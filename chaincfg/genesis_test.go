@@ -115,8 +115,9 @@ func TestTestNet4GenesisBlock(t *testing.T) {
 			"not appear valid - got %v, want %v", spew.Sdump(hash),
 			spew.Sdump(TestNet4Params.GenesisHash))
 	}
-	expectedHash := "00000000da84f2bafbbc53dee25a72ae507ff4914b867c565be3" +
-		"50b0da8bf043"
+	// SLUG: Argon2id digest of the testnet4 genesis header.
+	expectedHash := "c5b61fa53d45e0940dd1de9c9505982b7308dc7ccfecb216" +
+		"d5cd0f697fdf2d69"
 	require.Equal(t, expectedHash, hash.String())
 }
 
