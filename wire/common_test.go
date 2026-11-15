@@ -127,7 +127,7 @@ func TestElementWire(t *testing.T) {
 		},
 		{
 			MainNet,
-			[]byte{0xf9, 0xbe, 0xb4, 0xd9},
+			[]byte{0x47, 0x55, 0x4c, 0x53}, // SLUG mainnet magic (change set 2), little-endian
 		},
 		// Type not supported by the "fast" path and requires reflection.
 		{

@@ -57,26 +57,72 @@ var genesisCoinbaseTx = wire.MsgTx{
 
 // SLUG (change set 1): the genesis hash constants in this file are the
 // Argon2id digests of the genesis headers, recomputed after the
-// BlockHash swap in wire. The genesis blocks themselves are unchanged
-// inherited Bitcoin blocks for now; the SLUG genesis redesign is a
-// later change set.
+// BlockHash swap in wire.
+//
+// SLUG (change set 2): the main network genesis block below is now
+// SLUG's own genesis (new coinbase message, timestamp, and bits; see
+// slugGenesisCoinbaseTx). The other networks still use the inherited
+// Bitcoin genesis blocks, rehashed by change set 1; regtest and simnet
+// keep theirs for good, and testnet3/testnet4/signet cleanup belongs
+// to the rebrand change set.
+
+// slugGenesisCoinbaseTx is the coinbase transaction for the SLUG main
+// network genesis block. The signature script carries the message
+// "SLUG genesis, November 15 2026. Every fighter starts somewhere."
+// in the same layout Bitcoin's genesis used: a push of the block bits
+// (0x207fffff), a push of 0x04, then a push of the message. The single
+// output pays the 10 SLUG genesis subsidy to an OP_RETURN script
+// ("SLUG"), which makes it provably unspendable: this is a Phase A
+// test-chain genesis and the permanent genesis is decided later.
+var slugGenesisCoinbaseTx = wire.MsgTx{
+	Version: 1,
+	TxIn: []*wire.TxIn{
+		{
+			PreviousOutPoint: wire.OutPoint{
+				Hash:  chainhash.Hash{},
+				Index: 0xffffffff,
+			},
+			SignatureScript: []byte{
+				0x04, 0xff, 0xff, 0x7f, 0x20, 0x01, 0x04, 0x3f, /* |.......?| */
+				0x53, 0x4c, 0x55, 0x47, 0x20, 0x67, 0x65, 0x6e, /* |SLUG gen| */
+				0x65, 0x73, 0x69, 0x73, 0x2c, 0x20, 0x4e, 0x6f, /* |esis, No| */
+				0x76, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x20, 0x31, /* |vember 1| */
+				0x35, 0x20, 0x32, 0x30, 0x32, 0x36, 0x2e, 0x20, /* |5 2026. | */
+				0x45, 0x76, 0x65, 0x72, 0x79, 0x20, 0x66, 0x69, /* |Every fi| */
+				0x67, 0x68, 0x74, 0x65, 0x72, 0x20, 0x73, 0x74, /* |ghter st| */
+				0x61, 0x72, 0x74, 0x73, 0x20, 0x73, 0x6f, 0x6d, /* |arts som| */
+				0x65, 0x77, 0x68, 0x65, 0x72, 0x65, 0x2e, /* |ewhere.| */
+			},
+			Sequence: 0xffffffff,
+		},
+	},
+	TxOut: []*wire.TxOut{
+		{
+			Value: 0x3b9aca00, // 10 SLUG (1,000,000,000 base units), burned
+			PkScript: []byte{
+				0x6a, 0x04, 0x53, 0x4c, 0x55, 0x47, // OP_RETURN "SLUG"
+			},
+		},
+	},
+	LockTime: 0,
+}
 
 // genesisHash is the hash of the first block in the block chain for the main
-// network (genesis block).
+// network (genesis block). SLUG: Argon2id digest of the SLUG genesis header.
 var genesisHash = chainhash.Hash([chainhash.HashSize]byte{ // Make go vet happy.
-	0xfa, 0x54, 0x6f, 0x94, 0x81, 0x9c, 0xd4, 0x13,
-	0x98, 0xb5, 0x7d, 0xdd, 0x10, 0x58, 0x76, 0x09,
-	0xad, 0xce, 0x3d, 0x31, 0x9d, 0xca, 0xb1, 0xcb,
-	0x65, 0x1d, 0x9f, 0x9d, 0xc7, 0x9a, 0xfe, 0x45,
+	0xcd, 0x46, 0xe2, 0x0c, 0x23, 0xa7, 0x99, 0xa9,
+	0x26, 0x33, 0xcf, 0x22, 0x24, 0x9f, 0xa1, 0x22,
+	0x94, 0x7d, 0x34, 0x6a, 0xfb, 0x8d, 0x19, 0xbb,
+	0x85, 0x99, 0xcf, 0x99, 0x60, 0x67, 0x93, 0x78,
 })
 
 // genesisMerkleRoot is the hash of the first transaction in the genesis block
 // for the main network.
 var genesisMerkleRoot = chainhash.Hash([chainhash.HashSize]byte{ // Make go vet happy.
-	0x3b, 0xa3, 0xed, 0xfd, 0x7a, 0x7b, 0x12, 0xb2,
-	0x7a, 0xc7, 0x2c, 0x3e, 0x67, 0x76, 0x8f, 0x61,
-	0x7f, 0xc8, 0x1b, 0xc3, 0x88, 0x8a, 0x51, 0x32,
-	0x3a, 0x9f, 0xb8, 0xaa, 0x4b, 0x1e, 0x5e, 0x4a,
+	0x30, 0xaf, 0x33, 0x68, 0x15, 0x30, 0x75, 0x97,
+	0x99, 0xbe, 0x9f, 0x57, 0xed, 0x6d, 0xac, 0x59,
+	0x2a, 0x21, 0x6f, 0x61, 0x14, 0xea, 0x12, 0xbd,
+	0x89, 0x0d, 0x84, 0x20, 0x67, 0x25, 0x88, 0x7e,
 })
 
 // genesisBlock defines the genesis block of the block chain which serves as the
@@ -85,12 +131,12 @@ var genesisBlock = wire.MsgBlock{
 	Header: wire.BlockHeader{
 		Version:    1,
 		PrevBlock:  chainhash.Hash{},         // 0000000000000000000000000000000000000000000000000000000000000000
-		MerkleRoot: genesisMerkleRoot,        // 4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b
-		Timestamp:  time.Unix(0x495fab29, 0), // 2009-01-03 18:15:05 +0000 UTC
-		Bits:       0x1d00ffff,               // 486604799 [00000000ffff0000000000000000000000000000000000000000000000000000]
-		Nonce:      0x7c2bac1d,               // 2083236893
+		MerkleRoot: genesisMerkleRoot,        // 7e88256720840d89bd12ea14616f212a59ac6ded579fbe99977530156833af30
+		Timestamp:  time.Unix(1794700800, 0), // 2026-11-15 00:00:00 +0000 UTC
+		Bits:       0x207fffff,               // 545259519 [7fffff0000000000000000000000000000000000000000000000000000000000]
+		Nonce:      0,                        // Argon2id satisfied the target on the first attempt
 	},
-	Transactions: []*wire.MsgTx{&genesisCoinbaseTx},
+	Transactions: []*wire.MsgTx{&slugGenesisCoinbaseTx},
 }
 
 // regTestGenesisHash is the hash of the first block in the block chain for the
@@ -103,9 +149,14 @@ var regTestGenesisHash = chainhash.Hash([chainhash.HashSize]byte{ // Make go vet
 })
 
 // regTestGenesisMerkleRoot is the hash of the first transaction in the genesis
-// block for the regression test network.  It is the same as the merkle root for
-// the main network.
-var regTestGenesisMerkleRoot = genesisMerkleRoot
+// block for the regression test network.  SLUG: it stays the inherited
+// Bitcoin genesis merkle root; it is NOT the SLUG mainnet root.
+var regTestGenesisMerkleRoot = chainhash.Hash([chainhash.HashSize]byte{ // Make go vet happy.
+	0x3b, 0xa3, 0xed, 0xfd, 0x7a, 0x7b, 0x12, 0xb2,
+	0x7a, 0xc7, 0x2c, 0x3e, 0x67, 0x76, 0x8f, 0x61,
+	0x7f, 0xc8, 0x1b, 0xc3, 0x88, 0x8a, 0x51, 0x32,
+	0x3a, 0x9f, 0xb8, 0xaa, 0x4b, 0x1e, 0x5e, 0x4a,
+})
 
 // regTestGenesisBlock defines the genesis block of the block chain which serves
 // as the public transaction ledger for the regression test network.
@@ -131,9 +182,14 @@ var testNet3GenesisHash = chainhash.Hash([chainhash.HashSize]byte{ // Make go ve
 })
 
 // testNet3GenesisMerkleRoot is the hash of the first transaction in the genesis
-// block for the test network (version 3).  It is the same as the merkle root
-// for the main network.
-var testNet3GenesisMerkleRoot = genesisMerkleRoot
+// block for the test network (version 3).  SLUG: it stays the inherited
+// Bitcoin genesis merkle root; it is NOT the SLUG mainnet root.
+var testNet3GenesisMerkleRoot = chainhash.Hash([chainhash.HashSize]byte{ // Make go vet happy.
+	0x3b, 0xa3, 0xed, 0xfd, 0x7a, 0x7b, 0x12, 0xb2,
+	0x7a, 0xc7, 0x2c, 0x3e, 0x67, 0x76, 0x8f, 0x61,
+	0x7f, 0xc8, 0x1b, 0xc3, 0x88, 0x8a, 0x51, 0x32,
+	0x3a, 0x9f, 0xb8, 0xaa, 0x4b, 0x1e, 0x5e, 0x4a,
+})
 
 // testNet3GenesisBlock defines the genesis block of the block chain which
 // serves as the public transaction ledger for the test network (version 3).
@@ -230,9 +286,14 @@ var simNetGenesisHash = chainhash.Hash([chainhash.HashSize]byte{ // Make go vet 
 })
 
 // simNetGenesisMerkleRoot is the hash of the first transaction in the genesis
-// block for the simulation test network.  It is the same as the merkle root for
-// the main network.
-var simNetGenesisMerkleRoot = genesisMerkleRoot
+// block for the simulation test network.  SLUG: it stays the inherited
+// Bitcoin genesis merkle root; it is NOT the SLUG mainnet root.
+var simNetGenesisMerkleRoot = chainhash.Hash([chainhash.HashSize]byte{ // Make go vet happy.
+	0x3b, 0xa3, 0xed, 0xfd, 0x7a, 0x7b, 0x12, 0xb2,
+	0x7a, 0xc7, 0x2c, 0x3e, 0x67, 0x76, 0x8f, 0x61,
+	0x7f, 0xc8, 0x1b, 0xc3, 0x88, 0x8a, 0x51, 0x32,
+	0x3a, 0x9f, 0xb8, 0xaa, 0x4b, 0x1e, 0x5e, 0x4a,
+})
 
 // simNetGenesisBlock defines the genesis block of the block chain which serves
 // as the public transaction ledger for the simulation test network.
@@ -258,9 +319,14 @@ var sigNetGenesisHash = chainhash.Hash{
 }
 
 // sigNetGenesisMerkleRoot is the hash of the first transaction in the genesis
-// block for the signet test network. It is the same as the merkle root for
-// the main network.
-var sigNetGenesisMerkleRoot = genesisMerkleRoot
+// block for the signet test network. SLUG: it stays the inherited
+// Bitcoin genesis merkle root; it is NOT the SLUG mainnet root.
+var sigNetGenesisMerkleRoot = chainhash.Hash([chainhash.HashSize]byte{ // Make go vet happy.
+	0x3b, 0xa3, 0xed, 0xfd, 0x7a, 0x7b, 0x12, 0xb2,
+	0x7a, 0xc7, 0x2c, 0x3e, 0x67, 0x76, 0x8f, 0x61,
+	0x7f, 0xc8, 0x1b, 0xc3, 0x88, 0x8a, 0x51, 0x32,
+	0x3a, 0x9f, 0xb8, 0xaa, 0x4b, 0x1e, 0x5e, 0x4a,
+})
 
 // sigNetGenesisBlock defines the genesis block of the block chain which serves
 // as the public transaction ledger for the signet test network.
