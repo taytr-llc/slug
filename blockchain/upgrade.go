@@ -151,7 +151,7 @@ func migrateBlockIndex(db database.DB) error {
 // mainChain fields of the returned blockChainContext values.
 func readBlockTree(v1BlockIdxBucket database.Bucket) (map[chainhash.Hash]*blockChainContext, error) {
 	blocksMap := make(map[chainhash.Hash]*blockChainContext)
-	err := v1BlockIdxBucket.ForEach(func(_, blockRow []byte) error {
+	err := v1BlockIdxBucket.ForEach(func(hashBytes, blockRow []byte) error {
 		var header wire.BlockHeader
 		endOffset := blockHdrOffset + blockHdrSize
 		headerBytes := blockRow[blockHdrOffset:endOffset:endOffset]
@@ -160,7 +160,13 @@ func readBlockTree(v1BlockIdxBucket database.Bucket) (map[chainhash.Hash]*blockC
 			return err
 		}
 
-		blockHash := header.BlockHash()
+		// The v1 bucket is keyed by the block hash, so take the hash
+		// from the key instead of recomputing it from the header.
+		// Under SLUG's Argon2id proof of work a recomputation costs
+		// ~340 ms per block; see the block index load path in
+		// initChainState for the full reasoning.
+		var blockHash chainhash.Hash
+		copy(blockHash[:], hashBytes[0:chainhash.HashSize])
 		prevHash := header.PrevBlock
 
 		if blocksMap[blockHash] == nil {

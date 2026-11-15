@@ -1257,16 +1257,40 @@ func (b *BlockChain) initChainState() error {
 				return err
 			}
 
+			// The block index bucket is keyed by blockIndexKey(height,
+			// hash), so the hash of the block this entry describes is
+			// already in hand as part of the key.  Use it instead of
+			// recomputing the hash from the header: under SLUG's
+			// Argon2id proof of work, BlockHash costs ~340 ms, and
+			// recomputing it here made every restart replay one hash
+			// per block of stored history.
+			//
+			// Trusting the key is safe.  The entry only exists because
+			// this node stored it under that hash after the block
+			// passed full validation, and the key is how the node
+			// itself looks the entry up (the index map, the best chain
+			// state, and FetchBlock all key off the same hash).  All
+			// other on-disk chain state loaded here, such as the best
+			// chain state and the UTXO set, is trusted the same way.
+			// Fresh sync and block connection are unaffected: they
+			// still compute and validate every hash via initBlockNode.
+			key := cursor.Key()
+			if len(key) != chainhash.HashSize+4 {
+				return AssertError(fmt.Sprintf("initChainState: "+
+					"corrupt block index key length %d", len(key)))
+			}
+			var storedHash chainhash.Hash
+			copy(storedHash[:], key[4:4+chainhash.HashSize])
+
 			// Determine the parent block node. Since we iterate block headers
 			// in order of height, if the blocks are mostly linear there is a
 			// very good chance the previous header processed is the parent.
 			var parent *blockNode
 			if lastNode == nil {
-				blockHash := header.BlockHash()
-				if !blockHash.IsEqual(b.chainParams.GenesisHash) {
+				if !storedHash.IsEqual(b.chainParams.GenesisHash) {
 					return AssertError(fmt.Sprintf("initChainState: Expected "+
 						"first entry in block index to be genesis block, "+
-						"found %s", blockHash))
+						"found %s", storedHash))
 				}
 			} else if header.PrevBlock == lastNode.hash {
 				// Since we iterate block headers in order of height, if the
@@ -1277,14 +1301,14 @@ func (b *BlockChain) initChainState() error {
 				parent = b.index.LookupNode(&header.PrevBlock)
 				if parent == nil {
 					return AssertError(fmt.Sprintf("initChainState: Could "+
-						"not find parent for block %s", header.BlockHash()))
+						"not find parent for block %s", storedHash))
 				}
 			}
 
 			// Initialize the block node for the block, connect it,
 			// and add it to the block index.
 			node := new(blockNode)
-			initBlockNode(node, header, parent)
+			initBlockNodeWithHash(node, header, parent, storedHash)
 			node.status = status
 			b.index.addNode(node)
 
