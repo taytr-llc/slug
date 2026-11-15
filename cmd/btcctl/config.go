@@ -151,10 +151,12 @@ func normalizeAddress(addr string, chain *chaincfg.Params, useWallet bool) (stri
 				defaultPort = "38334"
 			}
 		default:
+			// SLUG (change set 2): mainnet RPC port is 29332 for
+			// both the node and the wallet.
 			if useWallet {
-				defaultPort = "8332"
+				defaultPort = "29332"
 			} else {
-				defaultPort = "8334"
+				defaultPort = "29332"
 			}
 		}
 
