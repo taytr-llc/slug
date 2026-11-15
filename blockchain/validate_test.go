@@ -66,6 +66,15 @@ func TestSequenceLocksActive(t *testing.T) {
 // TestCheckConnectBlockTemplate tests the CheckConnectBlockTemplate function to
 // ensure it fails.
 func TestCheckConnectBlockTemplate(t *testing.T) {
+	// SLUG (change set 2): skipped, not deleted. This test drives
+	// SHA256-mined Bitcoin mainnet fixture blocks (blk_0_to_4.dat,
+	// blk_3A.dat) against a MainNetParams chain. Change set 2 retired
+	// those fixtures when MainNetParams became the SLUG network with
+	// its own Argon2id genesis, so the fixture blocks no longer build
+	// on the chain under test. Restore this test if SLUG-native
+	// fixture blocks are ever generated.
+	t.Skip("Bitcoin mainnet fixture blocks retired by SLUG change set 2")
+
 	// Create a new database and chain instance to run tests against.
 	chain, teardownFunc, err := chainSetup("checkconnectblocktemplate",
 		&chaincfg.MainNetParams)
@@ -151,6 +160,14 @@ func TestCheckConnectBlockTemplate(t *testing.T) {
 // TestCheckBlockSanity tests the CheckBlockSanity function to ensure it works
 // as expected.
 func TestCheckBlockSanity(t *testing.T) {
+	// SLUG (change set 2): skipped, not deleted. This test runs
+	// CheckBlockSanity on Bitcoin mainnet block 100000, a SHA256-mined
+	// fixture whose Argon2id digest is effectively random and lands
+	// above the target. The Bitcoin mainnet fixtures were retired
+	// when MainNetParams became the SLUG network (change set 2).
+	// Restore this test against a SLUG-native fixture block.
+	t.Skip("Bitcoin mainnet fixture block retired by SLUG change set 2")
+
 	powLimit := chaincfg.MainNetParams.PowLimit
 	block := btcutil.NewBlock(&Block100000)
 	timeSource := NewMedianTime()

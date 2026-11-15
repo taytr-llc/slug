@@ -41,7 +41,8 @@ const (
 
 	// baseSubsidy is the starting subsidy amount for mined blocks.  This
 	// value is halved every SubsidyHalvingInterval blocks.
-	baseSubsidy = 50 * btcutil.SatoshiPerBitcoin
+	// SLUG (change set 2): 10 SLUG starting subsidy (D32).
+	baseSubsidy = 10 * btcutil.SatoshiPerBitcoin
 
 	// coinbaseHeightAllocSize is the amount of bytes that the
 	// ScriptBuilder will allocate when validating the coinbase height.
