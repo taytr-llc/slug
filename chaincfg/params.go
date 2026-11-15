@@ -331,9 +331,14 @@ var MainNetParams = Params{
 	BIP0066Height:            363725, // 00000000000000000379eaa19dce8c9b722d46ae6a57c2f1a988119488b50931
 	CoinbaseMaturity:         100,
 	SubsidyReductionInterval: 1050000,
-	TargetTimespan:           time.Hour * 24 * 14, // 14 days
-	TargetTimePerBlock:       time.Minute * 2,     // 2 minutes
-	RetargetAdjustmentFactor: 4,                   // 25% less, 400% more
+	// SLUG (D67): the retarget window is 2,016 blocks, not Bitcoin's
+	// 14-day timespan (which at 2-minute blocks would be 10,080
+	// blocks). A window counted in blocks stretches in wall-clock
+	// time when hash power leaves; 2,016 blocks (~2.8 days) keeps
+	// recovery at 1-2 weeks worst case on a small network.
+	TargetTimespan:           time.Minute * 2 * 2016, // 2016 blocks * 2 min (~2.8 days)
+	TargetTimePerBlock:       time.Minute * 2,        // 2 minutes
+	RetargetAdjustmentFactor: 4,                      // 25% less, 400% more
 	ReduceMinDifficulty:      false,
 	MinDiffReductionTime:     0,
 	// SLUG: CPU mining (the generate RPC) is enabled on mainnet params
