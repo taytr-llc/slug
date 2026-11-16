@@ -43,7 +43,8 @@ version.
   → `slug-prospect-service` (set 19, released on master at `56a4889d`)
   → `slug-mining-templates` (set 20, released on master at `3ed3b71e`)
   → `slug-automatic-miner` (set 21, released on master at `59e14a8c`)
-  → `slug-desktop-pilot` (set 22, isolated native mining pilot).
+  → `slug-desktop-pilot` (set 22, released on master at `fad9cbdf`)
+  → `slug-wallet-foundation` (set 23, paired wallet fork foundation).
 - Branch each next change set off the latest completed implementation tip,
   never the live seed branch by default. Use `slug-<topic>` names; set 7 is
   `slug-signed-checkpoints`. HANDOVER.md records the original takeover state.
@@ -229,6 +230,9 @@ does not understand. Never detach, replace, or clear the /data volume.
   Mike confirmed the gym shell is new Go work against the slugd/btcwallet RPC
   surfaces, not a Paymetheus adaptation. Fork the separate btcwallet repository
   when its wallet workstream begins.
+  That fork now exists at `taytr-llc/slugwallet`, checked out beside this repo.
+  Its first set 23 branch starts from btcwallet v0.18.1. Keep node deployment
+  separate from wallet work; no wallet service starts on Railway with this set.
 
 - Keep diffs minimal and close to upstream btcd structure; this fork tracks
   upstream and every gratuitous divergence makes merges harder.
