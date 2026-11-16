@@ -183,6 +183,11 @@ func TestReadBoundedRegularFile(t *testing.T) {
 	if _, err := readBoundedFile(dir, size); err == nil {
 		t.Fatal("accepted a directory")
 	}
+	if info, err := os.Stat(os.DevNull); err == nil && !info.Mode().IsRegular() {
+		if _, err := readBoundedFile(os.DevNull, size); err == nil {
+			t.Fatal("accepted a device file")
+		}
+	}
 }
 
 func TestCommandHelp(t *testing.T) {

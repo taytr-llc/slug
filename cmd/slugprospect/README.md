@@ -167,3 +167,28 @@ version-2 work, but it does not check issuance or the birth clock;
 `verify-auth`, `verify-node` and `verify-auth-node` explicitly report
 `birth_verified: false` for these proofs. Birth registration still does not
 establish account existence, transfer rights or league eligibility.
+
+Prepare a complete payable block candidate from a fresh node template:
+
+```sh
+/tmp/slugprospect prepare-work-node --job job.json --policy policy.json --rpc-config rpc.json --payout-address SLUG_ADDRESS --extra-nonce 0
+```
+
+The payout address is an explicit public SLUG mainnet destination supplied by
+the local wallet or operator. The command preserves the node's transactions,
+fees, header version and witness data, adds the job commitment to its coinbase,
+and asks the node to validate the full candidate using GBT proposal mode. It
+checks chain identity and the current parent before and after that proposal.
+If the additional coinbase data exceeds a block resource limit, it fails and
+requires a new template; it does not silently remove transactions or fees.
+
+Success returns `proposal_accepted: true`, `work_verified: false`,
+`admitted: false`, and `candidate`. The candidate includes the full `block_hex`,
+the matching version-2 proof with a stripped coinbase, the payout address,
+coinbase value, transaction count, weight and sigop cost. Its header nonce is
+zero; the separate 64-bit coinbase extra nonce defaults to zero. This command
+does not scan nonces, verify qualifying work locally, sign an admission, submit
+a block, or record a fighter. Proposal acceptance is an observation of the configured node
+and may become stale immediately. Local job-time checks before and after
+preparation are hints only; they cannot establish authority issuance or extend
+the issuer's fixed admission window. No private key input is accepted.

@@ -29,7 +29,9 @@ func TestCheapProfileRefusesBeforeNetwork(t *testing.T) {
 	_, _, verifyErr := client.Verify(context.Background(), testPolicy(), prospect.Proof{})
 	recheckErr := client.Recheck(context.Background(), prospect.Context{}, prospect.Proof{})
 	issuanceErr := client.RecheckContext(context.Background(), prospect.Context{})
-	for _, err := range []error{resolveErr, verifyErr, recheckErr, issuanceErr} {
+	_, templateErr := client.ResolveTemplate(context.Background(), testPolicy())
+	proposalErr := client.Proposal(context.Background(), prospect.Context{}, "")
+	for _, err := range []error{resolveErr, verifyErr, recheckErr, issuanceErr, templateErr, proposalErr} {
 		if err == nil || !strings.Contains(err.Error(), "slugtestpow") {
 			t.Fatal("cheap verification was not refused")
 		}
