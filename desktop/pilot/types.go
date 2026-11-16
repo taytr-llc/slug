@@ -5,6 +5,8 @@ package pilot
 import (
 	"context"
 	"github.com/taytr-llc/slug/fighter"
+	"github.com/taytr-llc/slug/gymauth"
+	"github.com/taytr-llc/slug/prospect"
 	"github.com/taytr-llc/slug/prospectservice"
 )
 
@@ -27,6 +29,10 @@ type AccountConfig struct {
 	RequireExisting bool
 	Authorizer      prospectservice.SessionAuthorizer
 	MiningToken     func(context.Context) (string, error)
+	// AdmissionSigner is optional private helper wiring. It receives only a
+	// scoped mining credential and typed admission; it must honor cancellation.
+	// A configured signer failure never falls back to the local wallet.
+	AdmissionSigner func(context.Context, string, prospect.Context, prospect.Proof) (gymauth.Authorization, error)
 }
 type Prospect struct {
 	Sequence     uint64             `json:"sequence"`

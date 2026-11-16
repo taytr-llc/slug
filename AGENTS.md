@@ -49,7 +49,8 @@ version.
   → `slug-phase-a-activation` (set 25, approved activation at height 62)
   → `slug-desktop-wallet` (set 26, released on master at `f03f1ef6`)
   → `slug-account-enrollment` (set 27, released on master at `a541fb58`)
-  → `slug-identity-recovery` (set 28, signed assertions and reset ordering).
+  → `slug-identity-recovery` (set 28, released on master at `bc92fd53`)
+  → `slug-recovery-vault` (set 29, encrypted fixture retention).
 - Branch each next change set off the latest completed implementation tip,
   never the live seed branch by default. Use `slug-<topic>` names; set 7 is
   `slug-signed-checkpoints`. HANDOVER.md records the original takeover state.
@@ -281,6 +282,14 @@ does not understand. Never detach, replace, or clear the /data volume.
   verified reset must establish its durable barrier before provider credential
   completion; pending state never clears merely on timeout or restart. Real
   provider deployment, arbitrary signup and production custody remain separate.
+  Set 29 retains recovery and gym-signing material in separate purpose-bound
+  envelopes in the wallet repository. Held gym operations must never unwrap
+  recovery material or export a seed, scalar or data key. Full provisioning
+  requires fresh authentication with no active hold; interrupted reservations
+  keep their original identity. Keep provider I/O outside account/vault leases
+  and reauthorize the original token/generation at publication. The initial
+  fixture manifest is immutable, not a current address-cursor backup. There is
+  no production KMS adapter, new-device wallet UI or real key issuance in this set.
 
 - Keep diffs minimal and close to upstream btcd structure; this fork tracks
   upstream and every gratuitous divergence makes merges harder.

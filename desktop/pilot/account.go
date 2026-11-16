@@ -190,6 +190,56 @@ func (c *Controller) accountSigner(signer prospectworker.Signer) prospectworker.
 	}
 }
 
+// delegatedAccountSigner leaves the account lease before calling the custody
+// boundary, which owns its own preflight/decryption/final authorization. Holding
+// the lease across that call would deadlock a shared authority and prevent reset
+// from progressing during provider I/O. Recheck the same credential and verify
+// the returned typed signature before handing it to the worker.
+func (c *Controller) delegatedAccountSigner() prospectworker.Signer {
+	return func(ctx context.Context, initial prospect.Context, proof prospect.Proof) (gymauth.Authorization, error) {
+		denied := errors.New("mining authorization unavailable")
+		key := c.manifest.Identity.GymPublicKey
+		if ctx.Err() != nil || len(proof.MerkleBranch) > 20 {
+			return gymauth.Authorization{}, denied
+		}
+		// Own the evidence checked across waits. Give the callback a separate
+		// branch so it cannot mutate this baseline or the worker's input.
+		proof.MerkleBranch = append([]string(nil), proof.MerkleBranch...)
+		if _, err := gymauth.AdmissionDigest(initial, proof, key); err != nil {
+			return gymauth.Authorization{}, denied
+		}
+		token, err := c.account.MiningToken(ctx)
+		if err != nil {
+			return gymauth.Authorization{}, denied
+		}
+		check := func(expected string, recheck func() error) error {
+			if ctx.Err() != nil || expected != key || recheck == nil {
+				return denied
+			}
+			return recheck()
+		}
+		if err = c.account.Authorizer.WithSession(ctx, token, check); err != nil {
+			return gymauth.Authorization{}, denied
+		}
+		request := proof
+		request.MerkleBranch = append([]string(nil), proof.MerkleBranch...)
+		auth, err := c.account.AdmissionSigner(ctx, token, initial, request)
+		if err != nil || ctx.Err() != nil {
+			return gymauth.Authorization{}, denied
+		}
+		err = c.account.Authorizer.WithSession(ctx, token, func(expected string, recheck func() error) error {
+			if auth.PublicKey != key || gymauth.VerifyAuthorization(initial, proof, auth) != nil {
+				return denied
+			}
+			return check(expected, recheck)
+		})
+		if err != nil {
+			return gymauth.Authorization{}, denied
+		}
+		return auth, nil
+	}
+}
+
 // AccountID is the immutable fixture binding, never a credential.
 func (c *Controller) AccountID() string {
 	if c.account == nil {

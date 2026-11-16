@@ -182,6 +182,17 @@ A later provider adapter must demonstrate this reset ordering before deployment.
 Production wallet profile, vault, real signup and provider provisioning are
 separate from this component. See `CHANGESET_28_NOTES.md`.
 
+Set 29 adds an encrypted fixture recovery vault in the separate wallet repo.
+Separate purpose-bound envelopes let original-gym enrollment and mining use
+only gym signing material during a reset hold. Full-material provisioning,
+export and wrapping-key changes enforce their own current session/hold gates.
+Durable reservations and reconciliation preserve the original wallet across
+interruptions. The desktop's private signer adapter checks the original mining
+session around the vault call without changing existing app defaults. This
+initial manifest is immutable; current address metadata, watch-only new-device
+views, production issuance and real provider/KMS deployment remain work ahead.
+See `CHANGESET_29_NOTES.md` and wallet `RECOVERY_VAULT.md`.
+
 The gym is the product surface: native Mac and Windows apps (menu
 bar and tray, gentle default mining setting) plus the browser
 version. Miner integration with the pool and solo switch, roster and
