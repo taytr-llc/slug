@@ -44,7 +44,8 @@ version.
   → `slug-mining-templates` (set 20, released on master at `3ed3b71e`)
   → `slug-automatic-miner` (set 21, released on master at `59e14a8c`)
   → `slug-desktop-pilot` (set 22, released on master at `fad9cbdf`)
-  → `slug-wallet-foundation` (set 23, paired wallet fork foundation).
+  → `slug-wallet-foundation` (set 23, released on master at `e1b25e7f`)
+  → `slug-wallet-recovery` (set 24, retained recovery and gym signing).
 - Branch each next change set off the latest completed implementation tip,
   never the live seed branch by default. Use `slug-<topic>` names; set 7 is
   `slug-signed-checkpoints`. HANDOVER.md records the original takeover state.
@@ -233,6 +234,12 @@ does not understand. Never detach, replace, or clear the /data volume.
   That fork now exists at `taytr-llc/slugwallet`, checked out beside this repo.
   Its first set 23 branch starts from btcwallet v0.18.1. Keep node deployment
   separate from wallet work; no wallet service starts on Railway with this set.
+  Mike approved D70: 24 English BIP39 words, no extra BIP39 passphrase, with
+  versioned SLUG wallet/gym recovery metadata. Login/encryption passwords remain
+  separate. New recovery profiles use explicit standard BIP32 derivation;
+  existing wallets keep legacy derivation. The Phase-A fixture profile is not a
+  production path allocation. Verify actual later export and fresh restore,
+  never invent a phrase for an old raw-seed wallet or imply hosted login exists.
 
 - Keep diffs minimal and close to upstream btcd structure; this fork tracks
   upstream and every gratuitous divergence makes merges harder.
