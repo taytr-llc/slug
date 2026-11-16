@@ -264,6 +264,11 @@ type Params struct {
 	// Checkpoints ordered from oldest to newest.
 	Checkpoints []Checkpoint
 
+	// CheckpointPublicKey is the compiled Ed25519 league checkpoint authority.
+	// A nil key means no authority has been configured. Signed checkpoints
+	// report the official league record only; they never change consensus.
+	CheckpointPublicKey []byte
+
 	// These fields are related to voting on consensus rule changes as
 	// defined by BIP0009.
 	//
@@ -347,10 +352,12 @@ var MainNetParams = Params{
 	GenerateSupported: true,
 
 	// Checkpoints ordered from oldest to newest.
-	// SLUG: none. Bitcoin's checkpoints referenced Bitcoin block
-	// hashes and were cleared; SLUG checkpoints (which double as
-	// signed fast-sync anchors) come with the checkpoint work.
+	// SLUG: Bitcoin's consensus checkpoints were cleared. Signed league
+	// declarations are separate, report-only records, never fast-sync anchors.
 	Checkpoints: nil,
+	// Operator enrollment is pending. Never substitute a generated or test
+	// key here: only the public key supplied by the league operator belongs.
+	CheckpointPublicKey: nil,
 
 	// Consensus rule change deployments.
 	//

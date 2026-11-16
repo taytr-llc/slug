@@ -17,9 +17,10 @@ version.
 - Work lands as numbered **change sets**, each on its own branch stacked on
   the previous one:
   `slug-pow-swap` → `slug-chain-params` → `slug-chain-fixes` → `slug-deploy`
-  → `slug-rebrand` (current tip, commit `0574b8b`).
-- Branch the next change set off the current tip (today: `slug-rebrand`).
-  Name it `slug-<topic>` (next up: `slug-module-rename`).
+  → `slug-rebrand` → `slug-module-rename` (set 6, `df655087`).
+- Branch each next change set off the latest completed implementation tip,
+  never the live seed branch by default. Use `slug-<topic>` names; set 7 is
+  `slug-signed-checkpoints`. HANDOVER.md records the original takeover state.
 - **Never open a pull request.** On a fork, GitHub's PR prompts can target
   btcsuite upstream. Push branches only.
 - One change set = one branch = one (or a few) well-explained commits.
@@ -100,6 +101,19 @@ change set renames the binary again, the Railway start command must be
 changed in the same deploy or the seed will not start. Deploying a
 different branch means switching the service's source branch in Railway
 settings.
+
+## Signed checkpoint policy (set 7, Mike's decision)
+
+- Signed checkpoints are report-only official league declarations. Conflicts
+  are publicly reported; normal chain selection and validation continue.
+  Never feed signed records into btcd's consensus checkpoints or fast-add
+  shortcuts. Enforced finality requires a separate explicit decision.
+- D62 burial means 60 descendant blocks, excluding the checkpoint block.
+- Mike runs the offline key/signing tool himself. Never create, read, or
+  request his operator private seed; only his public key is compiled into
+  chaincfg. Test fixture keys are not operator keys. Until public-key
+  enrollment, the client reports no configured authority and rejects signed
+  checkpoint imports. Do not claim official testnet checkpoints exist yet.
 
 ## Style
 

@@ -55,6 +55,7 @@ coverage.txt.bak
 /gencerts
 /slug
 /slugctl
+/slugcheckpoint
 /slugd
 
 .DS_Store

@@ -1,5 +1,9 @@
 # Argon2id Parameter Check: 64 MB vs 256 MB
 
+Historical benchmark note: set 7's accepted report-only checkpoint policy
+supersedes the fast-sync claims below. Signed league declarations do not
+skip PoW or other validation; the measured sync cost remains a review item.
+
 November 15, 2026. Benchmarked with golang.org/x/crypto/argon2
 (bench source in argon2id-bench/) on Ren's VM, a shared vCPU that is
 slower than a modern laptop. Absolute times will improve roughly

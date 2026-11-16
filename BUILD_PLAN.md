@@ -11,11 +11,15 @@ Fork btcd (D66), swap proof of work to Argon2id at 256 MB, t=1, p=1
 (D50), set the D32 parameters: 21M cap, 10 SLUG starting reward,
 halving every 1,050,000 blocks, 2-minute blocks, fees to the miner.
 Includes difficulty tuning for a slow hash (share difficulty, genesis
-difficulty), signed checkpoints doubling as fast-sync anchors against
-the Argon2id verification cost, public seed nodes, and an adapted
-open-source Bitcoin explorer. A security review of the PoW swap
+difficulty), report-only signed league checkpoints, public seed nodes,
+and an adapted open-source Bitcoin explorer. A security review of the PoW swap
 before genesis is non-optional (pre-launch list, spec section 17).
 Depends on: nothing. Everything else depends on this.
+
+Set 7 clarification (Mike, November 15, 2026): signed checkpoints declare
+the official record and report conflicts; they never reject branches or
+skip validation. The earlier fast-sync-anchor proposal is superseded.
+Argon2id sync cost remains work for the security/performance review.
 
 ### 2. Fighter layer
 Built off-chain with on-chain checkpoint anchors, per the chain

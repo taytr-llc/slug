@@ -116,6 +116,7 @@ func proxyTorIsolation(torIsolation bool, onionProxy string) bool {
 // See loadConfig for details on the configuration load process.
 type config struct {
 	AddCheckpoints       []string      `long:"addcheckpoint" description:"Add a custom checkpoint.  Format: '<height>:<hash>'"`
+	SignedCheckpoints    []string      `long:"signedcheckpoint" description:"Load a signed league checkpoint JSON file for report-only finality (repeatable; restart to reload)"`
 	AddPeers             []string      `short:"a" long:"addpeer" description:"Add a peer to connect with at startup"`
 	AddrIndex            bool          `long:"addrindex" description:"Maintain a full address-based transaction index which makes the searchrawtransactions RPC available"`
 	AgentBlacklist       []string      `long:"agentblacklist" description:"A comma separated list of user-agent substrings which will cause btcd to reject any peers whose user-agent contains any of the blacklisted substrings."`
@@ -203,6 +204,7 @@ type config struct {
 	oniondial            func(string, string, time.Duration) (net.Conn, error)
 	dial                 func(string, string, time.Duration) (net.Conn, error)
 	addCheckpoints       []chaincfg.Checkpoint
+	signedCheckpoints    []chaincfg.SignedCheckpoint
 	miningAddrs          []address.Address
 	minRelayTxFee        btcutil.Amount
 	whitelists           []*net.IPNet
@@ -1053,6 +1055,15 @@ func loadConfig() (*config, []string, error) {
 		fmt.Fprintln(os.Stderr, err)
 		fmt.Fprintln(os.Stderr, usageMessage)
 		return nil, nil, err
+	}
+
+	// League declarations are authenticated separately from the legacy
+	// consensus checkpoints and must never enable their validation shortcuts.
+	cfg.signedCheckpoints, err = loadSignedCheckpoints(
+		cfg.SignedCheckpoints, activeNetParams.Params,
+	)
+	if err != nil {
+		return nil, nil, fmt.Errorf("%s: signed checkpoints: %w", funcName, err)
 	}
 
 	// Tor stream isolation requires either proxy or onion proxy to be set.

@@ -67,6 +67,7 @@ build:
 	@$(call print, "Building all binaries")
 	$(GOBUILD) -o slugd$(GO_EXE) $(PKG)
 	$(GOBUILD) $(PKG)/cmd/slugctl
+	$(GOBUILD) $(PKG)/cmd/slugcheckpoint
 	$(GOBUILD) $(PKG)/cmd/gencerts
 	$(GOBUILD) $(PKG)/cmd/findcheckpoint
 	$(GOBUILD) $(PKG)/cmd/addblock
@@ -76,6 +77,7 @@ install:
 	@$(call print, "Installing all binaries")
 	$(GOBUILD) -o "$(GO_BIN)/slugd$(GO_EXE)" $(PKG)
 	$(GOINSTALL) $(PKG)/cmd/slugctl
+	$(GOINSTALL) $(PKG)/cmd/slugcheckpoint
 	$(GOINSTALL) $(PKG)/cmd/gencerts
 	$(GOINSTALL) $(PKG)/cmd/findcheckpoint
 	$(GOINSTALL) $(PKG)/cmd/addblock

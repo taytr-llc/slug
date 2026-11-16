@@ -96,6 +96,8 @@ type BlockChain struct {
 	// separate mutex.
 	checkpoints         []chaincfg.Checkpoint
 	checkpointsByHeight map[int32]*chaincfg.Checkpoint
+	signedCheckpoints   []chaincfg.SignedCheckpoint
+	checkpointPublicKey []byte
 	db                  database.DB
 	chainParams         *chaincfg.Params
 	timeSource          MedianTimeSource
@@ -2175,6 +2177,10 @@ type Config struct {
 	// checkpoints.
 	Checkpoints []chaincfg.Checkpoint
 
+	// SignedCheckpoints are authenticated league declarations, ordered by
+	// height. They are report-only and never feed consensus checkpoints.
+	SignedCheckpoints []chaincfg.SignedCheckpoint
+
 	// TimeSource defines the median time source to use for things such as
 	// block processing and determining whether or not the chain is current.
 	//
@@ -2227,6 +2233,12 @@ func New(config *Config) (*BlockChain, error) {
 	if config.TimeSource == nil {
 		return nil, AssertError("blockchain.New timesource is nil")
 	}
+	signedCheckpoints, checkpointPublicKey, err := prepareSignedCheckpoints(
+		config.ChainParams, config.SignedCheckpoints,
+	)
+	if err != nil {
+		return nil, err
+	}
 
 	// Generate a checkpoint by height map from the provided checkpoints
 	// and assert the provided checkpoints are sorted by height as required.
@@ -2253,6 +2265,8 @@ func New(config *Config) (*BlockChain, error) {
 	b := BlockChain{
 		checkpoints:         config.Checkpoints,
 		checkpointsByHeight: checkpointsByHeight,
+		signedCheckpoints:   signedCheckpoints,
+		checkpointPublicKey: checkpointPublicKey,
 		db:                  config.DB,
 		chainParams:         params,
 		timeSource:          config.TimeSource,
