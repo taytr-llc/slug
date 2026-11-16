@@ -166,3 +166,44 @@ atomic file write; custom account roots include authority and all sibling gyms
 in path protection. Backup verification emits public progress only and never
 replaces the original wallet. Native OS file previews can display the selected
 public fixture file; no production secret-reveal security is claimed.
+
+## Explicit signed-identity authority (set 28)
+
+Schema 2 is created and opened only through `CreateIdentity`/`OpenIdentity` with
+an `IdentityConfig`; it never upgrades a schema-1 directory. The nested account
+policy still permits only the same two published wallet fixtures. The authority
+pins the complete public verifier configuration digest and a bounded number of
+durable one-use login attempts. Legacy `Login` and `ApplyReset` refuse schema 2.
+
+`IssueLogin` returns an authority-issued nonce and monotonic sequence. The
+`gymidentity` verifier checks the signed assertion and obtains that persisted
+nonce itself through its `Login` helper. `LoginWithAssertion` consumes the attempt
+and inserts one session atomically, checking the exact trusted principal, verifier
+pin, original-authentication epoch, pending reset and sequence again. A fresh
+assertion issuance time or nonce cannot update an old authentication's epoch.
+
+A signed verified reset begins by atomically advancing the account generation,
+revoking existing sessions, storing a pending barrier and reserving completion
+audit capacity. All capabilities fail closed while pending. The provider must
+wait for this durable acknowledgment before completing its credential change.
+A matching signed completion commits the next epoch and fixed 24-hour hold,
+preserving the original wallet/gym and requiring its existing recovery proof.
+The original verification time and event binding are immutable; replay returns
+the same result. Pending state never clears because time elapsed or a process
+restarted. A fresh signed transport assertion may reconcile the same old event.
+
+Schema-2 capability checks also fail closed when fewer than two unreserved audit
+slots remain, so a session cannot stay usable when a new reset could not be
+recorded safely. Acknowledged reset completion retains its reserved slot. Login
+attempt lookup persists clock high-water even when rejecting expiry, preventing
+a clock rollback from reviving an expired attempt after restart. All records,
+nonce consumption, reset sequences, generations and reservations are audited
+when reopened; uncertain writes poison the handle until explicit reopen.
+
+The private native test coordinator exercises signed assertions with retained
+wallets and normal PoW. The shipped schema-1 desktop default stays unchanged.
+There is no browser login flow, deployed identity provider, public endpoint, real
+credential issuance, new MFA policy or hosted recovery vault in this component.
+A future provider must demonstrate the additional signed authentication-epoch
+and reset-ordering guarantees; ordinary OIDC support alone is insufficient.
+See `gymidentity/README.md` and `CHANGESET_28_NOTES.md`.

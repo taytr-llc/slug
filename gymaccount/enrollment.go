@@ -186,6 +186,9 @@ func (s *Store) ApplyReset(ctx context.Context, p Principal) (ResetResult, bool,
 		return ResetResult{}, false, err
 	}
 	defer s.unlock()
+	if s.meta.Version != Version1 {
+		return ResetResult{}, false, ErrForbidden
+	}
 	principal, err := PrincipalID(p.Issuer, p.Subject)
 	if err != nil {
 		return ResetResult{}, false, ErrUnauthorized

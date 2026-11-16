@@ -43,6 +43,9 @@ func (s *Store) Login(ctx context.Context, p Principal) (Session, error) {
 		return Session{}, err
 	}
 	defer s.unlock()
+	if s.meta.Version != Version1 {
+		return Session{}, ErrForbidden
+	}
 	// Reject unknown principals before any clock write.
 	id, err := PrincipalID(p.Issuer, p.Subject)
 	if err != nil {
@@ -166,10 +169,18 @@ func (s *Store) authorize(token string, capability Capability) (string, sessionR
 	if err != nil {
 		return "", sessionRecord{}, Account{}, 0, err
 	}
-	// Exhausting the immutable audit disables every existing capability as
-	// well as new mutations. Capacity cannot leave an unrevocable live token.
-	if s.meta.Events >= s.meta.Config.MaxEvents {
+	// Keep enough unreserved audit capacity to revoke an active authority.
+	// Schema 2 reset needs both its begin event and a reserved completion event;
+	// even one free slot is insufficient. Schema 1 retains its original rule.
+	revocationSlots := uint64(1)
+	if s.meta.Version == IdentityVersion {
+		revocationSlots = 2
+	}
+	if uint64(s.meta.Events)+uint64(s.meta.ReservedEvents)+revocationSlots > uint64(s.meta.Config.MaxEvents) {
 		return "", sessionRecord{}, Account{}, 0, ErrCapacity
+	}
+	if err := s.identityAuthorization(a); err != nil {
+		return "", sessionRecord{}, Account{}, 0, err
 	}
 	if session.Revoked || session.Generation != a.Generation {
 		return "", sessionRecord{}, Account{}, 0, ErrUnauthorized

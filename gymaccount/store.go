@@ -29,29 +29,34 @@ const markerName = "SLUG-ACCOUNTS.json"
 const application = "slug-fixture-gym-accounts"
 
 type metadata struct {
-	Application string `json:"application"`
-	Version     uint32 `json:"version"`
-	Network     uint32 `json:"network"`
-	Genesis     string `json:"genesis"`
-	Profile     string `json:"profile"`
-	HoldMS      int64  `json:"hold_ms"`
-	AuthorityID string `json:"authority_id"`
-	Config      Config `json:"config"`
-	ClockMS     int64  `json:"clock_ms"`
-	Accounts    uint32 `json:"accounts"`
-	Sessions    uint32 `json:"sessions"`
-	Challenges  uint32 `json:"challenges"`
-	Events      uint32 `json:"events"`
+	Application      string          `json:"application"`
+	Version          uint32          `json:"version"`
+	Network          uint32          `json:"network"`
+	Genesis          string          `json:"genesis"`
+	Profile          string          `json:"profile"`
+	HoldMS           int64           `json:"hold_ms"`
+	AuthorityID      string          `json:"authority_id"`
+	Config           Config          `json:"config"`
+	ClockMS          int64           `json:"clock_ms"`
+	Accounts         uint32          `json:"accounts"`
+	Sessions         uint32          `json:"sessions"`
+	Challenges       uint32          `json:"challenges"`
+	Events           uint32          `json:"events"`
+	Identity         *IdentityConfig `json:"identity,omitempty"`
+	LoginAttempts    uint32          `json:"login_attempts,omitempty"`
+	IdentitySequence uint64          `json:"identity_sequence,omitempty"`
+	ReservedEvents   uint32          `json:"reserved_events,omitempty"`
 }
 type marker struct {
-	Application string `json:"application"`
-	Version     uint32 `json:"version"`
-	Network     uint32 `json:"network"`
-	Genesis     string `json:"genesis"`
-	Profile     string `json:"profile"`
-	HoldMS      int64  `json:"hold_ms"`
-	AuthorityID string `json:"authority_id"`
-	Config      Config `json:"config"`
+	Application string          `json:"application"`
+	Version     uint32          `json:"version"`
+	Network     uint32          `json:"network"`
+	Genesis     string          `json:"genesis"`
+	Profile     string          `json:"profile"`
+	HoldMS      int64           `json:"hold_ms"`
+	AuthorityID string          `json:"authority_id"`
+	Config      Config          `json:"config"`
+	Identity    *IdentityConfig `json:"identity,omitempty"`
 }
 type sessionRecord struct {
 	AccountID         string `json:"account_id"`
@@ -187,6 +192,13 @@ func readMarker(path string) (marker, error) {
 // Create creates only a new private directory. Partial initialization remains
 // visible and is never silently replaced. Both published fixtures are required.
 func Create(path string, config Config) (*Store, error) {
+	return createStore(path, config, nil)
+}
+func createStore(path string, config Config, identity *IdentityConfig) (*Store, error) {
+	version := Version1
+	if identity != nil {
+		version = IdentityVersion
+	}
 	c, err := normalizedConfig(config)
 	if err != nil {
 		return nil, err
@@ -198,7 +210,7 @@ func Create(path string, config Config) (*Store, error) {
 	if err = os.Mkdir(path, 0700); err != nil {
 		return nil, errors.New("account directory unavailable")
 	}
-	m := marker{Application: application, Version: Version1, Network: FixtureNetwork, Genesis: FixtureGenesis, Profile: FixtureProfile, HoldMS: RecoveryHoldMS, AuthorityID: authority, Config: c}
+	m := marker{Application: application, Version: version, Identity: identity, Network: FixtureNetwork, Genesis: FixtureGenesis, Profile: FixtureProfile, HoldMS: RecoveryHoldMS, AuthorityID: authority, Config: c}
 	raw, _ := json.Marshal(m)
 	f, err := os.OpenFile(filepath.Join(path, markerName), os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
 	if err != nil {
@@ -212,7 +224,7 @@ func Create(path string, config Config) (*Store, error) {
 	if err != nil {
 		return nil, ErrCorrupt
 	}
-	s := &Store{gate: make(chan struct{}, 1), authorityID: authority, db: db, meta: metadata{Application: application, Version: Version1, Network: FixtureNetwork, Genesis: FixtureGenesis, Profile: FixtureProfile, HoldMS: RecoveryHoldMS, AuthorityID: authority, Config: c}, now: time.Now, random: rand.Reader, writeBatch: db.Write}
+	s := &Store{gate: make(chan struct{}, 1), authorityID: authority, db: db, meta: metadata{Application: application, Version: version, Identity: identity, Network: FixtureNetwork, Genesis: FixtureGenesis, Profile: FixtureProfile, HoldMS: RecoveryHoldMS, AuthorityID: authority, Config: c}, now: time.Now, random: rand.Reader, writeBatch: db.Write}
 	batch := new(leveldb.Batch)
 	if err = put(batch, "meta", s.meta); err == nil {
 		err = db.Write(batch, &opt.WriteOptions{Sync: true})
@@ -233,6 +245,13 @@ func Create(path string, config Config) (*Store, error) {
 // Open requires a complete matching fixture database; no migration or implicit
 // creation occurs. It audits all bounded records and cross-links before use.
 func Open(path string, config Config) (*Store, error) {
+	return openStore(path, config, nil)
+}
+func openStore(path string, config Config, identity *IdentityConfig) (*Store, error) {
+	version := Version1
+	if identity != nil {
+		version = IdentityVersion
+	}
 	c, err := normalizedConfig(config)
 	if err != nil {
 		return nil, err
@@ -241,7 +260,7 @@ func Open(path string, config Config) (*Store, error) {
 		return nil, ErrCorrupt
 	}
 	m, err := readMarker(filepath.Join(path, markerName))
-	if err != nil || m.Application != application || m.Version != Version1 || m.Network != FixtureNetwork || m.Genesis != FixtureGenesis || m.Profile != FixtureProfile || m.HoldMS != RecoveryHoldMS || !validID(m.AuthorityID) || !reflect.DeepEqual(m.Config, c) {
+	if err != nil || m.Application != application || m.Version != version || !reflect.DeepEqual(m.Identity, identity) || m.Network != FixtureNetwork || m.Genesis != FixtureGenesis || m.Profile != FixtureProfile || m.HoldMS != RecoveryHoldMS || !validID(m.AuthorityID) || !reflect.DeepEqual(m.Config, c) {
 		return nil, ErrCorrupt
 	}
 	db, err := leveldb.OpenFile(filepath.Join(path, "db"), &opt.Options{ErrorIfMissing: true})
@@ -250,7 +269,7 @@ func Open(path string, config Config) (*Store, error) {
 	}
 	s := &Store{gate: make(chan struct{}, 1), authorityID: m.AuthorityID, db: db, now: time.Now, random: rand.Reader, writeBatch: db.Write}
 	raw, err := db.Get([]byte("meta"), nil)
-	if err != nil || canonical(raw, &s.meta) != nil || s.meta.Application != application || s.meta.Version != Version1 || s.meta.Network != m.Network || s.meta.Genesis != m.Genesis || s.meta.Profile != m.Profile || s.meta.HoldMS != m.HoldMS || s.meta.AuthorityID != m.AuthorityID || !reflect.DeepEqual(s.meta.Config, c) || s.audit() != nil {
+	if err != nil || canonical(raw, &s.meta) != nil || s.meta.Application != application || s.meta.Version != version || !reflect.DeepEqual(s.meta.Identity, identity) || s.meta.Network != m.Network || s.meta.Genesis != m.Genesis || s.meta.Profile != m.Profile || s.meta.HoldMS != m.HoldMS || s.meta.AuthorityID != m.AuthorityID || !reflect.DeepEqual(s.meta.Config, c) || s.audit() != nil {
 		db.Close()
 		return nil, ErrCorrupt
 	}
@@ -390,7 +409,7 @@ func (s *Store) validateAccount(a Account) error {
 	return nil
 }
 func (s *Store) event(batch *leveldb.Batch, next *metadata, kind string, a Account, at int64, reference string) error {
-	if next.Events >= next.Config.MaxEvents {
+	if uint64(next.Events)+uint64(next.ReservedEvents) >= uint64(next.Config.MaxEvents) {
 		return ErrCapacity
 	}
 	next.Events++

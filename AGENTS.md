@@ -48,7 +48,8 @@ version.
   → `slug-wallet-recovery` (set 24, released on master at `0b04cd1b`)
   → `slug-phase-a-activation` (set 25, approved activation at height 62)
   → `slug-desktop-wallet` (set 26, released on master at `f03f1ef6`)
-  → `slug-account-enrollment` (set 27, account/reset fixture integration).
+  → `slug-account-enrollment` (set 27, released on master at `a541fb58`)
+  → `slug-identity-recovery` (set 28, signed assertions and reset ordering).
 - Branch each next change set off the latest completed implementation tip,
   never the live seed branch by default. Use `slug-<topic>` names; set 7 is
   `slug-signed-checkpoints`. HANDOVER.md records the original takeover state.
@@ -273,6 +274,13 @@ does not understand. Never detach, replace, or clear the /data volume.
   hold; replaying the same verified event must not extend it.
   Set 27 starts with two explicitly published fixtures, not real registration,
   production derivation allocation, or a public wallet service.
+  Set 28 adds an explicit schema-2 assertion/reset boundary. Preserve schema-1
+  data and APIs; never allow legacy login/reset to bypass schema 2. Pin verifier
+  trust, consume authority-issued nonces, and bind the signed credential epoch
+  to the original authentication. Refresh issuance time is not fresh auth. A
+  verified reset must establish its durable barrier before provider credential
+  completion; pending state never clears merely on timeout or restart. Real
+  provider deployment, arbitrary signup and production custody remain separate.
 
 - Keep diffs minimal and close to upstream btcd structure; this fork tracks
   upstream and every gratuitous divergence makes merges harder.
