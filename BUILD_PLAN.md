@@ -140,6 +140,16 @@ key derivation and full export/restore acceptance remain required before real
 wallet issuance. Restoring a published test seed verifies a foundation only;
 it does not demonstrate a user-facing recovery export or fighter transfer.
 
+Set 24 implements D70 in the separate wallet fork: encrypted retention of the
+approved 24-word English phrase material, later export, fresh restoration and
+the same wallet-derived gym identity. Its explicit Phase-A fixture profile uses
+standard BIP32 while old wallets retain legacy derivation. A narrow automatic
+admission signer joins the existing worker callback without exposing a raw-key
+or arbitrary-signing RPC. Normal-PoW acceptance must restore from the actual
+later export, recover beyond a default address gap, spend again and authorize
+a prospect with the same gym. Hosted login, custody recovery, production
+derivation allocation and fighter transfer remain separate gates.
+
 ### 5. Gym clients
 The gym is the product surface: native Mac and Windows apps (menu
 bar and tray, gentle default mining setting) plus the browser
