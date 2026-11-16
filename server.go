@@ -3097,6 +3097,16 @@ func newServer(listenAddrs, agentBlacklist, agentWhitelist []string,
 		return nil, err
 	}
 
+	// Expose the configured upgrade boundary in logs without opening RPC.
+	if s.chainParams.Net == chaincfg.MainNetParams.Net {
+		btcdLog.Infof("Phase-A script activation: bip34=%d bip65=%d bip66=%d csv=%d segwit=%d taproot=%d nextheight=%d",
+			s.chainParams.BIP0034Height, s.chainParams.BIP0065Height, s.chainParams.BIP0066Height,
+			s.chainParams.Deployments[chaincfg.DeploymentCSV].AlwaysActiveHeight,
+			s.chainParams.Deployments[chaincfg.DeploymentSegwit].AlwaysActiveHeight,
+			s.chainParams.Deployments[chaincfg.DeploymentTaproot].AlwaysActiveHeight,
+			s.chain.BestSnapshot().Height+1)
+	}
+
 	// Record the public league status on startup so operators can verify
 	// explicit imports without exposing the private RPC listener.
 	signedState := s.chain.SignedCheckpointSnapshot()

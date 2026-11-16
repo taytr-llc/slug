@@ -35,6 +35,11 @@ and nested transaction/auxiliary fields use strict schemas. Duplicate decoded
 keys, unknown fields, null fields, malformed UTF-8 and trailing input
 are rejected. Typed library inputs are also bounded and revalidated.
 
+The client requests `coinbasevalue` and declares `rules: ["segwit"]`.
+The pinned SLUG endpoint does not negotiate that rules field; deployment state
+governs witness inclusion. This declaration does not broaden the accepted
+response schema or add a Bitcoin Core backend.
+
 Full transaction bytes retain witness data. Each transaction is decoded
 canonically without trailing bytes; txid, wtxid and weight are recomputed.
 Coinbase transactions, duplicate txids and inconsistent or out-of-order

@@ -45,7 +45,8 @@ version.
   → `slug-automatic-miner` (set 21, released on master at `59e14a8c`)
   → `slug-desktop-pilot` (set 22, released on master at `fad9cbdf`)
   → `slug-wallet-foundation` (set 23, released on master at `e1b25e7f`)
-  → `slug-wallet-recovery` (set 24, retained recovery and gym signing).
+  → `slug-wallet-recovery` (set 24, released on master at `0b04cd1b`)
+  → `slug-phase-a-activation` (set 25, approved activation at height 62).
 - Branch each next change set off the latest completed implementation tip,
   never the live seed branch by default. Use `slug-<topic>` names; set 7 is
   `slug-signed-checkpoints`. HANDOVER.md records the original takeover state.
@@ -104,6 +105,12 @@ version.
 - Do not change any consensus parameter or the genesis on an existing
   branch. Parameter changes are a new change set, and after the Phase C
   genesis they become coordinated upgrades, never silent edits.
+- Mike approved D71 on November 16: implement, validate and deploy the existing
+  BIP34/65/66, CSV, SegWit and Taproot rules at Phase-A height 62 in set 25.
+  Preserve genesis and blocks 0–61. Confirm the seed still has the recorded
+  height-61 tip before promotion; stop if it has advanced. Update nodes before
+  further mining. This does not authorize public-chain mining or production
+  genesis. After height 62, a binary downgrade is not a sufficient rollback.
 
 ## Test-vector rule (learned the hard way)
 

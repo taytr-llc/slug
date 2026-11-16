@@ -9,6 +9,7 @@ import (
 	"bytes"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"io"
 	"strings"
 
@@ -422,23 +423,42 @@ func unmarshalPartialGetBlockChainInfoResult(res []byte) (*btcjson.GetBlockChain
 // unmarshalGetBlockChainInfoResultSoftForks properly unmarshals the softforks
 // related fields into the GetBlockChainInfoResult instance.
 func unmarshalGetBlockChainInfoResultSoftForks(chainInfo *btcjson.GetBlockChainInfoResult,
-	version BackendVersion, res []byte) error {
+	res []byte) error {
 
-	// Versions of bitcoind on or after v0.19.0 use the unified format.
-	if version.SupportUnifiedSoftForks() {
+	// SLUG emits the legacy array plus bip9_softforks. A backend version
+	// guess can select the wrong format, especially for forks; use the actual
+	// documented wire representation instead. This also avoids an unrelated
+	// version RPC just to decode an already received response.
+	var shape struct {
+		Forks json.RawMessage `json:"softforks"`
+		BIP9  json.RawMessage `json:"bip9_softforks"`
+	}
+	if err := json.Unmarshal(res, &shape); err != nil {
+		return err
+	}
+	forks := bytes.TrimSpace(shape.Forks)
+	chainInfo.SoftForks, chainInfo.UnifiedSoftForks = nil, nil
+	if len(forks) == 0 || bytes.Equal(forks, []byte("null")) {
+		if len(shape.BIP9) == 0 || bytes.Equal(bytes.TrimSpace(shape.BIP9), []byte("null")) {
+			return nil
+		}
+		forks = []byte("[]") // Legacy nodes may omit their buried-rule array.
+	}
+	switch forks[0] {
+	case '{':
 		var softForks btcjson.UnifiedSoftForks
 		if err := json.Unmarshal(res, &softForks); err != nil {
 			return err
 		}
 		chainInfo.UnifiedSoftForks = &softForks
-	} else {
-
-		// All other versions use the original format.
+	case '[':
 		var softForks btcjson.SoftForks
 		if err := json.Unmarshal(res, &softForks); err != nil {
 			return err
 		}
 		chainInfo.SoftForks = &softForks
+	default:
+		return errors.New("invalid soft-fork response representation")
 	}
 
 	return nil
@@ -456,14 +476,7 @@ func (r FutureGetBlockChainInfoResult) Receive() (*btcjson.GetBlockChainInfoResu
 		return nil, err
 	}
 
-	// Inspect the version to determine how we'll need to parse the
-	// softforks from the response.
-	version, err := r.client.BackendVersion()
-	if err != nil {
-		return nil, err
-	}
-
-	err = unmarshalGetBlockChainInfoResultSoftForks(chainInfo, version, res)
+	err = unmarshalGetBlockChainInfoResultSoftForks(chainInfo, res)
 	if err != nil {
 		return nil, err
 	}

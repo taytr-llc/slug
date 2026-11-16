@@ -1336,6 +1336,7 @@ func handleGetBlockChainInfo(s *rpcServer, cmd interface{}, closeChan <-chan str
 			StartTime2:          startTime,
 			Timeout:             endTime,
 			MinActivationHeight: int32(deploymentDetails.MinActivationHeight),
+			AlwaysActiveHeight:  deploymentDetails.AlwaysActiveHeight,
 		}
 	}
 

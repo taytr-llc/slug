@@ -22,39 +22,36 @@ var upgrader = websocket.Upgrader{}
 
 // TestUnmarshalGetBlockChainInfoResult ensures that the SoftForks and
 // UnifiedSoftForks fields of GetBlockChainInfoResult are properly unmarshaled
-// when using the expected backend version.
+// according to the actual wire representation, without guessing backend versions.
 func TestUnmarshalGetBlockChainInfoResultSoftForks(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
 		name       string
-		version    BackendVersion
 		res        []byte
 		compatible bool
+		unified    bool
 	}{
 		{
 			name:       "bitcoind < 0.19.0 with separate softforks",
-			version:    BitcoindPre19,
 			res:        []byte(`{"softforks": [{"version": 2}]}`),
 			compatible: true,
 		},
 		{
-			name:       "bitcoind >= 0.19.0 with separate softforks",
-			version:    BitcoindPre22,
-			res:        []byte(`{"softforks": [{"version": 2}]}`),
+			name:       "invalid scalar softforks",
+			res:        []byte(`{"softforks": true}`),
 			compatible: false,
 		},
 		{
-			name:       "bitcoind < 0.19.0 with unified softforks",
-			version:    BitcoindPre19,
-			res:        []byte(`{"softforks": {"segwit": {"type": "bip9"}}}`),
+			name:       "invalid string softforks",
+			res:        []byte(`{"softforks": "active"}`),
 			compatible: false,
 		},
 		{
 			name:       "bitcoind >= 0.19.0 with unified softforks",
-			version:    BitcoindPre22,
 			res:        []byte(`{"softforks": {"segwit": {"type": "bip9"}}}`),
 			compatible: true,
+			unified:    true,
 		},
 	}
 
@@ -75,12 +72,10 @@ func TestUnmarshalGetBlockChainInfoResultSoftForks(t *testing.T) {
 				t.Fatal("expected UnifiedSoftForks to be empty")
 			}
 
-			// Proceed to unmarshal the softforks of the response
-			// with the expected version. If the version is
-			// incompatible with the response, then this should
-			// fail.
+			// Reject malformed shapes, while accepting either documented
+			// representation independently of reported software versions.
 			err = unmarshalGetBlockChainInfoResultSoftForks(
-				info, test.version, test.res,
+				info, test.res,
 			)
 			if test.compatible && err != nil {
 				t.Fatalf("unable to unmarshal softforks: %v", err)
@@ -92,15 +87,9 @@ func TestUnmarshalGetBlockChainInfoResultSoftForks(t *testing.T) {
 				return
 			}
 
-			// If the version is compatible with the response, we
-			// should expect to see the proper softforks field set.
-			if test.version == BitcoindPre22 &&
-				info.SoftForks != nil {
-				t.Fatal("expected SoftForks to be empty")
-			}
-			if test.version == BitcoindPre19 &&
-				info.UnifiedSoftForks != nil {
-				t.Fatal("expected UnifiedSoftForks to be empty")
+			if (info.UnifiedSoftForks != nil) != test.unified ||
+				(info.SoftForks != nil) == test.unified {
+				t.Fatal("response selected the wrong soft-fork representation")
 			}
 		})
 		if !success {
