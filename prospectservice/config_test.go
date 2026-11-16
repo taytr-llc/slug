@@ -31,7 +31,7 @@ func TestServerConfigStrictAndCanonical(t *testing.T) {
 		}
 	}
 	for _, mutate := range []func(*ServerConfig){
-		func(c *ServerConfig) { c.Version = 2 }, func(c *ServerConfig) { c.MaxJobs = 0 }, func(c *ServerConfig) { c.MaxRecords = 0 },
+		func(c *ServerConfig) { c.Version = 3 }, func(c *ServerConfig) { c.MaxJobs = 0 }, func(c *ServerConfig) { c.MaxRecords = 0 },
 		func(c *ServerConfig) { c.MaxJobs = 1000000001 }, func(c *ServerConfig) { c.MaxRecords = 1000000001 },
 		func(c *ServerConfig) { c.Clients = nil }, func(c *ServerConfig) { c.Clients = append(c.Clients, c.Clients[0]) },
 		func(c *ServerConfig) { c.Clients = make([]Credential, 65) },
@@ -95,7 +95,7 @@ func TestClientConfigEndpointAndRedaction(t *testing.T) {
 			t.Fatal("credential leaked")
 		}
 	}
-	for _, mutate := range []func(*ClientConfig){func(c *ClientConfig) { c.Token = "SECRET" }, func(c *ClientConfig) { c.Version = 2 }, func(c *ClientConfig) { c.CACertificate = "PEM on HTTP" }} {
+	for _, mutate := range []func(*ClientConfig){func(c *ClientConfig) { c.Token = "SECRET" }, func(c *ClientConfig) { c.Version = 3 }, func(c *ClientConfig) { c.CACertificate = "PEM on HTTP" }} {
 		c := base
 		mutate(&c)
 		raw, _ := json.Marshal(c)

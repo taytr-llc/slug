@@ -42,31 +42,11 @@ func (client *Client) Proposal(ctx context.Context, expected prospect.Context, b
 	}
 	ctx, cancel := context.WithTimeout(ctx, operationTimeout)
 	defer cancel()
-	if err := validateInitial(expected); err != nil {
+	raw, block, err := canonicalBlock(expected, blockHex)
+	if err != nil {
 		return err
 	}
-	if len(blockHex) < 2*(wire.MaxBlockHeaderPayload+1) || len(blockHex) > 2*wire.MaxBlockPayload || len(blockHex)%2 != 0 {
-		return errors.New("invalid proposal block size")
-	}
-	raw, err := hex.DecodeString(blockHex)
-	if err != nil {
-		return errors.New("invalid proposal block encoding")
-	}
-	reader := bytes.NewReader(raw)
-	var block wire.MsgBlock
-	if block.Deserialize(reader) != nil || reader.Len() != 0 {
-		return errors.New("invalid proposal block encoding")
-	}
-	var canonical bytes.Buffer
-	if block.Serialize(&canonical) != nil || !bytes.Equal(raw, canonical.Bytes()) {
-		return errors.New("noncanonical proposal block encoding")
-	}
-	parent, _ := normalizeHash(expected.ParentHash, true)
 	timestamp := block.Header.Timestamp.Unix()
-	if block.Header.PrevBlock.String() != parent || block.Header.Bits != expected.ExpectedBits ||
-		timestamp < int64(expected.MinTimestamp) || timestamp > int64(expected.MaxTimestamp) {
-		return errors.New("proposal header does not match expected context")
-	}
 	check := func() error {
 		fresh, err := client.resolveSameParent(ctx, expected)
 		if err != nil {
@@ -93,4 +73,35 @@ func (client *Client) Proposal(ctx context.Context, expected prospect.Context, b
 		return errors.New("node rejected block proposal")
 	}
 	return check()
+}
+
+// canonicalBlock performs bounded binary and header-binding checks only. It
+// intentionally does not hash the header or assert full block validity.
+func canonicalBlock(expected prospect.Context, blockHex string) ([]byte, *wire.MsgBlock, error) {
+	if err := validateInitial(expected); err != nil {
+		return nil, nil, err
+	}
+	if len(blockHex) < 2*(wire.MaxBlockHeaderPayload+1) || len(blockHex) > 2*wire.MaxBlockPayload || len(blockHex)%2 != 0 {
+		return nil, nil, errors.New("invalid candidate block size")
+	}
+	raw, err := hex.DecodeString(blockHex)
+	if err != nil {
+		return nil, nil, errors.New("invalid candidate block encoding")
+	}
+	reader := bytes.NewReader(raw)
+	var block wire.MsgBlock
+	if block.Deserialize(reader) != nil || reader.Len() != 0 {
+		return nil, nil, errors.New("invalid candidate block encoding")
+	}
+	var canonical bytes.Buffer
+	if block.Serialize(&canonical) != nil || !bytes.Equal(raw, canonical.Bytes()) {
+		return nil, nil, errors.New("noncanonical candidate block encoding")
+	}
+	parent, _ := normalizeHash(expected.ParentHash, true)
+	timestamp := block.Header.Timestamp.Unix()
+	if block.Header.PrevBlock.String() != parent || block.Header.Bits != expected.ExpectedBits ||
+		timestamp < int64(expected.MinTimestamp) || timestamp > int64(expected.MaxTimestamp) {
+		return nil, nil, errors.New("candidate header does not match expected context")
+	}
+	return raw, &block, nil
 }

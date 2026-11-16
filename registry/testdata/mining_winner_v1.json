@@ -1,0 +1,141 @@
+{
+  "name": "public-test-canonical-winning-block",
+  "test_only_private_key": "0000000000000000000000000000000000000000000000000000000000000001",
+  "nonce": 0,
+  "attempts_until_block_win": 1,
+  "job": {
+    "version": 1,
+    "rule_version": 1,
+    "id": "e4cbe1dfb866c0ddd2e8ea2e0734437a35ffc27896c7ae2614d13557cf2fb449",
+    "context": {
+      "version": 1,
+      "network": 1397511495,
+      "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+      "dna_version": 1,
+      "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "parent_hash": "1f08a4ac11d4c60ebecbb8dc85401fa2756576c3d1920c45cad5f7113b587ee0",
+      "parent_height": 61,
+      "expected_bits": 545259519,
+      "min_timestamp": 1794780000,
+      "max_timestamp": 1794794400
+    },
+    "public_key": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+    "gym_id": "75b4142cec114931d596877cb3770d9e19a3b1eb161e0f733a869b14f26e3cbf",
+    "challenge": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "issued_at_ms": 1794787200000,
+    "expires_at_ms": 1794787500000
+  },
+  "context": {
+    "version": 1,
+    "network": 1397511495,
+    "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+    "dna_version": 1,
+    "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "parent_hash": "1f08a4ac11d4c60ebecbb8dc85401fa2756576c3d1920c45cad5f7113b587ee0",
+    "parent_height": 61,
+    "expected_bits": 545259519,
+    "min_timestamp": 1794780000,
+    "max_timestamp": 1794794400
+  },
+  "template": {
+    "context": {
+      "version": 1,
+      "network": 1397511495,
+      "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+      "dna_version": 1,
+      "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "parent_hash": "1f08a4ac11d4c60ebecbb8dc85401fa2756576c3d1920c45cad5f7113b587ee0",
+      "parent_height": 61,
+      "expected_bits": 545259519,
+      "min_timestamp": 1794780000,
+      "max_timestamp": 1794794400
+    },
+    "block": {
+      "bits": "207fffff",
+      "curtime": 1794787200,
+      "height": 62,
+      "previousblockhash": "1f08a4ac11d4c60ebecbb8dc85401fa2756576c3d1920c45cad5f7113b587ee0",
+      "sigoplimit": 80000,
+      "sizelimit": 4000000,
+      "weightlimit": 4000000,
+      "transactions": [],
+      "version": 536870912,
+      "coinbaseaux": {
+        "flags": "062f534c55472f"
+      },
+      "coinbasevalue": 1000000000,
+      "target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+      "mintime": 1794780000,
+      "maxtime": 1794794400,
+      "mutable": [
+        "time",
+        "transactions",
+        "prevblock"
+      ],
+      "noncerange": "00000000ffffffff",
+      "capabilities": [
+        "proposal"
+      ]
+    }
+  },
+  "candidate": {
+    "version": 1,
+    "job_id": "e4cbe1dfb866c0ddd2e8ea2e0734437a35ffc27896c7ae2614d13557cf2fb449",
+    "block_hex": "00000020e07e583b11f7d5ca450c92d1c3766575a21f4085dcb8cbbe0ec6d411aca4081f427e093a5376396befbeac36db4cefa6a34f382a15217a2a4566b8e7fe528a048047fa6affff7f20000000000102000000010000000000000000000000000000000000000000000000000000000000000000ffffffff12013e080000000000000000062f534c55472fffffffff0200ca9a3b000000001976a91400112233445566778899aabbccddeeff0011223388ac00000000000000002a6a28534c554750523032b3b9f8928ffe53abdcc8c8fe7bd8cf1000aaeeaf2479efe4d51ee07e80c019e200000000",
+    "proof": {
+      "version": 2,
+      "gym_id": "75b4142cec114931d596877cb3770d9e19a3b1eb161e0f733a869b14f26e3cbf",
+      "header": "00000020e07e583b11f7d5ca450c92d1c3766575a21f4085dcb8cbbe0ec6d411aca4081f427e093a5376396befbeac36db4cefa6a34f382a15217a2a4566b8e7fe528a048047fa6affff7f2000000000",
+      "coinbase": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff12013e080000000000000000062f534c55472fffffffff0200ca9a3b000000001976a91400112233445566778899aabbccddeeff0011223388ac00000000000000002a6a28534c554750523032b3b9f8928ffe53abdcc8c8fe7bd8cf1000aaeeaf2479efe4d51ee07e80c019e200000000",
+      "merkle_branch": [],
+      "job_id": "e4cbe1dfb866c0ddd2e8ea2e0734437a35ffc27896c7ae2614d13557cf2fb449"
+    },
+    "payout_address": "aQ4RFUbZbrBjSQcb7TnfLdYaERhaWwBNoD",
+    "coinbase_value": 1000000000,
+    "transaction_count": 1,
+    "weight": 940,
+    "sigop_cost": 4
+  },
+  "block_hex": "00000020e07e583b11f7d5ca450c92d1c3766575a21f4085dcb8cbbe0ec6d411aca4081f427e093a5376396befbeac36db4cefa6a34f382a15217a2a4566b8e7fe528a048047fa6affff7f20000000000102000000010000000000000000000000000000000000000000000000000000000000000000ffffffff12013e080000000000000000062f534c55472fffffffff0200ca9a3b000000001976a91400112233445566778899aabbccddeeff0011223388ac00000000000000002a6a28534c554750523032b3b9f8928ffe53abdcc8c8fe7bd8cf1000aaeeaf2479efe4d51ee07e80c019e200000000",
+  "proof": {
+    "version": 2,
+    "gym_id": "75b4142cec114931d596877cb3770d9e19a3b1eb161e0f733a869b14f26e3cbf",
+    "header": "00000020e07e583b11f7d5ca450c92d1c3766575a21f4085dcb8cbbe0ec6d411aca4081f427e093a5376396befbeac36db4cefa6a34f382a15217a2a4566b8e7fe528a048047fa6affff7f2000000000",
+    "coinbase": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff12013e080000000000000000062f534c55472fffffffff0200ca9a3b000000001976a91400112233445566778899aabbccddeeff0011223388ac00000000000000002a6a28534c554750523032b3b9f8928ffe53abdcc8c8fe7bd8cf1000aaeeaf2479efe4d51ee07e80c019e200000000",
+    "merkle_branch": [],
+    "job_id": "e4cbe1dfb866c0ddd2e8ea2e0734437a35ffc27896c7ae2614d13557cf2fb449"
+  },
+  "authorization": {
+    "version": 2,
+    "public_key": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+    "signature": "3045022100f1cc17fb9863a4c72a275896f9cf20c39b97ad6213631a43ded345729a938f6d022048fce4376662307f2d96d276356fa18c1f071b3e253ea9c0da1a1a2da2bb167f"
+  },
+  "expected_digest": "cc96c2aa0187c2057c946eb7b53c1bf27d2734af3c5cb432fb0ca18dddae5aae",
+  "expected_verified": {
+    "version": 2,
+    "verification": "supplied-context",
+    "network": 1397511495,
+    "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+    "prospect_id": "26f3d872118f1a294f8f47a668101b2c66011134ac6fb061cf1d93293568ebec",
+    "policy_id": "2dd6301ce9989bc383f942f3d1520e8bc61ee2564761a7f754eb09677b24fb8c",
+    "gym_id": "75b4142cec114931d596877cb3770d9e19a3b1eb161e0f733a869b14f26e3cbf",
+    "work_hash": "462bbd8497c97b8148534ba0e62ca55773cec886571fee18ebdbdf8c5799d20d",
+    "parent_hash": "1f08a4ac11d4c60ebecbb8dc85401fa2756576c3d1920c45cad5f7113b587ee0",
+    "parent_height": 61,
+    "dna": {
+      "dna_version": 1,
+      "seed": "462bbd8497c97b8148534ba0e62ca55773cec886571fee18ebdbdf8c5799d20d",
+      "rarity": "contender",
+      "talent_budget": 391,
+      "attributes": {
+        "power": 83,
+        "speed": 84,
+        "chin": 86,
+        "stamina": 100,
+        "skill": 38
+      },
+      "prime_weeks": 33,
+      "decline_weeks": 39
+    }
+  }
+}

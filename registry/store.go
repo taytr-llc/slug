@@ -37,6 +37,10 @@ const (
 	// Version3 records D68 jobs and immutable issuance-based fighter births.
 	Version3 uint32 = 3
 
+	// Version4 explicitly enables D69 admission with a persisted eligibility
+	// observation. Earlier registries are never migrated or opted in.
+	Version4 uint32 = 4
+
 	// MaxRecordSize bounds one stored JSON receipt in bytes.
 	MaxRecordSize = 65536
 
@@ -72,6 +76,7 @@ type Record struct {
 	Authorization *gymauth.Authorization `json:"authorization,omitempty"`
 	Job           *prospectjob.Job       `json:"job,omitempty"`
 	Birth         *Birth                 `json:"birth,omitempty"`
+	Eligibility   *Eligibility           `json:"eligibility,omitempty"`
 }
 
 // Birth is the immutable D68 league clock, not an exact discovery timestamp.
@@ -232,8 +237,10 @@ func CreateAuthenticated(path string, network uint32, genesis string) (*Store, e
 }
 
 func supportedVersion(version uint32) bool {
-	return version == Version1 || version == Version2 || version == Version3
+	return version == Version1 || version == Version2 || version == Version3 || version == Version4
 }
+
+func jobVersion(version uint32) bool { return version == Version3 || version == Version4 }
 
 func create(path string, network uint32, genesis string, version uint32) (*Store, error) {
 	canonicalGenesis, err := chainIdentity(network, genesis)
@@ -336,6 +343,9 @@ func (store *Store) decodeRecord(raw []byte, id string) (Record, error) {
 	if err := store.validateBirthRecord(record); err != nil {
 		return Record{}, err
 	}
+	if err := validateRecordEligibility(record); err != nil {
+		return Record{}, fmt.Errorf("%w: %v", ErrCorrupt, err)
+	}
 	if record.Authorization != nil {
 		if err := gymauth.VerifyAuthorization(record.Context, record.Proof, *record.Authorization); err != nil {
 			return Record{}, fmt.Errorf("%w: invalid stored gym authorization: %v", ErrCorrupt, err)
@@ -352,7 +362,7 @@ func (store *Store) decodeRecord(raw []byte, id string) (Record, error) {
 	// verification is deferred to reads so opening does not rehash all history.
 	proof := record.Proof
 	expectedVersion := prospect.Version1
-	if record.Version == Version3 {
+	if jobVersion(record.Version) {
 		expectedVersion = prospect.Version2
 	}
 	if proof.Version != expectedVersion || (proof.Version == prospect.Version1 && proof.JobID != "") || len(proof.Header) != 160 ||
@@ -403,7 +413,7 @@ func (store *Store) checkStructure(value marker) error {
 	if store.meta.Version != value.Version || store.meta.Network != value.Network || store.meta.Genesis != value.Genesis {
 		return fmt.Errorf("%w: metadata does not match application marker", ErrCorrupt)
 	}
-	if store.meta.LastClockMS < 0 || (store.meta.Version != Version3 && (store.meta.JobCount != 0 || store.meta.LastClockMS != 0)) {
+	if store.meta.LastClockMS < 0 || (!jobVersion(store.meta.Version) && (store.meta.JobCount != 0 || store.meta.LastClockMS != 0)) {
 		return fmt.Errorf("%w: clock/job metadata does not match schema", ErrCorrupt)
 	}
 	store.clockSeen = store.meta.LastClockMS
@@ -415,7 +425,7 @@ func (store *Store) checkStructure(value marker) error {
 		switch {
 		case bytes.Equal(key, []byte(metadataKey)):
 		case bytes.HasPrefix(key, []byte(jobPrefix)):
-			if store.meta.Version != Version3 {
+			if !jobVersion(store.meta.Version) {
 				return fmt.Errorf("%w: jobs require birth registry schema", ErrCorrupt)
 			}
 			if _, err := store.decodeJob(iterator.Value(), string(key[len(jobPrefix):])); err != nil {
@@ -547,7 +557,7 @@ func (store *Store) record(context prospect.Context, proof prospect.Proof, autho
 	if store.readOnly {
 		return Record{}, false, ErrReadOnly
 	}
-	if store.meta.Version == Version3 || proof.Version != prospect.Version1 || proof.JobID != "" {
+	if jobVersion(store.meta.Version) || proof.Version != prospect.Version1 || proof.JobID != "" {
 		return Record{}, false, fmt.Errorf("job-bound proofs require the birth admission path")
 	}
 	if (store.meta.Version == Version1 && authorization != nil) ||

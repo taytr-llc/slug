@@ -10,6 +10,9 @@
 // Explicit schema-3 stores issue fixed five-minute jobs and record immutable
 // D68 birth at issuance, under a trusted authority clock. They do not prove the
 // exact instant of mining; historical retries never reset birth or eligibility.
+// Explicit schema-4 stores additionally persist the D69 guard observation:
+// current-parent eligibility or the exact canonical winning block. Legacy
+// schemas retain their original admission rules and are never migrated.
 //
 // Each dedicated registry belongs to one network and genesis. Its append-only
 // API reserves prospect IDs permanently and orders receipts with consecutive

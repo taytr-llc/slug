@@ -32,7 +32,7 @@ func main() {
 func run(ctx context.Context, args []string, stdout, stderr io.Writer) error {
 	flags := flag.NewFlagSet("slugregistryd", flag.ContinueOnError)
 	flags.SetOutput(stderr)
-	dbPath := flags.String("db", "", "Existing schema-3 registry directory (required)")
+	dbPath := flags.String("db", "", "Existing schema-3 (v1) or schema-4 (v2) registry directory (required)")
 	policyPath := flags.String("policy", "", "Explicit prospect policy JSON file (required)")
 	rpcPath := flags.String("rpc-config", "", "Private trusted-node RPC configuration file (required)")
 	servicePath := flags.String("service-config", "", "Local authority server configuration file (required)")
@@ -90,7 +90,7 @@ func run(ctx context.Context, args []string, stdout, stderr io.Writer) error {
 		outputErr = json.NewEncoder(stdout).Encode(struct {
 			Version   uint32 `json:"version"`
 			Listening string `json:"listen"`
-		}{prospectservice.Version1, origin})
+		}{serviceConfig.Version, origin})
 		if outputErr != nil {
 			cancel()
 		}

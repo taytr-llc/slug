@@ -76,14 +76,14 @@ func (store *Store) GetJob(id string) (prospectjob.Job, error) {
 	if err := store.checkState(); err != nil {
 		return prospectjob.Job{}, err
 	}
-	if store.meta.Version != Version3 {
+	if !jobVersion(store.meta.Version) {
 		return prospectjob.Job{}, errors.New("jobs require a birth registry")
 	}
 	return store.loadJob(id)
 }
 
 func (store *Store) validateBirthRecord(record Record) error {
-	if record.Version != Version3 {
+	if !jobVersion(record.Version) {
 		if record.Job != nil || record.Birth != nil {
 			return fmt.Errorf("%w: legacy evidence contains birth fields", ErrCorrupt)
 		}
@@ -114,7 +114,7 @@ func (store *Store) timedWriteState() error {
 	if store.readOnly {
 		return ErrReadOnly
 	}
-	if store.meta.Version != Version3 {
+	if !jobVersion(store.meta.Version) {
 		return errors.New("timed admission requires a birth registry")
 	}
 	if wire.TestPoW {
@@ -234,13 +234,34 @@ func (store *Store) IssueJob(context prospect.Context, publicKey string, check f
 // or a claim of current eligibility/canonicality. The signature and production
 // work are still verified. The callback must not reenter this Store.
 func (store *Store) RecordJob(proof prospect.Proof, authorization gymauth.Authorization, check func(prospect.Context, prospect.Proof) error) (Record, bool, error) {
+	if check == nil {
+		return Record{}, false, errors.New("birth admission requires a final node check")
+	}
+	return store.recordJob(proof, authorization, Version3, func(context prospect.Context, proof prospect.Proof, _ prospect.Verified) (Eligibility, error) {
+		return Eligibility{}, check(context, proof)
+	})
+}
+
+// RecordJobChecked admits only to an explicitly created schema-4 authority.
+// check receives internally verified work and an owned proof snapshot, and
+// must establish D69 eligibility from a trusted node. The returned observation
+// is validated and stored atomically with the unchanged D68 birth rule. Old
+// receipts bypass the guard and retain their first eligibility and birth.
+func (store *Store) RecordJobChecked(proof prospect.Proof, authorization gymauth.Authorization, check func(prospect.Context, prospect.Proof, prospect.Verified) (Eligibility, error)) (Record, bool, error) {
+	if check == nil {
+		return Record{}, false, errors.New("mining admission requires a final eligibility check")
+	}
+	return store.recordJob(proof, authorization, Version4, check)
+}
+
+func (store *Store) recordJob(proof prospect.Proof, authorization gymauth.Authorization, version uint32, check func(prospect.Context, prospect.Proof, prospect.Verified) (Eligibility, error)) (Record, bool, error) {
 	store.mu.Lock()
 	defer store.mu.Unlock()
 	if err := store.timedWriteState(); err != nil {
 		return Record{}, false, err
 	}
-	if check == nil {
-		return Record{}, false, errors.New("birth admission requires a final node check")
+	if store.meta.Version != version {
+		return Record{}, false, errors.New("job admission method does not match registry schema")
 	}
 	if proof.Version != prospect.Version2 || len(proof.MerkleBranch) > 20 {
 		return Record{}, false, errors.New("birth admission requires a bounded job-bound proof")
@@ -295,8 +316,16 @@ func (store *Store) RecordJob(proof prospect.Proof, authorization gymauth.Author
 	// between authorization/work verification and the synchronized receipt.
 	guardProof := proof
 	guardProof.MerkleBranch = append([]string{}, proof.MerkleBranch...)
-	if err := check(job.Context, guardProof); err != nil {
+	observation, err := check(job.Context, guardProof, verified)
+	if err != nil {
 		return Record{}, false, fmt.Errorf("birth admission node check failed: %w", err)
+	}
+	var eligibility *Eligibility
+	if version == Version4 {
+		if err := ValidateEligibility(job.Context, verified, observation); err != nil {
+			return Record{}, false, err
+		}
+		eligibility = &observation
 	}
 	accepted, err := store.clockMillis()
 	if err != nil {
@@ -308,9 +337,9 @@ func (store *Store) RecordJob(proof prospect.Proof, authorization gymauth.Author
 		}
 		return Record{}, false, ErrJobExpired
 	}
-	record := Record{Version: Version3, Sequence: store.meta.LastSequence + 1,
+	record := Record{Version: version, Sequence: store.meta.LastSequence + 1,
 		Context: job.Context, Proof: proof, Verified: verified, Authorization: &authorization, Job: &job,
-		Birth: &Birth{RuleVersion: job.RuleVersion, BornAtMS: job.IssuedAtMS, AcceptedAtMS: accepted}}
+		Birth: &Birth{RuleVersion: job.RuleVersion, BornAtMS: job.IssuedAtMS, AcceptedAtMS: accepted}, Eligibility: eligibility}
 	raw, err = json.Marshal(record)
 	if err != nil || len(raw) > MaxRecordSize {
 		return Record{}, false, errors.New("birth receipt exceeds size bound")

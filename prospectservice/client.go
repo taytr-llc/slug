@@ -43,10 +43,11 @@ func (err *ClientError) Error() string {
 // Client uses one explicit authority and policy. It never retries, redirects,
 // uses an environment proxy, reads a signing key, or trusts receipt summaries.
 type Client struct {
-	origin string
-	token  string
-	policy prospectnode.Policy
-	http   *http.Client
+	version uint32
+	origin  string
+	token   string
+	policy  prospectnode.Policy
+	http    *http.Client
 }
 
 func NewClient(config ClientConfig, policy prospectnode.Policy) (*Client, error) {
@@ -76,12 +77,18 @@ func NewClient(config ClientConfig, policy prospectnode.Policy) (*Client, error)
 		ResponseHeaderTimeout: 30 * time.Second, MaxResponseHeaderBytes: 8192,
 		DisableCompression: true, DisableKeepAlives: true,
 	}
-	return &Client{origin: strings.TrimRight(endpoint.String(), "/"), token: config.Token, policy: policy,
+	return &Client{version: config.Version, origin: strings.TrimRight(endpoint.String(), "/"), token: config.Token, policy: policy,
 		http: &http.Client{Transport: transport, Timeout: 30 * time.Second,
 			CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }}}, nil
 }
 
 func (client *Client) Close() { client.http.CloseIdleConnections() }
+
+// ProtocolVersion identifies the explicitly selected admission rules.
+func (client *Client) ProtocolVersion() uint32 { return client.version }
+
+// AuthorityOrigin identifies the configured authority without credentials.
+func (client *Client) AuthorityOrigin() string { return client.origin }
 
 func clientFailure(submission bool) error {
 	if submission {
@@ -141,7 +148,7 @@ func (client *Client) post(ctx context.Context, path string, value any, submissi
 	if response.StatusCode != http.StatusOK {
 		fields, err := parseObject(data, MaxResponseSize, "version", "error")
 		var version uint32
-		if err != nil || decodeField(fields, "version", &version) != nil || version != Version1 {
+		if err != nil || decodeField(fields, "version", &version) != nil || version != client.version {
 			return nil, clientFailure(submission)
 		}
 		errorFields, err := parseObject(fields["error"], MaxResponseSize, "code", "outcome_unknown")
@@ -169,7 +176,7 @@ func (client *Client) IssueJob(ctx context.Context, publicKey string) (prospectj
 	if err != nil {
 		return prospectjob.Job{}, &ClientError{Code: "invalid_request"}
 	}
-	data, err := client.post(ctx, "/v1/jobs", struct {
+	data, err := client.post(ctx, apiPath(client.version, "jobs"), struct {
 		PublicKey string `json:"public_key"`
 	}{key}, false)
 	if err != nil {
@@ -204,9 +211,21 @@ func parseAdmission(data []byte) (AdmissionResult, error) {
 	if err != nil {
 		return result, err
 	}
-	record, err := parseObject(fields["record"], registry.MaxRecordSize, "version", "sequence", "context", "proof", "verified", "authorization", "job", "birth")
+	if decodeField(fields, "version", &result.Version) != nil || (result.Version != Version1 && result.Version != Version2) {
+		return result, errors.New("unsupported admission version")
+	}
+	keys := []string{"version", "sequence", "context", "proof", "verified", "authorization", "job", "birth"}
+	if result.Version == Version2 {
+		keys = append(keys, "eligibility")
+	}
+	record, err := parseObject(fields["record"], registry.MaxRecordSize, keys...)
 	if err != nil {
 		return result, err
+	}
+	if result.Version == Version2 {
+		if _, err := parseObject(record["eligibility"], MaxResponseSize, "rule_version", "source", "hash", "height"); err != nil {
+			return result, err
+		}
 	}
 	if _, err := prospect.ParseContext(record["context"]); err != nil {
 		return result, err
@@ -254,7 +273,7 @@ func (client *Client) Submit(ctx context.Context, job prospectjob.Job, proof pro
 		gymauth.VerifyAuthorization(job.Context, proof, authorization) != nil {
 		return AdmissionResult{}, &ClientError{Code: "invalid_request"}
 	}
-	data, err := client.post(ctx, "/v1/admissions", struct {
+	data, err := client.post(ctx, apiPath(client.version, "admissions"), struct {
 		Proof         prospect.Proof        `json:"proof"`
 		Authorization gymauth.Authorization `json:"authorization"`
 	}{proof, authorization}, true)
@@ -266,11 +285,15 @@ func (client *Client) Submit(ctx context.Context, job prospectjob.Job, proof pro
 		return AdmissionResult{}, clientFailure(true)
 	}
 	record := result.Record
-	if result.Version != Version1 || result.Authentication != "gym-key-control" || result.BirthRule != "job-issuance" ||
+	expectedSchema := registry.Version3
+	if client.version == Version2 {
+		expectedSchema = registry.Version4
+	}
+	if result.Version != client.version || result.Authentication != "gym-key-control" || result.BirthRule != "job-issuance" ||
 		result.Inserted != result.CurrentNodeChecked ||
 		(result.Inserted && (result.ContextSource != "trusted-node-snapshot" || !samePolicy(job.Context, client.policy))) ||
 		(!result.Inserted && result.ContextSource != "historical-receipt") ||
-		record.Version != registry.Version3 || record.Sequence == 0 || record.Job == nil || *record.Job != job ||
+		record.Version != expectedSchema || record.Sequence == 0 || record.Job == nil || *record.Job != job ||
 		record.Context != job.Context || !sameProof(record.Proof, proof) || record.Authorization == nil ||
 		!strings.EqualFold(record.Authorization.PublicKey, job.PublicKey) ||
 		gymauth.VerifyAuthorization(job.Context, record.Proof, *record.Authorization) != nil || record.Birth == nil ||
@@ -280,6 +303,9 @@ func (client *Client) Submit(ctx context.Context, job prospectjob.Job, proof pro
 	}
 	verified, err := prospect.Verify(job.Context, record.Proof)
 	if err != nil || verified != record.Verified || ctx.Err() != nil {
+		return AdmissionResult{}, clientFailure(true)
+	}
+	if client.version == Version2 && (record.Eligibility == nil || registry.ValidateEligibility(job.Context, verified, *record.Eligibility) != nil) {
 		return AdmissionResult{}, clientFailure(true)
 	}
 	return result, nil

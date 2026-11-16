@@ -20,7 +20,7 @@ import (
 	"github.com/taytr-llc/slug/registry"
 )
 
-const usage = "usage: slugregistry {init|init-auth|init-birth|record|record-auth|record-node|record-auth-node|issue-job-node|get-job|record-job-node|issue-job-service|record-job-service|get|list|export} [options]"
+const usage = "usage: slugregistry {init|init-auth|init-birth|init-mining|record|record-auth|record-node|record-auth-node|issue-job-node|get-job|record-job-node|issue-job-service|record-job-service|get|list|export} [options]"
 
 func main() {
 	if err := run(os.Args[1:], os.Stdout, os.Stderr); err != nil {
@@ -40,7 +40,7 @@ func run(args []string, stdout, stderr io.Writer) error {
 	case "help", "-h", "--help":
 		_, err := fmt.Fprintln(stdout, usage+"\nLocal evidence and job-birth storage; ordinary evidence is not a birth record, and no command establishes account ownership.")
 		return err
-	case "init", "init-auth", "init-birth":
+	case "init", "init-auth", "init-birth", "init-mining":
 		return initialize(args[0], args[1:], stdout, stderr)
 	case "record", "record-auth":
 		return record(args[0], args[1:], stdout, stderr)
@@ -104,6 +104,8 @@ func initialize(command string, args []string, stdout, stderr io.Writer) error {
 		create = registry.CreateAuthenticated
 	} else if command == "init-birth" {
 		create = registry.CreateBirth
+	} else if command == "init-mining" {
+		create = registry.CreateMining
 	}
 	store, err := create(*dbPath, uint32(*network), *genesis)
 	if err != nil {

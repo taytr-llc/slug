@@ -50,7 +50,7 @@ func ValidateServerConfig(config ServerConfig) (ServerConfig, error) {
 	ip := net.ParseIP(host)
 	n, portErr := strconv.Atoi(port)
 	if err != nil || portErr != nil || n < 0 || n > 65535 || strconv.Itoa(n) != port || ip == nil || !ip.IsLoopback() ||
-		config.Version != Version1 || len(config.Clients) == 0 || len(config.Clients) > 64 ||
+		(config.Version != Version1 && config.Version != Version2) || len(config.Clients) == 0 || len(config.Clients) > 64 ||
 		config.MaxJobs == 0 || config.MaxRecords == 0 || config.MaxJobs > 1000000000 || config.MaxRecords > 1000000000 {
 		return ServerConfig{}, invalid
 	}
@@ -100,7 +100,7 @@ func ParseServerConfig(data []byte) (ServerConfig, error) {
 func validateClientConfig(config ClientConfig) (ClientConfig, *url.URL, error) {
 	invalid := errors.New("invalid service client configuration")
 	token, err := normalizeToken(config.Token)
-	if err != nil || config.Version != Version1 || len(config.URL)+len(config.Token)+len(config.CACertificate) > MaxClientConfigSize {
+	if err != nil || (config.Version != Version1 && config.Version != Version2) || len(config.URL)+len(config.Token)+len(config.CACertificate) > MaxClientConfigSize {
 		return ClientConfig{}, nil, invalid
 	}
 	endpoint, err := url.Parse(config.URL)

@@ -1,7 +1,7 @@
-# Local prospect authority service (set 19)
+# Local prospect authority service
 
 This service connects D68 job issuance and birth admission across processes.
-The authority keeps one schema-3 registry open and uses one explicitly trusted
+The authority keeps one explicitly initialized registry open and uses one trusted
 node and policy. The daemon binds only a literal loopback address. Deploying
 the binary does not start an authority or expose it on the Railway seed.
 
@@ -14,7 +14,12 @@ Initialize a dedicated registry with `slugregistry init-birth` as described in
 slugregistryd --db REGISTRY --policy POLICY.json --rpc-config RPC.json --service-config SERVER.json
 ```
 
-The daemon opens an existing schema-3 registry exclusively. It never creates,
+Protocol v1 uses schema 3. Protocol v2 uses schema 4, initialized explicitly with
+`slugregistry init-mining --db PATH --network MAGIC --genesis HASH`. Select
+`"version":2` in both server and client configurations to enable D69. A v2
+service cannot open a schema-3 registry, and v1 cannot open schema 4.
+
+The daemon opens an existing registry exclusively. It never creates,
 migrates, repairs or clears a store. Stop it before using direct registry CLI
 commands or copying the complete directory for backup. Shutdown drains actual
 handlers before closing the database, including an uncancellable proof hash.
@@ -122,6 +127,30 @@ expected job supplied to `Submit`; old policy is accepted only in a valid
 historical receipt for that job. It cannot independently prove the authority's
 wall clock, durable storage or honest classification. D68 still trusts those.
 
+## HTTP contract, version 2 (D69)
+
+Version 2 uses `/v2/jobs` and `/v2/admissions` with the same request bodies,
+authentication, bounds, errors and D68 job/birth contract. Responses and errors
+identify service version 2; the underlying job remains version 1 and the proof
+and signature remain version 2. Each server accepts only its configured protocol.
+
+New receipts use registry schema 4 and contain an immutable `eligibility` object:
+`rule_version:2`, `source`, `hash`, and `height`. A `current-parent` observation
+binds the original job's parent. A `canonical-winning-block` observation binds
+the internally verified work hash at the original parent height plus one.
+The node guard verifies that exact block and its parent on the canonical chain,
+including raw header equality. A successful `submitblock` reply alone is
+insufficient. A later tip above the winning block is allowed while membership
+still matches. Side branches, orphan blocks and arbitrary stale shares are not.
+
+The final admission clock still rejects new evidence at or after the original
+five-minute expiry. Neither broadcasting a block nor a retry extends it.
+Historical recovery returns the original eligibility and birth, even after
+expiry, reorganization or node outage. The observation is an admission-time
+record, not permanent canonicality. v1 keeps its original current-parent rule.
+The client verifies the receipt's schema, bindings and block target alongside
+the full proof; it continues to trust the authority's recorded observation.
+
 ## Bounds and integration
 
 Requests are bounded to 64 KiB and responses to 72 KiB. The server permits 16
@@ -143,10 +172,11 @@ slugregistry record-job-service --service-config CLIENT.json --policy POLICY.jso
 `SignAndSubmit` lets a client sign automatically in memory through a callback
 under D44. It returns the generated authorization even on submission failure,
 for exact retry. It never reads keys or adds player prospect selection.
-Real wallet custody/login/export and automatic mining/renewal remain separate.
+The automatic worker persists the public authorization before calling `Submit`
+directly, so interrupted delivery can be recovered. Real wallet custody,
+login and full wallet export remain separate integration work.
 
-A job is not a full payable block template: the context API omits coinbase
-value/auxiliary data, transaction bytes and witness commitment. The next miner
-slice must construct valid blocks and handle prospect shares and block-target
-wins. Submitting a winning block changes the parent and affects admission
-ordering. That needs explicit handling; this service adds no eligibility rule.
+A job is not a full payable block template. `prospectwork` builds the payable
+candidate from the complete trusted template. Under D69 the automatic miner
+broadcasts block-target wins before signing or submitting prospects; v2 can
+then admit the exact canonical winning block within the original job lifetime.
