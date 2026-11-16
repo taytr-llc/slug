@@ -380,6 +380,11 @@ func handleAddNode(s *rpcServer, cmd interface{}, closeChan <-chan struct{}) (in
 	c := cmd.(*btcjson.AddNodeCmd)
 
 	addr := normalizeAddress(c.Addr, s.cfg.ChainParams.DefaultPort)
+	if cfg.LocalWalletPilot && (c.SubCmd == "add" || c.SubCmd == "onetry") &&
+		!literalLoopbackEndpoint(addr) {
+		return nil, btcjson.NewRPCError(btcjson.ErrRPCInvalidParameter,
+			"localwalletpilot permits only literal loopback peers")
+	}
 	var err error
 	switch c.SubCmd {
 	case "add":
@@ -466,6 +471,10 @@ func handleNode(s *rpcServer, cmd interface{}, closeChan <-chan struct{}) (inter
 
 	case "connect":
 		addr = normalizeAddress(c.Target, params.DefaultPort)
+		if cfg.LocalWalletPilot && !literalLoopbackEndpoint(addr) {
+			return nil, btcjson.NewRPCError(btcjson.ErrRPCInvalidParameter,
+				"localwalletpilot permits only literal loopback peers")
+		}
 
 		// Default to temporary connections.
 		subCmd := "temp"
@@ -1928,6 +1937,12 @@ func handleGetBlockTemplateLongPoll(s *rpcServer, longPollID string, useCoinbase
 		// Fallthrough
 	}
 
+	if cfg.LocalWalletPilot {
+		if err := checkGetBlockTemplateSync(s); err != nil {
+			return nil, err
+		}
+	}
+
 	// Get the lastest block template
 	state.Lock()
 	defer state.Unlock()
@@ -1946,6 +1961,80 @@ func handleGetBlockTemplateLongPoll(s *rpcServer, longPollID string, useCoinbase
 	}
 
 	return result, nil
+}
+
+// pilotTemplateChain allows a coherent tip observation without changing any
+// chain consensus or validation API.
+type pilotTemplateChain interface {
+	BestSnapshot() *blockchain.BestState
+	BestHeader() (chainhash.Hash, int32)
+}
+
+type pilotTemplatePeer struct {
+	address string
+	height  int32
+	ready   bool
+}
+
+// localPilotTemplateCurrent replaces only the age heuristic. Header downloads,
+// peers advertising more work, disconnected peers, and changing snapshots still
+// deny templates. Peers are observations, not trust anchors for consensus.
+func localPilotTemplateCurrent(chain pilotTemplateChain, peers []pilotTemplatePeer) bool {
+	if len(peers) == 0 {
+		return false
+	}
+	best := chain.BestSnapshot()
+	if best == nil || best.Height < 0 {
+		return false
+	}
+	for _, p := range peers {
+		if !p.ready || !literalLoopbackEndpoint(p.address) || p.height < 0 || p.height > best.Height {
+			return false
+		}
+	}
+	headerHash, headerHeight := chain.BestHeader()
+	if headerHeight != best.Height || headerHash != best.Hash {
+		return false
+	}
+	again := chain.BestSnapshot()
+	return again != nil && again.Height == best.Height && again.Hash == best.Hash
+}
+
+// checkGetBlockTemplateSync preserves the normal node age/currentness behavior.
+// The explicit loopback pilot instead proves local download/peer readiness; it
+// does not bypass proposal validation, PoW, timestamps, scripts, or consensus.
+func checkGetBlockTemplateSync(s *rpcServer) error {
+	return checkTemplateSyncState(cfg, s.cfg.Chain, s.cfg.ConnMgr, s.cfg.SyncMgr)
+}
+
+func checkTemplateSyncState(c *config, chain pilotTemplateChain,
+	conn rpcserverConnManager, syncManager rpcserverSyncManager) error {
+
+	if !(c.RegressionTest || c.SimNet) && conn.ConnectedCount() == 0 {
+		return btcjson.NewRPCError(btcjson.ErrRPCClientNotConnected, "Bitcoin is not connected")
+	}
+	current := false
+	if c.LocalWalletPilot {
+		connected := conn.ConnectedPeers()
+		peers := make([]pilotTemplatePeer, 0, len(connected))
+		for _, connectedPeer := range connected {
+			if connectedPeer == nil || connectedPeer.ToPeer() == nil {
+				return btcjson.NewRPCError(btcjson.ErrRPCClientInInitialDownload, "Pilot peer is unavailable")
+			}
+			p := connectedPeer.ToPeer()
+			peers = append(peers, pilotTemplatePeer{
+				address: p.Addr(), height: p.LastBlock(),
+				ready: p.Connected() && p.VersionKnown() && p.VerAckReceived(),
+			})
+		}
+		current = localPilotTemplateCurrent(chain, peers)
+	} else {
+		current = chain.BestSnapshot().Height == 0 || syncManager.IsCurrent()
+	}
+	if !current {
+		return btcjson.NewRPCError(btcjson.ErrRPCClientInInitialDownload, "Bitcoin is downloading blocks...")
+	}
+	return nil
 }
 
 // handleGetBlockTemplateRequest is a helper for handleGetBlockTemplate which
@@ -1987,26 +2076,8 @@ func handleGetBlockTemplateRequest(s *rpcServer, request *btcjson.TemplateReques
 		}
 	}
 
-	// Return an error if there are no peers connected since there is no
-	// way to relay a found block or receive transactions to work on.
-	// However, allow this state when running in the regression test or
-	// simulation test mode.
-	if !(cfg.RegressionTest || cfg.SimNet) &&
-		s.cfg.ConnMgr.ConnectedCount() == 0 {
-
-		return nil, &btcjson.RPCError{
-			Code:    btcjson.ErrRPCClientNotConnected,
-			Message: "Bitcoin is not connected",
-		}
-	}
-
-	// No point in generating or accepting work before the chain is synced.
-	currentHeight := s.cfg.Chain.BestSnapshot().Height
-	if currentHeight != 0 && !s.cfg.SyncMgr.IsCurrent() {
-		return nil, &btcjson.RPCError{
-			Code:    btcjson.ErrRPCClientInInitialDownload,
-			Message: "Bitcoin is downloading blocks...",
-		}
+	if err := checkGetBlockTemplateSync(s); err != nil {
+		return nil, err
 	}
 
 	// When a long poll ID was provided, this is a long poll request by the

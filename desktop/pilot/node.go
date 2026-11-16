@@ -16,6 +16,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/taytr-llc/slug/prospectnode"
 )
 
 type nodeRPC struct {
@@ -23,8 +25,65 @@ type nodeRPC struct {
 	client              *http.Client
 }
 
+type pilotNodes struct{ primary, peer *childNode }
+
+var errPilotNodeClose = errors.New("pilot node cleanup failed")
+
+func (n *pilotNodes) rpcConfig() prospectnode.RPCConfig {
+	return prospectnode.RPCConfig{Version: 1, URL: n.primary.rpc.url, Username: n.primary.rpc.user, Password: n.primary.rpc.password}
+}
+func (n *pilotNodes) Close() error {
+	return errors.Join(n.primary.stop(), n.peer.stop())
+}
+func (c *Controller) openNodes(ctx context.Context) (*pilotNodes, error) {
+	ports := make([]uint16, 4)
+	seen := map[uint16]bool{c.manifest.AuthorityPort: true}
+	for i := range ports {
+		for {
+			port, err := unusedPort()
+			if err != nil {
+				return nil, errors.New("loopback unavailable")
+			}
+			if !seen[port] {
+				ports[i], seen[port] = port, true
+				break
+			}
+		}
+	}
+	peer, err := startNode(c.config.NodeBinary, c.config.DataDir, "peer", ports[0], ports[1], ports[3], true)
+	if err != nil {
+		return nil, err
+	}
+	primary, err := startNode(c.config.NodeBinary, c.config.DataDir, "primary", ports[2], 0, ports[1], false)
+	if err != nil {
+		if closeErr := peer.stop(); closeErr != nil {
+			c.noteShutdown("pilot node startup cleanup failed")
+			return nil, errors.Join(err, errPilotNodeClose)
+		}
+		return nil, err
+	}
+	nodes := &pilotNodes{primary: primary, peer: peer}
+	cleanup := func(err error) error {
+		if nodes.Close() != nil {
+			c.noteShutdown("pilot node startup cleanup failed")
+			return errors.Join(err, errPilotNodeClose)
+		}
+		return err
+	}
+	if err := waitNode(ctx, primary, true); err != nil {
+		return nil, cleanup(err)
+	}
+	if err := waitNode(ctx, peer, false); err != nil {
+		return nil, cleanup(err)
+	}
+	return nodes, nil
+}
+
 func (r *nodeRPC) call(ctx context.Context, method string, result any) error {
-	raw, _ := json.Marshal(map[string]any{"jsonrpc": "1.0", "id": 1, "method": method, "params": []any{}})
+	return r.callParams(ctx, method, []any{}, result)
+}
+func (r *nodeRPC) callParams(ctx context.Context, method string, params []any, result any) error {
+	raw, _ := json.Marshal(map[string]any{"jsonrpc": "1.0", "id": 1, "method": method, "params": params})
 	req, e := http.NewRequestWithContext(ctx, http.MethodPost, r.url, bytes.NewReader(raw))
 	if e != nil {
 		return errors.New("node unavailable")
@@ -86,7 +145,9 @@ func startNode(binary, root, name string, rpcPort, peerPort, connectPort uint16,
 			return nil, errors.New("invalid pilot chain path")
 		}
 	}
-	config := fmt.Sprintf("rpcuser=local-pilot\nrpcpass=%s\nnotls=1\nrpclisten=127.0.0.1:%d\ndatadir=%s\nlogdir=%s\nnodnsseed=1\nconnect=127.0.0.1:%d\nminingaddr=%s\n", password, rpcPort, data, logs, connectPort, fixturePayout)
+	// The worker constructs its coinbase using the persisted wallet payout.
+	// GBT coinbasevalue mode needs no temporary or fallback mining address.
+	config := fmt.Sprintf("rpcuser=local-pilot\nrpcpass=%s\nnotls=1\nrpclisten=127.0.0.1:%d\ndatadir=%s\nlogdir=%s\nnodnsseed=1\nlocalwalletpilot=1\nconnect=127.0.0.1:%d\n", password, rpcPort, data, logs, connectPort)
 	if listen {
 		config += fmt.Sprintf("listen=127.0.0.1:%d\n", peerPort)
 	} else {
@@ -157,10 +218,30 @@ func waitNode(ctx context.Context, node *childNode, peers bool) error {
 	defer ticker.Stop()
 	for {
 		var info struct {
-			Chain  string `json:"chain"`
-			Blocks int64  `json:"blocks"`
+			Chain       string `json:"chain"`
+			Blocks      int64  `json:"blocks"`
+			Deployments map[string]struct {
+				Status             string `json:"status"`
+				AlwaysActiveHeight uint32 `json:"always_active_height"`
+			} `json:"bip9_softforks"`
 		}
 		if node.rpc.call(ctx, "getblockchaininfo", &info) == nil && info.Chain == "mainnet" {
+			var network uint32
+			var first string
+			if node.rpc.call(ctx, "getcurrentnet", &network) != nil || node.rpc.callParams(ctx, "getblockhash", []any{0}, &first) != nil || network != policy().Network || first != genesis || info.Blocks < 0 || info.Blocks > int64(^uint32(0))-1 {
+				return errors.New("pilot node identity mismatch")
+			}
+			for _, name := range []string{"csv", "segwit", "taproot"} {
+				deployment, ok := info.Deployments[name]
+				if !ok || deployment.AlwaysActiveHeight != 62 || (deployment.Status == "active") != (info.Blocks+1 >= 62) {
+					return errors.New("pilot node activation rules mismatch")
+				}
+				switch deployment.Status {
+				case "defined", "started", "locked_in", "active", "failed":
+				default:
+					return errors.New("pilot node activation state invalid")
+				}
+			}
 			if !peers {
 				return nil
 			}

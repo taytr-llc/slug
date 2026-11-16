@@ -7,7 +7,10 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
+	"path/filepath"
+	"strings"
 	"time"
+	"unicode/utf8"
 
 	"github.com/taytr-llc/slug/registry"
 )
@@ -16,6 +19,7 @@ type Request struct {
 	ID       uint64 `json:"id"`
 	Command  string `json:"command"`
 	Sequence uint64 `json:"sequence,omitempty"`
+	Path     string `json:"path,omitempty"`
 }
 type Response struct {
 	ID       uint64           `json:"id"`
@@ -27,7 +31,7 @@ type Response struct {
 
 func parseRequest(raw []byte) (Request, error) {
 	var request Request
-	if len(raw) > MaxRequestSize {
+	if len(raw) > MaxRequestSize || !utf8.Valid(raw) {
 		return request, errors.New("invalid_request")
 	}
 	decoder := json.NewDecoder(bytes.NewReader(raw))
@@ -61,7 +65,7 @@ func parseRequest(raw []byte) (Request, error) {
 		return request, errors.New("invalid_request")
 	}
 	for key := range fields {
-		if key != "id" && key != "command" && key != "sequence" {
+		if key != "id" && key != "command" && key != "sequence" && key != "path" {
 			return Request{}, errors.New("invalid_request")
 		}
 	}
@@ -72,12 +76,26 @@ func parseRequest(raw []byte) (Request, error) {
 	} else if _, ok := fields["sequence"]; ok {
 		return request, errors.New("invalid_request")
 	}
+	if request.Command == "export_recovery" || request.Command == "verify_backup" {
+		if json.Unmarshal(fields["path"], &request.Path) != nil || !ValidRecoveryPath(request.Path) {
+			return request, errors.New("invalid_request")
+		}
+	} else if _, ok := fields["path"]; ok {
+		return request, errors.New("invalid_request")
+	}
 	switch request.Command {
-	case "start", "stop", "snapshot", "receipt":
+	case "start", "stop", "snapshot", "receipt", "export_recovery", "verify_backup":
 	default:
 		return request, errors.New("invalid_request")
 	}
 	return request, nil
+}
+
+// ValidRecoveryPath bounds native-selected paths on the private helper pipe.
+// The controller additionally checks filesystem ownership and symlink targets.
+func ValidRecoveryPath(path string) bool {
+	return len(path) <= 1024 && utf8.ValidString(path) && filepath.IsAbs(path) &&
+		!strings.ContainsAny(path, "\x00\r\n")
 }
 func respond(writer io.Writer, response Response) error {
 	data, e := json.Marshal(response)
@@ -199,6 +217,22 @@ func Serve(ctx context.Context, input io.Reader, output io.Writer, c *Controller
 					response.Error = "receipt_unavailable"
 				} else {
 					response.Receipt = &record
+				}
+			case "export_recovery", "verify_backup":
+				var operationErr error
+				if req.Command == "export_recovery" {
+					operationErr = c.ExportRecovery(req.Path)
+					response.Error = "export_unavailable"
+				} else {
+					operationErr = c.VerifyBackup(req.Path)
+					response.Error = "backup_unavailable"
+				}
+				if operationErr != nil {
+					response.OK = false
+				} else {
+					response.Error = ""
+					s := c.Snapshot()
+					response.Snapshot = &s
 				}
 			}
 			if e = respond(output, response); e != nil {

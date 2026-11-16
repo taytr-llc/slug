@@ -38,7 +38,7 @@ func TestBridgeHelper(t *testing.T) {
 			_, _ = io.Copy(io.Discard, os.Stdin)
 			os.Exit(0)
 		default:
-			response := pilot.Response{ID: request.ID, OK: true, Snapshot: &pilot.Snapshot{State: "stopped", Mode: pilot.Mode, Prospects: []pilot.Prospect{}}}
+			response := pilot.Response{ID: request.ID, OK: true, Snapshot: &pilot.Snapshot{State: "stopped", Mode: pilot.Mode, WalletState: "closed", BackupState: "idle", Prospects: []pilot.Prospect{}}}
 			raw, _ := json.Marshal(response)
 			fmt.Println(string(raw))
 		}
@@ -104,14 +104,59 @@ func TestTimeoutAndCloseInterruptIdleHelper(t *testing.T) {
 	}
 }
 func TestResponseCanonicalAndBounds(t *testing.T) {
-	valid := pilot.Response{ID: 1, OK: true, Snapshot: &pilot.Snapshot{State: "stopped", Mode: pilot.Mode, Prospects: []pilot.Prospect{}}}
+	valid := pilot.Response{ID: 1, OK: true, Snapshot: &pilot.Snapshot{State: "stopped", Mode: pilot.Mode, WalletState: "closed", BackupState: "idle", Prospects: []pilot.Prospect{}}}
 	raw, _ := json.Marshal(valid)
 	if _, err := decode(raw); err != nil {
 		t.Fatal(err)
 	}
-	for _, mutated := range []string{strings.Replace(string(raw), `"id"`, `"ID"`, 1), strings.Replace(string(raw), `"mode":"local-pilot"`, `"mode":"local-pilot","mode":"local-pilot"`, 1), strings.Replace(string(raw), `"prospects":[]`, `"prospects":null`, 1), string(raw) + `{}`, `{"id":1,"ok":true}`, `{"id":1,"ok":false,"error":"sensitive path or key"}`} {
+	for _, mutated := range []string{strings.Replace(string(raw), `"id"`, `"ID"`, 1), strings.Replace(string(raw), `"mode":"local-wallet-pilot"`, `"mode":"local-wallet-pilot","mode":"local-wallet-pilot"`, 1), strings.Replace(string(raw), `"prospects":[]`, `"prospects":null`, 1), string(raw) + `{}`, `{"id":1,"ok":true}`, `{"id":1,"ok":false,"error":"sensitive path or key"}`} {
 		if _, err := decode([]byte(mutated)); err == nil {
 			t.Fatalf("accepted %s", mutated)
+		}
+	}
+}
+
+func TestRecoveryNativePathAndPublicResponse(t *testing.T) {
+	b := fixture(t, "valid")
+	for _, command := range []string{"export_recovery", "verify_backup"} {
+		if _, err := b.Request(context.Background(), command, 0); err == nil {
+			t.Fatal("public command accepted path operation")
+		}
+		response, err := b.RequestPath(context.Background(), command, "/private/tmp/test wallet.json")
+		if err != nil || response.Snapshot == nil || response.Receipt != nil {
+			t.Fatalf("native request: %v", err)
+		}
+	}
+	for _, command := range []string{"snapshot", "receipt", "dumpprivkey", "stop"} {
+		if _, err := b.RequestPath(context.Background(), command, "/tmp/a"); err == nil {
+			t.Fatal("unrestricted path command")
+		}
+	}
+	if _, err := b.RequestPath(context.Background(), "verify_backup", "relative"); err == nil {
+		t.Fatal("relative path accepted")
+	}
+	base := pilot.Response{ID: 1, OK: true, Snapshot: &pilot.Snapshot{State: "stopped", Mode: pilot.Mode, WalletState: "closed", BackupState: "idle", Prospects: []pilot.Prospect{}}}
+	raw, _ := json.Marshal(base)
+	for _, secret := range []string{"mnemonic", "seed", "private_key", "rpc_password"} {
+		mutated := strings.Replace(string(raw), `"wallet_state":"closed"`, `"wallet_state":"closed","`+secret+`":"forbidden"`, 1)
+		if _, err := decode([]byte(mutated)); err == nil {
+			t.Fatal("accepted private response field")
+		}
+	}
+	for _, mutate := range []func(*pilot.Snapshot){
+		func(s *pilot.Snapshot) { s.SpendableAtoms = -1 },
+		func(s *pilot.Snapshot) { s.ImmatureAtoms = 1 << 53 },
+		func(s *pilot.Snapshot) { s.GymPublicKey = "not a public key" },
+		func(s *pilot.Snapshot) { s.BackupError = "/private/path" },
+		func(s *pilot.Snapshot) { s.BackupPhase = "unbounded private content" },
+	} {
+		copy := *base.Snapshot
+		mutate(&copy)
+		response := base
+		response.Snapshot = &copy
+		raw, _ := json.Marshal(response)
+		if _, err := decode(raw); err == nil {
+			t.Fatal("accepted unsafe wallet state")
 		}
 	}
 }

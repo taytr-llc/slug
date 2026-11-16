@@ -74,7 +74,10 @@ function deferred() {
 
 function validSnapshot(overrides = {}) {
   return {
-    state: 'stopped', mode: 'local-pilot', attempts: 12, hashes_per_second: 1.25,
+    state: 'stopped', mode: 'local-wallet-pilot', attempts: 12, hashes_per_second: 1.25,
+    wallet_state: 'closed', wallet_height: 61, spendable_atoms: 123456789, immature_atoms: 1000000000,
+    payout_address: 'a'.repeat(34), gym_id: 'a'.repeat(64), gym_public_key: '02' + 'b'.repeat(64),
+    backup_state: 'idle', backup_phase: '', backup_error: '',
     height: 61, pending: 0, last_error: '', recovery_error: '', prospect_count: 1,
     prospects: [{
       sequence: 1, id: 'a'.repeat(64), work_hash: 'b'.repeat(64),
@@ -107,11 +110,11 @@ function harness(initial = validSnapshot()) {
     Snapshot: () => value,
     Start: () => { value = { ...value, state: 'starting' }; },
     Stop: () => { value = { ...value, state: 'stopped' }; },
-    ExportReceipt: () => '',
+    ExportReceipt: () => '', ExportRecovery: () => '', VerifyBackup: () => '',
   };
   const Call = {
     async ByName(name, ...args) {
-      assert.match(name, /^main\.Gym\.(Snapshot|Start|Stop|ExportReceipt)$/);
+      assert.match(name, /^main\.Gym\.(Snapshot|Start|Stop|ExportReceipt|ExportRecovery|VerifyBackup)$/);
       const method = name.slice('main.Gym.'.length);
       calls.push({ method, args });
       activeBridgeCalls++;
@@ -325,4 +328,52 @@ test('unknown display fields stay text-only and cannot create invalid attribute 
   const original = roster.children[0];
   await h.tick();
   assert.equal(roster.children[0], original);
+});
+
+test('wallet values are public and native recovery actions take no webview paths', async () => {
+  const h = harness();
+  h.start(); await settle();
+  assert.match(h.elements.get('spendable').textContent, /1\.23456789/);
+  assert.equal(h.elements.get('immature').textContent, '10');
+  assert.equal(h.elements.get('payout').textContent, h.value.payout_address);
+  const dialog = deferred();
+  h.handlers.ExportRecovery = () => dialog.promise;
+  const clicked = h.elements.get('export-recovery').dispatch('click');
+  await h.elements.get('verify-backup').dispatch('click');
+  await h.elements.get('mining-toggle').dispatch('click');
+  await h.tick();
+  assert.equal(h.count('ExportRecovery'), 1);
+  assert.equal(h.count('VerifyBackup'), 0);
+  assert.equal(h.count('Start'), 0);
+  assert.deepEqual(h.calls.find((call) => call.method === 'ExportRecovery').args, []);
+  dialog.resolve(''); await clicked;
+  assert.equal(h.elements.get('alert').textContent, 'Selection canceled.');
+  assert.equal(h.peakBridgeCalls, 1);
+});
+
+test('asynchronous backup verification keeps polling and excludes mining until completion', async () => {
+  const h = harness();
+  h.start(); await settle();
+  h.handlers.VerifyBackup = () => {
+    h.value = { ...h.value, backup_state: 'running', backup_phase: 'restoring' };
+    return 'Backup verification started.';
+  };
+  await h.elements.get('verify-backup').dispatch('click');
+  assert.deepEqual(h.calls.find((call) => call.method === 'VerifyBackup').args, []);
+  assert.equal(h.elements.get('mining-toggle').disabled, true);
+  assert.equal(h.elements.get('export-recovery').disabled, true);
+  assert.match(h.elements.get('backup-status').textContent, /fresh restore/);
+  const before = h.count('Snapshot');
+  await h.tick();
+  assert.equal(h.count('Snapshot'), before + 1);
+  await h.elements.get('mining-toggle').dispatch('click');
+  assert.equal(h.count('Start'), 0);
+  h.value = { ...h.value, backup_state: 'succeeded', backup_phase: 'complete' };
+  await h.tick();
+  assert.equal(h.elements.get('mining-toggle').disabled, false);
+  assert.match(h.elements.get('backup-status').textContent, /Backup verified/);
+  h.value = { ...h.value, state: 'running' };
+  await h.tick();
+  assert.equal(h.elements.get('export-recovery').disabled, true);
+  assert.equal(h.elements.get('verify-backup').disabled, true);
 });

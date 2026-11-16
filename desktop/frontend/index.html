@@ -23,13 +23,20 @@
         <div><div class="status-pill"><span id="status-dot"></span><span id="state">Ready</span></div><h2 id="hero-title">Build your corner.</h2><p id="hero-copy">Start mining to discover your first prospect. Every find starts a new career.</p></div>
         <button class="primary" id="mining-toggle" type="button"><span id="action-label">Start mining</span><span aria-hidden="true">↗</span></button>
       </section>
-      <p class="pilot-note">This pilot mines a private local chain with a test gym. Your real wallet and the public league are not connected.</p>
+      <p class="pilot-note">This pilot uses a public test wallet on a private training chain. Rewards have no monetary value. Use only this pilot’s recovery files.</p>
       <div id="alert" role="status" hidden></div>
       <section class="metrics" aria-label="Mining activity">
         <article><p>Mining attempts</p><strong id="attempts">0</strong><small id="rate">Ready when you are</small></article>
         <article><p>Prospects found</p><strong id="prospect-count">0</strong><small>Saved to this gym</small></article>
         <article><p>Pending delivery</p><strong id="pending">0</strong><small id="pending-copy">Nothing waiting</small></article>
         <article><p>Local chain</p><strong id="height">0</strong><small>Blocks confirmed</small></article>
+      </section>
+      <section class="wallet-panel" aria-labelledby="wallet-heading">
+        <div class="section-heading"><div><p class="eyebrow">YOUR TRAINING WALLET</p><h3 id="wallet-heading">Test rewards</h3></div><span id="wallet-state" role="status">Connecting…</span></div>
+        <div class="wallet-balances"><div><span>Spendable test SLUG</span><strong id="spendable">—</strong></div><div><span>Waiting to mature</span><strong id="immature">—</strong></div><p>Mining rewards mature after 100 blocks.<br><span id="wallet-height">Waiting for wallet</span></p></div>
+        <dl class="wallet-identity"><dt>Reward address</dt><dd id="payout">Created on your first Start</dd><dt>Gym identity</dt><dd id="gym-id">Created on your first Start</dd></dl>
+        <div class="wallet-actions"><button id="export-recovery" type="button" disabled>Save recovery file</button><button id="verify-backup" type="button" disabled>Verify backup</button></div>
+        <p id="backup-status" role="status">Stop mining to save or verify your test wallet backup.</p>
       </section>
       <section class="roster-section" aria-labelledby="roster-heading">
         <div class="section-heading"><div><p class="eyebrow">FRESH FROM THE WORK</p><h3 id="roster-heading">Your prospects</h3></div><span id="roster-label">A place for every find</span></div>

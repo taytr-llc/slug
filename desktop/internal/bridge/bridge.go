@@ -12,7 +12,9 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
+	"math"
 	"os/exec"
+	"regexp"
 	"sync"
 	"time"
 
@@ -23,6 +25,9 @@ var (
 	ErrUnavailable = errors.New("Local pilot is unavailable. Quit and reopen the app.")
 	ErrBusy        = errors.New("The pilot is finishing another request. Try again shortly.")
 	ErrClosed      = errors.New("The local pilot is shutting down.")
+	publicHex      = regexp.MustCompile(`^[a-f0-9]{64}$`)
+	publicKey      = regexp.MustCompile(`^(02|03)[a-f0-9]{64}$`)
+	payoutAddress  = regexp.MustCompile(`^[1-9A-HJ-NP-Za-km-z]{26,60}$`)
 )
 
 // Bridge has one request in flight, no unbounded request queue, and one reader.
@@ -121,7 +126,7 @@ func decode(raw []byte) (pilot.Response, error) {
 			return response, ErrUnavailable
 		}
 		switch response.Error {
-		case "invalid_request", "invalid_frame", "start_unavailable", "receipt_unavailable":
+		case "invalid_request", "invalid_frame", "start_unavailable", "receipt_unavailable", "export_unavailable", "backup_unavailable":
 		default:
 			return response, ErrUnavailable
 		}
@@ -137,8 +142,28 @@ func decode(raw []byte) (pilot.Response, error) {
 		if s.Mode != pilot.Mode || s.Prospects == nil || len(s.Prospects) > 100 || s.ProspectCount < uint64(len(s.Prospects)) || s.HashesPerSecond < 0 {
 			return response, ErrUnavailable
 		}
+		if !oneOf(s.WalletState, "closed", "connecting", "syncing", "ready", "failed") ||
+			!oneOf(s.BackupState, "idle", "running", "succeeded", "failed", "cancelled") ||
+			!oneOf(s.BackupPhase, "", "opening", "checking", "restoring", "syncing", "verifying", "complete") ||
+			!oneOf(s.BackupError, "", "backup_unavailable", "backup_invalid", "backup_mismatch", "backup_storage_failed") ||
+			s.SpendableAtoms < 0 || s.SpendableAtoms > 1<<53-1 || s.ImmatureAtoms < 0 || s.ImmatureAtoms > 1<<53-1 ||
+			s.WalletHeight > 1<<53-1 || math.IsNaN(s.HashesPerSecond) || math.IsInf(s.HashesPerSecond, 0) ||
+			(s.GymID != "" && !publicHex.MatchString(s.GymID)) ||
+			(s.GymPublicKey != "" && !publicKey.MatchString(s.GymPublicKey)) ||
+			(s.PayoutAddress != "" && !payoutAddress.MatchString(s.PayoutAddress)) {
+			return response, ErrUnavailable
+		}
 	}
 	return response, nil
+}
+
+func oneOf(value string, allowed ...string) bool {
+	for _, candidate := range allowed {
+		if value == candidate {
+			return true
+		}
+	}
+	return false
 }
 
 func (b *Bridge) Request(ctx context.Context, command string, sequence uint64) (pilot.Response, error) {
@@ -154,6 +179,20 @@ func (b *Bridge) Request(ctx context.Context, command string, sequence uint64) (
 	default:
 		return pilot.Response{}, ErrUnavailable
 	}
+	return b.request(ctx, pilot.Request{Command: command, Sequence: sequence})
+}
+
+// RequestPath accepts only a native dialog's selection. This method is not a
+// webview service and never receives or returns recovery-file contents.
+func (b *Bridge) RequestPath(ctx context.Context, command, path string) (pilot.Response, error) {
+	if (command != "export_recovery" && command != "verify_backup") || !pilot.ValidRecoveryPath(path) {
+		return pilot.Response{}, ErrUnavailable
+	}
+	return b.request(ctx, pilot.Request{Command: command, Path: path})
+}
+
+func (b *Bridge) request(ctx context.Context, request pilot.Request) (pilot.Response, error) {
+	command, sequence := request.Command, request.Sequence
 	select {
 	case b.gate <- struct{}{}:
 		defer func() { <-b.gate }()
@@ -175,9 +214,13 @@ func (b *Bridge) Request(ctx context.Context, command string, sequence uint64) (
 		b.fail(ErrUnavailable)
 		return pilot.Response{}, ErrUnavailable
 	}
-	raw, _ := json.Marshal(pilot.Request{ID: b.nextID, Command: command, Sequence: sequence})
+	request.ID = b.nextID
+	raw, err := json.Marshal(request)
+	if err != nil || len(raw) > pilot.MaxRequestSize {
+		return pilot.Response{}, ErrUnavailable
+	}
 	raw = append(raw, '\n')
-	// The request is less than 100 bytes and the one-at-a-time protocol never
+	// The request is bounded and the one-at-a-time protocol never
 	// fills the pipe. A dead/stalled helper is drained on operation timeout.
 	if deadline, ok := b.input.(interface{ SetWriteDeadline(time.Time) error }); ok {
 		_ = deadline.SetWriteDeadline(time.Now().Add(5 * time.Second))

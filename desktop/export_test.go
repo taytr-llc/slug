@@ -47,3 +47,32 @@ func TestEmbeddedAssetSecurity(t *testing.T) {
 		t.Fatal("missing asset policy")
 	}
 }
+
+func TestReceiptCannotReplaceManagedDataThroughParentAlias(t *testing.T) {
+	root := t.TempDir()
+	managed := filepath.Join(root, "pilot")
+	if err := os.Mkdir(managed, 0700); err != nil {
+		t.Fatal(err)
+	}
+	original := []byte("retained identity")
+	target := filepath.Join(managed, "SLUG-PILOT.json")
+	if err := os.WriteFile(target, original, 0600); err != nil {
+		t.Fatal(err)
+	}
+	alias := filepath.Join(root, "alias")
+	if err := os.Symlink(managed, alias); err != nil {
+		t.Fatal(err)
+	}
+	for _, path := range []string{target, filepath.Join(alias, "SLUG-PILOT.json"), filepath.Join(managed, "new.json")} {
+		if saveReceipt(path, []byte("receipt"), managed) == nil {
+			t.Fatal("accepted managed destination")
+		}
+	}
+	got, err := os.ReadFile(target)
+	if err != nil || string(got) != string(original) {
+		t.Fatal("changed managed data")
+	}
+	if err := saveReceipt(filepath.Join(root, "receipt.json"), []byte("public receipt"), managed); err != nil {
+		t.Fatal(err)
+	}
+}

@@ -156,6 +156,14 @@ witness and Taproot recovery spending plus complete witness mining candidates.
 Deploy only after boundary/reorg validation and a fresh height-61 history check.
 Public mining and production genesis remain separate from this upgrade.
 
+Set 26 integrates that fixture wallet into the Go gym shell through the
+btcwallet RPC surface. It retains one wallet-generated payout and fixed gym,
+shows test reward maturity, and adds native recovery export plus asynchronous
+file-only restore verification. New manifest/data roots reject old cached
+chains and preserve set-22 receipts. Only published fixture keys are used;
+real custody/login, production key/path allocation and release signing remain
+separate work. See `desktop/README.md` and `CHANGESET_26_NOTES.md`.
+
 ### 5. Gym clients
 The gym is the product surface: native Mac and Windows apps (menu
 bar and tray, gentle default mining setting) plus the browser

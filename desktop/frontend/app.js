@@ -4,6 +4,8 @@ const elements = Object.fromEntries([
   'state', 'status-dot', 'hero-copy', 'mining-toggle', 'action-label', 'alert',
   'attempts', 'rate', 'prospect-count', 'nav-count', 'pending', 'pending-copy',
   'height', 'roster-label', 'empty', 'roster',
+  'wallet-state', 'wallet-height', 'spendable', 'immature', 'payout', 'gym-id',
+  'export-recovery', 'verify-backup', 'backup-status',
 ].map((id) => [id, document.getElementById(id)]));
 
 const rarities = new Map([
@@ -15,9 +17,13 @@ const attributes = [
   ['stamina', 'Stamina'], ['skill', 'Skill'],
 ];
 const states = new Set(['stopped', 'starting', 'running', 'stopping', 'failed']);
+const walletStates = new Set(['closed', 'connecting', 'syncing', 'ready', 'failed']);
+const backupStates = new Set(['idle', 'running', 'succeeded', 'failed', 'cancelled']);
+const backupPhases = new Map([['', ''], ['opening', 'Reading the file'], ['checking', 'Checking the original wallet'], ['restoring', 'Restoring a fresh wallet'], ['syncing', 'Syncing the restored wallet'], ['verifying', 'Comparing identity and funds'], ['complete', 'Complete']]);
 const cards = new Map();
 const numberFormat = new Intl.NumberFormat();
 const rateFormat = new Intl.NumberFormat(undefined, { maximumFractionDigits: 2 });
+const coinFormat = new Intl.NumberFormat(undefined, { maximumFractionDigits: 8 });
 const dateFormat = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' });
 let snapshot = null;
 let polling = null;
@@ -48,7 +54,13 @@ function integer(value, minimum = 0, maximum = Number.MAX_SAFE_INTEGER) {
 }
 
 function normalize(value) {
-  if (!value || !states.has(value.state) || value.mode !== 'local-pilot'
+  if (!value || !states.has(value.state) || value.mode !== 'local-wallet-pilot'
+    || !walletStates.has(value.wallet_state) || !backupStates.has(value.backup_state) || !backupPhases.has(value.backup_phase)
+    || !['wallet_height', 'spendable_atoms', 'immature_atoms'].every((key) => integer(value[key]))
+    || !['payout_address', 'gym_id', 'gym_public_key', 'backup_phase', 'backup_error'].every((key) => typeof value[key] === 'string' && value[key].length <= 280)
+    || (value.payout_address !== '' && !/^[1-9A-HJ-NP-Za-km-z]{26,60}$/.test(value.payout_address))
+    || (value.gym_id !== '' && !/^[a-f\d]{64}$/.test(value.gym_id))
+    || (value.gym_public_key !== '' && !/^(02|03)[a-f\d]{64}$/.test(value.gym_public_key))
     || !['attempts', 'height', 'pending', 'prospect_count'].every((key) => integer(value[key]))
     || typeof value.hashes_per_second !== 'number' || !Number.isFinite(value.hashes_per_second)
     || value.hashes_per_second < 0 || !Array.isArray(value.prospects) || value.prospects.length > 100
@@ -199,9 +211,36 @@ function renderControls() {
   elements['mining-toggle'].setAttribute('aria-busy', String(busy || state === 'stopping'));
   // Starting again is also how a stopped gym retries saved uncertain work.
   // A recovery warning must not disable that explicit recovery action.
-  elements['mining-toggle'].disabled = busy || exporting !== null || !snapshot || !!connectionError || state === 'stopping';
+  elements['mining-toggle'].disabled = busy || exporting !== null || !snapshot || !!connectionError || state === 'stopping' || snapshot.backup_state === 'running';
   document.title = `${stateText} · SLUG Gym`;
+  renderWallet();
   renderAlert();
+}
+
+function renderWallet() {
+  const value = snapshot;
+  const labels = { closed: 'Wallet closed', connecting: 'Connecting wallet', syncing: 'Syncing wallet', ready: 'Wallet ready', failed: 'Wallet needs attention' };
+  text(elements['wallet-state'], labels[value?.wallet_state] ?? 'Connecting…');
+  text(elements['wallet-height'], value ? `Synced through block ${numberFormat.format(value.wallet_height)}` : 'Waiting for wallet');
+  text(elements.spendable, value ? coinFormat.format(value.spendable_atoms / 100000000) : '—');
+  text(elements.immature, value ? coinFormat.format(value.immature_atoms / 100000000) : '—');
+  text(elements.payout, value?.payout_address || 'Created on your first Start');
+  text(elements['gym-id'], value?.gym_id || 'Created on your first Start');
+  const unavailable = !value?.payout_address || !['stopped', 'failed'].includes(value?.state)
+    || value?.backup_state === 'running' || exporting !== null || command !== null || !!connectionError;
+  elements['export-recovery'].disabled = unavailable;
+  elements['verify-backup'].disabled = unavailable;
+  elements['export-recovery'].setAttribute('aria-busy', String(exporting === 'ExportRecovery'));
+  elements['verify-backup'].setAttribute('aria-busy', String(exporting === 'VerifyBackup' || value?.backup_state === 'running'));
+  const messages = {
+    idle: 'Stop mining to save or verify your test wallet backup.',
+    running: 'Verifying a fresh restore. Mining is paused; Quit cancels verification.',
+    succeeded: 'Backup verified: wallet identity and funds match. Prospect receipts stay in this gym.',
+    failed: 'Backup verification failed. Check the recovery file and try again.',
+    cancelled: 'Backup verification canceled. Your existing wallet is unchanged.',
+  };
+  const progress = value?.backup_state === 'running' ? `${backupPhases.get(value.backup_phase)}. ` : '';
+  text(elements['backup-status'], progress + (messages[value?.backup_state] ?? messages.idle));
 }
 
 function render(value) {
@@ -299,11 +338,36 @@ async function exportReceipt(sequence) {
   }
 }
 
+async function walletAction(method, button) {
+  if (button.disabled || exporting !== null || command !== null) return;
+  exporting = method;
+  actionMessage = '';
+  actionIsError = false;
+  renderExportButtons();
+  renderControls();
+  try {
+    if (polling) await polling;
+    const message = await Call.ByName(`main.Gym.${method}`);
+    actionMessage = message === '' ? 'Selection canceled.' : safeMessage(message, 'The wallet action did not return a result.');
+    actionIsError = typeof message !== 'string';
+  } catch (error) {
+    actionMessage = safeMessage(error, 'The wallet action could not finish. Please try again.');
+    actionIsError = true;
+  } finally {
+    exporting = null;
+    renderExportButtons();
+    await refresh();
+    renderControls();
+  }
+}
+
 elements.state.setAttribute('aria-live', 'polite');
 elements.alert.setAttribute('aria-atomic', 'true');
 elements.roster.setAttribute('aria-live', 'off');
 elements.roster.setAttribute('aria-busy', 'true');
 elements['mining-toggle'].addEventListener('click', toggleMining);
+elements['export-recovery'].addEventListener('click', () => walletAction('ExportRecovery', elements['export-recovery']));
+elements['verify-backup'].addEventListener('click', () => walletAction('VerifyBackup', elements['verify-backup']));
 document.addEventListener('visibilitychange', () => {
   if (!document.hidden && !disposed) void refresh();
 });

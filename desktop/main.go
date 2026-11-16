@@ -31,10 +31,11 @@ var assets embed.FS
 // Gym exposes only public pilot controls and receipt selection to the webview.
 // Paths, process arguments, and keys cannot be supplied through the web bridge.
 type Gym struct {
-	helper   *bridge.Bridge
-	app      *application.App
-	window   *application.WebviewWindow
-	exportMu sync.Mutex
+	helper         *bridge.Bridge
+	app            *application.App
+	window         *application.WebviewWindow
+	exportMu       sync.Mutex
+	protectedRoots []string
 }
 
 func (g *Gym) Snapshot() (pilot.Snapshot, error) {
@@ -70,10 +71,64 @@ func (g *Gym) ExportReceipt(sequence uint64) (string, error) {
 	if path == "" {
 		return "", nil
 	}
-	if err = saveReceipt(path, append(raw, '\n')); err != nil {
+	if err = saveReceipt(path, append(raw, '\n'), g.protectedRoots...); err != nil {
 		return "", errors.New("The receipt could not be saved.")
 	}
 	return "Receipt saved.", nil
+}
+
+// Recovery paths are chosen by native dialogs, never supplied by the webview.
+// The helper writes and verifies the file without returning its private data.
+func (g *Gym) ExportRecovery() (string, error) {
+	if !g.exportMu.TryLock() {
+		return "", bridge.ErrBusy
+	}
+	defer g.exportMu.Unlock()
+	path, err := g.app.Dialog.SaveFile().AttachToWindow(g.window).
+		SetMessage("Save the recovery file for this public test wallet.").
+		SetFilename("slug-test-wallet-recovery.json").
+		AddFilter("SLUG recovery file", "*.json").AllowsOtherFileTypes(false).
+		CanCreateDirectories(true).PromptForSingleSelection()
+	if err != nil {
+		return "", errors.New("The save dialog is unavailable.")
+	}
+	if path == "" {
+		return "", nil
+	}
+	path, err = selectedExportPath(path, g.protectedRoots)
+	if err != nil {
+		return "", errors.New("Choose a recovery destination outside application data.")
+	}
+	if _, err = g.helper.RequestPath(context.Background(), "export_recovery", path); err != nil {
+		return "", errors.New("The recovery file could not be saved. Stop mining and try again.")
+	}
+	return "Test wallet recovery file saved.", nil
+}
+
+func (g *Gym) VerifyBackup() (string, error) {
+	if !g.exportMu.TryLock() {
+		return "", bridge.ErrBusy
+	}
+	defer g.exportMu.Unlock()
+	path, err := g.app.Dialog.OpenFile().AttachToWindow(g.window).
+		SetMessage("Choose this test wallet's recovery file to verify a fresh restore.").
+		AddFilter("SLUG recovery file", "*.json").AllowsOtherFileTypes(false).
+		CanChooseFiles(true).CanChooseDirectories(false).ResolvesAliases(false).
+		PromptForSingleSelection()
+	if err != nil {
+		return "", errors.New("The open dialog is unavailable.")
+	}
+	if path == "" {
+		return "", nil
+	}
+	path, err = selectedExportPath(path, g.protectedRoots)
+	if err != nil {
+		return "", errors.New("Choose a recovery file outside application data.")
+	}
+	if _, err = g.helper.RequestPath(context.Background(), "verify_backup", path); err != nil {
+		return "", errors.New("Backup verification could not start. Stop mining and choose this test wallet's recovery file.")
+	}
+	return "Backup verification started.", nil
 }
 
 const contentPolicy = "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; font-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
@@ -92,11 +147,11 @@ func run() (resultErr error) {
 	if err != nil {
 		return errors.New("Local application storage is unavailable.")
 	}
-	dataDefault = filepath.Join(dataDefault, "SLUG", "LocalPilot")
+	dataDefault = filepath.Join(dataDefault, "SLUG", "LocalWalletPilot")
 	if value := os.Getenv("SLUG_PILOT_DATA_DIR"); value != "" {
 		dataDefault = value
 	}
-	data := flag.String("data-dir", dataDefault, "Local pilot data directory (never a wallet directory)")
+	data := flag.String("data-dir", dataDefault, "Local test-wallet pilot data directory")
 	flag.Parse()
 	if flag.NArg() != 0 || !filepath.IsAbs(*data) {
 		return errors.New("An absolute local pilot data directory is required.")
@@ -115,7 +170,13 @@ func run() (resultErr error) {
 		return err
 	}
 	defer func() { resultErr = errors.Join(resultErr, helper.Close()) }()
-	gym := &Gym{helper: helper}
+	gym := &Gym{helper: helper, protectedRoots: []string{
+		filepath.Clean(*data), filepath.Join(filepath.Dir(filepath.Clean(*data)), "LocalPilot"),
+		filepath.Clean(filepath.Join(resources, "..", "..")),
+	}}
+	if configDir, err := os.UserConfigDir(); err == nil {
+		gym.protectedRoots = append(gym.protectedRoots, filepath.Join(configDir, "SLUG"))
+	}
 	frontend, err := fs.Sub(assets, "frontend")
 	if err != nil {
 		return errors.New("Embedded application assets are unavailable.")
@@ -123,7 +184,7 @@ func run() (resultErr error) {
 	// Deliberately use the embedded file server, not Wails' development server
 	// environment override. There is no remote frontend or external URL input.
 	app := application.New(application.Options{
-		Name: "SLUG Local Pilot", Description: "An isolated local mining gym using public fixture identity.",
+		Name: "SLUG Wallet Pilot", Description: "An isolated local mining gym using public fixture identity.",
 		Services: []application.Service{application.NewService(gym)},
 		Assets:   application.AssetOptions{Handler: http.FileServer(http.FS(frontend)), Middleware: assetSecurity, DisableLogging: true},
 		Logger:   slog.New(slog.NewTextHandler(io.Discard, nil)),
@@ -136,7 +197,7 @@ func run() (resultErr error) {
 	})
 	gym.app = app
 	window := app.Window.NewWithOptions(application.WebviewWindowOptions{
-		Title: "SLUG — Local Pilot", Name: "SLUG Local Pilot", Width: 1180, Height: 820, MinWidth: 820, MinHeight: 640, URL: "/",
+		Title: "SLUG — Wallet Pilot", Name: "SLUG Wallet Pilot", Width: 1180, Height: 820, MinWidth: 820, MinHeight: 640, URL: "/",
 		DevToolsEnabled: false, DefaultContextMenuDisabled: true, EnableFileDrop: false,
 		Permissions: map[application.PermissionType]application.Permission{
 			application.PermissionMicrophone: application.PermissionDeny, application.PermissionCamera: application.PermissionDeny,
@@ -165,14 +226,14 @@ func run() (resultErr error) {
 					time.Sleep(50 * time.Millisecond)
 				}
 				if err != nil {
-					app.Dialog.Error().SetTitle("SLUG Local Pilot").SetMessage(err.Error()).Show()
+					app.Dialog.Error().SetTitle("SLUG Wallet Pilot").SetMessage(err.Error()).Show()
 				}
 			}()
 		}
 	}
 
 	menu := app.NewMenu()
-	controls := menu.AddSubmenu("SLUG Local Pilot")
+	controls := menu.AddSubmenu("SLUG Wallet Pilot")
 	controls.Add("Show gym").OnClick(func(*application.Context) { window.Show(); window.Focus() })
 	controls.Add("Start mining").OnClick(action(gym.Start))
 	controls.Add("Stop mining").OnClick(action(gym.Stop))
