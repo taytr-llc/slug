@@ -15,7 +15,7 @@ Version 1.3, updated November 16, 2026 Pacific. Consolidates Decisions 1 to 63, 
 
 **Names:** Brand and coin: SLUG, adopted Nov 15, 2026 as the single name for both (originally KOIN, knockout coin, dropped after the Nov 14, 2026 trademark check found the Koinos conflict; full name search in TRADEMARK_DOMAIN_CHECK.md). League working title: Brawlchain (project codename; it is a likely conflict as a public name, so the public brand is built on SLUG). Saturday card: The Mine Event. Logo: open under the SLUG brand (it was a chain under Brawlchain). Rejected: Fight Club (Disney trademark risk), Fighting Ultimate Championship / FUC (UFC confusion, profanity ceiling), and any name leading with "Crypto" (scam optics).
 
-**Status:** Still a design, not a committed build. Build approach is settled: build the actual chain and production system once, then run the small-group test on that real chain. No disposable test product. Internal fight simulations and load testing before genesis are tuning, not a throwaway version.
+**Status:** Implementation is underway; `BUILD_PLAN.md` and `LAUNCH_READINESS.md` track verified engineering milestones and remaining release gates. Permanent genesis and product release have not happened. Build approach is settled: build the actual chain and production system once, then run the small-group test on that real chain. No disposable test product. Internal fight simulations and load testing before genesis are tuning, not a throwaway version.
 
 ## 2. Launch and genesis
 

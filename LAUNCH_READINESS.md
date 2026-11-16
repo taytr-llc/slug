@@ -50,6 +50,12 @@ and unresolved choices. Mike and Codex review together; a solo code audit or
 automated accessibility check does not replace this session. Capture outcomes
 in a dated review record with owners and validation for each required change.
 
+The approved logo handoff is preserved byte-for-byte in the workspace's
+`../brand-assets`: gray background, white front-facing fist, black linework and
+SLUG across the knuckles, plus the transparent variant. Use those exact assets
+in the forthcoming desktop design work rather than recreating the mark. Source
+paths and checksums are recorded in `../brand-assets/handoff.json`.
+
 Do not invent a calendar date or claim an automatic reminder has been scheduled.
 Arrange the session when a representative build is ready, before user-facing
 release. Any later scope change must keep this gate visible.
