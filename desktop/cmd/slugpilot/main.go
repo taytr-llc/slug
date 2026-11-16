@@ -1,0 +1,41 @@
+// slugpilot owns only a disposable loopback mining environment and public
+// fixture signer. Its stdout is exclusively the bounded JSON-lines protocol.
+package main
+
+import (
+	"context"
+	"errors"
+	"flag"
+	"fmt"
+	"github.com/taytr-llc/slug/desktop/pilot"
+	"io"
+	"os"
+	"os/signal"
+	"syscall"
+)
+
+func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.Writer) error {
+	flags := flag.NewFlagSet("slugpilot", flag.ContinueOnError)
+	flags.SetOutput(stderr)
+	data := flags.String("data-dir", "", "Explicit disposable pilot directory")
+	node := flags.String("node-binary", "", "Explicit bundled normal SLUG node binary")
+	if e := flags.Parse(args); e != nil {
+		return e
+	}
+	if flags.NArg() != 0 || *data == "" || *node == "" {
+		return errors.New("explicit data-dir and node-binary are required")
+	}
+	controller, e := pilot.New(pilot.Config{DataDir: *data, NodeBinary: *node})
+	if e != nil {
+		return e
+	}
+	return pilot.Serve(ctx, stdin, stdout, controller)
+}
+func main() {
+	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer cancel()
+	if e := run(ctx, os.Args[1:], os.Stdin, os.Stdout, os.Stderr); e != nil && !errors.Is(e, flag.ErrHelp) {
+		fmt.Fprintln(os.Stderr, "slugpilot:", e)
+		os.Exit(1)
+	}
+}

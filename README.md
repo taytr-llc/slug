@@ -1,5 +1,21 @@
-btcd
+SLUG
 ====
+
+SLUG is a Go fork of btcd for a fight-league product. The current disposable
+engineering chain uses Argon2id proof of work, two-minute blocks and a 10 SLUG
+starting reward. The daemon is `slugd`; the command-line client is `slugctl`.
+See [the build plan](BUILD_PLAN.md), [chain handover](HANDOVER.md), and numbered
+change-set notes for the implementation and verification record.
+
+The [desktop gym](desktop/README.md) is a new Go application built around the
+SLUG node and automatic miner. Its first pilot runs a private local training
+chain. The separate btcwallet project will be forked for the wallet workstream;
+Paymetheus is not the desktop base.
+
+## Upstream btcd reference
+
+The inherited overview and badges below describe upstream btcd. SLUG's changed
+chain rules, release status and application work are documented above.
 
 [![Build Status](https://github.com/btcsuite/btcd/workflows/Build%20and%20Test/badge.svg)](https://github.com/btcsuite/btcd/actions)
 [![Coverage Status](https://coveralls.io/repos/github/btcsuite/btcd/badge.svg?branch=master)](https://coveralls.io/github/btcsuite/btcd?branch=master)

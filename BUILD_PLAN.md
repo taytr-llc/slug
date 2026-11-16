@@ -90,6 +90,18 @@ signer; it does not provide hosted wallet custody, login or full seed export.
 The next desktop slice wires start/stop/status/receipts to that worker behind a
 narrow Go bridge, with fixture identities visibly separated from real accounts.
 
+Set 22 prepares a new Go desktop shell and separate Go supervisor using Wails.
+Mike confirmed on November 16 that no existing desktop app is the base;
+Paymetheus is not involved. The gym integrates against the slugd and btcwallet
+RPC surfaces. btcwallet remains a separate repository to fork when the wallet
+workstream begins.
+It exercises actual production PoW and durable admissions on two disposable
+loopback-only nodes, with a public test gym identity. Start/stop, menu-bar/tray
+lifecycle, saved prospects and public receipt export are the initial interface.
+This is a local pilot, not the hosted account/wallet promised by D48. Real login,
+btcwallet custody, full tested seed export and public service provisioning are
+the next integration boundary; they must not be implied by a fixture roster.
+
 ### 3. The official pool
 The company-run pool that earns 1% (D35, D36). No turnkey pool exists
 for btcd plus Argon2id, so this is a real build: adapt a Miningcore
