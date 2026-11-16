@@ -193,6 +193,14 @@ initial manifest is immutable; current address metadata, watch-only new-device
 views, production issuance and real provider/KMS deployment remain work ahead.
 See `CHANGESET_29_NOTES.md` and wallet `RECOVERY_VAULT.md`.
 
+Mike approved the separate production profile as D73 on November 16. Set 30
+implements its descriptor, derivation and explicit candidate-fixture recovery
+while preserving every existing wallet/profile. Native84 receive/change defaults,
+dedicated coin paths and the permanent-chain-bound gym are the approved design.
+Final allocation/genesis and exact frozen descriptors still gate real issuance.
+See `PRODUCTION_WALLET_PROFILE.md`; the remaining launch work is tracked in
+`LAUNCH_READINESS.md`. Provider coordination is planned after this profile set.
+
 The gym is the product surface: native Mac and Windows apps (menu
 bar and tray, gentle default mining setting) plus the browser
 version. Miner integration with the pool and solo switch, roster and
@@ -238,6 +246,12 @@ cannot wait for launch is the workstream 1 security review, which
 gates genesis.
 
 ## Sequence
+
+Mike requires a thorough design review session with Codex before friends/tester
+or public product release (D74, November 16). Keep it as an explicit gate in
+`LAUNCH_READINESS.md`; review a representative working build together and track
+the agreed findings through validation. Routine engineering deployment and
+automated/code review do not replace that session.
 
 The November 15 chain-core handover and seed rollout are a milestone within
 Phase A, not completion of all three Phase A workstreams. Prospect

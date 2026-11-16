@@ -50,7 +50,12 @@ version.
   → `slug-desktop-wallet` (set 26, released on master at `f03f1ef6`)
   → `slug-account-enrollment` (set 27, released on master at `a541fb58`)
   → `slug-identity-recovery` (set 28, released on master at `bc92fd53`)
-  → `slug-recovery-vault` (set 29, encrypted fixture retention).
+  → `slug-recovery-vault` (set 29, encrypted fixture retention)
+  → `slug-production-profile` (set 30, approved D73 profile design).
+- Mike requires a thorough joint design review before friends/tester or public
+  product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
+  a solo review does not replace the session with him. Continue authorized
+  engineering deployments, but do not treat them as product launch approval.
 - Branch each next change set off the latest completed implementation tip,
   never the live seed branch by default. Use `slug-<topic>` names; set 7 is
   `slug-signed-checkpoints`. HANDOVER.md records the original takeover state.
@@ -290,6 +295,14 @@ does not understand. Never detach, replace, or clear the /data volume.
   and reauthorize the original token/generation at publication. The initial
   fixture manifest is immutable, not a current address-cursor backup. There is
   no production KMS adapter, new-device wallet UI or real key issuance in this set.
+  Mike approved D73 on November 16: a separate production recovery profile with
+  dedicated SLUG coin type, four payment scopes, native84 receive/change defaults
+  and a permanent-chain-bound gym key. Preserve all existing fixture and legacy
+  paths/schemas. The exact proposed contract is in PRODUCTION_WALLET_PROFILE.md.
+  Final coin allocation, descriptor bytes and permanent genesis remain issuance
+  gates; a caller-provided finalized flag cannot bypass them. Use only explicit
+  public fixtures until those gates are settled. Approval does not provision
+  provider/KMS resources or authorize reading/creating real wallet keys here.
 
 - Keep diffs minimal and close to upstream btcd structure; this fork tracks
   upstream and every gratuitous divergence makes merges harder.
