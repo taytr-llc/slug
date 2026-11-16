@@ -17,6 +17,11 @@ import (
 	"github.com/taytr-llc/slug/wire/v2"
 )
 
+// PhaseAActivationHeight is the first SLUG mainnet block enforcing the
+// explicitly approved Phase-A BIP34/65/66, CSV, SegWit and Taproot upgrade.
+// It is not an activation rule for any other network.
+const PhaseAActivationHeight = 62
+
 // These variables are the chain proof-of-work limit parameters for each default
 // network.
 var (
@@ -313,10 +318,9 @@ type Params struct {
 // SLUG (change set 2): this is Bitcoin's MainNetParams redefined in place
 // as the SLUG network (the standard btcd-fork path): new genesis, new
 // network magic (see wire.MainNet), new ports, SLUG economics, and fresh
-// address/HD version bytes. Fields not mentioned in change set 2 (the
-// BIP0034/65/66 activation heights and the BIP9 deployments below) still
-// carry Bitcoin's values and are flagged for an explicit decision
-// before the permanent genesis.
+// address/HD version bytes. BIP0034/65/66 and CSV/SegWit/Taproot activate at
+// height 62 on the Phase-A chain. This explicit upgrade preserves genesis
+// and historical blocks 0-61.
 var MainNetParams = Params{
 	Name:        "mainnet",
 	Net:         wire.MainNet,
@@ -330,10 +334,10 @@ var MainNetParams = Params{
 	GenesisHash:              &genesisHash,
 	PowLimit:                 mainPowLimit,
 	PowLimitBits:             0x207fffff,
-	BIP0034Height:            227931, // 000000000000024b89b42a942fe0d9fea3bb44ab7bd1b19115dd6a759c0808b8
-	BIP0034Hash:              newHashFromStr("000000000000024b89b42a942fe0d9fea3bb44ab7bd1b19115dd6a759c0808b8"),
-	BIP0065Height:            388381, // 000000000000000004c2b624ed5d7756c508d90fd0da2c7c679febfa6c4735f0
-	BIP0066Height:            363725, // 00000000000000000379eaa19dce8c9b722d46ae6a57c2f1a988119488b50931
+	BIP0034Height:            PhaseAActivationHeight,
+	BIP0034Hash:              nil, // Keep BIP30 checks; no future activation hash is assumed.
+	BIP0065Height:            PhaseAActivationHeight,
+	BIP0066Height:            PhaseAActivationHeight,
 	CoinbaseMaturity:         100,
 	SubsidyReductionInterval: 1050000,
 	// SLUG (D67): the retarget window is 2,016 blocks, not Bitcoin's
@@ -403,6 +407,8 @@ var MainNetParams = Params{
 		},
 		DeploymentCSV: {
 			BitNumber: 0,
+			// Fixed-height Phase-A activation overrides the legacy voting window.
+			AlwaysActiveHeight: PhaseAActivationHeight,
 			DeploymentStarter: NewMedianTimeDeploymentStarter(
 				time.Unix(1462060800, 0), // May 1st, 2016
 			),
@@ -411,7 +417,8 @@ var MainNetParams = Params{
 			),
 		},
 		DeploymentSegwit: {
-			BitNumber: 1,
+			BitNumber:          1,
+			AlwaysActiveHeight: PhaseAActivationHeight,
 			DeploymentStarter: NewMedianTimeDeploymentStarter(
 				time.Unix(1479168000, 0), // November 15, 2016 UTC
 			),
@@ -420,7 +427,8 @@ var MainNetParams = Params{
 			),
 		},
 		DeploymentTaproot: {
-			BitNumber: 2,
+			BitNumber:          2,
+			AlwaysActiveHeight: PhaseAActivationHeight,
 			DeploymentStarter: NewMedianTimeDeploymentStarter(
 				time.Unix(1619222400, 0), // April 24th, 2021 UTC.
 			),

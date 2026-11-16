@@ -92,7 +92,7 @@ func (node *mockNode) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case "getbestblock":
 		result = map[string]any{"hash": ctx.ParentHash, "height": ctx.ParentHeight}
 	case "getblocktemplate":
-		if len(request.Params) != 1 || string(request.Params[0]) != `{"mode":"template","capabilities":["coinbasevalue"]}` {
+		if len(request.Params) != 1 || string(request.Params[0]) != `{"mode":"template","capabilities":["coinbasevalue"],"rules":["segwit"]}` {
 			node.t.Errorf("unexpected template request: %s", request.Params)
 		}
 		result = map[string]any{"previousblockhash": ctx.ParentHash, "height": ctx.ParentHeight + 1, "bits": fmt.Sprintf("%x", ctx.ExpectedBits), "target": strings.Repeat("0", 63) + "1", "mintime": ctx.MinTimestamp, "curtime": uint32(1794787200), "maxtime": ctx.MaxTimestamp, "transactions": []any{}}

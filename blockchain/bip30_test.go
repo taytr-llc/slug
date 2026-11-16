@@ -80,6 +80,9 @@ func TestBip0030CheckNeededAtActivationHeight(t *testing.T) {
 // expensive duplicate-coinbase check can be skipped.
 func TestBip0030CheckNeededAfterBIP34(t *testing.T) {
 	params := chaincfg.MainNetParams
+	// Exercise the optional historical-anchor optimization explicitly;
+	// SLUG deliberately has no such anchor in its live parameters.
+	params.BIP0034Hash = newHashFromStr("000000000000024b89b42a942fe0d9fea3bb44ab7bd1b19115dd6a759c0808b8")
 
 	ancestor := &blockNode{
 		height: params.BIP0034Height,
@@ -105,6 +108,7 @@ func TestBip0030CheckNeededAfterBIP34(t *testing.T) {
 // chains that have not activated BIP34 yet).
 func TestBip0030CheckNeededMismatchedActivation(t *testing.T) {
 	params := chaincfg.MainNetParams
+	params.BIP0034Hash = newHashFromStr("000000000000024b89b42a942fe0d9fea3bb44ab7bd1b19115dd6a759c0808b8")
 
 	ancestor := &blockNode{
 		height: params.BIP0034Height,
@@ -129,6 +133,7 @@ func TestBip0030CheckNeededMismatchedActivation(t *testing.T) {
 // active on the current branch.
 func TestBip0030CheckNeededReenabled(t *testing.T) {
 	params := chaincfg.MainNetParams
+	params.BIP0034Hash = newHashFromStr("000000000000024b89b42a942fe0d9fea3bb44ab7bd1b19115dd6a759c0808b8")
 
 	ancestor := &blockNode{
 		height: params.BIP0034Height,

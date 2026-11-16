@@ -150,6 +150,12 @@ later export, recover beyond a default address gap, spend again and authorize
 a prospect with the same gym. Hosted login, custody recovery, production
 derivation allocation and fighter transfer remain separate gates.
 
+Set 25 follows Mike's D71 approval: activate the existing script upgrades at
+Phase-A block 62, preserve all earlier history, and prove funded native, nested
+witness and Taproot recovery spending plus complete witness mining candidates.
+Deploy only after boundary/reorg validation and a fresh height-61 history check.
+Public mining and production genesis remain separate from this upgrade.
+
 ### 5. Gym clients
 The gym is the product surface: native Mac and Windows apps (menu
 bar and tray, gentle default mining setting) plus the browser

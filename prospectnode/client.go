@@ -279,7 +279,8 @@ func (client *Client) resolveTemplateSnapshot(ctx context.Context, policy Policy
 	data, err := client.call(ctx, "getblocktemplate", []any{struct {
 		Mode         string   `json:"mode"`
 		Capabilities []string `json:"capabilities"`
-	}{"template", []string{"coinbasevalue"}}})
+		Rules        []string `json:"rules"`
+	}{"template", []string{"coinbasevalue"}, []string{"segwit"}}})
 	if err != nil {
 		return prospect.Context{}, nil, err
 	}

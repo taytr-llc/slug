@@ -189,6 +189,9 @@ type Bip9SoftForkDescription struct {
 	Timeout             int64  `json:"timeout"`
 	Since               int32  `json:"since"`
 	MinActivationHeight int32  `json:"min_activation_height"`
+	// AlwaysActiveHeight is the fixed next-block override, independent of
+	// the voting minimum. Zero means no override and is omitted.
+	AlwaysActiveHeight uint32 `json:"always_active_height,omitempty"`
 }
 
 // StartTime returns the starting time of the softfork as a Unix epoch.
@@ -241,6 +244,26 @@ type GetBlockChainInfoResult struct {
 	Warnings             StringOrArray `json:"warnings"`
 	*SoftForks
 	*UnifiedSoftForks
+}
+
+// MarshalJSON selects the configured soft-fork representation explicitly.
+// Both embedded types name their field "softforks"; encoding/json otherwise
+// drops both fields as ambiguous, even when only one embedded pointer is set.
+func (r GetBlockChainInfoResult) MarshalJSON() ([]byte, error) {
+	if r.SoftForks != nil && r.UnifiedSoftForks != nil {
+		return nil, fmt.Errorf("multiple soft-fork representations configured")
+	}
+	var forks any
+	if r.SoftForks != nil {
+		forks = r.SoftForks.SoftForks
+	} else if r.UnifiedSoftForks != nil {
+		forks = r.UnifiedSoftForks.SoftForks
+	}
+	type result GetBlockChainInfoResult
+	return json.Marshal(struct {
+		*result
+		Forks any `json:"softforks,omitempty"`
+	}{result: (*result)(&r), Forks: forks})
 }
 
 // GetBlockFilterResult models the data returned from the getblockfilter
