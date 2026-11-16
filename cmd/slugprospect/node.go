@@ -13,6 +13,7 @@ import (
 	"io"
 	"time"
 
+	"github.com/taytr-llc/slug/gymauth"
 	"github.com/taytr-llc/slug/prospect"
 	"github.com/taytr-llc/slug/prospectnode"
 )
@@ -25,8 +26,12 @@ func nodeCommand(command string, args []string, stdout, stderr io.Writer) error 
 	policyPath := flags.String("policy", "", "Explicit prospect policy JSON file (required)")
 	rpcPath := flags.String("rpc-config", "", "Trusted node RPC configuration file (required; contains credentials)")
 	var proofPath *string
-	if command == "verify-node" {
+	if command != "context-node" {
 		proofPath = flags.String("proof", "", "Untrusted proof JSON file (required)")
+	}
+	var authorizationPath *string
+	if command == "verify-auth-node" {
+		authorizationPath = flags.String("authorization", "", "Public gym-key authorization JSON file (required)")
 	}
 	flags.Usage = func() {
 		fmt.Fprintf(stderr, "usage: slugprospect %s [options]\n", command)
@@ -43,6 +48,17 @@ func nodeCommand(command string, args []string, stdout, stderr io.Writer) error 
 	}
 	if proofPath != nil && *proofPath == "" {
 		return errors.New("--proof is required")
+	}
+	if authorizationPath != nil && *authorizationPath == "" {
+		return errors.New("--authorization is required")
+	}
+	var authorization gymauth.Authorization
+	if authorizationPath != nil {
+		var err error
+		authorization, err = readAuthorization(*authorizationPath)
+		if err != nil {
+			return err
+		}
 	}
 	data, err := readBoundedFile(*policyPath, prospectnode.MaxPolicySize)
 	if err != nil {
@@ -86,13 +102,31 @@ func nodeCommand(command string, args []string, stdout, stderr io.Writer) error 
 		}
 		return encoder.Encode(resolved)
 	}
-	resolved, verified, err := client.Verify(ctx, policy, proof)
+	var resolved prospect.Context
+	var verified prospect.Verified
+	authentication := ""
+	if authorizationPath == nil {
+		resolved, verified, err = client.Verify(ctx, policy, proof)
+	} else {
+		resolved, err = client.Resolve(ctx, policy)
+		if err == nil {
+			err = gymauth.VerifyAuthorization(resolved, proof, authorization)
+		}
+		if err == nil {
+			verified, err = prospect.Verify(resolved, proof)
+		}
+		if err == nil {
+			err = client.Recheck(ctx, resolved, proof)
+		}
+		authentication = "gym-key-control"
+	}
 	if err != nil {
 		return err
 	}
 	return encoder.Encode(struct {
-		ContextSource string            `json:"context_source"`
-		Context       prospect.Context  `json:"context"`
-		Verified      prospect.Verified `json:"verified"`
-	}{"trusted-node-snapshot", resolved, verified})
+		ContextSource  string            `json:"context_source"`
+		Authentication string            `json:"authentication,omitempty"`
+		Context        prospect.Context  `json:"context"`
+		Verified       prospect.Verified `json:"verified"`
+	}{"trusted-node-snapshot", authentication, resolved, verified})
 }

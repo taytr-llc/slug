@@ -18,6 +18,7 @@ import (
 
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/opt"
+	"github.com/taytr-llc/slug/gymauth"
 	"github.com/taytr-llc/slug/prospect"
 )
 
@@ -102,5 +103,97 @@ func TestTestPoWRefusesAdmissionAndStoredEvidenceReads(t *testing.T) {
 	checkRefusal("duplicate Record", err)
 	if inserted || !reflect.DeepEqual(got, Record{}) {
 		t.Fatal("duplicate admission bypassed the production profile requirement")
+	}
+}
+
+func TestTestPoWRefusesAuthenticatedAdmissionAndStoredEvidenceReads(t *testing.T) {
+	raw, err := os.ReadFile("../gymauth/testdata/authorizations_v1.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var fixtures []struct {
+		Context       prospect.Context      `json:"context"`
+		Proof         prospect.Proof        `json:"proof"`
+		Expected      prospect.Verified     `json:"expected_verified"`
+		Authorization gymauth.Authorization `json:"authorization"`
+	}
+	if err := json.Unmarshal(raw, &fixtures); err != nil || len(fixtures) == 0 {
+		t.Fatalf("load independent production authorization: %v", err)
+	}
+	f := fixtures[0]
+	path := filepath.Join(t.TempDir(), "authenticated")
+	store, err := CreateAuthenticated(path, f.Context.Network, f.Context.Genesis)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() { _ = store.Close() }()
+	checkRefusal := func(operation string, err error) {
+		t.Helper()
+		if err == nil || errors.Is(err, ErrCorrupt) || !strings.Contains(err.Error(), "slugtestpow") {
+			t.Fatalf("%s must refuse production profile without mislabelling valid authorization corrupt: %v", operation, err)
+		}
+	}
+	checks := 0
+	guard := func() error { checks++; return nil }
+	got, inserted, err := store.RecordAuthorizedChecked(f.Context, f.Proof, f.Authorization, guard)
+	checkRefusal("first authorized admission", err)
+	if inserted || !reflect.DeepEqual(got, Record{}) || checks != 0 {
+		t.Fatalf("cheap profile emitted a receipt or reached final guard: %+v inserted=%v checks=%d", got, inserted, checks)
+	}
+	if records, err := store.List(0, 1); err != nil || len(records) != 0 {
+		t.Fatal("refused authorized admission modified empty storage")
+	}
+
+	// Install an independently derived, legitimate schema-2 production receipt
+	// to model opening an existing authenticated registry with a tagged binary.
+	record := Record{Version: Version2, Sequence: 1, Context: f.Context,
+		Proof: f.Proof, Verified: f.Expected, Authorization: &f.Authorization}
+	encodedRecord, err := json.Marshal(record)
+	if err != nil {
+		t.Fatal(err)
+	}
+	meta := metadata{Version: Version2, Network: f.Context.Network, Genesis: f.Context.Genesis, LastSequence: 1}
+	encodedMeta, err := json.Marshal(meta)
+	if err != nil {
+		t.Fatal(err)
+	}
+	batch := new(leveldb.Batch)
+	batch.Put([]byte(metadataKey), encodedMeta)
+	batch.Put(recordKey(f.Expected.ProspectID), encodedRecord)
+	batch.Put(sequenceKey(1), []byte(f.Expected.ProspectID))
+	if err := store.db.Write(batch, &opt.WriteOptions{Sync: true}); err != nil {
+		t.Fatal(err)
+	}
+	if err := store.Close(); err != nil {
+		t.Fatal(err)
+	}
+	store, err = Open(path, false)
+	if err != nil {
+		t.Fatalf("valid production authorization failed structural open: %v", err)
+	}
+	got, err = store.Get(f.Expected.ProspectID)
+	checkRefusal("authenticated Get", err)
+	if !reflect.DeepEqual(got, Record{}) {
+		t.Fatal("Get emitted unverified production evidence")
+	}
+	page, err := store.List(0, 100)
+	checkRefusal("authenticated List", err)
+	if len(page) != 0 {
+		t.Fatal("List emitted unverified production evidence")
+	}
+	var exported bytes.Buffer
+	checkRefusal("authenticated Export", store.Export(&exported))
+	if exported.Len() != 0 {
+		t.Fatal("Export emitted unverified production evidence")
+	}
+	got, inserted, err = store.RecordAuthorized(f.Context, f.Proof, f.Authorization)
+	checkRefusal("authorized replay", err)
+	if inserted || !reflect.DeepEqual(got, Record{}) {
+		t.Fatal("replay bypassed production profile requirement")
+	}
+	got, inserted, err = store.RecordAuthorizedChecked(f.Context, f.Proof, f.Authorization, guard)
+	checkRefusal("checked authorized replay", err)
+	if inserted || !reflect.DeepEqual(got, Record{}) || checks != 0 {
+		t.Fatal("checked replay bypassed production profile requirement")
 	}
 }

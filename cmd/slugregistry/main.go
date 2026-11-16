@@ -15,11 +15,12 @@ import (
 	"os"
 	"strings"
 
+	"github.com/taytr-llc/slug/gymauth"
 	"github.com/taytr-llc/slug/prospect"
 	"github.com/taytr-llc/slug/registry"
 )
 
-const usage = "usage: slugregistry {init|record|record-node|get|list|export} [options]"
+const usage = "usage: slugregistry {init|init-auth|record|record-auth|record-node|record-auth-node|get|list|export} [options]"
 
 func main() {
 	if err := run(os.Args[1:], os.Stdout, os.Stderr); err != nil {
@@ -39,12 +40,12 @@ func run(args []string, stdout, stderr io.Writer) error {
 	case "help", "-h", "--help":
 		_, err := fmt.Fprintln(stdout, usage+"\nLocal evidence storage; records establish neither ownership nor fighter birth.")
 		return err
-	case "init":
-		return initialize(args[1:], stdout, stderr)
-	case "record":
-		return record(args[1:], stdout, stderr)
-	case "record-node":
-		return recordNode(args[1:], stdout, stderr)
+	case "init", "init-auth":
+		return initialize(args[0], args[1:], stdout, stderr)
+	case "record", "record-auth":
+		return record(args[0], args[1:], stdout, stderr)
+	case "record-node", "record-auth-node":
+		return recordNode(args[0], args[1:], stdout, stderr)
 	case "get", "list", "export":
 		return read(args[0], args[1:], stdout, stderr)
 	default:
@@ -81,8 +82,8 @@ func writeJSON(stdout io.Writer, value any) error {
 	return encoder.Encode(value)
 }
 
-func initialize(args []string, stdout, stderr io.Writer) error {
-	flags, dbPath := commandFlags("init", stderr)
+func initialize(command string, args []string, stdout, stderr io.Writer) error {
+	flags, dbPath := commandFlags(command, stderr)
 	network := flags.Uint64("network", 0, "Nonzero uint32 network magic (required)")
 	genesis := flags.String("genesis", "", "Displayed genesis hash, 64 hex characters (required)")
 	if err := parseFlags(flags, args, dbPath); err != nil {
@@ -94,7 +95,11 @@ func initialize(args []string, stdout, stderr io.Writer) error {
 	if *genesis == "" {
 		return errors.New("--genesis is required")
 	}
-	store, err := registry.Create(*dbPath, uint32(*network), *genesis)
+	create := registry.Create
+	if command == "init-auth" {
+		create = registry.CreateAuthenticated
+	}
+	store, err := create(*dbPath, uint32(*network), *genesis)
 	if err != nil {
 		return err
 	}
@@ -108,15 +113,30 @@ func initialize(args []string, stdout, stderr io.Writer) error {
 	}{true, uint32(*network), strings.ToLower(*genesis)})
 }
 
-func record(args []string, stdout, stderr io.Writer) error {
-	flags, dbPath := commandFlags("record", stderr)
+func record(command string, args []string, stdout, stderr io.Writer) error {
+	flags, dbPath := commandFlags(command, stderr)
 	contextPath := flags.String("context", "", "Trusted context JSON file (required)")
 	proofPath := flags.String("proof", "", "Untrusted proof JSON file (required)")
+	var authorizationPath *string
+	if command == "record-auth" {
+		authorizationPath = flags.String("authorization", "", "Public gym-key authorization JSON file (required)")
+	}
 	if err := parseFlags(flags, args, dbPath); err != nil {
 		return err
 	}
 	if *contextPath == "" || *proofPath == "" {
 		return errors.New("--context and --proof are required")
+	}
+	if authorizationPath != nil && *authorizationPath == "" {
+		return errors.New("--authorization is required")
+	}
+	var authorization gymauth.Authorization
+	if authorizationPath != nil {
+		var err error
+		authorization, err = readAuthorization(*authorizationPath)
+		if err != nil {
+			return err
+		}
 	}
 	data, err := readBoundedFile(*contextPath, prospect.MaxContextSize)
 	if err != nil {
@@ -138,14 +158,32 @@ func record(args []string, stdout, stderr io.Writer) error {
 	if err != nil {
 		return err
 	}
-	entry, inserted, recordErr := store.Record(context, proof)
+	var entry registry.Record
+	var inserted bool
+	var recordErr error
+	authentication := ""
+	if authorizationPath == nil {
+		entry, inserted, recordErr = store.Record(context, proof)
+	} else {
+		entry, inserted, recordErr = store.RecordAuthorized(context, proof, authorization)
+		authentication = "gym-key-control"
+	}
 	if err := errors.Join(recordErr, store.Close()); err != nil {
 		return err
 	}
 	return writeJSON(stdout, struct {
-		Inserted bool            `json:"inserted"`
-		Record   registry.Record `json:"record"`
-	}{inserted, entry})
+		Authentication string          `json:"authentication,omitempty"`
+		Inserted       bool            `json:"inserted"`
+		Record         registry.Record `json:"record"`
+	}{authentication, inserted, entry})
+}
+
+func readAuthorization(path string) (gymauth.Authorization, error) {
+	data, err := readBoundedFile(path, gymauth.MaxAuthorizationSize)
+	if err != nil {
+		return gymauth.Authorization{}, fmt.Errorf("read authorization: %w", err)
+	}
+	return gymauth.ParseAuthorization(data)
 }
 
 func read(command string, args []string, stdout, stderr io.Writer) error {

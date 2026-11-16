@@ -1,5 +1,9 @@
 # Prospect evidence registry, version 1
 
+This document describes schema 1. Set 17 also supports explicitly created
+schema-2 authenticated registries; see `GYM_AUTHORIZATION.md`. Existing
+directories and evidence do not migrate or acquire authentication.
+
 Change set 15 adds the local `registry` package and offline `slugregistry`
 command. It durably records work already defined by `PROSPECT_PROOFS.md`.
 Every result remains conditional on the supplied context. A receipt is not

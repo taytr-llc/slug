@@ -31,7 +31,8 @@ version.
   → `slug-fighter-dna` (set 13, released on master at `0f44da5f`)
   → `slug-prospect-proof` (set 14, released on master at `fdeebae2`)
   → `slug-prospect-registry` (set 15, released on master at `6443d163`)
-  → `slug-trusted-prospect-context` (set 16, explicit node/policy adapter).
+  → `slug-trusted-prospect-context` (set 16, released on master at `e94c1cfa`)
+  → `slug-gym-identity` (set 17, proof-specific gym-key authorization).
 - Branch each next change set off the latest completed implementation tip,
   never the live seed branch by default. Use `slug-<topic>` names; set 7 is
   `slug-signed-checkpoints`. HANDOVER.md records the original takeover state.
@@ -168,6 +169,15 @@ does not understand. Never detach, replace, or clear the /data volume.
   Never describe this observation as permanent canonicality or fighter birth.
   Never accept a claimant-selected policy or expose RPC credentials in output.
   See `TRUSTED_PROSPECT_CONTEXT.md`; stored receipts remain supplied-context.
+
+- `gymauth` binds self-certifying gym IDs to wallet-compatible secp256k1 keys
+  and signs only a specific prospect admission. Signing is automatic client
+  work, never a player prospect-selection step. CLI tools accept public inputs
+  only; use fixture keys for tests, never real wallet or operator keys. Explicit
+  schema-2 registries require and atomically persist authorization; do not
+  upgrade schema-1 evidence or arbitrary gym IDs implicitly. Key control does
+  not prove an account, ownership transfer, birth, or permanent canonicality.
+  See `GYM_AUTHORIZATION.md` for exact bytes and integration boundaries.
 
 - Keep diffs minimal and close to upstream btcd structure; this fork tracks
   upstream and every gratuitous divergence makes merges harder.
