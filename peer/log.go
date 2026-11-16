@@ -175,8 +175,12 @@ func messageSummary(msg wire.Message) string {
 
 	case *wire.MsgBlock:
 		header := &msg.Header
-		return fmt.Sprintf("hash %s, ver %d, %d tx, %s", msg.BlockHash(),
-			header.Version, len(msg.Transactions), header.Timestamp)
+		// SLUG block hashes cost 256 MiB per Argon2id attempt.  Logging
+		// runs per peer, so summarize already available header fields
+		// without computing a block hash.
+		return fmt.Sprintf("prev %s, ver %d, %d tx, bits %08x, nonce %d, %s",
+			header.PrevBlock, header.Version, len(msg.Transactions),
+			header.Bits, header.Nonce, header.Timestamp)
 
 	case *wire.MsgInv:
 		return invSummary(msg.InvList)

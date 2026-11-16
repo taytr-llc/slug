@@ -883,7 +883,7 @@ func syncSendHeaders(t *testing.T, sm *SyncManager,
 		require.NoError(t, err)
 	}
 
-	sm.handleHeadersMsg(&headersMsg{
+	processAllHeaders(sm, &headersMsg{
 		headers: headers,
 		peer:    syncPeer,
 	})
@@ -1040,7 +1040,7 @@ func syncStalledHeaderRecovery(t *testing.T, sm *SyncManager,
 			require.NoError(t, err)
 		}
 
-		sm.handleHeadersMsg(&headersMsg{
+		processAllHeaders(sm, &headersMsg{
 			headers: headers,
 			peer:    stalledPeer,
 		})
@@ -1091,7 +1091,7 @@ func syncStalledHeaderRecovery(t *testing.T, sm *SyncManager,
 			&block.MsgBlock().Header)
 		require.NoError(t, err)
 	}
-	sm.handleHeadersMsg(&headersMsg{
+	processAllHeaders(sm, &headersMsg{
 		headers: remainingHeaders,
 		peer:    replacementPeer,
 	})
@@ -1283,5 +1283,12 @@ func TestIsSyncCandidateRegtest(t *testing.T) {
 			got := sm.isSyncCandidate(p)
 			require.Equal(t, tc.want, got)
 		})
+	}
+}
+
+// processAllHeaders drives all scheduling turns for tests that model a complete
+// peer response directly rather than running the asynchronous block handler.
+func processAllHeaders(sm *SyncManager, msg *headersMsg) {
+	for !sm.handleHeadersMsg(msg) {
 	}
 }

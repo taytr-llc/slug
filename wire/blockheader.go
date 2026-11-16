@@ -88,11 +88,22 @@ func (h *BlockHeader) BlockHash() chainhash.Hash {
 	_ = writeBlockHeader(&buf, 0, h)
 	serialized := buf.Bytes()
 
+	// SLUG: callers often hash the same header repeatedly during validation.
+	// Memoize only the digest of the exact serialized bytes, never validity
+	// or a caller-provided block identifier. Hashing stays outside the cache
+	// lock so independent mining attempts can still run concurrently.
+	var key [blockHeaderLen]byte
+	copy(key[:], serialized)
+	if hash, ok := blockHeaderHashes.lookup(key); ok {
+		return hash
+	}
+
 	digest := argon2.IDKey(serialized, serialized, powArgon2Time,
 		powArgon2Memory, powArgon2Threads, powArgon2KeyLen)
 
 	var hash chainhash.Hash
 	copy(hash[:], digest)
+	blockHeaderHashes.add(key, hash)
 	return hash
 }
 

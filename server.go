@@ -723,12 +723,10 @@ func (sp *serverPeer) OnTx(_ *peer.Peer, msg *wire.MsgTx) {
 // blocks until the bitcoin block has been fully processed.
 func (sp *serverPeer) OnBlock(_ *peer.Peer, msg *wire.MsgBlock, buf []byte) {
 	// Convert the raw MsgBlock to a btcutil.Block which provides some
-	// convenience methods and things such as hash caching.
+	// convenience methods and things such as hash caching.  SLUG hashes
+	// incoming blocks in the serialized sync manager, not per peer: an
+	// Argon2id hash allocates 256 MiB.
 	block := btcutil.NewBlockFromBlockAndBytes(msg, buf)
-
-	// Add the block to the known inventory for the peer.
-	iv := wire.NewInvVect(wire.InvTypeBlock, block.Hash())
-	sp.AddKnownInventory(iv)
 
 	// Queue the block up to be handled by the block
 	// manager and intentionally block further receives

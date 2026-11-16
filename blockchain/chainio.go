@@ -1222,7 +1222,7 @@ func (b *BlockChain) initChainState() error {
 	if !hasBlockIndex {
 		err := migrateBlockIndex(b.db)
 		if err != nil {
-			return nil
+			return err
 		}
 	}
 
@@ -1265,15 +1265,15 @@ func (b *BlockChain) initChainState() error {
 			// recomputing it here made every restart replay one hash
 			// per block of stored history.
 			//
-			// Trusting the key is safe.  The entry only exists because
-			// this node stored it under that hash after the block
-			// passed full validation, and the key is how the node
-			// itself looks the entry up (the index map, the best chain
-			// state, and FetchBlock all key off the same hash).  All
-			// other on-disk chain state loaded here, such as the best
-			// chain state and the UTXO set, is trusted the same way.
-			// Fresh sync and block connection are unaffected: they
-			// still compute and validate every hash via initBlockNode.
+			// The key is a block identity computed locally before the
+			// entry was stored, not a claim of full block validation:
+			// side branches and failed connections can be persisted.
+			// Validation status is stored separately below.  Like the
+			// best chain state and UTXO set, this trusts the local
+			// database; it does not authenticate imported snapshots or
+			// detect every header/key mismatch after disk corruption.
+			// Fresh block/header acceptance still derives identities
+			// from the headers and performs its validation checks.
 			key := cursor.Key()
 			if len(key) != chainhash.HashSize+4 {
 				return AssertError(fmt.Sprintf("initChainState: "+
