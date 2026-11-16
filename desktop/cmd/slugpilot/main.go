@@ -7,6 +7,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"github.com/taytr-llc/slug/desktop/accountpilot"
 	"github.com/taytr-llc/slug/desktop/pilot"
 	"io"
 	"os"
@@ -19,13 +20,20 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 	flags.SetOutput(stderr)
 	data := flags.String("data-dir", "", "Explicit disposable pilot directory")
 	node := flags.String("node-binary", "", "Explicit bundled normal SLUG node binary")
+	accounts := flags.Bool("account-fixtures", false, "Use the separate two-public-fixture account pilot")
 	if e := flags.Parse(args); e != nil {
 		return e
 	}
 	if flags.NArg() != 0 || *data == "" || *node == "" {
 		return errors.New("explicit data-dir and node-binary are required")
 	}
-	controller, e := pilot.New(pilot.Config{DataDir: *data, NodeBinary: *node})
+	var controller pilot.ControllerAPI
+	var e error
+	if *accounts {
+		controller, e = accountpilot.New(pilot.Config{DataDir: *data, NodeBinary: *node})
+	} else {
+		controller, e = pilot.New(pilot.Config{DataDir: *data, NodeBinary: *node})
+	}
 	if e != nil {
 		return e
 	}

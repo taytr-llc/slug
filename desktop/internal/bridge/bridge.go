@@ -19,6 +19,7 @@ import (
 	"time"
 
 	"github.com/taytr-llc/slug/desktop/pilot"
+	"github.com/taytr-llc/slug/gymaccount"
 )
 
 var (
@@ -51,6 +52,9 @@ type Bridge struct {
 // Launch starts the supervisor, which is stopped until Start is requested.
 func Launch(helper, dataDir, node string) (*Bridge, error) {
 	return start(exec.Command(helper, "--data-dir", dataDir, "--node-binary", node))
+}
+func LaunchAccounts(helper, dataDir, node string) (*Bridge, error) {
+	return start(exec.Command(helper, "--account-fixtures", "--data-dir", dataDir, "--node-binary", node))
 }
 func start(cmd *exec.Cmd) (*Bridge, error) {
 	input, err := cmd.StdinPipe()
@@ -126,7 +130,7 @@ func decode(raw []byte) (pilot.Response, error) {
 			return response, ErrUnavailable
 		}
 		switch response.Error {
-		case "invalid_request", "invalid_frame", "start_unavailable", "receipt_unavailable", "export_unavailable", "backup_unavailable":
+		case "invalid_request", "invalid_frame", "start_unavailable", "receipt_unavailable", "export_unavailable", "backup_unavailable", "account_unavailable":
 		default:
 			return response, ErrUnavailable
 		}
@@ -139,9 +143,16 @@ func decode(raw []byte) (pilot.Response, error) {
 		default:
 			return response, ErrUnavailable
 		}
-		if s.Mode != pilot.Mode || s.Prospects == nil || len(s.Prospects) > 100 || s.ProspectCount < uint64(len(s.Prospects)) || s.HashesPerSecond < 0 {
+		if (s.Mode != pilot.Mode && s.Mode != pilot.AccountMode) || s.Prospects == nil || len(s.Prospects) > 100 || s.ProspectCount < uint64(len(s.Prospects)) || s.HashesPerSecond < 0 {
 			return response, ErrUnavailable
 		}
+		if (s.Mode == pilot.AccountMode) != (s.Account != nil) {
+			return response, ErrUnavailable
+		}
+		if s.Account != nil && !validAccountProjection(s) {
+			return response, ErrUnavailable
+		}
+
 		if !oneOf(s.WalletState, "closed", "connecting", "syncing", "ready", "failed") ||
 			!oneOf(s.BackupState, "idle", "running", "succeeded", "failed", "cancelled") ||
 			!oneOf(s.BackupPhase, "", "opening", "checking", "restoring", "syncing", "verifying", "complete") ||
@@ -157,6 +168,26 @@ func decode(raw []byte) (pilot.Response, error) {
 	return response, nil
 }
 
+// validAccountProjection rejects contradictory or mixed-fixture UI authority.
+// Epoch milliseconds must also fit JavaScript Date, not merely safe integers.
+func validAccountProjection(s *pilot.Snapshot) bool {
+	a := s.Account
+	if !oneOf(a.State, "signed_out", "signing_in", "signed_in", "resetting", "signing_out", "failed", "expired") ||
+		!oneOf(a.Fixture, "", "zero256", "incrementing256") || !oneOf(a.LastError, "", "account_unavailable") ||
+		a.Generation > 1<<53-1 || a.HoldUntilMS < 0 || a.HoldUntilMS > 8640000000000000 ||
+		(a.Held && (a.CanExport || a.HoldUntilMS == 0)) {
+		return false
+	}
+	if a.State != "signed_in" {
+		return a.ID == "" && a.Generation == 0 && a.HoldUntilMS == 0 && !a.CanExport && !a.Held &&
+			s.GymID == "" && s.GymPublicKey == "" && s.PayoutAddress == "" &&
+			s.SpendableAtoms == 0 && s.ImmatureAtoms == 0 && s.ProspectCount == 0 && len(s.Prospects) == 0
+	}
+	identity, err := gymaccount.FixtureIdentity(a.Fixture)
+	return err == nil && publicHex.MatchString(a.ID) && a.Generation > 0 &&
+		s.GymID == identity.GymID && s.GymPublicKey == identity.GymPublicKey
+}
+
 func oneOf(value string, allowed ...string) bool {
 	for _, candidate := range allowed {
 		if value == candidate {
@@ -168,7 +199,7 @@ func oneOf(value string, allowed ...string) bool {
 
 func (b *Bridge) Request(ctx context.Context, command string, sequence uint64) (pilot.Response, error) {
 	switch command {
-	case "snapshot", "start", "stop":
+	case "snapshot", "start", "stop", "logout", "reset_fixture":
 		if sequence != 0 {
 			return pilot.Response{}, ErrUnavailable
 		}
@@ -180,6 +211,13 @@ func (b *Bridge) Request(ctx context.Context, command string, sequence uint64) (
 		return pilot.Response{}, ErrUnavailable
 	}
 	return b.request(ctx, pilot.Request{Command: command, Sequence: sequence})
+}
+
+func (b *Bridge) RequestFixture(ctx context.Context, fixture string) (pilot.Response, error) {
+	if fixture != "zero256" && fixture != "incrementing256" {
+		return pilot.Response{}, ErrUnavailable
+	}
+	return b.request(ctx, pilot.Request{Command: "login_fixture", Fixture: fixture})
 }
 
 // RequestPath accepts only a native dialog's selection. This method is not a

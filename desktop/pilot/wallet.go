@@ -11,6 +11,7 @@ import (
 	"github.com/taytr-llc/slug/btcjson"
 	"github.com/taytr-llc/slug/btcutil/v2"
 	"github.com/taytr-llc/slug/chaincfg/v2"
+	"github.com/taytr-llc/slug/gymaccount"
 	"github.com/taytr-llc/slug/gymauth"
 	"github.com/taytr-llc/slug/prospect"
 	"github.com/taytr-llc/slug/prospectnode"
@@ -35,7 +36,7 @@ import (
 )
 
 // Public demonstration passwords, not custody credentials. This adapter can
-// create only the independently published zero256 fixture.
+// create only published fixtures. The original local-wallet mode remains zero256.
 const fixtureWalletPublicPass = "slug-local-wallet-pilot-public"
 const fixtureWalletPrivatePass = "slug-local-wallet-pilot-public-fixture-only"
 const maxWalletRPCResponse = 4 << 20
@@ -135,6 +136,55 @@ func openFixtureWallet(dir string, create bool) (*walletRuntime, error) {
 	}
 	return finishWalletOpen(loader, loaded)
 }
+
+// openAccountFixtureWallet is separate from the original zero256 pilot mode.
+// Selection is an exact public fixture name supplied by trusted account config.
+func openAccountFixtureWallet(dir, fixture string, create bool) (*walletRuntime, error) {
+	identity, err := gymaccount.FixtureIdentity(fixture)
+	if err != nil || wire.TestPoW {
+		return nil, errors.New("account wallet fixture unavailable")
+	}
+	if err := prepareWalletDirectory(dir, create); err != nil {
+		return nil, err
+	}
+	loader := wallet.NewLoader(&chaincfg.MainNetParams, dir, true, 5*time.Second, 20)
+	var loaded *wallet.Wallet
+	if create {
+		var entropy [32]byte
+		if fixture == "incrementing256" {
+			for i := range entropy {
+				entropy[i] = byte(i)
+			}
+		}
+		loaded, err = loader.CreateNewRecoveryWallet([]byte(fixtureWalletPublicPass), []byte(fixtureWalletPrivatePass), entropy, chaincfg.MainNetParams.GenesisBlock.Header.Timestamp)
+		clear(entropy[:])
+	} else {
+		loaded, err = loader.OpenExistingWallet([]byte(fixtureWalletPublicPass), false)
+	}
+	if err != nil {
+		return nil, errors.New("account fixture wallet could not be opened")
+	}
+	return finishWalletOpenExpected(loader, loaded, walletIdentity{RootPublicKey: identity.RootPublicKey, GymPublicKey: identity.GymPublicKey, GymID: identity.GymID})
+}
+func restoreAccountFixtureWallet(dir, fixture string, bundle recovery.Export) (*walletRuntime, error) {
+	identity, err := gymaccount.FixtureIdentity(fixture)
+	if err != nil || wire.TestPoW {
+		return nil, errors.New("account wallet fixture unavailable")
+	}
+	expected := walletIdentity{RootPublicKey: identity.RootPublicKey, GymPublicKey: identity.GymPublicKey, GymID: identity.GymID}
+	if recovery.ValidateExport(bundle) != nil || bundle.Manifest.RootPublicKey != expected.RootPublicKey || bundle.Manifest.GymPublicKey != expected.GymPublicKey || bundle.Manifest.GymID != expected.GymID {
+		return nil, errors.New("backup does not match the selected account fixture")
+	}
+	if err := prepareWalletDirectory(dir, true); err != nil {
+		return nil, err
+	}
+	loader := wallet.NewLoader(&chaincfg.MainNetParams, dir, true, 5*time.Second, 20)
+	loaded, err := loader.RestoreRecoveryWallet([]byte(fixtureWalletPublicPass), []byte(fixtureWalletPrivatePass), bundle)
+	if err != nil {
+		return nil, errors.New("account fixture recovery could not be restored")
+	}
+	return finishWalletOpenExpected(loader, loaded, expected)
+}
 func restoreFixtureWallet(dir string, bundle recovery.Export) (*walletRuntime, error) {
 	if wire.TestPoW {
 		return nil, errors.New("wallet pilot requires production PoW")
@@ -153,6 +203,9 @@ func restoreFixtureWallet(dir string, bundle recovery.Export) (*walletRuntime, e
 	return finishWalletOpen(loader, loaded)
 }
 func finishWalletOpen(loader *wallet.Loader, loaded *wallet.Wallet) (*walletRuntime, error) {
+	return finishWalletOpenExpected(loader, loaded, publishedWalletIdentity)
+}
+func finishWalletOpenExpected(loader *wallet.Loader, loaded *wallet.Wallet, expected walletIdentity) (*walletRuntime, error) {
 	r := &walletRuntime{loader: loader, wallet: loaded}
 	gym, err := loaded.GymIdentity(context.Background())
 	if err == nil {
@@ -164,7 +217,7 @@ func finishWalletOpen(loader *wallet.Loader, loaded *wallet.Wallet) (*walletRunt
 			return e
 		})
 	}
-	if err != nil || r.identity != publishedWalletIdentity {
+	if err != nil || r.identity != expected {
 		closeErr := r.Close()
 		return nil, errors.Join(errors.New("wallet does not match the published pilot identity"), closeErr)
 	}
@@ -412,6 +465,27 @@ func (r *walletRuntime) ExportRecovery(ctx context.Context) (recovery.Export, er
 	result, err := r.wallet.ExportRecovery(ctx)
 	if err != nil {
 		return recovery.Export{}, errors.New("wallet recovery export failed")
+	}
+	return result, nil
+}
+
+// SignAccountChallenge uses a short unlock window and the wallet's bounded
+// enrollment signer. Session generation/hold checks belong to the authority.
+func (r *walletRuntime) SignAccountChallenge(ctx context.Context, pinnedAuthority string, challenge gymaccount.EnrollmentChallenge) (gymaccount.Authorization, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	if r.closed || ctx.Err() != nil {
+		return gymaccount.Authorization{}, errors.New("account wallet signer unavailable")
+	}
+	if r.wallet.Locked() {
+		if err := r.wallet.Unlock([]byte(fixtureWalletPrivatePass), nil); err != nil {
+			return gymaccount.Authorization{}, errors.New("account wallet unlock failed")
+		}
+		defer r.wallet.Lock()
+	}
+	result, err := r.wallet.SignAccountChallenge(ctx, pinnedAuthority, challenge)
+	if err != nil {
+		return gymaccount.Authorization{}, errors.New("account wallet authorization failed")
 	}
 	return result, nil
 }

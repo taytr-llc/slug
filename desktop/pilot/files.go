@@ -11,6 +11,7 @@ import (
 	"strconv"
 
 	"github.com/taytr-llc/slug/chaincfg/v2"
+	"github.com/taytr-llc/slug/gymaccount"
 	"github.com/taytr-llc/slug/prospectnode"
 	"github.com/taytr-llc/slug/prospectworker"
 	"github.com/taytr-llc/slugwallet/recovery"
@@ -31,6 +32,8 @@ type manifest struct {
 	RecoveryProfile  string         `json:"recovery_profile"`
 	Identity         walletIdentity `json:"identity"`
 	Payout           walletPayout   `json:"payout"`
+	AccountID        string         `json:"account_id,omitempty"`
+	Fixture          string         `json:"fixture,omitempty"`
 }
 type savedStatus struct {
 	Height         uint64 `json:"height"`
@@ -49,7 +52,12 @@ func (m manifest) workerConfig() prospectworker.Config {
 }
 
 func (m manifest) valid() bool {
-	if m.Version != 2 || m.Mode != Mode || m.AuthorityPort == 0 || m.Network != recovery.Network || m.Genesis != genesis || m.ActivationHeight != chaincfg.PhaseAActivationHeight || m.RecoveryProfile != recovery.ProfileID {
+	modeOK := m.Version == 2 && m.Mode == Mode && m.AccountID == "" && m.Fixture == ""
+	if m.Version == 3 && m.Mode == AccountMode && validAccountID(m.AccountID) {
+		expected, err := gymaccount.FixtureIdentity(m.Fixture)
+		modeOK = err == nil && (m.Phase != "ready" || m.Identity == (walletIdentity{RootPublicKey: expected.RootPublicKey, GymPublicKey: expected.GymPublicKey, GymID: expected.GymID}))
+	}
+	if !modeOK || m.AuthorityPort == 0 || m.Network != recovery.Network || m.Genesis != genesis || m.ActivationHeight != chaincfg.PhaseAActivationHeight || m.RecoveryProfile != recovery.ProfileID {
 		return false
 	}
 	switch m.Phase {

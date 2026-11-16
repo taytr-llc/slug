@@ -32,6 +32,7 @@ type Controller struct {
 	mu          sync.Mutex
 	resources   sync.Mutex
 	config      Config
+	account     *AccountConfig
 	manifest    manifest
 	lock        *leveldb.DB
 	snapshot    Snapshot
@@ -45,6 +46,10 @@ type Controller struct {
 }
 
 func New(config Config) (*Controller, error) {
+	return newController(config, nil)
+}
+
+func newController(config Config, account *AccountConfig) (*Controller, error) {
 	if wire.TestPoW {
 		return nil, errors.New("pilot requires production PoW")
 	}
@@ -58,11 +63,14 @@ func New(config Config) (*Controller, error) {
 	// Network/genesis alone cannot make old cached chains or receipts v2 data.
 	var before manifest
 	if _, err := os.Lstat(marker); err == nil {
-		if readJSON(marker, 8192, &before) != nil || !before.valid() || before.Phase == "initializing" {
+		if readJSON(marker, 8192, &before) != nil || !before.valid() || !matchesAccount(before, account) || before.Phase == "initializing" {
 			return nil, errors.New("unsupported or incomplete pilot identity; retained data was not changed")
 		}
 	} else if !os.IsNotExist(err) {
 		return nil, errors.New("pilot identity unavailable")
+	}
+	if account != nil && account.RequireExisting && before.Phase != "ready" {
+		return nil, errors.New("established account wallet is unavailable")
 	}
 	info, err := os.Stat(config.NodeBinary)
 	if err != nil || !info.Mode().IsRegular() {
@@ -117,6 +125,9 @@ func New(config Config) (*Controller, error) {
 			return nil, errors.New("loopback port unavailable")
 		}
 		m = manifest{Version: 2, Mode: Mode, AuthorityPort: port, Phase: "new", Network: policy().Network, Genesis: genesis, ActivationHeight: 62, RecoveryProfile: "slug-phase-a-fixture-bip39-v1"}
+		if account != nil {
+			m.Version, m.Mode, m.AccountID, m.Fixture = 3, AccountMode, account.AccountID, account.Fixture
+		}
 		if atomicJSON(marker, m) != nil {
 			return nil, errors.New("pilot initialization failed")
 		}
@@ -125,7 +136,7 @@ func New(config Config) (*Controller, error) {
 				return nil, errors.New("pilot initialization failed")
 			}
 		}
-	} else if readJSON(marker, 8192, &m) != nil || !m.valid() || m.Phase == "initializing" {
+	} else if readJSON(marker, 8192, &m) != nil || !m.valid() || !matchesAccount(m, account) || m.Phase == "initializing" {
 		return nil, errors.New("unsupported or incomplete pilot identity")
 	}
 	for _, name := range []string{"wallet", "registry", "outbox", "primary-chain", "peer-chain"} {
@@ -133,7 +144,7 @@ func New(config Config) (*Controller, error) {
 			return nil, errors.New("invalid managed pilot directory")
 		}
 	}
-	c := &Controller{config: config, manifest: m, lock: lock, snapshot: Snapshot{State: "stopped", Mode: Mode, WalletState: "closed", BackupState: "idle", Prospects: []Prospect{}}}
+	c := &Controller{config: config, account: account, manifest: m, lock: lock, snapshot: Snapshot{State: "stopped", Mode: m.Mode, WalletState: "closed", BackupState: "idle", Prospects: []Prospect{}}}
 	if m.Phase == "new" {
 		if err := c.checkNewData(); err != nil {
 			return nil, err
@@ -143,7 +154,7 @@ func New(config Config) (*Controller, error) {
 		if readJSON(filepath.Join(config.DataDir, "SLUG-PILOT-READY.json"), 8192, &ready) != nil || ready != m || checkInitializedChains(config.DataDir, m) != nil {
 			return nil, errors.New("pilot initialized data is unavailable")
 		}
-		wallet, err := openFixtureWallet(filepath.Join(config.DataDir, "wallet"), false)
+		wallet, err := c.openWallet(false)
 		if err != nil {
 			return nil, errors.New("pilot wallet unavailable")
 		}
@@ -268,6 +279,10 @@ func (c *Controller) Snapshot() Snapshot {
 	return s
 }
 func (c *Controller) Start() error {
+	return c.start(true)
+}
+
+func (c *Controller) start(mine bool) error {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	if c.closed {
@@ -288,7 +303,7 @@ func (c *Controller) Start() error {
 	c.done = make(chan struct{})
 	c.snapshot.State = "starting"
 	c.snapshot.LastError = ""
-	go c.run(ctx, c.done, c.snapshot.Attempts)
+	go c.run(ctx, c.done, c.snapshot.Attempts, mine)
 	return nil
 }
 func (c *Controller) Stop() {
@@ -473,7 +488,7 @@ func (a pacedAuthority) Submit(ctx context.Context, j prospectjob.Job, p prospec
 	// Preserve the original successful ACK even when Stop canceled the pause.
 	return result, e
 }
-func (c *Controller) run(ctx context.Context, done chan struct{}, base uint64) {
+func (c *Controller) run(ctx context.Context, done chan struct{}, base uint64, mine bool) {
 	failed := ""
 	fresh := c.manifest.Phase == "new"
 	defer func() {
@@ -544,7 +559,7 @@ func (c *Controller) run(ctx context.Context, done chan struct{}, base uint64) {
 			c.noteShutdown("pilot node shutdown failed")
 		}
 	}()
-	wallet, err := openFixtureWallet(filepath.Join(c.config.DataDir, "wallet"), fresh)
+	wallet, err := c.openWallet(fresh)
 	if err != nil {
 		failed = "wallet_unavailable"
 		return
@@ -624,7 +639,7 @@ func (c *Controller) run(ctx context.Context, done chan struct{}, base uint64) {
 		failed = "wallet_status_failed"
 		return
 	}
-	if ctx.Err() != nil {
+	if ctx.Err() != nil || !mine {
 		return
 	}
 	cancelStartup()
@@ -636,7 +651,14 @@ func (c *Controller) run(ctx context.Context, done chan struct{}, base uint64) {
 	defer node.Close()
 	token, _ := hex.DecodeString(fixtureToken)
 	digest := sha256.Sum256(token)
-	server, err := prospectservice.NewServer(prospectservice.ServerConfig{Version: 2, Listen: strings.TrimPrefix(c.manifest.origin(), "http://"), Clients: []prospectservice.Credential{{PublicKey: identity.GymPublicKey, TokenSHA256: hex.EncodeToString(digest[:])}}, MaxJobs: 1000, MaxRecords: 1000}, policy(), node, c.store)
+	serverConfig := prospectservice.ServerConfig{Version: 2, Listen: strings.TrimPrefix(c.manifest.origin(), "http://"), Clients: []prospectservice.Credential{{PublicKey: identity.GymPublicKey, TokenSHA256: hex.EncodeToString(digest[:])}}, MaxJobs: 1000, MaxRecords: 1000}
+	var server *prospectservice.Server
+	if c.account == nil {
+		server, err = prospectservice.NewServer(serverConfig, policy(), node, c.store)
+	} else {
+		serverConfig.Clients = nil
+		server, err = prospectservice.NewSessionServer(serverConfig, policy(), node, c.store, c.account.Authorizer)
+	}
 	if err != nil {
 		failed = "authority_unavailable"
 		return
@@ -664,18 +686,21 @@ func (c *Controller) run(ctx context.Context, done chan struct{}, base uint64) {
 	case <-ctx.Done():
 		return
 	}
-	service, err := prospectservice.NewClient(prospectservice.ClientConfig{Version: 2, URL: c.manifest.origin(), Token: fixtureToken}, policy())
+	service, closeService, err := c.miningService()
 	if err != nil {
 		failed = "authority_unavailable"
 		return
 	}
-	defer service.Close()
+	defer closeService()
 	signer, err := wallet.Signer(ctx, policy())
 	if err != nil {
 		failed = "wallet_signer_unavailable"
 		return
 	}
-	worker, err := prospectworker.New(c.manifest.workerConfig(), pacedAuthority{service}, node, signer, c.box)
+	if c.account != nil {
+		signer = c.accountSigner(signer)
+	}
+	worker, err := prospectworker.New(c.manifest.workerConfig(), service, node, signer, c.box)
 	if err != nil {
 		failed = "worker_unavailable"
 		return

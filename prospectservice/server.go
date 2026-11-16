@@ -56,6 +56,15 @@ type clientCredential struct {
 	digest    [32]byte
 	issue     *rate.Limiter
 	admit     *rate.Limiter
+	recheck   func() error
+}
+
+// SessionAuthorizer grants mining access to an enrolled gym. WithSession must
+// serialize revocation/reset against fn until it returns. recheck is valid only
+// inside fn and checks expiry/context immediately before a durable mutation.
+// Implementations must not log or return the bearer credential in errors.
+type SessionAuthorizer interface {
+	WithSession(ctx context.Context, token string, fn func(publicKey string, recheck func() error) error) error
 }
 
 // Server exclusively owns access to the supplied Store until Run returns.
@@ -67,6 +76,9 @@ type Server struct {
 	node      Node
 	store     *registry.Store
 	clients   []clientCredential
+	sessions  SessionAuthorizer
+	clientMu  sync.Mutex
+	dynamic   map[string]*clientCredential
 	active    chan struct{}
 	poisoned  atomic.Bool
 	lifecycle sync.Mutex
@@ -79,10 +91,24 @@ type Server struct {
 // v1 requires schema 3; v2 explicitly opts into D69 with schema 4.
 // It performs no network request, key generation, or database initialization.
 func NewServer(config ServerConfig, policy prospectnode.Policy, node Node, store *registry.Store) (*Server, error) {
+	return newServer(config, policy, node, store, nil)
+}
+
+// NewSessionServer explicitly replaces static fixture credentials with revocable
+// account sessions. Only v2 is supported and Clients must be empty. This does
+// not expose a new listener or alter the existing mining wire protocol.
+func NewSessionServer(config ServerConfig, policy prospectnode.Policy, node Node, store *registry.Store, sessions SessionAuthorizer) (*Server, error) {
+	if sessions == nil {
+		return nil, errors.New("account session authorizer is required")
+	}
+	return newServer(config, policy, node, store, sessions)
+}
+
+func newServer(config ServerConfig, policy prospectnode.Policy, node Node, store *registry.Store, sessions SessionAuthorizer) (*Server, error) {
 	if wire.TestPoW {
 		return nil, errors.New("local prospect authority requires production PoW; slugtestpow is unsupported")
 	}
-	canonical, err := ValidateServerConfig(config)
+	canonical, err := validateServerConfig(config, sessions != nil)
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +140,7 @@ func NewServer(config ServerConfig, policy prospectnode.Policy, node Node, store
 	if info.ReadOnly {
 		return nil, errors.New("authority requires a writable birth registry")
 	}
-	server := &Server{config: canonical, policy: policy, node: node, store: store, active: make(chan struct{}, 1)}
+	server := &Server{config: canonical, policy: policy, node: node, store: store, active: make(chan struct{}, 1), sessions: sessions, dynamic: make(map[string]*clientCredential)}
 	for _, credential := range canonical.Clients {
 		var digest [32]byte
 		decoded, err := hex.DecodeString(credential.TokenSHA256)
@@ -251,15 +277,38 @@ func (server *Server) requestShape(request *http.Request) bool {
 }
 
 func (server *Server) authenticate(request *http.Request) *clientCredential {
-	values := request.Header.Values("Authorization")
-	if len(values) != 1 || len(values[0]) != len("Bearer ")+64 || !strings.HasPrefix(values[0], "Bearer ") {
+	encoded := bearerToken(request)
+	if encoded == "" {
 		return nil
 	}
-	encoded := values[0][len("Bearer "):]
+	if server.sessions != nil {
+		var credential *clientCredential
+		err := server.sessions.WithSession(request.Context(), encoded, func(key string, recheck func() error) error {
+			canonical, err := normalizePublicKey(key)
+			if err != nil || recheck == nil || recheck() != nil {
+				return errSession
+			}
+			server.clientMu.Lock()
+			defer server.clientMu.Unlock()
+			credential = server.dynamic[canonical]
+			if credential == nil {
+				// A private fixture authority has a bounded identity set. Token
+				// rotation must not reset a gym's admission rate allowance.
+				if len(server.dynamic) >= 64 {
+					return errSession
+				}
+				credential = &clientCredential{publicKey: canonical, issue: rate.NewLimiter(1, 2), admit: rate.NewLimiter(4, 4)}
+				server.dynamic[canonical] = credential
+			}
+			return nil
+		})
+		if err != nil {
+			return nil
+		}
+		return credential
+	}
 	var token [32]byte
-	if _, err := hex.Decode(token[:], []byte(encoded)); err != nil {
-		return nil
-	}
+	_, _ = hex.Decode(token[:], []byte(encoded))
 	digest := sha256.Sum256(token[:])
 	matched := -1
 	for i := range server.clients {
@@ -271,6 +320,19 @@ func (server *Server) authenticate(request *http.Request) *clientCredential {
 		return nil
 	}
 	return &server.clients[matched]
+}
+
+func bearerToken(request *http.Request) string {
+	values := request.Header.Values("Authorization")
+	if len(values) != 1 || len(values[0]) != len("Bearer ")+64 || !strings.HasPrefix(values[0], "Bearer ") {
+		return ""
+	}
+	encoded := values[0][len("Bearer "):]
+	var token [32]byte
+	if _, err := hex.Decode(token[:], []byte(encoded)); err != nil {
+		return ""
+	}
+	return hex.EncodeToString(token[:])
 }
 
 type responseError struct {
@@ -312,19 +374,9 @@ func (server *Server) ServeHTTP(writer http.ResponseWriter, request *http.Reques
 		server.writeFailure(writer, apiError("invalid_request", 400))
 		return
 	}
-	credential := server.authenticate(request)
-	if credential == nil {
-		server.writeFailure(writer, apiError("unauthorized", 401))
-		return
-	}
-	limiter := credential.admit
-	if request.URL.Path == apiPath(server.config.Version, "jobs") {
-		limiter = credential.issue
-	}
-	if !limiter.Allow() {
-		server.writeFailure(writer, apiError("rate_limited", 429))
-		return
-	}
+	// Session authentication takes the account authority's operation lease.
+	// Admit no waiter before the fail-fast permit: otherwise a second request
+	// could queue behind Argon/node work before reaching this bound.
 	select {
 	case server.active <- struct{}{}:
 	default:
@@ -337,6 +389,18 @@ func (server *Server) ServeHTTP(writer http.ResponseWriter, request *http.Reques
 		defer func() { <-server.active }()
 		ctx, cancel := context.WithTimeout(request.Context(), operationTimeout)
 		defer cancel()
+		request = request.WithContext(ctx)
+		credential := server.authenticate(request)
+		if credential == nil {
+			return nil, apiError("unauthorized", 401)
+		}
+		limiter := credential.admit
+		if request.URL.Path == apiPath(server.config.Version, "jobs") {
+			limiter = credential.issue
+		}
+		if !limiter.Allow() {
+			return nil, apiError("rate_limited", 429)
+		}
 		if server.poisoned.Load() {
 			return nil, &responseError{"outcome_unknown", 503, true}
 		}
@@ -358,10 +422,28 @@ func (server *Server) ServeHTTP(writer http.ResponseWriter, request *http.Reques
 		}
 		var result any
 		var operationErr *responseError
-		if request.URL.Path == apiPath(server.config.Version, "jobs") {
-			result, operationErr = server.issue(ctx, credential, body)
+		operate := func(activeCredential *clientCredential) {
+			if request.URL.Path == apiPath(server.config.Version, "jobs") {
+				result, operationErr = server.issue(ctx, activeCredential, body)
+			} else {
+				result, operationErr = server.admit(ctx, activeCredential, body)
+			}
+		}
+		if server.sessions == nil {
+			operate(credential)
 		} else {
-			result, operationErr = server.admit(ctx, credential, body)
+			err := server.sessions.WithSession(ctx, bearerToken(request), func(key string, recheck func() error) error {
+				if key != credential.publicKey || recheck == nil || recheck() != nil {
+					return errSession
+				}
+				copy := *credential
+				copy.recheck = recheck
+				operate(&copy)
+				return nil
+			})
+			if err != nil {
+				return nil, apiError("unauthorized", 401)
+			}
 		}
 		if operationErr != nil {
 			return nil, operationErr
@@ -389,7 +471,15 @@ var (
 	errPolicy   = errors.New("policy mismatch")
 	errCapacity = errors.New("authority capacity reached")
 	errNode     = errors.New("trusted node check failed")
+	errSession  = errors.New("account session is unavailable")
 )
+
+func (credential *clientCredential) validSession() error {
+	if credential.recheck != nil && credential.recheck() != nil {
+		return errSession
+	}
+	return nil
+}
 
 func (server *Server) samePolicy(context prospect.Context) bool {
 	return context.Version == server.policy.Version && context.Network == server.policy.Network &&
@@ -399,6 +489,8 @@ func (server *Server) samePolicy(context prospect.Context) bool {
 
 func (server *Server) storeFailure(err error) *responseError {
 	switch {
+	case errors.Is(err, errSession):
+		return apiError("unauthorized", 401)
 	case errors.Is(err, registry.ErrPoisoned):
 		server.poisoned.Store(true)
 		return &responseError{"outcome_unknown", 503, true}
@@ -447,7 +539,7 @@ func (server *Server) issue(ctx context.Context, credential *clientCredential, b
 		if ctx.Err() != nil {
 			return errNode
 		}
-		return nil
+		return credential.validSession()
 	})
 	if err != nil {
 		return nil, server.storeFailure(err)
@@ -491,7 +583,7 @@ func (server *Server) admit(ctx context.Context, credential *clientCredential, b
 			if server.node.Recheck(ctx, initial, guardProof) != nil || ctx.Err() != nil {
 				return errNode
 			}
-			return nil
+			return credential.validSession()
 		})
 	} else {
 		record, inserted, err = server.store.RecordJobChecked(proof, authorization, func(initial prospect.Context, guardProof prospect.Proof, verified prospect.Verified) (registry.Eligibility, error) {
@@ -511,11 +603,17 @@ func (server *Server) admit(ctx context.Context, credential *clientCredential, b
 			default:
 				return registry.Eligibility{}, errNode
 			}
-			return observation, nil
+			return observation, credential.validSession()
 		})
 	}
 	if err != nil {
 		return nil, server.storeFailure(err)
+	}
+	// Historical recovery deliberately bypasses new-admission guards. It still
+	// requires a live session for the same gym; no fresh eligibility is granted.
+	// A newly inserted receipt already linearized authorization before its write.
+	if !inserted && credential.validSession() != nil {
+		return nil, apiError("unauthorized", 401)
 	}
 	source := "historical-receipt"
 	if inserted {

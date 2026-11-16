@@ -45,12 +45,17 @@ func normalizeToken(value string) (string, error) {
 // ValidateServerConfig returns an independent canonical configuration. Port
 // zero is permitted for a local ephemeral listener; wildcard binds are not.
 func ValidateServerConfig(config ServerConfig) (ServerConfig, error) {
+	return validateServerConfig(config, false)
+}
+
+func validateServerConfig(config ServerConfig, sessions bool) (ServerConfig, error) {
 	invalid := errors.New("invalid service configuration")
 	host, port, err := net.SplitHostPort(config.Listen)
 	ip := net.ParseIP(host)
 	n, portErr := strconv.Atoi(port)
 	if err != nil || portErr != nil || n < 0 || n > 65535 || strconv.Itoa(n) != port || ip == nil || !ip.IsLoopback() ||
-		(config.Version != Version1 && config.Version != Version2) || len(config.Clients) == 0 || len(config.Clients) > 64 ||
+		(config.Version != Version1 && config.Version != Version2) || (!sessions && len(config.Clients) == 0) || len(config.Clients) > 64 ||
+		(sessions && (config.Version != Version2 || len(config.Clients) != 0)) ||
 		config.MaxJobs == 0 || config.MaxRecords == 0 || config.MaxJobs > 1000000000 || config.MaxRecords > 1000000000 {
 		return ServerConfig{}, invalid
 	}

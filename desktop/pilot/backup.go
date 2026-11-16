@@ -96,6 +96,12 @@ func (c *Controller) finishOperation(done chan struct{}) {
 // ExportRecovery writes the actual reopened retained wallet export. Neither its
 // bytes nor its native-selected path are returned through the public bridge.
 func (c *Controller) ExportRecovery(path string) (resultErr error) {
+	return c.ExportRecoveryChecked(path, nil)
+}
+
+// ExportRecoveryChecked revalidates a held account session after decryption,
+// immediately before publishing its recovery file.
+func (c *Controller) ExportRecoveryChecked(path string, guard func() error) (resultErr error) {
 	path, err := c.backupPath(path, false)
 	if err != nil {
 		return errors.New("recovery export unavailable")
@@ -105,7 +111,7 @@ func (c *Controller) ExportRecovery(path string) (resultErr error) {
 		return err
 	}
 	defer c.finishOperation(done)
-	wallet, err := openFixtureWallet(filepath.Join(c.config.DataDir, "wallet"), false)
+	wallet, err := c.openWallet(false)
 	if err != nil {
 		return errors.New("recovery export unavailable")
 	}
@@ -130,6 +136,9 @@ func (c *Controller) ExportRecovery(path string) (resultErr error) {
 	}
 	output := append(raw, '\n')
 	defer clear(output)
+	if guard != nil && guard() != nil {
+		return errors.New("recovery export authorization unavailable")
+	}
 	if atomicBytes(path, output) != nil {
 		return errors.New("recovery export could not be saved")
 	}
@@ -241,7 +250,7 @@ func (c *Controller) verifyBackup(ctx context.Context, path string) (code string
 			c.noteShutdown("backup node close failed")
 		}
 	}()
-	original, err := openFixtureWallet(filepath.Join(c.config.DataDir, "wallet"), false)
+	original, err := c.openWallet(false)
 	if err != nil {
 		return "backup_unavailable"
 	}
@@ -287,7 +296,7 @@ func (c *Controller) verifyBackup(ctx context.Context, path string) (code string
 			code = "backup_storage_failed"
 		}
 	}()
-	restored, err := restoreFixtureWallet(filepath.Join(scratch, "wallet"), bundle)
+	restored, err := c.restoreWallet(filepath.Join(scratch, "wallet"), bundle)
 	bundle.Mnemonic = ""
 	if err != nil {
 		return "backup_invalid"
