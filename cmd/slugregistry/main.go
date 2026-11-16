@@ -19,7 +19,7 @@ import (
 	"github.com/taytr-llc/slug/registry"
 )
 
-const usage = "usage: slugregistry {init|record|get|list|export} [options]"
+const usage = "usage: slugregistry {init|record|record-node|get|list|export} [options]"
 
 func main() {
 	if err := run(os.Args[1:], os.Stdout, os.Stderr); err != nil {
@@ -43,6 +43,8 @@ func run(args []string, stdout, stderr io.Writer) error {
 		return initialize(args[1:], stdout, stderr)
 	case "record":
 		return record(args[1:], stdout, stderr)
+	case "record-node":
+		return recordNode(args[1:], stdout, stderr)
 	case "get", "list", "export":
 		return read(args[0], args[1:], stdout, stderr)
 	default:

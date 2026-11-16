@@ -30,7 +30,8 @@ version.
   → `slug-phase-a-closeout` (set 12, released on master at `e056146f`)
   → `slug-fighter-dna` (set 13, released on master at `0f44da5f`)
   → `slug-prospect-proof` (set 14, released on master at `fdeebae2`)
-  → `slug-prospect-registry` (set 15, local immutable evidence storage).
+  → `slug-prospect-registry` (set 15, released on master at `6443d163`)
+  → `slug-trusted-prospect-context` (set 16, explicit node/policy adapter).
 - Branch each next change set off the latest completed implementation tip,
   never the live seed branch by default. Use `slug-<topic>` names; set 7 is
   `slug-signed-checkpoints`. HANDOVER.md records the original takeover state.
@@ -161,6 +162,12 @@ does not understand. Never detach, replace, or clear the /data volume.
   explicitly initialized directory, synchronous atomic writes, and fail
   closed on corruption. A write error has an uncertain commit outcome;
   reopen before retrying. See `PROSPECT_REGISTRY.md`.
+- `prospectnode` resolves current-parent context from an explicitly trusted
+  node and policy. Online verification rechecks the node after hashing;
+  guarded admission checks before writes and duplicate acknowledgment.
+  Never describe this observation as permanent canonicality or fighter birth.
+  Never accept a claimant-selected policy or expose RPC credentials in output.
+  See `TRUSTED_PROSPECT_CONTEXT.md`; stored receipts remain supplied-context.
 
 - Keep diffs minimal and close to upstream btcd structure; this fork tracks
   upstream and every gratuitous divergence makes merges harder.
