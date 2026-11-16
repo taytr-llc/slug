@@ -47,7 +47,8 @@ There is no runtime public-key override or generated default authority.
 
 ## Action items
 
-1. Implement and test verification, offline signing, and read-only RPC.
-2. Have Mike create his private seed and supply only the public key.
-3. Compile that public key, then publish a signed checkpoint only after
-   the selected validated block has 60 descendants.
+1. Complete in set 7: verification, offline signing, and read-only RPC.
+2. Complete in set 10: Mike supplied only his public key; it is compiled
+   for the Phase A SLUG network. See the current operator guide for its hex.
+3. Pending: Mike signs a checkpoint after the selected validated block has
+   60 descendants; verify and load the public signed document.

@@ -4,7 +4,20 @@ SLUG checkpoints declare the official league record. Nodes verify the
 operator's signature and report conflicts; they continue ordinary proof-of-work
 validation and chain selection. The key never vetoes a competing chain.
 
-## Enroll the operator
+## Operator authority
+
+Mike supplied this Ed25519 public key on November 15, 2026. Set 10 compiles
+it into `chaincfg.MainNetParams.CheckpointPublicKey` for the disposable
+Phase A SLUG network:
+
+```text
+811349556ea792060edbb0518dd3a513c5906abe495a81eaf629abd5900c44a3
+```
+
+`getcheckpointinfo` reports `authorityconfigured: true` and this public key
+in builds containing set 10. Other networks have no enrolled authority.
+Enrollment does not create a signed checkpoint or deploy the client to the
+seed; no operator-signed record has been imported yet.
 
 The offline utility is documented in [cmd/slugcheckpoint](../cmd/slugcheckpoint/README.md).
 Build it from the repository root:
@@ -13,18 +26,10 @@ Build it from the repository root:
 go build -o slugcheckpoint ./cmd/slugcheckpoint
 ```
 
-Mike runs this next command himself. It creates a new private seed outside
-the source checkout and prints only the public key:
-
-```sh
-./slugcheckpoint keygen --out "$HOME/slug-checkpoint.seed"
-```
-
 Keep the private file on the Mac and back it up offline. Share only the
-printed 64-character public hex string. That public key must be compiled
-into `chaincfg.MainNetParams.CheckpointPublicKey` and distributed in a client
-update. No key is configured yet; no production/testnet authority is
-silently substituted. `getcheckpointinfo` exposes this explicitly.
+printed 64-character public hex string or a signed public JSON document.
+The agent must never read the private seed. A future key change requires
+explicit enrollment and distribution in a client update.
 
 ## Publish a checkpoint
 
@@ -39,7 +44,7 @@ following the tool's README. Distribute only the resulting JSON document.
 The utility verifies its signature but cannot prove chain membership or
 burial without access to a node; that remains the operator's check.
 
-After public-key enrollment, a node loads one or more documents explicitly:
+A node built with the enrolled public key loads documents explicitly:
 
 ```sh
 slugd --signedcheckpoint=/absolute/path/checkpoint.json

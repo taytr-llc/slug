@@ -355,9 +355,14 @@ var MainNetParams = Params{
 	// SLUG: Bitcoin's consensus checkpoints were cleared. Signed league
 	// declarations are separate, report-only records, never fast-sync anchors.
 	Checkpoints: nil,
-	// Operator enrollment is pending. Never substitute a generated or test
-	// key here: only the public key supplied by the league operator belongs.
-	CheckpointPublicKey: nil,
+	// Public Ed25519 authority supplied by Mike on November 15, 2026.
+	// This key authenticates report-only league declarations, not consensus.
+	CheckpointPublicKey: []byte{
+		0x81, 0x13, 0x49, 0x55, 0x6e, 0xa7, 0x92, 0x06,
+		0x0e, 0xdb, 0xb0, 0x51, 0x8d, 0xd3, 0xa5, 0x13,
+		0xc5, 0x90, 0x6a, 0xbe, 0x49, 0x5a, 0x81, 0xea,
+		0xf6, 0x29, 0xab, 0xd5, 0x90, 0x0c, 0x44, 0xa3,
+	},
 
 	// Consensus rule change deployments.
 	//

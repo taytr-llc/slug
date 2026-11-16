@@ -63,8 +63,14 @@ func TestLoadSignedCheckpoints(t *testing.T) {
 		t.Fatal("accepted duplicate checkpoint heights")
 	}
 	// An unconfigured authority cannot be supplied by an untrusted document.
-	if _, err := loadSignedCheckpoints([]string{firstPath}, &chaincfg.MainNetParams); err == nil {
+	unconfigured := chaincfg.MainNetParams
+	unconfigured.CheckpointPublicKey = nil
+	if _, err := loadSignedCheckpoints([]string{firstPath}, &unconfigured); err == nil {
 		t.Fatal("accepted signed file without compiled authority")
+	}
+	// A fixture signer must not be trusted as the enrolled league operator.
+	if _, err := loadSignedCheckpoints([]string{firstPath}, &chaincfg.MainNetParams); err == nil || !strings.Contains(err.Error(), "invalid signed checkpoint signature") {
+		t.Fatalf("expected enrolled authority to reject the fixture signer, got %v", err)
 	}
 	if records, err := loadSignedCheckpoints(nil, &chaincfg.MainNetParams); err != nil || len(records) != 0 {
 		t.Fatalf("normal startup requires no authority: %v", err)
