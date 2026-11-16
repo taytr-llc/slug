@@ -49,6 +49,12 @@ proofs and preserves evidence across restart. This is the storage foundation;
 authenticated registration, birth/freshness and account/transfer authority
 remain required before gym enrollment.
 
+Set 16 supplies current-parent context from an explicit trusted node and
+prospect policy (`TRUSTED_PROSPECT_CONTEXT.md`). Online verification and
+guarded registry admission recheck the node after hashing. This replaces
+manual chain assertions on the online path; it does not establish birth,
+account control, permanent canonicality, or a calibrated production target.
+
 ### 3. The official pool
 The company-run pool that earns 1% (D35, D36). No turnkey pool exists
 for btcd plus Argon2id, so this is a real build: adapt a Miningcore

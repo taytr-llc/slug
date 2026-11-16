@@ -435,6 +435,23 @@ func (store *Store) verifiedRecord(id string, raw []byte) (Record, error) {
 // A duplicate returns the original record and false without writing anything.
 // A write error poisons the handle because its durable outcome may be unknown.
 func (store *Store) Record(context prospect.Context, proof prospect.Proof) (Record, bool, error) {
+	return store.record(context, proof, nil)
+}
+
+// RecordChecked verifies the evidence, then runs check immediately before a
+// new write or duplicate acknowledgment. A failed check writes nothing and
+// returns no receipt. The check must not call this Store: it runs under the
+// admission mutex. External state can still change after check returns; this
+// is an observation boundary, not a transaction with an external chain node.
+// Evidence keeps its supplied-context meaning and the callback is not stored.
+func (store *Store) RecordChecked(context prospect.Context, proof prospect.Proof, check func() error) (Record, bool, error) {
+	if check == nil {
+		return Record{}, false, fmt.Errorf("registry pre-commit check is required")
+	}
+	return store.record(context, proof, check)
+}
+
+func (store *Store) record(context prospect.Context, proof prospect.Proof, check func() error) (Record, bool, error) {
 	store.mu.Lock()
 	defer store.mu.Unlock()
 	if err := store.checkState(); err != nil {
@@ -467,6 +484,11 @@ func (store *Store) Record(context prospect.Context, proof prospect.Proof) (Reco
 		if original.Verified != verified {
 			return Record{}, false, ErrConflict
 		}
+		if check != nil {
+			if err := check(); err != nil {
+				return Record{}, false, fmt.Errorf("registry pre-commit check failed: %w", err)
+			}
+		}
 		return original, false, nil
 	}
 	if !errors.Is(err, leveldb.ErrNotFound) {
@@ -488,6 +510,11 @@ func (store *Store) Record(context prospect.Context, proof prospect.Proof) (Reco
 	batch.Put(recordKey(id), raw)
 	batch.Put(sequenceKey(record.Sequence), []byte(id))
 	batch.Put([]byte(metadataKey), metaBytes)
+	if check != nil {
+		if err := check(); err != nil {
+			return Record{}, false, fmt.Errorf("registry pre-commit check failed: %w", err)
+		}
+	}
 	if err := store.writeBatch(batch, &opt.WriteOptions{Sync: true}); err != nil {
 		store.poisoned = err
 		return Record{}, false, fmt.Errorf("%w: %w", ErrPoisoned, err)

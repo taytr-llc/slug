@@ -32,6 +32,11 @@ The prospect target is independent of header bits and pool variable
 difficulty. It may be easier or harder than the block target. Calibration to
 D30's discovery cadence is a later deployment prerequisite.
 
+Set 16 implements the current-parent adapter in `prospectnode`, with online
+CLI commands and guarded registry admission. Its supported network, explicit
+policy, transport rules and observation limits are documented in
+`TRUSTED_PROSPECT_CONTEXT.md`. The offline verifier's contract is unchanged.
+
 The untrusted `Proof` JSON contains exactly these required fields:
 
 ```text

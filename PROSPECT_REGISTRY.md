@@ -115,6 +115,13 @@ the package still needs bounded queues, resource limits, account authorization,
 and an authenticated node/policy source. Normal node startup does not open a
 registry, and deployment of the binary does not create a league database.
 
+Set 16 adds `record-node` and `RecordChecked` for a current-node observation
+immediately before admission or replay acknowledgment. A failed pre-commit
+check writes nothing. The node can still change afterward; this does not
+make the receipt permanently canonical or persist authenticated provenance.
+The existing offline commands and receipt schema retain their original
+conditional meaning. See `TRUSTED_PROSPECT_CONTEXT.md`.
+
 ## Verification basis and remaining work
 
 Tests reuse set 14's independently derived synthetic production-Argon2id

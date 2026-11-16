@@ -2,7 +2,7 @@
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
 
-// slugprospect prepares public commitments and verifies prospect proofs offline.
+// slugprospect prepares public commitments and verifies prospect proofs.
 package main
 
 import (
@@ -17,7 +17,7 @@ import (
 	"github.com/taytr-llc/slug/prospect"
 )
 
-const usage = "usage: slugprospect {commitment|verify} [options]"
+const usage = "usage: slugprospect {commitment|verify|context-node|verify-node} [options]"
 
 func main() {
 	if err := run(os.Args[1:], os.Stdout, os.Stderr); err != nil {
@@ -35,8 +35,10 @@ func run(args []string, stdout, stderr io.Writer) error {
 	}
 	switch args[0] {
 	case "-h", "--help", "help":
-		_, err := fmt.Fprintln(stdout, usage+"\nOffline tools; context is an explicit trust input, not independently authenticated.")
+		_, err := fmt.Fprintln(stdout, usage+"\nOffline commands use supplied context; node commands resolve an explicitly configured trusted node snapshot.")
 		return err
+	case "context-node", "verify-node":
+		return nodeCommand(args[0], args[1:], stdout, stderr)
 	case "commitment", "verify":
 	default:
 		return errors.New(usage)
