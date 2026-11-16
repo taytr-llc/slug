@@ -37,6 +37,12 @@ base attributes and career lengths. It does not yet register prospects,
 establish ownership, or provide names, physical traits or portraits. The
 share-proof/ownership contract must precede real gym prospect registration.
 
+Set 14 follows with a bounded proof-of-work verifier and public commitment
+tool (`PROSPECT_PROOFS.md`). One pre-work coinbase commitment binds a header
+to a gym identifier and DNA/target policy. Offline verification takes a
+separately trusted chain context. Durable registration, account control,
+birth/freshness policy, replay storage and transfers remain later work.
+
 ### 3. The official pool
 The company-run pool that earns 1% (D35, D36). No turnkey pool exists
 for btcd plus Argon2id, so this is a real build: adapt a Miningcore

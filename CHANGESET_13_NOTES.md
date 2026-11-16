@@ -5,6 +5,12 @@ Mike said to keep going after the chain-core rollout and the next fighter
 workstream were explained. This set is pushed as its own branch; deploying
 it to the Railway seed is not part of this change set.
 
+Subsequent promotion: Mike explicitly requested promotion and verification
+before set 14. The exact reviewed tree was merged into master at `0f44da5f`
+and deployed as `16ac3a82-2b8b-4ada-a358-cd9480299a7d`. Public sync, 15-minute
+observation and observer restart passed with the existing chain/checkpoint.
+The actual outcome is recorded in `/Users/taytrrip/slug/set13-deployment-report.md`.
+
 ## What changed
 
 - Added a pure off-chain `fighter` package and offline `slugfighter` command.
