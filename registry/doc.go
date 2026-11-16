@@ -7,6 +7,9 @@
 // ownership, canonicality, discovery time, or fighter birth. Explicit schema-2
 // registries additionally verify proof-specific authorization by the key that
 // derives the gym ID; schema-1 evidence retains its unauthenticated meaning.
+// Explicit schema-3 stores issue fixed five-minute jobs and record immutable
+// D68 birth at issuance, under a trusted authority clock. They do not prove the
+// exact instant of mining; historical retries never reset birth or eligibility.
 //
 // Each dedicated registry belongs to one network and genesis. Its append-only
 // API reserves prospect IDs permanently and orders receipts with consecutive

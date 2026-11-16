@@ -1,5 +1,8 @@
 # Prospect work proofs, format 1
 
+Set 18 also supports a separate job-bound format 2. Its exact commitment and
+unchanged stable-ID rule are in `PROSPECT_BIRTH.md`; format 1 remains unchanged.
+
 Set 14 adds an offline verifier for work committed to one gym identifier.
 It is an off-chain prerequisite for registration, not a registration service,
 ownership ledger, account authenticator or full block validator. A supplied

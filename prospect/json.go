@@ -41,15 +41,26 @@ func ParseContext(data []byte) (Context, error) {
 func ParseProof(data []byte) (Proof, error) {
 	var proof Proof
 	var branch []json.RawMessage
+	var jobID *string
 	fields := map[string]any{
 		"version":       &proof.Version,
 		"gym_id":        &proof.GymID,
 		"header":        &proof.Header,
 		"coinbase":      &proof.Coinbase,
 		"merkle_branch": &branch,
+		"job_id":        &jobID,
 	}
-	if err := parseObject(data, MaxProofSize, fields); err != nil {
+	if err := parseObject(data, MaxProofSize, fields, "job_id"); err != nil {
 		return Proof{}, fmt.Errorf("proof: %w", err)
+	}
+	if proof.Version == Version1 && jobID != nil {
+		return Proof{}, errors.New("version-1 proof must not include job_id")
+	}
+	if jobID != nil {
+		proof.JobID = *jobID
+	}
+	if _, err := proofJob(proof); err != nil {
+		return Proof{}, err
 	}
 	if len(branch) > maxMerkleBranch {
 		return Proof{}, fmt.Errorf("proof: merkle_branch exceeds %d siblings", maxMerkleBranch)
@@ -73,7 +84,7 @@ func isNull(data []byte) bool {
 // parseObject uses decoded field names so escaped spellings cannot bypass the
 // duplicate check. Decoding directly into a struct would also accept duplicate
 // fields, null scalar values, and case-insensitive field-name aliases.
-func parseObject(data []byte, maxSize int, fields map[string]any) error {
+func parseObject(data []byte, maxSize int, fields map[string]any, optional ...string) error {
 	if len(data) > maxSize {
 		return fmt.Errorf("JSON exceeds %d bytes", maxSize)
 	}
@@ -121,8 +132,20 @@ func parseObject(data []byte, maxSize int, fields map[string]any) error {
 	if err := decoder.Decode(&extra); err != io.EOF {
 		return errors.New("trailing data after JSON object")
 	}
-	if len(seen) != len(fields) {
-		return errors.New("missing required fields")
+	for name := range fields {
+		if seen[name] {
+			continue
+		}
+		isOptional := false
+		for _, allowed := range optional {
+			if name == allowed {
+				isOptional = true
+				break
+			}
+		}
+		if !isOptional {
+			return errors.New("missing required fields")
+		}
 	}
 	return nil
 }

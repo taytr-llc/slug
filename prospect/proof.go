@@ -19,8 +19,10 @@ import (
 )
 
 const (
-	// Version1 is the supported prospect work proof format.
+	// Version1 is the original prospect work proof and context format.
 	Version1 uint32 = 1
+	// Version2 binds prospect work to a separately validated issuance job.
+	Version2 uint32 = 2
 
 	// MaxContextSize bounds a serialized context, including whitespace.
 	MaxContextSize = 4096
@@ -35,8 +37,10 @@ const (
 
 	policyDomain = "SLUG prospect policy\x00v1\x00"
 	gymDomain    = "SLUG prospect gym\x00v1\x00"
+	jobGymDomain = "SLUG prospect job gym\x00v2\x00"
 	idDomain     = "SLUG prospect id\x00v1\x00"
 	marker       = "SLUGPR01"
+	jobMarker    = "SLUGPR02"
 	markerFamily = "SLUGPR"
 )
 
@@ -57,12 +61,15 @@ type Context struct {
 
 // Proof contains a serialized header and an index-zero coinbase Merkle path.
 // Strings are exact hexadecimal encodings; Merkle siblings use display order.
+// Version 2 requires JobID, which binds the work to a job identifier without
+// authenticating that job's issuance, expiry, clock or birth policy.
 type Proof struct {
 	Version      uint32   `json:"version"`
 	GymID        string   `json:"gym_id"`
 	Header       string   `json:"header"`
 	Coinbase     string   `json:"coinbase"`
 	MerkleBranch []string `json:"merkle_branch"`
+	JobID        string   `json:"job_id,omitempty"`
 }
 
 // Verified records work meeting the supplied context. It is a value snapshot,
@@ -169,6 +176,48 @@ func CommitmentScript(context Context, gymID string) ([]byte, error) {
 		return nil, err
 	}
 	return commitmentScript(parsed.policy, gym), nil
+}
+
+func jobCommitmentScript(policy, gym, job [32]byte) []byte {
+	payload := append([]byte(jobGymDomain), policy[:]...)
+	payload = append(payload, gym[:]...)
+	payload = append(payload, job[:]...)
+	commitment := sha256.Sum256(payload)
+	script := append([]byte{0x6a, 40}, jobMarker...)
+	return append(script, commitment[:]...)
+}
+
+// CommitmentScriptForJob returns the version-2 commitment to the exact job ID.
+// It validates only the identifier's encoding, not issuance, expiry or birth.
+// Job IDs are SHA256 outputs, so an all-zero 32-byte value is allowed.
+func CommitmentScriptForJob(context Context, gymID, jobID string) ([]byte, error) {
+	parsed, err := parseContext(context)
+	if err != nil {
+		return nil, err
+	}
+	gym, err := decode32("gym ID", gymID, true)
+	if err != nil {
+		return nil, err
+	}
+	job, err := decode32("job ID", jobID, false)
+	if err != nil {
+		return nil, err
+	}
+	return jobCommitmentScript(parsed.policy, gym, job), nil
+}
+
+func proofJob(proof Proof) ([32]byte, error) {
+	switch proof.Version {
+	case Version1:
+		if proof.JobID != "" {
+			return [32]byte{}, fmt.Errorf("version-1 proof must not carry a job ID")
+		}
+		return [32]byte{}, nil
+	case Version2:
+		return decode32("job ID", proof.JobID, false)
+	default:
+		return [32]byte{}, fmt.Errorf("unsupported proof version %d", proof.Version)
+	}
 }
 
 // wireHash converts strict display-order bytes to the internal wire order.
@@ -368,6 +417,7 @@ func meetsTarget(hash chainhash.Hash, target [32]byte) bool {
 // Success does not authenticate that context, gym control, birth time, or the
 // other transactions. All structural checks precede a serialized production
 // Argon call; callers remain responsible for admission and queue limits.
+// Version-2 success checks the job commitment, not issuance or freshness.
 func Verify(context Context, proof Proof) (Verified, error) {
 	var empty Verified
 	if wire.TestPoW {
@@ -377,8 +427,9 @@ func Verify(context Context, proof Proof) (Verified, error) {
 	if err != nil {
 		return empty, err
 	}
-	if proof.Version != Version1 {
-		return empty, fmt.Errorf("unsupported proof version %d", proof.Version)
+	job, err := proofJob(proof)
+	if err != nil {
+		return empty, err
 	}
 	gym, err := decode32("gym ID", proof.GymID, true)
 	if err != nil {
@@ -423,7 +474,11 @@ func Verify(context Context, proof Proof) (Verified, error) {
 	if timestamp < context.MinTimestamp || timestamp > context.MaxTimestamp {
 		return empty, fmt.Errorf("header timestamp is outside supplied interval")
 	}
-	tx, err := validateCoinbase(coinbase, commitmentScript(parsed.policy, gym), context.ParentHeight+1)
+	expectedScript := commitmentScript(parsed.policy, gym)
+	if proof.Version == Version2 {
+		expectedScript = jobCommitmentScript(parsed.policy, gym, job)
+	}
+	tx, err := validateCoinbase(coinbase, expectedScript, context.ParentHeight+1)
 	if err != nil {
 		return empty, err
 	}
@@ -457,7 +512,7 @@ func Verify(context Context, proof Proof) (Verified, error) {
 	idBytes = append(idBytes, seed[:]...)
 	id := sha256.Sum256(idBytes)
 	return Verified{
-		Version: Version1, Verification: "supplied-context", Network: context.Network,
+		Version: proof.Version, Verification: "supplied-context", Network: context.Network,
 		Genesis: hex.EncodeToString(parsed.genesis[:]), ProspectID: hex.EncodeToString(id[:]),
 		PolicyID: hex.EncodeToString(parsed.policy[:]), GymID: hex.EncodeToString(gym[:]),
 		WorkHash: workHash.String(), ParentHash: hex.EncodeToString(parsed.parent[:]),

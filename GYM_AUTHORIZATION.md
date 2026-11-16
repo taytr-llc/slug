@@ -1,5 +1,8 @@
 # Gym-key authorization, version 1
 
+Set 18 adds version-2 authorization for job-bound proofs without changing
+version-1 bytes. See `PROSPECT_BIRTH.md` for the extra signed job ID and domain.
+
 Set 17 binds a self-certifying gym ID to a secp256k1 public key and authorizes
 one action: admit a specific prospect proof. The client signs automatically;
 there is no player-facing signing ceremony or extra prospect-selection step.

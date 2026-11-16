@@ -1,6 +1,6 @@
 # Brawlchain: Consolidated Design Spec
 
-Version 1.0, November 14, 2026. Consolidates Decisions 1 to 63, settled with Mike Taylor on November 14, 2026, plus Decisions 64, 65, and 66 added November 15, 2026. Decision numbers are cited as (D#) so any rule can be traced back to the decision log in `~/memory/groups/brawlchain.md`.
+Version 1.1, updated November 15, 2026 Pacific. Consolidates Decisions 1 to 63, settled with Mike Taylor on November 14, 2026, plus Decisions 64 through 68 added November 15, 2026. Decision numbers are cited as (D#); the original decision log is `~/memory/groups/brawlchain.md`, and D68's explicit approval and rationale are recorded here in section 10.
 
 ## 1. The product
 
@@ -96,7 +96,8 @@ Version 1.0, November 14, 2026. Consolidates Decisions 1 to 63, settled with Mik
 
 ## 10. Aging and retirement
 
-- The career clock starts when the fighter is mined, not at debut, so benching cannot preserve prime.
+- The career clock starts from the mining job's issuance time under D68, not at debut, so benching or delayed submission cannot preserve prime.
+- **Five-minute mining jobs and immutable birth** (D68, decided by Mike Nov 15, 2026 Pacific, during change set 18): the client automatically obtains unpredictable mining jobs, each valid for exactly five minutes. A qualifying prospect's age starts at its job's issuance time. New admissions at or after expiry are rejected, with no late-submission grace. The job and its issue/expiry times must be committed into the work before hashing; a later job cannot renew old work. This is a conservative league rule: the exact instant a hash was discovered cannot be proved from a miner timestamp or first receipt, so issuance-to-acceptance bounds discovery and can start age up to five minutes early. That bounded early start is preferable to allowing withholding to make an old fighter younger. A job may produce multiple distinct qualifying proofs; it is not a prospect cap. The client renews jobs automatically and handles authorization without a player signing step (D44). Already accepted receipts retain their original birth across retries, expiry, restarts, and reorgs; returning a historical receipt does not grant renewed eligibility. There is no retrospective birth assignment to older evidence. Future changes must use a new rule version and obey D55/D63. Job issuance and acceptance trust the authority's clock and durable records; they do not change node consensus or checkpoint policy.
 - **Prime length varies from 26 to 52 weeks by hash** (D21).
 - **Decline lasts 13 to 39 weeks by hash, then forced retirement from professional fights** (D22). Total career length is 39 to 91 weeks.
 - **Total attribute loss by the end of decline** (D43), applied gradually week by week, relative to mined values: Speed -40%, Stamina -30%, Chin -30%, Power -20%, Skill -10%.

@@ -126,7 +126,8 @@ func nodeCommand(command string, args []string, stdout, stderr io.Writer) error 
 	return encoder.Encode(struct {
 		ContextSource  string            `json:"context_source"`
 		Authentication string            `json:"authentication,omitempty"`
+		BirthVerified  *bool             `json:"birth_verified,omitempty"`
 		Context        prospect.Context  `json:"context"`
 		Verified       prospect.Verified `json:"verified"`
-	}{"trusted-node-snapshot", authentication, resolved, verified})
+	}{"trusted-node-snapshot", authentication, unverifiedJobBirth(proof), resolved, verified})
 }

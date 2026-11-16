@@ -17,7 +17,7 @@ import (
 	"github.com/taytr-llc/slug/prospect"
 )
 
-const usage = "usage: slugprospect {commitment|verify|context-node|verify-node|gym-id|auth-payload|verify-auth|verify-auth-node} [options]"
+const usage = "usage: slugprospect {commitment|commitment-job|verify|context-node|verify-node|gym-id|auth-payload|verify-auth|verify-auth-node} [options]"
 
 func main() {
 	if err := run(os.Args[1:], os.Stdout, os.Stderr); err != nil {
@@ -41,6 +41,8 @@ func run(args []string, stdout, stderr io.Writer) error {
 		return nodeCommand(args[0], args[1:], stdout, stderr)
 	case "gym-id", "auth-payload", "verify-auth":
 		return authorizationCommand(args[0], args[1:], stdout, stderr)
+	case "commitment-job":
+		return commitmentJob(args[1:], stdout, stderr)
 	case "commitment", "verify":
 	default:
 		return errors.New(usage)
@@ -108,6 +110,12 @@ func run(args []string, stdout, stderr io.Writer) error {
 	verified, err := prospect.Verify(context, proof)
 	if err != nil {
 		return err
+	}
+	if proof.Version == prospect.Version2 {
+		return encoder.Encode(struct {
+			prospect.Verified
+			BirthVerified bool `json:"birth_verified"`
+		}{verified, false})
 	}
 	return encoder.Encode(verified)
 }

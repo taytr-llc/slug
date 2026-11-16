@@ -330,9 +330,23 @@ func (client *Client) Recheck(ctx context.Context, initial prospect.Context, pro
 	if err := productionOnly(); err != nil {
 		return err
 	}
-	if initial.Version != prospect.Version1 || initial.ParentHeight > math.MaxInt32-1 ||
-		initial.MinTimestamp == 0 || initial.MaxTimestamp < initial.MinTimestamp || proof.Version != prospect.Version1 || len(proof.Header) != 160 {
-		return errors.New("invalid initial context or proof header")
+	if err := validateInitial(initial); err != nil {
+		return err
+	}
+	switch proof.Version {
+	case prospect.Version1:
+		if proof.JobID != "" {
+			return errors.New("version-1 proof must not carry a job ID")
+		}
+	case prospect.Version2:
+		if _, err := normalizeHash(proof.JobID, false); err != nil {
+			return errors.New("invalid proof job ID")
+		}
+	default:
+		return errors.New("unsupported proof version")
+	}
+	if len(proof.Header) != 160 {
+		return errors.New("invalid proof header size")
 	}
 	parent, err := normalizeHash(initial.ParentHash, true)
 	if err != nil {
@@ -351,14 +365,64 @@ func (client *Client) Recheck(ctx context.Context, initial prospect.Context, pro
 		timestamp < initial.MinTimestamp || timestamp > initial.MaxTimestamp {
 		return errors.New("proof header does not match initial context")
 	}
-	fresh, err := client.Resolve(ctx, Policy{Version: Version1, Network: initial.Network, Genesis: initial.Genesis,
-		DNAVersion: initial.DNAVersion, ProspectTarget: initial.ProspectTarget})
+	fresh, err := client.resolveSameParent(ctx, initial)
 	if err != nil {
 		return err
 	}
-	if fresh.ParentHash != parent || fresh.ParentHeight != initial.ParentHeight || fresh.ExpectedBits != initial.ExpectedBits ||
-		fresh.MinTimestamp != initial.MinTimestamp || timestamp < fresh.MinTimestamp || timestamp > fresh.MaxTimestamp {
+	if timestamp < fresh.MinTimestamp || timestamp > fresh.MaxTimestamp {
 		return errors.New("proof context is no longer current")
+	}
+	return nil
+}
+
+func validateInitial(initial prospect.Context) error {
+	if initial.Version != prospect.Version1 || initial.ParentHeight > math.MaxInt32-1 ||
+		initial.MinTimestamp == 0 || initial.MaxTimestamp < initial.MinTimestamp {
+		return errors.New("invalid initial node context")
+	}
+	if _, err := normalizeHash(initial.ParentHash, true); err != nil {
+		return errors.New("invalid initial parent")
+	}
+	if _, err := validatePolicy(Policy{Version: Version1, Network: initial.Network, Genesis: initial.Genesis,
+		DNAVersion: initial.DNAVersion, ProspectTarget: initial.ProspectTarget}); err != nil {
+		return err
+	}
+	if _, _, err := compactTarget(strconv.FormatUint(uint64(initial.ExpectedBits), 16)); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (client *Client) resolveSameParent(ctx context.Context, initial prospect.Context) (prospect.Context, error) {
+	if err := validateInitial(initial); err != nil {
+		return prospect.Context{}, err
+	}
+	fresh, err := client.Resolve(ctx, Policy{Version: Version1, Network: initial.Network, Genesis: initial.Genesis,
+		DNAVersion: initial.DNAVersion, ProspectTarget: initial.ProspectTarget})
+	if err != nil {
+		return prospect.Context{}, err
+	}
+	parent, _ := normalizeHash(initial.ParentHash, true)
+	if fresh.ParentHash != parent || fresh.ParentHeight != initial.ParentHeight || fresh.ExpectedBits != initial.ExpectedBits ||
+		fresh.MinTimestamp != initial.MinTimestamp {
+		return prospect.Context{}, errors.New("node context parent or difficulty changed")
+	}
+	return fresh, nil
+}
+
+// RecheckContext guards issuance against a changed parent or backward-moving
+// node time bounds without constructing a proof. It does not issue a job or
+// attest a wall clock. A chain change remains possible after this observation.
+func (client *Client) RecheckContext(ctx context.Context, initial prospect.Context) error {
+	if err := productionOnly(); err != nil {
+		return err
+	}
+	fresh, err := client.resolveSameParent(ctx, initial)
+	if err != nil {
+		return err
+	}
+	if fresh.MaxTimestamp < initial.MaxTimestamp {
+		return errors.New("node context upper time bound moved backward")
 	}
 	return nil
 }

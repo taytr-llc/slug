@@ -55,6 +55,16 @@ guarded registry admission recheck the node after hashing. This replaces
 manual chain assertions on the online path; it does not establish birth,
 account control, permanent canonicality, or a calibrated production target.
 
+Set 17 adds proof-specific gym-key authorization and explicit authenticated
+receipt schema 2 (`GYM_AUTHORIZATION.md`). Set 18 adds D68's five-minute
+pre-work jobs and immutable issuance-based birth in schema 3
+(`PROSPECT_BIRTH.md`). Original evidence schemas remain unchanged. These are
+library and command foundations: end-user automatic job renewal/mining,
+wallet/login and tested key export, public admission service, calibrated
+targets, ownership/transfer state, status history and publication still need
+their own implementation slices. The birth clock trusts the issuing authority's
+clock and durable records; it is not an exact mined timestamp or consensus rule.
+
 ### 3. The official pool
 The company-run pool that earns 1% (D35, D36). No turnkey pool exists
 for btcd plus Argon2id, so this is a real build: adapt a Miningcore

@@ -20,7 +20,7 @@ import (
 	"github.com/taytr-llc/slug/registry"
 )
 
-const usage = "usage: slugregistry {init|init-auth|record|record-auth|record-node|record-auth-node|get|list|export} [options]"
+const usage = "usage: slugregistry {init|init-auth|init-birth|record|record-auth|record-node|record-auth-node|issue-job-node|get-job|record-job-node|get|list|export} [options]"
 
 func main() {
 	if err := run(os.Args[1:], os.Stdout, os.Stderr); err != nil {
@@ -38,15 +38,17 @@ func run(args []string, stdout, stderr io.Writer) error {
 	}
 	switch args[0] {
 	case "help", "-h", "--help":
-		_, err := fmt.Fprintln(stdout, usage+"\nLocal evidence storage; records establish neither ownership nor fighter birth.")
+		_, err := fmt.Fprintln(stdout, usage+"\nLocal evidence and job-birth storage; ordinary evidence is not a birth record, and no command establishes account ownership.")
 		return err
-	case "init", "init-auth":
+	case "init", "init-auth", "init-birth":
 		return initialize(args[0], args[1:], stdout, stderr)
 	case "record", "record-auth":
 		return record(args[0], args[1:], stdout, stderr)
 	case "record-node", "record-auth-node":
 		return recordNode(args[0], args[1:], stdout, stderr)
-	case "get", "list", "export":
+	case "issue-job-node", "record-job-node":
+		return jobNode(args[0], args[1:], stdout, stderr)
+	case "get", "get-job", "list", "export":
 		return read(args[0], args[1:], stdout, stderr)
 	default:
 		return errors.New(usage)
@@ -98,6 +100,8 @@ func initialize(command string, args []string, stdout, stderr io.Writer) error {
 	create := registry.Create
 	if command == "init-auth" {
 		create = registry.CreateAuthenticated
+	} else if command == "init-birth" {
+		create = registry.CreateBirth
 	}
 	store, err := create(*dbPath, uint32(*network), *genesis)
 	if err != nil {
@@ -194,6 +198,8 @@ func read(command string, args []string, stdout, stderr io.Writer) error {
 	switch command {
 	case "get":
 		id = flags.String("id", "", "Prospect ID, 64 hex characters (required)")
+	case "get-job":
+		id = flags.String("id", "", "Issued job ID, 64 hex characters (required)")
 	case "list":
 		after = flags.Uint64("after", 0, "Return sequences strictly greater than this value")
 		limit = flags.Int("limit", registry.MaxPageSize, "Maximum records to return (1-100)")
@@ -201,7 +207,7 @@ func read(command string, args []string, stdout, stderr io.Writer) error {
 	if err := parseFlags(flags, args, dbPath); err != nil {
 		return err
 	}
-	if command == "get" && *id == "" {
+	if (command == "get" || command == "get-job") && *id == "" {
 		return errors.New("--id is required")
 	}
 	if command == "list" && (*limit < 1 || *limit > registry.MaxPageSize) {
@@ -219,6 +225,8 @@ func read(command string, args []string, stdout, stderr io.Writer) error {
 	var readErr error
 	if command == "get" {
 		result, readErr = store.Get(*id)
+	} else if command == "get-job" {
+		result, readErr = store.GetJob(*id)
 	} else {
 		var entries []registry.Record
 		entries, readErr = store.List(*after, *limit)

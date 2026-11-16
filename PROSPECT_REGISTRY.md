@@ -3,6 +3,8 @@
 This document describes schema 1. Set 17 also supports explicitly created
 schema-2 authenticated registries; see `GYM_AUTHORIZATION.md`. Existing
 directories and evidence do not migrate or acquire authentication.
+Set 18 adds a separately initialized schema 3 with durable jobs and birth
+under D68; see `PROSPECT_BIRTH.md`. No older evidence gains a birth date.
 
 Change set 15 adds the local `registry` package and offline `slugregistry`
 command. It durably records work already defined by `PROSPECT_PROOFS.md`.

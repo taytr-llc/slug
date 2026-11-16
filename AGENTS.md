@@ -32,7 +32,8 @@ version.
   → `slug-prospect-proof` (set 14, released on master at `fdeebae2`)
   → `slug-prospect-registry` (set 15, released on master at `6443d163`)
   → `slug-trusted-prospect-context` (set 16, released on master at `e94c1cfa`)
-  → `slug-gym-identity` (set 17, proof-specific gym-key authorization).
+  → `slug-gym-identity` (set 17, released on master at `7968e0a0`)
+  → `slug-prospect-birth` (set 18, D68 job-bound birth).
 - Branch each next change set off the latest completed implementation tip,
   never the live seed branch by default. Use `slug-<topic>` names; set 7 is
   `slug-signed-checkpoints`. HANDOVER.md records the original takeover state.
@@ -178,6 +179,16 @@ does not understand. Never detach, replace, or clear the /data volume.
   upgrade schema-1 evidence or arbitrary gym IDs implicitly. Key control does
   not prove an account, ownership transfer, birth, or permanent canonicality.
   See `GYM_AUTHORIZATION.md` for exact bytes and integration boundaries.
+
+- D68 jobs last exactly five minutes. Age starts at durable issuance; a new
+  admission at or after expiry is rejected without grace. Job IDs/challenges
+  enter proof-v2 work before hashing. Only explicitly created schema-3 stores
+  issue and admit jobs; no retrospective birth is attached to older evidence.
+  Keep accepted birth immutable across duplicate recovery, expiry and reorgs.
+  Historical receipts do not assert renewed eligibility. Persist clock high
+  water even for expiry rejections, fail closed on rollback/uncertain writes,
+  and never accept claimant time or nonce on authority APIs. Client handling is
+  automatic under D44. See `PROSPECT_BIRTH.md` and spec decision D68.
 
 - Keep diffs minimal and close to upstream btcd structure; this fork tracks
   upstream and every gratuitous divergence makes merges harder.

@@ -56,7 +56,7 @@ func ParseAuthorization(data []byte) (Authorization, error) {
 	if _, err := decoder.Token(); err != io.EOF {
 		return Authorization{}, errors.New("trailing authorization data")
 	}
-	if authorization.Version != Version1 {
+	if authorization.Version != Version1 && authorization.Version != Version2 {
 		return Authorization{}, errors.New("unsupported authorization version")
 	}
 	if _, _, err := publicKey(authorization.PublicKey); err != nil {

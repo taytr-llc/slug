@@ -82,7 +82,7 @@ func TestAuthorizationJSONContract(t *testing.T) {
 		})
 	}
 	for name, mutate := range map[string]func(*Authorization){
-		"unknown version":     func(a *Authorization) { a.Version = 2 },
+		"unknown version":     func(a *Authorization) { a.Version = 3 },
 		"short key":           func(a *Authorization) { a.PublicKey = a.PublicKey[2:] },
 		"uncompressed key":    func(a *Authorization) { a.PublicKey = "04" + a.PublicKey[2:] + strings.Repeat("1", 64) },
 		"invalid point":       func(a *Authorization) { a.PublicKey = "02" + strings.Repeat("f", 64) },
