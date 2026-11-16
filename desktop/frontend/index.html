@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SLUG Gym</title>
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" aria-label="Gym navigation">
+      <div class="brand">SLUG<span>GYM</span></div>
+      <div class="gym-mark" aria-hidden="true">S</div>
+      <p class="eyebrow">YOUR CORNER</p>
+      <h1>Training Gym</h1>
+      <div class="nav-item" aria-current="page"><span aria-hidden="true">◈</span> Prospects <span id="nav-count">0</span></div>
+      <div class="sidebar-foot"><span class="small-dot"></span> Local pilot<br><small>Test gym · Test rewards</small></div>
+    </aside>
+    <main>
+      <header class="topbar"><span class="eyebrow">THE WORK STARTS HERE</span><span class="pilot-tag">DISPOSABLE TRAINING CHAIN</span></header>
+      <section class="hero" aria-labelledby="hero-title">
+        <div><div class="status-pill"><span id="status-dot"></span><span id="state">Ready</span></div><h2 id="hero-title">Build your corner.</h2><p id="hero-copy">Start mining to discover your first prospect. Every find starts a new career.</p></div>
+        <button class="primary" id="mining-toggle" type="button"><span id="action-label">Start mining</span><span aria-hidden="true">↗</span></button>
+      </section>
+      <p class="pilot-note">This pilot mines a private local chain with a test gym. Your real wallet and the public league are not connected.</p>
+      <div id="alert" role="status" hidden></div>
+      <section class="metrics" aria-label="Mining activity">
+        <article><p>Mining attempts</p><strong id="attempts">0</strong><small id="rate">Ready when you are</small></article>
+        <article><p>Prospects found</p><strong id="prospect-count">0</strong><small>Saved to this gym</small></article>
+        <article><p>Pending delivery</p><strong id="pending">0</strong><small id="pending-copy">Nothing waiting</small></article>
+        <article><p>Local chain</p><strong id="height">0</strong><small>Blocks confirmed</small></article>
+      </section>
+      <section class="roster-section" aria-labelledby="roster-heading">
+        <div class="section-heading"><div><p class="eyebrow">FRESH FROM THE WORK</p><h3 id="roster-heading">Your prospects</h3></div><span id="roster-label">A place for every find</span></div>
+        <div id="empty" class="empty"><div class="empty-mark" aria-hidden="true">◈</div><h4>Your first prospect starts here.</h4><p>Mining runs in the background. New prospects appear here automatically.</p></div>
+        <div id="roster" class="roster" aria-live="polite" aria-relevant="additions"></div>
+      </section>
+      <footer><span>One mining worker · No mining on launch</span><span>Closing the window keeps your gym in the menu bar. Quit stops mining.</span></footer>
+    </main>
+  </div>
+</body>
+</html>

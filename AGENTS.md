@@ -42,7 +42,8 @@ version.
   → `slug-prospect-birth` (set 18, released on master at `c88abe11`)
   → `slug-prospect-service` (set 19, released on master at `56a4889d`)
   → `slug-mining-templates` (set 20, released on master at `3ed3b71e`)
-  → `slug-automatic-miner` (set 21, D69 and durable automatic worker).
+  → `slug-automatic-miner` (set 21, released on master at `59e14a8c`)
+  → `slug-desktop-pilot` (set 22, isolated native mining pilot).
 - Branch each next change set off the latest completed implementation tip,
   never the live seed branch by default. Use `slug-<topic>` names; set 7 is
   `slug-signed-checkpoints`. HANDOVER.md records the original takeover state.
@@ -217,6 +218,17 @@ does not understand. Never detach, replace, or clear the /data volume.
   found work before transport, and public authorization before admission;
   uncertain outcomes retain identical evidence for recovery. Retained-capacity
   exhaustion pauses mining, never drops pending work or receipts automatically.
+
+- The desktop pilot has its own module/workspace under `desktop`; keep the
+  ten-module chain workspace and Railway node build independent. Its fixture
+  gym mines only a disposable loopback chain, with no production wallet or
+  public-node option. Do not describe public receipt export as wallet export
+  or hosted login. Mining requires an explicit Start; Quit drains owned work
+  and processes. Real wallet custody, D48 export, calibrated policy and release
+  signing remain separate integration gates. Never read operator/wallet keys.
+  Mike confirmed the gym shell is new Go work against the slugd/btcwallet RPC
+  surfaces, not a Paymetheus adaptation. Fork the separate btcwallet repository
+  when its wallet workstream begins.
 
 - Keep diffs minimal and close to upstream btcd structure; this fork tracks
   upstream and every gratuitous divergence makes merges harder.

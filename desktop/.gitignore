@@ -1,0 +1,12 @@
+# Build artifacts and disposable local pilot state never belong in source.
+/build/
+/dist/
+/artifacts/
+*.app/
+*.exe
+/SLUGPilot
+/slugpilot
+/slugd
+/pilot-data/
+/LocalPilot/
+*.log
