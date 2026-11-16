@@ -154,8 +154,11 @@ type Client struct {
 	backendVersionMu sync.Mutex
 	backendVersion   BackendVersion
 
-	// mtx is a mutex to protect access to connection related fields.
-	mtx sync.Mutex
+	// mtx protects connection state. connectMtx serializes initial attempts
+	// without holding mtx through network I/O or retry waits.
+	mtx           contextMutex
+	connectMtx    contextMutex
+	connectCancel atomic.Pointer[connectAttempt] // Canceled by shutdown.
 
 	// disconnected indicated whether or not the server is disconnected.
 	disconnected bool
@@ -1130,6 +1133,11 @@ func (c *Client) doDisconnect() bool {
 	c.mtx.Lock()
 	defer c.mtx.Unlock()
 
+	// Initial connection attempts must also stop when the client disconnects.
+	if attempt := c.connectCancel.Load(); attempt != nil {
+		attempt.cancel()
+	}
+
 	// Nothing to do if already disconnected.
 	if c.disconnected {
 		return false
@@ -1459,6 +1467,14 @@ func (config *ConnConfig) httpURL() string {
 // dial opens a websocket connection using the passed connection configuration
 // details.
 func dial(config *ConnConfig) (*websocket.Conn, error) {
+	return dialContext(context.Background(), config)
+}
+
+// dialContext bounds TCP/proxy dialing, TLS, and the HTTP upgrade exchange.
+func dialContext(ctx context.Context, config *ConnConfig) (*websocket.Conn, error) {
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
 	// Setup TLS if not disabled.
 	var tlsConfig *tls.Config
 	var scheme = "ws"
@@ -1494,6 +1510,38 @@ func dial(config *ConnConfig) (*websocket.Conn, error) {
 		dialer.NetDialContext = proxy.DialContext
 	}
 
+	// Gorilla's HTTP upgrade read obeys connection deadlines, but a context
+	// canceled before its deadline does not itself interrupt that read. Close
+	// the raw connection on caller cancellation until the handshake finishes.
+	// Use the caller context, not Gorilla's temporary handshake context: the
+	// latter is canceled even after a successful upgrade.
+	baseDial := dialer.NetDialContext
+	if baseDial == nil {
+		baseDial = (&net.Dialer{}).DialContext
+	}
+	var stopCancel func() bool
+	var cancelDone chan struct{}
+	dialer.NetDialContext = func(dialCtx context.Context, network, address string) (net.Conn, error) {
+		conn, err := baseDial(dialCtx, network, address)
+		if err != nil {
+			return nil, err
+		}
+		cancelDone = make(chan struct{})
+		stopCancel = context.AfterFunc(ctx, func() {
+			_ = conn.Close()
+			close(cancelDone)
+		})
+		return conn, nil
+	}
+	stopCancellation := func() {
+		stop := stopCancel
+		stopCancel = nil
+		if stop != nil && !stop() {
+			<-cancelDone
+		}
+	}
+	defer stopCancellation()
+
 	// Configure generated basic access authorization. Caller-provided
 	// headers are added independently below.
 	requestHeader := make(http.Header)
@@ -1512,7 +1560,14 @@ func dial(config *ConnConfig) (*websocket.Conn, error) {
 
 	// Dial the connection.
 	url := fmt.Sprintf("%s://%s/%s", scheme, config.Host, config.Endpoint)
-	wsConn, resp, err := dialer.Dial(url, requestHeader)
+	wsConn, resp, err := dialer.DialContext(ctx, url, requestHeader)
+	stopCancellation()
+	if cancelErr := ctx.Err(); cancelErr != nil {
+		if wsConn != nil {
+			_ = wsConn.Close()
+		}
+		return nil, cancelErr
+	}
 	if err != nil {
 		if err != websocket.ErrBadHandshake || resp == nil {
 			return nil, err
@@ -1660,37 +1715,97 @@ func NewBatch(config *ConnConfig) (*Client, error) {
 // connection has already been established, or if none of the connection
 // attempts were successful.
 func (c *Client) Connect(tries int) error {
-	c.mtx.Lock()
-	defer c.mtx.Unlock()
+	return c.ConnectContext(context.Background(), tries)
+}
 
+// ConnectContext is Connect with cancellation covering connection-lock waits,
+// dialing (including SOCKS), TLS/HTTP handshakes, and retry backoff. Cancellation
+// before connection publication closes the attempted transport. Once connected,
+// the context no longer controls the live client; use Shutdown or Disconnect.
+// Client shutdown also cancels an in-progress initial connection attempt.
+func (c *Client) ConnectContext(ctx context.Context, tries int) error {
+	if err := c.connectMtx.LockContext(ctx); err != nil {
+		return err
+	}
+	defer c.connectMtx.Unlock()
+	if err := c.mtx.LockContext(ctx); err != nil {
+		return err
+	}
 	if c.config.HTTPPostMode {
+		c.mtx.Unlock()
 		return ErrNotWebsocketClient
 	}
 	if c.wsConn != nil {
+		c.mtx.Unlock()
 		return ErrClientAlreadyConnected
 	}
+	select {
+	case <-c.shutdown:
+		c.mtx.Unlock()
+		return ErrClientShutdown
+	default:
+	}
+	attemptCtx, cancel := context.WithCancel(ctx)
+	attempt := &connectAttempt{cancel: cancel}
+	c.connectCancel.Store(attempt)
+	c.mtx.Unlock()
+	defer func() {
+		cancel()
+		c.connectCancel.CompareAndSwap(attempt, nil)
+	}()
+	canceled := func() error {
+		select {
+		case <-c.shutdown:
+			return ErrClientShutdown
+		default:
+			return attemptCtx.Err()
+		}
+	}
 
-	// Begin connection attempts.  Increase the backoff after each failed
-	// attempt, up to a maximum of one minute.
 	var err error
-	var backoff time.Duration
 	for i := 0; tries == 0 || i < tries; i++ {
+		if err := canceled(); err != nil {
+			return err
+		}
 		var wsConn *websocket.Conn
-		wsConn, err = dial(c.config)
+		wsConn, err = dialContext(attemptCtx, c.config)
 		if err != nil {
-			backoff = connectionRetryInterval * time.Duration(i+1)
-			if backoff > time.Minute {
-				backoff = time.Minute
+			if cancelErr := canceled(); cancelErr != nil {
+				return cancelErr
 			}
-			time.Sleep(backoff)
+			// Preserve Connect's existing retry intervals, including the
+			// final failed-attempt delay, while allowing cancellation.
+			backoff := time.Minute
+			if i < 12 {
+				backoff = connectionRetryInterval * time.Duration(i+1)
+			}
+			timer := time.NewTimer(backoff)
+			select {
+			case <-timer.C:
+			case <-attemptCtx.Done():
+				timer.Stop()
+				return canceled()
+			}
 			continue
 		}
 
-		// Connection was established.  Set the websocket connection
-		// member of the client and start the goroutines necessary
-		// to run the client.
-		log.Infof("Established connection to RPC server %s",
-			c.config.Host)
+		if lockErr := c.mtx.LockContext(attemptCtx); lockErr != nil {
+			_ = wsConn.Close()
+			return canceled()
+		}
+		if cancelErr := canceled(); cancelErr != nil {
+			c.mtx.Unlock()
+			_ = wsConn.Close()
+			return cancelErr
+		}
+		log.Infof("Established connection to RPC server %s", c.config.Host)
+		// Disconnect may have canceled an earlier initial attempt before
+		// any I/O or reconnect handlers existed. A successful retry starts
+		// a fresh live connection, not an already-disconnected transport.
+		if c.disconnected {
+			c.disconnect = make(chan struct{})
+			c.disconnected = false
+		}
 		c.wsConn = wsConn
 		close(c.connEstablished)
 		c.start()
@@ -1698,10 +1813,9 @@ func (c *Client) Connect(tries int) error {
 			c.wg.Add(1)
 			go c.wsReconnectHandler()
 		}
+		c.mtx.Unlock()
 		return nil
 	}
-
-	// All connection attempts failed, so return the last error.
 	return err
 }
 

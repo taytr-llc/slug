@@ -121,6 +121,25 @@ export at any time (D48). Signing lives in the clients and on Mike's
 accounts, never on the assistant's machines.
 Depends on: chain core.
 
+Set 23 begins in the separate `taytr-llc/slugwallet` fork, pinned to btcwallet
+v0.18.1 (`43f2950d`). The first slice adapts its six runtime modules to SLUG and
+the full-node RPC backend, with explicit network/genesis checks, private wallet
+RPC and independent fixture receive/spend/recovery tests. The desktop pilot
+continues to use its labelled public fixture signer during this work. Neutrino
+and Bitcoin Core backends are outside the initial contract.
+
+Review also found that the inherited RPC connection handshake could delay
+startup cancellation for over a minute. Set 23 adds a backward-compatible
+context-aware connection API in the chain client library so the wallet can
+bound its whole connection/identity check, including retry waits. This changes
+client lifecycle behavior, not consensus or the seed's RPC exposure.
+
+The upstream wallet does not supply D48's later recovery-phrase reveal or SLUG
+admission signing. Normal login, protected recoverable seed material, fixed gym
+key derivation and full export/restore acceptance remain required before real
+wallet issuance. Restoring a published test seed verifies a foundation only;
+it does not demonstrate a user-facing recovery export or fighter transfer.
+
 ### 5. Gym clients
 The gym is the product surface: native Mac and Windows apps (menu
 bar and tray, gentle default mining setting) plus the browser
