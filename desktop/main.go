@@ -47,6 +47,36 @@ func (g *Gym) Snapshot() (pilot.Snapshot, error) {
 }
 func (g *Gym) Start() error { _, err := g.helper.Request(context.Background(), "start", 0); return err }
 func (g *Gym) Stop() error  { _, err := g.helper.Request(context.Background(), "stop", 0); return err }
+func (g *Gym) LoginFixture(fixture string) error {
+	// Preserve the account selected when a native recovery dialog opened.
+	// This guard is enforced at the Go boundary as well as by UI controls.
+	if !g.exportMu.TryLock() {
+		return bridge.ErrBusy
+	}
+	defer g.exportMu.Unlock()
+	_, err := g.helper.RequestFixture(context.Background(), fixture)
+	return err
+}
+func (g *Gym) Logout() error {
+	// Preserve the account selected when a native recovery dialog opened.
+	// This guard is enforced at the Go boundary as well as by UI controls.
+	if !g.exportMu.TryLock() {
+		return bridge.ErrBusy
+	}
+	defer g.exportMu.Unlock()
+	_, err := g.helper.Request(context.Background(), "logout", 0)
+	return err
+}
+func (g *Gym) ResetFixtureAccount() error {
+	// Preserve the account selected when a native recovery dialog opened.
+	// This guard is enforced at the Go boundary as well as by UI controls.
+	if !g.exportMu.TryLock() {
+		return bridge.ErrBusy
+	}
+	defer g.exportMu.Unlock()
+	_, err := g.helper.Request(context.Background(), "reset_fixture", 0)
+	return err
+}
 func (g *Gym) ExportReceipt(sequence uint64) (string, error) {
 	if !g.exportMu.TryLock() {
 		return "", bridge.ErrBusy
@@ -84,6 +114,16 @@ func (g *Gym) ExportRecovery() (string, error) {
 		return "", bridge.ErrBusy
 	}
 	defer g.exportMu.Unlock()
+	state, err := g.Snapshot()
+	if err != nil {
+		return "", err
+	}
+	if state.Account != nil && !state.Account.CanExport {
+		if state.Account.Held {
+			return "", errors.New("Recovery export is unavailable during the 24-hour security hold.")
+		}
+		return "", errors.New("Sign out and sign in again before exporting recovery.")
+	}
 	path, err := g.app.Dialog.SaveFile().AttachToWindow(g.window).
 		SetMessage("Save the recovery file for this public test wallet.").
 		SetFilename("slug-test-wallet-recovery.json").
@@ -147,11 +187,11 @@ func run() (resultErr error) {
 	if err != nil {
 		return errors.New("Local application storage is unavailable.")
 	}
-	dataDefault = filepath.Join(dataDefault, "SLUG", "LocalWalletPilot")
+	dataDefault = filepath.Join(dataDefault, "SLUG", "LocalAccountPilot")
 	if value := os.Getenv("SLUG_PILOT_DATA_DIR"); value != "" {
 		dataDefault = value
 	}
-	data := flag.String("data-dir", dataDefault, "Local test-wallet pilot data directory")
+	data := flag.String("data-dir", dataDefault, "Local two-fixture account pilot data directory")
 	flag.Parse()
 	if flag.NArg() != 0 || !filepath.IsAbs(*data) {
 		return errors.New("An absolute local pilot data directory is required.")
@@ -165,13 +205,14 @@ func run() (resultErr error) {
 	if err = os.MkdirAll(filepath.Dir(filepath.Clean(*data)), 0700); err != nil {
 		return errors.New("Local application storage is unavailable.")
 	}
-	helper, err := bridge.Launch(helperPath, filepath.Clean(*data), nodePath)
+	helper, err := bridge.LaunchAccounts(helperPath, filepath.Clean(*data), nodePath)
 	if err != nil {
 		return err
 	}
 	defer func() { resultErr = errors.Join(resultErr, helper.Close()) }()
 	gym := &Gym{helper: helper, protectedRoots: []string{
 		filepath.Clean(*data), filepath.Join(filepath.Dir(filepath.Clean(*data)), "LocalPilot"),
+		filepath.Join(filepath.Dir(filepath.Clean(*data)), "LocalWalletPilot"),
 		filepath.Clean(filepath.Join(resources, "..", "..")),
 	}}
 	if configDir, err := os.UserConfigDir(); err == nil {
@@ -184,7 +225,7 @@ func run() (resultErr error) {
 	// Deliberately use the embedded file server, not Wails' development server
 	// environment override. There is no remote frontend or external URL input.
 	app := application.New(application.Options{
-		Name: "SLUG Wallet Pilot", Description: "An isolated local mining gym using public fixture identity.",
+		Name: "SLUG Account Pilot", Description: "An isolated local mining gym using public fixture identity.",
 		Services: []application.Service{application.NewService(gym)},
 		Assets:   application.AssetOptions{Handler: http.FileServer(http.FS(frontend)), Middleware: assetSecurity, DisableLogging: true},
 		Logger:   slog.New(slog.NewTextHandler(io.Discard, nil)),
@@ -197,7 +238,7 @@ func run() (resultErr error) {
 	})
 	gym.app = app
 	window := app.Window.NewWithOptions(application.WebviewWindowOptions{
-		Title: "SLUG — Wallet Pilot", Name: "SLUG Wallet Pilot", Width: 1180, Height: 820, MinWidth: 820, MinHeight: 640, URL: "/",
+		Title: "SLUG — Account Pilot", Name: "SLUG Account Pilot", Width: 1180, Height: 820, MinWidth: 820, MinHeight: 640, URL: "/",
 		DevToolsEnabled: false, DefaultContextMenuDisabled: true, EnableFileDrop: false,
 		Permissions: map[application.PermissionType]application.Permission{
 			application.PermissionMicrophone: application.PermissionDeny, application.PermissionCamera: application.PermissionDeny,
@@ -226,14 +267,14 @@ func run() (resultErr error) {
 					time.Sleep(50 * time.Millisecond)
 				}
 				if err != nil {
-					app.Dialog.Error().SetTitle("SLUG Wallet Pilot").SetMessage(err.Error()).Show()
+					app.Dialog.Error().SetTitle("SLUG Account Pilot").SetMessage(err.Error()).Show()
 				}
 			}()
 		}
 	}
 
 	menu := app.NewMenu()
-	controls := menu.AddSubmenu("SLUG Wallet Pilot")
+	controls := menu.AddSubmenu("SLUG Account Pilot")
 	controls.Add("Show gym").OnClick(func(*application.Context) { window.Show(); window.Focus() })
 	controls.Add("Start mining").OnClick(action(gym.Start))
 	controls.Add("Stop mining").OnClick(action(gym.Stop))

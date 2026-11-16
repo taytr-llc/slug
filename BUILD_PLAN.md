@@ -165,6 +165,15 @@ real custody/login, production key/path allocation and release signing remain
 separate work. See `desktop/README.md` and `CHANGESET_26_NOTES.md`.
 
 ### 5. Gym clients
+Set 27 implements the approved D72 reset contract in a private two-fixture
+account pilot: verified reset restores the same wallet without the words,
+revokes old sessions, and starts the fixed 24-hour hold. The hold blocks
+withdrawal, fighter transfer, recovery export, recovery-authority changes and
+marketplace purchase/listing capabilities; viewing and mining remain allowed.
+Durable account enrollment uses a distinct narrow wallet signature. Production
+provider/custody design and derivation allocation remain separate from this
+mock-provider acceptance. See `GYM_ACCOUNTS.md` and `CHANGESET_27_NOTES.md`.
+
 The gym is the product surface: native Mac and Windows apps (menu
 bar and tray, gentle default mining setting) plus the browser
 version. Miner integration with the pool and solo switch, roster and

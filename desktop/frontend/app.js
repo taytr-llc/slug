@@ -6,6 +6,7 @@ const elements = Object.fromEntries([
   'height', 'roster-label', 'empty', 'roster',
   'wallet-state', 'wallet-height', 'spendable', 'immature', 'payout', 'gym-id',
   'export-recovery', 'verify-backup', 'backup-status',
+  'account-panel', 'account-state', 'account-copy', 'account-hold', 'login-a', 'login-b', 'account-logout', 'account-reset',
 ].map((id) => [id, document.getElementById(id)]));
 
 const rarities = new Map([
@@ -53,8 +54,19 @@ function integer(value, minimum = 0, maximum = Number.MAX_SAFE_INTEGER) {
   return Number.isSafeInteger(value) && value >= minimum && value <= maximum;
 }
 
+const accountFixtures = {
+  zero256: {
+    gymID: 'a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5',
+    publicKey: '03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519',
+  },
+  incrementing256: {
+    gymID: '28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510',
+    publicKey: '033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92',
+  },
+};
+
 function normalize(value) {
-  if (!value || !states.has(value.state) || value.mode !== 'local-wallet-pilot'
+  if (!value || !states.has(value.state) || !['local-wallet-pilot', 'local-account-pilot'].includes(value.mode)
     || !walletStates.has(value.wallet_state) || !backupStates.has(value.backup_state) || !backupPhases.has(value.backup_phase)
     || !['wallet_height', 'spendable_atoms', 'immature_atoms'].every((key) => integer(value[key]))
     || !['payout_address', 'gym_id', 'gym_public_key', 'backup_phase', 'backup_error'].every((key) => typeof value[key] === 'string' && value[key].length <= 280)
@@ -67,6 +79,25 @@ function normalize(value) {
     || value.prospect_count < value.prospects.length) {
     throw new Error('The local gym returned an unreadable update. Retrying…');
   }
+  if (value.mode === 'local-account-pilot') {
+    const a = value.account;
+    if (!a || !['signed_out', 'signing_in', 'signed_in', 'resetting', 'signing_out', 'failed', 'expired'].includes(a.state)
+      || !['', 'zero256', 'incrementing256'].includes(a.fixture) || !['', 'account_unavailable'].includes(a.last_error)
+      || !integer(a.generation) || !integer(a.hold_until_ms, 0, 8640000000000000) || typeof a.held !== 'boolean' || typeof a.can_export !== 'boolean'
+      || typeof a.id !== 'string' || (a.id !== '' && !/^[a-f\d]{64}$/.test(a.id))
+      || (a.held && (a.can_export || a.hold_until_ms === 0))) throw new Error('The account returned an unreadable update.');
+    if (a.state === 'signed_in') {
+      const fixture = accountFixtures[a.fixture];
+      if (!fixture || !/^[a-f\d]{64}$/.test(a.id) || a.generation < 1
+        || value.gym_id !== fixture.gymID || value.gym_public_key !== fixture.publicKey) {
+        throw new Error('The account identity does not match this gym.');
+      }
+    } else if (a.id !== '' || a.generation !== 0 || a.hold_until_ms !== 0 || a.held || a.can_export
+      || value.gym_id !== '' || value.gym_public_key !== '' || value.payout_address !== ''
+      || value.spendable_atoms !== 0 || value.immature_atoms !== 0 || value.prospect_count !== 0 || value.prospects.length !== 0) {
+      throw new Error('The signed-out account returned unexpected wallet data.');
+    }
+  } else if (value.account) throw new Error('The account mode does not match this gym.');
   const seen = new Set();
   const prospects = value.prospects.map((prospect) => {
     if (!prospect || !integer(prospect.sequence, 1) || !/^[a-f\d]{64}$/i.test(prospect.id)
@@ -204,16 +235,17 @@ function renderControls() {
   const [stateText, action, copy] = labels[state] ?? ['Connecting', 'Connecting…', 'Connecting to your local training gym.'];
   text(elements.state, connectionError ? 'Connection interrupted' : stateText);
   text(elements['hero-copy'], copy);
-  text(elements['action-label'], busy ? (command === 'Start' ? 'Starting…' : 'Stopping…') : action);
+  text(elements['action-label'], busy ? (command === 'Start' ? 'Starting…' : command === 'Stop' ? 'Stopping…' : 'Please wait…') : action);
   elements['status-dot'].classList.toggle('active', state === 'running' && !connectionError);
   elements['mining-toggle'].classList.toggle('running', active);
   elements['mining-toggle'].setAttribute('aria-pressed', String(active));
   elements['mining-toggle'].setAttribute('aria-busy', String(busy || state === 'stopping'));
   // Starting again is also how a stopped gym retries saved uncertain work.
   // A recovery warning must not disable that explicit recovery action.
-  elements['mining-toggle'].disabled = busy || exporting !== null || !snapshot || !!connectionError || state === 'stopping' || snapshot.backup_state === 'running';
+  elements['mining-toggle'].disabled = busy || exporting !== null || !snapshot || !!connectionError || state === 'stopping' || snapshot.backup_state === 'running' || (!!snapshot.account && snapshot.account.state !== 'signed_in');
   document.title = `${stateText} · SLUG Gym`;
   renderWallet();
+  renderAccount();
   renderAlert();
 }
 
@@ -228,8 +260,8 @@ function renderWallet() {
   text(elements['gym-id'], value?.gym_id || 'Created on your first Start');
   const unavailable = !value?.payout_address || !['stopped', 'failed'].includes(value?.state)
     || value?.backup_state === 'running' || exporting !== null || command !== null || !!connectionError;
-  elements['export-recovery'].disabled = unavailable;
-  elements['verify-backup'].disabled = unavailable;
+  elements['export-recovery'].disabled = unavailable || (!!value?.account && !value.account.can_export);
+  elements['verify-backup'].disabled = unavailable || (!!value?.account && value.account.state !== 'signed_in');
   elements['export-recovery'].setAttribute('aria-busy', String(exporting === 'ExportRecovery'));
   elements['verify-backup'].setAttribute('aria-busy', String(exporting === 'VerifyBackup' || value?.backup_state === 'running'));
   const messages = {
@@ -241,6 +273,44 @@ function renderWallet() {
   };
   const progress = value?.backup_state === 'running' ? `${backupPhases.get(value.backup_phase)}. ` : '';
   text(elements['backup-status'], progress + (messages[value?.backup_state] ?? messages.idle));
+}
+
+function renderAccount() {
+  const a = snapshot?.account;
+  elements['account-panel'].hidden = !a;
+  if (!a) return;
+  const labels = { signed_out: 'Signed out', signing_in: 'Opening your gym…', signed_in: a.fixture === 'zero256' ? 'Demo A signed in' : 'Demo B signed in', resetting: 'Recovering the same wallet…', signing_out: 'Saving and signing out…', failed: 'Account needs attention', expired: 'Sign-in expired' };
+  text(elements['account-state'], labels[a.state]);
+  const busy = command !== null || exporting !== null || ['signing_in', 'resetting', 'signing_out'].includes(a.state) || !!connectionError;
+  const signedIn = a.state === 'signed_in';
+  elements['login-a'].disabled = busy || !['signed_out', 'failed'].includes(a.state);
+  elements['login-b'].disabled = elements['login-a'].disabled;
+  elements['account-logout'].disabled = busy || ['signed_out'].includes(a.state);
+  elements['account-reset'].disabled = busy || !signedIn || snapshot.backup_state === 'running';
+  text(elements['account-copy'], a.state === 'failed' ? 'Account access could not finish. Retained wallet data has not been replaced. Sign out and try again.' : a.state === 'expired' ? 'Sign out and sign in again to continue with the same wallet and gym.' : signedIn ? 'Your wallet and personal gym stay the same across sign-ins and verified resets.' : 'Choose a demo account. Its wallet and personal gym are created automatically; mining starts only when you choose Start.');
+  text(elements['account-hold'], a.held ? `Security hold until ${dateFormat.format(new Date(a.hold_until_ms))}. Withdrawals, fighter transfers, recovery export, recovery-authority changes, marketplace purchases and listings are blocked. Viewing and mining remain available.` : signedIn && !a.can_export ? 'Sign out and sign in again before exporting recovery: a fresh sign-in is required.' : '');
+}
+
+async function accountAction(method, fixture) {
+  if (command !== null || exporting !== null) return;
+  command = method;
+  actionMessage = '';
+  actionIsError = false;
+  renderControls();
+  renderExportButtons();
+  try {
+    if (polling) await polling;
+    if (fixture) await Call.ByName(`main.Gym.${method}`, fixture);
+    else await Call.ByName(`main.Gym.${method}`);
+  } catch (error) {
+    actionMessage = safeMessage(error, 'The account action could not start.');
+    actionIsError = true;
+  } finally {
+    command = null;
+    await refresh();
+    renderControls();
+    renderExportButtons();
+  }
 }
 
 function render(value) {
@@ -368,6 +438,10 @@ elements.roster.setAttribute('aria-busy', 'true');
 elements['mining-toggle'].addEventListener('click', toggleMining);
 elements['export-recovery'].addEventListener('click', () => walletAction('ExportRecovery', elements['export-recovery']));
 elements['verify-backup'].addEventListener('click', () => walletAction('VerifyBackup', elements['verify-backup']));
+elements['login-a'].addEventListener('click', () => { if (!elements['login-a'].disabled) return accountAction('LoginFixture', 'zero256'); });
+elements['login-b'].addEventListener('click', () => { if (!elements['login-b'].disabled) return accountAction('LoginFixture', 'incrementing256'); });
+elements['account-logout'].addEventListener('click', () => { if (!elements['account-logout'].disabled) return accountAction('Logout'); });
+elements['account-reset'].addEventListener('click', () => { if (!elements['account-reset'].disabled) return accountAction('ResetFixtureAccount'); });
 document.addEventListener('visibilitychange', () => {
   if (!document.hidden && !disposed) void refresh();
 });

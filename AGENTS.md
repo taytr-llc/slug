@@ -47,7 +47,8 @@ version.
   → `slug-wallet-foundation` (set 23, released on master at `e1b25e7f`)
   → `slug-wallet-recovery` (set 24, released on master at `0b04cd1b`)
   → `slug-phase-a-activation` (set 25, approved activation at height 62)
-  → `slug-desktop-wallet` (set 26, fixture wallet integration).
+  → `slug-desktop-wallet` (set 26, released on master at `f03f1ef6`)
+  → `slug-account-enrollment` (set 27, account/reset fixture integration).
 - Branch each next change set off the latest completed implementation tip,
   never the live seed branch by default. Use `slug-<topic>` names; set 7 is
   `slug-signed-checkpoints`. HANDOVER.md records the original takeover state.
@@ -261,6 +262,17 @@ does not understand. Never detach, replace, or clear the /data volume.
   existing wallets keep legacy derivation. The Phase-A fixture profile is not a
   production path allocation. Verify actual later export and fresh restore,
   never invent a phrase for an old raw-seed wallet or imply hosted login exists.
+  Mike approved D72 on November 16: a verified password reset restores access
+  to the same hosted wallet without the 24 words, with a post-reset security
+  hold. Record this as closing D70's hosted-reset authority question. The
+  service retains recovery authority; backup export does not revoke it. For
+  24 hours after each verified reset, block withdrawals, fighter transfers,
+  recovery phrase/file export, recovery-authority changes, marketplace purchases
+  and listings. Viewing and mining into the same wallet remain available.
+  Revoke existing sessions immediately. A distinct further reset restarts the
+  hold; replaying the same verified event must not extend it.
+  Set 27 starts with two explicitly published fixtures, not real registration,
+  production derivation allocation, or a public wallet service.
 
 - Keep diffs minimal and close to upstream btcd structure; this fork tracks
   upstream and every gratuitous divergence makes merges harder.

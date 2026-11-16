@@ -23,7 +23,14 @@
         <div><div class="status-pill"><span id="status-dot"></span><span id="state">Ready</span></div><h2 id="hero-title">Build your corner.</h2><p id="hero-copy">Start mining to discover your first prospect. Every find starts a new career.</p></div>
         <button class="primary" id="mining-toggle" type="button"><span id="action-label">Start mining</span><span aria-hidden="true">↗</span></button>
       </section>
-      <p class="pilot-note">This pilot uses a public test wallet on a private training chain. Rewards have no monetary value. Use only this pilot’s recovery files.</p>
+      <p class="pilot-note">These two demo accounts use published test wallets on private training chains. No real signup or funds. Use only this pilot’s recovery files.</p>
+      <section id="account-panel" class="wallet-panel" aria-labelledby="account-heading" hidden>
+        <div class="section-heading"><div><p class="eyebrow">LOCAL ACCOUNT DEMO</p><h3 id="account-heading">Choose your corner</h3></div><span id="account-state" role="status">Signed out</span></div>
+        <p id="account-copy">Choose a demo account. Its wallet and personal gym are created automatically; mining starts only when you choose Start.</p>
+        <div class="wallet-actions"><button id="login-a" type="button">Sign in as Demo A</button><button id="login-b" type="button">Sign in as Demo B</button><button id="account-logout" type="button" disabled>Sign out</button><button id="account-reset" type="button" disabled>Simulate verified password reset</button></div>
+        <p id="account-hold" role="status"></p>
+        <p class="pilot-note">A reset keeps the same wallet and gym. The service retains recovery authority; exporting a backup does not remove that authority.</p>
+      </section>
       <div id="alert" role="status" hidden></div>
       <section class="metrics" aria-label="Mining activity">
         <article><p>Mining attempts</p><strong id="attempts">0</strong><small id="rate">Ready when you are</small></article>
@@ -35,7 +42,7 @@
         <div class="section-heading"><div><p class="eyebrow">YOUR TRAINING WALLET</p><h3 id="wallet-heading">Test rewards</h3></div><span id="wallet-state" role="status">Connecting…</span></div>
         <div class="wallet-balances"><div><span>Spendable test SLUG</span><strong id="spendable">—</strong></div><div><span>Waiting to mature</span><strong id="immature">—</strong></div><p>Mining rewards mature after 100 blocks.<br><span id="wallet-height">Waiting for wallet</span></p></div>
         <dl class="wallet-identity"><dt>Reward address</dt><dd id="payout">Created on your first Start</dd><dt>Gym identity</dt><dd id="gym-id">Created on your first Start</dd></dl>
-        <div class="wallet-actions"><button id="export-recovery" type="button" disabled>Save recovery file</button><button id="verify-backup" type="button" disabled>Verify backup</button></div>
+        <div class="wallet-actions"><button id="export-recovery" type="button" disabled>Export recovery backup</button><button id="verify-backup" type="button" disabled>Verify backup</button></div>
         <p id="backup-status" role="status">Stop mining to save or verify your test wallet backup.</p>
       </section>
       <section class="roster-section" aria-labelledby="roster-heading">

@@ -20,6 +20,7 @@ type Request struct {
 	Command  string `json:"command"`
 	Sequence uint64 `json:"sequence,omitempty"`
 	Path     string `json:"path,omitempty"`
+	Fixture  string `json:"fixture,omitempty"`
 }
 type Response struct {
 	ID       uint64           `json:"id"`
@@ -61,11 +62,11 @@ func parseRequest(raw []byte) (Request, error) {
 	if decoder.Decode(new(any)) != io.EOF {
 		return request, errors.New("invalid_request")
 	}
-	if json.Unmarshal(fields["id"], &request.ID) != nil || request.ID > 1<<53-1 || json.Unmarshal(fields["command"], &request.Command) != nil {
+	if json.Unmarshal(fields["id"], &request.ID) != nil || request.ID == 0 || request.ID > 1<<53-1 || json.Unmarshal(fields["command"], &request.Command) != nil {
 		return request, errors.New("invalid_request")
 	}
 	for key := range fields {
-		if key != "id" && key != "command" && key != "sequence" && key != "path" {
+		if key != "id" && key != "command" && key != "sequence" && key != "path" && key != "fixture" {
 			return Request{}, errors.New("invalid_request")
 		}
 	}
@@ -84,8 +85,15 @@ func parseRequest(raw []byte) (Request, error) {
 		return request, errors.New("invalid_request")
 	}
 	switch request.Command {
-	case "start", "stop", "snapshot", "receipt", "export_recovery", "verify_backup":
+	case "start", "stop", "snapshot", "receipt", "export_recovery", "verify_backup", "login_fixture", "logout", "reset_fixture":
 	default:
+		return request, errors.New("invalid_request")
+	}
+	if request.Command == "login_fixture" {
+		if json.Unmarshal(fields["fixture"], &request.Fixture) != nil || (request.Fixture != "zero256" && request.Fixture != "incrementing256") {
+			return request, errors.New("invalid_request")
+		}
+	} else if _, ok := fields["fixture"]; ok {
 		return request, errors.New("invalid_request")
 	}
 	return request, nil
@@ -117,7 +125,22 @@ func respond(writer io.Writer, response Response) error {
 
 // Serve reads a bounded, correlated JSON-lines protocol. It closes and drains
 // the controller on EOF, cancellation, malformed framing or output failure.
-func Serve(ctx context.Context, input io.Reader, output io.Writer, c *Controller) (resultErr error) {
+type ControllerAPI interface {
+	Start() error
+	Stop()
+	Close() error
+	Snapshot() Snapshot
+	Receipt(uint64) (registry.Record, error)
+	ExportRecovery(string) error
+	VerifyBackup(string) error
+}
+type AccountControllerAPI interface {
+	LoginFixture(string) error
+	Logout() error
+	ResetFixtureAccount() error
+}
+
+func Serve(ctx context.Context, input io.Reader, output io.Writer, c ControllerAPI) (resultErr error) {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 	type line struct {
@@ -195,6 +218,28 @@ func Serve(ctx context.Context, input io.Reader, output io.Writer, c *Controller
 			}
 			response := Response{ID: req.ID, OK: true}
 			switch req.Command {
+			case "login_fixture", "logout", "reset_fixture":
+				account, ok := c.(AccountControllerAPI)
+				var err error
+				if !ok {
+					err = errors.New("account mode unavailable")
+				} else {
+					switch req.Command {
+					case "login_fixture":
+						err = account.LoginFixture(req.Fixture)
+					case "logout":
+						err = account.Logout()
+					case "reset_fixture":
+						err = account.ResetFixtureAccount()
+					}
+				}
+				if err != nil {
+					response.OK = false
+					response.Error = "account_unavailable"
+				} else {
+					s := c.Snapshot()
+					response.Snapshot = &s
+				}
 			case "start":
 				if c.Start() != nil {
 					response.OK = false

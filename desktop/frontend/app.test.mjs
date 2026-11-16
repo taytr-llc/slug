@@ -111,10 +111,11 @@ function harness(initial = validSnapshot()) {
     Start: () => { value = { ...value, state: 'starting' }; },
     Stop: () => { value = { ...value, state: 'stopped' }; },
     ExportReceipt: () => '', ExportRecovery: () => '', VerifyBackup: () => '',
+    LoginFixture: () => {}, Logout: () => {}, ResetFixtureAccount: () => {},
   };
   const Call = {
     async ByName(name, ...args) {
-      assert.match(name, /^main\.Gym\.(Snapshot|Start|Stop|ExportReceipt|ExportRecovery|VerifyBackup)$/);
+      assert.match(name, /^main\.Gym\.(Snapshot|Start|Stop|ExportReceipt|ExportRecovery|VerifyBackup|LoginFixture|Logout|ResetFixtureAccount)$/);
       const method = name.slice('main.Gym.'.length);
       calls.push({ method, args });
       activeBridgeCalls++;
@@ -376,4 +377,89 @@ test('asynchronous backup verification keeps polling and excludes mining until c
   await h.tick();
   assert.equal(h.elements.get('export-recovery').disabled, true);
   assert.equal(h.elements.get('verify-backup').disabled, true);
+});
+
+function accountSnapshot(state, overrides = {}) {
+  const signedIn = state === 'signed_in';
+  return validSnapshot({ mode: 'local-account-pilot',
+    gym_id: signedIn ? 'a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5' : '',
+    gym_public_key: signedIn ? '03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519' : '',
+    ...(signedIn ? {} : { payout_address: '', spendable_atoms: 0, immature_atoms: 0, prospect_count: 0, prospects: [] }),
+    account: {
+      state, fixture: state === 'signed_out' ? '' : 'zero256', id: signedIn ? 'c'.repeat(64) : '',
+      generation: signedIn ? 1 : 0, hold_until_ms: 0, held: false, can_export: signedIn, last_error: '', ...overrides,
+    },
+  });
+}
+
+test('fixture login selects only a demo label and never starts mining', async () => {
+  const h = harness(accountSnapshot('signed_out'));
+  h.start(); await settle();
+  assert.equal(h.elements.get('account-panel').hidden, false);
+  assert.equal(h.elements.get('mining-toggle').disabled, true);
+  assert.equal(h.elements.get('export-recovery').disabled, true);
+  h.handlers.LoginFixture = (fixture) => {
+    assert.equal(fixture, 'zero256');
+    h.value = accountSnapshot('signing_in');
+  };
+  await h.elements.get('login-a').dispatch('click');
+  assert.deepEqual(h.calls.find((call) => call.method === 'LoginFixture').args, ['zero256']);
+  assert.equal(h.count('Start'), 0);
+  assert.equal(h.elements.get('login-b').disabled, true);
+  h.value = accountSnapshot('signed_in'); await h.tick();
+  assert.equal(h.elements.get('mining-toggle').disabled, false);
+  assert.equal(h.elements.get('export-recovery').disabled, false);
+  assert.equal(h.elements.get('login-b').disabled, true);
+  h.handlers.Logout = () => { h.value = accountSnapshot('signing_out'); };
+  await h.elements.get('account-logout').dispatch('click');
+  assert.deepEqual(h.calls.find((call) => call.method === 'Logout').args, []);
+  assert.equal(h.elements.get('mining-toggle').disabled, true);
+  assert.equal(h.peakBridgeCalls, 1);
+});
+
+test('reset hold blocks recovery export while keeping existing-wallet mining available', async () => {
+  const h = harness(accountSnapshot('signed_in'));
+  h.start(); await settle();
+  h.handlers.ResetFixtureAccount = () => { h.value = accountSnapshot('resetting'); };
+  await h.elements.get('account-reset').dispatch('click');
+  assert.deepEqual(h.calls.find((call) => call.method === 'ResetFixtureAccount').args, []);
+  assert.equal(h.elements.get('mining-toggle').disabled, true);
+  h.value = accountSnapshot('signed_in', { generation: 2, hold_until_ms: Date.now()+86400000, held: true, can_export: false });
+  await h.tick();
+  assert.equal(h.elements.get('mining-toggle').disabled, false);
+  assert.equal(h.elements.get('export-recovery').disabled, true);
+  await h.elements.get('export-recovery').dispatch('click');
+  assert.equal(h.count('ExportRecovery'), 0);
+  assert.match(h.elements.get('account-hold').textContent, /marketplace purchases and listings/);
+  assert.match(h.elements.get('account-hold').textContent, /Viewing and mining remain available/);
+  h.value = accountSnapshot('signed_in', {generation:2}); await h.tick();
+  assert.equal(h.elements.get('export-recovery').disabled, false);
+  assert.equal(h.elements.get('account-hold').textContent, '');
+});
+
+
+test('account projection rejects mixed identity, contradictory hold and out-of-range dates', async () => {
+  const h = harness(accountSnapshot('signed_in'));
+  h.start(); await settle();
+  const badValues = [
+    accountSnapshot('signed_in', { fixture: '' }),
+    accountSnapshot('signed_in', { id: '' }),
+    accountSnapshot('signed_in', { generation: 0 }),
+    accountSnapshot('signed_in', { held: true, can_export: true, hold_until_ms: Date.now() + 86400000 }),
+    accountSnapshot('signed_in', { held: true, can_export: false, hold_until_ms: 0 }),
+    accountSnapshot('signed_in', { held: true, can_export: false, hold_until_ms: 8640000000000001 }),
+    accountSnapshot('signed_in', { fixture: 'incrementing256' }),
+    { ...accountSnapshot('signed_in'), gym_id: 'f'.repeat(64) },
+    { ...accountSnapshot('signed_out'), spendable_atoms: 1 },
+    accountSnapshot('signing_in', { generation: 1 }),
+  ];
+  for (const value of badValues) {
+    h.value = value; await h.refresh();
+    assert.equal(h.elements.get('mining-toggle').disabled, true);
+    assert.equal(h.elements.get('export-recovery').disabled, true);
+    assert.match(h.elements.get('alert').textContent, /account|identity|signed-out/);
+  }
+  h.value = accountSnapshot('signed_in'); await h.refresh();
+  assert.equal(h.elements.get('mining-toggle').disabled, false);
+  assert.equal(h.elements.get('export-recovery').disabled, false);
 });

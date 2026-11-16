@@ -91,6 +91,15 @@ func (b *BlockChain) maybeAcceptBlock(block *btcutil.Block, flags BehaviorFlags)
 		return false, err
 	}
 
+	// A full block can arrive without a preceding header (for example through
+	// submitblock). Keep the header view in sync with that accepted work using
+	// the canonical index node above. Never rewind an ahead header chain or
+	// replace it with an equal-work fork, and only advance after connection
+	// validation succeeded.
+	if newNode.workSum.Cmp(b.bestHeader.Tip().workSum) > 0 {
+		b.bestHeader.SetTip(newNode)
+	}
+
 	// Notify the caller that the new block was accepted into the block
 	// chain.  The caller would typically want to react by relaying the
 	// inventory to other peers.
