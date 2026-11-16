@@ -174,6 +174,14 @@ Durable account enrollment uses a distinct narrow wallet signature. Production
 provider/custody design and derivation allocation remain separate from this
 mock-provider acceptance. See `GYM_ACCOUNTS.md` and `CHANGESET_27_NOTES.md`.
 
+Set 28 builds the provider assertion and reset-ordering boundary, with pinned
+RS256 verification, consumed login nonces, original-authentication epochs and a
+durable pending-reset barrier. The two existing wallets exercise original-gym
+recovery and mining under the hold; the set-27 desktop default remains intact.
+A later provider adapter must demonstrate this reset ordering before deployment.
+Production wallet profile, vault, real signup and provider provisioning are
+separate from this component. See `CHANGESET_28_NOTES.md`.
+
 The gym is the product surface: native Mac and Windows apps (menu
 bar and tray, gentle default mining setting) plus the browser
 version. Miner integration with the pool and solo switch, roster and

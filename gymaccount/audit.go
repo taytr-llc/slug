@@ -44,6 +44,13 @@ func (s *Store) validateReset(r ResetResult) error {
 	return nil
 }
 func (s *Store) audit() error {
+	identity := s.meta.Version == IdentityVersion
+	if !identity && (s.meta.Version != Version1 || s.meta.Identity != nil || s.meta.LoginAttempts != 0 || s.meta.IdentitySequence != 0 || s.meta.ReservedEvents != 0) {
+		return ErrCorrupt
+	}
+	if identity && (s.meta.Identity == nil || s.meta.LoginAttempts > s.meta.Identity.MaxLoginAttempts || uint64(s.meta.Events)+uint64(s.meta.ReservedEvents) > uint64(s.meta.Config.MaxEvents)) {
+		return ErrCorrupt
+	}
 	if s.meta.ClockMS < 0 || s.meta.ClockMS > math.MaxInt64-RecoveryHoldMS || s.meta.Accounts > 2 || s.meta.Sessions > s.meta.Config.MaxSessions || s.meta.Challenges > s.meta.Config.MaxChallenges || s.meta.Events > s.meta.Config.MaxEvents {
 		return ErrCorrupt
 	}
@@ -58,9 +65,19 @@ func (s *Store) audit() error {
 	accountRows := map[string]Account{}
 	resetsByAccount := map[string]map[uint64]ResetResult{}
 	completionsByAccount := map[string]map[uint64]string{}
+	identityStates := map[string]identityState{}
+	attempts := map[string]loginAttemptRecord{}
+	barriers := map[string]ResetBarrier{}
+	identityLogins := map[string]uint32{}
+	barrierBegins := map[string]uint32{}
+	barrierCompletes := map[string]uint32{}
+	sequences := map[uint64]bool{}
 	iterator := s.db.NewIterator(nil, nil)
 	defer iterator.Release()
 	maxKeys := 1 + 2*4 + int(s.meta.Config.MaxSessions) + int(s.meta.Config.MaxChallenges) + int(s.meta.Config.MaxEvents)*2
+	if identity {
+		maxKeys += 2 + int(s.meta.Identity.MaxLoginAttempts)
+	}
 	count := 0
 	for iterator.Next() {
 		count++
@@ -122,7 +139,36 @@ func (s *Store) audit() error {
 			}
 			challenges++
 			challengeConsumed[record.Challenge.ChallengeID] = record.Result != nil
+		case strings.HasPrefix(key, "identity:"):
+			var state identityState
+			if !identity || canonical(raw, &state) != nil || key != "identity:"+state.AccountID {
+				return ErrCorrupt
+			}
+			identityStates[state.AccountID] = state
+		case strings.HasPrefix(key, "attempt:"):
+			var record loginAttemptRecord
+			if !identity || canonical(raw, &record) != nil || key != "attempt:"+record.Attempt.ID || s.validateAttempt(record) != nil || sequences[record.Attempt.Sequence] {
+				return ErrCorrupt
+			}
+			sequences[record.Attempt.Sequence] = true
+			attempts[record.Attempt.ID] = record
+		case strings.HasPrefix(key, "barrier:"):
+			var record ResetBarrier
+			if !identity || canonical(raw, &record) != nil || key != "barrier:"+record.EventID || s.validateBarrier(record) != nil || sequences[record.BeginSequence] {
+				return ErrCorrupt
+			}
+			sequences[record.BeginSequence] = true
+			if record.CompleteSequence != 0 {
+				if sequences[record.CompleteSequence] {
+					return ErrCorrupt
+				}
+				sequences[record.CompleteSequence] = true
+			}
+			barriers[record.EventID] = record
 		case strings.HasPrefix(key, "reset:"):
+			if identity {
+				return ErrCorrupt
+			}
 			var record ResetResult
 			if canonical(raw, &record) != nil || key != "reset:"+record.EventID || s.validateReset(record) != nil {
 				return ErrCorrupt
@@ -146,7 +192,35 @@ func (s *Store) audit() error {
 				return ErrCorrupt
 			}
 			switch event.Kind {
+			case "identity-login":
+				var record loginAttemptRecord
+				if !identity || s.load("attempt:"+event.Reference, &record) != nil || s.validateAttempt(record) != nil || record.PrincipalID != a.PrincipalID || record.Generation != event.Generation || record.ConsumedAtMS != event.AtMS {
+					return ErrCorrupt
+				}
+				identityLogins[event.Reference]++
+				if event.Generation == 1 {
+					firstLogins[a.ID] = true
+				}
+			case "reset-begin", "reset-complete":
+				var record ResetBarrier
+				if !identity || s.load("barrier:"+event.Reference, &record) != nil || s.validateBarrier(record) != nil || record.AccountID != a.ID || record.Generation != event.Generation {
+					return ErrCorrupt
+				}
+				if event.Kind == "reset-begin" {
+					if event.AtMS != record.BeganAtMS {
+						return ErrCorrupt
+					}
+					barrierBegins[event.Reference]++
+				} else {
+					if record.Status != "completed" || event.AtMS != record.CompletedAtMS {
+						return ErrCorrupt
+					}
+					barrierCompletes[event.Reference]++
+				}
 			case "login":
+				if identity {
+					return ErrCorrupt
+				}
 				if event.Generation == 1 {
 					firstLogins[a.ID] = true
 				}
@@ -210,23 +284,29 @@ func (s *Store) audit() error {
 		}
 	}
 	for id, account := range accountRows {
-		resets := resetsByAccount[id]
-		if uint64(len(resets))+1 != account.Generation {
-			return ErrCorrupt
-		}
-		var lastAt int64
-		for generation := uint64(2); generation <= account.Generation; generation++ {
-			reset, found := resets[generation]
-			if !found || reset.AtMS < lastAt {
+		if identity {
+			if err := s.auditIdentityAccount(account, identityStates[id], barriers, completionsByAccount[id]); err != nil {
+				return err
+			}
+		} else {
+			resets := resetsByAccount[id]
+			if uint64(len(resets))+1 != account.Generation {
 				return ErrCorrupt
 			}
-			lastAt = reset.AtMS
-		}
-		if account.Generation == 1 && account.HoldUntilMS != 0 {
-			return ErrCorrupt
-		}
-		if account.Generation > 1 && account.HoldUntilMS != resets[account.Generation].HoldUntilMS {
-			return ErrCorrupt
+			var lastAt int64
+			for generation := uint64(2); generation <= account.Generation; generation++ {
+				reset, found := resets[generation]
+				if !found || reset.AtMS < lastAt {
+					return ErrCorrupt
+				}
+				lastAt = reset.AtMS
+			}
+			if account.Generation == 1 && account.HoldUntilMS != 0 {
+				return ErrCorrupt
+			}
+			if account.Generation > 1 && account.HoldUntilMS != resets[account.Generation].HoldUntilMS {
+				return ErrCorrupt
+			}
 		}
 		completed := completionsByAccount[id]
 		var enrollGeneration uint64
@@ -248,6 +328,37 @@ func (s *Store) audit() error {
 		}
 		_, currentCompletion := completed[account.Generation]
 		if account.RecoveryRequired != (account.Enrollment != nil && !currentCompletion) {
+			return ErrCorrupt
+		}
+	}
+	if identity {
+		if len(identityStates) != len(accountRows) || uint32(len(attempts)) != s.meta.LoginAttempts || uint64(len(sequences)) != s.meta.IdentitySequence {
+			return ErrCorrupt
+		}
+		var pending uint32
+		for id, record := range attempts {
+			if record.ConsumedAtMS != 0 {
+				if identityLogins[id] != 1 {
+					return ErrCorrupt
+				}
+			} else if identityLogins[id] != 0 {
+				return ErrCorrupt
+			}
+		}
+		for id, record := range barriers {
+			if barrierBegins[id] != 1 {
+				return ErrCorrupt
+			}
+			if record.Status == "pending" {
+				pending++
+				if barrierCompletes[id] != 0 {
+					return ErrCorrupt
+				}
+			} else if barrierCompletes[id] != 1 {
+				return ErrCorrupt
+			}
+		}
+		if pending != s.meta.ReservedEvents {
 			return ErrCorrupt
 		}
 	}
