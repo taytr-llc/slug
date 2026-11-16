@@ -131,12 +131,14 @@ cannot mint additional IDs. The verified JSON records format version,
 `verification: "supplied-context"`, chain identity, prospect ID, policy ID,
 gym ID, work hash, parent hash/height and DNA. It is returned only on success.
 
-A future registry must persist duplicate IDs/tombstones across restarts and
-reorgs, authenticate gym/account control and transfer authority, establish
-freshness and an immutable birth anchor, and publish portable records with
-checkpoint anchors. Delaying submission must never reset aging. These
-rules are not implied by this verifier, and the league signing key remains
-report-only for chain selection.
+Set 15's local evidence registry (`PROSPECT_REGISTRY.md`) persists IDs and
+first evidence across restarts, with no deletion or reset operation. Future
+status handling must preserve these IDs across reorgs. Actual registration
+still must authenticate gym/account control and transfer authority, establish
+freshness and an immutable birth anchor, and publish records with checkpoint
+anchors. Delaying submission must never reset aging. These rules are not
+implied by this verifier, and the league signing key remains report-only for
+chain selection.
 
 The height prefix follows [BIP 34](https://github.com/bitcoin/bips/blob/master/bip-0034.mediawiki),
 including OP_1 through OP_16 for the first sixteen heights and the separate

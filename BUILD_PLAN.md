@@ -43,6 +43,12 @@ to a gym identifier and DNA/target policy. Offline verification takes a
 separately trusted chain context. Durable registration, account control,
 birth/freshness policy, replay storage and transfers remain later work.
 
+Set 15 adds a durable local evidence registry (`PROSPECT_REGISTRY.md`) with
+immutable first receipts and persistent duplicate IDs. It re-verifies raw
+proofs and preserves evidence across restart. This is the storage foundation;
+authenticated registration, birth/freshness and account/transfer authority
+remain required before gym enrollment.
+
 ### 3. The official pool
 The company-run pool that earns 1% (D35, D36). No turnkey pool exists
 for btcd plus Argon2id, so this is a real build: adapt a Miningcore
