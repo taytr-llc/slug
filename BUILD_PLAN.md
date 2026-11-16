@@ -31,6 +31,12 @@ retirement state (D21, D22). Publication formats for entries, results,
 and ownership changes are build-time items (spec section 17).
 Depends on: chain core (hash and checkpoint formats).
 
+Current first implementation slice: set 13 provides the versioned off-chain
+DNA component and offline preview (`FIGHTER_DNA.md`), covering talent tiers,
+base attributes and career lengths. It does not yet register prospects,
+establish ownership, or provide names, physical traits or portraits. The
+share-proof/ownership contract must precede real gym prospect registration.
+
 ### 3. The official pool
 The company-run pool that earns 1% (D35, D36). No turnkey pool exists
 for btcd plus Argon2id, so this is a real build: adapt a Miningcore
@@ -96,6 +102,11 @@ cannot wait for launch is the workstream 1 security review, which
 gates genesis.
 
 ## Sequence
+
+The November 15 chain-core handover and seed rollout are a milestone within
+Phase A, not completion of all three Phase A workstreams. Prospect
+registration and pool validation/payouts remain ahead; the explorer and
+broader independent seed distribution also remain operational work.
 
 - **Phase A, testnet.** Workstreams 1 to 3 in basic form: the fork
   mines, prospects register from shares, the pool validates shares

@@ -27,7 +27,8 @@ version.
   → `slug-test-pow` (set 9, `273b5e17`)
   → `slug-checkpoint-authority` (set 10, `0ca7466a`)
   → `slug-first-checkpoint` (set 11, `af67093f`)
-  → `slug-phase-a-closeout` (set 12, authorized rollout).
+  → `slug-phase-a-closeout` (set 12, released on master at `e056146f`)
+  → `slug-fighter-dna` (set 13, off-chain DNA foundation).
 - Branch each next change set off the latest completed implementation tip,
   never the live seed branch by default. Use `slug-<topic>` names; set 7 is
   `slug-signed-checkpoints`. HANDOVER.md records the original takeover state.
@@ -141,6 +142,12 @@ does not understand. Never detach, replace, or clear the /data volume.
   Publishing the file does not automatically configure every node.
 
 ## Style
+
+- Fighter DNA is a separate off-chain component in `fighter`; its exact
+  versioned byte contract is in `FIGHTER_DNA.md`. Keep independent reference
+  vectors independently derived, preserve old DNA versions, and do not treat
+  a preview hash as qualifying work or an ownership claim. Complete fighter
+  generation and registration are subsequent work, not node consensus.
 
 - Keep diffs minimal and close to upstream btcd structure; this fork tracks
   upstream and every gratuitous divergence makes merges harder.
