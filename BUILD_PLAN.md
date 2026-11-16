@@ -73,6 +73,15 @@ not a deployed public enrollment service. Next, the miner needs complete payable
 block templates and explicit ordering for prospect admission versus block wins;
 the existing context-only jobs do not contain all transaction/coinbase data.
 
+Set 20 supplies complete payable candidates, matching proof-v2 evidence and
+nonbroadcast node proposal validation (`PROSPECT_WORK.md`). It preserves all
+template transactions and witness data and takes an explicit local payout
+address. The next milestone is a desktop mining pilot: automatic renewal and
+mining with durable retries, wallet/login plus tested full export (D48), and
+start/stop/status/roster UI. The shell can be developed with clearly labelled
+fixtures while real wallet and worker integration proceed. Automatic broadcast
+still requires an explicit winning-block/admission ordering decision.
+
 ### 3. The official pool
 The company-run pool that earns 1% (D35, D36). No turnkey pool exists
 for btcd plus Argon2id, so this is a real build: adapt a Miningcore
@@ -88,7 +97,7 @@ attestation format).
 
 ### 4. Wallet
 btcwallet from the btcd suite. Hosted wallet at signup with full
-export at any time (D58). Signing lives in the clients and on Mike's
+export at any time (D48). Signing lives in the clients and on Mike's
 accounts, never on the assistant's machines.
 Depends on: chain core.
 

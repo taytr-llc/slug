@@ -17,7 +17,7 @@ import (
 	"github.com/taytr-llc/slug/prospect"
 )
 
-const usage = "usage: slugprospect {commitment|commitment-job|verify|context-node|verify-node|gym-id|auth-payload|verify-auth|verify-auth-node} [options]"
+const usage = "usage: slugprospect {commitment|commitment-job|verify|context-node|verify-node|gym-id|auth-payload|verify-auth|verify-auth-node|prepare-work-node} [options]"
 
 func main() {
 	if err := run(os.Args[1:], os.Stdout, os.Stderr); err != nil {
@@ -43,6 +43,8 @@ func run(args []string, stdout, stderr io.Writer) error {
 		return authorizationCommand(args[0], args[1:], stdout, stderr)
 	case "commitment-job":
 		return commitmentJob(args[1:], stdout, stderr)
+	case "prepare-work-node":
+		return prepareWorkNode(args[1:], stdout, stderr)
 	case "commitment", "verify":
 	default:
 		return errors.New(usage)
@@ -121,12 +123,19 @@ func run(args []string, stdout, stderr io.Writer) error {
 }
 
 func readBoundedFile(path string, limit int64) ([]byte, error) {
+	info, err := os.Stat(path)
+	if err != nil {
+		return nil, err
+	}
+	if !info.Mode().IsRegular() {
+		return nil, errors.New("input must be a regular file")
+	}
 	file, err := os.Open(path)
 	if err != nil {
 		return nil, err
 	}
 	defer file.Close()
-	info, err := file.Stat()
+	info, err = file.Stat()
 	if err != nil {
 		return nil, err
 	}

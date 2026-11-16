@@ -18,6 +18,12 @@ version.
 - `master` is the release/deployment branch after closeout. Develop changes
   on topic branches and validate them before promotion. Treat any push to
   master as a live deployment; obtain authorization for a new rollout.
+- On November 16 Mike authorized continued work toward the desktop mining
+  pilot and deployment/verification of completed sets as needed, without
+  per-set rollout questions. That authorization persists: continue until a
+  decision needs him, and raise an explicit blocking question in the chat.
+  Do not claim push-notification delivery; notification controls are unavailable
+  to this session. Existing private-key and consensus rules remain in force.
 - Work lands as numbered **change sets**, each on its own branch stacked on
   the previous one:
   `slug-pow-swap` → `slug-chain-params` → `slug-chain-fixes` → `slug-deploy`
@@ -34,7 +40,8 @@ version.
   → `slug-trusted-prospect-context` (set 16, released on master at `e94c1cfa`)
   → `slug-gym-identity` (set 17, released on master at `7968e0a0`)
   → `slug-prospect-birth` (set 18, released on master at `c88abe11`)
-  → `slug-prospect-service` (set 19, local authority transport).
+  → `slug-prospect-service` (set 19, released on master at `56a4889d`)
+  → `slug-mining-templates` (set 20, complete payable candidates).
 - Branch each next change set off the latest completed implementation tip,
   never the live seed branch by default. Use `slug-<topic>` names; set 7 is
   `slug-signed-checkpoints`. HANDOVER.md records the original takeover state.

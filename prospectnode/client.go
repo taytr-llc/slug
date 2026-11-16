@@ -87,6 +87,12 @@ func callError(ctx context.Context) error {
 }
 
 func (client *Client) call(ctx context.Context, method string, params []any) (json.RawMessage, error) {
+	return client.callResult(ctx, method, params, false)
+}
+
+// callResult allows a null result only for the proposal RPC, whose documented
+// successful result is null. Ordinary node reads must still return a value.
+func (client *Client) callResult(ctx context.Context, method string, params []any, allowNull bool) (json.RawMessage, error) {
 	id := client.nextID.Add(1)
 	payload, err := json.Marshal(struct {
 		JSONRPC string `json:"jsonrpc"`
@@ -141,7 +147,7 @@ func (client *Client) call(ctx context.Context, method string, params []any) (js
 		return nil, errors.New("node RPC reported an error")
 	}
 	result, ok := fields["result"]
-	if !ok || isNull(result) {
+	if !ok || (!allowNull && isNull(result)) {
 		return nil, errors.New("node RPC result is missing")
 	}
 	return result, nil
@@ -249,28 +255,33 @@ func compactTarget(value string) (uint32, string, error) {
 // The template's peer/current checks are preserved, including its genesis
 // exception. These checks are node assertions, not independent synchronization.
 func (client *Client) Resolve(ctx context.Context, policy Policy) (prospect.Context, error) {
+	resolved, _, err := client.resolveTemplateSnapshot(ctx, policy)
+	return resolved, err
+}
+
+func (client *Client) resolveTemplateSnapshot(ctx context.Context, policy Policy) (prospect.Context, json.RawMessage, error) {
 	if err := productionOnly(); err != nil {
-		return prospect.Context{}, err
+		return prospect.Context{}, nil, err
 	}
 	policy, err := validatePolicy(policy)
 	if err != nil {
-		return prospect.Context{}, err
+		return prospect.Context{}, nil, err
 	}
 	ctx, cancel := context.WithTimeout(ctx, operationTimeout)
 	defer cancel()
 	if err := client.identity(ctx); err != nil {
-		return prospect.Context{}, err
+		return prospect.Context{}, nil, err
 	}
 	before, err := client.chainTip(ctx)
 	if err != nil {
-		return prospect.Context{}, err
+		return prospect.Context{}, nil, err
 	}
 	data, err := client.call(ctx, "getblocktemplate", []any{struct {
 		Mode         string   `json:"mode"`
 		Capabilities []string `json:"capabilities"`
 	}{"template", []string{"coinbasevalue"}}})
 	if err != nil {
-		return prospect.Context{}, err
+		return prospect.Context{}, nil, err
 	}
 	var parent, bitsText, targetText string
 	var height int64
@@ -279,47 +290,48 @@ func (client *Client) Resolve(ctx context.Context, policy Policy) (prospect.Cont
 		"previousblockhash": &parent, "height": &height, "bits": &bitsText, "target": &targetText,
 		"mintime": &minTime, "curtime": &curTime, "maxtime": &maxTime,
 	}, true) != nil {
-		return prospect.Context{}, errors.New("invalid node block template")
+		return prospect.Context{}, nil, errors.New("invalid node block template")
 	}
 	parent, err = normalizeHash(parent, true)
 	if err != nil || parent != before.hash || height != before.height+1 {
-		return prospect.Context{}, errors.New("node template parent is inconsistent")
+		return prospect.Context{}, nil, errors.New("node template parent is inconsistent")
 	}
 	if minTime == 0 || minTime != before.median+1 || curTime < minTime || curTime > maxTime {
-		return prospect.Context{}, errors.New("node template time interval is inconsistent")
+		return prospect.Context{}, nil, errors.New("node template time interval is inconsistent")
 	}
 	bits, target, err := compactTarget(bitsText)
 	if err != nil {
-		return prospect.Context{}, err
+		return prospect.Context{}, nil, err
 	}
 	targetText, err = normalizeHash(targetText, true)
 	if err != nil || targetText != target {
-		return prospect.Context{}, errors.New("node template target does not match bits")
+		return prospect.Context{}, nil, errors.New("node template target does not match bits")
 	}
+	templateData := data
 	data, err = client.call(ctx, "getbestblock", []any{})
 	if err != nil {
-		return prospect.Context{}, err
+		return prospect.Context{}, nil, err
 	}
 	var after tip
 	if decodeFields(data, maxRPCResponseSize, map[string]any{"hash": &after.hash, "height": &after.height}, true) != nil {
-		return prospect.Context{}, errors.New("invalid node best block response")
+		return prospect.Context{}, nil, errors.New("invalid node best block response")
 	}
 	after.hash, err = normalizeHash(after.hash, true)
 	if err != nil || after.hash != before.hash || after.height != before.height {
-		return prospect.Context{}, errors.New("node tip changed during context resolution")
+		return prospect.Context{}, nil, errors.New("node tip changed during context resolution")
 	}
 	if err := client.identity(ctx); err != nil {
-		return prospect.Context{}, err
+		return prospect.Context{}, nil, err
 	}
 	if err := ctx.Err(); err != nil {
-		return prospect.Context{}, err
+		return prospect.Context{}, nil, err
 	}
 	return prospect.Context{
 		Version: prospect.Version1, Network: policy.Network, Genesis: policy.Genesis,
 		DNAVersion: policy.DNAVersion, ProspectTarget: policy.ProspectTarget,
 		ParentHash: before.hash, ParentHeight: uint32(before.height), ExpectedBits: bits,
 		MinTimestamp: minTime, MaxTimestamp: maxTime,
-	}, nil
+	}, templateData, nil
 }
 
 // Recheck is a cheap final admission guard for a proof already verified under
