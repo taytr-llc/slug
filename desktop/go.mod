@@ -5,7 +5,7 @@ go 1.27.3
 require (
 	github.com/syndtr/goleveldb v1.0.1-0.20220721030215-126854af5e6d
 	github.com/taytr-llc/slug v0.0.0
-	github.com/taytr-llc/slugwallet v0.0.0-20261116215655-1c1fecb9f4df
+	github.com/taytr-llc/slugwallet v0.0.0-20261116230226-6a7db25ce7a7
 	github.com/wailsapp/wails/v3 v3.1.0
 )
 

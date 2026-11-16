@@ -76,7 +76,7 @@ both repositories, while the ten-module chain workspace stays independent.
 
 ```sh
 cd desktop
-./scripts/build-macos.sh /Users/taytrrip/slug/artifacts/set27
+./scripts/build-macos.sh /Users/taytrrip/slug/artifacts/set29
 ```
 
 The build clears inherited `GOFLAGS`, builds the node/helper with empty tags,
@@ -115,3 +115,13 @@ copies and hashes a frozen node binary before running mining, wallet and fresh
 recovery checks. See `../CHANGESET_27_NOTES.md` for account acceptance evidence. Sets25/26 retain
 funded recovery and four-script spending evidence; those do not substitute for
 set27 account/session and native-login verification.
+
+Set 29 adds an optional private `AccountConfig.AdmissionSigner` adapter for the
+same automatic worker. It releases the account lease during the signing call,
+then rechecks the original mining session and verifies the returned typed gym
+signature. Failure does not fall back to the local wallet. This adapter has no
+webview parameter or command-line switch and does not change the Account Pilot's
+default local fixture wallet. The separate wallet vault acceptance exercises
+gym-only signing during a reset hold, while full recovery export and wrapping-key
+changes remain denied. It does not ship a new-device watch-only wallet or a
+production identity/KMS connection.

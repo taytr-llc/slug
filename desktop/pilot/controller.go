@@ -692,13 +692,18 @@ func (c *Controller) run(ctx context.Context, done chan struct{}, base uint64, m
 		return
 	}
 	defer closeService()
-	signer, err := wallet.Signer(ctx, policy())
-	if err != nil {
-		failed = "wallet_signer_unavailable"
-		return
-	}
-	if c.account != nil {
-		signer = c.accountSigner(signer)
+	var signer prospectworker.Signer
+	if c.account != nil && c.account.AdmissionSigner != nil {
+		signer = c.delegatedAccountSigner()
+	} else {
+		signer, err = wallet.Signer(ctx, policy())
+		if err != nil {
+			failed = "wallet_signer_unavailable"
+			return
+		}
+		if c.account != nil {
+			signer = c.accountSigner(signer)
+		}
 	}
 	worker, err := prospectworker.New(c.manifest.workerConfig(), service, node, signer, c.box)
 	if err != nil {
