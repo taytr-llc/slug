@@ -298,6 +298,9 @@ func TestBoundedRegularFiles(t *testing.T) {
 	if _, err := readBoundedFile(dir, 4); err == nil {
 		t.Fatal("read a directory")
 	}
+	if _, err := readBoundedFile(os.DevNull, 4); err == nil {
+		t.Fatal("accepted a nonregular device as an input file")
+	}
 }
 
 func TestHelp(t *testing.T) {

@@ -33,7 +33,8 @@ version.
   → `slug-prospect-registry` (set 15, released on master at `6443d163`)
   → `slug-trusted-prospect-context` (set 16, released on master at `e94c1cfa`)
   → `slug-gym-identity` (set 17, released on master at `7968e0a0`)
-  → `slug-prospect-birth` (set 18, D68 job-bound birth).
+  → `slug-prospect-birth` (set 18, released on master at `c88abe11`)
+  → `slug-prospect-service` (set 19, local authority transport).
 - Branch each next change set off the latest completed implementation tip,
   never the live seed branch by default. Use `slug-<topic>` names; set 7 is
   `slug-signed-checkpoints`. HANDOVER.md records the original takeover state.
@@ -189,6 +190,16 @@ does not understand. Never detach, replace, or clear the /data volume.
   water even for expiry rejections, fail closed on rollback/uncertain writes,
   and never accept claimant time or nonce on authority APIs. Client handling is
   automatic under D44. See `PROSPECT_BIRTH.md` and spec decision D68.
+
+- `prospectservice` is a loopback-only authority boundary with one active
+  operation, bounded connections/bytes/rates and durable configured capacities.
+  API credentials bind access to a public gym key but never replace admission
+  signatures. Preserve historical receipts after uncertain acknowledgments,
+  drain real work before closing storage and never reopen a poisoned handle
+  automatically. `slugregistryd` is not started by seed deployment. See
+  `PROSPECT_SERVICE.md`. Mining integration still needs complete payable block
+  templates and explicit block-win/admission ordering; do not silently change
+  current-parent eligibility or present context-only jobs as full templates.
 
 - Keep diffs minimal and close to upstream btcd structure; this fork tracks
   upstream and every gratuitous divergence makes merges harder.

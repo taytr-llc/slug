@@ -65,6 +65,14 @@ targets, ownership/transfer state, status history and publication still need
 their own implementation slices. The birth clock trusts the issuing authority's
 clock and durable records; it is not an exact mined timestamp or consensus rule.
 
+Set 19 adds the bounded local authority daemon and validating client transport
+(`PROSPECT_SERVICE.md`, `ADR_001_PROSPECT_SERVICE.md`). It retains a schema-3
+registry across requests, binds API access to gym keys and recovers immutable
+receipts after lost acknowledgments. This is a private integration boundary,
+not a deployed public enrollment service. Next, the miner needs complete payable
+block templates and explicit ordering for prospect admission versus block wins;
+the existing context-only jobs do not contain all transaction/coinbase data.
+
 ### 3. The official pool
 The company-run pool that earns 1% (D35, D36). No turnkey pool exists
 for btcd plus Argon2id, so this is a real build: adapt a Miningcore

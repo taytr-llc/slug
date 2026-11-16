@@ -20,7 +20,7 @@ import (
 	"github.com/taytr-llc/slug/registry"
 )
 
-const usage = "usage: slugregistry {init|init-auth|init-birth|record|record-auth|record-node|record-auth-node|issue-job-node|get-job|record-job-node|get|list|export} [options]"
+const usage = "usage: slugregistry {init|init-auth|init-birth|record|record-auth|record-node|record-auth-node|issue-job-node|get-job|record-job-node|issue-job-service|record-job-service|get|list|export} [options]"
 
 func main() {
 	if err := run(os.Args[1:], os.Stdout, os.Stderr); err != nil {
@@ -48,6 +48,8 @@ func run(args []string, stdout, stderr io.Writer) error {
 		return recordNode(args[0], args[1:], stdout, stderr)
 	case "issue-job-node", "record-job-node":
 		return jobNode(args[0], args[1:], stdout, stderr)
+	case "issue-job-service", "record-job-service":
+		return serviceCommand(args[0], args[1:], stdout, stderr)
 	case "get", "get-job", "list", "export":
 		return read(args[0], args[1:], stdout, stderr)
 	default:
@@ -242,12 +244,20 @@ func read(command string, args []string, stdout, stderr io.Writer) error {
 }
 
 func readBoundedFile(path string, limit int64) ([]byte, error) {
+	// Reject accidental pipes/devices before Open, which can block on a FIFO.
+	info, err := os.Stat(path)
+	if err != nil {
+		return nil, err
+	}
+	if !info.Mode().IsRegular() {
+		return nil, errors.New("input must be a regular file")
+	}
 	file, err := os.Open(path)
 	if err != nil {
 		return nil, err
 	}
 	defer file.Close()
-	info, err := file.Stat()
+	info, err = file.Stat()
 	if err != nil {
 		return nil, err
 	}
