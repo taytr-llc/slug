@@ -45,7 +45,7 @@ var (
 
 	testHash = "000000000000000000496d7ff9bd2c96154a8d64260e8b3b411e625712abb14c"
 
-	testAddr = "3Nxwenay9Z8Lc9JBiywExpnEFiLp6Afp8v"
+	testAddr = "VwGkdxFz1TiAakVuLfvGy6k9o1M4yPrsaD"
 
 	witness = [][]byte{
 		{0x4c, 0xb1, 0xab, 0x12, 0x57, 0x62, 0x1e, 0x41,

@@ -12,8 +12,8 @@ import (
 
 // bip0032MasterPriv1 is the master private extended key from the first set of
 // test vectors in BIP0032.
-const bip0032MasterPriv1 = "xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbP" +
-	"y6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi"
+const bip0032MasterPriv1 = "RWC8zh2hyeVQ3jDP6u3EzrWzPmLoNhdze3C7h1zf9GbEa5Kr9dySsod" +
+	"rx9GQ9tg6EyLWrJ5QKNxDdP4fhh62ZRN2R7cNsWmmFiQBYa5mi7uNAvxA"
 
 // BenchmarkDeriveHardened benchmarks how long it takes to derive a hardened
 // child from a master private extended key.

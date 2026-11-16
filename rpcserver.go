@@ -3629,7 +3629,7 @@ func handleStop(s *rpcServer, cmd interface{}, closeChan <-chan struct{}) (inter
 	case s.requestProcessShutdown <- struct{}{}:
 	default:
 	}
-	return "btcd stopping.", nil
+	return "slugd stopping.", nil
 }
 
 // handleSubmitBlock implements the submitblock command.

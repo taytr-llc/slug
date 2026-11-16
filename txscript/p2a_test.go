@@ -113,7 +113,7 @@ func TestExtractPkScriptAddrs_P2A(t *testing.T) {
 		t.Fatalf("ExtractPkScriptAddrs() addrs = %v, want 1 entry",
 			addrs)
 	}
-	const wantAddr = "bc1pfeessrawgf"
+	const wantAddr = "slug1pfeesk47rxq"
 	if addrs[0].EncodeAddress() != wantAddr {
 		t.Errorf("ExtractPkScriptAddrs() addrs[0] = %v, want %v",
 			addrs[0].EncodeAddress(), wantAddr)
