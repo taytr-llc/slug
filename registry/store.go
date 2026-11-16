@@ -20,13 +20,17 @@ import (
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/opt"
 	"github.com/syndtr/goleveldb/leveldb/util"
+	"github.com/taytr-llc/slug/gymauth"
 	"github.com/taytr-llc/slug/prospect"
 	"github.com/taytr-llc/slug/wire/v2"
 )
 
 const (
-	// Version1 is the supported registry schema and receipt version.
+	// Version1 stores conditional proof evidence without key authorization.
 	Version1 uint32 = 1
+
+	// Version2 requires gym-key authorization in every immutable receipt.
+	Version2 uint32 = 2
 
 	// MaxRecordSize bounds one stored JSON receipt in bytes.
 	MaxRecordSize = 65536
@@ -55,11 +59,12 @@ var (
 // Record is the first successfully verified evidence for a prospect ID.
 // Sequence orders local receipts, not discovery, birth, or chain events.
 type Record struct {
-	Version  uint32            `json:"version"`
-	Sequence uint64            `json:"sequence"`
-	Context  prospect.Context  `json:"context"`
-	Proof    prospect.Proof    `json:"proof"`
-	Verified prospect.Verified `json:"verified"`
+	Version       uint32                 `json:"version"`
+	Sequence      uint64                 `json:"sequence"`
+	Context       prospect.Context       `json:"context"`
+	Proof         prospect.Proof         `json:"proof"`
+	Verified      prospect.Verified      `json:"verified"`
+	Authorization *gymauth.Authorization `json:"authorization,omitempty"`
 }
 
 type marker struct {
@@ -182,7 +187,7 @@ func readMarker(path string) (marker, error) {
 	canonical, _ := json.Marshal(value)
 	canonical = append(canonical, '\n')
 	genesis, err := chainIdentity(value.Network, value.Genesis)
-	if err != nil || value.Application != application || value.Version != Version1 ||
+	if err != nil || value.Application != application || (value.Version != Version1 && value.Version != Version2) ||
 		value.Genesis != genesis || !bytes.Equal(raw, canonical) {
 		return value, fmt.Errorf("%w: unrecognized application marker or schema", ErrCorrupt)
 	}
@@ -193,6 +198,17 @@ func readMarker(path string) (marker, error) {
 // path and retains an incomplete directory after failure for inspection;
 // callers must never erase evidence merely to retry initialization.
 func Create(path string, network uint32, genesis string) (*Store, error) {
+	return create(path, network, genesis, Version1)
+}
+
+// CreateAuthenticated initializes a separate schema-2 registry. Every admission
+// requires a proof-bound gym-key authorization. It does not migrate old evidence
+// or establish an account, wallet balance, ownership transfer, or birth time.
+func CreateAuthenticated(path string, network uint32, genesis string) (*Store, error) {
+	return create(path, network, genesis, Version2)
+}
+
+func create(path string, network uint32, genesis string, version uint32) (*Store, error) {
 	canonicalGenesis, err := chainIdentity(network, genesis)
 	if err != nil {
 		return nil, err
@@ -200,7 +216,7 @@ func Create(path string, network uint32, genesis string) (*Store, error) {
 	if err := os.Mkdir(path, 0700); err != nil {
 		return nil, err
 	}
-	value := marker{application, Version1, network, canonicalGenesis}
+	value := marker{application, version, network, canonicalGenesis}
 	if err := writeMarker(filepath.Join(path, markerName), value); err != nil {
 		return nil, fmt.Errorf("registry initialization incomplete; directory retained: %w", err)
 	}
@@ -212,7 +228,7 @@ func Create(path string, network uint32, genesis string) (*Store, error) {
 	if err != nil {
 		return nil, err
 	}
-	meta := metadata{Version: Version1, Network: network, Genesis: canonicalGenesis}
+	meta := metadata{Version: version, Network: network, Genesis: canonicalGenesis}
 	raw, _ := json.Marshal(meta)
 	batch := new(leveldb.Batch)
 	batch.Put([]byte(metadataKey), raw)
@@ -283,8 +299,17 @@ func (store *Store) decodeRecord(raw []byte, id string) (Record, error) {
 	if err := decodeCanonical(raw, MaxRecordSize, &record); err != nil {
 		return Record{}, err
 	}
-	if record.Version != Version1 || record.Sequence == 0 || record.Sequence > store.meta.LastSequence {
+	if record.Version != store.meta.Version || record.Sequence == 0 || record.Sequence > store.meta.LastSequence {
 		return Record{}, fmt.Errorf("%w: invalid receipt version or sequence", ErrCorrupt)
+	}
+	if (record.Version == Version1 && record.Authorization != nil) ||
+		(record.Version == Version2 && record.Authorization == nil) {
+		return Record{}, fmt.Errorf("%w: receipt authorization does not match schema", ErrCorrupt)
+	}
+	if record.Authorization != nil {
+		if err := gymauth.VerifyAuthorization(record.Context, record.Proof, *record.Authorization); err != nil {
+			return Record{}, fmt.Errorf("%w: invalid stored gym authorization: %v", ErrCorrupt, err)
+		}
 	}
 	genesis, err := chainIdentity(record.Context.Network, record.Context.Genesis)
 	if err != nil || record.Context.Network != store.meta.Network || genesis != store.meta.Genesis {
@@ -293,8 +318,8 @@ func (store *Store) decodeRecord(raw []byte, id string) (Record, error) {
 	if _, err := prospect.CommitmentScript(record.Context, record.Proof.GymID); err != nil {
 		return Record{}, fmt.Errorf("%w: malformed receipt context: %v", ErrCorrupt, err)
 	}
-	// Open checks shapes and linkage only. Full cryptographic verification is
-	// deliberately deferred to reads so opening does not rehash all history.
+	// Open checks shapes, linkage, and cheap key authorization. Argon proof
+	// verification is deferred to reads so opening does not rehash all history.
 	proof := record.Proof
 	if proof.Version != prospect.Version1 || len(proof.Header) != 160 ||
 		len(proof.Coinbase) == 0 || len(proof.Coinbase) > 32768 || len(proof.Coinbase)%2 != 0 ||
@@ -341,7 +366,7 @@ func (store *Store) checkStructure(value marker) error {
 	if err := decodeCanonical(raw, maxMarkerSize, &store.meta); err != nil {
 		return err
 	}
-	if store.meta.Version != Version1 || store.meta.Network != value.Network || store.meta.Genesis != value.Genesis {
+	if store.meta.Version != value.Version || store.meta.Network != value.Network || store.meta.Genesis != value.Genesis {
 		return fmt.Errorf("%w: metadata does not match application marker", ErrCorrupt)
 	}
 	var records, sequences uint64
@@ -435,7 +460,7 @@ func (store *Store) verifiedRecord(id string, raw []byte) (Record, error) {
 // A duplicate returns the original record and false without writing anything.
 // A write error poisons the handle because its durable outcome may be unknown.
 func (store *Store) Record(context prospect.Context, proof prospect.Proof) (Record, bool, error) {
-	return store.record(context, proof, nil)
+	return store.record(context, proof, nil, nil)
 }
 
 // RecordChecked verifies the evidence, then runs check immediately before a
@@ -448,10 +473,26 @@ func (store *Store) RecordChecked(context prospect.Context, proof prospect.Proof
 	if check == nil {
 		return Record{}, false, fmt.Errorf("registry pre-commit check is required")
 	}
-	return store.record(context, proof, check)
+	return store.record(context, proof, nil, check)
 }
 
-func (store *Store) record(context prospect.Context, proof prospect.Proof, check func() error) (Record, bool, error) {
+// RecordAuthorized verifies key authorization before production work and stores
+// both atomically in a schema-2 registry. A valid replay preserves the original
+// signature and receipt. Relaying this specific authorized admission is allowed.
+func (store *Store) RecordAuthorized(context prospect.Context, proof prospect.Proof, authorization gymauth.Authorization) (Record, bool, error) {
+	return store.record(context, proof, &authorization, nil)
+}
+
+// RecordAuthorizedChecked also runs check immediately before writing or
+// acknowledging a duplicate. The same guard rules as RecordChecked apply.
+func (store *Store) RecordAuthorizedChecked(context prospect.Context, proof prospect.Proof, authorization gymauth.Authorization, check func() error) (Record, bool, error) {
+	if check == nil {
+		return Record{}, false, fmt.Errorf("registry pre-commit check is required")
+	}
+	return store.record(context, proof, &authorization, check)
+}
+
+func (store *Store) record(context prospect.Context, proof prospect.Proof, authorization *gymauth.Authorization, check func() error) (Record, bool, error) {
 	store.mu.Lock()
 	defer store.mu.Unlock()
 	if err := store.checkState(); err != nil {
@@ -459,6 +500,10 @@ func (store *Store) record(context prospect.Context, proof prospect.Proof, check
 	}
 	if store.readOnly {
 		return Record{}, false, ErrReadOnly
+	}
+	if (store.meta.Version == Version1 && authorization != nil) ||
+		(store.meta.Version == Version2 && authorization == nil) {
+		return Record{}, false, fmt.Errorf("admission authorization does not match registry schema")
 	}
 	genesis, err := chainIdentity(context.Network, context.Genesis)
 	if err != nil || context.Network != store.meta.Network || genesis != store.meta.Genesis {
@@ -470,6 +515,11 @@ func (store *Store) record(context prospect.Context, proof prospect.Proof, check
 	// Snapshot the only mutable input backing array and normalize nil to the
 	// required empty JSON array. Other input fields are immutable Go values.
 	proof.MerkleBranch = append([]string{}, proof.MerkleBranch...)
+	if authorization != nil {
+		if err := gymauth.VerifyAuthorization(context, proof, *authorization); err != nil {
+			return Record{}, false, err
+		}
+	}
 	verified, err := prospect.Verify(context, proof)
 	if err != nil {
 		return Record{}, false, err
@@ -497,8 +547,8 @@ func (store *Store) record(context prospect.Context, proof prospect.Proof, check
 	if store.meta.LastSequence == ^uint64(0) {
 		return Record{}, false, fmt.Errorf("registry receipt sequence is exhausted")
 	}
-	record := Record{Version: Version1, Sequence: store.meta.LastSequence + 1,
-		Context: context, Proof: proof, Verified: verified}
+	record := Record{Version: store.meta.Version, Sequence: store.meta.LastSequence + 1,
+		Context: context, Proof: proof, Verified: verified, Authorization: authorization}
 	raw, err = json.Marshal(record)
 	if err != nil || len(raw) > MaxRecordSize {
 		return Record{}, false, fmt.Errorf("registry record exceeds %d bytes or cannot be encoded", MaxRecordSize)

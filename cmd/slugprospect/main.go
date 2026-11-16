@@ -17,7 +17,7 @@ import (
 	"github.com/taytr-llc/slug/prospect"
 )
 
-const usage = "usage: slugprospect {commitment|verify|context-node|verify-node} [options]"
+const usage = "usage: slugprospect {commitment|verify|context-node|verify-node|gym-id|auth-payload|verify-auth|verify-auth-node} [options]"
 
 func main() {
 	if err := run(os.Args[1:], os.Stdout, os.Stderr); err != nil {
@@ -37,8 +37,10 @@ func run(args []string, stdout, stderr io.Writer) error {
 	case "-h", "--help", "help":
 		_, err := fmt.Fprintln(stdout, usage+"\nOffline commands use supplied context; node commands resolve an explicitly configured trusted node snapshot.")
 		return err
-	case "context-node", "verify-node":
+	case "context-node", "verify-node", "verify-auth-node":
 		return nodeCommand(args[0], args[1:], stdout, stderr)
+	case "gym-id", "auth-payload", "verify-auth":
+		return authorizationCommand(args[0], args[1:], stdout, stderr)
 	case "commitment", "verify":
 	default:
 		return errors.New(usage)

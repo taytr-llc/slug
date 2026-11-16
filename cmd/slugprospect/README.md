@@ -79,3 +79,45 @@ For guarded local storage, use `slugregistry record-node --db PATH --policy
 policy.json --rpc-config rpc.json --proof share.json`. That command checks the
 node after proof verification and before writing or acknowledging a duplicate.
 Use `slugprospect help` or a command's `-h` option for usage.
+
+Gym-key authorization uses a canonical compressed secp256k1 public key and a
+strict DER, low-S ECDSA signature. These commands accept public inputs only:
+
+```sh
+/tmp/slugprospect gym-id --context trusted.json --public-key <66-hex-public-key>
+/tmp/slugprospect auth-payload --context trusted.json --proof share.json --public-key <66-hex-public-key>
+/tmp/slugprospect verify-auth --context trusted.json --proof share.json --authorization authorization.json
+/tmp/slugprospect verify-auth-node --policy policy.json --rpc-config rpc.json --proof share.json --authorization authorization.json
+```
+
+`gym-id` derives the chain-bound gym identifier. `auth-payload` returns public
+fields `version`, `action: "prospect-admission"`, `gym_id`, `public_key` and
+`digest` for a wallet client to sign. Preparing this payload does not verify
+qualifying work. The CLI has no signing, key-generation or private-key input
+command. The eventual wallet client signs automatically; this is not a player
+signing step. Export and recovery of the wallet-controlled gym key remain
+client responsibilities.
+
+The authorization file contains exactly `version`, `public_key` and
+`signature` and is limited to 4096 bytes. `verify-auth` checks authorization
+before production proof hashing; `verify-auth-node` obtains node context first,
+checks authorization before proof hashing, and performs the same final node
+recheck as `verify-node`. Success adds `authentication: "gym-key-control"` to
+the output. The inner verified result remains `"supplied-context"`. Gym-key
+control does not establish account existence, registered ownership, fighter
+birth, transfer rights or team-gym authority.
+
+Authenticated evidence requires a new, explicitly initialized registry:
+
+```sh
+slugregistry init-auth --db /path/to/new-auth-registry --network 1397511495 --genesis HEX
+slugregistry record-auth --db /path/to/auth-registry --context trusted.json --proof share.json --authorization authorization.json
+slugregistry record-auth-node --db /path/to/auth-registry --policy policy.json --rpc-config rpc.json --proof share.json --authorization authorization.json
+```
+
+These commands persist authorization with the first evidence in schema 2.
+Legacy evidence stores remain schema 1; neither format is automatically
+upgraded or substituted for the other. Unauthenticated recording commands
+cannot write authenticated stores, and authenticated recording commands cannot
+write legacy stores. Existing `get`, `list` and `export` commands read either
+format and re-verify its evidence. A replay preserves the original receipt.

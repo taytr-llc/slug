@@ -4,7 +4,9 @@
 
 // Package registry durably stores immutable, gym-bound prospect work evidence.
 // Receipts remain conditional on the supplied context. They do not establish
-// ownership, control of a gym, canonicality, discovery time, or fighter birth.
+// ownership, canonicality, discovery time, or fighter birth. Explicit schema-2
+// registries additionally verify proof-specific authorization by the key that
+// derives the gym ID; schema-1 evidence retains its unauthenticated meaning.
 //
 // Each dedicated registry belongs to one network and genesis. Its append-only
 // API reserves prospect IDs permanently and orders receipts with consecutive
