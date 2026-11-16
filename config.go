@@ -144,6 +144,7 @@ type config struct {
 	Generate             bool          `long:"generate" description:"Generate (mine) SLUG using the CPU"`
 	FreeTxRelayLimit     float64       `long:"limitfreerelay" description:"Limit relay of transactions with no transaction fee to the given amount in thousands of bytes per minute"`
 	Listeners            []string      `long:"listen" description:"Add an interface/port to listen for connections (default all interfaces port: 29333, testnet: 18333)"`
+	LocalWalletPilot     bool          `long:"localwalletpilot" description:"Allow templates on an idle, isolated Phase-A wallet pilot (explicit loopback-only connect/listen/RPC required)"`
 	LogDir               string        `long:"logdir" description:"Directory to log output."`
 	MaxOrphanTxs         int           `long:"maxorphantx" description:"Max number of orphan transactions to keep in memory"`
 	MaxPeers             int           `long:"maxpeers" description:"Max number of inbound and outbound peers. Must be greater than zero. Outbound slots for the configured peer mode are reserved before inbound capacity is calculated"`
@@ -770,6 +771,12 @@ func loadConfig() (*config, []string, error) {
 		}
 	}
 
+	// Validate before adding implicit listeners or normalizing hostnames. The
+	// pilot exception must be an explicit isolated configuration.
+	if err := validateLocalWalletPilot(&cfg, activeNetParams.Params); err != nil {
+		return nil, nil, err
+	}
+
 	// --addPeer and --connect do not mix.
 	if len(cfg.AddPeers) > 0 && len(cfg.ConnectPeers) > 0 {
 		str := "%s: the --addpeer and --connect options can not be " +
@@ -1313,4 +1320,51 @@ func btcdLookup(host string) ([]net.IP, error) {
 	}
 
 	return cfg.lookup(host)
+}
+
+// literalLoopbackEndpoint accepts explicit numeric loopback host:port pairs.
+// Hostnames, wildcard listeners, zones, and implicit/default ports are excluded.
+func literalLoopbackEndpoint(endpoint string) bool {
+	host, port, err := net.SplitHostPort(endpoint)
+	if err != nil {
+		return false
+	}
+	ip := net.ParseIP(host)
+	n, err := strconv.ParseUint(port, 10, 16)
+	return ip != nil && ip.IsLoopback() && err == nil && n != 0 &&
+		strconv.FormatUint(n, 10) == port
+}
+
+// validateLocalWalletPilot constrains the optional template-age exception to
+// an explicitly configured connect-only Phase-A network. Connect-only mode
+// disables discovered outbound peers in server.go, even with a retained addr DB.
+func validateLocalWalletPilot(c *config, params *chaincfg.Params) error {
+	if !c.LocalWalletPilot {
+		return nil
+	}
+	invalid := errors.New("localwalletpilot requires explicit isolated Phase-A loopback networking and RPC")
+	if params == nil || params.Net != chaincfg.MainNetParams.Net ||
+		params.GenesisHash == nil || *params.GenesisHash != *chaincfg.MainNetParams.GenesisHash ||
+		c.TestNet3 || c.TestNet4 || c.RegressionTest || c.SimNet || c.SigNet ||
+		len(params.Checkpoints) != 0 || len(c.AddCheckpoints) != 0 ||
+		!c.DisableDNSSeed || len(c.ConnectPeers) == 0 || len(c.AddPeers) != 0 ||
+		c.Upnp || len(c.ExternalIPs) != 0 || c.Proxy != "" || c.OnionProxy != "" ||
+		c.TorIsolation || c.Profile != "" || c.DisableRPC || c.RPCUser == "" ||
+		c.RPCPass == "" || len(c.RPCListeners) == 0 ||
+		(!c.DisableListen && len(c.Listeners) == 0) {
+		return invalid
+	}
+	for _, deployment := range []uint32{chaincfg.DeploymentCSV, chaincfg.DeploymentSegwit, chaincfg.DeploymentTaproot} {
+		if params.Deployments[deployment].AlwaysActiveHeight != chaincfg.PhaseAActivationHeight {
+			return invalid
+		}
+	}
+	for _, endpoints := range [][]string{c.ConnectPeers, c.Listeners, c.RPCListeners} {
+		for _, endpoint := range endpoints {
+			if !literalLoopbackEndpoint(endpoint) {
+				return invalid
+			}
+		}
+	}
+	return nil
 }

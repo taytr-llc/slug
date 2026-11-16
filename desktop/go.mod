@@ -1,10 +1,11 @@
 module github.com/taytr-llc/slug/desktop
 
-go 1.27.0
+go 1.27.3
 
 require (
 	github.com/syndtr/goleveldb v1.0.1-0.20220721030215-126854af5e6d
 	github.com/taytr-llc/slug v0.0.0
+	github.com/taytr-llc/slugwallet v0.0.0-20261116192828-f7cb5fb872f0
 	github.com/wailsapp/wails/v3 v3.1.0
 )
 
@@ -18,3 +19,5 @@ require (
 )
 
 replace github.com/taytr-llc/slug => ..
+
+replace github.com/taytr-llc/slugwallet => ../../slugwallet

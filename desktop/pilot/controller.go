@@ -15,7 +15,6 @@ import (
 	"time"
 
 	"github.com/syndtr/goleveldb/leveldb"
-	"github.com/taytr-llc/slug/btcec/v2"
 	"github.com/taytr-llc/slug/gymauth"
 	"github.com/taytr-llc/slug/prospect"
 	"github.com/taytr-llc/slug/prospectjob"
@@ -41,6 +40,8 @@ type Controller struct {
 	closed      bool
 	store       *registry.Store
 	box         *prospectworker.Outbox
+	wallet      *walletRuntime
+	operation   string
 }
 
 func New(config Config) (*Controller, error) {
@@ -52,45 +53,51 @@ func New(config Config) (*Controller, error) {
 	}
 	config.DataDir = filepath.Clean(config.DataDir)
 	config.NodeBinary = filepath.Clean(config.NodeBinary)
-	info, e := os.Stat(config.NodeBinary)
-	if e != nil || !info.Mode().IsRegular() {
+	marker := filepath.Join(config.DataDir, "SLUG-PILOT.json")
+	// Reject old identities before even opening their instance-lock database.
+	// Network/genesis alone cannot make old cached chains or receipts v2 data.
+	var before manifest
+	if _, err := os.Lstat(marker); err == nil {
+		if readJSON(marker, 8192, &before) != nil || !before.valid() || before.Phase == "initializing" {
+			return nil, errors.New("unsupported or incomplete pilot identity; retained data was not changed")
+		}
+	} else if !os.IsNotExist(err) {
+		return nil, errors.New("pilot identity unavailable")
+	}
+	info, err := os.Stat(config.NodeBinary)
+	if err != nil || !info.Mode().IsRegular() {
 		return nil, errors.New("bundled node binary is unavailable")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	cmd := exec.CommandContext(ctx, config.NodeBinary, "--version")
 	var output limitedBuffer
-	cmd.Stdout = &output
-	cmd.Stderr = io.Discard
+	cmd.Stdout, cmd.Stderr = &output, io.Discard
 	if cmd.Run() != nil || strings.TrimSpace(output.String()) != "slugd version 0.27.0" {
 		return nil, errors.New("normal SLUG node binary is required")
 	}
-	if e = os.Mkdir(config.DataDir, 0700); e != nil && !os.IsExist(e) {
-		return nil, errors.New("pilot directory is unavailable")
+	if err := os.Mkdir(config.DataDir, 0700); err != nil && !os.IsExist(err) {
+		return nil, errors.New("pilot directory unavailable")
 	}
-	info, e = os.Lstat(config.DataDir)
-	if e != nil || !info.IsDir() || info.Mode()&os.ModeSymlink != 0 {
+	if info, err := os.Lstat(config.DataDir); err != nil || !info.IsDir() || info.Mode()&os.ModeSymlink != 0 {
 		return nil, errors.New("pilot directory must be a real directory")
 	}
-	marker := filepath.Join(config.DataDir, "SLUG-PILOT.json")
-	// The only pre-marker artifact we may adopt is our own instance lock.
-	// Acquire that lock before choosing or writing the durable identity.
-	if _, e = os.Lstat(marker); os.IsNotExist(e) {
+	if _, err := os.Lstat(marker); os.IsNotExist(err) {
 		entries, err := os.ReadDir(config.DataDir)
 		if err != nil {
-			return nil, errors.New("pilot directory is unavailable")
+			return nil, errors.New("pilot directory unavailable")
 		}
 		for _, entry := range entries {
 			if entry.Name() != "instance-lock" {
-				return nil, errors.New("existing directory is not a pilot")
+				return nil, errors.New("existing directory is not a wallet pilot")
 			}
 		}
 	}
 	if plainChild(filepath.Join(config.DataDir, "instance-lock"), true) != nil {
 		return nil, errors.New("invalid managed pilot directory")
 	}
-	lock, e := leveldb.OpenFile(filepath.Join(config.DataDir, "instance-lock"), nil)
-	if e != nil {
+	lock, err := leveldb.OpenFile(filepath.Join(config.DataDir, "instance-lock"), nil)
+	if err != nil {
 		return nil, errors.New("pilot is already open or unavailable")
 	}
 	keepLock := false
@@ -99,78 +106,99 @@ func New(config Config) (*Controller, error) {
 			_ = lock.Close()
 		}
 	}()
-	fresh := false
 	var m manifest
-	if _, e = os.Lstat(marker); os.IsNotExist(e) {
+	if _, err := os.Lstat(marker); os.IsNotExist(err) {
 		entries, err := os.ReadDir(config.DataDir)
 		if err != nil || len(entries) != 1 || entries[0].Name() != "instance-lock" {
-			return nil, errors.New("existing directory is not a pilot")
+			return nil, errors.New("existing directory is not a wallet pilot")
 		}
-		p, err := unusedPort()
+		port, err := unusedPort()
 		if err != nil {
 			return nil, errors.New("loopback port unavailable")
 		}
-		m = manifest{Version: 1, Mode: Mode, AuthorityPort: p}
+		m = manifest{Version: 2, Mode: Mode, AuthorityPort: port, Phase: "new", Network: policy().Network, Genesis: genesis, ActivationHeight: 62, RecoveryProfile: "slug-phase-a-fixture-bip39-v1"}
 		if atomicJSON(marker, m) != nil {
 			return nil, errors.New("pilot initialization failed")
 		}
-		fresh = true
-	} else if readJSON(marker, 1024, &m) != nil || m.Version != 1 || m.Mode != Mode || m.AuthorityPort == 0 {
-		return nil, errors.New("invalid pilot identity")
+		for _, name := range []string{"primary-chain", "peer-chain"} {
+			if os.Mkdir(filepath.Join(config.DataDir, name), 0700) != nil {
+				return nil, errors.New("pilot initialization failed")
+			}
+		}
+	} else if readJSON(marker, 8192, &m) != nil || !m.valid() || m.Phase == "initializing" {
+		return nil, errors.New("unsupported or incomplete pilot identity")
 	}
-	for _, name := range []string{"registry", "outbox", "primary-chain", "peer-chain"} {
+	for _, name := range []string{"wallet", "registry", "outbox", "primary-chain", "peer-chain"} {
 		if plainChild(filepath.Join(config.DataDir, name), true) != nil {
 			return nil, errors.New("invalid managed pilot directory")
 		}
 	}
-	if !fresh {
+	c := &Controller{config: config, manifest: m, lock: lock, snapshot: Snapshot{State: "stopped", Mode: Mode, WalletState: "closed", BackupState: "idle", Prospects: []Prospect{}}}
+	if m.Phase == "new" {
+		if err := c.checkNewData(); err != nil {
+			return nil, err
+		}
+	} else {
 		var ready manifest
-		if readJSON(filepath.Join(config.DataDir, "SLUG-PILOT-READY.json"), 1024, &ready) != nil || ready != m {
-			return nil, errors.New("pilot initialization is incomplete")
+		if readJSON(filepath.Join(config.DataDir, "SLUG-PILOT-READY.json"), 8192, &ready) != nil || ready != m || checkInitializedChains(config.DataDir, m) != nil {
+			return nil, errors.New("pilot initialized data is unavailable")
 		}
-	}
-	for _, name := range []string{"primary-chain", "peer-chain"} {
-		path := filepath.Join(config.DataDir, name)
-		if fresh {
-			if os.Mkdir(path, 0700) != nil {
-				return nil, errors.New("pilot chain initialization failed")
-			}
-		} else if info, err := os.Lstat(path); err != nil || !info.IsDir() {
-			return nil, errors.New("pilot chain data is missing")
+		wallet, err := openFixtureWallet(filepath.Join(config.DataDir, "wallet"), false)
+		if err != nil {
+			return nil, errors.New("pilot wallet unavailable")
 		}
-	}
-	if checkInitializedChains(config.DataDir, m) != nil {
-		return nil, errors.New("pilot chain data is unavailable")
-	}
-	c := &Controller{config: config, manifest: m, lock: lock, snapshot: Snapshot{State: "stopped", Mode: Mode, Prospects: []Prospect{}}}
-	if !fresh {
+		identity := wallet.Identity()
+		closeErr := wallet.Close()
+		if identity != m.Identity || closeErr != nil {
+			return nil, errors.New("pilot wallet identity mismatch")
+		}
+		c.snapshot.GymID, c.snapshot.GymPublicKey, c.snapshot.PayoutAddress = m.Identity.GymID, m.Identity.GymPublicKey, m.Payout.Address
 		var status savedStatus
-		statusPath := filepath.Join(config.DataDir, "status.json")
-		if _, e := os.Lstat(statusPath); e == nil {
-			if readJSON(statusPath, 1024, &status) != nil {
+		if _, err := os.Lstat(filepath.Join(config.DataDir, "status.json")); err == nil {
+			if readJSON(filepath.Join(config.DataDir, "status.json"), 2048, &status) != nil {
 				return nil, errors.New("invalid pilot status")
 			}
-			c.snapshot.Height = status.Height
-			c.snapshot.Attempts = status.Attempts
+			c.snapshot.Height, c.snapshot.Attempts = status.Height, status.Attempts
+			c.snapshot.WalletHeight, c.snapshot.SpendableAtoms, c.snapshot.ImmatureAtoms = status.WalletHeight, status.SpendableAtoms, status.ImmatureAtoms
 		}
-	}
-	// Both stores are initialized once and retained; never erase a partial or
-	// corrupt directory. Failure preserves it for inspection rather than reset.
-	if e = c.openStores(fresh); e != nil {
-		return nil, e
-	}
-	if e = c.refresh(nil, nil, 0); e != nil {
-		closeErr := c.closeStores()
-		return nil, errors.Join(errors.New("pilot evidence is unavailable"), closeErr)
-	}
-	if e := c.closeStores(); e != nil {
-		return nil, e
-	}
-	if fresh && atomicJSON(filepath.Join(config.DataDir, "SLUG-PILOT-READY.json"), m) != nil {
-		return nil, errors.New("pilot initialization failed")
+		if err := c.openStores(false); err != nil {
+			return nil, err
+		}
+		refreshErr := c.refresh(nil, nil, 0)
+		closeErr = c.closeStores()
+		if refreshErr != nil || closeErr != nil {
+			return nil, errors.New("pilot evidence is unavailable")
+		}
 	}
 	keepLock = true
 	return c, nil
+}
+
+// A never-started v2 root is reopenable, but it cannot adopt any existing chain,
+// wallet or receipt data. First Start owns their one-time initialization.
+func (c *Controller) checkNewData() error {
+	entries, err := os.ReadDir(c.config.DataDir)
+	if err != nil {
+		return errors.New("new pilot directory unavailable")
+	}
+	allowed := map[string]bool{"instance-lock": true, "SLUG-PILOT.json": true, "primary-chain": true, "peer-chain": true}
+	for _, entry := range entries {
+		if !allowed[entry.Name()] {
+			return errors.New("new pilot contains unexpected retained data")
+		}
+	}
+	for _, name := range []string{"primary-chain", "peer-chain"} {
+		path := filepath.Join(c.config.DataDir, name)
+		info, err := os.Lstat(path)
+		if err != nil || !info.IsDir() || info.Mode()&os.ModeSymlink != 0 {
+			return errors.New("new pilot chain directory unavailable")
+		}
+		contents, err := os.ReadDir(path)
+		if err != nil || len(contents) != 0 {
+			return errors.New("preexisting chain cannot be adopted")
+		}
+	}
+	return nil
 }
 
 type limitedBuffer struct{ data []byte }
@@ -188,7 +216,7 @@ func (c *Controller) openStores(initialize bool) error {
 	defer c.resources.Unlock()
 	var e error
 	path := filepath.Join(c.config.DataDir, "registry")
-	if _, err := os.Lstat(path); os.IsNotExist(err) && initialize {
+	if initialize {
 		c.store, e = registry.CreateMining(path, policy().Network, genesis)
 	} else {
 		c.store, e = registry.Open(path, false)
@@ -203,7 +231,7 @@ func (c *Controller) openStores(initialize bool) error {
 		return errors.New("pilot registry identity mismatch")
 	}
 	path = filepath.Join(c.config.DataDir, "outbox")
-	if _, err := os.Lstat(path); os.IsNotExist(err) && initialize {
+	if initialize {
 		c.box, e = prospectworker.CreateOutbox(path, c.manifest.workerConfig())
 	} else {
 		c.box, e = prospectworker.OpenOutbox(path, c.manifest.workerConfig())
@@ -246,10 +274,17 @@ func (c *Controller) Start() error {
 		return errors.New("pilot is closed")
 	}
 	if c.cancel != nil {
-		return nil
+		if c.operation == "mining" {
+			return nil
+		}
+		return errors.New("pilot operation is in progress")
+	}
+	if c.manifest.Phase == "initializing" {
+		return errors.New("pilot initialization is incomplete")
 	}
 	ctx, cancel := context.WithCancel(context.Background())
 	c.cancel = cancel
+	c.operation = "mining"
 	c.done = make(chan struct{})
 	c.snapshot.State = "starting"
 	c.snapshot.LastError = ""
@@ -260,7 +295,9 @@ func (c *Controller) Stop() {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	if c.cancel != nil {
-		c.snapshot.State = "stopping"
+		if c.operation == "mining" {
+			c.snapshot.State = "stopping"
+		}
 		c.cancel()
 	}
 }
@@ -276,7 +313,11 @@ func (c *Controller) Close() error {
 		if done != nil {
 			<-done
 		}
+		// A stopped receipt export may own a temporary outbox handle. Drain it
+		// before releasing the application instance lock as well.
+		c.resources.Lock()
 		err := c.lock.Close()
+		c.resources.Unlock()
 		c.mu.Lock()
 		defer c.mu.Unlock()
 		c.closeErr = c.shutdownErr
@@ -297,6 +338,15 @@ func (c *Controller) Receipt(sequence uint64) (record registry.Record, resultErr
 	}
 	c.resources.Lock()
 	defer c.resources.Unlock()
+	c.mu.Lock()
+	closed := c.closed
+	c.mu.Unlock()
+	if closed {
+		return registry.Record{}, errors.New("pilot is closed")
+	}
+	if c.manifest.Phase != "ready" {
+		return registry.Record{}, errors.New("receipt not found")
+	}
 	box := c.box
 	if box == nil {
 		var e error
@@ -371,6 +421,15 @@ func (c *Controller) refresh(worker *prospectworker.Worker, node *childNode, bas
 		validHeight = node.rpc.call(ctx, "getblockcount", &height) == nil
 		cancel()
 	}
+	var view walletView
+	validWallet := false
+	if c.wallet != nil {
+		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		var err error
+		view, err = c.wallet.Snapshot(ctx)
+		validWallet = err == nil && view.Height >= 0 && view.Spendable >= 0 && view.Immature >= 0
+		cancel()
+	}
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	c.snapshot.Prospects = prospects
@@ -385,6 +444,18 @@ func (c *Controller) refresh(worker *prospectworker.Worker, node *childNode, bas
 	}
 	if validHeight {
 		c.snapshot.Height = height
+	}
+	if validWallet {
+		c.snapshot.WalletHeight = uint64(view.Height)
+		c.snapshot.SpendableAtoms, c.snapshot.ImmatureAtoms = view.Spendable, view.Immature
+		c.snapshot.WalletState = "syncing"
+		if view.Synced {
+			c.snapshot.WalletState = "ready"
+		}
+	} else if c.wallet != nil {
+		// Retain the last coherent amounts but never advertise current sync
+		// after a disconnected or changing RPC observation.
+		c.snapshot.WalletState = "syncing"
 	}
 	return nil
 }
@@ -404,112 +475,174 @@ func (a pacedAuthority) Submit(ctx context.Context, j prospectjob.Job, p prospec
 }
 func (c *Controller) run(ctx context.Context, done chan struct{}, base uint64) {
 	failed := ""
+	fresh := c.manifest.Phase == "new"
 	defer func() {
-		s := c.Snapshot()
-		if atomicJSON(filepath.Join(c.config.DataDir, "status.json"), savedStatus{s.Height, s.Attempts}) != nil {
-			failed = "storage_failed"
-			c.mu.Lock()
-			c.shutdownErr = errors.Join(c.shutdownErr, errors.New("pilot status save failed"))
-			c.mu.Unlock()
+		c.saveStatus(&failed)
+		if fresh {
+			var durable manifest
+			if readJSON(filepath.Join(c.config.DataDir, "SLUG-PILOT.json"), 8192, &durable) != nil || durable.Phase != "ready" {
+				c.resources.Lock()
+				c.mu.Lock()
+				c.manifest.Phase, c.manifest.Identity, c.manifest.Payout = "initializing", walletIdentity{}, walletPayout{}
+				c.mu.Unlock()
+				c.resources.Unlock()
+			}
 		}
 		c.mu.Lock()
-		c.cancel = nil
+		c.cancel, c.operation = nil, ""
 		c.snapshot.HashesPerSecond = 0
+		c.snapshot.WalletState = "closed"
 		if failed != "" {
-			c.snapshot.State = "failed"
-			c.snapshot.LastError = failed
+			c.snapshot.State, c.snapshot.LastError = "failed", failed
 		} else {
 			c.snapshot.State = "stopped"
 		}
 		close(done)
 		c.mu.Unlock()
 	}()
-	// Bind the exact persisted authority origin before enabling the worker.
-	// A conflict fails rather than selecting a new outbox identity.
-	if checkInitializedChains(c.config.DataDir, c.manifest) != nil {
+	if fresh {
+		if c.checkNewData() != nil {
+			failed = "initialization_failed"
+			return
+		}
+		m := c.manifest
+		m.Phase = "initializing"
+		if atomicJSON(filepath.Join(c.config.DataDir, "SLUG-PILOT.json"), m) != nil {
+			failed = "storage_failed"
+			return
+		}
+		c.resources.Lock()
+		c.mu.Lock()
+		c.manifest = m
+		c.mu.Unlock()
+		c.resources.Unlock()
+	} else if c.manifest.Phase != "ready" || checkInitializedChains(c.config.DataDir, c.manifest) != nil {
 		failed = "chain_data_missing"
 		return
 	}
-	if e := c.openStores(false); e != nil {
+	// First initialization cannot abandon a newly committed wallet on normal
+	// Stop/Quit. Drain this bounded transaction to its durable ready identity;
+	// actual failures leave the explicit incomplete phase for inspection.
+	startupBase := ctx
+	if fresh {
+		startupBase = context.Background()
+	}
+	startup, cancelStartup := context.WithTimeout(startupBase, 30*time.Second)
+	defer cancelStartup()
+	nodes, err := c.openNodes(startup)
+	if err != nil {
+		if errors.Is(err, errPilotNodeClose) {
+			failed = "node_shutdown_failed"
+		} else if ctx.Err() == nil || fresh {
+			failed = "node_start_failed"
+		}
+		return
+	}
+	defer func() {
+		if nodes.Close() != nil {
+			failed = "node_shutdown_failed"
+			c.noteShutdown("pilot node shutdown failed")
+		}
+	}()
+	wallet, err := openFixtureWallet(filepath.Join(c.config.DataDir, "wallet"), fresh)
+	if err != nil {
+		failed = "wallet_unavailable"
+		return
+	}
+	c.resources.Lock()
+	c.wallet = wallet
+	c.resources.Unlock()
+	defer func() {
+		c.resources.Lock()
+		c.wallet = nil
+		c.resources.Unlock()
+		if wallet.Close() != nil {
+			failed = "wallet_shutdown_failed"
+			c.noteShutdown("pilot wallet shutdown failed")
+		}
+	}()
+	c.mu.Lock()
+	c.snapshot.WalletState = "connecting"
+	c.mu.Unlock()
+	if wallet.Attach(startup, nodes.rpcConfig()) != nil {
+		failed = "wallet_connection_failed"
+		return
+	}
+	var expected *walletPayout
+	if !fresh {
+		expected = &c.manifest.Payout
+	}
+	payout, err := wallet.EnsurePayout(startup, expected)
+	if err != nil {
+		failed = "wallet_payout_failed"
+		return
+	}
+	if waitWallet(startup, wallet, nodes.primary) != nil {
+		failed = "wallet_connection_failed"
+		return
+	}
+	identity := wallet.Identity()
+	if !fresh && identity != c.manifest.Identity {
+		failed = "wallet_identity_mismatch"
+		return
+	}
+	if fresh {
+		m := c.manifest
+		m.Phase, m.Identity, m.Payout = "ready", identity, payout
+		if !m.valid() {
+			failed = "wallet_identity_mismatch"
+			return
+		}
+		// The in-memory identity is needed for store creation, but a failed
+		// initialization remains durably marked initializing, never adopted.
+		c.resources.Lock()
+		c.mu.Lock()
+		c.manifest = m
+		c.mu.Unlock()
+		c.resources.Unlock()
+	}
+	if err := c.openStores(fresh); err != nil {
 		failed = "storage_failed"
 		return
 	}
 	defer func() {
-		if err := c.closeStores(); err != nil {
+		if c.closeStores() != nil {
 			failed = "storage_close_failed"
-			c.mu.Lock()
-			c.shutdownErr = errors.Join(c.shutdownErr, err)
-			c.mu.Unlock()
+			c.noteShutdown("pilot storage close failed")
 		}
 	}()
-	ports := make([]uint16, 4)
-	seen := map[uint16]bool{c.manifest.AuthorityPort: true}
-	for i := range ports {
-		for {
-			p, e := unusedPort()
-			if e != nil {
-				failed = "loopback_unavailable"
-				return
-			}
-			if !seen[p] {
-				ports[i] = p
-				seen[p] = true
-				break
-			}
+	if fresh {
+		if markInitializedChains(c.config.DataDir, c.manifest) != nil || atomicJSON(filepath.Join(c.config.DataDir, "SLUG-PILOT-READY.json"), c.manifest) != nil || atomicJSON(filepath.Join(c.config.DataDir, "SLUG-PILOT.json"), c.manifest) != nil {
+			failed = "storage_failed"
+			return
 		}
 	}
-	peer, e := startNode(c.config.NodeBinary, c.config.DataDir, "peer", ports[0], ports[1], ports[3], true)
-	if e != nil {
-		failed = "node_start_failed"
+	c.mu.Lock()
+	c.snapshot.PayoutAddress, c.snapshot.GymID, c.snapshot.GymPublicKey = payout.Address, identity.GymID, identity.GymPublicKey
+	c.mu.Unlock()
+	if c.refresh(nil, nodes.primary, base) != nil {
+		failed = "wallet_status_failed"
 		return
 	}
-	stopNode := func(node *childNode) {
-		if node.stop() != nil {
-			failed = "node_shutdown_failed"
-			c.mu.Lock()
-			c.shutdownErr = errors.Join(c.shutdownErr, errors.New("pilot node shutdown failed"))
-			c.mu.Unlock()
-		}
-	}
-	defer stopNode(peer)
-	primary, e := startNode(c.config.NodeBinary, c.config.DataDir, "primary", ports[2], 0, ports[1], false)
-	if e != nil {
-		failed = "node_start_failed"
+	if ctx.Err() != nil {
 		return
-	}
-	defer stopNode(primary)
-	startup, cancelStartup := context.WithTimeout(ctx, 30*time.Second)
-	e = waitNode(startup, primary, true)
-	if e == nil {
-		e = waitNode(startup, peer, false)
 	}
 	cancelStartup()
-	if e != nil {
-		if ctx.Err() == nil {
-			failed = "node_unavailable"
-		}
-		return
-	}
-	if markInitializedChains(c.config.DataDir, c.manifest) != nil {
-		failed = "storage_failed"
-		return
-	}
-	node, e := prospectnode.NewClient(prospectnode.RPCConfig{Version: 1, URL: primary.rpc.url, Username: primary.rpc.user, Password: primary.rpc.password})
-	if e != nil {
+	node, err := prospectnode.NewClient(nodes.rpcConfig())
+	if err != nil {
 		failed = "node_unavailable"
 		return
 	}
 	defer node.Close()
 	token, _ := hex.DecodeString(fixtureToken)
 	digest := sha256.Sum256(token)
-	server, e := prospectservice.NewServer(prospectservice.ServerConfig{Version: 2, Listen: strings.TrimPrefix(c.manifest.origin(), "http://"), Clients: []prospectservice.Credential{{PublicKey: fixturePublicKey, TokenSHA256: hex.EncodeToString(digest[:])}}, MaxJobs: 1000, MaxRecords: 1000}, policy(), node, c.store)
-	if e != nil {
+	server, err := prospectservice.NewServer(prospectservice.ServerConfig{Version: 2, Listen: strings.TrimPrefix(c.manifest.origin(), "http://"), Clients: []prospectservice.Credential{{PublicKey: identity.GymPublicKey, TokenSHA256: hex.EncodeToString(digest[:])}}, MaxJobs: 1000, MaxRecords: 1000}, policy(), node, c.store)
+	if err != nil {
 		failed = "authority_unavailable"
 		return
 	}
 	authorityCtx, cancelAuthority := context.WithCancel(context.Background())
-	serverDone := make(chan error, 1)
-	ready := make(chan string, 1)
+	serverDone, ready := make(chan error, 1), make(chan string, 1)
 	go func() { serverDone <- server.Run(authorityCtx, func(origin string) { ready <- origin }) }()
 	serverFinished := false
 	defer func() {
@@ -531,23 +664,19 @@ func (c *Controller) run(ctx context.Context, done chan struct{}, base uint64) {
 	case <-ctx.Done():
 		return
 	}
-	service, e := prospectservice.NewClient(prospectservice.ClientConfig{Version: 2, URL: c.manifest.origin(), Token: fixtureToken}, policy())
-	if e != nil {
+	service, err := prospectservice.NewClient(prospectservice.ClientConfig{Version: 2, URL: c.manifest.origin(), Token: fixtureToken}, policy())
+	if err != nil {
 		failed = "authority_unavailable"
 		return
 	}
 	defer service.Close()
-	scalar := make([]byte, 32)
-	scalar[31] = 1 // Public fixture only. Never a wallet.
-	key, _ := btcec.PrivKeyFromBytes(scalar)
-	signer := func(ctx context.Context, initial prospect.Context, proof prospect.Proof) (gymauth.Authorization, error) {
-		if e := ctx.Err(); e != nil {
-			return gymauth.Authorization{}, e
-		}
-		return gymauth.SignAdmission(initial, proof, key)
+	signer, err := wallet.Signer(ctx, policy())
+	if err != nil {
+		failed = "wallet_signer_unavailable"
+		return
 	}
-	worker, e := prospectworker.New(c.manifest.workerConfig(), pacedAuthority{service}, node, signer, c.box)
-	if e != nil {
+	worker, err := prospectworker.New(c.manifest.workerConfig(), pacedAuthority{service}, node, signer, c.box)
+	if err != nil {
 		failed = "worker_unavailable"
 		return
 	}
@@ -564,30 +693,28 @@ func (c *Controller) run(ctx context.Context, done chan struct{}, base uint64) {
 	defer ticker.Stop()
 	for {
 		select {
-		case e := <-workerDone:
-			if e != nil {
+		case err := <-workerDone:
+			if err != nil {
 				failed = "worker_failed"
 			}
-			if c.refresh(worker, primary, base) != nil {
+			if c.refresh(worker, nodes.primary, base) != nil {
 				failed = "storage_failed"
-				c.mu.Lock()
-				c.shutdownErr = errors.Join(c.shutdownErr, errors.New("pilot final evidence read failed"))
-				c.mu.Unlock()
+				c.noteShutdown("pilot final evidence read failed")
 			}
 			return
 		case <-ticker.C:
-			if c.refresh(worker, primary, base) != nil {
+			if c.refresh(worker, nodes.primary, base) != nil {
 				failed = "storage_failed"
 				cancelWorker()
 				<-workerDone
 				return
 			}
-		case <-primary.done:
+		case <-nodes.primary.done:
 			failed = "node_exited"
 			cancelWorker()
 			<-workerDone
 			return
-		case <-peer.done:
+		case <-nodes.peer.done:
 			failed = "node_exited"
 			cancelWorker()
 			<-workerDone
@@ -599,5 +726,25 @@ func (c *Controller) run(ctx context.Context, done chan struct{}, base uint64) {
 			<-workerDone
 			return
 		}
+	}
+}
+
+func (c *Controller) noteShutdown(message string) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	c.shutdownErr = errors.Join(c.shutdownErr, errors.New(message))
+}
+func (c *Controller) saveStatus(failed *string) {
+	// A failed first initialization must retain its original durable intent,
+	// and a never-started pilot must stay empty/reopenable.
+	var durable manifest
+	if readJSON(filepath.Join(c.config.DataDir, "SLUG-PILOT.json"), 8192, &durable) != nil || durable.Phase != "ready" {
+		return
+	}
+	s := c.Snapshot()
+	status := savedStatus{Height: s.Height, Attempts: s.Attempts, WalletHeight: s.WalletHeight, SpendableAtoms: s.SpendableAtoms, ImmatureAtoms: s.ImmatureAtoms}
+	if atomicJSON(filepath.Join(c.config.DataDir, "status.json"), status) != nil {
+		*failed = "storage_failed"
+		c.noteShutdown("pilot status save failed")
 	}
 }

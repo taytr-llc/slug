@@ -1,10 +1,10 @@
-// Package pilot owns a disposable, loopback-only mining environment. Its public
-// fixture identity is never a production wallet or a source of real assets.
+// Package pilot owns a disposable, loopback-only mining environment and a
+// published recovery-wallet fixture. It never handles production wallet keys.
 package pilot
 
 import "github.com/taytr-llc/slug/fighter"
 
-const Mode = "local-pilot"
+const Mode = "local-wallet-pilot"
 const MaxRequestSize = 4096
 const MaxResponseSize = 256 << 10
 
@@ -32,4 +32,14 @@ type Snapshot struct {
 	RecoveryError   string     `json:"recovery_error"`
 	ProspectCount   uint64     `json:"prospect_count"`
 	Prospects       []Prospect `json:"prospects"`
+	WalletState     string     `json:"wallet_state"`
+	WalletHeight    uint64     `json:"wallet_height"`
+	PayoutAddress   string     `json:"payout_address"`
+	GymID           string     `json:"gym_id"`
+	GymPublicKey    string     `json:"gym_public_key"`
+	SpendableAtoms  int64      `json:"spendable_atoms"`
+	ImmatureAtoms   int64      `json:"immature_atoms"`
+	BackupState     string     `json:"backup_state"`
+	BackupPhase     string     `json:"backup_phase"`
+	BackupError     string     `json:"backup_error"`
 }

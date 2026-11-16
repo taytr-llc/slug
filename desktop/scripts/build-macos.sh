@@ -4,13 +4,13 @@ set -eu
 
 here=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 root=$(CDPATH= cd -- "$here/.." && pwd)
-output=${1:-"$root/../artifacts/set22"}
+output=${1:-"$root/../artifacts/set26"}
 case "$output" in /*) ;; *) printf '%s\n' 'Build output must be an absolute directory.' >&2; exit 1;; esac
 if [ "$(uname -s)" != Darwin ]; then printf '%s\n' 'This script builds the native macOS bundle on macOS.' >&2; exit 1; fi
 mkdir -p "$output"
 stage=$(mktemp -d "$output/.slug-build.XXXXXX")
 trap 'rm -rf "$stage"' EXIT HUP INT TERM
-bundle="$stage/SLUG Local Pilot.app"
+bundle="$stage/SLUG Wallet Pilot.app"
 mkdir -p "$bundle/Contents/MacOS" "$bundle/Contents/Resources/bin"
 # Explicit tags override GOFLAGS, so a developer test profile cannot leak into
 # the bundled node/helper. The GUI production tag belongs only to Wails.
@@ -37,13 +37,13 @@ cat > "$bundle/Contents/Info.plist" <<'PLIST'
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0"><dict>
-<key>CFBundleIdentifier</key><string>local.slug.gym.pilot</string>
-<key>CFBundleName</key><string>SLUG Local Pilot</string>
-<key>CFBundleDisplayName</key><string>SLUG Local Pilot</string>
+<key>CFBundleIdentifier</key><string>local.slug.gym.walletpilot</string>
+<key>CFBundleName</key><string>SLUG Wallet Pilot</string>
+<key>CFBundleDisplayName</key><string>SLUG Wallet Pilot</string>
 <key>CFBundleExecutable</key><string>SLUGPilot</string>
 <key>CFBundlePackageType</key><string>APPL</string>
-<key>CFBundleShortVersionString</key><string>0.1.0</string>
-<key>CFBundleVersion</key><string>22</string>
+<key>CFBundleShortVersionString</key><string>0.2.0</string>
+<key>CFBundleVersion</key><string>26</string>
 <key>LSMinimumSystemVersion</key><string>13.0</string>
 <key>NSHighResolutionCapable</key><true/>
 <key>LSUIElement</key><false/>
@@ -55,11 +55,16 @@ codesign --force --sign - "$bundle/Contents/Resources/bin/slugpilot"
 codesign --force --sign - "$bundle/Contents/MacOS/SLUGPilot"
 codesign --force --sign - "$bundle"
 codesign --verify --deep --strict "$bundle"
-final="$output/SLUG Local Pilot.app"
-if [ -e "$final" ]; then mv "$final" "$output/SLUG Local Pilot.previous.$(date +%Y%m%d-%H%M%S).app"; fi
+final="$output/SLUG Wallet Pilot.app"
+if [ -e "$final" ]; then mv "$final" "$output/SLUG Wallet Pilot.previous.$(date +%Y%m%d-%H%M%S).app"; fi
 mv "$bundle" "$final"
 {
- printf 'Source base: '; git -C "$root" rev-parse HEAD
+ printf 'Chain source: '; git -C "$root" rev-parse HEAD
+ printf 'Chain tracked changes: '; git -C "$root" diff HEAD --stat
+ printf 'Wallet source: '; git -C "$root/../slugwallet" rev-parse HEAD
+ printf 'Wallet tracked changes: '; git -C "$root/../slugwallet" diff HEAD --stat
+ printf 'Wallet untracked paths: '; git -C "$root/../slugwallet" ls-files --others --exclude-standard
+ printf 'Chain untracked paths: '; git -C "$root" ls-files --others --exclude-standard
  printf 'Go: '; go version
  printf 'Platform: '; uname -sm
  printf '%s\n' 'Native macOS build; ad hoc signed, not notarized.' 'Deployment target 13.0; older OS runtime compatibility is not proven by compilation.'

@@ -85,13 +85,13 @@ func TestManifestRejectsAmbiguousSchema(t *testing.T) {
 			s := string(raw)
 			switch kind {
 			case "duplicate":
-				s = strings.Replace(s, `"version":1`, `"version":1,"version":1`, 1)
+				s = strings.Replace(s, `"version":2`, `"version":2,"version":2`, 1)
 			case "case alias":
 				s = strings.Replace(s, `"version"`, `"Version"`, 1)
 			case "null":
-				s = strings.Replace(s, `"version":1`, `"version":null`, 1)
+				s = strings.Replace(s, `"version":2`, `"version":null`, 1)
 			case "unknown":
-				s = strings.Replace(s, `"version":1`, `"version":1,"secret":1`, 1)
+				s = strings.Replace(s, `"version":2`, `"version":2,"secret":1`, 1)
 			case "wrong mode":
 				s = strings.Replace(s, Mode, "production", 1)
 			case "zero port":
@@ -99,7 +99,7 @@ func TestManifestRejectsAmbiguousSchema(t *testing.T) {
 				json.Unmarshal(raw, &m)
 				s = strings.Replace(s, fmt.Sprint(m.AuthorityPort), "0", 1)
 			case "missing":
-				s = strings.Replace(s, `"version":1,`, "", 1)
+				s = strings.Replace(s, `"version":2,`, "", 1)
 			}
 			if e := os.WriteFile(path, []byte(s), 0600); e != nil {
 				t.Fatal(e)
@@ -262,9 +262,9 @@ func TestConcurrentFirstLaunchNeverReplacesIdentity(t *testing.T) {
 }
 
 func TestEstablishedPilotNeverRecreatesMissingEvidence(t *testing.T) {
-	for _, name := range []string{"registry", "outbox", "primary-chain", "peer-chain", "SLUG-PILOT-READY.json"} {
+	for _, name := range []string{"wallet", "registry", "outbox", "primary-chain", "peer-chain", "SLUG-PILOT-READY.json", "SLUG-PILOT-CHAINS.json"} {
 		t.Run(name, func(t *testing.T) {
-			c, config := testController(t)
+			c, config := testReadyController(t)
 			c.Close()
 			path := filepath.Join(config.DataDir, name)
 			if e := os.Rename(path, path+".retained"); e != nil {
@@ -282,9 +282,9 @@ func TestEstablishedPilotNeverRecreatesMissingEvidence(t *testing.T) {
 }
 
 func TestManagedSymlinkRefused(t *testing.T) {
-	for _, name := range []string{"registry", "outbox", "primary-chain", "peer-chain"} {
+	for _, name := range []string{"wallet", "registry", "outbox", "primary-chain", "peer-chain"} {
 		t.Run(name, func(t *testing.T) {
-			c, config := testController(t)
+			c, config := testReadyController(t)
 			c.Close()
 			path := filepath.Join(config.DataDir, name)
 			retained := path + ".retained"
@@ -303,7 +303,7 @@ func TestManagedSymlinkRefused(t *testing.T) {
 }
 
 func TestFailedStatusSavePropagatesThroughClose(t *testing.T) {
-	c, config := testController(t)
+	c, config := testReadyController(t)
 	if e := os.Mkdir(filepath.Join(config.DataDir, "status.json"), 0700); e != nil {
 		t.Fatal(e)
 	}
@@ -334,7 +334,7 @@ func (w *blockedOutput) Write([]byte) (int, error) {
 func (w *blockedOutput) Close() error { w.closeOnce.Do(func() { close(w.closed) }); return nil }
 
 func TestEOFInterruptsBlockedOutputAndDrainsController(t *testing.T) {
-	c, config := testController(t)
+	c, config := testReadyController(t)
 	input, writer := io.Pipe()
 	output := &blockedOutput{entered: make(chan struct{}), closed: make(chan struct{})}
 	done := make(chan error, 1)
@@ -363,7 +363,7 @@ func TestEOFInterruptsBlockedOutputAndDrainsController(t *testing.T) {
 func TestInitializedChainLossFailsBeforeNodeLaunch(t *testing.T) {
 	for _, lost := range []string{"primary-chain", "peer-chain/mainnet/blocks_ffldb", "primary-chain/mainnet/blocks_ffldb/metadata", "peer-chain/mainnet/blocks_ffldb/metadata/CURRENT", "primary-chain/mainnet/blocks_ffldb/000000000.fdb"} {
 		t.Run(lost, func(t *testing.T) {
-			c, config := testController(t)
+			c, config := testReadyController(t)
 			// Public structural fixtures only. Actual DB validation is tested
 			// by the real-node supervisor integration, not these empty files.
 			for _, name := range []string{"primary-chain", "peer-chain"} {

@@ -10,24 +10,34 @@ import (
 	"path/filepath"
 	"strconv"
 
+	"github.com/taytr-llc/slug/chaincfg/v2"
 	"github.com/taytr-llc/slug/prospectnode"
 	"github.com/taytr-llc/slug/prospectworker"
+	"github.com/taytr-llc/slugwallet/recovery"
 )
 
-const fixturePublicKey = "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798"
-const fixturePayout = "amkchND9pP6STAzbb4M6U4SzU2anReC4R4"
 const fixtureToken = "4242424242424242424242424242424242424242424242424242424242424242"
 const genesis = "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd"
 const target = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
 
 type manifest struct {
-	Version       uint32 `json:"version"`
-	Mode          string `json:"mode"`
-	AuthorityPort uint16 `json:"authority_port"`
+	Version          uint32         `json:"version"`
+	Mode             string         `json:"mode"`
+	AuthorityPort    uint16         `json:"authority_port"`
+	Phase            string         `json:"phase"`
+	Network          uint32         `json:"network"`
+	Genesis          string         `json:"genesis"`
+	ActivationHeight uint32         `json:"activation_height"`
+	RecoveryProfile  string         `json:"recovery_profile"`
+	Identity         walletIdentity `json:"identity"`
+	Payout           walletPayout   `json:"payout"`
 }
 type savedStatus struct {
-	Height   uint64 `json:"height"`
-	Attempts uint64 `json:"attempts"`
+	Height         uint64 `json:"height"`
+	Attempts       uint64 `json:"attempts"`
+	WalletHeight   uint64 `json:"wallet_height"`
+	SpendableAtoms int64  `json:"spendable_atoms"`
+	ImmatureAtoms  int64  `json:"immature_atoms"`
 }
 
 func policy() prospectnode.Policy {
@@ -35,7 +45,21 @@ func policy() prospectnode.Policy {
 }
 func (m manifest) origin() string { return "http://127.0.0.1:" + strconv.Itoa(int(m.AuthorityPort)) }
 func (m manifest) workerConfig() prospectworker.Config {
-	return prospectworker.Config{Version: 1, Policy: policy(), PublicKey: fixturePublicKey, PayoutAddress: fixturePayout, AuthorityOrigin: m.origin(), MaxRecords: 1000, MaxBytes: 64 << 20}
+	return prospectworker.Config{Version: 1, Policy: policy(), PublicKey: m.Identity.GymPublicKey, PayoutAddress: m.Payout.Address, AuthorityOrigin: m.origin(), MaxRecords: 1000, MaxBytes: 64 << 20}
+}
+
+func (m manifest) valid() bool {
+	if m.Version != 2 || m.Mode != Mode || m.AuthorityPort == 0 || m.Network != recovery.Network || m.Genesis != genesis || m.ActivationHeight != chaincfg.PhaseAActivationHeight || m.RecoveryProfile != recovery.ProfileID {
+		return false
+	}
+	switch m.Phase {
+	case "new", "initializing":
+		return m.Identity == (walletIdentity{}) && m.Payout == (walletPayout{})
+	case "ready":
+		return len(m.Identity.RootPublicKey) > 0 && len(m.Identity.GymPublicKey) == 66 && len(m.Identity.GymID) == 64 && m.Payout.Address != "" && m.Payout.Purpose == 44 && m.Payout.Coin == 0 && m.Payout.Account == 0 && m.Payout.Branch == 0 && m.Payout.Index == 0
+	default:
+		return false
+	}
 }
 func readJSON(path string, limit int64, v any) error {
 	info, e := os.Lstat(path)
@@ -155,10 +179,13 @@ func requireChainFiles(root string) error {
 func checkInitializedChains(root string, identity manifest) error {
 	path := filepath.Join(root, "SLUG-PILOT-CHAINS.json")
 	if _, e := os.Lstat(path); os.IsNotExist(e) {
+		if identity.Phase == "ready" {
+			return errors.New("initialized chain marker is missing")
+		}
 		return nil
 	}
 	var saved manifest
-	if readJSON(path, 1024, &saved) != nil || saved != identity {
+	if readJSON(path, 8192, &saved) != nil || saved != identity {
 		return errors.New("invalid pilot chain identity")
 	}
 	return requireChainFiles(root)

@@ -46,7 +46,8 @@ version.
   → `slug-desktop-pilot` (set 22, released on master at `fad9cbdf`)
   → `slug-wallet-foundation` (set 23, released on master at `e1b25e7f`)
   → `slug-wallet-recovery` (set 24, released on master at `0b04cd1b`)
-  → `slug-phase-a-activation` (set 25, approved activation at height 62).
+  → `slug-phase-a-activation` (set 25, approved activation at height 62)
+  → `slug-desktop-wallet` (set 26, fixture wallet integration).
 - Branch each next change set off the latest completed implementation tip,
   never the live seed branch by default. Use `slug-<topic>` names; set 7 is
   `slug-signed-checkpoints`. HANDOVER.md records the original takeover state.
@@ -235,6 +236,19 @@ does not understand. Never detach, replace, or clear the /data volume.
   or hosted login. Mining requires an explicit Start; Quit drains owned work
   and processes. Real wallet custody, D48 export, calibrated policy and release
   signing remain separate integration gates. Never read operator/wallet keys.
+  Set 26 uses a separate `LocalWalletPilot` v2 namespace and the published
+  zero256 wallet fixture. Ordinary address/balance/history operations use actual
+  btcwallet RPC with an owned minimal allowlist; signing/export stay inside the
+  helper. Native dialogs select recovery paths, never the webview. Restore
+  verification is asynchronous and excludes mining. Preserve old `LocalPilot`
+  data; never adopt pre-upgrade cached chains or substitute a new wallet/gym
+  when established data is missing. Runtime checks require activation height62,
+  since the node's unchanged version string is insufficient. The explicit
+  `--localwalletpilot` node option is restricted to connect-only literal
+  loopback networking and RPC; it changes only old-tip template readiness.
+  Wallet rescan readiness has the same private-pilot boundary. Never enable
+  either path for the seed or replace the worker/job/outbox flow with hidden
+  bootstrap mining. All consensus/proposal/PoW checks still apply.
   Mike confirmed the gym shell is new Go work against the slugd/btcwallet RPC
   surfaces, not a Paymetheus adaptation. Fork the separate btcwallet repository
   when its wallet workstream begins.
