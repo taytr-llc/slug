@@ -41,7 +41,8 @@ version.
   → `slug-gym-identity` (set 17, released on master at `7968e0a0`)
   → `slug-prospect-birth` (set 18, released on master at `c88abe11`)
   → `slug-prospect-service` (set 19, released on master at `56a4889d`)
-  → `slug-mining-templates` (set 20, complete payable candidates).
+  → `slug-mining-templates` (set 20, released on master at `3ed3b71e`)
+  → `slug-automatic-miner` (set 21, D69 and durable automatic worker).
 - Branch each next change set off the latest completed implementation tip,
   never the live seed branch by default. Use `slug-<topic>` names; set 7 is
   `slug-signed-checkpoints`. HANDOVER.md records the original takeover state.
@@ -190,7 +191,7 @@ does not understand. Never detach, replace, or clear the /data volume.
 
 - D68 jobs last exactly five minutes. Age starts at durable issuance; a new
   admission at or after expiry is rejected without grace. Job IDs/challenges
-  enter proof-v2 work before hashing. Only explicitly created schema-3 stores
+  enter proof-v2 work before hashing. Only explicitly created schema-3 or schema-4 stores
   issue and admit jobs; no retrospective birth is attached to older evidence.
   Keep accepted birth immutable across duplicate recovery, expiry and reorgs.
   Historical receipts do not assert renewed eligibility. Persist clock high
@@ -204,9 +205,18 @@ does not understand. Never detach, replace, or clear the /data volume.
   signatures. Preserve historical receipts after uncertain acknowledgments,
   drain real work before closing storage and never reopen a poisoned handle
   automatically. `slugregistryd` is not started by seed deployment. See
-  `PROSPECT_SERVICE.md`. Mining integration still needs complete payable block
-  templates and explicit block-win/admission ordering; do not silently change
-  current-parent eligibility or present context-only jobs as full templates.
+  `PROSPECT_SERVICE.md`. Protocol v1 requires schema 3; v2 requires explicit
+  schema 4. Never silently change old eligibility or present context-only jobs
+  as full templates.
+
+- D69 broadcasts block-target wins immediately, before prospect signing or
+  admission. Only the exact winning block on the canonical chain can use the
+  stale-parent exception, within the original D68 lifetime. Authority guards
+  take internally verified work, never claimant-provided hash summaries. Keep
+  admission-time eligibility immutable with birth. The worker synchronizes
+  found work before transport, and public authorization before admission;
+  uncertain outcomes retain identical evidence for recovery. Retained-capacity
+  exhaustion pauses mining, never drops pending work or receipts automatically.
 
 - Keep diffs minimal and close to upstream btcd structure; this fork tracks
   upstream and every gratuitous divergence makes merges harder.

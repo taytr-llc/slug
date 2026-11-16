@@ -41,6 +41,16 @@ type Node interface {
 	Recheck(context.Context, prospect.Context, prospect.Proof) error
 }
 
+// AdmissionNode adds D69 observations without changing the v1 node contract.
+// verified must come from the registry's own production proof verification.
+type AdmissionNode interface {
+	RecheckAdmission(context.Context, prospect.Context, prospect.Proof, prospect.Verified) (string, error)
+}
+
+func apiPath(version uint32, operation string) string {
+	return "/v" + strconv.FormatUint(uint64(version), 10) + "/" + operation
+}
+
 type clientCredential struct {
 	publicKey string
 	digest    [32]byte
@@ -65,7 +75,8 @@ type Server struct {
 	handlers  sync.WaitGroup
 }
 
-// NewServer validates configuration and an existing matching schema-3 store.
+// NewServer validates configuration and an existing matching store. Protocol
+// v1 requires schema 3; v2 explicitly opts into D69 with schema 4.
 // It performs no network request, key generation, or database initialization.
 func NewServer(config ServerConfig, policy prospectnode.Policy, node Node, store *registry.Store) (*Server, error) {
 	if wire.TestPoW {
@@ -90,8 +101,15 @@ func NewServer(config ServerConfig, policy prospectnode.Policy, node Node, store
 	if err != nil {
 		return nil, errors.New("authority registry is unavailable")
 	}
-	if info.Version != registry.Version3 || info.Network != policy.Network || info.Genesis != policy.Genesis {
-		return nil, errors.New("authority requires matching schema-3 registry and policy")
+	expectedSchema := registry.Version3
+	if canonical.Version == Version2 {
+		expectedSchema = registry.Version4
+		if _, ok := node.(AdmissionNode); !ok {
+			return nil, errors.New("authority v2 requires D69 node observations")
+		}
+	}
+	if info.Version != expectedSchema || info.Network != policy.Network || info.Genesis != policy.Genesis {
+		return nil, errors.New("authority requires a matching registry schema and policy")
 	}
 	if info.ReadOnly {
 		return nil, errors.New("authority requires a writable birth registry")
@@ -210,8 +228,8 @@ func validHost(request *http.Request) bool {
 	return true
 }
 
-func requestShape(request *http.Request) bool {
-	if request.Method != http.MethodPost || (request.URL.Path != "/v1/jobs" && request.URL.Path != "/v1/admissions") ||
+func (server *Server) requestShape(request *http.Request) bool {
+	if request.Method != http.MethodPost || (request.URL.Path != apiPath(server.config.Version, "jobs") && request.URL.Path != apiPath(server.config.Version, "admissions")) ||
 		request.URL.RawQuery != "" || request.URL.ForceQuery || request.URL.IsAbs() || request.URL.Host != "" ||
 		request.URL.RawPath != "" || len(request.Header.Values("Content-Encoding")) != 0 {
 		return false
@@ -265,11 +283,11 @@ func apiError(code string, status int) *responseError {
 	return &responseError{code: code, status: status}
 }
 
-func writeFailure(writer http.ResponseWriter, failure *responseError) {
-	data, err := encodeJSON(ErrorResponse{Version: Version1, Error: APIError{Code: failure.code, OutcomeUnknown: failure.unknown}})
+func (server *Server) writeFailure(writer http.ResponseWriter, failure *responseError) {
+	data, err := encodeJSON(ErrorResponse{Version: server.config.Version, Error: APIError{Code: failure.code, OutcomeUnknown: failure.unknown}})
 	if err != nil {
 		// This is a fixed public envelope, never input or a backend error.
-		data = []byte("{\"version\":1,\"error\":{\"code\":\"unavailable\",\"outcome_unknown\":false}}\n")
+		data = []byte("{\"version\":" + strconv.FormatUint(uint64(server.config.Version), 10) + ",\"error\":{\"code\":\"unavailable\",\"outcome_unknown\":false}}\n")
 	}
 	writer.Header().Set("Content-Type", "application/json")
 	writer.Header().Set("Cache-Control", "no-store")
@@ -282,35 +300,35 @@ func writeFailure(writer http.ResponseWriter, failure *responseError) {
 // credential grants local API access for one key, never signing authority.
 func (server *Server) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	if !server.beginHandler() {
-		writeFailure(writer, apiError("unavailable", 503))
+		server.writeFailure(writer, apiError("unavailable", 503))
 		return
 	}
 	defer server.handlers.Done()
 	if !validHost(request) || len(request.Header.Values("Origin")) != 0 {
-		writeFailure(writer, apiError("forbidden", 403))
+		server.writeFailure(writer, apiError("forbidden", 403))
 		return
 	}
-	if !requestShape(request) {
-		writeFailure(writer, apiError("invalid_request", 400))
+	if !server.requestShape(request) {
+		server.writeFailure(writer, apiError("invalid_request", 400))
 		return
 	}
 	credential := server.authenticate(request)
 	if credential == nil {
-		writeFailure(writer, apiError("unauthorized", 401))
+		server.writeFailure(writer, apiError("unauthorized", 401))
 		return
 	}
 	limiter := credential.admit
-	if request.URL.Path == "/v1/jobs" {
+	if request.URL.Path == apiPath(server.config.Version, "jobs") {
 		limiter = credential.issue
 	}
 	if !limiter.Allow() {
-		writeFailure(writer, apiError("rate_limited", 429))
+		server.writeFailure(writer, apiError("rate_limited", 429))
 		return
 	}
 	select {
 	case server.active <- struct{}{}:
 	default:
-		writeFailure(writer, apiError("busy", 503))
+		server.writeFailure(writer, apiError("busy", 503))
 		return
 	}
 	// Release before socket writes: a slow reader must not hold the operation
@@ -340,7 +358,7 @@ func (server *Server) ServeHTTP(writer http.ResponseWriter, request *http.Reques
 		}
 		var result any
 		var operationErr *responseError
-		if request.URL.Path == "/v1/jobs" {
+		if request.URL.Path == apiPath(server.config.Version, "jobs") {
 			result, operationErr = server.issue(ctx, credential, body)
 		} else {
 			result, operationErr = server.admit(ctx, credential, body)
@@ -357,7 +375,7 @@ func (server *Server) ServeHTTP(writer http.ResponseWriter, request *http.Reques
 		return encoded, nil
 	}()
 	if failure != nil {
-		writeFailure(writer, failure)
+		server.writeFailure(writer, failure)
 		return
 	}
 	writer.Header().Set("Content-Type", "application/json")
@@ -449,9 +467,9 @@ func (server *Server) admit(ctx context.Context, credential *clientCredential, b
 	if err != nil {
 		return nil, server.storeFailure(err)
 	}
-	record, inserted, err := server.store.RecordJob(proof, authorization, func(initial prospect.Context, guardProof prospect.Proof) error {
-		// The callback runs only for new receipts. Historical retries remain
-		// recoverable after policy changes, expiry, node outage or capacity.
+	checkPolicy := func(initial prospect.Context) error {
+		// Only new receipts invoke this guard. Historical recovery retains
+		// the original policy, birth and eligibility even after node outage.
 		if info.Records >= server.config.MaxRecords {
 			return errCapacity
 		}
@@ -461,14 +479,41 @@ func (server *Server) admit(ctx context.Context, credential *clientCredential, b
 		if ctx.Err() != nil {
 			return errNode
 		}
-		if err := server.node.Recheck(ctx, initial, guardProof); err != nil {
-			return errNode
-		}
-		if ctx.Err() != nil {
-			return errNode
-		}
 		return nil
-	})
+	}
+	var record registry.Record
+	var inserted bool
+	if server.config.Version == Version1 {
+		record, inserted, err = server.store.RecordJob(proof, authorization, func(initial prospect.Context, guardProof prospect.Proof) error {
+			if err := checkPolicy(initial); err != nil {
+				return err
+			}
+			if server.node.Recheck(ctx, initial, guardProof) != nil || ctx.Err() != nil {
+				return errNode
+			}
+			return nil
+		})
+	} else {
+		record, inserted, err = server.store.RecordJobChecked(proof, authorization, func(initial prospect.Context, guardProof prospect.Proof, verified prospect.Verified) (registry.Eligibility, error) {
+			if err := checkPolicy(initial); err != nil {
+				return registry.Eligibility{}, err
+			}
+			source, err := server.node.(AdmissionNode).RecheckAdmission(ctx, initial, guardProof, verified)
+			if err != nil || ctx.Err() != nil {
+				return registry.Eligibility{}, errNode
+			}
+			observation := registry.Eligibility{RuleVersion: registry.EligibilityRuleVersion2, Source: source}
+			switch source {
+			case "current-parent":
+				observation.Hash, observation.Height = initial.ParentHash, initial.ParentHeight
+			case "canonical-winning-block":
+				observation.Hash, observation.Height = verified.WorkHash, initial.ParentHeight+1
+			default:
+				return registry.Eligibility{}, errNode
+			}
+			return observation, nil
+		})
+	}
 	if err != nil {
 		return nil, server.storeFailure(err)
 	}
@@ -476,6 +521,6 @@ func (server *Server) admit(ctx context.Context, credential *clientCredential, b
 	if inserted {
 		source = "trusted-node-snapshot"
 	}
-	return AdmissionResult{Version: Version1, ContextSource: source, CurrentNodeChecked: inserted,
+	return AdmissionResult{Version: server.config.Version, ContextSource: source, CurrentNodeChecked: inserted,
 		Authentication: "gym-key-control", BirthRule: "job-issuance", Inserted: inserted, Record: record}, nil
 }

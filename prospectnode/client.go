@@ -90,8 +90,8 @@ func (client *Client) call(ctx context.Context, method string, params []any) (js
 	return client.callResult(ctx, method, params, false)
 }
 
-// callResult allows a null result only for the proposal RPC, whose documented
-// successful result is null. Ordinary node reads must still return a value.
+// callResult allows a null result only for proposal/submission RPCs, whose
+// documented successful result is null. Ordinary node reads require a value.
 func (client *Client) callResult(ctx context.Context, method string, params []any, allowNull bool) (json.RawMessage, error) {
 	id := client.nextID.Add(1)
 	payload, err := json.Marshal(struct {

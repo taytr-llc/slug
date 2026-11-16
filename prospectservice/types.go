@@ -9,6 +9,7 @@ import "github.com/taytr-llc/slug/registry"
 
 const (
 	Version1            uint32 = 1
+	Version2            uint32 = 2
 	MaxRequestSize             = 65536
 	MaxResponseSize            = 73728
 	MaxServerConfigSize        = 65536

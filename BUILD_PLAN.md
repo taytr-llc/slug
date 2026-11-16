@@ -79,8 +79,16 @@ template transactions and witness data and takes an explicit local payout
 address. The next milestone is a desktop mining pilot: automatic renewal and
 mining with durable retries, wallet/login plus tested full export (D48), and
 start/stop/status/roster UI. The shell can be developed with clearly labelled
-fixtures while real wallet and worker integration proceed. Automatic broadcast
-still requires an explicit winning-block/admission ordering decision.
+fixtures while real wallet and worker integration proceed.
+
+Mike settled the ordering as D69 on November 16: broadcast block wins immediately;
+the exact canonical winning block can qualify within the original five-minute
+job. Set 21 implements this in explicit registry schema 4/service protocol v2,
+with a bounded automatic worker and synchronized public outbox. Old registries
+retain their original eligibility rules. The worker integrates an in-memory
+signer; it does not provide hosted wallet custody, login or full seed export.
+The next desktop slice wires start/stop/status/receipts to that worker behind a
+narrow Go bridge, with fixture identities visibly separated from real accounts.
 
 ### 3. The official pool
 The company-run pool that earns 1% (D35, D36). No turnkey pool exists
