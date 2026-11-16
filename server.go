@@ -3097,6 +3097,19 @@ func newServer(listenAddrs, agentBlacklist, agentWhitelist []string,
 		return nil, err
 	}
 
+	// Record the public league status on startup so operators can verify
+	// explicit imports without exposing the private RPC listener.
+	signedState := s.chain.SignedCheckpointSnapshot()
+	if len(signedState.Checkpoints) != 0 {
+		btcdLog.Infof("Signed league checkpoints are report-only: authority=%x tip=%d:%s",
+			signedState.PublicKey, signedState.BestHeight, signedState.BestHash)
+		for _, checkpoint := range signedState.Checkpoints {
+			btcdLog.Infof("Signed league checkpoint height=%d hash=%s status=%s descendants=%d",
+				checkpoint.SignedCheckpoint.Height, checkpoint.SignedCheckpoint.Hash,
+				checkpoint.Status, checkpoint.Descendants)
+		}
+	}
+
 	// Search for a FeeEstimator state in the database. If none can be found
 	// or if it cannot be loaded, create a new one.
 	db.Update(func(tx database.Tx) error {

@@ -12,8 +12,12 @@ version.
 
 ## Branch discipline (do not break this)
 
-- `master` is **pristine upstream btcd** and stays that way until Phase A
-  (chain core) is declared done. Never commit to master.
+- Mike explicitly authorized the Phase A master merge and seed deployment
+  on November 15, 2026. The closeout merge ends master's pristine-upstream
+  role; upstream btcd remains available at `dd169fe0c32a56087d28b92fff3b8cf4fb43477a`.
+- `master` is the release/deployment branch after closeout. Develop changes
+  on topic branches and validate them before promotion. Treat any push to
+  master as a live deployment; obtain authorization for a new rollout.
 - Work lands as numbered **change sets**, each on its own branch stacked on
   the previous one:
   `slug-pow-swap` → `slug-chain-params` → `slug-chain-fixes` → `slug-deploy`
@@ -22,7 +26,8 @@ version.
   → `slug-pow-security` (set 8, `c8176de5`)
   → `slug-test-pow` (set 9, `273b5e17`)
   → `slug-checkpoint-authority` (set 10, `0ca7466a`)
-  → `slug-first-checkpoint` (set 11, first signed Phase A record).
+  → `slug-first-checkpoint` (set 11, `af67093f`)
+  → `slug-phase-a-closeout` (set 12, authorized rollout).
 - Branch each next change set off the latest completed implementation tip,
   never the live seed branch by default. Use `slug-<topic>` names; set 7 is
   `slug-signed-checkpoints`. HANDOVER.md records the original takeover state.
@@ -55,9 +60,9 @@ version.
 - Set 7's signed checkpoint deliverable is complete: Mike's public key was
   enrolled in set 10 and his signed height-1 record is archived in set 11 at
   `checkpoints/phase-a/height-1.json`. Explicit local import reported finalized
-  at tip 61 with 60 descendants. The seed serves this chain but still runs
-  the older `slug-rebrand` client; checkpoint-aware deployment is pending.
-  Phase A master merge/deployment still requires Mike's explicit go-ahead.
+  at tip 61 with 60 descendants. Mike authorized checkpoint-aware deployment
+  as part of set 12. See `PHASE_A_CLOSEOUT.md` for the rollout and rollback
+  configuration. Production genesis remains a separate explicit decision.
 
 ## Consensus facts (Phase A testnet, disposable but internally consistent)
 
@@ -105,16 +110,20 @@ rename is change set 6 (HANDOVER.md has the spec).
 ## Deployment coupling (Railway seed node)
 
 A public seed node runs this code on Railway (project
-`successful-cooperation`, service `slug`). It tracks branch
-**`slug-rebrand`**: any push to `slug-rebrand` auto-deploys. Its start
-command is `slugd --notls --rpcuser=u --rpcpass=p --datadir=/data` with a
+`successful-cooperation`, service `slug`). Phase A closeout switches its
+source from `slug-rebrand` to **`master`**. Check the live Railway configuration
+during the transition; afterward any push to master auto-deploys. Its start
+command adds `--signedcheckpoint=/usr/share/slug/checkpoints/phase-a/height-1.json`
+to `slugd --notls --rpcuser=u --rpcpass=p --datadir=/data`, with a
 persistent volume at /data; public TCP endpoint
 `junction.proxy.rlwy.net:16023` → port 29333 (RPC is not exposed).
-Implications: never push a broken build to `slug-rebrand`; if a future
+Implications: never push a broken build to master; if a future
 change set renames the binary again, the Railway start command must be
 changed in the same deploy or the seed will not start. Deploying a
 different branch means switching the service's source branch in Railway
-settings.
+settings. Preserve `slug-rebrand` at `0574b8b` as the rollback source;
+rollback also removes the signed-checkpoint flag, which that older client
+does not understand. Never detach, replace, or clear the /data volume.
 
 ## Signed checkpoint policy (set 7, Mike's decision)
 
