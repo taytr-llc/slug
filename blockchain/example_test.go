@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"math/big"
 	"os"
-	"path/filepath"
 
 	"github.com/taytr-llc/slug/blockchain"
 	"github.com/taytr-llc/slug/btcutil/v2"
@@ -19,7 +18,7 @@ import (
 
 // This example demonstrates how to create a new chain instance and use
 // ProcessBlock to attempt to add a block to the chain.  As the package
-// overview documentation describes, this includes all of the Bitcoin consensus
+// overview documentation describes, this includes all of the SLUG consensus
 // rules.  This example intentionally attempts to insert a duplicate genesis
 // block to illustrate how an invalid block is handled.
 func ExampleBlockChain_ProcessBlock() {
@@ -28,18 +27,21 @@ func ExampleBlockChain_ProcessBlock() {
 	// and creating a new database like this, but it is done here so this is
 	// a complete working example and does not leave temporary files laying
 	// around.
-	dbPath := filepath.Join(os.TempDir(), "exampleprocessblock")
-	_ = os.RemoveAll(dbPath)
+	dbPath, err := os.MkdirTemp("", "slug-exampleprocessblock-")
+	if err != nil {
+		fmt.Printf("Failed to create temporary directory: %v\n", err)
+		return
+	}
+	defer os.RemoveAll(dbPath)
 	db, err := database.Create("ffldb", dbPath, chaincfg.MainNetParams.Net)
 	if err != nil {
 		fmt.Printf("Failed to create database: %v\n", err)
 		return
 	}
-	defer os.RemoveAll(dbPath)
 	defer db.Close()
 
 	// Create a new BlockChain instance using the underlying database for
-	// the main bitcoin network.  This example does not demonstrate some
+	// the main SLUG network. This example does not demonstrate some
 	// of the other available configuration options such as specifying a
 	// notification callback and signature cache.  Also, the caller would
 	// ordinarily keep a reference to the median time source and add time
@@ -62,14 +64,20 @@ func ExampleBlockChain_ProcessBlock() {
 	isMainChain, isOrphan, err := chain.ProcessBlock(genesisBlock,
 		blockchain.BFNone)
 	if err != nil {
-		fmt.Printf("Failed to process block: %v\n", err)
+		// Report the stable rule code; the genesis identity differs between
+		// production and the explicitly tagged isolated test profile.
+		if ruleErr, ok := err.(blockchain.RuleError); ok {
+			fmt.Printf("Failed to process block: %v\n", ruleErr.ErrorCode)
+		} else {
+			fmt.Printf("Failed to process block: %v\n", err)
+		}
 		return
 	}
 	fmt.Printf("Block accepted. Is it on the main chain?: %v", isMainChain)
 	fmt.Printf("Block accepted. Is it an orphan?: %v", isOrphan)
 
 	// Output:
-	// Failed to process block: already have block 000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f
+	// Failed to process block: ErrDuplicateBlock
 }
 
 // This example demonstrates how to convert the compact "bits" in a block header

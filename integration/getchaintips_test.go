@@ -108,6 +108,15 @@ func TestGetChainTips(t *testing.T) {
 		"cce30fa417c0bea21cf5cd828db61d67ffff7f20000000000101000000010000000000000000000000000000000000000000000000000000" +
 		"000000000000ffffffff1054736c75672066697874757265203462ffffffff0100ca9a3b00000000015100000000"
 
+	// Keep the production fixtures byte-for-byte. The cheap test profile
+	// independently re-mines their headers, preserving transactions and forks.
+	fixtures := chainTipsFixturesForProfile(t, []string{
+		block1Hex, block2Hex, block3Hex, block4Hex,
+		block2aHex, block3aHex, block4aHex, block5aHex, block4bHex,
+	})
+	block1Hex, block2Hex, block3Hex, block4Hex = fixtures[0], fixtures[1], fixtures[2], fixtures[3]
+	block2aHex, block3aHex, block4aHex, block5aHex, block4bHex = fixtures[4], fixtures[5], fixtures[6], fixtures[7], fixtures[8]
+
 	// Set up regtest chain.
 	r, err := rpctest.New(&chaincfg.RegressionNetParams, nil, nil, "")
 	if err != nil {

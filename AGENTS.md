@@ -17,7 +17,10 @@ version.
 - Work lands as numbered **change sets**, each on its own branch stacked on
   the previous one:
   `slug-pow-swap` → `slug-chain-params` → `slug-chain-fixes` → `slug-deploy`
-  → `slug-rebrand` → `slug-module-rename` (set 6, `df655087`).
+  → `slug-rebrand` → `slug-module-rename` (set 6, `df655087`)
+  → `slug-signed-checkpoints` (set 7, `6b3e9e90`)
+  → `slug-pow-security` (set 8, `c8176de5`)
+  → `slug-test-pow` (set 9).
 - Branch each next change set off the latest completed implementation tip,
   never the live seed branch by default. Use `slug-<topic>` names; set 7 is
   `slug-signed-checkpoints`. HANDOVER.md records the original takeover state.
@@ -40,10 +43,16 @@ version.
   minute or two, database ~4.5 minutes, netsync full package ~6 minutes.
   Slow is normal; a suite that is still hashing at timeout is not the same
   as a failing assertion. Report which.
-- Known verification debt: the `blockchain` package suite has never run to
-  completion under Argon2id (its test helper grinds blocks). Closing that
-  is change set 9 (test-only reduced-cost PoW knob). Do not claim the
-  blockchain suite passes until it has actually run end to end.
+- Set 9 closed the blockchain/integration execution debt: complete tagged
+  suites passed, with production vectors and smoke checked separately.
+  Run `make test-chain` for both complete suites. The explicit `slugtestpow`
+  build tag selects 64 KiB Argon2 memory and incompatible test identities;
+  default/release builds retain 256 MiB. Never add that tag to release or
+  Railway builds. Tagged daemons require regtest/simnet and use separate
+  default files. No runtime flag enables cheap PoW.
+- Set 7 implementation is complete but official checkpoint activation still
+  needs Mike's public key and an eligible checkpoint with 60 descendants.
+  Phase A master merge/deployment still requires Mike's explicit go-ahead.
 
 ## Consensus facts (Phase A testnet, disposable but internally consistent)
 

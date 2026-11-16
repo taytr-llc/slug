@@ -105,7 +105,8 @@ func chainSetup(dbName string, params *chaincfg.Params) (*blockchain.BlockChain,
 		teardown = func() {
 			db.Close()
 			os.RemoveAll(dbPath)
-			os.RemoveAll(testDbRoot)
+			// Remove only an empty root, preserving other tests' databases.
+			os.Remove(testDbRoot)
 		}
 	}
 

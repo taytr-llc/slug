@@ -11,6 +11,8 @@ import (
 	"path/filepath"
 	"runtime"
 	"sync"
+
+	"github.com/taytr-llc/slug/wire/v2"
 )
 
 var (
@@ -23,6 +25,20 @@ var (
 	// instead use the function btcdExecutablePath().
 	executablePath string
 )
+
+// btcdBuildArgs explicitly selects the same PoW profile as the harness. An
+// empty -tags value is required for production too: it overrides a conflicting
+// GOFLAGS setting inherited by the nested go command.
+func btcdBuildArgs(outputPath string) []string {
+	tags := ""
+	if wire.TestPoW {
+		tags = "slugtestpow"
+	}
+	return []string{
+		"build", "-o", outputPath, "-tags=" + tags,
+		"github.com/taytr-llc/slug",
+	}
+}
 
 // btcdExecutablePath returns a path to the btcd executable to be used by
 // rpctests. To ensure the code tests against the most up-to-date version of
@@ -53,12 +69,9 @@ func btcdExecutablePath() (string, error) {
 	if runtime.GOOS == "windows" {
 		outputPath += ".exe"
 	}
-	cmd := exec.Command(
-		"go", "build", "-o", outputPath, "github.com/taytr-llc/slug",
-	)
-	err = cmd.Run()
+	output, err := exec.Command("go", btcdBuildArgs(outputPath)...).CombinedOutput()
 	if err != nil {
-		return "", fmt.Errorf("Failed to build btcd: %v", err)
+		return "", fmt.Errorf("failed to build btcd: %w\n%s", err, output)
 	}
 
 	// Save executable path so future calls do not recompile.

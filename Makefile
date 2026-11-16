@@ -95,6 +95,11 @@ release-install:
 #? check: Run `make unit`
 check: unit
 
+#? test-chain: Run complete blockchain and integration suites with test-only PoW
+test-chain:
+	go test -tags=slugtestpow -count=1 -timeout=30m ./blockchain/...
+	go test -tags=slugtestpow,rpctest -count=1 -timeout=30m ./integration/...
+
 #? unit: Run unit tests
 unit:
 	@$(call print, "Running unit tests.")

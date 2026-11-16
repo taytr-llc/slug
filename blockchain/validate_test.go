@@ -66,15 +66,6 @@ func TestSequenceLocksActive(t *testing.T) {
 // TestCheckConnectBlockTemplate tests the CheckConnectBlockTemplate function to
 // ensure it fails.
 func TestCheckConnectBlockTemplate(t *testing.T) {
-	// SLUG (change set 2): skipped, not deleted. This test drives
-	// SHA256-mined Bitcoin mainnet fixture blocks (blk_0_to_4.dat,
-	// blk_3A.dat) against a MainNetParams chain. Change set 2 retired
-	// those fixtures when MainNetParams became the SLUG network with
-	// its own Argon2id genesis, so the fixture blocks no longer build
-	// on the chain under test. Restore this test if SLUG-native
-	// fixture blocks are ever generated.
-	t.Skip("Bitcoin mainnet fixture blocks retired by SLUG change set 2")
-
 	// Create a new database and chain instance to run tests against.
 	chain, teardownFunc, err := chainSetup("checkconnectblocktemplate",
 		&chaincfg.MainNetParams)
@@ -91,19 +82,7 @@ func TestCheckConnectBlockTemplate(t *testing.T) {
 	// Load up blocks such that there is a side chain.
 	// (genesis block) -> 1 -> 2 -> 3 -> 4
 	//                          \-> 3a
-	testFiles := []string{
-		"blk_0_to_4.dat.bz2",
-		"blk_3A.dat.bz2",
-	}
-
-	var blocks []*btcutil.Block
-	for _, file := range testFiles {
-		blockTmp, err := loadBlocks(file)
-		if err != nil {
-			t.Fatalf("Error loading file: %v\n", err)
-		}
-		blocks = append(blocks, blockTmp...)
-	}
+	blocks := nativeShortFork(t)
 
 	for i := 1; i <= 3; i++ {
 		isMainChain, _, err := chain.ProcessBlock(blocks[i], BFNone)
@@ -140,7 +119,18 @@ func TestCheckConnectBlockTemplate(t *testing.T) {
 
 	// Block 4 should connect even if proof of work is invalid.
 	invalidPowBlock := *blocks[4].MsgBlock()
-	invalidPowBlock.Header.Nonce++
+	// At SLUG's initial target, a single nonce change has about a 50%
+	// chance of still satisfying PoW. Find an actually failing proof.
+	for {
+		invalidPowBlock.Header.Nonce++
+		hash := invalidPowBlock.BlockHash()
+		if HashToBig(&hash).Cmp(CompactToBig(invalidPowBlock.Header.Bits)) > 0 {
+			break
+		}
+	}
+	if err := CheckProofOfWork(btcutil.NewBlock(&invalidPowBlock), chain.chainParams.PowLimit); err == nil {
+		t.Fatal("invalid-PoW template fixture unexpectedly satisfies PoW")
+	}
 	err = chain.CheckConnectBlockTemplate(btcutil.NewBlock(&invalidPowBlock))
 	if err != nil {
 		t.Fatalf("CheckConnectBlockTemplate: Received unexpected error on "+
@@ -160,16 +150,9 @@ func TestCheckConnectBlockTemplate(t *testing.T) {
 // TestCheckBlockSanity tests the CheckBlockSanity function to ensure it works
 // as expected.
 func TestCheckBlockSanity(t *testing.T) {
-	// SLUG (change set 2): skipped, not deleted. This test runs
-	// CheckBlockSanity on Bitcoin mainnet block 100000, a SHA256-mined
-	// fixture whose Argon2id digest is effectively random and lands
-	// above the target. The Bitcoin mainnet fixtures were retired
-	// when MainNetParams became the SLUG network (change set 2).
-	// Restore this test against a SLUG-native fixture block.
-	t.Skip("Bitcoin mainnet fixture block retired by SLUG change set 2")
-
 	powLimit := chaincfg.MainNetParams.PowLimit
-	block := btcutil.NewBlock(&Block100000)
+	block := newNativeTestBlock(t, &chaincfg.MainNetParams,
+		nativeTestGenesis(&chaincfg.MainNetParams), 0)
 	timeSource := NewMedianTime()
 	err := CheckBlockSanity(block, powLimit, timeSource)
 	if err != nil {

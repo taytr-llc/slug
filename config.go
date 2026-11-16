@@ -73,7 +73,7 @@ const (
 )
 
 var (
-	defaultHomeDir     = btcutil.AppDataDir("slug", false)
+	defaultHomeDir     = btcutil.AppDataDir(powProfileAppName, false)
 	defaultConfigFile  = filepath.Join(defaultHomeDir, defaultConfigFilename)
 	defaultDataDir     = filepath.Join(defaultHomeDir, defaultDataDirname)
 	knownDbTypes       = database.SupportedDrivers()
@@ -539,6 +539,11 @@ func loadConfig() (*config, []string, error) {
 		if e, ok := err.(*flags.Error); !ok || e.Type != flags.ErrHelp {
 			fmt.Fprintln(os.Stderr, usageMessage)
 		}
+		return nil, nil, err
+	}
+
+	if err := validatePoWProfile(&cfg); err != nil {
+		fmt.Fprintln(os.Stderr, err)
 		return nil, nil, err
 	}
 

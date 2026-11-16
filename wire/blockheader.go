@@ -54,10 +54,6 @@ const (
 	// powArgon2Time is the Argon2id time cost (number of passes).
 	powArgon2Time = 1
 
-	// powArgon2Memory is the Argon2id memory cost in kibibytes, as the
-	// argon2 API takes it: 256 * 1024 KiB = 256 MB.
-	powArgon2Memory = 256 * 1024
-
 	// powArgon2Threads is the Argon2id parallelism (lanes) per attempt.
 	powArgon2Threads = 1
 
@@ -81,6 +77,8 @@ const (
 // exactly the property the old double SHA256 construction had. Only
 // this block header hash uses Argon2id; transaction IDs, merkle roots,
 // address checksums, and signature hashes remain double SHA256.
+// The explicitly tagged slugtestpow build uses a smaller memory arena for
+// isolated tests and produces incompatible block identifiers.
 func (h *BlockHeader) BlockHash() chainhash.Hash {
 	// writeBlockHeader cannot fail when the writer is a bytes.Buffer.
 	var buf bytes.Buffer

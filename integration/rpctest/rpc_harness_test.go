@@ -14,6 +14,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/taytr-llc/slug/blockchain"
 	"github.com/taytr-llc/slug/btcutil/v2"
 	"github.com/taytr-llc/slug/chaincfg/v2"
 	"github.com/taytr-llc/slug/chainhash/v2"
@@ -76,7 +77,7 @@ func testSendOutputs(r *Harness, t *testing.T) {
 
 	// Next, generate a spend much greater than the block reward. This
 	// transaction should also have been mined properly.
-	txid = genSpend(btcutil.Amount(500 * btcutil.SatoshiPerBitcoin))
+	txid = genSpend(btcutil.Amount(10 * blockchain.CalcBlockSubsidy(1, r.ActiveNet)))
 	blockHashes, err = r.Client.Generate(1)
 	if err != nil {
 		t.Fatalf("unable to generate single block: %v", err)
@@ -217,37 +218,41 @@ func testJoinMempools(r *Harness, t *testing.T) {
 
 	// Wait until the transaction shows up to ensure the two mempools are
 	// not the same.
-	harnessSynced := make(chan struct{})
+	harnessSynced := make(chan error, 1)
 	go func() {
 		for {
 			poolHashes, err := r.Client.GetRawMempool()
 			if err != nil {
-				t.Fatalf("failed to retrieve harness mempool: %v", err)
+				harnessSynced <- err
+				return
 			}
 			if len(poolHashes) > 0 {
 				break
 			}
 			time.Sleep(time.Millisecond * 100)
 		}
-		harnessSynced <- struct{}{}
+		harnessSynced <- nil
 	}()
 	select {
-	case <-harnessSynced:
+	case err := <-harnessSynced:
+		if err != nil {
+			t.Fatalf("failed to retrieve harness mempool: %v", err)
+		}
 	case <-time.After(time.Minute):
 		t.Fatalf("harness node never received transaction")
 	}
 
 	// This select case should fall through to the default as the goroutine
 	// should be blocked on the JoinNodes call.
-	poolsSynced := make(chan struct{})
+	poolsSynced := make(chan error, 1)
 	go func() {
-		if err := JoinNodes(nodeSlice, Mempools); err != nil {
-			t.Fatalf("unable to join node on mempools: %v", err)
-		}
-		poolsSynced <- struct{}{}
+		poolsSynced <- JoinNodes(nodeSlice, Mempools)
 	}()
 	select {
-	case <-poolsSynced:
+	case err := <-poolsSynced:
+		if err != nil {
+			t.Fatalf("unable to join node on mempools: %v", err)
+		}
 		t.Fatalf("mempools detected as synced yet harness has a new tx")
 	default:
 	}
@@ -267,13 +272,12 @@ func testJoinMempools(r *Harness, t *testing.T) {
 		t.Fatalf("send transaction failed: %v", err)
 	}
 
-	// Select once again with a special timeout case after 1 minute. The
-	// goroutine above should now be blocked on sending into the unbuffered
-	// channel. The send should immediately succeed. In order to avoid the
-	// test hanging indefinitely, a 1 minute timeout is in place.
+	// Wait at most one minute for the asynchronous join result.
 	select {
-	case <-poolsSynced:
-		// fall through
+	case err := <-poolsSynced:
+		if err != nil {
+			t.Fatalf("unable to join node on mempools: %v", err)
+		}
 	case <-time.After(time.Minute):
 		t.Fatalf("mempools never detected as synced")
 	}
@@ -292,18 +296,18 @@ func testJoinBlocks(r *Harness, t *testing.T) {
 	defer harness.TearDown()
 
 	nodeSlice := []*Harness{r, harness}
-	blocksSynced := make(chan struct{})
+	blocksSynced := make(chan error, 1)
 	go func() {
-		if err := JoinNodes(nodeSlice, Blocks); err != nil {
-			t.Fatalf("unable to join node on blocks: %v", err)
-		}
-		blocksSynced <- struct{}{}
+		blocksSynced <- JoinNodes(nodeSlice, Blocks)
 	}()
 
 	// This select case should fall through to the default as the goroutine
 	// should be blocked on the JoinNodes calls.
 	select {
-	case <-blocksSynced:
+	case err := <-blocksSynced:
+		if err != nil {
+			t.Fatalf("unable to join node on blocks: %v", err)
+		}
 		t.Fatalf("blocks detected as synced yet local harness is behind")
 	default:
 	}
@@ -314,13 +318,12 @@ func testJoinBlocks(r *Harness, t *testing.T) {
 		t.Fatalf("unable to connect harnesses: %v", err)
 	}
 
-	// Select once again with a special timeout case after 1 minute. The
-	// goroutine above should now be blocked on sending into the unbuffered
-	// channel. The send should immediately succeed. In order to avoid the
-	// test hanging indefinitely, a 1 minute timeout is in place.
+	// Wait at most one minute for the asynchronous join result.
 	select {
-	case <-blocksSynced:
-		// fall through
+	case err := <-blocksSynced:
+		if err != nil {
+			t.Fatalf("unable to join node on blocks: %v", err)
+		}
 	case <-time.After(time.Minute):
 		t.Fatalf("blocks never detected as synced")
 	}
@@ -479,8 +482,8 @@ func testMemWalletReorg(r *Harness, t *testing.T) {
 	}
 	defer harness.TearDown()
 
-	// The internal wallet of this harness should now have 250 BTC.
-	expectedBalance := btcutil.Amount(250 * btcutil.SatoshiPerBitcoin)
+	// Five mature coinbase outputs should be spendable.
+	expectedBalance := btcutil.Amount(5 * blockchain.CalcBlockSubsidy(1, harness.ActiveNet))
 	walletBalance := harness.ConfirmedBalance()
 	if expectedBalance != walletBalance {
 		t.Fatalf("wallet balance incorrect: expected %v, got %v",
@@ -602,9 +605,8 @@ func TestMain(m *testing.M) {
 }
 
 func TestHarness(t *testing.T) {
-	// We should have (numMatureOutputs * 50 BTC) of mature unspendable
-	// outputs.
-	expectedBalance := btcutil.Amount(numMatureOutputs * 50 * btcutil.SatoshiPerBitcoin)
+	// Each mature coinbase pays the SLUG block subsidy.
+	expectedBalance := btcutil.Amount(numMatureOutputs * blockchain.CalcBlockSubsidy(1, mainHarness.ActiveNet))
 	harnessBalance := mainHarness.ConfirmedBalance()
 	if harnessBalance != expectedBalance {
 		t.Fatalf("expected wallet balance of %v instead have %v",

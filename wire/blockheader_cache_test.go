@@ -90,9 +90,10 @@ func TestBlockHeaderHashCacheConcurrent(t *testing.T) {
 	}
 }
 
-func directArgon2HeaderHash(header BlockHeader) chainhash.Hash {
+func directArgon2HeaderHash(header BlockHeader, memory uint32) chainhash.Hash {
 	// Independently construct the canonical 80-byte header and call Argon2id
-	// with the settled production parameters, not BlockHash or its cache.
+	// with literal parameters supplied by the profile test, not BlockHash or
+	// its cache or implementation constants.
 	var raw [80]byte
 	binary.LittleEndian.PutUint32(raw[0:4], uint32(header.Version))
 	copy(raw[4:36], header.PrevBlock[:])
@@ -100,13 +101,14 @@ func directArgon2HeaderHash(header BlockHeader) chainhash.Hash {
 	binary.LittleEndian.PutUint32(raw[68:72], uint32(header.Timestamp.Unix()))
 	binary.LittleEndian.PutUint32(raw[72:76], header.Bits)
 	binary.LittleEndian.PutUint32(raw[76:80], header.Nonce)
-	digest := argon2.IDKey(raw[:], raw[:], 1, 256*1024, 1, 32)
+	digest := argon2.IDKey(raw[:], raw[:], 1, memory, 1, 32)
 	var hash chainhash.Hash
 	copy(hash[:], digest)
 	return hash
 }
 
-func TestBlockHashMemoizationPreservesArgon2(t *testing.T) {
+func testBlockHashMemoizationPreservesArgon2(t *testing.T, memory uint32) {
+	t.Helper()
 	header := BlockHeader{
 		Version:    1,
 		PrevBlock:  chainhash.Hash{0x11},
@@ -115,7 +117,7 @@ func TestBlockHashMemoizationPreservesArgon2(t *testing.T) {
 		Bits:       0x207fffff,
 		Nonce:      17,
 	}
-	want := directArgon2HeaderHash(header)
+	want := directArgon2HeaderHash(header, memory)
 	if got := header.BlockHash(); got != want {
 		t.Fatalf("uncached digest %s != independent Argon2id %s", got, want)
 	}
@@ -138,7 +140,7 @@ func TestBlockHashMemoizationPreservesArgon2(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			changed := header
 			test.change(&changed)
-			wantChanged := directArgon2HeaderHash(changed)
+			wantChanged := directArgon2HeaderHash(changed, memory)
 			if got := changed.BlockHash(); got != wantChanged || got == want {
 				t.Fatalf("header mutation returned wrong digest %s (want %s)", got, wantChanged)
 			}

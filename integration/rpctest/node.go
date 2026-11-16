@@ -50,7 +50,7 @@ func newConfig(nodeDir, certFile, keyFile string, extra []string,
 		var err error
 		btcdPath, err = btcdExecutablePath()
 		if err != nil {
-			btcdPath = "btcd"
+			return nil, err
 		}
 	}
 
