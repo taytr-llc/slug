@@ -69,9 +69,17 @@ against the frozen set-26 node, with eight listeners closed after cleanup.
 Actual native macOS actions verified account login, export, same-wallet reset,
 held export refusal, sign-out and isolated second-account login.
 
-Final continuation, updated node suite, exact-source remote CI, packaged artifact
-and deployment evidence are recorded in the workspace release report after
-completion; this note does not claim those pending gates have already passed.
+The fixed-node continuation gate passed in 21.96 seconds: after the first
+canonical win it admitted three more receipts on new jobs, with primary and peer
+headers/full-block tips equal and getheaders matching the canonical tip. Normal
+production-PoW full-block acceptance/reorg/rejection tests passed in 130.450
+seconds; the production header-hash vector passed in 4.704 seconds. The paired
+wallet revision is `1c1fecb9f4df5cd1988b1d8105fd4661e71c76aa`; wallet CI pins
+chain implementation `6d96f19781b93b97117b00f5701f84131af54ab5`.
+
+The complete updated chain suite, exact-source remote CI, packaged artifact and
+deployment evidence are recorded in the workspace release report after
+completion; this note does not claim pending gates have already passed.
 
 ## Deliberate boundaries and remaining work
 
