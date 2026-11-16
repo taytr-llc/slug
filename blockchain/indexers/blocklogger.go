@@ -8,8 +8,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/btcsuite/btcd/btcutil/v2"
 	"github.com/btcsuite/btclog"
+	"github.com/taytr-llc/slug/btcutil/v2"
 )
 
 // blockProgressLogger provides periodic logging for other services in order

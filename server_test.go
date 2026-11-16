@@ -9,13 +9,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg/v2"
-	"github.com/btcsuite/btcd/internal/inbound"
-	"github.com/btcsuite/btcd/internal/socks"
-	"github.com/btcsuite/btcd/peer"
 	"github.com/btcsuite/btclog"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"github.com/taytr-llc/slug/chaincfg/v2"
+	"github.com/taytr-llc/slug/internal/inbound"
+	"github.com/taytr-llc/slug/internal/socks"
+	"github.com/taytr-llc/slug/peer"
 )
 
 func TestMain(m *testing.M) {

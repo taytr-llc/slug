@@ -7,7 +7,7 @@ package base58_test
 import (
 	"fmt"
 
-	"github.com/btcsuite/btcd/address/v2/base58"
+	"github.com/taytr-llc/slug/address/v2/base58"
 )
 
 // This example demonstrates how to decode modified base58 encoded data.

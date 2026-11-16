@@ -11,7 +11,7 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/btcsuite/btcd/chainhash/v2"
+	"github.com/taytr-llc/slug/chainhash/v2"
 )
 
 func countPayload(t *testing.T, prefix []byte, count uint64) []byte {

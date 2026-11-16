@@ -13,9 +13,9 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/btcsuite/btcd/btcec/v2"
 	secp_ecdsa "github.com/decred/dcrd/dcrec/secp256k1/v4/ecdsa"
 	"github.com/stretchr/testify/require"
+	"github.com/taytr-llc/slug/btcec/v2"
 )
 
 type signatureTest struct {

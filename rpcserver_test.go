@@ -6,16 +6,16 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/btcsuite/btcd/btcjson"
-	"github.com/btcsuite/btcd/btcutil/v2"
-	"github.com/btcsuite/btcd/chaincfg/v2"
-	"github.com/btcsuite/btcd/chainhash/v2"
-	"github.com/btcsuite/btcd/database"
-	"github.com/btcsuite/btcd/mempool"
-	"github.com/btcsuite/btcd/mempool/mempooltest"
-	"github.com/btcsuite/btcd/wire/v2"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
+	"github.com/taytr-llc/slug/btcjson"
+	"github.com/taytr-llc/slug/btcutil/v2"
+	"github.com/taytr-llc/slug/chaincfg/v2"
+	"github.com/taytr-llc/slug/chainhash/v2"
+	"github.com/taytr-llc/slug/database"
+	"github.com/taytr-llc/slug/mempool"
+	"github.com/taytr-llc/slug/mempool/mempooltest"
+	"github.com/taytr-llc/slug/wire/v2"
 )
 
 // TestHandleTestMempoolAcceptFailDecode checks that when invalid hex string is

@@ -7,8 +7,8 @@ package blockchain
 import (
 	"testing"
 
-	"github.com/btcsuite/btcd/btcutil/v2"
-	"github.com/btcsuite/btcd/chaincfg/v2"
+	"github.com/taytr-llc/slug/btcutil/v2"
+	"github.com/taytr-llc/slug/chaincfg/v2"
 )
 
 // TestSlugBlockSubsidy pins the SLUG emission schedule (D32, change

@@ -3,8 +3,8 @@ package txscript
 import (
 	"testing"
 
-	"github.com/btcsuite/btcd/wire/v2"
 	"github.com/stretchr/testify/require"
+	"github.com/taytr-llc/slug/wire/v2"
 )
 
 // TestP2ASpending tests that pay-to-anchor outputs can be spent correctly.

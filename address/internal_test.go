@@ -12,9 +12,9 @@ interface. The functions are only exported while the tests are being run.
 package address
 
 import (
-	"github.com/btcsuite/btcd/address/v2/base58"
-	"github.com/btcsuite/btcd/address/v2/bech32"
-	"github.com/btcsuite/btcd/btcec/v2"
+	"github.com/taytr-llc/slug/address/v2/base58"
+	"github.com/taytr-llc/slug/address/v2/bech32"
+	"github.com/taytr-llc/slug/btcec/v2"
 	"golang.org/x/crypto/ripemd160"
 )
 

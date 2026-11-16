@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"sort"
 
-	"github.com/btcsuite/btcd/chainhash/v2"
+	"github.com/taytr-llc/slug/chainhash/v2"
 )
 
 // InPlaceSort modifies the passed packet's wire TX inputs and outputs to be

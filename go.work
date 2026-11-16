@@ -1,14 +1,10 @@
 go 1.26.10
 
-// SLUG development workspace. The fork is ten Go modules that pin each
-// other by released version; without this file, a change in one module
-// (for example the Argon2id BlockHash in wire) is invisible to the
-// modules that depend on it. The workspace makes every build and test
-// in this repo resolve the btcd modules to the local sources.
-//
-// This is development scaffolding for the fork's build-out phase. It
-// can be dropped once the modules are versioned and released under
-// their own tags.
+// SLUG development workspace. All ten modules resolve to this checkout.
+// Relative replacements in go.mod also keep dependency graph loading and
+// per-module tidy/sync local until the fork has its own module release tags.
+// Always build and test this repo in workspace mode so sibling source edits
+// are used together.
 use (
 	.
 	./address

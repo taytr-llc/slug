@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/btcsuite/btcd/btcjson"
-	"github.com/btcsuite/btcd/btcutil/v2"
-	"github.com/btcsuite/btcd/chaincfg/v2"
-	"github.com/btcsuite/btcd/integration/rpctest"
 	"github.com/stretchr/testify/require"
+	"github.com/taytr-llc/slug/btcjson"
+	"github.com/taytr-llc/slug/btcutil/v2"
+	"github.com/taytr-llc/slug/chaincfg/v2"
+	"github.com/taytr-llc/slug/integration/rpctest"
 )
 
 func getBlockFromString(t *testing.T, hexStr string) *btcutil.Block {

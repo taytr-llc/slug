@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/btcutil/v2"
+	"github.com/taytr-llc/slug/btcutil/v2"
 )
 
 // TestNewTLSCertPair ensures the NewTLSCertPair function works as expected.

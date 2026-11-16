@@ -15,11 +15,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg/v2"
-	"github.com/btcsuite/btcd/chainhash/v2"
-	"github.com/btcsuite/btcd/internal/socks"
-	"github.com/btcsuite/btcd/peer"
-	"github.com/btcsuite/btcd/wire/v2"
+	"github.com/taytr-llc/slug/chaincfg/v2"
+	"github.com/taytr-llc/slug/chainhash/v2"
+	"github.com/taytr-llc/slug/internal/socks"
+	"github.com/taytr-llc/slug/peer"
+	"github.com/taytr-llc/slug/wire/v2"
 )
 
 // testHandshakeAdmission adapts a function to the v2 handshake admission

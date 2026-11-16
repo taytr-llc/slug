@@ -17,10 +17,10 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/btcsuite/btcd/chaincfg/v2"
 	secp_ecdsa "github.com/decred/dcrd/dcrec/secp256k1/v4"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
+	"github.com/taytr-llc/slug/chaincfg/v2"
 )
 
 // childHMACMock supplies cancellation outputs without searching for an

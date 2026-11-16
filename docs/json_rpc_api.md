@@ -1112,8 +1112,8 @@ import (
 	"log"
 	"path/filepath"
 
-	"github.com/btcsuite/btcd/rpcclient"
-	"github.com/btcsuite/btcd/btcutil/v2"
+	"github.com/taytr-llc/slug/rpcclient"
+	"github.com/taytr-llc/slug/btcutil/v2"
 )
 
 func main() {
@@ -1175,9 +1175,9 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/btcsuite/btcd/chainhash/v2"
-	"github.com/btcsuite/btcd/rpcclient"
-	"github.com/btcsuite/btcd/btcutil/v2"
+	"github.com/taytr-llc/slug/chainhash/v2"
+	"github.com/taytr-llc/slug/rpcclient"
+	"github.com/taytr-llc/slug/btcutil/v2"
 )
 
 func main() {
@@ -1267,9 +1267,9 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/btcsuite/btcd/chainhash/v2"
-	"github.com/btcsuite/btcd/rpcclient"
-	"github.com/btcsuite/btcd/btcutil/v2"
+	"github.com/taytr-llc/slug/chainhash/v2"
+	"github.com/taytr-llc/slug/rpcclient"
+	"github.com/taytr-llc/slug/btcutil/v2"
 )
 
 func main() {

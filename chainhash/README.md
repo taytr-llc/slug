@@ -3,7 +3,7 @@ chainhash
 
 [![Build Status](https://github.com/btcsuite/btcd/workflows/Build%20and%20Test/badge.svg)](https://github.com/btcsuite/btcd/actions)
 [![ISC License](http://img.shields.io/badge/license-ISC-blue.svg)](http://copyfree.org)
-[![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg)](https://pkg.go.dev/github.com/btcsuite/btcd/chainhash/v2)
+[![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg)](https://pkg.go.dev/github.com/taytr-llc/slug/chainhash/v2)
 =======
 
 chainhash provides a generic hash type and associated functions that allows the
@@ -12,7 +12,7 @@ specific hash algorithm to be abstracted.
 ## Installation and Updating
 
 ```bash
-$ go get -u github.com/btcsuite/btcd/chainhash/v2
+$ go get -u github.com/taytr-llc/slug/chainhash/v2
 ```
 
 ## GPG Verification Key

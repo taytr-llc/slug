@@ -8,7 +8,7 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	"github.com/btcsuite/btcd/address/v2/bech32"
+	"github.com/taytr-llc/slug/address/v2/bech32"
 )
 
 // This example demonstrates how to decode a bech32 encoded string.

@@ -3,9 +3,9 @@ package peer
 import (
 	"testing"
 
-	"github.com/btcsuite/btcd/chainhash/v2"
-	"github.com/btcsuite/btcd/wire/v2"
 	"github.com/stretchr/testify/require"
+	"github.com/taytr-llc/slug/chainhash/v2"
+	"github.com/taytr-llc/slug/wire/v2"
 )
 
 // TestKnownInventoryByValue checks that known inventory is matched by its

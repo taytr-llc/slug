@@ -12,7 +12,8 @@ WORKDIR /app
 ARG TARGETOS TARGETARCH
 # Build into a flat directory. When cross-compiling, go install would put the
 # binaries into a per-platform subdirectory such as /go/bin/linux_arm64.
-RUN GOOS=$TARGETOS GOARCH=$TARGETARCH go build -v -o /out/ . ./cmd/...
+RUN GOOS=$TARGETOS GOARCH=$TARGETARCH go build -v -o /out/slugd . && \
+    GOOS=$TARGETOS GOARCH=$TARGETARCH go build -v -o /out/ ./cmd/...
 
 ###########################
 # Build docker image stage
@@ -22,4 +23,4 @@ COPY --from=build /out/ /bin/
 # 8333  Mainnet Bitcoin peer-to-peer port
 # 8334  Mainet RPC port
 EXPOSE 8333 8334
-ENTRYPOINT ["btcd"]
+ENTRYPOINT ["slugd"]

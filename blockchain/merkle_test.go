@@ -8,10 +8,10 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/btcsuite/btcd/btcutil/v2"
-	"github.com/btcsuite/btcd/chainhash/v2"
-	"github.com/btcsuite/btcd/wire/v2"
 	"github.com/stretchr/testify/require"
+	"github.com/taytr-llc/slug/btcutil/v2"
+	"github.com/taytr-llc/slug/chainhash/v2"
+	"github.com/taytr-llc/slug/wire/v2"
 )
 
 // TestMerkle tests the BuildMerkleTreeStore API.

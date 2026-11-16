@@ -1,8 +1,8 @@
 # Update
 
-* Run the following commands to update btcd, all dependencies, and install it:
+* Update and install SLUG from the selected change-set branch:
 
 ```bash
-cd $GOPATH/src/github.com/btcsuite/btcd
-git pull && go install -v . ./cmd/...
+cd $GOPATH/src/github.com/taytr-llc/slug
+git pull && make install
 ```
