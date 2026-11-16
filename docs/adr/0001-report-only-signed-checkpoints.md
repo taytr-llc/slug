@@ -50,5 +50,6 @@ There is no runtime public-key override or generated default authority.
 1. Complete in set 7: verification, offline signing, and read-only RPC.
 2. Complete in set 10: Mike supplied only his public key; it is compiled
    for the Phase A SLUG network. See the current operator guide for its hex.
-3. Pending: Mike signs a checkpoint after the selected validated block has
-   60 descendants; verify and load the public signed document.
+3. Complete in set 11: Mike signed height 1 after tip 61; independent
+   signature verification and local import reported finalized with 60
+   descendants. Deployment to the seed remains a separate authorized action.

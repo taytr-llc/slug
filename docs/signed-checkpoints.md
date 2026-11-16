@@ -16,8 +16,11 @@ Phase A SLUG network:
 
 `getcheckpointinfo` reports `authorityconfigured: true` and this public key
 in builds containing set 10. Other networks have no enrolled authority.
-Enrollment does not create a signed checkpoint or deploy the client to the
-seed; no operator-signed record has been imported yet.
+Set 11 archives Mike's first signed record at
+[`checkpoints/phase-a/height-1.json`](../checkpoints/phase-a/height-1.json).
+It was verified and imported locally, reporting `finalized` at tip 61 with
+60 descendants. The seed serves that chain but still runs the older client;
+no deployment or automatic record loading is implied.
 
 The offline utility is documented in [cmd/slugcheckpoint](../cmd/slugcheckpoint/README.md).
 Build it from the repository root:
@@ -35,9 +38,10 @@ explicit enrollment and distribution in a client update.
 
 From a fully validated node, select a positive height at most
 `current tip height - 60`. Verify its hash and chain before signing.
-At the handover seed's height 3, there is no eligible positive height:
-height 1 first becomes eligible at tip 61. Do not sign an immature block
-and describe it as finalized.
+Height 1 first becomes eligible at tip 61. The first Phase A record was
+signed after this threshold was reached and independently verified through
+a fresh node connected to the seed. Do not sign an immature block and
+describe it as finalized.
 
 Sign offline using the explicit public height/hash and your private file,
 following the tool's README. Distribute only the resulting JSON document.
@@ -50,6 +54,11 @@ A node built with the enrolled public key loads documents explicitly:
 slugd --signedcheckpoint=/absolute/path/checkpoint.json
 slugctl getcheckpointinfo
 ```
+
+For the bundled Phase A record, use its absolute checkout path. The Docker
+image installs it at `/usr/share/slug/checkpoints/phase-a/height-1.json`;
+deployment still requires adding that explicit startup flag. See the
+[checkpoint directory](../checkpoints/README.md) for verification commands.
 
 Repeat `--signedcheckpoint` for several heights. Restart to reload. Files
 must fit within 4096 bytes and contain exactly the six fields `version`,

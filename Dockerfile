@@ -24,6 +24,8 @@ RUN go build -o /out/slugd . && go build -o /out/ ./cmd/...
 FROM alpine:3.24
 
 COPY --from=build /out/ /bin/
+# Public signed records are available for explicit --signedcheckpoint imports.
+COPY checkpoints/ /usr/share/slug/checkpoints/
 
 EXPOSE 29333 29332
 

@@ -21,7 +21,8 @@ version.
   → `slug-signed-checkpoints` (set 7, `6b3e9e90`)
   → `slug-pow-security` (set 8, `c8176de5`)
   → `slug-test-pow` (set 9, `273b5e17`)
-  → `slug-checkpoint-authority` (set 10, operator public-key enrollment).
+  → `slug-checkpoint-authority` (set 10, `0ca7466a`)
+  → `slug-first-checkpoint` (set 11, first signed Phase A record).
 - Branch each next change set off the latest completed implementation tip,
   never the live seed branch by default. Use `slug-<topic>` names; set 7 is
   `slug-signed-checkpoints`. HANDOVER.md records the original takeover state.
@@ -51,9 +52,11 @@ version.
   default/release builds retain 256 MiB. Never add that tag to release or
   Railway builds. Tagged daemons require regtest/simnet and use separate
   default files. No runtime flag enables cheap PoW.
-- Set 7 implementation is complete; Mike's public key is enrolled in set 10.
-  Official checkpoint activation still needs an eligible record with 60
-  descendants, signed offline by Mike and loaded into the client.
+- Set 7's signed checkpoint deliverable is complete: Mike's public key was
+  enrolled in set 10 and his signed height-1 record is archived in set 11 at
+  `checkpoints/phase-a/height-1.json`. Explicit local import reported finalized
+  at tip 61 with 60 descendants. The seed serves this chain but still runs
+  the older `slug-rebrand` client; checkpoint-aware deployment is pending.
   Phase A master merge/deployment still requires Mike's explicit go-ahead.
 
 ## Consensus facts (Phase A testnet, disposable but internally consistent)
@@ -124,8 +127,9 @@ settings.
   request his operator private seed; only his public key is compiled into
   chaincfg. Test fixture keys are not operator keys. MainNetParams now uses
   his public key `811349556ea792060edbb0518dd3a513c5906abe495a81eaf629abd5900c44a3`.
-  Other networks remain unconfigured. No operator-signed record has been
-  imported yet; do not claim official testnet checkpoints exist yet.
+  Other networks remain unconfigured. The first signed Phase A checkpoint
+  is archived and verified; load it explicitly using `--signedcheckpoint`.
+  Publishing the file does not automatically configure every node.
 
 ## Style
 
