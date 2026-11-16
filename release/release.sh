@@ -84,13 +84,18 @@ SYS=${BTCDBUILDSYS:-"
 
 # Use the first element of $GOPATH in the case where GOPATH is a list
 # (something that is totally allowed).
-PKG="github.com/btcsuite/btcd"
+PKG="github.com/taytr-llc/slug"
 COMMIT=$(git describe --abbrev=40 --dirty)
 
 for i in $SYS; do
     OS=$(echo $i | cut -f1 -d-)
     ARCH=$(echo $i | cut -f2 -d-)
     ARM=
+    EXE=
+
+    if [[ $OS = "windows" ]]; then
+      EXE=.exe
+    fi
 
     if [[ $ARCH = "armv6" ]]; then
       ARCH=arm
@@ -104,8 +109,8 @@ for i in $SYS; do
     cd $PACKAGE-$i-$TAG
 
     echo "Building:" $OS $ARCH $ARM
-    env CGO_ENABLED=0 GOOS=$OS GOARCH=$ARCH GOARM=$ARM go build -v -trimpath -ldflags="-s -w -buildid=" github.com/btcsuite/btcd
-    env CGO_ENABLED=0 GOOS=$OS GOARCH=$ARCH GOARM=$ARM go build -v -trimpath -ldflags="-s -w -buildid=" github.com/btcsuite/btcd/cmd/btcctl
+    env CGO_ENABLED=0 GOOS=$OS GOARCH=$ARCH GOARM=$ARM go build -v -trimpath -ldflags="-s -w -buildid=" -o "slugd$EXE" "$PKG"
+    env CGO_ENABLED=0 GOOS=$OS GOARCH=$ARCH GOARM=$ARM go build -v -trimpath -ldflags="-s -w -buildid=" -o "slugctl$EXE" "$PKG/cmd/slugctl"
     cd ..
 
     if [[ $OS = "windows" ]]; then

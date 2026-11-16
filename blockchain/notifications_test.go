@@ -7,15 +7,13 @@ package blockchain
 import (
 	"testing"
 
-	"github.com/btcsuite/btcd/chaincfg/v2"
+	"github.com/taytr-llc/slug/chaincfg/v2"
 )
 
 // TestNotifications ensures that notification callbacks are fired on events.
 func TestNotifications(t *testing.T) {
-	blocks, err := loadBlocks("blk_0_to_4.dat.bz2")
-	if err != nil {
-		t.Fatalf("Error loading file: %v\n", err)
-	}
+	block := newNativeTestBlock(t, &chaincfg.MainNetParams,
+		nativeTestGenesis(&chaincfg.MainNetParams), 0)
 
 	// Create a new database and chain instance to run tests against.
 	chain, teardownFunc, err := chainSetup("notifications",
@@ -39,7 +37,7 @@ func TestNotifications(t *testing.T) {
 		chain.Subscribe(callback)
 	}
 
-	_, _, err = chain.ProcessBlock(blocks[1], BFNone)
+	_, _, err = chain.ProcessBlock(block, BFNone)
 	if err != nil {
 		t.Fatalf("ProcessBlock fail on block 1: %v\n", err)
 	}

@@ -8,8 +8,8 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/btcsuite/btcd/blockchain/internal/workmath"
-	"github.com/btcsuite/btcd/chainhash/v2"
+	"github.com/taytr-llc/slug/blockchain/internal/workmath"
+	"github.com/taytr-llc/slug/chainhash/v2"
 )
 
 // HashToBig converts a chainhash.Hash into a big.Int that can be used to

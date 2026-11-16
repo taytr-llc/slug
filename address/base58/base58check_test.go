@@ -7,7 +7,7 @@ package base58_test
 import (
 	"testing"
 
-	"github.com/btcsuite/btcd/address/v2/base58"
+	"github.com/taytr-llc/slug/address/v2/base58"
 )
 
 var checkEncodingStringTests = []struct {

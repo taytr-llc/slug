@@ -19,14 +19,14 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/btcsuite/btcd/blockchain"
-	"github.com/btcsuite/btcd/chaincfg/v2"
-	"github.com/btcsuite/btcd/chainhash/v2"
-	"github.com/btcsuite/btcd/internal/socks"
-	"github.com/btcsuite/btcd/v2transport"
-	"github.com/btcsuite/btcd/wire/v2"
 	"github.com/davecgh/go-spew/spew"
 	"github.com/decred/dcrd/container/lru"
+	"github.com/taytr-llc/slug/blockchain"
+	"github.com/taytr-llc/slug/chaincfg/v2"
+	"github.com/taytr-llc/slug/chainhash/v2"
+	"github.com/taytr-llc/slug/internal/socks"
+	"github.com/taytr-llc/slug/v2transport"
+	"github.com/taytr-llc/slug/wire/v2"
 )
 
 const (

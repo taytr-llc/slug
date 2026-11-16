@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/chainhash/v2"
 	"github.com/davecgh/go-spew/spew"
+	"github.com/taytr-llc/slug/chainhash/v2"
 )
 
 // TestBlock tests the MsgBlock API.
@@ -91,8 +91,10 @@ func TestBlockTxHashes(t *testing.T) {
 
 // TestBlockHash tests the ability to generate the hash of a block accurately.
 func TestBlockHash(t *testing.T) {
-	// Block 1 hash.
-	hashStr := "839a8e6886ab5951d76f411475428afc90947ee320161bbf18eb6048"
+	// Block 1 hash. SLUG: this is the Argon2id digest of the block 1
+	// header (see BlockHash in blockheader.go), not Bitcoin's double
+	// SHA256 value.
+	hashStr := "caf7d42adeeca5564c08f79ff213e0c267c5f4e0ab66f36327e63de2cfeb059c"
 	wantHash, err := chainhash.NewHashFromStr(hashStr)
 	if err != nil {
 		t.Errorf("NewHashFromStr: %v", err)

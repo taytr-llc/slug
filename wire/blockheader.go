@@ -5,10 +5,12 @@
 package wire
 
 import (
+	"bytes"
 	"io"
 	"time"
 
-	"github.com/btcsuite/btcd/chainhash/v2"
+	"github.com/taytr-llc/slug/chainhash/v2"
+	"golang.org/x/crypto/argon2"
 )
 
 // MaxBlockHeaderPayload is the maximum number of bytes a block header can be.
@@ -43,11 +45,64 @@ type BlockHeader struct {
 // header.
 const blockHeaderLen = 80
 
+// SLUG proof-of-work parameters (change set 1). The block header hash
+// is an Argon2id digest instead of Bitcoin's double SHA256. The settled
+// parameters (see ARGON2ID_PARAMS.md in the SLUG design docs) are a
+// 256 MB memory arena, a single pass, and a single lane per attempt;
+// miners parallelize across attempts, not within one.
+const (
+	// powArgon2Time is the Argon2id time cost (number of passes).
+	powArgon2Time = 1
+
+	// powArgon2Threads is the Argon2id parallelism (lanes) per attempt.
+	powArgon2Threads = 1
+
+	// powArgon2KeyLen is the Argon2id output length. At 32 bytes the
+	// digest fits the existing chainhash.Hash type, so no block ID,
+	// database key, or wire format changes size.
+	powArgon2KeyLen = 32
+)
+
 // BlockHash computes the block identifier hash for the given block header.
+//
+// SLUG hash construction: the header is serialized in the standard
+// 80-byte wire format, and the block hash is
+//
+//	argon2.IDKey(password = serializedHeader, salt = serializedHeader,
+//	             time = 1, memory = 256*1024 KiB, threads = 1, keyLen = 32)
+//
+// The serialized header serves as both the Argon2id password and its
+// salt. There is no per-block or per-network salt to store or transmit:
+// any node can recompute the digest from the header alone, which is
+// exactly the property the old double SHA256 construction had. Only
+// this block header hash uses Argon2id; transaction IDs, merkle roots,
+// address checksums, and signature hashes remain double SHA256.
+// The explicitly tagged slugtestpow build uses a smaller memory arena for
+// isolated tests and produces incompatible block identifiers.
 func (h *BlockHeader) BlockHash() chainhash.Hash {
-	return chainhash.DoubleHashRaw(func(w io.Writer) error {
-		return writeBlockHeader(w, 0, h)
-	})
+	// writeBlockHeader cannot fail when the writer is a bytes.Buffer.
+	var buf bytes.Buffer
+	buf.Grow(blockHeaderLen)
+	_ = writeBlockHeader(&buf, 0, h)
+	serialized := buf.Bytes()
+
+	// SLUG: callers often hash the same header repeatedly during validation.
+	// Memoize only the digest of the exact serialized bytes, never validity
+	// or a caller-provided block identifier. Hashing stays outside the cache
+	// lock so independent mining attempts can still run concurrently.
+	var key [blockHeaderLen]byte
+	copy(key[:], serialized)
+	if hash, ok := blockHeaderHashes.lookup(key); ok {
+		return hash
+	}
+
+	digest := argon2.IDKey(serialized, serialized, powArgon2Time,
+		powArgon2Memory, powArgon2Threads, powArgon2KeyLen)
+
+	var hash chainhash.Hash
+	copy(hash[:], digest)
+	blockHeaderHashes.add(key, hash)
+	return hash
 }
 
 // BtcDecode decodes r using the bitcoin protocol encoding into the receiver.

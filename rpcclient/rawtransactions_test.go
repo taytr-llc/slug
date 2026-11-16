@@ -5,9 +5,9 @@ import (
 	"encoding/hex"
 	"testing"
 
-	"github.com/btcsuite/btcd/btcjson"
-	"github.com/btcsuite/btcd/wire/v2"
 	"github.com/stretchr/testify/require"
+	"github.com/taytr-llc/slug/btcjson"
+	"github.com/taytr-llc/slug/wire/v2"
 )
 
 // TestMempoolAcceptPreservesTransactions checks that local validation leaves

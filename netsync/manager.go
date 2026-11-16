@@ -10,14 +10,14 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/btcsuite/btcd/blockchain"
-	"github.com/btcsuite/btcd/btcutil/v2"
-	"github.com/btcsuite/btcd/chaincfg/v2"
-	"github.com/btcsuite/btcd/chainhash/v2"
-	"github.com/btcsuite/btcd/database"
-	"github.com/btcsuite/btcd/mempool"
-	peerpkg "github.com/btcsuite/btcd/peer"
-	"github.com/btcsuite/btcd/wire/v2"
+	"github.com/taytr-llc/slug/blockchain"
+	"github.com/taytr-llc/slug/btcutil/v2"
+	"github.com/taytr-llc/slug/chaincfg/v2"
+	"github.com/taytr-llc/slug/chainhash/v2"
+	"github.com/taytr-llc/slug/database"
+	"github.com/taytr-llc/slug/mempool"
+	peerpkg "github.com/taytr-llc/slug/peer"
+	"github.com/taytr-llc/slug/wire/v2"
 )
 
 const (
@@ -45,6 +45,10 @@ const (
 	// stallSampleInterval the interval at which we will check to see if our
 	// sync has stalled.
 	stallSampleInterval = 30 * time.Second
+
+	// SLUG headers are expensive. Yield between small groups so a legitimate
+	// 2000-header response cannot monopolize block/RPC/stall processing.
+	headersPerTurn = 8
 )
 
 // zeroHash is the zero value hash (all zeros).  It is defined as a convenience.
@@ -75,6 +79,8 @@ type invMsg struct {
 type headersMsg struct {
 	headers *wire.MsgHeaders
 	peer    *peerpkg.Peer
+	next    int
+	reply   chan struct{}
 }
 
 // notFoundMsg packages a bitcoin notfound message and the peer it came from
@@ -699,6 +705,9 @@ func (sm *SyncManager) handleBlockMsg(bmsg *blockMsg) {
 
 	// If we didn't ask for this block then the peer is misbehaving.
 	blockHash := bmsg.block.Hash()
+	// SLUG: compute/cache the hash and record inventory on this serialized
+	// handler, never concurrently in the per-peer receive callback.
+	peer.AddKnownInventory(wire.NewInvVect(wire.InvTypeBlock, blockHash))
 	if _, exists = state.requestedBlocks[*blockHash]; !exists {
 		// The regression test intentionally sends some blocks twice
 		// to test duplicate block insertion fails.  Don't disconnect
@@ -950,25 +959,36 @@ func (sm *SyncManager) buildBlockRequest(peer *peerpkg.Peer) *wire.MsgGetData {
 	return gdmsg
 }
 
-// handleHeadersMsg handles block header messages from all peers.  Headers are
-// requested when performing the ibd and are propagated by peers once the ibd
-// is complete.
-func (sm *SyncManager) handleHeadersMsg(hmsg *headersMsg) {
+// handleHeadersMsg processes one bounded turn of a headers message and reports
+// whether it is complete. The block handler interleaves incomplete messages
+// with other work; fetching more data only happens after the full response.
+func (sm *SyncManager) handleHeadersMsg(hmsg *headersMsg) bool {
 	peer := hmsg.peer
 	_, exists := sm.peerStates[peer]
 	if !exists {
 		log.Warnf("Received headers message from unknown peer %s", peer)
-		return
+		return true
 	}
 
 	// Nothing to do for an empty headers message.
 	msg := hmsg.headers
 	numHeaders := len(msg.Headers)
 	if numHeaders == 0 {
-		return
+		return true
 	}
 
-	for _, blockHeader := range msg.Headers {
+	end := hmsg.next + headersPerTurn
+	if end > numHeaders {
+		end = numHeaders
+	}
+	previousBest, _ := sm.chain.BestHeader()
+	for ; hmsg.next < end; hmsg.next++ {
+		select {
+		case <-sm.quit:
+			return true
+		default:
+		}
+		blockHeader := msg.Headers[hmsg.next]
 		_, err := sm.chain.ProcessBlockHeader(
 			blockHeader, blockchain.BFNone, false,
 		)
@@ -977,29 +997,39 @@ func (sm *SyncManager) handleHeadersMsg(hmsg *headersMsg) {
 				"failed header verification -- disconnecting",
 				peer.Addr())
 			peer.Disconnect()
-			return
+			return true
 		}
 
 		sm.progressLogger.SetLastLogTime(time.Now())
+		currentBest, _ := sm.chain.BestHeader()
+		if peer == sm.syncPeer && currentBest != previousBest {
+			// Chunking allows the stall ticker to run during a long but
+			// valid response. Only best-header advancement counts as
+			// progress; replaying known headers must not reset the clock.
+			sm.lastProgressTime = time.Now()
+		}
+		previousBest = currentBest
+	}
+	if hmsg.next < numHeaders {
+		return false
 	}
 
 	bestHash, bestHeight := sm.chain.BestHeader()
 	if sm.ibdMode {
 		if sm.syncPeer == nil {
 			// Return if we've disconnected from the syncPeer.
-			return
-		}
-
-		// Update the last progress time to prevent the stall handler
-		// from disconnecting the sync peer during header download.
-		if peer == sm.syncPeer {
-			sm.lastProgressTime = time.Now()
+			return true
 		}
 
 		if bestHeight < sm.syncPeer.LastBlock() {
-			locator := blockchain.BlockLocator([]*chainhash.Hash{&bestHash})
-			sm.syncPeer.PushGetHeadersMsg(locator, &zeroHash)
-			return
+			// Other peers can finish short announcements while the
+			// sync peer's response is still being processed in turns.
+			// Only its own completion should request a continuation.
+			if peer == sm.syncPeer {
+				locator := blockchain.BlockLocator([]*chainhash.Hash{&bestHash})
+				sm.syncPeer.PushGetHeadersMsg(locator, &zeroHash)
+			}
+			return true
 		}
 	}
 
@@ -1008,6 +1038,7 @@ func (sm *SyncManager) handleHeadersMsg(hmsg *headersMsg) {
 		"-- now fetching blocks",
 		bestHeaderHash, bestHeaderHeight, hmsg.peer.String())
 	sm.fetchHeaderBlocks(peer)
+	return true
 }
 
 // handleNotFoundMsg handles notfound messages from all peers.
@@ -1301,6 +1332,14 @@ func (sm *SyncManager) blockHandler() {
 	stallTicker := time.NewTicker(stallSampleInterval)
 	defer stallTicker.Stop()
 
+	// A private ready signal schedules bounded header turns without sending
+	// a continuation into our own potentially full input channel. QueueHeaders
+	// applies per-peer receive backpressure until the whole message finishes.
+	ready := make(chan struct{})
+	close(ready)
+	var headerWork <-chan struct{}
+	var pendingHeaders []*headersMsg
+
 out:
 	for {
 		select {
@@ -1321,7 +1360,8 @@ out:
 				sm.handleInvMsg(msg)
 
 			case *headersMsg:
-				sm.handleHeadersMsg(msg)
+				pendingHeaders = append(pendingHeaders, msg)
+				headerWork = ready
 
 			case *notFoundMsg:
 				sm.handleNotFoundMsg(msg)
@@ -1361,6 +1401,19 @@ out:
 			default:
 				log.Warnf("Invalid message type in block "+
 					"handler: %T", msg)
+			}
+
+		case <-headerWork:
+			msg := pendingHeaders[0]
+			pendingHeaders[0] = nil
+			pendingHeaders = pendingHeaders[1:]
+			if !msg.peer.Connected() || sm.handleHeadersMsg(msg) {
+				close(msg.reply)
+			} else {
+				pendingHeaders = append(pendingHeaders, msg)
+			}
+			if len(pendingHeaders) == 0 {
+				headerWork = nil
 			}
 
 		case <-stallTicker.C:
@@ -1524,15 +1577,31 @@ func (sm *SyncManager) QueueInv(inv *wire.MsgInv, peer *peerpkg.Peer) {
 }
 
 // QueueHeaders adds the passed headers message and peer to the block handling
-// queue.
+// queue and waits for completion, disconnect, or shutdown. This bounds each
+// peer's unprocessed header responses to one instead of allowing an arbitrary
+// backlog of expensive Argon2 work.
 func (sm *SyncManager) QueueHeaders(headers *wire.MsgHeaders, peer *peerpkg.Peer) {
-	// No channel handling here because peers do not need to block on
-	// headers messages.
 	if atomic.LoadInt32(&sm.shutdown) != 0 {
 		return
 	}
 
-	sm.msgChan <- &headersMsg{headers: headers, peer: peer}
+	done := make(chan struct{})
+	var peerDone <-chan struct{}
+	if peer != nil {
+		peerDone = peer.Done()
+	}
+	select {
+	case sm.msgChan <- &headersMsg{headers: headers, peer: peer, reply: done}:
+	case <-peerDone:
+		return
+	case <-sm.quit:
+		return
+	}
+	select {
+	case <-done:
+	case <-peerDone:
+	case <-sm.quit:
+	}
 }
 
 // QueueNotFound adds the passed notfound message and peer to the block handling

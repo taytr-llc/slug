@@ -9,10 +9,10 @@ import (
 	"encoding/hex"
 	"testing"
 
-	"github.com/btcsuite/btcd/address/v2"
-	"github.com/btcsuite/btcd/btcec/v2"
-	. "github.com/btcsuite/btcd/btcutil/v2"
-	"github.com/btcsuite/btcd/chaincfg/v2"
+	"github.com/taytr-llc/slug/address/v2"
+	"github.com/taytr-llc/slug/btcec/v2"
+	. "github.com/taytr-llc/slug/btcutil/v2"
+	"github.com/taytr-llc/slug/chaincfg/v2"
 )
 
 func TestEncodeDecodeWIF(t *testing.T) {
@@ -32,7 +32,7 @@ func TestEncodeDecodeWIF(t *testing.T) {
 				0xe8, 0x98, 0x27, 0xe1, 0x9d, 0x72, 0xaa, 0x1d},
 			net:      &chaincfg.MainNetParams,
 			compress: false,
-			wif:      "5HueCGU8rMjxEXxiPuD5BDku4MkFqeZyd4dZ1jvhTVqvbTLvyTJ",
+			wif:      "85FRqWinafskRdCFe1j1LqXB4prro6Wew7WVGB26xtQ7Z6JGYtm",
 			publicKey: []byte{
 				0x04, 0xd0, 0xde, 0x0a, 0xae, 0xae, 0xfa, 0xd0,
 				0x2b, 0x8b, 0xdc, 0x8a, 0x01, 0xa1, 0xb8, 0xb1,
@@ -114,7 +114,7 @@ func TestEncodeDecodeWIF(t *testing.T) {
 		},
 		{
 			name: "decodeInvalidCompressMagicWif",
-			wif:  "KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU73sfZr2ym",
+			wif:  "YDM3e42owSK1cBo5gzHRyixmWgPe9JDPMDSW4r6yby2BRMBuRasG",
 			err:  ErrMalformedPrivateKey,
 		},
 		{
@@ -127,14 +127,14 @@ func TestEncodeDecodeWIF(t *testing.T) {
 			// outside the valid range [1, N-1] for a secp256k1
 			// private key.
 			name: "decodeZeroPrivKeyWif",
-			wif:  "5HpHagT65TZzG1PH3CSu63k8DbpvD8s5ip4nEB3kEsreAbuatmU",
+			wif:  "85A5DvhjomhnT6cpHJxqFfWQE4wXAaom2rwiUc99kGQq8J2bnfo",
 			err:  ErrMalformedPrivateKey,
 		},
 		{
 			// A WIF encoding a private key equal to the group order
 			// N, which is outside the valid range [1, N-1].
 			name: "decodeOrderNPrivKeyWif",
-			wif:  "5Km2kuu7vtFDPpxywn4u3NLpbr5jKpTB3jsuDU2KYEqetwr388P",
+			wif:  "876pQA9mfCP1avCXBtaqCz76cKCLHGPrMnkqTu7j3dPqrY6oceW",
 			err:  ErrMalformedPrivateKey,
 		},
 		{
@@ -143,7 +143,7 @@ func TestEncodeDecodeWIF(t *testing.T) {
 			// added, this was silently reduced modulo N and decoded
 			// to a different private key (5) without any error.
 			name: "decodeAboveOrderNPrivKeyWif",
-			wif:  "5Km2kuu7vtFDPpxywn4u3NLpbr5jKpTB3jsuDU2KYEqeuVhzTbv",
+			wif:  "876pQA9mfCP1avCXBtaqCz76cKCLHGPrMnkqTu7j3dPqs7iDkrs",
 			err:  ErrMalformedPrivateKey,
 		},
 	}

@@ -4,7 +4,7 @@ btcd
 [![Build Status](https://github.com/btcsuite/btcd/workflows/Build%20and%20Test/badge.svg)](https://github.com/btcsuite/btcd/actions)
 [![Coverage Status](https://coveralls.io/repos/github/btcsuite/btcd/badge.svg?branch=master)](https://coveralls.io/github/btcsuite/btcd?branch=master)
 [![ISC License](https://img.shields.io/badge/license-ISC-blue.svg)](http://copyfree.org)
-[![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg)](https://pkg.go.dev/github.com/btcsuite/btcd)
+[![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg)](https://pkg.go.dev/github.com/taytr-llc/slug)
 
 btcd is an alternative full node bitcoin implementation written in Go (golang).
 
@@ -80,27 +80,27 @@ recommended that `GOPATH` is set to a directory in your home directory such as
 `~/goprojects` to avoid write permission issues.  It is also recommended to add
 `$GOPATH/bin` to your `PATH` at this point.
 
-- Run the following commands to obtain btcd, all dependencies, and install it:
+- Build and install SLUG from the selected change-set branch:
 
 ```bash
-$ cd $GOPATH/src/github.com/btcsuite/btcd
-$ go install -v . ./cmd/...
+$ cd $GOPATH/src/github.com/taytr-llc/slug
+$ make install
 ```
 
-- btcd (and utilities) will now be installed in ```$GOPATH/bin```.  If you did
-  not already add the bin directory to your system path during Go installation,
-  we recommend you do so now.
+- slugd, slugctl, and utilities will now be installed in ```$GOPATH/bin```.
+  If you did not already add the bin directory to your system path during Go
+  installation, we recommend you do so now.
 
 ## Updating
 
 #### Linux/BSD/MacOSX/POSIX - Build from Source
 
-- Run the following commands to update btcd, all dependencies, and install it:
+- Update and install SLUG from the selected change-set branch:
 
 ```bash
-$ cd $GOPATH/src/github.com/btcsuite/btcd
+$ cd $GOPATH/src/github.com/taytr-llc/slug
 $ git pull
-$ go install -v . ./cmd/...
+$ make install
 ```
 
 ## Getting Started

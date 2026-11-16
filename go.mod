@@ -1,16 +1,8 @@
-module github.com/btcsuite/btcd
+module github.com/taytr-llc/slug
 
 go 1.26.10
 
 require (
-	github.com/btcsuite/btcd/address/v2 v2.0.1
-	github.com/btcsuite/btcd/btcec/v2 v2.5.1
-	github.com/btcsuite/btcd/btcutil/v2 v2.0.2
-	github.com/btcsuite/btcd/chaincfg/v2 v2.0.0
-	github.com/btcsuite/btcd/chainhash/v2 v2.0.0
-	github.com/btcsuite/btcd/txscript/v2 v2.0.1
-	github.com/btcsuite/btcd/v2transport v1.1.0
-	github.com/btcsuite/btcd/wire/v2 v2.0.2
 	github.com/btcsuite/btclog v1.0.0
 	github.com/davecgh/go-spew v1.1.1
 	github.com/decred/dcrd/container/lru v1.0.0
@@ -19,6 +11,14 @@ require (
 	github.com/jrick/logrotate v1.1.2
 	github.com/stretchr/testify v1.12.1
 	github.com/syndtr/goleveldb v1.0.1-0.20220721030215-126854af5e6d
+	github.com/taytr-llc/slug/address/v2 v2.0.1
+	github.com/taytr-llc/slug/btcec/v2 v2.5.1
+	github.com/taytr-llc/slug/btcutil/v2 v2.0.2
+	github.com/taytr-llc/slug/chaincfg/v2 v2.0.0
+	github.com/taytr-llc/slug/chainhash/v2 v2.0.0
+	github.com/taytr-llc/slug/txscript/v2 v2.0.1
+	github.com/taytr-llc/slug/v2transport v1.1.0
+	github.com/taytr-llc/slug/wire/v2 v2.0.2
 	golang.org/x/crypto v0.57.0
 	golang.org/x/net v0.60.0
 	golang.org/x/sys v0.48.0
@@ -66,4 +66,16 @@ retract (
 	v0.14.0
 	v0.13.0-beta2
 	v0.13.0-beta
+)
+
+// Resolve unpublished SLUG modules from this checkout until fork tags exist.
+replace (
+	github.com/taytr-llc/slug/address/v2 => ./address
+	github.com/taytr-llc/slug/btcec/v2 => ./btcec
+	github.com/taytr-llc/slug/btcutil/v2 => ./btcutil
+	github.com/taytr-llc/slug/chaincfg/v2 => ./chaincfg
+	github.com/taytr-llc/slug/chainhash/v2 => ./chainhash
+	github.com/taytr-llc/slug/txscript/v2 => ./txscript
+	github.com/taytr-llc/slug/v2transport => ./v2transport
+	github.com/taytr-llc/slug/wire/v2 => ./wire
 )

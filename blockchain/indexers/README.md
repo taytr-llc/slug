@@ -3,7 +3,7 @@ indexers
 
 [![Build Status](https://github.com/btcsuite/btcd/workflows/Build%20and%20Test/badge.svg)](https://github.com/btcsuite/btcd/actions)
 [![ISC License](http://img.shields.io/badge/license-ISC-blue.svg)](http://copyfree.org)
-[![GoDoc](https://pkg.go.dev/github.com/btcsuite/btcd/blockchain/indexers?status.png)](https://pkg.go.dev/github.com/btcsuite/btcd/blockchain/indexers)
+[![GoDoc](https://pkg.go.dev/github.com/taytr-llc/slug/blockchain/indexers?status.png)](https://pkg.go.dev/github.com/taytr-llc/slug/blockchain/indexers)
 
 Package indexers implements optional block chain indexes.
 
@@ -23,7 +23,7 @@ via an RPC interface.
 ## Installation
 
 ```bash
-$ go get -u github.com/btcsuite/btcd/blockchain/indexers
+$ go get -u github.com/taytr-llc/slug/blockchain/indexers
 ```
 
 ## License

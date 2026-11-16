@@ -14,8 +14,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/chainhash/v2"
 	"github.com/davecgh/go-spew/spew"
+	"github.com/taytr-llc/slug/chainhash/v2"
 )
 
 // makeHeader is a convenience function to make a message header in the form of

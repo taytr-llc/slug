@@ -11,7 +11,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/btcsuite/btcd/btcjson"
+	"github.com/taytr-llc/slug/btcjson"
 )
 
 // helpDescsEnUS defines the English descriptions used for the help strings.
@@ -168,6 +168,26 @@ var helpDescsEnUS = map[string]string{
 	"getblock--condition0": "verbosity=0",
 	"getblock--condition1": "verbosity=1",
 	"getblock--result0":    "Hex-encoded bytes of the serialized block",
+
+	// GetCheckpointInfoCmd and its report-only result help.
+	"getcheckpointinfo--synopsis":                 "Returns authenticated league checkpoints and their status against one local best-chain snapshot. Signed statements never change block acceptance, validation, or chain selection.",
+	"getcheckpointinforesult-mode":                "Always report-only; league declarations do not enforce consensus",
+	"getcheckpointinforesult-authorityconfigured": "Whether an Ed25519 checkpoint authority is compiled for this network",
+	"getcheckpointinforesult-publickey":           "Compiled authority public key in hex, absent until enrollment",
+	"getcheckpointinforesult-requireddescendants": "Required descendant blocks for local burial (60; the checkpoint itself does not count)",
+	"getcheckpointinforesult-bestheight":          "Best-chain height used for this entire report",
+	"getcheckpointinforesult-besthash":            "Best-chain block hash used for this entire report",
+	"getcheckpointinforesult-conflict":            "True if the local chain conflicts with any authenticated official declaration; signed history remains the official record",
+	"getcheckpointinforesult-checkpoints":         "Authenticated signed records and their current local status, ordered by height",
+	"signedcheckpointresult-version":              "Signed payload format version",
+	"signedcheckpointresult-network":              "Network magic bound by the signature",
+	"signedcheckpointresult-genesis":              "Genesis hash bound by the signature",
+	"signedcheckpointresult-height":               "Official signed block height",
+	"signedcheckpointresult-hash":                 "Official signed block hash",
+	"signedcheckpointresult-signature":            "Ed25519 signature in hex",
+	"signedcheckpointresult-status":               "Local status: pending (height not reached), provisional (matching with fewer than 60 descendants), finalized (matching with at least 60 descendants), or conflict (different local hash). This status never revokes the signed declaration",
+	"signedcheckpointresult-localhash":            "Local best-chain hash at this height, absent when pending",
+	"signedcheckpointresult-descendants":          "Local descendant count for a matching block; zero for pending or conflict",
 
 	// GetBlockChainInfoCmd help.
 	"getblockchaininfo--synopsis": "Returns information about the current blockchain state and the status of any active soft-fork deployments.",
@@ -598,8 +618,8 @@ var helpDescsEnUS = map[string]string{
 	"signmessagewithprivkey--result0":  "The signature of the message encoded in base 64",
 
 	// StopCmd help.
-	"stop--synopsis": "Shutdown btcd.",
-	"stop--result0":  "The string 'btcd stopping.'",
+	"stop--synopsis": "Shutdown slugd.",
+	"stop--result0":  "The string 'slugd stopping.'",
 
 	// SubmitBlockOptions help.
 	"submitblockoptions-workid": "This parameter is currently ignored",
@@ -778,6 +798,7 @@ var rpcResultTypes = map[string][]interface{}{
 	"getblocktemplate":       {(*btcjson.GetBlockTemplateResult)(nil), (*string)(nil), nil},
 	"getblockchaininfo":      {(*btcjson.GetBlockChainInfoResult)(nil)},
 	"getchaintips":           {(*[]btcjson.GetChainTipsResult)(nil)},
+	"getcheckpointinfo":      {(*btcjson.GetCheckpointInfoResult)(nil)},
 	"getcfilter":             {(*string)(nil)},
 	"getcfilterheader":       {(*string)(nil)},
 	"getconnectioncount":     {(*int32)(nil)},

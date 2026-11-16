@@ -10,10 +10,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg/v2"
-	"github.com/btcsuite/btcd/chainhash/v2"
-	"github.com/btcsuite/btcd/database"
-	"github.com/btcsuite/btcd/wire/v2"
+	"github.com/taytr-llc/slug/chaincfg/v2"
+	"github.com/taytr-llc/slug/chainhash/v2"
+	"github.com/taytr-llc/slug/database"
+	"github.com/taytr-llc/slug/wire/v2"
 )
 
 // blockStatus is a bit field representing the validation state of the block.
@@ -117,8 +117,22 @@ type blockNode struct {
 // This function is NOT safe for concurrent access.  It must only be called when
 // initially creating a node.
 func initBlockNode(node *blockNode, blockHeader *wire.BlockHeader, parent *blockNode) {
+	initBlockNodeWithHash(node, blockHeader, parent, blockHeader.BlockHash())
+}
+
+// initBlockNodeWithHash is initBlockNode, but with the block's hash supplied
+// by the caller instead of computed from the header.  It exists solely for
+// the block index load path (initChainState in chainio.go), where the hash
+// is already known because it is part of the database key the entry was
+// read from; see the comment there for why trusting that key is safe.
+// Every other caller must use initBlockNode, so the hash is always computed
+// from (and therefore checked against) the header itself.
+//
+// This function is NOT safe for concurrent access.  It must only be called
+// when initially creating a node.
+func initBlockNodeWithHash(node *blockNode, blockHeader *wire.BlockHeader, parent *blockNode, hash chainhash.Hash) {
 	*node = blockNode{
-		hash:       blockHeader.BlockHash(),
+		hash:       hash,
 		workSum:    CalcWork(blockHeader.Bits),
 		version:    blockHeader.Version,
 		bits:       blockHeader.Bits,

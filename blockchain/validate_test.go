@@ -10,10 +10,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/btcutil/v2"
-	"github.com/btcsuite/btcd/chaincfg/v2"
-	"github.com/btcsuite/btcd/chainhash/v2"
-	"github.com/btcsuite/btcd/wire/v2"
+	"github.com/taytr-llc/slug/btcutil/v2"
+	"github.com/taytr-llc/slug/chaincfg/v2"
+	"github.com/taytr-llc/slug/chainhash/v2"
+	"github.com/taytr-llc/slug/wire/v2"
 )
 
 // TestSequenceLocksActive tests the SequenceLockActive function to ensure it
@@ -82,19 +82,7 @@ func TestCheckConnectBlockTemplate(t *testing.T) {
 	// Load up blocks such that there is a side chain.
 	// (genesis block) -> 1 -> 2 -> 3 -> 4
 	//                          \-> 3a
-	testFiles := []string{
-		"blk_0_to_4.dat.bz2",
-		"blk_3A.dat.bz2",
-	}
-
-	var blocks []*btcutil.Block
-	for _, file := range testFiles {
-		blockTmp, err := loadBlocks(file)
-		if err != nil {
-			t.Fatalf("Error loading file: %v\n", err)
-		}
-		blocks = append(blocks, blockTmp...)
-	}
+	blocks := nativeShortFork(t)
 
 	for i := 1; i <= 3; i++ {
 		isMainChain, _, err := chain.ProcessBlock(blocks[i], BFNone)
@@ -131,7 +119,18 @@ func TestCheckConnectBlockTemplate(t *testing.T) {
 
 	// Block 4 should connect even if proof of work is invalid.
 	invalidPowBlock := *blocks[4].MsgBlock()
-	invalidPowBlock.Header.Nonce++
+	// At SLUG's initial target, a single nonce change has about a 50%
+	// chance of still satisfying PoW. Find an actually failing proof.
+	for {
+		invalidPowBlock.Header.Nonce++
+		hash := invalidPowBlock.BlockHash()
+		if HashToBig(&hash).Cmp(CompactToBig(invalidPowBlock.Header.Bits)) > 0 {
+			break
+		}
+	}
+	if err := CheckProofOfWork(btcutil.NewBlock(&invalidPowBlock), chain.chainParams.PowLimit); err == nil {
+		t.Fatal("invalid-PoW template fixture unexpectedly satisfies PoW")
+	}
 	err = chain.CheckConnectBlockTemplate(btcutil.NewBlock(&invalidPowBlock))
 	if err != nil {
 		t.Fatalf("CheckConnectBlockTemplate: Received unexpected error on "+
@@ -152,7 +151,8 @@ func TestCheckConnectBlockTemplate(t *testing.T) {
 // as expected.
 func TestCheckBlockSanity(t *testing.T) {
 	powLimit := chaincfg.MainNetParams.PowLimit
-	block := btcutil.NewBlock(&Block100000)
+	block := newNativeTestBlock(t, &chaincfg.MainNetParams,
+		nativeTestGenesis(&chaincfg.MainNetParams), 0)
 	timeSource := NewMedianTime()
 	err := CheckBlockSanity(block, powLimit, timeSource)
 	if err != nil {

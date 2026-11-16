@@ -13,10 +13,10 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/btcsuite/btcd/database/internal/treap"
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/iterator"
 	"github.com/syndtr/goleveldb/leveldb/util"
+	"github.com/taytr-llc/slug/database/internal/treap"
 )
 
 const (

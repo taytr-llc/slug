@@ -11,17 +11,17 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/blockchain"
-	"github.com/btcsuite/btcd/btcutil/v2"
-	"github.com/btcsuite/btcd/chaincfg/v2"
-	"github.com/btcsuite/btcd/chainhash/v2"
-	"github.com/btcsuite/btcd/database"
-	_ "github.com/btcsuite/btcd/database/ffldb"
-	"github.com/btcsuite/btcd/mempool"
-	"github.com/btcsuite/btcd/peer"
-	"github.com/btcsuite/btcd/txscript/v2"
-	"github.com/btcsuite/btcd/wire/v2"
 	"github.com/stretchr/testify/require"
+	"github.com/taytr-llc/slug/blockchain"
+	"github.com/taytr-llc/slug/btcutil/v2"
+	"github.com/taytr-llc/slug/chaincfg/v2"
+	"github.com/taytr-llc/slug/chainhash/v2"
+	"github.com/taytr-llc/slug/database"
+	_ "github.com/taytr-llc/slug/database/ffldb"
+	"github.com/taytr-llc/slug/mempool"
+	"github.com/taytr-llc/slug/peer"
+	"github.com/taytr-llc/slug/txscript/v2"
+	"github.com/taytr-llc/slug/wire/v2"
 )
 
 // The package-level log variable is nil by default. Set it to the
@@ -101,7 +101,10 @@ func chainSetup(t *testing.T, params *chaincfg.Params) (
 	return chain, teardown, nil
 }
 
-// loadHeaders loads headers from mainnet from 1 to 11.
+// loadHeaders loads headers from mainnet from 1 to 11. The fixture was
+// regenerated for SLUG in change set 5: the original file held Bitcoin
+// mainnet headers 1-11 (rooted at the Bitcoin genesis, SHA256d PoW); these
+// are generated headers chained on the SLUG genesis with Argon2id PoW.
 func loadHeaders(t *testing.T) []*wire.BlockHeader {
 	testFile := "blockheaders-mainnet-1-11.txt"
 	filename := filepath.Join("testdata/", testFile)
@@ -153,7 +156,7 @@ func TestCheckHeadersList(t *testing.T) {
 	params := chaincfg.MainNetParams
 	checkpointHeight := int32(11)
 	checkpointHash, err := chainhash.NewHashFromStr(
-		"0000000097be56d606cdd9c54b04d4747e957d3608abe69198c661f2add73073")
+		"306ffe041d1b468735ad5e85de448a83bcc4e629feed2c1ee8da58ae46b725fb")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -195,19 +198,19 @@ func TestCheckHeadersList(t *testing.T) {
 		},
 		{
 			// Block 10.
-			hash:              "000000002c05cc2e78923c34df87fd108b22221ac6076c18f3ade378a4d915e9",
+			hash:              "6c7e7ec699bad97704525e2c0e335ffef831c54ca3fee1c8c431d448edc7f8ef",
 			isCheckpointBlock: false,
 			behaviorFlags:     blockchain.BFFastAdd,
 		},
 		{
 			// Block 11.
-			hash:              "0000000097be56d606cdd9c54b04d4747e957d3608abe69198c661f2add73073",
+			hash:              "306ffe041d1b468735ad5e85de448a83bcc4e629feed2c1ee8da58ae46b725fb",
 			isCheckpointBlock: true,
 			behaviorFlags:     blockchain.BFFastAdd,
 		},
 		{
 			// Block 12.
-			hash:              "0000000027c2488e2510d1acf4369787784fa20ee084c258b58d9fbd43802b5e",
+			hash:              "4419c558bec02a010b493a599cb9513c21e07d160c06da72eb09a14ab25c6275",
 			isCheckpointBlock: false,
 			behaviorFlags:     blockchain.BFNone,
 		},
@@ -880,7 +883,7 @@ func syncSendHeaders(t *testing.T, sm *SyncManager,
 		require.NoError(t, err)
 	}
 
-	sm.handleHeadersMsg(&headersMsg{
+	processAllHeaders(sm, &headersMsg{
 		headers: headers,
 		peer:    syncPeer,
 	})
@@ -1037,7 +1040,7 @@ func syncStalledHeaderRecovery(t *testing.T, sm *SyncManager,
 			require.NoError(t, err)
 		}
 
-		sm.handleHeadersMsg(&headersMsg{
+		processAllHeaders(sm, &headersMsg{
 			headers: headers,
 			peer:    stalledPeer,
 		})
@@ -1088,7 +1091,7 @@ func syncStalledHeaderRecovery(t *testing.T, sm *SyncManager,
 			&block.MsgBlock().Header)
 		require.NoError(t, err)
 	}
-	sm.handleHeadersMsg(&headersMsg{
+	processAllHeaders(sm, &headersMsg{
 		headers: remainingHeaders,
 		peer:    replacementPeer,
 	})
@@ -1280,5 +1283,12 @@ func TestIsSyncCandidateRegtest(t *testing.T) {
 			got := sm.isSyncCandidate(p)
 			require.Equal(t, tc.want, got)
 		})
+	}
+}
+
+// processAllHeaders drives all scheduling turns for tests that model a complete
+// peer response directly rather than running the asynchronous block handler.
+func processAllHeaders(sm *SyncManager, msg *headersMsg) {
+	for !sm.handleHeadersMsg(msg) {
 	}
 }

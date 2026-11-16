@@ -12,10 +12,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/btcsuite/btcd/btcutil/v2"
-	"github.com/btcsuite/btcd/chainhash/v2"
-	"github.com/btcsuite/btcd/database"
-	"github.com/btcsuite/btcd/wire/v2"
+	"github.com/taytr-llc/slug/btcutil/v2"
+	"github.com/taytr-llc/slug/chainhash/v2"
+	"github.com/taytr-llc/slug/database"
+	"github.com/taytr-llc/slug/wire/v2"
 )
 
 const (
@@ -1222,7 +1222,7 @@ func (b *BlockChain) initChainState() error {
 	if !hasBlockIndex {
 		err := migrateBlockIndex(b.db)
 		if err != nil {
-			return nil
+			return err
 		}
 	}
 
@@ -1257,16 +1257,40 @@ func (b *BlockChain) initChainState() error {
 				return err
 			}
 
+			// The block index bucket is keyed by blockIndexKey(height,
+			// hash), so the hash of the block this entry describes is
+			// already in hand as part of the key.  Use it instead of
+			// recomputing the hash from the header: under SLUG's
+			// Argon2id proof of work, BlockHash costs ~340 ms, and
+			// recomputing it here made every restart replay one hash
+			// per block of stored history.
+			//
+			// The key is a block identity computed locally before the
+			// entry was stored, not a claim of full block validation:
+			// side branches and failed connections can be persisted.
+			// Validation status is stored separately below.  Like the
+			// best chain state and UTXO set, this trusts the local
+			// database; it does not authenticate imported snapshots or
+			// detect every header/key mismatch after disk corruption.
+			// Fresh block/header acceptance still derives identities
+			// from the headers and performs its validation checks.
+			key := cursor.Key()
+			if len(key) != chainhash.HashSize+4 {
+				return AssertError(fmt.Sprintf("initChainState: "+
+					"corrupt block index key length %d", len(key)))
+			}
+			var storedHash chainhash.Hash
+			copy(storedHash[:], key[4:4+chainhash.HashSize])
+
 			// Determine the parent block node. Since we iterate block headers
 			// in order of height, if the blocks are mostly linear there is a
 			// very good chance the previous header processed is the parent.
 			var parent *blockNode
 			if lastNode == nil {
-				blockHash := header.BlockHash()
-				if !blockHash.IsEqual(b.chainParams.GenesisHash) {
+				if !storedHash.IsEqual(b.chainParams.GenesisHash) {
 					return AssertError(fmt.Sprintf("initChainState: Expected "+
 						"first entry in block index to be genesis block, "+
-						"found %s", blockHash))
+						"found %s", storedHash))
 				}
 			} else if header.PrevBlock == lastNode.hash {
 				// Since we iterate block headers in order of height, if the
@@ -1277,14 +1301,14 @@ func (b *BlockChain) initChainState() error {
 				parent = b.index.LookupNode(&header.PrevBlock)
 				if parent == nil {
 					return AssertError(fmt.Sprintf("initChainState: Could "+
-						"not find parent for block %s", header.BlockHash()))
+						"not find parent for block %s", storedHash))
 				}
 			}
 
 			// Initialize the block node for the block, connect it,
 			// and add it to the block index.
 			node := new(blockNode)
-			initBlockNode(node, header, parent)
+			initBlockNodeWithHash(node, header, parent, storedHash)
 			node.status = status
 			b.index.addNode(node)
 

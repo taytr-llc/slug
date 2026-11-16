@@ -5,7 +5,7 @@
 package ffldb
 
 import (
-	"github.com/btcsuite/btcd/database"
+	"github.com/taytr-llc/slug/database"
 )
 
 // TstRunWithMaxBlockFileSize runs the passed function with the maximum allowed

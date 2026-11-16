@@ -1,47 +1,32 @@
-# This Dockerfile builds btcd from source and creates a small (55 MB) docker container based on alpine linux.
+# SLUG node deploy image (Railway-compatible).
 #
-# Clone this repository and run the following command to build and tag a fresh btcd amd64 container:
+# Minimal standard Dockerfile replacing btcd's upstream one, whose
+# VOLUME instruction Railway rejects ("docker VOLUME ... is not
+# supported, use Railway Volumes").
 #
-# docker build . -t yourregistry/btcd
+# Builds the slugd and slugctl binaries from this repo (go.work ties the
+# 10 modules together) and runs slugd. There is intentionally NO VOLUME
+# instruction here: Railway attaches its own volume at /data via the
+# dashboard, and the node's --datadir=/data start flag points there.
 #
-# You can use the following command to build an arm64v8 container:
+# 29333  SLUG mainnet peer-to-peer port (expose this via TCP proxy)
+# 29332  SLUG mainnet RPC port (keep private inside the container)
 #
-# docker build . -t yourregistry/btcd --platform linux/arm64 --build-arg ARCH=arm64v8
-#
-# For more information how to use this docker image visit:
-# https://github.com/btcsuite/btcd/tree/master/docs
-#
-# 8333  Mainnet Bitcoin peer-to-peer port
-# 8334  Mainet RPC port
+# NOTE: the Railway service start command must invoke slugd (not btcd):
+#   slugd --notls --rpcuser=u --rpcpass=p --datadir=/data
 
-ARG ARCH=amd64
-# using the SHA256 instead of tags
-# https://github.com/opencontainers/image-spec/blob/main/descriptor.md#digests
-# https://cloud.google.com/architecture/using-container-images
-# https://github.com/google/go-containerregistry/blob/main/cmd/crane/README.md
-# ➜  ~ crane digest golang:1.27.3-alpine3.24
-# sha256:f2c872bcee949b7be9c490efd02b48a8a2fbf947cdf533f1c58525ec9d8170fd
-# Build on the host platform and cross-compile for ARCH, so no emulation is
-# needed for other architectures.
-FROM --platform=$BUILDPLATFORM golang@sha256:f2c872bcee949b7be9c490efd02b48a8a2fbf947cdf533f1c58525ec9d8170fd AS build-container
+FROM golang:1.27-alpine AS build
 
-ARG ARCH
-
-ADD . /app
 WORKDIR /app
-RUN set -ex \
-  && if [ "${ARCH}" = "amd64" ]; then export GOARCH=amd64; fi \
-  && if [ "${ARCH}" = "arm32v7" ]; then export GOARCH=arm; fi \
-  && if [ "${ARCH}" = "arm64v8" ]; then export GOARCH=arm64; fi \
-  && echo "Compiling for $GOARCH" \
-  && go build -v -o /out/ . ./cmd/...
+COPY . .
+RUN go build -o /out/slugd . && go build -o /out/ ./cmd/...
 
-FROM $ARCH/alpine:3.24
+FROM alpine:3.24
 
-COPY --from=build-container /out/ /bin/
+COPY --from=build /out/ /bin/
+# Public signed records are available for explicit --signedcheckpoint imports.
+COPY checkpoints/ /usr/share/slug/checkpoints/
 
-VOLUME ["/root/.btcd"]
+EXPOSE 29333 29332
 
-EXPOSE 8333 8334
-
-ENTRYPOINT ["btcd"]
+ENTRYPOINT ["slugd"]

@@ -10,8 +10,8 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/btcsuite/btcd/wire/v2"
 	"github.com/stretchr/testify/require"
+	"github.com/taytr-llc/slug/wire/v2"
 )
 
 // TestInvalidHashStr ensures the newShaHashFromStr function panics when used to

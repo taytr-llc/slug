@@ -176,8 +176,10 @@ type BitcoinNet uint32
 // this package does not provide that functionality since it's generally a
 // better idea to simply disconnect clients that are misbehaving over TCP.
 const (
-	// MainNet represents the main bitcoin network.
-	MainNet BitcoinNet = 0xd9b4bef9
+	// MainNet represents the main SLUG network. SLUG (change set 2):
+	// the magic value is 0x534c5547, the ASCII bytes "SLUG", so SLUG
+	// nodes never peer with Bitcoin's.
+	MainNet BitcoinNet = 0x534c5547
 
 	// TestNet represents the regression test network.
 	TestNet BitcoinNet = 0xdab5bffa

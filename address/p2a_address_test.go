@@ -3,9 +3,9 @@ package address_test
 import (
 	"testing"
 
-	"github.com/btcsuite/btcd/address/v2"
-	"github.com/btcsuite/btcd/chaincfg/v2"
 	"github.com/stretchr/testify/require"
+	"github.com/taytr-llc/slug/address/v2"
+	"github.com/taytr-llc/slug/chaincfg/v2"
 )
 
 // TestAddressPayToAnchor tests the AddressPayToAnchor type.

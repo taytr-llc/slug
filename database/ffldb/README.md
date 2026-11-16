@@ -3,7 +3,7 @@ ffldb
 
 [![Build Status](https://github.com/btcsuite/btcd/workflows/Build%20and%20Test/badge.svg)](https://github.com/btcsuite/btcd/actions)
 [![ISC License](http://img.shields.io/badge/license-ISC-blue.svg)](http://copyfree.org)
-[![GoDoc](https://pkg.go.dev/github.com/btcsuite/btcd/database/ffldb?status.png)](https://pkg.go.dev/github.com/btcsuite/btcd/database/ffldb)
+[![GoDoc](https://pkg.go.dev/github.com/taytr-llc/slug/database/ffldb?status.png)](https://pkg.go.dev/github.com/taytr-llc/slug/database/ffldb)
 =======
 
 Package ffldb implements a driver for the database package that uses leveldb for

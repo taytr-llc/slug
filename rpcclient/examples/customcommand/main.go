@@ -9,8 +9,8 @@ import (
 	"encoding/json"
 	"log"
 
-	"github.com/btcsuite/btcd/btcjson"
-	"github.com/btcsuite/btcd/rpcclient"
+	"github.com/taytr-llc/slug/btcjson"
+	"github.com/taytr-llc/slug/rpcclient"
 )
 
 // NameShowCmd defines the name_show JSON-RPC command.

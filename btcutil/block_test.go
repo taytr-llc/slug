@@ -11,10 +11,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/btcutil/v2"
-	"github.com/btcsuite/btcd/chainhash/v2"
-	"github.com/btcsuite/btcd/wire/v2"
 	"github.com/davecgh/go-spew/spew"
+	"github.com/taytr-llc/slug/btcutil/v2"
+	"github.com/taytr-llc/slug/chainhash/v2"
+	"github.com/taytr-llc/slug/wire/v2"
 )
 
 // TestBlock tests the API for Block.
@@ -35,8 +35,10 @@ func TestBlock(t *testing.T) {
 			gotHeight, wantHeight)
 	}
 
-	// Hash for block 100,000.
-	wantHashStr := "3ba27aa200b1cecaad478d2b00432346c3f1f3986da1afd33e506"
+	// Hash for block 100,000. The fixture is Bitcoin block 100000 with its
+	// header unchanged; under SLUG the block hash is the Argon2id PoW hash
+	// of that header (verified independently of Block.Hash in change set 5).
+	wantHashStr := "1bc3113253d9ead82ae75318b4efa6fddd783bb33da0de8fc13c2675bcf38547"
 	wantHash, err := chainhash.NewHashFromStr(wantHashStr)
 	if err != nil {
 		t.Errorf("NewHashFromStr: %v", err)

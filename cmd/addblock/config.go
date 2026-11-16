@@ -10,12 +10,12 @@ import (
 	"path/filepath"
 	"slices"
 
-	"github.com/btcsuite/btcd/btcutil/v2"
-	"github.com/btcsuite/btcd/chaincfg/v2"
-	"github.com/btcsuite/btcd/database"
-	_ "github.com/btcsuite/btcd/database/ffldb"
-	"github.com/btcsuite/btcd/wire/v2"
 	flags "github.com/jessevdk/go-flags"
+	"github.com/taytr-llc/slug/btcutil/v2"
+	"github.com/taytr-llc/slug/chaincfg/v2"
+	"github.com/taytr-llc/slug/database"
+	_ "github.com/taytr-llc/slug/database/ffldb"
+	"github.com/taytr-llc/slug/wire/v2"
 )
 
 const (
@@ -25,8 +25,8 @@ const (
 )
 
 var (
-	btcdHomeDir     = btcutil.AppDataDir("btcd", false)
-	defaultDataDir  = filepath.Join(btcdHomeDir, "data")
+	slugHomeDir     = btcutil.AppDataDir("slug", false)
+	defaultDataDir  = filepath.Join(slugHomeDir, "data")
 	knownDbTypes    = database.SupportedDrivers()
 	activeNetParams = &chaincfg.MainNetParams
 )
@@ -36,7 +36,7 @@ var (
 // See loadConfig for details on the configuration load process.
 type config struct {
 	AddrIndex      bool   `long:"addrindex" description:"Build a full address-based transaction index which makes the searchrawtransactions RPC available"`
-	DataDir        string `short:"b" long:"datadir" description:"Location of the btcd data directory"`
+	DataDir        string `short:"b" long:"datadir" description:"Location of the slugd data directory"`
 	DbType         string `long:"dbtype" description:"Database backend to use for the Block Chain"`
 	InFile         string `short:"i" long:"infile" description:"File containing the block(s)"`
 	Progress       int    `short:"p" long:"progress" description:"Show a progress message each time this number of seconds have passed -- Use 0 to disable progress announcements"`

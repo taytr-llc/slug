@@ -3,23 +3,23 @@
 // license that can be found in the LICENSE file.
 
 /*
-btcd is a full-node bitcoin implementation written in Go.
+slugd is a full-node SLUG implementation written in Go (forked from btcd).
 
-The default options are sane for most users.  This means btcd will work 'out of
+The default options are sane for most users.  This means slugd will work 'out of
 the box' for most users.  However, there are also a wide variety of flags that
 can be used to control it.
 
 The following section provides a usage overview which enumerates the flags.  An
 interesting point to note is that the long form of all of these options
 (except -C) can be specified in a configuration file that is automatically
-parsed when btcd starts up.  By default, the configuration file is located at
-~/.btcd/btcd.conf on POSIX-style operating systems and %LOCALAPPDATA%\btcd\btcd.conf
+parsed when slugd starts up.  By default, the configuration file is located at
+~/.slug/slug.conf on POSIX-style operating systems and %LOCALAPPDATA%\slug\slug.conf
 on Windows.  The -C (--configfile) flag, as shown below, can be used to override
 this location.
 
 Usage:
 
-	btcd [OPTIONS]
+	slugd [OPTIONS]
 
 Application Options:
 
@@ -68,12 +68,12 @@ Application Options:
 	                            database on start up and then exits.
 	    --externalip=           Add an ip to the list of local addresses we claim
 	                            to listen on to peers
-	    --generate              Generate (mine) bitcoins using the CPU
+	    --generate              Generate (mine) SLUG using the CPU
 	    --limitfreerelay=       Limit relay of transactions with no transaction
 	                            fee to the given amount in thousands of bytes per
 	                            minute (default: 15)
 	    --listen=               Add an interface/port to listen for connections
-	                            (default all interfaces port: 8333, testnet:
+	                            (default all interfaces port: 29333, testnet:
 	                            18333, signet: 38333)
 	    --logdir=               Directory to log output
 	    --maxorphantx=          Max number of orphan transactions to keep in
@@ -84,7 +84,7 @@ Application Options:
 	                            addresses to use for generated blocks -- At least
 	                            one address is required if the generate option is
 	                            set
-	    --minrelaytxfee=        The minimum transaction fee in BTC/kB to be
+	    --minrelaytxfee=        The minimum transaction fee in SLUG/kB to be
 	                            considered a non-zero fee. (default: 1e-05)
 	    --nobanning             Disable banning of misbehaving peers
 	    --nocfilters            Disable committed filtering (CF) support
@@ -125,7 +125,7 @@ Application Options:
 	    --rpclimitpass=         Password for limited RPC connections
 	    --rpclimituser=         Username for limited RPC connections
 	    --rpclisten=            Add an interface/port to listen for RPC
-	                            connections (default port: 8334, testnet: 18334)
+	                            connections (default port: 29332, testnet: 18334)
 	    --rpcmaxclients=        Max number of RPC clients for standard
 	                            connections (default: 10)
 	    --rpcmaxconcurrentreqs= Max number of concurrent RPC requests that may be

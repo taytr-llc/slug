@@ -1,0 +1,224 @@
+rpcserver.go:1051:func handleGetBestBlockHash(s *rpcServer, cmd interface{}, closeChan <-chan struct{}) (interface{}, error) {
+rpcserver.go:1175:			txNames[i] = tx.Hash().String()
+rpcserver.go:1184:				tx.Hash().String(), blockHeader, hash.String(),
+rpcserver.go:1352:func handleGetBlockHash(s *rpcServer, cmd interface{}, closeChan <-chan struct{}) (interface{}, error) {
+rpcserver.go:2262:	filterBytes, err := s.cfg.CfIndex.FilterByBlockHash(hash, c.FilterType)
+rpcserver.go:2291:	headerBytes, err := s.cfg.CfIndex.FilterHeaderByBlockHash(hash, c.FilterType)
+rpcserver.go:2639:		hashStrings[i] = descs[i].Tx.Hash().String()
+rpcserver.go:3483:				tx.Hash(), err)
+rpcserver.go:3491:		rpcsLog.Debugf("Rejected transaction %v: %v", tx.Hash(), err)
+rpcserver.go:3527:	if len(acceptedTxs) == 0 || !acceptedTxs[0].Tx.Hash().IsEqual(tx.Hash()) {
+rpcserver.go:3531:			tx.Hash())
+rpcserver.go:3547:	iv := wire.NewInvVect(wire.InvTypeTx, txD.Tx.Hash())
+rpcserver.go:3550:	return tx.Hash().String(), nil
+rpcserver.go:3666:	rpcsLog.Infof("Accepted block %s via submitblock", block.Hash())
+rpcserver.go:3748:					block.Hash(), height, err)
+rpcserver.go:3883:			Txid:  tx.Hash().String(),
+rpcserver.go:3978:			result.SpendingTxid = spendingTx.Hash().String()
+rpcserver.go:4902:		s.gbtWorkState.NotifyBlockConnected(block.Hash())
+chaincfg/genesis.go:112:var genesisHash = chainhash.Hash([chainhash.HashSize]byte{ // Make go vet happy.
+chaincfg/genesis.go:121:var genesisMerkleRoot = chainhash.Hash([chainhash.HashSize]byte{ // Make go vet happy.
+chaincfg/genesis.go:144:var regTestGenesisHash = chainhash.Hash([chainhash.HashSize]byte{ // Make go vet happy.
+chaincfg/genesis.go:154:var regTestGenesisMerkleRoot = chainhash.Hash([chainhash.HashSize]byte{ // Make go vet happy.
+chaincfg/genesis.go:177:var testNet3GenesisHash = chainhash.Hash([chainhash.HashSize]byte{ // Make go vet happy.
+chaincfg/genesis.go:187:var testNet3GenesisMerkleRoot = chainhash.Hash([chainhash.HashSize]byte{ // Make go vet happy.
+chaincfg/genesis.go:249:var testNet4GenesisHash = chainhash.Hash([chainhash.HashSize]byte{
+chaincfg/genesis.go:258:var testNet4GenesisMerkleRoot = chainhash.Hash([chainhash.HashSize]byte{ // Make go vet happy.
+chaincfg/genesis.go:281:var simNetGenesisHash = chainhash.Hash([chainhash.HashSize]byte{ // Make go vet happy.
+chaincfg/genesis.go:291:var simNetGenesisMerkleRoot = chainhash.Hash([chainhash.HashSize]byte{ // Make go vet happy.
+chaincfg/genesis.go:324:var sigNetGenesisMerkleRoot = chainhash.Hash([chainhash.HashSize]byte{ // Make go vet happy.
+mempool/mempool.go:213:	txHash := tx.Hash()
+mempool/mempool.go:342:	mp.orphans[*tx.Hash()] = &orphanTx{
+mempool/mempool.go:352:		mp.orphansByPrev[txIn.PreviousOutPoint][*tx.Hash()] = tx
+mempool/mempool.go:355:	log.Debugf("Stored orphan transaction %v (total: %d)", tx.Hash(),
+mempool/mempool.go:479:	txHash := tx.Hash()
+mempool/mempool.go:532:			if !txRedeemer.Hash().IsEqual(tx.Hash()) {
+mempool/mempool.go:559:	mp.pool[*tx.Hash()] = txD
+mempool/mempool.go:602:				conflict.Hash())
+mempool/mempool.go:689:		ancestors[*parent.Tx.Hash()] = parent.Tx
+mempool/mempool.go:694:		moreAncestors, ok := cache[*parent.Tx.Hash()]
+mempool/mempool.go:697:			cache[*parent.Tx.Hash()] = moreAncestors
+mempool/mempool.go:725:	op := wire.OutPoint{Hash: *tx.Hash()}
+mempool/mempool.go:732:		descendants[*descendant.Hash()] = descendant
+mempool/mempool.go:737:		moreDescendants, ok := cache[*descendant.Hash()]
+mempool/mempool.go:740:			cache[*descendant.Hash()] = moreDescendants
+mempool/mempool.go:744:			descendants[*moreDescendant.Hash()] = moreDescendant
+mempool/mempool.go:767:		conflicts[*conflict.Hash()] = conflict
+mempool/mempool.go:849:			tx.Hash(), MaxReplacementEvictions, len(conflicts))
+mempool/mempool.go:861:			"transaction %v", tx.Hash(), ancestorHash)
+mempool/mempool.go:883:				"has %v", tx.Hash(), mp.pool[hash].FeePerKB,
+mempool/mempool.go:904:			tx.Hash(), conflictsFee+minFee, txFee)
+mempool/mempool.go:936:	txHash := tx.Hash()
+mempool/mempool.go:956:			"with %v (fee_rate=%v sat/kb)\n", conflict.Hash(),
+mempool/mempool.go:957:			mp.pool[*conflict.Hash()].FeePerKB, tx.Hash(),
+mempool/mempool.go:1008:		prevOut := wire.OutPoint{Hash: *processItem.Hash()}
+mempool/mempool.go:1106:	log.Tracef("Processing transaction %v", tx.Hash())
+mempool/mempool.go:1149:			"transaction %v", tx.Hash(), missingParents[0])
+mempool/mempool.go:1266:		result[tx.Hash().String()] = mpd
+mempool/mempool.go:1329:	log.Tracef("Tx %v passed mempool acceptance check: %v", tx.Hash(),
+mempool/mempool.go:1341:	txHash := tx.Hash()
+mempool/mempool.go:1588:		"but segwit isn't active yet%s", tx.Hash(), simnetHint)
+mempool/mempool.go:1621:			tx.Hash(), err)
+mempool/mempool.go:1637:			"input: %v", tx.Hash(), err)
+mempool/mempool.go:1672:		tx.Hash(), sigOpCost, mp.cfg.Policy.MaxSigOpCostPerTx)
+mempool/mempool.go:1683:	txHash := tx.Hash()
+netsync/manager.go:579:	txHash := tmsg.tx.Hash()
+netsync/manager.go:701:	blockHash := bmsg.block.Hash()
+netsync/manager.go:841:			bmsg.block.Hash(), bmsg.block.Height())
+netsync/manager.go:861:			bmsg.block.Hash(), bmsg.block.Height())
+netsync/manager.go:1404:		iv := wire.NewInvVect(wire.InvTypeBlock, block.Hash())
+netsync/manager.go:1475:			sm.feeEstimator.Rollback(block.Hash())
+mempool/estimatefee.go:209:	hash := *t.Tx.Hash()
+mempool/estimatefee.go:252:		hash:         *block.Hash(),
+mempool/estimatefee.go:258:		hash := *t.Hash()
+blockchain/blockindex.go:120:	initBlockNodeWithHash(node, blockHeader, parent, blockHeader.BlockHash())
+server.go:681:			iv := wire.NewInvVect(wire.InvTypeTx, txDesc.Tx.Hash())
+server.go:710:	iv := wire.NewInvVect(wire.InvTypeTx, tx.Hash())
+server.go:730:	iv := wire.NewInvVect(wire.InvTypeBlock, block.Hash())
+server.go:1124:		headerBytes, err := sp.server.cfIndex.FilterHeaderByBlockHash(
+server.go:1662:		iv := wire.NewInvVect(wire.InvTypeTx, txD.Tx.Hash())
+server.go:1691:	iv := wire.NewInvVect(wire.InvTypeTx, tx.Hash())
+blockchain/thresholdstate.go:156:			"previous node", blockHeader.BlockHash())
+integration/rpctest/blockgen.go:48:				hash := hdr.BlockHash()
+integration/rpctest/blockgen.go:154:		prevHash = prevBlock.Hash()
+blockchain/accept.go:72:	newNode := b.index.LookupNode(block.Hash())
+blockchain/accept.go:145:	hash := header.BlockHash()
+blockchain/scriptval.go:65:					txIn.PreviousOutPoint, txVI.tx.Hash(),
+blockchain/scriptval.go:87:					txVI.tx.Hash(), txVI.txInIndex,
+blockchain/scriptval.go:101:					txVI.tx.Hash(), txVI.txInIndex,
+blockchain/scriptval.go:205:		!hashCache.ContainsHashes(tx.Hash()) {
+blockchain/scriptval.go:216:		cachedHashes, _ = hashCache.GetSigHashes(tx.Hash())
+blockchain/scriptval.go:261:		hash := tx.Hash()
+blockchain/scriptval.go:309:	log.Tracef("block %v took %v to verify", block.Hash(), elapsed)
+blockchain/scriptval.go:317:				hashCache.PurgeSigHashes(tx.Hash())
+blockchain/rolling_merkle.go:75:			s.add(*adds[i].Hash())
+blockchain/rolling_merkle.go:90:			s.add(*adds[len(adds)-1].Hash())
+rpcwebsocket.go:653:						Hash:  *tx.Hash(),
+rpcwebsocket.go:672:	ntfn := btcjson.NewBlockConnectedNtfn(block.Hash().String(), block.Height(),
+rpcwebsocket.go:696:	ntfn := btcjson.NewBlockDisconnectedNtfn(block.Hash().String(),
+rpcwebsocket.go:801:	txHashStr := tx.Hash().String()
+rpcwebsocket.go:886:				"outpoint<%v>: %v", op, spend.Hash())
+rpcwebsocket.go:887:			spends[*spend.Hash()] = spend
+rpcwebsocket.go:948:		Hash:   block.Hash().String(),
+rpcwebsocket.go:1001:			op := []*wire.OutPoint{wire.NewOutPoint(tx.Hash(), uint32(i))}
+rpcwebsocket.go:2371:						tx.Hash(), err)
+rpcwebsocket.go:2409:						tx.Hash(), err)
+rpcwebsocket.go:2427:					Hash:  *tx.Hash(),
+rpcwebsocket.go:2504:					Hash:  *tx.Hash(),
+rpcwebsocket.go:2793:				lastBlockHash = blk.Hash()
+wire/msgblock.go:313:func (msg *MsgBlock) BlockHash() chainhash.Hash {
+wire/msgblock.go:314:	return msg.Header.BlockHash()
+blockchain/chainio.go:463:	serialized := spendBucket.Get(block.Hash()[:])
+blockchain/chainio.go:473:					"information for %v: %v", block.Hash(),
+blockchain/chainio.go:1475:	hasBlock, err := dbTx.HasBlock(block.Hash())
+blockchain/validate.go:393:		hash := header.BlockHash()
+blockchain/validate.go:458:				tx.Hash(), txInIndex)
+blockchain/validate.go:611:		hash := tx.Hash()
+blockchain/validate.go:814:	blockHash := header.BlockHash()
+blockchain/validate.go:910:					"transaction %v", tx.Hash())
+blockchain/validate.go:985:		prevOut := wire.OutPoint{Hash: *tx.Hash()}
+blockchain/validate.go:1036:				tx.Hash(), txInIndex)
+blockchain/validate.go:1104:			"spent of %v", tx.Hash(), totalSatoshiIn, totalSatoshiOut)
+blockchain/utxoviewpoint.go:245:	prevOut := wire.OutPoint{Hash: *tx.Hash(), Index: txOutIdx}
+blockchain/utxoviewpoint.go:258:	prevOut := wire.OutPoint{Hash: *tx.Hash()}
+blockchain/utxoviewpoint.go:333:	view.SetBestHash(block.Hash())
+blockchain/utxoviewpoint.go:400:		txHash := tx.Hash()
+blockchain/utxoviewpoint.go:590:		txInFlight[*tx.Hash()] = i
+blockchain/utxoviewpoint.go:663:	prevOut := wire.OutPoint{Hash: *tx.Hash()}
+rpcclient/examples/btcdwebsockets/main.go:26:				header.BlockHash(), height, header.Timestamp)
+rpcclient/examples/btcdwebsockets/main.go:30:				header.BlockHash(), height, header.Timestamp)
+database/ffldb/db.go:1166:	blockHash := block.Hash()
+blockchain/process.go:114:			orphanHash := orphan.block.Hash()
+blockchain/process.go:149:	blockHash := block.Hash()
+blockchain/merkle.go:128:			merkles[i] = tx.Hash()
+blockchain/chain.go:268:	orphanHash := orphan.block.Hash()
+blockchain/chain.go:278:		hash := orphans[i].block.Hash()
+blockchain/chain.go:336:	b.orphans[*block.Hash()] = oBlock
+blockchain/chain.go:420:				tx.Hash(), txInIndex)
+blockchain/chain.go:669:		err = dbPutBlockIndex(dbTx, block.Hash(), node.height)
+blockchain/chain.go:676:		err = dbPutSpendJournalEntry(dbTx, block.Hash(), stxos)
+blockchain/chain.go:775:		err = dbRemoveBlockIndex(dbTx, block.Hash(), node.height)
+blockchain/chain.go:806:		err = dbRemoveSpendJournalEntry(dbTx, block.Hash())
+blockchain/chain.go:1045:		if n.hash != *block.Hash() {
+blockchain/chain.go:1049:					&n.hash, n.height, block.Hash()))
+blockchain/chain.go:1254:			block.Hash())
+rpcclient/chain.go:47:func (c *Client) GetBestBlockHash() (*chainhash.Hash, error) {
+rpcclient/chain.go:363:func (c *Client) GetChainTxStatsNBlocksBlockHash(nBlocks int32, blockHash chainhash.Hash) (*btcjson.GetChainTxStatsResult, error) {
+rpcclient/chain.go:559:func (c *Client) GetBlockHash(blockHeight int64) (*chainhash.Hash, error) {
+blockchain/indexers/manager.go:85:			curTipHash, block.Hash()))
+blockchain/indexers/manager.go:94:	return dbPutIndexerTip(dbTx, idxKey, block.Hash(), block.Height())
+blockchain/indexers/manager.go:111:	if !curTipHash.IsEqual(block.Hash()) {
+blockchain/indexers/manager.go:115:			curTipHash, block.Hash()))
+wire/blockheader.go:84:func (h *BlockHeader) BlockHash() chainhash.Hash {
+blockchain/utxocache.go:380:	prevOut := wire.OutPoint{Hash: *tx.Hash()}
+database/cmd/dbtool/insecureimport.go:123:		exists, err = tx.HasBlock(block.Hash())
+blockchain/internal/testhelper/common.go:160:				hash := hdr.BlockHash()
+blockchain/indexers/txindex.go:245:		err := dbPutTxIndexEntry(dbTx, tx.Hash(),
+blockchain/indexers/txindex.go:273:		err := dbRemoveTxIndexEntry(dbTx, tx.Hash())
+blockchain/indexers/txindex.go:403:	err := dbPutBlockIDIndexEntry(dbTx, block.Hash(), newBlockID)
+blockchain/indexers/txindex.go:426:	if err := dbRemoveBlockIDIndexEntry(dbTx, block.Hash()); err != nil {
+blockchain/indexers/addrindex.go:172:	hash, err := fetchBlockHash(serialized[0:4])
+blockchain/indexers/addrindex.go:765:	blockID, err := dbFetchBlockIDByHash(dbTx, block.Hash())
+blockchain/indexers/addrindex.go:878:		addrIndexEntry[*tx.Hash()] = tx
+blockchain/indexers/addrindex.go:881:		addrsByTxEntry := idx.addrsByTx[*tx.Hash()]
+blockchain/indexers/addrindex.go:884:			idx.addrsByTx[*tx.Hash()] = addrsByTxEntry
+blockchain/indexers/cfindex.go:164:	h := block.Hash()
+blockchain/indexers/cfindex.go:235:		err := dbDeleteFilterIdxEntry(dbTx, key, block.Hash())
+blockchain/indexers/cfindex.go:242:		err := dbDeleteFilterIdxEntry(dbTx, key, block.Hash())
+blockchain/indexers/cfindex.go:249:		err := dbDeleteFilterIdxEntry(dbTx, key, block.Hash())
+blockchain/indexers/cfindex.go:260:func (idx *CfIndex) entryByBlockHash(filterTypeKeys [][]byte,
+blockchain/indexers/cfindex.go:303:func (idx *CfIndex) FilterByBlockHash(h *chainhash.Hash,
+blockchain/indexers/cfindex.go:305:	return idx.entryByBlockHash(cfIndexKeys, filterType, h)
+blockchain/indexers/cfindex.go:317:func (idx *CfIndex) FilterHeaderByBlockHash(h *chainhash.Hash,
+blockchain/indexers/cfindex.go:319:	return idx.entryByBlockHash(cfHeaderKeys, filterType, h)
+blockchain/indexers/cfindex.go:331:func (idx *CfIndex) FilterHashByBlockHash(h *chainhash.Hash,
+blockchain/indexers/cfindex.go:333:	return idx.entryByBlockHash(cfHashKeys, filterType, h)
+blockchain/checkpoints.go:205:	node := b.index.LookupNode(block.Hash())
+mining/cpuminer/cpuminer.go:195:		"amount %v)", block.Hash(), btcutil.Amount(coinbaseTx.Value))
+mining/cpuminer/cpuminer.go:278:			hash := header.BlockHash()
+mining/cpuminer/cpuminer.go:615:			blockHashes[i] = block.Hash()
+blockchain/weight.go:103:					txIn.PreviousOutPoint, tx.Hash(),
+mining/mining.go:316:			item.tx.Hash(), tx.Hash())
+mining/mining.go:518:			log.Tracef("Skipping coinbase tx %s", tx.Hash())
+mining/mining.go:524:			log.Tracef("Skipping non-finalized tx %s", tx.Hash())
+mining/mining.go:536:				tx.Hash(), err)
+mining/mining.go:552:						tx.Hash(), txIn.PreviousOutPoint)
+mining/mining.go:564:				deps[*prioItem.tx.Hash()] = prioItem
+mining/mining.go:666:		deps := dependers[*tx.Hash()]
+mining/mining.go:675:				"the max block weight", tx.Hash())
+mining/mining.go:686:				"GetSigOpCost: %v", tx.Hash(), err)
+mining/mining.go:693:				"exceed the maximum sigops per block", tx.Hash())
+mining/mining.go:706:				"minBlockWeight %d", tx.Hash(), prioItem.feePerKB,
+mining/mining.go:748:				"CheckTransactionInputs: %v", tx.Hash(), err)
+mining/mining.go:757:				"ValidateTransactionScripts: %v", tx.Hash(), err)
+mining/mining.go:779:			prioItem.tx.Hash(), prioItem.priority, prioItem.feePerKB)
+mining/mining.go:787:			delete(item.dependsOn, *tx.Hash())
+cmd/addblock/import.go:107:	blockHash := block.Hash()
+blockchain/fullblocktests/generate.go:184:	genesisHash := genesis.BlockHash()
+blockchain/fullblocktests/generate.go:384:			PrevBlock:  g.tip.BlockHash(),
+blockchain/fullblocktests/generate.go:412:	blockHash := block.BlockHash()
+blockchain/fullblocktests/generate.go:436:	newBlockHash := newBlock.BlockHash()
+blockchain/fullblocktests/generate.go:463:	g.prevCollectedHash = g.tip.BlockHash()
+blockchain/fullblocktests/generate.go:481:		if b.BlockHash() == g.prevCollectedHash {
+blockchain/fullblocktests/generate.go:609:func (g *testGenerator) assertTipBlockHash(expected chainhash.Hash) {
+blockchain/fullblocktests/generate.go:610:	hash := g.tip.BlockHash()
+blockchain/fullblocktests/generate.go:1320:		origHash := b46.BlockHash()
+blockchain/fullblocktests/generate.go:1325:			blockHash := b46.BlockHash()
+blockchain/fullblocktests/generate.go:1377:		origHash := b49a.BlockHash()
+blockchain/fullblocktests/generate.go:1511:	g.assertTipBlockHash(b57.BlockHash())
+blockchain/fullblocktests/generate.go:1518:	g.updateBlockState("b56", b56.BlockHash(), "b57", b57)
+blockchain/fullblocktests/generate.go:1680:	g.updateBlockState("b64a", b64a.BlockHash(), "b64", b64)
+blockchain/fullblocktests/generate.go:1682:	g.assertTipBlockHash(b64a.BlockHash())
+blockchain/fullblocktests/generate.go:1971:		true, b82aTx1Out0.PrevOut, g.blocksByName["b83a"].BlockHash())
+blockchain/fullblocktests/generate.go:1976:		false, b82aTx1Out0.PrevOut, g.blocksByName["b82a"].BlockHash())
+blockchain/fullblocktests/generate.go:1981:		true, outs[28].PrevOut, g.blocksByName["b82a"].BlockHash())
+cmd/findcheckpoint/findcheckpoint.go:105:				Hash:   block.Hash(),
+btcutil/gcs/builder/builder.go:301:	blockHash := block.BlockHash()
+peer/log.go:178:		return fmt.Sprintf("hash %s, ver %d, %d tx, %s", msg.BlockHash(),
+btcutil/block.go:103:	hash := b.msgBlock.BlockHash()
+btcutil/block.go:207:	return tx.Hash(), nil
+btcutil/bloom/merkleblock.go:99:		mBlock.allHashes = append(mBlock.allHashes, tx.Hash())
+btcutil/bloom/filter.go:287:	matched := bf.matches(tx.Hash()[:])
+btcutil/bloom/filter.go:309:			bf.maybeAddOutpoint(txOut.PkScript, tx.Hash(), uint32(i))
+btcutil/coinset/coins.go:134:				Hash:  *coin.Hash(),
+btcutil/coinset/coins.go:358:	return c.Tx.Hash()

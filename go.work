@@ -1,0 +1,19 @@
+go 1.26.10
+
+// SLUG development workspace. All ten modules resolve to this checkout.
+// Relative replacements in go.mod also keep dependency graph loading and
+// per-module tidy/sync local until the fork has its own module release tags.
+// Always build and test this repo in workspace mode so sibling source edits
+// are used together.
+use (
+	.
+	./address
+	./btcec
+	./btcutil
+	./chaincfg
+	./chainhash
+	./psbt
+	./txscript
+	./v2transport
+	./wire
+)

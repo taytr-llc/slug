@@ -11,11 +11,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/blockchain/internal/testhelper"
-	"github.com/btcsuite/btcd/btcutil/v2"
-	"github.com/btcsuite/btcd/chaincfg/v2"
-	"github.com/btcsuite/btcd/chainhash/v2"
-	"github.com/btcsuite/btcd/wire/v2"
+	"github.com/taytr-llc/slug/blockchain/internal/testhelper"
+	"github.com/taytr-llc/slug/btcutil/v2"
+	"github.com/taytr-llc/slug/chaincfg/v2"
+	"github.com/taytr-llc/slug/chainhash/v2"
+	"github.com/taytr-llc/slug/wire/v2"
 )
 
 // TestHaveBlock tests the HaveBlock API to ensure proper functionality.
@@ -24,20 +24,7 @@ func TestHaveBlock(t *testing.T) {
 	// We'll only process the header for block 4.
 	// (genesis block) -> 1 -> 2 -> 3 -> 4
 	//                          \-> 3a
-	testFiles := []string{
-		"blk_0_to_4.dat.bz2",
-		"blk_3A.dat.bz2",
-	}
-
-	var blocks []*btcutil.Block
-	for _, file := range testFiles {
-		blockTmp, err := loadBlocks(file)
-		if err != nil {
-			t.Errorf("Error loading file: %v\n", err)
-			return
-		}
-		blocks = append(blocks, blockTmp...)
-	}
+	blocks := nativeShortFork(t)
 
 	// Create a new database and chain instance to run tests against.
 	chain, teardownFunc, err := chainSetup("haveblock",
@@ -53,7 +40,7 @@ func TestHaveBlock(t *testing.T) {
 	chain.TstSetCoinbaseMaturity(1)
 
 	// We want to process just the header for block 4.
-	block4Hash := newHashFromStr("000000002f264d6504013e73b9c913de9098d4d771c1bb219af475d2a01b128e")
+	block4Hash := blocks[4].Hash()
 
 	for i := 1; i < len(blocks); i++ {
 		// Add just the header for the block 4.
@@ -87,9 +74,10 @@ func TestHaveBlock(t *testing.T) {
 		}
 	}
 
-	// Insert an orphan block.
-	_, isOrphan, err := chain.ProcessBlock(btcutil.NewBlock(&Block100000),
-		BFNone)
+	// Insert a fully mined block whose parent has not been submitted.
+	missingParent := newNativeTestBlock(t, &chaincfg.MainNetParams, blocks[0], 2)
+	orphan := newNativeTestBlock(t, &chaincfg.MainNetParams, missingParent, 2)
+	_, isOrphan, err := chain.ProcessBlock(orphan, BFNone)
 	if err != nil {
 		t.Errorf("Unable to process block: %v", err)
 		return
@@ -108,13 +96,13 @@ func TestHaveBlock(t *testing.T) {
 		{hash: chaincfg.MainNetParams.GenesisHash.String(), want: true},
 
 		// Block 3a should be present (on a side chain).
-		{hash: "00000000474284d20067a4d33f6a02284e6ef70764a3a26d6a5b9df52ef663dd", want: true},
+		{hash: blocks[5].Hash().String(), want: true},
 
 		// Block 4 shouldn't be present as we only have its header.
-		{hash: "000000002f264d6504013e73b9c913de9098d4d771c1bb219af475d2a01b128e", want: false},
+		{hash: block4Hash.String(), want: false},
 
-		// Block 100000 should be present (as an orphan).
-		{hash: "000000000003ba27aa200b1cecaad478d2b00432346c3f1f3986da1afd33e506", want: true},
+		// The child of the missing parent should be present as an orphan.
+		{hash: orphan.Hash().String(), want: true},
 
 		// Random hashes should not be available.
 		{hash: "123", want: false},

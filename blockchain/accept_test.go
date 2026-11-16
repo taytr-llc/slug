@@ -7,8 +7,8 @@ package blockchain
 import (
 	"testing"
 
-	"github.com/btcsuite/btcd/blockchain/internal/testhelper"
-	"github.com/btcsuite/btcd/btcutil/v2"
+	"github.com/taytr-llc/slug/blockchain/internal/testhelper"
+	"github.com/taytr-llc/slug/btcutil/v2"
 )
 
 // TestMaybeAcceptBlockReusesHeaderNode ensures that when a block header is

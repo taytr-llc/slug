@@ -14,14 +14,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/btcsuite/btcd/blockchain/internal/testhelper"
-	"github.com/btcsuite/btcd/btcutil/v2"
-	"github.com/btcsuite/btcd/chaincfg/v2"
-	"github.com/btcsuite/btcd/chainhash/v2"
-	"github.com/btcsuite/btcd/database"
-	_ "github.com/btcsuite/btcd/database/ffldb"
-	"github.com/btcsuite/btcd/txscript/v2"
-	"github.com/btcsuite/btcd/wire/v2"
+	"github.com/taytr-llc/slug/blockchain/internal/testhelper"
+	"github.com/taytr-llc/slug/btcutil/v2"
+	"github.com/taytr-llc/slug/chaincfg/v2"
+	"github.com/taytr-llc/slug/chainhash/v2"
+	"github.com/taytr-llc/slug/database"
+	_ "github.com/taytr-llc/slug/database/ffldb"
+	"github.com/taytr-llc/slug/txscript/v2"
+	"github.com/taytr-llc/slug/wire/v2"
 )
 
 const (
@@ -31,8 +31,13 @@ const (
 	// testDbRoot is the root directory used to create all test databases.
 	testDbRoot = "testdbs"
 
-	// blockDataNet is the expected network in the test block data.
+	// blockDataNet is the network used for test databases.
 	blockDataNet = wire.MainNet
+
+	// bitcoinFixtureMagic describes the retained upstream transaction/script
+	// fixtures. Their file framing stays Bitcoin even though wire.MainNet now
+	// denotes SLUG. Loading bytes does not assert their header PoW is SLUG.
+	bitcoinFixtureMagic uint32 = 0xd9b4bef9
 )
 
 // filesExists returns whether or not the named file or directory exists.
@@ -58,62 +63,65 @@ func isSupportedDbType(dbType string) bool {
 	return false
 }
 
-// loadBlocks reads files containing bitcoin block data (gzipped but otherwise
+// loadBlocks reads files containing Bitcoin block data (optionally bzip2, otherwise
 // in the format bitcoind writes) from disk and returns them as an array of
 // btcutil.Block.  This is largely borrowed from the test code in btcdb.
-func loadBlocks(filename string) (blocks []*btcutil.Block, err error) {
+func loadBlocks(filename string) ([]*btcutil.Block, error) {
 	filename = filepath.Join("testdata/", filename)
-
-	var network = wire.MainNet
-	var dr io.Reader
-	var fi io.ReadCloser
-
-	fi, err = os.Open(filename)
+	fi, err := os.Open(filename)
 	if err != nil {
-		return
-	}
-
-	if strings.HasSuffix(filename, ".bz2") {
-		dr = bzip2.NewReader(fi)
-	} else {
-		dr = fi
+		return nil, err
 	}
 	defer fi.Close()
 
-	var block *btcutil.Block
+	var dr io.Reader = fi
+	if strings.HasSuffix(filename, ".bz2") {
+		dr = bzip2.NewReader(fi)
+	}
+	blocks, err := readBitcoinFixtureBlocks(dr)
+	if err != nil {
+		return nil, fmt.Errorf("read fixture %s: %w", filename, err)
+	}
+	return blocks, nil
+}
 
-	err = nil
-	for height := int64(1); err == nil; height++ {
-		var rintbuf uint32
-		err = binary.Read(dr, binary.LittleEndian, &rintbuf)
+// readBitcoinFixtureBlocks rejects malformed framing instead of silently
+// returning an empty or partial fixture set that never exercises its test.
+func readBitcoinFixtureBlocks(r io.Reader) ([]*btcutil.Block, error) {
+	var blocks []*btcutil.Block
+	for {
+		var magic uint32
+		err := binary.Read(r, binary.LittleEndian, &magic)
 		if err == io.EOF {
-			// hit end of file at expected offset: no warning
-			height--
-			err = nil
-			break
+			if len(blocks) == 0 {
+				return nil, fmt.Errorf("empty Bitcoin block fixture")
+			}
+			return blocks, nil
 		}
 		if err != nil {
-			break
+			return nil, fmt.Errorf("block %d network magic: %w", len(blocks), err)
 		}
-		if rintbuf != uint32(network) {
-			break
+		if magic != bitcoinFixtureMagic {
+			return nil, fmt.Errorf("block %d has network magic %08x, want Bitcoin %08x",
+				len(blocks), magic, bitcoinFixtureMagic)
 		}
-		err = binary.Read(dr, binary.LittleEndian, &rintbuf)
-		blocklen := rintbuf
-
-		rbytes := make([]byte, blocklen)
-
-		// read block
-		dr.Read(rbytes)
-
-		block, err = btcutil.NewBlockFromBytes(rbytes)
+		var blockLen uint32
+		if err := binary.Read(r, binary.LittleEndian, &blockLen); err != nil {
+			return nil, fmt.Errorf("block %d length: %w", len(blocks), err)
+		}
+		if blockLen < 81 || blockLen > wire.MaxBlockPayload {
+			return nil, fmt.Errorf("block %d has invalid serialized length %d", len(blocks), blockLen)
+		}
+		raw := make([]byte, blockLen)
+		if _, err := io.ReadFull(r, raw); err != nil {
+			return nil, fmt.Errorf("block %d bytes: %w", len(blocks), err)
+		}
+		block, err := btcutil.NewBlockFromBytes(raw)
 		if err != nil {
-			return
+			return nil, fmt.Errorf("block %d decoding: %w", len(blocks), err)
 		}
 		blocks = append(blocks, block)
 	}
-
-	return
 }
 
 // chainSetup is used to create a new db and chain instance with the genesis
@@ -164,7 +172,8 @@ func chainSetup(dbName string, params *chaincfg.Params) (*BlockChain, func(), er
 		teardown = func() {
 			db.Close()
 			os.RemoveAll(dbPath)
-			os.RemoveAll(testDbRoot)
+			// Remove only an empty root, preserving other tests' databases.
+			os.Remove(testDbRoot)
 		}
 	}
 

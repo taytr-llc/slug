@@ -8,15 +8,64 @@ import (
 	"bytes"
 	"errors"
 	"math/big"
+	"path/filepath"
 	"reflect"
 	"testing"
 
-	"github.com/btcsuite/btcd/btcutil/v2"
-	"github.com/btcsuite/btcd/chaincfg/v2"
-	"github.com/btcsuite/btcd/database"
-	"github.com/btcsuite/btcd/txscript/v2"
-	"github.com/btcsuite/btcd/wire/v2"
+	"github.com/taytr-llc/slug/btcutil/v2"
+	"github.com/taytr-llc/slug/chaincfg/v2"
+	"github.com/taytr-llc/slug/database"
+	"github.com/taytr-llc/slug/txscript/v2"
+	"github.com/taytr-llc/slug/wire/v2"
 )
+
+// migrationFailDB leaves real database reads intact while injecting a failure
+// when startup attempts its legacy-index migration transaction.
+type migrationFailDB struct {
+	database.DB
+	updateErr   error
+	updateCalls int
+}
+
+func (db *migrationFailDB) Update(func(database.Tx) error) error {
+	db.updateCalls++
+	return db.updateErr
+}
+
+// TestInitChainStatePropagatesMigrationError ensures an unavailable migration
+// transaction cannot report successful startup with uninitialized chain state.
+func TestInitChainStatePropagatesMigrationError(t *testing.T) {
+	db, err := database.Create("ffldb", filepath.Join(t.TempDir(), "db"), wire.MainNet)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { db.Close() })
+
+	// A persisted best state without the v2 index identifies a legacy
+	// database.  No block mining or header hashing is needed for this path.
+	params := &chaincfg.MainNetParams
+	state := bestChainState{
+		hash:      *params.GenesisHash,
+		height:    0,
+		totalTxns: 1,
+		workSum:   CalcWork(params.GenesisBlock.Header.Bits),
+	}
+	err = db.Update(func(tx database.Tx) error {
+		return tx.Metadata().Put(chainStateKeyName, serializeBestChainState(state))
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	wantErr := errors.New("injected migration transaction failure")
+	failingDB := &migrationFailDB{DB: db, updateErr: wantErr}
+	chain := BlockChain{db: failingDB, chainParams: params}
+	if err := chain.initChainState(); !errors.Is(err, wantErr) {
+		t.Fatalf("startup error = %v, want migration error %v", err, wantErr)
+	}
+	if failingDB.updateCalls != 1 {
+		t.Fatalf("migration transactions = %d, want 1", failingDB.updateCalls)
+	}
+}
 
 // TestErrNotInMainChain ensures the functions related to errNotInMainChain work
 // as expected.

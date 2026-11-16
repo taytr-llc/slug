@@ -49,17 +49,17 @@ recommended that `GOPATH` is set to a directory in your home directory such as
 `~/goprojects` to avoid write permission issues.  It is also recommended to add
 `$GOPATH/bin` to your `PATH` at this point.
 
-* Run the following commands to obtain btcd, all dependencies, and install it:
+* Build and install SLUG from the module-rename change-set branch:
 
 ```bash
-git clone https://github.com/btcsuite/btcd $GOPATH/src/github.com/btcsuite/btcd
-cd $GOPATH/src/github.com/btcsuite/btcd
-go install -v . ./cmd/...
+git clone --branch slug-module-rename https://github.com/taytr-llc/slug $GOPATH/src/github.com/taytr-llc/slug
+cd $GOPATH/src/github.com/taytr-llc/slug
+make install
 ```
 
-* btcd (and utilities) will now be installed in ```$GOPATH/bin```.  If you did
-  not already add the bin directory to your system path during Go installation,
-  we recommend you do so now.
+* slugd, slugctl, and utilities will now be installed in ```$GOPATH/bin```.
+  If you did not already add the bin directory to your system path during Go
+  installation, we recommend you do so now.
 
 ## Gentoo Linux Installation
 

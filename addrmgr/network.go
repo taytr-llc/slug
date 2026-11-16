@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/btcsuite/btcd/wire/v2"
+	"github.com/taytr-llc/slug/wire/v2"
 )
 
 var (

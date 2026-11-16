@@ -13,12 +13,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/btcutil/v2"
-	"github.com/btcsuite/btcd/chaincfg/v2"
-	"github.com/btcsuite/btcd/chainhash/v2"
-	"github.com/btcsuite/btcd/database"
-	"github.com/btcsuite/btcd/database/ffldb"
-	"github.com/btcsuite/btcd/wire/v2"
+	"github.com/taytr-llc/slug/blockchain/internal/testhelper"
+	"github.com/taytr-llc/slug/btcutil/v2"
+	"github.com/taytr-llc/slug/chaincfg/v2"
+	"github.com/taytr-llc/slug/chainhash/v2"
+	"github.com/taytr-llc/slug/database"
+	"github.com/taytr-llc/slug/database/ffldb"
+	"github.com/taytr-llc/slug/wire/v2"
 )
 
 func TestMapSlice(t *testing.T) {
@@ -729,7 +730,8 @@ func TestFlushNeededAfterPrune(t *testing.T) {
 }
 
 func TestFlushOnPrune(t *testing.T) {
-	chain, tearDown, err := chainSetup("TestFlushOnPrune", &chaincfg.MainNetParams)
+	params := nativeUtxoParams()
+	chain, tearDown, err := chainSetup("TestFlushOnPrune", &params)
 	if err != nil {
 		panic(fmt.Sprintf("error loading blockchain with database: %v", err))
 	}
@@ -743,27 +745,28 @@ func TestFlushOnPrune(t *testing.T) {
 	maxBlockFileSize := uint32(8192)
 	chain.pruneTarget = uint64(maxBlockFileSize) * 2
 
-	// Read blocks from the file.
-	blocks, err := loadBlocks("blk_0_to_14131.dat")
-	if err != nil {
-		t.Fatalf("failed to read block from file. %v", err)
-	}
+	blocks := nativeUtxoBlocks(t, &params)
+	var staleHash chainhash.Hash
 
 	syncBlocks := func() {
-		// Modify block 1 to be a different hash.  This is to artificially
-		// create a stale branch in the chain.
+		// Mine a different valid block 1 to create a stale branch.
 		staleMsgBlock := blocks[1].MsgBlock().Copy()
-		staleMsgBlock.Header.Nonce = 0
+		staleMsgBlock.Transactions[0].TxIn[0].SignatureScript = append(
+			staleMsgBlock.Transactions[0].TxIn[0].SignatureScript, 0)
+		staleMsgBlock.Header.MerkleRoot = calcMerkleRoot(staleMsgBlock.Transactions)
+		if !testhelper.SolveBlock(&staleMsgBlock.Header) {
+			t.Fatal("could not solve stale storage fixture")
+		}
 		staleBlock := btcutil.NewBlock(staleMsgBlock)
+		staleHash = *staleBlock.Hash()
 
 		// Add the stale block here to create a chain view like so. The
 		// block will be the main chain at first but become stale as we
-		// keep adding blocks.  BFNoPoWCheck is given as the pow check will
-		// fail.
+		// keep adding blocks. All blocks pass ordinary PoW validation.
 		//
 		// (genesis block) -> 1 -> 2 -> 3 -> ...
 		//                \-> 1a
-		_, _, err = chain.ProcessBlock(staleBlock, BFNoPoWCheck)
+		_, _, err = chain.ProcessBlock(staleBlock, BFNone)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -805,9 +808,12 @@ func TestFlushOnPrune(t *testing.T) {
 
 	// Function that errors out if the block that shouldn't exist exists.
 	shouldNotExist := func(dbTx database.Tx, blockHash *chainhash.Hash) error {
-		bytes, err := dbTx.FetchBlock(chaincfg.MainNetParams.GenesisHash)
+		bytes, err := dbTx.FetchBlock(blockHash)
 		if err == nil {
 			return fmt.Errorf("expected block %s to be pruned", blockHash.String())
+		}
+		if dbErr, ok := err.(database.Error); !ok || dbErr.ErrorCode != database.ErrBlockNotFound {
+			return err
 		}
 		if len(bytes) != 0 {
 			return fmt.Errorf("expected block %s to be pruned but got %v",
@@ -817,23 +823,36 @@ func TestFlushOnPrune(t *testing.T) {
 		return nil
 	}
 
-	// The below code checks that the correct blocks were pruned.
+	// Pruning deletes whole files, so some blocks older than the last flush
+	// may remain. Require a nonempty pruned prefix and a contiguous retained
+	// suffix containing every block needed for replay from the last flush.
 	err = chain.db.View(func(dbTx database.Tx) error {
-		exist := false
-		for _, block := range blocks {
-			// Blocks up to the last flush hash should not exist.
-			// The utxocache is big enough so that it shouldn't flush
-			// on it being full.  It should only flush on prunes.
-			if block.Hash().IsEqual(&chain.utxoCache.lastFlushHash) {
-				exist = true
+		if err := shouldNotExist(dbTx, params.GenesisHash); err != nil {
+			return err
+		}
+		if err := shouldNotExist(dbTx, &staleHash); err != nil {
+			return err
+		}
+		flushNode := chain.index.LookupNode(&chain.utxoCache.lastFlushHash)
+		if flushNode == nil || flushNode.height == 0 {
+			return fmt.Errorf("pruning never advanced the UTXO flush point")
+		}
+		retained := false
+		for height, block := range blocks {
+			exists, err := dbTx.HasBlock(block.Hash())
+			if err != nil {
+				return err
 			}
-
-			if exist {
+			if exists {
+				retained = true
 				err = shouldExist(dbTx, block.Hash())
 				if err != nil {
 					return err
 				}
 			} else {
+				if retained || int32(height) >= flushNode.height {
+					return fmt.Errorf("pruned required replay block at height %d (flush %d)", height, flushNode.height)
+				}
 				err = shouldNotExist(dbTx, block.Hash())
 				if err != nil {
 					return err
@@ -850,8 +869,9 @@ func TestFlushOnPrune(t *testing.T) {
 
 func TestInitConsistentState(t *testing.T) {
 	//  Boilerplate for creating a chain.
-	dbName := "TestFlushOnPrune"
-	chain, tearDown, err := chainSetup(dbName, &chaincfg.MainNetParams)
+	dbName := "TestInitConsistentState"
+	params := nativeUtxoParams()
+	chain, tearDown, err := chainSetup(dbName, &params)
 	if err != nil {
 		panic(fmt.Sprintf("error loading blockchain with database: %v", err))
 	}
@@ -859,13 +879,9 @@ func TestInitConsistentState(t *testing.T) {
 	chain.utxoCache.maxTotalMemoryUsage = 10 * 1024 * 1024
 	chain.utxoCache.cachedEntries.maxTotalMemoryUsage = chain.utxoCache.maxTotalMemoryUsage
 
-	// Read blocks from the file.
-	blocks, err := loadBlocks("blk_0_to_14131.dat")
-	if err != nil {
-		t.Fatalf("failed to read block from file. %v", err)
-	}
+	blocks := nativeUtxoBlocks(t, &params)
 
-	// Sync up to height 13,000.  Flush the utxocache at height 11_000.
+	// Sync up to height 12,000. Flush the utxocache at height 9,000.
 	cacheFlushHeight := 9000
 	initialSyncHeight := 12_000
 	for i, block := range blocks {
@@ -900,7 +916,7 @@ func TestInitConsistentState(t *testing.T) {
 	}
 
 	// Close the database without flushing the utxocache.  This leaves the
-	// chaintip at height 13,000 but the utxocache consistent state at 11,000.
+	// chaintip at height 12,000 but the utxocache consistent state at 9,000.
 	err = chain.db.Close()
 	if err != nil {
 		t.Fatal(err)
@@ -914,8 +930,11 @@ func TestInitConsistentState(t *testing.T) {
 		t.Fatal(err)
 	}
 	chain.db = ndb
-	chain.utxoCache.db = ndb
+	// A real crash loses the dirty in-memory entries. Start a fresh cache
+	// so this test cannot accidentally pass by retaining the pre-crash UTXOs.
+	chain.utxoCache = newUtxoCache(ndb, 10*1024*1024)
 	chain.index.db = ndb
+	defer ndb.Close()
 
 	// Sanity check to see that the utxo cache was flushed before the
 	// current chain tip.
@@ -940,6 +959,7 @@ func TestInitConsistentState(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	assertNativeSpendTip(t, chain, blocks, initialSyncHeight)
 
 	// Sync the reset of the blocks.
 	for i, block := range blocks {
@@ -960,4 +980,5 @@ func TestInitConsistentState(t *testing.T) {
 		t.Fatalf("expected the chain to sync up to height %d",
 			blocks[len(blocks)-1].Height())
 	}
+	assertNativeSpendTip(t, chain, blocks, len(blocks)-1)
 }

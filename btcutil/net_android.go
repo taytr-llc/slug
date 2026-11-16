@@ -10,7 +10,7 @@ package btcutil
 import (
 	"net"
 
-	"github.com/btcsuite/btcd/btcutil/v2/internal/anet"
+	"github.com/taytr-llc/slug/btcutil/v2/internal/anet"
 )
 
 // InterfaceAddrs returns a list of the system's network interface addresses.

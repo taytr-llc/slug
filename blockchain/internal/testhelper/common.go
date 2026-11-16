@@ -5,11 +5,11 @@ import (
 	"math"
 	"runtime"
 
-	"github.com/btcsuite/btcd/blockchain/internal/workmath"
-	"github.com/btcsuite/btcd/btcutil/v2"
-	"github.com/btcsuite/btcd/chainhash/v2"
-	"github.com/btcsuite/btcd/txscript/v2"
-	"github.com/btcsuite/btcd/wire/v2"
+	"github.com/taytr-llc/slug/blockchain/internal/workmath"
+	"github.com/taytr-llc/slug/btcutil/v2"
+	"github.com/taytr-llc/slug/chainhash/v2"
+	"github.com/taytr-llc/slug/txscript/v2"
+	"github.com/taytr-llc/slug/wire/v2"
 )
 
 var (
@@ -161,12 +161,18 @@ func SolveBlock(header *wire.BlockHeader) bool {
 				if workmath.HashToBig(&hash).Cmp(
 					targetDifficulty) <= 0 {
 
-					results <- sbResult{true, i}
+					select {
+					case results <- sbResult{true, i}:
+					case <-quit:
+					}
 					return
 				}
 			}
 		}
-		results <- sbResult{false, 0}
+		select {
+		case results <- sbResult{false, 0}:
+		case <-quit:
+		}
 	}
 
 	startNonce := uint32(1)

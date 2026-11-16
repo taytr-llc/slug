@@ -1,9 +1,10 @@
-PKG := github.com/btcsuite/btcd
+PKG := github.com/taytr-llc/slug
 
 LINT_PKG := github.com/golangci/golangci-lint/v2/cmd/golangci-lint
 GOIMPORTS_PKG := golang.org/x/tools/cmd/goimports
 
-GO_BIN := ${shell go env GOBIN}
+GO_BIN := $(if $(GOBIN),$(GOBIN),$(shell go env GOBIN))
+GO_EXE := $(shell GOOS="$(GOOS)" go env GOEXE)
 
 # If GOBIN is not set, default to GOPATH/bin.
 ifeq ($(GO_BIN),)
@@ -64,8 +65,9 @@ goimports:
 #? build: Build all binaries, place them in project directory
 build:
 	@$(call print, "Building all binaries")
-	$(GOBUILD) $(PKG)
-	$(GOBUILD) $(PKG)/cmd/btcctl
+	$(GOBUILD) -o slugd$(GO_EXE) $(PKG)
+	$(GOBUILD) $(PKG)/cmd/slugctl
+	$(GOBUILD) $(PKG)/cmd/slugcheckpoint
 	$(GOBUILD) $(PKG)/cmd/gencerts
 	$(GOBUILD) $(PKG)/cmd/findcheckpoint
 	$(GOBUILD) $(PKG)/cmd/addblock
@@ -73,17 +75,18 @@ build:
 #? install: Install all binaries, place them in $GOPATH/bin
 install:
 	@$(call print, "Installing all binaries")
-	$(GOINSTALL) $(PKG)
-	$(GOINSTALL) $(PKG)/cmd/btcctl
+	$(GOBUILD) -o "$(GO_BIN)/slugd$(GO_EXE)" $(PKG)
+	$(GOINSTALL) $(PKG)/cmd/slugctl
+	$(GOINSTALL) $(PKG)/cmd/slugcheckpoint
 	$(GOINSTALL) $(PKG)/cmd/gencerts
 	$(GOINSTALL) $(PKG)/cmd/findcheckpoint
 	$(GOINSTALL) $(PKG)/cmd/addblock
 
-#? release-install: Install btcd and btcctl release binaries, place them in $GOBIN
+#? release-install: Install slugd and slugctl release binaries, place them in $GOBIN
 release-install:
-	@$(call print, "Installing btcd and btcctl release binaries")
-	env CGO_ENABLED=0 $(GOINSTALL) -trimpath -ldflags="-s -w -buildid=" $(PKG)
-	env CGO_ENABLED=0 $(GOINSTALL) -trimpath -ldflags="-s -w -buildid=" $(PKG)/cmd/btcctl
+	@$(call print, "Installing slugd and slugctl release binaries")
+	env CGO_ENABLED=0 $(GOBUILD) -trimpath -ldflags="-s -w -buildid=" -o "$(GO_BIN)/slugd$(GO_EXE)" $(PKG)
+	env CGO_ENABLED=0 $(GOINSTALL) -trimpath -ldflags="-s -w -buildid=" $(PKG)/cmd/slugctl
 
 # =======
 # TESTING
@@ -91,6 +94,11 @@ release-install:
 
 #? check: Run `make unit`
 check: unit
+
+#? test-chain: Run complete blockchain and integration suites with test-only PoW
+test-chain:
+	go test -tags=slugtestpow -count=1 -timeout=30m ./blockchain/...
+	go test -tags=slugtestpow,rpctest -count=1 -timeout=30m ./integration/...
 
 #? unit: Run unit tests
 unit:

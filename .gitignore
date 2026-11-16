@@ -47,12 +47,16 @@ coverage.txt.bak
 #IDE
 .idea
 
-# Binaries produced by "make build"
+# Binaries produced by "go build" and "make build"
 /addblock
 /btcctl
 /btcd
 /findcheckpoint
 /gencerts
+/slug
+/slugctl
+/slugcheckpoint
+/slugd
 
 .DS_Store
 .aider*

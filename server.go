@@ -22,24 +22,24 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/btcsuite/btcd/addrmgr"
-	"github.com/btcsuite/btcd/blockchain"
-	"github.com/btcsuite/btcd/blockchain/indexers"
-	"github.com/btcsuite/btcd/btcutil/v2"
-	"github.com/btcsuite/btcd/btcutil/v2/bloom"
-	"github.com/btcsuite/btcd/chaincfg/v2"
-	"github.com/btcsuite/btcd/chainhash/v2"
-	"github.com/btcsuite/btcd/connmgr"
-	"github.com/btcsuite/btcd/database"
-	"github.com/btcsuite/btcd/internal/inbound"
-	"github.com/btcsuite/btcd/mempool"
-	"github.com/btcsuite/btcd/mining"
-	"github.com/btcsuite/btcd/mining/cpuminer"
-	"github.com/btcsuite/btcd/netsync"
-	"github.com/btcsuite/btcd/peer"
-	"github.com/btcsuite/btcd/txscript/v2"
-	"github.com/btcsuite/btcd/wire/v2"
 	"github.com/decred/dcrd/container/lru"
+	"github.com/taytr-llc/slug/addrmgr"
+	"github.com/taytr-llc/slug/blockchain"
+	"github.com/taytr-llc/slug/blockchain/indexers"
+	"github.com/taytr-llc/slug/btcutil/v2"
+	"github.com/taytr-llc/slug/btcutil/v2/bloom"
+	"github.com/taytr-llc/slug/chaincfg/v2"
+	"github.com/taytr-llc/slug/chainhash/v2"
+	"github.com/taytr-llc/slug/connmgr"
+	"github.com/taytr-llc/slug/database"
+	"github.com/taytr-llc/slug/internal/inbound"
+	"github.com/taytr-llc/slug/mempool"
+	"github.com/taytr-llc/slug/mining"
+	"github.com/taytr-llc/slug/mining/cpuminer"
+	"github.com/taytr-llc/slug/netsync"
+	"github.com/taytr-llc/slug/peer"
+	"github.com/taytr-llc/slug/txscript/v2"
+	"github.com/taytr-llc/slug/wire/v2"
 )
 
 const (
@@ -64,7 +64,7 @@ const (
 var (
 	// userAgentName is the user agent name and is used to help identify
 	// ourselves to other bitcoin peers.
-	userAgentName = "btcd"
+	userAgentName = "slug"
 
 	// userAgentVersion is the user agent version and is used to help
 	// identify ourselves to other bitcoin peers.
@@ -723,12 +723,10 @@ func (sp *serverPeer) OnTx(_ *peer.Peer, msg *wire.MsgTx) {
 // blocks until the bitcoin block has been fully processed.
 func (sp *serverPeer) OnBlock(_ *peer.Peer, msg *wire.MsgBlock, buf []byte) {
 	// Convert the raw MsgBlock to a btcutil.Block which provides some
-	// convenience methods and things such as hash caching.
+	// convenience methods and things such as hash caching.  SLUG hashes
+	// incoming blocks in the serialized sync manager, not per peer: an
+	// Argon2id hash allocates 256 MiB.
 	block := btcutil.NewBlockFromBlockAndBytes(msg, buf)
-
-	// Add the block to the known inventory for the peer.
-	iv := wire.NewInvVect(wire.InvTypeBlock, block.Hash())
-	sp.AddKnownInventory(iv)
 
 	// Queue the block up to be handled by the block
 	// manager and intentionally block further receives
@@ -3083,19 +3081,33 @@ func newServer(listenAddrs, agentBlacklist, agentWhitelist []string,
 	// Create a new block chain instance with the appropriate configuration.
 	var err error
 	s.chain, err = blockchain.New(&blockchain.Config{
-		DB:               s.db,
-		Interrupt:        interrupt,
-		ChainParams:      s.chainParams,
-		Checkpoints:      checkpoints,
-		TimeSource:       s.timeSource,
-		SigCache:         s.sigCache,
-		IndexManager:     indexManager,
-		HashCache:        s.hashCache,
-		Prune:            cfg.Prune * 1024 * 1024,
-		UtxoCacheMaxSize: uint64(cfg.UtxoCacheMaxSizeMiB) * 1024 * 1024,
+		DB:                s.db,
+		Interrupt:         interrupt,
+		ChainParams:       s.chainParams,
+		Checkpoints:       checkpoints,
+		SignedCheckpoints: cfg.signedCheckpoints,
+		TimeSource:        s.timeSource,
+		SigCache:          s.sigCache,
+		IndexManager:      indexManager,
+		HashCache:         s.hashCache,
+		Prune:             cfg.Prune * 1024 * 1024,
+		UtxoCacheMaxSize:  uint64(cfg.UtxoCacheMaxSizeMiB) * 1024 * 1024,
 	})
 	if err != nil {
 		return nil, err
+	}
+
+	// Record the public league status on startup so operators can verify
+	// explicit imports without exposing the private RPC listener.
+	signedState := s.chain.SignedCheckpointSnapshot()
+	if len(signedState.Checkpoints) != 0 {
+		btcdLog.Infof("Signed league checkpoints are report-only: authority=%x tip=%d:%s",
+			signedState.PublicKey, signedState.BestHeight, signedState.BestHash)
+		for _, checkpoint := range signedState.Checkpoints {
+			btcdLog.Infof("Signed league checkpoint height=%d hash=%s status=%s descendants=%d",
+				checkpoint.SignedCheckpoint.Height, checkpoint.SignedCheckpoint.Hash,
+				checkpoint.Status, checkpoint.Descendants)
+		}
 	}
 
 	// Search for a FeeEstimator state in the database. If none can be found

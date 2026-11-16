@@ -13,8 +13,8 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/btcsuite/btcd/btcutil/v2"
-	rpc "github.com/btcsuite/btcd/rpcclient"
+	"github.com/taytr-llc/slug/btcutil/v2"
+	rpc "github.com/taytr-llc/slug/rpcclient"
 )
 
 // nodeConfig contains all the args, and data required to launch a btcd process
@@ -50,7 +50,7 @@ func newConfig(nodeDir, certFile, keyFile string, extra []string,
 		var err error
 		btcdPath, err = btcdExecutablePath()
 		if err != nil {
-			btcdPath = "btcd"
+			return nil, err
 		}
 	}
 
