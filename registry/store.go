@@ -16,12 +16,14 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/opt"
 	"github.com/syndtr/goleveldb/leveldb/util"
 	"github.com/taytr-llc/slug/gymauth"
 	"github.com/taytr-llc/slug/prospect"
+	"github.com/taytr-llc/slug/prospectjob"
 	"github.com/taytr-llc/slug/wire/v2"
 )
 
@@ -31,6 +33,9 @@ const (
 
 	// Version2 requires gym-key authorization in every immutable receipt.
 	Version2 uint32 = 2
+
+	// Version3 records D68 jobs and immutable issuance-based fighter births.
+	Version3 uint32 = 3
 
 	// MaxRecordSize bounds one stored JSON receipt in bytes.
 	MaxRecordSize = 65536
@@ -65,6 +70,17 @@ type Record struct {
 	Proof         prospect.Proof         `json:"proof"`
 	Verified      prospect.Verified      `json:"verified"`
 	Authorization *gymauth.Authorization `json:"authorization,omitempty"`
+	Job           *prospectjob.Job       `json:"job,omitempty"`
+	Birth         *Birth                 `json:"birth,omitempty"`
+}
+
+// Birth is the immutable D68 league clock, not an exact discovery timestamp.
+// The trusted authority observed qualifying work within the recorded job's
+// issuance/expiry interval. Replays retain these original values forever.
+type Birth struct {
+	RuleVersion  uint32 `json:"rule_version"`
+	BornAtMS     int64  `json:"born_at_ms"`
+	AcceptedAtMS int64  `json:"accepted_at_ms"`
 }
 
 type marker struct {
@@ -79,6 +95,8 @@ type metadata struct {
 	Network      uint32 `json:"network"`
 	Genesis      string `json:"genesis"`
 	LastSequence uint64 `json:"last_sequence"`
+	JobCount     uint64 `json:"job_count,omitempty"`
+	LastClockMS  int64  `json:"last_clock_ms,omitempty"`
 }
 
 // Store owns an exclusively opened database handle and serializes all API
@@ -93,6 +111,11 @@ type Store struct {
 	closed     bool
 	poisoned   error
 	writeBatch func(*leveldb.Batch, *opt.WriteOptions) error
+	// Clock and randomness are internal test seams, never caller-supplied time
+	// or nonce inputs. Durable high water survives normal close/reopen.
+	now       func() time.Time
+	random    io.Reader
+	clockSeen int64
 }
 
 func normalizeHash(value string) (string, error) {
@@ -187,7 +210,7 @@ func readMarker(path string) (marker, error) {
 	canonical, _ := json.Marshal(value)
 	canonical = append(canonical, '\n')
 	genesis, err := chainIdentity(value.Network, value.Genesis)
-	if err != nil || value.Application != application || (value.Version != Version1 && value.Version != Version2) ||
+	if err != nil || value.Application != application || !supportedVersion(value.Version) ||
 		value.Genesis != genesis || !bytes.Equal(raw, canonical) {
 		return value, fmt.Errorf("%w: unrecognized application marker or schema", ErrCorrupt)
 	}
@@ -206,6 +229,10 @@ func Create(path string, network uint32, genesis string) (*Store, error) {
 // or establish an account, wallet balance, ownership transfer, or birth time.
 func CreateAuthenticated(path string, network uint32, genesis string) (*Store, error) {
 	return create(path, network, genesis, Version2)
+}
+
+func supportedVersion(version uint32) bool {
+	return version == Version1 || version == Version2 || version == Version3
 }
 
 func create(path string, network uint32, genesis string, version uint32) (*Store, error) {
@@ -303,8 +330,11 @@ func (store *Store) decodeRecord(raw []byte, id string) (Record, error) {
 		return Record{}, fmt.Errorf("%w: invalid receipt version or sequence", ErrCorrupt)
 	}
 	if (record.Version == Version1 && record.Authorization != nil) ||
-		(record.Version == Version2 && record.Authorization == nil) {
+		(record.Version >= Version2 && record.Authorization == nil) {
 		return Record{}, fmt.Errorf("%w: receipt authorization does not match schema", ErrCorrupt)
+	}
+	if err := store.validateBirthRecord(record); err != nil {
+		return Record{}, err
 	}
 	if record.Authorization != nil {
 		if err := gymauth.VerifyAuthorization(record.Context, record.Proof, *record.Authorization); err != nil {
@@ -321,7 +351,11 @@ func (store *Store) decodeRecord(raw []byte, id string) (Record, error) {
 	// Open checks shapes, linkage, and cheap key authorization. Argon proof
 	// verification is deferred to reads so opening does not rehash all history.
 	proof := record.Proof
-	if proof.Version != prospect.Version1 || len(proof.Header) != 160 ||
+	expectedVersion := prospect.Version1
+	if record.Version == Version3 {
+		expectedVersion = prospect.Version2
+	}
+	if proof.Version != expectedVersion || (proof.Version == prospect.Version1 && proof.JobID != "") || len(proof.Header) != 160 ||
 		len(proof.Coinbase) == 0 || len(proof.Coinbase) > 32768 || len(proof.Coinbase)%2 != 0 ||
 		proof.MerkleBranch == nil || len(proof.MerkleBranch) > 20 {
 		return Record{}, fmt.Errorf("%w: invalid stored proof shape", ErrCorrupt)
@@ -341,7 +375,7 @@ func (store *Store) decodeRecord(raw []byte, id string) (Record, error) {
 		}
 	}
 	verified := record.Verified
-	if verified.Version != prospect.Version1 || verified.Verification != "supplied-context" ||
+	if verified.Version != expectedVersion || verified.Verification != "supplied-context" ||
 		verified.ProspectID != id || verified.Network != store.meta.Network ||
 		verified.Genesis != store.meta.Genesis || verified.ParentHeight != record.Context.ParentHeight ||
 		verified.ParentHash != strings.ToLower(record.Context.ParentHash) ||
@@ -369,13 +403,25 @@ func (store *Store) checkStructure(value marker) error {
 	if store.meta.Version != value.Version || store.meta.Network != value.Network || store.meta.Genesis != value.Genesis {
 		return fmt.Errorf("%w: metadata does not match application marker", ErrCorrupt)
 	}
-	var records, sequences uint64
+	if store.meta.LastClockMS < 0 || (store.meta.Version != Version3 && (store.meta.JobCount != 0 || store.meta.LastClockMS != 0)) {
+		return fmt.Errorf("%w: clock/job metadata does not match schema", ErrCorrupt)
+	}
+	store.clockSeen = store.meta.LastClockMS
+	var records, sequences, jobs uint64
 	iterator := store.db.NewIterator(nil, nil)
 	defer iterator.Release()
 	for iterator.Next() {
 		key := iterator.Key()
 		switch {
 		case bytes.Equal(key, []byte(metadataKey)):
+		case bytes.HasPrefix(key, []byte(jobPrefix)):
+			if store.meta.Version != Version3 {
+				return fmt.Errorf("%w: jobs require birth registry schema", ErrCorrupt)
+			}
+			if _, err := store.decodeJob(iterator.Value(), string(key[len(jobPrefix):])); err != nil {
+				return err
+			}
+			jobs++
 		case bytes.HasPrefix(key, []byte(recordPrefix)):
 			id := string(key[len(recordPrefix):])
 			record, err := store.decodeRecord(iterator.Value(), id)
@@ -418,7 +464,7 @@ func (store *Store) checkStructure(value marker) error {
 	}
 	// Unique keys, in-range sequences, matching links, and these counts prove
 	// a consecutive sequence without looping up to untrusted LastSequence.
-	if records != store.meta.LastSequence || sequences != store.meta.LastSequence {
+	if records != store.meta.LastSequence || sequences != store.meta.LastSequence || jobs != store.meta.JobCount {
 		return fmt.Errorf("%w: receipt counts or sequence continuity mismatch", ErrCorrupt)
 	}
 	return nil
@@ -500,6 +546,9 @@ func (store *Store) record(context prospect.Context, proof prospect.Proof, autho
 	}
 	if store.readOnly {
 		return Record{}, false, ErrReadOnly
+	}
+	if store.meta.Version == Version3 || proof.Version != prospect.Version1 || proof.JobID != "" {
+		return Record{}, false, fmt.Errorf("job-bound proofs require the birth admission path")
 	}
 	if (store.meta.Version == Version1 && authorization != nil) ||
 		(store.meta.Version == Version2 && authorization == nil) {

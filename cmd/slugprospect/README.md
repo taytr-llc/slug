@@ -121,3 +121,49 @@ upgraded or substituted for the other. Unauthenticated recording commands
 cannot write authenticated stores, and authenticated recording commands cannot
 write legacy stores. Existing `get`, `list` and `export` commands read either
 format and re-verify its evidence. A replay preserves the original receipt.
+
+Birth admission uses a separate schema-3 registry and the fixed D68 rule:
+age starts at job issuance, the job lasts exactly five minutes, and there is
+no late-submission grace period. The issuer chooses its own clock and random
+challenge and saves the job durably before returning it. No command accepts a
+caller-supplied time, lifetime or birth date.
+
+```sh
+slugregistry init-birth --db /path/to/new-birth-registry --network 1397511495 --genesis HEX
+slugregistry issue-job-node --db /path/to/birth-registry --policy policy.json --rpc-config rpc.json --public-key <66-hex-public-key>
+slugregistry get-job --db /path/to/birth-registry --id <64-hex-job-id>
+/tmp/slugprospect commitment-job --job job.json
+slugregistry record-job-node --db /path/to/birth-registry --policy policy.json --rpc-config rpc.json --proof share.json --authorization authorization.json
+```
+
+Save the public `issue-job-node` output as `job.json` for the mining client.
+`commitment-job` returns `proof_version: 2`, the job ID, context, gym ID and
+commitment script. The client includes that commitment before mining, then
+automatically signs the version-2 admission payload with its gym key.
+`auth-payload` selects the authorization version from the proof version.
+Job files are bounded to 8192 bytes. A correctly encoded job file alone is
+not proof that an authority issued it: new birth admission requires the exact
+job already present in that registry.
+
+New admission checks the stored job, authorization, work, current policy,
+node context and strict expiry before committing the immutable birth receipt.
+The success output reports `birth_rule: "job-issuance"`,
+`context_source: "trusted-node-snapshot"` and `current_node_checked: true`.
+Birth uses the issuer's `issued_at_ms`; `accepted_at_ms` records admission
+within the window. These are trusted issuer assertions, not an exact
+cryptographic measurement of when a hash was found.
+
+An already committed proof returns the original receipt with
+`context_source: "historical-receipt"`, `current_node_checked: false` and
+`inserted: false`. Historical recovery works during a node outage and after a
+policy change; it does not renew age or claim current eligibility. Valid
+policy and RPC configuration files are still required inputs. A reorganization
+does not erase the original birth or permit a replacement birth date.
+
+Schema-1 and schema-2 evidence cannot be promoted into a birth receipt or
+substituted for job-bound work. Existing `get`, `list` and `export` commands can
+read schema-3 receipts. Conditional proof verification remains available for
+version-2 work, but it does not check issuance or the birth clock;
+`verify-auth`, `verify-node` and `verify-auth-node` explicitly report
+`birth_verified: false` for these proofs. Birth registration still does not
+establish account existence, transfer rights or league eligibility.

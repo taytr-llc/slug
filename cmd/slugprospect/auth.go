@@ -103,7 +103,7 @@ func authorizationCommand(command string, args []string, stdout, stderr io.Write
 			GymID     string `json:"gym_id"`
 			PublicKey string `json:"public_key"`
 			Digest    string `json:"digest"`
-		}{gymauth.Version1, "prospect-admission", gymID, strings.ToLower(*publicKey), hex.EncodeToString(digest[:])})
+		}{proof.Version, "prospect-admission", gymID, strings.ToLower(*publicKey), hex.EncodeToString(digest[:])})
 	}
 	authorization, err := readAuthorization(*authorizationPath)
 	if err != nil {
@@ -118,6 +118,17 @@ func authorizationCommand(command string, args []string, stdout, stderr io.Write
 	}
 	return encoder.Encode(struct {
 		Authentication string            `json:"authentication"`
+		BirthVerified  *bool             `json:"birth_verified,omitempty"`
 		Verified       prospect.Verified `json:"verified"`
-	}{"gym-key-control", verified})
+	}{"gym-key-control", unverifiedJobBirth(proof), verified})
+}
+
+// Conditional work/key verification does not consult an issuer's durable job
+// record or enforce the birth-admission clock. Only the registry can do that.
+func unverifiedJobBirth(proof prospect.Proof) *bool {
+	if proof.Version == prospect.Version2 {
+		verified := false
+		return &verified
+	}
+	return nil
 }

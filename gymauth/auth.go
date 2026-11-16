@@ -19,11 +19,13 @@ import (
 
 const (
 	Version1             uint32 = 1
+	Version2             uint32 = 2
 	MaxAuthorizationSize        = 4096
 
-	gymDomain       = "SLUG gym identity\x00v1\x00"
-	admissionDomain = "SLUG prospect admission\x00v1\x00"
-	policyDomain    = "SLUG prospect policy\x00v1\x00"
+	gymDomain          = "SLUG gym identity\x00v1\x00"
+	admissionDomain    = "SLUG prospect admission\x00v1\x00"
+	jobAdmissionDomain = "SLUG prospect admission\x00v2\x00"
+	policyDomain       = "SLUG prospect policy\x00v1\x00"
 )
 
 // Authorization is public, relayable evidence of permission to admit one proof.
@@ -126,6 +128,8 @@ func GymID(context prospect.Context, key string) (string, error) {
 // Admission bytes are "SLUG prospect admission\x00v1\x00" || policy_ID32 ||
 // gym_ID32 || pubkey33 || proof_version_LE32 || header80 || coinbase_length_LE32
 // || coinbase || branch_count_LE32 || each sibling_display32 in supplied order.
+// Version 2 uses the "SLUG prospect admission\x00v2\x00" domain and inserts
+// job_ID32 immediately after proof_version_LE32. Gym identity is unchanged.
 // Node-derived transient timestamp bounds are excluded from the signed bytes.
 func AdmissionDigest(context prospect.Context, proof prospect.Proof, key string) ([32]byte, error) {
 	var empty [32]byte
@@ -138,12 +142,25 @@ func AdmissionDigest(context prospect.Context, proof prospect.Proof, key string)
 	if err != nil || claimedGym != gymBytes {
 		return empty, errors.New("proof gym does not match public key identity")
 	}
-	// Reuse the set-14 semantic context validator. This call does not hash work.
-	if _, err := prospect.CommitmentScript(context, gym); err != nil {
-		return empty, err
-	}
-	if proof.Version != prospect.Version1 {
+	// Reuse semantic context/job validators without hashing work or asserting
+	// that a job was issued. Issuance and freshness are separate admission rules.
+	var job [32]byte
+	switch proof.Version {
+	case prospect.Version1:
+		if proof.JobID != "" {
+			return empty, errors.New("version-1 proof must not carry a job ID")
+		}
+		_, err = prospect.CommitmentScript(context, gym)
+	case prospect.Version2:
+		_, err = prospect.CommitmentScriptForJob(context, gym, proof.JobID)
+		if err == nil {
+			job, err = decodeHash(proof.JobID, false)
+		}
+	default:
 		return empty, errors.New("unsupported prospect proof version")
+	}
+	if err != nil {
+		return empty, err
 	}
 	if len(proof.Header) != 160 {
 		return empty, errors.New("proof header must contain exactly 80 bytes")
@@ -189,11 +206,18 @@ func AdmissionDigest(context prospect.Context, proof prospect.Proof, key string)
 	_, _ = policy.Write(target[:])
 	_, pubBytes, _ := publicKey(key)
 	digest := sha256.New()
-	_, _ = digest.Write([]byte(admissionDomain))
+	domain := admissionDomain
+	if proof.Version == prospect.Version2 {
+		domain = jobAdmissionDomain
+	}
+	_, _ = digest.Write([]byte(domain))
 	_, _ = digest.Write(policy.Sum(nil))
 	_, _ = digest.Write(gymBytes[:])
 	_, _ = digest.Write(pubBytes)
 	putUint32(digest, proof.Version)
+	if proof.Version == prospect.Version2 {
+		_, _ = digest.Write(job[:])
+	}
 	_, _ = digest.Write(header)
 	putUint32(digest, uint32(len(coinbase)))
 	_, _ = digest.Write(coinbase)
@@ -210,7 +234,7 @@ func AdmissionDigest(context prospect.Context, proof prospect.Proof, key string)
 // admission action. It does not replace production proof verification or a
 // trusted node/freshness check and cannot authorize any other gym action.
 func VerifyAuthorization(context prospect.Context, proof prospect.Proof, authorization Authorization) error {
-	if authorization.Version != Version1 {
+	if (authorization.Version != Version1 && authorization.Version != Version2) || authorization.Version != proof.Version {
 		return errors.New("unsupported authorization version")
 	}
 	key, _, err := publicKey(authorization.PublicKey)
@@ -243,7 +267,7 @@ func SignAdmission(context prospect.Context, proof prospect.Proof, key *btcec.Pr
 	if err != nil {
 		return Authorization{}, err
 	}
-	authorization := Authorization{Version: Version1, PublicKey: public,
+	authorization := Authorization{Version: proof.Version, PublicKey: public,
 		Signature: hex.EncodeToString(ecdsa.Sign(key, digest[:]).Serialize())}
 	if err := VerifyAuthorization(context, proof, authorization); err != nil {
 		return Authorization{}, err
