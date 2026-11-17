@@ -37,7 +37,7 @@ they do not count as completion of this product-release gate.
   and maximum watch measurements pass, including the complete final scanner
   race and process-kill suite. The packaged Mac pilot and per-set normal-PoW
   smoke also pass. Full remote wallet CI passed, and set 32 deployed successfully;
-  its 15-minute live observation is running. See `RESUMABLE_RECOVERY.md`.
+  its full 15-minute live observation passed. See `RESUMABLE_RECOVERY.md`.
 - Set 33 adds independently checked candidate fighter manifests, including
   names, physical traits, styles and portrait selections. The original DNA
   preview stays compatible. These are offline previews; official assignment,
@@ -51,6 +51,13 @@ they do not count as completion of this product-release gate.
   projections. It preserves original DNA, uses supplied birth/time/XP and
   does not authenticate those facts or establish roster eligibility. Trusted
   admission/history and current ownership remain required.
+- Sets 33–35 are deployed as one engineering batch of offline candidate tools;
+  each passed its own normal-PoW smoke. The shared live observation is running.
+  The Mac GUI remains the set32 fixture pilot and portrait review stays pending.
+- Set 36 binds the exact candidate static appearance descriptor into a separate
+  job version and typed payable-candidate builder. Production activation has
+  no entries. Durable authority issuance/admission and trusted historical reads
+  must still connect this binding to an accepted fighter.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace

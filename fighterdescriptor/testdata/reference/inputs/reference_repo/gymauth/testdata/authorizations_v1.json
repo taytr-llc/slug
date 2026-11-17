@@ -1,0 +1,123 @@
+[
+  {
+    "name": "public-test-key-1-coinbase-only",
+    "test_only_private_key": "0000000000000000000000000000000000000000000000000000000000000001",
+    "context": {
+      "version": 1,
+      "network": 1397511495,
+      "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+      "dna_version": 1,
+      "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "parent_hash": "1f08a4ac11d4c60ebecbb8dc85401fa2756576c3d1920c45cad5f7113b587ee0",
+      "parent_height": 61,
+      "expected_bits": 16842752,
+      "min_timestamp": 1794780000,
+      "max_timestamp": 1794794400
+    },
+    "proof": {
+      "version": 1,
+      "gym_id": "75b4142cec114931d596877cb3770d9e19a3b1eb161e0f733a869b14f26e3cbf",
+      "header": "04000000e07e583b11f7d5ca450c92d1c3766575a21f4085dcb8cbbe0ec6d411aca4081fdb0058cc6b4951cdd955f136e53fa1a24d689a82f46d9cbda4eb8188abee851c8047fa6a0000010100000000",
+      "coinbase": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff03013e00ffffffff0200ca9a3b00000000015100000000000000002a6a28534c55475052303181ac2135748b9aef59ce5e48b618450a5f253f4a04a5340963bfe7687fa929c700000000",
+      "merkle_branch": []
+    },
+    "authorization": {
+      "version": 1,
+      "public_key": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+      "signature": "3044022047206a34c4ae69a4fe162c6f6a33741ab17ac7b9f2450f3f1e4fa7ae8ec9fdf702203303706756b67f411b42f115cb817df2904b7e5ca4ff2b81cfbf651bc56d37d4"
+    },
+    "expected_gym_id": "75b4142cec114931d596877cb3770d9e19a3b1eb161e0f733a869b14f26e3cbf",
+    "expected_digest": "c42ce10cada29b3cdea7ba67bf4ce747b7a4db32ad464c425a8d6a2574809e6b",
+    "invalid_high_s_signature": "3045022047206a34c4ae69a4fe162c6f6a33741ab17ac7b9f2450f3f1e4fa7ae8ec9fdf7022100ccfc8f98a94980bee4bd0eea347e820c2a635e8a0a4974b9f012f9710ac9096d",
+    "commitment_script": "6a28534c55475052303181ac2135748b9aef59ce5e48b618450a5f253f4a04a5340963bfe7687fa929c7",
+    "expected_verified": {
+      "version": 1,
+      "verification": "supplied-context",
+      "network": 1397511495,
+      "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+      "prospect_id": "c9eb6c0d252f36628727aae44551b212be956ef56a01578d9e795307f5ca830f",
+      "policy_id": "2dd6301ce9989bc383f942f3d1520e8bc61ee2564761a7f754eb09677b24fb8c",
+      "gym_id": "75b4142cec114931d596877cb3770d9e19a3b1eb161e0f733a869b14f26e3cbf",
+      "work_hash": "604981408c72f1f4a14d5ec597c9e1a97b13945fe0946b2d84c647b97f2e5fe1",
+      "parent_hash": "1f08a4ac11d4c60ebecbb8dc85401fa2756576c3d1920c45cad5f7113b587ee0",
+      "parent_height": 61,
+      "dna": {
+        "dna_version": 1,
+        "seed": "604981408c72f1f4a14d5ec597c9e1a97b13945fe0946b2d84c647b97f2e5fe1",
+        "rarity": "club",
+        "talent_budget": 274,
+        "attributes": {
+          "power": 59,
+          "speed": 15,
+          "chin": 87,
+          "stamina": 37,
+          "skill": 76
+        },
+        "prime_weeks": 46,
+        "decline_weeks": 22
+      }
+    }
+  },
+  {
+    "name": "public-test-key-2-two-level",
+    "test_only_private_key": "0000000000000000000000000000000000000000000000000000000000000002",
+    "context": {
+      "version": 1,
+      "network": 1397511495,
+      "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+      "dna_version": 1,
+      "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "parent_hash": "1f08a4ac11d4c60ebecbb8dc85401fa2756576c3d1920c45cad5f7113b587ee0",
+      "parent_height": 61,
+      "expected_bits": 16842752,
+      "min_timestamp": 1794780000,
+      "max_timestamp": 1794794400
+    },
+    "proof": {
+      "version": 1,
+      "gym_id": "ba2d33f3c3482bdaa2a64dafa3f2ab389b9e6f1faa40cbe646977540d56b6b3d",
+      "header": "04000000e07e583b11f7d5ca450c92d1c3766575a21f4085dcb8cbbe0ec6d411aca4081f6b29bd7ceba508c70a40b29fdfd71ebd6b2c358d7796c2edaf832dfc8246f2498047fa6a0000010100000000",
+      "coinbase": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff03013e00ffffffff0200ca9a3b00000000015100000000000000002a6a28534c554750523031c8f5ba69ff42fec72a2a77fdc5d0c5b7426fc8ddcb4add5f11e92e7d197196fe00000000",
+      "merkle_branch": [
+        "4493a73f1d390536fe221ed29fe83161173cb9364b476c98489bb8057dad3e9a",
+        "0f2794f0fd4fabe84ddb5384d763ed60ce9bf00474e1168ea2cc0e8d5daf161e"
+      ]
+    },
+    "authorization": {
+      "version": 1,
+      "public_key": "02c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee5",
+      "signature": "3045022100dd6f8d866b8fb1270dae7f2cd0b9f2d5a90eae048b98efca1539e804219f160602204445e205842c84f159872ce730a1420f236d4ce877a5df54056e4c69ce21831d"
+    },
+    "expected_gym_id": "ba2d33f3c3482bdaa2a64dafa3f2ab389b9e6f1faa40cbe646977540d56b6b3d",
+    "expected_digest": "326294f2dd586f59117ff8ffb8315978ac2111d3c4ae6dcd90622b7945d0daea",
+    "invalid_high_s_signature": "3046022100dd6f8d866b8fb1270dae7f2cd0b9f2d5a90eae048b98efca1539e804219f1606022100bbba1dfa7bd37b0ea678d318cf5ebdef97418ffe37a2c0e7ba6412230214be24",
+    "commitment_script": "6a28534c554750523031c8f5ba69ff42fec72a2a77fdc5d0c5b7426fc8ddcb4add5f11e92e7d197196fe",
+    "expected_verified": {
+      "version": 1,
+      "verification": "supplied-context",
+      "network": 1397511495,
+      "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+      "prospect_id": "67a57dc4a008c085e0754593b9a86d414abea02e5fda006f4304b4165cfcf1b7",
+      "policy_id": "2dd6301ce9989bc383f942f3d1520e8bc61ee2564761a7f754eb09677b24fb8c",
+      "gym_id": "ba2d33f3c3482bdaa2a64dafa3f2ab389b9e6f1faa40cbe646977540d56b6b3d",
+      "work_hash": "ce8e9213bd31809665db954f519cc284906de811429dd10b3b161b1b2e6531d0",
+      "parent_hash": "1f08a4ac11d4c60ebecbb8dc85401fa2756576c3d1920c45cad5f7113b587ee0",
+      "parent_height": 61,
+      "dna": {
+        "dna_version": 1,
+        "seed": "ce8e9213bd31809665db954f519cc284906de811429dd10b3b161b1b2e6531d0",
+        "rarity": "professional",
+        "talent_budget": 348,
+        "attributes": {
+          "power": 48,
+          "speed": 76,
+          "chin": 88,
+          "stamina": 100,
+          "skill": 36
+        },
+        "prime_weeks": 51,
+        "decline_weeks": 37
+      }
+    }
+  }
+]

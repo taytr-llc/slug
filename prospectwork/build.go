@@ -58,11 +58,39 @@ func Build(job prospectjob.Job, template Template, payoutAddress string, extraNo
 	if err := prospectjob.Validate(job); err != nil {
 		return candidate, err
 	}
+	commitment, err := prospectjob.CommitmentScript(job)
+	if err != nil {
+		return candidate, err
+	}
+	return buildValidated(job.Context, job.GymID, job.ID, commitment, template, payoutAddress, extraNonce)
+}
+
+// BuildManifest constructs a candidate-only manifest-bound job without
+// changing the candidate/proof formats or authenticating issuer/birth facts.
+// Legacy Build continues to require its distinct version-1 Job type.
+func BuildManifest(job prospectjob.ManifestJob, template Template, payoutAddress string, extraNonce uint64) (Candidate, error) {
+	if err := productionOnly(); err != nil {
+		return Candidate{}, err
+	}
+	if err := prospectjob.ValidateManifest(job); err != nil {
+		return Candidate{}, err
+	}
+	commitment, err := prospectjob.ManifestCommitmentScript(job)
+	if err != nil {
+		return Candidate{}, err
+	}
+	return buildValidated(job.Context, job.GymID, job.ID, commitment, template, payoutAddress, extraNonce)
+}
+
+// Both public entries validate their distinct job type and produce the script
+// internally. This private assembler is not an arbitrary public JobID bypass.
+func buildValidated(initial prospect.Context, gymID, jobID string, commitment []byte, template Template, payoutAddress string, extraNonce uint64) (Candidate, error) {
+	var candidate Candidate
 	parsed, err := validateTemplate(template)
 	if err != nil {
 		return candidate, err
 	}
-	initial, current := job.Context, template.Context
+	current := template.Context
 	if initial.Version != current.Version || initial.Network != current.Network ||
 		!strings.EqualFold(initial.Genesis, current.Genesis) || initial.DNAVersion != current.DNAVersion ||
 		!strings.EqualFold(initial.ProspectTarget, current.ProspectTarget) || !strings.EqualFold(initial.ParentHash, current.ParentHash) ||
@@ -71,10 +99,6 @@ func Build(job prospectjob.Job, template Template, payoutAddress string, extraNo
 		return candidate, errors.New("job and template contexts do not match")
 	}
 	destination, payoutScript, err := payout(payoutAddress)
-	if err != nil {
-		return candidate, err
-	}
-	commitment, err := prospectjob.CommitmentScript(job)
 	if err != nil {
 		return candidate, err
 	}
@@ -127,8 +151,8 @@ func Build(job prospectjob.Job, template Template, payoutAddress string, extraNo
 		return candidate, errors.New("could not serialize candidate")
 	}
 	return Candidate{
-		Version: Version1, JobID: job.ID, BlockHex: hex.EncodeToString(fullBlock.Bytes()),
-		Proof: prospect.Proof{Version: prospect.Version2, GymID: job.GymID, JobID: job.ID, Header: hex.EncodeToString(header.Bytes()),
+		Version: Version1, JobID: jobID, BlockHex: hex.EncodeToString(fullBlock.Bytes()),
+		Proof: prospect.Proof{Version: prospect.Version2, GymID: gymID, JobID: jobID, Header: hex.EncodeToString(header.Bytes()),
 			Coinbase: hex.EncodeToString(stripped.Bytes()), MerkleBranch: branch},
 		PayoutAddress: destination.EncodeAddress(), CoinbaseValue: *template.Block.CoinbaseValue,
 		TransactionCount: uint32(len(transactions)), Weight: weight, SigOpCost: sigOps,

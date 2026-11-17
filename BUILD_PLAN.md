@@ -126,6 +126,15 @@ birth, completed-fight XP accounting, current ownership and ten-slot roster
 selection still need integration; supplied preview timestamps prove none of
 those facts. The visual gallery check remains pending at Mike's request.
 
+Set 36 adds the candidate static descriptor and separately typed manifest-bound
+Job v2 (`MANIFEST_JOBS.md`). The exact immutable descriptor and public authority
+namespace enter the job commitment before work; the typed builder produces an
+unmined payable candidate without changing old jobs or proof-v2 encoding. The
+production descriptor catalog is empty. The next admission slice must durably
+pin an explicit authority/descriptor, preserve issuance-based birth and attach
+immutable static binding through trusted receipt reads. Current service,
+worker/outbox and existing registry schemas remain unchanged in set 36.
+
 ### 3. The official pool
 The company-run pool that earns 1% (D35, D36). No turnkey pool exists
 for btcd plus Argon2id, so this is a real build: adapt a Miningcore
