@@ -1,0 +1,125 @@
+{
+  "status": "passed",
+  "no_go_runtime_source_or_outputs": true,
+  "new_normal_work_verifications": 0,
+  "source_sha256_before": {
+    "README.md": "da77453eb6ad3cd2d502adc05f6a4d624be6b52a3aa0e5c90f1d4d16e823b090",
+    "entry_v1.json": "f3926a520771605aa5e071526d59bbdcc06a0027b16429e0f02a1e26c7c8af23",
+    "input_hashes.json": "a3d2cd8f6d2f1dd9fa03b8d1253f7783028ff79a2d278df493722cc73098135b",
+    "inputs/America_Los_Angeles.tzif": "200d05754f6d83a371cf408d7085125797657b3b0bebeba1e508cffe86a3e5c8",
+    "inputs/condition/input_hashes.json": "1ab9a78f6246236c87fb9b0304fe5b786b9d5f880f50d18a33ef3b12725419a3",
+    "inputs/condition/inputs/BRAWLCHAIN_SPEC.md": "fe7dc0dc404c35886d6119576722e5b9556b150e1f4f98738562f387d928751d",
+    "inputs/condition/inputs/baseline/dna_v1.json": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+    "inputs/condition/inputs/baseline/reference_dna.py": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+    "inputs/condition/inputs/fight_sim.py": "37ff08917ed720e3d9c4f3b14508c57b08d830f9f4cb01833fa412dbca9b6422",
+    "inputs/condition/inputs/fighter-condition-contract.md": "8ee75162fcd631cae15b33804c787690e60bf4997fae6b7cd536bb771908e654",
+    "inputs/condition/inputs/lifecycle_rating_reference.py.txt": "aa97b6f197d78d0f6245e5c122b482c5e5b1d6e34a74db5224e5f535cbda8d64",
+    "inputs/condition/inputs/rating_study.py": "e561ea57a5dc674f82ce9b881c9de5b83c31d2caf21c209d538c03554384bc70",
+    "inputs/condition/reference_condition.py": "924152a89241e9fa6d60aa27ba19666d3a3f65fdf53bd3c0cf6f89c8db4e946c",
+    "inputs/contracts/set43-entry-contract-approval.json": "c6de84be51aad7e76e23a210a337ae6d74a5d75bbbc1043c1f5f694caa0297cc",
+    "inputs/contracts/set43-entry-contract-draft.md": "958d3fda0cb50cda3bad38f7e461a44537a6a3c20ef5cc2b0c2abb7d2fdafcae",
+    "inputs/contracts/set43-entry-contract-independent-review.json": "e6a75094657ae453f8b9a4602f28f28f64843e5b28f33344f3eb15e7f1c40b5c",
+    "inputs/contracts/set43-entry-contract-scope.json": "d6780d1b55d221a4f37f2b7611dd9ef28f3d26bfd2ab932d968a002626f80ba5",
+    "inputs/manifest/baseline/dna_v1.json": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+    "inputs/manifest/baseline/reference_dna.py": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+    "inputs/manifest/manifests_v1.json": "75eb01acb79f45b74a6445edf956c5e3f3b68024998ae56ab44a7ed07cf15f3d",
+    "inputs/manifest/reference_manifest.py": "9fb1a814047f2329066bb19596e910ac7c4c7aadfce4b8f994e02dab81e51b4f",
+    "inputs/manifest/tables_v1.json": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+    "inputs/portraits_v1.json": "03df75cbf923a6dfc8fcac78e98d704641c0edf65ce563cf307f20a52f250670",
+    "inputs/stable/inputs/public-candidate-records.json": "c5b30b106fd55935e0483b0a1ac28f3d67d8301076186e64de549bcddf055020",
+    "inputs/stable/reference_stable.py": "defd95f9419caa25c8c0e686307464cef97107cf8a892284a5c023641c84069d",
+    "inputs/stable/stable_v1.json": "29f6a1302c2e04ade612fe2775c085c65b8bf33587c010060b727833182d2057",
+    "reference_entry.py": "cd8a5127bb7b48305d0ef6997beb6b66f57670503c5d676dc0808a8db6cf06bf",
+    "verify_reference.py": "5ee3969059d6900b12369cf0881d3115cfa649f2812691354b6f3972b2f52e38"
+  },
+  "source_sha256_after": {
+    "README.md": "da77453eb6ad3cd2d502adc05f6a4d624be6b52a3aa0e5c90f1d4d16e823b090",
+    "entry_v1.json": "f3926a520771605aa5e071526d59bbdcc06a0027b16429e0f02a1e26c7c8af23",
+    "input_hashes.json": "a3d2cd8f6d2f1dd9fa03b8d1253f7783028ff79a2d278df493722cc73098135b",
+    "inputs/America_Los_Angeles.tzif": "200d05754f6d83a371cf408d7085125797657b3b0bebeba1e508cffe86a3e5c8",
+    "inputs/condition/input_hashes.json": "1ab9a78f6246236c87fb9b0304fe5b786b9d5f880f50d18a33ef3b12725419a3",
+    "inputs/condition/inputs/BRAWLCHAIN_SPEC.md": "fe7dc0dc404c35886d6119576722e5b9556b150e1f4f98738562f387d928751d",
+    "inputs/condition/inputs/baseline/dna_v1.json": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+    "inputs/condition/inputs/baseline/reference_dna.py": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+    "inputs/condition/inputs/fight_sim.py": "37ff08917ed720e3d9c4f3b14508c57b08d830f9f4cb01833fa412dbca9b6422",
+    "inputs/condition/inputs/fighter-condition-contract.md": "8ee75162fcd631cae15b33804c787690e60bf4997fae6b7cd536bb771908e654",
+    "inputs/condition/inputs/lifecycle_rating_reference.py.txt": "aa97b6f197d78d0f6245e5c122b482c5e5b1d6e34a74db5224e5f535cbda8d64",
+    "inputs/condition/inputs/rating_study.py": "e561ea57a5dc674f82ce9b881c9de5b83c31d2caf21c209d538c03554384bc70",
+    "inputs/condition/reference_condition.py": "924152a89241e9fa6d60aa27ba19666d3a3f65fdf53bd3c0cf6f89c8db4e946c",
+    "inputs/contracts/set43-entry-contract-approval.json": "c6de84be51aad7e76e23a210a337ae6d74a5d75bbbc1043c1f5f694caa0297cc",
+    "inputs/contracts/set43-entry-contract-draft.md": "958d3fda0cb50cda3bad38f7e461a44537a6a3c20ef5cc2b0c2abb7d2fdafcae",
+    "inputs/contracts/set43-entry-contract-independent-review.json": "e6a75094657ae453f8b9a4602f28f28f64843e5b28f33344f3eb15e7f1c40b5c",
+    "inputs/contracts/set43-entry-contract-scope.json": "d6780d1b55d221a4f37f2b7611dd9ef28f3d26bfd2ab932d968a002626f80ba5",
+    "inputs/manifest/baseline/dna_v1.json": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+    "inputs/manifest/baseline/reference_dna.py": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+    "inputs/manifest/manifests_v1.json": "75eb01acb79f45b74a6445edf956c5e3f3b68024998ae56ab44a7ed07cf15f3d",
+    "inputs/manifest/reference_manifest.py": "9fb1a814047f2329066bb19596e910ac7c4c7aadfce4b8f994e02dab81e51b4f",
+    "inputs/manifest/tables_v1.json": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+    "inputs/portraits_v1.json": "03df75cbf923a6dfc8fcac78e98d704641c0edf65ce563cf307f20a52f250670",
+    "inputs/stable/inputs/public-candidate-records.json": "c5b30b106fd55935e0483b0a1ac28f3d67d8301076186e64de549bcddf055020",
+    "inputs/stable/reference_stable.py": "defd95f9419caa25c8c0e686307464cef97107cf8a892284a5c023641c84069d",
+    "inputs/stable/stable_v1.json": "29f6a1302c2e04ade612fe2775c085c65b8bf33587c010060b727833182d2057",
+    "reference_entry.py": "cd8a5127bb7b48305d0ef6997beb6b66f57670503c5d676dc0808a8db6cf06bf",
+    "verify_reference.py": "5ee3969059d6900b12369cf0881d3115cfa649f2812691354b6f3972b2f52e38"
+  },
+  "source_changes": [],
+  "commands": [
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "-B",
+        "/Users/taytrrip/slug/set43-entry-reference/reference_entry.py",
+        "--check"
+      ],
+      "TZ": "UTC",
+      "interpreter": "/Applications/Xcode.app/Contents/Developer/usr/bin/python3\n3.9.6 (default, Oct 19 2026, 19:18:13) \n[Clang 21.0.0 (clang-2100.4.1.1)]",
+      "exit_code": 0,
+      "seconds": 0.992,
+      "stdout": "{\"bytes\": 11586650, \"check\": true, \"codec_cases\": 902, \"corpus_sha256\": \"f3926a520771605aa5e071526d59bbdcc06a0027b16429e0f02a1e26c7c8af23\", \"dto_cases\": 48, \"events\": 18, \"pins\": 2, \"protocol_cases\": 74, \"retirement_cases\": 18, \"saturdays\": 3861, \"scenarios\": 54, \"shapes\": [{\"check\": 11809, \"check_member_max\": 2081, \"depth\": 9, \"fixture\": \"zero256\", \"full_response\": 13772, \"member_max\": 1303, \"operation\": 8270, \"receipt\": 7417, \"source_kind\": \"synthetic_structural_state_only_no_source_proofs\"}, {\"check\": 11809, \"check_member_max\": 2081, \"depth\": 9, \"fixture\": \"incrementing256\", \"full_response\": 13772, \"member_max\": 1303, \"operation\": 8270, \"receipt\": 7417, \"source_kind\": \"synthetic_structural_state_only_no_source_proofs\"}], \"state_steps\": 230, \"status\": \"passed\"}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "-B",
+        "/Users/taytrrip/slug/set43-entry-reference/reference_entry.py",
+        "--check"
+      ],
+      "TZ": "Pacific/Kiritimati",
+      "interpreter": "/Applications/Xcode.app/Contents/Developer/usr/bin/python3\n3.9.6 (default, Oct 19 2026, 19:18:13) \n[Clang 21.0.0 (clang-2100.4.1.1)]",
+      "exit_code": 0,
+      "seconds": 0.983,
+      "stdout": "{\"bytes\": 11586650, \"check\": true, \"codec_cases\": 902, \"corpus_sha256\": \"f3926a520771605aa5e071526d59bbdcc06a0027b16429e0f02a1e26c7c8af23\", \"dto_cases\": 48, \"events\": 18, \"pins\": 2, \"protocol_cases\": 74, \"retirement_cases\": 18, \"saturdays\": 3861, \"scenarios\": 54, \"shapes\": [{\"check\": 11809, \"check_member_max\": 2081, \"depth\": 9, \"fixture\": \"zero256\", \"full_response\": 13772, \"member_max\": 1303, \"operation\": 8270, \"receipt\": 7417, \"source_kind\": \"synthetic_structural_state_only_no_source_proofs\"}, {\"check\": 11809, \"check_member_max\": 2081, \"depth\": 9, \"fixture\": \"incrementing256\", \"full_response\": 13772, \"member_max\": 1303, \"operation\": 8270, \"receipt\": 7417, \"source_kind\": \"synthetic_structural_state_only_no_source_proofs\"}], \"state_steps\": 230, \"status\": \"passed\"}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/python3",
+        "-B",
+        "/Users/taytrrip/slug/set43-entry-reference/reference_entry.py",
+        "--check"
+      ],
+      "TZ": "UTC",
+      "interpreter": "/opt/homebrew/opt/python@3.14/bin/python3.14\n3.14.3 (main, Feb  3 2026, 15:32:20) [Clang 17.0.0 (clang-1700.6.3.2)]",
+      "exit_code": 0,
+      "seconds": 0.636,
+      "stdout": "{\"bytes\": 11586650, \"check\": true, \"codec_cases\": 902, \"corpus_sha256\": \"f3926a520771605aa5e071526d59bbdcc06a0027b16429e0f02a1e26c7c8af23\", \"dto_cases\": 48, \"events\": 18, \"pins\": 2, \"protocol_cases\": 74, \"retirement_cases\": 18, \"saturdays\": 3861, \"scenarios\": 54, \"shapes\": [{\"check\": 11809, \"check_member_max\": 2081, \"depth\": 9, \"fixture\": \"zero256\", \"full_response\": 13772, \"member_max\": 1303, \"operation\": 8270, \"receipt\": 7417, \"source_kind\": \"synthetic_structural_state_only_no_source_proofs\"}, {\"check\": 11809, \"check_member_max\": 2081, \"depth\": 9, \"fixture\": \"incrementing256\", \"full_response\": 13772, \"member_max\": 1303, \"operation\": 8270, \"receipt\": 7417, \"source_kind\": \"synthetic_structural_state_only_no_source_proofs\"}], \"state_steps\": 230, \"status\": \"passed\"}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/python3",
+        "-B",
+        "/Users/taytrrip/slug/set43-entry-reference/reference_entry.py",
+        "--check"
+      ],
+      "TZ": "Pacific/Kiritimati",
+      "interpreter": "/opt/homebrew/opt/python@3.14/bin/python3.14\n3.14.3 (main, Feb  3 2026, 15:32:20) [Clang 17.0.0 (clang-1700.6.3.2)]",
+      "exit_code": 0,
+      "seconds": 0.652,
+      "stdout": "{\"bytes\": 11586650, \"check\": true, \"codec_cases\": 902, \"corpus_sha256\": \"f3926a520771605aa5e071526d59bbdcc06a0027b16429e0f02a1e26c7c8af23\", \"dto_cases\": 48, \"events\": 18, \"pins\": 2, \"protocol_cases\": 74, \"retirement_cases\": 18, \"saturdays\": 3861, \"scenarios\": 54, \"shapes\": [{\"check\": 11809, \"check_member_max\": 2081, \"depth\": 9, \"fixture\": \"zero256\", \"full_response\": 13772, \"member_max\": 1303, \"operation\": 8270, \"receipt\": 7417, \"source_kind\": \"synthetic_structural_state_only_no_source_proofs\"}, {\"check\": 11809, \"check_member_max\": 2081, \"depth\": 9, \"fixture\": \"incrementing256\", \"full_response\": 13772, \"member_max\": 1303, \"operation\": 8270, \"receipt\": 7417, \"source_kind\": \"synthetic_structural_state_only_no_source_proofs\"}], \"state_steps\": 230, \"status\": \"passed\"}\n",
+      "stderr": ""
+    }
+  ],
+  "log_sha256": "87cc357290b984b7e682d18eefbd6727c16aec0524427eeb6130282a1900bb6f"
+}
