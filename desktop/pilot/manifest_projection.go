@@ -476,5 +476,5 @@ func (c *ManifestController) ReleaseManifestReceipt(ctx context.Context, viewID,
 }
 
 func (c *ManifestController) cacheFits(cache map[uint64]*manifestCached, slot *ManifestReceipt) bool {
-	return manifestCacheFits(cache, slot) && (c.stable == nil || stableCacheFits(cache, slot, c.previewBytes))
+	return manifestCacheFits(cache, slot) && (c.stable == nil || stableCacheFits(cache, slot, c.previewBytes+c.entryBytes))
 }

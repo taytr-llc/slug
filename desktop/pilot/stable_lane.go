@@ -9,11 +9,14 @@ import (
 	"errors"
 	"time"
 
+	"github.com/taytr-llc/slug/gymentry"
 	"github.com/taytr-llc/slug/gymstable"
 	"github.com/taytr-llc/slug/registry"
 )
 
 type stableTask struct {
+	entry        *EntryJob
+	entryRequest gymentry.Request
 	preview      *PreviewJob
 	followLatest bool
 	result       StableJob
@@ -29,6 +32,10 @@ type stableTask struct {
 func (s *StableController) expireQueuedLocked() {
 	if s.queued != nil && s.queued.ctx.Err() != nil {
 		s.queued.cancel()
+		if s.queued.entry != nil {
+			s.cancelQueuedEntryLocked()
+			return
+		}
 		if s.queued.preview != nil {
 			s.cancelQueuedPreviewLocked()
 			return
@@ -48,6 +55,10 @@ func (s *StableController) cancelTasksLocked() {
 	}
 	if s.queued != nil {
 		s.queued.cancel()
+		if s.queued.entry != nil {
+			s.cancelQueuedEntryLocked()
+			return
+		}
 		if s.queued.preview != nil {
 			s.cancelQueuedPreviewLocked()
 			return
@@ -177,13 +188,18 @@ func (s *StableController) cycle(ctx context.Context) error {
 		s.stableMu.Unlock()
 		return nil
 	}
-	if task.preview != nil {
+	if task.entry != nil {
+		task.entry.State = "running"
+	} else if task.preview != nil {
 		task.preview.State = "running"
 	} else {
 		task.result.State = "running"
 	}
 	s.active = task
 	s.stableMu.Unlock()
+	if task.entry != nil {
+		return s.runEntryTask(ctx, task)
+	}
 	if task.preview != nil {
 		return s.runPreviewTask(ctx, task)
 	}
@@ -381,7 +397,7 @@ func (s *StableController) publishStableItems(ctx context.Context, items []gymst
 				delete(next, low)
 			}
 		}
-		if !manifestCacheFits(next, s.receiptSlot) || !stableCacheFits(next, s.receiptSlot, s.previewBytes) {
+		if !manifestCacheFits(next, s.receiptSlot) || !stableCacheFits(next, s.receiptSlot, s.previewBytes+s.entryBytes) {
 			return gymstable.ErrCapacity
 		}
 		s.cache = next
@@ -431,7 +447,7 @@ func (s *StableController) StableJob(ctx context.Context, view, id string) (Stab
 		defer s.stableMu.Unlock()
 		s.expireQueuedLocked()
 		for _, t := range []*stableTask{s.active, s.queued} {
-			if t != nil && t.preview == nil && t.result.JobID == id {
+			if t != nil && t.family() == "stable" && t.result.JobID == id {
 				out = cloneStableJob(t.result)
 				return nil
 			}
@@ -459,12 +475,12 @@ func (s *StableController) CancelStableJob(ctx context.Context, view, id string)
 	err := s.shortView(ctx, view, func() error {
 		s.stableMu.Lock()
 		defer s.stableMu.Unlock()
-		if s.active != nil && s.active.preview == nil && s.active.result.JobID == id {
+		if s.active != nil && s.active.family() == "stable" && s.active.result.JobID == id {
 			s.active.cancel()
 			out = cloneStableJob(s.active.result)
 			return nil
 		}
-		if s.queued != nil && s.queued.preview == nil && s.queued.result.JobID == id {
+		if s.queued != nil && s.queued.family() == "stable" && s.queued.result.JobID == id {
 			s.queued.cancel()
 			s.queued.result.State = "cancelled"
 			s.queued.result.Error = "stable_cancelled"
@@ -596,4 +612,14 @@ func (s *StableController) LoadManifestProspects(context.Context) error {
 func (s *StableController) RefreshManifestProspects(ctx context.Context) error {
 	_, err := s.BeginStableRecent(ctx, s.view.ViewID)
 	return err
+}
+
+func (t *stableTask) family() string {
+	if t.entry != nil {
+		return "entry"
+	}
+	if t.preview != nil {
+		return "preview"
+	}
+	return "stable"
 }

@@ -36,6 +36,10 @@ type StableBridge struct {
 	previewReady           bool
 	previewJobs            map[string]previewJobExpectation
 	previewSnapshotJobs    map[string]bool
+	entriesEnabled         bool
+	// Entry correlation is also cleared by the reader's failure path. All
+	// access to this pointer and its contents is protected by mu.
+	entry *entryCorrelation
 	// presentation is also cleared by the reader's failure path, under mu.
 	presentation *previewPresentation
 	// At most one active, one queued and one retained completed explicit job.
@@ -51,11 +55,13 @@ type stableExpected struct {
 	id      uint64
 	stable  bool
 	preview bool
+	entry   bool
 }
 type stableFrame struct {
 	manifest *pilot.ManifestResponse
 	stable   *pilot.StableResponse
 	preview  *pilot.PreviewResponse
+	entry    *pilot.EntryResponse
 }
 
 func LaunchStable(helper, dataDir, node string) (*StableBridge, error) {
@@ -94,6 +100,7 @@ func (b *StableBridge) fail(err error) {
 		b.mu.Lock()
 		b.failure = err
 		b.presentation = nil
+		b.entry = nil
 		b.mu.Unlock()
 		close(b.failed)
 		_ = b.input.Close()
@@ -112,7 +119,14 @@ func (b *StableBridge) read(r io.Reader) {
 			return
 		}
 		var frame stableFrame
-		if expected.preview {
+		if expected.entry {
+			value, err := pilot.ParseEntryResponse(scanner.Bytes())
+			if err != nil || value.ID != expected.id {
+				b.fail(ErrUnavailable)
+				return
+			}
+			frame.entry = &value
+		} else if expected.preview {
 			value, err := pilot.ParsePreviewResponse(scanner.Bytes())
 			if err != nil || value.ID != expected.id {
 				b.fail(ErrUnavailable)
@@ -179,8 +193,11 @@ func (b *StableBridge) exchange(ctx context.Context, id uint64, stable bool, raw
 	return b.exchangeFamily(ctx, id, stable, false, raw)
 }
 func (b *StableBridge) exchangeFamily(ctx context.Context, id uint64, stable, preview bool, raw []byte) (stableFrame, error) {
+	return b.exchangeEntryFamily(ctx, id, stable, preview, false, raw)
+}
+func (b *StableBridge) exchangeEntryFamily(ctx context.Context, id uint64, stable, preview, entry bool, raw []byte) (stableFrame, error) {
 	b.mu.Lock()
-	b.expected = &stableExpected{id: id, stable: stable, preview: preview}
+	b.expected = &stableExpected{id: id, stable: stable, preview: preview, entry: entry}
 	b.mu.Unlock()
 	raw = append(raw, '\n')
 	if d, ok := b.input.(interface{ SetWriteDeadline(time.Time) error }); ok {
@@ -401,6 +418,7 @@ func (b *StableBridge) clearStableView() {
 	b.jobs = nil
 	b.snapshotJobs = nil
 	b.clearPreviewView()
+	b.clearEntryView()
 }
 func (b *StableBridge) rememberStableSnapshot(s pilot.StableSnapshot) {
 	if s.View == nil {

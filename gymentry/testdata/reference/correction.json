@@ -1,0 +1,41 @@
+{
+  "status": "passed_exact_two_canonical_strings_only",
+  "root_defect_review_sha256": "78fe49506c6f1e7d2600f985297e6693d1e9ccad197b3cddeb8669b82a1b17d4",
+  "original_freeze_sha256": "a157ca9ad54b0371397d128f471d3c827a5e3c157ec2e4c754a2c5924da7cbe7",
+  "original_corpus_sha256": "f3926a520771605aa5e071526d59bbdcc06a0027b16429e0f02a1e26c7c8af23",
+  "corrected_corpus_sha256": "d8f226964429e8068bbe8300c73b6061f9a6dfd4e737a06ddde40c5eaa992bee",
+  "original_generator_sha256": "cd8a5127bb7b48305d0ef6997beb6b66f57670503c5d676dc0808a8db6cf06bf",
+  "corrected_generator_sha256": "d82254ab58e7817620486dd0f65ff58b87c542fcd634dad02b6f891701ff166e",
+  "input_index_sha256": "a3d2cd8f6d2f1dd9fa03b8d1253f7783028ff79a2d278df493722cc73098135b",
+  "corpus_delta": [
+    {
+      "path": [
+        "codec_cases",
+        249,
+        "canonical"
+      ],
+      "fixture": "zero256",
+      "decoded_values_identical": true,
+      "equals_original_frozen_canonical_positive": true,
+      "old_canonical_sha256": "0e2a36d5a980ecd318e025b146c810fbafc2b4d459c72914c801867d910ac348",
+      "new_canonical_sha256": "f262e019079c37f8179295c4efc2e90c2a067136d677bd6df7aa5347525fbe55"
+    },
+    {
+      "path": [
+        "codec_cases",
+        690,
+        "canonical"
+      ],
+      "fixture": "incrementing256",
+      "decoded_values_identical": true,
+      "equals_original_frozen_canonical_positive": true,
+      "old_canonical_sha256": "696b82445d537fafab149646ccb01a991115dca913816b48b2227271aafbce53",
+      "new_canonical_sha256": "ff73730658e09e53029bac6c251f0f4224a82be0954fad6ddcaa60549ed03036"
+    }
+  ],
+  "all_other_corpus_bytes_and_values_unchanged": true,
+  "original_workspace_and_repository_31_files_unchanged": true,
+  "basis": "Frozen contract fixed EntryJob field order and original independently frozen canonical EntryResponse positive DTOs. No Go output supplies expected values.",
+  "role_transition": "Author separately read current DTO/runtime source for the authorized frontend role after original oracle freeze. This correction uses the frozen contract/FIELDS and original positive cases only; no new Go source/output was consulted to derive it.",
+  "generator_diff": "--- original/reference_entry.py\n+++ corrected/reference_entry.py\n@@ -388,7 +388,7 @@\n         for k in ('pending_operation_id','active_job_id','queued_job_id','last_job_id'):hexid(s[k],True)\n         req(not s['active_job_id'] or s['active_job_id']!=s['queued_job_id'])\n     if r['job'] is not None:\n-        j=r['job'];exact(j,FIELDS['EntryJob']);req(j['version']==1 and j['view']==r['view'] and j['store_id']==r['store_id']);hexid(j['job_id']);hexid(j['operation_id'],True);req(j['kind'] in ('prepare','apply','check') and j['state'] in ('queued','running','complete','failed','cancelled'));req(j['event_id']==event(p,j['saturday'])['event_id']);req(j['error'] in ('',)+ERRORS)\n+        j=r['job'];exact(j,FIELDS['EntryJob']);req(j['version']==1 and j['view']==r['view'] and j['store_id']==r['store_id']);j={k:j[k] for k in FIELDS['EntryJob']};j['view']=clone(r['view']);r['job']=j;hexid(j['job_id']);hexid(j['operation_id'],True);req(j['kind'] in ('prepare','apply','check') and j['state'] in ('queued','running','complete','failed','cancelled'));req(j['event_id']==event(p,j['saturday'])['event_id']);req(j['error'] in ('',)+ERRORS)\n         field,kind={'prepare':('intent','Intent'),'apply':('mutation','MutationResult'),'check':('check','CheckResult')}[j['kind']]\n         for k in ('intent','mutation','check'):req((j[k] is not None)==(j['state']=='complete' and k==field))\n         if j['state']=='complete':\n"
+}

@@ -1,0 +1,163 @@
+{
+  "status": "frozen_corrected_reference_independently_audited",
+  "frozen_at": "2026-11-17T18:05:18.256661+00:00",
+  "contract_sha256": "958d3fda0cb50cda3bad38f7e461a44537a6a3c20ef5cc2b0c2abb7d2fdafcae",
+  "approval_sha256": "c6de84be51aad7e76e23a210a337ae6d74a5d75bbbc1043c1f5f694caa0297cc",
+  "process_amendment_sha256": "f4f0b7d1afaf11c3ddd26a52a75e594ce3768b2245fc013dd1ae2375c479c38a",
+  "root_correction_review_sha256": "78fe49506c6f1e7d2600f985297e6693d1e9ccad197b3cddeb8669b82a1b17d4",
+  "predecessor_freeze_sha256": "a157ca9ad54b0371397d128f471d3c827a5e3c157ec2e4c754a2c5924da7cbe7",
+  "predecessor_corpus_sha256": "f3926a520771605aa5e071526d59bbdcc06a0027b16429e0f02a1e26c7c8af23",
+  "correction_sha256": "0bd53f1f088ddf5ddddefb30ac3374adb0869dcb4e5ae27613708a77d2542178",
+  "independent_review": {
+    "path": "/Users/taytrrip/slug/set43-entry-reference-correction-independent-review.json",
+    "sha256": "1c2cfdd765cb52a7f8729e53ed634ada172e8895519bd85b5dbcf842191208ca",
+    "status": "passed",
+    "findings": []
+  },
+  "files": {
+    "README.md": {
+      "sha256": "48594bc03e2681ad0223c5c47a9a2809f1f0314c2390612d3499af4f1c2e247e",
+      "bytes": 9454
+    },
+    "correction.json": {
+      "sha256": "0bd53f1f088ddf5ddddefb30ac3374adb0869dcb4e5ae27613708a77d2542178",
+      "bytes": 3608
+    },
+    "entry_v1.json": {
+      "sha256": "d8f226964429e8068bbe8300c73b6061f9a6dfd4e737a06ddde40c5eaa992bee",
+      "bytes": 11586650
+    },
+    "input_hashes.json": {
+      "sha256": "a3d2cd8f6d2f1dd9fa03b8d1253f7783028ff79a2d278df493722cc73098135b",
+      "bytes": 5737
+    },
+    "inputs/America_Los_Angeles.tzif": {
+      "sha256": "200d05754f6d83a371cf408d7085125797657b3b0bebeba1e508cffe86a3e5c8",
+      "bytes": 1294
+    },
+    "inputs/condition/input_hashes.json": {
+      "sha256": "1ab9a78f6246236c87fb9b0304fe5b786b9d5f880f50d18a33ef3b12725419a3",
+      "bytes": 1384
+    },
+    "inputs/condition/inputs/BRAWLCHAIN_SPEC.md": {
+      "sha256": "fe7dc0dc404c35886d6119576722e5b9556b150e1f4f98738562f387d928751d",
+      "bytes": 35451
+    },
+    "inputs/condition/inputs/baseline/dna_v1.json": {
+      "sha256": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+      "bytes": 2658
+    },
+    "inputs/condition/inputs/baseline/reference_dna.py": {
+      "sha256": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+      "bytes": 8283
+    },
+    "inputs/condition/inputs/fight_sim.py": {
+      "sha256": "37ff08917ed720e3d9c4f3b14508c57b08d830f9f4cb01833fa412dbca9b6422",
+      "bytes": 50586
+    },
+    "inputs/condition/inputs/fighter-condition-contract.md": {
+      "sha256": "8ee75162fcd631cae15b33804c787690e60bf4997fae6b7cd536bb771908e654",
+      "bytes": 10367
+    },
+    "inputs/condition/inputs/lifecycle_rating_reference.py.txt": {
+      "sha256": "aa97b6f197d78d0f6245e5c122b482c5e5b1d6e34a74db5224e5f535cbda8d64",
+      "bytes": 1838
+    },
+    "inputs/condition/inputs/rating_study.py": {
+      "sha256": "e561ea57a5dc674f82ce9b881c9de5b83c31d2caf21c209d538c03554384bc70",
+      "bytes": 7594
+    },
+    "inputs/condition/reference_condition.py": {
+      "sha256": "924152a89241e9fa6d60aa27ba19666d3a3f65fdf53bd3c0cf6f89c8db4e946c",
+      "bytes": 18218
+    },
+    "inputs/contracts/set43-entry-contract-approval.json": {
+      "sha256": "c6de84be51aad7e76e23a210a337ae6d74a5d75bbbc1043c1f5f694caa0297cc",
+      "bytes": 2304
+    },
+    "inputs/contracts/set43-entry-contract-draft.md": {
+      "sha256": "958d3fda0cb50cda3bad38f7e461a44537a6a3c20ef5cc2b0c2abb7d2fdafcae",
+      "bytes": 66414
+    },
+    "inputs/contracts/set43-entry-contract-independent-review.json": {
+      "sha256": "e6a75094657ae453f8b9a4602f28f28f64843e5b28f33344f3eb15e7f1c40b5c",
+      "bytes": 4677
+    },
+    "inputs/contracts/set43-entry-contract-scope.json": {
+      "sha256": "d6780d1b55d221a4f37f2b7611dd9ef28f3d26bfd2ab932d968a002626f80ba5",
+      "bytes": 11094
+    },
+    "inputs/manifest/baseline/dna_v1.json": {
+      "sha256": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+      "bytes": 2658
+    },
+    "inputs/manifest/baseline/reference_dna.py": {
+      "sha256": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+      "bytes": 8283
+    },
+    "inputs/manifest/manifests_v1.json": {
+      "sha256": "75eb01acb79f45b74a6445edf956c5e3f3b68024998ae56ab44a7ed07cf15f3d",
+      "bytes": 289470
+    },
+    "inputs/manifest/reference_manifest.py": {
+      "sha256": "9fb1a814047f2329066bb19596e910ac7c4c7aadfce4b8f994e02dab81e51b4f",
+      "bytes": 24912
+    },
+    "inputs/manifest/tables_v1.json": {
+      "sha256": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+      "bytes": 2578
+    },
+    "inputs/portraits_v1.json": {
+      "sha256": "03df75cbf923a6dfc8fcac78e98d704641c0edf65ce563cf307f20a52f250670",
+      "bytes": 302628
+    },
+    "inputs/stable/inputs/public-candidate-records.json": {
+      "sha256": "c5b30b106fd55935e0483b0a1ac28f3d67d8301076186e64de549bcddf055020",
+      "bytes": 34882
+    },
+    "inputs/stable/reference_stable.py": {
+      "sha256": "defd95f9419caa25c8c0e686307464cef97107cf8a892284a5c023641c84069d",
+      "bytes": 7126
+    },
+    "inputs/stable/stable_v1.json": {
+      "sha256": "29f6a1302c2e04ade612fe2775c085c65b8bf33587c010060b727833182d2057",
+      "bytes": 127516
+    },
+    "predecessor-freeze.json": {
+      "sha256": "a157ca9ad54b0371397d128f471d3c827a5e3c157ec2e4c754a2c5924da7cbe7",
+      "bytes": 6522
+    },
+    "reference_entry.py": {
+      "sha256": "d82254ab58e7817620486dd0f65ff58b87c542fcd634dad02b6f891701ff166e",
+      "bytes": 67410
+    },
+    "verification.json": {
+      "sha256": "4eb8bb03c38c47d9209a8b92863fe9f3d6e6b8878f745c322544c79adff09b49",
+      "bytes": 12212
+    },
+    "verification.log": {
+      "sha256": "d301a9d1e308dc33e1367b63fe32e1bfcfeed721cd3ee374196f0c7a8e54cff5",
+      "bytes": 4255
+    },
+    "verify_reference.py": {
+      "sha256": "7682f1f8b730b9396ce7cfa4ecbd5debbd0721204b0fef762b7af669d4a4caf3",
+      "bytes": 1987
+    }
+  },
+  "file_count_excluding_this_manifest": 32,
+  "original_workspace_and_repo_31_files_unchanged": true,
+  "expected_values_derived_from_go_source_or_output": false,
+  "role_provenance": "Frontend implementation role began after original independent freeze and included runtime DTO reads. This two-string correction used only frozen contract/FIELDS and original canonical positive DTOs; no Go output supplies expected values.",
+  "reference_counts": {
+    "supported_saturdays": 3861,
+    "pins": 2,
+    "event_entry_preimages": 18,
+    "dtos_and_disk_cases": 48,
+    "codec_cases": 902,
+    "protocol_cases": 74,
+    "scenarios": 54,
+    "state_steps": 230,
+    "retirement_edges": 18
+  },
+  "runtime_consumption": "Requires root explicit approval of corrected pin and copy strategy."
+}

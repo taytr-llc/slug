@@ -17,12 +17,13 @@ import (
 // existing genuine-work helper flow. It never edits receipt/class/birth inputs.
 // No native acceptance assertion substitutes for independent engine calibration.
 type previewAcceptance struct {
-	t        *testing.T
-	ctx      context.Context
-	bridge   *StableBridge
-	pairs    map[string][2]gymstable.Item
-	latest   map[string]pilot.PreviewJob
-	evidence []map[string]any
+	t            *testing.T
+	ctx          context.Context
+	bridge       *StableBridge
+	pairs        map[string][2]gymstable.Item
+	latest       map[string]pilot.PreviewJob
+	evidence     []map[string]any
+	restartCheck func(*StableBridge, pilot.StableSnapshot) any
 }
 
 func newPreviewAcceptance(t *testing.T, ctx context.Context, b *StableBridge) *previewAcceptance {
@@ -235,7 +236,11 @@ func (p *previewAcceptance) emptyReopen(fixture, view string) {
 }
 func (p *previewAcceptance) checkProcessRestart(helper, data, node string) map[string]any {
 	p.t.Helper()
-	b, err := LaunchStable(helper, data, node)
+	launch := LaunchStable
+	if p.bridge.entriesEnabled {
+		launch = LaunchEntries
+	}
+	b, err := launch(helper, data, node)
 	if err != nil {
 		p.t.Fatal("restart preview helper", err)
 	}
@@ -279,6 +284,10 @@ func (p *previewAcceptance) checkProcessRestart(helper, data, node string) map[s
 		p.t.Fatal("restart changed retained roster identity")
 	}
 	restarted.emptyReopen("zero256", stable.View.ViewID)
+	var entryRestart any
+	if p.restartCheck != nil {
+		entryRestart = p.restartCheck(b, stable)
+	}
 	inventory.capture(p.t, "zero256", "preview-restart", manifest.Account.ID, stable.View.AuthorityOrigin, false)
 	if err = b.Close(); err != nil {
 		p.t.Fatal("restarted helper Close", err)
@@ -288,5 +297,5 @@ func (p *previewAcceptance) checkProcessRestart(helper, data, node string) map[s
 	if b.cmd.ProcessState == nil || !b.cmd.ProcessState.Exited() || b.cmd.ProcessState.ExitCode() != 0 {
 		p.t.Fatal("restarted helper exit")
 	}
-	return map[string]any{"status": "passed", "helper_pid": b.cmd.Process.Pid, "helper_exit": b.cmd.ProcessState.ExitCode(), "cleanup": inventory.evidence(), "preview_cache_absent": true, "retained_stable": stable}
+	return map[string]any{"status": "passed", "helper_pid": b.cmd.Process.Pid, "helper_exit": b.cmd.ProcessState.ExitCode(), "cleanup": inventory.evidence(), "preview_cache_absent": true, "retained_stable": stable, "entry_restart": entryRestart}
 }

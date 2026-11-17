@@ -39,6 +39,21 @@
       <p id="mutation-state" class="note" role="status"></p>
       <div class="actions"><button id="reconcile" type="button" disabled>Check saved change</button><button id="apply-saved" type="button" disabled>Apply saved choice</button><button id="abandon" type="button" disabled>Discard saved choice</button></div>
     </section>
+    <section class="panel saturday-entry" aria-labelledby="entry-heading">
+      <div class="section-top"><h2 id="entry-heading">Saturday entry</h2><span id="entry-state">Sign in to view entries</span></div>
+      <p class="note">Save up to five rostered candidates, one per weight class. This candidate build does not lock an event or book a fight. Entry is free.</p>
+      <div class="entry-date-row"><label for="entry-date">Saturday</label><input id="entry-date" type="date" min="2026-01-01" max="2099-12-31" disabled><button id="entry-upcoming" type="button" disabled>Upcoming Saturday</button><button id="entry-status" type="button" disabled>Refresh entry status</button></div>
+      <p id="entry-cutoff" class="note"></p><p id="entry-saved" class="note"></p><p id="entry-warning" class="note" role="status"></p>
+      <h3>Draft selection <span id="entry-count">0 / 5</span></h3>
+      <p class="note">Use “Add to Saturday draft” on a rostered candidate card. The draft stays separate from your saved entry.</p>
+      <ol id="entry-draft" class="entry-draft"></ol>
+      <div class="actions"><button id="entry-save" type="button" disabled>Save entry</button><button id="entry-withdraw" type="button" disabled>Withdraw saved entry</button><button id="entry-check" type="button" disabled>Check saved eligibility</button><button id="entry-clear" type="button" disabled>Clear draft</button><button id="entry-cancel" type="button" disabled>Cancel entry request</button></div>
+      <p id="entry-message" class="note" role="status"></p><p id="entry-pending" class="note"></p>
+      <div class="actions"><button id="entry-reconcile" type="button" disabled>Check recorded outcome</button><button id="entry-apply" type="button" disabled>Apply prepared entry</button><button id="entry-abandon" type="button" disabled>Abandon prepared choice</button></div>
+      <ul id="entry-eligibility" class="entry-eligibility"></ul>
+      <div class="actions"><button id="entry-history" type="button" disabled>View entry history</button><button id="entry-history-next" type="button" disabled>More history</button></div>
+      <ul id="entry-history-list" class="entry-history"></ul>
+    </section>
     <section class="panel fight-preview" aria-labelledby="preview-heading">
       <div class="section-top"><h2 id="preview-heading">Fight preview — unrecorded</h2><span id="preview-state">Choose two candidates</span></div>
       <p>Unrecorded preview. No fight record, training or XP is awarded.</p>
