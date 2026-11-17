@@ -66,8 +66,15 @@ they do not count as completion of this product-release gate.
   header-serving gate immediately after the unchanged tip aged out. Local
   reproduction and a separate read-only P2P inventory/block check confirmed
   the diagnosis and unchanged height61 hash. Set38 repairs this serving gate;
-  fresh sync and full live observation remain pending. No new block is needed.
-  Candidate service/worker integration moves to set39.
+  fresh public sync, required smoke and the full combined 37–38 observation
+  passed. No public block was mined.
+- Set 39 connects candidate authority jobs and receipts to a pinned service and
+  typed durable miner. Independent service/worker reviews and the two-wallet
+  normal-PoW composition pass, including lost acknowledgments, reset-held mining
+  and exact historical recovery after real expiry with nodes offline. Final
+  integrated gates and deployment observation are recorded separately. The
+  default Mac GUI still uses the existing fixture pilot; candidate portrait
+  cards are the next desktop integration slice.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace

@@ -59,7 +59,8 @@ version.
   → `slug-fighter-condition` (set 35, exact candidate aging projection)
   → `slug-manifest-jobs` (set 36, candidate appearance-bound job codecs)
   → `slug-manifest-authority` (set 37, pinned candidate admission store)
-  → `slug-idle-headers` (set 38, idle-chain history serving).
+  → `slug-idle-headers` (set 38, idle-chain history serving)
+  → `slug-manifest-miner` (set 39, candidate service and durable miner).
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. Continue authorized
@@ -357,6 +358,18 @@ does not understand. Never detach, replace, or clear the /data volume.
   Keep exact duration weeks, nearest-even integer tenths, no added attribute
   floor, XP after aging and the D65 rating without training/form. The caller's
   later trusted event boundary must supply immutable birth and XP.
+
+- Set 39 adds explicitly pinned candidate service protocol 3 and a separately
+  typed worker/outbox version 2. Preserve old services, workers and journals;
+  never infer trust from a marker or silently migrate old evidence. Bind the
+  outbox to origin, full authority pin and transport trust identity without
+  persisting credentials. Found work, authorization and receipts synchronize
+  before their respective transport/acknowledgment boundaries. Reserve remaining
+  record growth so full capacity cannot prevent recovery of retained work.
+  Cancellation joins real work; historical recovery still requires a live
+  account session and preserves original birth/binding. See MANIFEST_MINING.md
+  and its separate reservation addendum. No official descriptor activation,
+  ownership authority, public receipt import or default desktop route is implied.
 
 - Set 36 separates structural appearance descriptors from compiled candidate
   support and production activation. Production resolution has no entries.

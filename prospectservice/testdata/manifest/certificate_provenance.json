@@ -1,0 +1,24 @@
+[
+  {
+    "name": "go_localhost",
+    "file": "inputs/go_localhost.pem",
+    "source": "Go standard library public test fixture",
+    "go_version": "go1.27.4",
+    "source_path": "src/net/http/internal/testcert/testcert.go",
+    "source_sha256": "812c69f79fc71384de1d93fb1058ab20e5b58ab2860dea72167681048d14a12e",
+    "selected_symbol": "LocalhostCert",
+    "pem_sha256": "4bf9786af942540c8b9f0b5275dbf658d9950f523b199b77b07aa8921c6cbdbf",
+    "private_key_copied": false
+  },
+  {
+    "name": "go_ecdsa_p256",
+    "file": "inputs/go_ecdsa_p256.pem",
+    "source": "Go standard library public test fixture",
+    "go_version": "go1.27.4",
+    "source_path": "src/crypto/x509/x509_test.go",
+    "source_sha256": "9037b05c36121f0b5cabb4c49b87441e3d551ee58b1ba3285fbb64fcced4b8dc",
+    "selected_symbol": "ecdsaSHA256p256CertPem",
+    "pem_sha256": "68329277fdd1b0836cdc3de55cde95d570021e5a9ff9e848b98586c08be223b5",
+    "private_key_copied": false
+  }
+]

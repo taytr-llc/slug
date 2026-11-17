@@ -1,0 +1,34 @@
+{
+  "inputs/portrait-renderer-contract.md": {
+    "source": "/Users/taytrrip/slug/portrait-renderer-contract.md",
+    "sha256": "8ae3c8dbe92fbef719880227e107cb98cbfd6419d984cad08ebb5d5e0a9c0df5"
+  },
+  "inputs/fighter-manifest-contract.md": {
+    "source": "/Users/taytrrip/slug/fighter-manifest-contract.md",
+    "sha256": "ba8d33dbad3722eed6b4406ef120f946d7e06e1ea04305cbe8648889ba169e80"
+  },
+  "inputs/portraits.py": {
+    "source": "/Users/taytrrip/slug/slug-sim-export/sim/portraits.py",
+    "sha256": "9bac3d966e7093e0665cd9c9a683e7a6ab73381948dccfd0dc8cac8c98a75a72"
+  },
+  "inputs/manifest/reference_manifest.py": {
+    "source": "/Users/taytrrip/slug/set33-manifest-stage/testdata/reference_manifest.py",
+    "sha256": "9fb1a814047f2329066bb19596e910ac7c4c7aadfce4b8f994e02dab81e51b4f"
+  },
+  "inputs/manifest/tables_v1.json": {
+    "source": "/Users/taytrrip/slug/set33-manifest-stage/testdata/tables_v1.json",
+    "sha256": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7"
+  },
+  "inputs/manifest/manifests_v1.json": {
+    "source": "/Users/taytrrip/slug/set33-manifest-stage/testdata/manifests_v1.json",
+    "sha256": "75eb01acb79f45b74a6445edf956c5e3f3b68024998ae56ab44a7ed07cf15f3d"
+  },
+  "inputs/manifest/baseline/reference_dna.py": {
+    "source": "/Users/taytrrip/slug/set33-manifest-stage/testdata/baseline/reference_dna.py",
+    "sha256": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2"
+  },
+  "inputs/manifest/baseline/dna_v1.json": {
+    "source": "/Users/taytrrip/slug/set33-manifest-stage/testdata/baseline/dna_v1.json",
+    "sha256": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71"
+  }
+}
