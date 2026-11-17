@@ -1,0 +1,3 @@
+# Preserve the hash-pinned verbatim lifecycle/rating excerpt, including its
+# original terminal blank line; ordinary code whitespace checks stay enabled.
+fightercondition/testdata/reference/inputs/lifecycle_rating_reference.py.txt whitespace=-blank-at-eof

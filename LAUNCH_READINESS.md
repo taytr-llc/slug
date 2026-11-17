@@ -36,8 +36,8 @@ they do not count as completion of this product-release gate.
   scanner. Frozen normal-PoW file-only restore/spend, full normal module tests
   and maximum watch measurements pass, including the complete final scanner
   race and process-kill suite. The packaged Mac pilot and per-set normal-PoW
-  smoke also pass. Full remote race CI and subsequent seed release gates remain
-  in progress. See `RESUMABLE_RECOVERY.md`.
+  smoke also pass. Full remote wallet CI passed, and set 32 deployed successfully;
+  its 15-minute live observation is running. See `RESUMABLE_RECOVERY.md`.
 - Set 33 adds independently checked candidate fighter manifests, including
   names, physical traits, styles and portrait selections. The original DNA
   preview stays compatible. These are offline previews; official assignment,
@@ -45,7 +45,12 @@ they do not count as completion of this product-release gate.
 - Set 34 implements the candidate portrait renderer and offline CLI with exact
   independent SVG fixtures and bounded markup. A local visual gallery is ready;
   browser policy blocked local-file preview, so visual and actual screen-reader
-  checks remain open. The desktop does not yet show these portraits.
+  checks remain open; Mike chose to keep the rendering check pending. The
+  desktop does not yet show these portraits.
+- Set 35 provides exact candidate aging/current-condition and D65 rating
+  projections. It preserves original DNA, uses supplied birth/time/XP and
+  does not authenticate those facts or establish roster eligibility. Trusted
+  admission/history and current ownership remain required.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace

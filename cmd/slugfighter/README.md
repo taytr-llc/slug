@@ -56,3 +56,16 @@ a newline. This command takes public hash text only, constructs all SVG bytes
 and accepts no caller markup. The digest is not a fighter ID or proof.
 See `FIGHTER_PORTRAITS.md` for frozen bytes and accessibility wording. Browser
 and screen-reader acceptance remain separate from exact-byte conformance.
+
+The `condition` subcommand previews aging at explicitly supplied times:
+
+```sh
+slugfighter condition --work-hash <64-hex-work-hash> --born-at-ms <unix-ms> --as-of-ms <unix-ms> --pro-xp 0
+```
+
+The birth must be positive, observation time must not precede it, and accounted
+XP must be 0–15. There is no implicit current clock. `--version` accepts only
+projector 1. Indented JSON reports aged and XP-adjusted attributes as integer
+tenths and the D65 rating in hundredths. These units are explicit in the field
+names. This command authenticates no birth, timestamp, XP, admission, ownership
+or roster eligibility. See `FIGHTER_CONDITION.md`; original DNA stays intact.

@@ -1,0 +1,30 @@
+{
+  "inputs/fighter-condition-contract.md": {
+    "source": "/Users/taytrrip/slug/fighter-condition-contract.md",
+    "sha256": "8ee75162fcd631cae15b33804c787690e60bf4997fae6b7cd536bb771908e654"
+  },
+  "inputs/BRAWLCHAIN_SPEC.md": {
+    "source": "/Users/taytrrip/slug/slug/BRAWLCHAIN_SPEC.md",
+    "sha256": "fe7dc0dc404c35886d6119576722e5b9556b150e1f4f98738562f387d928751d"
+  },
+  "inputs/fight_sim.py": {
+    "source": "/Users/taytrrip/slug/slug-sim-export/sim/fight_sim.py",
+    "sha256": "37ff08917ed720e3d9c4f3b14508c57b08d830f9f4cb01833fa412dbca9b6422"
+  },
+  "inputs/rating_study.py": {
+    "source": "/Users/taytrrip/slug/slug-sim-export/sim/rating_study.py",
+    "sha256": "e561ea57a5dc674f82ce9b881c9de5b83c31d2caf21c209d538c03554384bc70"
+  },
+  "inputs/baseline/reference_dna.py": {
+    "source": "/Users/taytrrip/slug/set33-manifest-stage/testdata/baseline/reference_dna.py",
+    "sha256": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2"
+  },
+  "inputs/baseline/dna_v1.json": {
+    "source": "/Users/taytrrip/slug/set33-manifest-stage/testdata/baseline/dna_v1.json",
+    "sha256": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71"
+  },
+  "inputs/lifecycle_rating_reference.py.txt": {
+    "source": "Exact excerpts from pinned inputs/fight_sim.py",
+    "sha256": "aa97b6f197d78d0f6245e5c122b482c5e5b1d6e34a74db5224e5f535cbda8d64"
+  }
+}

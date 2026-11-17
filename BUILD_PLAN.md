@@ -118,6 +118,14 @@ Python oracle make bytes reproducible. A local review gallery is available,
 but browser visual and assistive-technology checks remain open. There is no
 desktop portrait integration or official assignment in this library slice.
 
+Set 35 supplies a pure candidate current-condition projection and CLI
+(`FIGHTER_CONDITION.md`). It applies completed duration weeks of specified
+decline, retains retired exhibition condition, adds accounted XP after aging
+and computes the D65 rating with exact integer arithmetic. Trusted receipt
+birth, completed-fight XP accounting, current ownership and ten-slot roster
+selection still need integration; supplied preview timestamps prove none of
+those facts. The visual gallery check remains pending at Mike's request.
+
 ### 3. The official pool
 The company-run pool that earns 1% (D35, D36). No turnkey pool exists
 for btcd plus Argon2id, so this is a real build: adapt a Miningcore

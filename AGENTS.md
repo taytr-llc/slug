@@ -55,7 +55,8 @@ version.
   → `slug-provider-coordinator` (set 31, fixture authentication/reset journal)
   → `slug-resumable-recovery` (set 32, bounded candidate wallet recovery)
   → `slug-fighter-manifest` (set 33, static candidate fighter previews)
-  → `slug-fighter-portraits` (set 34, deterministic preview SVG).
+  → `slug-fighter-portraits` (set 34, deterministic preview SVG)
+  → `slug-fighter-condition` (set 35, exact candidate aging projection).
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. Continue authorized
@@ -346,3 +347,10 @@ does not understand. Never detach, replace, or clear the /data volume.
   enter rendering. Byte determinism does not imply cross-browser pixel identity
   or screen-reader verification. Portrait previews still carry no official
   assignment, identity, ownership or birth claim.
+
+- Set 35's `fightercondition` is a pure projection of complete canonical DNA,
+  supplied birth/time and already-accounted XP. It authenticates none of those
+  external facts and grants no admission, ownership or roster eligibility.
+  Keep exact duration weeks, nearest-even integer tenths, no added attribute
+  floor, XP after aging and the D65 rating without training/form. The caller's
+  later trusted event boundary must supply immutable birth and XP.
