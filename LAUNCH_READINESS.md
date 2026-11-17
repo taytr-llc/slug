@@ -23,11 +23,18 @@ they do not count as completion of this product-release gate.
   hold, signed identity assertions and durable reset ordering. Both seed
   deployments passed their live observation.
 - Set 29's purpose-separated fixture vault, race/crash gates, frozen normal-PoW
-  acceptance and packaged helper tests pass. Its sources are published; exact
-  wallet CI and seed promotion are tracked in the workspace release report.
+  acceptance and packaged helper tests pass. Its exact wallet CI, seed deployment
+  and 15-minute live observation are complete.
 - D73 approves the production-profile design. Set 30 implements it with
   explicit public candidate fixtures while final allocation/genesis and real
-  issuance remain gated. Provider coordination is the next planned set 31.
+  issuance remain gated. Set 31 is implementing fixture provider coordination and restart/replay
+  acceptance; real-provider integration remains a launch gate.
+
+The missing simulator and prototype sources arrived in `../slug-sim-export`
+on November 16. `README_HANDOFF.md` records their provenance; workspace
+`sim-handoff-intake.json` preserves archive and file checksums. They are reference
+implementations and first-pass mockups. The canonical spec takes precedence,
+and their intake does not replace the D74 review of the working product.
 
 ## Release milestones
 

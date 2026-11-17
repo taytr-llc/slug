@@ -199,7 +199,8 @@ while preserving every existing wallet/profile. Native84 receive/change defaults
 dedicated coin paths and the permanent-chain-bound gym are the approved design.
 Final allocation/genesis and exact frozen descriptors still gate real issuance.
 See `PRODUCTION_WALLET_PROFILE.md`; the remaining launch work is tracked in
-`LAUNCH_READINESS.md`. Provider coordination is planned after this profile set.
+`LAUNCH_READINESS.md`. Set 31 adds fixture provider coordination, independent signed evidence and
+durable reset replay; see `GYM_PROVIDER.md`. This does not enable real signup.
 
 The gym is the product surface: native Mac and Windows apps (menu
 bar and tray, gentle default mining setting) plus the browser

@@ -51,7 +51,8 @@ version.
   → `slug-account-enrollment` (set 27, released on master at `a541fb58`)
   → `slug-identity-recovery` (set 28, released on master at `bc92fd53`)
   → `slug-recovery-vault` (set 29, encrypted fixture retention)
-  → `slug-production-profile` (set 30, approved D73 profile design).
+  → `slug-production-profile` (set 30, approved D73 profile design)
+  → `slug-provider-coordinator` (set 31, fixture authentication/reset journal).
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. Continue authorized
@@ -310,3 +311,12 @@ does not understand. Never detach, replace, or clear the /data volume.
   saying so and why.
 - Write a `CHANGESET_<n>_NOTES.md` per change set (format: what changed,
   what was deliberately not changed, how it was verified, known debt).
+
+- Set 31's `gymprovider` accepts only the pinned published fixture issuer/key.
+  Keep original-authentication epochs and provider-operation identities immutable.
+  A reset may allow provider credential completion only after a synced, exact
+  pending authority barrier; historical completion never grants another permit.
+  Do not invent session replay after a lost acknowledgement or unlock abandoned
+  pending resets on timeout. Keep JWTs/session tokens out of the journal. Real
+  provider guarantees and product login integration require separate evidence;
+  the Auth0-shaped fixture is not a deployed adapter. See `GYM_PROVIDER.md`.
