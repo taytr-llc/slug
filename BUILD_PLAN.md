@@ -320,3 +320,14 @@ Mike's GitHub and on his servers, app signing uses Mike's developer
 accounts, and wallet or seed material never touches the assistant's
 machine. Prototype and simulation work stays on the assistant's VM
 until real assets exist.
+
+
+### Idle Phase-A seed maintenance (set 38)
+
+On November 16 Pacific (November 17 UTC), the unchanged height-61 tip crossed
+24 hours old immediately after set37 deployment. The inherited OnGetHeaders
+freshness gate then silently ignored new peers' requests. Insert the bounded
+history-serving repair before candidate service/worker integration (now set39).
+Preserve normal currentness and mining gates; verify a fresh node can download
+existing history without mining another block. Re-run full seed observation
+after this maintenance; set37's blocked observer is not a successful gate.

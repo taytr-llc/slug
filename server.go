@@ -967,10 +967,9 @@ func (sp *serverPeer) OnGetBlocks(_ *peer.Peer, msg *wire.MsgGetBlocks) {
 // OnGetHeaders is invoked when a peer receives a getheaders bitcoin
 // message.
 func (sp *serverPeer) OnGetHeaders(_ *peer.Peer, msg *wire.MsgGetHeaders) {
-	// Ignore getheaders requests if not in sync.
-	if !sp.server.syncManager.IsCurrent() {
-		return
-	}
+	// Available history remains useful even when an idle tip fails the
+	// freshness heuristic. Suppressing this response would prevent fresh
+	// peers from synchronizing an otherwise valid chain after 24 idle hours.
 
 	// Find the most recent known block in the best chain based on the block
 	// locator and fetch all of the headers after it until either

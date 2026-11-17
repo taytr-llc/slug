@@ -58,7 +58,8 @@ version.
   → `slug-fighter-portraits` (set 34, deterministic preview SVG)
   → `slug-fighter-condition` (set 35, exact candidate aging projection)
   → `slug-manifest-jobs` (set 36, candidate appearance-bound job codecs)
-  → `slug-manifest-authority` (set 37, pinned candidate admission store).
+  → `slug-manifest-authority` (set 37, pinned candidate admission store)
+  → `slug-idle-headers` (set 38, idle-chain history serving).
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. Continue authorized
@@ -373,3 +374,10 @@ does not understand. Never detach, replace, or clear the /data volume.
   batch. Historical reads retain their original facts through expiry/reorgs;
   they do not establish current ownership. Production activation stays closed.
   See MANIFEST_ADMISSION.md for strict bounds, poisoning and read guarantees.
+
+- Set 38 separates serving known headers from deciding that the chain is fresh.
+  Keep the existing bounded LocateHeaders semantics, including the special
+  empty-locator indexed-header lookup. Serving headers is not a claim that a
+  node is current or that every indexed header has a validated block body.
+  Do not relax chain currentness, mining templates, transaction relay, compact
+  filters, proof verification or consensus to make an idle seed synchronizable.
