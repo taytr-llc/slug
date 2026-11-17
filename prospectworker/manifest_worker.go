@@ -33,6 +33,7 @@ type ManifestWorker struct {
 	node      Node
 	signer    Signer
 	outbox    *ManifestOutbox
+	observer  ManifestReceiptObserver
 	mu        sync.Mutex
 	status    Status
 	started   bool
@@ -47,6 +48,10 @@ type ManifestWorker struct {
 }
 
 func NewManifest(config ManifestConfig, authority ManifestAuthority, node Node, signer Signer, outbox *ManifestOutbox) (*ManifestWorker, error) {
+	return NewManifestWithObserver(config, authority, node, signer, outbox, nil)
+}
+
+func NewManifestWithObserver(config ManifestConfig, authority ManifestAuthority, node Node, signer Signer, outbox *ManifestOutbox, observer ManifestReceiptObserver) (*ManifestWorker, error) {
 	if err := manifestProduction(); err != nil {
 		return nil, err
 	}
@@ -62,7 +67,7 @@ func NewManifest(config ManifestConfig, authority ManifestAuthority, node Node, 
 	if outbox.state() != nil || !sameManifestIdentity(outbox.config, canonical) || outbox.config.MaxBytes != canonical.MaxBytes || outbox.config.MaxRecords != canonical.MaxRecords {
 		return nil, errors.New("worker configuration does not match outbox")
 	}
-	return &ManifestWorker{config: canonical, authority: authority, node: node, signer: signer, outbox: outbox, status: Status{State: "ready"}, hash: func(header *wire.BlockHeader) chainhash.Hash { return header.BlockHash() }, now: time.Now, wait: waitFor}, nil
+	return &ManifestWorker{config: canonical, authority: authority, node: node, signer: signer, outbox: outbox, observer: observer, status: Status{State: "ready"}, hash: func(header *wire.BlockHeader) chainhash.Hash { return header.BlockHash() }, now: time.Now, wait: waitFor}, nil
 }
 func (worker *ManifestWorker) Status() Status {
 	worker.mu.Lock()
@@ -527,6 +532,11 @@ func (worker *ManifestWorker) deliver(ctx context.Context, entry *ManifestEntry)
 		}
 		if err := worker.outbox.update(*entry); err != nil {
 			return false, err
+		}
+		if entry.AdmissionState == "accepted" && entry.Receipt != nil {
+			if err := worker.notifyReceipt(ctx, entry.Receipt.Record); err != nil {
+				return progress, err
+			}
 		}
 	}
 	return progress, nil

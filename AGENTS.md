@@ -60,7 +60,8 @@ version.
   → `slug-manifest-jobs` (set 36, candidate appearance-bound job codecs)
   → `slug-manifest-authority` (set 37, pinned candidate admission store)
   → `slug-idle-headers` (set 38, idle-chain history serving)
-  → `slug-manifest-miner` (set 39, candidate service and durable miner).
+  → `slug-manifest-miner` (set 39, candidate service and durable miner)
+  → `slug-manifest-desktop` (set 40, opt-in candidate fixture desktop).
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. Continue authorized
@@ -394,3 +395,15 @@ does not understand. Never detach, replace, or clear the /data volume.
   node is current or that every indexed header has a validated block body.
   Do not relax chain currentness, mining templates, transaction relay, compact
   filters, proof verification or consensus to make an idle seed synchronizable.
+
+- Set 40 adds a separate Candidate Pilot bundle and explicit helper mode with
+  its own LocalManifestPilot namespace. Preserve all earlier app/data routes.
+  Login cold-verifies at most eight retained records while stopped; only Start
+  mines. Live cards follow fully verified, synchronized acceptance, never a
+  claimant receipt or an uncommitted response. View credentials and generation
+  remain bound to the original login through cache reads, portraits and exports.
+  Never substitute a new account session during a pending operation. Public
+  receipt export remains distinct from recovery export and uses an exclusive
+  native-selected destination. See MANIFEST_DESKTOP.md and its packaging and
+  acceptance addenda. The candidate build does not activate an official
+  descriptor, ownership, real accounts, product distribution or D74 approval.

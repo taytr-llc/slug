@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SLUG Candidate Pilot</title>
+  <link rel="stylesheet" href="/manifest.css">
+  <script type="module" src="/manifest.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#candidates-heading">Skip to candidates</a>
+  <div class="shell">
+    <header class="masthead"><img class="logo" src="/slug-transparent.png" alt="SLUG" width="220" height="100"><div><p class="eyebrow">PRIVATE TRAINING CHAIN</p><h1>Local candidate pilot</h1></div><span id="state" class="status">Connecting</span></header>
+    <p class="caveat">Demo wallets and candidates on a private training chain. Candidate previews; no official league registration or ownership records.</p>
+    <section class="panel account-panel" aria-labelledby="account-heading">
+      <div class="section-top"><h2 id="account-heading">Choose a demo account</h2><span id="account-state">Signed out</span></div>
+      <p id="account-copy">Choose a demo account to load its saved candidates. Mining starts only when you choose Start.</p>
+      <div class="actions"><button id="login-a" type="button" disabled>Sign in as Demo A</button><button id="login-b" type="button" disabled>Sign in as Demo B</button><button id="logout" type="button" disabled>Sign out</button><button id="reset" type="button" disabled>Simulate verified password reset</button></div>
+      <p id="hold" class="note"></p>
+    </section>
+    <div class="mining-bar"><div><h2>Discover candidates</h2><p id="mining-copy">Sign in to prepare your local gym.</p></div><button id="mining" class="primary" type="button" disabled>Start mining</button></div>
+    <p id="alert" class="alert" role="status" hidden></p>
+    <div class="metrics" aria-label="Local mining activity"><div><span>Mining attempts</span><strong id="attempts">0</strong><small id="rate">Not mining</small></div><div><span>Accepted candidates</span><strong id="accepted">0</strong><small>Saved by this local authority</small></div><div><span>Pending delivery</span><strong id="pending">0</strong><small>Retained until resolved</small></div><div><span>Local chain height</span><strong id="height">0</strong><small>Private training blocks</small></div></div>
+    <section class="panel" aria-labelledby="wallet-heading"><div class="section-top"><h2 id="wallet-heading">Demo wallet</h2><span id="wallet-state">Wallet closed</span></div>
+      <div class="balances"><div><span>Spendable test SLUG</span><strong id="spendable">—</strong></div><div><span>Waiting to mature</span><strong id="immature">—</strong></div><p id="wallet-height">Mining rewards mature after 100 blocks.</p></div>
+      <dl class="identity"><dt>Reward address</dt><dd id="payout">Sign in to load the demo wallet</dd><dt>Gym identity</dt><dd id="gym-id">—</dd></dl>
+      <div class="actions"><button id="export-recovery" type="button" disabled>Export recovery backup</button><button id="verify-backup" type="button" disabled>Verify backup</button></div>
+      <p id="backup" class="note">Stop mining to save or verify a demo wallet backup.</p><p class="note">The service retains recovery authority. Exporting a backup does not remove that authority.</p>
+    </section>
+    <section aria-labelledby="candidates-heading"><div class="section-top candidate-top"><div><p class="eyebrow">SAVED CANDIDATE PREVIEWS</p><h2 id="candidates-heading" tabindex="-1">Recent candidates</h2></div><button id="refresh" type="button" disabled>Load saved candidates</button></div>
+      <p id="coverage" class="note">Saved candidates load when you sign in. New accepted candidates appear automatically while mining.</p>
+      <p id="announcement" class="visually-hidden" aria-live="polite" aria-atomic="true"></p>
+      <div id="empty" class="empty"><h3>Your next candidate starts here.</h3><p id="empty-copy">Sign in to load your demo gym, then start mining when you are ready.</p></div>
+      <div id="cards" class="cards"></div>
+    </section>
+    <footer><span>Public demo wallets · No real signup or funds</span><span>Closing the window keeps the app in the menu bar. Quit stops mining.</span></footer>
+  </div>
+</body>
+</html>
