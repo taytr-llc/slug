@@ -93,7 +93,10 @@ they do not count as completion of this product-release gate.
   same-gym preview. Independent 55-bout conformance, core/helper, native and DOM
   checks pass. All ten module builds, full normal/cheap-PoW desktop tests,
   desktop vet, 111 frontend tests and formatting pass. The packaged integration
-  harness compiles but has not run for this set. Calibration simulated 9,660
+  harness compiles. Its first run failed during login when sandbox-denied
+  loopback allocation exposed a typed-nil cleanup crash. The narrow startup
+  repair passes focused and full account-component normal/race/tagged checks;
+  exact packaged acceptance still requires a fresh run. Calibration simulated 9,660
   fixed inputs; its rounded refit is
   [0.9, 2.5, 0.2, 0.6, 0.8], differing from D65. The exact-match release gate
   failed while the other numerical gates passed. Mike's D75 decision retains

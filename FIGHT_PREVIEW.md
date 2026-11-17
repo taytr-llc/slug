@@ -7,7 +7,9 @@ for the current authenticated view. Replay does not run the engine again.
 
 This documents frozen Set42 source, not a shipped product. D75 retains
 D65 and its existing condition projection; the new validation studies passed
-independent audit and successor acceptance. Packaged preview acceptance has not run.
+independent audit and successor acceptance. Final packaged preview acceptance
+remains pending after a failed startup attempt and the cleanup repair described
+in `CHANGESET_42_NOTES.md`.
 There is no recorded fight, training/XP award, entry lock, transferable ownership,
 future-block fairness or official league activation in this feature.
 
@@ -219,13 +221,15 @@ cache-hit authorization and late responses. DOM tests cover explicit selection,
 paging, busy-Snapshot/done-Job ordering, local-only playback, motion/visibility
 and immediate typed-error invalidation.
 
-The full normal desktop suite, full tagged suite after a test-only fixture-profile
+The original source snapshot passed the full normal desktop suite, full tagged suite after a test-only fixture-profile
 correction, desktop integration compile-only, vet and all 111 frontend tests
-passed at final captured hashes. The earlier failed tagged attempt is preserved;
+at its captured hashes. The earlier failed tagged attempt is preserved;
 it is not represented as a clean first run. Normal production fixture expectations
 must not be accepted under the cheap PoW profile.
 
-The optional actual-helper test is authored but **has not run**. With
+The optional actual-helper test's final repaired-commit acceptance is pending;
+the first failed startup attempt and cleanup regression evidence are retained.
+With
 `SLUG_PREVIEW_ACCEPTANCE=1`, it extends the existing `desktopintegration &&
 !slugtestpow` stable acceptance using `SLUG_STABLE_HELPER`, `SLUG_STABLE_NODE`
 and `SLUG_ACCOUNT_TEST_ARTIFACTS`. It mines at least six genuine receipts in each

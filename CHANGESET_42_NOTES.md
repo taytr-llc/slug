@@ -107,7 +107,21 @@ tests. Before/after captured sources did not drift. The earlier tagged failure
 is preserved separately. These timings describe local evidence, not CI or a
 packaged/native-product acceptance claim.
 
-The authored optional two-wallet actual-helper preview acceptance has not run.
+The first two-wallet packaged attempt passed build, signature and mode checks,
+then failed during login: default sandbox restrictions denied a loopback port,
+and a failed child constructor exposed a typed-nil interface cleanup panic.
+The failed bundle, test data and logs are retained. This was a real error-path
+bug in both candidate modes, not a statistical or fight-engine failure.
+
+Login now transfers a child into cleanup ownership only after construction
+succeeds. Before-fix tests reproduced both pointer-type panics; after-fix tests
+verify the failed state, cleared view, revoked original session, immediate Close
+and successful same-account retry without mining. Focused normal/race checks
+passed, as did complete account-component normal/race/tagged suites with required
+loopback access, vet and formatting. The default-sandbox full-suite failure is
+preserved separately. No protocol vocabulary, model, study or rating changed.
+
+Fresh exact packaged acceptance remains pending for the repaired commit.
 It requires normal PoW and genuine same-class admitted pairs; public results,
 portraits, preserved wallet/stable facts and every owned process/listener must
 be independently checked. Its three cached result rereads are not frontend
