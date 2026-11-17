@@ -56,7 +56,8 @@ version.
   → `slug-resumable-recovery` (set 32, bounded candidate wallet recovery)
   → `slug-fighter-manifest` (set 33, static candidate fighter previews)
   → `slug-fighter-portraits` (set 34, deterministic preview SVG)
-  → `slug-fighter-condition` (set 35, exact candidate aging projection).
+  → `slug-fighter-condition` (set 35, exact candidate aging projection)
+  → `slug-manifest-jobs` (set 36, candidate appearance-bound job codecs).
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. Continue authorized
@@ -354,3 +355,11 @@ does not understand. Never detach, replace, or clear the /data volume.
   Keep exact duration weeks, nearest-even integer tenths, no added attribute
   floor, XP after aging and the D65 rating without training/form. The caller's
   later trusted event boundary must supply immutable birth and XP.
+
+- Set 36 separates structural appearance descriptors from compiled candidate
+  support and production activation. Production resolution has no entries.
+  Keep Job v1 and its readers unchanged; the separate ManifestJob v2 binds
+  an authority namespace and exact descriptor before work. Neither field
+  authenticates issuance. BuildManifest is a typed unmined-candidate helper,
+  not an admission path. No schema migration, current-service activation or
+  historical appearance assignment is implied. See MANIFEST_JOBS.md.
