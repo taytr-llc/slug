@@ -1,0 +1,172 @@
+{
+  "purpose": "Independent candidate SVG byte/numeric oracle; no official assignment or visual/accessibility acceptance",
+  "python": "3.14.3 (main, Feb  3 2026, 15:32:20) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "checks": [
+    {
+      "label": "default",
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "reference_portraits.py",
+        "--check"
+      ],
+      "environment_overrides": {},
+      "exit_code": 0,
+      "elapsed_seconds": 0.703858,
+      "output": {
+        "corpus_sha256": "03df75cbf923a6dfc8fcac78e98d704641c0edf65ce563cf307f20a52f250670",
+        "mode": "check",
+        "result": "pass",
+        "validation": {
+          "full_pixel_or_accessibility_tests": false,
+          "manifest_cases": 50,
+          "maximum_corpus_bytes": 4039,
+          "maximum_corpus_graphics": 41,
+          "negative_cases": 118,
+          "original_geometry_comparisons": 289,
+          "synthetic_maximum": {
+            "byte_length": 4200,
+            "depth": 2,
+            "element_count": 46,
+            "graphics_count": 43
+          }
+        }
+      }
+    },
+    {
+      "label": "hash-seed-1",
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "reference_portraits.py",
+        "--check"
+      ],
+      "environment_overrides": {
+        "PYTHONHASHSEED": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.699462,
+      "output": {
+        "corpus_sha256": "03df75cbf923a6dfc8fcac78e98d704641c0edf65ce563cf307f20a52f250670",
+        "mode": "check",
+        "result": "pass",
+        "validation": {
+          "full_pixel_or_accessibility_tests": false,
+          "manifest_cases": 50,
+          "maximum_corpus_bytes": 4039,
+          "maximum_corpus_graphics": 41,
+          "negative_cases": 118,
+          "original_geometry_comparisons": 289,
+          "synthetic_maximum": {
+            "byte_length": 4200,
+            "depth": 2,
+            "element_count": 46,
+            "graphics_count": 43
+          }
+        }
+      }
+    },
+    {
+      "label": "hash-seed-947",
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "reference_portraits.py",
+        "--check"
+      ],
+      "environment_overrides": {
+        "PYTHONHASHSEED": "947",
+        "LC_ALL": "C",
+        "TZ": "Pacific/Honolulu"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.695581,
+      "output": {
+        "corpus_sha256": "03df75cbf923a6dfc8fcac78e98d704641c0edf65ce563cf307f20a52f250670",
+        "mode": "check",
+        "result": "pass",
+        "validation": {
+          "full_pixel_or_accessibility_tests": false,
+          "manifest_cases": 50,
+          "maximum_corpus_bytes": 4039,
+          "maximum_corpus_graphics": 41,
+          "negative_cases": 118,
+          "original_geometry_comparisons": 289,
+          "synthetic_maximum": {
+            "byte_length": 4200,
+            "depth": 2,
+            "element_count": 46,
+            "graphics_count": 43
+          }
+        }
+      }
+    }
+  ],
+  "source_artifact_hashes": {
+    "README.md": "abb62fcd4270383db2c9aaf3ea8c9af67c8fee1eb7f52676eaf3865c9bf4aa5b",
+    "input_hashes.json": "108b6911cc622b9510d1f8de96086964fb6718bc3e6029f28ea42a2db821ca19",
+    "inputs/fighter-manifest-contract.md": "ba8d33dbad3722eed6b4406ef120f946d7e06e1ea04305cbe8648889ba169e80",
+    "inputs/manifest/baseline/dna_v1.json": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+    "inputs/manifest/baseline/reference_dna.py": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+    "inputs/manifest/manifests_v1.json": "75eb01acb79f45b74a6445edf956c5e3f3b68024998ae56ab44a7ed07cf15f3d",
+    "inputs/manifest/reference_manifest.py": "9fb1a814047f2329066bb19596e910ac7c4c7aadfce4b8f994e02dab81e51b4f",
+    "inputs/manifest/tables_v1.json": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+    "inputs/portrait-renderer-contract.md": "8ae3c8dbe92fbef719880227e107cb98cbfd6419d984cad08ebb5d5e0a9c0df5",
+    "inputs/portraits.py": "9bac3d966e7093e0665cd9c9a683e7a6ab73381948dccfd0dc8cac8c98a75a72",
+    "portraits_v1.json": "03df75cbf923a6dfc8fcac78e98d704641c0edf65ce563cf307f20a52f250670",
+    "reference_portraits.py": "1a44c0506944211cf699b653f63905c6802e2012928855354f4053d03d209093",
+    "svg/coverage_integer_1.svg": "0f2bcbf6e4a1300b23215a63195971ffce0a1425390aadbd5269407ae681a33d",
+    "svg/coverage_integer_10.svg": "66c91ceb1cfe466849f757124cfa68a5b344c7c175f0e8c12f4ba68e079224c6",
+    "svg/coverage_integer_11.svg": "7fed2526f0783f6c2f41eb7405e2b30e04b0bc29472d3bc31ff433f9c3e581a1",
+    "svg/coverage_integer_12.svg": "4292d2125d809523401822eae519864e07602f49cd06c82979a7b26165e75d01",
+    "svg/coverage_integer_129.svg": "9174bb58bc903e0aca5dd3de2b207dd58f29f51ee5217781c763ea89ae24ba66",
+    "svg/coverage_integer_13.svg": "dcf3015527de8c6a71b8674d846c19958689cafeee11d1d9f64d39a511f59ce5",
+    "svg/coverage_integer_14.svg": "2f67b3c16def636e1938a49f6977335888dba059274ade96309416f68f838dfb",
+    "svg/coverage_integer_16.svg": "8081633688a10fff6c6df89c7656917c88027b460a3244eb630addca27f73f5e",
+    "svg/coverage_integer_17.svg": "3045f31f27e622b1c154fc535088068ec9b406c531cd4d55cc886241e2948047",
+    "svg/coverage_integer_2.svg": "fdd25b32881e4e9f87cf2109c2280b0eda5c0a15a347d03c591c087bfabad2d8",
+    "svg/coverage_integer_20.svg": "efe3d68ec5149a7bc7917e009e40371e98f8db369074a0ca8b12c062fae63830",
+    "svg/coverage_integer_21.svg": "998d814809c57e526c493cd8067b01f1c84368f2963fe08986e713dc34edadf8",
+    "svg/coverage_integer_212.svg": "3718a0cc0be3de87ec6051bf72f6dc74bd4dcb39e4541fbc839bea9f188e3cea",
+    "svg/coverage_integer_23.svg": "89681891a6c277ab151509658380f75971a241ef5d84cd3112fc67596b0b0e79",
+    "svg/coverage_integer_24.svg": "6c639236e54c483d9814442186f873babd07c3d0d3ddaa7ce0238e878849cd78",
+    "svg/coverage_integer_25.svg": "1972b6265d4010a1048d8558fb3b118b961afebf07035233e3cd65032db76669",
+    "svg/coverage_integer_26.svg": "8277cd1fd00866b9c27f06455464b2b3d1c2783aab7302336476f4c6390d334f",
+    "svg/coverage_integer_27.svg": "9029bc55be626dbe5e2c1f7f6d74fa055f94f76b5f64d589b3645ffe7c88c459",
+    "svg/coverage_integer_31.svg": "98a6d1f6dd8cb138aeabbdbf0581626f915f65d8390af7f919a2ae638b6aa27f",
+    "svg/coverage_integer_33.svg": "a242c3fb253f9aa752fb96457311264811364f0ebc2ee3d5968c2ca81d414586",
+    "svg/coverage_integer_34.svg": "a6d69300e9fdd24206b50ef08b69175cd69574578f6e3c6c2ddf82cdadf4164e",
+    "svg/coverage_integer_35.svg": "83520f8df1a481bbdd3974e487315b9393cf7cb04172bbd2cb63c0ab3bf3077c",
+    "svg/coverage_integer_4.svg": "45fa8ff9baf4f0fb777e19f0f71fb6335df1246fa31506a649c430d91975de87",
+    "svg/coverage_integer_42.svg": "d82d987bfb34e2e9304e070a1646a91c7aacb91f8561ff63842ba55e26e588f4",
+    "svg/coverage_integer_43.svg": "f55fec52808ccec4add2132b7607e62808d066d1fc293895fd060d56fd4a5e14",
+    "svg/coverage_integer_44.svg": "a88a5d9e3c30390f80ce5423704b1297f89450678b84c983335ec0517355e775",
+    "svg/coverage_integer_56.svg": "ca80519114c1fbfed385e77f13241c1ddb51145cec038952765d43ae7f477e45",
+    "svg/coverage_integer_6.svg": "bca55b271b6b2f39be18d4731e1daa22c9a51dbc4692f5e97a83525bf284e173",
+    "svg/coverage_integer_60.svg": "8b90d9733ff954af0639a18a7a18a41645ebece3ace6b839e09270c686520973",
+    "svg/coverage_integer_63.svg": "5a1bb4c74a48fffc33fcf8c137f9ce26260c942e139288ba12de013e1ffa83f9",
+    "svg/coverage_integer_65.svg": "f4d87f1fb8d0740e64bf043b6c6d02bb6bb370ae75d6f6c539cc49bc9347f8e7",
+    "svg/coverage_integer_66.svg": "b08210a338b36d7912c934fff763b1f7898f72c3ca2972b6efcfd3a34638113a",
+    "svg/coverage_integer_7.svg": "72986580258582e42644523e06352013bd6101a59cfbba051c045628f096e919",
+    "svg/coverage_integer_71.svg": "acd782c1d16f3f34694cf561b15da3ef6a4c3dc20e3e825fa9718f7f656dd12c",
+    "svg/coverage_integer_73.svg": "f67d7d803062943d166515e56c92d6485e6c34a91e93b01f0bf881f1eed2989a",
+    "svg/coverage_integer_74.svg": "9d2d1c3123cf7bbcbdac5bf318bae6e2d0b37f90fe5b3478bdf75b736e29b823",
+    "svg/coverage_integer_78.svg": "a6d12b170e700ca60c31863f53741890b6e781a7043648dffa681e0d4c67b13b",
+    "svg/coverage_integer_8.svg": "eadf7798d3dc8325ba35510f4cac304ed3c5fd4bda1ba3967ec1fb035614aad9",
+    "svg/coverage_integer_82.svg": "e1c7ab704ff27562813b6fa9bf76a8c9edee35fcce560e5188c32d721d28e1ac",
+    "svg/coverage_integer_9.svg": "3b9d3d389705a8245ddc9f66849fb3a4e3eb5bcc0cfe313714613d0d0616c6b6",
+    "svg/fixed_0.svg": "88bffd162dc44a2f7630a1afdf781b7c8a907ad7e181bf5e5e5a3c7ff09e1d29",
+    "svg/fixed_1.svg": "89d32fdf52ee6bbe819c15747e2267dcda5115d19a61d5b9c159e5177100bc3d",
+    "svg/fixed_2.svg": "99f7d3ed8318220fa3e7c2dbf7d6e62f96b4b13411409c9ee60b4093910f196a",
+    "svg/fixed_3.svg": "c0ffdff5734f7dc4dac34ca565a2ab39becf28292b6c7e6d560be8c5ec6a68ac",
+    "svg/fixed_4.svg": "f4416424763aae38a1dda48504f6fd5a40e55ea78c91f2bb0f87aef8c99a2771",
+    "svg/fixed_5.svg": "e01613207fadf5236abd4a8e27fc6145c73e2df927c8199d0c79f8d52fed979c",
+    "svg/fixed_6.svg": "1158aef2069f766b0600e96aa9a24691725cea00847e3f4569e62f3eec917dd2",
+    "svg/fixed_7.svg": "598b9d23c7015d2db2ce7c449a13ef311684753ffd95b3ab630162d352d21abd",
+    "svg/fixed_8.svg": "e17193449a1963aa60432d92cf54b18782ea75f3ac88e65d010b8ec2c7608b5c",
+    "svg/fixed_9.svg": "86ab320c3975c89f491fe033fb2b7e0a040ffa4dc5c00a9ed1222f3176802428"
+  },
+  "source_unchanged": true,
+  "read_go_renderer_output": false,
+  "read_go_renderer_source": false
+}

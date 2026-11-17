@@ -102,6 +102,30 @@ This is a local pilot, not the hosted account/wallet promised by D48. Real login
 btcwallet custody, full tested seed export and public service provisioning are
 the next integration boundary; they must not be implied by a fixture roster.
 
+Set 33 adds the candidate static manifest and optional `slugfighter preview`
+route (`FIGHTER_MANIFEST.md`). It preserves DNA v1 and independently derives
+names, physical traits, style and portrait selections under explicit versioned
+tables. The supplied simulator and HTML prototypes are now preserved in the
+workspace; the spec remains authoritative. This is a preview library/CLI, not
+an official assignment to admitted fighters. A bounded deterministic portrait
+renderer, explicit issuance/version binding, roster/lifecycle history and the
+fight engine remain subsequent slices.
+
+Set 34 implements the exact candidate SVG renderer and `slugfighter portrait`
+command (`FIGHTER_PORTRAITS.md`). Canonical manifest validation precedes all
+lookups; exact integer coordinates, bounded fixed markup and an independent
+Python oracle make bytes reproducible. A local review gallery is available,
+but browser visual and assistive-technology checks remain open. There is no
+desktop portrait integration or official assignment in this library slice.
+
+Set 35 supplies a pure candidate current-condition projection and CLI
+(`FIGHTER_CONDITION.md`). It applies completed duration weeks of specified
+decline, retains retired exhibition condition, adds accounted XP after aging
+and computes the D65 rating with exact integer arithmetic. Trusted receipt
+birth, completed-fight XP accounting, current ownership and ten-slot roster
+selection still need integration; supplied preview timestamps prove none of
+those facts. The visual gallery check remains pending at Mike's request.
+
 ### 3. The official pool
 The company-run pool that earns 1% (D35, D36). No turnkey pool exists
 for btcd plus Argon2id, so this is a real build: adapt a Miningcore

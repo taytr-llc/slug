@@ -1,0 +1,70 @@
+{
+  "purpose": "Cross-interpreter portability repair; normative expected projections unchanged",
+  "prior_evidence": "/Users/taytrrip/slug/set35-condition-reference-pre-portability",
+  "diagnosis": "Workdir-specific PATH selected Python3.9.6 vs3.14.3; built-in sum(float) changed in3.12. Diagnostic now explicit sequential binary64.",
+  "checks": [
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "reference_condition.py",
+        "--check"
+      ],
+      "environment_overrides": {
+        "PYTHONHASHSEED": "19",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "interpreter": "/Applications/Xcode.app/Contents/Developer/usr/bin/python3\n3.9.6 (default, Oct 19 2026, 19:18:13) \n[Clang 21.0.0 (clang-2100.4.1.1)]\n",
+      "exit_code": 0,
+      "elapsed_seconds": 6.803379,
+      "stdout": "{\"dna_cases\": 12, \"grid_cells\": 291600, \"hashes\": {\"aging_grid_v1.json\": \"d153d08e074fda21c5190de6e39617bcf799178201bdea256355cabf54bb95ff\", \"condition_v1.json\": \"4f5be20e0e6ceb6b2ef4ee4063fffd2691fecb7a71d984f4624eb97162a9dbfa\", \"prototype_artifacts_v1.json\": \"492ff45498f66a48650706bf856e79ed4ebbc3fe2500b1f3886307db92efff4d\", \"ties_v1.json\": \"f4b72681b304a6dd7dbe68c07bb1568481917cfcdb592561ba2c0400f85d4998\"}, \"invalid_cases\": 48, \"mode\": \"check\", \"prototype_aging_differences\": 2698, \"prototype_rating_differences\": 1802, \"result\": \"pass\", \"ties\": 7836, \"valid_cases\": 13950}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "reference_condition.py",
+        "--check"
+      ],
+      "environment_overrides": {
+        "PYTHONHASHSEED": "491",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "interpreter": "/opt/homebrew/opt/python@3.14/bin/python3.14\n3.14.3 (main, Feb  3 2026, 15:32:20) [Clang 17.0.0 (clang-1700.6.3.2)]\n",
+      "exit_code": 0,
+      "elapsed_seconds": 3.715284,
+      "stdout": "{\"dna_cases\": 12, \"grid_cells\": 291600, \"hashes\": {\"aging_grid_v1.json\": \"d153d08e074fda21c5190de6e39617bcf799178201bdea256355cabf54bb95ff\", \"condition_v1.json\": \"4f5be20e0e6ceb6b2ef4ee4063fffd2691fecb7a71d984f4624eb97162a9dbfa\", \"prototype_artifacts_v1.json\": \"492ff45498f66a48650706bf856e79ed4ebbc3fe2500b1f3886307db92efff4d\", \"ties_v1.json\": \"f4b72681b304a6dd7dbe68c07bb1568481917cfcdb592561ba2c0400f85d4998\"}, \"invalid_cases\": 48, \"mode\": \"check\", \"prototype_aging_differences\": 2698, \"prototype_rating_differences\": 1802, \"result\": \"pass\", \"ties\": 7836, \"valid_cases\": 13950}\n",
+      "stderr": ""
+    }
+  ],
+  "normative_fields_unchanged": {
+    "dna_cases": true,
+    "cases": true,
+    "invalid_cases": true,
+    "coverage": true
+  },
+  "normative_cases_sha256": "b7974e3f47b5a1cc3ec62f3d96cb4906a2affd4314ac5a870fbb130d10323437",
+  "source_unchanged": true,
+  "source_artifact_hashes": {
+    "README.md": "d7c232bf6deff9876354364d8625ac46180c890016c2adf61508ba8478cddb7b",
+    "aging_grid_v1.json": "d153d08e074fda21c5190de6e39617bcf799178201bdea256355cabf54bb95ff",
+    "condition_v1.json": "4f5be20e0e6ceb6b2ef4ee4063fffd2691fecb7a71d984f4624eb97162a9dbfa",
+    "input_hashes.json": "1ab9a78f6246236c87fb9b0304fe5b786b9d5f880f50d18a33ef3b12725419a3",
+    "inputs/BRAWLCHAIN_SPEC.md": "fe7dc0dc404c35886d6119576722e5b9556b150e1f4f98738562f387d928751d",
+    "inputs/baseline/dna_v1.json": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+    "inputs/baseline/reference_dna.py": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+    "inputs/fight_sim.py": "37ff08917ed720e3d9c4f3b14508c57b08d830f9f4cb01833fa412dbca9b6422",
+    "inputs/fighter-condition-contract.md": "8ee75162fcd631cae15b33804c787690e60bf4997fae6b7cd536bb771908e654",
+    "inputs/lifecycle_rating_reference.py.txt": "aa97b6f197d78d0f6245e5c122b482c5e5b1d6e34a74db5224e5f535cbda8d64",
+    "inputs/rating_study.py": "e561ea57a5dc674f82ce9b881c9de5b83c31d2caf21c209d538c03554384bc70",
+    "original-contract-draft.md": "4c12b919e34bb554554a7b47f698868c1464c4bff82fb419f8317d65cd9176ef",
+    "prototype_artifacts_v1.json": "492ff45498f66a48650706bf856e79ed4ebbc3fe2500b1f3886307db92efff4d",
+    "reference_condition.py": "924152a89241e9fa6d60aa27ba19666d3a3f65fdf53bd3c0cf6f89c8db4e946c",
+    "ties_v1.json": "f4b72681b304a6dd7dbe68c07bb1568481917cfcdb592561ba2c0400f85d4998"
+  },
+  "read_future_go_projection_source": false,
+  "read_future_go_projection_output": false
+}

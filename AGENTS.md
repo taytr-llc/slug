@@ -53,7 +53,10 @@ version.
   → `slug-recovery-vault` (set 29, encrypted fixture retention)
   → `slug-production-profile` (set 30, approved D73 profile design)
   → `slug-provider-coordinator` (set 31, fixture authentication/reset journal)
-  → `slug-resumable-recovery` (set 32, bounded candidate wallet recovery).
+  → `slug-resumable-recovery` (set 32, bounded candidate wallet recovery)
+  → `slug-fighter-manifest` (set 33, static candidate fighter previews)
+  → `slug-fighter-portraits` (set 34, deterministic preview SVG)
+  → `slug-fighter-condition` (set 35, exact candidate aging projection).
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. Continue authorized
@@ -329,3 +332,25 @@ does not understand. Never detach, replace, or clear the /data volume.
   Keep the aggregate 65,536-attempt quota and bounded node/watch requests.
   `RESUMABLE_RECOVERY.md` defines the scanner and ready-wallet limits; the
   fixture vault still does not track an evolving wallet snapshot.
+
+- Set 33's `fightermanifest` preserves complete DNA v1 while adding versioned
+  candidate names, physical traits, style and portrait selections. Keep the
+  frozen tables, strict canonical codec and independently derived fixtures.
+  A preview is not an official appearance assignment or fighter identity;
+  current jobs bind only DNA version. Official assignment requires explicit
+  issuance/version binding or an immutable committed mapping. Never change
+  historical receipts or birth, or replace the existing DNA CLI route.
+
+- Set 34's `fighterportrait` validates the complete manifest before drawing.
+  Preserve exact versioned SVG bytes, pinned tables and independent reference
+  fixtures. No uploaded markup, external assets, free text or mutable palettes
+  enter rendering. Byte determinism does not imply cross-browser pixel identity
+  or screen-reader verification. Portrait previews still carry no official
+  assignment, identity, ownership or birth claim.
+
+- Set 35's `fightercondition` is a pure projection of complete canonical DNA,
+  supplied birth/time and already-accounted XP. It authenticates none of those
+  external facts and grants no admission, ownership or roster eligibility.
+  Keep exact duration weeks, nearest-even integer tenths, no added attribute
+  floor, XP after aging and the D65 rating without training/form. The caller's
+  later trusted event boundary must supply immutable birth and XP.
