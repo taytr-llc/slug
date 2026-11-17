@@ -61,6 +61,9 @@ func (c *ManifestController) refresh(worker *prospectworker.ManifestWorker, node
 		c.snapshot.HashesPerSecond = status.HashesPerSecond
 		c.snapshot.Pending = status.Pending
 		c.snapshot.LastError = status.LastError
+		if c.snapshot.LastError == "cycle_unavailable" {
+			c.snapshot.LastError = "worker_failed"
+		}
 		c.snapshot.RecoveryError = status.RecoveryError
 	}
 	if validHeight {

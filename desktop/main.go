@@ -25,17 +25,19 @@ import (
 	"github.com/wailsapp/wails/v3/pkg/events"
 )
 
-//go:embed frontend/index.html frontend/style.css frontend/app.js frontend/manifest.html frontend/manifest.js frontend/manifest.css frontend/slug-transparent.png
+//go:embed frontend/index.html frontend/style.css frontend/app.js frontend/manifest.html frontend/manifest.js frontend/manifest.css frontend/stable.html frontend/stable.js frontend/stable.css frontend/slug-transparent.png
 var assets embed.FS
 
 // Only the separate candidate bundle build sets this private mode default.
 var candidateBuild string
+var stableBuild string
 
 // Gym exposes only public pilot controls and receipt selection to the webview.
 // Paths, process arguments, and keys cannot be supplied through the web bridge.
 type Gym struct {
 	helper         *bridge.Bridge
-	manifestHelper *bridge.ManifestBridge
+	manifestHelper manifestTransport
+	stableHelper   *bridge.StableBridge
 	app            *application.App
 	window         *application.WebviewWindow
 	exportMu       sync.Mutex
@@ -206,7 +208,11 @@ func run() (resultErr error) {
 	}
 	data := flag.String("data-dir", dataDefault, "Explicit local pilot data directory")
 	candidates := flag.Bool("candidate-manifests", candidateBuild == "1", "Use the separate candidate fixture desktop")
+	stable := flag.Bool("candidate-stable", stableBuild == "1", "Use candidate stable and roster within the candidate fixture desktop")
 	flag.Parse()
+	if *stable && !*candidates {
+		return errors.New("Candidate stable requires the candidate fixture desktop.")
+	}
 	dataExplicit := false
 	flag.Visit(func(f *flag.Flag) {
 		if f.Name == "data-dir" {
@@ -241,7 +247,12 @@ func run() (resultErr error) {
 		filepath.Join(filepath.Dir(filepath.Clean(*data)), "LocalManifestPilot"),
 		filepath.Clean(filepath.Join(resources, "..", "..")),
 	}}
-	if *candidates {
+	if *stable {
+		gym.stableHelper, err = bridge.LaunchStable(helperPath, filepath.Clean(*data), nodePath)
+		if err == nil {
+			gym.manifestHelper = gym.stableHelper
+		}
+	} else if *candidates {
 		gym.manifestHelper, err = bridge.LaunchManifests(helperPath, filepath.Clean(*data), nodePath)
 	} else {
 		gym.helper, err = bridge.LaunchAccounts(helperPath, filepath.Clean(*data), nodePath)
@@ -253,6 +264,9 @@ func run() (resultErr error) {
 	title, startURL := "SLUG Account Pilot", "/"
 	if *candidates {
 		title, startURL = "SLUG Candidate Pilot", "/manifest.html"
+		if *stable {
+			startURL = "/stable.html"
+		}
 	}
 	if configDir, err := os.UserConfigDir(); err == nil {
 		gym.protectedRoots = append(gym.protectedRoots, filepath.Join(configDir, "SLUG"))

@@ -24,6 +24,7 @@ const (
 	View                Capability = "view"
 	Enrollment          Capability = "enrollment"
 	Mining              Capability = "mining"
+	RosterManage        Capability = "roster-manage"
 	RecoveryExport      Capability = "recovery-export"
 	Withdrawal          Capability = "withdrawal"
 	FighterTransfer     Capability = "fighter-transfer"

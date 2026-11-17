@@ -75,6 +75,15 @@ func (c *ManifestController) clearManifestCacheLocked(state, code string) {
 }
 func (c *ManifestController) recomputeProjectionLocked() {
 	p := &c.snapshot.Projection
+	if c.stableSelected {
+		p.State = "idle"
+		p.Error = ""
+		p.Items = []ManifestProspectSummary{}
+		p.ThroughSequence = 0
+		p.CompleteRecent = false
+		p.HasOlder = c.snapshot.AcceptedCount > 0
+		return
+	}
 	p.Items = []ManifestProspectSummary{}
 	p.ThroughSequence = 0
 	for _, v := range c.cache {
@@ -199,7 +208,7 @@ func (c *ManifestController) observeManifest(ctx context.Context, r registry.Man
 				return nil
 			}
 		}
-		if !manifestCacheFits(next, c.receiptSlot) || c.snapshot.Projection.Revision == manifestMaxSafe {
+		if !c.cacheFits(next, c.receiptSlot) || c.snapshot.Projection.Revision == manifestMaxSafe {
 			corrupt = true
 			c.clearManifestCacheLocked("failed", "projection_corrupt")
 			return ErrManifestProjectionCorrupt
@@ -330,7 +339,7 @@ func (c *ManifestController) loadManifestPage(ctx context.Context) (resultErr er
 		next[rows[0].Sequence] = v
 		after++
 	}
-	if !manifestCacheFits(next, nil) {
+	if !c.cacheFits(next, nil) {
 		return ErrManifestProjectionCorrupt
 	}
 	return c.withView(ctx, func(check func() error) error {
@@ -417,7 +426,7 @@ func (c *ManifestController) ManifestPortrait(ctx context.Context, sequence uint
 			return ErrManifestPortrait
 		}
 		v.svg = svg
-		if !manifestCacheFits(c.cache, c.receiptSlot) {
+		if !c.cacheFits(c.cache, c.receiptSlot) {
 			v.svg = ""
 			return ErrManifestPortrait
 		}
@@ -441,7 +450,7 @@ func (c *ManifestController) ManifestReceipt(ctx context.Context, sequence uint6
 			return ErrManifestProspect
 		}
 		selected := ManifestReceipt{Version: 1, View: c.viewPin(), Record: ownedManifestRecord(v.record)}
-		if !manifestCacheFits(c.cache, &selected) {
+		if !c.cacheFits(c.cache, &selected) {
 			return ErrManifestReceipt
 		}
 		c.receiptSlot = &selected
@@ -464,4 +473,8 @@ func (c *ManifestController) ReleaseManifestReceipt(ctx context.Context, viewID,
 		c.receiptSlot = nil
 	}
 	return nil
+}
+
+func (c *ManifestController) cacheFits(cache map[uint64]*manifestCached, slot *ManifestReceipt) bool {
+	return manifestCacheFits(cache, slot) && (c.stable == nil || stableCacheFits(cache, slot))
 }
