@@ -27,8 +27,16 @@ they do not count as completion of this product-release gate.
   and 15-minute live observation are complete.
 - D73 approves the production-profile design. Set 30 implements it with
   explicit public candidate fixtures while final allocation/genesis and real
-  issuance remain gated. Set 31 is implementing fixture provider coordination and restart/replay
-  acceptance; real-provider integration remains a launch gate.
+  issuance remain gated. Set 31's fixture provider coordination, independent
+  vectors, crash/replay and two-wallet normal-PoW acceptance pass locally.
+  Set 30 is deployed and its full observation passed. Set 31 is deployed
+  and under its own observation;
+  real-provider integration remains a launch gate.
+- Set 32 implements bounded resumable candidate recovery with explicit
+  schema 11, high-index address metadata and a separately verified full-node
+  scanner. Frozen normal-PoW file-only restore/spend, full normal module tests
+  and maximum watch measurements pass, including the complete final scanner
+  race and process-kill suite. CI and release gates remain in progress. See `RESUMABLE_RECOVERY.md`.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
