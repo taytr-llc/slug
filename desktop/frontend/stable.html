@@ -39,6 +39,22 @@
       <p id="mutation-state" class="note" role="status"></p>
       <div class="actions"><button id="reconcile" type="button" disabled>Check saved change</button><button id="apply-saved" type="button" disabled>Apply saved choice</button><button id="abandon" type="button" disabled>Discard saved choice</button></div>
     </section>
+    <section class="panel fight-preview" aria-labelledby="preview-heading">
+      <div class="section-top"><h2 id="preview-heading">Fight preview — unrecorded</h2><span id="preview-state">Choose two candidates</span></div>
+      <p>Unrecorded preview. No fight record, training or XP is awarded.</p>
+      <p class="note">Select two saved candidates from the same weight class. Selections stay with you as you browse inventory pages.</p>
+      <ol id="preview-selection" class="preview-selection"></ol>
+      <div class="actions"><button id="preview-begin" type="button" disabled>Preview fight</button><button id="preview-cancel" type="button" disabled>Cancel preview</button><button id="preview-clear" type="button" disabled>Clear selection</button></div>
+      <p id="preview-message" class="note" role="status"></p>
+      <div id="preview-replay" hidden>
+        <p id="preview-asof" class="note"></p>
+        <div id="preview-fighters" class="preview-fighters"></div>
+        <div class="actions"><button id="preview-play" type="button">Play</button><button id="preview-previous" type="button">Previous step</button><button id="preview-next" type="button">Next step</button><button id="preview-restart" type="button">Replay from start</button><button id="preview-result" type="button">Show result</button></div>
+        <p id="preview-motion" class="note"></p><p id="preview-step"></p>
+        <ol id="preview-events" class="preview-events" aria-label="Fight events"></ol>
+        <div id="preview-outcome" hidden><h3 id="preview-finish"></h3><table id="preview-scores" class="condition-table"><caption>Whole-fight scorecard</caption></table></div>
+      </div>
+    </section>
     <section aria-labelledby="candidates-heading">
       <div class="section-top candidate-top"><div><p class="eyebrow">VERIFIED CANDIDATE CONDITION</p><h2 id="candidates-heading" tabindex="-1">Recent candidates</h2></div><div class="actions"><button id="recent" type="button" disabled>Recent</button><button id="inventory" type="button" disabled>Full inventory</button><button id="refresh" type="button" disabled>Refresh this page</button></div></div>
       <p id="coverage" class="note">Conditions are dated authority observations. Browser time does not change attributes or rating.</p>

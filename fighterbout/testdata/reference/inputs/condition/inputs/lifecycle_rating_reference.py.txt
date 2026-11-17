@@ -1,0 +1,46 @@
+# ---------------------------------------------------------------- lifecycle
+
+# D23: total attribute loss by the end of decline, applied gradually.
+# Mined attributes never change; this is a published current-condition
+# adjustment, exactly what marketplace listings must show.
+DECLINE_LOSS = {"Speed": 0.40, "Stamina": 0.30, "Chin": 0.30,
+                "Power": 0.20, "Skill": 0.10}
+
+def phase_at(f, week):
+    """Career phase at a given week since mining (D21-D22)."""
+    if week < f.prime_weeks:
+        return "Prime"
+    if week < f.career_weeks:
+        return "Decline"
+    return "Retired"
+
+def prime_remaining(f, week):
+    return max(0, f.prime_weeks - week)
+
+def effective_attrs(f, week):
+    """Current-condition attributes at a week: mined attrs adjusted
+    for aging only. Full strength through prime, a linear slide across
+    decline, final declined values after retirement (exhibitions)."""
+    phase = phase_at(f, week)
+    if phase == "Prime":
+        return dict(f.attrs)
+    if phase == "Retired":
+        p = 1.0
+    else:
+        p = (week - f.prime_weeks) / f.decline_weeks
+    return {k: round(f.attrs[k] * (1.0 - DECLINE_LOSS[k] * p), 1) for k in ATTRS}
+
+# D65: league rating weights, fitted by logistic regression on 6,000
+# simulated bouts and rounded (rating_study.py). Speed pays twice in
+# the engine (initiative and defense), Chin least in 3-round fights.
+RATING_WEIGHTS = {"Power": 1.0, "Speed": 2.5, "Chin": 0.2,
+                  "Stamina": 0.4, "Skill": 0.8}
+
+def league_rating(lf, week):
+    """D65: rating on current-condition attributes at the given week.
+    Skill includes permanent pro XP; form and the weekly training
+    bonus are excluded."""
+    eff = dict(effective_attrs(lf.f, lf.age(week)))
+    eff["Skill"] += min(15, lf.xp)
+    return sum(RATING_WEIGHTS[a] * eff[a] for a in ATTRS)
+

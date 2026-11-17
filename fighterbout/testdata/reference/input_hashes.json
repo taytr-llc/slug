@@ -1,0 +1,22 @@
+{
+  "inputs/condition/condition_v1.json": "4f5be20e0e6ceb6b2ef4ee4063fffd2691fecb7a71d984f4624eb97162a9dbfa",
+  "inputs/condition/input_hashes.json": "1ab9a78f6246236c87fb9b0304fe5b786b9d5f880f50d18a33ef3b12725419a3",
+  "inputs/condition/inputs/BRAWLCHAIN_SPEC.md": "fe7dc0dc404c35886d6119576722e5b9556b150e1f4f98738562f387d928751d",
+  "inputs/condition/inputs/baseline/dna_v1.json": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+  "inputs/condition/inputs/baseline/reference_dna.py": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+  "inputs/condition/inputs/fight_sim.py": "37ff08917ed720e3d9c4f3b14508c57b08d830f9f4cb01833fa412dbca9b6422",
+  "inputs/condition/inputs/fighter-condition-contract.md": "8ee75162fcd631cae15b33804c787690e60bf4997fae6b7cd536bb771908e654",
+  "inputs/condition/inputs/lifecycle_rating_reference.py.txt": "aa97b6f197d78d0f6245e5c122b482c5e5b1d6e34a74db5224e5f535cbda8d64",
+  "inputs/condition/inputs/rating_study.py": "e561ea57a5dc674f82ce9b881c9de5b83c31d2caf21c209d538c03554384bc70",
+  "inputs/condition/reference_condition.py": "924152a89241e9fa6d60aa27ba19666d3a3f65fdf53bd3c0cf6f89c8db4e946c",
+  "inputs/fight_sim.py": "37ff08917ed720e3d9c4f3b14508c57b08d830f9f4cb01833fa412dbca9b6422",
+  "inputs/manifest/baseline/dna_v1.json": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+  "inputs/manifest/baseline/reference_dna.py": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+  "inputs/manifest/manifests_v1.json": "75eb01acb79f45b74a6445edf956c5e3f3b68024998ae56ab44a7ed07cf15f3d",
+  "inputs/manifest/reference_manifest.py": "9fb1a814047f2329066bb19596e910ac7c4c7aadfce4b8f994e02dab81e51b4f",
+  "inputs/manifest/tables_v1.json": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+  "inputs/set42-fight-contract-draft.md": "abb5b54edd921855b81dc5b99ef29b2ac94cadc9296dcd2981af4b57ad25040f",
+  "inputs/set42-joint-contract-approval.json": "40db1444335f0d7af181601c80d7114da745cec7600004221aac3d776c39bf00",
+  "inputs/set42-preview-integration-draft.md": "149d908fdbd1436b1f1650095c0207f377f5304a5987922bf0cd39ad5949e589",
+  "inputs/set42-preview-ui-draft.md": "ee1d611c4bf6029746be6e487a9c2d5b0ee9ae1e20bdb4811a5450b6f33145a2"
+}

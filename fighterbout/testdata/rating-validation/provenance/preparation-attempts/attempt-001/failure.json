@@ -1,0 +1,29 @@
+{
+  "status": "failed_input_preparation_resource_cap",
+  "recorded_at": "2026-11-17T15:56:19.194801+00:00",
+  "exit_code": 1,
+  "completed_input_families": 14151,
+  "cap": 2000000,
+  "attempted_derivation": 2000001,
+  "new_fits": 0,
+  "new_fights": 0,
+  "external_before_capture": "data/coefficient-input-freeze.json completed before population launch",
+  "source_changes": [],
+  "before_source_sha256": {
+    "common.py": "78790b9d77c8edca11116f2683cac2d05d7f704a1192a79c8dbbf613763977f8",
+    "prepare_inputs.py": "69ea878d22855df8e7bb5e20e94af4336dc00afad9348f629f33c6ad23bad368"
+  },
+  "after_source_sha256": {
+    "common.py": "78790b9d77c8edca11116f2683cac2d05d7f704a1192a79c8dbbf613763977f8",
+    "prepare_inputs.py": "69ea878d22855df8e7bb5e20e94af4336dc00afad9348f629f33c6ad23bad368"
+  },
+  "files": {
+    "prepare_inputs.py": "69ea878d22855df8e7bb5e20e94af4336dc00afad9348f629f33c6ad23bad368",
+    "prepare-population.log": "f8cc627c54b94deb1a99a3aa697b55b71a2b746d025cdfeaa4e01e42232bc4b5",
+    "common.py": "78790b9d77c8edca11116f2683cac2d05d7f704a1192a79c8dbbf613763977f8",
+    "original-input-pins.json": "c838eb52bb6638d88f9fa1f7d13da3bc3ab77a7dba2c735eb78024b461958883",
+    "PROTOCOL.md": "b1e3a27c6dad5956b98dd340efd313998324d656a4d23d7d04b40d3fcc3424d6",
+    "data/population-schedules.jsonl.gz": "77238f28a8ee5e1456fc31c8d0b81379fb727f69f69a72cbdc041d1079abc0c3",
+    "data/population-inputs.jsonl.gz": "7566f34397f9adf50f822ee9e22ac2c28ecc4e27d741f624155d025f8da215a9"
+  }
+}

@@ -1,6 +1,6 @@
 # SLUG launch readiness
 
-Updated November 16, 2026. Numbered change sets are reviewable engineering
+Updated November 17, 2026. Numbered change sets are reviewable engineering
 increments, not a fixed countdown to launch. This checklist tracks the actual
 finish line and must be updated from evidence rather than a branch number.
 
@@ -86,9 +86,30 @@ they do not count as completion of this product-release gate.
   and ten reversible roster slots in the same Candidate Pilot. Core, DOM and
   development helper checks pass, including both retained fixture wallets,
   roster replay/reopen, reset-held actions and process cleanup. Final integrated
-  gates, exact packaged acceptance and seed rollout evidence are tracked in
-  the set41 reports. Entry locking, fights, results/XP and transferable ownership
+  gates, exact packaged acceptance, seed deployment and the full 15-minute
+  observation passed. Entry locking, fights, results/XP and transferable ownership
   remain open; this work does not close visual acceptance or D74.
+- Set 42's isolated implementation adds the deterministic engine and unrecorded
+  same-gym preview. Independent 55-bout conformance, core/helper, native and DOM
+  checks pass. All ten module builds, full normal/cheap-PoW desktop tests,
+  desktop vet, 111 frontend tests and formatting pass. The packaged integration
+  harness compiles. Its first run failed during login when sandbox-denied
+  loopback allocation exposed a typed-nil cleanup crash. The narrow startup
+  repair passes focused and full account-component normal/race/tagged checks;
+  exact packaged acceptance still requires a fresh run. Calibration simulated 9,660
+  fixed inputs; its rounded refit is
+  [0.9, 2.5, 0.2, 0.6, 0.8], differing from D65. The exact-match release gate
+  failed while the other numerical gates passed. Mike's D75 decision retains
+  D65 and rescinds that exact-equality rule, preserving its original failed
+  report. Future rating changes require positive paired-bootstrap evidence
+  validated on prime, aging and XP-varied populations including close pairs;
+  the incumbent wins ties. The 1,000 coefficient refits and 20,000 fresh matchup
+  families passed independent audit. All eight primary paired improvement
+  intervals include zero; the unchanged engine with D65 has explicit D75
+  successor acceptance. The checked source is integrated on the topic branch;
+  package acceptance and release remain ahead.
+  Set 41 remains live. Condition v1, authority pins and saved rosters are unchanged.
+  See `RATING_VALIDATION_POLICY.md` and `RATING_VALIDATION_REPORT.md`.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
@@ -116,6 +137,12 @@ examples of failure/recovery states. Bring a concise list of known design gaps
 and unresolved choices. Mike and Codex review together; a solo code audit or
 automated accessibility check does not replace this session. Capture outcomes
 in a dated review record with owners and validation for each required change.
+
+The D75 studies add two concrete league-design review topics: all 4,000 sampled
+initial-band-edge favorites won, and the set 42 engine produces fewer draws
+than the original simulator under its different score-tie rule. Review those
+findings as matchmaking/gameplay questions; changing a summary rating alone
+does not change a fight. Neither finding authorizes a policy or engine change.
 
 The approved logo handoff is preserved byte-for-byte in the workspace's
 `../brand-assets`: gray background, white front-facing fist, black linework and

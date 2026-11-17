@@ -38,7 +38,7 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 			if err != nil {
 				return err
 			}
-			return pilot.ServeStable(ctx, stdin, stdout, controller)
+			return pilot.ServePreview(ctx, stdin, stdout, controller)
 		}
 		if *accounts {
 			return errors.New("candidate-manifests and account-fixtures are separate modes")

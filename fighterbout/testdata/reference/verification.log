@@ -1,0 +1,10 @@
+["/usr/bin/python3", "-B", "-S", "/Users/taytrrip/slug/set42-fight-reference/verify_reference.py"]
+manifest corpus keys ['preview_only', 'corpus_version', 'generator_id', 'table_hash', 'baseline_sha256', 'selection', 'cases', 'stream_vectors', 'sampling_vectors', 'weight_rank_intervals', 'height_vectors', 'class_vectors', 'style_vectors', 'invalid_manifest_inputs', 'sample_mix']
+{"elapsed": 0.5608594579999995, "cases": 55, "methods": {"decision": 19, "tko_referee": 15, "ko": 14, "tko_three_knockdowns": 5, "tko_corner": 1, "decision_draw": 1}}
+{"status": "passed", "python": "3.9.6 (default, Oct 19 2026, 19:18:13) \n[Clang 21.0.0 (clang-2100.4.1.1)]", "manifest_cases": 50, "condition_cases": 13950, "complete_bouts": 55, "corpus_sha256": "87bd70465fa8c4e83dd55783e4ea0ef8b7f6475ffc74dde86475fd07b0d6ee84"}
+
+["/opt/homebrew/bin/python3", "-B", "-S", "/Users/taytrrip/slug/set42-fight-reference/verify_reference.py"]
+manifest corpus keys ['preview_only', 'corpus_version', 'generator_id', 'table_hash', 'baseline_sha256', 'selection', 'cases', 'stream_vectors', 'sampling_vectors', 'weight_rank_intervals', 'height_vectors', 'class_vectors', 'style_vectors', 'invalid_manifest_inputs', 'sample_mix']
+{"elapsed": 0.3785816250019707, "cases": 55, "methods": {"decision": 19, "tko_referee": 15, "ko": 14, "tko_three_knockdowns": 5, "tko_corner": 1, "decision_draw": 1}}
+{"status": "passed", "python": "3.14.3 (main, Feb  3 2026, 15:32:20) [Clang 17.0.0 (clang-1700.6.3.2)]", "manifest_cases": 50, "condition_cases": 13950, "complete_bouts": 55, "corpus_sha256": "87bd70465fa8c4e83dd55783e4ea0ef8b7f6475ffc74dde86475fd07b0d6ee84"}
+

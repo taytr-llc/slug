@@ -1,0 +1,33 @@
+{
+  "status": "passed",
+  "scope": "compile-only, no accelerator invocation or study fits",
+  "command": [
+    "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++",
+    "-O2",
+    "-std=c++17",
+    "-ffp-contract=off",
+    "-fno-fast-math",
+    "-fno-associative-math",
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+    "-Werror",
+    "/Users/taytrrip/slug/set42-rating-validation/fit_accelerator.cpp",
+    "-o",
+    "/Users/taytrrip/slug/set42-rating-validation/fit_accelerator"
+  ],
+  "exit_code": 0,
+  "wall_seconds": 0.674782917,
+  "compiler": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++",
+  "compiler_sha256": "fc5e3cbba6ad54059295cad716aacb05ace8235f5f7a6031f1d8c15d24bd6d66",
+  "compiler_version": "Apple clang version 21.0.0 (clang-2100.4.1.1)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin\n",
+  "source_sha256": "ed82341a3535dbfa834b7c4e36db3d1e61151937e4b8255e0f4f7f812be6790b",
+  "source_after_sha256": "ed82341a3535dbfa834b7c4e36db3d1e61151937e4b8255e0f4f7f812be6790b",
+  "protocol_sha256": "b1e3a27c6dad5956b98dd340efd313998324d656a4d23d7d04b40d3fcc3424d6",
+  "protocol_after_sha256": "b1e3a27c6dad5956b98dd340efd313998324d656a4d23d7d04b40d3fcc3424d6",
+  "binary_sha256": "0f1b15e5ece246d96aea0cac0b1d578e8b35567d922af367d8a5be6b66cad577",
+  "log_sha256": "11b21a1d92655c11f7121103f1e663febd885599f30ca55615e1d312b73a96c5",
+  "fits_executed": false,
+  "simulations_executed": false,
+  "captured_at_utc": "2026-11-17T15:49:07.534233+00:00"
+}

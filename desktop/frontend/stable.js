@@ -7,6 +7,7 @@ const GENESIS = '7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246c
 const DATE_MAX = 8640000000000000;
 const CACHE_MAX = 1 << 20;
 const ids = ['state', 'account-state', 'account-copy', 'hold', 'login-a', 'login-b', 'logout', 'reset', 'mining', 'mining-copy', 'alert', 'attempts', 'rate', 'accepted', 'pending', 'height', 'wallet-state', 'wallet-height', 'spendable', 'immature', 'payout', 'gym-id', 'export-recovery', 'verify-backup', 'backup', 'refresh', 'coverage', 'announcement', 'empty', 'empty-copy', 'cards', 'candidates-heading', 'stable-state', 'stable-count', 'stable-progress', 'sync', 'pause-sync', 'recent', 'inventory', 'roster-details', 'previous', 'next', 'page-label', 'roster-slots', 'roster-count', 'mutation-state', 'reconcile', 'apply-saved', 'abandon', 'cancel-job'];
+ids.push('preview-state', 'preview-selection', 'preview-begin', 'preview-cancel', 'preview-clear', 'preview-message', 'preview-replay', 'preview-asof', 'preview-fighters', 'preview-play', 'preview-previous', 'preview-next', 'preview-restart', 'preview-result', 'preview-motion', 'preview-step', 'preview-events', 'preview-outcome', 'preview-finish', 'preview-scores');
 const ui = Object.fromEntries(ids.map((id) => [id, document.getElementById(id)]));
 const attrs = ['power', 'speed', 'chin', 'stamina', 'skill'];
 const rarity = ['club', 'professional', 'contender', 'elite', 'generational'];
@@ -267,7 +268,7 @@ function ready() { return accountReady() && stable?.view && currentKey() === vie
 function canEdit() { return ready() && stable.status.caught_up && !stable.status.pending_operation_id && !watched && !flow && !command && !['failed', 'unavailable'].includes(stable.state); }
 function clearCards() { for (const c of cards.values()) { c.image.removeAttribute('src'); c.article.remove(); } cards.clear(); images.clear(); imageAttempts.clear(); }
 function forgetView(clearFlow = true) {
-  epoch++; clearCards(); pageItems = []; watched = null; savedOperation = null; lastViewedJob = ''; pageAfter = pageNext = 0; rosterFirst = 1; rosterNext = 0; pageRevision = null; mode = 'recent';
+  epoch++; clearPreview(); clearCards(); pageItems = []; watched = null; savedOperation = null; lastViewedJob = ''; pageAfter = pageNext = 0; rosterFirst = 1; rosterNext = 0; pageRevision = null; mode = 'recent';
   if (clearFlow) { flow = null; mutationMessage = ''; }
 }
 function disconnected() { forgetView(false); current = stable = null; connectionError = 'The local gym is unavailable. Saved changes remain on disk; reconnect before continuing.'; render(); }
@@ -311,20 +312,28 @@ function makeCard(i) {
   assign.addEventListener('click', () => { const slot = Number(select.value); if (int(slot, 1, 10)) choose(slot, a.prospect_id); });
   save.addEventListener('click', () => oldAction('ExportManifestReceipt', [a.sequence], a.prospect_id));
   retry.addEventListener('click', () => { images.delete(key(i)); imageAttempts.delete(key(i)); image.removeAttribute('src'); image.hidden = true; placeholder.hidden = false; pump(); });
-  actions.append(assign, save, retry); article.append(actions);
+  const preview = element('button', '', 'Select for preview'); preview.type = 'button'; preview.addEventListener('click', () => selectPreview(i));
+  actions.append(assign, save, retry, preview); article.append(actions);
   const details = element('details'), summary = element('summary', '', 'Verified identity'); details.append(summary); const dl = element('dl');
   for (const [name, value] of [['Prospect ID', a.prospect_id], ['Assignment sequence', a.sequence], ['Accepted', date.format(new Date(a.accepted_at_ms))], ['Manifest digest', a.manifest_digest], ['Portrait digest', a.portrait_digest], ['Source receipt digest', a.source_record_digest]]) dl.append(element('dt', '', name), element('dd', '', value));
   details.append(dl); article.append(details);
-  return { article, image, placeholder, assign, save, retry, select, details, item: i, fingerprint: JSON.stringify(i) };
+  return { article, image, placeholder, assign, save, retry, preview, select, details, item: i, fingerprint: JSON.stringify(i) };
 }
 function renderCards() {
   const want = new Set(pageItems.map((i) => i.assignment.prospect_id));
   for (const [id, c] of cards) if (!want.has(id)) { c.image.removeAttribute('src'); c.article.remove(); cards.delete(id); images.delete(key(c.item)); imageAttempts.delete(key(c.item)); }
+  if (!previewCapacity()) { previewImages.clear(); previewRendered = ''; }
+  if (!previewCapacity()) {
+    images.clear();
+    for (const c of cards.values()) { c.image.removeAttribute('src'); c.image.hidden = true; c.placeholder.hidden = false; }
+  }
+  requireValue(previewCapacity());
   for (const [position, i] of pageItems.entries()) {
     const id = i.assignment.prospect_id; let c = cards.get(id);
     if (c && c.fingerprint !== JSON.stringify(i)) { const previous = c; requireValue(same(c.item.assignment, i.assignment) && same(c.item.manifest, i.manifest)); c = makeCard(i); c.select.value = previous.select.value; c.details.open = previous.details.open; previous.image.removeAttribute('src'); previous.article.remove(); cards.set(id, c); }
     if (!c) { c = makeCard(i); cards.set(id, c); }
     if (ui.cards.children[position] !== c.article) ui.cards.insertBefore(c.article, ui.cards.children[position] ?? null);
+    c.preview.disabled = !ready() || !!command || previewSelected.some((v) => v.id === id) || previewSelected.length >= 2;
     c.assign.disabled = !canEdit(); c.select.disabled = !canEdit(); c.save.disabled = !ready() || !!command || !!watched; c.retry.disabled = !ready() || !!command;
     if (images.has(key(i))) { c.image.setAttribute('src', images.get(key(i))); c.image.hidden = false; c.placeholder.hidden = true; }
   }
@@ -363,7 +372,7 @@ function render() {
   ui['apply-saved'].disabled = !signed || !!command || !!watched || !pending || pending.intent.view_id !== s.view.view_id || pending.intent.generation !== s.view.generation || !st.caught_up;
   ui.abandon.disabled = !signed || !!command || !!watched || !pending;
   content(ui.alert, connectionError || message || (stable?.error ? textError(stable.error) : '')); ui.alert.hidden = !ui.alert.textContent;
-  renderRoster(); renderCards();
+  renderRoster(); renderCards(); renderPreview();
 }
 async function call(method, ...args) { requireValue(!activeCall); const p = Call.ByName(`main.Gym.${method}`, ...args); activeCall = p; try { return await p; } finally { activeCall = null; } }
 function schedule() { if (timer !== null) clearTimeout(timer); timer = null; if (!disposed && enabled && !document.hidden) timer = setTimeout(() => { timer = null; pollWanted = true; pump(); }, 1000); }
@@ -385,6 +394,7 @@ async function fetchSnapshots() {
     render();
     const id = watched?.id || next.last_job_id;
     if (id && (watched || id !== lastViewedJob)) await fetchJob(id);
+    if (!disposed && ready() && !tasks.length) await fetchPreviewSnapshot();
   } catch { if (!disposed && captured === epoch) disconnected(); }
 }
 function stablyChangedRoster() { return stable.status.roster_revision !== pageRevision; }
@@ -511,7 +521,7 @@ async function loadPortrait(i) {
     const p = await call('ManifestPortrait', i.assignment.sequence); if (!remains()) return;
     exact(p, ['version', 'view', 'sequence', 'id', 'manifest_digest', 'portrait_digest', 'svg']); const a = i.assignment;
     requireValue(p.version === 1 && viewKey(checkedView(p.view)) === view && p.sequence === a.sequence && p.id === a.prospect_id && p.manifest_digest === a.manifest_digest && p.portrait_digest === a.portrait_digest && imageOnlySVG(p.svg));
-    const src = `data:image/svg+xml;base64,${btoa(p.svg)}`; requireValue([...images.entries()].reduce((n, [other, v]) => n + (other === k ? 0 : v.length), src.length) + JSON.stringify(pageItems).length <= CACHE_MAX && images.size <= 8);
+    const src = `data:image/svg+xml;base64,${btoa(p.svg)}`; requireValue([...images.entries()].reduce((n, [other, v]) => n + (other === k ? 0 : 2 * v.length), 2 * src.length) + JSON.stringify(pageItems).length + previewRetainedBytes() <= CACHE_MAX && images.size <= 8);
     if (!remains()) return; images.set(k, src); const c = cards.get(a.prospect_id); c.image.setAttribute('src', src); c.image.hidden = false; c.placeholder.hidden = true;
   } catch { if (remains()) { const c = cards.get(i.assignment.prospect_id); c.image.removeAttribute('src'); c.image.hidden = true; c.placeholder.hidden = false; content(c.placeholder, 'Portrait unavailable. Reload it from the current verified page.'); } }
 }
@@ -523,11 +533,211 @@ function pump() {
       if (command) break;
       if (pollWanted) { pollWanted = false; await fetchSnapshots(); schedule(); continue; }
       const next = ready() ? pageItems.find((i) => !images.has(key(i)) && !imageAttempts.has(key(i))) : null;
-      if (!next) break; await loadPortrait(next);
+      if (next) { await loadPortrait(next); continue; }
+      const portrait = previewNextPortrait(); if (portrait) { await loadPreviewPortrait(portrait); continue; }
+      break;
     }
   })().catch(() => { if (!disposed) disconnected(); }).finally(() => { background = null; if ((tasks.length || pollWanted) && !disposed && enabled && !document.hidden) pump(); });
   return background;
 }
+const PREVIEW_ENGINE = 'slug-fighter-bout-candidate-v1';
+const PREVIEW_ERRORS = new Set(['invalid_request', 'unauthorized', 'forbidden', 'stale_view', 'busy', 'stable_corrupt', 'stable_clock', 'stable_conflict', 'stable_sync_required', 'outcome_unknown', 'preview_not_found', 'preview_class_mismatch', 'preview_capacity', 'preview_cancelled', 'preview_unavailable', 'preview_observation_unknown']);
+const FINISHES = ['decision', 'decision_draw', 'ko', 'tko_three_knockdowns', 'tko_referee', 'tko_corner', 'double_corner_stoppage'];
+function pairArray(v, fn) { requireValue(Array.isArray(v) && v.length === 2); v.forEach(fn); }
+function boutState(v) {
+  exact(v, ['stamina_q', 'damage_taken_q', 'thrown', 'landed', 'significant', 'damage_dealt_q', 'knockdowns', 'control_q', 'round_knockdowns']);
+  requireValue(int(v.stamina_q, 0, 214000000) && int(v.damage_taken_q, 0, 2699999999) && int(v.damage_dealt_q, 0, 2699999999) && int(v.control_q, 0, 630000000));
+  requireValue(int(v.thrown, 0, 180) && int(v.landed, 0, v.thrown) && int(v.significant, 0, v.landed) && int(v.knockdowns, 0, 180) && int(v.round_knockdowns, 0, 3));
+}
+function boutValue(v, ids) {
+  exact(v, ['version', 'engine_id', 'input_id', 'initial', 'rounds', 'final', 'winner', 'method', 'end_round', 'end_tick', 'scores', 'draw_counts']);
+  requireValue(v.version === 1 && v.engine_id === PREVIEW_ENGINE && hex(v.input_id) && FINISHES.includes(v.method) && int(v.end_round, 1, 3) && int(v.end_tick, 1, 60));
+  pairArray(v.initial, (i) => { exact(i, ['form_q', 'jitter_q', 'effective', 'max_stamina_q', 'ko_threshold_q']); exact(i.effective, attrs); requireValue(int(i.form_q, -100000, 100000) && int(i.jitter_q, 920000, 1080000) && int(i.max_stamina_q, 60000000, 214000000) && int(i.ko_threshold_q, 64000000, 130000000) && attrs.every((k) => int(i.effective[k], 1, k === 'skill' ? 130000000 : 110000000))); });
+  requireValue(Array.isArray(v.rounds) && v.rounds.length === v.end_round);
+  let count = 0;
+  for (const [n, r] of v.rounds.entries()) {
+    exact(r, ['number', 'ticks', 'end', 'recovery']); requireValue(r.number === n + 1 && Array.isArray(r.ticks) && r.ticks.length === (n + 1 === v.end_round ? v.end_tick : 60));
+    for (const [t, e] of r.ticks.entries()) {
+      exact(e, ['number', 'actor', 'strike', 'hit', 'damage_q', 'significant', 'knockdown', 'stoppage', 'states']);
+      requireValue(++count <= 180 && e.number === t + 1 && int(e.actor, 0, 1) && ['jab', 'cross', 'hook', 'uppercut', 'body'].includes(e.strike) && typeof e.hit === 'boolean' && int(e.damage_q, 0, 8999999) && typeof e.significant === 'boolean' && typeof e.knockdown === 'boolean' && ['', 'ko', 'tko_three_knockdowns', 'tko_referee'].includes(e.stoppage));
+      requireValue(e.hit ? e.damage_q > 0 : e.damage_q === 0 && !e.significant && !e.knockdown && e.stoppage === '');
+      pairArray(e.states, boutState); if (e.stoppage) requireValue(n + 1 === v.end_round && t + 1 === v.end_tick && e.stoppage === v.method);
+    }
+    pairArray(r.end, boutState); requireValue(same(r.end, r.ticks.at(-1).states));
+    const recovery = r.number < 3 && r.ticks.length === 60 && !r.ticks.at(-1).stoppage;
+    requireValue((r.recovery !== null) === recovery);
+    if (r.recovery !== null) { exact(r.recovery, ['states', 'corner_stopped']); pairArray(r.recovery.states, boutState); pairArray(r.recovery.corner_stopped, (x) => requireValue(typeof x === 'boolean')); if (r.number !== v.end_round) requireValue(!r.recovery.corner_stopped.some(Boolean)); }
+  }
+  pairArray(v.final, boutState); const last = v.rounds.at(-1); requireValue(same(v.final, last.recovery?.states ?? last.end));
+  pairArray(v.scores, (s, n) => {
+    const keys = ['damage_tenths', 'knockdown_tenths', 'accuracy_tenths', 'volume_tenths', 'control_tenths', 'total_tenths']; exact(s, keys); const f = v.final[n];
+    requireValue(keys.every((k) => int(s[k], 0, 48534)) && s.damage_tenths === halfEven(f.damage_dealt_q, 100000) && s.knockdown_tenths === 100 * f.knockdowns && s.accuracy_tenths === (f.thrown ? halfEven(250 * f.landed, f.thrown) : 0) && s.volume_tenths === 6 * f.significant && s.control_tenths === halfEven(7 * f.control_q, 2000000) && s.total_tenths === keys.slice(0, 5).reduce((sum, k) => sum + s[k], 0));
+  });
+  const draw = ['decision_draw', 'double_corner_stoppage'].includes(v.method); requireValue(draw ? v.winner === '' : ids.includes(v.winner));
+  if (v.method.startsWith('decision')) { requireValue(v.end_round === 3 && v.end_tick === 60 && last.ticks.at(-1).stoppage === '' && (v.scores[0].total_tenths === v.scores[1].total_tenths) === draw); if (!draw) requireValue(v.winner === ids[v.scores[0].total_tenths > v.scores[1].total_tenths ? 0 : 1]); }
+  if (['tko_corner', 'double_corner_stoppage'].includes(v.method)) { requireValue(v.end_round < 3 && v.end_tick === 60 && last.recovery !== null); const flags = last.recovery.corner_stopped; requireValue(flags.filter(Boolean).length === (draw ? 2 : 1)); if (!draw) requireValue(v.winner === ids[flags[0] ? 1 : 0]); }
+  exact(v.draw_counts, ['form_a', 'form_b', 'chin_a', 'chin_b', 'combat']); const d = Object.values(v.draw_counts); requireValue(d.every((x) => int(x, 1, 65536)) && d.reduce((a, b) => a + b, 0) <= 65536);
+  requireValue(JSON.stringify(v).length <= 196608);
+}
+function previewEnvelope(v, kind) {
+  requireValue(v !== null && typeof v === 'object' && JSON.stringify(v).length < 262144 && v.version === 1 && int(v.id, 1) && typeof v.ok === 'boolean');
+  if (!v.ok) { exact(v, ['id', 'version', 'ok', 'error']); requireValue(PREVIEW_ERRORS.has(v.error)); return { ok: false, error: v.error }; }
+  exact(v, ['id', 'version', 'ok', kind]); const value = v[kind];
+  if (kind === 'snapshot') {
+    exact(value, ['version', 'state', 'error', 'view', 'store_id', 'engine_version', 'engine_id', 'active_job_id', 'queued_job_id', 'last_job_id']);
+    requireValue(value.version === 1 && ['unavailable', 'idle', 'busy', 'ready', 'failed', 'cancelled'].includes(value.state) && ['active_job_id', 'queued_job_id', 'last_job_id'].every((k) => optionalID(value[k])));
+    if (value.view === null) requireValue(value.state === 'unavailable' && value.error === '' && value.store_id === '' && value.engine_version === 0 && value.engine_id === '' && value.active_job_id === '' && value.queued_job_id === '' && value.last_job_id === '');
+    else { previewPins(value); requireValue(value.state !== 'unavailable' && (['failed', 'cancelled'].includes(value.state) ? PREVIEW_ERRORS.has(value.error) && value.error !== 'outcome_unknown' : value.error === '')); requireValue(value.state === 'busy' ? !!(value.active_job_id || value.queued_job_id) && !(value.active_job_id && value.queued_job_id) && !value.last_job_id : !value.active_job_id && !value.queued_job_id); requireValue(value.state === 'idle' ? !value.last_job_id : value.state === 'busy' || !!value.last_job_id); if (value.state === 'cancelled') requireValue(value.error === 'preview_cancelled'); }
+  } else {
+    exact(value, ['version', 'job_id', 'state', 'view', 'store_id', 'engine_version', 'engine_id', 'fighter_a_id', 'fighter_b_id', 'error', 'result']); previewPins(value);
+    requireValue(hex(value.job_id) && hex(value.fighter_a_id) && hex(value.fighter_b_id) && value.fighter_a_id < value.fighter_b_id && ['queued', 'running', 'done', 'failed', 'cancelled'].includes(value.state));
+    requireValue(['queued', 'running', 'done'].includes(value.state) ? value.error === '' : PREVIEW_ERRORS.has(value.error) && value.error !== 'outcome_unknown'); if (value.state === 'cancelled') requireValue(value.error === 'preview_cancelled');
+    requireValue((value.result !== null) === (value.state === 'done'));
+    if (value.result !== null) {
+      const r = value.result; exact(r, ['version', 'pair', 'recipe', 'seed', 'engine_result', 'engine_result_digest']); requireValue(r.version === 1 && hex(r.seed) && hex(r.engine_result_digest) && JSON.stringify(r).length <= 229376);
+      const p = r.pair; exact(p, ['version', 'status', 'as_of_ms', 'fighters']); requireValue(p.version === 1 && int(p.as_of_ms, 1, DATE_MAX) && p.status.last_as_of_ms === p.as_of_ms && p.status.store_id === value.store_id && same(p.status.pin, stable.status.pin) && JSON.stringify(p).length <= 24576); status(p.status, value.view, current.account.fixture); pairArray(p.fighters, (i) => fullItem(i, p.status, p.as_of_ms));
+      const ids = [value.fighter_a_id, value.fighter_b_id]; requireValue(p.fighters.every((i, n) => i.assignment.prospect_id === ids[n]) && p.fighters[0].manifest.physical.weight_class === p.fighters[1].manifest.physical.weight_class);
+      const recipe = r.recipe; exact(recipe, ['version', 'engine_version', 'engine_id', 'network', 'genesis', 'store_id', 'source_authority_id', 'descriptor_id', 'as_of_ms', 'rounds', 'training', 'fighters']);
+      requireValue(recipe.version === 1 && recipe.engine_version === 1 && recipe.engine_id === PREVIEW_ENGINE && recipe.network === 0x534c5547 && recipe.genesis === GENESIS && recipe.store_id === value.store_id && recipe.source_authority_id === p.status.pin.source.authority_id && recipe.descriptor_id === DESCRIPTOR && recipe.as_of_ms === p.as_of_ms && recipe.rounds === 3 && JSON.stringify(recipe).length <= 4096);
+      pairArray(recipe.training, (x) => requireValue(x === 0)); pairArray(recipe.fighters, (f, n) => { exact(f, ['prospect_id', 'source_record_digest', 'manifest_digest', 'condition_digest']); const a = p.fighters[n].assignment; requireValue(f.prospect_id === ids[n] && f.source_record_digest === a.source_record_digest && f.manifest_digest === a.manifest_digest && hex(f.condition_digest)); }); boutValue(r.engine_result, ids);
+    }
+  }
+  return { ok: true, value: own(value) }; // Native checks canonical digest bindings.
+}
+function previewPins(v) { requireValue(v.version === 1 && ready() && viewKey(checkedView(v.view)) === currentKey() && v.store_id === stable.status.store_id && v.engine_version === 1 && v.engine_id === PREVIEW_ENGINE); }
+
+let previewSnapshot = null, previewSelected = [], previewWatch = null, previewDiscovery = null, previewResult = null, previewSerial = 0, previewMessage = '';
+let playbackTimer = null, playbackIndex = 0, playbackSteps = [], previewImages = new Map(), previewImageAttempts = new Set(), previewRendered = '';
+const motionPreference = typeof window.matchMedia === 'function' ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+function pausePreview() { if (playbackTimer !== null) clearTimeout(playbackTimer); playbackTimer = null; }
+function discardPreviewResult() { pausePreview(); previewResult = null; playbackSteps = []; playbackIndex = 0; previewImages.clear(); previewImageAttempts.clear(); previewRendered = ''; ui['preview-fighters'].textContent = ''; ui['preview-events'].textContent = ''; ui['preview-scores'].textContent = ''; }
+function clearPreview() { previewSerial++; discardPreviewResult(); previewSelected = []; previewWatch = null; previewDiscovery = null; previewSnapshot = null; previewMessage = ''; ui['preview-selection'].textContent = ''; }
+function previewRetainedBytes() { return JSON.stringify(previewSelected).length + (previewResult ? JSON.stringify(previewResult).length + 65536 : 0) + [...previewImages.values()].reduce((n, src) => n + 2 * src.length, 0); }
+function previewCapacity(extra = 0) { return previewRetainedBytes() + JSON.stringify(pageItems).length + [...images.values()].reduce((n, src) => n + 2 * src.length, 0) + extra <= CACHE_MAX; }
+function previewError(code) { return ({ preview_class_mismatch: 'Choose two candidates from the same weight class.', preview_not_found: 'This preview is no longer retained. Select your pair and explicitly preview again.', preview_capacity: 'The local preview cache is full. Clear the preview and retry.', preview_cancelled: 'Preview cancelled. No fight was recorded.', preview_observation_unknown: 'The authority could not confirm its clock observation. Reopen the gym before another preview. No fight was recorded.', outcome_unknown: 'The preview may have started. Check its status before explicitly trying again.', preview_unavailable: 'Fight preview is unavailable. Your saved candidates are retained.' })[code] ?? textError(code); }
+function previewRefusal(code) {
+  if (['unauthorized', 'stale_view'].includes(code)) clearPreview();
+  else if (['preview_unavailable', 'preview_not_found', 'preview_observation_unknown'].includes(code)) {
+    discardPreviewResult(); previewWatch = null; previewDiscovery = null; previewSnapshot = null;
+  }
+  previewMessage = previewError(code);
+}
+function selectionChanged(next) {
+  const old = previewWatch, oldView = current?.view?.view_id;
+  previewSerial++; previewSelected = next; previewWatch = null; previewDiscovery = null; discardPreviewResult(); previewMessage = '';
+  if (old && oldView) tasks.unshift(async () => { if (ready() && current.view.view_id === oldView) { try { await call('CancelFightPreview', oldView, old.id); } catch {} } });
+  render(); pump();
+}
+function selectPreview(i) {
+  if (!ready() || command || previewSelected.length >= 2 || previewSelected.some((v) => v.id === i.assignment.prospect_id)) return;
+  const next = { id: i.assignment.prospect_id, name: i.manifest.name.display, weightClass: i.manifest.physical.weight_class };
+  if (previewSelected.length && previewSelected[0].weightClass !== next.weightClass) { previewMessage = previewError('preview_class_mismatch'); renderPreview(); return; }
+  selectionChanged([...previewSelected, next]);
+}
+async function fetchPreviewSnapshot() {
+  const captured = epoch, serial = previewSerial, view = currentKey();
+  try {
+    const r = previewEnvelope(await call('PreviewSnapshot'), 'snapshot'); if (disposed || captured !== epoch || view !== currentKey()) return;
+    if (!r.ok) { previewRefusal(r.error); renderPreview(); return; }
+    previewSnapshot = r.value;
+    if (r.value.view === null) { clearPreview(); renderPreview(); return; }
+    // Reconcile the replay present at this observation before awaiting a job.
+    // A busy snapshot can precede a done job; it cannot evict that newer reply.
+    if (previewResult && r.value.last_job_id !== previewResult.job_id) discardPreviewResult();
+    // Discovery is only used for the exact still-selected pair and epoch.
+    const id = previewWatch?.id || (previewDiscovery?.serial === previewSerial ? r.value.active_job_id || r.value.queued_job_id || r.value.last_job_id : '');
+    if (id && serial === previewSerial && previewResult?.job_id !== id && !tasks.length) await fetchPreviewJob(id, serial);
+    renderPreview();
+  } catch { if (!disposed && captured === epoch && view === currentKey()) { discardPreviewResult(); previewSnapshot = null; previewMessage = previewError('preview_unavailable'); renderPreview(); } }
+}
+async function fetchPreviewJob(id, serial = previewSerial) {
+  if (!ready() || previewSelected.length !== 2) return;
+  const captured = epoch, view = currentKey(), ids = previewSelected.map((s) => s.id).sort();
+  const r = previewEnvelope(await call('FightPreviewJob', current.view.view_id, id), 'job');
+  if (disposed || captured !== epoch || serial !== previewSerial || view !== currentKey()) return;
+  if (!r.ok) { previewWatch = null; previewRefusal(r.error); return; }
+  const j = r.value; requireValue(j.job_id === id);
+  if (j.fighter_a_id !== ids[0] || j.fighter_b_id !== ids[1]) return;
+  if (['queued', 'running'].includes(j.state)) { previewWatch = { id, serial }; previewDiscovery = null; return; }
+  previewWatch = null; previewDiscovery = null;
+  if (j.state !== 'done') { previewMessage = previewError(j.error); return; }
+  discardPreviewResult(); previewResult = j; requireValue(previewCapacity());
+  playbackSteps = j.result.engine_result.rounds.flatMap((round) => round.ticks.map((tick) => ({ round: round.number, tick })));
+  previewMessage = 'Preview ready. Playback is paused; use Play or step through the fight.'; content(ui.announcement, 'Unrecorded fight preview ready.');
+}
+async function beginPreview() {
+  if (!ready() || previewSelected.length !== 2 || previewWatch || !previewSnapshot?.view) return;
+  const captured = epoch, serial = previewSerial, view = currentKey(), viewID = current.view.view_id, ids = previewSelected.map((s) => s.id).sort();
+  previewDiscovery = { serial, ids };
+  const r = previewEnvelope(await call('BeginFightPreview', viewID, ...ids), 'job');
+  if (disposed || captured !== epoch || serial !== previewSerial || view !== currentKey()) { if (!disposed && r.ok && ready() && current.view.view_id === viewID) await call('CancelFightPreview', viewID, r.value.job_id); return; }
+  if (!r.ok) { previewRefusal(r.error); if (r.error === 'outcome_unknown') discardPreviewResult(); else previewDiscovery = null; return; }
+  requireValue(r.value.state === 'queued' && r.value.fighter_a_id === ids[0] && r.value.fighter_b_id === ids[1]); discardPreviewResult(); previewWatch = { id: r.value.job_id, serial }; previewDiscovery = null; previewMessage = 'Preparing fight…'; pollWanted = true;
+}
+async function cancelPreview() {
+  if (!ready() || !previewWatch) return; const captured = epoch, serial = previewSerial, id = previewWatch.id;
+  const r = previewEnvelope(await call('CancelFightPreview', current.view.view_id, id), 'job');
+  if (captured !== epoch || serial !== previewSerial) return;
+  if (!r.ok) previewRefusal(r.error);
+  else { requireValue(r.value.job_id === id); previewMessage = 'Cancellation requested. No fight is recorded.'; if (!['queued', 'running'].includes(r.value.state)) previewWatch = null; }
+  pollWanted = true;
+}
+function previewNextPortrait() { return previewResult?.result.pair.fighters.find((i) => !previewImageAttempts.has(i.assignment.prospect_id)) ?? null; }
+async function loadPreviewPortrait(item) {
+  const captured = epoch, serial = previewSerial, j = previewResult, a = item.assignment; if (!j) return; previewImageAttempts.add(a.prospect_id);
+  const remains = () => !disposed && captured === epoch && serial === previewSerial && previewResult === j && ready();
+  try {
+    const r = await call('FightPreviewPortrait', j.view.view_id, j.job_id, a.prospect_id); if (!remains()) return;
+    requireValue(r?.version === 1 && typeof r.ok === 'boolean' && JSON.stringify(r).length <= 98304);
+    if (!r.ok) { exact(r, ['version', 'ok', 'error']); requireValue(PREVIEW_ERRORS.has(r.error)); previewRefusal(r.error); renderPreview(); return; }
+    exact(r, ['version', 'ok', 'portrait']); const p = r.portrait;
+    exact(p, ['version', 'view', 'store_id', 'job_id', 'prospect_id', 'result_digest', 'descriptor_id', 'manifest_digest', 'portrait_digest', 'svg']);
+    requireValue(p.version === 1 && viewKey(checkedView(p.view)) === currentKey() && p.store_id === j.store_id && p.job_id === j.job_id && p.prospect_id === a.prospect_id && p.result_digest === j.result.engine_result_digest && p.descriptor_id === DESCRIPTOR && p.manifest_digest === a.manifest_digest && p.portrait_digest === a.portrait_digest && imageOnlySVG(p.svg));
+    const src = `data:image/svg+xml;base64,${btoa(p.svg)}`; requireValue(previewCapacity(2 * src.length) && previewImages.size < 2); if (!remains()) return; previewImages.set(a.prospect_id, src); renderPreview();
+  } catch { if (remains()) { previewRefusal('preview_unavailable'); renderPreview(); } }
+}
+function stepPreview(n) { pausePreview(); playbackIndex = Math.max(0, Math.min(playbackSteps.length, n)); renderPreview(); }
+function playPreview() {
+  if (!previewResult || motionPreference?.matches || document.hidden) return;
+  if (playbackTimer !== null) { pausePreview(); renderPreview(); return; }
+  if (playbackIndex >= playbackSteps.length) playbackIndex = 0;
+  const serial = previewSerial;
+  const tick = () => { playbackTimer = null; if (disposed || serial !== previewSerial || !previewResult || document.hidden || motionPreference?.matches) return; playbackIndex++; if (playbackIndex < playbackSteps.length) playbackTimer = setTimeout(tick, 250); renderPreview(); };
+  playbackTimer = setTimeout(tick, 250); renderPreview();
+}
+function renderPreview() {
+  content(ui['preview-state'], previewWatch ? 'Preparing fight' : previewResult ? 'Ready to replay' : 'Choose two candidates'); content(ui['preview-message'], previewMessage);
+  const selectionKey = JSON.stringify(previewSelected);
+  if (ui['preview-selection']._selectionKey !== selectionKey) {
+    ui['preview-selection']._selectionKey = selectionKey; ui['preview-selection'].textContent = '';
+    for (const s of previewSelected) { const li = element('li', '', `${s.name} · ${label(s.weightClass)}`), remove = element('button', '', 'Remove'); remove.type = 'button'; remove.setAttribute('aria-label', `Remove ${s.name} from preview`); remove.addEventListener('click', () => selectionChanged(previewSelected.filter((x) => x.id !== s.id))); li.append(remove); ui['preview-selection'].append(li); }
+  }
+  ui['preview-begin'].disabled = !ready() || !previewSnapshot?.view || previewSelected.length !== 2 || !!previewWatch || !!command;
+  ui['preview-cancel'].disabled = !ready() || !previewWatch || !!command; ui['preview-clear'].disabled = previewSelected.length === 0;
+  ui['preview-replay'].hidden = !previewResult; if (!previewResult) return;
+  const j = previewResult, r = j.result.engine_result, fighters = j.result.pair.fighters, names = fighters.map((i) => i.manifest.name.display);
+  content(ui['preview-asof'], `Both conditions observed ${date.format(new Date(j.result.pair.as_of_ms))}. This replay keeps that observation fixed.`);
+  const rendered = j.result.engine_result_digest + JSON.stringify([...previewImages.keys()]);
+  if (previewRendered !== rendered) {
+    previewRendered = rendered; ui['preview-fighters'].textContent = '';
+    for (const [n, i] of fighters.entries()) { const box = element('div', 'preview-fighter'), src = previewImages.get(i.assignment.prospect_id); if (src) { const image = element('img'); image.setAttribute('src', src); image.setAttribute('alt', `Candidate portrait of ${names[n]}`); image.setAttribute('width', '160'); image.setAttribute('height', '160'); box.append(image); } box.append(element('strong', '', names[n]), element('span', 'note', `${label(i.condition.phase)} · Rating ${(i.condition.rating_hundredths / 100).toFixed(2)} · XP 0`)); ui['preview-fighters'].append(box); }
+    ui['preview-scores'].textContent = ''; ui['preview-scores'].append(element('caption', '', 'Whole-fight scorecard')); const head = element('tr'); for (const title of ['Component', ...names]) { const th = element('th', '', title); th.setAttribute('scope', 'col'); head.append(th); } const thead = element('thead'); thead.append(head); ui['preview-scores'].append(thead); const body = element('tbody');
+    for (const [key, title] of [['damage_tenths', 'Damage'], ['knockdown_tenths', 'Knockdowns'], ['accuracy_tenths', 'Accuracy'], ['volume_tenths', 'Volume'], ['control_tenths', 'Control'], ['total_tenths', 'Total']]) { const row = element('tr'), th = element('th', '', title); th.setAttribute('scope', 'row'); row.append(th, ...r.scores.map((score) => element('td', '', (score[key] / 10).toFixed(1)))); body.append(row); } ui['preview-scores'].append(body);
+  }
+  content(ui['preview-play'], playbackTimer === null ? 'Play' : 'Pause'); ui['preview-play'].disabled = !!motionPreference?.matches; ui['preview-previous'].disabled = playbackIndex === 0; ui['preview-next'].disabled = playbackIndex >= playbackSteps.length;
+  content(ui['preview-motion'], motionPreference?.matches ? 'Reduced motion is on. Use Previous step, Next step or Show result.' : 'Playback is local. Pause or step through at any time.');
+  const last = playbackSteps[playbackIndex - 1]; content(ui['preview-step'], last ? `Round ${last.round}, tick ${last.tick.number} · Step ${playbackIndex} of ${playbackSteps.length}` : 'Ready at the opening bell.');
+  ui['preview-events'].textContent = '';
+  for (const event of playbackSteps.slice(0, playbackIndex)) { const t = event.tick; ui['preview-events'].append(element('li', '', `Round ${event.round}, tick ${t.number}: ${names[t.actor]} ${t.hit ? 'lands' : 'misses'} a ${t.strike}.${t.knockdown ? ' Knockdown.' : ''}${t.stoppage ? ` ${label(t.stoppage)}.` : ''}`)); }
+  ui['preview-outcome'].hidden = playbackIndex < playbackSteps.length;
+  const winner = fighters.find((i) => i.assignment.prospect_id === r.winner)?.manifest.name.display;
+  content(ui['preview-finish'], r.method === 'decision_draw' ? 'Draw — equal whole-fight scores' : r.method === 'double_corner_stoppage' ? 'Draw — both corners stopped the fight' : `${winner} wins by ${label(r.method)}.`);
+}
+motionPreference?.addEventListener('change', () => { pausePreview(); renderPreview(); });
+ui['preview-begin'].addEventListener('click', () => queue(async () => { try { await beginPreview(); } catch { discardPreviewResult(); previewMessage = previewError('outcome_unknown'); } }, 'preview'));
+ui['preview-cancel'].addEventListener('click', () => queue(async () => { try { await cancelPreview(); } catch { previewMessage = previewError('preview_unavailable'); } }, 'preview-cancel'));
+ui['preview-clear'].addEventListener('click', () => selectionChanged([]));
+ui['preview-play'].addEventListener('click', playPreview); ui['preview-previous'].addEventListener('click', () => stepPreview(playbackIndex - 1)); ui['preview-next'].addEventListener('click', () => stepPreview(playbackIndex + 1)); ui['preview-restart'].addEventListener('click', () => stepPreview(0)); ui['preview-result'].addEventListener('click', () => stepPreview(playbackSteps.length));
 ui['login-a'].addEventListener('click', () => oldAction('LoginFixture', ['zero256']));
 ui['login-b'].addEventListener('click', () => oldAction('LoginFixture', ['incrementing256']));
 ui.logout.addEventListener('click', () => oldAction('Logout')); ui.reset.addEventListener('click', () => oldAction('ResetFixtureAccount'));
@@ -547,7 +757,7 @@ ui.abandon.addEventListener('click', () => queue(async () => {
 }, 'abandon'));
 ui['cancel-job'].addEventListener('click', () => queue(() => cancelJob(watched?.id || stable?.active_job_id || stable?.queued_job_id), 'cancel'));
 ui['export-recovery'].addEventListener('click', () => oldAction('ExportRecovery')); ui['verify-backup'].addEventListener('click', () => oldAction('VerifyBackup'));
-document.addEventListener('visibilitychange', () => { if (!document.hidden && enabled) { pollWanted = true; pump(); } else if (timer !== null) { clearTimeout(timer); timer = null; } });
-window.addEventListener('pagehide', () => { disposed = true; epoch++; tasks = []; if (timer !== null) clearTimeout(timer); timer = null; clearCards(); pageItems = []; current = stable = null; });
+document.addEventListener('visibilitychange', () => { if (document.hidden) pausePreview(); if (!document.hidden && enabled) { pollWanted = true; pump(); } else if (timer !== null) { clearTimeout(timer); timer = null; } });
+window.addEventListener('pagehide', () => { disposed = true; epoch++; clearPreview(); tasks = []; if (timer !== null) clearTimeout(timer); timer = null; clearCards(); pageItems = []; current = stable = null; });
 render();
 (async () => { try { requireValue(await call('Mode') === MODE); if (disposed) return; enabled = true; pollWanted = true; pump(); } catch { connectionError = 'Open this page through the candidate stable mode.'; render(); } })();

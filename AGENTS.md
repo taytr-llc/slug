@@ -62,7 +62,8 @@ version.
   → `slug-idle-headers` (set 38, idle-chain history serving)
   → `slug-manifest-miner` (set 39, candidate service and durable miner)
   → `slug-manifest-desktop` (set 40, opt-in candidate fixture desktop)
-  → `slug-gym-stable` (set 41, durable candidate stable and ten-slot roster).
+  → `slug-gym-stable` (set 41, durable candidate stable and ten-slot roster)
+  → `slug-fight-preview` (set 42, deterministic unrecorded candidate previews).
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. Continue authorized
@@ -360,6 +361,20 @@ does not understand. Never detach, replace, or clear the /data volume.
   Keep exact duration weeks, nearest-even integer tenths, no added attribute
   floor, XP after aging and the D65 rating without training/form. The caller's
   later trusted event boundary must supply immutable birth and XP.
+
+- D75 (Mike, November 17) keeps D65 unchanged and rescinds set 42's exact
+  rounded-coefficient equality gate. Preserve the failed original report and
+  contract; do not relabel them passed. Rating replacements require a positive
+  paired bootstrap interval excluding zero and population validation covering
+  prime, aging and XP-varied fighters, including close pairings. The incumbent
+  wins ties or inconclusive comparisons. Run and publish coefficient-refitting
+  bootstrap and population-coverage studies on the unchanged set 42 engine.
+  These studies do not authorize new weights, condition v2, historical rewrites
+  or gameplay rebalancing. See `RATING_VALIDATION_POLICY.md`. Other engineering
+  and D74 product-release gates remain in force.
+  The completed independent studies are in `RATING_VALIDATION_REPORT.md`:
+  all eight primary paired improvement intervals include zero. Preserve both
+  that evidence and the original failed equality result; D65 remains unchanged.
 
 - Set 39 adds explicitly pinned candidate service protocol 3 and a separately
   typed worker/outbox version 2. Preserve old services, workers and journals;

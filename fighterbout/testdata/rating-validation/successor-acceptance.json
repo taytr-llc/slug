@@ -1,0 +1,27 @@
+{
+  "status": "passed",
+  "at": "2026-11-17T16:28:40.158135+00:00",
+  "decision": "D75",
+  "scope": "Successor acceptance of unchanged set42 engine with retained D65; not a retroactive pass of the rescinded historical equality rule.",
+  "historical_original_status": "failed",
+  "rescinded_criterion": "rounded_refit_equals_current_d65",
+  "other_original_numerical_gates_passed": true,
+  "coefficient_refits_completed": 1000,
+  "fresh_population_families_completed": 20000,
+  "d65_unchanged": true,
+  "rating_change_authorized": false,
+  "model_change_authorized": false,
+  "challenger_all_eight_positive": false,
+  "source_input_freeze_sha256": "91c30017bf982b2f446e3502fd0a7b5944530c282f095fc96fa1b9b6efde8ce8",
+  "coefficient_report_sha256": "e435ab79a819156697829538d35ed0e3c4d4f4cb640e5120a1d8d2fc44cb15ca",
+  "population_report_sha256": "48f5a230e319530a02ac31fa1dfca0e9d133fbb16a703a47108281912e9a2461",
+  "independent_review_sha256": "89faef53553842a982afac3156cb1a35f1e68deed931dcc7f1595b7dcab3537d",
+  "condition_v1_files_unchanged": 19,
+  "remaining_engineering_gates": [
+    "final documented source commit",
+    "exact packaged normal-PoW preview acceptance and independent verification",
+    "per-set normal-PoW smoke",
+    "authorized seed promotion and full live observation"
+  ],
+  "product_review": "D74 joint design review and pending visual/native/accessibility acceptance remain open."
+}

@@ -1,0 +1,4 @@
+["/usr/bin/python3", "-B", "-S", "/Users/taytrrip/slug/set42-fight-reference/generate_preview.py", "--check"]
+{"status": "passed", "cases": 4, "sha256": "78d49e9dce74d21d83344a2f13c858ced65c74b24e858844f55779cdf298de32", "bytes": 751764}
+["/opt/homebrew/bin/python3", "-B", "-S", "/Users/taytrrip/slug/set42-fight-reference/generate_preview.py", "--check"]
+{"status": "passed", "cases": 4, "sha256": "78d49e9dce74d21d83344a2f13c858ced65c74b24e858844f55779cdf298de32", "bytes": 751764}

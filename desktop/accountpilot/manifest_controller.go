@@ -158,10 +158,12 @@ func (c *ManifestController) login(ctx context.Context, fixture string) (resultE
 	account.ViewLease = func(ctx context.Context, fn func(gymaccount.Account, func() error) error) error {
 		return c.withView(ctx, session, viewID, child, fn)
 	}
-	child, err = c.newChild(pilot.Config{DataDir: dir, NodeBinary: c.config.NodeBinary}, account)
+	created, err := c.newChild(pilot.Config{DataDir: dir, NodeBinary: c.config.NodeBinary}, account)
 	if err != nil {
 		return err
 	}
+	// Failed factories may return typed nils; cleanup owns only a successful child.
+	child = created
 	c.mu.Lock()
 	c.child, c.fixture = child, fixture
 	c.mu.Unlock()

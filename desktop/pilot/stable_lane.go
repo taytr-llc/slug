@@ -14,6 +14,7 @@ import (
 )
 
 type stableTask struct {
+	preview      *PreviewJob
 	followLatest bool
 	result       StableJob
 	ctx          context.Context
@@ -28,6 +29,10 @@ type stableTask struct {
 func (s *StableController) expireQueuedLocked() {
 	if s.queued != nil && s.queued.ctx.Err() != nil {
 		s.queued.cancel()
+		if s.queued.preview != nil {
+			s.cancelQueuedPreviewLocked()
+			return
+		}
 		j := s.queued.result
 		j.State = "cancelled"
 		j.Error = "stable_cancelled"
@@ -43,6 +48,10 @@ func (s *StableController) cancelTasksLocked() {
 	}
 	if s.queued != nil {
 		s.queued.cancel()
+		if s.queued.preview != nil {
+			s.cancelQueuedPreviewLocked()
+			return
+		}
 		s.queued.result.State = "cancelled"
 		s.queued.result.Error = "stable_cancelled"
 		j := s.queued.result
@@ -168,10 +177,20 @@ func (s *StableController) cycle(ctx context.Context) error {
 		s.stableMu.Unlock()
 		return nil
 	}
-	task.result.State = "running"
+	if task.preview != nil {
+		task.preview.State = "running"
+	} else {
+		task.result.State = "running"
+	}
 	s.active = task
 	s.stableMu.Unlock()
+	if task.preview != nil {
+		return s.runPreviewTask(ctx, task)
+	}
 	result := task.result
+	if s.laneCheckpoint != nil {
+		s.laneCheckpoint(result.Kind)
+	}
 	stop := context.AfterFunc(ctx, task.cancel)
 	defer stop()
 	defer task.cancel()
@@ -362,7 +381,7 @@ func (s *StableController) publishStableItems(ctx context.Context, items []gymst
 				delete(next, low)
 			}
 		}
-		if !manifestCacheFits(next, s.receiptSlot) || !stableCacheFits(next, s.receiptSlot) {
+		if !manifestCacheFits(next, s.receiptSlot) || !stableCacheFits(next, s.receiptSlot, s.previewBytes) {
 			return gymstable.ErrCapacity
 		}
 		s.cache = next
@@ -412,7 +431,7 @@ func (s *StableController) StableJob(ctx context.Context, view, id string) (Stab
 		defer s.stableMu.Unlock()
 		s.expireQueuedLocked()
 		for _, t := range []*stableTask{s.active, s.queued} {
-			if t != nil && t.result.JobID == id {
+			if t != nil && t.preview == nil && t.result.JobID == id {
 				out = cloneStableJob(t.result)
 				return nil
 			}
@@ -440,12 +459,12 @@ func (s *StableController) CancelStableJob(ctx context.Context, view, id string)
 	err := s.shortView(ctx, view, func() error {
 		s.stableMu.Lock()
 		defer s.stableMu.Unlock()
-		if s.active != nil && s.active.result.JobID == id {
+		if s.active != nil && s.active.preview == nil && s.active.result.JobID == id {
 			s.active.cancel()
 			out = cloneStableJob(s.active.result)
 			return nil
 		}
-		if s.queued != nil && s.queued.result.JobID == id {
+		if s.queued != nil && s.queued.preview == nil && s.queued.result.JobID == id {
 			s.queued.cancel()
 			s.queued.result.State = "cancelled"
 			s.queued.result.Error = "stable_cancelled"
@@ -545,8 +564,14 @@ func (s *StableController) AbandonStableOperation(ctx context.Context, v, id str
 // 64KiB manifests + 512KiB receipts + 256KiB SVG + 64KiB export
 // The 128KiB closed response allowance plus 8KiB of metadata is reserved
 // inside the shared 1MiB cache ceiling, including later lazy SVG/export writes.
-func stableCacheFits(cache map[uint64]*manifestCached, slot *ManifestReceipt) bool {
+func stableCacheFits(cache map[uint64]*manifestCached, slot *ManifestReceipt, extra ...int) bool {
 	total := gymstable.MaxResponseSize + 8192
+	for _, n := range extra {
+		if n < 0 || n > MaxManifestCacheBytes {
+			return false
+		}
+		total += n
+	}
 	for _, v := range cache {
 		total += v.manifestBytes + v.receiptBytes + len(v.svg)
 	}

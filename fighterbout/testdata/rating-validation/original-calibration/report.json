@@ -1,0 +1,2593 @@
+{
+  "status": "failed",
+  "scope": "frozen independent Python model calibration; Go conformance is separate",
+  "contract_sha256": "abb5b54edd921855b81dc5b99ef29b2ac94cadc9296dcd2981af4b57ad25040f",
+  "gates": {
+    "no_invalid_or_stream": true,
+    "positive_refit": true,
+    "rounded_refit_equals_current_d65": false,
+    "held_d65_at_least_75_percent": true,
+    "held_d65_gap_at_most_2pp": true,
+    "finish_difference_at_most_10pp": true,
+    "mean_end_round_difference_at_most_quarter": true,
+    "held_draws_at_most_10_percent": true,
+    "each_class_draws_at_most_15_percent": true,
+    "mirror_at_least_1500_decisive": true,
+    "mirror_bias_at_most_5_percent": true
+  },
+  "fit": {
+    "status": "completed",
+    "iterations": 400,
+    "precision": 50,
+    "rounding": "ROUND_HALF_EVEN",
+    "weights": [
+      "1.5109125624758156234575530686335049278739220650372",
+      "4.1663914208495939960095930339565465457890326463011",
+      "0.40272829864543429436085638000087190999845361753425",
+      "0.96257806061073389428390987808451918589420905388231",
+      "1.4375040916604738486514740279043727523286580470387"
+    ],
+    "mean": "1.6960228868484103313526772777159630643768550859587",
+    "normalized": [
+      "0.89085623442465975687413521031246126977688364078375",
+      "2.4565655647440469687361986216893618763402837866109",
+      "0.23745451890321686808711352888793528198802381810163",
+      "0.56755015989166226090121270322012738760407515177460",
+      "0.84757352203641414540133993589011418429073360272916"
+    ],
+    "rounded": [
+      "0.9",
+      "2.5",
+      "0.2",
+      "0.6",
+      "0.8"
+    ],
+    "positive": true,
+    "d65_exact": false,
+    "history": [
+      {
+        "iteration": 25,
+        "weights": [
+          "0.46282044148145348389643295743949305999237213564980",
+          "1.6448239323951394231609955407366108746253428933133",
+          "-0.0022687412044707244574942655587405863949976103484811",
+          "0.22751479788985005124342100944080166877261574089986",
+          "0.43370889429059354307029150600052332516555756372463"
+        ]
+      },
+      {
+        "iteration": 50,
+        "weights": [
+          "0.71499141854235298062595612726988697405083288874069",
+          "2.3028293441462821616083363747947800749224572114204",
+          "0.084551523152963445634773110653931539525488443914450",
+          "0.39956006033295299911143757728751550297649173228597",
+          "0.67935402852826921574767639941382224361840362646245"
+        ]
+      },
+      {
+        "iteration": 75,
+        "weights": [
+          "0.88516677054633719794009752696442724339202679686636",
+          "2.7097479475604965328962693633279054986020075713463",
+          "0.15293839965912549659003769083413465913712413076586",
+          "0.52037674793833410550799636156632844363466994554088",
+          "0.84393670936053630186142268001371021735160008279539"
+        ]
+      },
+      {
+        "iteration": 100,
+        "weights": [
+          "1.0099755239289032430589633177968347669341620942203",
+          "3.0001438597309179656935844253837214480582190551401",
+          "0.20437582927160395363707404558056776698929257594405",
+          "0.60949182890513692496633542114223045190751806974180",
+          "0.96365371860168326375704134952195819709618614860434"
+        ]
+      },
+      {
+        "iteration": 125,
+        "weights": [
+          "1.1060534370212581634274170846801585985698490476129",
+          "3.2221075034101326788221983457165055753842256286454",
+          "0.24381278267913057850096597600583261022596966495521",
+          "0.67796426949794427158601332672406535362219694901627",
+          "1.0552639760486062076717665999515107185617893357926"
+        ]
+      },
+      {
+        "iteration": 150,
+        "weights": [
+          "1.1824489581092363819299273246089252718364525930727",
+          "3.3986301053007565088416656760269583678125397938359",
+          "0.27480826771512363858036247669764150106508033812450",
+          "0.73220998162287066339346887149749066144311452745124",
+          "1.1278088331153699224565165442742514447800121248556"
+        ]
+      },
+      {
+        "iteration": 175,
+        "weights": [
+          "1.2446184706416125917648722760659252706990445705230",
+          "3.5426645758029260027042381538112169690092018806662",
+          "0.29971243131455041624242817589791093019904157760508",
+          "0.77618516724265220341851251535540887592880713822786",
+          "1.1866758883863274425354688631022843741342647881774"
+        ]
+      },
+      {
+        "iteration": 200,
+        "weights": [
+          "1.2960929053504015344131024801520407928287688319071",
+          "3.6623143697597051663598119069196796720571450971574",
+          "0.32009033598703872306703748578774911973079432205177",
+          "0.81246748059327579895539904560562278181737247712673",
+          "1.2353153579877348153286039320949958252642957492659"
+        ]
+      },
+      {
+        "iteration": 225,
+        "weights": [
+          "1.3392811302558943667678319758943652742095506794173",
+          "3.7630265314689134602615235369266647854093966690986",
+          "0.33701265998015420429282914934583562801668679542018",
+          "0.84281583289238022436822553702860165042456108169739",
+          "1.2760618937985895387398760869978815951966969731483"
+        ]
+      },
+      {
+        "iteration": 250,
+        "weights": [
+          "1.3758961487028458106118051081050925878654815344969",
+          "3.8486572259067129009145286100097237627766612342546",
+          "0.35123411098239190514610165605672307463629914399209",
+          "0.86847757658781066806470574388508426423614195802217",
+          "1.3105654808248141593978308589533324117973839908988"
+        ]
+      },
+      {
+        "iteration": 275,
+        "weights": [
+          "1.4071976595722202962011816363213366240078040007510",
+          "3.9220447249459932488953966839679797683080315904169",
+          "0.36330209219100864064621618665562073230457202222228",
+          "0.89036626350519006250650929620819345128631723940462",
+          "1.3400338098360989588910571550500139312777096255645"
+        ]
+      },
+      {
+        "iteration": 300,
+        "weights": [
+          "1.4341379215140743177894396279107368190079012818911",
+          "3.9853421410587397689870421073747700786688234159818",
+          "0.37362407187853605023994480646533362193453104721167",
+          "0.90916937517852564487551552105951682197194200593972",
+          "1.3653765515863921430336325587277760649336283788030"
+        ]
+      },
+      {
+        "iteration": 325,
+        "weights": [
+          "1.4574535117424469024247616956302853524009397124979",
+          "4.0402225789512648861026390898747240648968920114743",
+          "0.38251040794663073904158669364220025116797809809232",
+          "0.92541628290771783205292037647520070188777294896462",
+          "1.3872953622090425123564043893942772809326728802279"
+        ]
+      },
+      {
+        "iteration": 350,
+        "weights": [
+          "1.4777252801549137265130490077464060193220499887885",
+          "4.0880118237674435399063036511393399428394945948389",
+          "0.39020230245918687981413020706115006515898510009566",
+          "0.93952264517729786855040897609039455944051500351193",
+          "1.4063423022497163349643094885505487643778742916566"
+        ]
+      },
+      {
+        "iteration": 375,
+        "weights": [
+          "1.4954188186517492070530588964633636882410599463953",
+          "4.1297775734951780560685348864870063724657113620331",
+          "0.39689053013358705579025510727156252753908717480059",
+          "0.95182031781721705292001998338784864129473389838869",
+          "1.4229590630706323870151489087925788969854241161884"
+        ]
+      },
+      {
+        "iteration": 400,
+        "weights": [
+          "1.5109125624758156234575530686335049278739220650372",
+          "4.1663914208495939960095930339565465457890326463011",
+          "0.40272829864543429436085638000087190999845361753425",
+          "0.96257806061073389428390987808451918589420905388231",
+          "1.4375040916604738486514740279043727523286580470387"
+        ]
+      }
+    ],
+    "seconds": 29.620872792002046,
+    "source_hashes": {
+      "reference_bout.py": "c3247a0d856270cc5043b5767ace9f628b2efb9cd120d786773f9221d928bd7f",
+      "generate_corpus.py": "1effa2f9c1aeaa51fc5966e0486dc8e6833f932cc5256adc24283875d9d0f487",
+      "verify_reference.py": "1c06a31f0d6d4551df822601435fc7fad555b0f4e540d18e342a3a44f59c46a5",
+      "select_public_cases.py": "e5e483e7c134b53c5ee5d2b0891e8ca23c3fe828626fdf6403be8537d7e6d114",
+      "select_symmetric_cases.py": "dd815dedc88a9878c626362374fb29c39bb2d6a167c7b11732912151ece5b903",
+      "input_hashes.json": "7d1a9c7a27bc984b2f253d5e7bbe2f1d5bf093a23856309a8e62b8c6982566e1",
+      "selected_public_cases.json": "ff3a23678aee4fe8c56aa81d11a3260fcafa3da9916880ca6369e49efbbbf869",
+      "search_unequal.json": "f9d5e97da29de6bd993337bf60c977c66eeb71351cef9cdadb8e32957bbe8262",
+      "search_balanced.json": "01b4419eb3007f560030c76b3b5d60c39542c517b48799766347cb13b120045f",
+      "bout_v1.json": "87bd70465fa8c4e83dd55783e4ea0ef8b7f6475ffc74dde86475fd07b0d6ee84",
+      "README.md": "4af692b6314a0c666f1209f8dc400bcc6a4c3a8afdfbe1215ab4378aea7a0687",
+      "capture_corpus.py": "99e9510395d51eccd66b337645789cad6209bdcf61fe8668a8b31ed66cf638c8",
+      "inputs/condition/condition_v1.json": "4f5be20e0e6ceb6b2ef4ee4063fffd2691fecb7a71d984f4624eb97162a9dbfa",
+      "inputs/condition/input_hashes.json": "1ab9a78f6246236c87fb9b0304fe5b786b9d5f880f50d18a33ef3b12725419a3",
+      "inputs/condition/inputs/BRAWLCHAIN_SPEC.md": "fe7dc0dc404c35886d6119576722e5b9556b150e1f4f98738562f387d928751d",
+      "inputs/condition/inputs/baseline/dna_v1.json": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+      "inputs/condition/inputs/baseline/reference_dna.py": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+      "inputs/condition/inputs/fight_sim.py": "37ff08917ed720e3d9c4f3b14508c57b08d830f9f4cb01833fa412dbca9b6422",
+      "inputs/condition/inputs/fighter-condition-contract.md": "8ee75162fcd631cae15b33804c787690e60bf4997fae6b7cd536bb771908e654",
+      "inputs/condition/inputs/lifecycle_rating_reference.py.txt": "aa97b6f197d78d0f6245e5c122b482c5e5b1d6e34a74db5224e5f535cbda8d64",
+      "inputs/condition/inputs/rating_study.py": "e561ea57a5dc674f82ce9b881c9de5b83c31d2caf21c209d538c03554384bc70",
+      "inputs/condition/reference_condition.py": "924152a89241e9fa6d60aa27ba19666d3a3f65fdf53bd3c0cf6f89c8db4e946c",
+      "inputs/fight_sim.py": "37ff08917ed720e3d9c4f3b14508c57b08d830f9f4cb01833fa412dbca9b6422",
+      "inputs/manifest/baseline/dna_v1.json": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+      "inputs/manifest/baseline/reference_dna.py": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+      "inputs/manifest/manifests_v1.json": "75eb01acb79f45b74a6445edf956c5e3f3b68024998ae56ab44a7ed07cf15f3d",
+      "inputs/manifest/reference_manifest.py": "9fb1a814047f2329066bb19596e910ac7c4c7aadfce4b8f994e02dab81e51b4f",
+      "inputs/manifest/tables_v1.json": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+      "inputs/set42-fight-contract-draft.md": "abb5b54edd921855b81dc5b99ef29b2ac94cadc9296dcd2981af4b57ad25040f",
+      "inputs/set42-joint-contract-approval.json": "40db1444335f0d7af181601c80d7114da745cec7600004221aac3d776c39bf00",
+      "inputs/set42-preview-integration-draft.md": "149d908fdbd1436b1f1650095c0207f377f5304a5987922bf0cd39ad5949e589",
+      "inputs/set42-preview-ui-draft.md": "ee1d611c4bf6029746be6e487a9c2d5b0ee9ae1e20bdb4811a5450b6f33145a2",
+      "calibrate.py": "fd97524a20556a51bb12a46d032f2fa972250d23f0dd1b4887e7d25b8fdb0297"
+    }
+  },
+  "held": {
+    "n": 2000,
+    "half_points": {
+      "continuous": 3416,
+      "d65": 3402,
+      "total": 2872
+    },
+    "half_point_denominator": 4000,
+    "source_outcome_half_points": {
+      "continuous": 3460,
+      "d65": 3450,
+      "total": 2872
+    },
+    "methods": {
+      "tko_referee": 486,
+      "decision": 888,
+      "ko": 432,
+      "tko_three_knockdowns": 194
+    },
+    "source_methods": {
+      "KO": 426,
+      "Decision": 896,
+      "TKO (referee stoppage)": 479,
+      "TKO (three knockdowns)": 172,
+      "Draw": 26,
+      "TKO (corner stoppage)": 1
+    },
+    "draws": 0,
+    "finishes": 1112,
+    "source_finishes": 1078,
+    "end_round_sum": 5414,
+    "source_end_round_sum": 5419,
+    "mean_end_round": {
+      "numerator": 2707,
+      "denominator": 1000,
+      "decimal": "2.707"
+    },
+    "source_mean_end_round": {
+      "numerator": 5419,
+      "denominator": 2000,
+      "decimal": "2.7095"
+    }
+  },
+  "held_classes": {
+    "light": {
+      "n": 400,
+      "half_points": {
+        "continuous": 672,
+        "d65": 668,
+        "total": 543
+      },
+      "half_point_denominator": 800,
+      "source_outcome_half_points": {
+        "continuous": 702,
+        "d65": 694,
+        "total": 571
+      },
+      "methods": {
+        "tko_referee": 86,
+        "decision": 206,
+        "ko": 81,
+        "tko_three_knockdowns": 27
+      },
+      "source_methods": {
+        "KO": 83,
+        "Decision": 202,
+        "TKO (referee stoppage)": 78,
+        "TKO (three knockdowns)": 33,
+        "Draw": 4
+      },
+      "draws": 0,
+      "finishes": 194,
+      "source_finishes": 194,
+      "end_round_sum": 1090,
+      "source_end_round_sum": 1096,
+      "mean_end_round": {
+        "numerator": 109,
+        "denominator": 40,
+        "decimal": "2.725"
+      },
+      "source_mean_end_round": {
+        "numerator": 137,
+        "denominator": 50,
+        "decimal": "2.74"
+      }
+    },
+    "welter": {
+      "n": 400,
+      "half_points": {
+        "continuous": 692,
+        "d65": 690,
+        "total": 570
+      },
+      "half_point_denominator": 800,
+      "source_outcome_half_points": {
+        "continuous": 698,
+        "d65": 702,
+        "total": 584
+      },
+      "methods": {
+        "ko": 89,
+        "tko_referee": 108,
+        "decision": 157,
+        "tko_three_knockdowns": 46
+      },
+      "source_methods": {
+        "TKO (referee stoppage)": 102,
+        "KO": 97,
+        "Decision": 159,
+        "TKO (three knockdowns)": 36,
+        "Draw": 6
+      },
+      "draws": 0,
+      "finishes": 243,
+      "source_finishes": 235,
+      "end_round_sum": 1070,
+      "source_end_round_sum": 1062,
+      "mean_end_round": {
+        "numerator": 107,
+        "denominator": 40,
+        "decimal": "2.675"
+      },
+      "source_mean_end_round": {
+        "numerator": 531,
+        "denominator": 200,
+        "decimal": "2.655"
+      }
+    },
+    "middle": {
+      "n": 400,
+      "half_points": {
+        "continuous": 664,
+        "d65": 664,
+        "total": 599
+      },
+      "half_point_denominator": 800,
+      "source_outcome_half_points": {
+        "continuous": 684,
+        "d65": 682,
+        "total": 561
+      },
+      "methods": {
+        "tko_referee": 88,
+        "tko_three_knockdowns": 41,
+        "ko": 88,
+        "decision": 183
+      },
+      "source_methods": {
+        "Decision": 179,
+        "TKO (referee stoppage)": 97,
+        "KO": 80,
+        "TKO (three knockdowns)": 38,
+        "Draw": 6
+      },
+      "draws": 0,
+      "finishes": 217,
+      "source_finishes": 215,
+      "end_round_sum": 1077,
+      "source_end_round_sum": 1099,
+      "mean_end_round": {
+        "numerator": 1077,
+        "denominator": 400,
+        "decimal": "2.6925"
+      },
+      "source_mean_end_round": {
+        "numerator": 1099,
+        "denominator": 400,
+        "decimal": "2.7475"
+      }
+    },
+    "light_heavy": {
+      "n": 400,
+      "half_points": {
+        "continuous": 704,
+        "d65": 696,
+        "total": 572
+      },
+      "half_point_denominator": 800,
+      "source_outcome_half_points": {
+        "continuous": 680,
+        "d65": 688,
+        "total": 554
+      },
+      "methods": {
+        "ko": 94,
+        "decision": 172,
+        "tko_referee": 93,
+        "tko_three_knockdowns": 41
+      },
+      "source_methods": {
+        "Decision": 178,
+        "TKO (referee stoppage)": 103,
+        "TKO (three knockdowns)": 36,
+        "KO": 79,
+        "Draw": 4
+      },
+      "draws": 0,
+      "finishes": 228,
+      "source_finishes": 218,
+      "end_round_sum": 1102,
+      "source_end_round_sum": 1080,
+      "mean_end_round": {
+        "numerator": 551,
+        "denominator": 200,
+        "decimal": "2.755"
+      },
+      "source_mean_end_round": {
+        "numerator": 27,
+        "denominator": 10,
+        "decimal": "2.7"
+      }
+    },
+    "heavy": {
+      "n": 400,
+      "half_points": {
+        "continuous": 684,
+        "d65": 684,
+        "total": 588
+      },
+      "half_point_denominator": 800,
+      "source_outcome_half_points": {
+        "continuous": 696,
+        "d65": 684,
+        "total": 602
+      },
+      "methods": {
+        "decision": 170,
+        "tko_referee": 111,
+        "ko": 80,
+        "tko_three_knockdowns": 39
+      },
+      "source_methods": {
+        "Decision": 178,
+        "TKO (referee stoppage)": 99,
+        "TKO (three knockdowns)": 29,
+        "KO": 87,
+        "Draw": 6,
+        "TKO (corner stoppage)": 1
+      },
+      "draws": 0,
+      "finishes": 230,
+      "source_finishes": 216,
+      "end_round_sum": 1075,
+      "source_end_round_sum": 1082,
+      "mean_end_round": {
+        "numerator": 43,
+        "denominator": 16,
+        "decimal": "2.6875"
+      },
+      "source_mean_end_round": {
+        "numerator": 541,
+        "denominator": 200,
+        "decimal": "2.705"
+      }
+    }
+  },
+  "groups": {
+    "prime": {
+      "n": 6000,
+      "half_points": {
+        "continuous": 10243,
+        "d65": 10192,
+        "total": 8491
+      },
+      "half_point_denominator": 12000,
+      "source_outcome_half_points": {
+        "continuous": 10231,
+        "d65": 10216,
+        "total": 8563
+      },
+      "methods": {
+        "decision": 2718,
+        "ko": 1273,
+        "tko_referee": 1443,
+        "tko_three_knockdowns": 565,
+        "decision_draw": 1
+      },
+      "source_methods": {
+        "Decision": 2607,
+        "TKO (referee stoppage)": 1523,
+        "KO": 1247,
+        "Draw": 91,
+        "TKO (three knockdowns)": 528,
+        "TKO (corner stoppage)": 4
+      },
+      "draws": 1,
+      "finishes": 3281,
+      "source_finishes": 3302,
+      "end_round_sum": 16227,
+      "source_end_round_sum": 16275,
+      "mean_end_round": {
+        "numerator": 5409,
+        "denominator": 2000,
+        "decimal": "2.7045"
+      },
+      "source_mean_end_round": {
+        "numerator": 217,
+        "denominator": 80,
+        "decimal": "2.7125"
+      }
+    },
+    "decline": {
+      "n": 1500,
+      "half_points": {
+        "continuous": 2569,
+        "d65": 2581,
+        "total": 2263
+      },
+      "half_point_denominator": 3000,
+      "source_outcome_half_points": {
+        "continuous": 2600,
+        "d65": 2600,
+        "total": 2270
+      },
+      "methods": {
+        "decision": 549,
+        "tko_three_knockdowns": 146,
+        "tko_referee": 414,
+        "ko": 390,
+        "decision_draw": 1
+      },
+      "source_methods": {
+        "Decision": 520,
+        "KO": 421,
+        "TKO (three knockdowns)": 134,
+        "TKO (referee stoppage)": 414,
+        "Draw": 10,
+        "TKO (corner stoppage)": 1
+      },
+      "draws": 1,
+      "finishes": 950,
+      "source_finishes": 970,
+      "end_round_sum": 3965,
+      "source_end_round_sum": 3995,
+      "mean_end_round": {
+        "numerator": 793,
+        "denominator": 300,
+        "decimal": "2.6433333333333333333333333333333333333333333333333"
+      },
+      "source_mean_end_round": {
+        "numerator": 799,
+        "denominator": 300,
+        "decimal": "2.6633333333333333333333333333333333333333333333333"
+      }
+    },
+    "mirror": {
+      "n": 2000,
+      "half_points": {
+        "continuous": 2000,
+        "d65": 2000,
+        "total": 2000
+      },
+      "half_point_denominator": 4000,
+      "source_outcome_half_points": {
+        "continuous": 2000,
+        "d65": 2000,
+        "total": 2000
+      },
+      "methods": {
+        "decision": 1234,
+        "tko_three_knockdowns": 123,
+        "ko": 287,
+        "tko_referee": 350,
+        "tko_corner": 1,
+        "decision_draw": 5
+      },
+      "source_methods": {
+        "Decision": 1165,
+        "TKO (three knockdowns)": 130,
+        "KO": 290,
+        "TKO (referee stoppage)": 342,
+        "Draw": 71,
+        "TKO (corner stoppage)": 2
+      },
+      "draws": 5,
+      "finishes": 761,
+      "source_finishes": 764,
+      "end_round_sum": 5704,
+      "source_end_round_sum": 5718,
+      "mean_end_round": {
+        "numerator": 713,
+        "denominator": 250,
+        "decimal": "2.852"
+      },
+      "source_mean_end_round": {
+        "numerator": 2859,
+        "denominator": 1000,
+        "decimal": "2.859"
+      }
+    },
+    "endpoint": {
+      "n": 160,
+      "half_points": {
+        "continuous": 260,
+        "d65": 262,
+        "total": 226
+      },
+      "half_point_denominator": 320,
+      "source_outcome_half_points": {
+        "continuous": 272,
+        "d65": 274,
+        "total": 222
+      },
+      "methods": {
+        "tko_three_knockdowns": 20,
+        "decision": 47,
+        "tko_referee": 48,
+        "ko": 45
+      },
+      "source_methods": {
+        "TKO (referee stoppage)": 44,
+        "TKO (three knockdowns)": 8,
+        "KO": 66,
+        "Decision": 42
+      },
+      "draws": 0,
+      "finishes": 113,
+      "source_finishes": 118,
+      "end_round_sum": 414,
+      "source_end_round_sum": 430,
+      "mean_end_round": {
+        "numerator": 207,
+        "denominator": 80,
+        "decimal": "2.5875"
+      },
+      "source_mean_end_round": {
+        "numerator": 43,
+        "denominator": 16,
+        "decimal": "2.6875"
+      }
+    }
+  },
+  "held_strata": {
+    "styles": {
+      "['boxer', 'boxer']": {
+        "n": 612,
+        "half_points": {
+          "continuous": 1000,
+          "d65": 996,
+          "total": 792
+        },
+        "half_point_denominator": 1224,
+        "source_outcome_half_points": {
+          "continuous": 1053,
+          "d65": 1035,
+          "total": 773
+        },
+        "methods": {
+          "tko_referee": 114,
+          "decision": 342,
+          "ko": 111,
+          "tko_three_knockdowns": 45
+        },
+        "source_methods": {
+          "KO": 108,
+          "Decision": 342,
+          "TKO (referee stoppage)": 111,
+          "TKO (three knockdowns)": 43,
+          "Draw": 7,
+          "TKO (corner stoppage)": 1
+        },
+        "draws": 0,
+        "finishes": 270,
+        "source_finishes": 263,
+        "end_round_sum": 1704,
+        "source_end_round_sum": 1707,
+        "mean_end_round": {
+          "numerator": 142,
+          "denominator": 51,
+          "decimal": "2.7843137254901960784313725490196078431372549019608"
+        },
+        "source_mean_end_round": {
+          "numerator": 569,
+          "denominator": 204,
+          "decimal": "2.7892156862745098039215686274509803921568627450980"
+        }
+      },
+      "['boxer', 'boxer_puncher']": {
+        "n": 219,
+        "half_points": {
+          "continuous": 400,
+          "d65": 400,
+          "total": 358
+        },
+        "half_point_denominator": 438,
+        "source_outcome_half_points": {
+          "continuous": 393,
+          "d65": 397,
+          "total": 361
+        },
+        "methods": {
+          "tko_referee": 51,
+          "decision": 88,
+          "ko": 60,
+          "tko_three_knockdowns": 20
+        },
+        "source_methods": {
+          "TKO (referee stoppage)": 61,
+          "Decision": 84,
+          "KO": 51,
+          "TKO (three knockdowns)": 20,
+          "Draw": 3
+        },
+        "draws": 0,
+        "finishes": 131,
+        "source_finishes": 132,
+        "end_round_sum": 578,
+        "source_end_round_sum": 581,
+        "mean_end_round": {
+          "numerator": 578,
+          "denominator": 219,
+          "decimal": "2.6392694063926940639269406392694063926940639269406"
+        },
+        "source_mean_end_round": {
+          "numerator": 581,
+          "denominator": 219,
+          "decimal": "2.6529680365296803652968036529680365296803652968037"
+        }
+      },
+      "['boxer', 'outfighter']": {
+        "n": 97,
+        "half_points": {
+          "continuous": 174,
+          "d65": 176,
+          "total": 164
+        },
+        "half_point_denominator": 194,
+        "source_outcome_half_points": {
+          "continuous": 171,
+          "d65": 169,
+          "total": 161
+        },
+        "methods": {
+          "ko": 21,
+          "decision": 47,
+          "tko_referee": 22,
+          "tko_three_knockdowns": 7
+        },
+        "source_methods": {
+          "Decision": 50,
+          "KO": 19,
+          "TKO (three knockdowns)": 8,
+          "TKO (referee stoppage)": 17,
+          "Draw": 3
+        },
+        "draws": 0,
+        "finishes": 50,
+        "source_finishes": 44,
+        "end_round_sum": 264,
+        "source_end_round_sum": 267,
+        "mean_end_round": {
+          "numerator": 264,
+          "denominator": 97,
+          "decimal": "2.7216494845360824742268041237113402061855670103093"
+        },
+        "source_mean_end_round": {
+          "numerator": 267,
+          "denominator": 97,
+          "decimal": "2.7525773195876288659793814432989690721649484536082"
+        }
+      },
+      "['boxer', 'pressure']": {
+        "n": 39,
+        "half_points": {
+          "continuous": 66,
+          "d65": 66,
+          "total": 60
+        },
+        "half_point_denominator": 78,
+        "source_outcome_half_points": {
+          "continuous": 66,
+          "d65": 66,
+          "total": 60
+        },
+        "methods": {
+          "decision": 21,
+          "tko_referee": 9,
+          "tko_three_knockdowns": 2,
+          "ko": 7
+        },
+        "source_methods": {
+          "TKO (referee stoppage)": 10,
+          "TKO (three knockdowns)": 5,
+          "Decision": 18,
+          "KO": 6
+        },
+        "draws": 0,
+        "finishes": 18,
+        "source_finishes": 21,
+        "end_round_sum": 109,
+        "source_end_round_sum": 107,
+        "mean_end_round": {
+          "numerator": 109,
+          "denominator": 39,
+          "decimal": "2.7948717948717948717948717948717948717948717948718"
+        },
+        "source_mean_end_round": {
+          "numerator": 107,
+          "denominator": 39,
+          "decimal": "2.7435897435897435897435897435897435897435897435897"
+        }
+      },
+      "['boxer', 'slugger']": {
+        "n": 119,
+        "half_points": {
+          "continuous": 216,
+          "d65": 212,
+          "total": 151
+        },
+        "half_point_denominator": 238,
+        "source_outcome_half_points": {
+          "continuous": 210,
+          "d65": 210,
+          "total": 145
+        },
+        "methods": {
+          "tko_referee": 45,
+          "ko": 31,
+          "decision": 26,
+          "tko_three_knockdowns": 17
+        },
+        "source_methods": {
+          "TKO (three knockdowns)": 24,
+          "KO": 30,
+          "Decision": 28,
+          "TKO (referee stoppage)": 37
+        },
+        "draws": 0,
+        "finishes": 93,
+        "source_finishes": 91,
+        "end_round_sum": 299,
+        "source_end_round_sum": 293,
+        "mean_end_round": {
+          "numerator": 299,
+          "denominator": 119,
+          "decimal": "2.5126050420168067226890756302521008403361344537815"
+        },
+        "source_mean_end_round": {
+          "numerator": 293,
+          "denominator": 119,
+          "decimal": "2.4621848739495798319327731092436974789915966386555"
+        }
+      },
+      "['boxer_puncher', 'boxer']": {
+        "n": 226,
+        "half_points": {
+          "continuous": 410,
+          "d65": 408,
+          "total": 360
+        },
+        "half_point_denominator": 452,
+        "source_outcome_half_points": {
+          "continuous": 406,
+          "d65": 408,
+          "total": 348
+        },
+        "methods": {
+          "ko": 52,
+          "tko_three_knockdowns": 18,
+          "tko_referee": 75,
+          "decision": 81
+        },
+        "source_methods": {
+          "KO": 60,
+          "TKO (referee stoppage)": 63,
+          "Decision": 81,
+          "TKO (three knockdowns)": 22
+        },
+        "draws": 0,
+        "finishes": 145,
+        "source_finishes": 145,
+        "end_round_sum": 590,
+        "source_end_round_sum": 582,
+        "mean_end_round": {
+          "numerator": 295,
+          "denominator": 113,
+          "decimal": "2.6106194690265486725663716814159292035398230088496"
+        },
+        "source_mean_end_round": {
+          "numerator": 291,
+          "denominator": 113,
+          "decimal": "2.5752212389380530973451327433628318584070796460177"
+        }
+      },
+      "['boxer_puncher', 'boxer_puncher']": {
+        "n": 100,
+        "half_points": {
+          "continuous": 156,
+          "d65": 158,
+          "total": 141
+        },
+        "half_point_denominator": 200,
+        "source_outcome_half_points": {
+          "continuous": 157,
+          "d65": 159,
+          "total": 160
+        },
+        "methods": {
+          "tko_three_knockdowns": 12,
+          "decision": 42,
+          "tko_referee": 23,
+          "ko": 23
+        },
+        "source_methods": {
+          "Decision": 51,
+          "TKO (referee stoppage)": 18,
+          "TKO (three knockdowns)": 6,
+          "KO": 24,
+          "Draw": 1
+        },
+        "draws": 0,
+        "finishes": 58,
+        "source_finishes": 48,
+        "end_round_sum": 279,
+        "source_end_round_sum": 291,
+        "mean_end_round": {
+          "numerator": 279,
+          "denominator": 100,
+          "decimal": "2.79"
+        },
+        "source_mean_end_round": {
+          "numerator": 291,
+          "denominator": 100,
+          "decimal": "2.91"
+        }
+      },
+      "['boxer_puncher', 'outfighter']": {
+        "n": 42,
+        "half_points": {
+          "continuous": 62,
+          "d65": 62,
+          "total": 62
+        },
+        "half_point_denominator": 84,
+        "source_outcome_half_points": {
+          "continuous": 61,
+          "d65": 57,
+          "total": 57
+        },
+        "methods": {
+          "decision": 23,
+          "tko_referee": 11,
+          "ko": 3,
+          "tko_three_knockdowns": 5
+        },
+        "source_methods": {
+          "Decision": 23,
+          "KO": 9,
+          "TKO (referee stoppage)": 8,
+          "Draw": 1,
+          "TKO (three knockdowns)": 1
+        },
+        "draws": 0,
+        "finishes": 19,
+        "source_finishes": 18,
+        "end_round_sum": 119,
+        "source_end_round_sum": 123,
+        "mean_end_round": {
+          "numerator": 17,
+          "denominator": 6,
+          "decimal": "2.8333333333333333333333333333333333333333333333333"
+        },
+        "source_mean_end_round": {
+          "numerator": 41,
+          "denominator": 14,
+          "decimal": "2.9285714285714285714285714285714285714285714285714"
+        }
+      },
+      "['boxer_puncher', 'pressure']": {
+        "n": 15,
+        "half_points": {
+          "continuous": 20,
+          "d65": 20,
+          "total": 18
+        },
+        "half_point_denominator": 30,
+        "source_outcome_half_points": {
+          "continuous": 18,
+          "d65": 22,
+          "total": 20
+        },
+        "methods": {
+          "decision": 10,
+          "tko_referee": 3,
+          "tko_three_knockdowns": 1,
+          "ko": 1
+        },
+        "source_methods": {
+          "Decision": 8,
+          "TKO (referee stoppage)": 3,
+          "Draw": 2,
+          "KO": 2
+        },
+        "draws": 0,
+        "finishes": 5,
+        "source_finishes": 5,
+        "end_round_sum": 45,
+        "source_end_round_sum": 45,
+        "mean_end_round": {
+          "numerator": 3,
+          "denominator": 1,
+          "decimal": "3"
+        },
+        "source_mean_end_round": {
+          "numerator": 3,
+          "denominator": 1,
+          "decimal": "3"
+        }
+      },
+      "['boxer_puncher', 'slugger']": {
+        "n": 38,
+        "half_points": {
+          "continuous": 68,
+          "d65": 68,
+          "total": 56
+        },
+        "half_point_denominator": 76,
+        "source_outcome_half_points": {
+          "continuous": 68,
+          "d65": 68,
+          "total": 56
+        },
+        "methods": {
+          "tko_three_knockdowns": 10,
+          "tko_referee": 14,
+          "ko": 7,
+          "decision": 7
+        },
+        "source_methods": {
+          "KO": 10,
+          "TKO (referee stoppage)": 18,
+          "Decision": 9,
+          "TKO (three knockdowns)": 1
+        },
+        "draws": 0,
+        "finishes": 31,
+        "source_finishes": 29,
+        "end_round_sum": 93,
+        "source_end_round_sum": 95,
+        "mean_end_round": {
+          "numerator": 93,
+          "denominator": 38,
+          "decimal": "2.4473684210526315789473684210526315789473684210526"
+        },
+        "source_mean_end_round": {
+          "numerator": 5,
+          "denominator": 2,
+          "decimal": "2.5"
+        }
+      },
+      "['outfighter', 'boxer']": {
+        "n": 115,
+        "half_points": {
+          "continuous": 204,
+          "d65": 204,
+          "total": 175
+        },
+        "half_point_denominator": 230,
+        "source_outcome_half_points": {
+          "continuous": 205,
+          "d65": 205,
+          "total": 188
+        },
+        "methods": {
+          "decision": 54,
+          "tko_referee": 30,
+          "ko": 18,
+          "tko_three_knockdowns": 13
+        },
+        "source_methods": {
+          "Decision": 58,
+          "TKO (referee stoppage)": 30,
+          "KO": 22,
+          "Draw": 1,
+          "TKO (three knockdowns)": 4
+        },
+        "draws": 0,
+        "finishes": 61,
+        "source_finishes": 56,
+        "end_round_sum": 312,
+        "source_end_round_sum": 314,
+        "mean_end_round": {
+          "numerator": 312,
+          "denominator": 115,
+          "decimal": "2.7130434782608695652173913043478260869565217391304"
+        },
+        "source_mean_end_round": {
+          "numerator": 314,
+          "denominator": 115,
+          "decimal": "2.7304347826086956521739130434782608695652173913043"
+        }
+      },
+      "['outfighter', 'boxer_puncher']": {
+        "n": 32,
+        "half_points": {
+          "continuous": 46,
+          "d65": 46,
+          "total": 48
+        },
+        "half_point_denominator": 64,
+        "source_outcome_half_points": {
+          "continuous": 54,
+          "d65": 54,
+          "total": 56
+        },
+        "methods": {
+          "ko": 4,
+          "decision": 18,
+          "tko_referee": 9,
+          "tko_three_knockdowns": 1
+        },
+        "source_methods": {
+          "Decision": 13,
+          "TKO (referee stoppage)": 11,
+          "KO": 4,
+          "TKO (three knockdowns)": 2,
+          "Draw": 2
+        },
+        "draws": 0,
+        "finishes": 14,
+        "source_finishes": 17,
+        "end_round_sum": 94,
+        "source_end_round_sum": 91,
+        "mean_end_round": {
+          "numerator": 47,
+          "denominator": 16,
+          "decimal": "2.9375"
+        },
+        "source_mean_end_round": {
+          "numerator": 91,
+          "denominator": 32,
+          "decimal": "2.84375"
+        }
+      },
+      "['outfighter', 'outfighter']": {
+        "n": 18,
+        "half_points": {
+          "continuous": 28,
+          "d65": 28,
+          "total": 26
+        },
+        "half_point_denominator": 36,
+        "source_outcome_half_points": {
+          "continuous": 32,
+          "d65": 32,
+          "total": 30
+        },
+        "methods": {
+          "ko": 4,
+          "tko_referee": 3,
+          "tko_three_knockdowns": 1,
+          "decision": 10
+        },
+        "source_methods": {
+          "KO": 3,
+          "Decision": 9,
+          "TKO (referee stoppage)": 4,
+          "TKO (three knockdowns)": 2
+        },
+        "draws": 0,
+        "finishes": 8,
+        "source_finishes": 9,
+        "end_round_sum": 53,
+        "source_end_round_sum": 52,
+        "mean_end_round": {
+          "numerator": 53,
+          "denominator": 18,
+          "decimal": "2.9444444444444444444444444444444444444444444444444"
+        },
+        "source_mean_end_round": {
+          "numerator": 26,
+          "denominator": 9,
+          "decimal": "2.8888888888888888888888888888888888888888888888889"
+        }
+      },
+      "['outfighter', 'pressure']": {
+        "n": 11,
+        "half_points": {
+          "continuous": 14,
+          "d65": 14,
+          "total": 12
+        },
+        "half_point_denominator": 22,
+        "source_outcome_half_points": {
+          "continuous": 14,
+          "d65": 14,
+          "total": 16
+        },
+        "methods": {
+          "decision": 8,
+          "ko": 1,
+          "tko_referee": 1,
+          "tko_three_knockdowns": 1
+        },
+        "source_methods": {
+          "Decision": 9,
+          "TKO (referee stoppage)": 1,
+          "TKO (three knockdowns)": 1
+        },
+        "draws": 0,
+        "finishes": 3,
+        "source_finishes": 2,
+        "end_round_sum": 32,
+        "source_end_round_sum": 33,
+        "mean_end_round": {
+          "numerator": 32,
+          "denominator": 11,
+          "decimal": "2.9090909090909090909090909090909090909090909090909"
+        },
+        "source_mean_end_round": {
+          "numerator": 3,
+          "denominator": 1,
+          "decimal": "3"
+        }
+      },
+      "['outfighter', 'slugger']": {
+        "n": 28,
+        "half_points": {
+          "continuous": 52,
+          "d65": 50,
+          "total": 46
+        },
+        "half_point_denominator": 56,
+        "source_outcome_half_points": {
+          "continuous": 47,
+          "d65": 45,
+          "total": 49
+        },
+        "methods": {
+          "tko_referee": 14,
+          "decision": 5,
+          "ko": 7,
+          "tko_three_knockdowns": 2
+        },
+        "source_methods": {
+          "TKO (referee stoppage)": 8,
+          "Draw": 1,
+          "Decision": 8,
+          "TKO (three knockdowns)": 3,
+          "KO": 8
+        },
+        "draws": 0,
+        "finishes": 23,
+        "source_finishes": 19,
+        "end_round_sum": 76,
+        "source_end_round_sum": 75,
+        "mean_end_round": {
+          "numerator": 19,
+          "denominator": 7,
+          "decimal": "2.7142857142857142857142857142857142857142857142857"
+        },
+        "source_mean_end_round": {
+          "numerator": 75,
+          "denominator": 28,
+          "decimal": "2.6785714285714285714285714285714285714285714285714"
+        }
+      },
+      "['pressure', 'boxer']": {
+        "n": 33,
+        "half_points": {
+          "continuous": 60,
+          "d65": 56,
+          "total": 62
+        },
+        "half_point_denominator": 66,
+        "source_outcome_half_points": {
+          "continuous": 59,
+          "d65": 61,
+          "total": 53
+        },
+        "methods": {
+          "decision": 14,
+          "ko": 8,
+          "tko_referee": 5,
+          "tko_three_knockdowns": 6
+        },
+        "source_methods": {
+          "Decision": 16,
+          "KO": 7,
+          "TKO (referee stoppage)": 6,
+          "TKO (three knockdowns)": 3,
+          "Draw": 1
+        },
+        "draws": 0,
+        "finishes": 19,
+        "source_finishes": 16,
+        "end_round_sum": 90,
+        "source_end_round_sum": 88,
+        "mean_end_round": {
+          "numerator": 30,
+          "denominator": 11,
+          "decimal": "2.7272727272727272727272727272727272727272727272727"
+        },
+        "source_mean_end_round": {
+          "numerator": 8,
+          "denominator": 3,
+          "decimal": "2.6666666666666666666666666666666666666666666666667"
+        }
+      },
+      "['pressure', 'boxer_puncher']": {
+        "n": 21,
+        "half_points": {
+          "continuous": 28,
+          "d65": 28,
+          "total": 24
+        },
+        "half_point_denominator": 42,
+        "source_outcome_half_points": {
+          "continuous": 39,
+          "d65": 39,
+          "total": 31
+        },
+        "methods": {
+          "decision": 19,
+          "tko_referee": 1,
+          "ko": 1
+        },
+        "source_methods": {
+          "Decision": 15,
+          "Draw": 1,
+          "KO": 2,
+          "TKO (referee stoppage)": 1,
+          "TKO (three knockdowns)": 2
+        },
+        "draws": 0,
+        "finishes": 2,
+        "source_finishes": 5,
+        "end_round_sum": 62,
+        "source_end_round_sum": 61,
+        "mean_end_round": {
+          "numerator": 62,
+          "denominator": 21,
+          "decimal": "2.9523809523809523809523809523809523809523809523810"
+        },
+        "source_mean_end_round": {
+          "numerator": 61,
+          "denominator": 21,
+          "decimal": "2.9047619047619047619047619047619047619047619047619"
+        }
+      },
+      "['pressure', 'outfighter']": {
+        "n": 7,
+        "half_points": {
+          "continuous": 12,
+          "d65": 14,
+          "total": 12
+        },
+        "half_point_denominator": 14,
+        "source_outcome_half_points": {
+          "continuous": 14,
+          "d65": 12,
+          "total": 14
+        },
+        "methods": {
+          "ko": 3,
+          "decision": 2,
+          "tko_three_knockdowns": 1,
+          "tko_referee": 1
+        },
+        "source_methods": {
+          "Decision": 4,
+          "TKO (three knockdowns)": 1,
+          "TKO (referee stoppage)": 2
+        },
+        "draws": 0,
+        "finishes": 5,
+        "source_finishes": 3,
+        "end_round_sum": 20,
+        "source_end_round_sum": 19,
+        "mean_end_round": {
+          "numerator": 20,
+          "denominator": 7,
+          "decimal": "2.8571428571428571428571428571428571428571428571429"
+        },
+        "source_mean_end_round": {
+          "numerator": 19,
+          "denominator": 7,
+          "decimal": "2.7142857142857142857142857142857142857142857142857"
+        }
+      },
+      "['pressure', 'slugger']": {
+        "n": 11,
+        "half_points": {
+          "continuous": 22,
+          "d65": 22,
+          "total": 19
+        },
+        "half_point_denominator": 22,
+        "source_outcome_half_points": {
+          "continuous": 22,
+          "d65": 22,
+          "total": 19
+        },
+        "methods": {
+          "tko_referee": 7,
+          "decision": 3,
+          "tko_three_knockdowns": 1
+        },
+        "source_methods": {
+          "KO": 2,
+          "Decision": 4,
+          "TKO (referee stoppage)": 4,
+          "TKO (three knockdowns)": 1
+        },
+        "draws": 0,
+        "finishes": 8,
+        "source_finishes": 7,
+        "end_round_sum": 30,
+        "source_end_round_sum": 32,
+        "mean_end_round": {
+          "numerator": 30,
+          "denominator": 11,
+          "decimal": "2.7272727272727272727272727272727272727272727272727"
+        },
+        "source_mean_end_round": {
+          "numerator": 32,
+          "denominator": 11,
+          "decimal": "2.9090909090909090909090909090909090909090909090909"
+        }
+      },
+      "['slugger', 'boxer']": {
+        "n": 116,
+        "half_points": {
+          "continuous": 192,
+          "d65": 188,
+          "total": 150
+        },
+        "half_point_denominator": 232,
+        "source_outcome_half_points": {
+          "continuous": 185,
+          "d65": 189,
+          "total": 137
+        },
+        "methods": {
+          "decision": 47,
+          "ko": 31,
+          "tko_referee": 25,
+          "tko_three_knockdowns": 13
+        },
+        "source_methods": {
+          "Decision": 48,
+          "TKO (referee stoppage)": 27,
+          "KO": 32,
+          "TKO (three knockdowns)": 8,
+          "Draw": 1
+        },
+        "draws": 0,
+        "finishes": 69,
+        "source_finishes": 67,
+        "end_round_sum": 316,
+        "source_end_round_sum": 313,
+        "mean_end_round": {
+          "numerator": 79,
+          "denominator": 29,
+          "decimal": "2.7241379310344827586206896551724137931034482758621"
+        },
+        "source_mean_end_round": {
+          "numerator": 313,
+          "denominator": 116,
+          "decimal": "2.6982758620689655172413793103448275862068965517241"
+        }
+      },
+      "['slugger', 'boxer_puncher']": {
+        "n": 51,
+        "half_points": {
+          "continuous": 96,
+          "d65": 96,
+          "total": 68
+        },
+        "half_point_denominator": 102,
+        "source_outcome_half_points": {
+          "continuous": 100,
+          "d65": 100,
+          "total": 62
+        },
+        "methods": {
+          "tko_three_knockdowns": 8,
+          "decision": 10,
+          "tko_referee": 14,
+          "ko": 19
+        },
+        "source_methods": {
+          "KO": 15,
+          "TKO (referee stoppage)": 20,
+          "Decision": 9,
+          "TKO (three knockdowns)": 5,
+          "Draw": 2
+        },
+        "draws": 0,
+        "finishes": 41,
+        "source_finishes": 40,
+        "end_round_sum": 127,
+        "source_end_round_sum": 126,
+        "mean_end_round": {
+          "numerator": 127,
+          "denominator": 51,
+          "decimal": "2.4901960784313725490196078431372549019607843137255"
+        },
+        "source_mean_end_round": {
+          "numerator": 42,
+          "denominator": 17,
+          "decimal": "2.4705882352941176470588235294117647058823529411765"
+        }
+      },
+      "['slugger', 'outfighter']": {
+        "n": 20,
+        "half_points": {
+          "continuous": 40,
+          "d65": 40,
+          "total": 28
+        },
+        "half_point_denominator": 40,
+        "source_outcome_half_points": {
+          "continuous": 36,
+          "d65": 36,
+          "total": 32
+        },
+        "methods": {
+          "tko_referee": 2,
+          "decision": 7,
+          "ko": 10,
+          "tko_three_knockdowns": 1
+        },
+        "source_methods": {
+          "KO": 7,
+          "TKO (referee stoppage)": 8,
+          "TKO (three knockdowns)": 3,
+          "Decision": 2
+        },
+        "draws": 0,
+        "finishes": 13,
+        "source_finishes": 18,
+        "end_round_sum": 51,
+        "source_end_round_sum": 48,
+        "mean_end_round": {
+          "numerator": 51,
+          "denominator": 20,
+          "decimal": "2.55"
+        },
+        "source_mean_end_round": {
+          "numerator": 12,
+          "denominator": 5,
+          "decimal": "2.4"
+        }
+      },
+      "['slugger', 'pressure']": {
+        "n": 5,
+        "half_points": {
+          "continuous": 10,
+          "d65": 10,
+          "total": 8
+        },
+        "half_point_denominator": 10,
+        "source_outcome_half_points": {
+          "continuous": 10,
+          "d65": 10,
+          "total": 8
+        },
+        "methods": {
+          "decision": 2,
+          "ko": 2,
+          "tko_referee": 1
+        },
+        "source_methods": {
+          "TKO (referee stoppage)": 1,
+          "TKO (three knockdowns)": 1,
+          "Decision": 1,
+          "KO": 2
+        },
+        "draws": 0,
+        "finishes": 3,
+        "source_finishes": 4,
+        "end_round_sum": 15,
+        "source_end_round_sum": 14,
+        "mean_end_round": {
+          "numerator": 3,
+          "denominator": 1,
+          "decimal": "3"
+        },
+        "source_mean_end_round": {
+          "numerator": 14,
+          "denominator": 5,
+          "decimal": "2.8"
+        }
+      },
+      "['slugger', 'slugger']": {
+        "n": 25,
+        "half_points": {
+          "continuous": 40,
+          "d65": 40,
+          "total": 32
+        },
+        "half_point_denominator": 50,
+        "source_outcome_half_points": {
+          "continuous": 40,
+          "d65": 40,
+          "total": 36
+        },
+        "methods": {
+          "tko_three_knockdowns": 9,
+          "ko": 8,
+          "tko_referee": 6,
+          "decision": 2
+        },
+        "source_methods": {
+          "TKO (referee stoppage)": 10,
+          "KO": 3,
+          "Decision": 6,
+          "TKO (three knockdowns)": 6
+        },
+        "draws": 0,
+        "finishes": 23,
+        "source_finishes": 19,
+        "end_round_sum": 56,
+        "source_end_round_sum": 62,
+        "mean_end_round": {
+          "numerator": 56,
+          "denominator": 25,
+          "decimal": "2.24"
+        },
+        "source_mean_end_round": {
+          "numerator": 62,
+          "denominator": 25,
+          "decimal": "2.48"
+        }
+      }
+    },
+    "stances": {
+      "['orthodox', 'orthodox']": {
+        "n": 1115,
+        "half_points": {
+          "continuous": 1882,
+          "d65": 1880,
+          "total": 1601
+        },
+        "half_point_denominator": 2230,
+        "source_outcome_half_points": {
+          "continuous": 1918,
+          "d65": 1910,
+          "total": 1609
+        },
+        "methods": {
+          "decision": 516,
+          "ko": 233,
+          "tko_three_knockdowns": 102,
+          "tko_referee": 264
+        },
+        "source_methods": {
+          "Decision": 535,
+          "TKO (referee stoppage)": 249,
+          "TKO (three knockdowns)": 92,
+          "KO": 224,
+          "Draw": 14,
+          "TKO (corner stoppage)": 1
+        },
+        "draws": 0,
+        "finishes": 599,
+        "source_finishes": 566,
+        "end_round_sum": 3045,
+        "source_end_round_sum": 3039,
+        "mean_end_round": {
+          "numerator": 609,
+          "denominator": 223,
+          "decimal": "2.7309417040358744394618834080717488789237668161435"
+        },
+        "source_mean_end_round": {
+          "numerator": 3039,
+          "denominator": 1115,
+          "decimal": "2.7255605381165919282511210762331838565022421524664"
+        }
+      },
+      "['orthodox', 'southpaw']": {
+        "n": 383,
+        "half_points": {
+          "continuous": 666,
+          "d65": 664,
+          "total": 555
+        },
+        "half_point_denominator": 766,
+        "source_outcome_half_points": {
+          "continuous": 672,
+          "d65": 666,
+          "total": 559
+        },
+        "methods": {
+          "tko_referee": 97,
+          "decision": 153,
+          "ko": 96,
+          "tko_three_knockdowns": 37
+        },
+        "source_methods": {
+          "KO": 88,
+          "Decision": 141,
+          "TKO (referee stoppage)": 111,
+          "TKO (three knockdowns)": 37,
+          "Draw": 6
+        },
+        "draws": 0,
+        "finishes": 230,
+        "source_finishes": 236,
+        "end_round_sum": 1021,
+        "source_end_round_sum": 1024,
+        "mean_end_round": {
+          "numerator": 1021,
+          "denominator": 383,
+          "decimal": "2.6657963446475195822454308093994778067885117493473"
+        },
+        "source_mean_end_round": {
+          "numerator": 1024,
+          "denominator": 383,
+          "decimal": "2.6736292428198433420365535248041775456919060052219"
+        }
+      },
+      "['southpaw', 'orthodox']": {
+        "n": 374,
+        "half_points": {
+          "continuous": 650,
+          "d65": 640,
+          "total": 519
+        },
+        "half_point_denominator": 748,
+        "source_outcome_half_points": {
+          "continuous": 646,
+          "d65": 650,
+          "total": 527
+        },
+        "methods": {
+          "decision": 155,
+          "tko_three_knockdowns": 44,
+          "tko_referee": 95,
+          "ko": 80
+        },
+        "source_methods": {
+          "Decision": 157,
+          "KO": 85,
+          "TKO (referee stoppage)": 95,
+          "TKO (three knockdowns)": 33,
+          "Draw": 4
+        },
+        "draws": 0,
+        "finishes": 219,
+        "source_finishes": 213,
+        "end_round_sum": 996,
+        "source_end_round_sum": 1006,
+        "mean_end_round": {
+          "numerator": 498,
+          "denominator": 187,
+          "decimal": "2.6631016042780748663101604278074866310160427807487"
+        },
+        "source_mean_end_round": {
+          "numerator": 503,
+          "denominator": 187,
+          "decimal": "2.6898395721925133689839572192513368983957219251337"
+        }
+      },
+      "['southpaw', 'southpaw']": {
+        "n": 128,
+        "half_points": {
+          "continuous": 218,
+          "d65": 218,
+          "total": 197
+        },
+        "half_point_denominator": 256,
+        "source_outcome_half_points": {
+          "continuous": 224,
+          "d65": 224,
+          "total": 177
+        },
+        "methods": {
+          "decision": 64,
+          "ko": 23,
+          "tko_referee": 30,
+          "tko_three_knockdowns": 11
+        },
+        "source_methods": {
+          "Decision": 63,
+          "KO": 29,
+          "TKO (referee stoppage)": 24,
+          "TKO (three knockdowns)": 10,
+          "Draw": 2
+        },
+        "draws": 0,
+        "finishes": 64,
+        "source_finishes": 63,
+        "end_round_sum": 352,
+        "source_end_round_sum": 350,
+        "mean_end_round": {
+          "numerator": 11,
+          "denominator": 4,
+          "decimal": "2.75"
+        },
+        "source_mean_end_round": {
+          "numerator": 175,
+          "denominator": 64,
+          "decimal": "2.734375"
+        }
+      }
+    }
+  },
+  "mirror": {
+    "a_wins": 966,
+    "b_wins": 1029,
+    "draws": 5,
+    "decisive": 1995,
+    "bias": {
+      "numerator": 3,
+      "denominator": 95,
+      "decimal": "0.031578947368421052631578947368421052631578947368421"
+    },
+    "classes": {
+      "light": {
+        "a_wins": 207,
+        "b_wins": 191,
+        "draws": 2
+      },
+      "welter": {
+        "a_wins": 172,
+        "b_wins": 228,
+        "draws": 0
+      },
+      "middle": {
+        "a_wins": 197,
+        "b_wins": 203,
+        "draws": 0
+      },
+      "light_heavy": {
+        "a_wins": 185,
+        "b_wins": 213,
+        "draws": 2
+      },
+      "heavy": {
+        "a_wins": 205,
+        "b_wins": 194,
+        "draws": 1
+      }
+    }
+  },
+  "physical_by_signed_gap": {
+    "reach_zero": {
+      "3": {
+        "n": 19,
+        "changed_outcomes": 1,
+        "changed_scores": 8,
+        "normal_finishes": 12,
+        "alternate_finishes": 10,
+        "normal_round_sum": 50,
+        "alternate_round_sum": 50
+      },
+      "2": {
+        "n": 24,
+        "changed_outcomes": 0,
+        "changed_scores": 11,
+        "normal_finishes": 13,
+        "alternate_finishes": 13,
+        "normal_round_sum": 66,
+        "alternate_round_sum": 65
+      },
+      "-3": {
+        "n": 14,
+        "changed_outcomes": 0,
+        "changed_scores": 8,
+        "normal_finishes": 10,
+        "alternate_finishes": 10,
+        "normal_round_sum": 38,
+        "alternate_round_sum": 38
+      },
+      "1": {
+        "n": 26,
+        "changed_outcomes": 0,
+        "changed_scores": 9,
+        "normal_finishes": 18,
+        "alternate_finishes": 18,
+        "normal_round_sum": 70,
+        "alternate_round_sum": 70
+      },
+      "-4": {
+        "n": 19,
+        "changed_outcomes": 1,
+        "changed_scores": 17,
+        "normal_finishes": 10,
+        "alternate_finishes": 11,
+        "normal_round_sum": 52,
+        "alternate_round_sum": 51
+      },
+      "-5": {
+        "n": 13,
+        "changed_outcomes": 1,
+        "changed_scores": 10,
+        "normal_finishes": 6,
+        "alternate_finishes": 6,
+        "normal_round_sum": 37,
+        "alternate_round_sum": 37
+      },
+      "0": {
+        "n": 15,
+        "changed_outcomes": 0,
+        "changed_scores": 0,
+        "normal_finishes": 12,
+        "alternate_finishes": 12,
+        "normal_round_sum": 35,
+        "alternate_round_sum": 35
+      },
+      "-7": {
+        "n": 5,
+        "changed_outcomes": 1,
+        "changed_scores": 5,
+        "normal_finishes": 0,
+        "alternate_finishes": 0,
+        "normal_round_sum": 15,
+        "alternate_round_sum": 15
+      },
+      "4": {
+        "n": 14,
+        "changed_outcomes": 0,
+        "changed_scores": 11,
+        "normal_finishes": 5,
+        "alternate_finishes": 6,
+        "normal_round_sum": 38,
+        "alternate_round_sum": 39
+      },
+      "5": {
+        "n": 13,
+        "changed_outcomes": 2,
+        "changed_scores": 12,
+        "normal_finishes": 6,
+        "alternate_finishes": 5,
+        "normal_round_sum": 39,
+        "alternate_round_sum": 37
+      },
+      "-6": {
+        "n": 4,
+        "changed_outcomes": 0,
+        "changed_scores": 3,
+        "normal_finishes": 0,
+        "alternate_finishes": 0,
+        "normal_round_sum": 12,
+        "alternate_round_sum": 12
+      },
+      "-2": {
+        "n": 9,
+        "changed_outcomes": 0,
+        "changed_scores": 4,
+        "normal_finishes": 3,
+        "alternate_finishes": 4,
+        "normal_round_sum": 26,
+        "alternate_round_sum": 26
+      },
+      "-1": {
+        "n": 15,
+        "changed_outcomes": 0,
+        "changed_scores": 2,
+        "normal_finishes": 8,
+        "alternate_finishes": 8,
+        "normal_round_sum": 40,
+        "alternate_round_sum": 40
+      },
+      "-8": {
+        "n": 3,
+        "changed_outcomes": 0,
+        "changed_scores": 3,
+        "normal_finishes": 2,
+        "alternate_finishes": 3,
+        "normal_round_sum": 9,
+        "alternate_round_sum": 9
+      },
+      "6": {
+        "n": 4,
+        "changed_outcomes": 0,
+        "changed_scores": 4,
+        "normal_finishes": 0,
+        "alternate_finishes": 0,
+        "normal_round_sum": 12,
+        "alternate_round_sum": 12
+      },
+      "7": {
+        "n": 1,
+        "changed_outcomes": 1,
+        "changed_scores": 1,
+        "normal_finishes": 0,
+        "alternate_finishes": 0,
+        "normal_round_sum": 3,
+        "alternate_round_sum": 3
+      },
+      "9": {
+        "n": 1,
+        "changed_outcomes": 0,
+        "changed_scores": 1,
+        "normal_finishes": 0,
+        "alternate_finishes": 0,
+        "normal_round_sum": 3,
+        "alternate_round_sum": 3
+      },
+      "10": {
+        "n": 1,
+        "changed_outcomes": 0,
+        "changed_scores": 1,
+        "normal_finishes": 1,
+        "alternate_finishes": 1,
+        "normal_round_sum": 2,
+        "alternate_round_sum": 2
+      }
+    },
+    "height_zero": {
+      "2": {
+        "n": 23,
+        "changed_outcomes": 0,
+        "changed_scores": 3,
+        "normal_finishes": 11,
+        "alternate_finishes": 11,
+        "normal_round_sum": 66,
+        "alternate_round_sum": 66
+      },
+      "1": {
+        "n": 26,
+        "changed_outcomes": 0,
+        "changed_scores": 2,
+        "normal_finishes": 18,
+        "alternate_finishes": 18,
+        "normal_round_sum": 67,
+        "alternate_round_sum": 67
+      },
+      "5": {
+        "n": 5,
+        "changed_outcomes": 0,
+        "changed_scores": 3,
+        "normal_finishes": 1,
+        "alternate_finishes": 1,
+        "normal_round_sum": 14,
+        "alternate_round_sum": 14
+      },
+      "0": {
+        "n": 31,
+        "changed_outcomes": 0,
+        "changed_scores": 0,
+        "normal_finishes": 18,
+        "alternate_finishes": 18,
+        "normal_round_sum": 85,
+        "alternate_round_sum": 85
+      },
+      "-1": {
+        "n": 31,
+        "changed_outcomes": 1,
+        "changed_scores": 9,
+        "normal_finishes": 19,
+        "alternate_finishes": 18,
+        "normal_round_sum": 82,
+        "alternate_round_sum": 82
+      },
+      "-4": {
+        "n": 15,
+        "changed_outcomes": 0,
+        "changed_scores": 8,
+        "normal_finishes": 5,
+        "alternate_finishes": 7,
+        "normal_round_sum": 43,
+        "alternate_round_sum": 43
+      },
+      "-3": {
+        "n": 18,
+        "changed_outcomes": 0,
+        "changed_scores": 7,
+        "normal_finishes": 10,
+        "alternate_finishes": 10,
+        "normal_round_sum": 50,
+        "alternate_round_sum": 50
+      },
+      "3": {
+        "n": 18,
+        "changed_outcomes": 1,
+        "changed_scores": 11,
+        "normal_finishes": 9,
+        "alternate_finishes": 8,
+        "normal_round_sum": 50,
+        "alternate_round_sum": 50
+      },
+      "4": {
+        "n": 12,
+        "changed_outcomes": 0,
+        "changed_scores": 6,
+        "normal_finishes": 6,
+        "alternate_finishes": 7,
+        "normal_round_sum": 32,
+        "alternate_round_sum": 32
+      },
+      "-2": {
+        "n": 16,
+        "changed_outcomes": 0,
+        "changed_scores": 3,
+        "normal_finishes": 8,
+        "alternate_finishes": 8,
+        "normal_round_sum": 43,
+        "alternate_round_sum": 43
+      },
+      "-6": {
+        "n": 1,
+        "changed_outcomes": 0,
+        "changed_scores": 1,
+        "normal_finishes": 0,
+        "alternate_finishes": 0,
+        "normal_round_sum": 3,
+        "alternate_round_sum": 3
+      },
+      "8": {
+        "n": 1,
+        "changed_outcomes": 0,
+        "changed_scores": 1,
+        "normal_finishes": 1,
+        "alternate_finishes": 1,
+        "normal_round_sum": 3,
+        "alternate_round_sum": 2
+      },
+      "-5": {
+        "n": 2,
+        "changed_outcomes": 0,
+        "changed_scores": 1,
+        "normal_finishes": 0,
+        "alternate_finishes": 0,
+        "normal_round_sum": 6,
+        "alternate_round_sum": 6
+      },
+      "6": {
+        "n": 1,
+        "changed_outcomes": 0,
+        "changed_scores": 0,
+        "normal_finishes": 0,
+        "alternate_finishes": 0,
+        "normal_round_sum": 3,
+        "alternate_round_sum": 3
+      }
+    },
+    "mass_one": {
+      "-6": {
+        "n": 10,
+        "changed_outcomes": 0,
+        "changed_scores": 10,
+        "normal_finishes": 6,
+        "alternate_finishes": 6,
+        "normal_round_sum": 27,
+        "alternate_round_sum": 27
+      },
+      "-1": {
+        "n": 9,
+        "changed_outcomes": 0,
+        "changed_scores": 9,
+        "normal_finishes": 6,
+        "alternate_finishes": 6,
+        "normal_round_sum": 26,
+        "alternate_round_sum": 26
+      },
+      "12": {
+        "n": 7,
+        "changed_outcomes": 2,
+        "changed_scores": 7,
+        "normal_finishes": 4,
+        "alternate_finishes": 3,
+        "normal_round_sum": 20,
+        "alternate_round_sum": 21
+      },
+      "-2": {
+        "n": 7,
+        "changed_outcomes": 0,
+        "changed_scores": 7,
+        "normal_finishes": 3,
+        "alternate_finishes": 3,
+        "normal_round_sum": 19,
+        "alternate_round_sum": 19
+      },
+      "6": {
+        "n": 7,
+        "changed_outcomes": 0,
+        "changed_scores": 7,
+        "normal_finishes": 4,
+        "alternate_finishes": 4,
+        "normal_round_sum": 20,
+        "alternate_round_sum": 20
+      },
+      "4": {
+        "n": 5,
+        "changed_outcomes": 0,
+        "changed_scores": 5,
+        "normal_finishes": 2,
+        "alternate_finishes": 2,
+        "normal_round_sum": 15,
+        "alternate_round_sum": 15
+      },
+      "10": {
+        "n": 4,
+        "changed_outcomes": 0,
+        "changed_scores": 4,
+        "normal_finishes": 2,
+        "alternate_finishes": 2,
+        "normal_round_sum": 12,
+        "alternate_round_sum": 12
+      },
+      "13": {
+        "n": 2,
+        "changed_outcomes": 0,
+        "changed_scores": 2,
+        "normal_finishes": 2,
+        "alternate_finishes": 2,
+        "normal_round_sum": 4,
+        "alternate_round_sum": 4
+      },
+      "1": {
+        "n": 12,
+        "changed_outcomes": 0,
+        "changed_scores": 11,
+        "normal_finishes": 6,
+        "alternate_finishes": 6,
+        "normal_round_sum": 32,
+        "alternate_round_sum": 32
+      },
+      "3": {
+        "n": 10,
+        "changed_outcomes": 0,
+        "changed_scores": 10,
+        "normal_finishes": 5,
+        "alternate_finishes": 5,
+        "normal_round_sum": 29,
+        "alternate_round_sum": 29
+      },
+      "-7": {
+        "n": 13,
+        "changed_outcomes": 0,
+        "changed_scores": 13,
+        "normal_finishes": 10,
+        "alternate_finishes": 10,
+        "normal_round_sum": 29,
+        "alternate_round_sum": 29
+      },
+      "9": {
+        "n": 5,
+        "changed_outcomes": 0,
+        "changed_scores": 5,
+        "normal_finishes": 3,
+        "alternate_finishes": 3,
+        "normal_round_sum": 14,
+        "alternate_round_sum": 14
+      },
+      "5": {
+        "n": 6,
+        "changed_outcomes": 0,
+        "changed_scores": 6,
+        "normal_finishes": 5,
+        "alternate_finishes": 5,
+        "normal_round_sum": 16,
+        "alternate_round_sum": 16
+      },
+      "7": {
+        "n": 5,
+        "changed_outcomes": 1,
+        "changed_scores": 5,
+        "normal_finishes": 3,
+        "alternate_finishes": 3,
+        "normal_round_sum": 13,
+        "alternate_round_sum": 13
+      },
+      "-4": {
+        "n": 5,
+        "changed_outcomes": 0,
+        "changed_scores": 5,
+        "normal_finishes": 1,
+        "alternate_finishes": 1,
+        "normal_round_sum": 15,
+        "alternate_round_sum": 15
+      },
+      "-11": {
+        "n": 5,
+        "changed_outcomes": 0,
+        "changed_scores": 5,
+        "normal_finishes": 3,
+        "alternate_finishes": 2,
+        "normal_round_sum": 14,
+        "alternate_round_sum": 14
+      },
+      "8": {
+        "n": 6,
+        "changed_outcomes": 0,
+        "changed_scores": 6,
+        "normal_finishes": 3,
+        "alternate_finishes": 3,
+        "normal_round_sum": 15,
+        "alternate_round_sum": 15
+      },
+      "-3": {
+        "n": 7,
+        "changed_outcomes": 0,
+        "changed_scores": 7,
+        "normal_finishes": 2,
+        "alternate_finishes": 2,
+        "normal_round_sum": 21,
+        "alternate_round_sum": 21
+      },
+      "2": {
+        "n": 6,
+        "changed_outcomes": 0,
+        "changed_scores": 6,
+        "normal_finishes": 1,
+        "alternate_finishes": 1,
+        "normal_round_sum": 18,
+        "alternate_round_sum": 17
+      },
+      "-13": {
+        "n": 3,
+        "changed_outcomes": 0,
+        "changed_scores": 3,
+        "normal_finishes": 0,
+        "alternate_finishes": 1,
+        "normal_round_sum": 9,
+        "alternate_round_sum": 9
+      },
+      "11": {
+        "n": 8,
+        "changed_outcomes": 0,
+        "changed_scores": 8,
+        "normal_finishes": 6,
+        "alternate_finishes": 5,
+        "normal_round_sum": 21,
+        "alternate_round_sum": 21
+      },
+      "-5": {
+        "n": 4,
+        "changed_outcomes": 0,
+        "changed_scores": 4,
+        "normal_finishes": 1,
+        "alternate_finishes": 1,
+        "normal_round_sum": 12,
+        "alternate_round_sum": 12
+      },
+      "-15": {
+        "n": 5,
+        "changed_outcomes": 0,
+        "changed_scores": 5,
+        "normal_finishes": 2,
+        "alternate_finishes": 2,
+        "normal_round_sum": 12,
+        "alternate_round_sum": 12
+      },
+      "-8": {
+        "n": 7,
+        "changed_outcomes": 0,
+        "changed_scores": 7,
+        "normal_finishes": 3,
+        "alternate_finishes": 3,
+        "normal_round_sum": 19,
+        "alternate_round_sum": 19
+      },
+      "14": {
+        "n": 1,
+        "changed_outcomes": 0,
+        "changed_scores": 1,
+        "normal_finishes": 1,
+        "alternate_finishes": 1,
+        "normal_round_sum": 3,
+        "alternate_round_sum": 3
+      },
+      "-16": {
+        "n": 3,
+        "changed_outcomes": 0,
+        "changed_scores": 3,
+        "normal_finishes": 1,
+        "alternate_finishes": 1,
+        "normal_round_sum": 8,
+        "alternate_round_sum": 8
+      },
+      "-12": {
+        "n": 2,
+        "changed_outcomes": 0,
+        "changed_scores": 2,
+        "normal_finishes": 1,
+        "alternate_finishes": 1,
+        "normal_round_sum": 6,
+        "alternate_round_sum": 6
+      },
+      "18": {
+        "n": 3,
+        "changed_outcomes": 0,
+        "changed_scores": 3,
+        "normal_finishes": 2,
+        "alternate_finishes": 2,
+        "normal_round_sum": 8,
+        "alternate_round_sum": 8
+      },
+      "-9": {
+        "n": 3,
+        "changed_outcomes": 0,
+        "changed_scores": 3,
+        "normal_finishes": 2,
+        "alternate_finishes": 2,
+        "normal_round_sum": 9,
+        "alternate_round_sum": 9
+      },
+      "15": {
+        "n": 5,
+        "changed_outcomes": 0,
+        "changed_scores": 5,
+        "normal_finishes": 3,
+        "alternate_finishes": 3,
+        "normal_round_sum": 14,
+        "alternate_round_sum": 13
+      },
+      "19": {
+        "n": 2,
+        "changed_outcomes": 0,
+        "changed_scores": 2,
+        "normal_finishes": 0,
+        "alternate_finishes": 0,
+        "normal_round_sum": 6,
+        "alternate_round_sum": 6
+      },
+      "-10": {
+        "n": 6,
+        "changed_outcomes": 0,
+        "changed_scores": 6,
+        "normal_finishes": 3,
+        "alternate_finishes": 3,
+        "normal_round_sum": 15,
+        "alternate_round_sum": 15
+      },
+      "17": {
+        "n": 1,
+        "changed_outcomes": 0,
+        "changed_scores": 1,
+        "normal_finishes": 0,
+        "alternate_finishes": 0,
+        "normal_round_sum": 3,
+        "alternate_round_sum": 3
+      },
+      "0": {
+        "n": 5,
+        "changed_outcomes": 0,
+        "changed_scores": 0,
+        "normal_finishes": 3,
+        "alternate_finishes": 3,
+        "normal_round_sum": 14,
+        "alternate_round_sum": 14
+      },
+      "-26": {
+        "n": 1,
+        "changed_outcomes": 0,
+        "changed_scores": 1,
+        "normal_finishes": 1,
+        "alternate_finishes": 1,
+        "normal_round_sum": 3,
+        "alternate_round_sum": 3
+      },
+      "27": {
+        "n": 1,
+        "changed_outcomes": 0,
+        "changed_scores": 1,
+        "normal_finishes": 1,
+        "alternate_finishes": 1,
+        "normal_round_sum": 3,
+        "alternate_round_sum": 1
+      },
+      "21": {
+        "n": 2,
+        "changed_outcomes": 0,
+        "changed_scores": 2,
+        "normal_finishes": 2,
+        "alternate_finishes": 2,
+        "normal_round_sum": 5,
+        "alternate_round_sum": 5
+      },
+      "23": {
+        "n": 2,
+        "changed_outcomes": 0,
+        "changed_scores": 2,
+        "normal_finishes": 1,
+        "alternate_finishes": 1,
+        "normal_round_sum": 5,
+        "alternate_round_sum": 5
+      },
+      "-27": {
+        "n": 1,
+        "changed_outcomes": 0,
+        "changed_scores": 1,
+        "normal_finishes": 0,
+        "alternate_finishes": 0,
+        "normal_round_sum": 3,
+        "alternate_round_sum": 3
+      },
+      "20": {
+        "n": 3,
+        "changed_outcomes": 1,
+        "changed_scores": 3,
+        "normal_finishes": 2,
+        "alternate_finishes": 2,
+        "normal_round_sum": 7,
+        "alternate_round_sum": 8
+      },
+      "-30": {
+        "n": 1,
+        "changed_outcomes": 0,
+        "changed_scores": 1,
+        "normal_finishes": 0,
+        "alternate_finishes": 0,
+        "normal_round_sum": 3,
+        "alternate_round_sum": 3
+      }
+    }
+  },
+  "bootstrap_intervals": {
+    "key": "b9b4afb29b007a829c1b04182a89d176e91d0d6491bd7eb1fb0f93f8ea7945dc",
+    "raw_words": 2000000,
+    "replicates": 1000,
+    "half_point_denominator": 4000,
+    "indices": [
+      24,
+      974
+    ],
+    "intervals": {
+      "continuous": [
+        3352,
+        3474
+      ],
+      "d65": [
+        3340,
+        3462
+      ],
+      "total": [
+        2794,
+        2947
+      ],
+      "continuous_minus_d65": [
+        -12,
+        38
+      ],
+      "d65_minus_total": [
+        448,
+        615
+      ]
+    }
+  },
+  "artifacts": {
+    "input-freeze.json": "d2f46d9e8527b779ee8b2496b1b03ec003941569a8bcb24c6dd4485c9205c5e3",
+    "inputs.jsonl.gz": "ec9b63064e07d1e7dab0d8baaf307d1ac015540c7f2c938041ea12611622530b",
+    "simulation.json": "9c916d20f33be64402a7de75c001df07952f14bcf3e357c05012a5521f18eb96",
+    "results.jsonl.gz": "b0e1c7aa05575306748a1e69e47a9258aea0554bebe7f479c9b1ce7a297a3446",
+    "outcomes.jsonl.gz": "cf65a0704e300a476b8321f597116ac5cbb9080a40aeb1070d33f49dd857f2b1",
+    "physical.jsonl.gz": "1c8c0427bd101c80c0f4e34c6011701d82313384731da8e884d336cc7f62fdd8",
+    "fit.json": "e759cef7d5999a3512f0cdd853a3af49eace58c9f7beb54bfb5ca0d06b037c4d",
+    "bootstrap.json": "08e82c815d8aa6f86cf825c3758eaec10593929513063eaf84963ba35d20d73a"
+  },
+  "compiled_d65_changed": false,
+  "model_or_threshold_changed": false,
+  "source_changes": []
+}

@@ -1,0 +1,17 @@
+{
+  "phase": "coefficient",
+  "command": [
+    "/opt/homebrew/bin/python3",
+    "-B",
+    "-S",
+    "coefficient_study.py"
+  ],
+  "returncode": 0,
+  "started_at": "2026-11-17T16:18:27.116573+00:00",
+  "finished_at": "2026-11-17T16:20:50.406691+00:00",
+  "wall_seconds": 143.28921062499285,
+  "source_input_freeze_sha256": "91c30017bf982b2f446e3502fd0a7b5944530c282f095fc96fa1b9b6efde8ce8",
+  "execution_release_sha256": "f9533f2129bdeb59efb68e1a2b88d3e5aa06f8e6ff419cc8234763eeb2d19c36",
+  "frozen_unchanged": true,
+  "log_sha256": "4933faf8069a2927e4dba2668797e53db71c5cc7221feca3cb045f672974b109"
+}

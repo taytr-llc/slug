@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "at": "2026-11-17T16:16:45.061114+00:00",
+  "seconds": 83.86564991698833,
+  "families": 20000,
+  "unique_fighter_ids": 40000,
+  "original_input_ids_compared": 9719,
+  "original_fighter_ids_compared": 19428,
+  "disjoint_original_inputs": true,
+  "disjoint_original_fighter_ids": true,
+  "exact_failed_attempt_prefix_rows": 14151,
+  "exact_regenerated_bootstrap_words": 4000000,
+  "exact_regenerated_schedule_words": 29920,
+  "no_fits_or_fights": true,
+  "source_changes": [],
+  "files": {
+    "training.dat": "9b56e57922a5753174139a39b60023be9a8f12fe27f50825562ac9dbf0518057",
+    "indices.dat": "f4f4c1eb6f9067f659bb9f2b4e6ef27ac34a5d726882a2269a39acbf6bdfc08e",
+    "population-inputs.jsonl.gz": "56895841ffcb8e947d6c1dc72a56a81d75979264ba8d19637531e16864250ec5",
+    "population-schedules.jsonl.gz": "d79d86efe81f95f764a2f2281b4f705ba246870944ceb993f64c0ff9445e47a9"
+  }
+}

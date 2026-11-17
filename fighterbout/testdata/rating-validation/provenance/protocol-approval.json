@@ -1,0 +1,14 @@
+{
+  "status": "approved_protocol_for_source_and_input_preparation",
+  "at": "2026-11-17T15:45:49.528786+00:00",
+  "decision": "D75",
+  "protocol_sha256": "b1e3a27c6dad5956b98dd340efd313998324d656a4d23d7d04b40d3fcc3424d6",
+  "independent_review_sha256": "88110d790ad1bf3201da8a8ec985922d6a1bddb554df961858ebc25df1d74c55",
+  "original_input_pins_sha256": "c838eb52bb6638d88f9fa1f7d13da3bc3ab77a7dba2c735eb78024b461958883",
+  "coefficients": "1000 class-stratified refits of original4000 training pairs; Decimal50 checks",
+  "population": "20000 fresh unique families, four phase/XP populations, natural/close/initial-D52-edge panels",
+  "runtime_changes_authorized": false,
+  "rating_changes_authorized": false,
+  "next_gate": "Freeze and review all study sources, compiler binary, output schemas, coefficient resample indices and complete population inputs before refits or fights.",
+  "root_review": "Exact final protocol independently reviewed; reproducibility, ordering, quotas, numerical checks, missing-normalization reporting and limitations are explicit."
+}
