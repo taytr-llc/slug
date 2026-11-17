@@ -58,10 +58,16 @@ they do not count as completion of this product-release gate.
   job version and typed payable-candidate builder. Production activation has
   no entries. Durable authority issuance/admission and trusted historical reads
   must still connect this binding to an accepted fighter.
-- Set 36 is deployed and its full observation passed. Set 37 is implementing
+- Set 36 is deployed and its full observation passed. Set 37 has implemented
   a separate pinned candidate authority that atomically stores immutable birth,
   eligibility and appearance hashes. Verified local reads remain distinct from
   public authenticated publication, current ownership and roster integration.
+- Set 37 deployed, but its fresh observer exposed the inherited 24-hour idle-tip
+  header-serving gate immediately after the unchanged tip aged out. Local
+  reproduction and a separate read-only P2P inventory/block check confirmed
+  the diagnosis and unchanged height61 hash. Set38 repairs this serving gate;
+  fresh sync and full live observation remain pending. No new block is needed.
+  Candidate service/worker integration moves to set39.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
