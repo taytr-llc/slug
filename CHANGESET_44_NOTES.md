@@ -106,3 +106,32 @@ to one second after it. Following-Saturday/DST arithmetic is covered by the
 independent calendar/core tests, not a native session jumped forward one week.
 No GUI/window, portrait-render review, screen-reader acceptance, D74 completion,
 official transferable ownership or seed-finality observation is claimed.
+
+## Subsequent engineering closeout
+
+Implementation `a00ada0d2d3c5e903a4160e598905c667c10ee32` was pushed and
+promoted as master `1fc307e07eec1be7f2466e0aabedb505f8844b0d`. The exact Mac
+bundle passed its two-fixture acceptance in 111.905 seconds. Independent
+verification covered 14 normal-work records, 40 stable items, six fight
+previews, ten entry receipts, six real-clock event phases and coordinator
+restart. All 35 deliberate evidence mutations were rejected as intended.
+
+Railway deployment `164d4386-deef-4502-8466-a5dd290f81f0` succeeded with the
+same volume, network and configuration. Normal-PoW smoke and the full
+900.044-second live observation passed: 31 samples retained height 61, one
+seed peer and 60 checkpoint descendants. Chain verification, stale-template
+refusal, restart and clean owned-process shutdown passed. No public-chain
+mining occurred. The seed remains node-only.
+
+Remote GitHub returned no exact-commit workflow runs or checks; remote CI is
+not claimed passed. The local gates and their diagnostics remain preserved.
+The first commit attempt stopped on whitespace in an original reference
+input; the reviewed single-path exception preserved its exact bytes. The
+first binary freeze could not locate the symbol tool under inherited cache
+settings; the unchanged script passed with the configured writable cache.
+Neither attempt changed runtime source or reached deployment.
+
+Workspace `set44-release.json` binds the completed evidence and
+`set44-closeout.md` records the later rollout separately from the original
+pre-package capture. Real-clock closed-event coverage, the portrait check and
+the complete joint D74 review remain pending as described above.

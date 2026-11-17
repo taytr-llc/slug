@@ -126,13 +126,18 @@ they do not count as completion of this product-release gate.
   eligibility/condition; no seed substitution or automatic cancellation; and
   escalation at the following Saturday lock when the required seed remains
   unfinalized. Independent-reference, normal/race, crash-recovery and desktop
-  composition checks have passed; it is not yet packaged or deployed. Closed
+  composition checks have passed. The exact Mac bundle, independent evidence
+  checks and deployment at master `1fc307e0` passed, followed by the complete
+  15-minute live observation and restart. Closed
   desktop captures use the explicitly tagged test clock with normal PoW;
   successful real-clock closed-bundle coverage awaits an eligible Saturday.
   See `EVENT_SNAPSHOTS.md`.
   Its fixture assignment evidence cannot substitute for production ownership
   history, and its calendar threshold cannot substitute for chain finality.
   See `EVENT_LOCK_POLICY.md`; the D74 review remains pending.
+- Set 45's publication and seed-evidence contract is under review on
+  `slug-event-seed`. It is engineering work in progress, not an implemented
+  seed authority or an official event service.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
