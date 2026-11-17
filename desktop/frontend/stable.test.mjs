@@ -50,7 +50,8 @@ async function flush() { for (let i = 0; i < 25; i++) await setImmediate(); }
 function harness(initial = environment(), mode = 'local-manifest-pilot') {
   const elements = new Map([...html.matchAll(/\bid="([^"]+)"/g)].map((m) => [m[1], new Element()]));
   const document = new Element(); document.hidden = false; document.getElementById = (id) => elements.get(id); document.createElement = (tag) => new Element(tag);
-  const window = new Element(), calls = [], timers = new Map(), jobs = new Map(), history = new Map(); let counter = 0, id = 500, frame = 0, state = clone(initial), concurrent = 0, peak = 0;
+  const window = new Element(), motion = new Element(), timerDelays = new Map(), calls = [], timers = new Map(), jobs = new Map(), history = new Map(); let counter = 0, id = 500, frame = 0, state = clone(initial), concurrent = 0, peak = 0;
+  motion.matches = false; window.matchMedia = () => motion;
   const ok = (kind, value) => ({ id: ++frame, ok: true, [kind]: clone(value) }); const error = (value) => ({ id: ++frame, ok: false, error: value });
   const wrapOp = (o) => ({ version: 1, view: clone(state.manifest.view), store_id: state.stable.status.store_id, operation: o ? clone(o) : null });
   function publish(kind, result, op = '') { const jid = hash(++id), j = makeJob(state, jid, kind, result, op); jobs.set(jid, j); state.stable.last_job_id = jid; return ok('job', { ...j, state: 'queued', sync: null, page: null, roster: null, intent: null, mutation: null }); }
@@ -58,6 +59,7 @@ function harness(initial = environment(), mode = 'local-manifest-pilot') {
   initialJob();
   const handlers = {
     Mode: () => mode, ManifestSnapshot: () => clone(state.manifest), StableSnapshot: () => ok('snapshot', state.stable),
+    PreviewSnapshot: () => ({ id: ++frame, version: 1, ok: true, snapshot: { version: 1, state: state.manifest.view ? 'idle' : 'unavailable', error: '', view: clone(state.manifest.view), store_id: state.stable.status?.store_id ?? '', engine_version: state.manifest.view ? 1 : 0, engine_id: state.manifest.view ? 'slug-fighter-bout-candidate-v1' : '', active_job_id: '', queued_job_id: '', last_job_id: '' } }),
     ManifestPortrait: () => { throw new Error('fixture portrait is not loaded'); },
     StableJob: (view, jid) => jobs.has(jid) ? ok('job', jobs.get(jid)) : error('stable_not_found'),
     BeginStableSync: () => publish('sync', { version: 1, status: clone(state.stable.status), as_of_ms: state.stable.status.last_as_of_ms || 1794893590614, items: [] }),
@@ -81,8 +83,8 @@ function harness(initial = environment(), mode = 'local-manifest-pilot') {
     Start: () => { state.manifest.state = 'running'; }, Stop: () => { state.manifest.state = 'stopped'; }, LoginFixture: (fixture) => { state = environment(fixture, []); }, Logout: () => { state = blank(); }, ResetFixtureAccount: () => { state = blank(); }, ExportManifestReceipt: () => '', ExportRecovery: () => '', VerifyBackup: () => '',
   };
   const Call = { async ByName(name, ...args) { const method = name.slice(9); assert.match(name, /^main\.Gym\./); assert.ok(Object.hasOwn(handlers, method), `Unexpected API ${method}`); calls.push({ method, args: clone(args) }); concurrent++; peak = Math.max(peak, concurrent); try { return await handlers[method](...args); } finally { concurrent--; } } };
-  const context = vm.createContext({ document, window, Call, Intl, Date, btoa: (s) => Buffer.from(s, 'ascii').toString('base64'), setTimeout(f, delay) { assert.equal(delay, 1000); const id = ++counter; timers.set(id, f); return id; }, clearTimeout(id) { timers.delete(id); } });
-  return { elements, document, window, calls, timers, jobs, history, handlers, context, ok, error, publish, get state() { return state; }, set state(s) { state = clone(s); }, get peak() { return peak; }, count(m) { return calls.filter((c) => c.method === m).length; }, get cards() { return elements.get('cards').children; }, buttons(t) { return descendants(elements.get('cards'), (e) => e.tagName === 'button' && e.textContent === t); }, async start() { vm.runInContext(source.slice(runtime.length), context, { filename: 'stable.js' }); await flush(); }, async tick() { assert.equal(timers.size, 1); const [id, f] = timers.entries().next().value; timers.delete(id); f(); await flush(); }, async click(id) { await elements.get(id).dispatch('click'); await flush(); }, async save(slot = 1) { const select = descendants(elements.get('cards'), (e) => e.tagName === 'select')[0]; select.value = String(slot); await this.buttons('Save to slot')[0].dispatch('click'); await flush(); } };
+  const context = vm.createContext({ document, window, Call, Intl, Date, btoa: (s) => Buffer.from(s, 'ascii').toString('base64'), setTimeout(f, delay) { assert.ok([250, 1000].includes(delay)); const id = ++counter; timers.set(id, f); timerDelays.set(id, delay); return id; }, clearTimeout(id) { timers.delete(id); timerDelays.delete(id); } });
+  return { elements, document, window, motion, timerDelays, calls, timers, jobs, history, handlers, context, ok, error, publish, get state() { return state; }, set state(s) { state = clone(s); }, get peak() { return peak; }, count(m) { return calls.filter((c) => c.method === m).length; }, get cards() { return elements.get('cards').children; }, buttons(t) { return descendants(elements.get('cards'), (e) => e.tagName === 'button' && e.textContent === t); }, async start() { vm.runInContext(source.slice(runtime.length), context, { filename: 'stable.js' }); await flush(); }, async tick() { assert.equal(timers.size, 1); const [id, f] = timers.entries().next().value; timers.delete(id); f(); await flush(); }, async click(id) { await elements.get(id).dispatch('click'); await flush(); }, async save(slot = 1) { const select = descendants(elements.get('cards'), (e) => e.tagName === 'select')[0]; select.value = String(slot); await this.buttons('Save to slot')[0].dispatch('click'); await flush(); } };
 }
 
 test('explicit stable entry, exact approved asset and no mining on login', async () => {
@@ -219,4 +221,96 @@ test('fixed latest inventory stays fixed until explicit Recent follows new arriv
 test('Recent terminal page must end at its own checkpoint', async () => {
   const c=reference.cases.find(c=>c.fixture==='zero256'&&c.assignment.sequence===1), h=harness(environment('zero256',[item(c)]));await h.start();const native=h.handlers.BeginStableRecent;
   h.handlers.BeginStableRecent=(...args)=>{const r=native(...args), j=h.jobs.get(r.job.job_id);j.page.status.checkpoint=j.page.status.observed_source_count=2;j.page.next_after=1;j.page.has_more=true;return r;};await h.click('recent');assert.equal(h.cards.length,0);assert.match(h.elements.get('alert').textContent,/could not be validated/);
+});
+
+// These selected-pair fixtures test UI transport/state only. They are not new
+// proof/manifest/bout goldens or a claim that these edited IDs were admitted.
+function previewHarness() {
+  const a=item(), b=item(); b.assignment.prospect_id=hash(777); b.assignment.sequence=4;
+  const h=harness(environment('zero256',[a,b])); let pending=null;
+  const wrap=(j)=>({id:71,version:1,ok:true,job:clone(j)});
+  h.handlers.BeginFightPreview=(view,aID,bID)=>{pending={version:1,job_id:hash(888),state:'queued',view:clone(h.state.manifest.view),store_id:h.state.stable.status.store_id,engine_version:1,engine_id:'slug-fighter-bout-candidate-v1',fighter_a_id:aID,fighter_b_id:bID,error:'',result:null};return wrap(pending);};
+  h.handlers.FightPreviewJob=()=>wrap(pending);
+  h.handlers.CancelFightPreview=()=>{if(pending)Object.assign(pending,{state:'cancelled',error:'preview_cancelled'});return wrap(pending);};
+  h.select=async()=>{for(const b of h.buttons('Select for preview'))await b.dispatch('click');await flush();};
+  return h;
+}
+test('preview selection is explicit, bounded and survives inventory navigation',async()=>{
+  const h=previewHarness();await h.start();await h.select();assert.equal(h.count('BeginFightPreview'),0);assert.equal(h.elements.get('preview-selection').children.length,2);assert.equal(h.elements.get('preview-begin').disabled,false);
+  await h.click('inventory');assert.equal(h.elements.get('preview-selection').children.length,2);assert.equal(h.count('BeginFightPreview'),0);assert.equal(h.count('Start'),0);
+  await h.click('preview-begin');assert.equal(h.count('BeginFightPreview'),1);const call=h.calls.find(c=>c.method==='BeginFightPreview');assert.ok(call.args[1]<call.args[2]);assert.equal(h.peak,1);
+  await h.click('preview-clear');assert.equal(h.elements.get('preview-selection').children.length,0);assert.equal(h.count('CancelFightPreview'),1);assert.equal(h.count('BeginFightPreview'),1);
+});
+test('changing selection during Begin cancels the late job without adopting it',async()=>{
+  const h=previewHarness();await h.start();await h.select();const gate=deferred(),begin=h.handlers.BeginFightPreview;h.handlers.BeginFightPreview=async(...args)=>{await gate.promise;return begin(...args);};
+  const work=h.click('preview-begin');await flush();await h.click('preview-clear');gate.resolve();await work;await flush();
+  assert.equal(h.elements.get('preview-selection').children.length,0);assert.equal(h.elements.get('preview-replay').hidden,true);assert.equal(h.count('CancelFightPreview'),1);assert.equal(h.count('BeginFightPreview'),1);assert.equal(h.peak,1);
+});
+test('preview rejects mismatched class and duplicate selection before dispatch',async()=>{
+  const a=item(),b=item();b.assignment.prospect_id=hash(777);b.assignment.sequence=4;b.manifest.physical.weight_lb=195;b.manifest.physical.weight_class='middle';const e=environment('zero256',[a,b]);const h=harness(e);await h.start();for(const b of h.buttons('Select for preview'))await b.dispatch('click');await flush();
+  assert.equal(h.elements.get('preview-selection').children.length,1);assert.equal(h.elements.get('preview-begin').disabled,true);assert.match(h.elements.get('preview-message').textContent,/same weight class/);assert.equal(h.count('BeginFightPreview'),0);
+  for(const b of h.buttons('Select for preview'))await b.dispatch('click');assert.equal(h.elements.get('preview-selection').children.length,1);
+});
+test('a later sign-in with unchanged StoreID discards preview selection and job',async()=>{
+  const h=previewHarness();await h.start();await h.select();await h.click('preview-begin');h.state.manifest.view.view_id=hash(989);h.state.stable.view.view_id=hash(989);h.state.stable.last_job_id='';await h.tick();
+  assert.equal(h.elements.get('preview-selection').children.length,0);assert.equal(h.elements.get('preview-replay').hidden,true);assert.equal(h.elements.get('preview-begin').disabled,true);
+});
+test('old terminal discovery cannot populate a newly selected pair automatically',async()=>{
+  const h=previewHarness();await h.start();await h.select();await h.click('preview-begin');await h.click('preview-clear');await h.select();const before=h.count('FightPreviewJob');await h.tick();
+  assert.equal(h.count('FightPreviewJob'),before);assert.equal(h.count('BeginFightPreview'),1);assert.equal(h.elements.get('preview-replay').hidden,true);
+});
+
+test('all55 frozen independent complete bout transcripts pass the text consumer',async()=>{
+  const h=harness();await h.start();const corpus=JSON.parse(readFileSync(new URL('../../fighterbout/testdata/reference/bout_v1.json',import.meta.url),'utf8'));
+  assert.equal(corpus.cases.length,55);const methods=new Set();
+  for(const c of corpus.cases){h.context.boutFixture=JSON.parse(c.canonical_result);h.context.boutIDs=[c.input.a.prospect_id,c.input.b.prospect_id];assert.doesNotThrow(()=>vm.runInContext('boutValue(boutFixture,boutIDs)',h.context),c.name);methods.add(h.context.boutFixture.method);}
+  assert.ok(methods.has('decision_draw'));assert.ok(methods.has('tko_corner'));assert.ok(methods.has('ko'));
+});
+test('bout text consumer rejects altered score, extra steps and missing final state',async()=>{
+  const h=harness();await h.start();const corpus=JSON.parse(readFileSync(new URL('../../fighterbout/testdata/reference/bout_v1.json',import.meta.url),'utf8'));const c=corpus.cases[0];
+  for(const change of [v=>v.scores[0].total_tenths++,v=>v.rounds[0].ticks.push(clone(v.rounds[0].ticks[0])),v=>v.final.pop(),v=>v.rounds[0].ticks[0].states.push(clone(v.rounds[0].ticks[0].states[0])),v=>v.winner=hash(4)]){
+    const v=JSON.parse(c.canonical_result);change(v);h.context.boutFixture=v;h.context.boutIDs=[c.input.a.prospect_id,c.input.b.prospect_id];assert.throws(()=>vm.runInContext('boutValue(boutFixture,boutIDs)',h.context));
+  }
+});
+
+function completedPreviewHarness(index=0){
+  const corpus=JSON.parse(readFileSync(new URL('../../fighterbout/testdata/reference/preview_transport_v1.json',import.meta.url),'utf8')),c=corpus.cases[index],fixture=c.name.split('-')[0];
+  const e=environment(fixture,[...c.response.job.result.pair.fighters].sort((a,b)=>a.assignment.sequence-b.assignment.sequence));e.manifest.view=clone(c.view);e.manifest.account.id=c.view.account_id;e.manifest.account.generation=c.view.generation;e.stable.view=clone(c.view);e.stable.status=clone(c.status);
+  const h=harness(e);let accepted=false,done=false;
+  h.handlers.PreviewSnapshot=()=>({id:72,version:1,ok:true,snapshot:accepted?{...clone(c.snapshot_response.snapshot),state:done?'ready':'busy',last_job_id:done?c.response.job.job_id:'',active_job_id:done?'':c.response.job.job_id}: {version:1,state:'idle',error:'',view:clone(c.view),store_id:c.status.store_id,engine_version:1,engine_id:'slug-fighter-bout-candidate-v1',active_job_id:'',queued_job_id:'',last_job_id:''}});
+  h.handlers.BeginFightPreview=()=>{accepted=true;return {id:73,version:1,ok:true,job:{...clone(c.response.job),state:'queued',result:null}};};
+  h.handlers.FightPreviewJob=()=>{done=true;return clone(c.response);};
+  h.handlers.CancelFightPreview=()=>clone(c.response);
+  h.handlers.FightPreviewPortrait=(_,job,id)=>{assert.equal(job,c.response.job.job_id);const p=c.portrait_evidence.find(p=>p.prospect_id===id),a=c.response.job.result.pair.fighters.find(f=>f.assignment.prospect_id===id).assignment;return {version:1,ok:true,portrait:{version:1,view:clone(c.view),store_id:c.status.store_id,job_id:job,prospect_id:id,result_digest:c.engine_result_digest,descriptor_id:a.descriptor_id,manifest_digest:a.manifest_digest,portrait_digest:p.portrait_digest,svg:p.svg}};};
+  h.select=async()=>{for(const b of h.buttons('Select for preview'))await b.dispatch('click');await flush();};h.fixture=c;return h;
+}
+test('busy snapshot followed by completed job retains the newer independent preview',async()=>{
+  for(let n=0;n<4;n++){const h=completedPreviewHarness(n);await h.start();await h.select();await h.click('preview-begin');assert.equal(h.elements.get('preview-replay').hidden,false,h.fixture.name);assert.match(h.elements.get('preview-message').textContent,/ready/i);assert.equal(h.count('FightPreviewJob'),1);assert.equal(h.count('FightPreviewPortrait'),2);assert.equal(h.elements.get('preview-fighters').children.length,2);assert.equal(h.peak,1);}
+});
+test('local replay and stepping issue no native request and respect dynamic reduced motion',async()=>{
+  const h=completedPreviewHarness();await h.start();await h.select();await h.click('preview-begin');const calls=h.calls.length;
+  await h.click('preview-next');assert.match(h.elements.get('preview-step').textContent,/Step 1 of/);await h.click('preview-previous');assert.match(h.elements.get('preview-step').textContent,/opening bell/);
+  await h.click('preview-play');const play=[...h.timers].find(([id])=>h.timerDelays.get(id)===250);assert.ok(play);h.timers.delete(play[0]);play[1]();await flush();assert.match(h.elements.get('preview-step').textContent,/Step 1 of/);
+  h.motion.matches=true;await h.motion.dispatch('change');assert.equal([...h.timers.keys()].filter(id=>h.timerDelays.get(id)===250).length,0);assert.equal(h.elements.get('preview-play').disabled,true);assert.match(h.elements.get('preview-motion').textContent,/Reduced motion/);
+  await h.click('preview-result');assert.equal(h.elements.get('preview-outcome').hidden,false);assert.match(h.elements.get('preview-scores').textContent,/Whole-fight scorecard/);await h.click('preview-restart');assert.match(h.elements.get('preview-step').textContent,/opening bell/);assert.equal(h.calls.length,calls);
+  await h.click('preview-clear');assert.equal(h.elements.get('preview-fighters').children.length,0);assert.equal(h.elements.get('preview-replay').hidden,true);
+});
+test('portrait completion for an old selection is discarded before creating an image',async()=>{
+  const h=completedPreviewHarness();await h.start();await h.select();const gate=deferred(),portrait=h.handlers.FightPreviewPortrait;h.handlers.FightPreviewPortrait=async(...args)=>{await gate.promise;return portrait(...args);};
+  await h.click('preview-begin');assert.equal(h.count('FightPreviewPortrait'),1);await h.click('preview-clear');gate.resolve();await flush();assert.equal(h.elements.get('preview-fighters').children.length,0);assert.equal(h.elements.get('preview-replay').hidden,true);assert.equal(h.count('FightPreviewPortrait'),1);assert.equal(h.peak,1);
+});
+test('hidden or closed page stops local replay and does not advance it in the background',async()=>{
+  const h=completedPreviewHarness();await h.start();await h.select();await h.click('preview-begin');await h.click('preview-play');h.document.hidden=true;await h.document.dispatch('visibilitychange');assert.equal(h.timers.size,0);const before=h.calls.length;await h.window.dispatch('pagehide');await flush();assert.equal(h.calls.length,before);assert.equal(h.elements.get('preview-fighters').children.length,0);
+});
+
+test('fresh portrait authorization refusal immediately clears replay and selection',async()=>{
+  const h=completedPreviewHarness();await h.start();await h.select();const gate=deferred(),portrait=h.handlers.FightPreviewPortrait;let n=0;
+  h.handlers.FightPreviewPortrait=async(...args)=>{if(++n===1)return portrait(...args);await gate.promise;return {version:1,ok:false,error:'stale_view'};};
+  await h.click('preview-begin');assert.equal(h.elements.get('preview-replay').hidden,false);await h.click('preview-play');gate.resolve();await flush();
+  assert.equal(h.elements.get('preview-replay').hidden,true);assert.equal(h.elements.get('preview-selection').children.length,0);assert.equal(h.elements.get('preview-fighters').children.length,0);assert.equal([...h.timers.keys()].filter(id=>h.timerDelays.get(id)===250).length,0);
+});
+test('typed helper failure clears replay immediately while busy retains it',async()=>{
+  const h=completedPreviewHarness();await h.start();await h.select();await h.click('preview-begin');assert.equal(h.elements.get('preview-replay').hidden,false);
+  h.handlers.PreviewSnapshot=()=>({id:74,version:1,ok:false,error:'busy'});await h.tick();assert.equal(h.elements.get('preview-replay').hidden,false);
+  h.handlers.PreviewSnapshot=()=>({id:75,version:1,ok:false,error:'preview_unavailable'});await h.tick();assert.equal(h.elements.get('preview-replay').hidden,true);assert.equal(h.elements.get('preview-fighters').children.length,0);assert.equal(h.elements.get('preview-selection').children.length,2);assert.equal(h.elements.get('preview-begin').disabled,true);
 });

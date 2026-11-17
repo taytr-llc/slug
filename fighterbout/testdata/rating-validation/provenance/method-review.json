@@ -1,0 +1,35 @@
+{
+  "status": "passed",
+  "findings": [],
+  "scope": "read-only statistical/protocol review; no study execution or runtime/model changes",
+  "protocol": "/Users/taytrrip/slug/set42-rating-validation/PROTOCOL_DRAFT.md",
+  "protocol_sha256": "b1e3a27c6dad5956b98dd340efd313998324d656a4d23d7d04b40d3fcc3424d6",
+  "review_sha256": "6bf1db0a3f9258b3807cd244e0d688ede988da88fc591ede0c908574189ef721",
+  "initial_review_sha256": "580761697c9f1e368139634b153700419f9d35aac26ba34abd5e47da1c0f2908",
+  "source_hashes": {
+    "slug/RATING_VALIDATION_POLICY.md": "7929276b3f2f4787038e971bfe979ce0472ab004faa80e761398ce293bb54695",
+    "slug/BRAWLCHAIN_SPEC.md": "d1437b1bfc4df04de2bf5f8b620e08382fffd9ada990abf23d02138a3b24d622",
+    "set42-fight-contract-draft.md": "abb5b54edd921855b81dc5b99ef29b2ac94cadc9296dcd2981af4b57ad25040f",
+    "fighter-condition-contract.md": "8ee75162fcd631cae15b33804c787690e60bf4997fae6b7cd536bb771908e654",
+    "set42-fight-reference/calibrate.py": "fd97524a20556a51bb12a46d032f2fa972250d23f0dd1b4887e7d25b8fdb0297",
+    "set42-calibration-report.md": "11602f698a37401168b2161b94b3ee272bfa69fc71b630ca744f774042d27282",
+    "set42-fight-reference/calibration/fit.json": "e759cef7d5999a3512f0cdd853a3af49eace58c9f7beb54bfb5ca0d06b037c4d",
+    "set42-fight-reference/calibration/simulation.json": "9c916d20f33be64402a7de75c001df07952f14bcf3e357c05012a5521f18eb96"
+  },
+  "resolved_findings": [
+    "fixed allocation and bootstrap strata aligned",
+    "mixed prime/decline coverage added",
+    "near-zero/sign numerical fallback",
+    "exact resampling stratum/row order",
+    "undefined normalized summary and zero-variance correlation behavior"
+  ],
+  "remaining_disclosed_limits": [
+    "empirical bootstrap with6/7-family primary mixed cells and1/2-family diagnostic edge cells",
+    "class/gap-balanced research population does not estimate future player prevalence",
+    "accelerator agreement checked on fixed references and boundary fallbacks, not all-replicate Decimal identity",
+    "no fresh retired-population validation",
+    "no automatic rating adoption"
+  ],
+  "studies_executed": false,
+  "reviewed_at_utc": "2026-11-17T15:45:29.521111+00:00"
+}

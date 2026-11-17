@@ -1,0 +1,387 @@
+{
+  "decision": "D75",
+  "meaning": "Archived research evidence, not runtime weights or normative replacement test vectors.",
+  "workspace_study": "set42-rating-validation",
+  "full_research_bundle": "artifacts/set42/set42-d75-research.tar.gz",
+  "sources_and_stored_files": {
+    "fighterbout/testdata/rating-validation/sources/ACCELERATOR_IO.md": {
+      "source": "set42-rating-validation/ACCELERATOR_IO.md",
+      "source_sha256": "36951bcb42a4c990f9a7396ea44e51d68b5d35688beeb2ae0c168626c2eb0bef",
+      "stored_sha256": "36951bcb42a4c990f9a7396ea44e51d68b5d35688beeb2ae0c168626c2eb0bef",
+      "encoding": "unchanged bytes",
+      "bytes": 1786
+    },
+    "fighterbout/testdata/rating-validation/sources/PROTOCOL.md": {
+      "source": "set42-rating-validation/PROTOCOL.md",
+      "source_sha256": "b1e3a27c6dad5956b98dd340efd313998324d656a4d23d7d04b40d3fcc3424d6",
+      "stored_sha256": "b1e3a27c6dad5956b98dd340efd313998324d656a4d23d7d04b40d3fcc3424d6",
+      "encoding": "unchanged bytes",
+      "bytes": 22516
+    },
+    "fighterbout/testdata/rating-validation/sources/RESOURCE_AMENDMENT.md": {
+      "source": "set42-rating-validation/RESOURCE_AMENDMENT.md",
+      "source_sha256": "38ae55d7b796afda0868fd1d2b6ee96ba02630f2c8c189c575b7386505b9e91c",
+      "stored_sha256": "38ae55d7b796afda0868fd1d2b6ee96ba02630f2c8c189c575b7386505b9e91c",
+      "encoding": "unchanged bytes",
+      "bytes": 2062
+    },
+    "fighterbout/testdata/rating-validation/sources/SOURCE_AND_OUTPUTS.md": {
+      "source": "set42-rating-validation/SOURCE_AND_OUTPUTS.md",
+      "source_sha256": "c652fa876938d20e99cb865692eb3fe8469ebf7cf687f3e5b2441195a45cb785",
+      "stored_sha256": "c652fa876938d20e99cb865692eb3fe8469ebf7cf687f3e5b2441195a45cb785",
+      "encoding": "unchanged bytes",
+      "bytes": 6652
+    },
+    "fighterbout/testdata/rating-validation/sources/audit_inputs.py": {
+      "source": "set42-rating-validation/audit_inputs.py",
+      "source_sha256": "531702176f9020b4f0918c5db014dcc47277e1a13095e4f4db4f7836d9760863",
+      "stored_sha256": "531702176f9020b4f0918c5db014dcc47277e1a13095e4f4db4f7836d9760863",
+      "encoding": "unchanged bytes",
+      "bytes": 5682
+    },
+    "fighterbout/testdata/rating-validation/sources/coefficient_study.py": {
+      "source": "set42-rating-validation/coefficient_study.py",
+      "source_sha256": "a13afd5111674c1ec2a6b473d4a2dc1822ac63410ba1498a7e037d5f3b349eb9",
+      "stored_sha256": "a13afd5111674c1ec2a6b473d4a2dc1822ac63410ba1498a7e037d5f3b349eb9",
+      "encoding": "unchanged bytes",
+      "bytes": 7773
+    },
+    "fighterbout/testdata/rating-validation/sources/common.py": {
+      "source": "set42-rating-validation/common.py",
+      "source_sha256": "5310e5dfb6537f3bfbb948a43006853c53709ce3a99bee7780515d86140324ae",
+      "stored_sha256": "5310e5dfb6537f3bfbb948a43006853c53709ce3a99bee7780515d86140324ae",
+      "encoding": "unchanged bytes",
+      "bytes": 3174
+    },
+    "fighterbout/testdata/rating-validation/sources/decimal_refit_worker.py": {
+      "source": "set42-rating-validation/decimal_refit_worker.py",
+      "source_sha256": "7248e092cdc7865c8f40eb6f84069c3836e5993d8de5b2a698ed5a85cf930b9d",
+      "stored_sha256": "7248e092cdc7865c8f40eb6f84069c3836e5993d8de5b2a698ed5a85cf930b9d",
+      "encoding": "unchanged bytes",
+      "bytes": 268
+    },
+    "fighterbout/testdata/rating-validation/sources/execution.py": {
+      "source": "set42-rating-validation/execution.py",
+      "source_sha256": "56284e4e6ed08b492c0108e6bde7a67199faa90c287c6ea7c686c30a73c7a2d3",
+      "stored_sha256": "56284e4e6ed08b492c0108e6bde7a67199faa90c287c6ea7c686c30a73c7a2d3",
+      "encoding": "unchanged bytes",
+      "bytes": 1795
+    },
+    "fighterbout/testdata/rating-validation/sources/fit_accelerator.cpp": {
+      "source": "set42-rating-validation/fit_accelerator.cpp",
+      "source_sha256": "ed82341a3535dbfa834b7c4e36db3d1e61151937e4b8255e0f4f7f812be6790b",
+      "stored_sha256": "ed82341a3535dbfa834b7c4e36db3d1e61151937e4b8255e0f4f7f812be6790b",
+      "encoding": "unchanged bytes",
+      "bytes": 11086
+    },
+    "fighterbout/testdata/rating-validation/sources/freeze_inputs.py": {
+      "source": "set42-rating-validation/freeze_inputs.py",
+      "source_sha256": "c0aada622acabf677dec7f26403f38c9a54512fb1543e2dc1cb56fcbb21d4b4c",
+      "stored_sha256": "c0aada622acabf677dec7f26403f38c9a54512fb1543e2dc1cb56fcbb21d4b4c",
+      "encoding": "unchanged bytes",
+      "bytes": 3848
+    },
+    "fighterbout/testdata/rating-validation/sources/original-input-pins.json": {
+      "source": "set42-rating-validation/original-input-pins.json",
+      "source_sha256": "c838eb52bb6638d88f9fa1f7d13da3bc3ab77a7dba2c735eb78024b461958883",
+      "stored_sha256": "c838eb52bb6638d88f9fa1f7d13da3bc3ab77a7dba2c735eb78024b461958883",
+      "encoding": "unchanged bytes",
+      "bytes": 770
+    },
+    "fighterbout/testdata/rating-validation/sources/population_study.py": {
+      "source": "set42-rating-validation/population_study.py",
+      "source_sha256": "61aaa31173a8b9b115aa6e97866bc8e400bebf0c8f183dcf87df89856467a3d1",
+      "stored_sha256": "61aaa31173a8b9b115aa6e97866bc8e400bebf0c8f183dcf87df89856467a3d1",
+      "encoding": "unchanged bytes",
+      "bytes": 16389
+    },
+    "fighterbout/testdata/rating-validation/sources/prepare_inputs.py": {
+      "source": "set42-rating-validation/prepare_inputs.py",
+      "source_sha256": "871f923827997754d722bacf792b08cbc044efb0cc290d010eb84936c0c64b26",
+      "stored_sha256": "871f923827997754d722bacf792b08cbc044efb0cc290d010eb84936c0c64b26",
+      "encoding": "unchanged bytes",
+      "bytes": 7964
+    },
+    "fighterbout/testdata/rating-validation/sources/resources.py": {
+      "source": "set42-rating-validation/resources.py",
+      "source_sha256": "c95372ec17f97f4fdf4f4857b4f300f42013a27ce965555573a098ae6b1fbb5f",
+      "stored_sha256": "c95372ec17f97f4fdf4f4857b4f300f42013a27ce965555573a098ae6b1fbb5f",
+      "encoding": "unchanged bytes",
+      "bytes": 437
+    },
+    "fighterbout/testdata/rating-validation/provenance/source-input-freeze.json": {
+      "source": "set42-rating-validation/source-input-freeze.json",
+      "source_sha256": "91c30017bf982b2f446e3502fd0a7b5944530c282f095fc96fa1b9b6efde8ce8",
+      "stored_sha256": "91c30017bf982b2f446e3502fd0a7b5944530c282f095fc96fa1b9b6efde8ce8",
+      "encoding": "unchanged bytes",
+      "bytes": 10897
+    },
+    "fighterbout/testdata/rating-validation/provenance/execution-release.json": {
+      "source": "set42-rating-validation/execution-release.json",
+      "source_sha256": "f9533f2129bdeb59efb68e1a2b88d3e5aa06f8e6ff419cc8234763eeb2d19c36",
+      "stored_sha256": "f9533f2129bdeb59efb68e1a2b88d3e5aa06f8e6ff419cc8234763eeb2d19c36",
+      "encoding": "unchanged bytes",
+      "bytes": 995
+    },
+    "fighterbout/testdata/rating-validation/provenance/protocol-approval.json": {
+      "source": "set42-rating-validation/protocol-approval.json",
+      "source_sha256": "02e19fc4c0bf3a749718572331206cd7f60b9d67b27009b9d929e16c4607fcb7",
+      "stored_sha256": "02e19fc4c0bf3a749718572331206cd7f60b9d67b27009b9d929e16c4607fcb7",
+      "encoding": "unchanged bytes",
+      "bytes": 1064
+    },
+    "fighterbout/testdata/rating-validation/provenance/accelerator-build.json": {
+      "source": "set42-rating-validation/accelerator-build.json",
+      "source_sha256": "c25a5a1984393e77cf54ab8a8f7da0f6f12590c9aaa59e3756eb363cd6003696",
+      "stored_sha256": "c25a5a1984393e77cf54ab8a8f7da0f6f12590c9aaa59e3756eb363cd6003696",
+      "encoding": "unchanged bytes",
+      "bytes": 1661
+    },
+    "fighterbout/testdata/rating-validation/provenance/source-review.json": {
+      "source": "set42-rating-validation/source-review.json",
+      "source_sha256": "238d6b2ac05dc2b44f0784f0ee8ce509bd746c80310b7a11262fe1a84c8e0e79",
+      "stored_sha256": "238d6b2ac05dc2b44f0784f0ee8ce509bd746c80310b7a11262fe1a84c8e0e79",
+      "encoding": "unchanged bytes",
+      "bytes": 8061
+    },
+    "fighterbout/testdata/rating-validation/provenance/method-review.json": {
+      "source": "set42-rating-validation/method-review.json",
+      "source_sha256": "88110d790ad1bf3201da8a8ec985922d6a1bddb554df961858ebc25df1d74c55",
+      "stored_sha256": "88110d790ad1bf3201da8a8ec985922d6a1bddb554df961858ebc25df1d74c55",
+      "encoding": "unchanged bytes",
+      "bytes": 2180
+    },
+    "fighterbout/testdata/rating-validation/provenance/data/coefficient-input-freeze.json": {
+      "source": "set42-rating-validation/data/coefficient-input-freeze.json",
+      "source_sha256": "c2f7706b2cb94b6177b7c97c383afc72609190b5cef9b512e6a707df8e0b3708",
+      "stored_sha256": "c2f7706b2cb94b6177b7c97c383afc72609190b5cef9b512e6a707df8e0b3708",
+      "encoding": "unchanged bytes",
+      "bytes": 355731
+    },
+    "fighterbout/testdata/rating-validation/provenance/data/population-input-freeze.json": {
+      "source": "set42-rating-validation/data/population-input-freeze.json",
+      "source_sha256": "b81afe797c5221a08905bbed7f8e22c49ec01162e06ba90912a84324487df109",
+      "stored_sha256": "b81afe797c5221a08905bbed7f8e22c49ec01162e06ba90912a84324487df109",
+      "encoding": "unchanged bytes",
+      "bytes": 842249
+    },
+    "fighterbout/testdata/rating-validation/provenance/data/input-audit.json": {
+      "source": "set42-rating-validation/data/input-audit.json",
+      "source_sha256": "6ee30c254cf6da257fabca0ec6114613023caf87e67da23beda3ed1da0a55157",
+      "stored_sha256": "6ee30c254cf6da257fabca0ec6114613023caf87e67da23beda3ed1da0a55157",
+      "encoding": "unchanged bytes",
+      "bytes": 901
+    },
+    "fighterbout/testdata/rating-validation/provenance/preparation-attempts/attempt-001/failure.json": {
+      "source": "set42-rating-validation/preparation-attempts/attempt-001/failure.json",
+      "source_sha256": "d4c829d5c9f7266ffa0bae71d773b0206829006d39881b9bf162422907ac0d65",
+      "stored_sha256": "d4c829d5c9f7266ffa0bae71d773b0206829006d39881b9bf162422907ac0d65",
+      "encoding": "unchanged bytes",
+      "bytes": 1495
+    },
+    "fighterbout/testdata/rating-validation/provenance/coefficient-study-capture.json": {
+      "source": "set42-rating-validation/coefficient-study-capture.json",
+      "source_sha256": "7bdb439d6de94b5bc62dd4b07408f5556f635b5b9077030f9c9a6f6c8216dc8f",
+      "stored_sha256": "7bdb439d6de94b5bc62dd4b07408f5556f635b5b9077030f9c9a6f6c8216dc8f",
+      "encoding": "unchanged bytes",
+      "bytes": 601
+    },
+    "fighterbout/testdata/rating-validation/provenance/population-simulation-capture.json": {
+      "source": "set42-rating-validation/population-simulation-capture.json",
+      "source_sha256": "479a9e714a8512ed5fea455e84067944a3c3c23fd132c55f25a2213e265a9523",
+      "stored_sha256": "479a9e714a8512ed5fea455e84067944a3c3c23fd132c55f25a2213e265a9523",
+      "encoding": "unchanged bytes",
+      "bytes": 623
+    },
+    "fighterbout/testdata/rating-validation/provenance/population-bootstrap-capture.json": {
+      "source": "set42-rating-validation/population-bootstrap-capture.json",
+      "source_sha256": "1340946f437ff866830053d12c8f50c8890b60495943930209c42b292a1a9718",
+      "stored_sha256": "1340946f437ff866830053d12c8f50c8890b60495943930209c42b292a1a9718",
+      "encoding": "unchanged bytes",
+      "bytes": 626
+    },
+    "fighterbout/testdata/rating-validation/coefficient/report.json": {
+      "source": "set42-rating-validation/coefficient-results/report.json",
+      "source_sha256": "e435ab79a819156697829538d35ed0e3c4d4f4cb640e5120a1d8d2fc44cb15ca",
+      "stored_sha256": "e435ab79a819156697829538d35ed0e3c4d4f4cb640e5120a1d8d2fc44cb15ca",
+      "encoding": "unchanged bytes",
+      "bytes": 23275
+    },
+    "fighterbout/testdata/rating-validation/coefficient/original.jsonl": {
+      "source": "set42-rating-validation/coefficient-results/original.jsonl",
+      "source_sha256": "444bfa000800ee0cd3523bc08607824f8547fa4091f475b6b887da8afc4e47be",
+      "stored_sha256": "444bfa000800ee0cd3523bc08607824f8547fa4091f475b6b887da8afc4e47be",
+      "encoding": "unchanged bytes",
+      "bytes": 163
+    },
+    "fighterbout/testdata/rating-validation/coefficient/replicates.json.gz": {
+      "source": "set42-rating-validation/coefficient-results/replicates.json",
+      "source_sha256": "d5f1c0b26b17a4129df2d9c189421168c17326064cc968adcf2355159a854f35",
+      "stored_sha256": "aa582d55e48d4d75aa9d9e224dc8a306006f914013586d79a5a59829728e0760",
+      "encoding": "gzip",
+      "bytes": 291834
+    },
+    "fighterbout/testdata/rating-validation/coefficient/bootstrap.jsonl.gz": {
+      "source": "set42-rating-validation/coefficient-results/bootstrap.jsonl",
+      "source_sha256": "af8cbb1fe5b4ef73818b63a2e33fd87dd538e7d81bcd9dab1ff88b81627993e0",
+      "stored_sha256": "ab34784430975e02b787ec22a7639772ef327746896f576182a9b909d5325335",
+      "encoding": "gzip",
+      "bytes": 49396
+    },
+    "fighterbout/testdata/rating-validation/coefficient/decimal--1.json": {
+      "source": "set42-rating-validation/coefficient-results/decimal--1.json",
+      "source_sha256": "9a3229a0027b0f02848406a68b67eb4f8da9fe4465009c64cdeb6af40e28975d",
+      "stored_sha256": "9a3229a0027b0f02848406a68b67eb4f8da9fe4465009c64cdeb6af40e28975d",
+      "encoding": "unchanged bytes",
+      "bytes": 688
+    },
+    "fighterbout/testdata/rating-validation/coefficient/decimal-0.json": {
+      "source": "set42-rating-validation/coefficient-results/decimal-0.json",
+      "source_sha256": "b3d950d8176a2ef515d606335b5891edd8aa2282f46a00ec2e8948f5d1f8b5d3",
+      "stored_sha256": "b3d950d8176a2ef515d606335b5891edd8aa2282f46a00ec2e8948f5d1f8b5d3",
+      "encoding": "unchanged bytes",
+      "bytes": 688
+    },
+    "fighterbout/testdata/rating-validation/coefficient/decimal-1.json": {
+      "source": "set42-rating-validation/coefficient-results/decimal-1.json",
+      "source_sha256": "b46c8be3ed0f6561725eeb7f9ec24ef35a7284e14e6fb6788513d6787957c1b7",
+      "stored_sha256": "b46c8be3ed0f6561725eeb7f9ec24ef35a7284e14e6fb6788513d6787957c1b7",
+      "encoding": "unchanged bytes",
+      "bytes": 688
+    },
+    "fighterbout/testdata/rating-validation/coefficient/decimal-127.json": {
+      "source": "set42-rating-validation/coefficient-results/decimal-127.json",
+      "source_sha256": "7c34a868c0f0eefd88ba8af60418f48223f5455aee53f15a60d85a655c00f010",
+      "stored_sha256": "7c34a868c0f0eefd88ba8af60418f48223f5455aee53f15a60d85a655c00f010",
+      "encoding": "unchanged bytes",
+      "bytes": 690
+    },
+    "fighterbout/testdata/rating-validation/coefficient/decimal-2.json": {
+      "source": "set42-rating-validation/coefficient-results/decimal-2.json",
+      "source_sha256": "11bb0265eb5d5ac76dac93fe5a5d9dd8be0f48be0e6ece9d14ba12df4fb5ab9b",
+      "stored_sha256": "11bb0265eb5d5ac76dac93fe5a5d9dd8be0f48be0e6ece9d14ba12df4fb5ab9b",
+      "encoding": "unchanged bytes",
+      "bytes": 688
+    },
+    "fighterbout/testdata/rating-validation/coefficient/decimal-499.json": {
+      "source": "set42-rating-validation/coefficient-results/decimal-499.json",
+      "source_sha256": "4f07b5b88db445c14c6348da2360ea61657e1e08651254f6b571163eb6390b9a",
+      "stored_sha256": "4f07b5b88db445c14c6348da2360ea61657e1e08651254f6b571163eb6390b9a",
+      "encoding": "unchanged bytes",
+      "bytes": 691
+    },
+    "fighterbout/testdata/rating-validation/coefficient/decimal-998.json": {
+      "source": "set42-rating-validation/coefficient-results/decimal-998.json",
+      "source_sha256": "3b26b3194b6aae34958753d40edfc88559f0fed31d8bcfef4d8e5c6a1ce90c4e",
+      "stored_sha256": "3b26b3194b6aae34958753d40edfc88559f0fed31d8bcfef4d8e5c6a1ce90c4e",
+      "encoding": "unchanged bytes",
+      "bytes": 690
+    },
+    "fighterbout/testdata/rating-validation/coefficient/decimal-999.json": {
+      "source": "set42-rating-validation/coefficient-results/decimal-999.json",
+      "source_sha256": "1659f84f23b27d7b3a50a8e2a98090d9f8750e2ed45761df802311f41621d3bc",
+      "stored_sha256": "1659f84f23b27d7b3a50a8e2a98090d9f8750e2ed45761df802311f41621d3bc",
+      "encoding": "unchanged bytes",
+      "bytes": 691
+    },
+    "fighterbout/testdata/rating-validation/population/report.json.gz": {
+      "source": "set42-rating-validation/population-results/report.json",
+      "source_sha256": "48f5a230e319530a02ac31fa1dfca0e9d133fbb16a703a47108281912e9a2461",
+      "stored_sha256": "d229f096d943cf1bd357bcbe99106526708764dfe95b6f352cec34fa7881fa78",
+      "encoding": "gzip",
+      "bytes": 1620539
+    },
+    "fighterbout/testdata/rating-validation/population/bootstrap-replicas.json.gz": {
+      "source": "set42-rating-validation/population-results/bootstrap-replicas.json",
+      "source_sha256": "95155f7ccb475f804f765b261e576b1bc0cd68adb93633e343129a739db452b3",
+      "stored_sha256": "c730c8fab6655e16c5a6b5dc770c7ab3d9b406d16eb2e4756eca5eab71400428",
+      "encoding": "gzip",
+      "bytes": 936481
+    },
+    "fighterbout/testdata/rating-validation/population/outcomes.jsonl.gz": {
+      "source": "set42-rating-validation/population-results/outcomes.jsonl.gz",
+      "source_sha256": "1fbaa1c42afff9bc42d749c05e8a0da7256c361b45afa016fff9456b717fffbc",
+      "stored_sha256": "1fbaa1c42afff9bc42d749c05e8a0da7256c361b45afa016fff9456b717fffbc",
+      "encoding": "unchanged bytes",
+      "bytes": 5533341
+    },
+    "fighterbout/testdata/rating-validation/population/simulation.json": {
+      "source": "set42-rating-validation/population-results/simulation.json",
+      "source_sha256": "8bbfa4f07b6f5694ca78cc4232189bb74c4525cc08de24bbe3da3c45d17e5575",
+      "stored_sha256": "8bbfa4f07b6f5694ca78cc4232189bb74c4525cc08de24bbe3da3c45d17e5575",
+      "encoding": "unchanged bytes",
+      "bytes": 543
+    },
+    "fighterbout/testdata/rating-validation/original-calibration/report.json": {
+      "source": "set42-fight-reference/calibration/report.json",
+      "source_sha256": "0f9f3261dac4585e646961eb504e036cc98e4a7d66f5eba073d2a5303a0e2b9e",
+      "stored_sha256": "0f9f3261dac4585e646961eb504e036cc98e4a7d66f5eba073d2a5303a0e2b9e",
+      "encoding": "unchanged bytes",
+      "bytes": 71841
+    },
+    "fighterbout/testdata/rating-validation/original-calibration/fit.json": {
+      "source": "set42-fight-reference/calibration/fit.json",
+      "source_sha256": "e759cef7d5999a3512f0cdd853a3af49eace58c9f7beb54bfb5ca0d06b037c4d",
+      "stored_sha256": "e759cef7d5999a3512f0cdd853a3af49eace58c9f7beb54bfb5ca0d06b037c4d",
+      "encoding": "unchanged bytes",
+      "bytes": 10598
+    },
+    "fighterbout/testdata/rating-validation/original-calibration/rounded-rating-diagnostic.json": {
+      "source": "set42-fight-reference/rounded-rating-diagnostic/report.json",
+      "source_sha256": "1ee4624d8786fdc88e30830fecddddbf2008ff52b82c6db8c572cdd3786faf65",
+      "stored_sha256": "1ee4624d8786fdc88e30830fecddddbf2008ff52b82c6db8c572cdd3786faf65",
+      "encoding": "unchanged bytes",
+      "bytes": 2665
+    },
+    "fighterbout/testdata/rating-validation/independent-results-review.json": {
+      "source": "set42-d75-results-independent-review.json",
+      "source_sha256": "89faef53553842a982afac3156cb1a35f1e68deed931dcc7f1595b7dcab3537d",
+      "stored_sha256": "89faef53553842a982afac3156cb1a35f1e68deed931dcc7f1595b7dcab3537d",
+      "encoding": "unchanged bytes",
+      "bytes": 20231
+    },
+    "fighterbout/testdata/rating-validation/independent-results-audit.py": {
+      "source": "set42-d75-results-independent-audit.py",
+      "source_sha256": "adbdcbf05cc996882b60874ba61112920ec3b67142525fab3de3490e3c9b1ecb",
+      "stored_sha256": "adbdcbf05cc996882b60874ba61112920ec3b67142525fab3de3490e3c9b1ecb",
+      "encoding": "unchanged bytes",
+      "bytes": 28426
+    },
+    "fighterbout/testdata/rating-validation/independent-input-review.json": {
+      "source": "set42-rating-validation-input-freeze-review.json",
+      "source_sha256": "66c0026def7d3a0d43cf3258126bdf6d02ac4d58ecea005730c065d778f601a5",
+      "stored_sha256": "66c0026def7d3a0d43cf3258126bdf6d02ac4d58ecea005730c065d778f601a5",
+      "encoding": "unchanged bytes",
+      "bytes": 858
+    },
+    "fighterbout/testdata/rating-validation/successor-acceptance.json": {
+      "source": "set42-d75-acceptance.json",
+      "source_sha256": "01dd7cf6ca5a36136783e5251bbb9832802fdf183a48eaee65cf16e1efa45ced",
+      "stored_sha256": "01dd7cf6ca5a36136783e5251bbb9832802fdf183a48eaee65cf16e1efa45ced",
+      "encoding": "unchanged bytes",
+      "bytes": 1410
+    }
+  },
+  "large_artifacts_retained_in_workspace": {
+    "data/training.dat": {
+      "sha256": "9b56e57922a5753174139a39b60023be9a8f12fe27f50825562ac9dbf0518057",
+      "bytes": 96016
+    },
+    "data/indices.dat": {
+      "sha256": "f4f4c1eb6f9067f659bb9f2b4e6ef27ac34a5d726882a2269a39acbf6bdfc08e",
+      "bytes": 8000016
+    },
+    "data/population-inputs.jsonl.gz": {
+      "sha256": "56895841ffcb8e947d6c1dc72a56a81d75979264ba8d19637531e16864250ec5",
+      "bytes": 10096027
+    },
+    "data/population-schedules.jsonl.gz": {
+      "sha256": "d79d86efe81f95f764a2f2281b4f705ba246870944ceb993f64c0ff9445e47a9",
+      "bytes": 30871
+    },
+    "population-results/full-results.jsonl.gz": {
+      "sha256": "bd4399a08200a067fa6daf8debf84bd0c6d460726fd3e40406badd94233ebefc",
+      "bytes": 78243865
+    }
+  }
+}

@@ -30,7 +30,14 @@ type StableBridge struct {
 	nextID                 uint64
 	expected               *stableExpected
 	view                   *pilot.ManifestViewPin
+	manifestView           *pilot.ManifestViewPin
 	storeID                string
+	stablePin              *gymstable.Pin
+	previewReady           bool
+	previewJobs            map[string]previewJobExpectation
+	previewSnapshotJobs    map[string]bool
+	// presentation is also cleared by the reader's failure path, under mu.
+	presentation *previewPresentation
 	// At most one active, one queued and one retained completed explicit job.
 	// Access is serialized by gate; entries contain public request metadata only.
 	jobs         map[string]stableJobExpectation
@@ -41,12 +48,14 @@ type stableJobExpectation struct {
 	terminal bool
 }
 type stableExpected struct {
-	id     uint64
-	stable bool
+	id      uint64
+	stable  bool
+	preview bool
 }
 type stableFrame struct {
 	manifest *pilot.ManifestResponse
 	stable   *pilot.StableResponse
+	preview  *pilot.PreviewResponse
 }
 
 func LaunchStable(helper, dataDir, node string) (*StableBridge, error) {
@@ -81,7 +90,14 @@ func startStable(cmd *exec.Cmd) (*StableBridge, error) {
 	return b, nil
 }
 func (b *StableBridge) fail(err error) {
-	b.once.Do(func() { b.mu.Lock(); b.failure = err; b.mu.Unlock(); close(b.failed); _ = b.input.Close() })
+	b.once.Do(func() {
+		b.mu.Lock()
+		b.failure = err
+		b.presentation = nil
+		b.mu.Unlock()
+		close(b.failed)
+		_ = b.input.Close()
+	})
 }
 func (b *StableBridge) read(r io.Reader) {
 	defer close(b.readDone)
@@ -96,7 +112,14 @@ func (b *StableBridge) read(r io.Reader) {
 			return
 		}
 		var frame stableFrame
-		if expected.stable {
+		if expected.preview {
+			value, err := pilot.ParsePreviewResponse(scanner.Bytes())
+			if err != nil || value.ID != expected.id {
+				b.fail(ErrUnavailable)
+				return
+			}
+			frame.preview = &value
+		} else if expected.stable {
 			value, err := pilot.ParseStableResponse(scanner.Bytes())
 			if err != nil || value.ID != expected.id {
 				b.fail(ErrUnavailable)
@@ -153,8 +176,11 @@ func (b *StableBridge) begin(ctx context.Context) (uint64, error) {
 	return b.nextID, nil
 }
 func (b *StableBridge) exchange(ctx context.Context, id uint64, stable bool, raw []byte) (stableFrame, error) {
+	return b.exchangeFamily(ctx, id, stable, false, raw)
+}
+func (b *StableBridge) exchangeFamily(ctx context.Context, id uint64, stable, preview bool, raw []byte) (stableFrame, error) {
 	b.mu.Lock()
-	b.expected = &stableExpected{id: id, stable: stable}
+	b.expected = &stableExpected{id: id, stable: stable, preview: preview}
 	b.mu.Unlock()
 	raw = append(raw, '\n')
 	if d, ok := b.input.(interface{ SetWriteDeadline(time.Time) error }); ok {
@@ -246,6 +272,7 @@ func (b *StableBridge) manifestRequest(ctx context.Context, req pilot.ManifestRe
 	// lost. A fresh stable_snapshot must establish the next complete identity.
 	if oneOf(req.Command, "login_fixture", "logout", "reset_fixture") {
 		b.clearStableView()
+		b.manifestView = nil
 	}
 	ctx, cancel := context.WithTimeout(ctx, 30*time.Second)
 	defer cancel()
@@ -272,6 +299,13 @@ func (b *StableBridge) manifestRequest(ctx context.Context, req pilot.ManifestRe
 	}
 	if response.Snapshot != nil && (response.Snapshot.View == nil || b.view != nil && *b.view != *response.Snapshot.View) {
 		b.clearStableView()
+	}
+	if response.Snapshot != nil {
+		b.manifestView = nil
+		if response.Snapshot.View != nil {
+			v := *response.Snapshot.View
+			b.manifestView = &v
+		}
 	}
 	return response, nil
 }
@@ -363,20 +397,24 @@ func stableTerminal(state string) bool { return state != "queued" && state != "r
 func (b *StableBridge) clearStableView() {
 	b.view = nil
 	b.storeID = ""
+	b.stablePin = nil
 	b.jobs = nil
 	b.snapshotJobs = nil
+	b.clearPreviewView()
 }
 func (b *StableBridge) rememberStableSnapshot(s pilot.StableSnapshot) {
 	if s.View == nil {
 		b.clearStableView()
 		return
 	}
-	if b.view == nil || *b.view != *s.View || b.storeID != s.Status.StoreID {
+	if b.view == nil || *b.view != *s.View || b.storeID != s.Status.StoreID || b.stablePin != nil && *b.stablePin != s.Status.Pin {
 		b.clearStableView()
 	}
 	v := *s.View
 	b.view = &v
 	b.storeID = s.Status.StoreID
+	p := s.Status.Pin
+	b.stablePin = &p
 	b.snapshotJobs = map[string]bool{}
 	for _, id := range []string{s.ActiveJobID, s.QueuedJobID, s.LastJobID} {
 		if id != "" {

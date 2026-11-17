@@ -1,0 +1,14 @@
+{
+  "status": "approved",
+  "at": "2026-11-17T16:17:49.511033+00:00",
+  "decision": "D75",
+  "source_input_freeze_sha256": "91c30017bf982b2f446e3502fd0a7b5944530c282f095fc96fa1b9b6efde8ce8",
+  "input_freeze_independent_review_sha256": "66c0026def7d3a0d43cf3258126bdf6d02ac4d58ecea005730c065d778f601a5",
+  "protocol_sha256": "b1e3a27c6dad5956b98dd340efd313998324d656a4d23d7d04b40d3fcc3424d6",
+  "resource_amendment_sha256": "38ae55d7b796afda0868fd1d2b6ee96ba02630f2c8c189c575b7386505b9e91c",
+  "scope": "Run the frozen1000 coefficient refits with declared Decimal checks and20000 fixed-input population fights/source comparisons plus10000 paired bootstrap replicas per panel.",
+  "d65_unchanged": true,
+  "rating_change_authorized": false,
+  "model_change_authorized": false,
+  "resource_rules": "At most two Decimal check children alongside one accelerator or simulation process; original phase deadlines/artifact caps remain. Preserve failures, do not change model/predictors/samples/gates."
+}

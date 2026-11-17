@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "findings": [],
+  "scope": "read-only source/input seal verification; no study execution",
+  "source_input_freeze_sha256": "91c30017bf982b2f446e3502fd0a7b5944530c282f095fc96fa1b9b6efde8ce8",
+  "frozen_file_count": 51,
+  "source_review_sha256": "238d6b2ac05dc2b44f0784f0ee8ce509bd746c80310b7a11262fe1a84c8e0e79",
+  "reviewed_source_count": 16,
+  "input_audit_sha256": "6ee30c254cf6da257fabca0ec6114613023caf87e67da23beda3ed1da0a55157",
+  "families": 20000,
+  "unique_fighter_ids": 40000,
+  "manifest_derivations": 3164096,
+  "exact_failed_prefix_rows": 14151,
+  "full_training_and_schedule_recomputation_recorded": true,
+  "input_and_old_source_hashes_match": true,
+  "compiler_and_interpreter_match": true,
+  "new_fits_or_fights": 0,
+  "root_execution_release_still_required": true,
+  "at_utc": "2026-11-17T16:17:25.966839+00:00"
+}

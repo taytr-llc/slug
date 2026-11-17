@@ -32,6 +32,9 @@ type StableController struct {
 	stableClosed, installed, mining, paused, needSync bool
 	active, queued                                    *stableTask
 	last                                              *StableJob
+	previewLast                                       *PreviewJob
+	previewCheckpoint                                 func(string)
+	laneCheckpoint                                    func(string)
 	lastAcknowledged, lastAutomatic                   bool
 	loopCancel                                        context.CancelFunc
 	loopDone                                          chan struct{}
@@ -106,10 +109,10 @@ func (s *StableController) StableSnapshot() StableSnapshot {
 		status := *s.stableStatus
 		view := s.viewPin()
 		out = StableSnapshot{Version: 1, State: s.stableState, Error: s.stableError, View: &view, Status: &status, PendingOperationID: status.PendingOperationID}
-		if s.active != nil {
+		if s.active != nil && s.active.preview == nil {
 			out.ActiveJobID = s.active.result.JobID
 		}
-		if s.queued != nil {
+		if s.queued != nil && s.queued.preview == nil {
 			out.QueuedJobID = s.queued.result.JobID
 		}
 		if s.last != nil {
@@ -340,6 +343,10 @@ func (s *StableController) Close() error {
 		s.stableClosed = true
 		s.stableStatus = nil
 		s.last = nil
+		s.previewLast = nil
+		s.mu.Lock()
+		s.previewBytes = 0
+		s.mu.Unlock()
 		s.stableMu.Unlock()
 		s.Stop()
 		s.stableCloseErr = s.ManifestController.Close()

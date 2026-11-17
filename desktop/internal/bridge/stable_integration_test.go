@@ -25,6 +25,11 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 	if helper == "" || node == "" {
 		t.Skip("explicit frozen stable helper and normal node required")
 	}
+	previewEnabled := os.Getenv("SLUG_PREVIEW_ACCEPTANCE") == "1"
+	minimumCandidates := uint64(3)
+	if previewEnabled {
+		minimumCandidates = 6
+	}
 	root, e := os.MkdirTemp(os.Getenv("SLUG_ACCOUNT_TEST_ARTIFACTS"), "stable-desktop-")
 	if e != nil {
 		t.Fatal(e)
@@ -38,6 +43,10 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 		t.Fatal(e)
 	}
 	processes := newManifestProcessInventory(data, node, b.cmd.Process.Pid)
+	var previews *previewAcceptance
+	if previewEnabled {
+		previews = newPreviewAcceptance(t, ctx, b)
+	}
 	cleanupChecked := false
 	defer func() {
 		if e := b.Close(); e != nil {
@@ -217,7 +226,7 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 		processes.capture(t, fixture, "prepared", ready.Account.ID, synced.View.AuthorityOrigin, false)
 		request("start", 0)
 		mined := waitManifest(func(s pilot.ManifestSnapshot) bool {
-			if s.AcceptedCount < 3 || s.State != "running" {
+			if s.AcceptedCount < minimumCandidates || s.State != "running" {
 				return false
 			}
 			for _, item := range s.Projection.Items {
@@ -228,7 +237,7 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 			return false
 		})
 		processes.capture(t, fixture, "initial-mining", mined.Account.ID, mined.View.AuthorityOrigin, true)
-		live := waitStable(func(s pilot.StableSnapshot) bool { return s.Status != nil && s.Status.Checkpoint >= 3 })
+		live := waitStable(func(s pilot.StableSnapshot) bool { return s.Status != nil && s.Status.Checkpoint >= minimumCandidates })
 		if live.View.ViewID != mined.View.ViewID {
 			t.Fatal("live assignment wrong view")
 		}
@@ -248,7 +257,7 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 			return s.Status != nil && s.Status.CaughtUp && s.ActiveJobID == "" && s.QueuedJobID == ""
 		})
 		page := inventoryPage(view)
-		if len(page.Items) < 3 || page.Status.Checkpoint != stopped.AcceptedCount || page.Status.StoreID != quiet.Status.StoreID {
+		if uint64(len(page.Items)) < minimumCandidates || page.Status.Checkpoint != stopped.AcceptedCount || page.Status.StoreID != quiet.Status.StoreID {
 			t.Fatal("missing automatic dedicated-gym assignments")
 		}
 		firstRow := len(rows)
@@ -331,11 +340,17 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 		if !bytes.Equal(raw, append(canonical, '\n')) {
 			t.Fatal("export canonical bytes")
 		}
+		if previews != nil {
+			previews.run(fixture, "initial", page)
+		}
 		beforeLogout := snapshot()
 		request("logout", 0)
 		waitManifest(func(s pilot.ManifestSnapshot) bool { return s.Account.State == "signed_out" })
 		if s := snapshot(); s.View != nil || s.Status != nil {
 			t.Fatal("logout stable disclosure")
+		}
+		if previews != nil {
+			previews.refuseDetached(fixture)
 		}
 		if _, e = b.Request(ctx, "manifest_portrait", original.Portrait.Sequence); e == nil {
 			t.Fatal("signed-out portrait disclosed")
@@ -349,6 +364,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 		})
 		if attached.View.ViewID == view || attached.Status.StoreID != page.Status.StoreID || attached.Status.RosterRevision != 1 || attached.Status.Slots[0] != selected || attached.Status.Checkpoint != beforeLogout.Status.Checkpoint || reopened.Attempts != stopped.Attempts || reopened.AcceptedCount != stopped.AcceptedCount {
 			t.Fatal("reopen replaced stable or mined")
+		}
+		if previews != nil {
+			previews.emptyReopen(fixture, attached.View.ViewID)
 		}
 		oldView := view
 		view = attached.View.ViewID
@@ -368,6 +386,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 		if !reflect.DeepEqual(again.Record, original.Receipt.Record) || image.SVG != original.Portrait.SVG {
 			t.Fatal("reopen changed evidence")
 		}
+		if previews != nil {
+			previews.run(fixture, "reopened", restored)
+		}
 		pending := prepare(view, 1, 2, second)
 		request("reset_fixture", 0)
 		held := waitManifest(func(s pilot.ManifestSnapshot) bool {
@@ -379,6 +400,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 		heldView := heldStable.View.ViewID
 		if held.Account.CanExport || heldStable.Status.StoreID != page.Status.StoreID || heldStable.Status.Slots[0] != selected || heldStable.Status.RosterRevision != 1 || held.PayoutAddress != reopened.PayoutAddress || held.GymID != reopened.GymID {
 			t.Fatal("held reset changed identity/roster or restrictions")
+		}
+		if previews != nil {
+			previews.emptyReopen(fixture, heldView)
 		}
 		oldPending := meta("stable_pending", heldView, "")
 		if oldPending.Operation == nil || oldPending.Operation.Intent != pending {
@@ -409,6 +433,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 			t.Fatal("denied recovery left a file", e)
 		}
 		processes.capture(t, fixture, "reset-prepared", held.Account.ID, heldStable.View.AuthorityOrigin, false)
+		if previews != nil {
+			previews.run(fixture, "held", page)
+		}
 		fixedHeldPage := inventoryPage(heldView)
 		request("manifest_receipt", original.Receipt.Record.Sequence)
 		request("start", 0)
@@ -468,10 +495,19 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 	if b.cmd.ProcessState == nil || !b.cmd.ProcessState.Exited() || b.cmd.ProcessState.ExitCode() != 0 {
 		t.Error("helper exit was not clean")
 	}
+	var previewRestart map[string]any
+	if previews != nil {
+		previewRestart = previews.checkProcessRestart(helper, data, node)
+	}
 	if t.Failed() {
 		t.Fatal("refusing success evidence after failure")
 	}
 	result := map[string]any{"status": "passed", "fixture_only": true, "public_chain_mined": false, "gui_exercised": false, "helper_exit": b.cmd.ProcessState.ExitCode(), "helper_pid": b.cmd.Process.Pid, "cleanup": processes.evidence(), "exported_records_equal_selected": true, "denied_recovery_files_absent": true, "rows": rows, "stable": evidence}
+	if previews != nil {
+		result["previews"] = previews.evidence
+		result["preview_restart"] = previewRestart
+		result["preview_unrecorded"] = true
+	}
 	raw, e := json.MarshalIndent(result, "", "  ")
 	if e != nil {
 		t.Fatal(e)

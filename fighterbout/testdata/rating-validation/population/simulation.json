@@ -1,0 +1,13 @@
+{
+  "status": "completed",
+  "at": "2026-11-17T16:21:52.072847+00:00",
+  "count": 20000,
+  "seconds": 147.56642012498924,
+  "protocol_sha256": "b1e3a27c6dad5956b98dd340efd313998324d656a4d23d7d04b40d3fcc3424d6",
+  "source_input_freeze_sha256": "91c30017bf982b2f446e3502fd0a7b5944530c282f095fc96fa1b9b6efde8ce8",
+  "files": {
+    "full-results.jsonl.gz": "bd4399a08200a067fa6daf8debf84bd0c6d460726fd3e40406badd94233ebefc",
+    "outcomes.jsonl.gz": "1fbaa1c42afff9bc42d749c05e8a0da7256c361b45afa016fff9456b717fffbc"
+  },
+  "source_changes": []
+}

@@ -16,6 +16,7 @@ import (
 )
 
 type ManifestController struct {
+	previewBytes          int // guarded by mu, included in the shared stable cache ceiling
 	stable                *StableController
 	stableSelected        bool
 	stableProtected       bool

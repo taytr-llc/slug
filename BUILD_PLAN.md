@@ -284,6 +284,18 @@ have not yet been implemented. See `GYM_STABLE.md` and its addenda. Entry lockin
 fight inputs/results and training accounting are the next league integration
 boundary; visual acceptance and the joint D74 review remain required.
 
+Set 42 implements the first unrecorded same-gym fight preview: a pure deterministic
+three-round engine, a trusted same-class pair read at one observation time, bounded
+async helper work, native portraits and local transcript replay. It records no
+fight, XP, training or entry. D75 retains D65 and replaces the original exact-refit
+equality rule with evidence requirements for future rating changes. Its required
+coefficient-stability and fresh population-coverage studies passed independent
+audit, with no demonstrated challenger superiority across the eight primary
+comparisons. D75 successor acceptance retains D65; packaged acceptance and
+deployment remain ahead. See `FIGHTER_BOUT.md`, `FIGHT_PREVIEW.md`,
+`RATING_VALIDATION_POLICY.md` and `RATING_VALIDATION_REPORT.md`. Future recorded exhibitions
+and professional results still need their own seed, event and award authorities.
+
 ### 6. League services
 The Saturday operation: entry collection and lock (Saturday noon
 PT), matchmaking in the D52 ratio band with random draw (D13, D53),

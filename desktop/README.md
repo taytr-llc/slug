@@ -6,6 +6,17 @@ loopback btcwallet RPC surface for payout addresses, balances and history.
 Paymetheus is not the base. Private gym signing and recovery operations stay
 inside the Go helper.
 
+The separate Candidate Pilot now includes the set 42 unrecorded same-class
+fight-preview source: select two saved candidates, request a preview, then replay
+the bounded transcript locally with native portraits and the whole-fight scorecard.
+It preserves D65 and condition v1 under D75 and awards no results, XP or training.
+The independently audited [rating studies](../RATING_VALIDATION_REPORT.md)
+did not demonstrate superiority of the proposed replacement weights.
+Study completion and packaged acceptance are tracked in
+[`CHANGESET_42_NOTES.md`](../CHANGESET_42_NOTES.md); source-level tests do not
+complete actual visual/accessibility acceptance or the joint D74 design review.
+See [`FIGHT_PREVIEW.md`](../FIGHT_PREVIEW.md) for the typed interfaces and limits.
+
 Set 27 adds explicit Demo A/B accounts backed by the independently published
 `zero256` and `incrementing256` recovery fixtures. Each has one retained personal
 gym, wallet, private normal-PoW chain, prospect authority and durable outbox.

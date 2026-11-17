@@ -1,0 +1,10 @@
+{
+  "corpus-freeze.json": "4f248a892072e77a7ef06cc0e75d1fb964f375a7a9fe50bd02505bc2ed3e46a9",
+  "calibration/input-freeze.json": "d2f46d9e8527b779ee8b2496b1b03ec003941569a8bcb24c6dd4485c9205c5e3",
+  "calibration/inputs.jsonl.gz": "ec9b63064e07d1e7dab0d8baaf307d1ac015540c7f2c938041ea12611622530b",
+  "calibration/outcomes.jsonl.gz": "cf65a0704e300a476b8321f597116ac5cbb9080a40aeb1070d33f49dd857f2b1",
+  "calibration/fit.json": "e759cef7d5999a3512f0cdd853a3af49eace58c9f7beb54bfb5ca0d06b037c4d",
+  "calibration/report.json": "0f9f3261dac4585e646961eb504e036cc98e4a7d66f5eba073d2a5303a0e2b9e",
+  "reference_bout.py": "c3247a0d856270cc5043b5767ace9f628b2efb9cd120d786773f9221d928bd7f",
+  "calibrate.py": "fd97524a20556a51bb12a46d032f2fa972250d23f0dd1b4887e7d25b8fdb0297"
+}

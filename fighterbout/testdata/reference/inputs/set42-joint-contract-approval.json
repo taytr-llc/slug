@@ -1,0 +1,22 @@
+{
+  "status": "approved_for_unshipped_implementation",
+  "at": "2026-11-17T07:59:50.104408+00:00",
+  "approved_sha256": {
+    "set42-fight-contract-draft.md": "abb5b54edd921855b81dc5b99ef29b2ac94cadc9296dcd2981af4b57ad25040f",
+    "set42-preview-integration-draft.md": "149d908fdbd1436b1f1650095c0207f377f5304a5987922bf0cd39ad5949e589",
+    "set42-preview-ui-draft.md": "ee1d611c4bf6029746be6e487a9c2d5b0ee9ae1e20bdb4811a5450b6f33145a2"
+  },
+  "independent_reviews": [
+    "set42-fight-contract-independent-review.json",
+    "set42-preview-integration-independent-review.json",
+    "set42-preview-ui-independent-review.json"
+  ],
+  "execution_order": "Independent Python normative expected corpus must be derived and frozen before Go simulation is executed or any Go outcome is compared. Go types, engine authoring, codecs and integration authoring may proceed in parallel from these exact contracts. The independent reference author must not read Go implementation or outputs. No expected values may be derived from the Go implementation.",
+  "preserved_gates": [
+    "D65 refit and all predeclared calibration gates before shipping engine or packaged preview.",
+    "A changed approved rating formula requires a concrete user decision and explicit version contract; no silent weight or threshold changes.",
+    "Pure preview grants no records, XP, training, ownership, official entropy or league authority.",
+    "D74 joint design review and pending portrait rendering, native interaction and accessibility acceptance remain required before friends/tester/public product release."
+  ],
+  "change_control": "Freeze exact equations, stream schedule, data split, measurement and gate definitions. Record any clarification before generation; any outcome-informed model revision requires a new versioned contract and disjoint held-out namespace."
+}
