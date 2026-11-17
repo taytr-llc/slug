@@ -271,6 +271,19 @@ slice of the new Go gym shell, not real signup, official roster/ownership or
 product launch. See `MANIFEST_DESKTOP.md`; the packaging and acceptance addenda
 record the separate bundle default and precise composite lost-ACK evidence.
 
+Set 41 extends that same Candidate Pilot with a durable assigned inventory,
+trusted birth/current condition and ten reversible roster slots. Bounded
+catch-up consumes the pinned admission store; the original receipt remains
+the source of identity and birth. Slot edits use durable operation identities,
+revision checks and explicit reconciliation after a lost acknowledgment. Fixed
+inventory pages stay selected while Follow Recent resumes automatic arrivals.
+The two existing fixture accounts retain their wallets across the recoverable
+account-root upgrade. This candidate assignment authority does not establish
+transferable production ownership. XP remains zero because professional results
+have not yet been implemented. See `GYM_STABLE.md` and its addenda. Entry locking,
+fight inputs/results and training accounting are the next league integration
+boundary; visual acceptance and the joint D74 review remain required.
+
 ### 6. League services
 The Saturday operation: entry collection and lock (Saturday noon
 PT), matchmaking in the D52 ratio band with random draw (D13, D53),

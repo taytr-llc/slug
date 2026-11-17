@@ -4,7 +4,7 @@ set -eu
 
 here=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 root=$(CDPATH= cd -- "$here/.." && pwd)
-output=${1:-"$root/../artifacts/set40"}
+output=${1:-"$root/../artifacts/set41"}
 case "$output" in /*) ;; *) printf '%s\n' 'Build output must be an absolute directory.' >&2; exit 1;; esac
 if [ "$(uname -s)" != Darwin ]; then printf '%s\n' 'This script builds the native macOS bundle on macOS.' >&2; exit 1; fi
 mkdir -p "$output"
@@ -28,7 +28,7 @@ export GOMODCACHE=${GOMODCACHE:-/private/tmp/slug-desktop-modcache}
 (
  cd "$here"
  GOWORK="$here/go.work" CGO_ENABLED=0 go build -trimpath -tags= -o "$bundle/Contents/Resources/bin/slugpilot" ./cmd/slugpilot
- GOWORK="$here/go.work" CGO_ENABLED=1 go build -trimpath -tags=production -ldflags '-extldflags=-mmacosx-version-min=13.0 -X main.candidateBuild=1' -o "$bundle/Contents/MacOS/SLUGPilot" .
+ GOWORK="$here/go.work" CGO_ENABLED=1 go build -trimpath -tags=production -ldflags '-extldflags=-mmacosx-version-min=13.0 -X main.candidateBuild=1 -X main.stableBuild=1' -o "$bundle/Contents/MacOS/SLUGPilot" .
 )
 if [ "$("$bundle/Contents/Resources/bin/slugd" --version)" != 'slugd version 0.27.0' ]; then
  printf '%s\n' 'Bundled node is not the expected normal production PoW build.' >&2; exit 1
@@ -42,8 +42,8 @@ cat > "$bundle/Contents/Info.plist" <<'PLIST'
 <key>CFBundleDisplayName</key><string>SLUG Candidate Pilot</string>
 <key>CFBundleExecutable</key><string>SLUGPilot</string>
 <key>CFBundlePackageType</key><string>APPL</string>
-<key>CFBundleShortVersionString</key><string>0.4.0</string>
-<key>CFBundleVersion</key><string>40</string>
+<key>CFBundleShortVersionString</key><string>0.4.1</string>
+<key>CFBundleVersion</key><string>41</string>
 <key>LSMinimumSystemVersion</key><string>13.0</string>
 <key>NSHighResolutionCapable</key><true/>
 <key>LSUIElement</key><false/>

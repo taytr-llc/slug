@@ -34,6 +34,7 @@ type ManifestWorker struct {
 	signer    Signer
 	outbox    *ManifestOutbox
 	observer  ManifestReceiptObserver
+	cycleHook ManifestCycleHook
 	mu        sync.Mutex
 	status    Status
 	started   bool
@@ -52,6 +53,10 @@ func NewManifest(config ManifestConfig, authority ManifestAuthority, node Node, 
 }
 
 func NewManifestWithObserver(config ManifestConfig, authority ManifestAuthority, node Node, signer Signer, outbox *ManifestOutbox, observer ManifestReceiptObserver) (*ManifestWorker, error) {
+	return NewManifestWithHooks(config, authority, node, signer, outbox, observer, nil)
+}
+
+func NewManifestWithHooks(config ManifestConfig, authority ManifestAuthority, node Node, signer Signer, outbox *ManifestOutbox, observer ManifestReceiptObserver, cycleHook ManifestCycleHook) (*ManifestWorker, error) {
 	if err := manifestProduction(); err != nil {
 		return nil, err
 	}
@@ -67,7 +72,7 @@ func NewManifestWithObserver(config ManifestConfig, authority ManifestAuthority,
 	if outbox.state() != nil || !sameManifestIdentity(outbox.config, canonical) || outbox.config.MaxBytes != canonical.MaxBytes || outbox.config.MaxRecords != canonical.MaxRecords {
 		return nil, errors.New("worker configuration does not match outbox")
 	}
-	return &ManifestWorker{config: canonical, authority: authority, node: node, signer: signer, outbox: outbox, observer: observer, status: Status{State: "ready"}, hash: func(header *wire.BlockHeader) chainhash.Hash { return header.BlockHash() }, now: time.Now, wait: waitFor}, nil
+	return &ManifestWorker{config: canonical, authority: authority, node: node, signer: signer, outbox: outbox, observer: observer, cycleHook: cycleHook, status: Status{State: "ready"}, hash: func(header *wire.BlockHeader) chainhash.Hash { return header.BlockHash() }, now: time.Now, wait: waitFor}, nil
 }
 func (worker *ManifestWorker) Status() Status {
 	worker.mu.Lock()
@@ -114,7 +119,10 @@ func (worker *ManifestWorker) Run(ctx context.Context) error {
 		worker.outbox.mu.Lock()
 		worker.outbox.running = false
 		worker.outbox.mu.Unlock()
-		worker.set("stopped", worker.Status().LastError)
+		status := worker.Status()
+		if status.LastError != "cycle_unavailable" {
+			worker.set("stopped", status.LastError)
+		}
 	}()
 	backoff := time.Second
 	var refreshed time.Time
@@ -126,6 +134,12 @@ func (worker *ManifestWorker) Run(ctx context.Context) error {
 		worker.current = &recovered
 	}
 	for {
+		if ctx.Err() != nil {
+			return nil
+		}
+		if err := worker.runCycleHook(ctx); err != nil {
+			return err
+		}
 		if ctx.Err() != nil {
 			return nil
 		}

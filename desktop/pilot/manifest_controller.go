@@ -16,6 +16,9 @@ import (
 )
 
 type ManifestController struct {
+	stable                *StableController
+	stableSelected        bool
+	stableProtected       bool
 	closeOnce             sync.Once
 	shutdownErr, closeErr error
 	mu                    sync.Mutex
@@ -279,6 +282,13 @@ func (c *ManifestController) run(ctx context.Context, done chan struct{}, base u
 		return
 	}
 	cancelStartup()
+	if c.stable != nil {
+		if err := c.stable.openLive(c.store); err != nil {
+			failed = "storage_failed"
+			return
+		}
+		defer c.stable.closeLive()
+	}
 	node, err := prospectnode.NewClient(nodes.rpcConfig())
 	if err != nil {
 		failed = "node_unavailable"
@@ -322,7 +332,13 @@ func (c *ManifestController) run(ctx context.Context, done chan struct{}, base u
 	}
 	signer = c.accountSigner(signer)
 
-	worker, err := prospectworker.NewManifestWithObserver(c.manifest.workerConfig(), service, node, signer, c.box, c.observeManifest)
+	observer := c.observeManifest
+	var cycle prospectworker.ManifestCycleHook
+	if c.stable != nil {
+		observer = c.stable.observeStable
+		cycle = c.stable.cycle
+	}
+	worker, err := prospectworker.NewManifestWithHooks(c.manifest.workerConfig(), service, node, signer, c.box, observer, cycle)
 	if err != nil {
 		failed = "worker_unavailable"
 		return

@@ -78,10 +78,17 @@ they do not count as completion of this product-release gate.
   and exact deterministic portraits after explicit Start. It uses two published
   fixture wallets and a separate data namespace, with typed public receipt
   export and bounded cold history verification. Source reviews and preliminary
-  two-wallet normal-PoW composition pass; final package, integrated gates and
-  deployment observation are recorded separately. No window or native chooser
+  two-wallet normal-PoW composition pass. The exact package, integrated gates
+  and full deployment observation passed. No window or native chooser
   rendering is claimed by helper/DOM tests. Mike's rendering check, actual
   screen-reader acceptance and D74 review remain pending.
+- Set 41 implements a durable candidate inventory, trusted current condition
+  and ten reversible roster slots in the same Candidate Pilot. Core, DOM and
+  development helper checks pass, including both retained fixture wallets,
+  roster replay/reopen, reset-held actions and process cleanup. Final integrated
+  gates, exact packaged acceptance and seed rollout evidence are tracked in
+  the set41 reports. Entry locking, fights, results/XP and transferable ownership
+  remain open; this work does not close visual acceptance or D74.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace

@@ -61,7 +61,8 @@ version.
   → `slug-manifest-authority` (set 37, pinned candidate admission store)
   → `slug-idle-headers` (set 38, idle-chain history serving)
   → `slug-manifest-miner` (set 39, candidate service and durable miner)
-  → `slug-manifest-desktop` (set 40, opt-in candidate fixture desktop).
+  → `slug-manifest-desktop` (set 40, opt-in candidate fixture desktop)
+  → `slug-gym-stable` (set 41, durable candidate stable and ten-slot roster).
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. Continue authorized
@@ -407,3 +408,17 @@ does not understand. Never detach, replace, or clear the /data volume.
   native-selected destination. See MANIFEST_DESKTOP.md and its packaging and
   acceptance addenda. The candidate build does not activate an official
   descriptor, ownership, real accounts, product distribution or D74 approval.
+
+- Set 41 consumes verified records from one concrete pinned ManifestStore into
+  a separate candidate assignment authority. Assignment, consumed sequence and
+  clock high water synchronize together; roster membership never controls
+  inventory retention. Ten reversible slots use durable prepare/apply operation
+  identities and revision checks. Preserve original birth and XP=0 until an
+  explicit trusted results authority exists. Current held sessions may make
+  reversible roster edits; D72's asset/recovery/market restrictions stay intact.
+  Keep bounded serial verification, original account leases, uncertain-outcome
+  reconciliation and fixed-page versus Follow Recent behavior. The existing
+  candidate bundle uses the same account root with a recoverable explicit v2
+  upgrade; missing established components fail closed. No public receipt import,
+  transfer, discard, entry lock, training, official descriptor or real account
+  is enabled. See GYM_STABLE.md and its engineering addenda.

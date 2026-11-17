@@ -150,6 +150,12 @@ func markManifestChains(root string, m manifestIdentity) error {
 }
 
 func NewManifestAccount(config Config, a ManifestAccountConfig) (*ManifestController, error) {
+	return newManifestAccount(config, a, false)
+}
+
+// validationOnly suppresses the existing READY-assisted marker promotion for the
+// private root-upgrade preflight. It is never an authorization or IPC option.
+func newManifestAccount(config Config, a ManifestAccountConfig, validationOnly bool) (*ManifestController, error) {
 	if wire.TestPoW {
 		return nil, errors.New("pilot requires production PoW")
 	}
@@ -301,7 +307,7 @@ func NewManifestAccount(config Config, a ManifestAccountConfig) (*ManifestContro
 		} else if !os.IsNotExist(e) {
 			return nil, ErrManifestInitialization
 		}
-		if promote && atomicJSON(marker, m) != nil {
+		if promote && !validationOnly && atomicJSON(marker, m) != nil {
 			return nil, ErrManifestInitialization
 		}
 	}

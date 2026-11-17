@@ -54,8 +54,9 @@ type ManifestController struct {
 	closeOnce                         sync.Once
 	closeErr, shutdownErr             error
 	// Private behavioral-test seam, never a runtime configuration knob.
-	newChild   func(pilot.Config, pilot.ManifestAccountConfig) (manifestChild, error)
-	checkpoint func(string)
+	newChild    func(pilot.Config, pilot.ManifestAccountConfig) (manifestChild, error)
+	checkpoint  func(string)
+	attachChild func(context.Context, manifestChild) error
 }
 
 func NewManifest(config pilot.Config) (*ManifestController, error) {
@@ -164,6 +165,9 @@ func (c *ManifestController) login(ctx context.Context, fixture string) (resultE
 	c.mu.Lock()
 	c.child, c.fixture = child, fixture
 	c.mu.Unlock()
+	if c.checkpoint != nil {
+		c.checkpoint("manifest-child-created")
+	}
 	if err = child.Prepare(ctx); err != nil {
 		return err
 	}
@@ -197,7 +201,12 @@ func (c *ManifestController) login(ctx context.Context, fixture string) (resultE
 	}
 	// Retained proof verification is bounded and stopped. The parent remains
 	// blank/attaching until the child's complete verified page is published.
-	if err = child.LoadManifestProspects(ctx); err != nil {
+	if c.attachChild != nil {
+		err = c.attachChild(ctx, child)
+	} else {
+		err = child.LoadManifestProspects(ctx)
+	}
+	if err != nil {
 		return err
 	}
 	if err = ctx.Err(); err != nil {
@@ -223,10 +232,13 @@ func (c *ManifestController) login(ctx context.Context, fixture string) (resultE
 // No controller/cache lock is held on entry to the account lease. The parent
 // epoch check is short, and child callbacks may then take their own cache lock.
 func (c *ManifestController) withView(ctx context.Context, session gymaccount.Session, viewID string, child manifestChild, fn func(gymaccount.Account, func() error) error) error {
+	return c.withCapability(ctx, session, viewID, child, gymaccount.View, fn)
+}
+func (c *ManifestController) withCapability(ctx context.Context, session gymaccount.Session, viewID string, child manifestChild, capability gymaccount.Capability, fn func(gymaccount.Account, func() error) error) error {
 	if fn == nil || child == nil {
 		return gymaccount.ErrUnauthorized
 	}
-	return c.store.WithSession(ctx, session.Token, gymaccount.View, func(account gymaccount.Account, recheck func() error) error {
+	return c.store.WithSession(ctx, session.Token, capability, func(account gymaccount.Account, recheck func() error) error {
 		check := func() error {
 			if err := recheck(); err != nil {
 				return err
@@ -234,6 +246,9 @@ func (c *ManifestController) withView(ctx context.Context, session gymaccount.Se
 			c.mu.Lock()
 			defer c.mu.Unlock()
 			if c.closed || c.viewID != viewID || c.child != child || c.session.Token != session.Token || account.ID != session.Account.ID || account.Generation != session.Account.Generation || child.AccountID() != account.ID || (c.state != "signed_in" && c.state != "signing_in" && c.state != "resetting") {
+				return gymaccount.ErrUnauthorized
+			}
+			if capability == gymaccount.RosterManage && (c.state != "signed_in" || c.operation) {
 				return gymaccount.ErrUnauthorized
 			}
 			return nil

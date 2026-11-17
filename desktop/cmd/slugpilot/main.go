@@ -22,13 +22,24 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 	node := flags.String("node-binary", "", "Explicit bundled normal SLUG node binary")
 	accounts := flags.Bool("account-fixtures", false, "Use the separate two-public-fixture account pilot")
 	candidates := flags.Bool("candidate-manifests", false, "Use the separate candidate fixture desktop")
+	stable := flags.Bool("candidate-stable", false, "Enable the candidate stable within candidate-manifests")
 	if e := flags.Parse(args); e != nil {
 		return e
 	}
 	if flags.NArg() != 0 || *data == "" || *node == "" {
 		return errors.New("explicit data-dir and node-binary are required")
 	}
+	if *stable && (!*candidates || *accounts) {
+		return errors.New("candidate-stable requires candidate-manifests")
+	}
 	if *candidates {
+		if *stable {
+			controller, err := accountpilot.NewStable(pilot.Config{DataDir: *data, NodeBinary: *node})
+			if err != nil {
+				return err
+			}
+			return pilot.ServeStable(ctx, stdin, stdout, controller)
+		}
 		if *accounts {
 			return errors.New("candidate-manifests and account-fixtures are separate modes")
 		}
