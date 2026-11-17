@@ -64,7 +64,8 @@ version.
   → `slug-manifest-desktop` (set 40, opt-in candidate fixture desktop)
   → `slug-gym-stable` (set 41, durable candidate stable and ten-slot roster)
   → `slug-fight-preview` (set 42, released on master at `fc672113`)
-  → `slug-saturday-entry` (set 43, reversible candidate Saturday entry intake).
+  → `slug-saturday-entry` (set 43, released on master at `e2761812`)
+  → `slug-event-snapshot` (set 44, candidate event snapshots under D76/D77).
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. Continue authorized
@@ -376,6 +377,19 @@ does not understand. Never detach, replace, or clear the /data volume.
   The completed independent studies are in `RATING_VALIDATION_REPORT.md`:
   all eight primary paired improvement intervals include zero. Preserve both
   that evidence and the original failed equality result; D65 remains unchanged.
+
+- D76 (Mike, November 17) freezes roster membership, ownership, eligibility
+  and current condition at Saturday noon Pacific. Later roster changes,
+  transfers or retirement do not alter that event. Keep birth/live aging and
+  D39's immediate title vacancy intact. Candidate assignment is not proof of
+  transferable production ownership; official snapshots need that authority.
+- D77 (Mike, November 17) waits with visible delay/conflict, never substitutes
+  a seed and never automatically cancels the event. If the required seed is
+  unfinalized at the following Saturday noon-Pacific lock, escalate to the
+  operator as a chain incident under checkpoint/community policy. Use calendar
+  boundaries through DST, preserve original event/seed evidence, and keep node
+  checkpoints report-only. No synthetic finalized flag or preview seed can
+  stand in for the later trusted seed/finality authority. See EVENT_LOCK_POLICY.md.
 
 - Set 39 adds explicitly pinned candidate service protocol 3 and a separately
   typed worker/outbox version 2. Preserve old services, workers and journals;

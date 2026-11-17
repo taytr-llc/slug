@@ -82,3 +82,27 @@ will be appended after those gates actually complete.
 Actual visual rendering remains pending at Mike's request. The thorough joint
 design review (D74) is still required before friends/tester/public release.
 Engineering deployment alone does not close that gate.
+
+## Engineering closeout — November 17, 2026 Pacific
+
+The pre-package status above is retained as the implementation-time record.
+Implementation `17e0362244c2bd419ed30ee902887b0ece2ad268` was subsequently
+packaged and released as master `e276181201b63314c10dbf26c3954485dbe4021d`.
+The exact Mac bundle acceptance passed in 107.538 seconds with unchanged
+source/binaries. Independent checks verified 14 normal-work records, 40 stable
+items, six full previews and ten entry receipts, including both fixture gyms'
+replay/history/held-session/restart behavior. Normal-PoW smoke passed.
+
+Railway deployment `f7caf6bb-363a-41a8-a7a4-1fbb8e0a7771` succeeded with the
+existing volume, networking and node-only command. The 900.054-second live
+observation passed all 31 samples at height 61, one peer and 60 checkpoint
+descendants, followed by a clean observer restart and exit. Final Railway
+health showed one running replica, no crashes or pending configuration.
+
+The first promotion attempt stopped before any mutation because Python 3.9
+rejected a trailing-Z timestamp. The retained attempt and independently checked
+timestamp-normalization fix preserve the original five-minute freshness guard.
+GitHub returned no exact-commit CI runs/checks; remote CI is not claimed passed.
+The workspace `set43-release.json` and `set43-closeout.md` bind the completed
+evidence. Actual GUI/portrait/native chooser/screen-reader checks and D74 remain
+separate. No public product release or public-chain mining occurred.

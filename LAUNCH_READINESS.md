@@ -115,9 +115,17 @@ they do not count as completion of this product-release gate.
 - Set 43 is implemented on `slug-saturday-entry`: reversible Saturday entry
   selection, save/replace/withdraw, history and cutoff reporting in the same
   candidate gym. The independent corpus, core/desktop tests, crash recovery
-  and development two-wallet flow pass. Final packaged acceptance and
-  deployment are pending. Event locking, future seed selection, matching and
+  and exact two-wallet Mac bundle flow pass. Deployment at master `e2761812`,
+  the complete 15-minute live observation and clean restart passed. Event
+  locking, future seed selection, matching and
   results/XP remain separate work; no official league event is enabled yet.
+- Set 44 is beginning with D76/D77 accepted: noon-fixed roster/ownership/
+  eligibility/condition; no seed substitution or automatic cancellation; and
+  escalation at the following Saturday lock when the required seed remains
+  unfinalized. The candidate snapshot foundation is not implemented yet.
+  Its fixture assignment evidence cannot substitute for production ownership
+  history, and its calendar threshold cannot substitute for chain finality.
+  See `EVENT_LOCK_POLICY.md`; the D74 review remains pending.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
