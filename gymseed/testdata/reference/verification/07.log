@@ -1,0 +1,1 @@
+{"anchor_full_body_checks": 2, "calendar_rows": 3861, "codec_cases": 1420, "contract_field_orders": 18, "corpus_sha256": "2b8d78e8ef665e372543eb87bb5d25a975026a0ae946b15a871ac97bbf2153f0", "dtos": 125, "modeled_steps": 217, "normal_argon_headers": 145, "normal_work_fixture_blocks": 69, "protocol_cases": 194, "record_states": 78, "status": "passed"}

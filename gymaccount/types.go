@@ -26,6 +26,7 @@ const (
 	Mining              Capability = "mining"
 	RosterManage        Capability = "roster-manage"
 	EntryManage         Capability = "entry-manage"
+	SeedPublish         Capability = "seed-publish"
 	RecoveryExport      Capability = "recovery-export"
 	Withdrawal          Capability = "withdrawal"
 	FighterTransfer     Capability = "fighter-transfer"

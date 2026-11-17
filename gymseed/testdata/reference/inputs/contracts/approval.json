@@ -1,0 +1,32 @@
+{
+  "status": "approved",
+  "version": 1,
+  "at": "2026-11-17T21:51:30.852485+00:00",
+  "approval_kind": "root engineering contract under D77 delegated scope; not a new user decision or official activation",
+  "implementation_base": "a00ada0d2d3c5e903a4160e598905c667c10ee32",
+  "planning_commit": "f8e19063c66cdacc23e333ce6ca4bee8b39cbc37",
+  "branch": "slug-event-seed",
+  "files_sha256": {
+    "set45-seed-core-contract-draft.md": "51ddfc57931b1937f918f990a36c050dc9874b2d1a60b069273e314e317523df",
+    "set45-helper-contract-draft.md": "0abdcfa84e2213bd644ad2bfe43789961c3231ef10841121fa2f039776fb8f7e",
+    "set45-engineering-direction.md": "f8629e464e2c503d90c056e1f5eefce1612674268609ab9d15f4ec6fb2b5904f",
+    "set45-core-contract-before-final-clarification.md": "8e78e2e677f25417d9c27f308a483232cf8493fef28db4bf1d97d17a20870874",
+    "set45-core-final-clarification.diff": "84510f9b0d2da6e4d217780330c28927d97cc6405f500f690a1666b4233e4b4e",
+    "set45-core-helper-alignment-review.json": "f060eda2cbeb2e45667456c4ef4fe56f8cbd4199ff51bb4204792d2631777e33",
+    "set45-helper-contract-design-review.json": "5076b8f97cf470aa241dfdf11d045477c0b23a19d403d60e2bce56ad91b384a3",
+    "set45-root-contract-review.json": "9395fb28465dbbf9b4c485d210d0bb18704ad5ce716a4248d8f7d2d028a43d45",
+    "set45-contract-bounds-review.json": "548e557749a0f025e6d3e9cc9a58795abec6919826fa88d09821455b8baa6970",
+    "set45-contract-bounds-review.md": "069bffb977b8486506dd5adf9f2b128cf8eefe4164ca18bbc520568316c8c494"
+  },
+  "frozen_copies": "/Users/taytrrip/slug/set45-frozen-contract",
+  "implementation_authorized": true,
+  "independent_reference_generation_authorized": true,
+  "reference_comparison_authorized": false,
+  "conditions": [
+    "Reference producer remains isolated from new Go source/output until independently reviewed corpus freeze.",
+    "Runtime and expected vectors follow these exact contracts; preserve originals and explicitly review any later amendment.",
+    "Normal-PoW isolated fixtures only; no operator private key, public-chain broadcast/mining, hidden funding/mining, wallet-authority widening or PR.",
+    "Candidate exact-target checkpoint policy is engineering interpretation; D62 result finality and report-only consensus behavior are unchanged.",
+    "D74 full joint review at end, pending portrait rendering and real-clock closed-bundle debt remain explicit."
+  ]
+}

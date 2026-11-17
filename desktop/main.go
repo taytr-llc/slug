@@ -33,6 +33,7 @@ var candidateBuild string
 var stableBuild string
 var entryBuild string
 var eventBuild string
+var seedBuild string
 
 // Gym exposes only public pilot controls and receipt selection to the webview.
 // Paths, process arguments, and keys cannot be supplied through the web bridge.
@@ -213,7 +214,11 @@ func run() (resultErr error) {
 	stable := flag.Bool("candidate-stable", stableBuild == "1", "Use candidate stable and roster within the candidate fixture desktop")
 	entries := flag.Bool("candidate-entries", entryBuild == "1", "Enable Saturday entry intake within the candidate stable")
 	candidateEvents := flag.Bool("candidate-events", eventBuild == "1", "Enable immutable noon snapshots within candidate entries")
+	candidateSeeds := flag.Bool("candidate-seeds", seedBuild == "1", "Enable candidate seed publication within candidate events")
 	flag.Parse()
+	if *candidateSeeds && (!*candidateEvents || !*entries || !*stable || !*candidates) {
+		return errors.New("Candidate seeds require candidate events, entries, stable and fixture desktop.")
+	}
 	if *candidateEvents && (!*entries || !*stable || !*candidates) {
 		return errors.New("Candidate events require candidate entries, stable and fixture desktop.")
 	}
@@ -257,7 +262,12 @@ func run() (resultErr error) {
 		filepath.Join(filepath.Dir(filepath.Clean(*data)), "LocalManifestPilot"),
 		filepath.Clean(filepath.Join(resources, "..", "..")),
 	}}
-	if *candidateEvents {
+	if *candidateSeeds {
+		gym.stableHelper, err = bridge.LaunchSeeds(helperPath, filepath.Clean(*data), nodePath)
+		if err == nil {
+			gym.manifestHelper = gym.stableHelper
+		}
+	} else if *candidateEvents {
 		gym.stableHelper, err = bridge.LaunchEvents(helperPath, filepath.Clean(*data), nodePath)
 		if err == nil {
 			gym.manifestHelper = gym.stableHelper
@@ -299,6 +309,7 @@ func run() (resultErr error) {
 	// environment override. There is no remote frontend or external URL input.
 	app := application.New(application.Options{
 		Name: title, Description: "An isolated local mining gym using public fixture identity.",
+		Icon:     appIcon,
 		Services: []application.Service{application.NewService(gym)},
 		Assets:   application.AssetOptions{Handler: http.FileServer(http.FS(frontend)), Middleware: assetSecurity, DisableLogging: true},
 		Logger:   slog.New(slog.NewTextHandler(io.Discard, nil)),
@@ -355,7 +366,10 @@ func run() (resultErr error) {
 	controls.Add("Quit").OnClick(func(*application.Context) { app.Quit() })
 	app.Menu.Set(menu)
 	tray := app.SystemTray.New()
-	tray.SetLabel("SLUG")
+	tray.SetIconPosition(application.NSImageOnly).SetTemplateIcon(menuBarIcon)
+	// Wails currently uses this on supported platforms; its macOS tooltip
+	// implementation is a no-op. Keep the native tray lifecycle and callbacks.
+	tray.SetTooltip(title)
 	trayMenu := app.NewMenu()
 	trayMenu.Add("Show gym").OnClick(func(*application.Context) { window.Show(); window.Focus() })
 	trayMenu.Add("Start mining").OnClick(action(gym.Start))

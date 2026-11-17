@@ -12,6 +12,7 @@ import (
 	"github.com/taytr-llc/slug/gymaccount"
 	"github.com/taytr-llc/slug/gymentry"
 	"github.com/taytr-llc/slug/gymevent"
+	"github.com/taytr-llc/slug/gymseed"
 	"github.com/taytr-llc/slug/gymstable"
 	"github.com/taytr-llc/slug/registry"
 )
@@ -20,6 +21,14 @@ import (
 // laneGate, never by the legacy resource mutex across an account callback.
 type StableController struct {
 	*ManifestController
+	seedEnabled, seedAttached                         bool
+	seedStore                                         *gymseed.Store // immutable parent-owned handle
+	seedPin                                           gymseed.Pin
+	seedID, seedFailure                               string
+	seedCreated                                       int64
+	seedLast                                          *SeedJob
+	seedNodes                                         *pilotNodes // concrete process owner, only during its run
+	seedCheckpoint                                    func(string)
 	eventEnabled, eventAttached                       bool
 	eventStore                                        *gymevent.Store // borrowed immutable parent handle; never closed by child
 	eventPin                                          gymevent.Pin
@@ -392,6 +401,8 @@ func (s *StableController) Close() error {
 		s.last = nil
 		s.previewLast = nil
 		s.entryLast = nil
+		s.seedLast = nil
+		s.seedFailure = ""
 		s.eventLast = nil
 		s.eventFailure = ""
 		s.entryPending = ""
@@ -399,6 +410,7 @@ func (s *StableController) Close() error {
 		s.previewBytes = 0
 		s.entryBytes = 0
 		s.eventBytes = 0
+		s.seedBytes = 0
 		s.mu.Unlock()
 		s.stableMu.Unlock()
 		s.Stop()

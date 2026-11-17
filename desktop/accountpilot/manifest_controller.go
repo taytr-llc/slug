@@ -38,6 +38,7 @@ type manifestChild interface {
 // separately typed manifest child. Its immutable view lease never substitutes a
 // later token, even when a callback finishes after a reset or failed login.
 type ManifestController struct {
+	seedOwner                         *seedAccountOwner
 	eventOwner                        *eventAccountOwner                                                // new explicit route only; closed after child drain
 	verify                            func(context.Context, string, bool) (gymaccount.Principal, error) // immutable fixture-only dependency
 	now                               func() time.Time                                                  // nil preserves wall-clock behavior
@@ -253,7 +254,7 @@ func (c *ManifestController) withCapability(ctx context.Context, session gymacco
 			if c.closed || c.viewID != viewID || c.child != child || c.session.Token != session.Token || account.ID != session.Account.ID || account.Generation != session.Account.Generation || child.AccountID() != account.ID || (c.state != "signed_in" && c.state != "signing_in" && c.state != "resetting") {
 				return gymaccount.ErrUnauthorized
 			}
-			if (capability == gymaccount.RosterManage || capability == gymaccount.EntryManage) && (c.state != "signed_in" || c.operation) {
+			if (capability == gymaccount.RosterManage || capability == gymaccount.EntryManage || capability == gymaccount.SeedPublish) && (c.state != "signed_in" || c.operation) {
 				return gymaccount.ErrUnauthorized
 			}
 			return nil
@@ -566,6 +567,10 @@ func (c *ManifestController) Close() error {
 		}
 		err := c.detach(context.Background())
 		if c.store != nil {
+			if c.seedOwner != nil && c.seedOwner.store != nil {
+				err = errors.Join(err, c.seedOwner.store.Close())
+				c.seedOwner.store = nil
+			}
 			if c.eventOwner != nil && c.eventOwner.store != nil {
 				err = errors.Join(err, c.eventOwner.store.Close())
 				c.eventOwner.store = nil

@@ -1,0 +1,178 @@
+{
+  "inputs/contracts/approval.json": {
+    "bytes": 2391,
+    "sha256": "c02f51d028a1cbd6d047901c0a229b0094498ec8fc9088038abba4b363ad8116",
+    "origin": "/Users/taytrrip/slug/set45-contract-freeze.json",
+    "origin_sha256": "c02f51d028a1cbd6d047901c0a229b0094498ec8fc9088038abba4b363ad8116",
+    "json_pointer": null,
+    "encoding": "exact bytes"
+  },
+  "inputs/contracts/set45-seed-core-contract-draft.md": {
+    "bytes": 60151,
+    "sha256": "51ddfc57931b1937f918f990a36c050dc9874b2d1a60b069273e314e317523df",
+    "origin": "/Users/taytrrip/slug/set45-frozen-contract/set45-seed-core-contract-draft.md",
+    "origin_sha256": "51ddfc57931b1937f918f990a36c050dc9874b2d1a60b069273e314e317523df",
+    "json_pointer": null,
+    "encoding": "exact bytes"
+  },
+  "inputs/contracts/set45-helper-contract-draft.md": {
+    "bytes": 29463,
+    "sha256": "0abdcfa84e2213bd644ad2bfe43789961c3231ef10841121fa2f039776fb8f7e",
+    "origin": "/Users/taytrrip/slug/set45-frozen-contract/set45-helper-contract-draft.md",
+    "origin_sha256": "0abdcfa84e2213bd644ad2bfe43789961c3231ef10841121fa2f039776fb8f7e",
+    "json_pointer": null,
+    "encoding": "exact bytes"
+  },
+  "inputs/source44/pin.json": {
+    "bytes": 2881,
+    "sha256": "6916bef5751092b6376f9105a5f54e1795dac541e15195b74a79b77df85e4f0a",
+    "origin": "/Users/taytrrip/slug/set44-event-reference/event_v1.json",
+    "origin_sha256": "9287f92c0cb46c585b44274c70ae57c5d6c9a4234e7078fd1d69a200644f996a",
+    "json_pointer": "/pin/canonical",
+    "encoding": "exact ASCII bytes held in JSON string"
+  },
+  "inputs/source44/receipt-0.json": {
+    "bytes": 23135,
+    "sha256": "1dbceb9cd6a0224a416a6f81eae77d01ded734f2c343b73092044a99d2afd334",
+    "origin": "/Users/taytrrip/slug/set44-event-reference/event_v1.json",
+    "origin_sha256": "9287f92c0cb46c585b44274c70ae57c5d6c9a4234e7078fd1d69a200644f996a",
+    "json_pointer": "/records/0/canonical",
+    "encoding": "exact ASCII bytes held in JSON string"
+  },
+  "inputs/source44/receipt-1.json": {
+    "bytes": 4857,
+    "sha256": "eaa475205bfb03bb053505cebaa0a30a990f0f4acf32dcee4dd704ca9910c1ca",
+    "origin": "/Users/taytrrip/slug/set44-event-reference/event_v1.json",
+    "origin_sha256": "9287f92c0cb46c585b44274c70ae57c5d6c9a4234e7078fd1d69a200644f996a",
+    "json_pointer": "/records/1/canonical",
+    "encoding": "exact ASCII bytes held in JSON string"
+  },
+  "inputs/source44/receipt-10.json": {
+    "bytes": 34059,
+    "sha256": "27986a24ae8c7d27f83746dabfb81e8efec187b9032055f87f17de47b3efd409",
+    "origin": "/Users/taytrrip/slug/set44-event-reference/event_v1.json",
+    "origin_sha256": "9287f92c0cb46c585b44274c70ae57c5d6c9a4234e7078fd1d69a200644f996a",
+    "json_pointer": "/records/10/canonical",
+    "encoding": "exact ASCII bytes held in JSON string"
+  },
+  "inputs/source44/admission-incrementing256-0.json": {
+    "bytes": 3701,
+    "sha256": "8037ef08b5acacf30200fc816d4fcb32b2254f77d05a2eca5c12b84cc39a807e",
+    "origin": "/Users/taytrrip/slug/set44-event-reference/event_v1.json",
+    "origin_sha256": "9287f92c0cb46c585b44274c70ae57c5d6c9a4234e7078fd1d69a200644f996a",
+    "json_pointer": "/fixtures/0/source_records/0/record_canonical",
+    "encoding": "exact ASCII bytes held in JSON string"
+  },
+  "inputs/source44/admission-incrementing256-1.json": {
+    "bytes": 3696,
+    "sha256": "db9c3db1408696aec78195b7606b9c65612292eab15103ef088e1788d396feb4",
+    "origin": "/Users/taytrrip/slug/set44-event-reference/event_v1.json",
+    "origin_sha256": "9287f92c0cb46c585b44274c70ae57c5d6c9a4234e7078fd1d69a200644f996a",
+    "json_pointer": "/fixtures/0/source_records/1/record_canonical",
+    "encoding": "exact ASCII bytes held in JSON string"
+  },
+  "inputs/source44/admission-incrementing256-2.json": {
+    "bytes": 3698,
+    "sha256": "0169488d904560bbc505592bd34a8d64996bc8701aec201cfec8c5b44acfade4",
+    "origin": "/Users/taytrrip/slug/set44-event-reference/event_v1.json",
+    "origin_sha256": "9287f92c0cb46c585b44274c70ae57c5d6c9a4234e7078fd1d69a200644f996a",
+    "json_pointer": "/fixtures/0/source_records/2/record_canonical",
+    "encoding": "exact ASCII bytes held in JSON string"
+  },
+  "inputs/source44/admission-zero256-0.json": {
+    "bytes": 3695,
+    "sha256": "ac66fd34d72db4f61cd3369dc986b42d319d581b7a3d0872cc5154c5fe1cbba0",
+    "origin": "/Users/taytrrip/slug/set44-event-reference/event_v1.json",
+    "origin_sha256": "9287f92c0cb46c585b44274c70ae57c5d6c9a4234e7078fd1d69a200644f996a",
+    "json_pointer": "/fixtures/1/source_records/0/record_canonical",
+    "encoding": "exact ASCII bytes held in JSON string"
+  },
+  "inputs/source44/admission-zero256-1.json": {
+    "bytes": 3705,
+    "sha256": "338ba7f2431ca20ec4237a927bec54abef12da4dd9f8fc189e008dca48f6ee13",
+    "origin": "/Users/taytrrip/slug/set44-event-reference/event_v1.json",
+    "origin_sha256": "9287f92c0cb46c585b44274c70ae57c5d6c9a4234e7078fd1d69a200644f996a",
+    "json_pointer": "/fixtures/1/source_records/1/record_canonical",
+    "encoding": "exact ASCII bytes held in JSON string"
+  },
+  "inputs/source44/admission-zero256-2.json": {
+    "bytes": 3704,
+    "sha256": "0bfe8e12ab96ea0ab2990a6065030054ef7c89296ff82810bc5418b2dff40168",
+    "origin": "/Users/taytrrip/slug/set44-event-reference/event_v1.json",
+    "origin_sha256": "9287f92c0cb46c585b44274c70ae57c5d6c9a4234e7078fd1d69a200644f996a",
+    "json_pointer": "/fixtures/1/source_records/2/record_canonical",
+    "encoding": "exact ASCII bytes held in JSON string"
+  },
+  "inputs/source44/views.json": {
+    "bytes": 1819,
+    "sha256": "8c4dc072f8b34bf42c72b7683604a3c783fa630ecea9de01d5018853fe9ac262",
+    "origin": "/Users/taytrrip/slug/set44-event-reference/event_v1.json",
+    "origin_sha256": "9287f92c0cb46c585b44274c70ae57c5d6c9a4234e7078fd1d69a200644f996a",
+    "json_pointer": "/fixtures/{0,1}/{fixture,current_view,participant_id,source_kind}",
+    "encoding": "ordered exact value projection, compact canonical JSON"
+  },
+  "inputs/source44/index.json": {
+    "bytes": 6550,
+    "sha256": "c81460de2792ec4a691e13a0e60f7bcf7c376c9098c87f3c6709dbf8856dedc0",
+    "origin": "/Users/taytrrip/slug/set44-event-reference/event_v1.json",
+    "origin_sha256": "9287f92c0cb46c585b44274c70ae57c5d6c9a4234e7078fd1d69a200644f996a",
+    "json_pointer": "/calendar; /pin/store_id; /records/{0,1,10}",
+    "encoding": "selected projection and whole calendar checksum; does not copy whole corpus"
+  },
+  "inputs/source44/America_Los_Angeles.tzif": {
+    "bytes": 1294,
+    "sha256": "200d05754f6d83a371cf408d7085125797657b3b0bebeba1e508cffe86a3e5c8",
+    "origin": "/Users/taytrrip/slug/set44-event-reference/inputs/entry/inputs/America_Los_Angeles.tzif",
+    "origin_sha256": "200d05754f6d83a371cf408d7085125797657b3b0bebeba1e508cffe86a3e5c8",
+    "json_pointer": null,
+    "encoding": "exact bytes"
+  },
+  "inputs/source44/freeze.json": {
+    "bytes": 10630,
+    "sha256": "08fe99f3d6763289397dc3ce96bc96c42ad8d089e5d09a895e908429bafa63d0",
+    "origin": "/Users/taytrrip/slug/set44-event-reference/freeze.json",
+    "origin_sha256": "08fe99f3d6763289397dc3ce96bc96c42ad8d089e5d09a895e908429bafa63d0",
+    "json_pointer": null,
+    "encoding": "exact bytes"
+  },
+  "inputs/argon/argon_oracle.go": {
+    "bytes": 1532,
+    "sha256": "2acdec93813fb3a7feb3635e4e3d226a35797bb08306df7fe05b35ff4b81dbe9",
+    "origin": "/Users/taytrrip/slug/manifest-admission-reference/argon/argon_oracle.go",
+    "origin_sha256": "2acdec93813fb3a7feb3635e4e3d226a35797bb08306df7fe05b35ff4b81dbe9",
+    "json_pointer": null,
+    "encoding": "exact bytes"
+  },
+  "inputs/argon/go.mod": {
+    "bytes": 132,
+    "sha256": "a6f877804daa32c034e5c8056c67681f6f77d97f45d6d909f49b9a00ec821e09",
+    "origin": "/Users/taytrrip/slug/manifest-admission-reference/argon/go.mod",
+    "origin_sha256": "a6f877804daa32c034e5c8056c67681f6f77d97f45d6d909f49b9a00ec821e09",
+    "json_pointer": null,
+    "encoding": "exact bytes"
+  },
+  "inputs/argon/go.sum": {
+    "bytes": 312,
+    "sha256": "bff0eacd6a478f51dbac17b3ea35dff6a617bb776f34074f48c81b97a9ce33d5",
+    "origin": "/Users/taytrrip/slug/manifest-admission-reference/argon/go.sum",
+    "origin_sha256": "bff0eacd6a478f51dbac17b3ea35dff6a617bb776f34074f48c81b97a9ce33d5",
+    "json_pointer": null,
+    "encoding": "exact bytes"
+  },
+  "inputs/consensus-const.go": {
+    "bytes": 477,
+    "sha256": "50103851286e5e2a68a5ec0efe8794be0e3c801c0e9809777d91b9ccbb722279",
+    "origin": "git:a00ada0d2d3c5e903a4160e598905c667c10ee32:btcutil/const.go",
+    "origin_git_blob": "c73946056f5b08ba93b60acf55f247d5441a8837",
+    "json_pointer": null,
+    "encoding": "exact frozen base blob"
+  },
+  "inputs/contracts/shape_bounds.json": {
+    "bytes": 6142,
+    "sha256": "44ee0d5bf0d06c5960169d8a7494d93d8b6b35b3ba58561fb7f51ddc65f85ed6",
+    "origin": "/Users/taytrrip/slug/set45-contract-bounds-formula.json",
+    "origin_sha256": "44ee0d5bf0d06c5960169d8a7494d93d8b6b35b3ba58561fb7f51ddc65f85ed6",
+    "json_pointer": null,
+    "encoding": "exact approved formula-only report; no valid reference outputs"
+  }
+}

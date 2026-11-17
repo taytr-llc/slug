@@ -65,7 +65,8 @@ version.
   → `slug-gym-stable` (set 41, durable candidate stable and ten-slot roster)
   → `slug-fight-preview` (set 42, released on master at `fc672113`)
   → `slug-saturday-entry` (set 43, released on master at `e2761812`)
-  → `slug-event-snapshot` (set 44, candidate event snapshots under D76/D77).
+  → `slug-event-snapshot` (set 44, released on master at `1fc307e0`)
+  → `slug-event-seed` (set 45, candidate seed implementation under verification).
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

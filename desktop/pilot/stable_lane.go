@@ -15,6 +15,7 @@ import (
 )
 
 type stableTask struct {
+	seed         *SeedJob
 	event        *EventJob
 	entry        *EntryJob
 	entryRequest gymentry.Request
@@ -33,6 +34,10 @@ type stableTask struct {
 func (s *StableController) expireQueuedLocked() {
 	if s.queued != nil && s.queued.ctx.Err() != nil {
 		s.queued.cancel()
+		if s.queued.seed != nil {
+			s.cancelQueuedSeedLocked()
+			return
+		}
 		if s.queued.event != nil {
 			s.cancelQueuedEventLocked()
 			return
@@ -60,6 +65,10 @@ func (s *StableController) cancelTasksLocked() {
 	}
 	if s.queued != nil {
 		s.queued.cancel()
+		if s.queued.seed != nil {
+			s.cancelQueuedSeedLocked()
+			return
+		}
 		if s.queued.event != nil {
 			s.cancelQueuedEventLocked()
 			return
@@ -197,7 +206,9 @@ func (s *StableController) cycle(ctx context.Context) error {
 		s.stableMu.Unlock()
 		return nil
 	}
-	if task.event != nil {
+	if task.seed != nil {
+		task.seed.State = "running"
+	} else if task.event != nil {
 		task.event.State = "running"
 	} else if task.entry != nil {
 		task.entry.State = "running"
@@ -208,6 +219,9 @@ func (s *StableController) cycle(ctx context.Context) error {
 	}
 	s.active = task
 	s.stableMu.Unlock()
+	if task.seed != nil {
+		return s.runSeedTask(ctx, task)
+	}
 	if task.event != nil {
 		return s.runEventTask(ctx, task)
 	}
@@ -411,7 +425,7 @@ func (s *StableController) publishStableItems(ctx context.Context, items []gymst
 				delete(next, low)
 			}
 		}
-		if !manifestCacheFits(next, s.receiptSlot) || !stableCacheFits(next, s.receiptSlot, s.previewBytes+s.entryBytes+s.eventBytes) {
+		if !manifestCacheFits(next, s.receiptSlot) || !stableCacheFits(next, s.receiptSlot, s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes) {
 			return gymstable.ErrCapacity
 		}
 		s.cache = next
@@ -629,6 +643,9 @@ func (s *StableController) RefreshManifestProspects(ctx context.Context) error {
 }
 
 func (t *stableTask) family() string {
+	if t.seed != nil {
+		return "seed"
+	}
 	if t.event != nil {
 		return "event"
 	}

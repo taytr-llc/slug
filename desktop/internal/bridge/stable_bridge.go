@@ -38,6 +38,9 @@ type StableBridge struct {
 	previewSnapshotJobs    map[string]bool
 	entriesEnabled         bool
 	eventsEnabled          bool
+	seedsEnabled           bool
+	seedPin                *seedAuthority
+	seed                   *seedCorrelation
 	// The immutable coordinator pin survives logout; event correlation does not.
 	eventPin *eventAuthority
 	event    *eventCorrelation
@@ -61,6 +64,7 @@ type stableExpected struct {
 	preview bool
 	entry   bool
 	event   bool
+	seed    bool
 }
 type stableFrame struct {
 	manifest *pilot.ManifestResponse
@@ -68,6 +72,7 @@ type stableFrame struct {
 	preview  *pilot.PreviewResponse
 	entry    *pilot.EntryResponse
 	event    *pilot.EventResponse
+	seed     *pilot.SeedResponse
 }
 
 func LaunchStable(helper, dataDir, node string) (*StableBridge, error) {
@@ -108,6 +113,7 @@ func (b *StableBridge) fail(err error) {
 		b.presentation = nil
 		b.entry = nil
 		b.event = nil
+		b.seed = nil
 		b.mu.Unlock()
 		close(b.failed)
 		_ = b.input.Close()
@@ -126,7 +132,14 @@ func (b *StableBridge) read(r io.Reader) {
 			return
 		}
 		var frame stableFrame
-		if expected.event {
+		if expected.seed {
+			value, err := pilot.ParseSeedResponse(scanner.Bytes())
+			if err != nil || value.ID != expected.id {
+				b.fail(ErrUnavailable)
+				return
+			}
+			frame.seed = &value
+		} else if expected.event {
 			value, err := pilot.ParseEventResponse(scanner.Bytes())
 			if err != nil || value.ID != expected.id {
 				b.fail(ErrUnavailable)
@@ -213,8 +226,11 @@ func (b *StableBridge) exchangeEntryFamily(ctx context.Context, id uint64, stabl
 	return b.exchangeEventFamily(ctx, id, stable, preview, entry, false, raw)
 }
 func (b *StableBridge) exchangeEventFamily(ctx context.Context, id uint64, stable, preview, entry, event bool, raw []byte) (stableFrame, error) {
+	return b.exchangeSeedFamily(ctx, id, stable, preview, entry, event, false, raw)
+}
+func (b *StableBridge) exchangeSeedFamily(ctx context.Context, id uint64, stable, preview, entry, event, seed bool, raw []byte) (stableFrame, error) {
 	b.mu.Lock()
-	b.expected = &stableExpected{id: id, stable: stable, preview: preview, entry: entry, event: event}
+	b.expected = &stableExpected{id: id, stable: stable, preview: preview, entry: entry, event: event, seed: seed}
 	b.mu.Unlock()
 	raw = append(raw, '\n')
 	if d, ok := b.input.(interface{ SetWriteDeadline(time.Time) error }); ok {
@@ -437,6 +453,7 @@ func (b *StableBridge) clearStableView() {
 	b.clearPreviewView()
 	b.clearEntryView()
 	b.clearEventView()
+	b.clearSeedView()
 }
 func (b *StableBridge) rememberStableSnapshot(s pilot.StableSnapshot) {
 	if s.View == nil {

@@ -60,11 +60,19 @@
       <p id="event-cutoff" class="note"></p><p id="event-progress" class="note"></p>
       <div class="actions"><button id="event-refresh" type="button" disabled>Refresh snapshot status</button><button id="event-capture" type="button" disabled>Capture this gym</button><button id="event-cancel" type="button" disabled>Cancel capture request</button><button id="event-record" type="button" disabled>View complete snapshot</button><button id="event-clear" type="button" disabled>Clear snapshot details</button></div>
       <p id="event-message" class="note" role="status"></p>
-      <p id="event-seed" class="note">Seed selection and finality are not connected in this candidate build. No substitute seed or automatic cancellation is permitted.</p>
+      <p id="event-seed" class="note">The seed panel reports candidate publication and checkpoint evidence. No substitute seed or automatic cancellation is permitted.</p>
       <p id="event-deadline" class="note"></p><p id="event-digest" class="note"></p>
       <ul id="event-members" class="entry-eligibility"></ul>
       <div class="actions"><button id="event-history" type="button" disabled>View snapshot history</button><button id="event-history-next" type="button" disabled>More snapshot history</button></div>
       <ul id="event-history-list" class="entry-history"></ul>
+    </section>
+    <section class="panel seed-evidence" aria-labelledby="seed-heading">
+      <div class="section-top"><h2 id="seed-heading">Saturday seed</h2><span id="seed-state">Sign in to view seed evidence</span></div>
+      <p class="note">Uses the selected Saturday and its complete noon snapshot. Publication and checkpoint signing are explicit demo operator actions. Demo A’s private chain is fixed for both gyms.</p>
+      <div class="actions"><button id="seed-refresh" type="button" disabled>Read saved status</button><button id="seed-prepare" type="button" disabled>Prepare declaration</button><button id="seed-publish" type="button" disabled>Publish retained transaction</button><button id="seed-reconcile" type="button" disabled>Check chain</button><button id="seed-attest" type="button" disabled>Sign demo checkpoint</button><button id="seed-cancel" type="button" disabled>Cancel seed request</button></div>
+      <p id="seed-message" class="note" role="status"></p><p id="seed-observation" class="note"></p><p id="seed-finality" class="note">Waiting for the exact seed. No substitute or automatic cancellation.</p><p id="seed-incident" class="note" role="status"></p>
+      <div class="actions"><button id="seed-record" type="button" disabled>Read saved seed evidence</button><button id="seed-clear" type="button" disabled>Clear displayed evidence</button><button id="seed-history" type="button" disabled>Seed history</button><button id="seed-history-next" type="button" disabled>More seed history</button></div>
+      <p id="seed-identity" class="note identity"></p><ul id="seed-history-list" class="entry-history"></ul>
     </section>
     <section class="panel fight-preview" aria-labelledby="preview-heading">
       <div class="section-top"><h2 id="preview-heading">Fight preview — unrecorded</h2><span id="preview-state">Choose two candidates</span></div>

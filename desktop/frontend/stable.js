@@ -10,6 +10,7 @@ const ids = ['state', 'account-state', 'account-copy', 'hold', 'login-a', 'login
 ids.push('preview-state', 'preview-selection', 'preview-begin', 'preview-cancel', 'preview-clear', 'preview-message', 'preview-replay', 'preview-asof', 'preview-fighters', 'preview-play', 'preview-previous', 'preview-next', 'preview-restart', 'preview-result', 'preview-motion', 'preview-step', 'preview-events', 'preview-outcome', 'preview-finish', 'preview-scores');
 ids.push('entry-state', 'entry-date', 'entry-upcoming', 'entry-status', 'entry-cutoff', 'entry-saved', 'entry-warning', 'entry-count', 'entry-draft', 'entry-save', 'entry-withdraw', 'entry-check', 'entry-clear', 'entry-cancel', 'entry-message', 'entry-pending', 'entry-reconcile', 'entry-apply', 'entry-abandon', 'entry-eligibility', 'entry-history', 'entry-history-next', 'entry-history-list');
 ids.push('event-state', 'event-cutoff', 'event-progress', 'event-refresh', 'event-capture', 'event-cancel', 'event-record', 'event-clear', 'event-message', 'event-seed', 'event-deadline', 'event-digest', 'event-members', 'event-history', 'event-history-next', 'event-history-list');
+ids.push('seed-state', 'seed-refresh', 'seed-prepare', 'seed-publish', 'seed-reconcile', 'seed-attest', 'seed-cancel', 'seed-record', 'seed-clear', 'seed-history', 'seed-history-next', 'seed-message', 'seed-observation', 'seed-finality', 'seed-incident', 'seed-identity', 'seed-history-list');
 const ui = Object.fromEntries(ids.map((id) => [id, document.getElementById(id)]));
 const attrs = ['power', 'speed', 'chin', 'stamina', 'skill'];
 const rarity = ['club', 'professional', 'contender', 'elite', 'generational'];
@@ -376,7 +377,7 @@ function render() {
   ui['apply-saved'].disabled = !signed || !!command || !!watched || !pending || pending.intent.view_id !== s.view.view_id || pending.intent.generation !== s.view.generation || !st.caught_up;
   ui.abandon.disabled = !signed || !!command || !!watched || !pending;
   content(ui.alert, connectionError || message || (stable?.error ? textError(stable.error) : '')); ui.alert.hidden = !ui.alert.textContent;
-  renderRoster(); renderCards(); renderPreview(); renderEntry(); renderEvent();
+  renderRoster(); renderCards(); renderPreview(); renderEntry(); renderEvent(); renderSeed();
 }
 async function call(method, ...args) { requireValue(!activeCall); const p = Call.ByName(`main.Gym.${method}`, ...args); activeCall = p; try { return await p; } finally { activeCall = null; } }
 function schedule() { if (timer !== null) clearTimeout(timer); timer = null; if (!disposed && enabled && !document.hidden) timer = setTimeout(() => { timer = null; pollWanted = true; pump(); }, 1000); }
@@ -401,6 +402,7 @@ async function fetchSnapshots() {
     if (!disposed && ready() && !tasks.length) await fetchPreviewSnapshot();
     if (!disposed && ready() && !tasks.length) await fetchEntrySnapshot();
     if (!disposed && ready() && !tasks.length) await fetchEventSnapshot();
+    if (!disposed && ready() && !tasks.length) await fetchSeedSnapshot();
   } catch { if (!disposed && captured === epoch) disconnected(); }
 }
 function stablyChangedRoster() { return stable.status.roster_revision !== pageRevision; }
@@ -528,7 +530,7 @@ async function loadPortrait(i) {
     const p = await call('ManifestPortrait', i.assignment.sequence); if (!remains()) return;
     exact(p, ['version', 'view', 'sequence', 'id', 'manifest_digest', 'portrait_digest', 'svg']); const a = i.assignment;
     requireValue(p.version === 1 && viewKey(checkedView(p.view)) === view && p.sequence === a.sequence && p.id === a.prospect_id && p.manifest_digest === a.manifest_digest && p.portrait_digest === a.portrait_digest && imageOnlySVG(p.svg));
-    const src = `data:image/svg+xml;base64,${btoa(p.svg)}`; requireValue([...images.entries()].reduce((n, [other, v]) => n + (other === k ? 0 : 2 * v.length), 2 * src.length) + JSON.stringify(pageItems).length + previewRetainedBytes() + entryRetainedBytes() + eventRetainedBytes() <= CACHE_MAX && images.size <= 8);
+    const src = `data:image/svg+xml;base64,${btoa(p.svg)}`; requireValue([...images.entries()].reduce((n, [other, v]) => n + (other === k ? 0 : 2 * v.length), 2 * src.length) + JSON.stringify(pageItems).length + previewRetainedBytes() + entryRetainedBytes() + eventRetainedBytes() + seedRetainedBytes() <= CACHE_MAX && images.size <= 8);
     if (!remains()) return; images.set(k, src); const c = cards.get(a.prospect_id); c.image.setAttribute('src', src); c.image.hidden = false; c.placeholder.hidden = true;
   } catch { if (remains()) { const c = cards.get(i.assignment.prospect_id); c.image.removeAttribute('src'); c.image.hidden = true; c.placeholder.hidden = false; content(c.placeholder, 'Portrait unavailable. Reload it from the current verified page.'); } }
 }
@@ -620,7 +622,7 @@ function pausePreview() { if (playbackTimer !== null) clearTimeout(playbackTimer
 function discardPreviewResult() { pausePreview(); previewResult = null; playbackSteps = []; playbackIndex = 0; previewImages.clear(); previewImageAttempts.clear(); previewRendered = ''; ui['preview-fighters'].textContent = ''; ui['preview-events'].textContent = ''; ui['preview-scores'].textContent = ''; }
 function clearPreview() { previewSerial++; discardPreviewResult(); previewSelected = []; previewWatch = null; previewDiscovery = null; previewSnapshot = null; previewMessage = ''; ui['preview-selection'].textContent = ''; }
 function previewRetainedBytes() { return JSON.stringify(previewSelected).length + (previewResult ? JSON.stringify(previewResult).length + 65536 : 0) + [...previewImages.values()].reduce((n, src) => n + 2 * src.length, 0); }
-function previewCapacity(extra = 0) { return previewRetainedBytes() + entryRetainedBytes() + eventRetainedBytes() + JSON.stringify(pageItems).length + [...images.values()].reduce((n, src) => n + 2 * src.length, 0) + extra <= CACHE_MAX; }
+function previewCapacity(extra = 0) { return previewRetainedBytes() + entryRetainedBytes() + eventRetainedBytes() + seedRetainedBytes() + JSON.stringify(pageItems).length + [...images.values()].reduce((n, src) => n + 2 * src.length, 0) + extra <= CACHE_MAX; }
 function previewError(code) { return ({ preview_class_mismatch: 'Choose two candidates from the same weight class.', preview_not_found: 'This preview is no longer retained. Select your pair and explicitly preview again.', preview_capacity: 'The local preview cache is full. Clear the preview and retry.', preview_cancelled: 'Preview cancelled. No fight was recorded.', preview_observation_unknown: 'The authority could not confirm its clock observation. Reopen the gym before another preview. No fight was recorded.', outcome_unknown: 'The preview may have started. Check its status before explicitly trying again.', preview_unavailable: 'Fight preview is unavailable. Your saved candidates are retained.' })[code] ?? textError(code); }
 function previewRefusal(code) {
   if (['unauthorized', 'stale_view'].includes(code)) clearPreview();
@@ -955,11 +957,13 @@ function eventRetainedBytes() { return entryBytes([eventSnapshot, eventAuthority
 function eventCapacity() { return eventRetainedBytes() <= EVENT_MAX && previewCapacity(); }
 function eventReady() { return ready() && !eventUnavailable && !!eventSnapshot?.pin && !!eventAuthority && viewKey(eventSnapshot.view) === currentKey(); }
 function clearEvent() {
+  clearSeed();
   eventSerial++; eventSnapshot = eventStatus = eventHistory = eventDetail = eventWatch = null; eventLastJob = eventDate = eventMessage = ''; eventUnavailable = eventUnknown = false; eventAutoAttempted = new Set();
   // Retain the helper-lifetime public authority, never its old account view.
   for (const id of ['event-members', 'event-history-list']) { ui[id].textContent = ''; ui[id]._key = ''; }
 }
 function eventSelectDate(value) {
+  seedStatus = seedDetail = null; seedMessage = ''; seedSerial++;
   eventSerial++; eventDate = value; eventStatus = eventDetail = null; eventMessage = '';
   // An issued job is still tracked, but cannot repopulate another Saturday.
 }
@@ -1103,13 +1107,141 @@ function renderEvent() {
   content(ui['event-state'], eventUnavailable ? 'Unavailable' : !ready() ? 'Sign in to view snapshots' : eventSnapshot?.state === 'setup_incomplete' ? 'Setup incomplete' : eventWatch ? 'Capturing noon state' : s?.phase === 'snapshotted' ? 'Snapshot complete' : s?.phase === 'capturing' ? 'One gym captured' : 'Candidate snapshot');
   content(ui['event-cutoff'], s ? `Saturday ${s.event.saturday} · State fixed at noon Pacific · ${new Date(s.event.cutoff_ms).toISOString()}` : 'Select a Saturday in the entry panel.');
   content(ui['event-progress'], s ? s.coordinator_created_at_ms >= s.event.cutoff_ms ? eventError('event_created_too_late') : `${s.captured_participants.length} of 2 gyms captured.${s.phase === 'before_cutoff' ? ' Waiting for noon Pacific.' : s.phase !== 'snapshotted' ? ' Each demo gym captures its own historical state after sign-in.' : ' The complete snapshot is immutable.'}` : '');
-  content(ui['event-message'], eventMessage); content(ui['event-deadline'], s ? `If the required seed is still unfinalized at the following lock (${new Date(s.event.incident_deadline_ms).toISOString()}), escalate to the operator as a chain incident. Seed integration is unavailable here; this is the policy deadline, not an observed chain incident.` : '');
+  content(ui['event-message'], eventMessage); content(ui['event-deadline'], s ? `If the required seed is still unfinalized at the following lock (${new Date(s.event.incident_deadline_ms).toISOString()}), escalate to the operator as a chain incident. This is the policy deadline; the seed panel reports observed evidence.` : '');
+  content(ui['event-seed'], 'The seed panel reports candidate publication and checkpoint evidence. The event never receives a substitute seed and never automatically cancels.');
   content(ui['event-digest'], s?.snapshot_digest ? `Snapshot digest: ${s.snapshot_digest}` : '');
   ui['event-refresh'].disabled = !active || !entryDate || busy; ui['event-capture'].disabled = !active || busy || eventUnknown || !s || s.observed_at_ms < s.event.cutoff_ms || s.coordinator_created_at_ms >= s.event.cutoff_ms;
   content(ui['event-capture'], s?.captured_participants.includes(current?.gym_id) ? 'Recover this gym’s capture' : 'Capture this gym'); ui['event-cancel'].disabled = !active || !!command || !eventWatch?.id; ui['event-record'].disabled = !active || busy || s?.phase !== 'snapshotted'; ui['event-clear'].disabled = !eventDetail; ui['event-history'].disabled = !active || busy; ui['event-history-next'].disabled = !active || busy || !eventHistory?.has_more;
   const details = eventDetail && (eventDetail.kind === 'record' ? eventDetail.value.input.event.saturday : eventDetail.value.status.event.saturday) === entryDate ? eventDetail : null, detailKey = eventDetailRenderKey(details);
   if (ui['event-members']._key !== detailKey) { ui['event-members']._key = detailKey; ui['event-members'].textContent = ''; if (details) { const participants = details.kind === 'record' ? details.value.input.participants : [details.value.capture.snapshot], evidence = details.kind === 'record' ? details.value.captures : [details.value.capture.evidence]; participants.forEach((p, n) => { const name = p.participant_id === fixtures.zero256[0] ? 'Demo A' : 'Demo B'; ui['event-members'].append(element('li', '', `${name} · Candidate assignment at noon · Captured ${new Date(evidence[n].captured_at_ms).toISOString()}${p.members.length ? '' : ' · No submitted fighters at cutoff'}`)); for (const m of p.members) ui['event-members'].append(element('li', '', `${label(m.class)} · ${m.assignment.prospect_id} · ${label(m.eligibility)} · Noon rating ${(m.condition_at_cutoff.rating_hundredths / 100).toFixed(2)}${m.slot ? ` · Slot ${m.slot}` : ''}`)); }); } }
   const historyKey = eventHistoryRenderKey(eventHistory); requireValue(detailKey.length + historyKey.length <= EVENT_RENDER_KEY_BYTES); if (ui['event-history-list']._key !== historyKey) { ui['event-history-list']._key = historyKey; ui['event-history-list'].textContent = ''; if (eventHistory) for (const e of eventHistory.events) { const li = element('li'), button = element('button', '', e.event.saturday); button.type = 'button'; button.addEventListener('click', () => entryNavigate(e.event.saturday)); li.append(button, element('span', '', `${e.captured_participants.length} of 2 captured · ${e.phase === 'snapshotted' ? 'Complete' : 'Incomplete'}`)); ui['event-history-list'].append(li); } }
+}
+// Seed controls consume the native-validated fixed source authority. The
+// browser has no transaction, key, outpoint, RPC, clock or checkpoint input.
+const SEED_MAX = 262144, SEED_METADATA_MAX = 16384;
+const SEED_ERRORS = new Set(['invalid_request', 'unauthorized', 'forbidden', 'stale_view', 'busy', 'outcome_unknown', 'seed_unavailable', 'seed_setup_incomplete', 'seed_corrupt', 'seed_capacity', 'seed_clock', 'seed_calendar', 'seed_created_too_late', 'seed_source_incomplete', 'seed_not_found', 'seed_not_prepared', 'seed_node_offline', 'seed_waiting_for_funds', 'seed_scan_incomplete', 'seed_conflict', 'seed_target_unavailable', 'seed_not_mature', 'seed_cancelled']);
+let seedAuthority = null, seedSnapshot = null, seedStatus = null, seedDetail = null, seedHistory = null;
+let seedWatch = null, seedLastJob = '', seedMessage = '', seedUnavailable = false, seedUnknown = false, seedSerial = 0;
+function seedMetadataBytes() { return entryBytes([seedAuthority, seedSnapshot && { ...seedSnapshot, pin: null }, seedStatus, seedWatch, seedLastJob, seedMessage]) + 4096; }
+function seedRetainedBytes() { if (!seedAuthority && !seedSnapshot && !seedWatch) return 0; return seedMetadataBytes() + Math.max(entryBytes(seedDetail), seedWatch ? 245760 : 0) + entryBytes(seedHistory); }
+function seedCapacity() { return seedMetadataBytes() <= SEED_METADATA_MAX && seedRetainedBytes() <= SEED_MAX && previewCapacity(); }
+function seedReady() { return ready() && !seedUnavailable && !!seedAuthority && !!seedSnapshot?.pin && viewKey(seedSnapshot.view) === currentKey(); }
+function clearSeed() { seedSerial++; seedSnapshot = seedStatus = seedDetail = seedHistory = seedWatch = null; seedLastJob = seedMessage = ''; seedUnavailable = seedUnknown = false; if (ui['seed-history-list']) { ui['seed-history-list'].textContent = ''; ui['seed-history-list']._key = ''; } }
+function seedContext() { return { epoch, view: currentKey(), viewID: current?.view?.view_id, serial: seedSerial, date: entryDate }; }
+function seedCurrent(c, selection = false) { return !disposed && ready() && c.epoch === epoch && c.view === currentKey() && (!selection || c.serial === seedSerial && c.date === entryDate); }
+function seedHex(v, bytes) { return Number.isInteger(bytes) && bytes > 0 && typeof v === 'string' && v.length === bytes * 2 && /^[0-9a-f]+$/.test(v); }
+function seedTip(t) { exact(t, ['height', 'hash']); requireValue(int(t.height, 0, 2147483647) && hex(t.hash)); }
+function seedCheckpoint(c) { exact(c, ['version', 'network', 'genesis', 'height', 'hash', 'signature']); requireValue(c.version === 1 && c.network === 0x534c5547 && c.genesis === GENESIS && int(c.height, 1, 2147483647) && hex(c.hash) && seedHex(c.signature, 64)); }
+function seedPin(p) {
+  exact(p, ['version', 'source_store_id', 'source_pin', 'publisher_gym_id', 'publisher_account_id', 'publisher_source_authority_id', 'publisher_chain_id', 'network', 'genesis', 'floor_height', 'floor_hash', 'publisher_public_key', 'checkpoint_public_key', 'funding_public_key', 'funding_script', 'rules_id']);
+  requireValue(p.version === 1 && !!eventAuthority && p.source_store_id === eventAuthority.storeID && same(p.source_pin, eventAuthority.pin) && p.publisher_gym_id === fixtures.zero256[0] && p.network === 0x534c5547 && p.genesis === GENESIS && p.floor_height === 0 && p.floor_hash === GENESIS);
+  for (const k of ['publisher_account_id', 'publisher_source_authority_id', 'publisher_chain_id', 'publisher_public_key', 'checkpoint_public_key', 'rules_id']) requireValue(hex(p[k]));
+  const zero = p.source_pin.participants.find((v) => v.stable_pin.identity.gym_id === fixtures.zero256[0]); requireValue(!!zero && zero.stable_pin.account_id === p.publisher_account_id && zero.stable_pin.source.authority_id === p.publisher_source_authority_id && seedHex(p.funding_public_key, 33) && seedHex(p.funding_script, 22));
+  return p;
+}
+function seedStatusValue(s) {
+  exact(s, ['version', 'store_id', 'event_key', 'event', 'exists', 'phase', 'publication_state', 'scan_height', 'scan_tip_height', 'anchor_height', 'anchor_hash', 'target_height', 'target_hash', 'target_descendants', 'checkpoint_present', 'finalized_at_ms', 'conflict_count', 'conflict_overflow', 'incident_at_ms', 'prepared_at_ms', 'observed_at_ms', 'chain_observed_at_ms', 'node_state', 'funding_state', 'current_finality', 'escalation_due', 'scan_generation', 'funding_generation']);
+  eventValue(s.event); requireValue(s.version === 1 && s.store_id === seedAuthority.storeID && hex(s.event_key) && ['absent', 'prepared', 'waiting_anchor', 'waiting_target', 'provisional', 'finalized', 'conflict'].includes(s.phase) && ['none', 'retained', 'unknown', 'submitted'].includes(s.publication_state));
+  for (const k of ['exists', 'checkpoint_present', 'conflict_overflow', 'current_finality', 'escalation_due']) requireValue(typeof s[k] === 'boolean');
+  for (const k of ['scan_height', 'scan_tip_height']) requireValue(int(s[k], -1, 2147483647));
+  for (const k of ['anchor_height', 'target_height', 'target_descendants']) requireValue(int(s[k], 0, 2147483647));
+  for (const k of ['finalized_at_ms', 'incident_at_ms', 'prepared_at_ms', 'chain_observed_at_ms']) requireValue(int(s[k], 0, s.observed_at_ms));
+  requireValue(int(s.observed_at_ms, seedAuthority.createdMS, DATE_MAX) && optionalID(s.anchor_hash) && optionalID(s.target_hash) && int(s.conflict_count, 0, 8) && int(s.scan_generation, 0, 16) && int(s.funding_generation, 0, 16));
+  requireValue(['unobserved', 'online', 'offline', 'unavailable'].includes(s.node_state) && ['unobserved', 'scanning', 'ready', 'waiting_for_funds', 'unavailable'].includes(s.funding_state));
+  requireValue(!s.current_finality || s.finalized_at_ms > 0 && s.target_descendants >= 60 && s.chain_observed_at_ms > 0 && !s.conflict_count && !s.conflict_overflow);
+  requireValue(s.escalation_due === (s.observed_at_ms >= s.event.incident_deadline_ms && (!s.finalized_at_ms || s.conflict_count > 0 || s.conflict_overflow)));
+  return s;
+}
+function seedCursor(c) { exact(c, ['generation', 'height', 'hash', 'scan_digest', 'complete_to_height', 'complete_to_hash']); requireValue(int(c.generation, 0, 16) && int(c.height, -1, 2147483647) && int(c.complete_to_height, -1, c.height) && optionalID(c.hash) && optionalID(c.complete_to_hash) && hex(c.scan_digest)); }
+function seedDeclaration(s) {
+  exact(s, ['version', 'declaration', 'signature']); requireValue(s.version === 1 && seedHex(s.signature, 64)); const d = s.declaration;
+  exact(d, ['version', 'event_key', 'store_id', 'source_store_id', 'event', 'snapshot_digest', 'receipt_digest', 'publisher_chain_id', 'network', 'genesis', 'floor_height', 'floor_hash', 'rules_id', 'publisher_public_key', 'checkpoint_public_key']); eventValue(d.event);
+  requireValue(d.version === 1 && d.network === 0x534c5547 && d.genesis === GENESIS && d.floor_height === 0 && d.floor_hash === GENESIS && ['event_key', 'store_id', 'source_store_id', 'snapshot_digest', 'receipt_digest', 'publisher_chain_id', 'rules_id', 'publisher_public_key', 'checkpoint_public_key'].every((k) => hex(d[k]))); return d;
+}
+function seedRecordValue(r) {
+  exact(r, ['version', 'store_id', 'event_key', 'source_receipt', 'declaration', 'prepared_at_ms', 'publication', 'cursor', 'scan_restarts', 'anchor', 'target', 'checkpoint', 'finality', 'conflicts', 'conflict_overflow', 'incident_at_ms', 'observation']);
+  requireValue(entryBytes(r) <= 229376 && r.version === 1 && r.store_id === seedAuthority.storeID && hex(r.event_key)); eventRecordValue(r.source_receipt); const d = seedDeclaration(r.declaration), e = r.source_receipt.input.event;
+  for (const k of ['publication', 'anchor', 'target', 'checkpoint', 'finality']) requireValue(r[k] === null || !!r[k] && typeof r[k] === 'object' && !Array.isArray(r[k]));
+  requireValue(d.store_id === r.store_id && d.event_key === r.event_key && same(d.event, e) && e.cutoff_ms > seedAuthority.createdMS && int(r.prepared_at_ms, e.cutoff_ms, DATE_MAX)); seedCursor(r.cursor);
+  if (r.publication) { const p = r.publication; exact(p, ['version', 'raw_tx', 'txid', 'coin', 'built_at_ms', 'dispatch_count', 'first_dispatch_at_ms', 'last_dispatch_at_ms', 'state']); requireValue(p.version === 1 && typeof p.raw_tx === 'string' && p.raw_tx.length <= 2048 && seedHex(p.raw_tx, p.raw_tx.length / 2) && hex(p.txid) && ['retained', 'unknown', 'submitted'].includes(p.state) && int(p.dispatch_count)); exact(p.coin, ['outpoint', 'value_satoshis', 'script', 'block_height', 'block_hash', 'coinbase']); exact(p.coin.outpoint, ['txid', 'index']); requireValue(hex(p.coin.outpoint.txid) && int(p.coin.outpoint.index, 0, 4294967295) && int(p.coin.value_satoshis, 1294, 2100000000000000) && p.coin.script === seedAuthority.pin.funding_script && int(p.coin.block_height, 0, 2147483647) && hex(p.coin.block_hash) && typeof p.coin.coinbase === 'boolean'); for (const k of ['built_at_ms', 'first_dispatch_at_ms', 'last_dispatch_at_ms']) requireValue(int(p[k], 0, DATE_MAX)); }
+  requireValue(Array.isArray(r.scan_restarts) && r.scan_restarts.length <= 16 && r.cursor.generation === r.scan_restarts.length); for (const v of r.scan_restarts) { exact(v, ['generation', 'previous', 'observed_at_ms', 'observed_tip', 'replacement_hash']); seedCursor(v.previous); seedTip(v.observed_tip); requireValue(v.generation === v.previous.generation + 1 && int(v.observed_at_ms, r.prepared_at_ms, DATE_MAX) && optionalID(v.replacement_hash)); }
+  if (r.anchor) { const a = r.anchor; exact(a, ['height', 'hash', 'header', 'txid', 'raw_tx_digest', 'raw_tx_size', 'tx_count', 'tx_index', 'output_index', 'payload', 'merkle_branch']); requireValue(int(a.height, 0, 2147483647) && ['hash', 'txid', 'raw_tx_digest'].every((k) => hex(a[k])) && seedHex(a.header, 80) && seedHex(a.payload, 73) && int(a.raw_tx_size, 1, 4000000) && int(a.tx_count, 1, 1000000) && int(a.tx_index, 0, a.tx_count - 1) && int(a.output_index, 0, 4294967295) && Array.isArray(a.merkle_branch) && a.merkle_branch.length <= 20 && a.merkle_branch.every(hex)); }
+  if (r.target) { const t = r.target; exact(t, ['height', 'hash', 'header', 'observed_at_ms', 'observed_tip']); requireValue(!!r.anchor && t.height === r.anchor.height + 1 && hex(t.hash) && seedHex(t.header, 80) && int(t.observed_at_ms, r.prepared_at_ms, DATE_MAX)); seedTip(t.observed_tip); }
+  if (r.checkpoint) seedCheckpoint(r.checkpoint);
+  if (r.finality) { const f = r.finality; exact(f, ['checkpoint', 'observed_at_ms', 'observed_tip', 'target_descendants']); seedCheckpoint(f.checkpoint); seedTip(f.observed_tip); requireValue(!!r.target && f.checkpoint.height === r.target.height && f.checkpoint.hash === r.target.hash && f.target_descendants === f.observed_tip.height - r.target.height && f.target_descendants >= 60 && int(f.observed_at_ms, r.prepared_at_ms, DATE_MAX)); }
+  requireValue(Array.isArray(r.conflicts) && r.conflicts.length <= 8 && typeof r.conflict_overflow === 'boolean'); for (const c of r.conflicts) { exact(c, ['kind', 'observed_at_ms', 'declaration', 'checkpoint', 'expected_height', 'expected_hash', 'observed_hash', 'observed_tip']); requireValue(['declaration', 'checkpoint', 'chain'].includes(c.kind) && int(c.observed_at_ms, r.prepared_at_ms, DATE_MAX) && int(c.expected_height, 0, 2147483647) && optionalID(c.expected_hash) && optionalID(c.observed_hash)); if (c.declaration) seedDeclaration(c.declaration); if (c.checkpoint) seedCheckpoint(c.checkpoint); if (c.observed_tip) seedTip(c.observed_tip); }
+  const o = r.observation; exact(o, ['observed_at_ms', 'chain_observed_at_ms', 'tip', 'node_state', 'target_descendants', 'current_finality']); requireValue((o.observed_at_ms === 0 || int(o.observed_at_ms, r.prepared_at_ms, DATE_MAX)) && int(o.chain_observed_at_ms, 0, o.observed_at_ms) && ['unobserved', 'online', 'offline', 'unavailable'].includes(o.node_state) && int(o.target_descendants, 0, 2147483647) && typeof o.current_finality === 'boolean' && int(r.incident_at_ms, 0, DATE_MAX)); requireValue((o.chain_observed_at_ms === 0) === (o.tip === null)); if (o.tip !== null) seedTip(o.tip); return r;
+}
+function seedEnvelope(r, field) {
+  exact(r, ['id', 'ok', 'view', 'store_id', 'snapshot', 'status', 'record', 'history', 'job', 'error']); requireValue(int(r.id, 1) && typeof r.ok === 'boolean' && entryBytes(r) + 1 <= SEED_MAX);
+  const payloads = ['snapshot', 'status', 'record', 'history', 'job']; if (!r.ok) { requireValue(SEED_ERRORS.has(r.error) && r.view === null && r.store_id === '' && payloads.every((k) => r[k] === null)); return { ok: false, error: r.error }; }
+  requireValue(r.error === '' && payloads.every((k) => k === field ? r[k] !== null : r[k] === null)); const v = r[field];
+  if (field === 'snapshot') {
+    exact(v, ['version', 'state', 'error', 'view', 'store_id', 'pin', 'created_at_ms', 'publisher_account_id', 'node_state', 'active_job_id', 'queued_job_id', 'last_job_id']); requireValue(v.version === 1 && ['ready', 'busy', 'setup_incomplete', 'unavailable', 'failed'].includes(v.state) && ['ready', 'offline'].includes(v.node_state));
+    if (v.state === 'unavailable') { requireValue(r.view === null && v.view === null && v.pin === null && r.store_id === '' && v.store_id === '' && v.created_at_ms === 0 && v.publisher_account_id === '' && v.error === 'seed_unavailable' && v.node_state === 'offline' && ['active_job_id', 'queued_job_id', 'last_job_id'].every((k) => v[k] === '')); return { ok: true, value: v }; }
+    requireValue(viewKey(checkedView(v.view)) === currentKey() && viewKey(checkedView(r.view)) === currentKey() && r.store_id === v.store_id);
+    if (v.state === 'setup_incomplete') { requireValue(!seedAuthority && v.pin === null && v.store_id === '' && v.created_at_ms === 0 && v.publisher_account_id === '' && v.error === 'seed_setup_incomplete' && v.node_state === 'offline' && ['active_job_id', 'queued_job_id', 'last_job_id'].every((k) => v[k] === '')); return { ok: true, value: v }; }
+    seedPin(v.pin); requireValue(hex(v.store_id) && int(v.created_at_ms, 1, DATE_MAX) && v.publisher_account_id === v.pin.publisher_account_id && ['active_job_id', 'queued_job_id', 'last_job_id'].every((k) => optionalID(v[k])) && (v.state === 'failed' ? ['seed_unavailable', 'seed_corrupt', 'seed_clock'].includes(v.error) : v.error === ''));
+    const authority = { pin: v.pin, storeID: v.store_id, createdMS: v.created_at_ms }; requireValue(!seedAuthority || same(seedAuthority, authority)); if (!seedAuthority) seedAuthority = authority; v.pin = seedAuthority.pin; return { ok: true, value: v };
+  }
+  requireValue(seedReady() && r.store_id === seedAuthority.storeID && viewKey(checkedView(r.view)) === currentKey());
+  if (field === 'status') seedStatusValue(v);
+  if (field === 'record') seedRecordValue(v);
+  if (field === 'history') { exact(v, ['version', 'store_id', 'after_event_key', 'next_event_key', 'has_more', 'observed_at_ms', 'events']); requireValue(v.version === 1 && v.store_id === seedAuthority.storeID && optionalID(v.after_event_key) && optionalID(v.next_event_key) && typeof v.has_more === 'boolean' && int(v.observed_at_ms, seedAuthority.createdMS, DATE_MAX) && Array.isArray(v.events) && v.events.length <= 8); v.events.forEach((s, n) => { seedStatusValue(s); requireValue(s.exists && s.observed_at_ms === v.observed_at_ms && (!n || v.events[n - 1].event.cutoff_ms < s.event.cutoff_ms)); }); requireValue(v.next_event_key === (v.has_more && v.events.length ? v.events.at(-1).event_key : '')); }
+  if (field === 'job') { exact(v, ['version', 'job_id', 'kind', 'state', 'view', 'store_id', 'event_key', 'saturday', 'error', 'result']); requireValue(v.version === 1 && hex(v.job_id) && hex(v.event_key) && v.store_id === seedAuthority.storeID && viewKey(checkedView(v.view)) === currentKey() && ['prepare', 'publish', 'reconcile', 'attest'].includes(v.kind) && ['queued', 'running', 'completed', 'failed', 'cancelled'].includes(v.state)); entryDateValue(v.saturday); if (v.state === 'completed') { requireValue(v.error === '' && v.result !== null); seedRecordValue(v.result); requireValue(v.result.event_key === v.event_key && v.result.source_receipt.input.event.saturday === v.saturday); } else requireValue(v.result === null && (['queued', 'running'].includes(v.state) ? v.error === '' : SEED_ERRORS.has(v.error) && (v.state !== 'cancelled' || v.error === 'seed_cancelled'))); }
+  return { ok: true, value: v };
+}
+function seedError(code, kind = '') { if (code === 'outcome_unknown' && kind === 'reconcile') return 'The chain observation may have been recorded. No transaction was sent. Read saved evidence before another explicit chain check.'; return ({ seed_unavailable: 'Seed evidence is unavailable in this app route.', seed_setup_incomplete: 'Sign in to both demo gyms to finish the shared seed setup.', seed_source_incomplete: 'Complete both noon snapshots before preparing the event seed.', seed_created_too_late: 'This seed journal was established after the selected lock. Choose a later Saturday.', seed_not_prepared: 'Prepare this event’s declaration first.', seed_node_offline: 'The fixed Demo A node pair is offline. Start that gym explicitly to inspect its chain.', seed_waiting_for_funds: 'The separate test publisher has no mature funding output. No gym wallet will be spent.', seed_scan_incomplete: 'The bounded chain scan is incomplete. Choose Check chain again to continue.', seed_conflict: 'The fixed seed evidence conflicts. Retained evidence stays available; refer the incident to the operator.', seed_target_unavailable: 'Waiting for the exact block after publication. No substitute will be selected.', seed_not_mature: 'The required activation or confirmation depth has not been reached.', seed_not_found: 'No seed record has been prepared for this Saturday.', seed_capacity: 'The supported seed evidence or display capacity is full. Existing evidence is retained.', seed_clock: 'The local authority clock needs attention.', seed_corrupt: 'Saved seed evidence failed validation. Reopen the gym; no evidence has been discarded.', seed_cancelled: 'The request was cancelled. Check the saved record before another action.', seed_calendar: 'Choose a supported Saturday in the entry panel.', outcome_unknown: 'The operation may have been recorded or sent. Read the saved record and check the chain before another explicit action.' })[code] ?? textError(code); }
+function seedRefusal(code, action = false, kind = '') { if (['unauthorized', 'stale_view'].includes(code)) { clearSeed(); seedUnavailable = true; } if (code === 'seed_unavailable') seedUnavailable = true; if (action && code === 'outcome_unknown') seedUnknown = true; seedMessage = seedError(code, kind); }
+async function fetchSeedSnapshot() {
+  if (!ready() || seedUnavailable) return; const c = seedContext();
+  try { const raw = await call('SeedSnapshot'); if (!seedCurrent(c)) return; const old = [seedAuthority, seedSnapshot]; const r = seedEnvelope(raw, 'snapshot'); if (!r.ok) { seedRefusal(r.error); return; } seedSnapshot = r.value; if (!seedCapacity()) { [seedAuthority, seedSnapshot] = old; throw new Error('Seed cache full'); } if (seedSnapshot.state === 'unavailable') { seedUnavailable = true; return; }
+    const id = seedWatch?.id || seedSnapshot.active_job_id || seedSnapshot.queued_job_id || seedSnapshot.last_job_id; if (id && (seedWatch || id !== seedLastJob)) await seedFetchJob(id);
+  } catch { if (seedCurrent(c)) seedMessage = seedError('seed_unavailable'); } renderSeed();
+}
+async function seedRead(field = 'status', after = '') {
+  if (!seedReady() || field !== 'history' && !entryDate) return; const c = seedContext();
+  try { const args = field === 'history' ? [after, 8] : [c.date]; const raw = await call({ status: 'SeedStatus', record: 'SeedRecord', history: 'SeedHistory' }[field], c.viewID, ...args); if (!seedCurrent(c, field !== 'history')) return; const r = seedEnvelope(raw, field); if (!r.ok) { seedRefusal(r.error); return; }
+    // Present one complete selected observation; never mix a stale Record with a newer Status.
+    const old = [seedStatus, seedDetail, seedHistory, seedUnknown]; if (field === 'status') { requireValue(r.value.event.saturday === c.date); seedStatus = r.value; seedDetail = null; } if (field === 'record') { requireValue(r.value.source_receipt.input.event.saturday === c.date); seedDetail = r.value; seedStatus = null; seedUnknown = false; } if (field === 'history') { requireValue(r.value.after_event_key === after); seedHistory = r.value; }
+    if (!seedCapacity()) { [seedStatus, seedDetail, seedHistory, seedUnknown] = old; throw new Error('Seed cache full'); } seedMessage = field === 'record' ? 'Retained seed evidence loaded. This read did not check the chain or send a transaction.' : '';
+  } catch { if (seedCurrent(c)) seedMessage = seedError('seed_unavailable'); } renderSeed();
+}
+async function seedBegin(kind) {
+  if (!seedReady() || !entryDate || seedWatch || seedUnknown && kind !== 'reconcile' || seedSnapshot.state === 'busy' || !['prepare', 'publish', 'reconcile', 'attest'].includes(kind)) return;
+  if (['publish', 'attest'].includes(kind) && (current.account.held || current.account.id !== seedAuthority.pin.publisher_account_id)) { seedRefusal('forbidden'); return; }
+  const c = seedContext(); seedWatch = { id: '', kind, saturday: c.date, eventKey: '' }; if (!seedCapacity()) { seedWatch = null; seedMessage = seedError('seed_capacity'); return; }
+  try { const raw = await call({ prepare: 'BeginSeedPrepare', publish: 'BeginSeedPublish', reconcile: 'BeginSeedReconcile', attest: 'BeginSeedAttest' }[kind], c.viewID, c.date); if (!seedCurrent(c)) return; const r = seedEnvelope(raw, 'job'); if (!r.ok) { seedWatch = null; seedRefusal(r.error, true, kind); return; } const j = r.value; requireValue(j.kind === kind && j.saturday === c.date && j.state === 'queued'); seedDetail = seedHistory = null; seedWatch = { id: j.job_id, kind, saturday: j.saturday, eventKey: j.event_key }; seedMessage = 'Seed request queued.';
+  } catch { if (seedCurrent(c)) { seedWatch = null; seedRefusal('outcome_unknown', true, kind); } } renderSeed();
+}
+async function seedFetchJob(id) {
+  if (!seedReady()) return; const c = seedContext(), expected = seedWatch;
+  try { const raw = await call('SeedJob', c.viewID, id); if (!seedCurrent(c) || seedWatch !== expected) return; const r = seedEnvelope(raw, 'job'); if (!r.ok) { if (r.error !== 'busy') { seedWatch = null; seedRefusal(r.error, true, expected?.kind); } return; } const j = r.value; requireValue(j.job_id === id && (!expected || j.kind === expected.kind && j.saturday === expected.saturday && (!expected.eventKey || j.event_key === expected.eventKey)));
+    if (['queued', 'running'].includes(j.state)) { seedWatch = { id, kind: j.kind, saturday: j.saturday, eventKey: j.event_key }; requireValue(seedCapacity()); return; }
+    const retained = [seedWatch, seedLastJob, seedDetail, seedUnknown, seedStatus]; seedWatch = null; seedLastJob = id;
+    if (j.state === 'completed') { seedUnknown = false; if (j.saturday === entryDate) { seedDetail = j.result; seedStatus = null; } seedMessage = j.kind === 'reconcile' ? 'Chain evidence checked. No transaction was sent.' : 'The seed operation completed. Its retained evidence is shown below.'; } else seedRefusal(j.error, true, j.kind); if (!seedCapacity()) { [seedWatch, seedLastJob, seedDetail, seedUnknown, seedStatus] = retained; seedMessage = seedError('seed_capacity'); }
+  } catch { if (seedCurrent(c)) { seedWatch = null; seedRefusal('outcome_unknown', true, expected?.kind); } } renderSeed();
+}
+async function seedCancel() {
+  if (!seedReady() || !seedWatch?.id) return; const c = seedContext(), w = seedWatch;
+  try { const raw = await call('CancelSeedJob', c.viewID, w.id); if (!seedCurrent(c)) return; const r = seedEnvelope(raw, 'job'); if (!r.ok) { seedRefusal(r.error, true, w.kind); return; } requireValue(r.value.job_id === w.id && r.value.kind === w.kind && r.value.saturday === w.saturday && r.value.event_key === w.eventKey); await seedFetchJob(w.id); } catch { if (seedCurrent(c)) seedRefusal('outcome_unknown', true, w.kind); } renderSeed();
+}
+function seedRecordPhase(r) { return r.conflicts.length || r.conflict_overflow ? 'conflict' : r.finality ? 'finalized' : r.target ? 'provisional' : r.anchor ? 'waiting_target' : r.publication ? 'waiting_anchor' : 'prepared'; }
+function renderSeed() {
+  const active = seedReady(), s = seedStatus?.event.saturday === entryDate ? seedStatus : null, r = seedDetail?.source_receipt.input.event.saturday === entryDate ? seedDetail : null;
+  const busy = !!command || !!seedWatch || seedSnapshot?.state === 'busy', publisher = active && !current.account.held && current.account.id === seedAuthority.pin.publisher_account_id;
+  content(ui['seed-state'], !ready() ? 'Sign in to view seed evidence' : seedUnavailable ? 'Unavailable in this route' : seedSnapshot?.state === 'setup_incomplete' ? 'Setup incomplete' : seedWatch ? `${label(seedWatch.kind)} in progress` : s ? label(s.phase) : r ? label(seedRecordPhase(r)) : 'Candidate seed evidence');
+  content(ui['seed-message'], seedMessage); const o = r?.observation, chainTime = o?.chain_observed_at_ms ?? s?.chain_observed_at_ms ?? 0;
+  content(ui['seed-observation'], `Fixed Demo A nodes: ${seedSnapshot?.node_state ?? 'offline'}. ${chainTime ? `Last verified chain observation: ${new Date(chainTime).toISOString()}.` : 'No verified chain observation yet.'} ${s ? `Funding: ${label(s.funding_state)}. Scan through height ${s.scan_height}.` : ''}`);
+  const finalized = r?.finality?.observed_at_ms ?? s?.finalized_at_ms ?? 0, eligible = o?.current_finality ?? s?.current_finality ?? false, depth = o?.target_descendants ?? s?.target_descendants ?? 0;
+  content(ui['seed-finality'], finalized ? `First finality recorded ${new Date(finalized).toISOString()}. Eligible at the last verified observation: ${eligible ? 'yes' : 'no'}; ${depth} target descendants. This is retained candidate evidence, not continuous chain monitoring.` : 'Waiting for the exact seed block and its checkpoint with 60 descendants. No substitute seed or automatic cancellation.');
+  const incident = r?.incident_at_ms ?? s?.incident_at_ms ?? 0; content(ui['seed-incident'], incident ? `Chain incident first recorded ${new Date(incident).toISOString()}. Refer the evidence to the operator under the checkpoint/community rule.` : s?.escalation_due ? 'Chain incident escalation is due; no first incident has been journaled for this event.' : s ? `Escalation boundary: ${new Date(s.event.incident_deadline_ms).toISOString()}. The event waits.` : '');
+  content(ui['seed-identity'], r ? `Event ${r.event_key} · ${r.publication ? `Retained transaction ${r.publication.txid} (${r.publication.state})` : 'No retained transaction'} · Anchor ${r.anchor?.hash ?? 'pending'} · Target ${r.target?.hash ?? 'pending'}` : '');
+  for (const k of ['refresh', 'record']) ui[`seed-${k}`].disabled = !active || busy || !entryDate;
+  for (const k of ['prepare', 'publish', 'reconcile', 'attest']) ui[`seed-${k}`].disabled = !active || busy || !entryDate || seedUnknown && k !== 'reconcile' || ['publish', 'attest'].includes(k) && !publisher;
+  ui['seed-cancel'].disabled = !active || !!command || !seedWatch?.id; ui['seed-clear'].disabled = !seedDetail && !seedHistory; ui['seed-history'].disabled = !active || busy; ui['seed-history-next'].disabled = !active || busy || !seedHistory?.has_more;
+  const historyKey = seedHistory ? JSON.stringify(seedHistory.events.map((v) => [v.event_key, v.phase, v.incident_at_ms])) : ''; requireValue(historyKey.length + ui['seed-identity'].textContent.length <= 4096);
+  if (ui['seed-history-list']._key !== historyKey) { ui['seed-history-list']._key = historyKey; ui['seed-history-list'].textContent = ''; if (seedHistory) for (const s of seedHistory.events) { const li = element('li'), button = element('button', '', s.event.saturday); button.type = 'button'; button.addEventListener('click', () => entryNavigate(s.event.saturday)); li.append(button, element('span', '', label(s.phase))); ui['seed-history-list'].append(li); } }
 }
 ui['event-refresh'].addEventListener('click', () => queueEventSelection(() => eventReadStatus(), 'event-status'));
 ui['event-capture'].addEventListener('click', () => queueEventSelection(eventBegin, 'event-capture'));
@@ -1118,6 +1250,14 @@ ui['event-record'].addEventListener('click', () => queueEventSelection(eventRead
 ui['event-clear'].addEventListener('click', () => { eventDetail = null; renderEvent(); });
 ui['event-history'].addEventListener('click', () => queue(() => eventReadHistory(), 'event-history'));
 ui['event-history-next'].addEventListener('click', () => queue(() => eventReadHistory(eventHistory?.next_event_id ?? ''), 'event-history'));
+
+for (const kind of ['prepare', 'publish', 'reconcile', 'attest']) ui[`seed-${kind}`].addEventListener('click', () => { const c = seedContext(); queue(() => seedCurrent(c, true) ? seedBegin(kind) : undefined, `seed-${kind}`); });
+ui['seed-refresh'].addEventListener('click', () => { const c = seedContext(); queue(() => seedCurrent(c, true) ? seedRead('status') : undefined, 'seed-status'); });
+ui['seed-record'].addEventListener('click', () => { const c = seedContext(); queue(() => seedCurrent(c, true) ? seedRead('record') : undefined, 'seed-record'); });
+ui['seed-cancel'].addEventListener('click', () => queue(seedCancel, 'seed-cancel'));
+ui['seed-clear'].addEventListener('click', () => { seedDetail = seedHistory = null; renderSeed(); });
+ui['seed-history'].addEventListener('click', () => queue(() => seedRead('history'), 'seed-history'));
+ui['seed-history-next'].addEventListener('click', () => queue(() => seedRead('history', seedHistory?.next_event_key ?? ''), 'seed-history'));
 
 ui['entry-date'].addEventListener('change', () => entryNavigate(ui['entry-date'].value));
 ui['entry-upcoming'].addEventListener('click', () => { entryChanged(); queue(() => entryReadStatus(true), 'entry-upcoming'); });

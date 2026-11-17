@@ -25,7 +25,8 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 	if helper == "" || node == "" {
 		t.Skip("explicit frozen stable helper and normal node required")
 	}
-	eventEnabled := os.Getenv("SLUG_EVENT_ACCEPTANCE") == "1"
+	seedEnabled := os.Getenv("SLUG_SEED_ACCEPTANCE") == "1"
+	eventEnabled := os.Getenv("SLUG_EVENT_ACCEPTANCE") == "1" || seedEnabled
 	entryEnabled := os.Getenv("SLUG_ENTRY_ACCEPTANCE") == "1" || eventEnabled
 	previewEnabled := os.Getenv("SLUG_PREVIEW_ACCEPTANCE") == "1" || entryEnabled
 	minimumCandidates := uint64(3)
@@ -47,6 +48,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 	if eventEnabled {
 		launch = LaunchEvents
 	}
+	if seedEnabled {
+		launch = LaunchSeeds
+	}
 	b, e := launch(helper, data, node)
 	if e != nil {
 		t.Fatal(e)
@@ -67,6 +71,16 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 		previews.restartCheck = func(restarted *StableBridge, s pilot.StableSnapshot) any {
 			entry := entries.checkProcessRestart(restarted, s)
 			events.checkRestart(restarted, s)
+			return entry
+		}
+	}
+	var seeds *seedAcceptance
+	if seedEnabled {
+		seeds = newSeedAcceptance(t, ctx, b)
+		previews.restartCheck = func(restarted *StableBridge, s pilot.StableSnapshot) any {
+			entry := entries.checkProcessRestart(restarted, s)
+			events.checkRestart(restarted, s)
+			seeds.checkRestart(restarted, s)
 			return entry
 		}
 	}
@@ -370,6 +384,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 			entries.initial(fixture, snapshot(), page.Items[0])
 			if events != nil {
 				events.observe(fixture, "initial", snapshot())
+				if seeds != nil {
+					seeds.observe(fixture, "initial", snapshot())
+				}
 			}
 		}
 		beforeLogout := snapshot()
@@ -385,6 +402,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 			entries.refuseDetached()
 			if events != nil {
 				events.refuseDetached()
+				if seeds != nil {
+					seeds.refuseDetached()
+				}
 			}
 		}
 		if _, e = b.Request(ctx, "manifest_portrait", original.Portrait.Sequence); e == nil {
@@ -428,6 +448,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 			entries.reopened(fixture, attached)
 			if events != nil {
 				events.observe(fixture, "reopened", attached)
+				if seeds != nil {
+					seeds.observe(fixture, "reopened", attached)
+				}
 			}
 		}
 		pending := prepare(view, 1, 2, second)
@@ -481,6 +504,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 			entries.held(fixture, snapshot(), page.Items[0])
 			if events != nil {
 				events.observe(fixture, "held", snapshot())
+				if seeds != nil {
+					seeds.observe(fixture, "held", snapshot())
+				}
 			}
 		}
 		fixedHeldPage := inventoryPage(heldView)
@@ -564,6 +590,12 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 		result["event_restart"] = events.restartEvidence
 		result["event_real_clock_closed_coverage"] = false
 		result["event_seed_authority"] = "unavailable"
+	}
+	if seeds != nil {
+		result["seeds"] = seeds.evidence
+		result["seed_restart"] = seeds.restartEvidence
+		result["seed_real_clock_closed_coverage"] = false
+		result["seed_authority"] = "candidate_fixture_v1"
 	}
 	raw, e := json.MarshalIndent(result, "", "  ")
 	if e != nil {

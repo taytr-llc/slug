@@ -304,12 +304,21 @@ func (s *Store) begin(ctx context.Context, session Session, cap gymaccount.Capab
 	if ctx == nil || session.Lease == nil || session.Generation == 0 || session.Generation > MaxSafeInteger || !hashID(session.ViewID) {
 		return nil, nil, ErrUnauthorized
 	}
+	// Once Close starts, new calls see a closed dependency regardless of whether
+	// its cancelled lifetime or the available gate wins the select below.
+	// Operations already in progress still use the existing cancellation path.
+	if s.life.Err() != nil {
+		return nil, nil, ErrClosed
+	}
 	work, cancel := context.WithCancel(ctx)
 	stop := context.AfterFunc(s.life, cancel)
 	finish := func() { stop(); cancel() }
 	select {
 	case <-work.Done():
 		finish()
+		if ctx.Err() == nil && s.life.Err() != nil {
+			return nil, nil, ErrClosed
+		}
 		return nil, nil, ErrCancelled
 	case s.gate <- struct{}{}:
 	}
@@ -320,6 +329,10 @@ func (s *Store) begin(ctx context.Context, session Session, cap gymaccount.Capab
 	if e != nil {
 		release()
 		return nil, nil, e
+	}
+	if s.life.Err() != nil {
+		release()
+		return nil, nil, ErrClosed
 	}
 	if e = s.withLease(work, session, cap, nil); e != nil {
 		release()

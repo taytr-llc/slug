@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "scope": "Test-only public fixture checkpoint signature; independent of Go; original frozen oracle remains unchanged. This is a valid alternate signature, not RFC8032 deterministic signing output.",
+  "input_sha256": {
+    "/Users/taytrrip/slug/set45-seed-reference/crypto.py": "ea87b9021e14712b1ac7130daa73cd12fb8acf2fd8995ca5ce9e32d0d770fd1c",
+    "/Users/taytrrip/slug/set45-seed-reference/seed_v1.json": "2b8d78e8ef665e372543eb87bb5d25a975026a0ae946b15a871ac97bbf2153f0",
+    "/Users/taytrrip/slug/set45-seed-reference/freeze.json": "decbef0a5a69aac9827817994307b65a82f4a0daa20e654574072fe3f480b5db"
+  },
+  "script_sha256": "8e83683b7d56229b7435870788ebd033dec806629892e08fefc58e078941b8d6",
+  "public_key": "f1bee65bdc82723fbd180db7a0edb48354a9b8df038e6875b905cc2173a794fa",
+  "published_fixture_seed": "94752f800f29e8a2915494f62ac5080c8beb2aa339cbe0d1870c24495fc594b7",
+  "message_preimage": "534c5547207369676e656420636865636b706f696e74000100000047554c53cd46e20c23a799a92633cf22249fa122947d346afb8d19bb8599cf99606793780300000055dbb63e728cae3270175178128af119a8923ea1d413ba105872305185974d1d",
+  "message_sha256": "9b7ce1e38307e2c3ba32701eac4dae21449f2568faaccdbcf997cdea909738f8",
+  "nonce_derivation": "LE_integer(SHA512(nonce_domain || RFC8032_private_prefix || message)) mod L",
+  "nonce_domain_hex": "534c554720696e646570656e64656e7420616c7465726e61746520636865636b706f696e742072656772657373696f6e00763100",
+  "nonce_scalar_le_hex": "3c011eadd2e0571c87851e9b12c270b7663493735bc3363dd668803cc3a5d408",
+  "original_checkpoint": {
+    "version": 1,
+    "network": 1397511495,
+    "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+    "height": 3,
+    "hash": "1d4d97855130725810ba13d4a13e92a819f18a127851177032ae8c723eb6db55",
+    "signature": "73bc822ee0944977dcec39ac3fb05bc376e8c8da81a0305484424c614ea5663746008edc0be6e2a0a4a6a97baf4024717adecdc7b70d4db76600a0dcc300450f"
+  },
+  "alternate_checkpoint": {
+    "version": 1,
+    "network": 1397511495,
+    "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+    "height": 3,
+    "hash": "1d4d97855130725810ba13d4a13e92a819f18a127851177032ae8c723eb6db55",
+    "signature": "4a1f96ae8f205d2b07029be344c077c95ef15543271ea8d93a0eaf8e3ae2ae55aba070b8c17ac885f050b88a7ba6e72ff5e1cdc0d1e21bd7f58efc15461d0d09"
+  },
+  "checks": {
+    "original_valid": true,
+    "alternate_valid": true,
+    "signatures_distinct": true,
+    "changed_message_refused": true,
+    "wrong_key_refused": true
+  }
+}

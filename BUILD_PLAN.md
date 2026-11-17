@@ -316,10 +316,22 @@ remains unfinalized at the following Saturday lock. See `EVENT_LOCK_POLICY.md`.
 The shared coordinator reconstructs both gyms from committed history, separates
 noon inputs from actual capture evidence, and recovers interrupted captures.
 Its frozen independent reference is in `gymevent/testdata/reference`; normal,
-race, crash-recovery and scoped-clock desktop checks have passed. Exact release
-packaging and deployment verification remain pending. See `EVENT_SNAPSHOTS.md`.
+race, crash-recovery and scoped-clock desktop checks have passed. Exact Mac
+bundle acceptance, independent verification and deployment at master `1fc307e0`
+passed, followed by the full 900-second/31-sample live observation and restart.
+Successful real-clock closed-bundle coverage awaits an eligible Saturday.
+See `EVENT_SNAPSHOTS.md` and `CHANGESET_44_NOTES.md`.
 Transferable ownership and actual anchor/seed/finality integration
 remain required before official use; fixture assignment is not that evidence.
+
+Set 45 is implemented on `slug-event-seed`, stacked from set 44's
+implementation. It connects complete candidate snapshots to a fixed publisher,
+authenticated commitments, a permanently retained seed target and explicit
+checkpoint evidence. Independent reference comparisons and actual owned-node publication, finality,
+reorg and restart composition pass. Final source checks pass; packaged and
+deployment acceptance remain in progress. The requested app/menu-bar icons
+are included in the native build.
+See `EVENT_SEEDS.md` and `CHANGESET_45_NOTES.md`.
 
 ### 6. League services
 The Saturday operation: entry collection and lock (Saturday noon
