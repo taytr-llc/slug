@@ -54,7 +54,8 @@ version.
   → `slug-production-profile` (set 30, approved D73 profile design)
   → `slug-provider-coordinator` (set 31, fixture authentication/reset journal)
   → `slug-resumable-recovery` (set 32, bounded candidate wallet recovery)
-  → `slug-fighter-manifest` (set 33, static candidate fighter previews).
+  → `slug-fighter-manifest` (set 33, static candidate fighter previews)
+  → `slug-fighter-portraits` (set 34, deterministic preview SVG).
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. Continue authorized
@@ -338,3 +339,10 @@ does not understand. Never detach, replace, or clear the /data volume.
   current jobs bind only DNA version. Official assignment requires explicit
   issuance/version binding or an immutable committed mapping. Never change
   historical receipts or birth, or replace the existing DNA CLI route.
+
+- Set 34's `fighterportrait` validates the complete manifest before drawing.
+  Preserve exact versioned SVG bytes, pinned tables and independent reference
+  fixtures. No uploaded markup, external assets, free text or mutable palettes
+  enter rendering. Byte determinism does not imply cross-browser pixel identity
+  or screen-reader verification. Portrait previews still carry no official
+  assignment, identity, ownership or birth claim.

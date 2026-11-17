@@ -41,7 +41,11 @@ they do not count as completion of this product-release gate.
 - Set 33 adds independently checked candidate fighter manifests, including
   names, physical traits, styles and portrait selections. The original DNA
   preview stays compatible. These are offline previews; official assignment,
-  portrait rendering, lifecycle integration and fight gameplay remain open.
+  lifecycle integration and fight gameplay remain open.
+- Set 34 implements the candidate portrait renderer and offline CLI with exact
+  independent SVG fixtures and bounded markup. A local visual gallery is ready;
+  browser policy blocked local-file preview, so visual and actual screen-reader
+  checks remain open. The desktop does not yet show these portraits.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace

@@ -111,6 +111,13 @@ an official assignment to admitted fighters. A bounded deterministic portrait
 renderer, explicit issuance/version binding, roster/lifecycle history and the
 fight engine remain subsequent slices.
 
+Set 34 implements the exact candidate SVG renderer and `slugfighter portrait`
+command (`FIGHTER_PORTRAITS.md`). Canonical manifest validation precedes all
+lookups; exact integer coordinates, bounded fixed markup and an independent
+Python oracle make bytes reproducible. A local review gallery is available,
+but browser visual and assistive-technology checks remain open. There is no
+desktop portrait integration or official assignment in this library slice.
+
 ### 3. The official pool
 The company-run pool that earns 1% (D35, D36). No turnkey pool exists
 for btcd plus Argon2id, so this is a real build: adapt a Miningcore

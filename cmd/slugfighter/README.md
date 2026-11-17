@@ -41,3 +41,18 @@ The default preview output is exact canonical JSON without a terminal newline;
 manifest version 1 and rejects unknown versions. This is an offline public
 preview, not qualifying work, registration, a fighter ID or an ownership claim.
 See `FIGHTER_MANIFEST.md` at the repository root for the candidate contract.
+
+The `portrait` subcommand renders the candidate manifest as a deterministic
+200-by-200 SVG document, without a terminal newline:
+
+```sh
+slugfighter portrait --work-hash <64-hex-work-hash>
+slugfighter portrait --work-hash <64-hex-work-hash> --digest
+```
+
+`--version` selects the explicit renderer version (only 1 is supported);
+renderer 1 accepts manifest 1. `--digest` prints the separate SVG digest plus
+a newline. This command takes public hash text only, constructs all SVG bytes
+and accepts no caller markup. The digest is not a fighter ID or proof.
+See `FIGHTER_PORTRAITS.md` for frozen bytes and accessibility wording. Browser
+and screen-reader acceptance remain separate from exact-byte conformance.
