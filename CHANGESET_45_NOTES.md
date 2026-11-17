@@ -144,10 +144,16 @@ validation and independent review bind this narrow dependency correction.
 The first cheap-profile continuation was blocked by sandbox loopback permissions;
 with local listeners permitted, the full cheap-profile and vet checks passed.
 
-Mike added the native icon update during final verification. The app uses the
-simplified fist with SLUG lettering he requested; the menu bar uses the separate
-letterless template fist for system light/dark tint. Both PNG sources are
+Mike added the native icon update during final verification. After comparing the variants, he chose the
+original detailed SLUG fist for the app icon; the menu bar uses the separate
+letterless simplified template fist for system light/dark tint. Both PNG sources are
 committed, and both Mac bundle scripts build a standard ICNS resource and name
 it in Info.plist. Existing menu actions and Wails lifecycle remain intact.
 The original detailed artwork is preserved outside the checkout. Asset and
 bundle checks remain separate from the pending full joint design review.
+
+The first exact committed package at `dc01ac01` passed its 122.360-second
+acceptance before Mike restored the original detailed app-icon choice. That
+bundle, binary set and source/evidence records are preserved; they were never
+promoted. The follow-up changes only the app image and its description, retains
+the simplified menu template and rebuilds the final package from its new commit.

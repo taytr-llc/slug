@@ -1,13 +1,14 @@
 # Native icon sources
 
-`slug-app.png` is an unchanged copy of `slug-app-generated.png` (1254 × 1254,
-alpha), the simplified fist with SLUG lettering Mike requested on November 17
-after approving the letterless menu-bar fist.
-SHA256: `825633571834f68e64595eabdc1feac5e569de577351ebc868bec6ca0b02e2ff`.
+`slug-app.png` is an unchanged copy of Mike's selected original detailed logo,
+`ChatGPT Image Nov 16, 2026, 03_25_01 PM.png` (1254 × 1254, alpha).
+SHA256: `50ceada462548c677fb6e68e454625ca359aced2954daad5fb13abb9db85f693`.
 
-The earlier detailed artwork, `ChatGPT Image Nov 16, 2026, 03_25_01 PM.png`,
-remains unchanged in the workspace source assets; it is no longer the app icon.
-Its SHA256 is `50ceada462548c677fb6e68e454625ca359aced2954daad5fb13abb9db85f693`.
+On November 17 Mike chose this original detailed logo for the app icon after
+briefly selecting a simplified fist with SLUG lettering. The intermediate
+`slug-app-generated.png` remains in the workspace source assets and earlier
+commit/evidence; it is no longer the packaged app icon. Its SHA256 is
+`825633571834f68e64595eabdc1feac5e569de577351ebc868bec6ca0b02e2ff`.
 
 `slug-menubar-template.png` is an unchanged copy of the separately generated,
 approved letterless, reduced-detail fist (`slug-menubar-generated.png`,

@@ -3,7 +3,7 @@ package main
 
 import _ "embed"
 
-// The app uses the requested simplified fist with SLUG lettering. The separate
+// The app uses the requested original detailed logo. The separate
 // monochrome fist is a template image: macOS uses its alpha mask for light/dark
 // menu bars.
 
