@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/taytr-llc/slug/gymaccount"
+	"github.com/taytr-llc/slug/gymentry"
 	"github.com/taytr-llc/slug/gymstable"
 	"github.com/taytr-llc/slug/registry"
 )
@@ -18,6 +19,13 @@ import (
 // laneGate, never by the legacy resource mutex across an account callback.
 type StableController struct {
 	*ManifestController
+	entryEnabled                                      bool
+	entryStore                                        *gymentry.Store // laneGate owns handle lifetime
+	entryPin                                          gymentry.Pin    // immutable after preparation
+	entryStoreID                                      string
+	entryPending                                      string
+	entryLast                                         *EntryJob
+	entryCheckpoint                                   func(string)
 	stableConfig                                      StableAccountConfig
 	stableMu                                          sync.Mutex
 	stopMu                                            sync.Mutex
@@ -109,10 +117,10 @@ func (s *StableController) StableSnapshot() StableSnapshot {
 		status := *s.stableStatus
 		view := s.viewPin()
 		out = StableSnapshot{Version: 1, State: s.stableState, Error: s.stableError, View: &view, Status: &status, PendingOperationID: status.PendingOperationID}
-		if s.active != nil && s.active.preview == nil {
+		if s.active != nil && s.active.family() == "stable" {
 			out.ActiveJobID = s.active.result.JobID
 		}
-		if s.queued != nil && s.queued.preview == nil {
+		if s.queued != nil && s.queued.family() == "stable" {
 			out.QueuedJobID = s.queued.result.JobID
 		}
 		if s.last != nil {
@@ -157,12 +165,24 @@ func (s *StableController) openPair(source *registry.ManifestStore) error {
 		return err
 	}
 	s.stableStore, s.source, s.ownedSource = store, source, owned
+	if s.entryEnabled {
+		entry, e := gymentry.Open(context.Background(), filepath.Join(s.config.DataDir, "entries"), s.entryPin, store)
+		if e != nil {
+			_ = s.closePair()
+			return e
+		}
+		s.entryStore = entry
+	}
 	return nil
 }
 func (s *StableController) closePair() error {
 	var err error
+	if s.entryStore != nil {
+		err = s.entryStore.Close()
+		s.entryStore = nil
+	}
 	if s.stableStore != nil {
-		err = s.stableStore.Close()
+		err = errors.Join(err, s.stableStore.Close())
 		s.stableStore = nil
 	}
 	if s.ownedSource && s.source != nil {
@@ -199,6 +219,24 @@ func (s *StableController) AttachStable(ctx context.Context) error {
 		s.stableMu.Unlock()
 		_ = s.closePair()
 		return gymstable.ErrClosed
+	}
+	if s.entryEnabled {
+		s.stableMu.Unlock()
+		pending, e := s.entryStore.Pending(ctx, s.session())
+		if e != nil {
+			_ = s.closePair()
+			return e
+		}
+		s.stableMu.Lock()
+		if s.stableClosed {
+			s.stableMu.Unlock()
+			_ = s.closePair()
+			return gymstable.ErrClosed
+		}
+		s.entryPending = ""
+		if pending.Operation != nil {
+			s.entryPending = pending.Operation.Intent.OperationID
+		}
 	}
 	s.installed = true
 	s.stableStatus = &status
@@ -344,8 +382,11 @@ func (s *StableController) Close() error {
 		s.stableStatus = nil
 		s.last = nil
 		s.previewLast = nil
+		s.entryLast = nil
+		s.entryPending = ""
 		s.mu.Lock()
 		s.previewBytes = 0
+		s.entryBytes = 0
 		s.mu.Unlock()
 		s.stableMu.Unlock()
 		s.Stop()

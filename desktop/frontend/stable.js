@@ -8,6 +8,7 @@ const DATE_MAX = 8640000000000000;
 const CACHE_MAX = 1 << 20;
 const ids = ['state', 'account-state', 'account-copy', 'hold', 'login-a', 'login-b', 'logout', 'reset', 'mining', 'mining-copy', 'alert', 'attempts', 'rate', 'accepted', 'pending', 'height', 'wallet-state', 'wallet-height', 'spendable', 'immature', 'payout', 'gym-id', 'export-recovery', 'verify-backup', 'backup', 'refresh', 'coverage', 'announcement', 'empty', 'empty-copy', 'cards', 'candidates-heading', 'stable-state', 'stable-count', 'stable-progress', 'sync', 'pause-sync', 'recent', 'inventory', 'roster-details', 'previous', 'next', 'page-label', 'roster-slots', 'roster-count', 'mutation-state', 'reconcile', 'apply-saved', 'abandon', 'cancel-job'];
 ids.push('preview-state', 'preview-selection', 'preview-begin', 'preview-cancel', 'preview-clear', 'preview-message', 'preview-replay', 'preview-asof', 'preview-fighters', 'preview-play', 'preview-previous', 'preview-next', 'preview-restart', 'preview-result', 'preview-motion', 'preview-step', 'preview-events', 'preview-outcome', 'preview-finish', 'preview-scores');
+ids.push('entry-state', 'entry-date', 'entry-upcoming', 'entry-status', 'entry-cutoff', 'entry-saved', 'entry-warning', 'entry-count', 'entry-draft', 'entry-save', 'entry-withdraw', 'entry-check', 'entry-clear', 'entry-cancel', 'entry-message', 'entry-pending', 'entry-reconcile', 'entry-apply', 'entry-abandon', 'entry-eligibility', 'entry-history', 'entry-history-next', 'entry-history-list');
 const ui = Object.fromEntries(ids.map((id) => [id, document.getElementById(id)]));
 const attrs = ['power', 'speed', 'chin', 'stamina', 'skill'];
 const rarity = ['club', 'professional', 'contender', 'elite', 'generational'];
@@ -268,7 +269,7 @@ function ready() { return accountReady() && stable?.view && currentKey() === vie
 function canEdit() { return ready() && stable.status.caught_up && !stable.status.pending_operation_id && !watched && !flow && !command && !['failed', 'unavailable'].includes(stable.state); }
 function clearCards() { for (const c of cards.values()) { c.image.removeAttribute('src'); c.article.remove(); } cards.clear(); images.clear(); imageAttempts.clear(); }
 function forgetView(clearFlow = true) {
-  epoch++; clearPreview(); clearCards(); pageItems = []; watched = null; savedOperation = null; lastViewedJob = ''; pageAfter = pageNext = 0; rosterFirst = 1; rosterNext = 0; pageRevision = null; mode = 'recent';
+  epoch++; clearEntry(); clearPreview(); clearCards(); pageItems = []; watched = null; savedOperation = null; lastViewedJob = ''; pageAfter = pageNext = 0; rosterFirst = 1; rosterNext = 0; pageRevision = null; mode = 'recent';
   if (clearFlow) { flow = null; mutationMessage = ''; }
 }
 function disconnected() { forgetView(false); current = stable = null; connectionError = 'The local gym is unavailable. Saved changes remain on disk; reconnect before continuing.'; render(); }
@@ -313,11 +314,12 @@ function makeCard(i) {
   save.addEventListener('click', () => oldAction('ExportManifestReceipt', [a.sequence], a.prospect_id));
   retry.addEventListener('click', () => { images.delete(key(i)); imageAttempts.delete(key(i)); image.removeAttribute('src'); image.hidden = true; placeholder.hidden = false; pump(); });
   const preview = element('button', '', 'Select for preview'); preview.type = 'button'; preview.addEventListener('click', () => selectPreview(i));
-  actions.append(assign, save, retry, preview); article.append(actions);
+  const entry = element('button', '', 'Add to Saturday draft'); entry.type = 'button'; entry.addEventListener('click', () => selectEntry(i));
+  actions.append(assign, save, retry, preview, entry); article.append(actions);
   const details = element('details'), summary = element('summary', '', 'Verified identity'); details.append(summary); const dl = element('dl');
   for (const [name, value] of [['Prospect ID', a.prospect_id], ['Assignment sequence', a.sequence], ['Accepted', date.format(new Date(a.accepted_at_ms))], ['Manifest digest', a.manifest_digest], ['Portrait digest', a.portrait_digest], ['Source receipt digest', a.source_record_digest]]) dl.append(element('dt', '', name), element('dd', '', value));
   details.append(dl); article.append(details);
-  return { article, image, placeholder, assign, save, retry, preview, select, details, item: i, fingerprint: JSON.stringify(i) };
+  return { article, image, placeholder, assign, save, retry, preview, entry, select, details, item: i, fingerprint: JSON.stringify(i) };
 }
 function renderCards() {
   const want = new Set(pageItems.map((i) => i.assignment.prospect_id));
@@ -334,6 +336,7 @@ function renderCards() {
     if (!c) { c = makeCard(i); cards.set(id, c); }
     if (ui.cards.children[position] !== c.article) ui.cards.insertBefore(c.article, ui.cards.children[position] ?? null);
     c.preview.disabled = !ready() || !!command || previewSelected.some((v) => v.id === id) || previewSelected.length >= 2;
+    c.entry.disabled = !entryReady() || !!command || entryDraft.length >= 5 || entryDraft.some((d) => d.id === id) || !stable.status.slots.includes(id) || i.condition.phase === 'retired';
     c.assign.disabled = !canEdit(); c.select.disabled = !canEdit(); c.save.disabled = !ready() || !!command || !!watched; c.retry.disabled = !ready() || !!command;
     if (images.has(key(i))) { c.image.setAttribute('src', images.get(key(i))); c.image.hidden = false; c.placeholder.hidden = true; }
   }
@@ -372,7 +375,7 @@ function render() {
   ui['apply-saved'].disabled = !signed || !!command || !!watched || !pending || pending.intent.view_id !== s.view.view_id || pending.intent.generation !== s.view.generation || !st.caught_up;
   ui.abandon.disabled = !signed || !!command || !!watched || !pending;
   content(ui.alert, connectionError || message || (stable?.error ? textError(stable.error) : '')); ui.alert.hidden = !ui.alert.textContent;
-  renderRoster(); renderCards(); renderPreview();
+  renderRoster(); renderCards(); renderPreview(); renderEntry();
 }
 async function call(method, ...args) { requireValue(!activeCall); const p = Call.ByName(`main.Gym.${method}`, ...args); activeCall = p; try { return await p; } finally { activeCall = null; } }
 function schedule() { if (timer !== null) clearTimeout(timer); timer = null; if (!disposed && enabled && !document.hidden) timer = setTimeout(() => { timer = null; pollWanted = true; pump(); }, 1000); }
@@ -395,6 +398,7 @@ async function fetchSnapshots() {
     const id = watched?.id || next.last_job_id;
     if (id && (watched || id !== lastViewedJob)) await fetchJob(id);
     if (!disposed && ready() && !tasks.length) await fetchPreviewSnapshot();
+    if (!disposed && ready() && !tasks.length) await fetchEntrySnapshot();
   } catch { if (!disposed && captured === epoch) disconnected(); }
 }
 function stablyChangedRoster() { return stable.status.roster_revision !== pageRevision; }
@@ -503,6 +507,7 @@ async function cancelJob(id) {
 }
 async function oldAction(method, args = [], expectedID = '') {
   if (!enabled || command) return;
+  if (method === 'Stop') entryChanged();
   const capturedView = currentKey(); if (expectedID && !pageItems.some((i) => i.assignment.prospect_id === expectedID)) return;
   const invalidate = ['LoginFixture', 'Logout', 'ResetFixtureAccount'].includes(method);
   queue(async () => {
@@ -521,7 +526,7 @@ async function loadPortrait(i) {
     const p = await call('ManifestPortrait', i.assignment.sequence); if (!remains()) return;
     exact(p, ['version', 'view', 'sequence', 'id', 'manifest_digest', 'portrait_digest', 'svg']); const a = i.assignment;
     requireValue(p.version === 1 && viewKey(checkedView(p.view)) === view && p.sequence === a.sequence && p.id === a.prospect_id && p.manifest_digest === a.manifest_digest && p.portrait_digest === a.portrait_digest && imageOnlySVG(p.svg));
-    const src = `data:image/svg+xml;base64,${btoa(p.svg)}`; requireValue([...images.entries()].reduce((n, [other, v]) => n + (other === k ? 0 : 2 * v.length), 2 * src.length) + JSON.stringify(pageItems).length + previewRetainedBytes() <= CACHE_MAX && images.size <= 8);
+    const src = `data:image/svg+xml;base64,${btoa(p.svg)}`; requireValue([...images.entries()].reduce((n, [other, v]) => n + (other === k ? 0 : 2 * v.length), 2 * src.length) + JSON.stringify(pageItems).length + previewRetainedBytes() + entryRetainedBytes() <= CACHE_MAX && images.size <= 8);
     if (!remains()) return; images.set(k, src); const c = cards.get(a.prospect_id); c.image.setAttribute('src', src); c.image.hidden = false; c.placeholder.hidden = true;
   } catch { if (remains()) { const c = cards.get(i.assignment.prospect_id); c.image.removeAttribute('src'); c.image.hidden = true; c.placeholder.hidden = false; content(c.placeholder, 'Portrait unavailable. Reload it from the current verified page.'); } }
 }
@@ -613,7 +618,7 @@ function pausePreview() { if (playbackTimer !== null) clearTimeout(playbackTimer
 function discardPreviewResult() { pausePreview(); previewResult = null; playbackSteps = []; playbackIndex = 0; previewImages.clear(); previewImageAttempts.clear(); previewRendered = ''; ui['preview-fighters'].textContent = ''; ui['preview-events'].textContent = ''; ui['preview-scores'].textContent = ''; }
 function clearPreview() { previewSerial++; discardPreviewResult(); previewSelected = []; previewWatch = null; previewDiscovery = null; previewSnapshot = null; previewMessage = ''; ui['preview-selection'].textContent = ''; }
 function previewRetainedBytes() { return JSON.stringify(previewSelected).length + (previewResult ? JSON.stringify(previewResult).length + 65536 : 0) + [...previewImages.values()].reduce((n, src) => n + 2 * src.length, 0); }
-function previewCapacity(extra = 0) { return previewRetainedBytes() + JSON.stringify(pageItems).length + [...images.values()].reduce((n, src) => n + 2 * src.length, 0) + extra <= CACHE_MAX; }
+function previewCapacity(extra = 0) { return previewRetainedBytes() + entryRetainedBytes() + JSON.stringify(pageItems).length + [...images.values()].reduce((n, src) => n + 2 * src.length, 0) + extra <= CACHE_MAX; }
 function previewError(code) { return ({ preview_class_mismatch: 'Choose two candidates from the same weight class.', preview_not_found: 'This preview is no longer retained. Select your pair and explicitly preview again.', preview_capacity: 'The local preview cache is full. Clear the preview and retry.', preview_cancelled: 'Preview cancelled. No fight was recorded.', preview_observation_unknown: 'The authority could not confirm its clock observation. Reopen the gym before another preview. No fight was recorded.', outcome_unknown: 'The preview may have started. Check its status before explicitly trying again.', preview_unavailable: 'Fight preview is unavailable. Your saved candidates are retained.' })[code] ?? textError(code); }
 function previewRefusal(code) {
   if (['unauthorized', 'stale_view'].includes(code)) clearPreview();
@@ -734,6 +739,221 @@ function renderPreview() {
   content(ui['preview-finish'], r.method === 'decision_draw' ? 'Draw — equal whole-fight scores' : r.method === 'double_corner_stoppage' ? 'Draw — both corners stopped the fight' : `${winner} wins by ${label(r.method)}.`);
 }
 motionPreference?.addEventListener('change', () => { pausePreview(); renderPreview(); });
+// Candidate entry is a separate closed family on the same serialized scheduler.
+const ENTRY_CALENDAR = '1351d63c43cd08d760ca4a88c60bc7ecee9dcb0e331961f93b16d95425385450';
+const ENTRY_RULES = 'fdd7e3f43df60986cea1d5eeb8a0f3512c30c73229890b84a213d057b16b44e2';
+const ENTRY_MAX = 131072;
+const ENTRY_ERRORS = new Set(['invalid_request', 'unauthorized', 'forbidden', 'stale_view', 'busy', 'entry_unavailable', 'entry_corrupt', 'entry_capacity', 'entry_clock', 'entry_calendar', 'entry_closed', 'entry_conflict', 'entry_pending', 'entry_not_found', 'entry_sync_required', 'entry_not_rostered', 'entry_retired', 'entry_class_conflict', 'entry_cancelled', 'outcome_unknown']);
+let entrySnapshot = null, entryStore = '', entryNamespace = '', entryUnavailable = false, entryDate = '', entryStatus = null;
+let entryDraft = [], entrySerial = 0, entryWatch = null, entryFlow = null, entryOperation = null, entryTerminal = null, entryHistory = null, entryMessage = '', entryUnknown = false;
+function entryReady() { return ready() && !entryUnavailable && !!entrySnapshot?.view && entryStore === entrySnapshot.store_id; }
+function entryBytes(value) { return JSON.stringify(value).length; } // All validated text is bounded ASCII.
+function entryRetainedBytes() { return entryBytes([entrySnapshot, entryDate, entryStatus, entryDraft, entryWatch, entryFlow, entryOperation, entryTerminal, entryHistory, entryMessage]) + (entryWatch ? 65536 : 0); }
+function entryCapacity() { return entryRetainedBytes() <= ENTRY_MAX && previewCapacity(); }
+function clearEntry() {
+  entrySerial++; entrySnapshot = null; entryStore = entryNamespace = entryDate = ''; entryUnavailable = false; entryStatus = null; entryDraft = []; entryWatch = entryFlow = entryOperation = entryTerminal = entryHistory = null; entryUnknown = false; entryMessage = '';
+  for (const id of ['entry-draft', 'entry-eligibility', 'entry-history-list']) ui[id].textContent = '';
+}
+function entryDateValue(s) {
+  requireValue(typeof s === 'string' && /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(s)); const d = new Date(`${s}T00:00:00.000Z`);
+  requireValue(!Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === s && d.getUTCFullYear() >= 2026 && d.getUTCFullYear() <= 2099 && d.getUTCDay() === 6); return s;
+}
+function entryIDs(ids, min = 0) { requireValue(Array.isArray(ids) && ids.length >= min && ids.length <= 5 && ids.every(hex) && ids.every((id, n) => n === 0 || ids[n - 1] < id)); }
+function entryEvent(e) {
+  exact(e, ['version', 'event_id', 'namespace_id', 'calendar_id', 'rules_id', 'saturday', 'cutoff_ms']);
+  requireValue(e.version === 1 && hex(e.event_id) && hex(e.namespace_id) && (!entryNamespace || e.namespace_id === entryNamespace) && e.calendar_id === ENTRY_CALENDAR && e.rules_id === ENTRY_RULES && int(e.cutoff_ms, 1, DATE_MAX)); entryDateValue(e.saturday); return e;
+}
+function entryRequestValue(r) {
+  exact(r, ['version', 'event_id', 'saturday', 'action', 'expected_revision', 'expected_roster_revision', 'prospect_ids']);
+  requireValue(r.version === 1 && hex(r.event_id) && ['replace', 'withdraw'].includes(r.action) && int(r.expected_revision, 0, 4096) && int(r.expected_roster_revision, 0, 4096)); entryDateValue(r.saturday); entryIDs(r.prospect_ids, r.action === 'replace' ? 1 : 0);
+  if (r.action === 'withdraw') requireValue(r.prospect_ids.length === 0 && r.expected_roster_revision === 0); return r;
+}
+function entryIntent(i) {
+  exact(i, ['version', 'sequence', 'operation_id', 'generation', 'view_id', 'request', 'prepared_at_ms']);
+  requireValue(i.version === 1 && int(i.sequence, 1, 4096) && hex(i.operation_id) && int(i.generation, 1) && hex(i.view_id) && int(i.prepared_at_ms, 1, DATE_MAX)); entryRequestValue(i.request); return i;
+}
+function entrySavedCondition(c, a, asOf) {
+  exact(c, ['version', 'projector_id', 'dna_version', 'seed', 'born_at_ms', 'as_of_ms', 'age_weeks', 'phase', 'elapsed_decline_weeks', 'prime_remaining_weeks', 'prime_remaining_ms', 'career_remaining_ms', 'pro_xp', 'aged_attributes_tenths', 'league_attributes_tenths', 'rating_hundredths']);
+  requireValue(c.version === 1 && c.projector_id === 'slug-fighter-condition-candidate-v1' && c.dna_version === 1 && c.seed === a.work_hash && c.born_at_ms === a.born_at_ms && c.as_of_ms === asOf && asOf >= a.accepted_at_ms && c.pro_xp === 0 && ['prime', 'decline'].includes(c.phase));
+  requireValue(int(c.age_weeks, 0, 91) && c.age_weeks === Math.floor((asOf - a.born_at_ms) / WEEK) && int(c.elapsed_decline_weeks, 0, 39) && int(c.prime_remaining_weeks, 0, 52) && int(c.prime_remaining_ms, 0, 52 * WEEK) && int(c.career_remaining_ms, 1, 91 * WEEK));
+  exact(c.aged_attributes_tenths, attrs); exact(c.league_attributes_tenths, attrs); requireValue(attrs.every((k) => int(c.aged_attributes_tenths[k], 0, 1000) && c.league_attributes_tenths[k] === c.aged_attributes_tenths[k])); requireValue(c.rating_hundredths === attrs.reduce((sum, k, n) => sum + c.league_attributes_tenths[k] * [10, 25, 2, 4, 8][n], 0));
+}
+function entryReceipt(r) {
+  exact(r, ['version', 'store_id', 'entry_id', 'event', 'operation_id', 'operation_sequence', 'generation', 'view_id', 'action', 'previous_revision', 'revision', 'roster_revision', 'stable_checkpoint', 'observed_source_count', 'committed_at_ms', 'members']); entryEvent(r.event);
+  requireValue(r.version === 1 && r.store_id === entryStore && ['entry_id', 'operation_id', 'view_id'].every((k) => hex(r[k])) && int(r.operation_sequence, 1, 4096) && int(r.generation, 1) && ['replace', 'withdraw'].includes(r.action) && int(r.previous_revision, 0, 4095) && r.revision === r.previous_revision + 1 && int(r.roster_revision, 0, 4096) && int(r.stable_checkpoint, 0, 1000) && int(r.observed_source_count, r.stable_checkpoint, 1000) && int(r.committed_at_ms, 1, r.event.cutoff_ms - 1));
+  requireValue(Array.isArray(r.members) && r.members.length <= 5 && (r.action === 'replace' ? r.members.length > 0 : r.members.length === 0 && r.roster_revision === 0)); const seenSlots = new Set(), seenClasses = new Set(); let previous = '';
+  for (const m of r.members) { exact(m, ['slot', 'assignment', 'class', 'condition_at_save']); assignment(m.assignment, stable.status.pin.identity); requireValue(int(m.slot, 1, 10) && classes.includes(m.class) && !seenSlots.has(m.slot) && !seenClasses.has(m.class) && m.assignment.prospect_id > previous && m.assignment.sequence <= r.stable_checkpoint); seenSlots.add(m.slot); seenClasses.add(m.class); previous = m.assignment.prospect_id; entrySavedCondition(m.condition_at_save, m.assignment, r.committed_at_ms); }
+  return r;
+}
+function entryOperationValue(o) {
+  exact(o, ['version', 'intent', 'state', 'receipt', 'abandoned_at_ms']); requireValue(o.version === 1 && ['prepared', 'committed', 'abandoned'].includes(o.state)); const i = entryIntent(o.intent);
+  if (o.state === 'committed') { const r = entryReceipt(o.receipt), q = i.request; requireValue(r.operation_id === i.operation_id && r.operation_sequence === i.sequence && r.generation === i.generation && r.view_id === i.view_id && r.event.event_id === q.event_id && r.event.saturday === q.saturday && r.action === q.action && r.previous_revision === q.expected_revision && r.roster_revision === q.expected_roster_revision && same(r.members.map((m) => m.assignment.prospect_id), q.prospect_ids) && r.committed_at_ms >= i.prepared_at_ms && o.abandoned_at_ms === 0); }
+  else requireValue(o.receipt === null && (o.state === 'prepared' ? o.abandoned_at_ms === 0 : int(o.abandoned_at_ms, i.prepared_at_ms, DATE_MAX))); return o;
+}
+function entryStatusValue(s) {
+  exact(s, ['version', 'store_id', 'event', 'exists', 'phase', 'entry_id', 'revision', 'latest_operation_id', 'latest_receipt_digest', 'saved_ids', 'saved_at_ms', 'saved_roster_revision', 'current_roster_revision', 'roster_changed', 'eligibility', 'pending_operation_id', 'observed_at_ms', 'closed_observed_at_ms']); entryEvent(s.event); entryIDs(s.saved_ids);
+  requireValue(s.version === 1 && s.store_id === entryStore && typeof s.exists === 'boolean' && s.phase === (s.observed_at_ms >= s.event.cutoff_ms ? 'closed_pending_lock' : 'accepting') && hex(s.entry_id) && int(s.revision, 0, 4096) && optionalID(s.latest_operation_id) && optionalID(s.latest_receipt_digest) && optionalID(s.pending_operation_id) && int(s.saved_at_ms, 0, s.event.cutoff_ms - 1) && int(s.observed_at_ms, Math.max(s.saved_at_ms, 1), DATE_MAX) && int(s.saved_roster_revision, 0, 4096) && int(s.current_roster_revision, 0, 4096) && s.roster_changed === !!(s.saved_ids.length && s.saved_roster_revision !== s.current_roster_revision) && s.eligibility === 'not_checked');
+  requireValue(s.revision ? s.exists && hex(s.latest_operation_id) && hex(s.latest_receipt_digest) && s.saved_at_ms > 0 : s.latest_operation_id === '' && s.latest_receipt_digest === '' && s.saved_ids.length === 0 && s.saved_at_ms === 0 && s.saved_roster_revision === 0);
+  requireValue(!s.exists || s.phase === 'accepting' ? s.closed_observed_at_ms === 0 : int(s.closed_observed_at_ms, s.event.cutoff_ms, s.observed_at_ms)); if (!s.exists) requireValue(s.revision === 0); return s;
+}
+function entryCheckValue(c) {
+  exact(c, ['version', 'status', 'as_of_ms', 'roster_revision', 'members']); entryStatusValue(c.status); requireValue(c.version === 1 && c.as_of_ms === c.status.observed_at_ms && c.roster_revision === c.status.current_roster_revision && Array.isArray(c.members) && c.members.length === c.status.saved_ids.length);
+  for (const [n, m] of c.members.entries()) { exact(m, ['slot', 'item', 'eligibility']); requireValue(int(m.slot, 0, 10)); fullItem(m.item, { pin: stable.status.pin, checkpoint: 1000 }, c.as_of_ms); requireValue(m.item.assignment.prospect_id === c.status.saved_ids[n] && m.eligibility === (m.item.condition.phase === 'retired' ? 'retired' : m.slot ? 'eligible' : 'not_rostered')); } return c;
+}
+function entryJobValue(j) {
+  exact(j, ['version', 'job_id', 'kind', 'state', 'view', 'store_id', 'event_id', 'saturday', 'operation_id', 'error', 'intent', 'mutation', 'check']);
+  requireValue(j.version === 1 && hex(j.job_id) && ['prepare', 'apply', 'check'].includes(j.kind) && ['queued', 'running', 'complete', 'failed', 'cancelled'].includes(j.state) && viewKey(checkedView(j.view)) === currentKey() && j.store_id === entryStore && hex(j.event_id) && optionalID(j.operation_id) && (j.error === '' || ENTRY_ERRORS.has(j.error))); entryDateValue(j.saturday);
+  const field = { prepare: 'intent', apply: 'mutation', check: 'check' }[j.kind]; for (const k of ['intent', 'mutation', 'check']) requireValue((j[k] !== null) === (j.state === 'complete' && k === field));
+  if (j.state === 'complete') {
+    requireValue(j.error === '');
+    if (j.kind === 'prepare') { const i = entryIntent(j.intent); requireValue(i.operation_id === j.operation_id && i.view_id === j.view.view_id && i.generation === j.view.generation && i.request.event_id === j.event_id && i.request.saturday === j.saturday); }
+    if (j.kind === 'apply') { const m = j.mutation; exact(m, ['version', 'receipt', 'replayed']); requireValue(m.version === 1 && typeof m.replayed === 'boolean'); const r = entryReceipt(m.receipt); requireValue(r.operation_id === j.operation_id && r.view_id === j.view.view_id && r.generation === j.view.generation && r.event.event_id === j.event_id && r.event.saturday === j.saturday); }
+    if (j.kind === 'check') { entryCheckValue(j.check); requireValue(j.check.status.event.event_id === j.event_id && j.check.status.event.saturday === j.saturday); }
+  } else if (['queued', 'running'].includes(j.state)) requireValue(j.error === '' && (j.kind !== 'prepare' || j.operation_id === ''));
+  return j;
+}
+function entryEnvelope(r, field, allowNull = false) {
+  requireValue(entryBytes(r) <= ENTRY_MAX); exact(r, ['id', 'ok', 'view', 'store_id', 'snapshot', 'status', 'history', 'job', 'operation', 'error']); requireValue(int(r.id, 1) && typeof r.ok === 'boolean'); const fields = ['snapshot', 'status', 'history', 'job', 'operation'];
+  if (!r.ok) { requireValue(r.view === null && r.store_id === '' && fields.every((k) => r[k] === null) && ENTRY_ERRORS.has(r.error)); return { ok: false, error: r.error }; }
+  requireValue(r.error === '' && fields.every((k) => (r[k] !== null) === (k === field)));
+  if (field === 'snapshot' && r.snapshot.state === 'unavailable') { const s = r.snapshot; exact(s, ['version', 'state', 'error', 'view', 'store_id', 'pending_operation_id', 'active_job_id', 'queued_job_id', 'last_job_id']); requireValue(s.version === 1 && r.view === null && r.store_id === '' && s.view === null && ['store_id', 'pending_operation_id', 'active_job_id', 'queued_job_id', 'last_job_id'].every((k) => s[k] === '') && (s.error === '' || ENTRY_ERRORS.has(s.error))); return { ok: true, value: own(s) }; }
+  requireValue(ready() && viewKey(checkedView(r.view)) === currentKey() && hex(r.store_id) && (!entryStore || entryStore === r.store_id));
+  // Native derives the entry Pin/ID from its authenticated stable Pin; browser hashing is not a second authority.
+  if (!entryStore) { requireValue(field === 'snapshot'); entryStore = r.store_id; }
+  const v = r[field];
+  if (field === 'snapshot') { exact(v, ['version', 'state', 'error', 'view', 'store_id', 'pending_operation_id', 'active_job_id', 'queued_job_id', 'last_job_id']); requireValue(v.version === 1 && ['idle', 'busy', 'failed'].includes(v.state) && (v.error === '' || ENTRY_ERRORS.has(v.error)) && viewKey(checkedView(v.view)) === currentKey() && v.store_id === entryStore && ['pending_operation_id', 'active_job_id', 'queued_job_id', 'last_job_id'].every((k) => optionalID(v[k])) && (!v.active_job_id || v.active_job_id !== v.queued_job_id)); }
+  if (field === 'status') entryStatusValue(v);
+  if (field === 'job') entryJobValue(v);
+  if (field === 'operation') { exact(v, ['version', 'store_id', 'operation']); requireValue(v.version === 1 && v.store_id === entryStore && (v.operation !== null || allowNull)); if (v.operation !== null) entryOperationValue(v.operation); }
+  if (field === 'history') { exact(v, ['version', 'store_id', 'after_event_id', 'next_event_id', 'has_more', 'observed_at_ms', 'events']); requireValue(v.version === 1 && v.store_id === entryStore && optionalID(v.after_event_id) && optionalID(v.next_event_id) && typeof v.has_more === 'boolean' && int(v.observed_at_ms, 1, DATE_MAX) && Array.isArray(v.events) && v.events.length <= 8); for (const [n, e] of v.events.entries()) { entryStatusValue(e); requireValue(e.exists && e.observed_at_ms === v.observed_at_ms && (!n || v.events[n - 1].event.cutoff_ms < e.event.cutoff_ms)); } requireValue(v.next_event_id === (v.has_more && v.events.length ? v.events.at(-1).event.event_id : '')); }
+  return { ok: true, value: own(v) };
+}
+function entryError(code) { return ({ busy: 'Another local task is finishing. Your entry choice is retained.', entry_unavailable: 'Saturday entry is unavailable in this app route.', entry_corrupt: 'The local entry history could not be validated. Reopen the gym; saved evidence is retained.', entry_capacity: 'The supported entry capacity is full. Saved outcomes remain available.', entry_clock: 'The authority clock needs attention. No new entry was confirmed.', entry_calendar: 'Choose a Saturday from 2026 through 2099.', entry_closed: 'Entry intake is closed. Event locking is not available in this candidate build.', entry_conflict: 'The entry or roster changed. Refresh and review before a new save.', entry_pending: 'A prepared entry choice needs review before another change.', entry_not_found: 'That recorded outcome is unavailable. Refresh status and history before another explicit choice.', entry_sync_required: 'Sync saved candidates before checking this selection.', entry_not_rostered: 'Every selected fighter must be on your roster when the entry is saved.', entry_retired: 'A selected fighter has retired. Review the draft before another save.', entry_class_conflict: 'Choose at most one fighter from each weight class.', entry_cancelled: 'The task was cancelled. A prepared or committed choice may still be retained.', outcome_unknown: 'This change may have been recorded. Check the recorded outcome before another choice.' })[code] ?? textError(code); }
+function entryRefusal(code) { if (['unauthorized', 'stale_view'].includes(code)) { clearEntry(); entryUnavailable = true; } if (code === 'entry_unavailable') { entryUnavailable = true; entrySnapshot = null; } entryMessage = entryError(code); }
+function entryContext(serial = entrySerial) { return { epoch, view: currentKey(), viewID: current?.view?.view_id, serial }; }
+function entryCurrent(c, selection = false) { return !disposed && ready() && c.epoch === epoch && c.view === currentKey() && (!selection || c.serial === entrySerial); }
+function entryChanged() { entrySerial++; if (entryFlow) entryFlow.auto = false; }
+function selectEntry(i) {
+  if (!entryReady() || command || entryDraft.length >= 5 || entryDraft.some((v) => v.id === i.assignment.prospect_id) || !stable.status.slots.includes(i.assignment.prospect_id) || i.condition.phase === 'retired') return;
+  if (entryDraft.some((v) => v.weightClass === i.manifest.physical.weight_class)) { entryMessage = entryError('entry_class_conflict'); renderEntry(); return; }
+  entryChanged(); entryDraft = [...entryDraft, { id: i.assignment.prospect_id, name: i.manifest.name.display, weightClass: i.manifest.physical.weight_class }].sort((a, b) => a.id.localeCompare(b.id)); entryMessage = 'Draft updated. Your saved entry has not changed.'; requireValue(entryCapacity()); render();
+}
+function entryAdoptStatus(s) {
+  if (s.event.saturday !== entryDate) return;
+  if (entryStatus && entryStatus.event.event_id === s.event.event_id) { requireValue(s.revision >= entryStatus.revision && s.observed_at_ms >= entryStatus.observed_at_ms); if (s.revision === entryStatus.revision) requireValue(s.latest_operation_id === entryStatus.latest_operation_id && s.latest_receipt_digest === entryStatus.latest_receipt_digest && same(s.saved_ids, entryStatus.saved_ids)); }
+  const previous = entryStatus, namespace = entryNamespace; entryNamespace = s.event.namespace_id; entryStatus = s; if (!entryCapacity()) { entryStatus = previous; entryNamespace = namespace; throw new Error('Entry cache full'); }
+}
+async function entryReadStatus(upcoming = false) {
+  if (!entryReady()) return; const c = entryContext(), requested = entryDate;
+  try { const r = entryEnvelope(await call(upcoming ? 'EntryUpcoming' : 'EntryStatus', c.viewID, ...(upcoming ? [] : [requested])), 'status'); if (!entryCurrent(c, true)) return; if (!r.ok) { entryRefusal(r.error); return; } requireValue(upcoming ? r.value.event.cutoff_ms > r.value.observed_at_ms : r.value.event.saturday === requested); if (upcoming) { entryChanged(); entryDate = r.value.event.saturday; entryStatus = null; } entryAdoptStatus(r.value); }
+  catch { if (entryCurrent(c)) entryMessage = entryError('entry_unavailable'); } render();
+}
+async function entryQuery(operationID = '') {
+  if (!entryReady()) return; const c = entryContext(); const id = operationID || entryFlow?.operationID || entryOperation?.intent.operation_id || entrySnapshot.pending_operation_id;
+  try { const r = entryEnvelope(await call(id ? 'EntryOperation' : 'EntryPending', c.viewID, ...(id ? [id] : [])), 'operation', !id); if (!entryCurrent(c)) return; if (!r.ok) { entryRefusal(r.error); return; } const o = r.value.operation; requireValue(!o || !id || o.intent.operation_id === id); requireValue(id || o === null || o.state === 'prepared'); const priorOperation = entryOperation, priorFlow = entryFlow; entryOperation = o; entryUnknown = false; if (entryFlow) entryFlow.auto = false;
+    if (!o) { entryFlow = null; entryMessage = 'No pending choice was found. This does not prove an earlier dispatch never happened. Review status and history before a new explicit save.'; }
+    else if (o.state === 'prepared') { entryFlow = { operationID: o.intent.operation_id, request: own(o.intent.request), auto: false, context: c }; entryMessage = o.intent.view_id === c.viewID && o.intent.generation === current.view.generation ? 'A prepared choice is retained. Review it, then explicitly apply or abandon it.' : 'This prepared choice belongs to an earlier sign-in. You can inspect or abandon it, but cannot apply it.'; }
+    else { entryFlow = null; entryMessage = o.state === 'committed' ? `Saved outcome confirmed at entry revision ${o.receipt.revision}. This query did not change the entry.` : 'The prepared choice was abandoned. Any prior saved entry is unchanged.'; }
+    if (!entryCapacity()) { entryOperation = priorOperation; entryFlow = priorFlow; entryUnknown = true; entryMessage = entryError('entry_capacity'); return; } if (entryDate && !tasks.length) await entryReadStatus();
+  } catch { if (entryCurrent(c)) { entryUnknown = true; entryMessage = entryError('outcome_unknown'); } } render();
+}
+async function fetchEntrySnapshot() {
+  if (!ready() || entryUnavailable) return; const c = entryContext();
+  try { const r = entryEnvelope(await call('EntrySnapshot'), 'snapshot'); if (!entryCurrent(c)) return; if (!r.ok) { entryRefusal(r.error); renderEntry(); return; } entrySnapshot = r.value; if (!entrySnapshot.view) { entryUnavailable = true; renderEntry(); return; }
+    if (entryWatch) await entryFetchJob(entryWatch.id);
+    else if (entrySnapshot.pending_operation_id && entryOperation?.intent.operation_id !== entrySnapshot.pending_operation_id && !tasks.length) await entryQuery(entrySnapshot.pending_operation_id);
+    if (entryCurrent(c) && !entryWatch && !tasks.length && entrySnapshot.state !== 'busy') await entryReadStatus(!entryDate);
+    render();
+  } catch { if (entryCurrent(c)) { entryUnavailable = true; entryMessage = entryError('entry_unavailable'); renderEntry(); } }
+}
+async function entryBegin(kind, q = null, op = null, auto = false) {
+  if (!entryReady() || entryWatch) return; const c = entryContext(); const selected = kind === 'apply' ? op.intent.request : q; const target = selected || { event_id: entryStatus?.event.event_id, saturday: entryDate };
+  if (kind === 'apply') requireValue(op.state === 'prepared' && op.intent.view_id === c.viewID && op.intent.generation === current.view.generation);
+  const prior = entryTerminal; entryTerminal = null; const reservation = { id: '', kind, eventID: target.event_id, saturday: target.saturday, operationID: op?.intent.operation_id ?? '', request: selected ? own(selected) : null, context: c }; entryWatch = reservation;
+  if (!entryCapacity()) { entryWatch = null; entryTerminal = prior; entryMessage = entryError('entry_capacity'); return; }
+  const method = { prepare: 'BeginEntryPrepare', apply: 'BeginEntryApply', check: 'BeginEntryCheck' }[kind]; const arg = kind === 'prepare' ? q : kind === 'apply' ? op.intent.operation_id : target.saturday;
+  if (kind === 'prepare') entryFlow = { operationID: '', request: own(q), auto, context: c };
+  try { const r = entryEnvelope(await call(method, c.viewID, arg), 'job'); if (!entryCurrent(c)) return;
+    if (!r.ok) { entryWatch = null; entryTerminal = prior; if (['prepare', 'apply'].includes(kind) && r.error === 'outcome_unknown') { entryUnknown = true; if (entryFlow) entryFlow.auto = false; await entryQuery(reservation.operationID); } else { if (kind === 'prepare') entryFlow = null; entryRefusal(r.error); } return; }
+    const j = r.value; requireValue(j.state === 'queued' && j.kind === kind && j.event_id === target.event_id && j.saturday === target.saturday && (kind === 'apply' ? j.operation_id === op.intent.operation_id : j.operation_id === '')); entryWatch = { ...reservation, id: j.job_id }; entryMessage = kind === 'prepare' ? 'Preparing this exact entry choice…' : kind === 'apply' ? 'Checking and saving this entry…' : 'Checking the saved selection…'; pollWanted = true;
+  } catch { if (entryCurrent(c)) { entryWatch = null; entryTerminal = prior; if (['prepare', 'apply'].includes(kind)) { entryUnknown = true; if (entryFlow) entryFlow.auto = false; entryMessage = entryError('outcome_unknown'); await entryQuery(reservation.operationID); } else entryMessage = entryError('entry_unavailable'); } }
+  render();
+}
+async function entryFetchJob(id) {
+  if (!entryReady() || !entryWatch || entryWatch.id !== id) return; const w = entryWatch, c = entryContext();
+  try { const r = entryEnvelope(await call('EntryJob', c.viewID, id), 'job'); if (!entryCurrent(c) || entryWatch !== w) return; if (!r.ok) { if (r.error === 'busy') return; entryWatch = null; entryRefusal(r.error); if (w.kind !== 'check') { entryUnknown = true; await entryQuery(w.operationID); } return; }
+    const j = r.value; requireValue(j.job_id === id && j.kind === w.kind && j.event_id === w.eventID && j.saturday === w.saturday && (w.kind !== 'apply' || j.operation_id === w.operationID));
+    if (['queued', 'running'].includes(j.state)) return;
+    entryWatch = null;
+    if (j.state !== 'complete') { entryMessage = entryError(j.error || 'entry_cancelled'); if (j.kind !== 'check') { if (entryFlow) entryFlow.auto = false; if (j.error === 'outcome_unknown') { entryUnknown = true; await entryQuery(w.operationID); } else await entryQuery(w.operationID); } return; }
+    if (j.kind === 'prepare') {
+      requireValue(same(j.intent.request, w.request)); entryOperation = { version: 1, intent: own(j.intent), state: 'prepared', receipt: null, abandoned_at_ms: 0 };
+      const automatic = entryFlow?.auto && entryCurrent(w.context, true) && same(entryFlow.request, j.intent.request) && entryDate === j.saturday && !tasks.length;
+      entryFlow = { operationID: j.operation_id, request: own(j.intent.request), auto: false, context: w.context }; entryTerminal = j; requireValue(entryCapacity());
+      if (automatic) await entryBegin('apply', null, entryOperation); else entryMessage = 'The exact choice was prepared. Review it and apply explicitly, or abandon it. Nothing has been entered yet.';
+    } else if (j.kind === 'apply') {
+      const receipt = j.mutation.receipt; requireValue(receipt.previous_revision === w.request.expected_revision && receipt.roster_revision === w.request.expected_roster_revision && receipt.action === w.request.action && same(receipt.members.map((m) => m.assignment.prospect_id), w.request.prospect_ids)); entryTerminal = j; entryOperation = entryFlow = null; entryUnknown = false; entryMessage = receipt.action === 'withdraw' ? `Saved entry withdrawn at revision ${receipt.revision}.` : `Entry saved at revision ${receipt.revision}. No event lock or bout has been created.`; requireValue(entryCapacity()); if (entryDate === j.saturday) await entryReadStatus();
+    } else { entryTerminal = j; requireValue(entryCapacity()); if (entryDate === j.saturday && entryCurrent(w.context, true)) entryAdoptStatus(j.check.status); entryMessage = 'Saved eligibility checked at the displayed authority time. Saved history was not changed.'; }
+  } catch { if (entryCurrent(c)) { entryWatch = null; if (w.kind !== 'check') { entryUnknown = true; if (entryFlow) entryFlow.auto = false; entryMessage = entryError('outcome_unknown'); } else entryMessage = entryError('entry_unavailable'); } } render();
+}
+async function entrySave(action) {
+  if (!entryReady() || !entryStatus || entryStatus.event.saturday !== entryDate || entryStatus.phase !== 'accepting' || entryWatch || entryUnknown || entryOperation?.state === 'prepared' || entrySnapshot.pending_operation_id) return;
+  if (action === 'replace' && (!entryDraft.length || !stable.status.caught_up || entryDraft.some((x) => !stable.status.slots.includes(x.id)))) return;
+  const q = { version: 1, event_id: entryStatus.event.event_id, saturday: entryDate, action, expected_revision: entryStatus.revision, expected_roster_revision: action === 'replace' ? stable.status.roster_revision : 0, prospect_ids: action === 'replace' ? entryDraft.map((x) => x.id).sort() : [] }; entryRequestValue(q); await entryBegin('prepare', q, null, true);
+}
+async function entryCancel() {
+  if (!entryReady() || !entryWatch?.id) return; const w = entryWatch, c = entryContext(); if (entryFlow) entryFlow.auto = false; entryChanged();
+  try { const r = entryEnvelope(await call('CancelEntryJob', c.viewID, w.id), 'job'); if (!entryCurrent(c)) return; if (!r.ok) { entryRefusal(r.error); return; } requireValue(r.value.job_id === w.id && r.value.kind === w.kind && r.value.event_id === w.eventID && r.value.saturday === w.saturday && (w.kind !== 'apply' || r.value.operation_id === w.operationID) && (r.value.kind !== 'prepare' || r.value.state !== 'complete' || same(r.value.intent.request, w.request))); entryMessage = 'Cancellation requested. A durable prepared or saved choice remains until its recorded outcome is checked.'; if (!['queued', 'running'].includes(r.value.state)) { entryWatch = null; if (w.kind !== 'check') await entryQuery(w.operationID); } }
+  catch { if (entryCurrent(c)) { entryUnknown = w.kind !== 'check'; entryMessage = entryError('outcome_unknown'); } } render();
+}
+async function entryAbandon() {
+  if (!entryReady() || entryOperation?.state !== 'prepared') return; const c = entryContext(), id = entryOperation.intent.operation_id; if (entryFlow) entryFlow.auto = false;
+  try { const r = entryEnvelope(await call('AbandonEntryOperation', c.viewID, id), 'operation'); if (!entryCurrent(c)) return; if (!r.ok) { entryRefusal(r.error); if (r.error === 'outcome_unknown') { entryUnknown = true; await entryQuery(id); } return; } requireValue(r.value.operation.intent.operation_id === id && r.value.operation.state !== 'prepared'); entryOperation = r.value.operation; entryFlow = null; entryUnknown = false; entryMessage = entryOperation.state === 'abandoned' ? 'Prepared choice abandoned. Any prior saved entry is unchanged.' : 'This choice had already committed; abandoning does not withdraw it.'; await entryReadStatus(); }
+  catch { if (entryCurrent(c)) { entryUnknown = true; entryMessage = entryError('outcome_unknown'); await entryQuery(id); } } render();
+}
+async function entryReadHistory(after = '') {
+  if (!entryReady()) return; const c = entryContext(); try { const r = entryEnvelope(await call('EntryHistory', c.viewID, after, 8), 'history'); if (!entryCurrent(c)) return; if (!r.ok) { entryRefusal(r.error); return; } requireValue(r.value.after_event_id === after); const old = entryHistory; entryHistory = r.value; if (!entryCapacity()) { entryHistory = old; entryMessage = entryError('entry_capacity'); } } catch { if (entryCurrent(c)) entryMessage = entryError('entry_unavailable'); } render();
+}
+function entryNavigate(dateValue) {
+  try { entryDateValue(dateValue); } catch { entryMessage = entryError('entry_calendar'); renderEntry(); return; }
+  entryChanged(); entryDate = dateValue; entryStatus = null; entryMessage = 'Loading this Saturday. Draft and pending choices have not been entered or retargeted.';
+  queue(() => entryReadStatus(), 'entry-date'); render();
+}
+function renderEntry() {
+  const active = entryReady(), s = entryStatus, pending = entryOperation?.state === 'prepared' ? entryOperation : null, busy = !!command || !!entryWatch, accepting = active && s?.event.saturday === entryDate && s.phase === 'accepting';
+  content(ui['entry-state'], entryUnavailable ? 'Unavailable' : !active ? 'Sign in to view entries' : entryWatch ? 'Entry request in progress' : s?.phase === 'closed_pending_lock' ? 'Intake closed' : 'Candidate intake');
+  if (ui['entry-date'].value !== entryDate) ui['entry-date'].value = entryDate; ui['entry-date'].disabled = !active; ui['entry-upcoming'].disabled = !active || !!command; ui['entry-status'].disabled = !active || !entryDate || !!command;
+  content(ui['entry-cutoff'], s ? `Saturday ${s.event.saturday} · Noon Pacific cutoff · ${new Date(s.event.cutoff_ms).toISOString()} (authority UTC)` : 'Choose an authority-provided Upcoming Saturday or a supported Saturday date.');
+  content(ui['entry-saved'], s ? s.revision ? `Saved entry revision ${s.revision} · ${s.saved_ids.length} fighter${s.saved_ids.length === 1 ? '' : 's'} · Saved ${date.format(new Date(s.saved_at_ms))}.` : s.exists ? 'A choice is prepared; no entry has been saved yet.' : 'No saved entry for this Saturday.' : '');
+  content(ui['entry-warning'], s?.phase === 'closed_pending_lock' ? entryError('entry_closed') : s?.roster_changed || s?.saved_ids.length && s.saved_roster_revision !== stable?.status.roster_revision ? 'Your roster changed. Check this saved entry again. The entry has not been automatically withdrawn.' : s?.saved_ids.length ? 'Current eligibility has not been checked by this status read.' : '');
+  content(ui['entry-count'], `${entryDraft.length} / 5`); const draftKey = JSON.stringify(entryDraft);
+  if (ui['entry-draft']._key !== draftKey) { ui['entry-draft']._key = draftKey; ui['entry-draft'].textContent = ''; for (const d of entryDraft) { const li = element('li', '', `${d.name} · ${label(d.weightClass)}`), remove = element('button', '', 'Remove from draft'); remove.type = 'button'; remove.setAttribute('aria-label', `Remove ${d.name} from Saturday draft`); remove.addEventListener('click', () => { entryChanged(); entryDraft = entryDraft.filter((x) => x.id !== d.id); render(); }); li.append(remove, element('small', '', d.id)); ui['entry-draft'].append(li); } }
+  const blocked = busy || entryUnknown || !!pending || !!entrySnapshot?.pending_operation_id;
+  ui['entry-save'].disabled = !accepting || blocked || !entryDraft.length || !stable?.status.caught_up || entryDraft.some((x) => !stable.status.slots.includes(x.id)); content(ui['entry-save'], s?.revision ? 'Replace saved entry' : 'Save entry');
+  ui['entry-withdraw'].disabled = !accepting || blocked || !s?.revision || !s.saved_ids.length; ui['entry-check'].disabled = !active || busy || !s; ui['entry-clear'].disabled = !entryDraft.length; ui['entry-cancel'].disabled = !active || !!command || !entryWatch?.id;
+  content(ui['entry-message'], entryMessage); content(ui['entry-pending'], pending ? `Prepared ${pending.intent.request.action === 'withdraw' ? 'withdrawal' : `${pending.intent.request.prospect_ids.length}-fighter choice`} for ${pending.intent.request.saturday}. ${pending.intent.view_id === current?.view?.view_id && pending.intent.generation === current?.view?.generation ? 'It is not saved until Apply succeeds.' : 'It belongs to an earlier sign-in and cannot execute now.'}${pending.intent.request.prospect_ids.length ? ` Fighter IDs: ${pending.intent.request.prospect_ids.join(', ')}.` : ''}` : entryUnknown ? 'The outcome remains unresolved. Do not start a replacement operation.' : '');
+  ui['entry-reconcile'].disabled = !active || !!command || !!entryWatch || !(entryUnknown || entryFlow || entryOperation || entrySnapshot.pending_operation_id);
+  ui['entry-apply'].disabled = !active || busy || entryUnknown || !pending || pending.intent.view_id !== current?.view?.view_id || pending.intent.generation !== current?.view?.generation || pending.intent.request.saturday !== entryDate || !accepting;
+  ui['entry-abandon'].disabled = !active || busy || !pending; ui['entry-history'].disabled = !active || !!command; ui['entry-history-next'].disabled = !active || !!command || !entryHistory?.has_more;
+  const check = entryTerminal?.kind === 'check' && entryTerminal.saturday === entryDate ? entryTerminal.check : null, checkKey = JSON.stringify(check);
+  if (ui['entry-eligibility']._key !== checkKey) { ui['entry-eligibility']._key = checkKey; ui['entry-eligibility'].textContent = ''; if (check) { ui['entry-eligibility'].append(element('li', '', `Checked ${date.format(new Date(check.as_of_ms))}; this observation stays fixed until another Check.`)); for (const m of check.members) ui['entry-eligibility'].append(element('li', '', `${m.item.manifest.name.display} · ${label(m.item.manifest.physical.weight_class)} · ${label(m.eligibility)}${m.slot ? ` · Slot ${m.slot}` : ''}`)); } }
+  const historyKey = JSON.stringify(entryHistory);
+  if (ui['entry-history-list']._key !== historyKey) { ui['entry-history-list']._key = historyKey; ui['entry-history-list'].textContent = ''; if (entryHistory) for (const e of entryHistory.events) { const li = element('li'), b = element('button', '', e.event.saturday); b.type = 'button'; b.addEventListener('click', () => entryNavigate(e.event.saturday)); li.append(b, element('span', '', `Revision ${e.revision} · ${e.saved_ids.length} saved · ${e.phase === 'closed_pending_lock' ? 'Intake closed; awaiting event lock' : 'Intake accepting'}`)); ui['entry-history-list'].append(li); } }
+}
+ui['entry-date'].addEventListener('change', () => entryNavigate(ui['entry-date'].value));
+ui['entry-upcoming'].addEventListener('click', () => { entryChanged(); queue(() => entryReadStatus(true), 'entry-upcoming'); });
+ui['entry-status'].addEventListener('click', () => queue(() => entryReadStatus(), 'entry-status'));
+ui['entry-save'].addEventListener('click', () => queue(() => entrySave('replace'), 'entry-save'));
+ui['entry-withdraw'].addEventListener('click', () => queue(() => entrySave('withdraw'), 'entry-withdraw'));
+ui['entry-check'].addEventListener('click', () => queue(() => entryBegin('check'), 'entry-check'));
+ui['entry-clear'].addEventListener('click', () => { entryChanged(); entryDraft = []; render(); });
+ui['entry-cancel'].addEventListener('click', () => queue(entryCancel, 'entry-cancel'));
+ui['entry-reconcile'].addEventListener('click', () => queue(() => entryQuery(), 'entry-query'));
+ui['entry-apply'].addEventListener('click', () => queue(() => entryBegin('apply', null, entryOperation), 'entry-apply'));
+ui['entry-abandon'].addEventListener('click', () => queue(entryAbandon, 'entry-abandon'));
+ui['entry-history'].addEventListener('click', () => queue(() => entryReadHistory(), 'entry-history'));
+ui['entry-history-next'].addEventListener('click', () => queue(() => entryReadHistory(entryHistory?.next_event_id ?? ''), 'entry-history'));
+
 ui['preview-begin'].addEventListener('click', () => queue(async () => { try { await beginPreview(); } catch { discardPreviewResult(); previewMessage = previewError('outcome_unknown'); } }, 'preview'));
 ui['preview-cancel'].addEventListener('click', () => queue(async () => { try { await cancelPreview(); } catch { previewMessage = previewError('preview_unavailable'); } }, 'preview-cancel'));
 ui['preview-clear'].addEventListener('click', () => selectionChanged([]));
@@ -758,6 +978,6 @@ ui.abandon.addEventListener('click', () => queue(async () => {
 ui['cancel-job'].addEventListener('click', () => queue(() => cancelJob(watched?.id || stable?.active_job_id || stable?.queued_job_id), 'cancel'));
 ui['export-recovery'].addEventListener('click', () => oldAction('ExportRecovery')); ui['verify-backup'].addEventListener('click', () => oldAction('VerifyBackup'));
 document.addEventListener('visibilitychange', () => { if (document.hidden) pausePreview(); if (!document.hidden && enabled) { pollWanted = true; pump(); } else if (timer !== null) { clearTimeout(timer); timer = null; } });
-window.addEventListener('pagehide', () => { disposed = true; epoch++; clearPreview(); tasks = []; if (timer !== null) clearTimeout(timer); timer = null; clearCards(); pageItems = []; current = stable = null; });
+window.addEventListener('pagehide', () => { disposed = true; epoch++; clearEntry(); clearPreview(); tasks = []; if (timer !== null) clearTimeout(timer); timer = null; clearCards(); pageItems = []; current = stable = null; });
 render();
 (async () => { try { requireValue(await call('Mode') === MODE); if (disposed) return; enabled = true; pollWanted = true; pump(); } catch { connectionError = 'Open this page through the candidate stable mode.'; render(); } })();

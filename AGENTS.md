@@ -63,7 +63,8 @@ version.
   → `slug-manifest-miner` (set 39, candidate service and durable miner)
   → `slug-manifest-desktop` (set 40, opt-in candidate fixture desktop)
   → `slug-gym-stable` (set 41, durable candidate stable and ten-slot roster)
-  → `slug-fight-preview` (set 42, deterministic unrecorded candidate previews).
+  → `slug-fight-preview` (set 42, released on master at `fc672113`)
+  → `slug-saturday-entry` (set 43, reversible candidate Saturday entry intake).
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. Continue authorized

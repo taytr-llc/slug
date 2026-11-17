@@ -1,4 +1,4 @@
-# Independent candidate Saturday-entry reference, version 1
+# Independent candidate Saturday-entry reference, corrected canonical transport expectations
 
 This standalone Python reference derives Set43 bytes and state expectations from the approved contract `958d3fda0cb50cda3bad38f7e461a44537a6a3c20ef5cc2b0c2abb7d2fdafcae`. The copied approval authorizes the otherwise unchanged document titled “draft.” No new Go implementation, output or tests supply expected values. Runtime authorship may proceed separately under root's process amendment; comparison remains gated on this corpus freeze and its independent audit.
 
@@ -40,3 +40,9 @@ All object order is intentional. `Entry StoreID` and receipt digests have **no**
 `verify_reference.py` runs byte-for-byte regeneration under the two absolute Python interpreters and two host `TZ` settings, captures their actual versions, and asserts input/script/corpus stability. `verification.json` and `verification.log` record the commands and results; `freeze.json` is the final immutable file index after independent review. The auditor separately checks calendar arithmetic and encodings without consulting the new Go engine.
 
 The lexical/DTO validator is scoped to this finite corpus and its two current pins; it is not a general production parser, journal auditor or trust-discovery surface. The runtime must implement the complete contract and its resource/preallocation checks. Real lease contention, async cancellation/join, crash points, cache/stdio bounds, install-v3 recovery, source lifetime, held account controls and public-fixture normal-work composition require runtime acceptance tests. This corpus supplies independent expected values without claiming those tests already ran.
+
+## Narrow canonical-order correction
+
+This successor preserves the approved contract and all input bytes. Root independently identified two `EntryResponse/ordered_whitespace` expectations whose decoded values were correct but whose nested Job and Job.View key order remained reversed. The normalizer now rebuilds Job in the frozen `FIELDS['EntryJob']` order and assigns its already-normalized current View. Only the two expected canonical strings in the corpus change; every decoded value, input, acceptance result, other case, state expectation and ID stays identical. The corrected strings are byte-identical to the existing independently frozen canonical positive EntryResponse DTOs for their respective fixtures. No implementation output supplies either correction.
+
+The original 31-file directory `/Users/taytrrip/slug/set43-entry-reference` and its freeze `a157ca9ad54b0371397d128f471d3c827a5e3c157ec2e4c754a2c5924da7cbe7` remain immutable. `correction.json` records the exact semantic/byte delta and root's independent review; this successor has separate reproduction and freeze evidence. Concurrent Go authorship was permitted under the original process amendment. No chronology claim that all expectations preceded Go authorship is made.

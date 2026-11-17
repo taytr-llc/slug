@@ -3,10 +3,12 @@
 Branch: `slug-fight-preview`, staged from Set41 implementation
 `bbce6106c95eaa9284db38cdebd50c754c8ec775`.
 
-Implemented source is frozen and source/component gates have
-passed. D75 studies passed independent audit and successor acceptance; no Set42
-packaged preview acceptance, promotion or deployment is claimed here. Existing
-D65 stays unchanged. No coefficient-v2 implementation is included.
+Engineering closeout is complete. Implementation `81ef2816` was promoted to
+master as `fc672113` on November 17 after packaged acceptance and the required
+normal-PoW smoke. Railway deployment `97799d14-3dc3-42af-8685-98783a82059c`
+succeeded; the full 15-minute observation and restart verification passed.
+D75 studies passed independent audit and successor acceptance. Existing D65
+stays unchanged. No coefficient-v2 implementation is included.
 
 The candidate gym now has a deterministic fight preview between two saved
 same-class candidates. Selection is explicit and survives inventory paging.
@@ -121,17 +123,33 @@ passed, as did complete account-component normal/race/tagged suites with require
 loopback access, vet and formatting. The default-sandbox full-suite failure is
 preserved separately. No protocol vocabulary, model, study or rating changed.
 
-Fresh exact packaged acceptance remains pending for the repaired commit.
-It requires normal PoW and genuine same-class admitted pairs; public results,
-portraits, preserved wallet/stable facts and every owned process/listener must
-be independently checked. Its three cached result rereads are not frontend
-playback testing. Actual visual rendering, native chooser interaction,
+Fresh exact packaged acceptance passed for the repaired commit: two published
+fixture wallets, 14 genuine normal-work records, 40 condition projections and
+six complete independent preview comparisons across initial/reopen/held phases.
+Public results, portraits and preserved wallet/stable facts passed independent
+review. Both helpers exited successfully and all observed owned listeners
+closed. These observations do not establish every node's direct exit code.
+Three cached result rereads are not frontend playback testing.
+Actual visual rendering, native chooser interaction,
 screenreader/accessibility, local playback in the packaged UI and joint D74
 review remain outstanding.
 
-After the remaining required package gates,
-engineering promotion, deployment and observation may proceed under standing
-authorization. D74 and the actual visual/native chooser/screenreader gate apply
+The live observer took 31 samples over 900.047 seconds, retaining height 61,
+60 descendants of the signed checkpoint and the exact canonical hashes.
+Restart and normal-PoW verification passed; the unchanged old tip still refuses
+fresh mining templates. Railway reported one healthy replica with no crash or
+pending rollout. Its volume and proxy configuration stayed unchanged. The
+inherited missing-default-config warning was also present in set 41; explicit
+startup flags work. No public block was mined.
+
+No GitHub Actions run/check existed for the exact implementation commit despite
+Actions being enabled. Remote CI is not claimed passed; captured local gates
+and independent reviews support this engineering release. The first failed
+package and a pre-push verifier failure on an inherited documentation symlink
+are retained separately. The symlink verifier was narrowly repaired and
+independently reviewed before promotion.
+
+D74 and the actual visual/native chooser/screenreader gate apply
 before friends/tester/public product release; they are not an additional veto
 on that authorized engineering deployment process.
 

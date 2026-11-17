@@ -25,7 +25,8 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 	if helper == "" || node == "" {
 		t.Skip("explicit frozen stable helper and normal node required")
 	}
-	previewEnabled := os.Getenv("SLUG_PREVIEW_ACCEPTANCE") == "1"
+	entryEnabled := os.Getenv("SLUG_ENTRY_ACCEPTANCE") == "1"
+	previewEnabled := os.Getenv("SLUG_PREVIEW_ACCEPTANCE") == "1" || entryEnabled
 	minimumCandidates := uint64(3)
 	if previewEnabled {
 		minimumCandidates = 6
@@ -38,7 +39,11 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 12*time.Minute)
 	defer cancel()
 	data := filepath.Join(root, "data")
-	b, e := LaunchStable(helper, data, node)
+	launch := LaunchStable
+	if entryEnabled {
+		launch = LaunchEntries
+	}
+	b, e := launch(helper, data, node)
 	if e != nil {
 		t.Fatal(e)
 	}
@@ -46,6 +51,11 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 	var previews *previewAcceptance
 	if previewEnabled {
 		previews = newPreviewAcceptance(t, ctx, b)
+	}
+	var entries *entryAcceptance
+	if entryEnabled {
+		entries = newEntryAcceptance(t, ctx, b)
+		previews.restartCheck = entries.checkProcessRestart
 	}
 	cleanupChecked := false
 	defer func() {
@@ -343,6 +353,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 		if previews != nil {
 			previews.run(fixture, "initial", page)
 		}
+		if entries != nil {
+			entries.initial(fixture, snapshot(), page.Items[0])
+		}
 		beforeLogout := snapshot()
 		request("logout", 0)
 		waitManifest(func(s pilot.ManifestSnapshot) bool { return s.Account.State == "signed_out" })
@@ -351,6 +364,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 		}
 		if previews != nil {
 			previews.refuseDetached(fixture)
+		}
+		if entries != nil {
+			entries.refuseDetached()
 		}
 		if _, e = b.Request(ctx, "manifest_portrait", original.Portrait.Sequence); e == nil {
 			t.Fatal("signed-out portrait disclosed")
@@ -388,6 +404,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 		}
 		if previews != nil {
 			previews.run(fixture, "reopened", restored)
+		}
+		if entries != nil {
+			entries.reopened(fixture, attached)
 		}
 		pending := prepare(view, 1, 2, second)
 		request("reset_fixture", 0)
@@ -435,6 +454,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 		processes.capture(t, fixture, "reset-prepared", held.Account.ID, heldStable.View.AuthorityOrigin, false)
 		if previews != nil {
 			previews.run(fixture, "held", page)
+		}
+		if entries != nil {
+			entries.held(fixture, snapshot(), page.Items[0])
 		}
 		fixedHeldPage := inventoryPage(heldView)
 		request("manifest_receipt", original.Receipt.Record.Sequence)
@@ -507,6 +529,10 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 		result["previews"] = previews.evidence
 		result["preview_restart"] = previewRestart
 		result["preview_unrecorded"] = true
+	}
+	if entries != nil {
+		result["entries"] = entries.evidence
+		result["entries_intake_only"] = true
 	}
 	raw, e := json.MarshalIndent(result, "", "  ")
 	if e != nil {

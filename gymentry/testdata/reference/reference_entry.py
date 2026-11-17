@@ -388,7 +388,7 @@ def validate_response(r,p):
         for k in ('pending_operation_id','active_job_id','queued_job_id','last_job_id'):hexid(s[k],True)
         req(not s['active_job_id'] or s['active_job_id']!=s['queued_job_id'])
     if r['job'] is not None:
-        j=r['job'];exact(j,FIELDS['EntryJob']);req(j['version']==1 and j['view']==r['view'] and j['store_id']==r['store_id']);hexid(j['job_id']);hexid(j['operation_id'],True);req(j['kind'] in ('prepare','apply','check') and j['state'] in ('queued','running','complete','failed','cancelled'));req(j['event_id']==event(p,j['saturday'])['event_id']);req(j['error'] in ('',)+ERRORS)
+        j=r['job'];exact(j,FIELDS['EntryJob']);req(j['version']==1 and j['view']==r['view'] and j['store_id']==r['store_id']);j={k:j[k] for k in FIELDS['EntryJob']};j['view']=clone(r['view']);r['job']=j;hexid(j['job_id']);hexid(j['operation_id'],True);req(j['kind'] in ('prepare','apply','check') and j['state'] in ('queued','running','complete','failed','cancelled'));req(j['event_id']==event(p,j['saturday'])['event_id']);req(j['error'] in ('',)+ERRORS)
         field,kind={'prepare':('intent','Intent'),'apply':('mutation','MutationResult'),'check':('check','CheckResult')}[j['kind']]
         for k in ('intent','mutation','check'):req((j[k] is not None)==(j['state']=='complete' and k==field))
         if j['state']=='complete':

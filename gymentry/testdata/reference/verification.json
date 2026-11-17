@@ -1,10 +1,12 @@
 {
   "status": "passed",
-  "no_go_runtime_source_or_outputs": true,
+  "go_source_or_output_used_for_expected_values": false,
+  "verification_executes_go": false,
   "new_normal_work_verifications": 0,
   "source_sha256_before": {
-    "README.md": "da77453eb6ad3cd2d502adc05f6a4d624be6b52a3aa0e5c90f1d4d16e823b090",
-    "entry_v1.json": "f3926a520771605aa5e071526d59bbdcc06a0027b16429e0f02a1e26c7c8af23",
+    "README.md": "48594bc03e2681ad0223c5c47a9a2809f1f0314c2390612d3499af4f1c2e247e",
+    "correction.json": "0bd53f1f088ddf5ddddefb30ac3374adb0869dcb4e5ae27613708a77d2542178",
+    "entry_v1.json": "d8f226964429e8068bbe8300c73b6061f9a6dfd4e737a06ddde40c5eaa992bee",
     "input_hashes.json": "a3d2cd8f6d2f1dd9fa03b8d1253f7783028ff79a2d278df493722cc73098135b",
     "inputs/America_Los_Angeles.tzif": "200d05754f6d83a371cf408d7085125797657b3b0bebeba1e508cffe86a3e5c8",
     "inputs/condition/input_hashes.json": "1ab9a78f6246236c87fb9b0304fe5b786b9d5f880f50d18a33ef3b12725419a3",
@@ -29,12 +31,14 @@
     "inputs/stable/inputs/public-candidate-records.json": "c5b30b106fd55935e0483b0a1ac28f3d67d8301076186e64de549bcddf055020",
     "inputs/stable/reference_stable.py": "defd95f9419caa25c8c0e686307464cef97107cf8a892284a5c023641c84069d",
     "inputs/stable/stable_v1.json": "29f6a1302c2e04ade612fe2775c085c65b8bf33587c010060b727833182d2057",
-    "reference_entry.py": "cd8a5127bb7b48305d0ef6997beb6b66f57670503c5d676dc0808a8db6cf06bf",
-    "verify_reference.py": "5ee3969059d6900b12369cf0881d3115cfa649f2812691354b6f3972b2f52e38"
+    "predecessor-freeze.json": "a157ca9ad54b0371397d128f471d3c827a5e3c157ec2e4c754a2c5924da7cbe7",
+    "reference_entry.py": "d82254ab58e7817620486dd0f65ff58b87c542fcd634dad02b6f891701ff166e",
+    "verify_reference.py": "7682f1f8b730b9396ce7cfa4ecbd5debbd0721204b0fef762b7af669d4a4caf3"
   },
   "source_sha256_after": {
-    "README.md": "da77453eb6ad3cd2d502adc05f6a4d624be6b52a3aa0e5c90f1d4d16e823b090",
-    "entry_v1.json": "f3926a520771605aa5e071526d59bbdcc06a0027b16429e0f02a1e26c7c8af23",
+    "README.md": "48594bc03e2681ad0223c5c47a9a2809f1f0314c2390612d3499af4f1c2e247e",
+    "correction.json": "0bd53f1f088ddf5ddddefb30ac3374adb0869dcb4e5ae27613708a77d2542178",
+    "entry_v1.json": "d8f226964429e8068bbe8300c73b6061f9a6dfd4e737a06ddde40c5eaa992bee",
     "input_hashes.json": "a3d2cd8f6d2f1dd9fa03b8d1253f7783028ff79a2d278df493722cc73098135b",
     "inputs/America_Los_Angeles.tzif": "200d05754f6d83a371cf408d7085125797657b3b0bebeba1e508cffe86a3e5c8",
     "inputs/condition/input_hashes.json": "1ab9a78f6246236c87fb9b0304fe5b786b9d5f880f50d18a33ef3b12725419a3",
@@ -59,8 +63,9 @@
     "inputs/stable/inputs/public-candidate-records.json": "c5b30b106fd55935e0483b0a1ac28f3d67d8301076186e64de549bcddf055020",
     "inputs/stable/reference_stable.py": "defd95f9419caa25c8c0e686307464cef97107cf8a892284a5c023641c84069d",
     "inputs/stable/stable_v1.json": "29f6a1302c2e04ade612fe2775c085c65b8bf33587c010060b727833182d2057",
-    "reference_entry.py": "cd8a5127bb7b48305d0ef6997beb6b66f57670503c5d676dc0808a8db6cf06bf",
-    "verify_reference.py": "5ee3969059d6900b12369cf0881d3115cfa649f2812691354b6f3972b2f52e38"
+    "predecessor-freeze.json": "a157ca9ad54b0371397d128f471d3c827a5e3c157ec2e4c754a2c5924da7cbe7",
+    "reference_entry.py": "d82254ab58e7817620486dd0f65ff58b87c542fcd634dad02b6f891701ff166e",
+    "verify_reference.py": "7682f1f8b730b9396ce7cfa4ecbd5debbd0721204b0fef762b7af669d4a4caf3"
   },
   "source_changes": [],
   "commands": [
@@ -68,58 +73,58 @@
       "argv": [
         "/usr/bin/python3",
         "-B",
-        "/Users/taytrrip/slug/set43-entry-reference/reference_entry.py",
+        "/Users/taytrrip/slug/set43-entry-reference-corrected/reference_entry.py",
         "--check"
       ],
       "TZ": "UTC",
       "interpreter": "/Applications/Xcode.app/Contents/Developer/usr/bin/python3\n3.9.6 (default, Oct 19 2026, 19:18:13) \n[Clang 21.0.0 (clang-2100.4.1.1)]",
       "exit_code": 0,
-      "seconds": 0.992,
-      "stdout": "{\"bytes\": 11586650, \"check\": true, \"codec_cases\": 902, \"corpus_sha256\": \"f3926a520771605aa5e071526d59bbdcc06a0027b16429e0f02a1e26c7c8af23\", \"dto_cases\": 48, \"events\": 18, \"pins\": 2, \"protocol_cases\": 74, \"retirement_cases\": 18, \"saturdays\": 3861, \"scenarios\": 54, \"shapes\": [{\"check\": 11809, \"check_member_max\": 2081, \"depth\": 9, \"fixture\": \"zero256\", \"full_response\": 13772, \"member_max\": 1303, \"operation\": 8270, \"receipt\": 7417, \"source_kind\": \"synthetic_structural_state_only_no_source_proofs\"}, {\"check\": 11809, \"check_member_max\": 2081, \"depth\": 9, \"fixture\": \"incrementing256\", \"full_response\": 13772, \"member_max\": 1303, \"operation\": 8270, \"receipt\": 7417, \"source_kind\": \"synthetic_structural_state_only_no_source_proofs\"}], \"state_steps\": 230, \"status\": \"passed\"}\n",
+      "seconds": 1.033,
+      "stdout": "{\"bytes\": 11586650, \"check\": true, \"codec_cases\": 902, \"corpus_sha256\": \"d8f226964429e8068bbe8300c73b6061f9a6dfd4e737a06ddde40c5eaa992bee\", \"dto_cases\": 48, \"events\": 18, \"pins\": 2, \"protocol_cases\": 74, \"retirement_cases\": 18, \"saturdays\": 3861, \"scenarios\": 54, \"shapes\": [{\"check\": 11809, \"check_member_max\": 2081, \"depth\": 9, \"fixture\": \"zero256\", \"full_response\": 13772, \"member_max\": 1303, \"operation\": 8270, \"receipt\": 7417, \"source_kind\": \"synthetic_structural_state_only_no_source_proofs\"}, {\"check\": 11809, \"check_member_max\": 2081, \"depth\": 9, \"fixture\": \"incrementing256\", \"full_response\": 13772, \"member_max\": 1303, \"operation\": 8270, \"receipt\": 7417, \"source_kind\": \"synthetic_structural_state_only_no_source_proofs\"}], \"state_steps\": 230, \"status\": \"passed\"}\n",
       "stderr": ""
     },
     {
       "argv": [
         "/usr/bin/python3",
         "-B",
-        "/Users/taytrrip/slug/set43-entry-reference/reference_entry.py",
+        "/Users/taytrrip/slug/set43-entry-reference-corrected/reference_entry.py",
         "--check"
       ],
       "TZ": "Pacific/Kiritimati",
       "interpreter": "/Applications/Xcode.app/Contents/Developer/usr/bin/python3\n3.9.6 (default, Oct 19 2026, 19:18:13) \n[Clang 21.0.0 (clang-2100.4.1.1)]",
       "exit_code": 0,
-      "seconds": 0.983,
-      "stdout": "{\"bytes\": 11586650, \"check\": true, \"codec_cases\": 902, \"corpus_sha256\": \"f3926a520771605aa5e071526d59bbdcc06a0027b16429e0f02a1e26c7c8af23\", \"dto_cases\": 48, \"events\": 18, \"pins\": 2, \"protocol_cases\": 74, \"retirement_cases\": 18, \"saturdays\": 3861, \"scenarios\": 54, \"shapes\": [{\"check\": 11809, \"check_member_max\": 2081, \"depth\": 9, \"fixture\": \"zero256\", \"full_response\": 13772, \"member_max\": 1303, \"operation\": 8270, \"receipt\": 7417, \"source_kind\": \"synthetic_structural_state_only_no_source_proofs\"}, {\"check\": 11809, \"check_member_max\": 2081, \"depth\": 9, \"fixture\": \"incrementing256\", \"full_response\": 13772, \"member_max\": 1303, \"operation\": 8270, \"receipt\": 7417, \"source_kind\": \"synthetic_structural_state_only_no_source_proofs\"}], \"state_steps\": 230, \"status\": \"passed\"}\n",
+      "seconds": 1.017,
+      "stdout": "{\"bytes\": 11586650, \"check\": true, \"codec_cases\": 902, \"corpus_sha256\": \"d8f226964429e8068bbe8300c73b6061f9a6dfd4e737a06ddde40c5eaa992bee\", \"dto_cases\": 48, \"events\": 18, \"pins\": 2, \"protocol_cases\": 74, \"retirement_cases\": 18, \"saturdays\": 3861, \"scenarios\": 54, \"shapes\": [{\"check\": 11809, \"check_member_max\": 2081, \"depth\": 9, \"fixture\": \"zero256\", \"full_response\": 13772, \"member_max\": 1303, \"operation\": 8270, \"receipt\": 7417, \"source_kind\": \"synthetic_structural_state_only_no_source_proofs\"}, {\"check\": 11809, \"check_member_max\": 2081, \"depth\": 9, \"fixture\": \"incrementing256\", \"full_response\": 13772, \"member_max\": 1303, \"operation\": 8270, \"receipt\": 7417, \"source_kind\": \"synthetic_structural_state_only_no_source_proofs\"}], \"state_steps\": 230, \"status\": \"passed\"}\n",
       "stderr": ""
     },
     {
       "argv": [
         "/opt/homebrew/bin/python3",
         "-B",
-        "/Users/taytrrip/slug/set43-entry-reference/reference_entry.py",
+        "/Users/taytrrip/slug/set43-entry-reference-corrected/reference_entry.py",
         "--check"
       ],
       "TZ": "UTC",
       "interpreter": "/opt/homebrew/opt/python@3.14/bin/python3.14\n3.14.3 (main, Feb  3 2026, 15:32:20) [Clang 17.0.0 (clang-1700.6.3.2)]",
       "exit_code": 0,
-      "seconds": 0.636,
-      "stdout": "{\"bytes\": 11586650, \"check\": true, \"codec_cases\": 902, \"corpus_sha256\": \"f3926a520771605aa5e071526d59bbdcc06a0027b16429e0f02a1e26c7c8af23\", \"dto_cases\": 48, \"events\": 18, \"pins\": 2, \"protocol_cases\": 74, \"retirement_cases\": 18, \"saturdays\": 3861, \"scenarios\": 54, \"shapes\": [{\"check\": 11809, \"check_member_max\": 2081, \"depth\": 9, \"fixture\": \"zero256\", \"full_response\": 13772, \"member_max\": 1303, \"operation\": 8270, \"receipt\": 7417, \"source_kind\": \"synthetic_structural_state_only_no_source_proofs\"}, {\"check\": 11809, \"check_member_max\": 2081, \"depth\": 9, \"fixture\": \"incrementing256\", \"full_response\": 13772, \"member_max\": 1303, \"operation\": 8270, \"receipt\": 7417, \"source_kind\": \"synthetic_structural_state_only_no_source_proofs\"}], \"state_steps\": 230, \"status\": \"passed\"}\n",
+      "seconds": 0.658,
+      "stdout": "{\"bytes\": 11586650, \"check\": true, \"codec_cases\": 902, \"corpus_sha256\": \"d8f226964429e8068bbe8300c73b6061f9a6dfd4e737a06ddde40c5eaa992bee\", \"dto_cases\": 48, \"events\": 18, \"pins\": 2, \"protocol_cases\": 74, \"retirement_cases\": 18, \"saturdays\": 3861, \"scenarios\": 54, \"shapes\": [{\"check\": 11809, \"check_member_max\": 2081, \"depth\": 9, \"fixture\": \"zero256\", \"full_response\": 13772, \"member_max\": 1303, \"operation\": 8270, \"receipt\": 7417, \"source_kind\": \"synthetic_structural_state_only_no_source_proofs\"}, {\"check\": 11809, \"check_member_max\": 2081, \"depth\": 9, \"fixture\": \"incrementing256\", \"full_response\": 13772, \"member_max\": 1303, \"operation\": 8270, \"receipt\": 7417, \"source_kind\": \"synthetic_structural_state_only_no_source_proofs\"}], \"state_steps\": 230, \"status\": \"passed\"}\n",
       "stderr": ""
     },
     {
       "argv": [
         "/opt/homebrew/bin/python3",
         "-B",
-        "/Users/taytrrip/slug/set43-entry-reference/reference_entry.py",
+        "/Users/taytrrip/slug/set43-entry-reference-corrected/reference_entry.py",
         "--check"
       ],
       "TZ": "Pacific/Kiritimati",
       "interpreter": "/opt/homebrew/opt/python@3.14/bin/python3.14\n3.14.3 (main, Feb  3 2026, 15:32:20) [Clang 17.0.0 (clang-1700.6.3.2)]",
       "exit_code": 0,
-      "seconds": 0.652,
-      "stdout": "{\"bytes\": 11586650, \"check\": true, \"codec_cases\": 902, \"corpus_sha256\": \"f3926a520771605aa5e071526d59bbdcc06a0027b16429e0f02a1e26c7c8af23\", \"dto_cases\": 48, \"events\": 18, \"pins\": 2, \"protocol_cases\": 74, \"retirement_cases\": 18, \"saturdays\": 3861, \"scenarios\": 54, \"shapes\": [{\"check\": 11809, \"check_member_max\": 2081, \"depth\": 9, \"fixture\": \"zero256\", \"full_response\": 13772, \"member_max\": 1303, \"operation\": 8270, \"receipt\": 7417, \"source_kind\": \"synthetic_structural_state_only_no_source_proofs\"}, {\"check\": 11809, \"check_member_max\": 2081, \"depth\": 9, \"fixture\": \"incrementing256\", \"full_response\": 13772, \"member_max\": 1303, \"operation\": 8270, \"receipt\": 7417, \"source_kind\": \"synthetic_structural_state_only_no_source_proofs\"}], \"state_steps\": 230, \"status\": \"passed\"}\n",
+      "seconds": 0.708,
+      "stdout": "{\"bytes\": 11586650, \"check\": true, \"codec_cases\": 902, \"corpus_sha256\": \"d8f226964429e8068bbe8300c73b6061f9a6dfd4e737a06ddde40c5eaa992bee\", \"dto_cases\": 48, \"events\": 18, \"pins\": 2, \"protocol_cases\": 74, \"retirement_cases\": 18, \"saturdays\": 3861, \"scenarios\": 54, \"shapes\": [{\"check\": 11809, \"check_member_max\": 2081, \"depth\": 9, \"fixture\": \"zero256\", \"full_response\": 13772, \"member_max\": 1303, \"operation\": 8270, \"receipt\": 7417, \"source_kind\": \"synthetic_structural_state_only_no_source_proofs\"}, {\"check\": 11809, \"check_member_max\": 2081, \"depth\": 9, \"fixture\": \"incrementing256\", \"full_response\": 13772, \"member_max\": 1303, \"operation\": 8270, \"receipt\": 7417, \"source_kind\": \"synthetic_structural_state_only_no_source_proofs\"}], \"state_steps\": 230, \"status\": \"passed\"}\n",
       "stderr": ""
     }
   ],
-  "log_sha256": "87cc357290b984b7e682d18eefbd6727c16aec0524427eeb6130282a1900bb6f"
+  "log_sha256": "d301a9d1e308dc33e1367b63fe32e1bfcfeed721cd3ee374196f0c7a8e54cff5"
 }

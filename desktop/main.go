@@ -31,6 +31,7 @@ var assets embed.FS
 // Only the separate candidate bundle build sets this private mode default.
 var candidateBuild string
 var stableBuild string
+var entryBuild string
 
 // Gym exposes only public pilot controls and receipt selection to the webview.
 // Paths, process arguments, and keys cannot be supplied through the web bridge.
@@ -209,7 +210,11 @@ func run() (resultErr error) {
 	data := flag.String("data-dir", dataDefault, "Explicit local pilot data directory")
 	candidates := flag.Bool("candidate-manifests", candidateBuild == "1", "Use the separate candidate fixture desktop")
 	stable := flag.Bool("candidate-stable", stableBuild == "1", "Use candidate stable and roster within the candidate fixture desktop")
+	entries := flag.Bool("candidate-entries", entryBuild == "1", "Enable Saturday entry intake within the candidate stable")
 	flag.Parse()
+	if *entries && (!*stable || !*candidates) {
+		return errors.New("Candidate entries require the candidate stable and fixture desktop.")
+	}
 	if *stable && !*candidates {
 		return errors.New("Candidate stable requires the candidate fixture desktop.")
 	}
@@ -247,7 +252,12 @@ func run() (resultErr error) {
 		filepath.Join(filepath.Dir(filepath.Clean(*data)), "LocalManifestPilot"),
 		filepath.Clean(filepath.Join(resources, "..", "..")),
 	}}
-	if *stable {
+	if *entries {
+		gym.stableHelper, err = bridge.LaunchEntries(helperPath, filepath.Clean(*data), nodePath)
+		if err == nil {
+			gym.manifestHelper = gym.stableHelper
+		}
+	} else if *stable {
 		gym.stableHelper, err = bridge.LaunchStable(helperPath, filepath.Clean(*data), nodePath)
 		if err == nil {
 			gym.manifestHelper = gym.stableHelper

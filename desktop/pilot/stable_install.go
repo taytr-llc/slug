@@ -78,6 +78,9 @@ func (s *StableController) StablePin() (gymstable.Pin, error) {
 	return gymstable.ValidatePin(gymstable.Pin{Version: 1, AccountAuthorityID: m.AccountAuthorityID, AccountID: m.AccountID, Identity: id, Source: m.AuthorityPin, ConditionVersion: fightercondition.Version1, ProjectorID: fightercondition.ProjectorID})
 }
 func (s *StableController) installPhase() (string, error) {
+	if s.entryEnabled {
+		return s.entryStablePhase()
+	}
 	pin, err := s.StablePin()
 	if err != nil {
 		return "", err

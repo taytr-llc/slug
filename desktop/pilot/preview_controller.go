@@ -80,7 +80,7 @@ func (s *StableController) BeginFightPreview(ctx context.Context, v, a, b string
 		s.mu.Lock()
 		defer s.mu.Unlock()
 		oldBytes = s.previewBytes
-		if !stableCacheFits(s.cache, s.receiptSlot, max(oldBytes, previewAllowance)) {
+		if !stableCacheFits(s.cache, s.receiptSlot, max(oldBytes, previewAllowance)+s.entryBytes) {
 			return gymstable.ErrCapacity
 		}
 		var id [32]byte

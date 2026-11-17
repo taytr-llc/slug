@@ -250,7 +250,7 @@ func (c *ManifestController) withCapability(ctx context.Context, session gymacco
 			if c.closed || c.viewID != viewID || c.child != child || c.session.Token != session.Token || account.ID != session.Account.ID || account.Generation != session.Account.Generation || child.AccountID() != account.ID || (c.state != "signed_in" && c.state != "signing_in" && c.state != "resetting") {
 				return gymaccount.ErrUnauthorized
 			}
-			if capability == gymaccount.RosterManage && (c.state != "signed_in" || c.operation) {
+			if (capability == gymaccount.RosterManage || capability == gymaccount.EntryManage) && (c.state != "signed_in" || c.operation) {
 				return gymaccount.ErrUnauthorized
 			}
 			return nil

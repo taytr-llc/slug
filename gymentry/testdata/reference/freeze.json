@@ -1,23 +1,30 @@
 {
-  "status": "frozen_independently_audited",
-  "frozen_at": "2026-11-17T17:44:29.317752+00:00",
+  "status": "frozen_corrected_reference_independently_audited",
+  "frozen_at": "2026-11-17T18:05:18.256661+00:00",
   "contract_sha256": "958d3fda0cb50cda3bad38f7e461a44537a6a3c20ef5cc2b0c2abb7d2fdafcae",
   "approval_sha256": "c6de84be51aad7e76e23a210a337ae6d74a5d75bbbc1043c1f5f694caa0297cc",
   "process_amendment_sha256": "f4f0b7d1afaf11c3ddd26a52a75e594ce3768b2245fc013dd1ae2375c479c38a",
-  "input_index_sha256": "a3d2cd8f6d2f1dd9fa03b8d1253f7783028ff79a2d278df493722cc73098135b",
+  "root_correction_review_sha256": "78fe49506c6f1e7d2600f985297e6693d1e9ccad197b3cddeb8669b82a1b17d4",
+  "predecessor_freeze_sha256": "a157ca9ad54b0371397d128f471d3c827a5e3c157ec2e4c754a2c5924da7cbe7",
+  "predecessor_corpus_sha256": "f3926a520771605aa5e071526d59bbdcc06a0027b16429e0f02a1e26c7c8af23",
+  "correction_sha256": "0bd53f1f088ddf5ddddefb30ac3374adb0869dcb4e5ae27613708a77d2542178",
   "independent_review": {
-    "path": "/Users/taytrrip/slug/set43-entry-reference-independent-review.json",
-    "sha256": "57a30f7b735e1242461d4b3a0c4118cf7e11f5543263d232bfbcf1e5e84d1818",
+    "path": "/Users/taytrrip/slug/set43-entry-reference-correction-independent-review.json",
+    "sha256": "1c2cfdd765cb52a7f8729e53ed634ada172e8895519bd85b5dbcf842191208ca",
     "status": "passed",
     "findings": []
   },
   "files": {
     "README.md": {
-      "sha256": "da77453eb6ad3cd2d502adc05f6a4d624be6b52a3aa0e5c90f1d4d16e823b090",
-      "bytes": 8173
+      "sha256": "48594bc03e2681ad0223c5c47a9a2809f1f0314c2390612d3499af4f1c2e247e",
+      "bytes": 9454
+    },
+    "correction.json": {
+      "sha256": "0bd53f1f088ddf5ddddefb30ac3374adb0869dcb4e5ae27613708a77d2542178",
+      "bytes": 3608
     },
     "entry_v1.json": {
-      "sha256": "f3926a520771605aa5e071526d59bbdcc06a0027b16429e0f02a1e26c7c8af23",
+      "sha256": "d8f226964429e8068bbe8300c73b6061f9a6dfd4e737a06ddde40c5eaa992bee",
       "bytes": 11586650
     },
     "input_hashes.json": {
@@ -116,27 +123,31 @@
       "sha256": "29f6a1302c2e04ade612fe2775c085c65b8bf33587c010060b727833182d2057",
       "bytes": 127516
     },
+    "predecessor-freeze.json": {
+      "sha256": "a157ca9ad54b0371397d128f471d3c827a5e3c157ec2e4c754a2c5924da7cbe7",
+      "bytes": 6522
+    },
     "reference_entry.py": {
-      "sha256": "cd8a5127bb7b48305d0ef6997beb6b66f57670503c5d676dc0808a8db6cf06bf",
-      "bytes": 67333
+      "sha256": "d82254ab58e7817620486dd0f65ff58b87c542fcd634dad02b6f891701ff166e",
+      "bytes": 67410
     },
     "verification.json": {
-      "sha256": "f0b21cfe313e49cd8cd5016b8d82d92ab533fff7a9af0c7e18c28501b18c1f31",
-      "bytes": 11741
+      "sha256": "4eb8bb03c38c47d9209a8b92863fe9f3d6e6b8878f745c322544c79adff09b49",
+      "bytes": 12212
     },
     "verification.log": {
-      "sha256": "87cc357290b984b7e682d18eefbd6727c16aec0524427eeb6130282a1900bb6f",
-      "bytes": 4215
+      "sha256": "d301a9d1e308dc33e1367b63fe32e1bfcfeed721cd3ee374196f0c7a8e54cff5",
+      "bytes": 4255
     },
     "verify_reference.py": {
-      "sha256": "5ee3969059d6900b12369cf0881d3115cfa649f2812691354b6f3972b2f52e38",
-      "bytes": 1942
+      "sha256": "7682f1f8b730b9396ce7cfa4ecbd5debbd0721204b0fef762b7af669d4a4caf3",
+      "bytes": 1987
     }
   },
-  "file_count_excluding_this_manifest": 30,
-  "original_input_sources_unchanged": true,
-  "new_go_source_or_outputs_read": false,
-  "new_argon_or_mining_performed": false,
+  "file_count_excluding_this_manifest": 32,
+  "original_workspace_and_repo_31_files_unchanged": true,
+  "expected_values_derived_from_go_source_or_output": false,
+  "role_provenance": "Frontend implementation role began after original independent freeze and included runtime DTO reads. This two-string correction used only frozen contract/FIELDS and original canonical positive DTOs; no Go output supplies expected values.",
   "reference_counts": {
     "supported_saturdays": 3861,
     "pins": 2,
@@ -148,11 +159,5 @@
     "state_steps": 230,
     "retirement_edges": 18
   },
-  "limits": [
-    "No actual filesystem, LevelDB crash, process cancellation, account lease, provider, mining, GUI or runtime execution is claimed.",
-    "State source facts are semantic fixtures, not public trusted-selection capabilities.",
-    "The six retained genuine source records cover middle/light_heavy/heavy only. Five-class cases are explicitly synthetic structural/state expectations.",
-    "Ordinary codec and correlation refusals do not establish provenance; production parsing must additionally enforce its complete compiled validators.",
-    "Calendar law is pinned candidate interpretation, not a prediction of future civil-time legislation."
-  ]
+  "runtime_consumption": "Requires root explicit approval of corrected pin and copy strategy."
 }

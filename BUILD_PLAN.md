@@ -291,10 +291,21 @@ fight, XP, training or entry. D75 retains D65 and replaces the original exact-re
 equality rule with evidence requirements for future rating changes. Its required
 coefficient-stability and fresh population-coverage studies passed independent
 audit, with no demonstrated challenger superiority across the eight primary
-comparisons. D75 successor acceptance retains D65; packaged acceptance and
-deployment remain ahead. See `FIGHTER_BOUT.md`, `FIGHT_PREVIEW.md`,
+comparisons. D75 successor acceptance retains D65. Exact two-wallet packaged
+acceptance, normal-PoW smoke, deployment and the full live observation passed.
+See `FIGHTER_BOUT.md`, `FIGHT_PREVIEW.md`,
 `RATING_VALIDATION_POLICY.md` and `RATING_VALIDATION_REPORT.md`. Future recorded exhibitions
 and professional results still need their own seed, event and award authorities.
+
+Set 43 implements reversible Saturday entry intake in the same candidate
+gym: explicit selection of up to five rostered fighters, one per class;
+save/replace/withdraw, durable recovery and history; and authority-observed noon
+Pacific closure. It does not lock entrants, choose seeds, book fights or award
+results/XP. The frozen contract and independent calendar/protocol/state corpus
+are in `gymentry/testdata/reference`; source tests and the development two-wallet
+flow pass, with final package acceptance and deployment pending.
+See `GYM_ENTRIES.md` and `CHANGESET_43_NOTES.md`. The later event-lock
+and seed-unavailability rules still need explicit resolution before that work.
 
 ### 6. League services
 The Saturday operation: entry collection and lock (Saturday noon

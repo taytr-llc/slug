@@ -14,6 +14,6 @@ def main():
    logs.append(json.dumps({'argv':argv,'TZ':tz,'identity':identity})+'\n'+r.stdout+r.stderr)
    rows.append(dict(argv=argv,TZ=tz,interpreter=identity,exit_code=r.returncode,seconds=round(seconds,3),stdout=r.stdout,stderr=r.stderr));assert r.returncode==0,r.stderr
  after=capture();assert before==after
- report=dict(status='passed',no_go_runtime_source_or_outputs=True,new_normal_work_verifications=0,source_sha256_before=before,source_sha256_after=after,source_changes=[],commands=rows)
+ report=dict(status='passed',go_source_or_output_used_for_expected_values=False,verification_executes_go=False,new_normal_work_verifications=0,source_sha256_before=before,source_sha256_after=after,source_changes=[],commands=rows)
  log='\n'.join(logs).encode();(ROOT/'verification.log').write_bytes(log);report['log_sha256']=hashlib.sha256(log).hexdigest();(ROOT/'verification.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps({'status':'passed','checks':len(rows),'source_files':len(before),'corpus_sha256':digest(ROOT/'entry_v1.json'),'verification_sha256':digest(ROOT/'verification.json')}))
 if __name__=='__main__':main()

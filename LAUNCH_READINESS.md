@@ -96,7 +96,8 @@ they do not count as completion of this product-release gate.
   harness compiles. Its first run failed during login when sandbox-denied
   loopback allocation exposed a typed-nil cleanup crash. The narrow startup
   repair passes focused and full account-component normal/race/tagged checks;
-  exact packaged acceptance still requires a fresh run. Calibration simulated 9,660
+  fresh exact packaged acceptance passed with both fixture wallets and six
+  independently checked previews. Calibration simulated 9,660
   fixed inputs; its rounded refit is
   [0.9, 2.5, 0.2, 0.6, 0.8], differing from D65. The exact-match release gate
   failed while the other numerical gates passed. Mike's D75 decision retains
@@ -106,10 +107,17 @@ they do not count as completion of this product-release gate.
   the incumbent wins ties. The 1,000 coefficient refits and 20,000 fresh matchup
   families passed independent audit. All eight primary paired improvement
   intervals include zero; the unchanged engine with D65 has explicit D75
-  successor acceptance. The checked source is integrated on the topic branch;
-  package acceptance and release remain ahead.
-  Set 41 remains live. Condition v1, authority pins and saved rosters are unchanged.
+  successor acceptance. Set 42 is deployed at master `fc672113`; its full
+  15-minute live observation and restart passed. No remote CI run/check was
+  available for the exact commit, so only the captured local tests are claimed.
+  Condition v1, authority pins and saved rosters are unchanged.
   See `RATING_VALIDATION_POLICY.md` and `RATING_VALIDATION_REPORT.md`.
+- Set 43 is implemented on `slug-saturday-entry`: reversible Saturday entry
+  selection, save/replace/withdraw, history and cutoff reporting in the same
+  candidate gym. The independent corpus, core/desktop tests, crash recovery
+  and development two-wallet flow pass. Final packaged acceptance and
+  deployment are pending. Event locking, future seed selection, matching and
+  results/XP remain separate work; no official league event is enabled yet.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
