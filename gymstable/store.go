@@ -176,6 +176,9 @@ func create(path string, pin Pin, source *registry.ManifestStore, clock func() t
 	return s, nil
 }
 func Open(path string, expected Pin, source *registry.ManifestStore) (*Store, error) {
+	return openWithClock(path, expected, source, time.Now)
+}
+func openWithClock(path string, expected Pin, source *registry.ManifestStore, clock func() time.Time) (*Store, error) {
 	if e := normal(); e != nil {
 		return nil, e
 	}
@@ -222,6 +225,7 @@ func Open(path string, expected Pin, source *registry.ManifestStore) (*Store, er
 		return nil, ErrClosed
 	}
 	s := newStore(db, source)
+	s.now = clock
 	if e = s.audit(m, info.Records); e != nil {
 		_ = s.Close()
 		return nil, e

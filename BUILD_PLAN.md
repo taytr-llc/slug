@@ -302,10 +302,24 @@ gym: explicit selection of up to five rostered fighters, one per class;
 save/replace/withdraw, durable recovery and history; and authority-observed noon
 Pacific closure. It does not lock entrants, choose seeds, book fights or award
 results/XP. The frozen contract and independent calendar/protocol/state corpus
-are in `gymentry/testdata/reference`; source tests and the development two-wallet
-flow pass, with final package acceptance and deployment pending.
-See `GYM_ENTRIES.md` and `CHANGESET_43_NOTES.md`. The later event-lock
-and seed-unavailability rules still need explicit resolution before that work.
+are in `gymentry/testdata/reference`. Source checks, exact Mac bundle acceptance,
+independent verification, normal-PoW smoke and deployment at master `e2761812`
+passed; the full 900-second/31-sample live observation and restart passed.
+See `GYM_ENTRIES.md` and `CHANGESET_43_NOTES.md`.
+
+Set 44 implements the bounded candidate event-snapshot foundation on
+`slug-event-snapshot`. Mike approved D76: freeze roster membership, ownership,
+eligibility and current condition at noon Pacific; later changes do not alter
+that event. D77 requires visible wait/conflict with no substitute seed or
+automatic cancellation, and chain-incident escalation if the required seed
+remains unfinalized at the following Saturday lock. See `EVENT_LOCK_POLICY.md`.
+The shared coordinator reconstructs both gyms from committed history, separates
+noon inputs from actual capture evidence, and recovers interrupted captures.
+Its frozen independent reference is in `gymevent/testdata/reference`; normal,
+race, crash-recovery and scoped-clock desktop checks have passed. Exact release
+packaging and deployment verification remain pending. See `EVENT_SNAPSHOTS.md`.
+Transferable ownership and actual anchor/seed/finality integration
+remain required before official use; fixture assignment is not that evidence.
 
 ### 6. League services
 The Saturday operation: entry collection and lock (Saturday noon
@@ -348,6 +362,8 @@ or public product release (D74, November 16). Keep it as an explicit gate in
 `LAUNCH_READINESS.md`; review a representative working build together and track
 the agreed findings through validation. Routine engineering deployment and
 automated/code review do not replace that session.
+Mike wants this as one full review once all major flows are ready, at the end
+before release.
 
 The November 15 chain-core handover and seed rollout are a milestone within
 Phase A, not completion of all three Phase A workstreams. Prospect

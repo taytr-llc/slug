@@ -7,6 +7,9 @@ finish line and must be updated from evidence rather than a branch number.
 **Required design review with Mike:** before the friends/tester or public
 product release, hold a thorough joint design review and address or explicitly
 agree to defer its findings. Mike requested this gate on November 16 (D74).
+Mike wants one full joint design review once all major flows are ready, at the
+end before release. Partial reviews do not replace that session.
+
 Routine authorized engineering pushes and Phase-A seed verification continue;
 they do not count as completion of this product-release gate.
 
@@ -115,9 +118,21 @@ they do not count as completion of this product-release gate.
 - Set 43 is implemented on `slug-saturday-entry`: reversible Saturday entry
   selection, save/replace/withdraw, history and cutoff reporting in the same
   candidate gym. The independent corpus, core/desktop tests, crash recovery
-  and development two-wallet flow pass. Final packaged acceptance and
-  deployment are pending. Event locking, future seed selection, matching and
+  and exact two-wallet Mac bundle flow pass. Deployment at master `e2761812`,
+  the complete 15-minute live observation and clean restart passed. Event
+  locking, future seed selection, matching and
   results/XP remain separate work; no official league event is enabled yet.
+- Set 44 implements D76/D77's candidate foundation: noon-fixed roster/ownership/
+  eligibility/condition; no seed substitution or automatic cancellation; and
+  escalation at the following Saturday lock when the required seed remains
+  unfinalized. Independent-reference, normal/race, crash-recovery and desktop
+  composition checks have passed; it is not yet packaged or deployed. Closed
+  desktop captures use the explicitly tagged test clock with normal PoW;
+  successful real-clock closed-bundle coverage awaits an eligible Saturday.
+  See `EVENT_SNAPSHOTS.md`.
+  Its fixture assignment evidence cannot substitute for production ownership
+  history, and its calendar threshold cannot substitute for chain finality.
+  See `EVENT_LOCK_POLICY.md`; the D74 review remains pending.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace

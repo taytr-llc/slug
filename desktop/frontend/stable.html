@@ -41,7 +41,7 @@
     </section>
     <section class="panel saturday-entry" aria-labelledby="entry-heading">
       <div class="section-top"><h2 id="entry-heading">Saturday entry</h2><span id="entry-state">Sign in to view entries</span></div>
-      <p class="note">Save up to five rostered candidates, one per weight class. This candidate build does not lock an event or book a fight. Entry is free.</p>
+      <p class="note">Save up to five rostered candidates, one per weight class. Saturday noon Pacific fixes the event selection and condition. Candidate snapshots are local; no official fight is booked. Entry is free.</p>
       <div class="entry-date-row"><label for="entry-date">Saturday</label><input id="entry-date" type="date" min="2026-01-01" max="2099-12-31" disabled><button id="entry-upcoming" type="button" disabled>Upcoming Saturday</button><button id="entry-status" type="button" disabled>Refresh entry status</button></div>
       <p id="entry-cutoff" class="note"></p><p id="entry-saved" class="note"></p><p id="entry-warning" class="note" role="status"></p>
       <h3>Draft selection <span id="entry-count">0 / 5</span></h3>
@@ -53,6 +53,18 @@
       <ul id="entry-eligibility" class="entry-eligibility"></ul>
       <div class="actions"><button id="entry-history" type="button" disabled>View entry history</button><button id="entry-history-next" type="button" disabled>More history</button></div>
       <ul id="entry-history-list" class="entry-history"></ul>
+    </section>
+    <section class="panel event-snapshot" aria-labelledby="event-heading">
+      <div class="section-top"><h2 id="event-heading">Saturday snapshot</h2><span id="event-state">Sign in to view snapshots</span></div>
+      <p class="note">The selected Saturday uses the roster, candidate assignment and condition from noon Pacific. Later roster changes or retirement do not alter that snapshot.</p>
+      <p id="event-cutoff" class="note"></p><p id="event-progress" class="note"></p>
+      <div class="actions"><button id="event-refresh" type="button" disabled>Refresh snapshot status</button><button id="event-capture" type="button" disabled>Capture this gym</button><button id="event-cancel" type="button" disabled>Cancel capture request</button><button id="event-record" type="button" disabled>View complete snapshot</button><button id="event-clear" type="button" disabled>Clear snapshot details</button></div>
+      <p id="event-message" class="note" role="status"></p>
+      <p id="event-seed" class="note">Seed selection and finality are not connected in this candidate build. No substitute seed or automatic cancellation is permitted.</p>
+      <p id="event-deadline" class="note"></p><p id="event-digest" class="note"></p>
+      <ul id="event-members" class="entry-eligibility"></ul>
+      <div class="actions"><button id="event-history" type="button" disabled>View snapshot history</button><button id="event-history-next" type="button" disabled>More snapshot history</button></div>
+      <ul id="event-history-list" class="entry-history"></ul>
     </section>
     <section class="panel fight-preview" aria-labelledby="preview-heading">
       <div class="section-top"><h2 id="preview-heading">Fight preview — unrecorded</h2><span id="preview-state">Choose two candidates</span></div>

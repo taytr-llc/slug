@@ -1,0 +1,70 @@
+{
+  "status": "passed",
+  "findings": [],
+  "at": "2026-11-17T17:22:27.797701+00:00",
+  "reviewer": "checkpoint_envelope",
+  "contract_path": "/Users/taytrrip/slug/set43-entry-contract-draft.md",
+  "contract_sha256": "958d3fda0cb50cda3bad38f7e461a44537a6a3c20ef5cc2b0c2abb7d2fdafcae",
+  "initial_review_sha256": "4153b1bdcf103148677cecf90855a004d47a49f555b7f95bb35ed836116e76b3",
+  "scope": "Independent read-only exact engineering contract review, not implementation or user-policy approval.",
+  "resolved_findings": [
+    {
+      "id": "current-view-metadata",
+      "status": "resolved"
+    },
+    {
+      "id": "exact-api-and-command-shapes",
+      "status": "resolved"
+    },
+    {
+      "id": "prepare-final-cutoff",
+      "status": "resolved"
+    },
+    {
+      "id": "event-pending-and-absence",
+      "status": "resolved"
+    },
+    {
+      "id": "logical-upgrade-validation",
+      "status": "resolved"
+    },
+    {
+      "id": "shared-lane-family-and-budget",
+      "status": "resolved"
+    },
+    {
+      "id": "rejected-final-observation",
+      "status": "resolved"
+    }
+  ],
+  "checks": {
+    "calendar_input": "Verified exact1294-byte TZif2 member/archive hashes; supported range and cutoff roundtrip/strict equality semantics are explicit. No date vectors were generated.",
+    "canonical_bytes": "Domain-separated preimages, display-order raw hashes, canonical ordered DTOs, exact types/nullable exceptions, bounded counts/depth and command-specific field use are defined.",
+    "source_and_commit": "Concrete borrowed source only; <=5 serial proofs; expected roster revision and assignment fences held through original account lease/stable mutex callback; final entry clock/cutoff check after preparation work.",
+    "clock_replay": "Authenticated failure observations persist clock/closure; already committed or prepared replay retains original bytes/time; new-view pending can be queried/abandoned but never applied.",
+    "response_correlation": "Every nonblank metadata response carries current full view and derived Entry StoreID; historical intent author stays historical; native requires established full Stable pin; Pending is the only nullable Operation response.",
+    "lane_and_cache": "Global active1/queued1 with explicit family routing; old wire shapes remain closed; capacity reserved before ACK and failed publication fenced; all existing cache paths charge entry bytes.",
+    "installation": "Explicit v3 route, separately bounded16KiB new marker, old8KiB routes preserved; all reader/writer paths and second-fixture/stable-prepared recovery are listed; logical validation permits DB lock/log maintenance without source/history rewrite.",
+    "caps": "Conservative arithmetic reviewed: Operation32256<32768, Check+envelope64000<131072, v3 marker explicit16KiB, logical journal ceiling below136MiB; these are source-shape bounds, not generated vectors.",
+    "authorization": "EntryManage requires enrolled current login; mining tokens rejected; D72 enumerated holds unchanged; old original sessions cannot mutate.",
+    "deferred_policy": "No locked-card, entropy, reservation, post-lock roster/retirement choice, awards, official ownership or official history API is introduced."
+  },
+  "source_sha256": {
+    "/Users/taytrrip/slug/slug/BRAWLCHAIN_SPEC.md": "d1437b1bfc4df04de2bf5f8b620e08382fffd9ada990abf23d02138a3b24d622",
+    "/Users/taytrrip/slug/slug/gymstable/types.go": "1f0038aa844869c59b5f2e8f38e2ec69380aac88d66000b28d9d1471daccb2f0",
+    "/Users/taytrrip/slug/slug/gymstable/preview.go": "56c1f126f84b5d5c9d46d838bea9209ead789cc777d45584e9ff61b580a167bd",
+    "/Users/taytrrip/slug/slug/gymstable/operations.go": "5f67a8eee3cd38f25ceae9b73c4a6c020f3fdb1a31f39d1e3ee10195ebd2a845",
+    "/Users/taytrrip/slug/slug/desktop/pilot/stable_install.go": "6f34d6a24b1cd9dc687e1baf6032e0b9bcbf47dbe05ea41fa0cb5764b9f9aee4",
+    "/Users/taytrrip/slug/slug/desktop/accountpilot/stable_files.go": "1c4ec374bbede9b849464e42fcde612934dfb7f4d3e2cf006faf528ef0a20298"
+  },
+  "calendar_input": {
+    "archive_sha256": "b2d18a7c8fa8142097a48c99609fb3c92db5ee98bc740294e57eab8ae9f94779",
+    "member_sha256": "200d05754f6d83a371cf408d7085125797657b3b0bebeba1e508cffe86a3e5c8",
+    "member_bytes": 1294
+  },
+  "limitations": [
+    "Root must explicitly freeze the reviewed contract and input pins before runtime/oracle work.",
+    "No new oracle, expected IDs/date outputs, source implementation, simulations, tests, live network or production resources were created or run.",
+    "Review does not approve post-lock player rights, entropy/finality/outage promises, official publication or product release; D74 and other stated gates remain."
+  ]
+}

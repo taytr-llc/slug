@@ -11,6 +11,7 @@ import (
 
 	"github.com/taytr-llc/slug/gymaccount"
 	"github.com/taytr-llc/slug/gymentry"
+	"github.com/taytr-llc/slug/gymevent"
 	"github.com/taytr-llc/slug/gymstable"
 	"github.com/taytr-llc/slug/registry"
 )
@@ -19,6 +20,14 @@ import (
 // laneGate, never by the legacy resource mutex across an account callback.
 type StableController struct {
 	*ManifestController
+	eventEnabled, eventAttached                       bool
+	eventStore                                        *gymevent.Store // borrowed immutable parent handle; never closed by child
+	eventPin                                          gymevent.Pin
+	eventID, eventParticipant, eventFailure           string
+	eventCreated                                      int64
+	eventLast                                         *EventJob
+	eventCheckpoint                                   func(string)
+	eventFactories                                    *eventStoreFactories
 	entryEnabled                                      bool
 	entryStore                                        *gymentry.Store // laneGate owns handle lifetime
 	entryPin                                          gymentry.Pin    // immutable after preparation
@@ -157,7 +166,7 @@ func (s *StableController) openPair(source *registry.ManifestStore) error {
 			return err
 		}
 	}
-	store, err := gymstable.Open(filepath.Join(s.config.DataDir, "stable"), pin, source)
+	store, err := s.openStableStore(filepath.Join(s.config.DataDir, "stable"), pin, source)
 	if err != nil {
 		if owned {
 			_ = source.Close()
@@ -166,7 +175,7 @@ func (s *StableController) openPair(source *registry.ManifestStore) error {
 	}
 	s.stableStore, s.source, s.ownedSource = store, source, owned
 	if s.entryEnabled {
-		entry, e := gymentry.Open(context.Background(), filepath.Join(s.config.DataDir, "entries"), s.entryPin, store)
+		entry, e := s.openEntryStore(context.Background(), filepath.Join(s.config.DataDir, "entries"), s.entryPin, store)
 		if e != nil {
 			_ = s.closePair()
 			return e
@@ -383,10 +392,13 @@ func (s *StableController) Close() error {
 		s.last = nil
 		s.previewLast = nil
 		s.entryLast = nil
+		s.eventLast = nil
+		s.eventFailure = ""
 		s.entryPending = ""
 		s.mu.Lock()
 		s.previewBytes = 0
 		s.entryBytes = 0
+		s.eventBytes = 0
 		s.mu.Unlock()
 		s.stableMu.Unlock()
 		s.Stop()

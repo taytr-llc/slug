@@ -32,6 +32,7 @@ var assets embed.FS
 var candidateBuild string
 var stableBuild string
 var entryBuild string
+var eventBuild string
 
 // Gym exposes only public pilot controls and receipt selection to the webview.
 // Paths, process arguments, and keys cannot be supplied through the web bridge.
@@ -211,7 +212,11 @@ func run() (resultErr error) {
 	candidates := flag.Bool("candidate-manifests", candidateBuild == "1", "Use the separate candidate fixture desktop")
 	stable := flag.Bool("candidate-stable", stableBuild == "1", "Use candidate stable and roster within the candidate fixture desktop")
 	entries := flag.Bool("candidate-entries", entryBuild == "1", "Enable Saturday entry intake within the candidate stable")
+	candidateEvents := flag.Bool("candidate-events", eventBuild == "1", "Enable immutable noon snapshots within candidate entries")
 	flag.Parse()
+	if *candidateEvents && (!*entries || !*stable || !*candidates) {
+		return errors.New("Candidate events require candidate entries, stable and fixture desktop.")
+	}
 	if *entries && (!*stable || !*candidates) {
 		return errors.New("Candidate entries require the candidate stable and fixture desktop.")
 	}
@@ -252,7 +257,12 @@ func run() (resultErr error) {
 		filepath.Join(filepath.Dir(filepath.Clean(*data)), "LocalManifestPilot"),
 		filepath.Clean(filepath.Join(resources, "..", "..")),
 	}}
-	if *entries {
+	if *candidateEvents {
+		gym.stableHelper, err = bridge.LaunchEvents(helperPath, filepath.Clean(*data), nodePath)
+		if err == nil {
+			gym.manifestHelper = gym.stableHelper
+		}
+	} else if *entries {
 		gym.stableHelper, err = bridge.LaunchEntries(helperPath, filepath.Clean(*data), nodePath)
 		if err == nil {
 			gym.manifestHelper = gym.stableHelper

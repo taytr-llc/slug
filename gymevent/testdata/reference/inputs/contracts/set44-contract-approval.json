@@ -1,0 +1,31 @@
+{
+  "status": "approved_engineering_contract",
+  "at_utc": "2026-11-17T20:12:34.806947+00:00",
+  "runtime_base": "17e0362244c2bd419ed30ee902887b0ece2ad268",
+  "decision_commit": "b7985449768989cd808897c9ba9a432dbdd11729",
+  "files_sha256": {
+    "set44-core-contract-draft.md": "7e0c2842cb6fac2c67896c8e646ffe5778f1a0d03d8ec0e386a074e289537379",
+    "set44-helper-contract-proposal.md": "fedecce1bb5f7a4c975390c915dd8671850790d284899194e23b1e7329cc82f4",
+    "set44-core-shape-bounds.py": "8f0f0f22aced5113d8b0eea447eee1bf5a3cbf1257717e42365fdd7455c0b7e0",
+    "set44-core-shape-bounds.json": "61296beeb1ba114eef06cb6de8d8898dd6026f533f7ae164c5ebaadb0e493b32",
+    "set44-helper-shape-bounds.py": "310e6f8bd49c8df302f92d81fcf492f6d45f763192d829babe498efb1eb2de42",
+    "set44-helper-shape-bounds.json": "ee2c67ccde66413f33dfba0da00fa67e23b8dd0140dae05c6c30b799f1650bcf",
+    "set44-core-contract-scope.json": "506092fa2fc5441407df59ef23871b2827dab80da03f09872c1a7ab22a7c15e9",
+    "set44-core-contract-envelope-review.json": "fb14f06ae3e21f9a123c897c8422d534d40454979fec29069a1bad44d6a1bda1",
+    "set44-helper-core-alignment-review.json": "719b1dc9112731d08eb5ed90c7c05da374e265c5bf31000efaf5f125f68117b3",
+    "set44-reference-plan.md": "21498b2e938aa77da04cba8f9f035b98f5a4c808f98499ca961ab77f23f43918"
+  },
+  "runtime_changed_before_freeze": false,
+  "authorized_now": [
+    "Independent reference generation from these contracts and previously frozen inputs, without new Go outputs",
+    "Owned runtime implementation in parallel, with no expected-output derivation from runtime",
+    "Focused tests and candidate integration consistent with scoped normal-PoW test clocks"
+  ],
+  "not_claimed": [
+    "Runtime or package validation",
+    "Transferable ownership authority",
+    "Seed/finality integration or observed public-chain incident",
+    "Real-clock closed-event package evidence",
+    "Product-release design approval"
+  ]
+}

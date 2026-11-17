@@ -36,7 +36,7 @@ func (s *StableController) beginEntry(ctx context.Context, view, kind, date, op 
 		s.mu.Lock()
 		defer s.mu.Unlock()
 		oldBytes = s.entryBytes
-		if !stableCacheFits(s.cache, s.receiptSlot, s.previewBytes+MaxEntryCacheSize) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.previewBytes+MaxEntryCacheSize+s.eventBytes) {
 			return gymentry.ErrCapacity
 		}
 		var id [32]byte

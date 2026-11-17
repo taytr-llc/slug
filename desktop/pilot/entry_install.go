@@ -54,17 +54,32 @@ func (s *StableController) EntryPin() (gymentry.Pin, error) {
 	return gymentry.ValidatePin(gymentry.Pin{Version: 1, NamespaceID: namespace, CalendarID: gymentry.CalendarID(), RulesID: gymentry.RulesID(), StableStoreID: sid, StablePin: p})
 }
 func (s *StableController) entryRoot() (entryRootMarker, error) {
+	if s.eventEnabled {
+		m, e := s.eventRoot()
+		base := m.entryRootMarker
+		base.Version = 3
+		return base, e
+	}
 	var m entryRootMarker
 	path := filepath.Join(filepath.Dir(filepath.Dir(s.config.DataDir)), "SLUG-MANIFEST-ACCOUNTS.json")
 	if !s.entryEnabled || readManifestJSON(path, 16384, &m) != nil || m.Version != 3 || m.Mode != ManifestMode || m.StableSchema != 1 || m.EntrySchema != 1 || m.CalendarID != gymentry.CalendarID() || m.RulesID != gymentry.RulesID() || m.StableInstalls == nil || len(m.StableInstalls) > 2 || m.EntryInstalls == nil || len(m.EntryInstalls) > 2 {
 		return m, ErrManifestInitialization
+	}
+	if e := validateEntryRoot(m); e != nil {
+		return m, e
+	}
+	return m, nil
+}
+func validateEntryRoot(m entryRootMarker) error {
+	if m.Version != 3 || m.Mode != ManifestMode || m.StableSchema != 1 || m.EntrySchema != 1 || m.CalendarID != gymentry.CalendarID() || m.RulesID != gymentry.RulesID() || m.StableInstalls == nil || len(m.StableInstalls) > 2 || m.EntryInstalls == nil || len(m.EntryInstalls) > 2 {
+		return ErrManifestInitialization
 	}
 	last := ""
 	stable := map[string]stableInstall{}
 	for _, x := range m.StableInstalls {
 		p, e := gymstable.ValidatePin(x.Pin)
 		if e != nil || x.AccountID <= last || x.AccountID != p.AccountID || p.AccountAuthorityID != m.AccountAuthorityID || p.Source.DescriptorID != m.DescriptorID || (x.Phase != "ready" && x.Phase != "prepared") {
-			return m, ErrManifestInitialization
+			return ErrManifestInitialization
 		}
 		last = x.AccountID
 		stable[x.AccountID] = x
@@ -74,12 +89,13 @@ func (s *StableController) entryRoot() (entryRootMarker, error) {
 		p, e := gymentry.ValidatePin(x.Pin)
 		y, ok := stable[x.AccountID]
 		if e != nil || x.AccountID <= last || x.AccountID != p.StablePin.AccountID || !ok || y.Phase != "ready" || y.Pin != p.StablePin || (x.Phase != "ready" && x.Phase != "prepared") {
-			return m, ErrManifestInitialization
+			return ErrManifestInitialization
 		}
 		last = x.AccountID
 	}
-	return m, nil
+	return nil
 }
+
 func (s *StableController) entryStablePhase() (string, error) {
 	m, e := s.entryRoot()
 	if e != nil {
@@ -126,7 +142,7 @@ func (s *StableController) CreateEntryComponent(ctx context.Context) (resultErr 
 		return e
 	}
 	defer func() { resultErr = errors.Join(resultErr, source.Close()) }()
-	stable, e := gymstable.Open(filepath.Join(s.config.DataDir, "stable"), pin.StablePin, source)
+	stable, e := s.openStableStore(filepath.Join(s.config.DataDir, "stable"), pin.StablePin, source)
 	if e != nil {
 		return e
 	}
@@ -135,7 +151,7 @@ func (s *StableController) CreateEntryComponent(ctx context.Context) (resultErr 
 	var store *gymentry.Store
 	info, stat := os.Lstat(path)
 	if os.IsNotExist(stat) {
-		store, e = gymentry.Create(ctx, path, pin, stable)
+		store, e = s.createEntryStore(ctx, path, pin, stable)
 	} else if stat != nil {
 		return stat
 	} else {
@@ -149,9 +165,9 @@ func (s *StableController) CreateEntryComponent(ctx context.Context) (resultErr 
 		names, err := f.Readdirnames(1)
 		_ = f.Close()
 		if len(names) == 0 && (err == nil || errors.Is(err, io.EOF)) {
-			store, e = gymentry.Create(ctx, path, pin, stable)
+			store, e = s.createEntryStore(ctx, path, pin, stable)
 		} else {
-			store, e = gymentry.Open(ctx, path, pin, stable)
+			store, e = s.openEntryStore(ctx, path, pin, stable)
 		}
 	}
 	if e != nil {

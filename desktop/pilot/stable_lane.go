@@ -15,6 +15,7 @@ import (
 )
 
 type stableTask struct {
+	event        *EventJob
 	entry        *EntryJob
 	entryRequest gymentry.Request
 	preview      *PreviewJob
@@ -32,6 +33,10 @@ type stableTask struct {
 func (s *StableController) expireQueuedLocked() {
 	if s.queued != nil && s.queued.ctx.Err() != nil {
 		s.queued.cancel()
+		if s.queued.event != nil {
+			s.cancelQueuedEventLocked()
+			return
+		}
 		if s.queued.entry != nil {
 			s.cancelQueuedEntryLocked()
 			return
@@ -55,6 +60,10 @@ func (s *StableController) cancelTasksLocked() {
 	}
 	if s.queued != nil {
 		s.queued.cancel()
+		if s.queued.event != nil {
+			s.cancelQueuedEventLocked()
+			return
+		}
 		if s.queued.entry != nil {
 			s.cancelQueuedEntryLocked()
 			return
@@ -188,7 +197,9 @@ func (s *StableController) cycle(ctx context.Context) error {
 		s.stableMu.Unlock()
 		return nil
 	}
-	if task.entry != nil {
+	if task.event != nil {
+		task.event.State = "running"
+	} else if task.entry != nil {
 		task.entry.State = "running"
 	} else if task.preview != nil {
 		task.preview.State = "running"
@@ -197,6 +208,9 @@ func (s *StableController) cycle(ctx context.Context) error {
 	}
 	s.active = task
 	s.stableMu.Unlock()
+	if task.event != nil {
+		return s.runEventTask(ctx, task)
+	}
 	if task.entry != nil {
 		return s.runEntryTask(ctx, task)
 	}
@@ -397,7 +411,7 @@ func (s *StableController) publishStableItems(ctx context.Context, items []gymst
 				delete(next, low)
 			}
 		}
-		if !manifestCacheFits(next, s.receiptSlot) || !stableCacheFits(next, s.receiptSlot, s.previewBytes+s.entryBytes) {
+		if !manifestCacheFits(next, s.receiptSlot) || !stableCacheFits(next, s.receiptSlot, s.previewBytes+s.entryBytes+s.eventBytes) {
 			return gymstable.ErrCapacity
 		}
 		s.cache = next
@@ -615,6 +629,9 @@ func (s *StableController) RefreshManifestProspects(ctx context.Context) error {
 }
 
 func (t *stableTask) family() string {
+	if t.event != nil {
+		return "event"
+	}
 	if t.entry != nil {
 		return "entry"
 	}

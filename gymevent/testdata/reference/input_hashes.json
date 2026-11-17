@@ -1,0 +1,217 @@
+{
+  "inputs/contracts/set41-stable-contract.md": {
+    "bytes": 66607,
+    "sha256": "f977e8a7cef5ab470e5019f4f1b9d88cdb4fd03d5ee1feb6acc32321389d84d2",
+    "source": "/Users/taytrrip/slug/set41-stable-contract.md"
+  },
+  "inputs/contracts/set44-contract-approval.json": {
+    "bytes": 1938,
+    "sha256": "13ee5d8f202289bc3c216ab4b5524e487bc11f81f9ea5d87d27e0562da504133",
+    "source": "/Users/taytrrip/slug/set44-contract-approval.json"
+  },
+  "inputs/contracts/set44-contract-clarification-1.md": {
+    "source": "/Users/taytrrip/slug/set44-contract-clarification-1.md",
+    "bytes": 1559,
+    "sha256": "1a43251fbee36cfb6fb4cb22a7ef677555f46876e4a00f3a231f6cba94149ead"
+  },
+  "inputs/contracts/set44-core-contract-draft.md": {
+    "bytes": 45339,
+    "sha256": "7e0c2842cb6fac2c67896c8e646ffe5778f1a0d03d8ec0e386a074e289537379",
+    "source": "/Users/taytrrip/slug/set44-core-contract-draft.md"
+  },
+  "inputs/contracts/set44-core-shape-bounds.json": {
+    "bytes": 4353,
+    "sha256": "61296beeb1ba114eef06cb6de8d8898dd6026f533f7ae164c5ebaadb0e493b32",
+    "source": "/Users/taytrrip/slug/set44-core-shape-bounds.json"
+  },
+  "inputs/contracts/set44-core-shape-bounds.py": {
+    "bytes": 7739,
+    "sha256": "8f0f0f22aced5113d8b0eea447eee1bf5a3cbf1257717e42365fdd7455c0b7e0",
+    "source": "/Users/taytrrip/slug/set44-core-shape-bounds.py"
+  },
+  "inputs/contracts/set44-helper-contract-proposal.md": {
+    "bytes": 40386,
+    "sha256": "fedecce1bb5f7a4c975390c915dd8671850790d284899194e23b1e7329cc82f4",
+    "source": "/Users/taytrrip/slug/set44-helper-contract-proposal.md"
+  },
+  "inputs/contracts/set44-helper-shape-bounds.json": {
+    "bytes": 1862,
+    "sha256": "ee2c67ccde66413f33dfba0da00fa67e23b8dd0140dae05c6c30b799f1650bcf",
+    "source": "/Users/taytrrip/slug/set44-helper-shape-bounds.json"
+  },
+  "inputs/contracts/set44-helper-shape-bounds.py": {
+    "bytes": 3808,
+    "sha256": "310e6f8bd49c8df302f92d81fcf492f6d45f763192d829babe498efb1eb2de42",
+    "source": "/Users/taytrrip/slug/set44-helper-shape-bounds.py"
+  },
+  "inputs/contracts/set44-reference-plan.md": {
+    "bytes": 14008,
+    "sha256": "21498b2e938aa77da04cba8f9f035b98f5a4c808f98499ca961ab77f23f43918",
+    "source": "/Users/taytrrip/slug/set44-reference-plan.md"
+  },
+  "inputs/entry/README.md": {
+    "bytes": 9454,
+    "sha256": "48594bc03e2681ad0223c5c47a9a2809f1f0314c2390612d3499af4f1c2e247e",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/README.md"
+  },
+  "inputs/entry/correction.json": {
+    "bytes": 3608,
+    "sha256": "0bd53f1f088ddf5ddddefb30ac3374adb0869dcb4e5ae27613708a77d2542178",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/correction.json"
+  },
+  "inputs/entry/entry_v1.json": {
+    "bytes": 11586650,
+    "sha256": "d8f226964429e8068bbe8300c73b6061f9a6dfd4e737a06ddde40c5eaa992bee",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/entry_v1.json"
+  },
+  "inputs/entry/freeze.json": {
+    "bytes": 6817,
+    "sha256": "804cd5fd2c282a05a7894c768e9f0eedd2708e03c08e05d1771119c2bcae3fb2",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/freeze.json"
+  },
+  "inputs/entry/input_hashes.json": {
+    "bytes": 5737,
+    "sha256": "a3d2cd8f6d2f1dd9fa03b8d1253f7783028ff79a2d278df493722cc73098135b",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/input_hashes.json"
+  },
+  "inputs/entry/inputs/America_Los_Angeles.tzif": {
+    "bytes": 1294,
+    "sha256": "200d05754f6d83a371cf408d7085125797657b3b0bebeba1e508cffe86a3e5c8",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/inputs/America_Los_Angeles.tzif"
+  },
+  "inputs/entry/inputs/condition/input_hashes.json": {
+    "bytes": 1384,
+    "sha256": "1ab9a78f6246236c87fb9b0304fe5b786b9d5f880f50d18a33ef3b12725419a3",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/inputs/condition/input_hashes.json"
+  },
+  "inputs/entry/inputs/condition/inputs/BRAWLCHAIN_SPEC.md": {
+    "bytes": 35451,
+    "sha256": "fe7dc0dc404c35886d6119576722e5b9556b150e1f4f98738562f387d928751d",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/inputs/condition/inputs/BRAWLCHAIN_SPEC.md"
+  },
+  "inputs/entry/inputs/condition/inputs/baseline/dna_v1.json": {
+    "bytes": 2658,
+    "sha256": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/inputs/condition/inputs/baseline/dna_v1.json"
+  },
+  "inputs/entry/inputs/condition/inputs/baseline/reference_dna.py": {
+    "bytes": 8283,
+    "sha256": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/inputs/condition/inputs/baseline/reference_dna.py"
+  },
+  "inputs/entry/inputs/condition/inputs/fight_sim.py": {
+    "bytes": 50586,
+    "sha256": "37ff08917ed720e3d9c4f3b14508c57b08d830f9f4cb01833fa412dbca9b6422",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/inputs/condition/inputs/fight_sim.py"
+  },
+  "inputs/entry/inputs/condition/inputs/fighter-condition-contract.md": {
+    "bytes": 10367,
+    "sha256": "8ee75162fcd631cae15b33804c787690e60bf4997fae6b7cd536bb771908e654",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/inputs/condition/inputs/fighter-condition-contract.md"
+  },
+  "inputs/entry/inputs/condition/inputs/lifecycle_rating_reference.py.txt": {
+    "bytes": 1838,
+    "sha256": "aa97b6f197d78d0f6245e5c122b482c5e5b1d6e34a74db5224e5f535cbda8d64",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/inputs/condition/inputs/lifecycle_rating_reference.py.txt"
+  },
+  "inputs/entry/inputs/condition/inputs/rating_study.py": {
+    "bytes": 7594,
+    "sha256": "e561ea57a5dc674f82ce9b881c9de5b83c31d2caf21c209d538c03554384bc70",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/inputs/condition/inputs/rating_study.py"
+  },
+  "inputs/entry/inputs/condition/reference_condition.py": {
+    "bytes": 18218,
+    "sha256": "924152a89241e9fa6d60aa27ba19666d3a3f65fdf53bd3c0cf6f89c8db4e946c",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/inputs/condition/reference_condition.py"
+  },
+  "inputs/entry/inputs/contracts/set43-entry-contract-approval.json": {
+    "bytes": 2304,
+    "sha256": "c6de84be51aad7e76e23a210a337ae6d74a5d75bbbc1043c1f5f694caa0297cc",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/inputs/contracts/set43-entry-contract-approval.json"
+  },
+  "inputs/entry/inputs/contracts/set43-entry-contract-draft.md": {
+    "bytes": 66414,
+    "sha256": "958d3fda0cb50cda3bad38f7e461a44537a6a3c20ef5cc2b0c2abb7d2fdafcae",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/inputs/contracts/set43-entry-contract-draft.md"
+  },
+  "inputs/entry/inputs/contracts/set43-entry-contract-independent-review.json": {
+    "bytes": 4677,
+    "sha256": "e6a75094657ae453f8b9a4602f28f28f64843e5b28f33344f3eb15e7f1c40b5c",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/inputs/contracts/set43-entry-contract-independent-review.json"
+  },
+  "inputs/entry/inputs/contracts/set43-entry-contract-scope.json": {
+    "bytes": 11094,
+    "sha256": "d6780d1b55d221a4f37f2b7611dd9ef28f3d26bfd2ab932d968a002626f80ba5",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/inputs/contracts/set43-entry-contract-scope.json"
+  },
+  "inputs/entry/inputs/manifest/baseline/dna_v1.json": {
+    "bytes": 2658,
+    "sha256": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/inputs/manifest/baseline/dna_v1.json"
+  },
+  "inputs/entry/inputs/manifest/baseline/reference_dna.py": {
+    "bytes": 8283,
+    "sha256": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/inputs/manifest/baseline/reference_dna.py"
+  },
+  "inputs/entry/inputs/manifest/manifests_v1.json": {
+    "bytes": 289470,
+    "sha256": "75eb01acb79f45b74a6445edf956c5e3f3b68024998ae56ab44a7ed07cf15f3d",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/inputs/manifest/manifests_v1.json"
+  },
+  "inputs/entry/inputs/manifest/reference_manifest.py": {
+    "bytes": 24912,
+    "sha256": "9fb1a814047f2329066bb19596e910ac7c4c7aadfce4b8f994e02dab81e51b4f",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/inputs/manifest/reference_manifest.py"
+  },
+  "inputs/entry/inputs/manifest/tables_v1.json": {
+    "bytes": 2578,
+    "sha256": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/inputs/manifest/tables_v1.json"
+  },
+  "inputs/entry/inputs/portraits_v1.json": {
+    "bytes": 302628,
+    "sha256": "03df75cbf923a6dfc8fcac78e98d704641c0edf65ce563cf307f20a52f250670",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/inputs/portraits_v1.json"
+  },
+  "inputs/entry/inputs/stable/inputs/public-candidate-records.json": {
+    "bytes": 34882,
+    "sha256": "c5b30b106fd55935e0483b0a1ac28f3d67d8301076186e64de549bcddf055020",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/inputs/stable/inputs/public-candidate-records.json"
+  },
+  "inputs/entry/inputs/stable/reference_stable.py": {
+    "bytes": 7126,
+    "sha256": "defd95f9419caa25c8c0e686307464cef97107cf8a892284a5c023641c84069d",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/inputs/stable/reference_stable.py"
+  },
+  "inputs/entry/inputs/stable/stable_v1.json": {
+    "bytes": 127516,
+    "sha256": "29f6a1302c2e04ade612fe2775c085c65b8bf33587c010060b727833182d2057",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/inputs/stable/stable_v1.json"
+  },
+  "inputs/entry/predecessor-freeze.json": {
+    "bytes": 6522,
+    "sha256": "a157ca9ad54b0371397d128f471d3c827a5e3c157ec2e4c754a2c5924da7cbe7",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/predecessor-freeze.json"
+  },
+  "inputs/entry/reference_entry.py": {
+    "bytes": 67410,
+    "sha256": "d82254ab58e7817620486dd0f65ff58b87c542fcd634dad02b6f891701ff166e",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/reference_entry.py"
+  },
+  "inputs/entry/verification.json": {
+    "bytes": 12212,
+    "sha256": "4eb8bb03c38c47d9209a8b92863fe9f3d6e6b8878f745c322544c79adff09b49",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/verification.json"
+  },
+  "inputs/entry/verification.log": {
+    "bytes": 4255,
+    "sha256": "d301a9d1e308dc33e1367b63fe32e1bfcfeed721cd3ee374196f0c7a8e54cff5",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/verification.log"
+  },
+  "inputs/entry/verify_reference.py": {
+    "bytes": 1987,
+    "sha256": "7682f1f8b730b9396ce7cfa4ecbd5debbd0721204b0fef762b7af669d4a4caf3",
+    "source": "/Users/taytrrip/slug/set43-entry-reference-corrected/verify_reference.py"
+  }
+}

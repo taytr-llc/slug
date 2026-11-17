@@ -1,4 +1,4 @@
-//go:build desktopintegration && !slugtestpow
+//go:build desktopintegration && !slugtestpow && !slugtestclock
 
 // Copyright (c) 2026 The SLUG developers. ISC license.
 package bridge
@@ -25,7 +25,8 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 	if helper == "" || node == "" {
 		t.Skip("explicit frozen stable helper and normal node required")
 	}
-	entryEnabled := os.Getenv("SLUG_ENTRY_ACCEPTANCE") == "1"
+	eventEnabled := os.Getenv("SLUG_EVENT_ACCEPTANCE") == "1"
+	entryEnabled := os.Getenv("SLUG_ENTRY_ACCEPTANCE") == "1" || eventEnabled
 	previewEnabled := os.Getenv("SLUG_PREVIEW_ACCEPTANCE") == "1" || entryEnabled
 	minimumCandidates := uint64(3)
 	if previewEnabled {
@@ -43,6 +44,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 	if entryEnabled {
 		launch = LaunchEntries
 	}
+	if eventEnabled {
+		launch = LaunchEvents
+	}
 	b, e := launch(helper, data, node)
 	if e != nil {
 		t.Fatal(e)
@@ -56,6 +60,15 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 	if entryEnabled {
 		entries = newEntryAcceptance(t, ctx, b)
 		previews.restartCheck = entries.checkProcessRestart
+	}
+	var events *eventAcceptance
+	if eventEnabled {
+		events = newEventAcceptance(t, ctx, b)
+		previews.restartCheck = func(restarted *StableBridge, s pilot.StableSnapshot) any {
+			entry := entries.checkProcessRestart(restarted, s)
+			events.checkRestart(restarted, s)
+			return entry
+		}
 	}
 	cleanupChecked := false
 	defer func() {
@@ -355,6 +368,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 		}
 		if entries != nil {
 			entries.initial(fixture, snapshot(), page.Items[0])
+			if events != nil {
+				events.observe(fixture, "initial", snapshot())
+			}
 		}
 		beforeLogout := snapshot()
 		request("logout", 0)
@@ -367,6 +383,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 		}
 		if entries != nil {
 			entries.refuseDetached()
+			if events != nil {
+				events.refuseDetached()
+			}
 		}
 		if _, e = b.Request(ctx, "manifest_portrait", original.Portrait.Sequence); e == nil {
 			t.Fatal("signed-out portrait disclosed")
@@ -407,6 +426,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 		}
 		if entries != nil {
 			entries.reopened(fixture, attached)
+			if events != nil {
+				events.observe(fixture, "reopened", attached)
+			}
 		}
 		pending := prepare(view, 1, 2, second)
 		request("reset_fixture", 0)
@@ -457,6 +479,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 		}
 		if entries != nil {
 			entries.held(fixture, snapshot(), page.Items[0])
+			if events != nil {
+				events.observe(fixture, "held", snapshot())
+			}
 		}
 		fixedHeldPage := inventoryPage(heldView)
 		request("manifest_receipt", original.Receipt.Record.Sequence)
@@ -533,6 +558,12 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 	if entries != nil {
 		result["entries"] = entries.evidence
 		result["entries_intake_only"] = true
+	}
+	if events != nil {
+		result["events"] = events.evidence
+		result["event_restart"] = events.restartEvidence
+		result["event_real_clock_closed_coverage"] = false
+		result["event_seed_authority"] = "unavailable"
 	}
 	raw, e := json.MarshalIndent(result, "", "  ")
 	if e != nil {
