@@ -16,6 +16,7 @@ import (
 )
 
 type ManifestController struct {
+	seedBytes             int // guarded by mu; retained/reserved seed family bytes
 	eventBytes            int // guarded by mu; retained/reserved event family bytes
 	entryBytes            int // guarded by mu; retained/reserved entry family bytes
 	previewBytes          int // guarded by mu, included in the shared stable cache ceiling
@@ -291,6 +292,10 @@ func (c *ManifestController) run(ctx context.Context, done chan struct{}, base u
 			return
 		}
 		defer c.stable.closeLive()
+		if c.stable.seedEnabled {
+			c.stable.registerSeedNodes(nodes)
+			defer c.stable.unregisterSeedNodes(nodes)
+		}
 	}
 	node, err := prospectnode.NewClient(nodes.rpcConfig())
 	if err != nil {

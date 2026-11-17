@@ -12,6 +12,7 @@ stage=$(mktemp -d "$output/.slug-build.XXXXXX")
 trap 'rm -rf "$stage"' EXIT HUP INT TERM
 bundle="$stage/SLUG Account Pilot.app"
 mkdir -p "$bundle/Contents/MacOS" "$bundle/Contents/Resources/bin"
+sh "$here/scripts/build-icons-macos.sh" "$bundle/Contents/Resources/SLUG.icns"
 # Explicit tags override GOFLAGS, so a developer test profile cannot leak into
 # the bundled node/helper. The GUI production tag belongs only to Wails.
 chain_cache=${SLUG_CHAIN_GOMODCACHE:-$(go env GOMODCACHE)}
@@ -41,6 +42,7 @@ cat > "$bundle/Contents/Info.plist" <<'PLIST'
 <key>CFBundleName</key><string>SLUG Account Pilot</string>
 <key>CFBundleDisplayName</key><string>SLUG Account Pilot</string>
 <key>CFBundleExecutable</key><string>SLUGPilot</string>
+<key>CFBundleIconFile</key><string>SLUG.icns</string>
 <key>CFBundlePackageType</key><string>APPL</string>
 <key>CFBundleShortVersionString</key><string>0.3.0</string>
 <key>CFBundleVersion</key><string>32</string>

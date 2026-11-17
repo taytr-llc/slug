@@ -4,7 +4,7 @@ set -eu
 
 here=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 root=$(CDPATH= cd -- "$here/.." && pwd)
-output=${1:-"$root/../artifacts/set44"}
+output=${1:-"$root/../artifacts/set45"}
 case "$output" in /*) ;; *) printf '%s\n' 'Build output must be an absolute directory.' >&2; exit 1;; esac
 if [ "$(uname -s)" != Darwin ]; then printf '%s\n' 'This script builds the native macOS bundle on macOS.' >&2; exit 1; fi
 mkdir -p "$output"
@@ -12,6 +12,7 @@ stage=$(mktemp -d "$output/.slug-build.XXXXXX")
 trap 'rm -rf "$stage"' EXIT HUP INT TERM
 bundle="$stage/SLUG Candidate Pilot.app"
 mkdir -p "$bundle/Contents/MacOS" "$bundle/Contents/Resources/bin"
+sh "$here/scripts/build-icons-macos.sh" "$bundle/Contents/Resources/SLUG.icns"
 # Explicit tags override GOFLAGS, so a developer test profile cannot leak into
 # the bundled node/helper. The GUI production tag belongs only to Wails.
 chain_cache=${SLUG_CHAIN_GOMODCACHE:-$(go env GOMODCACHE)}
@@ -28,7 +29,7 @@ export GOMODCACHE=${GOMODCACHE:-/private/tmp/slug-desktop-modcache}
 (
  cd "$here"
  GOWORK="$here/go.work" CGO_ENABLED=0 go build -trimpath -tags= -o "$bundle/Contents/Resources/bin/slugpilot" ./cmd/slugpilot
- GOWORK="$here/go.work" CGO_ENABLED=1 go build -trimpath -tags=production -ldflags '-extldflags=-mmacosx-version-min=13.0 -X main.candidateBuild=1 -X main.stableBuild=1 -X main.entryBuild=1 -X main.eventBuild=1' -o "$bundle/Contents/MacOS/SLUGPilot" .
+ GOWORK="$here/go.work" CGO_ENABLED=1 go build -trimpath -tags=production -ldflags '-extldflags=-mmacosx-version-min=13.0 -X main.candidateBuild=1 -X main.stableBuild=1 -X main.entryBuild=1 -X main.eventBuild=1 -X main.seedBuild=1' -o "$bundle/Contents/MacOS/SLUGPilot" .
 )
 if [ "$("$bundle/Contents/Resources/bin/slugd" --version)" != 'slugd version 0.27.0' ]; then
  printf '%s\n' 'Bundled node is not the expected normal production PoW build.' >&2; exit 1
@@ -53,9 +54,10 @@ cat > "$bundle/Contents/Info.plist" <<'PLIST'
 <key>CFBundleName</key><string>SLUG Candidate Pilot</string>
 <key>CFBundleDisplayName</key><string>SLUG Candidate Pilot</string>
 <key>CFBundleExecutable</key><string>SLUGPilot</string>
+<key>CFBundleIconFile</key><string>SLUG.icns</string>
 <key>CFBundlePackageType</key><string>APPL</string>
-<key>CFBundleShortVersionString</key><string>0.4.4</string>
-<key>CFBundleVersion</key><string>44</string>
+<key>CFBundleShortVersionString</key><string>0.4.5</string>
+<key>CFBundleVersion</key><string>45</string>
 <key>LSMinimumSystemVersion</key><string>13.0</string>
 <key>NSHighResolutionCapable</key><true/>
 <key>LSUIElement</key><false/>

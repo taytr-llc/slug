@@ -1,0 +1,182 @@
+{
+  "status": "passed",
+  "review_stage": "final_contract_bytes_formula_only_not_joint_freeze",
+  "kind": "Formula-only impossible upper envelopes; no valid golden vectors, new Go reads or execution",
+  "at_utc": "2026-11-17T21:50:22.190265+00:00",
+  "draft_sha256": {
+    "/Users/taytrrip/slug/set45-seed-core-contract-draft.md": "51ddfc57931b1937f918f990a36c050dc9874b2d1a60b069273e314e317523df",
+    "/Users/taytrrip/slug/set45-helper-contract-draft.md": "0abdcfa84e2213bd644ad2bfe43789961c3231ef10841121fa2f039776fb8f7e",
+    "/Users/taytrrip/slug/set44-event-reference/inputs/contracts/set44-core-shape-bounds.py": "8f0f0f22aced5113d8b0eea447eee1bf5a3cbf1257717e42365fdd7455c0b7e0",
+    "/Users/taytrrip/slug/set44-event-reference/inputs/contracts/set44-core-shape-bounds.json": "61296beeb1ba114eef06cb6de8d8898dd6026f533f7ae164c5ebaadb0e493b32",
+    "/Users/taytrrip/slug/set44-event-reference/inputs/contracts/set44-helper-shape-bounds.json": "ee2c67ccde66413f33dfba0da00fa67e23b8dd0140dae05c6c30b799f1650bcf"
+  },
+  "input_changes_during_calculation": [],
+  "calculator_sha256": "5cbe3cc0a0e40b8ae3e8da9423f7601c25f764dedd748ecd52794e601484b9a6",
+  "assumptions": [
+    "Frozen44 conservative shapes use 16-digit numerics, overlong fixed selectors and full bounded arrays.",
+    "SignedCheckpoint exact six-field scalar shape and hex128 signature from draft; cap-based alternative replaces its canonical size with4096B at both Record positions.",
+    "Compact Anchor exact11fields and16 ScanRestart records use current on-disk core draft; output widths are deliberately conservative.",
+    "All nullable Record payloads and all8 largest conflicts populated; union fields deliberately widened beyond valid combinations.",
+    "Wrapper source receipt uses frozen44 formula42413B; cap-based record bound separately uses126976B source cap,5120B SignedDeclaration cap,2*4096B checkpoints,8*8192B Conflict caps and16*1024B ScanRestart caps.",
+    "Array paths enumerate this upper envelope, not arbitrary global name limits; only the final closed grammar is authoritative."
+  ],
+  "shapes": {
+    "Pin": {
+      "bytes": 4575,
+      "container_depth": 6
+    },
+    "Info": {
+      "bytes": 4972,
+      "container_depth": 7
+    },
+    "Declaration": {
+      "bytes": 1614,
+      "container_depth": 2
+    },
+    "SignedDeclaration": {
+      "bytes": 1800,
+      "container_depth": 3
+    },
+    "FundingCoin": {
+      "bytes": 332,
+      "container_depth": 2
+    },
+    "Publication": {
+      "bytes": 2666,
+      "container_depth": 3
+    },
+    "Cursor": {
+      "bytes": 336,
+      "container_depth": 1
+    },
+    "ScanRestart": {
+      "bytes": 616,
+      "container_depth": 2
+    },
+    "SignedCheckpoint": {
+      "bytes": 375,
+      "container_depth": 1
+    },
+    "Anchor_compact": {
+      "bytes": 2066,
+      "container_depth": 2
+    },
+    "Target": {
+      "bytes": 424,
+      "container_depth": 2
+    },
+    "Finality": {
+      "bytes": 579,
+      "container_depth": 2
+    },
+    "Record": {
+      "bytes": 78122,
+      "container_depth": 11
+    },
+    "Status": {
+      "bytes": 1649,
+      "container_depth": 2
+    },
+    "HistoryPage": {
+      "bytes": 13537,
+      "container_depth": 4
+    },
+    "CoreMarker_including_LF": {
+      "bytes": 4726,
+      "container_depth": 7
+    },
+    "Metadata": {
+      "bytes": 15173,
+      "container_depth": 7
+    },
+    "SeedSnapshot": {
+      "bytes": 6135,
+      "container_depth": 7
+    },
+    "SeedJob": {
+      "bytes": 79483,
+      "container_depth": 12
+    },
+    "SeedRequest_including_LF": {
+      "bytes": 338,
+      "container_depth": 1
+    },
+    "ParentV5Marker_including_LF": {
+      "bytes": 7000,
+      "container_depth": 6
+    },
+    "Conflict_declaration": {
+      "bytes": 2110,
+      "container_depth": 4
+    },
+    "Conflict_checkpoint": {
+      "bytes": 684,
+      "container_depth": 2
+    },
+    "Conflict_chain": {
+      "bytes": 405,
+      "container_depth": 2
+    }
+  },
+  "response_shapes": {
+    "snapshot": {
+      "bytes_including_LF": 7341,
+      "container_depth": 8
+    },
+    "status": {
+      "bytes_including_LF": 2855,
+      "container_depth": 3
+    },
+    "record": {
+      "bytes_including_LF": 79328,
+      "container_depth": 12
+    },
+    "history": {
+      "bytes_including_LF": 14743,
+      "container_depth": 5
+    },
+    "job": {
+      "bytes_including_LF": 80689,
+      "container_depth": 13
+    }
+  },
+  "record_nested_cap_bound": 228631,
+  "record_cap_headroom": 745,
+  "metadata_nested_cap_bound": 33510,
+  "record_cap": 229376,
+  "response_with_full_record_cap_including_LF": 231943,
+  "response_cap": 262144,
+  "retained_job_snapshot_status_three_compact_tuples_and_render4096": 92347,
+  "metadata_snapshot_status_three_compact_tuples_and_render4096": 12864,
+  "metadata_cap_proposed": 16384,
+  "job_cap_proposed": 245760,
+  "job_at_record_cap": 230737,
+  "tuple_shape_bytes": 304,
+  "additional_owned_pin_would_exceed_metadata_cap": true,
+  "retained_with_full_record_cap": 243601,
+  "seed_cache_cap": 262144,
+  "logical_storage_upper": 58878088,
+  "logical_storage_cap": 67108864,
+  "physical_db_overhead_included": false,
+  "array_paths_maximum": {
+    "/record/source_receipt/input/participants": 2,
+    "/record/source_receipt/input/participants/*/roster/slots": 10,
+    "/record/source_receipt/input/participants/*/roster/assigned_at_ms": 10,
+    "/record/source_receipt/input/participants/*/entry/latest_receipt/members": 5,
+    "/record/source_receipt/input/participants/*/members": 5,
+    "/record/source_receipt/captures": 2,
+    "/record/scan_restarts": 16,
+    "/record/anchor/merkle_branch": 20,
+    "/record/conflicts": 8,
+    "/pin/source_pin/participants": 2,
+    "/history/events": 8,
+    "/parent/stable_installs": 2,
+    "/parent/entry_installs": 2,
+    "/metadata/pin/source_pin/participants": 2,
+    "/metadata/funding_restarts": 16
+  },
+  "unsettled": [
+    "Final exact core/helper hashes are pinned; root joint approval is separate and required before reference generation.",
+    "This calculator proves shape bounds only, not valid cryptographic/runtime values, protocol authority or exact API semantics."
+  ]
+}

@@ -18,6 +18,7 @@ import (
 	"github.com/taytr-llc/slug/registry"
 	"os"
 	"path/filepath"
+	"sync"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -308,6 +309,93 @@ func TestPreviewFatalClosedDependencyStopsLane(t *testing.T) {
 	}
 	if previewProtocolError(gymstable.ErrOutcomeUnknown) != "preview_observation_unknown" {
 		t.Fatal("observation incorrectly treated as roster mutation")
+	}
+}
+
+func TestPreviewClosedDependencyErrorPrecedence(t *testing.T) {
+	s, _ := stableLaneFixture(t)
+	if e := s.stableStore.Close(); e != nil {
+		t.Fatal(e)
+	}
+	// A completed Close is a failed dependency, not cancellation of this live
+	// request. Exercise repeated entry to expose either branch of begin's select.
+	for i := 0; i < 2048; i++ {
+		if _, e := s.stableStore.Status(context.Background(), s.session()); !errors.Is(e, gymstable.ErrClosed) {
+			t.Fatalf("completed Close classified as %v on request %d", e, i)
+		}
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	if _, e := s.stableStore.Status(ctx, s.session()); !errors.Is(e, gymstable.ErrClosed) {
+		t.Fatal("completed Close lost precedence to caller cancellation", e)
+	}
+}
+
+func TestPreviewLiveDependencyCallerCancellation(t *testing.T) {
+	s, _ := stableLaneFixture(t)
+	holder := s.session()
+	original := holder.Lease
+	entered, release := make(chan struct{}), make(chan struct{})
+	var once sync.Once
+	holder.Lease = func(ctx context.Context, cap gymaccount.Capability, fn func(gymaccount.Account, func() error) error) error {
+		once.Do(func() { close(entered); <-release })
+		return original(ctx, cap, fn)
+	}
+	done := make(chan error, 1)
+	go func() { _, e := s.stableStore.Status(context.Background(), holder); done <- e }()
+	<-entered
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	if _, e := s.stableStore.Status(ctx, s.session()); !errors.Is(e, gymstable.ErrCancelled) {
+		close(release)
+		<-done
+		t.Fatal("live dependency changed caller cancellation", e)
+	}
+	close(release)
+	if e := <-done; e != nil {
+		t.Fatal("unrelated live gate holder failed", e)
+	}
+	if _, e := s.stableStore.Status(context.Background(), s.session()); e != nil {
+		t.Fatal("cancelled request retained the resource gate or poisoned the store", e)
+	}
+}
+
+func TestPreviewClosingDependencyDoesNotEnterLease(t *testing.T) {
+	s, _ := stableLaneFixture(t)
+	holder := s.session()
+	original := holder.Lease
+	entered, closing, release := make(chan struct{}), make(chan struct{}), make(chan struct{})
+	var once sync.Once
+	holder.Lease = func(ctx context.Context, cap gymaccount.Capability, fn func(gymaccount.Account, func() error) error) error {
+		once.Do(func() {
+			close(entered)
+			<-ctx.Done()
+			close(closing)
+			<-release
+		})
+		return original(ctx, cap, fn)
+	}
+	done := make(chan error, 1)
+	go func() { _, e := s.stableStore.Status(context.Background(), holder); done <- e }()
+	<-entered
+	closed := make(chan error, 1)
+	go func() { closed <- s.stableStore.Close() }()
+	<-closing // Close cancelled the lifetime but cannot finish before the holder.
+	probe := s.session()
+	probe.Lease = func(context.Context, gymaccount.Capability, func(gymaccount.Account, func() error) error) error {
+		t.Error("new request entered a closing dependency lease")
+		return nil
+	}
+	_, e := s.stableStore.Status(context.Background(), probe)
+	close(release)
+	if holderErr := <-done; !errors.Is(holderErr, gymstable.ErrCancelled) {
+		t.Fatal("in-progress request cancellation changed", holderErr)
+	}
+	if closeErr := <-closed; closeErr != nil {
+		t.Fatal(closeErr)
+	}
+	if !errors.Is(e, gymstable.ErrClosed) {
+		t.Fatal("closing dependency did not fail before acquiring the gate", e)
 	}
 }
 func TestPreviewStopDrainsBeforeSourceClose(t *testing.T) {

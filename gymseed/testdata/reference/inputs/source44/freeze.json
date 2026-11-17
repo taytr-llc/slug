@@ -1,0 +1,248 @@
+{
+  "version": 1,
+  "status": "frozen_independent_reference",
+  "frozen_at_utc": "2026-11-17T20:42:38.444343+00:00",
+  "approval_sha256": "13ee5d8f202289bc3c216ab4b5524e487bc11f81f9ea5d87d27e0562da504133",
+  "core_contract_sha256": "7e0c2842cb6fac2c67896c8e646ffe5778f1a0d03d8ec0e386a074e289537379",
+  "helper_contract_sha256": "fedecce1bb5f7a4c975390c915dd8671850790d284899194e23b1e7329cc82f4",
+  "clarification_sha256": "1a43251fbee36cfb6fb4cb22a7ef677555f46876e4a00f3a231f6cba94149ead",
+  "review": {
+    "path": "/Users/taytrrip/slug/set44-reference-source-review.json",
+    "sha256": "8319dd94a2609129d125b57f83fb8e9c3f478d4dc8710bbc6e86f45a719a18c4",
+    "status": "passed",
+    "findings": []
+  },
+  "corpus_sha256": "9287f92c0cb46c585b44274c70ae57c5d6c9a4234e7078fd1d69a200644f996a",
+  "generator_sha256": "766a213456fdc58597a33c73d39c2ff0ada3795f1f3ee231951431eceb786c3e",
+  "verification_sha256": "d20bcb06c7518ae515432cb63b8abff8a6adadb7646a2940c53e2dbe17975046",
+  "files": {
+    "README.md": {
+      "sha256": "76c32e23b208f9a09f9944ef24af2dbbde498a26738e73d3614f1aac99e5bc16",
+      "bytes": 7450
+    },
+    "event_v1.json": {
+      "sha256": "9287f92c0cb46c585b44274c70ae57c5d6c9a4234e7078fd1d69a200644f996a",
+      "bytes": 24274498
+    },
+    "input_hashes.json": {
+      "sha256": "cd882a7a9d9ec05f5d347d2006739c10aa001e6ea7d340aa16a12a4ff5697f0e",
+      "bytes": 10980
+    },
+    "inputs/contracts/set41-stable-contract.md": {
+      "sha256": "f977e8a7cef5ab470e5019f4f1b9d88cdb4fd03d5ee1feb6acc32321389d84d2",
+      "bytes": 66607
+    },
+    "inputs/contracts/set44-contract-approval.json": {
+      "sha256": "13ee5d8f202289bc3c216ab4b5524e487bc11f81f9ea5d87d27e0562da504133",
+      "bytes": 1938
+    },
+    "inputs/contracts/set44-contract-clarification-1.md": {
+      "sha256": "1a43251fbee36cfb6fb4cb22a7ef677555f46876e4a00f3a231f6cba94149ead",
+      "bytes": 1559
+    },
+    "inputs/contracts/set44-core-contract-draft.md": {
+      "sha256": "7e0c2842cb6fac2c67896c8e646ffe5778f1a0d03d8ec0e386a074e289537379",
+      "bytes": 45339
+    },
+    "inputs/contracts/set44-core-shape-bounds.json": {
+      "sha256": "61296beeb1ba114eef06cb6de8d8898dd6026f533f7ae164c5ebaadb0e493b32",
+      "bytes": 4353
+    },
+    "inputs/contracts/set44-core-shape-bounds.py": {
+      "sha256": "8f0f0f22aced5113d8b0eea447eee1bf5a3cbf1257717e42365fdd7455c0b7e0",
+      "bytes": 7739
+    },
+    "inputs/contracts/set44-helper-contract-proposal.md": {
+      "sha256": "fedecce1bb5f7a4c975390c915dd8671850790d284899194e23b1e7329cc82f4",
+      "bytes": 40386
+    },
+    "inputs/contracts/set44-helper-shape-bounds.json": {
+      "sha256": "ee2c67ccde66413f33dfba0da00fa67e23b8dd0140dae05c6c30b799f1650bcf",
+      "bytes": 1862
+    },
+    "inputs/contracts/set44-helper-shape-bounds.py": {
+      "sha256": "310e6f8bd49c8df302f92d81fcf492f6d45f763192d829babe498efb1eb2de42",
+      "bytes": 3808
+    },
+    "inputs/contracts/set44-reference-plan.md": {
+      "sha256": "21498b2e938aa77da04cba8f9f035b98f5a4c808f98499ca961ab77f23f43918",
+      "bytes": 14008
+    },
+    "inputs/entry/README.md": {
+      "sha256": "48594bc03e2681ad0223c5c47a9a2809f1f0314c2390612d3499af4f1c2e247e",
+      "bytes": 9454
+    },
+    "inputs/entry/correction.json": {
+      "sha256": "0bd53f1f088ddf5ddddefb30ac3374adb0869dcb4e5ae27613708a77d2542178",
+      "bytes": 3608
+    },
+    "inputs/entry/entry_v1.json": {
+      "sha256": "d8f226964429e8068bbe8300c73b6061f9a6dfd4e737a06ddde40c5eaa992bee",
+      "bytes": 11586650
+    },
+    "inputs/entry/freeze.json": {
+      "sha256": "804cd5fd2c282a05a7894c768e9f0eedd2708e03c08e05d1771119c2bcae3fb2",
+      "bytes": 6817
+    },
+    "inputs/entry/input_hashes.json": {
+      "sha256": "a3d2cd8f6d2f1dd9fa03b8d1253f7783028ff79a2d278df493722cc73098135b",
+      "bytes": 5737
+    },
+    "inputs/entry/inputs/America_Los_Angeles.tzif": {
+      "sha256": "200d05754f6d83a371cf408d7085125797657b3b0bebeba1e508cffe86a3e5c8",
+      "bytes": 1294
+    },
+    "inputs/entry/inputs/condition/input_hashes.json": {
+      "sha256": "1ab9a78f6246236c87fb9b0304fe5b786b9d5f880f50d18a33ef3b12725419a3",
+      "bytes": 1384
+    },
+    "inputs/entry/inputs/condition/inputs/BRAWLCHAIN_SPEC.md": {
+      "sha256": "fe7dc0dc404c35886d6119576722e5b9556b150e1f4f98738562f387d928751d",
+      "bytes": 35451
+    },
+    "inputs/entry/inputs/condition/inputs/baseline/dna_v1.json": {
+      "sha256": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+      "bytes": 2658
+    },
+    "inputs/entry/inputs/condition/inputs/baseline/reference_dna.py": {
+      "sha256": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+      "bytes": 8283
+    },
+    "inputs/entry/inputs/condition/inputs/fight_sim.py": {
+      "sha256": "37ff08917ed720e3d9c4f3b14508c57b08d830f9f4cb01833fa412dbca9b6422",
+      "bytes": 50586
+    },
+    "inputs/entry/inputs/condition/inputs/fighter-condition-contract.md": {
+      "sha256": "8ee75162fcd631cae15b33804c787690e60bf4997fae6b7cd536bb771908e654",
+      "bytes": 10367
+    },
+    "inputs/entry/inputs/condition/inputs/lifecycle_rating_reference.py.txt": {
+      "sha256": "aa97b6f197d78d0f6245e5c122b482c5e5b1d6e34a74db5224e5f535cbda8d64",
+      "bytes": 1838
+    },
+    "inputs/entry/inputs/condition/inputs/rating_study.py": {
+      "sha256": "e561ea57a5dc674f82ce9b881c9de5b83c31d2caf21c209d538c03554384bc70",
+      "bytes": 7594
+    },
+    "inputs/entry/inputs/condition/reference_condition.py": {
+      "sha256": "924152a89241e9fa6d60aa27ba19666d3a3f65fdf53bd3c0cf6f89c8db4e946c",
+      "bytes": 18218
+    },
+    "inputs/entry/inputs/contracts/set43-entry-contract-approval.json": {
+      "sha256": "c6de84be51aad7e76e23a210a337ae6d74a5d75bbbc1043c1f5f694caa0297cc",
+      "bytes": 2304
+    },
+    "inputs/entry/inputs/contracts/set43-entry-contract-draft.md": {
+      "sha256": "958d3fda0cb50cda3bad38f7e461a44537a6a3c20ef5cc2b0c2abb7d2fdafcae",
+      "bytes": 66414
+    },
+    "inputs/entry/inputs/contracts/set43-entry-contract-independent-review.json": {
+      "sha256": "e6a75094657ae453f8b9a4602f28f28f64843e5b28f33344f3eb15e7f1c40b5c",
+      "bytes": 4677
+    },
+    "inputs/entry/inputs/contracts/set43-entry-contract-scope.json": {
+      "sha256": "d6780d1b55d221a4f37f2b7611dd9ef28f3d26bfd2ab932d968a002626f80ba5",
+      "bytes": 11094
+    },
+    "inputs/entry/inputs/manifest/baseline/dna_v1.json": {
+      "sha256": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+      "bytes": 2658
+    },
+    "inputs/entry/inputs/manifest/baseline/reference_dna.py": {
+      "sha256": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+      "bytes": 8283
+    },
+    "inputs/entry/inputs/manifest/manifests_v1.json": {
+      "sha256": "75eb01acb79f45b74a6445edf956c5e3f3b68024998ae56ab44a7ed07cf15f3d",
+      "bytes": 289470
+    },
+    "inputs/entry/inputs/manifest/reference_manifest.py": {
+      "sha256": "9fb1a814047f2329066bb19596e910ac7c4c7aadfce4b8f994e02dab81e51b4f",
+      "bytes": 24912
+    },
+    "inputs/entry/inputs/manifest/tables_v1.json": {
+      "sha256": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+      "bytes": 2578
+    },
+    "inputs/entry/inputs/portraits_v1.json": {
+      "sha256": "03df75cbf923a6dfc8fcac78e98d704641c0edf65ce563cf307f20a52f250670",
+      "bytes": 302628
+    },
+    "inputs/entry/inputs/stable/inputs/public-candidate-records.json": {
+      "sha256": "c5b30b106fd55935e0483b0a1ac28f3d67d8301076186e64de549bcddf055020",
+      "bytes": 34882
+    },
+    "inputs/entry/inputs/stable/reference_stable.py": {
+      "sha256": "defd95f9419caa25c8c0e686307464cef97107cf8a892284a5c023641c84069d",
+      "bytes": 7126
+    },
+    "inputs/entry/inputs/stable/stable_v1.json": {
+      "sha256": "29f6a1302c2e04ade612fe2775c085c65b8bf33587c010060b727833182d2057",
+      "bytes": 127516
+    },
+    "inputs/entry/predecessor-freeze.json": {
+      "sha256": "a157ca9ad54b0371397d128f471d3c827a5e3c157ec2e4c754a2c5924da7cbe7",
+      "bytes": 6522
+    },
+    "inputs/entry/reference_entry.py": {
+      "sha256": "d82254ab58e7817620486dd0f65ff58b87c542fcd634dad02b6f891701ff166e",
+      "bytes": 67410
+    },
+    "inputs/entry/verification.json": {
+      "sha256": "4eb8bb03c38c47d9209a8b92863fe9f3d6e6b8878f745c322544c79adff09b49",
+      "bytes": 12212
+    },
+    "inputs/entry/verification.log": {
+      "sha256": "d301a9d1e308dc33e1367b63fe32e1bfcfeed721cd3ee374196f0c7a8e54cff5",
+      "bytes": 4255
+    },
+    "inputs/entry/verify_reference.py": {
+      "sha256": "7682f1f8b730b9396ce7cfa4ecbd5debbd0721204b0fef762b7af669d4a4caf3",
+      "bytes": 1987
+    },
+    "reference_event.py": {
+      "sha256": "766a213456fdc58597a33c73d39c2ff0ada3795f1f3ee231951431eceb786c3e",
+      "bytes": 73254
+    },
+    "schema.json": {
+      "sha256": "e04cd0c57164c69eb70c6fc00d721eec249d0488d9b6e410c53c797c2f2fbf4e",
+      "bytes": 16220
+    },
+    "verification.json": {
+      "sha256": "d20bcb06c7518ae515432cb63b8abff8a6adadb7646a2940c53e2dbe17975046",
+      "bytes": 15059
+    },
+    "verify_reference.py": {
+      "sha256": "40248d66b1942ae5a54ac2d9e3050ecd75d5451bc5c49d6a48bf0f4cbb6e5055",
+      "bytes": 1915
+    }
+  },
+  "file_count_without_freeze": 50,
+  "total_bytes_without_freeze": 37313842,
+  "counts": {
+    "fixtures": 2,
+    "calendar": 3861,
+    "histories": 36,
+    "history_cases": 23,
+    "records": 14,
+    "dtos": 97,
+    "codec_cases": 543,
+    "protocol_cases": 136,
+    "initialization_cases": 42,
+    "scenarios": 35
+  },
+  "independence": [
+    "Producer did not read new set44 Go source or output.",
+    "Runtime authoring began in parallel after contract freeze; expected corpus does not claim to predate Go authorship.",
+    "Root has authored native/frontend implementation and reviewed reference source against the frozen contract without supplying Go-derived expected values."
+  ],
+  "limits": [
+    "Parallel Go authoring was allowed after contract freeze; no new Go source/output was read to derive expectations.",
+    "Six unchanged public receipts were independently normal-Argon verified by retained Set41 reference; no Argon/mining rerun here.",
+    "Stable/entry operations, capture evidence, fault timing and initialization are independently modeled fixtures, not recorded real authority/crash execution.",
+    "Synthetic five-class/retirement assignments have no admitted proof and are never represented as trusted receipts.",
+    "No portable source authentication, filesystem durability, actual lease/gate concurrency, GUI, seed/finality or production ownership claim."
+  ],
+  "runtime_comparison_performed": false,
+  "repository_copy_performed": false
+}

@@ -324,10 +324,14 @@ See `EVENT_SNAPSHOTS.md` and `CHANGESET_44_NOTES.md`.
 Transferable ownership and actual anchor/seed/finality integration
 remain required before official use; fixture assignment is not that evidence.
 
-Set 45 is in contract review on `slug-event-seed`, stacked from set 44's
+Set 45 is implemented on `slug-event-seed`, stacked from set 44's
 implementation. It connects complete candidate snapshots to a fixed publisher,
 authenticated commitments, a permanently retained seed target and explicit
-checkpoint evidence. No Set 45 runtime or deployment is claimed yet.
+checkpoint evidence. Independent reference comparisons and actual owned-node publication, finality,
+reorg and restart composition pass. Final source checks pass; packaged and
+deployment acceptance remain in progress. The requested app/menu-bar icons
+are included in the native build.
+See `EVENT_SEEDS.md` and `CHANGESET_45_NOTES.md`.
 
 ### 6. League services
 The Saturday operation: entry collection and lock (Saturday noon

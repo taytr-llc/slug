@@ -20,6 +20,10 @@ func NewEventsForTestClock(c pilot.Config, clock func() time.Time) (*StableContr
 	if clock == nil {
 		return nil, gymevent.ErrInvalid
 	}
+	d := eventFactoriesForTestClock(clock)
+	return newEvents(c, d)
+}
+func eventFactoriesForTestClock(clock func() time.Time) eventAccountFactories {
 	d := eventAccountFactories{
 		createAccount: func(p string, c gymaccount.Config) (*gymaccount.Store, error) {
 			return gymaccount.CreateFixtureForTestClock(p, c, clock)
@@ -57,5 +61,5 @@ func NewEventsForTestClock(c pilot.Config, clock func() time.Time) (*StableContr
 			return p, nil
 		},
 	}
-	return newEvents(c, d)
+	return d
 }

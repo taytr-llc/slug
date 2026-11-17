@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "status": "approved-frozen-for-consumer-comparison",
+  "approved_at_utc": "2026-11-17T22:27:00.794729+00:00",
+  "reviewer": "root",
+  "contract_approval_sha256": "c02f51d028a1cbd6d047901c0a229b0094498ec8fc9088038abba4b363ad8116",
+  "core_contract_sha256": "51ddfc57931b1937f918f990a36c050dc9874b2d1a60b069273e314e317523df",
+  "helper_contract_sha256": "0abdcfa84e2213bd644ad2bfe43789961c3231ef10841121fa2f039776fb8f7e",
+  "file_index_sha256": "246411a21b609f19f4881c3693130b7cd94d0751357405e07d2906297c44babc",
+  "corpus_sha256": "2b8d78e8ef665e372543eb87bb5d25a975026a0ae946b15a871ac97bbf2153f0",
+  "verification_sha256": "c8408906536afbf61dfad972a39f59882b6a099e384161064673ad296706a1a5",
+  "reviewed": [
+    "independent domain/order/calendar and pure-Python signing derivations",
+    "late first finality preserves a previously due incident; authorized replay observations preserve ordering",
+    "Begin ACK queued and running monotonicity; terminal digest correlation",
+    "helper framing includes LF; internal storage excluded from tolerant transport claims",
+    "authenticated alternate checkpoint key or publisher chain ID retained only as equivocation evidence",
+    "synthetic wire/block fixtures and atomic state models do not claim validating-node or crash execution"
+  ],
+  "preserved_prior_candidates": [
+    "artifacts/set45/reference-draft-before-incident-fix/preservation.json",
+    "artifacts/set45/reference-draft-before-structural-policy-fix/preservation.json",
+    "artifacts/set45/reference-draft-before-structural-policy-fix/preserved-fixtures.json"
+  ],
+  "rules": [
+    "Exact reference inputs and expectations are frozen before Go comparison.",
+    "Preserve and investigate first mismatch; never replace expected values with implementation output.",
+    "Full normal-node maturity, relay, reorg, crash, native pipes, packaging and release checks remain separate."
+  ]
+}

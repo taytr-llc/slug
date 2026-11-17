@@ -136,3 +136,26 @@ default local fixture wallet. The separate wallet vault acceptance exercises
 gym-only signing during a reset hold, while full recovery export and wrapping-key
 changes remain denied. It does not ship a new-device watch-only wallet or a
 production identity/KMS connection.
+
+
+## Candidate seed controls (set 45)
+
+The separate Candidate Pilot adds a fixed event-seed journal after the Saturday
+entry and noon-snapshot panels. The seed panel can explicitly prepare a
+publication, publish the exact retained transaction, inspect the chain and
+attest with a published demo checkpoint key. It shows delays, conflicts,
+incident escalation and the timestamp of the last actual chain observation.
+Metadata polling does not sign, publish, project fighters or inspect a node.
+
+The seed route requires `--candidate-seeds` together with all preceding
+candidate flags. It shares the retained candidate parent through the v5
+installer and preserves the same fixed Demo A publication chain across account
+switches. Publish/Attest require Demo A outside the reset hold. The separate
+public fixture publisher must already have mature funds; the app never funds
+or mines for it automatically and never spends a gym wallet for publication.
+See [`EVENT_SEEDS.md`](../EVENT_SEEDS.md) for limits and authority boundaries.
+
+`./scripts/build-manifest-macos.sh /absolute/output` builds the candidate bundle
+with normal PoW and no scoped test-clock tag. Set45 acceptance/deployment is
+tracked in [`CHANGESET_45_NOTES.md`](../CHANGESET_45_NOTES.md); compiling the
+bundle does not complete the joint D74 design review or rendering acceptance.

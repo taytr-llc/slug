@@ -33,21 +33,33 @@ func eventPinFromRoot(m eventRootMarker) (gymevent.Pin, error) {
 	return gymevent.ValidatePin(p)
 }
 func (s *StableController) eventRoot() (eventRootMarker, error) {
+	if s.seedEnabled {
+		m, e := s.seedRoot()
+		base := m.eventRootMarker
+		base.Version = 4
+		return base, e
+	}
 	var m eventRootMarker
 	path := filepath.Join(filepath.Dir(filepath.Dir(s.config.DataDir)), "SLUG-MANIFEST-ACCOUNTS.json")
 	if !s.eventEnabled || readManifestJSON(path, 16384, &m) != nil || m.Version != 4 || m.EventSchema != 1 {
 		return m, ErrManifestInitialization
 	}
+	return m, validateEventRoot(m)
+}
+func validateEventRoot(m eventRootMarker) error {
+	if m.Version != 4 || m.EventSchema != 1 {
+		return ErrManifestInitialization
+	}
 	base := m.entryRootMarker
 	base.Version = 3
 	if validateEntryRoot(base) != nil {
-		return m, ErrManifestInitialization
+		return ErrManifestInitialization
 	}
 	p, e := eventPinFromRoot(m)
 	switch m.EventPhase {
 	case "waiting_participants":
 		if e == nil || m.EventStoreID != "" {
-			return m, ErrManifestInitialization
+			return ErrManifestInitialization
 		}
 		ready := 0
 		for _, x := range m.EntryInstalls {
@@ -56,20 +68,20 @@ func (s *StableController) eventRoot() (eventRootMarker, error) {
 			}
 		}
 		if ready >= 2 {
-			return m, ErrManifestInitialization
+			return ErrManifestInitialization
 		}
 	case "prepared", "ready":
 		if e != nil {
-			return m, e
+			return e
 		}
 		id, _ := gymevent.ID(p)
 		if id != m.EventStoreID {
-			return m, ErrManifestInitialization
+			return ErrManifestInitialization
 		}
 	default:
-		return m, ErrManifestInitialization
+		return ErrManifestInitialization
 	}
-	return m, nil
+	return nil
 }
 func NewEventManifestAccount(c Config, a StableAccountConfig) (*StableController, error) {
 	return newEventManifestAccount(c, a, nil)
@@ -123,7 +135,7 @@ func (s *StableController) AttachEvents(ctx context.Context, x *gymevent.Store) 
 		}
 		s.mu.Lock()
 		defer s.mu.Unlock()
-		if !stableCacheFits(s.cache, s.receiptSlot, s.previewBytes+s.entryBytes+eventMetadataBytes) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.previewBytes+s.entryBytes+eventMetadataBytes+s.seedBytes) {
 			return gymevent.ErrCapacity
 		}
 		s.eventStore = x
