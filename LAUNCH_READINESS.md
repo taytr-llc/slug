@@ -52,12 +52,16 @@ they do not count as completion of this product-release gate.
   does not authenticate those facts or establish roster eligibility. Trusted
   admission/history and current ownership remain required.
 - Sets 33–35 are deployed as one engineering batch of offline candidate tools;
-  each passed its own normal-PoW smoke. The shared live observation is running.
+  each passed its own normal-PoW smoke. The full shared live observation passed.
   The Mac GUI remains the set32 fixture pilot and portrait review stays pending.
 - Set 36 binds the exact candidate static appearance descriptor into a separate
   job version and typed payable-candidate builder. Production activation has
   no entries. Durable authority issuance/admission and trusted historical reads
   must still connect this binding to an accepted fighter.
+- Set 36 is deployed and its full observation passed. Set 37 is implementing
+  a separate pinned candidate authority that atomically stores immutable birth,
+  eligibility and appearance hashes. Verified local reads remain distinct from
+  public authenticated publication, current ownership and roster integration.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace

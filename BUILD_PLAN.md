@@ -135,6 +135,13 @@ pin an explicit authority/descriptor, preserve issuance-based birth and attach
 immutable static binding through trusted receipt reads. Current service,
 worker/outbox and existing registry schemas remain unchanged in set 36.
 
+Set 37 supplies the separate candidate schema-5 authority boundary
+(`MANIFEST_ADMISSION.md`): explicit pinned opening, durable manifest-job issuance,
+atomic static binding and bounded fully verified historical receipt reads.
+It preserves D68/D69 and all older stores. Service/worker transport, current
+ownership/roster state and portable authenticated publication remain separate
+integration steps; unsigned receipt JSON does not establish authority provenance.
+
 ### 3. The official pool
 The company-run pool that earns 1% (D35, D36). No turnkey pool exists
 for btcd plus Argon2id, so this is a real build: adapt a Miningcore

@@ -1,0 +1,8 @@
+{
+  "approved_contract_sha256": "6a761c2e78081178e45c493953b78759f721ad3772a4e1fe684f38ec5fb0cd66",
+  "approved_by": "root engineering review",
+  "approved_on": "2026-11-16",
+  "scope": "Independent descriptor/job/candidate expectations only; no official production activation",
+  "preserve_old_oracles_byte_for_byte": true,
+  "future_go_source_or_output_read": false
+}
