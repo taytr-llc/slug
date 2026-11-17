@@ -1,0 +1,222 @@
+{
+  "result": "pass",
+  "approved_contract_sha256": "6a761c2e78081178e45c493953b78759f721ad3772a4e1fe684f38ec5fb0cd66",
+  "scope": "independent candidate codec, commitment, authorization and unmined payable block bytes; no Go expectations, PoW, issuance or activation",
+  "source_hashes_before": {
+    "README.md": "ef16b00f6c33c4c24383129d8fa85ec59cf8178bbacc149fcb6a463ed43cb1b9",
+    "approval.json": "ade040749430cac4e93b0d6c4a8bece724ddfb856c0dc3dadbf24fcc0b2d4276",
+    "input_hashes.json": "d23e9a1c12f4a10256e167b94d768e6ae35f24a6f42a3430b430916b1fdaba7b",
+    "inputs/fighter-manifest-contract.md": "ba8d33dbad3722eed6b4406ef120f946d7e06e1ea04305cbe8648889ba169e80",
+    "inputs/manifest-job-contract.md": "6a761c2e78081178e45c493953b78759f721ad3772a4e1fe684f38ec5fb0cd66",
+    "inputs/portrait-renderer-contract.md": "8ae3c8dbe92fbef719880227e107cb98cbfd6419d984cad08ebb5d5e0a9c0df5",
+    "inputs/reference_repo/fighter/testdata/dna_v1.json": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+    "inputs/reference_repo/fighter/testdata/reference_dna.py": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+    "inputs/reference_repo/gymauth/testdata/authorizations_v1.json": "7e302f4d4f919b7e33c6c4cd80b81668277867ddbfa6d932ae68d897364b87f7",
+    "inputs/reference_repo/gymauth/testdata/reference_authorizations.py": "0490d6e7931cf0edb30e632a2fa213c8660e88afe916d3ed09421e34954b84d9",
+    "inputs/reference_repo/prospect/testdata/proofs_v1.json": "021fc596aeb9c0d8c383f6c5b20bfc89ae2e170be95846337c505773c318171b",
+    "inputs/reference_repo/prospect/testdata/reference_proofs.py": "db2b6bbe9aeb4aebe4052cf33aa1271f2e60351ad82d32a9b5ed20822e19c753",
+    "inputs/reference_repo/prospectjob/testdata/jobs_v1.json": "f95b04c39bc4b5ca648761908fc56f656376a9c41f55f406bb3a3ebe4bd0dd35",
+    "inputs/reference_repo/prospectjob/testdata/reference_jobs.py": "6b78563a0eeb92ed04c8f6df7e6b5aa240afacb1064cf23466dd57a1d2727f9e",
+    "inputs/reference_repo/prospectwork/testdata/reference_templates.py": "cfd10fb0690a100fecbf9abd5c42f00f6da80143535e46d3d8f9231320ac4fda",
+    "inputs/reference_repo/prospectwork/testdata/templates_v1.json": "1f2e6865f298a2647daa0fb3f4fca4a31546142481905e3fd30864d50ac70103",
+    "inputs/tables_v1.json": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+    "manifest_job_v1.json": "34b9484db90fd6d9ca9d704ee1ac76843a717bddaeb38194df1932f77fe754ad",
+    "reference_manifest_jobs.py": "2beaf985ae5f7851df4c945104e1c16559915dfb4ef23d6dfa4c019c0e8a4159"
+  },
+  "source_hashes_after": {
+    "README.md": "ef16b00f6c33c4c24383129d8fa85ec59cf8178bbacc149fcb6a463ed43cb1b9",
+    "approval.json": "ade040749430cac4e93b0d6c4a8bece724ddfb856c0dc3dadbf24fcc0b2d4276",
+    "input_hashes.json": "d23e9a1c12f4a10256e167b94d768e6ae35f24a6f42a3430b430916b1fdaba7b",
+    "inputs/fighter-manifest-contract.md": "ba8d33dbad3722eed6b4406ef120f946d7e06e1ea04305cbe8648889ba169e80",
+    "inputs/manifest-job-contract.md": "6a761c2e78081178e45c493953b78759f721ad3772a4e1fe684f38ec5fb0cd66",
+    "inputs/portrait-renderer-contract.md": "8ae3c8dbe92fbef719880227e107cb98cbfd6419d984cad08ebb5d5e0a9c0df5",
+    "inputs/reference_repo/fighter/testdata/dna_v1.json": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+    "inputs/reference_repo/fighter/testdata/reference_dna.py": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+    "inputs/reference_repo/gymauth/testdata/authorizations_v1.json": "7e302f4d4f919b7e33c6c4cd80b81668277867ddbfa6d932ae68d897364b87f7",
+    "inputs/reference_repo/gymauth/testdata/reference_authorizations.py": "0490d6e7931cf0edb30e632a2fa213c8660e88afe916d3ed09421e34954b84d9",
+    "inputs/reference_repo/prospect/testdata/proofs_v1.json": "021fc596aeb9c0d8c383f6c5b20bfc89ae2e170be95846337c505773c318171b",
+    "inputs/reference_repo/prospect/testdata/reference_proofs.py": "db2b6bbe9aeb4aebe4052cf33aa1271f2e60351ad82d32a9b5ed20822e19c753",
+    "inputs/reference_repo/prospectjob/testdata/jobs_v1.json": "f95b04c39bc4b5ca648761908fc56f656376a9c41f55f406bb3a3ebe4bd0dd35",
+    "inputs/reference_repo/prospectjob/testdata/reference_jobs.py": "6b78563a0eeb92ed04c8f6df7e6b5aa240afacb1064cf23466dd57a1d2727f9e",
+    "inputs/reference_repo/prospectwork/testdata/reference_templates.py": "cfd10fb0690a100fecbf9abd5c42f00f6da80143535e46d3d8f9231320ac4fda",
+    "inputs/reference_repo/prospectwork/testdata/templates_v1.json": "1f2e6865f298a2647daa0fb3f4fca4a31546142481905e3fd30864d50ac70103",
+    "inputs/tables_v1.json": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+    "manifest_job_v1.json": "34b9484db90fd6d9ca9d704ee1ac76843a717bddaeb38194df1932f77fe754ad",
+    "reference_manifest_jobs.py": "2beaf985ae5f7851df4c945104e1c16559915dfb4ef23d6dfa4c019c0e8a4159"
+  },
+  "source_hashes_stable": true,
+  "original_inputs_unchanged": {
+    "inputs/manifest-job-contract.md": {
+      "source": "/Users/taytrrip/slug/manifest-job-contract.md",
+      "sha256": "6a761c2e78081178e45c493953b78759f721ad3772a4e1fe684f38ec5fb0cd66",
+      "unchanged": true
+    },
+    "inputs/fighter-manifest-contract.md": {
+      "source": "/Users/taytrrip/slug/portrait-renderer-reference/inputs/fighter-manifest-contract.md",
+      "sha256": "ba8d33dbad3722eed6b4406ef120f946d7e06e1ea04305cbe8648889ba169e80",
+      "unchanged": true
+    },
+    "inputs/portrait-renderer-contract.md": {
+      "source": "/Users/taytrrip/slug/portrait-renderer-reference/inputs/portrait-renderer-contract.md",
+      "sha256": "8ae3c8dbe92fbef719880227e107cb98cbfd6419d984cad08ebb5d5e0a9c0df5",
+      "unchanged": true
+    },
+    "inputs/tables_v1.json": {
+      "source": "/Users/taytrrip/slug/fighter-manifest-reference/tables_v1.json",
+      "sha256": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+      "unchanged": true
+    },
+    "inputs/reference_repo/prospectjob/testdata/reference_jobs.py": {
+      "source": "/Users/taytrrip/slug/slug/prospectjob/testdata/reference_jobs.py",
+      "sha256": "6b78563a0eeb92ed04c8f6df7e6b5aa240afacb1064cf23466dd57a1d2727f9e",
+      "unchanged": true
+    },
+    "inputs/reference_repo/prospectjob/testdata/jobs_v1.json": {
+      "source": "/Users/taytrrip/slug/slug/prospectjob/testdata/jobs_v1.json",
+      "sha256": "f95b04c39bc4b5ca648761908fc56f656376a9c41f55f406bb3a3ebe4bd0dd35",
+      "unchanged": true
+    },
+    "inputs/reference_repo/prospectwork/testdata/reference_templates.py": {
+      "source": "/Users/taytrrip/slug/slug/prospectwork/testdata/reference_templates.py",
+      "sha256": "cfd10fb0690a100fecbf9abd5c42f00f6da80143535e46d3d8f9231320ac4fda",
+      "unchanged": true
+    },
+    "inputs/reference_repo/prospectwork/testdata/templates_v1.json": {
+      "source": "/Users/taytrrip/slug/slug/prospectwork/testdata/templates_v1.json",
+      "sha256": "1f2e6865f298a2647daa0fb3f4fca4a31546142481905e3fd30864d50ac70103",
+      "unchanged": true
+    },
+    "inputs/reference_repo/gymauth/testdata/reference_authorizations.py": {
+      "source": "/Users/taytrrip/slug/slug/gymauth/testdata/reference_authorizations.py",
+      "sha256": "0490d6e7931cf0edb30e632a2fa213c8660e88afe916d3ed09421e34954b84d9",
+      "unchanged": true
+    },
+    "inputs/reference_repo/gymauth/testdata/authorizations_v1.json": {
+      "source": "/Users/taytrrip/slug/slug/gymauth/testdata/authorizations_v1.json",
+      "sha256": "7e302f4d4f919b7e33c6c4cd80b81668277867ddbfa6d932ae68d897364b87f7",
+      "unchanged": true
+    },
+    "inputs/reference_repo/prospect/testdata/reference_proofs.py": {
+      "source": "/Users/taytrrip/slug/slug/prospect/testdata/reference_proofs.py",
+      "sha256": "db2b6bbe9aeb4aebe4052cf33aa1271f2e60351ad82d32a9b5ed20822e19c753",
+      "unchanged": true
+    },
+    "inputs/reference_repo/prospect/testdata/proofs_v1.json": {
+      "source": "/Users/taytrrip/slug/slug/prospect/testdata/proofs_v1.json",
+      "sha256": "021fc596aeb9c0d8c383f6c5b20bfc89ae2e170be95846337c505773c318171b",
+      "unchanged": true
+    },
+    "inputs/reference_repo/fighter/testdata/reference_dna.py": {
+      "source": "/Users/taytrrip/slug/slug/fighter/testdata/reference_dna.py",
+      "sha256": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+      "unchanged": true
+    },
+    "inputs/reference_repo/fighter/testdata/dna_v1.json": {
+      "source": "/Users/taytrrip/slug/slug/fighter/testdata/dna_v1.json",
+      "sha256": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+      "unchanged": true
+    }
+  },
+  "runs": [
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "reference_manifest_jobs.py",
+        "--check"
+      ],
+      "cwd": "/Users/taytrrip/slug/manifest-job-reference",
+      "environment": {
+        "PYTHONHASHSEED": "0",
+        "TZ": "UTC"
+      },
+      "interpreter": {
+        "executable": "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "version": "3.9.6 (default, Oct 19 2026, 19:18:13) \n[Clang 21.0.0 (clang-2100.4.1.1)]"
+      },
+      "exit_code": 0,
+      "seconds": 0.265343,
+      "stdout": "{\"candidate_descriptor_id\": \"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\", \"corpus_sha256\": \"34b9484db90fd6d9ca9d704ee1ac76843a717bddaeb38194df1932f77fe754ad\", \"mode\": \"check\", \"result\": \"pass\", \"validation\": {\"authorization_cases\": 3, \"candidate_cases\": 3, \"constructor_cases\": 39, \"descriptor_cases\": 2, \"descriptor_transport_cases\": 68, \"header_pow_computed\": false, \"job_cases\": 7, \"job_transport_cases\": 127, \"mutation_cases\": 20, \"normalization_cases\": 3, \"production_activation\": false, \"resolver_cases\": 10, \"structural_descriptor_cases\": 59}}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "reference_manifest_jobs.py",
+        "--check"
+      ],
+      "cwd": "/Users/taytrrip/slug/manifest-job-reference",
+      "environment": {
+        "PYTHONHASHSEED": "0",
+        "TZ": "UTC"
+      },
+      "interpreter": {
+        "executable": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "version": "3.14.3 (main, Feb  3 2026, 15:32:20) [Clang 17.0.0 (clang-1700.6.3.2)]"
+      },
+      "exit_code": 0,
+      "seconds": 0.276856,
+      "stdout": "{\"candidate_descriptor_id\": \"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\", \"corpus_sha256\": \"34b9484db90fd6d9ca9d704ee1ac76843a717bddaeb38194df1932f77fe754ad\", \"mode\": \"check\", \"result\": \"pass\", \"validation\": {\"authorization_cases\": 3, \"candidate_cases\": 3, \"constructor_cases\": 39, \"descriptor_cases\": 2, \"descriptor_transport_cases\": 68, \"header_pow_computed\": false, \"job_cases\": 7, \"job_transport_cases\": 127, \"mutation_cases\": 20, \"normalization_cases\": 3, \"production_activation\": false, \"resolver_cases\": 10, \"structural_descriptor_cases\": 59}}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "reference_manifest_jobs.py",
+        "--check"
+      ],
+      "cwd": "/Users/taytrrip/slug/manifest-job-reference",
+      "environment": {
+        "PYTHONHASHSEED": "17",
+        "TZ": "America/Los_Angeles"
+      },
+      "interpreter": {
+        "executable": "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "version": "3.9.6 (default, Oct 19 2026, 19:18:13) \n[Clang 21.0.0 (clang-2100.4.1.1)]"
+      },
+      "exit_code": 0,
+      "seconds": 0.264634,
+      "stdout": "{\"candidate_descriptor_id\": \"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\", \"corpus_sha256\": \"34b9484db90fd6d9ca9d704ee1ac76843a717bddaeb38194df1932f77fe754ad\", \"mode\": \"check\", \"result\": \"pass\", \"validation\": {\"authorization_cases\": 3, \"candidate_cases\": 3, \"constructor_cases\": 39, \"descriptor_cases\": 2, \"descriptor_transport_cases\": 68, \"header_pow_computed\": false, \"job_cases\": 7, \"job_transport_cases\": 127, \"mutation_cases\": 20, \"normalization_cases\": 3, \"production_activation\": false, \"resolver_cases\": 10, \"structural_descriptor_cases\": 59}}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "reference_manifest_jobs.py",
+        "--check"
+      ],
+      "cwd": "/Users/taytrrip/slug/manifest-job-reference",
+      "environment": {
+        "PYTHONHASHSEED": "random",
+        "TZ": "Pacific/Auckland"
+      },
+      "interpreter": {
+        "executable": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "version": "3.14.3 (main, Feb  3 2026, 15:32:20) [Clang 17.0.0 (clang-1700.6.3.2)]"
+      },
+      "exit_code": 0,
+      "seconds": 0.287494,
+      "stdout": "{\"candidate_descriptor_id\": \"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\", \"corpus_sha256\": \"34b9484db90fd6d9ca9d704ee1ac76843a717bddaeb38194df1932f77fe754ad\", \"mode\": \"check\", \"result\": \"pass\", \"validation\": {\"authorization_cases\": 3, \"candidate_cases\": 3, \"constructor_cases\": 39, \"descriptor_cases\": 2, \"descriptor_transport_cases\": 68, \"header_pow_computed\": false, \"job_cases\": 7, \"job_transport_cases\": 127, \"mutation_cases\": 20, \"normalization_cases\": 3, \"production_activation\": false, \"resolver_cases\": 10, \"structural_descriptor_cases\": 59}}\n",
+      "stderr": ""
+    }
+  ],
+  "cross_interpreter_results_identical": true,
+  "validation": {
+    "authorization_cases": 3,
+    "candidate_cases": 3,
+    "constructor_cases": 39,
+    "descriptor_cases": 2,
+    "descriptor_transport_cases": 68,
+    "header_pow_computed": false,
+    "job_cases": 7,
+    "job_transport_cases": 127,
+    "mutation_cases": 20,
+    "normalization_cases": 3,
+    "production_activation": false,
+    "resolver_cases": 10,
+    "structural_descriptor_cases": 59
+  }
+}

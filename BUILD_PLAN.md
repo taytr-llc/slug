@@ -142,6 +142,17 @@ It preserves D68/D69 and all older stores. Service/worker transport, current
 ownership/roster state and portable authenticated publication remain separate
 integration steps; unsigned receipt JSON does not establish authority provenance.
 
+Set 39 connects that candidate authority to a bounded protocol-3 client/service
+and a separately typed automatic worker with durable outbox version 2
+(`MANIFEST_MINING.md`, `MANIFEST_MINING_RESERVATION.md`). Explicit authority and
+transport pins survive restart; synchronized work and saved authorizations allow
+historical receipt recovery after lost acknowledgments, expiry and node outage.
+The fixture account/vault composition exercises reset revocation and permitted
+gym-only mining during the hold. This does not activate the production generator
+or change the existing desktop route. The next desktop slice can present these
+candidate receipts and portraits while ownership, roster/lifecycle authority,
+portable publication and real provider/custody remain separate requirements.
+
 ### 3. The official pool
 The company-run pool that earns 1% (D35, D36). No turnkey pool exists
 for btcd plus Argon2id, so this is a real build: adapt a Miningcore

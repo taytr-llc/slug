@@ -1,0 +1,10 @@
+{
+  "status": "approved_for_candidate_engineering",
+  "approved_by": "root",
+  "approved_at": "2026-11-17T02:54:53.899635+00:00",
+  "contract": "/Users/taytrrip/slug/manifest-admission-contract.md",
+  "sha256": "d51178db1decf13ad09986802bb3eb7861827d372a7f35e99c13adc739420f27",
+  "scope": "Separate registry ManifestStore schema5 with durable candidate issuance/static binding and pinned verified reads; no service/worker/UI/official activation",
+  "review": "Root read complete exact contract; independent design and implementation reviews clear",
+  "user_policy_question_required": false
+}
