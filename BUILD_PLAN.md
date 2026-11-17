@@ -102,6 +102,15 @@ This is a local pilot, not the hosted account/wallet promised by D48. Real login
 btcwallet custody, full tested seed export and public service provisioning are
 the next integration boundary; they must not be implied by a fixture roster.
 
+Set 33 adds the candidate static manifest and optional `slugfighter preview`
+route (`FIGHTER_MANIFEST.md`). It preserves DNA v1 and independently derives
+names, physical traits, style and portrait selections under explicit versioned
+tables. The supplied simulator and HTML prototypes are now preserved in the
+workspace; the spec remains authoritative. This is a preview library/CLI, not
+an official assignment to admitted fighters. A bounded deterministic portrait
+renderer, explicit issuance/version binding, roster/lifecycle history and the
+fight engine remain subsequent slices.
+
 ### 3. The official pool
 The company-run pool that earns 1% (D35, D36). No turnkey pool exists
 for btcd plus Argon2id, so this is a real build: adapt a Miningcore

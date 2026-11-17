@@ -1,0 +1,43 @@
+{
+  "timestamp_utc": "2026-11-17T00:23:12.498176+00:00",
+  "python": "3.14.3 (main, Feb  3 2026, 15:32:20) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-B",
+    "reference_manifest.py",
+    "--check"
+  ],
+  "cwd": "/Users/taytrrip/slug/fighter-manifest-reference",
+  "exit_code": 0,
+  "wall_seconds": 0.895,
+  "source_sha256_before": {
+    "fighter-manifest-reference/README.md": "74d1e82e540dee598bb79b2b6e9a7d8b4ad752f8be6a803f3a734ed960ba3693",
+    "fighter-manifest-reference/baseline/dna_v1.json": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+    "fighter-manifest-reference/baseline/reference_dna.py": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+    "fighter-manifest-reference/manifests_v1.json": "75eb01acb79f45b74a6445edf956c5e3f3b68024998ae56ab44a7ed07cf15f3d",
+    "fighter-manifest-reference/provenance.json": "fd90e8a991807f39aa3815eda879b24e89ab07137052d27ac61e2fecfa4eb628",
+    "fighter-manifest-reference/reference_manifest.py": "9fb1a814047f2329066bb19596e910ac7c4c7aadfce4b8f994e02dab81e51b4f",
+    "fighter-manifest-reference/tables_v1.json": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+    "fighter-manifest-contract.md": "ba8d33dbad3722eed6b4406ef120f946d7e06e1ea04305cbe8648889ba169e80"
+  },
+  "source_sha256_after": {
+    "fighter-manifest-reference/README.md": "74d1e82e540dee598bb79b2b6e9a7d8b4ad752f8be6a803f3a734ed960ba3693",
+    "fighter-manifest-reference/baseline/dna_v1.json": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+    "fighter-manifest-reference/baseline/reference_dna.py": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+    "fighter-manifest-reference/manifests_v1.json": "75eb01acb79f45b74a6445edf956c5e3f3b68024998ae56ab44a7ed07cf15f3d",
+    "fighter-manifest-reference/provenance.json": "fd90e8a991807f39aa3815eda879b24e89ab07137052d27ac61e2fecfa4eb628",
+    "fighter-manifest-reference/reference_manifest.py": "9fb1a814047f2329066bb19596e910ac7c4c7aadfce4b8f994e02dab81e51b4f",
+    "fighter-manifest-reference/tables_v1.json": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+    "fighter-manifest-contract.md": "ba8d33dbad3722eed6b4406ef120f946d7e06e1ea04305cbe8648889ba169e80"
+  },
+  "sources_unchanged": true,
+  "all_20_extracted_originals_unchanged": true,
+  "output": "{\n  \"verified_manifest_cases\": 50,\n  \"stream_vectors\": 68,\n  \"invalid_inputs\": 64,\n  \"sample_mix\": {\n    \"seed_encoding\": \"integers 1..4096, 32-byte big-endian\",\n    \"count\": 4096,\n    \"counts\": {\n      \"rarity\": {\n        \"club\": 2302,\n        \"contender\": 482,\n        \"elite\": 190,\n        \"generational\": 41,\n        \"professional\": 1081\n      },\n      \"weight_class\": {\n        \"heavy\": 572,\n        \"light\": 217,\n        \"light_heavy\": 1112,\n        \"middle\": 1306,\n        \"welter\": 889\n      },\n      \"style\": {\n        \"boxer\": 2268,\n        \"boxer_puncher\": 848,\n        \"outfighter\": 395,\n        \"pressure\": 150,\n        \"slugger\": 435\n      },\n      \"stance\": {\n        \"orthodox\": 3083,\n        \"southpaw\": 1013\n      },\n      \"scar\": {\n        \"left_brow\": 728,\n        \"none\": 2626,\n        \"right_cheek\": 742\n      }\n    },\n    \"interpretation\": \"deterministic candidate diagnostics, not fight or pricing calibration\"\n  }\n}\n",
+  "stderr": "",
+  "limits": [
+    "Independent candidate preview reference only; no Go runtime or Go conformance tests.",
+    "No official generator assignment, renderer, birth, ownership, fight or price implementation.",
+    "No production issuance or live network resources."
+  ]
+}

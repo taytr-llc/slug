@@ -1,0 +1,19 @@
+{
+  "purpose": "Reviewed candidate tables; not official generator activation or historical reassignment",
+  "source_hashes": {
+    "/Users/taytrrip/slug/slug-sim-export/sim/fight_sim.py": "37ff08917ed720e3d9c4f3b14508c57b08d830f9f4cb01833fa412dbca9b6422",
+    "/Users/taytrrip/slug/slug-sim-export/sim/portraits.py": "9bac3d966e7093e0665cd9c9a683e7a6ab73381948dccfd0dc8cac8c98a75a72"
+  },
+  "baseline_hashes": {
+    "reference_dna.py": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+    "dna_v1.json": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71"
+  },
+  "normalization": [
+    "FIRST and LAST source order retained; surrounding ASCII whitespace stripped once (LAST index17 is Boone)",
+    "Class/style/rarity enum spellings lower snake_case, explicit source mapping",
+    "Portrait enum names and geometry from source; unused tank table omitted for shirtless portrait",
+    "Distributions, labels and physical style predicates are new candidate engineering choices documented in contract"
+  ],
+  "table_encoding": "Compact ASCII ordered JSON, no terminal newline",
+  "table_sha256": "72231fbe707cea9a65dd5b92f7b2719953795bceadbbf9e3b8e0b8f4aaef3f44"
+}

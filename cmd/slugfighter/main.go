@@ -30,6 +30,9 @@ func main() {
 }
 
 func run(args []string, stdout, stderr io.Writer) error {
+	if len(args) > 0 && args[0] == "preview" {
+		return runManifestPreview(args, stdout, stderr)
+	}
 	flags := flag.NewFlagSet("slugfighter", flag.ContinueOnError)
 	flags.SetOutput(stderr)
 	version := flags.Uint64("dna-version", 1, "DNA derivation version (currently 1)")

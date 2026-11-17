@@ -25,6 +25,19 @@ exit status; successful previews go to standard output.
 
 This preview accepts any 32 bytes. It does not mine, validate qualifying work,
 sign anything, register a fighter, or grant fighter ownership. It uses no
-network connection or private keys. Names, portraits, physical traits and gym
-registration are future work with separate versioning; this command is not a
-complete fighter generator.
+network connection or private keys. The original DNA route does not include
+names, portrait selections, physical traits or gym registration.
+
+The optional `preview` subcommand adds the candidate static manifest while
+preserving the original DNA command:
+
+```sh
+slugfighter preview --work-hash <64-hex-work-hash>
+slugfighter preview --work-hash <64-hex-work-hash> --digest
+```
+
+The default preview output is exact canonical JSON without a terminal newline;
+`--digest` prints its separate digest. `--version` defaults to the explicit
+manifest version 1 and rejects unknown versions. This is an offline public
+preview, not qualifying work, registration, a fighter ID or an ownership claim.
+See `FIGHTER_MANIFEST.md` at the repository root for the candidate contract.
