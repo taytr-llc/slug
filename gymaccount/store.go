@@ -195,6 +195,9 @@ func Create(path string, config Config) (*Store, error) {
 	return createStore(path, config, nil)
 }
 func createStore(path string, config Config, identity *IdentityConfig) (*Store, error) {
+	return createStoreWithClock(path, config, identity, time.Now)
+}
+func createStoreWithClock(path string, config Config, identity *IdentityConfig, clock func() time.Time) (*Store, error) {
 	version := Version1
 	if identity != nil {
 		version = IdentityVersion
@@ -224,7 +227,7 @@ func createStore(path string, config Config, identity *IdentityConfig) (*Store, 
 	if err != nil {
 		return nil, ErrCorrupt
 	}
-	s := &Store{gate: make(chan struct{}, 1), authorityID: authority, db: db, meta: metadata{Application: application, Version: version, Identity: identity, Network: FixtureNetwork, Genesis: FixtureGenesis, Profile: FixtureProfile, HoldMS: RecoveryHoldMS, AuthorityID: authority, Config: c}, now: time.Now, random: rand.Reader, writeBatch: db.Write}
+	s := &Store{gate: make(chan struct{}, 1), authorityID: authority, db: db, meta: metadata{Application: application, Version: version, Identity: identity, Network: FixtureNetwork, Genesis: FixtureGenesis, Profile: FixtureProfile, HoldMS: RecoveryHoldMS, AuthorityID: authority, Config: c}, now: clock, random: rand.Reader, writeBatch: db.Write}
 	batch := new(leveldb.Batch)
 	if err = put(batch, "meta", s.meta); err == nil {
 		err = db.Write(batch, &opt.WriteOptions{Sync: true})
@@ -248,6 +251,9 @@ func Open(path string, config Config) (*Store, error) {
 	return openStore(path, config, nil)
 }
 func openStore(path string, config Config, identity *IdentityConfig) (*Store, error) {
+	return openStoreWithClock(path, config, identity, time.Now)
+}
+func openStoreWithClock(path string, config Config, identity *IdentityConfig, clock func() time.Time) (*Store, error) {
 	version := Version1
 	if identity != nil {
 		version = IdentityVersion
@@ -267,7 +273,7 @@ func openStore(path string, config Config, identity *IdentityConfig) (*Store, er
 	if err != nil {
 		return nil, errors.New("account database unavailable")
 	}
-	s := &Store{gate: make(chan struct{}, 1), authorityID: m.AuthorityID, db: db, now: time.Now, random: rand.Reader, writeBatch: db.Write}
+	s := &Store{gate: make(chan struct{}, 1), authorityID: m.AuthorityID, db: db, now: clock, random: rand.Reader, writeBatch: db.Write}
 	raw, err := db.Get([]byte("meta"), nil)
 	if err != nil || canonical(raw, &s.meta) != nil || s.meta.Application != application || s.meta.Version != version || !reflect.DeepEqual(s.meta.Identity, identity) || s.meta.Network != m.Network || s.meta.Genesis != m.Genesis || s.meta.Profile != m.Profile || s.meta.HoldMS != m.HoldMS || s.meta.AuthorityID != m.AuthorityID || !reflect.DeepEqual(s.meta.Config, c) || s.audit() != nil {
 		db.Close()

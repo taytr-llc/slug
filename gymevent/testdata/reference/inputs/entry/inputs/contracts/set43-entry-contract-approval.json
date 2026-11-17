@@ -1,0 +1,47 @@
+{
+  "status": "approved_for_reference_then_implementation",
+  "approved_at": "2026-11-17T17:23:25.090109+00:00",
+  "reviewer": "root",
+  "authorization": "Standing user instruction to continue engineering work; routine implementation choices only. No new product policy adopted.",
+  "baseline_commit": "81ef2816b42b9a10f0a37da90c5a967c7a93330b",
+  "planned_topic_branch": "slug-saturday-entry",
+  "evidence_sha256": {
+    "set43-entry-contract-draft.md": "958d3fda0cb50cda3bad38f7e461a44537a6a3c20ef5cc2b0c2abb7d2fdafcae",
+    "set43-entry-contract-scope.json": "d6780d1b55d221a4f37f2b7611dd9ef28f3d26bfd2ab932d968a002626f80ba5",
+    "set43-entry-contract-independent-review.json": "e6a75094657ae453f8b9a4602f28f28f64843e5b28f33344f3eb15e7f1c40b5c"
+  },
+  "calendar_input": {
+    "path": "/opt/homebrew/Cellar/go/1.27.4/libexec/lib/time/zoneinfo.zip",
+    "archive_sha256": "b2d18a7c8fa8142097a48c99609fb3c92db5ee98bc740294e57eab8ae9f94779",
+    "member": "America/Los_Angeles",
+    "member_sha256": "200d05754f6d83a371cf408d7085125797657b3b0bebeba1e508cffe86a3e5c8",
+    "member_bytes": 1294,
+    "range": [
+      2026,
+      2099
+    ],
+    "authority_cutoff": "Saturday 12:00:00.000 in pinned location",
+    "host_timezone_authoritative": false
+  },
+  "scope": [
+    "authenticated candidate Saturday save/replace/withdraw/query/history",
+    "five fighters maximum and one per class; rostered/nonretired at save; free",
+    "original session and final concrete stable revision fence; monotone cutoff clock",
+    "closed_pending_lock only; exact old history preserved",
+    "additive entry store and recoverable v3 root in existing candidate app"
+  ],
+  "order": [
+    "independent non-Go expected corpus frozen before runtime authoring",
+    "set42 observation and closeout complete before checkout changes",
+    "create next stacked topic from exact implementation baseline",
+    "implement core and same-app integration to frozen contract",
+    "independent review and appropriate tests before packaging/promotion"
+  ],
+  "deferred_policy": [
+    "post-lock roster/retirement eligibility and condition",
+    "future seed/anchor selection, reorg/outage and delay/cancellation rules"
+  ],
+  "d65_unchanged": true,
+  "d74_product_review": "pending",
+  "real_keys_or_public_mining_authorized": false
+}

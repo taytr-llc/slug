@@ -16,6 +16,7 @@ import (
 )
 
 type ManifestController struct {
+	eventBytes            int // guarded by mu; retained/reserved event family bytes
 	entryBytes            int // guarded by mu; retained/reserved entry family bytes
 	previewBytes          int // guarded by mu, included in the shared stable cache ceiling
 	stable                *StableController

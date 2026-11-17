@@ -24,6 +24,7 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 	candidates := flags.Bool("candidate-manifests", false, "Use the separate candidate fixture desktop")
 	stable := flags.Bool("candidate-stable", false, "Enable the candidate stable within candidate-manifests")
 	entries := flags.Bool("candidate-entries", false, "Enable Saturday entry intake within candidate-stable")
+	candidateEvents := flags.Bool("candidate-events", false, "Enable immutable noon snapshots within candidate-entries")
 	if e := flags.Parse(args); e != nil {
 		return e
 	}
@@ -36,7 +37,17 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 	if *entries && (!*stable || !*candidates || *accounts) {
 		return errors.New("candidate-entries requires candidate-stable and candidate-manifests")
 	}
+	if *candidateEvents && (!*entries || !*stable || !*candidates || *accounts) {
+		return errors.New("candidate-events requires candidate-entries, candidate-stable and candidate-manifests")
+	}
 	if *candidates {
+		if *candidateEvents {
+			controller, err := accountpilot.NewEvents(pilot.Config{DataDir: *data, NodeBinary: *node})
+			if err != nil {
+				return err
+			}
+			return pilot.ServeEvents(ctx, controller, stdin, stdout)
+		}
 		if *entries {
 			controller, err := accountpilot.NewEntries(pilot.Config{DataDir: *data, NodeBinary: *node})
 			if err != nil {

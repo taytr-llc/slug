@@ -1,0 +1,723 @@
+{
+  "version": 1,
+  "status": "schema_ready_pending_independent_audit",
+  "corpus": "event_v1.json",
+  "corpus_sha256": "9287f92c0cb46c585b44274c70ae57c5d6c9a4234e7078fd1d69a200644f996a",
+  "fields": [
+    "version",
+    "core_contract_sha256",
+    "helper_contract_sha256",
+    "clarification_sha256",
+    "reference_input_index_sha256",
+    "rules",
+    "pin",
+    "fixtures",
+    "calendar",
+    "calendar_invalid",
+    "histories",
+    "history_cases",
+    "maximum_history",
+    "records",
+    "dtos",
+    "codec_cases",
+    "protocol_cases",
+    "initialization_cases",
+    "capacity_case",
+    "scenarios",
+    "bounds",
+    "coverage_limits"
+  ],
+  "counts": {
+    "fixtures": 2,
+    "calendar": 3861,
+    "histories": 36,
+    "history_cases": 23,
+    "records": 14,
+    "dtos": 97,
+    "codec_cases": 543,
+    "protocol_cases": 136,
+    "initialization_cases": 42,
+    "scenarios": 35
+  },
+  "dto_index": [
+    {
+      "index": 0,
+      "name": "coordinator",
+      "kind": "Pin",
+      "fixture": "",
+      "canonical_bytes": 2881
+    },
+    {
+      "index": 1,
+      "name": "coordinator",
+      "kind": "Info",
+      "fixture": "",
+      "canonical_bytes": 3025
+    },
+    {
+      "index": 2,
+      "name": "coordinator",
+      "kind": "Event",
+      "fixture": "",
+      "canonical_bytes": 582
+    },
+    {
+      "index": 3,
+      "name": "coordinator",
+      "kind": "SnapshotInput",
+      "fixture": "",
+      "canonical_bytes": 21991
+    },
+    {
+      "index": 4,
+      "name": "coordinator",
+      "kind": "SnapshotReceipt",
+      "fixture": "",
+      "canonical_bytes": 23135
+    },
+    {
+      "index": 5,
+      "name": "coordinator",
+      "kind": "HistoryPage",
+      "fixture": "",
+      "canonical_bytes": 1319
+    },
+    {
+      "index": 6,
+      "name": "coordinator",
+      "kind": "Marker",
+      "fixture": "",
+      "canonical_bytes": 3017
+    },
+    {
+      "index": 7,
+      "name": "coordinator",
+      "kind": "Init",
+      "fixture": "",
+      "canonical_bytes": 2979
+    },
+    {
+      "index": 8,
+      "name": "coordinator",
+      "kind": "Metadata",
+      "fixture": "",
+      "canonical_bytes": 3050
+    },
+    {
+      "index": 9,
+      "name": "incrementing256",
+      "kind": "ParticipantSnapshot",
+      "fixture": "incrementing256",
+      "canonical_bytes": 10682
+    },
+    {
+      "index": 10,
+      "name": "incrementing256",
+      "kind": "CaptureEvidence",
+      "fixture": "incrementing256",
+      "canonical_bytes": 495
+    },
+    {
+      "index": 11,
+      "name": "incrementing256",
+      "kind": "ParticipantCapture",
+      "fixture": "incrementing256",
+      "canonical_bytes": 11214
+    },
+    {
+      "index": 12,
+      "name": "incrementing256",
+      "kind": "CaptureResult",
+      "fixture": "incrementing256",
+      "canonical_bytes": 12249
+    },
+    {
+      "index": 13,
+      "name": "incrementing256/unavailable",
+      "kind": "EventSnapshot",
+      "fixture": "incrementing256",
+      "canonical_bytes": 205
+    },
+    {
+      "index": 14,
+      "name": "incrementing256/unavailable",
+      "kind": "EventResponse",
+      "fixture": "incrementing256",
+      "canonical_bytes": 326
+    },
+    {
+      "index": 15,
+      "name": "incrementing256/setup_incomplete",
+      "kind": "EventSnapshot",
+      "fixture": "incrementing256",
+      "canonical_bytes": 975
+    },
+    {
+      "index": 16,
+      "name": "incrementing256/setup_incomplete",
+      "kind": "EventResponse",
+      "fixture": "incrementing256",
+      "canonical_bytes": 1792
+    },
+    {
+      "index": 17,
+      "name": "incrementing256/ready",
+      "kind": "EventSnapshot",
+      "fixture": "incrementing256",
+      "canonical_bytes": 3895
+    },
+    {
+      "index": 18,
+      "name": "incrementing256/ready",
+      "kind": "EventResponse",
+      "fixture": "incrementing256",
+      "canonical_bytes": 4776
+    },
+    {
+      "index": 19,
+      "name": "incrementing256/busy",
+      "kind": "EventSnapshot",
+      "fixture": "incrementing256",
+      "canonical_bytes": 3894
+    },
+    {
+      "index": 20,
+      "name": "incrementing256/busy",
+      "kind": "EventResponse",
+      "fixture": "incrementing256",
+      "canonical_bytes": 4775
+    },
+    {
+      "index": 21,
+      "name": "incrementing256/failed",
+      "kind": "EventSnapshot",
+      "fixture": "incrementing256",
+      "canonical_bytes": 3909
+    },
+    {
+      "index": 22,
+      "name": "incrementing256/failed",
+      "kind": "EventResponse",
+      "fixture": "incrementing256",
+      "canonical_bytes": 4790
+    },
+    {
+      "index": 23,
+      "name": "incrementing256/queued",
+      "kind": "EventJob",
+      "fixture": "incrementing256",
+      "canonical_bytes": 1120
+    },
+    {
+      "index": 24,
+      "name": "incrementing256/queued",
+      "kind": "EventResponse",
+      "fixture": "incrementing256",
+      "canonical_bytes": 2001
+    },
+    {
+      "index": 25,
+      "name": "incrementing256/running",
+      "kind": "EventJob",
+      "fixture": "incrementing256",
+      "canonical_bytes": 1121
+    },
+    {
+      "index": 26,
+      "name": "incrementing256/running",
+      "kind": "EventResponse",
+      "fixture": "incrementing256",
+      "canonical_bytes": 2002
+    },
+    {
+      "index": 27,
+      "name": "incrementing256/completed",
+      "kind": "EventJob",
+      "fixture": "incrementing256",
+      "canonical_bytes": 13368
+    },
+    {
+      "index": 28,
+      "name": "incrementing256/completed",
+      "kind": "EventResponse",
+      "fixture": "incrementing256",
+      "canonical_bytes": 14249
+    },
+    {
+      "index": 29,
+      "name": "incrementing256/failed",
+      "kind": "EventJob",
+      "fixture": "incrementing256",
+      "canonical_bytes": 1135
+    },
+    {
+      "index": 30,
+      "name": "incrementing256/failed",
+      "kind": "EventResponse",
+      "fixture": "incrementing256",
+      "canonical_bytes": 2016
+    },
+    {
+      "index": 31,
+      "name": "incrementing256/cancelled",
+      "kind": "EventJob",
+      "fixture": "incrementing256",
+      "canonical_bytes": 1138
+    },
+    {
+      "index": 32,
+      "name": "incrementing256/cancelled",
+      "kind": "EventResponse",
+      "fixture": "incrementing256",
+      "canonical_bytes": 2019
+    },
+    {
+      "index": 33,
+      "name": "incrementing256/event_status",
+      "kind": "EventRequest",
+      "fixture": "incrementing256",
+      "canonical_bytes": 176
+    },
+    {
+      "index": 34,
+      "name": "incrementing256/event_status",
+      "kind": "EventResponse",
+      "fixture": "incrementing256",
+      "canonical_bytes": 2010
+    },
+    {
+      "index": 35,
+      "name": "incrementing256/event_record",
+      "kind": "EventRequest",
+      "fixture": "incrementing256",
+      "canonical_bytes": 176
+    },
+    {
+      "index": 36,
+      "name": "incrementing256/event_record",
+      "kind": "EventResponse",
+      "fixture": "incrementing256",
+      "canonical_bytes": 24016
+    },
+    {
+      "index": 37,
+      "name": "incrementing256/event_history",
+      "kind": "EventRequest",
+      "fixture": "incrementing256",
+      "canonical_bytes": 167
+    },
+    {
+      "index": 38,
+      "name": "incrementing256/event_history",
+      "kind": "EventResponse",
+      "fixture": "incrementing256",
+      "canonical_bytes": 2200
+    },
+    {
+      "index": 39,
+      "name": "incrementing256/before_cutoff",
+      "kind": "EventStatus",
+      "fixture": "incrementing256",
+      "canonical_bytes": 911
+    },
+    {
+      "index": 40,
+      "name": "incrementing256/awaiting_capture",
+      "kind": "EventStatus",
+      "fixture": "incrementing256",
+      "canonical_bytes": 914
+    },
+    {
+      "index": 41,
+      "name": "incrementing256/deadline_reached",
+      "kind": "EventStatus",
+      "fixture": "incrementing256",
+      "canonical_bytes": 914
+    },
+    {
+      "index": 42,
+      "name": "zero256",
+      "kind": "ParticipantSnapshot",
+      "fixture": "zero256",
+      "canonical_bytes": 10686
+    },
+    {
+      "index": 43,
+      "name": "zero256",
+      "kind": "CaptureEvidence",
+      "fixture": "zero256",
+      "canonical_bytes": 495
+    },
+    {
+      "index": 44,
+      "name": "zero256",
+      "kind": "ParticipantCapture",
+      "fixture": "zero256",
+      "canonical_bytes": 11218
+    },
+    {
+      "index": 45,
+      "name": "zero256",
+      "kind": "CaptureResult",
+      "fixture": "zero256",
+      "canonical_bytes": 12398
+    },
+    {
+      "index": 46,
+      "name": "zero256/unavailable",
+      "kind": "EventSnapshot",
+      "fixture": "zero256",
+      "canonical_bytes": 205
+    },
+    {
+      "index": 47,
+      "name": "zero256/unavailable",
+      "kind": "EventResponse",
+      "fixture": "zero256",
+      "canonical_bytes": 326
+    },
+    {
+      "index": 48,
+      "name": "zero256/setup_incomplete",
+      "kind": "EventSnapshot",
+      "fixture": "zero256",
+      "canonical_bytes": 975
+    },
+    {
+      "index": 49,
+      "name": "zero256/setup_incomplete",
+      "kind": "EventResponse",
+      "fixture": "zero256",
+      "canonical_bytes": 1792
+    },
+    {
+      "index": 50,
+      "name": "zero256/ready",
+      "kind": "EventSnapshot",
+      "fixture": "zero256",
+      "canonical_bytes": 3895
+    },
+    {
+      "index": 51,
+      "name": "zero256/ready",
+      "kind": "EventResponse",
+      "fixture": "zero256",
+      "canonical_bytes": 4776
+    },
+    {
+      "index": 52,
+      "name": "zero256/busy",
+      "kind": "EventSnapshot",
+      "fixture": "zero256",
+      "canonical_bytes": 3894
+    },
+    {
+      "index": 53,
+      "name": "zero256/busy",
+      "kind": "EventResponse",
+      "fixture": "zero256",
+      "canonical_bytes": 4775
+    },
+    {
+      "index": 54,
+      "name": "zero256/failed",
+      "kind": "EventSnapshot",
+      "fixture": "zero256",
+      "canonical_bytes": 3909
+    },
+    {
+      "index": 55,
+      "name": "zero256/failed",
+      "kind": "EventResponse",
+      "fixture": "zero256",
+      "canonical_bytes": 4790
+    },
+    {
+      "index": 56,
+      "name": "zero256/queued",
+      "kind": "EventJob",
+      "fixture": "zero256",
+      "canonical_bytes": 1120
+    },
+    {
+      "index": 57,
+      "name": "zero256/queued",
+      "kind": "EventResponse",
+      "fixture": "zero256",
+      "canonical_bytes": 2001
+    },
+    {
+      "index": 58,
+      "name": "zero256/running",
+      "kind": "EventJob",
+      "fixture": "zero256",
+      "canonical_bytes": 1121
+    },
+    {
+      "index": 59,
+      "name": "zero256/running",
+      "kind": "EventResponse",
+      "fixture": "zero256",
+      "canonical_bytes": 2002
+    },
+    {
+      "index": 60,
+      "name": "zero256/completed",
+      "kind": "EventJob",
+      "fixture": "zero256",
+      "canonical_bytes": 13517
+    },
+    {
+      "index": 61,
+      "name": "zero256/completed",
+      "kind": "EventResponse",
+      "fixture": "zero256",
+      "canonical_bytes": 14398
+    },
+    {
+      "index": 62,
+      "name": "zero256/failed",
+      "kind": "EventJob",
+      "fixture": "zero256",
+      "canonical_bytes": 1135
+    },
+    {
+      "index": 63,
+      "name": "zero256/failed",
+      "kind": "EventResponse",
+      "fixture": "zero256",
+      "canonical_bytes": 2016
+    },
+    {
+      "index": 64,
+      "name": "zero256/cancelled",
+      "kind": "EventJob",
+      "fixture": "zero256",
+      "canonical_bytes": 1138
+    },
+    {
+      "index": 65,
+      "name": "zero256/cancelled",
+      "kind": "EventResponse",
+      "fixture": "zero256",
+      "canonical_bytes": 2019
+    },
+    {
+      "index": 66,
+      "name": "zero256/event_status",
+      "kind": "EventRequest",
+      "fixture": "zero256",
+      "canonical_bytes": 176
+    },
+    {
+      "index": 67,
+      "name": "zero256/event_status",
+      "kind": "EventResponse",
+      "fixture": "zero256",
+      "canonical_bytes": 2010
+    },
+    {
+      "index": 68,
+      "name": "zero256/event_record",
+      "kind": "EventRequest",
+      "fixture": "zero256",
+      "canonical_bytes": 176
+    },
+    {
+      "index": 69,
+      "name": "zero256/event_record",
+      "kind": "EventResponse",
+      "fixture": "zero256",
+      "canonical_bytes": 24016
+    },
+    {
+      "index": 70,
+      "name": "zero256/event_history",
+      "kind": "EventRequest",
+      "fixture": "zero256",
+      "canonical_bytes": 167
+    },
+    {
+      "index": 71,
+      "name": "zero256/event_history",
+      "kind": "EventResponse",
+      "fixture": "zero256",
+      "canonical_bytes": 2200
+    },
+    {
+      "index": 72,
+      "name": "zero256/before_cutoff",
+      "kind": "EventStatus",
+      "fixture": "zero256",
+      "canonical_bytes": 911
+    },
+    {
+      "index": 73,
+      "name": "zero256/awaiting_capture",
+      "kind": "EventStatus",
+      "fixture": "zero256",
+      "canonical_bytes": 914
+    },
+    {
+      "index": 74,
+      "name": "zero256/deadline_reached",
+      "kind": "EventStatus",
+      "fixture": "zero256",
+      "canonical_bytes": 914
+    },
+    {
+      "index": 75,
+      "name": "maximum_eight_metadata",
+      "kind": "HistoryPage",
+      "fixture": "",
+      "canonical_bytes": 7660
+    },
+    {
+      "index": 76,
+      "name": "maximum_eight_metadata",
+      "kind": "EventResponse",
+      "fixture": "",
+      "canonical_bytes": 8541
+    },
+    {
+      "index": 77,
+      "name": "history_exact_cursor",
+      "kind": "HistoryPage",
+      "fixture": "",
+      "canonical_bytes": 1179
+    },
+    {
+      "index": 78,
+      "name": "unrostered_numeric_zero_control",
+      "kind": "ParticipantSnapshot",
+      "fixture": "",
+      "canonical_bytes": 10598
+    },
+    {
+      "index": 79,
+      "name": "error/invalid_request",
+      "kind": "EventResponse",
+      "fixture": "",
+      "canonical_bytes": 141
+    },
+    {
+      "index": 80,
+      "name": "error/unauthorized",
+      "kind": "EventResponse",
+      "fixture": "",
+      "canonical_bytes": 138
+    },
+    {
+      "index": 81,
+      "name": "error/forbidden",
+      "kind": "EventResponse",
+      "fixture": "",
+      "canonical_bytes": 135
+    },
+    {
+      "index": 82,
+      "name": "error/stale_view",
+      "kind": "EventResponse",
+      "fixture": "",
+      "canonical_bytes": 136
+    },
+    {
+      "index": 83,
+      "name": "error/busy",
+      "kind": "EventResponse",
+      "fixture": "",
+      "canonical_bytes": 130
+    },
+    {
+      "index": 84,
+      "name": "error/event_unavailable",
+      "kind": "EventResponse",
+      "fixture": "",
+      "canonical_bytes": 143
+    },
+    {
+      "index": 85,
+      "name": "error/event_corrupt",
+      "kind": "EventResponse",
+      "fixture": "",
+      "canonical_bytes": 139
+    },
+    {
+      "index": 86,
+      "name": "error/event_capacity",
+      "kind": "EventResponse",
+      "fixture": "",
+      "canonical_bytes": 140
+    },
+    {
+      "index": 87,
+      "name": "error/event_clock",
+      "kind": "EventResponse",
+      "fixture": "",
+      "canonical_bytes": 137
+    },
+    {
+      "index": 88,
+      "name": "error/event_calendar",
+      "kind": "EventResponse",
+      "fixture": "",
+      "canonical_bytes": 140
+    },
+    {
+      "index": 89,
+      "name": "error/event_not_due",
+      "kind": "EventResponse",
+      "fixture": "",
+      "canonical_bytes": 139
+    },
+    {
+      "index": 90,
+      "name": "error/event_created_too_late",
+      "kind": "EventResponse",
+      "fixture": "",
+      "canonical_bytes": 148
+    },
+    {
+      "index": 91,
+      "name": "error/event_incomplete",
+      "kind": "EventResponse",
+      "fixture": "",
+      "canonical_bytes": 142
+    },
+    {
+      "index": 92,
+      "name": "error/event_conflict",
+      "kind": "EventResponse",
+      "fixture": "",
+      "canonical_bytes": 140
+    },
+    {
+      "index": 93,
+      "name": "error/event_not_found",
+      "kind": "EventResponse",
+      "fixture": "",
+      "canonical_bytes": 141
+    },
+    {
+      "index": 94,
+      "name": "error/event_cancelled",
+      "kind": "EventResponse",
+      "fixture": "",
+      "canonical_bytes": 141
+    },
+    {
+      "index": 95,
+      "name": "error/outcome_unknown",
+      "kind": "EventResponse",
+      "fixture": "",
+      "canonical_bytes": 141
+    },
+    {
+      "index": 96,
+      "name": "error/event_setup_incomplete",
+      "kind": "EventResponse",
+      "fixture": "",
+      "canonical_bytes": 148
+    }
+  ]
+}

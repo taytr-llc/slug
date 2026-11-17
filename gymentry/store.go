@@ -207,6 +207,9 @@ func create(ctx context.Context, path string, pin Pin, source *gymstable.Store, 
 	return s, nil
 }
 func Open(ctx context.Context, path string, expected Pin, source *gymstable.Store) (*Store, error) {
+	return openWithClock(ctx, path, expected, source, time.Now)
+}
+func openWithClock(ctx context.Context, path string, expected Pin, source *gymstable.Store, clock func() time.Time) (*Store, error) {
 	if e := normal(); e != nil {
 		return nil, e
 	}
@@ -256,6 +259,7 @@ func Open(ctx context.Context, path string, expected Pin, source *gymstable.Stor
 		return nil, ErrUnavailable
 	}
 	s := newStore(db, source)
+	s.now = clock
 	if e = s.audit(ctx, m, info); e != nil {
 		s.Close()
 		return nil, e

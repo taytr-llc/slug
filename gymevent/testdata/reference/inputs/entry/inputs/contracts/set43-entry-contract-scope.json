@@ -1,0 +1,226 @@
+{
+  "status": "independently_reviewed_awaiting_root_approval",
+  "created_at": "2026-11-17T17:20:25.142709+00:00",
+  "contract": {
+    "path": "/Users/taytrrip/slug/set43-entry-contract-draft.md",
+    "sha256": "958d3fda0cb50cda3bad38f7e461a44537a6a3c20ef5cc2b0c2abb7d2fdafcae"
+  },
+  "baseline_commit": "81ef2816b42b9a10f0a37da90c5a967c7a93330b",
+  "current_head": "81ef2816b42b9a10f0a37da90c5a967c7a93330b",
+  "scope": [
+    "authenticated candidate Saturday save/replace/withdraw/query/history",
+    "five fighters maximum and one per class; rostered/nonretired at save; free",
+    "original session and final concrete stable revision fence; monotone cutoff clock",
+    "closed_pending_lock only; exact old history preserved",
+    "additive entry store and recoverable v3 root in existing candidate app"
+  ],
+  "excluded": [
+    "post-lock roster/retirement policy",
+    "lock or unknown future seed selector",
+    "pairing/results/rankings/training/XP",
+    "ownership transfers or official activation",
+    "runtime/oracle/fixtures/code/commit/push/deployment"
+  ],
+  "proposal": {
+    "path": "/Users/taytrrip/slug/set43-next-slice-proposal.md",
+    "sha256": "c51a63cd69ee62caa0d0dabebdc59e71d33468fd48575bc9571eb1b36808822d"
+  },
+  "calendar_input": {
+    "path": "/opt/homebrew/Cellar/go/1.27.4/libexec/lib/time/zoneinfo.zip",
+    "archive_sha256": "b2d18a7c8fa8142097a48c99609fb3c92db5ee98bc740294e57eab8ae9f94779",
+    "member": "America/Los_Angeles",
+    "member_sha256": "200d05754f6d83a371cf408d7085125797657b3b0bebeba1e508cffe86a3e5c8",
+    "member_bytes": 1294,
+    "range": [
+      2026,
+      2099
+    ],
+    "authority_cutoff": "Saturday 12:00:00.000 in pinned location",
+    "host_timezone_authoritative": false
+  },
+  "source_inputs": {
+    "AGENTS.md": {
+      "baseline_sha256": "f1cfb9eccafa896b9957e148be9ea66fe93f0c8627950cc85c8d869b7105ded0",
+      "current_sha256": "f1cfb9eccafa896b9957e148be9ea66fe93f0c8627950cc85c8d869b7105ded0",
+      "unchanged_from_baseline": true
+    },
+    "BRAWLCHAIN_SPEC.md": {
+      "baseline_sha256": "d1437b1bfc4df04de2bf5f8b620e08382fffd9ada990abf23d02138a3b24d622",
+      "current_sha256": "d1437b1bfc4df04de2bf5f8b620e08382fffd9ada990abf23d02138a3b24d622",
+      "unchanged_from_baseline": true
+    },
+    "BUILD_PLAN.md": {
+      "baseline_sha256": "fe5d41fc8f674e727b372c3fa39bef8323d931a17990b2d682cc842bac529980",
+      "current_sha256": "fe5d41fc8f674e727b372c3fa39bef8323d931a17990b2d682cc842bac529980",
+      "unchanged_from_baseline": true
+    },
+    "LAUNCH_READINESS.md": {
+      "baseline_sha256": "56dbb93367e70c876f96a730c630d696d1a12a87052131fec72ca42623546eb3",
+      "current_sha256": "56dbb93367e70c876f96a730c630d696d1a12a87052131fec72ca42623546eb3",
+      "unchanged_from_baseline": true
+    },
+    "gymaccount/types.go": {
+      "baseline_sha256": "15ef430c082fe07d5d8056f87274f34bce77745824b7b8934155b583ddc2efe9",
+      "current_sha256": "15ef430c082fe07d5d8056f87274f34bce77745824b7b8934155b583ddc2efe9",
+      "unchanged_from_baseline": true
+    },
+    "gymaccount/sessions.go": {
+      "baseline_sha256": "4e1e324ae4c2e84c59d0a5e7cb594c457569294ff8f789261cc76216cdd91e55",
+      "current_sha256": "4e1e324ae4c2e84c59d0a5e7cb594c457569294ff8f789261cc76216cdd91e55",
+      "unchanged_from_baseline": true
+    },
+    "gymstable/types.go": {
+      "baseline_sha256": "1f0038aa844869c59b5f2e8f38e2ec69380aac88d66000b28d9d1471daccb2f0",
+      "current_sha256": "1f0038aa844869c59b5f2e8f38e2ec69380aac88d66000b28d9d1471daccb2f0",
+      "unchanged_from_baseline": true
+    },
+    "gymstable/store.go": {
+      "baseline_sha256": "e183962e484c7fe7fa913a3b3cd40cbe1ba20aec2f99901b66ed3a68b4247e99",
+      "current_sha256": "e183962e484c7fe7fa913a3b3cd40cbe1ba20aec2f99901b66ed3a68b4247e99",
+      "unchanged_from_baseline": true
+    },
+    "gymstable/read.go": {
+      "baseline_sha256": "3107ab73cdcfc5f79dba7097ab23a119db4302acd1b07ba6e8d6fde0b19666ae",
+      "current_sha256": "3107ab73cdcfc5f79dba7097ab23a119db4302acd1b07ba6e8d6fde0b19666ae",
+      "unchanged_from_baseline": true
+    },
+    "gymstable/operations.go": {
+      "baseline_sha256": "5f67a8eee3cd38f25ceae9b73c4a6c020f3fdb1a31f39d1e3ee10195ebd2a845",
+      "current_sha256": "5f67a8eee3cd38f25ceae9b73c4a6c020f3fdb1a31f39d1e3ee10195ebd2a845",
+      "unchanged_from_baseline": true
+    },
+    "gymstable/preview.go": {
+      "baseline_sha256": "56c1f126f84b5d5c9d46d838bea9209ead789cc777d45584e9ff61b580a167bd",
+      "current_sha256": "56c1f126f84b5d5c9d46d838bea9209ead789cc777d45584e9ff61b580a167bd",
+      "unchanged_from_baseline": true
+    },
+    "gymstable/codec.go": {
+      "baseline_sha256": "e83d4d9d91ad6ff429051d12cedb612c031b607cf5156ef725330d997a245df4",
+      "current_sha256": "e83d4d9d91ad6ff429051d12cedb612c031b607cf5156ef725330d997a245df4",
+      "unchanged_from_baseline": true
+    },
+    "fightermanifest/manifest.go": {
+      "baseline_sha256": "1f0767807efd5dc0e0ccb6a32270104b1e038366fadcb37542b0d717b0209adf",
+      "current_sha256": "1f0767807efd5dc0e0ccb6a32270104b1e038366fadcb37542b0d717b0209adf",
+      "unchanged_from_baseline": true
+    },
+    "fightermanifest/tables_v1.json": {
+      "baseline_sha256": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+      "current_sha256": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+      "unchanged_from_baseline": true
+    },
+    "fightercondition/condition.go": {
+      "baseline_sha256": "a70c4ccba956fae07d08d8cf5eda9ef0a72d57069d75b5c97441ecec546c3dda",
+      "current_sha256": "a70c4ccba956fae07d08d8cf5eda9ef0a72d57069d75b5c97441ecec546c3dda",
+      "unchanged_from_baseline": true
+    },
+    "desktop/accountpilot/manifest_controller.go": {
+      "baseline_sha256": "5745fa12db7a80c7076ac4215e79f27d4eae14bc74e3acb137a4d1e20e2662c8",
+      "current_sha256": "5745fa12db7a80c7076ac4215e79f27d4eae14bc74e3acb137a4d1e20e2662c8",
+      "unchanged_from_baseline": true
+    },
+    "desktop/accountpilot/manifest_files.go": {
+      "baseline_sha256": "ded2d3a33f56237639b4921b428a397c86f090f12adebd4368b8f1a506e4a622",
+      "current_sha256": "ded2d3a33f56237639b4921b428a397c86f090f12adebd4368b8f1a506e4a622",
+      "unchanged_from_baseline": true
+    },
+    "desktop/accountpilot/stable_controller.go": {
+      "baseline_sha256": "c1afb3cc3a87af1e79d98146326e9cfe83ce83415baab8049dbc20dda53d0d6b",
+      "current_sha256": "c1afb3cc3a87af1e79d98146326e9cfe83ce83415baab8049dbc20dda53d0d6b",
+      "unchanged_from_baseline": true
+    },
+    "desktop/accountpilot/stable_files.go": {
+      "baseline_sha256": "1c4ec374bbede9b849464e42fcde612934dfb7f4d3e2cf006faf528ef0a20298",
+      "current_sha256": "1c4ec374bbede9b849464e42fcde612934dfb7f4d3e2cf006faf528ef0a20298",
+      "unchanged_from_baseline": true
+    },
+    "desktop/pilot/stable_types.go": {
+      "baseline_sha256": "b04414f8861037d3b3c6e3bdd69dc737e70b074a990ef692f8122c8ed2456da9",
+      "current_sha256": "b04414f8861037d3b3c6e3bdd69dc737e70b074a990ef692f8122c8ed2456da9",
+      "unchanged_from_baseline": true
+    },
+    "desktop/pilot/stable_controller.go": {
+      "baseline_sha256": "73248a91cfc44791684413883f38a9248ae066bce245d19be83c39417b51dedd",
+      "current_sha256": "73248a91cfc44791684413883f38a9248ae066bce245d19be83c39417b51dedd",
+      "unchanged_from_baseline": true
+    },
+    "desktop/pilot/stable_install.go": {
+      "baseline_sha256": "6f34d6a24b1cd9dc687e1baf6032e0b9bcbf47dbe05ea41fa0cb5764b9f9aee4",
+      "current_sha256": "6f34d6a24b1cd9dc687e1baf6032e0b9bcbf47dbe05ea41fa0cb5764b9f9aee4",
+      "unchanged_from_baseline": true
+    },
+    "desktop/pilot/stable_lane.go": {
+      "baseline_sha256": "fbfd11ca64b717205a4afa37d0eb7ffe1cd6406f247d511604006af51a4a1a08",
+      "current_sha256": "fbfd11ca64b717205a4afa37d0eb7ffe1cd6406f247d511604006af51a4a1a08",
+      "unchanged_from_baseline": true
+    },
+    "desktop/pilot/preview_controller.go": {
+      "baseline_sha256": "6de37af49bd50ab575eba9912bdd1f27a3718c55145bd1aae38e7df87976d676",
+      "current_sha256": "6de37af49bd50ab575eba9912bdd1f27a3718c55145bd1aae38e7df87976d676",
+      "unchanged_from_baseline": true
+    },
+    "desktop/pilot/preview_types.go": {
+      "baseline_sha256": "6fccac0c575ceb89784cd425628c7b186ed9324c58a6bcbae05c4c3006ca1f9f",
+      "current_sha256": "6fccac0c575ceb89784cd425628c7b186ed9324c58a6bcbae05c4c3006ca1f9f",
+      "unchanged_from_baseline": true
+    },
+    "desktop/internal/bridge/stable_bridge.go": {
+      "baseline_sha256": "6bac093428a890e436c4fc2a47ed2aed5db23f918bfc877e4fa87e07267a586f",
+      "current_sha256": "6bac093428a890e436c4fc2a47ed2aed5db23f918bfc877e4fa87e07267a586f",
+      "unchanged_from_baseline": true
+    },
+    "desktop/cmd/slugpilot/main.go": {
+      "baseline_sha256": "99b403d53dbb236bbc78fbf5738faf82e0f6e4ecb5873cc75f71cdb451b3308a",
+      "current_sha256": "99b403d53dbb236bbc78fbf5738faf82e0f6e4ecb5873cc75f71cdb451b3308a",
+      "unchanged_from_baseline": true
+    },
+    "desktop/main.go": {
+      "baseline_sha256": "a5fe1640895eefcc8458304071785b1cd24236a7a07c51c6ff0a80dbd7c25b5a",
+      "current_sha256": "a5fe1640895eefcc8458304071785b1cd24236a7a07c51c6ff0a80dbd7c25b5a",
+      "unchanged_from_baseline": true
+    },
+    "desktop/stable.go": {
+      "baseline_sha256": "3a91001dbeeb88a8e0dec4138cc45e64c2216de6dd21d551a7b20f493e935af1",
+      "current_sha256": "3a91001dbeeb88a8e0dec4138cc45e64c2216de6dd21d551a7b20f493e935af1",
+      "unchanged_from_baseline": true
+    },
+    "desktop/candidate_path.go": {
+      "baseline_sha256": "42162e1934809da7a26a356eeaa5ef471aa313fbb7c33e5983ded90145044179",
+      "current_sha256": "42162e1934809da7a26a356eeaa5ef471aa313fbb7c33e5983ded90145044179",
+      "unchanged_from_baseline": true
+    },
+    "desktop/scripts/build-manifest-macos.sh": {
+      "baseline_sha256": "e9c9e7bb1ac73da55de20232cf173c5887b236a94e17843969d543295651b4c3",
+      "current_sha256": "e9c9e7bb1ac73da55de20232cf173c5887b236a94e17843969d543295651b4c3",
+      "unchanged_from_baseline": true
+    }
+  },
+  "preparation": {
+    "source_inspection": true,
+    "tzif_input_hash_only": true,
+    "formula_only_size_analysis": true,
+    "calendar_expected_values_generated": false,
+    "engine_oracle_runtime_executed": false,
+    "repository_files_modified": false
+  },
+  "genuine_later_policy_gaps": [
+    "when roster/retirement eligibility binds after intake cutoff",
+    "exact future entropy commitment/selector and idle/reorg/cancel behavior"
+  ],
+  "review_inputs": [
+    {
+      "path": "/Users/taytrrip/slug/set43-entry-integration-feasibility.json",
+      "sha256": "26b1cf87ef282ee49e14921fbf11a1d06e625b7c348f8c66609bd2f613135339"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set43-entry-integration-feasibility.md",
+      "sha256": "84f9e351278d4cdf7ed6ceded0f172f77346dca9490c5408d33bc25006c11846"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set43-entry-contract-independent-review.json",
+      "sha256": "e6a75094657ae453f8b9a4602f28f28f64843e5b28f33344f3eb15e7f1c40b5c"
+    }
+  ],
+  "completed_at": "2026-11-17T17:22:54.824958+00:00",
+  "git_status_at_close": ""
+}

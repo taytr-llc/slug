@@ -68,8 +68,10 @@ version.
   → `slug-event-snapshot` (set 44, candidate event snapshots under D76/D77).
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
-  a solo review does not replace the session with him. Continue authorized
-  engineering deployments, but do not treat them as product launch approval.
+  a solo review does not replace the session with him. He wants one full review
+  at the end once all major flows are ready, rather than partial design reviews.
+  Continue authorized engineering deployments, but do not treat them as product
+  launch approval.
 - Branch each next change set off the latest completed implementation tip,
   never the live seed branch by default. Use `slug-<topic>` names; set 7 is
   `slug-signed-checkpoints`. HANDOVER.md records the original takeover state.

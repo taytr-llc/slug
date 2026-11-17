@@ -1,0 +1,140 @@
+{
+  "status": "passed",
+  "kind": "formula_only_max_shape",
+  "claims_no_valid_vectors_or_engine_execution": true,
+  "python": "3.14.3 (main, Feb  3 2026, 15:32:20) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "reviewed_sha256": {
+    "/Users/taytrrip/slug/set44-core-contract-draft.md": "7e0c2842cb6fac2c67896c8e646ffe5778f1a0d03d8ec0e386a074e289537379",
+    "/Users/taytrrip/slug/set44-core-shape-bounds.py": "8f0f0f22aced5113d8b0eea447eee1bf5a3cbf1257717e42365fdd7455c0b7e0",
+    "/Users/taytrrip/slug/slug/gymstable/types.go": "1f0038aa844869c59b5f2e8f38e2ec69380aac88d66000b28d9d1471daccb2f0",
+    "/Users/taytrrip/slug/slug/gymaccount/types.go": "e8b71209692a8729d619c504c2cc241616b1f1919105fccf70c0eb2b347d32b6",
+    "/Users/taytrrip/slug/slug/gymaccount/fixtures.go": "f499c5042d61cff5bfeac127a21b92d9560ccbdb5c5a96ed7606acb70a38d3fa",
+    "/Users/taytrrip/slug/slug/gymentry/types.go": "684b52c7f3b5f982302b67c413d24f3330173598f6cd030f41b68b0d151c9ce0",
+    "/Users/taytrrip/slug/slug/fightercondition/condition.go": "a70c4ccba956fae07d08d8cf5eda9ef0a72d57069d75b5c97441ecec546c3dda",
+    "/Users/taytrrip/slug/slug/registry/manifest_types.go": "03a4fd3ee8e1de92b1edc8b09c61bb01933c7e1ad923660c10d8bdb82b41cfbb"
+  },
+  "source_changes": [],
+  "conservative_assumptions": [
+    "All numeric fields widened to16 decimal digits, even versions/counters/attributes",
+    "Root public key256bytes; profile/projector64bytes, exceeding exact fixture/selector lengths",
+    "All nullable receipt positions populated and all arrays at declared cardinality",
+    "Unknown keys/strings remain forbidden; these structurally oversized envelopes are not logical positive fixtures"
+  ],
+  "shapes": {
+    "Pin": {
+      "upper_envelope_bytes": 3456,
+      "cap_bytes": 16384,
+      "passes": true
+    },
+    "Marker": {
+      "upper_envelope_bytes": 3607,
+      "cap_bytes": 16383,
+      "passes": true
+    },
+    "InitIntent": {
+      "upper_envelope_bytes": 3569,
+      "cap_bytes": 20480,
+      "passes": true
+    },
+    "Metadata": {
+      "upper_envelope_bytes": 3661,
+      "cap_bytes": 20480,
+      "passes": true
+    },
+    "Info": {
+      "upper_envelope_bytes": 3633,
+      "cap_bytes": 20480,
+      "passes": true
+    },
+    "Event": {
+      "upper_envelope_bytes": 603,
+      "cap_bytes": 2048,
+      "passes": true
+    },
+    "EventStatus": {
+      "upper_envelope_bytes": 1183,
+      "cap_bytes": 2048,
+      "passes": true
+    },
+    "CutoffRoster": {
+      "upper_envelope_bytes": 1184,
+      "cap_bytes": 4096,
+      "passes": true
+    },
+    "CutoffEntry": {
+      "upper_envelope_bytes": 9988,
+      "cap_bytes": 36864,
+      "passes": true
+    },
+    "CutoffMember": {
+      "upper_envelope_bytes": 1672,
+      "cap_bytes": 4096,
+      "passes": true
+    },
+    "CutoffSelection": {
+      "upper_envelope_bytes": 9599,
+      "cap_bytes": 61440,
+      "passes": true
+    },
+    "CutoffSnapshot": {
+      "upper_envelope_bytes": 19596,
+      "cap_bytes": 61440,
+      "passes": true
+    },
+    "Member": {
+      "upper_envelope_bytes": 1701,
+      "cap_bytes": 4096,
+      "passes": true
+    },
+    "ParticipantSnapshot": {
+      "upper_envelope_bytes": 20206,
+      "cap_bytes": 57344,
+      "passes": true
+    },
+    "CaptureEvidence": {
+      "upper_envelope_bytes": 585,
+      "cap_bytes": 2048,
+      "passes": true
+    },
+    "ParticipantCapture": {
+      "upper_envelope_bytes": 20843,
+      "cap_bytes": 61440,
+      "passes": true
+    },
+    "SnapshotInput": {
+      "upper_envelope_bytes": 41071,
+      "cap_bytes": 122880,
+      "passes": true
+    },
+    "SnapshotReceipt": {
+      "upper_envelope_bytes": 42413,
+      "cap_bytes": 126976,
+      "passes": true
+    },
+    "CaptureResult": {
+      "upper_envelope_bytes": 22092,
+      "cap_bytes": 131072,
+      "passes": true
+    },
+    "HistoryPage": {
+      "upper_envelope_bytes": 9807,
+      "cap_bytes": 131072,
+      "passes": true
+    },
+    "EventRow": {
+      "upper_envelope_bytes": 820,
+      "cap_bytes": 2048,
+      "passes": true
+    },
+    "LargestCoreResultPlus8KiBEnvelope": {
+      "upper_envelope_bytes": 50605,
+      "cap_bytes": 131072,
+      "passes": true
+    }
+  },
+  "logical_reserved_value_bytes": 64524288,
+  "logical_key_bytes": 50180,
+  "logical_total_upper_bytes": 64574468,
+  "logical_value_limit": 67108864,
+  "physical_leveldb_overhead_included": false
+}

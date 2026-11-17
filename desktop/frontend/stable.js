@@ -9,6 +9,7 @@ const CACHE_MAX = 1 << 20;
 const ids = ['state', 'account-state', 'account-copy', 'hold', 'login-a', 'login-b', 'logout', 'reset', 'mining', 'mining-copy', 'alert', 'attempts', 'rate', 'accepted', 'pending', 'height', 'wallet-state', 'wallet-height', 'spendable', 'immature', 'payout', 'gym-id', 'export-recovery', 'verify-backup', 'backup', 'refresh', 'coverage', 'announcement', 'empty', 'empty-copy', 'cards', 'candidates-heading', 'stable-state', 'stable-count', 'stable-progress', 'sync', 'pause-sync', 'recent', 'inventory', 'roster-details', 'previous', 'next', 'page-label', 'roster-slots', 'roster-count', 'mutation-state', 'reconcile', 'apply-saved', 'abandon', 'cancel-job'];
 ids.push('preview-state', 'preview-selection', 'preview-begin', 'preview-cancel', 'preview-clear', 'preview-message', 'preview-replay', 'preview-asof', 'preview-fighters', 'preview-play', 'preview-previous', 'preview-next', 'preview-restart', 'preview-result', 'preview-motion', 'preview-step', 'preview-events', 'preview-outcome', 'preview-finish', 'preview-scores');
 ids.push('entry-state', 'entry-date', 'entry-upcoming', 'entry-status', 'entry-cutoff', 'entry-saved', 'entry-warning', 'entry-count', 'entry-draft', 'entry-save', 'entry-withdraw', 'entry-check', 'entry-clear', 'entry-cancel', 'entry-message', 'entry-pending', 'entry-reconcile', 'entry-apply', 'entry-abandon', 'entry-eligibility', 'entry-history', 'entry-history-next', 'entry-history-list');
+ids.push('event-state', 'event-cutoff', 'event-progress', 'event-refresh', 'event-capture', 'event-cancel', 'event-record', 'event-clear', 'event-message', 'event-seed', 'event-deadline', 'event-digest', 'event-members', 'event-history', 'event-history-next', 'event-history-list');
 const ui = Object.fromEntries(ids.map((id) => [id, document.getElementById(id)]));
 const attrs = ['power', 'speed', 'chin', 'stamina', 'skill'];
 const rarity = ['club', 'professional', 'contender', 'elite', 'generational'];
@@ -269,7 +270,7 @@ function ready() { return accountReady() && stable?.view && currentKey() === vie
 function canEdit() { return ready() && stable.status.caught_up && !stable.status.pending_operation_id && !watched && !flow && !command && !['failed', 'unavailable'].includes(stable.state); }
 function clearCards() { for (const c of cards.values()) { c.image.removeAttribute('src'); c.article.remove(); } cards.clear(); images.clear(); imageAttempts.clear(); }
 function forgetView(clearFlow = true) {
-  epoch++; clearEntry(); clearPreview(); clearCards(); pageItems = []; watched = null; savedOperation = null; lastViewedJob = ''; pageAfter = pageNext = 0; rosterFirst = 1; rosterNext = 0; pageRevision = null; mode = 'recent';
+  epoch++; clearEvent(); clearEntry(); clearPreview(); clearCards(); pageItems = []; watched = null; savedOperation = null; lastViewedJob = ''; pageAfter = pageNext = 0; rosterFirst = 1; rosterNext = 0; pageRevision = null; mode = 'recent';
   if (clearFlow) { flow = null; mutationMessage = ''; }
 }
 function disconnected() { forgetView(false); current = stable = null; connectionError = 'The local gym is unavailable. Saved changes remain on disk; reconnect before continuing.'; render(); }
@@ -375,7 +376,7 @@ function render() {
   ui['apply-saved'].disabled = !signed || !!command || !!watched || !pending || pending.intent.view_id !== s.view.view_id || pending.intent.generation !== s.view.generation || !st.caught_up;
   ui.abandon.disabled = !signed || !!command || !!watched || !pending;
   content(ui.alert, connectionError || message || (stable?.error ? textError(stable.error) : '')); ui.alert.hidden = !ui.alert.textContent;
-  renderRoster(); renderCards(); renderPreview(); renderEntry();
+  renderRoster(); renderCards(); renderPreview(); renderEntry(); renderEvent();
 }
 async function call(method, ...args) { requireValue(!activeCall); const p = Call.ByName(`main.Gym.${method}`, ...args); activeCall = p; try { return await p; } finally { activeCall = null; } }
 function schedule() { if (timer !== null) clearTimeout(timer); timer = null; if (!disposed && enabled && !document.hidden) timer = setTimeout(() => { timer = null; pollWanted = true; pump(); }, 1000); }
@@ -399,6 +400,7 @@ async function fetchSnapshots() {
     if (id && (watched || id !== lastViewedJob)) await fetchJob(id);
     if (!disposed && ready() && !tasks.length) await fetchPreviewSnapshot();
     if (!disposed && ready() && !tasks.length) await fetchEntrySnapshot();
+    if (!disposed && ready() && !tasks.length) await fetchEventSnapshot();
   } catch { if (!disposed && captured === epoch) disconnected(); }
 }
 function stablyChangedRoster() { return stable.status.roster_revision !== pageRevision; }
@@ -507,7 +509,7 @@ async function cancelJob(id) {
 }
 async function oldAction(method, args = [], expectedID = '') {
   if (!enabled || command) return;
-  if (method === 'Stop') entryChanged();
+  if (method === 'Stop') { entryChanged(); if (eventStatus && eventAutoAttempted.size < 256) eventAutoAttempted.add(eventStatus.event.event_id); }
   const capturedView = currentKey(); if (expectedID && !pageItems.some((i) => i.assignment.prospect_id === expectedID)) return;
   const invalidate = ['LoginFixture', 'Logout', 'ResetFixtureAccount'].includes(method);
   queue(async () => {
@@ -526,7 +528,7 @@ async function loadPortrait(i) {
     const p = await call('ManifestPortrait', i.assignment.sequence); if (!remains()) return;
     exact(p, ['version', 'view', 'sequence', 'id', 'manifest_digest', 'portrait_digest', 'svg']); const a = i.assignment;
     requireValue(p.version === 1 && viewKey(checkedView(p.view)) === view && p.sequence === a.sequence && p.id === a.prospect_id && p.manifest_digest === a.manifest_digest && p.portrait_digest === a.portrait_digest && imageOnlySVG(p.svg));
-    const src = `data:image/svg+xml;base64,${btoa(p.svg)}`; requireValue([...images.entries()].reduce((n, [other, v]) => n + (other === k ? 0 : 2 * v.length), 2 * src.length) + JSON.stringify(pageItems).length + previewRetainedBytes() + entryRetainedBytes() <= CACHE_MAX && images.size <= 8);
+    const src = `data:image/svg+xml;base64,${btoa(p.svg)}`; requireValue([...images.entries()].reduce((n, [other, v]) => n + (other === k ? 0 : 2 * v.length), 2 * src.length) + JSON.stringify(pageItems).length + previewRetainedBytes() + entryRetainedBytes() + eventRetainedBytes() <= CACHE_MAX && images.size <= 8);
     if (!remains()) return; images.set(k, src); const c = cards.get(a.prospect_id); c.image.setAttribute('src', src); c.image.hidden = false; c.placeholder.hidden = true;
   } catch { if (remains()) { const c = cards.get(i.assignment.prospect_id); c.image.removeAttribute('src'); c.image.hidden = true; c.placeholder.hidden = false; content(c.placeholder, 'Portrait unavailable. Reload it from the current verified page.'); } }
 }
@@ -618,7 +620,7 @@ function pausePreview() { if (playbackTimer !== null) clearTimeout(playbackTimer
 function discardPreviewResult() { pausePreview(); previewResult = null; playbackSteps = []; playbackIndex = 0; previewImages.clear(); previewImageAttempts.clear(); previewRendered = ''; ui['preview-fighters'].textContent = ''; ui['preview-events'].textContent = ''; ui['preview-scores'].textContent = ''; }
 function clearPreview() { previewSerial++; discardPreviewResult(); previewSelected = []; previewWatch = null; previewDiscovery = null; previewSnapshot = null; previewMessage = ''; ui['preview-selection'].textContent = ''; }
 function previewRetainedBytes() { return JSON.stringify(previewSelected).length + (previewResult ? JSON.stringify(previewResult).length + 65536 : 0) + [...previewImages.values()].reduce((n, src) => n + 2 * src.length, 0); }
-function previewCapacity(extra = 0) { return previewRetainedBytes() + entryRetainedBytes() + JSON.stringify(pageItems).length + [...images.values()].reduce((n, src) => n + 2 * src.length, 0) + extra <= CACHE_MAX; }
+function previewCapacity(extra = 0) { return previewRetainedBytes() + entryRetainedBytes() + eventRetainedBytes() + JSON.stringify(pageItems).length + [...images.values()].reduce((n, src) => n + 2 * src.length, 0) + extra <= CACHE_MAX; }
 function previewError(code) { return ({ preview_class_mismatch: 'Choose two candidates from the same weight class.', preview_not_found: 'This preview is no longer retained. Select your pair and explicitly preview again.', preview_capacity: 'The local preview cache is full. Clear the preview and retry.', preview_cancelled: 'Preview cancelled. No fight was recorded.', preview_observation_unknown: 'The authority could not confirm its clock observation. Reopen the gym before another preview. No fight was recorded.', outcome_unknown: 'The preview may have started. Check its status before explicitly trying again.', preview_unavailable: 'Fight preview is unavailable. Your saved candidates are retained.' })[code] ?? textError(code); }
 function previewRefusal(code) {
   if (['unauthorized', 'stale_view'].includes(code)) clearPreview();
@@ -828,7 +830,7 @@ function entryEnvelope(r, field, allowNull = false) {
   if (field === 'history') { exact(v, ['version', 'store_id', 'after_event_id', 'next_event_id', 'has_more', 'observed_at_ms', 'events']); requireValue(v.version === 1 && v.store_id === entryStore && optionalID(v.after_event_id) && optionalID(v.next_event_id) && typeof v.has_more === 'boolean' && int(v.observed_at_ms, 1, DATE_MAX) && Array.isArray(v.events) && v.events.length <= 8); for (const [n, e] of v.events.entries()) { entryStatusValue(e); requireValue(e.exists && e.observed_at_ms === v.observed_at_ms && (!n || v.events[n - 1].event.cutoff_ms < e.event.cutoff_ms)); } requireValue(v.next_event_id === (v.has_more && v.events.length ? v.events.at(-1).event.event_id : '')); }
   return { ok: true, value: own(v) };
 }
-function entryError(code) { return ({ busy: 'Another local task is finishing. Your entry choice is retained.', entry_unavailable: 'Saturday entry is unavailable in this app route.', entry_corrupt: 'The local entry history could not be validated. Reopen the gym; saved evidence is retained.', entry_capacity: 'The supported entry capacity is full. Saved outcomes remain available.', entry_clock: 'The authority clock needs attention. No new entry was confirmed.', entry_calendar: 'Choose a Saturday from 2026 through 2099.', entry_closed: 'Entry intake is closed. Event locking is not available in this candidate build.', entry_conflict: 'The entry or roster changed. Refresh and review before a new save.', entry_pending: 'A prepared entry choice needs review before another change.', entry_not_found: 'That recorded outcome is unavailable. Refresh status and history before another explicit choice.', entry_sync_required: 'Sync saved candidates before checking this selection.', entry_not_rostered: 'Every selected fighter must be on your roster when the entry is saved.', entry_retired: 'A selected fighter has retired. Review the draft before another save.', entry_class_conflict: 'Choose at most one fighter from each weight class.', entry_cancelled: 'The task was cancelled. A prepared or committed choice may still be retained.', outcome_unknown: 'This change may have been recorded. Check the recorded outcome before another choice.' })[code] ?? textError(code); }
+function entryError(code) { return ({ busy: 'Another local task is finishing. Your entry choice is retained.', entry_unavailable: 'Saturday entry is unavailable in this app route.', entry_corrupt: 'The local entry history could not be validated. Reopen the gym; saved evidence is retained.', entry_capacity: 'The supported entry capacity is full. Saved outcomes remain available.', entry_clock: 'The authority clock needs attention. No new entry was confirmed.', entry_calendar: 'Choose a Saturday from 2026 through 2099.', entry_closed: 'Entry intake is closed. The Saturday snapshot uses the state at noon Pacific.', entry_conflict: 'The entry or roster changed. Refresh and review before a new save.', entry_pending: 'A prepared entry choice needs review before another change.', entry_not_found: 'That recorded outcome is unavailable. Refresh status and history before another explicit choice.', entry_sync_required: 'Sync saved candidates before checking this selection.', entry_not_rostered: 'Every selected fighter must be on your roster when the entry is saved.', entry_retired: 'A selected fighter has retired. Review the draft before another save.', entry_class_conflict: 'Choose at most one fighter from each weight class.', entry_cancelled: 'The task was cancelled. A prepared or committed choice may still be retained.', outcome_unknown: 'This change may have been recorded. Check the recorded outcome before another choice.' })[code] ?? textError(code); }
 function entryRefusal(code) { if (['unauthorized', 'stale_view'].includes(code)) { clearEntry(); entryUnavailable = true; } if (code === 'entry_unavailable') { entryUnavailable = true; entrySnapshot = null; } entryMessage = entryError(code); }
 function entryContext(serial = entrySerial) { return { epoch, view: currentKey(), viewID: current?.view?.view_id, serial }; }
 function entryCurrent(c, selection = false) { return !disposed && ready() && c.epoch === epoch && c.view === currentKey() && (!selection || c.serial === entrySerial); }
@@ -845,7 +847,7 @@ function entryAdoptStatus(s) {
 }
 async function entryReadStatus(upcoming = false) {
   if (!entryReady()) return; const c = entryContext(), requested = entryDate;
-  try { const r = entryEnvelope(await call(upcoming ? 'EntryUpcoming' : 'EntryStatus', c.viewID, ...(upcoming ? [] : [requested])), 'status'); if (!entryCurrent(c, true)) return; if (!r.ok) { entryRefusal(r.error); return; } requireValue(upcoming ? r.value.event.cutoff_ms > r.value.observed_at_ms : r.value.event.saturday === requested); if (upcoming) { entryChanged(); entryDate = r.value.event.saturday; entryStatus = null; } entryAdoptStatus(r.value); }
+  try { const r = entryEnvelope(await call(upcoming ? 'EntryUpcoming' : 'EntryStatus', c.viewID, ...(upcoming ? [] : [requested])), 'status'); if (!entryCurrent(c, true)) return; if (!r.ok) { entryRefusal(r.error); return; } requireValue(upcoming ? r.value.event.cutoff_ms > r.value.observed_at_ms : r.value.event.saturday === requested); if (upcoming) { entryChanged(); entryDate = r.value.event.saturday; eventSelectDate(entryDate); entryStatus = null; } entryAdoptStatus(r.value); }
   catch { if (entryCurrent(c)) entryMessage = entryError('entry_unavailable'); } render();
 }
 async function entryQuery(operationID = '') {
@@ -916,7 +918,7 @@ async function entryReadHistory(after = '') {
 }
 function entryNavigate(dateValue) {
   try { entryDateValue(dateValue); } catch { entryMessage = entryError('entry_calendar'); renderEntry(); return; }
-  entryChanged(); entryDate = dateValue; entryStatus = null; entryMessage = 'Loading this Saturday. Draft and pending choices have not been entered or retargeted.';
+  entryChanged(); entryDate = dateValue; eventSelectDate(entryDate); entryStatus = null; entryMessage = 'Loading this Saturday. Draft and pending choices have not been entered or retargeted.';
   queue(() => entryReadStatus(), 'entry-date'); render();
 }
 function renderEntry() {
@@ -940,6 +942,183 @@ function renderEntry() {
   const historyKey = JSON.stringify(entryHistory);
   if (ui['entry-history-list']._key !== historyKey) { ui['entry-history-list']._key = historyKey; ui['entry-history-list'].textContent = ''; if (entryHistory) for (const e of entryHistory.events) { const li = element('li'), b = element('button', '', e.event.saturday); b.type = 'button'; b.addEventListener('click', () => entryNavigate(e.event.saturday)); li.append(b, element('span', '', `Revision ${e.revision} · ${e.saved_ids.length} saved · ${e.phase === 'closed_pending_lock' ? 'Intake closed; awaiting event lock' : 'Intake accepting'}`)); ui['entry-history-list'].append(li); } }
 }
+// Immutable candidate noon snapshots. Full source/projection and canonical
+// digest validation belong to the native boundary; the browser accepts only
+// its bounded, current-view, explicitly pinned presentation.
+const EVENT_MAX = 131072;
+const EVENT_RENDER_KEY_BYTES = 4096; // Fixed charge for the two bounded DOM identity strings.
+const EVENT_ERRORS = new Set(['invalid_request', 'unauthorized', 'forbidden', 'stale_view', 'busy', 'event_unavailable', 'event_setup_incomplete', 'event_corrupt', 'event_capacity', 'event_clock', 'event_calendar', 'event_not_due', 'event_created_too_late', 'event_incomplete', 'event_conflict', 'event_not_found', 'event_cancelled', 'outcome_unknown']);
+let eventSnapshot = null, eventAuthority = null, eventStatus = null, eventHistory = null, eventDetail = null;
+let eventWatch = null, eventLastJob = '', eventDate = '', eventSerial = 0, eventMessage = '', eventUnavailable = false, eventUnknown = false;
+let eventAutoAttempted = new Set();
+function eventRetainedBytes() { return entryBytes([eventSnapshot, eventAuthority, eventStatus, eventHistory, eventDetail, eventWatch, eventLastJob, eventDate, eventMessage, [...eventAutoAttempted]]) + EVENT_RENDER_KEY_BYTES + (eventWatch ? 65536 : 0); }
+function eventCapacity() { return eventRetainedBytes() <= EVENT_MAX && previewCapacity(); }
+function eventReady() { return ready() && !eventUnavailable && !!eventSnapshot?.pin && !!eventAuthority && viewKey(eventSnapshot.view) === currentKey(); }
+function clearEvent() {
+  eventSerial++; eventSnapshot = eventStatus = eventHistory = eventDetail = eventWatch = null; eventLastJob = eventDate = eventMessage = ''; eventUnavailable = eventUnknown = false; eventAutoAttempted = new Set();
+  // Retain the helper-lifetime public authority, never its old account view.
+  for (const id of ['event-members', 'event-history-list']) { ui[id].textContent = ''; ui[id]._key = ''; }
+}
+function eventSelectDate(value) {
+  eventSerial++; eventDate = value; eventStatus = eventDetail = null; eventMessage = '';
+  // An issued job is still tracked, but cannot repopulate another Saturday.
+}
+function eventContext() { return { epoch, view: currentKey(), viewID: current?.view?.view_id, serial: eventSerial, date: entryDate }; }
+function queueEventSelection(fn, name) { const c = eventContext(); queue(() => eventCurrent(c, true) ? fn() : undefined, name); }
+function eventCurrent(c, selection = false) { return !disposed && ready() && c.epoch === epoch && c.view === currentKey() && (!selection || c.serial === eventSerial && c.date === entryDate); }
+function eventPinValue(p) {
+  exact(p, ['version', 'calendar_id', 'rules_id', 'participants']); requireValue(p.version === 1 && p.calendar_id === ENTRY_CALENDAR && hex(p.rules_id)); pairArray(p.participants, (e) => {
+    exact(e, ['version', 'namespace_id', 'calendar_id', 'rules_id', 'stable_store_id', 'stable_pin']); requireValue(e.version === 1 && hex(e.namespace_id) && e.calendar_id === ENTRY_CALENDAR && e.rules_id === ENTRY_RULES && hex(e.stable_store_id));
+    const s = e.stable_pin; exact(s, ['version', 'account_authority_id', 'account_id', 'identity', 'source', 'condition_version', 'projector_id']); requireValue(s.version === 1 && s.account_authority_id === current.view.account_authority_id && hex(s.account_id) && s.condition_version === 1 && s.projector_id === 'slug-fighter-condition-candidate-v1');
+    const i = s.identity, a = s.source; exact(i, ['network', 'genesis', 'profile', 'root_public_key', 'gym_public_key', 'gym_id']); const f = Object.keys(fixtures).find((name) => fixtures[name][0] === i.gym_id); requireValue(!!f && i.network === 0x534c5547 && i.genesis === GENESIS && i.profile === 'slug-phase-a-fixture-bip39-v1' && i.root_public_key === ROOTS[f] && i.gym_public_key === fixtures[f][1]);
+    exact(a, ['version', 'network', 'genesis', 'authority_id', 'descriptor_id']); requireValue(a.version === 5 && a.network === i.network && a.genesis === i.genesis && a.descriptor_id === DESCRIPTOR && hex(a.authority_id));
+  });
+  const [a, b] = p.participants; requireValue(a.stable_pin.identity.gym_id < b.stable_pin.identity.gym_id && a.stable_pin.account_id !== b.stable_pin.account_id && a.stable_store_id !== b.stable_store_id && a.namespace_id === b.namespace_id);
+  const ownPin = p.participants.find((x) => x.stable_pin.identity.gym_id === current.gym_id); requireValue(!!ownPin && same(ownPin.stable_pin, stable.status.pin) && ownPin.stable_store_id === stable.status.store_id && (!entryNamespace || ownPin.namespace_id === entryNamespace)); return p;
+}
+function eventValue(e) {
+  exact(e, ['version', 'event_id', 'source_event_id', 'store_id', 'namespace_id', 'calendar_id', 'rules_id', 'saturday', 'cutoff_ms', 'incident_deadline_ms']);
+  requireValue(!!eventAuthority && e.version === 1 && ['event_id', 'source_event_id', 'store_id', 'namespace_id'].every((k) => hex(e[k])) && e.store_id === eventAuthority.storeID && e.namespace_id === eventAuthority.pin.participants[0].namespace_id && e.calendar_id === ENTRY_CALENDAR && e.rules_id === eventAuthority.pin.rules_id && int(e.cutoff_ms, 1, DATE_MAX) && int(e.incident_deadline_ms, e.cutoff_ms + 167 * 3600000, e.cutoff_ms + 169 * 3600000)); entryDateValue(e.saturday); return e;
+}
+function eventStatusValue(s) {
+  exact(s, ['version', 'store_id', 'event', 'exists', 'phase', 'captured_participants', 'snapshot_digest', 'coordinator_created_at_ms', 'created_at_ms', 'completed_at_ms', 'observed_at_ms', 'seed_authority']); eventValue(s.event);
+  requireValue(s.version === 1 && s.store_id === eventAuthority.storeID && typeof s.exists === 'boolean' && ['before_cutoff', 'awaiting_capture', 'capturing', 'snapshotted'].includes(s.phase) && s.coordinator_created_at_ms === eventAuthority.createdMS && int(s.observed_at_ms, s.coordinator_created_at_ms, DATE_MAX) && int(s.created_at_ms, 0, s.observed_at_ms) && int(s.completed_at_ms, 0, s.observed_at_ms) && optionalID(s.snapshot_digest) && s.seed_authority === 'unavailable');
+  const ids = eventAuthority.pin.participants.map((p) => p.stable_pin.identity.gym_id); requireValue(Array.isArray(s.captured_participants) && s.captured_participants.length <= 2 && s.captured_participants.every((x, n) => ids.includes(x) && (!n || s.captured_participants[n - 1] < x)));
+  if (!s.exists) requireValue(s.created_at_ms === 0 && s.completed_at_ms === 0 && s.snapshot_digest === '' && s.captured_participants.length === 0 && s.phase === (s.observed_at_ms < s.event.cutoff_ms ? 'before_cutoff' : 'awaiting_capture'));
+  else requireValue(s.created_at_ms >= s.event.cutoff_ms && s.coordinator_created_at_ms < s.event.cutoff_ms && s.phase === (s.captured_participants.length === 2 ? 'snapshotted' : s.captured_participants.length === 1 ? 'capturing' : 'awaiting_capture'));
+  requireValue(s.phase === 'snapshotted' ? hex(s.snapshot_digest) && s.completed_at_ms >= s.created_at_ms : s.snapshot_digest === '' && s.completed_at_ms === 0); return s;
+}
+function eventFence(f, store, cutoff) { exact(f, ['version', 'store_id', 'cutoff_ms', 'observed_at_ms', 'operation_count']); requireValue(f.version === 1 && f.store_id === store && f.cutoff_ms === cutoff && int(f.observed_at_ms, cutoff, DATE_MAX) && int(f.operation_count, 0, 4096)); }
+function eventCondition(c, a, cutoff) {
+  exact(c, ['version', 'projector_id', 'dna_version', 'seed', 'born_at_ms', 'as_of_ms', 'age_weeks', 'phase', 'elapsed_decline_weeks', 'prime_remaining_weeks', 'prime_remaining_ms', 'career_remaining_ms', 'pro_xp', 'aged_attributes_tenths', 'league_attributes_tenths', 'rating_hundredths']);
+  requireValue(c.version === 1 && c.projector_id === 'slug-fighter-condition-candidate-v1' && c.dna_version === 1 && c.seed === a.work_hash && c.born_at_ms === a.born_at_ms && c.as_of_ms === cutoff && a.accepted_at_ms < cutoff && c.age_weeks === Math.floor((cutoff - a.born_at_ms) / WEEK) && ['prime', 'decline', 'retired'].includes(c.phase) && c.pro_xp === 0 && int(c.elapsed_decline_weeks, 0, 39) && int(c.prime_remaining_weeks, 0, 52) && int(c.prime_remaining_ms, 0, 52 * WEEK) && int(c.career_remaining_ms, 0, 91 * WEEK));
+  requireValue((c.phase === 'retired') === (c.career_remaining_ms === 0)); exact(c.aged_attributes_tenths, attrs); exact(c.league_attributes_tenths, attrs); requireValue(attrs.every((k) => int(c.aged_attributes_tenths[k], 0, 1000) && c.league_attributes_tenths[k] === c.aged_attributes_tenths[k]) && c.rating_hundredths === attrs.reduce((n, k, i) => n + c.league_attributes_tenths[k] * [10, 25, 2, 4, 8][i], 0));
+}
+function eventSavedReceipt(r, p, e, store) {
+  exact(r, ['version', 'store_id', 'entry_id', 'event', 'operation_id', 'operation_sequence', 'generation', 'view_id', 'action', 'previous_revision', 'revision', 'roster_revision', 'stable_checkpoint', 'observed_source_count', 'committed_at_ms', 'members']); entryEvent(r.event);
+  requireValue(r.version === 1 && r.store_id === store && r.event.event_id === e.source_event_id && r.event.saturday === e.saturday && r.event.cutoff_ms === e.cutoff_ms && ['entry_id', 'operation_id', 'view_id'].every((k) => hex(r[k])) && int(r.operation_sequence, 1, 4096) && int(r.generation, 1) && ['replace', 'withdraw'].includes(r.action) && int(r.previous_revision, 0, 4095) && r.revision === r.previous_revision + 1 && int(r.roster_revision, 0, 4096) && int(r.stable_checkpoint, 0, 1000) && int(r.observed_source_count, r.stable_checkpoint, 1000) && int(r.committed_at_ms, 1, e.cutoff_ms - 1));
+  requireValue(Array.isArray(r.members) && r.members.length <= 5 && (r.action === 'replace' ? r.members.length > 0 : r.members.length === 0 && r.roster_revision === 0)); const slotsSeen = new Set(), classSeen = new Set(); let previous = '';
+  for (const m of r.members) { exact(m, ['slot', 'assignment', 'class', 'condition_at_save']); assignment(m.assignment, p.stable_pin.identity); requireValue(int(m.slot, 1, 10) && classes.includes(m.class) && !slotsSeen.has(m.slot) && !classSeen.has(m.class) && m.assignment.prospect_id > previous && m.assignment.sequence <= r.stable_checkpoint); slotsSeen.add(m.slot); classSeen.add(m.class); previous = m.assignment.prospect_id; entrySavedCondition(m.condition_at_save, m.assignment, r.committed_at_ms); }
+}
+function eventParticipant(s, e) {
+  exact(s, ['version', 'participant_id', 'entry_store_id', 'owner', 'roster', 'entry', 'members']); const p = eventAuthority.pin.participants.find((x) => x.stable_pin.identity.gym_id === s.participant_id); requireValue(s.version === 1 && !!p && hex(s.entry_store_id));
+  const o = s.owner; exact(o, ['ownership_basis', 'account_authority_id', 'account_id', 'gym_id']); requireValue(o.ownership_basis === 'candidate_assignment' && o.account_authority_id === p.stable_pin.account_authority_id && o.account_id === p.stable_pin.account_id && o.gym_id === s.participant_id);
+  const r = s.roster; exact(r, ['version', 'store_id', 'cutoff_ms', 'committed_count', 'last_sequence', 'history_digest', 'revision', 'slots', 'assigned_at_ms']); slots(r.slots); requireValue(r.version === 1 && r.store_id === p.stable_store_id && r.cutoff_ms === e.cutoff_ms && int(r.committed_count, 0, 4096) && int(r.last_sequence, r.committed_count, 4096) && int(r.revision, 0, r.committed_count) && hex(r.history_digest) && Array.isArray(r.assigned_at_ms) && r.assigned_at_ms.length === 10); r.slots.forEach((x, n) => requireValue(x ? int(r.assigned_at_ms[n], 1, e.cutoff_ms - 1) : r.assigned_at_ms[n] === 0));
+  const t = s.entry; exact(t, ['version', 'store_id', 'event', 'entry_id', 'committed_count', 'last_sequence', 'history_digest', 'latest_receipt']); entryEvent(t.event); requireValue(t.version === 1 && t.store_id === s.entry_store_id && t.event.event_id === e.source_event_id && t.event.cutoff_ms === e.cutoff_ms && t.event.saturday === e.saturday && hex(t.entry_id) && hex(t.history_digest) && int(t.committed_count, 0, 4096) && int(t.last_sequence, t.committed_count, 4096));
+  if (t.latest_receipt !== null) { eventSavedReceipt(t.latest_receipt, p, e, s.entry_store_id); requireValue(t.committed_count > 0 && t.latest_receipt.entry_id === t.entry_id && t.latest_receipt.operation_sequence === t.last_sequence); } else requireValue(t.committed_count === 0 && t.last_sequence === 0);
+  const saved = t.latest_receipt?.members ?? []; requireValue(Array.isArray(s.members) && s.members.length === saved.length && s.members.length <= 5);
+  for (const [n, m] of s.members.entries()) { exact(m, ['slot', 'slot_assigned_at_ms', 'assignment', 'class', 'condition_at_cutoff', 'eligibility']); assignment(m.assignment, p.stable_pin.identity); requireValue(same(m.assignment, saved[n].assignment) && m.class === saved[n].class && int(m.slot, 0, 10) && m.slot === r.slots.indexOf(m.assignment.prospect_id) + 1 && (m.slot ? m.slot_assigned_at_ms === r.assigned_at_ms[m.slot - 1] && m.slot_assigned_at_ms >= m.assignment.accepted_at_ms : m.slot_assigned_at_ms === 0)); eventCondition(m.condition_at_cutoff, m.assignment, e.cutoff_ms); requireValue(m.eligibility === (m.condition_at_cutoff.phase === 'retired' ? 'retired' : m.slot ? 'eligible' : 'not_rostered')); } return s;
+}
+function eventEvidence(v, s, e) { exact(v, ['version', 'participant_id', 'stable_fence', 'entry_fence', 'captured_at_ms']); requireValue(v.version === 1 && v.participant_id === s.participant_id); eventFence(v.stable_fence, s.roster.store_id, e.cutoff_ms); eventFence(v.entry_fence, s.entry_store_id, e.cutoff_ms); requireValue(v.entry_fence.observed_at_ms >= v.stable_fence.observed_at_ms && int(v.captured_at_ms, v.entry_fence.observed_at_ms, DATE_MAX) && v.stable_fence.operation_count >= s.roster.last_sequence && v.entry_fence.operation_count >= s.entry.last_sequence); }
+function eventCapture(v, e) { exact(v, ['version', 'snapshot', 'evidence']); requireValue(v.version === 1); eventParticipant(v.snapshot, e); eventEvidence(v.evidence, v.snapshot, e); return v; }
+function eventRecordValue(v) {
+  exact(v, ['version', 'input', 'snapshot_digest', 'captures', 'completed_at_ms']); const i = v.input; exact(i, ['version', 'event', 'participants']); eventValue(i.event); requireValue(v.version === 1 && i.version === 1 && hex(v.snapshot_digest)); pairArray(i.participants, (p) => eventParticipant(p, i.event)); pairArray(v.captures, () => {});
+  i.participants.forEach((p, n) => { requireValue(p.participant_id === eventAuthority.pin.participants[n].stable_pin.identity.gym_id); eventEvidence(v.captures[n], p, i.event); }); requireValue(int(v.completed_at_ms, Math.max(...v.captures.map((c) => c.captured_at_ms)), DATE_MAX)); return v;
+}
+function eventJobValue(j) {
+  exact(j, ['version', 'job_id', 'kind', 'state', 'view', 'store_id', 'event_id', 'saturday', 'participant_id', 'error', 'result']); requireValue(j.version === 1 && hex(j.job_id) && j.kind === 'capture' && ['queued', 'running', 'completed', 'failed', 'cancelled'].includes(j.state) && viewKey(checkedView(j.view)) === currentKey() && j.store_id === eventAuthority.storeID && hex(j.event_id) && j.participant_id === current.gym_id); entryDateValue(j.saturday);
+  if (j.state === 'completed') { requireValue(j.error === '' && j.result !== null); const r = j.result; exact(r, ['version', 'status', 'capture', 'replayed']); requireValue(r.version === 1 && typeof r.replayed === 'boolean'); eventStatusValue(r.status); eventCapture(r.capture, r.status.event); requireValue(r.status.event.event_id === j.event_id && r.status.event.saturday === j.saturday && r.capture.snapshot.participant_id === j.participant_id && r.status.captured_participants.includes(j.participant_id) && r.capture.evidence.captured_at_ms <= r.status.observed_at_ms); }
+  else requireValue(j.result === null && (['queued', 'running'].includes(j.state) ? j.error === '' : j.state === 'cancelled' ? j.error === 'event_cancelled' : EVENT_ERRORS.has(j.error))); return j;
+}
+function eventEnvelope(r, field) {
+  requireValue(entryBytes(r) <= EVENT_MAX); exact(r, ['id', 'ok', 'view', 'store_id', 'snapshot', 'status', 'record', 'history', 'job', 'error']); requireValue(int(r.id, 1) && typeof r.ok === 'boolean'); const fields = ['snapshot', 'status', 'record', 'history', 'job'];
+  if (!r.ok) { requireValue(r.view === null && r.store_id === '' && fields.every((k) => r[k] === null) && EVENT_ERRORS.has(r.error)); return { ok: false, error: r.error }; }
+  requireValue(r.error === '' && fields.every((k) => (r[k] !== null) === (k === field))); const v = r[field];
+  if (field === 'snapshot') {
+    exact(v, ['version', 'state', 'error', 'view', 'store_id', 'pin', 'coordinator_created_at_ms', 'participant_id', 'active_job_id', 'queued_job_id', 'last_job_id']); requireValue(v.version === 1 && ['unavailable', 'setup_incomplete', 'ready', 'busy', 'failed'].includes(v.state) && ['store_id', 'participant_id', 'active_job_id', 'queued_job_id', 'last_job_id'].every((k) => optionalID(v[k])));
+    if (v.state === 'unavailable') { requireValue(r.view === null && v.view === null && r.store_id === '' && v.pin === null && v.error === 'event_unavailable' && v.coordinator_created_at_ms === 0 && ['store_id', 'participant_id', 'active_job_id', 'queued_job_id', 'last_job_id'].every((k) => v[k] === '')); return { ok: true, value: own(v) }; }
+    requireValue(ready() && viewKey(checkedView(r.view)) === currentKey() && viewKey(checkedView(v.view)) === currentKey() && r.store_id === v.store_id && v.participant_id === current.gym_id);
+    if (v.state === 'setup_incomplete') { requireValue(!eventAuthority && v.pin === null && v.store_id === '' && v.coordinator_created_at_ms === 0 && v.error === 'event_setup_incomplete' && ['active_job_id', 'queued_job_id', 'last_job_id'].every((k) => v[k] === '')); return { ok: true, value: own(v) }; }
+    eventPinValue(v.pin); requireValue(hex(v.store_id) && int(v.coordinator_created_at_ms, 1, DATE_MAX) && (v.state === 'failed' ? EVENT_ERRORS.has(v.error) && v.error !== 'outcome_unknown' : v.error === '') && (!v.active_job_id || v.active_job_id !== v.queued_job_id));
+    const a = { pin: own(v.pin), storeID: v.store_id, createdMS: v.coordinator_created_at_ms }; requireValue(!eventAuthority || same(eventAuthority, a)); if (!eventAuthority) eventAuthority = a; return { ok: true, value: own(v) };
+  }
+  requireValue(eventReady() && viewKey(checkedView(r.view)) === currentKey() && r.store_id === eventAuthority.storeID);
+  if (field === 'status') eventStatusValue(v);
+  if (field === 'record') eventRecordValue(v);
+  if (field === 'job') eventJobValue(v);
+  if (field === 'history') { exact(v, ['version', 'store_id', 'after_event_id', 'next_event_id', 'has_more', 'observed_at_ms', 'events']); requireValue(v.version === 1 && v.store_id === eventAuthority.storeID && optionalID(v.after_event_id) && optionalID(v.next_event_id) && typeof v.has_more === 'boolean' && int(v.observed_at_ms, eventAuthority.createdMS, DATE_MAX) && Array.isArray(v.events) && v.events.length <= 8); v.events.forEach((s, n) => { eventStatusValue(s); requireValue(s.exists && s.observed_at_ms === v.observed_at_ms && (!n || v.events[n - 1].event.cutoff_ms < s.event.cutoff_ms)); }); requireValue(v.next_event_id === (v.has_more && v.events.length ? v.events.at(-1).event.event_id : '')); }
+  return { ok: true, value: own(v) };
+}
+function eventError(code) { return ({ event_unavailable: 'Saturday snapshots are unavailable in this app route.', event_setup_incomplete: 'Sign in to both demo gyms once to enable their shared snapshots.', event_not_due: 'The selected Saturday has not reached noon Pacific.', event_created_too_late: 'Snapshot setup completed after this Saturday’s lock. This event cannot be captured retrospectively.', event_incomplete: 'Both gyms must capture their noon state before the complete snapshot is available.', event_not_found: 'No recorded snapshot was found for that request.', event_capacity: 'The snapshot store or display reached its supported capacity. Existing records remain available.', event_clock: 'The authority clock needs attention. No new capture was confirmed.', event_corrupt: 'The saved history could not be verified. Reopen the gym; retained evidence has not been discarded.', event_conflict: 'The snapshot evidence conflicts. Review the retained record before continuing.', event_cancelled: 'Capture was cancelled. Check its status because a completed capture remains saved.', event_calendar: 'Choose a supported Saturday in the entry panel.', outcome_unknown: 'The capture may be saved. Refresh snapshot status and inspect the recorded outcome before retrying.' })[code] ?? textError(code); }
+function eventRefusal(code, capture = false) { if (['unauthorized', 'stale_view'].includes(code)) { clearEvent(); eventUnavailable = true; } if (code === 'event_unavailable') eventUnavailable = true; if (capture && code === 'outcome_unknown') eventUnknown = true; eventMessage = code === 'outcome_unknown' && !capture ? 'The authority could not confirm this status observation. Reopen the gym before another query; this does not confirm a capture.' : eventError(code); }
+function eventAdoptStatus(s) {
+  if (s.event.saturday !== entryDate) return; const old = eventStatus;
+  if (old && old.event.event_id === s.event.event_id) requireValue(s.observed_at_ms >= old.observed_at_ms && old.captured_participants.every((p) => s.captured_participants.includes(p)) && (!old.snapshot_digest || s.snapshot_digest === old.snapshot_digest));
+  eventStatus = s; if (!eventCapacity()) { eventStatus = old; throw new Error('Snapshot cache full'); }
+}
+async function eventReadStatus(auto = false) {
+  if (!eventReady() || !entryDate) return; const c = eventContext(), dateValue = entryDate;
+  try { const r = eventEnvelope(await call('EventStatus', c.viewID, dateValue), 'status'); if (!eventCurrent(c, true)) return; if (!r.ok) { eventRefusal(r.error); return; } requireValue(r.value.event.saturday === dateValue); eventAdoptStatus(r.value); if (r.value.captured_participants.includes(current.gym_id)) eventUnknown = false;
+    const s = eventStatus; if (auto && s && s.event.cutoff_ms <= s.observed_at_ms && s.coordinator_created_at_ms < s.event.cutoff_ms && !s.captured_participants.includes(current.gym_id) && !eventWatch && !eventAutoAttempted.has(s.event.event_id) && eventAutoAttempted.size < 256 && !tasks.length && eventSnapshot.state === 'ready') { eventAutoAttempted.add(s.event.event_id); await eventBegin(); }
+  } catch { if (eventCurrent(c)) eventMessage = eventError('event_unavailable'); } renderEvent();
+}
+async function fetchEventSnapshot() {
+  if (!ready() || eventUnavailable) return; const c = eventContext();
+  try { const r = eventEnvelope(await call('EventSnapshot'), 'snapshot'); if (!eventCurrent(c)) return; if (!r.ok) { eventRefusal(r.error); return; } const old = eventSnapshot; eventSnapshot = r.value; if (!eventCapacity()) { eventSnapshot = old; throw new Error('Snapshot cache full'); }
+    if (eventSnapshot.state === 'unavailable') { eventUnavailable = true; return; } if (eventSnapshot.state === 'setup_incomplete') { eventMessage = eventError('event_setup_incomplete'); return; }
+    if (eventDate !== entryDate) eventSelectDate(entryDate);
+    if (eventWatch?.id) await eventFetchJob(eventWatch.id);
+    else if (!tasks.length) { const id = eventSnapshot.active_job_id || eventSnapshot.queued_job_id || eventSnapshot.last_job_id; if (id && id !== eventLastJob) await eventFetchJob(id); }
+    // The entry authority, never the browser clock, prompts the transition.
+    if (eventReady() && !eventWatch && !tasks.length && eventSnapshot.state === 'ready' && entryDate && (!eventStatus || eventStatus.phase === 'before_cutoff' && entryStatus?.observed_at_ms >= eventStatus.event.cutoff_ms)) await eventReadStatus(true);
+  } catch { if (eventCurrent(c)) { eventUnavailable = true; eventMessage = eventError('event_unavailable'); } } finally { renderEvent(); }
+}
+async function eventBegin() {
+  if (!eventReady() || !eventStatus || eventStatus.event.saturday !== entryDate || eventWatch || eventUnknown || eventStatus.coordinator_created_at_ms >= eventStatus.event.cutoff_ms || eventStatus.observed_at_ms < eventStatus.event.cutoff_ms) return;
+  const c = eventContext(), e = eventStatus.event, reservation = { id: '', eventID: e.event_id, saturday: e.saturday, participantID: current.gym_id }; eventWatch = reservation; if (!eventCapacity()) { eventWatch = null; eventMessage = eventError('event_capacity'); renderEvent(); return; }
+  try { const r = eventEnvelope(await call('BeginEventCapture', c.viewID, e.saturday), 'job'); if (!eventCurrent(c)) return; if (!r.ok) { eventWatch = null; eventRefusal(r.error, true); return; } const j = r.value; requireValue(j.state === 'queued' && j.event_id === e.event_id && j.saturday === e.saturday && j.participant_id === reservation.participantID); eventDetail = null; eventWatch = { ...reservation, id: j.job_id }; eventMessage = 'Reconstructing and verifying this gym at noon Pacific…'; pollWanted = true;
+  } catch { if (eventCurrent(c)) { eventWatch = null; eventUnknown = true; eventMessage = eventError('outcome_unknown'); } } renderEvent();
+}
+async function eventFetchJob(id) {
+  if (!eventReady()) return; const c = eventContext(), w = eventWatch;
+  try { const r = eventEnvelope(await call('EventJob', c.viewID, id), 'job'); if (!eventCurrent(c) || eventWatch !== w) return; if (!r.ok) { if (r.error === 'busy') return; eventWatch = null; eventRefusal(r.error, true); return; } const j = r.value; requireValue(j.job_id === id && (!w || j.event_id === w.eventID && j.saturday === w.saturday && j.participant_id === w.participantID));
+    if (['queued', 'running'].includes(j.state)) { eventWatch = { id, eventID: j.event_id, saturday: j.saturday, participantID: j.participant_id }; requireValue(eventCapacity()); return; }
+    eventWatch = null; eventLastJob = id;
+    if (j.state === 'completed') { eventUnknown = false; if (j.saturday === entryDate) { const oldDetail = eventDetail; eventDetail = { kind: 'capture', value: j.result }; try { eventAdoptStatus(j.result.status); requireValue(eventCapacity()); } catch (error) { eventDetail = oldDetail; throw error; } } eventMessage = j.result.replayed ? 'The original saved capture was recovered unchanged.' : 'This gym’s noon state is saved. Later changes cannot alter it.'; }
+    else eventRefusal(j.error, true); requireValue(eventCapacity());
+  } catch { if (eventCurrent(c)) { eventWatch = null; eventUnknown = true; eventMessage = eventError('outcome_unknown'); } } renderEvent();
+}
+async function eventCancel() {
+  if (!eventReady() || !eventWatch?.id) return; const c = eventContext(), w = eventWatch;
+  try { const r = eventEnvelope(await call('CancelEventJob', c.viewID, w.id), 'job'); if (!eventCurrent(c)) return; if (!r.ok) { eventRefusal(r.error, true); return; } requireValue(r.value.job_id === w.id && r.value.event_id === w.eventID && r.value.saturday === w.saturday && r.value.participant_id === w.participantID); eventMessage = 'Cancellation requested. Check the recorded status; a completed capture remains saved.'; await eventFetchJob(w.id); }
+  catch { if (eventCurrent(c)) { eventUnknown = true; eventMessage = eventError('outcome_unknown'); } } renderEvent();
+}
+async function eventReadRecord() {
+  if (!eventReady() || !entryDate) return; const c = eventContext(), dateValue = entryDate;
+  try { const r = eventEnvelope(await call('EventRecord', c.viewID, dateValue), 'record'); if (!eventCurrent(c, true)) return; if (!r.ok) { eventRefusal(r.error); return; } requireValue(r.value.input.event.saturday === dateValue); const old = eventDetail; eventDetail = { kind: 'record', value: r.value }; if (!eventCapacity()) { eventDetail = old; eventMessage = eventError('event_capacity'); renderEvent(); return; } eventUnknown = false; eventMessage = 'Complete immutable candidate snapshot loaded.'; }
+  catch { if (eventCurrent(c)) eventMessage = eventError('event_unavailable'); } renderEvent();
+}
+async function eventReadHistory(after = '') {
+  if (!eventReady()) return; const c = eventContext(); try { const r = eventEnvelope(await call('EventHistory', c.viewID, after, 8), 'history'); if (!eventCurrent(c)) return; if (!r.ok) { eventRefusal(r.error); return; } requireValue(r.value.after_event_id === after); const old = eventHistory; eventHistory = r.value; if (!eventCapacity()) { eventHistory = old; eventMessage = eventError('event_capacity'); } } catch { if (eventCurrent(c)) eventMessage = eventError('event_unavailable'); } renderEvent();
+}
+function eventDetailRenderKey(details) {
+  if (!details) return '';
+  const v = details.value, captures = details.kind === 'record' ? v.captures : [v.capture.evidence];
+  const evidence = captures.map((c) => [c.participant_id, c.captured_at_ms, c.stable_fence.observed_at_ms, c.stable_fence.operation_count, c.entry_fence.observed_at_ms, c.entry_fence.operation_count]);
+  return JSON.stringify(details.kind === 'record' ? ['record', v.snapshot_digest, v.completed_at_ms, evidence] : ['capture', v.status.event.event_id, v.capture.snapshot.entry.history_digest, v.capture.snapshot.roster.history_digest, evidence]);
+}
+function eventHistoryRenderKey(history) { return history ? JSON.stringify(history.events.map((e) => [e.event.event_id, e.phase, e.captured_participants.length])) : ''; }
+function renderEvent() {
+  const active = eventReady(), s = eventStatus?.event.saturday === entryDate ? eventStatus : null, busy = !!command || !!eventWatch || eventSnapshot?.state === 'busy';
+  content(ui['event-state'], eventUnavailable ? 'Unavailable' : !ready() ? 'Sign in to view snapshots' : eventSnapshot?.state === 'setup_incomplete' ? 'Setup incomplete' : eventWatch ? 'Capturing noon state' : s?.phase === 'snapshotted' ? 'Snapshot complete' : s?.phase === 'capturing' ? 'One gym captured' : 'Candidate snapshot');
+  content(ui['event-cutoff'], s ? `Saturday ${s.event.saturday} · State fixed at noon Pacific · ${new Date(s.event.cutoff_ms).toISOString()}` : 'Select a Saturday in the entry panel.');
+  content(ui['event-progress'], s ? s.coordinator_created_at_ms >= s.event.cutoff_ms ? eventError('event_created_too_late') : `${s.captured_participants.length} of 2 gyms captured.${s.phase === 'before_cutoff' ? ' Waiting for noon Pacific.' : s.phase !== 'snapshotted' ? ' Each demo gym captures its own historical state after sign-in.' : ' The complete snapshot is immutable.'}` : '');
+  content(ui['event-message'], eventMessage); content(ui['event-deadline'], s ? `If the required seed is still unfinalized at the following lock (${new Date(s.event.incident_deadline_ms).toISOString()}), escalate to the operator as a chain incident. Seed integration is unavailable here; this is the policy deadline, not an observed chain incident.` : '');
+  content(ui['event-digest'], s?.snapshot_digest ? `Snapshot digest: ${s.snapshot_digest}` : '');
+  ui['event-refresh'].disabled = !active || !entryDate || busy; ui['event-capture'].disabled = !active || busy || eventUnknown || !s || s.observed_at_ms < s.event.cutoff_ms || s.coordinator_created_at_ms >= s.event.cutoff_ms;
+  content(ui['event-capture'], s?.captured_participants.includes(current?.gym_id) ? 'Recover this gym’s capture' : 'Capture this gym'); ui['event-cancel'].disabled = !active || !!command || !eventWatch?.id; ui['event-record'].disabled = !active || busy || s?.phase !== 'snapshotted'; ui['event-clear'].disabled = !eventDetail; ui['event-history'].disabled = !active || busy; ui['event-history-next'].disabled = !active || busy || !eventHistory?.has_more;
+  const details = eventDetail && (eventDetail.kind === 'record' ? eventDetail.value.input.event.saturday : eventDetail.value.status.event.saturday) === entryDate ? eventDetail : null, detailKey = eventDetailRenderKey(details);
+  if (ui['event-members']._key !== detailKey) { ui['event-members']._key = detailKey; ui['event-members'].textContent = ''; if (details) { const participants = details.kind === 'record' ? details.value.input.participants : [details.value.capture.snapshot], evidence = details.kind === 'record' ? details.value.captures : [details.value.capture.evidence]; participants.forEach((p, n) => { const name = p.participant_id === fixtures.zero256[0] ? 'Demo A' : 'Demo B'; ui['event-members'].append(element('li', '', `${name} · Candidate assignment at noon · Captured ${new Date(evidence[n].captured_at_ms).toISOString()}${p.members.length ? '' : ' · No submitted fighters at cutoff'}`)); for (const m of p.members) ui['event-members'].append(element('li', '', `${label(m.class)} · ${m.assignment.prospect_id} · ${label(m.eligibility)} · Noon rating ${(m.condition_at_cutoff.rating_hundredths / 100).toFixed(2)}${m.slot ? ` · Slot ${m.slot}` : ''}`)); }); } }
+  const historyKey = eventHistoryRenderKey(eventHistory); requireValue(detailKey.length + historyKey.length <= EVENT_RENDER_KEY_BYTES); if (ui['event-history-list']._key !== historyKey) { ui['event-history-list']._key = historyKey; ui['event-history-list'].textContent = ''; if (eventHistory) for (const e of eventHistory.events) { const li = element('li'), button = element('button', '', e.event.saturday); button.type = 'button'; button.addEventListener('click', () => entryNavigate(e.event.saturday)); li.append(button, element('span', '', `${e.captured_participants.length} of 2 captured · ${e.phase === 'snapshotted' ? 'Complete' : 'Incomplete'}`)); ui['event-history-list'].append(li); } }
+}
+ui['event-refresh'].addEventListener('click', () => queueEventSelection(() => eventReadStatus(), 'event-status'));
+ui['event-capture'].addEventListener('click', () => queueEventSelection(eventBegin, 'event-capture'));
+ui['event-cancel'].addEventListener('click', () => queue(eventCancel, 'event-cancel'));
+ui['event-record'].addEventListener('click', () => queueEventSelection(eventReadRecord, 'event-record'));
+ui['event-clear'].addEventListener('click', () => { eventDetail = null; renderEvent(); });
+ui['event-history'].addEventListener('click', () => queue(() => eventReadHistory(), 'event-history'));
+ui['event-history-next'].addEventListener('click', () => queue(() => eventReadHistory(eventHistory?.next_event_id ?? ''), 'event-history'));
+
 ui['entry-date'].addEventListener('change', () => entryNavigate(ui['entry-date'].value));
 ui['entry-upcoming'].addEventListener('click', () => { entryChanged(); queue(() => entryReadStatus(true), 'entry-upcoming'); });
 ui['entry-status'].addEventListener('click', () => queue(() => entryReadStatus(), 'entry-status'));
@@ -978,6 +1157,6 @@ ui.abandon.addEventListener('click', () => queue(async () => {
 ui['cancel-job'].addEventListener('click', () => queue(() => cancelJob(watched?.id || stable?.active_job_id || stable?.queued_job_id), 'cancel'));
 ui['export-recovery'].addEventListener('click', () => oldAction('ExportRecovery')); ui['verify-backup'].addEventListener('click', () => oldAction('VerifyBackup'));
 document.addEventListener('visibilitychange', () => { if (document.hidden) pausePreview(); if (!document.hidden && enabled) { pollWanted = true; pump(); } else if (timer !== null) { clearTimeout(timer); timer = null; } });
-window.addEventListener('pagehide', () => { disposed = true; epoch++; clearEntry(); clearPreview(); tasks = []; if (timer !== null) clearTimeout(timer); timer = null; clearCards(); pageItems = []; current = stable = null; });
+window.addEventListener('pagehide', () => { disposed = true; epoch++; clearEvent(); clearEntry(); clearPreview(); tasks = []; if (timer !== null) clearTimeout(timer); timer = null; clearCards(); pageItems = []; current = stable = null; });
 render();
 (async () => { try { requireValue(await call('Mode') === MODE); if (disposed) return; enabled = true; pollWanted = true; pump(); } catch { connectionError = 'Open this page through the candidate stable mode.'; render(); } })();

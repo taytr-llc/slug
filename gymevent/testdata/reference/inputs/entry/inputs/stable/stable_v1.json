@@ -1,0 +1,2635 @@
+{
+  "version": 1,
+  "candidate_fixture_only": true,
+  "approved_contract_sha256": "f977e8a7cef5ab470e5019f4f1b9d88cdb4fd03d5ee1feb6acc32321389d84d2",
+  "input_sha256": "c5b30b106fd55935e0483b0a1ac28f3d67d8301076186e64de549bcddf055020",
+  "reference_sha256": {
+    "registry/testdata/manifest/reference/reference_manifest_admission.py": "ab65e2c63fb288c3d117416825edc44a8a5596f31e54b50f12f476b96c883bbc",
+    "registry/testdata/manifest/reference/manifest_admission_v1.json": "d32a8653c76c643addb3df091ca8d7dfdba66c2486f2ca305e718113f71d5794",
+    "fightercondition/testdata/reference/condition_v1.json": "4f5be20e0e6ceb6b2ef4ee4063fffd2691fecb7a71d984f4624eb97162a9dbfa",
+    "fightercondition/testdata/reference/reference_condition.py": "924152a89241e9fa6d60aa27ba19666d3a3f65fdf53bd3c0cf6f89c8db4e946c",
+    "gymaccount/testdata/reference_enrollment.py": "24cbfdbaa84f8c106a6ce0b2b7128f9bdc5082e09d41d528d4a27efc576d3571"
+  },
+  "normal_argon_verifications": 6,
+  "pins": [
+    {
+      "name": "zero256",
+      "pin": {
+        "version": 1,
+        "account_authority_id": "9aaf6440e3eaa9dd14b90222bb5f857e2df8ea32a365e670da12e8cc4adde394",
+        "account_id": "5277ed842b3a0404dc1db532ed55c11e86ca7075e084936bc10249945c53a5bc",
+        "identity": {
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "profile": "slug-phase-a-fixture-bip39-v1",
+          "root_public_key": "JgduaQiYjRcnjcD9t1MfTP1qo8eWaAWPQtS9nChXwtAeyTsoEGVZ8SjVqa5qxxvvKqX8tqC77wMSjaMHXNY8JSYEASdzX6PT31ktXqKPJvkhyy31",
+          "gym_public_key": "03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519",
+          "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5"
+        },
+        "source": {
+          "version": 5,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "authority_id": "def06b4036f8dae71ef934cae29fa0f583e16234db153a82e75cfd9423309239",
+          "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303"
+        },
+        "condition_version": 1,
+        "projector_id": "slug-fighter-condition-candidate-v1"
+      },
+      "canonical": "{\"version\":1,\"account_authority_id\":\"9aaf6440e3eaa9dd14b90222bb5f857e2df8ea32a365e670da12e8cc4adde394\",\"account_id\":\"5277ed842b3a0404dc1db532ed55c11e86ca7075e084936bc10249945c53a5bc\",\"identity\":{\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"profile\":\"slug-phase-a-fixture-bip39-v1\",\"root_public_key\":\"JgduaQiYjRcnjcD9t1MfTP1qo8eWaAWPQtS9nChXwtAeyTsoEGVZ8SjVqa5qxxvvKqX8tqC77wMSjaMHXNY8JSYEASdzX6PT31ktXqKPJvkhyy31\",\"gym_public_key\":\"03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519\",\"gym_id\":\"a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5\"},\"source\":{\"version\":5,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"authority_id\":\"def06b4036f8dae71ef934cae29fa0f583e16234db153a82e75cfd9423309239\",\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\"},\"condition_version\":1,\"projector_id\":\"slug-fighter-condition-candidate-v1\"}",
+      "id_preimage": "534c55472063616e64696461746520737461626c6500763100e00300007b2276657273696f6e223a312c226163636f756e745f617574686f726974795f6964223a2239616166363434306533656161396464313462393032323262623566383537653264663865613332613336356536373064613132653863633461646465333934222c226163636f756e745f6964223a2235323737656438343262336130343034646331646235333265643535633131653836636137303735653038343933366263313032343939343563353361356263222c226964656e74697479223a7b226e6574776f726b223a313339373531313439352c2267656e65736973223a2237383933363736303939636639393835626231393864666236613334376439343232613139663234323263663333323661393939613732333063653234366364222c2270726f66696c65223a22736c75672d70686173652d612d666978747572652d62697033392d7631222c22726f6f745f7075626c69635f6b6579223a224a676475615169596a52636e6a63443974314d66545031716f38655761415750517453396e436858777441657954736f4547565a38536a5671613571787876764b7158387471433737774d536a614d48584e59384a5359454153647a5836505433316b7458714b504a766b6879793331222c2267796d5f7075626c69635f6b6579223a22303365633734383836363766643534346234613164653866623061653033373330633961326463333436633635326362616135396130373764626564646361353139222c2267796d5f6964223a2261323237353837643833373530376462636235663964373831393637333339643831363037306662376264353734393331633639306261363933376238386535227d2c22736f75726365223a7b2276657273696f6e223a352c226e6574776f726b223a313339373531313439352c2267656e65736973223a2237383933363736303939636639393835626231393864666236613334376439343232613139663234323263663333323661393939613732333063653234366364222c22617574686f726974795f6964223a2264656630366234303336663864616537316566393334636165323966613066353833653136323334646231353361383265373563666439343233333039323339222c2264657363726970746f725f6964223a2263316138363530613339663639353831346462363766646466373938313565663234396131336135633063633561663062393036623036316334633361333033227d2c22636f6e646974696f6e5f76657273696f6e223a312c2270726f6a6563746f725f6964223a22736c75672d666967687465722d636f6e646974696f6e2d63616e6469646174652d7631227d",
+      "expected_id": "4177b6b9828650086745db5b308e92f3955c772eb4123dd8637b2b0f0006c5ca"
+    },
+    {
+      "name": "incrementing256",
+      "pin": {
+        "version": 1,
+        "account_authority_id": "9aaf6440e3eaa9dd14b90222bb5f857e2df8ea32a365e670da12e8cc4adde394",
+        "account_id": "f86f9d7f9e1ffc3796df3eb8488dc14a680ea58c10b42d8e77ee5a2e9258321d",
+        "identity": {
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "profile": "slug-phase-a-fixture-bip39-v1",
+          "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+          "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+        },
+        "source": {
+          "version": 5,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "authority_id": "6c0067cb98c412e99f82e7440734ab4936fcc9163142da22793ace04f9af2713",
+          "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303"
+        },
+        "condition_version": 1,
+        "projector_id": "slug-fighter-condition-candidate-v1"
+      },
+      "canonical": "{\"version\":1,\"account_authority_id\":\"9aaf6440e3eaa9dd14b90222bb5f857e2df8ea32a365e670da12e8cc4adde394\",\"account_id\":\"f86f9d7f9e1ffc3796df3eb8488dc14a680ea58c10b42d8e77ee5a2e9258321d\",\"identity\":{\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"profile\":\"slug-phase-a-fixture-bip39-v1\",\"root_public_key\":\"JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC\",\"gym_public_key\":\"033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92\",\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\"},\"source\":{\"version\":5,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"authority_id\":\"6c0067cb98c412e99f82e7440734ab4936fcc9163142da22793ace04f9af2713\",\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\"},\"condition_version\":1,\"projector_id\":\"slug-fighter-condition-candidate-v1\"}",
+      "id_preimage": "534c55472063616e64696461746520737461626c6500763100e00300007b2276657273696f6e223a312c226163636f756e745f617574686f726974795f6964223a2239616166363434306533656161396464313462393032323262623566383537653264663865613332613336356536373064613132653863633461646465333934222c226163636f756e745f6964223a2266383666396437663965316666633337393664663365623834383864633134613638306561353863313062343264386537376565356132653932353833323164222c226964656e74697479223a7b226e6574776f726b223a313339373531313439352c2267656e65736973223a2237383933363736303939636639393835626231393864666236613334376439343232613139663234323263663333323661393939613732333063653234366364222c2270726f66696c65223a22736c75672d70686173652d612d666978747572652d62697033392d7631222c22726f6f745f7075626c69635f6b6579223a224a676475615169596a52636e6a63443973794e44663478337478545a6b6738487076544b5a74706f735454773762544c70527a7664376962563362755269784d4571417756417972655833367041773544784c5877473567573645474e576552634a664a69746b78326b434a35347043222c2267796d5f7075626c69635f6b6579223a22303333646535653265336435616430366636313635373266636233643631663038396365313130356566343836646562663330383032376233623636336436643932222c2267796d5f6964223a2232383435326663386134373864323866323834646665363731636663353765376361626563613038656139353361656633373166353637346433663463353130227d2c22736f75726365223a7b2276657273696f6e223a352c226e6574776f726b223a313339373531313439352c2267656e65736973223a2237383933363736303939636639393835626231393864666236613334376439343232613139663234323263663333323661393939613732333063653234366364222c22617574686f726974795f6964223a2236633030363763623938633431326539396638326537343430373334616234393336666363393136333134326461323237393361636530346639616632373133222c2264657363726970746f725f6964223a2263316138363530613339663639353831346462363766646466373938313565663234396131336135633063633561663062393036623036316334633361333033227d2c22636f6e646974696f6e5f76657273696f6e223a312c2270726f6a6563746f725f6964223a22736c75672d666967687465722d636f6e646974696f6e2d63616e6469646174652d7631227d",
+      "expected_id": "841e923c4da4eeab60530b382a29cf83ca2b80a54adedc8b03b30ed3c94e8d8a"
+    }
+  ],
+  "cases": [
+    {
+      "fixture": "zero256",
+      "record": {
+        "version": 5,
+        "sequence": 3,
+        "context": {
+          "version": 1,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "dna_version": 1,
+          "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "parent_hash": "6133e19efaf2ece5a87fb63b83b84b4c6aa06aff9f388d7df5db1862638f7288",
+          "parent_height": 2,
+          "expected_bits": 545259519,
+          "min_timestamp": 1794893585,
+          "max_timestamp": 1794900790
+        },
+        "proof": {
+          "version": 2,
+          "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+          "header": "0000002088728f636218dbf57d8d389fff6aa06a4c4bb8833bb67fa8e5ecf2fa9ee133611ca6b1c7f92be8221834be1a60cb928bb321bd54770e9fd85c5493d44f80df4516e7fb6affff7f2000000000",
+          "coinbase": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff16530800000000000000000b2f503253482f627463642fffffffff0200ca9a3b000000001976a914c774f7875f704f56898371b6424b6e6f6328d7fa88ac00000000000000002a6a28534c55475052303269cd6fc590ccda64f0ef1649a805637c62d53cd8c0a6d613107a2ba549b94c2a00000000",
+          "merkle_branch": [],
+          "job_id": "5ad731524598138ffcc19fb8e922c8e4085db03c601919fb88ba97bf8317ab08"
+        },
+        "verified": {
+          "version": 2,
+          "verification": "supplied-context",
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "prospect_id": "f60dde16fb862d5d1e84dc3b1978c2013841c49072b58ca2d68d3c5daede80a0",
+          "policy_id": "2dd6301ce9989bc383f942f3d1520e8bc61ee2564761a7f754eb09677b24fb8c",
+          "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+          "work_hash": "e641ed4775c39747c05c45c0657fee4da2040bd0a79709323506763e0f25de6e",
+          "parent_hash": "6133e19efaf2ece5a87fb63b83b84b4c6aa06aff9f388d7df5db1862638f7288",
+          "parent_height": 2,
+          "dna": {
+            "dna_version": 1,
+            "seed": "e641ed4775c39747c05c45c0657fee4da2040bd0a79709323506763e0f25de6e",
+            "rarity": "professional",
+            "talent_budget": 339,
+            "attributes": {
+              "power": 70,
+              "speed": 38,
+              "chin": 97,
+              "stamina": 77,
+              "skill": 57
+            },
+            "prime_weeks": 31,
+            "decline_weeks": 13
+          }
+        },
+        "authorization": {
+          "version": 2,
+          "public_key": "03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519",
+          "signature": "30440220787148ce03bb52ccb78345d870befbca399143c18101bb1b73289e32b74324b6022056d8f2ef33d28154aa30aef9797a721179a82258750028c5959d171726aac3a6"
+        },
+        "job": {
+          "version": 2,
+          "rule_version": 1,
+          "id": "5ad731524598138ffcc19fb8e922c8e4085db03c601919fb88ba97bf8317ab08",
+          "authority_id": "def06b4036f8dae71ef934cae29fa0f583e16234db153a82e75cfd9423309239",
+          "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+          "context": {
+            "version": 1,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "dna_version": 1,
+            "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "parent_hash": "6133e19efaf2ece5a87fb63b83b84b4c6aa06aff9f388d7df5db1862638f7288",
+            "parent_height": 2,
+            "expected_bits": 545259519,
+            "min_timestamp": 1794893585,
+            "max_timestamp": 1794900790
+          },
+          "public_key": "03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519",
+          "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+          "challenge": "eee5777ef672ab683fb104dfee6902ce3ccf5785bd9bbfef61ed77b7b8675384",
+          "issued_at_ms": 1794893590072,
+          "expires_at_ms": 1794893890072
+        },
+        "birth": {
+          "rule_version": 1,
+          "born_at_ms": 1794893590072,
+          "accepted_at_ms": 1794893590614
+        },
+        "eligibility": {
+          "rule_version": 2,
+          "source": "current-parent",
+          "hash": "6133e19efaf2ece5a87fb63b83b84b4c6aa06aff9f388d7df5db1862638f7288",
+          "height": 2
+        },
+        "static_binding": {
+          "version": 1,
+          "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+          "manifest_digest": "649f2bfe266c461e2df8fd4e9d0db9431270d9abb08469f63371c00d31431798",
+          "portrait_digest": "d611793e176d428d6aa76ab5e944ac78ad60d1f10be4dfdbc213d4e87bb01e74"
+        }
+      },
+      "record_canonical": "{\"version\":5,\"sequence\":3,\"context\":{\"version\":1,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"dna_version\":1,\"prospect_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"parent_hash\":\"6133e19efaf2ece5a87fb63b83b84b4c6aa06aff9f388d7df5db1862638f7288\",\"parent_height\":2,\"expected_bits\":545259519,\"min_timestamp\":1794893585,\"max_timestamp\":1794900790},\"proof\":{\"version\":2,\"gym_id\":\"a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5\",\"header\":\"0000002088728f636218dbf57d8d389fff6aa06a4c4bb8833bb67fa8e5ecf2fa9ee133611ca6b1c7f92be8221834be1a60cb928bb321bd54770e9fd85c5493d44f80df4516e7fb6affff7f2000000000\",\"coinbase\":\"02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff16530800000000000000000b2f503253482f627463642fffffffff0200ca9a3b000000001976a914c774f7875f704f56898371b6424b6e6f6328d7fa88ac00000000000000002a6a28534c55475052303269cd6fc590ccda64f0ef1649a805637c62d53cd8c0a6d613107a2ba549b94c2a00000000\",\"merkle_branch\":[],\"job_id\":\"5ad731524598138ffcc19fb8e922c8e4085db03c601919fb88ba97bf8317ab08\"},\"verified\":{\"version\":2,\"verification\":\"supplied-context\",\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"prospect_id\":\"f60dde16fb862d5d1e84dc3b1978c2013841c49072b58ca2d68d3c5daede80a0\",\"policy_id\":\"2dd6301ce9989bc383f942f3d1520e8bc61ee2564761a7f754eb09677b24fb8c\",\"gym_id\":\"a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5\",\"work_hash\":\"e641ed4775c39747c05c45c0657fee4da2040bd0a79709323506763e0f25de6e\",\"parent_hash\":\"6133e19efaf2ece5a87fb63b83b84b4c6aa06aff9f388d7df5db1862638f7288\",\"parent_height\":2,\"dna\":{\"dna_version\":1,\"seed\":\"e641ed4775c39747c05c45c0657fee4da2040bd0a79709323506763e0f25de6e\",\"rarity\":\"professional\",\"talent_budget\":339,\"attributes\":{\"power\":70,\"speed\":38,\"chin\":97,\"stamina\":77,\"skill\":57},\"prime_weeks\":31,\"decline_weeks\":13}},\"authorization\":{\"version\":2,\"public_key\":\"03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519\",\"signature\":\"30440220787148ce03bb52ccb78345d870befbca399143c18101bb1b73289e32b74324b6022056d8f2ef33d28154aa30aef9797a721179a82258750028c5959d171726aac3a6\"},\"job\":{\"version\":2,\"rule_version\":1,\"id\":\"5ad731524598138ffcc19fb8e922c8e4085db03c601919fb88ba97bf8317ab08\",\"authority_id\":\"def06b4036f8dae71ef934cae29fa0f583e16234db153a82e75cfd9423309239\",\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\",\"context\":{\"version\":1,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"dna_version\":1,\"prospect_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"parent_hash\":\"6133e19efaf2ece5a87fb63b83b84b4c6aa06aff9f388d7df5db1862638f7288\",\"parent_height\":2,\"expected_bits\":545259519,\"min_timestamp\":1794893585,\"max_timestamp\":1794900790},\"public_key\":\"03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519\",\"gym_id\":\"a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5\",\"challenge\":\"eee5777ef672ab683fb104dfee6902ce3ccf5785bd9bbfef61ed77b7b8675384\",\"issued_at_ms\":1794893590072,\"expires_at_ms\":1794893890072},\"birth\":{\"rule_version\":1,\"born_at_ms\":1794893590072,\"accepted_at_ms\":1794893590614},\"eligibility\":{\"rule_version\":2,\"source\":\"current-parent\",\"hash\":\"6133e19efaf2ece5a87fb63b83b84b4c6aa06aff9f388d7df5db1862638f7288\",\"height\":2},\"static_binding\":{\"version\":1,\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\",\"manifest_digest\":\"649f2bfe266c461e2df8fd4e9d0db9431270d9abb08469f63371c00d31431798\",\"portrait_digest\":\"d611793e176d428d6aa76ab5e944ac78ad60d1f10be4dfdbc213d4e87bb01e74\"}}",
+      "assignment": {
+        "version": 1,
+        "sequence": 3,
+        "prospect_id": "f60dde16fb862d5d1e84dc3b1978c2013841c49072b58ca2d68d3c5daede80a0",
+        "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+        "work_hash": "e641ed4775c39747c05c45c0657fee4da2040bd0a79709323506763e0f25de6e",
+        "born_at_ms": 1794893590072,
+        "accepted_at_ms": 1794893590614,
+        "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+        "manifest_digest": "649f2bfe266c461e2df8fd4e9d0db9431270d9abb08469f63371c00d31431798",
+        "portrait_digest": "d611793e176d428d6aa76ab5e944ac78ad60d1f10be4dfdbc213d4e87bb01e74",
+        "source_record_digest": "8cf27eb4dd6e82f02da617d6ae9b194509fc14b5d405c14328fc1ed9b0dec64e"
+      },
+      "manifest": {
+        "manifest_version": 1,
+        "generator_id": "slug-fighter-manifest-candidate-v1",
+        "table_hash": "72231fbe707cea9a65dd5b92f7b2719953795bceadbbf9e3b8e0b8f4aaef3f44",
+        "dna": {
+          "dna_version": 1,
+          "seed": "e641ed4775c39747c05c45c0657fee4da2040bd0a79709323506763e0f25de6e",
+          "rarity": "professional",
+          "talent_budget": 339,
+          "attributes": {
+            "power": 70,
+            "speed": 38,
+            "chin": 97,
+            "stamina": 77,
+            "skill": 57
+          },
+          "prime_weeks": 31,
+          "decline_weeks": 13
+        },
+        "name": {
+          "first": "Marcus",
+          "last": "Sosa",
+          "display": "Marcus Sosa"
+        },
+        "physical": {
+          "height_in": 75,
+          "reach_in": 77,
+          "stance": "orthodox",
+          "weight_lb": 246,
+          "weight_class": "heavy"
+        },
+        "style": "slugger",
+        "portrait": {
+          "portrait_version": 1,
+          "skin": 0,
+          "hair_style": 0,
+          "hair_color": 5,
+          "facial_hair": 2,
+          "head_shape": 0,
+          "mouth": 3,
+          "brow": 1,
+          "background": 7,
+          "scar": "none",
+          "shoulder_jitter": -6
+        }
+      },
+      "conditions": [
+        {
+          "as_of_ms": 1794893590614,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "e641ed4775c39747c05c45c0657fee4da2040bd0a79709323506763e0f25de6e",
+            "born_at_ms": 1794893590072,
+            "as_of_ms": 1794893590614,
+            "age_weeks": 0,
+            "phase": "prime",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 31,
+            "prime_remaining_ms": 18748799458,
+            "career_remaining_ms": 26611199458,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 700,
+              "speed": 380,
+              "chin": 970,
+              "stamina": 770,
+              "skill": 570
+            },
+            "league_attributes_tenths": {
+              "power": 700,
+              "speed": 380,
+              "chin": 970,
+              "stamina": 770,
+              "skill": 570
+            },
+            "rating_hundredths": 26080
+          }
+        },
+        {
+          "as_of_ms": 1795498390071,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "e641ed4775c39747c05c45c0657fee4da2040bd0a79709323506763e0f25de6e",
+            "born_at_ms": 1794893590072,
+            "as_of_ms": 1795498390071,
+            "age_weeks": 0,
+            "phase": "prime",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 31,
+            "prime_remaining_ms": 18144000001,
+            "career_remaining_ms": 26006400001,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 700,
+              "speed": 380,
+              "chin": 970,
+              "stamina": 770,
+              "skill": 570
+            },
+            "league_attributes_tenths": {
+              "power": 700,
+              "speed": 380,
+              "chin": 970,
+              "stamina": 770,
+              "skill": 570
+            },
+            "rating_hundredths": 26080
+          }
+        },
+        {
+          "as_of_ms": 1795498390072,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "e641ed4775c39747c05c45c0657fee4da2040bd0a79709323506763e0f25de6e",
+            "born_at_ms": 1794893590072,
+            "as_of_ms": 1795498390072,
+            "age_weeks": 1,
+            "phase": "prime",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 30,
+            "prime_remaining_ms": 18144000000,
+            "career_remaining_ms": 26006400000,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 700,
+              "speed": 380,
+              "chin": 970,
+              "stamina": 770,
+              "skill": 570
+            },
+            "league_attributes_tenths": {
+              "power": 700,
+              "speed": 380,
+              "chin": 970,
+              "stamina": 770,
+              "skill": 570
+            },
+            "rating_hundredths": 26080
+          }
+        },
+        {
+          "as_of_ms": 1813642390071,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "e641ed4775c39747c05c45c0657fee4da2040bd0a79709323506763e0f25de6e",
+            "born_at_ms": 1794893590072,
+            "as_of_ms": 1813642390071,
+            "age_weeks": 30,
+            "phase": "prime",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 1,
+            "prime_remaining_ms": 1,
+            "career_remaining_ms": 7862400001,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 700,
+              "speed": 380,
+              "chin": 970,
+              "stamina": 770,
+              "skill": 570
+            },
+            "league_attributes_tenths": {
+              "power": 700,
+              "speed": 380,
+              "chin": 970,
+              "stamina": 770,
+              "skill": 570
+            },
+            "rating_hundredths": 26080
+          }
+        },
+        {
+          "as_of_ms": 1813642390072,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "e641ed4775c39747c05c45c0657fee4da2040bd0a79709323506763e0f25de6e",
+            "born_at_ms": 1794893590072,
+            "as_of_ms": 1813642390072,
+            "age_weeks": 31,
+            "phase": "decline",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 0,
+            "prime_remaining_ms": 0,
+            "career_remaining_ms": 7862400000,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 700,
+              "speed": 380,
+              "chin": 970,
+              "stamina": 770,
+              "skill": 570
+            },
+            "league_attributes_tenths": {
+              "power": 700,
+              "speed": 380,
+              "chin": 970,
+              "stamina": 770,
+              "skill": 570
+            },
+            "rating_hundredths": 26080
+          }
+        },
+        {
+          "as_of_ms": 1814247190072,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "e641ed4775c39747c05c45c0657fee4da2040bd0a79709323506763e0f25de6e",
+            "born_at_ms": 1794893590072,
+            "as_of_ms": 1814247190072,
+            "age_weeks": 32,
+            "phase": "decline",
+            "elapsed_decline_weeks": 1,
+            "prime_remaining_weeks": 0,
+            "prime_remaining_ms": 0,
+            "career_remaining_ms": 7257600000,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 689,
+              "speed": 368,
+              "chin": 948,
+              "stamina": 752,
+              "skill": 566
+            },
+            "league_attributes_tenths": {
+              "power": 689,
+              "speed": 368,
+              "chin": 948,
+              "stamina": 752,
+              "skill": 566
+            },
+            "rating_hundredths": 25522
+          }
+        },
+        {
+          "as_of_ms": 1821504790071,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "e641ed4775c39747c05c45c0657fee4da2040bd0a79709323506763e0f25de6e",
+            "born_at_ms": 1794893590072,
+            "as_of_ms": 1821504790071,
+            "age_weeks": 43,
+            "phase": "decline",
+            "elapsed_decline_weeks": 12,
+            "prime_remaining_weeks": 0,
+            "prime_remaining_ms": 0,
+            "career_remaining_ms": 1,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 571,
+              "speed": 240,
+              "chin": 701,
+              "stamina": 557,
+              "skill": 517
+            },
+            "league_attributes_tenths": {
+              "power": 571,
+              "speed": 240,
+              "chin": 701,
+              "stamina": 557,
+              "skill": 517
+            },
+            "rating_hundredths": 19476
+          }
+        },
+        {
+          "as_of_ms": 1821504790072,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "e641ed4775c39747c05c45c0657fee4da2040bd0a79709323506763e0f25de6e",
+            "born_at_ms": 1794893590072,
+            "as_of_ms": 1821504790072,
+            "age_weeks": 44,
+            "phase": "retired",
+            "elapsed_decline_weeks": 13,
+            "prime_remaining_weeks": 0,
+            "prime_remaining_ms": 0,
+            "career_remaining_ms": 0,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 560,
+              "speed": 228,
+              "chin": 679,
+              "stamina": 539,
+              "skill": 513
+            },
+            "league_attributes_tenths": {
+              "power": 560,
+              "speed": 228,
+              "chin": 679,
+              "stamina": 539,
+              "skill": 513
+            },
+            "rating_hundredths": 18918
+          }
+        }
+      ]
+    },
+    {
+      "fixture": "zero256",
+      "record": {
+        "version": 5,
+        "sequence": 2,
+        "context": {
+          "version": 1,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "dna_version": 1,
+          "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "parent_hash": "21983c34004037a339904a015c4d0f18f1fab5928c7da1cb7e176b3101c05fcb",
+          "parent_height": 1,
+          "expected_bits": 545259519,
+          "min_timestamp": 1794893585,
+          "max_timestamp": 1794900787
+        },
+        "proof": {
+          "version": 2,
+          "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+          "header": "00000020cb5fc001316b177ecba17d8c92b5faf1180f4d5c014a9039a3374000343c982122699af3db3503a3f07c569f6b0293c0eb1912243420270c84a21fc6848d5daf13e7fb6affff7f2000000000",
+          "coinbase": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff16520800000000000000000b2f503253482f627463642fffffffff0200ca9a3b000000001976a914c774f7875f704f56898371b6424b6e6f6328d7fa88ac00000000000000002a6a28534c5547505230320cf881a253f13714546e4df1db0d5686c592c37c2c189d444e210a28f21faf0200000000",
+          "merkle_branch": [],
+          "job_id": "7dedb5e4fc1ef5fa21deddbf22ba5fa80f482f07c514439728f24d9b75258cb4"
+        },
+        "verified": {
+          "version": 2,
+          "verification": "supplied-context",
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "prospect_id": "ed8ab7f5ab370bec418c80ec98eaae0e1cbaa7f85f7e95a9a8faa91a2ec8d55e",
+          "policy_id": "2dd6301ce9989bc383f942f3d1520e8bc61ee2564761a7f754eb09677b24fb8c",
+          "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+          "work_hash": "6133e19efaf2ece5a87fb63b83b84b4c6aa06aff9f388d7df5db1862638f7288",
+          "parent_hash": "21983c34004037a339904a015c4d0f18f1fab5928c7da1cb7e176b3101c05fcb",
+          "parent_height": 1,
+          "dna": {
+            "dna_version": 1,
+            "seed": "6133e19efaf2ece5a87fb63b83b84b4c6aa06aff9f388d7df5db1862638f7288",
+            "rarity": "professional",
+            "talent_budget": 327,
+            "attributes": {
+              "power": 45,
+              "speed": 57,
+              "chin": 47,
+              "stamina": 100,
+              "skill": 78
+            },
+            "prime_weeks": 52,
+            "decline_weeks": 17
+          }
+        },
+        "authorization": {
+          "version": 2,
+          "public_key": "03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519",
+          "signature": "3044022001c6e375fc55e3709b816ddebf607c65b0b7acced01d80cec7602f328f3aac450220154b61cc6a3e05713916572c97f6c2fa907a450d986a0329be6866303d41387c"
+        },
+        "job": {
+          "version": 2,
+          "rule_version": 1,
+          "id": "7dedb5e4fc1ef5fa21deddbf22ba5fa80f482f07c514439728f24d9b75258cb4",
+          "authority_id": "def06b4036f8dae71ef934cae29fa0f583e16234db153a82e75cfd9423309239",
+          "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+          "context": {
+            "version": 1,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "dna_version": 1,
+            "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "parent_hash": "21983c34004037a339904a015c4d0f18f1fab5928c7da1cb7e176b3101c05fcb",
+            "parent_height": 1,
+            "expected_bits": 545259519,
+            "min_timestamp": 1794893585,
+            "max_timestamp": 1794900787
+          },
+          "public_key": "03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519",
+          "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+          "challenge": "019f22499a50e52f9e7c273479d6789c3642643adb8f89914369b92ad4d6cd66",
+          "issued_at_ms": 1794893587162,
+          "expires_at_ms": 1794893887162
+        },
+        "birth": {
+          "rule_version": 1,
+          "born_at_ms": 1794893587162,
+          "accepted_at_ms": 1794893587760
+        },
+        "eligibility": {
+          "rule_version": 2,
+          "source": "canonical-winning-block",
+          "hash": "6133e19efaf2ece5a87fb63b83b84b4c6aa06aff9f388d7df5db1862638f7288",
+          "height": 2
+        },
+        "static_binding": {
+          "version": 1,
+          "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+          "manifest_digest": "60f0a92e1496658e471654bf0880d254397b3bf9609fd9fb100a0ad953426927",
+          "portrait_digest": "ef773e4eaba4f3ff1b0b22dd677df12b9347ef404f15f158cbf57389af8e8160"
+        }
+      },
+      "record_canonical": "{\"version\":5,\"sequence\":2,\"context\":{\"version\":1,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"dna_version\":1,\"prospect_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"parent_hash\":\"21983c34004037a339904a015c4d0f18f1fab5928c7da1cb7e176b3101c05fcb\",\"parent_height\":1,\"expected_bits\":545259519,\"min_timestamp\":1794893585,\"max_timestamp\":1794900787},\"proof\":{\"version\":2,\"gym_id\":\"a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5\",\"header\":\"00000020cb5fc001316b177ecba17d8c92b5faf1180f4d5c014a9039a3374000343c982122699af3db3503a3f07c569f6b0293c0eb1912243420270c84a21fc6848d5daf13e7fb6affff7f2000000000\",\"coinbase\":\"02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff16520800000000000000000b2f503253482f627463642fffffffff0200ca9a3b000000001976a914c774f7875f704f56898371b6424b6e6f6328d7fa88ac00000000000000002a6a28534c5547505230320cf881a253f13714546e4df1db0d5686c592c37c2c189d444e210a28f21faf0200000000\",\"merkle_branch\":[],\"job_id\":\"7dedb5e4fc1ef5fa21deddbf22ba5fa80f482f07c514439728f24d9b75258cb4\"},\"verified\":{\"version\":2,\"verification\":\"supplied-context\",\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"prospect_id\":\"ed8ab7f5ab370bec418c80ec98eaae0e1cbaa7f85f7e95a9a8faa91a2ec8d55e\",\"policy_id\":\"2dd6301ce9989bc383f942f3d1520e8bc61ee2564761a7f754eb09677b24fb8c\",\"gym_id\":\"a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5\",\"work_hash\":\"6133e19efaf2ece5a87fb63b83b84b4c6aa06aff9f388d7df5db1862638f7288\",\"parent_hash\":\"21983c34004037a339904a015c4d0f18f1fab5928c7da1cb7e176b3101c05fcb\",\"parent_height\":1,\"dna\":{\"dna_version\":1,\"seed\":\"6133e19efaf2ece5a87fb63b83b84b4c6aa06aff9f388d7df5db1862638f7288\",\"rarity\":\"professional\",\"talent_budget\":327,\"attributes\":{\"power\":45,\"speed\":57,\"chin\":47,\"stamina\":100,\"skill\":78},\"prime_weeks\":52,\"decline_weeks\":17}},\"authorization\":{\"version\":2,\"public_key\":\"03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519\",\"signature\":\"3044022001c6e375fc55e3709b816ddebf607c65b0b7acced01d80cec7602f328f3aac450220154b61cc6a3e05713916572c97f6c2fa907a450d986a0329be6866303d41387c\"},\"job\":{\"version\":2,\"rule_version\":1,\"id\":\"7dedb5e4fc1ef5fa21deddbf22ba5fa80f482f07c514439728f24d9b75258cb4\",\"authority_id\":\"def06b4036f8dae71ef934cae29fa0f583e16234db153a82e75cfd9423309239\",\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\",\"context\":{\"version\":1,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"dna_version\":1,\"prospect_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"parent_hash\":\"21983c34004037a339904a015c4d0f18f1fab5928c7da1cb7e176b3101c05fcb\",\"parent_height\":1,\"expected_bits\":545259519,\"min_timestamp\":1794893585,\"max_timestamp\":1794900787},\"public_key\":\"03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519\",\"gym_id\":\"a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5\",\"challenge\":\"019f22499a50e52f9e7c273479d6789c3642643adb8f89914369b92ad4d6cd66\",\"issued_at_ms\":1794893587162,\"expires_at_ms\":1794893887162},\"birth\":{\"rule_version\":1,\"born_at_ms\":1794893587162,\"accepted_at_ms\":1794893587760},\"eligibility\":{\"rule_version\":2,\"source\":\"canonical-winning-block\",\"hash\":\"6133e19efaf2ece5a87fb63b83b84b4c6aa06aff9f388d7df5db1862638f7288\",\"height\":2},\"static_binding\":{\"version\":1,\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\",\"manifest_digest\":\"60f0a92e1496658e471654bf0880d254397b3bf9609fd9fb100a0ad953426927\",\"portrait_digest\":\"ef773e4eaba4f3ff1b0b22dd677df12b9347ef404f15f158cbf57389af8e8160\"}}",
+      "assignment": {
+        "version": 1,
+        "sequence": 2,
+        "prospect_id": "ed8ab7f5ab370bec418c80ec98eaae0e1cbaa7f85f7e95a9a8faa91a2ec8d55e",
+        "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+        "work_hash": "6133e19efaf2ece5a87fb63b83b84b4c6aa06aff9f388d7df5db1862638f7288",
+        "born_at_ms": 1794893587162,
+        "accepted_at_ms": 1794893587760,
+        "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+        "manifest_digest": "60f0a92e1496658e471654bf0880d254397b3bf9609fd9fb100a0ad953426927",
+        "portrait_digest": "ef773e4eaba4f3ff1b0b22dd677df12b9347ef404f15f158cbf57389af8e8160",
+        "source_record_digest": "db68034ed26f537cda19ba8be9722cbe05c139c344113aa16e7a739b06313e89"
+      },
+      "manifest": {
+        "manifest_version": 1,
+        "generator_id": "slug-fighter-manifest-candidate-v1",
+        "table_hash": "72231fbe707cea9a65dd5b92f7b2719953795bceadbbf9e3b8e0b8f4aaef3f44",
+        "dna": {
+          "dna_version": 1,
+          "seed": "6133e19efaf2ece5a87fb63b83b84b4c6aa06aff9f388d7df5db1862638f7288",
+          "rarity": "professional",
+          "talent_budget": 327,
+          "attributes": {
+            "power": 45,
+            "speed": 57,
+            "chin": 47,
+            "stamina": 100,
+            "skill": 78
+          },
+          "prime_weeks": 52,
+          "decline_weeks": 17
+        },
+        "name": {
+          "first": "Nico",
+          "last": "Grange",
+          "display": "Nico Grange"
+        },
+        "physical": {
+          "height_in": 67,
+          "reach_in": 67,
+          "stance": "orthodox",
+          "weight_lb": 178,
+          "weight_class": "middle"
+        },
+        "style": "boxer",
+        "portrait": {
+          "portrait_version": 1,
+          "skin": 3,
+          "hair_style": 0,
+          "hair_color": 4,
+          "facial_hair": 1,
+          "head_shape": 3,
+          "mouth": 0,
+          "brow": 2,
+          "background": 1,
+          "scar": "left_brow",
+          "shoulder_jitter": -6
+        }
+      },
+      "conditions": [
+        {
+          "as_of_ms": 1794893587760,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "6133e19efaf2ece5a87fb63b83b84b4c6aa06aff9f388d7df5db1862638f7288",
+            "born_at_ms": 1794893587162,
+            "as_of_ms": 1794893587760,
+            "age_weeks": 0,
+            "phase": "prime",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 52,
+            "prime_remaining_ms": 31449599402,
+            "career_remaining_ms": 41731199402,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 450,
+              "speed": 570,
+              "chin": 470,
+              "stamina": 1000,
+              "skill": 780
+            },
+            "league_attributes_tenths": {
+              "power": 450,
+              "speed": 570,
+              "chin": 470,
+              "stamina": 1000,
+              "skill": 780
+            },
+            "rating_hundredths": 29930
+          }
+        },
+        {
+          "as_of_ms": 1795498387161,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "6133e19efaf2ece5a87fb63b83b84b4c6aa06aff9f388d7df5db1862638f7288",
+            "born_at_ms": 1794893587162,
+            "as_of_ms": 1795498387161,
+            "age_weeks": 0,
+            "phase": "prime",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 52,
+            "prime_remaining_ms": 30844800001,
+            "career_remaining_ms": 41126400001,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 450,
+              "speed": 570,
+              "chin": 470,
+              "stamina": 1000,
+              "skill": 780
+            },
+            "league_attributes_tenths": {
+              "power": 450,
+              "speed": 570,
+              "chin": 470,
+              "stamina": 1000,
+              "skill": 780
+            },
+            "rating_hundredths": 29930
+          }
+        },
+        {
+          "as_of_ms": 1795498387162,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "6133e19efaf2ece5a87fb63b83b84b4c6aa06aff9f388d7df5db1862638f7288",
+            "born_at_ms": 1794893587162,
+            "as_of_ms": 1795498387162,
+            "age_weeks": 1,
+            "phase": "prime",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 51,
+            "prime_remaining_ms": 30844800000,
+            "career_remaining_ms": 41126400000,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 450,
+              "speed": 570,
+              "chin": 470,
+              "stamina": 1000,
+              "skill": 780
+            },
+            "league_attributes_tenths": {
+              "power": 450,
+              "speed": 570,
+              "chin": 470,
+              "stamina": 1000,
+              "skill": 780
+            },
+            "rating_hundredths": 29930
+          }
+        },
+        {
+          "as_of_ms": 1826343187161,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "6133e19efaf2ece5a87fb63b83b84b4c6aa06aff9f388d7df5db1862638f7288",
+            "born_at_ms": 1794893587162,
+            "as_of_ms": 1826343187161,
+            "age_weeks": 51,
+            "phase": "prime",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 1,
+            "prime_remaining_ms": 1,
+            "career_remaining_ms": 10281600001,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 450,
+              "speed": 570,
+              "chin": 470,
+              "stamina": 1000,
+              "skill": 780
+            },
+            "league_attributes_tenths": {
+              "power": 450,
+              "speed": 570,
+              "chin": 470,
+              "stamina": 1000,
+              "skill": 780
+            },
+            "rating_hundredths": 29930
+          }
+        },
+        {
+          "as_of_ms": 1826343187162,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "6133e19efaf2ece5a87fb63b83b84b4c6aa06aff9f388d7df5db1862638f7288",
+            "born_at_ms": 1794893587162,
+            "as_of_ms": 1826343187162,
+            "age_weeks": 52,
+            "phase": "decline",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 0,
+            "prime_remaining_ms": 0,
+            "career_remaining_ms": 10281600000,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 450,
+              "speed": 570,
+              "chin": 470,
+              "stamina": 1000,
+              "skill": 780
+            },
+            "league_attributes_tenths": {
+              "power": 450,
+              "speed": 570,
+              "chin": 470,
+              "stamina": 1000,
+              "skill": 780
+            },
+            "rating_hundredths": 29930
+          }
+        },
+        {
+          "as_of_ms": 1826947987162,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "6133e19efaf2ece5a87fb63b83b84b4c6aa06aff9f388d7df5db1862638f7288",
+            "born_at_ms": 1794893587162,
+            "as_of_ms": 1826947987162,
+            "age_weeks": 53,
+            "phase": "decline",
+            "elapsed_decline_weeks": 1,
+            "prime_remaining_weeks": 0,
+            "prime_remaining_ms": 0,
+            "career_remaining_ms": 9676800000,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 445,
+              "speed": 557,
+              "chin": 462,
+              "stamina": 982,
+              "skill": 775
+            },
+            "league_attributes_tenths": {
+              "power": 445,
+              "speed": 557,
+              "chin": 462,
+              "stamina": 982,
+              "skill": 775
+            },
+            "rating_hundredths": 29427
+          }
+        },
+        {
+          "as_of_ms": 1836624787161,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "6133e19efaf2ece5a87fb63b83b84b4c6aa06aff9f388d7df5db1862638f7288",
+            "born_at_ms": 1794893587162,
+            "as_of_ms": 1836624787161,
+            "age_weeks": 68,
+            "phase": "decline",
+            "elapsed_decline_weeks": 16,
+            "prime_remaining_weeks": 0,
+            "prime_remaining_ms": 0,
+            "career_remaining_ms": 1,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 365,
+              "speed": 355,
+              "chin": 337,
+              "stamina": 718,
+              "skill": 707
+            },
+            "league_attributes_tenths": {
+              "power": 365,
+              "speed": 355,
+              "chin": 337,
+              "stamina": 718,
+              "skill": 707
+            },
+            "rating_hundredths": 21727
+          }
+        },
+        {
+          "as_of_ms": 1836624787162,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "6133e19efaf2ece5a87fb63b83b84b4c6aa06aff9f388d7df5db1862638f7288",
+            "born_at_ms": 1794893587162,
+            "as_of_ms": 1836624787162,
+            "age_weeks": 69,
+            "phase": "retired",
+            "elapsed_decline_weeks": 17,
+            "prime_remaining_weeks": 0,
+            "prime_remaining_ms": 0,
+            "career_remaining_ms": 0,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 360,
+              "speed": 342,
+              "chin": 329,
+              "stamina": 700,
+              "skill": 702
+            },
+            "league_attributes_tenths": {
+              "power": 360,
+              "speed": 342,
+              "chin": 329,
+              "stamina": 700,
+              "skill": 702
+            },
+            "rating_hundredths": 21224
+          }
+        }
+      ]
+    },
+    {
+      "fixture": "zero256",
+      "record": {
+        "version": 5,
+        "sequence": 1,
+        "context": {
+          "version": 1,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "dna_version": 1,
+          "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "parent_hash": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "parent_height": 0,
+          "expected_bits": 545259519,
+          "min_timestamp": 1794700801,
+          "max_timestamp": 1794900784
+        },
+        "proof": {
+          "version": 2,
+          "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+          "header": "00000020cd46e20c23a799a92633cf22249fa122947d346afb8d19bb8599cf99606793788790869329bbf873c69c63ece438c8fda736ea864b85917008a31d6e830e925910e7fb6affff7f2000000000",
+          "coinbase": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff16510800000000000000000b2f503253482f627463642fffffffff0200ca9a3b000000001976a914c774f7875f704f56898371b6424b6e6f6328d7fa88ac00000000000000002a6a28534c554750523032b37ff8cb6ae639841dd3aeb54242af56ee695e412065f00c9ac960a2a124072b00000000",
+          "merkle_branch": [],
+          "job_id": "e063a390c216f81829a508520af886475157915374ee0101a230570aec2308e9"
+        },
+        "verified": {
+          "version": 2,
+          "verification": "supplied-context",
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "prospect_id": "edb242e34276bd30ddd862630dd4f7e461c67b0b628e923c39b8466b49bf72f4",
+          "policy_id": "2dd6301ce9989bc383f942f3d1520e8bc61ee2564761a7f754eb09677b24fb8c",
+          "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+          "work_hash": "21983c34004037a339904a015c4d0f18f1fab5928c7da1cb7e176b3101c05fcb",
+          "parent_hash": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "parent_height": 0,
+          "dna": {
+            "dna_version": 1,
+            "seed": "21983c34004037a339904a015c4d0f18f1fab5928c7da1cb7e176b3101c05fcb",
+            "rarity": "professional",
+            "talent_budget": 325,
+            "attributes": {
+              "power": 26,
+              "speed": 88,
+              "chin": 94,
+              "stamina": 33,
+              "skill": 84
+            },
+            "prime_weeks": 29,
+            "decline_weeks": 28
+          }
+        },
+        "authorization": {
+          "version": 2,
+          "public_key": "03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519",
+          "signature": "30440220226e57b8940a16c259082875db628b725961751ad46372cc83b7a107ee1c6e25022007250717977f926a2571a7a7095b17c79c80cd065fc9bb82a459465d6a58e5b7"
+        },
+        "job": {
+          "version": 2,
+          "rule_version": 1,
+          "id": "e063a390c216f81829a508520af886475157915374ee0101a230570aec2308e9",
+          "authority_id": "def06b4036f8dae71ef934cae29fa0f583e16234db153a82e75cfd9423309239",
+          "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+          "context": {
+            "version": 1,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "dna_version": 1,
+            "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "parent_hash": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "parent_height": 0,
+            "expected_bits": 545259519,
+            "min_timestamp": 1794700801,
+            "max_timestamp": 1794900784
+          },
+          "public_key": "03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519",
+          "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+          "challenge": "3bd65e79dedb838ed31720877d3d5a3f2b51e84dac6f29b41f35eeda6116a11c",
+          "issued_at_ms": 1794893584297,
+          "expires_at_ms": 1794893884297
+        },
+        "birth": {
+          "rule_version": 1,
+          "born_at_ms": 1794893584297,
+          "accepted_at_ms": 1794893584865
+        },
+        "eligibility": {
+          "rule_version": 2,
+          "source": "canonical-winning-block",
+          "hash": "21983c34004037a339904a015c4d0f18f1fab5928c7da1cb7e176b3101c05fcb",
+          "height": 1
+        },
+        "static_binding": {
+          "version": 1,
+          "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+          "manifest_digest": "d0d422ed4c2d592c76cec639ef4bb40b1e40334010caf93ecdd2eca43db30407",
+          "portrait_digest": "43de8b5aabfe2bc1a663ecd8003ccdecccae6876671df7fdd28447ef92c98a00"
+        }
+      },
+      "record_canonical": "{\"version\":5,\"sequence\":1,\"context\":{\"version\":1,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"dna_version\":1,\"prospect_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"parent_hash\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"parent_height\":0,\"expected_bits\":545259519,\"min_timestamp\":1794700801,\"max_timestamp\":1794900784},\"proof\":{\"version\":2,\"gym_id\":\"a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5\",\"header\":\"00000020cd46e20c23a799a92633cf22249fa122947d346afb8d19bb8599cf99606793788790869329bbf873c69c63ece438c8fda736ea864b85917008a31d6e830e925910e7fb6affff7f2000000000\",\"coinbase\":\"02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff16510800000000000000000b2f503253482f627463642fffffffff0200ca9a3b000000001976a914c774f7875f704f56898371b6424b6e6f6328d7fa88ac00000000000000002a6a28534c554750523032b37ff8cb6ae639841dd3aeb54242af56ee695e412065f00c9ac960a2a124072b00000000\",\"merkle_branch\":[],\"job_id\":\"e063a390c216f81829a508520af886475157915374ee0101a230570aec2308e9\"},\"verified\":{\"version\":2,\"verification\":\"supplied-context\",\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"prospect_id\":\"edb242e34276bd30ddd862630dd4f7e461c67b0b628e923c39b8466b49bf72f4\",\"policy_id\":\"2dd6301ce9989bc383f942f3d1520e8bc61ee2564761a7f754eb09677b24fb8c\",\"gym_id\":\"a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5\",\"work_hash\":\"21983c34004037a339904a015c4d0f18f1fab5928c7da1cb7e176b3101c05fcb\",\"parent_hash\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"parent_height\":0,\"dna\":{\"dna_version\":1,\"seed\":\"21983c34004037a339904a015c4d0f18f1fab5928c7da1cb7e176b3101c05fcb\",\"rarity\":\"professional\",\"talent_budget\":325,\"attributes\":{\"power\":26,\"speed\":88,\"chin\":94,\"stamina\":33,\"skill\":84},\"prime_weeks\":29,\"decline_weeks\":28}},\"authorization\":{\"version\":2,\"public_key\":\"03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519\",\"signature\":\"30440220226e57b8940a16c259082875db628b725961751ad46372cc83b7a107ee1c6e25022007250717977f926a2571a7a7095b17c79c80cd065fc9bb82a459465d6a58e5b7\"},\"job\":{\"version\":2,\"rule_version\":1,\"id\":\"e063a390c216f81829a508520af886475157915374ee0101a230570aec2308e9\",\"authority_id\":\"def06b4036f8dae71ef934cae29fa0f583e16234db153a82e75cfd9423309239\",\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\",\"context\":{\"version\":1,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"dna_version\":1,\"prospect_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"parent_hash\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"parent_height\":0,\"expected_bits\":545259519,\"min_timestamp\":1794700801,\"max_timestamp\":1794900784},\"public_key\":\"03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519\",\"gym_id\":\"a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5\",\"challenge\":\"3bd65e79dedb838ed31720877d3d5a3f2b51e84dac6f29b41f35eeda6116a11c\",\"issued_at_ms\":1794893584297,\"expires_at_ms\":1794893884297},\"birth\":{\"rule_version\":1,\"born_at_ms\":1794893584297,\"accepted_at_ms\":1794893584865},\"eligibility\":{\"rule_version\":2,\"source\":\"canonical-winning-block\",\"hash\":\"21983c34004037a339904a015c4d0f18f1fab5928c7da1cb7e176b3101c05fcb\",\"height\":1},\"static_binding\":{\"version\":1,\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\",\"manifest_digest\":\"d0d422ed4c2d592c76cec639ef4bb40b1e40334010caf93ecdd2eca43db30407\",\"portrait_digest\":\"43de8b5aabfe2bc1a663ecd8003ccdecccae6876671df7fdd28447ef92c98a00\"}}",
+      "assignment": {
+        "version": 1,
+        "sequence": 1,
+        "prospect_id": "edb242e34276bd30ddd862630dd4f7e461c67b0b628e923c39b8466b49bf72f4",
+        "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+        "work_hash": "21983c34004037a339904a015c4d0f18f1fab5928c7da1cb7e176b3101c05fcb",
+        "born_at_ms": 1794893584297,
+        "accepted_at_ms": 1794893584865,
+        "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+        "manifest_digest": "d0d422ed4c2d592c76cec639ef4bb40b1e40334010caf93ecdd2eca43db30407",
+        "portrait_digest": "43de8b5aabfe2bc1a663ecd8003ccdecccae6876671df7fdd28447ef92c98a00",
+        "source_record_digest": "78f92f246eb6c5800402c4ef9901f1ef9810ee52c4039e0cfa94c39e46ded9d9"
+      },
+      "manifest": {
+        "manifest_version": 1,
+        "generator_id": "slug-fighter-manifest-candidate-v1",
+        "table_hash": "72231fbe707cea9a65dd5b92f7b2719953795bceadbbf9e3b8e0b8f4aaef3f44",
+        "dna": {
+          "dna_version": 1,
+          "seed": "21983c34004037a339904a015c4d0f18f1fab5928c7da1cb7e176b3101c05fcb",
+          "rarity": "professional",
+          "talent_budget": 325,
+          "attributes": {
+            "power": 26,
+            "speed": 88,
+            "chin": 94,
+            "stamina": 33,
+            "skill": 84
+          },
+          "prime_weeks": 29,
+          "decline_weeks": 28
+        },
+        "name": {
+          "first": "Vince",
+          "last": "Kovac",
+          "display": "Vince Kovac"
+        },
+        "physical": {
+          "height_in": 72,
+          "reach_in": 70,
+          "stance": "orthodox",
+          "weight_lb": 225,
+          "weight_class": "light_heavy"
+        },
+        "style": "boxer",
+        "portrait": {
+          "portrait_version": 1,
+          "skin": 3,
+          "hair_style": 5,
+          "hair_color": 1,
+          "facial_hair": 2,
+          "head_shape": 1,
+          "mouth": 1,
+          "brow": 0,
+          "background": 0,
+          "scar": "none",
+          "shoulder_jitter": -1
+        }
+      },
+      "conditions": [
+        {
+          "as_of_ms": 1794893584865,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "21983c34004037a339904a015c4d0f18f1fab5928c7da1cb7e176b3101c05fcb",
+            "born_at_ms": 1794893584297,
+            "as_of_ms": 1794893584865,
+            "age_weeks": 0,
+            "phase": "prime",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 29,
+            "prime_remaining_ms": 17539199432,
+            "career_remaining_ms": 34473599432,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 260,
+              "speed": 880,
+              "chin": 940,
+              "stamina": 330,
+              "skill": 840
+            },
+            "league_attributes_tenths": {
+              "power": 260,
+              "speed": 880,
+              "chin": 940,
+              "stamina": 330,
+              "skill": 840
+            },
+            "rating_hundredths": 34520
+          }
+        },
+        {
+          "as_of_ms": 1795498384296,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "21983c34004037a339904a015c4d0f18f1fab5928c7da1cb7e176b3101c05fcb",
+            "born_at_ms": 1794893584297,
+            "as_of_ms": 1795498384296,
+            "age_weeks": 0,
+            "phase": "prime",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 29,
+            "prime_remaining_ms": 16934400001,
+            "career_remaining_ms": 33868800001,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 260,
+              "speed": 880,
+              "chin": 940,
+              "stamina": 330,
+              "skill": 840
+            },
+            "league_attributes_tenths": {
+              "power": 260,
+              "speed": 880,
+              "chin": 940,
+              "stamina": 330,
+              "skill": 840
+            },
+            "rating_hundredths": 34520
+          }
+        },
+        {
+          "as_of_ms": 1795498384297,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "21983c34004037a339904a015c4d0f18f1fab5928c7da1cb7e176b3101c05fcb",
+            "born_at_ms": 1794893584297,
+            "as_of_ms": 1795498384297,
+            "age_weeks": 1,
+            "phase": "prime",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 28,
+            "prime_remaining_ms": 16934400000,
+            "career_remaining_ms": 33868800000,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 260,
+              "speed": 880,
+              "chin": 940,
+              "stamina": 330,
+              "skill": 840
+            },
+            "league_attributes_tenths": {
+              "power": 260,
+              "speed": 880,
+              "chin": 940,
+              "stamina": 330,
+              "skill": 840
+            },
+            "rating_hundredths": 34520
+          }
+        },
+        {
+          "as_of_ms": 1812432784296,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "21983c34004037a339904a015c4d0f18f1fab5928c7da1cb7e176b3101c05fcb",
+            "born_at_ms": 1794893584297,
+            "as_of_ms": 1812432784296,
+            "age_weeks": 28,
+            "phase": "prime",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 1,
+            "prime_remaining_ms": 1,
+            "career_remaining_ms": 16934400001,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 260,
+              "speed": 880,
+              "chin": 940,
+              "stamina": 330,
+              "skill": 840
+            },
+            "league_attributes_tenths": {
+              "power": 260,
+              "speed": 880,
+              "chin": 940,
+              "stamina": 330,
+              "skill": 840
+            },
+            "rating_hundredths": 34520
+          }
+        },
+        {
+          "as_of_ms": 1812432784297,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "21983c34004037a339904a015c4d0f18f1fab5928c7da1cb7e176b3101c05fcb",
+            "born_at_ms": 1794893584297,
+            "as_of_ms": 1812432784297,
+            "age_weeks": 29,
+            "phase": "decline",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 0,
+            "prime_remaining_ms": 0,
+            "career_remaining_ms": 16934400000,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 260,
+              "speed": 880,
+              "chin": 940,
+              "stamina": 330,
+              "skill": 840
+            },
+            "league_attributes_tenths": {
+              "power": 260,
+              "speed": 880,
+              "chin": 940,
+              "stamina": 330,
+              "skill": 840
+            },
+            "rating_hundredths": 34520
+          }
+        },
+        {
+          "as_of_ms": 1813037584297,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "21983c34004037a339904a015c4d0f18f1fab5928c7da1cb7e176b3101c05fcb",
+            "born_at_ms": 1794893584297,
+            "as_of_ms": 1813037584297,
+            "age_weeks": 30,
+            "phase": "decline",
+            "elapsed_decline_weeks": 1,
+            "prime_remaining_weeks": 0,
+            "prime_remaining_ms": 0,
+            "career_remaining_ms": 16329600000,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 258,
+              "speed": 867,
+              "chin": 930,
+              "stamina": 326,
+              "skill": 837
+            },
+            "league_attributes_tenths": {
+              "power": 258,
+              "speed": 867,
+              "chin": 930,
+              "stamina": 326,
+              "skill": 837
+            },
+            "rating_hundredths": 34115
+          }
+        },
+        {
+          "as_of_ms": 1829367184296,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "21983c34004037a339904a015c4d0f18f1fab5928c7da1cb7e176b3101c05fcb",
+            "born_at_ms": 1794893584297,
+            "as_of_ms": 1829367184296,
+            "age_weeks": 56,
+            "phase": "decline",
+            "elapsed_decline_weeks": 27,
+            "prime_remaining_weeks": 0,
+            "prime_remaining_ms": 0,
+            "career_remaining_ms": 1,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 210,
+              "speed": 541,
+              "chin": 668,
+              "stamina": 235,
+              "skill": 759
+            },
+            "league_attributes_tenths": {
+              "power": 210,
+              "speed": 541,
+              "chin": 668,
+              "stamina": 235,
+              "skill": 759
+            },
+            "rating_hundredths": 23973
+          }
+        },
+        {
+          "as_of_ms": 1829367184297,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "21983c34004037a339904a015c4d0f18f1fab5928c7da1cb7e176b3101c05fcb",
+            "born_at_ms": 1794893584297,
+            "as_of_ms": 1829367184297,
+            "age_weeks": 57,
+            "phase": "retired",
+            "elapsed_decline_weeks": 28,
+            "prime_remaining_weeks": 0,
+            "prime_remaining_ms": 0,
+            "career_remaining_ms": 0,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 208,
+              "speed": 528,
+              "chin": 658,
+              "stamina": 231,
+              "skill": 756
+            },
+            "league_attributes_tenths": {
+              "power": 208,
+              "speed": 528,
+              "chin": 658,
+              "stamina": 231,
+              "skill": 756
+            },
+            "rating_hundredths": 23568
+          }
+        }
+      ]
+    },
+    {
+      "fixture": "incrementing256",
+      "record": {
+        "version": 5,
+        "sequence": 3,
+        "context": {
+          "version": 1,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "dna_version": 1,
+          "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "parent_hash": "40d1e8bfbdf60b7eb79176bec60ccecc6c02bd1d31e3935a67189245719da094",
+          "parent_height": 2,
+          "expected_bits": 545259519,
+          "min_timestamp": 1794893607,
+          "max_timestamp": 1794900812
+        },
+        "proof": {
+          "version": 2,
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+          "header": "0000002094a09d71459218675a93e3311dbd026cccce0cc6be7691b77e0bf6bdbfe8d140f84759ef9369f7f045530c160957d00e66fc34e279fe2421aec05e238d07f2dc2ce7fb6affff7f2000000000",
+          "coinbase": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff16530800000000000000000b2f503253482f627463642fffffffff0200ca9a3b000000001976a914c617e898f42c963d631ced3958ffacbeb7107e2788ac00000000000000002a6a28534c554750523032c559dae37eca01d5acf901eec3b8be4fdead5b9069e26d61af657b83be4d64d200000000",
+          "merkle_branch": [],
+          "job_id": "077be5df2fe07176419d2b0783298aa7d16859794e7db1324ee2855bcea22204"
+        },
+        "verified": {
+          "version": 2,
+          "verification": "supplied-context",
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "prospect_id": "f8a50f8ee604c8a45d3a89607f2323d64cef9dfd0c098df601e30b0b9632498f",
+          "policy_id": "2dd6301ce9989bc383f942f3d1520e8bc61ee2564761a7f754eb09677b24fb8c",
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+          "work_hash": "3a832fc26dd2f506e1dc20ac1c6082d359f5561b77e5645612328b6f0c4c7522",
+          "parent_hash": "40d1e8bfbdf60b7eb79176bec60ccecc6c02bd1d31e3935a67189245719da094",
+          "parent_height": 2,
+          "dna": {
+            "dna_version": 1,
+            "seed": "3a832fc26dd2f506e1dc20ac1c6082d359f5561b77e5645612328b6f0c4c7522",
+            "rarity": "contender",
+            "talent_budget": 373,
+            "attributes": {
+              "power": 44,
+              "speed": 90,
+              "chin": 78,
+              "stamina": 81,
+              "skill": 80
+            },
+            "prime_weeks": 35,
+            "decline_weeks": 21
+          }
+        },
+        "authorization": {
+          "version": 2,
+          "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+          "signature": "30440220365f4d976ed9961ac575f251c2f89a44ec2a5ff606e7867c78cf5f6b2155bed3022049d6bc2aa5cf1548b222142209ed68c4ee508d21a50275252a681432b963857a"
+        },
+        "job": {
+          "version": 2,
+          "rule_version": 1,
+          "id": "077be5df2fe07176419d2b0783298aa7d16859794e7db1324ee2855bcea22204",
+          "authority_id": "6c0067cb98c412e99f82e7440734ab4936fcc9163142da22793ace04f9af2713",
+          "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+          "context": {
+            "version": 1,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "dna_version": 1,
+            "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "parent_hash": "40d1e8bfbdf60b7eb79176bec60ccecc6c02bd1d31e3935a67189245719da094",
+            "parent_height": 2,
+            "expected_bits": 545259519,
+            "min_timestamp": 1794893607,
+            "max_timestamp": 1794900812
+          },
+          "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+          "challenge": "7f0d8b9362a2bfef00399e4210139cbb5306d48a23734984e09ecef9cf5630f4",
+          "issued_at_ms": 1794893612187,
+          "expires_at_ms": 1794893912187
+        },
+        "birth": {
+          "rule_version": 1,
+          "born_at_ms": 1794893612187,
+          "accepted_at_ms": 1794893612743
+        },
+        "eligibility": {
+          "rule_version": 2,
+          "source": "canonical-winning-block",
+          "hash": "3a832fc26dd2f506e1dc20ac1c6082d359f5561b77e5645612328b6f0c4c7522",
+          "height": 3
+        },
+        "static_binding": {
+          "version": 1,
+          "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+          "manifest_digest": "c2968d831f1bfe635bc326ad6514851c5c542ad9e474ed505cdd281675cf1354",
+          "portrait_digest": "9107a1cbbf9f03031aa2e2fceae788f16e7441f6f763398d09761aba1a37f2da"
+        }
+      },
+      "record_canonical": "{\"version\":5,\"sequence\":3,\"context\":{\"version\":1,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"dna_version\":1,\"prospect_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"parent_hash\":\"40d1e8bfbdf60b7eb79176bec60ccecc6c02bd1d31e3935a67189245719da094\",\"parent_height\":2,\"expected_bits\":545259519,\"min_timestamp\":1794893607,\"max_timestamp\":1794900812},\"proof\":{\"version\":2,\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"header\":\"0000002094a09d71459218675a93e3311dbd026cccce0cc6be7691b77e0bf6bdbfe8d140f84759ef9369f7f045530c160957d00e66fc34e279fe2421aec05e238d07f2dc2ce7fb6affff7f2000000000\",\"coinbase\":\"02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff16530800000000000000000b2f503253482f627463642fffffffff0200ca9a3b000000001976a914c617e898f42c963d631ced3958ffacbeb7107e2788ac00000000000000002a6a28534c554750523032c559dae37eca01d5acf901eec3b8be4fdead5b9069e26d61af657b83be4d64d200000000\",\"merkle_branch\":[],\"job_id\":\"077be5df2fe07176419d2b0783298aa7d16859794e7db1324ee2855bcea22204\"},\"verified\":{\"version\":2,\"verification\":\"supplied-context\",\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"prospect_id\":\"f8a50f8ee604c8a45d3a89607f2323d64cef9dfd0c098df601e30b0b9632498f\",\"policy_id\":\"2dd6301ce9989bc383f942f3d1520e8bc61ee2564761a7f754eb09677b24fb8c\",\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"work_hash\":\"3a832fc26dd2f506e1dc20ac1c6082d359f5561b77e5645612328b6f0c4c7522\",\"parent_hash\":\"40d1e8bfbdf60b7eb79176bec60ccecc6c02bd1d31e3935a67189245719da094\",\"parent_height\":2,\"dna\":{\"dna_version\":1,\"seed\":\"3a832fc26dd2f506e1dc20ac1c6082d359f5561b77e5645612328b6f0c4c7522\",\"rarity\":\"contender\",\"talent_budget\":373,\"attributes\":{\"power\":44,\"speed\":90,\"chin\":78,\"stamina\":81,\"skill\":80},\"prime_weeks\":35,\"decline_weeks\":21}},\"authorization\":{\"version\":2,\"public_key\":\"033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92\",\"signature\":\"30440220365f4d976ed9961ac575f251c2f89a44ec2a5ff606e7867c78cf5f6b2155bed3022049d6bc2aa5cf1548b222142209ed68c4ee508d21a50275252a681432b963857a\"},\"job\":{\"version\":2,\"rule_version\":1,\"id\":\"077be5df2fe07176419d2b0783298aa7d16859794e7db1324ee2855bcea22204\",\"authority_id\":\"6c0067cb98c412e99f82e7440734ab4936fcc9163142da22793ace04f9af2713\",\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\",\"context\":{\"version\":1,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"dna_version\":1,\"prospect_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"parent_hash\":\"40d1e8bfbdf60b7eb79176bec60ccecc6c02bd1d31e3935a67189245719da094\",\"parent_height\":2,\"expected_bits\":545259519,\"min_timestamp\":1794893607,\"max_timestamp\":1794900812},\"public_key\":\"033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92\",\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"challenge\":\"7f0d8b9362a2bfef00399e4210139cbb5306d48a23734984e09ecef9cf5630f4\",\"issued_at_ms\":1794893612187,\"expires_at_ms\":1794893912187},\"birth\":{\"rule_version\":1,\"born_at_ms\":1794893612187,\"accepted_at_ms\":1794893612743},\"eligibility\":{\"rule_version\":2,\"source\":\"canonical-winning-block\",\"hash\":\"3a832fc26dd2f506e1dc20ac1c6082d359f5561b77e5645612328b6f0c4c7522\",\"height\":3},\"static_binding\":{\"version\":1,\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\",\"manifest_digest\":\"c2968d831f1bfe635bc326ad6514851c5c542ad9e474ed505cdd281675cf1354\",\"portrait_digest\":\"9107a1cbbf9f03031aa2e2fceae788f16e7441f6f763398d09761aba1a37f2da\"}}",
+      "assignment": {
+        "version": 1,
+        "sequence": 3,
+        "prospect_id": "f8a50f8ee604c8a45d3a89607f2323d64cef9dfd0c098df601e30b0b9632498f",
+        "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+        "work_hash": "3a832fc26dd2f506e1dc20ac1c6082d359f5561b77e5645612328b6f0c4c7522",
+        "born_at_ms": 1794893612187,
+        "accepted_at_ms": 1794893612743,
+        "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+        "manifest_digest": "c2968d831f1bfe635bc326ad6514851c5c542ad9e474ed505cdd281675cf1354",
+        "portrait_digest": "9107a1cbbf9f03031aa2e2fceae788f16e7441f6f763398d09761aba1a37f2da",
+        "source_record_digest": "13ee34b012e7fff97c2664e102a3b7e2545980142110d67dd3f23ab9125ba890"
+      },
+      "manifest": {
+        "manifest_version": 1,
+        "generator_id": "slug-fighter-manifest-candidate-v1",
+        "table_hash": "72231fbe707cea9a65dd5b92f7b2719953795bceadbbf9e3b8e0b8f4aaef3f44",
+        "dna": {
+          "dna_version": 1,
+          "seed": "3a832fc26dd2f506e1dc20ac1c6082d359f5561b77e5645612328b6f0c4c7522",
+          "rarity": "contender",
+          "talent_budget": 373,
+          "attributes": {
+            "power": 44,
+            "speed": 90,
+            "chin": 78,
+            "stamina": 81,
+            "skill": 80
+          },
+          "prime_weeks": 35,
+          "decline_weeks": 21
+        },
+        "name": {
+          "first": "Omar",
+          "last": "Stokes",
+          "display": "Omar Stokes"
+        },
+        "physical": {
+          "height_in": 75,
+          "reach_in": 79,
+          "stance": "orthodox",
+          "weight_lb": 242,
+          "weight_class": "heavy"
+        },
+        "style": "outfighter",
+        "portrait": {
+          "portrait_version": 1,
+          "skin": 3,
+          "hair_style": 3,
+          "hair_color": 5,
+          "facial_hair": 1,
+          "head_shape": 0,
+          "mouth": 0,
+          "brow": 1,
+          "background": 5,
+          "scar": "left_brow",
+          "shoulder_jitter": 3
+        }
+      },
+      "conditions": [
+        {
+          "as_of_ms": 1794893612743,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "3a832fc26dd2f506e1dc20ac1c6082d359f5561b77e5645612328b6f0c4c7522",
+            "born_at_ms": 1794893612187,
+            "as_of_ms": 1794893612743,
+            "age_weeks": 0,
+            "phase": "prime",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 35,
+            "prime_remaining_ms": 21167999444,
+            "career_remaining_ms": 33868799444,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 440,
+              "speed": 900,
+              "chin": 780,
+              "stamina": 810,
+              "skill": 800
+            },
+            "league_attributes_tenths": {
+              "power": 440,
+              "speed": 900,
+              "chin": 780,
+              "stamina": 810,
+              "skill": 800
+            },
+            "rating_hundredths": 38100
+          }
+        },
+        {
+          "as_of_ms": 1795498412186,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "3a832fc26dd2f506e1dc20ac1c6082d359f5561b77e5645612328b6f0c4c7522",
+            "born_at_ms": 1794893612187,
+            "as_of_ms": 1795498412186,
+            "age_weeks": 0,
+            "phase": "prime",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 35,
+            "prime_remaining_ms": 20563200001,
+            "career_remaining_ms": 33264000001,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 440,
+              "speed": 900,
+              "chin": 780,
+              "stamina": 810,
+              "skill": 800
+            },
+            "league_attributes_tenths": {
+              "power": 440,
+              "speed": 900,
+              "chin": 780,
+              "stamina": 810,
+              "skill": 800
+            },
+            "rating_hundredths": 38100
+          }
+        },
+        {
+          "as_of_ms": 1795498412187,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "3a832fc26dd2f506e1dc20ac1c6082d359f5561b77e5645612328b6f0c4c7522",
+            "born_at_ms": 1794893612187,
+            "as_of_ms": 1795498412187,
+            "age_weeks": 1,
+            "phase": "prime",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 34,
+            "prime_remaining_ms": 20563200000,
+            "career_remaining_ms": 33264000000,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 440,
+              "speed": 900,
+              "chin": 780,
+              "stamina": 810,
+              "skill": 800
+            },
+            "league_attributes_tenths": {
+              "power": 440,
+              "speed": 900,
+              "chin": 780,
+              "stamina": 810,
+              "skill": 800
+            },
+            "rating_hundredths": 38100
+          }
+        },
+        {
+          "as_of_ms": 1816061612186,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "3a832fc26dd2f506e1dc20ac1c6082d359f5561b77e5645612328b6f0c4c7522",
+            "born_at_ms": 1794893612187,
+            "as_of_ms": 1816061612186,
+            "age_weeks": 34,
+            "phase": "prime",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 1,
+            "prime_remaining_ms": 1,
+            "career_remaining_ms": 12700800001,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 440,
+              "speed": 900,
+              "chin": 780,
+              "stamina": 810,
+              "skill": 800
+            },
+            "league_attributes_tenths": {
+              "power": 440,
+              "speed": 900,
+              "chin": 780,
+              "stamina": 810,
+              "skill": 800
+            },
+            "rating_hundredths": 38100
+          }
+        },
+        {
+          "as_of_ms": 1816061612187,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "3a832fc26dd2f506e1dc20ac1c6082d359f5561b77e5645612328b6f0c4c7522",
+            "born_at_ms": 1794893612187,
+            "as_of_ms": 1816061612187,
+            "age_weeks": 35,
+            "phase": "decline",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 0,
+            "prime_remaining_ms": 0,
+            "career_remaining_ms": 12700800000,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 440,
+              "speed": 900,
+              "chin": 780,
+              "stamina": 810,
+              "skill": 800
+            },
+            "league_attributes_tenths": {
+              "power": 440,
+              "speed": 900,
+              "chin": 780,
+              "stamina": 810,
+              "skill": 800
+            },
+            "rating_hundredths": 38100
+          }
+        },
+        {
+          "as_of_ms": 1816666412187,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "3a832fc26dd2f506e1dc20ac1c6082d359f5561b77e5645612328b6f0c4c7522",
+            "born_at_ms": 1794893612187,
+            "as_of_ms": 1816666412187,
+            "age_weeks": 36,
+            "phase": "decline",
+            "elapsed_decline_weeks": 1,
+            "prime_remaining_weeks": 0,
+            "prime_remaining_ms": 0,
+            "career_remaining_ms": 12096000000,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 436,
+              "speed": 883,
+              "chin": 769,
+              "stamina": 798,
+              "skill": 796
+            },
+            "league_attributes_tenths": {
+              "power": 436,
+              "speed": 883,
+              "chin": 769,
+              "stamina": 798,
+              "skill": 796
+            },
+            "rating_hundredths": 37533
+          }
+        },
+        {
+          "as_of_ms": 1828762412186,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "3a832fc26dd2f506e1dc20ac1c6082d359f5561b77e5645612328b6f0c4c7522",
+            "born_at_ms": 1794893612187,
+            "as_of_ms": 1828762412186,
+            "age_weeks": 55,
+            "phase": "decline",
+            "elapsed_decline_weeks": 20,
+            "prime_remaining_weeks": 0,
+            "prime_remaining_ms": 0,
+            "career_remaining_ms": 1,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 356,
+              "speed": 557,
+              "chin": 557,
+              "stamina": 579,
+              "skill": 724
+            },
+            "league_attributes_tenths": {
+              "power": 356,
+              "speed": 557,
+              "chin": 557,
+              "stamina": 579,
+              "skill": 724
+            },
+            "rating_hundredths": 26707
+          }
+        },
+        {
+          "as_of_ms": 1828762412187,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "3a832fc26dd2f506e1dc20ac1c6082d359f5561b77e5645612328b6f0c4c7522",
+            "born_at_ms": 1794893612187,
+            "as_of_ms": 1828762412187,
+            "age_weeks": 56,
+            "phase": "retired",
+            "elapsed_decline_weeks": 21,
+            "prime_remaining_weeks": 0,
+            "prime_remaining_ms": 0,
+            "career_remaining_ms": 0,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 352,
+              "speed": 540,
+              "chin": 546,
+              "stamina": 567,
+              "skill": 720
+            },
+            "league_attributes_tenths": {
+              "power": 352,
+              "speed": 540,
+              "chin": 546,
+              "stamina": 567,
+              "skill": 720
+            },
+            "rating_hundredths": 26140
+          }
+        }
+      ]
+    },
+    {
+      "fixture": "incrementing256",
+      "record": {
+        "version": 5,
+        "sequence": 2,
+        "context": {
+          "version": 1,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "dna_version": 1,
+          "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "parent_hash": "7fa1710bcf4ddbb75fda6952e888113dc44dc835fb8f49727e5577de9cf31e0d",
+          "parent_height": 1,
+          "expected_bits": 545259519,
+          "min_timestamp": 1794893607,
+          "max_timestamp": 1794900809
+        },
+        "proof": {
+          "version": 2,
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+          "header": "000000200d1ef39cde77557e72498ffb35c84dc43d1188e85269da5fb7db4dcf0b71a17fbf8f8790ba5d23f697433b26b0174774c50b13bb16e75ffa4ee017a9c7552d8029e7fb6affff7f2000000000",
+          "coinbase": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff16520800000000000000000b2f503253482f627463642fffffffff0200ca9a3b000000001976a914c617e898f42c963d631ced3958ffacbeb7107e2788ac00000000000000002a6a28534c554750523032bbc6cc5d66e1768727d2914255a88e8a2bde19e7e3cce3823d943a2d0f9838f700000000",
+          "merkle_branch": [],
+          "job_id": "8c67b75225013ce0a0221c129c7fcd2d306684587f228d427bcf167b384ab7b6"
+        },
+        "verified": {
+          "version": 2,
+          "verification": "supplied-context",
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "prospect_id": "d448ef6c66a2d41571ba96fc793fb8d2d961606e47ca164126f7760584ae453c",
+          "policy_id": "2dd6301ce9989bc383f942f3d1520e8bc61ee2564761a7f754eb09677b24fb8c",
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+          "work_hash": "40d1e8bfbdf60b7eb79176bec60ccecc6c02bd1d31e3935a67189245719da094",
+          "parent_hash": "7fa1710bcf4ddbb75fda6952e888113dc44dc835fb8f49727e5577de9cf31e0d",
+          "parent_height": 1,
+          "dna": {
+            "dna_version": 1,
+            "seed": "40d1e8bfbdf60b7eb79176bec60ccecc6c02bd1d31e3935a67189245719da094",
+            "rarity": "club",
+            "talent_budget": 276,
+            "attributes": {
+              "power": 15,
+              "speed": 97,
+              "chin": 44,
+              "stamina": 58,
+              "skill": 62
+            },
+            "prime_weeks": 35,
+            "decline_weeks": 30
+          }
+        },
+        "authorization": {
+          "version": 2,
+          "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+          "signature": "304402205729b07da492cdadd0738e1ef33fd85cbb68ac04017fa68b1eee3960d52fa4bf0220055cc65675a3ce430803288d172eef96647c7ec120086f0d839acc6d8e1e98e5"
+        },
+        "job": {
+          "version": 2,
+          "rule_version": 1,
+          "id": "8c67b75225013ce0a0221c129c7fcd2d306684587f228d427bcf167b384ab7b6",
+          "authority_id": "6c0067cb98c412e99f82e7440734ab4936fcc9163142da22793ace04f9af2713",
+          "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+          "context": {
+            "version": 1,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "dna_version": 1,
+            "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "parent_hash": "7fa1710bcf4ddbb75fda6952e888113dc44dc835fb8f49727e5577de9cf31e0d",
+            "parent_height": 1,
+            "expected_bits": 545259519,
+            "min_timestamp": 1794893607,
+            "max_timestamp": 1794900809
+          },
+          "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+          "challenge": "a9fd6f74de4d22fbac8fcd055a97f708acd422ee1dddf21a3d07d052f4310756",
+          "issued_at_ms": 1794893609319,
+          "expires_at_ms": 1794893909319
+        },
+        "birth": {
+          "rule_version": 1,
+          "born_at_ms": 1794893609319,
+          "accepted_at_ms": 1794893609887
+        },
+        "eligibility": {
+          "rule_version": 2,
+          "source": "canonical-winning-block",
+          "hash": "40d1e8bfbdf60b7eb79176bec60ccecc6c02bd1d31e3935a67189245719da094",
+          "height": 2
+        },
+        "static_binding": {
+          "version": 1,
+          "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+          "manifest_digest": "f0aee235ed176428e20df014cd1729fdf90d19409bf8782ebf5a805781356424",
+          "portrait_digest": "318cb0a474c1fcf6d5229c0b642c0dc75293af0540ca8d9658de4dbcd8501dfa"
+        }
+      },
+      "record_canonical": "{\"version\":5,\"sequence\":2,\"context\":{\"version\":1,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"dna_version\":1,\"prospect_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"parent_hash\":\"7fa1710bcf4ddbb75fda6952e888113dc44dc835fb8f49727e5577de9cf31e0d\",\"parent_height\":1,\"expected_bits\":545259519,\"min_timestamp\":1794893607,\"max_timestamp\":1794900809},\"proof\":{\"version\":2,\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"header\":\"000000200d1ef39cde77557e72498ffb35c84dc43d1188e85269da5fb7db4dcf0b71a17fbf8f8790ba5d23f697433b26b0174774c50b13bb16e75ffa4ee017a9c7552d8029e7fb6affff7f2000000000\",\"coinbase\":\"02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff16520800000000000000000b2f503253482f627463642fffffffff0200ca9a3b000000001976a914c617e898f42c963d631ced3958ffacbeb7107e2788ac00000000000000002a6a28534c554750523032bbc6cc5d66e1768727d2914255a88e8a2bde19e7e3cce3823d943a2d0f9838f700000000\",\"merkle_branch\":[],\"job_id\":\"8c67b75225013ce0a0221c129c7fcd2d306684587f228d427bcf167b384ab7b6\"},\"verified\":{\"version\":2,\"verification\":\"supplied-context\",\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"prospect_id\":\"d448ef6c66a2d41571ba96fc793fb8d2d961606e47ca164126f7760584ae453c\",\"policy_id\":\"2dd6301ce9989bc383f942f3d1520e8bc61ee2564761a7f754eb09677b24fb8c\",\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"work_hash\":\"40d1e8bfbdf60b7eb79176bec60ccecc6c02bd1d31e3935a67189245719da094\",\"parent_hash\":\"7fa1710bcf4ddbb75fda6952e888113dc44dc835fb8f49727e5577de9cf31e0d\",\"parent_height\":1,\"dna\":{\"dna_version\":1,\"seed\":\"40d1e8bfbdf60b7eb79176bec60ccecc6c02bd1d31e3935a67189245719da094\",\"rarity\":\"club\",\"talent_budget\":276,\"attributes\":{\"power\":15,\"speed\":97,\"chin\":44,\"stamina\":58,\"skill\":62},\"prime_weeks\":35,\"decline_weeks\":30}},\"authorization\":{\"version\":2,\"public_key\":\"033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92\",\"signature\":\"304402205729b07da492cdadd0738e1ef33fd85cbb68ac04017fa68b1eee3960d52fa4bf0220055cc65675a3ce430803288d172eef96647c7ec120086f0d839acc6d8e1e98e5\"},\"job\":{\"version\":2,\"rule_version\":1,\"id\":\"8c67b75225013ce0a0221c129c7fcd2d306684587f228d427bcf167b384ab7b6\",\"authority_id\":\"6c0067cb98c412e99f82e7440734ab4936fcc9163142da22793ace04f9af2713\",\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\",\"context\":{\"version\":1,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"dna_version\":1,\"prospect_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"parent_hash\":\"7fa1710bcf4ddbb75fda6952e888113dc44dc835fb8f49727e5577de9cf31e0d\",\"parent_height\":1,\"expected_bits\":545259519,\"min_timestamp\":1794893607,\"max_timestamp\":1794900809},\"public_key\":\"033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92\",\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"challenge\":\"a9fd6f74de4d22fbac8fcd055a97f708acd422ee1dddf21a3d07d052f4310756\",\"issued_at_ms\":1794893609319,\"expires_at_ms\":1794893909319},\"birth\":{\"rule_version\":1,\"born_at_ms\":1794893609319,\"accepted_at_ms\":1794893609887},\"eligibility\":{\"rule_version\":2,\"source\":\"canonical-winning-block\",\"hash\":\"40d1e8bfbdf60b7eb79176bec60ccecc6c02bd1d31e3935a67189245719da094\",\"height\":2},\"static_binding\":{\"version\":1,\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\",\"manifest_digest\":\"f0aee235ed176428e20df014cd1729fdf90d19409bf8782ebf5a805781356424\",\"portrait_digest\":\"318cb0a474c1fcf6d5229c0b642c0dc75293af0540ca8d9658de4dbcd8501dfa\"}}",
+      "assignment": {
+        "version": 1,
+        "sequence": 2,
+        "prospect_id": "d448ef6c66a2d41571ba96fc793fb8d2d961606e47ca164126f7760584ae453c",
+        "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+        "work_hash": "40d1e8bfbdf60b7eb79176bec60ccecc6c02bd1d31e3935a67189245719da094",
+        "born_at_ms": 1794893609319,
+        "accepted_at_ms": 1794893609887,
+        "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+        "manifest_digest": "f0aee235ed176428e20df014cd1729fdf90d19409bf8782ebf5a805781356424",
+        "portrait_digest": "318cb0a474c1fcf6d5229c0b642c0dc75293af0540ca8d9658de4dbcd8501dfa",
+        "source_record_digest": "a01cba5907ce0e53c01ff5dd8cd66e995807817d8102297ca60df4c545d4aaf8"
+      },
+      "manifest": {
+        "manifest_version": 1,
+        "generator_id": "slug-fighter-manifest-candidate-v1",
+        "table_hash": "72231fbe707cea9a65dd5b92f7b2719953795bceadbbf9e3b8e0b8f4aaef3f44",
+        "dna": {
+          "dna_version": 1,
+          "seed": "40d1e8bfbdf60b7eb79176bec60ccecc6c02bd1d31e3935a67189245719da094",
+          "rarity": "club",
+          "talent_budget": 276,
+          "attributes": {
+            "power": 15,
+            "speed": 97,
+            "chin": 44,
+            "stamina": 58,
+            "skill": 62
+          },
+          "prime_weeks": 35,
+          "decline_weeks": 30
+        },
+        "name": {
+          "first": "Yuri",
+          "last": "Ashford",
+          "display": "Yuri Ashford"
+        },
+        "physical": {
+          "height_in": 74,
+          "reach_in": 74,
+          "stance": "southpaw",
+          "weight_lb": 211,
+          "weight_class": "light_heavy"
+        },
+        "style": "boxer",
+        "portrait": {
+          "portrait_version": 1,
+          "skin": 1,
+          "hair_style": 6,
+          "hair_color": 0,
+          "facial_hair": 1,
+          "head_shape": 1,
+          "mouth": 1,
+          "brow": 1,
+          "background": 6,
+          "scar": "none",
+          "shoulder_jitter": 1
+        }
+      },
+      "conditions": [
+        {
+          "as_of_ms": 1794893609887,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "40d1e8bfbdf60b7eb79176bec60ccecc6c02bd1d31e3935a67189245719da094",
+            "born_at_ms": 1794893609319,
+            "as_of_ms": 1794893609887,
+            "age_weeks": 0,
+            "phase": "prime",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 35,
+            "prime_remaining_ms": 21167999432,
+            "career_remaining_ms": 39311999432,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 150,
+              "speed": 970,
+              "chin": 440,
+              "stamina": 580,
+              "skill": 620
+            },
+            "league_attributes_tenths": {
+              "power": 150,
+              "speed": 970,
+              "chin": 440,
+              "stamina": 580,
+              "skill": 620
+            },
+            "rating_hundredths": 33910
+          }
+        },
+        {
+          "as_of_ms": 1795498409318,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "40d1e8bfbdf60b7eb79176bec60ccecc6c02bd1d31e3935a67189245719da094",
+            "born_at_ms": 1794893609319,
+            "as_of_ms": 1795498409318,
+            "age_weeks": 0,
+            "phase": "prime",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 35,
+            "prime_remaining_ms": 20563200001,
+            "career_remaining_ms": 38707200001,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 150,
+              "speed": 970,
+              "chin": 440,
+              "stamina": 580,
+              "skill": 620
+            },
+            "league_attributes_tenths": {
+              "power": 150,
+              "speed": 970,
+              "chin": 440,
+              "stamina": 580,
+              "skill": 620
+            },
+            "rating_hundredths": 33910
+          }
+        },
+        {
+          "as_of_ms": 1795498409319,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "40d1e8bfbdf60b7eb79176bec60ccecc6c02bd1d31e3935a67189245719da094",
+            "born_at_ms": 1794893609319,
+            "as_of_ms": 1795498409319,
+            "age_weeks": 1,
+            "phase": "prime",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 34,
+            "prime_remaining_ms": 20563200000,
+            "career_remaining_ms": 38707200000,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 150,
+              "speed": 970,
+              "chin": 440,
+              "stamina": 580,
+              "skill": 620
+            },
+            "league_attributes_tenths": {
+              "power": 150,
+              "speed": 970,
+              "chin": 440,
+              "stamina": 580,
+              "skill": 620
+            },
+            "rating_hundredths": 33910
+          }
+        },
+        {
+          "as_of_ms": 1816061609318,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "40d1e8bfbdf60b7eb79176bec60ccecc6c02bd1d31e3935a67189245719da094",
+            "born_at_ms": 1794893609319,
+            "as_of_ms": 1816061609318,
+            "age_weeks": 34,
+            "phase": "prime",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 1,
+            "prime_remaining_ms": 1,
+            "career_remaining_ms": 18144000001,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 150,
+              "speed": 970,
+              "chin": 440,
+              "stamina": 580,
+              "skill": 620
+            },
+            "league_attributes_tenths": {
+              "power": 150,
+              "speed": 970,
+              "chin": 440,
+              "stamina": 580,
+              "skill": 620
+            },
+            "rating_hundredths": 33910
+          }
+        },
+        {
+          "as_of_ms": 1816061609319,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "40d1e8bfbdf60b7eb79176bec60ccecc6c02bd1d31e3935a67189245719da094",
+            "born_at_ms": 1794893609319,
+            "as_of_ms": 1816061609319,
+            "age_weeks": 35,
+            "phase": "decline",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 0,
+            "prime_remaining_ms": 0,
+            "career_remaining_ms": 18144000000,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 150,
+              "speed": 970,
+              "chin": 440,
+              "stamina": 580,
+              "skill": 620
+            },
+            "league_attributes_tenths": {
+              "power": 150,
+              "speed": 970,
+              "chin": 440,
+              "stamina": 580,
+              "skill": 620
+            },
+            "rating_hundredths": 33910
+          }
+        },
+        {
+          "as_of_ms": 1816666409319,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "40d1e8bfbdf60b7eb79176bec60ccecc6c02bd1d31e3935a67189245719da094",
+            "born_at_ms": 1794893609319,
+            "as_of_ms": 1816666409319,
+            "age_weeks": 36,
+            "phase": "decline",
+            "elapsed_decline_weeks": 1,
+            "prime_remaining_weeks": 0,
+            "prime_remaining_ms": 0,
+            "career_remaining_ms": 17539200000,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 149,
+              "speed": 957,
+              "chin": 436,
+              "stamina": 574,
+              "skill": 618
+            },
+            "league_attributes_tenths": {
+              "power": 149,
+              "speed": 957,
+              "chin": 436,
+              "stamina": 574,
+              "skill": 618
+            },
+            "rating_hundredths": 33527
+          }
+        },
+        {
+          "as_of_ms": 1834205609318,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "40d1e8bfbdf60b7eb79176bec60ccecc6c02bd1d31e3935a67189245719da094",
+            "born_at_ms": 1794893609319,
+            "as_of_ms": 1834205609318,
+            "age_weeks": 64,
+            "phase": "decline",
+            "elapsed_decline_weeks": 29,
+            "prime_remaining_weeks": 0,
+            "prime_remaining_ms": 0,
+            "career_remaining_ms": 1,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 121,
+              "speed": 595,
+              "chin": 312,
+              "stamina": 412,
+              "skill": 560
+            },
+            "league_attributes_tenths": {
+              "power": 121,
+              "speed": 595,
+              "chin": 312,
+              "stamina": 412,
+              "skill": 560
+            },
+            "rating_hundredths": 22837
+          }
+        },
+        {
+          "as_of_ms": 1834205609319,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "40d1e8bfbdf60b7eb79176bec60ccecc6c02bd1d31e3935a67189245719da094",
+            "born_at_ms": 1794893609319,
+            "as_of_ms": 1834205609319,
+            "age_weeks": 65,
+            "phase": "retired",
+            "elapsed_decline_weeks": 30,
+            "prime_remaining_weeks": 0,
+            "prime_remaining_ms": 0,
+            "career_remaining_ms": 0,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 120,
+              "speed": 582,
+              "chin": 308,
+              "stamina": 406,
+              "skill": 558
+            },
+            "league_attributes_tenths": {
+              "power": 120,
+              "speed": 582,
+              "chin": 308,
+              "stamina": 406,
+              "skill": 558
+            },
+            "rating_hundredths": 22454
+          }
+        }
+      ]
+    },
+    {
+      "fixture": "incrementing256",
+      "record": {
+        "version": 5,
+        "sequence": 1,
+        "context": {
+          "version": 1,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "dna_version": 1,
+          "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "parent_hash": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "parent_height": 0,
+          "expected_bits": 545259519,
+          "min_timestamp": 1794700801,
+          "max_timestamp": 1794900806
+        },
+        "proof": {
+          "version": 2,
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+          "header": "00000020cd46e20c23a799a92633cf22249fa122947d346afb8d19bb8599cf996067937897701657eadf21a9a30752e6b55ddd2f2609631a9b87acca5fc2a832283842d226e7fb6affff7f2000000000",
+          "coinbase": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff16510800000000000000000b2f503253482f627463642fffffffff0200ca9a3b000000001976a914c617e898f42c963d631ced3958ffacbeb7107e2788ac00000000000000002a6a28534c554750523032b68ef3f5d8e83de7b85395038665f1ec05f64313812d5432423d3a2c25d76c0b00000000",
+          "merkle_branch": [],
+          "job_id": "c7b2e0a712cfd0164d6161669debfc10f1787f1e6e2ddc830c57373a17876bbd"
+        },
+        "verified": {
+          "version": 2,
+          "verification": "supplied-context",
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "prospect_id": "0fda4fb7312ee0326af2fe274b32815f11d519efdb679d68c3ce5be5652ff638",
+          "policy_id": "2dd6301ce9989bc383f942f3d1520e8bc61ee2564761a7f754eb09677b24fb8c",
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+          "work_hash": "7fa1710bcf4ddbb75fda6952e888113dc44dc835fb8f49727e5577de9cf31e0d",
+          "parent_hash": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "parent_height": 0,
+          "dna": {
+            "dna_version": 1,
+            "seed": "7fa1710bcf4ddbb75fda6952e888113dc44dc835fb8f49727e5577de9cf31e0d",
+            "rarity": "club",
+            "talent_budget": 252,
+            "attributes": {
+              "power": 39,
+              "speed": 30,
+              "chin": 33,
+              "stamina": 85,
+              "skill": 65
+            },
+            "prime_weeks": 40,
+            "decline_weeks": 22
+          }
+        },
+        "authorization": {
+          "version": 2,
+          "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+          "signature": "3045022100c2f5d1c03292acf875334cbc4b64b943edc87f00c70b0db020f7e13fcc3bf9b102200fa4e08e640eb784b1a9829480e3f160467558d20dc7618cf42feb55047e27c8"
+        },
+        "job": {
+          "version": 2,
+          "rule_version": 1,
+          "id": "c7b2e0a712cfd0164d6161669debfc10f1787f1e6e2ddc830c57373a17876bbd",
+          "authority_id": "6c0067cb98c412e99f82e7440734ab4936fcc9163142da22793ace04f9af2713",
+          "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+          "context": {
+            "version": 1,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "dna_version": 1,
+            "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "parent_hash": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "parent_height": 0,
+            "expected_bits": 545259519,
+            "min_timestamp": 1794700801,
+            "max_timestamp": 1794900806
+          },
+          "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+          "challenge": "c6e4c6406e03be4a442303b018ea412d46fd2d39904bf76e67ac75dad8aa40da",
+          "issued_at_ms": 1794893606458,
+          "expires_at_ms": 1794893906458
+        },
+        "birth": {
+          "rule_version": 1,
+          "born_at_ms": 1794893606458,
+          "accepted_at_ms": 1794893607036
+        },
+        "eligibility": {
+          "rule_version": 2,
+          "source": "canonical-winning-block",
+          "hash": "7fa1710bcf4ddbb75fda6952e888113dc44dc835fb8f49727e5577de9cf31e0d",
+          "height": 1
+        },
+        "static_binding": {
+          "version": 1,
+          "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+          "manifest_digest": "ccd52b5da8f7b0b80f57af0c93f5cbdc922a3fdf47427d4db23f3599f032cdf6",
+          "portrait_digest": "44d56c9ec9befd0bc3960882ba1f9201722c06202ff13902869e195e7a727f0b"
+        }
+      },
+      "record_canonical": "{\"version\":5,\"sequence\":1,\"context\":{\"version\":1,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"dna_version\":1,\"prospect_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"parent_hash\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"parent_height\":0,\"expected_bits\":545259519,\"min_timestamp\":1794700801,\"max_timestamp\":1794900806},\"proof\":{\"version\":2,\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"header\":\"00000020cd46e20c23a799a92633cf22249fa122947d346afb8d19bb8599cf996067937897701657eadf21a9a30752e6b55ddd2f2609631a9b87acca5fc2a832283842d226e7fb6affff7f2000000000\",\"coinbase\":\"02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff16510800000000000000000b2f503253482f627463642fffffffff0200ca9a3b000000001976a914c617e898f42c963d631ced3958ffacbeb7107e2788ac00000000000000002a6a28534c554750523032b68ef3f5d8e83de7b85395038665f1ec05f64313812d5432423d3a2c25d76c0b00000000\",\"merkle_branch\":[],\"job_id\":\"c7b2e0a712cfd0164d6161669debfc10f1787f1e6e2ddc830c57373a17876bbd\"},\"verified\":{\"version\":2,\"verification\":\"supplied-context\",\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"prospect_id\":\"0fda4fb7312ee0326af2fe274b32815f11d519efdb679d68c3ce5be5652ff638\",\"policy_id\":\"2dd6301ce9989bc383f942f3d1520e8bc61ee2564761a7f754eb09677b24fb8c\",\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"work_hash\":\"7fa1710bcf4ddbb75fda6952e888113dc44dc835fb8f49727e5577de9cf31e0d\",\"parent_hash\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"parent_height\":0,\"dna\":{\"dna_version\":1,\"seed\":\"7fa1710bcf4ddbb75fda6952e888113dc44dc835fb8f49727e5577de9cf31e0d\",\"rarity\":\"club\",\"talent_budget\":252,\"attributes\":{\"power\":39,\"speed\":30,\"chin\":33,\"stamina\":85,\"skill\":65},\"prime_weeks\":40,\"decline_weeks\":22}},\"authorization\":{\"version\":2,\"public_key\":\"033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92\",\"signature\":\"3045022100c2f5d1c03292acf875334cbc4b64b943edc87f00c70b0db020f7e13fcc3bf9b102200fa4e08e640eb784b1a9829480e3f160467558d20dc7618cf42feb55047e27c8\"},\"job\":{\"version\":2,\"rule_version\":1,\"id\":\"c7b2e0a712cfd0164d6161669debfc10f1787f1e6e2ddc830c57373a17876bbd\",\"authority_id\":\"6c0067cb98c412e99f82e7440734ab4936fcc9163142da22793ace04f9af2713\",\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\",\"context\":{\"version\":1,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"dna_version\":1,\"prospect_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"parent_hash\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"parent_height\":0,\"expected_bits\":545259519,\"min_timestamp\":1794700801,\"max_timestamp\":1794900806},\"public_key\":\"033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92\",\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"challenge\":\"c6e4c6406e03be4a442303b018ea412d46fd2d39904bf76e67ac75dad8aa40da\",\"issued_at_ms\":1794893606458,\"expires_at_ms\":1794893906458},\"birth\":{\"rule_version\":1,\"born_at_ms\":1794893606458,\"accepted_at_ms\":1794893607036},\"eligibility\":{\"rule_version\":2,\"source\":\"canonical-winning-block\",\"hash\":\"7fa1710bcf4ddbb75fda6952e888113dc44dc835fb8f49727e5577de9cf31e0d\",\"height\":1},\"static_binding\":{\"version\":1,\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\",\"manifest_digest\":\"ccd52b5da8f7b0b80f57af0c93f5cbdc922a3fdf47427d4db23f3599f032cdf6\",\"portrait_digest\":\"44d56c9ec9befd0bc3960882ba1f9201722c06202ff13902869e195e7a727f0b\"}}",
+      "assignment": {
+        "version": 1,
+        "sequence": 1,
+        "prospect_id": "0fda4fb7312ee0326af2fe274b32815f11d519efdb679d68c3ce5be5652ff638",
+        "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+        "work_hash": "7fa1710bcf4ddbb75fda6952e888113dc44dc835fb8f49727e5577de9cf31e0d",
+        "born_at_ms": 1794893606458,
+        "accepted_at_ms": 1794893607036,
+        "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+        "manifest_digest": "ccd52b5da8f7b0b80f57af0c93f5cbdc922a3fdf47427d4db23f3599f032cdf6",
+        "portrait_digest": "44d56c9ec9befd0bc3960882ba1f9201722c06202ff13902869e195e7a727f0b",
+        "source_record_digest": "699e52e5bdd7b2ae3926f9b9ffd974770b5e4cb44b9ae55b81b836165bd243eb"
+      },
+      "manifest": {
+        "manifest_version": 1,
+        "generator_id": "slug-fighter-manifest-candidate-v1",
+        "table_hash": "72231fbe707cea9a65dd5b92f7b2719953795bceadbbf9e3b8e0b8f4aaef3f44",
+        "dna": {
+          "dna_version": 1,
+          "seed": "7fa1710bcf4ddbb75fda6952e888113dc44dc835fb8f49727e5577de9cf31e0d",
+          "rarity": "club",
+          "talent_budget": 252,
+          "attributes": {
+            "power": 39,
+            "speed": 30,
+            "chin": 33,
+            "stamina": 85,
+            "skill": 65
+          },
+          "prime_weeks": 40,
+          "decline_weeks": 22
+        },
+        "name": {
+          "first": "Benny",
+          "last": "Stokes",
+          "display": "Benny Stokes"
+        },
+        "physical": {
+          "height_in": 70,
+          "reach_in": 71,
+          "stance": "orthodox",
+          "weight_lb": 174,
+          "weight_class": "middle"
+        },
+        "style": "boxer",
+        "portrait": {
+          "portrait_version": 1,
+          "skin": 3,
+          "hair_style": 1,
+          "hair_color": 2,
+          "facial_hair": 2,
+          "head_shape": 0,
+          "mouth": 1,
+          "brow": 0,
+          "background": 6,
+          "scar": "none",
+          "shoulder_jitter": 4
+        }
+      },
+      "conditions": [
+        {
+          "as_of_ms": 1794893607036,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "7fa1710bcf4ddbb75fda6952e888113dc44dc835fb8f49727e5577de9cf31e0d",
+            "born_at_ms": 1794893606458,
+            "as_of_ms": 1794893607036,
+            "age_weeks": 0,
+            "phase": "prime",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 40,
+            "prime_remaining_ms": 24191999422,
+            "career_remaining_ms": 37497599422,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 390,
+              "speed": 300,
+              "chin": 330,
+              "stamina": 850,
+              "skill": 650
+            },
+            "league_attributes_tenths": {
+              "power": 390,
+              "speed": 300,
+              "chin": 330,
+              "stamina": 850,
+              "skill": 650
+            },
+            "rating_hundredths": 20660
+          }
+        },
+        {
+          "as_of_ms": 1795498406457,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "7fa1710bcf4ddbb75fda6952e888113dc44dc835fb8f49727e5577de9cf31e0d",
+            "born_at_ms": 1794893606458,
+            "as_of_ms": 1795498406457,
+            "age_weeks": 0,
+            "phase": "prime",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 40,
+            "prime_remaining_ms": 23587200001,
+            "career_remaining_ms": 36892800001,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 390,
+              "speed": 300,
+              "chin": 330,
+              "stamina": 850,
+              "skill": 650
+            },
+            "league_attributes_tenths": {
+              "power": 390,
+              "speed": 300,
+              "chin": 330,
+              "stamina": 850,
+              "skill": 650
+            },
+            "rating_hundredths": 20660
+          }
+        },
+        {
+          "as_of_ms": 1795498406458,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "7fa1710bcf4ddbb75fda6952e888113dc44dc835fb8f49727e5577de9cf31e0d",
+            "born_at_ms": 1794893606458,
+            "as_of_ms": 1795498406458,
+            "age_weeks": 1,
+            "phase": "prime",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 39,
+            "prime_remaining_ms": 23587200000,
+            "career_remaining_ms": 36892800000,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 390,
+              "speed": 300,
+              "chin": 330,
+              "stamina": 850,
+              "skill": 650
+            },
+            "league_attributes_tenths": {
+              "power": 390,
+              "speed": 300,
+              "chin": 330,
+              "stamina": 850,
+              "skill": 650
+            },
+            "rating_hundredths": 20660
+          }
+        },
+        {
+          "as_of_ms": 1819085606457,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "7fa1710bcf4ddbb75fda6952e888113dc44dc835fb8f49727e5577de9cf31e0d",
+            "born_at_ms": 1794893606458,
+            "as_of_ms": 1819085606457,
+            "age_weeks": 39,
+            "phase": "prime",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 1,
+            "prime_remaining_ms": 1,
+            "career_remaining_ms": 13305600001,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 390,
+              "speed": 300,
+              "chin": 330,
+              "stamina": 850,
+              "skill": 650
+            },
+            "league_attributes_tenths": {
+              "power": 390,
+              "speed": 300,
+              "chin": 330,
+              "stamina": 850,
+              "skill": 650
+            },
+            "rating_hundredths": 20660
+          }
+        },
+        {
+          "as_of_ms": 1819085606458,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "7fa1710bcf4ddbb75fda6952e888113dc44dc835fb8f49727e5577de9cf31e0d",
+            "born_at_ms": 1794893606458,
+            "as_of_ms": 1819085606458,
+            "age_weeks": 40,
+            "phase": "decline",
+            "elapsed_decline_weeks": 0,
+            "prime_remaining_weeks": 0,
+            "prime_remaining_ms": 0,
+            "career_remaining_ms": 13305600000,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 390,
+              "speed": 300,
+              "chin": 330,
+              "stamina": 850,
+              "skill": 650
+            },
+            "league_attributes_tenths": {
+              "power": 390,
+              "speed": 300,
+              "chin": 330,
+              "stamina": 850,
+              "skill": 650
+            },
+            "rating_hundredths": 20660
+          }
+        },
+        {
+          "as_of_ms": 1819690406458,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "7fa1710bcf4ddbb75fda6952e888113dc44dc835fb8f49727e5577de9cf31e0d",
+            "born_at_ms": 1794893606458,
+            "as_of_ms": 1819690406458,
+            "age_weeks": 41,
+            "phase": "decline",
+            "elapsed_decline_weeks": 1,
+            "prime_remaining_weeks": 0,
+            "prime_remaining_ms": 0,
+            "career_remaining_ms": 12700800000,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 386,
+              "speed": 295,
+              "chin": 326,
+              "stamina": 838,
+              "skill": 647
+            },
+            "league_attributes_tenths": {
+              "power": 386,
+              "speed": 295,
+              "chin": 326,
+              "stamina": 838,
+              "skill": 647
+            },
+            "rating_hundredths": 20415
+          }
+        },
+        {
+          "as_of_ms": 1832391206457,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "7fa1710bcf4ddbb75fda6952e888113dc44dc835fb8f49727e5577de9cf31e0d",
+            "born_at_ms": 1794893606458,
+            "as_of_ms": 1832391206457,
+            "age_weeks": 61,
+            "phase": "decline",
+            "elapsed_decline_weeks": 21,
+            "prime_remaining_weeks": 0,
+            "prime_remaining_ms": 0,
+            "career_remaining_ms": 1,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 316,
+              "speed": 185,
+              "chin": 236,
+              "stamina": 607,
+              "skill": 588
+            },
+            "league_attributes_tenths": {
+              "power": 316,
+              "speed": 185,
+              "chin": 236,
+              "stamina": 607,
+              "skill": 588
+            },
+            "rating_hundredths": 15389
+          }
+        },
+        {
+          "as_of_ms": 1832391206458,
+          "expected": {
+            "version": 1,
+            "projector_id": "slug-fighter-condition-candidate-v1",
+            "dna_version": 1,
+            "seed": "7fa1710bcf4ddbb75fda6952e888113dc44dc835fb8f49727e5577de9cf31e0d",
+            "born_at_ms": 1794893606458,
+            "as_of_ms": 1832391206458,
+            "age_weeks": 62,
+            "phase": "retired",
+            "elapsed_decline_weeks": 22,
+            "prime_remaining_weeks": 0,
+            "prime_remaining_ms": 0,
+            "career_remaining_ms": 0,
+            "pro_xp": 0,
+            "aged_attributes_tenths": {
+              "power": 312,
+              "speed": 180,
+              "chin": 231,
+              "stamina": 595,
+              "skill": 585
+            },
+            "league_attributes_tenths": {
+              "power": 312,
+              "speed": 180,
+              "chin": 231,
+              "stamina": 595,
+              "skill": 585
+            },
+            "rating_hundredths": 15142
+          }
+        }
+      ]
+    }
+  ],
+  "frozen_xp0_condition_count": 2790,
+  "limits": [
+    "Historical eligibility/time is trusted input, not independently authenticated.",
+    "Candidate assignment is not portable ownership or production activation."
+  ]
+}

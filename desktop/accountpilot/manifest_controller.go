@@ -38,6 +38,9 @@ type manifestChild interface {
 // separately typed manifest child. Its immutable view lease never substitutes a
 // later token, even when a callback finishes after a reset or failed login.
 type ManifestController struct {
+	eventOwner                        *eventAccountOwner                                                // new explicit route only; closed after child drain
+	verify                            func(context.Context, string, bool) (gymaccount.Principal, error) // immutable fixture-only dependency
+	now                               func() time.Time                                                  // nil preserves wall-clock behavior
 	mu                                sync.Mutex
 	miningMu                          sync.Mutex
 	config                            pilot.Config
@@ -115,7 +118,7 @@ func (c *ManifestController) LoginFixture(fixture string) error {
 }
 
 func (c *ManifestController) login(ctx context.Context, fixture string) (resultErr error) {
-	principal, err := verifyFixture(ctx, fixture, false)
+	principal, err := c.verifyPublicFixture(ctx, fixture, false)
 	if err != nil {
 		return err
 	}
@@ -226,7 +229,7 @@ func (c *ManifestController) login(ctx context.Context, fixture string) (resultE
 		c.state = "signed_in"
 		c.expiryDone = make(chan struct{})
 		done := c.expiryDone
-		c.expiry = time.AfterFunc(time.Until(time.UnixMilli(session.ExpiresAtMS)), func() { defer close(done); c.expireView(viewID, child) })
+		c.expiry = time.AfterFunc(time.UnixMilli(session.ExpiresAtMS).Sub(c.clockNow()), func() { defer close(done); c.expireView(viewID, child) })
 		return nil
 	})
 }
@@ -274,7 +277,7 @@ func (c *ManifestController) miningToken(ctx context.Context, accountID, viewID 
 	if !valid {
 		return "", gymaccount.ErrUnauthorized
 	}
-	if mining.Token != "" && time.Now().UnixMilli()+30000 < mining.ExpiresAtMS {
+	if mining.Token != "" && c.clockNow().UnixMilli()+30000 < mining.ExpiresAtMS {
 		return mining.Token, nil
 	}
 	next, err := c.store.MintMining(ctx, session.Token)
@@ -367,7 +370,7 @@ func (c *ManifestController) ResetFixtureAccount() error {
 		if err := c.detach(ctx); err != nil {
 			return err
 		}
-		principal, err := verifyFixture(ctx, fixture, true)
+		principal, err := c.verifyPublicFixture(ctx, fixture, true)
 		if err != nil {
 			return err
 		}
@@ -563,6 +566,10 @@ func (c *ManifestController) Close() error {
 		}
 		err := c.detach(context.Background())
 		if c.store != nil {
+			if c.eventOwner != nil && c.eventOwner.store != nil {
+				err = errors.Join(err, c.eventOwner.store.Close())
+				c.eventOwner.store = nil
+			}
 			err = errors.Join(err, c.store.Close())
 		}
 		if c.lock != nil {
@@ -573,4 +580,18 @@ func (c *ManifestController) Close() error {
 		c.mu.Unlock()
 	})
 	return c.closeErr
+}
+
+func (c *ManifestController) clockNow() time.Time {
+	if c.now != nil {
+		return c.now()
+	}
+	return time.Now()
+}
+
+func (c *ManifestController) verifyPublicFixture(ctx context.Context, fixture string, reset bool) (gymaccount.Principal, error) {
+	if c.verify != nil {
+		return c.verify(ctx, fixture, reset)
+	}
+	return verifyFixture(ctx, fixture, reset)
 }

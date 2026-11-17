@@ -130,9 +130,9 @@ func (s *StableController) CreateStableComponent(ctx context.Context) (resultErr
 	path := filepath.Join(s.config.DataDir, "stable")
 	var store *gymstable.Store
 	if _, e := os.Lstat(path); os.IsNotExist(e) {
-		store, err = gymstable.Create(path, pin, source)
+		store, err = s.createStableStore(path, pin, source)
 	} else if e == nil {
-		store, err = gymstable.Open(path, pin, source)
+		store, err = s.openStableStore(path, pin, source)
 	} else {
 		return e
 	}
