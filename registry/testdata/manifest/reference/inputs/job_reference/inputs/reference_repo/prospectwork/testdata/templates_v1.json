@@ -1,0 +1,345 @@
+[
+  {
+    "name": "coinbase-only",
+    "job": {
+      "version": 1,
+      "rule_version": 1,
+      "id": "e4cbe1dfb866c0ddd2e8ea2e0734437a35ffc27896c7ae2614d13557cf2fb449",
+      "context": {
+        "version": 1,
+        "network": 1397511495,
+        "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "dna_version": 1,
+        "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "parent_hash": "1f08a4ac11d4c60ebecbb8dc85401fa2756576c3d1920c45cad5f7113b587ee0",
+        "parent_height": 61,
+        "expected_bits": 545259519,
+        "min_timestamp": 1794780000,
+        "max_timestamp": 1794794400
+      },
+      "public_key": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+      "gym_id": "75b4142cec114931d596877cb3770d9e19a3b1eb161e0f733a869b14f26e3cbf",
+      "challenge": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+      "issued_at_ms": 1794787200000,
+      "expires_at_ms": 1794787500000
+    },
+    "template": {
+      "context": {
+        "version": 1,
+        "network": 1397511495,
+        "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "dna_version": 1,
+        "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "parent_hash": "1f08a4ac11d4c60ebecbb8dc85401fa2756576c3d1920c45cad5f7113b587ee0",
+        "parent_height": 61,
+        "expected_bits": 545259519,
+        "min_timestamp": 1794780000,
+        "max_timestamp": 1794794400
+      },
+      "block": {
+        "bits": "207fffff",
+        "curtime": 1794787200,
+        "height": 62,
+        "previousblockhash": "1f08a4ac11d4c60ebecbb8dc85401fa2756576c3d1920c45cad5f7113b587ee0",
+        "sigoplimit": 80000,
+        "sizelimit": 4000000,
+        "weightlimit": 4000000,
+        "transactions": [],
+        "version": 536870912,
+        "coinbaseaux": {
+          "flags": "062f534c55472f"
+        },
+        "coinbasevalue": 1000000000,
+        "target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+        "mintime": 1794780000,
+        "maxtime": 1794794400,
+        "mutable": [
+          "time",
+          "transactions",
+          "prevblock"
+        ],
+        "noncerange": "00000000ffffffff",
+        "capabilities": [
+          "proposal"
+        ]
+      }
+    },
+    "payout_address": "aQ4RFUbZbrBjSQcb7TnfLdYaERhaWwBNoD",
+    "extra_nonce": 0,
+    "expected": {
+      "version": 1,
+      "job_id": "e4cbe1dfb866c0ddd2e8ea2e0734437a35ffc27896c7ae2614d13557cf2fb449",
+      "block_hex": "00000020e07e583b11f7d5ca450c92d1c3766575a21f4085dcb8cbbe0ec6d411aca4081f427e093a5376396befbeac36db4cefa6a34f382a15217a2a4566b8e7fe528a048047fa6affff7f20000000000102000000010000000000000000000000000000000000000000000000000000000000000000ffffffff12013e080000000000000000062f534c55472fffffffff0200ca9a3b000000001976a91400112233445566778899aabbccddeeff0011223388ac00000000000000002a6a28534c554750523032b3b9f8928ffe53abdcc8c8fe7bd8cf1000aaeeaf2479efe4d51ee07e80c019e200000000",
+      "proof": {
+        "version": 2,
+        "gym_id": "75b4142cec114931d596877cb3770d9e19a3b1eb161e0f733a869b14f26e3cbf",
+        "header": "00000020e07e583b11f7d5ca450c92d1c3766575a21f4085dcb8cbbe0ec6d411aca4081f427e093a5376396befbeac36db4cefa6a34f382a15217a2a4566b8e7fe528a048047fa6affff7f2000000000",
+        "coinbase": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff12013e080000000000000000062f534c55472fffffffff0200ca9a3b000000001976a91400112233445566778899aabbccddeeff0011223388ac00000000000000002a6a28534c554750523032b3b9f8928ffe53abdcc8c8fe7bd8cf1000aaeeaf2479efe4d51ee07e80c019e200000000",
+        "merkle_branch": [],
+        "job_id": "e4cbe1dfb866c0ddd2e8ea2e0734437a35ffc27896c7ae2614d13557cf2fb449"
+      },
+      "payout_address": "aQ4RFUbZbrBjSQcb7TnfLdYaERhaWwBNoD",
+      "coinbase_value": 1000000000,
+      "transaction_count": 1,
+      "weight": 940,
+      "sigop_cost": 4
+    },
+    "expected_merkle_root": "048a52fee7b866452a7a21152a384fa3a6ef4cdb36acbeef6b3976533a097e42",
+    "expected_coinbase_txid": "048a52fee7b866452a7a21152a384fa3a6ef4cdb36acbeef6b3976533a097e42",
+    "expected_serialized_size": 235,
+    "expected_base_size": 235,
+    "expected_payout_script": "76a91400112233445566778899aabbccddeeff0011223388ac"
+  },
+  {
+    "name": "legacy-odd-leaf-dependent",
+    "job": {
+      "version": 1,
+      "rule_version": 1,
+      "id": "e4cbe1dfb866c0ddd2e8ea2e0734437a35ffc27896c7ae2614d13557cf2fb449",
+      "context": {
+        "version": 1,
+        "network": 1397511495,
+        "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "dna_version": 1,
+        "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "parent_hash": "1f08a4ac11d4c60ebecbb8dc85401fa2756576c3d1920c45cad5f7113b587ee0",
+        "parent_height": 61,
+        "expected_bits": 545259519,
+        "min_timestamp": 1794780000,
+        "max_timestamp": 1794794400
+      },
+      "public_key": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+      "gym_id": "75b4142cec114931d596877cb3770d9e19a3b1eb161e0f733a869b14f26e3cbf",
+      "challenge": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+      "issued_at_ms": 1794787200000,
+      "expires_at_ms": 1794787500000
+    },
+    "template": {
+      "context": {
+        "version": 1,
+        "network": 1397511495,
+        "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "dna_version": 1,
+        "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "parent_hash": "1f08a4ac11d4c60ebecbb8dc85401fa2756576c3d1920c45cad5f7113b587ee0",
+        "parent_height": 61,
+        "expected_bits": 545259519,
+        "min_timestamp": 1794780000,
+        "max_timestamp": 1794794400
+      },
+      "block": {
+        "bits": "207fffff",
+        "curtime": 1794787200,
+        "height": 62,
+        "previousblockhash": "1f08a4ac11d4c60ebecbb8dc85401fa2756576c3d1920c45cad5f7113b587ee0",
+        "sigoplimit": 80000,
+        "sizelimit": 4000000,
+        "weightlimit": 4000000,
+        "transactions": [
+          {
+            "data": "0200000001df2e32d7d4a3615bb16a6115b4354aa30dfe686eff5db713b4acee431d96f9a900000000020101feffffff0140420f0000000000015100000000",
+            "txid": "73dc4d723f9a1ccd8f18423d686cecc1606d6a07050dee957c88050357babe34",
+            "hash": "73dc4d723f9a1ccd8f18423d686cecc1606d6a07050dee957c88050357babe34",
+            "depends": [],
+            "fee": 2000,
+            "sigops": 0,
+            "weight": 252
+          },
+          {
+            "data": "020000000134beba570305887c95ee0d05076a6d60c1ec6c683d42188fcd1c9a3f724ddc7300000000020101feffffff01583e0f0000000000015100000000",
+            "txid": "70635efa0b417933e4f3fc4003a7edb2081a9043b1f69bc018f58ed89eb69487",
+            "hash": "70635efa0b417933e4f3fc4003a7edb2081a9043b1f69bc018f58ed89eb69487",
+            "depends": [
+              1
+            ],
+            "fee": 1000,
+            "sigops": 0,
+            "weight": 252
+          }
+        ],
+        "version": 536870912,
+        "coinbaseaux": {
+          "flags": "062f534c55472f"
+        },
+        "coinbasevalue": 1000003000,
+        "target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+        "mintime": 1794780000,
+        "maxtime": 1794794400,
+        "mutable": [
+          "time",
+          "transactions",
+          "prevblock"
+        ],
+        "noncerange": "00000000ffffffff",
+        "capabilities": [
+          "proposal"
+        ]
+      }
+    },
+    "payout_address": "aQ4RFUbZbrBjSQcb7TnfLdYaERhaWwBNoD",
+    "extra_nonce": 72623859790382856,
+    "expected": {
+      "version": 1,
+      "job_id": "e4cbe1dfb866c0ddd2e8ea2e0734437a35ffc27896c7ae2614d13557cf2fb449",
+      "block_hex": "00000020e07e583b11f7d5ca450c92d1c3766575a21f4085dcb8cbbe0ec6d411aca4081f773b5088d54dc24451c84b3b6735b9a94b7a0f1ce45561a5a00cb1e9338a1e448047fa6affff7f20000000000302000000010000000000000000000000000000000000000000000000000000000000000000ffffffff12013e080807060504030201062f534c55472fffffffff02b8d59a3b000000001976a91400112233445566778899aabbccddeeff0011223388ac00000000000000002a6a28534c554750523032b3b9f8928ffe53abdcc8c8fe7bd8cf1000aaeeaf2479efe4d51ee07e80c019e2000000000200000001df2e32d7d4a3615bb16a6115b4354aa30dfe686eff5db713b4acee431d96f9a900000000020101feffffff0140420f0000000000015100000000020000000134beba570305887c95ee0d05076a6d60c1ec6c683d42188fcd1c9a3f724ddc7300000000020101feffffff01583e0f0000000000015100000000",
+      "proof": {
+        "version": 2,
+        "gym_id": "75b4142cec114931d596877cb3770d9e19a3b1eb161e0f733a869b14f26e3cbf",
+        "header": "00000020e07e583b11f7d5ca450c92d1c3766575a21f4085dcb8cbbe0ec6d411aca4081f773b5088d54dc24451c84b3b6735b9a94b7a0f1ce45561a5a00cb1e9338a1e448047fa6affff7f2000000000",
+        "coinbase": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff12013e080807060504030201062f534c55472fffffffff02b8d59a3b000000001976a91400112233445566778899aabbccddeeff0011223388ac00000000000000002a6a28534c554750523032b3b9f8928ffe53abdcc8c8fe7bd8cf1000aaeeaf2479efe4d51ee07e80c019e200000000",
+        "merkle_branch": [
+          "73dc4d723f9a1ccd8f18423d686cecc1606d6a07050dee957c88050357babe34",
+          "02ac22aa87d34dc47dcdb182b1cc0f663b8d6212afa285ec6a6e2dc892fffd17"
+        ],
+        "job_id": "e4cbe1dfb866c0ddd2e8ea2e0734437a35ffc27896c7ae2614d13557cf2fb449"
+      },
+      "payout_address": "aQ4RFUbZbrBjSQcb7TnfLdYaERhaWwBNoD",
+      "coinbase_value": 1000003000,
+      "transaction_count": 3,
+      "weight": 1444,
+      "sigop_cost": 4
+    },
+    "expected_merkle_root": "441e8a33e9b10ca0a56155e41c0f7a4ba9b935673b4bc85144c24dd588503b77",
+    "expected_coinbase_txid": "8a642713aa22e797cc8aae0d510c2b45b4d0403232bd1aa64dbc1ca495966923",
+    "expected_serialized_size": 361,
+    "expected_base_size": 361,
+    "expected_payout_script": "76a91400112233445566778899aabbccddeeff0011223388ac"
+  },
+  {
+    "name": "witness-odd-two-level-dependent",
+    "job": {
+      "version": 1,
+      "rule_version": 1,
+      "id": "e4cbe1dfb866c0ddd2e8ea2e0734437a35ffc27896c7ae2614d13557cf2fb449",
+      "context": {
+        "version": 1,
+        "network": 1397511495,
+        "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "dna_version": 1,
+        "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "parent_hash": "1f08a4ac11d4c60ebecbb8dc85401fa2756576c3d1920c45cad5f7113b587ee0",
+        "parent_height": 61,
+        "expected_bits": 545259519,
+        "min_timestamp": 1794780000,
+        "max_timestamp": 1794794400
+      },
+      "public_key": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+      "gym_id": "75b4142cec114931d596877cb3770d9e19a3b1eb161e0f733a869b14f26e3cbf",
+      "challenge": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+      "issued_at_ms": 1794787200000,
+      "expires_at_ms": 1794787500000
+    },
+    "template": {
+      "context": {
+        "version": 1,
+        "network": 1397511495,
+        "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "dna_version": 1,
+        "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "parent_hash": "1f08a4ac11d4c60ebecbb8dc85401fa2756576c3d1920c45cad5f7113b587ee0",
+        "parent_height": 61,
+        "expected_bits": 545259519,
+        "min_timestamp": 1794780000,
+        "max_timestamp": 1794794400
+      },
+      "block": {
+        "bits": "207fffff",
+        "curtime": 1794787200,
+        "height": 62,
+        "previousblockhash": "1f08a4ac11d4c60ebecbb8dc85401fa2756576c3d1920c45cad5f7113b587ee0",
+        "sigoplimit": 80000,
+        "sizelimit": 4000000,
+        "weightlimit": 4000000,
+        "transactions": [
+          {
+            "data": "0200000001df2e32d7d4a3615bb16a6115b4354aa30dfe686eff5db713b4acee431d96f9a900000000020101feffffff0140420f0000000000015100000000",
+            "txid": "73dc4d723f9a1ccd8f18423d686cecc1606d6a07050dee957c88050357babe34",
+            "hash": "73dc4d723f9a1ccd8f18423d686cecc1606d6a07050dee957c88050357babe34",
+            "depends": [],
+            "fee": 2000,
+            "sigops": 0,
+            "weight": 252
+          },
+          {
+            "data": "020000000134beba570305887c95ee0d05076a6d60c1ec6c683d42188fcd1c9a3f724ddc7300000000020101feffffff01583e0f0000000000015100000000",
+            "txid": "70635efa0b417933e4f3fc4003a7edb2081a9043b1f69bc018f58ed89eb69487",
+            "hash": "70635efa0b417933e4f3fc4003a7edb2081a9043b1f69bc018f58ed89eb69487",
+            "depends": [
+              1
+            ],
+            "fee": 1000,
+            "sigops": 0,
+            "weight": 252
+          },
+          {
+            "data": "02000000000101407d88924f0b29922462bf52827689c9c88a87fd0878fdd0cca4d0c62320e7050000000000feffffff01a0bb0d00000000000151020101010200000000",
+            "txid": "c2c57488855e233637ebcb0c2ad46efb1efd199cf5520a84caa557bae9c09f3a",
+            "hash": "549ec8de839a50cd39e3333fd6aff3aba649f636ebd9c35e8b19765f994dccce",
+            "depends": [],
+            "fee": 3000,
+            "sigops": 0,
+            "weight": 251
+          },
+          {
+            "data": "020000000001013a9fc0e9ba57a5ca840a52f59c19fd1efb6ed42a0ccbeb3736235e858874c5c20000000000feffffff0100ac0d000000000001510200167075626c69632066697874757265207769746e65737300000000",
+            "txid": "a1a01f9b9d247175ca4c35519a02e6a9883d38f3d857d3cab9efdc59fd7ece8e",
+            "hash": "5ea7e0e80b872589ffa09aa9940b1326df81a6fcc32d3d54a8207ea1def6c098",
+            "depends": [
+              3
+            ],
+            "fee": 4000,
+            "sigops": 0,
+            "weight": 271
+          }
+        ],
+        "version": 536870912,
+        "coinbaseaux": {
+          "flags": "062f534c55472f"
+        },
+        "coinbasevalue": 1000010000,
+        "target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+        "mintime": 1794780000,
+        "maxtime": 1794794400,
+        "mutable": [
+          "time",
+          "transactions",
+          "prevblock"
+        ],
+        "noncerange": "00000000ffffffff",
+        "capabilities": [
+          "proposal"
+        ],
+        "default_witness_commitment": "295772e8d0847bebdb1869cdff3d4f2e5f115e849f45aafc31d7aac5b0bf08c1"
+      }
+    },
+    "payout_address": "aQ4RFUbZbrBjSQcb7TnfLdYaERhaWwBNoD",
+    "extra_nonce": 18446744073709551615,
+    "expected": {
+      "version": 1,
+      "job_id": "e4cbe1dfb866c0ddd2e8ea2e0734437a35ffc27896c7ae2614d13557cf2fb449",
+      "block_hex": "00000020e07e583b11f7d5ca450c92d1c3766575a21f4085dcb8cbbe0ec6d411aca4081fbc8303551580d06ed904000439ef302cd60493984c4461caed617e09f29dd9ca8047fa6affff7f200000000005020000000001010000000000000000000000000000000000000000000000000000000000000000ffffffff12013e08ffffffffffffffff062f534c55472fffffffff0310f19a3b000000001976a91400112233445566778899aabbccddeeff0011223388ac00000000000000002a6a28534c554750523032b3b9f8928ffe53abdcc8c8fe7bd8cf1000aaeeaf2479efe4d51ee07e80c019e20000000000000000266a24aa21a9ed295772e8d0847bebdb1869cdff3d4f2e5f115e849f45aafc31d7aac5b0bf08c101200000000000000000000000000000000000000000000000000000000000000000000000000200000001df2e32d7d4a3615bb16a6115b4354aa30dfe686eff5db713b4acee431d96f9a900000000020101feffffff0140420f0000000000015100000000020000000134beba570305887c95ee0d05076a6d60c1ec6c683d42188fcd1c9a3f724ddc7300000000020101feffffff01583e0f000000000001510000000002000000000101407d88924f0b29922462bf52827689c9c88a87fd0878fdd0cca4d0c62320e7050000000000feffffff01a0bb0d00000000000151020101010200000000020000000001013a9fc0e9ba57a5ca840a52f59c19fd1efb6ed42a0ccbeb3736235e858874c5c20000000000feffffff0100ac0d000000000001510200167075626c69632066697874757265207769746e65737300000000",
+      "proof": {
+        "version": 2,
+        "gym_id": "75b4142cec114931d596877cb3770d9e19a3b1eb161e0f733a869b14f26e3cbf",
+        "header": "00000020e07e583b11f7d5ca450c92d1c3766575a21f4085dcb8cbbe0ec6d411aca4081fbc8303551580d06ed904000439ef302cd60493984c4461caed617e09f29dd9ca8047fa6affff7f2000000000",
+        "coinbase": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff12013e08ffffffffffffffff062f534c55472fffffffff0310f19a3b000000001976a91400112233445566778899aabbccddeeff0011223388ac00000000000000002a6a28534c554750523032b3b9f8928ffe53abdcc8c8fe7bd8cf1000aaeeaf2479efe4d51ee07e80c019e20000000000000000266a24aa21a9ed295772e8d0847bebdb1869cdff3d4f2e5f115e849f45aafc31d7aac5b0bf08c100000000",
+        "merkle_branch": [
+          "73dc4d723f9a1ccd8f18423d686cecc1606d6a07050dee957c88050357babe34",
+          "1fd463ecf9624f4bbe57f7aa91747c26a74320d1697d300f79dbae32e683ef04",
+          "524f6f3bc240cca3200611c7cea43606a4c0d4f938de3be20c47e0febb90e6ba"
+        ],
+        "job_id": "e4cbe1dfb866c0ddd2e8ea2e0734437a35ffc27896c7ae2614d13557cf2fb449"
+      },
+      "payout_address": "aQ4RFUbZbrBjSQcb7TnfLdYaERhaWwBNoD",
+      "coinbase_value": 1000010000,
+      "transaction_count": 5,
+      "weight": 2190,
+      "sigop_cost": 4
+    },
+    "expected_merkle_root": "cad99df2097e61edca61444c989304d62c30ef39040004d96ed08015550383bc",
+    "expected_coinbase_txid": "a39838b2f89ed07b0b4c06533e542d8315fd6ff2e5c83202f509de16fbe468d9",
+    "expected_serialized_size": 600,
+    "expected_base_size": 530,
+    "expected_payout_script": "76a91400112233445566778899aabbccddeeff0011223388ac"
+  }
+]

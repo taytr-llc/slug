@@ -57,7 +57,8 @@ version.
   → `slug-fighter-manifest` (set 33, static candidate fighter previews)
   → `slug-fighter-portraits` (set 34, deterministic preview SVG)
   → `slug-fighter-condition` (set 35, exact candidate aging projection)
-  → `slug-manifest-jobs` (set 36, candidate appearance-bound job codecs).
+  → `slug-manifest-jobs` (set 36, candidate appearance-bound job codecs)
+  → `slug-manifest-authority` (set 37, pinned candidate admission store).
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. Continue authorized
@@ -363,3 +364,12 @@ does not understand. Never detach, replace, or clear the /data volume.
   authenticates issuance. BuildManifest is a typed unmined-candidate helper,
   not an admission path. No schema migration, current-service activation or
   historical appearance assignment is implied. See MANIFEST_JOBS.md.
+
+- Set 37's separate ManifestStore requires an explicit schema-5 authority pin.
+  Unsigned marker inspection supports provisioning recovery; it does not make
+  its output trusted configuration. Never migrate schemas 1–4 or accept caller
+  receipt JSON as authoritative. Generate the static binding from internally
+  verified work and commit it with original birth/eligibility in one synced
+  batch. Historical reads retain their original facts through expiry/reorgs;
+  they do not establish current ownership. Production activation stays closed.
+  See MANIFEST_ADMISSION.md for strict bounds, poisoning and read guarantees.
