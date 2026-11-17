@@ -1,0 +1,35 @@
+{
+  "set": 31,
+  "preparation_only": true,
+  "captured_at_utc": "2026-11-16T23:27:38.274306+00:00",
+  "command": [
+    "python3",
+    "/Users/taytrrip/slug/set31-fixtures/reference_coordinator.py",
+    "--check"
+  ],
+  "exit_code": 0,
+  "wall_seconds": 14.807,
+  "output": "RFC/baseline reproduced; 306 coordinated cases (28 verifier-accepted), 18 unexecuted state scenarios.\n",
+  "cases": 306,
+  "verifier_accepted_cases": 28,
+  "unexecuted_coordinator_scenarios": 18,
+  "files": {
+    "reference_coordinator.py": "21ac910920e49ffa571a3e2f4db0dd10242e748f6dbb0c14e407705f545cb5ac",
+    "coordinated_identity_v1.json": "ed9b61c74688c73bb77e8212322cabfddb9a924ca56a9332ec7019bff04c229f",
+    "rfc7515_rsa.json": "6dadd3d7c1ba76fb24557fbdd26ac956b6430692a4cac701cbefa035b2692a9a",
+    "README.md": "d609b80cd008143cdd18288d7aee55b254ec64685682d736a31d878cf48865a5",
+    "baseline/reference_identity.py": "7aac1e2243572cf0c5f60ce236ff7b3f40bc98015b1c182cf2000e2f392b3819",
+    "baseline/identity_v1.json": "d1a3275c79dda31b59b00f8051a7d503a495c460bff4779b66c69b5acfcafa80",
+    "baseline/rfc7515_rsa.json": "6dadd3d7c1ba76fb24557fbdd26ac956b6430692a4cac701cbefa035b2692a9a"
+  },
+  "contracts": {
+    "/Users/taytrrip/slug/set31-coordinator-contract.md": "2704ec780ff96bc51fe0641595b41bf5de8cfc11dd74a9f5f82f69d005b2b903",
+    "/Users/taytrrip/slug/set31-provider-review.md": "a186271aa829c81173b471bd7e445516c3d041bd818de2485fc982557dfdaa80"
+  },
+  "limits": [
+    "No future Go implementation was run or used to produce expected bytes.",
+    "Stateful coordinator scenarios are planned contract expectations, not runtime verification results.",
+    "The RSA private example is public RFC7515 fixture material only.",
+    "No repository source or live provider resources were modified."
+  ]
+}
