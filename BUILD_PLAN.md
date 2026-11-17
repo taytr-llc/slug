@@ -263,6 +263,14 @@ A working interface prototype exists (SLUG Gym space, November 15,
 2026); visual design polish is deferred by Mike's call.
 Depends on: fighter layer, pool, wallet.
 
+Set 40 adds the separate opt-in Candidate Pilot: two published wallet fixtures,
+automatic live candidate cards/portraits after explicit Start, bounded stopped
+historical verification, and public receipt export. It retains the original
+account app and uses a separate data namespace. This is a runnable integration
+slice of the new Go gym shell, not real signup, official roster/ownership or
+product launch. See `MANIFEST_DESKTOP.md`; the packaging and acceptance addenda
+record the separate bundle default and precise composite lost-ACK evidence.
+
 ### 6. League services
 The Saturday operation: entry collection and lock (Saturday noon
 PT), matchmaking in the D52 ratio band with random draw (D13, D53),

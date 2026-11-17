@@ -46,7 +46,7 @@ they do not count as completion of this product-release gate.
   independent SVG fixtures and bounded markup. A local visual gallery is ready;
   browser policy blocked local-file preview, so visual and actual screen-reader
   checks remain open; Mike chose to keep the rendering check pending. The
-  desktop does not yet show these portraits.
+  opt-in candidate desktop integration is recorded below.
 - Set 35 provides exact candidate aging/current-condition and D65 rating
   projections. It preserves original DNA, uses supplied birth/time/XP and
   does not authenticate those facts or establish roster eligibility. Trusted
@@ -72,9 +72,16 @@ they do not count as completion of this product-release gate.
   typed durable miner. Independent service/worker reviews and the two-wallet
   normal-PoW composition pass, including lost acknowledgments, reset-held mining
   and exact historical recovery after real expiry with nodes offline. Final
-  integrated gates and deployment observation are recorded separately. The
-  default Mac GUI still uses the existing fixture pilot; candidate portrait
-  cards are the next desktop integration slice.
+  integrated gates, seed deployment and full 15-minute observation passed. The
+  default Mac GUI still uses the existing fixture pilot.
+- Set 40 adds a separate Candidate Pilot bundle with automatic candidate cards
+  and exact deterministic portraits after explicit Start. It uses two published
+  fixture wallets and a separate data namespace, with typed public receipt
+  export and bounded cold history verification. Source reviews and preliminary
+  two-wallet normal-PoW composition pass; final package, integrated gates and
+  deployment observation are recorded separately. No window or native chooser
+  rendering is claimed by helper/DOM tests. Mike's rendering check, actual
+  screen-reader acceptance and D74 review remain pending.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace

@@ -21,11 +21,22 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 	data := flags.String("data-dir", "", "Explicit disposable pilot directory")
 	node := flags.String("node-binary", "", "Explicit bundled normal SLUG node binary")
 	accounts := flags.Bool("account-fixtures", false, "Use the separate two-public-fixture account pilot")
+	candidates := flags.Bool("candidate-manifests", false, "Use the separate candidate fixture desktop")
 	if e := flags.Parse(args); e != nil {
 		return e
 	}
 	if flags.NArg() != 0 || *data == "" || *node == "" {
 		return errors.New("explicit data-dir and node-binary are required")
+	}
+	if *candidates {
+		if *accounts {
+			return errors.New("candidate-manifests and account-fixtures are separate modes")
+		}
+		controller, err := accountpilot.NewManifest(pilot.Config{DataDir: *data, NodeBinary: *node})
+		if err != nil {
+			return err
+		}
+		return pilot.ServeManifest(ctx, stdin, stdout, controller)
 	}
 	var controller pilot.ControllerAPI
 	var e error
