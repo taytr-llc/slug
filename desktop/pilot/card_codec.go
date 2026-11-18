@@ -327,6 +327,9 @@ func cardRecordPath(path string) (string, bool) {
 	return "", false
 }
 func cardArrayBound(path string) (int, bool) {
+	if path == "job.ineligible_prospect_ids" {
+		return 10, false
+	}
 	if path == "snapshot.pin.source_pin.source_pin.participants" {
 		return 2, true
 	}

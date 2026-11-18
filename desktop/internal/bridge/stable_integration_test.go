@@ -25,7 +25,12 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 	if helper == "" || node == "" {
 		t.Skip("explicit frozen stable helper and normal node required")
 	}
-	resultEnabled := os.Getenv("SLUG_RESULT_ACCEPTANCE") == "1"
+	careerEnabled := os.Getenv("SLUG_CAREER_ACCEPTANCE") == "1"
+	var careerOriginal map[string]pilot.ManifestSnapshot
+	if careerEnabled {
+		careerOriginal = map[string]pilot.ManifestSnapshot{}
+	}
+	resultEnabled := os.Getenv("SLUG_RESULT_ACCEPTANCE") == "1" || careerEnabled
 	boutEnabled := os.Getenv("SLUG_BOUT_ACCEPTANCE") == "1" || resultEnabled
 	cardEnabled := os.Getenv("SLUG_CARD_ACCEPTANCE") == "1" || boutEnabled
 	seedEnabled := os.Getenv("SLUG_SEED_ACCEPTANCE") == "1" || cardEnabled
@@ -627,6 +632,13 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 			t.Fatal("mining changed roster")
 		}
 		evidence = append(evidence, map[string]any{"fixture": fixture, "initial": synced, "inventory": page, "roster": rosterJob.Roster, "first_mutation": changed, "replay": replay, "noop": noop, "reopened": attached, "retired_old_intent": abandoned, "held_mutation": heldChange, "fixed_held_page": fixedHeldPage, "recent_after_arrival": recent.Page, "final": finalStable, "no_login_mining": true, "current_held_roster_allowed": true, "old_view_intent_refused": true, "recovery_denied_path_absent": true})
+		if careerEnabled {
+			original := request("snapshot", 0).Snapshot
+			if original == nil || original.View == nil || finalStable.View == nil || *original.View != *finalStable.View {
+				t.Fatal("pre-activation counter snapshot lost original View")
+			}
+			careerOriginal[fixture] = *original
+		}
 		request("logout", 0)
 		waitManifest(func(s pilot.ManifestSnapshot) bool { return s.Account.State == "signed_out" })
 	}
@@ -644,6 +656,10 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 	var previewRestart map[string]any
 	if previews != nil {
 		previewRestart = previews.checkProcessRestart(helper, data, node)
+	}
+	var careerEvidence map[string]any
+	if careerEnabled {
+		careerEvidence = runCareerPackageAcceptance(t, ctx, helper, data, node, results, careerOriginal)
 	}
 	if t.Failed() {
 		t.Fatal("refusing success evidence after failure")
@@ -669,6 +685,10 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 		result["seed_restart"] = seeds.restartEvidence
 		result["seed_real_clock_closed_coverage"] = false
 		result["seed_authority"] = "candidate_fixture_v1"
+	}
+	if careerEnabled {
+		result["careers"] = careerEvidence
+		result["career_original_baseline"] = careerOriginal
 	}
 	if results != nil {
 		result["results"] = results.evidence

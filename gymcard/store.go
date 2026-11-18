@@ -15,6 +15,8 @@ import (
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/opt"
 	"github.com/taytr-llc/slug/gymseed"
+	"github.com/taytr-llc/slug/internal/careerconsumer"
+	"github.com/taytr-llc/slug/internal/careerstate"
 	"github.com/taytr-llc/slug/wire/v2"
 )
 
@@ -66,6 +68,7 @@ type Store struct {
 	now               func() time.Time
 	writeBatch        func(*leveldb.Batch, *opt.WriteOptions) error
 	checkpoint        func(string)
+	career            *careerconsumer.Guard
 }
 
 func normal() error {
@@ -76,7 +79,8 @@ func normal() error {
 }
 func newStore(db *leveldb.DB, clock func() time.Time) *Store {
 	life, cancel := context.WithCancel(context.Background())
-	return &Store{gate: make(chan struct{}, 1), life: life, cancel: cancel, db: db, now: clock, writeBatch: db.Write}
+	career, _ := careerconsumer.New(nil, false)
+	return &Store{gate: make(chan struct{}, 1), life: life, cancel: cancel, db: db, now: clock, writeBatch: db.Write, career: career}
 }
 func (s *Store) mark(v string) {
 	if s.checkpoint != nil {
@@ -311,6 +315,9 @@ func ResumePrepared(ctx context.Context, path string, expected Pin, events *gyms
 	return open(ctx, path, expected, events, time.Now, true)
 }
 func open(ctx context.Context, path string, expected Pin, events *gymseed.Store, clock func() time.Time, resume bool) (*Store, error) {
+	return openWithCareer(ctx, path, expected, events, clock, resume, nil, false)
+}
+func openWithCareer(ctx context.Context, path string, expected Pin, events *gymseed.Store, clock func() time.Time, resume bool, activation *careerstate.Activation, prepared bool) (*Store, error) {
 	if e := normal(); e != nil {
 		return nil, e
 	}
@@ -362,6 +369,10 @@ func open(ctx context.Context, path string, expected Pin, events *gymseed.Store,
 	s := newStore(db, clock)
 	s.sourceCreatedAtMS = source.CreatedAtMS
 	fail := func(e error) (*Store, error) { s.Close(); return nil, e }
+	s.career, e = careerconsumer.New(activation, prepared)
+	if e != nil {
+		return fail(e)
+	}
 	if resume {
 		it := db.NewIterator(nil, nil)
 		count := 0

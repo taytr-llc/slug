@@ -13,12 +13,16 @@ import (
 
 	"github.com/taytr-llc/slug/desktop/pilot"
 	"github.com/taytr-llc/slug/gymstable"
+	"github.com/taytr-llc/slug/internal/careerstate"
 )
 
 // StableBridge runs both closed command families on one owned helper pipe.
 // The pending command, never a response-controlled discriminator, selects the
 // decoder. A stable failure stays a typed code across the webview boundary.
 type StableBridge struct {
+	careersEnabled         bool
+	careerActivation       *careerstate.Activation
+	careerSelection        *careerPageExpectation
 	cmd                    *exec.Cmd
 	input                  io.WriteCloser
 	responses              chan stableFrame
@@ -69,6 +73,7 @@ type stableJobExpectation struct {
 	terminal bool
 }
 type stableExpected struct {
+	career  bool
 	id      uint64
 	stable  bool
 	preview bool
@@ -80,6 +85,7 @@ type stableExpected struct {
 	card    bool
 }
 type stableFrame struct {
+	career   *pilot.CareerResponse
 	manifest *pilot.ManifestResponse
 	stable   *pilot.StableResponse
 	preview  *pilot.PreviewResponse
@@ -126,6 +132,7 @@ func (b *StableBridge) fail(err error) {
 	b.once.Do(func() {
 		b.mu.Lock()
 		b.failure = err
+		b.careerSelection = nil
 		b.presentation = nil
 		b.entry = nil
 		b.event = nil
@@ -152,7 +159,14 @@ func (b *StableBridge) read(r io.Reader) {
 			return
 		}
 		var frame stableFrame
-		if expected.result {
+		if expected.career {
+			value, err := pilot.ParseCareerResponse(scanner.Bytes())
+			if err != nil || value.ID != expected.id {
+				b.fail(ErrUnavailable)
+				return
+			}
+			frame.career = &value
+		} else if expected.result {
 			value, err := pilot.ParseResultResponse(scanner.Bytes())
 			if err != nil || value.ID != expected.id {
 				b.fail(ErrUnavailable)
@@ -279,8 +293,11 @@ func (b *StableBridge) exchangeBoutFamily(ctx context.Context, id uint64, stable
 	return b.exchangeResultFamily(ctx, id, stable, preview, entry, event, seed, card, bout, false, raw)
 }
 func (b *StableBridge) exchangeResultFamily(ctx context.Context, id uint64, stable, preview, entry, event, seed, card, bout, result bool, raw []byte) (stableFrame, error) {
+	return b.exchangeCareerFamily(ctx, id, stable, preview, entry, event, seed, card, bout, result, false, raw)
+}
+func (b *StableBridge) exchangeCareerFamily(ctx context.Context, id uint64, stable, preview, entry, event, seed, card, bout, result, career bool, raw []byte) (stableFrame, error) {
 	b.mu.Lock()
-	b.expected = &stableExpected{id: id, stable: stable, preview: preview, entry: entry, event: event, seed: seed, card: card, bout: bout, result: result}
+	b.expected = &stableExpected{career: career, id: id, stable: stable, preview: preview, entry: entry, event: event, seed: seed, card: card, bout: bout, result: result}
 	b.mu.Unlock()
 	raw = append(raw, '\n')
 	if d, ok := b.input.(interface{ SetWriteDeadline(time.Time) error }); ok {
@@ -484,6 +501,10 @@ func (b *StableBridge) StableRequest(ctx context.Context, req pilot.StableReques
 		}
 		return fail(id, "stable_unavailable")
 	}
+	if response.Job != nil && !b.rememberCareerStableJob(req, *response.Job) {
+		b.fail(ErrUnavailable)
+		return fail(id, "stable_unavailable")
+	}
 	return response
 }
 
@@ -495,6 +516,9 @@ func stableMutation(command string) bool {
 }
 func stableTerminal(state string) bool { return state != "queued" && state != "running" }
 func (b *StableBridge) clearStableView() {
+	b.mu.Lock()
+	b.careerSelection = nil
+	b.mu.Unlock()
 	b.view = nil
 	b.storeID = ""
 	b.stablePin = nil

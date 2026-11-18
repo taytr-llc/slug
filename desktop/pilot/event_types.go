@@ -55,15 +55,16 @@ type EventSnapshot struct {
 	LastJobID              string           `json:"last_job_id"`
 }
 type EventJob struct {
-	Version       uint32                  `json:"version"`
-	JobID         string                  `json:"job_id"`
-	Kind          string                  `json:"kind"`
-	State         string                  `json:"state"`
-	View          ManifestViewPin         `json:"view"`
-	StoreID       string                  `json:"store_id"`
-	EventID       string                  `json:"event_id"`
-	Saturday      string                  `json:"saturday"`
-	ParticipantID string                  `json:"participant_id"`
-	Error         string                  `json:"error"`
-	Result        *gymevent.CaptureResult `json:"result"`
+	IneligibleProspectIDs []string                `json:"ineligible_prospect_ids,omitempty"`
+	Version               uint32                  `json:"version"`
+	JobID                 string                  `json:"job_id"`
+	Kind                  string                  `json:"kind"`
+	State                 string                  `json:"state"`
+	View                  ManifestViewPin         `json:"view"`
+	StoreID               string                  `json:"store_id"`
+	EventID               string                  `json:"event_id"`
+	Saturday              string                  `json:"saturday"`
+	ParticipantID         string                  `json:"participant_id"`
+	Error                 string                  `json:"error"`
+	Result                *gymevent.CaptureResult `json:"result"`
 }

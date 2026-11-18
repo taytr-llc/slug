@@ -18,6 +18,9 @@ func NewResultsForTestClock(ctx context.Context, c pilot.Config, clock func() ti
 	if clock == nil {
 		return nil, gymcard.ErrInvalid
 	}
+	return newResults(ctx, c, resultFactoriesForTestClock(clock))
+}
+func resultFactoriesForTestClock(clock func() time.Time) resultAccountFactories {
 	d := eventFactoriesForTestClock(clock)
 	d.child = func(c pilot.Config, a pilot.StableAccountConfig) (*pilot.StableController, error) {
 		return pilot.NewResultManifestAccountForTestClock(c, a, clock)
@@ -37,9 +40,9 @@ func NewResultsForTestClock(ctx context.Context, c pilot.Config, clock func() ti
 	}, func(ctx context.Context, path string, p gymbout.Pin, c *gymcard.Store) (*gymbout.Store, error) {
 		return gymbout.ResumePreparedForTestClock(ctx, path, p, c, clock)
 	}}
-	return newResults(ctx, c, resultAccountFactories{bouts, func(ctx context.Context, path string, p gymresult.Pin, b *gymbout.Store) (*gymresult.Store, error) {
+	return resultAccountFactories{bouts, func(ctx context.Context, path string, p gymresult.Pin, b *gymbout.Store) (*gymresult.Store, error) {
 		return gymresult.OpenForTestClock(ctx, path, p, b, clock)
 	}, func(ctx context.Context, path string, p gymresult.Pin, b *gymbout.Store) (*gymresult.Store, error) {
 		return gymresult.ResumePreparedForTestClock(ctx, path, p, b, clock)
-	}})
+	}}
 }

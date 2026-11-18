@@ -57,14 +57,15 @@ type CardSnapshot struct {
 	LastJobID         string           `json:"last_job_id"`
 }
 type CardJob struct {
-	Version  uint32               `json:"version"`
-	JobID    string               `json:"job_id"`
-	Kind     string               `json:"kind"`
-	State    string               `json:"state"`
-	View     ManifestViewPin      `json:"view"`
-	StoreID  string               `json:"store_id"`
-	CardID   string               `json:"card_id"`
-	Saturday string               `json:"saturday"`
-	Error    string               `json:"error"`
-	Result   *gymcard.BuildResult `json:"result"`
+	IneligibleProspectIDs []string             `json:"ineligible_prospect_ids,omitempty"`
+	Version               uint32               `json:"version"`
+	JobID                 string               `json:"job_id"`
+	Kind                  string               `json:"kind"`
+	State                 string               `json:"state"`
+	View                  ManifestViewPin      `json:"view"`
+	StoreID               string               `json:"store_id"`
+	CardID                string               `json:"card_id"`
+	Saturday              string               `json:"saturday"`
+	Error                 string               `json:"error"`
+	Result                *gymcard.BuildResult `json:"result"`
 }

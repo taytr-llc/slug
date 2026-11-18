@@ -135,7 +135,7 @@ func (s *StableController) AttachEvents(ctx context.Context, x *gymevent.Store) 
 		}
 		s.mu.Lock()
 		defer s.mu.Unlock()
-		if !stableCacheFits(s.cache, s.receiptSlot, s.previewBytes+s.entryBytes+eventMetadataBytes+s.seedBytes+s.cardBytes+s.boutBytes+s.resultBytes) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.careerBytes+s.previewBytes+s.entryBytes+eventMetadataBytes+s.seedBytes+s.cardBytes+s.boutBytes+s.resultBytes) {
 			return gymevent.ErrCapacity
 		}
 		s.eventStore = x
@@ -166,6 +166,21 @@ func (s *StableController) createStableStore(p string, pin gymstable.Pin, source
 	return gymstable.Create(p, pin, source)
 }
 func (s *StableController) openStableStore(p string, pin gymstable.Pin, source *registry.ManifestStore) (*gymstable.Store, error) {
+	if s.careerReader != nil {
+		a, e := s.careerReader.Activation()
+		if e != nil {
+			return nil, e
+		}
+		x, e := s.careerOpenStable(p, pin, source, a)
+		if e != nil {
+			return nil, e
+		}
+		if e = x.AttachCareer(context.Background(), s.careerReader); e != nil {
+			_ = x.Close()
+			return nil, e
+		}
+		return x, nil
+	}
 	if s.eventFactories != nil {
 		return s.eventFactories.openStable(p, pin, source)
 	}

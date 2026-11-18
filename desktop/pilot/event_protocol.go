@@ -14,6 +14,9 @@ import (
 )
 
 func eventProtocolError(err error) string {
+	if code := careerActionError(err); code != "" {
+		return code
+	}
 	for _, e := range []error{gymevent.ErrInvalid, gymevent.ErrUnauthorized, gymevent.ErrForbidden, gymevent.ErrStaleView, gymevent.ErrBusy, gymevent.ErrUnavailable, gymevent.ErrCorrupt, gymevent.ErrCapacity, gymevent.ErrClock, gymevent.ErrCalendar, gymevent.ErrNotDue, gymevent.ErrCreatedTooLate, gymevent.ErrIncomplete, gymevent.ErrConflict, gymevent.ErrNotFound, gymevent.ErrCancelled, gymevent.ErrOutcomeUnknown, errEventSetup} {
 		if errors.Is(err, e) {
 			return e.Error()

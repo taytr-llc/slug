@@ -42,7 +42,7 @@ func (s *StableController) BeginEventCapture(ctx context.Context, v, date string
 		s.mu.Lock()
 		defer s.mu.Unlock()
 		oldBytes = s.eventBytes
-		if !stableCacheFits(s.cache, s.receiptSlot, s.previewBytes+s.entryBytes+MaxEventCacheSize+s.seedBytes+s.cardBytes+s.boutBytes+s.resultBytes) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.careerBytes+s.previewBytes+s.entryBytes+MaxEventCacheSize+s.seedBytes+s.cardBytes+s.boutBytes+s.resultBytes) {
 			return gymevent.ErrCapacity
 		}
 		var id [32]byte
@@ -133,6 +133,9 @@ func (s *StableController) runEventTask(lane context.Context, t *stableTask) err
 	if e == nil && (s.eventStore == nil || s.entryStore == nil) {
 		e = gymevent.ErrUnavailable
 	}
+	if e == nil {
+		e = s.careerFence(t.ctx, j.Saturday)
+	}
 	committed := false
 	if e == nil {
 		var r gymevent.CaptureResult
@@ -194,6 +197,7 @@ func (s *StableController) runEventTask(lane context.Context, t *stableTask) err
 		if fatal {
 			s.eventFailure = "event_unavailable"
 		}
+		j.IneligibleProspectIDs = careerIneligibleIDs(e, j.Error)
 		s.retainEventLocked(j)
 	}
 	s.stableMu.Unlock()

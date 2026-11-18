@@ -29,6 +29,7 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 	candidateBouts := flags.Bool("candidate-bouts", false, "Enable saved candidate bout transcripts within candidate-cards")
 	candidateCards := flags.Bool("candidate-cards", false, "Enable bounded candidate cards within candidate-seeds")
 	candidateResults := flags.Bool("candidate-results", false, "Enable saved candidate result publication within candidate-bouts")
+	career := flags.Bool("career", false, "Enable finality-timed candidate career accounting within candidate-results")
 	if e := flags.Parse(args); e != nil {
 		return e
 	}
@@ -56,7 +57,17 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 	if *candidateSeeds && (!*candidateEvents || !*entries || !*stable || !*candidates || *accounts) {
 		return errors.New("candidate-seeds requires candidate-events, candidate-entries, candidate-stable and candidate-manifests")
 	}
+	if *career && (!*candidateResults || !*candidateBouts || !*candidateCards || !*candidateSeeds || !*candidateEvents || !*entries || !*stable || !*candidates || *accounts) {
+		return errors.New("career requires candidate-results and all earlier candidate modes")
+	}
 	if *candidates {
+		if *career {
+			c, e := accountpilot.NewCareers(ctx, pilot.Config{DataDir: *data, NodeBinary: *node})
+			if e != nil {
+				return e
+			}
+			return pilot.ServeCareers(ctx, c, stdin, stdout)
+		}
 		if *candidateResults {
 			c, e := accountpilot.NewResults(ctx, pilot.Config{DataDir: *data, NodeBinary: *node})
 			if e != nil {

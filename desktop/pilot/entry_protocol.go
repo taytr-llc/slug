@@ -14,6 +14,9 @@ import (
 )
 
 func entryProtocolError(err error) string {
+	if code := careerActionError(err); code != "" {
+		return code
+	}
 	for _, e := range []error{gymentry.ErrInvalid, gymentry.ErrUnauthorized, gymentry.ErrForbidden, gymentry.ErrStaleView, gymentry.ErrBusy, gymentry.ErrUnavailable, gymentry.ErrCorrupt, gymentry.ErrCapacity, gymentry.ErrClock, gymentry.ErrCalendar, gymentry.ErrClosed, gymentry.ErrConflict, gymentry.ErrPending, gymentry.ErrNotFound, gymentry.ErrSyncRequired, gymentry.ErrNotRostered, gymentry.ErrRetired, gymentry.ErrClassConflict, gymentry.ErrCancelled, gymentry.ErrOutcomeUnknown} {
 		if errors.Is(err, e) {
 			return e.Error()

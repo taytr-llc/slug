@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"github.com/taytr-llc/slug/internal/careerstate"
 	"sort"
 )
 
@@ -57,7 +58,7 @@ func (s *Store) installIndex(r Record) {
 	sort.Slice(s.index, func(i, j int) bool { return s.index[i].ResultKey < s.index[j].ResultKey })
 }
 func validMeta(m metadata, p Pin, id string) bool {
-	if m.Version != 1 || m.StoreID != id || !equal(m.Pin, p) || !timestamp(m.SourceCreatedAtMS) || !timestamp(m.CreatedAtMS) || !timestamp(m.ClockMS) || m.SourceCreatedAtMS > m.CreatedAtMS || m.CreatedAtMS > m.ClockMS || m.ResultCount > MaxResults || validateCursor(p, m.FundingCursor) != nil || m.FundingRestarts == nil || len(m.FundingRestarts) > 16 || uint32(len(m.FundingRestarts)) != m.FundingCursor.Generation {
+	if (m.Version != 1 && m.Version != 2) || m.Version == 1 && m.Career != nil || m.Version == 2 && (m.Career == nil || careerstate.ValidateActivation(*m.Career) != nil || m.Career.ResultStoreID != m.StoreID || m.Career.ResultCreatedAtMS != m.CreatedAtMS || m.Career.SourceCreatedAtMS != m.SourceCreatedAtMS || m.Career.ActivatedAtMS > m.ClockMS) || m.StoreID != id || !equal(m.Pin, p) || !timestamp(m.SourceCreatedAtMS) || !timestamp(m.CreatedAtMS) || !timestamp(m.ClockMS) || m.SourceCreatedAtMS > m.CreatedAtMS || m.CreatedAtMS > m.ClockMS || m.ResultCount > MaxResults || validateCursor(p, m.FundingCursor) != nil || m.FundingRestarts == nil || len(m.FundingRestarts) > 16 || uint32(len(m.FundingRestarts)) != m.FundingCursor.Generation {
 		return false
 	}
 	if m.FundingCursor.Height < 0 && !equal(m.FundingCursor, initialCursor(p, "", m.FundingCursor.Generation)) {
@@ -106,6 +107,10 @@ func (s *Store) audit(ctx context.Context, m marker) error {
 	if decode(raw, MaxMetadataSize, &meta, true) != nil || !validMeta(meta, m.Pin, m.StoreID) || meta.SourceCreatedAtMS != s.sourceCreatedAtMS {
 		return ErrCorrupt
 	}
+	if !s.careerOpening && (m.Version != 1 || meta.Version != 1) {
+		return ErrCorrupt
+	}
+	careerEvents := []careerstate.Event{}
 	index := []indexRow{}
 	expected := map[string]reservation{}
 	reserved := map[string]reservation{}
@@ -125,6 +130,16 @@ func (s *Store) audit(ctx context.Context, m marker) error {
 		if bytes.Equal(k, []byte("meta")) {
 			continue
 		}
+		if bytes.Equal(k, []byte("career_init")) {
+			if !s.careerOpening {
+				return ErrCorrupt
+			}
+			var intent careerIntent
+			if decode(v, 2048, &intent, true) != nil || intent != intentFor(meta) {
+				return ErrCorrupt
+			}
+			continue
+		}
 		if len(k) == 0 {
 			return ErrCorrupt
 		}
@@ -138,6 +153,14 @@ func (s *Store) audit(ctx context.Context, m marker) error {
 				return ErrCorrupt
 			}
 			index = append(index, indexFor(r))
+			if meta.Career != nil && r.Finality != nil {
+				event, e := careerEvent(*meta.Career, r)
+				if e != nil {
+					return e
+				}
+				careerEvents = append(careerEvents, event)
+				s.mark("career-audit-row")
+			}
 			if r.Publication != nil {
 				key := string(coinKey('u', r.Publication.Coin.Outpoint))
 				if _, ok := expected[key]; ok {
@@ -176,6 +199,14 @@ func (s *Store) audit(ctx context.Context, m marker) error {
 		}
 	}
 	sort.Slice(index, func(i, j int) bool { return index[i].ResultKey < index[j].ResultKey })
+	if meta.Career != nil {
+		var e error
+		careerEvents, e = careerstate.ValidateIndex(*meta.Career, careerEvents)
+		if e != nil {
+			return ErrCorrupt
+		}
+	}
+	s.careerIndex = careerEvents
 	s.meta = meta
 	s.clockSeen = meta.ClockMS
 	s.index = index
@@ -188,6 +219,15 @@ func (s *Store) funding(ctx context.Context) ([]FundingCoin, error) {
 	for ok := it.Seek([]byte{'c'}); ok && len(it.Key()) > 0 && it.Key()[0] == 'c'; ok = it.Next() {
 		if ctx.Err() != nil {
 			return nil, ErrCancelled
+		}
+		// The durable activation intent shares the coin prefix. Only its exact
+		// key and validated active-store identity are metadata, never a coin.
+		if bytes.Equal(it.Key(), []byte("career_init")) {
+			var intent careerIntent
+			if s.meta.Version != 2 || s.meta.Career == nil || careerstate.ValidateActivation(*s.meta.Career) != nil || decode(it.Value(), 2048, &intent, true) != nil || intent != intentFor(s.meta) {
+				return nil, ErrCorrupt
+			}
+			continue
 		}
 		var c FundingCoin
 		if len(out) >= MaxFundingCoins || len(it.Key()) != 37 || decode(it.Value(), 1024, &c, true) != nil || validateFundingCoin(s.meta.Pin, c) != nil || !bytes.Equal(it.Key(), coinKey('c', c.Outpoint)) {

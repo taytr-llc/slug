@@ -18,6 +18,8 @@ import (
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/opt"
 	"github.com/taytr-llc/slug/gymaccount"
+	"github.com/taytr-llc/slug/internal/careerconsumer"
+	"github.com/taytr-llc/slug/internal/careerstate"
 	"github.com/taytr-llc/slug/registry"
 	"github.com/taytr-llc/slug/wire/v2"
 )
@@ -69,6 +71,7 @@ type Store struct {
 	writeBatch func(*leveldb.Batch, *opt.WriteOptions) error
 	checkpoint func(string)
 	proofRead  func()
+	career     *careerconsumer.Guard
 }
 
 func normal() error {
@@ -90,7 +93,8 @@ func syncDir(path string) error {
 }
 func newStore(db *leveldb.DB, source *registry.ManifestStore) *Store {
 	ctx, cancel := context.WithCancel(context.Background())
-	return &Store{db: db, source: source, gate: make(chan struct{}, 1), life: ctx, cancel: cancel, now: time.Now, random: rand.Reader, writeBatch: db.Write}
+	career, _ := careerconsumer.New(nil, false)
+	return &Store{db: db, source: source, gate: make(chan struct{}, 1), life: ctx, cancel: cancel, now: time.Now, random: rand.Reader, writeBatch: db.Write, career: career}
 }
 func sourceValid(source *registry.ManifestStore, pin Pin) (registry.ManifestAuthorityInfo, error) {
 	if source == nil {
@@ -179,6 +183,9 @@ func Open(path string, expected Pin, source *registry.ManifestStore) (*Store, er
 	return openWithClock(path, expected, source, time.Now)
 }
 func openWithClock(path string, expected Pin, source *registry.ManifestStore, clock func() time.Time) (*Store, error) {
+	return openCareerWithClock(path, expected, source, clock, nil, false)
+}
+func openCareerWithClock(path string, expected Pin, source *registry.ManifestStore, clock func() time.Time, activation *careerstate.Activation, prepared bool) (*Store, error) {
 	if e := normal(); e != nil {
 		return nil, e
 	}
@@ -226,6 +233,11 @@ func openWithClock(path string, expected Pin, source *registry.ManifestStore, cl
 	}
 	s := newStore(db, source)
 	s.now = clock
+	s.career, e = careerconsumer.New(activation, prepared)
+	if e != nil {
+		_ = s.Close()
+		return nil, e
+	}
 	if e = s.audit(m, info.Records); e != nil {
 		_ = s.Close()
 		return nil, e
@@ -325,6 +337,9 @@ func (s *Store) begin(ctx context.Context, session Session, cap gymaccount.Capab
 	release := func() { <-s.gate; finish() }
 	s.mu.Lock()
 	e := s.stateLocked()
+	if e == nil {
+		e = s.career.Ready()
+	}
 	s.mu.Unlock()
 	if e != nil {
 		release()

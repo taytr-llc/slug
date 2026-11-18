@@ -17,12 +17,22 @@ import (
 	"github.com/taytr-llc/slug/gymresult"
 	"github.com/taytr-llc/slug/gymseed"
 	"github.com/taytr-llc/slug/gymstable"
+	"github.com/taytr-llc/slug/internal/careerstate"
 	"github.com/taytr-llc/slug/registry"
 )
 
 // StableController owns one serial work lane. Its source lifetime is fenced by
 // laneGate, never by the legacy resource mutex across an account callback.
 type StableController struct {
+	careerHandle                       *gymstable.CareerRead
+	careerJobID                        string
+	careerView                         ManifestViewPin
+	careerAfter                        uint64
+	careerFirst, careerLimit           uint32
+	careerRoster                       bool
+	careerEnabled                      bool
+	careerReader                       *careerstate.Reader
+	careerOpenStable                   func(string, gymstable.Pin, *registry.ManifestStore, careerstate.Activation) (*gymstable.Store, error)
 	resultNodeOwner                    *resultNodeOwner
 	resultEnabled, resultAttached      bool
 	resultStore                        *gymresult.Store
@@ -429,6 +439,8 @@ func (s *StableController) Close() error {
 	s.stableCloseOnce.Do(func() {
 		s.stableMu.Lock()
 		s.stableClosed = true
+		s.careerHandle = nil
+		s.careerJobID = ""
 		s.stableStatus = nil
 		s.last = nil
 		s.previewLast = nil
@@ -445,6 +457,7 @@ func (s *StableController) Close() error {
 		s.entryPending = ""
 		s.mu.Lock()
 		s.previewBytes = 0
+		s.careerBytes = 0
 		s.entryBytes = 0
 		s.eventBytes = 0
 		s.seedBytes = 0
@@ -481,6 +494,7 @@ func (s *StableController) closeLive() {
 }
 func (s *StableController) setStableFailure(err error) {
 	s.stableMu.Lock()
+	s.clearCareerReadLocked()
 	s.needSync = false
 	s.stableState = "failed"
 	s.stableError = stableProtocolError(err)

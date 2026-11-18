@@ -15,6 +15,9 @@ import (
 )
 
 func eventErrorCode(s string) bool {
+	if careerActionCode(s) {
+		return true
+	}
 	switch s {
 	case "invalid_request", "unauthorized", "forbidden", "stale_view", "busy", "event_unavailable", "event_corrupt", "event_capacity", "event_clock", "event_calendar", "event_not_due", "event_created_too_late", "event_incomplete", "event_conflict", "event_not_found", "event_cancelled", "outcome_unknown", "event_setup_incomplete":
 		return true
@@ -359,6 +362,10 @@ func eventHistoryShape(h gymevent.HistoryPage) bool {
 	return h.NextEventID == ""
 }
 func eventJobValid(j *EventJob) bool {
+	if j == nil || !careerIneligibleValid(j.Error, j.IneligibleProspectIDs) {
+		return false
+	}
+
 	if j.Version != 1 || j.Kind != "capture" || !canonicalManifestID(j.JobID) || !stableViewValid(j.View) || !canonicalManifestID(j.StoreID) || !canonicalManifestID(j.EventID) || !entryDateValid(j.Saturday) || !canonicalManifestID(j.ParticipantID) {
 		return false
 	}

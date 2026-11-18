@@ -1,8 +1,10 @@
-# Candidate career accounting — Set49 contract draft
+# Candidate career accounting — Set49 contract
 
-Status: root review required before runtime implementation. D78 is approved;
-this document fixes only the standard two-fixture candidate integration. Pure
-arithmetic is specified in `FIGHTER_CAREER.md`. No new matching, ranking board,
+Status: contract reviewed and implemented; local integrated acceptance passes,
+with normal packaging and release pending. D78 is approved; this document fixes
+only the standard two-fixture candidate integration. Pure arithmetic is specified
+in `FIGHTER_CAREER.md`.
+No new matching, ranking board,
 quality-rank authority, title allocation, exhibition, funding or signing policy.
 
 ## 1. Layered authority and activation

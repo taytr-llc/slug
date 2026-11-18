@@ -51,7 +51,7 @@ func (s *StableController) beginBout(ctx context.Context, v, date, bid, kind str
 		s.mu.Lock()
 		defer s.mu.Unlock()
 		oldBytes = s.boutBytes
-		if !stableCacheFits(s.cache, s.receiptSlot, s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+MaxBoutCacheSize+s.resultBytes) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.careerBytes+s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+MaxBoutCacheSize+s.resultBytes) {
 			return gymbout.ErrCapacity
 		}
 		var id [32]byte

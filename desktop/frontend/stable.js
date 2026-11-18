@@ -257,6 +257,7 @@ function response(v, kind, manifest, stable, allowNull = false) {
   return { ok: true, value: own(o) };
 }
 
+let careerMode = false, careerPage = null, careerActivation = null, careerSelectedJob = "";
 let current = null, stable = null, enabled = false, disposed = false, epoch = 0;
 let background = null, activeCall = null, timer = null, pollWanted = false, command = '';
 let tasks = [], watched = null, flow = null, savedOperation = null, lastViewedJob = '';
@@ -274,12 +275,12 @@ function ready() { return accountReady() && stable?.view && currentKey() === vie
 function canEdit() { return ready() && stable.status.caught_up && !stable.status.pending_operation_id && !watched && !flow && !command && !['failed', 'unavailable'].includes(stable.state); }
 function clearCards() { for (const c of cards.values()) { c.image.removeAttribute('src'); c.article.remove(); } cards.clear(); images.clear(); imageAttempts.clear(); }
 function forgetView(clearFlow = true) {
-  epoch++; clearEvent(); clearEntry(); clearPreview(); clearCards(); pageItems = []; watched = null; savedOperation = null; lastViewedJob = ''; pageAfter = pageNext = 0; rosterFirst = 1; rosterNext = 0; pageRevision = null; mode = 'recent';
+  epoch++; careerPage = null; careerSelectedJob = ""; clearEvent(); clearEntry(); clearPreview(); clearCards(); pageItems = []; watched = null; savedOperation = null; lastViewedJob = ''; pageAfter = pageNext = 0; rosterFirst = 1; rosterNext = 0; pageRevision = null; mode = 'recent';
   if (clearFlow) { flow = null; mutationMessage = ''; }
 }
 function disconnected() { forgetView(false); current = stable = null; connectionError = 'The local gym is unavailable. Saved changes remain on disk; reconnect before continuing.'; render(); }
 function textError(code) {
-  return ({ busy: 'Another local task is finishing. Try again shortly.', stable_sync_required: 'Saved candidates are still syncing. Resume syncing, then retry this choice.', stable_conflict: 'The roster changed. Refresh it before making a new choice.', stable_pending: 'A saved choice is awaiting reconciliation.', stable_capacity: 'This demo store reached its supported capacity. Existing candidates and outcomes remain available.', stable_clock: 'The authority clock needs attention. Condition and edits are unavailable.', stable_cancelled: 'The request was cancelled.', stale_view: 'This account view has expired. Sign in again.', unauthorized: 'Sign in again to continue.', forbidden: 'This action is unavailable for the current session.', stable_not_found: 'That saved result is unavailable. Reload the page or check the saved change.', outcome_unknown: 'The change may have been saved. Check its recorded outcome before trying another choice.' })[code] ?? 'The local stable could not complete the request. Its saved data has been retained.';
+  return ({ career_candidate_ineligible: 'C1 bookings require zero professional records. The affected fighters remain in your inventory.', career_inactive: 'Career accounting is waiting for both fixture gyms.', career_unfenced: 'Career accounting has not sealed this noon cutoff yet.', career_unavailable: 'Career evidence is unavailable. No zero-record fallback was used.', career_capacity: 'Career cutoff storage reached its bounded capacity.', busy: 'Another local task is finishing. Try again shortly.', stable_sync_required: 'Saved candidates are still syncing. Resume syncing, then retry this choice.', stable_conflict: 'The roster changed. Refresh it before making a new choice.', stable_pending: 'A saved choice is awaiting reconciliation.', stable_capacity: 'This demo store reached its supported capacity. Existing candidates and outcomes remain available.', stable_clock: 'The authority clock needs attention. Condition and edits are unavailable.', stable_cancelled: 'The request was cancelled.', stale_view: 'This account view has expired. Sign in again.', unauthorized: 'Sign in again to continue.', forbidden: 'This action is unavailable for the current session.', stable_not_found: 'That saved result is unavailable. Reload the page or check the saved change.', outcome_unknown: 'The change may have been saved. Check its recorded outcome before trying another choice.' })[code] ?? 'The local stable could not complete the request. Its saved data has been retained.';
 }
 function freshStatus(next) {
   const old = stable?.status, n = next?.status;
@@ -301,8 +302,58 @@ function renderRoster() {
   content(ui['roster-count'], `${list.filter(Boolean).length} / 10`);
   for (const [i, node] of rosterNodes.entries()) { const id = list[i]; content(node.who, id ? (pageItems.find((v) => v.assignment.prospect_id === id)?.manifest.name.display ?? `Candidate ${id.slice(0, 12)}…`) : 'Empty'); node.who.setAttribute('title', id || 'Empty slot'); node.details.disabled = !ready() || !id || !!command; node.clear.disabled = !id || !canEdit(); }
 }
+const CAREER_POLICY = '2bdf6089dc4bc641dc6e6e87dab21a15196e6b31708c9f84ab8dd728049e50d2';
+const CAREER_ERRORS = new Set([...STABLE_ERRORS, 'career_invalid', 'career_inactive', 'career_unfenced', 'career_closed', 'career_poisoned', 'career_cancelled', 'career_corrupt', 'career_candidate_ineligible']);
+const CAREER_ACTION_ERRORS = ['career_candidate_ineligible', 'career_inactive', 'career_unfenced', 'career_unavailable', 'career_capacity'];
+function careerRetainedBytes() { return (careerPage ? entryBytes(careerPage) : 0) + (careerActivation ? entryBytes(careerActivation) : 0); }
+function careerForItem(i) { return careerPage?.view === currentKey() && careerPage.as_of_ms === i.condition.as_of_ms ? careerPage.items.find(x => x.prospect_id === i.assignment.prospect_id && x.assignment_key === key(i)) : null; }
+function careerCondition(c, i, asOf, xp) {
+  requireValue(int(xp, 0, 15) && c.pro_xp === xp); const zero = own(c); zero.pro_xp = 0; zero.league_attributes_tenths = own(c.aged_attributes_tenths); zero.rating_hundredths = attrs.reduce((n, k, x) => n + zero.aged_attributes_tenths[k] * [10, 25, 2, 4, 8][x], 0); condition(zero, i, asOf);
+  for (const k of attrs) requireValue(c.league_attributes_tenths[k] === c.aged_attributes_tenths[k] + (k === 'skill' ? xp * 10 : 0));
+  requireValue(c.rating_hundredths === attrs.reduce((n, k, x) => n + c.league_attributes_tenths[k] * [10, 25, 2, 4, 8][x], 0));
+}
+function careerPageValue(r, kind, position, limit, jobID, terminalSource) {
+  exact(r, ['id', 'job_id', 'ok', 'view', 'store_id', 'page', 'roster', 'error']); requireValue(int(r.id, 1) && typeof r.ok === 'boolean' && entryBytes(r) + 1 <= 212992);
+  if (!r.ok) { requireValue(r.job_id === '' && r.view === null && r.store_id === '' && r.page === null && r.roster === null && CAREER_ERRORS.has(r.error)); return {ok:false,error:r.error}; }
+  requireValue(r.job_id === jobID && hex(jobID) && r.error === '' && viewKey(checkedView(r.view)) === currentKey() && r.store_id === stable.status.store_id && (r.page !== null) === (kind !== 'roster') && (r.roster !== null) === (kind === 'roster'));
+  const p = kind === 'roster' ? r.roster : r.page; exact(p, ['version','activation','career_digest','as_of_ms','source','items']); requireValue(p.version === 1 && hex(p.career_digest) && entryBytes(p) <= 196608);
+  const a = p.activation; exact(a, ['version','policy_id','activation_id','result_store_id','result_created_at_ms','source_created_at_ms','activated_at_ms']);
+  requireValue(a.version === 1 && a.policy_id === CAREER_POLICY && hex(a.activation_id) && hex(a.result_store_id) && int(a.source_created_at_ms,1,DATE_MAX) && int(a.result_created_at_ms,a.source_created_at_ms,DATE_MAX) && int(a.activated_at_ms,a.result_created_at_ms,DATE_MAX) && int(p.as_of_ms,a.activated_at_ms,DATE_MAX) && (!careerActivation || same(careerActivation,a)));
+  // Native verifies the activation hash and its concrete Result incarnation.
+  if (publicationAuthority) requireValue(a.result_store_id === publicationAuthority.storeID && a.result_created_at_ms === publicationAuthority.createdMS && a.source_created_at_ms === publicationAuthority.sourceCreatedMS);
+  const source = pageValue(p.source, kind === 'roster' ? 'roster' : 'inventory', current.view, current.account.fixture); requireValue(same(source.status.pin,stable.status.pin) && source.status.store_id === r.store_id && p.as_of_ms === source.as_of_ms && same(source,terminalSource));
+  if (kind === 'roster') requireValue(source.first_slot === position && source.next_slot === (position+limit>10?0:position+limit) && source.status.roster_revision === stable.status.roster_revision); else requireValue(source.after === position);
+  const items = kind === 'roster' ? source.items.map(x=>x.item) : source.items; requireValue(Array.isArray(p.items) && p.items.length === items.length && p.items.length <= limit);
+  p.items.forEach((x,n) => { exact(x,['prospect_id','totals','condition']); requireValue(x.prospect_id === items[n].assignment.prospect_id); const t=x.totals; exact(t,['wins','losses','draws','xp','base_points']); requireValue(['wins','losses','draws'].every(k=>int(t[k],0,256)) && t.wins+t.losses+t.draws<=256 && t.xp===Math.min(15,t.wins+t.losses+t.draws) && int(t.base_points,10*t.wins+4*t.draws,14*t.wins+4*t.draws) && (t.base_points-10*t.wins-4*t.draws)%4===0); careerCondition(x.condition,items[n],p.as_of_ms,t.xp); });
+  return {ok:true,page:p,source,items};
+}
+async function fetchCareerPage(kind, position, jobID, terminalSource, limit) {
+  if (!ready()) return; const captured=epoch, view=currentKey();
+  try {
+    const raw=await call(kind==='roster'?'CareerRoster':'CareerInventory',current.view.view_id,jobID,position,limit);
+    if(disposed||captured!==epoch||view!==currentKey()||careerSelectedJob!==jobID)return;
+    const r=careerPageValue(raw,kind,position,limit,jobID,terminalSource); if(!r.ok){message=r.error==='career_inactive'?'Career accounting is waiting for both fixture gyms to finish setup.':textError(r.error);render();return;}
+    const before=[pageItems,careerPage,careerActivation,mode,pageAfter,pageNext,pageRevision,rosterFirst,rosterNext];
+    careerPage={view,activation_id:r.page.activation.activation_id,career_digest:r.page.career_digest,as_of_ms:r.page.as_of_ms,items:r.page.items.map((x,n)=>({...own(x),assignment_key:key(r.items[n])}))};careerActivation=own(r.page.activation);
+    pageItems=own(r.items);mode=kind;if(kind==='recent')pageItems.reverse();if(kind==='roster'){rosterFirst=r.source.first_slot;rosterNext=r.source.next_slot;pageRevision=r.source.status.roster_revision;}else{pageAfter=r.source.after;pageNext=r.source.next_after;pageRevision=null;}
+    if(!previewCapacity()){[pageItems,careerPage,careerActivation,mode,pageAfter,pageNext,pageRevision,rosterFirst,rosterNext]=before;message='The display cache is full. The previous page is retained.';render();return;}
+    const awarded=new Set(r.page.items.filter(x=>x.totals.xp>0).map(x=>x.prospect_id));
+    if(previewSelected.some(x=>awarded.has(x.id))){selectionChanged(previewSelected.filter(x=>!awarded.has(x.id)));previewMessage='Awarded fighters were removed from this practice preview because it uses the original zero-XP profile.';}
+    if(entryDraft.some(x=>awarded.has(x.id))){entryDraft=entryDraft.filter(x=>!awarded.has(x.id));entryMessage='Finalized professional records make these fighters ineligible for new C1 bookings.';}
+    message='Finalized career totals at the stated observation time. Provisional outcomes do not award XP or base points.';render();
+  } catch { if(!disposed&&captured===epoch&&view===currentKey()&&careerSelectedJob===jobID){message='The career page could not be validated. The previous dated page is retained.';render();} }
+}
+function careerAffected(j) {
+  if (j.error !== 'career_candidate_ineligible') return '';
+  return ' Affected fighters: ' + j.ineligible_prospect_ids.map(id => pageItems.find(i => i.assignment.prospect_id === id)?.manifest.name.display ?? id).join(', ') + '.';
+}
+function careerJobFields(j, fields) {
+  const has=Object.hasOwn(j,'ineligible_prospect_ids'); exact(j,has?[...fields,'ineligible_prospect_ids']:fields);
+  if(j.error==='career_candidate_ineligible'){requireValue(has && Array.isArray(j.ineligible_prospect_ids) && j.ineligible_prospect_ids.length>=1 && j.ineligible_prospect_ids.length<=10 && j.ineligible_prospect_ids.every((x,n)=>hex(x)&&(n===0||j.ineligible_prospect_ids[n-1]<x)));}
+  else requireValue(!has);
+}
 function makeCard(i) {
-  const a = i.assignment, m = i.manifest, c = i.condition;
+  const a = i.assignment, m = i.manifest, career = careerForItem(i), c = career?.condition ?? i.condition;
   const article = element('article', 'candidate'), area = element('div', 'portrait-area'), image = element('img'), placeholder = element('p', 'portrait-placeholder', 'Loading verified portrait…');
   image.setAttribute('width', '200'); image.setAttribute('height', '200'); image.setAttribute('alt', `Candidate portrait of ${m.name.display}`); image.hidden = true; area.append(image, placeholder); article.append(area);
   const body = element('div', 'card-body'), meta = element('div', 'card-meta'); meta.append(element('span', '', label(m.physical.weight_class)), element('span', '', label(m.dna.rarity))); body.append(meta, element('h3', '', m.name.display));
@@ -311,7 +362,7 @@ function makeCard(i) {
   const table = element('table', 'condition-table'), head = element('tr');
   for (const name of ['Attribute', 'Mined', 'Current']) { const th = element('th', '', name); th.setAttribute('scope', 'col'); head.append(th); } const thead = element('thead'); thead.append(head); table.append(thead); const tbody = element('tbody');
   for (const k of attrs) { const row = element('tr'), th = element('th', '', label(k)); th.setAttribute('scope', 'row'); row.append(th, element('td', '', String(m.dna.attributes[k])), element('td', '', (c.league_attributes_tenths[k] / 10).toFixed(1))); tbody.append(row); }
-  table.append(tbody); body.append(table, element('p', 'rating', `Rating ${(c.rating_hundredths / 100).toFixed(2)}`), element('p', 'note', `Prime remaining: ${(c.prime_remaining_ms / WEEK).toFixed(2)} weeks · Career remaining: ${(c.career_remaining_ms / WEEK).toFixed(2)} weeks. Recorded professional XP: 0.`));
+  table.append(tbody); body.append(table, element('p', 'rating', `Rating ${(c.rating_hundredths / 100).toFixed(2)}`), element('p', 'note', `Prime remaining: ${(c.prime_remaining_ms / WEEK).toFixed(2)} weeks · Career remaining: ${(c.career_remaining_ms / WEEK).toFixed(2)} weeks. ${career ? `Finalized professional record: ${career.totals.wins}–${career.totals.losses}–${career.totals.draws}. Recorded professional XP: ${career.totals.xp}. Base-point history: ${career.totals.base_points} (not a ranking).` : careerMode ? 'Career accounting unavailable for this page; legacy condition only.' : 'Recorded professional XP: 0.'}`));
   const selectLabel = element('label', 'select-label', 'Choose roster slot'), select = element('select', 'slot-select'); select.setAttribute('aria-label', `Roster slot for ${m.name.display}`);
   for (let n = 1; n <= 10; n++) { const o = element('option', '', `Slot ${n}`); o.value = String(n); select.append(o); } select.value = '1'; selectLabel.append(select); body.append(selectLabel); article.append(body);
   const actions = element('div', 'card-actions'), assign = element('button', '', 'Save to slot'), save = element('button', '', 'Export public receipt'), retry = element('button', '', 'Reload portrait'); assign.type = save.type = retry.type = 'button';
@@ -324,7 +375,7 @@ function makeCard(i) {
   const details = element('details'), summary = element('summary', '', 'Verified identity'); details.append(summary); const dl = element('dl');
   for (const [name, value] of [['Prospect ID', a.prospect_id], ['Assignment sequence', a.sequence], ['Accepted', date.format(new Date(a.accepted_at_ms))], ['Manifest digest', a.manifest_digest], ['Portrait digest', a.portrait_digest], ['Source receipt digest', a.source_record_digest]]) dl.append(element('dt', '', name), element('dd', '', value));
   details.append(dl); article.append(details);
-  return { article, image, placeholder, assign, save, retry, preview, entry, select, details, item: i, fingerprint: JSON.stringify(i) };
+  return { article, image, placeholder, assign, save, retry, preview, entry, select, details, item: i, fingerprint: JSON.stringify([i, careerForItem(i)]) };
 }
 function renderCards() {
   const want = new Set(pageItems.map((i) => i.assignment.prospect_id));
@@ -337,11 +388,11 @@ function renderCards() {
   requireValue(previewCapacity());
   for (const [position, i] of pageItems.entries()) {
     const id = i.assignment.prospect_id; let c = cards.get(id);
-    if (c && c.fingerprint !== JSON.stringify(i)) { const previous = c; requireValue(same(c.item.assignment, i.assignment) && same(c.item.manifest, i.manifest)); c = makeCard(i); c.select.value = previous.select.value; c.details.open = previous.details.open; previous.image.removeAttribute('src'); previous.article.remove(); cards.set(id, c); }
+    if (c && c.fingerprint !== JSON.stringify([i, careerForItem(i)])) { const previous = c; requireValue(same(c.item.assignment, i.assignment) && same(c.item.manifest, i.manifest)); c = makeCard(i); c.select.value = previous.select.value; c.details.open = previous.details.open; previous.image.removeAttribute('src'); previous.article.remove(); cards.set(id, c); }
     if (!c) { c = makeCard(i); cards.set(id, c); }
     if (ui.cards.children[position] !== c.article) ui.cards.insertBefore(c.article, ui.cards.children[position] ?? null);
-    c.preview.disabled = !ready() || !!command || previewSelected.some((v) => v.id === id) || previewSelected.length >= 2;
-    c.entry.disabled = !entryReady() || !!command || entryDraft.length >= 5 || entryDraft.some((d) => d.id === id) || !stable.status.slots.includes(id) || i.condition.phase === 'retired';
+    c.preview.disabled = (careerMode && (!careerForItem(i) || careerForItem(i).totals.xp > 0)) || !ready() || !!command || previewSelected.some((v) => v.id === id) || previewSelected.length >= 2;
+    c.entry.disabled = (careerMode && (!careerForItem(i) || careerForItem(i).totals.xp > 0)) || !entryReady() || !!command || entryDraft.length >= 5 || entryDraft.some((d) => d.id === id) || !stable.status.slots.includes(id) || i.condition.phase === 'retired';
     c.assign.disabled = !canEdit(); c.select.disabled = !canEdit(); c.save.disabled = !ready() || !!command || !!watched; c.retry.disabled = !ready() || !!command;
     if (images.has(key(i))) { c.image.setAttribute('src', images.get(key(i))); c.image.hidden = false; c.placeholder.hidden = true; }
   }
@@ -454,7 +505,14 @@ async function fetchJob(id) {
       const data = j[{ sync: 'sync', inventory: 'page', roster: 'roster' }[j.kind]];
       if (w?.id === id && w.args) { if (j.kind === 'inventory') requireValue(w.recent ? data.after === Math.max(data.status.checkpoint - 8, 0) && data.next_after === data.status.checkpoint && data.items.length <= 8 : data.after === w.args[0] && data.items.length <= w.args[1]); if (j.kind === 'roster') requireValue(data.first_slot === w.args[0] && data.next_slot === (w.args[0] + w.args[1] > 10 ? 0 : w.args[0] + w.args[1])); }
       if (j.kind === 'roster' && data.status.roster_revision !== stable.status.roster_revision) message = 'The roster changed. Reload its details.';
-      else if (j.kind === 'sync' || w?.id === id) acceptItems(data.items, j.kind, data);
+      else if (j.kind === 'sync' || w?.id === id) {
+        if (!careerMode) acceptItems(data.items, j.kind, data);
+        else if (j.kind === 'sync') { if (mode === 'recent') await beginJob('inventory', [], {recent:true,careerMode:'recent'}); }
+        else if (careerSelectedJob === j.job_id) {
+          const selectedMode=w?.careerMode ?? (w?.recent?'recent':j.kind), position=j.kind==='roster'?data.first_slot:data.after, limit=w?.recent?8:w.args[1];
+          await fetchCareerPage(selectedMode,position,j.job_id,data,limit);
+        }
+      }
     }
     render();
   } catch {
@@ -472,7 +530,7 @@ async function beginJob(kind, args = [], extra = {}) {
     if (disposed || captured !== epoch || view !== currentKey()) return;
     if (!r.ok) { if (['prepare', 'apply'].includes(kind)) { mutationMessage = textError(r.error); if (r.error === 'outcome_unknown') await reconcile(extra.operationID ?? ''); else if (kind === 'prepare') flow = null; } else message = textError(r.error); return; }
     requireValue(r.value.kind === kind && (kind !== 'apply' || r.value.operation_id === extra.operationID));
-    watched = { id: r.value.job_id, kind, args, ...extra }; pollWanted = true;
+    watched = { id: r.value.job_id, kind, args, ...extra }; if(careerMode) careerSelectedJob=r.value.job_id; pollWanted = true;
   } catch {
     if (disposed || captured !== epoch || view !== currentKey()) return;
     if (['prepare', 'apply'].includes(kind)) { mutationMessage = textError('outcome_unknown'); if (flow) flow.phase = 'unknown'; await reconcile(extra.operationID ?? ''); }
@@ -507,6 +565,13 @@ function navigate(kind, position = 0) {
   if (!ready() || command) return;
   queue(async () => {
     if (watched) { await cancelJob(watched.id); if (!ready()) return; }
+    if (careerMode) {
+      message='Verifying the selected fighter page…';
+      if(kind==='roster'){const first=position||1;await beginJob('roster',[first,Math.min(8,11-first)],{careerMode:kind});}
+      else if(kind==='recent')await beginJob('inventory',[],{recent:true,careerMode:kind});
+      else await beginJob('inventory',[position,8],{careerMode:kind});
+      return;
+    }
     mode = kind; message = ''; clearCards(); pageItems = []; pageRevision = null;
     if (kind === 'roster') { rosterFirst = position || 1; await beginJob('roster', [rosterFirst, Math.min(8, 11 - rosterFirst)]); }
     else if (kind === 'recent') { await beginJob('inventory', [], { recent: true }); }
@@ -540,7 +605,7 @@ async function loadPortrait(i) {
     const p = await call('ManifestPortrait', i.assignment.sequence); if (!remains()) return;
     exact(p, ['version', 'view', 'sequence', 'id', 'manifest_digest', 'portrait_digest', 'svg']); const a = i.assignment;
     requireValue(p.version === 1 && viewKey(checkedView(p.view)) === view && p.sequence === a.sequence && p.id === a.prospect_id && p.manifest_digest === a.manifest_digest && p.portrait_digest === a.portrait_digest && imageOnlySVG(p.svg));
-    const src = `data:image/svg+xml;base64,${btoa(p.svg)}`; requireValue([...images.entries()].reduce((n, [other, v]) => n + (other === k ? 0 : 2 * v.length), 2 * src.length) + JSON.stringify(pageItems).length + previewRetainedBytes() + entryRetainedBytes() + eventRetainedBytes() + seedRetainedBytes() + cardRetainedBytes() + bookedRetainedBytes() + publicationRetainedBytes() <= CACHE_MAX && images.size <= 8);
+    const src = `data:image/svg+xml;base64,${btoa(p.svg)}`; requireValue([...images.entries()].reduce((n, [other, v]) => n + (other === k ? 0 : 2 * v.length), 2 * src.length) + JSON.stringify(pageItems).length + careerRetainedBytes() + previewRetainedBytes() + entryRetainedBytes() + eventRetainedBytes() + seedRetainedBytes() + cardRetainedBytes() + bookedRetainedBytes() + publicationRetainedBytes() <= CACHE_MAX && images.size <= 8);
     if (!remains()) return; images.set(k, src); const c = cards.get(a.prospect_id); c.image.setAttribute('src', src); c.image.hidden = false; c.placeholder.hidden = true;
   } catch { if (remains()) { const c = cards.get(i.assignment.prospect_id); c.image.removeAttribute('src'); c.image.hidden = true; c.placeholder.hidden = false; content(c.placeholder, 'Portrait unavailable. Reload it from the current verified page.'); } }
 }
@@ -633,7 +698,7 @@ function pausePreview() { if (playbackTimer !== null) clearTimeout(playbackTimer
 function discardPreviewResult() { pausePreview(); previewResult = null; playbackSteps = []; playbackIndex = 0; previewImages.clear(); previewImageAttempts.clear(); previewRendered = ''; ui['preview-fighters'].textContent = ''; ui['preview-events'].textContent = ''; ui['preview-scores'].textContent = ''; }
 function clearPreview() { previewSerial++; discardPreviewResult(); previewSelected = []; previewWatch = null; previewDiscovery = null; previewSnapshot = null; previewMessage = ''; ui['preview-selection'].textContent = ''; }
 function previewRetainedBytes() { return JSON.stringify(previewSelected).length + (previewResult ? JSON.stringify(previewResult).length + 65536 : 0) + [...previewImages.values()].reduce((n, src) => n + 2 * src.length, 0); }
-function previewCapacity(extra = 0) { return previewRetainedBytes() + entryRetainedBytes() + eventRetainedBytes() + seedRetainedBytes() + cardRetainedBytes() + bookedRetainedBytes() + publicationRetainedBytes() + JSON.stringify(pageItems).length + [...images.values()].reduce((n, src) => n + 2 * src.length, 0) + extra <= CACHE_MAX; }
+function previewCapacity(extra = 0) { return careerRetainedBytes() + previewRetainedBytes() + entryRetainedBytes() + eventRetainedBytes() + seedRetainedBytes() + cardRetainedBytes() + bookedRetainedBytes() + publicationRetainedBytes() + JSON.stringify(pageItems).length + [...images.values()].reduce((n, src) => n + 2 * src.length, 0) + extra <= CACHE_MAX; }
 function previewError(code) { return ({ preview_class_mismatch: 'Choose two candidates from the same weight class.', preview_not_found: 'This preview is no longer retained. Select your pair and explicitly preview again.', preview_capacity: 'The local preview cache is full. Clear the preview and retry.', preview_cancelled: 'Preview cancelled. No fight was recorded.', preview_observation_unknown: 'The authority could not confirm its clock observation. Reopen the gym before another preview. No fight was recorded.', outcome_unknown: 'The preview may have started. Check its status before explicitly trying again.', preview_unavailable: 'Fight preview is unavailable. Your saved candidates are retained.' })[code] ?? textError(code); }
 function previewRefusal(code) {
   if (['unauthorized', 'stale_view'].includes(code)) clearPreview();
@@ -649,6 +714,7 @@ function selectionChanged(next) {
   render(); pump();
 }
 function selectPreview(i) {
+  if (careerMode && (!careerForItem(i) || careerForItem(i).totals.xp > 0)) { previewMessage = 'This practice preview uses the original zero-XP profile. Awarded fighters remain available in career inventory.'; renderPreview(); return; }
   if (!ready() || command || previewSelected.length >= 2 || previewSelected.some((v) => v.id === i.assignment.prospect_id)) return;
   const next = { id: i.assignment.prospect_id, name: i.manifest.name.display, weightClass: i.manifest.physical.weight_class };
   if (previewSelected.length && previewSelected[0].weightClass !== next.weightClass) { previewMessage = previewError('preview_class_mismatch'); renderPreview(); return; }
@@ -726,7 +792,7 @@ function playPreview() {
   playbackTimer = setTimeout(tick, 250); renderPreview();
 }
 function renderPreview() {
-  content(ui['preview-state'], previewWatch ? 'Preparing fight' : previewResult ? 'Ready to replay' : 'Choose two candidates'); content(ui['preview-message'], previewMessage);
+  content(ui['preview-state'], previewWatch ? 'Preparing fight' : previewResult ? 'Unrecorded preview · Ready to replay' : 'Choose two candidates'); content(ui['preview-message'], previewMessage);
   const selectionKey = JSON.stringify(previewSelected);
   if (ui['preview-selection']._selectionKey !== selectionKey) {
     ui['preview-selection']._selectionKey = selectionKey; ui['preview-selection'].textContent = '';
@@ -741,7 +807,7 @@ function renderPreview() {
   if (previewRendered !== rendered) {
     previewRendered = rendered; ui['preview-fighters'].textContent = '';
     for (const [n, i] of fighters.entries()) { const box = element('div', 'preview-fighter'), src = previewImages.get(i.assignment.prospect_id); if (src) { const image = element('img'); image.setAttribute('src', src); image.setAttribute('alt', `Candidate portrait of ${names[n]}`); image.setAttribute('width', '160'); image.setAttribute('height', '160'); box.append(image); } box.append(element('strong', '', names[n]), element('span', 'note', `${label(i.condition.phase)} · Rating ${(i.condition.rating_hundredths / 100).toFixed(2)} · XP 0`)); ui['preview-fighters'].append(box); }
-    ui['preview-scores'].textContent = ''; ui['preview-scores'].append(element('caption', '', 'Whole-fight scorecard')); const head = element('tr'); for (const title of ['Component', ...names]) { const th = element('th', '', title); th.setAttribute('scope', 'col'); head.append(th); } const thead = element('thead'); thead.append(head); ui['preview-scores'].append(thead); const body = element('tbody');
+    ui['preview-scores'].textContent = ''; ui['preview-scores'].append(element('caption', '', 'Unrecorded preview · Whole-fight scorecard')); const head = element('tr'); for (const title of ['Component', ...names]) { const th = element('th', '', title); th.setAttribute('scope', 'col'); head.append(th); } const thead = element('thead'); thead.append(head); ui['preview-scores'].append(thead); const body = element('tbody');
     for (const [key, title] of [['damage_tenths', 'Damage'], ['knockdown_tenths', 'Knockdowns'], ['accuracy_tenths', 'Accuracy'], ['volume_tenths', 'Volume'], ['control_tenths', 'Control'], ['total_tenths', 'Total']]) { const row = element('tr'), th = element('th', '', title); th.setAttribute('scope', 'row'); row.append(th, ...r.scores.map((score) => element('td', '', (score[key] / 10).toFixed(1)))); body.append(row); } ui['preview-scores'].append(body);
   }
   content(ui['preview-play'], playbackTimer === null ? 'Play' : 'Pause'); ui['preview-play'].disabled = !!motionPreference?.matches; ui['preview-previous'].disabled = playbackIndex === 0; ui['preview-next'].disabled = playbackIndex >= playbackSteps.length;
@@ -751,14 +817,14 @@ function renderPreview() {
   for (const event of playbackSteps.slice(0, playbackIndex)) { const t = event.tick; ui['preview-events'].append(element('li', '', `Round ${event.round}, tick ${t.number}: ${names[t.actor]} ${t.hit ? 'lands' : 'misses'} a ${t.strike}.${t.knockdown ? ' Knockdown.' : ''}${t.stoppage ? ` ${label(t.stoppage)}.` : ''}`)); }
   ui['preview-outcome'].hidden = playbackIndex < playbackSteps.length;
   const winner = fighters.find((i) => i.assignment.prospect_id === r.winner)?.manifest.name.display;
-  content(ui['preview-finish'], r.method === 'decision_draw' ? 'Draw — equal whole-fight scores' : r.method === 'double_corner_stoppage' ? 'Draw — both corners stopped the fight' : `${winner} wins by ${label(r.method)}.`);
+  content(ui['preview-finish'], `Unrecorded preview: ${r.method === 'decision_draw' ? 'Draw — equal whole-fight scores' : r.method === 'double_corner_stoppage' ? 'Draw — both corners stopped the fight' : `${winner} wins by ${label(r.method)}.`}`);
 }
 motionPreference?.addEventListener('change', () => { pausePreview(); renderPreview(); });
 // Candidate entry is a separate closed family on the same serialized scheduler.
 const ENTRY_CALENDAR = '1351d63c43cd08d760ca4a88c60bc7ecee9dcb0e331961f93b16d95425385450';
 const ENTRY_RULES = 'fdd7e3f43df60986cea1d5eeb8a0f3512c30c73229890b84a213d057b16b44e2';
 const ENTRY_MAX = 131072;
-const ENTRY_ERRORS = new Set(['invalid_request', 'unauthorized', 'forbidden', 'stale_view', 'busy', 'entry_unavailable', 'entry_corrupt', 'entry_capacity', 'entry_clock', 'entry_calendar', 'entry_closed', 'entry_conflict', 'entry_pending', 'entry_not_found', 'entry_sync_required', 'entry_not_rostered', 'entry_retired', 'entry_class_conflict', 'entry_cancelled', 'outcome_unknown']);
+const ENTRY_ERRORS = new Set([...CAREER_ACTION_ERRORS, 'invalid_request', 'unauthorized', 'forbidden', 'stale_view', 'busy', 'entry_unavailable', 'entry_corrupt', 'entry_capacity', 'entry_clock', 'entry_calendar', 'entry_closed', 'entry_conflict', 'entry_pending', 'entry_not_found', 'entry_sync_required', 'entry_not_rostered', 'entry_retired', 'entry_class_conflict', 'entry_cancelled', 'outcome_unknown']);
 let entrySnapshot = null, entryStore = '', entryNamespace = '', entryUnavailable = false, entryDate = '', entryStatus = null;
 let entryDraft = [], entrySerial = 0, entryWatch = null, entryFlow = null, entryOperation = null, entryTerminal = null, entryHistory = null, entryMessage = '', entryUnknown = false;
 function entryReady() { return ready() && !entryUnavailable && !!entrySnapshot?.view && entryStore === entrySnapshot.store_id; }
@@ -816,7 +882,7 @@ function entryCheckValue(c) {
   for (const [n, m] of c.members.entries()) { exact(m, ['slot', 'item', 'eligibility']); requireValue(int(m.slot, 0, 10)); fullItem(m.item, { pin: stable.status.pin, checkpoint: 1000 }, c.as_of_ms); requireValue(m.item.assignment.prospect_id === c.status.saved_ids[n] && m.eligibility === (m.item.condition.phase === 'retired' ? 'retired' : m.slot ? 'eligible' : 'not_rostered')); } return c;
 }
 function entryJobValue(j) {
-  exact(j, ['version', 'job_id', 'kind', 'state', 'view', 'store_id', 'event_id', 'saturday', 'operation_id', 'error', 'intent', 'mutation', 'check']);
+  careerJobFields(j, ['version', 'job_id', 'kind', 'state', 'view', 'store_id', 'event_id', 'saturday', 'operation_id', 'error', 'intent', 'mutation', 'check']);
   requireValue(j.version === 1 && hex(j.job_id) && ['prepare', 'apply', 'check'].includes(j.kind) && ['queued', 'running', 'complete', 'failed', 'cancelled'].includes(j.state) && viewKey(checkedView(j.view)) === currentKey() && j.store_id === entryStore && hex(j.event_id) && optionalID(j.operation_id) && (j.error === '' || ENTRY_ERRORS.has(j.error))); entryDateValue(j.saturday);
   const field = { prepare: 'intent', apply: 'mutation', check: 'check' }[j.kind]; for (const k of ['intent', 'mutation', 'check']) requireValue((j[k] !== null) === (j.state === 'complete' && k === field));
   if (j.state === 'complete') {
@@ -849,6 +915,7 @@ function entryContext(serial = entrySerial) { return { epoch, view: currentKey()
 function entryCurrent(c, selection = false) { return !disposed && ready() && c.epoch === epoch && c.view === currentKey() && (!selection || c.serial === entrySerial); }
 function entryChanged() { entrySerial++; if (entryFlow) entryFlow.auto = false; }
 function selectEntry(i) {
+  if (careerMode && (!careerForItem(i) || careerForItem(i).totals.xp > 0)) { entryMessage = 'C1 bookings require a zero professional record. This fighter remains in your inventory.'; renderEntry(); return; }
   if (!entryReady() || command || entryDraft.length >= 5 || entryDraft.some((v) => v.id === i.assignment.prospect_id) || !stable.status.slots.includes(i.assignment.prospect_id) || i.condition.phase === 'retired') return;
   if (entryDraft.some((v) => v.weightClass === i.manifest.physical.weight_class)) { entryMessage = entryError('entry_class_conflict'); renderEntry(); return; }
   entryChanged(); entryDraft = [...entryDraft, { id: i.assignment.prospect_id, name: i.manifest.name.display, weightClass: i.manifest.physical.weight_class }].sort((a, b) => a.id.localeCompare(b.id)); entryMessage = 'Draft updated. Your saved entry has not changed.'; requireValue(entryCapacity()); render();
@@ -900,7 +967,7 @@ async function entryFetchJob(id) {
     const j = r.value; requireValue(j.job_id === id && j.kind === w.kind && j.event_id === w.eventID && j.saturday === w.saturday && (w.kind !== 'apply' || j.operation_id === w.operationID));
     if (['queued', 'running'].includes(j.state)) return;
     entryWatch = null;
-    if (j.state !== 'complete') { entryMessage = entryError(j.error || 'entry_cancelled'); if (j.kind !== 'check') { if (entryFlow) entryFlow.auto = false; if (j.error === 'outcome_unknown') { entryUnknown = true; await entryQuery(w.operationID); } else await entryQuery(w.operationID); } return; }
+    if (j.state !== 'complete') { entryMessage = entryError(j.error || 'entry_cancelled') + careerAffected(j); if (j.kind !== 'check') { if (entryFlow) entryFlow.auto = false; if (j.error === 'outcome_unknown') { entryUnknown = true; await entryQuery(w.operationID); } else await entryQuery(w.operationID); } return; }
     if (j.kind === 'prepare') {
       requireValue(same(j.intent.request, w.request)); entryOperation = { version: 1, intent: own(j.intent), state: 'prepared', receipt: null, abandoned_at_ms: 0 };
       const automatic = entryFlow?.auto && entryCurrent(w.context, true) && same(entryFlow.request, j.intent.request) && entryDate === j.saturday && !tasks.length;
@@ -960,7 +1027,7 @@ function renderEntry() {
 // its bounded, current-view, explicitly pinned presentation.
 const EVENT_MAX = 131072;
 const EVENT_RENDER_KEY_BYTES = 4096; // Fixed charge for the two bounded DOM identity strings.
-const EVENT_ERRORS = new Set(['invalid_request', 'unauthorized', 'forbidden', 'stale_view', 'busy', 'event_unavailable', 'event_setup_incomplete', 'event_corrupt', 'event_capacity', 'event_clock', 'event_calendar', 'event_not_due', 'event_created_too_late', 'event_incomplete', 'event_conflict', 'event_not_found', 'event_cancelled', 'outcome_unknown']);
+const EVENT_ERRORS = new Set([...CAREER_ACTION_ERRORS, 'invalid_request', 'unauthorized', 'forbidden', 'stale_view', 'busy', 'event_unavailable', 'event_setup_incomplete', 'event_corrupt', 'event_capacity', 'event_clock', 'event_calendar', 'event_not_due', 'event_created_too_late', 'event_incomplete', 'event_conflict', 'event_not_found', 'event_cancelled', 'outcome_unknown']);
 let eventSnapshot = null, eventAuthority = null, eventStatus = null, eventHistory = null, eventDetail = null;
 let eventWatch = null, eventLastJob = '', eventDate = '', eventSerial = 0, eventMessage = '', eventUnavailable = false, eventUnknown = false;
 let eventAutoAttempted = new Set();
@@ -1032,7 +1099,7 @@ function eventRecordValue(v) {
   i.participants.forEach((p, n) => { requireValue(p.participant_id === eventAuthority.pin.participants[n].stable_pin.identity.gym_id); eventEvidence(v.captures[n], p, i.event); }); requireValue(int(v.completed_at_ms, Math.max(...v.captures.map((c) => c.captured_at_ms)), DATE_MAX)); return v;
 }
 function eventJobValue(j) {
-  exact(j, ['version', 'job_id', 'kind', 'state', 'view', 'store_id', 'event_id', 'saturday', 'participant_id', 'error', 'result']); requireValue(j.version === 1 && hex(j.job_id) && j.kind === 'capture' && ['queued', 'running', 'completed', 'failed', 'cancelled'].includes(j.state) && viewKey(checkedView(j.view)) === currentKey() && j.store_id === eventAuthority.storeID && hex(j.event_id) && j.participant_id === current.gym_id); entryDateValue(j.saturday);
+  careerJobFields(j, ['version', 'job_id', 'kind', 'state', 'view', 'store_id', 'event_id', 'saturday', 'participant_id', 'error', 'result']); requireValue(j.version === 1 && hex(j.job_id) && j.kind === 'capture' && ['queued', 'running', 'completed', 'failed', 'cancelled'].includes(j.state) && viewKey(checkedView(j.view)) === currentKey() && j.store_id === eventAuthority.storeID && hex(j.event_id) && j.participant_id === current.gym_id); entryDateValue(j.saturday);
   if (j.state === 'completed') { requireValue(j.error === '' && j.result !== null); const r = j.result; exact(r, ['version', 'status', 'capture', 'replayed']); requireValue(r.version === 1 && typeof r.replayed === 'boolean'); eventStatusValue(r.status); eventCapture(r.capture, r.status.event); requireValue(r.status.event.event_id === j.event_id && r.status.event.saturday === j.saturday && r.capture.snapshot.participant_id === j.participant_id && r.status.captured_participants.includes(j.participant_id) && r.capture.evidence.captured_at_ms <= r.status.observed_at_ms); }
   else requireValue(j.result === null && (['queued', 'running'].includes(j.state) ? j.error === '' : j.state === 'cancelled' ? j.error === 'event_cancelled' : EVENT_ERRORS.has(j.error))); return j;
 }
@@ -1091,7 +1158,7 @@ async function eventFetchJob(id) {
     if (['queued', 'running'].includes(j.state)) { eventWatch = { id, eventID: j.event_id, saturday: j.saturday, participantID: j.participant_id }; requireValue(eventCapacity()); return; }
     eventWatch = null; eventLastJob = id;
     if (j.state === 'completed') { eventUnknown = false; if (j.saturday === entryDate) { const oldDetail = eventDetail; eventDetail = { kind: 'capture', value: j.result }; try { eventAdoptStatus(j.result.status); requireValue(eventCapacity()); } catch (error) { eventDetail = oldDetail; throw error; } } eventMessage = j.result.replayed ? 'The original saved capture was recovered unchanged.' : 'This gym’s noon state is saved. Later changes cannot alter it.'; }
-    else eventRefusal(j.error, true); requireValue(eventCapacity());
+    else { eventRefusal(j.error, true); eventMessage += careerAffected(j); } requireValue(eventCapacity());
   } catch { if (eventCurrent(c)) { eventWatch = null; eventUnknown = true; eventMessage = eventError('outcome_unknown'); } } renderEvent();
 }
 async function eventCancel() {
@@ -1262,7 +1329,7 @@ const CARD_RULES = '879f012a9520a8c3066b0a90e47f7069472a2d7b8ab9b32f3b80d98495ee
 const CARD_MAX = 294912, CARD_METADATA_MAX = 49152, CARD_RESULT_MAX = 245760;
 const CARD_BASIS = 'candidate_zero_record_no_results_authority';
 const CARD_REASONS = ['retired_at_cutoff', 'not_rostered_at_cutoff', 'no_opponent_in_class', 'opponent_ineligible_at_cutoff', 'outside_rating_band'];
-const CARD_ERRORS = new Set(['invalid_request', 'unauthorized', 'forbidden', 'stale_view', 'busy', 'outcome_unknown', 'card_unavailable', 'card_setup_incomplete', 'card_corrupt', 'card_capacity', 'card_clock', 'card_calendar', 'card_not_found', 'card_source_incomplete', 'card_source_conflict', 'card_source_changed', 'card_cancelled']);
+const CARD_ERRORS = new Set([...CAREER_ACTION_ERRORS, 'invalid_request', 'unauthorized', 'forbidden', 'stale_view', 'busy', 'outcome_unknown', 'card_unavailable', 'card_setup_incomplete', 'card_corrupt', 'card_capacity', 'card_clock', 'card_calendar', 'card_not_found', 'card_source_incomplete', 'card_source_conflict', 'card_source_changed', 'card_cancelled']);
 const cardReasonText = {
   retired_at_cutoff: 'Retired at the noon cutoff',
   not_rostered_at_cutoff: 'Off the roster at the noon cutoff',
@@ -1383,7 +1450,7 @@ function cardResultValue(v, build = false) {
   requireValue(state.event_key === source.event_key && state.anchor_height === source.anchor.height && state.anchor_hash === source.anchor.hash && state.target_height === source.target.height && state.target_hash === source.target.hash && state.finalized_at_ms === source.finality.observed_at_ms && s.usable === (state.conflict_count === 0 && !state.conflict_overflow)); return v;
 }
 function cardJobValue(j) {
-  exact(j, ['version', 'job_id', 'kind', 'state', 'view', 'store_id', 'card_id', 'saturday', 'error', 'result']);
+  careerJobFields(j, ['version', 'job_id', 'kind', 'state', 'view', 'store_id', 'card_id', 'saturday', 'error', 'result']);
   requireValue(j.version === 1 && hex(j.job_id) && j.kind === 'build' && ['queued', 'running', 'completed', 'failed', 'cancelled'].includes(j.state) && viewKey(checkedView(j.view)) === currentKey() && j.store_id === cardAuthority.storeID && hex(j.card_id) && entryBytes(j) <= CARD_RESULT_MAX); entryDateValue(j.saturday);
   if (j.state === 'completed') { requireValue(j.error === '' && j.result !== null); cardResultValue(j.result, true); requireValue(j.result.record.card_id === j.card_id && j.result.status.event.saturday === j.saturday); }
   else requireValue(j.result === null && (['queued', 'running'].includes(j.state) ? j.error === '' : j.state === 'cancelled' ? j.error === 'card_cancelled' : CARD_ERRORS.has(j.error)));
@@ -1491,7 +1558,7 @@ async function cardBegin() {
 function cardTerminalKey(j) {
   // The bridge checks the canonical full-job digest. Here its verified record
   // digest plus complete status retain compact presentation correlation.
-  return JSON.stringify([j.job_id, j.kind, j.state, viewKey(j.view), j.store_id, j.card_id, j.saturday, j.error, j.result?.status ?? null, j.result?.replayed ?? null]);
+  return JSON.stringify([j.job_id, j.kind, j.state, viewKey(j.view), j.store_id, j.card_id, j.saturday, j.error, j.ineligible_prospect_ids ?? [], j.result?.status ?? null, j.result?.replayed ?? null]);
 }
 async function cardFetchJob(id) {
   if (!cardReady()) return; const c = cardContext(), expected = cardWatch;
@@ -1505,7 +1572,7 @@ async function cardFetchJob(id) {
     rollback = [cardWatch, cardLastJob, cardTerminal, cardDetail, cardStatus, cardOverlayKnown, cardUnknown, cardOverlayRead, cardMessage, cardUnavailable];
     cardWatch = null; cardLastJob = id; cardTerminal = { id, key };
     if (j.state === 'completed') { cardAdoptResult(j.result, true); cardMessage = j.result.replayed ? 'The same saved card was recovered. Its original pairings and creation time are unchanged.' : 'The candidate card is saved. Every locked entrant is accounted for below.'; }
-    else cardRefusal(j.error, true);
+    else { cardRefusal(j.error, true); cardMessage += careerAffected(j); }
     if (!cardCapacity()) throw cardCacheError();
   } catch (e) { if (cardCurrent(c)) {
     if (rollback) [cardWatch, cardLastJob, cardTerminal, cardDetail, cardStatus, cardOverlayKnown, cardUnknown, cardOverlayRead, cardMessage, cardUnavailable] = rollback;
@@ -1769,7 +1836,7 @@ async function bookedFetchJob(id) {
     bookedWatch = null; bookedLastJob = id; bookedTerminal = { id, key };
     if (j.state === 'completed') {
       if (bookedCurrent(c, true) && j.saturday === entryDate && j.bout_id === bookedSelected) bookedAdoptResult(j.result, true);
-      bookedMessage = j.result.replayed ? 'The original saved candidate transcript was recovered.' : 'The candidate transcript was saved. Open it to replay; no record, XP or prize was awarded.';
+      bookedMessage = j.result.replayed ? 'The original saved candidate transcript was recovered.' : 'The candidate transcript was saved. Open it to replay. Saving alone does not award records, XP or prizes; result finality is shown separately.';
     } else bookedRefusal(j.error, true, { date: j.saturday, boutID: j.bout_id });
     if (!bookedCapacity()) throw bookedCacheError();
   } catch (e) { if (bookedCurrent(c)) { if (rollback) [bookedWatch, bookedLastJob, bookedTerminal, bookedRecord, bookedStatus, bookedOverlayKnown, bookedOverlayRead, bookedUnknown] = rollback; if (e.boutCode === 'bout_capacity') bookedMessage = bookedError(e.boutCode); else { bookedWatch = null; bookedRefusal('outcome_unknown', true, expected ? { date: expected.date, boutID: expected.boutID } : c); } } } renderBooked();
@@ -1804,7 +1871,8 @@ function playBooked() {
 }
 function renderBooked() {
   const active = bookedReady(), selected = bookedStatus?.saved, busy = !!command || !!bookedWatch || bookedSnapshot?.state === 'busy';
-  content(ui['bout-state'], !ready() ? 'Sign in to view saved bouts' : bookedUnavailable ? 'Unavailable in this route' : bookedSnapshot?.state === 'setup_incomplete' ? 'Setup incomplete' : bookedWatch ? 'Candidate bout in progress' : bookedRecord ? 'Saved candidate transcript' : 'Booked bouts'); content(ui['bout-message'], bookedUnknown ? `${bookedError('outcome_unknown', true)} Pending Saturday ${bookedUnknown.date || 'unknown'} · ${bookedUnknown.boutID || 'waiting for job identity'}.` : bookedMessage);
+  const publication = publicationForSelectedBout(), outcome = publicationOutcomeLabel(publication);
+  content(ui['bout-state'], !ready() ? 'Sign in to view saved bouts' : bookedUnavailable ? 'Unavailable in this route' : bookedSnapshot?.state === 'setup_incomplete' ? 'Setup incomplete' : bookedWatch ? 'Candidate bout in progress' : bookedRecord ? `Saved candidate transcript · ${outcome}` : 'Booked bouts'); content(ui['bout-message'], bookedUnknown ? `${bookedError('outcome_unknown', true)} Pending Saturday ${bookedUnknown.date || 'unknown'} · ${bookedUnknown.boutID || 'waiting for job identity'}.` : bookedMessage);
   ui['bout-refresh'].disabled = !active || busy || !entryDate; ui['bout-run'].disabled = !active || busy || !selected || selected.exists || !!bookedRecord || !bookedOverlayKnown || !bookedStatus.source.usable || !!bookedUnknown;
   ui['bout-check'].disabled = !active || busy || !(bookedSelected || bookedUnknown?.boutID); ui['bout-open'].disabled = !active || busy || !selected?.exists; ui['bout-cancel'].disabled = !active || !!command || !bookedWatch?.id; ui['bout-clear'].disabled = !bookedRecord && !bookedPage;
   const displayed = bookedPage?.bouts.map(v => bookedStatus?.saved.bout.bout_id === v.bout.bout_id ? bookedStatus.saved : v) ?? [];
@@ -1817,17 +1885,18 @@ function renderBooked() {
   content(ui['bout-empty'], bookedPage ? bookedPage.bouts.length ? '' : bookedPage.source.card_exists ? 'This saved card has no booked bouts. Unmatched entrants have no loss.' : 'No card is saved for this Saturday.' : '');
   renderPublication(); ui['bout-replay'].hidden = !bookedRecord; if (!bookedRecord) return;
   const r = bookedRecord, result = r.result, fighters = [r.input.a, r.input.b], names = fighters.map(v => v.manifest.name.display);
-  content(ui['bout-asof'], `Noon inputs ${new Date(r.input.as_of_ms).toISOString()} · Transcript saved ${new Date(r.created_at_ms).toISOString()}. Later retirement does not change these inputs.`);
+  content(ui['bout-asof'], `${outcome}. ${publication?.phase === 'conflict' ? 'Conflict reported. ' : ''}${!publication ? 'Finality has not been read for this outcome. ' : ''}Noon inputs ${new Date(r.input.as_of_ms).toISOString()} · Transcript saved ${new Date(r.created_at_ms).toISOString()}. Later retirement does not change these inputs.`);
   const rendered = r.result_digest + JSON.stringify([...bookedImages.keys()]);
   if (bookedRendered !== rendered) {
     bookedRendered = rendered; ui['bout-fighters'].textContent = ''; for (const [n, f] of fighters.entries()) { const box = element('div', 'preview-fighter'), corner = r.source.corners[n], src = bookedImages.get(f.prospect_id); if (src) { const img = element('img'); img.setAttribute('src', src); img.setAttribute('alt', `Candidate portrait of ${names[n]}`); img.setAttribute('width', '160'); img.setAttribute('height', '160'); box.append(img); } box.append(element('strong', '', names[n]), element('span', 'note', `${cardGymName(corner.owner.gym_id)} at noon · ${label(corner.member.condition_at_cutoff.phase)} · Rating ${(corner.member.condition_at_cutoff.rating_hundredths / 100).toFixed(2)} · XP 0 · Training 0`)); ui['bout-fighters'].append(box); }
     ui['bout-scores'].textContent = ''; ui['bout-scores'].append(element('caption', '', 'Whole-fight scorecard')); const head = element('tr'); for (const title of ['Component', ...names]) { const th = element('th', '', title); th.setAttribute('scope', 'col'); head.append(th); } const thead = element('thead'); thead.append(head); ui['bout-scores'].append(thead); const body = element('tbody');
     for (const [k, title] of [['damage_tenths', 'Damage'], ['knockdown_tenths', 'Knockdowns'], ['accuracy_tenths', 'Accuracy'], ['volume_tenths', 'Volume'], ['control_tenths', 'Control'], ['total_tenths', 'Total']]) { const row = element('tr'), th = element('th', '', title); th.setAttribute('scope', 'row'); row.append(th, ...result.scores.map(s => element('td', '', (s[k] / 10).toFixed(1)))); body.append(row); } ui['bout-scores'].append(body);
   }
+  content(ui['bout-scores'].children[0], `${outcome} · Whole-fight scorecard`);
   content(ui['bout-play'], bookedTimer === null ? 'Play' : 'Pause'); ui['bout-play'].disabled = !active || !!command || !!motionPreference?.matches; ui['bout-previous'].disabled = bookedStep === 0; ui['bout-next'].disabled = bookedStep >= bookedTicks(); content(ui['bout-motion'], motionPreference?.matches ? 'Reduced motion is on. Step through or show the result.' : 'Playback is local. Pause or step through at any time.');
   ui['bout-events'].textContent = ''; let n = 0, last = null; for (const round of result.rounds) for (const t of round.ticks) { if (++n > bookedStep) break; last = { round: round.number, tick: t.number }; ui['bout-events'].append(element('li', '', `Round ${round.number}, tick ${t.number}: ${names[t.actor]} ${t.hit ? 'lands' : 'misses'} a ${t.strike}.${t.knockdown ? ' Knockdown.' : ''}${t.stoppage ? ` ${label(t.stoppage)}.` : ''}`)); }
   content(ui['bout-step'], last ? `Round ${last.round}, tick ${last.tick} · Step ${bookedStep} of ${bookedTicks()}` : 'Paused at the opening bell.'); ui['bout-outcome'].hidden = bookedStep < bookedTicks();
-  const winner = fighters.find(v => v.prospect_id === result.winner)?.manifest.name.display; content(ui['bout-finish'], result.method === 'decision_draw' ? 'Candidate draw — equal whole-fight scores' : result.method === 'double_corner_stoppage' ? 'Candidate draw — both corners stopped the fight' : `${winner} wins the candidate bout by ${label(result.method)}.`);
+  const winner = fighters.find(v => v.prospect_id === result.winner)?.manifest.name.display; content(ui['bout-finish'], `${outcome}: ${result.method === 'decision_draw' ? 'Candidate draw — equal whole-fight scores' : result.method === 'double_corner_stoppage' ? 'Candidate draw — both corners stopped the fight' : `${winner} wins the candidate bout by ${label(result.method)}.`}`);
   content(ui['bout-evidence'], `Bout ${r.bout_id} · Input ${r.input_id} · Result ${r.result_digest}`); requireValue(entryBytes([key, rendered, ui['bout-evidence'].textContent]) <= 4096);
 }
 motionPreference?.addEventListener('change', () => { pauseBooked(); renderBooked(); });
@@ -2025,7 +2094,7 @@ async function publicationRead() {
     let r = publicationEnvelope(await call('ResultStatus', c.viewID, c.date, c.boutID), 'status'); if (!publicationCurrent(c, true)) return;
     if (!r.ok) { publicationRefusal(r.error); return; }
     requireValue(r.value.event.saturday === c.date && r.value.bout_id === c.boutID);
-    const old = publicationSavedState(); publicationAdoptStatus(r.value); if (!publicationCapacity()) { publicationRestoreState(old); throw publicationCacheError(); } publicationCommitBooked();
+    const old = publicationSavedState(); publicationAdoptStatus(r.value); if (!publicationCapacity()) { publicationRestoreState(old); throw publicationCacheError(); } publicationCommitBooked(); renderBooked();
     if (r.value.exists) {
       const raw = await call('ResultRecord', c.viewID, c.date, c.boutID); if (!publicationCurrent(c, true)) return; r = publicationEnvelope(raw, 'record'); if (!r.ok) { publicationRefusal(r.error); return; }
       requireValue(r.value.status.event.saturday === c.date && r.value.status.bout_id === c.boutID); const before = publicationSavedState();
@@ -2101,11 +2170,24 @@ async function publicationCancel() {
   renderPublication();
 }
 function publicationNodeConnected() { return !!publicationSnapshot && publicationSnapshot.node_owner === 'publication' && ['starting', 'online'].includes(publicationSnapshot.node_state); }
+function publicationForSelectedBout() {
+  const s = publicationStatus, b = bookedStatus?.saved, r = bookedRecord;
+  if (!ready() || !publicationAuthority || !bookedAuthority || viewKey(publicationSnapshot?.view) !== currentKey() || viewKey(bookedSnapshot?.view) !== currentKey() || !s || !b?.exists) return null;
+  if (s.store_id !== publicationAuthority.storeID || s.source.store_id !== bookedAuthority.storeID || s.event.saturday !== entryDate || s.bout_id !== bookedSelected || s.card_id !== bookedStatus.card_id || !same(s.source.saved.bout, b.bout)) return null;
+  if (!['record_digest', 'source_digest', 'input_id', 'result_digest', 'created_at_ms'].every(k => s.source.saved[k] === b[k])) return null;
+  if (s.exists && (s.source_record_digest !== b.record_digest || s.input_id !== b.input_id || s.result_digest !== b.result_digest)) return null;
+  if (r && (r.store_id !== bookedAuthority.storeID || r.card_id !== s.card_id || r.bout_id !== s.bout_id || !['source_digest', 'input_id', 'result_digest', 'created_at_ms'].every(k => r[k] === b[k]))) return null;
+  return s;
+}
+// Historical result finality survives later conflict or an unavailable fresh
+// observation. Seed finality, connection state and the phase badge cannot grant it.
+function publicationOutcomeLabel(s) { return s?.finalized_at_ms > 0 ? 'Finalized result' : 'Provisional result'; }
 function renderPublication() {
-  const active = publicationReady(), s = publicationStatus, busy = !!command || !!publicationWatch || publicationSnapshot?.state === 'busy';
+  const active = publicationReady(), s = publicationForSelectedBout(), busy = !!command || !!publicationWatch || publicationSnapshot?.state === 'busy';
   const selected = bookedStatus?.saved, connected = publicationNodeConnected();
   ui['result-panel'].hidden = publicationUnavailable;
-  content(ui['result-state'], !ready() ? 'Sign in to view publication' : publicationSnapshot?.state === 'setup_incomplete' ? 'Setup incomplete' : !selected?.exists ? 'Choose a saved bout' : !s ? 'Publication not read' : s.phase === 'absent' ? 'Saved outcome · unpublished' : s.phase === 'conflict' ? 'Conflicting evidence' : s.phase === 'finalized' ? 'Historical test finality' : s.inclusion_height ? 'Included · provisional' : s.publication_state === 'dispatch_unknown' ? 'Submission uncertain' : s.publication_state === 'submitted' ? 'Submitted · not included' : 'Prepared · not published');
+  const outcome = publicationOutcomeLabel(s);
+  content(ui['result-state'], !ready() ? 'Sign in to view publication' : publicationSnapshot?.state === 'setup_incomplete' ? 'Setup incomplete' : !selected?.exists ? 'Choose a saved bout' : `${outcome} · ${!s ? 'Publication not read' : s.phase === 'absent' ? 'Saved outcome · unpublished' : s.phase === 'conflict' ? 'Conflicting evidence' : s.finalized_at_ms ? 'Historical test finality' : s.inclusion_height ? 'Included' : s.publication_state === 'dispatch_unknown' ? 'Submission uncertain' : s.publication_state === 'submitted' ? 'Submitted · not included' : 'Prepared · not published'}`);
   content(ui['result-connection'], publicationSnapshot?.node_state === 'starting' ? 'Connecting test nodes. Mining remains stopped.' : publicationSnapshot?.node_state === 'online' ? publicationSnapshot.node_owner === 'publication' ? 'Test nodes connected for publication. No mining or admission worker is running for this connection.' : 'Using the existing mining connection.' : 'Test nodes are disconnected. An explicit publication action can connect Demo A’s nodes.');
   content(ui['result-observation'], s ? `${s.chain_observed_at_ms ? `Last chain check ${date.format(s.chain_observed_at_ms)}.` : 'No chain inclusion check is retained.'} Local evidence read ${date.format(s.observed_at_ms)}. Disconnection does not erase historical evidence.` : 'Read saved publication to inspect retained evidence without connecting nodes.');
   content(ui['result-message'], publicationUnknown ? `${publicationError('outcome_unknown', publicationUnknown.kind)} The pending request belongs to Saturday ${publicationUnknown.date}.` : publicationMessage);
@@ -2126,7 +2208,7 @@ for (const kind of ['publish', 'reconcile', 'attest', 'export']) ui[`result-${ki
 ui['result-read'].addEventListener('click', () => { const c = publicationContext(); queue(() => publicationCurrent(c, true) ? publicationRead() : undefined, 'result-read'); });
 ui['result-cancel'].addEventListener('click', () => queue(publicationCancel, 'result-cancel'));
 ui['result-disconnect'].addEventListener('click', () => oldAction('Stop'));
-ui['result-clear'].addEventListener('click', () => { publicationSelect(); renderPublication(); });
+ui['result-clear'].addEventListener('click', () => { publicationSelect(); renderBooked(); });
 
 ui['event-refresh'].addEventListener('click', () => queueEventSelection(() => eventReadStatus(), 'event-status'));
 ui['event-capture'].addEventListener('click', () => queueEventSelection(eventBegin, 'event-capture'));
@@ -2197,4 +2279,4 @@ ui['export-recovery'].addEventListener('click', () => oldAction('ExportRecovery'
 document.addEventListener('visibilitychange', () => { if (document.hidden) { pausePreview(); pauseBooked(); } if (!document.hidden && enabled) { pollWanted = true; pump(); } else if (timer !== null) { clearTimeout(timer); timer = null; } });
 window.addEventListener('pagehide', () => { disposed = true; epoch++; clearEvent(); clearEntry(); clearPreview(); tasks = []; if (timer !== null) clearTimeout(timer); timer = null; clearCards(); pageItems = []; current = stable = null; });
 render();
-(async () => { try { requireValue(await call('Mode') === MODE); if (disposed) return; enabled = true; pollWanted = true; pump(); } catch { connectionError = 'Open this page through the candidate stable mode.'; render(); } })();
+(async () => { try { requireValue(await call('Mode') === MODE); const selectedCareer = await call('CareerMode'); requireValue(typeof selectedCareer === 'boolean'); careerMode = selectedCareer; if (disposed) return; enabled = true; pollWanted = true; pump(); } catch { connectionError = 'Open this page through the candidate stable mode.'; render(); } })();

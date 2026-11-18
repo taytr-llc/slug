@@ -103,8 +103,14 @@ func readResultMarker(path string) (resultAccountMarker, error) {
 		return m, pilot.ErrManifestInitialization
 	}
 	canonical, _ := json.Marshal(m)
+	if !bytes.Equal(raw, append(canonical, '\n')) {
+		return m, pilot.ErrManifestInitialization
+	}
+	return validateResultAccountMarker(m)
+}
+func validateResultAccountMarker(m resultAccountMarker) (resultAccountMarker, error) {
 	descriptor, _ := fighterdescriptor.ID(fighterdescriptor.CandidateDescriptor())
-	if !bytes.Equal(raw, append(canonical, '\n')) || m.Version != 8 || m.Mode != pilot.ManifestMode || !stableID(m.AccountAuthorityID) || m.DescriptorID != descriptor || m.StableSchema != 1 || m.StableInstalls == nil || len(m.StableInstalls) > 2 || m.EntrySchema != 1 || m.CalendarID != gymentry.CalendarID() || m.RulesID != gymentry.RulesID() || m.EntryInstalls == nil || len(m.EntryInstalls) > 2 {
+	if m.Version != 8 || m.Mode != pilot.ManifestMode || !stableID(m.AccountAuthorityID) || m.DescriptorID != descriptor || m.StableSchema != 1 || m.StableInstalls == nil || len(m.StableInstalls) > 2 || m.EntrySchema != 1 || m.CalendarID != gymentry.CalendarID() || m.RulesID != gymentry.RulesID() || m.EntryInstalls == nil || len(m.EntryInstalls) > 2 {
 		return m, pilot.ErrManifestInitialization
 	}
 	last := ""
@@ -154,6 +160,13 @@ func writeResultMarker(path string, m resultAccountMarker) error {
 	return writeMarker(path, append(raw, '\n'))
 }
 func openResultAccountStore(ctx context.Context, config pilot.Config, deps resultAccountFactories) (store *gymaccount.Store, lock *leveldb.DB, marker resultAccountMarker, err error) {
+	return openResultAccountStoreMode(ctx, config, deps, nil)
+}
+func openResultAccountStoreMode(ctx context.Context, config pilot.Config, deps resultAccountFactories, career *careerAccountOwner) (store *gymaccount.Store, lock *leveldb.DB, marker resultAccountMarker, err error) {
+	readRoot := readResultMarker
+	if career != nil {
+		readRoot = readCareerResultMarker
+	}
 	if ctx == nil {
 		err = gymresult.ErrInvalid
 		return
@@ -198,7 +211,7 @@ func openResultAccountStore(ctx context.Context, config pilot.Config, deps resul
 		}
 	}
 	if !fresh {
-		if _, e := readResultMarker(path); e != nil {
+		if _, e := readRoot(path); e != nil {
 			if _, e7 := readBoutMarker(path); e7 == nil {
 			} else if _, e6 := readCardMarker(path); e6 == nil {
 			} else if _, e5 := readSeedMarker(path); e5 == nil {
@@ -260,7 +273,7 @@ func openResultAccountStore(ctx context.Context, config pilot.Config, deps resul
 		return
 	}
 	upgrade := false
-	marker, err = readResultMarker(path)
+	marker, err = readRoot(path)
 	if err != nil {
 		if prior, e7 := readBoutMarker(path); e7 == nil {
 			marker = resultMarkerFromBout(prior)
@@ -537,20 +550,20 @@ func (c *StableController) readBoutRoot(path string) (boutAccountMarker, error) 
 	if c.resultOwner == nil {
 		return readBoutMarker(path)
 	}
-	m, e := readResultMarker(path)
+	m, e := c.readResultRoot(path)
 	return resultBase(m), e
 }
 func (c *StableController) writeBoutRoot(path string, b boutAccountMarker) error {
 	if c.resultOwner == nil {
 		return writeBoutMarker(path, b)
 	}
-	m, e := readResultMarker(path)
+	m, e := c.readResultRoot(path)
 	if e != nil {
 		return e
 	}
 	b.Version = 8
 	m.boutAccountMarker = b
-	return writeResultMarker(path, m)
+	return c.writeResultRoot(path, m)
 }
 func (c *StableController) installResultComponents(ctx context.Context, child manifestChild) error {
 	if e := c.installBoutComponents(ctx, child); e != nil {
@@ -563,11 +576,16 @@ func (c *StableController) installResultComponents(ctx context.Context, child ma
 	if !ok {
 		return gymresult.ErrInvalid
 	}
+	if c.careerOwner != nil {
+		if e := c.ensureCareers(ctx, s); e != nil {
+			return e
+		}
+	}
 	return s.AttachResults(ctx, c.resultOwner.store)
 }
 func (c *StableController) ensureResults(ctx context.Context) error {
 	path := filepath.Join(c.config.DataDir, "SLUG-MANIFEST-ACCOUNTS.json")
-	m, e := readResultMarker(path)
+	m, e := c.readResultRoot(path)
 	if e != nil {
 		return e
 	}
@@ -592,7 +610,7 @@ func (c *StableController) ensureResults(ctx context.Context) error {
 			return e
 		}
 		m.ResultPhase = "prepared"
-		if e = writeResultMarker(path, m); e != nil {
+		if e = c.writeResultRoot(path, m); e != nil {
 			return e
 		}
 	}
@@ -653,7 +671,7 @@ func (c *StableController) ensureResults(ctx context.Context) error {
 			c.checkpoint("result-created")
 		}
 		m.ResultPhase = "ready"
-		if e = writeResultMarker(path, m); e != nil {
+		if e = c.writeResultRoot(path, m); e != nil {
 			return e
 		}
 		if c.checkpoint != nil {

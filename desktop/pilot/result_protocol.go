@@ -101,7 +101,10 @@ func handleResultRequest(ctx context.Context, r ResultRequest, c ResultControlle
 }
 
 // ServeResults adds one closed family without changing previous wire grammars.
-func ServeResults(ctx context.Context, c ResultControllerAPI, input io.Reader, output io.Writer) (resultErr error) {
+func ServeResults(ctx context.Context, c ResultControllerAPI, input io.Reader, output io.Writer) error {
+	return serveResults(ctx, c, input, output, nil)
+}
+func serveResults(ctx context.Context, c ResultControllerAPI, input io.Reader, output io.Writer, career CareerControllerAPI) (resultErr error) {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 	type line struct {
@@ -162,7 +165,28 @@ func ServeResults(ctx context.Context, c ResultControllerAPI, input io.Reader, o
 			if json.Unmarshal(value.data, &selector) != nil {
 				return gymstable.ErrInvalid
 			}
-			if strings.HasPrefix(selector.Command, "result_") {
+			if career != nil && strings.HasPrefix(selector.Command, "career_") {
+				req, e := ParseCareerRequest(value.data)
+				response := CareerResponse{ID: selector.ID, Error: "invalid_request"}
+				if e == nil {
+					response = handleCareerRequest(ctx, req, career)
+				}
+				raw, e := MarshalCareerResponse(response)
+				if e != nil {
+					return e
+				}
+				if d, ok := output.(interface{ SetWriteDeadline(time.Time) error }); ok {
+					_ = d.SetWriteDeadline(time.Now().Add(5 * time.Second))
+				}
+				raw = append(raw, '\n')
+				n, e := output.Write(raw)
+				if e != nil {
+					return e
+				}
+				if n != len(raw) {
+					return io.ErrShortWrite
+				}
+			} else if strings.HasPrefix(selector.Command, "result_") {
 				req, err := ParseResultRequest(value.data)
 				response := ResultResponse{ID: selector.ID, Error: "invalid_request"}
 				if err == nil {

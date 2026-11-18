@@ -124,7 +124,7 @@ func (s *StableController) AttachBouts(ctx context.Context, x *gymbout.Store) er
 		}
 		s.mu.Lock()
 		defer s.mu.Unlock()
-		if !stableCacheFits(s.cache, s.receiptSlot, s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+MaxBoutMetadataSize+s.resultBytes) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.careerBytes+s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+MaxBoutMetadataSize+s.resultBytes) {
 			return gymbout.ErrCapacity
 		}
 		s.boutStore = x

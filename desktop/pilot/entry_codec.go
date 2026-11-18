@@ -89,6 +89,8 @@ func entryDecode(raw []byte, limit, maxDepth int, out any) (map[string]bool, err
 			count := 0
 			bound := 0
 			switch {
+			case path == "job.ineligible_prospect_ids":
+				bound = 10
 			case strings.HasSuffix(path, "prospect_ids"), strings.HasSuffix(path, "saved_ids"), strings.HasSuffix(path, "members"):
 				bound = 5
 			case path == "history.events":

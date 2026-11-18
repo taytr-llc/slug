@@ -21,7 +21,21 @@ type resultRootMarker struct {
 func (s *StableController) resultRoot() (resultRootMarker, error) {
 	var m resultRootMarker
 	path := filepath.Join(filepath.Dir(filepath.Dir(s.config.DataDir)), "SLUG-MANIFEST-ACCOUNTS.json")
-	if !s.resultEnabled || readManifestJSON(path, 16384, &m) != nil || m.Version != 8 || m.ResultSchema != 1 {
+	if s.careerEnabled {
+		var cm careerRootMarker
+		if readManifestJSON(path, 16384, &cm) == nil && cm.Version == 9 {
+			if validateCareerRoot(cm) != nil {
+				return m, ErrManifestInitialization
+			}
+			m = cm.resultRootMarker
+			m.Version = 8
+		} else if readManifestJSON(path, 16384, &m) != nil {
+			return m, ErrManifestInitialization
+		}
+	} else if readManifestJSON(path, 16384, &m) != nil {
+		return m, ErrManifestInitialization
+	}
+	if !s.resultEnabled || m.Version != 8 || m.ResultSchema != 1 {
 		return m, ErrManifestInitialization
 	}
 	base := m.boutRootMarker
@@ -114,7 +128,7 @@ func (s *StableController) AttachResults(ctx context.Context, x *gymresult.Store
 		}
 		s.mu.Lock()
 		defer s.mu.Unlock()
-		if !stableCacheFits(s.cache, s.receiptSlot, s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+s.boutBytes+MaxResultMetadataSize) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.careerBytes+s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+s.boutBytes+MaxResultMetadataSize) {
 			return gymresult.ErrCapacity
 		}
 		s.resultStore = x

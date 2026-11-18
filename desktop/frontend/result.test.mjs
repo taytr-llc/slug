@@ -8,6 +8,9 @@ import vm from 'node:vm';
 const bytes = readFileSync(new URL('../../gymresult/testdata/reference/corpus.json', import.meta.url));
 assert.equal(createHash('sha256').update(bytes).digest('hex'), '07c00eef8d87ae9ae5dcd2d120a5dfd1f7b1ba33a1447b773cfd4d5194fd1a94');
 const ref = JSON.parse(bytes), clone = v => JSON.parse(JSON.stringify(v));
+const savedBoutBytes = readFileSync(new URL('../../gymresult/testdata/reference/inputs/actual47/bout_record.json', import.meta.url));
+assert.equal(createHash('sha256').update(savedBoutBytes).digest('hex'), '2675c392cb7ce82e779898d03170daba76eed6155c947221d6e5ecbe55733692');
+const savedBout = JSON.parse(savedBoutBytes);
 const source = readFileSync(new URL('./stable.js', import.meta.url), 'utf8'), html = readFileSync(new URL('./stable.html', import.meta.url), 'utf8');
 const script = source.slice("import { Call } from '/wails/runtime.js';".length, source.indexOf("ui['event-refresh'].addEventListener"));
 const core = (kind, name) => clone(ref.core.positive.find(v => v.kind === kind && v.name === name).value);
@@ -87,6 +90,7 @@ test('older successful terminal cannot remove a newer explicit conflict or final
   const h = harness(); h.adopt('checkpoint_conflict'); const before = createHash('sha256').update(h.run('JSON.stringify([publicationRecord,publicationStatus,publicationOverlayKnown])')).digest('hex');
   const j = wire('ResultJob', 'fixture0/job/publish/completed'); h.watch(j); h.handlers.ResultJob = () => h.reply('job', j); await h.run(`publicationFetchJob('${j.job_id}')`);
   assert.equal(createHash('sha256').update(h.run('JSON.stringify([publicationRecord,publicationStatus,publicationOverlayKnown])')).digest('hex'), before); assert.equal(h.run('publicationUnknown'), null);
+  assert.match(h.elements.get('result-state').textContent, /^Finalized result · Conflicting evidence/);
 });
 test('late publication ACK follows its original bout without replacing a new selection', async () => {
   const h = harness(), gate = deferred(), j = wire('ResultJob', 'fixture0/job/publish/queued'); h.handlers.BeginResultPublish = () => gate.promise;
@@ -164,4 +168,74 @@ test('rejected result cache replacement retains protected bout portrait evidence
   const h = harness(); h.adopt('prepared'); h.run("bookedImages.set('retained', 'data:image/svg+xml;base64,retained');publicationCapacity=()=>false");
   h.handlers.ResultStatus = () => h.reply('status', core('ReadResult', 'fresh-source-conflict-retained-result-chain-observation').status);
   await h.run('publicationRead()'); assert.equal(h.run('bookedImages.size'), 1); assert.equal(h.run('bookedOverlayKnown'), true); assert.match(h.run('publicationMessage'), /full/);
+});
+
+function showSavedReplay(h) {
+  h.set('bookedRecord', savedBout);
+  h.run('bookedRecordValue(bookedRecord);bookedMatchRecord(bookedRecord,bookedStatus);renderBooked()');
+}
+test('all pre-final publication states label the saved outcome provisional, including no loaded publication', () => {
+  for (const name of [null, 'absent', 'status-prepared', 'status-built', 'status-dispatch_unknown', 'status-submitted', 'status-included59', 'status-checkpoint59']) {
+    const h = harness();
+    if (name) { h.context.input = core('Status', name); h.run('publicationStatusValue(input);publicationAdoptStatus(input)'); }
+    showSavedReplay(h);
+    assert.match(h.elements.get('result-state').textContent, /^Provisional result/, name);
+    assert.match(h.elements.get('bout-asof').textContent, /^Provisional result/, name);
+    h.run('stepBooked(bookedTicks())');
+    assert.match(h.elements.get('bout-finish').textContent, /^Provisional result:/, name);
+    assert.match(h.elements.get('bout-scores').textContent, /^Provisional result/, name);
+    assert.equal(h.calls.length, 0);
+  }
+  const h = harness(), s = core('Status', 'status-included59'); s.descendants = 60; s.scan_tip_height++;
+  h.context.input = s; h.run('publicationStatusValue(input);publicationAdoptStatus(input)'); showSavedReplay(h);
+  assert.match(h.elements.get('bout-state').textContent, /Provisional result/);
+});
+test('matching historical result finality labels replay final through offline, shallow and conflicting observations', () => {
+  for (const name of ['finalized60', 'offline_historical', 'shallow_historical', 'checkpoint_conflict', 'source-conflict']) {
+    const h = harness();
+    if (name === 'source-conflict') { h.context.input = core('ReadResult', 'fresh-source-conflict-retained-result-chain-observation'); h.run('publicationResult(input);publicationAdoptResult(input)'); }
+    else h.adopt(name);
+    showSavedReplay(h); h.run('stepBooked(3)');
+    const record = h.run('JSON.stringify(bookedRecord)'), step = h.run('bookedStep');
+    assert.match(h.elements.get('result-state').textContent, /^Finalized result/, name);
+    assert.match(h.elements.get('bout-asof').textContent, /^Finalized result/, name);
+    assert.match(h.elements.get('bout-finish').textContent, /^Finalized result:/, name);
+    assert.match(h.elements.get('bout-scores').textContent, /^Finalized result/, name);
+    if (name.endsWith('conflict')) assert.match(h.elements.get('bout-asof').textContent, /Conflict reported/);
+    h.run("publicationRefusal('outcome_unknown');renderBooked()");
+    assert.match(h.elements.get('bout-finish').textContent, /^Finalized result:/);
+    assert.equal(h.run('JSON.stringify(bookedRecord)'), record); assert.equal(h.run('bookedStep'), step); assert.equal(h.calls.length, 0);
+  }
+});
+test('finality metadata is bound to the selected original view and exact saved outcome', () => {
+  const mismatches = [
+    "publicationSnapshot.view.view_id='f'.repeat(64)", "bookedSnapshot.view.view_id='f'.repeat(64)",
+    "entryDate='2026-12-05'", "bookedSelected='f'.repeat(64)", "bookedStatus.card_id='f'.repeat(64)",
+    "publicationStatus.source_record_digest='f'.repeat(64)", "publicationStatus.input_id='f'.repeat(64)", "publicationStatus.result_digest='f'.repeat(64)",
+    "publicationStatus.source.saved.record_digest='f'.repeat(64)", "publicationStatus.source.saved.source_digest='f'.repeat(64)",
+    "bookedRecord.input_id='f'.repeat(64)", "bookedRecord.result_digest='f'.repeat(64)", "bookedRecord.bout_id='f'.repeat(64)",
+  ];
+  for (const mismatch of mismatches) {
+    const h = harness(); h.adopt('finalized60'); showSavedReplay(h);
+    h.run(mismatch); assert.equal(h.run('publicationForSelectedBout()'), null, mismatch);
+    h.run('renderBooked()'); assert.match(h.elements.get('bout-finish').textContent, /^Provisional result:/, mismatch);
+  }
+});
+test('a validated status-only read updates replay finality without replaying or mutating its transcript', async () => {
+  const h = harness(); showSavedReplay(h); h.run('stepBooked(2)'); const before = h.run('JSON.stringify(bookedRecord)');
+  h.handlers.ResultStatus = () => h.reply('status', core('Status', 'status-finalized60'));
+  h.handlers.ResultRecord = () => h.refusal('busy'); await h.run('publicationRead()');
+  assert.equal(h.run('publicationRecord'), null); assert.match(h.elements.get('bout-finish').textContent, /^Finalized result:/);
+  assert.equal(h.run('bookedStep'), 2); assert.equal(h.run('JSON.stringify(bookedRecord)'), before);
+  assert.deepEqual(h.calls.map(v => v.method), ['ResultStatus', 'ResultRecord']);
+  h.run('publicationSelect();renderBooked()'); assert.match(h.elements.get('bout-finish').textContent, /^Provisional result:/); assert.match(h.elements.get('bout-asof').textContent, /Finality has not been read/);
+});
+
+test('rejected metadata capacity replacement preserves the prior finality label and replay', async () => {
+  const h = harness(); h.adopt('finalized60'); showSavedReplay(h); h.run('stepBooked(2)');
+  const before = h.run('JSON.stringify([publicationStatus,publicationRecord,bookedRecord])'); h.run('publicationCapacity=()=>false');
+  h.handlers.ResultStatus = () => h.reply('status', core('Status', 'status-checkpoint_conflict')); await h.run('publicationRead()');
+  assert.equal(h.run('JSON.stringify([publicationStatus,publicationRecord,bookedRecord])'), before);
+  assert.match(h.elements.get('bout-finish').textContent, /^Finalized result:/); assert.doesNotMatch(h.elements.get('result-state').textContent, /Conflicting/);
+  assert.equal(h.run('bookedStep'), 2); assert.deepEqual(h.calls.map(v => v.method), ['ResultStatus']);
 });

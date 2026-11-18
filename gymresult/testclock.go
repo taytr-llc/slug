@@ -18,3 +18,16 @@ func OpenForTestClock(ctx context.Context, path string, pin Pin, seeds *gymbout.
 func ResumePreparedForTestClock(ctx context.Context, path string, pin Pin, seeds *gymbout.Store, clock func() time.Time) (*Store, error) {
 	return open(ctx, path, pin, seeds, clock, true)
 }
+
+func CheckCareerActivationForTestClock(ctx context.Context, path string, pin Pin, bouts *gymbout.Store, clock func() time.Time) error {
+	return checkCareerActivation(ctx, path, pin, bouts, clock)
+}
+func ActivateCareerForTestClock(ctx context.Context, path string, pin Pin, bouts *gymbout.Store, clock func() time.Time) (*Store, error) {
+	return openCareer(ctx, path, pin, bouts, clock, "activate", nil)
+}
+func ResumeCareerActivationForTestClock(ctx context.Context, path string, pin Pin, bouts *gymbout.Store, clock func() time.Time) (*Store, error) {
+	return openCareer(ctx, path, pin, bouts, clock, "resume", nil)
+}
+func OpenCareerForTestClock(ctx context.Context, path string, pin Pin, bouts *gymbout.Store, clock func() time.Time) (*Store, error) {
+	return openCareer(ctx, path, pin, bouts, clock, "open", nil)
+}

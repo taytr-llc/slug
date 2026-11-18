@@ -209,8 +209,13 @@ they do not count as completion of this product-release gate.
   become effective exactly once at result finality. Provisional outcomes stay
   labeled; later chain conflicts retain finalized awards; noon snapshots use
   only awards already effective at lock. `RESULT_AWARD_POLICY.md` records the
-  decision. Runtime integration and acceptance remain in progress; C1 and D74
-  are unchanged.
+  decision. The prospective candidate implementation, local gates and actual
+  scoped-clock normal-PoW composition pass: one award event, twelve career
+  observations, six independently checked result proofs, and twenty-one
+  actual-evidence corruption controls. Standard records, capped XP and base
+  points are implemented; complete rankings and title allocation still need
+  their own authority and rules. Final normal Mac package and deployment remain
+  pending. C1 and D74 are unchanged.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace

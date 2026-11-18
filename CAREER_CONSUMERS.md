@@ -119,6 +119,40 @@ displays the career condition/record for the new route, not the legacy zero-XP
 projection. BasePoints is explicitly base-point history, not a ranking position
 or complete rolling league score. There is no new rankings or title page here.
 
+### Asynchronous proof pages and opaque reads
+
+Normal proof verification belongs to the existing 30-second asynchronous Stable
+page job. It must not be placed inside the 500-millisecond metadata/read budget:
+an eight-item cold-cache diagnostic exceeded that budget and correctly disclosed
+no page. Preserve that failure and the separate warm-cache measurement.
+
+`PrepareCareerInventory` and `PrepareCareerRoster` perform the verified page read
+and career projection together. They return the original transient composite
+(including private receipts needed by the existing portrait publisher) plus an
+opaque `CareerRead`. The handle has private owner, kind, original session
+generation/ViewID and canonical public composite fields. It accepts no
+caller-supplied page, JSON, XP or finality. It
+retains no private receipt. A nil, empty, foreign-owner or wrong-kind handle
+cannot disclose a page.
+
+The controller retains at most one handle, bound to the exact completed page
+job and complete original account View. Charge the canonical composite plus a
+512-byte fixed handle allowance alongside the existing terminal job/page in the
+controller's aggregate budget. New page work, identity changes and
+close invalidate it. A separately typed short read identifies that job and
+rechecks the original account, assignment/checkpoint/roster/source revisions,
+owner health and career-reader liveness before returning a fresh public copy.
+It does not rehash the already verified proofs or replace the captured career
+prefix. The page remains explicitly dated; later finality, including another
+commit in the same millisecond, cannot rewrite the held composite. These are
+process-local read handles, not portable evidence or authorization after restart.
+
+Retain the 500-millisecond metadata/authentication and 30-second page-job limits,
+bounded cancellation and original-view correlation. The legacy route and its
+wire bytes remain unchanged. Prove cold eight-item Inventory and Roster work,
+short read latency, view revocation, changed-source refusal, copied-output
+isolation and invalidation before qualifying the new flow.
+
 ## Verification
 
 Prove prepared/ready mixed-guard recovery, old-constructor refusal, wrong-reader

@@ -14,6 +14,9 @@ import (
 
 // Check closed shapes before Unmarshal can allocate any typed collection.
 func decode(raw []byte, limit int, out any, canonical bool) error {
+	if m, ok := out.(*metadata); ok {
+		return decodeCareerMetadata(raw, limit, m, canonical)
+	}
 	if len(raw) == 0 || len(raw) > limit || !utf8.Valid(raw) {
 		return ErrInvalid
 	}
