@@ -1,0 +1,36 @@
+{
+  "byte_identical": true,
+  "corpus_sha256": "058196afe3b6db1f53bea96aef72fc10f335ca0846d00f7db88f4b1d6165f06a",
+  "counts": {
+    "cases": 4,
+    "receipts": 2
+  },
+  "findings": [],
+  "generator_sha256": "5f202df0df3fae55309629acaf6947461b3569efa012b63a17f090b72f758e8c",
+  "go_comparisons": 0,
+  "runs": [
+    {
+      "exit_code": 0,
+      "python": "/usr/bin/python3",
+      "stderr_file": "python39.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_file": "python39.json",
+      "stdout_sha256": "058196afe3b6db1f53bea96aef72fc10f335ca0846d00f7db88f4b1d6165f06a",
+      "timezone": "UTC",
+      "version": "Python 3.9.6"
+    },
+    {
+      "exit_code": 0,
+      "python": "/opt/homebrew/bin/python3.13",
+      "stderr_file": "python313.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_file": "python313.json",
+      "stdout_sha256": "058196afe3b6db1f53bea96aef72fc10f335ca0846d00f7db88f4b1d6165f06a",
+      "timezone": "Pacific/Honolulu",
+      "version": "Python 3.13.5"
+    }
+  ],
+  "scope": "Independent finite byte-formula reproduction only, no Go execution or comparison. Author already reviewed implementation source; all expected bytes derived from pinned prose and pre-existing frozen independent snapshots.",
+  "status": "passed",
+  "version": 1
+}

@@ -1,0 +1,146 @@
+{
+  "activation": {
+    "canonical_json": "{\"version\":1,\"policy_id\":\"2bdf6089dc4bc641dc6e6e87dab21a15196e6b31708c9f84ab8dd728049e50d2\",\"activation_id\":\"adb9fc81f25aceca1afab83440892884474a83265b523f57d8a91358892e7cd8\",\"result_store_id\":\"000000000000000000000000000000000000000000000000000000000000005a\",\"result_created_at_ms\":1797105300000,\"source_created_at_ms\":1797105200000,\"activated_at_ms\":1797105400000}",
+    "id": "primary",
+    "preimage_hex": "534c55472063616e646964617465206361726565722061637469766174696f6e007631002bdf6089dc4bc641dc6e6e87dab21a15196e6b31708c9f84ab8dd728049e50d2000000000000000000000000000000000000000000000000000000000000005a20b2d26ba2010000802bd16ba2010000c038d46ba2010000",
+    "value": {
+      "activated_at_ms": 1797105400000,
+      "activation_id": "adb9fc81f25aceca1afab83440892884474a83265b523f57d8a91358892e7cd8",
+      "policy_id": "2bdf6089dc4bc641dc6e6e87dab21a15196e6b31708c9f84ab8dd728049e50d2",
+      "result_created_at_ms": 1797105300000,
+      "result_store_id": "000000000000000000000000000000000000000000000000000000000000005a",
+      "source_created_at_ms": 1797105200000,
+      "version": 1
+    }
+  },
+  "activation_pointer": "/activations/0",
+  "origin": "/Users/taytrrip/slug/slug/internal/careerstate/testdata/reference/corpus.json",
+  "origin_sha256": "89fbf2b1d16793b544d84922311017303832cdba89203f8a73fe4b79b3d66d42",
+  "scope": "Previously frozen independently modeled snapshots only; no actual authenticated chain or consumer execution claim.",
+  "snapshot_pointers": [
+    "/snapshot_cases/4",
+    "/snapshot_cases/17"
+  ],
+  "snapshots": [
+    {
+      "expected": {
+        "as_of_ms": 1797105599999,
+        "digest": "7634d07e06799f790943dac953174a8cd81394441d4804bed980c2165ea92a39",
+        "error": "",
+        "mode": "cutoff",
+        "prefix_award_ids": [
+          "f67cfdbba554b4b15fef05b2fa4a1893875b1179e6b8d3c08c31d75d69d26009"
+        ],
+        "totals": [
+          {
+            "found": true,
+            "prospect_id": "0000000000000000000000000000000000000000000000000000000000000001",
+            "totals": {
+              "base_points": 0,
+              "draws": 0,
+              "losses": 0,
+              "wins": 0,
+              "xp": 0
+            }
+          },
+          {
+            "found": true,
+            "prospect_id": "0000000000000000000000000000000000000000000000000000000000000002",
+            "totals": {
+              "base_points": 0,
+              "draws": 0,
+              "losses": 0,
+              "wins": 0,
+              "xp": 0
+            }
+          }
+        ],
+        "unrequested_lookup": {
+          "found": false,
+          "prospect_id": "00000000000000000000000000000000000000000000000000000000000003e7",
+          "totals": {
+            "base_points": 0,
+            "draws": 0,
+            "losses": 0,
+            "wins": 0,
+            "xp": 0
+          }
+        }
+      },
+      "id": "boundary/cutoff/-1",
+      "input": {
+        "activation": "primary",
+        "as_of_ms": 1797105599999,
+        "clock_ms": 1797105600001,
+        "events": [
+          "after",
+          "equal",
+          "unrelated",
+          "before"
+        ],
+        "ids": [
+          "0000000000000000000000000000000000000000000000000000000000000001",
+          "0000000000000000000000000000000000000000000000000000000000000002"
+        ],
+        "mode": "cutoff",
+        "owner_state": "live"
+      },
+      "provenance": "modeled captured audited prefix"
+    },
+    {
+      "expected": {
+        "as_of_ms": 1797105600000,
+        "digest": "5821e7e09e44856dd5ed3f1f8b9c60b003c1312817e1f135f93706684e64e656",
+        "error": "",
+        "mode": "cutoff",
+        "prefix_award_ids": [
+          "f67cfdbba554b4b15fef05b2fa4a1893875b1179e6b8d3c08c31d75d69d26009",
+          "799f27b06180e616556fc4c3b94683b0320bcae684f30dcebf578d7dac2cb1bf"
+        ],
+        "totals": [
+          {
+            "found": true,
+            "prospect_id": "0000000000000000000000000000000000000000000000000000000000000000",
+            "totals": {
+              "base_points": 0,
+              "draws": 0,
+              "losses": 0,
+              "wins": 0,
+              "xp": 0
+            }
+          }
+        ],
+        "unrequested_lookup": {
+          "found": false,
+          "prospect_id": "00000000000000000000000000000000000000000000000000000000000003e7",
+          "totals": {
+            "base_points": 0,
+            "draws": 0,
+            "losses": 0,
+            "wins": 0,
+            "xp": 0
+          }
+        }
+      },
+      "id": "requested-known-zero",
+      "input": {
+        "activation": "primary",
+        "as_of_ms": 1797105600000,
+        "clock_ms": 1797105600001,
+        "events": [
+          "after",
+          "equal",
+          "unrelated",
+          "before"
+        ],
+        "ids": [
+          "0000000000000000000000000000000000000000000000000000000000000000"
+        ],
+        "mode": "cutoff",
+        "owner_state": "live"
+      },
+      "provenance": "modeled captured audited prefix"
+    }
+  ],
+  "version": 1
+}
