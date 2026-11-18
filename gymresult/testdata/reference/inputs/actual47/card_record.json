@@ -1,0 +1,732 @@
+{
+  "version": 1,
+  "store_id": "8e15b2c1fb78c9b2a49abe17e3b1f9710aa11941dabdf65e44f1e4cb6bc7ad37",
+  "card_id": "db56365091c45d91b2a972346955ac499701d2e1a1bb49492c74262dd59ea4ab",
+  "source": {
+    "version": 1,
+    "store_id": "324aaa8a994f7405ed05dc0caa84980479ea5f3fcacdcdde48cd4e2496689f63",
+    "event_key": "d9764a4a35fe4a0fe5e22ff0100b1a0caf6fc483c99f85674d93a6c28c172594",
+    "source_receipt": {
+      "version": 1,
+      "input": {
+        "version": 1,
+        "event": {
+          "version": 1,
+          "event_id": "41c4c51720c5310e682e3a3368c4b433a327e76be639f4e448c10c97ac5b90ff",
+          "source_event_id": "8c2e66c84b950c2f4730a8a149bc8327f3dc508b0450c5bae0763d5880fb9a1b",
+          "store_id": "a7482072a3c38dfb5390dec9f288b635ea56ece6cde3c42ee2b57ac7ea6fda53",
+          "namespace_id": "8b7c5e221bc3f43f55127591922f7ce5406880fcc69d0d8cdb39c11cef4d527b",
+          "calendar_id": "1351d63c43cd08d760ca4a88c60bc7ecee9dcb0e331961f93b16d95425385450",
+          "rules_id": "acfcbf250caefb72b6ac6f08f89a61b782a47fc6024fce3a95436c1cfae0c6f8",
+          "saturday": "2026-11-28",
+          "cutoff_ms": 1795896000000,
+          "incident_deadline_ms": 1796500800000
+        },
+        "participants": [
+          {
+            "version": 1,
+            "participant_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "entry_store_id": "ee94f367c298de7717292d8da4842df33c2dd0925ffdc5fabbc5404d7a07f64a",
+            "owner": {
+              "ownership_basis": "candidate_assignment",
+              "account_authority_id": "1f1a174df7de619495774f261c7933adbaff55f9ae2e0bac89875ce8f7473d45",
+              "account_id": "ce595facc5e523469b498c89b4ae1bc2c7a7cf07b94063a217a7f263f779d5ab",
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+            },
+            "roster": {
+              "version": 1,
+              "store_id": "cd271a55cb9e5596b6af30b17b6a0d918fcbe5733557afc6c505c5b4d37b3f5b",
+              "cutoff_ms": 1795896000000,
+              "committed_count": 1,
+              "last_sequence": 1,
+              "history_digest": "3a4eac312d6a0feba51028458705355bf20be1d26b78787f2726b3dc575e60a7",
+              "revision": 1,
+              "slots": [
+                "22a2c799c122ac002a3ca277e0f7f84dd89c8b5f1fe1e1a18e098b1aad27e717",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "assigned_at_ms": [
+                1795291140000,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            "entry": {
+              "version": 1,
+              "store_id": "ee94f367c298de7717292d8da4842df33c2dd0925ffdc5fabbc5404d7a07f64a",
+              "event": {
+                "version": 1,
+                "event_id": "8c2e66c84b950c2f4730a8a149bc8327f3dc508b0450c5bae0763d5880fb9a1b",
+                "namespace_id": "8b7c5e221bc3f43f55127591922f7ce5406880fcc69d0d8cdb39c11cef4d527b",
+                "calendar_id": "1351d63c43cd08d760ca4a88c60bc7ecee9dcb0e331961f93b16d95425385450",
+                "rules_id": "fdd7e3f43df60986cea1d5eeb8a0f3512c30c73229890b84a213d057b16b44e2",
+                "saturday": "2026-11-28",
+                "cutoff_ms": 1795896000000
+              },
+              "entry_id": "193bf0cd91646f26b12b99034c2ccf840097cd9d4cf5088e09d7df4c7baa533d",
+              "committed_count": 1,
+              "last_sequence": 2,
+              "history_digest": "62493d3e90c047908272225bafd97e4aad656f19de11eecc8152244904842572",
+              "latest_receipt": {
+                "version": 1,
+                "store_id": "ee94f367c298de7717292d8da4842df33c2dd0925ffdc5fabbc5404d7a07f64a",
+                "entry_id": "193bf0cd91646f26b12b99034c2ccf840097cd9d4cf5088e09d7df4c7baa533d",
+                "event": {
+                  "version": 1,
+                  "event_id": "8c2e66c84b950c2f4730a8a149bc8327f3dc508b0450c5bae0763d5880fb9a1b",
+                  "namespace_id": "8b7c5e221bc3f43f55127591922f7ce5406880fcc69d0d8cdb39c11cef4d527b",
+                  "calendar_id": "1351d63c43cd08d760ca4a88c60bc7ecee9dcb0e331961f93b16d95425385450",
+                  "rules_id": "fdd7e3f43df60986cea1d5eeb8a0f3512c30c73229890b84a213d057b16b44e2",
+                  "saturday": "2026-11-28",
+                  "cutoff_ms": 1795896000000
+                },
+                "operation_id": "4a91d6e4ba324998608eaa4ae6aff16869f742146b4698daea4b79ef5ce4ebcf",
+                "operation_sequence": 2,
+                "generation": 1,
+                "view_id": "7d3ad532ad9540b47885e9e2e98a7ac9eb9d49faa06756582ba7d8e02169bc9b",
+                "action": "replace",
+                "previous_revision": 0,
+                "revision": 1,
+                "roster_revision": 1,
+                "stable_checkpoint": 4,
+                "observed_source_count": 4,
+                "committed_at_ms": 1795895940000,
+                "members": [
+                  {
+                    "slot": 1,
+                    "assignment": {
+                      "version": 1,
+                      "sequence": 3,
+                      "prospect_id": "22a2c799c122ac002a3ca277e0f7f84dd89c8b5f1fe1e1a18e098b1aad27e717",
+                      "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+                      "work_hash": "68b5091782ff69e134a177f1740bc9403bf7580740505eea5472f057c93ab8c9",
+                      "born_at_ms": 1794962900023,
+                      "accepted_at_ms": 1794962900518,
+                      "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+                      "manifest_digest": "3f8a2c265141233fd2268b2d8a0ae9cdd23894fa62d0a7e0f6a7acfd0e7cd680",
+                      "portrait_digest": "12d5d510056dc4831022c18465fa88357bf5fdcba261675d6adbc738926b8f3e",
+                      "source_record_digest": "869ba5bb8aa70fc83de4b13df324267a965780f974164bf298e378f8f32efb4a"
+                    },
+                    "class": "middle",
+                    "condition_at_save": {
+                      "version": 1,
+                      "projector_id": "slug-fighter-condition-candidate-v1",
+                      "dna_version": 1,
+                      "seed": "68b5091782ff69e134a177f1740bc9403bf7580740505eea5472f057c93ab8c9",
+                      "born_at_ms": 1794962900023,
+                      "as_of_ms": 1795895940000,
+                      "age_weeks": 1,
+                      "phase": "prime",
+                      "elapsed_decline_weeks": 0,
+                      "prime_remaining_weeks": 31,
+                      "prime_remaining_ms": 18420560023,
+                      "career_remaining_ms": 37774160023,
+                      "pro_xp": 0,
+                      "aged_attributes_tenths": {
+                        "power": 610,
+                        "speed": 390,
+                        "chin": 490,
+                        "stamina": 460,
+                        "skill": 610
+                      },
+                      "league_attributes_tenths": {
+                        "power": 610,
+                        "speed": 390,
+                        "chin": 490,
+                        "stamina": 460,
+                        "skill": 610
+                      },
+                      "rating_hundredths": 23550
+                    }
+                  }
+                ]
+              }
+            },
+            "members": [
+              {
+                "slot": 1,
+                "slot_assigned_at_ms": 1795291140000,
+                "assignment": {
+                  "version": 1,
+                  "sequence": 3,
+                  "prospect_id": "22a2c799c122ac002a3ca277e0f7f84dd89c8b5f1fe1e1a18e098b1aad27e717",
+                  "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+                  "work_hash": "68b5091782ff69e134a177f1740bc9403bf7580740505eea5472f057c93ab8c9",
+                  "born_at_ms": 1794962900023,
+                  "accepted_at_ms": 1794962900518,
+                  "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+                  "manifest_digest": "3f8a2c265141233fd2268b2d8a0ae9cdd23894fa62d0a7e0f6a7acfd0e7cd680",
+                  "portrait_digest": "12d5d510056dc4831022c18465fa88357bf5fdcba261675d6adbc738926b8f3e",
+                  "source_record_digest": "869ba5bb8aa70fc83de4b13df324267a965780f974164bf298e378f8f32efb4a"
+                },
+                "class": "middle",
+                "condition_at_cutoff": {
+                  "version": 1,
+                  "projector_id": "slug-fighter-condition-candidate-v1",
+                  "dna_version": 1,
+                  "seed": "68b5091782ff69e134a177f1740bc9403bf7580740505eea5472f057c93ab8c9",
+                  "born_at_ms": 1794962900023,
+                  "as_of_ms": 1795896000000,
+                  "age_weeks": 1,
+                  "phase": "prime",
+                  "elapsed_decline_weeks": 0,
+                  "prime_remaining_weeks": 31,
+                  "prime_remaining_ms": 18420500023,
+                  "career_remaining_ms": 37774100023,
+                  "pro_xp": 0,
+                  "aged_attributes_tenths": {
+                    "power": 610,
+                    "speed": 390,
+                    "chin": 490,
+                    "stamina": 460,
+                    "skill": 610
+                  },
+                  "league_attributes_tenths": {
+                    "power": 610,
+                    "speed": 390,
+                    "chin": 490,
+                    "stamina": 460,
+                    "skill": 610
+                  },
+                  "rating_hundredths": 23550
+                },
+                "eligibility": "eligible"
+              }
+            ]
+          },
+          {
+            "version": 1,
+            "participant_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+            "entry_store_id": "49516894f1047b860b22eb35b43023ce2434a0a29d4d0065f8a9d6562a9deb84",
+            "owner": {
+              "ownership_basis": "candidate_assignment",
+              "account_authority_id": "1f1a174df7de619495774f261c7933adbaff55f9ae2e0bac89875ce8f7473d45",
+              "account_id": "6e25d3797227d01460c479052fe61d574baf1617fbd3fd1d57f48ab164dfc9c3",
+              "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5"
+            },
+            "roster": {
+              "version": 1,
+              "store_id": "7302b0c4f9a608487cce1c12dbe3177712a0ed6c206fb5472a57ad736f3b7a32",
+              "cutoff_ms": 1795896000000,
+              "committed_count": 2,
+              "last_sequence": 2,
+              "history_digest": "0de591b31d54f33fb84c8b54edbe1a533fb85df6a58ed9ef7ec2dc33040df464",
+              "revision": 2,
+              "slots": [
+                "067121d1f9be9eee0eab884de24e24df996e3b15d4385f5123930c6405d71fa3",
+                "9a19e8a11affad0fc5f5987a6e800009ff1d91dbdd02e6530baac42dc92747f5",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "assigned_at_ms": [
+                1795291140000,
+                1795291140000,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            "entry": {
+              "version": 1,
+              "store_id": "49516894f1047b860b22eb35b43023ce2434a0a29d4d0065f8a9d6562a9deb84",
+              "event": {
+                "version": 1,
+                "event_id": "8c2e66c84b950c2f4730a8a149bc8327f3dc508b0450c5bae0763d5880fb9a1b",
+                "namespace_id": "8b7c5e221bc3f43f55127591922f7ce5406880fcc69d0d8cdb39c11cef4d527b",
+                "calendar_id": "1351d63c43cd08d760ca4a88c60bc7ecee9dcb0e331961f93b16d95425385450",
+                "rules_id": "fdd7e3f43df60986cea1d5eeb8a0f3512c30c73229890b84a213d057b16b44e2",
+                "saturday": "2026-11-28",
+                "cutoff_ms": 1795896000000
+              },
+              "entry_id": "a895e329f118aa2724f125e18bddfb20cbdbb54b9dd0a22d35261af9e6c63f56",
+              "committed_count": 1,
+              "last_sequence": 2,
+              "history_digest": "50240da0a46a45deb5a8987afbe8ecf7595dab472cee3da6bfb83ee18c6e107a",
+              "latest_receipt": {
+                "version": 1,
+                "store_id": "49516894f1047b860b22eb35b43023ce2434a0a29d4d0065f8a9d6562a9deb84",
+                "entry_id": "a895e329f118aa2724f125e18bddfb20cbdbb54b9dd0a22d35261af9e6c63f56",
+                "event": {
+                  "version": 1,
+                  "event_id": "8c2e66c84b950c2f4730a8a149bc8327f3dc508b0450c5bae0763d5880fb9a1b",
+                  "namespace_id": "8b7c5e221bc3f43f55127591922f7ce5406880fcc69d0d8cdb39c11cef4d527b",
+                  "calendar_id": "1351d63c43cd08d760ca4a88c60bc7ecee9dcb0e331961f93b16d95425385450",
+                  "rules_id": "fdd7e3f43df60986cea1d5eeb8a0f3512c30c73229890b84a213d057b16b44e2",
+                  "saturday": "2026-11-28",
+                  "cutoff_ms": 1795896000000
+                },
+                "operation_id": "36bde991e4b314e64ffff867cd0580682289335f73d661f7a996491925631090",
+                "operation_sequence": 2,
+                "generation": 2,
+                "view_id": "2dbff9b9e7f37eb344fc2fc439cc61485f22a9fa286f9d1c047e4c37a4b63b66",
+                "action": "replace",
+                "previous_revision": 0,
+                "revision": 1,
+                "roster_revision": 2,
+                "stable_checkpoint": 27,
+                "observed_source_count": 27,
+                "committed_at_ms": 1795895940000,
+                "members": [
+                  {
+                    "slot": 1,
+                    "assignment": {
+                      "version": 1,
+                      "sequence": 2,
+                      "prospect_id": "067121d1f9be9eee0eab884de24e24df996e3b15d4385f5123930c6405d71fa3",
+                      "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+                      "work_hash": "ebb1c933711dda7937634d80933ba6932a98a847d0914a7eb44aa1431bd4ab78",
+                      "born_at_ms": 1794962881028,
+                      "accepted_at_ms": 1794962883835,
+                      "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+                      "manifest_digest": "8fb40f35051eba45a9ff144088a129637985d429f8857b6912031efab7d769d4",
+                      "portrait_digest": "228a8872e8b2c87ebfdc6b527ee8e68eca5c3afe7d0fc8b0f71e130c59e2f09b",
+                      "source_record_digest": "06fad350ad91ec4e0de8294f09ee80921c9f70c90a744ba8f6b228696a6571db"
+                    },
+                    "class": "middle",
+                    "condition_at_save": {
+                      "version": 1,
+                      "projector_id": "slug-fighter-condition-candidate-v1",
+                      "dna_version": 1,
+                      "seed": "ebb1c933711dda7937634d80933ba6932a98a847d0914a7eb44aa1431bd4ab78",
+                      "born_at_ms": 1794962881028,
+                      "as_of_ms": 1795895940000,
+                      "age_weeks": 1,
+                      "phase": "prime",
+                      "elapsed_decline_weeks": 0,
+                      "prime_remaining_weeks": 45,
+                      "prime_remaining_ms": 26887741028,
+                      "career_remaining_ms": 36564541028,
+                      "pro_xp": 0,
+                      "aged_attributes_tenths": {
+                        "power": 960,
+                        "speed": 730,
+                        "chin": 580,
+                        "stamina": 540,
+                        "skill": 610
+                      },
+                      "league_attributes_tenths": {
+                        "power": 960,
+                        "speed": 730,
+                        "chin": 580,
+                        "stamina": 540,
+                        "skill": 610
+                      },
+                      "rating_hundredths": 36050
+                    }
+                  },
+                  {
+                    "slot": 2,
+                    "assignment": {
+                      "version": 1,
+                      "sequence": 1,
+                      "prospect_id": "9a19e8a11affad0fc5f5987a6e800009ff1d91dbdd02e6530baac42dc92747f5",
+                      "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+                      "work_hash": "80531663bfb857aa39640e106ed45b775ebd34228c176e926164a4f0f8e24a4c",
+                      "born_at_ms": 1794962881028,
+                      "accepted_at_ms": 1794962881522,
+                      "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+                      "manifest_digest": "a9bbe705b52448cd963a1ff0ae4db0fdfd089fef2b85660cf13c736d737a11e2",
+                      "portrait_digest": "15749a0b8a235f11927ab311cf2126db00c740ab773946d91d699fbf989dc3a7",
+                      "source_record_digest": "189af21dfb9352360e93a840523d9ff9536b8580f19a79b34ddba049acfe9dce"
+                    },
+                    "class": "light_heavy",
+                    "condition_at_save": {
+                      "version": 1,
+                      "projector_id": "slug-fighter-condition-candidate-v1",
+                      "dna_version": 1,
+                      "seed": "80531663bfb857aa39640e106ed45b775ebd34228c176e926164a4f0f8e24a4c",
+                      "born_at_ms": 1794962881028,
+                      "as_of_ms": 1795895940000,
+                      "age_weeks": 1,
+                      "phase": "prime",
+                      "elapsed_decline_weeks": 0,
+                      "prime_remaining_weeks": 50,
+                      "prime_remaining_ms": 29911741028,
+                      "career_remaining_ms": 49265341028,
+                      "pro_xp": 0,
+                      "aged_attributes_tenths": {
+                        "power": 190,
+                        "speed": 580,
+                        "chin": 870,
+                        "stamina": 350,
+                        "skill": 660
+                      },
+                      "league_attributes_tenths": {
+                        "power": 190,
+                        "speed": 580,
+                        "chin": 870,
+                        "stamina": 350,
+                        "skill": 660
+                      },
+                      "rating_hundredths": 24820
+                    }
+                  }
+                ]
+              }
+            },
+            "members": [
+              {
+                "slot": 1,
+                "slot_assigned_at_ms": 1795291140000,
+                "assignment": {
+                  "version": 1,
+                  "sequence": 2,
+                  "prospect_id": "067121d1f9be9eee0eab884de24e24df996e3b15d4385f5123930c6405d71fa3",
+                  "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+                  "work_hash": "ebb1c933711dda7937634d80933ba6932a98a847d0914a7eb44aa1431bd4ab78",
+                  "born_at_ms": 1794962881028,
+                  "accepted_at_ms": 1794962883835,
+                  "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+                  "manifest_digest": "8fb40f35051eba45a9ff144088a129637985d429f8857b6912031efab7d769d4",
+                  "portrait_digest": "228a8872e8b2c87ebfdc6b527ee8e68eca5c3afe7d0fc8b0f71e130c59e2f09b",
+                  "source_record_digest": "06fad350ad91ec4e0de8294f09ee80921c9f70c90a744ba8f6b228696a6571db"
+                },
+                "class": "middle",
+                "condition_at_cutoff": {
+                  "version": 1,
+                  "projector_id": "slug-fighter-condition-candidate-v1",
+                  "dna_version": 1,
+                  "seed": "ebb1c933711dda7937634d80933ba6932a98a847d0914a7eb44aa1431bd4ab78",
+                  "born_at_ms": 1794962881028,
+                  "as_of_ms": 1795896000000,
+                  "age_weeks": 1,
+                  "phase": "prime",
+                  "elapsed_decline_weeks": 0,
+                  "prime_remaining_weeks": 45,
+                  "prime_remaining_ms": 26887681028,
+                  "career_remaining_ms": 36564481028,
+                  "pro_xp": 0,
+                  "aged_attributes_tenths": {
+                    "power": 960,
+                    "speed": 730,
+                    "chin": 580,
+                    "stamina": 540,
+                    "skill": 610
+                  },
+                  "league_attributes_tenths": {
+                    "power": 960,
+                    "speed": 730,
+                    "chin": 580,
+                    "stamina": 540,
+                    "skill": 610
+                  },
+                  "rating_hundredths": 36050
+                },
+                "eligibility": "eligible"
+              },
+              {
+                "slot": 2,
+                "slot_assigned_at_ms": 1795291140000,
+                "assignment": {
+                  "version": 1,
+                  "sequence": 1,
+                  "prospect_id": "9a19e8a11affad0fc5f5987a6e800009ff1d91dbdd02e6530baac42dc92747f5",
+                  "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+                  "work_hash": "80531663bfb857aa39640e106ed45b775ebd34228c176e926164a4f0f8e24a4c",
+                  "born_at_ms": 1794962881028,
+                  "accepted_at_ms": 1794962881522,
+                  "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+                  "manifest_digest": "a9bbe705b52448cd963a1ff0ae4db0fdfd089fef2b85660cf13c736d737a11e2",
+                  "portrait_digest": "15749a0b8a235f11927ab311cf2126db00c740ab773946d91d699fbf989dc3a7",
+                  "source_record_digest": "189af21dfb9352360e93a840523d9ff9536b8580f19a79b34ddba049acfe9dce"
+                },
+                "class": "light_heavy",
+                "condition_at_cutoff": {
+                  "version": 1,
+                  "projector_id": "slug-fighter-condition-candidate-v1",
+                  "dna_version": 1,
+                  "seed": "80531663bfb857aa39640e106ed45b775ebd34228c176e926164a4f0f8e24a4c",
+                  "born_at_ms": 1794962881028,
+                  "as_of_ms": 1795896000000,
+                  "age_weeks": 1,
+                  "phase": "prime",
+                  "elapsed_decline_weeks": 0,
+                  "prime_remaining_weeks": 50,
+                  "prime_remaining_ms": 29911681028,
+                  "career_remaining_ms": 49265281028,
+                  "pro_xp": 0,
+                  "aged_attributes_tenths": {
+                    "power": 190,
+                    "speed": 580,
+                    "chin": 870,
+                    "stamina": 350,
+                    "skill": 660
+                  },
+                  "league_attributes_tenths": {
+                    "power": 190,
+                    "speed": 580,
+                    "chin": 870,
+                    "stamina": 350,
+                    "skill": 660
+                  },
+                  "rating_hundredths": 24820
+                },
+                "eligibility": "eligible"
+              }
+            ]
+          }
+        ]
+      },
+      "snapshot_digest": "01f5911c6f199b5f6b4c385199b0e6c834ee840ed86fc3c9144da43787ea7fb7",
+      "captures": [
+        {
+          "version": 1,
+          "participant_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+          "stable_fence": {
+            "version": 1,
+            "store_id": "cd271a55cb9e5596b6af30b17b6a0d918fcbe5733557afc6c505c5b4d37b3f5b",
+            "cutoff_ms": 1795896000000,
+            "observed_at_ms": 1795896001000,
+            "operation_count": 1
+          },
+          "entry_fence": {
+            "version": 1,
+            "store_id": "ee94f367c298de7717292d8da4842df33c2dd0925ffdc5fabbc5404d7a07f64a",
+            "cutoff_ms": 1795896000000,
+            "observed_at_ms": 1795896001000,
+            "operation_count": 2
+          },
+          "captured_at_ms": 1795896001000
+        },
+        {
+          "version": 1,
+          "participant_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+          "stable_fence": {
+            "version": 1,
+            "store_id": "7302b0c4f9a608487cce1c12dbe3177712a0ed6c206fb5472a57ad736f3b7a32",
+            "cutoff_ms": 1795896000000,
+            "observed_at_ms": 1795896001000,
+            "operation_count": 2
+          },
+          "entry_fence": {
+            "version": 1,
+            "store_id": "49516894f1047b860b22eb35b43023ce2434a0a29d4d0065f8a9d6562a9deb84",
+            "cutoff_ms": 1795896000000,
+            "observed_at_ms": 1795896001000,
+            "operation_count": 2
+          },
+          "captured_at_ms": 1795896001000
+        }
+      ],
+      "completed_at_ms": 1795896001000
+    },
+    "declaration": {
+      "version": 1,
+      "declaration": {
+        "version": 1,
+        "event_key": "d9764a4a35fe4a0fe5e22ff0100b1a0caf6fc483c99f85674d93a6c28c172594",
+        "store_id": "324aaa8a994f7405ed05dc0caa84980479ea5f3fcacdcdde48cd4e2496689f63",
+        "source_store_id": "a7482072a3c38dfb5390dec9f288b635ea56ece6cde3c42ee2b57ac7ea6fda53",
+        "event": {
+          "version": 1,
+          "event_id": "41c4c51720c5310e682e3a3368c4b433a327e76be639f4e448c10c97ac5b90ff",
+          "source_event_id": "8c2e66c84b950c2f4730a8a149bc8327f3dc508b0450c5bae0763d5880fb9a1b",
+          "store_id": "a7482072a3c38dfb5390dec9f288b635ea56ece6cde3c42ee2b57ac7ea6fda53",
+          "namespace_id": "8b7c5e221bc3f43f55127591922f7ce5406880fcc69d0d8cdb39c11cef4d527b",
+          "calendar_id": "1351d63c43cd08d760ca4a88c60bc7ecee9dcb0e331961f93b16d95425385450",
+          "rules_id": "acfcbf250caefb72b6ac6f08f89a61b782a47fc6024fce3a95436c1cfae0c6f8",
+          "saturday": "2026-11-28",
+          "cutoff_ms": 1795896000000,
+          "incident_deadline_ms": 1796500800000
+        },
+        "snapshot_digest": "01f5911c6f199b5f6b4c385199b0e6c834ee840ed86fc3c9144da43787ea7fb7",
+        "receipt_digest": "80c6bdb93346d9fdd59400055fa678c3ec387c4fb97365759cb091608d76f290",
+        "publisher_chain_id": "5bb59c30f0e494a1ad2ca0caf78e5243ff2ea507bb695a0e024c6a69b1496c37",
+        "network": 1397511495,
+        "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "floor_height": 0,
+        "floor_hash": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "rules_id": "c2b0bba6389dd571588eb1f0882c206c57ebab31b6f8fb3e886c6a859eb32226",
+        "publisher_public_key": "26f705c8b914e8608e725221b277e481ce57c8b6f09dbf21423b949d4939e29a",
+        "checkpoint_public_key": "f1bee65bdc82723fbd180db7a0edb48354a9b8df038e6875b905cc2173a794fa"
+      },
+      "signature": "2082577ecf19f9626182c4503be7bfff028db2ea8fcbafd6e0f560cafe29c6747216f3340a9fd20c614089931630b88a5b1b49612995b6642cd180048ef16f03"
+    },
+    "anchor": {
+      "height": 114,
+      "hash": "7c97e32cec622921f49a2e4b85570483faa1171cfd67188c0dbff22468672a52",
+      "header": "000000200299071cfd1ca02e681e47c8a31dd5b91d750fa47883c29ef96de452718ce500fbec6392886add8972a057b979f36da295e001ff6fc96487234457bc0d43fa024f2bfd6affff7f2002000000",
+      "txid": "4c09fd934a1ec7454c48c63105dd8287de6f40c5d59cf1910cee1920524c3511",
+      "raw_tx_digest": "9645aa54b09f1fc3fcf3ada103458fc7ec7d8670dfd8f48efd1c4bb0e19f2f3a",
+      "raw_tx_size": 276,
+      "tx_count": 2,
+      "tx_index": 1,
+      "output_index": 0,
+      "payload": "534c55475345454401d9764a4a35fe4a0fe5e22ff0100b1a0caf6fc483c99f85674d93a6c28c172594ce4b58e3e5c7134595ed792bb8ea587ec40353705820f03a99385a881f8207a5",
+      "merkle_branch": [
+        "f478e7efa3b43d0f11b7bbfc02bcba4c1f204c1d4f2be16ff6a458a47d08ebb2"
+      ]
+    },
+    "target": {
+      "height": 115,
+      "hash": "35290cf4b264806571c85be93752f41f42787c75497a2604f42baa933ec0d4f9",
+      "header": "00000020522a676824f2bf0d8c1867fd1c17a1fa830457854b2e9af4212962ec2ce3977c1552dfb46548b8db29b7a8a6a84cd6ad7b3eb93c05be50e39587ed8241b75240502bfd6affff7f2001000000",
+      "observed_at_ms": 1795896001000,
+      "observed_tip": {
+        "height": 116,
+        "hash": "2d943511f6aa66939363b1339e29f1dfd624bae16fa599b1ad0d2fa4314cb179"
+      }
+    },
+    "finality": {
+      "checkpoint": {
+        "version": 1,
+        "network": 1397511495,
+        "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "height": 115,
+        "hash": "35290cf4b264806571c85be93752f41f42787c75497a2604f42baa933ec0d4f9",
+        "signature": "c13997c1b9c76afcd87ecf226810fed55045ad63ae4e6389b1d9390acc180d9e042109828c8878be8f0c3118cf454a44233395c7103f53f0f855e41afc07310c"
+      },
+      "observed_at_ms": 1795896001000,
+      "observed_tip": {
+        "height": 175,
+        "hash": "158e260e06285eaf4ed5630788cea25816ed667663dcc5a8b0c34a8c4d28ae72"
+      },
+      "target_descendants": 60
+    }
+  },
+  "source_digest": "c70ff0ee03e1c9eab751d81ccc62e1f9d27a8a0c7eebe215fb494d62399a145e",
+  "plan": {
+    "version": 1,
+    "card_id": "db56365091c45d91b2a972346955ac499701d2e1a1bb49492c74262dd59ea4ab",
+    "input_id": "e5c064ac32eae96b80b49c26558856e16ec66503ca8553620ed3d717276ca00f",
+    "seed": "ecd5ae815f4e0d2551d23a352a664c56c1ad8e453b4eb47d81c907452e7aaf49",
+    "record_basis": "candidate_zero_record_no_results_authority",
+    "counts": {
+      "total_count": 3,
+      "eligible_count": 3,
+      "paired_count": 2,
+      "unmatched_count": 1,
+      "reasons": {
+        "retired_at_cutoff": 0,
+        "not_rostered_at_cutoff": 0,
+        "no_opponent_in_class": 1,
+        "opponent_ineligible_at_cutoff": 0,
+        "outside_rating_band": 0
+      }
+    },
+    "bout_count": 1,
+    "gyms": [
+      {
+        "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+        "counts": {
+          "total_count": 1,
+          "eligible_count": 1,
+          "paired_count": 1,
+          "unmatched_count": 0,
+          "reasons": {
+            "retired_at_cutoff": 0,
+            "not_rostered_at_cutoff": 0,
+            "no_opponent_in_class": 0,
+            "opponent_ineligible_at_cutoff": 0,
+            "outside_rating_band": 0
+          }
+        }
+      },
+      {
+        "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+        "counts": {
+          "total_count": 2,
+          "eligible_count": 2,
+          "paired_count": 1,
+          "unmatched_count": 1,
+          "reasons": {
+            "retired_at_cutoff": 0,
+            "not_rostered_at_cutoff": 0,
+            "no_opponent_in_class": 1,
+            "opponent_ineligible_at_cutoff": 0,
+            "outside_rating_band": 0
+          }
+        }
+      }
+    ],
+    "entrants": [
+      {
+        "prospect_id": "22a2c799c122ac002a3ca277e0f7f84dd89c8b5f1fe1e1a18e098b1aad27e717",
+        "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+        "account_id": "ce595facc5e523469b498c89b4ae1bc2c7a7cf07b94063a217a7f263f779d5ab",
+        "display_name": "Walter Keller",
+        "class": "middle",
+        "rating_hundredths": 23550,
+        "cutoff_eligibility": "eligible",
+        "professional_record": {
+          "wins": 0,
+          "losses": 0,
+          "draws": 0
+        },
+        "state": "paired",
+        "reason": "",
+        "bout_id": "a6a89c7b74fb68d948bab376be179b8ad2a8dd335f5bd000888850e51da3c38b"
+      },
+      {
+        "prospect_id": "067121d1f9be9eee0eab884de24e24df996e3b15d4385f5123930c6405d71fa3",
+        "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+        "account_id": "6e25d3797227d01460c479052fe61d574baf1617fbd3fd1d57f48ab164dfc9c3",
+        "display_name": "Milo Crane",
+        "class": "middle",
+        "rating_hundredths": 36050,
+        "cutoff_eligibility": "eligible",
+        "professional_record": {
+          "wins": 0,
+          "losses": 0,
+          "draws": 0
+        },
+        "state": "paired",
+        "reason": "",
+        "bout_id": "a6a89c7b74fb68d948bab376be179b8ad2a8dd335f5bd000888850e51da3c38b"
+      },
+      {
+        "prospect_id": "9a19e8a11affad0fc5f5987a6e800009ff1d91dbdd02e6530baac42dc92747f5",
+        "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+        "account_id": "6e25d3797227d01460c479052fe61d574baf1617fbd3fd1d57f48ab164dfc9c3",
+        "display_name": "Emil Marsh",
+        "class": "light_heavy",
+        "rating_hundredths": 24820,
+        "cutoff_eligibility": "eligible",
+        "professional_record": {
+          "wins": 0,
+          "losses": 0,
+          "draws": 0
+        },
+        "state": "unmatched",
+        "reason": "no_opponent_in_class",
+        "bout_id": ""
+      }
+    ],
+    "bouts": [
+      {
+        "bout_id": "a6a89c7b74fb68d948bab376be179b8ad2a8dd335f5bd000888850e51da3c38b",
+        "class": "middle",
+        "corner_a": "067121d1f9be9eee0eab884de24e24df996e3b15d4385f5123930c6405d71fa3",
+        "corner_b": "22a2c799c122ac002a3ca277e0f7f84dd89c8b5f1fe1e1a18e098b1aad27e717",
+        "seed": "94c4524bfb86d3e22aa35a86472f3a23076761a919f3f4341c53386029cc74dc"
+      }
+    ]
+  },
+  "created_at_ms": 1795896001000
+}

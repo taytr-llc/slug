@@ -1,0 +1,114 @@
+{
+  "version": 1,
+  "state": "ready",
+  "error": "",
+  "view": {
+    "version": 1,
+    "view_id": "29955d8af82b5635648c541f35dfa5a534a5a4f8ec01a0b0f29388533cfb49fa",
+    "account_authority_id": "1f1a174df7de619495774f261c7933adbaff55f9ae2e0bac89875ce8f7473d45",
+    "account_id": "6e25d3797227d01460c479052fe61d574baf1617fbd3fd1d57f48ab164dfc9c3",
+    "generation": 2,
+    "authority_pin": {
+      "version": 5,
+      "network": 1397511495,
+      "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+      "authority_id": "8180249161294a6bb9c7e4b1428a3cd4de45d5a9c63a0d35e7c625a94832a8dd",
+      "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303"
+    },
+    "authority_origin": "http://127.0.0.1:55617",
+    "transport_trust_id": "ed66ffdc4b9b6cd8b00c825642d9e179d63acfd87f65df8801c49906b18717ac"
+  },
+  "store_id": "8e15b2c1fb78c9b2a49abe17e3b1f9710aa11941dabdf65e44f1e4cb6bc7ad37",
+  "pin": {
+    "version": 1,
+    "source_store_id": "324aaa8a994f7405ed05dc0caa84980479ea5f3fcacdcdde48cd4e2496689f63",
+    "source_pin": {
+      "version": 1,
+      "source_store_id": "a7482072a3c38dfb5390dec9f288b635ea56ece6cde3c42ee2b57ac7ea6fda53",
+      "source_pin": {
+        "version": 1,
+        "calendar_id": "1351d63c43cd08d760ca4a88c60bc7ecee9dcb0e331961f93b16d95425385450",
+        "rules_id": "acfcbf250caefb72b6ac6f08f89a61b782a47fc6024fce3a95436c1cfae0c6f8",
+        "participants": [
+          {
+            "version": 1,
+            "namespace_id": "8b7c5e221bc3f43f55127591922f7ce5406880fcc69d0d8cdb39c11cef4d527b",
+            "calendar_id": "1351d63c43cd08d760ca4a88c60bc7ecee9dcb0e331961f93b16d95425385450",
+            "rules_id": "fdd7e3f43df60986cea1d5eeb8a0f3512c30c73229890b84a213d057b16b44e2",
+            "stable_store_id": "cd271a55cb9e5596b6af30b17b6a0d918fcbe5733557afc6c505c5b4d37b3f5b",
+            "stable_pin": {
+              "version": 1,
+              "account_authority_id": "1f1a174df7de619495774f261c7933adbaff55f9ae2e0bac89875ce8f7473d45",
+              "account_id": "ce595facc5e523469b498c89b4ae1bc2c7a7cf07b94063a217a7f263f779d5ab",
+              "identity": {
+                "network": 1397511495,
+                "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+                "profile": "slug-phase-a-fixture-bip39-v1",
+                "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+                "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+                "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+              },
+              "source": {
+                "version": 5,
+                "network": 1397511495,
+                "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+                "authority_id": "c2aa5bde3e1b8dede5080dcd287454714e32f8c893f24d59792c8ed02b0597e4",
+                "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303"
+              },
+              "condition_version": 1,
+              "projector_id": "slug-fighter-condition-candidate-v1"
+            }
+          },
+          {
+            "version": 1,
+            "namespace_id": "8b7c5e221bc3f43f55127591922f7ce5406880fcc69d0d8cdb39c11cef4d527b",
+            "calendar_id": "1351d63c43cd08d760ca4a88c60bc7ecee9dcb0e331961f93b16d95425385450",
+            "rules_id": "fdd7e3f43df60986cea1d5eeb8a0f3512c30c73229890b84a213d057b16b44e2",
+            "stable_store_id": "7302b0c4f9a608487cce1c12dbe3177712a0ed6c206fb5472a57ad736f3b7a32",
+            "stable_pin": {
+              "version": 1,
+              "account_authority_id": "1f1a174df7de619495774f261c7933adbaff55f9ae2e0bac89875ce8f7473d45",
+              "account_id": "6e25d3797227d01460c479052fe61d574baf1617fbd3fd1d57f48ab164dfc9c3",
+              "identity": {
+                "network": 1397511495,
+                "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+                "profile": "slug-phase-a-fixture-bip39-v1",
+                "root_public_key": "JgduaQiYjRcnjcD9t1MfTP1qo8eWaAWPQtS9nChXwtAeyTsoEGVZ8SjVqa5qxxvvKqX8tqC77wMSjaMHXNY8JSYEASdzX6PT31ktXqKPJvkhyy31",
+                "gym_public_key": "03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519",
+                "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5"
+              },
+              "source": {
+                "version": 5,
+                "network": 1397511495,
+                "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+                "authority_id": "8180249161294a6bb9c7e4b1428a3cd4de45d5a9c63a0d35e7c625a94832a8dd",
+                "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303"
+              },
+              "condition_version": 1,
+              "projector_id": "slug-fighter-condition-candidate-v1"
+            }
+          }
+        ]
+      },
+      "publisher_gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+      "publisher_account_id": "6e25d3797227d01460c479052fe61d574baf1617fbd3fd1d57f48ab164dfc9c3",
+      "publisher_source_authority_id": "8180249161294a6bb9c7e4b1428a3cd4de45d5a9c63a0d35e7c625a94832a8dd",
+      "publisher_chain_id": "5bb59c30f0e494a1ad2ca0caf78e5243ff2ea507bb695a0e024c6a69b1496c37",
+      "network": 1397511495,
+      "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+      "floor_height": 0,
+      "floor_hash": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+      "publisher_public_key": "26f705c8b914e8608e725221b277e481ce57c8b6f09dbf21423b949d4939e29a",
+      "checkpoint_public_key": "f1bee65bdc82723fbd180db7a0edb48354a9b8df038e6875b905cc2173a794fa",
+      "funding_public_key": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+      "funding_script": "0014751e76e8199196d454941c45d1b3a323f1433bd6",
+      "rules_id": "c2b0bba6389dd571588eb1f0882c206c57ebab31b6f8fb3e886c6a859eb32226"
+    },
+    "rules_id": "879f012a9520a8c3066b0a90e47f7069472a2d7b8ab9b32f3b80d98495eed76d"
+  },
+  "source_created_at_ms": 1795291140000,
+  "created_at_ms": 1795291140000,
+  "active_job_id": "",
+  "queued_job_id": "",
+  "last_job_id": "9812ebec35ba64c514d2c99505f09090938088d82d386121181e12ad83ec5d15"
+}

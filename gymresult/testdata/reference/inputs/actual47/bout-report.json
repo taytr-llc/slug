@@ -1,0 +1,102 @@
+{
+  "status": "passed",
+  "scope": "Independent actual owned-chain candidate bout arithmetic and exported native evidence; no official result/XP, GUI or public-chain claim.",
+  "run": "/Users/taytrrip/slug/artifacts/set47/bout-chain-attempt2",
+  "run_report": "/Users/taytrrip/slug/set47-actual-bouts-attempt2.json",
+  "run_report_sha256": "b0b35b18e60a8a8f4d100d442a9e1729a3904302a385e9ddef89df78a818a176",
+  "source_freeze_sha256": "e430a629cd42ef05c762dd29d45325219ff738214cb810750db2041be3c5b750",
+  "input_sha256": {
+    "/Users/taytrrip/slug/set47-reference-freeze.json": "fa5e7c2df167779f74a192dbbc20cd487f5b36617e752146a038a2b9c7da643c",
+    "/Users/taytrrip/slug/set46-card-reference/file_index.json": "c758070ad3a09427aa45b99c3e93c4d8860b6a9fcd41a70cf0de8c86e4c22ed4",
+    "/Users/taytrrip/slug/set47-actual-bouts-attempt2.json": "b0b35b18e60a8a8f4d100d442a9e1729a3904302a385e9ddef89df78a818a176",
+    "/Users/taytrrip/slug/set47-composition-source-freeze.json": "e430a629cd42ef05c762dd29d45325219ff738214cb810750db2041be3c5b750",
+    "/Users/taytrrip/slug/set47-actual-harness-independent-review.json": "c9f1ba5c972fc8f18631a10a6f9621b85d40cfe512b185df323329286276d98f",
+    "/Users/taytrrip/slug/artifacts/set47/bout-chain-attempt2/public-bout-prepared-card.json": "c6601c560678aef290f34030e35cb9769a45ba597c1f2f3646a36a045666fdfc",
+    "/Users/taytrrip/slug/artifacts/set47/bout-chain-attempt2/public-bout-native-first.json": "a6a9cd39893eec9b38e8fb4d790ee02dc260c935b493ed9f6ce89e7850540275",
+    "/Users/taytrrip/slug/artifacts/set47/bout-chain-attempt2/public-bout-native-historical.json": "67f06d05a6c30451aa018592079564c2cbbeefe7ff34d35d0ceb02a9426f7be0",
+    "/Users/taytrrip/slug/artifacts/set47/bout-chain-attempt2/public-bout-conflict.json": "db137e5d569f1ce87135c296c389567480a34c355fd24d9100252273768abab4",
+    "/Users/taytrrip/slug/artifacts/set47/bout-chain-attempt2/public-bout-preparation-counts.json": "613db58382ce37d233e0bf772c6f988d2b9b70c9e9378cf7b2352a7ef7365492",
+    "/Users/taytrrip/slug/artifacts/set47/bout-chain-attempt2/public-card-result.json": "b4349aab352a8e33400cf6d03e1c57beb680f72add2fcc18cbccd8ba37f17282",
+    "/Users/taytrrip/slug/artifacts/set47/bout-chain-attempt2/public-bout-prepared-views.json": "8cb0b76773f8e87b3d6172e95b29e8d5e1d8ca9a188dea0ff57e5f98585d2cda",
+    "/Users/taytrrip/slug/artifacts/set47/independent-bouts-attempt2/chain-report.json": "dc947379f104a988b96fe45063b6a03538fb5a2a260b526021a5c439990032e7",
+    "/Users/taytrrip/slug/artifacts/set47/independent-bouts-attempt2/seed-projection.json": "964a5e06675d239f73e9fa01c4f3941ecc1c3a38bd40e4537c53b152fa30e8c7",
+    "/Users/taytrrip/slug/artifacts/set47/bout-chain-attempt2/public-chain-evidence.json": "3a8416d1b27fd02c42ac215e8472e4c5a7f5ab72464e0ccd9ed2683b622ace0e"
+  },
+  "reference_freeze_sha256": "fa5e7c2df167779f74a192dbbc20cd487f5b36617e752146a038a2b9c7da643c",
+  "chain_checker_sha256": "3a61619838981765091431eff825564760f2946973b4984134f046c1de76c76b",
+  "chain_report": "/Users/taytrrip/slug/artifacts/set47/independent-bouts-attempt2/chain-report.json",
+  "chain_report_sha256": "dc947379f104a988b96fe45063b6a03538fb5a2a260b526021a5c439990032e7",
+  "normal_argon_headers": 176,
+  "inherited_admission_proof_count": 3,
+  "new_admission_argon_attempts": 0,
+  "composition_count": 1,
+  "exact_native_rows": [
+    {
+      "historical": false,
+      "fixture": "zero256",
+      "view_id": "b199a3400ee224e61d17719a169e9841c7a831b2b045331c4863ab14bf390d4a",
+      "first_job_id": "2b79030fbbf1c75fcf2e69421aa04ba5d78e3e175e383135053efeb2a6a82583",
+      "replayed": false
+    },
+    {
+      "historical": false,
+      "fixture": "incrementing256",
+      "view_id": "e2e72f8da3e26592f2440ef7c86fb606a5dd150a7f3e112f622e9305a5cbacb5",
+      "first_job_id": "77e54277bf1d0a2d5935b054ec1f93d4d483b2d2e81775c93f4a605c00ec0070",
+      "replayed": true
+    },
+    {
+      "historical": true,
+      "fixture": "zero256",
+      "view_id": "dc58b465aa8be57f9ea37dd39b0870497510e75c47def0457768c0e375fd10a5",
+      "first_job_id": "82ab3d7988f8409540fc2b6e2505e6466ed60b4e7b4ad03a58b192abc992ebeb",
+      "replayed": true
+    },
+    {
+      "historical": true,
+      "fixture": "incrementing256",
+      "view_id": "5caeb3df76aeadd4f7d745186646b6c4386ae08b0c3a82baab43bb174c827c05",
+      "first_job_id": "e2c6b69d7c1c613266b863883ceacebac0cd7bf3650ff0395916acc6bb18fbe9",
+      "replayed": true
+    }
+  ],
+  "exact_portrait_responses": 16,
+  "card_id": "db56365091c45d91b2a972346955ac499701d2e1a1bb49492c74262dd59ea4ab",
+  "bout_id": "a6a89c7b74fb68d948bab376be179b8ad2a8dd335f5bd000888850e51da3c38b",
+  "input_id": "20d7135985d322a51dbc51b63821d039247e47e23d718756c616444251ebf07a",
+  "result_digest": "61bcce83519583a73493817499660accf2b54b8452dfde2a7d3c61041da07adc",
+  "record_digest": "aca90a6a4643493ab384218586608557e9288910cca3edbd0de9bd3d3951479f",
+  "all_original_assignments_and_birth_exact": true,
+  "historical_record_unchanged": true,
+  "source_preparation_mode": "authenticated_core_seed_with_owned_normal_nodes_no_admission_worker",
+  "automatic_admissions": 0,
+  "core_phase_accounts": [
+    {
+      "core_account_id": "6e25d3797227d01460c479052fe61d574baf1617fbd3fd1d57f48ab164dfc9c3",
+      "core_account_generation": 2,
+      "core_account_hold_until_ms": 1795377601000,
+      "accepted_before": 27,
+      "accepted_after": 27
+    },
+    {
+      "core_account_id": "6e25d3797227d01460c479052fe61d574baf1617fbd3fd1d57f48ab164dfc9c3",
+      "core_account_generation": 3,
+      "core_account_hold_until_ms": 1795982401000,
+      "accepted_before": 27,
+      "accepted_after": 27
+    }
+  ],
+  "gui_exercised": false,
+  "limitations": [
+    "Source preparation and conflict observation use actual fixture account authorization plus concrete owned normal nodes with no admission worker. This is authenticated core Seed preparation, not helper Seed lane scheduling acceptance; normal parent/native Bout Run and replay remain separately exercised.",
+    "Normal Argon full exported pre-reorg chain, transaction/carrier/checkpoint arithmetic are checked by unchanged old46 verifier; full script/consensus admission remains owned-node producer evidence.",
+    "All three prior complete admission records/proofs are inherited at pinned independent report bytes and exact assignments/owners/birth; no redundant new admission hashing.",
+    "Fixed noon capture clocks, actual original-view authorization and later reorg/current node state remain trusted local fixture observations, not portable ownership/current consensus proof.",
+    "Finite reference full-source acceptance is not used: old44 dynamic receipt+old46 chain and dynamic matcher establish this actual source. Frozen47 pure Source/Input/engine formulas independently derive the complete transcript.",
+    "Exact SVG bytes are independently rendered and compared, but no GUI/pixels/native chooser/screenreader/D74 claim.",
+    "No official professional/exhibition records, XP, awards, production event authority, private key or public mining claim."
+  ],
+  "verifier_sha256": "de804800f2679924a3dcd9f545ac547a4c6ea9b96544d7ce7ccb3edfdca94cc2",
+  "wall_seconds": 37.651,
+  "at_utc": "2026-11-18T04:39:02.084174+00:00"
+}

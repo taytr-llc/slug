@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "scope": "Exactly one ASCII space removed from blank line105; AST and all arithmetic unchanged",
+  "original_source": "/Users/taytrrip/slug/artifacts/set48/reference-before-whitespace/reference_proof.py",
+  "original_sha256": "c6dae2903ab04617ec3a4817559320273cfc311d1f23329923eb5017e8fca2c6",
+  "final_sha256": "e83959ef7ecee55fe399c5b89e2a65bb3ff040bde2416e53c8a537c2354e24b4",
+  "original_gzip_sha256": "921dc9bc1126e67854734c6ee13f24729f01a6ded1577dcc450f1b8c5d5c6f81",
+  "old_index_sha256": "14f8b936714448e87651f6692d6a62df51297951fd524eef705e863722e4083f",
+  "corpus_sha256": "07c00eef8d87ae9ae5dcd2d120a5dfd1f7b1ba33a1447b773cfd4d5194fd1a94",
+  "original_recoverable_from": "reference_proof.py.gz",
+  "ast_equal": true,
+  "extra_predecessor_check": "Attempt4 ran on unchanged pre-whitespace source after the preservation-directory creation refused because root had already created that directory. No files overwritten; it is not post-change evidence."
+}

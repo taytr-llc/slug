@@ -1,0 +1,1 @@
+Initial witness-control authoring failed before fragment output: attempted bytes.fromhex on already-decoded header in same-txid-altered-witness construction. Corrected constructor only.

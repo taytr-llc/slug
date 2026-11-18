@@ -1,0 +1,49 @@
+{
+  "scope": "Pre48 source inspected for inherited exact constants, identities, wire and witness rules; not new runtime outputs or full compiler graph",
+  "files": {
+    "seednode/identity.go": {
+      "sha256": "b4bc93ccf49d4ad213ee4f1c5cfde41bcf7b955abf98a212ddb838726d8240aa",
+      "bytes": 1311
+    },
+    "seednode/types.go": {
+      "sha256": "177ce3c3de2bacb3cf6a78c26b6f45a9788e6134980b02086eff1123d32f8640",
+      "bytes": 2739
+    },
+    "chaincfg/signedcheckpoints.go": {
+      "sha256": "10a438b2875b9095bbdc6f37db25d4ba8193e0bef47a210bb2f6888e89ad73a0",
+      "bytes": 7810
+    },
+    "chaincfg/params.go": {
+      "sha256": "1bfdd5f930487edccdf5025d9f22b31b31bb8758a47198dd00ae576d574e8065",
+      "bytes": 47803
+    },
+    "chaincfg/genesis.go": {
+      "sha256": "99742345b0e42bc69300be6821362abe4e148a135ee38c28cf0d116c09b257ad",
+      "bytes": 15154
+    },
+    "blockchain/merkle.go": {
+      "sha256": "96dbe0e8a7f42b1ae7eee12d9f2f9e19a1251769ab0b4fb966a891b04f5765a7",
+      "bytes": 11043
+    },
+    "blockchain/validate.go": {
+      "sha256": "c01ba5dfaa370ca293fa19f19850e1d6109065f8da1aacf6f5a94cad231d044f",
+      "bytes": 54853
+    },
+    "wire/msgtx.go": {
+      "sha256": "fe700294c0ea7be85773c10b0e419441e3cd27138f27230bd1f3f66ac9e65e37",
+      "bytes": 39047
+    },
+    "wire/msgblock.go": {
+      "sha256": "417b2e7f663577e94363b8635c70025fcc1f7cff73f09f7d209819c15b01c7fc",
+      "bytes": 11659
+    },
+    "gymbout/types.go": {
+      "sha256": "1404574a6dee76ccd510a8a9b8dfb5c2d6a8b11dba952e5e76ae3af8ebf93c64",
+      "bytes": 4590
+    },
+    "gymbout/identity.go": {
+      "sha256": "8955a3b7ab1fc3c19c1ef6952bbf61e3ab4f1337f2f67920fd6971258dd08e08",
+      "bytes": 2234
+    }
+  }
+}

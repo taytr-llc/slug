@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "status": "approved",
+  "scope": "Independent candidate result publication reference, before runtime implementation",
+  "at_utc": "2026-11-18T06:16:20.349539+00:00",
+  "basis_commit": "1f59148d62bb45ea8104d4a26b20714574b47c4a",
+  "contract_freeze_sha256": "11c8322b53d79ddcfefea05f37433eb5807fb3a52541b0e467df314d7ce27e15",
+  "file_index_sha256": "12ebe693a757467df55e0cb474be62e1b2ed01516dad6112a9841dd26679fb8f",
+  "corpus_sha256": "07c00eef8d87ae9ae5dcd2d120a5dfd1f7b1ba33a1447b773cfd4d5194fd1a94",
+  "verification_sha256": "3bfbd49dabec67990cbd1c6be6b027d54e38ff3f0e6eaab074ee4e8afb553956",
+  "reviews": {
+    "set48-reference-independent-review.json": "c0c2824337ec943c6c5a77f43f5d24d6696a4e9188d24671ece8305008fee474",
+    "set48-reference-independent-review.md": "a32f84187f11c51fe9b05544d9964477e6f5254f6e6e4f05539dbc9bc13c7b2b",
+    "set48-helper-reference-independent-review.json": "45ae38f7eacc0e91ca27a4b9ab5758898bcde4f0aae19085088173e0145fc21a",
+    "set48-reference-final-input-review.json": "0fe72ebfd19365f3e38aaf665a2503d7b3d8d468c6250cd19d364da51fcea5f6",
+    "set48-reference-root-review.json": "536cde4f2b09dc8f49df7ae03fd448ac3c44a2fb42efc7d721cb9c40e6b5b80b"
+  },
+  "implementation_gate": "Commit these exact reference bytes separately before new runtime implementation or Go expected-value comparisons.",
+  "limitations": [
+    "Finite independent models are not runtime, normal-PoW, account, durability, process, GUI or release evidence.",
+    "Original source provenance is independently recomposed using the frozen old engine; new result codecs never simulate.",
+    "D74 joint review and production authority/genesis remain separate."
+  ]
+}

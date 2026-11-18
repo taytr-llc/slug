@@ -1,0 +1,247 @@
+{
+  "inputs/contracts/set48-contract-freeze.json": {
+    "sha256": "11c8322b53d79ddcfefea05f37433eb5807fb3a52541b0e467df314d7ce27e15",
+    "bytes": 3253,
+    "origin": "set48-contract-freeze.json",
+    "origin_sha256": "11c8322b53d79ddcfefea05f37433eb5807fb3a52541b0e467df314d7ce27e15",
+    "json_pointer": null
+  },
+  "inputs/contracts/set48-core-contract-draft.md": {
+    "sha256": "982126ad4678814ec7a6bedab9c4604b8c25c9955f1cd3e869c046bf37360eb3",
+    "bytes": 61929,
+    "origin": "set48-core-contract-draft.md",
+    "origin_sha256": "982126ad4678814ec7a6bedab9c4604b8c25c9955f1cd3e869c046bf37360eb3",
+    "json_pointer": null
+  },
+  "inputs/contracts/set48-helper-contract-draft.md": {
+    "sha256": "f0bae86a8384613795ff6820ff658471140ab7b70182580f4e4fd5304558b18a",
+    "bytes": 42690,
+    "origin": "set48-helper-contract-draft.md",
+    "origin_sha256": "f0bae86a8384613795ff6820ff658471140ab7b70182580f4e4fd5304558b18a",
+    "json_pointer": null
+  },
+  "inputs/contracts/set48-reference-plan-draft.md": {
+    "sha256": "645690328f52ccb26a5645711815739348bd21d7f8ab124d496f4824d66f9220",
+    "bytes": 5246,
+    "origin": "set48-reference-plan-draft.md",
+    "origin_sha256": "645690328f52ccb26a5645711815739348bd21d7f8ab124d496f4824d66f9220",
+    "json_pointer": null
+  },
+  "inputs/contracts/set48-contract-source-basis.json": {
+    "sha256": "692d1c332ba1248e8d816ea1db7657a67788c221c26891e63a672f5e481c9725",
+    "bytes": 44313,
+    "origin": "set48-contract-source-basis.json",
+    "origin_sha256": "692d1c332ba1248e8d816ea1db7657a67788c221c26891e63a672f5e481c9725",
+    "json_pointer": null
+  },
+  "inputs/contracts/set47-reference-freeze.json": {
+    "sha256": "fa5e7c2df167779f74a192dbbc20cd487f5b36617e752146a038a2b9c7da643c",
+    "bytes": 10471,
+    "origin": "set47-reference-freeze.json",
+    "origin_sha256": "fa5e7c2df167779f74a192dbbc20cd487f5b36617e752146a038a2b9c7da643c",
+    "json_pointer": null
+  },
+  "inputs/contracts/set47-final-composition-review.json": {
+    "sha256": "9bdd69d9938c1299c49917d3ab48d4532bb594ba89eb478cc0a30dcaa585eac9",
+    "bytes": 4322,
+    "origin": "set47-final-composition-review.json",
+    "origin_sha256": "9bdd69d9938c1299c49917d3ab48d4532bb594ba89eb478cc0a30dcaa585eac9",
+    "json_pointer": null
+  },
+  "inputs/contracts/set47-actual-verifier-root-review.json": {
+    "sha256": "e29c3081f5711b91860be54a79fbe5b92ce8b047bd9c3b8668df94c934084f13",
+    "bytes": 1237,
+    "origin": "set47-actual-verifier-root-review.json",
+    "origin_sha256": "e29c3081f5711b91860be54a79fbe5b92ce8b047bd9c3b8668df94c934084f13",
+    "json_pointer": null
+  },
+  "inputs/bout47/common.py": {
+    "sha256": "ff1bf9705985ba087e10af61d692171f87513e500d8108dec282fd8fac1da36f",
+    "bytes": 13569,
+    "origin": "slug/gymbout/testdata/reference/common.py",
+    "origin_sha256": "ff1bf9705985ba087e10af61d692171f87513e500d8108dec282fd8fac1da36f",
+    "json_pointer": null
+  },
+  "inputs/bout47/schema.py": {
+    "sha256": "9df84b0ee17acb7cb7d1da3a56098dcebe069f8dfe13637c1a23db8e3ea73338",
+    "bytes": 32905,
+    "origin": "slug/gymbout/testdata/reference/schema.py",
+    "origin_sha256": "9df84b0ee17acb7cb7d1da3a56098dcebe069f8dfe13637c1a23db8e3ea73338",
+    "json_pointer": null
+  },
+  "inputs/manifest/reference_manifest.py": {
+    "sha256": "9fb1a814047f2329066bb19596e910ac7c4c7aadfce4b8f994e02dab81e51b4f",
+    "bytes": 24912,
+    "origin": "slug/gymbout/testdata/reference/inputs/manifest/reference_manifest.py",
+    "origin_sha256": "9fb1a814047f2329066bb19596e910ac7c4c7aadfce4b8f994e02dab81e51b4f",
+    "json_pointer": null
+  },
+  "inputs/manifest/tables_v1.json": {
+    "sha256": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+    "bytes": 2578,
+    "origin": "slug/gymbout/testdata/reference/inputs/manifest/tables_v1.json",
+    "origin_sha256": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+    "json_pointer": null
+  },
+  "inputs/manifest/baseline/reference_dna.py": {
+    "sha256": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+    "bytes": 8283,
+    "origin": "slug/gymbout/testdata/reference/inputs/manifest/baseline/reference_dna.py",
+    "origin_sha256": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+    "json_pointer": null
+  },
+  "inputs/manifest/baseline/dna_v1.json": {
+    "sha256": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+    "bytes": 2658,
+    "origin": "slug/gymbout/testdata/reference/inputs/manifest/baseline/dna_v1.json",
+    "origin_sha256": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+    "json_pointer": null
+  },
+  "inputs/condition/reference_condition.py": {
+    "sha256": "924152a89241e9fa6d60aa27ba19666d3a3f65fdf53bd3c0cf6f89c8db4e946c",
+    "bytes": 18218,
+    "origin": "slug/gymbout/testdata/reference/inputs/condition/reference_condition.py",
+    "origin_sha256": "924152a89241e9fa6d60aa27ba19666d3a3f65fdf53bd3c0cf6f89c8db4e946c",
+    "json_pointer": null
+  },
+  "inputs/engine42/reference_bout.py": {
+    "sha256": "c3247a0d856270cc5043b5767ace9f628b2efb9cd120d786773f9221d928bd7f",
+    "bytes": 11532,
+    "origin": "slug/gymbout/testdata/reference/inputs/engine42/reference_bout.py",
+    "origin_sha256": "c3247a0d856270cc5043b5767ace9f628b2efb9cd120d786773f9221d928bd7f",
+    "json_pointer": null
+  },
+  "inputs/engine42/contract.md": {
+    "sha256": "abb5b54edd921855b81dc5b99ef29b2ac94cadc9296dcd2981af4b57ad25040f",
+    "bytes": 41570,
+    "origin": "slug/gymbout/testdata/reference/inputs/engine42/contract.md",
+    "origin_sha256": "abb5b54edd921855b81dc5b99ef29b2ac94cadc9296dcd2981af4b57ad25040f",
+    "json_pointer": null
+  },
+  "inputs/engine42/case-00.json": {
+    "sha256": "03884b8023f736f50d573be74e526b261fe83e9df17528043efbd84e8f083912",
+    "bytes": 102946,
+    "origin": "slug/gymbout/testdata/reference/inputs/engine42/case-00.json",
+    "origin_sha256": "03884b8023f736f50d573be74e526b261fe83e9df17528043efbd84e8f083912",
+    "json_pointer": null
+  },
+  "inputs/calendar/common.py": {
+    "sha256": "d83bcfb4b255d6f95adfe7986764d46d1bf31d7aa858bab55a38421148313caf",
+    "bytes": 7850,
+    "origin": "slug/gymbout/testdata/reference/inputs/calendar/common.py",
+    "origin_sha256": "d83bcfb4b255d6f95adfe7986764d46d1bf31d7aa858bab55a38421148313caf",
+    "json_pointer": null
+  },
+  "inputs/calendar/America_Los_Angeles.tzif": {
+    "sha256": "200d05754f6d83a371cf408d7085125797657b3b0bebeba1e508cffe86a3e5c8",
+    "bytes": 1294,
+    "origin": "slug/gymbout/testdata/reference/inputs/calendar/America_Los_Angeles.tzif",
+    "origin_sha256": "200d05754f6d83a371cf408d7085125797657b3b0bebeba1e508cffe86a3e5c8",
+    "json_pointer": null
+  },
+  "inputs/card46/rules.json": {
+    "sha256": "c8c109ccbf405784a82e44a8e40481f8b5a284232a92434d921300694b526581",
+    "bytes": 460,
+    "origin": "slug/gymbout/testdata/reference/inputs/card46/rules.json",
+    "origin_sha256": "c8c109ccbf405784a82e44a8e40481f8b5a284232a92434d921300694b526581",
+    "json_pointer": null
+  },
+  "inputs/seed45/crypto.py": {
+    "sha256": "ea87b9021e14712b1ac7130daa73cd12fb8acf2fd8995ca5ce9e32d0d770fd1c",
+    "bytes": 10124,
+    "origin": "slug/gymseed/testdata/reference/crypto.py",
+    "origin_sha256": "ea87b9021e14712b1ac7130daa73cd12fb8acf2fd8995ca5ce9e32d0d770fd1c",
+    "json_pointer": null
+  },
+  "inputs/actual47/bout_record.json": {
+    "sha256": "2675c392cb7ce82e779898d03170daba76eed6155c947221d6e5ecbe55733692",
+    "bytes": 153578,
+    "origin": "artifacts/set47/bout-chain-attempt2/public-bout-native-first.json",
+    "origin_sha256": "a6a9cd39893eec9b38e8fb4d790ee02dc260c935b493ed9f6ce89e7850540275",
+    "json_pointer": "/record"
+  },
+  "inputs/actual47/bout_snapshot.json": {
+    "sha256": "0e4a102bc98bce9c0906fd0884c285c1f6ab0cce4c36bc204ccbf9e858ea3769",
+    "bytes": 6774,
+    "origin": "artifacts/set47/bout-chain-attempt2/public-bout-native-first.json",
+    "origin_sha256": "a6a9cd39893eec9b38e8fb4d790ee02dc260c935b493ed9f6ce89e7850540275",
+    "json_pointer": "/rows/0/snapshot"
+  },
+  "inputs/actual47/bout_status.json": {
+    "sha256": "1b68a1c174a8d44540c68208c29427b995c605c9a913b0c6475963c86be39f22",
+    "bytes": 2579,
+    "origin": "artifacts/set47/bout-chain-attempt2/public-bout-native-first.json",
+    "origin_sha256": "a6a9cd39893eec9b38e8fb4d790ee02dc260c935b493ed9f6ce89e7850540275",
+    "json_pointer": "/rows/0/read/status"
+  },
+  "inputs/actual47/view0.json": {
+    "sha256": "67d50884d5ec39242c06e7cc482b862c482736265850eac4db411ee79049c565",
+    "bytes": 767,
+    "origin": "artifacts/set47/bout-chain-attempt2/public-bout-native-first.json",
+    "origin_sha256": "a6a9cd39893eec9b38e8fb4d790ee02dc260c935b493ed9f6ce89e7850540275",
+    "json_pointer": "/rows/0/snapshot/view"
+  },
+  "inputs/actual47/view1.json": {
+    "sha256": "db19ffecc98179d37cca81b99a119dd70cb20c5dbf6d14523d33b0056369ba6d",
+    "bytes": 767,
+    "origin": "artifacts/set47/bout-chain-attempt2/public-bout-native-first.json",
+    "origin_sha256": "a6a9cd39893eec9b38e8fb4d790ee02dc260c935b493ed9f6ce89e7850540275",
+    "json_pointer": "/rows/1/snapshot/view"
+  },
+  "inputs/actual47/historical_status.json": {
+    "sha256": "00631b644a5725f2e210ee1832c5a996c861ebad14edb4ecb2233813ba739f93",
+    "bytes": 2581,
+    "origin": "artifacts/set47/bout-chain-attempt2/public-bout-native-historical.json",
+    "origin_sha256": "67f06d05a6c30451aa018592079564c2cbbeefe7ff34d35d0ceb02a9426f7be0",
+    "json_pointer": "/rows/0/read/status"
+  },
+  "inputs/actual47/card_record.json": {
+    "sha256": "1abf38ab4c9c441a141ccaed98408926b6396c51de0fbe29b18125b11b92bd06",
+    "bytes": 33597,
+    "origin": "artifacts/set47/bout-chain-attempt2/public-bout-prepared-card.json",
+    "origin_sha256": "c6601c560678aef290f34030e35cb9769a45ba597c1f2f3646a36a045666fdfc",
+    "json_pointer": "/read/record"
+  },
+  "inputs/actual47/card_snapshot.json": {
+    "sha256": "633d0d6385f8a22a0a919728a5ebe2d84854e450ee662653bfbc545bf7b237ca",
+    "bytes": 6449,
+    "origin": "artifacts/set47/bout-chain-attempt2/public-bout-prepared-card.json",
+    "origin_sha256": "c6601c560678aef290f34030e35cb9769a45ba597c1f2f3646a36a045666fdfc",
+    "json_pointer": "/snapshot"
+  },
+  "inputs/actual47/seed_record.json": {
+    "sha256": "fe85779dd21b8c3f405f4552965bf2fe6fd8e67bfe8b9b4a0f777987a01c3f92",
+    "bytes": 30392,
+    "origin": "artifacts/set47/bout-chain-attempt2/public-bout-prepared-card.json",
+    "origin_sha256": "c6601c560678aef290f34030e35cb9769a45ba597c1f2f3646a36a045666fdfc",
+    "json_pointer": "/seed"
+  },
+  "inputs/actual47/bout-report.json": {
+    "sha256": "388d48dfbf8fbdbabbe0941fee4c57deb4ed92c967f34d09e89c706b4c072388",
+    "bytes": 7212,
+    "origin": "artifacts/set47/independent-bouts-attempt2/bout-report.json",
+    "origin_sha256": "388d48dfbf8fbdbabbe0941fee4c57deb4ed92c967f34d09e89c706b4c072388",
+    "json_pointer": null
+  },
+  "inputs/actual47/chain-report.json": {
+    "sha256": "dc947379f104a988b96fe45063b6a03538fb5a2a260b526021a5c439990032e7",
+    "bytes": 2154,
+    "origin": "artifacts/set47/independent-bouts-attempt2/chain-report.json",
+    "origin_sha256": "dc947379f104a988b96fe45063b6a03538fb5a2a260b526021a5c439990032e7",
+    "json_pointer": null
+  },
+  "inputs/contracts/set48-contract-clarification-1.md": {
+    "sha256": "aacf5540548be1e190ee4ac58e9fa573a42bd558bfeabe6a6bef026d0a1b2427",
+    "bytes": 1211,
+    "origin": "set48-contract-clarification-1.md",
+    "origin_sha256": "aacf5540548be1e190ee4ac58e9fa573a42bd558bfeabe6a6bef026d0a1b2427",
+    "json_pointer": null
+  },
+  "inputs/contracts/set48-contract-clarification-2.md": {
+    "sha256": "0b7ca0a736397e39b33532d394e3b6345cfda1aa4f3be2d6804299c91f2f59db",
+    "bytes": 1263,
+    "origin": "set48-contract-clarification-2.md",
+    "origin_sha256": "0b7ca0a736397e39b33532d394e3b6345cfda1aa4f3be2d6804299c91f2f59db",
+    "json_pointer": null
+  }
+}

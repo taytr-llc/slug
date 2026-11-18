@@ -1,0 +1,32 @@
+{
+  "status": "passed",
+  "scope": "Only report-presence/exact-binding guard controls; no child verifier execution",
+  "source_sha256": "0c0f91b8b7f99ee245814cbf709b946c302c3cd1aa99fce49bc5df32361c4fac",
+  "cases": [
+    {
+      "name": "missing",
+      "accept": false,
+      "observed": false
+    },
+    {
+      "name": "valid",
+      "accept": true,
+      "observed": true
+    },
+    {
+      "name": "wrong-status",
+      "accept": false,
+      "observed": false
+    },
+    {
+      "name": "wrong-corpus",
+      "accept": false,
+      "observed": false
+    },
+    {
+      "name": "wrong-source",
+      "accept": false,
+      "observed": false
+    }
+  ]
+}

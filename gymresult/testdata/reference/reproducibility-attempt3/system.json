@@ -1,0 +1,110 @@
+{
+  "status": "passed",
+  "findings": [],
+  "python": "3.9.6 (default, Oct 19 2026, 19:18:13) \n[Clang 21.0.0 (clang-2100.4.1.1)]",
+  "executable": "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+  "corpus_sha256": "07c00eef8d87ae9ae5dcd2d120a5dfd1f7b1ba33a1447b773cfd4d5194fd1a94",
+  "corpus_bytes": 9146164,
+  "source_sha256": {
+    "check_reproducibility.py": "0c0f91b8b7f99ee245814cbf709b946c302c3cd1aa99fce49bc5df32361c4fac",
+    "common.py": "1a9ec3e41a3aea44bf8e9f1374cf2a35fbd52866aa0ab7c6ec887e987b72211f",
+    "crypto_result.py": "d8fc772dd33919fa2d048eed9cee3d41c577cdc9d35a5b03edb793223662d9d9",
+    "reference_proof.py": "c6dae2903ab04617ec3a4817559320273cfc311d1f23329923eb5017e8fca2c6",
+    "reference_results.py": "5ddf9165c01fc88a8a6f02a477373c92f4df5fdfd1f47b7b1d4e044f560852f7",
+    "reference_state.py": "f4cf822d32afd4daaa6a48a3514019d8690dae40e1941107a66a9d5d04b7158a",
+    "reference_store.py": "25e186d1702909dd7dda36ed17ef828a02c91fd1138de7a38286b77e5e75bab3",
+    "reference_wire.py": "8c116f541bbb8539bcf454567152839fd7fb3b9cb0d4211c892118635a9d6def",
+    "schema_core.py": "c4d84a70d601be8c1c8540b3d9b014f4e59072db19e251f6a4a5938c9a83f35b",
+    "schema_wire.py": "08c45e11b3c44e66d1230f65bc575d17e26b2c030632e68f9f37b0ae6d0d3f64",
+    "verify_reference.py": "8b1f861db71c75a2acbd3152092970b12535d841637b4aca25a6ff5925f66e43"
+  },
+  "input_index_sha256": "e50ee0099acf02505b19b60ade2de5fe0660662d498bacc4f323352b0ddaa83d",
+  "input_sha256": {
+    "inputs/contracts/set48-contract-freeze.json": "11c8322b53d79ddcfefea05f37433eb5807fb3a52541b0e467df314d7ce27e15",
+    "inputs/contracts/set48-core-contract-draft.md": "982126ad4678814ec7a6bedab9c4604b8c25c9955f1cd3e869c046bf37360eb3",
+    "inputs/contracts/set48-helper-contract-draft.md": "f0bae86a8384613795ff6820ff658471140ab7b70182580f4e4fd5304558b18a",
+    "inputs/contracts/set48-reference-plan-draft.md": "645690328f52ccb26a5645711815739348bd21d7f8ab124d496f4824d66f9220",
+    "inputs/contracts/set48-contract-source-basis.json": "692d1c332ba1248e8d816ea1db7657a67788c221c26891e63a672f5e481c9725",
+    "inputs/contracts/set47-reference-freeze.json": "fa5e7c2df167779f74a192dbbc20cd487f5b36617e752146a038a2b9c7da643c",
+    "inputs/contracts/set47-final-composition-review.json": "9bdd69d9938c1299c49917d3ab48d4532bb594ba89eb478cc0a30dcaa585eac9",
+    "inputs/contracts/set47-actual-verifier-root-review.json": "e29c3081f5711b91860be54a79fbe5b92ce8b047bd9c3b8668df94c934084f13",
+    "inputs/bout47/common.py": "ff1bf9705985ba087e10af61d692171f87513e500d8108dec282fd8fac1da36f",
+    "inputs/bout47/schema.py": "9df84b0ee17acb7cb7d1da3a56098dcebe069f8dfe13637c1a23db8e3ea73338",
+    "inputs/manifest/reference_manifest.py": "9fb1a814047f2329066bb19596e910ac7c4c7aadfce4b8f994e02dab81e51b4f",
+    "inputs/manifest/tables_v1.json": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+    "inputs/manifest/baseline/reference_dna.py": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+    "inputs/manifest/baseline/dna_v1.json": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+    "inputs/condition/reference_condition.py": "924152a89241e9fa6d60aa27ba19666d3a3f65fdf53bd3c0cf6f89c8db4e946c",
+    "inputs/engine42/reference_bout.py": "c3247a0d856270cc5043b5767ace9f628b2efb9cd120d786773f9221d928bd7f",
+    "inputs/engine42/contract.md": "abb5b54edd921855b81dc5b99ef29b2ac94cadc9296dcd2981af4b57ad25040f",
+    "inputs/engine42/case-00.json": "03884b8023f736f50d573be74e526b261fe83e9df17528043efbd84e8f083912",
+    "inputs/calendar/common.py": "d83bcfb4b255d6f95adfe7986764d46d1bf31d7aa858bab55a38421148313caf",
+    "inputs/calendar/America_Los_Angeles.tzif": "200d05754f6d83a371cf408d7085125797657b3b0bebeba1e508cffe86a3e5c8",
+    "inputs/card46/rules.json": "c8c109ccbf405784a82e44a8e40481f8b5a284232a92434d921300694b526581",
+    "inputs/seed45/crypto.py": "ea87b9021e14712b1ac7130daa73cd12fb8acf2fd8995ca5ce9e32d0d770fd1c",
+    "inputs/actual47/bout_record.json": "2675c392cb7ce82e779898d03170daba76eed6155c947221d6e5ecbe55733692",
+    "inputs/actual47/bout_snapshot.json": "0e4a102bc98bce9c0906fd0884c285c1f6ab0cce4c36bc204ccbf9e858ea3769",
+    "inputs/actual47/bout_status.json": "1b68a1c174a8d44540c68208c29427b995c605c9a913b0c6475963c86be39f22",
+    "inputs/actual47/view0.json": "67d50884d5ec39242c06e7cc482b862c482736265850eac4db411ee79049c565",
+    "inputs/actual47/view1.json": "db19ffecc98179d37cca81b99a119dd70cb20c5dbf6d14523d33b0056369ba6d",
+    "inputs/actual47/historical_status.json": "00631b644a5725f2e210ee1832c5a996c861ebad14edb4ecb2233813ba739f93",
+    "inputs/actual47/card_record.json": "1abf38ab4c9c441a141ccaed98408926b6396c51de0fbe29b18125b11b92bd06",
+    "inputs/actual47/card_snapshot.json": "633d0d6385f8a22a0a919728a5ebe2d84854e450ee662653bfbc545bf7b237ca",
+    "inputs/actual47/seed_record.json": "fe85779dd21b8c3f405f4552965bf2fe6fd8e67bfe8b9b4a0f777987a01c3f92",
+    "inputs/actual47/bout-report.json": "388d48dfbf8fbdbabbe0941fee4c57deb4ed92c967f34d09e89c706b4c072388",
+    "inputs/actual47/chain-report.json": "dc947379f104a988b96fe45063b6a03538fb5a2a260b526021a5c439990032e7",
+    "inputs/contracts/set48-contract-clarification-1.md": "aacf5540548be1e190ee4ac58e9fa573a42bd558bfeabe6a6bef026d0a1b2427",
+    "inputs/contracts/set48-contract-clarification-2.md": "0b7ca0a736397e39b33532d394e3b6345cfda1aa4f3be2d6804299c91f2f59db",
+    "inputs/actual47/public-chain-evidence.json": "3a8416d1b27fd02c42ac215e8472e4c5a7f5ab72464e0ccd9ed2683b622ace0e",
+    "inputs/contracts/set48-contract-bounds-formula.json": "95bbea054f3ee1c09c517082d2cbe84c7641a84dd3813644331589ece1e47772",
+    "inputs/contracts/set48-contract-bounds-calculator.py": "dccff013b2c28c197ed026235ff643cdba560e1935a08281ec0d5ae85e53c6b9"
+  },
+  "checks": {
+    "core": {
+      "positive": 81,
+      "codec_cases": 361,
+      "core_no_engine_or_signing": true,
+      "transport_no_generation_engine_signing_or_merkle_hashing": true
+    },
+    "store": {
+      "row_cases": 14,
+      "initialization_models": 13,
+      "index_rows": 256,
+      "index_canonical_bytes": 68097
+    },
+    "proof": {
+      "proof_dag_cases": 9,
+      "block_controls": 10,
+      "normal_pow_checked": false,
+      "normal_consensus_model_claim": false
+    },
+    "wire": {
+      "dto": 214,
+      "codec": 264,
+      "protocol": 138
+    },
+    "state": {
+      "cases": 89,
+      "steps": 178
+    }
+  },
+  "provenance": {
+    "genuine_saved_saturday": "2026-11-28",
+    "card_id": "db56365091c45d91b2a972346955ac499701d2e1a1bb49492c74262dd59ea4ab",
+    "bout_id": "a6a89c7b74fb68d948bab376be179b8ad2a8dd335f5bd000888850e51da3c38b",
+    "input_id": "20d7135985d322a51dbc51b63821d039247e47e23d718756c616444251ebf07a",
+    "result_digest": "61bcce83519583a73493817499660accf2b54b8452dfde2a7d3c61041da07adc",
+    "record_digest": "aca90a6a4643493ab384218586608557e9288910cca3edbd0de9bd3d3951479f",
+    "independent_prior_engine_simulations": 1,
+    "source_header_count": 176,
+    "source_normal_argon_rechecked": false,
+    "source_argon_basis": "Byte-identical original public chain and prior independently passed report; no new Argon expected values",
+    "source_scope": "Genuine prior fixture evidence; inherited local-clock/admission/checkpoint limits remain. All new48 publication evidence is modeled."
+  },
+  "wall_seconds": 4.412381,
+  "limitations": [
+    "No Go/runtime output used as new expectations.",
+    "Added publication/proof headers are explicit unmined models; no new normal-PoW/UTXO/network/clock authority claim.",
+    "Codec verification invokes no engine/signing; one independent frozen42 engine recomposition verifies the genuine saved source."
+  ]
+}
