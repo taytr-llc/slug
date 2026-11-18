@@ -39,6 +39,9 @@ type StableBridge struct {
 	entriesEnabled         bool
 	eventsEnabled          bool
 	boutsEnabled           bool
+	resultsEnabled         bool
+	resultPin              *resultAuthority
+	result                 *resultCorrelation
 	boutPin                *boutAuthority
 	bout                   *boutCorrelation
 	boutPresentation       *boutPresentation
@@ -73,6 +76,7 @@ type stableExpected struct {
 	event   bool
 	seed    bool
 	bout    bool
+	result  bool
 	card    bool
 }
 type stableFrame struct {
@@ -83,6 +87,7 @@ type stableFrame struct {
 	event    *pilot.EventResponse
 	seed     *pilot.SeedResponse
 	bout     *pilot.BoutResponse
+	result   *pilot.ResultResponse
 	card     *pilot.CardResponse
 }
 
@@ -127,6 +132,7 @@ func (b *StableBridge) fail(err error) {
 		b.seed = nil
 		b.card = nil
 		b.bout = nil
+		b.result = nil
 		b.boutPresentation = nil
 		b.mu.Unlock()
 		close(b.failed)
@@ -146,7 +152,14 @@ func (b *StableBridge) read(r io.Reader) {
 			return
 		}
 		var frame stableFrame
-		if expected.bout {
+		if expected.result {
+			value, err := pilot.ParseResultResponse(scanner.Bytes())
+			if err != nil || value.ID != expected.id {
+				b.fail(ErrUnavailable)
+				return
+			}
+			frame.result = &value
+		} else if expected.bout {
 			value, err := pilot.ParseBoutResponse(scanner.Bytes())
 			if err != nil || value.ID != expected.id {
 				b.fail(ErrUnavailable)
@@ -263,8 +276,11 @@ func (b *StableBridge) exchangeCardFamily(ctx context.Context, id uint64, stable
 	return b.exchangeBoutFamily(ctx, id, stable, preview, entry, event, seed, card, false, raw)
 }
 func (b *StableBridge) exchangeBoutFamily(ctx context.Context, id uint64, stable, preview, entry, event, seed, card, bout bool, raw []byte) (stableFrame, error) {
+	return b.exchangeResultFamily(ctx, id, stable, preview, entry, event, seed, card, bout, false, raw)
+}
+func (b *StableBridge) exchangeResultFamily(ctx context.Context, id uint64, stable, preview, entry, event, seed, card, bout, result bool, raw []byte) (stableFrame, error) {
 	b.mu.Lock()
-	b.expected = &stableExpected{id: id, stable: stable, preview: preview, entry: entry, event: event, seed: seed, card: card, bout: bout}
+	b.expected = &stableExpected{id: id, stable: stable, preview: preview, entry: entry, event: event, seed: seed, card: card, bout: bout, result: result}
 	b.mu.Unlock()
 	raw = append(raw, '\n')
 	if d, ok := b.input.(interface{ SetWriteDeadline(time.Time) error }); ok {
@@ -490,6 +506,7 @@ func (b *StableBridge) clearStableView() {
 	b.clearSeedView()
 	b.clearCardView()
 	b.clearBoutView()
+	b.clearResultView()
 }
 func (b *StableBridge) rememberStableSnapshot(s pilot.StableSnapshot) {
 	if s.View == nil {

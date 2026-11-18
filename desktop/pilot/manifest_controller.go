@@ -16,6 +16,7 @@ import (
 )
 
 type ManifestController struct {
+	resultBytes           int
 	boutBytes             int // guarded by mu; retained/reserved Bout family bytes
 	cardBytes             int // guarded by mu; retained/reserved Card family bytes
 	seedBytes             int // guarded by mu; retained/reserved seed family bytes

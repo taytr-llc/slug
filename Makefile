@@ -1,14 +1,33 @@
 PKG := github.com/taytr-llc/slug
 
+# Temporary candidate engineering profile; its qualification is separate evidence.
+# Explicit compatibility mode preserves the minimum-Go CI job. Plain go test is
+# unchanged and does not implicitly use this profile.
+GO_PROFILE ?= candidate
+ifeq ($(GO_PROFILE),candidate)
+PROFILE_GO := sh "$(abspath scripts/candidate-go.sh)"
+GO_ENV := env GOENV=off GOTOOLCHAIN=local GOFLAGS= GOEXPERIMENT= go env
+VERIFY_BINARY := $(PROFILE_GO) verify-binary
+else ifeq ($(GO_PROFILE),compatibility)
+ifneq ($(filter install release-install,$(MAKECMDGOALS)),)
+$(error Compatibility mode cannot install shipping binaries)
+endif
+PROFILE_GO := go
+GO_ENV := go env
+VERIFY_BINARY := true
+else
+$(error GO_PROFILE must be candidate or compatibility)
+endif
+
 LINT_PKG := github.com/golangci/golangci-lint/v2/cmd/golangci-lint
 GOIMPORTS_PKG := golang.org/x/tools/cmd/goimports
 
-GO_BIN := $(if $(GOBIN),$(GOBIN),$(shell go env GOBIN))
-GO_EXE := $(shell GOOS="$(GOOS)" go env GOEXE)
+GO_BIN := $(if $(GOBIN),$(GOBIN),$(shell $(GO_ENV) GOBIN))
+GO_EXE := $(shell GOOS="$(GOOS)" $(GO_ENV) GOEXE)
 
 # If GOBIN is not set, default to GOPATH/bin.
 ifeq ($(GO_BIN),)
-GO_BIN := $(shell go env GOPATH)/bin
+GO_BIN := $(shell $(GO_ENV) GOPATH)/bin
 endif
 
 LINT_BIN := $(GO_BIN)/golangci-lint
@@ -17,11 +36,11 @@ GOIMPORTS_BIN := $(GO_BIN)/goimports
 LINT_COMMIT := v2.14.0
 GOIMPORTS_COMMIT := v0.51.0
 
-GOBUILD := go build -v
-GOINSTALL := go install -v 
+GOBUILD := $(PROFILE_GO) build -v
+GOINSTALL := $(PROFILE_GO) install -v
 DEV_TAGS := rpctest
-GOTEST_DEV = go test -v -tags=$(DEV_TAGS)
-GOTEST := go test -v
+GOTEST_DEV = $(PROFILE_GO) test -v -tags=$(DEV_TAGS)
+GOTEST := $(PROFILE_GO) test -v
 COVER_FLAGS = -coverprofile=coverage.txt -covermode=atomic -coverpkg=$(PKG)/...
 
 # Linting uses a lot of memory, so keep it under control by limiting the number
@@ -71,6 +90,7 @@ build:
 	$(GOBUILD) $(PKG)/cmd/gencerts
 	$(GOBUILD) $(PKG)/cmd/findcheckpoint
 	$(GOBUILD) $(PKG)/cmd/addblock
+	$(VERIFY_BINARY) slugd$(GO_EXE) slugctl$(GO_EXE) slugcheckpoint$(GO_EXE) gencerts$(GO_EXE) findcheckpoint$(GO_EXE) addblock$(GO_EXE)
 
 #? install: Install all binaries, place them in $GOPATH/bin
 install:
@@ -81,12 +101,14 @@ install:
 	$(GOINSTALL) $(PKG)/cmd/gencerts
 	$(GOINSTALL) $(PKG)/cmd/findcheckpoint
 	$(GOINSTALL) $(PKG)/cmd/addblock
+	$(VERIFY_BINARY) "$(GO_BIN)/slugd$(GO_EXE)" "$(GO_BIN)/slugctl$(GO_EXE)" "$(GO_BIN)/slugcheckpoint$(GO_EXE)" "$(GO_BIN)/gencerts$(GO_EXE)" "$(GO_BIN)/findcheckpoint$(GO_EXE)" "$(GO_BIN)/addblock$(GO_EXE)"
 
 #? release-install: Install slugd and slugctl release binaries, place them in $GOBIN
 release-install:
 	@$(call print, "Installing slugd and slugctl release binaries")
 	env CGO_ENABLED=0 $(GOBUILD) -trimpath -ldflags="-s -w -buildid=" -o "$(GO_BIN)/slugd$(GO_EXE)" $(PKG)
 	env CGO_ENABLED=0 $(GOINSTALL) -trimpath -ldflags="-s -w -buildid=" $(PKG)/cmd/slugctl
+	$(VERIFY_BINARY) "$(GO_BIN)/slugd$(GO_EXE)" "$(GO_BIN)/slugctl$(GO_EXE)"
 
 # =======
 # TESTING
@@ -97,8 +119,8 @@ check: unit
 
 #? test-chain: Run complete blockchain and integration suites with test-only PoW
 test-chain:
-	go test -tags=slugtestpow -count=1 -timeout=30m ./blockchain/...
-	go test -tags=slugtestpow,rpctest -count=1 -timeout=30m ./integration/...
+	$(PROFILE_GO) test -tags=slugtestpow -count=1 -timeout=30m ./blockchain/...
+	$(PROFILE_GO) test -tags=slugtestpow,rpctest -count=1 -timeout=30m ./integration/...
 
 #? unit: Run unit tests
 unit:

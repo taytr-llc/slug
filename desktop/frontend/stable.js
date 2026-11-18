@@ -13,6 +13,7 @@ ids.push('event-state', 'event-cutoff', 'event-progress', 'event-refresh', 'even
 ids.push('seed-state', 'seed-refresh', 'seed-prepare', 'seed-publish', 'seed-reconcile', 'seed-attest', 'seed-cancel', 'seed-record', 'seed-clear', 'seed-history', 'seed-history-next', 'seed-message', 'seed-observation', 'seed-finality', 'seed-incident', 'seed-identity', 'seed-history-list');
 ids.push('card-state', 'card-refresh', 'card-begin', 'card-cancel', 'card-record', 'card-clear', 'card-history', 'card-history-next', 'card-message', 'card-totals', 'card-source', 'card-conflict', 'card-incident', 'card-evidence', 'card-gyms', 'card-bouts', 'card-unmatched', 'card-reasons', 'card-history-list', 'card-detail-hint');
 ids.push('bout-state', 'bout-refresh', 'bout-list', 'bout-empty', 'bout-run', 'bout-open', 'bout-check', 'bout-cancel', 'bout-clear', 'bout-message', 'bout-source', 'bout-overlay', 'bout-replay', 'bout-asof', 'bout-fighters', 'bout-play', 'bout-previous', 'bout-next', 'bout-restart', 'bout-result', 'bout-motion', 'bout-step', 'bout-events', 'bout-outcome', 'bout-finish', 'bout-scores', 'bout-evidence');
+ids.push('result-panel', 'result-state', 'result-connection', 'result-observation', 'result-read', 'result-publish', 'result-reconcile', 'result-attest', 'result-export', 'result-cancel', 'result-disconnect', 'result-clear', 'result-message', 'result-finality', 'result-conflict', 'result-exported', 'result-evidence');
 const ui = Object.fromEntries(ids.map((id) => [id, document.getElementById(id)]));
 const attrs = ['power', 'speed', 'chin', 'stamina', 'skill'];
 const rarity = ['club', 'professional', 'contender', 'elite', 'generational'];
@@ -351,17 +352,17 @@ function render() {
   const s = current, signed = ready(), accountSigned = accountReady(), live = ['starting', 'running'].includes(s?.state), preparing = ['signing_in', 'resetting'].includes(s?.account.state), st = stable?.status;
   content(ui.state, s ? label(s.state) : 'Connecting'); content(ui['account-state'], label(s?.account.state ?? 'signed_out'));
   content(ui['account-copy'], accountSigned ? `${s.account.fixture === 'zero256' ? 'Demo A' : 'Demo B'} keeps the same wallet, gym and candidate stable.` : preparing ? 'Preparing the retained demo gym…' : 'Choose a demo account. Saved candidates sync automatically; mining starts only with Start.');
-  content(ui.hold, s?.account.held ? 'The 24-hour recovery hold is active. Viewing, mining and reversible roster moves are available; recovery backup export remains held.' : '');
+  content(ui.hold, s?.account.held ? 'The 24-hour recovery hold is active. Viewing, mining and reversible roster moves are available; recovery backup export and test-result signing remain held.' : '');
   for (const id of ['login-a', 'login-b']) ui[id].disabled = !enabled || !!command || !s || !['signed_out', 'failed', 'expired'].includes(s.account.state) || !!s.view;
   ui.logout.disabled = !accountSigned || !!command; ui.reset.disabled = !accountSigned || !!command;
   ui.mining.disabled = !enabled || !!command || (!accountSigned && !preparing) || s?.state === 'stopping'; content(ui.mining, live ? 'Stop mining' : preparing ? 'Stop preparing' : 'Start mining');
-  content(ui['mining-copy'], preparing ? 'Preparing your retained identity. Stop drains work already in progress.' : live ? 'Mining is active. New saved candidates update the stable automatically.' : 'Syncing and viewing do not create mining jobs. Start only when you are ready.');
+  content(ui['mining-copy'], publicationNodeConnected() ? 'Connected for publication. Start mining when ready, or disconnect the test nodes below.' : preparing ? 'Preparing your retained identity. Stop drains work already in progress.' : live ? 'Mining is active. New saved candidates update the stable automatically.' : 'Syncing and viewing do not create mining jobs. Start only when you are ready.');
   for (const [id, value] of [['attempts', s?.attempts ?? 0], ['accepted', s?.accepted_count ?? 0], ['pending', s?.pending ?? 0], ['height', s?.height ?? 0]]) content(ui[id], number.format(value));
   content(ui.rate, live ? `${number.format(s.hashes_per_second)} hashes / second` : 'Not mining'); content(ui['wallet-state'], label(s?.wallet_state ?? 'closed'));
   content(ui.spendable, accountSigned ? coin.format(s.spendable_atoms / 1e8) : '—'); content(ui.immature, accountSigned ? coin.format(s.immature_atoms / 1e8) : '—'); content(ui['wallet-height'], accountSigned ? `Wallet height ${number.format(s.wallet_height)} · Rewards mature after 100 blocks.` : 'Rewards mature after 100 blocks.');
   content(ui.payout, accountSigned ? s.payout_address : 'Sign in to load the demo wallet'); content(ui['gym-id'], accountSigned ? s.gym_id : '—');
-  ui['export-recovery'].disabled = !accountSigned || !!command || live || !!watched || !s.account.can_export || s.backup_state === 'running'; ui['verify-backup'].disabled = !accountSigned || !!command || live || !!watched || s.backup_state === 'running';
-  content(ui.backup, s?.backup_state === 'running' ? `${backupPhases[s.backup_phase] || 'Checking the backup'}…` : s?.backup_state === 'succeeded' ? 'Backup verification completed.' : s?.backup_state === 'failed' ? 'Backup verification failed; the original wallet remains retained.' : 'Stop mining to save or verify a wallet backup.');
+  ui['export-recovery'].disabled = !accountSigned || !!command || live || publicationNodeConnected() || !!watched || !s.account.can_export || s.backup_state === 'running'; ui['verify-backup'].disabled = !accountSigned || !!command || live || publicationNodeConnected() || !!watched || s.backup_state === 'running';
+  content(ui.backup, s?.backup_state === 'running' ? `${backupPhases[s.backup_phase] || 'Checking the backup'}…` : s?.backup_state === 'succeeded' ? 'Backup verification completed.' : s?.backup_state === 'failed' ? 'Backup verification failed; the original wallet remains retained.' : publicationNodeConnected() ? 'Disconnect test nodes before saving or verifying a wallet backup.' : 'Stop mining to save or verify a wallet backup.');
   content(ui['stable-state'], stable ? label(stable.state) : 'Not connected'); content(ui['stable-count'], signed ? `${number.format(st.checkpoint)} assigned candidates · ${number.format(st.observed_source_count)} saved receipts last observed` : 'Sign in to load your assigned candidates.');
   content(ui['stable-progress'], signed ? (st.caught_up ? 'Caught up to the last observed receipt count. New arrivals are checked automatically.' : `Syncing saved history: ${st.checkpoint} of ${st.observed_source_count}. Verified partial pages remain available.`) : '');
   ui.sync.disabled = !signed || !!command || !!watched; ui['pause-sync'].disabled = !signed || !!command || (!stable.active_job_id && !stable.queued_job_id && stable.state !== 'syncing');
@@ -379,7 +380,7 @@ function render() {
   ui['apply-saved'].disabled = !signed || !!command || !!watched || !pending || pending.intent.view_id !== s.view.view_id || pending.intent.generation !== s.view.generation || !st.caught_up;
   ui.abandon.disabled = !signed || !!command || !!watched || !pending;
   content(ui.alert, connectionError || message || (stable?.error ? textError(stable.error) : '')); ui.alert.hidden = !ui.alert.textContent;
-  renderRoster(); renderCards(); renderPreview(); renderEntry(); renderEvent(); renderSeed(); renderCard(); renderBooked();
+  renderRoster(); renderCards(); renderPreview(); renderEntry(); renderEvent(); renderSeed(); renderCard(); renderBooked(); renderPublication();
 }
 async function call(method, ...args) { requireValue(!activeCall); const p = Call.ByName(`main.Gym.${method}`, ...args); activeCall = p; try { return await p; } finally { activeCall = null; } }
 function schedule() { if (timer !== null) clearTimeout(timer); timer = null; if (!disposed && enabled && !document.hidden) timer = setTimeout(() => { timer = null; pollWanted = true; pump(); }, 1000); }
@@ -407,6 +408,7 @@ async function fetchSnapshots() {
     if (!disposed && ready() && !tasks.length) await fetchSeedSnapshot();
     if (!disposed && ready() && !tasks.length) await fetchCardSnapshot();
     if (!disposed && ready() && !tasks.length) await fetchBookedSnapshot();
+    if (!disposed && ready() && !tasks.length) await fetchPublicationSnapshot();
   } catch { if (!disposed && captured === epoch) disconnected(); }
 }
 function stablyChangedRoster() { return stable.status.roster_revision !== pageRevision; }
@@ -538,7 +540,7 @@ async function loadPortrait(i) {
     const p = await call('ManifestPortrait', i.assignment.sequence); if (!remains()) return;
     exact(p, ['version', 'view', 'sequence', 'id', 'manifest_digest', 'portrait_digest', 'svg']); const a = i.assignment;
     requireValue(p.version === 1 && viewKey(checkedView(p.view)) === view && p.sequence === a.sequence && p.id === a.prospect_id && p.manifest_digest === a.manifest_digest && p.portrait_digest === a.portrait_digest && imageOnlySVG(p.svg));
-    const src = `data:image/svg+xml;base64,${btoa(p.svg)}`; requireValue([...images.entries()].reduce((n, [other, v]) => n + (other === k ? 0 : 2 * v.length), 2 * src.length) + JSON.stringify(pageItems).length + previewRetainedBytes() + entryRetainedBytes() + eventRetainedBytes() + seedRetainedBytes() + cardRetainedBytes() + bookedRetainedBytes() <= CACHE_MAX && images.size <= 8);
+    const src = `data:image/svg+xml;base64,${btoa(p.svg)}`; requireValue([...images.entries()].reduce((n, [other, v]) => n + (other === k ? 0 : 2 * v.length), 2 * src.length) + JSON.stringify(pageItems).length + previewRetainedBytes() + entryRetainedBytes() + eventRetainedBytes() + seedRetainedBytes() + cardRetainedBytes() + bookedRetainedBytes() + publicationRetainedBytes() <= CACHE_MAX && images.size <= 8);
     if (!remains()) return; images.set(k, src); const c = cards.get(a.prospect_id); c.image.setAttribute('src', src); c.image.hidden = false; c.placeholder.hidden = true;
   } catch { if (remains()) { const c = cards.get(i.assignment.prospect_id); c.image.removeAttribute('src'); c.image.hidden = true; c.placeholder.hidden = false; content(c.placeholder, 'Portrait unavailable. Reload it from the current verified page.'); } }
 }
@@ -631,7 +633,7 @@ function pausePreview() { if (playbackTimer !== null) clearTimeout(playbackTimer
 function discardPreviewResult() { pausePreview(); previewResult = null; playbackSteps = []; playbackIndex = 0; previewImages.clear(); previewImageAttempts.clear(); previewRendered = ''; ui['preview-fighters'].textContent = ''; ui['preview-events'].textContent = ''; ui['preview-scores'].textContent = ''; }
 function clearPreview() { previewSerial++; discardPreviewResult(); previewSelected = []; previewWatch = null; previewDiscovery = null; previewSnapshot = null; previewMessage = ''; ui['preview-selection'].textContent = ''; }
 function previewRetainedBytes() { return JSON.stringify(previewSelected).length + (previewResult ? JSON.stringify(previewResult).length + 65536 : 0) + [...previewImages.values()].reduce((n, src) => n + 2 * src.length, 0); }
-function previewCapacity(extra = 0) { return previewRetainedBytes() + entryRetainedBytes() + eventRetainedBytes() + seedRetainedBytes() + cardRetainedBytes() + bookedRetainedBytes() + JSON.stringify(pageItems).length + [...images.values()].reduce((n, src) => n + 2 * src.length, 0) + extra <= CACHE_MAX; }
+function previewCapacity(extra = 0) { return previewRetainedBytes() + entryRetainedBytes() + eventRetainedBytes() + seedRetainedBytes() + cardRetainedBytes() + bookedRetainedBytes() + publicationRetainedBytes() + JSON.stringify(pageItems).length + [...images.values()].reduce((n, src) => n + 2 * src.length, 0) + extra <= CACHE_MAX; }
 function previewError(code) { return ({ preview_class_mismatch: 'Choose two candidates from the same weight class.', preview_not_found: 'This preview is no longer retained. Select your pair and explicitly preview again.', preview_capacity: 'The local preview cache is full. Clear the preview and retry.', preview_cancelled: 'Preview cancelled. No fight was recorded.', preview_observation_unknown: 'The authority could not confirm its clock observation. Reopen the gym before another preview. No fight was recorded.', outcome_unknown: 'The preview may have started. Check its status before explicitly trying again.', preview_unavailable: 'Fight preview is unavailable. Your saved candidates are retained.' })[code] ?? textError(code); }
 function previewRefusal(code) {
   if (['unauthorized', 'stale_view'].includes(code)) clearPreview();
@@ -1582,11 +1584,12 @@ function pauseBooked() { if (bookedTimer !== null) clearTimeout(bookedTimer); bo
 function bookedClearImages() { bookedImages.clear(); bookedImageAttempts.clear(); bookedRendered = ''; ui['bout-fighters'].textContent = ''; }
 function bookedClearRecord() { pauseBooked(); bookedRecord = null; bookedStep = 0; bookedClearImages(); ui['bout-events'].textContent = ''; ui['bout-scores'].textContent = ''; }
 function clearBooked() {
+  clearPublication();
   bookedSerial++; bookedClearRecord(); bookedAuthority = bookedSnapshot = bookedPage = bookedStatus = bookedWatch = bookedTerminal = bookedUnknown = null;
   bookedSelected = bookedLastJob = bookedMessage = ''; bookedUnavailable = bookedOverlayKnown = bookedOverlayRead = false;
   ui['bout-list'].textContent = ''; ui['bout-list']._key = '';
 }
-function bookedSelectDate() { bookedSerial++; bookedClearRecord(); bookedPage = bookedStatus = null; bookedSelected = ''; bookedMessage = ''; bookedOverlayKnown = bookedOverlayRead = false; }
+function bookedSelectDate() { publicationSelect(); bookedSerial++; bookedClearRecord(); bookedPage = bookedStatus = null; bookedSelected = ''; bookedMessage = ''; bookedOverlayKnown = bookedOverlayRead = false; }
 function bookedContext() { return { epoch, view: currentKey(), viewID: current?.view?.view_id, serial: bookedSerial, date: entryDate, boutID: bookedSelected }; }
 function bookedCurrent(c, selection = false) { return !disposed && ready() && c.epoch === epoch && c.view === currentKey() && (!selection || c.serial === bookedSerial && c.date === entryDate && c.boutID === bookedSelected); }
 function bookedBoutValue(b) { exact(b, ['bout_id', 'class', 'corner_a', 'corner_b', 'seed']); requireValue(['bout_id', 'corner_a', 'corner_b', 'seed'].every(k => hex(b[k])) && b.corner_a < b.corner_b && classes.includes(b.class)); }
@@ -1734,10 +1737,10 @@ async function bookedRead(kind) {
 }
 function bookedSelect(id) {
   const row = bookedPage?.bouts.find(v => v.bout.bout_id === id); if (!row || !bookedReady() || command) return;
-  bookedSerial++; bookedClearRecord(); bookedSelected = id; bookedStatus = { version: 1, store_id: bookedPage.store_id, card_id: bookedPage.card_id, observed_at_ms: bookedPage.observed_at_ms, source: bookedPage.source, saved: row }; bookedOverlayKnown = true; bookedOverlayRead = true; bookedMessage = row.exists ? 'Open the saved candidate transcript to replay it.' : 'This booked bout has not been run. Run is an explicit action.'; renderBooked();
+  publicationSelect(); bookedSerial++; bookedClearRecord(); bookedSelected = id; bookedStatus = { version: 1, store_id: bookedPage.store_id, card_id: bookedPage.card_id, observed_at_ms: bookedPage.observed_at_ms, source: bookedPage.source, saved: row }; bookedOverlayKnown = true; bookedOverlayRead = true; bookedMessage = row.exists ? 'Open the saved candidate transcript to replay it.' : 'This booked bout has not been run. Run is an explicit action.'; renderBooked();
 }
 function bookedCheck() {
-  if (bookedUnknown?.boutID && bookedUnknown.date) { const pending = bookedUnknown; if (entryDate !== pending.date) { entryDate = pending.date; ui['entry-date'].value = entryDate; eventSelectDate(entryDate); } if (bookedSelected !== pending.boutID) { bookedSerial++; bookedClearRecord(); bookedStatus = null; bookedSelected = pending.boutID; bookedOverlayKnown = bookedOverlayRead = false; } }
+  if (bookedUnknown?.boutID && bookedUnknown.date) { const pending = bookedUnknown; if (entryDate !== pending.date) { entryDate = pending.date; ui['entry-date'].value = entryDate; eventSelectDate(entryDate); } if (bookedSelected !== pending.boutID) { publicationSelect(); bookedSerial++; bookedClearRecord(); bookedStatus = null; bookedSelected = pending.boutID; bookedOverlayKnown = bookedOverlayRead = false; } }
   const c = bookedContext(); queue(() => bookedCurrent(c, true) ? bookedRead('status') : undefined, 'bout-check');
 }
 async function bookedBegin() {
@@ -1812,7 +1815,7 @@ function renderBooked() {
   content(ui['bout-overlay'], !bookedOverlayKnown && bookedStatus ? 'Current source usability is unconfirmed. The retained transcript is historical evidence.' : conflict ? 'Seed conflict: new runs are blocked. The saved transcript and its original noon inputs remain unchanged.' : source ? source.usable ? 'Candidate source usable at the last local observation; this is not continuous chain monitoring.' : 'The source is not currently usable for a new candidate run.' : '');
   if (source?.incident_at_ms) content(ui['bout-overlay'], `${ui['bout-overlay'].textContent} Incident first observed ${new Date(source.incident_at_ms).toISOString()}. No event cancellation or reseed.`);
   content(ui['bout-empty'], bookedPage ? bookedPage.bouts.length ? '' : bookedPage.source.card_exists ? 'This saved card has no booked bouts. Unmatched entrants have no loss.' : 'No card is saved for this Saturday.' : '');
-  ui['bout-replay'].hidden = !bookedRecord; if (!bookedRecord) return;
+  renderPublication(); ui['bout-replay'].hidden = !bookedRecord; if (!bookedRecord) return;
   const r = bookedRecord, result = r.result, fighters = [r.input.a, r.input.b], names = fighters.map(v => v.manifest.name.display);
   content(ui['bout-asof'], `Noon inputs ${new Date(r.input.as_of_ms).toISOString()} · Transcript saved ${new Date(r.created_at_ms).toISOString()}. Later retirement does not change these inputs.`);
   const rendered = r.result_digest + JSON.stringify([...bookedImages.keys()]);
@@ -1828,6 +1831,302 @@ function renderBooked() {
   content(ui['bout-evidence'], `Bout ${r.bout_id} · Input ${r.input_id} · Result ${r.result_digest}`); requireValue(entryBytes([key, rendered, ui['bout-evidence'].textContent]) <= 4096);
 }
 motionPreference?.addEventListener('change', () => { pauseBooked(); renderBooked(); });
+
+// Result publication consumes saved evidence. Native owns cryptographic and
+// account authority; presentation never signs, hashes a proof or runs a fight.
+const RESULT_MAX = 294912, RESULT_JOB_MAX = 245760, RESULT_META_MAX = 49152;
+const RESULT_CONSTANTS = { publisher_public_key: '984ebcc3fd73fcf64dd8ebb6a03b01a6ed2403548a479ce3089dca1392841bcf', checkpoint_public_key: 'aee7dd24b6a03c5a02f452f5f588c8ca7e1dba000d9e21a736993e5842b30ca4', funding_public_key: '02c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee5', funding_script: '001406afd46bcdfd22ef94ac122aa11f241244a37ecc', rules_id: 'b388cec7124548b4af5d5b096252b881f0a472878d5ee5e23f805d3a53371816' };
+const RESULT_ERRORS = new Set(['invalid_request', 'unauthorized', 'forbidden', 'stale_view', 'busy', 'outcome_unknown', 'result_unavailable', 'result_corrupt', 'result_capacity', 'result_clock', 'result_calendar', 'result_not_found', 'result_not_prepared', 'result_source_incomplete', 'result_source_changed', 'result_source_conflict', 'result_node_offline', 'result_waiting_for_funds', 'result_scan_incomplete', 'result_not_mature', 'result_conflict', 'result_cancelled', 'result_proof_unavailable', 'result_setup_incomplete', 'invalid_frame']);
+let publicationAuthority = null, publicationSnapshot = null, publicationStatus = null, publicationRecord = null, publicationExport = null;
+let publicationWatch = null, publicationTerminal = null, publicationUnknown = null, publicationLastJob = '', publicationMessage = '';
+let publicationUnavailable = false, publicationOverlayKnown = false, publicationOverlayRead = false, publicationSerial = 0;
+function publicationMetadataBytes() { return entryBytes([publicationAuthority, publicationSnapshot && { ...publicationSnapshot, pin: null }, publicationStatus, publicationExport, publicationWatch, publicationTerminal, publicationUnknown, publicationLastJob, publicationMessage]) + 4096; }
+function publicationRetainedBytes() { if (!publicationAuthority && !publicationSnapshot && !publicationWatch && !publicationRecord) return 0; return publicationWatch ? RESULT_MAX : publicationMetadataBytes() + entryBytes(publicationRecord); }
+function publicationCapacity() { return publicationMetadataBytes() <= RESULT_META_MAX && entryBytes(publicationRecord) <= RESULT_JOB_MAX && publicationRetainedBytes() <= RESULT_MAX && previewCapacity(); }
+function publicationCacheError() { const e = new Error('Publication display full'); e.resultCode = 'result_capacity'; return e; }
+function publicationReady() { return bookedReady() && !publicationUnavailable && !!publicationAuthority && !!publicationSnapshot?.pin && viewKey(publicationSnapshot.view) === currentKey(); }
+function publicationContext() { return { ...bookedContext(), publicationSerial }; }
+function publicationCurrent(c, selection = false) { return bookedCurrent(c, selection) && (!selection || c.publicationSerial === publicationSerial); }
+function publicationSelect() { publicationSerial++; publicationStatus = publicationRecord = publicationExport = null; publicationOverlayKnown = publicationOverlayRead = false; publicationMessage = ''; }
+function clearPublication() { publicationSelect(); publicationAuthority = publicationSnapshot = publicationWatch = publicationTerminal = publicationUnknown = null; publicationLastJob = ''; publicationUnavailable = false; }
+function publicationPin(p) {
+  exact(p, ['version', 'source_store_id', 'source_pin', 'publisher_gym_id', 'publisher_account_id', 'publisher_source_authority_id', 'publisher_chain_id', 'network', 'genesis', 'floor_height', 'floor_hash', 'publisher_public_key', 'checkpoint_public_key', 'funding_public_key', 'funding_script', 'rules_id']);
+  requireValue(p.version === 1 && !!bookedAuthority && p.source_store_id === bookedAuthority.storeID && same(p.source_pin, bookedAuthority.pin) && p.publisher_gym_id === fixtures.zero256[0] && p.network === 0x534c5547 && p.genesis === GENESIS && p.floor_height === 0 && p.floor_hash === GENESIS);
+  requireValue(Object.entries(RESULT_CONSTANTS).every(([k, v]) => p[k] === v));
+  const seed = bookedAuthority.pin.source_pin.source_pin;
+  for (const k of ['publisher_account_id', 'publisher_source_authority_id', 'publisher_chain_id']) requireValue(hex(p[k]) && p[k] === seed[k]);
+}
+function publicationSource(v) {
+  exact(v, ['version', 'store_id', 'store_created_at_ms', 'record_digest', 'source_digest', 'input_id', 'result_digest', 'created_at_ms', 'source', 'summary']); bookedSourceValue(v.source);
+  requireValue(v.version === 1 && v.store_id === bookedAuthority.storeID && v.store_created_at_ms === bookedAuthority.createdMS && ['record_digest', 'source_digest', 'input_id', 'result_digest'].every(k => hex(v[k])) && int(v.created_at_ms, Math.max(v.store_created_at_ms, v.source.card_created_at_ms, v.source.finalized_at_ms), DATE_MAX) && entryBytes(v) <= 20480);
+  const s = v.summary; exact(s, ['winner', 'method', 'end_round', 'end_tick']); requireValue(FINISHES.includes(s.method) && int(s.end_round, 1, 3) && int(s.end_tick, 1, 60) && (['decision_draw', 'double_corner_stoppage'].includes(s.method) ? s.winner === '' : [v.source.bout.corner_a, v.source.bout.corner_b].includes(s.winner)));
+}
+function publicationStatement(v) {
+  exact(v, ['version', 'statement', 'signature']); requireValue(v.version === 1 && seedHex(v.signature, 64)); const s = v.statement, p = publicationAuthority.pin;
+  exact(s, ['version', 'result_key', 'store_id', 'source_store_id', 'source', 'publisher_chain_id', 'network', 'genesis', 'rules_id', 'publisher_public_key', 'checkpoint_public_key']); publicationSource(s.source);
+  requireValue(s.version === 1 && hex(s.result_key) && s.store_id === publicationAuthority.storeID && s.source_store_id === p.source_store_id && ['publisher_chain_id', 'network', 'genesis', 'rules_id', 'publisher_public_key', 'checkpoint_public_key'].every(k => s[k] === p[k])); return s;
+}
+function publicationAnchor(a) {
+  exact(a, ['height', 'hash', 'header', 'txid', 'raw_tx_digest', 'raw_tx_size', 'tx_count', 'tx_index', 'output_index', 'payload', 'merkle_branch']);
+  requireValue(int(a.height, 1, 2147483647) && ['hash', 'txid', 'raw_tx_digest'].every(k => hex(a[k])) && seedHex(a.header, 80) && seedHex(a.payload, 73) && a.payload.startsWith('534c554752534c5401') && !/^0{64}$/.test(a.payload.slice(18, 82)) && !/^0{64}$/.test(a.payload.slice(82)) && int(a.raw_tx_size, 1, 1024) && int(a.tx_count, 1, 400000) && int(a.tx_index, 0, a.tx_count - 1) && a.output_index === 0 && Array.isArray(a.merkle_branch) && a.merkle_branch.length <= 20 && a.merkle_branch.every(hex));
+}
+function publicationInclusion(v, r) {
+  exact(v, ['version', 'generation', 'anchor', 'observed_at_ms', 'observed_tip']); publicationAnchor(v.anchor); seedTip(v.observed_tip);
+  requireValue(v.version === 1 && int(v.generation, 0, 16) && int(v.observed_at_ms, r.prepared_at_ms, DATE_MAX) && v.observed_tip.height >= v.anchor.height && !!r.publication && v.anchor.txid === r.publication.txid && v.anchor.raw_tx_size * 2 === r.publication.raw_tx.length && v.anchor.payload.slice(18, 82) === r.result_key);
+}
+function publicationRecordValue(r) {
+  exact(r, ['version', 'store_id', 'result_key', 'statement', 'prepared_at_ms', 'publication', 'cursor', 'scan_restarts', 'inclusion', 'prior_inclusions', 'checkpoint', 'finality', 'equivocation', 'conflicts', 'conflict_overflow', 'observation']);
+  requireValue(r.version === 1 && r.store_id === publicationAuthority.storeID && hex(r.result_key) && entryBytes(r) <= 196608); const s = publicationStatement(r.statement);
+  requireValue(r.result_key === s.result_key && int(r.prepared_at_ms, Math.max(publicationAuthority.createdMS, s.source.created_at_ms), DATE_MAX)); seedCursor(r.cursor);
+  for (const k of ['publication', 'inclusion', 'checkpoint', 'finality', 'equivocation']) requireValue(r[k] === null || !!r[k] && typeof r[k] === 'object' && !Array.isArray(r[k]));
+  if (r.publication) {
+    const p = r.publication; exact(p, ['version', 'raw_tx', 'txid', 'coin', 'built_at_ms', 'dispatch_count', 'first_dispatch_at_ms', 'last_dispatch_at_ms', 'state']);
+    requireValue(p.version === 1 && typeof p.raw_tx === 'string' && p.raw_tx.length <= 2048 && seedHex(p.raw_tx, p.raw_tx.length / 2) && hex(p.txid) && ['built', 'dispatch_unknown', 'submitted'].includes(p.state) && int(p.dispatch_count, 0, 4294967295) && int(p.built_at_ms, r.prepared_at_ms, DATE_MAX));
+    exact(p.coin, ['outpoint', 'value_satoshis', 'script', 'block_height', 'block_hash', 'coinbase']); exact(p.coin.outpoint, ['txid', 'index']); requireValue(hex(p.coin.outpoint.txid) && int(p.coin.outpoint.index, 0, 4294967295) && int(p.coin.value_satoshis, 1294, 2100000000000000) && p.coin.script === RESULT_CONSTANTS.funding_script && int(p.coin.block_height, 0, 2147483647) && hex(p.coin.block_hash) && typeof p.coin.coinbase === 'boolean');
+    requireValue(p.dispatch_count === 0 ? p.state === 'built' && p.first_dispatch_at_ms === 0 && p.last_dispatch_at_ms === 0 : p.state !== 'built' && int(p.first_dispatch_at_ms, p.built_at_ms, DATE_MAX) && int(p.last_dispatch_at_ms, p.first_dispatch_at_ms, DATE_MAX));
+  }
+  requireValue(Array.isArray(r.scan_restarts) && r.scan_restarts.length <= 16 && r.cursor.generation === r.scan_restarts.length);
+  for (const [n, v] of r.scan_restarts.entries()) { exact(v, ['generation', 'previous', 'observed_at_ms', 'observed_tip', 'replacement_hash']); seedCursor(v.previous); seedTip(v.observed_tip); requireValue(v.generation === n + 1 && v.previous.generation === n && int(v.observed_at_ms, r.prepared_at_ms, DATE_MAX) && optionalID(v.replacement_hash)); }
+  if (r.inclusion) publicationInclusion(r.inclusion, r);
+  requireValue(Array.isArray(r.prior_inclusions) && r.prior_inclusions.length <= 16);
+  for (const v of r.prior_inclusions) { exact(v, ['version', 'inclusion', 'orphaned_at_ms', 'observed_tip', 'replacement_hash']); publicationInclusion(v.inclusion, r); seedTip(v.observed_tip); requireValue(v.version === 1 && int(v.orphaned_at_ms, v.inclusion.observed_at_ms, DATE_MAX) && optionalID(v.replacement_hash)); }
+  if (r.checkpoint) { seedCheckpoint(r.checkpoint); requireValue(!!r.inclusion && r.checkpoint.height === r.inclusion.anchor.height && r.checkpoint.hash === r.inclusion.anchor.hash); }
+  if (r.finality) { const f = r.finality; exact(f, ['checkpoint', 'inclusion', 'observed_at_ms', 'observed_tip', 'descendants']); seedCheckpoint(f.checkpoint); publicationInclusion(f.inclusion, r); seedTip(f.observed_tip); requireValue(same(f.checkpoint, r.checkpoint) && same(f.inclusion, r.inclusion) && int(f.observed_at_ms, f.inclusion.observed_at_ms, DATE_MAX) && int(f.descendants, 60, 2147483647) && f.descendants === f.observed_tip.height - f.inclusion.anchor.height); }
+  if (r.equivocation) { const e = publicationStatement(r.equivocation); requireValue(e.result_key === r.result_key && e.source.source.card_id === s.source.source.card_id && e.source.source.bout.bout_id === s.source.source.bout.bout_id && !same(e, s)); }
+  requireValue(Array.isArray(r.conflicts) && r.conflicts.length <= 8 && typeof r.conflict_overflow === 'boolean');
+  for (const c of r.conflicts) { exact(c, ['kind', 'observed_at_ms', 'expected_height', 'expected_hash', 'observed_hash', 'observed_tip', 'checkpoint']); requireValue(['source_chain_conflict', 'checkpoint_chain_conflict', 'checkpoint_equivocation', 'statement_equivocation'].includes(c.kind) && int(c.observed_at_ms, r.prepared_at_ms, DATE_MAX) && int(c.expected_height, 0, 2147483647) && optionalID(c.expected_hash) && optionalID(c.observed_hash)); if (c.observed_tip !== null) seedTip(c.observed_tip); if (c.checkpoint !== null) seedCheckpoint(c.checkpoint); }
+  const o = r.observation; exact(o, ['observed_at_ms', 'chain_observed_at_ms', 'tip', 'node_state', 'descendants', 'current_finality']); requireValue(int(o.observed_at_ms, 0, DATE_MAX) && int(o.chain_observed_at_ms, 0, o.observed_at_ms) && ['unknown', 'online', 'offline'].includes(o.node_state) && int(o.descendants, 0, 2147483647) && typeof o.current_finality === 'boolean' && (o.chain_observed_at_ms === 0) === (o.tip === null)); if (o.tip !== null) seedTip(o.tip);
+  requireValue(!o.current_finality || !!r.finality && !r.conflicts.length && !r.conflict_overflow && !r.equivocation && o.node_state === 'online' && o.tip.height - r.inclusion.anchor.height === o.descendants && o.descendants >= 60);
+  return r;
+}
+function publicationStatusValue(s) {
+  exact(s, ['version', 'store_id', 'result_key', 'card_id', 'bout_id', 'event', 'exists', 'phase', 'record_digest', 'source_record_digest', 'input_id', 'result_digest', 'prepared_at_ms', 'publication_state', 'txid', 'scan_height', 'scan_tip_height', 'scan_generation', 'inclusion_height', 'inclusion_hash', 'inclusion_generation', 'prior_inclusion_count', 'descendants', 'checkpoint_present', 'finalized_at_ms', 'conflict_count', 'conflict_overflow', 'observed_at_ms', 'chain_observed_at_ms', 'node_state', 'funding_state', 'current_finality', 'source']);
+  bookedStatusValue(s.source); eventValue(s.event); requireValue(s.version === 1 && s.store_id === publicationAuthority.storeID && ['result_key', 'card_id', 'bout_id'].every(k => hex(s[k])) && s.card_id === s.source.card_id && s.bout_id === s.source.saved.bout.bout_id && same(s.event, s.source.source.event) && entryBytes(s) <= 16384);
+  requireValue(['absent', 'prepared', 'provisional', 'finalized', 'conflict'].includes(s.phase) && ['none', 'built', 'dispatch_unknown', 'submitted'].includes(s.publication_state) && ['unknown', 'online', 'offline'].includes(s.node_state) && ['unknown', 'scanning', 'available', 'waiting_for_funds'].includes(s.funding_state));
+  for (const k of ['exists', 'checkpoint_present', 'conflict_overflow', 'current_finality']) requireValue(typeof s[k] === 'boolean');
+  requireValue(int(s.observed_at_ms, Math.max(publicationAuthority.createdMS, s.source.observed_at_ms), DATE_MAX));
+  for (const k of ['prepared_at_ms', 'finalized_at_ms', 'chain_observed_at_ms']) requireValue(int(s[k], 0, s.observed_at_ms));
+  for (const k of ['scan_height', 'scan_tip_height']) requireValue(int(s[k], -1, 2147483647));
+  for (const k of ['inclusion_height', 'descendants']) requireValue(int(s[k], 0, 2147483647));
+  for (const k of ['scan_generation', 'inclusion_generation', 'prior_inclusion_count']) requireValue(int(s[k], 0, 16));
+  requireValue(int(s.conflict_count, 0, 8) && optionalID(s.inclusion_hash) && optionalID(s.txid) && (s.publication_state === 'none') === (s.txid === '') && (s.inclusion_height === 0) === (s.inclusion_hash === ''));
+  if (!s.exists) requireValue(s.phase === 'absent' && ['record_digest', 'source_record_digest', 'input_id', 'result_digest', 'txid', 'inclusion_hash'].every(k => s[k] === '') && ['prepared_at_ms', 'finalized_at_ms', 'chain_observed_at_ms', 'inclusion_height', 'inclusion_generation', 'prior_inclusion_count', 'descendants', 'conflict_count', 'scan_generation'].every(k => s[k] === 0) && !s.checkpoint_present && !s.conflict_overflow && !s.current_finality && s.publication_state === 'none' && s.scan_height === -1 && s.scan_tip_height === -1);
+  else { const b = s.source.saved; requireValue(b.exists && ['record_digest', 'source_record_digest', 'input_id', 'result_digest'].every(k => hex(s[k])) && s.source_record_digest === b.record_digest && s.input_id === b.input_id && s.result_digest === b.result_digest && int(s.prepared_at_ms, Math.max(publicationAuthority.createdMS, b.created_at_ms), s.observed_at_ms)); }
+  requireValue(!s.current_finality || s.finalized_at_ms > 0 && s.descendants >= 60 && s.chain_observed_at_ms > 0 && s.node_state === 'online' && !s.conflict_count && !s.conflict_overflow && s.scan_tip_height - s.inclusion_height === s.descendants);
+  const conflict = s.conflict_count > 0 || s.conflict_overflow || s.exists && !s.source.saved.usable;
+  requireValue(!conflict || s.phase === 'conflict'); requireValue(s.phase !== 'finalized' || s.finalized_at_ms > 0 && !conflict); requireValue(!s.finalized_at_ms || s.checkpoint_present && s.inclusion_height > 0);
+  return s;
+}
+function publicationMatch(r, s) {
+  requireValue(s.exists && r.result_key === s.result_key && r.store_id === s.store_id && r.prepared_at_ms === s.prepared_at_ms); const src = r.statement.statement.source, b = s.source.saved;
+  requireValue(src.record_digest === s.source_record_digest && src.input_id === s.input_id && src.result_digest === s.result_digest && src.source_digest === b.source_digest && src.created_at_ms === b.created_at_ms && same(src.source.bout, b.bout) && ['winner', 'method', 'end_round', 'end_tick'].every(k => src.summary[k] === b[k]));
+  requireValue(src.source.card_id === s.card_id && same(src.source.event, s.event) && ['card_record_digest', 'card_source_digest', 'card_created_at_ms', 'finalized_at_ms'].every(k => src.source[k] === s.source.source[k]));
+  requireValue((r.publication?.state ?? 'none') === s.publication_state && (r.publication?.txid ?? '') === s.txid && (r.inclusion?.anchor.height ?? 0) === s.inclusion_height && (r.inclusion?.anchor.hash ?? '') === s.inclusion_hash && (r.inclusion?.generation ?? 0) === s.inclusion_generation && r.prior_inclusions.length === s.prior_inclusion_count && r.conflicts.length === s.conflict_count && r.conflict_overflow === s.conflict_overflow && !!r.checkpoint === s.checkpoint_present && (r.finality?.observed_at_ms ?? 0) === s.finalized_at_ms && r.cursor.height === s.scan_height && r.cursor.generation === s.scan_generation);
+  for (const k of ['chain_observed_at_ms', 'node_state', 'descendants', 'current_finality']) requireValue(r.observation[k] === s[k]); requireValue((r.observation.tip?.height ?? -1) === s.scan_tip_height);
+}
+function publicationResult(v) { exact(v, ['version', 'record', 'status']); requireValue(v.version === 1 && entryBytes(v) <= 229376); publicationRecordValue(v.record); publicationStatusValue(v.status); publicationMatch(v.record, v.status); return v; }
+function publicationProofSummary(v) {
+  exact(v, ['version', 'result_key', 'card_id', 'bout_id', 'record_digest', 'source_record_digest', 'input_id', 'result_digest', 'txid', 'sha256', 'bytes', 'header_count', 'block_count', 'finalized_at_ms', 'observed_tip']);
+  requireValue(v.version === 1 && ['result_key', 'card_id', 'bout_id', 'record_digest', 'source_record_digest', 'input_id', 'result_digest', 'txid', 'sha256'].every(k => hex(v[k])) && int(v.bytes, 1, 25165824) && int(v.header_count, 1, 512) && int(v.block_count, 1, 3) && int(v.finalized_at_ms, 0, DATE_MAX) && entryBytes(v) <= 2048); seedTip(v.observed_tip); return v;
+}
+function publicationJobValue(j) {
+  exact(j, ['version', 'job_id', 'kind', 'state', 'view', 'store_id', 'card_id', 'saturday', 'bout_id', 'result_key', 'error', 'result', 'export']); entryDateValue(j.saturday);
+  requireValue(j.version === 1 && ['job_id', 'card_id', 'bout_id', 'result_key'].every(k => hex(j[k])) && ['publish', 'reconcile', 'attest', 'export'].includes(j.kind) && ['queued', 'running', 'completed', 'failed', 'cancelled'].includes(j.state) && viewKey(checkedView(j.view)) === currentKey() && j.store_id === publicationAuthority.storeID && entryBytes(j) <= RESULT_JOB_MAX);
+  if (j.state === 'completed') { requireValue(j.error === ''); if (j.kind === 'export') { requireValue(j.result === null && j.export !== null); publicationProofSummary(j.export); } else { requireValue(j.export === null && j.result !== null); publicationResult(j.result); requireValue(j.saturday === j.result.status.event.saturday); } const p = j.kind === 'export' ? j.export : j.result.status; requireValue(['card_id', 'bout_id', 'result_key'].every(k => p[k] === j[k])); }
+  else requireValue(j.result === null && j.export === null && (['queued', 'running'].includes(j.state) ? j.error === '' : RESULT_ERRORS.has(j.error) && j.error !== 'invalid_frame' && (j.state !== 'cancelled' || j.error === 'result_cancelled')));
+  return j;
+}
+function publicationEnvelope(r, field) {
+  exact(r, ['id', 'ok', 'view', 'store_id', 'snapshot', 'status', 'record', 'job', 'error']); requireValue(int(r.id, 1) && typeof r.ok === 'boolean' && entryBytes(r) + 1 <= 262144); const fields = ['snapshot', 'status', 'record', 'job'];
+  if (!r.ok) { requireValue(r.view === null && r.store_id === '' && fields.every(k => r[k] === null) && RESULT_ERRORS.has(r.error)); return { ok: false, error: r.error }; }
+  requireValue(r.error === '' && fields.every(k => k === field ? r[k] !== null : r[k] === null)); const v = r[field];
+  if (field === 'snapshot') {
+    exact(v, ['version', 'state', 'error', 'view', 'store_id', 'pin', 'source_created_at_ms', 'created_at_ms', 'publisher_account_id', 'node_state', 'node_owner', 'active_job_id', 'queued_job_id', 'last_job_id']);
+    requireValue(v.version === 1 && ['ready', 'busy', 'setup_incomplete', 'unavailable', 'failed'].includes(v.state) && int(v.source_created_at_ms, 0, DATE_MAX) && int(v.created_at_ms, 0, DATE_MAX) && ['active_job_id', 'queued_job_id', 'last_job_id'].every(k => optionalID(v[k])) && same(r.view, v.view) && r.store_id === v.store_id);
+    requireValue(['offline', 'starting', 'online'].includes(v.node_state) && (v.node_state === 'offline' ? v.node_owner === 'none' : v.node_state === 'starting' ? v.node_owner === 'publication' : ['publication', 'mining'].includes(v.node_owner)));
+    if (['unavailable', 'setup_incomplete'].includes(v.state)) { requireValue(v.pin === null && v.store_id === '' && v.publisher_account_id === '' && v.source_created_at_ms === 0 && v.created_at_ms === 0 && v.node_state === 'offline' && !v.active_job_id && !v.queued_job_id && !v.last_job_id && v.error === (v.state === 'unavailable' ? 'result_unavailable' : 'result_setup_incomplete')); requireValue(v.state === 'unavailable' ? v.view === null : viewKey(checkedView(v.view)) === currentKey()); }
+    else {
+      requireValue(viewKey(checkedView(v.view)) === currentKey() && hex(v.store_id)); publicationPin(v.pin); requireValue(v.publisher_account_id === v.pin.publisher_account_id && v.source_created_at_ms === bookedAuthority.createdMS && int(v.created_at_ms, v.source_created_at_ms, DATE_MAX));
+      const ids = [v.active_job_id, v.queued_job_id, v.last_job_id].filter(Boolean); requireValue(new Set(ids).size === ids.length && !(v.active_job_id && v.queued_job_id) && (!(v.active_job_id || v.queued_job_id) || v.state === 'busy') && (v.state === 'failed' ? ['result_unavailable', 'result_corrupt', 'result_clock', 'result_source_changed'].includes(v.error) && !v.active_job_id && !v.queued_job_id : v.error === ''));
+      const a = { pin: v.pin, storeID: v.store_id, sourceCreatedMS: v.source_created_at_ms, createdMS: v.created_at_ms }; requireValue(!publicationAuthority || same(publicationAuthority, a)); if (!publicationAuthority) { v.pin.source_pin = bookedAuthority.pin; publicationAuthority = a; } v.pin = publicationAuthority.pin;
+    }
+    return { ok: true, value: v };
+  }
+  requireValue(publicationReady() && viewKey(checkedView(r.view)) === currentKey() && r.store_id === publicationAuthority.storeID);
+  if (field === 'status') publicationStatusValue(v); else if (field === 'record') publicationResult(v); else publicationJobValue(v);
+  return { ok: true, value: v };
+}
+function publicationError(code, kind = '') {
+  if (code === 'outcome_unknown') return kind === 'publish' ? 'The test result may have been saved or submitted. Read saved publication and explicitly check its status before another publish request.' : kind === 'export' ? 'The proof file may have been saved. Check the selected destination before exporting again.' : kind === 'attest' ? 'The result checkpoint may have been saved. Read saved publication before another finalization request.' : 'The observation could not be confirmed. Read saved publication after reopening the gym. This check did not submit a transaction.';
+  return ({ result_setup_incomplete: 'Sign in to both demo gyms to complete the shared result setup.', result_unavailable: 'Result publication is unavailable in this route. Saved bouts remain retained.', result_source_incomplete: 'Choose a saved bout with its original finalized event source.', result_source_changed: 'The saved source identity changed. Reopen the gym before using this evidence.', result_source_conflict: 'The saved source conflicts. Publishing and finalizing are blocked; the original outcome remains available.', result_conflict: 'The result has conflicting evidence. Its first transaction and checkpoint remain retained.', result_waiting_for_funds: 'The separate test publication fund has no mature unreserved output. No automatic funding was requested.', result_scan_incomplete: 'The bounded scan is incomplete. Choose Check status again to continue.', result_node_offline: 'The owned test nodes are unavailable. Another explicit network action can reconnect them.', result_not_prepared: 'No publication has been prepared. Publish test result is the separate explicit action.', result_not_found: 'No saved publication was found for this bout.', result_not_mature: 'The result needs 60 descendant blocks before finalization.', result_proof_unavailable: 'A complete proof is not available for the retained inclusion and funding history. No partial proof is saved.', result_capacity: 'The publication store or display is full. Clear displayed details to free display space; saved evidence stays retained.', result_clock: 'The local authority clock needs attention. Reopen the gym before continuing.', result_corrupt: 'Saved result evidence failed validation. Reopen the gym; no evidence was replaced.', result_cancelled: 'The request was cancelled. Read saved publication before another action.', result_calendar: 'Choose a supported Saturday in the entry panel.', forbidden: 'Publishing and finalizing require a fresh, unheld Demo A login. Held sessions can still view and check evidence.' })[code] ?? textError(code);
+}
+function publicationRefusal(code, kind = '', selection = null) {
+  if (['unauthorized', 'stale_view'].includes(code)) { clearPublication(); publicationUnavailable = true; }
+  else if (!['busy', 'invalid_request', 'result_calendar', 'result_cancelled', 'result_capacity'].includes(code)) { publicationOverlayKnown = false; publicationOverlayRead = true; }
+  if (code === 'result_unavailable') publicationUnavailable = true;
+  if (['result_source_changed', 'result_source_conflict'].includes(code)) { pauseBooked(); bookedClearImages(); bookedOverlayKnown = false; bookedOverlayRead = true; }
+  if (code === 'outcome_unknown' && kind) publicationUnknown = { kind, date: selection?.date ?? entryDate, boutID: selection?.boutID ?? bookedSelected, jobID: selection?.id ?? '' };
+  publicationMessage = publicationError(code, kind);
+}
+function publicationStatusInvariant(old, next) {
+  if (!old || old.bout_id !== next.bout_id || old.event.saturday !== next.event.saturday) return;
+  requireValue(old.result_key === next.result_key && old.card_id === next.card_id);
+  if (old.exists) requireValue(next.exists && ['source_record_digest', 'input_id', 'result_digest', 'prepared_at_ms'].every(k => old[k] === next[k]));
+  if (old.txid) requireValue(old.txid === next.txid);
+  if (old.finalized_at_ms) requireValue(old.finalized_at_ms === next.finalized_at_ms);
+  if (old.checkpoint_present) requireValue(next.checkpoint_present);
+  requireValue(next.conflict_count >= old.conflict_count && (!old.conflict_overflow || next.conflict_overflow));
+}
+function publicationRecordInvariant(old, next, historical = false) {
+  if (!old) return;
+  requireValue(old.result_key === next.result_key && old.prepared_at_ms === next.prepared_at_ms && same(old.statement, next.statement));
+  if (old.publication && (!historical || next.publication)) requireValue(!!next.publication && ['raw_tx', 'txid', 'coin', 'built_at_ms'].every(k => same(old.publication[k], next.publication[k])));
+  for (const k of ['checkpoint', 'finality', 'equivocation']) if (old[k] && (!historical || next[k])) requireValue(same(old[k], next[k]));
+  if (old.checkpoint && (!historical || next.checkpoint)) requireValue(same(old.inclusion, next.inclusion));
+}
+function publicationAdoptStatus(s, terminal = false) {
+  const sameSelection = publicationStatus?.bout_id === s.bout_id && publicationStatus.event.saturday === s.event.saturday;
+  if (terminal && (publicationOverlayRead || sameSelection && publicationStatus.observed_at_ms > s.observed_at_ms)) return false;
+  publicationStatusInvariant(publicationStatus, s); requireValue(!sameSelection || s.observed_at_ms >= publicationStatus.observed_at_ms);
+  publicationStatus = s; publicationOverlayKnown = true; if (!terminal) publicationOverlayRead = true;
+  return true;
+}
+function publicationCommitBooked(terminal = false) {
+  const s = publicationStatus;
+  if (publicationOverlayKnown && s && bookedStatus?.saved.bout.bout_id === s.bout_id && s.source.observed_at_ms >= bookedStatus.observed_at_ms && (!terminal || !bookedOverlayRead)) {
+    bookedAdoptStatus(s.source, terminal);
+    if (!s.source.saved.usable) { pauseBooked(); bookedClearImages(); }
+  }
+}
+function publicationAdoptResult(v, terminal = false) {
+  const historical = terminal && (publicationOverlayRead || publicationStatus && publicationStatus.observed_at_ms > v.status.observed_at_ms);
+  publicationRecordInvariant(publicationRecord, v.record, historical);
+  if (historical) return;
+  const accepted = publicationAdoptStatus(v.status, terminal);
+  // A newer explicit observation owns the mutable record as well as its badge.
+  if (accepted) { publicationRecord = v.record; publicationExport = null; }
+}
+function publicationSavedState() { return [publicationStatus, publicationRecord, publicationExport, publicationWatch, publicationTerminal, publicationUnknown, publicationLastJob, publicationOverlayKnown, publicationOverlayRead, bookedStatus, bookedOverlayKnown, bookedOverlayRead]; }
+function publicationRestoreState(v) { [publicationStatus, publicationRecord, publicationExport, publicationWatch, publicationTerminal, publicationUnknown, publicationLastJob, publicationOverlayKnown, publicationOverlayRead, bookedStatus, bookedOverlayKnown, bookedOverlayRead] = v; }
+async function fetchPublicationSnapshot() {
+  if (!ready() || !bookedAuthority || publicationUnavailable) return; const c = publicationContext(), previous = [publicationAuthority, publicationSnapshot];
+  try {
+    const raw = await call('ResultSnapshot'); if (!publicationCurrent(c)) return; const r = publicationEnvelope(raw, 'snapshot'); if (!r.ok) { publicationRefusal(r.error); return; }
+    publicationSnapshot = r.value; if (!publicationCapacity()) { [publicationAuthority, publicationSnapshot] = previous; throw publicationCacheError(); }
+    if (['failed', 'unavailable'].includes(r.value.state)) { publicationRefusal(r.value.error); return; }
+    const id = publicationWatch?.id || r.value.active_job_id || r.value.queued_job_id || r.value.last_job_id;
+    if (id && (publicationWatch || id !== publicationLastJob)) await publicationFetchJob(id);
+  } catch (e) { if (publicationCurrent(c)) { [publicationAuthority, publicationSnapshot] = previous; publicationRefusal(e.resultCode ?? 'result_unavailable'); } }
+  renderPublication();
+}
+async function publicationRead() {
+  if (!publicationReady() || !bookedSelected || !entryDate) return; const c = publicationContext();
+  try {
+    let r = publicationEnvelope(await call('ResultStatus', c.viewID, c.date, c.boutID), 'status'); if (!publicationCurrent(c, true)) return;
+    if (!r.ok) { publicationRefusal(r.error); return; }
+    requireValue(r.value.event.saturday === c.date && r.value.bout_id === c.boutID);
+    const old = publicationSavedState(); publicationAdoptStatus(r.value); if (!publicationCapacity()) { publicationRestoreState(old); throw publicationCacheError(); } publicationCommitBooked();
+    if (r.value.exists) {
+      const raw = await call('ResultRecord', c.viewID, c.date, c.boutID); if (!publicationCurrent(c, true)) return; r = publicationEnvelope(raw, 'record'); if (!r.ok) { publicationRefusal(r.error); return; }
+      requireValue(r.value.status.event.saturday === c.date && r.value.status.bout_id === c.boutID); const before = publicationSavedState();
+      publicationAdoptResult(r.value); if (!publicationCapacity()) { publicationRestoreState(before); throw publicationCacheError(); } publicationCommitBooked();
+    }
+    // Only a complete explicit read resolves an unacknowledged request. A
+    // cached terminal for this bout may predate the uncertain operation.
+    if (publicationUnknown?.boutID === c.boutID && publicationUnknown.date === c.date) publicationUnknown = null;
+    publicationMessage = 'Saved publication read. This read did not connect nodes, check the chain or submit a transaction.';
+  } catch (e) { if (publicationCurrent(c, true)) publicationRefusal(e.resultCode ?? 'outcome_unknown'); }
+  renderPublication(); renderBooked();
+}
+function publicationCanAct(kind) {
+  if (!publicationReady() || !entryDate || !bookedSelected || publicationWatch || publicationSnapshot.state === 'busy' || !['publish', 'reconcile', 'attest', 'export'].includes(kind)) return false;
+  if (current?.view?.account_id !== publicationAuthority.pin.publisher_account_id) return false;
+  const s = publicationStatus, selected = bookedStatus?.saved;
+  if (['publish', 'attest'].includes(kind)) {
+    if (current.account.held || !bookedOverlayKnown || !selected?.exists || !selected.usable || selected.bout.bout_id !== bookedSelected || publicationUnknown) return false;
+    if (s && (!publicationOverlayKnown || s.phase === 'conflict' || !s.source.saved.usable)) return false;
+  }
+  if (kind === 'publish') return true;
+  if (!s?.exists || s.bout_id !== bookedSelected || s.event.saturday !== entryDate) return false;
+  if (kind === 'attest') return publicationOverlayKnown && s.inclusion_height > 0 && s.descendants >= 60 && s.node_state === 'online' && !s.finalized_at_ms;
+  if (kind === 'export') return s.inclusion_height > 0;
+  return true;
+}
+async function publicationBegin(kind) {
+  if (!publicationCanAct(kind)) return; const c = publicationContext(), prior = publicationSavedState(), selected = bookedStatus;
+  publicationWatch = { id: '', kind, state: 'queued', date: c.date, boutID: c.boutID, cardID: selected.card_id, resultKey: publicationStatus?.result_key ?? '' };
+  if (!publicationCapacity()) { publicationWatch = prior[3]; publicationMessage = publicationError('result_capacity'); return; }
+  try {
+    const method = { publish: 'BeginResultPublish', reconcile: 'BeginResultReconcile', attest: 'BeginResultAttest', export: 'ExportResultProof' }[kind];
+    const raw = await call(method, c.viewID, c.date, c.boutID); if (!publicationCurrent(c)) return;
+    if (kind === 'export' && raw === null) { publicationWatch = prior[3]; return; }
+    const r = publicationEnvelope(raw, 'job'); if (!r.ok) { publicationWatch = prior[3]; publicationRefusal(r.error, kind, c); return; }
+    const j = r.value; requireValue(j.state === 'queued' && j.kind === kind && j.saturday === c.date && j.bout_id === c.boutID && j.card_id === selected.card_id && (!publicationWatch.resultKey || j.result_key === publicationWatch.resultKey));
+    publicationTerminal = null; publicationWatch = { id: j.job_id, kind, state: j.state, date: j.saturday, boutID: j.bout_id, cardID: j.card_id, resultKey: j.result_key };
+    // Retain prior selected evidence until a completed, correlated response.
+    if (publicationCurrent(c, true)) publicationOverlayRead = false;
+    publicationMessage = kind === 'publish' ? 'Test publication queued. A queued request is not confirmation of submission.' : kind === 'reconcile' ? 'Explicit chain check queued. It will not submit a transaction.' : kind === 'attest' ? 'Test result finalization queued.' : 'Public proof export queued.';
+  } catch { if (publicationCurrent(c)) { publicationWatch = prior[3]; publicationRefusal('outcome_unknown', kind, c); } }
+  renderPublication();
+}
+function publicationTerminalKey(j) { return JSON.stringify([j.job_id, j.kind, j.state, viewKey(j.view), j.store_id, j.card_id, j.saturday, j.bout_id, j.result_key, j.error, j.result?.status ?? null, j.export]); }
+async function publicationFetchJob(id) {
+  if (!publicationReady()) return; const c = publicationContext(), expected = publicationWatch; let rollback = null;
+  try {
+    const raw = await call('ResultJob', c.viewID, id); if (!publicationCurrent(c) || expected !== publicationWatch) return; const r = publicationEnvelope(raw, 'job');
+    if (!r.ok) { if (r.error !== 'busy') { publicationWatch = null; publicationRefusal(r.error, expected?.kind ?? '', expected); } return; }
+    const j = r.value; requireValue(j.job_id === id && (!expected || j.kind === expected.kind && j.saturday === expected.date && j.bout_id === expected.boutID && j.card_id === expected.cardID && (!expected.resultKey || j.result_key === expected.resultKey) && !(expected.state === 'running' && j.state === 'queued')));
+    if (['queued', 'running'].includes(j.state)) { const prior = publicationWatch; publicationWatch = { id, kind: j.kind, state: j.state, date: j.saturday, boutID: j.bout_id, cardID: j.card_id, resultKey: j.result_key }; if (!publicationCapacity()) { publicationWatch = prior; throw publicationCacheError(); } return; }
+    const key = publicationTerminalKey(j); if (publicationTerminal?.id === id) requireValue(publicationTerminal.key === key);
+    rollback = publicationSavedState(); publicationWatch = null; publicationLastJob = id; publicationTerminal = { id, key };
+    if (j.state === 'completed') {
+      if (publicationCurrent(c, true) && j.saturday === entryDate && j.bout_id === bookedSelected) {
+        if (j.kind === 'export') {
+          const s = publicationStatus; requireValue(!!s && ['result_key', 'card_id', 'bout_id', 'source_record_digest', 'input_id', 'result_digest', 'txid', 'finalized_at_ms'].every(k => j.export[k] === s[k]));
+          publicationExport = j.export;
+        } else publicationAdoptResult(j.result, true);
+      }
+      if (publicationUnknown?.jobID === id && publicationUnknown.kind === j.kind && publicationUnknown.date === j.saturday && publicationUnknown.boutID === j.bout_id) publicationUnknown = null;
+      publicationMessage = j.kind === 'export' ? 'The complete public proof was saved.' : j.kind === 'reconcile' ? 'Chain check completed. No transaction was submitted by this check.' : 'The test result operation completed. Its publication and finality remain separate from the saved outcome.';
+    } else publicationRefusal(j.error, j.kind, { date: j.saturday, boutID: j.bout_id, id });
+    if (!publicationCapacity()) throw publicationCacheError();
+    publicationCommitBooked(true);
+  } catch (e) { if (publicationCurrent(c)) { if (rollback) publicationRestoreState(rollback); if (e.resultCode === 'result_capacity') publicationMessage = publicationError(e.resultCode); else { publicationWatch = null; publicationRefusal('outcome_unknown', expected?.kind ?? '', expected); } } }
+  renderPublication(); renderBooked();
+}
+async function publicationCancel() {
+  if (!publicationReady() || !publicationWatch?.id) return; const c = publicationContext(), w = publicationWatch;
+  try { const raw = await call('CancelResultJob', c.viewID, w.id); if (!publicationCurrent(c)) return; const r = publicationEnvelope(raw, 'job'); if (!r.ok) { publicationRefusal(r.error, w.kind, w); return; } const j = r.value; requireValue(j.job_id === w.id && j.kind === w.kind && j.saturday === w.date && j.bout_id === w.boutID && j.card_id === w.cardID && j.result_key === w.resultKey && !(w.state === 'running' && j.state === 'queued')); await publicationFetchJob(w.id); }
+  catch { if (publicationCurrent(c)) publicationRefusal('outcome_unknown', w.kind, w); }
+  renderPublication();
+}
+function publicationNodeConnected() { return !!publicationSnapshot && publicationSnapshot.node_owner === 'publication' && ['starting', 'online'].includes(publicationSnapshot.node_state); }
+function renderPublication() {
+  const active = publicationReady(), s = publicationStatus, busy = !!command || !!publicationWatch || publicationSnapshot?.state === 'busy';
+  const selected = bookedStatus?.saved, connected = publicationNodeConnected();
+  ui['result-panel'].hidden = publicationUnavailable;
+  content(ui['result-state'], !ready() ? 'Sign in to view publication' : publicationSnapshot?.state === 'setup_incomplete' ? 'Setup incomplete' : !selected?.exists ? 'Choose a saved bout' : !s ? 'Publication not read' : s.phase === 'absent' ? 'Saved outcome · unpublished' : s.phase === 'conflict' ? 'Conflicting evidence' : s.phase === 'finalized' ? 'Historical test finality' : s.inclusion_height ? 'Included · provisional' : s.publication_state === 'dispatch_unknown' ? 'Submission uncertain' : s.publication_state === 'submitted' ? 'Submitted · not included' : 'Prepared · not published');
+  content(ui['result-connection'], publicationSnapshot?.node_state === 'starting' ? 'Connecting test nodes. Mining remains stopped.' : publicationSnapshot?.node_state === 'online' ? publicationSnapshot.node_owner === 'publication' ? 'Test nodes connected for publication. No mining or admission worker is running for this connection.' : 'Using the existing mining connection.' : 'Test nodes are disconnected. An explicit publication action can connect Demo A’s nodes.');
+  content(ui['result-observation'], s ? `${s.chain_observed_at_ms ? `Last chain check ${date.format(s.chain_observed_at_ms)}.` : 'No chain inclusion check is retained.'} Local evidence read ${date.format(s.observed_at_ms)}. Disconnection does not erase historical evidence.` : 'Read saved publication to inspect retained evidence without connecting nodes.');
+  content(ui['result-message'], publicationUnknown ? `${publicationError('outcome_unknown', publicationUnknown.kind)} The pending request belongs to Saturday ${publicationUnknown.date}.` : publicationMessage);
+  content(ui['result-finality'], s?.finalized_at_ms ? `First test finality observed ${date.format(s.finalized_at_ms)}. ${s.current_finality ? 'The inclusion met the depth rule at its last chain check.' : 'Current chain finality is not confirmed by the last check.'}` : s?.inclusion_height ? `${s.descendants} descendant blocks observed for this result. ${s.descendants < 60 ? '60 are required, followed by its own signed test checkpoint.' : 'The depth threshold is reached; finalization is a separate explicit action.'}` : 'A finalized event seed does not finalize this result. Signed preparation and submission are not chain inclusion.');
+  const ownConflict = s && (s.conflict_count > 0 || s.conflict_overflow), sourceConflict = s?.exists && !s.source.saved.usable;
+  content(ui['result-conflict'], !publicationOverlayKnown && s ? 'Current source usability is unconfirmed. Read saved publication before signing or publishing.' : [ownConflict ? 'Result conflict is retained. The first transaction, certificate and historical finality are preserved.' : '', sourceConflict ? 'The saved source is currently unusable. Publishing and finalizing are blocked even if an earlier chain check met the finality rule.' : ''].filter(Boolean).join(' '));
+  content(ui['result-exported'], publicationExport ? `Public proof saved: ${number.format(publicationExport.bytes)} bytes, ${publicationExport.header_count} headers and ${publicationExport.block_count} full blocks. No wallet recovery material is included.` : '');
+  content(ui['result-evidence'], s?.exists ? `Publication ${s.result_key} · Transaction ${s.txid || 'not built'} · Saved outcome ${s.result_digest}${publicationExport ? ` · File SHA256 ${publicationExport.sha256}` : ''}` : '');
+  ui['result-read'].disabled = !active || busy || !bookedSelected;
+  for (const kind of ['publish', 'reconcile', 'attest', 'export']) ui[`result-${kind}`].disabled = busy || !publicationCanAct(kind);
+  ui['result-cancel'].disabled = !active || !!command || !publicationWatch?.id;
+  ui['result-disconnect'].disabled = !active || !!command || !connected;
+  ui['result-clear'].disabled = !publicationRecord && !publicationStatus && !publicationExport;
+  requireValue(entryBytes([ui['result-evidence'].textContent, ui['result-state'].textContent]) <= 4096);
+}
+
+for (const kind of ['publish', 'reconcile', 'attest', 'export']) ui[`result-${kind}`].addEventListener('click', () => { const c = publicationContext(); queue(() => publicationCurrent(c, true) ? publicationBegin(kind) : undefined, `result-${kind}`); });
+ui['result-read'].addEventListener('click', () => { const c = publicationContext(); queue(() => publicationCurrent(c, true) ? publicationRead() : undefined, 'result-read'); });
+ui['result-cancel'].addEventListener('click', () => queue(publicationCancel, 'result-cancel'));
+ui['result-disconnect'].addEventListener('click', () => oldAction('Stop'));
+ui['result-clear'].addEventListener('click', () => { publicationSelect(); renderPublication(); });
 
 ui['event-refresh'].addEventListener('click', () => queueEventSelection(() => eventReadStatus(), 'event-status'));
 ui['event-capture'].addEventListener('click', () => queueEventSelection(eventBegin, 'event-capture'));
@@ -1869,7 +2168,7 @@ for (const [id, kind] of [['bout-refresh', 'card_status'], ['bout-open', 'record
 ui['bout-check'].addEventListener('click', bookedCheck);
 ui['bout-run'].addEventListener('click', () => { const c = bookedContext(); queue(() => bookedCurrent(c, true) ? bookedBegin() : undefined, 'bout-run'); });
 ui['bout-cancel'].addEventListener('click', () => queue(bookedCancel, 'bout-cancel'));
-ui['bout-clear'].addEventListener('click', () => { bookedSerial++; bookedClearRecord(); bookedPage = bookedStatus = null; bookedSelected = ''; bookedOverlayKnown = bookedOverlayRead = false; renderBooked(); });
+ui['bout-clear'].addEventListener('click', () => { publicationSelect(); bookedSerial++; bookedClearRecord(); bookedPage = bookedStatus = null; bookedSelected = ''; bookedOverlayKnown = bookedOverlayRead = false; renderBooked(); });
 ui['bout-play'].addEventListener('click', playBooked); ui['bout-previous'].addEventListener('click', () => stepBooked(bookedStep - 1)); ui['bout-next'].addEventListener('click', () => stepBooked(bookedStep + 1)); ui['bout-restart'].addEventListener('click', () => stepBooked(0)); ui['bout-result'].addEventListener('click', () => stepBooked(bookedTicks()));
 
 ui['preview-begin'].addEventListener('click', () => queue(async () => { try { await beginPreview(); } catch { discardPreviewResult(); previewMessage = previewError('outcome_unknown'); } }, 'preview'));

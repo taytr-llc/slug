@@ -108,7 +108,14 @@ func (s *Store) WithCardView(ctx context.Context, events *gymevent.Store, entrie
 	return s.cardView(work, events, entries, session, dates, commit)
 }
 func (s *Store) cardAuthorize(ctx context.Context, events *gymevent.Store, entries *gymentry.Store, session gymstable.Session, fn func(gymevent.SeedSourceInfo, func() error) error) error {
-	return mapped(events.WithSeedView(ctx, entries, session, gymaccount.View, func(v gymevent.SeedSourceInfo, check func() error) error {
+	return s.cardAuthorizePurpose(ctx, events, entries, session, gymaccount.View, false, fn)
+}
+func (s *Store) cardAuthorizePurpose(ctx context.Context, events *gymevent.Store, entries *gymentry.Store, session gymstable.Session, capability gymaccount.Capability, result bool, fn func(gymevent.SeedSourceInfo, func() error) error) error {
+	observe := events.WithSeedView
+	if result {
+		observe = events.WithResultView
+	}
+	return mapped(observe(ctx, entries, session, capability, func(v gymevent.SeedSourceInfo, check func() error) error {
 		if v.Version != 1 || v.StoreID != s.meta.Pin.SourceStoreID || !equal(v.Pin, s.meta.Pin.SourcePin) || check == nil || !timestamp(v.ObservedAtMS) {
 			return ErrForbidden
 		}
@@ -134,6 +141,9 @@ func (s *Store) cardView(ctx context.Context, events *gymevent.Store, entries *g
 // stays held until the existing final source observation and original-View
 // publication guard finish. Neither callback may reenter these source stores.
 func (s *Store) WithCardPreparedView(ctx context.Context, events *gymevent.Store, entries *gymentry.Store, session gymstable.Session, prepare func(Info) ([]string, func(CardView, func() error) error, error)) error {
+	return s.withCardPreparedPurpose(ctx, events, entries, session, gymaccount.View, false, prepare)
+}
+func (s *Store) withCardPreparedPurpose(ctx context.Context, events *gymevent.Store, entries *gymentry.Store, session gymstable.Session, capability gymaccount.Capability, result bool, prepare func(Info) ([]string, func(CardView, func() error) error, error)) error {
 	if ctx == nil || events == nil || entries == nil || prepare == nil {
 		return ErrInvalid
 	}
@@ -142,7 +152,7 @@ func (s *Store) WithCardPreparedView(ctx context.Context, events *gymevent.Store
 		return e
 	}
 	defer done()
-	if e = s.cardAuthorize(work, events, entries, session, func(_ gymevent.SeedSourceInfo, check func() error) error { return check() }); e != nil {
+	if e = s.cardAuthorizePurpose(work, events, entries, session, capability, result, func(_ gymevent.SeedSourceInfo, check func() error) error { return check() }); e != nil {
 		return s.cardPreparedError(e)
 	}
 	if s.life.Err() != nil {
@@ -175,7 +185,7 @@ func (s *Store) WithCardPreparedView(ctx context.Context, events *gymevent.Store
 	if e != nil {
 		return e
 	}
-	e = s.cardViewAuthorized(work, events, entries, session, evs, commit)
+	e = s.cardViewAuthorizedPurpose(work, events, entries, session, capability, result, evs, commit)
 	// The body's final guard is the success linearization. Never replace a nil
 	// completed result because Close started afterward, or reinterpret an opaque
 	// consumer error (including its own distinct outcome-unknown error identity).
@@ -213,6 +223,9 @@ func (s *Store) cardDates(dates []string) ([]gymevent.Event, error) {
 }
 
 func (s *Store) cardViewAuthorized(ctx context.Context, events *gymevent.Store, entries *gymentry.Store, session gymstable.Session, evs []gymevent.Event, commit func(CardView, func() error) error) error {
+	return s.cardViewAuthorizedPurpose(ctx, events, entries, session, gymaccount.View, false, evs, commit)
+}
+func (s *Store) cardViewAuthorizedPurpose(ctx context.Context, events *gymevent.Store, entries *gymentry.Store, session gymstable.Session, capability gymaccount.Capability, result bool, evs []gymevent.Event, commit func(CardView, func() error) error) error {
 	rows := []Record{}
 	rowIndex := make([]int, len(evs))
 	digests := make([]string, len(evs))
@@ -253,7 +266,7 @@ func (s *Store) cardViewAuthorized(ctx context.Context, events *gymevent.Store, 
 		return ErrCorrupt
 	}
 	mutated := false
-	e = s.cardAuthorize(ctx, events, entries, session, func(v gymevent.SeedSourceInfo, check func() error) error {
+	e = s.cardAuthorizePurpose(ctx, events, entries, session, capability, result, func(v gymevent.SeedSourceInfo, check func() error) error {
 		s.mu.Lock()
 		defer s.mu.Unlock()
 		if e := check(); e != nil {

@@ -1,6 +1,6 @@
 # SLUG launch readiness
 
-Updated November 17, 2026. Numbered change sets are reviewable engineering
+Updated November 18, 2026. Numbered change sets are reviewable engineering
 increments, not a fixed countdown to launch. This checklist tracks the actual
 finish line and must be updated from evidence rather than a branch number.
 
@@ -171,6 +171,31 @@ they do not count as completion of this product-release gate.
   Candidate transcripts grant no professional/exhibition records, XP, awards,
   titles or ownership. See `EVENT_BOUTS.md` and `CHANGESET_47_NOTES.md`.
 
+
+- Set 48 is under integration on `slug-result-publication`: candidate result
+  publication, independent result finality and public proof export. The frozen
+  reference is committed; scoped core/desktop reviews, frontend checks and
+  installer crash recovery pass. The actual-chain run and independent proof
+  checks passed; normal Mac packaging and deployment remain pending.
+  Build qualification found a Go compiler lifetime
+  defect in the original application regression. The documented unoptimized
+  build option passes that test ten times and keeps full-capacity selected
+  metadata below 500 ms, but fails the existing 25-second startup deadline.
+  That option is not release-qualified. Disabling the two CSE passes instead
+  passes the original regression ten times, selected metadata at 228–241 ms
+  and full startup at 11.299 seconds in the preliminary diagnostic. Full core normal, scoped-clock, race and
+  GC-pressure checks pass; a three-literal vet correction has independent
+  equivalence review and passing final-source follow-up checks. Final-profile
+  desktop normal/race, adapter, all-module, capacity and installer crash checks
+  pass; selected metadata took 228–242 ms and full parent startup took 11.16
+  seconds. The fresh actual run passed in 286.793 seconds with six proof exports,
+  zero new admissions and graceful cleanup; independent verification checked
+  279 unique proof headers and all twelve altered-evidence controls were refused.
+  The temporary build profile is locally qualified for this scope; packaging
+  and deployment remain in progress. Preserve both failed-build
+  and timing evidence; no upstream compiler fix is claimed. This work adds
+  no professional records, XP, awards or product-launch approval.
+
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
 `sim-handoff-intake.json` preserves archive and file checksums. They are reference
@@ -204,6 +229,16 @@ initial-band-edge favorites won, and the set 42 engine produces fewer draws
 than the original simulator under its different score-tie rule. Review those
 findings as matchmaking/gameplay questions; changing a summary rating alone
 does not change a fight. Neither finding authorizes a policy or engine change.
+
+The current frozen name tables contain 32 distinct first and 32 distinct last
+names, yielding 1,024 display names. Under an independent-uniform draw model,
+the probability of at least one shared name exceeds 50% at 38 fighters; at
+100 fighters, the expected fraction with a namesake is about 9.22%. These are
+analytic scenarios, not a production population forecast. D51 already permits
+duplicates. Review acceptable prevalence and disambiguation at an explicit
+population scope, then assess the expanded version against that target while
+preserving existing assignments. The workspace's
+`set48-name-collision-prelaunch-note.md` records the assumptions and calculations.
 
 The approved logo handoff is preserved byte-for-byte in the workspace's
 `../brand-assets`: gray background, white front-facing fist, black linework and

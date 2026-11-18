@@ -252,6 +252,9 @@ func (p *previewAcceptance) checkProcessRestart(helper, data, node string) map[s
 	if p.bridge.boutsEnabled {
 		launch = LaunchBouts
 	}
+	if p.bridge.resultsEnabled {
+		launch = LaunchResults
+	}
 	b, err := launch(helper, data, node)
 	if err != nil {
 		p.t.Fatal("restart preview helper", err)

@@ -23,7 +23,14 @@ func (s *Store) seedView(ctx context.Context, source *gymentry.Store, session gy
 	if source == nil || fn == nil || (cap != gymaccount.View && cap != gymaccount.SeedPublish) {
 		return ErrInvalid
 	}
-	return mapped(source.WithSeedView(ctx, session, cap, func(v gymentry.SnapshotSourceInfo, check func() error) error {
+	return s.publicationView(ctx, source, session, cap, false, fn)
+}
+func (s *Store) publicationView(ctx context.Context, source *gymentry.Store, session gymstable.Session, cap gymaccount.Capability, result bool, fn func(SeedSourceInfo, func() error) error) error {
+	observe := source.WithSeedView
+	if result {
+		observe = source.WithResultView
+	}
+	return mapped(observe(ctx, session, cap, func(v gymentry.SnapshotSourceInfo, check func() error) error {
 		p, e := participant(s.meta.Pin, v.Pin.StablePin.Identity.GymID)
 		if e != nil || !equal(p, v.Pin) {
 			return ErrForbidden

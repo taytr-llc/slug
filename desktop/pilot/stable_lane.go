@@ -15,6 +15,8 @@ import (
 )
 
 type stableTask struct {
+	publication  *ResultJob
+	resultPath   string
 	bout         *BoutJob
 	card         *CardJob
 	seed         *SeedJob
@@ -36,6 +38,10 @@ type stableTask struct {
 func (s *StableController) expireQueuedLocked() {
 	if s.queued != nil && s.queued.ctx.Err() != nil {
 		s.queued.cancel()
+		if s.queued.publication != nil {
+			s.cancelQueuedResultLocked()
+			return
+		}
 		if s.queued.bout != nil {
 			s.cancelQueuedBoutLocked()
 			return
@@ -75,6 +81,10 @@ func (s *StableController) cancelTasksLocked() {
 	}
 	if s.queued != nil {
 		s.queued.cancel()
+		if s.queued.publication != nil {
+			s.cancelQueuedResultLocked()
+			return
+		}
 		if s.queued.bout != nil {
 			s.cancelQueuedBoutLocked()
 			return
@@ -224,6 +234,9 @@ func (s *StableController) cycle(ctx context.Context) error {
 		s.stableMu.Unlock()
 		return nil
 	}
+	if task.publication != nil {
+		task.publication.State = "running"
+	}
 	if task.bout != nil {
 		task.bout.State = "running"
 	} else if task.card != nil {
@@ -241,6 +254,9 @@ func (s *StableController) cycle(ctx context.Context) error {
 	}
 	s.active = task
 	s.stableMu.Unlock()
+	if task.publication != nil {
+		return s.runResultTask(ctx, task)
+	}
 	if task.bout != nil {
 		return s.runBoutTask(ctx, task)
 	}
@@ -453,7 +469,7 @@ func (s *StableController) publishStableItems(ctx context.Context, items []gymst
 				delete(next, low)
 			}
 		}
-		if !manifestCacheFits(next, s.receiptSlot) || !stableCacheFits(next, s.receiptSlot, s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+s.boutBytes) {
+		if !manifestCacheFits(next, s.receiptSlot) || !stableCacheFits(next, s.receiptSlot, s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+s.boutBytes+s.resultBytes) {
 			return gymstable.ErrCapacity
 		}
 		s.cache = next
@@ -671,6 +687,9 @@ func (s *StableController) RefreshManifestProspects(ctx context.Context) error {
 }
 
 func (t *stableTask) family() string {
+	if t.publication != nil {
+		return "result"
+	}
 	if t.bout != nil {
 		return "bout"
 	}

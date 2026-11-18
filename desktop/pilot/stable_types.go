@@ -62,6 +62,8 @@ type StableOperation struct {
 type StableAccountConfig struct {
 	Manifest ManifestAccountConfig
 	Lease    gymstable.Lease
+	// ResultNodeLease fences only explicit Result node readiness admission.
+	ResultNodeLease ManifestViewLease
 }
 
 type StableControllerAPI interface {

@@ -86,6 +86,13 @@ version.
 
 ## Build and test
 
+- Set 48 candidate qualification uses the exact local Go 1.27.4 profile in
+  `build-profile.json`; see `BUILD_TOOLCHAIN.md`. Use
+  `sh scripts/candidate-go.sh build ...` and `test ...` for that profile.
+  Plain `go build`/`go test` and the labelled minimum-Go compatibility job are
+  separate diagnostics. Do not weaken assertions or runtime limits to mask the
+  retained compiler failure. No upstream fix or completed qualification is
+  implied merely by the profile's presence.
 - Go workspace: `go.work` is committed and resolves all 10 modules to local
   sources. Always build/test from the repo root in workspace mode.
 - Full build: `go build ./...` at root covers the root module only. Build

@@ -14,6 +14,7 @@ import (
 	"github.com/taytr-llc/slug/gymcard"
 	"github.com/taytr-llc/slug/gymentry"
 	"github.com/taytr-llc/slug/gymevent"
+	"github.com/taytr-llc/slug/gymresult"
 	"github.com/taytr-llc/slug/gymseed"
 	"github.com/taytr-llc/slug/gymstable"
 	"github.com/taytr-llc/slug/registry"
@@ -22,6 +23,15 @@ import (
 // StableController owns one serial work lane. Its source lifetime is fenced by
 // laneGate, never by the legacy resource mutex across an account callback.
 type StableController struct {
+	resultNodeOwner                    *resultNodeOwner
+	resultEnabled, resultAttached      bool
+	resultStore                        *gymresult.Store
+	resultPin                          gymresult.Pin
+	resultID, resultFailure            string
+	resultCreated, resultSourceCreated int64
+	resultLast                         *ResultJob
+	resultCheckpoint                   func(string)
+
 	boutEnabled, boutAttached      bool
 	boutStore                      *gymbout.Store
 	boutPin                        gymbout.Pin
@@ -108,10 +118,13 @@ func (s *StableController) session() gymstable.Session {
 }
 
 func (s *StableController) shortView(ctx context.Context, view string, fn func() error) error {
+	return s.viewWithBudget(ctx, view, 250*time.Millisecond, fn)
+}
+func (s *StableController) viewWithBudget(ctx context.Context, view string, budget time.Duration, fn func() error) error {
 	if view != s.view.ViewID || !canonicalManifestID(view) {
 		return gymstable.ErrStaleView
 	}
-	short, cancel := context.WithTimeout(ctx, 250*time.Millisecond)
+	short, cancel := context.WithTimeout(ctx, budget)
 	defer cancel()
 	err := s.stableConfig.Lease(short, gymaccount.View, func(a gymaccount.Account, check func() error) error {
 		if a.ID != s.account.AccountID || a.Generation != s.view.Generation || check == nil {
@@ -363,6 +376,7 @@ func (s *StableController) Start() error {
 	go func() {
 		defer close(done)
 		s.stopStoppedLoop()
+		s.stopResultNodes()
 		s.laneGate <- struct{}{}
 		err := s.closePair()
 		<-s.laneGate
@@ -419,6 +433,7 @@ func (s *StableController) Close() error {
 		s.last = nil
 		s.previewLast = nil
 		s.entryLast = nil
+		s.resultLast = nil
 		s.boutLast = nil
 		s.boutFailure = ""
 		s.cardLast = nil
@@ -434,6 +449,7 @@ func (s *StableController) Close() error {
 		s.eventBytes = 0
 		s.seedBytes = 0
 		s.cardBytes = 0
+		s.resultBytes = 0
 		s.boutBytes = 0
 		s.mu.Unlock()
 		s.stableMu.Unlock()

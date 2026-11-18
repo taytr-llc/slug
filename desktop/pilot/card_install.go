@@ -80,7 +80,7 @@ func (s *StableController) AttachCards(ctx context.Context, x *gymcard.Store) er
 		}
 		s.mu.Lock()
 		defer s.mu.Unlock()
-		if !stableCacheFits(s.cache, s.receiptSlot, s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.boutBytes+MaxCardMetadataSize) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.boutBytes+MaxCardMetadataSize+s.resultBytes) {
 			return gymcard.ErrCapacity
 		}
 		s.cardStore = x

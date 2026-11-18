@@ -28,6 +28,7 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 	candidateSeeds := flags.Bool("candidate-seeds", false, "Enable candidate seed publication within candidate-events")
 	candidateBouts := flags.Bool("candidate-bouts", false, "Enable saved candidate bout transcripts within candidate-cards")
 	candidateCards := flags.Bool("candidate-cards", false, "Enable bounded candidate cards within candidate-seeds")
+	candidateResults := flags.Bool("candidate-results", false, "Enable saved candidate result publication within candidate-bouts")
 	if e := flags.Parse(args); e != nil {
 		return e
 	}
@@ -43,6 +44,9 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 	if *candidateEvents && (!*entries || !*stable || !*candidates || *accounts) {
 		return errors.New("candidate-events requires candidate-entries, candidate-stable and candidate-manifests")
 	}
+	if *candidateResults && (!*candidateBouts || !*candidateCards || !*candidateSeeds || !*candidateEvents || !*entries || !*stable || !*candidates || *accounts) {
+		return errors.New("candidate-results requires candidate-bouts and all earlier candidate modes")
+	}
 	if *candidateBouts && (!*candidateCards || !*candidateSeeds || !*candidateEvents || !*entries || !*stable || !*candidates || *accounts) {
 		return errors.New("candidate-bouts requires candidate-cards and all earlier candidate modes")
 	}
@@ -53,6 +57,13 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 		return errors.New("candidate-seeds requires candidate-events, candidate-entries, candidate-stable and candidate-manifests")
 	}
 	if *candidates {
+		if *candidateResults {
+			c, e := accountpilot.NewResults(ctx, pilot.Config{DataDir: *data, NodeBinary: *node})
+			if e != nil {
+				return e
+			}
+			return pilot.ServeResults(ctx, c, stdin, stdout)
+		}
 		if *candidateBouts {
 			controller, e := accountpilot.NewBouts(ctx, pilot.Config{DataDir: *data, NodeBinary: *node})
 			if e != nil {

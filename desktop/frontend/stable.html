@@ -92,6 +92,14 @@
         <ol id="bout-list" class="card-pairings" aria-label="Booked candidate bouts"></ol><p id="bout-empty" class="note"></p>
         <div class="actions"><button id="bout-run" type="button" disabled>Run candidate bout</button><button id="bout-open" type="button" disabled>Open saved replay</button><button id="bout-check" type="button" disabled>Check saved result</button><button id="bout-cancel" type="button" disabled>Cancel bout request</button></div>
         <p id="bout-message" class="note" role="status"></p><p id="bout-source" class="note"></p><p id="bout-overlay" class="note" role="status"></p>
+        <section id="result-panel" aria-labelledby="result-heading">
+          <div class="section-top"><h4 id="result-heading">Test result publication</h4><span id="result-state">Choose a saved bout</span></div>
+          <p class="note">The saved outcome is available immediately. A result becomes final only after its own publication has 60 descendant blocks and a signed test checkpoint. These public demo keys do not represent official league authority.</p>
+          <p id="result-connection" class="note"></p><p id="result-observation" class="note"></p>
+          <div class="actions"><button id="result-read" type="button" disabled>Read saved publication</button><button id="result-publish" type="button" disabled>Publish test result</button><button id="result-reconcile" type="button" disabled>Check status</button><button id="result-attest" type="button" disabled>Finalize test result</button><button id="result-export" type="button" disabled>Save public proof</button><button id="result-cancel" type="button" disabled>Cancel publication request</button><button id="result-disconnect" type="button" disabled>Disconnect test nodes</button><button id="result-clear" type="button" disabled>Clear publication details</button></div>
+          <p id="result-message" class="note" role="status"></p><p id="result-finality" class="note"></p><p id="result-conflict" class="note" role="status"></p><p id="result-exported" class="note"></p>
+          <details><summary>Publication evidence identities</summary><p id="result-evidence" class="note card-identities"></p></details>
+        </section>
         <div id="bout-replay" hidden>
           <p id="bout-asof" class="note"></p><div id="bout-fighters" class="preview-fighters"></div>
           <div class="actions"><button id="bout-play" type="button">Play</button><button id="bout-previous" type="button">Previous step</button><button id="bout-next" type="button">Next step</button><button id="bout-restart" type="button">Replay from start</button><button id="bout-result" type="button">Show result</button></div>
