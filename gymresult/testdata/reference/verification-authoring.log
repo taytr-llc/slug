@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/taytrrip/slug/set48-result-reference/verify_reference.py", line 105, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/Users/taytrrip/slug/set48-result-reference/verify_reference.py", line 98, in main
+    assert path.read_bytes()==expected,'helper fragment drift; owner must approve'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: helper fragment drift; owner must approve

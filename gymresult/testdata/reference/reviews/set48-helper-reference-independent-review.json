@@ -1,0 +1,100 @@
+{
+  "status": "passed",
+  "scope": "Independent static helper/wire/state source and finite-control review only; final assembled corpus and reproducibility freeze remain pending.",
+  "at_utc": "2026-11-18T05:59:14.256728+00:00",
+  "findings": [],
+  "file_sha256": {
+    "schema_wire.py": "08c45e11b3c44e66d1230f65bc575d17e26b2c030632e68f9f37b0ae6d0d3f64",
+    "reference_wire.py": "8c116f541bbb8539bcf454567152839fd7fb3b9cb0d4211c892118635a9d6def",
+    "reference_state.py": "f4cf822d32afd4daaa6a48a3514019d8690dae40e1941107a66a9d5d04b7158a",
+    "fragments/wire.json": "aa60fdb0267a77365039d95545b61e8a4adb256bad8366325d89fdf081611408",
+    "fragments/state.json": "6240c71231c7f80b330eb58df74ce30c31b2a55ed38d639fab7842e522bde8f5"
+  },
+  "contracts": {
+    "set48-contract-freeze.json": "11c8322b53d79ddcfefea05f37433eb5807fb3a52541b0e467df314d7ce27e15",
+    "set48-helper-contract-draft.md": "f0bae86a8384613795ff6820ff658471140ab7b70182580f4e4fd5304558b18a",
+    "set48-contract-clarification-1.md": "aacf5540548be1e190ee4ac58e9fa573a42bd558bfeabe6a6bef026d0a1b2427",
+    "set48-contract-clarification-2.md": "0b7ca0a736397e39b33532d394e3b6345cfda1aa4f3be2d6804299c91f2f59db"
+  },
+  "reviewed": [
+    [
+      "dto",
+      214
+    ],
+    [
+      "codec",
+      264
+    ],
+    [
+      "protocol",
+      138
+    ]
+  ],
+  "state_scenarios": 89,
+  "state_steps": 178,
+  "resolved": [
+    {
+      "finding": "Known transaction/certificate/finality could disappear because equality was conditional on new value presence.",
+      "resolution": "Presence and exact immutable bytes now required under request-captured known_publication; mutable observations and separately captured older terminals remain distinct."
+    },
+    {
+      "finding": "Export summary did not bind known transaction and finality time.",
+      "resolution": "Known txid and historical finality observed time now checked."
+    },
+    {
+      "finding": "Max-dispatch model began with impossible built/count>0 state.",
+      "resolution": "Uses submitted/count=uint32max; same capacity refusal retained."
+    },
+    {
+      "finding": "Rejected Start model closed an existing authorized publication owner before refusing.",
+      "resolution": "Original mining authorization now precedes all owner/borrower effects; refusal/preservation control added."
+    }
+  ],
+  "controls_read": [
+    "Strict closed union, scalar Bool rejection, LF-inclusive request/response caps, rooted arrays, UTF8 private path and canonical escaping.",
+    "Queued-only ACK, running monotonicity, terminal canonical immutability, original full View/selector/source-incarnation correlation.",
+    "Bad statement/checkpoint/equivocation signatures with independently recomputed mutable outer RecordDigest.",
+    "Node-owner epoch/transfer/drain and borrowed-mining-owner models; no automatic node readiness on polling.",
+    "Reciprocal cache transactional admission and older terminal versus newer explicit selection/status, including same timestamp.",
+    "Unknown dispatch/read/file boundaries, no retry or Prepare from polling, distinct acknowledged preparation/funds refusal.",
+    "Fresh source-conflict Read/Status preserves earlier Result.current_finality chain observation and immutable historical evidence; source health separately blocks newly completed Publish/Attest, while Reconcile remains readable."
+  ],
+  "limitations": [
+    "Reviewer did not execute producer modules, crypto, engine, process, RPC, filesystem lifecycle or timing tests.",
+    "Counts describe authored finite controls, not runtime execution coverage.",
+    "Nested core validator remains a separately reviewed live dependency; final exact assembled source/corpus binding is still required.",
+    "Full reference freeze and runtime comparison are not authorized by this helper-only report."
+  ],
+  "predecessor_review": {
+    "path": "/Users/taytrrip/slug/set48-reference-helper-drafts/before-source-freshness-control/set48-helper-reference-independent-review.json",
+    "sha256": "b3798d2194e73bdd4f1b08d90761eedea639ef82935dff8e0cbb5b9f5925dd0e"
+  },
+  "narrow_delta_sha256": {
+    "schema_wire.py.diff": "635f8f4b9fed45de754cebc9a857f1d8bd4ea1c9d7dc733d410df287f026a184",
+    "reference_wire.py.diff": "7d9baf616dd1ee5e316f7c4083166406ba10a8896ec48117b7e5d2365c813de2",
+    "reference_state.py.diff": "64a8b01daf032d647663b38705534df85bb1cfaeea549cc6fb52ac5e99af8369"
+  },
+  "final_assembly_binding": {
+    "file_index_sha256": "12ebe693a757467df55e0cb474be62e1b2ed01516dad6112a9841dd26679fb8f",
+    "corpus_sha256": "07c00eef8d87ae9ae5dcd2d120a5dfd1f7b1ba33a1447b773cfd4d5194fd1a94",
+    "verification_sha256": "3bfbd49dabec67990cbd1c6be6b027d54e38ff3f0e6eaab074ee4e8afb553956",
+    "schema_core_sha256": "c4d84a70d601be8c1c8540b3d9b014f4e59072db19e251f6a4a5938c9a83f35b",
+    "common_sha256": "1a9ec3e41a3aea44bf8e9f1374cf2a35fbd52866aa0ab7c6ec887e987b72211f",
+    "crypto_result_sha256": "d8fc772dd33919fa2d048eed9cee3d41c577cdc9d35a5b03edb793223662d9d9",
+    "prior_report_sha256": "ec9f6a3eeb455fe123c3865cd519cd131e363ff89480699690a8ccd25f5adaaf",
+    "prior_report_path": "/Users/taytrrip/slug/set48-helper-reference-independent-review-before-final-bind.json",
+    "source_files_unchanged": true,
+    "scope": "Exact shared-core/assembled-corpus/reproduction binding; no new helper source change or reviewer module execution."
+  },
+  "whitespace_successor_binding": {
+    "prior_report_path": "/Users/taytrrip/slug/set48-reference-review-before-whitespace/set48-helper-reference-independent-review.json",
+    "prior_report_sha256": "3f591c97cb1c491a5c1b0b94ee167500fb96a988008179eff1ace02c5ad173df",
+    "file_index_sha256": "12ebe693a757467df55e0cb474be62e1b2ed01516dad6112a9841dd26679fb8f",
+    "verification_sha256": "3bfbd49dabec67990cbd1c6be6b027d54e38ff3f0e6eaab074ee4e8afb553956",
+    "corpus_sha256": "07c00eef8d87ae9ae5dcd2d120a5dfd1f7b1ba33a1447b773cfd4d5194fd1a94",
+    "proof_source_sha256": "e83959ef7ecee55fe399c5b89e2a65bb3ff040bde2416e53c8a537c2354e24b4",
+    "helper_files_unchanged": true,
+    "ast_unchanged": true,
+    "scope": "One blank-line space removed from proof producer; no helper/core semantics or corpus change."
+  }
+}

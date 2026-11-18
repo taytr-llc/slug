@@ -148,14 +148,14 @@ func (s *Store) validateSession(session sessionRecord, a Account) error {
 }
 func validCapability(c Capability) bool {
 	switch c {
-	case View, Enrollment, Mining, RosterManage, EntryManage, SeedPublish, RecoveryExport, Withdrawal, FighterTransfer, RecoveryAuthority, MarketplacePurchase, MarketplaceListing:
+	case View, Enrollment, Mining, RosterManage, EntryManage, SeedPublish, ResultPublish, RecoveryExport, Withdrawal, FighterTransfer, RecoveryAuthority, MarketplacePurchase, MarketplaceListing:
 		return true
 	}
 	return false
 }
 func heldCapability(c Capability) bool {
 	switch c {
-	case SeedPublish, RecoveryExport, Withdrawal, FighterTransfer, RecoveryAuthority, MarketplacePurchase, MarketplaceListing:
+	case SeedPublish, ResultPublish, RecoveryExport, Withdrawal, FighterTransfer, RecoveryAuthority, MarketplacePurchase, MarketplaceListing:
 		return true
 	}
 	return false

@@ -1,6 +1,6 @@
 # SLUG launch readiness
 
-Updated November 17, 2026. Numbered change sets are reviewable engineering
+Updated November 18, 2026. Numbered change sets are reviewable engineering
 increments, not a fixed countdown to launch. This checklist tracks the actual
 finish line and must be updated from evidence rather than a branch number.
 
@@ -163,10 +163,38 @@ they do not count as completion of this product-release gate.
   checks and independent verification of the actual native first Run and
   historical conflict replay pass. The scoped-clock, normal-PoW test prepares
   its seed through real authenticated core actions without automatic admissions.
-  Final normal-clock app packaging and deployment observation remain pending;
+  Final normal-clock app packaging and seven independent package reports pass.
+  Release `ba218f55` is deployed; the full 900-second observation, 31 samples,
+  chain verification and clean restart pass. Railway configuration is unchanged.
+  Remote CI returned no runs/checks and is not claimed passed;
   GUI/portrait/native chooser/accessibility and the joint D74 review stay open.
   Candidate transcripts grant no professional/exhibition records, XP, awards,
   titles or ownership. See `EVENT_BOUTS.md` and `CHANGESET_47_NOTES.md`.
+
+
+- Set 48 is under integration on `slug-result-publication`: candidate result
+  publication, independent result finality and public proof export. The frozen
+  reference is committed; scoped core/desktop reviews, frontend checks and
+  installer crash recovery pass. The actual-chain run and independent proof
+  checks passed; normal Mac packaging and deployment remain pending.
+  Build qualification found a Go compiler lifetime
+  defect in the original application regression. The documented unoptimized
+  build option passes that test ten times and keeps full-capacity selected
+  metadata below 500 ms, but fails the existing 25-second startup deadline.
+  That option is not release-qualified. Disabling the two CSE passes instead
+  passes the original regression ten times, selected metadata at 228–241 ms
+  and full startup at 11.299 seconds in the preliminary diagnostic. Full core normal, scoped-clock, race and
+  GC-pressure checks pass; a three-literal vet correction has independent
+  equivalence review and passing final-source follow-up checks. Final-profile
+  desktop normal/race, adapter, all-module, capacity and installer crash checks
+  pass; selected metadata took 228–242 ms and full parent startup took 11.16
+  seconds. The fresh actual run passed in 286.793 seconds with six proof exports,
+  zero new admissions and graceful cleanup; independent verification checked
+  279 unique proof headers and all twelve altered-evidence controls were refused.
+  The temporary build profile is locally qualified for this scope; packaging
+  and deployment remain in progress. Preserve both failed-build
+  and timing evidence; no upstream compiler fix is claimed. This work adds
+  no professional records, XP, awards or product-launch approval.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
@@ -183,6 +211,7 @@ and their intake does not replace the D74 review of the working product.
 | Desktop product | Integrate real signup/login, wallet views and controlled mining with the service. Complete native error/recovery flows, cross-device behavior, macOS signing/notarization and Windows runtime acceptance. Review distribution/update behavior. |
 | Mining and fighter services | Complete the official pool/share validation and payout path in the build plan, authoritative fighter lifecycle/ownership and portable history. Preserve automatic jobs, birth, canonical-winning-block rules and report-only checkpoint doctrine. |
 | League, marketplace and presentation | Wire the fight/league operation, entries, matching, results/finality, rankings and required gym/fighter flows. Complete the agreed launch marketplace/transfer behavior and reset-hold restrictions. Prototype/simulation output does not substitute for deployed acceptance. |
+| Fighter-name diversity and collisions | Before launch, substantially expand the candidate name pool and measure collision frequency at expected fighter populations. Fighter IDs remain the identity keys. Use deterministic, versioned generation so existing identities, assigned names and manifests remain stable; do not rewrite the frozen generator or historical fighters. Bring population assumptions and remaining duplicate-name behavior to the D74 review. |
 | Thorough design review with Mike (D74) | Review a working representative build together: onboarding, mining controls/status, wallet/recovery/reset holds, roster/fighter lifecycle, fights/league, marketplace/transfers, navigation, visual hierarchy, accessibility, loading/empty/error/offline states and trust/irreversible-action wording. Record findings and agreed changes. Recheck affected flows before product release. |
 | Launch hardening and operations | Run end-to-end rehearsals and security review of the final system; verify capacity, monitoring, backups/recovery and rollback procedures. Complete the launch legal/operational items in the spec, including any external work requiring Mike's accounts or decisions. |
 | Permanent genesis and coordinated launch | Mike approves the exact permanent genesis and final parameters. Freeze release sources/configuration and deploy compatible nodes/services/clients. Rehearse the genesis procedure and verify the first permanent history. D1/D2's public-from-genesis and permanent tester-history commitments remain in force. |
@@ -200,6 +229,16 @@ initial-band-edge favorites won, and the set 42 engine produces fewer draws
 than the original simulator under its different score-tie rule. Review those
 findings as matchmaking/gameplay questions; changing a summary rating alone
 does not change a fight. Neither finding authorizes a policy or engine change.
+
+The current frozen name tables contain 32 distinct first and 32 distinct last
+names, yielding 1,024 display names. Under an independent-uniform draw model,
+the probability of at least one shared name exceeds 50% at 38 fighters; at
+100 fighters, the expected fraction with a namesake is about 9.22%. These are
+analytic scenarios, not a production population forecast. D51 already permits
+duplicates. Review acceptable prevalence and disambiguation at an explicit
+population scope, then assess the expanded version against that target while
+preserving existing assignments. The workspace's
+`set48-name-collision-prelaunch-note.md` records the assumptions and calculations.
 
 The approved logo handoff is preserved byte-for-byte in the workspace's
 `../brand-assets`: gray background, white front-facing fist, black linework and

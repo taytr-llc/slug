@@ -1,0 +1,230 @@
+{
+  "status": "passed_formula_only",
+  "at_utc": "2026-11-18T05:31:40.984733+00:00",
+  "contract_sha256": {
+    "/Users/taytrrip/slug/set48-core-contract-draft.md": "982126ad4678814ec7a6bedab9c4604b8c25c9955f1cd3e869c046bf37360eb3",
+    "/Users/taytrrip/slug/set48-helper-contract-draft.md": "f0bae86a8384613795ff6820ff658471140ab7b70182580f4e4fd5304558b18a"
+  },
+  "calculator_sha256": "dccff013b2c28c197ed026235ff643cdba560e1935a08281ec0d5ae85e53c6b9",
+  "inherited_calculator_sha256": {
+    "/Users/taytrrip/slug/set47-contract-bounds-calculator.py": "41a86c701605a0c2d467e6696e607ba4297542c06625b709a7a2b671159b5f24",
+    "/Users/taytrrip/slug/set46-contract-bounds-calculator.py": "465cb64156802ca7d39c6404aa61b5bf04094fe5d69018c8ff0226981be26368",
+    "/Users/taytrrip/slug/set45-contract-bounds-calculator.py": "5cbe3cc0a0e40b8ae3e8da9423f7601c25f764dedd748ecd52794e601484b9a6"
+  },
+  "shapes": {
+    "Pin": {
+      "bytes": 6104,
+      "container_depth": 9,
+      "cap": 32768
+    },
+    "Info": {
+      "bytes": 6542,
+      "container_depth": 10,
+      "cap": 36864
+    },
+    "Marker": {
+      "bytes": 6257,
+      "container_depth": 10,
+      "cap": 36864
+    },
+    "Metadata": {
+      "bytes": 16743,
+      "container_depth": 10,
+      "cap": 65536
+    },
+    "Init": {
+      "bytes": 6257,
+      "container_depth": 10,
+      "cap": null
+    },
+    "ResultSource": {
+      "bytes": 6391,
+      "container_depth": 7,
+      "cap": 20480
+    },
+    "ResultSummary": {
+      "bytes": 168,
+      "container_depth": 1,
+      "cap": null
+    },
+    "Statement": {
+      "bytes": 7123,
+      "container_depth": 8,
+      "cap": 24576
+    },
+    "SignedStatement": {
+      "bytes": 7307,
+      "container_depth": 9,
+      "cap": 25600
+    },
+    "Publication": {
+      "bytes": 2673,
+      "container_depth": 3,
+      "cap": 4096
+    },
+    "Anchor": {
+      "bytes": 2036,
+      "container_depth": 2,
+      "cap": 2048
+    },
+    "Inclusion": {
+      "bytes": 2255,
+      "container_depth": 3,
+      "cap": 3072
+    },
+    "PriorInclusion": {
+      "bytes": 2533,
+      "container_depth": 4,
+      "cap": 4096
+    },
+    "ScanRestart": {
+      "bytes": 616,
+      "container_depth": 2,
+      "cap": 1024
+    },
+    "Conflict": {
+      "bytes": 777,
+      "container_depth": 2,
+      "cap": 2048
+    },
+    "Record": {
+      "bytes": 80402,
+      "container_depth": 10,
+      "cap": 196608
+    },
+    "Status": {
+      "bytes": 4507,
+      "container_depth": 4,
+      "cap": 16384
+    },
+    "ActionResult": {
+      "bytes": 84957,
+      "container_depth": 11,
+      "cap": 229376
+    },
+    "ReadResult": {
+      "bytes": 84957,
+      "container_depth": 11,
+      "cap": 229376
+    },
+    "ResultSnapshot": {
+      "bytes": 9013,
+      "container_depth": 10,
+      "cap": null
+    },
+    "ResultJob": {
+      "bytes": 87768,
+      "container_depth": 12,
+      "cap": 245760
+    },
+    "ResultProofSummary": {
+      "bytes": 986,
+      "container_depth": 2,
+      "cap": null
+    },
+    "ResultRequest": {
+      "bytes": 6461,
+      "container_depth": 1,
+      "cap": 8192
+    },
+    "ResultResponse": {
+      "bytes": 2475,
+      "container_depth": 3,
+      "cap": null
+    },
+    "ParentV8Marker": {
+      "bytes": 7438,
+      "container_depth": 6,
+      "cap": 16384
+    },
+    "RetainedMetadata": {
+      "bytes": 19065,
+      "container_depth": 11,
+      "cap": 49152
+    },
+    "PrivateIndexRow": {
+      "bytes": 265,
+      "container_depth": 1,
+      "cap": null
+    }
+  },
+  "nested_cap_upper_bytes": {
+    "pin_at_bout_pin_cap": 25695,
+    "source_at_bout_source_cap": 17078,
+    "statement_at_source_cap": 21212,
+    "signed_at_statement_cap": 24760,
+    "record_at_all_nested_caps": 161749,
+    "status_at_bout_status_cap": 10285,
+    "action_at_record_status_caps": 213040,
+    "job_at_action_cap": 232187,
+    "metadata_at_pin_and_status_caps": 57606,
+    "metadata_at_exact_pin_and_status_caps": 30942,
+    "metadata_at_pin_cap_exact_status": 45729,
+    "journal_metadata_at_pin_restart_caps": 49935
+  },
+  "responses": {
+    "snapshot": {
+      "bytes_including_LF": 11485,
+      "container_depth": 11
+    },
+    "status": {
+      "bytes_including_LF": 6979,
+      "container_depth": 5
+    },
+    "record": {
+      "bytes_including_LF": 87429,
+      "container_depth": 12
+    },
+    "job": {
+      "bytes_including_LF": 90240,
+      "container_depth": 13
+    },
+    "job_at_action_cap": {
+      "bytes_including_LF": 234659,
+      "container_depth": 13
+    }
+  },
+  "public_proof": {
+    "bytes_at_nested_caps_including_LF": 24821071,
+    "cap": 25165824,
+    "headroom": 344753,
+    "container_depth": 13,
+    "maximum_unique_headers": 512,
+    "maximum_full_bodies": 3,
+    "maximum_binary_bytes_per_body": 4000000,
+    "full_body_hex_bytes": 24000000,
+    "proof_summary_bytes": 986,
+    "proof_summary_cap": 2048
+  },
+  "array_paths": {
+    "snapshot.pin.source_pin.source_pin.source_pin.source_pin.participants": 2,
+    "record.record.statement.statement.source.source.corners": 2,
+    "record.record.scan_restarts": 16,
+    "record.record.inclusion.anchor.merkle_branch": 20,
+    "record.record.prior_inclusions": 16,
+    "record.record.prior_inclusions[*].inclusion.anchor.merkle_branch": 20,
+    "record.record.finality.inclusion.anchor.merkle_branch": 20,
+    "record.record.equivocation.statement.source.source.corners": 2,
+    "record.record.conflicts": 8,
+    "job.result.record.statement.statement.source.source.corners": 2,
+    "job.result.record.scan_restarts": 16,
+    "job.result.record.inclusion.anchor.merkle_branch": 20,
+    "job.result.record.prior_inclusions": 16,
+    "job.result.record.prior_inclusions[*].inclusion.anchor.merkle_branch": 20,
+    "job.result.record.finality.inclusion.anchor.merkle_branch": 20,
+    "job.result.record.equivocation.statement.source.source.corners": 2,
+    "job.result.record.conflicts": 8
+  },
+  "index256_canonical_bytes": 68097,
+  "logical_journal_upper_bytes": 50540160,
+  "findings": [],
+  "input_changes": [],
+  "assumptions": [
+    "All numbers use16digits even where uint32 or tiny enum bounds apply. False uses5bytes. Every optional arm populated, even incompatible ones.",
+    "Fixed hex/ASCII fields avoid JSON escapes; source inherited conditions/owners use previously reviewed conservative bounded schemas. No full transcript in wire shapes.",
+    "Render identity4096 is charged as combined encoded contribution, never raw user text.",
+    "Formula shapes deliberately invalid: no simulations, cryptographic signatures, Go outputs or reference vectors.",
+    "Public proof uses independent full nested caps, not smaller finite source examples. Private index exact4fields at256 rows is canonical/accounted96KiB bound, not native heap bytes.",
+    "Path1024 decoded UTF8 bytes conservatively charged6escapedbytes each; inherited View origin256 similarly overcharged. These invalid strings are only bounds, never valid expected inputs."
+  ]
+}

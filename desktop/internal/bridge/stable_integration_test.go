@@ -25,7 +25,8 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 	if helper == "" || node == "" {
 		t.Skip("explicit frozen stable helper and normal node required")
 	}
-	boutEnabled := os.Getenv("SLUG_BOUT_ACCEPTANCE") == "1"
+	resultEnabled := os.Getenv("SLUG_RESULT_ACCEPTANCE") == "1"
+	boutEnabled := os.Getenv("SLUG_BOUT_ACCEPTANCE") == "1" || resultEnabled
 	cardEnabled := os.Getenv("SLUG_CARD_ACCEPTANCE") == "1" || boutEnabled
 	seedEnabled := os.Getenv("SLUG_SEED_ACCEPTANCE") == "1" || cardEnabled
 	eventEnabled := os.Getenv("SLUG_EVENT_ACCEPTANCE") == "1" || seedEnabled
@@ -58,6 +59,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 	}
 	if boutEnabled {
 		launch = LaunchBouts
+	}
+	if resultEnabled {
+		launch = LaunchResults
 	}
 	b, e := launch(helper, data, node)
 	if e != nil {
@@ -92,6 +96,10 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 			return entry
 		}
 	}
+	var results *resultAcceptance
+	if resultEnabled {
+		results = newResultAcceptance(t, ctx, b)
+	}
 	var bouts *boutAcceptance
 	if boutEnabled {
 		bouts = newBoutAcceptance(t, ctx, b)
@@ -106,6 +114,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 			cards.checkRestart(restarted, s)
 			if bouts != nil {
 				bouts.checkRestart(restarted, s)
+				if results != nil {
+					results.checkRestart(restarted, s)
+				}
 			}
 			return entry
 		}
@@ -417,6 +428,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 					cards.observe(fixture, "initial", snapshot())
 					if bouts != nil {
 						bouts.observe(fixture, "initial", snapshot())
+						if results != nil {
+							results.observe(fixture, "initial", snapshot())
+						}
 					}
 				}
 			}
@@ -441,6 +455,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 					cards.refuseDetached()
 					if bouts != nil {
 						bouts.refuseDetached()
+						if results != nil {
+							results.refuseDetached()
+						}
 					}
 				}
 			}
@@ -493,6 +510,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 					cards.observe(fixture, "reopened", attached)
 					if bouts != nil {
 						bouts.observe(fixture, "reopened", attached)
+						if results != nil {
+							results.observe(fixture, "reopened", attached)
+						}
 					}
 				}
 			}
@@ -555,6 +575,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 					cards.observe(fixture, "held", snapshot())
 					if bouts != nil {
 						bouts.observe(fixture, "held", snapshot())
+						if results != nil {
+							results.observe(fixture, "held", snapshot())
+						}
 					}
 				}
 			}
@@ -646,6 +669,13 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 		result["seed_restart"] = seeds.restartEvidence
 		result["seed_real_clock_closed_coverage"] = false
 		result["seed_authority"] = "candidate_fixture_v1"
+	}
+	if results != nil {
+		result["results"] = results.evidence
+		result["result_restart"] = results.restartEvidence
+		result["result_real_clock_closed_coverage"] = false
+		result["result_scope"] = "candidate_result_publication"
+		result["result_authority"] = "candidate_fixture_v1"
 	}
 	if bouts != nil {
 		result["bouts"] = bouts.evidence

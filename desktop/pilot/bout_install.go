@@ -18,49 +18,64 @@ type boutRootMarker struct {
 }
 
 func (s *StableController) boutRoot() (boutRootMarker, error) {
+	if s.resultEnabled {
+		m, e := s.resultRoot()
+		b := m.boutRootMarker
+		b.Version = 7
+		return b, e
+	}
 	var m boutRootMarker
 	path := filepath.Join(filepath.Dir(filepath.Dir(s.config.DataDir)), "SLUG-MANIFEST-ACCOUNTS.json")
 	if !s.boutEnabled || readManifestJSON(path, 16384, &m) != nil || m.Version != 7 || m.BoutSchema != 1 {
 		return m, ErrManifestInitialization
 	}
+	if e := validateBoutRoot(m); e != nil {
+		return m, e
+	}
+	return m, nil
+}
+func validateBoutRoot(m boutRootMarker) error {
+	if m.Version != 7 || m.BoutSchema != 1 {
+		return ErrManifestInitialization
+	}
 	base := m.cardRootMarker
 	base.Version = 6
 	if validateCardRoot(base) != nil {
-		return m, ErrManifestInitialization
+		return ErrManifestInitialization
 	}
 	switch m.BoutPhase {
 	case "waiting_source":
 		if m.BoutStoreID != "" {
-			return m, ErrManifestInitialization
+			return ErrManifestInitialization
 		}
 	case "prepared", "ready":
 		if m.CardPhase != "ready" {
-			return m, ErrManifestInitialization
+			return ErrManifestInitialization
 		}
 		ev, e := eventPinFromRoot(base.seedRootMarker.eventRootMarker)
 		if e != nil {
-			return m, e
+			return e
 		}
 		sp, e := gymseed.CandidatePin(ev)
 		if e != nil {
-			return m, e
+			return e
 		}
 		cp, e := gymcard.CandidatePin(sp)
 		if e != nil {
-			return m, e
+			return e
 		}
 		p, e := gymbout.CandidatePin(cp)
 		if e != nil {
-			return m, e
+			return e
 		}
 		id, e := gymbout.ID(p)
 		if e != nil || id != m.BoutStoreID {
-			return m, ErrManifestInitialization
+			return ErrManifestInitialization
 		}
 	default:
-		return m, ErrManifestInitialization
+		return ErrManifestInitialization
 	}
-	return m, nil
+	return nil
 }
 func NewBoutManifestAccount(c Config, a StableAccountConfig) (*StableController, error) {
 	s, e := NewCardManifestAccount(c, a)
@@ -109,7 +124,7 @@ func (s *StableController) AttachBouts(ctx context.Context, x *gymbout.Store) er
 		}
 		s.mu.Lock()
 		defer s.mu.Unlock()
-		if !stableCacheFits(s.cache, s.receiptSlot, s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+MaxBoutMetadataSize) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+MaxBoutMetadataSize+s.resultBytes) {
 			return gymbout.ErrCapacity
 		}
 		s.boutStore = x

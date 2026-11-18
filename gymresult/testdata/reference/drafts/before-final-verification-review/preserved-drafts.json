@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "scope": "Preserved authoring/review predecessors; none is current accepted corpus",
+  "directories": [
+    {
+      "path": "drafts/assembly-attempt1",
+      "reason": "Failed assembler encoding expectation for compact helper state; objects/cases identical and owner bytes preserved."
+    },
+    {
+      "path": "drafts/before-bounds-input",
+      "reason": "Inputs before reviewed max-envelope artifacts."
+    },
+    {
+      "path": "drafts/before-chronology-review",
+      "reason": "Funding/restart/own-row chronology predecessor."
+    },
+    {
+      "path": "drafts/before-clarification-2",
+      "reason": "Root nonzero-carrier clarification predecessor."
+    },
+    {
+      "path": "drafts/before-core-review-corrections",
+      "reason": "Reviewed shorter-tip/prior-witness/source-correlation corrections predecessor."
+    },
+    {
+      "path": "drafts/before-final-row-review",
+      "reason": "Semantic conflict deduplication and standalone carrier corrections predecessor."
+    },
+    {
+      "path": "drafts/before-proof-inputs",
+      "reason": "Inputs before adding exact prior public chain bytes."
+    },
+    {
+      "path": "drafts/before-proof-transport-split",
+      "reason": "Transport Merkle-hash removal predecessor."
+    },
+    {
+      "path": "drafts/before-signature-graph-review",
+      "reason": "Transport signature and source-incarnation graph correction predecessor."
+    },
+    {
+      "path": "drafts/initial-input-index",
+      "reason": "First independently reviewed33-input extraction, before root clarifications."
+    },
+    {
+      "path": "drafts/proof-controls-attempt1",
+      "reason": "Initial byte/string constructor error, no accepted output change."
+    },
+    {
+      "path": "drafts/store-syntax-attempt1",
+      "reason": "Initial authoring syntax error, no generated expectations."
+    }
+  ]
+}

@@ -353,7 +353,10 @@ candidate transcript per booked BoutID with explicit Run and saved replay.
 The independently frozen reference, implementation checks and actual native
 composition pass. The closed-event test uses normal PoW and a scoped clock;
 authenticated core seed preparation runs without an admission worker. The
-final normal-clock package and deployment observation remain pending. See
+final normal-clock package and its seven independent reports passed. Release
+`ba218f55` is deployed; the full 900-second live observation, 31 samples and
+clean restart passed with unchanged Railway configuration. Remote CI returned
+no runs/checks and is not claimed passed. See
 `EVENT_BOUTS.md` and `CHANGESET_47_NOTES.md`. Professional/exhibition records,
 awards, general matchmaking policy and the full joint D74 review remain separate.
 

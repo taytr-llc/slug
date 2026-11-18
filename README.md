@@ -52,28 +52,24 @@ which are both under active development.
 
 ## Requirements
 
-[Go](http://golang.org) 1.26.10 or newer.
+Candidate builds require [Go](https://go.dev/) 1.27.4 and the recorded
+[candidate build profile](BUILD_TOOLCHAIN.md). The chain module's language
+compatibility floor remains Go 1.26.10.
 
 ### Go version policy
 
-btcd is built with the newest Go release and requires the previous one, which
-still receives point releases. Both are kept at the latest point release of
-their branch:
+Set 48 is qualifying Go 1.27.4 with an explicit compiler workaround. `make`,
+both Mac builders and both container builders use `scripts/candidate-go.sh`;
+shipping builders verify the embedded compiler setting. The exact patch and
+flags are recorded in `build-profile.json`. Qualification remains separate
+from choosing this profile; see `BUILD_TOOLCHAIN.md` for evidence and limits.
 
-- CI, the Docker images and release binaries are built with Go 1.27.3, the
-  `GO_VERSION` in `.github/workflows/main.yml`.
-- The `go` line in every `go.mod`, which sets the minimum Go version and the
-  language version, is Go 1.26.10.
-
-The `go` directive sets only a minimum version, so it cannot encode the
-patched release floor for each supported Go branch. Use Go 1.26.10 or newer
-on the Go 1.26 branch, and Go 1.27.3 or newer on the Go 1.27 branch. Go
-1.27.0 through 1.27.2 do not include the CVE-2026-111943 mitigation.
-
-Both are bumped when Go publishes a point release, and both move up a branch
-when a new major version of Go is released. A weekly CI job checks this against
-the releases listed on go.dev; `make check-go-versions` runs the same check
-locally.
+The minimum-Go CI job is labelled compatibility-only and uses the root
+`go.mod` language floor. Its result is not candidate-profile acceptance.
+The existing weekly version check and `make check-go-versions` report newer
+Go releases; changing the candidate profile requires fresh regression and
+packaging evidence. Ordinary `go build` or `go test` does not automatically
+apply the candidate profile.
 
 ## Installation
 

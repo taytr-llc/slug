@@ -226,11 +226,15 @@ func (s *StableController) registerSeedNodes(n *pilotNodes) {
 }
 func (s *StableController) unregisterSeedNodes(n *pilotNodes) {
 	s.stableMu.Lock()
-	if s.seedNodes == n {
-		s.seedNodes = nil
+	if s.seedNodes != n {
+		s.stableMu.Unlock()
+		return
 	}
-	if s.active != nil && s.active.seed != nil {
-		s.active.cancel()
+	s.seedNodes = nil
+	for _, t := range []*stableTask{s.active, s.queued} {
+		if t != nil && (t.seed != nil || t.publication != nil) {
+			t.cancel()
+		}
 	}
 	s.stableMu.Unlock()
 	s.laneGate <- struct{}{}

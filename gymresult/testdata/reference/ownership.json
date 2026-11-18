@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "status": "independent_reference_authoring_only",
+  "core_owner": "/root/checkpoint_design_audit",
+  "core_files": [
+    "input_index.json",
+    "source_index.json",
+    "common.py",
+    "crypto_result.py",
+    "schema_core.py",
+    "reference_results.py",
+    "verify_reference.py",
+    "check_reproducibility.py",
+    "README.md",
+    "corpus.json",
+    "file_index.json",
+    "fragments/core.json",
+    "reference_proof.py",
+    "reference_store.py",
+    "fragments/proof.json",
+    "fragments/store.json"
+  ],
+  "helper_owner": "/root/checkpoint_envelope",
+  "helper_files": [
+    "schema_wire.py",
+    "reference_wire.py",
+    "reference_state.py",
+    "fragments/wire.json",
+    "fragments/state.json"
+  ],
+  "reviewers": [
+    "/root",
+    "/root/checkpoint_tool"
+  ],
+  "constraints": [
+    "No new Go/runtime output as expected values",
+    "Inputs preserve origin hashes and exact extraction pointers",
+    "Genuine saved47 result remains distinct from modeled result publication evidence",
+    "No original or frozen input mutations",
+    "Candidate requires independent review and reference-only commit before runtime implementation"
+  ]
+}

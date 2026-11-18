@@ -68,7 +68,7 @@ version.
   → `slug-event-snapshot` (set 44, released on master at `1fc307e0`)
   → `slug-event-seed` (set 45, released on master at `dcc44829`)
   → `slug-event-card` (set 46, released on master at `5c11cbaf`)
-  → `slug-event-bouts` (set 47, retained candidate bout work in progress).
+  → `slug-event-bouts` (set 47, released on master at `ba218f55`).
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review
@@ -86,6 +86,13 @@ version.
 
 ## Build and test
 
+- Set 48 candidate qualification uses the exact local Go 1.27.4 profile in
+  `build-profile.json`; see `BUILD_TOOLCHAIN.md`. Use
+  `sh scripts/candidate-go.sh build ...` and `test ...` for that profile.
+  Plain `go build`/`go test` and the labelled minimum-Go compatibility job are
+  separate diagnostics. Do not weaken assertions or runtime limits to mask the
+  retained compiler failure. No upstream fix or completed qualification is
+  implied merely by the profile's presence.
 - Go workspace: `go.work` is committed and resolves all 10 modules to local
   sources. Always build/test from the repo root in workspace mode.
 - Full build: `go build ./...` at root covers the root module only. Build

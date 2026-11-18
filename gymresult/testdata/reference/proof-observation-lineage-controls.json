@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "scope": "Independent Python proof-lineage regression; no Go/new Argon",
+  "before_sha256": "64d65b11e7d9da908a90320ea6d986011d1c1ed5e6aa71f7b559deb4f8ba4a0c",
+  "after_sha256": "c6dae2903ab04617ec3a4817559320273cfc311d1f23329923eb5017e8fca2c6",
+  "before_structural_accept": true,
+  "after_structural_accept": false,
+  "distinct_current_historical_positive": true
+}

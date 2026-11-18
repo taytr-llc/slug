@@ -4,8 +4,9 @@ Implemented on `slug-event-bouts`, stacked from final Set46 implementation
 `5e6b36d37e30d573a3817e32315bb96f12e0968c`. Commit `f732c90a` records Set46's
 completed deployment and observation closeout. Commit `f5ae315d` freezes the
 independent bout reference before any Set47 Go implementation. Core/desktop
-acceptance and the independently verified actual composition pass. Final normal
-Mac package and deployment/observation acceptance remain pending at this commit.
+acceptance and the independently verified actual composition pass. Implementation
+`ed3b6de7` was released on master at `ba218f55`; final normal Mac packaging,
+deployment and the full observation/restart acceptance passed.
 
 ## Intended behavior
 
@@ -124,11 +125,32 @@ passed without repeating Argon work. They reject changed source/result bytes,
 stale views, historical rerolls, false admission/hold declarations and altered
 portrait SVG, beyond merely detecting an outer file-hash mismatch.
 
-## Remaining release acceptance
+## Completed release acceptance
 
-Then freeze final runtime sources, run normal-clock Mac package acceptance,
-normal-PoW smoke and fresh live seed preflight, promote the verified release and
-complete its 15-minute observation/restart. Report remote CI according to actual
-returned evidence. Preserve the approved icons and keep portrait rendering,
-native chooser/accessibility and the full joint D74 review pending before
-friends/testers/public product release.
+Final acceptance binds all 171 changed files against the Set46 implementation.
+The normal-clock Mac package passed in 136.634 seconds, including helper
+integration, three ad-hoc-signed binaries and the unchanged approved app/menu
+icons. Seven independent package reports and an independent evidence review
+passed. Normal-calendar packaging verifies setup, metadata, typed refusals and
+restart; it contains no closed-event capture, seed publication, booking or saved
+bout. The successful closed-event flow is the separate scoped-clock composition
+described above, using normal PoW.
+
+Normal-PoW smoke and a fresh live seed preflight passed before promotion.
+Railway deployment `80ef559c-65f9-40ab-80d6-90ad8ee62c41` reports SUCCESS for
+release `ba218f551de5f0148db8d60c7f198970b6e40b2c`. The live observation completed
+900.038 seconds and 31 samples, each at height 61 with 60 checkpoint descendants
+and one peer. Chain verification, stale-template refusal, restart and clean
+owned-process shutdown passed. A fresh provider capture confirmed one healthy
+replica, no pending work and unchanged configuration, volume and TCP endpoint.
+Railway continues to run only the Phase A checkpoint-aware node.
+
+Both exact implementation and release GitHub queries returned no runs/checks;
+remote CI was reviewed, not claimed passed. All earlier failed reports remain
+preserved. The workspace closeout report is `../set47-closeout.json`, SHA256
+`f76fae296e5e06f994d04b32488c8b4375806680347b5c8538c2de81d09e020e`.
+
+Portrait rendering, native chooser/GUI/accessibility acceptance and the full
+joint D74 review remain pending before friends/testers/public product release.
+Candidate transcripts still grant no professional/exhibition records, XP or
+other awards. Result publication and its separate finality are the next slice.

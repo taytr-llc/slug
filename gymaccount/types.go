@@ -27,6 +27,7 @@ const (
 	RosterManage        Capability = "roster-manage"
 	EntryManage         Capability = "entry-manage"
 	SeedPublish         Capability = "seed-publish"
+	ResultPublish       Capability = "result-publish"
 	RecoveryExport      Capability = "recovery-export"
 	Withdrawal          Capability = "withdrawal"
 	FighterTransfer     Capability = "fighter-transfer"

@@ -1,0 +1,5 @@
+{
+  "path": "../assembly-attempt1/corpus.json",
+  "sha256": "65494bc5816459d6602ff85d8d2b2c01e3380a882da88fcc5baf40d06b1330c8",
+  "note": "Exact prior assembled corpus already preserved; no duplicate byte copy."
+}

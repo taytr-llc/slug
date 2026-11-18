@@ -13,10 +13,14 @@ func (s *Store) WithSeedView(ctx context.Context, session gymstable.Session, cap
 	if fn == nil || (cap != gymaccount.View && cap != gymaccount.SeedPublish) {
 		return ErrInvalid
 	}
+	return s.withPublicationView(ctx, session, cap, fn)
+}
+
+func (s *Store) withPublicationView(ctx context.Context, session gymstable.Session, cap gymaccount.Capability, fn func(SnapshotSourceInfo, func() error) error) error {
 	if s == nil {
 		return ErrUnavailable
 	}
-	if cap == gymaccount.SeedPublish {
+	if cap == gymaccount.SeedPublish || cap == gymaccount.ResultPublish {
 		zero, e := gymaccount.FixtureIdentity("zero256")
 		s.mu.Lock()
 		identity := s.meta.Pin.StablePin.Identity

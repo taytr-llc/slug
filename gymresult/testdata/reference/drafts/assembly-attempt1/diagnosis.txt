@@ -1,0 +1,1 @@
+Assembly required pretty serialization for both helper fragments; state owner intentionally serializes canonical compact JSON+LF. Object equality and every case were exact; only the assembler expected encoding differed. Preserve owned fragment bytes and use its declared canonical serializer. No input/case/oracle arithmetic changed.

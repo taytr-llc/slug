@@ -505,20 +505,20 @@ func (c *StableController) readCardRoot(path string) (cardAccountMarker, error) 
 	if c.boutOwner == nil {
 		return readCardMarker(path)
 	}
-	m, e := readBoutMarker(path)
+	m, e := c.readBoutRoot(path)
 	return boutBase(m), e
 }
 func (c *StableController) writeCardRoot(path string, b cardAccountMarker) error {
 	if c.boutOwner == nil {
 		return writeCardMarker(path, b)
 	}
-	m, e := readBoutMarker(path)
+	m, e := c.readBoutRoot(path)
 	if e != nil {
 		return e
 	}
 	b.Version = 7
 	m.cardAccountMarker = b
-	return writeBoutMarker(path, m)
+	return c.writeBoutRoot(path, m)
 }
 func (c *StableController) installBoutComponents(ctx context.Context, child manifestChild) error {
 	if e := c.installCardComponents(ctx, child); e != nil {
@@ -535,7 +535,7 @@ func (c *StableController) installBoutComponents(ctx context.Context, child mani
 }
 func (c *StableController) ensureBouts(ctx context.Context) error {
 	path := filepath.Join(c.config.DataDir, "SLUG-MANIFEST-ACCOUNTS.json")
-	m, e := readBoutMarker(path)
+	m, e := c.readBoutRoot(path)
 	if e != nil {
 		return e
 	}
@@ -560,7 +560,7 @@ func (c *StableController) ensureBouts(ctx context.Context) error {
 			return e
 		}
 		m.BoutPhase = "prepared"
-		if e = writeBoutMarker(path, m); e != nil {
+		if e = c.writeBoutRoot(path, m); e != nil {
 			return e
 		}
 	}
@@ -621,7 +621,7 @@ func (c *StableController) ensureBouts(ctx context.Context) error {
 			c.checkpoint("bout-created")
 		}
 		m.BoutPhase = "ready"
-		if e = writeBoutMarker(path, m); e != nil {
+		if e = c.writeBoutRoot(path, m); e != nil {
 			return e
 		}
 		if c.checkpoint != nil {

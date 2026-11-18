@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "store_id": "ceff8756118cbb06138b490532fd4838eff63b5f94cc8fcea33a4bab41ff6cd0",
+  "card_id": "db56365091c45d91b2a972346955ac499701d2e1a1bb49492c74262dd59ea4ab",
+  "observed_at_ms": 1795896001000,
+  "source": {
+    "version": 1,
+    "card_id": "db56365091c45d91b2a972346955ac499701d2e1a1bb49492c74262dd59ea4ab",
+    "event": {
+      "version": 1,
+      "event_id": "41c4c51720c5310e682e3a3368c4b433a327e76be639f4e448c10c97ac5b90ff",
+      "source_event_id": "8c2e66c84b950c2f4730a8a149bc8327f3dc508b0450c5bae0763d5880fb9a1b",
+      "store_id": "a7482072a3c38dfb5390dec9f288b635ea56ece6cde3c42ee2b57ac7ea6fda53",
+      "namespace_id": "8b7c5e221bc3f43f55127591922f7ce5406880fcc69d0d8cdb39c11cef4d527b",
+      "calendar_id": "1351d63c43cd08d760ca4a88c60bc7ecee9dcb0e331961f93b16d95425385450",
+      "rules_id": "acfcbf250caefb72b6ac6f08f89a61b782a47fc6024fce3a95436c1cfae0c6f8",
+      "saturday": "2026-11-28",
+      "cutoff_ms": 1795896000000,
+      "incident_deadline_ms": 1796500800000
+    },
+    "card_exists": true,
+    "card_record_digest": "2c832eeb12d53bf20d0e50d4433f113cf1c0b95df472a094eecefac93f378fc9",
+    "card_source_digest": "c70ff0ee03e1c9eab751d81ccc62e1f9d27a8a0c7eebe215fb494d62399a145e",
+    "card_created_at_ms": 1795896001000,
+    "finalized_at_ms": 1795896001000,
+    "conflict_count": 0,
+    "conflict_overflow": false,
+    "incident_at_ms": 0,
+    "escalation_due": false,
+    "chain_observed_at_ms": 1795896001000,
+    "target_descendants": 60,
+    "current_finality": true,
+    "node_state": "online",
+    "observed_at_ms": 1795896001000,
+    "usable": true
+  },
+  "saved": {
+    "bout": {
+      "bout_id": "a6a89c7b74fb68d948bab376be179b8ad2a8dd335f5bd000888850e51da3c38b",
+      "class": "middle",
+      "corner_a": "067121d1f9be9eee0eab884de24e24df996e3b15d4385f5123930c6405d71fa3",
+      "corner_b": "22a2c799c122ac002a3ca277e0f7f84dd89c8b5f1fe1e1a18e098b1aad27e717",
+      "seed": "94c4524bfb86d3e22aa35a86472f3a23076761a919f3f4341c53386029cc74dc"
+    },
+    "source_digest": "808f3621b46ea07c22bec1b7bf98c0198b8c9a12f51aa6a8e2e33f36f817133c",
+    "exists": true,
+    "record_digest": "aca90a6a4643493ab384218586608557e9288910cca3edbd0de9bd3d3951479f",
+    "created_at_ms": 1795896001000,
+    "input_id": "20d7135985d322a51dbc51b63821d039247e47e23d718756c616444251ebf07a",
+    "result_digest": "61bcce83519583a73493817499660accf2b54b8452dfde2a7d3c61041da07adc",
+    "winner": "067121d1f9be9eee0eab884de24e24df996e3b15d4385f5123930c6405d71fa3",
+    "method": "ko",
+    "end_round": 3,
+    "end_tick": 15,
+    "usable": true
+  }
+}

@@ -6,7 +6,12 @@ env:
   GOCACHE: /home/runner/work/go/pkg/build
   GOPATH: /home/runner/work/go
   GOBIN: /home/runner/work/go/bin
-  GO_VERSION: 1.27.3
+  # Temporary candidate profile; qualification is recorded outside this file.
+  GO_VERSION: 1.27.4
+  GOTOOLCHAIN: local
+  GOENV: "off"
+  GOFLAGS: ""
+  GOEXPERIMENT: ""
 
 jobs:
   build:
@@ -29,8 +34,8 @@ jobs:
           GOOS: android
           GOARCH: arm64
         run: |
-          go build ./...
-          (cd btcutil && go build ./...)
+          sh scripts/candidate-go.sh build ./...
+          (cd btcutil && sh ../scripts/candidate-go.sh build ./...)
 
   test-cover:
     name: Unit coverage
@@ -174,7 +179,8 @@ jobs:
   # needs a newer Go than go.mod promises fails here (see the Go version policy
   # in README.md).
   test-min-go:
-    name: Minimum Go version
+    # Compatibility only: deliberately not the candidate compiler profile.
+    name: Minimum Go version (compatibility)
     runs-on: ubuntu-latest
     env:
       # Fail rather than switch to a newer Go if a go.mod asks for one.
@@ -189,10 +195,10 @@ jobs:
           go-version-file: go.mod
 
       - name: Build
-        run: make build
+        run: make GO_PROFILE=compatibility build
 
       - name: Test
-        run: make unit
+        run: make GO_PROFILE=compatibility unit
 
   # The go.mod files require the published versions of the other modules in
   # this repo. This job builds and tests all modules against each other's
@@ -210,10 +216,16 @@ jobs:
       - name: Check out source
         uses: actions/checkout@v7
 
-      - name: Create workspace
+      - name: Validate committed workspace
         run: |
-          find . -mindepth 2 -name go.mod -printf '%h\n' | sort |
-            xargs go work init .
+          GOWORK="$PWD/go.work" go work edit -json | python3 -c '
+          import json, sys
+          workspace = json.load(sys.stdin)
+          expected = [".", "./address", "./btcec", "./btcutil", "./chaincfg", "./chainhash", "./psbt", "./txscript", "./v2transport", "./wire"]
+          actual = [entry["DiskPath"] for entry in workspace.get("Use", [])]
+          if actual != expected:
+              raise SystemExit("Committed workspace must contain exactly the ten local chain modules")
+          '
 
       # Even in a workspace, ./... from the root doesn't reach the nested
       # modules. make unit tests each module from its own directory, which

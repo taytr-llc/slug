@@ -65,9 +65,10 @@ network/genesis/activation62, payout and immutable wallet/gym identity. Missing,
 foreign or incomplete established storage fails closed without substitution.
 Use an absolute `--data-dir` or `SLUG_PILOT_DATA_DIR` for isolated checks.
 
-The webview exposes only `Snapshot`, `Start`, `Stop`, `ExportReceipt(sequence)`,
+The base account webview surface exposes `Snapshot`, `Start`, `Stop`, `ExportReceipt(sequence)`,
 `ExportRecovery()`, `VerifyBackup()`, `LoginFixture(allowlistedLabel)`, `Logout()`
-and `ResetFixtureAccount()`. It cannot provide issuer/subject, reset assurance,
+and `ResetFixtureAccount()`. The candidate flows below add their typed APIs.
+The webview cannot provide issuer/subject, reset assurance,
 clock, session credentials, keys, native paths or RPC requests. Native dialogs
 choose paths; both the full account root and child data are protected. The
 wallet RPC retains its minimal allowlist and ephemeral private credentials.
@@ -81,7 +82,9 @@ births, and authorized historical recovery does not renew eligibility. See
 
 ## Build on macOS
 
-Go 1.27.3 or later and the macOS command-line SDK are required. Check out the
+Go 1.27.4, the candidate compiler profile and the macOS command-line SDK are
+required. See `../BUILD_TOOLCHAIN.md` for the temporary workaround and pending
+qualification. Check out the
 paired `slugwallet` topic beside `slug`; desktop has its own workspace covering
 both repositories, while the ten-module chain workspace stays independent.
 
@@ -90,11 +93,13 @@ cd desktop
 ./scripts/build-macos.sh /Users/taytrrip/slug/artifacts/set29
 ```
 
-The build clears inherited `GOFLAGS`, builds the node/helper with empty tags,
+The build enforces `../build-profile.json`, clears inherited compiler overrides,
+verifies each artifact's embedded compiler setting, builds the node/helper with empty tags,
 and applies only Wails' `production` tag to the shell. `SLUG Account Pilot.app`
 targets macOS 13.0 and is ad hoc signed, **not notarized**. Compilation does not
 prove runtime compatibility on every older OS. Previous artifacts are retained.
-`BUILD.txt` records both repository revisions, dirty paths and binary hashes.
+`BUILD.txt` records both repository revisions, dirty paths and binary hashes;
+`BUILD-PROFILE.json` and `BUILD-INFO.txt` preserve the compiler profile and metadata.
 The helper checks actual activation metadata; the unchanged node version string
 alone cannot prove the block-62 upgrade. Its owned nodes use the explicit
 `--localwalletpilot` mode: connect-only literal loopback peers/listeners/RPC,
@@ -171,7 +176,7 @@ the same card rather than reshuffling it.
 
 The new `--candidate-cards` route requires all preceding candidate flags and
 uses the recoverable v6 parent installation. The ordinary candidate build
-script defaults to version0.4.6/build46 with normal PoW and no test-clock tag.
+script now defaults to version0.4.8/build48 with normal PoW and no test-clock tag.
 It preserves the original detailed app icon and letterless menu-bar fist.
 See [`EVENT_CARDS.md`](../EVENT_CARDS.md) for C1's scope and
 [`CHANGESET_46_NOTES.md`](../CHANGESET_46_NOTES.md) for acceptance status.

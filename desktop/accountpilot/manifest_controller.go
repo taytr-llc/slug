@@ -39,6 +39,7 @@ type manifestChild interface {
 // later token, even when a callback finishes after a reset or failed login.
 type ManifestController struct {
 	boutOwner                         *boutAccountOwner
+	resultOwner                       *resultAccountOwner
 	cardOwner                         *cardAccountOwner
 	seedOwner                         *seedAccountOwner
 	eventOwner                        *eventAccountOwner                                                // new explicit route only; closed after child drain
@@ -256,7 +257,7 @@ func (c *ManifestController) withCapability(ctx context.Context, session gymacco
 			if c.closed || c.viewID != viewID || c.child != child || c.session.Token != session.Token || account.ID != session.Account.ID || account.Generation != session.Account.Generation || child.AccountID() != account.ID || (c.state != "signed_in" && c.state != "signing_in" && c.state != "resetting") {
 				return gymaccount.ErrUnauthorized
 			}
-			if (capability == gymaccount.RosterManage || capability == gymaccount.EntryManage || capability == gymaccount.SeedPublish) && (c.state != "signed_in" || c.operation) {
+			if (capability == gymaccount.RosterManage || capability == gymaccount.EntryManage || capability == gymaccount.SeedPublish || capability == gymaccount.ResultPublish) && (c.state != "signed_in" || c.operation) {
 				return gymaccount.ErrUnauthorized
 			}
 			return nil
@@ -580,6 +581,10 @@ func (c *ManifestController) Close() error {
 		}
 		err := c.detach(context.Background())
 		if c.store != nil {
+			if c.resultOwner != nil && c.resultOwner.store != nil {
+				err = errors.Join(err, c.resultOwner.store.Close())
+				c.resultOwner.store = nil
+			}
 			if c.boutOwner != nil && c.boutOwner.store != nil {
 				err = errors.Join(err, c.boutOwner.store.Close())
 				c.boutOwner.store = nil

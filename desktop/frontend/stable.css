@@ -20,3 +20,7 @@
 .saved-bouts button[aria-pressed="true"] { outline: 2px solid currentColor; outline-offset: 2px; }
 .saved-bouts .card-pairings li { display: grid; gap: .5rem; margin-block: .75rem; }
 .saved-bouts .card-pairings button { justify-self: start; }
+
+#result-panel { margin-block: 1.25rem; padding: 1rem; border: 1px solid #526244; border-radius: 8px; }
+#result-panel h4 { margin: 0; }
+#result-panel .actions { margin-top: 1rem; }

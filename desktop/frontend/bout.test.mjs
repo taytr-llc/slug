@@ -117,7 +117,7 @@ test('unknown and malformed native portrait replies clear current usability and 
   await h.run('loadBookedPortrait(bookedRecord.source.corners[0])'); assert.equal(h.run('bookedOverlayKnown'), false); assert.equal(h.run('bookedImages.size'), 0); assert.equal(h.count('BeginBoutRun'), 0);
 });
 test('build script selects the additive mode and preserves normal-profile and icon guards', () => {
-  const b = readFileSync(new URL('../scripts/build-manifest-macos.sh', import.meta.url), 'utf8'); assert.match(b, /-X main.boutBuild=1/); assert.match(b, /<string>0.4.7<\/string>/); assert.match(b, /<string>47<\/string>/); assert.match(b, /slugtestclock\|slugtestpow/); assert.match(b, /ForTestClock/); assert.match(b, /build-icons-macos.sh/); assert.doesNotMatch(b, /-tags=[^\n]*slugtest/);
+  const b = readFileSync(new URL('../scripts/build-manifest-macos.sh', import.meta.url), 'utf8'); assert.match(b, /-X main.boutBuild=1/); assert.match(b, /<string>0.4.8<\/string>/); assert.match(b, /<string>48<\/string>/); assert.match(b, /slugtestclock\|slugtestpow/); assert.match(b, /ForTestClock/); assert.match(b, /build-icons-macos.sh/); assert.doesNotMatch(b, /-tags=[^\n]*slugtest/);
 });
 
 test('48 independent portrait envelope controls require exact tuple and fresh status even on cache hits', async () => {

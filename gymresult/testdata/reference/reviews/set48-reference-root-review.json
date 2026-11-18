@@ -1,0 +1,62 @@
+{
+  "status": "passed",
+  "at_utc": "2026-11-18T06:16:20.349539+00:00",
+  "basis_commit": "1f59148d62bb45ea8104d4a26b20714574b47c4a",
+  "implementation_basis": "ed3b6de7c1f46df4bbba1ec7de515d5dfce90a8c",
+  "contract_freeze_sha256": "11c8322b53d79ddcfefea05f37433eb5807fb3a52541b0e467df314d7ce27e15",
+  "file_index_sha256": "12ebe693a757467df55e0cb474be62e1b2ed01516dad6112a9841dd26679fb8f",
+  "corpus_sha256": "07c00eef8d87ae9ae5dcd2d120a5dfd1f7b1ba33a1447b773cfd4d5194fd1a94",
+  "verification_sha256": "3bfbd49dabec67990cbd1c6be6b027d54e38ff3f0e6eaab074ee4e8afb553956",
+  "review_sha256": {
+    "set48-reference-independent-review.json": "c0c2824337ec943c6c5a77f43f5d24d6696a4e9188d24671ece8305008fee474",
+    "set48-reference-independent-review.md": "a32f84187f11c51fe9b05544d9964477e6f5254f6e6e4f05539dbc9bc13c7b2b",
+    "set48-helper-reference-independent-review.json": "45ae38f7eacc0e91ca27a4b9ab5758898bcde4f0aae19085088173e0145fc21a",
+    "set48-reference-final-input-review.json": "0fe72ebfd19365f3e38aaf665a2503d7b3d8d468c6250cd19d364da51fcea5f6"
+  },
+  "checks": [
+    "Read frozen core/helper contracts, both clarifications, purpose-specific crypto, core/wire validation, structural proof checker and final guard deltas.",
+    "Verified complete 139-file candidate inventory, exact copied bytes and separate dual-Python reports/source/input/corpus bindings.",
+    "Independent final and helper cross-dependency reviews pass with no open finding.",
+    "Root reproduced the retained-current-finality/wrong-branch false positive; final conditional ancestry check and negative control close it without requiring export tip equality.",
+    "No runtime implementation existed while deriving or reviewing expected values.",
+    "Commit precheck found one whitespace-only blank line. Original bytes retained as gzip; active source correction is AST-equivalent, corpus unchanged, and fresh dual reproduction plus narrow independent rebind passed."
+  ],
+  "counts": {
+    "core": {
+      "positive": 81,
+      "codec_cases": 361,
+      "core_no_engine_or_signing": true,
+      "transport_no_generation_engine_signing_or_merkle_hashing": true
+    },
+    "store": {
+      "row_cases": 14,
+      "initialization_models": 13,
+      "index_rows": 256,
+      "index_canonical_bytes": 68097
+    },
+    "proof": {
+      "proof_dag_cases": 9,
+      "block_controls": 10,
+      "normal_pow_checked": false,
+      "normal_consensus_model_claim": false
+    },
+    "wire": {
+      "dto": 214,
+      "codec": 264,
+      "protocol": 138
+    },
+    "state": {
+      "cases": 89,
+      "steps": 178
+    }
+  },
+  "limitations": [
+    "Only one genuine prior saved C1 bout and its original two fixture views; fixed Pin acceptance and modeled extra summaries are finite, not general authority.",
+    "Original176 normal headers and3 admission proofs inherit byte-identical prior independent evidence; no new normal Argon or admission hashing in this review.",
+    "Every added Result funding/publication/inclusion/header/proof is explicitly an unmined structural/cryptographic model, not normal-PoW or consensus-valid evidence.",
+    "No full-chain UTXO, global best-chain choice, source seed firstness, trusted wall-clock, ownership, production result, awards or GUI/D74 claim.",
+    "State/init/owner/cache models do not execute account leases, fsync/crashes, node lifecycle, RPC, cancellation races or latency.",
+    "Author dual checks regenerate independently from frozen inputs and run the old42 engine once per run for original saved-source provenance; no new Result codec simulation is claimed."
+  ],
+  "runtime_comparison_authorized_after_reference_commit": true
+}

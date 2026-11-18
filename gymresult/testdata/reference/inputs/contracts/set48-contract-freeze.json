@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "status": "approved_for_independent_reference_authoring",
+  "frozen_at": "2026-11-18T05:32:30.160806+00:00",
+  "branch": "slug-result-publication",
+  "head": "1f59148d62bb45ea8104d4a26b20714574b47c4a",
+  "implementation_basis": "ed3b6de7c1f46df4bbba1ec7de515d5dfce90a8c",
+  "prior_release": "ba218f551de5f0148db8d60c7f198970b6e40b2c",
+  "prior_closeout_sha256": "f76fae296e5e06f994d04b32488c8b4375806680347b5c8538c2de81d09e020e",
+  "files": {
+    "set48-core-contract-draft.md": "982126ad4678814ec7a6bedab9c4604b8c25c9955f1cd3e869c046bf37360eb3",
+    "set48-helper-contract-draft.md": "f0bae86a8384613795ff6820ff658471140ab7b70182580f4e4fd5304558b18a",
+    "set48-reference-plan-draft.md": "645690328f52ccb26a5645711815739348bd21d7f8ab124d496f4824d66f9220",
+    "set48-contract-source-basis.json": "692d1c332ba1248e8d816ea1db7657a67788c221c26891e63a672f5e481c9725",
+    "set48-contract-bounds-calculator.py": "dccff013b2c28c197ed026235ff643cdba560e1935a08281ec0d5ae85e53c6b9",
+    "set48-contract-bounds-formula.json": "95bbea054f3ee1c09c517082d2cbe84c7641a84dd3813644331589ece1e47772",
+    "set48-contract-independent-review.json": "284977c8c6f918a79707277d8c4c344585614449451b9b4322ea084f07507ae9",
+    "set48-contract-independent-review.md": "4ec26c3ad41c5d77ff43ce080a2ef5aedb03bf1a941c812396bb13e3a328968f",
+    "set48-helper-core-alignment-review.json": "77073b665815391b1295463eaab752861512a62210387b759a3bce2c165f872f",
+    "set48-publication-design-audit.md": "982ca581317429640de418eb5454bfcc8403b3ca3d82d59ca14ce3fdac5276d9",
+    "set48-acceptance-outline-draft.md": "127f45a2f8f458ca80548a93b030e9fbcf2fa1c00da256f018c1c473ec07ce0e"
+  },
+  "source_basis_files_verified": 415,
+  "root_review": "Reviewed core/helper full shapes, exact source/adapter/export signatures, original capability and already-held gate paths, witness binding, uncertain dispatch and evidence-only equivocation. Independent semantic and formula review passed with no open finding.",
+  "scope": "One saved candidate result, separate key2 fixture fund and result checkpoint, explicit node-only native actions, immutable transcript and report-only conflict history. No professional records, XP, awards, production signer/genesis or new matchmaking policy.",
+  "authorization": "Standing user instruction to continue the burn list and deploy/verify completed engineering sets. These are bounded candidate engineering choices; no new gameplay decision.",
+  "next": "Author independently derived crypto/core/wire/state/proof reference from these exact bytes and pinned prior inputs; review and commit its separate freeze before new Go implementation or comparison.",
+  "constraints": [
+    "Preserve these exact contracts; later changes require an explicit retained addendum.",
+    "No new Go outputs may become expected values.",
+    "Models are not actual account/node/disk evidence.",
+    "No private operator/wallet material or public-chain mining.",
+    "Normal packaging and actual scoped-clock evidence remain separate.",
+    "D74 joint design and GUI/portrait/chooser/accessibility gates remain open."
+  ],
+  "formula_claim": "Finite encoding bounds only; runtime latency, memory, account/process and chain behavior remain untested for Set48."
+}
