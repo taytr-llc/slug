@@ -334,6 +334,13 @@ and restart passed. The requested app/menu-bar icons are included in the native
 build; GUI, portrait and joint D74 acceptance remain open.
 See `EVENT_SEEDS.md` and `CHANGESET_45_NOTES.md`.
 
+Set 46 is in progress on `slug-event-card`: retain a candidate booked card from
+the immutable noon inputs and fixed seed. Scoped exception C1 allows the two
+zero-record fixture gyms to match inside the existing same-class half-to-double
+band without five opponents. Report all entered, paired and unmatched fighters
+and reasons; general league widening, record filters and next-week priority
+remain open. See `CANDIDATE_CARD_EXCEPTION.md` and `CHANGESET_46_NOTES.md`.
+
 ### 6. League services
 The Saturday operation: entry collection and lock (Saturday noon
 PT), matchmaking in the D52 ratio band with random draw (D13, D28),
