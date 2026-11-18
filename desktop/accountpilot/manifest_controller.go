@@ -399,6 +399,17 @@ func (c *ManifestController) Snapshot() pilot.ManifestSnapshot {
 	blank := pilot.BlankManifestSnapshot()
 	blank.Account = pilot.AccountSnapshot{State: state, Fixture: fixture, LastError: last}
 	if closed || busy || state != "signed_in" || child == nil || viewID == "" {
+		// Login may publish its internal state before the final lease recheck
+		// and operation completion. A blank public snapshot cannot claim a
+		// signed-in identity before that publication is available.
+		switch {
+		case closed:
+			blank.Account.State = "signed_out"
+		case busy && state == "signed_in":
+			blank.Account.State = "signing_in"
+		case state == "signed_in":
+			blank.Account.State = "expired"
+		}
 		return blank
 	}
 	// Probe the distinct capability before final View capture, never nested.

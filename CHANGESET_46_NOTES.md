@@ -4,8 +4,10 @@ Branch `slug-event-card`, stacked from set 45 implementation
 `ca84a62d178386646aef119cbe2edbb6ad38f508`. The first branch commit records
 set 45's completed engineering closeout. Implementation `ede24725` was pushed
 after source and independent evidence review. Its actual normal-clock package
-test exposed a metadata responsiveness problem; a narrow correction and renewed
-package acceptance are in progress.
+test exposed a metadata responsiveness problem. The reviewed correction was
+pushed as `e7d15b4e`; its rebuilt package passed the first gym's flow, then exposed
+a separate sign-in publication defect. That correction and renewed package
+acceptance are in progress.
 No set 46 deployment is claimed yet.
 
 Connect the complete noon snapshot and fixed, finalized candidate seed to one
@@ -99,6 +101,23 @@ test clock or cheap-PoW profile. See `EVENT_CARDS.md` for the contract and bound
   this is a real-clock liveness failure, not a malformed response. The previous
   stationary test-clock capacity check did not cover that cost. All failed
   attempts and diagnostic source bytes remain preserved; none is a package pass.
+- The corrected metadata path passed 18 default-clock native operations without
+  retries. Fully charged 256-card histories with actual account sessions and
+  parent-equivalent rechecks completed in 253.680/263.223/168.007 ms under the
+  reviewed 500 ms budget. Core authority, corruption, lifetime and reference
+  checks passed. The old core capacity test's 250 ms and then 500 ms race runs
+  expired; those failures remain preserved. Its selected-row/tamper/cancellation
+  correctness passes separately under race, while the stronger normal-build
+  helper test retains the actual 500 ms latency requirement.
+- The rebuilt `e7d15b4e` package passed the zero256 initial, reopened and held
+  flows, then its native bridge refused a snapshot during incrementing256 login.
+  The original raw response was not retained. A scheduling-only diagnostic of
+  the real parent login reproduced an inherited publication window: state was
+  `signed_in` while the operation was still pending, so Snapshot returned an
+  empty identity marked signed in. The unchanged native decoder rejects that
+  contradictory frame and accepts its transitional-state control. This proves
+  the defect, without claiming the unavailable original wire frame established
+  that exact cause. Shared-journal ownership and cleanup were reviewed separately.
 
 Workspace evidence includes `../set46-reference-root-review.json`,
 `../set46-core-independent-review.json`, `../set46-frontend-checks.json` and
@@ -108,20 +127,15 @@ it is not a claim of continuous consensus observation or production authority.
 
 ## Remaining release gates
 
-Validate the prepared source-view correction for Card Read, Status and History,
-including original-session authorization before retained-row validation, final
-authorization, post-sync uncertainty, default-clock empty metadata and advancing
-scoped-clock capacity timings with the actual account journal. That stronger
-capacity test also found duplicate immutable card validation exceeding the
-budget. The additional correction retains a private bounded digest index from
-the full opening audit and successful inserts; reads compare actual stored bytes
-to that audited identity. The complete current seed-source audit remains in
-place. No external validation verdict or imported record is accepted.
-The full parent-equivalent account checks still exceeded the original 250 ms
-limit after those reductions. An explicit engineering review approved a Card-only
-500 ms metadata context budget; preserve the original failures, immutable card
-bytes, shorter caller deadlines and existing Build behavior. Other families and
-the separately proposed Set47 Bout budget do not inherit this change.
+The prepared source view, private audited-byte index and explicit Card-only
+500 ms engineering amendment are implemented and validated. The full current
+seed-source audit, original/final authorization, shorter caller deadlines and
+Build behavior remain intact. Other families and the separately proposed Set47
+Bout budget do not inherit that budget change.
+Complete the sign-in snapshot projection correction and its normal/race/native
+boundary regressions. Keep login operation completion, final authorization and
+native validation unchanged; a nonpublishable snapshot must use a transitional
+or unavailable account state, never an incomplete signed-in identity.
 Then renew exact-source packaged helper acceptance and independent checks,
 release smoke as required for the corrected source, and fresh live seed preflight.
 Then promote the reviewed source, verify Railway's
