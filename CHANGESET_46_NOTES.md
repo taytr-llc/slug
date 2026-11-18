@@ -6,9 +6,12 @@ set 45's completed engineering closeout. Implementation `ede24725` was pushed
 after source and independent evidence review. Its actual normal-clock package
 test exposed a metadata responsiveness problem. The reviewed correction was
 pushed as `e7d15b4e`; its rebuilt package passed the first gym's flow, then exposed
-a separate sign-in publication defect. That correction and renewed package
-acceptance are in progress.
-No set 46 deployment is claimed yet.
+a separate sign-in publication defect. The reviewed projection-only correction
+is in final implementation `5e6b36d37e30d573a3817e32315bb96f12e0968c`.
+Its exact normal-clock package passed, and master release
+`5c11cbaf5f1e236ffb3e46504e551be6dc5c2d69` deployed successfully as Railway
+`14c9d2f2-7c37-43aa-a73f-1fde1059ea65`. The full post-deployment observation
+and restart passed on November 18 UTC (November 17 Pacific).
 
 Connect the complete noon snapshot and fixed, finalized candidate seed to one
 retained card for the event. Mike approved scoped candidate exception C1:
@@ -47,7 +50,7 @@ portrait admission. An unknown write outcome is shown without an automatic retry
 Candidate build 0.4.6/build46 enables the card family; normal bundles contain no
 test clock or cheap-PoW profile. See `EVENT_CARDS.md` for the contract and bounds.
 
-## Verification recorded so far
+## Verification
 
 - The reviewed independent reference was frozen before comparison. Runtime and
   reference were developed concurrently; the reference was not derived from Go
@@ -125,24 +128,42 @@ Workspace evidence includes `../set46-reference-root-review.json`,
 scope and source/input hashes. The initial chain export is pre-reorg evidence;
 it is not a claim of continuous consensus observation or production authority.
 
-## Remaining release gates
+## Completed engineering closeout
 
 The prepared source view, private audited-byte index and explicit Card-only
 500 ms engineering amendment are implemented and validated. The full current
 seed-source audit, original/final authorization, shorter caller deadlines and
 Build behavior remain intact. Other families and the separately proposed Set47
 Bout budget do not inherit that budget change.
-Complete the sign-in snapshot projection correction and its normal/race/native
-boundary regressions. Keep login operation completion, final authorization and
-native validation unchanged; a nonpublishable snapshot must use a transitional
-or unavailable account state, never an incomplete signed-in identity.
-Then renew exact-source packaged helper acceptance and independent checks,
-release smoke as required for the corrected source, and fresh live seed preflight.
-Then promote the reviewed source, verify Railway's
-deployment and complete the 15-minute observation plus restart. Report remote CI
-honestly if GitHub supplies no runs. Later closeout records must identify the
-actual implementation and deployed commits; this document does not predeclare
-those checks passed.
+The final 11-line sign-in snapshot correction projects a pending login as
+`signing_in`, a closed controller as `signed_out`, and a missing signed-in
+identity as `expired`. Login operation completion, final authorization and the
+native decoder are unchanged. Both new regression tests fail against the old
+runtime; final normal/race checks pass. The original failed package frame was
+not captured, so its exact failure branch remains unproven.
+
+The exact-source final Mac package passed in 127.942 seconds and independent
+checks verified both fixtures, 14 normal-Argon records/attempts, 40 stable items,
+six complete previews and ten entry receipts. Closed-event publication/booking
+is separately scoped-clock evidence, not a normal-clock package claim. The
+final-source native replay retained the exact original card and three admission
+records, including the historical conflict. All captured owned listeners and
+processes closed cleanly. Normal-PoW release smoke and fresh seed preflight passed.
+
+The live observer used the final release binaries for 900.032 seconds across
+31 samples, all with one SLUG peer, height 61 and 60 checkpoint descendants.
+Chain verification, report-only checkpoint reporting, stale-template refusal
+and a clean local restart passed. Railway reports the exact release SUCCESS,
+one running replica, no issues, no staged work, and unchanged configuration,
+/data volume and public TCP endpoint. Exact implementation and release GitHub
+queries returned no runs/checks; remote CI is not claimed passed.
+
+Workspace `../set46-closeout.json` binds the final source, package, deployment
+and observation evidence (SHA256
+`5274972d24d1d09effd54b4a413bf2f599aeb3cf2a6ec1f6f62be263e63f634a`).
+Earlier failed package and race attempts remain preserved. The new stacked
+`slug-event-bouts` branch starts from the final Set46 implementation for Set47;
+this documentation closeout does not alter deployed runtime bytes.
 
 Keep the original detailed app icon and simplified letterless menu icon.
 The portrait check and full joint D74 review remain pending before product

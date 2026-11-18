@@ -146,12 +146,19 @@ they do not count as completion of this product-release gate.
   normal-PoW evidence. GUI/icon rendering, accessibility, portrait review and the
   full joint D74 review remain open. This is candidate engineering work, not an
   official event service. See `CHANGESET_45_NOTES.md` and `EVENT_SEEDS.md`.
-- Set 46 is in progress: candidate booked cards with unmatched counts/reasons
+- Set 46 is deployed: candidate booked cards with unmatched counts/reasons
   under the scoped C1 two-gym exception. This does not amend league matchmaking
   or establish professional results/awards. The implementation and first actual
   normal-PoW scoped-clock run produced one bout from three entrants, with one
   unmatched fighter and its reason. Independent arithmetic and frontend checks
-  pass; final source, package and rollout checks remain in progress. See
+  pass. Final implementation `5e6b36d3`, its corrected normal-clock Mac package
+  and deployment at master `5c11cbaf` passed, followed by 900 seconds of live
+  observation, 31 samples and a clean restart at the unchanged height-61 tip.
+  Successful closed-event booking uses separate scoped-clock normal-PoW evidence;
+  the normal-clock package covers setup, open/pending/refusal and recovery flows.
+  GitHub returned no runs/checks, so remote CI is not claimed passed. Earlier
+  failed package/race evidence remains preserved. Set 47 now prepares retained
+  candidate bouts and replay; professional results and awards remain absent. See
   `CANDIDATE_CARD_EXCEPTION.md`, `EVENT_CARDS.md` and `CHANGESET_46_NOTES.md`.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
