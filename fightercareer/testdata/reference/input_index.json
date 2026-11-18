@@ -1,0 +1,15 @@
+{
+  "inputs": {
+    "inputs/BRAWLCHAIN_SPEC.md": {
+      "bytes": 42592,
+      "origin_repo_path": "BRAWLCHAIN_SPEC.md",
+      "sha256": "ce44f1f9aed0639899e48f8288517e7687797626ea97e1df3da86a2093437c4b"
+    },
+    "inputs/FIGHTER_CAREER.md": {
+      "bytes": 3076,
+      "origin_repo_path": "FIGHTER_CAREER.md",
+      "sha256": "07de417554cf2a61085e8545f78fbf43bb5b02fc63a3d3d4d6889acadbe193d1"
+    }
+  },
+  "version": 1
+}
