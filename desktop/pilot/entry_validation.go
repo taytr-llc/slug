@@ -8,6 +8,9 @@ import (
 )
 
 func entryErrorCode(s string) bool {
+	if careerActionCode(s) {
+		return true
+	}
 	switch s {
 	case "invalid_request", "unauthorized", "forbidden", "stale_view", "busy", "entry_unavailable", "entry_corrupt", "entry_capacity", "entry_clock", "entry_calendar", "entry_closed", "entry_conflict", "entry_pending", "entry_not_found", "entry_sync_required", "entry_not_rostered", "entry_retired", "entry_class_conflict", "entry_cancelled", "outcome_unknown":
 		return true
@@ -98,6 +101,10 @@ func entrySnapshotValid(s EntrySnapshot) bool {
 	return s.ActiveJobID == "" || s.ActiveJobID != s.QueuedJobID
 }
 func entryJobValid(j *EntryJob) bool {
+	if j == nil || !careerIneligibleValid(j.Error, j.IneligibleProspectIDs) {
+		return false
+	}
+
 	if j.Version != 1 || !canonicalManifestID(j.JobID) || !stableViewValid(j.View) || !canonicalManifestID(j.StoreID) || !canonicalManifestID(j.EventID) || !entryDateValid(j.Saturday) {
 		return false
 	}

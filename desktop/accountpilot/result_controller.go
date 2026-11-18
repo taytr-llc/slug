@@ -33,6 +33,9 @@ func NewResults(ctx context.Context, c pilot.Config) (*StableController, error) 
 	return newResults(ctx, c, resultAccountFactories{boutAccountFactories{cardAccountFactories{seedAccountFactories{d, gymseed.Open, gymseed.ResumePrepared}, gymcard.Open, gymcard.ResumePrepared}, gymbout.Open, gymbout.ResumePrepared}, gymresult.Open, gymresult.ResumePrepared})
 }
 func newResults(parent context.Context, config pilot.Config, deps resultAccountFactories) (*StableController, error) {
+	return newResultsMode(parent, config, deps, nil)
+}
+func newResultsMode(parent context.Context, config pilot.Config, deps resultAccountFactories, career *careerAccountOwner) (*StableController, error) {
 	if parent == nil {
 		return nil, gymresult.ErrInvalid
 	}
@@ -89,12 +92,12 @@ func newResults(parent context.Context, config pilot.Config, deps resultAccountF
 		}
 		return s, e
 	}
-	store, lock, _, e := openResultAccountStore(ctx, config, deps)
+	store, lock, _, e := openResultAccountStoreMode(ctx, config, deps, career)
 	if e != nil {
 		return nil, e
 	}
 	d.createAccount, d.openAccount, d.openStable = oldCreate, oldOpen, oldStable
-	base := &ManifestController{config: config, store: store, lock: lock, state: "signed_out", eventOwner: &eventAccountOwner{deps: deps.bout.card.seed.event}, seedOwner: &seedAccountOwner{deps: deps.bout.card.seed}, cardOwner: &cardAccountOwner{deps: deps.bout.card}, boutOwner: &boutAccountOwner{deps: deps.bout}, resultOwner: &resultAccountOwner{deps: deps}, now: deps.bout.card.seed.event.now, verify: deps.bout.card.seed.event.verify}
+	base := &ManifestController{careerOwner: career, config: config, store: store, lock: lock, state: "signed_out", eventOwner: &eventAccountOwner{deps: deps.bout.card.seed.event}, seedOwner: &seedAccountOwner{deps: deps.bout.card.seed}, cardOwner: &cardAccountOwner{deps: deps.bout.card}, boutOwner: &boutAccountOwner{deps: deps.bout}, resultOwner: &resultAccountOwner{deps: deps}, now: deps.bout.card.seed.event.now, verify: deps.bout.card.seed.event.verify}
 	s := &StableController{base}
 	base.newChild = func(cfg pilot.Config, a pilot.ManifestAccountConfig) (manifestChild, error) {
 		base.mu.Lock()
@@ -108,6 +111,12 @@ func newResults(parent context.Context, config pilot.Config, deps resultAccountF
 		}})
 		if e != nil {
 			return nil, e
+		}
+		if career != nil {
+			if e := child.ConfigureCareer(career.reader, career.deps.openStable); e != nil {
+				_ = child.Close()
+				return nil, e
+			}
 		}
 		return child, nil
 	}
@@ -123,6 +132,9 @@ func newResults(parent context.Context, config pilot.Config, deps resultAccountF
 	}
 	if e == nil {
 		e = s.ensureResults(ctx)
+	}
+	if e == nil && career != nil {
+		e = s.ensureCareers(ctx, nil)
 	}
 	if e == nil {
 		e = ctx.Err()

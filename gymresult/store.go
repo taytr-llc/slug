@@ -15,6 +15,7 @@ import (
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/opt"
 	"github.com/taytr-llc/slug/gymbout"
+	"github.com/taytr-llc/slug/internal/careerstate"
 	"github.com/taytr-llc/slug/wire/v2"
 )
 
@@ -27,17 +28,18 @@ type marker struct {
 	Pin         Pin    `json:"pin"`
 }
 type metadata struct {
-	Version           uint32        `json:"version"`
-	StoreID           string        `json:"store_id"`
-	Pin               Pin           `json:"pin"`
-	SourceCreatedAtMS int64         `json:"source_created_at_ms"`
-	CreatedAtMS       int64         `json:"created_at_ms"`
-	ClockMS           int64         `json:"clock_ms"`
-	ResultCount       uint32        `json:"result_count"`
-	FundingCursor     Cursor        `json:"funding_cursor"`
-	FundingRestarts   []ScanRestart `json:"funding_restarts"`
-	FundingComplete   bool          `json:"funding_complete"`
-	LastFundingTip    *Tip          `json:"last_funding_tip"`
+	Version           uint32            `json:"version"`
+	StoreID           string            `json:"store_id"`
+	Pin               Pin               `json:"pin"`
+	SourceCreatedAtMS int64             `json:"source_created_at_ms"`
+	CreatedAtMS       int64             `json:"created_at_ms"`
+	ClockMS           int64             `json:"clock_ms"`
+	ResultCount       uint32            `json:"result_count"`
+	FundingCursor     Cursor            `json:"funding_cursor"`
+	FundingRestarts   []ScanRestart     `json:"funding_restarts"`
+	FundingComplete   bool              `json:"funding_complete"`
+	LastFundingTip    *Tip              `json:"last_funding_tip"`
+	Career            *CareerActivation `json:"career,omitempty"`
 }
 type initIntent struct {
 	Version           uint32 `json:"version"`
@@ -69,6 +71,8 @@ type Store struct {
 	db                *leveldb.DB
 	meta              metadata
 	index             []indexRow
+	careerIndex       []careerstate.Event
+	careerOpening     bool
 	clockSeen         int64
 	sourceCreatedAtMS int64
 	now               func() time.Time
@@ -507,6 +511,10 @@ func (s *Store) Info(ctx context.Context) (Info, error) {
 func (s *Store) commitLocked(b *leveldb.Batch, next metadata) error {
 	// Metadata must never retain a pointer also reachable from an action result.
 	// Reconcile may use the same local captured tip in a returned conflict.
+	if next.Career != nil {
+		a := *next.Career
+		next.Career = &a
+	}
 	if next.LastFundingTip != nil {
 		tip := *next.LastFundingTip
 		next.LastFundingTip = &tip

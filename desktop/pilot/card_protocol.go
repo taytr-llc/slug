@@ -15,6 +15,9 @@ import (
 )
 
 func cardProtocolError(err error) string {
+	if code := careerActionError(err); code != "" {
+		return code
+	}
 	if errors.Is(err, gymaccount.ErrHeld) || errors.Is(err, gymaccount.ErrForbidden) {
 		return "forbidden"
 	}

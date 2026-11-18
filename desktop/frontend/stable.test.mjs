@@ -58,7 +58,7 @@ function harness(initial = environment(), mode = 'local-manifest-pilot') {
   function initialJob() { if (state.items.length) { const data = { version: 1, status: clone(state.stable.status), as_of_ms: state.stable.status.last_as_of_ms, items: clone(state.items) }; publish('sync', data); } }
   initialJob();
   const handlers = {
-    Mode: () => mode, ManifestSnapshot: () => clone(state.manifest), StableSnapshot: () => ok('snapshot', state.stable),
+    Mode: () => mode, CareerMode: () => false, ManifestSnapshot: () => clone(state.manifest), StableSnapshot: () => ok('snapshot', state.stable),
     PreviewSnapshot: () => ({ id: ++frame, version: 1, ok: true, snapshot: { version: 1, state: state.manifest.view ? 'idle' : 'unavailable', error: '', view: clone(state.manifest.view), store_id: state.stable.status?.store_id ?? '', engine_version: state.manifest.view ? 1 : 0, engine_id: state.manifest.view ? 'slug-fighter-bout-candidate-v1' : '', active_job_id: '', queued_job_id: '', last_job_id: '' } }),
     ManifestPortrait: () => { throw new Error('fixture portrait is not loaded'); },
     StableJob: (view, jid) => jobs.has(jid) ? ok('job', jobs.get(jid)) : error('stable_not_found'),
@@ -88,7 +88,7 @@ function harness(initial = environment(), mode = 'local-manifest-pilot') {
 }
 
 test('explicit stable entry, exact approved asset and no mining on login', async () => {
-  const h = harness(blank()); await h.start(); assert.deepEqual(h.calls.map((c) => c.method), ['Mode', 'ManifestSnapshot', 'StableSnapshot']); assert.equal(h.count('Start'), 0); assert.equal(h.elements.get('login-a').disabled, false);
+  const h = harness(blank()); await h.start(); assert.deepEqual(h.calls.map((c) => c.method), ['Mode', 'CareerMode', 'ManifestSnapshot', 'StableSnapshot']); assert.equal(h.count('Start'), 0); assert.equal(h.elements.get('login-a').disabled, false);
   const wrong = harness(blank(), 'local-account-pilot'); await wrong.start(); assert.equal(wrong.count('ManifestSnapshot'), 0); assert.equal(wrong.timers.size, 0);
   assert.match(html, /src="\/stable.js"/); assert.match(html, /href="\/stable.css"/); assert.match(html, /src="\/slug-transparent.png"/); assert.doesNotMatch(html, /onclick=|https?:|<style/); assert.doesNotMatch(source, /\.innerHTML\s*=|crypto\.subtle|createElement\(['"]svg/);
   assert.equal(createHash('sha256').update(readFileSync(new URL('./slug-transparent.png', import.meta.url))).digest('hex'), '50ceada462548c677fb6e68e454625ca359aced2954daad5fb13abb9db85f693');
@@ -295,6 +295,18 @@ test('local replay and stepping issue no native request and respect dynamic redu
   await h.click('preview-result');assert.equal(h.elements.get('preview-outcome').hidden,false);assert.match(h.elements.get('preview-scores').textContent,/Whole-fight scorecard/);await h.click('preview-restart');assert.match(h.elements.get('preview-step').textContent,/opening bell/);assert.equal(h.calls.length,calls);
   await h.click('preview-clear');assert.equal(h.elements.get('preview-fighters').children.length,0);assert.equal(h.elements.get('preview-replay').hidden,true);
 });
+
+test('preview outcome and scorecard are explicitly unrecorded and cannot inherit result finality',async()=>{
+  const h=completedPreviewHarness();await h.start();await h.select();await h.click('preview-begin');const calls=h.calls.length;
+  // An unrelated retained publication is not an authority for this practice preview.
+  vm.runInContext('publicationStatus={finalized_at_ms:1}',h.context);
+  await h.click('preview-result');
+  assert.match(h.elements.get('preview-state').textContent,/^Unrecorded preview/);
+  assert.match(h.elements.get('preview-finish').textContent,/^Unrecorded preview:/);
+  assert.match(h.elements.get('preview-scores').textContent,/^Unrecorded preview/);
+  assert.doesNotMatch(h.elements.get('preview-finish').textContent,/Finalized result|Provisional result/);
+  assert.equal(h.calls.length,calls);
+});
 test('portrait completion for an old selection is discarded before creating an image',async()=>{
   const h=completedPreviewHarness();await h.start();await h.select();const gate=deferred(),portrait=h.handlers.FightPreviewPortrait;h.handlers.FightPreviewPortrait=async(...args)=>{await gate.promise;return portrait(...args);};
   await h.click('preview-begin');assert.equal(h.count('FightPreviewPortrait'),1);await h.click('preview-clear');gate.resolve();await flush();assert.equal(h.elements.get('preview-fighters').children.length,0);assert.equal(h.elements.get('preview-replay').hidden,true);assert.equal(h.count('FightPreviewPortrait'),1);assert.equal(h.peak,1);
@@ -313,4 +325,61 @@ test('typed helper failure clears replay immediately while busy retains it',asyn
   const h=completedPreviewHarness();await h.start();await h.select();await h.click('preview-begin');assert.equal(h.elements.get('preview-replay').hidden,false);
   h.handlers.PreviewSnapshot=()=>({id:74,version:1,ok:false,error:'busy'});await h.tick();assert.equal(h.elements.get('preview-replay').hidden,false);
   h.handlers.PreviewSnapshot=()=>({id:75,version:1,ok:false,error:'preview_unavailable'});await h.tick();assert.equal(h.elements.get('preview-replay').hidden,true);assert.equal(h.elements.get('preview-fighters').children.length,0);assert.equal(h.elements.get('preview-selection').children.length,2);assert.equal(h.elements.get('preview-begin').disabled,true);
+});
+
+// Modeled typed Career replies test UI correlation; native separately binds the
+// activation digest/incarnation. Expected XP effects use the unchanged D42 rule.
+function careerReply(e, wins = 1) {
+  const original=clone(e.items[0]), asOf=original.condition.as_of_ms;
+  const c=clone(original.condition); c.pro_xp=Math.min(15,wins); c.league_attributes_tenths.skill+=10*c.pro_xp; c.rating_hundredths+=80*c.pro_xp;
+  const status=clone(e.stable.status); status.last_as_of_ms=asOf;
+  return {id:900,job_id:"",ok:true,view:clone(e.manifest.view),store_id:status.store_id,page:{version:1,activation:{version:1,policy_id:'2bdf6089dc4bc641dc6e6e87dab21a15196e6b31708c9f84ab8dd728049e50d2',activation_id:hash(991),result_store_id:hash(992),result_created_at_ms:original.assignment.born_at_ms,source_created_at_ms:original.assignment.born_at_ms,activated_at_ms:original.assignment.born_at_ms},career_digest:hash(993),as_of_ms:asOf,source:{version:1,status,as_of_ms:asOf,after:0,next_after:1,has_more:false,items:[original]},items:[{prospect_id:original.assignment.prospect_id,totals:{wins,losses:0,draws:0,xp:c.pro_xp,base_points:10*wins},condition:c}]},roster:null,error:''};
+}
+test('career mode renders finalized totals and XP condition without changing the legacy source', async()=>{
+  const e=environment("zero256",[item(reference.cases[2])]),h=harness(e),r=careerReply(e); h.handlers.CareerMode=()=>true;h.handlers.CareerInventory=(_,jobID)=>({...clone(r),job_id:jobID});await h.start();
+  assert.equal(h.cards.length,1);assert.match(h.cards[0].textContent,/Finalized professional record: 1–0–0/);assert.match(h.cards[0].textContent,/professional XP: 1/);assert.match(h.cards[0].textContent,/Base-point history: 10 \(not a ranking\)/);
+  assert.equal(h.buttons('Select for preview')[0].disabled,true);assert.equal(vm.runInContext('pageItems[0].condition.pro_xp',h.context),0);assert.equal(h.count('Start'),0);assert.equal(h.count('BeginStableInventory'),0);
+});
+test('career page malformed identity, clock, XP and incarnation refuse without replacing retained page',async()=>{
+ const e=environment("zero256",[item(reference.cases[2])]),h=harness(e),r=careerReply(e);h.handlers.CareerMode=()=>true;h.handlers.CareerInventory=(_,jobID)=>({...clone(r),job_id:jobID});await h.start();const before=h.cards[0].textContent;
+ for(const change of [v=>v.view.view_id=hash(999),v=>v.page.items[0].prospect_id=hash(999),v=>v.page.as_of_ms++,v=>v.page.items[0].totals.xp=2,v=>v.page.items[0].condition.league_attributes_tenths.skill++,v=>v.page.activation.activation_id=hash(998)]){const bad=clone(r);change(bad);h.handlers.CareerInventory=(_,jobID)=>({...bad,job_id:jobID});await h.click('inventory');assert.equal(h.cards[0].textContent,before);assert.match(h.elements.get('stable-progress').textContent+h.elements.get('announcement').textContent+h.elements.get('mutation-state').textContent+vm.runInContext('message',h.context),/validated/);}
+});
+test('late career response cannot disclose the prior login page',async()=>{
+ const e=environment("zero256",[item(reference.cases[2])]),h=harness(e),r=careerReply(e),gate=deferred();h.handlers.CareerMode=()=>true;h.handlers.CareerInventory=(_,jobID)=>({...clone(r),job_id:jobID});await h.start();h.handlers.CareerInventory=async(_,jobID)=>{await gate.promise;return {...r,job_id:jobID}};const pending=h.click('inventory');await flush();h.state=blank();vm.runInContext('forgetView();current=stable=null;',h.context);gate.resolve();await pending;await flush();assert.equal(h.cards.length,0);
+});
+test('newly read finalized award clears selected zero-XP practice participant',async()=>{
+ const e=environment("zero256",[item(reference.cases[2])]),h=harness(e);h.handlers.CareerMode=()=>true;h.handlers.CareerInventory=(_,jobID)=>({...careerReply(e,0),job_id:jobID});await h.start();vm.runInContext('selectPreview(pageItems[0])',h.context);assert.equal(vm.runInContext('previewSelected.length',h.context),1);
+ h.handlers.CareerInventory=(_,jobID)=>({...careerReply(e,1),job_id:jobID});await h.click('inventory');assert.equal(vm.runInContext('previewSelected.length',h.context),0);assert.match(h.elements.get('preview-message').textContent,/zero-XP profile/);
+});
+test('career cache refusal rolls back activation, overlay and source page together',async()=>{
+ const e=environment("zero256",[item(reference.cases[2])]),h=harness(e);h.handlers.CareerMode=()=>true;h.handlers.CareerInventory=(_,jobID)=>({...careerReply(e,0),job_id:jobID});await h.start();const before=vm.runInContext('JSON.stringify([pageItems,careerPage,careerActivation])',h.context);
+ vm.runInContext('globalThis.capacityOriginal=previewCapacity;previewCapacity=()=>careerPage?.items[0]?.totals.xp===1?false:capacityOriginal();',h.context);h.handlers.CareerInventory=(_,jobID)=>({...careerReply(e,1),job_id:jobID});await h.click('inventory');assert.equal(vm.runInContext('JSON.stringify([pageItems,careerPage,careerActivation])',h.context),before);vm.runInContext('previewCapacity=capacityOriginal;',h.context);
+});
+
+test('career overlay requires the selected completed job and identical legacy source', async () => {
+  const e=environment('zero256',[item(reference.cases[2])]),h=harness(e);
+  h.handlers.CareerMode=()=>true;
+  h.handlers.CareerInventory=(_,jobID)=>({...careerReply(e,0),job_id:jobID});
+  await h.start();
+  assert.equal(h.count('BeginStableRecent'),1);
+  assert.equal(h.count('CareerInventory'),1);
+  const before=vm.runInContext('JSON.stringify([pageItems,careerPage,careerActivation])',h.context);
+  for (const mutate of [r=>r.job_id=hash(12345),r=>r.page.source.status.operation_count++]) {
+    h.handlers.CareerInventory=(_,jobID)=>{const r={...careerReply(e,1),job_id:jobID};mutate(r);return r;};
+    await h.click('inventory');
+    assert.equal(vm.runInContext('JSON.stringify([pageItems,careerPage,careerActivation])',h.context),before);
+    assert.match(vm.runInContext('message',h.context),/could not be validated/);
+  }
+});
+test('same-view superseded career overlay cannot replace the captured page', async () => {
+  const e=environment('zero256',[item(reference.cases[2])]),h=harness(e),gate=deferred();
+  h.handlers.CareerMode=()=>true;
+  h.handlers.CareerInventory=(_,jobID)=>({...careerReply(e,0),job_id:jobID});
+  await h.start();
+  const before=vm.runInContext('JSON.stringify([pageItems,careerPage,careerActivation])',h.context);
+  h.handlers.CareerInventory=async(_,jobID)=>{await gate.promise;return {...careerReply(e,1),job_id:jobID};};
+  const pending=h.click('inventory');await flush();
+  vm.runInContext(`careerSelectedJob='${hash(12346)}'`,h.context);
+  gate.resolve();await pending;await flush();
+  assert.equal(vm.runInContext('JSON.stringify([pageItems,careerPage,careerActivation])',h.context),before);
 });

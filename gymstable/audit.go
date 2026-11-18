@@ -84,6 +84,12 @@ func (s *Store) audit(m marker, sourceCount uint64) error {
 	defer it.Release()
 	for it.Next() {
 		k, v := it.Key(), it.Value()
+		if handled, e := s.career.Audit(k, v); handled {
+			if e != nil {
+				return ErrCorrupt
+			}
+			continue
+		}
 		switch {
 		case bytes.Equal(k, []byte("meta")), bytes.Equal(k, []byte("roster")):
 		case len(k) == 9 && k[0] == 'a':
@@ -129,7 +135,7 @@ func (s *Store) audit(m marker, sourceCount uint64) error {
 			return ErrCorrupt
 		}
 	}
-	if it.Error() != nil || uint64(len(assigns)) != x.Checkpoint || indexes != x.Checkpoint || len(ops) != int(x.OperationCount) {
+	if it.Error() != nil || s.career.Audited(x.ClockMS) != nil || uint64(len(assigns)) != x.Checkpoint || indexes != x.Checkpoint || len(ops) != int(x.OperationCount) {
 		return ErrCorrupt
 	}
 	for n := uint64(1); n <= x.Checkpoint; n++ {

@@ -49,7 +49,7 @@ func (s *StableController) beginSeed(ctx context.Context, v, date, kind string) 
 		s.mu.Lock()
 		defer s.mu.Unlock()
 		oldBytes = s.seedBytes
-		if !stableCacheFits(s.cache, s.receiptSlot, s.previewBytes+s.entryBytes+s.eventBytes+s.cardBytes+MaxSeedCacheSize+s.boutBytes+s.resultBytes) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.careerBytes+s.previewBytes+s.entryBytes+s.eventBytes+s.cardBytes+MaxSeedCacheSize+s.boutBytes+s.resultBytes) {
 			return gymseed.ErrCapacity
 		}
 		var id [32]byte

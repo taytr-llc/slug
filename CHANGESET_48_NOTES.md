@@ -1,9 +1,10 @@
 # Change set 48 — candidate result publication
 
-Implemented on `slug-result-publication`, stacked from completed Set47.
-The independent reference was committed and pushed at `17e6045d` before the
-runtime implementation. Runtime acceptance and packaging are in progress; this file
-does not record a completed deployment or release acceptance.
+Completed on `slug-result-publication`, stacked from completed Set47.
+The independent reference was committed and pushed at `17e6045d` before runtime
+implementation. Implementation `de4c1497` passed the candidate application and
+package gates and was released on master at `cc4f41e4`. The completed engineering
+release and its remaining product limitations are recorded below.
 
 ## Behavior
 
@@ -51,7 +52,7 @@ state transitions, journal graphs, initialization and public proof structure.
 Runtime tests compare against these independently derived values. Earlier
 failed reference candidates remain preserved.
 
-## Local validation and remaining acceptance
+## Local validation and preserved diagnostics
 
 Core, helper and native reference comparisons have passed during integration.
 The adapter's earlier normal, race, cheap-profile refusal and vet checks passed.
@@ -110,11 +111,54 @@ same saved result independently; D65 is unchanged and publication awards no
 records or XP.
 
 The exact temporary profile is locally qualified for this candidate application
-scope. Two nonblocking test-assertion improvements remain recorded separately:
+scope. Its initial qualification recorded two nonblocking test-assertion gaps:
 require the actual SIGKILL termination signal in the core crash test, and check
 temporary-file cleanup in the renamed original export directory. Source review
 found no corresponding runtime defect. Existing failures remain preserved.
 
-Normal-clock Mac packaging and deployment observation remain required before
-this set is marked complete. Local qualification does not certify a Linux
-container, universal compiler correctness, visual UI or D74 acceptance.
+After deployment closeout, both assertions were tightened. The crash test now
+requires an actual SIGKILL termination and joins its child before checking the
+status. The export test checks both the renamed original directory and its
+replacement, including directory-read errors. Both affected suites passed in
+normal and race modes with no forced cleanup or surviving process group.
+This follow-up changes tests and documentation only; the deployed implementation
+and packaged binaries remain the exact `de4c1497` build. The original findings
+and qualification reports are preserved in the workspace.
+
+## Engineering release acceptance
+
+The exact implementation's normal-clock Mac package passed in 167.93 seconds.
+Eight independent reports verified the existing proof, stable, preview and league
+scopes, including six Result metadata/refusal phases and process restart. Source,
+binary, profile and icon bindings remained exact. This normal-calendar package
+run made no successful closed-event result publication or export; the separate
+scoped-clock actual run above supplies that coverage.
+
+Railway deployment `66e97bfb-0587-430a-b5cd-60e7ed946d24` released
+`cc4f41e4176aafd593836ee4ff853775f2a87b66` with status SUCCESS. The final provider
+closeout confirmed one healthy replica and unchanged service configuration,
+volume and TCP settings. The isolated report-only checkpoint observer passed
+900.0553332919953 seconds with 31 samples at height 61,
+sixty descendants and one peer per sample; restart and owned shutdown passed.
+Workspace `set48-closeout.json` (SHA-256 `58ee3253b65b7c5da34321c4e1a481126d5421842421f0f541a1ae040f46c53f`) binds the final
+observer, provider and package evidence. Exact implementation and release CI
+queries returned no workflow or check runs; no hosted CI pass is inferred.
+
+Railway still runs only the Phase-A node, not a production league service. Mac
+cross-build evidence and the provider's container build/deployment evidence remain
+separate; no local Docker build is claimed.
+
+Supplementary provider evidence in workspace
+`set48-container-build-acceptance.json` records 82 build-log entries confirming
+completed Linux/amd64 build-stage tests, shipping builds and the wrapper's
+embedded-profile verification. This is provider-log evidence only. Direct CLI
+readback failed as unauthorized using both the inherited token and the existing
+login. Raw build metadata and built/runtime hash files were not retrieved or
+independently compared; the failed readbacks remain preserved.
+
+This candidate engineering release
+does not certify universal compiler correctness, production authority, permanent
+genesis, visual UI, portrait or native chooser acceptance, accessibility or D74.
+The original test-assertion findings, their verified follow-up and the
+forced-invalidation restart scope remain recorded; no professional records,
+XP or awards are granted.

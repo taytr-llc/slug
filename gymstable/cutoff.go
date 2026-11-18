@@ -8,9 +8,12 @@ import (
 	"encoding/binary"
 	"encoding/hex"
 	"encoding/json"
+	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/util"
 	"github.com/taytr-llc/slug/fightercondition"
 	"github.com/taytr-llc/slug/gymaccount"
+	"github.com/taytr-llc/slug/internal/careerconsumer"
+	"github.com/taytr-llc/slug/internal/careerstate"
 )
 
 func cutoffHash(domain string, parts ...[]byte) string {
@@ -176,6 +179,20 @@ func (s *Store) WithCutoffSelection(ctx context.Context, session Session, cutoff
 	if s.meta.ClockMS < cutoffMS {
 		return ErrClock
 	}
+	careerIDs := ids
+	if len(careerIDs) == 0 {
+		careerIDs = []string{"0000000000000000000000000000000000000000000000000000000000000000"}
+	}
+	var careerView careerstate.Snapshot
+	if s.career.Required() {
+		careerView, e = s.career.Snapshot(ctx, careerIDs, cutoffMS, careerstate.Cutoff)
+		if e != nil {
+			return e
+		}
+		if e = careerconsumer.RequireZero(careerView, ids); e != nil {
+			return e
+		}
+	}
 	if _, e = s.sourceInfo(ctx); e != nil {
 		return e
 	}
@@ -257,6 +274,36 @@ func (s *Store) WithCutoffSelection(ctx context.Context, session Session, cutoff
 			return e
 		}
 		s.mark("cutoff-fenced")
+		if s.career.Required() {
+			current, e := s.career.Snapshot(ctx, careerIDs, cutoffMS, careerstate.Cutoff)
+			if e != nil {
+				return e
+			}
+			if current.Digest() != careerView.Digest() {
+				return ErrConflict
+			}
+			key, raw, guardRaw, install, e := s.career.PrepareFence(careerView, careerIDs)
+			if e != nil {
+				if e == careerconsumer.ErrCapacity {
+					return ErrCapacity
+				}
+				return e
+			}
+			if raw != nil {
+				b := new(leveldb.Batch)
+				b.Put([]byte(key), raw)
+				b.Put([]byte(careerconsumer.GuardKey), guardRaw)
+				s.mark("before-career-cutoff")
+				if e = s.commitLocked(b, s.meta); e != nil {
+					return e
+				}
+				install()
+				s.mark("career-cutoff-synced")
+				if ctx.Err() != nil {
+					return ErrOutcomeUnknown
+				}
+			}
+		}
 		return commit(CutoffFence{1, s.meta.StoreID, cutoffMS, now, s.meta.OperationCount}, check)
 	})
 }

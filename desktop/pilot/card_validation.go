@@ -17,6 +17,9 @@ import (
 )
 
 func cardErrorCode(s string) bool {
+	if careerActionCode(s) {
+		return true
+	}
 	switch s {
 	case "invalid_request", "unauthorized", "forbidden", "stale_view", "busy", "outcome_unknown", "card_unavailable", "card_setup_incomplete", "card_corrupt", "card_capacity", "card_clock", "card_calendar", "card_not_found", "card_source_incomplete", "card_source_conflict", "card_source_changed", "card_cancelled":
 		return true
@@ -385,6 +388,10 @@ func cardHistoryShape(h gymcard.HistoryPage) bool {
 	return h.NextCardID == ""
 }
 func cardJobValid(j *CardJob) bool {
+	if j == nil || !careerIneligibleValid(j.Error, j.IneligibleProspectIDs) {
+		return false
+	}
+
 	if j.Version != 1 || !canonicalManifestID(j.JobID) || j.Kind != "build" || !stableViewValid(j.View) || !canonicalManifestID(j.StoreID) || !canonicalManifestID(j.CardID) || !entryDateValid(j.Saturday) {
 		return false
 	}

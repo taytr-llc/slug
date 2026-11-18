@@ -37,6 +37,7 @@ var seedBuild string
 var cardBuild string
 var boutBuild string
 var resultBuild string
+var careerBuild string
 
 // Gym exposes only public pilot controls and receipt selection to the webview.
 // Paths, process arguments, and keys cannot be supplied through the web bridge.
@@ -221,7 +222,11 @@ func run() (resultErr error) {
 	candidateBouts := flag.Bool("candidate-bouts", boutBuild == "1", "Enable saved candidate bout transcripts within candidate cards")
 	candidateCards := flag.Bool("candidate-cards", cardBuild == "1", "Enable bounded candidate cards within candidate seeds")
 	candidateResults := flag.Bool("candidate-results", resultBuild == "1", "Enable saved candidate result publication within candidate bouts")
+	candidateCareers := flag.Bool("candidate-careers", careerBuild == "1", "Enable finality-timed candidate careers within candidate results")
 	flag.Parse()
+	if *candidateCareers && (!*candidateResults || !*candidateBouts || !*candidateCards || !*candidateSeeds || !*candidateEvents || !*entries || !*stable || !*candidates) {
+		return errors.New("Candidate careers require candidate results and all earlier candidate modes.")
+	}
 	if *candidateResults && (!*candidateBouts || !*candidateCards || !*candidateSeeds || !*candidateEvents || !*entries || !*stable || !*candidates) {
 		return errors.New("Candidate results require candidate bouts and all earlier candidate modes.")
 	}
@@ -277,7 +282,12 @@ func run() (resultErr error) {
 		filepath.Join(filepath.Dir(filepath.Clean(*data)), "LocalManifestPilot"),
 		filepath.Clean(filepath.Join(resources, "..", "..")),
 	}}
-	if *candidateResults {
+	if *candidateCareers {
+		gym.stableHelper, err = bridge.LaunchCareers(helperPath, filepath.Clean(*data), nodePath)
+		if err == nil {
+			gym.manifestHelper = gym.stableHelper
+		}
+	} else if *candidateResults {
 		gym.stableHelper, err = bridge.LaunchResults(helperPath, filepath.Clean(*data), nodePath)
 		if err == nil {
 			gym.manifestHelper = gym.stableHelper

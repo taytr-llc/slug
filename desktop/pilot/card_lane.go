@@ -47,7 +47,7 @@ func (s *StableController) beginCard(ctx context.Context, v, date, kind string) 
 		s.mu.Lock()
 		defer s.mu.Unlock()
 		oldBytes = s.cardBytes
-		if !stableCacheFits(s.cache, s.receiptSlot, s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.boutBytes+MaxCardCacheSize+s.resultBytes) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.careerBytes+s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.boutBytes+MaxCardCacheSize+s.resultBytes) {
 			return gymcard.ErrCapacity
 		}
 		var id [32]byte
@@ -138,6 +138,9 @@ func (s *StableController) runCardTask(lane context.Context, t *stableTask) erro
 	if e == nil && (s.cardStore == nil || s.seedStore == nil || s.eventStore == nil || s.entryStore == nil) {
 		e = gymcard.ErrUnavailable
 	}
+	if e == nil {
+		e = s.careerFence(t.ctx, j.Saturday)
+	}
 	committed := false
 	if e == nil {
 		r, callErr := s.cardStore.Build(t.ctx, s.seedStore, s.eventStore, s.entryStore, s.session(), j.Saturday)
@@ -200,6 +203,7 @@ func (s *StableController) runCardTask(lane context.Context, t *stableTask) erro
 		if fatal {
 			s.cardFailure = "card_unavailable"
 		}
+		j.IneligibleProspectIDs = careerIneligibleIDs(e, j.Error)
 		s.retainCardLocked(j)
 	}
 	s.stableMu.Unlock()

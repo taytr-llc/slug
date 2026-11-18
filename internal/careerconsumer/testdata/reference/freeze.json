@@ -1,0 +1,18 @@
+{
+  "created_at_utc": "2026-11-18T19:51:26.073790+00:00",
+  "files_sha256": {
+    "CAREER_CONSUMERS.md": "1b30cc954d7f54c80a8ff3568edba6e81f9615fe7c288be808415d04dad3a56e",
+    "corpus.json": "058196afe3b6db1f53bea96aef72fc10f335ca0846d00f7db88f4b1d6165f06a",
+    "generate.py": "5f202df0df3fae55309629acaf6947461b3569efa012b63a17f090b72f758e8c",
+    "python313.json": "058196afe3b6db1f53bea96aef72fc10f335ca0846d00f7db88f4b1d6165f06a",
+    "python313.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "python39.json": "058196afe3b6db1f53bea96aef72fc10f335ca0846d00f7db88f4b1d6165f06a",
+    "python39.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "selected_inputs.json": "38dfdfc62618335ae034fccd8d3d575225017275bc957f067f71b3dfacee6d44",
+    "verification.json": "28b64c54de6412dffec516f5bbf9b0922144e6502cbc0206b0b495253d3390c4"
+  },
+  "go_outputs_used_as_expected": false,
+  "scope": "Prose-derived consumer receipt commitment arithmetic; modeled snapshots only.",
+  "status": "held_before_go_comparison",
+  "version": 1
+}

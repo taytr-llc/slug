@@ -176,3 +176,27 @@ test('stale common metadata page cannot overwrite a newer selected status', asyn
   const s = h.saved(), page = {...s, bouts: [s.saved]}; delete page.saved; h.handlers.BoutCardStatus = () => h.reply('card_status', page); await h.run("bookedRead('card_status')");
   assert.equal(h.run('JSON.stringify(bookedPage)'), before); assert.equal(h.run('bookedStatus.observed_at_ms'), fresh.observed_at_ms);
 });
+
+test('every retained independent bout labels replay provisional until its own result finality is loaded', () => {
+  for (const c of ref.compositions) {
+    const h = harness(c); h.select(true); h.context.input = dto('ReadResult', 'saved/' + c.name);
+    h.run('bookedResultValue(input);bookedAdoptResult(input);renderBooked()');
+    assert.match(h.elements.get('bout-state').textContent, /Provisional result/, c.name);
+    assert.match(h.elements.get('bout-asof').textContent, /^Provisional result/, c.name);
+    assert.equal(h.elements.get('bout-outcome').hidden, true);
+    h.run('stepBooked(bookedTicks())'); assert.match(h.elements.get('bout-finish').textContent, /^Provisional result:/, c.name);
+    assert.match(h.elements.get('bout-scores').textContent, /^Provisional result/, c.name);
+    assert.equal(h.calls.length, 0);
+  }
+});
+
+test('display-only finish controls qualify every win and both draw labels', () => {
+  // These are renderer branch controls, not new accepted transcripts or oracle outcomes.
+  for (const method of ['decision', 'ko', 'tko_referee', 'tko_three_knockdowns', 'tko_corner', 'decision_draw', 'double_corner_stoppage']) {
+    const h = harness(); h.select(true); h.context.input = dto('ReadResult', 'saved/genuine_set46_middle'); h.run('bookedAdoptResult(input)');
+    h.context.method = method; h.run("bookedRecord.result.method=method;if(method==='decision_draw'||method==='double_corner_stoppage')bookedRecord.result.winner='';stepBooked(bookedTicks())");
+    const text = h.elements.get('bout-finish').textContent; assert.match(text, /^Provisional result:/, method);
+    if (method === 'decision_draw' || method === 'double_corner_stoppage') assert.match(text, /Candidate draw/); else assert.match(text, /wins the candidate bout/);
+    assert.equal(h.calls.length, 0);
+  }
+});

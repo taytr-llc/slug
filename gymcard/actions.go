@@ -10,6 +10,8 @@ import (
 	"github.com/taytr-llc/slug/gymevent"
 	"github.com/taytr-llc/slug/gymseed"
 	"github.com/taytr-llc/slug/gymstable"
+	"github.com/taytr-llc/slug/internal/careerconsumer"
+	"github.com/taytr-llc/slug/internal/careerstate"
 )
 
 func (s *Store) authorize(ctx context.Context, seeds *gymseed.Store, events *gymevent.Store, entries *gymentry.Store, session gymstable.Session) error {
@@ -56,12 +58,23 @@ func (s *Store) Build(ctx context.Context, seeds *gymseed.Store, events *gymeven
 	if s.meta.EventCount >= MaxEvents {
 		return BuildResult{}, ErrCapacity
 	}
+	if e = s.career.Ready(); e != nil {
+		return BuildResult{}, e
+	}
 	var out BuildResult
 	mutated := false
 	e = seeds.WithCardSource(work, events, entries, session, date, func(source gymseed.CardSource) (func(gymseed.CardView, func() error) error, error) {
 		plan, e := DerivePlan(s.meta.Pin, source)
 		if e != nil {
 			return nil, ErrCorrupt
+		}
+		var careerView careerstate.Snapshot
+		var careerIDs []string
+		if s.career.Required() {
+			careerView, careerIDs, e = s.careerSelection(work, plan, ev.CutoffMS)
+			if e != nil {
+				return nil, e
+			}
 		}
 		digest, e := gymseed.CardSourceDigest(s.meta.Pin.SourcePin, source)
 		if e != nil {
@@ -113,6 +126,28 @@ func (s *Store) Build(ctx context.Context, seeds *gymseed.Store, events *gymeven
 			}
 			r.CreatedAtMS = n
 			b := new(leveldb.Batch)
+			installCareerFence := func() {}
+			if s.career.Required() {
+				current, e := s.career.Snapshot(work, careerIDs, ev.CutoffMS, careerstate.Cutoff)
+				if e != nil {
+					return e
+				}
+				if current.Digest() != careerView.Digest() {
+					return ErrSourceChanged
+				}
+				key, raw, guardRaw, install, e := s.career.PrepareFence(careerView, careerIDs)
+				if e != nil {
+					if e == careerconsumer.ErrCapacity {
+						return ErrCapacity
+					}
+					return e
+				}
+				if raw != nil {
+					b.Put([]byte(key), raw)
+					b.Put([]byte(careerconsumer.GuardKey), guardRaw)
+				}
+				installCareerFence = install
+			}
 			raw, e := json.Marshal(r)
 			if e != nil || len(raw) > MaxRecordSize {
 				return ErrCapacity
@@ -139,6 +174,7 @@ func (s *Store) Build(ctx context.Context, seeds *gymseed.Store, events *gymeven
 				return e
 			}
 			s.index = nextIndex
+			installCareerFence()
 			s.mark("card-synced")
 			out = BuildResult{Version: 1, Record: r, Status: statusFor(s.meta.Pin, ev, &r, v.States[0], n), Replayed: false}
 			return nil

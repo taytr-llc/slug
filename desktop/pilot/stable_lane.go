@@ -15,6 +15,7 @@ import (
 )
 
 type stableTask struct {
+	careerPage   bool
 	publication  *ResultJob
 	resultPath   string
 	bout         *BoutJob
@@ -67,6 +68,9 @@ func (s *StableController) expireQueuedLocked() {
 			return
 		}
 		j := s.queued.result
+		if s.careerJobID == j.JobID {
+			s.clearCareerReadLocked()
+		}
 		j.State = "cancelled"
 		j.Error = "stable_cancelled"
 		s.last = &j
@@ -76,6 +80,7 @@ func (s *StableController) expireQueuedLocked() {
 	}
 }
 func (s *StableController) cancelTasksLocked() {
+	s.clearCareerReadLocked()
 	if s.active != nil {
 		s.active.cancel()
 	}
@@ -109,6 +114,9 @@ func (s *StableController) cancelTasksLocked() {
 			s.cancelQueuedPreviewLocked()
 			return
 		}
+		if s.careerJobID == s.queued.result.JobID {
+			s.clearCareerReadLocked()
+		}
 		s.queued.result.State = "cancelled"
 		s.queued.result.Error = "stable_cancelled"
 		j := s.queued.result
@@ -119,6 +127,7 @@ func (s *StableController) cancelTasksLocked() {
 func (s *StableController) beginStable(ctx context.Context, view, kind, operation string, after uint64, limit, first uint32, request gymstable.SlotRequest, follow ...bool) (StableJob, error) {
 	var out StableJob
 	var reserved *stableTask
+	oldCareerBytes := -1
 	err := s.shortView(ctx, view, func() error {
 		s.stableMu.Lock()
 		defer s.stableMu.Unlock()
@@ -132,13 +141,21 @@ func (s *StableController) beginStable(ctx context.Context, view, kind, operatio
 		if s.queued != nil {
 			return gymstable.ErrBusy
 		}
+		careerPage := s.careerEnabled && (kind == "inventory" || kind == "roster")
+		if careerPage {
+			var err error
+			oldCareerBytes, err = s.reserveCareerReadLocked()
+			if err != nil {
+				return err
+			}
+		}
 		var id [32]byte
 		if _, err := rand.Read(id[:]); err != nil {
 			return err
 		}
 		jobctx, cancel := context.WithTimeout(ctx, 30*time.Second)
 		out = StableJob{Version: 1, JobID: hex.EncodeToString(id[:]), Kind: kind, State: "queued", View: s.viewPin(), StoreID: s.stableStatus.StoreID, OperationID: operation}
-		reserved = &stableTask{result: out, ctx: jobctx, cancel: cancel, after: after, limit: limit, first: first, request: request}
+		reserved = &stableTask{careerPage: careerPage, result: out, ctx: jobctx, cancel: cancel, after: after, limit: limit, first: first, request: request}
 		if len(follow) > 0 {
 			reserved.followLatest = follow[0]
 		}
@@ -151,6 +168,11 @@ func (s *StableController) beginStable(ctx context.Context, view, kind, operatio
 	})
 	s.stableMu.Lock()
 	if err != nil {
+		if oldCareerBytes >= 0 {
+			s.mu.Lock()
+			s.careerBytes = oldCareerBytes
+			s.mu.Unlock()
+		}
 		if reserved != nil {
 			reserved.cancel()
 			if s.queued == reserved {
@@ -158,9 +180,24 @@ func (s *StableController) beginStable(ctx context.Context, view, kind, operatio
 			}
 		}
 	} else if s.queued == reserved && !s.stableClosed {
+		// Publish selection only after the original account's admission guard.
+		s.careerHandle = nil
+		s.careerJobID = ""
+		if reserved.careerPage {
+			s.careerJobID, s.careerView = out.JobID, out.View
+		} else {
+			s.mu.Lock()
+			s.careerBytes = 0
+			s.mu.Unlock()
+		}
 		reserved.published = true
 		s.lastAcknowledged = true
 	} else {
+		if oldCareerBytes >= 0 {
+			s.mu.Lock()
+			s.careerBytes = oldCareerBytes
+			s.mu.Unlock()
+		}
 		err = gymstable.ErrCancelled
 	}
 	s.stableMu.Unlock()
@@ -290,6 +327,7 @@ func (s *StableController) cycle(ctx context.Context) error {
 		err = s.openPair(nil)
 	}
 	var items []gymstable.Item
+	var careerHandle *gymstable.CareerRead
 	var status *gymstable.Status
 	if err == nil {
 		switch result.Kind {
@@ -315,7 +353,13 @@ func (s *StableController) cycle(ctx context.Context) error {
 				task.limit = 8
 			}
 			var r gymstable.Page
-			r, err = s.stableStore.Inventory(task.ctx, s.session(), task.after, task.limit)
+			if task.careerPage {
+				var p gymstable.CareerPage
+				p, careerHandle, err = s.stableStore.PrepareCareerInventory(task.ctx, s.session(), task.after, task.limit)
+				r = p.Source
+			} else {
+				r, err = s.stableStore.Inventory(task.ctx, s.session(), task.after, task.limit)
+			}
 			if err == nil {
 				result.Page = &r
 				items = r.Items
@@ -323,7 +367,13 @@ func (s *StableController) cycle(ctx context.Context) error {
 			}
 		case "roster":
 			var r gymstable.RosterPage
-			r, err = s.stableStore.Roster(task.ctx, s.session(), task.first, task.limit)
+			if task.careerPage {
+				var p gymstable.CareerRosterPage
+				p, careerHandle, err = s.stableStore.PrepareCareerRoster(task.ctx, s.session(), task.first, task.limit)
+				r = p.Source
+			} else {
+				r, err = s.stableStore.Roster(task.ctx, s.session(), task.first, task.limit)
+			}
 			if err == nil {
 				result.Roster = &r
 				status = &r.Status
@@ -357,6 +407,9 @@ func (s *StableController) cycle(ctx context.Context) error {
 		} else if err == nil {
 			err = gymstable.ErrOutcomeUnknown
 		}
+	}
+	if err == nil && task.careerPage && (careerHandle == nil || careerHandle.RetainedBytes() > MaxCareerCacheSize) {
+		err = gymstable.ErrCapacity
 	}
 	if err == nil && items != nil {
 		err = s.publishStableItems(task.ctx, items, result.Kind != "sync" && !task.followLatest, task.followLatest)
@@ -411,6 +464,15 @@ func (s *StableController) cycle(ctx context.Context) error {
 	}
 	if s.active == task {
 		s.active = nil
+	}
+	if s.careerJobID == result.JobID {
+		if !s.stableClosed && result.State == "done" && careerHandle != nil {
+			s.careerHandle = careerHandle
+			s.careerAfter, s.careerFirst, s.careerLimit = task.after, task.first, task.limit
+			s.careerRoster = result.Kind == "roster"
+		} else {
+			s.clearCareerReadLocked()
+		}
 	}
 	if !s.stableClosed {
 		s.last = &public
@@ -469,7 +531,7 @@ func (s *StableController) publishStableItems(ctx context.Context, items []gymst
 				delete(next, low)
 			}
 		}
-		if !manifestCacheFits(next, s.receiptSlot) || !stableCacheFits(next, s.receiptSlot, s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+s.boutBytes+s.resultBytes) {
+		if !manifestCacheFits(next, s.receiptSlot) || !stableCacheFits(next, s.receiptSlot, s.careerBytes+s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+s.boutBytes+s.resultBytes) {
 			return gymstable.ErrCapacity
 		}
 		s.cache = next
@@ -554,6 +616,9 @@ func (s *StableController) CancelStableJob(ctx context.Context, view, id string)
 		}
 		if s.queued != nil && s.queued.family() == "stable" && s.queued.result.JobID == id {
 			s.queued.cancel()
+			if s.careerJobID == id {
+				s.clearCareerReadLocked()
+			}
 			s.queued.result.State = "cancelled"
 			s.queued.result.Error = "stable_cancelled"
 			out = cloneStableJob(s.queued.result)

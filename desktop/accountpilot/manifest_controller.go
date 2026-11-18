@@ -39,6 +39,7 @@ type manifestChild interface {
 // later token, even when a callback finishes after a reset or failed login.
 type ManifestController struct {
 	boutOwner                         *boutAccountOwner
+	careerOwner                       *careerAccountOwner
 	resultOwner                       *resultAccountOwner
 	cardOwner                         *cardAccountOwner
 	seedOwner                         *seedAccountOwner

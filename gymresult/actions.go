@@ -198,6 +198,10 @@ func (s *Store) save(c sourceCall, cap gymaccount.Capability, r Record, next met
 			stamp(&r, &next, n)
 		}
 		next.ClockMS = n
+		careerIndex, e := s.proposedCareerIndex(r)
+		if e != nil {
+			return e
+		}
 		if e = put(b, key('r', r.ResultKey), r, MaxRecordSize); e != nil {
 			return e
 		}
@@ -206,6 +210,7 @@ func (s *Store) save(c sourceCall, cap gymaccount.Capability, r Record, next met
 			return e
 		}
 		s.installIndex(r)
+		s.careerIndex = careerIndex
 		committed = true
 		s.mark("record-synced")
 		ss := v.Status

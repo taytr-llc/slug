@@ -6,6 +6,8 @@ import (
 	"errors"
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/taytr-llc/slug/gymaccount"
+	"github.com/taytr-llc/slug/internal/careerconsumer"
+	"github.com/taytr-llc/slug/internal/careerstate"
 )
 
 type EntrySourceInfo struct {
@@ -124,6 +126,15 @@ func (s *Store) entrySelection(ctx context.Context, session Session, cap gymacco
 		now, e := s.observeLocked()
 		if e != nil {
 			return e
+		}
+		if s.career.Required() {
+			view, e := s.career.Snapshot(ctx, ids, now, careerstate.Current)
+			if e != nil {
+				return e
+			}
+			if e = careerconsumer.RequireZero(view, ids); e != nil {
+				return e
+			}
 		}
 		if e = projectItems(items, now); e != nil {
 			return e

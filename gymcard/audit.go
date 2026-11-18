@@ -69,6 +69,12 @@ func (s *Store) audit(ctx context.Context, m marker) error {
 			return ErrCancelled
 		}
 		k, v := it.Key(), it.Value()
+		if handled, e := s.career.Audit(k, v); handled {
+			if e != nil {
+				return ErrCorrupt
+			}
+			continue
+		}
 		if bytes.Equal(k, []byte("meta")) {
 			continue
 		}
@@ -83,7 +89,7 @@ func (s *Store) audit(ctx context.Context, m marker) error {
 		s.index = append(s.index, indexRow{id: id, cutoff: r.Source.SourceReceipt.Input.Event.CutoffMS, digest: sha256.Sum256(v)})
 		count++
 	}
-	if it.Error() != nil || uint32(count) != meta.EventCount {
+	if it.Error() != nil || s.career.Audited(meta.ClockMS) != nil || uint32(count) != meta.EventCount {
 		return ErrCorrupt
 	}
 	sortIndex(s.index)

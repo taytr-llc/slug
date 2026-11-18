@@ -68,7 +68,10 @@ version.
   → `slug-event-snapshot` (set 44, released on master at `1fc307e0`)
   → `slug-event-seed` (set 45, released on master at `dcc44829`)
   → `slug-event-card` (set 46, released on master at `5c11cbaf`)
-  → `slug-event-bouts` (set 47, released on master at `ba218f55`).
+  → `slug-event-bouts` (set 47, released on master at `ba218f55`)
+  → `slug-result-publication` (set 48, released on master at `cc4f41e4`).
+  Set 49 continues on `slug-career-awards`, stacked from completed Set48
+  topic tip `dd74828f`.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review
@@ -409,6 +412,18 @@ does not understand. Never detach, replace, or clear the /data volume.
   only widen-to-five, not the band. Retain unmatched counts and per-fighter
   reasons. This does not amend D13/D28/D52 or settle general widening, record
   filters or next-week priority. See CANDIDATE_CARD_EXCEPTION.md.
+
+- D78 (Mike, November 18) makes professional records, XP and all result-derived
+  ranking points/title changes effective exactly once at the result's own signed
+  checkpoint plus 60 descendant blocks. Label every provisional outcome as
+  provisional wherever displayed, including fighter pages and rankings; no
+  provisional award affects effective condition or standings. Retain finalized
+  awards after a later reported chain conflict; report it under D62 without
+  automatic rollback or consensus enforcement. Noon snapshots use only awards
+  already effective at lock and never change retrospectively. Preserve D39's
+  independent retirement/time-driven vacancy rules, D65 and C1's zero-record
+  boundary. Do not infer transferable ownership, production authority or new
+  matchmaking/title-selection policy from this timing decision.
 
 - Set 46 retains immutable candidate cards in a separate explicit journal.
   Preserve the complete noon source, fixed seed, pairings, unmatched reasons and

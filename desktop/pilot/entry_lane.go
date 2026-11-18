@@ -9,6 +9,7 @@ import (
 	"errors"
 	"github.com/taytr-llc/slug/gymentry"
 	"github.com/taytr-llc/slug/gymstable"
+	"github.com/taytr-llc/slug/internal/careerstate"
 	"time"
 )
 
@@ -36,7 +37,7 @@ func (s *StableController) beginEntry(ctx context.Context, view, kind, date, op 
 		s.mu.Lock()
 		defer s.mu.Unlock()
 		oldBytes = s.entryBytes
-		if !stableCacheFits(s.cache, s.receiptSlot, s.previewBytes+MaxEntryCacheSize+s.eventBytes+s.seedBytes+s.cardBytes+s.boutBytes+s.resultBytes) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.careerBytes+s.previewBytes+MaxEntryCacheSize+s.eventBytes+s.seedBytes+s.cardBytes+s.boutBytes+s.resultBytes) {
 			return gymentry.ErrCapacity
 		}
 		var id [32]byte
@@ -153,6 +154,9 @@ func (s *StableController) runEntryTask(lane context.Context, t *stableTask) err
 	if e == nil && s.entryStore == nil {
 		e = gymentry.ErrUnavailable
 	}
+	if e == nil && s.careerEnabled && s.careerReader == nil {
+		e = careerstate.ErrInactive
+	}
 	if e == nil {
 		switch j.Kind {
 		case "prepare":
@@ -256,6 +260,7 @@ func (s *StableController) runEntryTask(lane context.Context, t *stableTask) err
 				s.entryPending = pending.Operation.Intent.OperationID
 			}
 		}
+		j.IneligibleProspectIDs = careerIneligibleIDs(e, j.Error)
 		s.retainEntryLocked(j)
 	}
 	s.stableMu.Unlock()

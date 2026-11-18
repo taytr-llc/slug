@@ -1,0 +1,15 @@
+type Inclusion struct {
+	Version      uint32 `json:"version"`
+	Generation   uint32 `json:"generation"`
+	Anchor       Anchor `json:"anchor"`
+	ObservedAtMS int64  `json:"observed_at_ms"`
+	ObservedTip  Tip    `json:"observed_tip"`
+}
+
+type Finality struct {
+	Checkpoint   chaincfg.SignedCheckpoint `json:"checkpoint"`
+	Inclusion    Inclusion                 `json:"inclusion"`
+	ObservedAtMS int64                     `json:"observed_at_ms"`
+	ObservedTip  Tip                       `json:"observed_tip"`
+	Descendants  uint32                    `json:"descendants"`
+}
