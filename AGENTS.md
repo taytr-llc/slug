@@ -68,7 +68,7 @@ version.
   → `slug-event-snapshot` (set 44, released on master at `1fc307e0`)
   → `slug-event-seed` (set 45, released on master at `dcc44829`)
   → `slug-event-card` (set 46, released on master at `5c11cbaf`)
-  → `slug-event-bouts` (set 47, retained candidate bout work in progress).
+  → `slug-event-bouts` (set 47, released on master at `ba218f55`).
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

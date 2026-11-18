@@ -163,7 +163,10 @@ they do not count as completion of this product-release gate.
   checks and independent verification of the actual native first Run and
   historical conflict replay pass. The scoped-clock, normal-PoW test prepares
   its seed through real authenticated core actions without automatic admissions.
-  Final normal-clock app packaging and deployment observation remain pending;
+  Final normal-clock app packaging and seven independent package reports pass.
+  Release `ba218f55` is deployed; the full 900-second observation, 31 samples,
+  chain verification and clean restart pass. Railway configuration is unchanged.
+  Remote CI returned no runs/checks and is not claimed passed;
   GUI/portrait/native chooser/accessibility and the joint D74 review stay open.
   Candidate transcripts grant no professional/exhibition records, XP, awards,
   titles or ownership. See `EVENT_BOUTS.md` and `CHANGESET_47_NOTES.md`.
