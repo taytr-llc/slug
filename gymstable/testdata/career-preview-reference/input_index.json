@@ -1,0 +1,724 @@
+{
+  "version": 1,
+  "contract_sha256": "5cf347a9e402ae46e4682728733dc637d997a1f702d11ddd65c9f8ebd04efeeb",
+  "freeze_sha256": "a59c4b4b6b11fa28f36bb4cdec9db6f4aecc8c7a101a4e34c89cd49b6cc4a11a",
+  "inputs": {
+    "inputs/contracts/set50-career-preview-contract.md": {
+      "sha256": "5cf347a9e402ae46e4682728733dc637d997a1f702d11ddd65c9f8ebd04efeeb",
+      "bytes": 35639,
+      "source": "/Users/taytrrip/slug/set50-career-preview-contract.md",
+      "role": "frozen_Set50_contract"
+    },
+    "inputs/contracts/set50-contract-freeze.json": {
+      "sha256": "a59c4b4b6b11fa28f36bb4cdec9db6f4aecc8c7a101a4e34c89cd49b6cc4a11a",
+      "bytes": 906,
+      "source": "/Users/taytrrip/slug/set50-contract-freeze.json",
+      "role": "frozen_Set50_contract"
+    },
+    "inputs/engine_transport_excerpt.py.txt": {
+      "sha256": "16bd03a97b83660c7250bbacd897727539062a35e13f33c0c4f75af9cb3294d5",
+      "bytes": 3821,
+      "source": "/Users/taytrrip/slug/slug/gymbout/testdata/reference/schema.py",
+      "role": "exact_AST_function_text; no common/bootstrap import",
+      "functions": [
+        "bounded_engine_state",
+        "engine_result"
+      ]
+    },
+    "inputs/prior-schema47.py": {
+      "sha256": "9df84b0ee17acb7cb7d1da3a56098dcebe069f8dfe13637c1a23db8e3ea73338",
+      "bytes": 32905,
+      "source": "/Users/taytrrip/slug/slug/gymbout/testdata/reference/schema.py",
+      "role": "frozen_old_Python_source_only"
+    },
+    "inputs/repo/CAREER_ACCOUNTING.md": {
+      "sha256": "a5b4d716a9b26f0cdcd469b623d34f0c218377149c376d5e22775bb46b10782b",
+      "bytes": 21107,
+      "source": "/Users/taytrrip/slug/slug/CAREER_ACCOUNTING.md",
+      "role": [
+        "current_approved_prose_context"
+      ]
+    },
+    "inputs/repo/CAREER_CONSUMERS.md": {
+      "sha256": "622e7b96d6a784555dd96c6eb86e5c4e1c66db5cf441aeb8e655e3a1dc7945a6",
+      "bytes": 10291,
+      "source": "/Users/taytrrip/slug/slug/CAREER_CONSUMERS.md",
+      "role": [
+        "current_approved_prose_context"
+      ]
+    },
+    "inputs/repo/FIGHTER_BOUT.md": {
+      "sha256": "7f4a3683097877e3463523c045dd1c78668c128f3675efab14d33d5b926bd28d",
+      "bytes": 11939,
+      "source": "/Users/taytrrip/slug/slug/FIGHTER_BOUT.md",
+      "role": [
+        "current_approved_prose_context"
+      ]
+    },
+    "inputs/repo/FIGHTER_CAREER.md": {
+      "sha256": "07de417554cf2a61085e8545f78fbf43bb5b02fc63a3d3d4d6889acadbe193d1",
+      "bytes": 3076,
+      "source": "/Users/taytrrip/slug/slug/FIGHTER_CAREER.md",
+      "role": [
+        "current_approved_prose_context"
+      ]
+    },
+    "inputs/repo/FIGHTER_CONDITION.md": {
+      "sha256": "8ee75162fcd631cae15b33804c787690e60bf4997fae6b7cd536bb771908e654",
+      "bytes": 10367,
+      "source": "/Users/taytrrip/slug/slug/FIGHTER_CONDITION.md",
+      "role": [
+        "current_approved_prose_context"
+      ]
+    },
+    "inputs/repo/FIGHTER_DNA.md": {
+      "sha256": "316e84dd6a4462596e49ce52d64571e2c419390799cc144a334f4a20e46c6b81",
+      "bytes": 5732,
+      "source": "/Users/taytrrip/slug/slug/FIGHTER_DNA.md",
+      "role": [
+        "current_approved_prose_context"
+      ]
+    },
+    "inputs/repo/FIGHTER_MANIFEST.md": {
+      "sha256": "0947691efaa9653c1a34b6eef41c0c8d0e7fffed5478ce95f4ebfc13636b98f7",
+      "bytes": 13250,
+      "source": "/Users/taytrrip/slug/slug/FIGHTER_MANIFEST.md",
+      "role": [
+        "current_approved_prose_context"
+      ]
+    },
+    "inputs/repo/FIGHTER_PORTRAITS.md": {
+      "sha256": "8ae3c8dbe92fbef719880227e107cb98cbfd6419d984cad08ebb5d5e0a9c0df5",
+      "bytes": 28710,
+      "source": "/Users/taytrrip/slug/slug/FIGHTER_PORTRAITS.md",
+      "role": [
+        "current_approved_prose_context"
+      ]
+    },
+    "inputs/repo/FIGHT_PREVIEW.md": {
+      "sha256": "e5dddc1129a7561a125fa1eebe8847523ff6e49c00647817374c6320fab12d60",
+      "bytes": 14563,
+      "source": "/Users/taytrrip/slug/slug/FIGHT_PREVIEW.md",
+      "role": [
+        "current_approved_prose_context"
+      ]
+    },
+    "inputs/repo/desktop/internal/bridge/preview_bridge.go": {
+      "sha256": "bd06c34bdea6476e85d400584758a4c9ee8f1a13273067a41428ae7b595bf02a",
+      "bytes": 13251,
+      "source": "/Users/taytrrip/slug/slug/desktop/internal/bridge/preview_bridge.go",
+      "role": [
+        "old_inherited_shape_only_not_expected_output"
+      ]
+    },
+    "inputs/repo/desktop/pilot/manifest_types.go": {
+      "sha256": "ef9d572bd086e32e5ac7ad55b6c402e9eb7e924b08e4bd8e5833a8f0d24a34fc",
+      "bytes": 6180,
+      "source": "/Users/taytrrip/slug/slug/desktop/pilot/manifest_types.go",
+      "role": [
+        "old_inherited_shape_only_not_expected_output"
+      ]
+    },
+    "inputs/repo/desktop/pilot/preview_types.go": {
+      "sha256": "6fccac0c575ceb89784cd425628c7b186ed9324c58a6bcbae05c4c3006ca1f9f",
+      "bytes": 3903,
+      "source": "/Users/taytrrip/slug/slug/desktop/pilot/preview_types.go",
+      "role": [
+        "old_inherited_shape_only_not_expected_output"
+      ]
+    },
+    "inputs/repo/desktop/pilot/preview_validation.go": {
+      "sha256": "1094eb74d19d2fa7de1ad661b6b0111d52fd1d230a64f56140f1488dd7087ce9",
+      "bytes": 9125,
+      "source": "/Users/taytrrip/slug/slug/desktop/pilot/preview_validation.go",
+      "role": [
+        "old_inherited_shape_only_not_expected_output"
+      ]
+    },
+    "inputs/repo/desktop/pilot/stable_validation.go": {
+      "sha256": "03616e20c1a2d73ed2365cdfbb12df2aeee12fc660341c99070f0605f4b1130b",
+      "bytes": 13924,
+      "source": "/Users/taytrrip/slug/slug/desktop/pilot/stable_validation.go",
+      "role": [
+        "old_inherited_shape_only_not_expected_output"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/bout_v1.json": {
+      "sha256": "87bd70465fa8c4e83dd55783e4ea0ef8b7f6475ffc74dde86475fd07b0d6ee84",
+      "bytes": 5524459,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/bout_v1.json",
+      "role": [
+        "inherited_compatibility_or_shape_reference"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/corpus-freeze.json": {
+      "sha256": "4f248a892072e77a7ef06cc0e75d1fb964f375a7a9fe50bd02505bc2ed3e46a9",
+      "bytes": 4480,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/corpus-freeze.json",
+      "role": [
+        "inherited_compatibility_or_shape_reference"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/generate_preview.py": {
+      "sha256": "5f3ae24d63e339c5c4f174a7943eca233aae27fc0ca7031762d675cf824e25ed",
+      "bytes": 6232,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/generate_preview.py",
+      "role": [
+        "inherited_compatibility_or_shape_reference"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/input_hashes.json": {
+      "sha256": "7d1a9c7a27bc984b2f253d5e7bbe2f1d5bf093a23856309a8e62b8c6982566e1",
+      "bytes": 2256,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/input_hashes.json",
+      "role": [
+        "inherited_input_index"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/inputs/condition/condition_v1.json": {
+      "sha256": "4f5be20e0e6ceb6b2ef4ee4063fffd2691fecb7a71d984f4624eb97162a9dbfa",
+      "bytes": 15315356,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/inputs/condition/condition_v1.json",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/inputs/condition/input_hashes.json": {
+      "sha256": "1ab9a78f6246236c87fb9b0304fe5b786b9d5f880f50d18a33ef3b12725419a3",
+      "bytes": 1384,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/inputs/condition/input_hashes.json",
+      "role": [
+        "transitive_declared_input",
+        "inherited_input_index"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/inputs/condition/inputs/BRAWLCHAIN_SPEC.md": {
+      "sha256": "fe7dc0dc404c35886d6119576722e5b9556b150e1f4f98738562f387d928751d",
+      "bytes": 35451,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/inputs/condition/inputs/BRAWLCHAIN_SPEC.md",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/inputs/condition/inputs/baseline/dna_v1.json": {
+      "sha256": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+      "bytes": 2658,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/inputs/condition/inputs/baseline/dna_v1.json",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/inputs/condition/inputs/baseline/reference_dna.py": {
+      "sha256": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+      "bytes": 8283,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/inputs/condition/inputs/baseline/reference_dna.py",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/inputs/condition/inputs/fight_sim.py": {
+      "sha256": "37ff08917ed720e3d9c4f3b14508c57b08d830f9f4cb01833fa412dbca9b6422",
+      "bytes": 50586,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/inputs/condition/inputs/fight_sim.py",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/inputs/condition/inputs/fighter-condition-contract.md": {
+      "sha256": "8ee75162fcd631cae15b33804c787690e60bf4997fae6b7cd536bb771908e654",
+      "bytes": 10367,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/inputs/condition/inputs/fighter-condition-contract.md",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/inputs/condition/inputs/lifecycle_rating_reference.py.txt": {
+      "sha256": "aa97b6f197d78d0f6245e5c122b482c5e5b1d6e34a74db5224e5f535cbda8d64",
+      "bytes": 1838,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/inputs/condition/inputs/lifecycle_rating_reference.py.txt",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/inputs/condition/inputs/rating_study.py": {
+      "sha256": "e561ea57a5dc674f82ce9b881c9de5b83c31d2caf21c209d538c03554384bc70",
+      "bytes": 7594,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/inputs/condition/inputs/rating_study.py",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/inputs/condition/reference_condition.py": {
+      "sha256": "924152a89241e9fa6d60aa27ba19666d3a3f65fdf53bd3c0cf6f89c8db4e946c",
+      "bytes": 18218,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/inputs/condition/reference_condition.py",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/inputs/fight_sim.py": {
+      "sha256": "37ff08917ed720e3d9c4f3b14508c57b08d830f9f4cb01833fa412dbca9b6422",
+      "bytes": 50586,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/inputs/fight_sim.py",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/inputs/manifest/baseline/dna_v1.json": {
+      "sha256": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+      "bytes": 2658,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/inputs/manifest/baseline/dna_v1.json",
+      "role": [
+        "transitive_declared_input",
+        "transitive_import_or_read"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/inputs/manifest/baseline/reference_dna.py": {
+      "sha256": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+      "bytes": 8283,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/inputs/manifest/baseline/reference_dna.py",
+      "role": [
+        "transitive_declared_input",
+        "transitive_import_or_read"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/inputs/manifest/manifests_v1.json": {
+      "sha256": "75eb01acb79f45b74a6445edf956c5e3f3b68024998ae56ab44a7ed07cf15f3d",
+      "bytes": 289470,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/inputs/manifest/manifests_v1.json",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/inputs/manifest/reference_manifest.py": {
+      "sha256": "9fb1a814047f2329066bb19596e910ac7c4c7aadfce4b8f994e02dab81e51b4f",
+      "bytes": 24912,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/inputs/manifest/reference_manifest.py",
+      "role": [
+        "transitive_declared_input",
+        "transitive_import_or_read"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/inputs/manifest/tables_v1.json": {
+      "sha256": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+      "bytes": 2578,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/inputs/manifest/tables_v1.json",
+      "role": [
+        "transitive_declared_input",
+        "transitive_import_or_read"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/inputs/set42-fight-contract-draft.md": {
+      "sha256": "abb5b54edd921855b81dc5b99ef29b2ac94cadc9296dcd2981af4b57ad25040f",
+      "bytes": 41570,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/inputs/set42-fight-contract-draft.md",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/inputs/set42-joint-contract-approval.json": {
+      "sha256": "40db1444335f0d7af181601c80d7114da745cec7600004221aac3d776c39bf00",
+      "bytes": 1846,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/inputs/set42-joint-contract-approval.json",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/inputs/set42-preview-integration-draft.md": {
+      "sha256": "149d908fdbd1436b1f1650095c0207f377f5304a5987922bf0cd39ad5949e589",
+      "bytes": 40510,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/inputs/set42-preview-integration-draft.md",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/inputs/set42-preview-ui-draft.md": {
+      "sha256": "ee1d611c4bf6029746be6e487a9c2d5b0ee9ae1e20bdb4811a5450b6f33145a2",
+      "bytes": 7038,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/inputs/set42-preview-ui-draft.md",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/preview-freeze.json": {
+      "sha256": "7a9da17f02a0724531ae84835257fad68cf148c8c7fe543417bee82c168c3911",
+      "bytes": 1446,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/preview-freeze.json",
+      "role": [
+        "inherited_compatibility_or_shape_reference"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/preview_inputs/portraits_v1.json": {
+      "sha256": "03df75cbf923a6dfc8fcac78e98d704641c0edf65ce563cf307f20a52f250670",
+      "bytes": 302628,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/preview_inputs/portraits_v1.json",
+      "role": [
+        "inherited_compatibility_or_shape_reference"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/preview_inputs/stable_v1.json": {
+      "sha256": "29f6a1302c2e04ade612fe2775c085c65b8bf33587c010060b727833182d2057",
+      "bytes": 127516,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/preview_inputs/stable_v1.json",
+      "role": [
+        "inherited_compatibility_or_shape_reference"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/preview_transport_v1.json": {
+      "sha256": "78d49e9dce74d21d83344a2f13c858ced65c74b24e858844f55779cdf298de32",
+      "bytes": 751764,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/preview_transport_v1.json",
+      "role": [
+        "inherited_compatibility_or_shape_reference"
+      ]
+    },
+    "inputs/repo/fighterbout/testdata/reference/reference_bout.py": {
+      "sha256": "c3247a0d856270cc5043b5767ace9f628b2efb9cd120d786773f9221d928bd7f",
+      "bytes": 11532,
+      "source": "/Users/taytrrip/slug/slug/fighterbout/testdata/reference/reference_bout.py",
+      "role": [
+        "existing_independent_producer"
+      ]
+    },
+    "inputs/repo/fightercareer/testdata/reference/README.md": {
+      "sha256": "589ca54c1354435c0ebcfcb723dfa54f00b198d8230bbbc301e62d1ceb37a2a5",
+      "bytes": 2712,
+      "source": "/Users/taytrrip/slug/slug/fightercareer/testdata/reference/README.md",
+      "role": [
+        "frozen_provenance_or_comparison_only"
+      ]
+    },
+    "inputs/repo/fightercareer/testdata/reference/corpus.json": {
+      "sha256": "63e85d8b3a6aeadddcf34c4a71cc70fc87e24f9335be37786edddfe8843c6b9d",
+      "bytes": 36296,
+      "source": "/Users/taytrrip/slug/slug/fightercareer/testdata/reference/corpus.json",
+      "role": [
+        "frozen_provenance_or_comparison_only"
+      ]
+    },
+    "inputs/repo/fightercareer/testdata/reference/file_index.json": {
+      "sha256": "04bf565d748f4ad1cf8b70e7ffefd2d426bb6ce9949b3eff20a60251330d9efa",
+      "bytes": 860,
+      "source": "/Users/taytrrip/slug/slug/fightercareer/testdata/reference/file_index.json",
+      "role": [
+        "frozen_provenance_or_comparison_only"
+      ]
+    },
+    "inputs/repo/fightercareer/testdata/reference/generate.py": {
+      "sha256": "506cb30affe74039b16bd0254f236fbfea4cf4b69f8a35760b0373666565857c",
+      "bytes": 10067,
+      "source": "/Users/taytrrip/slug/slug/fightercareer/testdata/reference/generate.py",
+      "role": [
+        "existing_independent_producer"
+      ]
+    },
+    "inputs/repo/fightercareer/testdata/reference/input_index.json": {
+      "sha256": "b6493e750dcb6889123cb611e6fa418bbc1e3f1fd82083227e4ced1586d847e0",
+      "bytes": 424,
+      "source": "/Users/taytrrip/slug/slug/fightercareer/testdata/reference/input_index.json",
+      "role": [
+        "inherited_input_index"
+      ]
+    },
+    "inputs/repo/fightercareer/testdata/reference/inputs/BRAWLCHAIN_SPEC.md": {
+      "sha256": "ce44f1f9aed0639899e48f8288517e7687797626ea97e1df3da86a2093437c4b",
+      "bytes": 42592,
+      "source": "/Users/taytrrip/slug/slug/fightercareer/testdata/reference/inputs/BRAWLCHAIN_SPEC.md",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/fightercareer/testdata/reference/inputs/FIGHTER_CAREER.md": {
+      "sha256": "07de417554cf2a61085e8545f78fbf43bb5b02fc63a3d3d4d6889acadbe193d1",
+      "bytes": 3076,
+      "source": "/Users/taytrrip/slug/slug/fightercareer/testdata/reference/inputs/FIGHTER_CAREER.md",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/fighterportrait/testdata/reference/README.md": {
+      "sha256": "abb62fcd4270383db2c9aaf3ea8c9af67c8fee1eb7f52676eaf3865c9bf4aa5b",
+      "bytes": 5443,
+      "source": "/Users/taytrrip/slug/slug/fighterportrait/testdata/reference/README.md",
+      "role": [
+        "frozen_provenance_or_comparison_only"
+      ]
+    },
+    "inputs/repo/fighterportrait/testdata/reference/input_hashes.json": {
+      "sha256": "108b6911cc622b9510d1f8de96086964fb6718bc3e6029f28ea42a2db821ca19",
+      "bytes": 1670,
+      "source": "/Users/taytrrip/slug/slug/fighterportrait/testdata/reference/input_hashes.json",
+      "role": [
+        "inherited_input_index"
+      ]
+    },
+    "inputs/repo/fighterportrait/testdata/reference/inputs/fighter-manifest-contract.md": {
+      "sha256": "ba8d33dbad3722eed6b4406ef120f946d7e06e1ea04305cbe8648889ba169e80",
+      "bytes": 13247,
+      "source": "/Users/taytrrip/slug/slug/fighterportrait/testdata/reference/inputs/fighter-manifest-contract.md",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/fighterportrait/testdata/reference/inputs/manifest/baseline/dna_v1.json": {
+      "sha256": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+      "bytes": 2658,
+      "source": "/Users/taytrrip/slug/slug/fighterportrait/testdata/reference/inputs/manifest/baseline/dna_v1.json",
+      "role": [
+        "transitive_declared_input",
+        "transitive_import_or_read"
+      ]
+    },
+    "inputs/repo/fighterportrait/testdata/reference/inputs/manifest/baseline/reference_dna.py": {
+      "sha256": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+      "bytes": 8283,
+      "source": "/Users/taytrrip/slug/slug/fighterportrait/testdata/reference/inputs/manifest/baseline/reference_dna.py",
+      "role": [
+        "transitive_declared_input",
+        "transitive_import_or_read"
+      ]
+    },
+    "inputs/repo/fighterportrait/testdata/reference/inputs/manifest/manifests_v1.json": {
+      "sha256": "75eb01acb79f45b74a6445edf956c5e3f3b68024998ae56ab44a7ed07cf15f3d",
+      "bytes": 289470,
+      "source": "/Users/taytrrip/slug/slug/fighterportrait/testdata/reference/inputs/manifest/manifests_v1.json",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/fighterportrait/testdata/reference/inputs/manifest/reference_manifest.py": {
+      "sha256": "9fb1a814047f2329066bb19596e910ac7c4c7aadfce4b8f994e02dab81e51b4f",
+      "bytes": 24912,
+      "source": "/Users/taytrrip/slug/slug/fighterportrait/testdata/reference/inputs/manifest/reference_manifest.py",
+      "role": [
+        "transitive_declared_input",
+        "transitive_import_or_read"
+      ]
+    },
+    "inputs/repo/fighterportrait/testdata/reference/inputs/manifest/tables_v1.json": {
+      "sha256": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+      "bytes": 2578,
+      "source": "/Users/taytrrip/slug/slug/fighterportrait/testdata/reference/inputs/manifest/tables_v1.json",
+      "role": [
+        "transitive_declared_input",
+        "transitive_import_or_read"
+      ]
+    },
+    "inputs/repo/fighterportrait/testdata/reference/inputs/portrait-renderer-contract.md": {
+      "sha256": "8ae3c8dbe92fbef719880227e107cb98cbfd6419d984cad08ebb5d5e0a9c0df5",
+      "bytes": 28710,
+      "source": "/Users/taytrrip/slug/slug/fighterportrait/testdata/reference/inputs/portrait-renderer-contract.md",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/fighterportrait/testdata/reference/inputs/portraits.py": {
+      "sha256": "9bac3d966e7093e0665cd9c9a683e7a6ab73381948dccfd0dc8cac8c98a75a72",
+      "bytes": 15381,
+      "source": "/Users/taytrrip/slug/slug/fighterportrait/testdata/reference/inputs/portraits.py",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/fighterportrait/testdata/reference/portraits_v1.json": {
+      "sha256": "03df75cbf923a6dfc8fcac78e98d704641c0edf65ce563cf307f20a52f250670",
+      "bytes": 302628,
+      "source": "/Users/taytrrip/slug/slug/fighterportrait/testdata/reference/portraits_v1.json",
+      "role": [
+        "frozen_provenance_or_comparison_only"
+      ]
+    },
+    "inputs/repo/fighterportrait/testdata/reference/reference_portraits.py": {
+      "sha256": "1a44c0506944211cf699b653f63905c6802e2012928855354f4053d03d209093",
+      "bytes": 28065,
+      "source": "/Users/taytrrip/slug/slug/fighterportrait/testdata/reference/reference_portraits.py",
+      "role": [
+        "existing_independent_producer"
+      ]
+    },
+    "inputs/repo/gymaccount/types.go": {
+      "sha256": "6331c46e206e6ebda14b56275f984587b35ed1882d3f5ada0c1b1734c230f4a7",
+      "bytes": 4760,
+      "source": "/Users/taytrrip/slug/slug/gymaccount/types.go",
+      "role": [
+        "old_inherited_shape_only_not_expected_output"
+      ]
+    },
+    "inputs/repo/gymstable/testdata/reference/reference_stable.py": {
+      "sha256": "defd95f9419caa25c8c0e686307464cef97107cf8a892284a5c023641c84069d",
+      "bytes": 7126,
+      "source": "/Users/taytrrip/slug/slug/gymstable/testdata/reference/reference_stable.py",
+      "role": [
+        "frozen_provenance_or_comparison_only"
+      ]
+    },
+    "inputs/repo/gymstable/testdata/reference/stable_v1.json": {
+      "sha256": "29f6a1302c2e04ade612fe2775c085c65b8bf33587c010060b727833182d2057",
+      "bytes": 127516,
+      "source": "/Users/taytrrip/slug/slug/gymstable/testdata/reference/stable_v1.json",
+      "role": [
+        "frozen_provenance_or_comparison_only"
+      ]
+    },
+    "inputs/repo/gymstable/types.go": {
+      "sha256": "1f0038aa844869c59b5f2e8f38e2ec69380aac88d66000b28d9d1471daccb2f0",
+      "bytes": 6760,
+      "source": "/Users/taytrrip/slug/slug/gymstable/types.go",
+      "role": [
+        "old_inherited_shape_only_not_expected_output"
+      ]
+    },
+    "inputs/repo/internal/careerstate/testdata/reference/README.md": {
+      "sha256": "0588b0c293cdca32de844ebe3f095dc574921ea7f49493e96a87425582ab6b42",
+      "bytes": 5264,
+      "source": "/Users/taytrrip/slug/slug/internal/careerstate/testdata/reference/README.md",
+      "role": [
+        "frozen_provenance_or_comparison_only"
+      ]
+    },
+    "inputs/repo/internal/careerstate/testdata/reference/corpus.json": {
+      "sha256": "89fbf2b1d16793b544d84922311017303832cdba89203f8a73fe4b79b3d66d42",
+      "bytes": 200207,
+      "source": "/Users/taytrrip/slug/slug/internal/careerstate/testdata/reference/corpus.json",
+      "role": [
+        "frozen_provenance_or_comparison_only"
+      ]
+    },
+    "inputs/repo/internal/careerstate/testdata/reference/file_index.json": {
+      "sha256": "b3271752c4f4c8e6d4c44751df19ec38310be58db9a8cc8011d0511c57c43e9f",
+      "bytes": 1642,
+      "source": "/Users/taytrrip/slug/slug/internal/careerstate/testdata/reference/file_index.json",
+      "role": [
+        "frozen_provenance_or_comparison_only"
+      ]
+    },
+    "inputs/repo/internal/careerstate/testdata/reference/generate.py": {
+      "sha256": "9cd4b150c274ef4bc54b0a21e35013d86b540405bbf003c8b7b0dd8899a53bdc",
+      "bytes": 18734,
+      "source": "/Users/taytrrip/slug/slug/internal/careerstate/testdata/reference/generate.py",
+      "role": [
+        "existing_independent_producer"
+      ]
+    },
+    "inputs/repo/internal/careerstate/testdata/reference/input_index.json": {
+      "sha256": "e3b2e43e5f05813dde7fcf03ebfd542175b47668eb083b163b0b7431d4086be6",
+      "bytes": 2976,
+      "source": "/Users/taytrrip/slug/slug/internal/careerstate/testdata/reference/input_index.json",
+      "role": [
+        "inherited_input_index"
+      ]
+    },
+    "inputs/repo/internal/careerstate/testdata/reference/inputs/CAREER_ACCOUNTING-preflight.md": {
+      "sha256": "8088f39815369f5d4840f9f33f1a7761f5b46486a4c97aa717337eda905b48bd",
+      "bytes": 20627,
+      "source": "/Users/taytrrip/slug/slug/internal/careerstate/testdata/reference/inputs/CAREER_ACCOUNTING-preflight.md",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/internal/careerstate/testdata/reference/inputs/CAREER_ACCOUNTING.md": {
+      "sha256": "d676a63454dc19360b94337227cd96d56b4f4879e89bf143e89d229ab4c0cfa1",
+      "bytes": 20392,
+      "source": "/Users/taytrrip/slug/slug/internal/careerstate/testdata/reference/inputs/CAREER_ACCOUNTING.md",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/internal/careerstate/testdata/reference/inputs/FIGHTER_CAREER.md": {
+      "sha256": "07de417554cf2a61085e8545f78fbf43bb5b02fc63a3d3d4d6889acadbe193d1",
+      "bytes": 3076,
+      "source": "/Users/taytrrip/slug/slug/internal/careerstate/testdata/reference/inputs/FIGHTER_CAREER.md",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/internal/careerstate/testdata/reference/inputs/chaincfg_SignedCheckpoint_MarshalJSON.txt": {
+      "sha256": "4c069820c1183838fe03ce39e62393c0bb9661557028d52f05bfd7ab5b76bfab",
+      "bytes": 718,
+      "source": "/Users/taytrrip/slug/slug/internal/careerstate/testdata/reference/inputs/chaincfg_SignedCheckpoint_MarshalJSON.txt",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/internal/careerstate/testdata/reference/inputs/constructor-preflight.diff": {
+      "sha256": "a23f76a4b5ac3480cebc62b292abfd8a0086a79f49e5256ae95c386102048f9f",
+      "bytes": 1142,
+      "source": "/Users/taytrrip/slug/slug/internal/careerstate/testdata/reference/inputs/constructor-preflight.diff",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/internal/careerstate/testdata/reference/inputs/gymresult_types.go.txt": {
+      "sha256": "6d05c2a2f68c9fdf38cc74e71b230ac4172b1d7b149c1f9a85892c848545e506",
+      "bytes": 562,
+      "source": "/Users/taytrrip/slug/slug/internal/careerstate/testdata/reference/inputs/gymresult_types.go.txt",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/internal/careerstate/testdata/reference/inputs/seednode_types.go.txt": {
+      "sha256": "f53dff124db30f2da93f831a494ce5e9561bb6ea2aa1134ce809da7b2c195e1d",
+      "bytes": 559,
+      "source": "/Users/taytrrip/slug/slug/internal/careerstate/testdata/reference/inputs/seednode_types.go.txt",
+      "role": [
+        "transitive_declared_input"
+      ]
+    },
+    "inputs/repo/registry/manifest_types.go": {
+      "sha256": "03a4fd3ee8e1de92b1edc8b09c61bb01933c7e1ad923660c10d8bdb82b41cfbb",
+      "bytes": 4733,
+      "source": "/Users/taytrrip/slug/slug/registry/manifest_types.go",
+      "role": [
+        "old_inherited_shape_only_not_expected_output"
+      ]
+    },
+    "inputs/workspace/artifacts/set49/actual-controls-attempt1/controls-report.json": {
+      "sha256": "3cfdb90a098a987163b9c6ad1526870288f3fc99d5e996371fbe061c707df88b",
+      "bytes": 13234,
+      "source": "/Users/taytrrip/slug/artifacts/set49/actual-controls-attempt1/controls-report.json",
+      "role": [
+        "public_actual_input_for_later_acceptance_not_Set50_expected_output"
+      ]
+    },
+    "inputs/workspace/artifacts/set49/career-chain-attempt3/public-career-native-evidence.json": {
+      "sha256": "91934c45ba3609a52b3ed64847c988e33c19cef2ea7055d5337af00b6e805069",
+      "bytes": 1884876,
+      "source": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-career-native-evidence.json",
+      "role": [
+        "public_actual_input_for_later_acceptance_not_Set50_expected_output"
+      ]
+    },
+    "inputs/workspace/artifacts/set49/independent-careers-attempt3/result-report.json": {
+      "sha256": "b62b6cad5a51d3fe5447a113c748c978d909fe7b52ff014e85740aceaaeeaf34",
+      "bytes": 149085,
+      "source": "/Users/taytrrip/slug/artifacts/set49/independent-careers-attempt3/result-report.json",
+      "role": [
+        "public_actual_input_for_later_acceptance_not_Set50_expected_output"
+      ]
+    },
+    "inputs/workspace/set49-actual-careers-attempt3.json": {
+      "sha256": "b519b928b83c2de2dfd8bbc5c59c250b6ce51a99802de51affe1b57ac95ba267",
+      "bytes": 46978,
+      "source": "/Users/taytrrip/slug/set49-actual-careers-attempt3.json",
+      "role": [
+        "public_actual_input_for_later_acceptance_not_Set50_expected_output"
+      ]
+    },
+    "inputs/workspace/set50-career-preview-contract-draft.md": {
+      "sha256": "471b28a6cf428fbf1b4fef9bfdc36218f885d299fba1265f205c77fd5f2ab630",
+      "bytes": 35244,
+      "source": "/Users/taytrrip/slug/set50-career-preview-contract-draft.md",
+      "role": [
+        "held_contract_candidate_pending_root_freeze"
+      ]
+    },
+    "inputs/workspace/set50-preview-intake.md": {
+      "sha256": "cf0d160736384c296022b7afe4c5e18432e45558c30c1a0445ca496db4c75c8d",
+      "bytes": 13861,
+      "source": "/Users/taytrrip/slug/set50-preview-intake.md",
+      "role": [
+        "source_only_intake"
+      ]
+    }
+  }
+}

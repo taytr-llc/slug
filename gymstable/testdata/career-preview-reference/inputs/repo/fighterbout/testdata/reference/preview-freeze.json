@@ -1,0 +1,37 @@
+{
+  "status": "frozen",
+  "scope": "synthetic transport bindings only, not admitted proof evidence",
+  "source_sha256": {
+    "generate_preview.py": "5f3ae24d63e339c5c4f174a7943eca233aae27fc0ca7031762d675cf824e25ed",
+    "capture_preview.py": "9ef39968a6ffe5f7e49186a18edf1c29e58bcdda7bf2eabe53d4266485048a4a",
+    "preview_transport_v1.json": "78d49e9dce74d21d83344a2f13c858ced65c74b24e858844f55779cdf298de32",
+    "preview_inputs/stable_v1.json": "29f6a1302c2e04ade612fe2775c085c65b8bf33587c010060b727833182d2057",
+    "preview_inputs/portraits_v1.json": "03df75cbf923a6dfc8fcac78e98d704641c0edf65ce563cf307f20a52f250670"
+  },
+  "commands": [
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "-S",
+        "/Users/taytrrip/slug/set42-fight-reference/generate_preview.py",
+        "--check"
+      ],
+      "seconds": 0.1970261670066975,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "/opt/homebrew/bin/python3",
+        "-B",
+        "-S",
+        "/Users/taytrrip/slug/set42-fight-reference/generate_preview.py",
+        "--check"
+      ],
+      "seconds": 0.16041900000709575,
+      "exit_code": 0
+    }
+  ],
+  "source_changes": [],
+  "pre_freeze_correction": "Initial generator asserted the stream domain rather than the existing manifest DIGEST_DOMAIN; assertion failed before creating any output. Corrected to the immutable independent digest_manifest helper. No expected output or model change."
+}

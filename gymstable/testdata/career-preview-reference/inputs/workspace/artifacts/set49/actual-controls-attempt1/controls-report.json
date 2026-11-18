@@ -1,0 +1,272 @@
+{
+  "status": "passed",
+  "scope": "Synthetic verifier controls only, NOT genuine packaged/actual acceptance or normal-work evidence.",
+  "cases": [
+    {
+      "name": "unchanged-positive",
+      "positive": true,
+      "exit_code": 0,
+      "expected_stage": "",
+      "actual_stage": "",
+      "error": "",
+      "report_sha256": "9ca7c75f4867cbb1bb4932c8d1efc3261e88e2881d67d43aa1fc080b7e7f50cb",
+      "log_sha256": "335eb6997b7d04402a7e310e7ade7986857671e076cf56d71537bea4d5a4409e",
+      "synthetic_run_sha256": "2014f14057bad960c8c873ab9adafa61b55e12c1899ce980a35bbb5e6e73bbc7"
+    },
+    {
+      "name": "same-txid-witness",
+      "positive": false,
+      "exit_code": 1,
+      "expected_stage": "proof:first-inclusion",
+      "actual_stage": "proof:first-inclusion",
+      "error": "ValueError: witness commitment",
+      "report_sha256": "95362d91dfb694d143a1254a2387675cc5eb2726875c5b000acadf2db41149fd",
+      "log_sha256": "7791bfe30ad644bf0f500eea6d07ce3837ad4c3c822630a8bed9112f544b0fa8",
+      "synthetic_run_sha256": "58b436a6c2b75c0cb5b8ab5040358d0ef67adf54d4ac379c598e5226e78c647d"
+    },
+    {
+      "name": "valid-alternate-retained-checkpoint",
+      "positive": false,
+      "exit_code": 1,
+      "expected_stage": "retained_history",
+      "actual_stage": "retained_history",
+      "error": "ValueError: first accepted certificate/inclusion permanently retained",
+      "report_sha256": "333d2900fba8debc6e2ee0a750278db3626f971070bb0fb8ae6e868225e476ce",
+      "log_sha256": "4abcc604f21984643a918a24a4f3960d950b3c816cf1a5d134eaebbe835af515",
+      "synthetic_run_sha256": "af1579ae541316b93c35b1b65c78f2f167e1acf9170465a1d371940ae920296c"
+    },
+    {
+      "name": "retained-inclusion-rewrite",
+      "positive": false,
+      "exit_code": 1,
+      "expected_stage": "retained_history",
+      "actual_stage": "retained_history",
+      "error": "ValueError: first accepted certificate/inclusion permanently retained",
+      "report_sha256": "25530a691e9ca2b2296510c0f1499ec3f371ed64ffd6371b446f75768b36de2d",
+      "log_sha256": "eaab99b3aed84e6f70d64bbe26638edc3f3b47918e3ae5059cc000eef6d1fa36",
+      "synthetic_run_sha256": "7a1637b5ec7cfce963a837bf433ded430a8b2ba2b23b9267ee722d374915fde9"
+    },
+    {
+      "name": "full-bout-outcome",
+      "positive": false,
+      "exit_code": 1,
+      "expected_stage": "bout",
+      "actual_stage": "bout",
+      "error": "ValueError: independent full Bout Source/Input/Result/digests",
+      "report_sha256": "a9db3416fb5ec3c1d1e37fc7298d19fb3bf5724750b2a5c7b04292b701944510",
+      "log_sha256": "9b592551320deeeeef695845729ab27d77eba73a088c384ee7eab5558e7f26ea",
+      "synthetic_run_sha256": "a56667b02c53c81479a21600391377bc3b33a2097a8937ba854f50b596a18cbf"
+    },
+    {
+      "name": "original-birth-source",
+      "positive": false,
+      "exit_code": 1,
+      "expected_stage": "source_chain",
+      "actual_stage": "source_chain",
+      "error": "ValueError: source projection report binding",
+      "report_sha256": "ed3273ebf4df77b02fa34d2eb5816efd801256fdfbff5af25aef765bc84f3497",
+      "log_sha256": "4647299ef2c0db0437ae4141ba1d39e7bb5e2a3d53e0681d26359ddc51fadf3b",
+      "synthetic_run_sha256": "d2a2df2514a01e162e40f4740f0821eb17042844010393dddcc753b9e6b52dd1"
+    },
+    {
+      "name": "export-txid-summary",
+      "positive": false,
+      "exit_code": 1,
+      "expected_stage": "export_summaries",
+      "actual_stage": "export_summaries",
+      "error": "ValueError: native exported file summary binding",
+      "report_sha256": "ccba1bfed65112abc956a2d6a7e31450410f9d5959180a55d55e4832ae94c406",
+      "log_sha256": "b97438cfb04c1c13ef7717b70c9caf9af7d45ebd80ca01aaadf58eda7b6c3dea",
+      "synthetic_run_sha256": "786ae4ab398d65d3f5e97ff524aebae60b02454c5c7938b33d99f1ef0a8bc99e"
+    },
+    {
+      "name": "missing-DAG-parent",
+      "positive": false,
+      "exit_code": 1,
+      "expected_stage": "proof:first-inclusion",
+      "actual_stage": "proof:first-inclusion",
+      "error": "Refusal: invalid_request",
+      "report_sha256": "37395399031ff624480042e3dcfc57d04c3601db1f45935197315e05b1ebe767",
+      "log_sha256": "1fd03e92b310f1c1af527bf206725145285d06b1ccc1e1774b312e4bb7c791a0",
+      "synthetic_run_sha256": "f7c058d7addc308ff359c69b3e126c07e36f42eca78e78495bd07f731d0a5d0d"
+    },
+    {
+      "name": "unmined-off-branch-funding",
+      "positive": false,
+      "exit_code": 1,
+      "expected_stage": "proof:first-inclusion",
+      "actual_stage": "proof:first-inclusion",
+      "error": "Refusal: invalid_request",
+      "report_sha256": "ea7739c4fdee8607e0c5aae2f57d2c8b23ef0f7616dd9f340190c41ec66d27bc",
+      "log_sha256": "724b657bd60b9c67532d56697db644d681ad6358675aaec170c9fb4230edc5c4",
+      "synthetic_run_sha256": "90b643dd3285e5a82a6d92034b2f8ca610e867d8cc24c6704d60dbe50c878e87"
+    },
+    {
+      "name": "pending-counter",
+      "positive": false,
+      "exit_code": 1,
+      "expected_stage": "native_rows",
+      "actual_stage": "native_rows",
+      "error": "ValueError: unchanged native mining/wallet counter pending",
+      "report_sha256": "840764327765fa6487147312f14825691311df378175379884793f27abbe5e20",
+      "log_sha256": "a13169f36b77f193dc4713a17ebaece2a1b65f745366de5abda8b93c1d081553",
+      "synthetic_run_sha256": "41b7d4154762c053d94009f6fc669d92db6ddfc53fa85de61495000f61ab1737"
+    },
+    {
+      "name": "automatic-admission-claim",
+      "positive": false,
+      "exit_code": 1,
+      "expected_stage": "native_scope",
+      "actual_stage": "native_scope",
+      "error": "ValueError: native declared scope",
+      "report_sha256": "20a9600d4b8cda85dc3b29282dcce82f9dc986689d7134ddd90f670ae2d78a5f",
+      "log_sha256": "dd88071b72ab7985c353da306be6e2e6af9f762b679f3dfc5e7cc8c4aa18ae22",
+      "synthetic_run_sha256": "443d6ccba656b2fc574933491b9a2cd94e06cfc183b19d82abc988db2ebedd48"
+    },
+    {
+      "name": "held-authority-claim",
+      "positive": false,
+      "exit_code": 1,
+      "expected_stage": "native_rows",
+      "actual_stage": "native_rows",
+      "error": "ValueError: held original publisher Check",
+      "report_sha256": "707e6c487ab2a1e508b7201160e20bd651e9ecd5c3255b2d5dca88d192f1bed4",
+      "log_sha256": "9e5d965951157b63773a871b66971808c186d9bf56016371cc13e4b267d06801",
+      "synthetic_run_sha256": "284f0ecda8a0ae6a36904e8ae8c8390115e5997b788ac908433eb3c723b23f67"
+    },
+    {
+      "name": "other-fixture-publish-success",
+      "positive": false,
+      "exit_code": 1,
+      "expected_stage": "native_rows",
+      "actual_stage": "native_rows",
+      "error": "ValueError: completed strong action unauthorized",
+      "report_sha256": "b7968260454d093ca9b568550195d7cf8263e83238613300b3dbc5d679762b69",
+      "log_sha256": "82063d4a196ccf3c356deaac41e3d96b7cb0a77865f84576640ef1e78c5de243",
+      "synthetic_run_sha256": "9c6c8e172da1f3a04a376b996cc99d28b6b218c10c82be09247224ee3d0a32d5"
+    }
+  ],
+  "career_cases": [
+    {
+      "name": "career-policy",
+      "positive": false,
+      "exit_code": 1,
+      "expected_stage": "career_arithmetic",
+      "actual_stage": "career_arithmetic",
+      "error": "ValueError: independent CareerPolicyID/ActivationID",
+      "report_sha256": "c50ceb8f25fcf063d55c5fea2b68e9b1ab399d7c348f0b4ca4c55fb5f3aa1d91",
+      "log_sha256": "16de46a331abf75d9b3bb147a01a5c933d77c552b9af276627e2a9d70feb8068",
+      "synthetic_run_sha256": "ca8e78cab35745e1d791614f6a2e1b1aca439d2ea804c12302a40851349cb089"
+    },
+    {
+      "name": "career-stale-original-view",
+      "positive": false,
+      "exit_code": 1,
+      "expected_stage": "career_arithmetic",
+      "actual_stage": "career_arithmetic",
+      "error": "ValueError: career stage exact original epoch",
+      "report_sha256": "56e00553a584b50c06af20dadfb5d7fabcc2589d59f78548868c144aa2f4bb10",
+      "log_sha256": "41b04ea1964c6ba387bd8d1e6b9971aac0878f7450cb8f06ed0b0e705f0e14d5",
+      "synthetic_run_sha256": "01134d61c0cff736a1851eb88e49db423d6c5473d3cab0963b2142fb3f7afd6d"
+    },
+    {
+      "name": "career-provisional-award",
+      "positive": false,
+      "exit_code": 1,
+      "expected_stage": "career_arithmetic",
+      "actual_stage": "career_arithmetic",
+      "error": "ValueError: provisional/finalized/held stage",
+      "report_sha256": "a3c56f2354d1934258f918fc23017022264e40f01c7ee08ab6eae5559fb549a3",
+      "log_sha256": "bfaf464681e39b38efc79b33a77496c2d79d74dc6eabfca6587a68c661a60399",
+      "synthetic_run_sha256": "798725b82dc553297f0896f7c38d9d0c11ba7f2def2d78bdf111e2eb37c30718"
+    },
+    {
+      "name": "career-displayed-totals-not-oracle",
+      "positive": false,
+      "exit_code": 1,
+      "expected_stage": "career_arithmetic",
+      "actual_stage": "career_arithmetic",
+      "error": "ValueError: displayed totals agree with independently derived award",
+      "report_sha256": "5f9b5865d55e315d7c0b42be26f7fc64e4929fea4235539bd3a72364617fe679",
+      "log_sha256": "34e201bd34f4fba29c574326e2444a701567da520e98d205a9ce5f099da039dd",
+      "synthetic_run_sha256": "2328753d32470dae62fb8780e3a9ef8bd83f7a2de0f265e5a44ca4fd240cbeb6"
+    },
+    {
+      "name": "career-prefix-digest",
+      "positive": false,
+      "exit_code": 1,
+      "expected_stage": "career_arithmetic",
+      "actual_stage": "career_arithmetic",
+      "error": "ValueError: independent complete Current prefix digest",
+      "report_sha256": "22f92cdc3fd10d4d2009c6eac4ac3d90de29d52a9b1e279f355741299590030e",
+      "log_sha256": "cb6b25fc1a7b24a2a4ab338fc3a71218d073f682c4c402273175d03f8c0a6185",
+      "synthetic_run_sha256": "dcce510295ba3a3075fe2a1afb803e03dd32e155c68596a465854d8dac8aeaf0"
+    },
+    {
+      "name": "career-doubled-xp",
+      "positive": false,
+      "exit_code": 1,
+      "expected_stage": "career_arithmetic",
+      "actual_stage": "career_arithmetic",
+      "error": "ValueError: independent career award/condition/D65",
+      "report_sha256": "92444391e4631b5920b454c844079ba9db80acdd5634ddf41020b1ec2cc2d553",
+      "log_sha256": "6dfb9f9a6fe77c71d398d9ef72a0ca4ab30800983b4f86cf00a379538840b42f",
+      "synthetic_run_sha256": "d10490a7a2d5c3218b9f6ecd38bb04ef4a7702ff83ae93700c0ae4c12899aee3"
+    },
+    {
+      "name": "career-condition",
+      "positive": false,
+      "exit_code": 1,
+      "expected_stage": "career_arithmetic",
+      "actual_stage": "career_arithmetic",
+      "error": "ValueError: independent career award/condition/D65",
+      "report_sha256": "699cc319965e30ef9d117de391105869654ae7efe0910f9c97b7bf21d51d5004",
+      "log_sha256": "cb732535355f701a677e1ef135a3b7b85eb7ba0540559e7645d9b01de27bba6b",
+      "synthetic_run_sha256": "1952bf53ea1996adde1d0e4afe032d019dfdff3256946f0a2f2d288168c45b40"
+    },
+    {
+      "name": "career-postconflict-award-loss",
+      "positive": false,
+      "exit_code": 1,
+      "expected_stage": "career_arithmetic",
+      "actual_stage": "career_arithmetic",
+      "error": "ValueError: independent career award/condition/D65",
+      "report_sha256": "069fa72faa466563e5e185e7b1d050c145c3f273e62c6ab04001805c7cc37da9",
+      "log_sha256": "09d2391fb95fec2f0cbd3ddbacbf4176f966d3f61d224d39d84106f74fc792fe",
+      "synthetic_run_sha256": "141bf508d88a5fbd1af256e722adbc31d23cc25babd4a714a8cf9ec28f5fbb06"
+    },
+    {
+      "name": "career-echoed-job",
+      "positive": false,
+      "exit_code": 1,
+      "expected_stage": "career_arithmetic",
+      "actual_stage": "career_arithmetic",
+      "error": "ValueError: exact completed job/original View/response correlation",
+      "report_sha256": "3036bdc91ac682290e7b3b608f7666cea99c1aa871971f2d549ef2e824d67624",
+      "log_sha256": "c49402c048d599a2cfb2dd230b789ac66ce890a0db6daa92303f3a8261c4c209",
+      "synthetic_run_sha256": "061fbdc7eff37d9820fb5ad99462343d847fda4b88c634ead6cbdfa94c77c427"
+    }
+  ],
+  "positive_controls": 1,
+  "negative_controls": 12,
+  "career_negative_controls": 9,
+  "total_negative_controls": 21,
+  "career_controls_use_actual_baseline": true,
+  "modeled_controls_relabelled_as_actual": false,
+  "no_repeated_argon": true,
+  "originals_unchanged": true,
+  "checker_sha256": "c63f29d04364d2cf749fa52a8b746b47e7d78cad1969f95b74add90feb258568",
+  "source_checker_sha256": "4dfecb09bdbbc32145bcec09d2cca442f78a4bdd8e6334e1bfd80fe6ee37b67b",
+  "baseline_run_sha256": "b519b928b83c2de2dfd8bbc5c59c250b6ce51a99802de51affe1b57ac95ba267",
+  "baseline_independent_sha256": "b62b6cad5a51d3fe5447a113c748c978d909fe7b52ff014e85740aceaaeeaf34",
+  "bootstrap_sha256": "ac268e7a0ff29cf47bd8f257e1cd9770d9de202975de556a73f3cc96f51220d7",
+  "limitations": [
+    "Inherited1+12 proof controls retain their exact mutation recipes; nine additional Career controls mutate independently passed actual public evidence copies. Modeled20 page controls remain separately scoped and are not run here.",
+    "Synthetic copied artifacts and rebound runner hash maps are verifier controls, never actual acceptance.",
+    "The off-branch funding header is deliberately unmined and must fail structural ancestry before any normal-work call.",
+    "Original actual proof/source/runner reports and all frozen reference bytes remain unchanged."
+  ],
+  "control_source_sha256": "0077164b92e43cd3aac8d3b94b5833de9dd9039d78347715fb9d5db1af88501e",
+  "wall_seconds": 23.55,
+  "at_utc": "2026-11-18T21:30:24.206129+00:00"
+}

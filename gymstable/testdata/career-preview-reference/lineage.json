@@ -1,0 +1,261 @@
+{
+  "version": 1,
+  "generation_failures": [],
+  "all_generation_attempts_passed": true,
+  "review_corrections": [
+    "Inherited accepted-time/Snapshot/error/cap/LF grammar clarified",
+    "Immutable terminal and selected-job portrait correlation",
+    "Unrelated-prefix and coherent256/257 boundary controls",
+    "Inherited score rounding maximum enforced with rebound negative",
+    "State refusal labels explicitly abstract, not exact core errors",
+    "Captured-prefix authority context distinguished from token replay"
+  ],
+  "preserved_attempts": [
+    {
+      "directory": "/Users/taytrrip/slug/set50-reference-attempts/attempt1",
+      "files": {
+        "common.py": {
+          "sha256": "6848720d5c0a3cf2471ab9fc211852d91fdf50f9dc403eda75de91a1ee08de5c",
+          "bytes": 3014
+        },
+        "corpus.json": {
+          "sha256": "a9ab3759b1f659ca02c992220b3fe369d597cef21786e2c45a284876f3fa525f",
+          "bytes": 12576065
+        },
+        "generate.py": {
+          "sha256": "bde6eb8bce6d3c03da4c9e5ad71fe68ff389f2360e954af9f554756e83bb1748",
+          "bytes": 16082
+        },
+        "run.log": {
+          "sha256": "4fcff6e43ed846bfd6189f12622a4b0a9b5380d299fd91331983704b84b489b6",
+          "bytes": 215
+        },
+        "schema.py": {
+          "sha256": "c0b1213aa7b74f481c3ce9a67a5a25f20e63adc7750b983a506b51945acc6561",
+          "bytes": 19706
+        }
+      }
+    },
+    {
+      "directory": "/Users/taytrrip/slug/set50-reference-attempts/attempt2",
+      "files": {
+        "common.py": {
+          "sha256": "6848720d5c0a3cf2471ab9fc211852d91fdf50f9dc403eda75de91a1ee08de5c",
+          "bytes": 3014
+        },
+        "corpus.json": {
+          "sha256": "83b6127f43d5880dfa16765ef32e2ea3f8bc01535cf406763426630220973a7a",
+          "bytes": 16330649
+        },
+        "generate.py": {
+          "sha256": "5f5b0bdf2d6d09bd5f030c1d3889f33c23dc8ea65603fe6fe7d18bea85b43afd",
+          "bytes": 23811
+        },
+        "run.log": {
+          "sha256": "49c98ba8467f6e5d6daa49fc093f12c34a52a52245fd2b74aa5c4c30e98f65f1",
+          "bytes": 244
+        },
+        "schema.py": {
+          "sha256": "5514ae1a16790cf6ddb1ec89a7c883ad809563b4c4d56d331cc7a0235f982141",
+          "bytes": 20765
+        }
+      }
+    },
+    {
+      "directory": "/Users/taytrrip/slug/set50-reference-attempts/attempt3",
+      "files": {
+        "common.py": {
+          "sha256": "6848720d5c0a3cf2471ab9fc211852d91fdf50f9dc403eda75de91a1ee08de5c",
+          "bytes": 3014
+        },
+        "corpus.json": {
+          "sha256": "84cfce91ddf0f8f1b4f6740f209ee374aff1b7cdbe03d35fe476ef28cab2ed05",
+          "bytes": 17295720
+        },
+        "generate.py": {
+          "sha256": "557873ea29dee8f62005139003b326c62e1167c858c1c91b6fed353084c386ba",
+          "bytes": 24859
+        },
+        "run.log": {
+          "sha256": "93a5d037f97b8a5398faf6fba484a5a93fd566d03ff039d4fb758ac3cb23ccfb",
+          "bytes": 246
+        },
+        "schema.py": {
+          "sha256": "5514ae1a16790cf6ddb1ec89a7c883ad809563b4c4d56d331cc7a0235f982141",
+          "bytes": 20765
+        }
+      }
+    },
+    {
+      "directory": "/Users/taytrrip/slug/set50-reference-attempts/attempt4",
+      "files": {
+        "common.py": {
+          "sha256": "6848720d5c0a3cf2471ab9fc211852d91fdf50f9dc403eda75de91a1ee08de5c",
+          "bytes": 3014
+        },
+        "corpus.json": {
+          "sha256": "a4168974e5f7c50e0bb0e4bc91cb260a3fbbb614114624d8bae2c90321ca158e",
+          "bytes": 17310924
+        },
+        "generate.py": {
+          "sha256": "73a495972efcdcbf8f52003dfea127432af08a53cf42edbe37b359478c8ca2d3",
+          "bytes": 25534
+        },
+        "run.log": {
+          "sha256": "d53838ce02fa715f6a2825a2e66f79b48241483d2579daf8814e0e1a5674d51e",
+          "bytes": 246
+        },
+        "schema.py": {
+          "sha256": "5514ae1a16790cf6ddb1ec89a7c883ad809563b4c4d56d331cc7a0235f982141",
+          "bytes": 20765
+        },
+        "state_models.py": {
+          "sha256": "d520e248bb98ec6b0e629fa2c1fb0ea405b7ff20d68ae82591907676f05e52e8",
+          "bytes": 27237
+        }
+      }
+    },
+    {
+      "directory": "/Users/taytrrip/slug/set50-reference-attempts/attempt5-dual",
+      "files": {
+        "corpus-python1.json": {
+          "sha256": "a4168974e5f7c50e0bb0e4bc91cb260a3fbbb614114624d8bae2c90321ca158e",
+          "bytes": 17310924
+        },
+        "corpus-python2.json": {
+          "sha256": "a4168974e5f7c50e0bb0e4bc91cb260a3fbbb614114624d8bae2c90321ca158e",
+          "bytes": 17310924
+        },
+        "generate-python1.log": {
+          "sha256": "8da470947f5e13a699ca79903df584004fb0173eac79419dba495cedd76d27e5",
+          "bytes": 246
+        },
+        "generate-python2.log": {
+          "sha256": "c37fe9c677ee81aab55afa90a3091915505d2b19e72bfaa5ee3da1e4d09f8bcf",
+          "bytes": 246
+        },
+        "report.json": {
+          "sha256": "9b44cea69f7b5fd927dc4dbdfb862d663da6d6b697d354b1961060a0a3a5497b",
+          "bytes": 16815
+        },
+        "verify-python1.log": {
+          "sha256": "d080907973027234188821f8d6297a7f352f55c319d36df26e28f996fe56248c",
+          "bytes": 450
+        },
+        "verify-python2.log": {
+          "sha256": "d080907973027234188821f8d6297a7f352f55c319d36df26e28f996fe56248c",
+          "bytes": 450
+        }
+      }
+    },
+    {
+      "directory": "/Users/taytrrip/slug/set50-reference-attempts/attempt6-dual",
+      "files": {
+        "corpus-python1.json": {
+          "sha256": "aa8619db21947090c0142757c3bf1748b7e9c4ec95f11cadb851270213e9b835",
+          "bytes": 17311424
+        },
+        "corpus-python2.json": {
+          "sha256": "aa8619db21947090c0142757c3bf1748b7e9c4ec95f11cadb851270213e9b835",
+          "bytes": 17311424
+        },
+        "generate-python1.log": {
+          "sha256": "f44471e3550efb3f460443716aa9ae2048b65c816552fe5c8121cad483e28eb2",
+          "bytes": 246
+        },
+        "generate-python2.log": {
+          "sha256": "9e48f678a2d42fa74caf964537b5b26a034f1b5ce5c4a66ef92e208130039f31",
+          "bytes": 246
+        },
+        "report.json": {
+          "sha256": "1b1b0fa2647fe84002f3569c30251a510172296b768daed7b6b8938789e439bb",
+          "bytes": 16814
+        },
+        "sources/README.md": {
+          "sha256": "1376365e95ed120bc6efa235660eb617f05e2f5f47f3fe991423bbd642b76a2c",
+          "bytes": 4477
+        },
+        "sources/check_reproducibility.py": {
+          "sha256": "27f48c6d3901bb793b7165fde84f7f4d25a7fb65bc998d9b33ac456053643e51",
+          "bytes": 3341
+        },
+        "sources/common.py": {
+          "sha256": "6848720d5c0a3cf2471ab9fc211852d91fdf50f9dc403eda75de91a1ee08de5c",
+          "bytes": 3014
+        },
+        "sources/generate.py": {
+          "sha256": "9122de48da3c1fe6d4d89b1e579b4f24c0958dc7939a016d9206c095c239fba7",
+          "bytes": 26011
+        },
+        "sources/input_index.json": {
+          "sha256": "319f9586b5c788aa2ad44963c1a8a073793a6dab2f765c5c09124952ff784987",
+          "bytes": 31818
+        },
+        "sources/schema.py": {
+          "sha256": "ec0141c274ce4096a86d884f6b19b435188426fd6969f1f7a7fa96386e9efc90",
+          "bytes": 20959
+        },
+        "sources/state_models.py": {
+          "sha256": "d520e248bb98ec6b0e629fa2c1fb0ea405b7ff20d68ae82591907676f05e52e8",
+          "bytes": 27237
+        },
+        "sources/verify_reference.py": {
+          "sha256": "0d46b3ad8806a6b17b7ebf1e506a4d1d31dadc7a9b6edb327d8b784533646bed",
+          "bytes": 2198
+        },
+        "verify-python1.log": {
+          "sha256": "a6ada822fe0a2c134447829b56106f9c384d5dd788d7e94ddb20c57a5c89570b",
+          "bytes": 450
+        },
+        "verify-python2.log": {
+          "sha256": "a6ada822fe0a2c134447829b56106f9c384d5dd788d7e94ddb20c57a5c89570b",
+          "bytes": 450
+        }
+      }
+    },
+    {
+      "directory": "/Users/taytrrip/slug/set50-reference-attempts/attempt7-dual",
+      "files": {
+        "corpus-python1.json": {
+          "sha256": "70cec03c5ef89765b5b929f41b4fd4314f5dd3a4dcbbae05521fbffc6cbddc8a",
+          "bytes": 17324281
+        },
+        "corpus-python2.json": {
+          "sha256": "70cec03c5ef89765b5b929f41b4fd4314f5dd3a4dcbbae05521fbffc6cbddc8a",
+          "bytes": 17324281
+        },
+        "generate-python1.log": {
+          "sha256": "bd7734ad03fbadbc8eabfe189aaafd59d28c29a9e21dc7e63790ba7e8c2375a4",
+          "bytes": 246
+        },
+        "generate-python2.log": {
+          "sha256": "272d6c3beaf77d8b1f0bb9b1f3cbfc6fcb806adeddc0ae5b92af15ff2a7ad451",
+          "bytes": 246
+        },
+        "report.json": {
+          "sha256": "d224781608fe4fabc80724409df21afef12182a9d91d12d20816d94e5c7cebba",
+          "bytes": 16815
+        },
+        "verify-python1.log": {
+          "sha256": "012e37549a8c67efcab227cbf348bdcc8724d294f2ac12cc8f2a5a5ebdb1ffa4",
+          "bytes": 450
+        },
+        "verify-python2.log": {
+          "sha256": "012e37549a8c67efcab227cbf348bdcc8724d294f2ac12cc8f2a5a5ebdb1ffa4",
+          "bytes": 450
+        }
+      }
+    }
+  ],
+  "external_state_reports": {
+    "/Users/taytrrip/slug/set50-state-model-author-checks.json": {
+      "sha256": "bf28bb61a8e75692e7a82e0d3eb0d61bb0bc3f15503359a0860595e17d59f9ec",
+      "bytes": 2415
+    },
+    "/Users/taytrrip/slug/set50-state-model-author-checks-attempt2.json": {
+      "sha256": "c302addc82c05484dcf67932843d56cd7b8c274685f73f8d4a58272a562bb7f0",
+      "bytes": 2835
+    }
+  },
+  "limits": "Earlier passing corpora are historical candidates, not final conformance claims. No runtime/Go/Argon or independent reviewer execution."
+}

@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "status": "passed",
+  "findings": [],
+  "reviewer": "checkpoint_tool",
+  "review_kind": "Independent nonauthor review of Set50 producer, modeled corpus and author reproduction evidence; reviewer arithmetic audit uses only stdlib stored JSON",
+  "reviewed_at_utc": "2026-11-18T22:24:13.405908+00:00",
+  "candidate_directory": "/Users/taytrrip/slug/set50-career-preview-reference",
+  "file_index_sha256": "21e5f0e77eec3e531830bf593be4a72c5fe166fcf9605f26cb62882a9bf61d9f",
+  "corpus_sha256": "70cec03c5ef89765b5b929f41b4fd4314f5dd3a4dcbbae05521fbffc6cbddc8a",
+  "verification_sha256": "d224781608fe4fabc80724409df21afef12182a9d91d12d20816d94e5c7cebba",
+  "source_sha256": {
+    "/Users/taytrrip/slug/set50-career-preview-reference/common.py": "6848720d5c0a3cf2471ab9fc211852d91fdf50f9dc403eda75de91a1ee08de5c",
+    "/Users/taytrrip/slug/set50-career-preview-reference/schema.py": "ec0141c274ce4096a86d884f6b19b435188426fd6969f1f7a7fa96386e9efc90",
+    "/Users/taytrrip/slug/set50-career-preview-reference/generate.py": "8548108b1029fd6d8933fe4e3f1bb7df81739cda08bf0cc5abc86f3ca8482d61",
+    "/Users/taytrrip/slug/set50-career-preview-reference/state_models.py": "9973826fef3315d2179814b54e934da7b9024c1755e6f1ccc78f4eb2df46962a",
+    "/Users/taytrrip/slug/set50-career-preview-reference/verify_reference.py": "0d46b3ad8806a6b17b7ebf1e506a4d1d31dadc7a9b6edb327d8b784533646bed",
+    "/Users/taytrrip/slug/set50-career-preview-reference/check_reproducibility.py": "27f48c6d3901bb793b7165fde84f7f4d25a7fb65bc998d9b33ac456053643e51",
+    "/Users/taytrrip/slug/set50-career-preview-reference/README.md": "48dd64003bc99ebac867cf36ae4822935346761f70f7d51f355549488a6d2a7f",
+    "/Users/taytrrip/slug/set50-career-preview-reference/file_index.json": "21e5f0e77eec3e531830bf593be4a72c5fe166fcf9605f26cb62882a9bf61d9f",
+    "/Users/taytrrip/slug/set50-career-preview-reference/input_index.json": "319f9586b5c788aa2ad44963c1a8a073793a6dab2f765c5c09124952ff784987",
+    "/Users/taytrrip/slug/set50-career-preview-reference/source_index.json": "73bebfc276a3192fe4b1236e967afdf661634836547ac2708da72dec754481d4",
+    "/Users/taytrrip/slug/set50-career-preview-reference/lineage.json": "ab07f17e2ff184e0349f5e73e53c5af3a2c630361e36957ce7c3d11e66ffce61",
+    "/Users/taytrrip/slug/set50-career-preview-reference/verification.json": "d224781608fe4fabc80724409df21afef12182a9d91d12d20816d94e5c7cebba",
+    "/Users/taytrrip/slug/set50-career-preview-reference/corpus.json": "70cec03c5ef89765b5b929f41b4fd4314f5dd3a4dcbbae05521fbffc6cbddc8a",
+    "/Users/taytrrip/slug/set50-career-preview-reference/inputs/engine_transport_excerpt.py.txt": "16bd03a97b83660c7250bbacd897727539062a35e13f33c0c4f75af9cb3294d5",
+    "/Users/taytrrip/slug/set50-career-preview-reference/inputs/prior-schema47.py": "9df84b0ee17acb7cb7d1da3a56098dcebe069f8dfe13637c1a23db8e3ea73338",
+    "/Users/taytrrip/slug/set50-career-preview-contract.md": "5cf347a9e402ae46e4682728733dc637d997a1f702d11ddd65c9f8ebd04efeeb",
+    "/Users/taytrrip/slug/set50-contract-freeze.json": "a59c4b4b6b11fa28f36bb4cdec9db6f4aecc8c7a101a4e34c89cd49b6cc4a11a",
+    "/Users/taytrrip/slug/set50-preview-bounds.json": "4966c8c3636568f669ddcb0e71b750e728ea944bc9731b9bccb659f350fd743f",
+    "/Users/taytrrip/slug/set50-reference-dependency-review-attempt1.json": "681f55c747ef191387b1618208983a62ffc67ccb4eca99ee8bc0ca7e12bb7ab6",
+    "/Users/taytrrip/slug/set50-reference-independent-audit.py": "1736d9cfa357492abe0134dab94dd00daabb4d2ea58f16fde115b24c173b69da",
+    "/Users/taytrrip/slug/set50-reference-independent-arithmetic-audit.json": "91823d54d6790db3d276b0dd20674eb44f0605ba33f395ed9c24999b9c18aed3"
+  },
+  "inventory_checks": {
+    "indexed_files": 101,
+    "indexed_bytes": 43754566,
+    "pinned_inputs": 89,
+    "exact_file_membership": true,
+    "all_regular_nonsymlink": true,
+    "all_hashes_and_sizes_match": true,
+    "source_and_input_map_matches_current": true,
+    "preserved_prior_files_checked": 50,
+    "unchanged_legacy_reference_files": 151
+  },
+  "counts": {
+    "compositions": 13,
+    "dtos": 252,
+    "codec_cases": 184,
+    "protocol_cases": 35,
+    "portrait_protocol_cases": 34,
+    "owner_cases": 7,
+    "state_cases": 145
+  },
+  "reproduction": {
+    "author_executed": true,
+    "reviewer_reran_producer": false,
+    "python_versions": [
+      "Python 3.9.6",
+      "Python 3.14.3"
+    ],
+    "different_hash_seeds_and_timezones": true,
+    "complete_bytes_identical": true,
+    "logs_and_outputs_hash_verified": true
+  },
+  "independent_stored_arithmetic_audit": {
+    "path": "/Users/taytrrip/slug/set50-reference-independent-arithmetic-audit.json",
+    "sha256": "91823d54d6790db3d276b0dd20674eb44f0605ba33f395ed9c24999b9c18aed3",
+    "no_producer_import": true,
+    "no_engine_execution": true,
+    "original_attempt1_12_compositions_unchanged": true,
+    "attempt4_13_compositions_unchanged": true
+  },
+  "resolved_findings": [
+    {
+      "topic": "Inherited typed and frame grammar",
+      "resolution": "Accepted-time window, Snapshot state/error/ID rules, cancelled Job code, nested/null-job caps and request/response LF accounting are explicit with finite controls."
+    },
+    {
+      "topic": "Known terminal immutability",
+      "resolution": "A known terminal supplies its own full canonical commitment even without a separate digest; regression and metadata replacement controls refuse."
+    },
+    {
+      "topic": "Selected portrait job",
+      "resolution": "Fresh portrait checks bind selected full View/job/store/activation/pair and private whole-result commitment; same-result different-job substitution refuses."
+    },
+    {
+      "topic": "Whole Current prefix",
+      "resolution": "Unrelated events change prefix/recipe seed while selected totals remain unchanged; exact captured-authority checks are distinguished from later token replay."
+    },
+    {
+      "topic": "Rounded score boundary",
+      "resolution": "Explicit inherited score component bounds reject damage score27000 after final tick/end/final state, scores and outer digest are coherently rebound."
+    },
+    {
+      "topic": "Model error categories",
+      "resolution": "Capture refusals use abstract refusal_category with explicit per-case semantics, preserving inherited runtime errors rather than prescribing invented wire mappings."
+    },
+    {
+      "topic": "Scope of owner and engine validation",
+      "resolution": "Owner schema checks captured prefix/totals only; frozen old Python simulation derives expected transcripts. State counters are symbolic requirements, not measured runtime entries."
+    }
+  ],
+  "limitations": [
+    "All13 composition authority/events/assignments are modeled. Public Set49 evidence is only pinned future acceptance input; this corpus authenticates no admission, chain finality, live session, source journal or signature.",
+    "Status Pin validation is intentionally finite to two old fixture Pins; it is not a general public source validator.",
+    "The synthetic 256-total Pair is a structural bound positive without a matching trusted owner claim.",
+    "The independent reviewer read all new producer/schema/state/repro source and checked stored formulas/hashes; author ran dual-Python simulation/reproduction. No new Go, Argon, renderer, network, journal, GUI, actual deadline or thread execution was performed by reviewer.",
+    "Root owns final freeze/reference-only commit and runtime authorization; this passed review is not implementation or product acceptance."
+  ]
+}

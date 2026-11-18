@@ -1,0 +1,40 @@
+def bounded_engine_state(v,init):
+ integer(v['stamina_q'],0,init['max_stamina_q'])
+ for k in ['damage_taken_q','damage_dealt_q']:integer(v[k],0,2700000000-1)
+ for k in ['thrown','landed','significant','knockdowns']:integer(v[k],0,180)
+ integer(v['control_q'],0,630000000);integer(v['round_knockdowns'],0,3)
+ req(v['significant']<=v['landed']<=v['thrown'])
+ return v
+
+def engine_result(v,inp,context):
+ v=exact(v,RESULT_TEMPLATE);integer(v['version'],1,1);req(v['engine_id']==ENGINE.ENGINE and v['input_id']==sha(ENGINE.INPUT_DOMAIN+J(inp)))
+ array(v['initial'],2,2);v['initial']=[ordered(x,RESULT_TEMPLATE['initial'][i],signed={'/form_q':(-100000,100000)})for i,x in enumerate(v['initial'])]
+ for x in v['initial']:
+  integer(x['jitter_q'],920000,1080000);integer(x['max_stamina_q'],60000000,214000000);integer(x['ko_threshold_q'],64000000,130000000)
+  for k,value in x['effective'].items():integer(value,1,130000000 if k=='skill'else 110000000)
+ array(v['rounds'],1,3);rounds=[]
+ for ri,r in enumerate(v['rounds']):
+  r=exact(r,['number','ticks','end','recovery']);integer(r['number'],ri+1,ri+1);array(r['ticks'],1,60)
+  r['ticks']=[ordered(t,RESULT_TEMPLATE['rounds'][0]['ticks'][0])for t in r['ticks']]
+  for ti,t in enumerate(r['ticks']):
+   integer(t['number'],ti+1,ti+1);integer(t['actor'],0,1);enum(t['strike'],ENGINE.STRIKES);enum(t['stoppage'],['','ko','tko_referee','tko_three_knockdowns']);req(t['hit']or(t['damage_q']==0 and not t['significant']and not t['knockdown']and t['stoppage']==''));req(not t['stoppage']or(ri==len(v['rounds'])-1 and ti==len(r['ticks'])-1))
+   integer(t['damage_q'],0,8999999)
+   for side,x in enumerate(t['states']):bounded_engine_state(x,v['initial'][side])
+  r['end']=ordered(r['end'],RESULT_TEMPLATE['rounds'][0]['end']);req(r['end']==r['ticks'][-1]['states'])
+  if r['recovery']is not None:
+   r['recovery']=ordered(r['recovery'],RESULT_TEMPLATE['rounds'][0]['recovery']);req(ri<2 and len(r['ticks'])==60 and not r['ticks'][-1]['stoppage'])
+   for side,x in enumerate(r['recovery']['states']):bounded_engine_state(x,v['initial'][side])
+  if ri<len(v['rounds'])-1:req(r['recovery']is not None and not any(r['recovery']['corner_stopped'])and len(r['ticks'])==60)
+  rounds.append(r)
+ v['rounds']=rounds;v['final']=ordered(v['final'],RESULT_TEMPLATE['final']);req(v['final']==(rounds[-1]['recovery']['states']if rounds[-1]['recovery']else rounds[-1]['end']))
+ v['scores']=ordered(v['scores'],RESULT_TEMPLATE['scores']);req(v['scores']==[ENGINE.scores(s)for s in v['final']]);v['draw_counts']=ordered(v['draw_counts'],RESULT_TEMPLATE['draw_counts']);req(sum(v['draw_counts'].values())<=65536)
+ for k in ['form_a','form_b','chin_a','chin_b']:integer(v['draw_counts'][k],1,256)
+ integer(v['draw_counts']['combat'],3*sum(len(r['ticks'])for r in rounds),65536)
+ enum(v['method'],METHODS);hx(v['winner'],True);integer(v['end_round'],1,3);integer(v['end_tick'],1,60);req(v['end_round']==len(rounds)and v['end_tick']==len(rounds[-1]['ticks']));a,b=inp['a']['prospect_id'],inp['b']['prospect_id'];last=rounds[-1];m=v['method']
+ if m in ['decision','decision_draw']:
+  req(len(rounds)==3 and len(last['ticks'])==60 and last['recovery']is None and not last['ticks'][-1]['stoppage']);x,y=[s['total_tenths']for s in v['scores']];req(m==('decision_draw'if x==y else'decision')and v['winner']==(''if x==y else a if x>y else b))
+ elif m in ['double_corner_stoppage','tko_corner']:
+  req(last['recovery']is not None);st=last['recovery']['corner_stopped'];req(any(st));req(m==('double_corner_stoppage'if all(st)else'tko_corner'));req(v['winner']==(''if all(st)else[b,a][st.index(True)]))
+ else:req(last['recovery']is None and last['ticks'][-1]['stoppage']==m and v['winner']==[a,b][last['ticks'][-1]['actor']])
+ if context=='core':req(v==ENGINE.simulate(inp))
+ req(len(J(v))<=CAPS['Result']);return v

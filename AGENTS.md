@@ -73,7 +73,10 @@ version.
   → `slug-career-awards` (set 49, released on master at `0a4374de`).
   Set 49 implementation is `5b590f40`, stacked from completed Set 48 topic
   `dd74828f`; its normal package and complete 900-second closeout passed.
-  Continue from the completed topic's maintenance tip for the next set.
+  Set 50 continues on `slug-career-preview`, stacked from Set 49's completed
+  topic maintenance tip `b3150b49`. Its additive unrecorded practice contract
+  is `CAREER_PREVIEW.md`; freeze and independently review reference expectations
+  before runtime implementation. Preserve the old XP0 Preview family and engine.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

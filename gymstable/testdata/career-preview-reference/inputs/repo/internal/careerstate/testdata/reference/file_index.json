@@ -1,0 +1,49 @@
+{
+  "files": {
+    "README.md": {
+      "bytes": 5264,
+      "sha256": "0588b0c293cdca32de844ebe3f095dc574921ea7f49493e96a87425582ab6b42"
+    },
+    "corpus.json": {
+      "bytes": 200207,
+      "sha256": "89fbf2b1d16793b544d84922311017303832cdba89203f8a73fe4b79b3d66d42"
+    },
+    "generate.py": {
+      "bytes": 18734,
+      "sha256": "9cd4b150c274ef4bc54b0a21e35013d86b540405bbf003c8b7b0dd8899a53bdc"
+    },
+    "input_index.json": {
+      "bytes": 2976,
+      "sha256": "e3b2e43e5f05813dde7fcf03ebfd542175b47668eb083b163b0b7431d4086be6"
+    },
+    "inputs/CAREER_ACCOUNTING-preflight.md": {
+      "bytes": 20627,
+      "sha256": "8088f39815369f5d4840f9f33f1a7761f5b46486a4c97aa717337eda905b48bd"
+    },
+    "inputs/CAREER_ACCOUNTING.md": {
+      "bytes": 20392,
+      "sha256": "d676a63454dc19360b94337227cd96d56b4f4879e89bf143e89d229ab4c0cfa1"
+    },
+    "inputs/FIGHTER_CAREER.md": {
+      "bytes": 3076,
+      "sha256": "07de417554cf2a61085e8545f78fbf43bb5b02fc63a3d3d4d6889acadbe193d1"
+    },
+    "inputs/chaincfg_SignedCheckpoint_MarshalJSON.txt": {
+      "bytes": 718,
+      "sha256": "4c069820c1183838fe03ce39e62393c0bb9661557028d52f05bfd7ab5b76bfab"
+    },
+    "inputs/constructor-preflight.diff": {
+      "bytes": 1142,
+      "sha256": "a23f76a4b5ac3480cebc62b292abfd8a0086a79f49e5256ae95c386102048f9f"
+    },
+    "inputs/gymresult_types.go.txt": {
+      "bytes": 562,
+      "sha256": "6d05c2a2f68c9fdf38cc74e71b230ac4172b1d7b149c1f9a85892c848545e506"
+    },
+    "inputs/seednode_types.go.txt": {
+      "bytes": 559,
+      "sha256": "f53dff124db30f2da93f831a494ce5e9561bb6ea2aa1134ce809da7b2c195e1d"
+    }
+  },
+  "version": 1
+}

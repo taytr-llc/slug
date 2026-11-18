@@ -1,0 +1,71 @@
+{
+  "status": "frozen",
+  "scope": "independent normative corpus freeze only",
+  "started_at": "2026-11-17T08:17:52.530310+00:00",
+  "commands": [
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "-S",
+        "/Users/taytrrip/slug/set42-fight-reference/verify_reference.py"
+      ],
+      "hash_seed": "0",
+      "timezone": "UTC",
+      "elapsed_seconds": 5.424545375004527,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "/opt/homebrew/bin/python3",
+        "-B",
+        "-S",
+        "/Users/taytrrip/slug/set42-fight-reference/verify_reference.py"
+      ],
+      "hash_seed": "87123",
+      "timezone": "America/Los_Angeles",
+      "elapsed_seconds": 2.8447033340053167,
+      "exit_code": 0
+    }
+  ],
+  "files": {
+    "reference_bout.py": "c3247a0d856270cc5043b5767ace9f628b2efb9cd120d786773f9221d928bd7f",
+    "generate_corpus.py": "1effa2f9c1aeaa51fc5966e0486dc8e6833f932cc5256adc24283875d9d0f487",
+    "verify_reference.py": "1c06a31f0d6d4551df822601435fc7fad555b0f4e540d18e342a3a44f59c46a5",
+    "select_public_cases.py": "e5e483e7c134b53c5ee5d2b0891e8ca23c3fe828626fdf6403be8537d7e6d114",
+    "select_symmetric_cases.py": "dd815dedc88a9878c626362374fb29c39bb2d6a167c7b11732912151ece5b903",
+    "input_hashes.json": "7d1a9c7a27bc984b2f253d5e7bbe2f1d5bf093a23856309a8e62b8c6982566e1",
+    "selected_public_cases.json": "ff3a23678aee4fe8c56aa81d11a3260fcafa3da9916880ca6369e49efbbbf869",
+    "search_unequal.json": "f9d5e97da29de6bd993337bf60c977c66eeb71351cef9cdadb8e32957bbe8262",
+    "search_balanced.json": "01b4419eb3007f560030c76b3b5d60c39542c517b48799766347cb13b120045f",
+    "bout_v1.json": "87bd70465fa8c4e83dd55783e4ea0ef8b7f6475ffc74dde86475fd07b0d6ee84",
+    "README.md": "4af692b6314a0c666f1209f8dc400bcc6a4c3a8afdfbe1215ab4378aea7a0687",
+    "capture_corpus.py": "99e9510395d51eccd66b337645789cad6209bdcf61fe8668a8b31ed66cf638c8",
+    "inputs/condition/condition_v1.json": "4f5be20e0e6ceb6b2ef4ee4063fffd2691fecb7a71d984f4624eb97162a9dbfa",
+    "inputs/condition/input_hashes.json": "1ab9a78f6246236c87fb9b0304fe5b786b9d5f880f50d18a33ef3b12725419a3",
+    "inputs/condition/inputs/BRAWLCHAIN_SPEC.md": "fe7dc0dc404c35886d6119576722e5b9556b150e1f4f98738562f387d928751d",
+    "inputs/condition/inputs/baseline/dna_v1.json": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+    "inputs/condition/inputs/baseline/reference_dna.py": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+    "inputs/condition/inputs/fight_sim.py": "37ff08917ed720e3d9c4f3b14508c57b08d830f9f4cb01833fa412dbca9b6422",
+    "inputs/condition/inputs/fighter-condition-contract.md": "8ee75162fcd631cae15b33804c787690e60bf4997fae6b7cd536bb771908e654",
+    "inputs/condition/inputs/lifecycle_rating_reference.py.txt": "aa97b6f197d78d0f6245e5c122b482c5e5b1d6e34a74db5224e5f535cbda8d64",
+    "inputs/condition/inputs/rating_study.py": "e561ea57a5dc674f82ce9b881c9de5b83c31d2caf21c209d538c03554384bc70",
+    "inputs/condition/reference_condition.py": "924152a89241e9fa6d60aa27ba19666d3a3f65fdf53bd3c0cf6f89c8db4e946c",
+    "inputs/fight_sim.py": "37ff08917ed720e3d9c4f3b14508c57b08d830f9f4cb01833fa412dbca9b6422",
+    "inputs/manifest/baseline/dna_v1.json": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+    "inputs/manifest/baseline/reference_dna.py": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+    "inputs/manifest/manifests_v1.json": "75eb01acb79f45b74a6445edf956c5e3f3b68024998ae56ab44a7ed07cf15f3d",
+    "inputs/manifest/reference_manifest.py": "9fb1a814047f2329066bb19596e910ac7c4c7aadfce4b8f994e02dab81e51b4f",
+    "inputs/manifest/tables_v1.json": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+    "inputs/set42-fight-contract-draft.md": "abb5b54edd921855b81dc5b99ef29b2ac94cadc9296dcd2981af4b57ad25040f",
+    "inputs/set42-joint-contract-approval.json": "40db1444335f0d7af181601c80d7114da745cec7600004221aac3d776c39bf00",
+    "inputs/set42-preview-integration-draft.md": "149d908fdbd1436b1f1650095c0207f377f5304a5987922bf0cd39ad5949e589",
+    "inputs/set42-preview-ui-draft.md": "ee1d611c4bf6029746be6e487a9c2d5b0ee9ae1e20bdb4811a5450b6f33145a2"
+  },
+  "go_source_or_output_read": false,
+  "calibration_status": "not_run",
+  "requires_root_release_before_go_execution": true,
+  "source_changes": [],
+  "completed_at": "2026-11-17T08:18:00.814381+00:00",
+  "log_sha256": "6f9e8ee50cc3b8a6a2533ca5489f0dcc6b3dd133086c23204622fd6b4c157b79"
+}

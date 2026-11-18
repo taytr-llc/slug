@@ -1,0 +1,16 @@
+{
+  "status": "frozen",
+  "created_at": "2026-11-18T22:01:09.238460+00:00",
+  "contract": "/Users/taytrrip/slug/set50-career-preview-contract.md",
+  "contract_sha256": "5cf347a9e402ae46e4682728733dc637d997a1f702d11ddd65c9f8ebd04efeeb",
+  "reviewed_draft_sha256": "471b28a6cf428fbf1b4fef9bfdc36218f885d299fba1265f205c77fd5f2ab630",
+  "independent_review_sha256": "5519eb8f09fbe4a6f3a84409a938a0a8082209343f7fce66e22eb1f5ef31843f",
+  "delta": "Only document title and status paragraph; remaining bytes identical",
+  "body_sha256": "a710842ec7926e85e2abb3820ea529f292488713771bd6cd7e2d0020a46dcc60",
+  "implementation_basis": "5b590f40a3ebef9c643f05dc8daa578baca66b1c",
+  "reference_location": "gymstable/testdata/career-preview-reference",
+  "reference_generation_authorized": true,
+  "Go_runtime_authorized_only_after_reference_review_and_commit": true,
+  "new_gameplay_policy": false,
+  "D74_open": true
+}
