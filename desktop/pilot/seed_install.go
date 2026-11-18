@@ -111,7 +111,7 @@ func (s *StableController) AttachSeeds(ctx context.Context, x *gymseed.Store) er
 		}
 		s.mu.Lock()
 		defer s.mu.Unlock()
-		if !stableCacheFits(s.cache, s.receiptSlot, s.previewBytes+s.entryBytes+s.eventBytes+s.cardBytes+MaxSeedMetadataSize) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.previewBytes+s.entryBytes+s.eventBytes+s.cardBytes+MaxSeedMetadataSize+s.boutBytes) {
 			return gymseed.ErrCapacity
 		}
 		s.seedStore = x

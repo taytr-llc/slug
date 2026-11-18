@@ -1,0 +1,177 @@
+{
+  "status": "preserved_pre_freeze_revisions",
+  "scope": "No Go output supplied any correction; genuine source inputs unchanged.",
+  "drafts": {
+    "set47-reference-draft-attempt1": {
+      "path": "/Users/taytrrip/slug/set47-reference-draft-attempt1",
+      "files": {
+        "bout_v1.json": {
+          "sha256": "fd7f01242cb91686ef914f295b1cb9c36a77e613054489f95c8c2a3f8d6c432d",
+          "bytes": 26341714
+        },
+        "common.py": {
+          "sha256": "b52f42e2e40e4e36b685d83d476bc33e8b04a890d251e2f371aed8ec6fa1768c",
+          "bytes": 13409
+        },
+        "failure.json": {
+          "sha256": "df351e734369c94d209770bd047ae5a30428e2ccdec328085515937e47d63b9f",
+          "bytes": 1010
+        },
+        "input_index.json": {
+          "sha256": "c487dc7fd98bfcc601e73e17627a8aa35ea344719366a618ccb26a24bde91517",
+          "bytes": 23645
+        },
+        "reference_bouts.py": {
+          "sha256": "705625098869514cc569e7069655063508aee883e4b1a30b3ca1723c8166c39e",
+          "bytes": 13854
+        },
+        "reference_state.py": {
+          "sha256": "a3dca942e5c65bb664caed2abe20cd935ffd5e049a1379b704cd5079b64e891f",
+          "bytes": 5494
+        },
+        "schema.py": {
+          "sha256": "94465647cc86b4e1b110e4ac7a31bc0157dccfbd10e194032bdf7d8b064287db",
+          "bytes": 27158
+        }
+      }
+    },
+    "set47-reference-draft-attempt2": {
+      "path": "/Users/taytrrip/slug/set47-reference-draft-attempt2",
+      "files": {
+        "bout_v1.json": {
+          "sha256": "257298acff5ed5887da2cb319011a641dd18dc18a9a66c2deebd1a36592d3339",
+          "bytes": 27683285
+        },
+        "common.py": {
+          "sha256": "7e3728cf77251f9e92e2daa709cc8a66a68c245919ea467944de7ed89e41a871",
+          "bytes": 13409
+        },
+        "failure.json": {
+          "sha256": "94462ec33ea2dd8b6d0c483850e8544fa15beaf6639301cfe39bb459fd8d1fee",
+          "bytes": 821
+        },
+        "reference_bouts.py": {
+          "sha256": "705625098869514cc569e7069655063508aee883e4b1a30b3ca1723c8166c39e",
+          "bytes": 13854
+        },
+        "reference_state.py": {
+          "sha256": "a3dca942e5c65bb664caed2abe20cd935ffd5e049a1379b704cd5079b64e891f",
+          "bytes": 5494
+        },
+        "schema.py": {
+          "sha256": "94465647cc86b4e1b110e4ac7a31bc0157dccfbd10e194032bdf7d8b064287db",
+          "bytes": 27158
+        }
+      }
+    },
+    "set47-reference-draft-attempt3": {
+      "path": "/Users/taytrrip/slug/set47-reference-draft-attempt3",
+      "files": {
+        "bout_v1.json": {
+          "sha256": "e658c6e7bce2b2236458f9bc9e5bd8d76b9960503e3eaf5a16ace3f45c0fbb99",
+          "bytes": 31406959
+        },
+        "note.json": {
+          "sha256": "dd0127d0dad85d8de3ef351e7ddaca47b98dd91883468a489a04d01a5820fd13",
+          "bytes": 305
+        }
+      }
+    },
+    "set47-reference-repro-attempt1": {
+      "path": "/Users/taytrrip/slug/set47-reference-repro-attempt1",
+      "files": {
+        "README.md": {
+          "sha256": "dcac594f623107edb9cca44d2f471eab387e126438b4729bb2fffbe2d74753b9",
+          "bytes": 10822
+        },
+        "ast-version-diff.json": {
+          "sha256": "65cff3e3d58efd46b6332e7f4f0c55ebbd1bc1f9180cdaf4d2496d13b6839d40",
+          "bytes": 823
+        },
+        "bout_v1.json": {
+          "sha256": "17b4c3ffd91785c31ff95575f1e3c2a8a8ea5d6862391e661dbe898766b44eac",
+          "bytes": 34267037
+        },
+        "check_reproducibility.py": {
+          "sha256": "84e41240dd7192ee05b48a1b7916666f4521527a92d4c1d9375c21125a899fe7",
+          "bytes": 2534
+        },
+        "common.py": {
+          "sha256": "7e3728cf77251f9e92e2daa709cc8a66a68c245919ea467944de7ed89e41a871",
+          "bytes": 13409
+        },
+        "python-0.log": {
+          "sha256": "6172f130f687c97ab18b9a67542737c99d87d5224a5faba7b81ca80697461447",
+          "bytes": 1013
+        },
+        "python-1.log": {
+          "sha256": "403da1cf1c10c81e6a4f906c3ffa80a829242f51e496febb416c2ae327c0a484",
+          "bytes": 359
+        },
+        "report.json": {
+          "sha256": "c7e1edcc90019a88938dec75d3a144022a4fcfd1db3ea556bed0d58109958ef7",
+          "bytes": 18393
+        },
+        "verify_reference.py": {
+          "sha256": "a5dac72ab2a5a927fb03768bf5259c8e35c5ee1b28d207550407e8fe035b9024",
+          "bytes": 7595
+        }
+      }
+    },
+    "set47-reference-repro-before-creation-correlation": {
+      "path": "/Users/taytrrip/slug/set47-reference-repro-before-creation-correlation",
+      "files": {
+        "bout_v1.json": {
+          "sha256": "64b580743e8f79db599611762a33b370deb5b9a1ad976c52b668eb0356a7f9c4",
+          "bytes": 34267394
+        },
+        "note.json": {
+          "sha256": "9be85a507ab5d79c61bf737e142499e1f25faefe9b8dd8332e2be7a46799efce",
+          "bytes": 393
+        },
+        "python-0.log": {
+          "sha256": "471a1028978ae7690144f61a35cc5d1f0a6392dc054c90e0c6cceed2ef90e2f5",
+          "bytes": 1013
+        },
+        "python-1.log": {
+          "sha256": "03a8936cd0648dd414801ed0392762da70f139e46c3581b2441b308e5a8283fb",
+          "bytes": 1009
+        },
+        "reference_bouts.py": {
+          "sha256": "580653f646f50aee8b638d91b5f534c9d55a16adf4bc7375087efb89732c01d5",
+          "bytes": 19178
+        },
+        "report.json": {
+          "sha256": "d24cc18c70f0df3967417a26e77bd183ac59c3179cf28304247d77858956cbf6",
+          "bytes": 19867
+        },
+        "schema.py": {
+          "sha256": "f9d9aa874e60101b8a607b3807571b7e410ca883a97b0a83524a42f8850d4509",
+          "bytes": 29082
+        }
+      }
+    }
+  },
+  "corrections": [
+    "Modeled prime admission/roster chronology only; moved synthetic birth/admission one millisecond earlier.",
+    "Canonical nested Pin/View ordering rebuilt from frozen typed order.",
+    "Python3.9/3.14 AST dumps differed only in provenance metadata; exact selected source-byte framing replaced version-dependent AST serialization. All semantic arrays were equal.",
+    "Added explicit native known journal/source creation-time correlation before final freeze; no fight arithmetic change."
+  ],
+  "local_bytecode_removed": [
+    "__pycache__"
+  ],
+  "review_candidate_preservation": {
+    "path": "/Users/taytrrip/slug/set47-reference-candidate-before-parser-review",
+    "file_index_sha256": "92452eb87422760cff4c144a36292826ab05801bdfc746cbf45624bddfb01c43",
+    "corpus_sha256": "0cd84c99a44ea325d55eac8b4ed7c6afc8aaafb67db850aeefa69cb874c14360",
+    "verification_sha256": "458cd06ecbf0edee3bf763328280f9ecebfcc723a987511b219e9b35785c23d9",
+    "full_tree_preserved": true
+  },
+  "cap_case_base_preservation": {
+    "path": "/Users/taytrrip/slug/set47-reference-parser-review-before-cap-base",
+    "corpus_sha256": "2da499f22d4f284a65a0c0b70158ad19d82d1992054f5b42dc4cdc6f3b94ec54",
+    "verification_sha256": "a042a313149c70b6936bc7785df2ee447b209b22aba6048813da9668f5b4cdfa",
+    "reason": "Successful corrected run preserved before restoring original cap-case base/name; no arithmetic change."
+  }
+}

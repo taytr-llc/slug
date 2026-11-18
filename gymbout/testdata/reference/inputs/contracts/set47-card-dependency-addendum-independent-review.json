@@ -1,0 +1,95 @@
+{
+  "status": "passed",
+  "findings": [],
+  "scope": "Independent additive dependency review only; no Set47 implementation, oracle execution, runtime comparison, package or release approval.",
+  "at_utc": "2026-11-18T02:26:23.578716+00:00",
+  "addendum": {
+    "path": "/Users/taytrrip/slug/set47-card-dependency-addendum-draft.md",
+    "sha256": "b0c89f487f15f38de34d5e5692cac0462f56b4b404ed12247bd454f01a5f07a7"
+  },
+  "original_set47_freeze": {
+    "path": "/Users/taytrrip/slug/set47-contract-freeze.json",
+    "sha256": "e023ddb4c043ae09b6edd826e0fbd1765d3e8bd02c34bcf0ce0ed10205d8c2fe"
+  },
+  "original_contract_sha256": {
+    "set47-core-contract-draft.md": "f73db38d7860b6fba7d57370fbbb58ad24377082a253ad234e57a22385f0997b",
+    "set47-helper-contract-draft.md": "eabdf5e294fe26b6acb72ac67ff3c87b4764a366422414a1c202f8fa6622b691"
+  },
+  "set46_runtime_sha256": {
+    "gymseed/card_source.go": "6f19b32155b713219d94915e369799c41a62581f6d164e120f9128afb8c0aef7",
+    "gymcard/read.go": "dc5996ac2973dabfa6c28389f859439375100f53368d7a1643d223f55f38ecb5",
+    "gymcard/actions.go": "d1041f6bcfb274e628e68c61914080898297fe3cd99ee6d39e2668c269809855",
+    "gymcard/audit.go": "d707b5a666d7f70622d930ec257517687b20ed6faff8c2344195c934af53294f",
+    "gymcard/store.go": "4ea9b83dafb683ca0a079050f37212e63af7d1580fc7ea14e13c7b0615ee40b8",
+    "desktop/pilot/card_controller.go": "fdfd317c779c1ea45d81ce0a45a1adb5f816efd69166eaa9fad076a157816842"
+  },
+  "set46_reviewed_test_sha256": {
+    "gymseed/card_prepared_view_test.go": "3f1acac02861c9a0e3f791e42bef50b9140c2a1186bdd8d3f3636de2a44f780c",
+    "gymcard/read_liveness_test.go": "831f83b2f6f341bdc198663c24bebdd257df666f34055f2f3db6adff4a16a9a7",
+    "gymcard/audited_index_test.go": "20579c64f6b02cc32bb784429f9acc9eab1599ae9153b374016e9c6bb2e96d2f",
+    "desktop/pilot/card_metadata_deadline_test.go": "c8cdeefbf622e067a6f0fd598fb60430a9ebf2b5e26f36cd04778cdd11f1736b",
+    "desktop/pilot/card_capacity_account_test.go": "41dcd373cec52e26c94bcb5b0f3eb5cc7f72cfdcc9e8285cd547c70f772e342b"
+  },
+  "evidence_sha256": {
+    "set46-card-read-liveness-independent-review.json": "60d4b0f934ac7843ad67000060b47dbf4620b30d09b8abff7c01d57dd0e64e47",
+    "set46-card-read-liveness-final-reviewed.patch": "f93c85160be7c8c36a5147d8fd4f508c9e8ee896f8f9e6c7bb63909082019df2",
+    "set46-card-liveness-engineering-amendment.json": "b48a45ce117d226dce351b629c8a20794c19433ed9f6d69410372158690cc2eb",
+    "set46-card-read-liveness-index-addendum.md": "e2ac5b50b605906536e0aede1874ca28a58dbc05bbcf958ea3e05f991d65307e",
+    "set46-card-read-liveness-index-addendum-pre-budget.md": "9179e4a5f2414cb40ebfa818c088aa88823f2812962ae6f951b341057b8e4861",
+    "set46-card-metadata500-final.json": "19d578f106f828aaa04634171016ea19558b89118a94c9a4f161b69c3f5b4fb2",
+    "set46-card-deadline-checks.json": "db2d3d4000643e40e32e398193fef0b685a11ba4286167629437fde41e9bc2ba",
+    "set47-contract-bounds-formula.json": "64735cd1e17fdd5c2456f0a0d94f996d11bee92094255384d0f383c99f042c7f",
+    "set47-reference-draft-before-dependency-addendum.json": "64e9a55490e234427777b76911de872ccaaf2a3fc214606cde6f40d435129455"
+  },
+  "allowed_dependency_delta": [
+    "Reuse only the existing Set46 prepared source-view sequence: initial original-session authorization, owned immutable source Info and out-of-lease row preparation, fresh concrete seed semantic validation, then final original-session/source/creation/digest guard.",
+    "Reuse only the existing bounded private Card ID/cutoff/raw-SHA256 index. Full Open canonical/semantic audit and successful validated synced inserts establish its bytes; selected current DB bytes must match before owned decoding. No new Set47 Card cache, persistent trusted flag, public import or caller verdict is authorized.",
+    "Derive compact at-most-five source projections and canonical hashes from that checked owned Card value without repeated semantic validation per bout; retain fresh current seed evidence validation and immutable source comparison before disclosure."
+  ],
+  "unchanged": [
+    "All Set47 exported DTO fields, canonical ordering, null/signed-path grammar, byte/depth/cache/frame/storage caps, IDs and digest domains/preimages.",
+    "Frozen Set42 fighterbout version1 engine equations, RNG, standard3rounds, booked Bout.Seed, exact noon cutoff, original WorkHash/birth/ownership attribution, conditionv1 and zero XP/training bonuses.",
+    "Immutable saved transcript and first creation bytes, authorized early replay without engine work, new-run source-conflict refusal, separate current conflict overlay and no result/record/XP/title authority.",
+    "No engine simulation or engine Input regeneration on retained transcript reads/replay; no source projection, engine or other expensive work on cached polls/private native transport.",
+    "Original authorization, held-compatible View, source lifetime/creation, cancellation/Close distinctions, post-sync uncertainty and joined synchronous work.",
+    "Original Set47 v1 contracts/freezes/input copies. This addendum supplements explicit dependency assumptions; it does not silently redefine historical contract bytes."
+  ],
+  "budget_separation": {
+    "card_metadata_ms": 500,
+    "card_authorization": "Explicit Set46 engineering amendment b48a45ce; measured owner evidence19d578f1 separately attributed.",
+    "bout_metadata_ms": 250,
+    "bout_gate_status": "unproven; not inherited from the Card500ms budget or from existing measurements",
+    "requirement": "Actual complete-path Set47 measurement remains mandatory; a failure requires a separately reviewed explicit engineering amendment, not automatic widening or retry-only acceptance.",
+    "other_limits_changed": false
+  },
+  "original_input_preservation": {
+    "input_index_sha256": "ea71df113574b1a7500f0ceac0560b08cd18fa5350cd65c17b24198299d98d51",
+    "input_count": 46,
+    "all_indexed_input_bytes_match": true,
+    "draft_capture_sha256": "64e9a55490e234427777b76911de872ccaaf2a3fc214606cde6f40d435129455",
+    "draft_files": 53,
+    "all_draft_bytes_match": true,
+    "engine_executed": false,
+    "corpus_generated": false,
+    "new_set47_runtime_or_outputs_read": false
+  },
+  "interpretation": [
+    "Original core section2 selected-card validation wording and section5 no-new-Card-cache wording, plus helper section5 source-cost wording, are explicitly superseded only for reuse of the subsequently reviewed Set46 implementation. The full current seed-source validation remains fresh.",
+    "The draft supplies no new expected output, no claim that the original package outcome_unknown has a proven branch attribution, and no retroactive250ms pass.",
+    "Formula bounds remain applicable because exported field shapes and family budgets are unchanged; this review performs no new engine or arithmetic generation."
+  ],
+  "remaining_adoption_bindings": {
+    "final_set46_commit": null,
+    "final_set46_source_inventory_or_freeze": null,
+    "owner": "Root may append a separately bound commit/inventory record after committing exactly the reviewed source bytes; no substitution of different source hashes is covered.",
+    "additive_set47_freeze": "Required before reference execution resumes; must bind this exact addendum/review and preserve the original v1 freeze and draft input inventory.",
+    "runtime_start": "Still waits for verified Set46 release and separate root dispatch."
+  },
+  "reviewer_actions": {
+    "repository_edits": [],
+    "contract_edits": [],
+    "reference_edits": [],
+    "tests_executed": [],
+    "oracle_executed": false
+  }
+}

@@ -67,7 +67,8 @@ version.
   → `slug-saturday-entry` (set 43, released on master at `e2761812`)
   → `slug-event-snapshot` (set 44, released on master at `1fc307e0`)
   → `slug-event-seed` (set 45, released on master at `dcc44829`)
-  → `slug-event-card` (set 46, scoped candidate card work in progress).
+  → `slug-event-card` (set 46, released on master at `5c11cbaf`)
+  → `slug-event-bouts` (set 47, retained candidate bout work in progress).
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review
@@ -409,6 +410,11 @@ does not understand. Never detach, replace, or clear the /data volume.
   authorize booking. Shared event/seed/card stores belong to the candidate parent,
   not the current login. Never infer professional record authority from XP or
   award results/training from a card. See EVENT_CARDS.md.
+
+- Set 47's saved candidate bout transcripts grant no professional/exhibition
+  records, XP, training, title or ownership. Preserve the booked noon inputs,
+  fixed seed and complete first result across replay; report current source
+  conflicts separately without rewriting history. See EVENT_BOUTS.md.
 
 - Set 39 adds explicitly pinned candidate service protocol 3 and a separately
   typed worker/outbox version 2. Preserve old services, workers and journals;

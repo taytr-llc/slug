@@ -42,7 +42,7 @@ func (s *StableController) BeginEventCapture(ctx context.Context, v, date string
 		s.mu.Lock()
 		defer s.mu.Unlock()
 		oldBytes = s.eventBytes
-		if !stableCacheFits(s.cache, s.receiptSlot, s.previewBytes+s.entryBytes+MaxEventCacheSize+s.seedBytes+s.cardBytes) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.previewBytes+s.entryBytes+MaxEventCacheSize+s.seedBytes+s.cardBytes+s.boutBytes) {
 			return gymevent.ErrCapacity
 		}
 		var id [32]byte

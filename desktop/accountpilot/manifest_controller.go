@@ -38,6 +38,7 @@ type manifestChild interface {
 // separately typed manifest child. Its immutable view lease never substitutes a
 // later token, even when a callback finishes after a reset or failed login.
 type ManifestController struct {
+	boutOwner                         *boutAccountOwner
 	cardOwner                         *cardAccountOwner
 	seedOwner                         *seedAccountOwner
 	eventOwner                        *eventAccountOwner                                                // new explicit route only; closed after child drain
@@ -579,6 +580,10 @@ func (c *ManifestController) Close() error {
 		}
 		err := c.detach(context.Background())
 		if c.store != nil {
+			if c.boutOwner != nil && c.boutOwner.store != nil {
+				err = errors.Join(err, c.boutOwner.store.Close())
+				c.boutOwner.store = nil
+			}
 			if c.cardOwner != nil && c.cardOwner.store != nil {
 				err = errors.Join(err, c.cardOwner.store.Close())
 				c.cardOwner.store = nil

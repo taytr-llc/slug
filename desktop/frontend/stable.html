@@ -85,6 +85,21 @@
       <h3>Unmatched fighters</h3><ul id="card-reasons" class="entry-eligibility" aria-label="Unmatched counts by reason"></ul><ul id="card-unmatched" class="entry-eligibility"></ul>
       <details><summary>Saved card evidence</summary><p id="card-evidence" class="note"></p></details>
       <p class="note">This card records candidate pairings only. Fight results, records, training and XP have not been awarded.</p>
+      <div class="saved-bouts" aria-labelledby="bout-heading">
+        <div class="section-top"><h3 id="bout-heading">Saved candidate bouts</h3><span id="bout-state">Sign in to view saved bouts</span></div>
+        <p class="note">Run a booked bout once with the standard engine and its fixed noon inputs. The saved candidate transcript awards no professional or exhibition record, XP, training, title or prize.</p>
+        <div class="actions"><button id="bout-refresh" type="button" disabled>Read booked bouts</button><button id="bout-clear" type="button" disabled>Clear displayed bout</button></div>
+        <ol id="bout-list" class="card-pairings" aria-label="Booked candidate bouts"></ol><p id="bout-empty" class="note"></p>
+        <div class="actions"><button id="bout-run" type="button" disabled>Run candidate bout</button><button id="bout-open" type="button" disabled>Open saved replay</button><button id="bout-check" type="button" disabled>Check saved result</button><button id="bout-cancel" type="button" disabled>Cancel bout request</button></div>
+        <p id="bout-message" class="note" role="status"></p><p id="bout-source" class="note"></p><p id="bout-overlay" class="note" role="status"></p>
+        <div id="bout-replay" hidden>
+          <p id="bout-asof" class="note"></p><div id="bout-fighters" class="preview-fighters"></div>
+          <div class="actions"><button id="bout-play" type="button">Play</button><button id="bout-previous" type="button">Previous step</button><button id="bout-next" type="button">Next step</button><button id="bout-restart" type="button">Replay from start</button><button id="bout-result" type="button">Show result</button></div>
+          <p id="bout-motion" class="note"></p><p id="bout-step"></p><ol id="bout-events" class="preview-events" aria-label="Saved candidate bout events"></ol>
+          <div id="bout-outcome" hidden><h4 id="bout-finish"></h4><table id="bout-scores" class="condition-table"><caption>Whole-fight scorecard</caption></table></div>
+          <details><summary>Saved bout identities</summary><p id="bout-evidence" class="note card-identities"></p></details>
+        </div>
+      </div>
       <div class="actions"><button id="card-history" type="button" disabled>Card history</button><button id="card-history-next" type="button" disabled>More card history</button></div><ul id="card-history-list" class="entry-history"></ul>
     </section>
     <section class="panel fight-preview" aria-labelledby="preview-heading">

@@ -1,0 +1,34 @@
+{
+  "status": "passed",
+  "corpus_sha256": "09f0430789328b9226fc4a24aae3cdb07beeb8b41d61b42cd33e4ba3121fa2ec",
+  "input_index_sha256": "f07c09d5a6c41a4909472cf023e3fbd64f17e49da9935b96af0237408bd82423",
+  "counts": {
+    "compositions": 11,
+    "dtos": 183,
+    "codec_cases": 1016,
+    "protocol_cases": 74,
+    "portrait_cases": 48,
+    "calendar_cases": 3861,
+    "calendar_refusals": 9,
+    "identity_cases": 11,
+    "state_cases": 16,
+    "initialization_cases": 36
+  },
+  "genuine_source_compositions": 1,
+  "modeled_source_compositions": 10,
+  "legacy_engine_control_methods": [
+    "decision",
+    "decision_draw",
+    "ko",
+    "tko_corner",
+    "tko_referee",
+    "tko_three_knockdowns"
+  ],
+  "transport_expensive_dependencies_trapped": true,
+  "pinned_TZif_independent_library_crosscheck": true,
+  "all_inputs_unchanged": true,
+  "Go_runtime_or_outputs_used": false,
+  "seconds": 8.528627,
+  "regeneration_byte_identical": true,
+  "python_version": "3.9.6 (default, Oct 19 2026, 19:18:13) \n[Clang 21.0.0 (clang-2100.4.1.1)]"
+}

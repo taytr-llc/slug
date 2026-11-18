@@ -1,0 +1,215 @@
+{
+  "status": "passed",
+  "kind": "formula_only_impossible_upper_shapes_no_engine_no_goldens",
+  "at_utc": "2026-11-18T01:44:14.271169+00:00",
+  "contract_sha256": {
+    "/Users/taytrrip/slug/set47-core-contract-draft.md": "f73db38d7860b6fba7d57370fbbb58ad24377082a253ad234e57a22385f0997b",
+    "/Users/taytrrip/slug/set47-helper-contract-draft.md": "eabdf5e294fe26b6acb72ac67ff3c87b4764a366422414a1c202f8fa6622b691"
+  },
+  "script_sha256": "41a86c701605a0c2d467e6696e607ba4297542c06625b709a7a2b671159b5f24",
+  "inherited_source_sha256": {
+    "/Users/taytrrip/slug/set45-contract-bounds-calculator.py": "5cbe3cc0a0e40b8ae3e8da9423f7601c25f764dedd748ecd52794e601484b9a6",
+    "/Users/taytrrip/slug/set42-serialization-shape-check.py": "6ff60b77627d36aa0b0bb77bbac2a08ef7f2e85d25852b897a2f8dc33f33e78c",
+    "/Users/taytrrip/slug/manifest-admission-reference/inputs/job_reference/inputs/tables_v1.json": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+    "/Users/taytrrip/slug/set45-seed-core-contract-draft.md": "51ddfc57931b1937f918f990a36c050dc9874b2d1a60b069273e314e317523df",
+    "/Users/taytrrip/slug/set45-helper-contract-draft.md": "0abdcfa84e2213bd644ad2bfe43789961c3231ef10841121fa2f039776fb8f7e",
+    "/Users/taytrrip/slug/set44-event-reference/inputs/contracts/set44-core-shape-bounds.py": "8f0f0f22aced5113d8b0eea447eee1bf5a3cbf1257717e42365fdd7455c0b7e0",
+    "/Users/taytrrip/slug/set44-event-reference/inputs/contracts/set44-core-shape-bounds.json": "61296beeb1ba114eef06cb6de8d8898dd6026f533f7ae164c5ebaadb0e493b32",
+    "/Users/taytrrip/slug/set44-event-reference/inputs/contracts/set44-helper-shape-bounds.json": "ee2c67ccde66413f33dfba0da00fa67e23b8dd0140dae05c6c30b799f1650bcf",
+    "/Users/taytrrip/slug/slug/fighterportrait/portrait.go": "696dee6bfc22661edb979144b7723239a3ad10214dcf41fc2301a8f0fee0e2a9",
+    "/Users/taytrrip/slug/slug/fighterportrait/features.go": "b2bf61d8228f77901d6a4cff714cd664dc802a5afdc9532de8cb8d184d22f885"
+  },
+  "shapes": {
+    "BoutCorner": {
+      "bytes": 2009,
+      "container_depth": 4,
+      "cap": null
+    },
+    "BoutSource": {
+      "bytes": 5697,
+      "container_depth": 6,
+      "cap": 16384
+    },
+    "BoutState": {
+      "bytes": 1282,
+      "container_depth": 2,
+      "cap": 4096
+    },
+    "BoutRef": {
+      "bytes": 422,
+      "container_depth": 2,
+      "cap": null
+    },
+    "BoutView": {
+      "bytes": 8556,
+      "container_depth": 8,
+      "cap": 32768
+    },
+    "Pin": {
+      "bytes": 4985,
+      "container_depth": 8,
+      "cap": 24576
+    },
+    "Info": {
+      "bytes": 5201,
+      "container_depth": 9,
+      "cap": 28672
+    },
+    "Record": {
+      "bytes": 107596,
+      "container_depth": 8,
+      "cap": 237568
+    },
+    "SavedBout": {
+      "bytes": 896,
+      "container_depth": 2,
+      "cap": 2048
+    },
+    "Status": {
+      "bytes": 2414,
+      "container_depth": 3,
+      "cap": 8192
+    },
+    "CardStatus": {
+      "bytes": 6004,
+      "container_depth": 4,
+      "cap": 16384
+    },
+    "RunResult": {
+      "bytes": 110075,
+      "container_depth": 9,
+      "cap": 249856
+    },
+    "ReadResult": {
+      "bytes": 110058,
+      "container_depth": 9,
+      "cap": 249856
+    },
+    "Marker": {
+      "bytes": 5136,
+      "container_depth": 9,
+      "cap": 28672
+    },
+    "Metadata": {
+      "bytes": 5229,
+      "container_depth": 9,
+      "cap": 28672
+    },
+    "Init": {
+      "bytes": 5138,
+      "container_depth": 9,
+      "cap": null
+    },
+    "GeneratedManifest": {
+      "bytes": 1107,
+      "container_depth": 3,
+      "cap": null
+    },
+    "CompositionInput": {
+      "bytes": 2748,
+      "container_depth": 5,
+      "cap": 16384
+    },
+    "EngineResult": {
+      "bytes": 98585,
+      "container_depth": 7,
+      "cap": 196608
+    }
+  },
+  "nested_cap_upper_bytes": {
+    "Pin_source_pin_cap": 20685,
+    "Info_pin_cap": 24792,
+    "Marker_pin_cap": 24727,
+    "Metadata_pin_cap": 24820,
+    "BoutSource_members_at_old4096cap": 10487,
+    "BoutView_pin_state_caps": 27070,
+    "Record_source_input_result_caps": 229942,
+    "Status_state_saved_caps": 6380,
+    "CardStatus_state_saved_caps": 14578,
+    "RunResult_record_status_caps": 245825,
+    "ReadResult_record_status_caps": 245808
+  },
+  "helper": {
+    "responses": {
+      "snapshot": {
+        "bytes_including_LF": 7680,
+        "container_depth": 10
+      },
+      "card_status": {
+        "bytes_including_LF": 7213,
+        "container_depth": 5
+      },
+      "status": {
+        "bytes_including_LF": 3623,
+        "container_depth": 4
+      },
+      "record": {
+        "bytes_including_LF": 111267,
+        "container_depth": 10
+      },
+      "job": {
+        "bytes_including_LF": 112713,
+        "container_depth": 11
+      }
+    },
+    "job_with_full_run_cap": 251285,
+    "job_response_including_LF_at_run_cap": 252494,
+    "record_response_including_LF_at_read_cap": 251065,
+    "metadata_actual_formula": 20885,
+    "metadata_at_pin_status_page_caps": 56634,
+    "metadata_cap": 73728,
+    "portrait_reply_at_status_encoded_svg_caps": 42916,
+    "portrait_reply_cap": 49152,
+    "family_at_job_metadata_svg_caps": 373455,
+    "family_cap": 393216,
+    "parent_v7_marker_including_LF": 7288,
+    "request_including_LF": 307
+  },
+  "array_paths": {
+    "snapshot.pin.source_pin.source_pin.source_pin.participants": 2,
+    "job.result.record.source.corners": 2,
+    "job.result.record.result.initial": 2,
+    "job.result.record.result.rounds": 3,
+    "job.result.record.result.rounds[*].ticks": 60,
+    "job.result.record.result.rounds[*].ticks[*].states": 2,
+    "job.result.record.result.rounds[*].end": 2,
+    "job.result.record.result.rounds[*].recovery.states": 2,
+    "job.result.record.result.rounds[*].recovery.corner_stopped": 2,
+    "job.result.record.result.final": 2,
+    "job.result.record.result.scores": 2,
+    "record.record.source.corners": 2,
+    "record.record.result.initial": 2,
+    "record.record.result.rounds": 3,
+    "record.record.result.rounds[*].ticks": 60,
+    "record.record.result.rounds[*].ticks[*].states": 2,
+    "record.record.result.rounds[*].end": 2,
+    "record.record.result.rounds[*].recovery.states": 2,
+    "record.record.result.rounds[*].recovery.corner_stopped": 2,
+    "record.record.result.final": 2,
+    "record.record.result.scores": 2,
+    "card_status.bouts": 5
+  },
+  "encoded_svg_upper_bytes": 29247,
+  "svg_bound_assumptions": [
+    "43 graphic elements each at most511raw bytes, at most8attributes (16quote escapes),2markup bracket escapes; unchanged complete renderer call sites inspected.",
+    "Opening envelope <1024raw bytes conservatively charged6perbyte; closing SVG16encoded bytes; outer quoted-string delimiters2.",
+    "Attribute values only numeric/palette/path ASCII and fixed safe tokens; source names appear only inside the alreadyovercharged envelope. No renderer executed."
+  ],
+  "index256_bytes": 299009,
+  "index_cap": 393216,
+  "logical_journal_upper": 60883328,
+  "logical_journal_cap": 67108864,
+  "physical_db_overhead_included": false,
+  "assumptions": [
+    "All otherwise nonnegative numbers use16digits, overestimating bounded IDs/version/counters. Existing engine bound uses its independently reviewed fixed arithmetic envelope.",
+    "Manifest constructed from frozen fixed field list and longest frozen table strings; no Generate/Simulate called.16digit numeric values are deliberately not valid manifests.",
+    "Cap-replacement bounds do not assume every independent nested cap can be realized simultaneously.",
+    "Rendered identity is a combined encoded contribution4096; emptySVG quotes are replaced with32768encoded bytes per retained image, not raw-string assumption.",
+    "Metadata has one Pin/currentView/Snapshot, selectedStatus/CardStatus,threecompacttuples,two bindingrecords; manifests reference the retained transcript and are not independently copied.",
+    "Root parent fields preserve old shapes, suffix alone added; array lists are rooted full typed paths."
+  ],
+  "goldens_generated": false,
+  "engine_executed": false,
+  "new_runtime_read": false,
+  "input_changes": []
+}

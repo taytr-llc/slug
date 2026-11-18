@@ -334,7 +334,7 @@ and restart passed. The requested app/menu-bar icons are included in the native
 build; GUI, portrait and joint D74 acceptance remain open.
 See `EVENT_SEEDS.md` and `CHANGESET_45_NOTES.md`.
 
-Set 46 is in progress on `slug-event-card`: retain a candidate booked card from
+Set 46 is complete on `slug-event-card`: retain a candidate booked card from
 the immutable noon inputs and fixed seed. Scoped exception C1 allows the two
 zero-record fixture gyms to match inside the existing same-class half-to-double
 band without five opponents. Report all entered, paired and unmatched fighters
@@ -342,10 +342,20 @@ and reasons; general league widening, record filters and next-week priority
 remain open. See `CANDIDATE_CARD_EXCEPTION.md` and `CHANGESET_46_NOTES.md`.
 The implementation and initial normal-PoW scoped-clock composition now produce
 one retained bout from three entrants, with one reported unmatched fighter.
-Independent arithmetic and frontend checks pass; final source/package and live
-rollout gates remain in progress. The following league slice must consume the
-retained card and fixed seed to run reproducible candidate bouts and preserve
-replay evidence before introducing professional result/award authority.
+Independent arithmetic, frontend checks and the corrected final-source Mac
+package pass. Implementation `5e6b36d3` is deployed at master `5c11cbaf`;
+the full 900-second live observation, 31 samples and clean restart passed.
+Railway still runs only the Phase A node. Remote CI returned no runs/checks;
+no remote CI pass is claimed. Failed earlier package/race attempts remain retained.
+
+Set 47 on `slug-event-bouts`, stacked from `5e6b36d3`, retains one immutable
+candidate transcript per booked BoutID with explicit Run and saved replay.
+The independently frozen reference, implementation checks and actual native
+composition pass. The closed-event test uses normal PoW and a scoped clock;
+authenticated core seed preparation runs without an admission worker. The
+final normal-clock package and deployment observation remain pending. See
+`EVENT_BOUTS.md` and `CHANGESET_47_NOTES.md`. Professional/exhibition records,
+awards, general matchmaking policy and the full joint D74 review remain separate.
 
 ### 6. League services
 The Saturday operation: entry collection and lock (Saturday noon

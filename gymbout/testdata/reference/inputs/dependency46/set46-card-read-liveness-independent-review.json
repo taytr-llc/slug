@@ -1,0 +1,98 @@
+{
+  "status": "passed",
+  "scope": "Independent read-only security/callback/durability review of final prepared-view, audited-row index and Card-only500ms helper delta. Static source/test review only; executable and performance gates remain separate.",
+  "at_utc": "2026-11-18T02:20:11.646064+00:00",
+  "basis_commit": "ede24725fef8a2f90e617160d263d283981bbe1e",
+  "findings": [],
+  "source_sha256": {
+    "gymseed/card_source.go": "6f19b32155b713219d94915e369799c41a62581f6d164e120f9128afb8c0aef7",
+    "gymcard/read.go": "dc5996ac2973dabfa6c28389f859439375100f53368d7a1643d223f55f38ecb5",
+    "gymcard/actions.go": "d1041f6bcfb274e628e68c61914080898297fe3cd99ee6d39e2668c269809855",
+    "gymcard/audit.go": "d707b5a666d7f70622d930ec257517687b20ed6faff8c2344195c934af53294f",
+    "gymcard/store.go": "4ea9b83dafb683ca0a079050f37212e63af7d1580fc7ea14e13c7b0615ee40b8",
+    "desktop/pilot/card_controller.go": "fdfd317c779c1ea45d81ce0a45a1adb5f816efd69166eaa9fad076a157816842"
+  },
+  "test_sha256": {
+    "gymseed/card_prepared_view_test.go": "3f1acac02861c9a0e3f791e42bef50b9140c2a1186bdd8d3f3636de2a44f780c",
+    "gymcard/read_liveness_test.go": "831f83b2f6f341bdc198663c24bebdd257df666f34055f2f3db6adff4a16a9a7",
+    "gymcard/audited_index_test.go": "20579c64f6b02cc32bb784429f9acc9eab1599ae9153b374016e9c6bb2e96d2f",
+    "desktop/pilot/card_metadata_deadline_test.go": "c8cdeefbf622e067a6f0fd598fb60430a9ebf2b5e26f36cd04778cdd11f1736b",
+    "desktop/pilot/card_capacity_account_test.go": "41dcd373cec52e26c94bcb5b0f3eb5cc7f72cfdcc9e8285cd547c70f772e342b"
+  },
+  "dependency_sha256": {
+    "gymseed/codec.go": "75fbb6313669363168d6201dc9a682b82078b8b953c403fa7000539e0b4544ff",
+    "gymseed/json.go": "379406059c507139ca63baa27cc567b4bce55a77ca0121e97438350778350eb7",
+    "gymseed/store.go": "eb6662d14e9f601c44b0fcde55ed497d067a81246a3745a3880770aeba5eeff5",
+    "gymseed/read.go": "94b4a668a76674f36968c368be93af764bc6a9563b27b998c53c3ef3714fe07c",
+    "gymcard/source.go": "52287242b7a2b7084e1a07d356bb4097d15c4591bfef143801a077f1d4c53065",
+    "gymevent/seed.go": "19fe370f46a5ebf163ca88a29024870157024264ade36f57211130caa73230bd",
+    "gymentry/seed.go": "cc48fe32ad83b9e35614b4b2c9a617c3f5513d6f320d92141e9c50e5456b72c2",
+    "gymcard/dependency_test.go": "6b0571a7810fdf3ca14555689c0dd4b7834a87bfb5ada0df84a1ef7738aedb94",
+    "gymcard/store_test.go": "a46f3396c160908ad3bdd6ccc8beff942fcc0c18f9a5b891c33f6272ce7496e9"
+  },
+  "before_source_sha256": {
+    "gymseed/card_source.go": "a0acaed02907048092b953d1d544cafd9c36c03874ce7d3eae88d4d15585ecae",
+    "gymcard/read.go": "a2d8096d7b64ceb87ddac44ea12d06226a139f612946054530d34ae69f0a5dbb",
+    "gymcard/actions.go": "7da4d5b14b61bd601086c04dd921d01f9921ecc57842b18fe3f8db846a3e9dc1"
+  },
+  "reviewed_diff_sha256": "f93c85160be7c8c36a5147d8fd4f508c9e8ee896f8f9e6c7bb63909082019df2",
+  "proposal_sha256": "35facb7de2a04c94ce2b7d377da9e3b4c9900daa9216dcae84bb89f6f9abefc5",
+  "review_notes": [
+    "Initial original View authorization precedes consumer retained-row access. ValidateInfo provides a deep-owned bounded copy; exact complete Pin, StoreID and immutable SourceCreatedAtMS are checked before local row access and again at final source observation.",
+    "The original resource gates remain held across preparation without holding account/source mutex leases. Dates remain nonnil, unique, ascending and bounded8. Final authorization captures the original session, preserves source creation/current digest checks, and writes source observations before the foreign callback.",
+    "New lifetime checks distinguish dependency closure from caller cancellation. Opaque callback errors remain unchanged; synchronous observation uncertainty takes precedence over closure/cancellation. No success payload is returned on a failed final guard.",
+    "The private index adds only fixed raw SHA256 to the existing ID/cutoff fields, bounded256 and no Record payload. Full Open key/count/canonical/semantic/creation audit remains in place before index publication. No persisted trusted flag or new source import exists.",
+    "Selected bytes are size-bounded before copy and must match the exact audited/inserted raw SHA256 before owned JSON decoding. Missing indexed rows, present unindexed rows and any byte drift refuse. True absence requires both absent. Unselected external corruption remains lazily detected on selection or Open, not claimed continuously audited.",
+    "Build still validates full owned source/plan/Record outside final lease. Final timestamp serialization yields exact bytes for batch and private next-index hash; index becomes visible only after successful Sync/metadata update. Lost ACK poisons without publishing index, and reopen fully audits/reconciles the retained row.",
+    "Concrete seed source record semantic validation/current conflict overlay remains fresh; byte index does not replace original authorization, source incarnation or current source checks. Old WithCardView/WithCardSource signatures and public validators remain unchanged; shared final body gains only the explicit lifetime/unknown ordering fix.",
+    "The helper change is exactly Card-only500ms context admission/operation budget with the original context as parent. Shorter caller deadlines, short View checks, other families, 30-second jobs/native requests, wire/cache limits and post-sync unknown behavior remain unchanged. It does not guarantee forcible interruption of a synchronous disk write.",
+    "Focused tests cover initial denial, outside-lease owned Info, before/after commit revocation/cancellation/Close, foreign callback error identity, delayed context propagation, exact selected bytes/caller copies, semantic reopen refusal and unknown sync/index publication. No duplicate execution was performed by reviewer.",
+    "The two helper tests use genuine fixture account authority with both parent-equivalent session rechecks for modeled256 histories, and check that a20ms caller deadline is inherited even when preparation expires before source entry. Their executable outcomes remain the owner capture, not this static review."
+  ],
+  "limitations": [
+    "Owner normal/race/profile checks and envelope actual-account/advancing-clock capacity/package gates must be independently bound before release; this passed status is static review only.",
+    "The original packaged outcome_unknown remains unattributed; retained diagnostic busy/deadline evidence is not rewritten into a proven root cause.",
+    "Original250ms contracts/failures remain preserved. The explicit root Card-only500ms decision and current/historical index addendum hashes are bound separately as engineering authorization, not test results.",
+    "Set47 Bout250ms remains a separate unproven future gate. No Set47 runtime/output was read and no reference arithmetic was derived from this Set46 review."
+  ],
+  "source_changes_by_reviewer": [],
+  "budget_review_sha256": "08234a56f84acd026b5f91a63fc6027095766d1b138041d7664ece16bf172aa8",
+  "prior_review_sha256": "4d16aacd1c27daa26b02399cac4a15d2f150a8e722bc3e86bb94b52f5d339386",
+  "preserved_pending_review_sha256": "e492c5a302eaebab1fab50a67cad2106b76d8f7f61d24ebcc1b0335e94513c80",
+  "resolved_findings": [
+    {
+      "issue": "New post-auth/post-prepare branches could classify source Close as ordinary cancellation.",
+      "resolution": "Direct life checks precede task cancellation at both boundaries; Close joins preparation before returning, and no commit runs after precommit closure.",
+      "tests": [
+        "TestCardPreparedViewCloseJoinsAndPreservesUncertainty"
+      ]
+    },
+    {
+      "issue": "Final unconditional Close remapping could conceal a synced source observation or reinterpret opaque foreign outcome_unknown.",
+      "resolution": "Final source body checks lifetime directly and prioritizes mutated observation as unknown. Cancellation mapper preserves nil completion and all non-cancellation errors, including foreign unknown identity; completed-body success is the linearization boundary.",
+      "tests": [
+        "TestCardPreparedViewDirectLifetimeAndForeignError",
+        "TestCardPreparedViewCloseJoinsAndPreservesUncertainty"
+      ]
+    }
+  ],
+  "prior_dependency_sha256": {
+    "gymcard/store.go": "6f4bc3585a6fa7e7cab351e5f64e1ba70f8d249df68098f3aeade10b44f15bd6",
+    "gymcard/audit.go": "ce9650acf771617fa05d1d452d49917659ada9526a4c6091af2694765f3d14ad"
+  },
+  "prior_dependency_note": "These two paths were reviewed before the raw-byte index delta; their final hashes are in source_sha256. They are not claimed to match the current checkout.",
+  "before_decision_binding_review_sha256": "2a6d79aa428e265f60c06f20605995ee4f32ac6ff2bda3fd9e958b07afa0bc93",
+  "engineering_decision": {
+    "path": "/Users/taytrrip/slug/set46-card-liveness-engineering-amendment.json",
+    "sha256": "b48a45ce117d226dce351b629c8a20794c19433ed9f6d69410372158690cc2eb",
+    "status": "approved_engineering_amendment",
+    "tests_claimed_passed_here": false
+  },
+  "addendum_provenance": {
+    "current_path": "/Users/taytrrip/slug/set46-card-read-liveness-index-addendum.md",
+    "current_sha256": "e2ac5b50b605906536e0aede1874ca28a58dbc05bbcf958ea3e05f991d65307e",
+    "decision_time_path": "/Users/taytrrip/slug/set46-card-read-liveness-index-addendum-pre-budget.md",
+    "decision_time_sha256": "9179e4a5f2414cb40ebfa818c088aa88823f2812962ae6f951b341057b8e4861",
+    "meaning": "The decision pins the historical9179 bytes. The current addendum explicitly maps that preserved version and the later Card-only500ms context budget; original250ms failures are not reclassified."
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "status": "frozen",
+  "at": "2026-11-18T02:41:55.483786+00:00",
+  "scope": "Additive adoption of reviewed Set46 prepared-view/private audited-byte-index dependency only; original Set47v1 contract bytes and reference input copies preserved.",
+  "previous_freeze_sha256": "e023ddb4c043ae09b6edd826e0fbd1765d3e8bd02c34bcf0ce0ed10205d8c2fe",
+  "set46_basis_source": "e7d15b4e6be72a5f49b7cc38fe0bff8402cc09b3",
+  "set46_source_sha256": {
+    "gymseed/card_source.go": "6f19b32155b713219d94915e369799c41a62581f6d164e120f9128afb8c0aef7",
+    "gymcard/read.go": "dc5996ac2973dabfa6c28389f859439375100f53368d7a1643d223f55f38ecb5",
+    "gymcard/actions.go": "d1041f6bcfb274e628e68c61914080898297fe3cd99ee6d39e2668c269809855",
+    "gymcard/audit.go": "d707b5a666d7f70622d930ec257517687b20ed6faff8c2344195c934af53294f",
+    "gymcard/store.go": "4ea9b83dafb683ca0a079050f37212e63af7d1580fc7ea14e13c7b0615ee40b8",
+    "desktop/pilot/card_controller.go": "fdfd317c779c1ea45d81ce0a45a1adb5f816efd69166eaa9fad076a157816842"
+  },
+  "evidence_sha256": {
+    "set47-contract-freeze.json": "e023ddb4c043ae09b6edd826e0fbd1765d3e8bd02c34bcf0ce0ed10205d8c2fe",
+    "set47-card-dependency-addendum-draft.md": "b0c89f487f15f38de34d5e5692cac0462f56b4b404ed12247bd454f01a5f07a7",
+    "set47-card-dependency-addendum-independent-review.json": "b4a3f57bd9db98d88b054503d1f2237f9b8ff7ffad685d0ad988aa30e067ce27",
+    "set47-reference-draft-before-dependency-addendum.json": "64e9a55490e234427777b76911de872ccaaf2a3fc214606cde6f40d435129455",
+    "set47-reference-plan.md": "e73c404083a2beef3fa8630f3677de766ac08b4b9dd6e2adc6daa65c2006e414",
+    "set46-implementation.json": "de30758ca7cb12df2e656fd255f2f42d275e32b8750ba06a94aeed115aa3caf0",
+    "set46-final-files.json": "ae826ec2a82616c315f2c8fde507ca82752e90f9aa5c76ddb04052170cc9a810",
+    "set46-liveness-root-review.json": "70183c039c395a2e9538c8925d6b6ebb4182cf06ea960137c47bf1ec8f7d2c9d",
+    "set46-card-read-liveness-final-checks.json": "d8a6223e5f1730b8b94107a2656232857dce41afc005fdf05b38152a8ac59e71",
+    "set46-card-metadata500-final.json": "19d578f106f828aaa04634171016ea19558b89118a94c9a4f161b69c3f5b4fb2"
+  },
+  "contract_sha256": {
+    "set47-core-contract-draft.md": "f73db38d7860b6fba7d57370fbbb58ad24377082a253ad234e57a22385f0997b",
+    "set47-helper-contract-draft.md": "eabdf5e294fe26b6acb72ac67ff3c87b4764a366422414a1c202f8fa6622b691"
+  },
+  "unchanged": "All exported DTOs, canonical recipes, fight engine, cutoff/birth/seed, result semantics and resource caps.",
+  "bout_metadata_ms": 250,
+  "bout_budget_status": "Separate unproven future actual-full-path acceptance gate; no automatic inheritance of Card500ms.",
+  "independent_reference_generation_authorized": true,
+  "reference_quiet_window": "Root will dispatch after renewed Set46 package latency checks to avoid competing CPU load.",
+  "runtime_implementation_authorized_now": false,
+  "runtime_start_gate": "Verified Set46 release and separate root dispatch; no repository Set47 edits yet.",
+  "root_review": "Read exact addendum and independent review; verified six runtime hashes in committed corrected source and unchanged original contracts. No engine or reference output executed by root."
+}

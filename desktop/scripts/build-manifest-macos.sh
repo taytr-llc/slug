@@ -4,7 +4,7 @@ set -eu
 
 here=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 root=$(CDPATH= cd -- "$here/.." && pwd)
-output=${1:-"$root/../artifacts/set45"}
+output=${1:-"$root/../artifacts/set47"}
 case "$output" in /*) ;; *) printf '%s\n' 'Build output must be an absolute directory.' >&2; exit 1;; esac
 if [ "$(uname -s)" != Darwin ]; then printf '%s\n' 'This script builds the native macOS bundle on macOS.' >&2; exit 1; fi
 mkdir -p "$output"
@@ -29,7 +29,7 @@ export GOMODCACHE=${GOMODCACHE:-/private/tmp/slug-desktop-modcache}
 (
  cd "$here"
  GOWORK="$here/go.work" CGO_ENABLED=0 go build -trimpath -tags= -o "$bundle/Contents/Resources/bin/slugpilot" ./cmd/slugpilot
- GOWORK="$here/go.work" CGO_ENABLED=1 go build -trimpath -tags=production -ldflags '-extldflags=-mmacosx-version-min=13.0 -X main.candidateBuild=1 -X main.stableBuild=1 -X main.entryBuild=1 -X main.eventBuild=1 -X main.seedBuild=1 -X main.cardBuild=1' -o "$bundle/Contents/MacOS/SLUGPilot" .
+ GOWORK="$here/go.work" CGO_ENABLED=1 go build -trimpath -tags=production -ldflags '-extldflags=-mmacosx-version-min=13.0 -X main.candidateBuild=1 -X main.stableBuild=1 -X main.entryBuild=1 -X main.eventBuild=1 -X main.seedBuild=1 -X main.cardBuild=1 -X main.boutBuild=1' -o "$bundle/Contents/MacOS/SLUGPilot" .
 )
 if [ "$("$bundle/Contents/Resources/bin/slugd" --version)" != 'slugd version 0.27.0' ]; then
  printf '%s\n' 'Bundled node is not the expected normal production PoW build.' >&2; exit 1
@@ -56,8 +56,8 @@ cat > "$bundle/Contents/Info.plist" <<'PLIST'
 <key>CFBundleExecutable</key><string>SLUGPilot</string>
 <key>CFBundleIconFile</key><string>SLUG.icns</string>
 <key>CFBundlePackageType</key><string>APPL</string>
-<key>CFBundleShortVersionString</key><string>0.4.6</string>
-<key>CFBundleVersion</key><string>46</string>
+<key>CFBundleShortVersionString</key><string>0.4.7</string>
+<key>CFBundleVersion</key><string>47</string>
 <key>LSMinimumSystemVersion</key><string>13.0</string>
 <key>NSHighResolutionCapable</key><true/>
 <key>LSUIElement</key><false/>

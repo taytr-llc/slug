@@ -1,0 +1,89 @@
+{
+  "status": "passed",
+  "findings": [],
+  "reviewer": "checkpoint_envelope",
+  "scope": "Independent contract/source review of helper/native closed transport and correlation in the Python reference; no new Go/runtime outputs, engine execution, reference edits or application source changes.",
+  "source_sha256": {
+    "/Users/taytrrip/slug/set47-bout-reference/schema.py": "9df84b0ee17acb7cb7d1da3a56098dcebe069f8dfe13637c1a23db8e3ea73338",
+    "/Users/taytrrip/slug/set47-bout-reference/reference_bouts.py": "ed270b8454db6b7a882a0b08958310f75a41e0cc2f6ccaae1fef4d6f82270670",
+    "/Users/taytrrip/slug/set47-bout-reference/reference_state.py": "a3dca942e5c65bb664caed2abe20cd935ffd5e049a1379b704cd5079b64e891f",
+    "/Users/taytrrip/slug/set47-bout-reference/verify_reference.py": "5f389375e3d3dfe8527640a1c8e565cdede961c095530605ac4b020521d9e51f",
+    "/Users/taytrrip/slug/set47-bout-reference/common.py": "ff1bf9705985ba087e10af61d692171f87513e500d8108dec282fd8fac1da36f",
+    "/Users/taytrrip/slug/set47-bout-reference/README.md": "887577e4f77cb449e59ebfb3fcef01466dc6a18eac790e8a6525a83446151830",
+    "/Users/taytrrip/slug/set47-bout-reference/input_index.json": "f07c09d5a6c41a4909472cf023e3fbd64f17e49da9935b96af0237408bd82423",
+    "/Users/taytrrip/slug/set47-bout-reference/file_index.json": "9d806bd4d0641fbdb68733ac1928cb4e3a960304da790c20ee1cc73ca7b46abb",
+    "/Users/taytrrip/slug/set47-bout-reference/bout_v1.json": "09f0430789328b9226fc4a24aae3cdb07beeb8b41d61b42cd33e4ba3121fa2ec"
+  },
+  "evidence_sha256": {
+    "/Users/taytrrip/slug/set47-helper-reference-review-attempt1.json": "a0a13a224457280dacaef304a6e0950a5587c46fcc050370129503ab49f04387",
+    "/Users/taytrrip/slug/set47-helper-oracle-review-probes.json": "3723e41090c09ba73c8a9fce532c3c821808f0bd2bf707fed6345365cd7bd43d",
+    "/Users/taytrrip/slug/set47-helper-oracle-review-probes-corrected.json": "6e6a9eec78af67dca9433c1585f82d735c2a8f50aed6beebd660a8f9f5942a99",
+    "/Users/taytrrip/slug/set47-helper-reference-transport-checks.json": "ae549a2505c8f989ccdc65af85b94f82778d3be2360d60df02249c25e7784b29",
+    "/Users/taytrrip/slug/set47-helper-contract-draft.md": "eabdf5e294fe26b6acb72ac67ff3c87b4764a366422414a1c202f8fa6622b691",
+    "/Users/taytrrip/slug/set47-core-contract-draft.md": "f73db38d7860b6fba7d57370fbbb58ad24377082a253ad234e57a22385f0997b",
+    "/Users/taytrrip/slug/set47-contract-freeze.json": "e023ddb4c043ae09b6edd826e0fbd1765d3e8bd02c34bcf0ce0ed10205d8c2fe",
+    "/Users/taytrrip/slug/set47-contract-dependency-freeze.json": "0fa378f221a8901ba8bdc97f9d86680aa260b274ca5d972a9fc6796d61669067",
+    "/Users/taytrrip/slug/set47-final-dependency-source.json": "f62aafadda089b09f9635c74d3c764d43e44551fdb72d4dc475ea4d16de0e7df"
+  },
+  "corpus_sha256": "09f0430789328b9226fc4a24aae3cdb07beeb8b41d61b42cd33e4ba3121fa2ec",
+  "file_index_sha256": "9d806bd4d0641fbdb68733ac1928cb4e3a960304da790c20ee1cc73ca7b46abb",
+  "producer_verification_sha256": "883c11656ca7d1533b2eada71ebf3f818fb27dc6f8513d8f2d82f8a2a5581cf1",
+  "correction_delta_sha256": "dd5fc3bbabecd45b37dac603984eb31e62bce07825bc5828fb9a4913b08ffda3",
+  "indexed_file_count": 82,
+  "input_file_count": 65,
+  "source_unchanged_during_checks": true,
+  "counts": {
+    "compositions": 11,
+    "dtos": 183,
+    "codec_cases": 1016,
+    "protocol_cases": 74,
+    "portrait_cases": 48,
+    "calendar_cases": 3861,
+    "calendar_refusals": 9,
+    "identity_cases": 11,
+    "state_cases": 16,
+    "initialization_cases": 36
+  },
+  "independent_transport_checks": {
+    "positive_dtos_transport_only": 183,
+    "transport_codec_cases": 576,
+    "protocol_cases": 74,
+    "portrait_structural_correlation_cases": 48
+  },
+  "resolved_findings": [
+    {
+      "id": "H1",
+      "issue": "Boolean false accepted as numeric zero in unavailable/setup Snapshot timestamps.",
+      "resolution": "Explicit integer/time validation precedes branch equality, with standalone/wrapped negatives; all four independent original probes now refuse."
+    },
+    {
+      "id": "H2",
+      "issue": "Self-rehashed overlong Manifest name accepted by transport.",
+      "resolution": "Inherited per-field Manifest/DNA/portrait physical and string bounds applied without generators; first64 control and first65 negative; independent rehashed65 probe now refuses."
+    },
+    {
+      "id": "H3",
+      "issue": "Promised portrait/current-tuple and finite request/array/snapshot closure controls were absent.",
+      "resolution": "48 declared structural portrait correlation cases plus typed DTOs; fresh Status, missing selected tuple, identity/digest/view mismatch and historical conflict coverage. Added unused request, exact corner cardinality and Snapshot ID conflicts."
+    },
+    {
+      "id": "companion-core",
+      "issue": "Result.version Boolean equality and broad condition scalar/BoutView uniqueness checks.",
+      "resolution": "Strict version integer, bounded condition arithmetic, unique BoutID/global fighter checks and negative vectors. Companion review owns full engine/provenance validation."
+    }
+  ],
+  "reviewed_properties": [
+    "Closed fields and canonical ordering, duplicate decoded-key refusal, exact integer spelling and signed paths, LF-inclusive frames, depth and path-specific arrays.",
+    "Original full View, request/command/store/date/booked ID correlation; queued Run ACK; running-to-queued refusal; exact terminal digest immutability and known creation bounds.",
+    "One selected immutable record and fresh matching Status for portrait replies, with explicit historical conflict display and no authority derived from SVG.",
+    "Transport parsing uses structural arithmetic/digests only; engine/manifest/condition generator traps remain active across independent checks.",
+    "Abstract state and initialization models are explicitly not actual account, lease, storage-sync, crash, queue or cache execution."
+  ],
+  "limitations": [
+    "This finite oracle accepts only the pinned fixture authorities and declared modeled alternatives; no universal arbitrary-authority claim.",
+    "The genuine historical booking remains conflicted; expected transcripts/new journal creation times are hypothetical arithmetic, not authorized saved results.",
+    "Portrait SVG is an explicit placeholder. These controls do not verify rendering, digest-correct pixels, live cache-hit authorization, GUI or D74.",
+    "Cache budgets are supported by the separate frozen formula; runtime cache admission/rollback, original-view leases, deadlines and source fencing remain implementation acceptance work.",
+    "Producer dual-Python/TZ and full engine checks were inspected and hash-bound, not rerun by this transport reviewer."
+  ]
+}
