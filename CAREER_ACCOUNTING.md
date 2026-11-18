@@ -1,9 +1,12 @@
 # Candidate career accounting — Set49 contract
 
-Status: contract reviewed and implemented; local integrated acceptance passes,
-with normal packaging and release pending. D78 is approved; this document fixes
-only the standard two-fixture candidate integration. Pure arithmetic is specified
-in `FIGHTER_CAREER.md`.
+Status: implemented and released on master at `0a4374de`. Local gates, the
+normal-calendar Mac package and separate scoped-clock normal-PoW awarded
+composition passed, followed by the complete 900-second observation and clean
+restart. See `CHANGESET_49_NOTES.md` for evidence and limits; normal-calendar
+award coverage and production authority are not claimed. D78 is approved; this
+document fixes only the standard two-fixture candidate integration. Pure
+arithmetic is specified in `FIGHTER_CAREER.md`.
 No new matching, ranking board,
 quality-rank authority, title allocation, exhibition, funding or signing policy.
 

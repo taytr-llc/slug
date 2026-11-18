@@ -204,18 +204,23 @@ they do not count as completion of this product-release gate.
   authority, permanent genesis, portrait/GUI/accessibility and D74 gates remain
   unchanged. This work adds no professional records, XP or awards.
 
-- Set 49 is in progress on `slug-career-awards`. Mike approved D78 on November
-  18: permanent records/XP and all result-derived ranking points/title changes
-  become effective exactly once at result finality. Provisional outcomes stay
-  labeled; later chain conflicts retain finalized awards; noon snapshots use
-  only awards already effective at lock. `RESULT_AWARD_POLICY.md` records the
-  decision. The prospective candidate implementation, local gates and actual
-  scoped-clock normal-PoW composition pass: one award event, twelve career
-  observations, six independently checked result proofs, and twenty-one
-  actual-evidence corruption controls. Standard records, capped XP and base
-  points are implemented; complete rankings and title allocation still need
-  their own authority and rules. Final normal Mac package and deployment remain
-  pending. C1 and D74 are unchanged.
+- Set 49 completed on `slug-career-awards`. Mike approved D78 on November 18:
+  permanent records/XP and all result-derived points/title changes take effect
+  exactly once at result finality. Provisional outcomes stay labeled; later
+  conflicts retain awards; noon snapshots use only awards effective at lock.
+  Implementation `5b590f40` passed local gates and actual scoped-clock normal-PoW
+  acceptance: one award event, twelve Career observations, six independent proof
+  checks, and twenty-one actual-evidence corruption controls. The normal-calendar
+  Mac package and nine independent package reports separately passed activation,
+  zero-award current pages, held/refused views and restart; they do not establish
+  real-calendar finalized awards. Release `0a4374de` deployed successfully and
+  passed 900.03260950002 seconds of observation with 31 samples at unchanged
+  height 61, sixty descendants and one peer, chain verification and clean restart.
+  Railway configuration and volume remain unchanged. Remote CI returned no
+  runs/checks and is assessed rather than claimed passed. Standard records,
+  capped XP and base points are implemented; complete rankings/title allocation,
+  production authority, portrait/GUI/accessibility and D74 remain open. C1 and
+  D65 are unchanged. See `CHANGESET_49_NOTES.md` and `RESULT_AWARD_POLICY.md`.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace

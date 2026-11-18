@@ -1,8 +1,9 @@
 # Change set 49 — finality-timed career awards
 
-Implemented on `slug-career-awards`, stacked from completed Set48 topic
-`dd74828f3957d252f16f0e4925e2bcbb518ed540`. Local runtime and actual normal-PoW
-composition gates pass. Final normal package and deployment are still pending.
+Completed on `slug-career-awards`, stacked from completed Set48 topic
+`dd74828f3957d252f16f0e4925e2bcbb518ed540`. Implementation `5b590f40` passed
+local, actual normal-PoW and normal Mac package acceptance. Release `0a4374de`
+is deployed; the full 900-second observation and clean restart passed.
 
 ## Decision
 
@@ -116,8 +117,40 @@ All ten module builds, five retained conformance packages, formatting and final
 source/profile checks pass. No source membership or byte changes occurred during
 that module gate.
 
-Remaining gates are final normal package verification, then
-the authorized promotion and deployment observation. Set49 is not deployed.
-Production authority, permanent genesis, portrait/GUI checks and the joint D74
-design review remain open. Awarded fighters cannot enter the old zero-XP practice
-preview; a separate career-aware preview contract has not been introduced.
+## Package and deployment closeout
+
+The exact implementation's normal-PoW, normal-calendar Mac package passed in
+186.101 seconds with unchanged source and binaries. Nine independent package
+reports checked manifest proofs, Stable, preview/Entry, Event, Seed, Card, Bout,
+Result and Career evidence. The Career path explicitly upgrades the completed
+v8 root to v9 and verifies fourteen current pages against their exact completed
+Stable jobs, including held/refused views and restart, with no extra mining.
+Those pages contain zero awards. Successful finalized awards belong to the
+separate scoped-clock composition above; normal-calendar closed-event or award
+coverage is not claimed. Native icon bytes were checked, not GUI rendering.
+
+Release `0a4374dec9cc767165ed20e660265c4b98ecb742` deployed successfully as
+`85ccee5f-3286-4035-af3e-9b9a79342d57`. The complete observer ran for
+900.03260950002 seconds and captured 31 samples, all at height 61 with sixty
+descendants of the report-only checkpoint and one peer. Chain verification,
+restart and owned-process join passed. Fresh Railway closeout confirmed healthy
+service with unchanged configuration, persistent volume and TCP exposure.
+Railway runs the Phase A node, not a production career service.
+
+The implementation and release GitHub queries returned no workflow runs or
+commit checks. Their absence was assessed, not called a remote CI pass or given
+an inferred cause. The exact local Go 1.27.4 no-CSE profile is qualified only for
+the recorded candidate gates. Native Mac tools and the Linux cross-build have
+profile evidence; no local Docker build, upstream compiler fix or universal
+platform guarantee is claimed. Provider deployment evidence is separate.
+
+The workspace's `set49-closeout.json` (SHA256
+`b8963d37b0ed4567e50437486245fd32a62dfcae265de52f6d347edad2e2ab83`)
+binds the implementation, package, independent reviews, CI assessments, release
+and observer evidence. All earlier failed attempts and their scope limits remain
+preserved. Production authority, complete rankings/title allocation, permanent
+genesis, portrait rendering, native chooser, GUI/accessibility and the joint D74
+review remain open. The shipped Career UI does not offer awarded fighters for
+its zero-XP practice preview; the legacy core preview API remains unchanged.
+The separate Set50 Career-preview contract is planning work, not implemented
+behavior.

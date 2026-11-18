@@ -1,6 +1,6 @@
 # ADR-002: Derive career awards from durable result finality
 
-**Status:** Implemented; local integrated acceptance passed, packaging/release pending
+**Status:** Implemented and released in Set49; scoped acceptance and deployment closeout passed
 **Date:** November 18, 2026 Pacific
 **Deciders:** Mike approved product policy D78; Codex selected this implementation
 
@@ -69,7 +69,11 @@ code cannot fabricate facts.
 
 Activation/recovery, poisoned writes, wrong source, replay/re-inclusion,
 noon ordering, C1 refusal, XP cap, bounded startup/reads and every implemented
-provisional display require tests. Existing normal-PoW and packaged acceptance
-remain necessary. D74, production authority and future ranked/title mechanics
-remain open. Local integrated acceptance is recorded in `CHANGESET_49_NOTES.md`;
-normal packaging and release remain separate gates.
+provisional display are covered by the recorded Set49 gates. The scoped-clock
+normal-PoW composition verified a genuine first-finality award through restart,
+conflict and held reads; the normal-calendar Mac package separately verified
+activation and zero-award pages. Its nine independent package reports and the
+full 900-second, 31-sample deployment observation passed, including restart.
+Release `0a4374de` and the preserved failures/scope limits are recorded in
+`CHANGESET_49_NOTES.md`. Remote CI returned no runs/checks and is not claimed
+passed. D74, production authority and future ranked/title mechanics remain open.
