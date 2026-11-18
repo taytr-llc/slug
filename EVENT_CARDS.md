@@ -69,9 +69,11 @@ established journal is refused rather than recreated. The parent owns shared
 event, seed and card journals across account switches and closes them only
 after draining its child on final Close.
 
-The store retains at most 256 cards. Open audits the journal and builds a
-bounded in-memory date/ID index; a history request validates only its selected
-page of at most eight records. Writes synchronize the immutable record and
+The store retains at most 256 cards. Open fully audits canonical bytes and card
+semantics, then builds a bounded private date/ID/raw-byte-digest index. Reads
+compare the selected stored bytes with that audited identity before decoding;
+the index retains no record payload and accepts no caller validation verdict.
+A history request loads at most eight records. Writes synchronize the immutable record and
 metadata together. An uncertain write requires reopen and explicit recovery,
 not automatic retry or replacement.
 
@@ -79,11 +81,23 @@ not automatic retry or replacement.
 0.4.6/build46 enables that complete chain. The helper/native/webview family
 accepts only current view IDs, Saturdays, job IDs and history cursors. Build
 uses the existing serial work lane; status, record and history reads have a
-250 ms bound and Build has a 30-second queue-inclusive bound. Metadata polls
+500 ms context budget and Build has a 30-second queue-inclusive bound. Cached Snapshot/Job polls
 do not build cards, derive names or conditions, hash proof headers, sign,
 mine or contact a node. The 288 KiB card allowance is charged reciprocally
 within the unchanged shared 1 MiB cache; a rejected admission preserves the
 previous accepted display.
+
+Actual-clock package testing exposed repeated source/account clock writes that
+the initial stationary-clock capacity test did not measure. The corrected read
+path authorizes before retained-row validation, then performs one final source
+observation and original-session check. Current seed evidence still receives its
+full semantic validation. The original 250 ms Card read budget was explicitly
+revised to 500 ms after a populated, advancing-clock test with actual account
+checks still exceeded it following both redundancy reductions. Earlier failures
+remain preserved. This is an engineering budget amendment, with no matchmaking
+or authority-policy change. Shorter caller deadlines remain effective; ongoing
+synchronous writes are joined rather than forcibly interrupted. Other families'
+budgets and the separately proposed Set47 Bout budget do not inherit this change.
 
 The original detailed app icon and simple letterless menu-bar fist are
 preserved. Normal bundles omit cheap-PoW and scoped-clock build tags. Set46

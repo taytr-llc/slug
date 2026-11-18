@@ -44,9 +44,11 @@ type initIntent struct {
 type indexRow struct {
 	id     string
 	cutoff int64
+	digest [32]byte
 }
 
-// Store owns only its card journal and audited ID/date index. Concrete source
+// Store owns only its card journal and audited ID/date/raw-byte-digest index.
+// The index retains no Record or source payload. Concrete source
 // handles are borrowed per call, never retained. Order is card -> seed -> event -> entry.
 type Store struct {
 	gate              chan struct{}

@@ -3,6 +3,7 @@ package gymcard
 
 import (
 	"context"
+	"crypto/sha256"
 	"encoding/json"
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/taytr-llc/slug/gymentry"
@@ -77,7 +78,9 @@ func (s *Store) Build(ctx context.Context, seeds *gymseed.Store, events *gymeven
 		if e != nil || len(raw) > MaxRecordSize {
 			return nil, ErrCapacity
 		}
-		nextIndex := append(append([]indexRow{}, s.index...), indexRow{id, ev.CutoffMS})
+		nextIndex := make([]indexRow, len(s.index)+1)
+		copy(nextIndex, s.index)
+		nextIndex[len(s.index)] = indexRow{id: id, cutoff: ev.CutoffMS}
 		sortIndex(nextIndex)
 		s.mark("build-prepared")
 		return func(v gymseed.CardView, check func() error) error {
@@ -110,8 +113,16 @@ func (s *Store) Build(ctx context.Context, seeds *gymseed.Store, events *gymeven
 			}
 			r.CreatedAtMS = n
 			b := new(leveldb.Batch)
-			if e = put(b, key('r', id), r, MaxRecordSize); e != nil {
-				return e
+			raw, e := json.Marshal(r)
+			if e != nil || len(raw) > MaxRecordSize {
+				return ErrCapacity
+			}
+			b.Put(key('r', id), raw)
+			for i := range nextIndex {
+				if nextIndex[i].id == id {
+					nextIndex[i].digest = sha256.Sum256(raw)
+					break
+				}
 			}
 			next := s.meta
 			next.ClockMS = n
@@ -168,7 +179,15 @@ func (s *Store) observe(ctx context.Context, seeds *gymseed.Store, events *gymev
 	}
 	out := []Status{}
 	mutated := false
-	e := seeds.WithCardView(ctx, events, entries, session, dates, func(v gymseed.CardView, check func() error) error {
+	e := seeds.WithCardView(ctx, events, entries, session, dates, s.observeCommit(ctx, evs, records, &out, &mutated))
+	if e = observationError(ctx, e, mutated); e != nil {
+		return nil, e
+	}
+	return out, nil
+}
+
+func (s *Store) observeCommit(ctx context.Context, evs []gymevent.Event, records []*Record, out *[]Status, mutated *bool) func(gymseed.CardView, func() error) error {
+	return func(v gymseed.CardView, check func() error) error {
 		s.mu.Lock()
 		defer s.mu.Unlock()
 		if e := s.stateLocked(); e != nil {
@@ -193,24 +212,27 @@ func (s *Store) observe(ctx context.Context, seeds *gymseed.Store, events *gymev
 		}
 		before := s.meta.ClockMS
 		n, e := s.observeLocked(v.ObservedAtMS)
-		mutated = mutated || s.meta.ClockMS != before || e == ErrOutcomeUnknown
+		*mutated = *mutated || s.meta.ClockMS != before || e == ErrOutcomeUnknown
 		if e != nil {
 			return e
 		}
 		for i, ev := range evs {
-			out = append(out, statusFor(s.meta.Pin, ev, records[i], v.States[i], n))
+			*out = append(*out, statusFor(s.meta.Pin, ev, records[i], v.States[i], n))
 		}
 		s.mark("read-observed")
 		return nil
-	})
+	}
+}
+
+func observationError(ctx context.Context, e error, mutated bool) error {
 	if e != nil || ctx.Err() != nil {
 		if mutated {
-			return nil, ErrOutcomeUnknown
+			return ErrOutcomeUnknown
 		}
 		if e != nil {
-			return nil, mapped(e)
+			return mapped(e)
 		}
-		return nil, ErrCancelled
+		return ErrCancelled
 	}
-	return out, nil
+	return nil
 }

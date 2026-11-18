@@ -9,6 +9,12 @@ import (
 	"time"
 )
 
+// Card metadata reads include durable account and source-clock observations.
+// This admission/operation budget preserves a shorter caller deadline; a Sync
+// already in progress must still join and can return observation uncertainty.
+// Cached polls, short View checks, other families and jobs keep their budgets.
+const cardMetadataTimeout = 500 * time.Millisecond
+
 func (s *StableController) CardSnapshot() CardSnapshot {
 	blank := CardSnapshot{Version: 1, State: "unavailable", Error: "card_unavailable"}
 	out := blank
@@ -56,7 +62,7 @@ func (s *StableController) CardSnapshot() CardSnapshot {
 	return out
 }
 func (s *StableController) cardRead(ctx context.Context, v string, fn func(context.Context, *gymcard.Store, *gymentry.Store) error) error {
-	ctx, cancel := context.WithTimeout(ctx, 250*time.Millisecond)
+	ctx, cancel := context.WithTimeout(ctx, cardMetadataTimeout)
 	defer cancel()
 	if e := s.shortView(ctx, v, func() error { return nil }); e != nil {
 		return e

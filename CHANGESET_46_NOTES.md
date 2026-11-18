@@ -2,9 +2,10 @@
 
 Branch `slug-event-card`, stacked from set 45 implementation
 `ca84a62d178386646aef119cbe2edbb6ad38f508`. The first branch commit records
-set 45's completed engineering closeout. The card implementation is complete;
-focused integration checks pass; final evidence review, packaging and rollout
-checks are in progress.
+set 45's completed engineering closeout. Implementation `ede24725` was pushed
+after source and independent evidence review. Its actual normal-clock package
+test exposed a metadata responsiveness problem; a narrow correction and renewed
+package acceptance are in progress.
 No set 46 deployment is claimed yet.
 
 Connect the complete noon snapshot and fixed, finalized candidate seed to one
@@ -83,6 +84,21 @@ test clock or cheap-PoW profile. See `EVENT_CARDS.md` for the contract and bound
   Its captured listeners and owned processes closed cleanly. The initial
   pipeline's exact runtime differences remain documented; its original run is
   not relabeled as having used the final source.
+- The independent admission addendum verified all three complete public proofs,
+  signatures, generated fighter facts and birth/source bindings. The normal
+  release smoke synchronized to the unchanged height-61 public seed, verified
+  its report-only checkpoint and restarted cleanly. GitHub returned no runs or
+  checks for the pushed implementation; remote CI is not claimed passed.
+- The first package attempt failed icon conversion under the sandbox, which also
+  blocked cleanup inspection; a separate process check found no owned survivors.
+  The next attempt built the approved icons and all three signed normal-profile
+  binaries, then failed on the first ready card-status request. Its original
+  `outcome_unknown` response has no raw timing capture. Separate cold-copy runs
+  of that exact helper produced seven valid `busy` responses at 253–267 ms.
+  Instrumentation isolated repeated source authorization/clock-sync work;
+  this is a real-clock liveness failure, not a malformed response. The previous
+  stationary test-clock capacity check did not cover that cost. All failed
+  attempts and diagnostic source bytes remain preserved; none is a package pass.
 
 Workspace evidence includes `../set46-reference-root-review.json`,
 `../set46-core-independent-review.json`, `../set46-frontend-checks.json` and
@@ -92,8 +108,22 @@ it is not a claim of continuous consensus observation or production authority.
 
 ## Remaining release gates
 
-Finish the independent full-admission addendum, normal packaged helper acceptance
-and independent checks, normal-PoW release smoke and live seed preflight.
+Validate the prepared source-view correction for Card Read, Status and History,
+including original-session authorization before retained-row validation, final
+authorization, post-sync uncertainty, default-clock empty metadata and advancing
+scoped-clock capacity timings with the actual account journal. That stronger
+capacity test also found duplicate immutable card validation exceeding the
+budget. The additional correction retains a private bounded digest index from
+the full opening audit and successful inserts; reads compare actual stored bytes
+to that audited identity. The complete current seed-source audit remains in
+place. No external validation verdict or imported record is accepted.
+The full parent-equivalent account checks still exceeded the original 250 ms
+limit after those reductions. An explicit engineering review approved a Card-only
+500 ms metadata context budget; preserve the original failures, immutable card
+bytes, shorter caller deadlines and existing Build behavior. Other families and
+the separately proposed Set47 Bout budget do not inherit this change.
+Then renew exact-source packaged helper acceptance and independent checks,
+release smoke as required for the corrected source, and fresh live seed preflight.
 Then promote the reviewed source, verify Railway's
 deployment and complete the 15-minute observation plus restart. Report remote CI
 honestly if GitHub supplies no runs. Later closeout records must identify the

@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"github.com/taytr-llc/slug/gymaccount"
 	"github.com/taytr-llc/slug/gymentry"
 	"github.com/taytr-llc/slug/gymevent"
@@ -118,22 +119,100 @@ func (s *Store) cardAuthorize(ctx context.Context, events *gymevent.Store, entri
 	}))
 }
 func (s *Store) cardView(ctx context.Context, events *gymevent.Store, entries *gymentry.Store, session gymstable.Session, dates []string, commit func(CardView, func() error) error) error {
-	evs := make([]gymevent.Event, 0, len(dates))
-	last := ""
-	for _, d := range dates {
-		if d <= last {
-			return ErrInvalid
-		}
-		ev, e := gymevent.EventForDate(s.meta.Pin.SourcePin, d)
-		if e != nil {
-			return ErrCalendar
-		}
-		evs = append(evs, ev)
-		last = d
+	evs, e := s.cardDates(dates)
+	if e != nil {
+		return e
 	}
 	if e := s.cardAuthorize(ctx, events, entries, session, func(_ gymevent.SeedSourceInfo, check func() error) error { return check() }); e != nil {
 		return e
 	}
+	return s.cardViewAuthorized(ctx, events, entries, session, evs, commit)
+}
+
+// WithCardPreparedView authorizes the original View before the consumer reads
+// and validates its retained rows outside the account lease. The same seed gate
+// stays held until the existing final source observation and original-View
+// publication guard finish. Neither callback may reenter these source stores.
+func (s *Store) WithCardPreparedView(ctx context.Context, events *gymevent.Store, entries *gymentry.Store, session gymstable.Session, prepare func(Info) ([]string, func(CardView, func() error) error, error)) error {
+	if ctx == nil || events == nil || entries == nil || prepare == nil {
+		return ErrInvalid
+	}
+	work, done, e := s.beginCard(ctx)
+	if e != nil {
+		return e
+	}
+	defer done()
+	if e = s.cardAuthorize(work, events, entries, session, func(_ gymevent.SeedSourceInfo, check func() error) error { return check() }); e != nil {
+		return s.cardPreparedError(e)
+	}
+	if s.life.Err() != nil {
+		return ErrClosed
+	}
+	if work.Err() != nil {
+		return ErrCancelled
+	}
+	// Immutable identity and bounded metadata are owned copies. Do not call
+	// Info here: that public method would reenter the resource gate we hold.
+	m := s.meta
+	info, e := ValidateInfo(m.Pin, Info{Version: 1, StoreID: m.StoreID, Pin: m.Pin, CreatedAtMS: m.CreatedAtMS, EventCount: m.EventCount, FundingHeight: m.FundingCursor.Height, FundingHash: m.FundingCursor.Hash, FundingComplete: m.FundingComplete, FundingGeneration: m.FundingCursor.Generation, FundingRestartCount: uint32(len(m.FundingRestarts))})
+	if e != nil {
+		return ErrCorrupt
+	}
+	dates, commit, e := prepare(info)
+	if e != nil {
+		return s.cardPreparedError(e)
+	}
+	if s.life.Err() != nil {
+		return ErrClosed
+	}
+	if work.Err() != nil {
+		return ErrCancelled
+	}
+	if commit == nil {
+		return ErrInvalid
+	}
+	evs, e := s.cardDates(dates)
+	if e != nil {
+		return e
+	}
+	e = s.cardViewAuthorized(work, events, entries, session, evs, commit)
+	// The body's final guard is the success linearization. Never replace a nil
+	// completed result because Close started afterward, or reinterpret an opaque
+	// consumer error (including its own distinct outcome-unknown error identity).
+	return s.cardPreparedError(e)
+}
+
+func (s *Store) cardPreparedError(e error) error {
+	if errors.Is(e, ErrCancelled) || errors.Is(e, context.Canceled) || errors.Is(e, context.DeadlineExceeded) {
+		if s.life.Err() != nil {
+			return ErrClosed
+		}
+		return ErrCancelled
+	}
+	return e
+}
+
+func (s *Store) cardDates(dates []string) ([]gymevent.Event, error) {
+	if dates == nil || len(dates) > 8 {
+		return nil, ErrInvalid
+	}
+	evs := make([]gymevent.Event, 0, len(dates))
+	last := ""
+	for _, d := range dates {
+		if d <= last {
+			return nil, ErrInvalid
+		}
+		ev, e := gymevent.EventForDate(s.meta.Pin.SourcePin, d)
+		if e != nil {
+			return nil, ErrCalendar
+		}
+		evs = append(evs, ev)
+		last = d
+	}
+	return evs, nil
+}
+
+func (s *Store) cardViewAuthorized(ctx context.Context, events *gymevent.Store, entries *gymentry.Store, session gymstable.Session, evs []gymevent.Event, commit func(CardView, func() error) error) error {
 	rows := []Record{}
 	rowIndex := make([]int, len(evs))
 	digests := make([]string, len(evs))
@@ -201,12 +280,15 @@ func (s *Store) cardView(ctx context.Context, events *gymevent.Store, entries *g
 		}
 		return commit(out, check)
 	})
-	if e != nil || ctx.Err() != nil {
+	if e != nil || ctx.Err() != nil || s.life.Err() != nil {
 		if mutated {
 			return ErrOutcomeUnknown
 		}
 		if e != nil {
 			return e
+		}
+		if s.life.Err() != nil {
+			return ErrClosed
 		}
 		return ErrCancelled
 	}

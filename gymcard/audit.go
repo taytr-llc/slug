@@ -4,17 +4,38 @@ package gymcard
 import (
 	"bytes"
 	"context"
+	"crypto/sha256"
 	"encoding/hex"
+	"encoding/json"
 	"sort"
 )
 
 func (s *Store) record(id string) (Record, bool, error) {
+	var indexed *indexRow
+	for i := range s.index {
+		if s.index[i].id == id {
+			indexed = &s.index[i]
+			break
+		}
+	}
 	raw, ok, e := s.raw(key('r', id), MaxRecordSize)
-	if e != nil || !ok {
+	if e != nil {
 		return Record{}, ok, e
 	}
+	if !ok {
+		if indexed != nil {
+			return Record{}, false, ErrCorrupt
+		}
+		return Record{}, false, nil
+	}
+	if indexed == nil || sha256.Sum256(raw) != indexed.digest {
+		return Record{}, false, ErrCorrupt
+	}
+	// These exact bounded canonical bytes passed the full Open audit or the
+	// owned Build validation before their digest was published after Sync.
+	// Current source semantics are still checked by the concrete seed seam.
 	var r Record
-	if decode(raw, MaxRecordSize, &r, true) != nil || r.CardID != id || validateRecord(s.meta.Pin, r) != nil || r.CreatedAtMS < s.meta.CreatedAtMS || r.CreatedAtMS > s.meta.ClockMS {
+	if json.Unmarshal(raw, &r) != nil || r.CardID != id || r.Source.SourceReceipt.Input.Event.CutoffMS != indexed.cutoff {
 		return Record{}, false, ErrCorrupt
 	}
 	s.mark("record-validated")
@@ -39,7 +60,7 @@ func (s *Store) audit(ctx context.Context, m marker) error {
 	}
 	s.meta = meta
 	s.clockSeen = meta.ClockMS
-	s.index = []indexRow{}
+	s.index = make([]indexRow, 0, meta.EventCount)
 	it := s.db.NewIterator(nil, nil)
 	defer it.Release()
 	count := 0
@@ -59,7 +80,7 @@ func (s *Store) audit(ctx context.Context, m marker) error {
 		if decode(v, MaxRecordSize, &r, true) != nil || r.CardID != id || validateRecord(meta.Pin, r) != nil || r.CreatedAtMS < meta.CreatedAtMS || r.CreatedAtMS > meta.ClockMS {
 			return ErrCorrupt
 		}
-		s.index = append(s.index, indexRow{id, r.Source.SourceReceipt.Input.Event.CutoffMS})
+		s.index = append(s.index, indexRow{id: id, cutoff: r.Source.SourceReceipt.Input.Event.CutoffMS, digest: sha256.Sum256(v)})
 		count++
 	}
 	if it.Error() != nil || uint32(count) != meta.EventCount {
