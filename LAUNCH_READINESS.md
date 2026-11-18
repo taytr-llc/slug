@@ -138,9 +138,14 @@ they do not count as completion of this product-release gate.
 - Set 45's candidate publication/seed journal, owned-node adapter and desktop
   controls are implemented on `slug-event-seed`, with frozen independent
   reference comparisons and actual normal-node composition passing, including
-  retained finality/conflict, restart and next-Saturday escalation. Final source
-  checks pass; packaged/deployment acceptance is still in progress. This is
-  candidate engineering work, not an official event service. See `EVENT_SEEDS.md`.
+  retained finality/conflict, restart and next-Saturday escalation. Source checks,
+  the exact original-icon package at `ca84a62d`, independent evidence checks and
+  deployment at master `dcc44829` passed, followed by the complete 15-minute
+  observation and clean restart. The normal-clock package covers setup, refusals
+  and recovery; successful closed publication/finality uses separate scoped-clock
+  normal-PoW evidence. GUI/icon rendering, accessibility, portrait review and the
+  full joint D74 review remain open. This is candidate engineering work, not an
+  official event service. See `CHANGESET_45_NOTES.md` and `EVENT_SEEDS.md`.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
