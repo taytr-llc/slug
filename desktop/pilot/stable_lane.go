@@ -15,25 +15,27 @@ import (
 )
 
 type stableTask struct {
-	careerPage   bool
-	publication  *ResultJob
-	resultPath   string
-	bout         *BoutJob
-	card         *CardJob
-	seed         *SeedJob
-	event        *EventJob
-	entry        *EntryJob
-	entryRequest gymentry.Request
-	preview      *PreviewJob
-	followLatest bool
-	result       StableJob
-	ctx          context.Context
-	cancel       context.CancelFunc
-	after        uint64
-	limit, first uint32
-	request      gymstable.SlotRequest
-	automatic    bool
-	published    bool
+	previewPriorBytes int
+	careerPage        bool
+	publication       *ResultJob
+	resultPath        string
+	bout              *BoutJob
+	card              *CardJob
+	seed              *SeedJob
+	event             *EventJob
+	entry             *EntryJob
+	entryRequest      gymentry.Request
+	careerPreview     *CareerPreviewJob
+	preview           *PreviewJob
+	followLatest      bool
+	result            StableJob
+	ctx               context.Context
+	cancel            context.CancelFunc
+	after             uint64
+	limit, first      uint32
+	request           gymstable.SlotRequest
+	automatic         bool
+	published         bool
 }
 
 func (s *StableController) expireQueuedLocked() {
@@ -61,6 +63,10 @@ func (s *StableController) expireQueuedLocked() {
 		}
 		if s.queued.entry != nil {
 			s.cancelQueuedEntryLocked()
+			return
+		}
+		if s.queued.careerPreview != nil {
+			s.cancelQueuedCareerPreviewLocked()
 			return
 		}
 		if s.queued.preview != nil {
@@ -108,6 +114,10 @@ func (s *StableController) cancelTasksLocked() {
 		}
 		if s.queued.entry != nil {
 			s.cancelQueuedEntryLocked()
+			return
+		}
+		if s.queued.careerPreview != nil {
+			s.cancelQueuedCareerPreviewLocked()
 			return
 		}
 		if s.queued.preview != nil {
@@ -284,6 +294,8 @@ func (s *StableController) cycle(ctx context.Context) error {
 		task.event.State = "running"
 	} else if task.entry != nil {
 		task.entry.State = "running"
+	} else if task.careerPreview != nil {
+		task.careerPreview.State = "running"
 	} else if task.preview != nil {
 		task.preview.State = "running"
 	} else {
@@ -308,6 +320,9 @@ func (s *StableController) cycle(ctx context.Context) error {
 	}
 	if task.entry != nil {
 		return s.runEntryTask(ctx, task)
+	}
+	if task.careerPreview != nil {
+		return s.runCareerPreviewTask(ctx, task)
 	}
 	if task.preview != nil {
 		return s.runPreviewTask(ctx, task)
@@ -769,6 +784,9 @@ func (t *stableTask) family() string {
 	}
 	if t.entry != nil {
 		return "entry"
+	}
+	if t.careerPreview != nil {
+		return "career_preview"
 	}
 	if t.preview != nil {
 		return "preview"

@@ -338,7 +338,6 @@ async function fetchCareerPage(kind, position, jobID, terminalSource, limit) {
     pageItems=own(r.items);mode=kind;if(kind==='recent')pageItems.reverse();if(kind==='roster'){rosterFirst=r.source.first_slot;rosterNext=r.source.next_slot;pageRevision=r.source.status.roster_revision;}else{pageAfter=r.source.after;pageNext=r.source.next_after;pageRevision=null;}
     if(!previewCapacity()){[pageItems,careerPage,careerActivation,mode,pageAfter,pageNext,pageRevision,rosterFirst,rosterNext]=before;message='The display cache is full. The previous page is retained.';render();return;}
     const awarded=new Set(r.page.items.filter(x=>x.totals.xp>0).map(x=>x.prospect_id));
-    if(previewSelected.some(x=>awarded.has(x.id))){selectionChanged(previewSelected.filter(x=>!awarded.has(x.id)));previewMessage='Awarded fighters were removed from this practice preview because it uses the original zero-XP profile.';}
     if(entryDraft.some(x=>awarded.has(x.id))){entryDraft=entryDraft.filter(x=>!awarded.has(x.id));entryMessage='Finalized professional records make these fighters ineligible for new C1 bookings.';}
     message='Finalized career totals at the stated observation time. Provisional outcomes do not award XP or base points.';render();
   } catch { if(!disposed&&captured===epoch&&view===currentKey()&&careerSelectedJob===jobID){message='The career page could not be validated. The previous dated page is retained.';render();} }
@@ -391,7 +390,7 @@ function renderCards() {
     if (c && c.fingerprint !== JSON.stringify([i, careerForItem(i)])) { const previous = c; requireValue(same(c.item.assignment, i.assignment) && same(c.item.manifest, i.manifest)); c = makeCard(i); c.select.value = previous.select.value; c.details.open = previous.details.open; previous.image.removeAttribute('src'); previous.article.remove(); cards.set(id, c); }
     if (!c) { c = makeCard(i); cards.set(id, c); }
     if (ui.cards.children[position] !== c.article) ui.cards.insertBefore(c.article, ui.cards.children[position] ?? null);
-    c.preview.disabled = (careerMode && (!careerForItem(i) || careerForItem(i).totals.xp > 0)) || !ready() || !!command || previewSelected.some((v) => v.id === id) || previewSelected.length >= 2;
+    c.preview.disabled = (careerMode && (!careerForItem(i) || !careerPreviewReady())) || !ready() || !!command || previewSelected.some((v) => v.id === id) || previewSelected.length >= 2;
     c.entry.disabled = (careerMode && (!careerForItem(i) || careerForItem(i).totals.xp > 0)) || !entryReady() || !!command || entryDraft.length >= 5 || entryDraft.some((d) => d.id === id) || !stable.status.slots.includes(id) || i.condition.phase === 'retired';
     c.assign.disabled = !canEdit(); c.select.disabled = !canEdit(); c.save.disabled = !ready() || !!command || !!watched; c.retry.disabled = !ready() || !!command;
     if (images.has(key(i))) { c.image.setAttribute('src', images.get(key(i))); c.image.hidden = false; c.placeholder.hidden = true; }
@@ -689,6 +688,47 @@ function previewEnvelope(v, kind) {
   }
   return { ok: true, value: own(value) }; // Native checks canonical digest bindings.
 }
+const CAREER_PREVIEW_ERRORS = new Set([...PREVIEW_ERRORS, 'career_invalid', 'career_inactive', 'career_unfenced', 'career_closed', 'career_poisoned', 'career_cancelled', 'career_corrupt']);
+const CAREER_PREVIEW_UNAVAILABLE = new Set(['', 'preview_unavailable', 'career_inactive', 'career_unfenced', 'career_closed', 'career_poisoned', 'career_corrupt']);
+function careerPreviewActivationValue(a) {
+  exact(a, ['version','policy_id','activation_id','result_store_id','result_created_at_ms','source_created_at_ms','activated_at_ms']);
+  requireValue(a.version === 1 && a.policy_id === CAREER_POLICY && hex(a.activation_id) && hex(a.result_store_id) && int(a.source_created_at_ms,1,DATE_MAX) && int(a.result_created_at_ms,a.source_created_at_ms,DATE_MAX) && int(a.activated_at_ms,a.result_created_at_ms,DATE_MAX) && (!careerActivation || same(careerActivation,a)));
+  if (publicationAuthority) requireValue(a.result_store_id === publicationAuthority.storeID && a.result_created_at_ms === publicationAuthority.createdMS && a.source_created_at_ms === publicationAuthority.sourceCreatedMS);
+}
+function careerPreviewFighter(i, st, asOf) {
+  exact(i, ['assignment','manifest','totals','condition']); assignment(i.assignment, st.pin.identity); manifestValue(i.manifest, i.assignment.work_hash);
+  const t=i.totals; exact(t,['wins','losses','draws','xp','base_points']);
+  requireValue(['wins','losses','draws'].every(k=>int(t[k],0,256)) && t.wins+t.losses+t.draws<=256 && t.xp===Math.min(15,t.wins+t.losses+t.draws) && int(t.base_points,10*t.wins+4*t.draws,14*t.wins+4*t.draws) && (t.base_points-10*t.wins-4*t.draws)%4===0);
+  careerCondition(i.condition,i,asOf,t.xp); requireValue(i.assignment.sequence <= st.checkpoint && entryBytes(i)<=8448);
+}
+function activePreviewEnvelope(v, kind) { return careerMode ? careerPreviewEnvelope(v, kind) : previewEnvelope(v, kind); }
+function previewMethod(kind) { return ({snapshot:careerMode?'CareerPreviewSnapshot':'PreviewSnapshot',begin:careerMode?'BeginCareerFightPreview':'BeginFightPreview',job:careerMode?'CareerFightPreviewJob':'FightPreviewJob',cancel:careerMode?'CancelCareerFightPreview':'CancelFightPreview',portrait:careerMode?'CareerFightPreviewPortrait':'FightPreviewPortrait'})[kind]; }
+function careerPreviewReady() { return !careerMode || !!(previewSnapshot?.view && previewSnapshot?.activation && previewSnapshot.state !== 'unavailable'); }
+function careerPreviewEnvelope(v, kind) {
+  requireValue(v !== null && typeof v === 'object' && JSON.stringify(v).length < 262144 && v.version === 1 && int(v.id, 1) && typeof v.ok === 'boolean');
+  if (!v.ok) { exact(v, ['id', 'version', 'ok', 'error']); requireValue(CAREER_PREVIEW_ERRORS.has(v.error)); return { ok: false, error: v.error }; }
+  exact(v, ['id', 'version', 'ok', kind]); const value = v[kind];
+  if (kind === 'snapshot') {
+    exact(value, ['version', 'state', 'error', 'view', 'store_id', 'engine_version', 'engine_id', 'activation', 'active_job_id', 'queued_job_id', 'last_job_id']);
+    requireValue(value.version === 1 && ['unavailable', 'idle', 'busy', 'ready', 'failed', 'cancelled'].includes(value.state) && ['active_job_id', 'queued_job_id', 'last_job_id'].every((k) => optionalID(value[k])));
+    if (value.view === null) requireValue(value.state === 'unavailable' && CAREER_PREVIEW_UNAVAILABLE.has(value.error) && value.activation === null && value.store_id === '' && value.engine_version === 0 && value.engine_id === '' && value.active_job_id === '' && value.queued_job_id === '' && value.last_job_id === '');
+    else { previewPins(value); careerPreviewActivationValue(value.activation); requireValue(value.state !== 'unavailable' && (['failed', 'cancelled'].includes(value.state) ? CAREER_PREVIEW_ERRORS.has(value.error) && value.error !== 'outcome_unknown' : value.error === '')); requireValue(value.state === 'busy' ? !!(value.active_job_id || value.queued_job_id) && !(value.active_job_id && value.queued_job_id) && !value.last_job_id : !value.active_job_id && !value.queued_job_id); requireValue(value.state === 'idle' ? !value.last_job_id : value.state === 'busy' || !!value.last_job_id); if (value.state === 'cancelled') requireValue(value.error === 'preview_cancelled'); }
+  } else {
+    exact(value, ['version', 'job_id', 'state', 'view', 'store_id', 'engine_version', 'engine_id', 'activation_id', 'fighter_a_id', 'fighter_b_id', 'error', 'result']); previewPins(value); requireValue(hex(value.activation_id) && value.activation_id === (careerActivation?.activation_id ?? previewSnapshot?.activation?.activation_id));
+    requireValue(hex(value.job_id) && hex(value.fighter_a_id) && hex(value.fighter_b_id) && value.fighter_a_id < value.fighter_b_id && ['queued', 'running', 'done', 'failed', 'cancelled'].includes(value.state));
+    requireValue(['queued', 'running', 'done'].includes(value.state) ? value.error === '' : CAREER_PREVIEW_ERRORS.has(value.error) && value.error !== 'outcome_unknown'); if (value.state === 'cancelled') requireValue(value.error === 'preview_cancelled');
+    requireValue((value.result !== null) === (value.state === 'done'));
+    if (value.result !== null) {
+      const r = value.result; exact(r, ['version', 'pair', 'recipe', 'seed', 'engine_result', 'engine_result_digest']); requireValue(r.version === 1 && hex(r.seed) && hex(r.engine_result_digest) && JSON.stringify(r).length <= 229376);
+      const p = r.pair; exact(p, ['version', 'status', 'activation', 'career_digest', 'as_of_ms', 'fighters']); requireValue(p.version === 1 && int(p.as_of_ms, 1, DATE_MAX) && p.status.last_as_of_ms === p.as_of_ms && p.status.store_id === value.store_id && same(p.status.pin, stable.status.pin) && JSON.stringify(p).length <= 24576); status(p.status, value.view, current.account.fixture); careerPreviewActivationValue(p.activation); requireValue(p.activation.activation_id === value.activation_id && hex(p.career_digest) && p.as_of_ms >= p.activation.activated_at_ms); pairArray(p.fighters, (i) => careerPreviewFighter(i, p.status, p.as_of_ms));
+      const ids = [value.fighter_a_id, value.fighter_b_id]; requireValue(p.fighters.every((i, n) => i.assignment.prospect_id === ids[n]) && p.fighters[0].manifest.physical.weight_class === p.fighters[1].manifest.physical.weight_class);
+      const recipe = r.recipe; exact(recipe, ['version', 'engine_version', 'engine_id', 'network', 'genesis', 'store_id', 'source_authority_id', 'descriptor_id', 'activation_id', 'career_digest', 'as_of_ms', 'rounds', 'training', 'fighters']);
+      requireValue(recipe.version === 1 && recipe.engine_version === 1 && recipe.engine_id === PREVIEW_ENGINE && recipe.network === 0x534c5547 && recipe.genesis === GENESIS && recipe.store_id === value.store_id && recipe.source_authority_id === p.status.pin.source.authority_id && recipe.descriptor_id === DESCRIPTOR && recipe.activation_id === value.activation_id && recipe.career_digest === p.career_digest && recipe.as_of_ms === p.as_of_ms && recipe.rounds === 3 && JSON.stringify(recipe).length <= 4096);
+      pairArray(recipe.training, (x) => requireValue(x === 0)); pairArray(recipe.fighters, (f, n) => { exact(f, ['prospect_id', 'source_record_digest', 'manifest_digest', 'condition_digest', 'totals']); const a = p.fighters[n].assignment; requireValue(f.prospect_id === ids[n] && f.source_record_digest === a.source_record_digest && f.manifest_digest === a.manifest_digest && hex(f.condition_digest) && same(f.totals, p.fighters[n].totals)); }); boutValue(r.engine_result, ids);
+    }
+  }
+  return { ok: true, value: own(value) }; // Native checks canonical digest bindings.
+}
 function previewPins(v) { requireValue(v.version === 1 && ready() && viewKey(checkedView(v.view)) === currentKey() && v.store_id === stable.status.store_id && v.engine_version === 1 && v.engine_id === PREVIEW_ENGINE); }
 
 let previewSnapshot = null, previewSelected = [], previewWatch = null, previewDiscovery = null, previewResult = null, previewSerial = 0, previewMessage = '';
@@ -702,7 +742,7 @@ function previewCapacity(extra = 0) { return careerRetainedBytes() + previewReta
 function previewError(code) { return ({ preview_class_mismatch: 'Choose two candidates from the same weight class.', preview_not_found: 'This preview is no longer retained. Select your pair and explicitly preview again.', preview_capacity: 'The local preview cache is full. Clear the preview and retry.', preview_cancelled: 'Preview cancelled. No fight was recorded.', preview_observation_unknown: 'The authority could not confirm its clock observation. Reopen the gym before another preview. No fight was recorded.', outcome_unknown: 'The preview may have started. Check its status before explicitly trying again.', preview_unavailable: 'Fight preview is unavailable. Your saved candidates are retained.' })[code] ?? textError(code); }
 function previewRefusal(code) {
   if (['unauthorized', 'stale_view'].includes(code)) clearPreview();
-  else if (['preview_unavailable', 'preview_not_found', 'preview_observation_unknown'].includes(code)) {
+  else if (['preview_unavailable', 'preview_not_found', 'preview_observation_unknown', 'career_inactive', 'career_unfenced', 'career_closed', 'career_poisoned', 'career_corrupt'].includes(code)) {
     discardPreviewResult(); previewWatch = null; previewDiscovery = null; previewSnapshot = null;
   }
   previewMessage = previewError(code);
@@ -710,11 +750,11 @@ function previewRefusal(code) {
 function selectionChanged(next) {
   const old = previewWatch, oldView = current?.view?.view_id;
   previewSerial++; previewSelected = next; previewWatch = null; previewDiscovery = null; discardPreviewResult(); previewMessage = '';
-  if (old && oldView) tasks.unshift(async () => { if (ready() && current.view.view_id === oldView) { try { await call('CancelFightPreview', oldView, old.id); } catch {} } });
+  if (old && oldView) tasks.unshift(async () => { if (ready() && current.view.view_id === oldView) { try { await call(previewMethod('cancel'), oldView, old.id); } catch {} } });
   render(); pump();
 }
 function selectPreview(i) {
-  if (careerMode && (!careerForItem(i) || careerForItem(i).totals.xp > 0)) { previewMessage = 'This practice preview uses the original zero-XP profile. Awarded fighters remain available in career inventory.'; renderPreview(); return; }
+  if (careerMode && (!careerForItem(i) || !careerPreviewReady())) { previewMessage = 'Career practice is unavailable. Refresh the career page and try again.'; renderPreview(); return; }
   if (!ready() || command || previewSelected.length >= 2 || previewSelected.some((v) => v.id === i.assignment.prospect_id)) return;
   const next = { id: i.assignment.prospect_id, name: i.manifest.name.display, weightClass: i.manifest.physical.weight_class };
   if (previewSelected.length && previewSelected[0].weightClass !== next.weightClass) { previewMessage = previewError('preview_class_mismatch'); renderPreview(); return; }
@@ -723,10 +763,11 @@ function selectPreview(i) {
 async function fetchPreviewSnapshot() {
   const captured = epoch, serial = previewSerial, view = currentKey();
   try {
-    const r = previewEnvelope(await call('PreviewSnapshot'), 'snapshot'); if (disposed || captured !== epoch || view !== currentKey()) return;
+    const r = activePreviewEnvelope(await call(previewMethod('snapshot')), 'snapshot'); if (disposed || captured !== epoch || view !== currentKey()) return;
     if (!r.ok) { previewRefusal(r.error); renderPreview(); return; }
     previewSnapshot = r.value;
-    if (r.value.view === null) { clearPreview(); renderPreview(); return; }
+    if (r.value.view === null) { const code=r.value.error; clearPreview(); if(code) previewMessage=previewError(code); renderPreview(); return; }
+    if (careerMode) careerActivation=own(r.value.activation);
     // Reconcile the replay present at this observation before awaiting a job.
     // A busy snapshot can precede a done job; it cannot evict that newer reply.
     if (previewResult && r.value.last_job_id !== previewResult.job_id) discardPreviewResult();
@@ -739,7 +780,7 @@ async function fetchPreviewSnapshot() {
 async function fetchPreviewJob(id, serial = previewSerial) {
   if (!ready() || previewSelected.length !== 2) return;
   const captured = epoch, view = currentKey(), ids = previewSelected.map((s) => s.id).sort();
-  const r = previewEnvelope(await call('FightPreviewJob', current.view.view_id, id), 'job');
+  const r = activePreviewEnvelope(await call(previewMethod('job'), current.view.view_id, id), 'job');
   if (disposed || captured !== epoch || serial !== previewSerial || view !== currentKey()) return;
   if (!r.ok) { previewWatch = null; previewRefusal(r.error); return; }
   const j = r.value; requireValue(j.job_id === id);
@@ -752,17 +793,17 @@ async function fetchPreviewJob(id, serial = previewSerial) {
   previewMessage = 'Preview ready. Playback is paused; use Play or step through the fight.'; content(ui.announcement, 'Unrecorded fight preview ready.');
 }
 async function beginPreview() {
-  if (!ready() || previewSelected.length !== 2 || previewWatch || !previewSnapshot?.view) return;
+  if (!ready() || previewSelected.length !== 2 || previewWatch || !previewSnapshot?.view || !careerPreviewReady()) return;
   const captured = epoch, serial = previewSerial, view = currentKey(), viewID = current.view.view_id, ids = previewSelected.map((s) => s.id).sort();
   previewDiscovery = { serial, ids };
-  const r = previewEnvelope(await call('BeginFightPreview', viewID, ...ids), 'job');
-  if (disposed || captured !== epoch || serial !== previewSerial || view !== currentKey()) { if (!disposed && r.ok && ready() && current.view.view_id === viewID) await call('CancelFightPreview', viewID, r.value.job_id); return; }
+  const r = activePreviewEnvelope(await call(previewMethod('begin'), viewID, ...ids), 'job');
+  if (disposed || captured !== epoch || serial !== previewSerial || view !== currentKey()) { if (!disposed && r.ok && ready() && current.view.view_id === viewID) await call(previewMethod('cancel'), viewID, r.value.job_id); return; }
   if (!r.ok) { previewRefusal(r.error); if (r.error === 'outcome_unknown') discardPreviewResult(); else previewDiscovery = null; return; }
   requireValue(r.value.state === 'queued' && r.value.fighter_a_id === ids[0] && r.value.fighter_b_id === ids[1]); discardPreviewResult(); previewWatch = { id: r.value.job_id, serial }; previewDiscovery = null; previewMessage = 'Preparing fight…'; pollWanted = true;
 }
 async function cancelPreview() {
   if (!ready() || !previewWatch) return; const captured = epoch, serial = previewSerial, id = previewWatch.id;
-  const r = previewEnvelope(await call('CancelFightPreview', current.view.view_id, id), 'job');
+  const r = activePreviewEnvelope(await call(previewMethod('cancel'), current.view.view_id, id), 'job');
   if (captured !== epoch || serial !== previewSerial) return;
   if (!r.ok) previewRefusal(r.error);
   else { requireValue(r.value.job_id === id); previewMessage = 'Cancellation requested. No fight is recorded.'; if (!['queued', 'running'].includes(r.value.state)) previewWatch = null; }
@@ -773,11 +814,12 @@ async function loadPreviewPortrait(item) {
   const captured = epoch, serial = previewSerial, j = previewResult, a = item.assignment; if (!j) return; previewImageAttempts.add(a.prospect_id);
   const remains = () => !disposed && captured === epoch && serial === previewSerial && previewResult === j && ready();
   try {
-    const r = await call('FightPreviewPortrait', j.view.view_id, j.job_id, a.prospect_id); if (!remains()) return;
+    const r = await call(previewMethod('portrait'), j.view.view_id, j.job_id, a.prospect_id); if (!remains()) return;
     requireValue(r?.version === 1 && typeof r.ok === 'boolean' && JSON.stringify(r).length <= 98304);
-    if (!r.ok) { exact(r, ['version', 'ok', 'error']); requireValue(PREVIEW_ERRORS.has(r.error)); previewRefusal(r.error); renderPreview(); return; }
+    if (!r.ok) { exact(r, ['version', 'ok', 'error']); requireValue((careerMode?CAREER_PREVIEW_ERRORS:PREVIEW_ERRORS).has(r.error)); previewRefusal(r.error); renderPreview(); return; }
     exact(r, ['version', 'ok', 'portrait']); const p = r.portrait;
-    exact(p, ['version', 'view', 'store_id', 'job_id', 'prospect_id', 'result_digest', 'descriptor_id', 'manifest_digest', 'portrait_digest', 'svg']);
+    exact(p, ['version', 'view', 'store_id', 'job_id', 'prospect_id', ...(careerMode?['activation_id','career_digest']:[]), 'result_digest', 'descriptor_id', 'manifest_digest', 'portrait_digest', 'svg']);
+    if(careerMode) requireValue(p.activation_id===j.activation_id && p.career_digest===j.result.pair.career_digest);
     requireValue(p.version === 1 && viewKey(checkedView(p.view)) === currentKey() && p.store_id === j.store_id && p.job_id === j.job_id && p.prospect_id === a.prospect_id && p.result_digest === j.result.engine_result_digest && p.descriptor_id === DESCRIPTOR && p.manifest_digest === a.manifest_digest && p.portrait_digest === a.portrait_digest && imageOnlySVG(p.svg));
     const src = `data:image/svg+xml;base64,${btoa(p.svg)}`; requireValue(previewCapacity(2 * src.length) && previewImages.size < 2); if (!remains()) return; previewImages.set(a.prospect_id, src); renderPreview();
   } catch { if (remains()) { previewRefusal('preview_unavailable'); renderPreview(); } }
@@ -798,7 +840,7 @@ function renderPreview() {
     ui['preview-selection']._selectionKey = selectionKey; ui['preview-selection'].textContent = '';
     for (const s of previewSelected) { const li = element('li', '', `${s.name} · ${label(s.weightClass)}`), remove = element('button', '', 'Remove'); remove.type = 'button'; remove.setAttribute('aria-label', `Remove ${s.name} from preview`); remove.addEventListener('click', () => selectionChanged(previewSelected.filter((x) => x.id !== s.id))); li.append(remove); ui['preview-selection'].append(li); }
   }
-  ui['preview-begin'].disabled = !ready() || !previewSnapshot?.view || previewSelected.length !== 2 || !!previewWatch || !!command;
+  ui['preview-begin'].disabled = !ready() || !previewSnapshot?.view || !careerPreviewReady() || previewSelected.length !== 2 || !!previewWatch || !!command;
   ui['preview-cancel'].disabled = !ready() || !previewWatch || !!command; ui['preview-clear'].disabled = previewSelected.length === 0;
   ui['preview-replay'].hidden = !previewResult; if (!previewResult) return;
   const j = previewResult, r = j.result.engine_result, fighters = j.result.pair.fighters, names = fighters.map((i) => i.manifest.name.display);
@@ -806,7 +848,7 @@ function renderPreview() {
   const rendered = j.result.engine_result_digest + JSON.stringify([...previewImages.keys()]);
   if (previewRendered !== rendered) {
     previewRendered = rendered; ui['preview-fighters'].textContent = '';
-    for (const [n, i] of fighters.entries()) { const box = element('div', 'preview-fighter'), src = previewImages.get(i.assignment.prospect_id); if (src) { const image = element('img'); image.setAttribute('src', src); image.setAttribute('alt', `Candidate portrait of ${names[n]}`); image.setAttribute('width', '160'); image.setAttribute('height', '160'); box.append(image); } box.append(element('strong', '', names[n]), element('span', 'note', `${label(i.condition.phase)} · Rating ${(i.condition.rating_hundredths / 100).toFixed(2)} · XP 0`)); ui['preview-fighters'].append(box); }
+    for (const [n, i] of fighters.entries()) { const box = element('div', 'preview-fighter'), src = previewImages.get(i.assignment.prospect_id); if (src) { const image = element('img'); image.setAttribute('src', src); image.setAttribute('alt', `Candidate portrait of ${names[n]}`); image.setAttribute('width', '160'); image.setAttribute('height', '160'); box.append(image); } box.append(element('strong', '', names[n]), element('span', 'note', `${label(i.condition.phase)} · Rating ${(i.condition.rating_hundredths / 100).toFixed(2)} · XP ${i.condition.pro_xp}`)); ui['preview-fighters'].append(box); }
     ui['preview-scores'].textContent = ''; ui['preview-scores'].append(element('caption', '', 'Unrecorded preview · Whole-fight scorecard')); const head = element('tr'); for (const title of ['Component', ...names]) { const th = element('th', '', title); th.setAttribute('scope', 'col'); head.append(th); } const thead = element('thead'); thead.append(head); ui['preview-scores'].append(thead); const body = element('tbody');
     for (const [key, title] of [['damage_tenths', 'Damage'], ['knockdown_tenths', 'Knockdowns'], ['accuracy_tenths', 'Accuracy'], ['volume_tenths', 'Volume'], ['control_tenths', 'Control'], ['total_tenths', 'Total']]) { const row = element('tr'), th = element('th', '', title); th.setAttribute('scope', 'row'); row.append(th, ...r.scores.map((score) => element('td', '', (score[key] / 10).toFixed(1)))); body.append(row); } ui['preview-scores'].append(body);
   }

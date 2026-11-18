@@ -370,8 +370,11 @@ Mac package and nine independent reports separately passed zero-award current
 Career pages and recovery, followed by the full 900-second/31-sample deployment
 observation and restart. Remote CI absence is assessed, not a pass. C1 still
 refuses awarded fighters; historical noon inputs remain fixed. The shipped
-practice preview still uses XP0. Career-aware unrecorded practice is the next
-bounded proposal; complete rankings/title authority and D74 remain open. See
+legacy practice preview still uses XP0. Set50 on `slug-career-preview` adds a
+separate career-aware practice path under `CAREER_PREVIEW.md`; local, independent
+arithmetic and scoped awarded-fighter checks pass, with final package/deployment
+verification in progress. Practice grants no permanent awards. Complete
+rankings/title authority and D74 remain open. See
 `CHANGESET_49_NOTES.md` and `RESULT_AWARD_POLICY.md`.
 
 The Saturday operation: entry collection and lock (Saturday noon

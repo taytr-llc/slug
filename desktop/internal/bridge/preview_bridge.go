@@ -39,11 +39,13 @@ type previewMember struct {
 	Manifest                           fightermanifest.Manifest
 }
 type previewPresentationMetadata struct {
-	View                                                pilot.ManifestViewPin
-	StoreID, JobID                                      string
-	EngineVersion                                       uint32
-	EngineID, Seed, InputID, ResultDigest, DescriptorID string
-	Members                                             [2]previewMember
+	Family, ActivationID, CareerDigest, CapturedResultDigest string
+	AsOfMS                                                   int64
+	View                                                     pilot.ManifestViewPin
+	StoreID, JobID                                           string
+	EngineVersion                                            uint32
+	EngineID, Seed, InputID, ResultDigest, DescriptorID      string
+	Members                                                  [2]previewMember
 }
 type previewPresentation struct {
 	metadata previewPresentationMetadata
@@ -77,7 +79,9 @@ func previewFailure(id uint64, code string) pilot.PreviewResponse {
 }
 func (b *StableBridge) clearPreviewPresentation() {
 	b.mu.Lock()
-	b.presentation = nil
+	if b.presentation != nil && b.presentation.metadata.Family != careerPreviewFamily {
+		b.presentation = nil
+	}
 	b.mu.Unlock()
 }
 func (b *StableBridge) clearPreviewView() {
@@ -124,14 +128,8 @@ func (b *StableBridge) previewRequestHeld(ctx context.Context, id uint64, req pi
 			return previewFailure(id, "preview_not_found")
 		}
 	}
-	if req.Command == "preview_begin" && len(b.previewJobs) >= 3 {
-		canEvict := false
-		for _, e := range b.previewJobs {
-			canEvict = canEvict || stableTerminal(e.state)
-		}
-		if !canEvict {
-			return previewFailure(id, "busy")
-		}
+	if req.Command == "preview_begin" && !b.canTrackPreview() {
+		return previewFailure(id, "busy")
 	}
 	ctx, cancel := context.WithTimeout(ctx, 30*time.Second)
 	defer cancel()
@@ -150,7 +148,7 @@ func (b *StableBridge) previewRequestHeld(ctx context.Context, id uint64, req pi
 		}
 		if oneOf(r.Error, "preview_not_found", "preview_unavailable") {
 			b.mu.Lock()
-			if b.presentation != nil && (req.JobID == b.presentation.metadata.JobID || r.Error == "preview_unavailable") {
+			if b.presentation != nil && b.presentation.metadata.Family != careerPreviewFamily && (req.JobID == b.presentation.metadata.JobID || r.Error == "preview_unavailable") {
 				b.presentation = nil
 			}
 			b.mu.Unlock()
@@ -167,11 +165,15 @@ func (b *StableBridge) previewRequestHeld(ctx context.Context, id uint64, req pi
 	}
 	if r.Snapshot != nil {
 		b.rememberPreviewSnapshot(*r.Snapshot)
+		if !b.previewMetadataBound() {
+			b.fail(ErrUnavailable)
+			return previewFailure(id, "preview_capacity")
+		}
 	}
 	if r.Job != nil {
 		if req.Command == "preview_begin" {
 			// Only successful internal acceptance replaces the previous replay.
-			b.clearPreviewPresentation()
+			b.selectPreview(legacyPreviewFamily, r.Job.JobID)
 			for key, e := range b.previewJobs {
 				if stableTerminal(e.state) {
 					delete(b.previewJobs, key)
@@ -249,7 +251,7 @@ func (b *StableBridge) rememberPreviewSnapshot(s pilot.PreviewSnapshot) {
 		}
 	}
 	b.mu.Lock()
-	if b.presentation != nil && b.presentation.metadata.JobID != s.LastJobID {
+	if b.presentation != nil && b.presentation.metadata.Family != careerPreviewFamily && b.presentation.metadata.JobID != s.LastJobID {
 		b.presentation = nil
 	}
 	b.mu.Unlock()
@@ -265,7 +267,7 @@ func (b *StableBridge) rememberPreviewJob(j pilot.PreviewJob) bool {
 			}
 		}
 	}
-	if _, exists := b.previewJobs[j.JobID]; !exists && len(b.previewJobs) >= 3 {
+	if _, exists := b.previewJobs[j.JobID]; !exists && len(b.previewJobs)+len(b.careerPreviewJobs) >= 3 {
 		return false
 	}
 	e := previewJobExpectation{a: j.FighterAID, b: j.FighterBID, state: j.State}
@@ -289,13 +291,13 @@ func (b *StableBridge) rememberPreviewJob(j pilot.PreviewJob) bool {
 			b.mu.Unlock()
 			return false
 		}
-		if b.presentation == nil || b.presentation.metadata != meta {
+		if b.previewMayPresentLocked(legacyPreviewFamily, j.JobID) && (b.presentation == nil || b.presentation.metadata != meta) {
 			b.presentation = &previewPresentation{metadata: meta}
 		}
 		b.mu.Unlock()
 	}
 	b.previewJobs[j.JobID] = e
-	return true
+	return b.previewMetadataBound()
 }
 
 // FightPreviewPortrait authorizes every disclosure after rendering, including
@@ -318,7 +320,7 @@ func (b *StableBridge) FightPreviewPortrait(ctx context.Context, viewID, jobID, 
 	}
 	b.mu.Lock()
 	p := b.presentation
-	if p == nil || p.metadata.View != *b.view || p.metadata.StoreID != b.storeID || p.metadata.JobID != jobID {
+	if p == nil || p.metadata.Family == careerPreviewFamily || p.metadata.View != *b.view || p.metadata.StoreID != b.storeID || p.metadata.JobID != jobID {
 		b.mu.Unlock()
 		return fail("preview_not_found")
 	}

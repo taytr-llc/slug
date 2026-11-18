@@ -20,41 +20,45 @@ import (
 // The pending command, never a response-controlled discriminator, selects the
 // decoder. A stable failure stays a typed code across the webview boundary.
 type StableBridge struct {
-	careersEnabled         bool
-	careerActivation       *careerstate.Activation
-	careerSelection        *careerPageExpectation
-	cmd                    *exec.Cmd
-	input                  io.WriteCloser
-	responses              chan stableFrame
-	failed, done, readDone chan struct{}
-	gate                   chan struct{}
-	once                   sync.Once
-	mu                     sync.Mutex
-	failure, waitErr       error
-	nextID                 uint64
-	expected               *stableExpected
-	view                   *pilot.ManifestViewPin
-	manifestView           *pilot.ManifestViewPin
-	storeID                string
-	stablePin              *gymstable.Pin
-	previewReady           bool
-	previewJobs            map[string]previewJobExpectation
-	previewSnapshotJobs    map[string]bool
-	entriesEnabled         bool
-	eventsEnabled          bool
-	boutsEnabled           bool
-	resultsEnabled         bool
-	resultPin              *resultAuthority
-	result                 *resultCorrelation
-	boutPin                *boutAuthority
-	bout                   *boutCorrelation
-	boutPresentation       *boutPresentation
-	cardsEnabled           bool
-	cardPin                *cardAuthority
-	card                   *cardCorrelation
-	seedsEnabled           bool
-	seedPin                *seedAuthority
-	seed                   *seedCorrelation
+	careersEnabled            bool
+	careerActivation          *careerstate.Activation
+	careerSelection           *careerPageExpectation
+	cmd                       *exec.Cmd
+	input                     io.WriteCloser
+	responses                 chan stableFrame
+	failed, done, readDone    chan struct{}
+	gate                      chan struct{}
+	once                      sync.Once
+	mu                        sync.Mutex
+	failure, waitErr          error
+	nextID                    uint64
+	expected                  *stableExpected
+	view                      *pilot.ManifestViewPin
+	manifestView              *pilot.ManifestViewPin
+	storeID                   string
+	stablePin                 *gymstable.Pin
+	careerPreviewReady        bool
+	careerPreviewJobs         map[string]careerPreviewJobExpectation
+	careerPreviewSnapshotJobs map[string]bool
+	previewSelection          *previewSelection
+	previewReady              bool
+	previewJobs               map[string]previewJobExpectation
+	previewSnapshotJobs       map[string]bool
+	entriesEnabled            bool
+	eventsEnabled             bool
+	boutsEnabled              bool
+	resultsEnabled            bool
+	resultPin                 *resultAuthority
+	result                    *resultCorrelation
+	boutPin                   *boutAuthority
+	bout                      *boutCorrelation
+	boutPresentation          *boutPresentation
+	cardsEnabled              bool
+	cardPin                   *cardAuthority
+	card                      *cardCorrelation
+	seedsEnabled              bool
+	seedPin                   *seedAuthority
+	seed                      *seedCorrelation
 	// The immutable coordinator pin survives logout; event correlation does not.
 	eventPin *eventAuthority
 	event    *eventCorrelation
@@ -73,28 +77,30 @@ type stableJobExpectation struct {
 	terminal bool
 }
 type stableExpected struct {
-	career  bool
-	id      uint64
-	stable  bool
-	preview bool
-	entry   bool
-	event   bool
-	seed    bool
-	bout    bool
-	result  bool
-	card    bool
+	careerPreview bool
+	career        bool
+	id            uint64
+	stable        bool
+	preview       bool
+	entry         bool
+	event         bool
+	seed          bool
+	bout          bool
+	result        bool
+	card          bool
 }
 type stableFrame struct {
-	career   *pilot.CareerResponse
-	manifest *pilot.ManifestResponse
-	stable   *pilot.StableResponse
-	preview  *pilot.PreviewResponse
-	entry    *pilot.EntryResponse
-	event    *pilot.EventResponse
-	seed     *pilot.SeedResponse
-	bout     *pilot.BoutResponse
-	result   *pilot.ResultResponse
-	card     *pilot.CardResponse
+	careerPreview *pilot.CareerPreviewResponse
+	career        *pilot.CareerResponse
+	manifest      *pilot.ManifestResponse
+	stable        *pilot.StableResponse
+	preview       *pilot.PreviewResponse
+	entry         *pilot.EntryResponse
+	event         *pilot.EventResponse
+	seed          *pilot.SeedResponse
+	bout          *pilot.BoutResponse
+	result        *pilot.ResultResponse
+	card          *pilot.CardResponse
 }
 
 func LaunchStable(helper, dataDir, node string) (*StableBridge, error) {
@@ -134,6 +140,7 @@ func (b *StableBridge) fail(err error) {
 		b.failure = err
 		b.careerSelection = nil
 		b.presentation = nil
+		b.previewSelection = nil
 		b.entry = nil
 		b.event = nil
 		b.seed = nil
@@ -159,7 +166,14 @@ func (b *StableBridge) read(r io.Reader) {
 			return
 		}
 		var frame stableFrame
-		if expected.career {
+		if expected.careerPreview {
+			value, err := pilot.ParseCareerPreviewResponse(scanner.Bytes())
+			if err != nil || value.ID != expected.id {
+				b.fail(ErrUnavailable)
+				return
+			}
+			frame.careerPreview = &value
+		} else if expected.career {
 			value, err := pilot.ParseCareerResponse(scanner.Bytes())
 			if err != nil || value.ID != expected.id {
 				b.fail(ErrUnavailable)
@@ -296,8 +310,11 @@ func (b *StableBridge) exchangeResultFamily(ctx context.Context, id uint64, stab
 	return b.exchangeCareerFamily(ctx, id, stable, preview, entry, event, seed, card, bout, result, false, raw)
 }
 func (b *StableBridge) exchangeCareerFamily(ctx context.Context, id uint64, stable, preview, entry, event, seed, card, bout, result, career bool, raw []byte) (stableFrame, error) {
+	return b.exchangeCareerPreviewFamily(ctx, id, stable, preview, entry, event, seed, card, bout, result, career, false, raw)
+}
+func (b *StableBridge) exchangeCareerPreviewFamily(ctx context.Context, id uint64, stable, preview, entry, event, seed, card, bout, result, career, careerPreview bool, raw []byte) (stableFrame, error) {
 	b.mu.Lock()
-	b.expected = &stableExpected{career: career, id: id, stable: stable, preview: preview, entry: entry, event: event, seed: seed, card: card, bout: bout, result: result}
+	b.expected = &stableExpected{careerPreview: careerPreview, career: career, id: id, stable: stable, preview: preview, entry: entry, event: event, seed: seed, card: card, bout: bout, result: result}
 	b.mu.Unlock()
 	raw = append(raw, '\n')
 	if d, ok := b.input.(interface{ SetWriteDeadline(time.Time) error }); ok {
@@ -525,6 +542,10 @@ func (b *StableBridge) clearStableView() {
 	b.jobs = nil
 	b.snapshotJobs = nil
 	b.clearPreviewView()
+	b.clearCareerPreviewView()
+	b.mu.Lock()
+	b.previewSelection = nil
+	b.mu.Unlock()
 	b.clearEntryView()
 	b.clearEventView()
 	b.clearSeedView()

@@ -152,7 +152,7 @@ test('own result conflict cannot advertise current finality and malformed sizes/
   const p = core('ProofSummary', 'proof-summary'); p.bytes = 25165825; h.context.input = p; assert.throws(() => h.run('publicationProofSummary(input)'));
 });
 test('result build extends prior mode and preserves diagnostic profile and icon guards', () => {
-  const b = readFileSync(new URL('../scripts/build-manifest-macos.sh', import.meta.url), 'utf8'); for (const k of ['candidate', 'stable', 'entry', 'event', 'seed', 'card', 'bout', 'result']) assert.ok(b.includes(`-X main.${k}Build=1`)); assert.match(b, /<string>0.4.8<\/string>/); assert.match(b, /<string>48<\/string>/); assert.match(b, /slugtestclock\|slugtestpow/); assert.match(b, /ForTestClock/); assert.match(b, /build-icons-macos.sh/);
+  const b = readFileSync(new URL('../scripts/build-manifest-macos.sh', import.meta.url), 'utf8'); for (const k of ['candidate', 'stable', 'entry', 'event', 'seed', 'card', 'bout', 'result']) assert.ok(b.includes(`-X main.${k}Build=1`)); assert.match(b, /<string>0.4.10<\/string>/); assert.match(b, /<string>50<\/string>/); assert.match(b, /slugtestclock\|slugtestpow/); assert.match(b, /ForTestClock/); assert.match(b, /build-icons-macos.sh/);
 });
 
 test('late refusal or chooser cancellation cannot restore a previous selected publication', async () => {

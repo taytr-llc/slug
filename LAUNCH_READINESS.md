@@ -222,6 +222,16 @@ they do not count as completion of this product-release gate.
   production authority, portrait/GUI/accessibility and D74 remain open. C1 and
   D65 are unchanged. See `CHANGESET_49_NOTES.md` and `RESULT_AWARD_POLICY.md`.
 
+- Set 50 is under validation on `slug-career-preview`. The additive practice
+  path captures finalized XP with original DNA and birth, preserves the saved
+  result across later awards, and grants no records, XP, points or titles.
+  Local tests, independent arithmetic and a scoped awarded-fighter composition
+  passed again after a narrow logout classification fix.
+  Normal-calendar Mac packaging and deployment verification remain pending.
+  The legacy XP0 preview, fight engine, D65, C1 and D78 remain unchanged.
+  See `CAREER_PREVIEW.md` and `CHANGESET_50_NOTES.md`. This does not close any
+  production authority, GUI/accessibility or joint D74 review gate.
+
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
 `sim-handoff-intake.json` preserves archive and file checksums. They are reference
