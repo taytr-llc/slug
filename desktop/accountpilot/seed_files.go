@@ -409,7 +409,7 @@ func (c *StableController) installSeedComponents(ctx context.Context, child mani
 		return err
 	}
 	path := filepath.Join(c.config.DataDir, "SLUG-MANIFEST-ACCOUNTS.json")
-	marker, err := readSeedMarker(path)
+	marker, err := c.readSeedRoot(path)
 	if err != nil {
 		return err
 	}
@@ -431,7 +431,7 @@ func (c *StableController) installSeedComponents(ctx context.Context, child mani
 		}
 		marker.StableInstalls = append(marker.StableInstalls, stableInstall{pin.AccountID, pin, "prepared"})
 		sort.Slice(marker.StableInstalls, func(i, j int) bool { return marker.StableInstalls[i].AccountID < marker.StableInstalls[j].AccountID })
-		if err = writeSeedMarker(path, marker); err != nil {
+		if err = c.writeSeedRoot(path, marker); err != nil {
 			return err
 		}
 		if c.checkpoint != nil {
@@ -451,7 +451,7 @@ func (c *StableController) installSeedComponents(ctx context.Context, child mani
 			c.checkpoint("stable-created")
 		}
 		marker.StableInstalls[index].Phase = "ready"
-		if err = writeSeedMarker(path, marker); err != nil {
+		if err = c.writeSeedRoot(path, marker); err != nil {
 			return err
 		}
 	}
@@ -483,7 +483,7 @@ func (c *StableController) installSeedComponents(ctx context.Context, child mani
 		}
 		marker.EntryInstalls = append(marker.EntryInstalls, entryInstall{pin.AccountID, ep, "prepared"})
 		sort.Slice(marker.EntryInstalls, func(i, j int) bool { return marker.EntryInstalls[i].AccountID < marker.EntryInstalls[j].AccountID })
-		if err = writeSeedMarker(path, marker); err != nil {
+		if err = c.writeSeedRoot(path, marker); err != nil {
 			return err
 		}
 		if c.checkpoint != nil {
@@ -503,7 +503,7 @@ func (c *StableController) installSeedComponents(ctx context.Context, child mani
 			c.checkpoint("entry-created")
 		}
 		marker.EntryInstalls[ei].Phase = "ready"
-		if err = writeSeedMarker(path, marker); err != nil {
+		if err = c.writeSeedRoot(path, marker); err != nil {
 			return err
 		}
 	}
@@ -578,7 +578,7 @@ func validateSeedEventPhase(m seedAccountMarker) error {
 }
 func (c *StableController) ensureSeedEvents(ctx context.Context) error {
 	path := filepath.Join(c.config.DataDir, "SLUG-MANIFEST-ACCOUNTS.json")
-	m, e := readSeedMarker(path)
+	m, e := c.readSeedRoot(path)
 	if e != nil {
 		return e
 	}
@@ -653,7 +653,7 @@ func (c *StableController) ensureSeedEvents(ctx context.Context) error {
 			c.checkpoint("event-created")
 		}
 		m.EventPhase = "ready"
-		if e = writeSeedMarker(path, m); e != nil {
+		if e = c.writeSeedRoot(path, m); e != nil {
 			return e
 		}
 		if c.checkpoint != nil {
@@ -700,7 +700,7 @@ func validateSeedAccountPhase(m seedAccountMarker) error {
 }
 func (c *StableController) ensureSeeds(ctx context.Context) error {
 	path := filepath.Join(c.config.DataDir, "SLUG-MANIFEST-ACCOUNTS.json")
-	m, e := readSeedMarker(path)
+	m, e := c.readSeedRoot(path)
 	if e != nil {
 		return e
 	}
@@ -725,7 +725,7 @@ func (c *StableController) ensureSeeds(ctx context.Context) error {
 			return e
 		}
 		m.SeedPhase = "prepared"
-		if e = writeSeedMarker(path, m); e != nil {
+		if e = c.writeSeedRoot(path, m); e != nil {
 			return e
 		}
 	}
@@ -783,7 +783,7 @@ func (c *StableController) ensureSeeds(ctx context.Context) error {
 			c.checkpoint("seed-created")
 		}
 		m.SeedPhase = "ready"
-		if e = writeSeedMarker(path, m); e != nil {
+		if e = c.writeSeedRoot(path, m); e != nil {
 			return e
 		}
 		if c.checkpoint != nil {

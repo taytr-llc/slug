@@ -328,14 +328,28 @@ Set 45 is implemented on `slug-event-seed`, stacked from set 44's
 implementation. It connects complete candidate snapshots to a fixed publisher,
 authenticated commitments, a permanently retained seed target and explicit
 checkpoint evidence. Independent reference comparisons and actual owned-node publication, finality,
-reorg and restart composition pass. Final source checks pass; packaged and
-deployment acceptance remain in progress. The requested app/menu-bar icons
-are included in the native build.
+reorg and restart composition pass. Final source checks, the exact original-icon
+package, deployment at master `dcc44829` and the full 15-minute live observation
+and restart passed. The requested app/menu-bar icons are included in the native
+build; GUI, portrait and joint D74 acceptance remain open.
 See `EVENT_SEEDS.md` and `CHANGESET_45_NOTES.md`.
+
+Set 46 is in progress on `slug-event-card`: retain a candidate booked card from
+the immutable noon inputs and fixed seed. Scoped exception C1 allows the two
+zero-record fixture gyms to match inside the existing same-class half-to-double
+band without five opponents. Report all entered, paired and unmatched fighters
+and reasons; general league widening, record filters and next-week priority
+remain open. See `CANDIDATE_CARD_EXCEPTION.md` and `CHANGESET_46_NOTES.md`.
+The implementation and initial normal-PoW scoped-clock composition now produce
+one retained bout from three entrants, with one reported unmatched fighter.
+Independent arithmetic and frontend checks pass; final source/package and live
+rollout gates remain in progress. The following league slice must consume the
+retained card and fixed seed to run reproducible candidate bouts and preserve
+replay evidence before introducing professional result/award authority.
 
 ### 6. League services
 The Saturday operation: entry collection and lock (Saturday noon
-PT), matchmaking in the D52 ratio band with random draw (D13, D53),
+PT), matchmaking in the D52 ratio band with random draw (D13, D28),
 card production, results published provisional at once and final
 after 60 blocks with the signed public checkpoint (D62), points and
 rankings on the rolling 26-week window, title logic (D18, D20, D39,

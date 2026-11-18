@@ -1,0 +1,13 @@
+{
+  "reason": "Self-check found frozen old synthetic-five receipt intentionally reuses full prospect IDs across gyms. Such full source is invalid for46. Independent matcher controls now explicitly derive unique synthetic IDs from gym+originalID; original input untouched. Retain one old-ID duplicate refusal. No Go read/output.",
+  "files": {
+    "reference_card.py": {
+      "original_sha256": "e4703472fe7ac25d02d7a08653ee18da4de46029848703dd1385c732fa1767d6",
+      "retained": "reference_card.py"
+    },
+    "card_v1.json": {
+      "original_sha256": "b2edbf901a09525f359cef1025984d648850a836091260b1adf11675b6a8dde8",
+      "retained": "card_v1.json.gz"
+    }
+  }
+}

@@ -25,7 +25,8 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 	if helper == "" || node == "" {
 		t.Skip("explicit frozen stable helper and normal node required")
 	}
-	seedEnabled := os.Getenv("SLUG_SEED_ACCEPTANCE") == "1"
+	cardEnabled := os.Getenv("SLUG_CARD_ACCEPTANCE") == "1"
+	seedEnabled := os.Getenv("SLUG_SEED_ACCEPTANCE") == "1" || cardEnabled
 	eventEnabled := os.Getenv("SLUG_EVENT_ACCEPTANCE") == "1" || seedEnabled
 	entryEnabled := os.Getenv("SLUG_ENTRY_ACCEPTANCE") == "1" || eventEnabled
 	previewEnabled := os.Getenv("SLUG_PREVIEW_ACCEPTANCE") == "1" || entryEnabled
@@ -50,6 +51,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 	}
 	if seedEnabled {
 		launch = LaunchSeeds
+	}
+	if cardEnabled {
+		launch = LaunchCards
 	}
 	b, e := launch(helper, data, node)
 	if e != nil {
@@ -81,6 +85,17 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 			entry := entries.checkProcessRestart(restarted, s)
 			events.checkRestart(restarted, s)
 			seeds.checkRestart(restarted, s)
+			return entry
+		}
+	}
+	var cards *cardAcceptance
+	if cardEnabled {
+		cards = newCardAcceptance(t, ctx, b)
+		previews.restartCheck = func(restarted *StableBridge, s pilot.StableSnapshot) any {
+			entry := entries.checkProcessRestart(restarted, s)
+			events.checkRestart(restarted, s)
+			seeds.checkRestart(restarted, s)
+			cards.checkRestart(restarted, s)
 			return entry
 		}
 	}
@@ -387,6 +402,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 				if seeds != nil {
 					seeds.observe(fixture, "initial", snapshot())
 				}
+				if cards != nil {
+					cards.observe(fixture, "initial", snapshot())
+				}
 			}
 		}
 		beforeLogout := snapshot()
@@ -404,6 +422,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 				events.refuseDetached()
 				if seeds != nil {
 					seeds.refuseDetached()
+				}
+				if cards != nil {
+					cards.refuseDetached()
 				}
 			}
 		}
@@ -450,6 +471,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 				events.observe(fixture, "reopened", attached)
 				if seeds != nil {
 					seeds.observe(fixture, "reopened", attached)
+				}
+				if cards != nil {
+					cards.observe(fixture, "reopened", attached)
 				}
 			}
 		}
@@ -506,6 +530,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 				events.observe(fixture, "held", snapshot())
 				if seeds != nil {
 					seeds.observe(fixture, "held", snapshot())
+				}
+				if cards != nil {
+					cards.observe(fixture, "held", snapshot())
 				}
 			}
 		}
@@ -596,6 +623,12 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 		result["seed_restart"] = seeds.restartEvidence
 		result["seed_real_clock_closed_coverage"] = false
 		result["seed_authority"] = "candidate_fixture_v1"
+	}
+	if cards != nil {
+		result["cards"] = cards.evidence
+		result["card_restart"] = cards.restartEvidence
+		result["card_real_clock_closed_coverage"] = false
+		result["card_scope"] = "two_fixture_candidate"
 	}
 	raw, e := json.MarshalIndent(result, "", "  ")
 	if e != nil {

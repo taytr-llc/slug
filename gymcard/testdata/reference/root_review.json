@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "status": "passed",
+  "at": "2026-11-18T00:49:08.948917+00:00",
+  "reviewer": "root",
+  "reference_index_sha256": "c758070ad3a09427aa45b99c3e93c4d8860b6a9fcd41a70cf0de8c86e4c22ed4",
+  "corpus_sha256": "c52f513f8dfda34c884312c6a2caaf93b429bbf788aaf7c2cba3fbd901329790",
+  "verification_sha256": "aca15225c83dce9c8d61b6d67150ad2d3bf83341ccc37fbda9ec2fa4324c70ae",
+  "files_verified": 58,
+  "independent_rerun": {
+    "band_boundary_checks": 150000,
+    "band_boundary_digest": "587ca71444f8d34c5c3e27ab9eda330dc69a821c8207976d34e19a3035e0632d",
+    "calendar_count": 3861,
+    "codec_cases": 1350,
+    "corpus_sha256": "c52f513f8dfda34c884312c6a2caaf93b429bbf788aaf7c2cba3fbd901329790",
+    "dst_gaps": {
+      "167": 74,
+      "168": 3713,
+      "169": 74
+    },
+    "dtos": 136,
+    "history_index_rows": 256,
+    "input_count": 36,
+    "journal_scenarios": 16,
+    "protocol_cases": 108,
+    "python": "3.14.3",
+    "source_input_claim": "prior normal-work evidence reused unchanged; no new Argon or Go46 execution",
+    "status": "passed",
+    "valid_matcher_crosschecks": 53
+  },
+  "source_review": [
+    "C1 same-class two-fixture record basis and integer band; reason priority and count conservation",
+    "Natural digest byte order, actual NUL domains, length prefixes and immutable evidence versus input recipes",
+    "Minimal pre46 source extraction and AST-only inherited calendar/condition functions; no Go46 producer input",
+    "Context-limited full-source, standalone Plan and cheap transport validators; synthetic matcher and journal scenarios labeled",
+    "Exact rooted inherited -1 paths, canonical escaping including ASCII controls/DEL/HTML, depth/array/byte caps",
+    "Gregorian and pinned-TZif calendar; rational arithmetic band boundary crosscheck",
+    "Runtime authors worked concurrently; no claim that oracle generation preceded runtime authoring"
+  ],
+  "resolved_before_freeze": [
+    "Prepared recovery model now permits absent/real-empty states required by frozen contract",
+    "Literal ASCII1..128 encoding clarified from inherited encoder; existing six-byte-escape bounds remain sufficient",
+    "Old synthetic repeated IDs preserved unchanged and distinguished from openly synthesized matcher IDs"
+  ],
+  "limitations": [
+    "Independent model does not execute real leases, filesystem crashes, consensus chain or first-publication scan",
+    "Normal-work evidence reused from pinned prior independently verified inputs; new real pipeline separately required"
+  ],
+  "runtime_oracle_comparison_performed": false,
+  "authorization": "Approve exact independent source/corpus freeze and subsequent consumer conformance; no policy expansion"
+}

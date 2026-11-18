@@ -11,6 +11,7 @@ ids.push('preview-state', 'preview-selection', 'preview-begin', 'preview-cancel'
 ids.push('entry-state', 'entry-date', 'entry-upcoming', 'entry-status', 'entry-cutoff', 'entry-saved', 'entry-warning', 'entry-count', 'entry-draft', 'entry-save', 'entry-withdraw', 'entry-check', 'entry-clear', 'entry-cancel', 'entry-message', 'entry-pending', 'entry-reconcile', 'entry-apply', 'entry-abandon', 'entry-eligibility', 'entry-history', 'entry-history-next', 'entry-history-list');
 ids.push('event-state', 'event-cutoff', 'event-progress', 'event-refresh', 'event-capture', 'event-cancel', 'event-record', 'event-clear', 'event-message', 'event-seed', 'event-deadline', 'event-digest', 'event-members', 'event-history', 'event-history-next', 'event-history-list');
 ids.push('seed-state', 'seed-refresh', 'seed-prepare', 'seed-publish', 'seed-reconcile', 'seed-attest', 'seed-cancel', 'seed-record', 'seed-clear', 'seed-history', 'seed-history-next', 'seed-message', 'seed-observation', 'seed-finality', 'seed-incident', 'seed-identity', 'seed-history-list');
+ids.push('card-state', 'card-refresh', 'card-begin', 'card-cancel', 'card-record', 'card-clear', 'card-history', 'card-history-next', 'card-message', 'card-totals', 'card-source', 'card-conflict', 'card-incident', 'card-evidence', 'card-gyms', 'card-bouts', 'card-unmatched', 'card-reasons', 'card-history-list', 'card-detail-hint');
 const ui = Object.fromEntries(ids.map((id) => [id, document.getElementById(id)]));
 const attrs = ['power', 'speed', 'chin', 'stamina', 'skill'];
 const rarity = ['club', 'professional', 'contender', 'elite', 'generational'];
@@ -377,7 +378,7 @@ function render() {
   ui['apply-saved'].disabled = !signed || !!command || !!watched || !pending || pending.intent.view_id !== s.view.view_id || pending.intent.generation !== s.view.generation || !st.caught_up;
   ui.abandon.disabled = !signed || !!command || !!watched || !pending;
   content(ui.alert, connectionError || message || (stable?.error ? textError(stable.error) : '')); ui.alert.hidden = !ui.alert.textContent;
-  renderRoster(); renderCards(); renderPreview(); renderEntry(); renderEvent(); renderSeed();
+  renderRoster(); renderCards(); renderPreview(); renderEntry(); renderEvent(); renderSeed(); renderCard();
 }
 async function call(method, ...args) { requireValue(!activeCall); const p = Call.ByName(`main.Gym.${method}`, ...args); activeCall = p; try { return await p; } finally { activeCall = null; } }
 function schedule() { if (timer !== null) clearTimeout(timer); timer = null; if (!disposed && enabled && !document.hidden) timer = setTimeout(() => { timer = null; pollWanted = true; pump(); }, 1000); }
@@ -403,6 +404,7 @@ async function fetchSnapshots() {
     if (!disposed && ready() && !tasks.length) await fetchEntrySnapshot();
     if (!disposed && ready() && !tasks.length) await fetchEventSnapshot();
     if (!disposed && ready() && !tasks.length) await fetchSeedSnapshot();
+    if (!disposed && ready() && !tasks.length) await fetchCardSnapshot();
   } catch { if (!disposed && captured === epoch) disconnected(); }
 }
 function stablyChangedRoster() { return stable.status.roster_revision !== pageRevision; }
@@ -530,7 +532,7 @@ async function loadPortrait(i) {
     const p = await call('ManifestPortrait', i.assignment.sequence); if (!remains()) return;
     exact(p, ['version', 'view', 'sequence', 'id', 'manifest_digest', 'portrait_digest', 'svg']); const a = i.assignment;
     requireValue(p.version === 1 && viewKey(checkedView(p.view)) === view && p.sequence === a.sequence && p.id === a.prospect_id && p.manifest_digest === a.manifest_digest && p.portrait_digest === a.portrait_digest && imageOnlySVG(p.svg));
-    const src = `data:image/svg+xml;base64,${btoa(p.svg)}`; requireValue([...images.entries()].reduce((n, [other, v]) => n + (other === k ? 0 : 2 * v.length), 2 * src.length) + JSON.stringify(pageItems).length + previewRetainedBytes() + entryRetainedBytes() + eventRetainedBytes() + seedRetainedBytes() <= CACHE_MAX && images.size <= 8);
+    const src = `data:image/svg+xml;base64,${btoa(p.svg)}`; requireValue([...images.entries()].reduce((n, [other, v]) => n + (other === k ? 0 : 2 * v.length), 2 * src.length) + JSON.stringify(pageItems).length + previewRetainedBytes() + entryRetainedBytes() + eventRetainedBytes() + seedRetainedBytes() + cardRetainedBytes() <= CACHE_MAX && images.size <= 8);
     if (!remains()) return; images.set(k, src); const c = cards.get(a.prospect_id); c.image.setAttribute('src', src); c.image.hidden = false; c.placeholder.hidden = true;
   } catch { if (remains()) { const c = cards.get(i.assignment.prospect_id); c.image.removeAttribute('src'); c.image.hidden = true; c.placeholder.hidden = false; content(c.placeholder, 'Portrait unavailable. Reload it from the current verified page.'); } }
 }
@@ -622,7 +624,7 @@ function pausePreview() { if (playbackTimer !== null) clearTimeout(playbackTimer
 function discardPreviewResult() { pausePreview(); previewResult = null; playbackSteps = []; playbackIndex = 0; previewImages.clear(); previewImageAttempts.clear(); previewRendered = ''; ui['preview-fighters'].textContent = ''; ui['preview-events'].textContent = ''; ui['preview-scores'].textContent = ''; }
 function clearPreview() { previewSerial++; discardPreviewResult(); previewSelected = []; previewWatch = null; previewDiscovery = null; previewSnapshot = null; previewMessage = ''; ui['preview-selection'].textContent = ''; }
 function previewRetainedBytes() { return JSON.stringify(previewSelected).length + (previewResult ? JSON.stringify(previewResult).length + 65536 : 0) + [...previewImages.values()].reduce((n, src) => n + 2 * src.length, 0); }
-function previewCapacity(extra = 0) { return previewRetainedBytes() + entryRetainedBytes() + eventRetainedBytes() + seedRetainedBytes() + JSON.stringify(pageItems).length + [...images.values()].reduce((n, src) => n + 2 * src.length, 0) + extra <= CACHE_MAX; }
+function previewCapacity(extra = 0) { return previewRetainedBytes() + entryRetainedBytes() + eventRetainedBytes() + seedRetainedBytes() + cardRetainedBytes() + JSON.stringify(pageItems).length + [...images.values()].reduce((n, src) => n + 2 * src.length, 0) + extra <= CACHE_MAX; }
 function previewError(code) { return ({ preview_class_mismatch: 'Choose two candidates from the same weight class.', preview_not_found: 'This preview is no longer retained. Select your pair and explicitly preview again.', preview_capacity: 'The local preview cache is full. Clear the preview and retry.', preview_cancelled: 'Preview cancelled. No fight was recorded.', preview_observation_unknown: 'The authority could not confirm its clock observation. Reopen the gym before another preview. No fight was recorded.', outcome_unknown: 'The preview may have started. Check its status before explicitly trying again.', preview_unavailable: 'Fight preview is unavailable. Your saved candidates are retained.' })[code] ?? textError(code); }
 function previewRefusal(code) {
   if (['unauthorized', 'stale_view'].includes(code)) clearPreview();
@@ -963,6 +965,7 @@ function clearEvent() {
   for (const id of ['event-members', 'event-history-list']) { ui[id].textContent = ''; ui[id]._key = ''; }
 }
 function eventSelectDate(value) {
+  cardSelectDate();
   seedStatus = seedDetail = null; seedMessage = ''; seedSerial++;
   eventSerial++; eventDate = value; eventStatus = eventDetail = null; eventMessage = '';
   // An issued job is still tracked, but cannot repopulate another Saturday.
@@ -1126,7 +1129,7 @@ function seedMetadataBytes() { return entryBytes([seedAuthority, seedSnapshot &&
 function seedRetainedBytes() { if (!seedAuthority && !seedSnapshot && !seedWatch) return 0; return seedMetadataBytes() + Math.max(entryBytes(seedDetail), seedWatch ? 245760 : 0) + entryBytes(seedHistory); }
 function seedCapacity() { return seedMetadataBytes() <= SEED_METADATA_MAX && seedRetainedBytes() <= SEED_MAX && previewCapacity(); }
 function seedReady() { return ready() && !seedUnavailable && !!seedAuthority && !!seedSnapshot?.pin && viewKey(seedSnapshot.view) === currentKey(); }
-function clearSeed() { seedSerial++; seedSnapshot = seedStatus = seedDetail = seedHistory = seedWatch = null; seedLastJob = seedMessage = ''; seedUnavailable = seedUnknown = false; if (ui['seed-history-list']) { ui['seed-history-list'].textContent = ''; ui['seed-history-list']._key = ''; } }
+function clearSeed() { clearCard(); seedSerial++; seedSnapshot = seedStatus = seedDetail = seedHistory = seedWatch = null; seedLastJob = seedMessage = ''; seedUnavailable = seedUnknown = false; if (ui['seed-history-list']) { ui['seed-history-list'].textContent = ''; ui['seed-history-list']._key = ''; } }
 function seedContext() { return { epoch, view: currentKey(), viewID: current?.view?.view_id, serial: seedSerial, date: entryDate }; }
 function seedCurrent(c, selection = false) { return !disposed && ready() && c.epoch === epoch && c.view === currentKey() && (!selection || c.serial === seedSerial && c.date === entryDate); }
 function seedHex(v, bytes) { return Number.isInteger(bytes) && bytes > 0 && typeof v === 'string' && v.length === bytes * 2 && /^[0-9a-f]+$/.test(v); }
@@ -1243,6 +1246,310 @@ function renderSeed() {
   const historyKey = seedHistory ? JSON.stringify(seedHistory.events.map((v) => [v.event_key, v.phase, v.incident_at_ms])) : ''; requireValue(historyKey.length + ui['seed-identity'].textContent.length <= 4096);
   if (ui['seed-history-list']._key !== historyKey) { ui['seed-history-list']._key = historyKey; ui['seed-history-list'].textContent = ''; if (seedHistory) for (const s of seedHistory.events) { const li = element('li'), button = element('button', '', s.event.saturday); button.type = 'button'; button.addEventListener('click', () => entryNavigate(s.event.saturday)); li.append(button, element('span', '', label(s.phase))); ui['seed-history-list'].append(li); } }
 }
+// C1 candidate cards: the native boundary owns source truth and canonical hashes.
+// This consumer checks bounded shape, count/pair relationships and current-view
+// correlation. It never regenerates names, hashes proof headers or books on poll.
+const CARD_RULES = '879f012a9520a8c3066b0a90e47f7069472a2d7b8ab9b32f3b80d98495eed76d';
+const CARD_MAX = 294912, CARD_METADATA_MAX = 49152, CARD_RESULT_MAX = 245760;
+const CARD_BASIS = 'candidate_zero_record_no_results_authority';
+const CARD_REASONS = ['retired_at_cutoff', 'not_rostered_at_cutoff', 'no_opponent_in_class', 'opponent_ineligible_at_cutoff', 'outside_rating_band'];
+const CARD_ERRORS = new Set(['invalid_request', 'unauthorized', 'forbidden', 'stale_view', 'busy', 'outcome_unknown', 'card_unavailable', 'card_setup_incomplete', 'card_corrupt', 'card_capacity', 'card_clock', 'card_calendar', 'card_not_found', 'card_source_incomplete', 'card_source_conflict', 'card_source_changed', 'card_cancelled']);
+const cardReasonText = {
+  retired_at_cutoff: 'Retired at the noon cutoff',
+  not_rostered_at_cutoff: 'Off the roster at the noon cutoff',
+  no_opponent_in_class: 'No opposing entrant in this weight class',
+  opponent_ineligible_at_cutoff: 'The opposing entrant was ineligible at noon',
+  outside_rating_band: 'The opposing rating falls outside the half-to-double band',
+};
+let cardAuthority = null, cardSnapshot = null, cardStatus = null, cardDetail = null, cardHistory = null;
+let cardWatch = null, cardTerminal = null, cardLastJob = '', cardMessage = '', cardSerial = 0;
+let cardUnavailable = false, cardUnknown = false, cardOverlayKnown = false, cardOverlayRead = false;
+
+function cardMetadataBytes() {
+  return entryBytes([cardAuthority, cardSnapshot && { ...cardSnapshot, pin: null }, cardStatus, cardHistory, cardWatch, cardTerminal, cardLastJob, cardMessage]) + 4096;
+}
+function cardRetainedBytes() {
+  if (!cardAuthority && !cardSnapshot && !cardWatch && !cardDetail) return 0;
+  if (cardWatch) return CARD_MAX;
+  return cardMetadataBytes() + Math.max(entryBytes(cardDetail), cardWatch ? CARD_RESULT_MAX : 0);
+}
+function cardCapacity() { return cardMetadataBytes() <= CARD_METADATA_MAX && entryBytes(cardDetail) <= CARD_RESULT_MAX && cardRetainedBytes() <= CARD_MAX && previewCapacity(); }
+function cardReady() { return ready() && !cardUnavailable && !!cardAuthority && !!cardSnapshot?.pin && viewKey(cardSnapshot.view) === currentKey(); }
+function clearCard() {
+  cardSerial++; cardSnapshot = cardStatus = cardDetail = cardHistory = cardWatch = cardTerminal = null;
+  cardLastJob = cardMessage = ''; cardUnavailable = cardUnknown = cardOverlayKnown = cardOverlayRead = false;
+  for (const id of ['card-gyms', 'card-bouts', 'card-unmatched', 'card-reasons', 'card-history-list']) {
+    if (ui[id]) { ui[id].textContent = ''; ui[id]._key = ''; }
+  }
+}
+function cardSelectDate() { cardSerial++; cardStatus = cardDetail = null; cardMessage = ''; cardOverlayKnown = cardOverlayRead = false; }
+function cardCacheError() { const e = new Error('Card cache full'); e.cardCode = 'card_capacity'; return e; }
+function cardContext() { return { epoch, view: currentKey(), viewID: current?.view?.view_id, serial: cardSerial, date: entryDate }; }
+function cardCurrent(c, selection = false) { return !disposed && ready() && c.epoch === epoch && c.view === currentKey() && (!selection || c.serial === cardSerial && c.date === entryDate); }
+function cardPinValue(p) {
+  exact(p, ['version', 'source_store_id', 'source_pin', 'rules_id']);
+  requireValue(!!seedAuthority && p.version === 1 && p.source_store_id === seedAuthority.storeID && same(p.source_pin, seedAuthority.pin) && p.rules_id === CARD_RULES);
+}
+function cardCountsValue(c, max = 10) {
+  exact(c, ['total_count', 'eligible_count', 'paired_count', 'unmatched_count', 'reasons']); exact(c.reasons, CARD_REASONS);
+  requireValue(['total_count', 'eligible_count', 'paired_count', 'unmatched_count'].every(k => int(c[k], 0, max)) && c.eligible_count <= c.total_count && c.paired_count <= c.eligible_count && c.total_count === c.paired_count + c.unmatched_count);
+  requireValue(CARD_REASONS.every(k => int(c.reasons[k], 0, max)) && CARD_REASONS.reduce((n, k) => n + c.reasons[k], 0) === c.unmatched_count);
+  return c;
+}
+function cardSourceValue(s) {
+  exact(s, ['version', 'store_id', 'event_key', 'source_receipt', 'declaration', 'anchor', 'target', 'finality']);
+  requireValue(s.version === 1 && s.store_id === seedAuthority.storeID && hex(s.event_key) && entryBytes(s) <= 163840);
+  eventRecordValue(s.source_receipt); const d = seedDeclaration(s.declaration), p = seedAuthority.pin;
+  requireValue(d.store_id === s.store_id && d.event_key === s.event_key && same(d.event, s.source_receipt.input.event) && d.snapshot_digest === s.source_receipt.snapshot_digest);
+  for (const k of ['source_store_id', 'publisher_chain_id', 'network', 'genesis', 'floor_height', 'floor_hash', 'rules_id', 'publisher_public_key', 'checkpoint_public_key']) requireValue(d[k] === p[k]);
+  const a = s.anchor; exact(a, ['height', 'hash', 'header', 'txid', 'raw_tx_digest', 'raw_tx_size', 'tx_count', 'tx_index', 'output_index', 'payload', 'merkle_branch']);
+  requireValue(int(a.height, 0, 2147483646) && ['hash', 'txid', 'raw_tx_digest'].every(k => hex(a[k])) && seedHex(a.header, 80) && seedHex(a.payload, 73) && int(a.raw_tx_size, 1, 4000000) && int(a.tx_count, 1, 1000000) && int(a.tx_index, 0, a.tx_count - 1) && int(a.output_index, 0, 4294967295) && Array.isArray(a.merkle_branch) && a.merkle_branch.length <= 20 && a.merkle_branch.every(hex));
+  const t = s.target; exact(t, ['height', 'hash', 'header', 'observed_at_ms', 'observed_tip']); seedTip(t.observed_tip);
+  requireValue(t.height === a.height + 1 && hex(t.hash) && seedHex(t.header, 80) && t.header.slice(8, 72) === a.hash.match(/../g).reverse().join('') && int(t.observed_at_ms, s.source_receipt.completed_at_ms, DATE_MAX) && t.observed_tip.height >= t.height && (t.observed_tip.height !== t.height || t.observed_tip.hash === t.hash));
+  const f = s.finality; exact(f, ['checkpoint', 'observed_at_ms', 'observed_tip', 'target_descendants']); seedCheckpoint(f.checkpoint); seedTip(f.observed_tip);
+  requireValue(f.checkpoint.height === t.height && f.checkpoint.hash === t.hash && int(f.observed_at_ms, t.observed_at_ms, DATE_MAX) && int(f.target_descendants, 60, 2147483647) && f.target_descendants === f.observed_tip.height - t.height);
+  return s;
+}
+function cardStateValue(s) {
+  exact(s, ['version', 'status', 'source_digest']); requireValue(s.version === 1 && optionalID(s.source_digest)); seedStatusValue(s.status);
+  requireValue((s.source_digest !== '') === (s.status.finalized_at_ms > 0)); return s;
+}
+function cardPlanValue(p, source = null) {
+  exact(p, ['version', 'card_id', 'input_id', 'seed', 'record_basis', 'counts', 'bout_count', 'gyms', 'entrants', 'bouts']);
+  requireValue(p.version === 1 && ['card_id', 'input_id', 'seed'].every(k => hex(p[k])) && p.record_basis === CARD_BASIS && int(p.bout_count, 0, 5) && entryBytes(p) <= 16384);
+  cardCountsValue(p.counts); requireValue(p.counts.paired_count === 2 * p.bout_count);
+  requireValue(Array.isArray(p.gyms) && p.gyms.length === 2 && Array.isArray(p.entrants) && p.entrants.length === p.counts.total_count && p.entrants.length <= 10 && Array.isArray(p.bouts) && p.bouts.length === p.bout_count);
+  const pins = cardAuthority.pin.source_pin.source_pin.participants;
+  p.gyms.forEach((g, i) => { exact(g, ['gym_id', 'counts']); requireValue(g.gym_id === pins[i].stable_pin.identity.gym_id); cardCountsValue(g.counts, 5); });
+  const byID = new Map(), byClassGym = new Map(); let previous = '';
+  for (const e of p.entrants) {
+    exact(e, ['prospect_id', 'gym_id', 'account_id', 'display_name', 'class', 'rating_hundredths', 'cutoff_eligibility', 'professional_record', 'state', 'reason', 'bout_id']);
+    const pin = pins.find(v => v.stable_pin.identity.gym_id === e.gym_id), key = `${classes.indexOf(e.class)}|${e.gym_id}|${e.prospect_id}`;
+    requireValue(!!pin && hex(e.prospect_id) && e.account_id === pin.stable_pin.account_id && classes.includes(e.class) && key > previous && !byID.has(e.prospect_id) && !byClassGym.has(`${e.class}|${e.gym_id}`)); previous = key;
+    requireValue(typeof e.display_name === 'string' && /^[\x00-\x7f]{1,128}$/.test(e.display_name) && int(e.rating_hundredths, 0, 100000) && ['eligible', 'retired', 'not_rostered'].includes(e.cutoff_eligibility) && (e.cutoff_eligibility !== 'eligible' || e.rating_hundredths > 0));
+    exact(e.professional_record, ['wins', 'losses', 'draws']); requireValue(['wins', 'losses', 'draws'].every(k => e.professional_record[k] === 0));
+    requireValue(['paired', 'unmatched'].includes(e.state) && (e.state === 'paired' ? e.reason === '' && hex(e.bout_id) : CARD_REASONS.includes(e.reason) && e.bout_id === ''));
+    byID.set(e.prospect_id, e); byClassGym.set(`${e.class}|${e.gym_id}`, e);
+  }
+  for (const e of p.entrants) {
+    const opponent = p.entrants.find(v => v.class === e.class && v.gym_id !== e.gym_id);
+    const reason = e.cutoff_eligibility === 'retired' ? 'retired_at_cutoff' : e.cutoff_eligibility === 'not_rostered' ? 'not_rostered_at_cutoff' : !opponent ? 'no_opponent_in_class' : opponent.cutoff_eligibility !== 'eligible' ? 'opponent_ineligible_at_cutoff' : 2 * Math.min(e.rating_hundredths, opponent.rating_hundredths) < Math.max(e.rating_hundredths, opponent.rating_hundredths) ? 'outside_rating_band' : '';
+    requireValue(e.reason === reason && e.state === (reason ? 'unmatched' : 'paired'));
+  }
+  const used = new Set(), boutIDs = new Set(); let priorClass = -1;
+  for (const b of p.bouts) {
+    exact(b, ['bout_id', 'class', 'corner_a', 'corner_b', 'seed']); const a = byID.get(b.corner_a), c = byID.get(b.corner_b), i = classes.indexOf(b.class);
+    requireValue(hex(b.bout_id) && hex(b.seed) && !boutIDs.has(b.bout_id) && i > priorClass && !!a && !!c && b.corner_a < b.corner_b && a.gym_id !== c.gym_id && a.class === b.class && c.class === b.class && a.state === 'paired' && c.state === 'paired' && a.bout_id === b.bout_id && c.bout_id === b.bout_id && !used.has(b.corner_a) && !used.has(b.corner_b));
+    priorClass = i; used.add(b.corner_a); used.add(b.corner_b); boutIDs.add(b.bout_id);
+  }
+  requireValue(used.size === p.counts.paired_count && p.entrants.every(e => (e.state === 'paired') === used.has(e.prospect_id)));
+  const tally = entries => ({ total_count: entries.length, eligible_count: entries.filter(e => e.cutoff_eligibility === 'eligible').length, paired_count: entries.filter(e => e.state === 'paired').length, unmatched_count: entries.filter(e => e.state === 'unmatched').length, reasons: Object.fromEntries(CARD_REASONS.map(k => [k, entries.filter(e => e.reason === k).length])) });
+  requireValue(same(p.counts, tally(p.entrants))); p.gyms.forEach(g => requireValue(same(g.counts, tally(p.entrants.filter(e => e.gym_id === g.gym_id)))));
+  if (source) {
+    const all = source.source_receipt.input.participants.flatMap(v => v.members.map(m => ({ m, owner: v.owner })));
+    requireValue(all.length === p.entrants.length);
+    for (const e of p.entrants) { const row = all.find(v => v.m.assignment.prospect_id === e.prospect_id); requireValue(!!row && e.gym_id === row.owner.gym_id && e.account_id === row.owner.account_id && e.class === row.m.class && e.rating_hundredths === row.m.condition_at_cutoff.rating_hundredths && e.cutoff_eligibility === row.m.eligibility); }
+  }
+  return p;
+}
+function cardRecordValue(r) {
+  exact(r, ['version', 'store_id', 'card_id', 'source', 'source_digest', 'plan', 'created_at_ms']);
+  requireValue(r.version === 1 && r.store_id === cardAuthority.storeID && hex(r.card_id) && hex(r.source_digest) && entryBytes(r) <= 196608); cardSourceValue(r.source); cardPlanValue(r.plan, r.source);
+  requireValue(r.plan.card_id === r.card_id && int(r.created_at_ms, Math.max(cardAuthority.createdMS, r.source.finality.observed_at_ms), DATE_MAX)); return r;
+}
+function cardStatusValue(s) {
+  exact(s, ['version', 'store_id', 'card_id', 'event', 'exists', 'record_digest', 'created_at_ms', 'observed_at_ms', 'counts', 'bout_count', 'source', 'usable']); eventValue(s.event); cardStateValue(s.source); cardCountsValue(s.counts);
+  requireValue(s.version === 1 && s.store_id === cardAuthority.storeID && hex(s.card_id) && typeof s.exists === 'boolean' && typeof s.usable === 'boolean' && same(s.event, s.source.status.event) && int(s.observed_at_ms, cardAuthority.createdMS, DATE_MAX) && s.source.status.observed_at_ms <= s.observed_at_ms && int(s.bout_count, 0, 5) && 2 * s.bout_count === s.counts.paired_count);
+  if (s.exists) requireValue(hex(s.record_digest) && int(s.created_at_ms, Math.max(cardAuthority.createdMS, s.source.status.finalized_at_ms), s.observed_at_ms) && hex(s.source.source_digest));
+  else requireValue(s.record_digest === '' && s.created_at_ms === 0 && s.counts.total_count === 0 && s.bout_count === 0 && !s.usable);
+  // A standalone status cannot compare the saved record's source digest.
+  requireValue(!s.usable || s.exists && s.source.status.finalized_at_ms > 0 && s.source.status.conflict_count === 0 && !s.source.status.conflict_overflow); return s;
+}
+function cardResultValue(v, build = false) {
+  exact(v, build ? ['version', 'record', 'status', 'replayed'] : ['version', 'record', 'status']); requireValue(v.version === 1 && (!build || typeof v.replayed === 'boolean') && entryBytes(v) <= 229376);
+  const r = cardRecordValue(v.record), s = cardStatusValue(v.status);
+  requireValue(s.exists && s.card_id === r.card_id && s.created_at_ms === r.created_at_ms && same(s.event, r.source.source_receipt.input.event) && s.source.source_digest === r.source_digest && same(s.counts, r.plan.counts) && s.bout_count === r.plan.bout_count);
+  const state = s.source.status, source = r.source;
+  requireValue(state.event_key === source.event_key && state.anchor_height === source.anchor.height && state.anchor_hash === source.anchor.hash && state.target_height === source.target.height && state.target_hash === source.target.hash && state.finalized_at_ms === source.finality.observed_at_ms && s.usable === (state.conflict_count === 0 && !state.conflict_overflow)); return v;
+}
+function cardJobValue(j) {
+  exact(j, ['version', 'job_id', 'kind', 'state', 'view', 'store_id', 'card_id', 'saturday', 'error', 'result']);
+  requireValue(j.version === 1 && hex(j.job_id) && j.kind === 'build' && ['queued', 'running', 'completed', 'failed', 'cancelled'].includes(j.state) && viewKey(checkedView(j.view)) === currentKey() && j.store_id === cardAuthority.storeID && hex(j.card_id) && entryBytes(j) <= CARD_RESULT_MAX); entryDateValue(j.saturday);
+  if (j.state === 'completed') { requireValue(j.error === '' && j.result !== null); cardResultValue(j.result, true); requireValue(j.result.record.card_id === j.card_id && j.result.status.event.saturday === j.saturday); }
+  else requireValue(j.result === null && (['queued', 'running'].includes(j.state) ? j.error === '' : j.state === 'cancelled' ? j.error === 'card_cancelled' : CARD_ERRORS.has(j.error)));
+  return j;
+}
+function cardEnvelope(r, field) {
+  exact(r, ['id', 'ok', 'view', 'store_id', 'snapshot', 'status', 'record', 'history', 'job', 'error']); requireValue(int(r.id, 1) && typeof r.ok === 'boolean' && entryBytes(r) + 1 <= 262144);
+  const fields = ['snapshot', 'status', 'record', 'history', 'job'];
+  if (!r.ok) { requireValue(CARD_ERRORS.has(r.error) && r.view === null && r.store_id === '' && fields.every(k => r[k] === null)); return { ok: false, error: r.error }; }
+  requireValue(r.error === '' && fields.every(k => (r[k] !== null) === (k === field))); const v = r[field];
+  if (field === 'snapshot') {
+    exact(v, ['version', 'state', 'error', 'view', 'store_id', 'pin', 'source_created_at_ms', 'created_at_ms', 'active_job_id', 'queued_job_id', 'last_job_id']);
+    requireValue(v.version === 1 && ['ready', 'busy', 'setup_incomplete', 'unavailable', 'failed'].includes(v.state));
+    if (v.state === 'unavailable') { requireValue(r.view === null && v.view === null && v.pin === null && r.store_id === '' && v.store_id === '' && v.source_created_at_ms === 0 && v.created_at_ms === 0 && v.error === 'card_unavailable' && ['active_job_id', 'queued_job_id', 'last_job_id'].every(k => v[k] === '')); return { ok: true, value: v }; }
+    requireValue(viewKey(checkedView(v.view)) === currentKey() && viewKey(checkedView(r.view)) === currentKey() && r.store_id === v.store_id);
+    if (v.state === 'setup_incomplete') { requireValue(!cardAuthority && v.pin === null && v.store_id === '' && v.source_created_at_ms === 0 && v.created_at_ms === 0 && v.error === 'card_setup_incomplete' && ['active_job_id', 'queued_job_id', 'last_job_id'].every(k => v[k] === '')); return { ok: true, value: v }; }
+    cardPinValue(v.pin); requireValue(hex(v.store_id) && v.source_created_at_ms === seedAuthority.createdMS && int(v.created_at_ms, v.source_created_at_ms, DATE_MAX) && ['active_job_id', 'queued_job_id', 'last_job_id'].every(k => optionalID(v[k])) && !(v.active_job_id && v.queued_job_id) && (v.state === 'failed' ? ['card_unavailable', 'card_corrupt', 'card_clock', 'card_source_changed'].includes(v.error) : v.error === ''));
+    const ids = [v.active_job_id, v.queued_job_id, v.last_job_id].filter(Boolean); requireValue(new Set(ids).size === ids.length);
+    requireValue((!v.active_job_id && !v.queued_job_id) || v.state === 'busy');
+    const authority = { pin: v.pin, storeID: v.store_id, sourceCreatedMS: v.source_created_at_ms, createdMS: v.created_at_ms };
+    requireValue(!cardAuthority || same(cardAuthority, authority)); if (!cardAuthority) cardAuthority = authority; v.pin = cardAuthority.pin; return { ok: true, value: v };
+  }
+  requireValue(cardReady() && r.store_id === cardAuthority.storeID && viewKey(checkedView(r.view)) === currentKey());
+  if (field === 'status') cardStatusValue(v);
+  if (field === 'record') cardResultValue(v);
+  if (field === 'job') cardJobValue(v);
+  if (field === 'history') {
+    exact(v, ['version', 'store_id', 'after_card_id', 'next_card_id', 'has_more', 'observed_at_ms', 'cards']);
+    requireValue(v.version === 1 && v.store_id === cardAuthority.storeID && optionalID(v.after_card_id) && optionalID(v.next_card_id) && typeof v.has_more === 'boolean' && int(v.observed_at_ms, cardAuthority.createdMS, DATE_MAX) && Array.isArray(v.cards) && v.cards.length <= 8 && entryBytes(v) <= 139264);
+    v.cards.forEach((s, i) => { cardStatusValue(s); requireValue(s.exists && s.observed_at_ms === v.observed_at_ms && (!i || v.cards[i - 1].event.cutoff_ms < s.event.cutoff_ms)); });
+    requireValue(v.next_card_id === (v.has_more && v.cards.length ? v.cards.at(-1).card_id : ''));
+  }
+  return { ok: true, value: v };
+}
+function cardError(code, build = false) {
+  if (code === 'outcome_unknown') return build ? 'The card may have been saved. Open the saved card or check its status before another explicit request. No transaction was sent.' : 'The local status observation could not be confirmed. The saved card is unchanged; refresh after reopening the gym. No booking or transaction was requested.';
+  return ({ card_unavailable: 'Candidate cards are unavailable in this route. Saved evidence is retained.', card_setup_incomplete: 'Sign in to both demo gyms to finish the shared setup.', card_source_incomplete: 'The complete noon snapshot and its fixed finalized seed are required before a card can be created.', card_source_conflict: 'The fixed seed has conflicting evidence. A new card cannot be created; existing card evidence remains available.', card_source_changed: 'The retained source identity changed. The displayed card is historical; its current usability is unknown.', card_not_found: 'No saved card was found for this Saturday.', card_capacity: 'The card store or display is full. Clear a detail view to free display space; saved cards remain retained.', card_clock: 'The local authority clock needs attention. No new card was confirmed.', card_corrupt: 'Saved card evidence failed validation. Reopen the gym; no history was discarded.', card_cancelled: 'The request was cancelled. Check the saved card before another request.', card_calendar: 'Choose a supported Saturday in the entry panel.' })[code] ?? textError(code);
+}
+function cardRefusal(code, build = false) {
+  if (['unauthorized', 'stale_view'].includes(code)) { clearCard(); cardUnavailable = true; }
+  if (code === 'card_unavailable') cardUnavailable = true;
+  if (['card_unavailable', 'card_source_changed', 'card_corrupt', 'outcome_unknown'].includes(code)) { cardOverlayKnown = false; cardOverlayRead = true; }
+  if (build && code === 'outcome_unknown') cardUnknown = true;
+  cardMessage = cardError(code, build);
+}
+function cardAdoptStatus(s) {
+  if (s.event.saturday !== entryDate) return;
+  if (cardStatus && cardStatus.card_id === s.card_id) {
+    requireValue(s.observed_at_ms >= cardStatus.observed_at_ms && (!cardStatus.exists || s.exists && s.record_digest === cardStatus.record_digest && s.created_at_ms === cardStatus.created_at_ms && same(s.counts, cardStatus.counts)));
+  }
+  if (cardDetail) requireValue(cardDetail.card_id === s.card_id && s.exists && cardDetail.source_digest === s.source.source_digest && same(cardDetail.plan.counts, s.counts));
+  const old = [cardStatus, cardOverlayKnown, cardOverlayRead]; cardStatus = s; cardOverlayKnown = cardOverlayRead = true;
+  if (!cardCapacity()) { [cardStatus, cardOverlayKnown, cardOverlayRead] = old; throw cardCacheError(); }
+}
+function cardAdoptResult(result, terminal = false) {
+  if (result.status.event.saturday !== entryDate) return;
+  const r = result.record, s = result.status;
+  if (cardDetail) requireValue(cardDetail.card_id === r.card_id && same(cardDetail, r));
+  const newer = cardStatus?.card_id === s.card_id && cardStatus.observed_at_ms > s.observed_at_ms;
+  if (cardStatus?.exists) requireValue(cardStatus.card_id === s.card_id && cardStatus.record_digest === s.record_digest && cardStatus.source.source_digest === r.source_digest && same(cardStatus.counts, r.plan.counts));
+  requireValue(!newer || terminal);
+  const old = [cardDetail, cardStatus, cardOverlayKnown, cardUnknown, cardOverlayRead]; cardDetail = cardDetail ?? r;
+  // A fresh explicit overlay, including a later observation failure, outranks
+  // the immutable status saved inside a completed job.
+  if (!(terminal && (newer || cardOverlayRead))) { cardStatus = s; cardOverlayKnown = true; }
+  if (!terminal) cardOverlayRead = true; cardUnknown = false;
+  if (!cardCapacity()) { [cardDetail, cardStatus, cardOverlayKnown, cardUnknown, cardOverlayRead] = old; throw cardCacheError(); }
+}
+async function fetchCardSnapshot() {
+  if (!ready() || !seedAuthority || cardUnavailable) return; const c = cardContext(), prior = [cardSnapshot, cardAuthority];
+  try {
+    const raw = await call('CardSnapshot'); if (!cardCurrent(c)) return;
+    const r = cardEnvelope(raw, 'snapshot'); if (!r.ok) { cardRefusal(r.error); return; }
+    cardSnapshot = r.value; if (!cardCapacity()) { [cardSnapshot, cardAuthority] = prior; cardMessage = cardError('card_capacity'); return; }
+    if (cardSnapshot.state === 'unavailable') { cardRefusal('card_unavailable'); return; }
+    if (cardSnapshot.state === 'failed') { cardRefusal(cardSnapshot.error); return; }
+    const id = cardWatch?.id || cardSnapshot.active_job_id || cardSnapshot.queued_job_id || cardSnapshot.last_job_id;
+    if (id && (cardWatch || id !== cardLastJob)) await cardFetchJob(id);
+  } catch { if (cardCurrent(c)) { [cardSnapshot, cardAuthority] = prior; cardRefusal('card_unavailable'); } }
+}
+async function cardRead(kind, after = '') {
+  if (!cardReady() || !['status', 'record', 'history'].includes(kind) || kind !== 'history' && !entryDate) return;
+  const c = cardContext();
+  try {
+    const raw = kind === 'history' ? await call('CardHistory', c.viewID, after, 8) : await call(kind === 'record' ? 'CardRecord' : 'CardStatus', c.viewID, c.date);
+    if (!cardCurrent(c, kind !== 'history')) return; const r = cardEnvelope(raw, kind); if (!r.ok) { cardRefusal(r.error); return; }
+    if (kind === 'history') { requireValue(r.value.after_card_id === after); const old = cardHistory; cardHistory = r.value; if (!cardCapacity()) { cardHistory = old; cardMessage = cardError('card_capacity'); return; } }
+    else { const s = kind === 'record' ? r.value.status : r.value; requireValue(s.event.saturday === c.date); if (kind === 'record') cardAdoptResult(r.value); else { cardAdoptStatus(s); if (s.exists) cardUnknown = false; } }
+    cardMessage = kind === 'record' ? 'The original saved card and its latest local source status are shown below.' : kind === 'history' ? 'Saved card history loaded.' : 'Local card status checked. The seed chain was not refreshed.';
+  } catch (e) { if (cardCurrent(c, kind !== 'history')) cardRefusal(e.cardCode ?? 'card_unavailable'); } renderCard();
+}
+async function cardBegin() {
+  if (!cardReady() || !entryDate || cardWatch || cardUnknown || cardSnapshot.state === 'busy') return;
+  const c = cardContext(); cardWatch = { id: '', kind: 'build', state: 'queued', saturday: c.date, cardID: '' };
+  if (!cardCapacity()) { cardWatch = null; cardMessage = cardError('card_capacity'); return; }
+  try {
+    const raw = await call('BeginCardBuild', c.viewID, c.date); if (!cardCurrent(c)) return; const r = cardEnvelope(raw, 'job');
+    if (!r.ok) { cardWatch = null; cardRefusal(r.error, true); return; } const j = r.value;
+    requireValue(j.state === 'queued' && j.saturday === c.date);
+    if (cardCurrent(c, true)) { cardDetail = cardStatus = null; cardOverlayKnown = cardOverlayRead = false; }
+    cardTerminal = null;
+    cardWatch = { id: j.job_id, kind: j.kind, state: j.state, saturday: j.saturday, cardID: j.card_id }; cardMessage = 'Candidate card request queued.';
+  } catch { if (cardCurrent(c)) { cardWatch = null; cardRefusal('outcome_unknown', true); } } renderCard();
+}
+function cardTerminalKey(j) {
+  // The bridge checks the canonical full-job digest. Here its verified record
+  // digest plus complete status retain compact presentation correlation.
+  return JSON.stringify([j.job_id, j.kind, j.state, viewKey(j.view), j.store_id, j.card_id, j.saturday, j.error, j.result?.status ?? null, j.result?.replayed ?? null]);
+}
+async function cardFetchJob(id) {
+  if (!cardReady()) return; const c = cardContext(), expected = cardWatch;
+  let rollback = null;
+  try {
+    const raw = await call('CardJob', c.viewID, id); if (!cardCurrent(c) || cardWatch !== expected) return; const r = cardEnvelope(raw, 'job');
+    if (!r.ok) { if (r.error !== 'busy') { cardWatch = null; cardRefusal(r.error, true); } return; } const j = r.value;
+    requireValue(j.job_id === id && (!expected || j.kind === expected.kind && j.saturday === expected.saturday && (!expected.cardID || j.card_id === expected.cardID) && !(expected.state === 'running' && j.state === 'queued')));
+    if (['queued', 'running'].includes(j.state)) { const old = cardWatch; cardWatch = { id, kind: j.kind, state: j.state, saturday: j.saturday, cardID: j.card_id }; if (!cardCapacity()) { cardWatch = old; throw cardCacheError(); } return; }
+    const key = cardTerminalKey(j); if (cardTerminal?.id === id) requireValue(cardTerminal.key === key);
+    rollback = [cardWatch, cardLastJob, cardTerminal, cardDetail, cardStatus, cardOverlayKnown, cardUnknown, cardOverlayRead, cardMessage, cardUnavailable];
+    cardWatch = null; cardLastJob = id; cardTerminal = { id, key };
+    if (j.state === 'completed') { cardAdoptResult(j.result, true); cardMessage = j.result.replayed ? 'The same saved card was recovered. Its original pairings and creation time are unchanged.' : 'The candidate card is saved. Every locked entrant is accounted for below.'; }
+    else cardRefusal(j.error, true);
+    if (!cardCapacity()) throw cardCacheError();
+  } catch (e) { if (cardCurrent(c)) {
+    if (rollback) [cardWatch, cardLastJob, cardTerminal, cardDetail, cardStatus, cardOverlayKnown, cardUnknown, cardOverlayRead, cardMessage, cardUnavailable] = rollback;
+    if (e.cardCode === 'card_capacity') cardMessage = cardError('card_capacity');
+    else { cardWatch = null; cardRefusal('outcome_unknown', true); }
+  } } renderCard();
+}
+async function cardCancel() {
+  if (!cardReady() || !cardWatch?.id) return; const c = cardContext(), w = cardWatch;
+  try { const raw = await call('CancelCardJob', c.viewID, w.id); if (!cardCurrent(c)) return; const r = cardEnvelope(raw, 'job'); if (!r.ok) { cardRefusal(r.error, true); return; } requireValue(r.value.job_id === w.id && r.value.kind === w.kind && r.value.saturday === w.saturday && r.value.card_id === w.cardID); await cardFetchJob(w.id); }
+  catch { if (cardCurrent(c)) cardRefusal('outcome_unknown', true); } renderCard();
+}
+function cardGymName(id) { return id === fixtures.zero256[0] ? 'Demo A' : id === fixtures.incrementing256[0] ? 'Demo B' : 'Unknown gym'; }
+function renderCard() {
+  const active = cardReady(), s = cardStatus?.event.saturday === entryDate ? cardStatus : null;
+  const r = cardDetail?.source.source_receipt.input.event.saturday === entryDate ? cardDetail : null, plan = r?.plan;
+  const busy = !!command || !!cardWatch || cardSnapshot?.state === 'busy';
+  const conflict = !!s && (s.source.status.conflict_count > 0 || s.source.status.conflict_overflow);
+  content(ui['card-state'], !ready() ? 'Sign in to view cards' : cardUnavailable ? 'Unavailable in this route' : cardSnapshot?.state === 'setup_incomplete' ? 'Setup incomplete' : cardWatch ? 'Card request in progress' : s?.exists ? !cardOverlayKnown ? 'Saved card · source status unavailable' : conflict ? 'Saved card · seed conflict' : !s.usable ? 'Saved card · source unavailable' : 'Candidate card saved' : 'No saved card');
+  content(ui['card-message'], cardMessage);
+  content(ui['card-totals'], s?.exists ? `${s.counts.total_count} entered · ${s.counts.eligible_count} eligible at noon · ${s.counts.paired_count} paired · ${s.counts.unmatched_count} unmatched · ${s.bout_count} bouts` : 'Create a card after both noon snapshots and the fixed seed are ready.');
+  const source = s?.source.status, chainTime = source?.chain_observed_at_ms ?? 0;
+  content(ui['card-source'], source ? `Saturday ${source.event.saturday} · Noon cutoff ${new Date(source.event.cutoff_ms).toISOString()}. ${source.finalized_at_ms ? `First seed finality ${new Date(source.finalized_at_ms).toISOString()}.` : 'Waiting for the fixed finalized seed.'} ${chainTime ? `Last verified chain observation ${new Date(chainTime).toISOString()}.` : 'No verified chain observation yet.'}` : 'The card uses the locked selection and condition for the Saturday chosen above.');
+  content(ui['card-conflict'], !cardOverlayKnown && (r || s?.exists) ? 'This is retained historical booking evidence. Current source usability has not been confirmed.' : conflict ? 'The fixed seed has conflicting evidence. The original card is retained and is not currently usable.' : s?.exists ? s.usable ? 'Retained candidate source is usable at the last local status check. This is not continuous chain monitoring.' : 'The saved card is retained, but its source is not currently usable.' : '');
+  content(ui['card-incident'], source?.incident_at_ms ? `Chain incident first recorded ${new Date(source.incident_at_ms).toISOString()}; refer the retained seed evidence to the operator. The event has not been cancelled or reseeded.` : '');
+  content(ui['card-evidence'], r ? `Card ${r.card_id} · Created ${new Date(r.created_at_ms).toISOString()} · Fixed seed ${r.source.target.hash} · Source ${r.source_digest}` : '');
+  const retainedKey = r ? `${r.card_id}|${s?.record_digest ?? ''}` : '';
+  if (ui['card-bouts']._key !== retainedKey) {
+    for (const id of ['card-gyms', 'card-bouts', 'card-unmatched']) ui[id].textContent = '';
+    if (plan) {
+      for (const g of plan.gyms) { const row = element('tr'); for (const value of [cardGymName(g.gym_id), g.counts.total_count, g.counts.paired_count, g.counts.unmatched_count]) row.append(element('td', '', String(value))); ui['card-gyms'].append(row); }
+      for (const b of plan.bouts) {
+        const a = plan.entrants.find(e => e.prospect_id === b.corner_a), c = plan.entrants.find(e => e.prospect_id === b.corner_b), li = element('li'), detail = element('details');
+        detail.append(element('summary', '', `${label(b.class)}: ${a.display_name} (${cardGymName(a.gym_id)}, ${(a.rating_hundredths / 100).toFixed(2)}) vs ${c.display_name} (${cardGymName(c.gym_id)}, ${(c.rating_hundredths / 100).toFixed(2)})`), element('p', 'note card-identities', `${a.display_name}: ${a.prospect_id} · ${c.display_name}: ${c.prospect_id}`)); li.append(detail); ui['card-bouts'].append(li);
+      }
+      for (const e of plan.entrants.filter(e => e.state === 'unmatched')) {
+        const li = element('li'), detail = element('details'); detail.append(element('summary', '', `${e.display_name} · ${cardGymName(e.gym_id)} · ${label(e.class)} · ${(e.rating_hundredths / 100).toFixed(2)}: ${cardReasonText[e.reason]}`), element('p', 'note card-identities', e.prospect_id)); li.append(detail); ui['card-unmatched'].append(li);
+      }
+    }
+    ui['card-bouts']._key = retainedKey;
+  }
+  const reasonKey = s?.exists ? JSON.stringify(s.counts.reasons) : '';
+  if (ui['card-reasons']._key !== reasonKey) { ui['card-reasons'].textContent = ''; if (s?.exists) for (const k of CARD_REASONS) if (s.counts.reasons[k]) ui['card-reasons'].append(element('li', '', `${s.counts.reasons[k]}: ${cardReasonText[k]}`)); ui['card-reasons']._key = reasonKey; }
+  content(ui['card-detail-hint'], plan ? plan.counts.total_count === 0 ? 'This complete saved card has no entered fighters.' : plan.counts.unmatched_count === 0 ? 'Every entered fighter is paired.' : 'Every unmatched entrant is listed below.' : s?.exists ? 'Open the saved card to inspect fighter names, pairings and individual reasons.' : '');
+  for (const k of ['refresh', 'record']) ui[`card-${k}`].disabled = !active || busy || !entryDate;
+  const knownIncomplete = s && !s.exists && (!s.source.status.finalized_at_ms || conflict);
+  ui['card-begin'].disabled = !active || busy || !entryDate || cardUnknown || !!knownIncomplete;
+  ui['card-cancel'].disabled = !active || !!command || !cardWatch?.id;
+  ui['card-clear'].disabled = !cardDetail && !cardHistory; ui['card-history'].disabled = !active || busy; ui['card-history-next'].disabled = !active || busy || !cardHistory?.has_more;
+  const historyKey = cardHistory ? JSON.stringify(cardHistory.cards.map(v => [v.card_id, v.event.saturday, v.counts.total_count, v.counts.paired_count, v.counts.unmatched_count, v.usable, v.source.status.incident_at_ms, v.source.status.conflict_count, v.source.status.conflict_overflow])) : '';
+  requireValue(entryBytes([retainedKey, reasonKey, historyKey, ui['card-evidence'].textContent]) <= 4096);
+  if (ui['card-history-list']._key !== historyKey) { ui['card-history-list'].textContent = ''; if (cardHistory) for (const v of cardHistory.cards) { const li = element('li'), button = element('button', '', v.event.saturday); button.type = 'button'; button.addEventListener('click', () => entryNavigate(v.event.saturday)); li.append(button, element('span', '', `${v.counts.total_count} entered, ${v.counts.paired_count} paired, ${v.counts.unmatched_count} unmatched${v.usable ? '' : ' · source conflict or unavailable'}`)); ui['card-history-list'].append(li); } ui['card-history-list']._key = historyKey; }
+}
+
 ui['event-refresh'].addEventListener('click', () => queueEventSelection(() => eventReadStatus(), 'event-status'));
 ui['event-capture'].addEventListener('click', () => queueEventSelection(eventBegin, 'event-capture'));
 ui['event-cancel'].addEventListener('click', () => queue(eventCancel, 'event-cancel'));
@@ -1258,6 +1565,12 @@ ui['seed-cancel'].addEventListener('click', () => queue(seedCancel, 'seed-cancel
 ui['seed-clear'].addEventListener('click', () => { seedDetail = seedHistory = null; renderSeed(); });
 ui['seed-history'].addEventListener('click', () => queue(() => seedRead('history'), 'seed-history'));
 ui['seed-history-next'].addEventListener('click', () => queue(() => seedRead('history', seedHistory?.next_event_key ?? ''), 'seed-history'));
+for (const kind of ['status', 'record']) ui[`card-${kind === 'status' ? 'refresh' : kind}`].addEventListener('click', () => { const c = cardContext(); queue(() => cardCurrent(c, true) ? cardRead(kind) : undefined, `card-${kind}`); });
+ui['card-begin'].addEventListener('click', () => { const c = cardContext(); queue(() => cardCurrent(c, true) ? cardBegin() : undefined, 'card-build'); });
+ui['card-cancel'].addEventListener('click', () => queue(cardCancel, 'card-cancel'));
+ui['card-clear'].addEventListener('click', () => { cardDetail = cardHistory = null; renderCard(); });
+ui['card-history'].addEventListener('click', () => queue(() => cardRead('history'), 'card-history'));
+ui['card-history-next'].addEventListener('click', () => { const c = cardContext(), after = cardHistory?.next_card_id ?? ''; queue(() => cardCurrent(c) && after ? cardRead('history', after) : undefined, 'card-history'); });
 
 ui['entry-date'].addEventListener('change', () => entryNavigate(ui['entry-date'].value));
 ui['entry-upcoming'].addEventListener('click', () => { entryChanged(); queue(() => entryReadStatus(true), 'entry-upcoming'); });

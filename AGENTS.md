@@ -66,7 +66,8 @@ version.
   → `slug-fight-preview` (set 42, released on master at `fc672113`)
   → `slug-saturday-entry` (set 43, released on master at `e2761812`)
   → `slug-event-snapshot` (set 44, released on master at `1fc307e0`)
-  → `slug-event-seed` (set 45, candidate seed implementation under verification).
+  → `slug-event-seed` (set 45, released on master at `dcc44829`)
+  → `slug-event-card` (set 46, scoped candidate card work in progress).
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review
@@ -393,6 +394,21 @@ does not understand. Never detach, replace, or clear the /data volume.
   boundaries through DST, preserve original event/seed evidence, and keep node
   checkpoints report-only. No synthetic finalized flag or preview seed can
   stand in for the later trusted seed/finality authority. See EVENT_LOCK_POLICY.md.
+
+- Candidate-card exception C1 (Mike, November 17) permits the existing two-gym,
+  zero-professional-record candidate to book same-class opposing fighters in
+  the inclusive half-to-double D65 band with fewer than five opponents. Waive
+  only widen-to-five, not the band. Retain unmatched counts and per-fighter
+  reasons. This does not amend D13/D28/D52 or settle general widening, record
+  filters or next-week priority. See CANDIDATE_CARD_EXCEPTION.md.
+
+- Set 46 retains immutable candidate cards in a separate explicit journal.
+  Preserve the complete noon source, fixed seed, pairings, unmatched reasons and
+  original creation time across replay, conflict and restart. Source health is
+  separate from saved evidence; a caller-supplied source or finalized flag cannot
+  authorize booking. Shared event/seed/card stores belong to the candidate parent,
+  not the current login. Never infer professional record authority from XP or
+  award results/training from a card. See EVENT_CARDS.md.
 
 - Set 39 adds explicitly pinned candidate service protocol 3 and a separately
   typed worker/outbox version 2. Preserve old services, workers and journals;

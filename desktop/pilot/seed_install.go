@@ -16,41 +16,53 @@ type seedRootMarker struct {
 }
 
 func (s *StableController) seedRoot() (seedRootMarker, error) {
+	if s.cardEnabled {
+		m, e := s.cardRoot()
+		base := m.seedRootMarker
+		base.Version = 5
+		return base, e
+	}
 	var m seedRootMarker
 	path := filepath.Join(filepath.Dir(filepath.Dir(s.config.DataDir)), "SLUG-MANIFEST-ACCOUNTS.json")
 	if !s.seedEnabled || readManifestJSON(path, 16384, &m) != nil || m.Version != 5 || m.SeedSchema != 1 {
 		return m, ErrManifestInitialization
 	}
+	return m, validateSeedRoot(m)
+}
+func validateSeedRoot(m seedRootMarker) error {
+	if m.Version != 5 || m.SeedSchema != 1 {
+		return ErrManifestInitialization
+	}
 	base := m.eventRootMarker
 	base.Version = 4
 	if validateEventRoot(base) != nil {
-		return m, ErrManifestInitialization
+		return ErrManifestInitialization
 	}
 	switch m.SeedPhase {
 	case "waiting_source":
 		if m.SeedStoreID != "" {
-			return m, ErrManifestInitialization
+			return ErrManifestInitialization
 		}
 	case "prepared", "ready":
 		if m.EventPhase != "ready" {
-			return m, ErrManifestInitialization
+			return ErrManifestInitialization
 		}
 		ev, e := eventPinFromRoot(base)
 		if e != nil {
-			return m, e
+			return e
 		}
 		p, e := gymseed.CandidatePin(ev)
 		if e != nil {
-			return m, e
+			return e
 		}
 		id, e := gymseed.ID(p)
 		if e != nil || id != m.SeedStoreID {
-			return m, ErrManifestInitialization
+			return ErrManifestInitialization
 		}
 	default:
-		return m, ErrManifestInitialization
+		return ErrManifestInitialization
 	}
-	return m, nil
+	return nil
 }
 func NewSeedManifestAccount(c Config, a StableAccountConfig) (*StableController, error) {
 	s, e := NewEventManifestAccount(c, a)
@@ -99,7 +111,7 @@ func (s *StableController) AttachSeeds(ctx context.Context, x *gymseed.Store) er
 		}
 		s.mu.Lock()
 		defer s.mu.Unlock()
-		if !stableCacheFits(s.cache, s.receiptSlot, s.previewBytes+s.entryBytes+s.eventBytes+MaxSeedMetadataSize) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.previewBytes+s.entryBytes+s.eventBytes+s.cardBytes+MaxSeedMetadataSize) {
 			return gymseed.ErrCapacity
 		}
 		s.seedStore = x

@@ -34,6 +34,7 @@ var stableBuild string
 var entryBuild string
 var eventBuild string
 var seedBuild string
+var cardBuild string
 
 // Gym exposes only public pilot controls and receipt selection to the webview.
 // Paths, process arguments, and keys cannot be supplied through the web bridge.
@@ -215,7 +216,11 @@ func run() (resultErr error) {
 	entries := flag.Bool("candidate-entries", entryBuild == "1", "Enable Saturday entry intake within the candidate stable")
 	candidateEvents := flag.Bool("candidate-events", eventBuild == "1", "Enable immutable noon snapshots within candidate entries")
 	candidateSeeds := flag.Bool("candidate-seeds", seedBuild == "1", "Enable candidate seed publication within candidate events")
+	candidateCards := flag.Bool("candidate-cards", cardBuild == "1", "Enable bounded candidate cards within candidate seeds")
 	flag.Parse()
+	if *candidateCards && (!*candidateSeeds || !*candidateEvents || !*entries || !*stable || !*candidates) {
+		return errors.New("Candidate cards require candidate seeds, events, entries, stable and fixture desktop.")
+	}
 	if *candidateSeeds && (!*candidateEvents || !*entries || !*stable || !*candidates) {
 		return errors.New("Candidate seeds require candidate events, entries, stable and fixture desktop.")
 	}
@@ -262,7 +267,12 @@ func run() (resultErr error) {
 		filepath.Join(filepath.Dir(filepath.Clean(*data)), "LocalManifestPilot"),
 		filepath.Clean(filepath.Join(resources, "..", "..")),
 	}}
-	if *candidateSeeds {
+	if *candidateCards {
+		gym.stableHelper, err = bridge.LaunchCards(helperPath, filepath.Clean(*data), nodePath)
+		if err == nil {
+			gym.manifestHelper = gym.stableHelper
+		}
+	} else if *candidateSeeds {
 		gym.stableHelper, err = bridge.LaunchSeeds(helperPath, filepath.Clean(*data), nodePath)
 		if err == nil {
 			gym.manifestHelper = gym.stableHelper

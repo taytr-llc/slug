@@ -1,8 +1,11 @@
 # Change set 45 — candidate event seed evidence
 
 Branch `slug-event-seed`, stacked from set 44 implementation
-`a00ada0d2d3c5e903a4160e598905c667c10ee32`. Implementation is complete and source checks pass. Packaged acceptance and
-deployment remain pending; this note does not claim promotion or rollout.
+`a00ada0d2d3c5e903a4160e598905c667c10ee32`. Final implementation
+`ca84a62d178386646aef119cbe2edbb6ad38f508` passed exact packaged acceptance and
+was promoted to master `dcc448290d4b6f1ff76459a5c0044deeaefb7aa5`.
+Deployment and the full live observation/restart passed. This is engineering
+closeout; the product-release limits below remain open.
 
 Connect a complete immutable event snapshot to authenticated candidate
 publication and retained seed evidence. The intended slice records the first
@@ -53,7 +56,7 @@ normal header work and cancellation joins. Core, helper, adapter and native
 normal/race checks pass, as do independent corpus comparisons. The isolated
 normal-PoW composition now passes through publication, target finality, rollback,
 conflict retention and restart. Final desktop normal/race regression and the narrow shared-store correction
-now pass. Packaged acceptance and live rollout verification remain outstanding.
+now pass. The final package and live rollout closeout are recorded below.
 
 
 The frozen reference contains 125 DTOs, 1,420 codec recipes, 194 protocol cases,
@@ -157,3 +160,40 @@ acceptance before Mike restored the original detailed app-icon choice. That
 bundle, binary set and source/evidence records are preserved; they were never
 promoted. The follow-up changes only the app image and its description, retains
 the simplified menu template and rebuilds the final package from its new commit.
+
+
+## Final package and deployment closeout
+
+The bundle with the original detailed app icon at `ca84a62d` passed in
+121.083 seconds.
+Its source and three binary hashes remained unchanged, and five independent
+proof/stable/entry/event/seed reports passed against the exact public result.
+Both fixture wallets, six previews, entry/event/seed flows and process restart
+were checked; all captured listeners and owned configuration commands were
+absent after cleanup. The retained package report and independent review are
+`../set45-package-acceptance.json` (SHA256
+`02ddebcb425ba19180c927b7e5a93c45f803e459fe8c9da5e3481381add801d6`)
+and `../set45-package-review.json` (SHA256
+`82d7008e7e5409de5d45bc82f42e635136c8e8d3328da7279c773f0276c1bf54`).
+The earlier `dc01ac01` bundle and every diagnostic remain preserved separately.
+
+Normal-PoW smoke and fresh public-seed preflight passed. Railway deployment
+`636c34ad-4549-4584-8d72-ecd916e92a85` succeeded with the exact release tree and
+unchanged seed configuration. The observer ran 900.0442289580001 seconds with
+31 successful samples and a clean restart, retaining public height 61 and its expected hash;
+no public block was mined. Final observation/closeout evidence is
+`../set45-closeout.md` (SHA256
+`cfc4d9c6006f20485fed45c096733f972ed4cc7018e8e6ec7798bdee219bf589`).
+Remote CI returned no runs/checks for the
+implementation, so no remote-CI pass is claimed.
+
+The packaged test uses real time and verifies setup, absence, typed refusals
+and restart; it does not demonstrate a successful real-clock closed event,
+publication or finality before an eligible Saturday. Successful closed-chain
+composition is the separate tagged-clock, normal-PoW evidence described above.
+The package checks icon sources, conversion and embedded bytes, not Dock/menu
+rendering, native chooser behavior or screen-reader acceptance. The limited
+signed-out app inspection did not establish icon visual acceptance. Mike's
+portrait-render check and one full joint D74 review after the major flows are
+ready remain required. No official league/production ownership, awards,
+public-chain publication or automatic mining is enabled by this closeout.
