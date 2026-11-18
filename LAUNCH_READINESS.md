@@ -204,6 +204,14 @@ they do not count as completion of this product-release gate.
   authority, permanent genesis, portrait/GUI/accessibility and D74 gates remain
   unchanged. This work adds no professional records, XP or awards.
 
+- Set 49 is in progress on `slug-career-awards`. Mike approved D78 on November
+  18: permanent records/XP and all result-derived ranking points/title changes
+  become effective exactly once at result finality. Provisional outcomes stay
+  labeled; later chain conflicts retain finalized awards; noon snapshots use
+  only awards already effective at lock. `RESULT_AWARD_POLICY.md` records the
+  decision. Runtime integration and acceptance remain in progress; C1 and D74
+  are unchanged.
+
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
 `sim-handoff-intake.json` preserves archive and file checksums. They are reference
