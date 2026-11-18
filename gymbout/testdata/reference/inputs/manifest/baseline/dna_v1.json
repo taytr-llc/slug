@@ -1,0 +1,122 @@
+[
+  {
+    "dna_version": 1,
+    "seed": "0000000000000000000000000000000000000000000000000000000000000000",
+    "rarity": "club",
+    "talent_budget": 270,
+    "attributes": {
+      "power": 44,
+      "speed": 13,
+      "chin": 83,
+      "stamina": 71,
+      "skill": 59
+    },
+    "prime_weeks": 37,
+    "decline_weeks": 14
+  },
+  {
+    "dna_version": 1,
+    "seed": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "rarity": "club",
+    "talent_budget": 281,
+    "attributes": {
+      "power": 28,
+      "speed": 68,
+      "chin": 73,
+      "stamina": 17,
+      "skill": 95
+    },
+    "prime_weeks": 46,
+    "decline_weeks": 26
+  },
+  {
+    "dna_version": 1,
+    "seed": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "rarity": "club",
+    "talent_budget": 295,
+    "attributes": {
+      "power": 68,
+      "speed": 96,
+      "chin": 12,
+      "stamina": 70,
+      "skill": 49
+    },
+    "prime_weeks": 43,
+    "decline_weeks": 14
+  },
+  {
+    "dna_version": 1,
+    "seed": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+    "rarity": "professional",
+    "talent_budget": 327,
+    "attributes": {
+      "power": 80,
+      "speed": 48,
+      "chin": 32,
+      "stamina": 95,
+      "skill": 72
+    },
+    "prime_weeks": 38,
+    "decline_weeks": 28
+  },
+  {
+    "dna_version": 1,
+    "seed": "729d92f2de29fa6415f4920df49164a8a9824971ff972d42037ee7c9d41f470f",
+    "rarity": "professional",
+    "talent_budget": 318,
+    "attributes": {
+      "power": 82,
+      "speed": 66,
+      "chin": 73,
+      "stamina": 91,
+      "skill": 6
+    },
+    "prime_weeks": 52,
+    "decline_weeks": 38
+  },
+  {
+    "dna_version": 1,
+    "seed": "1f08a4ac11d4c60ebecbb8dc85401fa2756576c3d1920c45cad5f7113b587ee0",
+    "rarity": "generational",
+    "talent_budget": 469,
+    "attributes": {
+      "power": 87,
+      "speed": 99,
+      "chin": 87,
+      "stamina": 96,
+      "skill": 100
+    },
+    "prime_weeks": 45,
+    "decline_weeks": 33
+  },
+  {
+    "dna_version": 1,
+    "seed": "0000000000000000000000000000000000000000000000000000000000000003",
+    "rarity": "elite",
+    "talent_budget": 412,
+    "attributes": {
+      "power": 70,
+      "speed": 75,
+      "chin": 99,
+      "stamina": 100,
+      "skill": 68
+    },
+    "prime_weeks": 36,
+    "decline_weeks": 32
+  },
+  {
+    "dna_version": 1,
+    "seed": "0000000000000000000000000000000000000000000000000000000000000005",
+    "rarity": "contender",
+    "talent_budget": 357,
+    "attributes": {
+      "power": 92,
+      "speed": 49,
+      "chin": 95,
+      "stamina": 37,
+      "skill": 84
+    },
+    "prime_weeks": 46,
+    "decline_weeks": 30
+  }
+]

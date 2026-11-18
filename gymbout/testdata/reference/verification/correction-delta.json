@@ -1,0 +1,23 @@
+{
+  "status": "passed_independent_review_corrections",
+  "prior_candidate_index_sha256": "92452eb87422760cff4c144a36292826ab05801bdfc746cbf45624bddfb01c43",
+  "prior_corpus_sha256": "0cd84c99a44ea325d55eac8b4ed7c6afc8aaafb67db850aeefa69cb874c14360",
+  "corrected_corpus_sha256": "09f0430789328b9226fc4a24aae3cdb07beeb8b41d61b42cd33e4ba3121fa2ec",
+  "unchanged_sections": [
+    "compositions",
+    "protocol_cases",
+    "calendar_cases",
+    "calendar_refusals",
+    "identity_cases",
+    "state_cases",
+    "initialization_cases",
+    "actual_source_context"
+  ],
+  "prior_dtos_unchanged": 162,
+  "prior_codec_recipes_bytes_and_acceptance_unchanged": 856,
+  "new_codec_cases": 160,
+  "new_portrait_cases": 48,
+  "source": "Frozen contracts, old independent sources and reviewer static/pure-Python findings only; no Go values.",
+  "all_input_origins_preserved": true,
+  "new_input_purpose": "Pin frozen40 structural name limits; preserve original63-input inventory."
+}

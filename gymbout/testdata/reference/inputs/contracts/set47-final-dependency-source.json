@@ -1,0 +1,29 @@
+{
+  "status": "bound",
+  "at": "2026-11-18T03:03:52.410979+00:00",
+  "scope": "Additive final source binding only; original Set47v1 and dependency freeze are unchanged.",
+  "previous_dependency_freeze_sha256": "0fa378f221a8901ba8bdc97f9d86680aa260b274ca5d972a9fc6796d61669067",
+  "set46_implementation": "5e6b36d37e30d573a3817e32315bb96f12e0968c",
+  "set46_release": "5c11cbaf5f1e236ffb3e46504e551be6dc5c2d69",
+  "set46_tree": "ed89b8c4a31193c62e96252416f01ce66f4622ad",
+  "set46_final_files_sha256": "af2992a3baed042f29e9a616e832e9d642946d1ee017bcd7b51398c6f4d3984c",
+  "set46_card_dependencies_sha256": {
+    "gymseed/card_source.go": "6f19b32155b713219d94915e369799c41a62581f6d164e120f9128afb8c0aef7",
+    "gymcard/read.go": "dc5996ac2973dabfa6c28389f859439375100f53368d7a1643d223f55f38ecb5",
+    "gymcard/actions.go": "d1041f6bcfb274e628e68c61914080898297fe3cd99ee6d39e2668c269809855",
+    "gymcard/audit.go": "d707b5a666d7f70622d930ec257517687b20ed6faff8c2344195c934af53294f",
+    "gymcard/store.go": "4ea9b83dafb683ca0a079050f37212e63af7d1580fc7ea14e13c7b0615ee40b8",
+    "desktop/pilot/card_controller.go": "fdfd317c779c1ea45d81ce0a45a1adb5f816efd69166eaa9fad076a157816842"
+  },
+  "later_delta": "Snapshot-only account publication normalization, two tests and change-set notes; no Card/seed dependency, DTO, engine or digest recipe change.",
+  "evidence_sha256": {
+    "set46-publication-root-review.json": "c84a9357b583d6ce3f822788b59f3e8851f2eefb31fd361363a707460ab89260",
+    "set46-login-publication-independent-review.json": "4914a21a96421f36deb828d96d4a22b7823244c27cbe99cb04f4327844fdea90",
+    "set46-package-review.json": "755e3ad8e848142f2e4fc3f4441e44f43e942fefa5353e188b452e9f2eee847c",
+    "set46-smoke.json": "3028cc65d8250e139e8e34886aba1d259d221e68034c46c95e8b92a8c0dfcefd",
+    "set46-railway-after-deployment.json": "e7e3962d53da0f951fce5470909cf05f249bed416780316e2bff21bb41ad1d83"
+  },
+  "independent_reference_scope_unchanged": true,
+  "runtime_implementation_authorized_now": false,
+  "remaining_runtime_gate": "Set46 full900second observation/restart plus approved independent reference freeze, then separate root dispatch."
+}

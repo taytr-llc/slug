@@ -1,0 +1,19 @@
+{
+  "status": "frozen",
+  "at": "2026-11-18T01:46:15.740022+00:00",
+  "contract_sha256": {
+    "set47-core-contract-draft.md": "f73db38d7860b6fba7d57370fbbb58ad24377082a253ad234e57a22385f0997b",
+    "set47-helper-contract-draft.md": "eabdf5e294fe26b6acb72ac67ff3c87b4764a366422414a1c202f8fa6622b691"
+  },
+  "evidence_sha256": {
+    "set47-contract-independent-review.json": "8bbe1b0fb07afc6cbbbe3942466c8429dfa3a40849809b6a9148c7029646527d",
+    "set47-contract-root-review.json": "a6f88749f15eb2b6a8e4b695f815a8d1623b37c97e2faad493bde14afaedfb1c",
+    "set47-contract-bounds-formula.json": "64735cd1e17fdd5c2456f0a0d94f996d11bee92094255384d0f383c99f042c7f",
+    "set47-contract-bounds-calculator.py": "41a86c701605a0c2d467e6696e607ba4297542c06625b709a7a2b671159b5f24"
+  },
+  "basis_source": "ede24725fef8a2f90e617160d263d283981bbe1e",
+  "runtime_implementation_authorized_now": false,
+  "independent_reference_generation_authorized": true,
+  "runtime_start_gate": "Set46 package correction and completed verified release; separate root task dispatch",
+  "scope": "Explicit retained candidate bouts under unchanged C1, engine and decisions; not production/result/record authority."
+}

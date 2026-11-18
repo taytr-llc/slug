@@ -1,0 +1,52 @@
+{
+  "status": "passed",
+  "findings": [],
+  "at": "2026-11-18T02:40:43.268273+00:00",
+  "scope": "Root review of six runtime files, five new focused tests, one existing capacity-test measurement separation and two documents after actual package liveness failure; exact correction source and bounded supporting evidence.",
+  "basis_commit": "ede24725fef8a2f90e617160d263d283981bbe1e",
+  "final_files_sha256": "ae826ec2a82616c315f2c8fde507ca82752e90f9aa5c76ddb04052170cc9a810",
+  "source_sha256": {
+    "CHANGESET_46_NOTES.md": "502559d7a5f5e7d7c8d4f06645718a78d74df38c1eba8dc53095bd7fb2370110",
+    "EVENT_CARDS.md": "44d341bd8f46b6effa49853c8db56d6f0f036599e72bafa480cfedb103a1c9ba",
+    "desktop/pilot/card_capacity_account_test.go": "41dcd373cec52e26c94bcb5b0f3eb5cc7f72cfdcc9e8285cd547c70f772e342b",
+    "desktop/pilot/card_controller.go": "fdfd317c779c1ea45d81ce0a45a1adb5f816efd69166eaa9fad076a157816842",
+    "desktop/pilot/card_metadata_deadline_test.go": "c8cdeefbf622e067a6f0fd598fb60430a9ebf2b5e26f36cd04778cdd11f1736b",
+    "gymcard/actions.go": "d1041f6bcfb274e628e68c61914080898297fe3cd99ee6d39e2668c269809855",
+    "gymcard/audit.go": "d707b5a666d7f70622d930ec257517687b20ed6faff8c2344195c934af53294f",
+    "gymcard/audited_index_test.go": "20579c64f6b02cc32bb784429f9acc9eab1599ae9153b374016e9c6bb2e96d2f",
+    "gymcard/history_capacity_test.go": "a4811312b304a3e4fe7d885ba43ea43ea4a5d75610ffbc0a42970440afd0e195",
+    "gymcard/read.go": "dc5996ac2973dabfa6c28389f859439375100f53368d7a1643d223f55f38ecb5",
+    "gymcard/read_liveness_test.go": "831f83b2f6f341bdc198663c24bebdd257df666f34055f2f3db6adff4a16a9a7",
+    "gymcard/store.go": "4ea9b83dafb683ca0a079050f37212e63af7d1580fc7ea14e13c7b0615ee40b8",
+    "gymseed/card_prepared_view_test.go": "3f1acac02861c9a0e3f791e42bef50b9140c2a1186bdd8d3f3636de2a44f780c",
+    "gymseed/card_source.go": "6f19b32155b713219d94915e369799c41a62581f6d164e120f9128afb8c0aef7"
+  },
+  "evidence_sha256": {
+    "set46-card-read-liveness-final-checks.json": "d8a6223e5f1730b8b94107a2656232857dce41afc005fdf05b38152a8ac59e71",
+    "set46-card-read-liveness-independent-review.json": "60d4b0f934ac7843ad67000060b47dbf4620b30d09b8abff7c01d57dd0e64e47",
+    "set46-card-read-envelope-review.json": "635cc157a453ea50e77dfa6a0dc428818ae2ba0e7ab5dcc912277c72b13173e2",
+    "set46-card-metadata500-final.json": "19d578f106f828aaa04634171016ea19558b89118a94c9a4f161b69c3f5b4fb2",
+    "set46-card-read-liveness-reference-preservation.json": "413ccde36c0991d399ccfdd1f4141573730a10c9bbebdb3c78f476057b06501c",
+    "set46-card-native-replay-post-liveness-binding.json": "40fba1f77befc4306e7817e1b40af3fc0520c68a3a20cc85e0024b50ccbc4a2e",
+    "set46-liveness-root-checks.json": "64e6fb19db6e38e27e315737afaf70e74fac527c059396927a801893151f459e",
+    "set46-liveness-final-format.json": "dd21e33e679ecb63b9a0cbc75e3f3cbf96f1af69d3c6b5e298582692d36291e3"
+  },
+  "engineering_amendment_sha256": "b48a45ce117d226dce351b629c8a20794c19433ed9f6d69410372158690cc2eb",
+  "historical_failed_package_sha256": "50192b7a6f6cd4ecd927222ea37628dccc598f4b110e0f197ad65da00815f6a5",
+  "reviewed": [
+    "Original account authorization precedes retained disclosure; prepared source view preserves full pin/incarnation and final source/session checks.",
+    "Private immutable-row digest index derives only from full opening audit or validated synced insert; current seed-source semantic audit remains full.",
+    "Closure, caller cancellation, opaque consumer errors and post-sync uncertainty retain distinct outcomes; successful completed-body results are not revoked by a later Close.",
+    "Card-only500ms metadata context is an explicit engineering amendment; shorter caller deadlines and other families remain unchanged.",
+    "Actual-account advancing-clock256-row pages include parent-equivalent before/after rechecks;18default-clock native metadata operations passed without retries.",
+    "All61 independent reference files, matchup arithmetic, C1 exception, card identities, schemas, frontend and icon bytes remain unchanged.",
+    "Normal root build, full formatting, whitespace and owner normal/race/cheap-profile checks pass on exact corrected bytes.",
+    "Both250ms and500ms core capacity race attempts remain failed. The affected core capacity test is rerun for selected-row/tamper/cancellation correctness without a per-page latency deadline. Strict500ms latency acceptance remains in the stronger normal desktop actual-account/advancing-clock/parent-recheck gate, plus default-clock native operations. Other individually passing race controls are inherited with identical bytes."
+  ],
+  "limitations": [
+    "The original package outcome_unknown was not captured with raw timing and is not assigned a proven specific branch.",
+    "Original package/250ms failures remain failed; final rebuilt package and deployment are still separate pending gates.",
+    "Full initial mining pipeline remains historical; corrected-source replay proves unchanged retained card/admission bytes, not a newly mined pipeline.",
+    "No GUI, portrait rendering, D74 product review, production authority or public mining claim."
+  ]
+}

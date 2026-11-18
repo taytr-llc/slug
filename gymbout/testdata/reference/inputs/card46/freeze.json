@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "status": "frozen_approved",
+  "at": "2026-11-18T00:49:26.475041+00:00",
+  "core_contract_sha256": "0280887a3a5b1d20862253760bc655649b7bad23dec20c8fe523a1463436bbee",
+  "helper_contract_sha256": "394747421cd8ca39cc0f6f255c709178be4e324ab9d7a927bf67e2696df47b5a",
+  "contract_freeze_sha256": "c5f992094df47de09e15a882fcba3cff47b295078ba8506e2200134517ae1ad0",
+  "corpus_sha256": "c52f513f8dfda34c884312c6a2caaf93b429bbf788aaf7c2cba3fbd901329790",
+  "file_index_sha256": "c758070ad3a09427aa45b99c3e93c4d8860b6a9fcd41a70cf0de8c86e4c22ed4",
+  "verification_sha256": "aca15225c83dce9c8d61b6d67150ad2d3bf83341ccc37fbda9ec2fa4324c70ae",
+  "root_review_sha256": "61f3e464ea6760ff72d3cf5c8f5a5544521e223671cedc898289590bde8290da",
+  "reference_producer_read_Go46": false,
+  "runtime_authoring": "concurrent under prior contract freeze; no expected values obtained from runtime",
+  "comparison_allowed": true,
+  "conditions": [
+    "Preserve this frozen independent source and corpus unchanged",
+    "Any mismatch must be diagnosed against the frozen contract, never repaired by copying runtime outputs",
+    "A corrected oracle requires preserved predecessor, explicit contract justification and successor root review/freeze",
+    "Synthetic/model coverage does not replace actual normal-PoW pipeline, crash/lease tests or exact bundle acceptance"
+  ]
+}

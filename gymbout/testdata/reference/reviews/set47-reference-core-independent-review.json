@@ -1,0 +1,146 @@
+{
+  "status": "passed",
+  "findings": [],
+  "at_utc": "2026-11-18T03:27:53.322546+00:00",
+  "scope": "Independent read-only core composition, identity, schema and abstract state-model review of external Set47 Python reference; no reference/runtime execution by this reviewer.",
+  "reference_root": "/Users/taytrrip/slug/set47-bout-reference",
+  "corpus_sha256": "09f0430789328b9226fc4a24aae3cdb07beeb8b41d61b42cd33e4ba3121fa2ec",
+  "file_index_sha256": "9d806bd4d0641fbdb68733ac1928cb4e3a960304da790c20ee1cc73ca7b46abb",
+  "source_sha256": {
+    "common.py": "ff1bf9705985ba087e10af61d692171f87513e500d8108dec282fd8fac1da36f",
+    "schema.py": "9df84b0ee17acb7cb7d1da3a56098dcebe069f8dfe13637c1a23db8e3ea73338",
+    "reference_bouts.py": "ed270b8454db6b7a882a0b08958310f75a41e0cc2f6ccaae1fef4d6f82270670",
+    "reference_state.py": "a3dca942e5c65bb664caed2abe20cd935ffd5e049a1379b704cd5079b64e891f",
+    "verify_reference.py": "5f389375e3d3dfe8527640a1c8e565cdede961c095530605ac4b020521d9e51f"
+  },
+  "contract_sha256": {
+    "set47-core-contract-draft.md": "f73db38d7860b6fba7d57370fbbb58ad24377082a253ad234e57a22385f0997b",
+    "set47-helper-contract-draft.md": "eabdf5e294fe26b6acb72ac67ff3c87b4764a366422414a1c202f8fa6622b691",
+    "set47-contract-freeze.json": "e023ddb4c043ae09b6edd826e0fbd1765d3e8bd02c34bcf0ce0ed10205d8c2fe",
+    "set47-contract-dependency-freeze.json": "0fa378f221a8901ba8bdc97f9d86680aa260b274ca5d972a9fc6796d61669067",
+    "set47-final-dependency-source.json": "f62aafadda089b09f9635c74d3c764d43e44551fdb72d4dc475ea4d16de0e7df"
+  },
+  "evidence_sha256": {
+    "file_index.json": "9d806bd4d0641fbdb68733ac1928cb4e3a960304da790c20ee1cc73ca7b46abb",
+    "input_index.json": "f07c09d5a6c41a4909472cf023e3fbd64f17e49da9935b96af0237408bd82423",
+    "verification/report.json": "883c11656ca7d1533b2eada71ebf3f818fb27dc6f8513d8f2d82f8a2a5581cf1",
+    "verification/observed-bounds.json": "5aee99ba89f3f5e25664facba5bff4af5897a6f8d3edf99e888c1253d92db9ea",
+    "README.md": "887577e4f77cb449e59ebfb3fcef01466dc6a18eac790e8a6525a83446151830",
+    "preserved-drafts.json": "5ec911854e77b413357ed752a36921996f882df0bc06e903e6b88636a5435ece"
+  },
+  "inventory_check": {
+    "indexed_files": 82,
+    "indexed_bytes": 38655239,
+    "input_files": 65,
+    "all_indexed_hashes_and_sizes_match": true,
+    "symlinks_in_index": false
+  },
+  "preserved_candidate": {
+    "path": "/Users/taytrrip/slug/set47-reference-candidate-before-parser-review",
+    "schema_sha256": "39c90c5a180d391902c3cf822abeb5b604dfe0909209d498b470a3e75e189cbc",
+    "corpus_sha256": "0cd84c99a44ea325d55eac8b4ed7c6afc8aaafb67db850aeefa69cb874c14360",
+    "verification_report_sha256": "458cd06ecbf0edee3bf763328280f9ecebfcc723a987511b219e9b35785c23d9"
+  },
+  "resolved_findings": [
+    {
+      "id": "C1",
+      "issue": "Nested Result.version accepted true through Python numeric equality, including full dictionary comparison after a matching digest was recomputed.",
+      "resolution": "Strict integer type/range check before result validation; recomputed Boolean-version refusals in both core and transport contexts."
+    },
+    {
+      "id": "C2",
+      "issue": "BoutView class ordering did not reject duplicate BoutIDs or a prospect repeated across distinct class refs.",
+      "resolution": "Bounded uniqueness checks for BoutIDs and all corner IDs, plus explicit duplicate controls."
+    },
+    {
+      "id": "C3",
+      "issue": "Cheap source Condition validation inherited broad generic integer ranges rather than supported candidate XP0 limits.",
+      "resolution": "Explicit eligible age/decline/remaining-time/attribute bounds and cheap age, XP0 attribute equality and D65 rating relationships; full core condition regeneration remains unchanged."
+    },
+    {
+      "id": "H1-H2 companion review",
+      "issue": "Companion reviewer found Boolean zero Snapshot timestamps and overly broad cheap manifest field bounds.",
+      "resolution": "Reviewed strict timestamp validation, inherited manifest shape/range checks and negative controls; no generator or engine added to transport validation."
+    }
+  ],
+  "reviewed_conclusions": [
+    "Common input hash checks and AST-allowlisted old engine functions/constants preserve the exact frozen42 engine file c3247a0d856270cc5043b5767ace9f628b2efb9cd120d786773f9221d928bd7f; copied condition globals match original D65 and conditionv1.",
+    "Existing CardID/InputID/plan seed/BoutID/bout seed recipes, class indexes and corner sorting match frozen46. New rules/store/source/record domains use LE32 byte-length framing; old engine input/result domains remain unframed.",
+    "Composition uses original Assignment birth and WorkHash, canonical manifest/class/digest, complete cutoff condition equality, booked seed and zero XP/training. Later run or retirement does not change the engine input.",
+    "The one genuine booking is explicitly a hypothetical deterministic composition of a retained conflicted card, with previously verified public admissions and chain provenance. It does not authorize a new Run. Ten other sources are labelled structural synthetic projections.",
+    "Full core Record validation rederives input and complete engine result. Cheap transport validates bounded structure, relationships and canonical digests without condition/manifest generation or simulation. Rehashed draw-accounting acceptance in transport and refusal in core honestly demonstrates that distinction.",
+    "State scenarios retain local replay/capacity/cancellation/final authorization/source-conflict/uncertain-write distinctions without claiming real account, disk, clock, concurrency or crash execution.",
+    "All11 composition values are byte-for-byte equivalent JSON data to the preserved pre-parser-review candidate; all856 existing codec recipes/input hashes/lengths/acceptance and all74 protocol cases are unchanged. New coverage only adds controls and structural portrait correlation."
+  ],
+  "author_verification": {
+    "report_sha256": "883c11656ca7d1533b2eada71ebf3f818fb27dc6f8513d8f2d82f8a2a5581cf1",
+    "commands": [
+      {
+        "argv": [
+          "/usr/bin/python3",
+          "-B",
+          "-S",
+          "/Users/taytrrip/slug/set47-bout-reference/verify_reference.py",
+          "--regenerate"
+        ],
+        "seconds": 11.603408,
+        "exit_code": 0,
+        "log_sha256": "d987e4dc2ce3f626dcb6f6d528a5bfd66a154ba8de378e3165bbe8ceb55e3557",
+        "python_version": "3.9.6 (default, Oct 19 2026, 19:18:13) \n[Clang 21.0.0 (clang-2100.4.1.1)]"
+      },
+      {
+        "argv": [
+          "/opt/homebrew/bin/python3.14",
+          "-B",
+          "-S",
+          "/Users/taytrrip/slug/set47-bout-reference/verify_reference.py",
+          "--regenerate"
+        ],
+        "seconds": 7.321013,
+        "exit_code": 0,
+        "log_sha256": "0c6c8fcec3c9536dc879cc46850ab90567f1b1de490102a8867597517bf1aaaf",
+        "python_version": "3.14.3 (main, Feb  3 2026, 15:32:20) [Clang 17.0.0 (clang-1700.6.3.2)]"
+      }
+    ],
+    "counts": {
+      "compositions": 11,
+      "dtos": 183,
+      "codec_cases": 1016,
+      "protocol_cases": 74,
+      "portrait_cases": 48,
+      "calendar_cases": 3861,
+      "calendar_refusals": 9,
+      "identity_cases": 11,
+      "state_cases": 16,
+      "initialization_cases": 36
+    },
+    "source_changes": [],
+    "transport_dependencies_trapped": true
+  },
+  "post_verification_metadata_changes": [
+    {
+      "path": "preserved-drafts.json",
+      "verified_run_sha256": "02d13473eee5fefc9f8d895803dbfce9071a8e983695d559f9d5ece061a70ef9",
+      "final_inventory_sha256": "5ec911854e77b413357ed752a36921996f882df0bc06e903e6b88636a5435ece",
+      "scope": "Final preserved-draft/cap-case lineage index only; not generator, validator, input or corpus."
+    }
+  ],
+  "reviewer_execution": {
+    "source_reads_and_hash_json_audit_only": true,
+    "reference_generator_run": false,
+    "engine_run": false,
+    "PoW_run": false,
+    "Go_runtime_read_or_execution": false,
+    "corpus_mutated": false,
+    "repository_modified": false
+  },
+  "limitations": [
+    "This is a finite specification oracle, not a general authority validator: Pin acceptance is deliberately restricted to the retained fixture installations.",
+    "No new normal PoW or live chain verification was performed in this review. Prior public-proof reports remain separately pinned evidence.",
+    "Synthetic attribution groups are independent alternative source profiles; their rows must not be combined into a contradictory same-card journal.",
+    "The Python JSON checker does not establish production preallocation limits, cancellation latency, storage durability, source leases, lock ordering, startup performance or metadata deadlines. Those remain runtime acceptance gates.",
+    "The abstract state model does not prescribe every downstream source/account write or refusal ordering. Engine_calls is a model count, not an observed implementation call count.",
+    "Portrait vectors contain explicit placeholder SVG and prove only structural envelope/selection/fresh-Status correlation, not renderer/digest content or visual acceptance.",
+    "No professional/exhibition records, XP, training, awards, result publication, production activation, GUI or D74 acceptance is inferred."
+  ]
+}

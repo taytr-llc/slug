@@ -1,0 +1,49 @@
+{
+  "status": "passed",
+  "scope": "Independent dynamic public card/name/condition/identity arithmetic plus a separately verified exported normal-work chain; diagnostic scoped-clock evidence only.",
+  "input": "/Users/taytrrip/slug/artifacts/set46/card-testclock-626145732/public-card-result.json",
+  "input_sha256": "b4349aab352a8e33400cf6d03e1c57beb680f72add2fcc18cbccd8ba37f17282",
+  "chain_report": "/Users/taytrrip/slug/artifacts/set46/independent-attempt1/chain-report.json",
+  "chain_report_sha256": "1080c41658b65186049c874c6cd3ab367e3566a35c3c8b89df43753146472fd9",
+  "chain_sha256": "7b454b483e9e8e4bda6e0115f42f2c13910ef0b9a5e29ca72f62559d4a62a0f6",
+  "selection_sha256": "48b6f03d4c41ad80d214613b6e957712d15005cd64043037cd76da0bf5ef5a92",
+  "views_sha256": "c404d25d0665b733db4f450872dcbaa787794a4b5a187ff1fa38e5daee29dca6",
+  "projection_sha256": "0885c6d94fcf57708d746ed563e9d8bd494d7cce2ed3ed8a0a3a1ffa81f8799e",
+  "reference_freeze_sha256": "895bf574fd1a3de5fbb213bbbc84ca27b64e7c6790585000c4d7b117ea2563f1",
+  "reference_index_sha256": "c758070ad3a09427aa45b99c3e93c4d8860b6a9fcd41a70cf0de8c86e4c22ed4",
+  "normal_argon_headers": 175,
+  "inventory_items": 8,
+  "entered": 3,
+  "counts": {
+    "total_count": 3,
+    "eligible_count": 3,
+    "paired_count": 2,
+    "unmatched_count": 1,
+    "reasons": {
+      "retired_at_cutoff": 0,
+      "not_rostered_at_cutoff": 0,
+      "no_opponent_in_class": 1,
+      "opponent_ineligible_at_cutoff": 0,
+      "outside_rating_band": 0
+    }
+  },
+  "bout_count": 1,
+  "card_store_id": "8e15b2c1fb78c9b2a49abe17e3b1f9710aa11941dabdf65e44f1e4cb6bc7ad37",
+  "card_id": "06e1c9baa01c4755eec75ec1bf0d67736c96125b4d914b3bbb19cdc808e8d543",
+  "input_id": "b99f28ad8e4c459674fac3848d0c660984dcfcb57ac634eeeac00f7aace7769c",
+  "record_digest": "8715b34460e8ee75bf80d1c6cadb7f89cba77b695cb9613842566254a1f28740",
+  "source_digest": "e5596e7912f5402e17d79117d18471f6843ddb92dcc08bc6a28b3ac58ef15073",
+  "full_record_unchanged_after_conflict": true,
+  "gui_exercised": false,
+  "public_chain_mined": false,
+  "limitations": [
+    "Finite oracle full-source acceptance is not used for the new actual source: independent dynamic old44 receipt validation plus seed transaction/chain arithmetic supplies the separate basis.",
+    "Public inventory assignments omit complete schema5 admission proofs. Normal admission is exercised by the owned test, but those work hashes/source-record digests are not independently revalidated as admission proofs here.",
+    "The exported pre-reorg chain and first-finality evidence do not establish continuous/current consensus or prove the later reorg; later conflict/reopen observations are local producer evidence.",
+    "No official zero-professional-record authority is established; C1 fixture-only profile has no results writer.",
+    "No GUI, shipped test clock, private key, wallet, node RPC, fight/result/XP or production event claim."
+  ],
+  "verifier_sha256": "0be42bd20857e79989f00b5c656c29c43d80662feb3c16d1a06d2994399de8a4",
+  "wall_seconds": 0.058,
+  "at_utc": "2026-11-18T01:01:02.904685+00:00"
+}

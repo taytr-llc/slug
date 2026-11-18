@@ -1,0 +1,89 @@
+{
+  "status": "passed",
+  "findings": [],
+  "scope": "Owner validation of approved Card-only500ms metadata context plus fully charged account/source read liveness. Core source receives a separate independent review.",
+  "owned_source_sha256": {
+    "desktop/pilot/card_controller.go": "fdfd317c779c1ea45d81ce0a45a1adb5f816efd69166eaa9fad076a157816842",
+    "desktop/pilot/card_capacity_account_test.go": "41dcd373cec52e26c94bcb5b0f3eb5cc7f72cfdcc9e8285cd547c70f772e342b",
+    "desktop/pilot/card_metadata_deadline_test.go": "c8cdeefbf622e067a6f0fd598fb60430a9ebf2b5e26f36cd04778cdd11f1736b"
+  },
+  "runtime_dependency_sha256": {
+    "gymseed/card_source.go": "6f19b32155b713219d94915e369799c41a62581f6d164e120f9128afb8c0aef7",
+    "gymcard/actions.go": "d1041f6bcfb274e628e68c61914080898297fe3cd99ee6d39e2668c269809855",
+    "gymcard/read.go": "dc5996ac2973dabfa6c28389f859439375100f53368d7a1643d223f55f38ecb5",
+    "gymcard/audit.go": "d707b5a666d7f70622d930ec257517687b20ed6faff8c2344195c934af53294f",
+    "gymcard/store.go": "4ea9b83dafb683ca0a079050f37212e63af7d1580fc7ea14e13c7b0615ee40b8"
+  },
+  "engineering_amendment_sha256": "b48a45ce117d226dce351b629c8a20794c19433ed9f6d69410372158690cc2eb",
+  "default_clock": {
+    "expected_operations": 18,
+    "fixtures": 2,
+    "statuses": 6,
+    "read_not_found_refusals": 6,
+    "empty_histories": 6,
+    "retries": 0,
+    "raw_frame_count_including_snapshots": 20,
+    "raw_frame_sha256": "3d69e608d984f9897c120d7b1b7e3034a2c0ec1ba447499dbdcff0ffe0602c6c",
+    "normal_helper_sha256": "1b2eaa846acd9e6bc6d5e959ff37476cf404af6a8e4b77d433e391c6a8870bd3",
+    "normal_node_sha256": "a6bade20f249fe04dea40a5d50187483c58d158fb88ddfb1e3ef4042f9308c2a"
+  },
+  "populated_normal_capacity": {
+    "modeled_rows": 256,
+    "members_per_row": 10,
+    "real_account_store_and_session": true,
+    "parent_equivalent_extra_rechecks_per_lease": 2,
+    "original_account_identity_substitution": false,
+    "clock": "Retained fixture time plus monotonic elapsed time, not default wallclock",
+    "first_eight_ms": 253.680458,
+    "late_eight_ms": 263.223084,
+    "exhausted_ms": 168.007125,
+    "metadata_context_ms": 500,
+    "retries": 0,
+    "limitation": "Actual pilot plus real account and parent-equivalent recheck cost; parent epoch bookkeeping is not synthesized. Default-clock native checks separately use the actual parent. Modeled histories/finality are not chain or admission evidence."
+  },
+  "caller_deadline": {
+    "milliseconds": 20,
+    "commands": [
+      "Status",
+      "Record",
+      "History"
+    ],
+    "normal": "passed",
+    "race": "passed",
+    "required": "No deadline extension, busy refusal with no public payload; bounded preparation may expire before the source callback under race instrumentation."
+  },
+  "source_coverage": {
+    "performance_capture_source_stable": true,
+    "only_later_delta": [
+      "/Users/taytrrip/slug/slug/desktop/pilot/card_metadata_deadline_test.go"
+    ],
+    "reason": "Test assertion now observes admitted initial lease deadline and permits legitimate earlier preparation expiry. No runtime/performance source changed.",
+    "affected_normal_race_vet_format": "passed"
+  },
+  "cleanup": {
+    "status": "passed",
+    "matching_owned_process_ids": [],
+    "scope": "Exact diagnostic/validation roots; process arguments not retained; test helper Close calls all joined."
+  },
+  "preserved_diagnostics": [
+    "Original exact package outcome_unknown remains unproven as a specific branch; raw-less original failure retained.",
+    "Seven exact old-helper cold-copy reads returned valid busy at253\u2013267ms.",
+    "Prepared-view-only combined capacity failed253ms; private index narrower direct-account pass did not include parent rechecks.",
+    "Fully charged250ms capacity still failed253.525ms; retained before explicit500ms engineering amendment.",
+    "First500ms gate had all timing phases pass and a test-only race assertion failure, preserved unmodified."
+  ],
+  "evidence_sha256": {
+    "set46-card-metadata500-checks.json": "4c98bfea00ff1a5f182a752520d1863dceb23a64d92ce9441504d67fd284b1af",
+    "set46-card-deadline-checks.json": "db2d3d4000643e40e32e398193fef0b685a11ba4286167629437fde41e9bc2ba",
+    "set46-card-liveness-cleanup.json": "494d4ea5710a07fb77cd921c25330ffeb2365d779b4e975ad17b1d6ba381bfe0",
+    "set46-card-liveness-engineering-amendment.json": "b48a45ce117d226dce351b629c8a20794c19433ed9f6d69410372158690cc2eb",
+    "set46-card-status-package-diagnosis.json": "218c9eac3696e065f5bcf44b0c1676c534946896dd805401d8d5c57fba0ab743",
+    "set46-card-prepared-view-attempt1.json": "9adade6f935635cec57faeef672ffe794b89bc54a84a2bb630fde12634ed0b35",
+    "set46-card-parent-cost-250ms.json": "90989e87e70d06ce06591129db3a89989eb781c1adf9b407505e7d3da077ca3d",
+    "set46-card-liveness-checks.json": "b92a43483c96e4fe0ec84f1ec8093304e0453cab84860cd17b38e3675be7c43b"
+  },
+  "limitations": [
+    "No final packaged-bundle, release/deployment, GUI or D74 claim.",
+    "Normal-only populated timing test excludes race instrumentation; separate caller/correctness race controls remain."
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "status": "approved_engineering_amendment",
+  "at": "2026-11-18T02:15:24.148112+00:00",
+  "decision_owner": "root within standing engineering authorization; no new user gameplay/consensus decision",
+  "scope": "Set46 Card Read/Status/History only",
+  "changes": [
+    "One prepared source-view sequence retains initial original-session authorization, out-of-lease retained validation and final original-session/source guard.",
+    "Private <=256 ID/cutoff/raw-SHA256 index derives from complete canonical/semantic Open audit and successful synced inserts. Actual selected bytes must match before owned decode; full current seed-source audit remains.",
+    "Card metadata context/admission budget increases from250ms to500ms after fully charged account and eight-row tests exceeded250ms following both redundancy reductions."
+  ],
+  "reason": "Measurements isolated duplicate work, then showed remaining required source/account checks exceed the originally assumed250ms budget. A bounded500ms Card-only budget avoids expanding seed trust caching or changing durable account/clock semantics.",
+  "preserved": [
+    "Original frozen contracts and all250ms failures",
+    "C1/engine/seed/digest/serialized rule decisions",
+    "All original-session, source, cancellation and uncertain-observation rules",
+    "Other family budgets, native/job30s, payload/cache caps",
+    "Shorter caller context deadlines and joined synchronous writes"
+  ],
+  "required_gates": [
+    "No-retry default-wallclock two-fixture metadata checks",
+    "Advancing scoped-clock modeled256 rows with actual accounts and parent-equivalent real before/after rechecks: first/late/exhausted pages",
+    "Shorter caller deadline plus original authority/close/unknown/tamper/full-audit regression",
+    "Final exact-source package, independent verification, fresh smoke/preflight and deployment observer"
+  ],
+  "set47": "Its frozen250ms Bout budget remains a separate unproven later gate. Dependency language will receive an explicit preserved addendum for the new existing Card index/budget before reference execution.",
+  "evidence_sha256": {
+    "set46-card-status-package-diagnosis.json": "218c9eac3696e065f5bcf44b0c1676c534946896dd805401d8d5c57fba0ab743",
+    "set46-card-read-liveness-proposal.md": "35facb7de2a04c94ce2b7d377da9e3b4c9900daa9216dcae84bb89f6f9abefc5",
+    "set46-card-read-liveness-index-addendum.md": "9179e4a5f2414cb40ebfa818c088aa88823f2812962ae6f951b341057b8e4861",
+    "set46-card-prepared-view-attempt1.json": "9adade6f935635cec57faeef672ffe794b89bc54a84a2bb630fde12634ed0b35",
+    "set46-card-metadata-budget-review.json": "08234a56f84acd026b5f91a63fc6027095766d1b138041d7664ece16bf172aa8"
+  },
+  "tests_claimed_passed_here": false
+}

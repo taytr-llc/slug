@@ -1,0 +1,146 @@
+{
+  "status": "passed_observed_corpus_bounds",
+  "scope": "Finite observed sizes only; original maximum-shape proof remains separate. Portrait SVGs are structural placeholders.",
+  "maximum_shape_formula_sha256": "64735cd1e17fdd5c2456f0a0d94f996d11bee92094255384d0f383c99f042c7f",
+  "corpus_sha256": "09f0430789328b9226fc4a24aae3cdb07beeb8b41d61b42cd33e4ba3121fa2ec",
+  "kinds": {
+    "Rules": {
+      "maximum_observed_bytes": 461,
+      "maximum_observed_depth": 1,
+      "cap_including_LF_if_framed": 4096,
+      "LF_charge": 0
+    },
+    "Pin": {
+      "maximum_observed_bytes": 4344,
+      "maximum_observed_depth": 8,
+      "cap_including_LF_if_framed": 24576,
+      "LF_charge": 0
+    },
+    "Info": {
+      "maximum_observed_bytes": 4524,
+      "maximum_observed_depth": 9,
+      "cap_including_LF_if_framed": 28672,
+      "LF_charge": 0
+    },
+    "Marker": {
+      "maximum_observed_bytes": 4479,
+      "maximum_observed_depth": 9,
+      "cap_including_LF_if_framed": 28672,
+      "LF_charge": 0
+    },
+    "Init": {
+      "maximum_observed_bytes": 4479,
+      "maximum_observed_depth": 9,
+      "cap_including_LF_if_framed": 28672,
+      "LF_charge": 0
+    },
+    "Metadata": {
+      "maximum_observed_bytes": 4549,
+      "maximum_observed_depth": 9,
+      "cap_including_LF_if_framed": 28672,
+      "LF_charge": 0
+    },
+    "BoutSource": {
+      "maximum_observed_bytes": 4972,
+      "maximum_observed_depth": 6,
+      "cap_including_LF_if_framed": 16384,
+      "LF_charge": 0
+    },
+    "Record": {
+      "maximum_observed_bytes": 96305,
+      "maximum_observed_depth": 8,
+      "cap_including_LF_if_framed": 237568,
+      "LF_charge": 0
+    },
+    "Status": {
+      "maximum_observed_bytes": 2251,
+      "maximum_observed_depth": 3,
+      "cap_including_LF_if_framed": 8192,
+      "LF_charge": 0
+    },
+    "RunResult": {
+      "maximum_observed_bytes": 98598,
+      "maximum_observed_depth": 9,
+      "cap_including_LF_if_framed": 249856,
+      "LF_charge": 0
+    },
+    "ReadResult": {
+      "maximum_observed_bytes": 98581,
+      "maximum_observed_depth": 9,
+      "cap_including_LF_if_framed": 249856,
+      "LF_charge": 0
+    },
+    "Bout": {
+      "maximum_observed_bytes": 325,
+      "maximum_observed_depth": 1,
+      "cap_including_LF_if_framed": 2048,
+      "LF_charge": 0
+    },
+    "BoutRef": {
+      "maximum_observed_bytes": 417,
+      "maximum_observed_depth": 2,
+      "cap_including_LF_if_framed": 2048,
+      "LF_charge": 0
+    },
+    "SavedBout": {
+      "maximum_observed_bytes": 837,
+      "maximum_observed_depth": 2,
+      "cap_including_LF_if_framed": 2048,
+      "LF_charge": 0
+    },
+    "BoutState": {
+      "maximum_observed_bytes": 1182,
+      "maximum_observed_depth": 2,
+      "cap_including_LF_if_framed": 4096,
+      "LF_charge": 0
+    },
+    "CardStatus": {
+      "maximum_observed_bytes": 5624,
+      "maximum_observed_depth": 4,
+      "cap_including_LF_if_framed": 16384,
+      "LF_charge": 0
+    },
+    "BoutView": {
+      "maximum_observed_bytes": 7787,
+      "maximum_observed_depth": 8,
+      "cap_including_LF_if_framed": 32768,
+      "LF_charge": 0
+    },
+    "BoutSnapshot": {
+      "maximum_observed_bytes": 5362,
+      "maximum_observed_depth": 9,
+      "cap_including_LF_if_framed": 73728,
+      "LF_charge": 0
+    },
+    "BoutJob": {
+      "maximum_observed_bytes": 85585,
+      "maximum_observed_depth": 10,
+      "cap_including_LF_if_framed": 253952,
+      "LF_charge": 0
+    },
+    "BoutResponse": {
+      "maximum_observed_bytes": 86471,
+      "maximum_observed_depth": 11,
+      "cap_including_LF_if_framed": 262144,
+      "LF_charge": 1
+    },
+    "BoutRequest": {
+      "maximum_observed_bytes": 223,
+      "maximum_observed_depth": 1,
+      "cap_including_LF_if_framed": 8192,
+      "LF_charge": 1
+    },
+    "BoutPortrait": {
+      "maximum_observed_bytes": 1632,
+      "maximum_observed_depth": 3,
+      "cap_including_LF_if_framed": 49152,
+      "LF_charge": 0
+    },
+    "BoutPortraitResponse": {
+      "maximum_observed_bytes": 3925,
+      "maximum_observed_depth": 4,
+      "cap_including_LF_if_framed": 49152,
+      "LF_charge": 0
+    }
+  }
+}

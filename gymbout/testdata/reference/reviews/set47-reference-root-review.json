@@ -1,0 +1,42 @@
+{
+  "status": "passed",
+  "at": "2026-11-18T03:29:48.785057+00:00",
+  "basis_commit": "f732c90a0bbce4cca4311c61da5c820f4973681c",
+  "implementation_base": "5e6b36d37e30d573a3817e32315bb96f12e0968c",
+  "set46_closeout_sha256": "5274972d24d1d09effd54b4a413bf2f599aeb3cf2a6ec1f6f62be263e63f634a",
+  "file_index_sha256": "9d806bd4d0641fbdb68733ac1928cb4e3a960304da790c20ee1cc73ca7b46abb",
+  "corpus_sha256": "09f0430789328b9226fc4a24aae3cdb07beeb8b41d61b42cd33e4ba3121fa2ec",
+  "verification_sha256": "883c11656ca7d1533b2eada71ebf3f818fb27dc6f8513d8f2d82f8a2a5581cf1",
+  "review_sha256": {
+    "set47-reference-core-independent-review.json": "1b742470f79f74f731d4044f759f62204b498243cbd170137c298a769ec3d1b3",
+    "set47-helper-reference-review.json": "5af31c1cd784a33264122d14ed2ed6963da2ec3900b31a23cc6ec5cf4c8e3004"
+  },
+  "checks": [
+    "Read frozen core/helper contracts and source/state/verification/provenance recipes; no new Go implementation existed.",
+    "Verified every indexed file hash/size, complete candidate inventory and exact dual verification evidence.",
+    "Verified both independent reviewers bind the held candidate and have no open findings.",
+    "Compared all11 compositions,162 original DTOs by kind/name/fixture/context,856 prior codec recipe/bytes/acceptances and74 protocols to the retained candidate; unchanged.",
+    "Only post-run metadata difference is preserved-drafts.json lineage inventory, explicitly reviewed and covered by final file_index.",
+    "No new engine, D65, condition, C1, event-lock, seed-finality or professional-result policy introduced."
+  ],
+  "precheck_note": "Initial root precheck stopped before any writes because it assumed old DTOs stayed a contiguous prefix. New DTOs are interleaved; exact identity-based comparison confirms all162 old DTOs unchanged. No source or corpus correction was required.",
+  "counts": {
+    "compositions": 11,
+    "dtos": 183,
+    "codec_cases": 1016,
+    "protocol_cases": 74,
+    "portrait_cases": 48,
+    "calendar_cases": 3861,
+    "calendar_refusals": 9,
+    "identity_cases": 11,
+    "state_cases": 16,
+    "initialization_cases": 36
+  },
+  "limitations": [
+    "Finite fixture reference, not universal source authority. Genuine booking currently conflicted; its expected transcript is hypothetical arithmetic.",
+    "Ten other projections are model-only; do not combine alternative profiles into contradictory same-card rows.",
+    "Portrait cases use explicit placeholders and do not validate rendered SVG.",
+    "State models do not prove actual disk/account/cancellation/liveness/cache/GUI behavior. Runtime acceptance remains required."
+  ],
+  "runtime_comparison_authorized": true
+}

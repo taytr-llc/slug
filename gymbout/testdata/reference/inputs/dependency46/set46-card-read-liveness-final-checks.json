@@ -1,0 +1,298 @@
+{
+  "status": "passed",
+  "findings": [],
+  "at": "2026-11-18T02:40:16.905238+00:00",
+  "scope": "Final core correctness and source binding for Set46 Card metadata liveness correction; normal latency acceptance is separately bound, never inferred from race instrumentation.",
+  "source_sha256": {
+    "gymseed/card_source.go": "6f19b32155b713219d94915e369799c41a62581f6d164e120f9128afb8c0aef7",
+    "gymcard/actions.go": "d1041f6bcfb274e628e68c61914080898297fe3cd99ee6d39e2668c269809855",
+    "gymcard/read.go": "dc5996ac2973dabfa6c28389f859439375100f53368d7a1643d223f55f38ecb5",
+    "gymcard/read_liveness_test.go": "831f83b2f6f341bdc198663c24bebdd257df666f34055f2f3db6adff4a16a9a7",
+    "gymseed/card_prepared_view_test.go": "3f1acac02861c9a0e3f791e42bef50b9140c2a1186bdd8d3f3636de2a44f780c",
+    "gymcard/audit.go": "d707b5a666d7f70622d930ec257517687b20ed6faff8c2344195c934af53294f",
+    "gymcard/store.go": "4ea9b83dafb683ca0a079050f37212e63af7d1580fc7ea14e13c7b0615ee40b8",
+    "gymcard/audited_index_test.go": "20579c64f6b02cc32bb784429f9acc9eab1599ae9153b374016e9c6bb2e96d2f",
+    "gymcard/history_capacity_test.go": "a4811312b304a3e4fe7d885ba43ea43ea4a5d75610ffbc0a42970440afd0e195"
+  },
+  "source_changes_during_captures": [],
+  "test_only_source_delta_between_captures": [
+    [
+      "gymcard/history_capacity_test.go"
+    ],
+    [
+      "gymcard/history_capacity_test.go"
+    ]
+  ],
+  "evidence_sha256": {
+    "set46-card-read-liveness-checks-attempt1.json": "00ce849852dd6916c85ecae09f55962e8bccc1b269a9ecf3eb4ab19565de8f7a",
+    "set46-card-read-liveness-checks-attempt1.log": "65e0e85925e10414a24626201f57e2a727e5ea07876094f9baafe4a973414835",
+    "set46-card-read-liveness-checks-attempt2.json": "96ecba8e89a034833db2c872a8415eb69fbeb2d37e2f8bd1bf0b827bbe8e9e49",
+    "set46-card-read-liveness-checks-attempt2.log": "c73960de1e52a21921630eee55d5cd7207e1a5bb7d68c21c25ab93b8f812df9a",
+    "set46-card-read-liveness-checks-attempt3.json": "6aa597f205f743bbafef93cd87f5fcaa73bac59da7f335731e9cea68b791f843",
+    "set46-card-read-liveness-checks-attempt3.log": "980fcf97302d75a8bc51cf035519ba1b49caa6922e80e48021d4dd83a89f9969",
+    "set46-card-read-liveness-checks-remaining.json": "b4a13fe1a6ea3cc1a04eeadd01e95d3ee7e9bc1deb3b09e5e1ec1f7c83867a7e",
+    "set46-card-read-liveness-checks-remaining.log": "154a2f84965f52e4f6061e1008ed0ea469eca664a6635c385406c83185bd4917",
+    "set46-card-read-liveness-capacity-budget-delta.json": "97131f4279a969e77dc18fcf6ead0479aec95502ea3daae3d8bab45471874e79",
+    "set46-card-read-liveness-capacity-budget.patch": "512d1dab7fa0ad7b29dc785f5b13c6f29462d606751fdfdf89a8be0f912b9a8b",
+    "set46-card-read-liveness-capacity-correctness-delta.json": "cfb219d9f680238b7975c8324c23d9b562e76b1257a0e94c751d844a624b2f2f",
+    "set46-card-read-liveness-capacity-correctness.patch": "10b80472941531fd5963fd8d19ed4b775824931db1b1fdeeee94c29a9edf144c",
+    "set46-card-read-liveness-capacity-before.go": "d9c59975dd6c08ef64c8286fc2b8afab17440df9070562eef1dae1a4923a8071",
+    "set46-card-read-liveness-capacity-before-correctness.go": "1fbb5066b7c748911cf85361acd770891e698f3f7c18b6d0c35fa510b618be1f",
+    "set46-card-read-liveness-reference-preservation.json": "413ccde36c0991d399ccfdd1f4141573730a10c9bbebdb3c78f476057b06501c",
+    "set46-card-read-liveness-index-addendum.md": "e2ac5b50b605906536e0aede1874ca28a58dbc05bbcf958ea3e05f991d65307e",
+    "set46-card-read-liveness-index-addendum-pre-budget.md": "9179e4a5f2414cb40ebfa818c088aa88823f2812962ae6f951b341057b8e4861",
+    "set46-card-liveness-engineering-amendment.json": "b48a45ce117d226dce351b629c8a20794c19433ed9f6d69410372158690cc2eb",
+    "set46-card-metadata500-final.json": "19d578f106f828aaa04634171016ea19558b89118a94c9a4f161b69c3f5b4fb2",
+    "set46-card-read-liveness-independent-review.json": "60d4b0f934ac7843ad67000060b47dbf4620b30d09b8abff7c01d57dd0e64e47",
+    "set46-card-read-envelope-review.json": "635cc157a453ea50e77dfa6a0dc428818ae2ba0e7ab5dcc912277c72b13173e2"
+  },
+  "ordinary_normal": {
+    "args": [
+      "go",
+      "test",
+      "./gymcard",
+      "./gymseed",
+      "-count=1"
+    ],
+    "returncode": 0,
+    "elapsed_seconds": 12.112,
+    "stdout_sha256": "31ed906a2113b2ba01256246a5329a8b4b2d3a3e04650f0c08d69430299d68f5"
+  },
+  "focused_normal": {
+    "args": [
+      "go",
+      "test",
+      "-tags",
+      "slugtestclock",
+      "./gymcard",
+      "./gymseed",
+      "-run",
+      "^TestCard(Audited|Prepared|Concrete|Lost|History|Close|Source|Standalone|Modeled|Band|Entrant|Reference|Profile)",
+      "-count=1",
+      "-v"
+    ],
+    "returncode": 0,
+    "elapsed_seconds": 31.941,
+    "stdout_sha256": "45bbaeec0fce63fd8ed2eb0f7dc94a942f9f718ab23699cf10df238d43cd37a3"
+  },
+  "preserved_failed_race_aggregate": {
+    "status": "failed",
+    "command": {
+      "args": [
+        "go",
+        "test",
+        "-race",
+        "-tags",
+        "slugtestclock",
+        "./gymcard",
+        "./gymseed",
+        "-run",
+        "^TestCard(Audited|Prepared|Concrete|Lost|History|Close|Source|Standalone|Modeled|Band|Entrant|Reference|Profile)",
+        "-count=1",
+        "-v"
+      ],
+      "returncode": 1,
+      "elapsed_seconds": 513.517,
+      "stdout_sha256": "ec788bd08da9af85e631272db4ed938e25bb1414065ae8c220f2809d74c04bff"
+    },
+    "failed_tests": [
+      "TestCardHistoryCapacityUsesOnlySelectedRows"
+    ],
+    "individually_passed_tests": [
+      "TestCardAuditedIndexRejectsSelectedRowDrift",
+      "TestCardAuditedIndexPublishesAfterSyncOnly",
+      "TestCardAuditedIndexBound",
+      "TestCardClosePrecedenceAndCallerCancellation",
+      "TestCardModeledSourceDerivationAndCodec",
+      "TestCardBandAndReasonPriorityLocalScalars",
+      "TestCardEntrantEscapedASCIIEnvelope",
+      "TestCardPreparedReadsKeepOriginalAuthority",
+      "TestCardReferencePublicCodecs",
+      "TestCardReferenceDerivationCalendarMatcher",
+      "TestCardStandaloneStatusCannotInferRetainedSourceEquality",
+      "TestCardConcreteBuildReplayConflictAndReopen",
+      "TestCardLostSyncAcknowledgementAndRevokedPreparation",
+      "TestCardConcreteSourceLeaseAndConflict",
+      "TestCardPreparedViewAuthorityAndCallbackLifetime",
+      "TestCardPreparedViewCloseJoinsAndPreservesUncertainty",
+      "TestCardPreparedViewDirectLifetimeAndForeignError",
+      "TestCardSourceProjectionClosedAndOwned",
+      "TestCardSourceRejectsCrossGymDuplicateProspects"
+    ],
+    "race_detector_warning": false,
+    "reason": "Stationary capacity fixture retained the old 250 ms per-page caller deadline. Its instrumented first page took 379.032 ms and correctly returned card_cancelled. Aggregate remains failed."
+  },
+  "preserved_failed_capacity_rerun": {
+    "status": "failed",
+    "normal_pass": {
+      "args": [
+        "go",
+        "test",
+        "-tags",
+        "slugtestclock",
+        "./gymcard",
+        "-run",
+        "^TestCardHistoryCapacityUsesOnlySelectedRows$",
+        "-count=1",
+        "-v"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 16.589,
+      "stdout_sha256": "b9b9c221d567d89fbc1c3a0a4eaa51c80675e2c00148c7f2475016ffa669dad5"
+    },
+    "race_command": {
+      "args": [
+        "go",
+        "test",
+        "-race",
+        "-tags",
+        "slugtestclock",
+        "./gymcard",
+        "-run",
+        "^TestCardHistoryCapacityUsesOnlySelectedRows$",
+        "-count=1",
+        "-v"
+      ],
+      "returncode": 1,
+      "elapsed_seconds": 261.666,
+      "stdout_sha256": "1a11d66964d52d8058e43fc2219da1cedc229fbb3254386941d8892b77cd9f98"
+    },
+    "race_detector_warning": false,
+    "reason": "Test-only alignment to 500 ms still expired under race instrumentation at 506.152 ms. Aggregate remains failed; runtime 500 ms was not changed."
+  },
+  "final_capacity_correctness_and_remaining_gates": [
+    {
+      "args": [
+        "go",
+        "test",
+        "-tags",
+        "slugtestclock",
+        "./gymcard",
+        "-run",
+        "^TestCardHistoryCapacityUsesOnlySelectedRows$",
+        "-count=1",
+        "-v"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 15.991,
+      "stdout_sha256": "2b10ea4d4dec189874c36fe19b1fc359dfc2b0c6bc27d421dfa61531d79549fa"
+    },
+    {
+      "args": [
+        "go",
+        "test",
+        "-race",
+        "-tags",
+        "slugtestclock",
+        "./gymcard",
+        "-run",
+        "^TestCardHistoryCapacityUsesOnlySelectedRows$",
+        "-count=1",
+        "-v"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 265.881,
+      "stdout_sha256": "8b4a63dbb128d2634ab8f01d8e94fdb9c635597ea190c1d38dd1dcf58fccd6ee"
+    },
+    {
+      "args": [
+        "go",
+        "test",
+        "-tags",
+        "slugtestpow",
+        "./gymcard",
+        "./gymseed",
+        "-run",
+        "TestCard",
+        "-count=1"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 1.05,
+      "stdout_sha256": "ee4997a810fccaaf8e27b3a6c111c242b9f690b6a5259831703bad38a87ec192"
+    },
+    {
+      "args": [
+        "go",
+        "vet",
+        "-tags",
+        "slugtestclock",
+        "./gymcard",
+        "./gymseed"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.215,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "args": [
+        "gofmt",
+        "-l",
+        "gymseed/card_source.go",
+        "gymcard/actions.go",
+        "gymcard/read.go",
+        "gymcard/read_liveness_test.go",
+        "gymseed/card_prepared_view_test.go",
+        "gymcard/audit.go",
+        "gymcard/store.go",
+        "gymcard/audited_index_test.go",
+        "gymcard/history_capacity_test.go"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.007,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "capacity_test_policy": {
+    "runtime_metadata_context_ms": 500,
+    "test_only_change": "Remove per-page wall-clock cancellation in the stationary core correctness test. Retain informational elapsed logs, exact selected counts/HasMore, missing-row tamper refusal and explicit cancellation-after-one-row assertions.",
+    "normal_capacity_elapsed_is_informational": true,
+    "race_capacity_elapsed_is_informational": true,
+    "latency_acceptance_source": "set46-card-metadata500-final.json",
+    "real_account_advancing_clock_parent_checks_ms": {
+      "modeled_rows": 256,
+      "members_per_row": 10,
+      "real_account_store_and_session": true,
+      "parent_equivalent_extra_rechecks_per_lease": 2,
+      "original_account_identity_substitution": false,
+      "clock": "Retained fixture time plus monotonic elapsed time, not default wallclock",
+      "first_eight_ms": 253.680458,
+      "late_eight_ms": 263.223084,
+      "exhausted_ms": 168.007125,
+      "metadata_context_ms": 500,
+      "retries": 0,
+      "limitation": "Actual pilot plus real account and parent-equivalent recheck cost; parent epoch bookkeeping is not synthesized. Default-clock native checks separately use the actual parent. Modeled histories/finality are not chain or admission evidence."
+    },
+    "actual_parent_default_clock": {
+      "expected_operations": 18,
+      "fixtures": 2,
+      "statuses": 6,
+      "read_not_found_refusals": 6,
+      "empty_histories": 6,
+      "retries": 0,
+      "raw_frame_count_including_snapshots": 20,
+      "raw_frame_sha256": "3d69e608d984f9897c120d7b1b7e3034a2c0ec1ba447499dbdcff0ffe0602c6c",
+      "normal_helper_sha256": "1b2eaa846acd9e6bc6d5e959ff37476cf404af6a8e4b77d433e391c6a8870bd3",
+      "normal_node_sha256": "a6bade20f249fe04dea40a5d50187483c58d158fb88ddfb1e3ef4042f9308c2a"
+    },
+    "shorter_caller_deadline": {
+      "milliseconds": 20,
+      "commands": [
+        "Status",
+        "Record",
+        "History"
+      ],
+      "normal": "passed",
+      "race": "passed",
+      "required": "No deadline extension, busy refusal with no public payload; bounded preparation may expire before the source callback under race instrumentation."
+    }
+  },
+  "frozen_core_source_codec_recipes": 935,
+  "reference_files_unchanged": 61,
+  "limitations": [
+    "The two failed aggregates are retained as failed. Individual prior race passes plus the corrected single-test normal/race pass provide scoped correctness evidence; this is not a relabelled full-suite pass.",
+    "Core runtime bytes are identical across all three captures. Only the existing capacity test changed between captures.",
+    "Latency is measured by the stronger normal helper/account/native gates; race instrumentation is used for concurrency correctness, not a wall-clock service-level claim.",
+    "No repeated installer or unchanged SIGKILL Build/init gate, no new model/engine/reference outputs, and no packaged release, GUI or D74 claim."
+  ],
+  "finalizer_sha256": "c29c8e1626c2712bf70b727099b6830fc6735fb228183a2f21772a3c2353646b"
+}
