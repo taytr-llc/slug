@@ -17,43 +17,19 @@ type cardRootMarker struct {
 }
 
 func (s *StableController) cardRoot() (cardRootMarker, error) {
+	if s.boutEnabled {
+		m, e := s.boutRoot()
+		b := m.cardRootMarker
+		b.Version = 6
+		return b, e
+	}
 	var m cardRootMarker
 	path := filepath.Join(filepath.Dir(filepath.Dir(s.config.DataDir)), "SLUG-MANIFEST-ACCOUNTS.json")
 	if !s.cardEnabled || readManifestJSON(path, 16384, &m) != nil || m.Version != 6 || m.CardSchema != 1 {
 		return m, ErrManifestInitialization
 	}
-	base := m.seedRootMarker
-	base.Version = 5
-	if validateSeedRoot(base) != nil {
-		return m, ErrManifestInitialization
-	}
-	switch m.CardPhase {
-	case "waiting_source":
-		if m.CardStoreID != "" {
-			return m, ErrManifestInitialization
-		}
-	case "prepared", "ready":
-		if m.SeedPhase != "ready" {
-			return m, ErrManifestInitialization
-		}
-		ev, e := eventPinFromRoot(base.eventRootMarker)
-		if e != nil {
-			return m, e
-		}
-		sp, e := gymseed.CandidatePin(ev)
-		if e != nil {
-			return m, e
-		}
-		p, e := gymcard.CandidatePin(sp)
-		if e != nil {
-			return m, e
-		}
-		id, e := gymcard.ID(p)
-		if e != nil || id != m.CardStoreID {
-			return m, ErrManifestInitialization
-		}
-	default:
-		return m, ErrManifestInitialization
+	if e := validateCardRoot(m); e != nil {
+		return m, e
 	}
 	return m, nil
 }
@@ -104,7 +80,7 @@ func (s *StableController) AttachCards(ctx context.Context, x *gymcard.Store) er
 		}
 		s.mu.Lock()
 		defer s.mu.Unlock()
-		if !stableCacheFits(s.cache, s.receiptSlot, s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+MaxCardMetadataSize) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.boutBytes+MaxCardMetadataSize) {
 			return gymcard.ErrCapacity
 		}
 		s.cardStore = x
@@ -116,4 +92,44 @@ func (s *StableController) AttachCards(ctx context.Context, x *gymcard.Store) er
 		s.cardBytes = MaxCardMetadataSize
 		return nil
 	})
+}
+
+func validateCardRoot(m cardRootMarker) error {
+	if m.Version != 6 || m.CardSchema != 1 {
+		return ErrManifestInitialization
+	}
+	base := m.seedRootMarker
+	base.Version = 5
+	if validateSeedRoot(base) != nil {
+		return ErrManifestInitialization
+	}
+	switch m.CardPhase {
+	case "waiting_source":
+		if m.CardStoreID != "" {
+			return ErrManifestInitialization
+		}
+	case "prepared", "ready":
+		if m.SeedPhase != "ready" {
+			return ErrManifestInitialization
+		}
+		ev, e := eventPinFromRoot(base.eventRootMarker)
+		if e != nil {
+			return e
+		}
+		sp, e := gymseed.CandidatePin(ev)
+		if e != nil {
+			return e
+		}
+		p, e := gymcard.CandidatePin(sp)
+		if e != nil {
+			return e
+		}
+		id, e := gymcard.ID(p)
+		if e != nil || id != m.CardStoreID {
+			return ErrManifestInitialization
+		}
+	default:
+		return ErrManifestInitialization
+	}
+	return nil
 }

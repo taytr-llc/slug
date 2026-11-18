@@ -15,6 +15,7 @@ import (
 )
 
 type stableTask struct {
+	bout         *BoutJob
 	card         *CardJob
 	seed         *SeedJob
 	event        *EventJob
@@ -35,6 +36,10 @@ type stableTask struct {
 func (s *StableController) expireQueuedLocked() {
 	if s.queued != nil && s.queued.ctx.Err() != nil {
 		s.queued.cancel()
+		if s.queued.bout != nil {
+			s.cancelQueuedBoutLocked()
+			return
+		}
 		if s.queued.card != nil {
 			s.cancelQueuedCardLocked()
 			return
@@ -70,6 +75,10 @@ func (s *StableController) cancelTasksLocked() {
 	}
 	if s.queued != nil {
 		s.queued.cancel()
+		if s.queued.bout != nil {
+			s.cancelQueuedBoutLocked()
+			return
+		}
 		if s.queued.card != nil {
 			s.cancelQueuedCardLocked()
 			return
@@ -215,7 +224,9 @@ func (s *StableController) cycle(ctx context.Context) error {
 		s.stableMu.Unlock()
 		return nil
 	}
-	if task.card != nil {
+	if task.bout != nil {
+		task.bout.State = "running"
+	} else if task.card != nil {
 		task.card.State = "running"
 	} else if task.seed != nil {
 		task.seed.State = "running"
@@ -230,6 +241,9 @@ func (s *StableController) cycle(ctx context.Context) error {
 	}
 	s.active = task
 	s.stableMu.Unlock()
+	if task.bout != nil {
+		return s.runBoutTask(ctx, task)
+	}
 	if task.card != nil {
 		return s.runCardTask(ctx, task)
 	}
@@ -439,7 +453,7 @@ func (s *StableController) publishStableItems(ctx context.Context, items []gymst
 				delete(next, low)
 			}
 		}
-		if !manifestCacheFits(next, s.receiptSlot) || !stableCacheFits(next, s.receiptSlot, s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes) {
+		if !manifestCacheFits(next, s.receiptSlot) || !stableCacheFits(next, s.receiptSlot, s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+s.boutBytes) {
 			return gymstable.ErrCapacity
 		}
 		s.cache = next
@@ -657,6 +671,9 @@ func (s *StableController) RefreshManifestProspects(ctx context.Context) error {
 }
 
 func (t *stableTask) family() string {
+	if t.bout != nil {
+		return "bout"
+	}
 	if t.card != nil {
 		return "card"
 	}

@@ -47,7 +47,7 @@ func (s *StableController) beginCard(ctx context.Context, v, date, kind string) 
 		s.mu.Lock()
 		defer s.mu.Unlock()
 		oldBytes = s.cardBytes
-		if !stableCacheFits(s.cache, s.receiptSlot, s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+MaxCardCacheSize) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.boutBytes+MaxCardCacheSize) {
 			return gymcard.ErrCapacity
 		}
 		var id [32]byte

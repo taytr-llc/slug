@@ -25,7 +25,8 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 	if helper == "" || node == "" {
 		t.Skip("explicit frozen stable helper and normal node required")
 	}
-	cardEnabled := os.Getenv("SLUG_CARD_ACCEPTANCE") == "1"
+	boutEnabled := os.Getenv("SLUG_BOUT_ACCEPTANCE") == "1"
+	cardEnabled := os.Getenv("SLUG_CARD_ACCEPTANCE") == "1" || boutEnabled
 	seedEnabled := os.Getenv("SLUG_SEED_ACCEPTANCE") == "1" || cardEnabled
 	eventEnabled := os.Getenv("SLUG_EVENT_ACCEPTANCE") == "1" || seedEnabled
 	entryEnabled := os.Getenv("SLUG_ENTRY_ACCEPTANCE") == "1" || eventEnabled
@@ -54,6 +55,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 	}
 	if cardEnabled {
 		launch = LaunchCards
+	}
+	if boutEnabled {
+		launch = LaunchBouts
 	}
 	b, e := launch(helper, data, node)
 	if e != nil {
@@ -88,6 +92,10 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 			return entry
 		}
 	}
+	var bouts *boutAcceptance
+	if boutEnabled {
+		bouts = newBoutAcceptance(t, ctx, b)
+	}
 	var cards *cardAcceptance
 	if cardEnabled {
 		cards = newCardAcceptance(t, ctx, b)
@@ -96,6 +104,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 			events.checkRestart(restarted, s)
 			seeds.checkRestart(restarted, s)
 			cards.checkRestart(restarted, s)
+			if bouts != nil {
+				bouts.checkRestart(restarted, s)
+			}
 			return entry
 		}
 	}
@@ -404,6 +415,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 				}
 				if cards != nil {
 					cards.observe(fixture, "initial", snapshot())
+					if bouts != nil {
+						bouts.observe(fixture, "initial", snapshot())
+					}
 				}
 			}
 		}
@@ -425,6 +439,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 				}
 				if cards != nil {
 					cards.refuseDetached()
+					if bouts != nil {
+						bouts.refuseDetached()
+					}
 				}
 			}
 		}
@@ -474,6 +491,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 				}
 				if cards != nil {
 					cards.observe(fixture, "reopened", attached)
+					if bouts != nil {
+						bouts.observe(fixture, "reopened", attached)
+					}
 				}
 			}
 		}
@@ -533,6 +553,9 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 				}
 				if cards != nil {
 					cards.observe(fixture, "held", snapshot())
+					if bouts != nil {
+						bouts.observe(fixture, "held", snapshot())
+					}
 				}
 			}
 		}
@@ -623,6 +646,12 @@ func TestStablePackagedHelperNormalPoW(t *testing.T) {
 		result["seed_restart"] = seeds.restartEvidence
 		result["seed_real_clock_closed_coverage"] = false
 		result["seed_authority"] = "candidate_fixture_v1"
+	}
+	if bouts != nil {
+		result["bouts"] = bouts.evidence
+		result["bout_restart"] = bouts.restartEvidence
+		result["bout_real_clock_closed_coverage"] = false
+		result["bout_scope"] = "candidate_saved_transcript"
 	}
 	if cards != nil {
 		result["cards"] = cards.evidence

@@ -348,11 +348,14 @@ the full 900-second live observation, 31 samples and clean restart passed.
 Railway still runs only the Phase A node. Remote CI returned no runs/checks;
 no remote CI pass is claimed. Failed earlier package/race attempts remain retained.
 
-Set 47 starts on `slug-event-bouts`, stacked from `5e6b36d3`. Consume the
-retained card and fixed seed to run reproducible candidate bouts and preserve
-complete immutable input/result replay. The independent reference must pass
-review before runtime comparisons. Professional result/award authority,
-general matchmaking policy and the full joint D74 review remain separate gates.
+Set 47 on `slug-event-bouts`, stacked from `5e6b36d3`, retains one immutable
+candidate transcript per booked BoutID with explicit Run and saved replay.
+The independently frozen reference, implementation checks and actual native
+composition pass. The closed-event test uses normal PoW and a scoped clock;
+authenticated core seed preparation runs without an admission worker. The
+final normal-clock package and deployment observation remain pending. See
+`EVENT_BOUTS.md` and `CHANGESET_47_NOTES.md`. Professional/exhibition records,
+awards, general matchmaking policy and the full joint D74 review remain separate.
 
 ### 6. League services
 The Saturday operation: entry collection and lock (Saturday noon

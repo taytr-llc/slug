@@ -448,20 +448,20 @@ func (c *StableController) readSeedRoot(path string) (seedAccountMarker, error) 
 	if c.cardOwner == nil {
 		return readSeedMarker(path)
 	}
-	m, e := readCardMarker(path)
+	m, e := c.readCardRoot(path)
 	return cardBase(m), e
 }
 func (c *StableController) writeSeedRoot(path string, b seedAccountMarker) error {
 	if c.cardOwner == nil {
 		return writeSeedMarker(path, b)
 	}
-	m, e := readCardMarker(path)
+	m, e := c.readCardRoot(path)
 	if e != nil {
 		return e
 	}
 	b.Version = 6
 	m.seedAccountMarker = b
-	return writeCardMarker(path, m)
+	return c.writeCardRoot(path, m)
 }
 func (c *StableController) installCardComponents(ctx context.Context, child manifestChild) error {
 	if e := c.installSeedComponents(ctx, child); e != nil {
@@ -478,7 +478,7 @@ func (c *StableController) installCardComponents(ctx context.Context, child mani
 }
 func (c *StableController) ensureCards(ctx context.Context) error {
 	path := filepath.Join(c.config.DataDir, "SLUG-MANIFEST-ACCOUNTS.json")
-	m, e := readCardMarker(path)
+	m, e := c.readCardRoot(path)
 	if e != nil {
 		return e
 	}
@@ -503,7 +503,7 @@ func (c *StableController) ensureCards(ctx context.Context) error {
 			return e
 		}
 		m.CardPhase = "prepared"
-		if e = writeCardMarker(path, m); e != nil {
+		if e = c.writeCardRoot(path, m); e != nil {
 			return e
 		}
 	}
@@ -564,7 +564,7 @@ func (c *StableController) ensureCards(ctx context.Context) error {
 			c.checkpoint("card-created")
 		}
 		m.CardPhase = "ready"
-		if e = writeCardMarker(path, m); e != nil {
+		if e = c.writeCardRoot(path, m); e != nil {
 			return e
 		}
 		if c.checkpoint != nil {

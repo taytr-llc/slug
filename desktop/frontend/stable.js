@@ -12,6 +12,7 @@ ids.push('entry-state', 'entry-date', 'entry-upcoming', 'entry-status', 'entry-c
 ids.push('event-state', 'event-cutoff', 'event-progress', 'event-refresh', 'event-capture', 'event-cancel', 'event-record', 'event-clear', 'event-message', 'event-seed', 'event-deadline', 'event-digest', 'event-members', 'event-history', 'event-history-next', 'event-history-list');
 ids.push('seed-state', 'seed-refresh', 'seed-prepare', 'seed-publish', 'seed-reconcile', 'seed-attest', 'seed-cancel', 'seed-record', 'seed-clear', 'seed-history', 'seed-history-next', 'seed-message', 'seed-observation', 'seed-finality', 'seed-incident', 'seed-identity', 'seed-history-list');
 ids.push('card-state', 'card-refresh', 'card-begin', 'card-cancel', 'card-record', 'card-clear', 'card-history', 'card-history-next', 'card-message', 'card-totals', 'card-source', 'card-conflict', 'card-incident', 'card-evidence', 'card-gyms', 'card-bouts', 'card-unmatched', 'card-reasons', 'card-history-list', 'card-detail-hint');
+ids.push('bout-state', 'bout-refresh', 'bout-list', 'bout-empty', 'bout-run', 'bout-open', 'bout-check', 'bout-cancel', 'bout-clear', 'bout-message', 'bout-source', 'bout-overlay', 'bout-replay', 'bout-asof', 'bout-fighters', 'bout-play', 'bout-previous', 'bout-next', 'bout-restart', 'bout-result', 'bout-motion', 'bout-step', 'bout-events', 'bout-outcome', 'bout-finish', 'bout-scores', 'bout-evidence');
 const ui = Object.fromEntries(ids.map((id) => [id, document.getElementById(id)]));
 const attrs = ['power', 'speed', 'chin', 'stamina', 'skill'];
 const rarity = ['club', 'professional', 'contender', 'elite', 'generational'];
@@ -171,14 +172,14 @@ function assignment(v, identity) {
   exact(v, ['version', 'sequence', 'prospect_id', 'gym_id', 'work_hash', 'born_at_ms', 'accepted_at_ms', 'descriptor_id', 'manifest_digest', 'portrait_digest', 'source_record_digest']);
   requireValue(v.version === 1 && int(v.sequence, 1, 1000) && ['prospect_id', 'gym_id', 'work_hash', 'manifest_digest', 'portrait_digest', 'source_record_digest'].every((k) => hex(v[k])) && v.gym_id === identity.gym_id && v.descriptor_id === DESCRIPTOR && int(v.born_at_ms, 1, DATE_MAX) && int(v.accepted_at_ms, v.born_at_ms, Math.min(DATE_MAX, v.born_at_ms + 299999)));
 }
-function manifestValue(m, seed) {
+function manifestValue(m, seed, boundedASCIIName = false) {
   exact(m, ['manifest_version', 'generator_id', 'table_hash', 'dna', 'name', 'physical', 'style', 'portrait']);
   requireValue(m.manifest_version === 1 && m.generator_id === 'slug-fighter-manifest-candidate-v1' && m.table_hash === '72231fbe707cea9a65dd5b92f7b2719953795bceadbbf9e3b8e0b8f4aaef3f44');
   const d = m.dna; exact(d, ['dna_version', 'seed', 'rarity', 'talent_budget', 'attributes', 'prime_weeks', 'decline_weeks']);
   requireValue(d.dna_version === 1 && d.seed === seed && rarity.includes(d.rarity) && int(d.talent_budget, 250, 489) && int(d.prime_weeks, 26, 52) && int(d.decline_weeks, 13, 39));
   exact(d.attributes, attrs); requireValue(attrs.every((k) => int(d.attributes[k], 1, 100)) && attrs.reduce((n, k) => n + d.attributes[k], 0) === d.talent_budget);
   const limits = [[250, 299], [300, 349], [350, 399], [400, 449], [450, 489]][rarity.indexOf(d.rarity)]; requireValue(int(d.talent_budget, ...limits));
-  exact(m.name, ['first', 'last', 'display']); requireValue(['first', 'last'].every((k) => typeof m.name[k] === 'string' && /^[A-Za-z][A-Za-z '\-]{0,63}$/.test(m.name[k])) && m.name.display === `${m.name.first} ${m.name.last}`);
+  exact(m.name, ['first', 'last', 'display']); requireValue(['first', 'last'].every((k) => typeof m.name[k] === 'string' && (boundedASCIIName ? /^[\x00-\x7f]{1,64}$/.test(m.name[k]) : /^[A-Za-z][A-Za-z '\-]{0,63}$/.test(m.name[k]))) && m.name.display === `${m.name.first} ${m.name.last}`);
   exact(m.physical, ['height_in', 'reach_in', 'stance', 'weight_lb', 'weight_class']); const p = m.physical;
   requireValue(int(p.height_in, 62, 80) && int(p.reach_in, p.height_in - 2, p.height_in + 4) && int(p.weight_lb, 128, 268) && ['orthodox', 'southpaw'].includes(p.stance) && p.weight_class === classes[p.weight_lb <= 145 ? 0 : p.weight_lb <= 170 ? 1 : p.weight_lb <= 195 ? 2 : p.weight_lb <= 225 ? 3 : 4] && styles.includes(m.style));
   const r = m.portrait; exact(r, ['portrait_version', 'skin', 'hair_style', 'hair_color', 'facial_hair', 'head_shape', 'mouth', 'brow', 'background', 'scar', 'shoulder_jitter']);
@@ -378,7 +379,7 @@ function render() {
   ui['apply-saved'].disabled = !signed || !!command || !!watched || !pending || pending.intent.view_id !== s.view.view_id || pending.intent.generation !== s.view.generation || !st.caught_up;
   ui.abandon.disabled = !signed || !!command || !!watched || !pending;
   content(ui.alert, connectionError || message || (stable?.error ? textError(stable.error) : '')); ui.alert.hidden = !ui.alert.textContent;
-  renderRoster(); renderCards(); renderPreview(); renderEntry(); renderEvent(); renderSeed(); renderCard();
+  renderRoster(); renderCards(); renderPreview(); renderEntry(); renderEvent(); renderSeed(); renderCard(); renderBooked();
 }
 async function call(method, ...args) { requireValue(!activeCall); const p = Call.ByName(`main.Gym.${method}`, ...args); activeCall = p; try { return await p; } finally { activeCall = null; } }
 function schedule() { if (timer !== null) clearTimeout(timer); timer = null; if (!disposed && enabled && !document.hidden) timer = setTimeout(() => { timer = null; pollWanted = true; pump(); }, 1000); }
@@ -405,10 +406,12 @@ async function fetchSnapshots() {
     if (!disposed && ready() && !tasks.length) await fetchEventSnapshot();
     if (!disposed && ready() && !tasks.length) await fetchSeedSnapshot();
     if (!disposed && ready() && !tasks.length) await fetchCardSnapshot();
+    if (!disposed && ready() && !tasks.length) await fetchBookedSnapshot();
   } catch { if (!disposed && captured === epoch) disconnected(); }
 }
 function stablyChangedRoster() { return stable.status.roster_revision !== pageRevision; }
 function acceptItems(items, kind, data) {
+  const priorPage = [pageItems, mode, pageAfter, pageNext, pageRevision, rosterFirst, rosterNext];
   if (kind === 'sync') {
     if (mode !== 'recent') { message = 'New candidates were saved. Your selected page remains open.'; return; }
     const merged = new Map(pageItems.map((i) => [i.assignment.prospect_id, i])); for (const i of items) { const prior = merged.get(i.assignment.prospect_id); requireValue(!prior || same(prior.assignment, i.assignment) && same(prior.manifest, i.manifest)); merged.set(i.assignment.prospect_id, i); }
@@ -418,7 +421,9 @@ function acceptItems(items, kind, data) {
     if (kind === 'roster') { mode = 'roster'; rosterFirst = data.first_slot; rosterNext = data.next_slot; pageRevision = data.status.roster_revision; }
     else { pageAfter = data.after; pageNext = data.next_after; pageRevision = null; if (mode === 'recent') pageItems.reverse(); }
   }
-  requireValue(pageItems.length <= 8); render(); content(ui.announcement, `${pageItems.length} verified candidates shown. Conditions keep their stated observation time.`);
+  requireValue(pageItems.length <= 8);
+  if (!previewCapacity()) { [pageItems, mode, pageAfter, pageNext, pageRevision, rosterFirst, rosterNext] = priorPage; message = 'The display cache is full. Clear a detail or replay before loading another page; the current page is retained.'; render(); return; }
+  render(); content(ui.announcement, `${pageItems.length} verified candidates shown. Conditions keep their stated observation time.`);
 }
 async function fetchJob(id) {
   if (!ready()) return; const captured = epoch, view = currentKey(), w = watched;
@@ -513,6 +518,7 @@ async function cancelJob(id) {
 }
 async function oldAction(method, args = [], expectedID = '') {
   if (!enabled || command) return;
+  pauseBooked();
   if (method === 'Stop') { entryChanged(); if (eventStatus && eventAutoAttempted.size < 256) eventAutoAttempted.add(eventStatus.event.event_id); }
   const capturedView = currentKey(); if (expectedID && !pageItems.some((i) => i.assignment.prospect_id === expectedID)) return;
   const invalidate = ['LoginFixture', 'Logout', 'ResetFixtureAccount'].includes(method);
@@ -532,7 +538,7 @@ async function loadPortrait(i) {
     const p = await call('ManifestPortrait', i.assignment.sequence); if (!remains()) return;
     exact(p, ['version', 'view', 'sequence', 'id', 'manifest_digest', 'portrait_digest', 'svg']); const a = i.assignment;
     requireValue(p.version === 1 && viewKey(checkedView(p.view)) === view && p.sequence === a.sequence && p.id === a.prospect_id && p.manifest_digest === a.manifest_digest && p.portrait_digest === a.portrait_digest && imageOnlySVG(p.svg));
-    const src = `data:image/svg+xml;base64,${btoa(p.svg)}`; requireValue([...images.entries()].reduce((n, [other, v]) => n + (other === k ? 0 : 2 * v.length), 2 * src.length) + JSON.stringify(pageItems).length + previewRetainedBytes() + entryRetainedBytes() + eventRetainedBytes() + seedRetainedBytes() + cardRetainedBytes() <= CACHE_MAX && images.size <= 8);
+    const src = `data:image/svg+xml;base64,${btoa(p.svg)}`; requireValue([...images.entries()].reduce((n, [other, v]) => n + (other === k ? 0 : 2 * v.length), 2 * src.length) + JSON.stringify(pageItems).length + previewRetainedBytes() + entryRetainedBytes() + eventRetainedBytes() + seedRetainedBytes() + cardRetainedBytes() + bookedRetainedBytes() <= CACHE_MAX && images.size <= 8);
     if (!remains()) return; images.set(k, src); const c = cards.get(a.prospect_id); c.image.setAttribute('src', src); c.image.hidden = false; c.placeholder.hidden = true;
   } catch { if (remains()) { const c = cards.get(i.assignment.prospect_id); c.image.removeAttribute('src'); c.image.hidden = true; c.placeholder.hidden = false; content(c.placeholder, 'Portrait unavailable. Reload it from the current verified page.'); } }
 }
@@ -545,6 +551,7 @@ function pump() {
       if (pollWanted) { pollWanted = false; await fetchSnapshots(); schedule(); continue; }
       const next = ready() ? pageItems.find((i) => !images.has(key(i)) && !imageAttempts.has(key(i))) : null;
       if (next) { await loadPortrait(next); continue; }
+      const bookedPortrait = bookedNextPortrait(); if (bookedPortrait) { await loadBookedPortrait(bookedPortrait); continue; }
       const portrait = previewNextPortrait(); if (portrait) { await loadPreviewPortrait(portrait); continue; }
       break;
     }
@@ -624,7 +631,7 @@ function pausePreview() { if (playbackTimer !== null) clearTimeout(playbackTimer
 function discardPreviewResult() { pausePreview(); previewResult = null; playbackSteps = []; playbackIndex = 0; previewImages.clear(); previewImageAttempts.clear(); previewRendered = ''; ui['preview-fighters'].textContent = ''; ui['preview-events'].textContent = ''; ui['preview-scores'].textContent = ''; }
 function clearPreview() { previewSerial++; discardPreviewResult(); previewSelected = []; previewWatch = null; previewDiscovery = null; previewSnapshot = null; previewMessage = ''; ui['preview-selection'].textContent = ''; }
 function previewRetainedBytes() { return JSON.stringify(previewSelected).length + (previewResult ? JSON.stringify(previewResult).length + 65536 : 0) + [...previewImages.values()].reduce((n, src) => n + 2 * src.length, 0); }
-function previewCapacity(extra = 0) { return previewRetainedBytes() + entryRetainedBytes() + eventRetainedBytes() + seedRetainedBytes() + cardRetainedBytes() + JSON.stringify(pageItems).length + [...images.values()].reduce((n, src) => n + 2 * src.length, 0) + extra <= CACHE_MAX; }
+function previewCapacity(extra = 0) { return previewRetainedBytes() + entryRetainedBytes() + eventRetainedBytes() + seedRetainedBytes() + cardRetainedBytes() + bookedRetainedBytes() + JSON.stringify(pageItems).length + [...images.values()].reduce((n, src) => n + 2 * src.length, 0) + extra <= CACHE_MAX; }
 function previewError(code) { return ({ preview_class_mismatch: 'Choose two candidates from the same weight class.', preview_not_found: 'This preview is no longer retained. Select your pair and explicitly preview again.', preview_capacity: 'The local preview cache is full. Clear the preview and retry.', preview_cancelled: 'Preview cancelled. No fight was recorded.', preview_observation_unknown: 'The authority could not confirm its clock observation. Reopen the gym before another preview. No fight was recorded.', outcome_unknown: 'The preview may have started. Check its status before explicitly trying again.', preview_unavailable: 'Fight preview is unavailable. Your saved candidates are retained.' })[code] ?? textError(code); }
 function previewRefusal(code) {
   if (['unauthorized', 'stale_view'].includes(code)) clearPreview();
@@ -1276,13 +1283,14 @@ function cardRetainedBytes() {
 function cardCapacity() { return cardMetadataBytes() <= CARD_METADATA_MAX && entryBytes(cardDetail) <= CARD_RESULT_MAX && cardRetainedBytes() <= CARD_MAX && previewCapacity(); }
 function cardReady() { return ready() && !cardUnavailable && !!cardAuthority && !!cardSnapshot?.pin && viewKey(cardSnapshot.view) === currentKey(); }
 function clearCard() {
+  clearBooked();
   cardSerial++; cardSnapshot = cardStatus = cardDetail = cardHistory = cardWatch = cardTerminal = null;
   cardLastJob = cardMessage = ''; cardUnavailable = cardUnknown = cardOverlayKnown = cardOverlayRead = false;
   for (const id of ['card-gyms', 'card-bouts', 'card-unmatched', 'card-reasons', 'card-history-list']) {
     if (ui[id]) { ui[id].textContent = ''; ui[id]._key = ''; }
   }
 }
-function cardSelectDate() { cardSerial++; cardStatus = cardDetail = null; cardMessage = ''; cardOverlayKnown = cardOverlayRead = false; }
+function cardSelectDate() { bookedSelectDate(); cardSerial++; cardStatus = cardDetail = null; cardMessage = ''; cardOverlayKnown = cardOverlayRead = false; }
 function cardCacheError() { const e = new Error('Card cache full'); e.cardCode = 'card_capacity'; return e; }
 function cardContext() { return { epoch, view: currentKey(), viewID: current?.view?.view_id, serial: cardSerial, date: entryDate }; }
 function cardCurrent(c, selection = false) { return !disposed && ready() && c.epoch === epoch && c.view === currentKey() && (!selection || c.serial === cardSerial && c.date === entryDate); }
@@ -1550,6 +1558,277 @@ function renderCard() {
   if (ui['card-history-list']._key !== historyKey) { ui['card-history-list'].textContent = ''; if (cardHistory) for (const v of cardHistory.cards) { const li = element('li'), button = element('button', '', v.event.saturday); button.type = 'button'; button.addEventListener('click', () => entryNavigate(v.event.saturday)); li.append(button, element('span', '', `${v.counts.total_count} entered, ${v.counts.paired_count} paired, ${v.counts.unmatched_count} unmatched${v.usable ? '' : ' · source conflict or unavailable'}`)); ui['card-history-list'].append(li); } ui['card-history-list']._key = historyKey; }
 }
 
+// Saved candidate bouts are a separate family. Native owns canonical hashes and
+// authorization; this presentation validator never derives a manifest or fight.
+const BOOKED_RULES = '5f1e8b5ee9e7caaa0cc796dc8d486b453a3c7c7d5dc1ee399667d7f6051e7247';
+const BOOKED_MAX = 393216, BOOKED_RESULT_MAX = 253952, BOOKED_METADATA_MAX = 73728;
+const BOOKED_ERRORS = new Set(['invalid_request', 'unauthorized', 'forbidden', 'stale_view', 'busy', 'outcome_unknown', 'bout_unavailable', 'bout_setup_incomplete', 'bout_corrupt', 'bout_capacity', 'bout_clock', 'bout_calendar', 'bout_not_found', 'bout_source_incomplete', 'bout_source_conflict', 'bout_source_changed', 'bout_cancelled']);
+let bookedAuthority = null, bookedSnapshot = null, bookedPage = null, bookedStatus = null, bookedRecord = null;
+let bookedSelected = '', bookedSerial = 0, bookedWatch = null, bookedTerminal = null, bookedLastJob = '', bookedMessage = '';
+let bookedUnavailable = false, bookedUnknown = null, bookedOverlayKnown = false, bookedOverlayRead = false;
+let bookedTimer = null, bookedStep = 0, bookedRendered = '', bookedImages = new Map(), bookedImageAttempts = new Set();
+function bookedMetadataBytes() {
+  return entryBytes([bookedAuthority, bookedSnapshot && { ...bookedSnapshot, pin: null }, bookedPage, bookedStatus, bookedSelected, bookedWatch, bookedTerminal, bookedLastJob, bookedMessage, bookedUnknown, [...bookedImageAttempts]]) + 4096;
+}
+function bookedRetainedBytes() {
+  if (!bookedAuthority && !bookedSnapshot && !bookedWatch && !bookedRecord) return 0;
+  if (bookedWatch) return BOOKED_MAX;
+  return bookedMetadataBytes() + entryBytes(bookedRecord) + [...bookedImages.values()].reduce((n, v) => n + 2 * v.length, 0);
+}
+function bookedCapacity() { return bookedMetadataBytes() <= BOOKED_METADATA_MAX && entryBytes(bookedRecord) <= BOOKED_RESULT_MAX && [...bookedImages.values()].every(v => 2 * v.length <= 32768) && bookedRetainedBytes() <= BOOKED_MAX && previewCapacity(); }
+function bookedCacheError() { const e = new Error('Bout display full'); e.boutCode = 'bout_capacity'; return e; }
+function bookedReady() { return ready() && !bookedUnavailable && !!bookedAuthority && !!bookedSnapshot?.pin && viewKey(bookedSnapshot.view) === currentKey(); }
+function pauseBooked() { if (bookedTimer !== null) clearTimeout(bookedTimer); bookedTimer = null; }
+function bookedClearImages() { bookedImages.clear(); bookedImageAttempts.clear(); bookedRendered = ''; ui['bout-fighters'].textContent = ''; }
+function bookedClearRecord() { pauseBooked(); bookedRecord = null; bookedStep = 0; bookedClearImages(); ui['bout-events'].textContent = ''; ui['bout-scores'].textContent = ''; }
+function clearBooked() {
+  bookedSerial++; bookedClearRecord(); bookedAuthority = bookedSnapshot = bookedPage = bookedStatus = bookedWatch = bookedTerminal = bookedUnknown = null;
+  bookedSelected = bookedLastJob = bookedMessage = ''; bookedUnavailable = bookedOverlayKnown = bookedOverlayRead = false;
+  ui['bout-list'].textContent = ''; ui['bout-list']._key = '';
+}
+function bookedSelectDate() { bookedSerial++; bookedClearRecord(); bookedPage = bookedStatus = null; bookedSelected = ''; bookedMessage = ''; bookedOverlayKnown = bookedOverlayRead = false; }
+function bookedContext() { return { epoch, view: currentKey(), viewID: current?.view?.view_id, serial: bookedSerial, date: entryDate, boutID: bookedSelected }; }
+function bookedCurrent(c, selection = false) { return !disposed && ready() && c.epoch === epoch && c.view === currentKey() && (!selection || c.serial === bookedSerial && c.date === entryDate && c.boutID === bookedSelected); }
+function bookedBoutValue(b) { exact(b, ['bout_id', 'class', 'corner_a', 'corner_b', 'seed']); requireValue(['bout_id', 'corner_a', 'corner_b', 'seed'].every(k => hex(b[k])) && b.corner_a < b.corner_b && classes.includes(b.class)); }
+function bookedSourceState(s) {
+  exact(s, ['version', 'card_id', 'event', 'card_exists', 'card_record_digest', 'card_source_digest', 'card_created_at_ms', 'finalized_at_ms', 'conflict_count', 'conflict_overflow', 'incident_at_ms', 'escalation_due', 'chain_observed_at_ms', 'target_descendants', 'current_finality', 'node_state', 'observed_at_ms', 'usable']); eventValue(s.event);
+  requireValue(s.version === 1 && hex(s.card_id) && ['card_exists', 'conflict_overflow', 'escalation_due', 'current_finality', 'usable'].every(k => typeof s[k] === 'boolean') && int(s.observed_at_ms, cardAuthority.createdMS, DATE_MAX) && int(s.conflict_count, 0, 8) && (!s.conflict_overflow || s.conflict_count === 8) && int(s.target_descendants, 0, 2147483647) && ['unobserved', 'online', 'offline', 'unavailable'].includes(s.node_state));
+  for (const k of ['finalized_at_ms', 'incident_at_ms', 'chain_observed_at_ms']) requireValue(int(s[k], 0, s.observed_at_ms));
+  if (s.card_exists) requireValue(hex(s.card_record_digest) && hex(s.card_source_digest) && int(s.card_created_at_ms, Math.max(cardAuthority.createdMS, s.finalized_at_ms), s.observed_at_ms));
+  else requireValue(s.card_record_digest === '' && s.card_source_digest === '' && s.card_created_at_ms === 0 && !s.usable);
+  requireValue(!s.usable || s.card_exists && s.finalized_at_ms > 0 && !s.conflict_count && !s.conflict_overflow);
+  requireValue(!s.incident_at_ms || s.incident_at_ms >= s.event.incident_deadline_ms);
+  requireValue(s.escalation_due === (s.observed_at_ms >= s.event.incident_deadline_ms && (!s.finalized_at_ms || s.conflict_count > 0 || s.conflict_overflow)));
+  requireValue(s.chain_observed_at_ms > 0 || s.target_descendants === 0 && !s.current_finality);
+  requireValue(!s.current_finality || s.finalized_at_ms > 0 && s.chain_observed_at_ms > 0 && s.target_descendants >= 60 && !s.conflict_count && !s.conflict_overflow);
+  return s;
+}
+function bookedSavedValue(s, source, observed) {
+  exact(s, ['bout', 'source_digest', 'exists', 'record_digest', 'created_at_ms', 'input_id', 'result_digest', 'winner', 'method', 'end_round', 'end_tick', 'usable']); bookedBoutValue(s.bout);
+  requireValue(hex(s.source_digest) && typeof s.exists === 'boolean' && typeof s.usable === 'boolean' && entryBytes(s) <= 2048);
+  if (!s.exists) requireValue(['record_digest', 'input_id', 'result_digest', 'winner', 'method'].every(k => s[k] === '') && ['created_at_ms', 'end_round', 'end_tick'].every(k => s[k] === 0) && !s.usable);
+  else requireValue(['record_digest', 'input_id', 'result_digest'].every(k => hex(s[k])) && int(s.created_at_ms, Math.max(bookedAuthority.createdMS, source.card_created_at_ms, source.finalized_at_ms), observed) && FINISHES.includes(s.method) && int(s.end_round, 1, 3) && int(s.end_tick, 1, 60) && (['decision_draw', 'double_corner_stoppage'].includes(s.method) ? s.winner === '' : [s.bout.corner_a, s.bout.corner_b].includes(s.winner)));
+  requireValue(!s.usable || s.exists && source.usable); return s;
+}
+function bookedStatusValue(s, page = false) {
+  exact(s, ['version', 'store_id', 'card_id', 'observed_at_ms', 'source', page ? 'bouts' : 'saved']); bookedSourceState(s.source);
+  requireValue(s.version === 1 && s.store_id === bookedAuthority.storeID && s.card_id === s.source.card_id && int(s.observed_at_ms, bookedAuthority.createdMS, DATE_MAX) && s.observed_at_ms >= s.source.observed_at_ms && entryBytes(s) <= (page ? 16384 : 8192));
+  if (!page) { requireValue(s.source.card_exists); bookedSavedValue(s.saved, s.source, s.observed_at_ms); }
+  else {
+    requireValue(Array.isArray(s.bouts) && s.bouts.length <= 5 && (s.source.card_exists || !s.bouts.length));
+    const ids = new Set(), corners = new Set(); let prior = -1;
+    for (const v of s.bouts) { bookedSavedValue(v, s.source, s.observed_at_ms); const b = v.bout, ci = classes.indexOf(b.class); requireValue(ci > prior && !ids.has(b.bout_id) && !corners.has(b.corner_a) && !corners.has(b.corner_b)); prior = ci; ids.add(b.bout_id); corners.add(b.corner_a); corners.add(b.corner_b); }
+  } return s;
+}
+function bookedSourceValue(s) {
+  exact(s, ['version', 'store_id', 'card_id', 'card_record_digest', 'card_source_digest', 'card_created_at_ms', 'event', 'snapshot_digest', 'seed_event_key', 'target_height', 'target_hash', 'finalized_at_ms', 'bout', 'corners']); eventValue(s.event); bookedBoutValue(s.bout);
+  requireValue(s.version === 1 && s.store_id === cardAuthority.storeID && ['card_id', 'card_record_digest', 'card_source_digest', 'snapshot_digest', 'seed_event_key', 'target_hash'].every(k => hex(s[k])) && int(s.target_height, 1, 2147483647) && int(s.finalized_at_ms, s.event.cutoff_ms, DATE_MAX) && int(s.card_created_at_ms, Math.max(cardAuthority.createdMS, s.finalized_at_ms), DATE_MAX) && entryBytes(s) <= 16384);
+  const owners = new Set(); pairArray(s.corners, (v, n) => {
+    exact(v, ['owner', 'member']); const o = v.owner, m = v.member; exact(o, ['ownership_basis', 'account_authority_id', 'account_id', 'gym_id']);
+    const p = eventAuthority.pin.participants.find(p => p.stable_pin.identity.gym_id === o.gym_id); requireValue(!!p && !owners.has(o.gym_id) && o.ownership_basis === 'candidate_assignment' && o.account_authority_id === p.stable_pin.account_authority_id && o.account_id === p.stable_pin.account_id); owners.add(o.gym_id);
+    exact(m, ['slot', 'slot_assigned_at_ms', 'assignment', 'class', 'condition_at_cutoff', 'eligibility']); assignment(m.assignment, p.stable_pin.identity); eventCondition(m.condition_at_cutoff, m.assignment, s.event.cutoff_ms);
+    requireValue(m.assignment.prospect_id === [s.bout.corner_a, s.bout.corner_b][n] && m.class === s.bout.class && m.eligibility === 'eligible' && int(m.slot, 1, 10) && int(m.slot_assigned_at_ms, m.assignment.accepted_at_ms, s.event.cutoff_ms - 1));
+    const c = m.condition_at_cutoff; requireValue(['prime', 'decline'].includes(c.phase) && int(c.age_weeks, 0, 90) && int(c.elapsed_decline_weeks, 0, 38) && attrs.every(k => int(c.aged_attributes_tenths[k], 1, 1000)) && (c.phase === 'prime' ? c.elapsed_decline_weeks === 0 && c.prime_remaining_weeks > 0 : c.prime_remaining_weeks === 0 && c.prime_remaining_ms === 0));
+  });
+  const ratings = s.corners.map(v => v.member.condition_at_cutoff.rating_hundredths); requireValue(2 * Math.min(...ratings) >= Math.max(...ratings)); return s;
+}
+function bookedRecordValue(r) {
+  exact(r, ['version', 'store_id', 'card_id', 'bout_id', 'source', 'source_digest', 'input', 'input_id', 'result', 'result_digest', 'created_at_ms']); bookedSourceValue(r.source);
+  requireValue(r.version === 1 && r.store_id === bookedAuthority.storeID && r.card_id === r.source.card_id && r.bout_id === r.source.bout.bout_id && ['source_digest', 'input_id', 'result_digest'].every(k => hex(r[k])) && int(r.created_at_ms, Math.max(bookedAuthority.createdMS, r.source.card_created_at_ms), DATE_MAX) && entryBytes(r) <= 237568);
+  const i = r.input; exact(i, ['version', 'engine_id', 'mode', 'seed_kind', 'as_of_ms', 'seed', 'a', 'b']);
+  requireValue(i.version === 1 && i.engine_id === PREVIEW_ENGINE && i.mode === 'standard' && i.seed_kind === 'explicit' && i.seed === r.source.bout.seed && i.as_of_ms === r.source.event.cutoff_ms && entryBytes(i) <= 16384);
+  for (const [n, f] of [i.a, i.b].entries()) { exact(f, ['prospect_id', 'born_at_ms', 'manifest', 'pro_xp', 'training_skill']); const m = r.source.corners[n].member; requireValue(f.prospect_id === m.assignment.prospect_id && f.born_at_ms === m.assignment.born_at_ms && f.pro_xp === 0 && f.training_skill === 0); manifestValue(f.manifest, m.assignment.work_hash, true); requireValue(f.manifest.physical.weight_class === m.class); }
+  boutValue(r.result, [i.a.prospect_id, i.b.prospect_id]); requireValue(r.result.input_id === r.input_id); return r;
+}
+function bookedMatchRecord(r, s) {
+  const v = s.saved, source = s.source;
+  requireValue(v.exists && s.card_id === r.card_id && v.bout.bout_id === r.bout_id && same(v.bout, r.source.bout) && v.source_digest === r.source_digest && v.created_at_ms === r.created_at_ms && v.input_id === r.input_id && v.result_digest === r.result_digest && v.winner === r.result.winner && v.method === r.result.method && v.end_round === r.result.end_round && v.end_tick === r.result.end_tick);
+  requireValue(same(source.event, r.source.event) && source.card_record_digest === r.source.card_record_digest && source.card_source_digest === r.source.card_source_digest && source.card_created_at_ms === r.source.card_created_at_ms && source.finalized_at_ms === r.source.finalized_at_ms && v.usable === source.usable);
+}
+function bookedResultValue(v, run = false) { exact(v, run ? ['version', 'record', 'status', 'replayed'] : ['version', 'record', 'status']); requireValue(v.version === 1 && (!run || typeof v.replayed === 'boolean') && entryBytes(v) <= 249856); bookedRecordValue(v.record); bookedStatusValue(v.status); bookedMatchRecord(v.record, v.status); return v; }
+function bookedJobValue(j) {
+  exact(j, ['version', 'job_id', 'kind', 'state', 'view', 'store_id', 'card_id', 'saturday', 'bout_id', 'error', 'result']); entryDateValue(j.saturday);
+  requireValue(j.version === 1 && hex(j.job_id) && j.kind === 'run' && ['queued', 'running', 'completed', 'failed', 'cancelled'].includes(j.state) && viewKey(checkedView(j.view)) === currentKey() && j.store_id === bookedAuthority.storeID && hex(j.card_id) && hex(j.bout_id) && entryBytes(j) <= BOOKED_RESULT_MAX);
+  if (j.state === 'completed') { requireValue(j.error === '' && j.result !== null); bookedResultValue(j.result, true); requireValue(j.card_id === j.result.record.card_id && j.bout_id === j.result.record.bout_id && j.saturday === j.result.record.source.event.saturday); }
+  else { requireValue(j.result === null); if (['queued', 'running'].includes(j.state)) requireValue(j.error === ''); else requireValue(BOOKED_ERRORS.has(j.error) && j.error !== 'bout_setup_incomplete' && (j.state !== 'cancelled' || j.error === 'bout_cancelled')); }
+  return j;
+}
+function bookedEnvelope(r, field) {
+  exact(r, ['id', 'ok', 'view', 'store_id', 'snapshot', 'card_status', 'status', 'record', 'job', 'error']); requireValue(int(r.id, 1) && typeof r.ok === 'boolean' && entryBytes(r) + 1 <= 262144);
+  const fields = ['snapshot', 'card_status', 'status', 'record', 'job'];
+  if (!r.ok) { requireValue(r.view === null && r.store_id === '' && fields.every(k => r[k] === null) && BOOKED_ERRORS.has(r.error)); return { ok: false, error: r.error }; }
+  requireValue(r.error === '' && fields.every(k => k === field ? r[k] !== null : r[k] === null)); const v = r[field];
+  if (field === 'snapshot') {
+    exact(v, ['version', 'state', 'error', 'view', 'store_id', 'pin', 'source_created_at_ms', 'created_at_ms', 'active_job_id', 'queued_job_id', 'last_job_id']);
+    requireValue(v.version === 1 && ['ready', 'busy', 'failed', 'unavailable', 'setup_incomplete'].includes(v.state) && int(v.source_created_at_ms, 0, DATE_MAX) && int(v.created_at_ms, 0, DATE_MAX) && ['active_job_id', 'queued_job_id', 'last_job_id'].every(k => optionalID(v[k])) && same(r.view, v.view) && r.store_id === v.store_id);
+    if (['unavailable', 'setup_incomplete'].includes(v.state)) { requireValue(v.pin === null && v.store_id === '' && v.source_created_at_ms === 0 && v.created_at_ms === 0 && !v.active_job_id && !v.queued_job_id && !v.last_job_id && v.error === (v.state === 'unavailable' ? 'bout_unavailable' : 'bout_setup_incomplete')); requireValue(v.state === 'unavailable' ? v.view === null : viewKey(checkedView(v.view)) === currentKey()); }
+    else {
+      requireValue(!!cardAuthority && viewKey(checkedView(v.view)) === currentKey() && hex(v.store_id)); exact(v.pin, ['version', 'source_store_id', 'source_pin', 'rules_id']);
+      requireValue(v.pin.version === 1 && v.pin.source_store_id === cardAuthority.storeID && same(v.pin.source_pin, cardAuthority.pin) && v.pin.rules_id === BOOKED_RULES && v.source_created_at_ms === cardAuthority.createdMS && int(v.created_at_ms, v.source_created_at_ms, DATE_MAX));
+      const ids = [v.active_job_id, v.queued_job_id, v.last_job_id].filter(Boolean); requireValue(new Set(ids).size === ids.length && !(v.active_job_id && v.queued_job_id) && (!(v.active_job_id || v.queued_job_id) || v.state === 'busy') && (v.state === 'failed' ? ['bout_unavailable', 'bout_corrupt', 'bout_clock', 'bout_source_changed'].includes(v.error) : v.error === '') && (v.state !== 'failed' || !v.active_job_id && !v.queued_job_id));
+      const authority = { pin: v.pin, storeID: v.store_id, sourceCreatedMS: v.source_created_at_ms, createdMS: v.created_at_ms }; requireValue(!bookedAuthority || same(bookedAuthority, authority));
+      if (!bookedAuthority) { v.pin.source_pin = cardAuthority.pin; bookedAuthority = authority; } v.pin = bookedAuthority.pin;
+    } return { ok: true, value: v };
+  }
+  requireValue(bookedReady() && viewKey(checkedView(r.view)) === currentKey() && r.store_id === bookedAuthority.storeID);
+  if (field === 'status' || field === 'card_status') bookedStatusValue(v, field === 'card_status');
+  else if (field === 'record') bookedResultValue(v); else bookedJobValue(v);
+  return { ok: true, value: v };
+}
+function bookedError(code, run = false) {
+  if (code === 'outcome_unknown') return run ? 'The candidate transcript may have been saved. Use Check saved result before another explicit Run.' : 'The local source observation could not be confirmed. Check saved result after reopening the gym. No fight was requested by this read.';
+  return ({ bout_setup_incomplete: 'The shared card setup is not ready. Sign in to both demo gyms first.', bout_unavailable: 'Saved bouts are unavailable in this route. Durable results remain retained.', bout_source_incomplete: 'A complete saved card with its fixed finalized seed is required.', bout_source_conflict: 'The retained seed has conflicting evidence. New runs are blocked; saved transcripts remain historical evidence.', bout_source_changed: 'The selected source identity changed. Reopen the gym before disclosing this saved transcript.', bout_not_found: 'No saved transcript was found. A new run requires a separate explicit Run action.', bout_capacity: 'The saved-bout store or display is full. Clear displayed details to release display space; saved transcripts are retained.', bout_clock: 'The local authority clock needs attention. Current usability could not be confirmed.', bout_corrupt: 'Saved evidence failed validation. Reopen the gym; no saved record was replaced.', bout_cancelled: 'The request was cancelled. Check saved result before another Run.', bout_calendar: 'Choose a supported Saturday in the entry panel.' })[code] ?? textError(code);
+}
+function bookedRefusal(code, run = false, selection = null) {
+  if (['unauthorized', 'stale_view'].includes(code)) { clearBooked(); bookedUnavailable = true; }
+  else if (!['busy', 'invalid_request', 'bout_calendar', 'bout_cancelled', 'bout_capacity'].includes(code)) { pauseBooked(); bookedClearImages(); bookedOverlayKnown = false; bookedOverlayRead = true; }
+  if (code === 'bout_unavailable') bookedUnavailable = true;
+  if (run && code === 'outcome_unknown') bookedUnknown = { date: selection?.date ?? entryDate, boutID: selection?.boutID ?? bookedSelected };
+  bookedMessage = bookedError(code, run); renderBooked();
+}
+function bookedStatusInvariant(old, next) {
+  if (!old || old.saved.bout.bout_id !== next.saved.bout.bout_id) return;
+  requireValue(old.card_id === next.card_id && same(old.saved.bout, next.saved.bout) && old.saved.source_digest === next.saved.source_digest && (!old.saved.exists || next.saved.exists && ['record_digest', 'created_at_ms', 'input_id', 'result_digest', 'winner', 'method', 'end_round', 'end_tick'].every(k => old.saved[k] === next.saved[k])));
+}
+function bookedAdoptStatus(s, terminal = false) {
+  bookedStatusInvariant(bookedStatus, s); if (bookedRecord) bookedMatchRecord(bookedRecord, s);
+  if (terminal && (bookedOverlayRead || bookedStatus && bookedStatus.observed_at_ms > s.observed_at_ms)) return;
+  requireValue(!bookedStatus || s.observed_at_ms >= bookedStatus.observed_at_ms);
+  bookedStatus = s; bookedOverlayKnown = true; if (!terminal) bookedOverlayRead = true;
+}
+function bookedAdoptResult(v, terminal = false) {
+  if (bookedRecord) requireValue(same(bookedRecord, v.record));
+  const previous = [bookedRecord, bookedStatus, bookedOverlayKnown, bookedOverlayRead, bookedUnknown];
+  bookedAdoptStatus(v.status, terminal); bookedRecord = bookedRecord ?? v.record;
+  if (bookedUnknown?.boutID === v.record.bout_id && bookedUnknown.date === v.record.source.event.saturday) bookedUnknown = null;
+  if (!bookedCapacity()) { [bookedRecord, bookedStatus, bookedOverlayKnown, bookedOverlayRead, bookedUnknown] = previous; throw bookedCacheError(); }
+  pauseBooked(); bookedStep = 0;
+}
+async function fetchBookedSnapshot() {
+  if (!ready() || !cardAuthority || bookedUnavailable) return; const c = bookedContext(), prior = [bookedSnapshot, bookedAuthority];
+  try {
+    const raw = await call('BoutSnapshot'); if (!bookedCurrent(c)) return; const r = bookedEnvelope(raw, 'snapshot'); if (!r.ok) { bookedRefusal(r.error); return; }
+    bookedSnapshot = r.value; if (!bookedCapacity()) { [bookedSnapshot, bookedAuthority] = prior; throw bookedCacheError(); }
+    if (['unavailable', 'failed'].includes(r.value.state)) { bookedRefusal(r.value.error); return; }
+    const id = bookedWatch?.id || r.value.active_job_id || r.value.queued_job_id || r.value.last_job_id;
+    if (id && (bookedWatch || id !== bookedLastJob)) await bookedFetchJob(id);
+  } catch (e) { if (bookedCurrent(c)) { [bookedSnapshot, bookedAuthority] = prior; bookedRefusal(e.boutCode ?? 'bout_unavailable'); } } renderBooked();
+}
+async function bookedRead(kind) {
+  if (!bookedReady() || !entryDate || !['card_status', 'status', 'record'].includes(kind) || kind !== 'card_status' && !bookedSelected) return;
+  const c = bookedContext();
+  try {
+    const raw = await call({ card_status: 'BoutCardStatus', status: 'BoutStatus', record: 'BoutRecord' }[kind], c.viewID, c.date, ...(kind === 'card_status' ? [] : [c.boutID]));
+    if (!bookedCurrent(c, true)) return; const r = bookedEnvelope(raw, kind); if (!r.ok) { bookedRefusal(r.error); return; }
+    const s = kind === 'record' ? r.value.status : r.value; requireValue(s.source.event.saturday === c.date && (kind === 'card_status' || s.saved.bout.bout_id === c.boutID));
+    if (kind === 'card_status') {
+      if (bookedPage) { requireValue(s.card_id === bookedPage.card_id && s.observed_at_ms >= bookedPage.observed_at_ms); for (const old of bookedPage.bouts) { const next = s.bouts.find(v => v.bout.bout_id === old.bout.bout_id); requireValue(!!next); bookedStatusInvariant({ card_id: s.card_id, saved: old }, { card_id: s.card_id, saved: next }); } }
+      const prior = [bookedPage, bookedStatus, bookedOverlayKnown, bookedOverlayRead];
+      try { bookedPage = s; const selected = s.bouts.find(v => v.bout.bout_id === c.boutID); if (selected) bookedAdoptStatus({ version: 1, store_id: s.store_id, card_id: s.card_id, observed_at_ms: s.observed_at_ms, source: s.source, saved: selected }); if (!bookedCapacity()) throw bookedCacheError(); }
+      catch (e) { [bookedPage, bookedStatus, bookedOverlayKnown, bookedOverlayRead] = prior; throw e; }
+    } else if (kind === 'record') bookedAdoptResult(r.value);
+    else { const prior = [bookedStatus, bookedOverlayKnown, bookedOverlayRead]; bookedAdoptStatus(s); if (!bookedCapacity()) { [bookedStatus, bookedOverlayKnown, bookedOverlayRead] = prior; throw bookedCacheError(); } }
+    if (kind !== 'card_status' && bookedUnknown?.date === c.date && bookedUnknown.boutID === c.boutID) bookedUnknown = null;
+    bookedMessage = kind === 'record' ? 'Saved candidate transcript opened. Playback is paused.' : 'Saved bout status checked. This read did not refresh the chain or run a fight.';
+  } catch (e) { if (bookedCurrent(c, true)) bookedRefusal(e.boutCode ?? 'bout_unavailable'); } renderBooked();
+}
+function bookedSelect(id) {
+  const row = bookedPage?.bouts.find(v => v.bout.bout_id === id); if (!row || !bookedReady() || command) return;
+  bookedSerial++; bookedClearRecord(); bookedSelected = id; bookedStatus = { version: 1, store_id: bookedPage.store_id, card_id: bookedPage.card_id, observed_at_ms: bookedPage.observed_at_ms, source: bookedPage.source, saved: row }; bookedOverlayKnown = true; bookedOverlayRead = true; bookedMessage = row.exists ? 'Open the saved candidate transcript to replay it.' : 'This booked bout has not been run. Run is an explicit action.'; renderBooked();
+}
+function bookedCheck() {
+  if (bookedUnknown?.boutID && bookedUnknown.date) { const pending = bookedUnknown; if (entryDate !== pending.date) { entryDate = pending.date; ui['entry-date'].value = entryDate; eventSelectDate(entryDate); } if (bookedSelected !== pending.boutID) { bookedSerial++; bookedClearRecord(); bookedStatus = null; bookedSelected = pending.boutID; bookedOverlayKnown = bookedOverlayRead = false; } }
+  const c = bookedContext(); queue(() => bookedCurrent(c, true) ? bookedRead('status') : undefined, 'bout-check');
+}
+async function bookedBegin() {
+  const selected = bookedStatus?.saved;
+  if (!bookedReady() || !bookedSelected || bookedWatch || bookedUnknown || bookedSnapshot.state === 'busy' || !bookedOverlayKnown || !bookedStatus?.source.usable || !selected || selected.exists || bookedRecord || selected.bout.bout_id !== bookedSelected) return;
+  const c = bookedContext(), priorWatch = bookedWatch; bookedWatch = { id: '', state: 'queued', date: c.date, boutID: c.boutID, cardID: bookedStatus.card_id };
+  if (!bookedCapacity()) { bookedWatch = priorWatch; bookedMessage = bookedError('bout_capacity'); return; } pauseBooked();
+  try {
+    const raw = await call('BeginBoutRun', c.viewID, c.date, c.boutID); if (!bookedCurrent(c)) return; const r = bookedEnvelope(raw, 'job');
+    if (!r.ok) { bookedWatch = priorWatch; bookedRefusal(r.error, true, c); return; }
+    const j = r.value; requireValue(j.state === 'queued' && j.saturday === c.date && j.bout_id === c.boutID && j.card_id === bookedWatch.cardID);
+    bookedTerminal = null; bookedWatch = { id: j.job_id, state: j.state, date: j.saturday, boutID: j.bout_id, cardID: j.card_id };
+    if (bookedCurrent(c, true)) { bookedClearRecord(); bookedOverlayRead = false; } bookedMessage = 'Candidate bout queued. No record or award is granted.';
+  } catch { if (bookedCurrent(c)) { bookedWatch = priorWatch; bookedRefusal('outcome_unknown', true, c); } } renderBooked();
+}
+function bookedTerminalKey(j) { return JSON.stringify([j.job_id, j.state, viewKey(j.view), j.store_id, j.card_id, j.saturday, j.bout_id, j.error, j.result?.status ?? null, j.result?.replayed ?? null]); }
+async function bookedFetchJob(id) {
+  if (!bookedReady()) return; const c = bookedContext(), expected = bookedWatch; let rollback = null;
+  try {
+    const raw = await call('BoutJob', c.viewID, id); if (!bookedCurrent(c) || expected !== bookedWatch) return; const r = bookedEnvelope(raw, 'job');
+    if (!r.ok) { if (r.error !== 'busy') { bookedWatch = null; bookedRefusal(r.error, !expected || !!expected.id, expected ? { date: expected.date, boutID: expected.boutID } : c); } return; }
+    const j = r.value; requireValue(j.job_id === id && (!expected || j.saturday === expected.date && j.bout_id === expected.boutID && j.card_id === expected.cardID && !(expected.state === 'running' && j.state === 'queued')));
+    if (['queued', 'running'].includes(j.state)) { const prior = bookedWatch; bookedWatch = { id, state: j.state, date: j.saturday, boutID: j.bout_id, cardID: j.card_id }; if (!bookedCapacity()) { bookedWatch = prior; throw bookedCacheError(); } return; }
+    const key = bookedTerminalKey(j); if (bookedTerminal?.id === id) requireValue(bookedTerminal.key === key);
+    rollback = [bookedWatch, bookedLastJob, bookedTerminal, bookedRecord, bookedStatus, bookedOverlayKnown, bookedOverlayRead, bookedUnknown];
+    bookedWatch = null; bookedLastJob = id; bookedTerminal = { id, key };
+    if (j.state === 'completed') {
+      if (bookedCurrent(c, true) && j.saturday === entryDate && j.bout_id === bookedSelected) bookedAdoptResult(j.result, true);
+      bookedMessage = j.result.replayed ? 'The original saved candidate transcript was recovered.' : 'The candidate transcript was saved. Open it to replay; no record, XP or prize was awarded.';
+    } else bookedRefusal(j.error, true, { date: j.saturday, boutID: j.bout_id });
+    if (!bookedCapacity()) throw bookedCacheError();
+  } catch (e) { if (bookedCurrent(c)) { if (rollback) [bookedWatch, bookedLastJob, bookedTerminal, bookedRecord, bookedStatus, bookedOverlayKnown, bookedOverlayRead, bookedUnknown] = rollback; if (e.boutCode === 'bout_capacity') bookedMessage = bookedError(e.boutCode); else { bookedWatch = null; bookedRefusal('outcome_unknown', true, expected ? { date: expected.date, boutID: expected.boutID } : c); } } } renderBooked();
+}
+async function bookedCancel() {
+  if (!bookedReady() || !bookedWatch?.id) return; const c = bookedContext(), w = bookedWatch;
+  try { const raw = await call('CancelBoutJob', c.viewID, w.id); if (!bookedCurrent(c)) return; const r = bookedEnvelope(raw, 'job'); if (!r.ok) { bookedRefusal(r.error, true, { date: w.date, boutID: w.boutID }); return; } requireValue(r.value.job_id === w.id && r.value.saturday === w.date && r.value.bout_id === w.boutID && r.value.card_id === w.cardID && !(w.state === 'running' && r.value.state === 'queued')); await bookedFetchJob(w.id); }
+  catch { if (bookedCurrent(c)) bookedRefusal('outcome_unknown', true, { date: w.date, boutID: w.boutID }); } renderBooked();
+}
+function bookedNextPortrait() { return bookedReady() && bookedRecord && bookedOverlayKnown ? bookedRecord.source.corners.find(v => !bookedImageAttempts.has(v.member.assignment.prospect_id)) ?? null : null; }
+async function loadBookedPortrait(corner) {
+  const c = bookedContext(), record = bookedRecord, a = corner.member.assignment; if (!record) return; bookedImageAttempts.add(a.prospect_id);
+  const remains = () => bookedCurrent(c, true) && bookedRecord === record;
+  try {
+    const r = await call('BoutPortrait', c.viewID, c.date, c.boutID, a.prospect_id); if (!remains()) return;
+    exact(r, ['version', 'ok', 'portrait', 'status', 'error']); requireValue(r.version === 1 && typeof r.ok === 'boolean' && entryBytes(r) <= 49152);
+    if (!r.ok) { requireValue(r.portrait === null && r.status === null && BOOKED_ERRORS.has(r.error) && r.error !== 'bout_setup_incomplete'); bookedRefusal(r.error); renderBooked(); return; }
+    requireValue(r.error === ''); const p = r.portrait;
+    exact(p, ['version', 'view', 'store_id', 'card_id', 'saturday', 'bout_id', 'prospect_id', 'record_digest', 'input_id', 'result_digest', 'descriptor_id', 'manifest_digest', 'portrait_digest', 'svg']);
+    requireValue(p.version === 1 && viewKey(checkedView(p.view)) === c.view && p.store_id === bookedAuthority.storeID && p.card_id === record.card_id && p.saturday === c.date && p.bout_id === c.boutID && p.prospect_id === a.prospect_id && p.record_digest === bookedStatus.saved.record_digest && p.input_id === record.input_id && p.result_digest === record.result_digest && p.descriptor_id === DESCRIPTOR && p.manifest_digest === a.manifest_digest && p.portrait_digest === a.portrait_digest && entryBytes(p.svg) <= 32768 && imageOnlySVG(p.svg));
+    bookedStatusValue(r.status); bookedMatchRecord(record, r.status); const old = [bookedStatus, bookedOverlayKnown, bookedOverlayRead]; bookedAdoptStatus(r.status);
+    const src = `data:image/svg+xml;base64,${btoa(p.svg)}`, priorImage = bookedImages.get(a.prospect_id); bookedImages.set(a.prospect_id, src);
+    if (!bookedCapacity()) { if (priorImage) bookedImages.set(a.prospect_id, priorImage); else bookedImages.delete(a.prospect_id); [bookedStatus, bookedOverlayKnown, bookedOverlayRead] = old; throw bookedCacheError(); }
+  } catch (e) { if (remains()) bookedRefusal(e.boutCode ?? 'bout_unavailable'); } renderBooked();
+}
+function bookedTicks() { return bookedRecord ? bookedRecord.result.rounds.reduce((n, r) => n + r.ticks.length, 0) : 0; }
+function stepBooked(n) { pauseBooked(); bookedStep = Math.max(0, Math.min(bookedTicks(), n)); renderBooked(); }
+function playBooked() {
+  if (!bookedRecord || !bookedReady() || motionPreference?.matches || document.hidden || command) return;
+  if (bookedTimer !== null) { pauseBooked(); renderBooked(); return; } if (bookedStep >= bookedTicks()) bookedStep = 0;
+  const c = bookedContext(), r = bookedRecord; const tick = () => { bookedTimer = null; if (!bookedCurrent(c, true) || bookedRecord !== r || document.hidden || motionPreference?.matches || command) return; bookedStep++; if (bookedStep < bookedTicks()) bookedTimer = setTimeout(tick, 250); renderBooked(); }; bookedTimer = setTimeout(tick, 250); renderBooked();
+}
+function renderBooked() {
+  const active = bookedReady(), selected = bookedStatus?.saved, busy = !!command || !!bookedWatch || bookedSnapshot?.state === 'busy';
+  content(ui['bout-state'], !ready() ? 'Sign in to view saved bouts' : bookedUnavailable ? 'Unavailable in this route' : bookedSnapshot?.state === 'setup_incomplete' ? 'Setup incomplete' : bookedWatch ? 'Candidate bout in progress' : bookedRecord ? 'Saved candidate transcript' : 'Booked bouts'); content(ui['bout-message'], bookedUnknown ? `${bookedError('outcome_unknown', true)} Pending Saturday ${bookedUnknown.date || 'unknown'} · ${bookedUnknown.boutID || 'waiting for job identity'}.` : bookedMessage);
+  ui['bout-refresh'].disabled = !active || busy || !entryDate; ui['bout-run'].disabled = !active || busy || !selected || selected.exists || !!bookedRecord || !bookedOverlayKnown || !bookedStatus.source.usable || !!bookedUnknown;
+  ui['bout-check'].disabled = !active || busy || !(bookedSelected || bookedUnknown?.boutID); ui['bout-open'].disabled = !active || busy || !selected?.exists; ui['bout-cancel'].disabled = !active || !!command || !bookedWatch?.id; ui['bout-clear'].disabled = !bookedRecord && !bookedPage;
+  const displayed = bookedPage?.bouts.map(v => bookedStatus?.saved.bout.bout_id === v.bout.bout_id ? bookedStatus.saved : v) ?? [];
+  const key = bookedPage ? JSON.stringify([bookedPage.card_id, bookedSelected, bookedRecord?.bout_id ?? '', busy, displayed.map(v => [v.bout.bout_id, v.exists, v.method, v.usable])]) : '';
+  if (ui['bout-list']._key !== key) { ui['bout-list']._key = key; ui['bout-list'].textContent = ''; if (bookedPage) for (const v of displayed) { const b = v.bout, li = element('li'), button = element('button', '', `${label(b.class)} · ${v.exists || bookedRecord?.bout_id === b.bout_id ? 'Saved candidate transcript' : 'Not run'}`); button.type = 'button'; button.disabled = !active || !!command; button.setAttribute('aria-pressed', b.bout_id === bookedSelected ? 'true' : 'false'); button.addEventListener('click', () => bookedSelect(b.bout_id)); const detail = element('details'); detail.append(element('summary', '', 'Booked fighter identities'), element('p', 'note card-identities', `${b.corner_a} vs ${b.corner_b}`)); li.append(button, detail); ui['bout-list'].append(li); } }
+  const source = bookedStatus?.source ?? bookedPage?.source, conflict = source && (source.conflict_count > 0 || source.conflict_overflow);
+  content(ui['bout-source'], source ? `${source.event.saturday} · Original noon condition ${new Date(source.event.cutoff_ms).toISOString()}. ${source.chain_observed_at_ms ? `Last verified chain observation ${new Date(source.chain_observed_at_ms).toISOString()}.` : 'No verified chain observation.'} Local status ${new Date(bookedStatus?.observed_at_ms ?? bookedPage.observed_at_ms).toISOString()}.` : 'Choose a Saturday above and read its booked-bout status. Unmatched fighters remain listed in the card.');
+  content(ui['bout-overlay'], !bookedOverlayKnown && bookedStatus ? 'Current source usability is unconfirmed. The retained transcript is historical evidence.' : conflict ? 'Seed conflict: new runs are blocked. The saved transcript and its original noon inputs remain unchanged.' : source ? source.usable ? 'Candidate source usable at the last local observation; this is not continuous chain monitoring.' : 'The source is not currently usable for a new candidate run.' : '');
+  if (source?.incident_at_ms) content(ui['bout-overlay'], `${ui['bout-overlay'].textContent} Incident first observed ${new Date(source.incident_at_ms).toISOString()}. No event cancellation or reseed.`);
+  content(ui['bout-empty'], bookedPage ? bookedPage.bouts.length ? '' : bookedPage.source.card_exists ? 'This saved card has no booked bouts. Unmatched entrants have no loss.' : 'No card is saved for this Saturday.' : '');
+  ui['bout-replay'].hidden = !bookedRecord; if (!bookedRecord) return;
+  const r = bookedRecord, result = r.result, fighters = [r.input.a, r.input.b], names = fighters.map(v => v.manifest.name.display);
+  content(ui['bout-asof'], `Noon inputs ${new Date(r.input.as_of_ms).toISOString()} · Transcript saved ${new Date(r.created_at_ms).toISOString()}. Later retirement does not change these inputs.`);
+  const rendered = r.result_digest + JSON.stringify([...bookedImages.keys()]);
+  if (bookedRendered !== rendered) {
+    bookedRendered = rendered; ui['bout-fighters'].textContent = ''; for (const [n, f] of fighters.entries()) { const box = element('div', 'preview-fighter'), corner = r.source.corners[n], src = bookedImages.get(f.prospect_id); if (src) { const img = element('img'); img.setAttribute('src', src); img.setAttribute('alt', `Candidate portrait of ${names[n]}`); img.setAttribute('width', '160'); img.setAttribute('height', '160'); box.append(img); } box.append(element('strong', '', names[n]), element('span', 'note', `${cardGymName(corner.owner.gym_id)} at noon · ${label(corner.member.condition_at_cutoff.phase)} · Rating ${(corner.member.condition_at_cutoff.rating_hundredths / 100).toFixed(2)} · XP 0 · Training 0`)); ui['bout-fighters'].append(box); }
+    ui['bout-scores'].textContent = ''; ui['bout-scores'].append(element('caption', '', 'Whole-fight scorecard')); const head = element('tr'); for (const title of ['Component', ...names]) { const th = element('th', '', title); th.setAttribute('scope', 'col'); head.append(th); } const thead = element('thead'); thead.append(head); ui['bout-scores'].append(thead); const body = element('tbody');
+    for (const [k, title] of [['damage_tenths', 'Damage'], ['knockdown_tenths', 'Knockdowns'], ['accuracy_tenths', 'Accuracy'], ['volume_tenths', 'Volume'], ['control_tenths', 'Control'], ['total_tenths', 'Total']]) { const row = element('tr'), th = element('th', '', title); th.setAttribute('scope', 'row'); row.append(th, ...result.scores.map(s => element('td', '', (s[k] / 10).toFixed(1)))); body.append(row); } ui['bout-scores'].append(body);
+  }
+  content(ui['bout-play'], bookedTimer === null ? 'Play' : 'Pause'); ui['bout-play'].disabled = !active || !!command || !!motionPreference?.matches; ui['bout-previous'].disabled = bookedStep === 0; ui['bout-next'].disabled = bookedStep >= bookedTicks(); content(ui['bout-motion'], motionPreference?.matches ? 'Reduced motion is on. Step through or show the result.' : 'Playback is local. Pause or step through at any time.');
+  ui['bout-events'].textContent = ''; let n = 0, last = null; for (const round of result.rounds) for (const t of round.ticks) { if (++n > bookedStep) break; last = { round: round.number, tick: t.number }; ui['bout-events'].append(element('li', '', `Round ${round.number}, tick ${t.number}: ${names[t.actor]} ${t.hit ? 'lands' : 'misses'} a ${t.strike}.${t.knockdown ? ' Knockdown.' : ''}${t.stoppage ? ` ${label(t.stoppage)}.` : ''}`)); }
+  content(ui['bout-step'], last ? `Round ${last.round}, tick ${last.tick} · Step ${bookedStep} of ${bookedTicks()}` : 'Paused at the opening bell.'); ui['bout-outcome'].hidden = bookedStep < bookedTicks();
+  const winner = fighters.find(v => v.prospect_id === result.winner)?.manifest.name.display; content(ui['bout-finish'], result.method === 'decision_draw' ? 'Candidate draw — equal whole-fight scores' : result.method === 'double_corner_stoppage' ? 'Candidate draw — both corners stopped the fight' : `${winner} wins the candidate bout by ${label(result.method)}.`);
+  content(ui['bout-evidence'], `Bout ${r.bout_id} · Input ${r.input_id} · Result ${r.result_digest}`); requireValue(entryBytes([key, rendered, ui['bout-evidence'].textContent]) <= 4096);
+}
+motionPreference?.addEventListener('change', () => { pauseBooked(); renderBooked(); });
+
 ui['event-refresh'].addEventListener('click', () => queueEventSelection(() => eventReadStatus(), 'event-status'));
 ui['event-capture'].addEventListener('click', () => queueEventSelection(eventBegin, 'event-capture'));
 ui['event-cancel'].addEventListener('click', () => queue(eventCancel, 'event-cancel'));
@@ -1586,6 +1865,13 @@ ui['entry-abandon'].addEventListener('click', () => queue(entryAbandon, 'entry-a
 ui['entry-history'].addEventListener('click', () => queue(() => entryReadHistory(), 'entry-history'));
 ui['entry-history-next'].addEventListener('click', () => queue(() => entryReadHistory(entryHistory?.next_event_id ?? ''), 'entry-history'));
 
+for (const [id, kind] of [['bout-refresh', 'card_status'], ['bout-open', 'record']]) ui[id].addEventListener('click', () => { const c = bookedContext(); queue(() => bookedCurrent(c, true) ? bookedRead(kind) : undefined, `bout-${kind}`); });
+ui['bout-check'].addEventListener('click', bookedCheck);
+ui['bout-run'].addEventListener('click', () => { const c = bookedContext(); queue(() => bookedCurrent(c, true) ? bookedBegin() : undefined, 'bout-run'); });
+ui['bout-cancel'].addEventListener('click', () => queue(bookedCancel, 'bout-cancel'));
+ui['bout-clear'].addEventListener('click', () => { bookedSerial++; bookedClearRecord(); bookedPage = bookedStatus = null; bookedSelected = ''; bookedOverlayKnown = bookedOverlayRead = false; renderBooked(); });
+ui['bout-play'].addEventListener('click', playBooked); ui['bout-previous'].addEventListener('click', () => stepBooked(bookedStep - 1)); ui['bout-next'].addEventListener('click', () => stepBooked(bookedStep + 1)); ui['bout-restart'].addEventListener('click', () => stepBooked(0)); ui['bout-result'].addEventListener('click', () => stepBooked(bookedTicks()));
+
 ui['preview-begin'].addEventListener('click', () => queue(async () => { try { await beginPreview(); } catch { discardPreviewResult(); previewMessage = previewError('outcome_unknown'); } }, 'preview'));
 ui['preview-cancel'].addEventListener('click', () => queue(async () => { try { await cancelPreview(); } catch { previewMessage = previewError('preview_unavailable'); } }, 'preview-cancel'));
 ui['preview-clear'].addEventListener('click', () => selectionChanged([]));
@@ -1609,7 +1895,7 @@ ui.abandon.addEventListener('click', () => queue(async () => {
 }, 'abandon'));
 ui['cancel-job'].addEventListener('click', () => queue(() => cancelJob(watched?.id || stable?.active_job_id || stable?.queued_job_id), 'cancel'));
 ui['export-recovery'].addEventListener('click', () => oldAction('ExportRecovery')); ui['verify-backup'].addEventListener('click', () => oldAction('VerifyBackup'));
-document.addEventListener('visibilitychange', () => { if (document.hidden) pausePreview(); if (!document.hidden && enabled) { pollWanted = true; pump(); } else if (timer !== null) { clearTimeout(timer); timer = null; } });
+document.addEventListener('visibilitychange', () => { if (document.hidden) { pausePreview(); pauseBooked(); } if (!document.hidden && enabled) { pollWanted = true; pump(); } else if (timer !== null) { clearTimeout(timer); timer = null; } });
 window.addEventListener('pagehide', () => { disposed = true; epoch++; clearEvent(); clearEntry(); clearPreview(); tasks = []; if (timer !== null) clearTimeout(timer); timer = null; clearCards(); pageItems = []; current = stable = null; });
 render();
 (async () => { try { requireValue(await call('Mode') === MODE); if (disposed) return; enabled = true; pollWanted = true; pump(); } catch { connectionError = 'Open this page through the candidate stable mode.'; render(); } })();

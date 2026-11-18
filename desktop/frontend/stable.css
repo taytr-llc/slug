@@ -15,3 +15,8 @@
 @media (prefers-reduced-motion: reduce) { .fight-preview * { scroll-behavior: auto; } }
 
 .saturday-entry h3{font-size:15px;margin:20px 0 8px}.entry-date-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:16px}.entry-date-row input{font:inherit;color:#e9eee5;background:#202c19;border:1px solid #657c50;border-radius:5px;padding:10px}.entry-date-row input:focus-visible{outline:3px solid #d3ff9e;outline-offset:3px}.entry-draft{padding-left:22px;display:grid;gap:10px}.entry-draft button{margin-left:10px;padding:7px 10px}.entry-history,.entry-eligibility{padding-left:22px;line-height:1.7;overflow-wrap:anywhere}.entry-history button{margin:5px 10px 5px 0}.entry-draft small{display:block;overflow-wrap:anywhere;color:#b2bea7}.entry-date-row label{font-weight:600}.saturday-entry .actions{margin-top:12px}
+
+.saved-bouts { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border, #d2d5d8); }
+.saved-bouts button[aria-pressed="true"] { outline: 2px solid currentColor; outline-offset: 2px; }
+.saved-bouts .card-pairings li { display: grid; gap: .5rem; margin-block: .75rem; }
+.saved-bouts .card-pairings button { justify-self: start; }

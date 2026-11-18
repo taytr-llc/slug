@@ -411,6 +411,11 @@ does not understand. Never detach, replace, or clear the /data volume.
   not the current login. Never infer professional record authority from XP or
   award results/training from a card. See EVENT_CARDS.md.
 
+- Set 47's saved candidate bout transcripts grant no professional/exhibition
+  records, XP, training, title or ownership. Preserve the booked noon inputs,
+  fixed seed and complete first result across replay; report current source
+  conflicts separately without rewriting history. See EVENT_BOUTS.md.
+
 - Set 39 adds explicitly pinned candidate service protocol 3 and a separately
   typed worker/outbox version 2. Preserve old services, workers and journals;
   never infer trust from a marker or silently migrate old evidence. Bind the

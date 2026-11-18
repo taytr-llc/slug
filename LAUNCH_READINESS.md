@@ -157,9 +157,16 @@ they do not count as completion of this product-release gate.
   Successful closed-event booking uses separate scoped-clock normal-PoW evidence;
   the normal-clock package covers setup, open/pending/refusal and recovery flows.
   GitHub returned no runs/checks, so remote CI is not claimed passed. Earlier
-  failed package/race evidence remains preserved. Set 47 now prepares retained
-  candidate bouts and replay; professional results and awards remain absent. See
+  failed package/race evidence remains preserved. See
   `CANDIDATE_CARD_EXCEPTION.md`, `EVENT_CARDS.md` and `CHANGESET_46_NOTES.md`.
+- Set 47 implements saved candidate bouts and immutable replay. Implementation
+  checks and independent verification of the actual native first Run and
+  historical conflict replay pass. The scoped-clock, normal-PoW test prepares
+  its seed through real authenticated core actions without automatic admissions.
+  Final normal-clock app packaging and deployment observation remain pending;
+  GUI/portrait/native chooser/accessibility and the joint D74 review stay open.
+  Candidate transcripts grant no professional/exhibition records, XP, awards,
+  titles or ownership. See `EVENT_BOUTS.md` and `CHANGESET_47_NOTES.md`.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
