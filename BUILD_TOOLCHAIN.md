@@ -4,7 +4,19 @@ Set 48 locally qualified `slug-go1274-no-cse-v1` for candidate application check
 Go 1.27.4 with `-gcflags=all=-d=ssa/generic_cse/off,ssa/lowered_cse/off`.
 `build-profile.json` records the exact profile. This is a temporary workaround,
 not a claim that the upstream compiler is fixed or that production launch is
-approved. Normal Mac package and deployment acceptance remain pending.
+approved. The exact implementation `de4c1497` also passed the normal Mac package
+and the `cc4f41e4` engineering deployment's final observation. See
+`CHANGESET_48_NOTES.md` for the final evidence. This qualifies only the recorded
+candidate scope: Mac native/cross-build evidence is separate from the provider's
+container build and deployment, and no local Docker build is claimed.
+
+Supplementary provider evidence in workspace
+`set48-container-build-acceptance.json` records 82 build-log entries confirming
+completed Linux/amd64 build-stage tests, shipping builds and the wrapper's
+embedded-profile verification. This is provider-log evidence only. Direct CLI
+readback failed as unauthorized using both the inherited token and the existing
+login. Raw build metadata and built/runtime hash files were not retrieved or
+independently compared; the failed readbacks remain preserved.
 
 The original two-result reservation test exposed a caller-retained key changing
 after garbage collection under the default compiler. A separate program also

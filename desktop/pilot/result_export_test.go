@@ -110,10 +110,19 @@ func TestResultProofFileExclusiveFencedStreaming(t *testing.T) {
 					t.Fatal("refusal published a file", re)
 				}
 			}
-			entries, _ := os.ReadDir(filepath.Dir(path))
-			for _, x := range entries {
-				if x.Name() == f.name {
-					t.Fatal("temporary file retained")
+			parents := []string{filepath.Dir(path)}
+			if mode == "replaced-parent" {
+				parents = append(parents, filepath.Dir(path)+"-old")
+			}
+			for _, parent := range parents {
+				entries, e := os.ReadDir(parent)
+				if e != nil {
+					t.Fatal("read export directory", parent, e)
+				}
+				for _, x := range entries {
+					if x.Name() == f.name {
+						t.Fatal("temporary file retained", parent)
+					}
 				}
 			}
 		})

@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"syscall"
 	"testing"
 	"time"
 )
@@ -109,10 +110,16 @@ func TestResultActualSIGKILLRecovery(t *testing.T) {
 			if e = cmd.Process.Kill(); e != nil {
 				t.Fatal(e)
 			}
-			if e = <-wait; e == nil {
-				t.Fatal("expected killed child")
-			}
+			e = <-wait
 			joined = true
+			var exit *exec.ExitError
+			if !errors.As(e, &exit) {
+				t.Fatal("expected killed child", e)
+			}
+			status, ok := exit.Sys().(syscall.WaitStatus)
+			if !ok || !status.Signaled() || status.Signal() != syscall.SIGKILL {
+				t.Fatal("not SIGKILL", e)
+			}
 			// Identical concrete source authorities/creation facts, freshly opened in
 			// an isolated test fixture, authenticate recovery of the child's result DB.
 			// This tests result journal durability, not a real network dispatch.

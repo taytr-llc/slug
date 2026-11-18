@@ -172,11 +172,14 @@ they do not count as completion of this product-release gate.
   titles or ownership. See `EVENT_BOUTS.md` and `CHANGESET_47_NOTES.md`.
 
 
-- Set 48 is under integration on `slug-result-publication`: candidate result
-  publication, independent result finality and public proof export. The frozen
-  reference is committed; scoped core/desktop reviews, frontend checks and
-  installer crash recovery pass. The actual-chain run and independent proof
-  checks passed; normal Mac packaging and deployment remain pending.
+- Set 48 completed candidate result publication, independent result finality
+  and public proof export on `slug-result-publication`. Implementation
+  `de4c1497` passed the exact-profile local and normal Mac package gates and
+  was released on master at `cc4f41e4`. The final provider closeout and isolated
+  900.0553332919953-second, 31-sample checkpoint observer
+  passed, including restart and clean owned shutdown. Service configuration and
+  volume settings stayed unchanged. `CHANGESET_48_NOTES.md` records the exact
+  evidence and scope; this engineering deployment is not product-launch approval.
   Build qualification found a Go compiler lifetime
   defect in the original application regression. The documented unoptimized
   build option passes that test ten times and keeps full-capacity selected
@@ -191,10 +194,15 @@ they do not count as completion of this product-release gate.
   seconds. The fresh actual run passed in 286.793 seconds with six proof exports,
   zero new admissions and graceful cleanup; independent verification checked
   279 unique proof headers and all twelve altered-evidence controls were refused.
-  The temporary build profile is locally qualified for this scope; packaging
-  and deployment remain in progress. Preserve both failed-build
-  and timing evidence; no upstream compiler fix is claimed. This work adds
-  no professional records, XP, awards or product-launch approval.
+  The temporary build profile is qualified for this recorded candidate scope;
+  no upstream compiler fix or universal platform guarantee is claimed. Preserve
+  the failed-build and timing evidence, the two original test-assertion findings
+  and the forced-invalidation restart limitation. The two assertions were
+  tightened after closeout and passed their affected normal/race suites without
+  changing shipping code. Normal-calendar package acceptance
+  does not establish a successful closed-event publication. D65, C1, production
+  authority, permanent genesis, portrait/GUI/accessibility and D74 gates remain
+  unchanged. This work adds no professional records, XP or awards.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
