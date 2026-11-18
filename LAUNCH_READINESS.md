@@ -148,8 +148,11 @@ they do not count as completion of this product-release gate.
   official event service. See `CHANGESET_45_NOTES.md` and `EVENT_SEEDS.md`.
 - Set 46 is in progress: candidate booked cards with unmatched counts/reasons
   under the scoped C1 two-gym exception. This does not amend league matchmaking
-  or establish professional results/awards. See `CANDIDATE_CARD_EXCEPTION.md`
-  and `CHANGESET_46_NOTES.md`; no acceptance or rollout is claimed yet.
+  or establish professional results/awards. The implementation and first actual
+  normal-PoW scoped-clock run produced one bout from three entrants, with one
+  unmatched fighter and its reason. Independent arithmetic and frontend checks
+  pass; final source, package and rollout checks remain in progress. See
+  `CANDIDATE_CARD_EXCEPTION.md`, `EVENT_CARDS.md` and `CHANGESET_46_NOTES.md`.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace

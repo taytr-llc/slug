@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "status": "approved",
+  "approved_by": "Mike",
+  "date_pacific": "2026-11-17",
+  "exception": "C1",
+  "scope": "first two-gym zero-professional-record candidate card",
+  "quote": "Allow this limited candidate card, logged as an exception, with unmatched counts reported.",
+  "conditions": [
+    "same weight class",
+    "both fighters have zero professional records within the fixed candidate profile",
+    "preserve the inclusive half-to-double rating band",
+    "waive only the widen-to-five trigger",
+    "retain entered, paired and unmatched counts with per-fighter reasons"
+  ],
+  "reason": "A two-gym pool cannot provide five opponents. Booking the limited card exercises the downstream candidate event pipeline; unmatched evidence should inform the unresolved thin-league rules.",
+  "not_amended": ["D13", "D28", "D52"],
+  "still_open": ["general league widening", "record filters", "next-week unmatched priority"],
+  "implementation_acceptance": "pending"
+}

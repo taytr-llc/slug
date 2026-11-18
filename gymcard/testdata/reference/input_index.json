@@ -1,0 +1,290 @@
+{
+  "inputs/contracts/set46-card-core-contract-draft.md": {
+    "origin": "/Users/taytrrip/slug/set46-card-core-contract-draft.md",
+    "origin_sha256": "0280887a3a5b1d20862253760bc655649b7bad23dec20c8fe523a1463436bbee",
+    "json_pointer": null,
+    "extraction": "byte_exact",
+    "sha256": "0280887a3a5b1d20862253760bc655649b7bad23dec20c8fe523a1463436bbee",
+    "bytes": 29687
+  },
+  "inputs/contracts/set46-helper-contract-draft.md": {
+    "origin": "/Users/taytrrip/slug/set46-helper-contract-draft.md",
+    "origin_sha256": "394747421cd8ca39cc0f6f255c709178be4e324ab9d7a927bf67e2696df47b5a",
+    "json_pointer": null,
+    "extraction": "byte_exact",
+    "sha256": "394747421cd8ca39cc0f6f255c709178be4e324ab9d7a927bf67e2696df47b5a",
+    "bytes": 32725
+  },
+  "inputs/contracts/set46-contract-freeze.json": {
+    "origin": "/Users/taytrrip/slug/set46-contract-freeze.json",
+    "origin_sha256": "c5f992094df47de09e15a882fcba3cff47b295078ba8506e2200134517ae1ad0",
+    "json_pointer": null,
+    "extraction": "byte_exact",
+    "sha256": "c5f992094df47de09e15a882fcba3cff47b295078ba8506e2200134517ae1ad0",
+    "bytes": 2316
+  },
+  "inputs/contracts/set46-candidate-exception-approval.json": {
+    "origin": "/Users/taytrrip/slug/set46-candidate-exception-approval.json",
+    "origin_sha256": "14c6074ed36351f979bf8f3e9c7e456489155e1a5ab3b56f909ae1998bccd007",
+    "json_pointer": null,
+    "extraction": "byte_exact",
+    "sha256": "14c6074ed36351f979bf8f3e9c7e456489155e1a5ab3b56f909ae1998bccd007",
+    "bytes": 986
+  },
+  "inputs/contracts/set46-contract-bounds-formula.json": {
+    "origin": "/Users/taytrrip/slug/set46-contract-bounds-formula.json",
+    "origin_sha256": "a82b6be80d1d35c43b0a9084db3fc5619d5bdd9dc24e3bfd721b3abba5b9916e",
+    "json_pointer": null,
+    "extraction": "byte_exact",
+    "sha256": "a82b6be80d1d35c43b0a9084db3fc5619d5bdd9dc24e3bfd721b3abba5b9916e",
+    "bytes": 8479
+  },
+  "inputs/contracts/CANDIDATE_CARD_EXCEPTION.md": {
+    "origin": "/Users/taytrrip/slug/slug/CANDIDATE_CARD_EXCEPTION.md",
+    "origin_sha256": "30e5c6ec200797a6c6012f9437a13cf9f2e0379e3b5e561b0e93300d21ff9f56",
+    "json_pointer": null,
+    "extraction": "byte_exact",
+    "sha256": "30e5c6ec200797a6c6012f9437a13cf9f2e0379e3b5e561b0e93300d21ff9f56",
+    "bytes": 1928
+  },
+  "inputs/seed45/freeze.json": {
+    "origin": "/Users/taytrrip/slug/set45-seed-reference/freeze.json",
+    "origin_sha256": "decbef0a5a69aac9827817994307b65a82f4a0daa20e654574072fe3f480b5db",
+    "json_pointer": null,
+    "extraction": "byte_exact",
+    "sha256": "decbef0a5a69aac9827817994307b65a82f4a0daa20e654574072fe3f480b5db",
+    "bytes": 1919
+  },
+  "inputs/seed45/file_index.json": {
+    "origin": "/Users/taytrrip/slug/set45-seed-reference/file_index.json",
+    "origin_sha256": "246411a21b609f19f4881c3693130b7cd94d0751357405e07d2906297c44babc",
+    "json_pointer": null,
+    "extraction": "byte_exact",
+    "sha256": "246411a21b609f19f4881c3693130b7cd94d0751357405e07d2906297c44babc",
+    "bytes": 20113
+  },
+  "inputs/seed45/Pin-candidate.json": {
+    "origin": "/Users/taytrrip/slug/set45-seed-reference/seed_v1.json",
+    "origin_sha256": "2b8d78e8ef665e372543eb87bb5d25a975026a0ae946b15a871ac97bbf2153f0",
+    "json_pointer": "/dtos/1/value",
+    "extraction": "canonical_JSON_without_LF",
+    "sha256": "4daa740ed3362ff2059f828ced6a095e5daa40181c40cdb6094a4bad397f570c",
+    "bytes": 3964
+  },
+  "inputs/seed45/Record-prepared.json": {
+    "origin": "/Users/taytrrip/slug/set45-seed-reference/seed_v1.json",
+    "origin_sha256": "2b8d78e8ef665e372543eb87bb5d25a975026a0ae946b15a871ac97bbf2153f0",
+    "json_pointer": "/dtos/14/value",
+    "extraction": "canonical_JSON_without_LF",
+    "sha256": "666f28c68e1e50dbc011e8312b10dd5e4f588bd4050d7477e62efc81876204f7",
+    "bytes": 25577
+  },
+  "inputs/seed45/Record-finalized.json": {
+    "origin": "/Users/taytrrip/slug/set45-seed-reference/seed_v1.json",
+    "origin_sha256": "2b8d78e8ef665e372543eb87bb5d25a975026a0ae946b15a871ac97bbf2153f0",
+    "json_pointer": "/dtos/22/value",
+    "extraction": "canonical_JSON_without_LF",
+    "sha256": "f28f1d287b2831aa1647127c0348b360444999a31717d84f4aa3da78ebc11f3f",
+    "bytes": 28908
+  },
+  "inputs/seed45/Record-conflict.json": {
+    "origin": "/Users/taytrrip/slug/set45-seed-reference/seed_v1.json",
+    "origin_sha256": "2b8d78e8ef665e372543eb87bb5d25a975026a0ae946b15a871ac97bbf2153f0",
+    "json_pointer": "/dtos/24/value",
+    "extraction": "canonical_JSON_without_LF",
+    "sha256": "9818b6963c68f84a4c57698d437aa8b71c013c629509ad4b7acbe033397f15b9",
+    "bytes": 29279
+  },
+  "inputs/seed45/Record-empty.json": {
+    "origin": "/Users/taytrrip/slug/set45-seed-reference/seed_v1.json",
+    "origin_sha256": "2b8d78e8ef665e372543eb87bb5d25a975026a0ae946b15a871ac97bbf2153f0",
+    "json_pointer": "/dtos/26/value",
+    "extraction": "canonical_JSON_without_LF",
+    "sha256": "9898a5a88d4661623e85d92cba4c240889496b2a84349b3015a25c9d6a9f164d",
+    "bytes": 7299
+  },
+  "inputs/seed45/Record-five_class_synthetic.json": {
+    "origin": "/Users/taytrrip/slug/set45-seed-reference/seed_v1.json",
+    "origin_sha256": "2b8d78e8ef665e372543eb87bb5d25a975026a0ae946b15a871ac97bbf2153f0",
+    "json_pointer": "/dtos/27/value",
+    "extraction": "canonical_JSON_without_LF",
+    "sha256": "2468afc372224e99f20cf89a53605a1cbe1b5bea9787b8cb45817515f0e170ea",
+    "bytes": 36501
+  },
+  "inputs/seed45/Status-prepared.json": {
+    "origin": "/Users/taytrrip/slug/set45-seed-reference/seed_v1.json",
+    "origin_sha256": "2b8d78e8ef665e372543eb87bb5d25a975026a0ae946b15a871ac97bbf2153f0",
+    "json_pointer": "/dtos/15/value",
+    "extraction": "canonical_JSON_without_LF",
+    "sha256": "082a3352e88ad7534d67501c8aff5a32b67ddedb356fadb22b75f32b2c8caf0a",
+    "bytes": 1291
+  },
+  "inputs/seed45/Status-finalized.json": {
+    "origin": "/Users/taytrrip/slug/set45-seed-reference/seed_v1.json",
+    "origin_sha256": "2b8d78e8ef665e372543eb87bb5d25a975026a0ae946b15a871ac97bbf2153f0",
+    "json_pointer": "/dtos/23/value",
+    "extraction": "canonical_JSON_without_LF",
+    "sha256": "0263fa18e22ee7a0ac3b578e72ffb63d69743075a58cd0078fe891a2b53c13da",
+    "bytes": 1443
+  },
+  "inputs/seed45/Status-conflict.json": {
+    "origin": "/Users/taytrrip/slug/set45-seed-reference/seed_v1.json",
+    "origin_sha256": "2b8d78e8ef665e372543eb87bb5d25a975026a0ae946b15a871ac97bbf2153f0",
+    "json_pointer": "/dtos/25/value",
+    "extraction": "canonical_JSON_without_LF",
+    "sha256": "ef8dfaf6c05add70a3dadec7d0cafe8cc02742bd4189fba39286d82a7c6982d1",
+    "bytes": 1441
+  },
+  "inputs/seed45/Status-absent_due_no_allocation.json": {
+    "origin": "/Users/taytrrip/slug/set45-seed-reference/seed_v1.json",
+    "origin_sha256": "2b8d78e8ef665e372543eb87bb5d25a975026a0ae946b15a871ac97bbf2153f0",
+    "json_pointer": "/dtos/41/value",
+    "extraction": "canonical_JSON_without_LF",
+    "sha256": "7cdd537f5eae8c8d0711306583b5087a36a4d501bb5a3f69ab809189f400c68b",
+    "bytes": 1282
+  },
+  "inputs/seed45/fixture_keys.json": {
+    "origin": "/Users/taytrrip/slug/set45-seed-reference/seed_v1.json",
+    "origin_sha256": "2b8d78e8ef665e372543eb87bb5d25a975026a0ae946b15a871ac97bbf2153f0",
+    "json_pointer": "/fixture_keys",
+    "extraction": "canonical_JSON_without_LF",
+    "sha256": "f7d227bdd1f81eb3652c01f70287b98363d760a9eb908a421e621cb35a752fc8",
+    "bytes": 656
+  },
+  "inputs/source44/index.json": {
+    "origin": "/Users/taytrrip/slug/set45-seed-reference/inputs/source44/index.json",
+    "origin_sha256": "c81460de2792ec4a691e13a0e60f7bcf7c376c9098c87f3c6709dbf8856dedc0",
+    "json_pointer": null,
+    "extraction": "byte_exact",
+    "sha256": "c81460de2792ec4a691e13a0e60f7bcf7c376c9098c87f3c6709dbf8856dedc0",
+    "bytes": 6550
+  },
+  "inputs/source44/pin.json": {
+    "origin": "/Users/taytrrip/slug/set45-seed-reference/inputs/source44/pin.json",
+    "origin_sha256": "6916bef5751092b6376f9105a5f54e1795dac541e15195b74a79b77df85e4f0a",
+    "json_pointer": null,
+    "extraction": "byte_exact",
+    "sha256": "6916bef5751092b6376f9105a5f54e1795dac541e15195b74a79b77df85e4f0a",
+    "bytes": 2881
+  },
+  "inputs/source44/views.json": {
+    "origin": "/Users/taytrrip/slug/set45-seed-reference/inputs/source44/views.json",
+    "origin_sha256": "8c4dc072f8b34bf42c72b7683604a3c783fa630ecea9de01d5018853fe9ac262",
+    "json_pointer": null,
+    "extraction": "byte_exact",
+    "sha256": "8c4dc072f8b34bf42c72b7683604a3c783fa630ecea9de01d5018853fe9ac262",
+    "bytes": 1819
+  },
+  "inputs/source44/receipt-0.json": {
+    "origin": "/Users/taytrrip/slug/set45-seed-reference/inputs/source44/receipt-0.json",
+    "origin_sha256": "1dbceb9cd6a0224a416a6f81eae77d01ded734f2c343b73092044a99d2afd334",
+    "json_pointer": null,
+    "extraction": "byte_exact",
+    "sha256": "1dbceb9cd6a0224a416a6f81eae77d01ded734f2c343b73092044a99d2afd334",
+    "bytes": 23135
+  },
+  "inputs/source44/receipt-1.json": {
+    "origin": "/Users/taytrrip/slug/set45-seed-reference/inputs/source44/receipt-1.json",
+    "origin_sha256": "eaa475205bfb03bb053505cebaa0a30a990f0f4acf32dcee4dd704ca9910c1ca",
+    "json_pointer": null,
+    "extraction": "byte_exact",
+    "sha256": "eaa475205bfb03bb053505cebaa0a30a990f0f4acf32dcee4dd704ca9910c1ca",
+    "bytes": 4857
+  },
+  "inputs/source44/receipt-10.json": {
+    "origin": "/Users/taytrrip/slug/set45-seed-reference/inputs/source44/receipt-10.json",
+    "origin_sha256": "27986a24ae8c7d27f83746dabfb81e8efec187b9032055f87f17de47b3efd409",
+    "json_pointer": null,
+    "extraction": "byte_exact",
+    "sha256": "27986a24ae8c7d27f83746dabfb81e8efec187b9032055f87f17de47b3efd409",
+    "bytes": 34059
+  },
+  "inputs/source44/America_Los_Angeles.tzif": {
+    "origin": "/Users/taytrrip/slug/set45-seed-reference/inputs/source44/America_Los_Angeles.tzif",
+    "origin_sha256": "200d05754f6d83a371cf408d7085125797657b3b0bebeba1e508cffe86a3e5c8",
+    "json_pointer": null,
+    "extraction": "byte_exact",
+    "sha256": "200d05754f6d83a371cf408d7085125797657b3b0bebeba1e508cffe86a3e5c8",
+    "bytes": 1294
+  },
+  "inputs/seed45/crypto.py": {
+    "origin": "/Users/taytrrip/slug/set45-seed-reference/crypto.py",
+    "origin_sha256": "ea87b9021e14712b1ac7130daa73cd12fb8acf2fd8995ca5ce9e32d0d770fd1c",
+    "json_pointer": null,
+    "extraction": "byte_exact",
+    "sha256": "ea87b9021e14712b1ac7130daa73cd12fb8acf2fd8995ca5ce9e32d0d770fd1c",
+    "bytes": 10124
+  },
+  "inputs/seed45/common.py": {
+    "origin": "/Users/taytrrip/slug/set45-seed-reference/common.py",
+    "origin_sha256": "d83bcfb4b255d6f95adfe7986764d46d1bf31d7aa858bab55a38421148313caf",
+    "json_pointer": null,
+    "extraction": "byte_exact",
+    "sha256": "d83bcfb4b255d6f95adfe7986764d46d1bf31d7aa858bab55a38421148313caf",
+    "bytes": 7850
+  },
+  "inputs/seed45/normal_work.json": {
+    "origin": "/Users/taytrrip/slug/set45-seed-reference/fixtures/normal_work.json",
+    "origin_sha256": "e7fbffc37db14ff21382b91cafce424702cbb02adea4e4de3cf6fec1768d87f3",
+    "json_pointer": null,
+    "extraction": "byte_exact",
+    "sha256": "e7fbffc37db14ff21382b91cafce424702cbb02adea4e4de3cf6fec1768d87f3",
+    "bytes": 74968
+  },
+  "inputs/seed45/verification.json": {
+    "origin": "/Users/taytrrip/slug/set45-seed-reference/verification.json",
+    "origin_sha256": "c8408906536afbf61dfad972a39f59882b6a099e384161064673ad296706a1a5",
+    "json_pointer": null,
+    "extraction": "byte_exact",
+    "sha256": "c8408906536afbf61dfad972a39f59882b6a099e384161064673ad296706a1a5",
+    "bytes": 25557
+  },
+  "inputs/manifest/reference_manifest.py": {
+    "origin": "/Users/taytrrip/slug/fighter-manifest-reference/reference_manifest.py",
+    "origin_sha256": "9fb1a814047f2329066bb19596e910ac7c4c7aadfce4b8f994e02dab81e51b4f",
+    "json_pointer": null,
+    "extraction": "byte_exact",
+    "sha256": "9fb1a814047f2329066bb19596e910ac7c4c7aadfce4b8f994e02dab81e51b4f",
+    "bytes": 24912
+  },
+  "inputs/manifest/tables_v1.json": {
+    "origin": "/Users/taytrrip/slug/fighter-manifest-reference/tables_v1.json",
+    "origin_sha256": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+    "json_pointer": null,
+    "extraction": "byte_exact",
+    "sha256": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+    "bytes": 2578
+  },
+  "inputs/manifest/baseline/reference_dna.py": {
+    "origin": "/Users/taytrrip/slug/fighter-manifest-reference/baseline/reference_dna.py",
+    "origin_sha256": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+    "json_pointer": null,
+    "extraction": "byte_exact",
+    "sha256": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+    "bytes": 8283
+  },
+  "inputs/manifest/baseline/dna_v1.json": {
+    "origin": "/Users/taytrrip/slug/fighter-manifest-reference/baseline/dna_v1.json",
+    "origin_sha256": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+    "json_pointer": null,
+    "extraction": "byte_exact",
+    "sha256": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+    "bytes": 2658
+  },
+  "inputs/condition/reference_condition.py": {
+    "origin": "/Users/taytrrip/slug/fighter-condition-reference/reference_condition.py",
+    "origin_sha256": "924152a89241e9fa6d60aa27ba19666d3a3f65fdf53bd3c0cf6f89c8db4e946c",
+    "json_pointer": null,
+    "extraction": "byte_exact",
+    "sha256": "924152a89241e9fa6d60aa27ba19666d3a3f65fdf53bd3c0cf6f89c8db4e946c",
+    "bytes": 18218
+  },
+  "inputs/encoding/pre46-gymseed-json.go": {
+    "origin": "git:/Users/taytrrip/slug/slug@ca84a62d178386646aef119cbe2edbb6ad38f508:gymseed/json.go",
+    "origin_sha256": "379406059c507139ca63baa27cc567b4bce55a77ca0121e97438350778350eb7",
+    "json_pointer": null,
+    "extraction": "byte_exact_committed_blob",
+    "sha256": "379406059c507139ca63baa27cc567b4bce55a77ca0121e97438350778350eb7",
+    "bytes": 7211
+  }
+}

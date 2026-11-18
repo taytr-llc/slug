@@ -159,3 +159,19 @@ See [`EVENT_SEEDS.md`](../EVENT_SEEDS.md) for limits and authority boundaries.
 with normal PoW and no scoped test-clock tag. Set45 acceptance/deployment is
 tracked in [`CHANGESET_45_NOTES.md`](../CHANGESET_45_NOTES.md); compiling the
 bundle does not complete the joint D74 design review or rendering acceptance.
+
+## Candidate card controls (set 46)
+
+The candidate bundle adds a Saturday card panel after seed evidence. Explicit
+Create books the two demo gyms' eligible same-class fighters inside the
+unchanged half-to-double band. It lists every unmatched fighter and reason,
+total and per-gym counts, and retained source/conflict evidence. Polling and
+history navigation never create a card. A repeated explicit request recovers
+the same card rather than reshuffling it.
+
+The new `--candidate-cards` route requires all preceding candidate flags and
+uses the recoverable v6 parent installation. The ordinary candidate build
+script defaults to version0.4.6/build46 with normal PoW and no test-clock tag.
+It preserves the original detailed app icon and letterless menu-bar fist.
+See [`EVENT_CARDS.md`](../EVENT_CARDS.md) for C1's scope and
+[`CHANGESET_46_NOTES.md`](../CHANGESET_46_NOTES.md) for acceptance status.

@@ -402,6 +402,14 @@ does not understand. Never detach, replace, or clear the /data volume.
   reasons. This does not amend D13/D28/D52 or settle general widening, record
   filters or next-week priority. See CANDIDATE_CARD_EXCEPTION.md.
 
+- Set 46 retains immutable candidate cards in a separate explicit journal.
+  Preserve the complete noon source, fixed seed, pairings, unmatched reasons and
+  original creation time across replay, conflict and restart. Source health is
+  separate from saved evidence; a caller-supplied source or finalized flag cannot
+  authorize booking. Shared event/seed/card stores belong to the candidate parent,
+  not the current login. Never infer professional record authority from XP or
+  award results/training from a card. See EVENT_CARDS.md.
+
 - Set 39 adds explicitly pinned candidate service protocol 3 and a separately
   typed worker/outbox version 2. Preserve old services, workers and journals;
   never infer trust from a marker or silently migrate old evidence. Bind the

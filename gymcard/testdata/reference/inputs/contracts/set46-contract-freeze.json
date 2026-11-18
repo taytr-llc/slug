@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "status": "frozen_approved",
+  "at": "2026-11-18T00:23:15.065773+00:00",
+  "scope_commit": "8c25f88bfecb344af160ed148c21690686533cb7",
+  "base_implementation": "ca84a62d178386646aef119cbe2edbb6ad38f508",
+  "live_release": "dcc448290d4b6f1ff76459a5c0044deeaefb7aa5",
+  "scope": "C1: two fixture gyms, zero-record candidate, same class and unchanged inclusive half-to-double band; waive only widen-to-five; preserve unmatched counts and per-fighter reasons",
+  "user_scope_authority": "explicit November17 Pacific answer; engineering bytes reviewed by root with independent contract/bounds review",
+  "contract_sha256": {
+    "/Users/taytrrip/slug/set46-card-core-contract-draft.md": "0280887a3a5b1d20862253760bc655649b7bad23dec20c8fe523a1463436bbee",
+    "/Users/taytrrip/slug/set46-helper-contract-draft.md": "394747421cd8ca39cc0f6f255c709178be4e324ab9d7a927bf67e2696df47b5a"
+  },
+  "evidence_sha256": {
+    "set46-contract-bounds-review.json": "9d432891093bcc89b3625552a375d4af0555c05f051fe2f73b478ed075cae0dd",
+    "set46-contract-bounds-formula.json": "a82b6be80d1d35c43b0a9084db3fc5619d5bdd9dc24e3bfd721b3abba5b9916e",
+    "set46-contract-bounds-calculator.py": "465cb64156802ca7d39c6404aa61b5bf04094fe5d69018c8ff0226981be26368",
+    "set46-core-helper-alignment-review.json": "399a88575b4ccad861f1639a1fc707e5c52da723fb2c33cf2a62575828c878c8",
+    "set46-candidate-exception-approval.json": "14c6074ed36351f979bf8f3e9c7e456489155e1a5ab3b56f909ae1998bccd007"
+  },
+  "exception_document_sha256": "30e5c6ec200797a6c6012f9437a13cf9f2e0379e3b5e561b0e93300d21ff9f56",
+  "runtime_authoring_allowed": true,
+  "independent_reference_authoring_allowed": true,
+  "runtime_reference_comparison": "forbidden until separate independent corpus review and freeze",
+  "new_expected_outputs_generated_at_freeze": false,
+  "notes": [
+    "Draft filenames are retained to preserve provenance; this exact hash approval freezes their bytes.",
+    "Independent reference producer must not read new Set46 runtime source or output until corpus freeze.",
+    "No new player policy, private keys, public mining, consensus or official activation; D74 and portrait gates remain pending.",
+    "Source/parent/window/history findings are resolved in these exact contracts; diagnostic predecessors remain preserved."
+  ]
+}

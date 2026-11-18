@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/taytr-llc/slug/gymaccount"
+	"github.com/taytr-llc/slug/gymcard"
 	"github.com/taytr-llc/slug/gymentry"
 	"github.com/taytr-llc/slug/gymevent"
 	"github.com/taytr-llc/slug/gymseed"
@@ -20,6 +21,14 @@ import (
 // StableController owns one serial work lane. Its source lifetime is fenced by
 // laneGate, never by the legacy resource mutex across an account callback.
 type StableController struct {
+	cardEnabled, cardAttached      bool
+	cardStore                      *gymcard.Store
+	cardPin                        gymcard.Pin
+	cardID, cardFailure            string
+	cardCreated, cardSourceCreated int64
+	cardLast                       *CardJob
+	cardCheckpoint                 func(string)
+
 	*ManifestController
 	seedEnabled, seedAttached                         bool
 	seedStore                                         *gymseed.Store // immutable parent-owned handle
@@ -401,6 +410,8 @@ func (s *StableController) Close() error {
 		s.last = nil
 		s.previewLast = nil
 		s.entryLast = nil
+		s.cardLast = nil
+		s.cardFailure = ""
 		s.seedLast = nil
 		s.seedFailure = ""
 		s.eventLast = nil
@@ -411,6 +422,7 @@ func (s *StableController) Close() error {
 		s.entryBytes = 0
 		s.eventBytes = 0
 		s.seedBytes = 0
+		s.cardBytes = 0
 		s.mu.Unlock()
 		s.stableMu.Unlock()
 		s.Stop()

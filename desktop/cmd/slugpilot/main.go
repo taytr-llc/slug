@@ -26,6 +26,7 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 	entries := flags.Bool("candidate-entries", false, "Enable Saturday entry intake within candidate-stable")
 	candidateEvents := flags.Bool("candidate-events", false, "Enable immutable noon snapshots within candidate-entries")
 	candidateSeeds := flags.Bool("candidate-seeds", false, "Enable candidate seed publication within candidate-events")
+	candidateCards := flags.Bool("candidate-cards", false, "Enable bounded candidate cards within candidate-seeds")
 	if e := flags.Parse(args); e != nil {
 		return e
 	}
@@ -41,10 +42,20 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 	if *candidateEvents && (!*entries || !*stable || !*candidates || *accounts) {
 		return errors.New("candidate-events requires candidate-entries, candidate-stable and candidate-manifests")
 	}
+	if *candidateCards && (!*candidateSeeds || !*candidateEvents || !*entries || !*stable || !*candidates || *accounts) {
+		return errors.New("candidate-cards requires candidate-seeds, candidate-events, candidate-entries, candidate-stable and candidate-manifests")
+	}
 	if *candidateSeeds && (!*candidateEvents || !*entries || !*stable || !*candidates || *accounts) {
 		return errors.New("candidate-seeds requires candidate-events, candidate-entries, candidate-stable and candidate-manifests")
 	}
 	if *candidates {
+		if *candidateCards {
+			controller, e := accountpilot.NewCards(pilot.Config{DataDir: *data, NodeBinary: *node})
+			if e != nil {
+				return e
+			}
+			return pilot.ServeCards(ctx, controller, stdin, stdout)
+		}
 		if *candidateSeeds {
 			controller, err := accountpilot.NewSeeds(pilot.Config{DataDir: *data, NodeBinary: *node})
 			if err != nil {

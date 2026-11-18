@@ -340,6 +340,12 @@ zero-record fixture gyms to match inside the existing same-class half-to-double
 band without five opponents. Report all entered, paired and unmatched fighters
 and reasons; general league widening, record filters and next-week priority
 remain open. See `CANDIDATE_CARD_EXCEPTION.md` and `CHANGESET_46_NOTES.md`.
+The implementation and initial normal-PoW scoped-clock composition now produce
+one retained bout from three entrants, with one reported unmatched fighter.
+Independent arithmetic and frontend checks pass; final source/package and live
+rollout gates remain in progress. The following league slice must consume the
+retained card and fixed seed to run reproducible candidate bouts and preserve
+replay evidence before introducing professional result/award authority.
 
 ### 6. League services
 The Saturday operation: entry collection and lock (Saturday noon

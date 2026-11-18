@@ -1,0 +1,236 @@
+{
+  "status": "passed",
+  "kind": "Formula-only impossible upper envelopes; not canonical reference vectors or cryptographic expectations",
+  "at": "2026-11-18T00:22:19.624277+00:00",
+  "contract_sha256": {
+    "/Users/taytrrip/slug/set46-card-core-contract-draft.md": "0280887a3a5b1d20862253760bc655649b7bad23dec20c8fe523a1463436bbee",
+    "/Users/taytrrip/slug/set46-helper-contract-draft.md": "394747421cd8ca39cc0f6f255c709178be4e324ab9d7a927bf67e2696df47b5a"
+  },
+  "calculator_sha256": "465cb64156802ca7d39c6404aa61b5bf04094fe5d69018c8ff0226981be26368",
+  "inherited_shape_calculator_sha256": "5cbe3cc0a0e40b8ae3e8da9423f7601c25f764dedd748ecd52794e601484b9a6",
+  "inherited_inputs_sha256": {
+    "/Users/taytrrip/slug/set45-seed-core-contract-draft.md": "51ddfc57931b1937f918f990a36c050dc9874b2d1a60b069273e314e317523df",
+    "/Users/taytrrip/slug/set45-helper-contract-draft.md": "0abdcfa84e2213bd644ad2bfe43789961c3231ef10841121fa2f039776fb8f7e",
+    "/Users/taytrrip/slug/set44-event-reference/inputs/contracts/set44-core-shape-bounds.py": "8f0f0f22aced5113d8b0eea447eee1bf5a3cbf1257717e42365fdd7455c0b7e0",
+    "/Users/taytrrip/slug/set44-event-reference/inputs/contracts/set44-core-shape-bounds.json": "61296beeb1ba114eef06cb6de8d8898dd6026f533f7ae164c5ebaadb0e493b32",
+    "/Users/taytrrip/slug/set44-event-reference/inputs/contracts/set44-helper-shape-bounds.json": "ee2c67ccde66413f33dfba0da00fa67e23b8dd0140dae05c6c30b799f1650bcf"
+  },
+  "shapes": {
+    "CardSource": {
+      "bytes": 47532,
+      "container_depth": 11,
+      "cap": 163840
+    },
+    "CardState": {
+      "bytes": 1770,
+      "container_depth": 3,
+      "cap": 12288
+    },
+    "CardView": {
+      "bytes": 19114,
+      "container_depth": 7,
+      "cap": 122880
+    },
+    "Pin": {
+      "bytes": 4780,
+      "container_depth": 7,
+      "cap": 20480
+    },
+    "Info": {
+      "bytes": 4997,
+      "container_depth": 8,
+      "cap": 24576
+    },
+    "ProfessionalRecord": {
+      "bytes": 31,
+      "container_depth": 1,
+      "cap": null
+    },
+    "ReasonCounts": {
+      "bytes": 138,
+      "container_depth": 1,
+      "cap": null
+    },
+    "Counts": {
+      "bytes": 226,
+      "container_depth": 2,
+      "cap": null
+    },
+    "GymCounts": {
+      "bytes": 313,
+      "container_depth": 3,
+      "cap": null
+    },
+    "Entrant": {
+      "bytes": 1301,
+      "container_depth": 2,
+      "cap": null
+    },
+    "Bout": {
+      "bytes": 330,
+      "container_depth": 1,
+      "cap": null
+    },
+    "Plan": {
+      "bytes": 15903,
+      "container_depth": 5,
+      "cap": 16384
+    },
+    "Record": {
+      "bytes": 63752,
+      "container_depth": 12,
+      "cap": 196608
+    },
+    "Status": {
+      "bytes": 3021,
+      "container_depth": 4,
+      "cap": 16384
+    },
+    "BuildResult": {
+      "bytes": 66838,
+      "container_depth": 13,
+      "cap": 229376
+    },
+    "ReadResult": {
+      "bytes": 66821,
+      "container_depth": 13,
+      "cap": 229376
+    },
+    "HistoryPage": {
+      "bytes": 24508,
+      "container_depth": 6,
+      "cap": 139264
+    },
+    "Marker": {
+      "bytes": 4931,
+      "container_depth": 8,
+      "cap": 24576
+    },
+    "Metadata": {
+      "bytes": 5025,
+      "container_depth": 8,
+      "cap": 24576
+    },
+    "Init": {
+      "bytes": 4933,
+      "container_depth": 8,
+      "cap": null
+    }
+  },
+  "nested_cap_upper_bytes": {
+    "CardSource_receipt_cap": 132095,
+    "CardView_state_caps": 115067,
+    "Pin_source_pin_cap": 16589,
+    "Info_pin_cap": 20697,
+    "Record_source_plan_caps": 180541,
+    "Status_state_cap": 13539,
+    "BuildResult_record_status_caps": 213057,
+    "ReadResult_record_status_caps": 213040,
+    "HistoryPage_status_caps": 131412,
+    "Marker_pin_cap": 20631,
+    "Metadata_pin_cap": 20725
+  },
+  "array_paths": {
+    "/CardView/pin/source_pin/participants": 2,
+    "/CardView/states": 8,
+    "/Pin/source_pin/source_pin/participants": 2,
+    "/Record/source/source_receipt/input/participants": 2,
+    "/Record/source/source_receipt/input/participants/*/roster/slots": 10,
+    "/Record/source/source_receipt/input/participants/*/roster/assigned_at_ms": 10,
+    "/Record/source/source_receipt/input/participants/*/entry/latest_receipt/members": 5,
+    "/Record/source/source_receipt/input/participants/*/members": 5,
+    "/Record/source/source_receipt/captures": 2,
+    "/Record/source/anchor/merkle_branch": 20,
+    "/Record/plan/gyms": 2,
+    "/Record/plan/entrants": 10,
+    "/Record/plan/bouts": 5,
+    "/HistoryPage/cards": 8,
+    "/response/snapshot/pin/source_pin/source_pin/participants": 2,
+    "/response/job/result/record/source/source_receipt/input/participants": 2,
+    "/response/job/result/record/source/source_receipt/input/participants/*/roster/slots": 10,
+    "/response/job/result/record/source/source_receipt/input/participants/*/roster/assigned_at_ms": 10,
+    "/response/job/result/record/source/source_receipt/input/participants/*/entry/latest_receipt/members": 5,
+    "/response/job/result/record/source/source_receipt/input/participants/*/members": 5,
+    "/response/job/result/record/source/source_receipt/captures": 2,
+    "/response/job/result/record/source/anchor/merkle_branch": 20,
+    "/response/job/result/record/plan/gyms": 2,
+    "/response/job/result/record/plan/entrants": 10,
+    "/response/job/result/record/plan/bouts": 5,
+    "/response/record/record/source/source_receipt/input/participants": 2,
+    "/response/record/record/source/source_receipt/input/participants/*/roster/slots": 10,
+    "/response/record/record/source/source_receipt/input/participants/*/roster/assigned_at_ms": 10,
+    "/response/record/record/source/source_receipt/input/participants/*/entry/latest_receipt/members": 5,
+    "/response/record/record/source/source_receipt/input/participants/*/members": 5,
+    "/response/record/record/source/source_receipt/captures": 2,
+    "/response/record/record/source/anchor/merkle_branch": 20,
+    "/response/record/record/plan/gyms": 2,
+    "/response/record/record/plan/entrants": 10,
+    "/response/record/record/plan/bouts": 5,
+    "/response/history/cards": 8,
+    "/parent/stable_installs": 2,
+    "/parent/entry_installs": 2
+  },
+  "assumptions": [
+    "Unbounded supplied widths conservatively widened to16digits; explicit matching counts use global max10, bout count5, rating100000 and professional record0 exactly.",
+    "Display name128ASCII bytes charged as128 six-byte JSON escapes; actual deterministic generated names are smaller.",
+    "Nested unchanged source shapes from pinned45/44 formula constructors; no game or source expected outputs.",
+    "Field-order assertions check every named core/source DTO against current contract.",
+    "Only nested Status.scan_height/scan_tip_height may use inherited -1 sentinel; widths here conservatively overestimated."
+  ],
+  "helper": {
+    "shapes": {
+      "CardSnapshot": {
+        "bytes": 6266,
+        "container_depth": 8
+      },
+      "CardJob": {
+        "bytes": 68192,
+        "container_depth": 14
+      },
+      "CardRequest": {
+        "bytes": 335,
+        "container_depth": 1
+      },
+      "ParentV6Marker": {
+        "bytes": 7144,
+        "container_depth": 6
+      }
+    },
+    "responses": {
+      "snapshot": {
+        "bytes_including_LF": 7471,
+        "container_depth": 9
+      },
+      "status": {
+        "bytes_including_LF": 4226,
+        "container_depth": 5
+      },
+      "record": {
+        "bytes_including_LF": 68026,
+        "container_depth": 14
+      },
+      "history": {
+        "bytes_including_LF": 25713,
+        "container_depth": 7
+      },
+      "job": {
+        "bytes_including_LF": 69397,
+        "container_depth": 15
+      }
+    },
+    "job_with_full_BuildResult_cap": 230730,
+    "job_response_with_full_BuildResult_cap_including_LF": 231935,
+    "read_response_with_full_ReadResult_cap_including_LF": 230581,
+    "history_response_with_full_HistoryPage_cap_including_LF": 140469,
+    "metadata_snapshot_selectedstatus_history8_three_tuples_render4096": 38868,
+    "metadata_cap": 49152,
+    "result_cap": 245760,
+    "combined_cap": 294912,
+    "combined_with_full_BuildResult_cap": 269598,
+    "actual_byte_admission_required": true,
+    "root_marker_including_LF": 7144
+  },
+  "helper_status": "Exact final-review shapes and encoded cache allowance fit; ACK/state/correlation and source-history clarifications reviewed. Root joint freeze/generation authorization remains separate.",
+  "new_go_or_outputs_read": false,
+  "goldens_generated": false
+}
