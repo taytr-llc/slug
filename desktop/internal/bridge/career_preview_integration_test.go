@@ -71,6 +71,7 @@ func TestCareerPreviewPackagedHelperNormalPoW(t *testing.T) {
 		t.Fatal("complete inherited nine-family package evidence required")
 	}
 	pairs := map[string][2]gymstable.Item{}
+	stableSources := map[string]gymstable.Status{}
 	for _, row := range inherited.Stable {
 		if row.Fixture != "zero256" && row.Fixture != "incrementing256" {
 			t.Fatal("unknown published fixture")
@@ -97,6 +98,7 @@ func TestCareerPreviewPackagedHelperNormalPoW(t *testing.T) {
 			pair[0], pair[1] = pair[1], pair[0]
 		}
 		pairs[row.Fixture] = pair
+		stableSources[row.Fixture] = row.Inventory.Status
 	}
 	data := filepath.Join(root, "data")
 	if real, err := filepath.EvalSymlinks(data); err != nil || real != data {
@@ -129,6 +131,19 @@ func TestCareerPreviewPackagedHelperNormalPoW(t *testing.T) {
 			t.Fatal("retained held fixture/current View required")
 		}
 		view, pair := *account.View, pairs[fixture]
+		// Manifest login does not establish the native Stable source binding.
+		// Discover both authorities through their existing typed snapshots first.
+		resultBefore := newResultAcceptance(t, ctx, p.b).captureSnapshot()
+		result := resultBefore.Snapshot
+		activation := inherited.Careers.Activation
+		if result == nil || result.State != "ready" || result.View == nil || *result.View != view || result.StoreID != activation.ResultStoreID || result.CreatedAtMS != activation.ResultCreatedAtMS || result.SourceCreatedAtMS != activation.SourceCreatedAtMS {
+			t.Fatal("original result authority required before career source job", resultBefore.Error)
+		}
+		stable := p.b.StableRequest(ctx, pilot.StableRequest{Command: "stable_snapshot"})
+		expected := stableSources[fixture]
+		if !stable.OK || stable.Snapshot == nil || stable.Snapshot.View == nil || *stable.Snapshot.View != view || stable.Snapshot.Status == nil || stable.Snapshot.Status.StoreID != expected.StoreID || stable.Snapshot.Status.Pin != expected.Pin {
+			t.Fatal("original stable authority required before career source job", stable.Error)
+		}
 		before, sourceJob := p.page(pilot.CareerRequest{Command: "career_inventory", Limit: 8}, view)
 		if before.Page == nil || before.Page.Activation != inherited.Careers.Activation {
 			t.Fatal("unchanged activation required")
@@ -147,7 +162,6 @@ func TestCareerPreviewPackagedHelperNormalPoW(t *testing.T) {
 		if found != [2]int{1, 1} {
 			t.Fatal("inherited same-class pair absent from exact current page")
 		}
-		resultBefore := newResultAcceptance(t, ctx, p.b).captureSnapshot()
 		var snap pilot.CareerPreviewResponse
 		deadline := time.Now().Add(45 * time.Second)
 		for time.Now().Before(deadline) {

@@ -83,6 +83,12 @@ on the corrected source. Frontend review also caught an accidental coupling
 between C1 entry selection and practice readiness; the original zero-record
 entry rule is retained separately from career-aware practice.
 Normal-calendar packaging, deployment and live observation remain pending.
+The first normal package attempt passed the inherited nine-family flow but
+failed the new practice producer before its first inventory job: the producer
+omitted the Stable snapshot required after Manifest login. The native bridge
+correctly refused the unbound request as stale. The corrected test compiles; it establishes and checks the original Stable
+identity on every login/restart;
+runtime session checks remain unchanged, and the failed attempt is retained.
 Production authority, general matchmaking, rankings/title allocation, permanent
 genesis and the joint D74 design review remain separate gates. No Daybreak scan
 is claimed or required for these local independent reviews.
