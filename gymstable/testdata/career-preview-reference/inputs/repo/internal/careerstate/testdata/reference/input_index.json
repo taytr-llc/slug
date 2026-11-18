@@ -1,0 +1,61 @@
+{
+  "inputs": {
+    "inputs/CAREER_ACCOUNTING-preflight.md": {
+      "bytes": 20627,
+      "origin_repo_path": "CAREER_ACCOUNTING.md",
+      "role": "Approved constructor-only successor; original d676 retained unchanged",
+      "sha256": "8088f39815369f5d4840f9f33f1a7761f5b46486a4c97aa717337eda905b48bd"
+    },
+    "inputs/CAREER_ACCOUNTING.md": {
+      "bytes": 20392,
+      "origin_repo_path": "CAREER_ACCOUNTING.md",
+      "sha256": "d676a63454dc19360b94337227cd96d56b4f4879e89bf143e89d229ab4c0cfa1"
+    },
+    "inputs/FIGHTER_CAREER.md": {
+      "bytes": 3076,
+      "origin_repo_path": "FIGHTER_CAREER.md",
+      "sha256": "07de417554cf2a61085e8545f78fbf43bb5b02fc63a3d3d4d6889acadbe193d1"
+    },
+    "inputs/chaincfg_SignedCheckpoint_MarshalJSON.txt": {
+      "bytes": 718,
+      "extraction": "Exact full SignedCheckpoint.MarshalJSON method",
+      "origin_git_commit": "dd74828f3957d252f16f0e4925e2bcbb518ed540",
+      "origin_repo_path": "chaincfg/signedcheckpoints.go",
+      "origin_sha256": "10a438b2875b9095bbdc6f37db25d4ba8193e0bef47a210bb2f6888e89ad73a0",
+      "sha256": "4c069820c1183838fe03ce39e62393c0bb9661557028d52f05bfd7ab5b76bfab"
+    },
+    "inputs/constructor-preflight.diff": {
+      "bytes": 1142,
+      "derived_from_sha256": [
+        "d676a63454dc19360b94337227cd96d56b4f4879e89bf143e89d229ab4c0cfa1",
+        "8088f39815369f5d4840f9f33f1a7761f5b46486a4c97aa717337eda905b48bd"
+      ],
+      "role": "Exact unified diff, no DTO/hash equations changed",
+      "sha256": "a23f76a4b5ac3480cebc62b292abfd8a0086a79f49e5256ae95c386102048f9f"
+    },
+    "inputs/gymresult_types.go.txt": {
+      "bytes": 562,
+      "extraction": "Exact full struct declarations: Inclusion, Finality",
+      "origin_git_commit": "dd74828f3957d252f16f0e4925e2bcbb518ed540",
+      "origin_repo_path": "gymresult/types.go",
+      "origin_sha256": "ca63b5bbfafcbbdd749fa471b6652743ef8c39c0fa1031129a547a9fd68666df",
+      "sha256": "6d05c2a2f68c9fdf38cc74e71b230ac4172b1d7b149c1f9a85892c848545e506"
+    },
+    "inputs/seednode_types.go.txt": {
+      "bytes": 559,
+      "extraction": "Exact full struct declarations: Tip, Anchor",
+      "origin_git_commit": "dd74828f3957d252f16f0e4925e2bcbb518ed540",
+      "origin_repo_path": "seednode/types.go",
+      "origin_sha256": "177ce3c3de2bacb3cf6a78c26b6f45a9788e6134980b02086eff1123d32f8640",
+      "sha256": "f53dff124db30f2da93f831a494ce5e9561bb6ea2aa1134ce809da7b2c195e1d"
+    },
+    "prior_arithmetic_provenance": {
+      "copied": false,
+      "corpus_sha256": "63e85d8b3a6aeadddcf34c4a71cc70fc87e24f9335be37786edddfe8843c6b9d",
+      "generator_sha256": "506cb30affe74039b16bd0254f236fbfea4cf4b69f8a35760b0373666565857c",
+      "input_contract_sha256": "07de417554cf2a61085e8545f78fbf43bb5b02fc63a3d3d4d6889acadbe193d1",
+      "note": "Prior independently generated pure arithmetic pinned; no Go input or recursive corpus copy. New model rederives standard arithmetic from the same contract."
+    }
+  },
+  "version": 1
+}

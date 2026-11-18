@@ -96,6 +96,9 @@ type StableController struct {
 	stableClosed, installed, mining, paused, needSync bool
 	active, queued                                    *stableTask
 	last                                              *StableJob
+	careerPreviewFailure                              error
+	careerPreviewLast                                 *CareerPreviewJob
+	careerPreviewCheckpoint                           func(string)
 	previewLast                                       *PreviewJob
 	previewCheckpoint                                 func(string)
 	laneCheckpoint                                    func(string)
@@ -444,6 +447,7 @@ func (s *StableController) Close() error {
 		s.stableStatus = nil
 		s.last = nil
 		s.previewLast = nil
+		s.careerPreviewLast = nil
 		s.entryLast = nil
 		s.resultLast = nil
 		s.boutLast = nil

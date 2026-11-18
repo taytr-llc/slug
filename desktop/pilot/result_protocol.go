@@ -165,7 +165,28 @@ func serveResults(ctx context.Context, c ResultControllerAPI, input io.Reader, o
 			if json.Unmarshal(value.data, &selector) != nil {
 				return gymstable.ErrInvalid
 			}
-			if career != nil && strings.HasPrefix(selector.Command, "career_") {
+			if strings.HasPrefix(selector.Command, "career_preview_") {
+				req, e := ParseCareerPreviewRequest(value.data)
+				response := CareerPreviewResponse{ID: selector.ID, Version: 1, Error: "invalid_request"}
+				if preview, ok := career.(CareerPreviewControllerAPI); e == nil && ok {
+					response = handleCareerPreviewRequest(ctx, req, preview)
+				}
+				raw, e := MarshalCareerPreviewResponse(response)
+				if e != nil {
+					return e
+				}
+				if d, ok := output.(interface{ SetWriteDeadline(time.Time) error }); ok {
+					_ = d.SetWriteDeadline(time.Now().Add(5 * time.Second))
+				}
+				raw = append(raw, '\n')
+				n, e := output.Write(raw)
+				if e != nil {
+					return e
+				}
+				if n != len(raw) {
+					return io.ErrShortWrite
+				}
+			} else if career != nil && strings.HasPrefix(selector.Command, "career_") {
 				req, e := ParseCareerRequest(value.data)
 				response := CareerResponse{ID: selector.ID, Error: "invalid_request"}
 				if e == nil {

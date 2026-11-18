@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "status": "held_candidate_for_independent_review",
+  "contract_sha256": "5cf347a9e402ae46e4682728733dc637d997a1f702d11ddd65c9f8ebd04efeeb",
+  "source_basis": {
+    "repository": "/Users/taytrrip/slug/slug",
+    "branch": "slug-career-awards",
+    "head": "5b590f40a3ebef9c643f05dc8daa578baca66b1c",
+    "maintenance_note": "Copied frozen inputs precede later status-only Set49 maintenance; no rebasing of copied pins."
+  },
+  "authors": {
+    "checkpoint_envelope": [
+      "common.py",
+      "schema.py",
+      "generate.py",
+      "verify_reference.py",
+      "check_reproducibility.py",
+      "README.md"
+    ],
+    "state_models.py": [
+      "checkpoint_envelope initial draft",
+      "checkpoint_design_audit refinement and category clarification"
+    ]
+  },
+  "sources": {
+    "common.py": {
+      "sha256": "6848720d5c0a3cf2471ab9fc211852d91fdf50f9dc403eda75de91a1ee08de5c",
+      "bytes": 3014
+    },
+    "schema.py": {
+      "sha256": "ec0141c274ce4096a86d884f6b19b435188426fd6969f1f7a7fa96386e9efc90",
+      "bytes": 20959
+    },
+    "generate.py": {
+      "sha256": "8548108b1029fd6d8933fe4e3f1bb7df81739cda08bf0cc5abc86f3ca8482d61",
+      "bytes": 26130
+    },
+    "state_models.py": {
+      "sha256": "9973826fef3315d2179814b54e934da7b9024c1755e6f1ccc78f4eb2df46962a",
+      "bytes": 28392
+    },
+    "verify_reference.py": {
+      "sha256": "0d46b3ad8806a6b17b7ebf1e506a4d1d31dadc7a9b6edb327d8b784533646bed",
+      "bytes": 2198
+    },
+    "check_reproducibility.py": {
+      "sha256": "27f48c6d3901bb793b7165fde84f7f4d25a7fb65bc998d9b33ac456053643e51",
+      "bytes": 3341
+    },
+    "README.md": {
+      "sha256": "48dd64003bc99ebac867cf36ae4822935346761f70f7d51f355549488a6d2a7f",
+      "bytes": 4737
+    }
+  },
+  "input_index": {
+    "sha256": "319f9586b5c788aa2ad44963c1a8a073793a6dab2f765c5c09124952ff784987",
+    "bytes": 31818
+  },
+  "generated_expected_values_from_new_Go": false,
+  "runtime_implementation_or_acceptance_claim": false
+}

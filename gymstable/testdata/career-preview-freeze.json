@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "status": "frozen_before_runtime_implementation",
+  "created_at": "2026-11-18T22:24:55.604280+00:00",
+  "implementation_parent": "b3150b49e958d91e90da9a0320bc91ab731dc5b4",
+  "branch": "slug-career-preview",
+  "contract": "CAREER_PREVIEW.md",
+  "contract_sha256": "5cf347a9e402ae46e4682728733dc637d997a1f702d11ddd65c9f8ebd04efeeb",
+  "reference_directory": "gymstable/testdata/career-preview-reference",
+  "file_index_sha256": "21e5f0e77eec3e531830bf593be4a72c5fe166fcf9605f26cb62882a9bf61d9f",
+  "corpus_sha256": "70cec03c5ef89765b5b929f41b4fd4314f5dd3a4dcbbae05521fbffc6cbddc8a",
+  "verification_sha256": "d224781608fe4fabc80724409df21afef12182a9d91d12d20816d94e5c7cebba",
+  "independent_review": "gymstable/testdata/career-preview-review.json",
+  "independent_review_sha256": "cbe1c4fbaf3602079f4308f69c0899ce46e0f803d082a31204163df2f3a04262",
+  "counts": {
+    "compositions": 13,
+    "dtos": 252,
+    "codec_cases": 184,
+    "protocol_cases": 35,
+    "portrait_protocol_cases": 34,
+    "owner_cases": 7,
+    "state_cases": 145
+  },
+  "legacy_files_preserved": 151,
+  "new_Go_outputs_used_as_expectations": false,
+  "root_review": "Read contract and all changes, source/composition/model design, reproduction and independent review. Resolved inherited transport boundaries, source-prefix coverage and nonbinding model error categories before freeze.",
+  "scope": "Independent modeled reference, not runtime/actual authority/GUI qualification. Old expected bytes unchanged; source derivation precedes Go implementation."
+}

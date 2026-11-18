@@ -361,6 +361,22 @@ no runs/checks and is not claimed passed. See
 awards, general matchmaking policy and the full joint D74 review remain separate.
 
 ### 6. League services
+
+Candidate status: Set 48 shipped result publication/finality and public proofs;
+Set 49 implementation `5b590f40`, released at `0a4374de`, adds prospective
+finality-timed standard records, capped XP and base points, retained through later
+conflict. Local and scoped-clock normal-PoW awarded acceptance passed. The normal
+Mac package and nine independent reports separately passed zero-award current
+Career pages and recovery, followed by the full 900-second/31-sample deployment
+observation and restart. Remote CI absence is assessed, not a pass. C1 still
+refuses awarded fighters; historical noon inputs remain fixed. The shipped
+legacy practice preview still uses XP0. Set50 on `slug-career-preview` adds a
+separate career-aware practice path under `CAREER_PREVIEW.md`; local, independent
+arithmetic and scoped awarded-fighter checks pass, with final package/deployment
+verification in progress. Practice grants no permanent awards. Complete
+rankings/title authority and D74 remain open. See
+`CHANGESET_49_NOTES.md` and `RESULT_AWARD_POLICY.md`.
+
 The Saturday operation: entry collection and lock (Saturday noon
 PT), matchmaking in the D52 ratio band with random draw (D13, D28),
 card production, results published provisional at once and final

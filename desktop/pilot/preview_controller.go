@@ -74,7 +74,7 @@ func (s *StableController) BeginFightPreview(ctx context.Context, v, a, b string
 			return gymstable.ErrBusy
 		}
 		s.expireQueuedLocked()
-		if s.queued != nil || s.active != nil && s.active.preview != nil {
+		if s.queued != nil || s.active != nil && (s.active.preview != nil || s.active.careerPreview != nil) {
 			return gymstable.ErrBusy
 		}
 		s.mu.Lock()
@@ -90,7 +90,7 @@ func (s *StableController) BeginFightPreview(ctx context.Context, v, a, b string
 		out = PreviewJob{Version: 1, JobID: hex.EncodeToString(id[:]), State: "queued", View: s.viewPin(), StoreID: s.stableStatus.StoreID, EngineVersion: 1, EngineID: previewEngineID, FighterAID: a, FighterBID: b}
 		taskctx, cancel := context.WithTimeout(ctx, 30*time.Second)
 		owned := out
-		t = &stableTask{preview: &owned, ctx: taskctx, cancel: cancel}
+		t = &stableTask{previewPriorBytes: oldBytes, preview: &owned, ctx: taskctx, cancel: cancel}
 		s.queued = t
 		s.previewBytes = max(oldBytes, previewAllowance)
 		return nil
@@ -101,16 +101,17 @@ func (s *StableController) BeginFightPreview(ctx context.Context, v, a, b string
 			t.cancel()
 			if s.queued == t {
 				s.queued = nil
+				s.mu.Lock()
+				if !s.stableClosed {
+					s.previewBytes = oldBytes
+				}
+				s.mu.Unlock()
 			}
-			s.mu.Lock()
-			if !s.stableClosed {
-				s.previewBytes = oldBytes
-			}
-			s.mu.Unlock()
 		}
 	} else if s.queued == t && !s.stableClosed && !s.stopping && ctx.Err() == nil {
 		t.published = true
 		s.previewLast = nil
+		s.careerPreviewLast = nil
 		s.paused = false
 		if s.active != nil && s.active.automatic {
 			s.active.cancel()
@@ -121,12 +122,12 @@ func (s *StableController) BeginFightPreview(ctx context.Context, v, a, b string
 			t.cancel()
 			if s.queued == t {
 				s.queued = nil
+				s.mu.Lock()
+				if !s.stableClosed {
+					s.previewBytes = oldBytes
+				}
+				s.mu.Unlock()
 			}
-			s.mu.Lock()
-			if !s.stableClosed {
-				s.previewBytes = oldBytes
-			}
-			s.mu.Unlock()
 		}
 	}
 	s.stableMu.Unlock()
@@ -143,6 +144,7 @@ func (s *StableController) retainPreviewLocked(j PreviewJob) {
 	}
 	owned := clonePreview(j)
 	s.previewLast = &owned
+	s.careerPreviewLast = nil
 	raw, _ := json.Marshal(owned)
 	s.mu.Lock()
 	s.previewBytes = len(raw)
@@ -161,6 +163,13 @@ func (s *StableController) cancelQueuedPreviewLocked() {
 	s.queued = nil
 	if t.published {
 		s.retainPreviewLocked(j)
+	} else {
+		// An unpublished task owns its rollback only while it is this queue.
+		s.mu.Lock()
+		if !s.stableClosed {
+			s.previewBytes = t.previewPriorBytes
+		}
+		s.mu.Unlock()
 	}
 }
 func (s *StableController) FightPreviewJob(ctx context.Context, v, id string) (PreviewJob, error) {

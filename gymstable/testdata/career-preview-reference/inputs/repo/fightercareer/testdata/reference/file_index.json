@@ -1,0 +1,29 @@
+{
+  "files": {
+    "README.md": {
+      "bytes": 2712,
+      "sha256": "589ca54c1354435c0ebcfcb723dfa54f00b198d8230bbbc301e62d1ceb37a2a5"
+    },
+    "corpus.json": {
+      "bytes": 36296,
+      "sha256": "63e85d8b3a6aeadddcf34c4a71cc70fc87e24f9335be37786edddfe8843c6b9d"
+    },
+    "generate.py": {
+      "bytes": 10067,
+      "sha256": "506cb30affe74039b16bd0254f236fbfea4cf4b69f8a35760b0373666565857c"
+    },
+    "input_index.json": {
+      "bytes": 424,
+      "sha256": "b6493e750dcb6889123cb611e6fa418bbc1e3f1fd82083227e4ced1586d847e0"
+    },
+    "inputs/BRAWLCHAIN_SPEC.md": {
+      "bytes": 42592,
+      "sha256": "ce44f1f9aed0639899e48f8288517e7687797626ea97e1df3da86a2093437c4b"
+    },
+    "inputs/FIGHTER_CAREER.md": {
+      "bytes": 3076,
+      "sha256": "07de417554cf2a61085e8545f78fbf43bb5b02fc63a3d3d4d6889acadbe193d1"
+    }
+  },
+  "version": 1
+}

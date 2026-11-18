@@ -69,9 +69,14 @@ version.
   → `slug-event-seed` (set 45, released on master at `dcc44829`)
   → `slug-event-card` (set 46, released on master at `5c11cbaf`)
   → `slug-event-bouts` (set 47, released on master at `ba218f55`)
-  → `slug-result-publication` (set 48, released on master at `cc4f41e4`).
-  Set 49 continues on `slug-career-awards`, stacked from completed Set48
-  topic tip `dd74828f`.
+  → `slug-result-publication` (set 48, released on master at `cc4f41e4`)
+  → `slug-career-awards` (set 49, released on master at `0a4374de`).
+  Set 49 implementation is `5b590f40`, stacked from completed Set 48 topic
+  `dd74828f`; its normal package and complete 900-second closeout passed.
+  Set 50 continues on `slug-career-preview`, stacked from Set 49's completed
+  topic maintenance tip `b3150b49`. Its additive unrecorded practice contract
+  is `CAREER_PREVIEW.md`; freeze and independently review reference expectations
+  before runtime implementation. Preserve the old XP0 Preview family and engine.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review
@@ -89,13 +94,18 @@ version.
 
 ## Build and test
 
-- Set 48 candidate qualification uses the exact local Go 1.27.4 profile in
-  `build-profile.json`; see `BUILD_TOOLCHAIN.md`. Use
+- Sets 48–49 candidate qualification uses the exact local Go 1.27.4 no-CSE
+  profile in `build-profile.json`; see `BUILD_TOOLCHAIN.md`. Use
   `sh scripts/candidate-go.sh build ...` and `test ...` for that profile.
-  Plain `go build`/`go test` and the labelled minimum-Go compatibility job are
-  separate diagnostics. Do not weaken assertions or runtime limits to mask the
-  retained compiler failure. No upstream fix or completed qualification is
-  implied merely by the profile's presence.
+  Set 49's ten-module builds, scoped local regressions, actual normal-PoW
+  composition and normal Mac package passed under their recorded profile/source
+  bindings. Plain `go build`/`go test` and the labelled minimum-Go compatibility
+  job remain separate diagnostics. Preserve the compiler failure and all failed
+  attempts; do not weaken assertions or runtime limits. Qualification is finite
+  candidate evidence, not an upstream fix or universal platform guarantee.
+  Mac native/Linux cross-build evidence is not a local Docker build. Remote CI
+  returned no implementation/release runs or checks; absence was assessed, not
+  counted as a pass. Provider deployment is separately evidenced.
 - Go workspace: `go.work` is committed and resolves all 10 modules to local
   sources. Always build/test from the repo root in workspace mode.
 - Full build: `go build ./...` at root covers the root module only. Build
