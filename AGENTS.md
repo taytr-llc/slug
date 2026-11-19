@@ -468,6 +468,12 @@ does not understand. Never detach, replace, or clear the /data volume.
   funding coinbase blocks payment without erasing locked earnings. Resolve
   orphan handling, incident policy, fees and rounding before money movement;
   see `POOL_ACCOUNTING_POLICY.md`. Work classification alone is not credit.
+- D80 (Mike, November 18) includes an expired-job winning share only when its
+  exact block becomes canonical and pays the configured pool address. Count
+  that share and distribute its block reward under D79; reject ordinary late
+  shares. Never grant fighter admission or birth from the expired job. A node
+  submission acknowledgment is not canonical membership, and observed
+  canonicality is not irreversible finality.
 
 - Set 46 retains immutable candidate cards in a separate explicit journal.
   Preserve the complete noon source, fixed seed, pairings, unmatched reasons and
