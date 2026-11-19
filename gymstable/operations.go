@@ -190,6 +190,11 @@ func (s *Store) ApplySlot(ctx context.Context, session Session, operationID stri
 	}
 	var result MutationResult
 	committed := false
+	if s.shared() {
+		if e = s.caughtUp(ctx); e != nil {
+			return MutationResult{}, e
+		}
+	}
 	e = s.withLease(ctx, session, gymaccount.RosterManage, func(check func() error) error {
 		s.mu.Lock()
 		defer s.mu.Unlock()

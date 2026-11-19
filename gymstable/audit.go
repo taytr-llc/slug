@@ -69,6 +69,14 @@ func (s *Store) audit(m marker, sourceCount uint64) error {
 	if x.StoreID != m.StoreID || x.Pin != m.Pin || x.Checkpoint > x.ObservedSourceCount || x.ObservedSourceCount > MaxAssignments || sourceCount < x.ObservedSourceCount || x.RosterRevision > uint64(x.OperationCount) || x.OperationCount > MaxOperations || x.ClockMS <= 0 || x.ClockMS > MaxTimestampMS || x.LastAsOfMS < 0 || x.LastAsOfMS > x.ClockMS {
 		return ErrCorrupt
 	}
+	if s.shared() {
+		raw, e := s.db.Get([]byte("shared"), nil)
+		var shared sharedMetadata
+		if e != nil || decode(raw, MaxMetadataSize, 1, &shared, true) != nil || shared.Version != Version1 || shared.AssignmentCount > x.Checkpoint {
+			return ErrCorrupt
+		}
+		s.meta.assignmentCount, x.assignmentCount = shared.AssignmentCount, shared.AssignmentCount
+	}
 	if (x.OperationCount == 0) != (x.LastOperationID == "") || (x.LastOperationID != "" && !hashID(x.LastOperationID)) || (x.PendingOperationID != "" && !hashID(x.PendingOperationID)) {
 		return ErrCorrupt
 	}
@@ -78,6 +86,8 @@ func (s *Store) audit(m marker, sourceCount uint64) error {
 	}
 	assigns := map[uint64]Assignment{}
 	ids := map[string]uint64{}
+	sourceIDs := map[string]bool{}
+	skips := map[uint64]sharedSkip{}
 	ops := map[uint64]Operation{}
 	var indexes uint64
 	it := s.db.NewIterator(nil, nil)
@@ -92,6 +102,7 @@ func (s *Store) audit(m marker, sourceCount uint64) error {
 		}
 		switch {
 		case bytes.Equal(k, []byte("meta")), bytes.Equal(k, []byte("roster")):
+		case s.shared() && bytes.Equal(k, []byte("shared")):
 		case len(k) == 9 && k[0] == 'a':
 			if len(assigns) >= MaxAssignments || len(v) > MaxAssignmentSize {
 				return ErrCorrupt
@@ -100,11 +111,19 @@ func (s *Store) audit(m marker, sourceCount uint64) error {
 			if decode(v, MaxAssignmentSize, 1, &a, true) != nil || !validAssignment(a, x.Pin) || a.Sequence != binary.BigEndian.Uint64(k[1:]) || a.Sequence > x.Checkpoint || a.AcceptedAtMS > x.ClockMS {
 				return ErrCorrupt
 			}
-			if _, ok := ids[a.ProspectID]; ok {
+			if sourceIDs[a.ProspectID] {
 				return ErrCorrupt
 			}
+			sourceIDs[a.ProspectID] = true
 			assigns[a.Sequence] = a
 			ids[a.ProspectID] = a.Sequence
+		case s.shared() && len(k) == 9 && k[0] == 's':
+			var skipped sharedSkip
+			if len(skips) >= MaxAssignments || decode(v, maxSharedSkipSize, 1, &skipped, true) != nil || !validSharedSkip(skipped, x.Pin, x.Checkpoint) || skipped.Sequence != binary.BigEndian.Uint64(k[1:]) || sourceIDs[skipped.ProspectID] {
+				return ErrCorrupt
+			}
+			sourceIDs[skipped.ProspectID] = true
+			skips[skipped.Sequence] = skipped
 		case len(k) == 33 && k[0] == 'i':
 			indexes++
 			if indexes > MaxAssignments || len(v) != 8 {
@@ -135,11 +154,22 @@ func (s *Store) audit(m marker, sourceCount uint64) error {
 			return ErrCorrupt
 		}
 	}
-	if it.Error() != nil || s.career.Audited(x.ClockMS) != nil || uint64(len(assigns)) != x.Checkpoint || indexes != x.Checkpoint || len(ops) != int(x.OperationCount) {
+	wantAssignments := x.Checkpoint
+	if s.shared() {
+		wantAssignments = x.assignmentCount
+	}
+	if it.Error() != nil || s.career.Audited(x.ClockMS) != nil || uint64(len(assigns)) != wantAssignments || indexes != wantAssignments || uint64(len(assigns)+len(skips)) != x.Checkpoint || len(ops) != int(x.OperationCount) {
 		return ErrCorrupt
 	}
 	for n := uint64(1); n <= x.Checkpoint; n++ {
 		a, ok := assigns[n]
+		_, skip := skips[n]
+		if skip {
+			if ok {
+				return ErrCorrupt
+			}
+			continue
+		}
 		if !ok {
 			return ErrCorrupt
 		}

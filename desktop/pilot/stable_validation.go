@@ -221,10 +221,17 @@ func stablePageItems(items []gymstable.Item, s gymstable.Status, asOf int64, fir
 		return false
 	}
 	seen := map[string]bool{}
+	previous := uint64(0)
 	for n, i := range items {
-		if i.Assignment.Sequence != first+uint64(n) || !stableItemValid(i, s, asOf) || seen[i.Assignment.ProspectID] {
+		sequence := i.Assignment.Sequence
+		ordered := sequence == first+uint64(n)
+		if s.Pin.Version == gymstable.SharedPinVersion2 {
+			ordered = sequence >= first && sequence > previous
+		}
+		if !ordered || !stableItemValid(i, s, asOf) || seen[i.Assignment.ProspectID] {
 			return false
 		}
+		previous = sequence
 		seen[i.Assignment.ProspectID] = true
 	}
 	return true
@@ -270,10 +277,27 @@ func stableJobValid(j StableJob) bool {
 		if p == nil || p.Version != 1 || !stableStatusValid(p.Status, j.View, j.StoreID) || uint64(len(p.Items)) > p.Status.Checkpoint {
 			return false
 		}
-		return stablePageItems(p.Items, p.Status, p.AsOfMS, p.Status.Checkpoint-uint64(len(p.Items))+1)
+		first := p.Status.Checkpoint - uint64(len(p.Items)) + 1
+		if p.Status.Pin.Version == gymstable.SharedPinVersion2 {
+			// A shared sync consumes at most one bounded global-source page,
+			// including foreign records that yield no local assignments.
+			first = p.Status.Checkpoint - min(p.Status.Checkpoint, uint64(gymstable.MaxPageSize)) + 1
+		}
+		return stablePageItems(p.Items, p.Status, p.AsOfMS, first)
 	case "inventory":
 		p := j.Page
-		if p == nil || p.Version != 1 || !stableStatusValid(p.Status, j.View, j.StoreID) || p.After > p.Status.Checkpoint || p.NextAfter != p.After+uint64(len(p.Items)) || p.NextAfter > p.Status.Checkpoint || p.HasMore != (p.NextAfter < p.Status.Checkpoint) {
+		if p == nil || p.Version != 1 || !stableStatusValid(p.Status, j.View, j.StoreID) || p.After > p.Status.Checkpoint || p.NextAfter > p.Status.Checkpoint {
+			return false
+		}
+		if p.Status.Pin.Version == gymstable.SharedPinVersion2 {
+			if p.HasMore {
+				if len(p.Items) == 0 || p.NextAfter != p.Items[len(p.Items)-1].Assignment.Sequence || p.NextAfter >= p.Status.Checkpoint {
+					return false
+				}
+			} else if p.NextAfter != p.Status.Checkpoint {
+				return false
+			}
+		} else if p.NextAfter != p.After+uint64(len(p.Items)) || p.HasMore != (p.NextAfter < p.Status.Checkpoint) {
 			return false
 		}
 		return stablePageItems(p.Items, p.Status, p.AsOfMS, p.After+1)

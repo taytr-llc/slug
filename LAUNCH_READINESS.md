@@ -315,6 +315,14 @@ they do not count as completion of this product-release gate.
   must not silently receive its multi-gym record stream. Shared runtime,
   balance presentation and daily scheduling remain functional integration work.
 
+- Set 59 adds explicit shared-issuer stable scoping. Each gym keeps only its
+  own verified assignments while accounting for every consumed global record.
+  Sparse typed pages, local Recent and career fences preserve original source
+  sequences; legacy contiguous projections remain separate. See
+  `SHARED_GYM_STABLE.md` and `CHANGESET_59_NOTES.md`. Shared parent runtime,
+  visible pool balances and daily scheduling remain next. No app navigation
+  reorganization or D74 design approval is implied.
+
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
 `sim-handoff-intake.json` preserves archive and file checksums. They are reference

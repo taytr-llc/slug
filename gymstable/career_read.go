@@ -54,6 +54,20 @@ func (s *Store) PrepareCareerInventory(ctx context.Context, session Session, aft
 	return p, r, nil
 }
 
+// PrepareCareerSharedRecent seals the same original-session handle for the
+// explicit shared source's latest local page. ReadCareerInventory redeems it.
+func (s *Store) PrepareCareerSharedRecent(ctx context.Context, session Session, limit uint32) (CareerPage, *CareerRead, error) {
+	p, e := s.CareerSharedRecent(ctx, session, limit)
+	if e != nil {
+		return CareerPage{}, nil, e
+	}
+	r, e := s.sealCareerRead(session, false, p)
+	if e != nil {
+		return CareerPage{}, nil, e
+	}
+	return p, r, nil
+}
+
 // PrepareCareerRoster is the roster equivalent of PrepareCareerInventory.
 func (s *Store) PrepareCareerRoster(ctx context.Context, session Session, first, limit uint32) (CareerRosterPage, *CareerRead, error) {
 	p, e := s.CareerRoster(ctx, session, first, limit)

@@ -107,14 +107,29 @@ func (s *Store) readSource(ctx context.Context, sequence uint64, id string) (Ite
 // History preserves a learned source failure even if cancellation arrives
 // while the uncancellable proof is joined. Legacy callers keep their ordering.
 func (s *Store) readSourceMode(ctx context.Context, sequence uint64, id string, fatalFirst bool) (Item, error) {
+	r, e := s.readVerifiedSource(ctx, sequence, id, fatalFirst)
+	if e != nil {
+		return Item{}, e
+	}
+	item, e := itemForRecord(r, s.meta.Pin)
+	if e != nil {
+		return Item{}, e
+	}
+	if sequence != 0 && item.Assignment.Sequence != sequence || id != "" && item.Assignment.ProspectID != id {
+		return Item{}, ErrCorrupt
+	}
+	return item, nil
+}
+
+func (s *Store) readVerifiedSource(ctx context.Context, sequence uint64, id string, fatalFirst bool) (registry.ManifestRecord, error) {
 	if ctx.Err() != nil {
-		return Item{}, ErrCancelled
+		return registry.ManifestRecord{}, ErrCancelled
 	}
 	if s.proofRead != nil {
 		s.proofRead()
 	}
 	if ctx.Err() != nil {
-		return Item{}, ErrCancelled
+		return registry.ManifestRecord{}, ErrCancelled
 	}
 	var r registry.ManifestRecord
 	var e error
@@ -136,28 +151,21 @@ func (s *Store) readSourceMode(ctx context.Context, sequence uint64, id string, 
 	_, clockErr := s.observeLocked()
 	s.mu.Unlock()
 	if clockErr != nil {
-		return Item{}, clockErr
+		return registry.ManifestRecord{}, clockErr
 	}
 	if fatalFirst && e != nil {
-		return Item{}, ErrCorrupt
+		return registry.ManifestRecord{}, ErrCorrupt
 	}
 	if ctx.Err() != nil {
-		return Item{}, ErrCancelled
+		return registry.ManifestRecord{}, ErrCancelled
 	}
 	if e != nil {
-		return Item{}, ErrCorrupt
+		return registry.ManifestRecord{}, ErrCorrupt
 	}
-	item, e := itemForRecord(r, s.meta.Pin)
-	if e != nil {
-		return Item{}, e
+	if sequence != 0 && r.Sequence != sequence || id != "" && r.Verified.ProspectID != id {
+		return registry.ManifestRecord{}, ErrCorrupt
 	}
-	if sequence != 0 && item.Assignment.Sequence != sequence {
-		return Item{}, ErrCorrupt
-	}
-	if id != "" && item.Assignment.ProspectID != id {
-		return Item{}, ErrCorrupt
-	}
-	return item, nil
+	return r, nil
 }
 
 func (s *Store) Sync(ctx context.Context, session Session) (SyncResult, error) {
@@ -166,6 +174,9 @@ func (s *Store) Sync(ctx context.Context, session Session) (SyncResult, error) {
 		return SyncResult{}, e
 	}
 	defer done()
+	if s.shared() {
+		return s.syncShared(ctx, session)
+	}
 	count, e := s.sourceInfo(ctx)
 	if e != nil {
 		return SyncResult{}, e
@@ -255,6 +266,9 @@ func (s *Store) Inventory(ctx context.Context, session Session, after uint64, li
 		return Page{}, e
 	}
 	defer done()
+	if s.shared() {
+		return s.sharedInventory(ctx, session, after, limit)
+	}
 	if limit < 1 || limit > MaxPageSize || after > s.meta.Checkpoint {
 		return Page{}, ErrInvalid
 	}
@@ -340,6 +354,9 @@ func (s *Store) Roster(ctx context.Context, session Session, firstSlot uint32, l
 	return result, nil
 }
 func (s *Store) publishRead(ctx context.Context, session Session, items []Item, checkpoint, revision uint64, build func(int64, Status) error) error {
+	if e := s.sharedSourceFence(ctx); e != nil {
+		return e
+	}
 	e := s.withLease(ctx, session, gymaccount.View, func(check func() error) error {
 		s.mu.Lock()
 		defer s.mu.Unlock()

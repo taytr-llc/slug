@@ -27,7 +27,7 @@ func hashID(s string) bool {
 	return e == nil
 }
 func ValidatePin(p Pin) (Pin, error) {
-	if p.Version != Version1 || !hashID(p.AccountAuthorityID) || !hashID(p.AccountID) || p.Source.Version != registry.Version5 || !hashID(p.Source.AuthorityID) || p.Source.AuthorityID == p.AccountAuthorityID || p.ConditionVersion != fightercondition.Version1 || p.ProjectorID != fightercondition.ProjectorID {
+	if (p.Version != Version1 && p.Version != SharedPinVersion2) || !hashID(p.AccountAuthorityID) || !hashID(p.AccountID) || p.Source.Version != registry.Version5 || !hashID(p.Source.AuthorityID) || p.Source.AuthorityID == p.AccountAuthorityID || p.ConditionVersion != fightercondition.Version1 || p.ProjectorID != fightercondition.ProjectorID {
 		return Pin{}, ErrInvalid
 	}
 	a, _ := gymaccount.FixtureIdentity("zero256")
@@ -74,6 +74,9 @@ func ID(p Pin) (string, error) {
 	raw, e := MarshalPin(p)
 	if e != nil {
 		return "", e
+	}
+	if p.Version == SharedPinVersion2 {
+		return domainHash("SLUG candidate shared stable\x00v1\x00", raw), nil
 	}
 	return domainHash("SLUG candidate stable\x00v1\x00", raw), nil
 }

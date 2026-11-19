@@ -143,6 +143,14 @@ version.
   after uncertain publication. Shared-source stable isolation and parent
   runtime follow; no current app route or production custody is activated.
   See `POOL_RECIPIENTS.md` and `CHANGESET_58_NOTES.md`.
+- Set 59 on `slug-shared-gym-source` adds explicit Pin2 shared-source stables.
+  Verify every global source row before filtering by gym; retain original
+  sequences and complete assignment-or-skip audit coverage. The global cursor
+  is not a fighter count: use SharedStatus.AssignmentCount. Follow Recent must
+  select the local tail, preserving opaque career read/session fences. Keep
+  legacy Pin1 namespaces and projection semantics unchanged; shared typed pages
+  cannot publish a contiguous legacy projection. No current app route switches
+  implicitly. See `SHARED_GYM_STABLE.md` and `CHANGESET_59_NOTES.md`.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

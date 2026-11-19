@@ -153,6 +153,20 @@ func (s *Store) CareerInventory(ctx context.Context, session Session, after uint
 	if e != nil {
 		return CareerPage{}, e
 	}
+	return s.careerInventoryPage(ctx, session, p)
+}
+
+// CareerSharedRecent overlays the exact sparse recent page with the same
+// authoritative career snapshot used by ordinary career inventory reads.
+func (s *Store) CareerSharedRecent(ctx context.Context, session Session, limit uint32) (CareerPage, error) {
+	p, e := s.SharedRecent(ctx, session, limit)
+	if e != nil {
+		return CareerPage{}, e
+	}
+	return s.careerInventoryPage(ctx, session, p)
+}
+
+func (s *Store) careerInventoryPage(ctx context.Context, session Session, p Page) (CareerPage, error) {
 	v, items, e := s.careerProjection(ctx, session, p.Status, p.AsOfMS, p.Items)
 	if e != nil {
 		return CareerPage{}, e
