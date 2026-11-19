@@ -192,9 +192,13 @@ Go client. The desktop credential adapter refreshes tokens between calls while
 retaining its original account/view and pool trust. A real two-account isolated
 chain demonstrates HTTP work, lost-response recovery, shared payout and
 reset-scoped balance/mining access. The existing solo worker is preserved:
-next add a dedicated durable pool worker, shared desktop runtime and separate
-native-SegWit recipient binding, then connect the balance view and scheduler.
-See `CHANGESET_52_NOTES.md` through `CHANGESET_56_NOTES.md`.
+Set 57 adds the dedicated automatic pool worker and separate durable outbox.
+Found work survives cancellation and lost acknowledgments; pool credit and
+fighter admission recover independently against the original issued job.
+An admission-only service shares the pool issuer without creating jobs outside
+its work journal. Next connect the shared desktop runtime and separate
+native-SegWit recipient binding, then the balance view and daily scheduler.
+See `CHANGESET_52_NOTES.md` through `CHANGESET_57_NOTES.md` and `POOL_WORKER.md`.
 
 ### 4. Wallet
 btcwallet from the btcd suite. Hosted wallet at signup with full

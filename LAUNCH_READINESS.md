@@ -298,6 +298,14 @@ they do not count as completion of this product-release gate.
   recipient binding and balance presentation remain next. See
   `CHANGESET_56_NOTES.md`.
 
+- Set 57 adds automatic pool mining with a separate durable outbox. Recovery
+  retains the original job/nonce, and independent fighter admission preserves
+  D68/D69/D80 rather than treating a share receipt as birth. The pool owns
+  issuance; its companion admission-only service cannot issue extra jobs.
+  Validation is recorded in `CHANGESET_57_NOTES.md`. Shared desktop runtime,
+  recipient binding, visible balances and daily scheduling remain ahead.
+  This engineering slice does not replace the final joint D74 design review.
+
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
 `sim-handoff-intake.json` preserves archive and file checksums. They are reference

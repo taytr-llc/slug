@@ -123,6 +123,16 @@ version.
   birth. Shared runtime and a dedicated durable pool worker remain next; do not
   silently switch the existing solo worker or rewrite its wallet payout marker.
   See `POOL_SERVICE.md` and `CHANGESET_56_NOTES.md`.
+- Set 57 on `slug-pool-worker` adds a separate `PoolWorker`/`PoolOutbox` v1.
+  Mine only exact issued templates with extra nonce zero; preserve independent
+  pool, block and prospect outcomes before transport. Recover original job and
+  nonce after uncertainty; a sequence-zero receipt is not credit. Broadcast
+  blocks before signing, never sign new expired births, and allow historical
+  signed-receipt recovery without changing birth. Use the admission-only v3
+  service when sharing a pool issuer; never expose outside job issuance.
+  Capacity pauses mining while preserving pending recovery. The shared desktop
+  runtime and balance view follow; do not silently replace the solo route.
+  See `POOL_WORKER.md` and `CHANGESET_57_NOTES.md`.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review
