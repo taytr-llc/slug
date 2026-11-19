@@ -480,6 +480,10 @@ does not understand. Never detach, replace, or clear the /data volume.
   shares. Never grant fighter admission or birth from the expired job. A node
   submission acknowledgment is not canonical membership, and observed
   canonicality is not irreversible finality.
+- D81 (Mike) keeps an orphaned pool round's shares fixed, with no earnings
+  before confirmation while its block is orphaned. The exact block's return
+  resumes the same round; never reuse shares in another round. Preserve D79's
+  already-confirmed earnings through later conflict and never advance reserves.
 
 - Set 46 retains immutable candidate cards in a separate explicit journal.
   Preserve the complete noon source, fixed seed, pairings, unmatched reasons and
