@@ -9,6 +9,9 @@ product release, hold a thorough joint design review and address or explicitly
 agree to defer its findings. Mike requested this gate on November 16 (D74).
 Mike wants one full joint design review once all major flows are ready, at the
 end before release. Partial reviews do not replace that session.
+On November 18 Mike clarified that app organization and navigation changes
+belong in that final session. The external navigation draft is stopped and
+unapplied; it is not the next engineering set.
 
 Routine authorized engineering pushes and Phase-A seed verification continue;
 they do not count as completion of this product-release gate.
@@ -243,6 +246,18 @@ they do not count as completion of this product-release gate.
   does not close full GUI, native chooser, screen-reader or D74 acceptance.
   See `CAREER_PREVIEW.md` and `CHANGESET_50_NOTES.md`; production authority
   and the remaining product gates stay open.
+
+- Set 51 implementation `751b947b` passed local, cold-capacity, scoped actual,
+  normal Mac package and eleven independent package checks for authenticated
+  finalized fighter history. The candidate build is 0.4.11/build 51. Its first
+  package attempt failed an inherited missing-source restart probe; a focused
+  diagnostic did not reproduce it and the fresh full package passed without
+  relaxed assertions or deadlines. The original cause remains unproven.
+  Approved icon bytes are unchanged. No compiled seed-node source or deployment
+  configuration changed, so the verified desktop build does not trigger a
+  Set 51 seed rollout; master/live remain Set 50. Remote CI absence is not a
+  pass. GUI/accessibility, production authority, rankings/titles, permanent
+  genesis and the final joint D74 review remain open. See `CHANGESET_51_NOTES.md`.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace

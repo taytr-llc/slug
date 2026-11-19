@@ -384,10 +384,14 @@ TCP endpoint unchanged. Remote CI absence is assessed, not
 a pass. Practice grants no permanent awards. Complete rankings/title authority,
 production gates and D74 remain open. See
 `CHANGESET_49_NOTES.md`, `CHANGESET_50_NOTES.md` and `RESULT_AWARD_POLICY.md`.
-Set 51 begins with authenticated finalized fighter history: one captured
-prefix, bounded newest-first pages and per-result base-point/earned/applied-XP
-explanations. Its independently reviewed contract is frozen; reference
-preparation precedes runtime work. Full ranking/title policy stays separate.
+Set 51 implementation `751b947b` completes authenticated finalized fighter
+history: one captured prefix, bounded newest-first pages and per-result
+base-point/earned/applied-XP explanations. Local, scoped actual, cold-capacity,
+normal Mac package and eleven independent package checks pass. The candidate
+desktop build is 0.4.11/build 51; the unchanged seed stays on Set 50. Preserve
+the failed first package attempt and its unresolved cause separately from the
+successful diagnostic and strict successor package. Full ranking/title policy
+stays separate. See `CHANGESET_51_NOTES.md`.
 
 The Saturday operation: entry collection and lock (Saturday noon
 PT), matchmaking in the D52 ratio band with random draw (D13, D28),
@@ -431,6 +435,9 @@ the agreed findings through validation. Routine engineering deployment and
 automated/code review do not replace that session.
 Mike wants this as one full review once all major flows are ready, at the end
 before release.
+He clarified on November 18 that app organization and navigation belong in
+that final session too. The external navigation draft is deferred and unapplied;
+it is not the next engineering set. Continue the functional workstreams below.
 
 The November 15 chain-core handover and seed rollout are a milestone within
 Phase A, not completion of all three Phase A workstreams. Prospect

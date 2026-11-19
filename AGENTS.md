@@ -85,16 +85,25 @@ version.
   and TCP endpoint unchanged.
   Remote CI absence is assessed, not a pass. One local signed-out header-logo
   and user-confirmed menu-bar fist check does not replace the full D74 review.
-- Next, Set 51 adds authenticated finalized fighter history under the externally
-  reviewed history contract. Freeze independent expectations before runtime
-  work, and stack its topic from the completed Set 50 maintenance tip. Preserve
-  original authority, effective-only awards and all existing policy boundaries.
+- Set 51 on `slug-fighter-history`, implementation `751b947b`, completes the
+  authenticated finalized fighter-history candidate. Local, scoped actual,
+  cold-capacity, normal Mac package and eleven independent package checks pass.
+  Preserve its failed first package attempt and unresolved original cause;
+  the focused diagnostic and fresh strict package pass are successor evidence.
+  Version 0.4.11/build 51 is a verified desktop build. No compiled seed-node
+  source or deployment configuration changed, so master and the live seed
+  remain at Set 50 (`592e143c`). See `CHANGESET_51_NOTES.md`.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review
   at the end once all major flows are ready, rather than partial design reviews.
   Continue authorized engineering deployments, but do not treat them as product
   launch approval.
+  On November 18 Mike clarified that app organization and navigation changes
+  also belong in that final session. The external Gym/Fighters/Saturday draft
+  is stopped and unapplied; do not resume it as the next engineering set.
+  Continue functional release blockers and avoid redundant seed rollouts for
+  desktop-only work when compiled node source and deployment config are unchanged.
 - Branch each next change set off the latest completed implementation tip,
   never the live seed branch by default. Use `slug-<topic>` names; set 7 is
   `slug-signed-checkpoints`. HANDOVER.md records the original takeover state.

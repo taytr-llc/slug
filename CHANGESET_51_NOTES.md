@@ -3,9 +3,10 @@
 Work is on `slug-fighter-history`, stacked from completed Set 50 maintenance
 `1cdfdb8a156624c97fbad512cb5386d1c5797f4c`. Reference-only commit `285082c6`
 froze the independently reviewed contract and expected values before runtime
-implementation. Runtime implementation and the scoped actual acceptance are
-complete; renewed final local and cold-capacity gates pass. Exact package
-acceptance and deployment gates are pending.
+implementation. Implementation `751b947b` passed the final local, cold-capacity,
+scoped actual and normal Mac package checks. The verified candidate desktop
+build is 0.4.11/build 51. This is a desktop release on the stacked topic; the
+unchanged seed remains on Set 50 rather than receiving a redundant rollout.
 
 `CAREER_HISTORY.md` defines an explicit authenticated capture of one fighter’s
 already-effective awards, followed by immutable newest-first pages. It keeps
@@ -134,3 +135,38 @@ the same six captures, twelve pages and three explicit Result links. The
 unchanged independent checker and all 22 corruption controls passed against
 that new public evidence. All five actual-run final audits passed, with no
 forced cleanup, mining, new awards or changes to the original fixture.
+
+The first full normal package attempt failed in the inherited restart path:
+a missing-source Result attestation probe returned `outcome_unknown` instead
+of the required definite refusal. Its report remains failed. A single
+instrumented restart on copied public fixtures did not reproduce the failure;
+all native Result probes received the correct missing-Bout preflight refusal,
+with no action dispatched. Selected reads took 179–222 ms; repeated durable
+account observations accounted for most of that time. The original cause is
+not proven, and no timeout, assertion or shipping behavior was changed.
+
+A fresh complete package attempt then passed in 212.783 seconds, followed by
+all eleven independent package checks. These include six normal-clock History
+captures, twelve pages, three empty-result-link refusals and detached-view
+checks, with no additional History mining or awards. All owned processes and
+listeners closed. The first independent checker wrapper could not inspect
+process cleanup because the sandbox denied `ps`; that failed wrapper and its
+successful proof output are preserved separately. The permitted run completed
+all original checks. Package icon checks preserved the approved detailed app
+art and simplified menu-bar fist; no new GUI/design acceptance is claimed.
+
+The seven normal CLI artifacts built, and the node smoke passed isolated
+mining, report-only checkpoint conflict, public height-61 synchronization,
+chain verification, stale-template refusal and clean restart. Dependency
+inspection found no changed compiled seed-node source or build/deployment
+configuration. No Set 51 seed promotion, provider deployment or 900-second
+deployment observation was performed or claimed. Exact-commit remote CI
+returned no runs/checks; absence is assessed, not a pass.
+
+Workspace `set51-desktop-closeout.json` binds the verified implementation,
+package and independent evidence. The app is at
+`../artifacts/set51/final-attempt2/bundle/SLUG Candidate Pilot.app`.
+Mike clarified on November 18 that app organization and navigation belong in
+the final joint D74 review, held last. The external navigation draft is stopped
+and unapplied. Remaining engineering work should address functional release
+blockers; this closeout does not approve product launch or permanent genesis.
