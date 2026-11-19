@@ -170,7 +170,9 @@ D79 fixes accounting to difficulty-weighted per-block rounds, including the
 winning share. Earnings lock at sixty descendants; daily settlement waits for
 the funding coinbase's 100-block maturity, with no reserve advances. The 1%
 fee applies once and balances below 1 SLUG carry forward. See
-`POOL_ACCOUNTING_POLICY.md` for the remaining incident, rounding and fee rules.
+`POOL_ACCOUNTING_POLICY.md` for D58's approved exact carry-forward, single daily
+batch and network-fee funding from the operator's 1% only. Insufficient fees
+defer visibly; conflicted-funding incident resolution remains separate.
 Set 52 implements and tests nonce-only manifest share verification with
 separate pool/prospect/block targets and stable duplicate identities. Durable
 acceptance follows in Set 53; no live pool or framework adaptation is implied.
@@ -180,8 +182,12 @@ D80 only to exact canonical payout-bound winners. Public transport and miner
 integration and payouts remain ahead. Set 54 adds fixed D81 rounds, exact gross
 allocations and fresh 60-descendant confirmation locks. Orphaning and return
 change status without reusing shares; a later funding conflict retains locked
-earnings. Maturity/unspent funding, rounding/fees and settlement remain open.
-See `CHANGESET_52_NOTES.md`, `CHANGESET_53_NOTES.md` and `CHANGESET_54_NOTES.md`.
+earnings. Set 55 adds exact net balances, original mature funding, one durable
+daily batch, visible deferrals and identical-byte payout recovery. Its first
+adapter signs only with published fixtures on an isolated chain. Public
+transport, miner integration, the daily service scheduler, authoritative payout
+address enrollment and production signer custody remain ahead.
+See `CHANGESET_52_NOTES.md` through `CHANGESET_55_NOTES.md`.
 
 ### 4. Wallet
 btcwallet from the btcd suite. Hosted wallet at signup with full

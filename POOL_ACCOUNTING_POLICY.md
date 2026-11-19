@@ -1,4 +1,4 @@
-# Official pool accounting — D79, D80 and D81
+# Official pool accounting — D58 completion, D79, D80 and D81
 
 Mike approved per-block proportional rounds on November 18, 2026, Pacific.
 The pool's daily payment schedule does not define its share-allocation window.
@@ -66,10 +66,38 @@ an orphaned round has no confirmed earnings. After a prior sixty-descendant
 lock, D79 retains the earnings and blocks unfunded payment on a conflict. RPC
 failure is unavailable evidence, not evidence of an orphan or a new lock.
 
-Deep-reorg incident resolution, payout transaction fees, rounding and dust
-allocation remain to be specified before implementing money movement.
-Set 54 now retains fixed rounds, exact fractional gross allocations and durable
-confirmation locks. It uses the accepted-share journal and fresh node evidence;
-it creates no payable wallet balance, live service, reserve funding or payout.
-Work classification, share acceptance and round confirmation remain distinct
-from a successful payment. See `POOL_ROUNDS.md`.
+## Daily settlement — completion of D58
+
+Mike approved the remaining settlement details on November 18, 2026:
+
+> Approved. Carry fractional balances forward, pay at 1 SLUG, fees from the pool's 1% cut, defer rather than charge miners if the cut cannot cover the fee.
+
+He additionally requires one daily transaction batching the eligible miners,
+and a visible reason in each affected miner's balance view when payment is
+deferred. This completes D58 and clarifies D36/D79; it does not invent a new
+daily cadence, minimum, or additional fee decision.
+
+Keep reduced exact fractions of atomic units. Deduct the 1% once from each
+round's gross allocation, sum funded net balances, pay whole atomic units when
+the balance reaches 100,000,000 atoms, and retain every remaining fraction.
+The pool pays network transaction fees solely from its earned 1% portion.
+If that portion cannot cover the quoted fee, defer rather than reducing miner
+principal. Never discard miner-backed change as an implicit dust fee.
+
+Payments spend the original mature canonical rewards and retained settlement
+change carrying those rewards' remaining claims. A wallet's unrelated balance
+is not funding. Confirmation remains sixty descendants; coinbase spendability
+is the consensus check at the next block height, so a currently canonical
+coinbase with 99 descendants can be included in the next block at maturity.
+
+Before broadcasting, atomically retain the exact signed transaction, its daily
+slot, input reservations, miner debits and remaining claims. A retry or uncertain
+broadcast may only recover or retransmit those same bytes. Pending payments
+remain reserved, not paid. The first milestone must show confirmed earnings
+reaching an actual on-chain payout with a retry that cannot pay twice.
+
+Deep-reorg incident resolution remains separate: retain locked earnings and
+payment history, visibly block conflicted funding, and never make reserve
+advances. Work classification, share acceptance, round confirmation and
+successful payment remain distinct. See `POOL_ROUNDS.md` and
+`POOL_SETTLEMENT.md`.

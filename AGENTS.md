@@ -109,6 +109,12 @@ version.
   conflicts preserve confirmed gross earnings. Normal/race/profile-refusal
   checks and vet pass. This is not maturity, spendability or payout authority;
   no changed package is linked by the seed. See `CHANGESET_54_NOTES.md`.
+- Set 55 on `slug-pool-settlement` completes D58's daily settlement contract
+  with exact fractional carry, original mature funding and a durable signed
+  batch before broadcast. Network fees use the operator's 1% only; deferrals
+  stay visible and retries cannot create another payment. The isolated public
+  fixture signer is not a production wallet. See `CHANGESET_55_NOTES.md` for
+  validation and the remaining service integration boundary.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review
@@ -478,7 +484,7 @@ does not understand. Never detach, replace, or clear the /data volume.
   consensus maturity. Never advance pool reserves. Apply the 1% fee once,
   pay balances of at least 1 SLUG and carry the rest. A later loss of the
   funding coinbase blocks payment without erasing locked earnings. Resolve
-  orphan handling, incident policy, fees and rounding before money movement;
+  incident policy separately for conflicted funding;
   see `POOL_ACCOUNTING_POLICY.md`. Work classification alone is not credit.
 - D80 (Mike, November 18) includes an expired-job winning share only when its
   exact block becomes canonical and pays the configured pool address. Count
@@ -490,6 +496,16 @@ does not understand. Never detach, replace, or clear the /data volume.
   before confirmation while its block is orphaned. The exact block's return
   resumes the same round; never reuse shares in another round. Preserve D79's
   already-confirmed earnings through later conflict and never advance reserves.
+
+- Mike completed D58's settlement details on November 18: preserve exact
+  fractional net balances, pay whole atoms at the 1-SLUG threshold, and batch
+  the daily payments into one transaction. Network fees come only from the
+  pool's earned 1%; defer visibly rather than surcharge miners or drop their
+  change into fees. Pin recipient authority, retain original matured funding
+  provenance and persist the exact signed transaction and all reservations
+  before broadcast. Retry only those bytes; unknown delivery never releases
+  funds or creates another payment. Do not label this a new daily-payout rule.
+  Real wallet custody and product release gates remain separate.
 
 - Set 46 retains immutable candidate cards in a separate explicit journal.
   Preserve the complete noon source, fixed seed, pairings, unmatched reasons and

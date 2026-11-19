@@ -278,6 +278,16 @@ they do not count as completion of this product-release gate.
   Maturity, unspent funding, fee/rounding policy and payment remain separate;
   this adds no public service or desktop route. See `CHANGESET_54_NOTES.md`.
 
+- Set 55 implements D58's approved settlement contract: exact net carry-forward,
+  a 1-SLUG minimum, one daily transaction, fees paid from the pool's 1% and
+  explicit deferral reasons. An isolated normal-PoW chain has demonstrated
+  confirmed earnings becoming one actual two-miner payout, including recovery
+  after a deliberately lost broadcast acknowledgment without another payment.
+  Final scoped checks and the reviewed source binding are recorded in
+  `CHANGESET_55_NOTES.md`. The fixture signer is not production custody;
+  public service/miner integration, recipient enrollment and scheduling remain
+  release work. The joint D74 design review remains last.
+
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
 `sim-handoff-intake.json` preserves archive and file checksums. They are reference
