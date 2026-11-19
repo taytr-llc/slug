@@ -20,9 +20,12 @@ import (
 // The pending command, never a response-controlled discriminator, selects the
 // decoder. A stable failure stays a typed code across the webview boundary.
 type StableBridge struct {
-	careersEnabled            bool
-	careerActivation          *careerstate.Activation
-	careerSelection           *careerPageExpectation
+	careersEnabled   bool
+	careerActivation *careerstate.Activation
+	careerSelection  *careerPageExpectation
+	// History state is also invalidated by the reader failure path under mu.
+	history                   *careerHistoryCorrelation
+	historyFatal              bool
 	cmd                       *exec.Cmd
 	input                     io.WriteCloser
 	responses                 chan stableFrame
@@ -77,6 +80,7 @@ type stableJobExpectation struct {
 	terminal bool
 }
 type stableExpected struct {
+	history       bool
 	careerPreview bool
 	career        bool
 	id            uint64
@@ -90,6 +94,7 @@ type stableExpected struct {
 	card          bool
 }
 type stableFrame struct {
+	history       *pilot.CareerHistoryResponse
 	careerPreview *pilot.CareerPreviewResponse
 	career        *pilot.CareerResponse
 	manifest      *pilot.ManifestResponse
@@ -139,6 +144,8 @@ func (b *StableBridge) fail(err error) {
 		b.mu.Lock()
 		b.failure = err
 		b.careerSelection = nil
+		b.history = nil
+		b.historyFatal = true
 		b.presentation = nil
 		b.previewSelection = nil
 		b.entry = nil
@@ -166,7 +173,14 @@ func (b *StableBridge) read(r io.Reader) {
 			return
 		}
 		var frame stableFrame
-		if expected.careerPreview {
+		if expected.history {
+			value, err := pilot.ParseCareerHistoryResponse(scanner.Bytes())
+			if err != nil || value.ID != expected.id {
+				b.fail(ErrUnavailable)
+				return
+			}
+			frame.history = &value
+		} else if expected.careerPreview {
 			value, err := pilot.ParseCareerPreviewResponse(scanner.Bytes())
 			if err != nil || value.ID != expected.id {
 				b.fail(ErrUnavailable)
@@ -313,8 +327,11 @@ func (b *StableBridge) exchangeCareerFamily(ctx context.Context, id uint64, stab
 	return b.exchangeCareerPreviewFamily(ctx, id, stable, preview, entry, event, seed, card, bout, result, career, false, raw)
 }
 func (b *StableBridge) exchangeCareerPreviewFamily(ctx context.Context, id uint64, stable, preview, entry, event, seed, card, bout, result, career, careerPreview bool, raw []byte) (stableFrame, error) {
+	return b.exchangeHistoryFamily(ctx, id, stable, preview, entry, event, seed, card, bout, result, career, careerPreview, false, raw)
+}
+func (b *StableBridge) exchangeHistoryFamily(ctx context.Context, id uint64, stable, preview, entry, event, seed, card, bout, result, career, careerPreview, history bool, raw []byte) (stableFrame, error) {
 	b.mu.Lock()
-	b.expected = &stableExpected{careerPreview: careerPreview, career: career, id: id, stable: stable, preview: preview, entry: entry, event: event, seed: seed, card: card, bout: bout, result: result}
+	b.expected = &stableExpected{history: history, careerPreview: careerPreview, career: career, id: id, stable: stable, preview: preview, entry: entry, event: event, seed: seed, card: card, bout: bout, result: result}
 	b.mu.Unlock()
 	raw = append(raw, '\n')
 	if d, ok := b.input.(interface{ SetWriteDeadline(time.Time) error }); ok {
@@ -408,6 +425,11 @@ func (b *StableBridge) manifestRequest(ctx context.Context, req pilot.ManifestRe
 		b.clearStableView()
 		b.manifestView = nil
 	}
+	if req.Command == "stop" {
+		// Stop replaces the concrete Stable owner. A lost ACK cannot leave a
+		// pageable handle claiming that the previous owner is still live.
+		b.clearCareerHistory(false)
+	}
 	ctx, cancel := context.WithTimeout(ctx, 30*time.Second)
 	defer cancel()
 	frame, err := b.exchange(ctx, id, false, raw)
@@ -496,6 +518,9 @@ func (b *StableBridge) StableRequest(ctx context.Context, req pilot.StableReques
 		if oneOf(response.Error, "unauthorized", "stale_view") {
 			b.clearStableView()
 		}
+		if oneOf(response.Error, "stable_unavailable", "stable_corrupt", "stable_clock", "stable_observation_unknown") {
+			b.clearCareerHistory(true)
+		}
 		if unknown && oneOf(response.Error, "unauthorized", "stale_view", "stable_unavailable", "stable_not_found") {
 			return fail(id, "outcome_unknown")
 		}
@@ -535,6 +560,8 @@ func stableTerminal(state string) bool { return state != "queued" && state != "r
 func (b *StableBridge) clearStableView() {
 	b.mu.Lock()
 	b.careerSelection = nil
+	b.history = nil
+	b.historyFatal = false
 	b.mu.Unlock()
 	b.view = nil
 	b.storeID = ""

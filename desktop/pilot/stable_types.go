@@ -64,6 +64,9 @@ type StableAccountConfig struct {
 	Lease    gymstable.Lease
 	// ResultNodeLease fences only explicit Result node readiness admission.
 	ResultNodeLease ManifestViewLease
+	// HistoryPublicationLease holds the original parent epoch through a short
+	// cache/queue publication. It never spans proof or capture work.
+	HistoryPublicationLease ManifestViewLease
 }
 
 type StableControllerAPI interface {

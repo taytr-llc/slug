@@ -15,6 +15,9 @@ import (
 )
 
 type stableTask struct {
+	history           *CareerHistoryJob
+	historyPriorBytes int
+	historyEpoch      uint64
 	previewPriorBytes int
 	careerPage        bool
 	publication       *ResultJob
@@ -41,6 +44,10 @@ type stableTask struct {
 func (s *StableController) expireQueuedLocked() {
 	if s.queued != nil && s.queued.ctx.Err() != nil {
 		s.queued.cancel()
+		if s.queued.history != nil {
+			s.cancelQueuedHistoryLocked()
+			return
+		}
 		if s.queued.publication != nil {
 			s.cancelQueuedResultLocked()
 			return
@@ -86,12 +93,17 @@ func (s *StableController) expireQueuedLocked() {
 	}
 }
 func (s *StableController) cancelTasksLocked() {
+	s.invalidateHistoryLocked()
 	s.clearCareerReadLocked()
 	if s.active != nil {
 		s.active.cancel()
 	}
 	if s.queued != nil {
 		s.queued.cancel()
+		if s.queued.history != nil {
+			s.cancelQueuedHistoryLocked()
+			return
+		}
 		if s.queued.publication != nil {
 			s.cancelQueuedResultLocked()
 			return
@@ -281,6 +293,9 @@ func (s *StableController) cycle(ctx context.Context) error {
 		s.stableMu.Unlock()
 		return nil
 	}
+	if task.history != nil {
+		task.history.State = "running"
+	}
 	if task.publication != nil {
 		task.publication.State = "running"
 	}
@@ -303,6 +318,9 @@ func (s *StableController) cycle(ctx context.Context) error {
 	}
 	s.active = task
 	s.stableMu.Unlock()
+	if task.history != nil {
+		return s.runHistoryTask(ctx, task)
+	}
 	if task.publication != nil {
 		return s.runResultTask(ctx, task)
 	}
@@ -546,7 +564,7 @@ func (s *StableController) publishStableItems(ctx context.Context, items []gymst
 				delete(next, low)
 			}
 		}
-		if !manifestCacheFits(next, s.receiptSlot) || !stableCacheFits(next, s.receiptSlot, s.careerBytes+s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+s.boutBytes+s.resultBytes) {
+		if !manifestCacheFits(next, s.receiptSlot) || !stableCacheFits(next, s.receiptSlot, s.historyBytes+s.careerBytes+s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+s.boutBytes+s.resultBytes) {
 			return gymstable.ErrCapacity
 		}
 		s.cache = next
@@ -767,6 +785,9 @@ func (s *StableController) RefreshManifestProspects(ctx context.Context) error {
 }
 
 func (t *stableTask) family() string {
+	if t.history != nil {
+		return "career_history"
+	}
 	if t.publication != nil {
 		return "result"
 	}

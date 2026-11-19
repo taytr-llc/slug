@@ -39,6 +39,17 @@
       <p id="mutation-state" class="note" role="status"></p>
       <div class="actions"><button id="reconcile" type="button" disabled>Check saved change</button><button id="apply-saved" type="button" disabled>Apply saved choice</button><button id="abandon" type="button" disabled>Discard saved choice</button></div>
     </section>
+    <section id="history-panel" class="panel fighter-history" aria-labelledby="history-heading" hidden>
+      <div class="section-top"><h2 id="history-heading" tabindex="-1">Finalized history</h2><span id="history-state">Choose a fighter</span></div>
+      <p id="history-fighter" class="note">Use “View finalized history” on a fighter’s card.</p>
+      <p id="history-asof" class="note"></p><p id="history-totals" class="note"></p>
+      <p class="note">Only finalized results appear here. Earned XP continues after the 15-XP cap; applied XP explains this capture’s total. Base points are not rankings.</p>
+      <div class="actions"><button id="history-refresh" type="button" disabled>Check history request</button><button id="history-cancel" type="button" disabled>Cancel history request</button><button id="history-clear" type="button" disabled>Clear history</button></div>
+      <p id="history-message" class="note" role="status"></p>
+      <ol id="history-list" class="entry-history"></ol>
+      <div class="actions"><button id="history-previous" type="button" disabled>Newer results</button><span id="history-page-label"></span><button id="history-next" type="button" disabled>Older results</button></div>
+      <p id="history-result" class="note" role="status">Current status not checked.</p>
+    </section>
     <section class="panel saturday-entry" aria-labelledby="entry-heading">
       <div class="section-top"><h2 id="entry-heading">Saturday entry</h2><span id="entry-state">Sign in to view entries</span></div>
       <p class="note">Save up to five rostered candidates, one per weight class. Saturday noon Pacific fixes the event selection and condition. Candidate snapshots are local; no official fight is booked. Entry is free.</p>

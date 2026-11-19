@@ -135,7 +135,7 @@ func (s *StableController) AttachEvents(ctx context.Context, x *gymevent.Store) 
 		}
 		s.mu.Lock()
 		defer s.mu.Unlock()
-		if !stableCacheFits(s.cache, s.receiptSlot, s.careerBytes+s.previewBytes+s.entryBytes+eventMetadataBytes+s.seedBytes+s.cardBytes+s.boutBytes+s.resultBytes) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.historyBytes+s.careerBytes+s.previewBytes+s.entryBytes+eventMetadataBytes+s.seedBytes+s.cardBytes+s.boutBytes+s.resultBytes) {
 			return gymevent.ErrCapacity
 		}
 		s.eventStore = x

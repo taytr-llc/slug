@@ -425,10 +425,24 @@ func (s *Store) withLease(ctx context.Context, session Session, cap gymaccount.C
 	return mapped(err)
 }
 func (s *Store) sourceInfo(ctx context.Context) (uint64, error) {
+	return s.sourceInfoMode(ctx, false)
+}
+
+// The history family cannot downgrade learned source failures to cancellation.
+// Existing consumers retain their original cancellation order.
+func (s *Store) sourceInfoMode(ctx context.Context, fatalFirst bool) (uint64, error) {
 	if ctx.Err() != nil {
 		return 0, ErrCancelled
 	}
 	i, e := sourceValid(s.source, s.meta.Pin)
+	if fatalFirst {
+		if e != nil {
+			return 0, e
+		}
+		if i.Records < s.meta.ObservedSourceCount || i.Records < s.meta.Checkpoint {
+			return 0, ErrCorrupt
+		}
+	}
 	if ctx.Err() != nil {
 		return 0, ErrCancelled
 	}

@@ -47,7 +47,7 @@ func (s *StableController) beginCard(ctx context.Context, v, date, kind string) 
 		s.mu.Lock()
 		defer s.mu.Unlock()
 		oldBytes = s.cardBytes
-		if !stableCacheFits(s.cache, s.receiptSlot, s.careerBytes+s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.boutBytes+MaxCardCacheSize+s.resultBytes) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.historyBytes+s.careerBytes+s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.boutBytes+MaxCardCacheSize+s.resultBytes) {
 			return gymcard.ErrCapacity
 		}
 		var id [32]byte
@@ -103,7 +103,7 @@ func (s *StableController) retainCardLocked(j CardJob) {
 	s.cardLast = &owned
 	raw, _ := json.Marshal(owned)
 	s.mu.Lock()
-	s.cardBytes = MaxCardMetadataSize + len(raw)
+	s.cardBytes = cardRetainedMetadataBytes + len(raw)
 	s.mu.Unlock()
 }
 func (s *StableController) cancelQueuedCardLocked() {

@@ -80,7 +80,7 @@ func (s *StableController) AttachCards(ctx context.Context, x *gymcard.Store) er
 		}
 		s.mu.Lock()
 		defer s.mu.Unlock()
-		if !stableCacheFits(s.cache, s.receiptSlot, s.careerBytes+s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.boutBytes+MaxCardMetadataSize+s.resultBytes) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.historyBytes+s.careerBytes+s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.boutBytes+cardRetainedMetadataBytes+s.resultBytes) {
 			return gymcard.ErrCapacity
 		}
 		s.cardStore = x
@@ -89,7 +89,7 @@ func (s *StableController) AttachCards(ctx context.Context, x *gymcard.Store) er
 		s.cardCreated = created
 		s.cardSourceCreated = sourceCreated
 		s.cardAttached = true
-		s.cardBytes = MaxCardMetadataSize
+		s.cardBytes = cardRetainedMetadataBytes
 		return nil
 	})
 }

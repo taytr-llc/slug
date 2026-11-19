@@ -1,0 +1,1095 @@
+{
+  "version": 1,
+  "scope": "Unchanged public Set49 scoped-clock Result inputs for presentation link checks, previously independently verified. No new Go outputs or expected history equations. Test harness models fresh same-owner Snapshot View binding only.",
+  "source_path": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-result-native-evidence.json",
+  "source_sha256": "2d1c2e97ada528e90c6d4e10c93e208fa8aaa666f05a37873b3ddb100d854b17",
+  "pointers": [
+    "/rows/0/snapshot",
+    "/finalized",
+    "/conflict"
+  ],
+  "snapshot": {
+    "version": 1,
+    "state": "ready",
+    "error": "",
+    "view": {
+      "version": 1,
+      "view_id": "95771bd193e38a03369688b9213e0d6f958e5b11c53cdef3640ac0919c4b7349",
+      "account_authority_id": "1f1a174df7de619495774f261c7933adbaff55f9ae2e0bac89875ce8f7473d45",
+      "account_id": "6e25d3797227d01460c479052fe61d574baf1617fbd3fd1d57f48ab164dfc9c3",
+      "generation": 3,
+      "authority_pin": {
+        "version": 5,
+        "network": 1397511495,
+        "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "authority_id": "8180249161294a6bb9c7e4b1428a3cd4de45d5a9c63a0d35e7c625a94832a8dd",
+        "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303"
+      },
+      "authority_origin": "http://127.0.0.1:55617",
+      "transport_trust_id": "ed66ffdc4b9b6cd8b00c825642d9e179d63acfd87f65df8801c49906b18717ac"
+    },
+    "store_id": "49272dc0c7eb115f37d490d2b80785b81c993333db8fd26e158702fa061386b9",
+    "pin": {
+      "version": 1,
+      "source_store_id": "ceff8756118cbb06138b490532fd4838eff63b5f94cc8fcea33a4bab41ff6cd0",
+      "source_pin": {
+        "version": 1,
+        "source_store_id": "8e15b2c1fb78c9b2a49abe17e3b1f9710aa11941dabdf65e44f1e4cb6bc7ad37",
+        "source_pin": {
+          "version": 1,
+          "source_store_id": "324aaa8a994f7405ed05dc0caa84980479ea5f3fcacdcdde48cd4e2496689f63",
+          "source_pin": {
+            "version": 1,
+            "source_store_id": "a7482072a3c38dfb5390dec9f288b635ea56ece6cde3c42ee2b57ac7ea6fda53",
+            "source_pin": {
+              "version": 1,
+              "calendar_id": "1351d63c43cd08d760ca4a88c60bc7ecee9dcb0e331961f93b16d95425385450",
+              "rules_id": "acfcbf250caefb72b6ac6f08f89a61b782a47fc6024fce3a95436c1cfae0c6f8",
+              "participants": [
+                {
+                  "version": 1,
+                  "namespace_id": "8b7c5e221bc3f43f55127591922f7ce5406880fcc69d0d8cdb39c11cef4d527b",
+                  "calendar_id": "1351d63c43cd08d760ca4a88c60bc7ecee9dcb0e331961f93b16d95425385450",
+                  "rules_id": "fdd7e3f43df60986cea1d5eeb8a0f3512c30c73229890b84a213d057b16b44e2",
+                  "stable_store_id": "cd271a55cb9e5596b6af30b17b6a0d918fcbe5733557afc6c505c5b4d37b3f5b",
+                  "stable_pin": {
+                    "version": 1,
+                    "account_authority_id": "1f1a174df7de619495774f261c7933adbaff55f9ae2e0bac89875ce8f7473d45",
+                    "account_id": "ce595facc5e523469b498c89b4ae1bc2c7a7cf07b94063a217a7f263f779d5ab",
+                    "identity": {
+                      "network": 1397511495,
+                      "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+                      "profile": "slug-phase-a-fixture-bip39-v1",
+                      "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+                      "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+                      "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+                    },
+                    "source": {
+                      "version": 5,
+                      "network": 1397511495,
+                      "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+                      "authority_id": "c2aa5bde3e1b8dede5080dcd287454714e32f8c893f24d59792c8ed02b0597e4",
+                      "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303"
+                    },
+                    "condition_version": 1,
+                    "projector_id": "slug-fighter-condition-candidate-v1"
+                  }
+                },
+                {
+                  "version": 1,
+                  "namespace_id": "8b7c5e221bc3f43f55127591922f7ce5406880fcc69d0d8cdb39c11cef4d527b",
+                  "calendar_id": "1351d63c43cd08d760ca4a88c60bc7ecee9dcb0e331961f93b16d95425385450",
+                  "rules_id": "fdd7e3f43df60986cea1d5eeb8a0f3512c30c73229890b84a213d057b16b44e2",
+                  "stable_store_id": "7302b0c4f9a608487cce1c12dbe3177712a0ed6c206fb5472a57ad736f3b7a32",
+                  "stable_pin": {
+                    "version": 1,
+                    "account_authority_id": "1f1a174df7de619495774f261c7933adbaff55f9ae2e0bac89875ce8f7473d45",
+                    "account_id": "6e25d3797227d01460c479052fe61d574baf1617fbd3fd1d57f48ab164dfc9c3",
+                    "identity": {
+                      "network": 1397511495,
+                      "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+                      "profile": "slug-phase-a-fixture-bip39-v1",
+                      "root_public_key": "JgduaQiYjRcnjcD9t1MfTP1qo8eWaAWPQtS9nChXwtAeyTsoEGVZ8SjVqa5qxxvvKqX8tqC77wMSjaMHXNY8JSYEASdzX6PT31ktXqKPJvkhyy31",
+                      "gym_public_key": "03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519",
+                      "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5"
+                    },
+                    "source": {
+                      "version": 5,
+                      "network": 1397511495,
+                      "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+                      "authority_id": "8180249161294a6bb9c7e4b1428a3cd4de45d5a9c63a0d35e7c625a94832a8dd",
+                      "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303"
+                    },
+                    "condition_version": 1,
+                    "projector_id": "slug-fighter-condition-candidate-v1"
+                  }
+                }
+              ]
+            },
+            "publisher_gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+            "publisher_account_id": "6e25d3797227d01460c479052fe61d574baf1617fbd3fd1d57f48ab164dfc9c3",
+            "publisher_source_authority_id": "8180249161294a6bb9c7e4b1428a3cd4de45d5a9c63a0d35e7c625a94832a8dd",
+            "publisher_chain_id": "5bb59c30f0e494a1ad2ca0caf78e5243ff2ea507bb695a0e024c6a69b1496c37",
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "floor_height": 0,
+            "floor_hash": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "publisher_public_key": "26f705c8b914e8608e725221b277e481ce57c8b6f09dbf21423b949d4939e29a",
+            "checkpoint_public_key": "f1bee65bdc82723fbd180db7a0edb48354a9b8df038e6875b905cc2173a794fa",
+            "funding_public_key": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+            "funding_script": "0014751e76e8199196d454941c45d1b3a323f1433bd6",
+            "rules_id": "c2b0bba6389dd571588eb1f0882c206c57ebab31b6f8fb3e886c6a859eb32226"
+          },
+          "rules_id": "879f012a9520a8c3066b0a90e47f7069472a2d7b8ab9b32f3b80d98495eed76d"
+        },
+        "rules_id": "5f1e8b5ee9e7caaa0cc796dc8d486b453a3c7c7d5dc1ee399667d7f6051e7247"
+      },
+      "publisher_gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+      "publisher_account_id": "6e25d3797227d01460c479052fe61d574baf1617fbd3fd1d57f48ab164dfc9c3",
+      "publisher_source_authority_id": "8180249161294a6bb9c7e4b1428a3cd4de45d5a9c63a0d35e7c625a94832a8dd",
+      "publisher_chain_id": "5bb59c30f0e494a1ad2ca0caf78e5243ff2ea507bb695a0e024c6a69b1496c37",
+      "network": 1397511495,
+      "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+      "floor_height": 0,
+      "floor_hash": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+      "publisher_public_key": "984ebcc3fd73fcf64dd8ebb6a03b01a6ed2403548a479ce3089dca1392841bcf",
+      "checkpoint_public_key": "aee7dd24b6a03c5a02f452f5f588c8ca7e1dba000d9e21a736993e5842b30ca4",
+      "funding_public_key": "02c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee5",
+      "funding_script": "001406afd46bcdfd22ef94ac122aa11f241244a37ecc",
+      "rules_id": "b388cec7124548b4af5d5b096252b881f0a472878d5ee5e23f805d3a53371816"
+    },
+    "source_created_at_ms": 1795291201000,
+    "created_at_ms": 1796500801001,
+    "publisher_account_id": "6e25d3797227d01460c479052fe61d574baf1617fbd3fd1d57f48ab164dfc9c3",
+    "node_state": "offline",
+    "node_owner": "none",
+    "active_job_id": "",
+    "queued_job_id": "",
+    "last_job_id": ""
+  },
+  "finalized": {
+    "version": 1,
+    "record": {
+      "version": 1,
+      "store_id": "49272dc0c7eb115f37d490d2b80785b81c993333db8fd26e158702fa061386b9",
+      "result_key": "8e475149c6ae5d630e7d1a2278f7a7fdca8e577bf58937872821dcfaedfe2fbb",
+      "statement": {
+        "version": 1,
+        "statement": {
+          "version": 1,
+          "result_key": "8e475149c6ae5d630e7d1a2278f7a7fdca8e577bf58937872821dcfaedfe2fbb",
+          "store_id": "49272dc0c7eb115f37d490d2b80785b81c993333db8fd26e158702fa061386b9",
+          "source_store_id": "ceff8756118cbb06138b490532fd4838eff63b5f94cc8fcea33a4bab41ff6cd0",
+          "source": {
+            "version": 1,
+            "store_id": "ceff8756118cbb06138b490532fd4838eff63b5f94cc8fcea33a4bab41ff6cd0",
+            "store_created_at_ms": 1795291201000,
+            "record_digest": "dcf359029214646622d3cf1d1dd23acb7e1004f26f4d43ccfb7c15094076f7e1",
+            "source_digest": "cdc056fd4e0180d612b1dab29483ddf6c5711d00d7283b7ab1b65e755df1633e",
+            "input_id": "b474b39527c03b33841dd3a6da963f92dad808e3cd3f97887c62c744e43c0839",
+            "result_digest": "cd1feeefc8d8c331dddc72abeeee32fe58551e9f30228f2af0d8dc7aefda5c0f",
+            "created_at_ms": 1796500801001,
+            "source": {
+              "version": 1,
+              "store_id": "8e15b2c1fb78c9b2a49abe17e3b1f9710aa11941dabdf65e44f1e4cb6bc7ad37",
+              "card_id": "f14da2616920711e38c8c9afcb5ebfc0597e310729b50c5a9f63dbe7b04506eb",
+              "card_record_digest": "f824126d75ef21d2d3e6f4ef484a77a6edd385fa0f62edb1933c0c3f2df71ec5",
+              "card_source_digest": "42b5be46edf489da9af041ebd32f38a5591c11770bea740cce0ea7042d85ad9f",
+              "card_created_at_ms": 1796500801000,
+              "event": {
+                "version": 1,
+                "event_id": "9acc7753657380c9b15529b52044216fa3f5c0a3bae45697602b0127afc86b13",
+                "source_event_id": "2571299fa1c67208337ba635c292af0da8a6e630fdb1cfa5e322822dcc88716c",
+                "store_id": "a7482072a3c38dfb5390dec9f288b635ea56ece6cde3c42ee2b57ac7ea6fda53",
+                "namespace_id": "8b7c5e221bc3f43f55127591922f7ce5406880fcc69d0d8cdb39c11cef4d527b",
+                "calendar_id": "1351d63c43cd08d760ca4a88c60bc7ecee9dcb0e331961f93b16d95425385450",
+                "rules_id": "acfcbf250caefb72b6ac6f08f89a61b782a47fc6024fce3a95436c1cfae0c6f8",
+                "saturday": "2026-12-05",
+                "cutoff_ms": 1796500800000,
+                "incident_deadline_ms": 1797105600000
+              },
+              "snapshot_digest": "19d6e6e5d7b37782174ae4719e3210a1c7b28007bce49d897bdc691e6b9f1474",
+              "seed_event_key": "7e4c4144be89fc7c97912bd24300effe19a721b4efec7f7be84385932792a260",
+              "target_height": 117,
+              "target_hash": "49a887fb058599f1014ad7fc56d2b3fdec341cd24aa86dba9140fac13b820ed9",
+              "finalized_at_ms": 1796500801000,
+              "bout": {
+                "bout_id": "7833a42dd4784a9d8abbc914cc7a0dbb45b9ce2f8d7efa237ae3700d4085f190",
+                "class": "middle",
+                "corner_a": "067121d1f9be9eee0eab884de24e24df996e3b15d4385f5123930c6405d71fa3",
+                "corner_b": "22a2c799c122ac002a3ca277e0f7f84dd89c8b5f1fe1e1a18e098b1aad27e717",
+                "seed": "6de8d6f199163439eb0c13a3df9193ba6fb272cc317de31271de45caef36506c"
+              },
+              "corners": [
+                {
+                  "owner": {
+                    "ownership_basis": "candidate_assignment",
+                    "account_authority_id": "1f1a174df7de619495774f261c7933adbaff55f9ae2e0bac89875ce8f7473d45",
+                    "account_id": "6e25d3797227d01460c479052fe61d574baf1617fbd3fd1d57f48ab164dfc9c3",
+                    "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5"
+                  },
+                  "member": {
+                    "slot": 1,
+                    "slot_assigned_at_ms": 1795291140000,
+                    "assignment": {
+                      "version": 1,
+                      "sequence": 2,
+                      "prospect_id": "067121d1f9be9eee0eab884de24e24df996e3b15d4385f5123930c6405d71fa3",
+                      "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+                      "work_hash": "ebb1c933711dda7937634d80933ba6932a98a847d0914a7eb44aa1431bd4ab78",
+                      "born_at_ms": 1794962881028,
+                      "accepted_at_ms": 1794962883835,
+                      "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+                      "manifest_digest": "8fb40f35051eba45a9ff144088a129637985d429f8857b6912031efab7d769d4",
+                      "portrait_digest": "228a8872e8b2c87ebfdc6b527ee8e68eca5c3afe7d0fc8b0f71e130c59e2f09b",
+                      "source_record_digest": "06fad350ad91ec4e0de8294f09ee80921c9f70c90a744ba8f6b228696a6571db"
+                    },
+                    "class": "middle",
+                    "condition_at_cutoff": {
+                      "version": 1,
+                      "projector_id": "slug-fighter-condition-candidate-v1",
+                      "dna_version": 1,
+                      "seed": "ebb1c933711dda7937634d80933ba6932a98a847d0914a7eb44aa1431bd4ab78",
+                      "born_at_ms": 1794962881028,
+                      "as_of_ms": 1796500800000,
+                      "age_weeks": 2,
+                      "phase": "prime",
+                      "elapsed_decline_weeks": 0,
+                      "prime_remaining_weeks": 44,
+                      "prime_remaining_ms": 26282881028,
+                      "career_remaining_ms": 35959681028,
+                      "pro_xp": 0,
+                      "aged_attributes_tenths": {
+                        "power": 960,
+                        "speed": 730,
+                        "chin": 580,
+                        "stamina": 540,
+                        "skill": 610
+                      },
+                      "league_attributes_tenths": {
+                        "power": 960,
+                        "speed": 730,
+                        "chin": 580,
+                        "stamina": 540,
+                        "skill": 610
+                      },
+                      "rating_hundredths": 36050
+                    },
+                    "eligibility": "eligible"
+                  }
+                },
+                {
+                  "owner": {
+                    "ownership_basis": "candidate_assignment",
+                    "account_authority_id": "1f1a174df7de619495774f261c7933adbaff55f9ae2e0bac89875ce8f7473d45",
+                    "account_id": "ce595facc5e523469b498c89b4ae1bc2c7a7cf07b94063a217a7f263f779d5ab",
+                    "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+                  },
+                  "member": {
+                    "slot": 1,
+                    "slot_assigned_at_ms": 1795291140000,
+                    "assignment": {
+                      "version": 1,
+                      "sequence": 3,
+                      "prospect_id": "22a2c799c122ac002a3ca277e0f7f84dd89c8b5f1fe1e1a18e098b1aad27e717",
+                      "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+                      "work_hash": "68b5091782ff69e134a177f1740bc9403bf7580740505eea5472f057c93ab8c9",
+                      "born_at_ms": 1794962900023,
+                      "accepted_at_ms": 1794962900518,
+                      "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+                      "manifest_digest": "3f8a2c265141233fd2268b2d8a0ae9cdd23894fa62d0a7e0f6a7acfd0e7cd680",
+                      "portrait_digest": "12d5d510056dc4831022c18465fa88357bf5fdcba261675d6adbc738926b8f3e",
+                      "source_record_digest": "869ba5bb8aa70fc83de4b13df324267a965780f974164bf298e378f8f32efb4a"
+                    },
+                    "class": "middle",
+                    "condition_at_cutoff": {
+                      "version": 1,
+                      "projector_id": "slug-fighter-condition-candidate-v1",
+                      "dna_version": 1,
+                      "seed": "68b5091782ff69e134a177f1740bc9403bf7580740505eea5472f057c93ab8c9",
+                      "born_at_ms": 1794962900023,
+                      "as_of_ms": 1796500800000,
+                      "age_weeks": 2,
+                      "phase": "prime",
+                      "elapsed_decline_weeks": 0,
+                      "prime_remaining_weeks": 30,
+                      "prime_remaining_ms": 17815700023,
+                      "career_remaining_ms": 37169300023,
+                      "pro_xp": 0,
+                      "aged_attributes_tenths": {
+                        "power": 610,
+                        "speed": 390,
+                        "chin": 490,
+                        "stamina": 460,
+                        "skill": 610
+                      },
+                      "league_attributes_tenths": {
+                        "power": 610,
+                        "speed": 390,
+                        "chin": 490,
+                        "stamina": 460,
+                        "skill": 610
+                      },
+                      "rating_hundredths": 23550
+                    },
+                    "eligibility": "eligible"
+                  }
+                }
+              ]
+            },
+            "summary": {
+              "winner": "067121d1f9be9eee0eab884de24e24df996e3b15d4385f5123930c6405d71fa3",
+              "method": "tko_referee",
+              "end_round": 2,
+              "end_tick": 16
+            }
+          },
+          "publisher_chain_id": "5bb59c30f0e494a1ad2ca0caf78e5243ff2ea507bb695a0e024c6a69b1496c37",
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "rules_id": "b388cec7124548b4af5d5b096252b881f0a472878d5ee5e23f805d3a53371816",
+          "publisher_public_key": "984ebcc3fd73fcf64dd8ebb6a03b01a6ed2403548a479ce3089dca1392841bcf",
+          "checkpoint_public_key": "aee7dd24b6a03c5a02f452f5f588c8ca7e1dba000d9e21a736993e5842b30ca4"
+        },
+        "signature": "fa3f04fb03606f3fc021773bf2d0b8cdeac5461670ba5259ffb6fc4e5936240f155e20e642c3bb4b282aa662a9d1e888f5141a9f8ae9970a6c2de5b2440b610f"
+      },
+      "prepared_at_ms": 1796500801001,
+      "publication": {
+        "version": 1,
+        "raw_tx": "02000000000101e4e53a8c65b0654583412889c47c02b2fc57f23b39936548edb9ef60f801fd960000000000ffffffff0200000000000000004b6a49534c554752534c54018e475149c6ae5d630e7d1a2278f7a7fdca8e577bf58937872821dcfaedfe2fbb82f3ec051438e578dc8417be11843a4b1ed158d57e8e8a17f70d040ed8fe129518c69a3b0000000016001406afd46bcdfd22ef94ac122aa11f241244a37ecc024830450221008f5633cba3488dda9637330dd8b54c1e54f90bb28d230ab2ee7e7c0740d2ff48022068920ae65867aeb6f9e7be5d91663f3d0f132ec152e7e521faeddf9a61d720fa012102c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee500000000",
+        "txid": "973fb578703fc51cee1eeb545b12c85a795ffe555dda62e97870d25dfdc6480d",
+        "coin": {
+          "outpoint": {
+            "txid": "96fd01f860efb9ed486593393bf257fcb2027cc4892841834565b0658c3ae5e4",
+            "index": 0
+          },
+          "value_satoshis": 1000000000,
+          "script": "001406afd46bcdfd22ef94ac122aa11f241244a37ecc",
+          "block_height": 115,
+          "block_hash": "07257b0f98150ff7b472c90090033aeddf9d93c506e452ce52b0439286985fb8",
+          "coinbase": true
+        },
+        "built_at_ms": 1796500801001,
+        "dispatch_count": 2,
+        "first_dispatch_at_ms": 1796500801001,
+        "last_dispatch_at_ms": 1796500801001,
+        "state": "submitted"
+      },
+      "cursor": {
+        "generation": 1,
+        "height": 215,
+        "hash": "3ccc91982fa5c3def57f11992481a5b67f96e992627eff13d19feff153cac4a9",
+        "scan_digest": "9cd15a1a5b5020180658890c18db47896d72aafbdad14b48877d192b8369234b",
+        "complete_to_height": 215,
+        "complete_to_hash": "3ccc91982fa5c3def57f11992481a5b67f96e992627eff13d19feff153cac4a9"
+      },
+      "scan_restarts": [
+        {
+          "generation": 1,
+          "previous": {
+            "generation": 0,
+            "height": 215,
+            "hash": "4b8d2d72874dd3444fac5cece4be8f0717bb7a913bcafed7b6d76ac96b494cdb",
+            "scan_digest": "9c1328d5a7fcb1c4ba3e787ee7c4a6ca3c35f39ed926f22f9084196aa3974e78",
+            "complete_to_height": 215,
+            "complete_to_hash": "4b8d2d72874dd3444fac5cece4be8f0717bb7a913bcafed7b6d76ac96b494cdb"
+          },
+          "observed_at_ms": 1796500801001,
+          "observed_tip": {
+            "height": 214,
+            "hash": "3d71f83262b6f2cc1f309ba2f047ee0f69755c7d982811bc3e1af3bbe3eb961f"
+          },
+          "replacement_hash": ""
+        }
+      ],
+      "inclusion": {
+        "version": 1,
+        "generation": 1,
+        "anchor": {
+          "height": 215,
+          "hash": "3ccc91982fa5c3def57f11992481a5b67f96e992627eff13d19feff153cac4a9",
+          "header": "000000201f96ebe3bbf31a3ebc1128987d5c75690fee47f0a29b301fccf2b66232f8713d324ba7b2af3f622e31065149a76005400f59edd058867c7c0549d675b190b0b60318fe6affff7f2000000000",
+          "txid": "973fb578703fc51cee1eeb545b12c85a795ffe555dda62e97870d25dfdc6480d",
+          "raw_tx_digest": "5127d4ca0c1637cc7344db2bcb3b7a9ba2f5097955b5fe921b2b943f8444d703",
+          "raw_tx_size": 276,
+          "tx_count": 2,
+          "tx_index": 1,
+          "output_index": 0,
+          "payload": "534c554752534c54018e475149c6ae5d630e7d1a2278f7a7fdca8e577bf58937872821dcfaedfe2fbb82f3ec051438e578dc8417be11843a4b1ed158d57e8e8a17f70d040ed8fe1295",
+          "merkle_branch": [
+            "8930ea5aab2e7d856382ff30ebf8c4714481617a549facecc3b9e709f4b6b069"
+          ]
+        },
+        "observed_at_ms": 1796500801001,
+        "observed_tip": {
+          "height": 215,
+          "hash": "3ccc91982fa5c3def57f11992481a5b67f96e992627eff13d19feff153cac4a9"
+        }
+      },
+      "prior_inclusions": [
+        {
+          "version": 1,
+          "inclusion": {
+            "version": 1,
+            "generation": 0,
+            "anchor": {
+              "height": 215,
+              "hash": "4b8d2d72874dd3444fac5cece4be8f0717bb7a913bcafed7b6d76ac96b494cdb",
+              "header": "000000201f96ebe3bbf31a3ebc1128987d5c75690fee47f0a29b301fccf2b66232f8713d8a57ab9185dfab4527f69e03ab34bcc0f736783d0dceb389bbea239def7135ceea17fe6affff7f2001000000",
+              "txid": "973fb578703fc51cee1eeb545b12c85a795ffe555dda62e97870d25dfdc6480d",
+              "raw_tx_digest": "5127d4ca0c1637cc7344db2bcb3b7a9ba2f5097955b5fe921b2b943f8444d703",
+              "raw_tx_size": 276,
+              "tx_count": 2,
+              "tx_index": 1,
+              "output_index": 0,
+              "payload": "534c554752534c54018e475149c6ae5d630e7d1a2278f7a7fdca8e577bf58937872821dcfaedfe2fbb82f3ec051438e578dc8417be11843a4b1ed158d57e8e8a17f70d040ed8fe1295",
+              "merkle_branch": [
+                "dfb60b9ccd44ca382ce8e577ece82ba9185130446b02b7f348099db46df77c29"
+              ]
+            },
+            "observed_at_ms": 1796500801001,
+            "observed_tip": {
+              "height": 215,
+              "hash": "4b8d2d72874dd3444fac5cece4be8f0717bb7a913bcafed7b6d76ac96b494cdb"
+            }
+          },
+          "orphaned_at_ms": 1796500801001,
+          "observed_tip": {
+            "height": 214,
+            "hash": "3d71f83262b6f2cc1f309ba2f047ee0f69755c7d982811bc3e1af3bbe3eb961f"
+          },
+          "replacement_hash": ""
+        }
+      ],
+      "checkpoint": {
+        "version": 1,
+        "network": 1397511495,
+        "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "height": 215,
+        "hash": "3ccc91982fa5c3def57f11992481a5b67f96e992627eff13d19feff153cac4a9",
+        "signature": "0da9497a7b16f58e60da43df92204be32c8f7deaa29e5e87f569b15b2a5fc895c57b522f205abd77a0dfeb3ef3cd49998fbcf597cc1ced54c8824e28e369fc09"
+      },
+      "finality": {
+        "checkpoint": {
+          "version": 1,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "height": 215,
+          "hash": "3ccc91982fa5c3def57f11992481a5b67f96e992627eff13d19feff153cac4a9",
+          "signature": "0da9497a7b16f58e60da43df92204be32c8f7deaa29e5e87f569b15b2a5fc895c57b522f205abd77a0dfeb3ef3cd49998fbcf597cc1ced54c8824e28e369fc09"
+        },
+        "inclusion": {
+          "version": 1,
+          "generation": 1,
+          "anchor": {
+            "height": 215,
+            "hash": "3ccc91982fa5c3def57f11992481a5b67f96e992627eff13d19feff153cac4a9",
+            "header": "000000201f96ebe3bbf31a3ebc1128987d5c75690fee47f0a29b301fccf2b66232f8713d324ba7b2af3f622e31065149a76005400f59edd058867c7c0549d675b190b0b60318fe6affff7f2000000000",
+            "txid": "973fb578703fc51cee1eeb545b12c85a795ffe555dda62e97870d25dfdc6480d",
+            "raw_tx_digest": "5127d4ca0c1637cc7344db2bcb3b7a9ba2f5097955b5fe921b2b943f8444d703",
+            "raw_tx_size": 276,
+            "tx_count": 2,
+            "tx_index": 1,
+            "output_index": 0,
+            "payload": "534c554752534c54018e475149c6ae5d630e7d1a2278f7a7fdca8e577bf58937872821dcfaedfe2fbb82f3ec051438e578dc8417be11843a4b1ed158d57e8e8a17f70d040ed8fe1295",
+            "merkle_branch": [
+              "8930ea5aab2e7d856382ff30ebf8c4714481617a549facecc3b9e709f4b6b069"
+            ]
+          },
+          "observed_at_ms": 1796500801001,
+          "observed_tip": {
+            "height": 215,
+            "hash": "3ccc91982fa5c3def57f11992481a5b67f96e992627eff13d19feff153cac4a9"
+          }
+        },
+        "observed_at_ms": 1796500801001,
+        "observed_tip": {
+          "height": 275,
+          "hash": "6f4d822ce8e91ac9519a40cf1dbc06e0fc5888d8838c277d2413bf0ca32e641d"
+        },
+        "descendants": 60
+      },
+      "equivocation": null,
+      "conflicts": [],
+      "conflict_overflow": false,
+      "observation": {
+        "observed_at_ms": 1796500801001,
+        "chain_observed_at_ms": 1796500801001,
+        "tip": {
+          "height": 275,
+          "hash": "6f4d822ce8e91ac9519a40cf1dbc06e0fc5888d8838c277d2413bf0ca32e641d"
+        },
+        "node_state": "online",
+        "descendants": 60,
+        "current_finality": true
+      }
+    },
+    "status": {
+      "version": 1,
+      "store_id": "49272dc0c7eb115f37d490d2b80785b81c993333db8fd26e158702fa061386b9",
+      "result_key": "8e475149c6ae5d630e7d1a2278f7a7fdca8e577bf58937872821dcfaedfe2fbb",
+      "card_id": "f14da2616920711e38c8c9afcb5ebfc0597e310729b50c5a9f63dbe7b04506eb",
+      "bout_id": "7833a42dd4784a9d8abbc914cc7a0dbb45b9ce2f8d7efa237ae3700d4085f190",
+      "event": {
+        "version": 1,
+        "event_id": "9acc7753657380c9b15529b52044216fa3f5c0a3bae45697602b0127afc86b13",
+        "source_event_id": "2571299fa1c67208337ba635c292af0da8a6e630fdb1cfa5e322822dcc88716c",
+        "store_id": "a7482072a3c38dfb5390dec9f288b635ea56ece6cde3c42ee2b57ac7ea6fda53",
+        "namespace_id": "8b7c5e221bc3f43f55127591922f7ce5406880fcc69d0d8cdb39c11cef4d527b",
+        "calendar_id": "1351d63c43cd08d760ca4a88c60bc7ecee9dcb0e331961f93b16d95425385450",
+        "rules_id": "acfcbf250caefb72b6ac6f08f89a61b782a47fc6024fce3a95436c1cfae0c6f8",
+        "saturday": "2026-12-05",
+        "cutoff_ms": 1796500800000,
+        "incident_deadline_ms": 1797105600000
+      },
+      "exists": true,
+      "phase": "finalized",
+      "record_digest": "1d0512e41cacb099fcc0a48f2d01ebe14d8f852b57e0b3ba7b5de0af6da39133",
+      "source_record_digest": "dcf359029214646622d3cf1d1dd23acb7e1004f26f4d43ccfb7c15094076f7e1",
+      "input_id": "b474b39527c03b33841dd3a6da963f92dad808e3cd3f97887c62c744e43c0839",
+      "result_digest": "cd1feeefc8d8c331dddc72abeeee32fe58551e9f30228f2af0d8dc7aefda5c0f",
+      "prepared_at_ms": 1796500801001,
+      "publication_state": "submitted",
+      "txid": "973fb578703fc51cee1eeb545b12c85a795ffe555dda62e97870d25dfdc6480d",
+      "scan_height": 215,
+      "scan_tip_height": 275,
+      "scan_generation": 1,
+      "inclusion_height": 215,
+      "inclusion_hash": "3ccc91982fa5c3def57f11992481a5b67f96e992627eff13d19feff153cac4a9",
+      "inclusion_generation": 1,
+      "prior_inclusion_count": 1,
+      "descendants": 60,
+      "checkpoint_present": true,
+      "finalized_at_ms": 1796500801001,
+      "conflict_count": 0,
+      "conflict_overflow": false,
+      "observed_at_ms": 1796500801001,
+      "chain_observed_at_ms": 1796500801001,
+      "node_state": "online",
+      "funding_state": "scanning",
+      "current_finality": true,
+      "source": {
+        "version": 1,
+        "store_id": "ceff8756118cbb06138b490532fd4838eff63b5f94cc8fcea33a4bab41ff6cd0",
+        "card_id": "f14da2616920711e38c8c9afcb5ebfc0597e310729b50c5a9f63dbe7b04506eb",
+        "observed_at_ms": 1796500801001,
+        "source": {
+          "version": 1,
+          "card_id": "f14da2616920711e38c8c9afcb5ebfc0597e310729b50c5a9f63dbe7b04506eb",
+          "event": {
+            "version": 1,
+            "event_id": "9acc7753657380c9b15529b52044216fa3f5c0a3bae45697602b0127afc86b13",
+            "source_event_id": "2571299fa1c67208337ba635c292af0da8a6e630fdb1cfa5e322822dcc88716c",
+            "store_id": "a7482072a3c38dfb5390dec9f288b635ea56ece6cde3c42ee2b57ac7ea6fda53",
+            "namespace_id": "8b7c5e221bc3f43f55127591922f7ce5406880fcc69d0d8cdb39c11cef4d527b",
+            "calendar_id": "1351d63c43cd08d760ca4a88c60bc7ecee9dcb0e331961f93b16d95425385450",
+            "rules_id": "acfcbf250caefb72b6ac6f08f89a61b782a47fc6024fce3a95436c1cfae0c6f8",
+            "saturday": "2026-12-05",
+            "cutoff_ms": 1796500800000,
+            "incident_deadline_ms": 1797105600000
+          },
+          "card_exists": true,
+          "card_record_digest": "f824126d75ef21d2d3e6f4ef484a77a6edd385fa0f62edb1933c0c3f2df71ec5",
+          "card_source_digest": "42b5be46edf489da9af041ebd32f38a5591c11770bea740cce0ea7042d85ad9f",
+          "card_created_at_ms": 1796500801000,
+          "finalized_at_ms": 1796500801000,
+          "conflict_count": 0,
+          "conflict_overflow": false,
+          "incident_at_ms": 0,
+          "escalation_due": false,
+          "chain_observed_at_ms": 1796500801000,
+          "target_descendants": 60,
+          "current_finality": true,
+          "node_state": "online",
+          "observed_at_ms": 1796500801001,
+          "usable": true
+        },
+        "saved": {
+          "bout": {
+            "bout_id": "7833a42dd4784a9d8abbc914cc7a0dbb45b9ce2f8d7efa237ae3700d4085f190",
+            "class": "middle",
+            "corner_a": "067121d1f9be9eee0eab884de24e24df996e3b15d4385f5123930c6405d71fa3",
+            "corner_b": "22a2c799c122ac002a3ca277e0f7f84dd89c8b5f1fe1e1a18e098b1aad27e717",
+            "seed": "6de8d6f199163439eb0c13a3df9193ba6fb272cc317de31271de45caef36506c"
+          },
+          "source_digest": "cdc056fd4e0180d612b1dab29483ddf6c5711d00d7283b7ab1b65e755df1633e",
+          "exists": true,
+          "record_digest": "dcf359029214646622d3cf1d1dd23acb7e1004f26f4d43ccfb7c15094076f7e1",
+          "created_at_ms": 1796500801001,
+          "input_id": "b474b39527c03b33841dd3a6da963f92dad808e3cd3f97887c62c744e43c0839",
+          "result_digest": "cd1feeefc8d8c331dddc72abeeee32fe58551e9f30228f2af0d8dc7aefda5c0f",
+          "winner": "067121d1f9be9eee0eab884de24e24df996e3b15d4385f5123930c6405d71fa3",
+          "method": "tko_referee",
+          "end_round": 2,
+          "end_tick": 16,
+          "usable": true
+        }
+      }
+    }
+  },
+  "conflict": {
+    "version": 1,
+    "record": {
+      "version": 1,
+      "store_id": "49272dc0c7eb115f37d490d2b80785b81c993333db8fd26e158702fa061386b9",
+      "result_key": "8e475149c6ae5d630e7d1a2278f7a7fdca8e577bf58937872821dcfaedfe2fbb",
+      "statement": {
+        "version": 1,
+        "statement": {
+          "version": 1,
+          "result_key": "8e475149c6ae5d630e7d1a2278f7a7fdca8e577bf58937872821dcfaedfe2fbb",
+          "store_id": "49272dc0c7eb115f37d490d2b80785b81c993333db8fd26e158702fa061386b9",
+          "source_store_id": "ceff8756118cbb06138b490532fd4838eff63b5f94cc8fcea33a4bab41ff6cd0",
+          "source": {
+            "version": 1,
+            "store_id": "ceff8756118cbb06138b490532fd4838eff63b5f94cc8fcea33a4bab41ff6cd0",
+            "store_created_at_ms": 1795291201000,
+            "record_digest": "dcf359029214646622d3cf1d1dd23acb7e1004f26f4d43ccfb7c15094076f7e1",
+            "source_digest": "cdc056fd4e0180d612b1dab29483ddf6c5711d00d7283b7ab1b65e755df1633e",
+            "input_id": "b474b39527c03b33841dd3a6da963f92dad808e3cd3f97887c62c744e43c0839",
+            "result_digest": "cd1feeefc8d8c331dddc72abeeee32fe58551e9f30228f2af0d8dc7aefda5c0f",
+            "created_at_ms": 1796500801001,
+            "source": {
+              "version": 1,
+              "store_id": "8e15b2c1fb78c9b2a49abe17e3b1f9710aa11941dabdf65e44f1e4cb6bc7ad37",
+              "card_id": "f14da2616920711e38c8c9afcb5ebfc0597e310729b50c5a9f63dbe7b04506eb",
+              "card_record_digest": "f824126d75ef21d2d3e6f4ef484a77a6edd385fa0f62edb1933c0c3f2df71ec5",
+              "card_source_digest": "42b5be46edf489da9af041ebd32f38a5591c11770bea740cce0ea7042d85ad9f",
+              "card_created_at_ms": 1796500801000,
+              "event": {
+                "version": 1,
+                "event_id": "9acc7753657380c9b15529b52044216fa3f5c0a3bae45697602b0127afc86b13",
+                "source_event_id": "2571299fa1c67208337ba635c292af0da8a6e630fdb1cfa5e322822dcc88716c",
+                "store_id": "a7482072a3c38dfb5390dec9f288b635ea56ece6cde3c42ee2b57ac7ea6fda53",
+                "namespace_id": "8b7c5e221bc3f43f55127591922f7ce5406880fcc69d0d8cdb39c11cef4d527b",
+                "calendar_id": "1351d63c43cd08d760ca4a88c60bc7ecee9dcb0e331961f93b16d95425385450",
+                "rules_id": "acfcbf250caefb72b6ac6f08f89a61b782a47fc6024fce3a95436c1cfae0c6f8",
+                "saturday": "2026-12-05",
+                "cutoff_ms": 1796500800000,
+                "incident_deadline_ms": 1797105600000
+              },
+              "snapshot_digest": "19d6e6e5d7b37782174ae4719e3210a1c7b28007bce49d897bdc691e6b9f1474",
+              "seed_event_key": "7e4c4144be89fc7c97912bd24300effe19a721b4efec7f7be84385932792a260",
+              "target_height": 117,
+              "target_hash": "49a887fb058599f1014ad7fc56d2b3fdec341cd24aa86dba9140fac13b820ed9",
+              "finalized_at_ms": 1796500801000,
+              "bout": {
+                "bout_id": "7833a42dd4784a9d8abbc914cc7a0dbb45b9ce2f8d7efa237ae3700d4085f190",
+                "class": "middle",
+                "corner_a": "067121d1f9be9eee0eab884de24e24df996e3b15d4385f5123930c6405d71fa3",
+                "corner_b": "22a2c799c122ac002a3ca277e0f7f84dd89c8b5f1fe1e1a18e098b1aad27e717",
+                "seed": "6de8d6f199163439eb0c13a3df9193ba6fb272cc317de31271de45caef36506c"
+              },
+              "corners": [
+                {
+                  "owner": {
+                    "ownership_basis": "candidate_assignment",
+                    "account_authority_id": "1f1a174df7de619495774f261c7933adbaff55f9ae2e0bac89875ce8f7473d45",
+                    "account_id": "6e25d3797227d01460c479052fe61d574baf1617fbd3fd1d57f48ab164dfc9c3",
+                    "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5"
+                  },
+                  "member": {
+                    "slot": 1,
+                    "slot_assigned_at_ms": 1795291140000,
+                    "assignment": {
+                      "version": 1,
+                      "sequence": 2,
+                      "prospect_id": "067121d1f9be9eee0eab884de24e24df996e3b15d4385f5123930c6405d71fa3",
+                      "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+                      "work_hash": "ebb1c933711dda7937634d80933ba6932a98a847d0914a7eb44aa1431bd4ab78",
+                      "born_at_ms": 1794962881028,
+                      "accepted_at_ms": 1794962883835,
+                      "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+                      "manifest_digest": "8fb40f35051eba45a9ff144088a129637985d429f8857b6912031efab7d769d4",
+                      "portrait_digest": "228a8872e8b2c87ebfdc6b527ee8e68eca5c3afe7d0fc8b0f71e130c59e2f09b",
+                      "source_record_digest": "06fad350ad91ec4e0de8294f09ee80921c9f70c90a744ba8f6b228696a6571db"
+                    },
+                    "class": "middle",
+                    "condition_at_cutoff": {
+                      "version": 1,
+                      "projector_id": "slug-fighter-condition-candidate-v1",
+                      "dna_version": 1,
+                      "seed": "ebb1c933711dda7937634d80933ba6932a98a847d0914a7eb44aa1431bd4ab78",
+                      "born_at_ms": 1794962881028,
+                      "as_of_ms": 1796500800000,
+                      "age_weeks": 2,
+                      "phase": "prime",
+                      "elapsed_decline_weeks": 0,
+                      "prime_remaining_weeks": 44,
+                      "prime_remaining_ms": 26282881028,
+                      "career_remaining_ms": 35959681028,
+                      "pro_xp": 0,
+                      "aged_attributes_tenths": {
+                        "power": 960,
+                        "speed": 730,
+                        "chin": 580,
+                        "stamina": 540,
+                        "skill": 610
+                      },
+                      "league_attributes_tenths": {
+                        "power": 960,
+                        "speed": 730,
+                        "chin": 580,
+                        "stamina": 540,
+                        "skill": 610
+                      },
+                      "rating_hundredths": 36050
+                    },
+                    "eligibility": "eligible"
+                  }
+                },
+                {
+                  "owner": {
+                    "ownership_basis": "candidate_assignment",
+                    "account_authority_id": "1f1a174df7de619495774f261c7933adbaff55f9ae2e0bac89875ce8f7473d45",
+                    "account_id": "ce595facc5e523469b498c89b4ae1bc2c7a7cf07b94063a217a7f263f779d5ab",
+                    "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+                  },
+                  "member": {
+                    "slot": 1,
+                    "slot_assigned_at_ms": 1795291140000,
+                    "assignment": {
+                      "version": 1,
+                      "sequence": 3,
+                      "prospect_id": "22a2c799c122ac002a3ca277e0f7f84dd89c8b5f1fe1e1a18e098b1aad27e717",
+                      "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+                      "work_hash": "68b5091782ff69e134a177f1740bc9403bf7580740505eea5472f057c93ab8c9",
+                      "born_at_ms": 1794962900023,
+                      "accepted_at_ms": 1794962900518,
+                      "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+                      "manifest_digest": "3f8a2c265141233fd2268b2d8a0ae9cdd23894fa62d0a7e0f6a7acfd0e7cd680",
+                      "portrait_digest": "12d5d510056dc4831022c18465fa88357bf5fdcba261675d6adbc738926b8f3e",
+                      "source_record_digest": "869ba5bb8aa70fc83de4b13df324267a965780f974164bf298e378f8f32efb4a"
+                    },
+                    "class": "middle",
+                    "condition_at_cutoff": {
+                      "version": 1,
+                      "projector_id": "slug-fighter-condition-candidate-v1",
+                      "dna_version": 1,
+                      "seed": "68b5091782ff69e134a177f1740bc9403bf7580740505eea5472f057c93ab8c9",
+                      "born_at_ms": 1794962900023,
+                      "as_of_ms": 1796500800000,
+                      "age_weeks": 2,
+                      "phase": "prime",
+                      "elapsed_decline_weeks": 0,
+                      "prime_remaining_weeks": 30,
+                      "prime_remaining_ms": 17815700023,
+                      "career_remaining_ms": 37169300023,
+                      "pro_xp": 0,
+                      "aged_attributes_tenths": {
+                        "power": 610,
+                        "speed": 390,
+                        "chin": 490,
+                        "stamina": 460,
+                        "skill": 610
+                      },
+                      "league_attributes_tenths": {
+                        "power": 610,
+                        "speed": 390,
+                        "chin": 490,
+                        "stamina": 460,
+                        "skill": 610
+                      },
+                      "rating_hundredths": 23550
+                    },
+                    "eligibility": "eligible"
+                  }
+                }
+              ]
+            },
+            "summary": {
+              "winner": "067121d1f9be9eee0eab884de24e24df996e3b15d4385f5123930c6405d71fa3",
+              "method": "tko_referee",
+              "end_round": 2,
+              "end_tick": 16
+            }
+          },
+          "publisher_chain_id": "5bb59c30f0e494a1ad2ca0caf78e5243ff2ea507bb695a0e024c6a69b1496c37",
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "rules_id": "b388cec7124548b4af5d5b096252b881f0a472878d5ee5e23f805d3a53371816",
+          "publisher_public_key": "984ebcc3fd73fcf64dd8ebb6a03b01a6ed2403548a479ce3089dca1392841bcf",
+          "checkpoint_public_key": "aee7dd24b6a03c5a02f452f5f588c8ca7e1dba000d9e21a736993e5842b30ca4"
+        },
+        "signature": "fa3f04fb03606f3fc021773bf2d0b8cdeac5461670ba5259ffb6fc4e5936240f155e20e642c3bb4b282aa662a9d1e888f5141a9f8ae9970a6c2de5b2440b610f"
+      },
+      "prepared_at_ms": 1796500801001,
+      "publication": {
+        "version": 1,
+        "raw_tx": "02000000000101e4e53a8c65b0654583412889c47c02b2fc57f23b39936548edb9ef60f801fd960000000000ffffffff0200000000000000004b6a49534c554752534c54018e475149c6ae5d630e7d1a2278f7a7fdca8e577bf58937872821dcfaedfe2fbb82f3ec051438e578dc8417be11843a4b1ed158d57e8e8a17f70d040ed8fe129518c69a3b0000000016001406afd46bcdfd22ef94ac122aa11f241244a37ecc024830450221008f5633cba3488dda9637330dd8b54c1e54f90bb28d230ab2ee7e7c0740d2ff48022068920ae65867aeb6f9e7be5d91663f3d0f132ec152e7e521faeddf9a61d720fa012102c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee500000000",
+        "txid": "973fb578703fc51cee1eeb545b12c85a795ffe555dda62e97870d25dfdc6480d",
+        "coin": {
+          "outpoint": {
+            "txid": "96fd01f860efb9ed486593393bf257fcb2027cc4892841834565b0658c3ae5e4",
+            "index": 0
+          },
+          "value_satoshis": 1000000000,
+          "script": "001406afd46bcdfd22ef94ac122aa11f241244a37ecc",
+          "block_height": 115,
+          "block_hash": "07257b0f98150ff7b472c90090033aeddf9d93c506e452ce52b0439286985fb8",
+          "coinbase": true
+        },
+        "built_at_ms": 1796500801001,
+        "dispatch_count": 2,
+        "first_dispatch_at_ms": 1796500801001,
+        "last_dispatch_at_ms": 1796500801001,
+        "state": "submitted"
+      },
+      "cursor": {
+        "generation": 1,
+        "height": 215,
+        "hash": "3ccc91982fa5c3def57f11992481a5b67f96e992627eff13d19feff153cac4a9",
+        "scan_digest": "9cd15a1a5b5020180658890c18db47896d72aafbdad14b48877d192b8369234b",
+        "complete_to_height": 215,
+        "complete_to_hash": "3ccc91982fa5c3def57f11992481a5b67f96e992627eff13d19feff153cac4a9"
+      },
+      "scan_restarts": [
+        {
+          "generation": 1,
+          "previous": {
+            "generation": 0,
+            "height": 215,
+            "hash": "4b8d2d72874dd3444fac5cece4be8f0717bb7a913bcafed7b6d76ac96b494cdb",
+            "scan_digest": "9c1328d5a7fcb1c4ba3e787ee7c4a6ca3c35f39ed926f22f9084196aa3974e78",
+            "complete_to_height": 215,
+            "complete_to_hash": "4b8d2d72874dd3444fac5cece4be8f0717bb7a913bcafed7b6d76ac96b494cdb"
+          },
+          "observed_at_ms": 1796500801001,
+          "observed_tip": {
+            "height": 214,
+            "hash": "3d71f83262b6f2cc1f309ba2f047ee0f69755c7d982811bc3e1af3bbe3eb961f"
+          },
+          "replacement_hash": ""
+        }
+      ],
+      "inclusion": {
+        "version": 1,
+        "generation": 1,
+        "anchor": {
+          "height": 215,
+          "hash": "3ccc91982fa5c3def57f11992481a5b67f96e992627eff13d19feff153cac4a9",
+          "header": "000000201f96ebe3bbf31a3ebc1128987d5c75690fee47f0a29b301fccf2b66232f8713d324ba7b2af3f622e31065149a76005400f59edd058867c7c0549d675b190b0b60318fe6affff7f2000000000",
+          "txid": "973fb578703fc51cee1eeb545b12c85a795ffe555dda62e97870d25dfdc6480d",
+          "raw_tx_digest": "5127d4ca0c1637cc7344db2bcb3b7a9ba2f5097955b5fe921b2b943f8444d703",
+          "raw_tx_size": 276,
+          "tx_count": 2,
+          "tx_index": 1,
+          "output_index": 0,
+          "payload": "534c554752534c54018e475149c6ae5d630e7d1a2278f7a7fdca8e577bf58937872821dcfaedfe2fbb82f3ec051438e578dc8417be11843a4b1ed158d57e8e8a17f70d040ed8fe1295",
+          "merkle_branch": [
+            "8930ea5aab2e7d856382ff30ebf8c4714481617a549facecc3b9e709f4b6b069"
+          ]
+        },
+        "observed_at_ms": 1796500801001,
+        "observed_tip": {
+          "height": 215,
+          "hash": "3ccc91982fa5c3def57f11992481a5b67f96e992627eff13d19feff153cac4a9"
+        }
+      },
+      "prior_inclusions": [
+        {
+          "version": 1,
+          "inclusion": {
+            "version": 1,
+            "generation": 0,
+            "anchor": {
+              "height": 215,
+              "hash": "4b8d2d72874dd3444fac5cece4be8f0717bb7a913bcafed7b6d76ac96b494cdb",
+              "header": "000000201f96ebe3bbf31a3ebc1128987d5c75690fee47f0a29b301fccf2b66232f8713d8a57ab9185dfab4527f69e03ab34bcc0f736783d0dceb389bbea239def7135ceea17fe6affff7f2001000000",
+              "txid": "973fb578703fc51cee1eeb545b12c85a795ffe555dda62e97870d25dfdc6480d",
+              "raw_tx_digest": "5127d4ca0c1637cc7344db2bcb3b7a9ba2f5097955b5fe921b2b943f8444d703",
+              "raw_tx_size": 276,
+              "tx_count": 2,
+              "tx_index": 1,
+              "output_index": 0,
+              "payload": "534c554752534c54018e475149c6ae5d630e7d1a2278f7a7fdca8e577bf58937872821dcfaedfe2fbb82f3ec051438e578dc8417be11843a4b1ed158d57e8e8a17f70d040ed8fe1295",
+              "merkle_branch": [
+                "dfb60b9ccd44ca382ce8e577ece82ba9185130446b02b7f348099db46df77c29"
+              ]
+            },
+            "observed_at_ms": 1796500801001,
+            "observed_tip": {
+              "height": 215,
+              "hash": "4b8d2d72874dd3444fac5cece4be8f0717bb7a913bcafed7b6d76ac96b494cdb"
+            }
+          },
+          "orphaned_at_ms": 1796500801001,
+          "observed_tip": {
+            "height": 214,
+            "hash": "3d71f83262b6f2cc1f309ba2f047ee0f69755c7d982811bc3e1af3bbe3eb961f"
+          },
+          "replacement_hash": ""
+        }
+      ],
+      "checkpoint": {
+        "version": 1,
+        "network": 1397511495,
+        "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "height": 215,
+        "hash": "3ccc91982fa5c3def57f11992481a5b67f96e992627eff13d19feff153cac4a9",
+        "signature": "0da9497a7b16f58e60da43df92204be32c8f7deaa29e5e87f569b15b2a5fc895c57b522f205abd77a0dfeb3ef3cd49998fbcf597cc1ced54c8824e28e369fc09"
+      },
+      "finality": {
+        "checkpoint": {
+          "version": 1,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "height": 215,
+          "hash": "3ccc91982fa5c3def57f11992481a5b67f96e992627eff13d19feff153cac4a9",
+          "signature": "0da9497a7b16f58e60da43df92204be32c8f7deaa29e5e87f569b15b2a5fc895c57b522f205abd77a0dfeb3ef3cd49998fbcf597cc1ced54c8824e28e369fc09"
+        },
+        "inclusion": {
+          "version": 1,
+          "generation": 1,
+          "anchor": {
+            "height": 215,
+            "hash": "3ccc91982fa5c3def57f11992481a5b67f96e992627eff13d19feff153cac4a9",
+            "header": "000000201f96ebe3bbf31a3ebc1128987d5c75690fee47f0a29b301fccf2b66232f8713d324ba7b2af3f622e31065149a76005400f59edd058867c7c0549d675b190b0b60318fe6affff7f2000000000",
+            "txid": "973fb578703fc51cee1eeb545b12c85a795ffe555dda62e97870d25dfdc6480d",
+            "raw_tx_digest": "5127d4ca0c1637cc7344db2bcb3b7a9ba2f5097955b5fe921b2b943f8444d703",
+            "raw_tx_size": 276,
+            "tx_count": 2,
+            "tx_index": 1,
+            "output_index": 0,
+            "payload": "534c554752534c54018e475149c6ae5d630e7d1a2278f7a7fdca8e577bf58937872821dcfaedfe2fbb82f3ec051438e578dc8417be11843a4b1ed158d57e8e8a17f70d040ed8fe1295",
+            "merkle_branch": [
+              "8930ea5aab2e7d856382ff30ebf8c4714481617a549facecc3b9e709f4b6b069"
+            ]
+          },
+          "observed_at_ms": 1796500801001,
+          "observed_tip": {
+            "height": 215,
+            "hash": "3ccc91982fa5c3def57f11992481a5b67f96e992627eff13d19feff153cac4a9"
+          }
+        },
+        "observed_at_ms": 1796500801001,
+        "observed_tip": {
+          "height": 275,
+          "hash": "6f4d822ce8e91ac9519a40cf1dbc06e0fc5888d8838c277d2413bf0ca32e641d"
+        },
+        "descendants": 60
+      },
+      "equivocation": null,
+      "conflicts": [
+        {
+          "kind": "checkpoint_chain_conflict",
+          "observed_at_ms": 1796500801001,
+          "expected_height": 215,
+          "expected_hash": "3ccc91982fa5c3def57f11992481a5b67f96e992627eff13d19feff153cac4a9",
+          "observed_hash": "",
+          "observed_tip": {
+            "height": 214,
+            "hash": "3d71f83262b6f2cc1f309ba2f047ee0f69755c7d982811bc3e1af3bbe3eb961f"
+          },
+          "checkpoint": null
+        },
+        {
+          "kind": "checkpoint_chain_conflict",
+          "observed_at_ms": 1796500801001,
+          "expected_height": 215,
+          "expected_hash": "3ccc91982fa5c3def57f11992481a5b67f96e992627eff13d19feff153cac4a9",
+          "observed_hash": "4734023f443982c97d2123730386f1b1bda484a655a437e2f1e821de41b4841b",
+          "observed_tip": {
+            "height": 215,
+            "hash": "4734023f443982c97d2123730386f1b1bda484a655a437e2f1e821de41b4841b"
+          },
+          "checkpoint": null
+        }
+      ],
+      "conflict_overflow": false,
+      "observation": {
+        "observed_at_ms": 1796500801001,
+        "chain_observed_at_ms": 1796500801001,
+        "tip": {
+          "height": 215,
+          "hash": "4734023f443982c97d2123730386f1b1bda484a655a437e2f1e821de41b4841b"
+        },
+        "node_state": "online",
+        "descendants": 0,
+        "current_finality": false
+      }
+    },
+    "status": {
+      "version": 1,
+      "store_id": "49272dc0c7eb115f37d490d2b80785b81c993333db8fd26e158702fa061386b9",
+      "result_key": "8e475149c6ae5d630e7d1a2278f7a7fdca8e577bf58937872821dcfaedfe2fbb",
+      "card_id": "f14da2616920711e38c8c9afcb5ebfc0597e310729b50c5a9f63dbe7b04506eb",
+      "bout_id": "7833a42dd4784a9d8abbc914cc7a0dbb45b9ce2f8d7efa237ae3700d4085f190",
+      "event": {
+        "version": 1,
+        "event_id": "9acc7753657380c9b15529b52044216fa3f5c0a3bae45697602b0127afc86b13",
+        "source_event_id": "2571299fa1c67208337ba635c292af0da8a6e630fdb1cfa5e322822dcc88716c",
+        "store_id": "a7482072a3c38dfb5390dec9f288b635ea56ece6cde3c42ee2b57ac7ea6fda53",
+        "namespace_id": "8b7c5e221bc3f43f55127591922f7ce5406880fcc69d0d8cdb39c11cef4d527b",
+        "calendar_id": "1351d63c43cd08d760ca4a88c60bc7ecee9dcb0e331961f93b16d95425385450",
+        "rules_id": "acfcbf250caefb72b6ac6f08f89a61b782a47fc6024fce3a95436c1cfae0c6f8",
+        "saturday": "2026-12-05",
+        "cutoff_ms": 1796500800000,
+        "incident_deadline_ms": 1797105600000
+      },
+      "exists": true,
+      "phase": "conflict",
+      "record_digest": "71f1ee262c512a52eb94ffc833153ba132338e023ea4339f5ca160f69a76c5b1",
+      "source_record_digest": "dcf359029214646622d3cf1d1dd23acb7e1004f26f4d43ccfb7c15094076f7e1",
+      "input_id": "b474b39527c03b33841dd3a6da963f92dad808e3cd3f97887c62c744e43c0839",
+      "result_digest": "cd1feeefc8d8c331dddc72abeeee32fe58551e9f30228f2af0d8dc7aefda5c0f",
+      "prepared_at_ms": 1796500801001,
+      "publication_state": "submitted",
+      "txid": "973fb578703fc51cee1eeb545b12c85a795ffe555dda62e97870d25dfdc6480d",
+      "scan_height": 215,
+      "scan_tip_height": 215,
+      "scan_generation": 1,
+      "inclusion_height": 215,
+      "inclusion_hash": "3ccc91982fa5c3def57f11992481a5b67f96e992627eff13d19feff153cac4a9",
+      "inclusion_generation": 1,
+      "prior_inclusion_count": 1,
+      "descendants": 0,
+      "checkpoint_present": true,
+      "finalized_at_ms": 1796500801001,
+      "conflict_count": 2,
+      "conflict_overflow": false,
+      "observed_at_ms": 1796500801001,
+      "chain_observed_at_ms": 1796500801001,
+      "node_state": "online",
+      "funding_state": "scanning",
+      "current_finality": false,
+      "source": {
+        "version": 1,
+        "store_id": "ceff8756118cbb06138b490532fd4838eff63b5f94cc8fcea33a4bab41ff6cd0",
+        "card_id": "f14da2616920711e38c8c9afcb5ebfc0597e310729b50c5a9f63dbe7b04506eb",
+        "observed_at_ms": 1796500801001,
+        "source": {
+          "version": 1,
+          "card_id": "f14da2616920711e38c8c9afcb5ebfc0597e310729b50c5a9f63dbe7b04506eb",
+          "event": {
+            "version": 1,
+            "event_id": "9acc7753657380c9b15529b52044216fa3f5c0a3bae45697602b0127afc86b13",
+            "source_event_id": "2571299fa1c67208337ba635c292af0da8a6e630fdb1cfa5e322822dcc88716c",
+            "store_id": "a7482072a3c38dfb5390dec9f288b635ea56ece6cde3c42ee2b57ac7ea6fda53",
+            "namespace_id": "8b7c5e221bc3f43f55127591922f7ce5406880fcc69d0d8cdb39c11cef4d527b",
+            "calendar_id": "1351d63c43cd08d760ca4a88c60bc7ecee9dcb0e331961f93b16d95425385450",
+            "rules_id": "acfcbf250caefb72b6ac6f08f89a61b782a47fc6024fce3a95436c1cfae0c6f8",
+            "saturday": "2026-12-05",
+            "cutoff_ms": 1796500800000,
+            "incident_deadline_ms": 1797105600000
+          },
+          "card_exists": true,
+          "card_record_digest": "f824126d75ef21d2d3e6f4ef484a77a6edd385fa0f62edb1933c0c3f2df71ec5",
+          "card_source_digest": "42b5be46edf489da9af041ebd32f38a5591c11770bea740cce0ea7042d85ad9f",
+          "card_created_at_ms": 1796500801000,
+          "finalized_at_ms": 1796500801000,
+          "conflict_count": 0,
+          "conflict_overflow": false,
+          "incident_at_ms": 0,
+          "escalation_due": false,
+          "chain_observed_at_ms": 1796500801000,
+          "target_descendants": 60,
+          "current_finality": true,
+          "node_state": "online",
+          "observed_at_ms": 1796500801001,
+          "usable": true
+        },
+        "saved": {
+          "bout": {
+            "bout_id": "7833a42dd4784a9d8abbc914cc7a0dbb45b9ce2f8d7efa237ae3700d4085f190",
+            "class": "middle",
+            "corner_a": "067121d1f9be9eee0eab884de24e24df996e3b15d4385f5123930c6405d71fa3",
+            "corner_b": "22a2c799c122ac002a3ca277e0f7f84dd89c8b5f1fe1e1a18e098b1aad27e717",
+            "seed": "6de8d6f199163439eb0c13a3df9193ba6fb272cc317de31271de45caef36506c"
+          },
+          "source_digest": "cdc056fd4e0180d612b1dab29483ddf6c5711d00d7283b7ab1b65e755df1633e",
+          "exists": true,
+          "record_digest": "dcf359029214646622d3cf1d1dd23acb7e1004f26f4d43ccfb7c15094076f7e1",
+          "created_at_ms": 1796500801001,
+          "input_id": "b474b39527c03b33841dd3a6da963f92dad808e3cd3f97887c62c744e43c0839",
+          "result_digest": "cd1feeefc8d8c331dddc72abeeee32fe58551e9f30228f2af0d8dc7aefda5c0f",
+          "winner": "067121d1f9be9eee0eab884de24e24df996e3b15d4385f5123930c6405d71fa3",
+          "method": "tko_referee",
+          "end_round": 2,
+          "end_tick": 16,
+          "usable": true
+        }
+      }
+    }
+  }
+}

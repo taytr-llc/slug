@@ -96,6 +96,11 @@ type StableController struct {
 	stableClosed, installed, mining, paused, needSync bool
 	active, queued                                    *stableTask
 	last                                              *StableJob
+	historyFailure                                    error
+	historyLast                                       *CareerHistoryJob
+	historyHandle                                     *gymstable.CareerHistoryRead
+	historyEpoch                                      uint64
+	historyCheckpoint                                 func(string)
 	careerPreviewFailure                              error
 	careerPreviewLast                                 *CareerPreviewJob
 	careerPreviewCheckpoint                           func(string)
@@ -448,6 +453,8 @@ func (s *StableController) Close() error {
 		s.last = nil
 		s.previewLast = nil
 		s.careerPreviewLast = nil
+		s.historyLast = nil
+		s.historyHandle = nil
 		s.entryLast = nil
 		s.resultLast = nil
 		s.boutLast = nil
@@ -462,6 +469,7 @@ func (s *StableController) Close() error {
 		s.mu.Lock()
 		s.previewBytes = 0
 		s.careerBytes = 0
+		s.historyBytes = 0
 		s.entryBytes = 0
 		s.eventBytes = 0
 		s.seedBytes = 0
@@ -498,6 +506,10 @@ func (s *StableController) closeLive() {
 }
 func (s *StableController) setStableFailure(err error) {
 	s.stableMu.Lock()
+	s.invalidateHistoryLocked()
+	if historyFatal(err) || errors.Is(err, gymstable.ErrOutcomeUnknown) {
+		s.latchHistoryFailureLocked(err)
+	}
 	s.clearCareerReadLocked()
 	s.needSync = false
 	s.stableState = "failed"

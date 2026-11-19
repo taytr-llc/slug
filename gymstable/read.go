@@ -101,6 +101,12 @@ func boundedResult(v any) error {
 // Each call performs at most one source verification. Source methods have no
 // cancellation API; cancellation joins that proof and prevents the next call.
 func (s *Store) readSource(ctx context.Context, sequence uint64, id string) (Item, error) {
+	return s.readSourceMode(ctx, sequence, id, false)
+}
+
+// History preserves a learned source failure even if cancellation arrives
+// while the uncancellable proof is joined. Legacy callers keep their ordering.
+func (s *Store) readSourceMode(ctx context.Context, sequence uint64, id string, fatalFirst bool) (Item, error) {
 	if ctx.Err() != nil {
 		return Item{}, ErrCancelled
 	}
@@ -131,6 +137,9 @@ func (s *Store) readSource(ctx context.Context, sequence uint64, id string) (Ite
 	s.mu.Unlock()
 	if clockErr != nil {
 		return Item{}, clockErr
+	}
+	if fatalFirst && e != nil {
+		return Item{}, ErrCorrupt
 	}
 	if ctx.Err() != nil {
 		return Item{}, ErrCancelled
