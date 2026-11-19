@@ -198,7 +198,15 @@ fighter admission recover independently against the original issued job.
 An admission-only service shares the pool issuer without creating jobs outside
 its work journal. Next connect the shared desktop runtime and separate
 native-SegWit recipient binding, then the balance view and daily scheduler.
-See `CHANGESET_52_NOTES.md` through `CHANGESET_57_NOTES.md` and `POOL_WORKER.md`.
+Set 58 supplies the separate native84 wallet-recipient binding, preserving
+legacy payout markers and recovering uncertain allocation without another
+address. Shared-source stable records need explicit per-gym scoping before
+the pool parent can safely present both gyms' fighters; current stable stores
+assume an isolated source and contiguous sequences. Preserve original source
+sequence/evidence while separating the global cursor from local assignment
+count. Then connect the shared runtime, balance view and daily scheduler.
+See `CHANGESET_52_NOTES.md` through `CHANGESET_58_NOTES.md`, `POOL_WORKER.md`
+and `POOL_RECIPIENTS.md`.
 
 ### 4. Wallet
 btcwallet from the btcd suite. Hosted wallet at signup with full

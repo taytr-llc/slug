@@ -133,6 +133,16 @@ version.
   Capacity pauses mining while preserving pending recovery. The shared desktop
   runtime and balance view follow; do not silently replace the solo route.
   See `POOL_WORKER.md` and `CHANGESET_57_NOTES.md`.
+- Set 58 on `slug-pool-gym-binding` adds separately pinned native84/index0
+  pool recipients for the two published fixture wallets. Preserve the old
+  scope44 payout and markers. Persist account/source intent before allocating;
+  a lost address-allocation response requires wallet close/reopen/reattachment
+  and recovery of the original index0 address, never blind reallocation.
+  READY requires synchronized wallet ownership/path checks and the original
+  token/view recheck. Matching existing markers must be synchronized again
+  after uncertain publication. Shared-source stable isolation and parent
+  runtime follow; no current app route or production custody is activated.
+  See `POOL_RECIPIENTS.md` and `CHANGESET_58_NOTES.md`.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

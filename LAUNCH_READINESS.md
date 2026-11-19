@@ -306,6 +306,15 @@ they do not count as completion of this product-release gate.
   recipient binding, visible balances and daily scheduling remain ahead.
   This engineering slice does not replace the final joint D74 design review.
 
+- Set 58 binds each published gym to its actual native84 wallet recipient,
+  separately from the legacy solo payout and gym-signing key. Durable intent,
+  uncertain-allocation recovery and original-session publication checks prevent
+  recipient drift across retry/reset. See `POOL_RECIPIENTS.md` and
+  `CHANGESET_58_NOTES.md` for verification. The shared issuer also needs explicit
+  per-gym stable/projection scoping; existing contiguous single-gym readers
+  must not silently receive its multi-gym record stream. Shared runtime,
+  balance presentation and daily scheduling remain functional integration work.
+
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
 `sim-handoff-intake.json` preserves archive and file checksums. They are reference

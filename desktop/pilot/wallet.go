@@ -87,6 +87,8 @@ type walletRuntime struct {
 	identity walletIdentity
 	closed   bool
 	closeErr error
+
+	poolRecipientUncertain bool
 }
 
 func prepareWalletDirectory(dir string, create bool) error {
