@@ -259,6 +259,12 @@ they do not count as completion of this product-release gate.
   pass. GUI/accessibility, production authority, rankings/titles, permanent
   genesis and the final joint D74 review remain open. See `CHANGESET_51_NOTES.md`.
 
+- Set 52 validates immutable manifest-bound pool work against independent
+  pool/prospect/block targets, with stable duplicate keys. Normal/race/profile
+  refusal tests and vet pass. D79 accounting and maturity policy is recorded;
+  durable acceptance, a live pool and payouts remain open. This additive library
+  work requires no seed or desktop rollout. See `CHANGESET_52_NOTES.md`.
+
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
 `sim-handoff-intake.json` preserves archive and file checksums. They are reference

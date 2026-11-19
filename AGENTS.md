@@ -93,6 +93,10 @@ version.
   Version 0.4.11/build 51 is a verified desktop build. No compiled seed-node
   source or deployment configuration changed, so master and the live seed
   remain at Set 50 (`592e143c`). See `CHANGESET_51_NOTES.md`.
+- Set 52 on `slug-pool-shares` adds immutable manifest pool-work verification
+  with independent pool/prospect/block targets. Its focused normal/race/profile
+  refusal tests and vet pass. No durable share acceptance, credits, payments or
+  live pool are enabled, and no seed rollout is needed. See `CHANGESET_52_NOTES.md`.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review
@@ -455,6 +459,15 @@ does not understand. Never detach, replace, or clear the /data volume.
   independent retirement/time-driven vacancy rules, D65 and C1's zero-record
   boundary. Do not infer transferable ownership, production authority or new
   matchmaking/title-selection policy from this timing decision.
+
+- D79 (Mike, November 18) uses difficulty-weighted per-block pool rounds,
+  including the winning share, with daily settlement only. Earnings lock at
+  sixty descendants; payment waits for the funding coinbase's 100-block
+  consensus maturity. Never advance pool reserves. Apply the 1% fee once,
+  pay balances of at least 1 SLUG and carry the rest. A later loss of the
+  funding coinbase blocks payment without erasing locked earnings. Resolve
+  orphan handling, incident policy, fees and rounding before money movement;
+  see `POOL_ACCOUNTING_POLICY.md`. Work classification alone is not credit.
 
 - Set 46 retains immutable candidate cards in a separate explicit journal.
   Preserve the complete noon source, fixed seed, pairings, unmatched reasons and

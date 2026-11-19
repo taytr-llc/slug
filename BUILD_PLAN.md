@@ -166,6 +166,16 @@ it is served by the chain and the gym clients directly.
 Depends on: chain core (stratum surface), fighter layer (prospect
 attestation format).
 
+D79 fixes accounting to difficulty-weighted per-block rounds, including the
+winning share. Earnings lock at sixty descendants; daily settlement waits for
+the funding coinbase's 100-block maturity, with no reserve advances. The 1%
+fee applies once and balances below 1 SLUG carry forward. See
+`POOL_ACCOUNTING_POLICY.md` for the remaining incident, rounding and fee rules.
+Set 52 implements and tests nonce-only manifest share verification with
+separate pool/prospect/block targets and stable duplicate identities. Durable
+acceptance, the pool protocol, accounting and payouts remain ahead; no live
+pool or framework adaptation is implied. See `CHANGESET_52_NOTES.md`.
+
 ### 4. Wallet
 btcwallet from the btcd suite. Hosted wallet at signup with full
 export at any time (D48). Signing lives in the clients and on Mike's
