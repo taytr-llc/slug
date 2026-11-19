@@ -110,6 +110,14 @@ func TestPoolBridgeProcess(t *testing.T) {
 			continue
 		}
 		s := poolBridgeSnapshot(t)
+		if mode == "backup-uncertain" && req.Command == "export_recovery" {
+			raw, _ := json.Marshal(pilot.PoolResponse{ID: req.ID, Error: "export_uncertain"})
+			fmt.Println(string(raw))
+			continue
+		}
+		if mode == "backup-wrong-view" && req.Command == "export_recovery" {
+			s.View.ViewID = strings.Repeat("e", 64)
+		}
 		if mode == "changed-source" && calls > 1 {
 			s.SourceBindingID = strings.Repeat("e", 64)
 			s.Balance.Value.BindingID = s.SourceBindingID

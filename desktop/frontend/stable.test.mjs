@@ -480,10 +480,11 @@ function poolEnvironment(sequences = [2, 5], checkpoint = 12, fixture = 'zero256
   });
   const e = environment(fixture, list), p = sharedReference.pins.find((v) => v.fixture === fixture);
   e.stable.status.pin = clone(p.pin); e.stable.status.store_id = p.id;
+  e.manifest.view.authority_pin = clone(p.pin.source); e.stable.view = clone(e.manifest.view);
   e.stable.status.checkpoint = e.stable.status.observed_source_count = checkpoint;
   const m = e.manifest; delete m.accepted_count; delete m.projection;
-  Object.assign(m, { mode: 'local-pool-pilot', assignment_count: sequences.length, source_binding_id: hash(1234), payout_address: fixture === 'zero256' ? 'slug1qzmtrqsfuaf6l6kkcsseumq26ukaphfj9s9ptme' : 'slug1qslk39wvggqa0vl8nd6jckaz54dw3vk45c8educ', backup_state: 'unavailable' });
-  m.account.can_export = false;
+  Object.assign(m, { mode: 'local-pool-pilot', assignment_count: sequences.length, source_binding_id: hash(1234), payout_address: fixture === 'zero256' ? 'slug1qzmtrqsfuaf6l6kkcsseumq26ukaphfj9s9ptme' : 'slug1qslk39wvggqa0vl8nd6jckaz54dw3vk45c8educ', backup_state: 'idle' });
+  m.account.can_export = true;
   m.balance = { state: 'ready', error: '', value: { version: 1, binding_id: m.source_binding_id, observed_at_ms: m.view ? 1794893590614 : 0, balance: { gym_id: m.gym_id, confirmed: { numerator: '990000001', denominator: '2' }, available: { numerator: '0', denominator: '1' }, reserved_atoms: 0, paid_atoms: 0, reason: 'immature' } } };
   return e;
 }
@@ -506,7 +507,7 @@ test('pool mode reports local count, exact fractional carry and maturity reason 
   assert.equal(h.elements.get('pool-confirmed').textContent, '4.95 + fraction of an atom');
   assert.equal(h.elements.get('pool-confirmed').attributes.get('title'), '990000001/2 atoms');
   assert.match(h.elements.get('pool-reason').textContent, /mature at 100 blocks/);
-  assert.equal(h.elements.get('export-recovery').disabled, true); assert.equal(h.elements.get('verify-backup').disabled, true);
+  assert.equal(h.elements.get('export-recovery').disabled, false); assert.equal(h.elements.get('verify-backup').disabled, false);
   for (const method of ['Start', 'ManifestSnapshot', 'PreviewSnapshot', 'EntrySnapshot', 'EventSnapshot', 'SeedSnapshot', 'CardSnapshot', 'CareerMode']) assert.equal(h.count(method), 0);
   await h.click('pool-refresh'); assert.equal(h.count('RefreshPoolBalance'), 1); assert.equal(h.peak, 1);
 });
@@ -559,3 +560,68 @@ test('signed-out pool view refuses any retained account balance', async () => {
   m.account = { state: 'signed_out', fixture: '', id: '', generation: 0, hold_until_ms: 0, held: false, can_export: false, last_error: '' };
   const h = poolHarness(e); await h.start(); assert.equal(h.elements.get('mining').disabled, true); assert.equal(h.elements.get('pool-confirmed').textContent, '—');
 });
+
+test('pool recovery controls use native dialogs and preserve the reset hold', async () => {
+  const h = poolHarness(); await h.start();
+  await h.click('export-recovery'); await h.click('verify-backup');
+  assert.deepEqual(h.calls.filter((c) => ['ExportRecovery', 'VerifyBackup'].includes(c.method)).map((c) => c.args), [[], []]);
+  assert.equal(h.count('Start'), 0);
+  Object.assign(h.state.manifest.account, { held: true, hold_until_ms: 1795093590614, can_export: false }); await h.tick();
+  assert.equal(h.elements.get('export-recovery').disabled, true);
+  assert.equal(h.elements.get('verify-backup').disabled, false);
+  assert.equal(h.elements.get('mining').disabled, false);
+});
+test('pool verification blocks Start, supports cancellation and never restarts mining', async () => {
+  const h = poolHarness();
+  h.handlers.VerifyBackup = () => { Object.assign(h.state.manifest, { backup_state: 'running', backup_phase: 'restoring' }); return 'Backup verification started.'; };
+  h.handlers.CancelPoolBackup = () => { Object.assign(h.state.manifest, { backup_state: 'cancelled', backup_phase: '' }); };
+  await h.start(); await h.click('verify-backup');
+  assert.equal(h.elements.get('mining').disabled, true); assert.equal(h.elements.get('export-recovery').disabled, true);
+  assert.equal(h.elements.get('verify-backup').textContent, 'Cancel backup verification');
+  assert.equal(h.elements.get('logout').disabled, false); assert.equal(h.elements.get('reset').disabled, false);
+  await h.click('verify-backup');
+  assert.equal(h.count('CancelPoolBackup'), 1); assert.deepEqual(h.calls.find((c) => c.method === 'CancelPoolBackup').args, []);
+  assert.equal(h.elements.get('mining').disabled, false); assert.equal(h.count('Start'), 0);
+  assert.match(h.elements.get('backup').textContent, /cancelled/);
+});
+test('uncertain pool export warns to inspect the destination and never echoes backend text', async () => {
+  const h = poolHarness();
+  h.handlers.ExportRecovery = () => { Object.assign(h.state.manifest, { backup_state: 'failed', backup_phase: 'opening', backup_error: 'backup_export_uncertain' }); throw new Error('private recovery bytes and path'); };
+  await h.start(); await h.click('export-recovery');
+  assert.match(h.elements.get('backup').textContent, /may already be saved/);
+  assert.match(h.elements.get('alert').textContent, /Check the selected destination before trying again/);
+  assert.doesNotMatch(h.elements.get('alert').textContent, /private recovery/);
+  assert.equal(h.count('ExportRecovery'), 1);
+});
+test('temporarily unavailable pool backup offers retry without claiming a bad file', async () => {
+  const h = poolHarness(); await h.start();
+  Object.assign(h.state.manifest, { backup_state: 'failed', backup_phase: 'verifying', backup_error: 'backup_unavailable' }); await h.tick();
+  assert.match(h.elements.get('backup').textContent, /Retry after pending payments confirm/);
+  assert.doesNotMatch(h.elements.get('backup').textContent, /mismatch|invalid|completed/);
+  assert.equal(h.elements.get('verify-backup').disabled, false);
+});
+test('pool backup state cannot forge verification success or bypass a hold', async (t) => {
+  for (const [name, mutate] of Object.entries({
+    incompleteSuccess: (s) => { s.backup_state = 'succeeded'; s.backup_phase = 'restoring'; },
+    successWithError: (s) => { s.backup_state = 'succeeded'; s.backup_phase = 'complete'; s.backup_error = 'backup_mismatch'; },
+    runningWithoutPhase: (s) => { s.backup_state = 'running'; },
+    miningDuringVerification: (s) => { s.state = 'running'; s.backup_state = 'running'; s.backup_phase = 'restoring'; },
+    heldExport: (s) => { s.account.held = true; s.account.hold_until_ms = 1795093590614; },
+  })) await t.test(name, async () => {
+    const e = poolEnvironment(); mutate(e.manifest); const h = poolHarness(e); await h.start();
+    assert.equal(h.elements.get('mining').disabled, true); assert.equal(h.elements.get('export-recovery').disabled, true);
+    assert.doesNotMatch(h.elements.get('backup').textContent, /verification completed/);
+  });
+});
+test('late pool verification success from a replaced account does not display', async () => {
+  const h = poolHarness(), gate = deferred();
+  h.handlers.VerifyBackup = () => gate.promise;
+  await h.start(); const checking = h.click('verify-backup'); await flush();
+  h.state = poolEnvironment([], 0, 'incrementing256');
+  gate.resolve('Backup verification started.'); await checking; await flush();
+  assert.doesNotMatch(h.elements.get('alert').textContent, /verification started/);
+  assert.equal(h.elements.get('gym-id').textContent, fixturesFromReference('incrementing256'));
+  assert.doesNotMatch(h.elements.get('alert').textContent, /verification started/);
+  assert.doesNotMatch(h.elements.get('backup').textContent, /verification completed/);
+});
+function fixturesFromReference(fixture) { return sharedReference.pins.find((v) => v.fixture === fixture).pin.identity.gym_id; }

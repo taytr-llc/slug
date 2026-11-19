@@ -43,3 +43,18 @@ type PoolSnapshot struct {
 func BlankPoolSnapshot() PoolSnapshot {
 	return PoolSnapshot{Version: 1, Mode: PoolMode, State: "stopped", WalletState: "closed", BackupState: "unavailable", Account: AccountSnapshot{State: "signed_out"}, Balance: PoolBalanceSnapshot{State: "unavailable"}}
 }
+
+func poolBackupValid(s PoolSnapshot) bool {
+	phase := stableOne(s.BackupPhase, "", "opening", "checking", "restoring", "syncing", "verifying")
+	switch s.BackupState {
+	case "unavailable", "idle", "cancelled":
+		return s.BackupPhase == "" && s.BackupError == ""
+	case "running":
+		return phase && s.BackupPhase != "" && s.BackupError == "" && stableOne(s.State, "stopped", "failed")
+	case "succeeded":
+		return s.BackupPhase == "complete" && s.BackupError == ""
+	case "failed":
+		return phase && stableOne(s.BackupError, "backup_unavailable", "backup_invalid", "backup_mismatch", "backup_storage_failed", "backup_export_uncertain")
+	}
+	return false
+}

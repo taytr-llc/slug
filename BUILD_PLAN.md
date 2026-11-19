@@ -220,16 +220,18 @@ child without replacing the source; Quit joins the complete runtime. The solo
 route retains its namespace. See `CHANGESET_61_NOTES.md` for the actual payout,
 isolation, reset/restart and package qualification.
 
-Next connect shared-wallet export and fresh restoration to these actual pool
-recipients, preserving the original view and D72 hold through publication.
-Then attach pool-mined fighters to a fresh explicit shared event/career namespace,
+Set62 connects shared-wallet export and fresh restoration to these actual pool
+recipients, preserving the original view and D72 hold through publication. The
+funded independent restore/spend and exact-package checks pass, including fresh
+wallets at genesis. See `SHARED_POOL_RECOVERY.md` and `CHANGESET_62_NOTES.md`.
+Next attach pool-mined fighters to a fresh explicit shared event/career namespace,
 keeping original Pin2 participant pins, source sequences and finality rules.
 Never repin solo event histories. Keep the existing layout/logos until the final
 joint D74 review. Public hosting, production signer custody/capacity, real account
 configuration and permanent genesis remain separate gates. The implemented
 contract is `SHARED_POOL_DESKTOP.md`; the earlier workspace runtime proposal
 remains historical context. See `CHANGESET_52_NOTES.md` through
-`CHANGESET_61_NOTES.md`, `POOL_WORKER.md`, `POOL_RECIPIENTS.md`,
+`CHANGESET_62_NOTES.md`, `POOL_WORKER.md`, `POOL_RECIPIENTS.md`,
 `SHARED_GYM_STABLE.md` and `POOL_SESSION_FENCES.md`.
 
 ### 4. Wallet

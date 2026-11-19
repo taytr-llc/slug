@@ -175,6 +175,19 @@ version.
   timestamps. Preserve the solo route. Shared-wallet recovery follows in Set62,
   then explicit shared league attachment; never repin old histories or reorganize
   navigation. See `SHARED_POOL_DESKTOP.md` and `CHANGESET_61_NOTES.md`; D74 stays last.
+- Set62 on `slug-shared-pool-recovery` connects native recovery export and
+  file-only fresh verification to the actual Pool Pilot wallet. Capture the
+  original view before the dialog, retain directory/file descriptors through
+  helper handoff, and publish owner-only files exclusively under the original
+  RecoveryExport capability. D72 blocks export during a hold but allows viewing
+  and existing-file verification. Wait for actual synchronization even at
+  genesis; retain complete confirmed-state comparison and retry when pending
+  transactions or changing observations prevent a stable comparison. Uncertain
+  publication must tell the user to inspect the destination before retrying.
+  Cancel/Close join cleanup; verification never spends or starts mining. The
+  funded file-only restore/spend, package, full desktop and smoke checks pass.
+  Shared league attachment is next; preserve solo histories and the final D74
+  gate. See `SHARED_POOL_RECOVERY.md` and `CHANGESET_62_NOTES.md`.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

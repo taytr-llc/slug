@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"github.com/taytr-llc/slug/desktop/internal/recoveryfile"
 	"github.com/taytr-llc/slug/gymaccount"
 	"github.com/taytr-llc/slug/gymstable"
 	"github.com/taytr-llc/slug/poolsettle"
@@ -22,13 +23,14 @@ import (
 )
 
 type PoolRequest struct {
-	ID         uint64 `json:"id"`
-	Command    string `json:"command"`
-	Sequence   uint64 `json:"sequence,omitempty"`
-	Path       string `json:"path,omitempty"`
-	Fixture    string `json:"fixture,omitempty"`
-	ViewID     string `json:"view_id,omitempty"`
-	ProspectID string `json:"prospect_id,omitempty"`
+	ID         uint64            `json:"id"`
+	Command    string            `json:"command"`
+	Sequence   uint64            `json:"sequence,omitempty"`
+	Path       string            `json:"path,omitempty"`
+	Fixture    string            `json:"fixture,omitempty"`
+	ViewID     string            `json:"view_id,omitempty"`
+	ProspectID string            `json:"prospect_id,omitempty"`
+	Selection  *recoveryfile.Pin `json:"selection,omitempty"`
 }
 type PoolResponse struct {
 	ID              uint64            `json:"id"`
@@ -69,12 +71,18 @@ type PoolChildAPI interface {
 	PoolSurfaceAPI
 	AccountID() string
 	Prepare(context.Context) error
+	ExportPoolRecovery(context.Context, recoveryfile.Pin) error
+	VerifyPoolBackup(context.Context, recoveryfile.Pin) error
+	CancelPoolBackup()
 }
 type PoolControllerAPI interface {
 	PoolSurfaceAPI
 	LoginFixture(string) error
 	Logout() error
 	ResetFixtureAccount() error
+	ExportPoolRecovery(context.Context, string, recoveryfile.Pin) error
+	VerifyPoolBackup(context.Context, string, recoveryfile.Pin) error
+	CancelPoolBackup(context.Context, string) error
 }
 
 func ParsePoolRequest(raw []byte) (PoolRequest, error) {
@@ -111,7 +119,7 @@ func ParsePoolRequest(raw []byte) (PoolRequest, error) {
 	}
 	for name := range fields {
 		switch name {
-		case "id", "command", "sequence", "path", "fixture", "view_id", "prospect_id":
+		case "id", "command", "sequence", "path", "fixture", "view_id", "prospect_id", "selection":
 		default:
 			return req, invalid
 		}
@@ -129,6 +137,10 @@ func ParsePoolRequest(raw []byte) (PoolRequest, error) {
 		allowed["path"], allowed["view_id"], allowed["prospect_id"] = true, true, true
 	case "release_manifest_receipt":
 		allowed["view_id"], allowed["prospect_id"] = true, true
+	case "export_recovery", "verify_backup":
+		allowed["view_id"], allowed["selection"] = true, true
+	case "cancel_pool_backup":
+		allowed["view_id"] = true
 	default:
 		return req, invalid
 	}
@@ -155,6 +167,20 @@ func ParsePoolRequest(raw []byte) (PoolRequest, error) {
 	if allowed["prospect_id"] && (json.Unmarshal(fields["prospect_id"], &req.ProspectID) != nil || !canonicalManifestID(req.ProspectID)) {
 		return req, invalid
 	}
+	if allowed["selection"] {
+		var pin recoveryfile.Pin
+		if _, e := poolDecode(fields["selection"], MaxRequestSize, 6, &pin); e != nil {
+			return req, invalid
+		}
+		mode := recoveryfile.CreateMode
+		if req.Command == "verify_backup" {
+			mode = recoveryfile.ReadMode
+		}
+		if recoveryfile.ValidatePin(pin, mode) != nil {
+			return req, invalid
+		}
+		req.Selection = &pin
+	}
 	return req, nil
 }
 
@@ -176,6 +202,15 @@ func handlePoolRequest(ctx context.Context, req PoolRequest, c PoolControllerAPI
 		err = c.ResetFixtureAccount()
 	case "refresh_pool_balance":
 		err, code = c.RefreshPoolBalance(ctx), "balance_unavailable"
+	case "export_recovery":
+		err, code = c.ExportPoolRecovery(ctx, req.ViewID, *req.Selection), "export_unavailable"
+		if errors.Is(err, recoveryfile.ErrOutcomeUnknown) {
+			code = "export_uncertain"
+		}
+	case "verify_backup":
+		err, code = c.VerifyPoolBackup(ctx, req.ViewID, *req.Selection), "backup_unavailable"
+	case "cancel_pool_backup":
+		err, code = c.CancelPoolBackup(ctx, req.ViewID), "backup_unavailable"
 	case "manifest_portrait":
 		value, e := c.ManifestPortrait(ctx, req.Sequence)
 		err, code = e, "portrait_unavailable"
@@ -306,20 +341,20 @@ var poolPayoutPattern = regexp.MustCompile(`^slug1q[023456789acdefghjklmnpqrstuv
 func ValidatePoolSnapshot(s PoolSnapshot) error {
 	bad := gymstable.ErrInvalid
 	a := s.Account
-	if s.Version != 1 || s.Mode != PoolMode || !stableOne(s.State, "stopped", "starting", "running", "stopping", "failed") || !stableOne(s.WalletState, "closed", "connecting", "syncing", "ready", "failed") || s.BackupState != "unavailable" || s.BackupPhase != "" || s.BackupError != "" || !PoolStatusCode(s.LastError) || !PoolStatusCode(s.RecoveryError) {
+	if s.Version != 1 || s.Mode != PoolMode || !stableOne(s.State, "stopped", "starting", "running", "stopping", "failed") || !stableOne(s.WalletState, "closed", "connecting", "syncing", "ready", "failed") || !poolBackupValid(s) || !PoolStatusCode(s.LastError) || !PoolStatusCode(s.RecoveryError) {
 		return bad
 	}
 	if s.Attempts > gymstable.MaxSafeInteger || s.Height > gymstable.MaxSafeInteger || s.WalletHeight > gymstable.MaxSafeInteger || s.Pending > 1000 || s.AssignmentCount > 1000 || s.SpendableAtoms < 0 || s.SpendableAtoms > poolsettle.MaxMoney || s.ImmatureAtoms < 0 || s.ImmatureAtoms > poolsettle.MaxMoney || math.IsNaN(s.HashesPerSecond) || math.IsInf(s.HashesPerSecond, 0) || s.HashesPerSecond < 0 {
 		return bad
 	}
-	if !stableOne(a.State, "signed_out", "signing_in", "signed_in", "resetting", "signing_out", "failed", "expired") || !stableOne(a.Fixture, "", "zero256", "incrementing256") || !stableOne(a.LastError, "", "account_unavailable") || a.Generation > gymstable.MaxSafeInteger || a.HoldUntilMS < 0 || a.HoldUntilMS > 8640000000000000 || a.CanExport || a.Held && a.HoldUntilMS == 0 {
+	if !stableOne(a.State, "signed_out", "signing_in", "signed_in", "resetting", "signing_out", "failed", "expired") || !stableOne(a.Fixture, "", "zero256", "incrementing256") || !stableOne(a.LastError, "", "account_unavailable") || a.Generation > gymstable.MaxSafeInteger || a.HoldUntilMS < 0 || a.HoldUntilMS > 8640000000000000 || a.Held && (a.CanExport || a.HoldUntilMS == 0) {
 		return bad
 	}
 	if !poolBalanceValid(s) {
 		return bad
 	}
 	if a.State != "signed_in" {
-		if s.View != nil || a.ID != "" || a.Generation != 0 || a.HoldUntilMS != 0 || a.Held || s.GymID != "" || s.GymPublicKey != "" || s.PayoutAddress != "" || s.SourceBindingID != "" || s.AssignmentCount != 0 || s.SpendableAtoms != 0 || s.ImmatureAtoms != 0 || s.Pending != 0 || s.Attempts != 0 || s.Height != 0 || s.WalletHeight != 0 || s.HashesPerSecond != 0 || s.Balance.State != "unavailable" {
+		if s.View != nil || a.ID != "" || a.Generation != 0 || a.HoldUntilMS != 0 || a.Held || a.CanExport || s.BackupState != "unavailable" || s.GymID != "" || s.GymPublicKey != "" || s.PayoutAddress != "" || s.SourceBindingID != "" || s.AssignmentCount != 0 || s.SpendableAtoms != 0 || s.ImmatureAtoms != 0 || s.Pending != 0 || s.Attempts != 0 || s.Height != 0 || s.WalletHeight != 0 || s.HashesPerSecond != 0 || s.Balance.State != "unavailable" {
 			return bad
 		}
 		return nil
@@ -341,7 +376,7 @@ func ParsePoolResponse(raw []byte) (PoolResponse, error) {
 		return PoolResponse{}, gymstable.ErrInvalid
 	}
 	if !r.OK {
-		if !fields["error"] || !stableOne(r.Error, "invalid_request", "invalid_frame", "start_unavailable", "account_unavailable", "balance_unavailable", "portrait_unavailable", "manifest_receipt_unavailable", "export_unavailable", "initialization_incomplete", "projection_unavailable", "projection_corrupt", "projection_cancelled", "projection_required", "prospect_unavailable") {
+		if !fields["error"] || !stableOne(r.Error, "invalid_request", "invalid_frame", "start_unavailable", "account_unavailable", "balance_unavailable", "portrait_unavailable", "manifest_receipt_unavailable", "export_unavailable", "export_uncertain", "backup_unavailable", "initialization_incomplete", "projection_unavailable", "projection_corrupt", "projection_cancelled", "projection_required", "prospect_unavailable") {
 			return PoolResponse{}, gymstable.ErrInvalid
 		}
 		return r, nil

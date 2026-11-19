@@ -146,14 +146,22 @@ function poolBalance(v, gym, binding) {
   requireValue(r.observed_at_ms !== 0 || (confirmed.n === 0n && available.n === 0n && b.reserved_atoms === 0 && b.paid_atoms === 0 && b.reason === ''));
   return own(v);
 }
+function validPoolBackup(v) {
+  requireValue(['unavailable', ...backupStates].includes(v.backup_state) && Object.hasOwn(backupPhases, v.backup_phase) && [...backupErrors, 'backup_export_uncertain'].includes(v.backup_error));
+  const phase = v.backup_phase, error = v.backup_error;
+  if (['unavailable', 'idle', 'cancelled'].includes(v.backup_state)) requireValue(phase === '' && error === '');
+  else if (v.backup_state === 'running') requireValue(phase !== '' && phase !== 'complete' && error === '' && ['stopped', 'failed'].includes(v.state));
+  else if (v.backup_state === 'succeeded') requireValue(phase === 'complete' && error === '');
+  else requireValue(error !== '' && phase !== 'complete');
+}
 function normalizePool(v) {
   exact(v, ['version', 'mode', 'state', 'attempts', 'hashes_per_second', 'height', 'pending', 'last_error', 'recovery_error', 'wallet_state', 'wallet_height', 'payout_address', 'gym_id', 'gym_public_key', 'spendable_atoms', 'immature_atoms', 'backup_state', 'backup_phase', 'backup_error', 'account', 'view', 'assignment_count', 'source_binding_id', 'balance']);
   requireValue(v.version === 1 && v.mode === POOL_MODE && states.includes(v.state) && walletStates.includes(v.wallet_state));
   requireValue(['attempts', 'height', 'wallet_height'].every((k) => int(v[k])) && ['spendable_atoms', 'immature_atoms'].every((k) => int(v[k], 0, MAX_ATOMS)) && int(v.pending, 0, 4096) && int(v.assignment_count, 0, 1000));
   requireValue(typeof v.hashes_per_second === 'number' && Number.isFinite(v.hashes_per_second) && v.hashes_per_second >= 0 && statusErrors.has(v.last_error) && statusErrors.has(v.recovery_error));
-  requireValue(v.backup_state === 'unavailable' && v.backup_phase === '' && v.backup_error === '');
+  validPoolBackup(v);
   const a = v.account; exact(a, ['state', 'fixture', 'id', 'generation', 'hold_until_ms', 'held', 'can_export', 'last_error']);
-  requireValue(accountStates.includes(a.state) && ['', ...Object.keys(fixtures)].includes(a.fixture) && ['', 'account_unavailable'].includes(a.last_error) && int(a.generation) && int(a.hold_until_ms, 0, DATE_MAX) && typeof a.held === 'boolean' && a.can_export === false && (!a.held || a.hold_until_ms > 0));
+  requireValue(accountStates.includes(a.state) && ['', ...Object.keys(fixtures)].includes(a.fixture) && ['', 'account_unavailable'].includes(a.last_error) && int(a.generation) && int(a.hold_until_ms, 0, DATE_MAX) && typeof a.held === 'boolean' && typeof a.can_export === 'boolean' && (!a.held || (!a.can_export && a.hold_until_ms > 0)));
   let view = null;
   if (a.state === 'signed_in') {
     view = checkedView(v.view);
@@ -161,7 +169,7 @@ function normalizePool(v) {
     const recipients = { zero256: 'slug1qzmtrqsfuaf6l6kkcsseumq26ukaphfj9s9ptme', incrementing256: 'slug1qslk39wvggqa0vl8nd6jckaz54dw3vk45c8educ' };
     requireValue(v.gym_id === fixtures[a.fixture][0] && v.gym_public_key === fixtures[a.fixture][1] && v.payout_address === recipients[a.fixture]);
   } else {
-    requireValue(v.view === null && a.id === '' && a.generation === 0 && a.hold_until_ms === 0 && !a.held && v.gym_id === '' && v.gym_public_key === '' && v.payout_address === '' && v.source_binding_id === '' && ['attempts', 'height', 'wallet_height', 'pending', 'spendable_atoms', 'immature_atoms', 'assignment_count', 'hashes_per_second'].every((k) => v[k] === 0) && v.balance.state === 'unavailable');
+    requireValue(v.view === null && a.id === '' && a.generation === 0 && a.hold_until_ms === 0 && !a.held && v.gym_id === '' && v.gym_public_key === '' && v.payout_address === '' && v.source_binding_id === '' && ['attempts', 'height', 'wallet_height', 'pending', 'spendable_atoms', 'immature_atoms', 'assignment_count', 'hashes_per_second'].every((k) => v[k] === 0) && v.balance.state === 'unavailable' && !a.can_export && v.backup_state === 'unavailable');
   }
   return { ...v, account: { ...a }, view, balance: poolBalance(v.balance, v.gym_id, v.source_binding_id) };
 }
@@ -501,14 +509,17 @@ function render() {
   content(ui.hold, s?.account.held ? 'The 24-hour recovery hold is active. Viewing, mining and reversible roster moves are available; recovery backup export and test-result signing remain held.' : '');
   for (const id of ['login-a', 'login-b']) ui[id].disabled = !enabled || !!command || !s || !['signed_out', 'failed', 'expired'].includes(s.account.state) || !!s.view;
   ui.logout.disabled = !accountSigned || !!command; ui.reset.disabled = !accountSigned || !!command;
-  ui.mining.disabled = !enabled || !!command || (!accountSigned && !preparing) || s?.state === 'stopping'; content(ui.mining, live ? 'Stop mining' : preparing ? 'Stop preparing' : 'Start mining');
+  ui.mining.disabled = !enabled || !!command || (!accountSigned && !preparing) || s?.state === 'stopping' || (poolMode && s?.backup_state === 'running'); content(ui.mining, live ? 'Stop mining' : preparing ? 'Stop preparing' : 'Start mining');
   content(ui['mining-copy'], publicationNodeConnected() ? 'Connected for publication. Start mining when ready, or disconnect the test nodes below.' : preparing ? 'Preparing your retained identity. Stop drains work already in progress.' : live ? 'Mining is active. New saved candidates update the stable automatically.' : 'Syncing and viewing do not create mining jobs. Start only when you are ready.');
   for (const [id, value] of [['attempts', s?.attempts ?? 0], ['accepted', (poolMode ? s?.assignment_count : s?.accepted_count) ?? 0], ['pending', s?.pending ?? 0], ['height', s?.height ?? 0]]) content(ui[id], number.format(value));
   content(ui.rate, live ? `${number.format(s.hashes_per_second)} hashes / second` : 'Not mining'); content(ui['wallet-state'], label(s?.wallet_state ?? 'closed'));
   content(ui.spendable, accountSigned ? coin.format(s.spendable_atoms / 1e8) : '—'); content(ui.immature, accountSigned ? coin.format(s.immature_atoms / 1e8) : '—'); content(ui['wallet-height'], accountSigned ? `Wallet height ${number.format(s.wallet_height)} · Rewards mature after 100 blocks.` : 'Rewards mature after 100 blocks.');
   content(ui.payout, accountSigned ? s.payout_address : 'Sign in to load the demo wallet'); content(ui['gym-id'], accountSigned ? s.gym_id : '—');
-  ui['export-recovery'].disabled = poolMode || !accountSigned || !!command || live || publicationNodeConnected() || !!watched || !s.account.can_export || s.backup_state === 'running'; ui['verify-backup'].disabled = poolMode || !accountSigned || !!command || live || publicationNodeConnected() || !!watched || s.backup_state === 'running';
-  content(ui.backup, poolMode ? 'Wallet backup tools are not connected to the shared-pool demo yet.' : s?.backup_state === 'running' ? `${backupPhases[s.backup_phase] || 'Checking the backup'}…` : s?.backup_state === 'succeeded' ? 'Backup verification completed.' : s?.backup_state === 'failed' ? 'Backup verification failed; the original wallet remains retained.' : publicationNodeConnected() ? 'Disconnect test nodes before saving or verifying a wallet backup.' : 'Stop mining to save or verify a wallet backup.');
+  const poolBackupRunning = poolMode && s?.backup_state === 'running';
+  ui['export-recovery'].disabled = !accountSigned || !!command || live || publicationNodeConnected() || !!watched || !s.account.can_export || s.backup_state === 'running';
+  ui['verify-backup'].disabled = !accountSigned || !!command || (!poolBackupRunning && (live || publicationNodeConnected() || !!watched || s.backup_state === 'running'));
+  content(ui['verify-backup'], poolBackupRunning ? 'Cancel backup verification' : 'Verify backup');
+  content(ui.backup, poolMode && s?.backup_error === 'backup_export_uncertain' ? 'The recovery file may already be saved. Check the selected destination before trying again.' : poolMode && s?.backup_error === 'backup_unavailable' ? 'The backup operation is temporarily unavailable. Retry after pending payments confirm and the test node is available.' : s?.backup_state === 'running' ? `${backupPhases[s.backup_phase] || 'Checking the backup'}…` : s?.backup_state === 'succeeded' ? 'Backup verification completed.' : s?.backup_state === 'failed' ? poolMode ? 'The backup operation failed; the original wallet remains retained.' : 'Backup verification failed; the original wallet remains retained.' : s?.backup_state === 'cancelled' ? 'Backup verification cancelled; the original wallet remains retained.' : publicationNodeConnected() ? 'Disconnect test nodes before saving or verifying a wallet backup.' : 'Stop mining to save or verify a wallet backup.');
   content(ui['stable-state'], stable ? label(stable.state) : 'Not connected'); content(ui['stable-count'], signed ? `${number.format(poolMode ? s.assignment_count : st.checkpoint)} assigned candidates · ${number.format(st.observed_source_count)} ${poolMode ? 'shared ' : ''}saved receipts last observed` : 'Sign in to load your assigned candidates.');
   content(ui['stable-progress'], signed ? (st.caught_up ? 'Caught up to the last observed receipt count. New arrivals are checked automatically.' : `Syncing saved history: ${st.checkpoint} of ${st.observed_source_count}. Verified partial pages remain available.`) : '');
   ui.sync.disabled = !signed || !!command || !!watched; ui['pause-sync'].disabled = !signed || !!command || (!stable.active_job_id && !stable.queued_job_id && stable.state !== 'syncing');
@@ -694,7 +705,7 @@ async function oldAction(method, args = [], expectedID = '') {
     catch { failed = true; }
     await fetchSnapshots();
     if (disposed || (!invalidate && capturedView !== currentKey())) return;
-    message = failed ? 'The requested action did not complete. Check the current gym and try again.' : typeof result === 'string' ? result : '';
+    message = failed ? poolMode && method === 'ExportRecovery' ? 'Recovery export did not report completion. Check the selected destination before trying again.' : 'The requested action did not complete. Check the current gym and try again.' : typeof result === 'string' ? result : '';
   }, method, invalidate);
 }
 async function loadPortrait(i) {
@@ -2588,7 +2599,7 @@ ui.abandon.addEventListener('click', () => queue(async () => {
 }, 'abandon'));
 ui['cancel-job'].addEventListener('click', () => queue(() => cancelJob(watched?.id || stable?.active_job_id || stable?.queued_job_id), 'cancel'));
 poolUI['pool-refresh'].addEventListener('click', () => queue(async () => { if (!poolMode || !accountReady()) return; await call('RefreshPoolBalance'); await fetchSnapshots(); }, 'pool-balance'));
-ui['export-recovery'].addEventListener('click', () => oldAction('ExportRecovery')); ui['verify-backup'].addEventListener('click', () => oldAction('VerifyBackup'));
+ui['export-recovery'].addEventListener('click', () => oldAction('ExportRecovery')); ui['verify-backup'].addEventListener('click', () => oldAction(poolMode && current?.backup_state === 'running' ? 'CancelPoolBackup' : 'VerifyBackup'));
 document.addEventListener('visibilitychange', () => { if (document.hidden) { pausePreview(); pauseBooked(); } if (!document.hidden && enabled) { pollWanted = true; pump(); } else if (timer !== null) { clearTimeout(timer); timer = null; } });
 window.addEventListener('pagehide', () => { disposed = true; epoch++; clearHistory(); clearEvent(); clearEntry(); clearPreview(); tasks = []; if (timer !== null) clearTimeout(timer); timer = null; clearCards(); pageItems = []; current = stable = null; });
 render();

@@ -19,6 +19,7 @@ import (
 	"github.com/taytr-llc/slug/gymstable"
 	"github.com/taytr-llc/slug/prospectworker"
 	"github.com/taytr-llc/slug/wire/v2"
+	"github.com/taytr-llc/slugwallet/recovery"
 )
 
 type poolChildRun struct {
@@ -48,9 +49,13 @@ type PoolChild struct {
 	refreshDone                                chan struct{}
 	mu                                         sync.Mutex
 	stopMu                                     sync.Mutex
+	refreshMu                                  sync.Mutex
 	closed                                     bool
 	prepared, prepareAttempted, refreshStarted bool
 	run                                        *poolChildRun
+	backup                                     *poolBackupOperation
+	backupCloseErr                             error
+	backupExport                               func(context.Context) (recovery.Export, error)
 	snapshot                                   PoolSnapshot
 	closeOnce                                  sync.Once
 	closeDone                                  chan struct{}
@@ -218,6 +223,7 @@ func (c *PoolChild) Prepare(parent context.Context) error {
 		c.snapshot.SourceBindingID = r.Recipient.SourceBindingID
 		c.snapshot.AssignmentCount = status.AssignmentCount
 		c.snapshot.WalletState = "ready"
+		c.snapshot.BackupState = "idle"
 		c.prepared, c.refreshStarted = true, true
 		return nil
 	})
@@ -365,6 +371,9 @@ func (c *PoolChild) Start() error {
 		if c.closed || !c.prepared {
 			return gymstable.ErrClosed
 		}
+		if c.backup != nil || c.backupCloseErr != nil {
+			return gymstable.ErrBusy
+		}
 		if c.run != nil {
 			return nil
 		}
@@ -460,6 +469,7 @@ func (c *PoolChild) copyWorkerLocked(run *poolChildRun, s prospectworker.Status)
 }
 func (c *PoolChild) Stop() { c.stopMu.Lock(); defer c.stopMu.Unlock(); c.stop() }
 func (c *PoolChild) stop() {
+	c.cancelPoolBackup()
 	c.mu.Lock()
 	run := c.run
 	if run != nil {
@@ -517,10 +527,12 @@ func (c *PoolChild) Close() error {
 		if c.refreshStarted {
 			<-c.refreshDone
 		}
-		var err error
+		c.mu.Lock()
+		err := c.backupCloseErr
+		c.mu.Unlock()
 		if s != nil {
 			s.laneGate <- struct{}{}
-			err = s.closePair()
+			err = errors.Join(err, s.closePair())
 			<-s.laneGate
 		}
 		err = errors.Join(err, c.authority.Close(), c.admission.Close())

@@ -61,8 +61,15 @@ func (c *PoolChild) refreshLoop() {
 			})
 		}
 		if !time.Now().Before(next) {
-			c.refreshWalletAndStable()
-			_ = c.RefreshPoolBalance(c.ctx)
+			c.refreshMu.Lock()
+			c.mu.Lock()
+			paused := c.backup != nil || c.closed
+			c.mu.Unlock()
+			if !paused {
+				c.refreshWalletAndStable()
+				_ = c.refreshPoolBalance(c.ctx)
+			}
+			c.refreshMu.Unlock()
 			next = time.Now().Add(10 * time.Second)
 		}
 		select {
@@ -110,6 +117,18 @@ func (c *PoolChild) refreshWalletAndStable() {
 // RefreshPoolBalance performs network/proof work outside the view lease. The
 // public Snapshot method only copies the resulting timestamped cache.
 func (c *PoolChild) RefreshPoolBalance(parent context.Context) error {
+	c.refreshMu.Lock()
+	defer c.refreshMu.Unlock()
+	c.mu.Lock()
+	paused := c.backup != nil
+	c.mu.Unlock()
+	if paused {
+		return gymstable.ErrBusy
+	}
+	return c.refreshPoolBalance(parent)
+}
+
+func (c *PoolChild) refreshPoolBalance(parent context.Context) error {
 	if parent == nil {
 		return gymstable.ErrInvalid
 	}

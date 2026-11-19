@@ -426,12 +426,16 @@ func (c *PoolController) Snapshot() pilot.PoolSnapshot {
 		return blank
 	}
 	result := blank
+	capabilityCtx, capabilityCancel := context.WithTimeout(context.Background(), 250*time.Millisecond)
+	canExport := c.withCapability(capabilityCtx, session, viewID, child, gymaccount.RecoveryExport, func(_ gymaccount.Account, check func() error) error { return check() }) == nil
+	capabilityCancel()
 	err := c.withView(context.Background(), session, viewID, child, func(a gymaccount.Account, check func() error) error {
 		v := child.Snapshot()
 		if v.Mode != pilot.PoolMode || v.View == nil || v.View.ViewID != viewID || v.View.AccountID != a.ID || v.View.AccountAuthorityID != c.store.AuthorityID() || v.View.Generation != a.Generation || v.SourceBindingID != c.sourceID {
 			return gymaccount.ErrForbidden
 		}
-		v.Account = pilot.AccountSnapshot{State: "signed_in", Fixture: fixture, ID: a.ID, Generation: a.Generation, HoldUntilMS: a.HoldUntilMS, Held: a.HoldUntilMS > time.Now().UnixMilli()}
+		held := a.HoldUntilMS > c.clockNow().UnixMilli()
+		v.Account = pilot.AccountSnapshot{State: "signed_in", Fixture: fixture, ID: a.ID, Generation: a.Generation, HoldUntilMS: a.HoldUntilMS, Held: held, CanExport: canExport && !held}
 		if err := check(); err != nil {
 			return err
 		}

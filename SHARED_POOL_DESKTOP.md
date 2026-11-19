@@ -62,9 +62,10 @@ Portrait and public-receipt operations remain bound to the original gym view.
 
 ## Current integration limits
 
-Shared-pool fighters support inventory and reversible roster selection. Shared
-fight preview/event/career attachment and wallet backup tools are subsequent
-functional work. This route never delegates those operations to incompatible
+Shared-pool fighters support inventory and reversible roster selection. Set62
+adds recovery export and fresh backup verification as described in
+`SHARED_POOL_RECOVERY.md`. Shared fight preview/event/career attachment remains
+subsequent functional work. This route never delegates those operations to incompatible
 solo stores or relabels old histories. Their existing solo routes remain intact.
 Public receipts are not wallet recovery exports.
 

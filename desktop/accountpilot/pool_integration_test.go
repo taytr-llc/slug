@@ -157,7 +157,7 @@ func poolActualLogin(t *testing.T, ctx context.Context, c *PoolController, fixtu
 	}, func() any {
 		return struct{ Account, State, Wallet, Error string }{s.Account.State, s.State, s.WalletState, s.Account.LastError}
 	})
-	if s.View == nil || s.Account.Fixture != fixture || s.State != "stopped" || s.Attempts != 0 || s.Account.CanExport || s.BackupState != "unavailable" {
+	if s.View == nil || s.Account.Fixture != fixture || s.State != "stopped" || s.Attempts != 0 || s.Account.CanExport == s.Account.Held || s.BackupState != "idle" {
 		t.Fatal("explicit stopped pool view", s.State, s.Account.State)
 	}
 	return s
@@ -400,6 +400,7 @@ func TestPoolDesktopActualSharedRuntime(t *testing.T) {
 	if paid["zero256"] == 0 && paid["incrementing256"] == 0 {
 		t.Fatal("shared scheduler produced no actual wallet payout")
 	}
+	backup := poolActualBackup(t, ctx, c, root, artifacts, rpc, paid)
 	original := c.Snapshot()
 	if e = c.ResetFixtureAccount(); e != nil {
 		t.Fatal("reset dispatch", e)
@@ -418,6 +419,7 @@ func TestPoolDesktopActualSharedRuntime(t *testing.T) {
 	if _, e = c.BeginStableInventory(ctx, original.View.ViewID, 0, 8); e == nil {
 		t.Fatal("reset retained old view authority")
 	}
+	poolActualHeldExport(t, ctx, c, root, artifacts)
 	t.Log("verified reset retained the wallet and source, revoked the old view, and applied the security hold")
 	if e = c.Close(); e != nil {
 		t.Fatal("first close", e)
@@ -457,8 +459,9 @@ func TestPoolDesktopActualSharedRuntime(t *testing.T) {
 		SourceID     string                           `json:"source_binding_id"`
 		Paid         map[string]int64                 `json:"paid_atoms"`
 		Settlements  map[string]settlementObservation `json:"settlement_observations"`
+		Backup       poolBackupPublic                 `json:"backup"`
 		Observations []observed                       `json:"observations"`
-	}{1, sourceID, paid, settlements, observations}
+	}{1, sourceID, paid, settlements, backup, observations}
 	raw, e := json.MarshalIndent(report, "", "  ")
 	if e != nil {
 		t.Fatal(e)
@@ -489,7 +492,7 @@ func poolActualConfirm(t *testing.T, parent context.Context, rpc *poolActualRPC,
 	}
 	policy := prospectnode.Policy{Version: 1, Network: uint32(chaincfg.MainNetParams.Net), Genesis: chaincfg.MainNetParams.GenesisHash.String(), DNAVersion: 1, ProspectTarget: strings.Repeat("f", 64)}
 	var template prospectwork.Template
-	poolActualWait(t, ctx, "resolved template includes the exact daily payout", func(ctx context.Context) bool {
+	poolActualWait(t, ctx, "resolved template includes the exact selected transaction", func(ctx context.Context) bool {
 		var err error
 		template, err = client.ResolveTemplate(ctx, policy)
 		if err != nil {
@@ -553,7 +556,7 @@ func poolActualConfirm(t *testing.T, parent context.Context, rpc *poolActualRPC,
 			}
 			for _, txID := range observed.Tx {
 				if txID == payoutTxID {
-					t.Logf("exact payout transaction %s confirmed in canonical block %s", payoutTxID, canonical)
+					t.Logf("exact transaction %s confirmed in canonical block %s", payoutTxID, canonical)
 					return
 				}
 			}

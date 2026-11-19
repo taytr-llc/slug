@@ -66,16 +66,16 @@ func (g *Gym) Snapshot() (pilot.Snapshot, error) {
 func (g *Gym) Start() error { return g.control("start") }
 func (g *Gym) Stop() error  { return g.control("stop") }
 func (g *Gym) LoginFixture(fixture string) error {
+	if g.poolHelper != nil {
+		_, e := g.poolHelper.PoolRequest(context.Background(), pilot.PoolRequest{Command: "login_fixture", Fixture: fixture})
+		return e
+	}
 	// Preserve the account selected when a native recovery dialog opened.
 	// This guard is enforced at the Go boundary as well as by UI controls.
 	if !g.exportMu.TryLock() {
 		return bridge.ErrBusy
 	}
 	defer g.exportMu.Unlock()
-	if g.poolHelper != nil {
-		_, e := g.poolHelper.PoolRequest(context.Background(), pilot.PoolRequest{Command: "login_fixture", Fixture: fixture})
-		return e
-	}
 	if g.manifestHelper != nil {
 		_, err := g.manifestHelper.RequestFixture(context.Background(), fixture)
 		return err
@@ -84,6 +84,9 @@ func (g *Gym) LoginFixture(fixture string) error {
 	return err
 }
 func (g *Gym) Logout() error {
+	if g.poolHelper != nil {
+		return g.control("logout")
+	}
 	// Preserve the account selected when a native recovery dialog opened.
 	// This guard is enforced at the Go boundary as well as by UI controls.
 	if !g.exportMu.TryLock() {
@@ -93,6 +96,9 @@ func (g *Gym) Logout() error {
 	return g.control("logout")
 }
 func (g *Gym) ResetFixtureAccount() error {
+	if g.poolHelper != nil {
+		return g.control("reset_fixture")
+	}
 	// Preserve the account selected when a native recovery dialog opened.
 	// This guard is enforced at the Go boundary as well as by UI controls.
 	if !g.exportMu.TryLock() {
@@ -138,7 +144,7 @@ func (g *Gym) ExportReceipt(sequence uint64) (string, error) {
 // The helper writes and verifies the file without returning its private data.
 func (g *Gym) ExportRecovery() (string, error) {
 	if g.poolHelper != nil {
-		return "", bridge.ErrUnavailable
+		return g.poolRecovery(true)
 	}
 	if !g.exportMu.TryLock() {
 		return "", bridge.ErrBusy
@@ -177,7 +183,7 @@ func (g *Gym) ExportRecovery() (string, error) {
 
 func (g *Gym) VerifyBackup() (string, error) {
 	if g.poolHelper != nil {
-		return "", bridge.ErrUnavailable
+		return g.poolRecovery(false)
 	}
 	if !g.exportMu.TryLock() {
 		return "", bridge.ErrBusy

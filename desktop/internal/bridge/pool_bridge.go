@@ -15,6 +15,8 @@ import (
 // snapshot/control family. A pending request selects the decoder before I/O.
 type PoolBridge struct{ *StableBridge }
 
+var ErrRecoveryOutcomeUnknown = errors.New("The recovery file may already be saved. Check the selected destination before trying again.")
+
 func LaunchPool(helper, dataDir, node string) (*PoolBridge, error) {
 	b, e := startStable(exec.Command(helper, "--candidate-pool", "--data-dir", dataDir, "--node-binary", node))
 	if e != nil {
@@ -35,6 +37,10 @@ func (b *PoolBridge) PoolRequest(ctx context.Context, req pilot.PoolRequest) (pi
 		return pilot.PoolResponse{}, ErrUnavailable
 	}
 	if _, e = pilot.ParsePoolRequest(raw); e != nil {
+		return pilot.PoolResponse{}, ErrUnavailable
+	}
+	backup := oneOf(req.Command, "export_recovery", "verify_backup", "cancel_pool_backup")
+	if backup && (b.manifestView == nil || b.manifestView.ViewID != req.ViewID) {
 		return pilot.PoolResponse{}, ErrUnavailable
 	}
 	if oneOf(req.Command, "login_fixture", "logout", "reset_fixture") {
@@ -67,6 +73,9 @@ func (b *PoolBridge) PoolRequest(ctx context.Context, req pilot.PoolRequest) (pi
 	b.mu.Unlock()
 	r := *f.pool
 	if !r.OK {
+		if req.Command == "export_recovery" && r.Error == "export_uncertain" {
+			return pilot.PoolResponse{}, ErrRecoveryOutcomeUnknown
+		}
 		return pilot.PoolResponse{}, errors.New("The shared pool could not complete this request.")
 	}
 	correct := false
@@ -80,6 +89,9 @@ func (b *PoolBridge) PoolRequest(ctx context.Context, req pilot.PoolRequest) (pi
 	}
 	if !correct {
 		b.fail(ErrUnavailable)
+		return pilot.PoolResponse{}, ErrUnavailable
+	}
+	if backup && (r.Snapshot == nil || r.Snapshot.View == nil || r.Snapshot.View.ViewID != req.ViewID || b.manifestView == nil || *r.Snapshot.View != *b.manifestView) {
 		return pilot.PoolResponse{}, ErrUnavailable
 	}
 	if s := r.Snapshot; s != nil {
