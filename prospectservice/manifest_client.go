@@ -249,7 +249,7 @@ func manifestOwnedEvidence(proof prospect.Proof, auth gymauth.Authorization) (pr
 // verification. It is not a public supplied-Verified-to-admission projector.
 func manifestResponseBinding(pin registry.ManifestAuthorityPin, verified prospect.Verified) (registry.StaticBinding, error) {
 	descriptor, err := fighterdescriptor.ResolveCandidate(pin.DescriptorID)
-	if err != nil || descriptor.RendererID != fighterportrait.RendererID || !manifestHex(verified.WorkHash, 32) {
+	if err != nil || !manifestHex(verified.WorkHash, 32) {
 		return registry.StaticBinding{}, errors.New("invalid manifest binding")
 	}
 	m, err := fightermanifest.GenerateText(descriptor.ManifestVersion, verified.WorkHash)
@@ -260,6 +260,8 @@ func manifestResponseBinding(pin registry.ManifestAuthorityPin, verified prospec
 	if err != nil {
 		return registry.StaticBinding{}, errors.New("invalid manifest binding")
 	}
+	// The resolved descriptor is a frozen full tuple, and Digest enforces its
+	// exact renderer/manifest version pairing.
 	portraitDigest, err := fighterportrait.Digest(descriptor.RendererVersion, m)
 	if err != nil {
 		return registry.StaticBinding{}, errors.New("invalid manifest binding")

@@ -152,7 +152,7 @@ func entryJobValid(j *EntryJob) bool {
 			return false
 		}
 		v := *j.Mutation
-		if v.Version != 1 || !entryReceiptShape(v.Receipt) {
+		if v.Version != 1 || !entryReceiptShape(v.Receipt, j.View.AuthorityPin.DescriptorID) {
 			return false
 		}
 		j.Mutation = &v
@@ -163,7 +163,7 @@ func entryJobValid(j *EntryJob) bool {
 			return false
 		}
 		v := *j.Check
-		if !entryCheckShape(v) {
+		if !entryCheckShape(v, j.View.AuthorityPin.DescriptorID) {
 			return false
 		}
 		j.Check = &v
@@ -219,7 +219,7 @@ func entryResponseValid(r *EntryResponse) bool {
 		return true
 	case r.Operation != nil:
 		v := *r.Operation
-		if !entryOperationShape(v) || v.StoreID != r.StoreID {
+		if !entryOperationShape(v, r.View.AuthorityPin.DescriptorID) || v.StoreID != r.StoreID {
 			return false
 		}
 		r.Operation = &v

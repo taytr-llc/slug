@@ -1,0 +1,77 @@
+{
+  "status": "frozen before v2 outcomes",
+  "created_at_utc": "2026-11-19T17:03:22.933610+00:00",
+  "approval_sha256": "993792280545137c30e44da3f47406c2cfe71061eb3433ddc136f6088994caf4",
+  "oracle_sha256": "44feef72ff87781e4c4fcfb53c335e3d9a2e1152af24a17d1145fd04133c4b1f",
+  "public_inputs_sha256": "1bb6eb19386a74bd8c97ebf6f99201d43659e06d18d04f6eaa43f7578ad8f90e",
+  "archived_inputs": {
+    "independent/inputs/portrait-v1/reference_portraits.py": {
+      "source": "fighterportrait/testdata/reference/reference_portraits.py",
+      "sha256": "1a44c0506944211cf699b653f63905c6802e2012928855354f4053d03d209093",
+      "copied_byte_identical": true,
+      "classification": "archived independent Python/reference input; not Go output"
+    },
+    "independent/inputs/portrait-v1/portraits_v1.json": {
+      "source": "fighterportrait/testdata/reference/portraits_v1.json",
+      "sha256": "03df75cbf923a6dfc8fcac78e98d704641c0edf65ce563cf307f20a52f250670",
+      "copied_byte_identical": true,
+      "classification": "archived independent Python/reference input; not Go output"
+    },
+    "independent/inputs/portrait-v1/input_hashes.json": {
+      "source": "fighterportrait/testdata/reference/input_hashes.json",
+      "sha256": "108b6911cc622b9510d1f8de96086964fb6718bc3e6029f28ea42a2db821ca19",
+      "copied_byte_identical": true,
+      "classification": "archived independent Python/reference input; not Go output"
+    },
+    "independent/inputs/portrait-v1/inputs/portrait-renderer-contract.md": {
+      "source": "fighterportrait/testdata/reference/inputs/portrait-renderer-contract.md",
+      "sha256": "8ae3c8dbe92fbef719880227e107cb98cbfd6419d984cad08ebb5d5e0a9c0df5",
+      "copied_byte_identical": true,
+      "classification": "archived independent Python/reference input; not Go output"
+    },
+    "independent/inputs/portrait-v1/inputs/portraits.py": {
+      "source": "fighterportrait/testdata/reference/inputs/portraits.py",
+      "sha256": "9bac3d966e7093e0665cd9c9a683e7a6ab73381948dccfd0dc8cac8c98a75a72",
+      "copied_byte_identical": true,
+      "classification": "archived independent Python/reference input; not Go output"
+    },
+    "independent/inputs/portrait-v1/inputs/fighter-manifest-contract.md": {
+      "source": "fighterportrait/testdata/reference/inputs/fighter-manifest-contract.md",
+      "sha256": "ba8d33dbad3722eed6b4406ef120f946d7e06e1ea04305cbe8648889ba169e80",
+      "copied_byte_identical": true,
+      "classification": "archived independent Python/reference input; not Go output"
+    },
+    "independent/inputs/portrait-v1/inputs/manifest/reference_manifest.py": {
+      "source": "fighterportrait/testdata/reference/inputs/manifest/reference_manifest.py",
+      "sha256": "9fb1a814047f2329066bb19596e910ac7c4c7aadfce4b8f994e02dab81e51b4f",
+      "copied_byte_identical": true,
+      "classification": "archived independent Python/reference input; not Go output"
+    },
+    "independent/inputs/portrait-v1/inputs/manifest/tables_v1.json": {
+      "source": "fighterportrait/testdata/reference/inputs/manifest/tables_v1.json",
+      "sha256": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+      "copied_byte_identical": true,
+      "classification": "archived independent Python/reference input; not Go output"
+    },
+    "independent/inputs/portrait-v1/inputs/manifest/manifests_v1.json": {
+      "source": "fighterportrait/testdata/reference/inputs/manifest/manifests_v1.json",
+      "sha256": "75eb01acb79f45b74a6445edf956c5e3f3b68024998ae56ab44a7ed07cf15f3d",
+      "copied_byte_identical": true,
+      "classification": "archived independent Python/reference input; not Go output"
+    },
+    "independent/inputs/portrait-v1/inputs/manifest/baseline/reference_dna.py": {
+      "source": "fighterportrait/testdata/reference/inputs/manifest/baseline/reference_dna.py",
+      "sha256": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+      "copied_byte_identical": true,
+      "classification": "archived independent Python/reference input; not Go output"
+    },
+    "independent/inputs/portrait-v1/inputs/manifest/baseline/dna_v1.json": {
+      "source": "fighterportrait/testdata/reference/inputs/manifest/baseline/dna_v1.json",
+      "sha256": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+      "copied_byte_identical": true,
+      "classification": "archived independent Python/reference input; not Go output"
+    }
+  },
+  "expected_outputs": "not generated yet; no implementation output read",
+  "geometry_reuse": "Archived independent rational reference paint routine with separately validated v2 manifest and exact renderer attribute replacement; full v1 corpora rechecked."
+}

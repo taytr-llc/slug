@@ -19,10 +19,13 @@ import (
 // settlement clocks remain real. This constructor is absent from the ordinary
 // executable; Config, CLI, environment and protocol expose no clock bypass.
 func NewPoolRuntimeForTestClock(ctx context.Context, config Config, accounts *gymaccount.Store, clock func() time.Time) (*PoolRuntime, error) {
+	return NewPoolRuntimeForTestClockWithOptions(ctx, config, accounts, clock, PoolOptions{})
+}
+func NewPoolRuntimeForTestClockWithOptions(ctx context.Context, config Config, accounts *gymaccount.Store, clock func() time.Time, options PoolOptions) (*PoolRuntime, error) {
 	if clock == nil {
 		return nil, gymevent.ErrInvalid
 	}
-	r, e := NewPoolRuntime(ctx, config, accounts)
+	r, e := NewPoolRuntimeWithOptions(ctx, config, accounts, options)
 	if e != nil {
 		return nil, e
 	}

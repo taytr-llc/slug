@@ -176,8 +176,8 @@ test('native modal pauses polling and stale dialog success is discarded', async 
   h.state = blank(); gate.resolve('Receipt saved.'); await exporting; await flush(); assert.equal(h.cards.length, 0); assert.doesNotMatch(h.elements.get('alert').textContent, /Receipt saved/); assert.equal(h.peak, 1);
 });
 test('independent image-only SVG consumer accepts all50 frozen bytes and refuses active content', async () => {
-  const h = harness(blank()); await h.start(); for (const p of portraits.cases) { h.context.svg = p.svg; assert.equal(vm.runInContext('imageOnlySVG(svg)', h.context), true); }
-  h.context.svg = portraits.cases[0].svg.replace('</svg>', '<script>bad()</script></svg>'); assert.equal(vm.runInContext('imageOnlySVG(svg)', h.context), false);
+  const h = harness(blank()); await h.start(); for (const p of portraits.cases) { h.context.svg = p.svg; assert.equal(vm.runInContext('imageOnlySVG(svg, DESCRIPTOR)', h.context), true); }
+  h.context.svg = portraits.cases[0].svg.replace('</svg>', '<script>bad()</script></svg>'); assert.equal(vm.runInContext('imageOnlySVG(svg, DESCRIPTOR)', h.context), false);
 });
 test('pagehide joins no new UI calls and drops images/results from a late reply', async () => {
   const h = harness(); await h.start(); const gate = deferred(); h.handlers.ManifestSnapshot = () => gate.promise; const ticking = h.tick(); await flush(); await h.window.dispatch('pagehide'); const count = h.calls.length; gate.resolve(clone(h.state.manifest)); await ticking; await flush(); assert.equal(h.calls.length, count); assert.equal(h.cards.length, 0); assert.equal(h.timers.size, 0);

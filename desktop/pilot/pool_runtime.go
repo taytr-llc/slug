@@ -121,11 +121,19 @@ type poolChildResources struct {
 	RegisterClose                                        func(func() error) error
 }
 
-func NewPoolRuntime(ctx context.Context, config Config, accounts *gymaccount.Store) (_ *PoolRuntime, resultErr error) {
+func NewPoolRuntime(ctx context.Context, config Config, accounts *gymaccount.Store) (*PoolRuntime, error) {
+	return NewPoolRuntimeWithOptions(ctx, config, accounts, PoolOptions{})
+}
+
+func NewPoolRuntimeWithOptions(ctx context.Context, config Config, accounts *gymaccount.Store, options PoolOptions) (_ *PoolRuntime, resultErr error) {
+	options, optionErr := ResolvePoolOptions(options)
+	if optionErr != nil {
+		return nil, optionErr
+	}
 	if wire.TestPoW || ctx == nil || ctx.Err() != nil || accounts == nil || !validAccountID(accounts.AuthorityID()) || !filepath.IsAbs(config.DataDir) || filepath.Clean(config.DataDir) != config.DataDir || !filepath.IsAbs(config.NodeBinary) || filepath.Clean(config.NodeBinary) != config.NodeBinary || strings.ContainsAny(config.DataDir+config.NodeBinary, "\r\n\t\x00") {
 		return nil, ErrPoolRuntime
 	}
-	if e := poolRuntimePath(config.DataDir); e != nil {
+	if e := CheckPoolRuntimeSelection(config.DataDir, accounts.AuthorityID(), options); e != nil {
 		return nil, e
 	}
 	if i, e := os.Stat(config.NodeBinary); e != nil || !i.Mode().IsRegular() {
@@ -176,11 +184,11 @@ func NewPoolRuntime(ctx context.Context, config Config, accounts *gymaccount.Sto
 		if e != nil || admissionPort == poolPort {
 			return nil, ErrPoolRuntime
 		}
-		r.marker = poolRuntimeMarker{"slug-shared-pool-runtime", 1, accounts.AuthorityID(), policy().Network, genesis, chaincfg.PhaseAActivationHeight, recovery.ProfileID, manifestDescriptorID, true, poolPort, admissionPort}
+		r.marker = poolRuntimeMarker{"slug-shared-pool-runtime", 1, accounts.AuthorityID(), policy().Network, genesis, chaincfg.PhaseAActivationHeight, recovery.ProfileID, options.CandidateDescriptorID, true, poolPort, admissionPort}
 		if e = writePoolRuntimeRecord(markerPath, r.marker); e != nil {
 			return nil, e
 		}
-	} else if readManifestJSON(markerPath, poolRuntimeMarkerLimit, &r.marker) != nil || !r.marker.valid(accounts.AuthorityID()) {
+	} else if readManifestJSON(markerPath, poolRuntimeMarkerLimit, &r.marker) != nil || !r.marker.validFor(accounts.AuthorityID(), options.CandidateDescriptorID) {
 		return nil, ErrPoolRuntime
 	}
 	if e = poolRuntimeRootFiles(config.DataDir); e != nil {
@@ -302,7 +310,7 @@ func (r *PoolRuntime) openPoolIssuer(established bool) error {
 		return e
 	}
 	if hasSource {
-		if !hasIssuer || readManifestJSON(sourcePath, poolRuntimeMarkerLimit, &r.source) != nil || r.source != r.marker.source(r.source.AuthorityPin) {
+		if !hasIssuer || readManifestJSON(sourcePath, poolRuntimeMarkerLimit, &r.source) != nil || !r.marker.validSource(r.source) {
 			return ErrPoolRuntime
 		}
 		if _, e = poolservice.BindingID(r.source); e != nil {

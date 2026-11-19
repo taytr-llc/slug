@@ -119,8 +119,16 @@ func stableOperationValid(o StableOperation) bool {
 	return o.Version == 1 && stableViewValid(o.View) && canonicalManifestID(o.StoreID) && (o.Operation == nil || stableCoreOperationValid(*o.Operation))
 }
 
+// Solo practice and career preview retain the original v1-only contract.
 func stableManifestShape(m fightermanifest.Manifest, seed string) bool {
-	if m.Version != 1 || m.Generator != fightermanifest.GeneratorID || m.Tables != fightermanifest.TableHash || m.DNA.DNAVersion != 1 || m.DNA.Seed != seed || m.DNA.PrimeWeeks < 26 || m.DNA.PrimeWeeks > 52 || m.DNA.DeclineWeeks < 13 || m.DNA.DeclineWeeks > 39 {
+	return stableManifestShapeFor(m, seed, manifestDescriptorID)
+}
+
+// The caller supplies the exact source or source-bound assignment descriptor.
+// This remains a bounded shape check; it does not regenerate a manifest.
+func stableManifestShapeFor(m fightermanifest.Manifest, seed, descriptorID string) bool {
+	d, err := fighterdescriptor.ResolveCandidate(descriptorID)
+	if err != nil || m.Version != d.ManifestVersion || m.Generator != d.GeneratorID || m.Tables != d.ManifestTableHash || m.DNA.DNAVersion != d.DNAVersion || m.Portrait.Version != d.PortraitTraitVersion || m.DNA.Seed != seed || m.DNA.PrimeWeeks < 26 || m.DNA.PrimeWeeks > 52 || m.DNA.DeclineWeeks < 13 || m.DNA.DeclineWeeks > 39 {
 		return false
 	}
 	ranges := map[string][2]int{"club": {250, 299}, "professional": {300, 349}, "contender": {350, 399}, "elite": {400, 449}, "generational": {450, 489}}
@@ -153,6 +161,9 @@ func stableManifestShape(m fightermanifest.Manifest, seed string) bool {
 	if !ascii(m.Name.First, 1, 64) || !ascii(m.Name.Last, 1, 64) || m.Name.Display != m.Name.First+" "+m.Name.Last {
 		return false
 	}
+	if m.Version == fightermanifest.Version2 && (!stableNameV2(m.Name.First) || !stableNameV2(m.Name.Last)) {
+		return false
+	}
 	p := m.Physical
 	if p.Height < 62 || p.Height > 80 || p.Reach < p.Height-2 || p.Reach > p.Height+4 || p.Weight < 128 || p.Weight > 268 || !stableOne(p.Stance, "orthodox", "southpaw") || !stableOne(m.Style, "slugger", "outfighter", "boxer_puncher", "pressure", "boxer") {
 		return false
@@ -174,11 +185,29 @@ func stableManifestShape(m fightermanifest.Manifest, seed string) bool {
 	r := m.Portrait
 	return r.Version == 1 && r.Skin >= 0 && r.Skin <= 5 && r.HairStyle >= 0 && r.HairStyle <= 7 && r.HairColor >= 0 && r.HairColor <= 5 && r.FacialHair >= 0 && r.FacialHair <= 4 && r.HeadShape >= 0 && r.HeadShape <= 3 && r.Mouth >= 0 && r.Mouth <= 3 && r.Brow >= 0 && r.Brow <= 2 && r.Background >= 0 && r.Background <= 7 && stableOne(r.Scar, "none", "left_brow", "right_cheek") && r.ShoulderJitter >= -6 && r.ShoulderJitter <= 6
 }
+
+// V2 punctuation separates nonempty ASCII letter groups; no normalization.
+func stableNameV2(s string) bool {
+	if len(s) == 0 || len(s) > 32 {
+		return false
+	}
+	letter := func(c byte) bool { return c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' }
+	for i := range len(s) {
+		if letter(s[i]) {
+			continue
+		}
+		if (s[i] != '\'' && s[i] != '-') || i == 0 || i == len(s)-1 || !letter(s[i-1]) || !letter(s[i+1]) {
+			return false
+		}
+	}
+	return true
+}
+
 func stableItemValid(i gymstable.Item, s gymstable.Status, asOf int64) bool {
 	a := i.Assignment
 	m := i.Manifest
 	c := i.Condition
-	if a.Version != 1 || a.Sequence == 0 || a.Sequence > s.Checkpoint || a.GymID != s.Pin.Identity.GymID || !canonicalManifestID(a.ProspectID) || !canonicalManifestID(a.WorkHash) || !canonicalManifestID(a.ManifestDigest) || !canonicalManifestID(a.PortraitDigest) || !canonicalManifestID(a.SourceRecordDigest) || a.DescriptorID != s.Pin.Source.DescriptorID || !stableTime(a.BornAtMS) || !stableTime(a.AcceptedAtMS) || a.AcceptedAtMS < a.BornAtMS || a.AcceptedAtMS >= a.BornAtMS+300000 || asOf < a.AcceptedAtMS || !stableManifestShape(m, a.WorkHash) {
+	if a.Version != 1 || a.Sequence == 0 || a.Sequence > s.Checkpoint || a.GymID != s.Pin.Identity.GymID || !canonicalManifestID(a.ProspectID) || !canonicalManifestID(a.WorkHash) || !canonicalManifestID(a.ManifestDigest) || !canonicalManifestID(a.PortraitDigest) || !canonicalManifestID(a.SourceRecordDigest) || a.DescriptorID != s.Pin.Source.DescriptorID || !stableTime(a.BornAtMS) || !stableTime(a.AcceptedAtMS) || a.AcceptedAtMS < a.BornAtMS || a.AcceptedAtMS >= a.BornAtMS+300000 || asOf < a.AcceptedAtMS || !stableManifestShapeFor(m, a.WorkHash, s.Pin.Source.DescriptorID) {
 		return false
 	}
 	if c.Version != 1 || c.ProjectorID != s.Pin.ProjectorID || c.DNAVersion != 1 || c.Seed != a.WorkHash || c.BornAtMS != a.BornAtMS || c.AsOfMS != asOf || c.ProXP != 0 {

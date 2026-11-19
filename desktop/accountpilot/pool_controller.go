@@ -44,18 +44,31 @@ type PoolController struct {
 	checkpoint                        func(string)
 }
 
-func NewPool(ctx context.Context, config pilot.Config) (_ *PoolController, resultErr error) {
-	return newPool(ctx, config, pilot.NewPoolRuntime)
+func NewPool(ctx context.Context, config pilot.Config) (*PoolController, error) {
+	return NewPoolWithOptions(ctx, config, pilot.PoolOptions{})
 }
 
-func newPool(ctx context.Context, config pilot.Config, newRuntime func(context.Context, pilot.Config, *gymaccount.Store) (*pilot.PoolRuntime, error)) (_ *PoolController, resultErr error) {
+func NewPoolWithOptions(ctx context.Context, config pilot.Config, options pilot.PoolOptions) (*PoolController, error) {
+	return newPoolWithOptions(ctx, config, options, func(ctx context.Context, config pilot.Config, accounts *gymaccount.Store) (*pilot.PoolRuntime, error) {
+		return pilot.NewPoolRuntimeWithOptions(ctx, config, accounts, options)
+	})
+}
+
+func newPool(ctx context.Context, config pilot.Config, newRuntime func(context.Context, pilot.Config, *gymaccount.Store) (*pilot.PoolRuntime, error)) (*PoolController, error) {
+	return newPoolWithOptions(ctx, config, pilot.PoolOptions{}, newRuntime)
+}
+func newPoolWithOptions(ctx context.Context, config pilot.Config, options pilot.PoolOptions, newRuntime func(context.Context, pilot.Config, *gymaccount.Store) (*pilot.PoolRuntime, error)) (_ *PoolController, resultErr error) {
+	options, optionErr := pilot.ResolvePoolOptions(options)
+	if optionErr != nil {
+		return nil, optionErr
+	}
 	if wire.TestPoW {
 		return nil, errors.New("pool desktop requires production PoW")
 	}
 	if ctx == nil || ctx.Err() != nil || !filepath.IsAbs(config.NodeBinary) || filepath.Clean(config.NodeBinary) != config.NodeBinary {
 		return nil, errors.New("explicit pool node required")
 	}
-	store, lock, err := openPoolAccountStore(config.DataDir)
+	store, lock, err := openPoolAccountStoreWithOptions(config.DataDir, options)
 	if err != nil {
 		return nil, err
 	}

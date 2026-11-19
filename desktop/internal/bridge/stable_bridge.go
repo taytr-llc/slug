@@ -21,15 +21,16 @@ import (
 // The pending command, never a response-controlled discriminator, selects the
 // decoder. A stable failure stays a typed code across the webview boundary.
 type StableBridge struct {
-	poolStartupComplete  bool
-	poolHandshakeUsed    bool
-	poolHandshakePending bool
-	poolMode             bool
-	poolSourceID         string
-	poolSourcePin        *registry.ManifestAuthorityPin
-	careersEnabled       bool
-	careerActivation     *careerstate.Activation
-	careerSelection      *careerPageExpectation
+	poolStartupComplete    bool
+	poolHandshakeUsed      bool
+	poolHandshakePending   bool
+	poolMode               bool
+	poolSourceID           string
+	poolExpectedDescriptor string
+	poolSourcePin          *registry.ManifestAuthorityPin
+	careersEnabled         bool
+	careerActivation       *careerstate.Activation
+	careerSelection        *careerPageExpectation
 	// History state is also invalidated by the reader failure path under mu.
 	history                   *careerHistoryCorrelation
 	historyFatal              bool

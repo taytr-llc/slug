@@ -1,0 +1,26 @@
+{
+  "status": "independently derived after approved input/script freeze",
+  "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+  "descriptor": {
+    "version": 1,
+    "dna_version": 1,
+    "manifest_version": 2,
+    "generator_id": "slug-fighter-manifest-candidate-v2",
+    "manifest_table_hash": "b537490e1e602e27de01975aeec36f5fb53ba9a3a35f98143e8ecb7f9e2687c2",
+    "manifest_contract_hash": "0283415807d33b362aaeffbb1570504085cd975bf9f3adc0b497d0c8b79856a7",
+    "portrait_trait_version": 1,
+    "renderer_version": 2,
+    "renderer_id": "slug-fighter-portrait-candidate-v2",
+    "renderer_contract_hash": "6044ce174e9a7a466783985e34b02b34ae2785719ca77b1268f7e6ad3c717677"
+  },
+  "canonical_descriptor": "{\"version\":1,\"dna_version\":1,\"manifest_version\":2,\"generator_id\":\"slug-fighter-manifest-candidate-v2\",\"manifest_table_hash\":\"b537490e1e602e27de01975aeec36f5fb53ba9a3a35f98143e8ecb7f9e2687c2\",\"manifest_contract_hash\":\"0283415807d33b362aaeffbb1570504085cd975bf9f3adc0b497d0c8b79856a7\",\"portrait_trait_version\":1,\"renderer_version\":2,\"renderer_id\":\"slug-fighter-portrait-candidate-v2\",\"renderer_contract_hash\":\"6044ce174e9a7a466783985e34b02b34ae2785719ca77b1268f7e6ad3c717677\"}",
+  "approval_sha256": "993792280545137c30e44da3f47406c2cfe71061eb3433ddc136f6088994caf4",
+  "input_lock_sha256": "bae736a305e6e9019db0396740c7f57c9b66ced1f484c53863d23ddbd3b88b43",
+  "corpus_sha256": "62c4cd102341476548b9d388437af83750be407b8cbf534b34896719e2fa281b",
+  "collision_report_sha256": "18b5dcc0e344dd3d207c06ba4f31d48a5bc4bbcfdc6435fd4d076796f8ef870b",
+  "cases": 764,
+  "complete_regeneration": "passed",
+  "secondary_openssl_hash_checks": 25,
+  "no_repository_writes": true,
+  "no_go_outputs_used": true
+}

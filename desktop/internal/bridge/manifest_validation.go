@@ -14,6 +14,7 @@ import (
 	"github.com/taytr-llc/slug/chaincfg/v2"
 	"github.com/taytr-llc/slug/desktop/pilot"
 	"github.com/taytr-llc/slug/fighterdescriptor"
+	"github.com/taytr-llc/slug/fighterportrait"
 	"github.com/taytr-llc/slug/gymauth"
 	"github.com/taytr-llc/slug/prospect"
 	"github.com/taytr-llc/slug/prospectjob"
@@ -149,6 +150,23 @@ func validManifestSummary(s pilot.ManifestProspectSummary) bool {
 	}
 	return total == s.TalentBudget
 }
+
+// Only a checksum-domain selector, not an SVG validator or ownership authority.
+// Callers must retain their existing exact view/assignment/source comparisons.
+func manifestPortraitDomain(descriptorID string) (string, bool) {
+	d, err := fighterdescriptor.ResolveCandidate(descriptorID)
+	if err != nil {
+		return "", false
+	}
+	switch d.RendererVersion {
+	case fighterportrait.Version1:
+		return "SLUG fighter portrait SVG\x00v1\x00", d.RendererID == fighterportrait.RendererID
+	case fighterportrait.Version2:
+		return "SLUG fighter portrait SVG\x00v2\x00", d.RendererID == fighterportrait.RendererIDV2
+	}
+	return "", false
+}
+
 func validManifestPortrait(p *pilot.ManifestPortrait) bool {
 	if p.Version != 1 || !validManifestView(p.View) || p.Sequence == 0 || p.Sequence > 1000 || !publicHex.MatchString(p.ID) || !publicHex.MatchString(p.ManifestDigest) || !publicHex.MatchString(p.PortraitDigest) || len(p.SVG) == 0 || len(p.SVG) > 32768 {
 		return false
@@ -158,7 +176,11 @@ func validManifestPortrait(p *pilot.ManifestPortrait) bool {
 			return false
 		}
 	}
-	h := sha256.Sum256(append([]byte("SLUG fighter portrait SVG\x00v1\x00"), []byte(p.SVG)...))
+	domain, ok := manifestPortraitDomain(p.View.AuthorityPin.DescriptorID)
+	if !ok {
+		return false
+	}
+	h := sha256.Sum256(append([]byte(domain), []byte(p.SVG)...))
 	return hex.EncodeToString(h[:]) == p.PortraitDigest
 }
 func validManifestReceipt(p *pilot.ManifestReceipt) bool {

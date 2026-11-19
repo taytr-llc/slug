@@ -268,7 +268,7 @@ func manifestReceiptMatches(e ManifestEntry, c ManifestConfig) error {
 }
 func manifestStaticBinding(id string, v prospect.Verified) (registry.StaticBinding, error) {
 	d, err := fighterdescriptor.ResolveCandidate(id)
-	if err != nil || !manifestHashShape(v.WorkHash) || d.RendererID != fighterportrait.RendererID {
+	if err != nil || !manifestHashShape(v.WorkHash) {
 		return registry.StaticBinding{}, ErrCorrupt
 	}
 	m, err := fightermanifest.GenerateText(d.ManifestVersion, v.WorkHash)
@@ -279,6 +279,8 @@ func manifestStaticBinding(id string, v prospect.Verified) (registry.StaticBindi
 	if err != nil {
 		return registry.StaticBinding{}, ErrCorrupt
 	}
+	// The caller supplies the exact bound job descriptor. The catalog and Digest
+	// enforce the complete renderer/manifest pairing without a v1-only fallback.
 	pd, err := fighterportrait.Digest(d.RendererVersion, m)
 	if err != nil {
 		return registry.StaticBinding{}, ErrCorrupt

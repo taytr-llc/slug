@@ -8,6 +8,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/taytr-llc/slug/desktop/accountpilot"
+	"github.com/taytr-llc/slug/desktop/internal/poolselection"
 	"github.com/taytr-llc/slug/desktop/pilot"
 	"io"
 	"os"
@@ -21,6 +22,7 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 	data := flags.String("data-dir", "", "Explicit disposable pilot directory")
 	node := flags.String("node-binary", "", "Explicit bundled normal SLUG node binary")
 	pool := flags.Bool("candidate-pool", false, "Use the separate shared public-fixture pool desktop")
+	nameVersion := flags.String("candidate-name-version", "1", "Explicit immutable pool candidate name version (1 or 2)")
 	accounts := flags.Bool("account-fixtures", false, "Use the separate two-public-fixture account pilot")
 	candidates := flags.Bool("candidate-manifests", false, "Use the separate candidate fixture desktop")
 	stable := flags.Bool("candidate-stable", false, "Enable the candidate stable within candidate-manifests")
@@ -37,11 +39,26 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 	if flags.NArg() != 0 || *data == "" || *node == "" {
 		return errors.New("explicit data-dir and node-binary are required")
 	}
+	dataExplicit, poolExplicit, nameExplicit := false, false, false
+	flags.Visit(func(f *flag.Flag) {
+		switch f.Name {
+		case "data-dir":
+			dataExplicit = true
+		case "candidate-pool":
+			poolExplicit = true
+		case "candidate-name-version":
+			nameExplicit = true
+		}
+	})
+	options, selectionErr := poolselection.Options(*pool, poolExplicit, *nameVersion, nameExplicit, *data, dataExplicit)
+	if selectionErr != nil {
+		return selectionErr
+	}
 	if *pool {
 		if *accounts || *candidates || *stable || *entries || *candidateEvents || *candidateSeeds || *candidateCards || *candidateBouts || *candidateResults || *career {
 			return errors.New("candidate-pool is a separate mode")
 		}
-		c, e := accountpilot.NewPool(ctx, pilot.Config{DataDir: *data, NodeBinary: *node})
+		c, e := accountpilot.NewPoolWithOptions(ctx, pilot.Config{DataDir: *data, NodeBinary: *node}, options)
 		if e != nil {
 			return e
 		}

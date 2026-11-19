@@ -214,6 +214,19 @@ version.
   explicit Start-only mining, recovery and existing panels; practice stays off.
   See `SHARED_EVENT_CYCLE.md` and `CHANGESET_64_NOTES.md`. Continue functional
   blockers with frozen-history compatibility; D74 remains the final joint gate.
+- Set65 on `slug-name-diversity` adds the explicitly selected name-v2 candidate
+  with 512 first names and 512 surnames. Default constructors and existing
+  sources remain v1; never infer a version from saved data or repin history.
+  Resolve the complete original descriptor at admission, reconstruction and
+  every transport/portrait boundary, including the manifest hash domain in a
+  saved bout response. The frozen independent corpus covers all name indices;
+  the reproducible collision sample is a scenario, not a population forecast.
+  Normal-PoW v2 event/finality/career acceptance, v1/v2 package recovery and the
+  full desktop suite pass. Preserve the failed first bout-response acceptance
+  and independent diagnosis. See `NAME_DIVERSITY.md` and `CHANGESET_65_NOTES.md`.
+  Continue portable public evidence without claiming ownership, authenticated
+  admission time or complete authoritative history from unsigned summaries.
+  Transfer timing/order remains a later policy question; D74 remains last.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

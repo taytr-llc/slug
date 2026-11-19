@@ -16,10 +16,13 @@ import (
 // Actual node, wallet, account/provider/session and settlement clocks stay real.
 // This tagged constructor has no corresponding normal Config or CLI option.
 func NewPoolForTestClock(ctx context.Context, config pilot.Config, clock func() time.Time) (*PoolController, error) {
+	return NewPoolForTestClockWithOptions(ctx, config, clock, pilot.PoolOptions{})
+}
+func NewPoolForTestClockWithOptions(ctx context.Context, config pilot.Config, clock func() time.Time, options pilot.PoolOptions) (*PoolController, error) {
 	if clock == nil {
 		return nil, gymevent.ErrInvalid
 	}
-	return newPool(ctx, config, func(ctx context.Context, config pilot.Config, accounts *gymaccount.Store) (*pilot.PoolRuntime, error) {
-		return pilot.NewPoolRuntimeForTestClock(ctx, config, accounts, clock)
+	return newPoolWithOptions(ctx, config, options, func(ctx context.Context, config pilot.Config, accounts *gymaccount.Store) (*pilot.PoolRuntime, error) {
+		return pilot.NewPoolRuntimeForTestClockWithOptions(ctx, config, accounts, clock, options)
 	})
 }

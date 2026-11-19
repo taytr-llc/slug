@@ -17,6 +17,7 @@ import (
 
 	"github.com/taytr-llc/slug/desktop/pilot"
 	"github.com/taytr-llc/slug/fightercareer"
+	"github.com/taytr-llc/slug/fighterdescriptor"
 	"github.com/taytr-llc/slug/gymbout"
 	"github.com/taytr-llc/slug/gymcard"
 	"github.com/taytr-llc/slug/gymentry"
@@ -32,6 +33,22 @@ import (
 // The tagged clock only advances store/calendar observations. Fixture carrier
 // funding is explicit, independent of scalar3 pool earnings, and normal PoW.
 func TestPoolEventCycleActualFinalityAndCareers(t *testing.T) {
+	poolEventCycleActualFinalityAndCareers(t, pilot.PoolOptions{})
+}
+
+func TestPoolNameV2EventCycleActualFinalityAndCareers(t *testing.T) {
+	id, err := fighterdescriptor.ID(fighterdescriptor.CandidateNameV2Descriptor())
+	if err != nil {
+		t.Fatal(err)
+	}
+	poolEventCycleActualFinalityAndCareers(t, pilot.PoolOptions{CandidateDescriptorID: id})
+}
+
+func poolEventCycleActualFinalityAndCareers(t *testing.T, options pilot.PoolOptions) {
+	selectedOptions, err := pilot.ResolvePoolOptions(options)
+	if err != nil {
+		t.Fatal(err)
+	}
 	node, artifacts := os.Getenv("SLUG_POOL_NODE"), os.Getenv("SLUG_POOL_DESKTOP_ARTIFACTS")
 	if node == "" || artifacts == "" {
 		t.Skip("explicit normal node and owned fixture artifacts required")
@@ -53,7 +70,7 @@ func TestPoolEventCycleActualFinalityAndCareers(t *testing.T) {
 		return time.Now()
 	}
 	config := pilot.Config{DataDir: root, NodeBinary: node}
-	c, err := NewPoolForTestClock(ctx, config, clock)
+	c, err := NewPoolForTestClockWithOptions(ctx, config, clock, options)
 	if err != nil {
 		t.Fatal("shared cycle setup", err)
 	}
@@ -79,6 +96,9 @@ func TestPoolEventCycleActualFinalityAndCareers(t *testing.T) {
 	for round := 0; round < 4 && len(selected) == 0; round++ {
 		for _, fixture := range fixtures {
 			s := poolActualLogin(t, ctx, c, fixture)
+			if s.View == nil || s.View.AuthorityPin.DescriptorID != selectedOptions.CandidateDescriptorID {
+				t.Fatal("source ignored explicit descriptor selection")
+			}
 			if sourceID == "" {
 				sourceID = s.SourceBindingID
 			}
@@ -328,7 +348,7 @@ func TestPoolEventCycleActualFinalityAndCareers(t *testing.T) {
 	}
 	c = nil
 	calendar.Store(cutoff.UnixMilli() + 3000)
-	c, err = NewPoolForTestClock(ctx, config, clock)
+	c, err = NewPoolForTestClockWithOptions(ctx, config, clock, options)
 	if err != nil {
 		t.Fatal("career-bound restart", err)
 	}
@@ -337,7 +357,7 @@ func TestPoolEventCycleActualFinalityAndCareers(t *testing.T) {
 	for _, fixture := range fixtures {
 		s = poolActualLogin(t, ctx, c, fixture)
 		view = s.View.ViewID
-		if s.SourceBindingID != sourceID || s.State != "stopped" || s.Attempts != 0 {
+		if s.SourceBindingID != sourceID || s.View.AuthorityPin.DescriptorID != selectedOptions.CandidateDescriptorID || s.State != "stopped" || s.Attempts != 0 {
 			t.Fatal("restart changed source or mined")
 		}
 		var rr gymresult.ReadResult
@@ -404,6 +424,7 @@ func TestPoolEventCycleActualFinalityAndCareers(t *testing.T) {
 		poolActualLogout(t, ctx, c)
 	}
 	report := map[string]any{"scope": "normal-PoW isolated shared event cycle; real canonical depth; published fixture keys; tagged calendar only", "source_binding_id": sourceID, "entries": entries, "noon": noon, "seed_funding": seedCoin, "result_funding": resultCoin, "seed_finality": seedFinal, "card": card, "bout": bout, "result_finality": finality, "seed_raw_tx": seedTx, "result_raw_tx": resultTx, "expected_awards": expected, "c1_entry_refusals": entryRefusals, "c1_later_cutoff_refusals": cutoffRefusals}
+	report["candidate_descriptor_id"] = selectedOptions.CandidateDescriptorID
 	if err = os.WriteFile(filepath.Join(root, "public-cycle-result.json"), append(poolLeagueJSON(t, report), '\n'), 0600); err != nil {
 		t.Fatal(err)
 	}

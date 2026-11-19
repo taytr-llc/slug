@@ -212,7 +212,8 @@ func TestIndependentInvalidManifests(t *testing.T) {
 	if _, err := Marshal(m); err == nil {
 		t.Fatal("accepted unrelated name")
 	}
-	if _, err := Generate(2, [32]byte{}); err == nil {
+	// Version2 is now explicitly supported; Version3 is still unknown.
+	if _, err := Generate(3, [32]byte{}); err == nil {
 		t.Fatal("unknown version")
 	}
 }

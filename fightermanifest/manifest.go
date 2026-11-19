@@ -195,9 +195,18 @@ func styleFor(a fighter.Attributes, p Physical) string {
 
 // Generate preserves DNA v1 and isolates every additional field's stream.
 func Generate(version uint32, seed [32]byte) (Manifest, error) {
-	if version != Version1 {
+	switch version {
+	case Version1:
+		return generateV1(seed)
+	case Version2:
+		return generateNameV2(seed)
+	default:
 		return Manifest{}, ErrManifest
 	}
+}
+
+// The original generator's streams and values remain frozen.
+func generateV1(seed [32]byte) (Manifest, error) {
 	dna, err := fighter.Generate(fighter.Version1, seed)
 	if err != nil {
 		return Manifest{}, err
@@ -283,7 +292,11 @@ func Digest(m Manifest) (string, error) {
 		return "", err
 	}
 	h := sha256.New()
-	h.Write([]byte(digestDomain))
+	domain := digestDomain
+	if m.Version == Version2 {
+		domain = digestDomainV2
+	}
+	h.Write([]byte(domain))
 	h.Write(raw)
 	return hex.EncodeToString(h.Sum(nil)), nil
 }

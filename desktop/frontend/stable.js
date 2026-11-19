@@ -4,6 +4,39 @@ import { Call } from '/wails/runtime.js';
 const MODE = 'local-manifest-pilot';
 const POOL_MODE = 'local-pool-pilot';
 const DESCRIPTOR = 'c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303';
+// Frozen compiled candidate tuples. Membership never replaces source equality.
+// The native bridge validates descriptor IDs; the browser checks their exact shapes.
+const CANDIDATE_DESCRIPTORS = Object.freeze({
+  [DESCRIPTOR]: Object.freeze({
+    version: 1, dna_version: 1, manifest_version: 1,
+    generator_id: 'slug-fighter-manifest-candidate-v1',
+    manifest_table_hash: '72231fbe707cea9a65dd5b92f7b2719953795bceadbbf9e3b8e0b8f4aaef3f44',
+    manifest_contract_hash: 'ba8d33dbad3722eed6b4406ef120f946d7e06e1ea04305cbe8648889ba169e80',
+    portrait_trait_version: 1, renderer_version: 1,
+    renderer_id: 'slug-fighter-portrait-candidate-v1',
+    renderer_contract_hash: '8ae3c8dbe92fbef719880227e107cb98cbfd6419d984cad08ebb5d5e0a9c0df5',
+  }),
+  cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75: Object.freeze({
+    version: 1, dna_version: 1, manifest_version: 2,
+    generator_id: 'slug-fighter-manifest-candidate-v2',
+    manifest_table_hash: 'b537490e1e602e27de01975aeec36f5fb53ba9a3a35f98143e8ecb7f9e2687c2',
+    manifest_contract_hash: '0283415807d33b362aaeffbb1570504085cd975bf9f3adc0b497d0c8b79856a7',
+    portrait_trait_version: 1, renderer_version: 2,
+    renderer_id: 'slug-fighter-portrait-candidate-v2',
+    renderer_contract_hash: '6044ce174e9a7a466783985e34b02b34ae2785719ca77b1268f7e6ad3c717677',
+  }),
+});
+function candidateDescriptor(id) {
+  requireValue(Object.hasOwn(CANDIDATE_DESCRIPTORS, id));
+  return CANDIDATE_DESCRIPTORS[id];
+}
+function candidateName(value, descriptorID, boundedASCIIName = false) {
+  const d = candidateDescriptor(descriptorID);
+  if (typeof value !== 'string') return false;
+  if (d.manifest_version === 2) return value.length <= 32 && /^[A-Za-z]+(?:['-][A-Za-z]+)*$/.test(value);
+  return boundedASCIIName ? /^[\x00-\x7f]{1,64}$/.test(value) : /^[A-Za-z][A-Za-z '\-]{0,63}$/.test(value);
+}
+
 const GENESIS = '7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd';
 const DATE_MAX = 8640000000000000;
 const CACHE_MAX = 1 << 20;
@@ -50,7 +83,7 @@ function checkedView(v) {
   requireValue(v.version === 1 && ['view_id', 'account_authority_id', 'account_id', 'transport_trust_id'].every((key) => hex(v[key])) && int(v.generation, 1));
   exact(v.authority_pin, ['version', 'network', 'genesis', 'authority_id', 'descriptor_id']);
   const p = v.authority_pin;
-  requireValue(p.version === 5 && p.network === 0x534c5547 && p.genesis === GENESIS && hex(p.authority_id) && p.descriptor_id === DESCRIPTOR && p.authority_id !== v.account_authority_id);
+  requireValue(p.version === 5 && p.network === 0x534c5547 && p.genesis === GENESIS && hex(p.authority_id) && Object.hasOwn(CANDIDATE_DESCRIPTORS, p.descriptor_id) && (poolMode || p.descriptor_id === DESCRIPTOR) && p.authority_id !== v.account_authority_id);
   requireValue(typeof v.authority_origin === 'string' && /^http:\/\/127\.0\.0\.1:[1-9][0-9]{0,4}$/.test(v.authority_origin));
   requireValue(int(Number(v.authority_origin.split(':').pop()), 1, 65535));
   return { ...v, authority_pin: { ...p } };
@@ -58,12 +91,13 @@ function checkedView(v) {
 function viewKey(v) {
   return v ? [v.version, v.view_id, v.account_authority_id, v.account_id, v.generation, v.authority_pin.version, v.authority_pin.network, v.authority_pin.genesis, v.authority_pin.authority_id, v.authority_pin.descriptor_id, v.authority_origin, v.transport_trust_id].join('|') : '';
 }
-function checkedItem(p) {
+function checkedItem(p, descriptorID) {
+  candidateDescriptor(descriptorID);
   exact(p, ['sequence', 'id', 'work_hash', 'born_at_ms', 'accepted_at_ms', 'name', 'physical', 'style', 'rarity', 'talent_budget', 'attributes', 'descriptor_id', 'manifest_digest', 'portrait_digest', 'eligibility_mode']);
-  requireValue(int(p.sequence, 1, 1000) && ['id', 'work_hash', 'manifest_digest', 'portrait_digest'].every((key) => hex(p[key])) && p.descriptor_id === DESCRIPTOR);
+  requireValue(int(p.sequence, 1, 1000) && ['id', 'work_hash', 'manifest_digest', 'portrait_digest'].every((key) => hex(p[key])) && p.descriptor_id === descriptorID);
   requireValue(int(p.born_at_ms, 1, DATE_MAX) && int(p.accepted_at_ms, p.born_at_ms, Math.min(DATE_MAX, p.born_at_ms + 299999)));
   exact(p.name, ['first', 'last', 'display']);
-  requireValue(['first', 'last'].every((key) => typeof p.name[key] === 'string' && /^[A-Za-z][A-Za-z '\-]{0,63}$/.test(p.name[key])) && p.name.display === `${p.name.first} ${p.name.last}`);
+  requireValue(['first', 'last'].every((key) => candidateName(p.name[key], descriptorID)) && p.name.display === `${p.name.first} ${p.name.last}`);
   exact(p.physical, ['height_in', 'reach_in', 'stance', 'weight_lb', 'weight_class']);
   const q = p.physical;
   requireValue(int(q.height_in, 62, 80) && int(q.reach_in, q.height_in - 2, q.height_in + 4) && int(q.weight_lb, 128, 268) && ['orthodox', 'southpaw'].includes(q.stance) && classes.includes(q.weight_class));
@@ -86,7 +120,7 @@ function normalize(v) {
   const p = v.projection;
   requireValue(projectionStates.includes(p.state) && projectionErrors.includes(p.error) && int(p.revision) && int(p.through_sequence, 0, 1000) && typeof p.has_older === 'boolean' && typeof p.complete_recent === 'boolean' && Array.isArray(p.items) && p.items.length <= 8 && p.items.length <= v.accepted_count);
   requireValue((p.state === 'failed' ? ['projection_corrupt', 'projection_unavailable'].includes(p.error) : p.state === 'cancelled' ? ['', 'projection_cancelled'].includes(p.error) : p.error === ''));
-  const items = p.items.map(checkedItem);
+  const items = p.items.map((item) => checkedItem(item, DESCRIPTOR));
   const unique = new Set(); let previousSequence = 1001;
   for (const item of items) { requireValue(!unique.has(item.id) && item.sequence < previousSequence && item.sequence <= v.accepted_count); unique.add(item.id); previousSequence = item.sequence; }
   requireValue(p.through_sequence === (items[0]?.sequence ?? 0) && p.has_older === (v.accepted_count > items.length));
@@ -94,7 +128,7 @@ function normalize(v) {
   requireValue(p.complete_recent === (v.view !== null && complete) && (p.state === 'ready' || items.length === 0));
   let view = null;
   if (a.state === 'signed_in') {
-    view = checkedView(v.view);
+    view = checkedView(v.view); requireValue(view.authority_pin.descriptor_id === DESCRIPTOR);
     requireValue(hex(a.id) && a.generation > 0 && view.account_id === a.id && view.generation === a.generation && Object.hasOwn(fixtures, a.fixture));
     requireValue(v.gym_id === fixtures[a.fixture][0] && v.gym_public_key === fixtures[a.fixture][1] && typeof v.payout_address === 'string' && /^[1-9A-HJ-NP-Za-km-z]{26,60}$/.test(v.payout_address));
   } else {
@@ -192,7 +226,9 @@ function renderPool() {
   poolUI['pool-refresh'].disabled = !visible || !!command || current.balance.state === 'loading';
 }
 
-function imageOnlySVG(svg) {
+function imageOnlySVG(svg, descriptorID) {
+  if (!Object.hasOwn(CANDIDATE_DESCRIPTORS, descriptorID)) return false;
+  const expectedRenderer = CANDIDATE_DESCRIPTORS[descriptorID].renderer_id;
   if (typeof svg !== 'string' || svg.length < 1 || svg.length > 32768 || !/^[\x20-\x7e]+$/.test(svg) || !svg.startsWith('<svg xmlns="http://www.w3.org/2000/svg" ') || !svg.endsWith('</svg>') || /&(?!(?:amp|lt|gt|quot|apos);)|<\s*[!?]|url\s*\(/i.test(svg)) return false;
   const allowed = {
     svg: 'xmlns width height viewBox preserveAspectRatio overflow role aria-label data-renderer', title: '', desc: '',
@@ -211,7 +247,7 @@ function imageOnlySVG(svg) {
     for (const a of body.matchAll(/ ([A-Za-z][A-Za-z-]*)="([^"<>]*)"/g)) {
       if (a.index !== used || seen.has(a[1]) || !allowed[name].split(' ').includes(a[1])) return false;
       seen.add(a[1]); used += a[0].length;
-      if (a[1] === 'data-renderer' && a[2] !== 'slug-fighter-portrait-candidate-v1') return false;
+      if (a[1] === 'data-renderer' && a[2] !== expectedRenderer) return false;
     }
     if (used !== body.length || (name === 'svg' && !seen.has('data-renderer'))) return false;
     if (!selfClosing) stack.push(name);
@@ -262,22 +298,24 @@ function stableSnapshot(v, manifest) {
   }
   return own(v);
 }
-function assignment(v, identity) {
+function assignment(v, identity, descriptorID) {
+  candidateDescriptor(descriptorID);
   exact(v, ['version', 'sequence', 'prospect_id', 'gym_id', 'work_hash', 'born_at_ms', 'accepted_at_ms', 'descriptor_id', 'manifest_digest', 'portrait_digest', 'source_record_digest']);
-  requireValue(v.version === 1 && int(v.sequence, 1, 1000) && ['prospect_id', 'gym_id', 'work_hash', 'manifest_digest', 'portrait_digest', 'source_record_digest'].every((k) => hex(v[k])) && v.gym_id === identity.gym_id && v.descriptor_id === DESCRIPTOR && int(v.born_at_ms, 1, DATE_MAX) && int(v.accepted_at_ms, v.born_at_ms, Math.min(DATE_MAX, v.born_at_ms + 299999)));
+  requireValue(v.version === 1 && int(v.sequence, 1, 1000) && ['prospect_id', 'gym_id', 'work_hash', 'manifest_digest', 'portrait_digest', 'source_record_digest'].every((k) => hex(v[k])) && v.gym_id === identity.gym_id && v.descriptor_id === descriptorID && int(v.born_at_ms, 1, DATE_MAX) && int(v.accepted_at_ms, v.born_at_ms, Math.min(DATE_MAX, v.born_at_ms + 299999)));
 }
-function manifestValue(m, seed, boundedASCIIName = false) {
+function manifestValue(m, seed, descriptorID, boundedASCIIName = false) {
+  const dsc = candidateDescriptor(descriptorID);
   exact(m, ['manifest_version', 'generator_id', 'table_hash', 'dna', 'name', 'physical', 'style', 'portrait']);
-  requireValue(m.manifest_version === 1 && m.generator_id === 'slug-fighter-manifest-candidate-v1' && m.table_hash === '72231fbe707cea9a65dd5b92f7b2719953795bceadbbf9e3b8e0b8f4aaef3f44');
+  requireValue(m.manifest_version === dsc.manifest_version && m.generator_id === dsc.generator_id && m.table_hash === dsc.manifest_table_hash);
   const d = m.dna; exact(d, ['dna_version', 'seed', 'rarity', 'talent_budget', 'attributes', 'prime_weeks', 'decline_weeks']);
-  requireValue(d.dna_version === 1 && d.seed === seed && rarity.includes(d.rarity) && int(d.talent_budget, 250, 489) && int(d.prime_weeks, 26, 52) && int(d.decline_weeks, 13, 39));
+  requireValue(d.dna_version === dsc.dna_version && d.seed === seed && rarity.includes(d.rarity) && int(d.talent_budget, 250, 489) && int(d.prime_weeks, 26, 52) && int(d.decline_weeks, 13, 39));
   exact(d.attributes, attrs); requireValue(attrs.every((k) => int(d.attributes[k], 1, 100)) && attrs.reduce((n, k) => n + d.attributes[k], 0) === d.talent_budget);
   const limits = [[250, 299], [300, 349], [350, 399], [400, 449], [450, 489]][rarity.indexOf(d.rarity)]; requireValue(int(d.talent_budget, ...limits));
-  exact(m.name, ['first', 'last', 'display']); requireValue(['first', 'last'].every((k) => typeof m.name[k] === 'string' && (boundedASCIIName ? /^[\x00-\x7f]{1,64}$/.test(m.name[k]) : /^[A-Za-z][A-Za-z '\-]{0,63}$/.test(m.name[k]))) && m.name.display === `${m.name.first} ${m.name.last}`);
+  exact(m.name, ['first', 'last', 'display']); requireValue(['first', 'last'].every((k) => candidateName(m.name[k], descriptorID, boundedASCIIName)) && m.name.display === `${m.name.first} ${m.name.last}`);
   exact(m.physical, ['height_in', 'reach_in', 'stance', 'weight_lb', 'weight_class']); const p = m.physical;
   requireValue(int(p.height_in, 62, 80) && int(p.reach_in, p.height_in - 2, p.height_in + 4) && int(p.weight_lb, 128, 268) && ['orthodox', 'southpaw'].includes(p.stance) && p.weight_class === classes[p.weight_lb <= 145 ? 0 : p.weight_lb <= 170 ? 1 : p.weight_lb <= 195 ? 2 : p.weight_lb <= 225 ? 3 : 4] && styles.includes(m.style));
   const r = m.portrait; exact(r, ['portrait_version', 'skin', 'hair_style', 'hair_color', 'facial_hair', 'head_shape', 'mouth', 'brow', 'background', 'scar', 'shoulder_jitter']);
-  requireValue(r.portrait_version === 1 && int(r.skin, 0, 5) && int(r.hair_style, 0, 7) && int(r.hair_color, 0, 5) && int(r.facial_hair, 0, 4) && int(r.head_shape, 0, 3) && int(r.mouth, 0, 3) && int(r.brow, 0, 2) && int(r.background, 0, 7) && ['none', 'left_brow', 'right_cheek'].includes(r.scar) && int(r.shoulder_jitter, -6, 6) && !Object.is(r.shoulder_jitter, -0));
+  requireValue(r.portrait_version === dsc.portrait_trait_version && int(r.skin, 0, 5) && int(r.hair_style, 0, 7) && int(r.hair_color, 0, 5) && int(r.facial_hair, 0, 4) && int(r.head_shape, 0, 3) && int(r.mouth, 0, 3) && int(r.brow, 0, 2) && int(r.background, 0, 7) && ['none', 'left_brow', 'right_cheek'].includes(r.scar) && int(r.shoulder_jitter, -6, 6) && !Object.is(r.shoulder_jitter, -0));
 }
 function halfEven(n, d) { const q = Math.floor(n / d), r = n % d; return q + (2 * r > d || (2 * r === d && q % 2 === 1) ? 1 : 0); }
 function condition(c, item, asOf) {
@@ -291,7 +329,7 @@ function condition(c, item, asOf) {
   for (const [i, k] of attrs.entries()) { const wanted = halfEven(d.attributes[k] * (100 * d.decline_weeks - [20, 40, 30, 30, 10][i] * step), 10 * d.decline_weeks); requireValue(c.aged_attributes_tenths[k] === wanted && c.league_attributes_tenths[k] === wanted); }
   requireValue(c.rating_hundredths === attrs.reduce((sum, k, i) => sum + c.league_attributes_tenths[k] * [10, 25, 2, 4, 8][i], 0));
 }
-function fullItem(i, st, asOf) { exact(i, ['assignment', 'manifest', 'condition']); assignment(i.assignment, st.pin.identity); manifestValue(i.manifest, i.assignment.work_hash); condition(i.condition, i, asOf); requireValue(i.assignment.sequence <= st.checkpoint && JSON.stringify(i).length <= 8192); return own(i); }
+function fullItem(i, st, asOf) { exact(i, ['assignment', 'manifest', 'condition']); assignment(i.assignment, st.pin.identity, st.pin.source.descriptor_id); manifestValue(i.manifest, i.assignment.work_hash, st.pin.source.descriptor_id); condition(i.condition, i, asOf); requireValue(i.assignment.sequence <= st.checkpoint && JSON.stringify(i).length <= 8192); return own(i); }
 function request(r) { exact(r, ['expected_revision', 'slot', 'prospect_id']); requireValue(int(r.expected_revision, 0, 4096) && int(r.slot, 1, 10) && optionalID(r.prospect_id)); }
 function intent(v) { exact(v, ['version', 'sequence', 'operation_id', 'generation', 'view_id', 'request', 'prepared_at_ms']); requireValue(v.version === 1 && int(v.sequence, 1, 4096) && hex(v.operation_id) && int(v.generation, 1) && hex(v.view_id) && int(v.prepared_at_ms, 1, DATE_MAX)); request(v.request); return own(v); }
 function receipt(v) {
@@ -713,7 +751,7 @@ async function loadPortrait(i) {
   try {
     const p = await call('ManifestPortrait', i.assignment.sequence); if (!remains()) return;
     exact(p, ['version', 'view', 'sequence', 'id', 'manifest_digest', 'portrait_digest', 'svg']); const a = i.assignment;
-    requireValue(p.version === 1 && viewKey(checkedView(p.view)) === view && p.sequence === a.sequence && p.id === a.prospect_id && p.manifest_digest === a.manifest_digest && p.portrait_digest === a.portrait_digest && imageOnlySVG(p.svg));
+    requireValue(p.version === 1 && viewKey(checkedView(p.view)) === view && p.sequence === a.sequence && p.id === a.prospect_id && p.manifest_digest === a.manifest_digest && p.portrait_digest === a.portrait_digest && imageOnlySVG(p.svg, a.descriptor_id));
     const src = `data:image/svg+xml;base64,${btoa(p.svg)}`; requireValue([...images.entries()].reduce((n, [other, v]) => n + (other === k ? 0 : 2 * v.length), 2 * src.length) + JSON.stringify(pageItems).length + careerRetainedBytes() + previewRetainedBytes() + entryRetainedBytes() + eventRetainedBytes() + seedRetainedBytes() + cardRetainedBytes() + bookedRetainedBytes() + publicationRetainedBytes() + historyRetainedBytes() <= CACHE_MAX && images.size <= 8);
     if (!remains()) return; images.set(k, src); const c = cards.get(a.prospect_id); c.image.setAttribute('src', src); c.image.hidden = false; c.placeholder.hidden = true;
   } catch { if (remains()) { const c = cards.get(i.assignment.prospect_id); c.image.removeAttribute('src'); c.image.hidden = true; c.placeholder.hidden = false; content(c.placeholder, 'Portrait unavailable. Reload it from the current verified page.'); } }
@@ -792,7 +830,7 @@ function previewEnvelope(v, kind) {
       const p = r.pair; exact(p, ['version', 'status', 'as_of_ms', 'fighters']); requireValue(p.version === 1 && int(p.as_of_ms, 1, DATE_MAX) && p.status.last_as_of_ms === p.as_of_ms && p.status.store_id === value.store_id && same(p.status.pin, stable.status.pin) && JSON.stringify(p).length <= 24576); status(p.status, value.view, current.account.fixture); pairArray(p.fighters, (i) => fullItem(i, p.status, p.as_of_ms));
       const ids = [value.fighter_a_id, value.fighter_b_id]; requireValue(p.fighters.every((i, n) => i.assignment.prospect_id === ids[n]) && p.fighters[0].manifest.physical.weight_class === p.fighters[1].manifest.physical.weight_class);
       const recipe = r.recipe; exact(recipe, ['version', 'engine_version', 'engine_id', 'network', 'genesis', 'store_id', 'source_authority_id', 'descriptor_id', 'as_of_ms', 'rounds', 'training', 'fighters']);
-      requireValue(recipe.version === 1 && recipe.engine_version === 1 && recipe.engine_id === PREVIEW_ENGINE && recipe.network === 0x534c5547 && recipe.genesis === GENESIS && recipe.store_id === value.store_id && recipe.source_authority_id === p.status.pin.source.authority_id && recipe.descriptor_id === DESCRIPTOR && recipe.as_of_ms === p.as_of_ms && recipe.rounds === 3 && JSON.stringify(recipe).length <= 4096);
+      requireValue(recipe.version === 1 && recipe.engine_version === 1 && recipe.engine_id === PREVIEW_ENGINE && recipe.network === 0x534c5547 && recipe.genesis === GENESIS && recipe.store_id === value.store_id && recipe.source_authority_id === p.status.pin.source.authority_id && recipe.descriptor_id === p.status.pin.source.descriptor_id && recipe.as_of_ms === p.as_of_ms && recipe.rounds === 3 && JSON.stringify(recipe).length <= 4096);
       pairArray(recipe.training, (x) => requireValue(x === 0)); pairArray(recipe.fighters, (f, n) => { exact(f, ['prospect_id', 'source_record_digest', 'manifest_digest', 'condition_digest']); const a = p.fighters[n].assignment; requireValue(f.prospect_id === ids[n] && f.source_record_digest === a.source_record_digest && f.manifest_digest === a.manifest_digest && hex(f.condition_digest)); }); boutValue(r.engine_result, ids);
     }
   }
@@ -806,7 +844,7 @@ function careerPreviewActivationValue(a) {
   if (publicationAuthority) requireValue(a.result_store_id === publicationAuthority.storeID && a.result_created_at_ms === publicationAuthority.createdMS && a.source_created_at_ms === publicationAuthority.sourceCreatedMS);
 }
 function careerPreviewFighter(i, st, asOf) {
-  exact(i, ['assignment','manifest','totals','condition']); assignment(i.assignment, st.pin.identity); manifestValue(i.manifest, i.assignment.work_hash);
+  exact(i, ['assignment','manifest','totals','condition']); assignment(i.assignment, st.pin.identity, st.pin.source.descriptor_id); manifestValue(i.manifest, i.assignment.work_hash, st.pin.source.descriptor_id);
   const t=i.totals; exact(t,['wins','losses','draws','xp','base_points']);
   requireValue(['wins','losses','draws'].every(k=>int(t[k],0,256)) && t.wins+t.losses+t.draws<=256 && t.xp===Math.min(15,t.wins+t.losses+t.draws) && int(t.base_points,10*t.wins+4*t.draws,14*t.wins+4*t.draws) && (t.base_points-10*t.wins-4*t.draws)%4===0);
   careerCondition(i.condition,i,asOf,t.xp); requireValue(i.assignment.sequence <= st.checkpoint && entryBytes(i)<=8448);
@@ -833,7 +871,7 @@ function careerPreviewEnvelope(v, kind) {
       const p = r.pair; exact(p, ['version', 'status', 'activation', 'career_digest', 'as_of_ms', 'fighters']); requireValue(p.version === 1 && int(p.as_of_ms, 1, DATE_MAX) && p.status.last_as_of_ms === p.as_of_ms && p.status.store_id === value.store_id && same(p.status.pin, stable.status.pin) && JSON.stringify(p).length <= 24576); status(p.status, value.view, current.account.fixture); careerPreviewActivationValue(p.activation); requireValue(p.activation.activation_id === value.activation_id && hex(p.career_digest) && p.as_of_ms >= p.activation.activated_at_ms); pairArray(p.fighters, (i) => careerPreviewFighter(i, p.status, p.as_of_ms));
       const ids = [value.fighter_a_id, value.fighter_b_id]; requireValue(p.fighters.every((i, n) => i.assignment.prospect_id === ids[n]) && p.fighters[0].manifest.physical.weight_class === p.fighters[1].manifest.physical.weight_class);
       const recipe = r.recipe; exact(recipe, ['version', 'engine_version', 'engine_id', 'network', 'genesis', 'store_id', 'source_authority_id', 'descriptor_id', 'activation_id', 'career_digest', 'as_of_ms', 'rounds', 'training', 'fighters']);
-      requireValue(recipe.version === 1 && recipe.engine_version === 1 && recipe.engine_id === PREVIEW_ENGINE && recipe.network === 0x534c5547 && recipe.genesis === GENESIS && recipe.store_id === value.store_id && recipe.source_authority_id === p.status.pin.source.authority_id && recipe.descriptor_id === DESCRIPTOR && recipe.activation_id === value.activation_id && recipe.career_digest === p.career_digest && recipe.as_of_ms === p.as_of_ms && recipe.rounds === 3 && JSON.stringify(recipe).length <= 4096);
+      requireValue(recipe.version === 1 && recipe.engine_version === 1 && recipe.engine_id === PREVIEW_ENGINE && recipe.network === 0x534c5547 && recipe.genesis === GENESIS && recipe.store_id === value.store_id && recipe.source_authority_id === p.status.pin.source.authority_id && recipe.descriptor_id === p.status.pin.source.descriptor_id && recipe.activation_id === value.activation_id && recipe.career_digest === p.career_digest && recipe.as_of_ms === p.as_of_ms && recipe.rounds === 3 && JSON.stringify(recipe).length <= 4096);
       pairArray(recipe.training, (x) => requireValue(x === 0)); pairArray(recipe.fighters, (f, n) => { exact(f, ['prospect_id', 'source_record_digest', 'manifest_digest', 'condition_digest', 'totals']); const a = p.fighters[n].assignment; requireValue(f.prospect_id === ids[n] && f.source_record_digest === a.source_record_digest && f.manifest_digest === a.manifest_digest && hex(f.condition_digest) && same(f.totals, p.fighters[n].totals)); }); boutValue(r.engine_result, ids);
     }
   }
@@ -931,7 +969,7 @@ async function loadPreviewPortrait(item) {
     exact(r, ['version', 'ok', 'portrait']); const p = r.portrait;
     exact(p, ['version', 'view', 'store_id', 'job_id', 'prospect_id', ...(careerMode?['activation_id','career_digest']:[]), 'result_digest', 'descriptor_id', 'manifest_digest', 'portrait_digest', 'svg']);
     if(careerMode) requireValue(p.activation_id===j.activation_id && p.career_digest===j.result.pair.career_digest);
-    requireValue(p.version === 1 && viewKey(checkedView(p.view)) === currentKey() && p.store_id === j.store_id && p.job_id === j.job_id && p.prospect_id === a.prospect_id && p.result_digest === j.result.engine_result_digest && p.descriptor_id === DESCRIPTOR && p.manifest_digest === a.manifest_digest && p.portrait_digest === a.portrait_digest && imageOnlySVG(p.svg));
+    requireValue(p.version === 1 && viewKey(checkedView(p.view)) === currentKey() && p.store_id === j.store_id && p.job_id === j.job_id && p.prospect_id === a.prospect_id && p.result_digest === j.result.engine_result_digest && p.descriptor_id === a.descriptor_id && p.manifest_digest === a.manifest_digest && p.portrait_digest === a.portrait_digest && imageOnlySVG(p.svg, a.descriptor_id));
     const src = `data:image/svg+xml;base64,${btoa(p.svg)}`; requireValue(previewCapacity(2 * src.length) && previewImages.size < 2); if (!remains()) return; previewImages.set(a.prospect_id, src); renderPreview();
   } catch { if (remains()) { previewRefusal('preview_unavailable'); renderPreview(); } }
 }
@@ -1017,7 +1055,7 @@ function entryReceipt(r) {
   exact(r, ['version', 'store_id', 'entry_id', 'event', 'operation_id', 'operation_sequence', 'generation', 'view_id', 'action', 'previous_revision', 'revision', 'roster_revision', 'stable_checkpoint', 'observed_source_count', 'committed_at_ms', 'members']); entryEvent(r.event);
   requireValue(r.version === 1 && r.store_id === entryStore && ['entry_id', 'operation_id', 'view_id'].every((k) => hex(r[k])) && int(r.operation_sequence, 1, 4096) && int(r.generation, 1) && ['replace', 'withdraw'].includes(r.action) && int(r.previous_revision, 0, 4095) && r.revision === r.previous_revision + 1 && int(r.roster_revision, 0, 4096) && int(r.stable_checkpoint, 0, 1000) && int(r.observed_source_count, r.stable_checkpoint, 1000) && int(r.committed_at_ms, 1, r.event.cutoff_ms - 1));
   requireValue(Array.isArray(r.members) && r.members.length <= 5 && (r.action === 'replace' ? r.members.length > 0 : r.members.length === 0 && r.roster_revision === 0)); const seenSlots = new Set(), seenClasses = new Set(); let previous = '';
-  for (const m of r.members) { exact(m, ['slot', 'assignment', 'class', 'condition_at_save']); assignment(m.assignment, stable.status.pin.identity); requireValue(int(m.slot, 1, 10) && classes.includes(m.class) && !seenSlots.has(m.slot) && !seenClasses.has(m.class) && m.assignment.prospect_id > previous && m.assignment.sequence <= r.stable_checkpoint); seenSlots.add(m.slot); seenClasses.add(m.class); previous = m.assignment.prospect_id; entrySavedCondition(m.condition_at_save, m.assignment, r.committed_at_ms); }
+  for (const m of r.members) { exact(m, ['slot', 'assignment', 'class', 'condition_at_save']); assignment(m.assignment, stable.status.pin.identity, stable.status.pin.source.descriptor_id); requireValue(int(m.slot, 1, 10) && classes.includes(m.class) && !seenSlots.has(m.slot) && !seenClasses.has(m.class) && m.assignment.prospect_id > previous && m.assignment.sequence <= r.stable_checkpoint); seenSlots.add(m.slot); seenClasses.add(m.class); previous = m.assignment.prospect_id; entrySavedCondition(m.condition_at_save, m.assignment, r.committed_at_ms); }
   return r;
 }
 function entryOperationValue(o) {
@@ -1208,7 +1246,7 @@ function eventPinValue(p) {
     exact(e, ['version', 'namespace_id', 'calendar_id', 'rules_id', 'stable_store_id', 'stable_pin']); requireValue(e.version === 1 && hex(e.namespace_id) && e.calendar_id === ENTRY_CALENDAR && e.rules_id === ENTRY_RULES && hex(e.stable_store_id));
     const s = e.stable_pin; exact(s, ['version', 'account_authority_id', 'account_id', 'identity', 'source', 'condition_version', 'projector_id']); requireValue(s.version === (poolMode ? 2 : 1) && s.account_authority_id === current.view.account_authority_id && hex(s.account_id) && s.condition_version === 1 && s.projector_id === 'slug-fighter-condition-candidate-v1');
     const i = s.identity, a = s.source; exact(i, ['network', 'genesis', 'profile', 'root_public_key', 'gym_public_key', 'gym_id']); const f = Object.keys(fixtures).find((name) => fixtures[name][0] === i.gym_id); requireValue(!!f && i.network === 0x534c5547 && i.genesis === GENESIS && i.profile === 'slug-phase-a-fixture-bip39-v1' && i.root_public_key === ROOTS[f] && i.gym_public_key === fixtures[f][1]);
-    exact(a, ['version', 'network', 'genesis', 'authority_id', 'descriptor_id']); requireValue(a.version === 5 && a.network === i.network && a.genesis === i.genesis && a.descriptor_id === DESCRIPTOR && hex(a.authority_id));
+    exact(a, ['version', 'network', 'genesis', 'authority_id', 'descriptor_id']); requireValue(a.version === 5 && a.network === i.network && a.genesis === i.genesis && a.descriptor_id === current.view.authority_pin.descriptor_id && hex(a.authority_id));
     if (poolMode) requireValue(same(a, current.view.authority_pin));
   });
   const [a, b] = p.participants; requireValue(a.stable_pin.identity.gym_id < b.stable_pin.identity.gym_id && a.stable_pin.account_id !== b.stable_pin.account_id && a.stable_store_id !== b.stable_store_id && a.namespace_id === b.namespace_id);
@@ -1236,7 +1274,7 @@ function eventSavedReceipt(r, p, e, store) {
   exact(r, ['version', 'store_id', 'entry_id', 'event', 'operation_id', 'operation_sequence', 'generation', 'view_id', 'action', 'previous_revision', 'revision', 'roster_revision', 'stable_checkpoint', 'observed_source_count', 'committed_at_ms', 'members']); entryEvent(r.event);
   requireValue(r.version === 1 && r.store_id === store && r.event.event_id === e.source_event_id && r.event.saturday === e.saturday && r.event.cutoff_ms === e.cutoff_ms && ['entry_id', 'operation_id', 'view_id'].every((k) => hex(r[k])) && int(r.operation_sequence, 1, 4096) && int(r.generation, 1) && ['replace', 'withdraw'].includes(r.action) && int(r.previous_revision, 0, 4095) && r.revision === r.previous_revision + 1 && int(r.roster_revision, 0, 4096) && int(r.stable_checkpoint, 0, 1000) && int(r.observed_source_count, r.stable_checkpoint, 1000) && int(r.committed_at_ms, 1, e.cutoff_ms - 1));
   requireValue(Array.isArray(r.members) && r.members.length <= 5 && (r.action === 'replace' ? r.members.length > 0 : r.members.length === 0 && r.roster_revision === 0)); const slotsSeen = new Set(), classSeen = new Set(); let previous = '';
-  for (const m of r.members) { exact(m, ['slot', 'assignment', 'class', 'condition_at_save']); assignment(m.assignment, p.stable_pin.identity); requireValue(int(m.slot, 1, 10) && classes.includes(m.class) && !slotsSeen.has(m.slot) && !classSeen.has(m.class) && m.assignment.prospect_id > previous && m.assignment.sequence <= r.stable_checkpoint); slotsSeen.add(m.slot); classSeen.add(m.class); previous = m.assignment.prospect_id; entrySavedCondition(m.condition_at_save, m.assignment, r.committed_at_ms); }
+  for (const m of r.members) { exact(m, ['slot', 'assignment', 'class', 'condition_at_save']); assignment(m.assignment, p.stable_pin.identity, p.stable_pin.source.descriptor_id); requireValue(int(m.slot, 1, 10) && classes.includes(m.class) && !slotsSeen.has(m.slot) && !classSeen.has(m.class) && m.assignment.prospect_id > previous && m.assignment.sequence <= r.stable_checkpoint); slotsSeen.add(m.slot); classSeen.add(m.class); previous = m.assignment.prospect_id; entrySavedCondition(m.condition_at_save, m.assignment, r.committed_at_ms); }
 }
 function eventParticipant(s, e) {
   exact(s, ['version', 'participant_id', 'entry_store_id', 'owner', 'roster', 'entry', 'members']); const p = eventAuthority.pin.participants.find((x) => x.stable_pin.identity.gym_id === s.participant_id); requireValue(s.version === 1 && !!p && hex(s.entry_store_id));
@@ -1245,7 +1283,7 @@ function eventParticipant(s, e) {
   const t = s.entry; exact(t, ['version', 'store_id', 'event', 'entry_id', 'committed_count', 'last_sequence', 'history_digest', 'latest_receipt']); entryEvent(t.event); requireValue(t.version === 1 && t.store_id === s.entry_store_id && t.event.event_id === e.source_event_id && t.event.cutoff_ms === e.cutoff_ms && t.event.saturday === e.saturday && hex(t.entry_id) && hex(t.history_digest) && int(t.committed_count, 0, 4096) && int(t.last_sequence, t.committed_count, 4096));
   if (t.latest_receipt !== null) { eventSavedReceipt(t.latest_receipt, p, e, s.entry_store_id); requireValue(t.committed_count > 0 && t.latest_receipt.entry_id === t.entry_id && t.latest_receipt.operation_sequence === t.last_sequence); } else requireValue(t.committed_count === 0 && t.last_sequence === 0);
   const saved = t.latest_receipt?.members ?? []; requireValue(Array.isArray(s.members) && s.members.length === saved.length && s.members.length <= 5);
-  for (const [n, m] of s.members.entries()) { exact(m, ['slot', 'slot_assigned_at_ms', 'assignment', 'class', 'condition_at_cutoff', 'eligibility']); assignment(m.assignment, p.stable_pin.identity); requireValue(same(m.assignment, saved[n].assignment) && m.class === saved[n].class && int(m.slot, 0, 10) && m.slot === r.slots.indexOf(m.assignment.prospect_id) + 1 && (m.slot ? m.slot_assigned_at_ms === r.assigned_at_ms[m.slot - 1] && m.slot_assigned_at_ms >= m.assignment.accepted_at_ms : m.slot_assigned_at_ms === 0)); eventCondition(m.condition_at_cutoff, m.assignment, e.cutoff_ms); requireValue(m.eligibility === (m.condition_at_cutoff.phase === 'retired' ? 'retired' : m.slot ? 'eligible' : 'not_rostered')); } return s;
+  for (const [n, m] of s.members.entries()) { exact(m, ['slot', 'slot_assigned_at_ms', 'assignment', 'class', 'condition_at_cutoff', 'eligibility']); assignment(m.assignment, p.stable_pin.identity, p.stable_pin.source.descriptor_id); requireValue(same(m.assignment, saved[n].assignment) && m.class === saved[n].class && int(m.slot, 0, 10) && m.slot === r.slots.indexOf(m.assignment.prospect_id) + 1 && (m.slot ? m.slot_assigned_at_ms === r.assigned_at_ms[m.slot - 1] && m.slot_assigned_at_ms >= m.assignment.accepted_at_ms : m.slot_assigned_at_ms === 0)); eventCondition(m.condition_at_cutoff, m.assignment, e.cutoff_ms); requireValue(m.eligibility === (m.condition_at_cutoff.phase === 'retired' ? 'retired' : m.slot ? 'eligible' : 'not_rostered')); } return s;
 }
 function eventEvidence(v, s, e) { exact(v, ['version', 'participant_id', 'stable_fence', 'entry_fence', 'captured_at_ms']); requireValue(v.version === 1 && v.participant_id === s.participant_id); eventFence(v.stable_fence, s.roster.store_id, e.cutoff_ms); eventFence(v.entry_fence, s.entry_store_id, e.cutoff_ms); requireValue(v.entry_fence.observed_at_ms >= v.stable_fence.observed_at_ms && int(v.captured_at_ms, v.entry_fence.observed_at_ms, DATE_MAX) && v.stable_fence.operation_count >= s.roster.last_sequence && v.entry_fence.operation_count >= s.entry.last_sequence); }
 function eventCapture(v, e) { exact(v, ['version', 'snapshot', 'evidence']); requireValue(v.version === 1); eventParticipant(v.snapshot, e); eventEvidence(v.evidence, v.snapshot, e); return v; }
@@ -1851,7 +1889,7 @@ function bookedSourceValue(s) {
   const owners = new Set(); pairArray(s.corners, (v, n) => {
     exact(v, ['owner', 'member']); const o = v.owner, m = v.member; exact(o, ['ownership_basis', 'account_authority_id', 'account_id', 'gym_id']);
     const p = eventAuthority.pin.participants.find(p => p.stable_pin.identity.gym_id === o.gym_id); requireValue(!!p && !owners.has(o.gym_id) && o.ownership_basis === 'candidate_assignment' && o.account_authority_id === p.stable_pin.account_authority_id && o.account_id === p.stable_pin.account_id); owners.add(o.gym_id);
-    exact(m, ['slot', 'slot_assigned_at_ms', 'assignment', 'class', 'condition_at_cutoff', 'eligibility']); assignment(m.assignment, p.stable_pin.identity); eventCondition(m.condition_at_cutoff, m.assignment, s.event.cutoff_ms);
+    exact(m, ['slot', 'slot_assigned_at_ms', 'assignment', 'class', 'condition_at_cutoff', 'eligibility']); assignment(m.assignment, p.stable_pin.identity, p.stable_pin.source.descriptor_id); eventCondition(m.condition_at_cutoff, m.assignment, s.event.cutoff_ms);
     requireValue(m.assignment.prospect_id === [s.bout.corner_a, s.bout.corner_b][n] && m.class === s.bout.class && m.eligibility === 'eligible' && int(m.slot, 1, 10) && int(m.slot_assigned_at_ms, m.assignment.accepted_at_ms, s.event.cutoff_ms - 1));
     const c = m.condition_at_cutoff; requireValue(['prime', 'decline'].includes(c.phase) && int(c.age_weeks, 0, 90) && int(c.elapsed_decline_weeks, 0, 38) && attrs.every(k => int(c.aged_attributes_tenths[k], 1, 1000)) && (c.phase === 'prime' ? c.elapsed_decline_weeks === 0 && c.prime_remaining_weeks > 0 : c.prime_remaining_weeks === 0 && c.prime_remaining_ms === 0));
   });
@@ -1862,7 +1900,7 @@ function bookedRecordValue(r) {
   requireValue(r.version === 1 && r.store_id === bookedAuthority.storeID && r.card_id === r.source.card_id && r.bout_id === r.source.bout.bout_id && ['source_digest', 'input_id', 'result_digest'].every(k => hex(r[k])) && int(r.created_at_ms, Math.max(bookedAuthority.createdMS, r.source.card_created_at_ms), DATE_MAX) && entryBytes(r) <= 237568);
   const i = r.input; exact(i, ['version', 'engine_id', 'mode', 'seed_kind', 'as_of_ms', 'seed', 'a', 'b']);
   requireValue(i.version === 1 && i.engine_id === PREVIEW_ENGINE && i.mode === 'standard' && i.seed_kind === 'explicit' && i.seed === r.source.bout.seed && i.as_of_ms === r.source.event.cutoff_ms && entryBytes(i) <= 16384);
-  for (const [n, f] of [i.a, i.b].entries()) { exact(f, ['prospect_id', 'born_at_ms', 'manifest', 'pro_xp', 'training_skill']); const m = r.source.corners[n].member; requireValue(f.prospect_id === m.assignment.prospect_id && f.born_at_ms === m.assignment.born_at_ms && f.pro_xp === 0 && f.training_skill === 0); manifestValue(f.manifest, m.assignment.work_hash, true); requireValue(f.manifest.physical.weight_class === m.class); }
+  for (const [n, f] of [i.a, i.b].entries()) { exact(f, ['prospect_id', 'born_at_ms', 'manifest', 'pro_xp', 'training_skill']); const m = r.source.corners[n].member; requireValue(f.prospect_id === m.assignment.prospect_id && f.born_at_ms === m.assignment.born_at_ms && f.pro_xp === 0 && f.training_skill === 0); manifestValue(f.manifest, m.assignment.work_hash, m.assignment.descriptor_id, true); requireValue(f.manifest.physical.weight_class === m.class); }
   boutValue(r.result, [i.a.prospect_id, i.b.prospect_id]); requireValue(r.result.input_id === r.input_id); return r;
 }
 function bookedMatchRecord(r, s) {
@@ -2011,7 +2049,7 @@ async function loadBookedPortrait(corner) {
     if (!r.ok) { requireValue(r.portrait === null && r.status === null && BOOKED_ERRORS.has(r.error) && r.error !== 'bout_setup_incomplete'); bookedRefusal(r.error); renderBooked(); return; }
     requireValue(r.error === ''); const p = r.portrait;
     exact(p, ['version', 'view', 'store_id', 'card_id', 'saturday', 'bout_id', 'prospect_id', 'record_digest', 'input_id', 'result_digest', 'descriptor_id', 'manifest_digest', 'portrait_digest', 'svg']);
-    requireValue(p.version === 1 && viewKey(checkedView(p.view)) === c.view && p.store_id === bookedAuthority.storeID && p.card_id === record.card_id && p.saturday === c.date && p.bout_id === c.boutID && p.prospect_id === a.prospect_id && p.record_digest === bookedStatus.saved.record_digest && p.input_id === record.input_id && p.result_digest === record.result_digest && p.descriptor_id === DESCRIPTOR && p.manifest_digest === a.manifest_digest && p.portrait_digest === a.portrait_digest && entryBytes(p.svg) <= 32768 && imageOnlySVG(p.svg));
+    requireValue(p.version === 1 && viewKey(checkedView(p.view)) === c.view && p.store_id === bookedAuthority.storeID && p.card_id === record.card_id && p.saturday === c.date && p.bout_id === c.boutID && p.prospect_id === a.prospect_id && p.record_digest === bookedStatus.saved.record_digest && p.input_id === record.input_id && p.result_digest === record.result_digest && p.descriptor_id === a.descriptor_id && p.manifest_digest === a.manifest_digest && p.portrait_digest === a.portrait_digest && entryBytes(p.svg) <= 32768 && imageOnlySVG(p.svg, a.descriptor_id));
     bookedStatusValue(r.status); bookedMatchRecord(record, r.status); const old = [bookedStatus, bookedOverlayKnown, bookedOverlayRead]; bookedAdoptStatus(r.status);
     const src = `data:image/svg+xml;base64,${btoa(p.svg)}`, priorImage = bookedImages.get(a.prospect_id); bookedImages.set(a.prospect_id, src);
     if (!bookedCapacity()) { if (priorImage) bookedImages.set(a.prospect_id, priorImage); else bookedImages.delete(a.prospect_id); [bookedStatus, bookedOverlayKnown, bookedOverlayRead] = old; throw bookedCacheError(); }
@@ -2393,7 +2431,7 @@ function historyTotals(t, count) {
 function historyCapture(c) {
   exact(c,['version','status','activation','career_digest','as_of_ms','assignment','prefix_count','event_count','totals','history_id']);
   requireValue(c.version===1 && hex(c.career_digest) && hex(c.history_id) && entryBytes(c)<=8192 && entryBytes(c.status)<=4096);
-  status(c.status,current.view,current.account.fixture); historyActivation(c.activation); assignment(c.assignment,c.status.pin.identity);
+  status(c.status,current.view,current.account.fixture); historyActivation(c.activation); assignment(c.assignment,c.status.pin.identity,c.status.pin.source.descriptor_id);
   requireValue(c.status.store_id===stable.status.store_id && same(c.status.pin,stable.status.pin) && c.assignment.sequence<=c.status.checkpoint && int(c.as_of_ms,Math.max(c.activation.activated_at_ms,c.assignment.accepted_at_ms),DATE_MAX) && c.status.last_as_of_ms===c.as_of_ms && int(c.prefix_count,0,256) && int(c.event_count,0,c.prefix_count));
   historyTotals(c.totals,c.event_count); return c;
 }

@@ -2,6 +2,7 @@
 package gymcard
 
 import (
+	"github.com/taytr-llc/slug/fighterdescriptor"
 	"github.com/taytr-llc/slug/fightermanifest"
 	"github.com/taytr-llc/slug/gymseed"
 	"sort"
@@ -48,7 +49,12 @@ func derivePlanValidated(p Pin, source gymseed.CardSource) (Plan, error) {
 				return Plan{}, ErrInvalid
 			}
 			seen[m.Assignment.ProspectID] = true
-			manifest, e := fightermanifest.GenerateText(1, m.Assignment.WorkHash)
+			// CardSource validation already bound this assignment to its participant.
+			descriptor, e := fighterdescriptor.ResolveCandidate(m.Assignment.DescriptorID)
+			if e != nil {
+				return Plan{}, ErrInvalid
+			}
+			manifest, e := fightermanifest.GenerateText(descriptor.ManifestVersion, m.Assignment.WorkHash)
 			if e != nil {
 				return Plan{}, ErrInvalid
 			}

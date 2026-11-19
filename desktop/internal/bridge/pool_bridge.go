@@ -8,6 +8,8 @@ import (
 	"github.com/taytr-llc/slug/desktop/pilot"
 	"os"
 	"os/exec"
+	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -18,11 +20,27 @@ type PoolBridge struct{ *StableBridge }
 var ErrRecoveryOutcomeUnknown = errors.New("The recovery file may already be saved. Check the selected destination before trying again.")
 
 func LaunchPool(helper, dataDir, node string) (*PoolBridge, error) {
-	b, e := startStable(exec.Command(helper, "--candidate-pool", "--data-dir", dataDir, "--node-binary", node))
+	return LaunchPoolWithOptions(helper, dataDir, node, pilot.PoolOptions{})
+}
+func LaunchPoolWithOptions(helper, dataDir, node string, options pilot.PoolOptions) (*PoolBridge, error) {
+	options, e := pilot.ResolvePoolOptions(options)
+	if e != nil || !filepath.IsAbs(dataDir) || filepath.Clean(dataDir) != dataDir || strings.ContainsAny(dataDir, "\x00\r\n\t") {
+		return nil, ErrUnavailable
+	}
+	args := []string{"--candidate-pool", "--data-dir", dataDir, "--node-binary", node}
+	original, e := pilot.ResolvePoolOptions(pilot.PoolOptions{})
+	if e != nil {
+		return nil, ErrUnavailable
+	}
+	if options.CandidateDescriptorID != original.CandidateDescriptorID {
+		args = append(args, "--candidate-name-version=2")
+	}
+	b, e := startStable(exec.Command(helper, args...))
 	if e != nil {
 		return nil, e
 	}
 	b.poolMode = true
+	b.poolExpectedDescriptor = options.CandidateDescriptorID
 	b.entriesEnabled, b.eventsEnabled = true, true
 	b.seedsEnabled, b.cardsEnabled, b.boutsEnabled, b.resultsEnabled, b.careersEnabled = true, true, true, true, true
 	return &PoolBridge{b}, nil
@@ -98,7 +116,7 @@ func (b *PoolBridge) PoolRequest(ctx context.Context, req pilot.PoolRequest) (pi
 	}
 	if s := r.Snapshot; s != nil {
 		if s.View != nil {
-			if b.poolSourceID != "" && (b.poolSourceID != s.SourceBindingID || b.poolSourcePin == nil || *b.poolSourcePin != s.View.AuthorityPin) {
+			if !b.matchesPoolSelection(s) {
 				b.fail(ErrUnavailable)
 				return pilot.PoolResponse{}, ErrUnavailable
 			}
@@ -134,4 +152,15 @@ func (b *PoolBridge) Close() error {
 		b.interruptStartup()
 	}
 	return b.StableBridge.Close()
+}
+
+// The first public source must match the launch selection; later responses must
+// also retain the complete original source. Empty is the legacy v1 constructor
+// expectation used by old in-package process fixtures, never disk discovery.
+func (b *PoolBridge) matchesPoolSelection(s *pilot.PoolSnapshot) bool {
+	options, e := pilot.ResolvePoolOptions(pilot.PoolOptions{CandidateDescriptorID: b.poolExpectedDescriptor})
+	if e != nil || s == nil || s.View == nil || s.View.AuthorityPin.DescriptorID != options.CandidateDescriptorID {
+		return false
+	}
+	return b.poolSourceID == "" || b.poolSourceID == s.SourceBindingID && b.poolSourcePin != nil && *b.poolSourcePin == s.View.AuthorityPin
 }

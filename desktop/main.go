@@ -20,6 +20,7 @@ import (
 	"time"
 
 	"github.com/taytr-llc/slug/desktop/internal/bridge"
+	"github.com/taytr-llc/slug/desktop/internal/poolselection"
 	"github.com/taytr-llc/slug/desktop/pilot"
 	"github.com/wailsapp/wails/v3/pkg/application"
 	"github.com/wailsapp/wails/v3/pkg/events"
@@ -233,6 +234,7 @@ func run() (resultErr error) {
 	}
 	data := flag.String("data-dir", dataDefault, "Explicit local pilot data directory")
 	pool := flag.Bool("candidate-pool", poolBuild == "1", "Use the separate shared pool desktop")
+	nameVersion := flag.String("candidate-name-version", "1", "Explicit immutable pool candidate name version (1 or 2)")
 	candidates := flag.Bool("candidate-manifests", candidateBuild == "1", "Use the separate candidate fixture desktop")
 	stable := flag.Bool("candidate-stable", stableBuild == "1", "Use candidate stable and roster within the candidate fixture desktop")
 	entries := flag.Bool("candidate-entries", entryBuild == "1", "Enable Saturday entry intake within the candidate stable")
@@ -270,12 +272,21 @@ func run() (resultErr error) {
 	if *stable && !*candidates {
 		return errors.New("Candidate stable requires the candidate fixture desktop.")
 	}
-	dataExplicit := false
+	dataExplicit, poolExplicit, nameExplicit := false, false, false
 	flag.Visit(func(f *flag.Flag) {
-		if f.Name == "data-dir" {
+		switch f.Name {
+		case "data-dir":
 			dataExplicit = true
+		case "candidate-pool":
+			poolExplicit = true
+		case "candidate-name-version":
+			nameExplicit = true
 		}
 	})
+	poolOptions, selectionErr := poolselection.Options(*pool, poolExplicit, *nameVersion, nameExplicit, *data, dataExplicit)
+	if selectionErr != nil {
+		return selectionErr
+	}
 	poolDefault := *pool && !dataExplicit && os.Getenv("SLUG_PILOT_DATA_DIR") == ""
 	if poolDefault {
 		*data = filepath.Join(filepath.Dir(dataDefault), "LocalPoolPilot")
@@ -312,7 +323,7 @@ func run() (resultErr error) {
 		filepath.Clean(filepath.Join(resources, "..", "..")),
 	}}
 	if *pool {
-		gym.poolHelper, err = bridge.LaunchPool(helperPath, filepath.Clean(*data), nodePath)
+		gym.poolHelper, err = bridge.LaunchPoolWithOptions(helperPath, filepath.Clean(*data), nodePath, poolOptions)
 		if err == nil {
 			gym.stableHelper = gym.poolHelper.StableBridge
 		}

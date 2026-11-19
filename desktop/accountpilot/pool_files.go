@@ -13,7 +13,6 @@ import (
 
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/taytr-llc/slug/desktop/pilot"
-	"github.com/taytr-llc/slug/fighterdescriptor"
 	"github.com/taytr-llc/slug/gymaccount"
 )
 
@@ -95,7 +94,15 @@ func readPoolAccountMarker(path string) (poolAccountMarker, error) {
 
 // The separate instance lock serializes initial marker publication. An orphaned
 // authority without its committed pin is retained, never inspected into trust.
-func openPoolAccountStore(root string) (_ *gymaccount.Store, _ *leveldb.DB, resultErr error) {
+func openPoolAccountStore(root string) (*gymaccount.Store, *leveldb.DB, error) {
+	return openPoolAccountStoreWithOptions(root, pilot.PoolOptions{})
+}
+func openPoolAccountStoreWithOptions(root string, options pilot.PoolOptions) (_ *gymaccount.Store, _ *leveldb.DB, resultErr error) {
+	options, optionErr := pilot.ResolvePoolOptions(options)
+	if optionErr != nil {
+		return nil, nil, optionErr
+	}
+	descriptorID := options.CandidateDescriptorID
 	if err := poolAccountPath(root); err != nil {
 		return nil, nil, err
 	}
@@ -122,10 +129,12 @@ func openPoolAccountStore(root string) (_ *gymaccount.Store, _ *leveldb.DB, resu
 		}
 	} else {
 		before, err := readPoolAccountMarker(markerPath)
-		descriptor, descriptorErr := fighterdescriptor.ID(fighterdescriptor.CandidateDescriptor())
 		_, idErr := hex.DecodeString(before.AccountAuthorityID)
-		if err != nil || descriptorErr != nil || before.Version != 1 || before.Mode != pilot.PoolMode || before.DescriptorID != descriptor || len(before.AccountAuthorityID) != 64 || strings.ToLower(before.AccountAuthorityID) != before.AccountAuthorityID || idErr != nil {
+		if err != nil || before.Version != 1 || before.Mode != pilot.PoolMode || before.DescriptorID != descriptorID || len(before.AccountAuthorityID) != 64 || strings.ToLower(before.AccountAuthorityID) != before.AccountAuthorityID || idErr != nil {
 			return nil, nil, pilot.ErrManifestInitialization
+		}
+		if err = pilot.CheckPoolRuntimeSelection(filepath.Join(root, "shared"), before.AccountAuthorityID, options); err != nil {
+			return nil, nil, err
 		}
 	}
 	lockPath := filepath.Join(root, "instance-lock")
@@ -144,10 +153,6 @@ func openPoolAccountStore(root string) (_ *gymaccount.Store, _ *leveldb.DB, resu
 			_ = lock.Close()
 		}
 	}()
-	descriptorID, err := fighterdescriptor.ID(fighterdescriptor.CandidateDescriptor())
-	if err != nil {
-		return nil, nil, err
-	}
 	var store *gymaccount.Store
 	if _, err = os.Lstat(markerPath); os.IsNotExist(err) {
 		entries, e := os.ReadDir(root)

@@ -41,7 +41,14 @@ type poolRuntimeMarker struct {
 }
 
 func (m poolRuntimeMarker) valid(authority string) bool {
-	return m.Application == "slug-shared-pool-runtime" && m.Version == 1 && validAccountID(authority) && m.AccountAuthorityID == authority && m.Network == policy().Network && m.Genesis == genesis && m.ActivationHeight == chaincfg.PhaseAActivationHeight && m.RecoveryProfile == recovery.ProfileID && m.DescriptorID == manifestDescriptorID && m.PrimaryTXIndex && m.PoolPort != 0 && m.AdmissionPort != 0 && m.PoolPort != m.AdmissionPort
+	return m.validFor(authority, manifestDescriptorID)
+}
+func (m poolRuntimeMarker) validFor(authority, descriptorID string) bool {
+	options, err := ResolvePoolOptions(PoolOptions{CandidateDescriptorID: descriptorID})
+	if err != nil || options.CandidateDescriptorID != descriptorID {
+		return false
+	}
+	return m.Application == "slug-shared-pool-runtime" && m.Version == 1 && validAccountID(authority) && m.AccountAuthorityID == authority && m.Network == policy().Network && m.Genesis == genesis && m.ActivationHeight == chaincfg.PhaseAActivationHeight && m.RecoveryProfile == recovery.ProfileID && m.DescriptorID == descriptorID && m.PrimaryTXIndex && m.PoolPort != 0 && m.AdmissionPort != 0 && m.PoolPort != m.AdmissionPort
 }
 func poolRuntimeOrigin(port uint16) string { return "http://127.0.0.1:" + strconv.Itoa(int(port)) }
 

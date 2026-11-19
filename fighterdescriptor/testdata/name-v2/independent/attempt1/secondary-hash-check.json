@@ -1,0 +1,7 @@
+{
+  "scope": "second SHA256 executable cross-check for the exact descriptor and all stream preimages; direct hex-prefix integer/index cross-check",
+  "openssl_checks": 25,
+  "stream_prefix_checks": 24,
+  "result": "pass",
+  "no_go_or_private_inputs": true
+}

@@ -18,7 +18,7 @@ func (s *ManifestStore) binding(verified prospect.Verified) (StaticBinding, erro
 	if err != nil {
 		return StaticBinding{}, err
 	}
-	if d != s.meta.Descriptor || d.RendererID != fighterportrait.RendererID || !manifestCanonicalHash(verified.WorkHash) {
+	if d != s.meta.Descriptor || !manifestCanonicalHash(verified.WorkHash) {
 		return StaticBinding{}, ErrManifestAuthority
 	}
 	m, err := fightermanifest.GenerateText(d.ManifestVersion, verified.WorkHash)
@@ -32,7 +32,8 @@ func (s *ManifestStore) binding(verified prospect.Verified) (StaticBinding, erro
 	if err != nil {
 		return StaticBinding{}, err
 	}
-	// Digest performs complete validation/rendering with the SVG byte bound.
+	// ResolveCandidate pins the complete implementation tuple; Digest checks the
+	// exact renderer/manifest version pairing with the SVG byte bound.
 	portraitDigest, err := fighterportrait.Digest(d.RendererVersion, m)
 	if err != nil {
 		return StaticBinding{}, err

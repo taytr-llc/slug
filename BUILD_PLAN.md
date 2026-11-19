@@ -233,14 +233,21 @@ activating career authority before the new event's lock and first finality.
 Actual normal-PoW acceptance proves both finalities and exactly-once careers
 through retry/restart. Publication funding stays separate from share-accounted
 pool rewards. See `SHARED_EVENT_CYCLE.md` and `CHANGESET_64_NOTES.md`.
-Next expand the name pool through an explicit versioned candidate, retaining
-all existing fighters, source pins and defaults and measuring duplicate names.
+Set65 qualifies an explicit name-v2 candidate with 512-by-512 names, complete
+independent manifest/portrait references and a fixed 100,000-seed collision
+study. Both package routes and the actual v2 event/finality/career cycle pass;
+existing fighters, source pins and defaults remain v1. See `NAME_DIVERSITY.md`
+and `CHANGESET_65_NOTES.md`. Next add bounded public evidence export and offline
+checks from the existing history flow. Supplied work/record consistency does
+not establish issuer timing, current ownership or complete authoritative history;
+those remain separate requirements. Transfer effective timing and competing
+transfer ordering require a later explicit policy decision.
 Never repin solo event histories. Keep the existing layout/logos until the final
 joint D74 review. Public hosting, production signer custody/capacity, real account
 configuration and permanent genesis remain separate gates. The implemented
 contract is `SHARED_POOL_DESKTOP.md`; the earlier workspace runtime proposal
 remains historical context. See `CHANGESET_52_NOTES.md` through
-`CHANGESET_64_NOTES.md`, `POOL_WORKER.md`, `POOL_RECIPIENTS.md`,
+`CHANGESET_65_NOTES.md`, `POOL_WORKER.md`, `POOL_RECIPIENTS.md`,
 `SHARED_GYM_STABLE.md` and `POOL_SESSION_FENCES.md`.
 
 ### 4. Wallet

@@ -72,27 +72,27 @@ func loadTables(raw string) (portraitTables, error) {
 // Render validates the entire manifest before using any rendering index. The
 // value-only input and newly allocated result have no shared mutable buffers.
 func Render(version uint32, manifest fightermanifest.Manifest) ([]byte, error) {
-	if version != Version1 || !supported(manifest) {
+	if !supportedVersion(version, manifest) {
 		return nil, ErrPortrait
 	}
 	if _, err := fightermanifest.Marshal(manifest); err != nil {
 		return nil, ErrPortrait
 	}
-	return render(manifest)
+	return renderWithID(manifest, rendererVersionID(version))
 }
 
 // RenderCanonical owns a bounded copy before applying the manifest package's
 // strict, complete canonical JSON parser. It accepts no raw SVG or free text.
 func RenderCanonical(version uint32, canonicalManifest []byte) ([]byte, error) {
-	if version != Version1 || len(canonicalManifest) == 0 || len(canonicalManifest) > fightermanifest.MaxEncodedBytes {
+	if rendererVersionID(version) == "" || len(canonicalManifest) == 0 || len(canonicalManifest) > fightermanifest.MaxEncodedBytes {
 		return nil, ErrPortrait
 	}
 	owned := bytes.Clone(canonicalManifest)
 	m, err := fightermanifest.Parse(owned)
-	if err != nil || !supported(m) {
+	if err != nil || !supportedVersion(version, m) {
 		return nil, ErrPortrait
 	}
-	return render(m)
+	return renderWithID(m, rendererVersionID(version))
 }
 
 // Pin the compatibility mapping explicitly even if the manifest package later
@@ -109,7 +109,11 @@ func Digest(version uint32, manifest fightermanifest.Manifest) (string, error) {
 		return "", err
 	}
 	h := sha256.New()
-	h.Write([]byte(digestDomain))
+	domain := digestDomain
+	if version == Version2 {
+		domain = digestDomainV2
+	}
+	h.Write([]byte(domain))
 	h.Write(raw)
 	return hex.EncodeToString(h.Sum(nil)), nil
 }
@@ -258,6 +262,10 @@ func lineAttrs(color, width, opacity string, cap bool) []attr {
 // therefore cannot overflow. S and head geometry come from the hash-pinned
 // table and the validated [-6,6] jitter, never untrusted arbitrary dimensions.
 func render(m fightermanifest.Manifest) ([]byte, error) {
+	return renderWithID(m, RendererID)
+}
+
+func renderWithID(m fightermanifest.Manifest, rendererID string) ([]byte, error) {
 	p := m.Portrait
 	h := tables.Head[p.HeadShape]
 	t, s, b, j := h.Top, h.Side, h.Bottom, h.Jaw
@@ -269,7 +277,7 @@ func render(m fightermanifest.Manifest) ([]byte, error) {
 	skin, shadow := tables.Skin[p.Skin][0], tables.Skin[p.Skin][1]
 	hair, bg, ring := tables.Hair[p.HairColor], tables.Background[p.Background], tables.Ring[m.DNA.Rarity]
 	label := xmlText("Portrait preview of " + m.Name.Display)
-	envelope := `<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" overflow="hidden" role="img" aria-label="` + label + `" data-renderer="` + RendererID + `"><title>` + label + `</title><desc>Deterministic appearance preview only. No work, ownership or birth verification.</desc>`
+	envelope := `<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" overflow="hidden" role="img" aria-label="` + label + `" data-renderer="` + rendererID + `"><title>` + label + `</title><desc>Deterministic appearance preview only. No work, ownership or birth verification.</desc>`
 	d := document{data: make([]byte, 0, 8192)}
 	if len(envelope) >= 1024 {
 		return nil, ErrPortrait

@@ -4,6 +4,7 @@ package gymcard
 import (
 	"encoding/json"
 	"github.com/taytr-llc/slug/fightercondition"
+	"github.com/taytr-llc/slug/fighterdescriptor"
 	"github.com/taytr-llc/slug/fightermanifest"
 	"github.com/taytr-llc/slug/gymevent"
 	"github.com/taytr-llc/slug/gymseed"
@@ -30,7 +31,12 @@ func validateBoutCorner(p Pin, v BoutCorner) error {
 	if !found || !timestamp(m.ConditionAtCutoff.AsOfMS) {
 		return ErrInvalid
 	}
-	man, e := fightermanifest.GenerateText(1, a.WorkHash)
+	// Keep the exact participant/source equality above before choosing a version.
+	descriptor, e := fighterdescriptor.ResolveCandidate(a.DescriptorID)
+	if e != nil {
+		return ErrInvalid
+	}
+	man, e := fightermanifest.GenerateText(descriptor.ManifestVersion, a.WorkHash)
 	if e != nil {
 		return ErrInvalid
 	}

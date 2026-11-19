@@ -373,6 +373,17 @@ they do not count as completion of this product-release gate.
   This proves the candidate cycle, not general matchmaking, titles/rankings,
   transferable ownership, production custody, distribution or D74 approval.
 
+- Set65 qualifies a separately selected name-v2 source with 512 first names
+  and 512 surnames. Its 764 independent manifest/portrait cases cover every name
+  index, and Go reproduces the frozen 100,000-seed collision study. At 10,000
+  sampled fighters, 3.99% have a namesake; at 100,000, 31.969% do. Those are
+  scenarios, not production forecasts or adopted release thresholds. Old names,
+  complete v1 bytes and defaults remain unchanged. Actual normal-PoW v2 seed/
+  result finality and exact-once careers, both packaged routes with recovery,
+  the full normal desktop suite and required smoke pass. See
+  `CHANGESET_65_NOTES.md`; source activation/population assumptions and remaining
+  duplicate-name presentation still belong to the final D74 session.
+
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
 `sim-handoff-intake.json` preserves archive and file checksums. They are reference
@@ -385,10 +396,10 @@ and their intake does not replace the D74 review of the working product.
 | --- | --- |
 | Production wallet and recovery | Freeze the approved profile and exact chain/coin identity; prove actual export, independent fresh restore and spending. Complete authoritative address metadata and bounded resumable scanning before claiming full evolving-wallet recovery. Real entropy and custody must use the operator-owned runtime, never assistant-visible keys. |
 | Real accounts and hosted custody | Demonstrate provider authentication/reset ordering, original-authentication epochs, durable retry/reconciliation and abandoned-flow behavior. Provision the reviewed operator-owned provider/vault configuration; prove same-wallet recovery, hold enforcement, backups, key rotation and disaster recovery. |
-| Desktop product | Qualify the explicitly versioned expanded-name candidate. Integrate real signup/login, wallet views and controlled mining with the service. Complete native error/recovery flows, cross-device behavior, macOS signing/notarization and Windows runtime acceptance. Review distribution/update behavior. |
+| Desktop product | Integrate real signup/login, wallet views and controlled mining with the service. Complete native error/recovery flows, cross-device behavior, macOS signing/notarization and Windows runtime acceptance. Review distribution/update behavior. The expanded-name candidate is qualified for explicit fixture use; production activation remains separate. |
 | Mining and fighter services | Qualify hosted official-pool operations and production signer custody/capacity for the implemented share, round and settlement path; complete authoritative fighter lifecycle/ownership and portable history. Preserve automatic jobs, birth, canonical-winning-block rules and report-only checkpoint doctrine. |
 | League, marketplace and presentation | Wire the fight/league operation, entries, matching, results/finality, rankings and required gym/fighter flows. Complete the agreed launch marketplace/transfer behavior and reset-hold restrictions. Prototype/simulation output does not substitute for deployed acceptance. |
-| Fighter-name diversity and collisions | Before launch, substantially expand the candidate name pool and measure collision frequency at expected fighter populations. Fighter IDs remain the identity keys. Use deterministic, versioned generation so existing identities, assigned names and manifests remain stable; do not rewrite the frozen generator or historical fighters. Bring population assumptions and remaining duplicate-name behavior to the D74 review. |
+| Fighter-name diversity and collisions | Set65 completes the explicit versioned expansion and reproducible collision scenarios. Confirm the launch population assumptions, acceptable prevalence, disambiguation and source activation at D74. Fighter IDs remain identity keys; preserve all existing assigned names/manifests and never rewrite historical fighters. |
 | Thorough design review with Mike (D74) | Review a working representative build together: onboarding, mining controls/status, wallet/recovery/reset holds, roster/fighter lifecycle, fights/league, marketplace/transfers, navigation, visual hierarchy, accessibility, loading/empty/error/offline states and trust/irreversible-action wording. Record findings and agreed changes. Recheck affected flows before product release. |
 | Launch hardening and operations | Run end-to-end rehearsals and security review of the final system; verify capacity, monitoring, backups/recovery and rollback procedures. Complete the launch legal/operational items in the spec, including any external work requiring Mike's accounts or decisions. |
 | Permanent genesis and coordinated launch | Mike approves the exact permanent genesis and final parameters. Freeze release sources/configuration and deploy compatible nodes/services/clients. Rehearse the genesis procedure and verify the first permanent history. D1/D2's public-from-genesis and permanent tester-history commitments remain in force. |
@@ -407,7 +418,7 @@ than the original simulator under its different score-tie rule. Review those
 findings as matchmaking/gameplay questions; changing a summary rating alone
 does not change a fight. Neither finding authorizes a policy or engine change.
 
-The current frozen name tables contain 32 distinct first and 32 distinct last
+The retained v1 name tables contain 32 distinct first and 32 distinct last
 names, yielding 1,024 display names. Under an independent-uniform draw model,
 the probability of at least one shared name exceeds 50% at 38 fighters; at
 100 fighters, the expected fraction with a namesake is about 9.22%. These are
@@ -416,6 +427,9 @@ duplicates. Review acceptable prevalence and disambiguation at an explicit
 population scope, then assess the expanded version against that target while
 preserving existing assignments. The workspace's
 `set48-name-collision-prelaunch-note.md` records the assumptions and calculations.
+Set65's separately selected 512-by-512 candidate and its complete reproducible
+scenario results are documented in `NAME_DIVERSITY.md`; no launch population or
+numeric collision tolerance has been silently adopted.
 
 The approved logo handoff is preserved byte-for-byte in the workspace's
 `../brand-assets`: gray background, white front-facing fist, black linework and

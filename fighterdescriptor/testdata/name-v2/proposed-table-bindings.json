@@ -1,0 +1,12 @@
+{
+  "status": "proposed table encoding and inherited contract copies; no vectors generated",
+  "list_and_order_unchanged": true,
+  "table_bytes": 9017,
+  "table_raw_sha256": "96e7ae3eaae038932355e44ef4a3a88ecab4c8f5fa1dea7371d748b6fab0b051",
+  "table_domain_sha256": "b537490e1e602e27de01975aeec36f5fb53ba9a3a35f98143e8ecb7f9e2687c2",
+  "inherited": {
+    "fighter-manifest-v1-contract.md": "ba8d33dbad3722eed6b4406ef120f946d7e06e1ea04305cbe8648889ba169e80",
+    "portrait-renderer-v1-contract.md": "8ae3c8dbe92fbef719880227e107cb98cbfd6419d984cad08ebb5d5e0a9c0df5",
+    "full-tables-v1.json": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7"
+  }
+}
