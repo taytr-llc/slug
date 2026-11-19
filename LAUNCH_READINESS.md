@@ -336,6 +336,15 @@ they do not count as completion of this product-release gate.
   payout/restart/reset acceptance. Preserve the current solo route and layout;
   the thorough joint D74 review remains last.
 
+- Set 61 connects the actual shared fixture Pool Pilot: one parent runtime,
+  two recipient-bound wallets, per-gym workers/outboxes/Pin2 stables and visible
+  authenticated balances. The normal-PoW acceptance paid 29.7 and 49.5 test SLUG
+  in one confirmed batch, preserved separate inventories and retained wallet,
+  source and payments through reset and restart. Exact evidence and limits are
+  in `CHANGESET_61_NOTES.md`. Shared recovery and league attachment still follow;
+  production accounts, hosting/custody and public-release gates remain open.
+  This does not approve a friends build or replace the final joint D74 review.
+
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
 `sim-handoff-intake.json` preserves archive and file checksums. They are reference
@@ -348,8 +357,8 @@ and their intake does not replace the D74 review of the working product.
 | --- | --- |
 | Production wallet and recovery | Freeze the approved profile and exact chain/coin identity; prove actual export, independent fresh restore and spending. Complete authoritative address metadata and bounded resumable scanning before claiming full evolving-wallet recovery. Real entropy and custody must use the operator-owned runtime, never assistant-visible keys. |
 | Real accounts and hosted custody | Demonstrate provider authentication/reset ordering, original-authentication epochs, durable retry/reconciliation and abandoned-flow behavior. Provision the reviewed operator-owned provider/vault configuration; prove same-wallet recovery, hold enforcement, backups, key rotation and disaster recovery. |
-| Desktop product | Integrate real signup/login, wallet views and controlled mining with the service. Complete native error/recovery flows, cross-device behavior, macOS signing/notarization and Windows runtime acceptance. Review distribution/update behavior. |
-| Mining and fighter services | Complete the official pool/share validation and payout path in the build plan, authoritative fighter lifecycle/ownership and portable history. Preserve automatic jobs, birth, canonical-winning-block rules and report-only checkpoint doctrine. |
+| Desktop product | Connect shared-pool fighters to league/career and shared-wallet recovery. Integrate real signup/login, wallet views and controlled mining with the service. Complete native error/recovery flows, cross-device behavior, macOS signing/notarization and Windows runtime acceptance. Review distribution/update behavior. |
+| Mining and fighter services | Qualify hosted official-pool operations and production signer custody/capacity for the implemented share, round and settlement path; complete authoritative fighter lifecycle/ownership and portable history. Preserve automatic jobs, birth, canonical-winning-block rules and report-only checkpoint doctrine. |
 | League, marketplace and presentation | Wire the fight/league operation, entries, matching, results/finality, rankings and required gym/fighter flows. Complete the agreed launch marketplace/transfer behavior and reset-hold restrictions. Prototype/simulation output does not substitute for deployed acceptance. |
 | Fighter-name diversity and collisions | Before launch, substantially expand the candidate name pool and measure collision frequency at expected fighter populations. Fighter IDs remain the identity keys. Use deterministic, versioned generation so existing identities, assigned names and manifests remain stable; do not rewrite the frozen generator or historical fighters. Bring population assumptions and remaining duplicate-name behavior to the D74 review. |
 | Thorough design review with Mike (D74) | Review a working representative build together: onboarding, mining controls/status, wallet/recovery/reset holds, roster/fighter lifecycle, fights/league, marketplace/transfers, navigation, visual hierarchy, accessibility, loading/empty/error/offline states and trust/irreversible-action wording. Record findings and agreed changes. Recheck affected flows before product release. |

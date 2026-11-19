@@ -38,10 +38,12 @@ var cardBuild string
 var boutBuild string
 var resultBuild string
 var careerBuild string
+var poolBuild string
 
 // Gym exposes only public pilot controls and receipt selection to the webview.
 // Paths, process arguments, and keys cannot be supplied through the web bridge.
 type Gym struct {
+	poolHelper     *bridge.PoolBridge
 	helper         *bridge.Bridge
 	manifestHelper manifestTransport
 	stableHelper   *bridge.StableBridge
@@ -70,6 +72,10 @@ func (g *Gym) LoginFixture(fixture string) error {
 		return bridge.ErrBusy
 	}
 	defer g.exportMu.Unlock()
+	if g.poolHelper != nil {
+		_, e := g.poolHelper.PoolRequest(context.Background(), pilot.PoolRequest{Command: "login_fixture", Fixture: fixture})
+		return e
+	}
 	if g.manifestHelper != nil {
 		_, err := g.manifestHelper.RequestFixture(context.Background(), fixture)
 		return err
@@ -131,6 +137,9 @@ func (g *Gym) ExportReceipt(sequence uint64) (string, error) {
 // Recovery paths are chosen by native dialogs, never supplied by the webview.
 // The helper writes and verifies the file without returning its private data.
 func (g *Gym) ExportRecovery() (string, error) {
+	if g.poolHelper != nil {
+		return "", bridge.ErrUnavailable
+	}
 	if !g.exportMu.TryLock() {
 		return "", bridge.ErrBusy
 	}
@@ -167,6 +176,9 @@ func (g *Gym) ExportRecovery() (string, error) {
 }
 
 func (g *Gym) VerifyBackup() (string, error) {
+	if g.poolHelper != nil {
+		return "", bridge.ErrUnavailable
+	}
 	if !g.exportMu.TryLock() {
 		return "", bridge.ErrBusy
 	}
@@ -214,6 +226,7 @@ func run() (resultErr error) {
 		dataDefault = value
 	}
 	data := flag.String("data-dir", dataDefault, "Explicit local pilot data directory")
+	pool := flag.Bool("candidate-pool", poolBuild == "1", "Use the separate shared pool desktop")
 	candidates := flag.Bool("candidate-manifests", candidateBuild == "1", "Use the separate candidate fixture desktop")
 	stable := flag.Bool("candidate-stable", stableBuild == "1", "Use candidate stable and roster within the candidate fixture desktop")
 	entries := flag.Bool("candidate-entries", entryBuild == "1", "Enable Saturday entry intake within the candidate stable")
@@ -224,6 +237,9 @@ func run() (resultErr error) {
 	candidateResults := flag.Bool("candidate-results", resultBuild == "1", "Enable saved candidate result publication within candidate bouts")
 	candidateCareers := flag.Bool("candidate-careers", careerBuild == "1", "Enable finality-timed candidate careers within candidate results")
 	flag.Parse()
+	if *pool && (*candidates || *stable || *entries || *candidateEvents || *candidateSeeds || *candidateCards || *candidateBouts || *candidateResults || *candidateCareers) {
+		return errors.New("Pool mode is separate from existing candidate modes.")
+	}
 	if *candidateCareers && (!*candidateResults || !*candidateBouts || !*candidateCards || !*candidateSeeds || !*candidateEvents || !*entries || !*stable || !*candidates) {
 		return errors.New("Candidate careers require candidate results and all earlier candidate modes.")
 	}
@@ -254,6 +270,10 @@ func run() (resultErr error) {
 			dataExplicit = true
 		}
 	})
+	poolDefault := *pool && !dataExplicit && os.Getenv("SLUG_PILOT_DATA_DIR") == ""
+	if poolDefault {
+		*data = filepath.Join(filepath.Dir(dataDefault), "LocalPoolPilot")
+	}
 	candidateDefault := *candidates && !dataExplicit && os.Getenv("SLUG_PILOT_DATA_DIR") == ""
 	if candidateDefault {
 		*data = filepath.Join(filepath.Dir(dataDefault), "LocalManifestPilot")
@@ -267,7 +287,9 @@ func run() (resultErr error) {
 	}
 	resources := filepath.Clean(filepath.Join(filepath.Dir(executable), "..", "Resources", "bin"))
 	helperPath, nodePath := filepath.Join(resources, "slugpilot"), filepath.Join(resources, "slugd")
-	if *candidates {
+	if *pool {
+		err = preparePoolDataParent(filepath.Clean(*data), configDir, poolDefault)
+	} else if *candidates {
 		err = prepareCandidateDataParent(filepath.Clean(*data), configDir, candidateDefault)
 	} else {
 		err = os.MkdirAll(filepath.Dir(filepath.Clean(*data)), 0700)
@@ -280,9 +302,15 @@ func run() (resultErr error) {
 		filepath.Join(filepath.Dir(filepath.Clean(*data)), "LocalWalletPilot"),
 		filepath.Join(filepath.Dir(filepath.Clean(*data)), "LocalAccountPilot"),
 		filepath.Join(filepath.Dir(filepath.Clean(*data)), "LocalManifestPilot"),
+		filepath.Join(filepath.Dir(filepath.Clean(*data)), "LocalPoolPilot"),
 		filepath.Clean(filepath.Join(resources, "..", "..")),
 	}}
-	if *candidateCareers {
+	if *pool {
+		gym.poolHelper, err = bridge.LaunchPool(helperPath, filepath.Clean(*data), nodePath)
+		if err == nil {
+			gym.stableHelper = gym.poolHelper.StableBridge
+		}
+	} else if *candidateCareers {
 		gym.stableHelper, err = bridge.LaunchCareers(helperPath, filepath.Clean(*data), nodePath)
 		if err == nil {
 			gym.manifestHelper = gym.stableHelper
@@ -332,6 +360,9 @@ func run() (resultErr error) {
 	}
 	defer func() { resultErr = errors.Join(resultErr, gym.closeHelper()) }()
 	title, startURL := "SLUG Account Pilot", "/"
+	if *pool {
+		title, startURL = "SLUG Pool Pilot", "/stable.html"
+	}
 	if *candidates {
 		title, startURL = "SLUG Candidate Pilot", "/manifest.html"
 		if *stable {

@@ -24,6 +24,10 @@ import (
 // StableController owns one serial work lane. Its source lifetime is fenced by
 // laneGate, never by the legacy resource mutex across an account callback.
 type StableController struct {
+	// Explicit pool children borrow this source for their entire lifetime. They
+	// never fall back to the isolated manifest-authority directory.
+	sharedPin                          *gymstable.Pin
+	sharedSource                       *registry.ManifestStore
 	careerHandle                       *gymstable.CareerRead
 	careerJobID                        string
 	careerView                         ManifestViewPin
@@ -216,6 +220,12 @@ func (s *StableController) openPair(source *registry.ManifestStore) error {
 	pin, err := s.StablePin()
 	if err != nil {
 		return err
+	}
+	if s.sharedPin != nil {
+		if s.sharedSource == nil || (source != nil && source != s.sharedSource) {
+			return gymstable.ErrInvalid
+		}
+		source = s.sharedSource
 	}
 	owned := source == nil
 	if owned {

@@ -64,6 +64,12 @@ func (stableRejectAuthorizer) WithSession(context.Context, string, func(string, 
 }
 
 func (s *StableController) StablePin() (gymstable.Pin, error) {
+	if s.sharedPin != nil {
+		if s.sharedPin.Version != gymstable.SharedPinVersion2 || s.sharedSource == nil {
+			return gymstable.Pin{}, gymstable.ErrInvalid
+		}
+		return gymstable.ValidatePin(*s.sharedPin)
+	}
 	c := s.ManifestController
 	c.mu.Lock()
 	m := c.manifest

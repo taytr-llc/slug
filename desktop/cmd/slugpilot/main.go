@@ -20,6 +20,7 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 	flags.SetOutput(stderr)
 	data := flags.String("data-dir", "", "Explicit disposable pilot directory")
 	node := flags.String("node-binary", "", "Explicit bundled normal SLUG node binary")
+	pool := flags.Bool("candidate-pool", false, "Use the separate shared public-fixture pool desktop")
 	accounts := flags.Bool("account-fixtures", false, "Use the separate two-public-fixture account pilot")
 	candidates := flags.Bool("candidate-manifests", false, "Use the separate candidate fixture desktop")
 	stable := flags.Bool("candidate-stable", false, "Enable the candidate stable within candidate-manifests")
@@ -35,6 +36,16 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 	}
 	if flags.NArg() != 0 || *data == "" || *node == "" {
 		return errors.New("explicit data-dir and node-binary are required")
+	}
+	if *pool {
+		if *accounts || *candidates || *stable || *entries || *candidateEvents || *candidateSeeds || *candidateCards || *candidateBouts || *candidateResults || *career {
+			return errors.New("candidate-pool is a separate mode")
+		}
+		c, e := accountpilot.NewPool(ctx, pilot.Config{DataDir: *data, NodeBinary: *node})
+		if e != nil {
+			return e
+		}
+		return pilot.ServePool(ctx, stdin, stdout, c)
 	}
 	if *stable && (!*candidates || *accounts) {
 		return errors.New("candidate-stable requires candidate-manifests")

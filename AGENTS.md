@@ -164,6 +164,17 @@ version.
   visible authenticated balances and bounded daily scheduling. Preserve the
   solo route and D74 gate. See `POOL_SESSION_FENCES.md` and
   `CHANGESET_60_NOTES.md`.
+- Set 61 on `slug-shared-pool-desktop` adds the explicit `--candidate-pool`
+  route and separate `SLUG Pool Pilot` / `LocalPoolPilot` namespace. One parent
+  owns the nodes, shared issuer and accounting journals; original-view children
+  own their wallet, worker, outbox and Pin2 stable. Both actual fixture recipients
+  must verify before services start. Only Start mines; logout/reset joins the
+  child while retaining the source, and Quit joins all owners. Preserve exact
+  source/transport/recipient markers; missing established components fail closed.
+  Shared counts are gym-local; balances retain exact fractions and observation
+  timestamps. Preserve the solo route. Shared-wallet recovery follows in Set62,
+  then explicit shared league attachment; never repin old histories or reorganize
+  navigation. See `SHARED_POOL_DESKTOP.md` and `CHANGESET_61_NOTES.md`; D74 stays last.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

@@ -166,6 +166,12 @@ func (s *StableController) createStableStore(p string, pin gymstable.Pin, source
 	return gymstable.Create(p, pin, source)
 }
 func (s *StableController) openStableStore(p string, pin gymstable.Pin, source *registry.ManifestStore) (*gymstable.Store, error) {
+	if s.sharedPin != nil {
+		if pin != *s.sharedPin || source != s.sharedSource || s.careerReader != nil || s.eventFactories != nil {
+			return nil, gymstable.ErrInvalid
+		}
+		return gymstable.OpenShared(p, pin, source)
+	}
 	if s.careerReader != nil {
 		a, e := s.careerReader.Activation()
 		if e != nil {

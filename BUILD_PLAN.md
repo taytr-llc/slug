@@ -211,19 +211,26 @@ actual local commit. Additive staged registry commits fail fast on lock contenti
 the new shared runtime must select the explicit fenced admission-only server.
 Legacy registry/session APIs and wire/journal formats remain unchanged.
 
-Next deliver a runnable explicit shared fixture desktop app, with one parent
-node pair/issuer/pool/round/settlement owner, two actually enrolled wallets and
-Set58 recipients, per-gym workers/outboxes/Pin2 stables, authenticated visible
-balances and bounded daily settlement. Preserve the solo route in its existing
-namespace. Mining starts only on Start; switch/reset drains the current gym
-child while retaining the parent source. Prove stop/restart, isolation, exact
-pending recovery and a maturity-funded payout to the actual fixture wallets.
-Do not split off another accounting-only milestone or repin old event histories;
-shared league attachment remains explicit. Existing layout/logos stay intact
-until the final joint D74 review. The workspace proposal is
-`../shared-pool-runtime-plan.md`; `POOL_SESSION_FENCES.md` records the implemented
-prerequisite. See `CHANGESET_52_NOTES.md` through `CHANGESET_60_NOTES.md`,
-`POOL_WORKER.md`, `POOL_RECIPIENTS.md` and `SHARED_GYM_STABLE.md`.
+Set 61 connects these components through the explicit shared fixture Pool Pilot:
+one parent owns the nodes, issuer, pool and accounting journals; two actual
+wallets retain their Set58 recipients; each original account view owns its
+worker, outbox and Pin2 stable. Authenticated balances expose exact carry and
+bounded daily settlement. Only Start mines. Account switch/reset drains the
+child without replacing the source; Quit joins the complete runtime. The solo
+route retains its namespace. See `CHANGESET_61_NOTES.md` for the actual payout,
+isolation, reset/restart and package qualification.
+
+Next connect shared-wallet export and fresh restoration to these actual pool
+recipients, preserving the original view and D72 hold through publication.
+Then attach pool-mined fighters to a fresh explicit shared event/career namespace,
+keeping original Pin2 participant pins, source sequences and finality rules.
+Never repin solo event histories. Keep the existing layout/logos until the final
+joint D74 review. Public hosting, production signer custody/capacity, real account
+configuration and permanent genesis remain separate gates. The implemented
+contract is `SHARED_POOL_DESKTOP.md`; the earlier workspace runtime proposal
+remains historical context. See `CHANGESET_52_NOTES.md` through
+`CHANGESET_61_NOTES.md`, `POOL_WORKER.md`, `POOL_RECIPIENTS.md`,
+`SHARED_GYM_STABLE.md` and `POOL_SESSION_FENCES.md`.
 
 ### 4. Wallet
 btcwallet from the btcd suite. Hosted wallet at signup with full

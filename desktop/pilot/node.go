@@ -129,6 +129,10 @@ type childNode struct {
 }
 
 func startNode(binary, root, name string, rpcPort, peerPort, connectPort uint16, listen bool) (*childNode, error) {
+	return startNodeProfile(binary, root, name, rpcPort, peerPort, connectPort, listen, false)
+}
+
+func startNodeProfile(binary, root, name string, rpcPort, peerPort, connectPort uint16, listen, poolTXIndex bool) (*childNode, error) {
 	secret := make([]byte, 32)
 	if _, e := rand.Read(secret); e != nil {
 		return nil, errors.New("node startup failed")
@@ -148,6 +152,9 @@ func startNode(binary, root, name string, rpcPort, peerPort, connectPort uint16,
 	// The worker constructs its coinbase using the persisted wallet payout.
 	// GBT coinbasevalue mode needs no temporary or fallback mining address.
 	config := fmt.Sprintf("rpcuser=local-pilot\nrpcpass=%s\nnotls=1\nrpclisten=127.0.0.1:%d\ndatadir=%s\nlogdir=%s\nnodnsseed=1\nlocalwalletpilot=1\nconnect=127.0.0.1:%d\n", password, rpcPort, data, logs, connectPort)
+	if poolTXIndex {
+		config += "txindex=1\n"
+	}
 	if listen {
 		config += fmt.Sprintf("listen=127.0.0.1:%d\n", peerPort)
 	} else {

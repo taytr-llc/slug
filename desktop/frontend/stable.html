@@ -24,10 +24,19 @@
     <section class="panel" aria-labelledby="wallet-heading"><div class="section-top"><h2 id="wallet-heading">Demo wallet</h2><span id="wallet-state">Wallet closed</span></div>
       <div class="balances"><div><span>Spendable test SLUG</span><strong id="spendable">—</strong></div><div><span>Waiting to mature</span><strong id="immature">—</strong></div><p id="wallet-height">Mining rewards mature after 100 blocks.</p></div>
       <dl class="identity"><dt>Reward address</dt><dd id="payout">Sign in to load the demo wallet</dd><dt>Gym identity</dt><dd id="gym-id">—</dd></dl>
+      <div id="pool-balance" hidden>
+        <h3>Pool earnings</h3>
+        <dl class="identity"><dt>Confirmed, unpaid SLUG</dt><dd id="pool-confirmed">—</dd><dt>Available for settlement</dt><dd id="pool-available">—</dd><dt>Payment pending</dt><dd id="pool-reserved">—</dd><dt>Paid to this wallet</dt><dd id="pool-paid">—</dd></dl>
+        <p id="pool-observed" class="note">Sign in to view your pool balance.</p>
+        <p id="pool-reason" class="note" role="status"></p>
+        <button id="pool-refresh" type="button" disabled>Refresh pool balance</button>
+        <p class="note">Earnings include the 1% pool fee. Payments batch daily after rewards mature, once your balance reaches 1 SLUG. Smaller amounts carry forward.</p>
+      </div>
       <div class="actions"><button id="export-recovery" type="button" disabled>Export recovery backup</button><button id="verify-backup" type="button" disabled>Verify backup</button></div>
       <p id="backup" class="note">Stop mining to save or verify a demo wallet backup.</p><p class="note">The service retains recovery authority. Exporting a backup does not remove that authority.</p>
     </section>
     <section class="panel" aria-labelledby="stable-heading">
+      <p id="pool-features" class="note" hidden>Shared-pool fighters support inventory and roster selection. Fight previews, Saturday events and wallet backup tools are not connected to this demo mode yet.</p>
       <div class="section-top"><h2 id="stable-heading">Gym stable</h2><span id="stable-state">Not connected</span></div>
       <p id="stable-count" class="note">Sign in to load your assigned candidates.</p><p id="stable-progress" class="note"></p>
       <div class="actions"><button id="sync" type="button" disabled>Sync saved candidates</button><button id="pause-sync" type="button" disabled>Pause syncing</button><button id="cancel-job" type="button" disabled>Cancel current request</button></div>

@@ -2,6 +2,7 @@ import { Call } from '/wails/runtime.js';
 
 // Separate stable entry: only typed, current-view, candidate-only native data.
 const MODE = 'local-manifest-pilot';
+const POOL_MODE = 'local-pool-pilot';
 const DESCRIPTOR = 'c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303';
 const GENESIS = '7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd';
 const DATE_MAX = 8640000000000000;
@@ -16,6 +17,7 @@ ids.push('bout-state', 'bout-refresh', 'bout-list', 'bout-empty', 'bout-run', 'b
 ids.push('result-panel', 'result-state', 'result-connection', 'result-observation', 'result-read', 'result-publish', 'result-reconcile', 'result-attest', 'result-export', 'result-cancel', 'result-disconnect', 'result-clear', 'result-message', 'result-finality', 'result-conflict', 'result-exported', 'result-evidence');
 ids.push('history-panel', 'history-state', 'history-fighter', 'history-asof', 'history-totals', 'history-message', 'history-list', 'history-previous', 'history-next', 'history-page-label', 'history-refresh', 'history-cancel', 'history-clear', 'history-result');
 const ui = Object.fromEntries(ids.map((id) => [id, document.getElementById(id)]));
+const poolUI = Object.fromEntries(['pool-balance', 'pool-confirmed', 'pool-available', 'pool-reserved', 'pool-paid', 'pool-observed', 'pool-reason', 'pool-refresh', 'pool-features'].map((id) => [id, document.getElementById(id)]));
 const attrs = ['power', 'speed', 'chin', 'stamina', 'skill'];
 const rarity = ['club', 'professional', 'contender', 'elite', 'generational'];
 const styles = ['slugger', 'outfighter', 'boxer_puncher', 'pressure', 'boxer'];
@@ -29,6 +31,7 @@ const backupErrors = ['', 'backup_unavailable', 'backup_invalid', 'backup_mismat
 const projectionStates = ['idle', 'loading', 'ready', 'failed', 'cancelled'];
 const projectionErrors = ['', 'projection_unavailable', 'projection_corrupt', 'projection_cancelled'];
 const statusErrors = new Set(['', 'unavailable', 'outcome_unknown', 'busy', 'capacity', 'rate_limited', 'expired', 'rejected', 'unknown_job', 'unauthorized', 'forbidden', 'invalid_request', 'too_large', 'signer_unavailable', 'clock', 'stale', 'observer_unavailable', 'storage_failed', 'storage_close_failed', 'chain_data_missing', 'node_shutdown_failed', 'node_start_failed', 'wallet_unavailable', 'wallet_shutdown_failed', 'wallet_connection_failed', 'wallet_payout_failed', 'wallet_identity_mismatch', 'wallet_status_failed', 'node_unavailable', 'authority_unavailable', 'authority_identity_mismatch', 'authority_port_busy', 'wallet_signer_unavailable', 'worker_unavailable', 'worker_failed', 'node_exited', 'authority_exited', 'initialization_incomplete', 'initialization_failed', ...projectionErrors]);
+for (const code of ['pool_unavailable', 'pool_shutdown_failed', 'pool_capacity', 'balance_unavailable']) statusErrors.add(code);
 const fixtures = {
   zero256: ['a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5', '03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519'],
   incrementing256: ['28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510', '033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92'],
@@ -100,6 +103,87 @@ function normalize(v) {
   return { ...v, account: { ...a }, view, projection: { ...p, items } };
 }
 
+const poolReasons = {
+  '': '',
+  'payout-pending': 'Payment is waiting for confirmation.',
+  'broadcast-unknown': 'Payment delivery is being checked. The same transaction will be retried.',
+  'transaction-unavailable': 'Payment confirmation is temporarily unavailable.',
+  'payout-conflict': 'A payment conflict needs attention. Your earnings remain recorded.',
+  'funding-unavailable': 'Reward funding could not be checked yet.',
+  'funding-conflict': 'The reward is on a conflicting chain. Payment is deferred.',
+  'funding-changed': 'Reward funding changed during the check. Payment is deferred.',
+  immature: 'Confirmed earnings are waiting for the reward to mature at 100 blocks.',
+  'awaiting-confirmation': 'Reward funding is waiting for confirmation.',
+  'below-minimum': 'The balance carries forward until it reaches 1 SLUG.',
+  'destination-unavailable': 'The wallet recipient needs verification before payment.',
+  'daily-batch-complete': 'Today’s batch is complete. Remaining earnings carry forward.',
+  'fee-unavailable': 'A network fee could not be checked. Payment is deferred.',
+  'fee-budget': 'Payment is deferred until the pool’s 1% cut covers the network fee.',
+  'change-dust': 'Payment is deferred to preserve the remaining balance.',
+  'signing-unavailable': 'The pool could not sign the payment yet.',
+  capacity: 'The demo pool reached its retained capacity. Earnings remain recorded.',
+};
+const MAX_ATOMS = 2100000000000000;
+function poolFraction(f) {
+  exact(f, ['numerator', 'denominator']);
+  requireValue(typeof f.numerator === 'string' && /^(0|[1-9][0-9]{0,4095})$/.test(f.numerator) && typeof f.denominator === 'string' && /^[1-9][0-9]{0,4095}$/.test(f.denominator));
+  const n = BigInt(f.numerator), d = BigInt(f.denominator);
+  let a = n, b = d; while (b) [a, b] = [b, a % b];
+  requireValue(a === 1n && n <= BigInt(MAX_ATOMS) * d);
+  return { n, d };
+}
+function poolBalance(v, gym, binding) {
+  exact(v, ['state', 'error', 'value']);
+  requireValue(['unavailable', 'loading', 'ready', 'failed'].includes(v.state) && v.error === (v.state === 'failed' ? 'balance_unavailable' : ''));
+  if (v.state !== 'ready') { requireValue(v.value === null); return own(v); }
+  const r = v.value; exact(r, ['version', 'binding_id', 'balance', 'observed_at_ms']);
+  requireValue(r.version === 1 && r.binding_id === binding && hex(binding) && int(r.observed_at_ms, 0, DATE_MAX));
+  const b = r.balance; exact(b, ['gym_id', 'confirmed', 'available', 'reserved_atoms', 'paid_atoms', 'reason']);
+  requireValue(hex(gym) && b.gym_id === gym && int(b.reserved_atoms, 0, MAX_ATOMS) && int(b.paid_atoms, 0, MAX_ATOMS) && Object.hasOwn(poolReasons, b.reason));
+  const confirmed = poolFraction(b.confirmed), available = poolFraction(b.available);
+  const remaining = confirmed.n - BigInt(b.reserved_atoms) * confirmed.d;
+  requireValue(remaining >= 0n && available.n * confirmed.d <= remaining * available.d && (confirmed.n !== 0n || b.reason === ''));
+  requireValue(r.observed_at_ms !== 0 || (confirmed.n === 0n && available.n === 0n && b.reserved_atoms === 0 && b.paid_atoms === 0 && b.reason === ''));
+  return own(v);
+}
+function normalizePool(v) {
+  exact(v, ['version', 'mode', 'state', 'attempts', 'hashes_per_second', 'height', 'pending', 'last_error', 'recovery_error', 'wallet_state', 'wallet_height', 'payout_address', 'gym_id', 'gym_public_key', 'spendable_atoms', 'immature_atoms', 'backup_state', 'backup_phase', 'backup_error', 'account', 'view', 'assignment_count', 'source_binding_id', 'balance']);
+  requireValue(v.version === 1 && v.mode === POOL_MODE && states.includes(v.state) && walletStates.includes(v.wallet_state));
+  requireValue(['attempts', 'height', 'wallet_height'].every((k) => int(v[k])) && ['spendable_atoms', 'immature_atoms'].every((k) => int(v[k], 0, MAX_ATOMS)) && int(v.pending, 0, 4096) && int(v.assignment_count, 0, 1000));
+  requireValue(typeof v.hashes_per_second === 'number' && Number.isFinite(v.hashes_per_second) && v.hashes_per_second >= 0 && statusErrors.has(v.last_error) && statusErrors.has(v.recovery_error));
+  requireValue(v.backup_state === 'unavailable' && v.backup_phase === '' && v.backup_error === '');
+  const a = v.account; exact(a, ['state', 'fixture', 'id', 'generation', 'hold_until_ms', 'held', 'can_export', 'last_error']);
+  requireValue(accountStates.includes(a.state) && ['', ...Object.keys(fixtures)].includes(a.fixture) && ['', 'account_unavailable'].includes(a.last_error) && int(a.generation) && int(a.hold_until_ms, 0, DATE_MAX) && typeof a.held === 'boolean' && a.can_export === false && (!a.held || a.hold_until_ms > 0));
+  let view = null;
+  if (a.state === 'signed_in') {
+    view = checkedView(v.view);
+    requireValue(hex(a.id) && a.generation > 0 && view.account_id === a.id && view.generation === a.generation && Object.hasOwn(fixtures, a.fixture) && hex(v.source_binding_id));
+    const recipients = { zero256: 'slug1qzmtrqsfuaf6l6kkcsseumq26ukaphfj9s9ptme', incrementing256: 'slug1qslk39wvggqa0vl8nd6jckaz54dw3vk45c8educ' };
+    requireValue(v.gym_id === fixtures[a.fixture][0] && v.gym_public_key === fixtures[a.fixture][1] && v.payout_address === recipients[a.fixture]);
+  } else {
+    requireValue(v.view === null && a.id === '' && a.generation === 0 && a.hold_until_ms === 0 && !a.held && v.gym_id === '' && v.gym_public_key === '' && v.payout_address === '' && v.source_binding_id === '' && ['attempts', 'height', 'wallet_height', 'pending', 'spendable_atoms', 'immature_atoms', 'assignment_count', 'hashes_per_second'].every((k) => v[k] === 0) && v.balance.state === 'unavailable');
+  }
+  return { ...v, account: { ...a }, view, balance: poolBalance(v.balance, v.gym_id, v.source_binding_id) };
+}
+function poolAmount(f) {
+  const { n, d } = poolFraction(f), atoms = n / d;
+  const whole = atoms / 100000000n, decimal = (atoms % 100000000n).toString().padStart(8, '0').replace(/0+$/, '');
+  return `${whole}${decimal ? `.${decimal}` : ''}${n % d ? ' + fraction of an atom' : ''}`;
+}
+function renderPool() {
+  poolUI['pool-balance'].hidden = poolUI['pool-features'].hidden = !poolMode;
+  if (!poolMode) return;
+  const visible = accountReady(), value = visible && current.balance.state === 'ready' ? current.balance.value : null;
+  const b = value?.balance;
+  for (const [id, amount] of [['pool-confirmed', b?.confirmed], ['pool-available', b?.available], ['pool-reserved', b ? { numerator: String(b.reserved_atoms), denominator: '1' } : null], ['pool-paid', b ? { numerator: String(b.paid_atoms), denominator: '1' } : null]]) {
+    content(poolUI[id], amount ? poolAmount(amount) : '—');
+    if (amount) poolUI[id].setAttribute('title', `${amount.numerator}/${amount.denominator} atoms`); else poolUI[id].removeAttribute('title');
+  }
+  content(poolUI['pool-observed'], !visible ? 'Sign in to view your pool balance.' : value ? value.observed_at_ms ? `Observed ${date.format(new Date(value.observed_at_ms))}.` : 'No settlement observation yet.' : current.balance.state === 'loading' ? 'Checking your pool balance…' : current.balance.state === 'failed' ? 'The pool balance is unavailable. Refresh to check again.' : 'Your pool balance has not been checked yet.');
+  content(poolUI['pool-reason'], b ? poolReasons[b.reason] : '');
+  poolUI['pool-refresh'].disabled = !visible || !!command || current.balance.state === 'loading';
+}
+
 function imageOnlySVG(svg) {
   if (typeof svg !== 'string' || svg.length < 1 || svg.length > 32768 || !/^[\x20-\x7e]+$/.test(svg) || !svg.startsWith('<svg xmlns="http://www.w3.org/2000/svg" ') || !svg.endsWith('</svg>') || /&(?!(?:amp|lt|gt|quot|apos);)|<\s*[!?]|url\s*\(/i.test(svg)) return false;
   const allowed = {
@@ -150,7 +234,7 @@ function status(v, view, fixture) {
   requireValue(optionalID(v.pending_operation_id) && optionalID(v.last_operation_id) && ((v.operation_count === 0) === (v.last_operation_id === '')) && (!v.pending_operation_id || v.pending_operation_id === v.last_operation_id));
   slots(v.slots); requireValue(v.slots.filter(Boolean).length <= v.checkpoint);
   const p = v.pin; exact(p, ['version', 'account_authority_id', 'account_id', 'identity', 'source', 'condition_version', 'projector_id']);
-  requireValue(p.version === 1 && p.account_authority_id === view.account_authority_id && p.account_id === view.account_id && p.condition_version === 1 && p.projector_id === 'slug-fighter-condition-candidate-v1');
+  requireValue(p.version === (poolMode ? 2 : 1) && p.account_authority_id === view.account_authority_id && p.account_id === view.account_id && p.condition_version === 1 && p.projector_id === 'slug-fighter-condition-candidate-v1');
   exact(p.source, ['version', 'network', 'genesis', 'authority_id', 'descriptor_id']); requireValue(same(p.source, view.authority_pin));
   exact(p.identity, ['network', 'genesis', 'profile', 'root_public_key', 'gym_public_key', 'gym_id']);
   requireValue(Object.hasOwn(ROOTS, fixture) && p.identity.network === 0x534c5547 && p.identity.genesis === GENESIS && p.identity.profile === 'slug-phase-a-fixture-bip39-v1' && p.identity.root_public_key === ROOTS[fixture] && p.identity.gym_id === fixtures[fixture][0] && p.identity.gym_public_key === fixtures[fixture][1]);
@@ -222,8 +306,14 @@ function pageValue(p, kind, view, fixture) {
     const i = fullItem(kind === 'roster' ? row.item : row, st, p.as_of_ms); requireValue(!seen.has(i.assignment.prospect_id)); seen.add(i.assignment.prospect_id);
     if (kind === 'roster') requireValue(st.slots[row.slot - 1] === i.assignment.prospect_id); else { requireValue(i.assignment.sequence > last); last = i.assignment.sequence; }
   }
-  if (kind === 'inventory') requireValue(int(p.after, 0, st.checkpoint) && int(p.next_after, p.after, st.checkpoint) && p.next_after === (p.items.at(-1)?.assignment.sequence ?? p.after) && p.items.every((i, n) => i.assignment.sequence === p.after + n + 1) && p.has_more === (p.next_after < st.checkpoint));
-  if (kind === 'sync') requireValue(p.items.length === 0 || p.items.every((i, n) => i.assignment.sequence === st.checkpoint - p.items.length + n + 1));
+  if (kind === 'inventory') {
+    requireValue(int(p.after, 0, st.checkpoint) && int(p.next_after, p.after, st.checkpoint) && typeof p.has_more === 'boolean');
+    if (st.pin.version === 2) {
+      requireValue(p.items.every((i) => i.assignment.sequence > p.after));
+      requireValue(p.has_more ? p.items.length > 0 && p.next_after === p.items.at(-1).assignment.sequence && p.next_after < st.checkpoint : p.next_after === st.checkpoint);
+    } else requireValue(p.next_after === (p.items.at(-1)?.assignment.sequence ?? p.after) && p.items.every((i, n) => i.assignment.sequence === p.after + n + 1) && p.has_more === (p.next_after < st.checkpoint));
+  }
+  if (kind === 'sync') requireValue(p.items.length === 0 || (st.pin.version === 2 ? p.items.every((i) => i.assignment.sequence > Math.max(0, st.checkpoint - 8)) : p.items.every((i, n) => i.assignment.sequence === st.checkpoint - p.items.length + n + 1)));
   if (kind === 'roster') {
     requireValue(int(p.first_slot, 1, 10) && (p.next_slot === 0 || int(p.next_slot, p.first_slot + 1, 10)));
     const end = p.next_slot || 11, expected = st.slots.map((id, n) => ({ id, slot: n + 1 })).filter((r) => r.id && r.slot >= p.first_slot && r.slot < end);
@@ -258,12 +348,14 @@ function response(v, kind, manifest, stable, allowNull = false) {
   return { ok: true, value: own(o) };
 }
 
-let careerMode = false, careerPage = null, careerActivation = null, careerSelectedJob = "";
+let poolMode = false, careerMode = false, careerPage = null, careerActivation = null, careerSelectedJob = "";
 let current = null, stable = null, enabled = false, disposed = false, epoch = 0;
 let background = null, activeCall = null, timer = null, pollWanted = false, command = '';
 let tasks = [], watched = null, flow = null, savedOperation = null, lastViewedJob = '';
 let rememberedView = '', connectionError = '', message = '', mutationMessage = '';
 let mode = 'recent', pageAfter = 0, pageNext = 0, rosterFirst = 1, rosterNext = 0, pageItems = [], pageRevision = null;
+let inventoryCursors = new Set([0]);
+function previousInventoryCursor() { return poolMode ? Math.max(0, ...[...inventoryCursors].filter((v) => v < pageAfter)) : Math.max(0, pageAfter - 8); }
 const cards = new Map(), images = new Map(), imageAttempts = new Set(), rosterNodes = [];
 function content(node, value) { const s = String(value); if (node.textContent !== s) node.textContent = s; }
 function element(tag, className = '', value) { const n = document.createElement(tag); n.className = className; if (value !== undefined) n.textContent = value; return n; }
@@ -276,6 +368,7 @@ function ready() { return accountReady() && stable?.view && currentKey() === vie
 function canEdit() { return ready() && stable.status.caught_up && !stable.status.pending_operation_id && !watched && !flow && !command && !['failed', 'unavailable'].includes(stable.state); }
 function clearCards() { for (const c of cards.values()) { c.image.removeAttribute('src'); c.article.remove(); } cards.clear(); images.clear(); imageAttempts.clear(); }
 function forgetView(clearFlow = true) {
+  inventoryCursors = new Set([0]);
   epoch++; careerPage = null; careerSelectedJob = ""; clearHistory(); clearEvent(); clearEntry(); clearPreview(); clearCards(); pageItems = []; watched = null; savedOperation = null; lastViewedJob = ''; pageAfter = pageNext = 0; rosterFirst = 1; rosterNext = 0; pageRevision = null; mode = 'recent';
   if (clearFlow) { flow = null; mutationMessage = ''; }
 }
@@ -392,7 +485,7 @@ function renderCards() {
     if (c && c.fingerprint !== JSON.stringify([i, careerForItem(i)])) { const previous = c; requireValue(same(c.item.assignment, i.assignment) && same(c.item.manifest, i.manifest)); c = makeCard(i); c.select.value = previous.select.value; c.details.open = previous.details.open; previous.image.removeAttribute('src'); previous.article.remove(); cards.set(id, c); }
     if (!c) { c = makeCard(i); cards.set(id, c); }
     if (ui.cards.children[position] !== c.article) ui.cards.insertBefore(c.article, ui.cards.children[position] ?? null);
-    c.preview.disabled = (careerMode && (!careerForItem(i) || !careerPreviewReady())) || !ready() || !!command || previewSelected.some((v) => v.id === id) || previewSelected.length >= 2;
+    c.preview.disabled = poolMode || (careerMode && (!careerForItem(i) || !careerPreviewReady())) || !ready() || !!command || previewSelected.some((v) => v.id === id) || previewSelected.length >= 2;
     c.entry.disabled = (careerMode && (!careerForItem(i) || careerForItem(i).totals.xp > 0)) || !entryReady() || !!command || entryDraft.length >= 5 || entryDraft.some((d) => d.id === id) || !stable.status.slots.includes(id) || i.condition.phase === 'retired';
     c.history.hidden = !careerMode; c.history.disabled = !ready() || !!command || !!historyWatch || historyUnknown;
     c.assign.disabled = !canEdit(); c.select.disabled = !canEdit(); c.save.disabled = !ready() || !!command || !!watched; c.retry.disabled = !ready() || !!command;
@@ -410,13 +503,13 @@ function render() {
   ui.logout.disabled = !accountSigned || !!command; ui.reset.disabled = !accountSigned || !!command;
   ui.mining.disabled = !enabled || !!command || (!accountSigned && !preparing) || s?.state === 'stopping'; content(ui.mining, live ? 'Stop mining' : preparing ? 'Stop preparing' : 'Start mining');
   content(ui['mining-copy'], publicationNodeConnected() ? 'Connected for publication. Start mining when ready, or disconnect the test nodes below.' : preparing ? 'Preparing your retained identity. Stop drains work already in progress.' : live ? 'Mining is active. New saved candidates update the stable automatically.' : 'Syncing and viewing do not create mining jobs. Start only when you are ready.');
-  for (const [id, value] of [['attempts', s?.attempts ?? 0], ['accepted', s?.accepted_count ?? 0], ['pending', s?.pending ?? 0], ['height', s?.height ?? 0]]) content(ui[id], number.format(value));
+  for (const [id, value] of [['attempts', s?.attempts ?? 0], ['accepted', (poolMode ? s?.assignment_count : s?.accepted_count) ?? 0], ['pending', s?.pending ?? 0], ['height', s?.height ?? 0]]) content(ui[id], number.format(value));
   content(ui.rate, live ? `${number.format(s.hashes_per_second)} hashes / second` : 'Not mining'); content(ui['wallet-state'], label(s?.wallet_state ?? 'closed'));
   content(ui.spendable, accountSigned ? coin.format(s.spendable_atoms / 1e8) : '—'); content(ui.immature, accountSigned ? coin.format(s.immature_atoms / 1e8) : '—'); content(ui['wallet-height'], accountSigned ? `Wallet height ${number.format(s.wallet_height)} · Rewards mature after 100 blocks.` : 'Rewards mature after 100 blocks.');
   content(ui.payout, accountSigned ? s.payout_address : 'Sign in to load the demo wallet'); content(ui['gym-id'], accountSigned ? s.gym_id : '—');
-  ui['export-recovery'].disabled = !accountSigned || !!command || live || publicationNodeConnected() || !!watched || !s.account.can_export || s.backup_state === 'running'; ui['verify-backup'].disabled = !accountSigned || !!command || live || publicationNodeConnected() || !!watched || s.backup_state === 'running';
-  content(ui.backup, s?.backup_state === 'running' ? `${backupPhases[s.backup_phase] || 'Checking the backup'}…` : s?.backup_state === 'succeeded' ? 'Backup verification completed.' : s?.backup_state === 'failed' ? 'Backup verification failed; the original wallet remains retained.' : publicationNodeConnected() ? 'Disconnect test nodes before saving or verifying a wallet backup.' : 'Stop mining to save or verify a wallet backup.');
-  content(ui['stable-state'], stable ? label(stable.state) : 'Not connected'); content(ui['stable-count'], signed ? `${number.format(st.checkpoint)} assigned candidates · ${number.format(st.observed_source_count)} saved receipts last observed` : 'Sign in to load your assigned candidates.');
+  ui['export-recovery'].disabled = poolMode || !accountSigned || !!command || live || publicationNodeConnected() || !!watched || !s.account.can_export || s.backup_state === 'running'; ui['verify-backup'].disabled = poolMode || !accountSigned || !!command || live || publicationNodeConnected() || !!watched || s.backup_state === 'running';
+  content(ui.backup, poolMode ? 'Wallet backup tools are not connected to the shared-pool demo yet.' : s?.backup_state === 'running' ? `${backupPhases[s.backup_phase] || 'Checking the backup'}…` : s?.backup_state === 'succeeded' ? 'Backup verification completed.' : s?.backup_state === 'failed' ? 'Backup verification failed; the original wallet remains retained.' : publicationNodeConnected() ? 'Disconnect test nodes before saving or verifying a wallet backup.' : 'Stop mining to save or verify a wallet backup.');
+  content(ui['stable-state'], stable ? label(stable.state) : 'Not connected'); content(ui['stable-count'], signed ? `${number.format(poolMode ? s.assignment_count : st.checkpoint)} assigned candidates · ${number.format(st.observed_source_count)} ${poolMode ? 'shared ' : ''}saved receipts last observed` : 'Sign in to load your assigned candidates.');
   content(ui['stable-progress'], signed ? (st.caught_up ? 'Caught up to the last observed receipt count. New arrivals are checked automatically.' : `Syncing saved history: ${st.checkpoint} of ${st.observed_source_count}. Verified partial pages remain available.`) : '');
   ui.sync.disabled = !signed || !!command || !!watched; ui['pause-sync'].disabled = !signed || !!command || (!stable.active_job_id && !stable.queued_job_id && stable.state !== 'syncing');
   ui['cancel-job'].disabled = !signed || !!command || !(watched?.id || stable.active_job_id || stable.queued_job_id);
@@ -426,14 +519,14 @@ function render() {
   content(ui['candidates-heading'], mode === 'roster' ? 'Roster details' : mode === 'inventory' ? 'Candidate inventory' : 'Recent candidates');
   content(ui['page-label'], pageItems.length ? (mode === 'roster' ? `Roster slots ${rosterFirst}–${Math.min(rosterFirst + 7, 10)}` : `Showing ${pageItems.length} verified candidates${mode === 'inventory' ? ` after sequence ${pageAfter}` : ''}`) : 'No verified page loaded');
   content(ui.coverage, 'Condition is dated by the authority on each card. Browser time never changes its attributes or rating. Selecting a roster does not grant fight eligibility.');
-  content(ui['empty-copy'], signed ? (st.checkpoint ? 'Choose Recent, Full inventory or Roster details to load a verified page.' : 'Saved history is syncing. Start mining separately when you are ready.') : 'Sign in to load your retained demo gym.');
+  content(ui['empty-copy'], signed ? ((poolMode ? s.assignment_count : st.checkpoint) ? 'Choose Recent, Full inventory or Roster details to load a verified page.' : 'Saved history is syncing. Start mining separately when you are ready.') : 'Sign in to load your retained demo gym.');
   content(ui['mutation-state'], signed ? mutationMessage || (st.pending_operation_id ? 'A saved roster choice needs review before another change.' : 'Roster choices take effect only after their durable outcome is confirmed.') : '');
   ui.reconcile.disabled = !signed || !!command || !!watched || !(flow || st.pending_operation_id || st.last_operation_id);
   const pending = savedOperation?.state === 'prepared' ? savedOperation : null;
   ui['apply-saved'].disabled = !signed || !!command || !!watched || !pending || pending.intent.view_id !== s.view.view_id || pending.intent.generation !== s.view.generation || !st.caught_up;
   ui.abandon.disabled = !signed || !!command || !!watched || !pending;
-  content(ui.alert, connectionError || message || (stable?.error ? textError(stable.error) : '')); ui.alert.hidden = !ui.alert.textContent;
-  renderRoster(); renderCards(); renderPreview(); renderEntry(); renderEvent(); renderSeed(); renderCard(); renderBooked(); renderPublication(); renderHistory();
+  content(ui.alert, connectionError || message || (stable?.error ? textError(stable.error) : '') || (poolMode && s?.last_error ? ['capacity', 'pool_capacity'].includes(s.last_error) ? 'Mining is paused because the demo pool reached its retained capacity. Existing earnings and fighters are saved.' : 'The pool miner needs attention. Stop and retry when the local service is available.' : '')); ui.alert.hidden = !ui.alert.textContent;
+  renderPool(); renderRoster(); renderCards(); renderPreview(); renderEntry(); renderEvent(); renderSeed(); renderCard(); renderBooked(); renderPublication(); renderHistory();
 }
 async function call(method, ...args) { requireValue(!activeCall); const p = Call.ByName(`main.Gym.${method}`, ...args); activeCall = p; try { return await p; } finally { activeCall = null; } }
 function schedule() { if (timer !== null) clearTimeout(timer); timer = null; if (!disposed && enabled && !document.hidden) timer = setTimeout(() => { timer = null; pollWanted = true; pump(); }, 1000); }
@@ -445,16 +538,18 @@ function queue(fn, name, invalidate = false) {
 async function fetchSnapshots() {
   const captured = epoch;
   try {
-    const m = normalize(await call('ManifestSnapshot')); if (disposed || captured !== epoch) return;
+    const m = poolMode ? normalizePool(await call('PoolSnapshot')) : normalize(await call('ManifestSnapshot')); if (disposed || captured !== epoch) return;
     const r = response(await call('StableSnapshot'), 'snapshot', m, stable); if (disposed || captured !== epoch) return;
     requireValue(r.ok); const next = r.value, nextKey = viewKey(m.view);
     if (nextKey !== rememberedView) { forgetView(); rememberedView = nextKey; stable = null; message = ''; }
     if (!nextKey) { current = m; stable = next; connectionError = ''; render(); return; }
+    if (poolMode && current?.view && nextKey === viewKey(current.view)) requireValue(m.source_binding_id === current.source_binding_id && m.assignment_count >= current.assignment_count);
     freshStatus(next); current = m; stable = next; connectionError = '';
     if (mode === 'roster' && pageRevision !== null && stablyChangedRoster()) { clearCards(); pageItems = []; pageRevision = null; message = 'The roster changed. Reload its details to view the current selection.'; }
     render();
     const id = watched?.id || next.last_job_id;
     if (id && (watched || id !== lastViewedJob)) await fetchJob(id);
+    if (poolMode) return;
     if (!disposed && ready() && !tasks.length) await fetchPreviewSnapshot();
     if (!disposed && ready() && !tasks.length) await fetchEntrySnapshot();
     if (!disposed && ready() && !tasks.length) await fetchEventSnapshot();
@@ -479,6 +574,7 @@ function acceptItems(items, kind, data) {
   }
   requireValue(pageItems.length <= 8);
   if (!previewCapacity()) { [pageItems, mode, pageAfter, pageNext, pageRevision, rosterFirst, rosterNext] = priorPage; message = 'The display cache is full. Clear a detail or replay before loading another page; the current page is retained.'; render(); return; }
+  if (poolMode && kind === 'inventory' && mode === 'inventory') { inventoryCursors.add(data.after); if (inventoryCursors.size > 128) inventoryCursors.delete(Math.min(...[...inventoryCursors].filter((v) => v > 0))); }
   render(); content(ui.announcement, `${pageItems.length} verified candidates shown. Conditions keep their stated observation time.`);
 }
 async function fetchJob(id) {
@@ -506,7 +602,7 @@ async function fetchJob(id) {
       flow = null; savedOperation = null; mutationMessage = j.mutation.receipt.changed ? 'Roster saved. Refreshing the current selection…' : 'The roster was already set to that choice.'; pollWanted = true;
     } else {
       const data = j[{ sync: 'sync', inventory: 'page', roster: 'roster' }[j.kind]];
-      if (w?.id === id && w.args) { if (j.kind === 'inventory') requireValue(w.recent ? data.after === Math.max(data.status.checkpoint - 8, 0) && data.next_after === data.status.checkpoint && data.items.length <= 8 : data.after === w.args[0] && data.items.length <= w.args[1]); if (j.kind === 'roster') requireValue(data.first_slot === w.args[0] && data.next_slot === (w.args[0] + w.args[1] > 10 ? 0 : w.args[0] + w.args[1])); }
+      if (w?.id === id && w.args) { if (j.kind === 'inventory') requireValue(w.recent ? (poolMode || data.after === Math.max(data.status.checkpoint - 8, 0)) && !data.has_more && data.next_after === data.status.checkpoint && data.items.length <= 8 : data.after === w.args[0] && data.items.length <= w.args[1]); if (j.kind === 'roster') requireValue(data.first_slot === w.args[0] && data.next_slot === (w.args[0] + w.args[1] > 10 ? 0 : w.args[0] + w.args[1])); }
       if (j.kind === 'roster' && data.status.roster_revision !== stable.status.roster_revision) message = 'The roster changed. Reload its details.';
       else if (j.kind === 'sync' || w?.id === id) {
         if (!careerMode) acceptItems(data.items, j.kind, data);
@@ -758,6 +854,7 @@ function selectionChanged(next) {
   render(); pump();
 }
 function selectPreview(i) {
+  if (poolMode) return;
   if (careerMode && (!careerForItem(i) || !careerPreviewReady())) { previewMessage = 'Career practice is unavailable. Refresh the career page and try again.'; renderPreview(); return; }
   if (!ready() || command || previewSelected.length >= 2 || previewSelected.some((v) => v.id === i.assignment.prospect_id)) return;
   const next = { id: i.assignment.prospect_id, name: i.manifest.name.display, weightClass: i.manifest.physical.weight_class };
@@ -873,7 +970,7 @@ const ENTRY_MAX = 131072;
 const ENTRY_ERRORS = new Set([...CAREER_ACTION_ERRORS, 'invalid_request', 'unauthorized', 'forbidden', 'stale_view', 'busy', 'entry_unavailable', 'entry_corrupt', 'entry_capacity', 'entry_clock', 'entry_calendar', 'entry_closed', 'entry_conflict', 'entry_pending', 'entry_not_found', 'entry_sync_required', 'entry_not_rostered', 'entry_retired', 'entry_class_conflict', 'entry_cancelled', 'outcome_unknown']);
 let entrySnapshot = null, entryStore = '', entryNamespace = '', entryUnavailable = false, entryDate = '', entryStatus = null;
 let entryDraft = [], entrySerial = 0, entryWatch = null, entryFlow = null, entryOperation = null, entryTerminal = null, entryHistory = null, entryMessage = '', entryUnknown = false;
-function entryReady() { return ready() && !entryUnavailable && !!entrySnapshot?.view && entryStore === entrySnapshot.store_id; }
+function entryReady() { return !poolMode && ready() && !entryUnavailable && !!entrySnapshot?.view && entryStore === entrySnapshot.store_id; }
 function entryBytes(value) { return JSON.stringify(value).length; } // All validated text is bounded ASCII.
 function entryRetainedBytes() { return entryBytes([entrySnapshot, entryDate, entryStatus, entryDraft, entryWatch, entryFlow, entryOperation, entryTerminal, entryHistory, entryMessage]) + (entryWatch ? 65536 : 0); }
 function entryCapacity() { return entryRetainedBytes() <= ENTRY_MAX && previewCapacity(); }
@@ -1079,7 +1176,7 @@ let eventWatch = null, eventLastJob = '', eventDate = '', eventSerial = 0, event
 let eventAutoAttempted = new Set();
 function eventRetainedBytes() { return entryBytes([eventSnapshot, eventAuthority, eventStatus, eventHistory, eventDetail, eventWatch, eventLastJob, eventDate, eventMessage, [...eventAutoAttempted]]) + EVENT_RENDER_KEY_BYTES + (eventWatch ? 65536 : 0); }
 function eventCapacity() { return eventRetainedBytes() <= EVENT_MAX && previewCapacity(); }
-function eventReady() { return ready() && !eventUnavailable && !!eventSnapshot?.pin && !!eventAuthority && viewKey(eventSnapshot.view) === currentKey(); }
+function eventReady() { return !poolMode && ready() && !eventUnavailable && !!eventSnapshot?.pin && !!eventAuthority && viewKey(eventSnapshot.view) === currentKey(); }
 function clearEvent() {
   clearSeed();
   eventSerial++; eventSnapshot = eventStatus = eventHistory = eventDetail = eventWatch = null; eventLastJob = eventDate = eventMessage = ''; eventUnavailable = eventUnknown = false; eventAutoAttempted = new Set();
@@ -1250,7 +1347,7 @@ let seedWatch = null, seedLastJob = '', seedMessage = '', seedUnavailable = fals
 function seedMetadataBytes() { return entryBytes([seedAuthority, seedSnapshot && { ...seedSnapshot, pin: null }, seedStatus, seedWatch, seedLastJob, seedMessage]) + 4096; }
 function seedRetainedBytes() { if (!seedAuthority && !seedSnapshot && !seedWatch) return 0; return seedMetadataBytes() + Math.max(entryBytes(seedDetail), seedWatch ? 245760 : 0) + entryBytes(seedHistory); }
 function seedCapacity() { return seedMetadataBytes() <= SEED_METADATA_MAX && seedRetainedBytes() <= SEED_MAX && previewCapacity(); }
-function seedReady() { return ready() && !seedUnavailable && !!seedAuthority && !!seedSnapshot?.pin && viewKey(seedSnapshot.view) === currentKey(); }
+function seedReady() { return !poolMode && ready() && !seedUnavailable && !!seedAuthority && !!seedSnapshot?.pin && viewKey(seedSnapshot.view) === currentKey(); }
 function clearSeed() { clearCard(); seedSerial++; seedSnapshot = seedStatus = seedDetail = seedHistory = seedWatch = null; seedLastJob = seedMessage = ''; seedUnavailable = seedUnknown = false; if (ui['seed-history-list']) { ui['seed-history-list'].textContent = ''; ui['seed-history-list']._key = ''; } }
 function seedContext() { return { epoch, view: currentKey(), viewID: current?.view?.view_id, serial: seedSerial, date: entryDate }; }
 function seedCurrent(c, selection = false) { return !disposed && ready() && c.epoch === epoch && c.view === currentKey() && (!selection || c.serial === seedSerial && c.date === entryDate); }
@@ -1396,7 +1493,7 @@ function cardRetainedBytes() {
   return cardMetadataBytes() + Math.max(entryBytes(cardDetail), cardWatch ? CARD_RESULT_MAX : 0);
 }
 function cardCapacity() { return cardMetadataBytes() <= CARD_METADATA_MAX && entryBytes(cardDetail) <= CARD_RESULT_MAX && cardRetainedBytes() <= CARD_MAX && previewCapacity(); }
-function cardReady() { return ready() && !cardUnavailable && !!cardAuthority && !!cardSnapshot?.pin && viewKey(cardSnapshot.view) === currentKey(); }
+function cardReady() { return !poolMode && ready() && !cardUnavailable && !!cardAuthority && !!cardSnapshot?.pin && viewKey(cardSnapshot.view) === currentKey(); }
 function clearCard() {
   clearBooked();
   cardSerial++; cardSnapshot = cardStatus = cardDetail = cardHistory = cardWatch = cardTerminal = null;
@@ -1692,7 +1789,7 @@ function bookedRetainedBytes() {
 }
 function bookedCapacity() { return bookedMetadataBytes() <= BOOKED_METADATA_MAX && entryBytes(bookedRecord) <= BOOKED_RESULT_MAX && [...bookedImages.values()].every(v => 2 * v.length <= 32768) && bookedRetainedBytes() <= BOOKED_MAX && previewCapacity(); }
 function bookedCacheError() { const e = new Error('Bout display full'); e.boutCode = 'bout_capacity'; return e; }
-function bookedReady() { return ready() && !bookedUnavailable && !!bookedAuthority && !!bookedSnapshot?.pin && viewKey(bookedSnapshot.view) === currentKey(); }
+function bookedReady() { return !poolMode && ready() && !bookedUnavailable && !!bookedAuthority && !!bookedSnapshot?.pin && viewKey(bookedSnapshot.view) === currentKey(); }
 function pauseBooked() { if (bookedTimer !== null) clearTimeout(bookedTimer); bookedTimer = null; }
 function bookedClearImages() { bookedImages.clear(); bookedImageAttempts.clear(); bookedRendered = ''; ui['bout-fighters'].textContent = ''; }
 function bookedClearRecord() { pauseBooked(); bookedRecord = null; bookedStep = 0; bookedClearImages(); ui['bout-events'].textContent = ''; ui['bout-scores'].textContent = ''; }
@@ -2480,7 +2577,7 @@ ui['pause-sync'].addEventListener('click', () => oldAction('Stop'));
 ui.sync.addEventListener('click', () => queue(() => beginJob('sync'), 'sync'));
 ui.recent.addEventListener('click', () => navigate('recent')); ui.inventory.addEventListener('click', () => navigate('inventory')); ui['roster-details'].addEventListener('click', () => navigate('roster', 1));
 ui.refresh.addEventListener('click', () => navigate(mode, mode === 'roster' ? rosterFirst : pageAfter));
-ui.previous.addEventListener('click', () => navigate(mode, mode === 'roster' ? 1 : Math.max(0, pageAfter - 8)));
+ui.previous.addEventListener('click', () => navigate(mode, mode === 'roster' ? 1 : previousInventoryCursor()));
 ui.next.addEventListener('click', () => navigate(mode, mode === 'roster' ? rosterNext : pageNext));
 ui.reconcile.addEventListener('click', () => queue(() => reconcile(flow?.id || stable?.status?.pending_operation_id || stable?.status?.last_operation_id || ''), 'reconcile'));
 ui['apply-saved'].addEventListener('click', () => { if (savedOperation?.state === 'prepared' && ready() && savedOperation.intent.view_id === current.view.view_id && savedOperation.intent.generation === current.view.generation) queue(() => beginJob('apply', [savedOperation.intent.operation_id], { operationID: savedOperation.intent.operation_id }), 'apply'); });
@@ -2490,8 +2587,9 @@ ui.abandon.addEventListener('click', () => queue(async () => {
   catch { if (captured === epoch) { mutationMessage = textError('outcome_unknown'); await reconcile(id); } }
 }, 'abandon'));
 ui['cancel-job'].addEventListener('click', () => queue(() => cancelJob(watched?.id || stable?.active_job_id || stable?.queued_job_id), 'cancel'));
+poolUI['pool-refresh'].addEventListener('click', () => queue(async () => { if (!poolMode || !accountReady()) return; await call('RefreshPoolBalance'); await fetchSnapshots(); }, 'pool-balance'));
 ui['export-recovery'].addEventListener('click', () => oldAction('ExportRecovery')); ui['verify-backup'].addEventListener('click', () => oldAction('VerifyBackup'));
 document.addEventListener('visibilitychange', () => { if (document.hidden) { pausePreview(); pauseBooked(); } if (!document.hidden && enabled) { pollWanted = true; pump(); } else if (timer !== null) { clearTimeout(timer); timer = null; } });
 window.addEventListener('pagehide', () => { disposed = true; epoch++; clearHistory(); clearEvent(); clearEntry(); clearPreview(); tasks = []; if (timer !== null) clearTimeout(timer); timer = null; clearCards(); pageItems = []; current = stable = null; });
 render();
-(async () => { try { requireValue(await call('Mode') === MODE); const selectedCareer = await call('CareerMode'); requireValue(typeof selectedCareer === 'boolean'); careerMode = selectedCareer; if (disposed) return; enabled = true; pollWanted = true; pump(); } catch { connectionError = 'Open this page through the candidate stable mode.'; render(); } })();
+(async () => { try { const selectedMode = await call('Mode'); requireValue([MODE, POOL_MODE].includes(selectedMode)); poolMode = selectedMode === POOL_MODE; const selectedCareer = poolMode ? false : await call('CareerMode'); requireValue(typeof selectedCareer === 'boolean'); careerMode = selectedCareer; if (disposed) return; enabled = true; pollWanted = true; pump(); } catch { connectionError = 'Open this page through the candidate stable mode.'; render(); } })();

@@ -14,15 +14,22 @@ import (
 	"github.com/taytr-llc/slug/desktop/pilot"
 	"github.com/taytr-llc/slug/gymstable"
 	"github.com/taytr-llc/slug/internal/careerstate"
+	"github.com/taytr-llc/slug/registry"
 )
 
 // StableBridge runs both closed command families on one owned helper pipe.
 // The pending command, never a response-controlled discriminator, selects the
 // decoder. A stable failure stays a typed code across the webview boundary.
 type StableBridge struct {
-	careersEnabled   bool
-	careerActivation *careerstate.Activation
-	careerSelection  *careerPageExpectation
+	poolStartupComplete  bool
+	poolHandshakeUsed    bool
+	poolHandshakePending bool
+	poolMode             bool
+	poolSourceID         string
+	poolSourcePin        *registry.ManifestAuthorityPin
+	careersEnabled       bool
+	careerActivation     *careerstate.Activation
+	careerSelection      *careerPageExpectation
 	// History state is also invalidated by the reader failure path under mu.
 	history                   *careerHistoryCorrelation
 	historyFatal              bool
@@ -80,6 +87,7 @@ type stableJobExpectation struct {
 	terminal bool
 }
 type stableExpected struct {
+	pool          bool
 	history       bool
 	careerPreview bool
 	career        bool
@@ -94,6 +102,7 @@ type stableExpected struct {
 	card          bool
 }
 type stableFrame struct {
+	pool          *pilot.PoolResponse
 	history       *pilot.CareerHistoryResponse
 	careerPreview *pilot.CareerPreviewResponse
 	career        *pilot.CareerResponse
@@ -173,7 +182,14 @@ func (b *StableBridge) read(r io.Reader) {
 			return
 		}
 		var frame stableFrame
-		if expected.history {
+		if expected.pool {
+			value, err := pilot.ParsePoolResponse(scanner.Bytes())
+			if err != nil || value.ID != expected.id {
+				b.fail(ErrUnavailable)
+				return
+			}
+			frame.pool = &value
+		} else if expected.history {
 			value, err := pilot.ParseCareerHistoryResponse(scanner.Bytes())
 			if err != nil || value.ID != expected.id {
 				b.fail(ErrUnavailable)
@@ -330,8 +346,11 @@ func (b *StableBridge) exchangeCareerPreviewFamily(ctx context.Context, id uint6
 	return b.exchangeHistoryFamily(ctx, id, stable, preview, entry, event, seed, card, bout, result, career, careerPreview, false, raw)
 }
 func (b *StableBridge) exchangeHistoryFamily(ctx context.Context, id uint64, stable, preview, entry, event, seed, card, bout, result, career, careerPreview, history bool, raw []byte) (stableFrame, error) {
+	return b.exchangeExpected(ctx, &stableExpected{history: history, careerPreview: careerPreview, career: career, id: id, stable: stable, preview: preview, entry: entry, event: event, seed: seed, card: card, bout: bout, result: result}, raw)
+}
+func (b *StableBridge) exchangeExpected(ctx context.Context, expected *stableExpected, raw []byte) (stableFrame, error) {
 	b.mu.Lock()
-	b.expected = &stableExpected{history: history, careerPreview: careerPreview, career: career, id: id, stable: stable, preview: preview, entry: entry, event: event, seed: seed, card: card, bout: bout, result: result}
+	b.expected = expected
 	b.mu.Unlock()
 	raw = append(raw, '\n')
 	if d, ok := b.input.(interface{ SetWriteDeadline(time.Time) error }); ok {
@@ -409,6 +428,9 @@ func (b *StableBridge) ReleaseManifest(ctx context.Context, viewID, prospectID s
 	return b.manifestRequest(ctx, pilot.ManifestRequest{Command: "release_manifest_receipt", ViewID: viewID, ProspectID: prospectID})
 }
 func (b *StableBridge) manifestRequest(ctx context.Context, req pilot.ManifestRequest) (pilot.ManifestResponse, error) {
+	if b.poolMode {
+		return pilot.ManifestResponse{}, ErrUnavailable
+	}
 	id, err := b.begin(ctx)
 	if err != nil {
 		return pilot.ManifestResponse{}, err
@@ -526,7 +548,7 @@ func (b *StableBridge) StableRequest(ctx context.Context, req pilot.StableReques
 		}
 		return response
 	}
-	if !b.correlateStable(req, response) {
+	if b.poolMode && response.Snapshot != nil && response.Snapshot.Status != nil && response.Snapshot.Status.Pin.Version != gymstable.SharedPinVersion2 || !b.correlateStable(req, response) {
 		b.fail(ErrUnavailable)
 		if unknown {
 			return fail(id, "outcome_unknown")
