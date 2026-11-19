@@ -93,6 +93,14 @@ func (p *Pool) withSession(ctx context.Context, token string, fn func(context.Co
 // durable before acknowledgment. A failure after issuer commit may leave an
 // unused issuer job; it is never assigned a new birth or silently recycled.
 func (p *Pool) Issue(ctx context.Context, token string) (Work, error) {
+	_, result, err := p.issue(ctx, token)
+	return result, err
+}
+
+// issue is the single durable issuance path shared by candidate and transport
+// exports. Neither export performs a second issuance or changes the template.
+func (p *Pool) issue(ctx context.Context, token string) (savedWork, Work, error) {
+	var retained savedWork
 	var result Work
 	err := p.withSession(ctx, token, func(ctx context.Context, key string, recheck func() error) error {
 		info, err := p.authority.Info()
@@ -146,12 +154,13 @@ func (p *Pool) Issue(ctx context.Context, token string) (Work, error) {
 			return err
 		}
 		result = Work{Job: job, PoolTarget: p.config.PoolTarget, Candidate: candidate}
+		retained = w
 		return nil
 	})
 	if err != nil {
-		return Work{}, err
+		return savedWork{}, Work{}, err
 	}
-	return result, nil
+	return retained, result, nil
 }
 
 // Work recovers saved public preparation for its original gym. It does not

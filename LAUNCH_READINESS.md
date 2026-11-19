@@ -288,6 +288,16 @@ they do not count as completion of this product-release gate.
   public service/miner integration, recipient enrollment and scheduling remain
   release work. The joint D74 design review remains last.
 
+- Set 56 connects pool work, share recovery and each gym's balance over bounded
+  authenticated HTTP. Its Go client pins source/gym/transport, and the desktop
+  adapter preserves the original login while refreshing mining credentials.
+  Two fixture accounts complete a shared actual payout over that transport;
+  a lost receipt and account reset preserve duplicate and isolation rules.
+  This does not switch the app's existing solo worker, create public hosting
+  or expose settlement controls. The dedicated pool worker, shared app runtime,
+  recipient binding and balance presentation remain next. See
+  `CHANGESET_56_NOTES.md`.
+
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
 `sim-handoff-intake.json` preserves archive and file checksums. They are reference

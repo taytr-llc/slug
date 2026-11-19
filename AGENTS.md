@@ -115,6 +115,14 @@ version.
   stay visible and retries cannot create another payment. The isolated public
   fixture signer is not a production wallet. See `CHANGESET_55_NOTES.md` for
   validation and the remaining service integration boundary.
+- Set 56 on `slug-pool-service` adds authenticated work/share/balance HTTP and
+  the desktop's original-view credential adapter. Pin the complete pool source,
+  transport and expected gym; preserve exact job/nonce recovery on uncertainty.
+  The concrete pool and settlement take their own account leases: never nest
+  those calls under a service/view lease. Pool receipts never grant fighter
+  birth. Shared runtime and a dedicated durable pool worker remain next; do not
+  silently switch the existing solo worker or rewrite its wallet payout marker.
+  See `POOL_SERVICE.md` and `CHANGESET_56_NOTES.md`.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review
