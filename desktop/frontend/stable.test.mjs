@@ -494,6 +494,7 @@ function poolHarness(initial = poolEnvironment()) {
   h.handlers.RefreshPoolBalance = () => {};
   h.handlers.EntrySnapshot = () => ({ id: 1000 + h.calls.length, ok: false, view: null, store_id: '', snapshot: null, status: null, history: null, job: null, operation: null, error: 'entry_unavailable' });
   h.handlers.EventSnapshot = () => ({ id: 1000 + h.calls.length, ok: false, view: null, store_id: '', snapshot: null, status: null, record: null, history: null, job: null, error: 'event_unavailable' });
+  h.handlers.SeedSnapshot = () => ({ id: 1000 + h.calls.length, ok: false, view: null, store_id: '', snapshot: null, status: null, record: null, history: null, job: null, error: 'seed_unavailable' });
   const page = (after, limit) => {
     const candidates = h.state.items.filter((i) => i.assignment.sequence > after), list = candidates.slice(0, limit), more = candidates.length > list.length;
     return h.publish('inventory', { version: 1, status: clone(h.state.stable.status), as_of_ms: h.state.stable.status.last_as_of_ms || 1794893590614, after, next_after: more ? list.at(-1).assignment.sequence : h.state.stable.status.checkpoint, has_more: more, items: clone(list) });
@@ -510,8 +511,9 @@ test('pool mode reports local count, exact fractional carry and maturity reason 
   assert.equal(h.elements.get('pool-confirmed').attributes.get('title'), '990000001/2 atoms');
   assert.match(h.elements.get('pool-reason').textContent, /mature at 100 blocks/);
   assert.equal(h.elements.get('export-recovery').disabled, false); assert.equal(h.elements.get('verify-backup').disabled, false);
-  for (const method of ['Start', 'ManifestSnapshot', 'PreviewSnapshot', 'SeedSnapshot', 'CardSnapshot', 'CareerMode']) assert.equal(h.count(method), 0);
+  for (const method of ['Start', 'ManifestSnapshot', 'PreviewSnapshot', 'CardSnapshot']) assert.equal(h.count(method), 0);
   assert.equal(h.count('EntrySnapshot'), 1); assert.equal(h.count('EventSnapshot'), 1);
+  assert.equal(h.count('CareerMode'), 1); assert.equal(h.count('SeedSnapshot'), 1);
   await h.click('pool-refresh'); assert.equal(h.count('RefreshPoolBalance'), 1); assert.equal(h.peak, 1);
 });
 test('pool sparse inventory and Follow Recent retain old local rows behind a foreign tail', async () => {
@@ -522,6 +524,20 @@ test('pool sparse inventory and Follow Recent retain old local rows behind a for
   assert.equal(h.buttons('Add to Saturday draft')[0].disabled, true);
   assert.equal(h.buttons('Save to slot')[0].disabled, false);
   assert.equal(h.count('Start'), 0);
+});
+
+test('shared career mode renders finalized totals on the original Pin2 inventory page', async () => {
+  const e = poolEnvironment([2], 2), h = poolHarness(e), result = careerReply(e);
+  result.page.source.next_after = 2;
+  h.handlers.CareerMode = () => true;
+  h.handlers.CareerInventory = (_, jobID) => ({...clone(result), job_id: jobID});
+  await h.start(); await h.click('inventory');
+  assert.equal(h.count('CareerMode'), 1); assert.equal(h.count('CareerInventory'), 1);
+  assert.equal(h.cards.length, 1); assert.match(h.cards[0].textContent, /Finalized professional record: 1–0–0/);
+  assert.match(h.cards[0].textContent, /professional XP: 1/);
+  assert.equal(vm.runInContext('pageItems[0].assignment.sequence', h.context), 2);
+  assert.equal(vm.runInContext('pageItems[0].condition.pro_xp', h.context), 0);
+  assert.equal(h.count('Start'), 0); assert.equal(h.buttons('Select for preview')[0].disabled, true);
 });
 test('pool previous-page uses learned sparse cursors rather than subtracting eight global rows', async () => {
   const sequences = Array.from({ length: 19 }, (_, n) => 2 + n * 5), h = poolHarness(poolEnvironment(sequences, 100));

@@ -189,6 +189,10 @@ func (c *PoolController) login(ctx context.Context, fixture string) (resultErr e
 	}
 	stable := pilot.StableAccountConfig{Manifest: a, Lease: func(ctx context.Context, cap gymaccount.Capability, fn func(gymaccount.Account, func() error) error) error {
 		return c.withCapability(ctx, session, viewID, child, cap, fn)
+	}, HistoryPublicationLease: func(ctx context.Context, fn func(gymaccount.Account, func() error) error) error {
+		return c.withPoolHistoryPublicationLease(ctx, session, viewID, child, fn)
+	}, ResultNodeLease: func(ctx context.Context, fn func(gymaccount.Account, func() error) error) error {
+		return c.withPoolResultNodeLease(ctx, session, viewID, child, fn)
 	}}
 	created, err := c.newChild(ctx, c.runtime, stable)
 	if err != nil {

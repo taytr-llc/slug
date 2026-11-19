@@ -46,7 +46,7 @@ func resultProtocolError(err error) string {
 	}
 	return "result_unavailable"
 }
-func handleResultRequest(ctx context.Context, r ResultRequest, c ResultControllerAPI) ResultResponse {
+func handleResultRequest(ctx context.Context, r ResultRequest, c ResultSurfaceAPI) ResultResponse {
 	out := ResultResponse{ID: r.ID, OK: true}
 	var err error
 	switch r.Command {

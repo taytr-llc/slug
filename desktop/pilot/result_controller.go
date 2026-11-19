@@ -41,6 +41,9 @@ func (s *StableController) ResultSnapshot() ResultSnapshot {
 		if s.seedNodesReadyLocked() {
 			out.NodeState = "online"
 			out.NodeOwner = "mining"
+			if s.sharedPublisher != nil {
+				out.NodeOwner = "shared_pool"
+			}
 			if s.resultNodeOwner != nil && s.resultNodeOwner.ready && s.resultNodeOwner.nodes == s.seedNodes {
 				out.NodeOwner = "publication"
 			}

@@ -57,6 +57,9 @@ func (r *PoolRuntime) StartServices(ctx context.Context) error {
 	if e = r.prepareLeague(work); e != nil {
 		return e
 	}
+	if e = r.preparePipeline(work); e != nil {
+		return e
+	}
 	if r.backend == nil {
 		r.backend, e = poolsettlefixture.New(work, r.nodes.rpcConfig())
 		if e != nil {

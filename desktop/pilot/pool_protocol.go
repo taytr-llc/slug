@@ -59,6 +59,12 @@ type PoolSurfaceAPI interface {
 	PoolStableAPI
 	EntrySurfaceAPI
 	EventSurfaceAPI
+	SeedSurfaceAPI
+	CardSurfaceAPI
+	BoutSurfaceAPI
+	ResultSurfaceAPI
+	CareerSurfaceAPI
+	CareerHistorySurfaceAPI
 	Start() error
 	Stop()
 	Close() error
@@ -603,7 +609,7 @@ func ServePool(ctx context.Context, input io.Reader, output io.Writer, c PoolCon
 		defer close(readerDone)
 		defer close(lines)
 		scanner := bufio.NewScanner(input)
-		scanner.Buffer(make([]byte, 1024), max(MaxRequestSize, MaxEntryRequestSize, MaxEventRequestSize)+1)
+		scanner.Buffer(make([]byte, 1024), max(MaxRequestSize, MaxEntryRequestSize, MaxEventRequestSize, MaxSeedRequestSize, MaxCardRequestSize, MaxBoutRequestSize, MaxResultRequestSize, MaxCareerRequestSize, MaxCareerHistoryRequestSize)+1)
 		for scanner.Scan() {
 			value := line{data: append([]byte(nil), scanner.Bytes()...)}
 			select {
@@ -635,7 +641,14 @@ func ServePool(ctx context.Context, input io.Reader, output io.Writer, c PoolCon
 			if json.Unmarshal(value.data, &selector) != nil {
 				return gymstable.ErrInvalid
 			}
-			if strings.HasPrefix(selector.Command, "entry_") || strings.HasPrefix(selector.Command, "event_") {
+			if raw, handled, err := poolCycleResponse(ctx, value.data, selector.ID, selector.Command, c); handled {
+				if err != nil {
+					return err
+				}
+				if err = respondPoolFamily(output, raw); err != nil {
+					return err
+				}
+			} else if strings.HasPrefix(selector.Command, "entry_") || strings.HasPrefix(selector.Command, "event_") {
 				if selector.ID == 0 || selector.ID > gymstable.MaxSafeInteger {
 					return gymstable.ErrInvalid
 				}

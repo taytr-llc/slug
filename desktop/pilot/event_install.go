@@ -167,7 +167,28 @@ func (s *StableController) createStableStore(p string, pin gymstable.Pin, source
 }
 func (s *StableController) openStableStore(p string, pin gymstable.Pin, source *registry.ManifestStore) (*gymstable.Store, error) {
 	if s.sharedPin != nil {
-		if pin != *s.sharedPin || source != s.sharedSource || s.careerReader != nil || s.eventFactories != nil {
+		if pin != *s.sharedPin || source != s.sharedSource || s.eventFactories != nil {
+			return nil, gymstable.ErrInvalid
+		}
+		if s.careerEnabled {
+			if s.careerReader == nil || s.sharedFactories == nil || s.sharedFactories.openSharedCareer == nil {
+				return nil, gymstable.ErrInvalid
+			}
+			a, e := s.careerReader.Activation()
+			if e != nil {
+				return nil, e
+			}
+			x, e := s.sharedFactories.openSharedCareer(p, pin, source, a)
+			if e != nil {
+				return nil, e
+			}
+			if e = x.AttachCareer(context.Background(), s.careerReader); e != nil {
+				_ = x.Close()
+				return nil, e
+			}
+			return x, nil
+		}
+		if s.careerReader != nil {
 			return nil, gymstable.ErrInvalid
 		}
 		if s.sharedFactories != nil {

@@ -67,7 +67,7 @@ func resultRequestValid(r ResultRequest) bool {
 	return b == (ResultRequest{})
 }
 func resultSnapshotValid(s ResultSnapshot) bool {
-	if s.Version != 1 || !(s.NodeState == "offline" && s.NodeOwner == "none" || s.NodeState == "starting" && s.NodeOwner == "publication" || s.NodeState == "online" && stableOne(s.NodeOwner, "publication", "mining")) {
+	if s.Version != 1 || !(s.NodeState == "offline" && s.NodeOwner == "none" || s.NodeState == "starting" && s.NodeOwner == "publication" || s.NodeState == "online" && stableOne(s.NodeOwner, "publication", "mining", "shared_pool")) {
 		return false
 	}
 	blank := s.Pin == nil && s.StoreID == "" && s.PublisherAccountID == "" && s.SourceCreatedAtMS == 0 && s.CreatedAtMS == 0 && s.ActiveJobID == "" && s.QueuedJobID == "" && s.LastJobID == "" && s.NodeState == "offline"
@@ -90,6 +90,13 @@ func resultSnapshotValid(s ResultSnapshot) bool {
 	id, e := gymresult.ID(p)
 	if e != nil || id != s.StoreID || s.PublisherAccountID != p.PublisherAccountID {
 		return false
+	}
+	if s.NodeOwner == "shared_pool" {
+		for _, entry := range p.SourcePin.SourcePin.SourcePin.SourcePin.Participants {
+			if entry.StablePin.Version != gymstable.SharedPinVersion2 || entry.StablePin.Source != s.View.AuthorityPin || entry.StablePin.AccountAuthorityID != s.View.AccountAuthorityID {
+				return false
+			}
+		}
 	}
 	if _, ok := eventViewParticipant(*s.View, p.SourcePin.SourcePin.SourcePin.SourcePin); !ok {
 		return false

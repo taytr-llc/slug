@@ -1,3 +1,4 @@
+import {sharedTransport} from './pool-cycle-fixture.mjs';
 // UI tests consume the separately committed Python corpus. They do not grant
 // cryptographic/source authority or claim native chooser/GUI acceptance.
 import assert from 'node:assert/strict';
@@ -25,17 +26,19 @@ class Element {
   removeAttribute(k) { this.attributes.delete(k); }
   addEventListener(k, v) { this.listeners.set(k, v); }
 }
-function harness(index = 0) {
-  const snap = wire('ResultSnapshot', `fixture${index}/snapshot/none-offline`), p = snap.pin, view = snap.view;
-  const src = core('ResultSource', 'saved-source'), ss = core('Status', 'status-prepared').source;
+function harness(index = 0, pool = false) {
+ const transport = pool ? sharedTransport : clone;
+  const snap = transport(wire('ResultSnapshot', `fixture${index}/snapshot/none-offline`)), p = snap.pin, view = snap.view;
+  const src = transport(core('ResultSource', 'saved-source')), ss = transport(core('Status', 'status-prepared').source);
   const ep = p.source_pin.source_pin.source_pin.source_pin, sp = ep.participants.find(v => v.stable_pin.account_id === view.account_id);
   const elements = new Map([...html.matchAll(/\bid="([^"]+)"/g)].map(m => [m[1], new Element()]));
   const handlers = {}, calls = [], timers = new Map(); let id = 200, active = 0, peak = 0, timerID = 0;
   const document = {getElementById: id => elements.get(id), createElement: tag => new Element(tag), hidden: false};
   const motion = {matches: false, addEventListener() {}};
-  const context = vm.createContext({document, window: {matchMedia: () => motion}, Call: {async ByName(name, ...args) { const method = name.slice(9); calls.push({method, args: clone(args)}); assert.ok(handlers[method], `Unexpected ${method}`); active++; peak = Math.max(peak, active); try { const v = await handlers[method](...args); return v === undefined ? null : clone(v); } finally { active--; } }}, Intl, Date, btoa: s => Buffer.from(s, 'ascii').toString('base64'), setTimeout(fn) { timers.set(++timerID, fn); return timerID; }, clearTimeout(id) { timers.delete(id); }});
+  const context = vm.createContext({document, window: {matchMedia: () => motion}, Call: {async ByName(name, ...args) { const method = name.slice(9); calls.push({method, args: transport(args)}); assert.ok(handlers[method], `Unexpected ${method}`); active++; peak = Math.max(peak, active); try { const v = await handlers[method](...args); return v === undefined ? null : transport(v); } finally { active--; } }}, Intl, Date, btoa: s => Buffer.from(s, 'ascii').toString('base64'), setTimeout(fn) { timers.set(++timerID, fn); return timerID; }, clearTimeout(id) { timers.delete(id); }});
   vm.runInContext(script, context, {filename: 'stable.js'});
-  const h = {context, elements, handlers, calls, timers, document, snap, p, view, src, ss, get peak() { return peak; }, run: s => vm.runInContext(s, context), set(n, v) { context.input = clone(v); vm.runInContext(`${n}=input`, context); }, count: m => calls.filter(v => v.method === m).length};
+ context.poolFixtureMode = pool; vm.runInContext('poolMode = poolFixtureMode', context);
+  const h = {context, elements, handlers, calls, timers, document, snap, p, view, src, ss, get peak() { return peak; }, run: s => vm.runInContext(s, context), set(n, v) { context.input = transport(v); vm.runInContext(`${n}=input`, context); }, count: m => calls.filter(v => v.method === m).length};
   h.set('current', {account: {state: 'signed_in', fixture: index ? 'incrementing256' : 'zero256', held: false, can_export: true, id: view.account_id}, view, gym_id: sp.stable_pin.identity.gym_id});
   h.set('stable', {state: 'ready', view, status: {pin: sp.stable_pin, store_id: sp.stable_store_id, caught_up: true, pending_operation_id: '', slots: Array(10).fill('')}});
   h.set('eventAuthority', {pin: ep, storeID: p.source_pin.source_pin.source_pin.source_store_id, createdMS: 1});
@@ -46,13 +49,43 @@ function harness(index = 0) {
   h.set('bookedStatus', ss); h.set('bookedSelected', src.source.bout.bout_id); h.set('entryDate', src.source.event.saturday);
   h.set('publicationAuthority', {pin: p, storeID: snap.store_id, sourceCreatedMS: snap.source_created_at_ms, createdMS: snap.created_at_ms}); h.set('publicationSnapshot', snap);
   h.run('enabled=true;rememberedView=currentKey();bookedOverlayKnown=bookedOverlayRead=true');
-  h.reply = (field, value) => ({id: ++id, ok: true, view: clone(view), store_id: snap.store_id, snapshot: null, status: null, record: null, job: null, error: '', [field]: clone(value)});
+  h.reply = (field, value) => ({id: ++id, ok: true, view: transport(view), store_id: snap.store_id, snapshot: null, status: null, record: null, job: null, error: '', [field]: transport(value)});
   h.refusal = error => ({id: ++id, ok: false, view: null, store_id: '', snapshot: null, status: null, record: null, job: null, error});
-  h.adopt = name => { h.context.input = core('ActionResult', 'action-' + name); h.run('publicationAdoptResult(input)'); };
+  h.adopt = name => { h.context.input = transport(core('ActionResult', 'action-' + name)); h.run('publicationAdoptResult(input)'); };
   h.watch = j => h.set('publicationWatch', {id: j.job_id, kind: j.kind, state: 'queued', date: j.saturday, boutID: j.bout_id, cardID: j.card_id, resultKey: j.result_key});
   return h;
 }
 const deferred = () => { let resolve; const promise = new Promise(r => { resolve = r; }); return {promise, resolve}; };
+
+test('shared publication identifies parent nodes without disconnecting or restarting them', () => {
+  for (const index of [0, 1]) {
+    const h = harness(index, true), snap = {...h.snap, node_state: 'online', node_owner: 'shared_pool'};
+    h.run('eventPinValue(eventAuthority.pin)'); h.context.input = h.reply('snapshot', snap);
+    h.run("publicationSnapshot=publicationEnvelope(input,'snapshot').value;renderPublication()");
+    assert.match(h.elements.get('result-connection').textContent, /shared test chain/);
+    assert.equal(h.elements.get('result-disconnect').disabled, true); assert.equal(h.elements.get('result-disconnect').hidden, true);
+    assert.equal(h.run('publicationNodeConnected()'), false); assert.equal(h.calls.length, 0);
+    for (const owner of ['mining', 'publication']) {
+      h.context.input = h.reply('snapshot', {...snap, node_owner: owner});
+      assert.throws(() => h.run("publicationEnvelope(input,'snapshot')"));
+    }
+  }
+  const solo = harness(); solo.context.input = solo.reply('snapshot', {...solo.snap, node_state: 'online', node_owner: 'shared_pool'});
+  assert.throws(() => solo.run("publicationEnvelope(input,'snapshot')"));
+});
+
+test('shared result authority keeps held-session and backup restrictions while showing provisional outcomes', async () => {
+  const h = harness(0, true); h.adopt('included59'); h.run('renderPublication()');
+  assert.match(h.elements.get('result-state').textContent, /Provisional result/);
+  assert.equal(h.run("publicationCanAct('attest')"), false);
+  h.run("current.backup_state='running'");
+  for (const kind of ['publish', 'reconcile', 'attest', 'export']) {
+    assert.equal(h.run(`publicationCanAct('${kind}')`), false); await h.run(`publicationBegin('${kind}')`);
+  }
+  assert.equal(h.calls.length, 0);
+  h.run("current.backup_state='idle';current.account.held=true");
+  assert.equal(h.run("publicationCanAct('publish')"), false); assert.equal(h.run("publicationCanAct('reconcile')"), true);
+});
 
 test('all independent compact result positives pass presentation checks without generating source', () => {
   const h = harness(); h.run("condition=()=>{throw Error('projection')};fullItem=()=>{throw Error('projection')}"); let count = 0;

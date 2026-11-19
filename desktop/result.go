@@ -8,6 +8,9 @@ import (
 )
 
 func (g *Gym) resultRequest(r pilot.ResultRequest) pilot.ResultResponse {
+	if g.poolHelper != nil {
+		return g.poolHelper.ResultRequest(context.Background(), r)
+	}
 	if g.stableHelper == nil {
 		return pilot.ResultResponse{ID: 1, Error: "result_unavailable"}
 	}
@@ -41,7 +44,7 @@ func (g *Gym) BeginResultAttest(viewID, saturday, boutID string) pilot.ResultRes
 
 func (g *Gym) ExportResultProof(viewID, saturday, boutID string) pilot.ResultResponse {
 	failure := func(code string) pilot.ResultResponse { return pilot.ResultResponse{ID: 1, Error: code} }
-	if g.stableHelper == nil || g.app == nil || g.window == nil {
+	if g.stableHelper == nil && g.poolHelper == nil || g.app == nil || g.window == nil {
 		return failure("result_unavailable")
 	}
 	if !g.exportMu.TryLock() {
@@ -50,7 +53,7 @@ func (g *Gym) ExportResultProof(viewID, saturday, boutID string) pilot.ResultRes
 	defer g.exportMu.Unlock()
 	// Do not hold the helper pipe gate while a native modal is open: Stop/logout
 	// remain available. The captured original View is rechecked after selection.
-	status := g.stableHelper.ResultRequest(context.Background(), pilot.ResultRequest{Command: "result_status", ViewID: viewID, Saturday: saturday, BoutID: boutID})
+	status := g.resultRequest(pilot.ResultRequest{Command: "result_status", ViewID: viewID, Saturday: saturday, BoutID: boutID})
 	if !status.OK {
 		return status
 	}
@@ -67,6 +70,9 @@ func (g *Gym) ExportResultProof(viewID, saturday, boutID string) pilot.ResultRes
 	path, e = selectedExportPath(path, g.protectedRoots)
 	if e != nil {
 		return failure("invalid_request")
+	}
+	if g.poolHelper != nil {
+		return g.poolHelper.ExportResultProof(context.Background(), viewID, saturday, boutID, path)
 	}
 	return g.stableHelper.ExportResultProof(context.Background(), viewID, saturday, boutID, path)
 }

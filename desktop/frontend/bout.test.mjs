@@ -1,3 +1,4 @@
+import {sharedTransport} from './pool-cycle-fixture.mjs';
 // Frozen independent compositions; the DOM harness grants no source/GUI authority.
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
@@ -20,17 +21,19 @@ class Element {
   addEventListener(k, v) { this.listeners.set(k, v); }
 }
 function dto(kind, name) { const v = ref.dtos.find(d => d.kind === kind && d.name === name); assert.ok(v, kind + '/' + name); return clone(v.value); }
-function harness(composition = ref.compositions[0], viewIndex = 0) {
-  const c = clone(composition), view = c.views[viewIndex], pin = c.pin, eventPin = pin.source_pin.source_pin.source_pin;
+function harness(composition = ref.compositions[0], viewIndex = 0, pool = false) {
+ const transport = pool ? sharedTransport : clone;
+  const c = transport(composition), view = c.views[viewIndex], pin = c.pin, eventPin = pin.source_pin.source_pin.source_pin;
   const ownPin = eventPin.participants.find(p => p.stable_pin.account_id === view.account_id), gymID = ownPin.stable_pin.identity.gym_id;
   const fixture = gymID === 'a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5' ? 'zero256' : 'incrementing256';
   const elements = new Map([...html.matchAll(/\bid="([^"]+)"/g)].map(m => [m[1], new Element()]));
   const handlers = {}, calls = [], timers = new Map(); let id = 2000, active = 0, peak = 0, timerID = 0;
   const motion = {matches: false, addEventListener(_, fn) { this.change = fn; }};
   const document = {getElementById: id => elements.get(id), createElement: tag => new Element(tag), hidden: false};
-  const context = vm.createContext({document, window: {matchMedia: () => motion}, Call: {async ByName(name, ...args) { const method = name.slice(9); calls.push({method, args: clone(args)}); assert.ok(handlers[method], `Unexpected ${method}`); active++; peak = Math.max(peak, active); try { return clone(await handlers[method](...args)); } finally { active--; } }}, Intl, Date, btoa: s => Buffer.from(s, 'ascii').toString('base64'), setTimeout(fn) { timers.set(++timerID, fn); return timerID; }, clearTimeout(id) { timers.delete(id); }});
+  const context = vm.createContext({document, window: {matchMedia: () => motion}, Call: {async ByName(name, ...args) { const method = name.slice(9); calls.push({method, args: transport(args)}); assert.ok(handlers[method], `Unexpected ${method}`); active++; peak = Math.max(peak, active); try { return transport(await handlers[method](...args)); } finally { active--; } }}, Intl, Date, btoa: s => Buffer.from(s, 'ascii').toString('base64'), setTimeout(fn) { timers.set(++timerID, fn); return timerID; }, clearTimeout(id) { timers.delete(id); }});
   vm.runInContext(script, context, {filename: 'stable.js'});
-  const h = {context, elements, handlers, calls, timers, motion, document, c, view, get peak() { return peak; }, run: s => vm.runInContext(s, context), set(n, v) { context.inputValue = clone(v); vm.runInContext(`${n}=inputValue`, context); }, count: m => calls.filter(c => c.method === m).length};
+ context.poolFixtureMode = pool; vm.runInContext('poolMode = poolFixtureMode', context);
+  const h = {context, elements, handlers, calls, timers, motion, document, c, view, get peak() { return peak; }, run: s => vm.runInContext(s, context), set(n, v) { context.inputValue = transport(v); vm.runInContext(`${n}=inputValue`, context); }, count: m => calls.filter(c => c.method === m).length};
   h.set('current', {account: {state: 'signed_in', fixture, held: false, can_export: true}, view, gym_id: gymID});
   h.set('stable', {state: 'ready', view, status: {pin: ownPin.stable_pin, store_id: ownPin.stable_store_id, caught_up: true, pending_operation_id: '', slots: Array(10).fill('')}});
   h.set('eventAuthority', {pin: eventPin, storeID: pin.source_pin.source_pin.source_store_id, createdMS: 1});
@@ -39,7 +42,7 @@ function harness(composition = ref.compositions[0], viewIndex = 0) {
   h.set('bookedAuthority', {pin, storeID: c.record.store_id, sourceCreatedMS: c.source_store_created_at_ms, createdMS: c.store_created_at_ms});
   h.set('bookedSnapshot', {version: 1, state: 'ready', error: '', view, store_id: c.record.store_id, pin, source_created_at_ms: c.source_store_created_at_ms, created_at_ms: c.store_created_at_ms, active_job_id: '', queued_job_id: '', last_job_id: ''});
   h.set('entryDate', c.source.event.saturday); h.run('enabled=true;rememberedView=currentKey()');
-  h.reply = (field, value) => ({id: ++id, ok: true, view: clone(view), store_id: c.record.store_id, snapshot: null, card_status: null, status: null, record: null, job: null, error: '', [field]: clone(value)});
+  h.reply = (field, value) => ({id: ++id, ok: true, view: transport(view), store_id: c.record.store_id, snapshot: null, card_status: null, status: null, record: null, job: null, error: '', [field]: transport(value)});
   h.refusal = error => ({id: ++id, ok: false, view: null, store_id: '', snapshot: null, card_status: null, status: null, record: null, job: null, error});
   h.unsaved = () => dto('Status', 'unsaved/' + c.name); h.saved = () => dto('Status', 'saved/' + c.name);
   h.select = (saved = false) => { const s = saved ? h.saved() : h.unsaved(); h.set('bookedPage', {...s, bouts: [s.saved]}); h.run('delete bookedPage.saved'); h.run(`bookedSelect('${c.source.bout.bout_id}')`); };
@@ -47,6 +50,18 @@ function harness(composition = ref.compositions[0], viewIndex = 0) {
 }
 function watch(h, j) { h.set('bookedWatch', {id: j.job_id, state: 'queued', date: j.saturday, boutID: j.bout_id, cardID: j.card_id}); }
 const deferred = () => { let resolve; const promise = new Promise(r => { resolve = r; }); return {promise, resolve}; };
+
+test('shared booked fights keep the original view and block new work during backup', async () => {
+  const h = harness(ref.compositions[0], 0, true);
+  h.run('eventPinValue(eventAuthority.pin)'); assert.equal(h.run('bookedReady()'), true);
+  h.set('bookedStatus', h.unsaved()); h.run('bookedSelected=bookedStatus.saved.bout.bout_id;bookedOverlayKnown=true');
+  h.handlers.BeginBoutRun = () => h.reply('job', dto('BoutJob', 'queued-0'));
+  h.run("current.backup_state='running';renderBooked()"); await h.run('bookedBegin()');
+  assert.equal(h.count('BeginBoutRun'), 0); assert.equal(h.elements.get('bout-run').disabled, true);
+  h.run("current.backup_state='idle'"); await h.run('bookedBegin()');
+  assert.equal(h.count('BeginBoutRun'), 1); assert.equal(h.calls[0].args[0], h.view.view_id);
+  assert.equal(h.count('Start'), 0);
+});
 
 test('all 11 frozen independent saved compositions reach the UI without engine or condition projection', () => {
   for (const c of ref.compositions) { const h = harness(c); h.context.input = dto('ReadResult', 'saved/' + c.name); h.run("condition=()=>{throw Error('projection')};fullItem=()=>{throw Error('projection')}"); assert.doesNotThrow(() => h.run('bookedResultValue(input)'), c.name); }

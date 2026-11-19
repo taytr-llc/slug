@@ -24,6 +24,7 @@ func LaunchPool(helper, dataDir, node string) (*PoolBridge, error) {
 	}
 	b.poolMode = true
 	b.entriesEnabled, b.eventsEnabled = true, true
+	b.seedsEnabled, b.cardsEnabled, b.boutsEnabled, b.resultsEnabled, b.careersEnabled = true, true, true, true, true
 	return &PoolBridge{b}, nil
 }
 func (b *PoolBridge) PoolRequest(ctx context.Context, req pilot.PoolRequest) (pilot.PoolResponse, error) {

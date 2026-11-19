@@ -19,6 +19,11 @@ const MaxCareerRequestSize = 4096
 
 type CareerControllerAPI interface {
 	ResultControllerAPI
+	CareerSurfaceAPI
+}
+
+// CareerSurfaceAPI is the closed career family shared by solo and pool routes.
+type CareerSurfaceAPI interface {
 	CareerView(string) (ManifestViewPin, error)
 	CareerInventory(context.Context, string, string, uint64, uint32) (gymstable.CareerPage, error)
 	CareerRoster(context.Context, string, string, uint32, uint32) (gymstable.CareerRosterPage, error)
@@ -149,7 +154,7 @@ func ParseCareerResponse(raw []byte) (CareerResponse, error) {
 	}
 	return r, nil
 }
-func handleCareerRequest(ctx context.Context, r CareerRequest, c CareerControllerAPI) CareerResponse {
+func handleCareerRequest(ctx context.Context, r CareerRequest, c CareerSurfaceAPI) CareerResponse {
 	out := CareerResponse{ID: r.ID, JobID: r.JobID, OK: true}
 	var e error
 	if r.Command == "career_inventory" {

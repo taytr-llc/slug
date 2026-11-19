@@ -18,6 +18,11 @@ const careerHistoryCaptureAllowance = 416 * 1024
 
 type CareerHistoryControllerAPI interface {
 	CareerControllerAPI
+	CareerHistorySurfaceAPI
+}
+
+// CareerHistorySurfaceAPI is the closed careerhistory family shared by solo and pool routes.
+type CareerHistorySurfaceAPI interface {
 	CareerHistorySnapshot(context.Context) (CareerHistorySnapshot, error)
 	BeginCareerHistory(context.Context, string, string) (CareerHistoryJob, error)
 	CareerHistoryJob(context.Context, string, string) (CareerHistoryJob, error)

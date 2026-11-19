@@ -1,3 +1,4 @@
+import {sharedTransport} from './pool-cycle-fixture.mjs';
 // Frozen independent transport/DOM-state controls, not a browser rendering claim.
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
@@ -16,23 +17,38 @@ class Element {
 }
 function dto(kind,name){const d=ref.dtos.find(d=>d.kind===kind&&d.name===name);assert.ok(d,`${kind}/${name}`);return clone(d.value);}
 function record(predicate=()=>true){const values=[...ref.dtos.filter(d=>d.kind==='Record').map(d=>d.value),...ref.record_states.map(d=>JSON.parse(d.canonical))];const d=values.find(predicate);assert.ok(d,'Record');return clone(d);}
-function harness(fixture='zero256'){
- const f=old.fixtures.find(f=>f.fixture===fixture),elements=new Map([...html.matchAll(/\bid="([^"]+)"/g)].map(m=>[m[1],new Element()]));
+function harness(fixture='zero256', pool = false){
+ const transport = pool ? sharedTransport : clone;
+ const f=transport(old.fixtures.find(f=>f.fixture===fixture)),elements=new Map([...html.matchAll(/\bid="([^"]+)"/g)].map(m=>[m[1],new Element()]));
  const handlers={},calls=[],document={getElementById:id=>elements.get(id),createElement:tag=>new Element(tag),hidden:false};let id=1000,active=0,peak=0;
- const Call={async ByName(name,...args){const method=name.slice(9);calls.push({method,args:clone(args)});assert.ok(handlers[method],`Unexpected ${method}`);active++;peak=Math.max(peak,active);try{return clone(await handlers[method](...args));}finally{active--;}}};
+ const Call={async ByName(name,...args){const method=name.slice(9);calls.push({method,args:transport(args)});assert.ok(handlers[method],`Unexpected ${method}`);active++;peak=Math.max(peak,active);try{return transport(await handlers[method](...args));}finally{active--;}}};
  const context=vm.createContext({document,window:{matchMedia:()=>({matches:false,addEventListener(){}})},Call,Intl,Date,btoa:s=>Buffer.from(s,'ascii').toString('base64'),setTimeout(){return 1;},clearTimeout(){}});
  vm.runInContext(script,context,{filename:'stable.js'});
- const h={context,elements,handlers,calls,fixture:f,get peak(){return peak;},run:s=>vm.runInContext(s,context),set(n,v){context.inputValue=clone(v);vm.runInContext(`${n}=inputValue`,context);},count:m=>calls.filter(c=>c.method===m).length};
+ context.poolFixtureMode = pool; vm.runInContext('poolMode = poolFixtureMode', context);
+ const h={context,elements,handlers,calls,fixture:f,get peak(){return peak;},run:s=>vm.runInContext(s,context),set(n,v){context.inputValue=transport(v);vm.runInContext(`${n}=inputValue`,context);},count:m=>calls.filter(c=>c.method===m).length};
  h.set('current',{account:{state:'signed_in',id:f.current_view.account_id,fixture,held:false,can_export:true},view:f.current_view,gym_id:f.participant_id});
  h.set('stable',{state:'ready',view:f.current_view,status:{pin:f.entry_pin.stable_pin,store_id:f.entry_pin.stable_store_id,caught_up:true,pending_operation_id:'',slots:Array(10).fill('')}});
  h.run('enabled=true;rememberedView=currentKey()');
  const event=old.dtos.find(d=>d.kind==='EventSnapshot'&&d.fixture===fixture&&d.value.state==='ready').value;
  h.set('eventAuthority',{pin:old.pin.value,storeID:old.pin.store_id,createdMS:event.coordinator_created_at_ms});h.set('eventSnapshot',event);
- h.reply=(field,value)=>({id:++id,ok:true,view:clone(f.current_view),store_id:ref.pin.store_id,snapshot:null,status:null,record:null,history:null,job:null,error:'',[field]:clone(value)});
+ h.reply=(field,value)=>({id:++id,ok:true,view:transport(f.current_view),store_id:ref.pin.store_id,snapshot:null,status:null,record:null,history:null,job:null,error:'',[field]:transport(value)});
  h.refusal=error=>({id:++id,ok:false,view:null,store_id:'',snapshot:null,status:null,record:null,history:null,job:null,error});
  context.initial=h.reply('snapshot',dto('SeedSnapshot',fixture+'/ready'));h.run("seedSnapshot=seedEnvelope(initial,'snapshot').value;entryDate='2026-11-21'");return h;
 }
 const deferred=()=>{let resolve;const promise=new Promise(r=>{resolve=r;});return {resolve,promise};};
+
+test('shared seed controls retain both original views and pause dispatch during backup', async () => {
+ for (const fixture of ['zero256', 'incrementing256']) {
+  const h = harness(fixture, true), queued = dto('SeedJob', fixture + '/prepare/queued');
+  h.run('eventPinValue(eventAuthority.pin)'); assert.equal(h.run('seedReady()'), true);
+  h.handlers.BeginSeedPrepare = () => h.reply('job', queued);
+  h.run("current.backup_state='running';renderSeed()"); await h.run("seedBegin('prepare')");
+  assert.equal(h.count('BeginSeedPrepare'), 0); assert.equal(h.elements.get('seed-prepare').disabled, true);
+  h.run("current.backup_state='idle'"); await h.run("seedBegin('prepare')");
+  assert.equal(h.count('BeginSeedPrepare'), 1); assert.equal(h.calls[0].args[0], h.fixture.current_view.view_id);
+  assert.equal(h.run('seedWatch.id'), queued.job_id); assert.equal(h.count('Start'), 0);
+ }
+});
 
 test('every frozen accepted seed response reaches the bounded presentation consumer',()=>{
  let count=0;

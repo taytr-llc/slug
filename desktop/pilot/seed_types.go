@@ -14,6 +14,11 @@ const MaxSeedMetadataSize = 16384
 
 type SeedControllerAPI interface {
 	EventControllerAPI
+	SeedSurfaceAPI
+}
+
+// SeedSurfaceAPI is the closed seed family shared by solo and pool routes.
+type SeedSurfaceAPI interface {
 	SeedSnapshot() SeedSnapshot
 	SeedStatus(context.Context, string, string) (gymseed.Status, error)
 	SeedRecord(context.Context, string, string) (gymseed.Record, error)

@@ -28,6 +28,11 @@ func careerFailure(id uint64, code string) pilot.CareerResponse {
 	return pilot.CareerResponse{ID: id, Error: code}
 }
 func (b *StableBridge) CareerRequest(ctx context.Context, req pilot.CareerRequest) pilot.CareerResponse {
+	return b.careerRequest(ctx, req, b.ResultRequest)
+}
+
+// The caller chooses the concrete source-discovery route; no embedded-method fallback.
+func (b *StableBridge) careerRequest(ctx context.Context, req pilot.CareerRequest, prepare func(context.Context, pilot.ResultRequest) pilot.ResultResponse) pilot.CareerResponse {
 	if !b.careersEnabled {
 		return careerFailure(0, "career_inactive")
 	}
@@ -40,7 +45,7 @@ func (b *StableBridge) CareerRequest(ctx context.Context, req pilot.CareerReques
 	// Result source. It cannot be supplied by the page or webview.
 	a, view, ready := b.resultContext()
 	if !ready {
-		r := b.ResultRequest(ctx, pilot.ResultRequest{Command: "result_snapshot"})
+		r := prepare(ctx, pilot.ResultRequest{Command: "result_snapshot"})
 		if !r.OK {
 			code := r.Error
 			if !oneOf(code, "unauthorized", "forbidden", "stale_view", "busy", "outcome_unknown") {

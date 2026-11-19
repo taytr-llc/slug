@@ -122,7 +122,7 @@ func TestPoolLeagueWireRejectsBeforeDispatch(t *testing.T) {
 			t.Fatal("invalid envelope was handled", err, string(output))
 		}
 	}
-	for _, command := range []string{"preview_snapshot", "seed_snapshot", "card_snapshot", "bout_snapshot", "result_snapshot", "career_snapshot"} {
+	for _, command := range []string{"preview_snapshot"} {
 		raw, _ := json.Marshal(PoolRequest{ID: 1, Command: command})
 		c, output, err := poolLeagueWire(t, raw)
 		r, parseErr := ParsePoolResponse(output)

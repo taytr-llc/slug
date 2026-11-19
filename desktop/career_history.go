@@ -7,6 +7,9 @@ import (
 )
 
 func (g *Gym) careerHistoryRequest(r pilot.CareerHistoryRequest) pilot.CareerHistoryResponse {
+	if g.poolHelper != nil {
+		return g.poolHelper.CareerHistoryRequest(context.Background(), r)
+	}
 	if g.stableHelper == nil {
 		return pilot.CareerHistoryResponse{ID: 1, Version: 1, Error: "career_inactive"}
 	}
@@ -28,6 +31,9 @@ func (g *Gym) CareerHistoryPage(viewID, jobID string, after, limit uint32) pilot
 	return g.careerHistoryRequest(pilot.CareerHistoryRequest{Command: "career_history_page", ViewID: viewID, JobID: jobID, After: after, Limit: limit})
 }
 func (g *Gym) CareerHistoryResult(viewID, jobID string, ordinal uint32) pilot.ResultResponse {
+	if g.poolHelper != nil {
+		return g.poolHelper.CareerHistoryResult(context.Background(), viewID, jobID, ordinal)
+	}
 	if g.stableHelper == nil {
 		return pilot.ResultResponse{ID: 1, Error: "result_unavailable"}
 	}

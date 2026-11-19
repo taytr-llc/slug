@@ -25,6 +25,7 @@ const poolLeagueReadyName = "SLUG-POOL-LEAGUE-READY.json"
 // These are private, immutable dependencies. Only the explicitly tagged test
 // constructor installs another clock; neither Config nor the wire can do so.
 type poolLeagueFactories struct {
+	poolPipelineFactories
 	createStable func(string, gymstable.Pin, *registry.ManifestStore) (*gymstable.Store, error)
 	openStable   func(string, gymstable.Pin, *registry.ManifestStore) (*gymstable.Store, error)
 	createEntry  func(context.Context, string, gymentry.Pin, *gymstable.Store) (*gymentry.Store, error)
@@ -35,7 +36,7 @@ type poolLeagueFactories struct {
 }
 
 func defaultPoolLeagueFactories() *poolLeagueFactories {
-	return &poolLeagueFactories{gymstable.CreateShared, gymstable.OpenShared, gymentry.Create, gymentry.Open, gymevent.Create, gymevent.Open, gymevent.ResumePrepared}
+	return &poolLeagueFactories{poolPipelineFactories: defaultPoolPipelineFactories(), createStable: gymstable.CreateShared, openStable: gymstable.OpenShared, createEntry: gymentry.Create, openEntry: gymentry.Open, createEvent: gymevent.Create, openEvent: gymevent.Open, resumeEvent: gymevent.ResumePrepared}
 }
 
 type poolLeagueChildBinding struct {
@@ -280,6 +281,9 @@ func (r *PoolRuntime) prepareLeague(ctx context.Context) (resultErr error) {
 			return ErrPoolRuntime
 		}
 	}
+	if e = r.loadPipelineBootstrap(ready, established); e != nil {
+		return e
+	}
 	for _, p := range intent.Participants {
 		if e = r.prepareLeagueParticipant(ctx, root, intent.SourceBindingID, p, established, factories); e != nil {
 			return e
@@ -357,7 +361,7 @@ func (r *PoolRuntime) prepareLeagueParticipant(ctx context.Context, leagueRoot, 
 	if !hasStable || !p.StableExisting && !ready && !childReady && poolLeagueEmpty(stablePath) {
 		stable, e = f.createStable(stablePath, p.EntryPin.StablePin, r.issuer)
 	} else {
-		stable, e = f.openStable(stablePath, p.EntryPin.StablePin, r.issuer)
+		stable, e = r.openPipelineStable(stablePath, p.EntryPin.StablePin, f)
 	}
 	if e != nil {
 		return e

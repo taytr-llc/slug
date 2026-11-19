@@ -15,8 +15,13 @@ import (
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/taytr-llc/slug/chaincfg/v2"
 	"github.com/taytr-llc/slug/gymaccount"
+	"github.com/taytr-llc/slug/gymbout"
+	"github.com/taytr-llc/slug/gymcard"
 	"github.com/taytr-llc/slug/gymevent"
+	"github.com/taytr-llc/slug/gymresult"
+	"github.com/taytr-llc/slug/gymseed"
 	"github.com/taytr-llc/slug/gymstable"
+	"github.com/taytr-llc/slug/internal/careerstate"
 	"github.com/taytr-llc/slug/poolround"
 	"github.com/taytr-llc/slug/poolservice"
 	"github.com/taytr-llc/slug/poolsettle"
@@ -26,6 +31,7 @@ import (
 	"github.com/taytr-llc/slug/prospectservice"
 	"github.com/taytr-llc/slug/prospectworker"
 	"github.com/taytr-llc/slug/registry"
+	"github.com/taytr-llc/slug/seednode"
 	"github.com/taytr-llc/slug/wire/v2"
 	"github.com/taytr-llc/slugwallet/recovery"
 )
@@ -69,6 +75,13 @@ type PoolRuntime struct {
 	league                       *poolLeagueReady
 	events                       *gymevent.Store
 	leagueFactories              *poolLeagueFactories
+	pipeline                     *poolPipelineReady
+	pipelineBootstrap            *poolPipelineBootstrap
+	seeds                        *gymseed.Store
+	cards                        *gymcard.Store
+	bouts                        *gymbout.Store
+	results                      *gymresult.Store
+	careerReader                 *careerstate.Reader
 	backend                      *poolsettlefixture.Backend
 	recipients                   map[string]PoolRecipientBinding
 	verified                     map[string]bool
@@ -95,6 +108,13 @@ type poolChildResources struct {
 	League                                               *poolLeagueChildBinding
 	Events                                               *gymevent.Store
 	Factories                                            *poolLeagueFactories
+	Pipeline                                             *poolPipelineChildBinding
+	Seeds                                                *gymseed.Store
+	Cards                                                *gymcard.Store
+	Bouts                                                *gymbout.Store
+	Results                                              *gymresult.Store
+	CareerReader                                         *careerstate.Reader
+	Publisher                                            *seednode.SharedPoolOwnerBinding
 	WorkerConfig                                         prospectworker.PoolConfig
 	Life                                                 context.Context
 	Release                                              func()
@@ -373,6 +393,10 @@ func (r *PoolRuntime) childResources(accountID, fixture string) (poolChildResour
 	if e != nil {
 		return poolChildResources{}, e
 	}
+	pipeline, publisher, e := r.pipelineChild()
+	if e != nil {
+		return poolChildResources{}, e
+	}
 	worker := prospectworker.PoolConfig{Version: 1, Source: r.source, PublicKey: b.Config.Identity.GymPublicKey, AuthorityOrigin: poolURL, TransportTrustID: poolTrust, AdmissionOrigin: admissionURL, AdmissionTrustID: admissionTrust, MaxRecords: 1000, MaxBytes: 256 << 20}
 	if _, e = prospectworker.ValidatePoolConfig(worker); e != nil {
 		return poolChildResources{}, e
@@ -392,7 +416,7 @@ func (r *PoolRuntime) childResources(accountID, fixture string) (poolChildResour
 		borrow.close = closeChild
 		return nil
 	}
-	return poolChildResources{Config: Config{DataDir: filepath.Join(r.config.DataDir, "gyms", accountID), NodeBinary: r.config.NodeBinary}, Source: r.source, PoolURL: poolURL, PoolTrustID: poolTrust, AdmissionURL: admissionURL, AdmissionTrustID: admissionTrust, Issuer: r.issuer, Node: r.node, RPC: r.nodes.rpcConfig(), Recipient: b, StablePin: pin, League: league, Events: r.events, Factories: r.leagueFactories, WorkerConfig: worker, Life: r.life, Release: release, RegisterClose: register}, nil
+	return poolChildResources{Config: Config{DataDir: filepath.Join(r.config.DataDir, "gyms", accountID), NodeBinary: r.config.NodeBinary}, Source: r.source, PoolURL: poolURL, PoolTrustID: poolTrust, AdmissionURL: admissionURL, AdmissionTrustID: admissionTrust, Issuer: r.issuer, Node: r.node, RPC: r.nodes.rpcConfig(), Recipient: b, StablePin: pin, League: league, Events: r.events, Factories: r.leagueFactories, Pipeline: pipeline, Seeds: r.seeds, Cards: r.cards, Bouts: r.bouts, Results: r.results, CareerReader: r.careerReader, Publisher: publisher, WorkerConfig: worker, Life: r.life, Release: release, RegisterClose: register}, nil
 }
 
 func (r *PoolRuntime) Close() error {
@@ -422,6 +446,18 @@ func (r *PoolRuntime) Close() error {
 		}
 		r.gate <- struct{}{}
 		r.services.Wait()
+		if r.results != nil {
+			failures = append(failures, r.results.Close())
+		}
+		if r.bouts != nil {
+			failures = append(failures, r.bouts.Close())
+		}
+		if r.cards != nil {
+			failures = append(failures, r.cards.Close())
+		}
+		if r.seeds != nil {
+			failures = append(failures, r.seeds.Close())
+		}
 		if r.events != nil {
 			failures = append(failures, r.events.Close())
 		}

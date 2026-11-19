@@ -14,7 +14,7 @@ import (
 	"github.com/taytr-llc/slug/registry"
 )
 
-// NewPoolRuntimeForTestClock scopes a calendar clock to stable, entry and event
+// NewPoolRuntimeForTestClock scopes a calendar clock to stable, entry, event and downstream cycle
 // stores and every later reopen. Mining, account/provider/session, wallet and
 // settlement clocks remain real. This constructor is absent from the ordinary
 // executable; Config, CLI, environment and protocol expose no clock bypass.
@@ -26,7 +26,13 @@ func NewPoolRuntimeForTestClock(ctx context.Context, config Config, accounts *gy
 	if e != nil {
 		return nil, e
 	}
-	r.leagueFactories = &poolLeagueFactories{
+	r.leagueFactories = poolLeagueTestFactories(clock)
+	return r, nil
+}
+
+func poolLeagueTestFactories(clock func() time.Time) *poolLeagueFactories {
+	return &poolLeagueFactories{
+		poolPipelineFactories: poolPipelineTestFactories(clock),
 		createStable: func(p string, pin gymstable.Pin, source *registry.ManifestStore) (*gymstable.Store, error) {
 			return gymstable.CreateSharedForTestClock(p, pin, source, clock)
 		},
@@ -49,5 +55,4 @@ func NewPoolRuntimeForTestClock(ctx context.Context, config Config, accounts *gy
 			return gymevent.ResumePreparedForTestClock(ctx, p, pin, clock)
 		},
 	}
-	return r, nil
 }

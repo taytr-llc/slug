@@ -206,7 +206,7 @@ test('pool fixtures enter and withdraw through original-view entry controls with
     assert.equal(saved.receipt.view_id, h.state.manifest.view.view_id);
     await h.click('entry-withdraw'); assert.equal(h.count('BeginEntryApply'), 2);
     assert.deepEqual([...h.ops.values()].at(-1).receipt.members, []);
-    for (const method of ['Start', 'ManifestSnapshot', 'PreviewSnapshot', 'SeedSnapshot', 'CardSnapshot', 'CareerMode']) assert.equal(h.count(method), 0);
+    for (const method of ['Start', 'ManifestSnapshot', 'PreviewSnapshot', 'CardSnapshot']) assert.equal(h.count(method), 0);
     assert.equal(h.peak, 1);
   }
 });

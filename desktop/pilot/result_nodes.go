@@ -42,6 +42,22 @@ func (s *StableController) resultNodeLease(ctx context.Context, fn func() error)
 // after its source prerequisite has been checked. It never opens a wallet,
 // registry, source service, mining worker or block template.
 func (s *StableController) ensureResultNodes(ctx context.Context) error {
+	if s.sharedPin != nil {
+		return s.resultNodeLease(ctx, func() error {
+			s.stableMu.Lock()
+			defer s.stableMu.Unlock()
+			if s.stableClosed || s.stopping || !s.resultAttached || s.resultStore == nil {
+				return gymresult.ErrUnavailable
+			}
+			if s.account.AccountID != s.resultPin.PublisherAccountID {
+				return gymresult.ErrForbidden
+			}
+			if !sharedPoolNodesReady(s.sharedPublisher) {
+				return gymresult.ErrNodeOffline
+			}
+			return nil
+		})
+	}
 	var owner *resultNodeOwner
 	var already bool
 	e := s.resultNodeLease(ctx, func() error {
@@ -185,6 +201,11 @@ func (s *StableController) borrowResultPublisher(ctx context.Context) (*seednode
 	if !s.seedNodesReadyLocked() || s.stableClosed || s.stopping || s.account.AccountID != s.resultPin.PublisherAccountID {
 		s.stableMu.Unlock()
 		return nil, gymresult.ErrNodeOffline
+	}
+	if s.sharedPublisher != nil {
+		binding := *s.sharedPublisher
+		s.stableMu.Unlock()
+		return seednode.AttachSharedPoolResult(ctx, binding)
 	}
 	n := s.seedNodes
 	binding := seednode.OwnerBinding{Source: s.resultPin.SourcePin.SourcePin.SourcePin.SourcePin, Home: s.config.DataDir, Primary: seednode.OwnedProcess{Cmd: n.primary.cmd, Done: n.primary.done}, Peer: seednode.OwnedProcess{Cmd: n.peer.cmd, Done: n.peer.done}}

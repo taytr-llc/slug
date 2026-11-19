@@ -165,7 +165,7 @@ func readPoolRuntimeRecord(path string, expected any) error {
 }
 
 func poolRuntimeRootFiles(root string) error {
-	allowed := map[string]bool{poolRuntimeMarkerName: true, poolRuntimeSourceName: true, poolRuntimeCoreName: true, poolRuntimeReadyName: true, "instance-lock": true, "issuer": true, "shares": true, "rounds": true, "settlement": true, "gyms": true, poolLeagueDirectory: true,
+	allowed := map[string]bool{poolRuntimeMarkerName: true, poolRuntimeSourceName: true, poolRuntimeCoreName: true, poolRuntimeReadyName: true, "instance-lock": true, "issuer": true, "shares": true, "rounds": true, "settlement": true, "gyms": true, poolLeagueDirectory: true, poolPipelineDirectory: true,
 		"primary-chain": true, "primary-logs": true, "primary.conf": true, "primary-process.log": true, "peer-chain": true, "peer-logs": true, "peer.conf": true, "peer-process.log": true}
 	entries, e := os.ReadDir(root)
 	if e != nil {

@@ -364,6 +364,15 @@ they do not count as completion of this product-release gate.
   Existing solo history and earlier shared snapshots remain unchanged. This is
   candidate engineering and does not replace the final joint D74 review.
 
+- Set64 completes the shared fixture seed/card/bout/result/career connection.
+  The normal-PoW acceptance finalizes seed118 at178 and result180 at240, grants
+  each fighter one XP exactly once, and preserves awards and the original noon
+  through retry/restart. It also proves C1's awarded-fighter refusal at entry
+  application and later cutoff. The exact normal package retains both recovery
+  paths, shared authorities and zero implicit mining. See `CHANGESET_64_NOTES.md`.
+  This proves the candidate cycle, not general matchmaking, titles/rankings,
+  transferable ownership, production custody, distribution or D74 approval.
+
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
 `sim-handoff-intake.json` preserves archive and file checksums. They are reference
@@ -376,7 +385,7 @@ and their intake does not replace the D74 review of the working product.
 | --- | --- |
 | Production wallet and recovery | Freeze the approved profile and exact chain/coin identity; prove actual export, independent fresh restore and spending. Complete authoritative address metadata and bounded resumable scanning before claiming full evolving-wallet recovery. Real entropy and custody must use the operator-owned runtime, never assistant-visible keys. |
 | Real accounts and hosted custody | Demonstrate provider authentication/reset ordering, original-authentication epochs, durable retry/reconciliation and abandoned-flow behavior. Provision the reviewed operator-owned provider/vault configuration; prove same-wallet recovery, hold enforcement, backups, key rotation and disaster recovery. |
-| Desktop product | Connect shared-pool fighters to league/career. Integrate real signup/login, wallet views and controlled mining with the service. Complete native error/recovery flows, cross-device behavior, macOS signing/notarization and Windows runtime acceptance. Review distribution/update behavior. |
+| Desktop product | Qualify the explicitly versioned expanded-name candidate. Integrate real signup/login, wallet views and controlled mining with the service. Complete native error/recovery flows, cross-device behavior, macOS signing/notarization and Windows runtime acceptance. Review distribution/update behavior. |
 | Mining and fighter services | Qualify hosted official-pool operations and production signer custody/capacity for the implemented share, round and settlement path; complete authoritative fighter lifecycle/ownership and portable history. Preserve automatic jobs, birth, canonical-winning-block rules and report-only checkpoint doctrine. |
 | League, marketplace and presentation | Wire the fight/league operation, entries, matching, results/finality, rankings and required gym/fighter flows. Complete the agreed launch marketplace/transfer behavior and reset-hold restrictions. Prototype/simulation output does not substitute for deployed acceptance. |
 | Fighter-name diversity and collisions | Before launch, substantially expand the candidate name pool and measure collision frequency at expected fighter populations. Fighter IDs remain the identity keys. Use deterministic, versioned generation so existing identities, assigned names and manifests remain stable; do not rewrite the frozen generator or historical fighters. Bring population assumptions and remaining duplicate-name behavior to the D74 review. |

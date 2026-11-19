@@ -563,7 +563,6 @@ async function fetchSnapshots() {
     if (!poolMode && !disposed && ready() && !tasks.length) await fetchPreviewSnapshot();
     if (!disposed && ready() && !tasks.length) await fetchEntrySnapshot();
     if (!disposed && ready() && !tasks.length) await fetchEventSnapshot();
-    if (poolMode) return;
     if (!disposed && ready() && !tasks.length) await fetchSeedSnapshot();
     if (!disposed && ready() && !tasks.length) await fetchCardSnapshot();
     if (!disposed && ready() && !tasks.length) await fetchBookedSnapshot();
@@ -1343,7 +1342,7 @@ function renderEvent() {
   content(ui['event-cutoff'], s ? `Saturday ${s.event.saturday} · State fixed at noon Pacific · ${new Date(s.event.cutoff_ms).toISOString()}` : 'Select a Saturday in the entry panel.');
   content(ui['event-progress'], s ? s.coordinator_created_at_ms >= s.event.cutoff_ms ? eventError('event_created_too_late') : `${s.captured_participants.length} of 2 gyms captured.${s.phase === 'before_cutoff' ? ' Waiting for noon Pacific.' : s.phase !== 'snapshotted' ? ' Each demo gym captures its own historical state after sign-in.' : ' The complete snapshot is immutable.'}` : '');
   content(ui['event-message'], eventMessage); content(ui['event-deadline'], s ? `If the required seed is still unfinalized at the following lock (${new Date(s.event.incident_deadline_ms).toISOString()}), escalate to the operator as a chain incident. This is the policy deadline; the seed panel reports observed evidence.` : '');
-  content(ui['event-seed'], poolMode ? 'This snapshot fixes the noon entry. Seed publication and fight results are not available in this demo mode yet.' : 'The seed panel reports candidate publication and checkpoint evidence. The event never receives a substitute seed and never automatically cancels.');
+  content(ui['event-seed'], 'The seed panel reports candidate publication and checkpoint evidence. The event never receives a substitute seed and never automatically cancels.');
   content(ui['event-digest'], s?.snapshot_digest ? `Snapshot digest: ${s.snapshot_digest}` : '');
   ui['event-refresh'].disabled = !active || !entryDate || busy; ui['event-capture'].disabled = !active || busy || eventUnknown || !s || s.observed_at_ms < s.event.cutoff_ms || s.coordinator_created_at_ms >= s.event.cutoff_ms;
   content(ui['event-capture'], s?.captured_participants.includes(current?.gym_id) ? 'Recover this gym’s capture' : 'Capture this gym'); ui['event-cancel'].disabled = !active || !!command || !eventWatch?.id; ui['event-record'].disabled = !active || busy || s?.phase !== 'snapshotted'; ui['event-clear'].disabled = !eventDetail; ui['event-history'].disabled = !active || busy; ui['event-history-next'].disabled = !active || busy || !eventHistory?.has_more;
@@ -1360,7 +1359,7 @@ let seedWatch = null, seedLastJob = '', seedMessage = '', seedUnavailable = fals
 function seedMetadataBytes() { return entryBytes([seedAuthority, seedSnapshot && { ...seedSnapshot, pin: null }, seedStatus, seedWatch, seedLastJob, seedMessage]) + 4096; }
 function seedRetainedBytes() { if (!seedAuthority && !seedSnapshot && !seedWatch) return 0; return seedMetadataBytes() + Math.max(entryBytes(seedDetail), seedWatch ? 245760 : 0) + entryBytes(seedHistory); }
 function seedCapacity() { return seedMetadataBytes() <= SEED_METADATA_MAX && seedRetainedBytes() <= SEED_MAX && previewCapacity(); }
-function seedReady() { return !poolMode && ready() && !seedUnavailable && !!seedAuthority && !!seedSnapshot?.pin && viewKey(seedSnapshot.view) === currentKey(); }
+function seedReady() { return ready() && !seedUnavailable && !!seedAuthority && !!seedSnapshot?.pin && viewKey(seedSnapshot.view) === currentKey(); }
 function clearSeed() { clearCard(); seedSerial++; seedSnapshot = seedStatus = seedDetail = seedHistory = seedWatch = null; seedLastJob = seedMessage = ''; seedUnavailable = seedUnknown = false; if (ui['seed-history-list']) { ui['seed-history-list'].textContent = ''; ui['seed-history-list']._key = ''; } }
 function seedContext() { return { epoch, view: currentKey(), viewID: current?.view?.view_id, serial: seedSerial, date: entryDate }; }
 function seedCurrent(c, selection = false) { return !disposed && ready() && c.epoch === epoch && c.view === currentKey() && (!selection || c.serial === seedSerial && c.date === entryDate); }
@@ -1443,7 +1442,7 @@ async function seedRead(field = 'status', after = '') {
   } catch { if (seedCurrent(c)) seedMessage = seedError('seed_unavailable'); } renderSeed();
 }
 async function seedBegin(kind) {
-  if (!seedReady() || !entryDate || seedWatch || seedUnknown && kind !== 'reconcile' || seedSnapshot.state === 'busy' || !['prepare', 'publish', 'reconcile', 'attest'].includes(kind)) return;
+  if (!seedReady() || poolBackupRunning() || !entryDate || seedWatch || seedUnknown && kind !== 'reconcile' || seedSnapshot.state === 'busy' || !['prepare', 'publish', 'reconcile', 'attest'].includes(kind)) return;
   if (['publish', 'attest'].includes(kind) && (current.account.held || current.account.id !== seedAuthority.pin.publisher_account_id)) { seedRefusal('forbidden'); return; }
   const c = seedContext(); seedWatch = { id: '', kind, saturday: c.date, eventKey: '' }; if (!seedCapacity()) { seedWatch = null; seedMessage = seedError('seed_capacity'); return; }
   try { const raw = await call({ prepare: 'BeginSeedPrepare', publish: 'BeginSeedPublish', reconcile: 'BeginSeedReconcile', attest: 'BeginSeedAttest' }[kind], c.viewID, c.date); if (!seedCurrent(c)) return; const r = seedEnvelope(raw, 'job'); if (!r.ok) { seedWatch = null; seedRefusal(r.error, true, kind); return; } const j = r.value; requireValue(j.kind === kind && j.saturday === c.date && j.state === 'queued'); seedDetail = seedHistory = null; seedWatch = { id: j.job_id, kind, saturday: j.saturday, eventKey: j.event_key }; seedMessage = 'Seed request queued.';
@@ -1464,10 +1463,10 @@ async function seedCancel() {
 function seedRecordPhase(r) { return r.conflicts.length || r.conflict_overflow ? 'conflict' : r.finality ? 'finalized' : r.target ? 'provisional' : r.anchor ? 'waiting_target' : r.publication ? 'waiting_anchor' : 'prepared'; }
 function renderSeed() {
   const active = seedReady(), s = seedStatus?.event.saturday === entryDate ? seedStatus : null, r = seedDetail?.source_receipt.input.event.saturday === entryDate ? seedDetail : null;
-  const busy = !!command || !!seedWatch || seedSnapshot?.state === 'busy', publisher = active && !current.account.held && current.account.id === seedAuthority.pin.publisher_account_id;
+  const busy = !!command || poolBackupRunning() || !!seedWatch || seedSnapshot?.state === 'busy', publisher = active && !current.account.held && current.account.id === seedAuthority.pin.publisher_account_id;
   content(ui['seed-state'], !ready() ? 'Sign in to view seed evidence' : seedUnavailable ? 'Unavailable in this route' : seedSnapshot?.state === 'setup_incomplete' ? 'Setup incomplete' : seedWatch ? `${label(seedWatch.kind)} in progress` : s ? label(s.phase) : r ? label(seedRecordPhase(r)) : 'Candidate seed evidence');
   content(ui['seed-message'], seedMessage); const o = r?.observation, chainTime = o?.chain_observed_at_ms ?? s?.chain_observed_at_ms ?? 0;
-  content(ui['seed-observation'], `Fixed Demo A nodes: ${seedSnapshot?.node_state ?? 'offline'}. ${chainTime ? `Last verified chain observation: ${new Date(chainTime).toISOString()}.` : 'No verified chain observation yet.'} ${s ? `Funding: ${label(s.funding_state)}. Scan through height ${s.scan_height}.` : ''}`);
+  content(ui['seed-observation'], `${poolMode ? 'Shared test chain' : 'Fixed Demo A nodes'}: ${seedSnapshot?.node_state ?? 'offline'}. ${chainTime ? `Last verified chain observation: ${new Date(chainTime).toISOString()}.` : 'No verified chain observation yet.'} ${s ? `Funding: ${label(s.funding_state)}. Scan through height ${s.scan_height}.` : ''}`);
   const finalized = r?.finality?.observed_at_ms ?? s?.finalized_at_ms ?? 0, eligible = o?.current_finality ?? s?.current_finality ?? false, depth = o?.target_descendants ?? s?.target_descendants ?? 0;
   content(ui['seed-finality'], finalized ? `First finality recorded ${new Date(finalized).toISOString()}. Eligible at the last verified observation: ${eligible ? 'yes' : 'no'}; ${depth} target descendants. This is retained candidate evidence, not continuous chain monitoring.` : 'Waiting for the exact seed block and its checkpoint with 60 descendants. No substitute seed or automatic cancellation.');
   const incident = r?.incident_at_ms ?? s?.incident_at_ms ?? 0; content(ui['seed-incident'], incident ? `Chain incident first recorded ${new Date(incident).toISOString()}. Refer the evidence to the operator under the checkpoint/community rule.` : s?.escalation_due ? 'Chain incident escalation is due; no first incident has been journaled for this event.' : s ? `Escalation boundary: ${new Date(s.event.incident_deadline_ms).toISOString()}. The event waits.` : '');
@@ -1506,7 +1505,7 @@ function cardRetainedBytes() {
   return cardMetadataBytes() + Math.max(entryBytes(cardDetail), cardWatch ? CARD_RESULT_MAX : 0);
 }
 function cardCapacity() { return cardMetadataBytes() <= CARD_METADATA_MAX && entryBytes(cardDetail) <= CARD_RESULT_MAX && cardRetainedBytes() <= CARD_MAX && previewCapacity(); }
-function cardReady() { return !poolMode && ready() && !cardUnavailable && !!cardAuthority && !!cardSnapshot?.pin && viewKey(cardSnapshot.view) === currentKey(); }
+function cardReady() { return ready() && !cardUnavailable && !!cardAuthority && !!cardSnapshot?.pin && viewKey(cardSnapshot.view) === currentKey(); }
 function clearCard() {
   clearBooked();
   cardSerial++; cardSnapshot = cardStatus = cardDetail = cardHistory = cardWatch = cardTerminal = null;
@@ -1699,7 +1698,7 @@ async function cardRead(kind, after = '') {
   } catch (e) { if (cardCurrent(c, kind !== 'history')) cardRefusal(e.cardCode ?? 'card_unavailable'); } renderCard();
 }
 async function cardBegin() {
-  if (!cardReady() || !entryDate || cardWatch || cardUnknown || cardSnapshot.state === 'busy') return;
+  if (!cardReady() || poolBackupRunning() || !entryDate || cardWatch || cardUnknown || cardSnapshot.state === 'busy') return;
   const c = cardContext(); cardWatch = { id: '', kind: 'build', state: 'queued', saturday: c.date, cardID: '' };
   if (!cardCapacity()) { cardWatch = null; cardMessage = cardError('card_capacity'); return; }
   try {
@@ -1745,7 +1744,7 @@ function cardGymName(id) { return id === fixtures.zero256[0] ? 'Demo A' : id ===
 function renderCard() {
   const active = cardReady(), s = cardStatus?.event.saturday === entryDate ? cardStatus : null;
   const r = cardDetail?.source.source_receipt.input.event.saturday === entryDate ? cardDetail : null, plan = r?.plan;
-  const busy = !!command || !!cardWatch || cardSnapshot?.state === 'busy';
+  const busy = !!command || poolBackupRunning() || !!cardWatch || cardSnapshot?.state === 'busy';
   const conflict = !!s && (s.source.status.conflict_count > 0 || s.source.status.conflict_overflow);
   content(ui['card-state'], !ready() ? 'Sign in to view cards' : cardUnavailable ? 'Unavailable in this route' : cardSnapshot?.state === 'setup_incomplete' ? 'Setup incomplete' : cardWatch ? 'Card request in progress' : s?.exists ? !cardOverlayKnown ? 'Saved card · source status unavailable' : conflict ? 'Saved card · seed conflict' : !s.usable ? 'Saved card · source unavailable' : 'Candidate card saved' : 'No saved card');
   content(ui['card-message'], cardMessage);
@@ -1802,7 +1801,7 @@ function bookedRetainedBytes() {
 }
 function bookedCapacity() { return bookedMetadataBytes() <= BOOKED_METADATA_MAX && entryBytes(bookedRecord) <= BOOKED_RESULT_MAX && [...bookedImages.values()].every(v => 2 * v.length <= 32768) && bookedRetainedBytes() <= BOOKED_MAX && previewCapacity(); }
 function bookedCacheError() { const e = new Error('Bout display full'); e.boutCode = 'bout_capacity'; return e; }
-function bookedReady() { return !poolMode && ready() && !bookedUnavailable && !!bookedAuthority && !!bookedSnapshot?.pin && viewKey(bookedSnapshot.view) === currentKey(); }
+function bookedReady() { return ready() && !bookedUnavailable && !!bookedAuthority && !!bookedSnapshot?.pin && viewKey(bookedSnapshot.view) === currentKey(); }
 function pauseBooked() { if (bookedTimer !== null) clearTimeout(bookedTimer); bookedTimer = null; }
 function bookedClearImages() { bookedImages.clear(); bookedImageAttempts.clear(); bookedRendered = ''; ui['bout-fighters'].textContent = ''; }
 function bookedClearRecord() { pauseBooked(); bookedRecord = null; bookedStep = 0; bookedClearImages(); ui['bout-events'].textContent = ''; ui['bout-scores'].textContent = ''; }
@@ -1968,7 +1967,7 @@ function bookedCheck() {
 }
 async function bookedBegin() {
   const selected = bookedStatus?.saved;
-  if (!bookedReady() || !bookedSelected || bookedWatch || bookedUnknown || bookedSnapshot.state === 'busy' || !bookedOverlayKnown || !bookedStatus?.source.usable || !selected || selected.exists || bookedRecord || selected.bout.bout_id !== bookedSelected) return;
+  if (!bookedReady() || poolBackupRunning() || !bookedSelected || bookedWatch || bookedUnknown || bookedSnapshot.state === 'busy' || !bookedOverlayKnown || !bookedStatus?.source.usable || !selected || selected.exists || bookedRecord || selected.bout.bout_id !== bookedSelected) return;
   const c = bookedContext(), priorWatch = bookedWatch; bookedWatch = { id: '', state: 'queued', date: c.date, boutID: c.boutID, cardID: bookedStatus.card_id };
   if (!bookedCapacity()) { bookedWatch = priorWatch; bookedMessage = bookedError('bout_capacity'); return; } pauseBooked();
   try {
@@ -2026,7 +2025,7 @@ function playBooked() {
   const c = bookedContext(), r = bookedRecord; const tick = () => { bookedTimer = null; if (!bookedCurrent(c, true) || bookedRecord !== r || document.hidden || motionPreference?.matches || command) return; bookedStep++; if (bookedStep < bookedTicks()) bookedTimer = setTimeout(tick, 250); renderBooked(); }; bookedTimer = setTimeout(tick, 250); renderBooked();
 }
 function renderBooked() {
-  const active = bookedReady(), selected = bookedStatus?.saved, busy = !!command || !!bookedWatch || bookedSnapshot?.state === 'busy';
+  const active = bookedReady(), selected = bookedStatus?.saved, busy = !!command || poolBackupRunning() || !!bookedWatch || bookedSnapshot?.state === 'busy';
   const publication = publicationForSelectedBout(), outcome = publicationOutcomeLabel(publication);
   content(ui['bout-state'], !ready() ? 'Sign in to view saved bouts' : bookedUnavailable ? 'Unavailable in this route' : bookedSnapshot?.state === 'setup_incomplete' ? 'Setup incomplete' : bookedWatch ? 'Candidate bout in progress' : bookedRecord ? `Saved candidate transcript · ${outcome}` : 'Booked bouts'); content(ui['bout-message'], bookedUnknown ? `${bookedError('outcome_unknown', true)} Pending Saturday ${bookedUnknown.date || 'unknown'} · ${bookedUnknown.boutID || 'waiting for job identity'}.` : bookedMessage);
   ui['bout-refresh'].disabled = !active || busy || !entryDate; ui['bout-run'].disabled = !active || busy || !selected || selected.exists || !!bookedRecord || !bookedOverlayKnown || !bookedStatus.source.usable || !!bookedUnknown;
@@ -2168,7 +2167,7 @@ function publicationEnvelope(r, field) {
   if (field === 'snapshot') {
     exact(v, ['version', 'state', 'error', 'view', 'store_id', 'pin', 'source_created_at_ms', 'created_at_ms', 'publisher_account_id', 'node_state', 'node_owner', 'active_job_id', 'queued_job_id', 'last_job_id']);
     requireValue(v.version === 1 && ['ready', 'busy', 'setup_incomplete', 'unavailable', 'failed'].includes(v.state) && int(v.source_created_at_ms, 0, DATE_MAX) && int(v.created_at_ms, 0, DATE_MAX) && ['active_job_id', 'queued_job_id', 'last_job_id'].every(k => optionalID(v[k])) && same(r.view, v.view) && r.store_id === v.store_id);
-    requireValue(['offline', 'starting', 'online'].includes(v.node_state) && (v.node_state === 'offline' ? v.node_owner === 'none' : v.node_state === 'starting' ? v.node_owner === 'publication' : ['publication', 'mining'].includes(v.node_owner)));
+    requireValue(['offline', 'starting', 'online'].includes(v.node_state) && (v.node_state === 'offline' ? v.node_owner === 'none' : v.node_state === 'starting' ? !poolMode && v.node_owner === 'publication' : (poolMode ? v.node_owner === 'shared_pool' : ['publication', 'mining'].includes(v.node_owner))));
     if (['unavailable', 'setup_incomplete'].includes(v.state)) { requireValue(v.pin === null && v.store_id === '' && v.publisher_account_id === '' && v.source_created_at_ms === 0 && v.created_at_ms === 0 && v.node_state === 'offline' && !v.active_job_id && !v.queued_job_id && !v.last_job_id && v.error === (v.state === 'unavailable' ? 'result_unavailable' : 'result_setup_incomplete')); requireValue(v.state === 'unavailable' ? v.view === null : viewKey(checkedView(v.view)) === currentKey()); }
     else {
       requireValue(viewKey(checkedView(v.view)) === currentKey() && hex(v.store_id)); publicationPin(v.pin); requireValue(v.publisher_account_id === v.pin.publisher_account_id && v.source_created_at_ms === bookedAuthority.createdMS && int(v.created_at_ms, v.source_created_at_ms, DATE_MAX));
@@ -2264,7 +2263,7 @@ async function publicationRead() {
   renderPublication(); renderBooked();
 }
 function publicationCanAct(kind) {
-  if (!publicationReady() || !entryDate || !bookedSelected || publicationWatch || publicationSnapshot.state === 'busy' || !['publish', 'reconcile', 'attest', 'export'].includes(kind)) return false;
+  if (!publicationReady() || poolBackupRunning() || !entryDate || !bookedSelected || publicationWatch || publicationSnapshot.state === 'busy' || !['publish', 'reconcile', 'attest', 'export'].includes(kind)) return false;
   if (current?.view?.account_id !== publicationAuthority.pin.publisher_account_id) return false;
   const s = publicationStatus, selected = bookedStatus?.saved;
   if (['publish', 'attest'].includes(kind)) {
@@ -2339,12 +2338,12 @@ function publicationForSelectedBout() {
 // observation. Seed finality, connection state and the phase badge cannot grant it.
 function publicationOutcomeLabel(s) { return s?.finalized_at_ms > 0 ? 'Finalized result' : 'Provisional result'; }
 function renderPublication() {
-  const active = publicationReady(), s = publicationForSelectedBout(), busy = !!command || !!publicationWatch || publicationSnapshot?.state === 'busy';
+  const active = publicationReady(), s = publicationForSelectedBout(), busy = !!command || poolBackupRunning() || !!publicationWatch || publicationSnapshot?.state === 'busy';
   const selected = bookedStatus?.saved, connected = publicationNodeConnected();
   ui['result-panel'].hidden = publicationUnavailable;
   const outcome = publicationOutcomeLabel(s);
   content(ui['result-state'], !ready() ? 'Sign in to view publication' : publicationSnapshot?.state === 'setup_incomplete' ? 'Setup incomplete' : !selected?.exists ? 'Choose a saved bout' : `${outcome} · ${!s ? 'Publication not read' : s.phase === 'absent' ? 'Saved outcome · unpublished' : s.phase === 'conflict' ? 'Conflicting evidence' : s.finalized_at_ms ? 'Historical test finality' : s.inclusion_height ? 'Included' : s.publication_state === 'dispatch_unknown' ? 'Submission uncertain' : s.publication_state === 'submitted' ? 'Submitted · not included' : 'Prepared · not published'}`);
-  content(ui['result-connection'], publicationSnapshot?.node_state === 'starting' ? 'Connecting test nodes. Mining remains stopped.' : publicationSnapshot?.node_state === 'online' ? publicationSnapshot.node_owner === 'publication' ? 'Test nodes connected for publication. No mining or admission worker is running for this connection.' : 'Using the existing mining connection.' : 'Test nodes are disconnected. An explicit publication action can connect Demo A’s nodes.');
+  content(ui['result-connection'], poolMode ? publicationSnapshot?.node_state === 'online' ? 'Using the shared test chain. Only Start begins mining; publication uses separately funded test outputs.' : 'The shared test chain is unavailable. Saved evidence is retained.' : publicationSnapshot?.node_state === 'starting' ? 'Connecting test nodes. Mining remains stopped.' : publicationSnapshot?.node_state === 'online' ? publicationSnapshot.node_owner === 'publication' ? 'Test nodes connected for publication. No mining or admission worker is running for this connection.' : 'Using the existing mining connection.' : 'Test nodes are disconnected. An explicit publication action can connect Demo A’s nodes.');
   content(ui['result-observation'], s ? `${s.chain_observed_at_ms ? `Last chain check ${date.format(s.chain_observed_at_ms)}.` : 'No chain inclusion check is retained.'} Local evidence read ${date.format(s.observed_at_ms)}. Disconnection does not erase historical evidence.` : 'Read saved publication to inspect retained evidence without connecting nodes.');
   content(ui['result-message'], publicationUnknown ? `${publicationError('outcome_unknown', publicationUnknown.kind)} The pending request belongs to Saturday ${publicationUnknown.date}.` : publicationMessage);
   content(ui['result-finality'], s?.finalized_at_ms ? `First test finality observed ${date.format(s.finalized_at_ms)}. ${s.current_finality ? 'The inclusion met the depth rule at its last chain check.' : 'Current chain finality is not confirmed by the last check.'}` : s?.inclusion_height ? `${s.descendants} descendant blocks observed for this result. ${s.descendants < 60 ? '60 are required, followed by its own signed test checkpoint.' : 'The depth threshold is reached; finalization is a separate explicit action.'}` : 'A finalized event seed does not finalize this result. Signed preparation and submission are not chain inclusion.');
@@ -2355,7 +2354,8 @@ function renderPublication() {
   ui['result-read'].disabled = !active || busy || !bookedSelected;
   for (const kind of ['publish', 'reconcile', 'attest', 'export']) ui[`result-${kind}`].disabled = busy || !publicationCanAct(kind);
   ui['result-cancel'].disabled = !active || !!command || !publicationWatch?.id;
-  ui['result-disconnect'].disabled = !active || !!command || !connected;
+  ui['result-disconnect'].hidden = poolMode;
+  ui['result-disconnect'].disabled = poolMode || !active || !!command || !connected;
   ui['result-clear'].disabled = !publicationRecord && !publicationStatus && !publicationExport;
   requireValue(entryBytes([ui['result-evidence'].textContent, ui['result-state'].textContent]) <= 4096);
 }
@@ -2605,4 +2605,4 @@ ui['export-recovery'].addEventListener('click', () => oldAction('ExportRecovery'
 document.addEventListener('visibilitychange', () => { if (document.hidden) { pausePreview(); pauseBooked(); } if (!document.hidden && enabled) { pollWanted = true; pump(); } else if (timer !== null) { clearTimeout(timer); timer = null; } });
 window.addEventListener('pagehide', () => { disposed = true; epoch++; clearHistory(); clearEvent(); clearEntry(); clearPreview(); tasks = []; if (timer !== null) clearTimeout(timer); timer = null; clearCards(); pageItems = []; current = stable = null; });
 render();
-(async () => { try { const selectedMode = await call('Mode'); requireValue([MODE, POOL_MODE].includes(selectedMode)); poolMode = selectedMode === POOL_MODE; const selectedCareer = poolMode ? false : await call('CareerMode'); requireValue(typeof selectedCareer === 'boolean'); careerMode = selectedCareer; if (disposed) return; enabled = true; pollWanted = true; pump(); } catch { connectionError = 'Open this page through the candidate stable mode.'; render(); } })();
+(async () => { try { const selectedMode = await call('Mode'); requireValue([MODE, POOL_MODE].includes(selectedMode)); poolMode = selectedMode === POOL_MODE; const selectedCareer = await call('CareerMode'); requireValue(typeof selectedCareer === 'boolean'); careerMode = selectedCareer; if (disposed) return; enabled = true; pollWanted = true; pump(); } catch { connectionError = 'Open this page through the candidate stable mode.'; render(); } })();

@@ -129,7 +129,14 @@ func (p *Publisher) Unspent(ctx context.Context, outpoint Outpoint) (*UnspentOut
 		return nil, e
 	}
 	defer end()
-	return p.unspent(c, outpoint)
+	out, e := p.unspent(c, outpoint)
+	if e == nil {
+		e = p.finishShared(c)
+	}
+	if e != nil {
+		return nil, e
+	}
+	return out, nil
 }
 
 func (p *Publisher) checkCoin(ctx context.Context, coin FundingCoin) error {
@@ -214,6 +221,9 @@ func (p *Publisher) BuildPublication(ctx context.Context, carrier [73]byte, coin
 		return nil, e
 	}
 	if e = p.checkCoin(c, coin); e != nil {
+		return nil, e
+	}
+	if e = p.finishShared(c); e != nil {
 		return nil, e
 	}
 	return raw, nil

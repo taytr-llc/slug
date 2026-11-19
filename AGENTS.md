@@ -201,6 +201,19 @@ version.
   its new lock and first finality. Preserve prior snapshots without backdating
   activation. Keep publication funding separate from pool earnings. See
   `SHARED_POOL_LEAGUE.md` and `CHANGESET_63_NOTES.md`; D74 remains last.
+- Set64 on `slug-shared-event-cycle` attaches the full shared event/career
+  pipeline. Activate the parent-owned result reader before publishing children;
+  persist the exact source/store/activation chain and fail closed on missing
+  established components. Borrow the concrete existing node pair, retaining
+  source pins, owner handles and original-view capabilities. Retry only transient
+  issuer contention within the existing request/lifetime bounds, outside account
+  leases. Keep scalar1/2 fixture publication funding separate from scalar3 pool
+  settlement. Genuine seed/result finality, exact-once careers, restart and C1
+  refusal pass on the normal-PoW fixture chain. Pre-enrollment never exempts an
+  awarded fighter from C1's later zero-record cutoff. The normal package retains
+  explicit Start-only mining, recovery and existing panels; practice stays off.
+  See `SHARED_EVENT_CYCLE.md` and `CHANGESET_64_NOTES.md`. Continue functional
+  blockers with frozen-history compatibility; D74 remains the final joint gate.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

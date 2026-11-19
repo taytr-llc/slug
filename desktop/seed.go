@@ -7,6 +7,9 @@ import (
 )
 
 func (g *Gym) seedRequest(r pilot.SeedRequest) pilot.SeedResponse {
+	if g.poolHelper != nil {
+		return g.poolHelper.SeedRequest(context.Background(), r)
+	}
 	if g.stableHelper == nil {
 		return pilot.SeedResponse{ID: 1, Error: "seed_unavailable"}
 	}

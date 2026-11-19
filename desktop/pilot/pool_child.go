@@ -75,6 +75,10 @@ func NewPoolChild(ctx context.Context, runtime *PoolRuntime, account StableAccou
 	if err != nil {
 		return nil, err
 	}
+	if r.Pipeline == nil {
+		r.Release()
+		return nil, ErrManifestInitialization
+	}
 	c, err := newPoolChild(ctx, r, account)
 	if err != nil {
 		r.Release()
@@ -104,6 +108,11 @@ func newPoolChild(ctx context.Context, r poolChildResources, account StableAccou
 		return nil, err
 	}
 	r.League = league
+	pipeline, err := validatePoolPipelineChild(r)
+	if err != nil {
+		return nil, err
+	}
+	r.Pipeline = pipeline
 	a := account.Manifest
 	f, err := gymaccount.FixtureIdentity(a.Account.Fixture)
 	if err != nil || a.Account.AdmissionSigner != nil || r.Recipient.Config.AccountID != a.Account.AccountID || r.Recipient.Config.AccountAuthorityID != a.Account.AuthorityID || r.Recipient.Config.Fixture != a.Account.Fixture || r.Recipient.Config.Identity != f || r.StablePin.Version != gymstable.SharedPinVersion2 || r.StablePin.Source != r.Source.AuthorityPin || r.StablePin.Identity != f || r.StablePin.AccountID != a.Account.AccountID || r.StablePin.AccountAuthorityID != a.Account.AuthorityID || r.Issuer == nil || r.Node == nil || r.Life == nil || r.Life.Err() != nil || r.Release == nil {
@@ -203,6 +212,9 @@ func (c *PoolChild) Prepare(parent context.Context) error {
 	if err = s.preparePoolLeague(r); err != nil {
 		return err
 	}
+	if err = s.preparePoolPipeline(r); err != nil {
+		return err
+	}
 	if err = s.openPair(r.Issuer); err != nil {
 		return err
 	}
@@ -212,6 +224,9 @@ func (c *PoolChild) Prepare(parent context.Context) error {
 	}
 	s.stableStatus, s.installed, s.needSync = &status.Status, true, true
 	if err = s.attachPoolLeague(ctx, r); err != nil {
+		return err
+	}
+	if err = s.attachPoolPipeline(ctx, r); err != nil {
 		return err
 	}
 	view := base.viewPin()
@@ -329,7 +344,13 @@ func openPoolChildOutbox(r poolChildResources) (*prospectworker.PoolOutbox, erro
 	} else if e != nil {
 		err = e
 	} else {
-		if r.Factories != nil {
+		if r.Pipeline != nil {
+			if r.Factories == nil || r.Factories.openSharedCareer == nil {
+				_ = box.Close()
+				return nil, ErrManifestInitialization
+			}
+			stable, err = r.Factories.openSharedCareer(stablePath, r.StablePin, r.Issuer, r.Pipeline.Career)
+		} else if r.Factories != nil {
 			stable, err = r.Factories.openStable(stablePath, r.StablePin, r.Issuer)
 		} else {
 			stable, err = gymstable.OpenShared(stablePath, r.StablePin, r.Issuer)
@@ -537,6 +558,9 @@ func (c *PoolChild) Close() error {
 			s.last = nil
 			s.previewLast = nil
 			s.entryLast, s.eventLast = nil, nil
+			s.seedLast, s.cardLast, s.boutLast, s.resultLast = nil, nil, nil, nil
+			s.clearCareerReadLocked()
+			s.invalidateHistoryLocked()
 			s.entryPending, s.eventFailure = "", ""
 			s.stableMu.Unlock()
 		}

@@ -1,3 +1,4 @@
+import {sharedTransport} from './pool-cycle-fixture.mjs';
 // Presentation tests against the independently frozen preimplementation corpus.
 // Native crypto, source proofs and original-session authorization are separate gates.
 import assert from 'node:assert/strict';
@@ -16,18 +17,30 @@ class Element {
   set textContent(v){this._text=String(v);this.children=[];}get textContent(){return this._text+this.children.map(c=>c.textContent).join('');}
   set innerHTML(_){throw Error('Unsafe HTML');}append(...nodes){this.children.push(...nodes);}setAttribute(k,v){this.attributes.set(k,String(v));}removeAttribute(k){this.attributes.delete(k);}addEventListener(k,v){this.listeners.set(k,v);}
 }
-function harness(name='genuine_win'){
-  const c=clone(history(name).expected.capture),j=dto('job/done');j.capture=c;j.store_id=c.status.store_id;j.activation_id=c.activation.activation_id;j.prospect_id=c.assignment.prospect_id;
-  Object.assign(j.view,{account_id:c.status.pin.account_id,account_authority_id:c.status.pin.account_authority_id,authority_pin:clone(c.status.pin.source)});
-  const s={...dto('snapshot/ready'),view:clone(j.view),store_id:j.store_id,activation:clone(c.activation),last_job_id:j.job_id};
+function harness(name='genuine_win', pool = false){
+ const transport = pool ? sharedTransport : clone;
+  const c=transport(history(name).expected.capture),j=dto('job/done');j.capture=c;j.store_id=c.status.store_id;j.activation_id=c.activation.activation_id;j.prospect_id=c.assignment.prospect_id;
+  Object.assign(j.view,{account_id:c.status.pin.account_id,account_authority_id:c.status.pin.account_authority_id,authority_pin:transport(c.status.pin.source)});
+  const s={...dto('snapshot/ready'),view:transport(j.view),store_id:j.store_id,activation:transport(c.activation),last_job_id:j.job_id};
   const elements=new Map([...html.matchAll(/\bid="([^"]+)"/g)].map(m=>[m[1],new Element()])),calls=[],handlers={};
-  const context=vm.createContext({document:{getElementById:id=>elements.get(id),createElement:tag=>new Element(tag),hidden:false},window:{matchMedia:()=>({matches:false,addEventListener(){}})},Call:{async ByName(name,...args){const method=name.slice(9);calls.push({method,args:clone(args)});assert.ok(handlers[method],`Unexpected ${method}`);return clone(await handlers[method](...args));}},Intl,Date,btoa:s=>Buffer.from(s).toString('base64'),setTimeout(){return 1;},clearTimeout(){}});
-  vm.runInContext(script,context);const run=s=>vm.runInContext(s,context),set=(name,value)=>{context.input=clone(value);run(`${name}=input`);};
+  const context=vm.createContext({document:{getElementById:id=>elements.get(id),createElement:tag=>new Element(tag),hidden:false},window:{matchMedia:()=>({matches:false,addEventListener(){}})},Call:{async ByName(name,...args){const method=name.slice(9);calls.push({method,args:transport(args)});assert.ok(handlers[method],`Unexpected ${method}`);return transport(await handlers[method](...args));}},Intl,Date,btoa:s=>Buffer.from(s).toString('base64'),setTimeout(){return 1;},clearTimeout(){}});
+  vm.runInContext(script,context);
+ context.poolFixtureMode = pool; vm.runInContext('poolMode = poolFixtureMode', context);const run=s=>vm.runInContext(s,context),set=(name,value)=>{context.input=transport(value);run(`${name}=input`);};
   set('current',{account:{state:'signed_in',fixture:c.status.pin.identity.gym_id==='a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5'?'zero256':'incrementing256'},view:j.view});set('stable',{state:'ready',view:j.view,status:c.status});set('careerMode',true);set('careerActivation',c.activation);set('historySnapshot',s);set('historyJob',j);set('historySelection',{id:j.prospect_id,name:'Captured fighter',assignment:c.assignment});
-  const response=(kind,value)=>({id:1,version:1,ok:true,snapshot:null,job:null,page:null,error:'',[kind]:clone(value)});
+  const response=(kind,value)=>({id:1,version:1,ok:true,snapshot:null,job:null,page:null,error:'',[kind]:transport(value)});
   const error=code=>({id:1,version:1,ok:false,snapshot:null,job:null,page:null,error:code});
   return {run,set,context,elements,c,j,s,calls,handlers,response,error};
 }
+test('shared career history preserves final awards and the original sparse source', async () => {
+  const h = harness('genuine_win', true), page = sharedTransport(history('genuine_win').expected.pages[0].value);
+  h.handlers.CareerHistoryPage = () => h.response('page', {view: h.j.view, store_id: h.j.store_id, job_id: h.j.job_id, page});
+  await h.run('readHistoryPage(0)');
+  assert.equal(h.run('historyPage.capture.status.pin.version'), 2);
+  assert.equal(h.run('historyPage.items.length'), 1);
+  assert.match(h.elements.get('history-totals').textContent, /Base points \(not ranking\)/);
+  assert.deepEqual(h.calls.map(v => v.method), ['CareerHistoryPage']);
+});
+
 test('all independent captures and page boundaries retain chronological totals in newest-first presentation',()=>{
   let pages=0;for(const item of reference.history.histories){const h=harness(item.name);h.run('historyCapture(historyJob.capture)');for(const p of item.expected.pages){h.context.input=clone(p.value);h.context.after=p.after;h.context.limit=p.limit;h.run('historyPageValue(input,after,limit)');pages++;}}assert.equal(pages,80);
 });

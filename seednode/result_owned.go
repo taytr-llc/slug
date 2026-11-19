@@ -65,7 +65,7 @@ func (p *ResultPublisher) finish(ctx context.Context) error {
 	if ctx.Err() != nil {
 		return ErrOffline
 	}
-	if err := p.owner.checkOwner(); err != nil {
+	if err := p.owner.checkOwnerContext(ctx); err != nil {
 		return err
 	}
 	if ctx.Err() != nil {

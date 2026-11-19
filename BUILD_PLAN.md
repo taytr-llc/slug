@@ -228,15 +228,19 @@ Set63 connects shared-pool fighters to Saturday entries and durable noon
 snapshots in an explicit parent-owned coordinator. Both gyms retain original
 Pin2 participant pins and source sequences across reset and restart. See
 `SHARED_POOL_LEAGUE.md` and `CHANGESET_63_NOTES.md`.
-Next connect shared publication, cards, fights, results and career awards,
+Set64 connects shared publication, cards, fights, results and career awards,
 activating career authority before the new event's lock and first finality.
-Keep publication funding separate from share-accounted pool rewards.
+Actual normal-PoW acceptance proves both finalities and exactly-once careers
+through retry/restart. Publication funding stays separate from share-accounted
+pool rewards. See `SHARED_EVENT_CYCLE.md` and `CHANGESET_64_NOTES.md`.
+Next expand the name pool through an explicit versioned candidate, retaining
+all existing fighters, source pins and defaults and measuring duplicate names.
 Never repin solo event histories. Keep the existing layout/logos until the final
 joint D74 review. Public hosting, production signer custody/capacity, real account
 configuration and permanent genesis remain separate gates. The implemented
 contract is `SHARED_POOL_DESKTOP.md`; the earlier workspace runtime proposal
 remains historical context. See `CHANGESET_52_NOTES.md` through
-`CHANGESET_63_NOTES.md`, `POOL_WORKER.md`, `POOL_RECIPIENTS.md`,
+`CHANGESET_64_NOTES.md`, `POOL_WORKER.md`, `POOL_RECIPIENTS.md`,
 `SHARED_GYM_STABLE.md` and `POOL_SESSION_FENCES.md`.
 
 ### 4. Wallet

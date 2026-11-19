@@ -19,6 +19,7 @@ import (
 	"github.com/taytr-llc/slug/gymstable"
 	"github.com/taytr-llc/slug/internal/careerstate"
 	"github.com/taytr-llc/slug/registry"
+	"github.com/taytr-llc/slug/seednode"
 )
 
 // StableController owns one serial work lane. Its source lifetime is fenced by
@@ -29,6 +30,7 @@ type StableController struct {
 	sharedPin                          *gymstable.Pin
 	sharedSource                       *registry.ManifestStore
 	sharedFactories                    *poolLeagueFactories
+	sharedPublisher                    *seednode.SharedPoolOwnerBinding
 	careerHandle                       *gymstable.CareerRead
 	careerJobID                        string
 	careerView                         ManifestViewPin

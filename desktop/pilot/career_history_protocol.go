@@ -60,7 +60,7 @@ func historyMetadataError(ctx context.Context, e error) error {
 	}
 	return e
 }
-func handleCareerHistoryRequest(ctx context.Context, r CareerHistoryRequest, c CareerHistoryControllerAPI) CareerHistoryResponse {
+func handleCareerHistoryRequest(ctx context.Context, r CareerHistoryRequest, c CareerHistorySurfaceAPI) CareerHistoryResponse {
 	out := CareerHistoryResponse{ID: r.ID, Version: 1, OK: true}
 	var e error
 	switch r.Command {

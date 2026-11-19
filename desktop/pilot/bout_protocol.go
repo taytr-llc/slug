@@ -42,7 +42,7 @@ func boutProtocolError(err error) string {
 
 var errBoutSetup = errors.New("bout_setup_incomplete")
 
-func handleBoutRequest(ctx context.Context, r BoutRequest, c BoutControllerAPI) BoutResponse {
+func handleBoutRequest(ctx context.Context, r BoutRequest, c BoutSurfaceAPI) BoutResponse {
 	out := BoutResponse{ID: r.ID, OK: true}
 	var err error
 	switch r.Command {

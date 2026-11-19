@@ -192,7 +192,7 @@ test('pool event controls pin both gyms to the same shared source and retain ori
     assert.equal(h.calls.find((c) => c.method === 'BeginEventCapture').args[0], h.view.view_id);
     assert.equal(h.run('eventAuthority.pin.participants.every(p => p.stable_pin.version === 2)'), true);
     assert.equal(h.count('Start'), 0); assert.equal(h.count('ManifestSnapshot'), 0);
-    assert.match(h.elements.get('event-seed').textContent, /Seed publication and fight results are not available/);
+    assert.match(h.elements.get('event-seed').textContent, /never receives a substitute seed/);
   }
 });
 test('pool event snapshots reject mixed versions and a foreign counterparty source', async (t) => {

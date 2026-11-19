@@ -90,6 +90,11 @@ func historyTuple(j pilot.CareerHistoryJob) careerHistoryTuple {
 }
 
 func (b *StableBridge) CareerHistoryRequest(ctx context.Context, req pilot.CareerHistoryRequest) pilot.CareerHistoryResponse {
+	return b.careerHistoryRequest(ctx, req, b.ResultRequest)
+}
+
+// The caller chooses the concrete source-discovery route; no embedded-method fallback.
+func (b *StableBridge) careerHistoryRequest(ctx context.Context, req pilot.CareerHistoryRequest, prepare func(context.Context, pilot.ResultRequest) pilot.ResultResponse) pilot.CareerHistoryResponse {
 	if !b.careersEnabled {
 		return historyFailure(0, "career_inactive")
 	}
@@ -102,7 +107,7 @@ func (b *StableBridge) CareerHistoryRequest(ctx context.Context, req pilot.Caree
 		// The existing Result discovery independently establishes the entire
 		// original source chain. A History DTO cannot supply its own authority.
 		if _, _, ready := b.resultContext(); !ready {
-			r := b.ResultRequest(ctx, pilot.ResultRequest{Command: "result_snapshot"})
+			r := prepare(ctx, pilot.ResultRequest{Command: "result_snapshot"})
 			if !r.OK {
 				code := "career_inactive"
 				if oneOf(r.Error, "busy", "unauthorized", "forbidden", "stale_view", "outcome_unknown") {
