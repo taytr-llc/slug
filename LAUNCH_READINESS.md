@@ -222,15 +222,27 @@ they do not count as completion of this product-release gate.
   production authority, portrait/GUI/accessibility and D74 remain open. C1 and
   D65 are unchanged. See `CHANGESET_49_NOTES.md` and `RESULT_AWARD_POLICY.md`.
 
-- Set 50 is under validation on `slug-career-preview`. The additive practice
-  path captures finalized XP with original DNA and birth, preserves the saved
-  result across later awards, and grants no records, XP, points or titles.
-  Local tests, independent arithmetic and a scoped awarded-fighter composition
-  passed again after a narrow logout classification fix.
-  Normal-calendar Mac packaging and deployment verification remain pending.
-  The legacy XP0 preview, fight engine, D65, C1 and D78 remain unchanged.
-  See `CAREER_PREVIEW.md` and `CHANGESET_50_NOTES.md`. This does not close any
-  production authority, GUI/accessibility or joint D74 review gate.
+- Set 50 implementation `99d36ef2` is released as `592e143c` on the seed. Its
+  additive practice path captures finalized XP with original DNA and birth,
+  retains that captured result across later awards, and grants no records,
+  XP, points or titles. All 249 frontend tests, independent arithmetic and
+  three scoped awarded-fighter jobs/two distinct compositions pass. The normal
+  Mac package passed five XP0 jobs/ten typed portraits and all ten independent
+  checks: nine passed reports were hash-reused after a corrected tenth checker.
+  The initial missing-snapshot producer failure and checker-envelope failure
+  remain preserved. The live observation and provider closeout passed: 900.03
+  seconds, 31 successful samples at height 61 with 60 checkpoint descendants,
+  and a clean restart.
+  Railway remained healthy on the exact release, with configuration, volume
+  and TCP endpoint unchanged. Remote CI absence is assessed, not
+  passed. The legacy XP0 preview, fight engine, D65, C1 and D78 are unchanged.
+  One local signed-out spot check showed the detailed header logo and one
+  running instance. Mike explicitly confirmed the menu-bar fist visible after
+  its already-on macOS Allow in Menu Bar setting was toggled off/on. No source
+  fix or established root cause is claimed. This narrow logo/tray observation
+  does not close full GUI, native chooser, screen-reader or D74 acceptance.
+  See `CAREER_PREVIEW.md` and `CHANGESET_50_NOTES.md`; production authority
+  and the remaining product gates stay open.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace

@@ -1,8 +1,14 @@
 # Change set 50 — career-aware practice previews
 
-In progress on `slug-career-preview`, stacked from Set49 completion tip
-`b3150b49e958d91e90da9a0320bc91ab731dc5b4`. Set49 remains deployed at
-`0a4374de`; Set50 implementation is under validation and has not been deployed.
+Implemented on `slug-career-preview`, stacked from Set 49 completion tip
+`b3150b49e958d91e90da9a0320bc91ab731dc5b4`. Implementation `99d36ef2` passed
+normal package acceptance and was released as `592e143c`; Railway deployment
+`d09988c7-8441-45e4-b7df-5e07850b49c2` reports SUCCESS. The full live
+observation passed:
+900.03 seconds, 31 successful samples at height 61 with 60 checkpoint
+descendants, and a clean restart. Provider closeout confirmed that
+Railway remained healthy on the exact release, with configuration, volume and
+TCP endpoint unchanged.
 The reference-only commit is `47704d73` and was pushed before runtime work.
 
 The accepted engineering contract is `CAREER_PREVIEW.md`, frozen at SHA256
@@ -28,7 +34,7 @@ hash seeds and time zones. All 151 prior reference files remain unchanged.
 Pre-freeze candidates preserve the transport, correlation, score-bound and
 model-label refinements found during review; they are not relabelled as final.
 The exact inventory, reproduction and review are bound by
-`gymstable/testdata/career-preview-freeze.json`. No Set50 runtime code preceded
+`gymstable/testdata/career-preview-freeze.json`. No Set 50 runtime code preceded
 that freeze.
 
 The reference distinguishes modeled career inputs from genuine previously
@@ -59,8 +65,9 @@ controls similarly remain reference-only because there is no raw portrait API.
 Earlier failed compilation/test attempts are retained separately.
 
 The actual awarded-fighter acceptance passed on an isolated copy of the retained
-Set49 fixture: both gyms completed practice, portrait reads and Stop replay,
-then the first gym repeated the flow after process restart. Current Career
+Set 49 fixture: both gyms completed practice, portrait reads and Stop replay,
+then the first gym repeated the flow after process restart. These are three
+explicit jobs and two distinct independently checked compositions. Current Career
 pages, original account counters and the saved professional result stayed
 unchanged. Independent Python validation checked both distinct complete fight
 compositions and native SVGs. One positive and sixteen semantic corruption
@@ -82,13 +89,41 @@ the awarded-fighter acceptance and independent arithmetic checks passed again
 on the corrected source. Frontend review also caught an accidental coupling
 between C1 entry selection and practice readiness; the original zero-record
 entry rule is retained separately from career-aware practice.
-Normal-calendar packaging, deployment and live observation remain pending.
-The first normal package attempt passed the inherited nine-family flow but
-failed the new practice producer before its first inventory job: the producer
-omitted the Stable snapshot required after Manifest login. The native bridge
-correctly refused the unbound request as stale. The corrected test compiles; it establishes and checks the original Stable
-identity on every login/restart;
-runtime session checks remain unchanged, and the failed attempt is retained.
+The normal-calendar version 0.4.10/build 50 package passed on implementation
+`99d36ef2`. It preserves the inherited nine-family acceptance and adds five
+explicit XP0 Career previews, ten typed portrait outputs (with separately
+checked cache-hit replies), and ten original source-job/current-page pairs.
+This additional phase adds no mining or awards; the inherited isolated private
+fixture mining remains separately recorded. It does not claim a real-calendar
+closed event, professional result publication or career award.
+
+The first package attempt remains failed and preserved. It passed the inherited
+nine-family flow but the new producer omitted native authority discovery after
+Manifest login; the native bridge correctly refused its first inventory request
+as stale. The test-only correction establishes and checks the original Result
+and Stable identities on every login/restart, without relaxing runtime checks.
+The second package attempt passed. Its first independent aggregate then passed
+nine checks but failed the tenth on a checker assumption about the inherited
+ResultResponse envelope. The corrected checker preserves that legacy grammar.
+The final ten-check aggregate reuses exactly those nine passed reports, bound
+to unchanged input/source hashes, and executes only the corrected tenth. It
+repeats no normal Argon work and leaves the failed aggregate, sources and logs
+intact. Package signatures, profile and icon assets passed their separate
+checks; remote CI returned no runs/checks and is assessed, not claimed passed.
+
+A separate signed-out GUI spot check of the latest build showed the detailed
+header logo and one running app instance. Mike initially could not see the
+menu-bar icon, then explicitly confirmed the fist was visible after the
+already-enabled macOS Allow in Menu Bar setting was toggled off/on. No source
+fix was made and the cause of the initial visibility issue is unestablished.
+This is one local logo/tray observation, not general GUI, chooser, portrait,
+screen-reader or joint D74 acceptance; its contemporaneous session receipt
+clarifies earlier pending visual lists without rewriting release evidence.
 Production authority, general matchmaking, rankings/title allocation, permanent
 genesis and the joint D74 design review remain separate gates. No Daybreak scan
 is claimed or required for these local independent reviews.
+
+The completed release evidence is retained in the workspace as
+`set50-closeout.json`, `set50-observer.json` and `set50-railway-closeout.json`.
+Set 51 starts with the independently reviewed finalized fighter-history
+contract and reference work; it adds no ranking or title-selection policy.

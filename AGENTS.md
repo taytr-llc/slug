@@ -70,13 +70,25 @@ version.
   → `slug-event-card` (set 46, released on master at `5c11cbaf`)
   → `slug-event-bouts` (set 47, released on master at `ba218f55`)
   → `slug-result-publication` (set 48, released on master at `cc4f41e4`)
-  → `slug-career-awards` (set 49, released on master at `0a4374de`).
+  → `slug-career-awards` (set 49, released on master at `0a4374de`)
+  → `slug-career-preview` (set 50, released on master at `592e143c`).
   Set 49 implementation is `5b590f40`, stacked from completed Set 48 topic
   `dd74828f`; its normal package and complete 900-second closeout passed.
-  Set 50 continues on `slug-career-preview`, stacked from Set 49's completed
-  topic maintenance tip `b3150b49`. Its additive unrecorded practice contract
-  is `CAREER_PREVIEW.md`; freeze and independently review reference expectations
-  before runtime implementation. Preserve the old XP0 Preview family and engine.
+  Set 50 implementation is `99d36ef2`, stacked from Set 49's completed topic
+  maintenance tip `b3150b49`. Its independently frozen `CAREER_PREVIEW.md`
+  family passed scoped awarded-fighter and normal XP0 package acceptance;
+  practice remains unrecorded and grants no awards. Preserve the old XP0
+  Preview family/engine and every failed acceptance/checker attempt. Final
+  observation and provider closeout passed: 900.03 seconds, 31 successful
+  samples at height 61 with 60 checkpoint descendants, and a clean restart.
+  Railway remained healthy on the exact release, with configuration, volume
+  and TCP endpoint unchanged.
+  Remote CI absence is assessed, not a pass. One local signed-out header-logo
+  and user-confirmed menu-bar fist check does not replace the full D74 review.
+- Next, Set 51 adds authenticated finalized fighter history under the externally
+  reviewed history contract. Freeze independent expectations before runtime
+  work, and stack its topic from the completed Set 50 maintenance tip. Preserve
+  original authority, effective-only awards and all existing policy boundaries.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

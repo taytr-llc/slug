@@ -370,12 +370,24 @@ Mac package and nine independent reports separately passed zero-award current
 Career pages and recovery, followed by the full 900-second/31-sample deployment
 observation and restart. Remote CI absence is assessed, not a pass. C1 still
 refuses awarded fighters; historical noon inputs remain fixed. The shipped
-legacy practice preview still uses XP0. Set50 on `slug-career-preview` adds a
-separate career-aware practice path under `CAREER_PREVIEW.md`; local, independent
-arithmetic and scoped awarded-fighter checks pass, with final package/deployment
-verification in progress. Practice grants no permanent awards. Complete
-rankings/title authority and D74 remain open. See
-`CHANGESET_49_NOTES.md` and `RESULT_AWARD_POLICY.md`.
+legacy practice preview still uses XP0. Set 50 implementation `99d36ef2` adds a
+separate career-aware practice path under `CAREER_PREVIEW.md`. Local checks,
+all 249 frontend tests, three scoped awarded-fighter jobs/two distinct
+compositions, and five normal-package XP0 jobs/ten typed portraits passed.
+The final ten independent package checks include nine unchanged-input-bound
+reused reports and the corrected tenth check; failed attempts remain preserved.
+Release `592e143c` is deployed. Final observation and provider closeout
+passed: 900.03 seconds, 31 successful samples at height 61 with 60 checkpoint
+descendants, and a clean restart.
+Railway remained healthy on the exact release, with configuration, volume and
+TCP endpoint unchanged. Remote CI absence is assessed, not
+a pass. Practice grants no permanent awards. Complete rankings/title authority,
+production gates and D74 remain open. See
+`CHANGESET_49_NOTES.md`, `CHANGESET_50_NOTES.md` and `RESULT_AWARD_POLICY.md`.
+Set 51 begins with authenticated finalized fighter history: one captured
+prefix, bounded newest-first pages and per-result base-point/earned/applied-XP
+explanations. Its independently reviewed contract is frozen; reference
+preparation precedes runtime work. Full ranking/title policy stays separate.
 
 The Saturday operation: entry collection and lock (Saturday noon
 PT), matchmaking in the D52 ratio band with random draw (D13, D28),
