@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "sequence": 2,
+  "prospect_id": "067121d1f9be9eee0eab884de24e24df996e3b15d4385f5123930c6405d71fa3",
+  "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+  "work_hash": "ebb1c933711dda7937634d80933ba6932a98a847d0914a7eb44aa1431bd4ab78",
+  "born_at_ms": 1794962881028,
+  "accepted_at_ms": 1794962883835,
+  "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+  "manifest_digest": "8fb40f35051eba45a9ff144088a129637985d429f8857b6912031efab7d769d4",
+  "portrait_digest": "228a8872e8b2c87ebfdc6b527ee8e68eca5c3afe7d0fc8b0f71e130c59e2f09b",
+  "source_record_digest": "06fad350ad91ec4e0de8294f09ee80921c9f70c90a744ba8f6b228696a6571db"
+}

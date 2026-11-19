@@ -1,0 +1,9 @@
+{
+  "reason": "First assembled authoring candidate preserved before concrete within-page uniqueness correction; no passed verification claim.",
+  "source_and_output_sha256": {
+    "corpus.json": "78865b9d998daf33032c55c79d6e156a86595141fa0fbf43ed7c893845be9aed",
+    "fragments/history.json": "343c72bf7af3b8faf2f4465483d156d8137db54bb7459f2f5f21177a76513e78",
+    "history_math.py": "55ed98604676012d25222847d2bbb5acd02199b5cd530a5f79abb618541cc25d",
+    "reference_history.py": "03ba3d435e1914f2320b69e13f767447586352d865b4a6a1611bb8a78f5185b0"
+  }
+}

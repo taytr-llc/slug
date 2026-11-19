@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "status": "passed",
+  "findings": [],
+  "source_sha256": {
+    "common.py": "bd348290836084323c738cfcdaab35a18c76cd36233b582c88e207de095c8988",
+    "history_math.py": "a029c39d622123da3dac699aca154eb8f143ddaf0e754e3c6aa515a04d93c6c2",
+    "reference_history.py": "5cb08b9c93dc38da99740d47a9768eb023fff10a72702edd38d17bbdf2b814f9",
+    "schema_wire.py": "48a69083341cd3f69f5d16660db4d709ee516090362b01e5fbafc1e589f3af1f",
+    "reference_wire.py": "76ad717074e9e55771186507acb2756d32b816decbcd11a1092b38dabb614a15",
+    "state_models.py": "721237b1ea1cd126b92fee07069f30a71c8982cf8b85a09e961aa4d4cbd8bd03",
+    "generate.py": "ecdc6eb24e3bbe17007fa81bc0f9991c7e7d1bc17d6b8bce2bcfb0b3b2746147",
+    "verify_reference.py": "376a5239afaa57f258a0addec177bd62154f25ab65bb898ea6adfb2b5939086c",
+    "check_reproducibility.py": "5ffbd94f0ea8d89b357750febbaa44591e29dce3a4914d2e5d6c093590a11457",
+    "extract_inputs.py": "2e61fd3f50eb167b8262e11a8900b8ee6f0ebb93329bb3c27fe458bb80506ae1"
+  },
+  "source_sha256_after": {
+    "common.py": "bd348290836084323c738cfcdaab35a18c76cd36233b582c88e207de095c8988",
+    "history_math.py": "a029c39d622123da3dac699aca154eb8f143ddaf0e754e3c6aa515a04d93c6c2",
+    "reference_history.py": "5cb08b9c93dc38da99740d47a9768eb023fff10a72702edd38d17bbdf2b814f9",
+    "schema_wire.py": "48a69083341cd3f69f5d16660db4d709ee516090362b01e5fbafc1e589f3af1f",
+    "reference_wire.py": "76ad717074e9e55771186507acb2756d32b816decbcd11a1092b38dabb614a15",
+    "state_models.py": "721237b1ea1cd126b92fee07069f30a71c8982cf8b85a09e961aa4d4cbd8bd03",
+    "generate.py": "ecdc6eb24e3bbe17007fa81bc0f9991c7e7d1bc17d6b8bce2bcfb0b3b2746147",
+    "verify_reference.py": "376a5239afaa57f258a0addec177bd62154f25ab65bb898ea6adfb2b5939086c",
+    "check_reproducibility.py": "5ffbd94f0ea8d89b357750febbaa44591e29dce3a4914d2e5d6c093590a11457",
+    "extract_inputs.py": "2e61fd3f50eb167b8262e11a8900b8ee6f0ebb93329bb3c27fe458bb80506ae1"
+  },
+  "sources_unchanged": true,
+  "corpus_sha256": "d1970ec177f61519a3f1c54968a4179f3dfb2ea2e6ca7f1a5f492b98de5bd2a8",
+  "runs": [
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/Users/taytrrip/slug/set51-fighter-history-reference/verify_reference.py",
+        "--report",
+        "/Users/taytrrip/slug/set51-fighter-history-reference/verification/attempt1/python1.json"
+      ],
+      "environment": {
+        "TZ": "UTC",
+        "PYTHONHASHSEED": "7",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "report": "verification/attempt1/python1.json",
+      "log": "verification/attempt1/python1.log",
+      "exit_code": 0,
+      "elapsed_seconds": 0.9478649589873385,
+      "log_sha256": "8d52315d9c4d14a2089d776807a1d1246fb5ef2992b5afb5a97f4f1c9b00ddfc",
+      "report_sha256": "6a4bc994c30e62150efefab792f0b18618c0516bfc2a40b914f9b6cc4b825ea9",
+      "python": "3.9.6 (default, Oct 19 2026, 19:18:13) \n[Clang 21.0.0 (clang-2100.4.1.1)]",
+      "status": "passed"
+    },
+    {
+      "command": [
+        "/opt/homebrew/bin/python3",
+        "-B",
+        "/Users/taytrrip/slug/set51-fighter-history-reference/verify_reference.py",
+        "--report",
+        "/Users/taytrrip/slug/set51-fighter-history-reference/verification/attempt1/python2.json"
+      ],
+      "environment": {
+        "TZ": "Pacific/Auckland",
+        "PYTHONHASHSEED": "981",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "report": "verification/attempt1/python2.json",
+      "log": "verification/attempt1/python2.log",
+      "exit_code": 0,
+      "elapsed_seconds": 0.6681087920151185,
+      "log_sha256": "067a4f1262898d7abddbac368915a1330ef4f1028adc9ef3547480b7792b13c9",
+      "report_sha256": "f91bc4e7fab30d34eae378e27b30e6c89b06a5eef5b28b339c6546a319f394f1",
+      "python": "3.14.3 (main, Feb  3 2026, 15:32:20) [Clang 17.0.0 (clang-1700.6.3.2)]",
+      "status": "passed"
+    }
+  ],
+  "serial": true,
+  "distinct_python_versions": true,
+  "elapsed_seconds": 1.617136874992866,
+  "scope": "Pure independent reference reproduction only; no runtime/engine/Argon/signing/proof work."
+}

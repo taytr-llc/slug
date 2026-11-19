@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "status": "frozen_for_independent_reference",
+  "frozen_at": "2026-11-18T23:45:03.697981+00:00",
+  "contract": "/Users/taytrrip/slug/set51-fighter-history-contract.md",
+  "contract_sha256": "24d9ef135ca949947c29ed1a887b517209d9ae932ca8286ad9a2ad9046b53e53",
+  "review_sha256": {
+    "set51-history-contract-independent-review.json": "089d7cfaa2287f66ef00121631caf8f3969d2abb7ded795a43bcb98d744eae08",
+    "set51-history-bound-independent-review.json": "305f532f730d4f03479185bb94c5102533f52302b52ce59f1e0c3a110deec4b4"
+  },
+  "source_commit": "99d36ef2cc0532f7684c0cb37644b3aa337a59db",
+  "root_review": "Read full closed contract, lifecycle review, exact retained-byte and wire bounds. Approved engineering implementation direction: one original-session sealed atomic capture, newest-first immutable pages, original earned/applied capped XP with base points only, same-authority explicit Result detail linkage, and Stop/reopen invalidation. No new gameplay/consensus/ranking/title rule. Independent reference expectations precede new Go runtime.",
+  "reference_intake_sha256": "2ad33786f79128cb6c6551f0bccfb2f8ab6c23c8faed66c374d1e70f85221fd7",
+  "approved_work": "External independent Python public-input extraction, history/codec/model reference generation and serial dual-Python reproduction. Repository source remains untouched during Set50 observation; implementation waits independently reviewed reference.",
+  "limits": [
+    "Size formulas are not measured runtime qualification.",
+    "Filtered history is not standalone proof of global completeness.",
+    "No new signatures, Argon work, mining, private input or production authority.",
+    "D74 joint design review stays pending."
+  ]
+}

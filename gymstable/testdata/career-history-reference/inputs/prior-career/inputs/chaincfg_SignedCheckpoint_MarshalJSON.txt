@@ -1,0 +1,24 @@
+func (c SignedCheckpoint) MarshalJSON() ([]byte, error) {
+	if _, err := c.SigningBytes(); err != nil {
+		return nil, err
+	}
+	if len(c.Signature) != ed25519.SignatureSize {
+		return nil, fmt.Errorf("signed checkpoint signature must be %d bytes", ed25519.SignatureSize)
+	}
+
+	return json.Marshal(struct {
+		Version   uint32 `json:"version"`
+		Network   uint32 `json:"network"`
+		Genesis   string `json:"genesis"`
+		Height    int32  `json:"height"`
+		Hash      string `json:"hash"`
+		Signature string `json:"signature"`
+	}{
+		Version:   c.Version,
+		Network:   uint32(c.Network),
+		Genesis:   c.GenesisHash.String(),
+		Height:    c.Height,
+		Hash:      c.Hash.String(),
+		Signature: hex.EncodeToString(c.Signature),
+	})
+}

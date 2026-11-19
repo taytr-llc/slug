@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "view_id": "95771bd193e38a03369688b9213e0d6f958e5b11c53cdef3640ac0919c4b7349",
+  "account_authority_id": "1f1a174df7de619495774f261c7933adbaff55f9ae2e0bac89875ce8f7473d45",
+  "account_id": "6e25d3797227d01460c479052fe61d574baf1617fbd3fd1d57f48ab164dfc9c3",
+  "generation": 3,
+  "authority_pin": {
+    "version": 5,
+    "network": 1397511495,
+    "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+    "authority_id": "8180249161294a6bb9c7e4b1428a3cd4de45d5a9c63a0d35e7c625a94832a8dd",
+    "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303"
+  },
+  "authority_origin": "http://127.0.0.1:55617",
+  "transport_trust_id": "ed66ffdc4b9b6cd8b00c825642d9e179d63acfd87f65df8801c49906b18717ac"
+}

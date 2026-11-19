@@ -1,0 +1,8 @@
+{
+  "reason": "Narrow native lookup pre-admission scope/model coverage correction; core math/raw parser executable grammar unchanged.",
+  "preserved_complete_candidate": "../set51-reference-before-native-discovery",
+  "preserved_index_sha256": "836bf113a7f414297442ee01d29dfd7b01ca79482c042211d7f4b23f2dcb9b75",
+  "author_delta_report": "../set51-native-discovery-reference-delta.json",
+  "author_delta_report_sha256": "e93516d9379d60554d45c4697d7360f808921ffbf9d54315e08ed7b9b8f3a7ab",
+  "original_reproduction": "verification/attempt2/report.json"
+}

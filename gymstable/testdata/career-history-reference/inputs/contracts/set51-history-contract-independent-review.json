@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "status": "passed",
+  "findings": [],
+  "scope": "Independent source-only successor contract review against current sealed CareerReader, Stable consumer and helper/UI lifecycle. Reviewer did not edit the contract, repository or reference corpus and did not execute application, proof, engine or runtime tests. Author-owned contract; reviewer supplied and checked narrow corrections.",
+  "contract": {
+    "path": "/Users/taytrrip/slug/set51-fighter-history-contract.md",
+    "sha256": "24d9ef135ca949947c29ed1a887b517209d9ae932ca8286ad9a2ad9046b53e53"
+  },
+  "author_source_map": {
+    "path": "/Users/taytrrip/slug/set51-fighter-history-contract-source.json",
+    "sha256": "2ed8f127166dc188be5945f79f13d0bfe6976e4af76c23013647279af94e0911"
+  },
+  "source_sha256": {
+    "internal/careerstate/state.go": "eaedd8f52777cbb11b1e085474a1b51d2a144bd5179542156f5c2d8713463528",
+    "internal/careerconsumer/guard.go": "f592047da0031c2d4931d1bf7ae606d10bd08e3f0a959269ee678cadfccf6984",
+    "fightercareer/career.go": "ceedee1a864b9d41048e8f7873f7f19da66d187862b68abbf93a4acb559aeac7",
+    "gymresult/career.go": "3ea3e29088bab7be2d3779dc9056211e38a58cded11eb5cf09b87d875ef07739",
+    "gymstable/read.go": "3107ab73cdcfc5f79dba7097ab23a119db4302acd1b07ba6e8d6fde0b19666ae",
+    "gymstable/career_read.go": "e9c8c6d6ee54f111f2fa38509c0c25353ef5f9dce51650150a5d5ddace632f89",
+    "gymstable/career_preview.go": "712cfc929f86f4b000a6b8c692d9e38dbabdffa5858b90f68894a8792a5f5522",
+    "desktop/pilot/career_controller.go": "bf74d0b2d3bb7f1e14a2f98af98f15fe438b8b628f244a20d0c5fb3959a24752",
+    "desktop/pilot/stable_controller.go": "d348299a1d2db8c161f5f9020d2066f677b8e1930aecbada07dbc631673a7eb1",
+    "desktop/pilot/stable_lane.go": "4a10bc933cb760d12695f7dba44986f5f4042104724114279f9401c07d8132ce",
+    "desktop/pilot/career_preview_controller.go": "aa292ecabf4d3d905206e8ccdc4400e8b7522e34a70a256c4de000e74a746343",
+    "desktop/frontend/stable.js": "fe8ac4c399d5b15f5da182f832d006fd2e1b3014ea0f8104759b392487aaa4e1"
+  },
+  "prior_findings": {
+    "path": "/Users/taytrrip/slug/set51-history-contract-source-review-attempt1.json",
+    "sha256": "cdada0a5fe6c6c74e1f03f7b6d7376fcc8a421c9da27e75b038d5ce75d72f0f2"
+  },
+  "prior_source_recommendations": {
+    "path": "/Users/taytrrip/slug/set51-history-source-review.md",
+    "sha256": "d13570918fc7185295df62447f63363b17d01a620c51703d04b6525145eaaf49"
+  },
+  "reference_intake": {
+    "path": "/Users/taytrrip/slug/set51-history-reference-intake.md",
+    "sha256": "2ad33786f79128cb6c6551f0bccfb2f8ab6c23c8faed66c374d1e70f85221fd7"
+  },
+  "preserved_reviewed_predecessor": {
+    "path": "/Users/taytrrip/slug/set51-history-contract-before-page-closure/set51-fighter-history-contract.md",
+    "sha256": "2764a5ac1c0ef801cae355c5cfb897307e16bd614c77977d765a9e01034866b9"
+  },
+  "closures": [
+    {
+      "id": "H1",
+      "resolution": "History allowance512KiB plus existing136KiB Stable baseline and200KiB selected Career allowance totals848KiB, leaving176KiB for actual other retained payloads. Opaque storage is one canonical matching-row buffer/header/offsets, without retained decoded graph or full prefix copy. Remaining payloads stay charged, capacity refusal has no eviction side effect. Retained-cache and transient heap are expressly separate."
+    },
+    {
+      "id": "H2",
+      "resolution": "All-required Request/Response/Job/Snapshot/PageResult fields and arms are closed; exact unavailable subset and terminal error union are stated. One History active-or-queued task, existing lane, task-pointer-fenced admission/rollback/publication, exact-job lost-ACK recovery and Stop invalidation are explicit."
+    },
+    {
+      "id": "H3",
+      "resolution": "No additional history-specific condition work is required, while existing publishRead/projectItems projection is expressly retained."
+    },
+    {
+      "id": "H4",
+      "resolution": "Metadata/admission/page deadline exhaustion, including shorter caller deadline, maps busy unless already-known observation uncertainty/fatal/original-authority error has priority; explicit cancellation and admitted-task timeout map history_cancelled. Known observation unknown takes priority and returns no payload."
+    },
+    {
+      "id": "H5",
+      "resolution": "Page length exactly min(requested Limit,EventCount-After); Ordinal[i]=EventCount-After-i; no empty/short nonterminal page. Capture totals match only the global newest row, not first row of an arbitrary later page."
+    }
+  ],
+  "reviewed_invariants": [
+    "One owned atomic Current state capture preserves old Event bytes, identities and full two-gym temporal-prefix digest; filtered matching rows never become caller authority.",
+    "Canonical chronological fold precedes newest-first display. Earned standard XP1 and applied capped increment are separate, capture-relative explanation; record/base points continue after15.",
+    "Opaque owner/source/original generation+ViewID/assignment/activation linkage, original account lease, source health/nonregression and unchanged selected assignment/checkpoint/revision remain required. New Current awards never rebase old pages.",
+    "Reader liveness uses bounded sealed getters without Result action-gate entry or source/proof/engine work; unavailable/closed/poisoned never becomes empty history.",
+    "Exactly one retained capture; new accepted selection retires prior handle after admission guard. Cancelled predecessors cannot restore charges or selections over successors. Stop/reopen/view loss clear pageable selection.",
+    "New native selection binds exact family/full View/job/prospect and complete Capture; HistoryID alone is insufficient. Three compact job tuples retain whole-terminal commitments, rejecting changed terminal or regression to running.",
+    "Selected capture has fixed256 binary row hashes plus seen bitmap, bound within metadata allowance; revisiting an ordinal must preserve canonical row bytes. No arbitrary page map or full native history payload.",
+    "Result link remains an explicit existing read with retained ResultKey/Bout digest/Input/Result/outcome/first-Finality linkage; current usability is separate. No automatic Check/Finalize/export, new awards, rankings or title policy.",
+    "No old wire grammar changes. New raw parser/encoder caps reserve LF; unknown/missing/duplicate fields and wrong union arms refuse."
+  ],
+  "bounds_scope": {
+    "candidate": {
+      "path": "/Users/taytrrip/slug/set51-history-bound-candidate.json",
+      "sha256": "c46640bd90d36f026e39cb1c60edd91cc718e629d7ac33e594a6e2b90a832280"
+    },
+    "assessment": "Retained-byte representation and baseline arithmetic are feasible source design. Independent exact header/wire/native metadata formula review remains a separate prerequisite; runtime peak/cold-proof/page latency and actual cache tests have not occurred.",
+    "no_measured_acceptance": true
+  },
+  "limitations": [
+    "This is not a runtime correctness, memory, latency, real authority or release acceptance report.",
+    "Filtered pages cannot prove whole global-prefix completeness independently; trusted sealed capture provenance remains explicit.",
+    "No new reference vectors or Go expected outputs were generated.",
+    "The author source map was hash-checked in full; reviewed source scope is the separate named source_sha256 map, not a blanket claim about every file in the author map."
+  ]
+}

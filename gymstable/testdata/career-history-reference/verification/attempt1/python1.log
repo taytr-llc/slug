@@ -1,0 +1,1 @@
+{"status": "passed", "report": "/Users/taytrrip/slug/set51-fighter-history-reference/verification/attempt1/python1.json", "sha256": "6a4bc994c30e62150efefab792f0b18618c0516bfc2a40b914f9b6cc4b825ea9", "counts": {"histories": 28, "core_controls": 35, "index_controls": 4, "wire_dtos": 65, "wire_codecs": 67, "protocols": 45, "state_models": 57}}

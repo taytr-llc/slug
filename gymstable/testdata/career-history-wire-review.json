@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "status": "passed",
+  "findings": [],
+  "reviewer": "checkpoint_envelope",
+  "authorship": "Reviewer authored the frozen contract but did not author schema_wire.py, reference_wire.py, state_models.py or either reviewed fragment. Core/math/provenance nonauthor review is a separate partition.",
+  "scope": "Static independent source, fragment and artifact-binding review; no producer import/execution, expected regeneration, Go/runtime test or authority claim.",
+  "source_root": "/Users/taytrrip/slug/set51-fighter-history-reference",
+  "source_sha256": {
+    "schema_wire.py": "af8d700bb8f7cf45231197e9c022f6e793e5926451d29ce23af986f864e2e20e",
+    "reference_wire.py": "ba4d876e17d77cc82eb159474c583abcee55d15fbf6e04c6ea21d9439970fe9b",
+    "state_models.py": "f51ecc5897bbbc73f80f5e5f940a3584b83b4e3b60a435e43157fa687a1f06ca",
+    "fragments/wire.json": "13fa57ec623196d3117f6ea751d406d05f91ce87a5a6c42b982fc44b4f1a1259",
+    "fragments/state.json": "7dd42929ef8cae3b9b9d220a497715f54d9293e22a7dfa6cb20ad78bd85430f2"
+  },
+  "dependency_sha256": {
+    "common.py": "bd348290836084323c738cfcdaab35a18c76cd36233b582c88e207de095c8988",
+    "history_math.py": "a029c39d622123da3dac699aca154eb8f143ddaf0e754e3c6aa515a04d93c6c2",
+    "input_index.json": "cae11a8fb9a1707051626330161d6523795228c01d765dc920d8db3af13e9ae6",
+    "README.md": "28f22ae2fc5bf1b1ac4e5c5e74bd5010d158edb2332f8ce5f20b2438c9b80a2c",
+    "inputs/contracts/set51-fighter-history-contract.md": "24d9ef135ca949947c29ed1a887b517209d9ae932ca8286ad9a2ad9046b53e53"
+  },
+  "candidate": {
+    "index": {
+      "path": "/Users/taytrrip/slug/set51-fighter-history-reference/file_index.json",
+      "sha256": "c76bea7a2b3270f07968746ae07e216a4e266756f415ae21b6f559ab02ad2712",
+      "verified_regular_files": 140
+    },
+    "corpus": {
+      "path": "/Users/taytrrip/slug/set51-fighter-history-reference/corpus.json",
+      "sha256": "18e51e25c6760f756159e12a92265b517438152533d439d541d4696044e60283"
+    },
+    "author_reproduction": {
+      "path": "/Users/taytrrip/slug/set51-fighter-history-reference/verification/attempt3/report.json",
+      "sha256": "4bdbb06a49fdf0c6f0b7cd57bbb9f186bf8333cffc105de8155babf26cc7efca",
+      "status": "passed",
+      "source_maps_match_current": true,
+      "child_reports_and_logs_hash_verified": true,
+      "reviewer_executed": false
+    }
+  },
+  "reviewed_counts": {
+    "wire_dtos": 65,
+    "raw_codec_controls": 67,
+    "post_admission_protocols": 45,
+    "symbolic_models": 69,
+    "new_discovery_models": 12
+  },
+  "conclusions": [
+    "Exact required keys and closed request/response/Snapshot/Job/Page arms, terminal errors, metadata null caps, LF-reserved request/response caps, nested delegated validation and strict JSON parsing are coherent with the frozen contract.",
+    "Original full View/store/activation/job/prospect crossbindings, whole-terminal immutability, whole-Capture equality and exact request limit/offset relations are enforced in their stated correlation layer.",
+    "Locally checkable row arithmetic, selected owner and ordinal constraints flow through common.validate to history_math; filtered rows do not claim omitted-prefix completeness or independently reconstruct CareerDigest.",
+    "Symbolic lane models distinguish unpublished admission and exact-task rollback, preserve prior capture on refused admission, model Stop invalidation and known observation-unknown precedence, and retain fixed row commitments across overlapping pages. These are not actual scheduler/concurrency results.",
+    "Separate native discovery models require known admitted authority or latest same-authority Snapshot naming; response exchange explicitly assumes that pre-admission check. Raw helper request validity does not itself confer native lookup authority.",
+    "The author transport trap implementation revalidates the already-derived finite cases with input/derivation/process/network access trapped; its report is Python-only author evidence, not actual Go call counts.",
+    "All140 indexed file bytes match; assembled wire/state objects equal their fragments. Prior65/67/45 expected wire cases and57 models are unchanged by the narrow discovery supplement."
+  ],
+  "resolved_findings": [
+    {
+      "id": "native-discovery-precondition-scope",
+      "original_review": {
+        "path": "/Users/taytrrip/slug/set51-wire-reference-review-attempt1.json",
+        "sha256": "cdc23ae5af46a3972a4cd0c74f86a74f72c3c6313e5b045b7d9469f3693158c7"
+      },
+      "resolution": "Explicit post-native-admission exchange scope plus12 independent symbolic discovery cases, including absent/old/foreign Snapshot and lost original authority. No raw parser or old expected value changed.",
+      "author_delta": {
+        "path": "/Users/taytrrip/slug/set51-native-discovery-reference-delta.json",
+        "sha256": "e93516d9379d60554d45c4697d7360f808921ffbf9d54315e08ed7b9b8f3a7ab"
+      },
+      "preserved_candidate_index": {
+        "path": "/Users/taytrrip/slug/set51-reference-before-native-discovery/file_index.json",
+        "sha256": "836bf113a7f414297442ee01d29dfd7b01ca79482c042211d7f4b23f2dcb9b75"
+      }
+    }
+  ],
+  "limits": [
+    "No Go implementation, application/proof/Argon/engine/network execution or trusted runtime handle was reviewed or tested.",
+    "No broad completeness claim for all malformed inputs or concurrent schedules; this is the finite preimplementation reference scope.",
+    "Physical heap, real500ms/30s performance, original-account authorization and lock/process lifecycle require later runtime gates.",
+    "Final whole-reference freeze and approval belong to root; full mathematical/provenance review remains separately attributed."
+  ]
+}

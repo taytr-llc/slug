@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "status": "frozen_before_runtime_implementation",
+  "created_at": "2026-11-19T00:12:39.607085+00:00",
+  "implementation_parent": "1cdfdb8a156624c97fbad512cb5386d1c5797f4c",
+  "branch": "slug-fighter-history",
+  "contract": "CAREER_HISTORY.md",
+  "contract_sha256": "24d9ef135ca949947c29ed1a887b517209d9ae932ca8286ad9a2ad9046b53e53",
+  "contract_status_note": "The exact historical draft prose is preserved; the external contract freeze and this reviewed reference freeze supersede its pending status.",
+  "reference_directory": "gymstable/testdata/career-history-reference",
+  "file_index_sha256": "c76bea7a2b3270f07968746ae07e216a4e266756f415ae21b6f559ab02ad2712",
+  "corpus_sha256": "18e51e25c6760f756159e12a92265b517438152533d439d541d4696044e60283",
+  "verification_path": "verification/attempt3/report.json",
+  "verification_sha256": "4bdbb06a49fdf0c6f0b7cd57bbb9f186bf8333cffc105de8155babf26cc7efca",
+  "independent_reviews": {
+    "gymstable/testdata/career-history-core-review-attempt1.json": "c651ec670952cdbb6c18c28b0cd471606e17fb40f989ecc1bcfa868d44f224fe",
+    "gymstable/testdata/career-history-core-review.json": "b5f87e605a0a435d304fb147f7b6a139dcc131363931181f81c716d37bf8f131",
+    "gymstable/testdata/career-history-wire-review.json": "ac0942742651e40d7a88dd4bf39be75e199049586729e2e42e362174ccc812ab",
+    "gymstable/testdata/career-history-root-review.json": "d8e6c5ad24c8a5c84e4b9ec3dd1b955cc46de5b13bdac15b7a5f618f02257a66"
+  },
+  "counts": {
+    "histories": 28,
+    "core_controls": 35,
+    "index_controls": 4,
+    "wire_dtos": 65,
+    "wire_codecs": 67,
+    "protocols": 45,
+    "state_models": 69
+  },
+  "new_Go_outputs_used_as_expectations": false,
+  "root_review": "Independent core provenance and wire/model reviews passed. Root verified all 140 file bytes and exact membership, child reproduction report bindings, preserved predecessor and unchanged original expectations; read discovery delta before approval.",
+  "preserved_predecessor_index_sha256": "836bf113a7f414297442ee01d29dfd7b01ca79482c042211d7f4b23f2dcb9b75",
+  "scope": "Independent finite reference, including explicitly modeled capacity and lifecycle cases. Genuine inputs inherit recorded Set49 scoped-clock public evidence. No new runtime/proof/performance/GUI qualification. No policy, engine, existing schema or historical Event change."
+}

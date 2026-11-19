@@ -1,0 +1,20 @@
+{
+  "public-career-native-evidence.json": "91934c45ba3609a52b3ed64847c988e33c19cef2ea7055d5337af00b6e805069",
+  "public-result-funding.json": "cc9300270cad0a04f3fb2252f1a3750635b2635e11ab68c4f77e44ec4b4e0dde",
+  "public-result-native-evidence.json": "2d1c2e97ada528e90c6d4e10c93e208fa8aaa666f05a37873b3ddb100d854b17",
+  "public-result-original-card.json": "c6601c560678aef290f34030e35cb9769a45ba597c1f2f3646a36a045666fdfc",
+  "public-result-original-cards-before.json": "5370ef5730e68a842301ca9111b644a34427cd410c377344b917b4508a8f95a2",
+  "public-result-preparation-counts.json": "d2fa167f31df4b6d50342ebb5ab849e96bd2d3563c53fd96f2a4a4ea9762285c",
+  "public-result-prepared-card.json": "e0c11e979eb3ce1fe327e5014815aa26b9e527218197e93a13e7c9e1a494fd64",
+  "public-result-prepared-views.json": "55c4400671163267d42efca5aada1675680b22507a929685a9b28930f5378951",
+  "public-result-proof-conflict.json": "efb4dd96cc4fcce4dba79e72adaa835cbb0df4e4c463e6312ff70e14c5556651",
+  "public-result-proof-finalized60.json": "c717d1e7cb5b9ec309c19d5c453ec5e9683e0a28b7becc5dbe9978cd3349c04d",
+  "public-result-proof-finalized61.json": "5e9b57d85e69203e20806e240cd89a307a93310471e4fbdcd12a0748a7ff4cd0",
+  "public-result-proof-first-inclusion.json": "666b99c7c9d45b4e3567b4737880bc18a5597596a6e9963a0aab3dc757835e53",
+  "public-result-proof-held-conflict.json": "efb4dd96cc4fcce4dba79e72adaa835cbb0df4e4c463e6312ff70e14c5556651",
+  "public-result-proof-reincluded.json": "33c1fdf363bdbc0d8e65f201391f034922f673844d2838c928cb03015920b0fc",
+  "public-result-saved-bout.json": "287a649d655966046d738f7ee809f89bb2432b2a320aceaff58d64e65a5ce91a",
+  "public-result-source-anchor-block.hex": "a38cb74dee7566326dd96f2b418936ca0fe5555b48cbe6d16cc0ba6ef11a58b6",
+  "public-result-source-chain.json": "3e0cb43cd4a8d6a87f0ef854d53fd9d5522ed9af36aa023673d260a972478bdd",
+  "public-result-source-target-block.hex": "48c9c05eec0d3f91f6c67d9b12e87a35b04268fa9a7db6e557e381925c9fa5b6"
+}
