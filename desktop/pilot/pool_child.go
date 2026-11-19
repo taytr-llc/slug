@@ -17,6 +17,7 @@ import (
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/taytr-llc/slug/gymaccount"
 	"github.com/taytr-llc/slug/gymstable"
+	"github.com/taytr-llc/slug/poolservice"
 	"github.com/taytr-llc/slug/prospectworker"
 	"github.com/taytr-llc/slug/wire/v2"
 	"github.com/taytr-llc/slugwallet/recovery"
@@ -36,6 +37,12 @@ type poolChildWorker interface {
 // PoolChild owns one original account view. Shared chain and source resources
 // are borrowed until every worker, proof lane and wallet operation has joined.
 type PoolChild struct {
+	payoutOp                                   *poolPayoutOperation
+	payoutCache                                *poolPayoutCache
+	payoutLast                                 *PoolPayoutJob
+	payoutScratch, payoutCacheBytes            uint64
+	payoutReader                               poolservice.PayoutReader
+	payoutObserve                              func(context.Context, walletPayoutSelection) (walletPayoutRead, error)
 	stable                                     *StableController
 	account                                    StableAccountConfig
 	resources                                  poolChildResources
@@ -509,6 +516,7 @@ func (c *PoolChild) copyWorkerLocked(run *poolChildRun, s prospectworker.Status)
 func (c *PoolChild) Stop() { c.stopMu.Lock(); defer c.stopMu.Unlock(); c.stop() }
 func (c *PoolChild) stop() {
 	c.cancelPoolBackup()
+	c.cancelPoolPayout()
 	c.mu.Lock()
 	run := c.run
 	if run != nil {
@@ -572,6 +580,10 @@ func (c *PoolChild) Close() error {
 			s.stableMu.Unlock()
 		}
 		c.stop()
+		c.mu.Lock()
+		c.payoutCache, c.payoutLast = nil, nil
+		c.payoutCacheBytes = 0
+		c.mu.Unlock()
 		if c.refreshStarted {
 			<-c.refreshDone
 		}

@@ -62,8 +62,8 @@ cat > "$bundle/Contents/Info.plist" <<'PLIST'
 <key>CFBundleExecutable</key><string>SLUGPilot</string>
 <key>CFBundleIconFile</key><string>SLUG.icns</string>
 <key>CFBundlePackageType</key><string>APPL</string>
-<key>CFBundleShortVersionString</key><string>0.5.5</string>
-<key>CFBundleVersion</key><string>66</string>
+<key>CFBundleShortVersionString</key><string>0.5.6</string>
+<key>CFBundleVersion</key><string>67</string>
 <key>LSMinimumSystemVersion</key><string>13.0</string>
 <key>NSHighResolutionCapable</key><true/>
 <key>LSUIElement</key><false/>

@@ -51,6 +51,7 @@ ids.push('result-panel', 'result-state', 'result-connection', 'result-observatio
 ids.push('history-panel', 'history-state', 'history-fighter', 'history-asof', 'history-totals', 'history-message', 'history-list', 'history-previous', 'history-next', 'history-page-label', 'history-refresh', 'history-cancel', 'history-clear', 'history-result', 'history-export', 'history-export-status');
 const ui = Object.fromEntries(ids.map((id) => [id, document.getElementById(id)]));
 const poolUI = Object.fromEntries(['pool-balance', 'pool-confirmed', 'pool-available', 'pool-reserved', 'pool-paid', 'pool-observed', 'pool-reason', 'pool-refresh', 'pool-features'].map((id) => [id, document.getElementById(id)]));
+const payoutUI = Object.fromEntries(['refresh', 'cancel', 'status', 'capture', 'list', 'previous', 'page', 'next', 'wallet'].map((name) => [name, document.getElementById(`pool-history-${name}`)]));
 const attrs = ['power', 'speed', 'chin', 'stamina', 'skill'];
 const rarity = ['club', 'professional', 'contender', 'elite', 'generational'];
 const styles = ['slugger', 'outfighter', 'boxer_puncher', 'pressure', 'boxer'];
@@ -224,6 +225,7 @@ function renderPool() {
   content(poolUI['pool-observed'], !visible ? 'Sign in to view your pool balance.' : value ? value.observed_at_ms ? `Observed ${date.format(new Date(value.observed_at_ms))}.` : 'No settlement observation yet.' : current.balance.state === 'loading' ? 'Checking your pool balance…' : current.balance.state === 'failed' ? 'The pool balance is unavailable. Refresh to check again.' : 'Your pool balance has not been checked yet.');
   content(poolUI['pool-reason'], b ? poolReasons[b.reason] : '');
   poolUI['pool-refresh'].disabled = !visible || !!command || current.balance.state === 'loading';
+  renderPayout();
 }
 
 function imageOnlySVG(svg, descriptorID) {
@@ -415,6 +417,7 @@ function canEdit() { return ready() && stable.status.caught_up && !stable.status
 function clearCards() { for (const c of cards.values()) { c.image.removeAttribute('src'); c.article.remove(); } cards.clear(); images.clear(); imageAttempts.clear(); }
 function forgetView(clearFlow = true) {
   inventoryCursors = new Set([0]);
+  clearPayout();
   epoch++; careerPage = null; careerSelectedJob = ""; clearHistory(); clearEvent(); clearEntry(); clearPreview(); clearCards(); pageItems = []; watched = null; savedOperation = null; lastViewedJob = ''; pageAfter = pageNext = 0; rosterFirst = 1; rosterNext = 0; pageRevision = null; mode = 'recent';
   if (clearFlow) { flow = null; mutationMessage = ''; }
 }
@@ -607,6 +610,7 @@ async function fetchSnapshots() {
     if (!disposed && ready() && !tasks.length) await fetchPublicationSnapshot();
     if (!disposed && ready() && !tasks.length && careerMode && (historySelection || historyUnknown)) await fetchHistorySnapshot();
     if (!disposed && ready() && !tasks.length && evidenceBusy()) await fetchEvidenceSnapshot();
+    if (!disposed && accountReady() && !tasks.length && payoutBusy()) await fetchPayout();
   } catch { if (!disposed && captured === epoch) disconnected(); }
 }
 function stablyChangedRoster() { return stable.status.roster_revision !== pageRevision; }
@@ -2689,6 +2693,177 @@ function renderEvidence() {
   ui['history-export'].disabled = !ready() || !careerMode || !!command || (busy ? !evidenceJob : !evidenceCanBegin());
   content(ui['history-export-status'], evidenceMessage || (historyJob?.state === 'done' && !evidenceCanBegin() ? evidenceError('busy') : ''));
 }
+
+// Read-only, original-view payout captures. One retained page and observation;
+// a failed refresh never turns a previously dated capture into a new success.
+const PAYOUT_TIME_MAX = 253402300799999;
+const PAYOUT_ERRORS = new Set(['invalid_request', 'unauthorized', 'stale_view', 'busy', 'capacity', 'payout_unavailable', 'payout_not_found', 'operation_conflict', 'outcome_unknown']);
+const PAYOUT_SCRIPTS = Object.freeze({ zero256: '001416d630413cea75fd5ad88433cd815ae5ba1ba645', incrementing256: '001487ed12b988403af67cf36ea58b7454ab5d165ab4' });
+let payoutAttempt = null, payoutCaptureJob = null, payoutPage = null, payoutObservation = null;
+let payoutUnknown = false, payoutPriorID = '', payoutMessage = '', payoutSerial = 0, payoutWalletPending = false;
+function clearPayout() { payoutSerial++; payoutAttempt = payoutCaptureJob = payoutPage = payoutObservation = null; payoutUnknown = payoutWalletPending = false; payoutPriorID = payoutMessage = ''; }
+function payoutBusy() { return poolMode && (payoutUnknown || payoutAttempt?.state === 'running'); }
+function payoutContext() { return { epoch, serial: payoutSerial, view: currentKey() }; }
+function payoutCurrent(c) { return poolMode && accountReady() && c.epoch === epoch && c.serial === payoutSerial && c.view === currentKey(); }
+function payoutSize(v, max) { requireValue(JSON.stringify(v).length <= max); }
+function payoutID(v, empty = false) { return (empty && v === '') || (hex(v) && v !== '0'.repeat(64)); }
+function payoutBinding(v) {
+  exact(v, ['view', 'source_binding_id', 'recipient_script']);
+  requireValue(poolMode && accountReady() && viewKey(checkedView(v.view)) === currentKey() && v.source_binding_id === current.source_binding_id && payoutID(v.source_binding_id) && v.recipient_script === PAYOUT_SCRIPTS[current.account.fixture]);
+  payoutSize(v, 4096); return own(v);
+}
+function payoutItem(v, observed = PAYOUT_TIME_MAX) {
+  exact(v, ['day', 'created_at_ms', 'txid', 'output_index', 'atoms', 'recorded_state']);
+  requireValue(int(v.created_at_ms, 1, observed) && int(v.created_at_ms, 1, PAYOUT_TIME_MAX) && typeof v.day === 'string' && /^\d{4}-\d\d-\d\d$/.test(v.day) && new Date(v.created_at_ms).toISOString().slice(0, 10) === v.day && hex(v.txid) && int(v.output_index, 0, 255) && int(v.atoms, 100000000, MAX_ATOMS) && ['prepared', 'broadcast', 'confirmed'].includes(v.recorded_state));
+  payoutSize(v, 256); return own(v);
+}
+function payoutCapture(v) {
+  exact(v, ['version', 'count', 'paid_atoms', 'reserved_atoms', 'settlement_observed_at_ms', 'captured_at_ms']);
+  requireValue(v.version === 1 && int(v.count, 0, 366) && int(v.paid_atoms, 0, MAX_ATOMS) && int(v.reserved_atoms, 0, MAX_ATOMS) && v.paid_atoms + v.reserved_atoms <= MAX_ATOMS && int(v.settlement_observed_at_ms, 0, PAYOUT_TIME_MAX) && int(v.captured_at_ms, 1, PAYOUT_TIME_MAX));
+  requireValue(v.settlement_observed_at_ms !== 0 || (v.count === 0 && v.paid_atoms === 0 && v.reserved_atoms === 0));
+  payoutSize(v, 512); return own(v);
+}
+function payoutSnapshotValue(v) {
+  exact(v, ['version', 'state', 'error', 'binding', 'activity', 'active_job_id', 'last_job_id', 'capture_job_id']);
+  requireValue(v.version === 1 && ['unavailable', 'idle', 'busy'].includes(v.state) && ['active_job_id', 'last_job_id', 'capture_job_id'].every(k => payoutID(v[k], true)));
+  if (v.state === 'unavailable') requireValue(v.error === 'payout_unavailable' && v.binding === null && v.activity === 'none' && v.active_job_id === '' && v.last_job_id === '' && v.capture_job_id === '');
+  else {
+    payoutBinding(v.binding); requireValue(v.error === '');
+    requireValue(v.state === 'idle' ? v.activity === 'none' && v.active_job_id === '' : ['capture', 'wallet'].includes(v.activity) && v.active_job_id !== '');
+    if (v.activity === 'wallet') requireValue(v.active_job_id === v.capture_job_id);
+  }
+  payoutSize(v, 5120); return own(v);
+}
+function payoutJobValue(v) {
+  exact(v, ['version', 'job_id', 'state', 'binding', 'error', 'capture']);
+  requireValue(v.version === 1 && payoutID(v.job_id) && ['running', 'done', 'failed', 'cancelled'].includes(v.state)); payoutBinding(v.binding);
+  if (v.state === 'done') { requireValue(v.error === ''); payoutCapture(v.capture); }
+  else if (v.state === 'failed') requireValue(v.capture === null && ['busy', 'capacity', 'payout_unavailable'].includes(v.error));
+  else requireValue(v.capture === null && v.error === '');
+  const prior = [payoutAttempt, payoutCaptureJob].find(j => j?.job_id === v.job_id);
+  if (prior && prior.state !== 'running') requireValue(same(prior, v));
+  payoutSize(v, 6144); return own(v);
+}
+function payoutPageValue(v) {
+  exact(v, ['version', 'binding', 'job_id', 'capture', 'after', 'limit', 'next', 'has_more', 'items']);
+  requireValue(v.version === 1 && payoutID(v.job_id)); payoutBinding(v.binding); payoutCapture(v.capture);
+  requireValue(int(v.after, 0, v.capture.count) && int(v.limit, 1, 8) && Array.isArray(v.items) && v.items.length === Math.min(v.limit, v.capture.count - v.after) && int(v.next, 0, 366) && v.next === v.after + v.items.length && typeof v.has_more === 'boolean' && v.has_more === (v.next < v.capture.count));
+  let prior = null; const ids = new Set();
+  for (const row of v.items) { payoutItem(row, v.capture.settlement_observed_at_ms); requireValue(!ids.has(row.txid) && (!prior || row.day < prior.day && row.created_at_ms < prior.created_at_ms)); ids.add(row.txid); prior = row; }
+  payoutSize(v, 10240); return own(v);
+}
+function payoutObservationValue(v) {
+  exact(v, ['version', 'binding', 'job_id', 'capture', 'payment', 'observed_at_ms', 'state', 'error', 'wallet_synced', 'wallet_height', 'wallet_tip', 'confirmations', 'block_hash']);
+  requireValue(v.version === 1 && payoutID(v.job_id) && int(v.observed_at_ms, 1, PAYOUT_TIME_MAX) && ['not_observed', 'unconfirmed', 'confirmed', 'unavailable'].includes(v.state) && typeof v.wallet_synced === 'boolean' && int(v.wallet_height, 0, 2147483647) && int(v.confirmations, 0, 2147483648));
+  payoutBinding(v.binding); payoutCapture(v.capture); payoutItem(v.payment, v.capture.settlement_observed_at_ms);
+  if (v.state === 'unavailable') requireValue(v.error === 'wallet_unavailable' && !v.wallet_synced && v.wallet_height === 0 && v.wallet_tip === '' && v.confirmations === 0 && v.block_hash === '');
+  else {
+    requireValue(v.error === '' && v.wallet_synced && payoutID(v.wallet_tip));
+    requireValue(v.state === 'confirmed' ? int(v.confirmations, 1, v.wallet_height + 1) && payoutID(v.block_hash) : v.confirmations === 0 && v.block_hash === '');
+  }
+  payoutSize(v, 7168); return own(v);
+}
+function payoutEnvelope(v, arm, jobID = '') {
+  exact(v, ['id', 'version', 'ok', 'snapshot', 'job', 'page', 'observation', 'error']);
+  requireValue(int(v.id, 1) && v.version === 1 && typeof v.ok === 'boolean'); payoutSize(v, 12287);
+  const arms = ['snapshot', 'job', 'page', 'observation'];
+  if (!v.ok) { requireValue(arms.every(k => v[k] === null) && PAYOUT_ERRORS.has(v.error)); return { ok: false, error: v.error }; }
+  requireValue(v.error === '' && arms.every(k => k === arm ? v[k] !== null : v[k] === null));
+  const value = ({ snapshot: payoutSnapshotValue, job: payoutJobValue, page: payoutPageValue, observation: payoutObservationValue })[arm](v[arm]);
+  if (jobID) requireValue(value.job_id === jobID);
+  return { ok: true, value };
+}
+function payoutAtoms(value) { requireValue(int(value, 0, MAX_ATOMS)); const n = BigInt(value); return `${n / 100000000n}.${(n % 100000000n).toString().padStart(8, '0')}`; }
+function payoutRetained(attempt = payoutAttempt, capture = payoutCaptureJob, page = payoutPage, observation = payoutObservation) { requireValue(JSON.stringify([attempt, capture, page, observation]).length <= 32768); }
+function payoutRefusal(error) {
+  if (['unauthorized', 'stale_view'].includes(error)) { disconnected(); return; }
+  payoutMessage = error === 'busy' ? 'Another pool or wallet read is finishing. Retry shortly; the dated history is retained.' : error === 'capacity' ? 'Payment history reached its bounded capacity. The dated history is retained.' : error === 'outcome_unknown' ? 'Checking whether this history refresh started. The previous capture stays dated.' : 'This payment-history read is unavailable. Retry to check again; a previous dated capture is retained.';
+}
+async function acceptPayoutJob(j) {
+  payoutRetained(j, j.state === 'done' ? j : payoutCaptureJob, j.state === 'done' && j.job_id !== payoutCaptureJob?.job_id ? null : payoutPage, j.state === 'done' && j.job_id !== payoutCaptureJob?.job_id ? null : payoutObservation);
+  payoutAttempt = j; payoutUnknown = false;
+  if (j.state === 'done') {
+    if (payoutCaptureJob?.job_id !== j.job_id) { payoutCaptureJob = j; payoutPage = payoutObservation = null; }
+    payoutMessage = 'Recorded payment history captured. Wallet checks are separate.';
+    if (!payoutPage) await readPayoutPage(0);
+  } else if (j.state === 'failed') payoutRefusal(j.error);
+  else payoutMessage = j.state === 'cancelled' ? 'History refresh cancelled. The previous dated capture is retained.' : 'Reading your recorded pool payments…';
+}
+async function readPayoutPage(after) {
+  if (!poolMode || !accountReady() || !payoutCaptureJob || payoutWalletPending) return;
+  const c = payoutContext(), capture = payoutCaptureJob, limit = 8;
+  try {
+    const raw = await call('PoolPayoutPage', current.view.view_id, capture.job_id, after, limit); if (!payoutCurrent(c) || payoutCaptureJob?.job_id !== capture.job_id) return;
+    const r = payoutEnvelope(raw, 'page', capture.job_id); if (!r.ok) { payoutRefusal(r.error); return; }
+    requireValue(same(r.value.capture, capture.capture) && same(r.value.binding, capture.binding) && r.value.after === after && r.value.limit === limit);
+    payoutRetained(payoutAttempt, payoutCaptureJob, r.value, payoutObservation); payoutPage = r.value;
+  } catch { if (payoutCurrent(c)) payoutRefusal('payout_unavailable'); } finally { renderPayout(); }
+}
+async function beginPayout() {
+  if (!poolMode || !accountReady() || payoutBusy() || payoutWalletPending || poolBackupRunning()) return;
+  const c = payoutContext(); payoutPriorID = payoutAttempt?.job_id || payoutCaptureJob?.job_id || ''; payoutAttempt = null; payoutUnknown = true; payoutMessage = 'Starting a payment-history refresh…'; renderPayout();
+  try {
+    const raw = await call('BeginPoolPayoutHistory', current.view.view_id); if (!payoutCurrent(c)) return;
+    const r = payoutEnvelope(raw, 'job'); if (!r.ok) { payoutUnknown = r.error === 'outcome_unknown'; payoutRefusal(r.error); return; }
+    requireValue(r.value.job_id !== payoutPriorID && r.value.job_id !== payoutCaptureJob?.job_id); await acceptPayoutJob(r.value);
+  } catch { if (payoutCurrent(c)) { payoutUnknown = true; payoutRefusal('outcome_unknown'); } } finally { renderPayout(); }
+}
+async function fetchPayout() {
+  if (!poolMode || !accountReady() || !payoutBusy()) return; const c = payoutContext();
+  try {
+    let id = payoutAttempt?.job_id;
+    if (!id) {
+      const raw = await call('PoolPayoutSnapshot'); if (!payoutCurrent(c)) return;
+      const r = payoutEnvelope(raw, 'snapshot'); if (!r.ok) { payoutRefusal(r.error); return; }
+      if (r.value.state === 'unavailable') { payoutRefusal('payout_unavailable'); return; }
+      id = r.value.active_job_id || r.value.last_job_id;
+      if (!id || id === payoutPriorID || id === payoutCaptureJob?.job_id) { payoutUnknown = false; payoutMessage = 'The new history refresh did not start. The previous capture is unchanged; retry when ready.'; return; }
+    }
+    const raw = await call('PoolPayoutJob', current.view.view_id, id); if (!payoutCurrent(c)) return;
+    const r = payoutEnvelope(raw, 'job', id); if (!r.ok) { if (r.error === 'payout_not_found') { payoutUnknown = false; payoutAttempt = null; } payoutRefusal(r.error); return; }
+    await acceptPayoutJob(r.value);
+  } catch { if (payoutCurrent(c)) payoutRefusal('outcome_unknown'); } finally { renderPayout(); }
+}
+async function cancelPayout() {
+  if (!poolMode || !accountReady() || payoutAttempt?.state !== 'running') return; const c = payoutContext(), id = payoutAttempt.job_id;
+  try { const raw = await call('CancelPoolPayoutHistory', current.view.view_id, id); if (!payoutCurrent(c)) return; const r = payoutEnvelope(raw, 'job', id); if (r.ok) await acceptPayoutJob(r.value); else payoutRefusal(r.error); }
+  catch { if (payoutCurrent(c)) payoutRefusal('outcome_unknown'); } finally { renderPayout(); }
+}
+async function readPayoutWallet(row) {
+  if (!poolMode || !accountReady() || payoutBusy() || payoutWalletPending || poolBackupRunning() || !payoutCaptureJob || !payoutPage?.items.some(i => same(i, row))) return;
+  const c = payoutContext(), capture = payoutCaptureJob; payoutWalletPending = true; payoutMessage = 'Checking the selected transaction in this wallet…'; renderPayout();
+  try {
+    const raw = await call('ReadPoolPayoutTransaction', current.view.view_id, capture.job_id, row.txid, row.output_index); if (!payoutCurrent(c) || payoutCaptureJob?.job_id !== capture.job_id) return;
+    const r = payoutEnvelope(raw, 'observation', capture.job_id); if (!r.ok) { payoutRefusal(r.error); return; }
+    requireValue(same(r.value.capture, capture.capture) && same(r.value.binding, capture.binding) && same(r.value.payment, row));
+    payoutRetained(payoutAttempt, payoutCaptureJob, payoutPage, r.value); payoutObservation = r.value;
+    payoutMessage = r.value.state === 'unavailable' ? 'The wallet check is unavailable. This does not mean the payment failed.' : 'Dated wallet check completed; recorded pool history is unchanged.';
+  } catch { if (payoutCurrent(c)) payoutRefusal('payout_unavailable'); } finally { if (payoutCurrent(c)) payoutWalletPending = false; renderPayout(); }
+}
+function renderPayout() {
+  const visible = poolMode && accountReady(), busy = payoutBusy() || payoutWalletPending, blocked = !visible || !!command || poolBackupRunning();
+  payoutUI.refresh.disabled = blocked || busy; content(payoutUI.refresh, payoutCaptureJob ? 'Refresh payment history' : 'Load payment history');
+  payoutUI.cancel.disabled = !visible || !!command || payoutAttempt?.state !== 'running';
+  payoutUI.previous.disabled = blocked || busy || !payoutPage || payoutPage.after === 0;
+  payoutUI.next.disabled = blocked || busy || !payoutPage?.has_more;
+  content(payoutUI.status, visible ? payoutMessage || 'Load a dated copy of your recorded pool payments.' : 'Sign in to view your recorded payments.');
+  const capture = visible ? payoutCaptureJob?.capture : null;
+  content(payoutUI.capture, capture ? `Captured ${new Date(capture.captured_at_ms).toISOString()}. Pool report ${capture.settlement_observed_at_ms ? new Date(capture.settlement_observed_at_ms).toISOString() : 'not yet observed'}. Recorded paid: ${payoutAtoms(capture.paid_atoms)} SLUG; reserved: ${payoutAtoms(capture.reserved_atoms)} SLUG.` : '');
+  content(payoutUI.page, visible && payoutPage ? payoutPage.capture.count === 0 ? 'No recorded payments in this capture.' : `Payments ${payoutPage.after + 1}–${payoutPage.next} of ${payoutPage.capture.count}` : '');
+  payoutUI.list.textContent = '';
+  for (const row of visible ? payoutPage?.items ?? [] : []) {
+    const li = element('li'), text = element('p', '', `${row.day} · ${payoutAtoms(row.atoms)} SLUG · Pool-recorded ${row.recorded_state}.`), id = element('p', 'note', `Transaction ${row.txid}, output ${row.output_index}. Prepared ${new Date(row.created_at_ms).toISOString()}.`), button = element('button', '', 'Check in wallet');
+    button.disabled = blocked || busy; button.addEventListener('click', () => { const c = payoutContext(); queue(() => payoutCurrent(c) ? readPayoutWallet(row) : undefined, 'pool-payment-wallet'); }); li.append(text, id, button); payoutUI.list.append(li);
+  }
+  const o = visible ? payoutObservation : null;
+  const status = o ? o.state === 'unavailable' ? 'Unavailable; no wallet status was established.' : o.state === 'not_observed' ? 'Not observed in the saved wallet transaction view.' : o.state === 'unconfirmed' ? 'Wallet-reported unconfirmed.' : `Wallet-reported confirmed with ${o.confirmations} confirmation${o.confirmations === 1 ? '' : 's'}.` : '';
+  content(payoutUI.wallet, o ? `Wallet check ${new Date(o.observed_at_ms).toISOString()} for ${o.payment.txid}, output ${o.payment.output_index}: ${status}${o.wallet_synced ? ` Wallet-reported synchronized at height ${o.wallet_height}, tip ${o.wallet_tip}.` : ''}` : '');
+}
+
+payoutUI.refresh.addEventListener('click', () => queue(beginPayout, 'pool-history'));
+payoutUI.cancel.addEventListener('click', () => queue(cancelPayout, 'pool-history-cancel'));
+payoutUI.previous.addEventListener('click', () => queue(() => readPayoutPage(Math.max(0, (payoutPage?.after ?? 0) - 8)), 'pool-history-page'));
+payoutUI.next.addEventListener('click', () => queue(() => payoutPage?.has_more ? readPayoutPage(payoutPage.next) : undefined, 'pool-history-page'));
 
 for (const kind of ['publish', 'reconcile', 'attest', 'export']) ui[`result-${kind}`].addEventListener('click', () => { const c = publicationContext(); queue(() => publicationCurrent(c, true) ? publicationBegin(kind) : undefined, `result-${kind}`); });
 ui['result-read'].addEventListener('click', () => { const c = publicationContext(); queue(() => publicationCurrent(c, true) ? publicationRead() : undefined, 'result-read'); });

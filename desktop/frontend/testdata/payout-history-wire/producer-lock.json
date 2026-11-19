@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "status": "Before first expected output; root approval requested",
+  "core_lock_sha256": "0748cde981c0539055473f5583dd4356e8fc49223c3c08b12d00d37b72e7b2f2",
+  "contract_sha256": "88c8ba350e44869b9c22f90cb2e168c011f351625c3ba750d70a5203ea91e9e5",
+  "bundle_files": {
+    "CASE_PLAN.md": {
+      "sha256": "c4d3a9d4c7302a420ad114431cafe647c2ac7c311d6dd02e02668de2571850f4",
+      "bytes": 3885
+    },
+    "contracts/desktop-wallet-v1.md": {
+      "sha256": "88c8ba350e44869b9c22f90cb2e168c011f351625c3ba750d70a5203ea91e9e5",
+      "bytes": 26934
+    },
+    "inherited/prospectservice/manifest_config.go": {
+      "sha256": "291db23448450a44b6f42a17641b78ce38c8c5e5dcfd98fe90dd160dc4274b8f",
+      "bytes": 10004
+    },
+    "producer/generate_wire.py": {
+      "sha256": "ca72e66f5e0ce517d4a14f1083c8646484fa92d9fa84c0ec7d3b8a2630dda8b3",
+      "bytes": 14159
+    },
+    "producer/wire_model.py": {
+      "sha256": "d655f239633b089633b2192db2c413384f82c96b123e2769c264ebb41d115351",
+      "bytes": 6797
+    },
+    "reproduce.py": {
+      "sha256": "ef89f5236ea9f3c645a9cff8e236537803a1466b64720baf2126696cd6618836",
+      "bytes": 1079
+    }
+  },
+  "case_counts": {
+    "positive": 72,
+    "typed_negative": 61,
+    "raw_cases": 8,
+    "lifecycle_scenarios": 3,
+    "atom_formats": 8
+  },
+  "production_calls": 0,
+  "expected_outputs_generated": false,
+  "supersedes_preexecution_lock_sha256": "911b77b9f9720b3cf847bea76d6b286f6437430c920e9d795f7e6e4c320b5c56",
+  "correction": "Successor to preserved invalid inherited View trust fixture: independently derive loopback transport trust by exact Set66 preimage, validate that derivation, and preserve reference bytes. All case recipes/counts otherwise unchanged.",
+  "inherited_reference_base": "247edc868a620dd39ac3bfdf678241066fa4f844"
+}

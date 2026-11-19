@@ -123,7 +123,13 @@ func (c *Client) post(ctx context.Context, path string, value any, mutation bool
 	}
 	if res.StatusCode != http.StatusOK {
 		var result ErrorResponse
-		if decodeStrict(raw, MaxResponseSize, &result) != nil || result.Version != Version1 || errorStatus(result.Error.Code) != res.StatusCode || result.Error.OutcomeUnknown != (result.Error.Code == "outcome_unknown") {
+		decodeErr := error(nil)
+		if path == "payouts" {
+			decodeErr = decodePayoutError(raw, &result)
+		} else {
+			decodeErr = decodeStrict(raw, MaxResponseSize, &result)
+		}
+		if decodeErr != nil || result.Version != Version1 || errorStatus(result.Error.Code) != res.StatusCode || result.Error.OutcomeUnknown != (result.Error.Code == "outcome_unknown") {
 			return nil, failure(mutation)
 		}
 		return nil, &ClientError{Code: result.Error.Code, OutcomeUnknown: result.Error.OutcomeUnknown}

@@ -245,16 +245,23 @@ recovery, complete desktop, package and smoke checks pass; see
 `PUBLIC_FIGHTER_EVIDENCE.md` and `CHANGESET_66_NOTES.md`. Supplied consistency
 does not establish issuer timing, actual awards/finality, current ownership or
 complete authoritative history. Transfer timing and competing-transfer ordering
-still require an explicit policy decision. Next add authenticated own-payout
-history with a separate dated observation of the exact transaction in the
-existing wallet; preserve daily accounting, original-view authorization and the
-distinction between retained pool state and current wallet observation.
+still require an explicit policy decision.
+Set67 implements authenticated own-payout history with fixed local pages and
+a separate dated observation of the selected transaction output in the owned
+wallet. Preserve daily accounting, original-view authorization and the distinction
+between retained pool state and current wallet observation. No new send,
+settlement or fee authority is added. See `POOL_PAYOUT_HISTORY.md`,
+`POOL_PAYOUT_DESKTOP.md` and `CHANGESET_67_NOTES.md` for qualification status.
+The next wallet work must provide a reviewed, durable withdrawal with exact
+transaction recovery and D72 enforcement; simply enabling a generic send RPC
+does not establish that flow. Transfer and general-matchmaking decisions remain
+separate, and no next-set implementation is implied by this planning entry.
 Never repin solo event histories. Keep the existing layout/logos until the final
 joint D74 review. Public hosting, production signer custody/capacity, real account
 configuration and permanent genesis remain separate gates. The implemented
 contract is `SHARED_POOL_DESKTOP.md`; the earlier workspace runtime proposal
 remains historical context. See `CHANGESET_52_NOTES.md` through
-`CHANGESET_65_NOTES.md`, `POOL_WORKER.md`, `POOL_RECIPIENTS.md`,
+`CHANGESET_67_NOTES.md`, `POOL_WORKER.md`, `POOL_RECIPIENTS.md`,
 `SHARED_GYM_STABLE.md` and `POOL_SESSION_FENCES.md`.
 
 ### 4. Wallet

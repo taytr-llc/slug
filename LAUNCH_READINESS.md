@@ -391,8 +391,17 @@ they do not count as completion of this product-release gate.
   establish admission time, actual result finality, ownership or complete/fresh
   authoritative history. Preserve the initial sandbox failure and composite
   qualification record. See `CHANGESET_66_NOTES.md`. The seed inputs are unchanged;
-  no new rollout or product-release approval is implied. Own-payout history and
-  separately dated wallet transaction observations are the next functional slice.
+  no new rollout or product-release approval is implied.
+
+- Set67 implements each authenticated gym's historical payment capture and
+  local pages, with a separate dated check of the exact output in its owned
+  wallet. Original source/recipient/view and native action identities remain
+  bound through refresh, cancellation and lost replies. A missing wallet
+  observation cannot undo a recorded payment or authorize another one.
+  `CHANGESET_67_NOTES.md` tracks focused, actual, package and smoke qualification;
+  this entry does not replace that evidence. Reviewed withdrawals, transferable
+  ownership, general league policy, real custody/hosting and distribution remain
+  open. The joint D74 review remains the final product gate.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace

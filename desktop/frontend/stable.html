@@ -31,6 +31,14 @@
         <p id="pool-reason" class="note" role="status"></p>
         <button id="pool-refresh" type="button" disabled>Refresh pool balance</button>
         <p class="note">Earnings include the 1% pool fee. Payments batch daily after rewards mature, once your balance reaches 1 SLUG. Smaller amounts carry forward.</p>
+        <h3>Payment history</h3>
+        <div class="actions"><button id="pool-history-refresh" type="button" disabled>Load payment history</button><button id="pool-history-cancel" type="button" disabled>Cancel history refresh</button></div>
+        <p id="pool-history-status" class="note" role="status">Load a dated copy of your recorded pool payments.</p>
+        <p id="pool-history-capture" class="note"></p>
+        <ol id="pool-history-list"></ol>
+        <div class="actions"><button id="pool-history-previous" type="button" disabled>Previous payments</button><span id="pool-history-page" class="note"></span><button id="pool-history-next" type="button" disabled>Next payments</button></div>
+        <p id="pool-history-wallet" class="note" role="status"></p>
+        <p class="note">Recorded pool state and wallet checks are separate observations. A wallet check does not prove current chain finality, conflict absence, or spendability.</p>
       </div>
       <div class="actions"><button id="export-recovery" type="button" disabled>Export recovery backup</button><button id="verify-backup" type="button" disabled>Verify backup</button></div>
       <p id="backup" class="note">Stop mining to save or verify a demo wallet backup.</p><p class="note">The service retains recovery authority. Exporting a backup does not remove that authority.</p>

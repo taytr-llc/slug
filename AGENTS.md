@@ -238,8 +238,19 @@ version.
   and the old recovery-file limit. Normal/race/reference, six actual exports,
   complete desktop, normal package and smoke checks pass; retain the sandbox
   failure and explicit composite rerun evidence. See `CHANGESET_66_NOTES.md`.
-  Next add authenticated own-payout history with separately dated wallet
-  observations; no transfer policy or navigation redesign is implied.
+  Own-payout history follows in Set67; no transfer policy or navigation redesign
+  is implied.
+- Set67 on `slug-payout-history` adds an authenticated own-payment capture,
+  fixed local pages and a separate dated observation of a selected output in
+  the owned wallet. Preserve the original recipient, source, view and exact
+  native action through reads and uncertain replies. Pool-recorded state and
+  wallet-reported confirmation are separate facts; neither authorizes another
+  payment. Stop/backup/Close join the independent payout slot before reusing
+  resources. Keep errors distinct from a verified empty history and keep the
+  former capture after a failed refresh. See `POOL_PAYOUT_HISTORY.md`,
+  `POOL_PAYOUT_DESKTOP.md` and `CHANGESET_67_NOTES.md` for qualification status.
+  Continue remaining wallet/lifecycle work under settled policies; transfers
+  and general league matching still need their own decisions. D74 stays last.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

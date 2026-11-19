@@ -132,6 +132,14 @@ func (b *PoolBridge) PoolRequest(ctx context.Context, req pilot.PoolRequest) (pi
 			v := *s.View
 			b.manifestView = &v
 		}
+		binding, bindingErr := pilot.PoolPayoutBindingForSnapshot(*s)
+		b.mu.Lock()
+		if bindingErr == nil {
+			b.payoutBinding = &binding
+		} else {
+			b.payoutBinding = nil
+		}
+		b.mu.Unlock()
 	}
 	return r, nil
 }

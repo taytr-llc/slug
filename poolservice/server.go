@@ -189,6 +189,8 @@ func requestAction(r *http.Request) string {
 		return "lookup"
 	case pathPrefix + "balance":
 		return "balance"
+	case pathPrefix + "payouts":
+		return "payouts"
 	}
 	return ""
 }
@@ -364,6 +366,10 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		var jobID string
 		var nonce uint32
 		switch action {
+		case "payouts":
+			if !payoutRequest(body) {
+				return nil, "invalid_request"
+			}
 		case "issue", "balance":
 			var empty struct{}
 			if decodeStrict(body, MaxRequestSize, &empty) != nil {
@@ -386,6 +392,16 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		mutating := action == "issue" || action == "submit"
 		maxSize := MaxResponseSize
 		switch action {
+		case "payouts":
+			var history poolsettle.PayoutHistory
+			history, e = s.settlement.MinerPayoutHistory(ctx, s.sessions, token)
+			if e == nil {
+				if history.Balance.GymID != gym {
+					return nil, "unavailable"
+				}
+				result = PayoutHistoryResponse{Version1, s.binding, history}
+				maxSize = MaxPayoutResponseSize
+			}
 		case "issue", "work":
 			var work poolshare.MiningWork
 			if action == "issue" {
@@ -429,6 +445,12 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 		if e != nil {
+			if action == "payouts" {
+				if ctx.Err() != nil {
+					return nil, "unavailable"
+				}
+				return nil, payoutFailure(e)
+			}
 			// Issuance can fail after the underlying job was synchronized but
 			// before the complete pool work was acknowledged. No new-issue retry
 			// is silently described as recovery of that original job.
