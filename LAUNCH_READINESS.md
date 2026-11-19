@@ -272,6 +272,12 @@ they do not count as completion of this product-release gate.
   remain open. No seed or desktop rollout is needed for this unconnected
   component. See `CHANGESET_53_NOTES.md`.
 
+- Set 54 retains fixed pool rounds and exact gross allocations, with first
+  confirmation at sixty descendants. D81 orphan/return and post-confirmation
+  funding conflicts pass focused normal/race/profile-refusal checks and vet.
+  Maturity, unspent funding, fee/rounding policy and payment remain separate;
+  this adds no public service or desktop route. See `CHANGESET_54_NOTES.md`.
+
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
 `sim-handoff-intake.json` preserves archive and file checksums. They are reference

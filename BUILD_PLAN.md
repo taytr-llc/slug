@@ -177,8 +177,11 @@ acceptance follows in Set 53; no live pool or framework adaptation is implied.
 Set 53's bounded `poolshare` journal now persists issued work, authenticated
 share acceptance and block delivery, recovering exact duplicates and applying
 D80 only to exact canonical payout-bound winners. Public transport and miner
-integration, round accounting and payouts remain ahead. See
-`CHANGESET_52_NOTES.md` and `CHANGESET_53_NOTES.md`.
+integration and payouts remain ahead. Set 54 adds fixed D81 rounds, exact gross
+allocations and fresh 60-descendant confirmation locks. Orphaning and return
+change status without reusing shares; a later funding conflict retains locked
+earnings. Maturity/unspent funding, rounding/fees and settlement remain open.
+See `CHANGESET_52_NOTES.md`, `CHANGESET_53_NOTES.md` and `CHANGESET_54_NOTES.md`.
 
 ### 4. Wallet
 btcwallet from the btcd suite. Hosted wallet at signup with full

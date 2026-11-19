@@ -5,6 +5,8 @@ Set 53 accepted-share journal. It does not round amounts, deduct fees, move
 coins or declare a balance payable. The public pool and desktop integration
 remain separate work.
 
+Implementation and focused validation are complete. See `CHANGESET_54_NOTES.md`.
+
 ## Source and membership
 
 The concrete pool supplies bounded operator-only `AccountingPage` reads. They

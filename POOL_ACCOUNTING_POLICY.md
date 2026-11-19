@@ -66,9 +66,10 @@ an orphaned round has no confirmed earnings. After a prior sixty-descendant
 lock, D79 retains the earnings and blocks unfunded payment on a conflict. RPC
 failure is unavailable evidence, not evidence of an orphan or a new lock.
 
-Deep-reorg incident resolution, payout transaction
-fees, rounding and dust allocation remain to be specified before implementing
-money movement. No current pool ledger, live service, reserve funding or payout
-has been created by this decision. The first implementation slice validates
-job-bound work against distinct pool, prospect and block targets; it must not
-present proof classification as an account credit or successful payment.
+Deep-reorg incident resolution, payout transaction fees, rounding and dust
+allocation remain to be specified before implementing money movement.
+Set 54 now retains fixed rounds, exact fractional gross allocations and durable
+confirmation locks. It uses the accepted-share journal and fresh node evidence;
+it creates no payable wallet balance, live service, reserve funding or payout.
+Work classification, share acceptance and round confirmation remain distinct
+from a successful payment. See `POOL_ROUNDS.md`.

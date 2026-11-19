@@ -103,6 +103,12 @@ version.
   issuer and preserve exact pending block evidence on uncertainty. The journal
   grants no fighter admission, monetary balance or payment. Public pool/miner
   integration and round accounting remain ahead. See `CHANGESET_53_NOTES.md`.
+- Set 54 on `slug-pool-rounds` adds operator-only accepted-work pages, fixed
+  pool rounds, exact fractional gross allocations and fresh 60-descendant
+  confirmation locks. D81 orphan/return never changes membership; later
+  conflicts preserve confirmed gross earnings. Normal/race/profile-refusal
+  checks and vet pass. This is not maturity, spendability or payout authority;
+  no changed package is linked by the seed. See `CHANGESET_54_NOTES.md`.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review
