@@ -323,6 +323,19 @@ they do not count as completion of this product-release gate.
   visible pool balances and daily scheduling remain next. No app navigation
   reorganization or D74 design approval is implied.
 
+- Set 60 removes long account leases from pool node/proof work and balance
+  verification. Original-token fences still cover actual commits and final
+  disclosure; staged registry commits fail fast rather than waiting behind
+  proof readers while holding account authority. The new admission-only
+  constructor is explicit, with one writer per shared issuer. See
+  `POOL_SESSION_FENCES.md` and `CHANGESET_60_NOTES.md` for the implementation
+  boundary and evidence. This does not activate a new app route or production
+  service. Next is the runnable shared fixture desktop integration: one parent
+  runtime, two actual recipient-bound wallets, separate workers/outboxes and
+  Pin2 stables, visible authenticated balances, daily scheduling, and actual
+  payout/restart/reset acceptance. Preserve the current solo route and layout;
+  the thorough joint D74 review remains last.
+
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
 `sim-handoff-intake.json` preserves archive and file checksums. They are reference

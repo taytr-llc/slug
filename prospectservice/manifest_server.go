@@ -32,7 +32,8 @@ import (
 // ManifestServer borrows its manifest store until Run drains. Full servers own
 // exclusive issuance; admission-only servers may share a pool's issuer without
 // issuing jobs outside its durable work journal. It has no account authority of
-// its own; session mode delegates the account-before-registry lease.
+// its own; legacy session mode delegates the account-before-registry lease.
+// Explicit fenced admission stages proof/node work before its short commit lease.
 type ManifestServer struct {
 	config        ManifestServerConfig
 	policy        prospectnode.Policy
@@ -49,6 +50,8 @@ type ManifestServer struct {
 	closing       bool
 	started       bool
 	handlers      sync.WaitGroup
+
+	fencedAdmission bool // explicit shared-runtime path; legacy session contract is unchanged
 }
 
 // NewManifestServer selects static per-gym credentials for protocol 3.
@@ -371,7 +374,9 @@ func (server *ManifestServer) ServeHTTP(writer http.ResponseWriter, request *htt
 				result, operationErr = server.admit(ctx, activeCredential, body)
 			}
 		}
-		if server.sessions == nil {
+		if server.fencedAdmission {
+			result, operationErr = server.admitFenced(ctx, bearerToken(request), credential, body)
+		} else if server.sessions == nil {
 			operate(credential)
 		} else {
 			err := server.sessions.WithSession(ctx, bearerToken(request), func(key string, recheck func() error) error {

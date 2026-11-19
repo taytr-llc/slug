@@ -267,7 +267,10 @@ func setupPool(t *testing.T, target string, maxSubmissions uint64) *poolHarness 
 	}
 	h.pool.now = func() time.Time { return time.UnixMilli(h.now) }
 	// Seed only independently frozen issued inputs. The source is a real
-	// ManifestStore, and saveWork still checks it and builds its own candidate.
+	// ManifestStore; preparation verifies it before the local commit boundary.
+	if _, err := h.pool.prepare(savedWork{Job: source.Job, Template: source.Template}); err != nil {
+		t.Fatal(err)
+	}
 	if err := h.pool.saveWork(savedWork{Job: source.Job, Template: source.Template}, func() error { return nil }); err != nil {
 		t.Fatal(err)
 	}

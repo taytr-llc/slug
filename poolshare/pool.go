@@ -5,17 +5,73 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"strings"
 	"time"
 
 	"github.com/taytr-llc/slug/gymauth"
+	"github.com/taytr-llc/slug/internal/mininglease"
 	"github.com/taytr-llc/slug/prospect"
+	"github.com/taytr-llc/slug/prospectjob"
 	"github.com/taytr-llc/slug/prospectnode"
 	"github.com/taytr-llc/slug/prospectwork"
+	"github.com/taytr-llc/slug/registry"
 	"github.com/taytr-llc/slug/wire/v2"
 )
 
-func (p *Pool) withSession(ctx context.Context, token string, fn func(context.Context, string, func() error) error) error {
+// A pool operation owns the pool gate for its lifetime, but holds the account
+// lease only for a local commit or final disclosure. No node, proof, or blocking
+// issuer read may run in do. The original token is never replaced after reset.
+type poolSession struct {
+	lease   *mininglease.Lease
+	effects bool // issued work, retained share, or attempted block transmission
+}
+
+func poolLeaseError(err error) error {
+	switch {
+	case errors.Is(err, mininglease.ErrOutcomeUnknown):
+		return ErrOutcomeUnknown
+	case errors.Is(err, mininglease.ErrUnauthorized):
+		return ErrUnauthorized
+	default:
+		return err
+	}
+}
+
+func (s *poolSession) check() error { return poolLeaseError(s.lease.Check()) }
+func (s *poolSession) do(fn func(func() error) error) error {
+	return poolLeaseError(s.lease.Do(fn))
+}
+func (p *Pool) sessionClock(s *poolSession) (int64, error) {
+	var at int64
+	err := s.do(func(check func() error) error {
+		var e error
+		at, e = p.clock(check)
+		return e
+	})
+	return at, err
+}
+func (p *Pool) sessionSubmission(s *poolSession, job prospectjob.ManifestJob, r Submission, previous *Submission) (Submission, error) {
+	// The issuer may be serving a long historical proof read. Wait only while
+	// the account gate is free, and preserve the previous exact-job health check.
+	actual, err := p.authority.GetManifestJob(job.ID)
+	if err != nil || actual != job {
+		return Submission{}, ErrCorrupt
+	}
+	var saved Submission
+	err = s.do(func(check func() error) error {
+		var e error
+		saved, e = p.saveSubmission(job, r, previous, check)
+		if e == nil {
+			s.effects = true
+		}
+		return e
+	})
+	if err != nil {
+		return Submission{}, err
+	}
+	return saved, nil
+}
+
+func (p *Pool) withSession(ctx context.Context, token string, fn func(context.Context, string, *poolSession) error) error {
 	if wire.TestPoW {
 		return ErrProfile
 	}
@@ -46,47 +102,27 @@ func (p *Pool) withSession(ctx context.Context, token string, fn func(context.Co
 	}
 	ctx, cancel := context.WithTimeout(ctx, 30*time.Second)
 	defer cancel()
-	called := false
-	var operationErr error
-	err := p.sessions.WithSession(ctx, token, func(key string, recheck func() error) error {
-		if called {
-			return ErrUnauthorized
-		}
-		called = true
-		if len(key) != 66 || key != strings.ToLower(key) || recheck == nil {
-			operationErr = ErrUnauthorized
-			return operationErr
-		}
-		identity := prospect.Context{Version: p.config.Policy.Version, Network: p.config.Policy.Network, Genesis: p.config.Policy.Genesis, DNAVersion: p.config.Policy.DNAVersion}
-		if _, e := gymauth.GymID(identity, key); e != nil {
-			operationErr = ErrUnauthorized
-			return operationErr
-		}
-		guard := func() error {
-			if err := ctx.Err(); err != nil {
-				return err
-			}
-			if recheck() != nil {
-				return ErrUnauthorized
-			}
-			return ctx.Err()
-		}
-		if operationErr = guard(); operationErr != nil {
-			return operationErr
-		}
-		operationErr = fn(ctx, key, guard)
-		if operationErr == nil {
-			operationErr = guard()
-		}
-		return operationErr
-	})
-	if operationErr != nil {
-		return operationErr
+	lease, err := mininglease.Capture(ctx, p.sessions, token)
+	if err != nil {
+		return poolLeaseError(err)
 	}
-	if err != nil || !called {
+	key := lease.PublicKey()
+	identity := prospect.Context{Version: p.config.Policy.Version, Network: p.config.Policy.Network, Genesis: p.config.Policy.Genesis, DNAVersion: p.config.Policy.DNAVersion}
+	if _, err := gymauth.GymID(identity, key); err != nil {
 		return ErrUnauthorized
 	}
-	return nil
+	session := &poolSession{lease: lease}
+	err = fn(ctx, key, session)
+	if err == nil {
+		err = session.check()
+	}
+	if p.poisoned {
+		return ErrPoisoned
+	}
+	if err != nil && session.effects {
+		return ErrOutcomeUnknown
+	}
+	return err
 }
 
 // Issue uses the live trusted issuer and node. Its immutable exact candidate is
@@ -102,7 +138,7 @@ func (p *Pool) Issue(ctx context.Context, token string) (Work, error) {
 func (p *Pool) issue(ctx context.Context, token string) (savedWork, Work, error) {
 	var retained savedWork
 	var result Work
-	err := p.withSession(ctx, token, func(ctx context.Context, key string, recheck func() error) error {
+	err := p.withSession(ctx, token, func(ctx context.Context, key string, session *poolSession) error {
 		info, err := p.authority.Info()
 		if err != nil || info.Pin != p.config.AuthorityPin || info.ReadOnly {
 			return ErrCorrupt
@@ -126,17 +162,31 @@ func (p *Pool) issue(ctx context.Context, token string) (savedWork, Work, error)
 		if prospectwork.ValidateTemplate(owned) != nil {
 			return ErrNode
 		}
-		if _, err := p.clock(recheck); err != nil {
+		if _, err := p.sessionClock(session); err != nil {
 			return err
 		}
-		job, err := p.authority.IssueManifestJob(owned.Context, key, func() error {
-			if p.node.RecheckContext(ctx, owned.Context) != nil {
-				return ErrNode
-			}
-			return recheck()
-		})
+		issuance, err := p.authority.PrepareManifestIssue(owned.Context, key)
 		if err != nil {
 			return ErrNode
+		}
+		if p.node.RecheckContext(ctx, owned.Context) != nil {
+			return ErrNode
+		}
+		var job prospectjob.ManifestJob
+		err = session.do(func(check func() error) error {
+			var e error
+			job, e = p.authority.CommitManifestIssue(issuance, check)
+			if e == nil {
+				session.effects = true
+			} else if errors.Is(e, registry.ErrBusy) {
+				return ErrBusy
+			} else if errors.Is(e, registry.ErrPoisoned) {
+				return ErrOutcomeUnknown
+			}
+			return e
+		})
+		if err != nil {
+			return err
 		}
 		w := savedWork{Job: job, Template: owned}
 		prepared, err := p.prepare(w)
@@ -150,7 +200,10 @@ func (p *Pool) issue(ctx context.Context, token string) (savedWork, Work, error)
 		if p.node.RecheckContext(ctx, job.Context) != nil {
 			return ErrNode
 		}
-		if err := p.saveWork(w, recheck); err != nil {
+		if _, err := p.prepare(w); err != nil {
+			return err
+		}
+		if err := session.do(func(check func() error) error { return p.saveWork(w, check) }); err != nil {
 			return err
 		}
 		result = Work{Job: job, PoolTarget: p.config.PoolTarget, Candidate: candidate}
@@ -167,7 +220,7 @@ func (p *Pool) issue(ctx context.Context, token string) (savedWork, Work, error)
 // refresh expiry, consult the node or claim that the work is still current.
 func (p *Pool) Work(ctx context.Context, token, jobID string) (Work, error) {
 	var result Work
-	err := p.withSession(ctx, token, func(ctx context.Context, key string, recheck func() error) error {
+	err := p.withSession(ctx, token, func(ctx context.Context, key string, session *poolSession) error {
 		w, prepared, err := p.loadWork(jobID)
 		if err != nil {
 			return err
@@ -176,7 +229,7 @@ func (p *Pool) Work(ctx context.Context, token, jobID string) (Work, error) {
 			return ErrUnauthorized
 		}
 		result = Work{Job: w.Job, PoolTarget: p.config.PoolTarget, Candidate: prepared.Candidate()}
-		return recheck()
+		return session.check()
 	})
 	if err != nil {
 		return Work{}, err
@@ -188,7 +241,7 @@ func (p *Pool) Work(ctx context.Context, token, jobID string) (Work, error) {
 // verifies its work but never contacts the node or creates/renews acceptance.
 func (p *Pool) Lookup(ctx context.Context, token, jobID string, nonce uint32) (Submission, error) {
 	var result Submission
-	err := p.withSession(ctx, token, func(ctx context.Context, key string, recheck func() error) error {
+	err := p.withSession(ctx, token, func(ctx context.Context, key string, session *poolSession) error {
 		w, prepared, err := p.loadWork(jobID)
 		if err != nil {
 			return err
@@ -204,7 +257,7 @@ func (p *Pool) Lookup(ctx context.Context, token, jobID string, nonce uint32) (S
 			return err
 		}
 		result = r
-		return recheck()
+		return session.check()
 	})
 	if err != nil {
 		return Submission{}, err
@@ -218,7 +271,7 @@ func (p *Pool) Lookup(ctx context.Context, token, jobID string, nonce uint32) (S
 // pending/unknown/processed block is not canonical merely because this returns.
 func (p *Pool) Submit(ctx context.Context, token, jobID string, nonce uint32) (Submission, error) {
 	var result Submission
-	err := p.withSession(ctx, token, func(ctx context.Context, key string, recheck func() error) error {
+	err := p.withSession(ctx, token, func(ctx context.Context, key string, session *poolSession) error {
 		w, prepared, err := p.loadWork(jobID)
 		if err != nil {
 			return err
@@ -232,7 +285,7 @@ func (p *Pool) Submit(ctx context.Context, token, jobID string, nonce uint32) (S
 			if err != nil {
 				return err
 			}
-			result, err = p.deliver(ctx, w, original, check, recheck)
+			result, err = p.deliver(ctx, w, original, check, session)
 			return err
 		}
 		if !errors.Is(err, ErrNotFound) {
@@ -241,7 +294,7 @@ func (p *Pool) Submit(ctx context.Context, token, jobID string, nonce uint32) (S
 		if p.meta.Submissions >= p.config.MaxSubmissions || maxSubmissionSize > p.config.MaxBytes-p.meta.Bytes {
 			return ErrCapacity
 		}
-		received, err := p.clock(recheck)
+		received, err := p.sessionClock(session)
 		if err != nil {
 			return err
 		}
@@ -252,7 +305,7 @@ func (p *Pool) Submit(ctx context.Context, token, jobID string, nonce uint32) (S
 		if err != nil {
 			return err
 		}
-		observed, err := p.clock(recheck)
+		observed, err := p.sessionClock(session)
 		if err != nil {
 			return err
 		}
@@ -263,7 +316,7 @@ func (p *Pool) Submit(ctx context.Context, token, jobID string, nonce uint32) (S
 		if check.Pool && observed < w.Job.ExpiresAtMS {
 			current = p.node.RecheckContext(ctx, w.Job.Context) == nil
 		}
-		observed, err = p.clock(recheck)
+		observed, err = p.sessionClock(session)
 		if err != nil {
 			return err
 		}
@@ -285,11 +338,11 @@ func (p *Pool) Submit(ctx context.Context, token, jobID string, nonce uint32) (S
 			r.AcceptedAtMS = observed
 			r.Acceptance = "current-parent"
 		}
-		r, err = p.saveSubmission(r, nil, recheck)
+		r, err = p.sessionSubmission(session, w.Job, r, nil)
 		if err != nil {
 			return err
 		}
-		result, err = p.deliver(ctx, w, r, check, recheck)
+		result, err = p.deliver(ctx, w, r, check, session)
 		return err
 	})
 	if err != nil {
@@ -298,19 +351,20 @@ func (p *Pool) Submit(ctx context.Context, token, jobID string, nonce uint32) (S
 	return result, nil
 }
 
-func (p *Pool) deliver(ctx context.Context, w savedWork, r Submission, check prospectwork.ShareCheck, recheck func() error) (Submission, error) {
+func (p *Pool) deliver(ctx context.Context, w savedWork, r Submission, check prospectwork.ShareCheck, session *poolSession) (Submission, error) {
 	if !r.Block || r.BlockState == "canonical-observed" {
-		return r, recheck()
+		return r, session.check()
 	}
 	if check.Candidate == nil || !check.Block {
 		return Submission{}, ErrCorrupt
 	}
-	if err := recheck(); err != nil {
+	if err := session.check(); err != nil {
 		return Submission{}, err
 	}
 	// The exact block intent is already synchronized. Submission happens before
 	// any fighter operation (this package has none), including for expired work.
 	if r.BlockState != "rejected" {
+		session.effects = true
 		err := p.node.SubmitBlock(ctx, w.Job.Context, check.Candidate.BlockHex)
 		next := r
 		next.BlockState = "processed"
@@ -322,13 +376,13 @@ func (p *Pool) deliver(ctx context.Context, w savedWork, r Submission, check pro
 			}
 		}
 		var saveErr error
-		next, saveErr = p.saveSubmission(next, &r, recheck)
+		next, saveErr = p.sessionSubmission(session, w.Job, next, &r)
 		if saveErr != nil {
 			return Submission{}, saveErr
 		}
 		r = next
 	}
-	if err := recheck(); err != nil {
+	if err := session.check(); err != nil {
 		return Submission{}, err
 	}
 	proof := check.Candidate.Proof
@@ -340,7 +394,7 @@ func (p *Pool) deliver(ctx context.Context, w savedWork, r Submission, check pro
 	// This independent check cannot turn an ordinary RPC error into eligibility.
 	// Its exact header commits the retained configured-payout coinbase.
 	if p.node.CanonicalBlock(ctx, w.Job.Context, proof, check.WorkHash) != nil {
-		return r, recheck()
+		return r, session.check()
 	}
 	next := r
 	next.BlockState = "canonical-observed"
@@ -348,5 +402,5 @@ func (p *Pool) deliver(ctx context.Context, w savedWork, r Submission, check pro
 		next.AcceptedSequence = p.meta.Accepted + 1
 		next.Acceptance = "canonical-winning-block"
 	}
-	return p.saveSubmission(next, &r, recheck)
+	return p.sessionSubmission(session, w.Job, next, &r)
 }

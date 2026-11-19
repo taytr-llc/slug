@@ -7,10 +7,10 @@ import (
 	"encoding/hex"
 	"math/big"
 	"sort"
-	"strings"
 	"time"
 
 	"github.com/taytr-llc/slug/gymauth"
+	"github.com/taytr-llc/slug/internal/mininglease"
 	"github.com/taytr-llc/slug/prospect"
 	"github.com/taytr-llc/slug/prospectservice"
 )
@@ -365,54 +365,36 @@ func (s *Store) MinerBalance(ctx context.Context, sessions prospectservice.Sessi
 		return Balance{}, time.Time{}, e
 	}
 	defer end()
-	var result Balance
+	lease, e := mininglease.Capture(ctx, sessions, token)
+	if e != nil {
+		return Balance{}, time.Time{}, e
+	}
+	p := s.state.Source.Policy
+	gym, e := gymauth.GymID(prospect.Context{Version: p.Version, Network: p.Network, Genesis: p.Genesis, DNAVersion: p.DNAVersion}, lease.PublicKey())
+	if e != nil {
+		return Balance{}, time.Time{}, e
+	}
+	// Verification can traverse source proofs. Retain the settlement operation
+	// permit, but never hold the global account lease over this slow work.
+	if e = s.verify(ctx); e != nil {
+		return Balance{}, time.Time{}, e
+	}
+	report := clone(s.state.Report)
+	result := Balance{GymID: gym, Confirmed: Fraction{"0", "1"}, Available: Fraction{"0", "1"}}
+	for _, b := range report.Balances {
+		if b.GymID == gym {
+			result = b
+			break
+		}
+	}
 	var observed time.Time
-	called := false
-	var operationErr error
-	err := sessions.WithSession(ctx, token, func(public string, recheck func() error) (opErr error) {
-		defer func() { operationErr = opErr }()
-		if called || len(public) != 66 || public != strings.ToLower(public) || recheck == nil {
-			return ErrInvalid
-		}
-		called = true
-		p := s.state.Source.Policy
-		gym, e := gymauth.GymID(prospect.Context{Version: p.Version, Network: p.Network, Genesis: p.Genesis, DNAVersion: p.DNAVersion}, public)
-		if e != nil {
-			return e
-		}
-		if e = recheck(); e != nil {
-			return e
-		}
-		if e = s.verify(ctx); e != nil {
-			return e
-		}
-		report := clone(s.state.Report)
-		if e = recheck(); e != nil {
-			return e
-		}
-		result = Balance{GymID: gym, Confirmed: Fraction{"0", "1"}, Available: Fraction{"0", "1"}}
-		for _, b := range report.Balances {
-			if b.GymID == gym {
-				result = b
-				break
-			}
-		}
-		if report.ObservedAtMS != 0 {
-			observed = time.UnixMilli(report.ObservedAtMS)
-		}
-		return ctx.Err()
-	})
-	if err != nil {
-		return Balance{}, time.Time{}, err
+	if report.ObservedAtMS != 0 {
+		observed = time.UnixMilli(report.ObservedAtMS)
 	}
-	if operationErr != nil {
-		return Balance{}, time.Time{}, operationErr
-	}
-	if !called {
-		return Balance{}, time.Time{}, ErrInvalid
-	}
-	if err := ctx.Err(); err != nil {
-		return Balance{}, time.Time{}, err
+	// Only the original credential may disclose the prepared gym balance.
+	// The copied report retains its historical observation time.
+	if e = lease.Check(); e != nil {
+		return Balance{}, time.Time{}, e
 	}
 	return result, observed, nil
 }

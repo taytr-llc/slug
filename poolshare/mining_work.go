@@ -31,7 +31,7 @@ func (p *Pool) IssueMiningWork(ctx context.Context, token string) (MiningWork, e
 // expiry. It neither issues new work nor asks the node to refresh that work.
 func (p *Pool) RecoverMiningWork(ctx context.Context, token, jobID string) (MiningWork, error) {
 	var result MiningWork
-	err := p.withSession(ctx, token, func(ctx context.Context, key string, recheck func() error) error {
+	err := p.withSession(ctx, token, func(ctx context.Context, key string, session *poolSession) error {
 		w, _, err := p.loadWork(jobID)
 		if err != nil {
 			return err
@@ -40,7 +40,7 @@ func (p *Pool) RecoverMiningWork(ctx context.Context, token, jobID string) (Mini
 			return ErrUnauthorized
 		}
 		result = MiningWork{Job: w.Job, Template: w.Template}
-		return recheck()
+		return session.check()
 	})
 	if err != nil {
 		return MiningWork{}, err

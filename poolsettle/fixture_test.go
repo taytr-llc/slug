@@ -174,6 +174,7 @@ func (b *settlementBackend) Broadcast(_ context.Context, raw []byte) (string, er
 
 type settlementHarness struct {
 	store     *Store
+	issuer    *registry.ManifestStore
 	source    *poolround.Store
 	pool      *poolshare.Pool
 	node      *settlementSourceNode
@@ -281,6 +282,7 @@ func newSettlementHarnessWithLimit(t *testing.T, maxRounds uint32) *settlementHa
 		t.Fatalf("confirmed source: %+v %v", record, err)
 	}
 	h := &settlementHarness{source: rounds, pool: pool, node: node, backend: &settlementBackend{funding: "ready", fee: 1000, txs: make(map[string][]byte)}, config: Config{Version: 1, ChangeScript: poolScript, Destinations: []Destination{{GymID: work.Job.GymID, Script: payScript}}, MaxRounds: maxRounds, MaxBatches: 4}, path: filepath.Join(t.TempDir(), "settlement"), gym: work.Job.GymID, clock: time.Date(2030, 1, 1, 12, 0, 0, 0, time.UTC)}
+	h.issuer = issuer
 	h.store, err = Create(h.path, h.config, h.source, h.backend)
 	if err != nil {
 		t.Fatal(err)

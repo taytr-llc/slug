@@ -205,9 +205,25 @@ issuer, preserving original source sequence/evidence and separating global
 cursor progress from local assignment count. Sparse inventory, local Recent,
 roster, noon entry and career reads reuse their original authority fences.
 Legacy single-gym stores and contiguous projections keep their semantics.
-Next connect the shared runtime, separate balance view and daily scheduler.
-See `CHANGESET_52_NOTES.md` through `CHANGESET_59_NOTES.md`, `POOL_WORKER.md`,
-`POOL_RECIPIENTS.md` and `SHARED_GYM_STABLE.md`.
+Set 60 removes the account lease from slow pool proofs, node/source calls and
+balance verification while retaining original-token authorization through each
+actual local commit. Additive staged registry commits fail fast on lock contention;
+the new shared runtime must select the explicit fenced admission-only server.
+Legacy registry/session APIs and wire/journal formats remain unchanged.
+
+Next deliver a runnable explicit shared fixture desktop app, with one parent
+node pair/issuer/pool/round/settlement owner, two actually enrolled wallets and
+Set58 recipients, per-gym workers/outboxes/Pin2 stables, authenticated visible
+balances and bounded daily settlement. Preserve the solo route in its existing
+namespace. Mining starts only on Start; switch/reset drains the current gym
+child while retaining the parent source. Prove stop/restart, isolation, exact
+pending recovery and a maturity-funded payout to the actual fixture wallets.
+Do not split off another accounting-only milestone or repin old event histories;
+shared league attachment remains explicit. Existing layout/logos stay intact
+until the final joint D74 review. The workspace proposal is
+`../shared-pool-runtime-plan.md`; `POOL_SESSION_FENCES.md` records the implemented
+prerequisite. See `CHANGESET_52_NOTES.md` through `CHANGESET_60_NOTES.md`,
+`POOL_WORKER.md`, `POOL_RECIPIENTS.md` and `SHARED_GYM_STABLE.md`.
 
 ### 4. Wallet
 btcwallet from the btcd suite. Hosted wallet at signup with full

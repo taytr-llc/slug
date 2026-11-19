@@ -151,6 +151,19 @@ version.
   legacy Pin1 namespaces and projection semantics unchanged; shared typed pages
   cannot publish a contiguous legacy projection. No current app route switches
   implicitly. See `SHARED_GYM_STABLE.md` and `CHANGESET_59_NOTES.md`.
+- Set 60 on `slug-pool-session-fences` releases account leases during pool
+  proof/node/source work and balance verification. Capture the original token
+  and key; reacquire that same authority around each actual local commit and
+  final disclosure. Do not weaken WithSession or retain its temporary recheck.
+  Registry staged commits use TryLock; retry busy outside the account lease.
+  The shared issuer must select NewFencedManifestAdmissionServer with one
+  admission writer and pool-only job issuance. Preserve exact pending evidence,
+  outcome-unknown recovery, old schemas and legacy isolated APIs. Next deliver
+  the runnable explicit shared fixture app: parent-owned nodes/issuer/journals,
+  two actual recipient-bound wallets, separate workers/outboxes/Pin2 stables,
+  visible authenticated balances and bounded daily scheduling. Preserve the
+  solo route and D74 gate. See `POOL_SESSION_FENCES.md` and
+  `CHANGESET_60_NOTES.md`.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

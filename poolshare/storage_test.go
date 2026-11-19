@@ -196,6 +196,9 @@ func TestPoolCapacityStillAllowsRetainedWinnerRecovery(t *testing.T) {
 		t.Fatal(err)
 	}
 	h.pool.now = func() time.Time { return time.UnixMilli(h.now) }
+	if _, err := h.pool.prepare(savedWork{Job: h.source.Job, Template: h.source.Template}); err != nil {
+		t.Fatal(err)
+	}
 	if err := h.pool.saveWork(savedWork{Job: h.source.Job, Template: h.source.Template}, func() error { return nil }); err != nil {
 		t.Fatal(err)
 	}

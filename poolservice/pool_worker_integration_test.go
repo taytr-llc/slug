@@ -169,7 +169,7 @@ func TestActualNormalPoolWorker(t *testing.T) {
 		t.Fatal(err)
 	}
 	poolOrigin := runWorkerService(t, ctx, server.Run)
-	admissionServer, err := prospectservice.NewManifestAdmissionServer(prospectservice.ManifestServerConfig{Version: 3, Listen: "127.0.0.1:0", AuthorityPin: issuerInfo.Pin, MaxJobs: 8, MaxRecords: 8}, policy, nodeClient, issuer, sessions)
+	admissionServer, err := prospectservice.NewFencedManifestAdmissionServer(prospectservice.ManifestServerConfig{Version: 3, Listen: "127.0.0.1:0", AuthorityPin: issuerInfo.Pin, MaxJobs: 8, MaxRecords: 8}, policy, nodeClient, issuer, sessions)
 	if err != nil {
 		t.Fatal(err)
 	}

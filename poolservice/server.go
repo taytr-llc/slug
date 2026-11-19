@@ -279,6 +279,8 @@ func writeFailure(w http.ResponseWriter, code string) {
 func operationFailure(err error, mutating bool) string {
 	if mutating {
 		switch {
+		case errors.Is(err, poolshare.ErrOutcomeUnknown):
+			return "outcome_unknown"
 		case errors.Is(err, poolshare.ErrLowWork):
 			return "rejected"
 		case errors.Is(err, poolshare.ErrExpired):

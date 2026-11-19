@@ -15,6 +15,7 @@ import (
 
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/opt"
+	"github.com/taytr-llc/slug/prospectjob"
 	"github.com/taytr-llc/slug/prospectservice"
 	"github.com/taytr-llc/slug/prospectwork"
 	"github.com/taytr-llc/slug/registry"
@@ -281,10 +282,9 @@ func (p *Pool) loadWork(id string) (savedWork, *prospectwork.ManifestWork, error
 	return w, prepared, err
 }
 
+// saveWork runs inside the original account lease. Its caller already verified
+// this exact immutable job/template with prepare outside that lease.
 func (p *Pool) saveWork(w savedWork, recheck func() error) error {
-	if _, err := p.prepare(w); err != nil {
-		return err
-	}
 	raw, err := json.Marshal(w)
 	if err != nil || len(raw) > maxWorkSize {
 		return ErrCapacity
@@ -342,9 +342,10 @@ func (p *Pool) loadSubmission(jobID string, nonce uint32) (Submission, error) {
 	return r, nil
 }
 
-func (p *Pool) saveSubmission(r Submission, previous *Submission, recheck func() error) (Submission, error) {
-	job, err := p.authority.GetManifestJob(r.JobID)
-	if err != nil {
+// The exact issued job was loaded and checked before entering the account lease.
+// No issuer lock, normal proof, or network call belongs in this final batch.
+func (p *Pool) saveSubmission(job prospectjob.ManifestJob, r Submission, previous *Submission, recheck func() error) (Submission, error) {
+	if job.ID != r.JobID || job.GymID != r.GymID {
 		return Submission{}, ErrCorrupt
 	}
 	if r.ReceivedAtMS < job.IssuedAtMS {
