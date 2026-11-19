@@ -33,7 +33,7 @@ func (s *StableController) beginBout(ctx context.Context, v, date, bid, kind str
 		if s.boutStore == nil {
 			return errBoutSetup
 		}
-		if s.stopping {
+		if s.stopping || s.evidenceBusyLocked() {
 			return gymbout.ErrBusy
 		}
 		s.expireQueuedLocked()

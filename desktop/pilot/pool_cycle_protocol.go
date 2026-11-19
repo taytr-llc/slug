@@ -10,6 +10,18 @@ import (
 // Dispatch chooses a closed family before decoding. Each existing codec retains its own bounds.
 func poolCycleResponse(ctx context.Context, raw []byte, id uint64, command string, c PoolSurfaceAPI) ([]byte, bool, error) {
 	switch {
+	case strings.HasPrefix(command, "fighter_evidence_"):
+		if id == 0 || id > gymstable.MaxSafeInteger {
+			return nil, true, gymstable.ErrInvalid
+		}
+		req, err := ParseFighterEvidenceRequest(raw)
+		response := FighterEvidenceResponse{ID: id, Version: 1, Error: "invalid_request"}
+		if surface, ok := c.(FighterEvidenceSurfaceAPI); err == nil && ok {
+			response = handleFighterEvidenceRequest(ctx, req, surface)
+		}
+		out, err := MarshalFighterEvidenceResponse(response)
+		return out, true, err
+
 	case strings.HasPrefix(command, "seed_"):
 		if id == 0 || id > gymstable.MaxSafeInteger {
 			return nil, true, gymstable.ErrInvalid

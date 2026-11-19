@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "scope": "fixed before reference outcomes; modeled histories explicitly not actual awards",
+  "actual_cases": [
+    "v1/incrementing256-awarded",
+    "v1/zero256-awarded",
+    "v1/zero256-unawarded",
+    "v2/incrementing256-awarded",
+    "v2/zero256-awarded",
+    "v2/zero256-unawarded"
+  ],
+  "modeled_per_version": {
+    "counts": [
+      0,
+      1,
+      8,
+      9,
+      15,
+      16,
+      256
+    ],
+    "mixed_prefix": 24,
+    "ties": 16
+  },
+  "modeled_event_index_start": 660000,
+  "modeled_time": "captured as_of_ms+1000+i; ties use constant start",
+  "modeled_methods": [
+    "decision",
+    "ko",
+    "tko_referee",
+    "tko_three_knockdowns",
+    "tko_corner",
+    "decision_draw",
+    "double_corner_stoppage"
+  ],
+  "modeled_corner_winners": [
+    "a",
+    "b"
+  ],
+  "limit_positives": [
+    "coherent_omission",
+    "unsigned_acceptance_time"
+  ],
+  "raw_negative_controls": [
+    "trailing_lf",
+    "leading_space",
+    "unknown_root",
+    "duplicate_root",
+    "duplicate_nested",
+    "missing_birth_rule",
+    "root_wrong_order",
+    "escaped_format",
+    "version_exponent",
+    "version_negative_zero",
+    "sequence_overflow",
+    "null_rows",
+    "null_merkle",
+    "slots9",
+    "slots11",
+    "merkle21",
+    "coinbase16385",
+    "capture_overlimit",
+    "row_overlimit",
+    "event_overlimit",
+    "rows257",
+    "file_overlimit",
+    "unexpected_depth"
+  ],
+  "shape_negative_controls": [
+    "foreign_expected_gym",
+    "foreign_expected_source",
+    "wrong_supported_descriptor",
+    "accepted_at_expiry",
+    "born_not_issued",
+    "wrong_source_digest_framing",
+    "high_s_signature",
+    "zero_r_signature",
+    "altered_header",
+    "uppercase_header",
+    "uppercase_coinbase",
+    "uppercase_merkle",
+    "uppercase_signature",
+    "omitted_row",
+    "reordered_page_boundary",
+    "duplicate_result_page_boundary",
+    "interpage_totals",
+    "history_id",
+    "effective_after_capture"
+  ],
+  "work_negative_controls": [
+    "v1/claimed_zero_work_hash",
+    "v2/claimed_zero_work_hash"
+  ],
+  "work_negative_recipe": "Original proof/header/auth unchanged; recompute only unsigned Verified/static/assignment/capture claims using zero work hash, select consistent current-parent observation; actual Argon must disagree.",
+  "max_unique_actual_headers": 6,
+  "normal_hash_reuse": "Only exact header bytes previously computed by the independent direct primitive within this run; no supplied hashes accepted.",
+  "expected_positive_count": 28,
+  "expected_negative_count": 44
+}

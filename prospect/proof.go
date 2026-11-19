@@ -413,6 +413,96 @@ func meetsTarget(hash chainhash.Hash, target [32]byte) bool {
 	return true
 }
 
+// ValidateProofStructure checks the existing bounded context, header,
+// coinbase commitment and Merkle path without hashing proof work. It proves
+// neither proof-of-work nor context provenance and returns no Verified value.
+func ValidateProofStructure(context Context, proof Proof) error {
+	_, err := prepareProof(context, proof)
+	return err
+}
+
+type preparedProof struct {
+	context parsedContext
+	gym     [32]byte
+	header  wire.BlockHeader
+}
+
+func prepareProof(context Context, proof Proof) (preparedProof, error) {
+	parsed, err := parseContext(context)
+	if err != nil {
+		return preparedProof{}, err
+	}
+	job, err := proofJob(proof)
+	if err != nil {
+		return preparedProof{}, err
+	}
+	gym, err := decode32("gym ID", proof.GymID, true)
+	if err != nil {
+		return preparedProof{}, err
+	}
+	if len(proof.Header) != 160 {
+		return preparedProof{}, fmt.Errorf("header must contain exactly 160 hexadecimal characters")
+	}
+	headerBytes, err := hex.DecodeString(proof.Header)
+	if err != nil {
+		return preparedProof{}, fmt.Errorf("invalid header: %w", err)
+	}
+	if len(proof.Coinbase) == 0 || len(proof.Coinbase) > maxCoinbaseSize*2 || len(proof.Coinbase)%2 != 0 {
+		return preparedProof{}, fmt.Errorf("coinbase must encode 1 to %d bytes", maxCoinbaseSize)
+	}
+	coinbase, err := hex.DecodeString(proof.Coinbase)
+	if err != nil {
+		return preparedProof{}, fmt.Errorf("invalid coinbase: %w", err)
+	}
+	if len(proof.MerkleBranch) > maxMerkleBranch {
+		return preparedProof{}, fmt.Errorf("Merkle branch exceeds %d siblings", maxMerkleBranch)
+	}
+	var siblings [maxMerkleBranch]chainhash.Hash
+	for i, text := range proof.MerkleBranch {
+		display, err := decode32("Merkle sibling", text, false)
+		if err != nil {
+			return preparedProof{}, err
+		}
+		siblings[i] = wireHash(display)
+	}
+	var header wire.BlockHeader
+	if err := header.Deserialize(bytes.NewReader(headerBytes)); err != nil {
+		return preparedProof{}, fmt.Errorf("decode header: %w", err)
+	}
+	if header.PrevBlock != wireHash(parsed.parent) {
+		return preparedProof{}, fmt.Errorf("header does not match supplied parent")
+	}
+	if header.Bits != context.ExpectedBits {
+		return preparedProof{}, fmt.Errorf("header does not match supplied expected bits")
+	}
+	timestamp := uint32(header.Timestamp.Unix())
+	if timestamp < context.MinTimestamp || timestamp > context.MaxTimestamp {
+		return preparedProof{}, fmt.Errorf("header timestamp is outside supplied interval")
+	}
+	expectedScript := commitmentScript(parsed.policy, gym)
+	if proof.Version == Version2 {
+		expectedScript = jobCommitmentScript(parsed.policy, gym, job)
+	}
+	tx, err := validateCoinbase(coinbase, expectedScript, context.ParentHeight+1)
+	if err != nil {
+		return preparedProof{}, err
+	}
+	current := tx.TxHash()
+	for _, sibling := range siblings[:len(proof.MerkleBranch)] {
+		if current == sibling {
+			return preparedProof{}, fmt.Errorf("index-zero Merkle path has an equal sibling")
+		}
+		var pair [64]byte
+		copy(pair[:32], current[:])
+		copy(pair[32:], sibling[:])
+		current = chainhash.DoubleHashH(pair[:])
+	}
+	if current != header.MerkleRoot {
+		return preparedProof{}, fmt.Errorf("coinbase Merkle root does not match header")
+	}
+	return preparedProof{context: parsed, gym: gym, header: header}, nil
+}
+
 // Verify checks a gym-bound work proof against supplied trusted assertions.
 // Success does not authenticate that context, gym control, birth time, or the
 // other transactions. All structural checks precede a serialized production
@@ -423,78 +513,11 @@ func Verify(context Context, proof Proof) (Verified, error) {
 	if wire.TestPoW {
 		return empty, fmt.Errorf("prospect verification requires production PoW; slugtestpow is unsupported")
 	}
-	parsed, err := parseContext(context)
+	prepared, err := prepareProof(context, proof)
 	if err != nil {
 		return empty, err
 	}
-	job, err := proofJob(proof)
-	if err != nil {
-		return empty, err
-	}
-	gym, err := decode32("gym ID", proof.GymID, true)
-	if err != nil {
-		return empty, err
-	}
-	if len(proof.Header) != 160 {
-		return empty, fmt.Errorf("header must contain exactly 160 hexadecimal characters")
-	}
-	headerBytes, err := hex.DecodeString(proof.Header)
-	if err != nil {
-		return empty, fmt.Errorf("invalid header: %w", err)
-	}
-	if len(proof.Coinbase) == 0 || len(proof.Coinbase) > maxCoinbaseSize*2 || len(proof.Coinbase)%2 != 0 {
-		return empty, fmt.Errorf("coinbase must encode 1 to %d bytes", maxCoinbaseSize)
-	}
-	coinbase, err := hex.DecodeString(proof.Coinbase)
-	if err != nil {
-		return empty, fmt.Errorf("invalid coinbase: %w", err)
-	}
-	if len(proof.MerkleBranch) > maxMerkleBranch {
-		return empty, fmt.Errorf("Merkle branch exceeds %d siblings", maxMerkleBranch)
-	}
-	var siblings [maxMerkleBranch]chainhash.Hash
-	for i, text := range proof.MerkleBranch {
-		display, err := decode32("Merkle sibling", text, false)
-		if err != nil {
-			return empty, err
-		}
-		siblings[i] = wireHash(display)
-	}
-	var header wire.BlockHeader
-	if err := header.Deserialize(bytes.NewReader(headerBytes)); err != nil {
-		return empty, fmt.Errorf("decode header: %w", err)
-	}
-	if header.PrevBlock != wireHash(parsed.parent) {
-		return empty, fmt.Errorf("header does not match supplied parent")
-	}
-	if header.Bits != context.ExpectedBits {
-		return empty, fmt.Errorf("header does not match supplied expected bits")
-	}
-	timestamp := uint32(header.Timestamp.Unix())
-	if timestamp < context.MinTimestamp || timestamp > context.MaxTimestamp {
-		return empty, fmt.Errorf("header timestamp is outside supplied interval")
-	}
-	expectedScript := commitmentScript(parsed.policy, gym)
-	if proof.Version == Version2 {
-		expectedScript = jobCommitmentScript(parsed.policy, gym, job)
-	}
-	tx, err := validateCoinbase(coinbase, expectedScript, context.ParentHeight+1)
-	if err != nil {
-		return empty, err
-	}
-	current := tx.TxHash()
-	for _, sibling := range siblings[:len(proof.MerkleBranch)] {
-		if current == sibling {
-			return empty, fmt.Errorf("index-zero Merkle path has an equal sibling")
-		}
-		var pair [64]byte
-		copy(pair[:32], current[:])
-		copy(pair[32:], sibling[:])
-		current = chainhash.DoubleHashH(pair[:])
-	}
-	if current != header.MerkleRoot {
-		return empty, fmt.Errorf("coinbase Merkle root does not match header")
-	}
+	parsed, gym, header := prepared.context, prepared.gym, prepared.header
 	workHash := hashHeader(&header)
 	if !meetsTarget(workHash, parsed.target) {
 		return empty, fmt.Errorf("work hash exceeds supplied prospect target")

@@ -237,11 +237,18 @@ Set65 qualifies an explicit name-v2 candidate with 512-by-512 names, complete
 independent manifest/portrait references and a fixed 100,000-seed collision
 study. Both package routes and the actual v2 event/finality/career cycle pass;
 existing fighters, source pins and defaults remain v1. See `NAME_DIVERSITY.md`
-and `CHANGESET_65_NOTES.md`. Next add bounded public evidence export and offline
-checks from the existing history flow. Supplied work/record consistency does
-not establish issuer timing, current ownership or complete authoritative history;
-those remain separate requirements. Transfer effective timing and competing
-transfer ordering require a later explicit policy decision.
+and `CHANGESET_65_NOTES.md`.
+Set66 completes bounded original-receipt/history export from the existing panel
+and a packaged offline consistency checker. Six actual v1/v2 exports match the
+independent reference, including an older fighter outside Recent. Original-action
+recovery, complete desktop, package and smoke checks pass; see
+`PUBLIC_FIGHTER_EVIDENCE.md` and `CHANGESET_66_NOTES.md`. Supplied consistency
+does not establish issuer timing, actual awards/finality, current ownership or
+complete authoritative history. Transfer timing and competing-transfer ordering
+still require an explicit policy decision. Next add authenticated own-payout
+history with a separate dated observation of the exact transaction in the
+existing wallet; preserve daily accounting, original-view authorization and the
+distinction between retained pool state and current wallet observation.
 Never repin solo event histories. Keep the existing layout/logos until the final
 joint D74 review. Public hosting, production signer custody/capacity, real account
 configuration and permanent genesis remain separate gates. The implemented

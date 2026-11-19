@@ -49,7 +49,8 @@ func (g *Gym) requestPath(command, path string) error {
 	_, err := g.helper.RequestPath(context.Background(), command, path)
 	return err
 }
-func (g *Gym) closeHelper() error {
+func (g *Gym) closeHelper() (resultErr error) {
+	defer func() { resultErr = errors.Join(resultErr, g.joinedEvidenceSelection()) }()
 	if g.poolHelper != nil {
 		return g.poolHelper.Close()
 	}
@@ -85,6 +86,9 @@ func (g *Gym) ManifestSnapshot() (pilot.ManifestSnapshot, error) {
 	}
 	r, err := g.manifestHelper.Request(context.Background(), "snapshot", 0)
 	if err != nil {
+		return pilot.ManifestSnapshot{}, err
+	}
+	if err = g.observeEvidenceAccount(g.stableHelper, r.Snapshot.Account.State, r.Snapshot.View); err != nil {
 		return pilot.ManifestSnapshot{}, err
 	}
 	return *r.Snapshot, nil

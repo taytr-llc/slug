@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "original_attempt": "oracle-attempt1",
+  "successor_attempt": "oracle-attempt2",
+  "reason": "Inherited DNA Go int fields were incorrectly capped atU32 by the original scanner; corrected to nonnegative signed64 per unchanged frozen contract.",
+  "first_pass_preserved": true,
+  "all72_verification_cases_and_work_results_unchanged": true,
+  "only_corpus_change": "top-level execution_lock_sha256 binding the corrected producer and24 parser-only diagnostic inputs",
+  "old_execution_lock_sha256": "a8a3e86e26c465d45ea7dcb25199598b52f4ffc8313ba1809aa2bdc1b74600bb",
+  "new_execution_lock_sha256": "43aec989297bb766ad07244f07a4f40e7d341c8d5940c6e66a9a7cb383c8303f",
+  "parser_boundary_cases": 24,
+  "parser_boundary_normal_work_calls": 0
+}

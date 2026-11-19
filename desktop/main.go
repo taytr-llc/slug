@@ -44,6 +44,7 @@ var poolBuild string
 // Gym exposes only public pilot controls and receipt selection to the webview.
 // Paths, process arguments, and keys cannot be supplied through the web bridge.
 type Gym struct {
+	evidence       nativeEvidenceState
 	poolHelper     *bridge.PoolBridge
 	helper         *bridge.Bridge
 	manifestHelper manifestTransport

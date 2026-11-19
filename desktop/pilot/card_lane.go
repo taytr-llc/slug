@@ -29,7 +29,7 @@ func (s *StableController) beginCard(ctx context.Context, v, date, kind string) 
 		if s.cardStore == nil {
 			return errCardSetup
 		}
-		if s.stopping {
+		if s.stopping || s.evidenceBusyLocked() {
 			return gymcard.ErrBusy
 		}
 		s.expireQueuedLocked()

@@ -35,7 +35,7 @@ func (s *StableController) beginResult(ctx context.Context, v, date, bid, kind, 
 		if s.resultStore == nil {
 			return errResultSetup
 		}
-		if s.stopping {
+		if s.stopping || s.evidenceBusyLocked() {
 			return gymresult.ErrBusy
 		}
 		s.expireQueuedLocked()

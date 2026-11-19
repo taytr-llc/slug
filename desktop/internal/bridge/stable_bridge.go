@@ -21,6 +21,8 @@ import (
 // The pending command, never a response-controlled discriminator, selects the
 // decoder. A stable failure stays a typed code across the webview boundary.
 type StableBridge struct {
+	evidence               [2]*evidenceExpectation
+	evidenceSerial         uint64
 	poolStartupComplete    bool
 	poolHandshakeUsed      bool
 	poolHandshakePending   bool
@@ -88,6 +90,7 @@ type stableJobExpectation struct {
 	terminal bool
 }
 type stableExpected struct {
+	evidence      bool
 	pool          bool
 	history       bool
 	careerPreview bool
@@ -103,6 +106,7 @@ type stableExpected struct {
 	card          bool
 }
 type stableFrame struct {
+	evidence      *pilot.FighterEvidenceResponse
 	pool          *pilot.PoolResponse
 	history       *pilot.CareerHistoryResponse
 	careerPreview *pilot.CareerPreviewResponse
@@ -183,7 +187,14 @@ func (b *StableBridge) read(r io.Reader) {
 			return
 		}
 		var frame stableFrame
-		if expected.pool {
+		if expected.evidence {
+			value, err := pilot.ParseFighterEvidenceResponse(scanner.Bytes())
+			if err != nil || value.ID != expected.id {
+				b.fail(ErrUnavailable)
+				return
+			}
+			frame.evidence = &value
+		} else if expected.pool {
 			value, err := pilot.ParsePoolResponse(scanner.Bytes())
 			if err != nil || value.ID != expected.id {
 				b.fail(ErrUnavailable)
@@ -582,6 +593,7 @@ func stableMutation(command string) bool {
 func stableTerminal(state string) bool { return state != "queued" && state != "running" }
 func (b *StableBridge) clearStableView() {
 	b.mu.Lock()
+	b.evidence = [2]*evidenceExpectation{}
 	b.careerSelection = nil
 	b.history = nil
 	b.historyFatal = false

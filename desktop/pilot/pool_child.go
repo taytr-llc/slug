@@ -407,7 +407,10 @@ func (c *PoolChild) Start() error {
 		if c.closed || !c.prepared {
 			return gymstable.ErrClosed
 		}
-		if c.backup != nil || c.backupCloseErr != nil {
+		s.stableMu.Lock()
+		evidenceBusy := s.evidenceBusyLocked()
+		s.stableMu.Unlock()
+		if c.backup != nil || c.backupCloseErr != nil || evidenceBusy {
 			return gymstable.ErrBusy
 		}
 		if c.run != nil {
@@ -521,6 +524,10 @@ func (c *PoolChild) stop() {
 		s.cancelTasksLocked()
 		s.stableMu.Unlock()
 		s.stopStoppedLoop()
+		// Evidence owns the lane directly, not through stoppedLoop. Stop must
+		// join its proof/file cleanup before native handoff pins can be released.
+		s.laneGate <- struct{}{}
+		<-s.laneGate
 	}
 	if run != nil {
 		<-run.done
@@ -573,7 +580,7 @@ func (c *PoolChild) Close() error {
 		c.mu.Unlock()
 		if s != nil {
 			s.laneGate <- struct{}{}
-			err = errors.Join(err, s.closePair())
+			err = errors.Join(err, s.closePair(), s.evidenceFailure)
 			<-s.laneGate
 		}
 		err = errors.Join(err, c.authority.Close(), c.admission.Close())

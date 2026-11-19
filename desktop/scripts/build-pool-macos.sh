@@ -7,7 +7,7 @@ root=$(CDPATH= cd -- "$here/.." && pwd)
 profile_go="$root/scripts/candidate-go.sh"
 export GOENV=off GOTOOLCHAIN=local GOFLAGS= GOEXPERIMENT=
 sh "$profile_go" check
-output=${1:-"$root/../artifacts/set65"}
+output=${1:-"$root/../artifacts/set66"}
 case "$output" in /*) ;; *) printf '%s\n' 'Build output must be an absolute directory.' >&2; exit 1;; esac
 if [ "$(uname -s)" != Darwin ]; then printf '%s\n' 'This script builds the native macOS bundle on macOS.' >&2; exit 1; fi
 mkdir -p "$output"
@@ -28,6 +28,7 @@ export GOMODCACHE=${GOMODCACHE:-/private/tmp/slug-desktop-modcache}
 (
  cd "$root"
  GOMODCACHE="$chain_cache" GOWORK="$root/go.work" CGO_ENABLED=0 sh "$profile_go" build -trimpath -tags= -o "$bundle/Contents/Resources/bin/slugd" .
+ GOMODCACHE="$chain_cache" GOWORK="$root/go.work" CGO_ENABLED=0 sh "$profile_go" build -trimpath -tags= -o "$bundle/Contents/Resources/bin/slugevidence" ./cmd/slugevidence
 )
 (
  cd "$here"
@@ -37,10 +38,10 @@ export GOMODCACHE=${GOMODCACHE:-/private/tmp/slug-desktop-modcache}
 if [ "$("$bundle/Contents/Resources/bin/slugd" --version)" != 'slugd version 0.27.0' ]; then
  printf '%s\n' 'Bundled node is not the expected normal production PoW build.' >&2; exit 1
 fi
-# Verify the three exact artifacts carry neither diagnostic profile. Normal
+# Verify the four exact artifacts carry neither diagnostic profile. Normal
 # entrypoints never call the scoped test-clock constructors.
 : > "$stage/build-info-all.txt"
-for binary in "$bundle/Contents/Resources/bin/slugd" "$bundle/Contents/Resources/bin/slugpilot" "$bundle/Contents/MacOS/SLUGPilot"; do
+for binary in "$bundle/Contents/Resources/bin/slugd" "$bundle/Contents/Resources/bin/slugevidence" "$bundle/Contents/Resources/bin/slugpilot" "$bundle/Contents/MacOS/SLUGPilot"; do
  sh "$profile_go" verify-binary "$binary" > "$stage/build-info.txt"
  cat "$stage/build-info.txt" >> "$stage/build-info-all.txt"
  if rg -q 'slugtestclock|slugtestpow' "$stage/build-info.txt"; then
@@ -61,8 +62,8 @@ cat > "$bundle/Contents/Info.plist" <<'PLIST'
 <key>CFBundleExecutable</key><string>SLUGPilot</string>
 <key>CFBundleIconFile</key><string>SLUG.icns</string>
 <key>CFBundlePackageType</key><string>APPL</string>
-<key>CFBundleShortVersionString</key><string>0.5.4</string>
-<key>CFBundleVersion</key><string>65</string>
+<key>CFBundleShortVersionString</key><string>0.5.5</string>
+<key>CFBundleVersion</key><string>66</string>
 <key>LSMinimumSystemVersion</key><string>13.0</string>
 <key>NSHighResolutionCapable</key><true/>
 <key>LSUIElement</key><false/>
@@ -70,6 +71,7 @@ cat > "$bundle/Contents/Info.plist" <<'PLIST'
 PLIST
 plutil -lint "$bundle/Contents/Info.plist"
 codesign --force --sign - "$bundle/Contents/Resources/bin/slugd"
+codesign --force --sign - "$bundle/Contents/Resources/bin/slugevidence"
 codesign --force --sign - "$bundle/Contents/Resources/bin/slugpilot"
 codesign --force --sign - "$bundle/Contents/MacOS/SLUGPilot"
 codesign --force --sign - "$bundle"
@@ -91,6 +93,6 @@ cp "$stage/build-info-all.txt" "$output/BUILD-INFO.txt"
  printf 'Go: '; go version
  printf 'Platform: '; uname -sm
  printf '%s\n' 'Native macOS build; ad hoc signed, not notarized.' 'Deployment target 13.0; older OS runtime compatibility is not proven by compilation.'
- shasum -a 256 "$final/Contents/MacOS/SLUGPilot" "$final/Contents/Resources/bin/slugpilot" "$final/Contents/Resources/bin/slugd"
+ shasum -a 256 "$final/Contents/MacOS/SLUGPilot" "$final/Contents/Resources/bin/slugpilot" "$final/Contents/Resources/bin/slugd" "$final/Contents/Resources/bin/slugevidence"
 } > "$output/BUILD.txt"
 printf '%s\n' "$final"

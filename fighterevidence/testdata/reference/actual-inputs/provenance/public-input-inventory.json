@@ -1,0 +1,77 @@
+{
+  "source_report_sha256": "f0b5e2a710333e4827c1d8ba8beb1debf6f15b07ab43387323fb77be4f0a4ea3",
+  "public_inputs": {
+    "v1/incrementing256-awarded/admission.json": "03f0af5e084cb6db2823758ba064c0daed80ed8e9203ec082eb127c088a4efcb",
+    "v1/incrementing256-awarded/capture.json": "438aab38a11634117f593c0915918683eadd067b66677ad0c5d400ed01ec018b",
+    "v1/incrementing256-awarded/expected-pin.json": "1bc1ce36d914f357c7d4676fcde4b8989d9db8ee6d1f30c5025ad13cf1eb318e",
+    "v1/incrementing256-awarded/rows.json": "ab644d173194133d754532629e19649b372cbd018be9ab3a56e1befe04855ca6",
+    "v1/report.json": "d9a268507b02dc117ed7163132d1398c785493515c1c13128abcaae4503c574d",
+    "v1/zero256-awarded/admission.json": "b88f6f7dfeb785756480a64df97e074dde496e88443e24417dc836e5f445d6b1",
+    "v1/zero256-awarded/capture.json": "d2b2ce06147cb83d698f716191772d1a1ae918fb5a5695400708abb832e970b4",
+    "v1/zero256-awarded/expected-pin.json": "0ba127c98025ed7f16c302c662017193bb5a633ff1bf0d4a5b03acdc3a674daa",
+    "v1/zero256-awarded/rows.json": "0b4889fc600d503be64343602b0396b4c7cd9c808a7ae5aa8175e34d474b2ca3",
+    "v1/zero256-unawarded/admission.json": "af868d73e6949e5e74f678abc7cc3c64600069415d709dcf0dd9dc2c35a3d5e7",
+    "v1/zero256-unawarded/capture.json": "a9e2244558ade3fdea3098a095e684b67c8b73fb615a8c048abb942cdb858d3a",
+    "v1/zero256-unawarded/expected-pin.json": "0ba127c98025ed7f16c302c662017193bb5a633ff1bf0d4a5b03acdc3a674daa",
+    "v1/zero256-unawarded/rows.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "v2/incrementing256-awarded/admission.json": "90a2e6844ee0b0be10e28620862f0b3d76467047bd3932bf346bbc9fee5bd81b",
+    "v2/incrementing256-awarded/capture.json": "d0f73bdfb1126d314f9554067a3f8f2329067698627840e5bb6a3de9f2fd7254",
+    "v2/incrementing256-awarded/expected-pin.json": "fc4227b209800ec59b300340da7348433168c56f557a14da10708ab8a4fefea9",
+    "v2/incrementing256-awarded/rows.json": "8751c8fb5b4679c9dd2227782759124563eaf6d4267192c88d7d47b7cd632654",
+    "v2/report.json": "f20ac1166c931fcdf7000a12f096d39ae9857120e12d6f754e0c30a575f10a24",
+    "v2/zero256-awarded/admission.json": "a023a5b850a4492d35db3302abcd26b830694c029e4278333f9eb279b382123d",
+    "v2/zero256-awarded/capture.json": "1f1edfc237dfe7dd959bef8a90387a4f542397b2a3be8bc0ae817a49d072c866",
+    "v2/zero256-awarded/expected-pin.json": "2981d0ef863116901eaff23b48b6425b35a5b27614a8312b97a4a8a51dbb6def",
+    "v2/zero256-awarded/rows.json": "045685f98bb532c302d6b828c6486e871eecc4186a69e39ce0b1a2345762112b",
+    "v2/zero256-unawarded/admission.json": "7a65051f8338e5cb8e15c4692829819566787893941a9bcf3a24f0f17999fb4e",
+    "v2/zero256-unawarded/capture.json": "06a0eed7a91ebe090c22b0dc6a9b2d29f55d602b9c23d149c64acbe86aad7ee9",
+    "v2/zero256-unawarded/expected-pin.json": "2981d0ef863116901eaff23b48b6425b35a5b27614a8312b97a4a8a51dbb6def",
+    "v2/zero256-unawarded/rows.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "cases": [
+    {
+      "case": "v1/incrementing256-awarded",
+      "prospect_id": "00f068a2bcd08b03aec1e029e707c4857837eb542305ea4e74acfc7fa442de84",
+      "source_sequence": 18,
+      "history_rows": 1,
+      "history_id": "28811ade0bfffcea06f27c3d7bbb59754fd604fd85fe9ec93a55bcf504956da6"
+    },
+    {
+      "case": "v1/zero256-awarded",
+      "prospect_id": "75dc0f5cb0f300425c0cd950401af6ce5171ec46539c951038fcc45323ad8b33",
+      "source_sequence": 8,
+      "history_rows": 1,
+      "history_id": "759a3fcc7187ec9be501993661116f7603ee5dd30c904b973bee81e8180efdc8"
+    },
+    {
+      "case": "v1/zero256-unawarded",
+      "prospect_id": "dc3abec4402a29c8e20649555af6813f7528f0d9318c3cc015a8fab9396beb39",
+      "source_sequence": 1,
+      "history_rows": 0,
+      "history_id": "bdcc052ad7d5ec78e9d297db940e1faea0945f9ef63152e381a77f452845cf79"
+    },
+    {
+      "case": "v2/incrementing256-awarded",
+      "prospect_id": "97554222f17d4cc25712d5a5325220b22e10d38ae05c9d74c5ef3ce9b8b46e9c",
+      "source_sequence": 9,
+      "history_rows": 1,
+      "history_id": "a9bd1c66a2a7c26f4f71dd817c1553c8c664188e8ad004a71d3a6899331d7c80"
+    },
+    {
+      "case": "v2/zero256-awarded",
+      "prospect_id": "72c607799dcdbec768b8cff179261330a9359ad51141e4be0e01d3a08ffe846a",
+      "source_sequence": 1,
+      "history_rows": 1,
+      "history_id": "3f16ebefdbefc50e8374cace2f862500a3509f069e1b34a0dad83ba5475ff55d"
+    },
+    {
+      "case": "v2/zero256-unawarded",
+      "prospect_id": "e02d419e08042f9ae9f8a89213b55608300554071faac29c99b290bbd23f3612",
+      "source_sequence": 2,
+      "history_rows": 0,
+      "history_id": "81ebe2a8b4f09435d2d2e64c7741fd28d148b701d87d9458f82caec5fe584d2a"
+    }
+  ],
+  "owned_nodes_clean_shutdown": true,
+  "no_expected_oracle_outputs_generated": true
+}

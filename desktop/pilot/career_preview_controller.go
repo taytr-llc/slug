@@ -80,7 +80,7 @@ func (s *StableController) BeginCareerFightPreview(ctx context.Context, v, a, b 
 		if s.stableClosed || !s.installed || s.stableStatus == nil {
 			return gymstable.ErrClosed
 		}
-		if s.stopping {
+		if s.stopping || s.evidenceBusyLocked() {
 			return gymstable.ErrBusy
 		}
 		s.expireQueuedLocked()

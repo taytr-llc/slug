@@ -60,8 +60,10 @@ type StableOperation struct {
 	Operation *gymstable.Operation `json:"operation"`
 }
 type StableAccountConfig struct {
-	Manifest ManifestAccountConfig
-	Lease    gymstable.Lease
+	// EvidencePermit is borrowed from the account parent across child generations.
+	EvidencePermit *EvidencePermit
+	Manifest       ManifestAccountConfig
+	Lease          gymstable.Lease
 	// ResultNodeLease fences only explicit Result node readiness admission.
 	ResultNodeLease ManifestViewLease
 	// HistoryPublicationLease holds the original parent epoch through a short

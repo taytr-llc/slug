@@ -23,6 +23,7 @@ type poolChild interface {
 // PoolController owns one account view over a shared runtime. Invalidating a
 // view never destroys the pool source or the other gym's retained history.
 type PoolController struct {
+	evidencePermit                    pilot.EvidencePermit
 	mu, miningMu                      sync.Mutex
 	config                            pilot.Config
 	store                             *gymaccount.Store
@@ -200,7 +201,7 @@ func (c *PoolController) login(ctx context.Context, fixture string) (resultErr e
 	a.ViewLease = func(ctx context.Context, fn func(gymaccount.Account, func() error) error) error {
 		return c.withView(ctx, session, viewID, child, fn)
 	}
-	stable := pilot.StableAccountConfig{Manifest: a, Lease: func(ctx context.Context, cap gymaccount.Capability, fn func(gymaccount.Account, func() error) error) error {
+	stable := pilot.StableAccountConfig{EvidencePermit: &c.evidencePermit, Manifest: a, Lease: func(ctx context.Context, cap gymaccount.Capability, fn func(gymaccount.Account, func() error) error) error {
 		return c.withCapability(ctx, session, viewID, child, cap, fn)
 	}, HistoryPublicationLease: func(ctx context.Context, fn func(gymaccount.Account, func() error) error) error {
 		return c.withPoolHistoryPublicationLease(ctx, session, viewID, child, fn)

@@ -31,7 +31,7 @@ func (s *StableController) beginSeed(ctx context.Context, v, date, kind string) 
 		if s.seedStore == nil {
 			return errSeedSetup
 		}
-		if s.stopping {
+		if s.stopping || s.evidenceBusyLocked() {
 			return gymseed.ErrBusy
 		}
 		s.expireQueuedLocked()

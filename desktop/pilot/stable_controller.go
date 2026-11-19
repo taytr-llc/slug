@@ -25,6 +25,11 @@ import (
 // StableController owns one serial work lane. Its source lifetime is fenced by
 // laneGate, never by the legacy resource mutex across an account callback.
 type StableController struct {
+	evidenceCheckpoint  func(string)
+	evidenceOp          *fighterEvidenceOperation
+	evidenceLast        *FighterEvidenceJob
+	evidenceFailure     error
+	localEvidencePermit EvidencePermit
 	// Explicit pool children borrow this source for their entire lifetime. They
 	// never fall back to the isolated manifest-authority directory.
 	sharedPin                          *gymstable.Pin
@@ -389,7 +394,7 @@ func (s *StableController) Start() error {
 		s.stableMu.Unlock()
 		return gymstable.ErrClosed
 	}
-	if s.stopping {
+	if s.stopping || s.evidenceBusyLocked() {
 		s.stableMu.Unlock()
 		return gymstable.ErrBusy
 	}
@@ -492,7 +497,7 @@ func (s *StableController) Close() error {
 		s.mu.Unlock()
 		s.stableMu.Unlock()
 		s.Stop()
-		s.stableCloseErr = s.ManifestController.Close()
+		s.stableCloseErr = errors.Join(s.ManifestController.Close(), s.evidenceFailure)
 	})
 	return s.stableCloseErr
 }

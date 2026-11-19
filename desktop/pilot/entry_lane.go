@@ -23,7 +23,7 @@ func (s *StableController) beginEntry(ctx context.Context, view, kind, date, op 
 		if !s.entryEnabled || !s.installed || s.stableClosed || s.entryStoreID == "" {
 			return gymentry.ErrUnavailable
 		}
-		if s.stopping {
+		if s.stopping || s.evidenceBusyLocked() {
 			return gymentry.ErrBusy
 		}
 		s.expireQueuedLocked()

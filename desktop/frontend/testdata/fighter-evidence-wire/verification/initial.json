@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "bytes": 372801,
+  "sha256": "c2489601d6c58440e001839c4ed14ce17dbaec43203a36ca197fa9ff89fc6dcb",
+  "positives": 112,
+  "negatives": 38,
+  "raw_negatives": 4,
+  "normal_work_calls": 0,
+  "python": "3.14.3 (main, Feb  3 2026, 15:32:20) [Clang 17.0.0 (clang-1700.6.3.2)]"
+}

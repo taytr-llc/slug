@@ -48,7 +48,7 @@ ids.push('seed-state', 'seed-refresh', 'seed-prepare', 'seed-publish', 'seed-rec
 ids.push('card-state', 'card-refresh', 'card-begin', 'card-cancel', 'card-record', 'card-clear', 'card-history', 'card-history-next', 'card-message', 'card-totals', 'card-source', 'card-conflict', 'card-incident', 'card-evidence', 'card-gyms', 'card-bouts', 'card-unmatched', 'card-reasons', 'card-history-list', 'card-detail-hint');
 ids.push('bout-state', 'bout-refresh', 'bout-list', 'bout-empty', 'bout-run', 'bout-open', 'bout-check', 'bout-cancel', 'bout-clear', 'bout-message', 'bout-source', 'bout-overlay', 'bout-replay', 'bout-asof', 'bout-fighters', 'bout-play', 'bout-previous', 'bout-next', 'bout-restart', 'bout-result', 'bout-motion', 'bout-step', 'bout-events', 'bout-outcome', 'bout-finish', 'bout-scores', 'bout-evidence');
 ids.push('result-panel', 'result-state', 'result-connection', 'result-observation', 'result-read', 'result-publish', 'result-reconcile', 'result-attest', 'result-export', 'result-cancel', 'result-disconnect', 'result-clear', 'result-message', 'result-finality', 'result-conflict', 'result-exported', 'result-evidence');
-ids.push('history-panel', 'history-state', 'history-fighter', 'history-asof', 'history-totals', 'history-message', 'history-list', 'history-previous', 'history-next', 'history-page-label', 'history-refresh', 'history-cancel', 'history-clear', 'history-result');
+ids.push('history-panel', 'history-state', 'history-fighter', 'history-asof', 'history-totals', 'history-message', 'history-list', 'history-previous', 'history-next', 'history-page-label', 'history-refresh', 'history-cancel', 'history-clear', 'history-result', 'history-export', 'history-export-status');
 const ui = Object.fromEntries(ids.map((id) => [id, document.getElementById(id)]));
 const poolUI = Object.fromEntries(['pool-balance', 'pool-confirmed', 'pool-available', 'pool-reserved', 'pool-paid', 'pool-observed', 'pool-reason', 'pool-refresh', 'pool-features'].map((id) => [id, document.getElementById(id)]));
 const attrs = ['power', 'speed', 'chin', 'stamina', 'skill'];
@@ -533,7 +533,7 @@ function renderCards() {
     if (ui.cards.children[position] !== c.article) ui.cards.insertBefore(c.article, ui.cards.children[position] ?? null);
     c.preview.disabled = poolMode || (careerMode && (!careerForItem(i) || !careerPreviewReady())) || !ready() || !!command || previewSelected.some((v) => v.id === id) || previewSelected.length >= 2;
     c.entry.disabled = (careerMode && (!careerForItem(i) || careerForItem(i).totals.xp > 0)) || !entryReady() || !!command || entryDraft.length >= 5 || entryDraft.some((d) => d.id === id) || !stable.status.slots.includes(id) || i.condition.phase === 'retired';
-    c.history.hidden = !careerMode; c.history.disabled = !ready() || !!command || !!historyWatch || historyUnknown;
+    c.history.hidden = !careerMode; c.history.disabled = !ready() || !!command || !!historyWatch || historyUnknown || evidenceBusy();
     c.assign.disabled = !canEdit(); c.select.disabled = !canEdit(); c.save.disabled = !ready() || !!command || !!watched; c.retry.disabled = !ready() || !!command;
     if (images.has(key(i))) { c.image.setAttribute('src', images.get(key(i))); c.image.hidden = false; c.placeholder.hidden = true; }
   }
@@ -547,7 +547,7 @@ function render() {
   content(ui.hold, s?.account.held ? 'The 24-hour recovery hold is active. Viewing, mining and reversible roster moves are available; recovery backup export and test-result signing remain held.' : '');
   for (const id of ['login-a', 'login-b']) ui[id].disabled = !enabled || !!command || !s || !['signed_out', 'failed', 'expired'].includes(s.account.state) || !!s.view;
   ui.logout.disabled = !accountSigned || !!command; ui.reset.disabled = !accountSigned || !!command;
-  ui.mining.disabled = !enabled || !!command || (!accountSigned && !preparing) || s?.state === 'stopping' || (poolMode && s?.backup_state === 'running'); content(ui.mining, live ? 'Stop mining' : preparing ? 'Stop preparing' : 'Start mining');
+  ui.mining.disabled = !enabled || !!command || (!accountSigned && !preparing) || s?.state === 'stopping' || (!live && evidenceBusy()) || (poolMode && s?.backup_state === 'running'); content(ui.mining, live ? 'Stop mining' : preparing ? 'Stop preparing' : 'Start mining');
   content(ui['mining-copy'], publicationNodeConnected() ? 'Connected for publication. Start mining when ready, or disconnect the test nodes below.' : preparing ? 'Preparing your retained identity. Stop drains work already in progress.' : live ? 'Mining is active. New saved candidates update the stable automatically.' : 'Syncing and viewing do not create mining jobs. Start only when you are ready.');
   for (const [id, value] of [['attempts', s?.attempts ?? 0], ['accepted', (poolMode ? s?.assignment_count : s?.accepted_count) ?? 0], ['pending', s?.pending ?? 0], ['height', s?.height ?? 0]]) content(ui[id], number.format(value));
   content(ui.rate, live ? `${number.format(s.hashes_per_second)} hashes / second` : 'Not mining'); content(ui['wallet-state'], label(s?.wallet_state ?? 'closed'));
@@ -606,6 +606,7 @@ async function fetchSnapshots() {
     if (!disposed && ready() && !tasks.length) await fetchBookedSnapshot();
     if (!disposed && ready() && !tasks.length) await fetchPublicationSnapshot();
     if (!disposed && ready() && !tasks.length && careerMode && (historySelection || historyUnknown)) await fetchHistorySnapshot();
+    if (!disposed && ready() && !tasks.length && evidenceBusy()) await fetchEvidenceSnapshot();
   } catch { if (!disposed && captured === epoch) disconnected(); }
 }
 function stablyChangedRoster() { return stable.status.roster_revision !== pageRevision; }
@@ -2404,17 +2405,17 @@ const HISTORY_ERRORS = new Set(['invalid_request', 'unauthorized', 'forbidden', 
 const HISTORY_TOTALS = ['wins', 'losses', 'draws', 'xp', 'base_points'];
 let historySnapshot = null, historySelection = null, historyJob = null, historyPage = null, historyWatch = '', historyUnknown = false, historyMessage = '', historyOverlay = null, historyIntent = null, historySerial = 0;
 function historyMetadataBytes() { return entryBytes([historySnapshot, historySelection, historyJob, historyWatch, historyUnknown, historyMessage, historyOverlay, historyIntent]) + 512; }
-function historyRetainedBytes() { return historyWatch || historyUnknown ? 49152 : historySelection || historySnapshot ? historyMetadataBytes() + (historyPage ? entryBytes(historyPage) : 0) : 0; }
+function historyRetainedBytes() { return evidenceRetainedBytes() + (historyWatch || historyUnknown ? 49152 : historySelection || historySnapshot ? historyMetadataBytes() + (historyPage ? entryBytes(historyPage) : 0) : 0); }
 function historyCapacity() { return historyMetadataBytes() <= 16384 && (!historyPage || entryBytes(historyPage) <= 32768) && previewCapacity(); }
-function clearHistory() { historySerial++; historySnapshot = historySelection = historyJob = historyPage = historyOverlay = historyIntent = null; historyWatch = historyMessage = ''; historyUnknown = false; }
+function clearHistory() { clearEvidence(); historySerial++; historySnapshot = historySelection = historyJob = historyPage = historyOverlay = historyIntent = null; historyWatch = historyMessage = ''; historyUnknown = false; }
 function historyContext() { return {epoch, view: currentKey(), serial: historySerial, viewID: current?.view?.view_id}; }
 function historyCurrent(c) { return !disposed && ready() && c.epoch === epoch && c.view === currentKey() && c.serial === historySerial; }
 function historyError(code) { return ({history_not_found: 'This captured history is no longer selected. Open a new history from the fighter’s card.', history_source_changed: 'The source changed. Open a new history from the fighter’s card.', history_corrupt: 'History evidence could not be validated.', history_clock: 'The authority clock needs attention.', history_unavailable: 'History is currently unavailable.', history_capacity: 'The display or history cache is full. Clear a detail before trying again.', history_cancelled: 'The history request was cancelled.', history_observation_unknown: 'The source observation is uncertain. History is unavailable until the original store is recovered.', outcome_unknown: 'The request may have started. Check its recorded state before starting another history.'})[code] ?? textError(code); }
 function historyRefusal(code) {
   historyMessage = historyError(code);
   if (['unauthorized', 'stale_view', 'forbidden'].includes(code)) { clearHistory(); historyMessage = historyError(code); }
-  else if (['history_unavailable', 'history_corrupt', 'history_clock', 'history_observation_unknown', 'career_inactive'].includes(code)) { historySerial++; historySnapshot = historyJob = historyPage = historyOverlay = historyIntent = historySelection = null; historyWatch = ''; historyUnknown = false; }
-  else if (['history_source_changed', 'history_not_found'].includes(code)) { historySerial++; historyJob = historyPage = historyOverlay = historyIntent = historySelection = null; historyWatch = ''; historyUnknown = false; }
+  else if (['history_unavailable', 'history_corrupt', 'history_clock', 'history_observation_unknown', 'career_inactive'].includes(code)) { clearEvidence(); historySerial++; historySnapshot = historyJob = historyPage = historyOverlay = historyIntent = historySelection = null; historyWatch = ''; historyUnknown = false; }
+  else if (['history_source_changed', 'history_not_found'].includes(code)) { clearEvidence(); historySerial++; historyJob = historyPage = historyOverlay = historyIntent = historySelection = null; historyWatch = ''; historyUnknown = false; }
   else if (code === 'outcome_unknown') historyUnknown = true;
 }
 function historyActivation(a) {
@@ -2493,7 +2494,7 @@ async function fetchHistorySnapshot() {
   } catch {if(historyCurrent(c))historyRefusal('outcome_unknown');} finally {renderHistory();}
 }
 async function selectHistory(i) {
-  if(!ready()||!careerMode||command||historyWatch||historyUnknown)return;
+  if(!ready()||!careerMode||command||historyWatch||historyUnknown||evidenceBusy())return;
   ui['history-panel'].scrollIntoView?.({block:'start',behavior:motionPreference?.matches?'auto':'smooth'});document.getElementById('history-heading').focus?.({preventScroll:true});
   const chosen={id:i.assignment.prospect_id,name:i.manifest.name.display,assignment:own(i.assignment)}, c=historyContext();
   queue(async()=>{
@@ -2501,7 +2502,7 @@ async function selectHistory(i) {
     await fetchHistorySnapshot(); if(!historyCurrent(c)||!historySnapshot?.activation||historyWatch||historyUnknown)return;
     if(!previewCapacity(Math.max(0,49152-historyRetainedBytes()))){historyRefusal('history_capacity');return;}historyIntent=chosen;
     try {const r=historyEnvelope(await call('BeginCareerHistory',c.viewID,chosen.id),'job');if(!historyCurrent(c))return;if(!r.ok){historyIntent=null;historyRefusal(r.error);return;}
-      requireValue(r.value.state==='queued'&&r.value.prospect_id===chosen.id);historySerial++;historySelection=chosen;historyJob=r.value;historyPage=historyOverlay=null;historyWatch=r.value.job_id;historyUnknown=false;historyIntent=null;historyMessage='Capturing finalized history...';
+      requireValue(r.value.state==='queued'&&r.value.prospect_id===chosen.id);clearEvidence();historySerial++;historySelection=chosen;historyJob=r.value;historyPage=historyOverlay=null;historyWatch=r.value.job_id;historyUnknown=false;historyIntent=null;historyMessage='Capturing finalized history...';
     } catch {if(historyCurrent(c)){historyUnknown=true;historyMessage=historyError('outcome_unknown');}}
     renderHistory();
   },'history-begin');
@@ -2510,6 +2511,7 @@ async function fetchHistoryJob(id) {
   if(!ready()||!historySnapshot?.activation)return;const c=historyContext();
   try {const r=historyEnvelope(await call('CareerHistoryJob',c.viewID,id),'job');if(!historyCurrent(c))return;if(!r.ok){historyRefusal(r.error);return;}
     const j=r.value;requireValue(j.job_id===id); if(j.state==='done'&&(historyIntent||historySelection)?.assignment)requireValue(same((historyIntent||historySelection).assignment,j.capture.assignment)); if((historyIntent||historySelection)&&j.prospect_id!==(historyIntent||historySelection).id){historyUnknown=false;historyIntent=null;historyMessage='A different history request is retained. Choose this fighter again to replace it.';return;}
+    if(historyJob?.job_id!==j.job_id)clearEvidence();
     const before=[historyJob,historyWatch,historyUnknown,historySelection,historyPage,historyOverlay,historyIntent];if(historyIntent){historySelection=historyIntent;historyPage=historyOverlay=null;}historyJob=j;historyWatch=['queued','running'].includes(j.state)?id:'';historyUnknown=false;historyIntent=null;
     if(!historySelection)historySelection={id:j.prospect_id,name:'Selected fighter',assignment:j.capture?.assignment??null};
     if(!historyCapacity()){[historyJob,historyWatch,historyUnknown,historySelection,historyPage,historyOverlay,historyIntent]=before;historyRefusal('history_capacity');return;}
@@ -2558,7 +2560,134 @@ function renderHistory() {
   }}
   const o=historyOverlay;content(ui['history-result'],o?`Fight ${o.ordinal}: ${o.conflict?'Conflict reported; finalized award retained.':'No conflict in this saved result read.'} Local evidence read ${date.format(o.observed_at_ms)}. ${o.chain_observed_at_ms?`Chain last checked ${date.format(o.chain_observed_at_ms)}; ${o.current_finality?'finality met at that check.':'current finality was not confirmed.'}`:'Current chain status not checked.'}`:'Current status not checked.');
   ui['history-previous'].disabled=!active||busy||historyUnknown||!p||p.after===0;ui['history-next'].disabled=!active||busy||historyUnknown||!p?.has_more;
-  ui['history-refresh'].disabled=!active||!!command||(!historySelection&&!historyUnknown);ui['history-cancel'].disabled=!active||!!command||!historyWatch;ui['history-clear'].disabled=busy||(!historySelection&&!historyPage);
+  ui['history-refresh'].disabled=!active||!!command||(!historySelection&&!historyUnknown);ui['history-cancel'].disabled=!active||!!command||!historyWatch;ui['history-clear'].disabled=busy||evidenceBusy()||(!historySelection&&!historyPage);renderEvidence();
+}
+
+// Public evidence exports retain metadata only. Native owns the selected path,
+// original operation ID, source verification and exclusive file publication.
+const EVIDENCE_ERRORS = new Set(['invalid_request', 'stale_view', 'unauthorized', 'forbidden', 'busy', 'history_not_found', 'history_unavailable', 'evidence_not_found', 'evidence_capacity', 'evidence_operation_conflict', 'evidence_unavailable', 'evidence_profile', 'outcome_unknown']);
+const EVIDENCE_TERMINAL = new Set(['evidence_invalid', 'evidence_source_changed', 'evidence_unavailable', 'evidence_destination_conflict', 'evidence_storage_failed', 'evidence_export_uncertain']);
+let evidenceIntent = null, evidenceJob = null, evidenceUnknown = false, evidenceMessage = '', evidencePriorJobID = '';
+function evidenceBusy() { return evidenceUnknown || evidenceJob?.state === 'running'; }
+function clearEvidence() { evidenceIntent = evidenceJob = null; evidenceUnknown = false; evidenceMessage = ''; evidencePriorJobID = ''; }
+function evidenceRetainedBytes() { return evidenceIntent || evidenceJob || evidenceUnknown ? 16384 : evidenceMessage ? 1024 : 0; }
+function evidenceBinding() {
+  requireValue(historyJob?.state === 'done' && !historyUnknown && !historyWatch);
+  const c = historyCapture(historyJob.capture);
+  return {view: own(current.view), store_id: c.status.store_id, history_job_id: historyJob.job_id,
+    history_id: c.history_id, prospect_id: c.assignment.prospect_id, source_record_digest: c.assignment.source_record_digest,
+    event_count: c.event_count, captured_as_of_ms: c.as_of_ms};
+}
+function evidenceContext() { return {...historyContext(), historyJobID: historyJob?.job_id, historyID: historyJob?.capture?.history_id}; }
+function evidenceCurrent(c) { return historyCurrent(c) && c.historyJobID === historyJob?.job_id && c.historyID === historyJob?.capture?.history_id; }
+function evidencePins(v, b = evidenceIntent) {
+  requireValue(b && viewKey(checkedView(v.view)) === currentKey() && same(v.view, b.view) && v.store_id === b.store_id);
+}
+function evidenceSummary(v, b = evidenceIntent) {
+  exact(v, ['version', 'file_sha256', 'file_bytes', 'prospect_id', 'history_id', 'source_record_digest', 'event_count', 'captured_as_of_ms']);
+  requireValue(b && v.version === 1 && entryBytes(v) <= 2048 && hex(v.file_sha256) && int(v.file_bytes, 1, 524288) && int(v.event_count, 0, 256) && int(v.captured_as_of_ms, 1, DATE_MAX));
+  requireValue(['prospect_id', 'history_id', 'source_record_digest'].every(k => hex(v[k])));
+  requireValue(['prospect_id', 'history_id', 'source_record_digest', 'event_count', 'captured_as_of_ms'].every(k => v[k] === b[k]));
+  return v;
+}
+function evidenceJobValue(v, expectedID = '', previous = evidenceJob) {
+  exact(v, ['version', 'job_id', 'state', 'view', 'store_id', 'history_job_id', 'history_id', 'prospect_id', 'error', 'summary']);
+  evidencePins(v); requireValue(v.version === 1 && entryBytes(v) <= 4096 && ['job_id', 'history_job_id', 'history_id', 'prospect_id'].every(k => hex(v[k])));
+  requireValue(v.job_id !== evidencePriorJobID && (!expectedID || v.job_id === expectedID) && ['history_job_id', 'history_id', 'prospect_id'].every(k => v[k] === evidenceIntent[k]));
+  if (v.state === 'done') { requireValue(v.error === ''); evidenceSummary(v.summary); }
+  else { requireValue(v.summary === null); if (v.state === 'running') requireValue(v.error === '');
+    else if (v.state === 'failed') requireValue(EVIDENCE_TERMINAL.has(v.error));
+    else requireValue(v.state === 'cancelled' && v.error === 'evidence_cancelled'); }
+  if (previous?.job_id === v.job_id && previous.state !== 'running') requireValue(same(previous, v));
+  return v;
+}
+function evidenceSnapshotValue(v) {
+  exact(v, ['version', 'state', 'error', 'view', 'store_id', 'active_job_id', 'last_job_id']);
+  requireValue(v.version === 1 && entryBytes(v) <= 4096 && ['active_job_id', 'last_job_id'].every(k => optionalID(v[k])));
+  if (v.state === 'unavailable') requireValue(v.error === 'evidence_unavailable' && v.view === null && v.store_id === '' && !v.active_job_id && !v.last_job_id);
+  else { evidencePins(v); requireValue(['idle', 'busy'].includes(v.state) && v.error === '' && (v.state === 'busy') === !!v.active_job_id);
+    requireValue(['active_job_id', 'last_job_id'].every(k => !v[k] || v[k] !== evidencePriorJobID));
+    // With a known operation, never substitute another helper's latest ID.
+    // During a lost begin, native admits only its own previously recorded ID.
+    if (evidenceJob) requireValue(['active_job_id', 'last_job_id'].every(k => !v[k] || v[k] === evidenceJob.job_id)); }
+  return v;
+}
+function evidenceEnvelope(v, kind, expectedID = '') {
+  exact(v, ['id', 'version', 'ok', 'snapshot', 'job', 'error']);
+  requireValue(int(v.id, 1) && v.version === 1 && typeof v.ok === 'boolean' && entryBytes(v) <= 8192);
+  if (!v.ok) { requireValue(v.snapshot === null && v.job === null && EVIDENCE_ERRORS.has(v.error)); return {ok: false, error: v.error}; }
+  requireValue(v.error === '' && (kind === 'snapshot' ? v.job === null && v.snapshot !== null : v.snapshot === null && v.job !== null));
+  const x = kind === 'snapshot' ? evidenceSnapshotValue(v.snapshot) : evidenceJobValue(v.job, expectedID);
+  return {ok: true, value: own(x)};
+}
+function evidenceError(code) {
+  return ({busy: 'Stop mining and wait for the current task to finish before exporting public evidence.', evidence_capacity: 'The evidence export is at capacity. Finish the current task before trying again.',
+    evidence_destination_conflict: 'The selected destination already exists or changed. Choose a new destination.',
+    evidence_export_uncertain: 'The evidence file may already be saved. Check the selected destination before trying again.',
+    outcome_unknown: 'The export could not be confirmed. Check the selected destination before trying again.',
+    evidence_cancelled: 'Evidence export cancelled.', evidence_source_changed: 'The source changed. Open a new history before exporting.',
+    history_not_found: 'Open a new finalized history before exporting.', evidence_profile: 'Public evidence export is unavailable in this build.'})[code] || 'Public evidence export is unavailable. The captured history is retained.';
+}
+function evidenceRefusal(code) {
+  if (['unauthorized', 'stale_view', 'forbidden'].includes(code)) { clearHistory(); historyMessage = historyError(code); return; }
+  evidenceMessage = evidenceError(code);
+  if (code === 'outcome_unknown') evidenceUnknown = true;
+}
+function acceptEvidenceJob(j) {
+  evidenceJob = j; evidenceUnknown = false;
+  evidenceMessage = j.state === 'running' ? 'Saving the original receipt and captured history…' : j.state === 'done' ?
+    `Public evidence saved: ${number.format(j.summary.file_bytes)} bytes · File SHA256 ${j.summary.file_sha256}. This export is not an offline verification report.` : evidenceError(j.error);
+}
+function evidenceCanBegin() {
+  return ready() && careerMode && historyJob?.state === 'done' && !historyUnknown && !historyWatch && !evidenceBusy() &&
+    ['stopped', 'failed'].includes(current?.state) && current?.backup_state !== 'running' && !watched && !stable?.active_job_id && !stable?.queued_job_id && stable?.state !== 'syncing';
+}
+async function beginEvidence() {
+  if (!evidenceCanBegin()) { evidenceMessage = evidenceError('busy'); renderHistory(); return; }
+  const c = evidenceContext();
+  if (!previewCapacity(Math.max(0, 16384 - evidenceRetainedBytes()))) { evidenceMessage = evidenceError('evidence_capacity'); renderHistory(); return; }
+  // A lost new begin may recover only the new native-held action, never the
+  // previous successful export of the very same captured history.
+  evidencePriorJobID = evidenceJob?.job_id || evidencePriorJobID;
+  evidenceIntent = evidenceBinding(); evidenceJob = null; evidenceUnknown = true; evidenceMessage = 'Choose where to save public evidence.';
+  try {
+    const raw = await call('BeginFighterEvidenceExport', c.viewID, c.historyJobID);
+    if (!evidenceCurrent(c)) return;
+    if (raw === null) { clearEvidence(); return; } // Native dialog cancelled before dispatch.
+    const r = evidenceEnvelope(raw, 'job');
+    if (!r.ok) { if (r.error !== 'outcome_unknown') { evidenceUnknown = false; evidenceIntent = null; } evidenceRefusal(r.error); return; }
+    acceptEvidenceJob(r.value);
+  } catch { if (evidenceCurrent(c)) { evidenceUnknown = true; evidenceMessage = 'Checking whether the export started.'; } }
+  finally { renderHistory(); }
+}
+async function fetchEvidenceJob(id) {
+  if (!ready() || !evidenceIntent) return; const c = evidenceContext();
+  try { const raw = await call('FighterEvidenceJob', c.viewID, id); if (!evidenceCurrent(c)) return;
+    const r = evidenceEnvelope(raw, 'job', id); if (!r.ok) { evidenceRefusal(r.error); return; } acceptEvidenceJob(r.value);
+  } catch { if (evidenceCurrent(c)) evidenceRefusal('outcome_unknown'); } finally { renderHistory(); }
+}
+async function fetchEvidenceSnapshot() {
+  if (!ready() || !evidenceIntent || !evidenceBusy()) return; const c = evidenceContext();
+  try {
+    if (evidenceJob) { await fetchEvidenceJob(evidenceJob.job_id); return; }
+    const raw = await call('FighterEvidenceSnapshot'); if (!evidenceCurrent(c)) return;
+    const r = evidenceEnvelope(raw, 'snapshot'); if (!r.ok) { evidenceRefusal(r.error); return; }
+    if (r.value.state === 'unavailable') { evidenceRefusal(r.value.error); return; }
+    const id = r.value.active_job_id || r.value.last_job_id;
+    if (id) await fetchEvidenceJob(id);
+    else { evidenceUnknown = false; evidenceIntent = null; evidenceMessage = 'No evidence export was started. Choose Export public evidence to try again.'; }
+  } catch { if (evidenceCurrent(c)) evidenceRefusal('outcome_unknown'); } finally { renderHistory(); }
+}
+async function cancelEvidence() {
+  if (!ready() || !evidenceJob || !evidenceBusy()) return; const c = evidenceContext(), id = evidenceJob.job_id;
+  try { const raw = await call('CancelFighterEvidence', c.viewID, id); if (!evidenceCurrent(c)) return;
+    const r = evidenceEnvelope(raw, 'job', id); if (!r.ok) { evidenceRefusal(r.error); return; } acceptEvidenceJob(r.value);
+  } catch { if (evidenceCurrent(c)) evidenceRefusal('outcome_unknown'); } finally { renderHistory(); }
+}
+function renderEvidence() {
+  const busy = evidenceBusy(); content(ui['history-export'], busy && evidenceJob ? 'Cancel evidence export' : 'Export public evidence');
+  ui['history-export'].disabled = !ready() || !careerMode || !!command || (busy ? !evidenceJob : !evidenceCanBegin());
+  content(ui['history-export-status'], evidenceMessage || (historyJob?.state === 'done' && !evidenceCanBegin() ? evidenceError('busy') : ''));
 }
 
 for (const kind of ['publish', 'reconcile', 'attest', 'export']) ui[`result-${kind}`].addEventListener('click', () => { const c = publicationContext(); queue(() => publicationCurrent(c, true) ? publicationBegin(kind) : undefined, `result-${kind}`); });
@@ -2571,7 +2700,8 @@ ui['history-refresh'].addEventListener('click',()=>queue(fetchHistorySnapshot,'h
 ui['history-cancel'].addEventListener('click',()=>queue(cancelHistory,'history-cancel'));
 ui['history-previous'].addEventListener('click',()=>queue(()=>readHistoryPage(Math.max(0,(historyPage?.after??0)-8)),'history-page'));
 ui['history-next'].addEventListener('click',()=>queue(()=>historyPage?.has_more?readHistoryPage(historyPage.next):undefined,'history-page'));
-ui['history-clear'].addEventListener('click',()=>{clearHistory();renderHistory();});
+ui['history-clear'].addEventListener('click',()=>{if(!evidenceBusy()){clearHistory();renderHistory();}});
+ui['history-export'].addEventListener('click',()=>queue(evidenceBusy()?cancelEvidence:beginEvidence,'history-export'));
 
 ui['event-refresh'].addEventListener('click', () => queueEventSelection(() => eventReadStatus(), 'event-status'));
 ui['event-capture'].addEventListener('click', () => queueEventSelection(eventBegin, 'event-capture'));

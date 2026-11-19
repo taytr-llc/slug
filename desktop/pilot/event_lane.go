@@ -28,7 +28,7 @@ func (s *StableController) BeginEventCapture(ctx context.Context, v, date string
 		if s.eventStore == nil {
 			return errEventSetup
 		}
-		if s.stopping {
+		if s.stopping || s.evidenceBusyLocked() {
 			return gymevent.ErrBusy
 		}
 		s.expireQueuedLocked()

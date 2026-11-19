@@ -33,6 +33,7 @@ func (s *StableController) latchHistoryFailureLocked(e error) {
 
 // Caller owns stableMu. Invalidation cannot let a late task restore a handle.
 func (s *StableController) invalidateHistoryLocked() {
+	s.cancelEvidenceLocked()
 	s.historyEpoch++
 	s.historyHandle = nil
 	s.historyLast = nil
@@ -190,7 +191,7 @@ func (s *StableController) BeginCareerHistoryAdmission(admission, taskParent con
 		if e != nil {
 			return e
 		}
-		if s.stopping || s.queued != nil || s.active != nil && s.active.history != nil {
+		if s.stopping || s.evidenceBusyLocked() || s.queued != nil || s.active != nil && s.active.history != nil {
 			return gymstable.ErrBusy
 		}
 		s.mu.Lock()

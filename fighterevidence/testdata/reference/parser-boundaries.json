@@ -1,0 +1,176 @@
+{
+  "version": 1,
+  "scope": "Parser-only signed64 inherited int boundary; no value is valid DNA or work evidence",
+  "cases": [
+    {
+      "field": "talent_budget",
+      "value_decimal": "4294967296",
+      "parse_accepted": true,
+      "semantic_accepted": false,
+      "normal_work_calls": 0
+    },
+    {
+      "field": "talent_budget",
+      "value_decimal": "9223372036854775807",
+      "parse_accepted": true,
+      "semantic_accepted": false,
+      "normal_work_calls": 0
+    },
+    {
+      "field": "talent_budget",
+      "value_decimal": "9223372036854775808",
+      "parse_accepted": false,
+      "semantic_accepted": false,
+      "normal_work_calls": 0
+    },
+    {
+      "field": "attributes.power",
+      "value_decimal": "4294967296",
+      "parse_accepted": true,
+      "semantic_accepted": false,
+      "normal_work_calls": 0
+    },
+    {
+      "field": "attributes.power",
+      "value_decimal": "9223372036854775807",
+      "parse_accepted": true,
+      "semantic_accepted": false,
+      "normal_work_calls": 0
+    },
+    {
+      "field": "attributes.power",
+      "value_decimal": "9223372036854775808",
+      "parse_accepted": false,
+      "semantic_accepted": false,
+      "normal_work_calls": 0
+    },
+    {
+      "field": "attributes.speed",
+      "value_decimal": "4294967296",
+      "parse_accepted": true,
+      "semantic_accepted": false,
+      "normal_work_calls": 0
+    },
+    {
+      "field": "attributes.speed",
+      "value_decimal": "9223372036854775807",
+      "parse_accepted": true,
+      "semantic_accepted": false,
+      "normal_work_calls": 0
+    },
+    {
+      "field": "attributes.speed",
+      "value_decimal": "9223372036854775808",
+      "parse_accepted": false,
+      "semantic_accepted": false,
+      "normal_work_calls": 0
+    },
+    {
+      "field": "attributes.chin",
+      "value_decimal": "4294967296",
+      "parse_accepted": true,
+      "semantic_accepted": false,
+      "normal_work_calls": 0
+    },
+    {
+      "field": "attributes.chin",
+      "value_decimal": "9223372036854775807",
+      "parse_accepted": true,
+      "semantic_accepted": false,
+      "normal_work_calls": 0
+    },
+    {
+      "field": "attributes.chin",
+      "value_decimal": "9223372036854775808",
+      "parse_accepted": false,
+      "semantic_accepted": false,
+      "normal_work_calls": 0
+    },
+    {
+      "field": "attributes.stamina",
+      "value_decimal": "4294967296",
+      "parse_accepted": true,
+      "semantic_accepted": false,
+      "normal_work_calls": 0
+    },
+    {
+      "field": "attributes.stamina",
+      "value_decimal": "9223372036854775807",
+      "parse_accepted": true,
+      "semantic_accepted": false,
+      "normal_work_calls": 0
+    },
+    {
+      "field": "attributes.stamina",
+      "value_decimal": "9223372036854775808",
+      "parse_accepted": false,
+      "semantic_accepted": false,
+      "normal_work_calls": 0
+    },
+    {
+      "field": "attributes.skill",
+      "value_decimal": "4294967296",
+      "parse_accepted": true,
+      "semantic_accepted": false,
+      "normal_work_calls": 0
+    },
+    {
+      "field": "attributes.skill",
+      "value_decimal": "9223372036854775807",
+      "parse_accepted": true,
+      "semantic_accepted": false,
+      "normal_work_calls": 0
+    },
+    {
+      "field": "attributes.skill",
+      "value_decimal": "9223372036854775808",
+      "parse_accepted": false,
+      "semantic_accepted": false,
+      "normal_work_calls": 0
+    },
+    {
+      "field": "prime_weeks",
+      "value_decimal": "4294967296",
+      "parse_accepted": true,
+      "semantic_accepted": false,
+      "normal_work_calls": 0
+    },
+    {
+      "field": "prime_weeks",
+      "value_decimal": "9223372036854775807",
+      "parse_accepted": true,
+      "semantic_accepted": false,
+      "normal_work_calls": 0
+    },
+    {
+      "field": "prime_weeks",
+      "value_decimal": "9223372036854775808",
+      "parse_accepted": false,
+      "semantic_accepted": false,
+      "normal_work_calls": 0
+    },
+    {
+      "field": "decline_weeks",
+      "value_decimal": "4294967296",
+      "parse_accepted": true,
+      "semantic_accepted": false,
+      "normal_work_calls": 0
+    },
+    {
+      "field": "decline_weeks",
+      "value_decimal": "9223372036854775807",
+      "parse_accepted": true,
+      "semantic_accepted": false,
+      "normal_work_calls": 0
+    },
+    {
+      "field": "decline_weeks",
+      "value_decimal": "9223372036854775808",
+      "parse_accepted": false,
+      "semantic_accepted": false,
+      "normal_work_calls": 0
+    }
+  ],
+  "normal_work_calls": 0,
+  "execution_lock_sha256": "43aec989297bb766ad07244f07a4f40e7d341c8d5940c6e66a9a7cb383c8303f"
+}

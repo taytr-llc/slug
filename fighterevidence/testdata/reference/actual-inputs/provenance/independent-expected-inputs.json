@@ -1,0 +1,119 @@
+{
+  "provenance": "Exact pins from separately retained successful-run stable markers, cross-checked against original accepted entry gyms before any archive assembly. Test provenance only, never general marker trust.",
+  "original_public_cycle_sha256": {
+    "v1": "c249b9fd8b21e5950ae084a37b8c5738ae985a936d583105b1454436fc64db9a",
+    "v2": "9a0a2db2ec65dd12e0792beed125808226ecfc32c92ccd27cb22995367808159"
+  },
+  "expected": [
+    {
+      "Name": "v1",
+      "DescriptorID": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+      "ClockMS": 1795982400000,
+      "Pins": {
+        "incrementing256": {
+          "version": 2,
+          "account_authority_id": "207a1d2d32d12c0c8a18509820a7a8a2f40a710b291a1490704fe9a38b766936",
+          "account_id": "2ab49c15cda627c733bef47f7cf36c3b4110a152ce96c371fe6a3ba8fd4e7aa4",
+          "identity": {
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "profile": "slug-phase-a-fixture-bip39-v1",
+            "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+            "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+          },
+          "source": {
+            "version": 5,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "authority_id": "b50b26a8399827e02df23f2deb5a3a1ab017c5447a1039e77cb6792ec36e7d72",
+            "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303"
+          },
+          "condition_version": 1,
+          "projector_id": "slug-fighter-condition-candidate-v1"
+        },
+        "zero256": {
+          "version": 2,
+          "account_authority_id": "207a1d2d32d12c0c8a18509820a7a8a2f40a710b291a1490704fe9a38b766936",
+          "account_id": "7d2ce55cdced6db42dce79179485cefe3d73ba640c9e21eba03f3fe35fbf555f",
+          "identity": {
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "profile": "slug-phase-a-fixture-bip39-v1",
+            "root_public_key": "JgduaQiYjRcnjcD9t1MfTP1qo8eWaAWPQtS9nChXwtAeyTsoEGVZ8SjVqa5qxxvvKqX8tqC77wMSjaMHXNY8JSYEASdzX6PT31ktXqKPJvkhyy31",
+            "gym_public_key": "03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519",
+            "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5"
+          },
+          "source": {
+            "version": 5,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "authority_id": "b50b26a8399827e02df23f2deb5a3a1ab017c5447a1039e77cb6792ec36e7d72",
+            "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303"
+          },
+          "condition_version": 1,
+          "projector_id": "slug-fighter-condition-candidate-v1"
+        }
+      },
+      "Awarded": {
+        "incrementing256": "00f068a2bcd08b03aec1e029e707c4857837eb542305ea4e74acfc7fa442de84",
+        "zero256": "75dc0f5cb0f300425c0cd950401af6ce5171ec46539c951038fcc45323ad8b33"
+      }
+    },
+    {
+      "Name": "v2",
+      "DescriptorID": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+      "ClockMS": 1795982400000,
+      "Pins": {
+        "zero256": {
+          "version": 2,
+          "account_authority_id": "fdb194ec69e5d2de13d7b054ccdf22cb819ffce26162ed9590807df8cbee8244",
+          "account_id": "16601c20b1ee90da176777ff417ba5760e4f893a49c47b5a57bad2216b74e77a",
+          "identity": {
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "profile": "slug-phase-a-fixture-bip39-v1",
+            "root_public_key": "JgduaQiYjRcnjcD9t1MfTP1qo8eWaAWPQtS9nChXwtAeyTsoEGVZ8SjVqa5qxxvvKqX8tqC77wMSjaMHXNY8JSYEASdzX6PT31ktXqKPJvkhyy31",
+            "gym_public_key": "03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519",
+            "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5"
+          },
+          "source": {
+            "version": 5,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "authority_id": "d029e74f3638b8258384527408839bb7e3d5bdd9cc17dfaddfe43d0a379152f3",
+            "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75"
+          },
+          "condition_version": 1,
+          "projector_id": "slug-fighter-condition-candidate-v1"
+        },
+        "incrementing256": {
+          "version": 2,
+          "account_authority_id": "fdb194ec69e5d2de13d7b054ccdf22cb819ffce26162ed9590807df8cbee8244",
+          "account_id": "b5cd8df6ca42a4f4085f1ffa18b3609cae78efdfd9d82c275c30ef3026742ecc",
+          "identity": {
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "profile": "slug-phase-a-fixture-bip39-v1",
+            "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+            "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+          },
+          "source": {
+            "version": 5,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "authority_id": "d029e74f3638b8258384527408839bb7e3d5bdd9cc17dfaddfe43d0a379152f3",
+            "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75"
+          },
+          "condition_version": 1,
+          "projector_id": "slug-fighter-condition-candidate-v1"
+        }
+      },
+      "Awarded": {
+        "zero256": "72c607799dcdbec768b8cff179261330a9359ad51141e4be0e01d3a08ffe846a",
+        "incrementing256": "97554222f17d4cc25712d5a5325220b22e10d38ae05c9d74c5ef3ce9b8b46e9c"
+      }
+    }
+  ]
+}

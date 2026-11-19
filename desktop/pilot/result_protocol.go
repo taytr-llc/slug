@@ -165,7 +165,32 @@ func serveResults(ctx context.Context, c ResultControllerAPI, input io.Reader, o
 			if json.Unmarshal(value.data, &selector) != nil {
 				return gymstable.ErrInvalid
 			}
-			if strings.HasPrefix(selector.Command, "career_history_") {
+			if strings.HasPrefix(selector.Command, "fighter_evidence_") {
+				req, e := ParseFighterEvidenceRequest(value.data)
+				id := selector.ID
+				if id == 0 || id > gymstable.MaxSafeInteger {
+					id = 1
+				}
+				response := FighterEvidenceResponse{ID: id, Version: 1, Error: "invalid_request"}
+				if surface, ok := career.(FighterEvidenceSurfaceAPI); e == nil && ok {
+					response = handleFighterEvidenceRequest(ctx, req, surface)
+				}
+				raw, e := MarshalFighterEvidenceResponse(response)
+				if e != nil {
+					return e
+				}
+				if d, ok := output.(interface{ SetWriteDeadline(time.Time) error }); ok {
+					_ = d.SetWriteDeadline(time.Now().Add(5 * time.Second))
+				}
+				raw = append(raw, '\n')
+				n, e := output.Write(raw)
+				if e != nil {
+					return e
+				}
+				if n != len(raw) {
+					return io.ErrShortWrite
+				}
+			} else if strings.HasPrefix(selector.Command, "career_history_") {
 				req, e := ParseCareerHistoryRequest(value.data)
 				id := selector.ID
 				if id == 0 || id > gymstable.MaxSafeInteger {

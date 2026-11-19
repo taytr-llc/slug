@@ -227,6 +227,19 @@ version.
   Continue portable public evidence without claiming ownership, authenticated
   admission time or complete authoritative history from unsigned summaries.
   Transfer timing/order remains a later policy question; D74 remains last.
+- Set66 on `slug-public-fighter-evidence` adds bounded original-receipt/history
+  export and a separate offline consistency checker. Require a separately
+  established full expected source Pin; the file authenticates neither issuance
+  time, actual awards/finality, current ownership nor global history completeness.
+  Use one concrete source proof, the original opaque history capture and exact
+  native action ID. Never recover a new export by adopting an older latest job.
+  Stop/Close join proof and file cleanup; asynchronous account transition
+  acknowledgments do not prove cleanup. Preserve possible-publication uncertainty
+  and the old recovery-file limit. Normal/race/reference, six actual exports,
+  complete desktop, normal package and smoke checks pass; retain the sandbox
+  failure and explicit composite rerun evidence. See `CHANGESET_66_NOTES.md`.
+  Next add authenticated own-payout history with separately dated wallet
+  observations; no transfer policy or navigation redesign is implied.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

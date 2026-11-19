@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "execution_authorized_by_root": false,
+  "status": "Corrected pre-execution proposal; native parent identity uses inherited exact16 lowercase hex with nonzero inode. Original proposal retained; no outputs generated.",
+  "files": {
+    "wire_reference.py": {
+      "sha256": "34d0c80bec85b9b9ddac539eb2494a1c588082ef04634ef140863e4ec9200057",
+      "bytes": 21109
+    },
+    "wire-plan.json": {
+      "sha256": "d57f27af23fcec6b1085f88fb36d44e09c658e2bb1333993168014116c682a26",
+      "bytes": 1641
+    },
+    "contract.md": {
+      "sha256": "be2053422fb57adfd7839624bb545c237aea265547891917ff1f028335ed9feb",
+      "bytes": 29039
+    }
+  },
+  "repository_inputs": {
+    "fighterevidence/testdata/reference/reference-v1.json": "eb51028daf2ebbda44dfbfdb79f58353137ed03f1836fad5b8db8cf428300772"
+  },
+  "normal_work_calls": 0,
+  "production_implementation_used": false
+}

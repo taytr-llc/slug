@@ -156,7 +156,7 @@ func (s *StableController) beginStable(ctx context.Context, view, kind, operatio
 		if s.stableClosed || !s.installed || s.stableStatus == nil {
 			return gymstable.ErrClosed
 		}
-		if s.stopping {
+		if s.stopping || s.evidenceBusyLocked() {
 			return gymstable.ErrBusy
 		}
 		s.expireQueuedLocked()

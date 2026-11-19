@@ -15,6 +15,9 @@ func (g *Gym) PoolSnapshot() (pilot.PoolSnapshot, error) {
 	if e != nil {
 		return pilot.PoolSnapshot{}, e
 	}
+	if e = g.observeEvidenceAccount(g.stableHelper, r.Snapshot.Account.State, r.Snapshot.View); e != nil {
+		return pilot.PoolSnapshot{}, e
+	}
 	return *r.Snapshot, nil
 }
 func (g *Gym) RefreshPoolBalance() error {

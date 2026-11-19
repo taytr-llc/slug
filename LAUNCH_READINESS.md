@@ -384,6 +384,16 @@ they do not count as completion of this product-release gate.
   `CHANGESET_65_NOTES.md`; source activation/population assumptions and remaining
   duplicate-name presentation still belong to the final D74 session.
 
+- Set66 completes public original-receipt/history export and conditional offline
+  consistency checking against an independently selected full source Pin.
+  Six actual v1/v2 exports, independent references, original-action recovery,
+  full desktop, normal Mac package and required smoke pass. The file does not
+  establish admission time, actual result finality, ownership or complete/fresh
+  authoritative history. Preserve the initial sandbox failure and composite
+  qualification record. See `CHANGESET_66_NOTES.md`. The seed inputs are unchanged;
+  no new rollout or product-release approval is implied. Own-payout history and
+  separately dated wallet transaction observations are the next functional slice.
+
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
 `sim-handoff-intake.json` preserves archive and file checksums. They are reference
