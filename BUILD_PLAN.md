@@ -258,15 +258,22 @@ explicit native approval of recipient, amount, fee and total. Its actual
 two-wallet rehearsal includes a lost acknowledgment, same-byte retry, one debit,
 live change detection and restart. See `REVIEWED_WITHDRAWALS_ADOPTION.md` and
 `CHANGESET_68_NOTES.md` for contracts and qualification. The candidate is limited
-to public schema-9 fixture wallets. Authoritative evolving-wallet address
-metadata and bounded resumable restore remain a separate functional recovery
-gate; transfers and general matchmaking still require their own decisions.
+to public schema-9 fixture wallets.
+Set69 adds bounded schema-12 restoration of existing Phase-A version-1 files,
+with unchanged derivation/root/gym identity, explicit library resume, joined
+scratch cleanup and exact synchronized tip comparisons. Live exports already
+track current issued/change cursors. The separate hosted-vault path still needs
+authoritative evolving metadata and integration; successful scratch verification
+does not restore the installed payment journal or authorization. See
+`PHASE_A_BACKUP_RECOVERY.md`, `PHASE_A_RECOVERY_CLEANUP.md` and
+`CHANGESET_69_NOTES.md` for qualification and limits. Transfers and general
+matchmaking still require their own decisions.
 Never repin solo event histories. Keep the existing layout/logos until the final
 joint D74 review. Public hosting, production signer custody/capacity, real account
 configuration and permanent genesis remain separate gates. The implemented
 contract is `SHARED_POOL_DESKTOP.md`; the earlier workspace runtime proposal
 remains historical context. See `CHANGESET_52_NOTES.md` through
-`CHANGESET_68_NOTES.md`, `POOL_WORKER.md`, `POOL_RECIPIENTS.md`,
+`CHANGESET_69_NOTES.md`, `POOL_WORKER.md`, `POOL_RECIPIENTS.md`,
 `SHARED_GYM_STABLE.md` and `POOL_SESSION_FENCES.md`.
 
 ### 4. Wallet

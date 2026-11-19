@@ -327,11 +327,11 @@ func (c *PoolChild) waitPoolBackupWallet(ctx context.Context, wallet *walletRunt
 	ticker := time.NewTicker(100 * time.Millisecond)
 	defer ticker.Stop()
 	for {
-		view, err := wallet.Snapshot(ctx)
+		walletTip, err := wallet.poolBackupSyncedTip(ctx)
 		tip, tipErr := c.poolBackupTip(ctx)
 		// Height zero also needs the asynchronous rescan-finished notification.
 		// A fresh wallet can already report genesis while its restore is pending.
-		if err == nil && tipErr == nil && view.Height == tip.Height && view.Synced {
+		if err == nil && tipErr == nil && walletTip == tip {
 			return nil
 		}
 		select {
@@ -410,14 +410,14 @@ func (c *PoolChild) verifyPoolBackup(op *poolBackupOperation, file *recoveryfile
 		return "backup_unavailable"
 	}
 	tip, err := c.poolBackupTip(ctx)
-	if err != nil {
+	if err != nil || !c.poolBackupWalletAt(ctx, c.wallet, tip) {
 		return "backup_unavailable"
 	}
 	expected, err := c.wallet.VerificationState(ctx)
 	if err != nil {
 		return "backup_unavailable"
 	}
-	if current, err := c.poolBackupTip(ctx); err != nil || current != tip {
+	if current, err := c.poolBackupTip(ctx); err != nil || current != tip || !c.poolBackupWalletAt(ctx, c.wallet, tip) {
 		return "backup_unavailable"
 	}
 	if c.poolBackupPhase(op, "restoring") != nil {
@@ -427,21 +427,23 @@ func (c *PoolChild) verifyPoolBackup(op *poolBackupOperation, file *recoveryfile
 	if err != nil {
 		return "backup_storage_failed"
 	}
-	var restored *walletRuntime
+	owner := &poolBackupRestore{}
 	defer func() {
-		var closeWallet func() error
-		if restored != nil {
-			closeWallet = restored.Close
-		}
-		if cleanupPoolBackupScratch(scratch, closeWallet, os.RemoveAll) != nil {
+		if err := cleanupPoolBackupScratch(scratch, owner.Close, os.RemoveAll); err != nil {
+			c.mu.Lock()
+			// A failed close error retains the exact lifecycle owner, including
+			// an acquired session/runtime that never finished construction.
+			c.backupCloseErr = errors.Join(c.backupCloseErr, err)
+			c.mu.Unlock()
 			code = "backup_storage_failed"
 		}
 	}()
-	restored, err = restoreAccountFixtureWallet(filepath.Join(scratch, "wallet"), c.account.Manifest.Account.Fixture, bundle)
+	err = owner.Run(ctx, filepath.Join(scratch, "wallet"), c.account.Manifest.Account.Fixture, bundle, c.resources.RPC)
 	bundle.Mnemonic = ""
 	if err != nil {
-		return "backup_invalid"
+		return "backup_unavailable"
 	}
+	restored := owner.runtime
 	if restored.Identity() != identity || restored.Attach(ctx, c.resources.RPC) != nil {
 		return "backup_mismatch"
 	}
@@ -451,8 +453,11 @@ func (c *PoolChild) verifyPoolBackup(op *poolBackupOperation, file *recoveryfile
 	if c.poolBackupPhase(op, "syncing") != nil || c.waitPoolBackupWallet(ctx, restored) != nil {
 		return "backup_unavailable"
 	}
+	if !c.poolBackupWalletAt(ctx, restored, tip) || !c.poolBackupWalletAt(ctx, c.wallet, tip) {
+		return "backup_unavailable"
+	}
 	actual, err := restored.VerificationState(ctx)
-	if err != nil || c.poolBackupPhase(op, "verifying") != nil {
+	if err != nil || !c.poolBackupWalletAt(ctx, restored, tip) || c.poolBackupPhase(op, "verifying") != nil {
 		return "backup_unavailable"
 	}
 	initial, proof, err := backupSigningProof(tip, identity)
@@ -468,7 +473,7 @@ func (c *PoolChild) verifyPoolBackup(op *poolBackupOperation, file *recoveryfile
 		return "backup_mismatch"
 	}
 	resampled, err := c.wallet.VerificationState(ctx)
-	if err != nil {
+	if err != nil || !c.poolBackupWalletAt(ctx, c.wallet, tip) || !c.poolBackupWalletAt(ctx, restored, tip) {
 		return "backup_unavailable"
 	}
 	after, err := c.poolBackupTip(ctx)

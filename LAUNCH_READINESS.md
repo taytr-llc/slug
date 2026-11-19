@@ -412,6 +412,16 @@ they do not count as completion of this product-release gate.
   supply real custody, production-wallet activation or full evolving-wallet
   recovery. The joint D74 review remains the final product gate.
 
+- Set69 replaces synchronous reconstruction in the Pool backup verifier with
+  bounded schema-12 recovery of its unchanged version-1 files. It retains the
+  original gym/root and address paths, supports explicit library resume, and
+  checks the exact synchronized wallet/node tip before comparing restored state.
+  The app still joins and deletes successfully closed scratch work; it does not
+  install the restore or recover payment authorization. See
+  `CHANGESET_69_NOTES.md` for qualification and limits. Current live exports
+  already include issued change cursors; the separate hosted-vault integration
+  still needs authoritative evolving metadata. D74 remains last.
+
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
 `sim-handoff-intake.json` preserves archive and file checksums. They are reference

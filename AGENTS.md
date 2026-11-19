@@ -264,6 +264,17 @@ version.
   `REVIEWED_WITHDRAWALS_ADOPTION.md` and qualification in `CHANGESET_68_NOTES.md`.
   This remains schema-9 public-fixture engineering, not production issuance or
   full evolving-wallet recovery. D74 and permanent identity/custody gates remain.
+- Set69 on `slug-resumable-phase-a-backup` adds explicit schema-12 bounded
+  restoration of the existing version-1 Phase-A recovery file. Preserve coin-0
+  paths, mixed49 branches, root/gym identity and original imported manifest;
+  never migrate installed wallets or recreate withdrawal authorization from a
+  recovery file. Keep 128-attempt steps, clipped 4096-per-branch limits and exact
+  private wallet/node tip comparisons. Failed cleanup retains its owner and
+  scratch directory; a later no-op Close cannot clear the first failure. The
+  completed scanner audit permits later live allocation and retained orphan
+  discovery without equating historical rows to the current wallet ledger.
+  `CHANGESET_69_NOTES.md` records qualification and its precise limits. Hosted
+  evolving metadata, production custody and D74 remain separate gates.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review
