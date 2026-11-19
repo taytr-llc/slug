@@ -89,14 +89,27 @@ function harness(initial = environment(), mode = 'local-manifest-pilot') {
 }
 
 const entryReference = JSON.parse(readFileSync(new URL('../../gymentry/testdata/reference/entry_v1.json', import.meta.url), 'utf8'));
-function entryHarness(fixture = 'zero256', five = false) {
+const sharedReference = JSON.parse(readFileSync(new URL('../../gymstable/testdata/shared-reference/shared_v1.json', import.meta.url), 'utf8'));
+// Pool cases adapt transport state using independent Pin2 inputs; they do not
+// claim new mined records or new cryptographic entry/store goldens.
+function entryHarness(fixture = 'zero256', five = false, pool = false) {
   const scenario = entryReference.scenarios.find((s) => s.name === `${fixture}/${five ? 'synthetic-five-class' : 'save-repeat-withdraw-close-historical'}`);
   const receipt = scenario.final_operations.find((o) => o.state === 'committed').receipt;
   const source = scenario.initial_source;
   const list = receipt.members.map((m) => ({ assignment: clone(m.assignment), manifest: clone(source.find((s) => s.assignment.prospect_id === m.assignment.prospect_id).manifest), condition: clone(m.condition_at_save) })).sort((a, b) => a.assignment.sequence - b.assignment.sequence);
   const e = environment(fixture, list), pin = entryReference.pins.find((p) => p.fixture === fixture), view = clone(entryReference.protocol_cases.find((p) => p.name === `${fixture}/nested-negative-jitter`).current_view);
   e.manifest.view = clone(view); e.stable.view = clone(view); e.stable.status.slots = Array(10).fill(''); for (const s of source) e.stable.status.slots[s.slot - 1] = s.assignment.prospect_id; e.stable.status.operation_count = e.stable.status.roster_revision = source.length; e.stable.status.last_operation_id = hash(700); e.stable.status.checkpoint = e.stable.status.observed_source_count = e.manifest.accepted_count = source.length;
-  const h = harness(e); let counter = 800, frame = 900, pending = '', latestJob = '', now = receipt.committed_at_ms, revision = 0, latest = null, closed = false;
+  if (pool) {
+    const shared = sharedReference.pins.find((p) => p.fixture === fixture), m = e.manifest;
+    view.authority_pin = clone(shared.pin.source); m.view = clone(view); e.stable.view = clone(view);
+    e.stable.status.pin = clone(shared.pin); e.stable.status.store_id = shared.id;
+    delete m.accepted_count; delete m.projection;
+    Object.assign(m, { mode: 'local-pool-pilot', assignment_count: source.length, source_binding_id: hash(1234), payout_address: fixture === 'zero256' ? 'slug1qzmtrqsfuaf6l6kkcsseumq26ukaphfj9s9ptme' : 'slug1qslk39wvggqa0vl8nd6jckaz54dw3vk45c8educ', backup_state: 'idle', backup_phase: '', backup_error: '' });
+    m.balance = { state: 'ready', error: '', value: { version: 1, binding_id: m.source_binding_id, observed_at_ms: e.stable.status.last_as_of_ms, balance: { gym_id: m.gym_id, confirmed: { numerator: '0', denominator: '1' }, available: { numerator: '0', denominator: '1' }, reserved_atoms: 0, paid_atoms: 0, reason: '' } } };
+  }
+  const h = harness(e, pool ? 'local-pool-pilot' : 'local-manifest-pilot');
+  if (pool) { h.handlers.PoolSnapshot = () => clone(h.state.manifest); h.handlers.RefreshPoolBalance = () => {}; }
+  let counter = 800, frame = 900, pending = '', latestJob = '', now = receipt.committed_at_ms, revision = 0, latest = null, closed = false;
   const ops = new Map(), entryJobs = new Map(); const events = new Map(entryReference.events.filter((x) => x.fixture === fixture).map((x) => [x.event.saturday, clone(x)]));
   const getStatus = (saturday = receipt.event.saturday) => { const ev = events.get(saturday); assert.ok(ev, saturday); const r = latest?.event.saturday === saturday ? latest : null; const isPending = pending && ops.get(pending).intent.request.saturday === saturday; return { version: 1, store_id: pin.store_id, event: clone(ev.event), exists: !!r || !!isPending, phase: now >= ev.event.cutoff_ms ? 'closed_pending_lock' : 'accepting', entry_id: ev.entry_id, revision: r?.revision ?? 0, latest_operation_id: r?.operation_id ?? '', latest_receipt_digest: r ? hash(990) : '', saved_ids: r?.members.map((m) => m.assignment.prospect_id) ?? [], saved_at_ms: r?.committed_at_ms ?? 0, saved_roster_revision: r?.roster_revision ?? 0, current_roster_revision: h.state.stable.status.roster_revision, roster_changed: !!(r?.members.length && r.roster_revision !== h.state.stable.status.roster_revision), eligibility: 'not_checked', pending_operation_id: isPending ? pending : '', observed_at_ms: now, closed_observed_at_ms: (r || isPending) && now >= ev.event.cutoff_ms ? now : 0 }; };
   const reply = (field, value) => { const r = { id: ++frame, ok: true, view: clone(h.state.manifest.view), store_id: pin.store_id, snapshot: null, status: null, history: null, job: null, operation: null, error: '' }; r[field] = clone(value); return r; };
@@ -181,4 +194,36 @@ test('eligibility check terminal is not shown on a changed selected Saturday', a
 test('Pending cannot smuggle a committed historical row, while Abandon may return committed history', async () => {
   const h = entryHarness(); await h.start(); await h.select(); await h.click('entry-save'); const committed = clone([...h.ops.values()][0]); h.handlers.EntryPending = () => h.reply('operation', { version: 1, store_id: h.pin.store_id, operation: committed }); vm.runInContext("entryOperation = entryFlow = null; entryUnknown = true; entrySnapshot.pending_operation_id = ''; render()", h.context); await h.click('entry-reconcile'); assert.equal(vm.runInContext('entryOperation', h.context), null); assert.equal(vm.runInContext('entryUnknown', h.context), true); assert.doesNotMatch(h.elements.get('entry-message').textContent, /confirmed/);
   const g = entryHarness(); await g.start(); await g.select(); const original = g.handlers.BeginEntryPrepare; g.handlers.BeginEntryPrepare = (...args) => { original(...args); return g.refusal('outcome_unknown'); }; await g.click('entry-save'); const id = [...g.ops.keys()][0]; g.handlers.BeginEntryApply(g.state.manifest.view.view_id, id); await g.click('entry-abandon'); assert.equal(g.ops.get(id).state, 'committed'); assert.match(g.elements.get('entry-message').textContent, /already committed/); assert.equal(g.count('BeginEntryApply'), 0);
+});
+
+
+test('pool fixtures enter and withdraw through original-view entry controls without legacy mining reads', async () => {
+  for (const fixture of ['zero256', 'incrementing256']) {
+    const h = entryHarness(fixture, false, true); await h.start(); await h.select(); await h.click('entry-save');
+    assert.equal(h.count('BeginEntryPrepare'), 1); assert.equal(h.count('BeginEntryApply'), 1);
+    const saved = clone([...h.ops.values()][0]); assert.equal(saved.state, 'committed');
+    assert.deepEqual(saved.receipt.members.map((m) => [m.assignment.prospect_id, m.assignment.sequence]).sort(), h.list.map((i) => [i.assignment.prospect_id, i.assignment.sequence]).sort());
+    assert.equal(saved.receipt.view_id, h.state.manifest.view.view_id);
+    await h.click('entry-withdraw'); assert.equal(h.count('BeginEntryApply'), 2);
+    assert.deepEqual([...h.ops.values()].at(-1).receipt.members, []);
+    for (const method of ['Start', 'ManifestSnapshot', 'PreviewSnapshot', 'SeedSnapshot', 'CardSnapshot', 'CareerMode']) assert.equal(h.count(method), 0);
+    assert.equal(h.peak, 1);
+  }
+});
+test('held pool session can save entry while recovery export remains denied', async () => {
+  const h = entryHarness('incrementing256', false, true);
+  Object.assign(h.state.manifest.account, { held: true, can_export: false, hold_until_ms: h.state.stable.status.last_as_of_ms + 86400000 });
+  await h.start(); await h.select(); await h.click('entry-save');
+  assert.equal(h.count('BeginEntryApply'), 1); assert.equal(h.elements.get('export-recovery').disabled, true);
+  assert.equal(h.count('ExportRecovery'), 0);
+});
+test('pool backup pauses new entry work and preserves the local draft', async () => {
+  const h = entryHarness('zero256', false, true); await h.start(); await h.select();
+  const draft = vm.runInContext('JSON.stringify(entryDraft)', h.context);
+  Object.assign(h.state.manifest, { backup_state: 'running', backup_phase: 'restoring' }); await h.tick();
+  assert.equal(h.elements.get('entry-save').disabled, true); assert.equal(h.elements.get('entry-check').disabled, true);
+  await h.click('entry-save'); assert.equal(h.count('BeginEntryPrepare'), 0);
+  assert.equal(vm.runInContext('JSON.stringify(entryDraft)', h.context), draft);
+  Object.assign(h.state.manifest, { backup_state: 'succeeded', backup_phase: 'complete' }); await h.tick();
+  await h.click('entry-save'); assert.equal(h.count('BeginEntryApply'), 1); assert.equal(h.count('Start'), 0);
 });

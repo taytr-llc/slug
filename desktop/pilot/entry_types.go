@@ -17,6 +17,12 @@ const (
 // It has no lock, seed, pairing, result or award capability.
 type EntryControllerAPI interface {
 	PreviewControllerAPI
+	EntrySurfaceAPI
+}
+
+// EntrySurfaceAPI is the closed intake surface shared by the isolated and
+// shared-source desktops. It does not require a preview or mining controller.
+type EntrySurfaceAPI interface {
 	EntrySnapshot() EntrySnapshot
 	EntryUpcoming(context.Context, string) (gymentry.EventStatus, error)
 	EntryStatus(context.Context, string, string) (gymentry.EventStatus, error)

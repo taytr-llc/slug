@@ -14,8 +14,8 @@ import (
 
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/taytr-llc/slug/chaincfg/v2"
-	"github.com/taytr-llc/slug/fightercondition"
 	"github.com/taytr-llc/slug/gymaccount"
+	"github.com/taytr-llc/slug/gymevent"
 	"github.com/taytr-llc/slug/gymstable"
 	"github.com/taytr-llc/slug/poolround"
 	"github.com/taytr-llc/slug/poolservice"
@@ -66,6 +66,9 @@ type PoolRuntime struct {
 	pool                         *poolshare.Pool
 	rounds                       *poolround.Store
 	settlement                   *poolsettle.Store
+	league                       *poolLeagueReady
+	events                       *gymevent.Store
+	leagueFactories              *poolLeagueFactories
 	backend                      *poolsettlefixture.Backend
 	recipients                   map[string]PoolRecipientBinding
 	verified                     map[string]bool
@@ -89,6 +92,9 @@ type poolChildResources struct {
 	RPC                                                  prospectnode.RPCConfig
 	Recipient                                            PoolRecipientBinding
 	StablePin                                            gymstable.Pin
+	League                                               *poolLeagueChildBinding
+	Events                                               *gymevent.Store
+	Factories                                            *poolLeagueFactories
 	WorkerConfig                                         prospectworker.PoolConfig
 	Life                                                 context.Context
 	Release                                              func()
@@ -362,7 +368,11 @@ func (r *PoolRuntime) childResources(accountID, fixture string) (poolChildResour
 	if e != nil {
 		return poolChildResources{}, e
 	}
-	pin := gymstable.Pin{Version: 2, AccountAuthorityID: r.marker.AccountAuthorityID, AccountID: accountID, Identity: b.Config.Identity, Source: r.source.AuthorityPin, ConditionVersion: 1, ProjectorID: fightercondition.ProjectorID}
+	pin := poolStablePin(b)
+	league, e := r.leagueChild(accountID, pin)
+	if e != nil {
+		return poolChildResources{}, e
+	}
 	worker := prospectworker.PoolConfig{Version: 1, Source: r.source, PublicKey: b.Config.Identity.GymPublicKey, AuthorityOrigin: poolURL, TransportTrustID: poolTrust, AdmissionOrigin: admissionURL, AdmissionTrustID: admissionTrust, MaxRecords: 1000, MaxBytes: 256 << 20}
 	if _, e = prospectworker.ValidatePoolConfig(worker); e != nil {
 		return poolChildResources{}, e
@@ -382,7 +392,7 @@ func (r *PoolRuntime) childResources(accountID, fixture string) (poolChildResour
 		borrow.close = closeChild
 		return nil
 	}
-	return poolChildResources{Config: Config{DataDir: filepath.Join(r.config.DataDir, "gyms", accountID), NodeBinary: r.config.NodeBinary}, Source: r.source, PoolURL: poolURL, PoolTrustID: poolTrust, AdmissionURL: admissionURL, AdmissionTrustID: admissionTrust, Issuer: r.issuer, Node: r.node, RPC: r.nodes.rpcConfig(), Recipient: b, StablePin: pin, WorkerConfig: worker, Life: r.life, Release: release, RegisterClose: register}, nil
+	return poolChildResources{Config: Config{DataDir: filepath.Join(r.config.DataDir, "gyms", accountID), NodeBinary: r.config.NodeBinary}, Source: r.source, PoolURL: poolURL, PoolTrustID: poolTrust, AdmissionURL: admissionURL, AdmissionTrustID: admissionTrust, Issuer: r.issuer, Node: r.node, RPC: r.nodes.rpcConfig(), Recipient: b, StablePin: pin, League: league, Events: r.events, Factories: r.leagueFactories, WorkerConfig: worker, Life: r.life, Release: release, RegisterClose: register}, nil
 }
 
 func (r *PoolRuntime) Close() error {
@@ -412,6 +422,9 @@ func (r *PoolRuntime) Close() error {
 		}
 		r.gate <- struct{}{}
 		r.services.Wait()
+		if r.events != nil {
+			failures = append(failures, r.events.Close())
+		}
 		if r.settlement != nil {
 			failures = append(failures, r.settlement.Close())
 		}

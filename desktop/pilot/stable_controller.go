@@ -28,6 +28,7 @@ type StableController struct {
 	// never fall back to the isolated manifest-authority directory.
 	sharedPin                          *gymstable.Pin
 	sharedSource                       *registry.ManifestStore
+	sharedFactories                    *poolLeagueFactories
 	careerHandle                       *gymstable.CareerRead
 	careerJobID                        string
 	careerView                         ManifestViewPin

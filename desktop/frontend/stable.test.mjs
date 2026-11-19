@@ -492,6 +492,8 @@ function poolHarness(initial = poolEnvironment()) {
   const h = harness(initial, 'local-pool-pilot'); h.state.stable.last_job_id = '';
   h.handlers.PoolSnapshot = () => clone(h.state.manifest);
   h.handlers.RefreshPoolBalance = () => {};
+  h.handlers.EntrySnapshot = () => ({ id: 1000 + h.calls.length, ok: false, view: null, store_id: '', snapshot: null, status: null, history: null, job: null, operation: null, error: 'entry_unavailable' });
+  h.handlers.EventSnapshot = () => ({ id: 1000 + h.calls.length, ok: false, view: null, store_id: '', snapshot: null, status: null, record: null, history: null, job: null, error: 'event_unavailable' });
   const page = (after, limit) => {
     const candidates = h.state.items.filter((i) => i.assignment.sequence > after), list = candidates.slice(0, limit), more = candidates.length > list.length;
     return h.publish('inventory', { version: 1, status: clone(h.state.stable.status), as_of_ms: h.state.stable.status.last_as_of_ms || 1794893590614, after, next_after: more ? list.at(-1).assignment.sequence : h.state.stable.status.checkpoint, has_more: more, items: clone(list) });
@@ -508,7 +510,8 @@ test('pool mode reports local count, exact fractional carry and maturity reason 
   assert.equal(h.elements.get('pool-confirmed').attributes.get('title'), '990000001/2 atoms');
   assert.match(h.elements.get('pool-reason').textContent, /mature at 100 blocks/);
   assert.equal(h.elements.get('export-recovery').disabled, false); assert.equal(h.elements.get('verify-backup').disabled, false);
-  for (const method of ['Start', 'ManifestSnapshot', 'PreviewSnapshot', 'EntrySnapshot', 'EventSnapshot', 'SeedSnapshot', 'CardSnapshot', 'CareerMode']) assert.equal(h.count(method), 0);
+  for (const method of ['Start', 'ManifestSnapshot', 'PreviewSnapshot', 'SeedSnapshot', 'CardSnapshot', 'CareerMode']) assert.equal(h.count(method), 0);
+  assert.equal(h.count('EntrySnapshot'), 1); assert.equal(h.count('EventSnapshot'), 1);
   await h.click('pool-refresh'); assert.equal(h.count('RefreshPoolBalance'), 1); assert.equal(h.peak, 1);
 });
 test('pool sparse inventory and Follow Recent retain old local rows behind a foreign tail', async () => {

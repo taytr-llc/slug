@@ -12,6 +12,11 @@ const MaxEventCacheSize = 131072
 
 type EventControllerAPI interface {
 	EntryControllerAPI
+	EventSurfaceAPI
+}
+
+// EventSurfaceAPI exposes only the existing noon-snapshot coordinator.
+type EventSurfaceAPI interface {
 	EventSnapshot() EventSnapshot
 	EventStatus(context.Context, string, string) (gymevent.EventStatus, error)
 	EventRecord(context.Context, string, string) (gymevent.SnapshotReceipt, error)

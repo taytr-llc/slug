@@ -45,6 +45,10 @@ type PoolController struct {
 }
 
 func NewPool(ctx context.Context, config pilot.Config) (_ *PoolController, resultErr error) {
+	return newPool(ctx, config, pilot.NewPoolRuntime)
+}
+
+func newPool(ctx context.Context, config pilot.Config, newRuntime func(context.Context, pilot.Config, *gymaccount.Store) (*pilot.PoolRuntime, error)) (_ *PoolController, resultErr error) {
 	if wire.TestPoW {
 		return nil, errors.New("pool desktop requires production PoW")
 	}
@@ -61,7 +65,7 @@ func NewPool(ctx context.Context, config pilot.Config) (_ *PoolController, resul
 			resultErr = errors.Join(resultErr, c.Close())
 		}
 	}()
-	c.runtime, err = pilot.NewPoolRuntime(ctx, pilot.Config{DataDir: filepath.Join(config.DataDir, "shared"), NodeBinary: config.NodeBinary}, store)
+	c.runtime, err = newRuntime(ctx, pilot.Config{DataDir: filepath.Join(config.DataDir, "shared"), NodeBinary: config.NodeBinary}, store)
 	if err != nil {
 		return nil, err
 	}

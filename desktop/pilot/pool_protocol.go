@@ -57,6 +57,8 @@ type PoolStableAPI interface {
 }
 type PoolSurfaceAPI interface {
 	PoolStableAPI
+	EntrySurfaceAPI
+	EventSurfaceAPI
 	Start() error
 	Stop()
 	Close() error
@@ -407,6 +409,11 @@ func respondPool(w io.Writer, r PoolResponse) error {
 	if _, e = ParsePoolResponse(raw); e != nil {
 		return e
 	}
+	return respondPoolFamily(w, raw)
+}
+
+// Family marshaling and bounds are checked before this common pipe write.
+func respondPoolFamily(w io.Writer, raw []byte) error {
 	if d, ok := w.(interface{ SetWriteDeadline(time.Time) error }); ok {
 		_ = d.SetWriteDeadline(time.Now().Add(5 * time.Second))
 	}
@@ -596,7 +603,7 @@ func ServePool(ctx context.Context, input io.Reader, output io.Writer, c PoolCon
 		defer close(readerDone)
 		defer close(lines)
 		scanner := bufio.NewScanner(input)
-		scanner.Buffer(make([]byte, 1024), MaxRequestSize+1)
+		scanner.Buffer(make([]byte, 1024), max(MaxRequestSize, MaxEntryRequestSize, MaxEventRequestSize)+1)
 		for scanner.Scan() {
 			value := line{data: append([]byte(nil), scanner.Bytes()...)}
 			select {
@@ -628,7 +635,34 @@ func ServePool(ctx context.Context, input io.Reader, output io.Writer, c PoolCon
 			if json.Unmarshal(value.data, &selector) != nil {
 				return gymstable.ErrInvalid
 			}
-			if strings.HasPrefix(selector.Command, "stable_") {
+			if strings.HasPrefix(selector.Command, "entry_") || strings.HasPrefix(selector.Command, "event_") {
+				if selector.ID == 0 || selector.ID > gymstable.MaxSafeInteger {
+					return gymstable.ErrInvalid
+				}
+				var raw []byte
+				var err error
+				if strings.HasPrefix(selector.Command, "entry_") {
+					req, parseErr := ParseEntryRequest(value.data)
+					response := EntryResponse{ID: selector.ID, Error: "invalid_request"}
+					if parseErr == nil {
+						response = handleEntryRequest(ctx, req, c)
+					}
+					raw, err = MarshalEntryResponse(response)
+				} else {
+					req, parseErr := ParseEventRequest(value.data)
+					response := EventResponse{ID: selector.ID, Error: "invalid_request"}
+					if parseErr == nil {
+						response = handleEventRequest(ctx, req, c)
+					}
+					raw, err = MarshalEventResponse(response)
+				}
+				if err != nil {
+					return err
+				}
+				if err = respondPoolFamily(output, raw); err != nil {
+					return err
+				}
+			} else if strings.HasPrefix(selector.Command, "stable_") {
 				req, err := ParseStableRequest(value.data)
 				var response StableResponse
 				if err != nil {

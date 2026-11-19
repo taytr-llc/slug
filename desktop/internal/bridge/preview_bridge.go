@@ -98,6 +98,9 @@ func (b *StableBridge) previewPinned() bool {
 // verifies bounded shapes and digest bindings; it never evaluates work or runs
 // the fight engine in the native process.
 func (b *StableBridge) PreviewRequest(ctx context.Context, req pilot.PreviewRequest) pilot.PreviewResponse {
+	if b.poolMode {
+		return previewFailure(0, "preview_unavailable")
+	}
 	id, err := b.begin(ctx)
 	if err != nil {
 		if errors.Is(err, ErrBusy) {
@@ -304,6 +307,9 @@ func (b *StableBridge) rememberPreviewJob(j pilot.PreviewJob) bool {
 // cache hits. It sends only the existing job read and holds no helper lease.
 func (b *StableBridge) FightPreviewPortrait(ctx context.Context, viewID, jobID, prospectID string) PreviewPortraitResponse {
 	fail := func(code string) PreviewPortraitResponse { return PreviewPortraitResponse{Version: 1, Error: code} }
+	if b.poolMode {
+		return fail("preview_unavailable")
+	}
 	if !publicHex.MatchString(viewID) || !publicHex.MatchString(jobID) || !publicHex.MatchString(prospectID) {
 		return fail("invalid_request")
 	}

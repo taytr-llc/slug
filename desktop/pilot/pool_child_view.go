@@ -182,46 +182,22 @@ func (c *PoolChild) StableSnapshot() StableSnapshot {
 	return s.StableSnapshot()
 }
 func (c *PoolChild) BeginStableSync(ctx context.Context, v string) (StableJob, error) {
-	s, e := c.readyStable()
-	if e != nil {
-		return StableJob{}, e
-	}
-	return s.BeginStableSync(ctx, v)
+	return poolLaneWork(ctx, c, func(s *StableController) (StableJob, error) { return s.BeginStableSync(ctx, v) })
 }
 func (c *PoolChild) BeginStableRecent(ctx context.Context, v string) (StableJob, error) {
-	s, e := c.readyStable()
-	if e != nil {
-		return StableJob{}, e
-	}
-	return s.BeginStableRecent(ctx, v)
+	return poolLaneWork(ctx, c, func(s *StableController) (StableJob, error) { return s.BeginStableRecent(ctx, v) })
 }
 func (c *PoolChild) BeginStableInventory(ctx context.Context, v string, a uint64, l uint32) (StableJob, error) {
-	s, e := c.readyStable()
-	if e != nil {
-		return StableJob{}, e
-	}
-	return s.BeginStableInventory(ctx, v, a, l)
+	return poolLaneWork(ctx, c, func(s *StableController) (StableJob, error) { return s.BeginStableInventory(ctx, v, a, l) })
 }
 func (c *PoolChild) BeginStableRoster(ctx context.Context, v string, f, l uint32) (StableJob, error) {
-	s, e := c.readyStable()
-	if e != nil {
-		return StableJob{}, e
-	}
-	return s.BeginStableRoster(ctx, v, f, l)
+	return poolLaneWork(ctx, c, func(s *StableController) (StableJob, error) { return s.BeginStableRoster(ctx, v, f, l) })
 }
 func (c *PoolChild) BeginStablePrepare(ctx context.Context, v string, r gymstable.SlotRequest) (StableJob, error) {
-	s, e := c.readyStable()
-	if e != nil {
-		return StableJob{}, e
-	}
-	return s.BeginStablePrepare(ctx, v, r)
+	return poolLaneWork(ctx, c, func(s *StableController) (StableJob, error) { return s.BeginStablePrepare(ctx, v, r) })
 }
 func (c *PoolChild) BeginStableApply(ctx context.Context, v, id string) (StableJob, error) {
-	s, e := c.readyStable()
-	if e != nil {
-		return StableJob{}, e
-	}
-	return s.BeginStableApply(ctx, v, id)
+	return poolLaneWork(ctx, c, func(s *StableController) (StableJob, error) { return s.BeginStableApply(ctx, v, id) })
 }
 func (c *PoolChild) StableJob(ctx context.Context, v, id string) (StableJob, error) {
 	s, e := c.readyStable()
@@ -231,25 +207,13 @@ func (c *PoolChild) StableJob(ctx context.Context, v, id string) (StableJob, err
 	return s.StableJob(ctx, v, id)
 }
 func (c *PoolChild) StableOperation(ctx context.Context, v, id string) (StableOperation, error) {
-	s, e := c.readyStable()
-	if e != nil {
-		return StableOperation{}, e
-	}
-	return s.StableOperation(ctx, v, id)
+	return poolLaneWork(ctx, c, func(s *StableController) (StableOperation, error) { return s.StableOperation(ctx, v, id) })
 }
 func (c *PoolChild) StablePending(ctx context.Context, v string) (StableOperation, error) {
-	s, e := c.readyStable()
-	if e != nil {
-		return StableOperation{}, e
-	}
-	return s.StablePending(ctx, v)
+	return poolLaneWork(ctx, c, func(s *StableController) (StableOperation, error) { return s.StablePending(ctx, v) })
 }
 func (c *PoolChild) AbandonStableOperation(ctx context.Context, v, id string) (StableOperation, error) {
-	s, e := c.readyStable()
-	if e != nil {
-		return StableOperation{}, e
-	}
-	return s.AbandonStableOperation(ctx, v, id)
+	return poolLaneWork(ctx, c, func(s *StableController) (StableOperation, error) { return s.AbandonStableOperation(ctx, v, id) })
 }
 func (c *PoolChild) CancelStableJob(ctx context.Context, v, id string) (StableJob, error) {
 	s, e := c.readyStable()

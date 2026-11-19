@@ -354,6 +354,16 @@ they do not count as completion of this product-release gate.
   See `CHANGESET_62_NOTES.md`. This fixture evidence does not close production
   custody/profile or native chooser rendering, and does not replace D74.
 
+- Set63 connects actual shared-pool fighters to Saturday entries and durable
+  noon snapshots. The normal-PoW fixture acceptance preserves original receipts,
+  post-noon historical roster state, both participants, reset holds and exact
+  snapshot bytes through replay/restart. The normal Mac package verifies both
+  gyms' shared authority, recovery and before-noon refusal. See
+  `CHANGESET_63_NOTES.md`. Shared seed/card/fight/result/career integration follows;
+  activate career accounting before the new event lock and first result finality.
+  Existing solo history and earlier shared snapshots remain unchanged. This is
+  candidate engineering and does not replace the final joint D74 review.
+
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
 `sim-handoff-intake.json` preserves archive and file checksums. They are reference

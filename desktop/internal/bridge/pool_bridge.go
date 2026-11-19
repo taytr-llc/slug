@@ -23,6 +23,7 @@ func LaunchPool(helper, dataDir, node string) (*PoolBridge, error) {
 		return nil, e
 	}
 	b.poolMode = true
+	b.entriesEnabled, b.eventsEnabled = true, true
 	return &PoolBridge{b}, nil
 }
 func (b *PoolBridge) PoolRequest(ctx context.Context, req pilot.PoolRequest) (pilot.PoolResponse, error) {

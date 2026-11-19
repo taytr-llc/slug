@@ -170,6 +170,9 @@ func (s *StableController) openStableStore(p string, pin gymstable.Pin, source *
 		if pin != *s.sharedPin || source != s.sharedSource || s.careerReader != nil || s.eventFactories != nil {
 			return nil, gymstable.ErrInvalid
 		}
+		if s.sharedFactories != nil {
+			return s.sharedFactories.openStable(p, pin, source)
+		}
 		return gymstable.OpenShared(p, pin, source)
 	}
 	if s.careerReader != nil {
@@ -199,6 +202,15 @@ func (s *StableController) createEntryStore(ctx context.Context, p string, pin g
 	return gymentry.Create(ctx, p, pin, source)
 }
 func (s *StableController) openEntryStore(ctx context.Context, p string, pin gymentry.Pin, source *gymstable.Store) (*gymentry.Store, error) {
+	if s.sharedPin != nil {
+		if pin != s.entryPin || pin.StablePin != *s.sharedPin || s.eventFactories != nil {
+			return nil, gymentry.ErrInvalid
+		}
+		if s.sharedFactories != nil {
+			return s.sharedFactories.openEntry(ctx, p, pin, source)
+		}
+		return gymentry.Open(ctx, p, pin, source)
+	}
 	if s.eventFactories != nil {
 		return s.eventFactories.openEntry(ctx, p, pin, source)
 	}

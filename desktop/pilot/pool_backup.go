@@ -107,6 +107,17 @@ func (c *PoolChild) beginPoolBackup(parent context.Context, verify bool) (*poolB
 	// later refreshes. Drain the prior refresh only after releasing authority.
 	c.refreshMu.Lock()
 	c.refreshMu.Unlock()
+	// Work dispatch shares stopMu, so no new roster/entry/event task can race
+	// this pause. Join the old serial lane outside every account lease.
+	if s := c.stable; s != nil {
+		s.stableMu.Lock()
+		s.paused, s.needSync = true, false
+		s.cancelTasksLocked()
+		s.stableMu.Unlock()
+		s.stopStoppedLoop()
+		s.laneGate <- struct{}{}
+		<-s.laneGate
+	}
 	return op, nil
 }
 

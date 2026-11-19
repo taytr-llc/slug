@@ -99,6 +99,11 @@ func NewPoolChild(ctx context.Context, runtime *PoolRuntime, account StableAccou
 }
 
 func newPoolChild(ctx context.Context, r poolChildResources, account StableAccountConfig) (_ *PoolChild, resultErr error) {
+	league, err := validatePoolLeagueChild(r)
+	if err != nil {
+		return nil, err
+	}
+	r.League = league
 	a := account.Manifest
 	f, err := gymaccount.FixtureIdentity(a.Account.Fixture)
 	if err != nil || a.Account.AdmissionSigner != nil || r.Recipient.Config.AccountID != a.Account.AccountID || r.Recipient.Config.AccountAuthorityID != a.Account.AuthorityID || r.Recipient.Config.Fixture != a.Account.Fixture || r.Recipient.Config.Identity != f || r.StablePin.Version != gymstable.SharedPinVersion2 || r.StablePin.Source != r.Source.AuthorityPin || r.StablePin.Identity != f || r.StablePin.AccountID != a.Account.AccountID || r.StablePin.AccountAuthorityID != a.Account.AuthorityID || r.Issuer == nil || r.Node == nil || r.Life == nil || r.Life.Err() != nil || r.Release == nil {
@@ -195,6 +200,9 @@ func (c *PoolChild) Prepare(parent context.Context) error {
 	s := &StableController{ManifestController: base, stableConfig: account, laneGate: make(chan struct{}, 1), wake: make(chan struct{}, 1), stableState: "syncing", sharedPin: &pin, sharedSource: r.Issuer}
 	base.stable = s
 	c.stable = s
+	if err = s.preparePoolLeague(r); err != nil {
+		return err
+	}
 	if err = s.openPair(r.Issuer); err != nil {
 		return err
 	}
@@ -203,6 +211,9 @@ func (c *PoolChild) Prepare(parent context.Context) error {
 		return err
 	}
 	s.stableStatus, s.installed, s.needSync = &status.Status, true, true
+	if err = s.attachPoolLeague(ctx, r); err != nil {
+		return err
+	}
 	view := base.viewPin()
 	c.newWorker = func(signer prospectworker.Signer) (poolChildWorker, error) {
 		return prospectworker.NewPoolWithHooks(wc, c.authority, c.admission, r.Node, poolChildSigner(c.authority, signer), c.box, s.observeStable, s.cycle)
@@ -310,7 +321,7 @@ func openPoolChildOutbox(r poolChildResources) (*prospectworker.PoolOutbox, erro
 	stablePath := filepath.Join(r.Config.DataDir, "stable")
 	var stable *gymstable.Store
 	if _, e := os.Lstat(stablePath); os.IsNotExist(e) {
-		if readyErr == nil {
+		if readyErr == nil || r.League != nil {
 			_ = box.Close()
 			return nil, ErrManifestInitialization
 		}
@@ -318,7 +329,11 @@ func openPoolChildOutbox(r poolChildResources) (*prospectworker.PoolOutbox, erro
 	} else if e != nil {
 		err = e
 	} else {
-		stable, err = gymstable.OpenShared(stablePath, r.StablePin, r.Issuer)
+		if r.Factories != nil {
+			stable, err = r.Factories.openStable(stablePath, r.StablePin, r.Issuer)
+		} else {
+			stable, err = gymstable.OpenShared(stablePath, r.StablePin, r.Issuer)
+		}
 	}
 	if err != nil {
 		_ = box.Close()
@@ -521,6 +536,8 @@ func (c *PoolChild) Close() error {
 			s.stableStatus = nil
 			s.last = nil
 			s.previewLast = nil
+			s.entryLast, s.eventLast = nil, nil
+			s.entryPending, s.eventFailure = "", ""
 			s.stableMu.Unlock()
 		}
 		c.stop()

@@ -14,6 +14,7 @@ import (
 	"github.com/taytr-llc/slug/desktop/pilot"
 	"github.com/taytr-llc/slug/gymentry"
 	"github.com/taytr-llc/slug/gymevent"
+	"github.com/taytr-llc/slug/gymstable"
 )
 
 // This is installed from the owned helper's validated root after correlating
@@ -276,6 +277,16 @@ func (b *StableBridge) rememberEventSnapshot(r pilot.EventResponse) bool {
 	pin, err := gymevent.ValidatePin(*s.Pin)
 	if err != nil {
 		return false
+	}
+	if b.poolMode {
+		if b.poolSourcePin == nil || b.poolSourceID == "" {
+			return false
+		}
+		for _, participant := range pin.Participants {
+			if participant.StablePin.Version != gymstable.SharedPinVersion2 || participant.StablePin.Source != *b.poolSourcePin {
+				return false
+			}
+		}
 	}
 	id, err := gymevent.ID(pin)
 	if err != nil || id != s.StoreID {

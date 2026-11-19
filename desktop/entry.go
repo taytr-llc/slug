@@ -9,6 +9,12 @@ import (
 )
 
 func (g *Gym) entryRequest(r pilot.EntryRequest) pilot.EntryResponse {
+	if g.poolHelper != nil {
+		if g.poolHelper.StableBridge == nil {
+			return pilot.EntryResponse{ID: 1, Error: "entry_unavailable"}
+		}
+		return g.poolHelper.EntryRequest(context.Background(), r)
+	}
 	if g.stableHelper == nil {
 		return pilot.EntryResponse{ID: 1, Error: "entry_unavailable"}
 	}

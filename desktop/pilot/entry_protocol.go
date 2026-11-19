@@ -31,7 +31,7 @@ func entryProtocolError(err error) string {
 	}
 	return "entry_unavailable"
 }
-func handleEntryRequest(ctx context.Context, r EntryRequest, c EntryControllerAPI) EntryResponse {
+func handleEntryRequest(ctx context.Context, r EntryRequest, c EntrySurfaceAPI) EntryResponse {
 	out := EntryResponse{ID: r.ID, OK: true}
 	var err error
 	switch r.Command {

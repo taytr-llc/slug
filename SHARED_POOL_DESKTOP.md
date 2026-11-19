@@ -64,8 +64,10 @@ Portrait and public-receipt operations remain bound to the original gym view.
 
 Shared-pool fighters support inventory and reversible roster selection. Set62
 adds recovery export and fresh backup verification as described in
-`SHARED_POOL_RECOVERY.md`. Shared fight preview/event/career attachment remains
-subsequent functional work. This route never delegates those operations to incompatible
+`SHARED_POOL_RECOVERY.md`. Set63 adds shared Saturday entries and durable noon
+snapshots, described in `SHARED_POOL_LEAGUE.md`. Shared seed/card/bout/result,
+career and practice attachment remain subsequent functional work. This route
+never delegates those operations to incompatible
 solo stores or relabels old histories. Their existing solo routes remain intact.
 Public receipts are not wallet recovery exports.
 

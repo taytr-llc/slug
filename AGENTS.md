@@ -188,6 +188,19 @@ version.
   funded file-only restore/spend, package, full desktop and smoke checks pass.
   Shared league attachment is next; preserve solo histories and the final D74
   gate. See `SHARED_POOL_RECOVERY.md` and `CHANGESET_62_NOTES.md`.
+- Set63 on `slug-shared-pool-entries` connects shared mined fighters to Saturday
+  entries and a parent-owned noon coordinator. Preserve exact Pin2 participants,
+  original global receipt sequences, immutable setup intent/READY identities and
+  child-owned entry handles. Missing established stores fail closed. Recheck the
+  original view through native dispatch and commit; backup drains active lane
+  work outside account leases and does not restart mining. A Recent page does
+  not prove complete shared-source synchronization: roster/entry mutations still
+  require caught-up authority. Normal-PoW noon/reset/restart acceptance and exact
+  normal-package before-noon/recovery checks passed. Next attach the complete
+  shared publication/card/result/career cycle, activating career authority before
+  its new lock and first finality. Preserve prior snapshots without backdating
+  activation. Keep publication funding separate from pool earnings. See
+  `SHARED_POOL_LEAGUE.md` and `CHANGESET_63_NOTES.md`; D74 remains last.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

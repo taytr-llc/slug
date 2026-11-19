@@ -560,10 +560,10 @@ async function fetchSnapshots() {
     render();
     const id = watched?.id || next.last_job_id;
     if (id && (watched || id !== lastViewedJob)) await fetchJob(id);
-    if (poolMode) return;
-    if (!disposed && ready() && !tasks.length) await fetchPreviewSnapshot();
+    if (!poolMode && !disposed && ready() && !tasks.length) await fetchPreviewSnapshot();
     if (!disposed && ready() && !tasks.length) await fetchEntrySnapshot();
     if (!disposed && ready() && !tasks.length) await fetchEventSnapshot();
+    if (poolMode) return;
     if (!disposed && ready() && !tasks.length) await fetchSeedSnapshot();
     if (!disposed && ready() && !tasks.length) await fetchCardSnapshot();
     if (!disposed && ready() && !tasks.length) await fetchBookedSnapshot();
@@ -981,7 +981,8 @@ const ENTRY_MAX = 131072;
 const ENTRY_ERRORS = new Set([...CAREER_ACTION_ERRORS, 'invalid_request', 'unauthorized', 'forbidden', 'stale_view', 'busy', 'entry_unavailable', 'entry_corrupt', 'entry_capacity', 'entry_clock', 'entry_calendar', 'entry_closed', 'entry_conflict', 'entry_pending', 'entry_not_found', 'entry_sync_required', 'entry_not_rostered', 'entry_retired', 'entry_class_conflict', 'entry_cancelled', 'outcome_unknown']);
 let entrySnapshot = null, entryStore = '', entryNamespace = '', entryUnavailable = false, entryDate = '', entryStatus = null;
 let entryDraft = [], entrySerial = 0, entryWatch = null, entryFlow = null, entryOperation = null, entryTerminal = null, entryHistory = null, entryMessage = '', entryUnknown = false;
-function entryReady() { return !poolMode && ready() && !entryUnavailable && !!entrySnapshot?.view && entryStore === entrySnapshot.store_id; }
+function poolBackupRunning() { return poolMode && current?.backup_state === 'running'; }
+function entryReady() { return ready() && !entryUnavailable && !!entrySnapshot?.view && entryStore === entrySnapshot.store_id; }
 function entryBytes(value) { return JSON.stringify(value).length; } // All validated text is bounded ASCII.
 function entryRetainedBytes() { return entryBytes([entrySnapshot, entryDate, entryStatus, entryDraft, entryWatch, entryFlow, entryOperation, entryTerminal, entryHistory, entryMessage]) + (entryWatch ? 65536 : 0); }
 function entryCapacity() { return entryRetainedBytes() <= ENTRY_MAX && previewCapacity(); }
@@ -1103,7 +1104,7 @@ async function fetchEntrySnapshot() {
   } catch { if (entryCurrent(c)) { entryUnavailable = true; entryMessage = entryError('entry_unavailable'); renderEntry(); } }
 }
 async function entryBegin(kind, q = null, op = null, auto = false) {
-  if (!entryReady() || entryWatch) return; const c = entryContext(); const selected = kind === 'apply' ? op.intent.request : q; const target = selected || { event_id: entryStatus?.event.event_id, saturday: entryDate };
+  if (!entryReady() || entryWatch || poolBackupRunning()) return; const c = entryContext(); const selected = kind === 'apply' ? op.intent.request : q; const target = selected || { event_id: entryStatus?.event.event_id, saturday: entryDate };
   if (kind === 'apply') requireValue(op.state === 'prepared' && op.intent.view_id === c.viewID && op.intent.generation === current.view.generation);
   const prior = entryTerminal; entryTerminal = null; const reservation = { id: '', kind, eventID: target.event_id, saturday: target.saturday, operationID: op?.intent.operation_id ?? '', request: selected ? own(selected) : null, context: c }; entryWatch = reservation;
   if (!entryCapacity()) { entryWatch = null; entryTerminal = prior; entryMessage = entryError('entry_capacity'); return; }
@@ -1143,7 +1144,7 @@ async function entryCancel() {
   catch { if (entryCurrent(c)) { entryUnknown = w.kind !== 'check'; entryMessage = entryError('outcome_unknown'); } } render();
 }
 async function entryAbandon() {
-  if (!entryReady() || entryOperation?.state !== 'prepared') return; const c = entryContext(), id = entryOperation.intent.operation_id; if (entryFlow) entryFlow.auto = false;
+  if (!entryReady() || poolBackupRunning() || entryOperation?.state !== 'prepared') return; const c = entryContext(), id = entryOperation.intent.operation_id; if (entryFlow) entryFlow.auto = false;
   try { const r = entryEnvelope(await call('AbandonEntryOperation', c.viewID, id), 'operation'); if (!entryCurrent(c)) return; if (!r.ok) { entryRefusal(r.error); if (r.error === 'outcome_unknown') { entryUnknown = true; await entryQuery(id); } return; } requireValue(r.value.operation.intent.operation_id === id && r.value.operation.state !== 'prepared'); entryOperation = r.value.operation; entryFlow = null; entryUnknown = false; entryMessage = entryOperation.state === 'abandoned' ? 'Prepared choice abandoned. Any prior saved entry is unchanged.' : 'This choice had already committed; abandoning does not withdraw it.'; await entryReadStatus(); }
   catch { if (entryCurrent(c)) { entryUnknown = true; entryMessage = entryError('outcome_unknown'); await entryQuery(id); } } render();
 }
@@ -1156,8 +1157,8 @@ function entryNavigate(dateValue) {
   queue(() => entryReadStatus(), 'entry-date'); render();
 }
 function renderEntry() {
-  const active = entryReady(), s = entryStatus, pending = entryOperation?.state === 'prepared' ? entryOperation : null, busy = !!command || !!entryWatch, accepting = active && s?.event.saturday === entryDate && s.phase === 'accepting';
-  content(ui['entry-state'], entryUnavailable ? 'Unavailable' : !active ? 'Sign in to view entries' : entryWatch ? 'Entry request in progress' : s?.phase === 'closed_pending_lock' ? 'Intake closed' : 'Candidate intake');
+  const active = entryReady(), s = entryStatus, pending = entryOperation?.state === 'prepared' ? entryOperation : null, busy = !!command || !!entryWatch || poolBackupRunning(), accepting = active && s?.event.saturday === entryDate && s.phase === 'accepting';
+  content(ui['entry-state'], entryUnavailable ? 'Unavailable' : !active ? 'Sign in to view entries' : poolBackupRunning() ? 'Wallet backup in progress' : entryWatch ? 'Entry request in progress' : s?.phase === 'closed_pending_lock' ? 'Intake closed' : 'Candidate intake');
   if (ui['entry-date'].value !== entryDate) ui['entry-date'].value = entryDate; ui['entry-date'].disabled = !active; ui['entry-upcoming'].disabled = !active || !!command; ui['entry-status'].disabled = !active || !entryDate || !!command;
   content(ui['entry-cutoff'], s ? `Saturday ${s.event.saturday} · Noon Pacific cutoff · ${new Date(s.event.cutoff_ms).toISOString()} (authority UTC)` : 'Choose an authority-provided Upcoming Saturday or a supported Saturday date.');
   content(ui['entry-saved'], s ? s.revision ? `Saved entry revision ${s.revision} · ${s.saved_ids.length} fighter${s.saved_ids.length === 1 ? '' : 's'} · Saved ${date.format(new Date(s.saved_at_ms))}.` : s.exists ? 'A choice is prepared; no entry has been saved yet.' : 'No saved entry for this Saturday.' : '');
@@ -1187,7 +1188,7 @@ let eventWatch = null, eventLastJob = '', eventDate = '', eventSerial = 0, event
 let eventAutoAttempted = new Set();
 function eventRetainedBytes() { return entryBytes([eventSnapshot, eventAuthority, eventStatus, eventHistory, eventDetail, eventWatch, eventLastJob, eventDate, eventMessage, [...eventAutoAttempted]]) + EVENT_RENDER_KEY_BYTES + (eventWatch ? 65536 : 0); }
 function eventCapacity() { return eventRetainedBytes() <= EVENT_MAX && previewCapacity(); }
-function eventReady() { return !poolMode && ready() && !eventUnavailable && !!eventSnapshot?.pin && !!eventAuthority && viewKey(eventSnapshot.view) === currentKey(); }
+function eventReady() { return ready() && !eventUnavailable && !!eventSnapshot?.pin && !!eventAuthority && viewKey(eventSnapshot.view) === currentKey(); }
 function clearEvent() {
   clearSeed();
   eventSerial++; eventSnapshot = eventStatus = eventHistory = eventDetail = eventWatch = null; eventLastJob = eventDate = eventMessage = ''; eventUnavailable = eventUnknown = false; eventAutoAttempted = new Set();
@@ -1206,9 +1207,10 @@ function eventCurrent(c, selection = false) { return !disposed && ready() && c.e
 function eventPinValue(p) {
   exact(p, ['version', 'calendar_id', 'rules_id', 'participants']); requireValue(p.version === 1 && p.calendar_id === ENTRY_CALENDAR && hex(p.rules_id)); pairArray(p.participants, (e) => {
     exact(e, ['version', 'namespace_id', 'calendar_id', 'rules_id', 'stable_store_id', 'stable_pin']); requireValue(e.version === 1 && hex(e.namespace_id) && e.calendar_id === ENTRY_CALENDAR && e.rules_id === ENTRY_RULES && hex(e.stable_store_id));
-    const s = e.stable_pin; exact(s, ['version', 'account_authority_id', 'account_id', 'identity', 'source', 'condition_version', 'projector_id']); requireValue(s.version === 1 && s.account_authority_id === current.view.account_authority_id && hex(s.account_id) && s.condition_version === 1 && s.projector_id === 'slug-fighter-condition-candidate-v1');
+    const s = e.stable_pin; exact(s, ['version', 'account_authority_id', 'account_id', 'identity', 'source', 'condition_version', 'projector_id']); requireValue(s.version === (poolMode ? 2 : 1) && s.account_authority_id === current.view.account_authority_id && hex(s.account_id) && s.condition_version === 1 && s.projector_id === 'slug-fighter-condition-candidate-v1');
     const i = s.identity, a = s.source; exact(i, ['network', 'genesis', 'profile', 'root_public_key', 'gym_public_key', 'gym_id']); const f = Object.keys(fixtures).find((name) => fixtures[name][0] === i.gym_id); requireValue(!!f && i.network === 0x534c5547 && i.genesis === GENESIS && i.profile === 'slug-phase-a-fixture-bip39-v1' && i.root_public_key === ROOTS[f] && i.gym_public_key === fixtures[f][1]);
     exact(a, ['version', 'network', 'genesis', 'authority_id', 'descriptor_id']); requireValue(a.version === 5 && a.network === i.network && a.genesis === i.genesis && a.descriptor_id === DESCRIPTOR && hex(a.authority_id));
+    if (poolMode) requireValue(same(a, current.view.authority_pin));
   });
   const [a, b] = p.participants; requireValue(a.stable_pin.identity.gym_id < b.stable_pin.identity.gym_id && a.stable_pin.account_id !== b.stable_pin.account_id && a.stable_store_id !== b.stable_store_id && a.namespace_id === b.namespace_id);
   const ownPin = p.participants.find((x) => x.stable_pin.identity.gym_id === current.gym_id); requireValue(!!ownPin && same(ownPin.stable_pin, stable.status.pin) && ownPin.stable_store_id === stable.status.store_id && (!entryNamespace || ownPin.namespace_id === entryNamespace)); return p;
@@ -1286,7 +1288,7 @@ function eventAdoptStatus(s) {
 async function eventReadStatus(auto = false) {
   if (!eventReady() || !entryDate) return; const c = eventContext(), dateValue = entryDate;
   try { const r = eventEnvelope(await call('EventStatus', c.viewID, dateValue), 'status'); if (!eventCurrent(c, true)) return; if (!r.ok) { eventRefusal(r.error); return; } requireValue(r.value.event.saturday === dateValue); eventAdoptStatus(r.value); if (r.value.captured_participants.includes(current.gym_id)) eventUnknown = false;
-    const s = eventStatus; if (auto && s && s.event.cutoff_ms <= s.observed_at_ms && s.coordinator_created_at_ms < s.event.cutoff_ms && !s.captured_participants.includes(current.gym_id) && !eventWatch && !eventAutoAttempted.has(s.event.event_id) && eventAutoAttempted.size < 256 && !tasks.length && eventSnapshot.state === 'ready') { eventAutoAttempted.add(s.event.event_id); await eventBegin(); }
+    const s = eventStatus; if (auto && !poolBackupRunning() && s && s.event.cutoff_ms <= s.observed_at_ms && s.coordinator_created_at_ms < s.event.cutoff_ms && !s.captured_participants.includes(current.gym_id) && !eventWatch && !eventAutoAttempted.has(s.event.event_id) && eventAutoAttempted.size < 256 && !tasks.length && eventSnapshot.state === 'ready') { eventAutoAttempted.add(s.event.event_id); await eventBegin(); }
   } catch { if (eventCurrent(c)) eventMessage = eventError('event_unavailable'); } renderEvent();
 }
 async function fetchEventSnapshot() {
@@ -1301,7 +1303,7 @@ async function fetchEventSnapshot() {
   } catch { if (eventCurrent(c)) { eventUnavailable = true; eventMessage = eventError('event_unavailable'); } } finally { renderEvent(); }
 }
 async function eventBegin() {
-  if (!eventReady() || !eventStatus || eventStatus.event.saturday !== entryDate || eventWatch || eventUnknown || eventStatus.coordinator_created_at_ms >= eventStatus.event.cutoff_ms || eventStatus.observed_at_ms < eventStatus.event.cutoff_ms) return;
+  if (!eventReady() || poolBackupRunning() || !eventStatus || eventStatus.event.saturday !== entryDate || eventWatch || eventUnknown || eventStatus.coordinator_created_at_ms >= eventStatus.event.cutoff_ms || eventStatus.observed_at_ms < eventStatus.event.cutoff_ms) return;
   const c = eventContext(), e = eventStatus.event, reservation = { id: '', eventID: e.event_id, saturday: e.saturday, participantID: current.gym_id }; eventWatch = reservation; if (!eventCapacity()) { eventWatch = null; eventMessage = eventError('event_capacity'); renderEvent(); return; }
   try { const r = eventEnvelope(await call('BeginEventCapture', c.viewID, e.saturday), 'job'); if (!eventCurrent(c)) return; if (!r.ok) { eventWatch = null; eventRefusal(r.error, true); return; } const j = r.value; requireValue(j.state === 'queued' && j.event_id === e.event_id && j.saturday === e.saturday && j.participant_id === reservation.participantID); eventDetail = null; eventWatch = { ...reservation, id: j.job_id }; eventMessage = 'Reconstructing and verifying this gym at noon Pacific…'; pollWanted = true;
   } catch { if (eventCurrent(c)) { eventWatch = null; eventUnknown = true; eventMessage = eventError('outcome_unknown'); } } renderEvent();
@@ -1336,12 +1338,12 @@ function eventDetailRenderKey(details) {
 }
 function eventHistoryRenderKey(history) { return history ? JSON.stringify(history.events.map((e) => [e.event.event_id, e.phase, e.captured_participants.length])) : ''; }
 function renderEvent() {
-  const active = eventReady(), s = eventStatus?.event.saturday === entryDate ? eventStatus : null, busy = !!command || !!eventWatch || eventSnapshot?.state === 'busy';
-  content(ui['event-state'], eventUnavailable ? 'Unavailable' : !ready() ? 'Sign in to view snapshots' : eventSnapshot?.state === 'setup_incomplete' ? 'Setup incomplete' : eventWatch ? 'Capturing noon state' : s?.phase === 'snapshotted' ? 'Snapshot complete' : s?.phase === 'capturing' ? 'One gym captured' : 'Candidate snapshot');
+  const active = eventReady(), s = eventStatus?.event.saturday === entryDate ? eventStatus : null, busy = !!command || !!eventWatch || eventSnapshot?.state === 'busy' || poolBackupRunning();
+  content(ui['event-state'], eventUnavailable ? 'Unavailable' : !ready() ? 'Sign in to view snapshots' : poolBackupRunning() ? 'Wallet backup in progress' : eventSnapshot?.state === 'setup_incomplete' ? 'Setup incomplete' : eventWatch ? 'Capturing noon state' : s?.phase === 'snapshotted' ? 'Snapshot complete' : s?.phase === 'capturing' ? 'One gym captured' : 'Candidate snapshot');
   content(ui['event-cutoff'], s ? `Saturday ${s.event.saturday} · State fixed at noon Pacific · ${new Date(s.event.cutoff_ms).toISOString()}` : 'Select a Saturday in the entry panel.');
   content(ui['event-progress'], s ? s.coordinator_created_at_ms >= s.event.cutoff_ms ? eventError('event_created_too_late') : `${s.captured_participants.length} of 2 gyms captured.${s.phase === 'before_cutoff' ? ' Waiting for noon Pacific.' : s.phase !== 'snapshotted' ? ' Each demo gym captures its own historical state after sign-in.' : ' The complete snapshot is immutable.'}` : '');
   content(ui['event-message'], eventMessage); content(ui['event-deadline'], s ? `If the required seed is still unfinalized at the following lock (${new Date(s.event.incident_deadline_ms).toISOString()}), escalate to the operator as a chain incident. This is the policy deadline; the seed panel reports observed evidence.` : '');
-  content(ui['event-seed'], 'The seed panel reports candidate publication and checkpoint evidence. The event never receives a substitute seed and never automatically cancels.');
+  content(ui['event-seed'], poolMode ? 'This snapshot fixes the noon entry. Seed publication and fight results are not available in this demo mode yet.' : 'The seed panel reports candidate publication and checkpoint evidence. The event never receives a substitute seed and never automatically cancels.');
   content(ui['event-digest'], s?.snapshot_digest ? `Snapshot digest: ${s.snapshot_digest}` : '');
   ui['event-refresh'].disabled = !active || !entryDate || busy; ui['event-capture'].disabled = !active || busy || eventUnknown || !s || s.observed_at_ms < s.event.cutoff_ms || s.coordinator_created_at_ms >= s.event.cutoff_ms;
   content(ui['event-capture'], s?.captured_participants.includes(current?.gym_id) ? 'Recover this gym’s capture' : 'Capture this gym'); ui['event-cancel'].disabled = !active || !!command || !eventWatch?.id; ui['event-record'].disabled = !active || busy || s?.phase !== 'snapshotted'; ui['event-clear'].disabled = !eventDetail; ui['event-history'].disabled = !active || busy; ui['event-history-next'].disabled = !active || busy || !eventHistory?.has_more;
