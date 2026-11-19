@@ -21,6 +21,10 @@ import (
 // The pending command, never a response-controlled discriminator, selects the
 // decoder. A stable failure stays a typed code across the webview boundary.
 type StableBridge struct {
+	withdrawalPool               *pilot.PoolSnapshot
+	withdrawalBinding            *pilot.WithdrawalBinding
+	withdrawalExpected           *withdrawalExpectation
+	withdrawalOperation          *pilot.WithdrawalOperation
 	payoutBinding                *pilot.PoolPayoutBinding
 	payoutAttempt, payoutCapture *payoutExpectation
 	payoutRows                   *pilot.PoolPayoutPage
@@ -93,6 +97,7 @@ type stableJobExpectation struct {
 	terminal bool
 }
 type stableExpected struct {
+	withdrawal    bool
 	payout        bool
 	evidence      bool
 	pool          bool
@@ -110,6 +115,7 @@ type stableExpected struct {
 	card          bool
 }
 type stableFrame struct {
+	withdrawal    *pilot.WithdrawalResponse
 	payout        *pilot.PoolPayoutResponse
 	evidence      *pilot.FighterEvidenceResponse
 	pool          *pilot.PoolResponse
@@ -163,6 +169,7 @@ func (b *StableBridge) fail(err error) {
 		b.mu.Lock()
 		b.failure = err
 		b.payoutBinding, b.payoutAttempt, b.payoutCapture, b.payoutRows = nil, nil, nil, nil
+		b.withdrawalPool, b.withdrawalBinding, b.withdrawalExpected, b.withdrawalOperation = nil, nil, nil, nil
 		b.careerSelection = nil
 		b.history = nil
 		b.historyFatal = true
@@ -193,7 +200,14 @@ func (b *StableBridge) read(r io.Reader) {
 			return
 		}
 		var frame stableFrame
-		if expected.payout {
+		if expected.withdrawal {
+			value, err := pilot.ParseWithdrawalResponse(scanner.Bytes())
+			if err != nil {
+				b.fail(ErrUnavailable)
+				return
+			}
+			frame.withdrawal = &value
+		} else if expected.payout {
 			value, err := pilot.ParsePoolPayoutResponse(scanner.Bytes())
 			if err != nil || value.ID != expected.id {
 				b.fail(ErrUnavailable)
@@ -608,6 +622,7 @@ func (b *StableBridge) clearStableView() {
 	b.mu.Lock()
 	b.evidence = [2]*evidenceExpectation{}
 	b.payoutBinding, b.payoutAttempt, b.payoutCapture, b.payoutRows = nil, nil, nil, nil
+	b.withdrawalPool, b.withdrawalBinding, b.withdrawalExpected, b.withdrawalOperation = nil, nil, nil, nil
 	b.careerSelection = nil
 	b.history = nil
 	b.historyFatal = false

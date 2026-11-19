@@ -252,16 +252,21 @@ wallet. Preserve daily accounting, original-view authorization and the distincti
 between retained pool state and current wallet observation. No new send,
 settlement or fee authority is added. See `POOL_PAYOUT_HISTORY.md`,
 `POOL_PAYOUT_DESKTOP.md` and `CHANGESET_67_NOTES.md` for qualification status.
-The next wallet work must provide a reviewed, durable withdrawal with exact
-transaction recovery and D72 enforcement; simply enabling a generic send RPC
-does not establish that flow. Transfer and general-matchmaking decisions remain
-separate, and no next-set implementation is implied by this planning entry.
+Set68 implements reviewed personal withdrawals with original-view D72 gates,
+paired durable wallet/journal reservations, exact signed-byte recovery and
+explicit native approval of recipient, amount, fee and total. Its actual
+two-wallet rehearsal includes a lost acknowledgment, same-byte retry, one debit,
+live change detection and restart. See `REVIEWED_WITHDRAWALS_ADOPTION.md` and
+`CHANGESET_68_NOTES.md` for contracts and qualification. The candidate is limited
+to public schema-9 fixture wallets. Authoritative evolving-wallet address
+metadata and bounded resumable restore remain a separate functional recovery
+gate; transfers and general matchmaking still require their own decisions.
 Never repin solo event histories. Keep the existing layout/logos until the final
 joint D74 review. Public hosting, production signer custody/capacity, real account
 configuration and permanent genesis remain separate gates. The implemented
 contract is `SHARED_POOL_DESKTOP.md`; the earlier workspace runtime proposal
 remains historical context. See `CHANGESET_52_NOTES.md` through
-`CHANGESET_67_NOTES.md`, `POOL_WORKER.md`, `POOL_RECIPIENTS.md`,
+`CHANGESET_68_NOTES.md`, `POOL_WORKER.md`, `POOL_RECIPIENTS.md`,
 `SHARED_GYM_STABLE.md` and `POOL_SESSION_FENCES.md`.
 
 ### 4. Wallet

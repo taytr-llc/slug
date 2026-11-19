@@ -173,6 +173,7 @@ func readPoolRuntimeRecord(path string, expected any) error {
 
 func poolRuntimeRootFiles(root string) error {
 	allowed := map[string]bool{poolRuntimeMarkerName: true, poolRuntimeSourceName: true, poolRuntimeCoreName: true, poolRuntimeReadyName: true, "instance-lock": true, "issuer": true, "shares": true, "rounds": true, "settlement": true, "gyms": true, poolLeagueDirectory: true, poolPipelineDirectory: true,
+		poolWithdrawalGuardName: true, poolWithdrawalDirectory: true,
 		"primary-chain": true, "primary-logs": true, "primary.conf": true, "primary-process.log": true, "peer-chain": true, "peer-logs": true, "peer.conf": true, "peer-process.log": true}
 	entries, e := os.ReadDir(root)
 	if e != nil {
@@ -187,6 +188,7 @@ func poolRuntimeRootFiles(root string) error {
 }
 
 func (r *PoolRuntime) loadPoolRecipients() error {
+	r.gymAccounts = make(map[string]string)
 	dir := filepath.Join(r.config.DataDir, "gyms")
 	if e := plainChild(dir, true); e != nil {
 		return e
@@ -207,6 +209,10 @@ func (r *PoolRuntime) loadPoolRecipients() error {
 		if readManifestJSON(filepath.Join(root, poolRuntimeGymName), poolRuntimeMarkerLimit, &gym) != nil || gym.Version != 1 || gym.AccountID != entry.Name() || gym.AccountAuthorityID != r.marker.AccountAuthorityID || (gym.Fixture != "zero256" && gym.Fixture != "incrementing256") {
 			return ErrPoolRuntime
 		}
+		if _, exists := r.gymAccounts[gym.Fixture]; exists {
+			return ErrPoolRuntime
+		}
+		r.gymAccounts[gym.Fixture] = gym.AccountID
 		var binding PoolRecipientBinding
 		path := filepath.Join(root, poolRuntimeGymReadyName)
 		exists, e := poolRuntimeExists(path)

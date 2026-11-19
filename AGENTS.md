@@ -251,6 +251,19 @@ version.
   `POOL_PAYOUT_DESKTOP.md` and `CHANGESET_67_NOTES.md` for qualification status.
   Continue remaining wallet/lifecycle work under settled policies; transfers
   and general league matching still need their own decisions. D74 stays last.
+- Set68 on `slug-reviewed-withdrawals` adds separately reviewed, durable personal
+  withdrawals to the fixture Pool Pilot. Keep exact intent/draft/signed bytes,
+  wallet reservations and the paired journal across interrupted replies and
+  reopen. Fresh original-view D72 authorization gates signing, explicit retry
+  and unsigned abandonment; a send acknowledgment is not an observed payment.
+  Never automatically resend or replace a signed transaction. Native review
+  displays the full recipient and exact amount/fee/total. Keep the candidate
+  fee ceiling, bounded selection, concrete resource provenance and paired-store
+  audits; missing established components fail closed. The two-wallet actual
+  rehearsal proves lost-ack retry with one debit. See the frozen contracts in
+  `REVIEWED_WITHDRAWALS_ADOPTION.md` and qualification in `CHANGESET_68_NOTES.md`.
+  This remains schema-9 public-fixture engineering, not production issuance or
+  full evolving-wallet recovery. D74 and permanent identity/custody gates remain.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

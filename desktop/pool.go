@@ -19,6 +19,7 @@ func (g *Gym) PoolSnapshot() (pilot.PoolSnapshot, error) {
 		return pilot.PoolSnapshot{}, e
 	}
 	g.observePayoutAccount(g.poolHelper, r.Snapshot.Account.State, r.Snapshot.View)
+	g.observeWithdrawalAccount(g.poolHelper, r.Snapshot.Account.State, r.Snapshot.View)
 	return *r.Snapshot, nil
 }
 func (g *Gym) RefreshPoolBalance() error {

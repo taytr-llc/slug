@@ -84,6 +84,8 @@ type PoolRuntime struct {
 	careerReader                 *careerstate.Reader
 	backend                      *poolsettlefixture.Backend
 	recipients                   map[string]PoolRecipientBinding
+	withdrawals                  map[string]poolWithdrawalScope
+	gymAccounts                  map[string]string
 	verified                     map[string]bool
 	borrows                      map[*poolRuntimeBorrow]bool
 	life                         context.Context
@@ -104,6 +106,7 @@ type poolChildResources struct {
 	Node                                                 *prospectnode.Client
 	RPC                                                  prospectnode.RPCConfig
 	Recipient                                            PoolRecipientBinding
+	Withdrawal                                           *poolWithdrawalScope
 	StablePin                                            gymstable.Pin
 	League                                               *poolLeagueChildBinding
 	Events                                               *gymevent.Store
@@ -159,7 +162,7 @@ func NewPoolRuntimeWithOptions(ctx context.Context, config Config, accounts *gym
 		return nil, ErrPoolRuntime
 	}
 	life, cancel := context.WithCancel(context.Background())
-	r := &PoolRuntime{config: config, accounts: accounts, gate: make(chan struct{}, 1), life: life, cancel: cancel, recipients: make(map[string]PoolRecipientBinding), verified: make(map[string]bool), borrows: make(map[*poolRuntimeBorrow]bool)}
+	r := &PoolRuntime{config: config, accounts: accounts, gate: make(chan struct{}, 1), life: life, cancel: cancel, recipients: make(map[string]PoolRecipientBinding), withdrawals: make(map[string]poolWithdrawalScope), verified: make(map[string]bool), borrows: make(map[*poolRuntimeBorrow]bool)}
 	keep := false
 	defer func() {
 		if !keep {
@@ -264,6 +267,9 @@ func NewPoolRuntimeWithOptions(ctx context.Context, config Config, accounts *gym
 		return nil, e
 	}
 	if e = r.loadPoolRecipients(); e != nil {
+		return nil, e
+	}
+	if e = r.validateWithdrawalRoot(); e != nil {
 		return nil, e
 	}
 	core, e := r.coreRecord()
@@ -382,6 +388,10 @@ func (r *PoolRuntime) childResources(accountID, fixture string) (poolChildResour
 	if !ok || b.Config.AccountID != accountID {
 		return poolChildResources{}, ErrPoolRuntime
 	}
+	withdrawal, ok := r.withdrawals[fixture]
+	if !ok || withdrawal.Identity.Pin.AccountID != accountID || len(r.withdrawals) != 2 {
+		return poolChildResources{}, ErrPoolRuntime
+	}
 	for borrow := range r.borrows {
 		if borrow.account == accountID {
 			return poolChildResources{}, ErrPoolRuntimeBusy
@@ -424,7 +434,7 @@ func (r *PoolRuntime) childResources(accountID, fixture string) (poolChildResour
 		borrow.close = closeChild
 		return nil
 	}
-	return poolChildResources{Config: Config{DataDir: filepath.Join(r.config.DataDir, "gyms", accountID), NodeBinary: r.config.NodeBinary}, Source: r.source, PoolURL: poolURL, PoolTrustID: poolTrust, AdmissionURL: admissionURL, AdmissionTrustID: admissionTrust, Issuer: r.issuer, Node: r.node, RPC: r.nodes.rpcConfig(), Recipient: b, StablePin: pin, League: league, Events: r.events, Factories: r.leagueFactories, Pipeline: pipeline, Seeds: r.seeds, Cards: r.cards, Bouts: r.bouts, Results: r.results, CareerReader: r.careerReader, Publisher: publisher, WorkerConfig: worker, Life: r.life, Release: release, RegisterClose: register}, nil
+	return poolChildResources{Config: Config{DataDir: filepath.Join(r.config.DataDir, "gyms", accountID), NodeBinary: r.config.NodeBinary}, Source: r.source, PoolURL: poolURL, PoolTrustID: poolTrust, AdmissionURL: admissionURL, AdmissionTrustID: admissionTrust, Issuer: r.issuer, Node: r.node, RPC: r.nodes.rpcConfig(), Recipient: b, Withdrawal: &withdrawal, StablePin: pin, League: league, Events: r.events, Factories: r.leagueFactories, Pipeline: pipeline, Seeds: r.seeds, Cards: r.cards, Bouts: r.bouts, Results: r.results, CareerReader: r.careerReader, Publisher: publisher, WorkerConfig: worker, Life: r.life, Release: release, RegisterClose: register}, nil
 }
 
 func (r *PoolRuntime) Close() error {

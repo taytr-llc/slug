@@ -37,6 +37,13 @@ type poolChildWorker interface {
 // PoolChild owns one original account view. Shared chain and source resources
 // are borrowed until every worker, proof lane and wallet operation has joined.
 type PoolChild struct {
+	withdrawal                                 *poolWithdrawalResources
+	withdrawalIO                               withdrawalBackend
+	withdrawalTask                             *withdrawalTask
+	withdrawalLast                             *WithdrawalAction
+	withdrawalLastRequest                      *WithdrawalRequest
+	withdrawalReviewValue                      *WithdrawalReview
+	withdrawalScratch                          uint64
 	payoutOp                                   *poolPayoutOperation
 	payoutCache                                *poolPayoutCache
 	payoutLast                                 *PoolPayoutJob
@@ -202,6 +209,13 @@ func (c *PoolChild) Prepare(parent context.Context) error {
 	binding, err := ensurePoolRecipientBinding(ctx, r.Config.DataDir, r.Recipient.Config, a, c.wallet, false)
 	if err != nil || binding != r.Recipient {
 		return ErrPoolRecipient
+	}
+	if r.Withdrawal != nil {
+		c.withdrawal, err = openPoolWithdrawal(ctx, r, c.wallet)
+		c.withdrawalIO = c.withdrawal
+		if err != nil {
+			return err
+		}
 	}
 	endpoint, err := url.Parse(r.AdmissionURL)
 	if err != nil {
@@ -515,6 +529,7 @@ func (c *PoolChild) copyWorkerLocked(run *poolChildRun, s prospectworker.Status)
 }
 func (c *PoolChild) Stop() { c.stopMu.Lock(); defer c.stopMu.Unlock(); c.stop() }
 func (c *PoolChild) stop() {
+	c.cancelWithdrawal()
 	c.cancelPoolBackup()
 	c.cancelPoolPayout()
 	c.mu.Lock()
@@ -598,6 +613,9 @@ func (c *PoolChild) Close() error {
 		err = errors.Join(err, c.authority.Close(), c.admission.Close())
 		if c.box != nil {
 			err = errors.Join(err, c.box.Close())
+		}
+		if c.withdrawalIO != nil {
+			err = errors.Join(err, c.withdrawalIO.Close())
 		}
 		if c.wallet != nil {
 			err = errors.Join(err, c.wallet.Close())

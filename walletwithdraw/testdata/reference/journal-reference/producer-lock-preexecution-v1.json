@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "status": "locked before first envelope generation and before core implementation",
+  "producer_sha256": "4420846be4b6c74e15418264d73c0592b57b7216e91ad3db7f4165d31b6c472d",
+  "inputs": {
+    "frozen/journal-v1.md": "33bcf03ea830a3d87fc7e174fc5b874690c80969a2656f36bf31b730c2022386",
+    "frozen/wallet-v1.md": "e1da62fdf3785cd6e7cf1c24ae5269ff2d7409b4b9366a13f95a5c88d7fa8524",
+    "journal-reference/wallet-reference-v1.json": "d7c7b1e4c94e02f734a162b5974749853c91828ea1a0a4c4446c379bddc841c3",
+    "reference-inputs/public/fixture-recovery-v1.json": "d5141f4a8ee4378d77d483b09f6ecd809f8b328f82e79a69ff83164e73bc799a"
+  },
+  "scope": "Canonical public Pin/Binding/Intent/Draft/phase-state expectations from frozen contracts. Modeled node states explicitly labeled; no source or runtime imports."
+}

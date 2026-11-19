@@ -201,7 +201,7 @@ func (c *PoolController) login(ctx context.Context, fixture string) (resultErr e
 	a.ViewLease = func(ctx context.Context, fn func(gymaccount.Account, func() error) error) error {
 		return c.withView(ctx, session, viewID, child, fn)
 	}
-	stable := pilot.StableAccountConfig{EvidencePermit: &c.evidencePermit, Manifest: a, Lease: func(ctx context.Context, cap gymaccount.Capability, fn func(gymaccount.Account, func() error) error) error {
+	stable := pilot.StableAccountConfig{AuthenticatedAtMS: principal.AuthenticatedAtMS, SessionExpiresAtMS: session.ExpiresAtMS, EvidencePermit: &c.evidencePermit, Manifest: a, Lease: func(ctx context.Context, cap gymaccount.Capability, fn func(gymaccount.Account, func() error) error) error {
 		return c.withCapability(ctx, session, viewID, child, cap, fn)
 	}, HistoryPublicationLease: func(ctx context.Context, fn func(gymaccount.Account, func() error) error) error {
 		return c.withPoolHistoryPublicationLease(ctx, session, viewID, child, fn)
@@ -254,7 +254,7 @@ func (c *PoolController) withCapability(ctx context.Context, session gymaccount.
 			if c.closed || c.viewID != viewID || c.child != child || c.session.Token != session.Token || account.ID != session.Account.ID || account.Generation != session.Account.Generation || child.AccountID() != account.ID || (c.state != "signed_in" && c.state != "signing_in" && c.state != "resetting") {
 				return gymaccount.ErrUnauthorized
 			}
-			if (capability == gymaccount.RosterManage || capability == gymaccount.EntryManage || capability == gymaccount.SeedPublish || capability == gymaccount.ResultPublish) && (c.state != "signed_in" || c.operation) {
+			if (capability == gymaccount.Withdrawal || capability == gymaccount.RosterManage || capability == gymaccount.EntryManage || capability == gymaccount.SeedPublish || capability == gymaccount.ResultPublish) && (c.state != "signed_in" || c.operation) {
 				return gymaccount.ErrUnauthorized
 			}
 			return nil
@@ -330,13 +330,13 @@ func (c *PoolController) noteCleanup(err error) error {
 
 func (c *PoolController) cleanupAccount(ctx context.Context, token string, child poolChild) error {
 	var err error
-	if child != nil {
-		child.Stop()
-	}
+	// Revoke before joining work: blocked wallet or node IO cannot delay reset
+	// authority. The already-cleared parent View prevents any new callback.
 	if token != "" {
 		err = c.store.Logout(ctx, token)
 	}
 	if child != nil {
+		child.Stop()
 		err = errors.Join(err, child.Close())
 	}
 	return c.noteCleanup(err)
@@ -381,16 +381,14 @@ func (c *PoolController) ResetFixtureAccount() error {
 		return errors.New("sign in to the fixture first")
 	}
 	return c.begin("resetting", func(ctx context.Context) error {
-		// Invalidate first and drain without any account/controller lease. The
-		// same retained wallet is reopened only after the durable reset.
-		if err := c.detach(ctx); err != nil {
-			return err
+		// begin has already invalidated the old View. Durable reset must win
+		// before wallet/task joins; cleanup still runs after any reset failure.
+		principal, resetErr := verifyFixture(ctx, fixture, true)
+		if resetErr == nil {
+			_, _, resetErr = c.store.ApplyReset(ctx, principal)
 		}
-		principal, err := verifyFixture(ctx, fixture, true)
-		if err != nil {
-			return err
-		}
-		if _, _, err = c.store.ApplyReset(ctx, principal); err != nil {
+		cleanupErr := c.detach(context.Background())
+		if err := errors.Join(resetErr, cleanupErr); err != nil {
 			return err
 		}
 		return c.login(ctx, fixture)

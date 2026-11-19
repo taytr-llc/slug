@@ -152,6 +152,13 @@ func (r *PoolRuntime) ProvisionFixture(ctx context.Context, fixture string, logi
 	if e != nil {
 		return PoolRecipientBinding{}, e
 	}
+	if e = lease(work, func(gymaccount.Account, func() error) error { return nil }); e != nil {
+		return PoolRecipientBinding{}, e
+	}
+	withdrawal, e := r.ensureWithdrawalScope(work, binding, w)
+	if e != nil {
+		return PoolRecipientBinding{}, e
+	}
 	// Successful shutdown is part of provisioning: the child must be able to
 	// open this wallet exclusively before the runtime advertises it as ready.
 	e = w.Close()
@@ -183,6 +190,14 @@ func (r *PoolRuntime) ProvisionFixture(ctx context.Context, fixture string, logi
 			}
 		}
 		r.recipients[fixture] = binding
+		if r.withdrawals == nil {
+			r.withdrawals = make(map[string]poolWithdrawalScope)
+		}
+		r.withdrawals[fixture] = withdrawal
+		if r.gymAccounts == nil {
+			r.gymAccounts = make(map[string]string)
+		}
+		r.gymAccounts[fixture] = account.ID
 		r.verified[fixture] = true
 		return nil
 	}); e != nil {

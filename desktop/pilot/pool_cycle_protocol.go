@@ -10,6 +10,17 @@ import (
 // Dispatch chooses a closed family before decoding. Each existing codec retains its own bounds.
 func poolCycleResponse(ctx context.Context, raw []byte, id uint64, command string, c PoolSurfaceAPI) ([]byte, bool, error) {
 	switch {
+	case strings.HasPrefix(command, "withdrawal_"):
+		if id == 0 || id > gymstable.MaxSafeInteger {
+			return nil, true, gymstable.ErrInvalid
+		}
+		req, err := ParseWithdrawalRequest(raw)
+		response := WithdrawalFailure(id, "invalid_request")
+		if surface, ok := c.(WithdrawalSurfaceAPI); err == nil && ok {
+			response = surface.HandleWithdrawal(ctx, req)
+		}
+		out, err := MarshalWithdrawalResponse(response)
+		return out, true, err
 	case strings.HasPrefix(command, "pool_payout_"):
 		if id == 0 || id > gymstable.MaxSafeInteger {
 			return nil, true, gymstable.ErrInvalid

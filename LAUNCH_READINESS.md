@@ -399,9 +399,18 @@ they do not count as completion of this product-release gate.
   bound through refresh, cancellation and lost replies. A missing wallet
   observation cannot undo a recorded payment or authorize another one.
   `CHANGESET_67_NOTES.md` tracks focused, actual, package and smoke qualification;
-  this entry does not replace that evidence. Reviewed withdrawals, transferable
-  ownership, general league policy, real custody/hosting and distribution remain
-  open. The joint D74 review remains the final product gate.
+  this entry does not replace that evidence. Set68 supplies the next reviewed
+  withdrawal flow; transferable ownership, general league policy, real
+  custody/hosting and distribution remain open.
+
+- Set68 adds native-reviewed personal withdrawals for the two public fixture
+  wallets, with durable reservations, original-session D72 enforcement and
+  explicit retry of the exact signed transaction. Actual funded acceptance
+  proves both complete drafts/signatures against independent fixtures, lost-ack
+  retry with one debit, live change detection, inclusion and reopen. See
+  `CHANGESET_68_NOTES.md` for the complete qualification state. This does not
+  supply real custody, production-wallet activation or full evolving-wallet
+  recovery. The joint D74 review remains the final product gate.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace

@@ -60,6 +60,9 @@ type StableOperation struct {
 	Operation *gymstable.Operation `json:"operation"`
 }
 type StableAccountConfig struct {
+	// Original login times are private authority metadata, never token-derived.
+	AuthenticatedAtMS  int64
+	SessionExpiresAtMS int64
 	// EvidencePermit is borrowed from the account parent across child generations.
 	EvidencePermit *EvidencePermit
 	Manifest       ManifestAccountConfig

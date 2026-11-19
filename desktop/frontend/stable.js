@@ -226,6 +226,7 @@ function renderPool() {
   content(poolUI['pool-reason'], b ? poolReasons[b.reason] : '');
   poolUI['pool-refresh'].disabled = !visible || !!command || current.balance.state === 'loading';
   renderPayout();
+  renderWithdrawal();
 }
 
 function imageOnlySVG(svg, descriptorID) {
@@ -418,6 +419,7 @@ function clearCards() { for (const c of cards.values()) { c.image.removeAttribut
 function forgetView(clearFlow = true) {
   inventoryCursors = new Set([0]);
   clearPayout();
+  clearWithdrawal();
   epoch++; careerPage = null; careerSelectedJob = ""; clearHistory(); clearEvent(); clearEntry(); clearPreview(); clearCards(); pageItems = []; watched = null; savedOperation = null; lastViewedJob = ''; pageAfter = pageNext = 0; rosterFirst = 1; rosterNext = 0; pageRevision = null; mode = 'recent';
   if (clearFlow) { flow = null; mutationMessage = ''; }
 }
@@ -611,6 +613,7 @@ async function fetchSnapshots() {
     if (!disposed && ready() && !tasks.length && careerMode && (historySelection || historyUnknown)) await fetchHistorySnapshot();
     if (!disposed && ready() && !tasks.length && evidenceBusy()) await fetchEvidenceSnapshot();
     if (!disposed && accountReady() && !tasks.length && payoutBusy()) await fetchPayout();
+    if (!disposed && accountReady() && !tasks.length && poolMode && (!withdrawalBinding || withdrawalBusy())) await fetchWithdrawal();
   } catch { if (!disposed && captured === epoch) disconnected(); }
 }
 function stablyChangedRoster() { return stable.status.roster_revision !== pageRevision; }
@@ -2859,6 +2862,128 @@ function renderPayout() {
   const status = o ? o.state === 'unavailable' ? 'Unavailable; no wallet status was established.' : o.state === 'not_observed' ? 'Not observed in the saved wallet transaction view.' : o.state === 'unconfirmed' ? 'Wallet-reported unconfirmed.' : `Wallet-reported confirmed with ${o.confirmations} confirmation${o.confirmations === 1 ? '' : 's'}.` : '';
   content(payoutUI.wallet, o ? `Wallet check ${new Date(o.observed_at_ms).toISOString()} for ${o.payment.txid}, output ${o.payment.output_index}: ${status}${o.wallet_synced ? ` Wallet-reported synchronized at height ${o.wallet_height}, tip ${o.wallet_tip}.` : ''}` : '');
 }
+
+// Candidate withdrawals retain exact native operation/action correlation. The
+// browser never approves raw transactions or refreshes an action's authority.
+const withdrawalUI = Object.fromEntries(['destination', 'amount', 'prepare', 'refresh', 'review', 'retry', 'observe', 'stop', 'abandon', 'status', 'detail', 'observation'].map(k => [k, document.getElementById(`withdrawal-${k}`)]));
+const WITHDRAWAL_ERRORS = new Set(['invalid_request', 'unauthorized', 'stale_view', 'held', 'reauthentication_required', 'busy', 'capacity', 'withdrawal_unavailable', 'withdrawal_not_found', 'operation_conflict', 'draft_stale', 'insufficient_funds', 'fee_limit', 'outcome_unknown']);
+let withdrawalBinding = null, withdrawalSaved = null, withdrawalAction = null, withdrawalReview = null, withdrawalUnknown = false, withdrawalMessage = '', withdrawalPriorAction = '', withdrawalSerial = 0;
+function clearWithdrawal() { withdrawalSerial++; withdrawalBinding = withdrawalSaved = withdrawalAction = withdrawalReview = null; withdrawalUnknown = false; withdrawalMessage = withdrawalPriorAction = ''; if (withdrawalUI.destination) withdrawalUI.destination.value = ''; if (withdrawalUI.amount) withdrawalUI.amount.value = ''; }
+function withdrawalContext() { return {epoch, serial: withdrawalSerial, view: currentKey()}; }
+function withdrawalCurrent(c) { return poolMode && accountReady() && c.epoch === epoch && c.serial === withdrawalSerial && c.view === currentKey(); }
+function withdrawalBusy() { return withdrawalUnknown || ['running', 'review'].includes(withdrawalAction?.state) || !!withdrawalReview; }
+function withdrawalBindingValue(v, establish = false) {
+  exact(v, ['view', 'source_binding_id', 'journal_id', 'withdrawal_binding_id']); checkedView(v.view);
+  requireValue(poolMode && accountReady() && viewKey(v.view) === currentKey() && v.source_binding_id === current.source_binding_id && ['source_binding_id', 'journal_id'].every(k => payoutID(v[k])) && hex(v.withdrawal_binding_id)); payoutSize(v, 4096);
+  if (withdrawalBinding) requireValue(same(v, withdrawalBinding)); else requireValue(establish);
+  return own(v);
+}
+function withdrawalIntentValue(v) {
+  exact(v, ['destination', 'recipient_script', 'amount_atoms', 'fee_rate_atoms_per_kb', 'fee_limit_atoms']);
+  requireValue(typeof v.destination === 'string' && /^[\x21-\x7e]{1,90}$/.test(v.destination) && typeof v.recipient_script === 'string' && /^(?:76a914[0-9a-f]{40}88ac|a914[0-9a-f]{40}87|0014[0-9a-f]{40}|5120[0-9a-f]{64})$/.test(v.recipient_script) && int(v.amount_atoms, 1, MAX_ATOMS) && v.fee_rate_atoms_per_kb === 1000 && v.fee_limit_atoms === 100000); payoutSize(v, 512); return v;
+}
+function withdrawalDraftValue(v) {
+  exact(v, ['version', 'draft_digest', 'unsigned_txid', 'destination', 'recipient_script', 'amount_atoms', 'fee_atoms', 'total_debit_atoms', 'input_count', 'input_atoms', 'recipient_output_index', 'change_atoms', 'change_output_index', 'prepared_at_ms', 'observed_tip', 'observed_height']);
+  withdrawalIntentValue({destination:v.destination, recipient_script:v.recipient_script, amount_atoms:v.amount_atoms, fee_rate_atoms_per_kb:1000, fee_limit_atoms:100000});
+  requireValue(v.version === 1 && ['draft_digest', 'unsigned_txid', 'observed_tip'].every(k => hex(v[k])) && int(v.fee_atoms, 1, 100000) && int(v.total_debit_atoms, 1, MAX_ATOMS) && v.total_debit_atoms === v.amount_atoms + v.fee_atoms && int(v.change_atoms, 0, MAX_ATOMS) && int(v.input_atoms, 1, MAX_ATOMS) && v.input_atoms === v.total_debit_atoms + v.change_atoms && int(v.input_count, 1, 16) && int(v.recipient_output_index, 0, 1) && int(v.prepared_at_ms, 1, PAYOUT_TIME_MAX) && int(v.observed_height, 0, 2147483647));
+  requireValue(v.change_atoms === 0 ? v.change_output_index === -1 && v.recipient_output_index === 0 : int(v.change_output_index, 0, 1) && v.change_output_index !== v.recipient_output_index); payoutSize(v, 2048); return v;
+}
+function withdrawalOperationValue(v, expectedID = '') {
+  exact(v, ['version', 'operation_id', 'journal_id', 'withdrawal_binding_id', 'sequence', 'revision', 'created_at_ms', 'updated_at_ms', 'prepared_at_ms', 'stage', 'intent', 'intent_digest', 'draft', 'txid', 'signed_sha256', 'dispatch', 'observation']);
+  requireValue(withdrawalBinding && v.journal_id === withdrawalBinding.journal_id && v.withdrawal_binding_id === withdrawalBinding.withdrawal_binding_id && v.version === 1 && payoutID(v.operation_id) && (!expectedID || v.operation_id === expectedID) && hex(v.intent_digest) && int(v.sequence, 1, 128) && int(v.revision, 1, 4294967295) && int(v.created_at_ms, 1, PAYOUT_TIME_MAX) && int(v.updated_at_ms, v.created_at_ms, PAYOUT_TIME_MAX) && int(v.prepared_at_ms, 0, v.updated_at_ms)); withdrawalIntentValue(v.intent);
+  const stages = ['intent', 'prepared', 'signed', 'dispatching', 'submitted', 'abandoned']; requireValue(stages.includes(v.stage));
+  if (v.draft !== null) { withdrawalDraftValue(v.draft); requireValue(v.prepared_at_ms === v.draft.prepared_at_ms && v.prepared_at_ms >= v.created_at_ms && ['destination', 'recipient_script', 'amount_atoms'].every(k => v.intent[k] === v.draft[k])); } else requireValue(v.prepared_at_ms === 0);
+  if (['signed', 'dispatching', 'submitted'].includes(v.stage)) requireValue(v.draft !== null && v.txid === v.draft.unsigned_txid && hex(v.signed_sha256));
+  else requireValue(v.txid === '' && v.signed_sha256 === '' && v.dispatch === null && v.observation === null);
+  if (v.stage === 'intent') requireValue(v.draft === null); if (v.stage === 'prepared') requireValue(v.draft !== null); if (v.stage === 'signed') requireValue(v.dispatch === null); if (v.stage === 'dispatching') requireValue(v.dispatch !== null); if (v.stage === 'submitted') requireValue(v.observation !== null);
+  if (v.dispatch !== null) {
+    const d = v.dispatch; exact(d, ['attempt', 'authorization', 'intent_at_ms', 'result', 'result_at_ms', 'error']); const a = d.authorization; exact(a, ['action_id', 'review_id', 'view_id', 'generation', 'authorized_at_ms']);
+    requireValue(int(d.attempt, 1, 4294967295) && ['action_id', 'review_id', 'view_id'].every(k => payoutID(a[k])) && int(a.generation, 1) && int(a.authorized_at_ms, v.created_at_ms, v.updated_at_ms) && int(d.intent_at_ms, a.authorized_at_ms, v.updated_at_ms));
+    if (d.result === 'pending') requireValue(d.result_at_ms === 0 && d.error === ''); else requireValue(int(d.result_at_ms, d.intent_at_ms, v.updated_at_ms) && ({acknowledged:'', unknown:'node_unavailable', rejected:'node_rejected'})[d.result] === d.error);
+  }
+  if (v.observation !== null) {
+    const o = v.observation; exact(o, ['version', 'txid', 'observed_at_ms', 'state', 'node_tip', 'node_height', 'confirmations', 'block_hash', 'error']);
+    requireValue(o.version === 1 && o.txid === v.txid && int(o.observed_at_ms, v.created_at_ms, v.updated_at_ms) && int(o.node_height, 0, 2147483647));
+    if (o.state === 'unknown') requireValue(o.node_tip === '' && o.node_height === 0 && o.confirmations === 0 && o.block_hash === '' && o.error === 'node_unavailable');
+    else { requireValue(o.error === '' && payoutID(o.node_tip)); if (o.state === 'confirmed') requireValue(int(o.confirmations, 1, o.node_height + 1) && payoutID(o.block_hash)); else requireValue(['not_observed', 'mempool'].includes(o.state) && o.confirmations === 0 && o.block_hash === ''); }
+    payoutSize(o, 2048);
+  }
+  if (withdrawalSaved?.operation_id === v.operation_id) {
+    const old = withdrawalSaved; requireValue(v.sequence === old.sequence && v.revision >= old.revision && v.updated_at_ms >= old.updated_at_ms && v.created_at_ms === old.created_at_ms && same(v.intent, old.intent) && v.intent_digest === old.intent_digest && (!old.draft || same(v.draft, old.draft)) && (!old.txid || v.txid === old.txid && v.signed_sha256 === old.signed_sha256));
+    requireValue(v.revision !== old.revision || same(v, old)); requireValue(stages.indexOf(v.stage) >= stages.indexOf(old.stage) && (!['submitted', 'abandoned'].includes(old.stage) || old.stage === v.stage));
+  }
+  payoutSize(v, 8192); return own(v);
+}
+function withdrawalActionValue(v, expectedID = '') {
+  exact(v, ['version', 'binding', 'operation_id', 'action_id', 'kind', 'state', 'review_id', 'error', 'operation']); withdrawalBindingValue(v.binding);
+  requireValue(v.version === 1 && payoutID(v.operation_id) && payoutID(v.action_id) && (!expectedID || v.action_id === expectedID) && v.action_id !== withdrawalPriorAction && ['prepare', 'send', 'retry', 'abandon', 'observe'].includes(v.kind) && payoutID(v.review_id, true) && ['send', 'retry'].includes(v.kind) === !!v.review_id);
+  requireValue(['running', 'review', 'done', 'failed', 'stopped', 'outcome_unknown'].includes(v.state)); if (['running', 'review', 'done', 'stopped'].includes(v.state)) requireValue(v.error === ''); else requireValue(WITHDRAWAL_ERRORS.has(v.error) && (v.state === 'outcome_unknown') === (v.error === 'outcome_unknown'));
+  if (v.operation !== null) withdrawalOperationValue(v.operation, v.operation_id); if (v.state === 'review') requireValue(['send', 'retry'].includes(v.kind) && v.operation !== null && (v.kind === 'send' ? v.operation.stage === 'prepared' : ['signed', 'dispatching'].includes(v.operation.stage)));
+  if (withdrawalAction?.action_id === v.action_id && !['running', 'review'].includes(withdrawalAction.state)) requireValue(same(v, withdrawalAction)); payoutSize(v, 14336); return own(v);
+}
+function withdrawalReviewValue(v) {
+  exact(v, ['version', 'binding', 'operation_id', 'action_id', 'review_id', 'kind', 'draft', 'txid', 'reviewed_at_ms', 'expires_at_ms']); withdrawalBindingValue(v.binding); withdrawalDraftValue(v.draft);
+  requireValue(v.version === 1 && ['operation_id', 'action_id', 'review_id'].every(k => payoutID(v[k])) && v.action_id !== withdrawalPriorAction && ['send', 'retry'].includes(v.kind) && int(v.reviewed_at_ms, 1, PAYOUT_TIME_MAX) && int(v.expires_at_ms, v.reviewed_at_ms + 1, Math.min(PAYOUT_TIME_MAX, v.reviewed_at_ms + 300000)) && (v.kind === 'send' ? v.txid === '' : v.txid === v.draft.unsigned_txid));
+  requireValue(withdrawalSaved?.operation_id === v.operation_id && same(v.draft, withdrawalSaved.draft)); payoutSize(v, 8192); return own(v);
+}
+function withdrawalSnapshotValue(v) {
+  exact(v, ['version', 'state', 'error', 'binding', 'active_action_id', 'last_action_id', 'unresolved_operation_id', 'latest_operation_id', 'can_prepare', 'can_review']);
+  requireValue(v.version === 1 && ['active_action_id', 'last_action_id', 'unresolved_operation_id', 'latest_operation_id'].every(k => payoutID(v[k], true)) && typeof v.can_prepare === 'boolean' && typeof v.can_review === 'boolean');
+  if (v.state === 'unavailable') requireValue(v.error === 'withdrawal_unavailable' && v.binding === null && ['active_action_id', 'last_action_id', 'unresolved_operation_id', 'latest_operation_id'].every(k => v[k] === '') && !v.can_prepare && !v.can_review);
+  else { withdrawalBindingValue(v.binding, true); requireValue(['idle', 'busy'].includes(v.state) && v.error === '' && (v.state === 'busy') === !!v.active_action_id && (!v.can_prepare || v.state === 'idle' && !v.unresolved_operation_id)); }
+  payoutSize(v, 5120); return own(v);
+}
+function withdrawalEnvelope(v, arm, id = '') {
+  exact(v, ['id', 'version', 'ok', 'snapshot', 'operation', 'review', 'action', 'error']); requireValue(int(v.id, 1) && v.version === 1 && typeof v.ok === 'boolean'); payoutSize(v, 16383);
+  if (!v.ok) { requireValue(['snapshot', 'operation', 'review', 'action'].every(k => v[k] === null) && WITHDRAWAL_ERRORS.has(v.error)); return {ok:false,error:v.error}; }
+  requireValue(v.error === '' && ['snapshot', 'operation', 'review', 'action'].every(k => k === arm ? v[k] !== null : v[k] === null));
+  const value = ({snapshot:withdrawalSnapshotValue,operation:withdrawalOperationValue,review:withdrawalReviewValue,action:withdrawalActionValue})[arm](v[arm],id); return {ok:true,value};
+}
+function withdrawalRefusal(code) {
+  if (['unauthorized', 'stale_view'].includes(code)) { withdrawalReview = null; withdrawalUnknown = false; }
+  withdrawalMessage = ({held:'The security hold blocks new payments and retries. You can still check saved transactions.', reauthentication_required:'Sign out and sign in again, then review this same payment.', unauthorized:'Sign out and sign in again before reviewing this payment.', busy:'Another wallet task is finishing. Check the saved withdrawal before retrying.', outcome_unknown:'Checking this exact withdrawal. Do not prepare another payment to retry it.', capacity:'This candidate wallet has reached its retained-withdrawal capacity.', withdrawal_not_found:'No matching saved withdrawal was found.', operation_conflict:'The saved payment differs from this action. Check its current state.', insufficient_funds:'The wallet cannot fund this amount with eligible inputs.', fee_limit:'The payment exceeds the fixed candidate fee limit.'})[code] || 'The withdrawal is unavailable. Check the saved operation before trying again.';
+}
+function acceptWithdrawalAction(a) { withdrawalAction = a; withdrawalUnknown = false; if (a.operation) withdrawalSaved = a.operation; if (a.state !== 'review') withdrawalReview = null; withdrawalMessage = a.state === 'running' ? 'Working on the reviewed withdrawal…' : a.state === 'review' ? 'Choose in the native payment review.' : a.state === 'stopped' ? 'Task stopped. Saved payment state is retained; submitted bytes cannot be recalled.' : a.state === 'done' ? 'Withdrawal state saved. Transaction observations are separate from finality.' : ''; if (['failed', 'outcome_unknown'].includes(a.state)) withdrawalRefusal(a.error); }
+async function fetchWithdrawal(force = false) {
+  if (!poolMode || !accountReady() || (!force && withdrawalBinding && !withdrawalBusy())) return; const c = withdrawalContext();
+  try {
+    const raw = await call('WithdrawalSnapshot'); if (!withdrawalCurrent(c)) return; const r = withdrawalEnvelope(raw,'snapshot'); if (!r.ok) { withdrawalRefusal(r.error); return; } const s = r.value;
+    if (!s.binding) { withdrawalRefusal(s.error); return; } withdrawalBinding = s.binding;
+    const actionID = withdrawalAction?.action_id || withdrawalReview?.action_id || (withdrawalUnknown ? s.active_action_id || s.last_action_id : '');
+    if (actionID && actionID !== withdrawalPriorAction) {
+      const opID = withdrawalAction?.operation_id || withdrawalReview?.operation_id || '';
+      const aRaw = await call('WithdrawalAction', current.view.view_id, opID, actionID); if (!withdrawalCurrent(c)) return; const a = withdrawalEnvelope(aRaw,'action',actionID); if (a.ok) acceptWithdrawalAction(a.value); else { if (a.error === 'withdrawal_not_found') withdrawalUnknown = false; withdrawalRefusal(a.error); }
+    } else { if (withdrawalUnknown) {withdrawalUnknown = false; withdrawalMessage = 'The new action was not started. Check any saved withdrawal before trying again.';} const opID = s.unresolved_operation_id || s.latest_operation_id; if (opID && (!withdrawalSaved || force)) { const oRaw = await call('WithdrawalOperation', current.view.view_id, opID); if (!withdrawalCurrent(c)) return; const o = withdrawalEnvelope(oRaw,'operation',opID); if (o.ok) {withdrawalSaved = o.value; withdrawalMessage = 'Recovered saved withdrawal. A new send or retry requires a fresh native review.';} else withdrawalRefusal(o.error); } }
+  } catch { if (withdrawalCurrent(c)) withdrawalRefusal('withdrawal_unavailable'); } finally {renderWithdrawal();}
+}
+async function invokeWithdrawal(kind) {
+  if (!poolMode || !accountReady() || poolBackupRunning()) return; const c = withdrawalContext();
+  if (!withdrawalBinding) await fetchWithdrawal(true); if (!withdrawalCurrent(c) || !withdrawalBinding) return;
+  const previous = withdrawalAction?.action_id || withdrawalReview?.action_id || '';
+  if (kind !== 'stop') {withdrawalPriorAction = previous;withdrawalAction = withdrawalReview = null;withdrawalUnknown = true;}
+  renderWithdrawal();
+  try {
+    let raw, arm = 'action'; const view = current.view.view_id, id = withdrawalSaved?.operation_id;
+    if (kind === 'prepare') raw = await call('BeginWithdrawal',view,withdrawalUI.destination.value,withdrawalUI.amount.value);
+    else if (kind === 'review' || kind === 'retry') {arm = 'review';raw = await call(kind === 'review' ? 'ReviewWithdrawal' : 'RetryWithdrawal',view,id);}
+    else if (kind === 'stop') raw = await call('StopWithdrawal',view,withdrawalAction?.operation_id || withdrawalReview?.operation_id,previous);
+    else raw = await call(kind === 'abandon' ? 'AbandonWithdrawal' : 'ObserveWithdrawal',view,id);
+    if (!withdrawalCurrent(c)) return; const r = withdrawalEnvelope(raw,arm);
+    if (!r.ok) {withdrawalUnknown = r.error === 'outcome_unknown';withdrawalRefusal(r.error);return;}
+    if (arm === 'review') {withdrawalReview = r.value;withdrawalUnknown = false;withdrawalMessage = 'Review the full payment in the native confirmation. Cancelling the review does not abandon its saved draft.';} else acceptWithdrawalAction(r.value);
+  } catch {if (withdrawalCurrent(c)) {withdrawalUnknown = true;withdrawalRefusal('outcome_unknown');}} finally {renderWithdrawal();}
+}
+function renderWithdrawal() {
+  if (!withdrawalUI.prepare) return; const visible = poolMode && accountReady(), busy = withdrawalBusy(), blocked = !visible || !!command || poolBackupRunning(), held = current?.account?.held, stage = withdrawalSaved?.stage;
+  for (const k of ['destination', 'amount', 'prepare']) withdrawalUI[k].disabled = blocked || busy || held || !!stage && !['submitted', 'abandoned'].includes(stage);
+  withdrawalUI.refresh.disabled = blocked; withdrawalUI.review.disabled = blocked || busy || held || stage !== 'prepared'; withdrawalUI.retry.disabled = blocked || busy || held || !['signed', 'dispatching'].includes(stage); withdrawalUI.observe.disabled = blocked || busy || !withdrawalSaved?.txid; withdrawalUI.abandon.disabled = blocked || busy || held || !['intent', 'prepared'].includes(stage); withdrawalUI.stop.disabled = blocked || !withdrawalAction && !withdrawalReview || !busy;
+  content(withdrawalUI.status,visible ? withdrawalMessage || (held ? 'The security hold blocks sending. Saved transactions remain viewable.' : 'Prepare a test payment to review its exact amount and fee.') : 'Sign in to view withdrawals.');
+  const o = visible ? withdrawalSaved : null, d = o?.draft;
+  content(withdrawalUI.detail,o ? `Operation ${o.operation_id}. Saved state: ${o.stage}. Destination ${o.intent.destination}. Recipient ${payoutAtoms(o.intent.amount_atoms)} SLUG.${d ? ` Fee ${payoutAtoms(d.fee_atoms)} SLUG. Total debit ${payoutAtoms(d.total_debit_atoms)} SLUG.` : ''}${o.txid ? ` Transaction ${o.txid}.` : ''}` : '');
+  const x = o?.observation; content(withdrawalUI.observation,x ? `Node observation ${new Date(x.observed_at_ms).toISOString()}: ${x.state === 'unknown' ? 'unavailable; no absence claim' : x.state === 'not_observed' ? 'not observed under the recorded tip' : x.state === 'mempool' ? 'exact transaction observed in the mempool' : `exact transaction observed with ${x.confirmations} confirmations`}. This is dated evidence, not finality.` : '');
+}
+for (const kind of ['prepare', 'review', 'retry', 'observe', 'stop', 'abandon']) withdrawalUI[kind].addEventListener('click',()=>queue(()=>invokeWithdrawal(kind),`withdrawal-${kind}`));
+withdrawalUI.refresh.addEventListener('click',()=>queue(()=>fetchWithdrawal(true),'withdrawal-refresh'));
 
 payoutUI.refresh.addEventListener('click', () => queue(beginPayout, 'pool-history'));
 payoutUI.cancel.addEventListener('click', () => queue(cancelPayout, 'pool-history-cancel'));
