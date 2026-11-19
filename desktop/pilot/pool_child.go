@@ -21,6 +21,7 @@ import (
 	"github.com/taytr-llc/slug/prospectworker"
 	"github.com/taytr-llc/slug/wire/v2"
 	"github.com/taytr-llc/slugwallet/recovery"
+	"github.com/taytr-llc/slugwallet/wallet"
 )
 
 type poolChildRun struct {
@@ -37,6 +38,13 @@ type poolChildWorker interface {
 // PoolChild owns one original account view. Shared chain and source resources
 // are borrowed until every worker, proof lane and wallet operation has joined.
 type PoolChild struct {
+	activityOp                                 *walletActivityOperation
+	activityCache                              *walletActivityCache
+	activityLast                               *WalletActivityJob
+	activityProjection                         *walletActivityProjection
+	activityScratch                            uint64
+	activityRead                               func(context.Context) (walletActivityRead, error)
+	activityProject                            func(context.Context, wallet.OwnActivityRecord, WalletActivityCapture, bool) (WalletActivityItem, []WalletActivityOutput, error)
 	withdrawal                                 *poolWithdrawalResources
 	withdrawalIO                               withdrawalBackend
 	withdrawalTask                             *withdrawalTask
@@ -532,6 +540,7 @@ func (c *PoolChild) stop() {
 	c.cancelWithdrawal()
 	c.cancelPoolBackup()
 	c.cancelPoolPayout()
+	c.cancelWalletActivity()
 	c.mu.Lock()
 	run := c.run
 	if run != nil {
@@ -598,6 +607,7 @@ func (c *PoolChild) Close() error {
 		c.mu.Lock()
 		c.payoutCache, c.payoutLast = nil, nil
 		c.payoutCacheBytes = 0
+		c.activityCache, c.activityLast = nil, nil
 		c.mu.Unlock()
 		if c.refreshStarted {
 			<-c.refreshDone

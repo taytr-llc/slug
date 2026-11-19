@@ -37,6 +37,13 @@
         <label for="withdrawal-amount">SLUG amount</label><input id="withdrawal-amount" type="text" inputmode="decimal" maxlength="25" autocomplete="off" disabled>
         <div class="actions"><button id="withdrawal-prepare" type="button" disabled>Prepare payment</button><button id="withdrawal-refresh" type="button" disabled>Check saved withdrawal</button><button id="withdrawal-review" type="button" disabled>Review and send</button><button id="withdrawal-retry" type="button" disabled>Review same-payment retry</button><button id="withdrawal-observe" type="button" disabled>Check transaction</button><button id="withdrawal-stop" type="button" disabled>Stop current task</button><button id="withdrawal-abandon" type="button" disabled>Abandon unsigned payment</button></div>
         <p id="withdrawal-status" class="note" role="status"></p><p id="withdrawal-detail" class="note"></p><p id="withdrawal-observation" class="note"></p>
+        <h3>Wallet activity</h3>
+        <div class="actions"><button id="wallet-activity-refresh" type="button" disabled>Load wallet activity</button><button id="wallet-activity-cancel" type="button" disabled>Cancel activity refresh</button></div>
+        <p id="wallet-activity-status" class="note" role="status">Load a dated view of incoming and outgoing wallet transactions.</p>
+        <p id="wallet-activity-capture" class="note"></p><ol id="wallet-activity-list"></ol>
+        <div class="actions"><button id="wallet-activity-previous" type="button" disabled>Previous transactions</button><span id="wallet-activity-page" class="note"></span><button id="wallet-activity-next" type="button" disabled>Next transactions</button></div>
+        <div id="wallet-activity-detail" aria-live="polite"></div>
+        <p class="note">These are dated wallet records. Confirmations do not establish finality, conflict absence or spendability. Refresh explicitly to update this view.</p>
         <h3>Payment history</h3>
         <div class="actions"><button id="pool-history-refresh" type="button" disabled>Load payment history</button><button id="pool-history-cancel" type="button" disabled>Cancel history refresh</button></div>
         <p id="pool-history-status" class="note" role="status">Load a dated copy of your recorded pool payments.</p>

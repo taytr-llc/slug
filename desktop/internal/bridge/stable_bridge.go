@@ -21,25 +21,28 @@ import (
 // The pending command, never a response-controlled discriminator, selects the
 // decoder. A stable failure stays a typed code across the webview boundary.
 type StableBridge struct {
-	withdrawalPool               *pilot.PoolSnapshot
-	withdrawalBinding            *pilot.WithdrawalBinding
-	withdrawalExpected           *withdrawalExpectation
-	withdrawalOperation          *pilot.WithdrawalOperation
-	payoutBinding                *pilot.PoolPayoutBinding
-	payoutAttempt, payoutCapture *payoutExpectation
-	payoutRows                   *pilot.PoolPayoutPage
-	evidence                     [2]*evidenceExpectation
-	evidenceSerial               uint64
-	poolStartupComplete          bool
-	poolHandshakeUsed            bool
-	poolHandshakePending         bool
-	poolMode                     bool
-	poolSourceID                 string
-	poolExpectedDescriptor       string
-	poolSourcePin                *registry.ManifestAuthorityPin
-	careersEnabled               bool
-	careerActivation             *careerstate.Activation
-	careerSelection              *careerPageExpectation
+	activityBinding                  *pilot.WalletActivityBinding
+	activityAttempt, activityCapture *activityExpectation
+	activityRows                     *pilot.WalletActivityPage
+	withdrawalPool                   *pilot.PoolSnapshot
+	withdrawalBinding                *pilot.WithdrawalBinding
+	withdrawalExpected               *withdrawalExpectation
+	withdrawalOperation              *pilot.WithdrawalOperation
+	payoutBinding                    *pilot.PoolPayoutBinding
+	payoutAttempt, payoutCapture     *payoutExpectation
+	payoutRows                       *pilot.PoolPayoutPage
+	evidence                         [2]*evidenceExpectation
+	evidenceSerial                   uint64
+	poolStartupComplete              bool
+	poolHandshakeUsed                bool
+	poolHandshakePending             bool
+	poolMode                         bool
+	poolSourceID                     string
+	poolExpectedDescriptor           string
+	poolSourcePin                    *registry.ManifestAuthorityPin
+	careersEnabled                   bool
+	careerActivation                 *careerstate.Activation
+	careerSelection                  *careerPageExpectation
 	// History state is also invalidated by the reader failure path under mu.
 	history                   *careerHistoryCorrelation
 	historyFatal              bool
@@ -97,6 +100,7 @@ type stableJobExpectation struct {
 	terminal bool
 }
 type stableExpected struct {
+	activity      bool
 	withdrawal    bool
 	payout        bool
 	evidence      bool
@@ -115,6 +119,7 @@ type stableExpected struct {
 	card          bool
 }
 type stableFrame struct {
+	activity      *pilot.WalletActivityResponse
 	withdrawal    *pilot.WithdrawalResponse
 	payout        *pilot.PoolPayoutResponse
 	evidence      *pilot.FighterEvidenceResponse
@@ -169,6 +174,7 @@ func (b *StableBridge) fail(err error) {
 		b.mu.Lock()
 		b.failure = err
 		b.payoutBinding, b.payoutAttempt, b.payoutCapture, b.payoutRows = nil, nil, nil, nil
+		b.activityBinding, b.activityAttempt, b.activityCapture, b.activityRows = nil, nil, nil, nil
 		b.withdrawalPool, b.withdrawalBinding, b.withdrawalExpected, b.withdrawalOperation = nil, nil, nil, nil
 		b.careerSelection = nil
 		b.history = nil
@@ -200,7 +206,14 @@ func (b *StableBridge) read(r io.Reader) {
 			return
 		}
 		var frame stableFrame
-		if expected.withdrawal {
+		if expected.activity {
+			value, err := pilot.ParseWalletActivityResponse(scanner.Bytes())
+			if err != nil || value.ID != expected.id {
+				b.fail(ErrUnavailable)
+				return
+			}
+			frame.activity = &value
+		} else if expected.withdrawal {
 			value, err := pilot.ParseWithdrawalResponse(scanner.Bytes())
 			if err != nil {
 				b.fail(ErrUnavailable)
@@ -622,6 +635,7 @@ func (b *StableBridge) clearStableView() {
 	b.mu.Lock()
 	b.evidence = [2]*evidenceExpectation{}
 	b.payoutBinding, b.payoutAttempt, b.payoutCapture, b.payoutRows = nil, nil, nil, nil
+	b.activityBinding, b.activityAttempt, b.activityCapture, b.activityRows = nil, nil, nil, nil
 	b.withdrawalPool, b.withdrawalBinding, b.withdrawalExpected, b.withdrawalOperation = nil, nil, nil, nil
 	b.careerSelection = nil
 	b.history = nil

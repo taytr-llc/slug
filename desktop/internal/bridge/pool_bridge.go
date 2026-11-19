@@ -133,7 +133,16 @@ func (b *PoolBridge) PoolRequest(ctx context.Context, req pilot.PoolRequest) (pi
 			b.manifestView = &v
 		}
 		binding, bindingErr := pilot.PoolPayoutBindingForSnapshot(*s)
+		activityBinding, activityErr := pilot.WalletActivityBindingForSnapshot(*s)
 		b.mu.Lock()
+		if activityErr == nil {
+			if b.activityBinding == nil || *b.activityBinding != activityBinding {
+				b.activityAttempt, b.activityCapture, b.activityRows = nil, nil, nil
+			}
+			b.activityBinding = &activityBinding
+		} else {
+			b.activityBinding, b.activityAttempt, b.activityCapture, b.activityRows = nil, nil, nil, nil
+		}
 		if bindingErr == nil {
 			if b.withdrawalPool == nil || b.withdrawalPool.View == nil || *b.withdrawalPool.View != *s.View {
 				b.withdrawalBinding, b.withdrawalExpected, b.withdrawalOperation = nil, nil, nil

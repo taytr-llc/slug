@@ -105,6 +105,7 @@ func (c *PoolChild) beginPoolBackup(parent context.Context, verify bool) (*poolB
 	}
 	c.cancelWithdrawal()
 	c.cancelPoolPayout()
+	c.cancelWalletActivity()
 	// Start cannot run while stopMu is held, and the active operation prevents
 	// later refreshes. Drain the prior refresh only after releasing authority.
 	c.refreshMu.Lock()

@@ -275,6 +275,18 @@ version.
   discovery without equating historical rows to the current wallet ledger.
   `CHANGESET_69_NOTES.md` records qualification and its precise limits. Hosted
   evolving metadata, production custody and D74 remain separate gates.
+- Set70 on `slug-wallet-activity` adds a bounded, immutable own-wallet activity
+  capture, eight-row pages and selected transaction details in the existing
+  wallet section. Keep integer amounts, the atomic public identity/history/sync
+  snapshot, exact wallet/node hash and height checks, original View/source/gym
+  binding, native-known job IDs and explicit refresh. Failed refresh retains the
+  dated prior capture; old success never resolves a new uncertain action.
+  Capture/detail cancellation must join before wallet unload or backup. Read no
+  private recovery material; do not infer pool earnings, spendability, finality
+  or a new send permission from activity. Preserve the independently frozen
+  corpora and bounded storage/raw-transaction checks. See `WALLET_ACTIVITY.md`
+  and `CHANGESET_70_NOTES.md` for qualification and limits. Hosted evolving
+  recovery remains separate; D74 remains last.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

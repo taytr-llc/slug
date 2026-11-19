@@ -226,6 +226,7 @@ function renderPool() {
   content(poolUI['pool-reason'], b ? poolReasons[b.reason] : '');
   poolUI['pool-refresh'].disabled = !visible || !!command || current.balance.state === 'loading';
   renderPayout();
+  renderActivity();
   renderWithdrawal();
 }
 
@@ -419,6 +420,7 @@ function clearCards() { for (const c of cards.values()) { c.image.removeAttribut
 function forgetView(clearFlow = true) {
   inventoryCursors = new Set([0]);
   clearPayout();
+  clearActivity();
   clearWithdrawal();
   epoch++; careerPage = null; careerSelectedJob = ""; clearHistory(); clearEvent(); clearEntry(); clearPreview(); clearCards(); pageItems = []; watched = null; savedOperation = null; lastViewedJob = ''; pageAfter = pageNext = 0; rosterFirst = 1; rosterNext = 0; pageRevision = null; mode = 'recent';
   if (clearFlow) { flow = null; mutationMessage = ''; }
@@ -613,6 +615,7 @@ async function fetchSnapshots() {
     if (!disposed && ready() && !tasks.length && careerMode && (historySelection || historyUnknown)) await fetchHistorySnapshot();
     if (!disposed && ready() && !tasks.length && evidenceBusy()) await fetchEvidenceSnapshot();
     if (!disposed && accountReady() && !tasks.length && payoutBusy()) await fetchPayout();
+    if (!disposed && accountReady() && !tasks.length && activityBusy()) await fetchActivity();
     if (!disposed && accountReady() && !tasks.length && poolMode && (!withdrawalBinding || withdrawalBusy())) await fetchWithdrawal();
   } catch { if (!disposed && captured === epoch) disconnected(); }
 }
@@ -2862,6 +2865,172 @@ function renderPayout() {
   const status = o ? o.state === 'unavailable' ? 'Unavailable; no wallet status was established.' : o.state === 'not_observed' ? 'Not observed in the saved wallet transaction view.' : o.state === 'unconfirmed' ? 'Wallet-reported unconfirmed.' : `Wallet-reported confirmed with ${o.confirmations} confirmation${o.confirmations === 1 ? '' : 's'}.` : '';
   content(payoutUI.wallet, o ? `Wallet check ${new Date(o.observed_at_ms).toISOString()} for ${o.payment.txid}, output ${o.payment.output_index}: ${status}${o.wallet_synced ? ` Wallet-reported synchronized at height ${o.wallet_height}, tip ${o.wallet_tip}.` : ''}` : '');
 }
+
+// Immutable own-wallet observations. Refresh is explicit; rows are never summed
+// into a balance or used as payment, ownership, spendability or finality authority.
+const activityUI = Object.fromEntries(['refresh','cancel','previous','next','status','capture','page','list','detail'].map(k => [k, document.getElementById(`wallet-activity-${k}`)]));
+const ACTIVITY_ERRORS = new Set(['invalid_request','unauthorized','stale_view','busy','capacity','activity_unavailable','activity_not_found','operation_conflict','outcome_unknown']);
+let activityAttempt = null, activityCaptureJob = null, activityPage = null, activityDetail = null;
+let activityUnknown = false, activityPriorID = '', activityMessage = '', activitySerial = 0, activityProjectionPending = false;
+function clearActivity() { activitySerial++; activityAttempt = activityCaptureJob = activityPage = activityDetail = null; activityUnknown = activityProjectionPending = false; activityPriorID = activityMessage = ''; }
+function activityBusy() { return poolMode && (activityUnknown || activityAttempt?.state === 'running'); }
+function activityContext() { return {epoch, serial:activitySerial, view:currentKey()}; }
+function activityCurrent(c) { return poolMode && accountReady() && c.epoch === epoch && c.serial === activitySerial && c.view === currentKey(); }
+function activityBinding(v) {
+  exact(v,['view','source_binding_id','root_public_key','gym_public_key','gym_id']);
+  const f = current?.account?.fixture;
+  requireValue(poolMode && accountReady() && Object.hasOwn(ROOTS,f) && viewKey(checkedView(v.view)) === currentKey() && v.source_binding_id === current.source_binding_id && hex(v.source_binding_id) && v.root_public_key === ROOTS[f] && v.gym_public_key === fixtures[f][1] && v.gym_id === fixtures[f][0]);
+  return v;
+}
+function activityCapture(v) {
+  exact(v,['version','captured_at_ms','wallet_height','wallet_tip','node_height','node_tip','count','has_older']);
+  requireValue(v.version === 1 && int(v.captured_at_ms,1,PAYOUT_TIME_MAX) && int(v.wallet_height,0,2147483647) && int(v.node_height,0,2147483647) && payoutID(v.wallet_tip) && payoutID(v.node_tip) && v.wallet_height === v.node_height && v.wallet_tip === v.node_tip && int(v.count,0,256) && typeof v.has_older === 'boolean' && (!v.has_older || v.count === 256));
+  return v;
+}
+function activityItem(v,capture) {
+  exact(v,['txid','raw_sha256','recorded_at_ms','coinbase','block','confirmations','received_atoms','spent_atoms','change_atoms','net_atoms','fee_atoms','input_count','output_count','owned_input_count','owned_output_count']);
+  requireValue(hex(v.txid) && hex(v.raw_sha256) && int(v.recorded_at_ms,0,PAYOUT_TIME_MAX) && typeof v.coinbase === 'boolean' && int(v.confirmations,0,2147483648));
+  for (const k of ['received_atoms','spent_atoms','change_atoms']) requireValue(int(v[k],0,MAX_ATOMS));
+  requireValue(int(v.net_atoms,-MAX_ATOMS,MAX_ATOMS) && v.net_atoms === v.received_atoms-v.spent_atoms && v.change_atoms <= v.received_atoms);
+  requireValue(int(v.input_count,1,256) && int(v.output_count,1,256) && int(v.owned_input_count,0,v.input_count) && int(v.owned_output_count,0,v.output_count) && v.owned_input_count+v.owned_output_count > 0);
+  requireValue((v.owned_input_count !== 0 || v.spent_atoms === 0) && (v.owned_output_count !== 0 || v.received_atoms === 0 && v.change_atoms === 0));
+  if (v.block === null) requireValue(v.confirmations === 0);
+  else { exact(v.block,['height','hash','time_ms']); requireValue(int(v.block.height,0,capture.wallet_height) && payoutID(v.block.hash) && int(v.block.time_ms,0,PAYOUT_TIME_MAX) && v.confirmations === capture.wallet_height-v.block.height+1); }
+  const unknown = v.coinbase || v.owned_input_count < v.input_count;
+  requireValue(unknown ? v.fee_atoms === null : int(v.fee_atoms,0,v.spent_atoms));
+  if (v.coinbase) requireValue(v.input_count === 1 && v.owned_input_count === 0 && v.spent_atoms === 0);
+  return v;
+}
+function activityOrder(a,b) {
+  if ((a.block === null) !== (b.block === null)) return a.block === null ? -1 : 1;
+  const d = a.block === null ? b.recorded_at_ms-a.recorded_at_ms : b.block.height-a.block.height;
+  return d || (a.txid < b.txid ? -1 : a.txid > b.txid ? 1 : 0);
+}
+function activitySnapshotValue(v) {
+  exact(v,['version','state','error','binding','activity','active_job_id','last_job_id','capture_job_id']);
+  requireValue(v.version === 1 && ['active_job_id','last_job_id','capture_job_id'].every(k=>payoutID(v[k],true)));
+  if (v.state === 'unavailable') requireValue(v.error === 'activity_unavailable' && v.binding === null && v.activity === 'none' && !v.active_job_id && !v.last_job_id && !v.capture_job_id);
+  else { activityBinding(v.binding); requireValue(v.error === '' && ['idle','busy'].includes(v.state)); requireValue(v.state === 'idle' ? v.activity === 'none' && v.active_job_id === '' : ['capture','detail'].includes(v.activity) && !!v.active_job_id); if (v.activity === 'detail') requireValue(v.active_job_id === v.capture_job_id); }
+  return v;
+}
+function activityJobValue(v) {
+  exact(v,['version','job_id','state','binding','error','capture']); activityBinding(v.binding);
+  requireValue(v.version === 1 && payoutID(v.job_id) && ['running','done','failed','cancelled'].includes(v.state));
+  if (v.state === 'done') { requireValue(v.error === ''); activityCapture(v.capture); }
+  else if (v.state === 'failed') requireValue(v.capture === null && ['busy','capacity','activity_unavailable'].includes(v.error));
+  else requireValue(v.capture === null && v.error === '');
+  const old = [activityAttempt,activityCaptureJob].find(x=>x?.job_id === v.job_id);
+  if (old && old.state !== 'running') requireValue(same(old,v));
+  return v;
+}
+function activityPageValue(v) {
+  exact(v,['version','binding','job_id','capture','after','limit','next','has_more','items']); activityBinding(v.binding); activityCapture(v.capture);
+  requireValue(v.version === 1 && payoutID(v.job_id) && int(v.after,0,v.capture.count) && int(v.limit,1,8) && Array.isArray(v.items) && v.items.length === Math.min(v.limit,v.capture.count-v.after) && int(v.next,0,256) && v.next === v.after+v.items.length && typeof v.has_more === 'boolean' && v.has_more === (v.next<v.capture.count));
+  const ids = new Set(); let previous = null;
+  for (const row of v.items) { activityItem(row,v.capture); requireValue(!ids.has(row.txid) && (!previous || activityOrder(previous,row)<0)); ids.add(row.txid); previous=row; }
+  return v;
+}
+function activityDetailValue(v) {
+  exact(v,['version','binding','job_id','capture','item','outputs']); activityBinding(v.binding); activityCapture(v.capture); activityItem(v.item,v.capture);
+  requireValue(v.version === 1 && payoutID(v.job_id) && Array.isArray(v.outputs) && v.outputs.length === v.item.output_count);
+  let total=0,c=0,k=0,owned=0;
+  v.outputs.forEach((o,i)=>{
+    exact(o,['index','atoms','owned','change','address']); requireValue(int(o.index,i,i) && int(o.atoms,0,MAX_ATOMS) && typeof o.owned === 'boolean' && typeof o.change === 'boolean' && (!o.change || o.owned));
+    // The native codec validates the actual chain address/checksum; the browser
+    // accepts only bounded printable encodings, never a URL or injected markup.
+    requireValue(typeof o.address === 'string' && o.address.length <= 90 && (o.address === '' || /^(slug1[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{8,84}|[1-9A-HJ-NP-Za-km-z]{26,60})$/.test(o.address)));
+    total+=o.atoms; requireValue(int(total,0,MAX_ATOMS)); if(o.owned){c+=o.atoms;owned++;} if(o.change)k+=o.atoms;
+  });
+  requireValue(c === v.item.received_atoms && k === v.item.change_atoms && owned === v.item.owned_output_count && (v.item.fee_atoms === null || total+v.item.fee_atoms === v.item.spent_atoms));
+  return v;
+}
+function activityEnvelope(v,arm,jobID='') {
+  exact(v,['id','version','ok','snapshot','job','page','detail','error']);
+  requireValue(int(v.id,1) && v.version === 1 && typeof v.ok === 'boolean'); payoutSize(v,arm === 'detail' ? 98303 : 16383);
+  const arms=['snapshot','job','page','detail'];
+  if(!v.ok){requireValue(arms.every(k=>v[k]===null) && ACTIVITY_ERRORS.has(v.error));return {ok:false,error:v.error};}
+  requireValue(v.error === '' && arms.every(k=>k === arm ? v[k] !== null : v[k] === null));
+  const value=({snapshot:activitySnapshotValue,job:activityJobValue,page:activityPageValue,detail:activityDetailValue})[arm](v[arm]);
+  if(jobID)requireValue(value.job_id===jobID);
+  return {ok:true,value:own(value)};
+}
+function activityAtoms(value) { requireValue(int(value,-MAX_ATOMS,MAX_ATOMS)); const n=BigInt(value),a=n<0n?-n:n; return `${n<0n?'-':''}${a/100000000n}.${(a%100000000n).toString().padStart(8,'0')}`; }
+function activityRetained(attempt=activityAttempt,capture=activityCaptureJob,page=activityPage,detail=activityDetail) { payoutSize([attempt,capture,page,detail],131072); }
+function activityRefusal(code) {
+  if(['unauthorized','stale_view'].includes(code)){disconnected();return;}
+  activityMessage=({busy:'Another wallet task is finishing. The previous dated capture is retained.',capacity:'This wallet activity exceeds the current display limit. The previous dated capture is retained.',outcome_unknown:'Checking whether this exact refresh started. The previous capture stays dated.',activity_not_found:'The requested capture is no longer available. Choose Refresh to capture again.'})[code] || 'Wallet activity is unavailable. The previous dated capture is retained; choose Refresh to try again.';
+}
+async function acceptActivityJob(j) {
+  const replaced=j.state==='done' && j.job_id!==activityCaptureJob?.job_id;
+  activityRetained(j,j.state==='done'?j:activityCaptureJob,replaced?null:activityPage,replaced?null:activityDetail);
+  activityAttempt=j;activityUnknown=false;
+  if(j.state==='done'){if(replaced){activityCaptureJob=j;activityPage=activityDetail=null;}activityMessage='Wallet activity captured. Refresh explicitly to update it.';if(!activityPage)await readActivityPage(0);}
+  else if(j.state==='failed')activityRefusal(j.error);
+  else activityMessage=j.state==='cancelled'?'Refresh cancelled. The previous dated capture is retained.':'Reading wallet activity…';
+}
+async function readActivityPage(after) {
+  if(!poolMode || !accountReady() || !activityCaptureJob || activityProjectionPending)return;
+  const c=activityContext(),capture=activityCaptureJob,limit=8;activityProjectionPending=true;
+  try{
+    const raw=await call('WalletActivityPage',current.view.view_id,capture.job_id,after,limit);if(!activityCurrent(c) || activityCaptureJob?.job_id!==capture.job_id)return;
+    const r=activityEnvelope(raw,'page',capture.job_id);if(!r.ok){activityRefusal(r.error);return;}
+    requireValue(same(r.value.capture,capture.capture) && same(r.value.binding,capture.binding) && r.value.after===after && r.value.limit===limit);
+    if(activityPage){const old=activityPage; for(let i=0;i<r.value.items.length;i++){const oldIndex=after+i-old.after;if(oldIndex>=0 && oldIndex<old.items.length)requireValue(same(r.value.items[i],old.items[oldIndex]));}
+      if(old.next===after && old.items.length && r.value.items.length)requireValue(activityOrder(old.items.at(-1),r.value.items[0])<0);
+      if(r.value.next===old.after && old.items.length && r.value.items.length)requireValue(activityOrder(r.value.items.at(-1),old.items[0])<0);
+    }
+    activityRetained(activityAttempt,activityCaptureJob,r.value,null);activityPage=r.value;activityDetail=null;
+  }catch{if(activityCurrent(c))activityRefusal('activity_unavailable');}finally{if(activityCurrent(c))activityProjectionPending=false;renderActivity();}
+}
+async function beginActivity() {
+  if(!poolMode || !accountReady() || activityBusy() || activityProjectionPending || poolBackupRunning())return;
+  const c=activityContext();activityPriorID=activityAttempt?.job_id || activityCaptureJob?.job_id || '';activityAttempt=null;activityUnknown=true;activityMessage='Starting wallet activity refresh…';renderActivity();
+  try{const raw=await call('BeginWalletActivity',current.view.view_id);if(!activityCurrent(c))return;const r=activityEnvelope(raw,'job');if(!r.ok){activityUnknown=r.error==='outcome_unknown';activityRefusal(r.error);return;}
+    requireValue(r.value.job_id!==activityPriorID && r.value.job_id!==activityCaptureJob?.job_id);await acceptActivityJob(r.value);
+  }catch{if(activityCurrent(c)){activityUnknown=true;activityRefusal('outcome_unknown');}}finally{renderActivity();}
+}
+async function fetchActivity() {
+  if(!poolMode || !accountReady() || !activityBusy())return;const c=activityContext();
+  try{let id=activityAttempt?.job_id;
+    if(!id){const raw=await call('WalletActivitySnapshot');if(!activityCurrent(c))return;const r=activityEnvelope(raw,'snapshot');if(!r.ok){activityRefusal(r.error);return;}if(r.value.state==='unavailable'){activityRefusal('activity_unavailable');return;}
+      id=r.value.activity==='capture'?r.value.active_job_id:r.value.last_job_id;
+      if(!id || id===activityPriorID || id===activityCaptureJob?.job_id){activityUnknown=false;activityMessage='The new refresh did not start. The previous capture is unchanged; choose Refresh when ready.';return;}
+    }
+    const raw=await call('WalletActivityJob',current.view.view_id,id);if(!activityCurrent(c))return;const r=activityEnvelope(raw,'job',id);
+    if(!r.ok){if(r.error==='activity_not_found'){activityUnknown=false;activityAttempt=null;}activityRefusal(r.error);return;}await acceptActivityJob(r.value);
+  }catch{if(activityCurrent(c))activityRefusal('outcome_unknown');}finally{renderActivity();}
+}
+async function cancelActivity() {
+  if(!poolMode || !accountReady() || activityAttempt?.state!=='running')return;const c=activityContext(),id=activityAttempt.job_id;
+  try{const raw=await call('CancelWalletActivity',current.view.view_id,id);if(!activityCurrent(c))return;const r=activityEnvelope(raw,'job',id);if(r.ok)await acceptActivityJob(r.value);else activityRefusal(r.error);}
+  catch{if(activityCurrent(c))activityRefusal('outcome_unknown');}finally{renderActivity();}
+}
+async function readActivityDetail(row) {
+  if(!poolMode || !accountReady() || activityBusy() || activityProjectionPending || poolBackupRunning() || !activityCaptureJob || !activityPage?.items.some(i=>same(i,row)))return;
+  const c=activityContext(),capture=activityCaptureJob;activityProjectionPending=true;activityMessage='Reading the selected captured transaction…';renderActivity();
+  try{const raw=await call('WalletActivityDetail',current.view.view_id,capture.job_id,row.txid);if(!activityCurrent(c) || activityCaptureJob?.job_id!==capture.job_id)return;const r=activityEnvelope(raw,'detail',capture.job_id);if(!r.ok){activityRefusal(r.error);return;}
+    requireValue(same(r.value.capture,capture.capture) && same(r.value.binding,capture.binding) && same(r.value.item,row));activityRetained(activityAttempt,activityCaptureJob,activityPage,r.value);activityDetail=r.value;activityMessage='Transaction details from the same dated capture.';
+  }catch{if(activityCurrent(c))activityRefusal('activity_unavailable');}finally{if(activityCurrent(c))activityProjectionPending=false;renderActivity();}
+}
+function activityConfirmation(row) { return row.block===null?'Unconfirmed wallet record':`Wallet records ${row.confirmations} confirmation${row.confirmations===1?'':'s'}`; }
+function renderActivity() {
+  const visible=poolMode && accountReady(),busy=activityBusy() || activityProjectionPending,blocked=!visible || !!command || poolBackupRunning();
+  activityUI.refresh.disabled=blocked || busy;content(activityUI.refresh,activityCaptureJob?'Refresh wallet activity':'Load wallet activity');activityUI.cancel.disabled=!visible || !!command || activityAttempt?.state!=='running';
+  activityUI.previous.disabled=blocked || busy || !activityPage || activityPage.after===0;activityUI.next.disabled=blocked || busy || !activityPage?.has_more;
+  content(activityUI.status,visible?activityMessage || 'Load a dated view of incoming and outgoing wallet transactions.':'Sign in to view wallet activity.');
+  const cap=visible?activityCaptureJob?.capture:null;
+  content(activityUI.capture,cap?`Captured ${new Date(cap.captured_at_ms).toISOString()} at wallet height ${cap.wallet_height}, tip ${cap.wallet_tip}. ${cap.has_older?'Showing the most recent 256 records; older records exist.':'This is a bounded wallet observation.'}`:'');
+  content(activityUI.page,visible && activityPage?activityPage.capture.count===0?'No recorded wallet transactions in this capture.':`Transactions ${activityPage.after+1}–${activityPage.next} of ${activityPage.capture.count}`:'');activityUI.list.textContent='';
+  for(const row of visible?activityPage?.items??[]:[]){const li=element('li'),button=element('button','','View transaction details');button.disabled=blocked || busy;button.addEventListener('click',()=>{const c=activityContext();queue(()=>activityCurrent(c)?readActivityDetail(row):undefined,'wallet-activity-detail');});li.append(element('p','',`Net change ${activityAtoms(row.net_atoms)} SLUG · ${activityConfirmation(row)}${row.coinbase?' · Mining reward':''}.`),element('p','note',`Transaction ${row.txid}. Wallet recorded ${new Date(row.recorded_at_ms).toISOString()}.`),button);activityUI.list.append(li);}
+  activityUI.detail.textContent='';const d=visible?activityDetail:null;
+  if(d){const i=d.item;activityUI.detail.append(element('p','',`Transaction ${i.txid}. Net change ${activityAtoms(i.net_atoms)} SLUG. Received, including change: ${activityAtoms(i.received_atoms)} SLUG. Spent from wallet inputs: ${activityAtoms(i.spent_atoms)} SLUG. Recorded change: ${activityAtoms(i.change_atoms)} SLUG. ${i.fee_atoms===null?'Fee unknown.':`Fee ${activityAtoms(i.fee_atoms)} SLUG.`}`),element('p','note',`${activityConfirmation(i)} as captured ${new Date(d.capture.captured_at_ms).toISOString()}. Raw transaction SHA256 ${i.raw_sha256}.`));
+    const list=element('ol');for(const o of d.outputs)list.append(element('li','',`Output ${o.index}: ${activityAtoms(o.atoms)} SLUG · ${o.owned?'Wallet-recorded ownership':'Not recorded as owned'}${o.change?' · Recorded change':''}. ${o.address || 'No address representation available.'}`));activityUI.detail.append(list);
+  }
+}
+activityUI.refresh.addEventListener('click',()=>queue(beginActivity,'wallet-activity'));
+activityUI.cancel.addEventListener('click',()=>queue(cancelActivity,'wallet-activity-cancel'));
+activityUI.previous.addEventListener('click',()=>queue(()=>readActivityPage(Math.max(0,(activityPage?.after??0)-8)),'wallet-activity-page'));
+activityUI.next.addEventListener('click',()=>queue(()=>activityPage?.has_more?readActivityPage(activityPage.next):undefined,'wallet-activity-page'));
 
 // Candidate withdrawals retain exact native operation/action correlation. The
 // browser never approves raw transactions or refreshes an action's authority.

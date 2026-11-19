@@ -422,6 +422,14 @@ they do not count as completion of this product-release gate.
   already include issued change cursors; the separate hosted-vault integration
   still needs authoritative evolving metadata. D74 remains last.
 
+- Set70 adds ordinary own-wallet activity alongside the existing pool-payment
+  and withdrawal views. A bounded immutable capture provides incoming/outgoing
+  records, exact integer amounts and selected outputs at a dated wallet/node
+  tip. The concrete funded-fixture check matches the independently retained
+  transactions without changing wallet state. See `CHANGESET_70_NOTES.md` for
+  the complete qualification state and limits. This does not close hosted
+  recovery, real account or production identity gates; D74 remains last.
+
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
 `sim-handoff-intake.json` preserves archive and file checksums. They are reference

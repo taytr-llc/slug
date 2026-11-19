@@ -268,12 +268,20 @@ does not restore the installed payment journal or authorization. See
 `PHASE_A_BACKUP_RECOVERY.md`, `PHASE_A_RECOVERY_CLEANUP.md` and
 `CHANGESET_69_NOTES.md` for qualification and limits. Transfers and general
 matchmaking still require their own decisions.
+Set70 adds bounded own-wallet activity: immutable incoming/outgoing transaction
+pages, exact selected output details, integer amounts and dated wallet/node
+confirmation observations. Explicit refresh preserves the previous capture on
+failure. It reads the existing wallet under its original account/source binding
+and adds no spending or address-allocation authority. See `WALLET_ACTIVITY.md`
+and `CHANGESET_70_NOTES.md`. The next functional work is the current-wallet to
+hosted-recovery integration, preserving the old immutable vault API while adding
+authoritative evolving metadata and an actual consumer under schema-2 accounts.
 Never repin solo event histories. Keep the existing layout/logos until the final
 joint D74 review. Public hosting, production signer custody/capacity, real account
 configuration and permanent genesis remain separate gates. The implemented
 contract is `SHARED_POOL_DESKTOP.md`; the earlier workspace runtime proposal
 remains historical context. See `CHANGESET_52_NOTES.md` through
-`CHANGESET_69_NOTES.md`, `POOL_WORKER.md`, `POOL_RECIPIENTS.md`,
+`CHANGESET_70_NOTES.md`, `POOL_WORKER.md`, `POOL_RECIPIENTS.md`,
 `SHARED_GYM_STABLE.md` and `POOL_SESSION_FENCES.md`.
 
 ### 4. Wallet

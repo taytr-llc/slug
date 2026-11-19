@@ -46,6 +46,7 @@ var poolBuild string
 type Gym struct {
 	withdrawal     nativeWithdrawalState
 	payout         nativePayoutState
+	walletActivity nativeWalletActivityState
 	evidence       nativeEvidenceState
 	poolHelper     *bridge.PoolBridge
 	helper         *bridge.Bridge
