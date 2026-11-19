@@ -1,6 +1,6 @@
 # Durable pool share acceptance — Set 53
 
-Status: implementation contract. D79 and D80 are approved; this component does
+Status: implemented and focused validation passed. D79 and D80 are approved; this component does
 not calculate earnings, close rounds, send payments or admit fighters.
 
 ## Context and decision
@@ -18,6 +18,10 @@ represents ordinary pool shares.
 policy, pool payout address and share target, with finite work/submission/byte
 limits. This initial coordinator uses a fixed configured share target. No
 claimant may choose a target, payout, timestamp, hash or eligibility flag.
+Use a dedicated manifest issuer whose issuance access belongs to this pool.
+Its retained job count includes issuance that did not reach a pool work receipt.
+Capacity exhaustion stops new work; it does not evict evidence. This bounded
+candidate journal is not a production retention or archival policy.
 
 `Issue(ctx, token)` resolves a full template, durably issues the gym-bound job,
 builds the exact configured-payout candidate, checks the node proposal and

@@ -265,6 +265,13 @@ they do not count as completion of this product-release gate.
   durable acceptance, a live pool and payouts remain open. This additive library
   work requires no seed or desktop rollout. See `CHANGESET_52_NOTES.md`.
 
+- Set 53 adds durable pool work/share acceptance and restart recovery, including
+  D80's canonical late-winner exception. Focused normal/race/profile-refusal
+  checks and vet pass; no fighter admission or payment is granted by the pool
+  journal. Public service/miner integration, round earnings and settlement
+  remain open. No seed or desktop rollout is needed for this unconnected
+  component. See `CHANGESET_53_NOTES.md`.
+
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
 `sim-handoff-intake.json` preserves archive and file checksums. They are reference

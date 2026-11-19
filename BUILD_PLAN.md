@@ -173,8 +173,12 @@ fee applies once and balances below 1 SLUG carry forward. See
 `POOL_ACCOUNTING_POLICY.md` for the remaining incident, rounding and fee rules.
 Set 52 implements and tests nonce-only manifest share verification with
 separate pool/prospect/block targets and stable duplicate identities. Durable
-acceptance, the pool protocol, accounting and payouts remain ahead; no live
-pool or framework adaptation is implied. See `CHANGESET_52_NOTES.md`.
+acceptance follows in Set 53; no live pool or framework adaptation is implied.
+Set 53's bounded `poolshare` journal now persists issued work, authenticated
+share acceptance and block delivery, recovering exact duplicates and applying
+D80 only to exact canonical payout-bound winners. Public transport and miner
+integration, round accounting and payouts remain ahead. See
+`CHANGESET_52_NOTES.md` and `CHANGESET_53_NOTES.md`.
 
 ### 4. Wallet
 btcwallet from the btcd suite. Hosted wallet at signup with full

@@ -97,6 +97,12 @@ version.
   with independent pool/prospect/block targets. Its focused normal/race/profile
   refusal tests and vet pass. No durable share acceptance, credits, payments or
   live pool are enabled, and no seed rollout is needed. See `CHANGESET_52_NOTES.md`.
+- Set 53 on `slug-pool-acceptance` adds durable issued pool work, authenticated
+  share acceptance, duplicate recovery and canonical-only D80 late credit.
+  Normal/race/profile-refusal checks and vet pass. Use its dedicated manifest
+  issuer and preserve exact pending block evidence on uncertainty. The journal
+  grants no fighter admission, monetary balance or payment. Public pool/miner
+  integration and round accounting remain ahead. See `CHANGESET_53_NOTES.md`.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review
