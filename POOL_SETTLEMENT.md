@@ -20,6 +20,22 @@ is permanently occupied. No catch-up transaction is created for missed days.
 A monotonic persisted clock high-water rejects rollback. A future service
 scheduler will choose the daily run time; this library does not start one.
 
+`RecoverPending` is a separate operator recovery pass. It uses the same exact
+retained-transaction observation/rebroadcast path as `RunDaily`, then stops
+before new credit import, payment planning, fee quotation or signing. It never
+occupies a new daily slot. This lets a future scheduler recover old delivery
+before its configured payment time without accidentally preparing today's
+batch. Existing `RunDaily` callers retain their previous behavior.
+
+Recovery's pending/deferred reports retain their existing meanings. A recovery
+report with `state: complete` and an empty reason means the saved-transaction
+scan finished, not that today's payment ran. Its day and timestamp date that
+scan; only a persisted batch's day occupies the daily slot. Unreserved funding
+was not inspected, so available is conservatively zero and recovery does not
+invent a below-minimum reason. Confirmed, reserved and paid ledger amounts
+remain exact; a known missing destination remains visible. A future scheduler
+must display its own next due time separately from this recovery report.
+
 One batch combines ready inputs, pays each configured gym the floor of its
 aggregate funded net balance if at least 1 SLUG, and carries all remaining
 claims and unused fee budget in one change output. Original round attribution

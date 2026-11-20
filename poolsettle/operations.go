@@ -108,6 +108,10 @@ func (s *Store) finish(ctx context.Context, st state, day, phase, reason string,
 	if err != nil {
 		return Report{}, err
 	}
+	return s.finishBalances(ctx, st, day, phase, reason, balances)
+}
+
+func (s *Store) finishBalances(ctx context.Context, st state, day, phase, reason string, balances []Balance) (Report, error) {
 	now := s.now().UnixMilli()
 	if now < st.LastClockMS {
 		return Report{}, ErrClock
@@ -117,10 +121,10 @@ func (s *Store) finish(ctx context.Context, st state, day, phase, reason string,
 	if len(st.Batches) > 0 {
 		st.Report.TxID = st.Batches[len(st.Batches)-1].TxID
 	}
-	if err = ctx.Err(); err != nil {
+	if err := ctx.Err(); err != nil {
 		return Report{}, err
 	}
-	if err = s.commit(st, false); err != nil {
+	if err := s.commit(st, false); err != nil {
 		return Report{}, err
 	}
 	return clone(st.Report), nil
@@ -168,6 +172,12 @@ func (s *Store) inspect(ctx context.Context, coins []Coin) ([]Coin, map[string]s
 // is prepared that day's slot is permanently occupied. A pending transaction
 // blocks later batches and can only be recovered or rebroadcast byte-for-byte.
 func (s *Store) RunDaily(ctx context.Context) (Report, error) {
+	return s.runSettlement(ctx, false)
+}
+
+// runSettlement shares the original exact-byte recovery prefix. Recovery-only
+// callers return before the credit import, plan, fee quote and signing path.
+func (s *Store) runSettlement(ctx context.Context, recoveryOnly bool) (Report, error) {
 	if s != nil && s.auditOnly {
 		return Report{}, ErrInvalid
 	}
@@ -240,6 +250,9 @@ func (s *Store) RunDaily(ctx context.Context) (Report, error) {
 		}
 		b.State = "broadcast"
 		return s.finish(ctx, st, day, "pending", "payout-pending", nil, nil)
+	}
+	if recoveryOnly {
+		return s.finishRecovery(ctx, st, day)
 	}
 	// Existing exact-byte recovery always precedes capacity for new credits.
 	// A full journal must not strand an already reserved payment.

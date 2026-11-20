@@ -21,3 +21,23 @@ func (s *Store) SourceConfig(ctx context.Context) (poolshare.Config, error) {
 	}
 	return s.state.Source, nil
 }
+
+// SchedulerBinding audits the original writable settlement owner and returns
+// owned copies of its immutable configuration. It is a logical binding only,
+// not a unique database identity, replacement-store permission or payment
+// capability. The operator runtime retains the original path and Store pointer.
+// Read-only audit handles cannot be attached to a mutation scheduler.
+func (s *Store) SchedulerBinding(ctx context.Context) (Config, poolshare.Config, error) {
+	if s != nil && s.auditOnly {
+		return Config{}, poolshare.Config{}, ErrInvalid
+	}
+	end, err := s.begin(ctx)
+	if err != nil {
+		return Config{}, poolshare.Config{}, err
+	}
+	defer end()
+	if err = s.verify(ctx); err != nil {
+		return Config{}, poolshare.Config{}, err
+	}
+	return clone(s.state.Config), s.state.Source, nil
+}

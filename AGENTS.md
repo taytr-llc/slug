@@ -347,6 +347,12 @@ tests alone do not close public deployment and scheduled-payout acceptance.
   `PUBLIC_FIGHTER_OWNERSHIP.md`, `OWNED_GYM_DESKTOP.md`, `RESTORED_GYM_CLI.md` and
   `CHANGESET_73_NOTES.md`. Public pool/scheduled payouts follow this milestone;
   sign-in/onboarding and the final D74 product review remain later.
+- Set74 on `slug-public-pool-runtime` follows completed Set73 maintenance
+  `1aba70ca`. Public operator service and scheduled payouts precede sign-in.
+  Recovery-only settlement and original-store binding passed focused normal,
+  race and profile-refusal checks; service/wallet integration remains in progress.
+  Keep exact retained transaction recovery separate from daily preparation.
+  See `CHANGESET_74_NOTES.md`; no public pool readiness is implied.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review
