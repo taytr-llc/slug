@@ -22,6 +22,7 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 	data := flags.String("data-dir", "", "Explicit disposable pilot directory")
 	node := flags.String("node-binary", "", "Explicit bundled normal SLUG node binary")
 	pool := flags.Bool("candidate-pool", false, "Use the separate shared public-fixture pool desktop")
+	hosted := flags.Bool("candidate-hosted-pool", false, "Use the separate signed public-fixture hosted pool desktop")
 	nameVersion := flags.String("candidate-name-version", "1", "Explicit immutable pool candidate name version (1 or 2)")
 	accounts := flags.Bool("account-fixtures", false, "Use the separate two-public-fixture account pilot")
 	candidates := flags.Bool("candidate-manifests", false, "Use the separate candidate fixture desktop")
@@ -39,17 +40,34 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 	if flags.NArg() != 0 || *data == "" || *node == "" {
 		return errors.New("explicit data-dir and node-binary are required")
 	}
-	dataExplicit, poolExplicit, nameExplicit := false, false, false
+	dataExplicit, poolExplicit, nameExplicit, legacyExplicit := false, false, false, false
 	flags.Visit(func(f *flag.Flag) {
 		switch f.Name {
 		case "data-dir":
 			dataExplicit = true
 		case "candidate-pool":
 			poolExplicit = true
+			legacyExplicit = true
 		case "candidate-name-version":
 			nameExplicit = true
+		case "account-fixtures", "candidate-manifests", "candidate-stable", "candidate-entries", "candidate-events", "candidate-seeds", "candidate-cards", "candidate-bouts", "candidate-results", "career":
+			legacyExplicit = true
 		}
 	})
+	if *hosted {
+		if legacyExplicit {
+			return errors.New("candidate-hosted-pool is a separate explicit mode")
+		}
+		options, err := poolselection.HostedOptions(*nameVersion, nameExplicit, *data, dataExplicit)
+		if err != nil {
+			return err
+		}
+		c, err := accountpilot.NewHostedFixturePool(ctx, pilot.Config{DataDir: *data, NodeBinary: *node}, options)
+		if err != nil {
+			return err
+		}
+		return pilot.ServePool(ctx, stdin, stdout, c)
+	}
 	options, selectionErr := poolselection.Options(*pool, poolExplicit, *nameVersion, nameExplicit, *data, dataExplicit)
 	if selectionErr != nil {
 		return selectionErr

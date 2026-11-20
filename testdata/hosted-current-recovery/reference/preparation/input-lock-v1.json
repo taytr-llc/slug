@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "catalog": "input-catalog-v1.json",
+  "catalog_sha256": "b57278333ed28f9b46f62b7a4fdc8c6b3f55d3f21f2ea656cc19a803708ad0d1",
+  "recipe_sha256": "d501b92fc10e2b307bf210bf3457655f0c0632dc20bd91b57548462e3ea699d3",
+  "contract_sha256": "92b247a5c3f47e637ed0dbf09d08c8f580a881cc80ff114a4c22d2e119572a86",
+  "file_count": 75,
+  "input_bytes": 2498308,
+  "expected_outputs_generated": false,
+  "execution_authorized": false
+}

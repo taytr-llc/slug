@@ -273,15 +273,28 @@ pages, exact selected output details, integer amounts and dated wallet/node
 confirmation observations. Explicit refresh preserves the previous capture on
 failure. It reads the existing wallet under its original account/source binding
 and adds no spending or address-allocation authority. See `WALLET_ACTIVITY.md`
-and `CHANGESET_70_NOTES.md`. The next functional work is the current-wallet to
-hosted-recovery integration, preserving the old immutable vault API while adding
-authoritative evolving metadata and an actual consumer under schema-2 accounts.
+and `CHANGESET_70_NOTES.md`. Set71 implements the current-wallet to
+hosted-recovery integration in an explicit, isolated fixture mode, preserving the
+old immutable vault API while adding concrete public wallet captures and signed
+schema-2 account login/reset. `HOSTED_CURRENT_RECOVERY.md` freezes the contract;
+`CHANGESET_71_NOTES.md` records the qualification status and limits. This supplies
+local hosted-account plumbing, not a live signup provider, continuous recovery
+coverage or production custody. The real login method/provider and screens are
+still open; email/password is a proposal. The approved same-wallet verified
+reset and 24-hour hold remain mandatory for the eventual provider.
+The next recovery milestone is durable address-issuance inventory and deliberate
+recovery when the local wallet is missing. A dated export does not protect
+later allocations continuously, and a seed/cursor restore must never recreate
+missing signed-payment authority. Define and qualify that boundary before
+claiming original-device-loss recovery; real provider route preparation can
+proceed separately. The proposed scope is recorded in the workspace's
+`set72-next-functional-review.md`, not yet an adopted byte contract.
 Never repin solo event histories. Keep the existing layout/logos until the final
 joint D74 review. Public hosting, production signer custody/capacity, real account
 configuration and permanent genesis remain separate gates. The implemented
 contract is `SHARED_POOL_DESKTOP.md`; the earlier workspace runtime proposal
 remains historical context. See `CHANGESET_52_NOTES.md` through
-`CHANGESET_70_NOTES.md`, `POOL_WORKER.md`, `POOL_RECIPIENTS.md`,
+`CHANGESET_71_NOTES.md`, `POOL_WORKER.md`, `POOL_RECIPIENTS.md`,
 `SHARED_GYM_STABLE.md` and `POOL_SESSION_FENCES.md`.
 
 ### 4. Wallet

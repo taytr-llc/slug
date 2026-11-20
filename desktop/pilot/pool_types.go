@@ -4,6 +4,7 @@ package pilot
 import "github.com/taytr-llc/slug/poolservice"
 
 const PoolMode = "local-pool-pilot"
+const HostedPoolMode = "local-hosted-fixture-pool"
 
 type PoolBalanceSnapshot struct {
 	State string                       `json:"state"`

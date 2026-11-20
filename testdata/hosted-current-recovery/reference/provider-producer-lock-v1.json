@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "approved_by": "root",
+  "frozen_at_utc": "2026-11-19T23:33:48.040924+00:00",
+  "input_lock_sha256": "f7809a938be24d9a320beeff9f8ed09fb2a43f9245864ca7ab0d4f5bb7a16dd9",
+  "contract_sha256": "92b247a5c3f47e637ed0dbf09d08c8f580a881cc80ff114a4c22d2e119572a86",
+  "sources": {
+    "common.py": "77d04d88185063b06dcfad5a8f30afb6aefaaa1846737d92fdb467ac2da763a2",
+    "provider_model.py": "efcb708b726e61a4bcf4e578876c8f802555e085c371a4f6158e7521b1a733f9",
+    "marker_model.py": "46646bf94cc20fb7e344bd106b810c366f76164f6fad16ae9081486a71b90278",
+    "generate_provider_reference.py": "28b7490097104b3bb2cfb62deb1df87f7b53f1d048ff2eb7c4ac7d9dbd6341bc",
+    "provider-case-plan.json": "db86ab4a1e14c9128395056ae34f3510a2f540068265f306f718fdc2149f78c6"
+  },
+  "review": "provider-source-review.md",
+  "producer_executed": false,
+  "execution_authorized": true,
+  "product_implementation_started": false
+}

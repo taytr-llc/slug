@@ -488,8 +488,8 @@ function poolEnvironment(sequences = [2, 5], checkpoint = 12, fixture = 'zero256
   m.balance = { state: 'ready', error: '', value: { version: 1, binding_id: m.source_binding_id, observed_at_ms: m.view ? 1794893590614 : 0, balance: { gym_id: m.gym_id, confirmed: { numerator: '990000001', denominator: '2' }, available: { numerator: '0', denominator: '1' }, reserved_atoms: 0, paid_atoms: 0, reason: 'immature' } } };
   return e;
 }
-function poolHarness(initial = poolEnvironment()) {
-  const h = harness(initial, 'local-pool-pilot'); h.state.stable.last_job_id = '';
+function poolHarness(initial = poolEnvironment(), mode = 'local-pool-pilot') {
+  const h = harness(initial, mode); h.state.stable.last_job_id = '';
   h.handlers.PoolSnapshot = () => clone(h.state.manifest);
   h.handlers.RefreshPoolBalance = () => {};
   h.handlers.EntrySnapshot = () => ({ id: 1000 + h.calls.length, ok: false, view: null, store_id: '', snapshot: null, status: null, history: null, job: null, operation: null, error: 'entry_unavailable' });
@@ -503,6 +503,41 @@ function poolHarness(initial = poolEnvironment()) {
   h.handlers.BeginStableRecent = () => page(h.state.items.length > 8 ? h.state.items.at(-9).assignment.sequence : 0, 8);
   return h;
 }
+
+test('hosted mode pins its snapshot and preserves explicit Start', async () => {
+  const initial = poolEnvironment(); initial.manifest.mode = 'local-hosted-fixture-pool';
+  const h = poolHarness(initial, initial.manifest.mode); await h.start();
+  assert.equal(h.elements.get('hosted-fixture-caption').hidden, false);
+  assert.equal(h.count('Start'), 0); assert.equal(h.count('PoolSnapshot'), 1);
+  h.context.testSnapshot = clone(initial.manifest);
+  assert.doesNotThrow(() => vm.runInContext('normalizePool(testSnapshot)', h.context));
+  h.context.testSnapshot.mode = 'local-pool-pilot';
+  assert.throws(() => vm.runInContext('normalizePool(testSnapshot)', h.context));
+  const old = poolHarness(); await old.start();
+  old.context.testSnapshot = clone(initial.manifest);
+  assert.throws(() => vm.runInContext('normalizePool(testSnapshot)', old.context));
+  assert.equal(old.elements.get('hosted-fixture-caption').hidden, true);
+});
+
+test('exact hosted pending fixture can resume while signed out without creating a login', async () => {
+  const initial = blank(); delete initial.manifest.accepted_count; delete initial.manifest.projection;
+  Object.assign(initial.manifest, { mode: 'local-hosted-fixture-pool', assignment_count: 0, source_binding_id: '', backup_state: 'unavailable', balance: { state: 'unavailable', error: '', value: null } });
+  Object.assign(initial.manifest.account, { fixture: 'zero256', last_error: 'hosted_reset_pending' });
+  const h = poolHarness(initial, initial.manifest.mode);
+  h.handlers.ResetFixtureAccount = () => { h.state.manifest.account.last_error = ''; };
+  await h.start();
+  assert.equal(h.elements.get('reset').disabled, false);
+  assert.equal(h.elements.get('reset').textContent, 'Resume fixture reset');
+  assert.match(h.elements.get('account-copy').textContent, /Demo A/);
+  assert.equal(h.elements.get('mining').disabled, true);
+  assert.equal(h.elements.get('export-recovery').disabled, true);
+  h.context.testSnapshot = clone(initial.manifest); h.context.testSnapshot.account.fixture = '';
+  assert.throws(() => vm.runInContext('normalizePool(testSnapshot)', h.context));
+  await h.click('reset');
+  assert.equal(h.count('ResetFixtureAccount'), 1);
+  assert.equal(h.count('LoginFixture'), 0); assert.equal(h.count('Start'), 0);
+  assert.equal(h.elements.get('reset').disabled, true);
+});
 test('pool mode reports local count, exact fractional carry and maturity reason without mining or legacy reads', async () => {
   const h = poolHarness(); await h.start();
   assert.match(h.elements.get('stable-count').textContent, /^2 assigned candidates · 12 shared/);

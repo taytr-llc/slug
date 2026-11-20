@@ -60,6 +60,8 @@ type StableOperation struct {
 	Operation *gymstable.Operation `json:"operation"`
 }
 type StableAccountConfig struct {
+	// Hosted is accepted only with the matching explicit hosted runtime.
+	Hosted *HostedPoolSession
 	// Original login times are private authority metadata, never token-derived.
 	AuthenticatedAtMS  int64
 	SessionExpiresAtMS int64

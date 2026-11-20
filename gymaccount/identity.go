@@ -9,6 +9,7 @@ import (
 	"errors"
 	"math"
 	"strings"
+	"time"
 
 	"github.com/syndtr/goleveldb/leveldb"
 )
@@ -44,6 +45,33 @@ func OpenIdentity(path string, c IdentityConfig) (*Store, error) {
 		return nil, err
 	}
 	return openStore(path, c.Accounts, &c)
+}
+
+// CreateIdentityPinned creates a new schema-2 authority with the exact identity
+// already committed by its owning initializer. It never adopts an existing
+// directory or changes the random-ID behavior of CreateIdentity.
+func CreateIdentityPinned(path string, c IdentityConfig, authorityID string) (*Store, error) {
+	if !validID(authorityID) || authorityID == strings.Repeat("0", 64) {
+		return nil, ErrCorrupt
+	}
+	c, err := normalizedIdentityConfig(c)
+	if err != nil {
+		return nil, err
+	}
+	return createStorePinnedWithClock(path, c.Accounts, &c, time.Now, authorityID)
+}
+
+// OpenIdentityPinned audits an established schema-2 authority only after its
+// marker matches the owner's separately retained identity and configuration.
+func OpenIdentityPinned(path string, c IdentityConfig, authorityID string) (*Store, error) {
+	if !validID(authorityID) || authorityID == strings.Repeat("0", 64) {
+		return nil, ErrCorrupt
+	}
+	c, err := normalizedIdentityConfig(c)
+	if err != nil {
+		return nil, err
+	}
+	return openStorePinnedWithClock(path, c.Accounts, &c, time.Now, authorityID)
 }
 func (s *Store) identityMode() error {
 	if s.meta.Version != IdentityVersion || s.meta.Identity == nil {

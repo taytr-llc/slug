@@ -23,6 +23,7 @@ type poolChild interface {
 // PoolController owns one account view over a shared runtime. Invalidating a
 // view never destroys the pool source or the other gym's retained history.
 type PoolController struct {
+	hosted                            *hostedPoolOwner
 	evidencePermit                    pilot.EvidencePermit
 	mu, miningMu                      sync.Mutex
 	config                            pilot.Config
@@ -115,7 +116,7 @@ func newPoolWithOptions(ctx context.Context, config pilot.Config, options pilot.
 func (c *PoolController) begin(state string, fn func(context.Context) error) error {
 	c.mu.Lock()
 	defer c.mu.Unlock()
-	if c.closed || c.operation {
+	if c.closed || c.operation || c.hosted != nil && c.shutdownErr != nil {
 		return errors.New("account operation unavailable")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
@@ -132,6 +133,9 @@ func (c *PoolController) begin(state string, fn func(context.Context) error) err
 		c.cancel, c.operation = nil, false
 		if err != nil {
 			c.state, c.lastError = "failed", "account_unavailable"
+			if c.hosted != nil && errors.Is(err, errHostedPending) {
+				c.state, c.lastError = "signed_out", "hosted_reset_pending"
+			}
 		}
 		close(done)
 		c.mu.Unlock()
@@ -153,6 +157,9 @@ func (c *PoolController) LoginFixture(fixture string) error {
 }
 
 func (c *PoolController) login(ctx context.Context, fixture string) (resultErr error) {
+	if c.hosted != nil {
+		return c.loginHosted(ctx, fixture)
+	}
 	principal, err := verifyFixture(ctx, fixture, false)
 	if err != nil {
 		return err
@@ -161,6 +168,10 @@ func (c *PoolController) login(ctx context.Context, fixture string) (resultErr e
 	if err != nil {
 		return err
 	}
+	return c.installSession(ctx, fixture, session, principal.AuthenticatedAtMS)
+}
+func (c *PoolController) installSession(ctx context.Context, fixture string, session gymaccount.Session, authenticatedAtMS int64) (resultErr error) {
+	var err error
 	var nonce [32]byte
 	if _, err = rand.Read(nonce[:]); err != nil {
 		_ = c.store.Logout(context.Background(), session.Token)
@@ -183,7 +194,12 @@ func (c *PoolController) login(ctx context.Context, fixture string) (resultErr e
 			resultErr = errors.Join(resultErr, c.cleanupAccount(context.Background(), session.Token, child))
 		}
 	}()
-	if _, err = c.provision(ctx, fixture, session); err != nil {
+	if c.hosted != nil {
+		_, err = c.runtime.ProvisionHostedFixture(ctx, fixture, session, c.hostedViewFence(session, viewID, func() poolChild { return child }))
+	} else {
+		_, err = c.provision(ctx, fixture, session)
+	}
+	if err != nil {
 		return err
 	}
 	token, err := c.store.MintMining(ctx, session.Token)
@@ -201,13 +217,19 @@ func (c *PoolController) login(ctx context.Context, fixture string) (resultErr e
 	a.ViewLease = func(ctx context.Context, fn func(gymaccount.Account, func() error) error) error {
 		return c.withView(ctx, session, viewID, child, fn)
 	}
-	stable := pilot.StableAccountConfig{AuthenticatedAtMS: principal.AuthenticatedAtMS, SessionExpiresAtMS: session.ExpiresAtMS, EvidencePermit: &c.evidencePermit, Manifest: a, Lease: func(ctx context.Context, cap gymaccount.Capability, fn func(gymaccount.Account, func() error) error) error {
+	stable := pilot.StableAccountConfig{AuthenticatedAtMS: authenticatedAtMS, SessionExpiresAtMS: session.ExpiresAtMS, EvidencePermit: &c.evidencePermit, Manifest: a, Lease: func(ctx context.Context, cap gymaccount.Capability, fn func(gymaccount.Account, func() error) error) error {
 		return c.withCapability(ctx, session, viewID, child, cap, fn)
 	}, HistoryPublicationLease: func(ctx context.Context, fn func(gymaccount.Account, func() error) error) error {
 		return c.withPoolHistoryPublicationLease(ctx, session, viewID, child, fn)
 	}, ResultNodeLease: func(ctx context.Context, fn func(gymaccount.Account, func() error) error) error {
 		return c.withPoolResultNodeLease(ctx, session, viewID, child, fn)
 	}}
+	if c.hosted != nil {
+		stable.Hosted, err = c.runtime.HostedSession(session, c.hostedViewFence(session, viewID, func() poolChild { return child }))
+		if err != nil {
+			return err
+		}
+	}
 	created, err := c.newChild(ctx, c.runtime, stable)
 	if err != nil {
 		return err
@@ -337,7 +359,13 @@ func (c *PoolController) cleanupAccount(ctx context.Context, token string, child
 	}
 	if child != nil {
 		child.Stop()
-		err = errors.Join(err, child.Close())
+		closeErr := child.Close()
+		err = errors.Join(err, closeErr)
+		if closeErr != nil && c.hosted != nil {
+			c.mu.Lock()
+			c.hosted.failedChild = child
+			c.mu.Unlock()
+		}
 	}
 	return c.noteCleanup(err)
 }
@@ -377,6 +405,20 @@ func (c *PoolController) ResetFixtureAccount() error {
 	c.mu.Lock()
 	fixture, child := c.fixture, c.child
 	c.mu.Unlock()
+	if c.hosted != nil {
+		if fixture == "" {
+			return errors.New("select the fixture first")
+		}
+		if child == nil {
+			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+			_, err := c.hosted.driver.PendingReset(ctx, fixture)
+			cancel()
+			if err != nil {
+				return errors.New("no exact pending fixture reset")
+			}
+		}
+		return c.begin("resetting", func(ctx context.Context) error { return c.resetHosted(ctx, fixture) })
+	}
 	if child == nil || fixture == "" {
 		return errors.New("sign in to the fixture first")
 	}
@@ -432,6 +474,9 @@ func (c *PoolController) Snapshot() pilot.PoolSnapshot {
 	state, fixture, last, busy, closed := c.state, c.fixture, c.lastError, c.operation, c.closed
 	c.mu.Unlock()
 	blank := pilot.BlankPoolSnapshot()
+	if c.hosted != nil {
+		blank.Mode = pilot.HostedPoolMode
+	}
 	blank.Account = pilot.AccountSnapshot{State: state, Fixture: fixture, LastError: last}
 	if closed || busy || state != "signed_in" || child == nil || viewID == "" {
 		if closed {
@@ -451,7 +496,7 @@ func (c *PoolController) Snapshot() pilot.PoolSnapshot {
 	capabilityCancel()
 	err := c.withView(context.Background(), session, viewID, child, func(a gymaccount.Account, check func() error) error {
 		v := child.Snapshot()
-		if v.Mode != pilot.PoolMode || v.View == nil || v.View.ViewID != viewID || v.View.AccountID != a.ID || v.View.AccountAuthorityID != c.store.AuthorityID() || v.View.Generation != a.Generation || v.SourceBindingID != c.sourceID {
+		if v.Mode != blank.Mode || v.View == nil || v.View.ViewID != viewID || v.View.AccountID != a.ID || v.View.AccountAuthorityID != c.store.AuthorityID() || v.View.Generation != a.Generation || v.SourceBindingID != c.sourceID {
 			return gymaccount.ErrForbidden
 		}
 		held := a.HoldUntilMS > c.clockNow().UnixMilli()
@@ -527,6 +572,17 @@ func (c *PoolController) Close() error {
 		err := c.detach(context.Background())
 		if c.runtime != nil {
 			err = errors.Join(err, c.runtime.Close())
+		}
+		if c.hosted != nil {
+			if err == nil {
+				err = c.hosted.close()
+			}
+			if err != nil {
+				c.mu.Lock()
+				c.closeErr = errors.Join(c.shutdownErr, err)
+				c.mu.Unlock()
+				return
+			}
 		}
 		if c.store != nil {
 			err = errors.Join(err, c.store.Close())

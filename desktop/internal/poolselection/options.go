@@ -33,3 +33,13 @@ func Options(pool, poolExplicit bool, version string, versionExplicit bool, data
 	}
 	return pilot.ResolvePoolOptions(pilot.PoolOptions{})
 }
+
+// HostedOptions requires an explicit canonical namespace even for name v1.
+// Callers select this only for an explicit true --candidate-hosted-pool flag,
+// after refusing every explicitly supplied legacy mode flag.
+func HostedOptions(version string, versionExplicit bool, data string, dataExplicit bool) (pilot.PoolOptions, error) {
+	if !dataExplicit || !filepath.IsAbs(data) || filepath.Clean(data) != data || strings.ContainsAny(data, "\x00\r\n\t") {
+		return pilot.PoolOptions{}, ErrSelection
+	}
+	return Options(true, true, version, versionExplicit, data, true)
+}

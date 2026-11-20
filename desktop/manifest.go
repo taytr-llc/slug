@@ -13,7 +13,7 @@ import (
 
 func (g *Gym) Mode() string {
 	if g.poolHelper != nil {
-		return pilot.PoolMode
+		return g.poolHelper.Mode()
 	}
 	if g.manifestHelper != nil {
 		return pilot.ManifestMode

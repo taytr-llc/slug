@@ -25,6 +25,16 @@ func realDirectory(path string) bool {
 }
 
 func openStore(root string) (*gymaccount.Store, error) {
+	for dir := root; ; dir = filepath.Dir(dir) {
+		for _, name := range []string{"SLUG-HOSTED-POOL-INIT.json", "SLUG-HOSTED-POOL-READY.json"} {
+			if _, e := os.Lstat(filepath.Join(dir, name)); !os.IsNotExist(e) {
+				return nil, errors.New("account directory overlaps hosted data")
+			}
+		}
+		if dir == filepath.Dir(dir) {
+			break
+		}
+	}
 	if !filepath.IsAbs(root) || filepath.Clean(root) != root {
 		return nil, errors.New("absolute account pilot directory required")
 	}

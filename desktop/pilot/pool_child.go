@@ -21,6 +21,7 @@ import (
 	"github.com/taytr-llc/slug/prospectworker"
 	"github.com/taytr-llc/slug/wire/v2"
 	"github.com/taytr-llc/slugwallet/recovery"
+	"github.com/taytr-llc/slugwallet/recoveryvault"
 	"github.com/taytr-llc/slugwallet/wallet"
 )
 
@@ -38,6 +39,7 @@ type poolChildWorker interface {
 // PoolChild owns one original account view. Shared chain and source resources
 // are borrowed until every worker, proof lane and wallet operation has joined.
 type PoolChild struct {
+	hostedCurrent                              *recoveryvault.CurrentSource
 	activityOp                                 *walletActivityOperation
 	activityCache                              *walletActivityCache
 	activityLast                               *WalletActivityJob
@@ -125,6 +127,9 @@ func NewPoolChild(ctx context.Context, runtime *PoolRuntime, account StableAccou
 }
 
 func newPoolChild(ctx context.Context, r poolChildResources, account StableAccountConfig) (_ *PoolChild, resultErr error) {
+	if err := validateHostedPoolChild(r, account); err != nil {
+		return nil, err
+	}
 	league, err := validatePoolLeagueChild(r)
 	if err != nil {
 		return nil, err
@@ -156,6 +161,9 @@ func newPoolChild(ctx context.Context, r poolChildResources, account StableAccou
 	}
 	life, cancel := context.WithCancel(context.Background())
 	c := &PoolChild{account: account, resources: r, authority: authority, admission: &poolChildAdmission{fence: admissionFence, config: wc}, ctx: life, cancel: cancel, refreshDone: make(chan struct{}), closeDone: make(chan struct{}), snapshot: BlankPoolSnapshot()}
+	if r.Hosted != nil {
+		c.snapshot.Mode = HostedPoolMode
+	}
 	return c, nil
 }
 
@@ -218,6 +226,9 @@ func (c *PoolChild) Prepare(parent context.Context) error {
 	if err != nil || binding != r.Recipient {
 		return ErrPoolRecipient
 	}
+	if err = c.attachHostedCurrent(ctx); err != nil {
+		return err
+	}
 	if r.Withdrawal != nil {
 		c.withdrawal, err = openPoolWithdrawal(ctx, r, c.wallet)
 		c.withdrawalIO = c.withdrawal
@@ -260,9 +271,15 @@ func (c *PoolChild) Prepare(parent context.Context) error {
 	}
 	view := base.viewPin()
 	c.newWorker = func(signer prospectworker.Signer) (poolChildWorker, error) {
-		return prospectworker.NewPoolWithHooks(wc, c.authority, c.admission, r.Node, poolChildSigner(c.authority, signer), c.box, s.observeStable, s.cycle)
+		if r.Hosted == nil {
+			signer = poolChildSigner(c.authority, signer)
+		}
+		return prospectworker.NewPoolWithHooks(wc, c.authority, c.admission, r.Node, signer, c.box, s.observeStable, s.cycle)
 	}
 	c.signer = func(ctx context.Context) (prospectworker.Signer, error) { return c.wallet.Signer(ctx, r.Source.Policy) }
+	if r.Hosted != nil {
+		c.signer = c.hostedSigner
+	}
 	if c.authority.checkToken(ctx, token) != nil {
 		return poolAccessError(false)
 	}
@@ -627,8 +644,19 @@ func (c *PoolChild) Close() error {
 		if c.withdrawalIO != nil {
 			err = errors.Join(err, c.withdrawalIO.Close())
 		}
-		if c.wallet != nil {
+		if c.hostedCurrent != nil {
+			err = errors.Join(err, c.hostedCurrent.Close())
+		}
+		if c.wallet != nil && (c.resources.Hosted == nil || err == nil) {
 			err = errors.Join(err, c.wallet.Close())
+		}
+		if c.resources.Hosted != nil && err != nil {
+			c.account.Hosted.runtime.retainHostedWallet(c.wallet, err)
+			c.mu.Lock()
+			c.closeErr = err
+			c.mu.Unlock()
+			close(c.closeDone)
+			return // Retain lock/borrow/dependencies after failed joined cleanup.
 		}
 		if c.lock != nil {
 			err = errors.Join(err, c.lock.Close())

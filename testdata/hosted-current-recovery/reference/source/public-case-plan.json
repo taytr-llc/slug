@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "status": "SOURCE ONLY; no module imports, expected generation or output execution before root reviews and freezes exact source",
+  "contract_sha256": "92b247a5c3f47e637ed0dbf09d08c8f580a881cc80ff114a4c22d2e119572a86",
+  "input_lock_sha256": "f7809a938be24d9a320beeff9f8ed09fb2a43f9245864ca7ab0d4f5bb7a16dd9",
+  "sources": ["common.py", "public_rows.py", "public_inventory.py", "size_model.py", "generate_public_reference.py", "public-case-plan.json"],
+  "provenance": "Only approved75-file public input set. Baseline public manifests match original independent recovery_v1 identity with DefaultAccounts zero cursors; actual old-source native84 1/1 manifests remain independently preserved. Row encrypted spans are inert public sentinel bytes, not valid ciphertext or decrypted material.",
+  "binary_rows": {
+    "positive_count": 7,
+    "negative_count": 18,
+    "positives": ["minimal default", "ordinary default", "both4096", "mixed0/4096", "required imported metadata", "exact65536-byte mixed row", "opaque nontext name span"],
+    "negatives": ["empty", "short header", "unsupported account type", "short body length", "long body length", "public length overflow", "private length overflow", "name length overflow", "trailing body", "empty default public", "empty default private", "external4097", "internal4097", "nonempty imported public", "nonempty imported private", "nonzero imported cursor", "foreign account number", "65537-byte row"],
+    "claims": "Exact inherited LE32 framing/type and public cursor consistency. Parser skips encrypted spans without slicing them; vectors do not prove production private-span treatment. Outcome only accepted boolean plus owned public cursors, no invented production error code."
+  },
+  "inventories": {
+    "positive_count": 10,
+    "negative_count": 28,
+    "positives_each_fixture": ["initial zero cursors and absent imported-index subbuckets", "actual native84 1/1 and empty imports", "all eight4096", "uneven branches including4095/4096", "changed opaque private sentinel with unchanged public result"],
+    "negatives": ["schema8", "schema10", "schema11", "schema12", "legacy derivation", "profile2 version", "watch-only", "foreign network", "foreign genesis", "foreign fixture public manifest", "nested account cursor false versus integer0", "public-root mismatch", "missing scope", "fifth scope", "foreign coin", "short scope key", "scope entry is value", "wrong mixed49 schema", "reversed schema bytes", "missing account0", "missing required imported metadata", "third account", "short account key", "nonempty imported index", "missing parent index", "malformed mixed row", "imported private material", "imported issued cursor"],
+    "claims": "Synthetic bucket shape in inherited byte-key order; separately pinned public identity; at most fifth scope/third account refusal witnesses and four import probes. Result is public canonical manifest, SHA and modeled visit counts. No claim JSON can construct opaque capture authority."
+  },
+  "size_arithmetic": {
+    "record_compositions": 13,
+    "records": ["manifest", "checkpoint", "meta", "current marker", "INIT", "READY", "receipt", "hosted vault marker", "auth row", "reset row", "full driver file", "prepared batch", "all128 current key/value rows"],
+    "method": "Independent closed-schema constructors with exact frozen fixed strings, longer published fixture root/subject, maximum scalar widths and all retained counts. Max-width templates may be unreachable histories and are not positive acceptance vectors. Compare encoded raw/file framing against every frozen cap. Do not import current/provider models or their outputs.",
+    "memory_scope": "Separate conservative component accounting for old/staged row-cap owners plus encoded copies within each16MiB allowance. Include legacy envelope copies, wrapped keys, output copies and borrowed mixed rows. This is NOT a claim about exact Go/Python allocator heap; runtime charging and overlap still need fault/lifetime tests."
+  },
+  "implementation_only": ["actual walletdb transaction atomicity", "concrete Manager/wallet identity", "public-key decrypt integrity", "zero private-retention Gets", "no private-span copy/decrypt/retain", "no derivation/unlock/KDF/network", "profile refusal before private access", "context checked between reads and joined DB close", "original account epoch/View fence", "CaptureID entropy and opaque owner", "real filesystem identity and publication sync/cleanup"],
+  "execution": "Explicit --execute; exact approved producer-lock SHA, approved_by root and execution_authorized true; exact six-source set plus approved75-file input lock; recheck inputs/source before exclusive output creation. No output overwrite or Python bytecode. Independent Python3.9 reproduction after approved first execution; no Go outputs."
+}

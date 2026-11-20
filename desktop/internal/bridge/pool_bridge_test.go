@@ -110,6 +110,13 @@ func TestPoolBridgeProcess(t *testing.T) {
 			continue
 		}
 		s := poolBridgeSnapshot(t)
+		if mode == "hosted" || mode == "hosted-then-legacy" && calls == 1 {
+			s.Mode = pilot.HostedPoolMode
+		}
+		if mode == "hosted-signed-out" {
+			s = pilot.BlankPoolSnapshot()
+			s.Mode = pilot.HostedPoolMode
+		}
 		if mode == "backup-uncertain" && req.Command == "export_recovery" {
 			raw, _ := json.Marshal(pilot.PoolResponse{ID: req.ID, Error: "export_uncertain"})
 			fmt.Println(string(raw))
@@ -132,6 +139,48 @@ func TestPoolBridgeProcess(t *testing.T) {
 		}
 	}
 	os.Exit(0)
+}
+
+func TestHostedPoolBridgePinsModeBeforeAnyAccount(t *testing.T) {
+	if wire.TestPoW {
+		t.Skip("normal identity")
+	}
+	for _, tc := range []struct {
+		process, selected string
+		accepted          bool
+	}{
+		{"hosted", pilot.HostedPoolMode, true},
+		{"hosted-signed-out", pilot.HostedPoolMode, true},
+		{"hosted-signed-out", pilot.PoolMode, false},
+		{"valid", pilot.HostedPoolMode, false},
+		{"hosted", pilot.PoolMode, false},
+		{"hosted-then-legacy", pilot.HostedPoolMode, true},
+	} {
+		t.Run(tc.process+tc.selected, func(t *testing.T) {
+			cmd := exec.Command(os.Args[0], "-test.run=^TestPoolBridgeProcess$", "-test.count=1")
+			cmd.Env = append(os.Environ(), "SLUG_POOL_BRIDGE_PROCESS="+tc.process)
+			base, err := startStable(cmd)
+			if err != nil {
+				t.Fatal(err)
+			}
+			base.poolMode = true
+			base.poolExpectedMode = tc.selected
+			b := &PoolBridge{base}
+			defer b.Close()
+			if b.Mode() != tc.selected {
+				t.Fatal("mode not bound to launch selection")
+			}
+			_, err = b.PoolRequest(context.Background(), pilot.PoolRequest{Command: "snapshot"})
+			if (err == nil) != tc.accepted {
+				t.Fatal("wrong mode acceptance", err)
+			}
+			if tc.process == "hosted-then-legacy" {
+				if _, err = b.PoolRequest(context.Background(), pilot.PoolRequest{Command: "snapshot"}); err == nil {
+					t.Fatal("later mode substitution accepted")
+				}
+			}
+		})
+	}
 }
 func TestPoolBridgePinsFamilySourceAndSharedStable(t *testing.T) {
 	if wire.TestPoW {

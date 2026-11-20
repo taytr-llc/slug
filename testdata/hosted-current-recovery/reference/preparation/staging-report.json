@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "scope": "copy-integrity verification only; no producer/import/test execution",
+  "public_files": 64,
+  "input_bytes": 2193971,
+  "all_staged_bytes_match_catalog": true,
+  "catalog_sha256": "643923a18bc4e078ef1f870773580498fc4cf5f581ce4883042e69dbbcb3b9cf",
+  "case_plan_sha256": "246553e3860360c5482a23e54018c9c5b83610f13689537d7aac86435375f57b",
+  "repository_writes": false,
+  "private_export_or_database_reads": false,
+  "new_expected_outputs": false
+}

@@ -34,6 +34,7 @@ import (
 	"github.com/taytr-llc/slug/seednode"
 	"github.com/taytr-llc/slug/wire/v2"
 	"github.com/taytr-llc/slugwallet/recovery"
+	"github.com/taytr-llc/slugwallet/recoveryvault"
 )
 
 var ErrPoolRuntime = errors.New("shared pool runtime unavailable")
@@ -59,6 +60,7 @@ type poolRuntimeBorrow struct {
 // PoolRuntime owns only the dedicated fixture pool environment. Its account
 // store is borrowed, its children borrow sources, and nothing here mines.
 type PoolRuntime struct {
+	hosted                       *hostedPoolResources
 	mu                           sync.Mutex
 	gate                         chan struct{}
 	config                       Config
@@ -99,6 +101,8 @@ type PoolRuntime struct {
 }
 
 type poolChildResources struct {
+	Hosted                                               *hostedPoolResources
+	HostedBinding                                        recoveryvault.CurrentBinding
 	Config                                               Config
 	Source                                               poolshare.Config
 	PoolURL, PoolTrustID, AdmissionURL, AdmissionTrustID string
@@ -381,7 +385,7 @@ func (r *PoolRuntime) begin(ctx context.Context) (context.Context, func(), error
 func (r *PoolRuntime) childResources(accountID, fixture string) (poolChildResources, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
-	if r.closed || !r.ready || r.life.Err() != nil || !r.verified[fixture] {
+	if r.closed || !r.ready || r.life.Err() != nil || !r.verified[fixture] || r.hosted != nil && r.hosted.failure != nil {
 		return poolChildResources{}, ErrPoolRuntime
 	}
 	b, ok := r.recipients[fixture]
@@ -434,7 +438,11 @@ func (r *PoolRuntime) childResources(accountID, fixture string) (poolChildResour
 		borrow.close = closeChild
 		return nil
 	}
-	return poolChildResources{Config: Config{DataDir: filepath.Join(r.config.DataDir, "gyms", accountID), NodeBinary: r.config.NodeBinary}, Source: r.source, PoolURL: poolURL, PoolTrustID: poolTrust, AdmissionURL: admissionURL, AdmissionTrustID: admissionTrust, Issuer: r.issuer, Node: r.node, RPC: r.nodes.rpcConfig(), Recipient: b, Withdrawal: &withdrawal, StablePin: pin, League: league, Events: r.events, Factories: r.leagueFactories, Pipeline: pipeline, Seeds: r.seeds, Cards: r.cards, Bouts: r.bouts, Results: r.results, CareerReader: r.careerReader, Publisher: publisher, WorkerConfig: worker, Life: r.life, Release: release, RegisterClose: register}, nil
+	var hostedBinding recoveryvault.CurrentBinding
+	if r.hosted != nil {
+		hostedBinding = r.hosted.bindings[fixture]
+	}
+	return poolChildResources{HostedBinding: hostedBinding, Hosted: r.hosted, Config: Config{DataDir: filepath.Join(r.config.DataDir, "gyms", accountID), NodeBinary: r.config.NodeBinary}, Source: r.source, PoolURL: poolURL, PoolTrustID: poolTrust, AdmissionURL: admissionURL, AdmissionTrustID: admissionTrust, Issuer: r.issuer, Node: r.node, RPC: r.nodes.rpcConfig(), Recipient: b, Withdrawal: &withdrawal, StablePin: pin, League: league, Events: r.events, Factories: r.leagueFactories, Pipeline: pipeline, Seeds: r.seeds, Cards: r.cards, Bouts: r.bouts, Results: r.results, CareerReader: r.careerReader, Publisher: publisher, WorkerConfig: worker, Life: r.life, Release: release, RegisterClose: register}, nil
 }
 
 func (r *PoolRuntime) Close() error {
@@ -459,11 +467,25 @@ func (r *PoolRuntime) Close() error {
 		for _, closeChild := range closers {
 			failures = append(failures, closeChild())
 		}
+		if r.hosted != nil {
+			r.gate <- struct{}{} // Join setup before inspecting retained loader failure.
+			r.services.Wait()
+			r.mu.Lock()
+			hostedFailure := r.hosted.failure
+			r.mu.Unlock()
+			if errors.Join(failures...) != nil || hostedFailure != nil {
+				r.closeErr = errors.Join(errors.Join(failures...), hostedFailure)
+				<-r.gate
+				return // Retain wallet/source/root ownership; no unsafe replacement.
+			}
+		}
 		for _, b := range borrows {
 			<-b.done
 		}
-		r.gate <- struct{}{}
-		r.services.Wait()
+		if r.hosted == nil {
+			r.gate <- struct{}{}
+			r.services.Wait()
+		}
 		if r.results != nil {
 			failures = append(failures, r.results.Close())
 		}

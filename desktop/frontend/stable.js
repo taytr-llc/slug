@@ -3,6 +3,7 @@ import { Call } from '/wails/runtime.js';
 // Separate stable entry: only typed, current-view, candidate-only native data.
 const MODE = 'local-manifest-pilot';
 const POOL_MODE = 'local-pool-pilot';
+const HOSTED_POOL_MODE = 'local-hosted-fixture-pool';
 const DESCRIPTOR = 'c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303';
 // Frozen compiled candidate tuples. Membership never replaces source equality.
 // The native bridge validates descriptor IDs; the browser checks their exact shapes.
@@ -191,12 +192,13 @@ function validPoolBackup(v) {
 }
 function normalizePool(v) {
   exact(v, ['version', 'mode', 'state', 'attempts', 'hashes_per_second', 'height', 'pending', 'last_error', 'recovery_error', 'wallet_state', 'wallet_height', 'payout_address', 'gym_id', 'gym_public_key', 'spendable_atoms', 'immature_atoms', 'backup_state', 'backup_phase', 'backup_error', 'account', 'view', 'assignment_count', 'source_binding_id', 'balance']);
-  requireValue(v.version === 1 && v.mode === POOL_MODE && states.includes(v.state) && walletStates.includes(v.wallet_state));
+  requireValue(v.version === 1 && v.mode === (hostedPoolMode ? HOSTED_POOL_MODE : POOL_MODE) && states.includes(v.state) && walletStates.includes(v.wallet_state));
   requireValue(['attempts', 'height', 'wallet_height'].every((k) => int(v[k])) && ['spendable_atoms', 'immature_atoms'].every((k) => int(v[k], 0, MAX_ATOMS)) && int(v.pending, 0, 4096) && int(v.assignment_count, 0, 1000));
   requireValue(typeof v.hashes_per_second === 'number' && Number.isFinite(v.hashes_per_second) && v.hashes_per_second >= 0 && statusErrors.has(v.last_error) && statusErrors.has(v.recovery_error));
   validPoolBackup(v);
   const a = v.account; exact(a, ['state', 'fixture', 'id', 'generation', 'hold_until_ms', 'held', 'can_export', 'last_error']);
-  requireValue(accountStates.includes(a.state) && ['', ...Object.keys(fixtures)].includes(a.fixture) && ['', 'account_unavailable'].includes(a.last_error) && int(a.generation) && int(a.hold_until_ms, 0, DATE_MAX) && typeof a.held === 'boolean' && typeof a.can_export === 'boolean' && (!a.held || (!a.can_export && a.hold_until_ms > 0)));
+  const pendingReset = hostedPoolMode && a.last_error === 'hosted_reset_pending' && ['signed_out', 'failed'].includes(a.state) && Object.hasOwn(fixtures, a.fixture);
+  requireValue(accountStates.includes(a.state) && ['', ...Object.keys(fixtures)].includes(a.fixture) && (['', 'account_unavailable'].includes(a.last_error) || pendingReset) && int(a.generation) && int(a.hold_until_ms, 0, DATE_MAX) && typeof a.held === 'boolean' && typeof a.can_export === 'boolean' && (!a.held || (!a.can_export && a.hold_until_ms > 0)));
   let view = null;
   if (a.state === 'signed_in') {
     view = checkedView(v.view);
@@ -398,7 +400,7 @@ function response(v, kind, manifest, stable, allowNull = false) {
   return { ok: true, value: own(o) };
 }
 
-let poolMode = false, careerMode = false, careerPage = null, careerActivation = null, careerSelectedJob = "";
+let poolMode = false, hostedPoolMode = false, careerMode = false, careerPage = null, careerActivation = null, careerSelectedJob = "";
 let current = null, stable = null, enabled = false, disposed = false, epoch = 0;
 let background = null, activeCall = null, timer = null, pollWanted = false, command = '';
 let tasks = [], watched = null, flow = null, savedOperation = null, lastViewedJob = '';
@@ -550,10 +552,14 @@ function render() {
   const navigationBusy = !!watched && !['sync', 'inventory', 'roster'].includes(watched.kind);
   const s = current, signed = ready(), accountSigned = accountReady(), live = ['starting', 'running'].includes(s?.state), preparing = ['signing_in', 'resetting'].includes(s?.account.state), st = stable?.status;
   content(ui.state, s ? label(s.state) : 'Connecting'); content(ui['account-state'], label(s?.account.state ?? 'signed_out'));
-  content(ui['account-copy'], accountSigned ? `${s.account.fixture === 'zero256' ? 'Demo A' : 'Demo B'} keeps the same wallet, gym and candidate stable.` : preparing ? 'Preparing the retained demo gym…' : 'Choose a demo account. Saved candidates sync automatically; mining starts only with Start.');
+  const resetPending = hostedPoolMode && s?.account.last_error === 'hosted_reset_pending' && ['signed_out', 'failed'].includes(s?.account.state) && Object.hasOwn(fixtures, s?.account.fixture);
+  const hostedCaption = document.getElementById('hosted-fixture-caption');
+  if (hostedCaption) hostedCaption.hidden = !hostedPoolMode;
+  content(ui['account-copy'], resetPending ? `The verified reset for ${s.account.fixture === 'zero256' ? 'Demo A' : 'Demo B'} needs to finish. Resume the same reset to recover access to its retained wallet.` : accountSigned ? `${s.account.fixture === 'zero256' ? 'Demo A' : 'Demo B'} keeps the same wallet, gym and candidate stable.` : preparing ? 'Preparing the retained demo gym…' : 'Choose a demo account. Saved candidates sync automatically; mining starts only with Start.');
   content(ui.hold, s?.account.held ? 'The 24-hour recovery hold is active. Viewing, mining and reversible roster moves are available; recovery backup export and test-result signing remain held.' : '');
   for (const id of ['login-a', 'login-b']) ui[id].disabled = !enabled || !!command || !s || !['signed_out', 'failed', 'expired'].includes(s.account.state) || !!s.view;
-  ui.logout.disabled = !accountSigned || !!command; ui.reset.disabled = !accountSigned || !!command;
+  ui.logout.disabled = !accountSigned || !!command; ui.reset.disabled = (!accountSigned && !resetPending) || !!command;
+  content(ui.reset, resetPending ? 'Resume fixture reset' : 'Simulate verified password reset');
   ui.mining.disabled = !enabled || !!command || (!accountSigned && !preparing) || s?.state === 'stopping' || (!live && evidenceBusy()) || (poolMode && s?.backup_state === 'running'); content(ui.mining, live ? 'Stop mining' : preparing ? 'Stop preparing' : 'Start mining');
   content(ui['mining-copy'], publicationNodeConnected() ? 'Connected for publication. Start mining when ready, or disconnect the test nodes below.' : preparing ? 'Preparing your retained identity. Stop drains work already in progress.' : live ? 'Mining is active. New saved candidates update the stable automatically.' : 'Syncing and viewing do not create mining jobs. Start only when you are ready.');
   for (const [id, value] of [['attempts', s?.attempts ?? 0], ['accepted', (poolMode ? s?.assignment_count : s?.accepted_count) ?? 0], ['pending', s?.pending ?? 0], ['height', s?.height ?? 0]]) content(ui[id], number.format(value));
@@ -3242,4 +3248,4 @@ ui['export-recovery'].addEventListener('click', () => oldAction('ExportRecovery'
 document.addEventListener('visibilitychange', () => { if (document.hidden) { pausePreview(); pauseBooked(); } if (!document.hidden && enabled) { pollWanted = true; pump(); } else if (timer !== null) { clearTimeout(timer); timer = null; } });
 window.addEventListener('pagehide', () => { disposed = true; epoch++; clearHistory(); clearEvent(); clearEntry(); clearPreview(); tasks = []; if (timer !== null) clearTimeout(timer); timer = null; clearCards(); pageItems = []; current = stable = null; });
 render();
-(async () => { try { const selectedMode = await call('Mode'); requireValue([MODE, POOL_MODE].includes(selectedMode)); poolMode = selectedMode === POOL_MODE; const selectedCareer = await call('CareerMode'); requireValue(typeof selectedCareer === 'boolean'); careerMode = selectedCareer; if (disposed) return; enabled = true; pollWanted = true; pump(); } catch { connectionError = 'Open this page through the candidate stable mode.'; render(); } })();
+(async () => { try { const selectedMode = await call('Mode'); requireValue([MODE, POOL_MODE, HOSTED_POOL_MODE].includes(selectedMode)); hostedPoolMode = selectedMode === HOSTED_POOL_MODE; poolMode = selectedMode === POOL_MODE || hostedPoolMode; const selectedCareer = await call('CareerMode'); requireValue(typeof selectedCareer === 'boolean'); careerMode = selectedCareer; if (disposed) return; enabled = true; pollWanted = true; pump(); } catch { connectionError = 'Open this page through the candidate stable mode.'; render(); } })();

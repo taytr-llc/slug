@@ -235,6 +235,10 @@ func (c *PoolChild) ExportPoolRecovery(parent context.Context, pin recoveryfile.
 	}
 	code := "backup_unavailable"
 	defer func() { c.finishPoolBackup(op, code) }()
+	if c.resources.Hosted != nil {
+		code, resultErr = c.exportHostedRecovery(op, pin)
+		return resultErr
+	}
 	protected, err := c.poolBackupProtected()
 	if err != nil {
 		return err

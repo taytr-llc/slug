@@ -54,7 +54,7 @@ func poolAccountPath(root string) error {
 				return errors.New("pool directory overlaps a managed root")
 			}
 		}
-		for _, name := range []string{"SLUG-ACCOUNTS.json", "SLUG-PILOT.json", "SLUG-MANIFEST-ACCOUNTS.json", "SLUG-MANIFEST-PILOT.json", "SLUG-POOL-RUNTIME.json"} {
+		for _, name := range []string{"SLUG-HOSTED-POOL-INIT.json", "SLUG-HOSTED-POOL-READY.json", "SLUG-ACCOUNTS.json", "SLUG-PILOT.json", "SLUG-MANIFEST-ACCOUNTS.json", "SLUG-MANIFEST-PILOT.json", "SLUG-POOL-RUNTIME.json"} {
 			if _, err := os.Lstat(filepath.Join(dir, name)); err == nil {
 				return errors.New("manifest directory overlaps an older mode")
 			}

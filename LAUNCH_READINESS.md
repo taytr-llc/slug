@@ -430,6 +430,16 @@ they do not count as completion of this product-release gate.
   the complete qualification state and limits. This does not close hosted
   recovery, real account or production identity gates; D74 remains last.
 
+- Set71's explicit hosted-fixture mode connects signed login/reset to the same
+  wallet, separate recovery/gym vault envelopes, public current cursor captures
+  and authorized current-file export. Independent references, actual funded
+  file-only restore/spend, reset/hold/restart, complete wallet/desktop suites,
+  normal packaged-helper acceptance and the required smoke passed. See
+  `HOSTED_CURRENT_RECOVERY.md` and `CHANGESET_71_NOTES.md`. The two buttons remain
+  published test identities. Real signup/login method and provider selection,
+  cross-device service behavior, continuous disaster recovery and production
+  key custody remain release work. The full joint D74 review stays last.
+
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
 `sim-handoff-intake.json` preserves archive and file checksums. They are reference

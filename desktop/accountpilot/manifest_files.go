@@ -55,7 +55,7 @@ func manifestPath(root string) error {
 	}
 	// Detect explicit custom old roots as ancestors, without scanning their data.
 	for dir := resolved; ; dir = filepath.Dir(dir) {
-		for _, name := range []string{"SLUG-ACCOUNTS.json", "SLUG-PILOT.json"} {
+		for _, name := range []string{"SLUG-HOSTED-POOL-INIT.json", "SLUG-HOSTED-POOL-READY.json", "SLUG-ACCOUNTS.json", "SLUG-PILOT.json"} {
 			if _, err := os.Lstat(filepath.Join(dir, name)); err == nil {
 				return errors.New("manifest directory overlaps an older mode")
 			}

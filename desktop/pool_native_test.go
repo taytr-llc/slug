@@ -56,3 +56,43 @@ func TestPoolPathSeparateFromCandidateNamespace(t *testing.T) {
 		t.Fatal("pool symlink accepted")
 	}
 }
+
+func TestHostedPoolNativeNamespaceNeverAdoptsLegacy(t *testing.T) {
+	parent := candidateTestRoot(t)
+	root := filepath.Join(parent, "LocalHostedPoolPilot")
+	if err := prepareHostedPoolDataParent(root, parent); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := os.Stat(root); !os.IsNotExist(err) {
+		t.Fatal("native preflight created helper root")
+	}
+	if err := os.Mkdir(root, 0700); err != nil {
+		t.Fatal(err)
+	}
+	for _, name := range []string{"SLUG-HOSTED-POOL-INIT.json", "SLUG-HOSTED-POOL-READY.json"} {
+		if err := os.WriteFile(filepath.Join(root, name), []byte("helper validates exact contents"), 0600); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if err := prepareHostedPoolDataParent(root, parent); err != nil {
+		t.Fatal("own hosted markers refused before helper audit", err)
+	}
+	if err := preparePoolDataParent(root, parent, false); err == nil {
+		t.Fatal("old pool selected hosted root")
+	}
+	if err := prepareCandidateDataParent(root, parent, false); err == nil {
+		t.Fatal("old candidate selected hosted root")
+	}
+	custom := filepath.Join(parent, "custom-old")
+	if err := os.Mkdir(custom, 0700); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(custom, "SLUG-POOL-ACCOUNTS.json"), []byte("old"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	for _, path := range []string{custom, filepath.Join(custom, "nested"), filepath.Join(root, "nested")} {
+		if err := prepareHostedPoolDataParent(path, parent); err == nil {
+			t.Fatal("hosted preflight accepted managed overlap", path)
+		}
+	}
+}

@@ -8,6 +8,29 @@ import (
 	"testing"
 )
 
+func TestHostedOptionsAlwaysRequireExplicitCanonicalNamespace(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "hosted")
+	for _, v := range []string{"1", "2"} {
+		for _, tc := range []struct {
+			path     string
+			explicit bool
+		}{{path, false}, {"relative", true}, {path + "/../hosted", true}, {path + "\n", true}} {
+			if _, err := HostedOptions(v, true, tc.path, tc.explicit); err == nil {
+				t.Fatal("implicit or noncanonical hosted namespace accepted", v, tc)
+			}
+		}
+		if _, err := HostedOptions(v, true, path, true); err != nil {
+			t.Fatal("explicit hosted selection refused", v, err)
+		}
+	}
+	if _, err := HostedOptions("2", false, path, true); err == nil {
+		t.Fatal("implicit name2 accepted")
+	}
+	if _, err := HostedOptions("3", true, path, true); err == nil {
+		t.Fatal("unknown name version accepted")
+	}
+}
+
 func TestExplicitNameVersionRequiresExactPoolAndPathSelection(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "fresh")
 	for _, tc := range []struct {

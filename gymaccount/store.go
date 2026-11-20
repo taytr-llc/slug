@@ -198,6 +198,9 @@ func createStore(path string, config Config, identity *IdentityConfig) (*Store, 
 	return createStoreWithClock(path, config, identity, time.Now)
 }
 func createStoreWithClock(path string, config Config, identity *IdentityConfig, clock func() time.Time) (*Store, error) {
+	return createStorePinnedWithClock(path, config, identity, clock, "")
+}
+func createStorePinnedWithClock(path string, config Config, identity *IdentityConfig, clock func() time.Time, authority string) (*Store, error) {
 	version := Version1
 	if identity != nil {
 		version = IdentityVersion
@@ -206,9 +209,11 @@ func createStoreWithClock(path string, config Config, identity *IdentityConfig, 
 	if err != nil {
 		return nil, err
 	}
-	authority, err := randomID(rand.Reader)
-	if err != nil {
-		return nil, err
+	if authority == "" {
+		authority, err = randomID(rand.Reader)
+		if err != nil {
+			return nil, err
+		}
 	}
 	if err = os.Mkdir(path, 0700); err != nil {
 		return nil, errors.New("account directory unavailable")
@@ -254,6 +259,9 @@ func openStore(path string, config Config, identity *IdentityConfig) (*Store, er
 	return openStoreWithClock(path, config, identity, time.Now)
 }
 func openStoreWithClock(path string, config Config, identity *IdentityConfig, clock func() time.Time) (*Store, error) {
+	return openStorePinnedWithClock(path, config, identity, clock, "")
+}
+func openStorePinnedWithClock(path string, config Config, identity *IdentityConfig, clock func() time.Time, authority string) (*Store, error) {
 	version := Version1
 	if identity != nil {
 		version = IdentityVersion
@@ -267,6 +275,11 @@ func openStoreWithClock(path string, config Config, identity *IdentityConfig, cl
 	}
 	m, err := readMarker(filepath.Join(path, markerName))
 	if err != nil || m.Application != application || m.Version != version || !reflect.DeepEqual(m.Identity, identity) || m.Network != FixtureNetwork || m.Genesis != FixtureGenesis || m.Profile != FixtureProfile || m.HoldMS != RecoveryHoldMS || !validID(m.AuthorityID) || !reflect.DeepEqual(m.Config, c) {
+		return nil, ErrCorrupt
+	}
+	// An externally persisted setup pin is checked before LevelDB can create
+	// a lock/log or recover the store. Marker contents never select the pin.
+	if authority != "" && m.AuthorityID != authority {
 		return nil, ErrCorrupt
 	}
 	db, err := leveldb.OpenFile(filepath.Join(path, "db"), &opt.Options{ErrorIfMissing: true})

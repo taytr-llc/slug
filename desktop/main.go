@@ -238,6 +238,7 @@ func run() (resultErr error) {
 	}
 	data := flag.String("data-dir", dataDefault, "Explicit local pilot data directory")
 	pool := flag.Bool("candidate-pool", poolBuild == "1", "Use the separate shared pool desktop")
+	hosted := flag.Bool("candidate-hosted-pool", false, "Use the separate signed public-fixture hosted pool desktop")
 	nameVersion := flag.String("candidate-name-version", "1", "Explicit immutable pool candidate name version (1 or 2)")
 	candidates := flag.Bool("candidate-manifests", candidateBuild == "1", "Use the separate candidate fixture desktop")
 	stable := flag.Bool("candidate-stable", stableBuild == "1", "Use candidate stable and roster within the candidate fixture desktop")
@@ -249,6 +250,29 @@ func run() (resultErr error) {
 	candidateResults := flag.Bool("candidate-results", resultBuild == "1", "Enable saved candidate result publication within candidate bouts")
 	candidateCareers := flag.Bool("candidate-careers", careerBuild == "1", "Enable finality-timed candidate careers within candidate results")
 	flag.Parse()
+	dataExplicit, poolExplicit, nameExplicit, legacyExplicit := false, false, false, false
+	flag.Visit(func(f *flag.Flag) {
+		switch f.Name {
+		case "data-dir":
+			dataExplicit = true
+		case "candidate-pool":
+			poolExplicit = true
+			legacyExplicit = true
+		case "candidate-name-version":
+			nameExplicit = true
+		case "candidate-manifests", "candidate-stable", "candidate-entries", "candidate-events", "candidate-seeds", "candidate-cards", "candidate-bouts", "candidate-results", "candidate-careers":
+			legacyExplicit = true
+		}
+	})
+	if *hosted {
+		if legacyExplicit {
+			return errors.New("Hosted public-fixture mode requires a separate explicit selection.")
+		}
+		// Explicit hosted mode supersedes compiled bundle defaults only. A
+		// supplied legacy flag, even false, was rejected above before any I/O.
+		*pool, *candidates, *stable, *entries, *candidateEvents, *candidateSeeds = false, false, false, false, false, false
+		*candidateCards, *candidateBouts, *candidateResults, *candidateCareers = false, false, false, false
+	}
 	if *pool && (*candidates || *stable || *entries || *candidateEvents || *candidateSeeds || *candidateCards || *candidateBouts || *candidateResults || *candidateCareers) {
 		return errors.New("Pool mode is separate from existing candidate modes.")
 	}
@@ -276,18 +300,13 @@ func run() (resultErr error) {
 	if *stable && !*candidates {
 		return errors.New("Candidate stable requires the candidate fixture desktop.")
 	}
-	dataExplicit, poolExplicit, nameExplicit := false, false, false
-	flag.Visit(func(f *flag.Flag) {
-		switch f.Name {
-		case "data-dir":
-			dataExplicit = true
-		case "candidate-pool":
-			poolExplicit = true
-		case "candidate-name-version":
-			nameExplicit = true
-		}
-	})
-	poolOptions, selectionErr := poolselection.Options(*pool, poolExplicit, *nameVersion, nameExplicit, *data, dataExplicit)
+	var poolOptions pilot.PoolOptions
+	var selectionErr error
+	if *hosted {
+		poolOptions, selectionErr = poolselection.HostedOptions(*nameVersion, nameExplicit, *data, dataExplicit)
+	} else {
+		poolOptions, selectionErr = poolselection.Options(*pool, poolExplicit, *nameVersion, nameExplicit, *data, dataExplicit)
+	}
 	if selectionErr != nil {
 		return selectionErr
 	}
@@ -308,7 +327,9 @@ func run() (resultErr error) {
 	}
 	resources := filepath.Clean(filepath.Join(filepath.Dir(executable), "..", "Resources", "bin"))
 	helperPath, nodePath := filepath.Join(resources, "slugpilot"), filepath.Join(resources, "slugd")
-	if *pool {
+	if *hosted {
+		err = prepareHostedPoolDataParent(filepath.Clean(*data), configDir)
+	} else if *pool {
 		err = preparePoolDataParent(filepath.Clean(*data), configDir, poolDefault)
 	} else if *candidates {
 		err = prepareCandidateDataParent(filepath.Clean(*data), configDir, candidateDefault)
@@ -324,9 +345,15 @@ func run() (resultErr error) {
 		filepath.Join(filepath.Dir(filepath.Clean(*data)), "LocalAccountPilot"),
 		filepath.Join(filepath.Dir(filepath.Clean(*data)), "LocalManifestPilot"),
 		filepath.Join(filepath.Dir(filepath.Clean(*data)), "LocalPoolPilot"),
+		filepath.Join(filepath.Dir(filepath.Clean(*data)), "LocalHostedPoolPilot"),
 		filepath.Clean(filepath.Join(resources, "..", "..")),
 	}}
-	if *pool {
+	if *hosted {
+		gym.poolHelper, err = bridge.LaunchHostedPoolWithOptions(helperPath, filepath.Clean(*data), nodePath, poolOptions)
+		if err == nil {
+			gym.stableHelper = gym.poolHelper.StableBridge
+		}
+	} else if *pool {
 		gym.poolHelper, err = bridge.LaunchPoolWithOptions(helperPath, filepath.Clean(*data), nodePath, poolOptions)
 		if err == nil {
 			gym.stableHelper = gym.poolHelper.StableBridge
@@ -381,7 +408,7 @@ func run() (resultErr error) {
 	}
 	defer func() { resultErr = errors.Join(resultErr, gym.closeHelper()) }()
 	title, startURL := "SLUG Account Pilot", "/"
-	if *pool {
+	if *pool || *hosted {
 		title, startURL = "SLUG Pool Pilot", "/stable.html"
 	}
 	if *candidates {

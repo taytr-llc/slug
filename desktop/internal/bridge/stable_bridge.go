@@ -37,6 +37,7 @@ type StableBridge struct {
 	poolHandshakeUsed                bool
 	poolHandshakePending             bool
 	poolMode                         bool
+	poolExpectedMode                 string
 	poolSourceID                     string
 	poolExpectedDescriptor           string
 	poolSourcePin                    *registry.ManifestAuthorityPin
@@ -236,7 +237,7 @@ func (b *StableBridge) read(r io.Reader) {
 			frame.evidence = &value
 		} else if expected.pool {
 			value, err := pilot.ParsePoolResponse(scanner.Bytes())
-			if err != nil || value.ID != expected.id {
+			if err != nil || value.ID != expected.id || value.Snapshot != nil && value.Snapshot.Mode != b.selectedPoolMode() {
 				b.fail(ErrUnavailable)
 				return
 			}

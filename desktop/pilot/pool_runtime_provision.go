@@ -11,13 +11,20 @@ import (
 	"time"
 
 	"github.com/taytr-llc/slug/gymaccount"
+	"github.com/taytr-llc/slugwallet/recoveryvault"
 )
 
 // ProvisionFixture verifies a concrete retained wallet under one original
 // login. It is used for temporary setup sessions and for each visible login;
 // it never substitutes a successor session, starts mining, or leaves a wallet
 // open for a child. The account parent owns revocation of setup login sessions.
-func (r *PoolRuntime) ProvisionFixture(ctx context.Context, fixture string, login gymaccount.Session) (binding PoolRecipientBinding, resultErr error) {
+func (r *PoolRuntime) ProvisionFixture(ctx context.Context, fixture string, login gymaccount.Session) (PoolRecipientBinding, error) {
+	if r.hosted != nil {
+		return PoolRecipientBinding{}, ErrPoolRuntime
+	}
+	return r.provisionFixture(ctx, fixture, login, nil)
+}
+func (r *PoolRuntime) provisionFixture(ctx context.Context, fixture string, login gymaccount.Session, epoch recoveryvault.EpochFence) (binding PoolRecipientBinding, resultErr error) {
 	work, end, e := r.begin(ctx)
 	if e != nil {
 		return binding, e
@@ -42,10 +49,28 @@ func (r *PoolRuntime) ProvisionFixture(ctx context.Context, fixture string, logi
 			if a.ID != login.Account.ID || a.Generation != login.Account.Generation || check == nil || check() != nil || work.Err() != nil {
 				return gymaccount.ErrUnauthorized
 			}
-			if e := fn(a, check); e != nil {
-				return e
+			invoke := func(parentCheck func() error) error {
+				guard := func() error {
+					if e := check(); e != nil {
+						return e
+					}
+					if parentCheck != nil {
+						return parentCheck()
+					}
+					return nil
+				}
+				if e := guard(); e != nil {
+					return e
+				}
+				if e := fn(a, guard); e != nil {
+					return e
+				}
+				return guard()
 			}
-			return check()
+			if epoch != nil {
+				return epoch(ctx, invoke)
+			}
+			return invoke(nil)
 		})
 	}
 	if e = lease(work, func(a gymaccount.Account, _ func() error) error { account = a; return nil }); e != nil {
@@ -107,7 +132,9 @@ func (r *PoolRuntime) ProvisionFixture(ctx context.Context, fixture string, logi
 	walletClosed := false
 	defer func() {
 		if !walletClosed {
-			resultErr = errors.Join(resultErr, w.Close())
+			closeErr := w.Close()
+			r.retainHostedWallet(w, closeErr)
+			resultErr = errors.Join(resultErr, closeErr)
 		}
 	}()
 	if e = w.Attach(work, r.nodes.rpcConfig()); e != nil {
@@ -126,15 +153,33 @@ func (r *PoolRuntime) ProvisionFixture(ctx context.Context, fixture string, logi
 		case <-ticker.C:
 		}
 	}
+	if r.hosted != nil {
+		if _, e = r.hostedReceipt(work, login, epoch, identity); e != nil {
+			return binding, e
+		}
+	}
 	if challenge.ChallengeID != "" {
 		if e = lease(work, func(_ gymaccount.Account, _ func() error) error { return nil }); e != nil {
 			return binding, e
 		}
-		auth, e := w.SignAccountChallenge(work, r.marker.AccountAuthorityID, challenge)
+		var auth gymaccount.Authorization
+		var e error
+		if r.hosted != nil {
+			auth, e = r.hosted.vault.SignAccountChallenge(work, login.Token, challenge, epoch)
+		} else {
+			auth, e = w.SignAccountChallenge(work, r.marker.AccountAuthorityID, challenge)
+		}
 		if e != nil {
 			return binding, e
 		}
 		if _, _, e = r.accounts.CompleteChallenge(work, login.Token, challenge.ChallengeID, auth); e != nil {
+			return binding, e
+		}
+	}
+	var current recoveryvault.CurrentBinding
+	if r.hosted != nil {
+		current, e = r.hostedCurrentBinding(work, fixture, login, epoch)
+		if e != nil {
 			return binding, e
 		}
 	}
@@ -164,6 +209,7 @@ func (r *PoolRuntime) ProvisionFixture(ctx context.Context, fixture string, logi
 	e = w.Close()
 	walletClosed = true
 	if e != nil {
+		r.retainHostedWallet(w, e)
 		return PoolRecipientBinding{}, e
 	}
 	if e = lease(work, func(a gymaccount.Account, check func() error) error {
@@ -176,7 +222,13 @@ func (r *PoolRuntime) ProvisionFixture(ctx context.Context, fixture string, logi
 		if e := check(); e != nil {
 			return e
 		}
-		r.mu.Lock()
+		if r.hosted != nil {
+			if !r.mu.TryLock() {
+				return ErrPoolRuntimeBusy
+			}
+		} else {
+			r.mu.Lock()
+		}
 		defer r.mu.Unlock()
 		if r.closed || work.Err() != nil {
 			return ErrPoolRuntime
@@ -198,6 +250,9 @@ func (r *PoolRuntime) ProvisionFixture(ctx context.Context, fixture string, logi
 			r.gymAccounts = make(map[string]string)
 		}
 		r.gymAccounts[fixture] = account.ID
+		if r.hosted != nil {
+			r.hosted.bindings[fixture] = current
+		}
 		r.verified[fixture] = true
 		return nil
 	}); e != nil {

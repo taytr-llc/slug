@@ -287,6 +287,26 @@ version.
   corpora and bounded storage/raw-transaction checks. See `WALLET_ACTIVITY.md`
   and `CHANGESET_70_NOTES.md` for qualification and limits. Hosted evolving
   recovery remains separate; D74 remains last.
+- Set71 on `slug-hosted-current-recovery` adds the explicit
+  `--candidate-hosted-pool` route in a separate selected namespace. Preserve
+  legacy Pool defaults and stores. Pin authority/coordinator/vault/wallet-owner
+  IDs before setup, retain ordered immutable receipts and fail closed on missing
+  established storage. Signed published-fixture login/reset is not a real
+  provider: retain the original authentication epoch, exact reset event and
+  durable barrier before credential changes or child joins. Pending reset must
+  remain reachable while signed out; replay never extends the hold.
+  Current recovery captures only bounded public committed wallet metadata from
+  the retained concrete schema-9 owner. Join captures before unloading; do not
+  hold wallet/parent mutexes across account fences. Current checkpoints and
+  exports are separate from old immutable vault APIs. Keep recovery and gym
+  envelopes distinct, no local signer fallback, and no recovery unwrap for held
+  mining. Prepare export outside account leases, then use the original
+  RecoveryExport fence only for bounded publication to the pinned destination.
+  Preserve uncertain outcomes and cleanup ownership. A current export is a dated
+  capture, not continuous disaster recovery or permission to recreate missing
+  payment journals. See `HOSTED_CURRENT_RECOVERY.md`, the portable independent
+  references and `CHANGESET_71_NOTES.md` for qualification and limits. Real
+  provider/custody and permanent identity remain gates; D74 stays last.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

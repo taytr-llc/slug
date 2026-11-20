@@ -23,11 +23,25 @@ func LaunchPool(helper, dataDir, node string) (*PoolBridge, error) {
 	return LaunchPoolWithOptions(helper, dataDir, node, pilot.PoolOptions{})
 }
 func LaunchPoolWithOptions(helper, dataDir, node string, options pilot.PoolOptions) (*PoolBridge, error) {
+	return launchPoolMode(helper, dataDir, node, options, pilot.PoolMode)
+}
+
+func LaunchHostedPoolWithOptions(helper, dataDir, node string, options pilot.PoolOptions) (*PoolBridge, error) {
+	return launchPoolMode(helper, dataDir, node, options, pilot.HostedPoolMode)
+}
+
+func launchPoolMode(helper, dataDir, node string, options pilot.PoolOptions, mode string) (*PoolBridge, error) {
 	options, e := pilot.ResolvePoolOptions(options)
 	if e != nil || !filepath.IsAbs(dataDir) || filepath.Clean(dataDir) != dataDir || strings.ContainsAny(dataDir, "\x00\r\n\t") {
 		return nil, ErrUnavailable
 	}
-	args := []string{"--candidate-pool", "--data-dir", dataDir, "--node-binary", node}
+	flag := "--candidate-pool"
+	if mode == pilot.HostedPoolMode {
+		flag = "--candidate-hosted-pool"
+	} else if mode != pilot.PoolMode {
+		return nil, ErrUnavailable
+	}
+	args := []string{flag, "--data-dir", dataDir, "--node-binary", node}
 	original, e := pilot.ResolvePoolOptions(pilot.PoolOptions{})
 	if e != nil {
 		return nil, ErrUnavailable
@@ -40,10 +54,26 @@ func LaunchPoolWithOptions(helper, dataDir, node string, options pilot.PoolOptio
 		return nil, e
 	}
 	b.poolMode = true
+	b.poolExpectedMode = mode
 	b.poolExpectedDescriptor = options.CandidateDescriptorID
 	b.entriesEnabled, b.eventsEnabled = true, true
 	b.seedsEnabled, b.cardsEnabled, b.boutsEnabled, b.resultsEnabled, b.careersEnabled = true, true, true, true, true
 	return &PoolBridge{b}, nil
+}
+
+func (b *StableBridge) selectedPoolMode() string {
+	if b.poolExpectedMode == "" {
+		return pilot.PoolMode // Legacy in-package process fixtures only.
+	}
+	return b.poolExpectedMode
+}
+
+// Mode is the launch selection, never a mode learned from helper responses.
+func (b *PoolBridge) Mode() string {
+	if b == nil || b.StableBridge == nil {
+		return pilot.PoolMode
+	}
+	return b.selectedPoolMode()
 }
 func (b *PoolBridge) PoolRequest(ctx context.Context, req pilot.PoolRequest) (pilot.PoolResponse, error) {
 	id, e := b.begin(ctx)
@@ -68,6 +98,9 @@ func (b *PoolBridge) PoolRequest(ctx context.Context, req pilot.PoolRequest) (pi
 		b.manifestView = nil
 	}
 	budget := 30 * time.Second
+	if b.Mode() == pilot.HostedPoolMode && oneOf(req.Command, "login_fixture", "reset_fixture") {
+		budget = 2 * time.Minute
+	}
 	b.mu.Lock()
 	initial := req.Command == "snapshot" && !b.poolHandshakeUsed
 	if initial {
