@@ -262,6 +262,16 @@ work joining and bounded command output. Action tests use real partial owners;
 they do not claim full funded Runtime.Run acceptance. The portable independent
 reference producer and its public inputs reproduce the exact setup corpus.
 
+Final composition review identified a normal contention path: admission and
+public maintenance share the original nonwaiting signing authority. Its raw
+`operatorauthority.ErrBusy` now reports busy and retries without discarding the
+retained replay. Retry requires every joined error to be a recognized retryable
+cause; busy cannot hide closed custody, integrity or cleanup failure. The
+successor `runtime-contention-attempt1` passed normal8.589s, race10.680s and
+vet0.386s with4,524 unchanged inputs and clean process joins. Twelve classification
+controls cover this correction. This is a source-review finding, not a previously
+observed deployed outage.
+
 ## Remaining integration
 
 - Exercise the complete operator with two independent automatic TLS miners,

@@ -275,7 +275,30 @@ func (r *Runtime) custodyLoop(ctx context.Context) error {
 	}
 }
 func publicRetry(e error) bool {
-	return errors.Is(e, fighterownership.ErrBusy) || errors.Is(e, fighterownership.ErrStale) || errors.Is(e, fighterownership.ErrUnavailable) || errors.Is(e, registry.ErrBusy) || errors.Is(e, registry.ErrConflict) || errors.Is(e, context.DeadlineExceeded)
+	// A shared online owner is deliberately nonwaiting. Admission and public
+	// maintenance may contend normally; only the original busy error permits
+	// retry. Never hide a joined cleanup or custody failure behind that error.
+	switch e {
+	case fighterownership.ErrBusy, fighterownership.ErrStale, fighterownership.ErrUnavailable,
+		registry.ErrBusy, registry.ErrConflict, operatorauthority.ErrBusy, context.DeadlineExceeded:
+		return true
+	}
+	if many, ok := e.(interface{ Unwrap() []error }); ok {
+		children := many.Unwrap()
+		if len(children) == 0 {
+			return false
+		}
+		for _, child := range children {
+			if !publicRetry(child) {
+				return false
+			}
+		}
+		return true
+	}
+	if one, ok := e.(interface{ Unwrap() error }); ok {
+		return publicRetry(one.Unwrap())
+	}
+	return false
 }
 func roundRetry(e error) bool {
 	return errors.Is(e, poolround.ErrBusy) || errors.Is(e, poolround.ErrNode) || errors.Is(e, poolround.ErrSourceUnavailable) || errors.Is(e, context.DeadlineExceeded)
@@ -287,7 +310,7 @@ func maintenanceCode(e error) string {
 	if errors.Is(e, context.DeadlineExceeded) {
 		return "timed_out"
 	}
-	if errors.Is(e, fighterownership.ErrBusy) || errors.Is(e, registry.ErrBusy) || errors.Is(e, poolround.ErrBusy) {
+	if errors.Is(e, fighterownership.ErrBusy) || errors.Is(e, registry.ErrBusy) || errors.Is(e, poolround.ErrBusy) || errors.Is(e, operatorauthority.ErrBusy) {
 		return "busy"
 	}
 	if errors.Is(e, fighterownership.ErrCapacity) || errors.Is(e, poolround.ErrCapacity) {

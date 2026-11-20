@@ -6,7 +6,41 @@ import (
 	"errors"
 	"fmt"
 	"testing"
+
+	"github.com/taytr-llc/slug/fighterownership"
+	"github.com/taytr-llc/slug/internal/operatorauthority"
+	"github.com/taytr-llc/slug/registry"
 )
+
+func TestOperatorPublicMaintenanceContention(t *testing.T) {
+	for _, tc := range []struct {
+		name  string
+		cause error
+		retry bool
+	}{
+		{"owner busy", operatorauthority.ErrBusy, true},
+		{"wrapped owner busy", fmt.Errorf("publication: %w", operatorauthority.ErrBusy), true},
+		{"joined known retry", errors.Join(operatorauthority.ErrBusy, registry.ErrBusy, context.DeadlineExceeded), true},
+		{"stale replay", fighterownership.ErrStale, true},
+		{"owner closed", operatorauthority.ErrClosed, false},
+		{"owner integrity", operatorauthority.ErrIntegrity, false},
+		{"owner binding", operatorauthority.ErrBinding, false},
+		{"busy with closed", errors.Join(operatorauthority.ErrBusy, operatorauthority.ErrClosed), false},
+		{"busy with cleanup", errors.Join(operatorauthority.ErrBusy, ErrCleanup), false},
+		{"stale with cleanup", errors.Join(fighterownership.ErrStale, ErrCleanup), false},
+		{"canceled", context.Canceled, false},
+		{"nil", nil, false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			if publicRetry(tc.cause) != tc.retry {
+				t.Fatal("wrong maintenance retry classification", tc.cause)
+			}
+		})
+	}
+	if maintenanceCode(operatorauthority.ErrBusy) != "busy" {
+		t.Fatal("ordinary owner contention not visible as busy")
+	}
+}
 
 func TestOperatorRuntimeCompletionClassification(t *testing.T) {
 	canceled, cancel := context.WithCancel(context.Background())

@@ -117,7 +117,7 @@ func (m *publicMaintenance) step(ctx context.Context) (p fighterownership.Progre
 		if e != nil {
 			// Contention or a slice deadline need not discard completed in-memory
 			// verification. Source/tip changes are detected again by the same Step.
-			if !errors.Is(e, fighterownership.ErrBusy) && !errors.Is(e, context.DeadlineExceeded) {
+			if !errors.Is(e, fighterownership.ErrBusy) && !errors.Is(e, operatorauthority.ErrBusy) && !errors.Is(e, context.DeadlineExceeded) {
 				e = errors.Join(e, m.close())
 			}
 			m.progress.Ready = false
