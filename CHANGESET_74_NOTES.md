@@ -431,9 +431,29 @@ unchanged inputs. All process groups joined. The component-bound report is
 `docs/evidence/set74/remote-attachment.json`; it does not claim actual remote
 wallet/miner composition or native application acceptance.
 
+The subsequent `remote-attachment-actual-attempt1` passed in 13.894 seconds of
+runtime after normal builds. It selected the closed Set73 baseline's existing
+incrementing256 wallet and a separate TLS OperatorV2 runtime, mined a block
+(copied chain height 2 to 3), obtained both an accepted share and fighter receipt,
+then stopped and reopened the exact controller/outbox without automatic work.
+Closed operator audit matched the original receipts. All 2,967 selected inputs,
+the original fixture, and 226 protected copied history/control paths stayed
+unchanged; both isolated nodes and all process groups joined without signals.
+This proves actual attachment/admission, not native UI, ownership replay or
+payout presentation. See `docs/evidence/set74/remote-attachment-actual.json`.
+
 The broader GitHub CLI authorization was canceled when Mike restricted access
-to SLUG/taytr-llc and excluded Wandercom/Growmaple. The replacement is an explicitly
-scoped setup; Linux execution remains pending until that access is established.
+to SLUG/taytr-llc and excluded Wandercom/Growmaple. He installed a fine-grained
+credential through a hidden local prompt, stored in Keychain for this repository
+without changing the global login. Its saved GitHub selection is only `slug`,
+with Contents/Workflows write and Actions read. The topic push through
+`388546a8` succeeded, activating `.github/workflows/operator-linux.yml`.
+This supersedes the earlier authentication-blocked workflow state above.
+
+The first actual GitHub run, `44819586232`, failed workflow validation before
+creating a job: `runner.temp` is unavailable in job-level `env`. The successor
+moves that expression into step-level environment and the artifact upload input.
+Preserve the original failed run; the corrected Linux execution is still pending.
 
 ## Remaining integration
 

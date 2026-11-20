@@ -1,0 +1,141 @@
+{
+  "actual": {
+    "accepted_fighter": true,
+    "accepted_share": true,
+    "bootstrap_mining": false,
+    "clean_join": true,
+    "cleanup_errors": [],
+    "completed": true,
+    "config_id": "50ceaf6124016e1a0e643e9223b0f546b12a52f6a244feb5353cd4a63c90169b",
+    "final_height": 3,
+    "initial_height": 2,
+    "initial_tip": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+    "max_new_blocks": 1,
+    "node_cleanup": [
+      {
+        "clean": true,
+        "forced_kill": false,
+        "joined": true,
+        "log_close_error": false,
+        "stop_rpc_error": false,
+        "unexpected_exit": false,
+        "wait_error": ""
+      },
+      {
+        "clean": true,
+        "forced_kill": false,
+        "joined": true,
+        "log_close_error": false,
+        "stop_rpc_error": false,
+        "unexpected_exit": false,
+        "wait_error": ""
+      }
+    ],
+    "open_login_contexts_canceled": true,
+    "operator_audit_exact": true,
+    "passed": true,
+    "public_seed_mining": false,
+    "reopened_same_rows": true,
+    "rows": 1,
+    "scope": "existing schema14 remote TLS attachment",
+    "version": 1
+  },
+  "approved_lock_sha256": "2578af33dba5d34cbedea05cf17536e05d4b698b03ae95ef8854b965f194913d",
+  "attempt": "remote-attachment-actual-attempt1",
+  "binary_artifacts": {
+    "node": {
+      "build_info": "/Users/taytrrip/slug/artifacts/set74/remote-attachment-actual-attempt1/node-build-info.txt",
+      "build_info_sha256": "1935f4bf0a479b5476d8a3bd841e9ccbaa5f834000532f62a33ae3ee67b2823e",
+      "compiler_setting_evidence": "embedded_build_info",
+      "go_version": "go1.27.4",
+      "path": "/Users/taytrrip/slug/artifacts/set74/remote-attachment-actual-attempt1/bin/slugd",
+      "settings": {
+        "-buildmode": "exe",
+        "-compiler": "gc",
+        "-gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "-trimpath": "true",
+        "CGO_ENABLED": "0",
+        "GOARCH": "arm64",
+        "GOARM64": "v8.0",
+        "GOOS": "darwin",
+        "vcs": "git",
+        "vcs.modified": "false",
+        "vcs.revision": "718c5a1daf18cc7a07b6eaac5bbe2d9f7472009c",
+        "vcs.time": "2026-11-20T21:19:46Z"
+      },
+      "sha256": "ae8d5cbf1f0c4b6fdc7e5a644837c680cf3aa76f71fcb4cc422ebb16c99191be"
+    },
+    "probe": {
+      "build_info": "/Users/taytrrip/slug/artifacts/set74/remote-attachment-actual-attempt1/probe-build-info.txt",
+      "build_info_sha256": "418b1e6a526944c1c1f85f99c8d2c3cc37b894159e3db821da1b617448aeaddb",
+      "compiler_setting_evidence": "embedded_build_info",
+      "go_version": "go1.27.4",
+      "path": "/Users/taytrrip/slug/artifacts/set74/remote-attachment-actual-attempt1/bin/remote-attachment-actual",
+      "settings": {
+        "-buildmode": "exe",
+        "-compiler": "gc",
+        "-gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "-trimpath": "true",
+        "CGO_ENABLED": "1",
+        "GOARCH": "arm64",
+        "GOARM64": "v8.0",
+        "GOOS": "darwin"
+      },
+      "sha256": "4731b2f58ccffd2cb2b5632c88d3ba0a0fb5817f2951c6112f0c3819193088d1"
+    }
+  },
+  "commands": [
+    {
+      "clean_join": true,
+      "exit_code": 0,
+      "seconds": 0.742,
+      "signals": []
+    },
+    {
+      "clean_join": true,
+      "exit_code": 0,
+      "seconds": 0.429,
+      "signals": []
+    },
+    {
+      "clean_join": true,
+      "exit_code": 0,
+      "seconds": 2.265,
+      "signals": []
+    },
+    {
+      "clean_join": true,
+      "exit_code": 0,
+      "seconds": 14.815,
+      "signals": []
+    },
+    {
+      "clean_join": true,
+      "exit_code": 0,
+      "seconds": 13.894,
+      "signals": []
+    }
+  ],
+  "fixture_catalog_sha256": "2637978c2e08637dae2a21bf7fcb8e9ab37edb3476e2b9512c73ff16809b7e55",
+  "immutable_copy_paths": 226,
+  "old_copied_histories_unchanged": true,
+  "original_fixture_unchanged": true,
+  "passed": true,
+  "public_evidence_sha256": {
+    "01-runtime-and-selection.json": "6052e951086a67bcef2fe516436faccc6db720f725266356e3c4b45d295b4dcd",
+    "02-stopped-original-view.json": "3619532b37ee5c69a7843f7d00db7db325229affd898ba95a295826302fa0eaa",
+    "03-work-stopped.json": "b2d3f7595757054bcbff3bcb192c1cfd612ce0759627da8ad488c4bad36e3cb8",
+    "04-closed-rows.json": "0feda50beff5872e8f58f9ad688dfdc8ad8c4afc8810a14ff042ee9deedc903a",
+    "05-reopened-rows.json": "21dedb0fb2f8b30171cc45c87b81d8e7bd5db6baddc1d581c6815d1d8095ad68",
+    "actual-report.json": "a9194e54f20dfe4c35a6fe3e6f0504e9f7c41dc086239bd27873ca5f6bc97bbc",
+    "selected-public-setup.json": "a29d5934275a6890d22f6bc6e95685225cee49819463f788073e6201eaa00087"
+  },
+  "qualified_code_commit": "718c5a1daf18cc7a07b6eaac5bbe2d9f7472009c",
+  "report_sha256": "9e7e04b88c02a0c35848c92b9a2cd804d7322612483f55d5f91a463a34c4881f",
+  "scope": "Actual existing schema14 wallet to isolated TLS OperatorV2 pool; separate native UI, payouts and ownership replay acceptance remain pending",
+  "source_count": 2967,
+  "source_inventory_sha256": "38e8e65a43180ea61537368d51fb1711bd90f0aca941d1d8c9cf996db3f7614a",
+  "source_unchanged": true,
+  "version": 1,
+  "wallet_commit": "6a69ecfcfc20f5433b5a1ca75e6dbb3a4db725a0"
+}

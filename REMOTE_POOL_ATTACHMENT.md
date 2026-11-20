@@ -72,8 +72,17 @@ recipient and wallet-startup regressions; the cheap-only case also passed.
 Its 4,606 selected inputs stayed unchanged. `remote-controller-attempt1` passed
 normal (11.553s), race (15.035s), no-CGO compilation (9.028s) and vet (0.938s),
 with 4,613 unchanged inputs. All process groups joined. These are focused
-boundary checks; actual existing-wallet/node/TLS mining composition and native
-integration remain separate. See `docs/evidence/set74/remote-attachment.json`.
+boundary checks. See `docs/evidence/set74/remote-attachment.json`.
+
+The subsequent actual rehearsal also passed: the existing incrementing256
+schema14 wallet connected to a separate TLS operator, mined one normal-PoW block
+and obtained both an accepted share and a separately signed fighter admission.
+Stop/logout joined all owners; the same controller and outbox reopened stopped
+with identical receipts. Independent operator audit matched those receipts.
+The runtime took 13.894 seconds, all 2,967 selected inputs stayed unchanged,
+and the original fixture plus 226 protected copied history/control files stayed
+unchanged. See `docs/evidence/set74/remote-attachment-actual.json`. Native UI,
+remote fighter ownership replay and payout presentation remain separate work.
 
 OperatorV2 fighter/history integration remains separate; remote receipts must
 not be presented as entries in an old local stable. Navigation and the final
