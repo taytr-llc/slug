@@ -327,6 +327,19 @@ version.
   Commit messages: short summary line, then a body that says what changed
   and why, including any deliberate non-changes.
 
+## Hosted authentication requirement (D82)
+
+- Mike requires strict mandatory MFA for email/password login and wants passkey
+  support (November 19). Record and preserve these release requirements in
+  `HOSTED_AUTHENTICATION.md`; the current signed fixture buttons do not prove MFA.
+- Preserve D72's same-wallet reset, revocation and hold. Password reset must not
+  remove the second factor or create an email-only bypass. The all-factor-loss
+  support-recovery policy is awaiting Mike's answer; do not assume approval.
+- Passkey user verification and password-plus-authenticator are proposed paths.
+  Freeze a separately versioned trusted assurance contract before implementing;
+  do not reinterpret old fixture assertions, freshness timestamps or schemas as
+  MFA evidence. Provider selection and final D74 screens remain separate work.
+
 ## Build and test
 
 - Sets 48–49 candidate qualification uses the exact local Go 1.27.4 no-CSE

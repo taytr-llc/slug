@@ -279,9 +279,13 @@ old immutable vault API while adding concrete public wallet captures and signed
 schema-2 account login/reset. `HOSTED_CURRENT_RECOVERY.md` freezes the contract;
 `CHANGESET_71_NOTES.md` records the qualification status and limits. This supplies
 local hosted-account plumbing, not a live signup provider, continuous recovery
-coverage or production custody. The real login method/provider and screens are
-still open; email/password is a proposal. The approved same-wallet verified
-reset and 24-hour hold remain mandatory for the eventual provider.
+coverage or production custody. D82 requires mandatory MFA for hosted login and
+passkey support. Email/password must include a second factor; the proposed
+passkey route requires server-verified user verification. The real provider,
+all-factor-loss recovery policy and final screens remain open. Preserve the
+approved same-wallet verified reset and 24-hour hold without an MFA bypass.
+See `HOSTED_AUTHENTICATION.md` for accepted requirements, proposed mechanisms and
+the provider/assurance/recovery acceptance work still required.
 The next recovery milestone is durable address-issuance inventory and deliberate
 recovery when the local wallet is missing. A dated export does not protect
 later allocations continuously, and a seed/cursor restore must never recreate

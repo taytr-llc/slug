@@ -436,9 +436,11 @@ they do not count as completion of this product-release gate.
   file-only restore/spend, reset/hold/restart, complete wallet/desktop suites,
   normal packaged-helper acceptance and the required smoke passed. See
   `HOSTED_CURRENT_RECOVERY.md` and `CHANGESET_71_NOTES.md`. The two buttons remain
-  published test identities. Real signup/login method and provider selection,
-  cross-device service behavior, continuous disaster recovery and production
-  key custody remain release work. The full joint D74 review stays last.
+  published test identities, not MFA-qualified accounts. D82 now requires
+  mandatory MFA and passkey support; provider selection, all-factor-loss
+  recovery policy, cross-device service behavior, continuous disaster recovery
+  and production key custody remain release work. The full joint D74 review
+  stays last.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
@@ -451,7 +453,7 @@ and their intake does not replace the D74 review of the working product.
 | Milestone | Remaining acceptance |
 | --- | --- |
 | Production wallet and recovery | Freeze the approved profile and exact chain/coin identity; prove actual export, independent fresh restore and spending. Complete authoritative address metadata and bounded resumable scanning before claiming full evolving-wallet recovery. Real entropy and custody must use the operator-owned runtime, never assistant-visible keys. |
-| Real accounts and hosted custody | Demonstrate provider authentication/reset ordering, original-authentication epochs, durable retry/reconciliation and abandoned-flow behavior. Provision the reviewed operator-owned provider/vault configuration; prove same-wallet recovery, hold enforcement, backups, key rotation and disaster recovery. |
+| Real accounts and hosted custody | Implement D82 mandatory MFA and passkey support with trusted assurance, user verification and fresh sensitive-action authentication. Resolve factor-loss recovery and prove enrollment, replacement, replay/rate limits, refresh downgrade refusal and reset/session revocation without an MFA bypass. Demonstrate provider authentication/reset ordering, original-authentication epochs, durable retry/reconciliation and abandoned-flow behavior. Provision the reviewed operator-owned provider/vault configuration; prove same-wallet recovery, D72 hold enforcement, backups, key rotation and disaster recovery. See HOSTED_AUTHENTICATION.md. |
 | Desktop product | Integrate real signup/login, wallet views and controlled mining with the service. Complete native error/recovery flows, cross-device behavior, macOS signing/notarization and Windows runtime acceptance. Review distribution/update behavior. The expanded-name candidate is qualified for explicit fixture use; production activation remains separate. |
 | Mining and fighter services | Qualify hosted official-pool operations and production signer custody/capacity for the implemented share, round and settlement path; complete authoritative fighter lifecycle/ownership and portable history. Preserve automatic jobs, birth, canonical-winning-block rules and report-only checkpoint doctrine. |
 | League, marketplace and presentation | Wire the fight/league operation, entries, matching, results/finality, rankings and required gym/fighter flows. Complete the agreed launch marketplace/transfer behavior and reset-hold restrictions. Prototype/simulation output does not substitute for deployed acceptance. |
