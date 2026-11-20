@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"github.com/syndtr/goleveldb/leveldb"
+	"github.com/syndtr/goleveldb/leveldb/opt"
 	"github.com/taytr-llc/slug/desktop/pilot"
 	"github.com/taytr-llc/slug/fighterownership"
 	"github.com/taytr-llc/slug/gymaccount"
@@ -107,6 +108,11 @@ func ownedRootInventory(root string) error {
 	return nil
 }
 func openOwnedRoot(root string) (*leveldb.DB, error) {
+	return openOwnedRootMode(root, false)
+}
+
+// Existing mode cannot create a root or replace a missing instance lock.
+func openOwnedRootMode(root string, existing bool) (*leveldb.DB, error) {
 	if !filepath.IsAbs(root) || filepath.Clean(root) != root || strings.ContainsAny(root, "\x00\r\n\t") {
 		return nil, pilot.ErrManifestInitialization
 	}
@@ -129,7 +135,11 @@ func openOwnedRoot(root string) (*leveldb.DB, error) {
 			break
 		}
 	}
-	if e = ownedMakeDirectory(root); e != nil {
+	if existing {
+		if found, err := hostedComponentExists(root); err != nil || !found {
+			return nil, errors.Join(pilot.ErrManifestInitialization, err)
+		}
+	} else if e = ownedMakeDirectory(root); e != nil {
 		return nil, e
 	}
 	if e = ownedRootInventory(root); e != nil {
@@ -140,6 +150,12 @@ func openOwnedRoot(root string) (*leveldb.DB, error) {
 		return nil, pilot.ErrManifestInitialization
 	} else if e != nil && !os.IsNotExist(e) {
 		return nil, e
+	}
+	if existing {
+		if found, err := hostedComponentExists(path); err != nil || !found {
+			return nil, errors.Join(pilot.ErrManifestInitialization, err)
+		}
+		return leveldb.OpenFile(path, &opt.Options{ErrorIfMissing: true})
 	}
 	return leveldb.OpenFile(path, nil)
 }

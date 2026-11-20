@@ -16,6 +16,12 @@ and onboarding. Preserve D82 requirements for that later work and D74's full
 joint design review as the final product review before release. Fixture pool
 tests alone do not close public deployment and scheduled-payout acceptance.
 
+Mike explicitly excludes Wandercom and Growmaple from agent access. Do not
+query or operate on either organization's repositories or other resources.
+Keep GitHub work scoped to the authorized SLUG repositories. The broad GitHub
+CLI workflow-scope authorization was canceled at his direction; any replacement
+authorization must be repository-limited, not an account-wide OAuth expansion.
+
 ## Branch discipline (do not break this)
 
 - Mike explicitly authorized the Phase A master merge and seed deployment

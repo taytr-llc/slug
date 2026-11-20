@@ -21,21 +21,22 @@ import (
 )
 
 type OwnedWalletSession struct {
-	setup       *OwnedWalletSetup
-	entry       *ownedWalletEntry
-	runtime     *walletRuntime
-	login       gymaccount.Session
-	epoch       recoveryvault.EpochFence
-	intent      ownedWalletIntent
-	root        string
-	carrier     *wallet.FighterCarrierOwner
-	withdrawals *wallet.AllocatedWithdrawals2
-	recipient   PoolRecipientBinding
-	ready       atomic.Bool
-	opMu        sync.Mutex
-	closed      atomic.Bool
-	closeOnce   sync.Once
-	closeErr    error
+	setup         *OwnedWalletSetup
+	entry         *ownedWalletEntry
+	runtime       *walletRuntime
+	login         gymaccount.Session
+	epoch         recoveryvault.EpochFence
+	intent        ownedWalletIntent
+	root          string
+	carrier       *wallet.FighterCarrierOwner
+	withdrawals   *wallet.AllocatedWithdrawals2
+	recipient     PoolRecipientBinding
+	ready         atomic.Bool
+	opMu          sync.Mutex
+	remoteClaimed bool // Single-use attachment claim; close/reopen before replacement.
+	closed        atomic.Bool
+	closeOnce     sync.Once
+	closeErr      error
 }
 
 func ownedWalletGuard(i ownedWalletIntent, bound bool) waddrmgr.HostedAllocationGuard2 {
@@ -126,6 +127,9 @@ func (s *OwnedWalletSetup) OpenFixture(ctx context.Context, fixture string, logi
 	root := filepath.Join(entry.config.ChildRoot, "owned-wallet")
 	intent, ready, e := ownedWalletPrepareControls(root, expected, entry.config.RequireExisting)
 	if e != nil {
+		return nil, e
+	}
+	if e = auditOwnedWalletRecipientControls(root, ready); e != nil {
 		return nil, e
 	}
 	session := &OwnedWalletSession{setup: s, entry: entry, login: login, epoch: epoch, intent: intent, root: root}
@@ -519,4 +523,21 @@ func (w *ownedRecipientWallet) EnsurePoolRecipient(ctx context.Context, expected
 		return walletPoolRecipient{}, ErrPoolRecipient
 	}
 	return want, nil
+}
+
+// Established controls must be exact before any wallet or journal is opened.
+// This corroborates the independently reconstructed recipient; it never repairs
+// missing markers or substitutes for the later live wallet ownership audit.
+func auditOwnedWalletRecipientControls(root string, ready *ownedWalletReady) error {
+	if ready == nil {
+		return nil
+	}
+	for _, item := range []struct{ name, phase string }{
+		{poolRecipientIntentName, "initializing"}, {poolRecipientReadyName, "ready"},
+	} {
+		if e := readPoolRecipientMarker(filepath.Join(root, item.name), recipientMarker(ready.Recipient, item.phase)); e != nil {
+			return e
+		}
+	}
+	return nil
 }

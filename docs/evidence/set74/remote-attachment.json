@@ -1,0 +1,120 @@
+{
+  "version": 1,
+  "scope": "Focused existing-wallet remote attachment and controller boundaries; actual wallet/node/TLS mining acceptance and native route remain pending",
+  "base_commit": "3bfc2e13f9deb88c30ab72e6649a8224e08af40b",
+  "wallet_commit": "6a69ecfcfc20f5433b5a1ca75e6dbb3a4db725a0",
+  "passed": true,
+  "components": [
+    {
+      "attempt": "remote-attachment-attempt1",
+      "inputs_unchanged": true,
+      "input_count": 4606,
+      "selected_source_sha256": {
+        "desktop/pilot/owned_wallet.go": "4621524f2915dc8043bba4c45c19dcc4011a3b8ccda8bba647d5121be9e97514",
+        "desktop/pilot/pool_recipient_binding.go": "3470537463122ff4a58b484fec46ea18077157de664620fc0f191a8cce6ffef0",
+        "desktop/pilot/remote_pool_acl_darwin.go": "cc42c0344c3e2b88b8e516da4149e1a3f68f673d5e9275fe3cc1c74191520878",
+        "desktop/pilot/remote_pool_acl_linux.go": "29331ff3e01aab60a09bc4abfa305b361d1dafced0fa920ed34dd99927c81716",
+        "desktop/pilot/remote_pool_attachment.go": "7435b96449ae383173050721c590d3cd97b3d1752e0b1dbb36feb6dd80cbbe78",
+        "desktop/pilot/remote_pool_attachment_test.go": "cd4b6d38098e21bbb97dd67f96e9fcdc5c32377033927c8cff7cb4987036e5a7",
+        "desktop/pilot/remote_pool_config.go": "37ebf395a482873047f6b27e2a0adfd4f449cc014a1accff489427757e96f9cb",
+        "desktop/pilot/remote_pool_config_test.go": "a5e78740104c148be9fa2d9fd4a12fe6bfdcbf542649f5427dfb81f8e5698c41",
+        "desktop/pilot/remote_pool_credential_clients.go": "817d4f571ccac6e41084ddb26993aeeb39199cc9080c979d6372aa13c8e1bfe6",
+        "desktop/pilot/remote_pool_credentials.go": "156294d970dd3a8b04f98b069851e1a9e72e7500d2176b1895ec12387d2838bb",
+        "desktop/pilot/remote_pool_credentials_test.go": "e4ae947b9032f10efd1e9e383a082be839ae1c5cf54e8efcc66fe45bfe9989f2",
+        "desktop/pilot/remote_pool_credentials_unsupported_test.go": "c69b9b9f25ff390c6957d4cf89afcc05f89341ee64bedbdee9b35151f4a4b72d",
+        "desktop/pilot/remote_pool_existing.go": "6664894280c1786680213dbd8d7bfaedade189f2c343587d3186442267874fb0",
+        "desktop/pilot/remote_pool_files_test.go": "7325b5dfe73c263f2414f8e7230e6d13f73a66b1dc82766f78213e6e484ba673",
+        "desktop/pilot/remote_pool_files_unix.go": "6cee59c0d79d3fe9f920ff647a539ba2caaf2c4d1b8bba12a200817f18d750b9",
+        "desktop/pilot/remote_pool_files_unsupported.go": "6308bbc49e98887228b7be001bf89dba4c4053f92d18695b84f6d9f2fddb0338",
+        "desktop/pilot/remote_pool_local.go": "81282051bc831825c4a6449472431e400c053ddd6b321f2f6ba8abe0f7e2dc50",
+        "desktop/pilot/remote_pool_node.go": "bc2dfc81dd7ea9f36ebdaa7ea4be09deb0675af3b051575b3651a9803e1f731f",
+        "desktop/pilot/remote_pool_private_unix.go": "0c6adb6fb4f4705e936b92deb3b19a80a675002aea9542456bca7c8941890cfd",
+        "desktop/pilot/remote_pool_private_unsupported.go": "019519261680d45bdb78bd65af1a8b7bb223a95eafe331221b63950725a74141",
+        "desktop/pilot/remote_pool_read.go": "601d91b58c5114ad1a43d37d31b84bdd83fb175b6e183b4f1437ed6381200467",
+        "desktop/pilot/remote_pool_recipient_test.go": "4350bd28d9c80895701feb94a4e90ad6e4857e944f89f669ec6e1d508b3eca3f",
+        "desktop/pilot/remote_pool_worker.go": "60f2f5203b03bcd8a245b9f1635c2b0022dff1f34bcd7d3c9bc20a2f6fdb3c7e"
+      },
+      "commands": [
+        {
+          "name": "normal",
+          "seconds": 25.722,
+          "exit_code": 0,
+          "clean_join": true
+        },
+        {
+          "name": "race",
+          "seconds": 61.726,
+          "exit_code": 0,
+          "clean_join": true
+        },
+        {
+          "name": "no-cgo",
+          "seconds": 11.174,
+          "exit_code": 0,
+          "clean_join": true
+        },
+        {
+          "name": "cheap",
+          "seconds": 9.428,
+          "exit_code": 0,
+          "clean_join": true
+        },
+        {
+          "name": "vet",
+          "seconds": 1.105,
+          "exit_code": 0,
+          "clean_join": true
+        }
+      ],
+      "report_sha256": "b23ca95f6a074eec12ae7bb6d0643667b36e67311e74024224e05b361f5573be",
+      "source_inventory_sha256": "464ed9684221357957d6c22898b721610a67f8c12af5364065b1f932c59d6419"
+    },
+    {
+      "attempt": "remote-controller-attempt1",
+      "inputs_unchanged": true,
+      "input_count": 4613,
+      "selected_source_sha256": {
+        "desktop/accountpilot/owned_controller.go": "6ea44446a2b2e182aadb4fc316d1d5e61f7faad705a5c044a3d63a2f217ecf4c",
+        "desktop/accountpilot/owned_files.go": "375f5529b3490b29b1a585255fbf14ed23b32c085c47e86548146122b55df0c5",
+        "desktop/accountpilot/remote_pool_controller.go": "5eb09ea2b35a264677d120dc2c6346b5cf96f627e0db0d2798639e44a0238f04",
+        "desktop/accountpilot/remote_pool_files.go": "fa566f347fe246ac991052c9c4faa16642f6393d0564ab313c409daca6265d6c",
+        "desktop/accountpilot/remote_pool_files_test.go": "cd6a41932a9d850301784715f17c8fc446e0e59940c0f3c72f4dd4bb4e60e6db",
+        "desktop/accountpilot/remote_pool_session.go": "ed71bedd2d128087c1074480cfb94ac8a10d2e5ebeb3f26b86a1bb57b8101480",
+        "desktop/accountpilot/remote_pool_session_test.go": "b67f0e178c346084169c79a0e8e85a164171c36f2c83c0a7a92a8a56fbea1cf8"
+      },
+      "commands": [
+        {
+          "name": "normal",
+          "seconds": 11.553,
+          "exit_code": 0,
+          "clean_join": true
+        },
+        {
+          "name": "race",
+          "seconds": 15.035,
+          "exit_code": 0,
+          "clean_join": true
+        },
+        {
+          "name": "no-cgo-compile",
+          "seconds": 9.028,
+          "exit_code": 0,
+          "clean_join": true
+        },
+        {
+          "name": "vet",
+          "seconds": 0.938,
+          "exit_code": 0,
+          "clean_join": true
+        }
+      ],
+      "report_sha256": "844460f6f150169871fe0b089ecdb573f84b71717de70b455934f3afac77f425",
+      "source_inventory_sha256": "2fa05303240283ab5188c8c1e6f4757239a10de220d58bf7d3de66c0b51b2044"
+    }
+  ],
+  "source_reviews": {
+    "attachment_manifest": "e73e1f348ac964848e4d0a898c8654e2e58e98b1875a09bb459a46eac0898353",
+    "controller_manifest": "efa81703c650fde7213c31ef8f3662c6c647c244cfe51f08343fd4759d9f15cf",
+    "controller_peer_review": "21eee86ad6f4b0657a165610674f24432f2472c26b21baa627832b691a9fe30a"
+  }
+}

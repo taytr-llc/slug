@@ -406,6 +406,35 @@ unchanged and all process groups joined. The resulting normal provisioner SHA256
 is `1073f7138768704c81b7510ab6ade4daf0db8a07684d25a73c91c5d71132a455`.
 See `docs/evidence/set74/operator-provision.json` for the exact composite.
 
+## Existing-wallet remote attachment
+
+The explicit remote attachment now borrows the exact established schema14
+wallet/account/vault, verifies both original recipient markers before opening
+wallet state, attaches the selected private local node once and retains a
+separate outbox. Only explicit Start mines or delivers pending work. The
+controller reuses concrete signed fixture login and enrolled receipt validation;
+it cannot provision a wallet, repair missing vault controls or repin old history.
+This is existing-account composition, not the deferred sign-in/onboarding work.
+
+Finite source review corrected three defects before installation: an empty
+Merkle branch lost its canonical nonnil representation during copying; a failed
+source-audit descriptor close lost its retained owner; and an existing-only
+vault open could resume an empty initializer with a missing marker. Successor
+source/control tests preserve the predecessor artifacts and old APIs. Original
+View/Mining fences, stopped Open/Login, separate owner lifetimes, joined expiry
+and cleanup, exact recovery and sticky failed-owner retention remain required.
+
+`remote-attachment-attempt1` passed normal25.722s, race61.726s, no-CGO11.174s,
+cheap-refusal9.428s and vet1.105s with4,606 unchanged inputs. The paired controller
+passed normal11.553s, race15.035s, no-CGO compilation9.028s and vet0.938s with4,613
+unchanged inputs. All process groups joined. The component-bound report is
+`docs/evidence/set74/remote-attachment.json`; it does not claim actual remote
+wallet/miner composition or native application acceptance.
+
+The broader GitHub CLI authorization was canceled when Mike restricted access
+to SLUG/taytr-llc and excluded Wandercom/Growmaple. The replacement is an explicitly
+scoped setup; Linux execution remains pending until that access is established.
+
 ## Remaining integration
 
 - Prepare the concrete operator handoff and deployment selections without

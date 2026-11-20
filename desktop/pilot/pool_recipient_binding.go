@@ -211,6 +211,15 @@ func ensurePoolRecipientBinding(ctx context.Context, root string, c PoolRecipien
 // The owner serializes this operation with its wallet lifecycle and reopens
 // that wallet after ErrPoolRecipientUncertain before recovering an allocation.
 func ensurePoolRecipientBindingWithWrite(ctx context.Context, root string, c PoolRecipientConfig, a ManifestAccountConfig, w poolRecipientWallet, create bool, write func(string, poolRecipientMarker) error) (PoolRecipientBinding, error) {
+	return poolRecipientBindingWithMode(ctx, root, c, a, w, create, false, write)
+}
+
+// Existing-only audit never allocates a new recipient or repairs a missing marker.
+func auditExistingPoolRecipientBinding(ctx context.Context, root string, c PoolRecipientConfig, a ManifestAccountConfig, w poolRecipientWallet) (PoolRecipientBinding, error) {
+	return poolRecipientBindingWithMode(ctx, root, c, a, w, false, true, func(string, poolRecipientMarker) error { return ErrPoolRecipient })
+}
+
+func poolRecipientBindingWithMode(ctx context.Context, root string, c PoolRecipientConfig, a ManifestAccountConfig, w poolRecipientWallet, create, existingOnly bool, write func(string, poolRecipientMarker) error) (PoolRecipientBinding, error) {
 	if wire.TestPoW || ctx == nil || w == nil || write == nil || a.ViewLease == nil || a.Account.Authorizer == nil || a.Account.MiningToken == nil || a.Generation == 0 || a.Generation > manifestMaxSafe || !validAccountID(a.ViewID) || a.Account.AccountID != c.AccountID || a.Account.AuthorityID != c.AccountAuthorityID || a.Account.Fixture != c.Fixture {
 		return PoolRecipientBinding{}, ErrPoolRecipient
 	}
@@ -245,7 +254,7 @@ func ensurePoolRecipientBindingWithWrite(ctx context.Context, root string, c Poo
 		_, ie := os.Lstat(intentPath)
 		_, re := os.Lstat(readyPath)
 		if os.IsNotExist(ie) {
-			if !create || !os.IsNotExist(re) {
+			if existingOnly || !create || !os.IsNotExist(re) {
 				return ErrPoolRecipient
 			}
 			if e := write(intentPath, intent); e != nil {
@@ -261,7 +270,7 @@ func ensurePoolRecipientBindingWithWrite(ctx context.Context, root string, c Poo
 				return e
 			}
 			hasReady = true
-		} else if !os.IsNotExist(re) {
+		} else if existingOnly || !os.IsNotExist(re) {
 			return ErrPoolRecipient
 		}
 		return nil
@@ -270,7 +279,7 @@ func ensurePoolRecipientBindingWithWrite(ctx context.Context, root string, c Poo
 		return PoolRecipientBinding{}, e
 	}
 	var expected *walletPoolRecipient
-	if hasReady {
+	if hasReady || existingOnly {
 		expected = &want
 	}
 	actual, e := w.EnsurePoolRecipient(ctx, expected)
@@ -294,7 +303,7 @@ func ensurePoolRecipientBindingWithWrite(ctx context.Context, root string, c Poo
 		}
 		if _, e := os.Lstat(readyPath); e == nil {
 			return confirmPoolRecipientMarker(readyPath, ready)
-		} else if !os.IsNotExist(e) {
+		} else if existingOnly || !os.IsNotExist(e) {
 			return ErrPoolRecipient
 		}
 		return write(readyPath, ready)

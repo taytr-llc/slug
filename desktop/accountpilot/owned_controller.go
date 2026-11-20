@@ -210,34 +210,38 @@ func (c *OwnedGymController) pendingReset(ctx context.Context) (*FixturePendingR
 	return out, nil
 }
 func (c *OwnedGymController) signedLogin(ctx context.Context, fixture string) (gymaccount.Session, int64, error) {
-	if _, e := c.driver.PendingReset(ctx, fixture); e == nil {
+	return signedOwnedFixtureLogin(ctx, c.accounts, c.coordinator, c.driver, fixture)
+}
+
+func signedOwnedFixtureLogin(ctx context.Context, accounts *gymaccount.Store, coordinator *gymprovider.Coordinator, driver *hostedFixtureDriver, fixture string) (gymaccount.Session, int64, error) {
+	if _, e := driver.PendingReset(ctx, fixture); e == nil {
 		return gymaccount.Session{}, 0, errHostedPending
 	} else if !errors.Is(e, gymprovider.ErrNotFound) {
 		return gymaccount.Session{}, 0, e
 	}
-	flow, e := c.coordinator.IssueLogin(ctx)
+	flow, e := coordinator.IssueLogin(ctx)
 	if e != nil {
 		return gymaccount.Session{}, 0, e
 	}
-	token, e := c.driver.FreshLogin(ctx, flow, fixture)
+	token, e := driver.FreshLogin(ctx, flow, fixture)
 	if e != nil {
 		return gymaccount.Session{}, 0, e
 	}
-	session, e := c.coordinator.FinishLogin(ctx, flow.ID, token)
+	session, e := coordinator.FinishLogin(ctx, flow.ID, token)
 	token = ""
 	if e != nil {
 		return gymaccount.Session{}, 0, e
 	}
-	c.driver.mu.Lock()
+	driver.mu.Lock()
 	at := int64(0)
-	for _, row := range c.driver.state.Auth {
+	for _, row := range driver.state.Auth {
 		if row.Flow == flow && row.Fixture == fixture {
 			at = row.AuthenticatedAtMS
 		}
 	}
-	c.driver.mu.Unlock()
+	driver.mu.Unlock()
 	if at == 0 {
-		return gymaccount.Session{}, 0, errors.Join(gymprovider.ErrCorrupt, c.accounts.Logout(context.Background(), session.Token))
+		return gymaccount.Session{}, 0, errors.Join(gymprovider.ErrCorrupt, accounts.Logout(context.Background(), session.Token))
 	}
 	return session, at, nil
 }
