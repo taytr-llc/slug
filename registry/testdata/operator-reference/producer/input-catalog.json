@@ -1,0 +1,115 @@
+{
+  "version": 2,
+  "status": "reviewed-scope selector successor proposed; unexecuted",
+  "public_only": true,
+  "files": [
+    {
+      "path": "actual/v1/admission.json",
+      "original": "/Users/taytrrip/slug/set73-prep/public-core-reference/inputs/actual/v1/zero256-unawarded/admission.json",
+      "bytes": 3697,
+      "sha256": "af868d73e6949e5e74f678abc7cc3c64600069415d709dcf0dd9dc2c35a3d5e7"
+    },
+    {
+      "path": "actual/v1/expected-pin.json",
+      "original": "/Users/taytrrip/slug/set73-prep/public-core-reference/inputs/actual/v1/zero256-unawarded/expected-pin.json",
+      "bytes": 992,
+      "sha256": "0ba127c98025ed7f16c302c662017193bb5a633ff1bf0d4a5b03acdc3a674daa"
+    },
+    {
+      "path": "actual/v2/admission.json",
+      "original": "/Users/taytrrip/slug/set73-prep/public-core-reference/inputs/actual/v2/zero256-awarded/admission.json",
+      "bytes": 3698,
+      "sha256": "a023a5b850a4492d35db3302abcd26b830694c029e4278333f9eb279b382123d"
+    },
+    {
+      "path": "actual/v2/expected-pin.json",
+      "original": "/Users/taytrrip/slug/set73-prep/public-core-reference/inputs/actual/v2/zero256-awarded/expected-pin.json",
+      "bytes": 992,
+      "sha256": "2981d0ef863116901eaff23b48b6425b35a5b27614a8312b97a4a8a51dbb6def"
+    },
+    {
+      "path": "inherited/core_model.py",
+      "original": "/Users/taytrrip/slug/set73-prep/public-core-reference/core_model.py",
+      "bytes": 16555,
+      "sha256": "6ff06eb7c83a9fcc428cbb28056565f0abd7456b0bd3fe072092f254731172f2"
+    },
+    {
+      "path": "inherited/crypto.py",
+      "original": "/Users/taytrrip/slug/set73-prep/public-core-reference/inputs/inherited/crypto.py",
+      "bytes": 10124,
+      "sha256": "ea87b9021e14712b1ac7130daa73cd12fb8acf2fd8995ca5ce9e32d0d770fd1c"
+    },
+    {
+      "path": "legacy/public-core-v1.json",
+      "original": "/Users/taytrrip/slug/slug/fighterownership/testdata/reference/public-core-v1.json",
+      "bytes": 336499,
+      "sha256": "1145dede4fcfa453e8bb1cdffff01079f6cca1df3bbe810dc32868207292b507"
+    },
+    {
+      "path": "policy/offline-checkpoint.md",
+      "original": "explicit root policy or public deterministic recipe; no computed key/signature output",
+      "bytes": 895,
+      "sha256": "0d35503e749e245e3fc8560718a0c1dc8caac91471c916428632d545d04631ff"
+    },
+    {
+      "path": "policy/operator-profile.md",
+      "original": "/Users/taytrrip/slug/set74-prep/authority-profile/CONTRACT.draft.md",
+      "bytes": 14817,
+      "sha256": "892aa290062a8730a5cf0986eee0a50e0dab24c1321b5d5fbd3a01402d72e3c6"
+    },
+    {
+      "path": "policy/public-ownership-v1.md",
+      "original": "/Users/taytrrip/slug/slug/PUBLIC_FIGHTER_OWNERSHIP.md",
+      "bytes": 47731,
+      "sha256": "4d82b4ebc907356dc89e714e004955bae35c16a0dcfa091ff68da69710f98853"
+    },
+    {
+      "path": "policy/transfer.md",
+      "original": "/Users/taytrrip/slug/slug/FIGHTER_TRANSFER_POLICY.md",
+      "bytes": 3780,
+      "sha256": "de59533a494ffbbfca99996f0e1d6054a98a1ef4dba95f0c47d1675414543969"
+    },
+    {
+      "path": "provenance/core-input-catalog.json",
+      "original": "/Users/taytrrip/slug/set73-prep/public-core-reference/input-catalog.json",
+      "bytes": 7017,
+      "sha256": "658156e6fe852d56a6430a6618477df566838cb655737891dba9cf3523cf0119"
+    },
+    {
+      "path": "provenance/core-lock.json",
+      "original": "/Users/taytrrip/slug/set73-prep/public-core-reference/producer-lock.cutoff-prefix.approved.json",
+      "bytes": 769,
+      "sha256": "4adad7fb1655c747077201a815ef9149b0ac303232f262ae3f5864e873cb4fd7"
+    },
+    {
+      "path": "provenance/gymresult-identity.go",
+      "original": "/Users/taytrrip/slug/slug/gymresult/identity.go",
+      "bytes": 5110,
+      "sha256": "c91db2517471ee0418b8e3bf80ce8347e3abf260c040331b27e4ca0932dd835c"
+    },
+    {
+      "path": "provenance/gymseed-identity.go",
+      "original": "/Users/taytrrip/slug/slug/gymseed/identity.go",
+      "bytes": 5442,
+      "sha256": "89c6a2842168fa6027150a2f7cefd6ed30ed2d29f580f996235cf03653428aa2"
+    },
+    {
+      "path": "provenance/registry-public-codec.go",
+      "original": "/Users/taytrrip/slug/slug/registry/public_codec.go",
+      "bytes": 18205,
+      "sha256": "c695f4d4e8b49119aa8eb83ed3d78fb6c26fdef4586072131e94d7b88ee34ca5"
+    },
+    {
+      "path": "provenance/signedcheckpoints.go",
+      "original": "/Users/taytrrip/slug/slug/chaincfg/signedcheckpoints.go",
+      "bytes": 7810,
+      "sha256": "10a438b2875b9095bbdc6f37db25d4ba8193e0bef47a210bb2f6888e89ad73a0"
+    },
+    {
+      "path": "recipe.json",
+      "original": "explicit root policy or public deterministic recipe; no computed key/signature output",
+      "bytes": 1732,
+      "sha256": "4de611d99f258dc40e8413c3fead1fc5da3471d7e93216707283cf28758101d1"
+    }
+  ]
+}

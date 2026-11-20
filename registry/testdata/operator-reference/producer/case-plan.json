@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "status": "source prepared; first execution forbidden until exact root-approved lock",
+  "scope": "Independent public pin/profile/role signature codecs and conditional compositions only; no production custody, normal work, replay completeness or filesystem-open proof.",
+  "expected_counts": {
+    "positives": 54,
+    "refusals": 102,
+    "raw_cases": 12,
+    "guards": 12,
+    "checkpoint_matrix": 4
+  },
+  "cases": [
+    "For each of two unchanged source/descriptor record families, compose fixture_v1, operator_v2_distinct and operator_v2_shared profiles.",
+    "Each profile: canonical pin+PinID, signed original admission, inherited checkpoint wire preimage/signature, three linked admission/checkpoint/chain publications, signed finality frame, authentic-shaped synthetic boundary and cutoff. Record canonical bytes/digests.",
+    "Both legacy v1 pins/admissions must byte-match the previously independent public-core corpus; compare inherited rule/log/checkpoint literals.",
+    "Five exact exclusion definitions times four role fields times two sources: v2 refuses all 40 known published fixture key placements.",
+    "Both directions v1/v2: reject wrong selected pin profile and five foreign signed families (24 cases across two sources).",
+    "Five families times two sources: wrong role signature, boolean statement version, and signed statement version2 refuse (30); record grammar stays version1 beneath pin v2.",
+    "Two sources: pin versions0,3,true refuse (6); same admission signing key but changed full pin refuses (2).",
+    "Six canonical/duplicate/unknown/newline/bool/float raw pin cases per source (12).",
+    "Guard filename/body projections for each profile against selected reader1/2 (12); no filesystem or mutation claim.",
+    "Two directions foreign checkpoint key verification per source (4)."
+  ],
+  "limits": {
+    "wall_seconds": 120,
+    "output_bytes": 2097152,
+    "node_calls": 0,
+    "go_calls": 0,
+    "network_calls": 0
+  },
+  "non_claims": [
+    "Synthetic seed recipes are published reference data, not operator secrets.",
+    "Admission records are unchanged qualified inputs; new statements are synthetic wrappers, not old authorities issuing new history.",
+    "Modeled branch/state/frame/cutoff facts do not establish normal PoW, canonicality or event readiness.",
+    "Profile verification model is deliberately scoped, not exhaustive production schema/replay validation.",
+    "Offline checkpoint custody is not changed by pure signature vectors."
+  ]
+}

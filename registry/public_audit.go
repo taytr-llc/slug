@@ -48,7 +48,7 @@ func (s *ManifestStore) auditPublic() error {
 		switch {
 		case bytes.Equal(key, []byte("ownership/guard")):
 			var g publicGuard
-			if publicDecode(value, MaxPublicSmallSize, &g) != nil || g != publicGuardFor(p.pin) {
+			if publicDecode(value, MaxPublicSmallSize, &g) != nil || g != p.codec.guard(p.pin) {
 				return ErrCorrupt
 			}
 			guardSeen = true
@@ -76,7 +76,7 @@ func (s *ManifestStore) auditPublic() error {
 			outboxes[n] = v
 		case bytes.HasPrefix(key, []byte("ownership/admission/")):
 			n := binary.BigEndian.Uint32(key[len("ownership/admission/"):])
-			v, e := ParsePublicAdmission(p.pin, value)
+			v, e := p.codec.ParsePublicAdmission(p.pin, value)
 			if e != nil || n == 0 || n > m.SignedAdmissionSequence || v.AdmissionSequence != n {
 				return ErrCorrupt
 			}
@@ -88,7 +88,7 @@ func (s *ManifestStore) auditPublic() error {
 			admissions[n] = v
 		case bytes.HasPrefix(key, []byte("ownership/publication/")):
 			n := binary.BigEndian.Uint32(key[len("ownership/publication/"):])
-			v, e := ParsePublicPublication(p.pin, value)
+			v, e := p.codec.ParsePublicPublication(p.pin, value)
 			if e != nil || n == 0 || n > m.PublicationSequence || v.Sequence != n {
 				return ErrCorrupt
 			}
@@ -100,13 +100,13 @@ func (s *ManifestStore) auditPublic() error {
 			checkpointIndices[fmt.Sprintf("%x", key[len("ownership/checkpoint/"):])] = binary.BigEndian.Uint32(value)
 		case bytes.HasPrefix(key, []byte("ownership/cutoff-intent/")):
 			var v PublicCutoffIntent
-			if publicDecode(value, MaxPublicSmallSize, &v) != nil || ValidatePublicCutoffIntent(p.pin, v) != nil || !bytes.Equal(publicIDKey("ownership/cutoff-intent/", v.EventID), key) {
+			if publicDecode(value, MaxPublicSmallSize, &v) != nil || p.codec.ValidatePublicCutoffIntent(p.pin, v) != nil || !bytes.Equal(publicIDKey("ownership/cutoff-intent/", v.EventID), key) {
 				return ErrCorrupt
 			}
 			intents[v.EventID] = v
 		case bytes.HasPrefix(key, []byte("ownership/cutoff/")):
 			var v PublicCutoffRecord
-			if publicDecode(value, MaxPublicSmallSize, &v) != nil || ValidatePublicCutoff(p.pin, v) != nil || !bytes.Equal(publicIDKey("ownership/cutoff/", v.EventID), key) {
+			if publicDecode(value, MaxPublicSmallSize, &v) != nil || p.codec.ValidatePublicCutoff(p.pin, v) != nil || !bytes.Equal(publicIDKey("ownership/cutoff/", v.EventID), key) {
 				return ErrCorrupt
 			}
 			cutoffs[v.EventID] = v
@@ -123,7 +123,7 @@ func (s *ManifestStore) auditPublic() error {
 		if !ok || a.PreviousAdmissionID != previous || outboxes[n].ProspectID != a.Record.Verified.ProspectID {
 			return ErrCorrupt
 		}
-		previous, e = PublicAdmissionID(p.pin, a)
+		previous, e = p.codec.PublicAdmissionID(p.pin, a)
 		if e != nil {
 			return ErrCorrupt
 		}
@@ -142,7 +142,7 @@ func (s *ManifestStore) auditPublic() error {
 		if !ok || v.PreviousID != previous || v.AttestedAtMS < clock || v.AttestedAtMS > m.ClockHighWaterMS {
 			return ErrCorrupt
 		}
-		id, e := PublicPublicationID(p.pin, v)
+		id, e := p.codec.PublicPublicationID(p.pin, v)
 		if e != nil {
 			return ErrCorrupt
 		}
@@ -153,7 +153,7 @@ func (s *ManifestStore) auditPublic() error {
 			var ref PublicAdmissionReference
 			json.Unmarshal(v.Payload, &ref)
 			a, ok := admissions[ref.AdmissionSequence]
-			aid, _ := PublicAdmissionID(p.pin, a)
+			aid, _ := p.codec.PublicAdmissionID(p.pin, a)
 			if !ok || aid != ref.AdmissionID || seenAdmissions[ref.AdmissionSequence] {
 				return ErrCorrupt
 			}

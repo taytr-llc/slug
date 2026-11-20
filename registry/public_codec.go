@@ -11,7 +11,6 @@ import (
 	"errors"
 	"io"
 	"math"
-	"strconv"
 	"strings"
 
 	"github.com/taytr-llc/slug/chaincfg/v2"
@@ -180,10 +179,7 @@ func NewPublicManifestPin(source ManifestAuthorityPin, publicationID string) (Pu
 	return p, ValidatePublicManifestPin(p)
 }
 func PublicManifestPinID(p PublicManifestPin) (string, error) {
-	if e := ValidatePublicManifestPin(p); e != nil {
-		return "", e
-	}
-	return PublicOwnershipDigest("SLUG fighter ownership pin", p)
+	return (publicEvidenceCodec{}).PublicManifestPinID(p)
 }
 func ParsePublicManifestPin(raw []byte) (PublicManifestPin, error) {
 	var p PublicManifestPin
@@ -275,38 +271,16 @@ func ValidatePublicManifestRecordShape(pin ManifestAuthorityPin, r ManifestRecor
 	return nil
 }
 func ValidatePublicAdmission(p PublicManifestPin, a PublicAdmissionStatement) error {
-	id, e := PublicManifestPinID(p)
-	if e != nil || a.Version != 1 || a.PinID != id || a.AdmissionSequence == 0 || a.AdmissionSequence > p.Limits.Admissions || uint64(a.AdmissionSequence) != a.Record.Sequence || !publicPrefix(a.AdmissionSequence-1, a.PreviousAdmissionID) || ValidatePublicManifestRecordShape(p.Source, a.Record) != nil {
-		return ErrPublicOwnership
-	}
-	rd, e := PublicOwnershipDigest("SLUG fighter ownership admission record", a.Record)
-	if e != nil || rd != a.RecordDigest {
-		return ErrPublicOwnership
-	}
-	return publicSignature("SLUG fighter ownership admission statement", a, p.AdmissionKey, a.Signature)
+	return (publicEvidenceCodec{}).ValidatePublicAdmission(p, a)
 }
 func PublicAdmissionID(p PublicManifestPin, a PublicAdmissionStatement) (string, error) {
-	if e := ValidatePublicAdmission(p, a); e != nil {
-		return "", e
-	}
-	return PublicOwnershipDigest("SLUG fighter ownership admission id", a)
+	return (publicEvidenceCodec{}).PublicAdmissionID(p, a)
 }
 func ParsePublicAdmission(p PublicManifestPin, raw []byte) (PublicAdmissionStatement, error) {
-	var a PublicAdmissionStatement
-	if e := publicDecode(raw, MaxPublicAdmissionSize, &a); e != nil {
-		return a, e
-	}
-	return a, ValidatePublicAdmission(p, a)
+	return (publicEvidenceCodec{}).ParsePublicAdmission(p, raw)
 }
 func MarshalPublicAdmission(p PublicManifestPin, a PublicAdmissionStatement) ([]byte, error) {
-	if e := ValidatePublicAdmission(p, a); e != nil {
-		return nil, e
-	}
-	raw, e := json.Marshal(a)
-	if len(raw) > MaxPublicAdmissionSize {
-		return nil, ErrPublicOwnership
-	}
-	return raw, e
+	return (publicEvidenceCodec{}).MarshalPublicAdmission(p, a)
 }
 func validatePublicPayload(p PublicManifestPin, e PublicPublicationEntry) error {
 	switch e.Kind {
@@ -341,7 +315,7 @@ func validatePublicPayload(p PublicManifestPin, e PublicPublicationEntry) error 
 	return nil
 }
 func validatePublicCheckpoint(p PublicManifestPin, c chaincfg.SignedCheckpoint) error {
-	// Signature verification deliberately uses the separately pinned fixture role.
+	// Signature verification deliberately uses the separately pinned checkpoint role.
 	pub, _ := hex.DecodeString(p.CheckpointKey)
 	params := chaincfg.MainNetParams
 	if uint32(c.Network) != p.Source.Network || c.GenesisHash.String() != p.Source.Genesis {
@@ -353,118 +327,46 @@ func validatePublicCheckpoint(p PublicManifestPin, c chaincfg.SignedCheckpoint) 
 	return nil
 }
 func ValidatePublicPublication(p PublicManifestPin, e PublicPublicationEntry) error {
-	id, err := PublicManifestPinID(p)
-	if err != nil || e.Version != 1 || e.PinID != id || e.Sequence == 0 || e.Sequence > p.Limits.Publications || !publicPrefix(e.Sequence-1, e.PreviousID) || e.AttestedAtMS < 0 || e.AttestedAtMS > MaxPublicTimestampMS || validatePublicPayload(p, e) != nil {
-		return ErrPublicOwnership
-	}
-	return publicSignature("SLUG fighter ownership publication statement", e, p.PublicationKey, e.Signature)
+	return (publicEvidenceCodec{}).ValidatePublicPublication(p, e)
 }
 func PublicPublicationID(p PublicManifestPin, e PublicPublicationEntry) (string, error) {
-	if err := ValidatePublicPublication(p, e); err != nil {
-		return "", err
-	}
-	return PublicOwnershipDigest("SLUG fighter ownership publication id", e)
+	return (publicEvidenceCodec{}).PublicPublicationID(p, e)
 }
 func ParsePublicPublication(p PublicManifestPin, raw []byte) (PublicPublicationEntry, error) {
-	var e PublicPublicationEntry
-	if err := publicDecode(raw, MaxPublicSmallSize, &e); err != nil {
-		return e, err
-	}
-	return e, ValidatePublicPublication(p, e)
+	return (publicEvidenceCodec{}).ParsePublicPublication(p, raw)
 }
 func MarshalPublicPublication(p PublicManifestPin, e PublicPublicationEntry) ([]byte, error) {
-	if err := ValidatePublicPublication(p, e); err != nil {
-		return nil, err
-	}
-	raw, err := json.Marshal(e)
-	if len(raw) > MaxPublicSmallSize {
-		return nil, ErrPublicOwnership
-	}
-	return raw, err
+	return (publicEvidenceCodec{}).MarshalPublicPublication(p, e)
 }
 func ValidatePublicCutoffIntent(p PublicManifestPin, v PublicCutoffIntent) error {
-	id, e := PublicManifestPinID(p)
-	if e != nil || v.Version != 1 || v.PinID != id || !publicHex(v.EventID, 32, true) || v.CutoffMS <= 0 || v.CutoffMS > MaxPublicTimestampMS || v.AcceptedAdmissionSequence > 1000 || v.PublicationSequence > 16384 || !publicPrefix(v.PublicationSequence, v.PublicationHead) || v.FinalitySequence > 4096 || !publicPrefix(v.FinalitySequence, v.FinalityBodyHead) || !publicHex(v.PriorCutoffID, 32, false) {
-		return ErrPublicOwnership
-	}
-	for _, o := range []PublicBoundaryObservation{v.First, v.Second} {
-		r, e := strconv.ParseUint(o.Revision, 10, 64)
-		if e != nil || r == 0 || strconv.FormatUint(r, 10) != o.Revision || !publicHex(o.InstanceID, 32, true) || !publicHex(o.Hash, 32, false) || o.Height > math.MaxInt32 || o.RequestStartMS < 0 || o.ResponseEndMS < o.RequestStartMS || o.ResponseEndMS > MaxPublicTimestampMS || o.ResponseEndMS-o.RequestStartMS > 5000 {
-			return ErrPublicOwnership
-		}
-	}
-	a, b := v.First, v.Second
-	if a.InstanceID != b.InstanceID || a.Revision != b.Revision || a.Height != b.Height || a.Hash != b.Hash || a.ResponseEndMS >= v.CutoffMS || b.RequestStartMS < v.CutoffMS || b.ResponseEndMS-a.RequestStartMS > 10000 {
-		return ErrPublicOwnership
-	}
-	return nil
+	return (publicEvidenceCodec{}).ValidatePublicCutoffIntent(p, v)
 }
 func ValidatePublicBoundary(p PublicManifestPin, b PublicSignedBoundary) error {
-	id, e := PublicManifestPinID(p)
-	if e != nil || b.Version != 1 || b.PinID != id || ValidatePublicCutoffIntent(p, b.Intent) != nil {
-		return ErrPublicOwnership
-	}
-	return publicSignature("SLUG fighter ownership boundary statement", b, p.CutoffKey, b.Signature)
+	return (publicEvidenceCodec{}).ValidatePublicBoundary(p, b)
 }
 func PublicBoundaryID(p PublicManifestPin, b PublicSignedBoundary) (string, error) {
-	if e := ValidatePublicBoundary(p, b); e != nil {
-		return "", e
-	}
-	return PublicOwnershipDigest("SLUG fighter ownership boundary id", b)
+	return (publicEvidenceCodec{}).PublicBoundaryID(p, b)
 }
 func ParsePublicBoundary(p PublicManifestPin, raw []byte) (PublicSignedBoundary, error) {
-	var b PublicSignedBoundary
-	if e := publicDecode(raw, MaxPublicSmallSize, &b); e != nil {
-		return b, e
-	}
-	return b, ValidatePublicBoundary(p, b)
+	return (publicEvidenceCodec{}).ParsePublicBoundary(p, raw)
 }
 func MarshalPublicBoundary(p PublicManifestPin, b PublicSignedBoundary) ([]byte, error) {
-	if e := ValidatePublicBoundary(p, b); e != nil {
-		return nil, e
-	}
-	return json.Marshal(b)
+	return (publicEvidenceCodec{}).MarshalPublicBoundary(p, b)
 }
 
 func ValidatePublicOwnershipHead(p PublicManifestPin, h PublicOwnershipHead) error {
-	id, e := PublicManifestPinID(p)
-	if e != nil || h.Version != 1 || h.PinID != id || h.AdmissionSequence > 1000 || h.PublicationSequence > 16384 || !publicPrefix(h.AdmissionSequence, h.AdmissionHead) || !publicPrefix(h.PublicationSequence, h.PublicationHead) || h.ChainHeight > math.MaxInt32 || !publicHex(h.ChainHash, 32, true) || !publicHex(h.ReplayDigest, 32, true) || !publicHex(h.FinalizedPrefixID, 32, true) || h.ConflictID != "" && !publicHex(h.ConflictID, 32, true) {
-		return ErrPublicOwnership
-	}
-	return nil
+	return (publicEvidenceCodec{}).ValidatePublicOwnershipHead(p, h)
 }
 func ValidatePublicCutoff(p PublicManifestPin, c PublicCutoffRecord) error {
-	id, e := PublicManifestPinID(p)
-	if e != nil || c.Version != 1 || c.PinID != id || ValidatePublicBoundary(p, c.Boundary) != nil || ValidatePublicOwnershipHead(p, c.Head) != nil || !publicHex(c.OwnershipDigest, 32, true) {
-		return ErrPublicOwnership
-	}
-	v := c.Boundary.Intent
-	if c.EventID != v.EventID || c.CutoffMS != v.CutoffMS || c.AdmissionSequence != v.AcceptedAdmissionSequence || c.AdmissionSequence != c.Head.AdmissionSequence || c.AdmissionHead != c.Head.AdmissionHead || c.Head.PublicationSequence != v.PublicationSequence || c.Head.PublicationHead != v.PublicationHead || c.Head.ChainHeight != v.First.Height || c.Head.ChainHash != v.First.Hash {
-		return ErrPublicOwnership
-	}
-	return publicSignature("SLUG fighter ownership cutoff statement", c, p.CutoffKey, c.Signature)
+	return (publicEvidenceCodec{}).ValidatePublicCutoff(p, c)
 }
 func ParsePublicCutoff(p PublicManifestPin, raw []byte) (PublicCutoffRecord, error) {
-	var c PublicCutoffRecord
-	if e := publicDecode(raw, MaxPublicSmallSize, &c); e != nil {
-		return c, e
-	}
-	return c, ValidatePublicCutoff(p, c)
+	return (publicEvidenceCodec{}).ParsePublicCutoff(p, raw)
 }
 func MarshalPublicCutoff(p PublicManifestPin, c PublicCutoffRecord) ([]byte, error) {
-	if e := ValidatePublicCutoff(p, c); e != nil {
-		return nil, e
-	}
-	raw, e := json.Marshal(c)
-	if len(raw) > MaxPublicSmallSize {
-		return nil, ErrPublicOwnership
-	}
-	return raw, e
+	return (publicEvidenceCodec{}).MarshalPublicCutoff(p, c)
 }
 
 func PublicCutoffID(p PublicManifestPin, v PublicCutoffRecord) (string, error) {
-	if e := ValidatePublicCutoff(p, v); e != nil {
-		return "", e
-	}
-	return PublicOwnershipDigest("SLUG fighter ownership cutoff id", v)
+	return (publicEvidenceCodec{}).PublicCutoffID(p, v)
 }

@@ -35,6 +35,56 @@ funding, cancellation, capacity, uncertain writes/reopen, original-owner binding
 and the existing transaction/maturity/history controls. No node or public chain
 was mined by these library checks. This is not full service or wallet acceptance.
 
+## Completed component: explicit operator key owner
+
+The internal operator owner pins separate public admission, publication, cutoff
+and checkpoint roles. Online construction accepts only the first three private
+file selections; public checkpoint imports need no checkpoint custody. It
+retains exact original file descriptors and identity, refuses permissions/ACLs,
+links and replacements, and joins signing/commit operations before Close.
+
+Owner qualification passed on macOS: normal 1.364 seconds, race 3.094 seconds,
+vet 0.185 seconds and the no-CGO refusal control 0.668 seconds. All 1,986 bound
+inputs/profile remained unchanged and six process groups joined cleanly. Tests
+include 32 independent signatures plus actual added-file/parent ACL refusal.
+Evidence: `artifacts/set74/operatorauthority-focused-attempt4/report.json`.
+
+The first attempt found that macOS denies the security-xattr query even without
+an ACL. The corrected implementation uses the retained-descriptor ACL API;
+Darwin operator custody requires CGO and explicitly refuses without it. Preserve
+the first defect, a harness-only SDK symlink admission failure, and two corrected
+test expectations separately. Existing node/helper settings remain unchanged.
+Linux execution and downstream operator integration are still required.
+
+## Completed component: operator admission/publication stores
+
+Explicit version-2 profiles select independently supplied operator public keys
+and fresh V2 file/database guards. Legacy V1 constructors and validation remain
+closed to those profiles. Writable stores retain the original concrete owner;
+audit readers need no signer. Admission, checkpoint-publication and exact
+pending chain/cutoff commits retain the original operation through durable
+publication. A shaped chain reference alone cannot obtain a signature.
+Checkpoint import accepts already-signed public evidence, never private custody.
+
+The independent public corpus reproduced identically under Python 3.14 and 3.9.
+Registry tests consume 48 positive and 92 refusal cases, 12 canonical raw cases,
+12 guard projections and four checkpoint-role cases; the remaining six finality
+frames and ten frame refusals belong to the later ownership-core consumer.
+
+`artifacts/set74/registry-attempt2/report.json` passed with 3,846 source/reference
+inputs unchanged: normal 3.278 seconds, race 9.477 seconds, cheap-profile controls
+1.435 seconds, no-CGO pure codecs 1.655 seconds and vet 0.404 seconds. All owned
+processes joined cleanly. Concrete store tests include normal-PoW admission,
+exact pending reopen, wrong original-owner refusal, audit/mixed-guard refusal,
+checkpoint import without custody, and cancellation during synchronous commit.
+
+Attempt1 passed normal/race but wrongly ran normal-chain checkpoint positives
+under the incompatible cheap genesis. The successor preserves those inputs and
+asserts all 12 checkpoint/publication refusals there; no production validator was
+weakened. Darwin lifecycle tests select CGO as required by the qualified owner;
+pure codecs remain supported without it. This is local component qualification,
+not a public operator deployment or complete core/remote-reader acceptance.
+
 ## Remaining integration
 
 - Explicit operator public-authority profile and concrete key owner; legacy

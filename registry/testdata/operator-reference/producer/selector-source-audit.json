@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "scope": "JSON/public bytes source audit only; no producer/model/crypto import or new signature derivation",
+  "actual_cause": "Incorrect v2 fixture selection (integer2); no sequence type error.",
+  "verified": [
+    {
+      "fixture": "v1/zero256-unawarded",
+      "record_sha256": "af868d73e6949e5e74f678abc7cc3c64600069415d709dcf0dd9dc2c35a3d5e7",
+      "record_sequence": 1,
+      "source_matches": true,
+      "legacy_pin_canonical_sha256": "0183aff8a6984648f136a5e58a0094aec9f53a3407b1a859a7abb17067f24a06",
+      "legacy_admission_canonical_sha256": "222f0b55289a7fe895df352362619e7e92e4bdbc11b397ae0417f9f448417b44",
+      "record_bytes_equal_signed_legacy_nested_record": true,
+      "conditional_final_case_present": true
+    },
+    {
+      "fixture": "v2/zero256-awarded",
+      "record_sha256": "a023a5b850a4492d35db3302abcd26b830694c029e4278333f9eb279b382123d",
+      "record_sequence": 1,
+      "source_matches": true,
+      "legacy_pin_canonical_sha256": "57373482c7ee9d7192642718344ad102494c22ee284d40720c8a2cfe08bc877a",
+      "legacy_admission_canonical_sha256": "3e73bc7d74538a0e3de7172d36e5e5aaa197bf39984fc2090366e42079755221",
+      "record_bytes_equal_signed_legacy_nested_record": true,
+      "conditional_final_case_present": true
+    }
+  ],
+  "next_assumptions": "Both explicit legacy pin/admission names and conditional /final cases exist. Public source tuple and publication IDs match original recipes; authorization public_key field exists. All other formula/schema/model/crypto/case-plan bytes unchanged."
+}

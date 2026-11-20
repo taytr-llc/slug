@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "copied_from": {
+    "policy/operator-profile.md": "/Users/taytrrip/slug/set74-prep/authority-profile/CONTRACT.draft.md",
+    "policy/public-ownership-v1.md": "/Users/taytrrip/slug/slug/PUBLIC_FIGHTER_OWNERSHIP.md",
+    "policy/transfer.md": "/Users/taytrrip/slug/slug/FIGHTER_TRANSFER_POLICY.md",
+    "inherited/crypto.py": "/Users/taytrrip/slug/set73-prep/public-core-reference/inputs/inherited/crypto.py",
+    "inherited/core_model.py": "/Users/taytrrip/slug/set73-prep/public-core-reference/core_model.py",
+    "provenance/core-input-catalog.json": "/Users/taytrrip/slug/set73-prep/public-core-reference/input-catalog.json",
+    "provenance/core-lock.json": "/Users/taytrrip/slug/set73-prep/public-core-reference/producer-lock.cutoff-prefix.approved.json",
+    "legacy/public-core-v1.json": "/Users/taytrrip/slug/slug/fighterownership/testdata/reference/public-core-v1.json",
+    "provenance/registry-public-codec.go": "/Users/taytrrip/slug/slug/registry/public_codec.go",
+    "provenance/gymseed-identity.go": "/Users/taytrrip/slug/slug/gymseed/identity.go",
+    "provenance/gymresult-identity.go": "/Users/taytrrip/slug/slug/gymresult/identity.go",
+    "provenance/signedcheckpoints.go": "/Users/taytrrip/slug/slug/chaincfg/signedcheckpoints.go",
+    "actual/v1/admission.json": "/Users/taytrrip/slug/set73-prep/public-core-reference/inputs/actual/v1/zero256-unawarded/admission.json",
+    "actual/v1/expected-pin.json": "/Users/taytrrip/slug/set73-prep/public-core-reference/inputs/actual/v1/zero256-unawarded/expected-pin.json",
+    "actual/v2/admission.json": "/Users/taytrrip/slug/set73-prep/public-core-reference/inputs/actual/v2/zero256-awarded/admission.json",
+    "actual/v2/expected-pin.json": "/Users/taytrrip/slug/set73-prep/public-core-reference/inputs/actual/v2/zero256-awarded/expected-pin.json"
+  },
+  "recipe": "explicit public domain/byte recipes, not derived output"
+}

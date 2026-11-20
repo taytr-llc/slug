@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "approved_by": "root",
+  "execution_authorized": true,
+  "scope": "Narrow inherited v2 sequence-one fixture selector correction; no formula/schema/crypto/case-count changes",
+  "input_catalog_sha256": "5a0c9d1f295fe424682b3935e20f06ba6977ec3df2214f0db801b04dfa3488bd",
+  "sources": {
+    "authority_model.py": "790b6fd25064f51c2f4ba29f3bc660de77bcec11469e3cd85a86a2688cccf810",
+    "generate_reference.py": "dfae0c9ad809960f79f8674a96c29e867b6068a755d3bdae2b599c5666b30f3a",
+    "case-plan.json": "f49cfb43bae8f4e5ca0b1ff6093365718b61df3c1f2c4fcf169d1e9062a5e0c6",
+    "README.md": "fe6257b1e436a122f2e879ffc552df20021b93e9fc62570a8a5dfe683131c125"
+  },
+  "planned_output": "authority-v2.json",
+  "max_output_bytes": 2097152,
+  "outer_timeout_seconds": 120,
+  "predecessor_lock_sha256": "3dfa114ad594f682c6608524c4ee98e1b6cfc0bb70ff5ddd04577b0eee8d2799",
+  "failed_report_sha256": "fbdf3069be61760aa9075de6c86b9cc842be81bdbf1cf3c913720fe680b9d672",
+  "selector_source_audit_sha256": "04e89165244838c8d3dc1abb5a23e2ecfff6a29eabcf652da1bfcc3a49e82ee5",
+  "selector_diff_sha256": "a27ee1b5405cc74610ff7519691e795444cfd93f67a89448aa93c10479cac070"
+}

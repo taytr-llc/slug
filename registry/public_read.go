@@ -35,7 +35,7 @@ func (p *ManifestPublication) admissionLocked(n uint32) (PublicAdmissionStatemen
 	if e != nil {
 		return PublicAdmissionStatement{}, ErrCorrupt
 	}
-	return ParsePublicAdmission(p.pin, raw)
+	return p.codec.ParsePublicAdmission(p.pin, raw)
 }
 func (p *ManifestPublication) publicationLocked(n uint32) (PublicPublicationEntry, error) {
 	if n == 0 || n > p.store.public.meta.PublicationSequence {
@@ -45,7 +45,7 @@ func (p *ManifestPublication) publicationLocked(n uint32) (PublicPublicationEntr
 	if e != nil {
 		return PublicPublicationEntry{}, ErrCorrupt
 	}
-	return ParsePublicPublication(p.pin, raw)
+	return p.codec.ParsePublicPublication(p.pin, raw)
 }
 func (p *ManifestPublication) Admission(ctx context.Context, n uint32) (PublicAdmissionStatement, error) {
 	if e := p.readLock(ctx); e != nil {
@@ -78,7 +78,7 @@ func (p *ManifestPublication) AdmissionPage(ctx context.Context, after, limit, t
 		if e != nil {
 			return PublicAdmissionPage{}, e
 		}
-		head, e = PublicAdmissionID(p.pin, a)
+		head, e = p.codec.PublicAdmissionID(p.pin, a)
 		if e != nil {
 			return PublicAdmissionPage{}, e
 		}
@@ -119,7 +119,7 @@ func (p *ManifestPublication) PublicationPage(ctx context.Context, after, limit,
 		if e != nil {
 			return PublicPublicationPage{}, e
 		}
-		head, e = PublicPublicationID(p.pin, v)
+		head, e = p.codec.PublicPublicationID(p.pin, v)
 		if e != nil {
 			return PublicPublicationPage{}, e
 		}
@@ -154,5 +154,5 @@ func (p *ManifestPublication) Cutoff(ctx context.Context, eventID string) (Publi
 	if e != nil {
 		return PublicCutoffRecord{}, e
 	}
-	return ParsePublicCutoff(p.pin, raw)
+	return p.codec.ParsePublicCutoff(p.pin, raw)
 }

@@ -3,6 +3,7 @@ package registry
 
 import (
 	"bytes"
+	"context"
 	"crypto/rand"
 	"encoding/hex"
 	"encoding/json"
@@ -201,10 +202,23 @@ func (s *ManifestStore) state(write bool) error {
 	if write && s.readOnly {
 		return ErrReadOnly
 	}
+	if write && s.public != nil && s.public.codec.operator {
+		if s.public.operator == nil {
+			return ErrPublicOwnership
+		}
+		if err := s.public.operator.Check(context.Background(), s.public.binding); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
 func (s *ManifestStore) commit(batch *leveldb.Batch, next manifestMetadata) error {
+	if s.public != nil && s.public.codec.operator {
+		if err := s.state(true); err != nil {
+			return err
+		}
+	}
 	raw, err := json.Marshal(next)
 	if err != nil || len(raw) > MaxManifestMetadataSize {
 		return fmt.Errorf("%w: manifest metadata encoding", ErrCorrupt)

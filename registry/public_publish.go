@@ -126,11 +126,11 @@ func (p *ManifestPublication) admission(ctx context.Context, n uint32) (PublicAd
 		return PublicAdmissionStatement{}, e
 	}
 	a := PublicAdmissionStatement{1, p.pinID, n, previous, digest, ownedManifestRecord(r), ""}
-	a.Signature, e = publicSign("SLUG fighter ownership admission statement", a)
+	a.Signature, e = p.signAdmission(ctx, a)
 	if e != nil {
 		return PublicAdmissionStatement{}, e
 	}
-	return a, ValidatePublicAdmission(p.pin, a)
+	return a, p.codec.ValidatePublicAdmission(p.pin, a)
 }
 func (p *ManifestPublication) stage(ctx context.Context, kind string, payload json.RawMessage, admissionID string) (publicPublicationIntent, error) {
 	var v publicPublicationIntent
@@ -190,7 +190,7 @@ func (p *ManifestPublication) stage(ctx context.Context, kind string, payload js
 func (p *ManifestPublication) complete(ctx context.Context, v publicPublicationIntent, a *PublicAdmissionStatement) (PublicPublicationEntry, error) {
 	e := v.entry()
 	var err error
-	e.Signature, err = publicSign("SLUG fighter ownership publication statement", e)
+	e.Signature, err = p.signPublication(ctx, e)
 	if err != nil {
 		return PublicPublicationEntry{}, err
 	}
@@ -207,7 +207,7 @@ func (p *ManifestPublication) commitSigned(ctx context.Context, v publicPublicat
 	if !bytes.Equal(wantEntry, gotEntry) {
 		return PublicPublicationEntry{}, ErrConflict
 	}
-	id, err := PublicPublicationID(p.pin, e)
+	id, err := p.codec.PublicPublicationID(p.pin, e)
 	if err != nil {
 		return PublicPublicationEntry{}, err
 	}
@@ -239,7 +239,7 @@ func (p *ManifestPublication) commitSigned(ctx context.Context, v publicPublicat
 		if a == nil || a.AdmissionSequence != m.SignedAdmissionSequence+1 {
 			return PublicPublicationEntry{}, ErrConflict
 		}
-		aid, er := PublicAdmissionID(p.pin, *a)
+		aid, er := p.codec.PublicAdmissionID(p.pin, *a)
 		if er != nil || aid != v.AdmissionID || a.PreviousAdmissionID != m.AdmissionHead {
 			return PublicPublicationEntry{}, ErrConflict
 		}
@@ -272,10 +272,10 @@ func (p *ManifestPublication) commitSigned(ctx context.Context, v publicPublicat
 		m.ChainEntryID = id
 	}
 	if v.Kind == "cutoff" {
-		if cutoff == nil || ValidatePublicCutoff(p.pin, *cutoff) != nil || m.CutoffCount >= 256 {
+		if cutoff == nil || p.codec.ValidatePublicCutoff(p.pin, *cutoff) != nil || m.CutoffCount >= 256 {
 			return PublicPublicationEntry{}, ErrPublicOwnership
 		}
-		cid, er := PublicCutoffID(p.pin, *cutoff)
+		cid, er := p.codec.PublicCutoffID(p.pin, *cutoff)
 		var ref PublicCutoffReference
 		if er != nil || json.Unmarshal(v.Payload, &ref) != nil || ref.CutoffID != cid {
 			return PublicPublicationEntry{}, ErrConflict
@@ -300,7 +300,13 @@ func (p *ManifestPublication) commitSigned(ctx context.Context, v publicPublicat
 	m.PendingPublicationID = ""
 	raw, _ = json.Marshal(m)
 	batch.Put([]byte(publicMetaKey), raw)
+	if err = p.checkOperatorAction(ctx); err != nil {
+		return PublicPublicationEntry{}, err
+	}
 	if err = s.commit(batch, s.meta); err != nil {
+		return PublicPublicationEntry{}, err
+	}
+	if err = p.checkOperatorAction(ctx); err != nil {
 		return PublicPublicationEntry{}, err
 	}
 	return e, nil
@@ -329,6 +335,11 @@ func (p *ManifestPublication) PublishNext(ctx context.Context) (PublicationStatu
 		return PublicationStatus{}, e
 	}
 	defer done()
+	ctx, release, e := p.beginOperatorAction(ctx)
+	if e != nil {
+		return PublicationStatus{}, e
+	}
+	defer release()
 	pending, e := p.readPending()
 	if e != nil {
 		return PublicationStatus{}, e
@@ -347,7 +358,7 @@ func (p *ManifestPublication) PublishNext(ctx context.Context) (PublicationStatu
 	if e != nil {
 		return PublicationStatus{}, e
 	}
-	id, e := PublicAdmissionID(p.pin, a)
+	id, e := p.codec.PublicAdmissionID(p.pin, a)
 	if e != nil {
 		return PublicationStatus{}, e
 	}
@@ -367,6 +378,11 @@ func (p *ManifestPublication) PublishCheckpoint(ctx context.Context, c chaincfg.
 		return PublicPublicationEntry{}, e
 	}
 	defer done()
+	ctx, release, e := p.beginOperatorAction(ctx)
+	if e != nil {
+		return PublicPublicationEntry{}, e
+	}
+	defer release()
 	if validatePublicCheckpoint(p.pin, c) != nil {
 		return PublicPublicationEntry{}, ErrPublicOwnership
 	}
@@ -394,7 +410,7 @@ func (p *ManifestPublication) PublishCheckpoint(ctx context.Context, c chaincfg.
 		if e != nil {
 			return PublicPublicationEntry{}, e
 		}
-		return ParsePublicPublication(p.pin, raw)
+		return p.codec.ParsePublicPublication(p.pin, raw)
 	}
 	if !errors.Is(e, leveldb.ErrNotFound) {
 		s.mu.Unlock()

@@ -30,6 +30,9 @@ func (p *ManifestPublication) PendingCutoffPublication(ctx context.Context) (*Pr
 // original boundary intent, and the pending bytes/head in one sync CAS. This
 // method cannot stage another publication or sign a cutoff/publication itself.
 func (v *PreparedPublicPublication) CommitCutoffSigned(ctx context.Context, entry PublicPublicationEntry, cutoff PublicCutoffRecord) (PublicPublicationEntry, error) {
+	if v != nil && v.owner != nil && v.owner.codec.operator {
+		return PublicPublicationEntry{}, ErrPublicOwnership
+	}
 	if v == nil || v.owner == nil || v.intent.Kind != "cutoff" {
 		return PublicPublicationEntry{}, ErrPublicOwnership
 	}

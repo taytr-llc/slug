@@ -1,0 +1,57 @@
+{
+  "version": 2,
+  "status": "source ready, unexecuted selector successor; root review before execution",
+  "files": {
+    "authority_model.py": {
+      "sha256": "790b6fd25064f51c2f4ba29f3bc660de77bcec11469e3cd85a86a2688cccf810",
+      "bytes": 6949
+    },
+    "generate_reference.py": {
+      "sha256": "dfae0c9ad809960f79f8674a96c29e867b6068a755d3bdae2b599c5666b30f3a",
+      "bytes": 19385
+    },
+    "case-plan.json": {
+      "sha256": "f49cfb43bae8f4e5ca0b1ff6093365718b61df3c1f2c4fcf169d1e9062a5e0c6",
+      "bytes": 2525
+    },
+    "README.md": {
+      "sha256": "fe6257b1e436a122f2e879ffc552df20021b93e9fc62570a8a5dfe683131c125",
+      "bytes": 5491
+    },
+    "input-catalog.json": {
+      "sha256": "5a0c9d1f295fe424682b3935e20f06ba6977ec3df2214f0db801b04dfa3488bd",
+      "bytes": 4775
+    },
+    "producer-lock.proposed.json": {
+      "sha256": "cb57961bc417a0a6e6f99af9890d3bdfc99b598e38125abed089197c998a3299",
+      "bytes": 1165
+    },
+    "copy-provenance.json": {
+      "sha256": "04e701bffd6e6a03fe46074a007d9d9cc5c2056e9e45946e4bd01a7abd715b93",
+      "bytes": 1913
+    },
+    "selector-source-audit.json": {
+      "sha256": "04e89165244838c8d3dc1abb5a23e2ecfff6a29eabcf652da1bfcc3a49e82ee5",
+      "bytes": 1558
+    },
+    "selector-successor.diff": {
+      "sha256": "a27ee1b5405cc74610ff7519691e795444cfd93f67a89448aa93c10479cac070",
+      "bytes": 7612
+    }
+  },
+  "changed_inputs": [
+    "actual/v2/admission.json",
+    "recipe.json"
+  ],
+  "inputs": 18,
+  "expected_counts": {
+    "positives": 54,
+    "refusals": 102,
+    "raw_cases": 12,
+    "guards": 12,
+    "checkpoint_matrix": 4
+  },
+  "predecessor_preserved": "/Users/taytrrip/slug/set74-prep/authority-reference/pre-sequence-selector",
+  "private_keys_accessed": false,
+  "successor_producer_executed": false
+}

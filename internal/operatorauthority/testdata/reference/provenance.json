@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "source": "independent public-only Python corpus; no product-generated expected bytes",
+  "corpus": {
+    "sha256": "7328ea2102c9ac993281bd732590c3e734eda26a3d180c2fa98bbd37da02c6b4",
+    "bytes": 622582
+  },
+  "recipe": {
+    "sha256": "4de611d99f258dc40e8413c3fead1fc5da3471d7e93216707283cf28758101d1",
+    "bytes": 1732
+  },
+  "approved_lock_sha256": "97a368ab412ca1a77ef8f8770d935958684df23d9e9ae66d37ff74957bbaf0e0",
+  "producer_source_ready_sha256": "dac06cf728ec617d18660de3d92ab8a9d6633eccd951830fc6428c5ed7267a21",
+  "predecessor_draft_manifest_sha256": "19de337f4fe9f133fec2bf76522ec3e88dd3a0d6968cc28c813f710d63a7e2a1",
+  "test_seeds": "published synthetic SHA256 recipes only; no real custody/official checkpoint key access"
+}

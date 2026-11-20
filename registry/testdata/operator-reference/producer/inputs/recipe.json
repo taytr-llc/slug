@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "scope": "Published synthetic reference seeds only; not deployment keys or newly generated secrets.",
+  "rule_ascii": "SLUG ownership and direct transfer\u0000v1\u0000",
+  "known_fixture_seeds": [
+    {
+      "name": "ownership_log",
+      "kind": "repeat_byte",
+      "byte": 115,
+      "length": 32
+    },
+    {
+      "name": "seed_declaration",
+      "kind": "sha256_ascii",
+      "ascii": "SLUG candidate seed declaration fixture\u0000v1\u0000"
+    },
+    {
+      "name": "seed_checkpoint",
+      "kind": "sha256_ascii",
+      "ascii": "SLUG candidate seed checkpoint fixture\u0000v1\u0000"
+    },
+    {
+      "name": "result_statement",
+      "kind": "sha256_ascii",
+      "ascii": "SLUG candidate result statement fixture\u0000v1\u0000"
+    },
+    {
+      "name": "result_checkpoint",
+      "kind": "sha256_ascii",
+      "ascii": "SLUG candidate result checkpoint fixture\u0000v1\u0000"
+    }
+  ],
+  "synthetic_role_seed_ascii": {
+    "admission": "SLUG set74 public synthetic operator admission\u0000v1\u0000",
+    "publication": "SLUG set74 public synthetic operator publication\u0000v1\u0000",
+    "cutoff": "SLUG set74 public synthetic operator cutoff\u0000v1\u0000",
+    "checkpoint": "SLUG set74 public synthetic operator checkpoint\u0000v1\u0000"
+  },
+  "profile_labels": [
+    "fixture_v1",
+    "operator_v2_distinct",
+    "operator_v2_shared"
+  ],
+  "base_ms": 1795291200000,
+  "publication_id_byte": 17,
+  "modeled_chain_height": 160,
+  "modeled_chain_hash_byte": 82,
+  "event_id_byte": 114,
+  "instance_id_byte": 113,
+  "revision": "19",
+  "output_max_bytes": 2097152,
+  "normal_work_claim": false,
+  "inherited_fixture_names": {
+    "v1": "zero256-unawarded",
+    "v2": "zero256-awarded"
+  }
+}

@@ -5,11 +5,16 @@ import (
 	"context"
 	"sync"
 	"sync/atomic"
+
+	"github.com/taytr-llc/slug/internal/operatorauthority"
 )
 
 // ManifestPublication is a concrete borrowed source. It cannot be constructed
 // from caller receipt bytes and never owns or independently closes the DB.
 type ManifestPublication struct {
+	codec     publicEvidenceCodec
+	operator  *operatorauthority.Owner
+	binding   operatorauthority.Binding
 	store     *ManifestStore
 	pin       PublicManifestPin
 	pinID     string
@@ -29,6 +34,9 @@ func (p *ManifestPublication) Pin() PublicManifestPin {
 func (p *ManifestPublication) Alive() error {
 	if p == nil || p.store == nil || p.closed.Load() || p.life == nil || p.life.Err() != nil {
 		return ErrClosed
+	}
+	if p.operator != nil {
+		return p.operator.Check(context.Background(), p.binding)
 	}
 	return nil
 }
@@ -89,6 +97,9 @@ type publicManifestMetadata struct {
 	PendingPublicationID    string `json:"pending_publication_id"`
 }
 type publicManifestState struct {
+	codec     publicEvidenceCodec
+	operator  *operatorauthority.Owner
+	binding   operatorauthority.Binding
 	closing   bool
 	boundary  bool
 	pin       PublicManifestPin

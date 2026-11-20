@@ -54,6 +54,9 @@ func (v *PreparedPublicPublication) Check(ctx context.Context) error {
 	return nil
 }
 func (v *PreparedPublicPublication) CommitSigned(ctx context.Context, entry PublicPublicationEntry) (PublicPublicationEntry, error) {
+	if v != nil && v.owner != nil && v.owner.codec.operator {
+		return PublicPublicationEntry{}, ErrPublicOwnership
+	}
 	if v == nil || v.owner == nil {
 		return PublicPublicationEntry{}, ErrPublicOwnership
 	}
@@ -119,7 +122,7 @@ func (p *ManifestPublication) PendingChainPublication(ctx context.Context) (*Pre
 	return &PreparedPublicPublication{owner: p, intent: *pending}, nil
 }
 func (p *ManifestPublication) PrepareCutoffPublication(ctx context.Context, cutoff PublicCutoffRecord) (*PreparedPublicPublication, error) {
-	id, e := PublicCutoffID(p.pin, cutoff)
+	id, e := p.codec.PublicCutoffID(p.pin, cutoff)
 	if e != nil {
 		return nil, e
 	}
@@ -217,7 +220,7 @@ func (l *PublicBoundaryLease) CommitIntent(ctx context.Context, v PublicCutoffIn
 	if e := l.ctx.Err(); e != nil {
 		return e
 	}
-	if ValidatePublicCutoffIntent(l.owner.pin, v) != nil || v.AcceptedAdmissionSequence != l.status.AcceptedSequence || v.PublicationSequence != l.status.PublicationSequence || v.PublicationHead != l.status.PublicationHead {
+	if l.owner.codec.ValidatePublicCutoffIntent(l.owner.pin, v) != nil || v.AcceptedAdmissionSequence != l.status.AcceptedSequence || v.PublicationSequence != l.status.PublicationSequence || v.PublicationHead != l.status.PublicationHead {
 		return ErrConflict
 	}
 	s := l.owner.store
@@ -316,7 +319,7 @@ func (p *ManifestPublication) CutoffIntent(ctx context.Context, eventID string) 
 	if e != nil {
 		return v, e
 	}
-	if publicDecode(raw, MaxPublicSmallSize, &v) != nil || ValidatePublicCutoffIntent(p.pin, v) != nil {
+	if publicDecode(raw, MaxPublicSmallSize, &v) != nil || p.codec.ValidatePublicCutoffIntent(p.pin, v) != nil {
 		return v, ErrCorrupt
 	}
 	return v, nil
@@ -344,7 +347,7 @@ func (s *ManifestStore) previousPublicCutoff(before int64) (string, error) {
 		}
 		if v.CutoffMS > last {
 			var e error
-			id, e = PublicCutoffID(s.public.pin, v)
+			id, e = s.public.codec.PublicCutoffID(s.public.pin, v)
 			if e != nil {
 				return "", e
 			}

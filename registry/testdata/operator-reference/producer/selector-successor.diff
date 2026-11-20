@@ -1,0 +1,139 @@
+--- before/generate_reference.py
++++ after/generate_reference.py
+@@ -57,12 +57,13 @@
+     legacy = json.loads((root/'legacy/public-core-v1.json').read_bytes())
+     source_inputs = []
+     for version in ('v1', 'v2'):
++        legacy_name = version+'/'+recipe['inherited_fixture_names'][version]
+         record = json.loads((root/'actual'/version/'admission.json').read_bytes())
+         expected = json.loads((root/'actual'/version/'expected-pin.json').read_bytes())
+         need(type(record['sequence']) is int and record['sequence'] == 1, 'inherited sequence one')
+         need(B.J(record) == (root/'actual'/version/'admission.json').read_bytes().rstrip(b'\n'),
+              'original nested record bytes')
+-        source_inputs.append((version, expected['source'], record))
++        source_inputs.append((version, expected['source'], record, legacy_name))
+     model = A.Model(B, E, recipe, [x[1] for x in source_inputs])
+     need(legacy['literals']['public_log_key'] == model.excluded['ownership_log'] and
+          legacy['literals']['checkpoint_key'] == model.excluded['seed_checkpoint'] and
+@@ -89,7 +90,7 @@
+         else:
+             raise RuntimeError('negative accepted: '+name)
+ 
+-    for descriptor, source, record in source_inputs:
++    for descriptor, source, record, legacy_name in source_inputs:
+         for label in recipe['profile_labels']:
+             bounded()
+             pin = model.pin(source, label)
+@@ -106,7 +107,7 @@
+             if version == 1:
+                 for family, value in (('pin', pin), ('admission', admission)):
+                     old = next(x for x in legacy['positives'] if x['family'] == family and
+-                               x['name'] == descriptor+'/zero256-unawarded')
++                               x['name'] == legacy_name)
+                     need(B.J(value).hex() == old['canonical_hex'], 'exact inherited v1 '+family)
+             height, block_hash = 100, '51'*32
+             cp = dict(version=1, network=source['network'], genesis=source['genesis'],
+@@ -134,7 +135,7 @@
+             # Existing independent conditional model supplies a recipient point;
+             # neither this transition nor its modeled chain is new chain proof.
+             old_final = next(x['value'] for x in legacy['positives'] if x['family'] == 'state' and
+-                             x['name'] == descriptor+'/zero256-unawarded/final')
++                             x['name'] == legacy_name+'/final')
+             cp_id = model.verify(pin, version, 'publication', pubs[1])
+             state = B.Model.transferred(model, pid, birth, '61'*32, cp_id, tip,
+                                         old_final['owner_public_key'])
+--- before/README.md
++++ after/README.md
+@@ -16,8 +16,9 @@
+ pin/admission bytes, public literals and modeled recipient point are reused.
+ No new Go code, executable or product output is imported or invoked.
+ 
+-Two original sequence-one public records retain every record byte, source ID,
+-descriptor and sequence. Three profile variants per source exercise old fixture
++The original sequence-one records are `v1/zero256-unawarded` and
++`v2/zero256-awarded`, selected by the explicit recipe mapping. Both retain every
++record byte, source ID, descriptor and sequence. Three variants exercise fixture
+ v1, four distinct synthetic v2 role keys and explicitly shared online v2 keys.
+ The source labels `actual/v1` and `actual/v2` denote inherited descriptor
+ families, not authority pin versions. New signatures are synthetic wrappers,
+@@ -74,4 +75,13 @@
+ produce no output and must be captured by the invoking reviewed runner.
+ 
+ No producer, primitive selftest, import, public-key derivation, build or Go test
+-has been executed while preparing this plan. Files remain outside the checkout.
++was executed during the original source preparation. Root's first approved
++Python3.14 attempt then failed at the sequence-one input assertion, before new
++corpus output: the mistakenly selected `v2/zero256-unawarded` record has integer
++sequence2, not a string. The complete predecessor sources, inputs, approved lock
++and failed report are retained in `pre-sequence-selector/`. This successor only
++selects the already qualified sequence-one v2 awarded record and uses its exact
++legacy case name for byte comparisons and conditional recipient lookup. No
++record rewrite, type coercion, case-count, formula, schema or crypto change is
++made. The successor is unexecuted and requires its own root-approved lock.
++Files remain outside the checkout.
+--- before/inputs/recipe.json
++++ after/inputs/recipe.json
+@@ -49,5 +49,9 @@
+   "instance_id_byte": 113,
+   "revision": "19",
+   "output_max_bytes": 2097152,
+-  "normal_work_claim": false
++  "normal_work_claim": false,
++  "inherited_fixture_names": {
++    "v1": "zero256-unawarded",
++    "v2": "zero256-awarded"
++  }
+ }
+--- before/copy-provenance.json
++++ after/copy-provenance.json
+@@ -15,8 +15,8 @@
+     "provenance/signedcheckpoints.go": "/Users/taytrrip/slug/slug/chaincfg/signedcheckpoints.go",
+     "actual/v1/admission.json": "/Users/taytrrip/slug/set73-prep/public-core-reference/inputs/actual/v1/zero256-unawarded/admission.json",
+     "actual/v1/expected-pin.json": "/Users/taytrrip/slug/set73-prep/public-core-reference/inputs/actual/v1/zero256-unawarded/expected-pin.json",
+-    "actual/v2/admission.json": "/Users/taytrrip/slug/set73-prep/public-core-reference/inputs/actual/v2/zero256-unawarded/admission.json",
+-    "actual/v2/expected-pin.json": "/Users/taytrrip/slug/set73-prep/public-core-reference/inputs/actual/v2/zero256-unawarded/expected-pin.json"
++    "actual/v2/admission.json": "/Users/taytrrip/slug/set73-prep/public-core-reference/inputs/actual/v2/zero256-awarded/admission.json",
++    "actual/v2/expected-pin.json": "/Users/taytrrip/slug/set73-prep/public-core-reference/inputs/actual/v2/zero256-awarded/expected-pin.json"
+   },
+   "recipe": "explicit public domain/byte recipes, not derived output"
+ }
+--- before/input-catalog.json
++++ after/input-catalog.json
+@@ -1,6 +1,6 @@
+ {
+-  "version": 1,
+-  "status": "fixed inputs proposed for root review; no generation",
++  "version": 2,
++  "status": "reviewed-scope selector successor proposed; unexecuted",
+   "public_only": true,
+   "files": [
+     {
+@@ -17,13 +17,13 @@
+     },
+     {
+       "path": "actual/v2/admission.json",
+-      "original": "/Users/taytrrip/slug/set73-prep/public-core-reference/inputs/actual/v2/zero256-unawarded/admission.json",
+-      "bytes": 3690,
+-      "sha256": "7a65051f8338e5cb8e15c4692829819566787893941a9bcf3a24f0f17999fb4e"
++      "original": "/Users/taytrrip/slug/set73-prep/public-core-reference/inputs/actual/v2/zero256-awarded/admission.json",
++      "bytes": 3698,
++      "sha256": "a023a5b850a4492d35db3302abcd26b830694c029e4278333f9eb279b382123d"
+     },
+     {
+       "path": "actual/v2/expected-pin.json",
+-      "original": "/Users/taytrrip/slug/set73-prep/public-core-reference/inputs/actual/v2/zero256-unawarded/expected-pin.json",
++      "original": "/Users/taytrrip/slug/set73-prep/public-core-reference/inputs/actual/v2/zero256-awarded/expected-pin.json",
+       "bytes": 992,
+       "sha256": "2981d0ef863116901eaff23b48b6425b35a5b27614a8312b97a4a8a51dbb6def"
+     },
+@@ -108,8 +108,8 @@
+     {
+       "path": "recipe.json",
+       "original": "explicit root policy or public deterministic recipe; no computed key/signature output",
+-      "bytes": 1637,
+-      "sha256": "65d327721804987365d5d1d068a9cfe5b577170470f4d1c4ef2dcabe3456acef"
++      "bytes": 1732,
++      "sha256": "4de611d99f258dc40e8413c3fead1fc5da3471d7e93216707283cf28758101d1"
+     }
+   ]
+ }

@@ -1,0 +1,17 @@
+{
+  "bytes": 622582,
+  "counts": {
+    "checkpoint_matrix": 4,
+    "guards": 12,
+    "positives": 54,
+    "raw_cases": 12,
+    "refusals": 102
+  },
+  "inputs_unchanged": true,
+  "network_calls": 0,
+  "normal_work_calls": 0,
+  "product_output_calls": 0,
+  "sha256": "7328ea2102c9ac993281bd732590c3e734eda26a3d180c2fa98bbd37da02c6b4",
+  "source_unchanged": true,
+  "status": "passed"
+}

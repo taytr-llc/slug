@@ -44,11 +44,27 @@ func publicIDKey(prefix, id string) []byte {
 	return append([]byte(prefix), raw...)
 }
 func newPublicState(p PublicManifestPin) *publicManifestState {
-	id, _ := PublicManifestPinID(p)
-	return &publicManifestState{pin: p, pinID: id, meta: publicManifestMetadata{Version: 1, PinID: id, AdmissionHead: publicZero, PublicationHead: publicZero, ChainEntryID: publicZero}}
+	return newSelectedPublicState(p, publicEvidenceCodec{})
+}
+func newSelectedPublicState(p PublicManifestPin, codec publicEvidenceCodec) *publicManifestState {
+	id, _ := codec.PublicManifestPinID(p)
+	return &publicManifestState{codec: codec, pin: p, pinID: id, meta: publicManifestMetadata{Version: 1, PinID: id, AdmissionHead: publicZero, PublicationHead: publicZero, ChainEntryID: publicZero}}
 }
 func publicGuardFor(p PublicManifestPin) publicGuard {
-	return publicGuard{"slug-manifest-ownership", 1, p, p.Source.AuthorityID, p.PublicationID}
+	return (publicEvidenceCodec{}).guard(p)
+}
+func (codec publicEvidenceCodec) guard(p PublicManifestPin) publicGuard {
+	version := uint32(1)
+	if codec.operator {
+		version = 2
+	}
+	return publicGuard{"slug-manifest-ownership", version, p, p.Source.AuthorityID, p.PublicationID}
+}
+func (codec publicEvidenceCodec) markerName() string {
+	if codec.operator {
+		return "SLUG-MANIFEST-OWNERSHIP-V2.json"
+	}
+	return publicMarkerName
 }
 func writePublicFile(path string, value any) error {
 	raw, e := json.Marshal(value)
@@ -67,6 +83,10 @@ func writePublicFile(path string, value any) error {
 	return errors.Join(we, se, f.Close())
 }
 func publicInventory(path string, partial bool) error {
+	return selectedPublicInventory(path, partial, publicEvidenceCodec{})
+}
+func selectedPublicInventory(path string, partial bool, codec publicEvidenceCodec) error {
+	selectedMarker := codec.markerName()
 	if !filepath.IsAbs(path) || filepath.Clean(path) != path {
 		return ErrPublicOwnership
 	}
@@ -88,7 +108,7 @@ func publicInventory(path string, partial bool) error {
 			return ErrCorrupt
 		}
 		switch entry.Name() {
-		case markerName, publicMarkerName:
+		case markerName, selectedMarker:
 			if !entry.Type().IsRegular() {
 				return ErrCorrupt
 			}
@@ -101,17 +121,20 @@ func publicInventory(path string, partial bool) error {
 		}
 		seen[entry.Name()] = true
 	}
-	if !seen[markerName] || !seen[publicMarkerName] || !partial && !seen[databaseName] {
+	if !seen[markerName] || !seen[selectedMarker] || !partial && !seen[databaseName] {
 		return ErrCorrupt
 	}
 	return nil
 }
 func readPublicGuard(path string, expected PublicManifestPin) (publicGuard, error) {
+	return readSelectedPublicGuard(path, expected, publicEvidenceCodec{})
+}
+func readSelectedPublicGuard(path string, expected PublicManifestPin, codec publicEvidenceCodec) (publicGuard, error) {
 	var g publicGuard
-	if e := publicInventory(path, false); e != nil {
+	if e := selectedPublicInventory(path, false, codec); e != nil {
 		return g, e
 	}
-	path = filepath.Join(path, publicMarkerName)
+	path = filepath.Join(path, codec.markerName())
 	before, e := os.Lstat(path)
 	if e != nil || !before.Mode().IsRegular() || before.Size() > MaxPublicSmallSize {
 		return g, ErrCorrupt
@@ -128,7 +151,7 @@ func readPublicGuard(path string, expected PublicManifestPin) (publicGuard, erro
 	if e = errors.Join(re, f.Close()); e != nil {
 		return g, e
 	}
-	if len(raw) < 2 || len(raw) > MaxPublicSmallSize || raw[len(raw)-1] != '\n' || publicDecode(raw[:len(raw)-1], MaxPublicSmallSize, &g) != nil || g != publicGuardFor(expected) {
+	if len(raw) < 2 || len(raw) > MaxPublicSmallSize || raw[len(raw)-1] != '\n' || publicDecode(raw[:len(raw)-1], MaxPublicSmallSize, &g) != nil || g != codec.guard(expected) {
 		return g, ErrCorrupt
 	}
 	return g, nil
@@ -137,10 +160,14 @@ func readPublicGuard(path string, expected PublicManifestPin) (publicGuard, erro
 // CreatePublicManifestAuthority selects the guarded mode only on a fresh path.
 // The caller must already retain the exact random AuthorityID/PublicationID.
 func CreatePublicManifestAuthority(path string, d fighterdescriptor.Descriptor, p PublicManifestPin) (*ManifestStore, error) {
+	return createSelectedPublicManifestAuthority(path, d, newPublicState(p))
+}
+func createSelectedPublicManifestAuthority(path string, d fighterdescriptor.Descriptor, selected *publicManifestState) (*ManifestStore, error) {
+	p, codec := selected.pin, selected.codec
 	if e := manifestProduction(); e != nil {
 		return nil, e
 	}
-	if ValidatePublicManifestPin(p) != nil {
+	if codec.validatePin(p) != nil {
 		return nil, ErrPublicOwnership
 	}
 	want, e := validateManifestPin(p.Source)
@@ -162,7 +189,7 @@ func CreatePublicManifestAuthority(path string, d fighterdescriptor.Descriptor, 
 		return nil, e
 	}
 	m := manifestMarker{application, Version5, p.Source.Network, p.Source.Genesis, p.Source.AuthorityID, p.Source.DescriptorID, d}
-	if e = writePublicFile(filepath.Join(path, publicMarkerName), publicGuardFor(p)); e != nil {
+	if e = writePublicFile(filepath.Join(path, codec.markerName()), codec.guard(p)); e != nil {
 		return nil, e
 	}
 	if e = writePublicFile(filepath.Join(path, markerName), m); e != nil {
@@ -179,9 +206,9 @@ func CreatePublicManifestAuthority(path string, d fighterdescriptor.Descriptor, 
 	if e != nil {
 		return nil, e
 	}
-	s := &ManifestStore{db: db, writeBatch: db.Write, public: newPublicState(p), meta: manifestMetadata{Version: Version5, Network: p.Source.Network, Genesis: p.Source.Genesis, AuthorityID: p.Source.AuthorityID, DescriptorID: p.Source.DescriptorID, Descriptor: d}}
+	s := &ManifestStore{db: db, writeBatch: db.Write, public: selected, meta: manifestMetadata{Version: Version5, Network: p.Source.Network, Genesis: p.Source.Genesis, AuthorityID: p.Source.AuthorityID, DescriptorID: p.Source.DescriptorID, Descriptor: d}}
 	batch := new(leveldb.Batch)
-	guard, _ := json.Marshal(publicGuardFor(p))
+	guard, _ := json.Marshal(codec.guard(p))
 	batch.Put([]byte("ownership/guard"), guard)
 	if e = s.commit(batch, s.meta); e != nil {
 		return nil, errors.Join(e, db.Close())
@@ -200,13 +227,17 @@ func OpenPublicManifestAuthorityAudit(path string, p PublicManifestPin) (*Manife
 	return openPublicManifestAuthority(path, p, true)
 }
 func openPublicManifestAuthority(path string, p PublicManifestPin, readOnly bool) (*ManifestStore, error) {
+	return openSelectedPublicManifestAuthority(path, newPublicState(p), readOnly)
+}
+func openSelectedPublicManifestAuthority(path string, selected *publicManifestState, readOnly bool) (*ManifestStore, error) {
+	p, codec := selected.pin, selected.codec
 	if e := manifestProduction(); e != nil {
 		return nil, e
 	}
-	if e := ValidatePublicManifestPin(p); e != nil {
+	if e := codec.validatePin(p); e != nil {
 		return nil, e
 	}
-	if _, e := readPublicGuard(path, p); e != nil {
+	if _, e := readSelectedPublicGuard(path, p, codec); e != nil {
 		return nil, e
 	}
 	m, e := readManifestMarker(path)
@@ -217,7 +248,7 @@ func openPublicManifestAuthority(path string, p PublicManifestPin, readOnly bool
 	if e != nil {
 		return nil, e
 	}
-	s := &ManifestStore{db: db, writeBatch: db.Write, readOnly: readOnly, public: newPublicState(p)}
+	s := &ManifestStore{db: db, writeBatch: db.Write, readOnly: readOnly, public: selected}
 	if e = s.audit(m); e == nil {
 		e = s.auditPublic()
 	}
@@ -227,6 +258,9 @@ func openPublicManifestAuthority(path string, p PublicManifestPin, readOnly bool
 	return s, nil
 }
 func (s *ManifestStore) PublicPublication(expected PublicManifestPin) (*ManifestPublication, error) {
+	return s.selectedPublicPublication(expected, publicEvidenceCodec{})
+}
+func (s *ManifestStore) selectedPublicPublication(expected PublicManifestPin, codec publicEvidenceCodec) (*ManifestPublication, error) {
 	if s == nil {
 		return nil, ErrClosed
 	}
@@ -237,14 +271,14 @@ func (s *ManifestStore) PublicPublication(expected PublicManifestPin) (*Manifest
 	if e := s.state(false); e != nil {
 		return nil, e
 	}
-	if s.public == nil || s.public.pin != expected {
+	if s.public == nil || s.public.pin != expected || s.public.codec != codec {
 		return nil, ErrPublicOwnership
 	}
 	if old := s.public.publisher; old != nil && !old.closed.Load() {
 		return old, nil
 	}
 	life, cancel := context.WithCancel(context.Background())
-	p := &ManifestPublication{store: s, pin: expected, pinID: s.public.pinID, life: life, cancel: cancel, gate: make(chan struct{}, 1)}
+	p := &ManifestPublication{codec: codec, operator: s.public.operator, binding: s.public.binding, store: s, pin: expected, pinID: s.public.pinID, life: life, cancel: cancel, gate: make(chan struct{}, 1)}
 	s.public.publisher = p
 	return p, nil
 }
