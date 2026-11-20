@@ -210,6 +210,27 @@ and add cleanup-only release paths. The original three-second cancellation
 assertions and production ingress source remain unchanged. This component pass
 does not establish public deployment or an actual payout.
 
+## Completed component: fixed miner enrollment and credentials
+
+`poolminer` binds a bounded, sorted miner enrollment to the complete operator
+profile, pool source and settlement destinations. Credentials are scoped to
+pool or admission use; only hashes enter the private durable journal. Rotation
+uses exact generations, refuses token reuse across audiences and caps a new
+credential at thirty days. Exact lost-response recovery returns the original
+expiry without extending it. Revocation, expiry and backward-clock detection
+remain effective across reopen. An original session callback and its temporary
+recheck cannot survive cancellation, callback exit or joined Close.
+
+`artifacts/set74/poolminer-attempt1/report.json` passed normal tests 2.116 seconds,
+race 3.960 seconds, cheap-profile refusal 1.471 seconds and vet 0.343 seconds;
+3,904 inputs/profile stayed unchanged and all four process groups joined. The
+independent corpus covers eight positive states/configurations, thirty-two
+refusals and three credential hash vectors, reproduced identically. Concrete
+controls cover two-audience rotation, expiry/revocation, unchanged recipients,
+uncertain writes, escaped rechecks, callback panic, original file identity and
+close while an original operation is active. This is pre-enrolled mining access,
+not hosted login, wallet ownership or public signup.
+
 ## Remaining integration
 
 - Compose the qualified operator issuer/replay with standalone pool issuance and

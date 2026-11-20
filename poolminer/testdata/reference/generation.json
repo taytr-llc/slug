@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "scope": "independent grammar/digest only; 30-day lifetime successor",
+  "sha256": "d6b517f13cb0f738ab5579e366416c40482bd22935b09fe53d9fa8da4151f4c5",
+  "bytes": 113223,
+  "positives": 8,
+  "refusals": 32,
+  "tokens": 3,
+  "reproduced_identical": true
+}

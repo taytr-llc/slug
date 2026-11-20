@@ -67,6 +67,16 @@ request after uncertain delivery. Shutdown joins its handlers before the owning
 runtime releases those private services. Miner enrollment and wallet integration
 remain separate from this transport component.
 
+## Miner enrollment
+
+`poolminer` retains fixed public gym keys and native payout scripts matching the
+original settlement configuration. Separate pool/admission credentials expire,
+rotate by exact generation and revoke durably; tokens are stored only as scoped
+hashes and cannot be reused across audiences. Local operator actions never
+change a payout destination. Original session rechecks remain active only within
+their admitted callback, including cancellation and joined shutdown. This does
+not implement the deferred hosted sign-in or onboarding flow.
+
 ## Remaining acceptance
 
 The dedicated encrypted wallet, immediate signing authority, public TLS runtime
