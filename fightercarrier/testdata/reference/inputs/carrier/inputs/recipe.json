@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "fixture_only": true,
+  "fixtures": [
+    "zero256",
+    "incrementing256"
+  ],
+  "gym_path": "m/1397511495'/1'/0'",
+  "funding_paths": [
+    "m/84'/0'/0'/0/0",
+    "m/84'/0'/0'/0/1"
+  ],
+  "return_path": "m/84'/0'/0'/1/0",
+  "pin_id": "0100000000000000000000000000000000000000000000000000000000000000",
+  "prior_state_id": "0200000000000000000000000000000000000000000000000000000000000000",
+  "alternate_pin_id": "0300000000000000000000000000000000000000000000000000000000000000",
+  "alternate_prior_state_id": "0400000000000000000000000000000000000000000000000000000000000000",
+  "commit_atoms": 500000,
+  "leg_fee_atoms": 10000,
+  "minimum_change_atoms": 1000,
+  "notice": "PinID/StateID and prevout transactions are modeled public bytes, not admission/finality or actual chain facts. Seed material comes only from the existing published Set24 corpus. No private derived scalars are emitted.",
+  "parent_transaction": {
+    "version": 1,
+    "dummy_input_hash_domain": "SLUG Set73 independent modeled prevout",
+    "dummy_input_index": 0,
+    "dummy_input_script_hex": "",
+    "sequence": 4294967295,
+    "output_index": 0,
+    "atoms": 600000,
+    "locktime": 0,
+    "unrelated_large_output": {
+      "atoms": 0,
+      "script_prefix_hex": "6a",
+      "zero_padding_bytes": 10000
+    },
+    "notice": "Modeled structural parent transaction; actual serialized stripped TxID binds each selected native84 output. Its dummy input has no chain/signature/existence claim."
+  }
+}

@@ -10,6 +10,12 @@ Read HANDOVER.md before starting. It has the full state, the remaining work
 spec, and the verification gates. This file is the short standing-rules
 version.
 
+Mike's current work order (November 19): finish fighter transfers and recovery
+first; then complete the public mining pool and scheduled payouts; then sign-in
+and onboarding. Preserve D82 requirements for that later work and D74's full
+joint design review as the final product review before release. Fixture pool
+tests alone do not close public deployment and scheduled-payout acceptance.
+
 ## Branch discipline (do not break this)
 
 - Mike explicitly authorized the Phase A master merge and seed deployment

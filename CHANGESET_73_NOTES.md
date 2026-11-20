@@ -101,14 +101,82 @@ attempt failed before tests because its inventory script wrongly required an
 optional absent `go.work.sum`; that failure and runner are retained. These checks
 do not replace the actual ownership/wallet acceptance still required below.
 
-The frozen carrier and wallet contracts are `FIGHTER_TRANSFER_CARRIER.md` and
-`FIGHTER_CARRIER_WALLET.md`. Independent references precede their new product
+The carrier and wallet contracts are `FIGHTER_TRANSFER_CARRIER.md` and
+`FIGHTER_CARRIER_WALLET.md`. Independent references precede their product
 implementation. Public admission/finality history, replay, wallet schemas14/15,
 reviewed transfer, owned stable/event/career integration and the packaged
-independent restored-gym command still require implementation and qualification.
-The full set is not complete, promoted, deployed or a release candidate.
+independent restored-gym command remain in progress. Component checks below do
+not complete the full set, which is not promoted, deployed or a release candidate.
 
 The new observation changes compiled node inputs. A later completed Set73
 promotion therefore requires the standing full checks, smoke and authorized
 deployment verification; the earlier unchanged-node Set72 smoke is insufficient
 for this new RPC. Master and the live seed remain unchanged at this checkpoint.
+
+## Completed component: carrier journal and wallet codecs
+
+The separate `fightercarrier` package defines strict versioned preparation,
+signed-package and wallet bookkeeping codecs. Its private application journal
+retains exact intent, reviewed preparation, both signed legs and delivery
+attempts before broadcast. A dispatch ticket is single-use; retry retains the
+same bytes. Only an unsigned operation can be abandoned. These are delivery and
+recovery records, not proof that a fighter changed owners.
+
+The independent wallet corpus SHA256 is
+`8648ac23d5e077df1a4dd1e3b8f07157922e650e92e9eea99c233a6993283495`.
+The original corpus and the narrow successor adding refusal cases remain in
+the artifact history. Python3.14, Python3.9 and the installed portable producer
+reproduce the successor. Shared codec normal/race/tag-neutral/vet checks passed
+in1.254/9.999/1.618/1.125s, scoped to189 positives,113 negatives and12 raw cases:
+`../artifacts/set73/wallet-codec-attempt2/report.json`.
+Concrete manager/inventory cases are qualified separately; they are not counted
+as passing merely because these structural codecs reject malformed data.
+
+The journal's latest focused normal/race/profile-refusal/vet run passed in
+2.599/18.320/0.990/0.445s:
+`../artifacts/set73/carrier-journal-focused-attempt2/report.json`.
+It covers exact independently derived transactions; one-use dispatch; same-action
+replay; reopen without automatic sending; explicit byte-identical retry;
+commit-before-spend observation; unsigned-only abandonment; and both restored
+single-leg recovery modes. It also covers interrupted file publication,
+preservation of foreign/malformed stages, alias/identity refusal, original-view
+fences, joined cancellation and strict mutation-clock progression. All source
+closures and the compiler profile stayed unchanged; process groups joined.
+
+## Fresh recovery spendability checks
+
+`OwnedChainSource` retains one original local node lifetime and rechecks its
+network/genesis. Reads are bounded and complete traversals use the node's
+instance/revision observation to detect restarts, advancing tips and same-hash
+reorganizations. `CheckUnspent` now checks the exact confirmed output amount and
+script between equal observations. Decimal RPC amounts are converted exactly
+to atoms; fractional atoms and floating-point rounding are refused. This is a
+fresh observation, never a fund reservation or ownership proof.
+
+The existing node `gettxout` implementation previously included a chain output
+even when a mempool transaction spent it. With `include_mempool=true` it now
+checks pending spends before and after lookup, covering confirmed and unconfirmed
+parents. Chain-only reads retain their existing behavior. Consensus is unchanged.
+
+Focused transport normal/race/profile tests passed in1.462/3.506/1.349s; RPC
+normal/race passed in2.550/5.344s and combined vet in0.827s:
+`../artifacts/set73/unspent-focused-attempt1/report.json`.
+These use bounded HTTP and RPC fixtures, not an actual transfer. The complete
+source/profile binding stayed unchanged and all process groups joined. Actual
+node recovery and the final set-wide checks remain required.
+
+## Current integration and work order
+
+Mike's November19 order is explicit: finish fighter transfers and independent
+gym/fighter recovery; then complete the public mining pool and scheduled payouts;
+then sign-in and onboarding. Existing fixture authentication supports tests only.
+The final joint D74 design review remains before product release.
+
+Wallet schema14/15, shared carrier/withdrawal exclusions, ownership-aware
+stable/event consumers and public replay are being integrated. The noon cutoff
+review found that freezing admission/checkpoint prefixes alone omitted the
+durable finality-frame prefix. A narrow contract/reference successor is being
+prepared so later frames cannot backdate ownership after a reorganization.
+This implements D76/D83 without changing their timing or community doctrine.
+Full reviewed transfer, competing-send/finality/noon checks and packaged
+independent restored-gym use remain the acceptance milestone.

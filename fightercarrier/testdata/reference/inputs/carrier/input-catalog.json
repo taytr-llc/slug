@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "status": "full_parent_recipe_before_producer_successor_no_execution",
+  "files": [
+    {
+      "path": "published-recovery-v1.json",
+      "original": "/Users/taytrrip/slug/slugwallet/recovery/testdata/recovery_v1.json",
+      "bytes": 16064,
+      "sha256": "d5141f4a8ee4378d77d483b09f6ecd809f8b328f82e79a69ff83164e73bc799a"
+    },
+    {
+      "path": "inherited/recovery/reference.py",
+      "original": "/Users/taytrrip/slug/set24-reference/reference.py",
+      "bytes": 15839,
+      "sha256": "60e1527ce408213fd89bc2cf6b4d2d8ecaedbd3c811ef4d40b6f888bb608202f"
+    },
+    {
+      "path": "inherited/recovery/sources/english.txt",
+      "original": "/Users/taytrrip/slug/set24-reference/sources/english.txt",
+      "bytes": 13116,
+      "sha256": "2f5eed53a4727b4bf8880d8f3f199efc90e58503646d9ff8eff3a2ed3b24dbda"
+    },
+    {
+      "path": "inherited/ecdsa/reference_authorizations.py",
+      "original": "/Users/taytrrip/slug/set68-prep/reference-inputs/inherited/ecdsa/reference_authorizations.py",
+      "bytes": 9946,
+      "sha256": "0490d6e7931cf0edb30e632a2fa213c8660e88afe916d3ed09421e34954b84d9"
+    },
+    {
+      "path": "inherited/withdrawal-transaction-model.py",
+      "original": "/Users/taytrrip/slug/set68-prep/reference-producer/transaction_model.py",
+      "bytes": 6572,
+      "sha256": "05ee7a66d91dd436663cf6081203e9d7bc053407eeee0867298ee0037cdbb6f3"
+    },
+    {
+      "path": "policy/FIGHTER_TRANSFER_POLICY.md",
+      "original": "/Users/taytrrip/slug/slug/FIGHTER_TRANSFER_POLICY.md",
+      "bytes": 3780,
+      "sha256": "de59533a494ffbbfca99996f0e1d6054a98a1ef4dba95f0c47d1675414543969"
+    },
+    {
+      "path": "contract/FIGHTER_TRANSFER_CARRIER.md",
+      "original": "/Users/taytrrip/slug/slug/FIGHTER_TRANSFER_CARRIER.md",
+      "bytes": 11769,
+      "sha256": "70e1ff02bd335a7436014fbe34ee76aca4b9046cb1167c4f2ea0d9fbe80e0dc7"
+    },
+    {
+      "path": "recipe.json",
+      "original": "new explicit literal recipe; no computed protocol expectations",
+      "bytes": 1497,
+      "sha256": "488f80df155d10226d61e9dfd87c32bfc7132c23e1c9a31e1978a9da7324dee9"
+    }
+  ],
+  "source_policy": "Only published fixture seed input; inherited independent arithmetic with source hashes. No probe73/new Go output or private DB/export is input. Exact adopted carrier contract bound; root approves exact producer execution lock."
+}

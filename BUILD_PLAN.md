@@ -4,6 +4,13 @@ Consolidated November 15, 2026. The rules live in BRAWLCHAIN_SPEC.md;
 this is the work list: what gets built, in what order, and what each
 piece depends on. Decision numbers point back to the spec.
 
+Current execution order (Mike, November 19): finish fighter transfers and
+independent same-gym/fighter recovery first. Complete the public mining pool
+and scheduled payouts next, before sign-in and onboarding. Existing fixture
+implementations require public service and operational qualification; they do
+not make that milestone complete. The full joint D74 design review stays last,
+before friends/tester or public release.
+
 ## Workstreams
 
 ### 1. Chain core

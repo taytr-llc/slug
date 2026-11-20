@@ -1,0 +1,15 @@
+{
+  "corpus_sha256": "8648ac23d5e077df1a4dd1e3b8f07157922e650e92e9eea99c233a6993283495",
+  "approved_lock_sha256": "889afaa2b8a924d3a07d2f3dece19e759cba95250c7506fca5a44561e21b2e8e",
+  "source_attempts": [
+    "/Users/taytrrip/slug/artifacts/set73/wallet-reference-attempt1",
+    "/Users/taytrrip/slug/artifacts/set73/wallet-reference-attempt2",
+    "/Users/taytrrip/slug/artifacts/set73/wallet-reference-attempt3",
+    "/Users/taytrrip/slug/artifacts/set73/wallet-reference-attempt4"
+  ],
+  "original363_positive_bytes_unchanged": true,
+  "original_raw_and_selection_unchanged": true,
+  "python314_and39_identical": true,
+  "portable_reproduction_pending": false,
+  "portable_reproduction_passed": true
+}

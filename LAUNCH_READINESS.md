@@ -23,6 +23,10 @@ complete. D82's mandatory MFA, passkey support and no-support-bypass requirement
 remain recorded for later. Existing fixture login may support functional tests;
 it is not the real onboarding deliverable. Key restoration alone does not close
 the fighter-ownership/recovery gate, and D74 remains the final joint review.
+Mike's subsequent explicit order is: finish fighter transfers and recovery;
+then finish the public mining pool and scheduled payouts; then sign-in and
+onboarding. Existing fixture pool and payout evidence does not close the public
+deployment, operation or scheduled-settlement acceptance gate.
 
 **D83 transfer policy, approved November 19:** first valid competing send in
 canonical chain order wins; later competing sends are void. Transfers remain
