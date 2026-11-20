@@ -2,7 +2,8 @@
 
 **Status:** Accepted product requirement; proposed delivery design.
 **Date:** November 19, 2026 Pacific.
-**Decider:** Mike. Provider selection and all-factor-loss recovery remain open.
+**Decider:** Mike. Mandatory MFA, passkey support and no support bypass are
+accepted. Provider selection and the exact recovery-proof contract remain open.
 
 ## Context and accepted requirement
 
@@ -54,15 +55,27 @@ ordinary “disable 2FA” switch. Plan revocation, durable audit records and us
 notifications for recovery and credential changes. Factor changes require more
 than possession of an existing session. See [OWASP's MFA guidance](https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html#changing-mfa-factors).
 
-## Recovery policy still awaiting Mike's answer
+## Recovery policy and the two kinds of backup
 
-The pending question concerns a player who loses every passkey/authenticator and
-all account recovery codes. The recommendation is to require a surviving backup
-factor or code for launch, with no support bypass. That can permanently lock the
-player out of the hosted account; an independently exported wallet backup remains
-usable separately. A reviewed manual support-recovery procedure is the other
-option. Neither is recorded as approved yet, and no fallback is enabled while
-the question is open.
+Mike selected “Require backup factor/code; no support bypass.” Support therefore
+cannot override MFA when the player has lost all accepted recovery methods.
+He then asked whether the 24-word phrase was the backup code. This distinction
+must be explicit before freezing the recovery mechanism:
+
+- D70's 24 words plus SLUG recovery metadata recover wallet/gym keys through
+  SLUG recovery software. They are not automatically a hosted-login MFA reset.
+- The proposed account recovery codes are separate, single-use secrets for loss
+  of login factors. They are not wallet seeds and cannot restore wallet keys.
+- A backup passkey/security key is another enrolled login method, separate from
+  either kind of recovery secret.
+
+No support bypass is approved; separate account codes remain the recommended
+mechanism, not a frozen or implemented protocol. Do not infer that Mike approved
+collecting a wallet phrase for account recovery, or that an exported wallet
+automatically restores the hosted account. If all accepted login recovery methods
+are lost, the hosted account can remain inaccessible while an independently
+exported wallet backup remains usable separately. The UI must explain both
+backups and what each can recover; neither belongs in support messages or chat.
 
 Before coding recovery, define exactly what proof a code must accompany, atomic
 one-time consumption, replacement-factor enrollment, credential/session epochs,
@@ -95,7 +108,9 @@ no service and does not change wallet derivation, seed deployment or custody.
 
 ## Action items and acceptance
 
-- [ ] Resolve all-factor-loss policy and freeze the exact recovery/hold contract.
+- [ ] Freeze the allowed backup factors and account recovery-code proof/hold
+      contract under the approved no-support-bypass rule; make the distinction
+      from the 24-word wallet backup explicit before onboarding is finalized.
 - [ ] Select and qualify a provider supporting enforced MFA, passkeys and the
       required reset/revocation ordering; document its operational recovery power.
 - [ ] Freeze a versioned assurance and factor-lifecycle contract with independent

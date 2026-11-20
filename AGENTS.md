@@ -333,8 +333,9 @@ version.
   support (November 19). Record and preserve these release requirements in
   `HOSTED_AUTHENTICATION.md`; the current signed fixture buttons do not prove MFA.
 - Preserve D72's same-wallet reset, revocation and hold. Password reset must not
-  remove the second factor or create an email-only bypass. The all-factor-loss
-  support-recovery policy is awaiting Mike's answer; do not assume approval.
+  remove the second factor or create an email-only bypass. Mike requires a backup
+  factor/code with no support bypass. Separate single-use login recovery codes
+  remain proposed; never assume the 24-word wallet phrase is a login reset code.
 - Passkey user verification and password-plus-authenticator are proposed paths.
   Freeze a separately versioned trusted assurance contract before implementing;
   do not reinterpret old fixture assertions, freshness timestamps or schemas as

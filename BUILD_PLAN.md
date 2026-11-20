@@ -281,8 +281,10 @@ schema-2 account login/reset. `HOSTED_CURRENT_RECOVERY.md` freezes the contract;
 local hosted-account plumbing, not a live signup provider, continuous recovery
 coverage or production custody. D82 requires mandatory MFA for hosted login and
 passkey support. Email/password must include a second factor; the proposed
-passkey route requires server-verified user verification. The real provider,
-all-factor-loss recovery policy and final screens remain open. Preserve the
+passkey route requires server-verified user verification. Mike requires a backup
+factor/code with no support bypass. The real provider, exact account-recovery
+proof contract and final screens remain open; distinguish account codes from
+the 24-word wallet backup. Preserve the
 approved same-wallet verified reset and 24-hour hold without an MFA bypass.
 See `HOSTED_AUTHENTICATION.md` for accepted requirements, proposed mechanisms and
 the provider/assurance/recovery acceptance work still required.
