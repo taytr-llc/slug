@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "source_sha256": "53491b07b218a0cbcb307987ca2398608e98331f70bb6cfbe2ec8969c5455e2e",
+  "sha256": "2d9d589d38453759f8b334c8ca154ce6c35168ff83537bec87eca90363817aeb",
+  "bytes": 97687,
+  "positives": 37,
+  "refusals": 35,
+  "finish_cases": 6,
+  "byte_identical_reproduction": true,
+  "scope": "pure Python grammar generation only; no Go execution or financial fixture"
+}

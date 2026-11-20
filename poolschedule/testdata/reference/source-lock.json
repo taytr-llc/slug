@@ -1,0 +1,7 @@
+{
+  "purpose": "Frozen independent source before any Go scheduler implementation or corpus generation",
+  "files": {
+    "CONTRACT.md": "a4a50c880e0dac2ca3b92b67112e96c1be05c8d1ce9867bf8d4c64197110f262",
+    "reference/model.py": "53491b07b218a0cbcb307987ca2398608e98331f70bb6cfbe2ec8969c5455e2e"
+  }
+}

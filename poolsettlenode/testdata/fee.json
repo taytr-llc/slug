@@ -1,0 +1,256 @@
+{
+  "version": 1,
+  "scope": "independent size and exact fee arithmetic; no funding or estimator observation",
+  "sizes": [
+    {
+      "inputs": 1,
+      "payments": 1,
+      "rate": 1,
+      "vsize": 141,
+      "fee": 1
+    },
+    {
+      "inputs": 1,
+      "payments": 1,
+      "rate": 1000,
+      "vsize": 141,
+      "fee": 141
+    },
+    {
+      "inputs": 1,
+      "payments": 1,
+      "rate": 1234,
+      "vsize": 141,
+      "fee": 174
+    },
+    {
+      "inputs": 1,
+      "payments": 1,
+      "rate": 1000000000,
+      "vsize": 141,
+      "fee": 141000000
+    },
+    {
+      "inputs": 2,
+      "payments": 1,
+      "rate": 1,
+      "vsize": 209,
+      "fee": 1
+    },
+    {
+      "inputs": 2,
+      "payments": 1,
+      "rate": 1000,
+      "vsize": 209,
+      "fee": 209
+    },
+    {
+      "inputs": 2,
+      "payments": 1,
+      "rate": 1234,
+      "vsize": 209,
+      "fee": 258
+    },
+    {
+      "inputs": 2,
+      "payments": 1,
+      "rate": 1000000000,
+      "vsize": 209,
+      "fee": 209000000
+    },
+    {
+      "inputs": 8,
+      "payments": 8,
+      "rate": 1,
+      "vsize": 836,
+      "fee": 1
+    },
+    {
+      "inputs": 8,
+      "payments": 8,
+      "rate": 1000,
+      "vsize": 836,
+      "fee": 836
+    },
+    {
+      "inputs": 8,
+      "payments": 8,
+      "rate": 1234,
+      "vsize": 836,
+      "fee": 1032
+    },
+    {
+      "inputs": 8,
+      "payments": 8,
+      "rate": 1000000000,
+      "vsize": 836,
+      "fee": 836000000
+    },
+    {
+      "inputs": 1,
+      "payments": 251,
+      "rate": 1,
+      "vsize": 7891,
+      "fee": 8
+    },
+    {
+      "inputs": 1,
+      "payments": 251,
+      "rate": 1000,
+      "vsize": 7891,
+      "fee": 7891
+    },
+    {
+      "inputs": 1,
+      "payments": 251,
+      "rate": 1234,
+      "vsize": 7891,
+      "fee": 9738
+    },
+    {
+      "inputs": 1,
+      "payments": 251,
+      "rate": 1000000000,
+      "vsize": 7891,
+      "fee": 7891000000
+    },
+    {
+      "inputs": 1,
+      "payments": 252,
+      "rate": 1,
+      "vsize": 7924,
+      "fee": 8
+    },
+    {
+      "inputs": 1,
+      "payments": 252,
+      "rate": 1000,
+      "vsize": 7924,
+      "fee": 7924
+    },
+    {
+      "inputs": 1,
+      "payments": 252,
+      "rate": 1234,
+      "vsize": 7924,
+      "fee": 9779
+    },
+    {
+      "inputs": 1,
+      "payments": 252,
+      "rate": 1000000000,
+      "vsize": 7924,
+      "fee": 7924000000
+    },
+    {
+      "inputs": 252,
+      "payments": 1,
+      "rate": 1,
+      "vsize": 17272,
+      "fee": 18
+    },
+    {
+      "inputs": 252,
+      "payments": 1,
+      "rate": 1000,
+      "vsize": 17272,
+      "fee": 17272
+    },
+    {
+      "inputs": 252,
+      "payments": 1,
+      "rate": 1234,
+      "vsize": 17272,
+      "fee": 21314
+    },
+    {
+      "inputs": 252,
+      "payments": 1,
+      "rate": 1000000000,
+      "vsize": 17272,
+      "fee": 17272000000
+    },
+    {
+      "inputs": 253,
+      "payments": 1,
+      "rate": 1,
+      "vsize": 17342,
+      "fee": 18
+    },
+    {
+      "inputs": 253,
+      "payments": 1,
+      "rate": 1000,
+      "vsize": 17342,
+      "fee": 17342
+    },
+    {
+      "inputs": 253,
+      "payments": 1,
+      "rate": 1234,
+      "vsize": 17342,
+      "fee": 21401
+    },
+    {
+      "inputs": 253,
+      "payments": 1,
+      "rate": 1000000000,
+      "vsize": 17342,
+      "fee": 17342000000
+    },
+    {
+      "inputs": 256,
+      "payments": 256,
+      "rate": 1,
+      "vsize": 25454,
+      "fee": 26
+    },
+    {
+      "inputs": 256,
+      "payments": 256,
+      "rate": 1000,
+      "vsize": 25454,
+      "fee": 25454
+    },
+    {
+      "inputs": 256,
+      "payments": 256,
+      "rate": 1234,
+      "vsize": 25454,
+      "fee": 31411
+    },
+    {
+      "inputs": 256,
+      "payments": 256,
+      "rate": 1000000000,
+      "vsize": 25454,
+      "fee": 25454000000
+    }
+  ],
+  "rates": [
+    {
+      "decimal": "0.00001",
+      "rate": 1000
+    },
+    {
+      "decimal": "1e-8",
+      "rate": 1
+    },
+    {
+      "decimal": "0.000000001",
+      "rate": 1
+    },
+    {
+      "decimal": "0.000010001",
+      "rate": 1001
+    },
+    {
+      "decimal": "1.23456789",
+      "rate": 123456789
+    },
+    {
+      "decimal": "10",
+      "rate": 1000000000
+    }
+  ]
+}

@@ -85,11 +85,57 @@ weakened. Darwin lifecycle tests select CGO as required by the qualified owner;
 pure codecs remain supported without it. This is local component qualification,
 not a public operator deployment or complete core/remote-reader acceptance.
 
+## Completed component: recovery-first daily scheduler
+
+`poolschedule` retains one original concrete settlement store and a separate
+bounded schedule journal. Every start/retry recovers retained payments before
+considering a new daily batch. Only a completed daily result advances the UTC
+cursor; recovery, deferral, uncertainty and missing funding never pretend a
+payment completed. An uncertain completion write poisons the handle and requires
+reopen/recovery. Close cancels and joins active work before releasing storage.
+
+The independent scheduler corpus contains 37 positive, 35 refusal and six
+completion-guard cases. `artifacts/set74/scheduler-attempt2/report.json` passed:
+compile 1.554 seconds, normal 5.925 seconds, race 22.472 seconds, cheap-profile
+codec/refusal 3.281 seconds and vet 0.491 seconds. All 4,443 paired-repository
+inputs and the profile remained unchanged; five process groups joined cleanly.
+Concrete tests cover before-due recovery, due dispatch, same-day suppression,
+uncertain completion/reopen, original-owner binding and joined cancellation.
+Attempt1 was a test-only return-arity compilation error, retained separately.
+The directory is trusted operator storage; pre-open checks do not promise
+protection from a hostile local writer racing LevelDB's background path access.
+
+## Completed component: concrete payout-node connection
+
+`poolsettlenode` supplies funding inspection, fee quotation, transaction
+observation and exact-byte broadcast. It has no key or signer. It requires
+authenticated HTTPS with selected trust or literal-loopback HTTP, verifies the
+Phase A identity and activation, checks original canonical mature funding even
+through change, and distinguishes definite indexed absence from unavailable
+evidence. It sends once; the settlement journal owns uncertain-delivery recovery.
+
+Fee policy explicitly selects a node estimate or fixed atoms per kilobyte.
+Independent rational arithmetic and serialized-size vectors cover decimal units,
+conservative native SegWit witness size and CompactSize boundaries. Unavailable
+estimation and configured caps cause deferral, never silent fallback or clipping.
+Peer review found and fixed contradictory error/result envelopes and omitted
+critical zero-valued fields before execution; negative controls preserve both.
+
+`artifacts/set74/settlement-node-attempt2/report.json` passed: normal 1.197
+seconds, race 3.680 seconds, cheap-profile controls 1.150 seconds and vet 0.291
+seconds. All 3,869 source/reference inputs and the profile stayed unchanged;
+four process groups joined cleanly. Tests exercise local HTTP/TLS models,
+maturity, orphaned original funding, authentication/trust, malformed replies,
+fee caps, lost broadcast acknowledgment and joined cancellation. Attempt1
+compiled but the sandbox denied its local listener; unchanged sources passed
+with local-listener permission. This is not an actual funded-wallet payout.
+See `POOL_PAYOUT_RUNTIME.md` for the component contract and remaining integration.
+
 ## Remaining integration
 
-- Explicit operator public-authority profile and concrete key owner; legacy
-  fixture profiles remain closed and unchanged. The official checkpoint key
-  stays offline; signed checkpoint import verifies public evidence only.
+- Connect the qualified operator profile/owner to ownership replay and public
+  pool issuance. The official checkpoint key stays offline; signed checkpoint
+  import verifies public evidence only.
 - Independently running public pool with authenticated TLS miner transport,
   immutable enrollment/payees and joined operator lifetime.
 - Concrete guarded wallet settlement backend and persisted recovery-first UTC
