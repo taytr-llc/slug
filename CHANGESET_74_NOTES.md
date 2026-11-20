@@ -453,7 +453,14 @@ This supersedes the earlier authentication-blocked workflow state above.
 The first actual GitHub run, `44819586232`, failed workflow validation before
 creating a job: `runner.temp` is unavailable in job-level `env`. The successor
 moves that expression into step-level environment and the artifact upload input.
-Preserve the original failed run; the corrected Linux execution is still pending.
+Preserve the original failed run. The next run, `44819933811`, checked out the
+exact sources and toolchain but failed before tests because merged stderr
+download notices reached the `go list` JSON parser. Its cleanup also encountered
+Go's read-only module-cache directories. The successor keeps both streams in
+the bounded log while parsing stdout alone, and makes only owned temporary
+directories writable after all children join. Local controls reproduced both
+conditions and passed; remote execution remains pending. Both failed runs and
+the downloaded second-run report remain preserved.
 
 ## Remaining integration
 

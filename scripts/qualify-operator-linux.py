@@ -89,14 +89,16 @@ class Gate:
         start = time.monotonic()
         proc = None
         output = bytearray()
+        captured_bytes = 0
         try:
             with path.open("xb") as log:
                 proc = subprocess.Popen(record["argv"], cwd=record["cwd"], env=selected,
                                         stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
-                                        stderr=subprocess.STDOUT, start_new_session=True)
+                                        stderr=subprocess.PIPE, start_new_session=True)
                 record.update(pid=proc.pid, pgid=proc.pid)
                 with selectors.DefaultSelector() as selector:
                     selector.register(proc.stdout, selectors.EVENT_READ)
+                    selector.register(proc.stderr, selectors.EVENT_READ)
                     while selector.get_map():
                         if time.monotonic() - start > bound:
                             raise TimeoutError("command bound: " + name)
@@ -105,10 +107,14 @@ class Gate:
                             if not block:
                                 selector.unregister(key.fileobj)
                                 continue
-                            if len(output) + len(block) > LOG_LIMIT:
+                            if captured_bytes + len(block) > LOG_LIMIT:
                                 raise RuntimeError("command output bound: " + name)
                             log.write(block)
-                            output.extend(block)
+                            captured_bytes += len(block)
+                            # Keep diagnostics in the bounded evidence log, but
+                            # return only stdout to structured-output parsers.
+                            if key.fileobj is proc.stdout:
+                                output.extend(block)
                 record["exit_code"] = proc.wait(timeout=max(0.1, bound - (time.monotonic() - start)))
         except BaseException as e:
             record["error"] = type(e).__name__ + ": " + str(e)
@@ -135,6 +141,7 @@ class Gate:
                 try:
                     record["exit_code"] = proc.wait(timeout=2)
                     proc.stdout.close()
+                    proc.stderr.close()
                     record["group_empty"] = group_empty(proc.pid)
                 except BaseException as e:
                     record["cleanup_errors"].append(type(e).__name__ + ": " + str(e))
@@ -206,6 +213,22 @@ def expected_members(root, wallet):
                                          "psbt", "txscript", "v2transport", "wire")]
     wallets = [wallet] + [wallet / x for x in ("wallet/txauthor", "wallet/txrules", "wallet/txsizes", "walletdb", "wtxmgr")]
     return set(chain + wallets)
+
+
+def remove_temporary_work(path):
+    # Go's downloaded module directories are intentionally read-only. All
+    # children have joined before this private temporary tree is released.
+    info = path.lstat()
+    if (not path.name.startswith(".operator-linux-work-") or
+            not stat.S_ISDIR(info.st_mode) or info.st_uid != os.geteuid()):
+        raise RuntimeError("unexpected temporary work owner")
+    for directory, _, _ in os.walk(path, topdown=True, followlinks=False):
+        current = Path(directory)
+        info = current.lstat()
+        if not stat.S_ISDIR(info.st_mode) or info.st_uid != os.geteuid():
+            raise RuntimeError("unexpected temporary directory owner")
+        os.chmod(current, stat.S_IMODE(info.st_mode) | stat.S_IRWXU)
+    shutil.rmtree(path)
 
 
 def main():
@@ -313,7 +336,7 @@ def main():
                 report["errors"].append("temporary material retained because child cleanup is uncertain")
             else:
                 try:
-                    shutil.rmtree(gate.work)
+                    remove_temporary_work(gate.work)
                     report["temporary_material_removed"] = True
                 except BaseException as e:
                     report["errors"].append("temporary cleanup: " + type(e).__name__ + ": " + str(e))
@@ -328,6 +351,8 @@ def main():
         summary = ("Operator Linux qualification: " + ("PASS" if report["passed"] else "FAIL") + "\n\n"
                    + "Focused authority, wallet16 and operator checks only; provisioning/deployed-host acceptance are excluded.\n"
                    + "Source unchanged: " + str(report["source_unchanged"]) + "; clean join: " + str(report["clean_join"]) + "\n")
+        if report["errors"]:
+            summary += "Errors: " + "; ".join(report["errors"]) + "\n"
         (artifacts / "SUMMARY.md").write_text(summary)
         if os.environ.get("GITHUB_STEP_SUMMARY"):
             with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as out:
