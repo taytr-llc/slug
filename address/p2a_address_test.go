@@ -18,7 +18,7 @@ func TestAddressPayToAnchor(t *testing.T) {
 		{
 			name:        "mainnet",
 			net:         &chaincfg.MainNetParams,
-			wantAddress: "bc1pfeessrawgf",
+			wantAddress: "slug1pfeesk47rxq",
 		},
 		{
 			name:        "testnet",
@@ -72,7 +72,7 @@ func TestDecodeAddressP2A(t *testing.T) {
 	}{
 		{
 			name:    "mainnet P2A",
-			address: "bc1pfeessrawgf",
+			address: "slug1pfeesk47rxq",
 			net:     &chaincfg.MainNetParams,
 			wantErr: false,
 		},
@@ -93,7 +93,7 @@ func TestDecodeAddressP2A(t *testing.T) {
 			// Decoding must normalize the HRP so the resulting
 			// address still reports as belonging to its network.
 			name:    "uppercase mainnet P2A",
-			address: "BC1PFEESSRAWGF",
+			address: "SLUG1PFEESK47RXQ",
 			net:     &chaincfg.MainNetParams,
 			wantErr: false,
 		},

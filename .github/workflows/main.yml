@@ -52,6 +52,32 @@ jobs:
       - name: Test
         run: sh scripts/ci-unit.sh unit-cover
 
+      # Preserve generated reports even when a test fails. The two test-PoW
+      # reports stay separately named; they are not production coverage.
+      - name: Retain normal and test-PoW coverage profiles
+        if: always()
+        timeout-minutes: 5
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: coverage-profiles-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            coverage.txt
+            address/coverage.txt
+            btcec/coverage.txt
+            btcutil/coverage.txt
+            chaincfg/coverage.txt
+            chainhash/coverage.txt
+            psbt/coverage.txt
+            txscript/coverage.txt
+            wire/coverage.txt
+            v2transport/coverage.txt
+            coverage-chain-testpow.txt
+            coverage-integration-testpow.txt
+          retention-days: 14
+          compression-level: 6
+          if-no-files-found: warn
+
+      # Coveralls delivery is informational. The Test step remains a hard gate.
       - name: Send top-level coverage
         uses: coverallsapp/github-action@v2
         continue-on-error: true
@@ -63,6 +89,7 @@ jobs:
 
       - name: Send address coverage
         uses: coverallsapp/github-action@v2
+        continue-on-error: true
         with:
           file: address/coverage.txt
           flag-name: address
@@ -80,6 +107,7 @@ jobs:
 
       - name: Send chaincfg coverage
         uses: coverallsapp/github-action@v2
+        continue-on-error: true
         with:
           file: chaincfg/coverage.txt
           flag-name: chaincfg
@@ -88,6 +116,7 @@ jobs:
 
       - name: Send chainhash coverage
         uses: coverallsapp/github-action@v2
+        continue-on-error: true
         with:
           file: chainhash/coverage.txt
           flag-name: chainhash

@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "status": "pass",
+  "scope": "independent fixture generation only; no Go execution",
+  "source_ready": {
+    "bytes": 956,
+    "sha256": "73f14236f04df047411e2324ad0a0bc08a42eb3a08fa5576b1915dab2033f827"
+  },
+  "runs": [
+    {
+      "python": "3.14.3",
+      "exit_code": 0,
+      "output": "reference-py314.json",
+      "bytes": 3969,
+      "sha256": "cb339e188ebb5a12be7cf42cb4eb2f3f107857a29fa3b9c940febc040d41abb5"
+    },
+    {
+      "python": "3.9.6",
+      "exit_code": 0,
+      "output": "reference-py39.json",
+      "bytes": 3969,
+      "sha256": "cb339e188ebb5a12be7cf42cb4eb2f3f107857a29fa3b9c940febc040d41abb5"
+    }
+  ],
+  "byte_equal": true,
+  "frozen_inputs_unchanged": true
+}

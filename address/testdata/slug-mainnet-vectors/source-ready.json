@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "inputs": [
+    {
+      "path": "reference.py",
+      "bytes": 5030,
+      "sha256": "5dedb4caa4e3536be8e496f53146a3562a414604ce8867de76cf348f5502ceb0"
+    },
+    {
+      "path": "inputs/recipe.json",
+      "bytes": 2675,
+      "sha256": "8ccfb4f7b76e1deea93c514c6da9a1d7fc8598d9eb2b7eb191ad9fa29f94da5e"
+    },
+    {
+      "path": "inputs/params.go",
+      "bytes": 47803,
+      "sha256": "1bfdd5f930487edccdf5025d9f22b31b31bb8758a47198dd00ae576d574e8065"
+    },
+    {
+      "path": "before/address/address_test.go",
+      "bytes": 33443,
+      "sha256": "628565d13b57dc56e1aa743e2fb02067bc650197db0170dcf15f0233f6c60c9a"
+    },
+    {
+      "path": "before/address/p2a_address_test.go",
+      "bytes": 3251,
+      "sha256": "adff5f4b77f95eaf475f1834dff1072f68c2539e3a28ff5bc21719bf0d7d5b0a"
+    }
+  ],
+  "scope": "11 original mainnet positives translated only by network prefix;2 checksum controls; no Go expected-output derivation"
+}

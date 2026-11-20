@@ -560,6 +560,32 @@ complete successor suites enforce it. See `docs/evidence/set74/ci-repair-local.j
 Remote CI for this successor must still be observed; local success is not a
 substitute for its result.
 
+
+### Address-fixture successor
+
+Run `44826929376` passed the normal build and Android cross-build; all five
+failed test jobs reached the address module and rejected inherited Bitcoin
+mainnet expectations. The earlier root fixture repairs passed in each mode,
+including race detection. The focused operator run `44826929540` also passed.
+
+The address tests now use independently re-encoded SLUG prefixes and checksums,
+retaining every original key/hash/witness payload. Eleven original Bitcoin
+encodings plus uppercase P2A remain explicit refusal cases. The frozen producer,
+input snapshots and identical Python 3.14/3.9 outputs are retained under
+`address/testdata/slug-mainnet-vectors`; no production encoder output supplied
+the expectations. No production source or consensus parameter changes.
+
+The complete address module passes normal, race and coverage checks. The other
+eight nested modules pass complete normal and race runs (42.254 and 542.841
+seconds). All process groups joined without signals and selected inputs stayed
+unchanged. See `docs/evidence/set74/ci-address-local.json`; the original failed
+run remains failed. This successor still requires a completed GitHub run.
+
+Coverage files now remain available as GitHub artifacts, with normal and
+explicit test-PoW reports separately named. The three previously mandatory
+Coveralls uploads follow the other seven uploads' informational policy. Test
+commands remain mandatory; coverage reporting does not turn failed tests green.
+
 ## Remaining integration
 
 - Prepare the concrete operator handoff and deployment selections without

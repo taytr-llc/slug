@@ -1,0 +1,342 @@
+{
+  "version": 1,
+  "scope": "address fixture CI successor; no production source changes",
+  "failed_predecessor": {
+    "run_id": 44826929376,
+    "head": "859489e5fbf8111fde0e0ddda6f52f06e316aca8",
+    "jobs": [
+      {
+        "job_id": "136601774083",
+        "bytes": 2251467,
+        "sha256": "3ca50d058c21253e96542e49358078bf938d515f49d2e74d6804d0a2351e6f81",
+        "failure_family": "inherited Bitcoin mainnet encodings in SLUG address tests"
+      },
+      {
+        "job_id": "136601774389",
+        "bytes": 2252858,
+        "sha256": "0d72cc792da93d23066de872cc65fb45cbca58f9f102665cc5839c736b634a36",
+        "failure_family": "inherited Bitcoin mainnet encodings in SLUG address tests"
+      },
+      {
+        "job_id": "136601774432",
+        "bytes": 2264625,
+        "sha256": "a315bbb5343f0031fdfac3c14715bd6e6bed7b61f786371d7aa1572fb26be8f4",
+        "failure_family": "inherited Bitcoin mainnet encodings in SLUG address tests"
+      },
+      {
+        "job_id": "136601774503",
+        "bytes": 2268098,
+        "sha256": "d3983ae760cacf2a440001987aec22ce0d286aea1ba6c0e70e4fc9fa77baaea2",
+        "failure_family": "inherited Bitcoin mainnet encodings in SLUG address tests"
+      },
+      {
+        "job_id": "136601774547",
+        "bytes": 2254737,
+        "sha256": "98827a6f419bb8005bc1bf261400357cf7a854c0e65525f2ed6cf2204f824cfc",
+        "failure_family": "inherited Bitcoin mainnet encodings in SLUG address tests"
+      }
+    ]
+  },
+  "independent_reference": {
+    "path": "address/testdata/slug-mainnet-vectors",
+    "source_ready_sha256": "73f14236f04df047411e2324ad0a0bc08a42eb3a08fa5576b1915dab2033f827",
+    "output_sha256": "cb339e188ebb5a12be7cf42cb4eb2f3f107857a29fa3b9c940febc040d41abb5",
+    "python_versions": [
+      "3.14.3",
+      "3.9.6"
+    ]
+  },
+  "results": {
+    "legacy-ci-modules-attempt1": {
+      "report_sha256": "94897de9be8eff6e0627b49058ee2b7179a7bf7303b466c1b6f1ba04ce2fc50b",
+      "passed": true,
+      "source_unchanged": true,
+      "commands": [
+        {
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "test",
+            "-json",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=1200s",
+            "-tags=rpctest",
+            "./btcec/...",
+            "./btcutil/...",
+            "./chaincfg/...",
+            "./chainhash/...",
+            "./txscript/...",
+            "./psbt/...",
+            "./wire/...",
+            "./v2transport/..."
+          ],
+          "pid": 99017,
+          "pgid": 99017,
+          "exit_code": 0,
+          "seconds": 42.254,
+          "timed_out": false,
+          "log_limit_exceeded": false,
+          "log_joined": true,
+          "capture_errors": [],
+          "log_errors": [],
+          "cleanup": {
+            "pid": 99017,
+            "pgid": 99017,
+            "leftover_after_exit": false,
+            "signals": [],
+            "group_empty": true,
+            "errors": [],
+            "return_code": 0
+          }
+        }
+      ],
+      "logs": [
+        {
+          "log": "remaining-modules-normal.log",
+          "sha256": "49c23986736990ff43b8c5892dc46a80144cf74b9e5b23731ecc504ecb204fa2",
+          "passed_packages": [
+            "github.com/taytr-llc/slug/btcec/v2",
+            "github.com/taytr-llc/slug/btcec/v2/ecdsa",
+            "github.com/taytr-llc/slug/btcec/v2/ellswift",
+            "github.com/taytr-llc/slug/btcec/v2/schnorr",
+            "github.com/taytr-llc/slug/btcec/v2/schnorr/musig2",
+            "github.com/taytr-llc/slug/btcutil/v2",
+            "github.com/taytr-llc/slug/btcutil/v2/bloom",
+            "github.com/taytr-llc/slug/btcutil/v2/coinset",
+            "github.com/taytr-llc/slug/btcutil/v2/gcs",
+            "github.com/taytr-llc/slug/btcutil/v2/gcs/builder",
+            "github.com/taytr-llc/slug/btcutil/v2/hdkeychain",
+            "github.com/taytr-llc/slug/btcutil/v2/txsort",
+            "github.com/taytr-llc/slug/chaincfg/v2",
+            "github.com/taytr-llc/slug/chainhash/v2",
+            "github.com/taytr-llc/slug/txscript/v2",
+            "github.com/taytr-llc/slug/psbt/v2",
+            "github.com/taytr-llc/slug/wire/v2",
+            "github.com/taytr-llc/slug/v2transport"
+          ],
+          "top_level_passes": 444,
+          "failures": []
+        }
+      ]
+    },
+    "legacy-ci-modules-race-attempt1": {
+      "report_sha256": "5d93f9293f2a15f3c092fddbbf8037c0b598a62e6b2fa805bc0e50c4a9bab5d7",
+      "passed": true,
+      "source_unchanged": true,
+      "commands": [
+        {
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "test",
+            "-json",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=1200s",
+            "-race",
+            "-tags=",
+            "./btcec/...",
+            "./btcutil/...",
+            "./chaincfg/...",
+            "./chainhash/...",
+            "./txscript/...",
+            "./psbt/...",
+            "./wire/...",
+            "./v2transport/..."
+          ],
+          "pid": 99419,
+          "pgid": 99419,
+          "exit_code": 0,
+          "seconds": 542.841,
+          "timed_out": false,
+          "log_limit_exceeded": false,
+          "log_joined": true,
+          "capture_errors": [],
+          "log_errors": [],
+          "cleanup": {
+            "pid": 99419,
+            "pgid": 99419,
+            "leftover_after_exit": false,
+            "signals": [],
+            "group_empty": true,
+            "errors": [],
+            "return_code": 0
+          }
+        }
+      ],
+      "logs": [
+        {
+          "log": "remaining-modules-race.log",
+          "sha256": "5fe2164eabdfe5ff46166f8cdb7dc9d990849d8666fab1bfd877fc1a74df99fe",
+          "passed_packages": [
+            "github.com/taytr-llc/slug/btcec/v2",
+            "github.com/taytr-llc/slug/btcec/v2/ecdsa",
+            "github.com/taytr-llc/slug/btcec/v2/ellswift",
+            "github.com/taytr-llc/slug/btcec/v2/schnorr",
+            "github.com/taytr-llc/slug/btcec/v2/schnorr/musig2",
+            "github.com/taytr-llc/slug/btcutil/v2",
+            "github.com/taytr-llc/slug/btcutil/v2/bloom",
+            "github.com/taytr-llc/slug/btcutil/v2/coinset",
+            "github.com/taytr-llc/slug/btcutil/v2/gcs",
+            "github.com/taytr-llc/slug/btcutil/v2/gcs/builder",
+            "github.com/taytr-llc/slug/btcutil/v2/hdkeychain",
+            "github.com/taytr-llc/slug/btcutil/v2/txsort",
+            "github.com/taytr-llc/slug/chaincfg/v2",
+            "github.com/taytr-llc/slug/chainhash/v2",
+            "github.com/taytr-llc/slug/txscript/v2",
+            "github.com/taytr-llc/slug/psbt/v2",
+            "github.com/taytr-llc/slug/wire/v2",
+            "github.com/taytr-llc/slug/v2transport"
+          ],
+          "top_level_passes": 444,
+          "failures": []
+        }
+      ]
+    },
+    "legacy-ci-address-attempt1": {
+      "report_sha256": "53cb90c6bdd186ec910e3a82c3bfe1ed3461b1e7cd13bd3345a7a5f598072fe0",
+      "passed": true,
+      "source_unchanged": true,
+      "commands": [
+        {
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "test",
+            "-json",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=90s",
+            "-tags=rpctest",
+            "./address/..."
+          ],
+          "pid": 1194,
+          "pgid": 1194,
+          "exit_code": 0,
+          "seconds": 3.331,
+          "timed_out": false,
+          "log_limit_exceeded": false,
+          "log_joined": true,
+          "capture_errors": [],
+          "log_errors": [],
+          "cleanup": {
+            "pid": 1194,
+            "pgid": 1194,
+            "leftover_after_exit": false,
+            "signals": [],
+            "group_empty": true,
+            "errors": [],
+            "return_code": 0
+          }
+        },
+        {
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "test",
+            "-json",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=90s",
+            "-race",
+            "-tags=",
+            "./address/..."
+          ],
+          "pid": 1231,
+          "pgid": 1231,
+          "exit_code": 0,
+          "seconds": 6.061,
+          "timed_out": false,
+          "log_limit_exceeded": false,
+          "log_joined": true,
+          "capture_errors": [],
+          "log_errors": [],
+          "cleanup": {
+            "pid": 1231,
+            "pgid": 1231,
+            "leftover_after_exit": false,
+            "signals": [],
+            "group_empty": true,
+            "errors": [],
+            "return_code": 0
+          }
+        },
+        {
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "test",
+            "-json",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=90s",
+            "-tags=",
+            "-covermode=atomic",
+            "-coverprofile=/Users/taytrrip/slug/artifacts/set74/legacy-ci-address-attempt1/address-coverage.txt",
+            "./address/..."
+          ],
+          "pid": 1298,
+          "pgid": 1298,
+          "exit_code": 0,
+          "seconds": 2.656,
+          "timed_out": false,
+          "log_limit_exceeded": false,
+          "log_joined": true,
+          "capture_errors": [],
+          "log_errors": [],
+          "cleanup": {
+            "pid": 1298,
+            "pgid": 1298,
+            "leftover_after_exit": false,
+            "signals": [],
+            "group_empty": true,
+            "errors": [],
+            "return_code": 0
+          }
+        }
+      ],
+      "logs": [
+        {
+          "log": "address-coverage.log",
+          "sha256": "607d71f336a6c74ebdf76e1f0d80b07983b9e57d2eaa8f52c748fea472c7dffd",
+          "passed_packages": [
+            "github.com/taytr-llc/slug/address/v2",
+            "github.com/taytr-llc/slug/address/v2/base58",
+            "github.com/taytr-llc/slug/address/v2/bech32"
+          ],
+          "top_level_passes": 23,
+          "failures": []
+        },
+        {
+          "log": "address-normal.log",
+          "sha256": "96b5a979db91d18a67db0ddad503f4ee4555f162ebbdddfffdbe74f22204d36b",
+          "passed_packages": [
+            "github.com/taytr-llc/slug/address/v2",
+            "github.com/taytr-llc/slug/address/v2/base58",
+            "github.com/taytr-llc/slug/address/v2/bech32"
+          ],
+          "top_level_passes": 23,
+          "failures": []
+        },
+        {
+          "log": "address-race.log",
+          "sha256": "670e47851a9a7592f7fe8dba14894c22e399880b38e939faa0442bdc975d2706",
+          "passed_packages": [
+            "github.com/taytr-llc/slug/address/v2",
+            "github.com/taytr-llc/slug/address/v2/base58",
+            "github.com/taytr-llc/slug/address/v2/bech32"
+          ],
+          "top_level_passes": 23,
+          "failures": []
+        }
+      ]
+    }
+  },
+  "remote_successor": "pending after push; local qualification is not remote CI success"
+}

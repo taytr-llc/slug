@@ -46,6 +46,8 @@ func applyCustomParams(params chaincfg.Params, customParams CustomParamStruct) c
 
 var customParams = applyCustomParams(chaincfg.MainNetParams, CustomParams)
 
+// SLUG mainnet vectors preserve the original Bitcoin payloads, changing only
+// network version bytes or HRP and the independently recomputed checksum.
 func TestAddresses(t *testing.T) {
 	tests := []struct {
 		name    string
@@ -59,8 +61,8 @@ func TestAddresses(t *testing.T) {
 		// Positive P2PKH tests.
 		{
 			name:    "mainnet p2pkh",
-			addr:    "1MirQ9bwyQcGVJPwKUgapu5ouK2E2Ey4gX",
-			encoded: "1MirQ9bwyQcGVJPwKUgapu5ouK2E2Ey4gX",
+			addr:    "akmv8ALruP4zNGy8MJL35Jg79BQWybP9Ci",
+			encoded: "akmv8ALruP4zNGy8MJL35Jg79BQWybP9Ci",
 			valid:   true,
 			result: address.TstAddressPubKeyHash(
 				[ripemd160.Size]byte{
@@ -77,8 +79,8 @@ func TestAddresses(t *testing.T) {
 		},
 		{
 			name:    "mainnet p2pkh 2",
-			addr:    "12MzCDwodF9G1e7jfwLXfR164RNtx4BRVG",
-			encoded: "12MzCDwodF9G1e7jfwLXfR164RNtx4BRVG",
+			addr:    "aRR3vEgiZDbytcgvhkyyupbPJHmBxfma7M",
+			encoded: "aRR3vEgiZDbytcgvhkyyupbPJHmBxfma7M",
 			valid:   true,
 			result: address.TstAddressPubKeyHash(
 				[ripemd160.Size]byte{
@@ -146,7 +148,7 @@ func TestAddresses(t *testing.T) {
 		},
 		{
 			name:  "p2pkh bad checksum",
-			addr:  "1MirQ9bwyQcGVJPwKUgapu5ouK2E2Ey4gY",
+			addr:  "akmv8ALruP4zNGy8MJL35Jg79BQWybP9Cj",
 			valid: false,
 			net:   &chaincfg.MainNetParams,
 		},
@@ -157,8 +159,8 @@ func TestAddresses(t *testing.T) {
 			// output: 3c9018e8d5615c306d72397f8f5eef44308c98fb576a88e030c25456b4f3a7ac
 			// input:  837dea37ddc8b1e3ce646f1a656e79bbd8cc7f558ac56a169626d649ebe2a3ba.
 			name:    "mainnet p2sh",
-			addr:    "3QJmV3qfvL9SuYo34YihAf3sRCW3qSinyC",
-			encoded: "3QJmV3qfvL9SuYo34YihAf3sRCW3qSinyC",
+			addr:    "VxcaUDWgnEjGt9zkgEhjAw1nxVWJg7Bi6r",
+			encoded: "VxcaUDWgnEjGt9zkgEhjAw1nxVWJg7Bi6r",
 			valid:   true,
 			result: address.TstAddressScriptHash(
 				[ripemd160.Size]byte{
@@ -215,8 +217,8 @@ func TestAddresses(t *testing.T) {
 			// output: b0539a45de13b3e0403909b8bd1a555b8cbe45fd4e3f3fda76f3a5f52835c29d
 			// input: (not yet redeemed at time test was written)
 			name:    "mainnet p2sh 2",
-			addr:    "3NukJ6fYZJ5Kk8bPjycAnruZkE5Q7UW7i8",
-			encoded: "3NukJ6fYZJ5Kk8bPjycAnruZkE5Q7UW7i8",
+			addr:    "VwDZHGLZRCf9ijo7MfbCo8sVHX5f4YoN3D",
+			encoded: "VwDZHGLZRCf9ijo7MfbCo8sVHX5f4YoN3D",
 			valid:   true,
 			result: address.TstAddressScriptHash(
 				[ripemd160.Size]byte{
@@ -270,7 +272,7 @@ func TestAddresses(t *testing.T) {
 		{
 			name:    "mainnet p2pk compressed (0x02)",
 			addr:    "02192d74d0cb94344c9569c2e77901573d8d7903c3ebec3a957724895dca52c6b4",
-			encoded: "13CG6SJ3yHUXo4Cr2RY4THLLJrNFuG3gUg",
+			encoded: "aSFKpT2xuFwFg2n34FBWhgvdYikZ14cvRm",
 			valid:   true,
 			result: address.TstAddressPubKey(
 				[]byte{
@@ -292,7 +294,7 @@ func TestAddresses(t *testing.T) {
 		{
 			name:    "mainnet p2pk compressed (0x03)",
 			addr:    "03b0bd634234abbb1ba1e986e884185c61cf43e001f9137f23c2c409273eb16e65",
-			encoded: "15sHANNUBSh6nDp8XkDPmQcW6n3EFwmvE6",
+			encoded: "aUvLtP7P7R9pfCPKZZrr1pCoLeRXFY8wML",
 			valid:   true,
 			result: address.TstAddressPubKey(
 				[]byte{
@@ -315,7 +317,7 @@ func TestAddresses(t *testing.T) {
 			name: "mainnet p2pk uncompressed (0x04)",
 			addr: "0411db93e1dcdb8a016b49840f8c53bc1eb68a382e97b1482ecad7b148a6909a5cb2" +
 				"e0eaddfb84ccf9744464f82e160bfa9b8b64f9d4c03f999b8643f656b412a3",
-			encoded: "12cbQLTFMXRnSzktFkuoG3eHoMeFtpTu3S",
+			encoded: "aRff8MCAHVtWKyL5HaZFWTEb3E2YtCUr2F",
 			valid:   true,
 			result: address.TstAddressPubKey(
 				[]byte{
@@ -416,8 +418,8 @@ func TestAddresses(t *testing.T) {
 		// Segwit address tests.
 		{
 			name:    "segwit mainnet p2wpkh v0",
-			addr:    "BC1QW508D6QEJXTDG4Y5R3ZARVARY0C5XW7KV8F3T4",
-			encoded: "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4",
+			addr:    "SLUG1QW508D6QEJXTDG4Y5R3ZARVARY0C5XW7KV57XCK",
+			encoded: "slug1qw508d6qejxtdg4y5r3zarvary0c5xw7kv57xck",
 			valid:   true,
 			result: address.TstAddressWitnessPubKeyHash(
 				0,
@@ -435,8 +437,8 @@ func TestAddresses(t *testing.T) {
 		},
 		{
 			name:    "segwit mainnet p2wsh v0",
-			addr:    "bc1qrp33g0q5c5txsp9arysrx4k6zdkfs4nce4xj0gdcccefvpysxf3qccfmv3",
-			encoded: "bc1qrp33g0q5c5txsp9arysrx4k6zdkfs4nce4xj0gdcccefvpysxf3qccfmv3",
+			addr:    "slug1qrp33g0q5c5txsp9arysrx4k6zdkfs4nce4xj0gdcccefvpysxf3qnpvhd9",
+			encoded: "slug1qrp33g0q5c5txsp9arysrx4k6zdkfs4nce4xj0gdcccefvpysxf3qnpvhd9",
 			valid:   true,
 			result: address.TstAddressWitnessScriptHash(
 				0,
@@ -545,8 +547,8 @@ func TestAddresses(t *testing.T) {
 		// P2TR address tests.
 		{
 			name:    "segwit v1 mainnet p2tr",
-			addr:    "bc1paardr2nczq0rx5rqpfwnvpzm497zvux64y0f7wjgcs7xuuuh2nnqwr2d5c",
-			encoded: "bc1paardr2nczq0rx5rqpfwnvpzm497zvux64y0f7wjgcs7xuuuh2nnqwr2d5c",
+			addr:    "slug1paardr2nczq0rx5rqpfwnvpzm497zvux64y0f7wjgcs7xuuuh2nnq960p4v",
+			encoded: "slug1paardr2nczq0rx5rqpfwnvpzm497zvux64y0f7wjgcs7xuuuh2nnq960p4v",
 			valid:   true,
 			result: address.TstAddressTaproot(
 				1, [32]byte{
@@ -679,7 +681,7 @@ func TestAddresses(t *testing.T) {
 		},
 		{
 			name:  "segwit invalid checksum",
-			addr:  "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t5",
+			addr:  "slug1qw508d6qejxtdg4y5r3zarvary0c5xw7kv57xch",
 			valid: false,
 			net:   &chaincfg.MainNetParams,
 		},
@@ -922,4 +924,32 @@ func TestDecodeAddressBase58Fallback(t *testing.T) {
 	// and the bech32 error is returned.
 	_, err = address.DecodeAddress(addrStr, &chaincfg.MainNetParams)
 	require.ErrorAs(t, err, &bech32.ErrMixedCase{})
+}
+
+// Bitcoin mainnet encodings must not be accepted as SLUG mainnet addresses.
+// The low-level BIP173/BIP350 encoding vectors remain network-independent.
+func TestDecodeAddressRejectsBitcoinMainnet(t *testing.T) {
+	tests := []struct {
+		name    string
+		encoded string
+	}{
+		{"mainnet p2pkh", "1MirQ9bwyQcGVJPwKUgapu5ouK2E2Ey4gX"},
+		{"mainnet p2pkh 2", "12MzCDwodF9G1e7jfwLXfR164RNtx4BRVG"},
+		{"mainnet p2sh", "3QJmV3qfvL9SuYo34YihAf3sRCW3qSinyC"},
+		{"mainnet p2sh 2", "3NukJ6fYZJ5Kk8bPjycAnruZkE5Q7UW7i8"},
+		{"mainnet p2pk compressed (0x02)", "13CG6SJ3yHUXo4Cr2RY4THLLJrNFuG3gUg"},
+		{"mainnet p2pk compressed (0x03)", "15sHANNUBSh6nDp8XkDPmQcW6n3EFwmvE6"},
+		{"mainnet p2pk uncompressed (0x04)", "12cbQLTFMXRnSzktFkuoG3eHoMeFtpTu3S"},
+		{"segwit mainnet p2wpkh v0", "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4"},
+		{"segwit mainnet p2wsh v0", "bc1qrp33g0q5c5txsp9arysrx4k6zdkfs4nce4xj0gdcccefvpysxf3qccfmv3"},
+		{"segwit v1 mainnet p2tr", "bc1paardr2nczq0rx5rqpfwnvpzm497zvux64y0f7wjgcs7xuuuh2nnqwr2d5c"},
+		{"mainnet P2A", "bc1pfeessrawgf"},
+		{"uppercase mainnet P2A", "BC1PFEESSRAWGF"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			_, err := address.DecodeAddress(tt.encoded, &chaincfg.MainNetParams)
+			require.Error(t, err)
+		})
+	}
 }
