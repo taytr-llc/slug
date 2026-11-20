@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "status": "source_only_unexecuted_pending_root_review_and_exact_lock",
+  "counts": {
+    "positives": 12,
+    "negatives": 31,
+    "unavailable": 2,
+    "tuple_refusals": 4
+  },
+  "positive_cases": [
+    "both published fixtures with one and sixteen canonical native84 inputs",
+    "refund exposes the same envelope without becoming a transfer",
+    "nonminimal outer signature/redeem pushes preserve semantic send",
+    "outer high-S funding signature preserves low-S gym authorization",
+    "harmless extra scriptSig stack item preserves send",
+    "valid alternative low-S gym signature has same TransferID but cannot reconstruct RFC writer P2SH",
+    "third-party published fixture pays fees; actual first funding key remains authoritative for coins",
+    "different actual modeled input tuple gives a competing semantic intent",
+    "hash-matching full modeled parent with unrelated10001-byte output script accepted within4M raw bound"
+  ],
+  "negative_cases": [
+    "independently expected pin/prior/sender mismatch",
+    "commit version/locktime/sequence/fee/change-dust/locator/return-program",
+    "reveal version/locktime/sequence/return/locator/extra-output",
+    "compact gym r=0/r=N/s=0/s=N/high-S",
+    "all-zero pin/prior versus legitimate IDs containing individual zero bytes",
+    "self recipient, invalid compressed point, wrong funding digest/tag/first funding key",
+    "raw appended/truncated bytes",
+    "tuple count0/count17/duplicate/unsorted",
+    "selected parent output facts mismatched"
+  ],
+  "independence": "Only copied pre-Set73 independent BIP32/RFC6979 primitives and published Set24 fixture seeds are executable inherited inputs; old withdrawal transaction model is provenance only. No Go/runtime/probe outputs. PinID/StateID/full parent transactions explicitly modeled, with actual serialized TxID/output binding. Semantic/template mutations are re-signed with the published fixture funding keys so they are not merely stale funding-signature failures.",
+  "scope_limits": [
+    "No block/header/Merkle/admission/checkpoint/source completeness or chronological evidence is modeled",
+    "No actual node relay, consensus engine acceptance, wallet restoration, allocated cursor coverage or durable journal atomicity is claimed",
+    "The final240-byte carrier is modeled; generic520/521-byte script-element boundary remains separately qualified by the mechanical probe",
+    "Missing evidence and D83 ordering/finality/cutoff cases belong to the separate public ownership producer",
+    "No private scalar, seed or mnemonic is emitted in generated expectations"
+  ],
+  "unavailable_cases": [
+    "missing required parent",
+    "supplied well-formed parent has wrong actual TxID"
+  ]
+}

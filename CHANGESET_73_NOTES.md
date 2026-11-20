@@ -72,6 +72,35 @@ as an unexpected response after the first three real cases had passed. Each
 successor fixed only the identified harness issue without changing consensus,
 relay flags, expected acceptance or proof-of-work.
 
+## Completed component: supplied carrier validation
+
+The pure `fightertransfer` package implements the frozen compact carrier,
+authorization digest, canonical funding tuple and public transaction discovery.
+It validates complete supplied parent/commit/spend bytes, including the actual
+TxIDs and signatures, and distinguishes invalid, unavailable and capacity
+failures. Its results do not claim canonical inclusion, ownership or finality.
+Public discovery finds carriers without a saved local transaction ID; refunds
+expose the envelope without becoming ownership transfers.
+
+The independently reviewed Python reference contains12 positive cases,31 invalid
+cases,2 missing-evidence cases and4 funding-tuple refusals. Its exact output SHA256
+is `365e2997171b5f06706d628866f2cbc64cf0d7a3ac4205015def259a5340f4af`.
+Python3.14, Python3.9 and the portable checked-in producer reproduce identical
+bytes. Tests include third-party funding,16 inputs, actual full parent bytes,
+nonminimal outer pushes, high-S outer signatures, harmless extra stack items,
+and a valid non-RFC6979 gym signature. The internal gym signature remains low-S;
+the parser cannot infer a signer's nonce-selection algorithm.
+
+Focused normal/race/profile-neutral/vet qualification passed in
+0.771/2.441/0.871/0.234 seconds, respectively:
+`../artifacts/set73/carrier-focused-attempt2/report.json`.
+The go-list dependency source closure, test data and exact compiler profile were
+unchanged throughout; all process groups joined cleanly. The tagged run proves
+only that this supplied-byte parser has no proof-of-work dependency. The first
+attempt failed before tests because its inventory script wrongly required an
+optional absent `go.work.sum`; that failure and runner are retained. These checks
+do not replace the actual ownership/wallet acceptance still required below.
+
 The frozen carrier and wallet contracts are `FIGHTER_TRANSFER_CARRIER.md` and
 `FIGHTER_CARRIER_WALLET.md`. Independent references precede their new product
 implementation. Public admission/finality history, replay, wallet schemas14/15,
