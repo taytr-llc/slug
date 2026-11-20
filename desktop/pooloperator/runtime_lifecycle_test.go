@@ -10,7 +10,17 @@ import (
 	"github.com/taytr-llc/slug/fighterownership"
 	"github.com/taytr-llc/slug/internal/operatorauthority"
 	"github.com/taytr-llc/slug/registry"
+	"github.com/taytr-llc/slugwallet/walletdb"
 )
+
+func TestOperatorWalletDriverRegistered(t *testing.T) {
+	for _, name := range walletdb.SupportedDrivers() {
+		if name == "bdb" {
+			return
+		}
+	}
+	t.Fatal("standalone operator cannot open its dedicated wallet")
+}
 
 func TestOperatorPublicMaintenanceContention(t *testing.T) {
 	for _, tc := range []struct {

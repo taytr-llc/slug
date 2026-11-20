@@ -25,6 +25,9 @@ import (
 	"github.com/taytr-llc/slug/registry"
 	"github.com/taytr-llc/slug/wire/v2"
 	"github.com/taytr-llc/slugwallet/wallet"
+	// The dedicated wallet selects bdb. Register it in the concrete host,
+	// independently of test imports or the graphical desktop pilot.
+	_ "github.com/taytr-llc/slugwallet/walletdb/bdb"
 )
 
 // BorrowedOwners must outlive successful Runtime.Close. They are never replaced

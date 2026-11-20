@@ -272,6 +272,17 @@ vet0.386s with4,524 unchanged inputs and clean process joins. Twelve classificat
 controls cover this correction. This is a source-review finding, not a previously
 observed deployed outage.
 
+`public-pool-actual-attempt1` built the exact normal node, headless command and
+two-miner probe, then stopped before miner startup: standalone wallet creation
+could not find the bdb driver. Both executable dependency inventories omitted
+that driver, while wallet-package test imports had registered it. The created
+fixture wallet directory remained empty. Both nodes and the process group joined
+cleanly; all2,409 source inputs, profile and binaries stayed unchanged. This
+failed actual attempt is preserved. The concrete operator host now explicitly
+registers bdb, matching the existing desktop host convention; registration does
+no key or database I/O. `runtime-driver-attempt1` passed normal9.695s,
+race11.481s and vet0.453s, including a standalone driver regression check.
+
 ## Remaining integration
 
 - Exercise the complete operator with two independent automatic TLS miners,
