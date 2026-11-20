@@ -498,6 +498,18 @@ in a new lineage fixture. The corrected positive preserves all original amounts
 and inequalities, and retains that reversed order as a required refusal; no
 production planner changed. See `docs/evidence/set74/operator-capacity.json`.
 
+The same capacity implementation at `64b3aa50` also passed native Linux run
+`44823622386` in 315.815 seconds: 13 authority, 12 wallet and 29 operator
+top-level cases in both normal and race modes, the actual Linux ACL controls,
+normal binary/profile checks and vet. All processes joined, source remained
+unchanged and private temporary material was removed. The unchanged actual
+remote-wallet rehearsal then passed on that implementation: accepted share and
+fighter, exact stopped reopen, both nodes joined, 2,982 source inputs unchanged
+and all 226 protected copied history/control paths preserved. See
+`docs/evidence/set74/operator-capacity-linux.json` and
+`docs/evidence/set74/remote-attachment-capacity-actual.json`. These repeat the
+qualified finite slice; neither proves continuous capacity or D80 completion.
+
 The finite reservation/drain candidate covers already retained submission rows.
 A further audit found that an unseen nonce from an already issued job is checked
 against capacity before canonical-block verification. The real worker broadcasts

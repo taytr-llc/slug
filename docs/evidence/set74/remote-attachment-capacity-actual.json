@@ -1,0 +1,148 @@
+{
+  "actual": {
+    "accepted_fighter": true,
+    "accepted_share": true,
+    "bootstrap_mining": false,
+    "clean_join": true,
+    "cleanup_errors": [],
+    "completed": true,
+    "config_id": "a942d7532b5fc879219ad4e51d83a7df4afeafadd80645c707d8a4c893f2c44c",
+    "final_height": 3,
+    "initial_height": 2,
+    "initial_tip": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+    "max_new_blocks": 1,
+    "node_cleanup": [
+      {
+        "clean": true,
+        "forced_kill": false,
+        "joined": true,
+        "log_close_error": false,
+        "stop_rpc_error": false,
+        "unexpected_exit": false,
+        "wait_error": ""
+      },
+      {
+        "clean": true,
+        "forced_kill": false,
+        "joined": true,
+        "log_close_error": false,
+        "stop_rpc_error": false,
+        "unexpected_exit": false,
+        "wait_error": ""
+      }
+    ],
+    "open_login_contexts_canceled": true,
+    "operator_audit_exact": true,
+    "passed": true,
+    "public_seed_mining": false,
+    "reopened_same_rows": true,
+    "rows": 1,
+    "scope": "existing schema14 remote TLS attachment",
+    "version": 1
+  },
+  "approved_lock_sha256": "c9e840509fd32cd53f9f2745fd0bf1dc71a7a1919e52e64dbfd916525bcd2842",
+  "attempt": "remote-attachment-actual-attempt2",
+  "binary_artifacts": {
+    "node": {
+      "build_info": "/Users/taytrrip/slug/artifacts/set74/remote-attachment-actual-attempt2/node-build-info.txt",
+      "build_info_sha256": "41f8e4d8546e38884a3fd13acca6cdd3fd3386a8b82ed583588338f2762533f2",
+      "compiler_setting_evidence": "embedded_build_info",
+      "go_version": "go1.27.4",
+      "path": "/Users/taytrrip/slug/artifacts/set74/remote-attachment-actual-attempt2/bin/slugd",
+      "settings": {
+        "-buildmode": "exe",
+        "-compiler": "gc",
+        "-gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "-trimpath": "true",
+        "CGO_ENABLED": "0",
+        "GOARCH": "arm64",
+        "GOARM64": "v8.0",
+        "GOOS": "darwin",
+        "vcs": "git",
+        "vcs.modified": "false",
+        "vcs.revision": "64b3aa50ca43291b08b67bdb6428fbcbfdc3846b",
+        "vcs.time": "2026-11-20T21:45:08Z"
+      },
+      "sha256": "3b2913bfaab95897d83ab4cc1d042f5e006798c6f65c16347ee145d5c84750bc"
+    },
+    "probe": {
+      "build_info": "/Users/taytrrip/slug/artifacts/set74/remote-attachment-actual-attempt2/probe-build-info.txt",
+      "build_info_sha256": "885ef5b647510fb06065802fa696c343e1eacfc83a0f4bd4905d7fac0b6a78de",
+      "compiler_setting_evidence": "embedded_build_info",
+      "go_version": "go1.27.4",
+      "path": "/Users/taytrrip/slug/artifacts/set74/remote-attachment-actual-attempt2/bin/remote-attachment-actual",
+      "settings": {
+        "-buildmode": "exe",
+        "-compiler": "gc",
+        "-gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "-trimpath": "true",
+        "CGO_ENABLED": "1",
+        "GOARCH": "arm64",
+        "GOARM64": "v8.0",
+        "GOOS": "darwin"
+      },
+      "sha256": "e2825997e2aeb5f36c2400d7f1e4697de88871222ad46a420d4e67e70081a00e"
+    }
+  },
+  "commands": [
+    {
+      "clean_join": true,
+      "exit_code": 0,
+      "seconds": 0.683,
+      "signals": []
+    },
+    {
+      "clean_join": true,
+      "exit_code": 0,
+      "seconds": 0.432,
+      "signals": []
+    },
+    {
+      "clean_join": true,
+      "exit_code": 0,
+      "seconds": 2.276,
+      "signals": []
+    },
+    {
+      "clean_join": true,
+      "exit_code": 0,
+      "seconds": 21.44,
+      "signals": []
+    },
+    {
+      "clean_join": true,
+      "exit_code": 0,
+      "seconds": 13.033,
+      "signals": []
+    }
+  ],
+  "fixture_catalog_sha256": "2637978c2e08637dae2a21bf7fcb8e9ab37edb3476e2b9512c73ff16809b7e55",
+  "immutable_copy_paths": 226,
+  "old_copied_histories_unchanged": true,
+  "original_fixture_unchanged": true,
+  "passed": true,
+  "predecessor_evidence": {
+    "attempt": "remote-attachment-actual-attempt1",
+    "git_commit": "64b3aa50ca43291b08b67bdb6428fbcbfdc3846b",
+    "passed": true,
+    "path": "docs/evidence/set74/remote-attachment-actual.json",
+    "sha256": "585b8111e173a2dd7b9f4e594badbb9e262b54cb32f220a4a98991b583da489a"
+  },
+  "public_evidence_sha256": {
+    "01-runtime-and-selection.json": "d21f9dbdf9ca8fe0856e14b8e687c85fa15bf56ea4642ade31f2a3c0d82f2f3a",
+    "02-stopped-original-view.json": "f3fe3a718deb35a3954707f3c625c0b03a9f63d134d98f6a2b066d566038b451",
+    "03-work-stopped.json": "51ba6e200a9efc501be95505206e751d7c144a8048d74dd5835dc447ca8faf61",
+    "04-closed-rows.json": "65d3bd2d503a06e69cb17308f391ba85f7a5e1ed6bf778558e96378a9da16c45",
+    "05-reopened-rows.json": "6d4b7439d60d3443cdb1ff5735c1e4293cb8ec5f72974075af699e4101c5a1a2",
+    "actual-report.json": "d9548030644a94a1be9bcfa04bbd9f8be60fc7ee4bb9d6e3d56f09c8d670b6ae",
+    "selected-public-setup.json": "f85615c02ab6d1f57b21ac7dc306852b96fac59914ef3dc64b26a8578150f02c"
+  },
+  "qualified_code_commit": "64b3aa50ca43291b08b67bdb6428fbcbfdc3846b",
+  "report_sha256": "1b6317aa2eb6376a4aba7c5407c40f9f22a6ff64e099a6c52c6ee31bad4f8c8a",
+  "scope": "Unchanged actual existing schema14 remote TLS attachment repeated after finite-capacity integration; neither D80 continuation nor native UI/payout presentation is qualified.",
+  "source_count": 2982,
+  "source_inventory_sha256": "522642a600d71e5db984bd0f875222e6d50743a9323f2f3dc0106c6b7118c440",
+  "source_unchanged": true,
+  "version": 1,
+  "wallet_commit": "6a69ecfcfc20f5433b5a1ca75e6dbb3a4db725a0"
+}

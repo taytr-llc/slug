@@ -1,0 +1,402 @@
+{
+  "binaries": [
+    {
+      "bytes": 20199783,
+      "normal_tags_and_symbols": true,
+      "path": "bin/slugd",
+      "profile_verified": true,
+      "sha256": "71a3ab75983c0dba5034b65a8b751fb6196beb5f15173d229cd6a3810895aced",
+      "unchanged_after_checks": true
+    },
+    {
+      "bytes": 20127688,
+      "normal_tags_and_symbols": true,
+      "path": "bin/slugpoold",
+      "profile_verified": true,
+      "sha256": "2774f04a0153d550523b9f63d3e32347cf49085a35ab42de5dabbc8c6b47daae",
+      "unchanged_after_checks": true
+    }
+  ],
+  "chain_commit": "64b3aa50ca43291b08b67bdb6428fbcbfdc3846b",
+  "clean_join": true,
+  "commands": [
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "9c5d6aff9c7dd4d5961cf66159f51f11d2d9f33248f6045a8a5d0265da47317e",
+      "name": "sources-before-chain-head",
+      "passed": true,
+      "seconds": 0.001
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "name": "sources-before-chain-status",
+      "passed": true,
+      "seconds": 0.062
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "c09ece70db7270d9f82a831f4cdce6a1f9db6b2a7fba7754d9d173ea9f2e66bc",
+      "name": "sources-before-chain-files",
+      "passed": true,
+      "seconds": 0.003
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "162afceb392519dafd5efe5f274aecfa20bfb97dddae6673338857b56f06d113",
+      "name": "sources-before-wallet-head",
+      "passed": true,
+      "seconds": 0.002
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "name": "sources-before-wallet-status",
+      "passed": true,
+      "seconds": 0.05
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "3d48b316a94cef71218d0338528885f5bcf53519e6696937f23c6e2c6c349857",
+      "name": "sources-before-wallet-files",
+      "passed": true,
+      "seconds": 0.001
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "name": "candidate-profile",
+      "passed": true,
+      "seconds": 0.006
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "af30f72cfa613929dad581c4c2f5bb5d8f67caab1c0b1c162fc0f40e9b1bbde4",
+      "name": "go-environment",
+      "passed": true,
+      "seconds": 0.002
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "8497f84b2b8334c413d9c6166bd39d009ba55d2ff60a8f23e66dfa5819c2b048",
+      "name": "c-compiler",
+      "passed": true,
+      "seconds": 0.001
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "172dc6e116b9b654d5222881a1bbf3139ff7a9e492d186548c454adb5032d098",
+      "name": "workspace-desktop",
+      "passed": true,
+      "seconds": 0.002
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "3f4732bea3622d7864f7d4c77b9dc84126dce3c4d9caa5b80296fc29ccbe8895",
+      "name": "workspace-wallet",
+      "passed": true,
+      "seconds": 0.003
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "46eb8bfd139ba3142942c744257e116a034a58876412f0805d3129e213babd94",
+      "name": "normal-wire-selection",
+      "passed": true,
+      "seconds": 1.044
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "c5c2c6af6ec838949d791785809d9c74ab29868c48c4ef3ec2e34794ace1f601",
+      "name": "normal-wire-guard",
+      "passed": true,
+      "seconds": 35.286
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "030c0ef473677232a34fdce0edff81af1dfd0ea75a548c3297516da5652a7c9d",
+      "name": "build-slugd",
+      "passed": true,
+      "seconds": 28.72
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "53cddefc908803a478d9775bbc24076d0e61341c7f6896eb26ce8834e3dccbd7",
+      "name": "verify-slugd",
+      "passed": true,
+      "seconds": 0.009
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "682ed6d0e5aa6991c59974ca193fd062f893cf89f00c95c03959106f5c933ac1",
+      "name": "symbols-slugd",
+      "passed": true,
+      "seconds": 5.119
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "6ba9a916b1ad92caec56e67d0c918bba5b56f9f120c2f05d974a0a256dab1aeb",
+      "name": "build-slugpoold",
+      "passed": true,
+      "seconds": 14.921
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "a6fdf63f40814aaecb945e1cbe66618cc6764f136407c5439ea92f0f5164560e",
+      "name": "verify-slugpoold",
+      "passed": true,
+      "seconds": 0.009
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "65c977eaf0c3aff6e18a8ddf32b6c29e1bc0a732705e33b36e12f79f94b425de",
+      "name": "symbols-slugpoold",
+      "passed": true,
+      "seconds": 0.053
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "743eefe162f5ee89bc05881673d5650b3e4e77a4c49e87a74a6d502f9e734864",
+      "name": "normal-authority",
+      "passed": true,
+      "seconds": 1.558
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "32a5464a9b2508b7b7520cbcd948c954bca447d30bbf9bd5f43eac6b556cb9c3",
+      "name": "normal-wallet",
+      "passed": true,
+      "seconds": 36.205
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "82000fa3730ff467799e32c49a916e759302ce30b1db5c1f72b0b97fcbc587aa",
+      "name": "normal-operator",
+      "passed": true,
+      "seconds": 12.492
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "3de8ecbf71fc9b84ca38f96d22d64bd4c12dd7e80ca516987fe6ba7b61578b81",
+      "name": "race-authority",
+      "passed": true,
+      "seconds": 20.672
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "ff8d4d5ef5c52892407c2e5080458eefe7714b19ea3b63955455360697fc373c",
+      "name": "race-wallet",
+      "passed": true,
+      "seconds": 133.717
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "479549c3caab9c00bc1f35eb072e02732e9d8390f4f30b264d76e6686c5c7b11",
+      "name": "race-operator",
+      "passed": true,
+      "seconds": 18.103
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "name": "vet-authority",
+      "passed": true,
+      "seconds": 1.805
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "name": "vet-wallet",
+      "passed": true,
+      "seconds": 4.014
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "name": "vet-operator",
+      "passed": true,
+      "seconds": 0.736
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "9c5d6aff9c7dd4d5961cf66159f51f11d2d9f33248f6045a8a5d0265da47317e",
+      "name": "sources-after-chain-head",
+      "passed": true,
+      "seconds": 0.001
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "name": "sources-after-chain-status",
+      "passed": true,
+      "seconds": 0.012
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "c09ece70db7270d9f82a831f4cdce6a1f9db6b2a7fba7754d9d173ea9f2e66bc",
+      "name": "sources-after-chain-files",
+      "passed": true,
+      "seconds": 0.002
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "162afceb392519dafd5efe5f274aecfa20bfb97dddae6673338857b56f06d113",
+      "name": "sources-after-wallet-head",
+      "passed": true,
+      "seconds": 0.002
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "name": "sources-after-wallet-status",
+      "passed": true,
+      "seconds": 0.003
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "log_sha256": "3d48b316a94cef71218d0338528885f5bcf53519e6696937f23c6e2c6c349857",
+      "name": "sources-after-wallet-files",
+      "passed": true,
+      "seconds": 0.001
+    }
+  ],
+  "deployed_host_qualified": false,
+  "passed": true,
+  "platform": "Linux-7.0.0-1014-aws-x86_64-with-glibc2.39",
+  "predecessor_failures": [
+    {
+      "reason": "runner.temp at job env failed workflow validation",
+      "run_id": 44819586232
+    },
+    {
+      "reason": "Go download stderr reached JSON parser; readonly module-cache cleanup failed",
+      "run_id": 44819933811
+    },
+    {
+      "reason": "authority ACL test fixture removed parent owner execute permission",
+      "run_id": 44820451298
+    }
+  ],
+  "predecessor_pass": {
+    "chain_commit": "c41cc3370081a3fa92ad22d0ec89311aab0ce8fc",
+    "evidence_sha256": "90e93510f9fa5e10515d845276bf4561c6e19af1819144cf90476d90b8ab9bb7",
+    "run_id": 44821053057
+  },
+  "profile": {
+    "gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+    "go_version": "go1.27.4",
+    "id": "slug-go1274-no-cse-v1",
+    "scope": "candidate_engineering",
+    "version": 1
+  },
+  "provisioning_qualified": false,
+  "report_sha256": "0068f43a72c71afa01b2425db5f14b08fd8ad6866aa00d1f3de9c95c00dad468",
+  "run_id": 44823622386,
+  "run_url": "https://github.com/taytr-llc/slug/actions/runs/44823622386",
+  "scope": "focused_linux_operator",
+  "seconds": 315.815,
+  "source_after_sha256": "858ede17dc0ec55f5ab3bf36f3c2861d7e3a685416da7288cd96c422d9203734",
+  "source_before_sha256": "858ede17dc0ec55f5ab3bf36f3c2861d7e3a685416da7288cd96c422d9203734",
+  "source_unchanged": true,
+  "temporary_material_removed": true,
+  "tests": [
+    {
+      "command": "normal-wire-guard",
+      "required": [
+        "TestBlockHashMemoizationPreservesArgon2"
+      ],
+      "top_level_passes": 1
+    },
+    {
+      "command": "normal-authority",
+      "required": [
+        "TestOperatorAuthorityExtendedACLRefusal",
+        "TestOperatorAuthorityIndependentNamedSignatures"
+      ],
+      "top_level_passes": 13
+    },
+    {
+      "command": "normal-wallet",
+      "required": [
+        "TestPoolSettlementManagerIndependentSigning",
+        "TestPoolWalletOwnerLifecycle"
+      ],
+      "top_level_passes": 12
+    },
+    {
+      "command": "normal-operator",
+      "required": [
+        "TestOperatorPrivateInputLinuxACLRefusal",
+        "TestOperatorPrivateInputLinuxACLRefusal/file-access-before",
+        "TestOperatorPrivateInputLinuxACLRefusal/parent-access-before",
+        "TestOperatorPrivateInputLinuxACLRefusal/parent-default-before",
+        "TestOperatorPrivateInputLinuxACLRefusal/file-access-after",
+        "TestOperatorPrivateInputLinuxACLRefusal/parent-default-after"
+      ],
+      "top_level_passes": 29
+    },
+    {
+      "command": "race-authority",
+      "required": [
+        "TestOperatorAuthorityExtendedACLRefusal",
+        "TestOperatorAuthorityIndependentNamedSignatures"
+      ],
+      "top_level_passes": 13
+    },
+    {
+      "command": "race-wallet",
+      "required": [
+        "TestPoolSettlementManagerIndependentSigning",
+        "TestPoolWalletOwnerLifecycle"
+      ],
+      "top_level_passes": 12
+    },
+    {
+      "command": "race-operator",
+      "required": [
+        "TestOperatorPrivateInputLinuxACLRefusal",
+        "TestOperatorPrivateInputLinuxACLRefusal/file-access-before",
+        "TestOperatorPrivateInputLinuxACLRefusal/parent-access-before",
+        "TestOperatorPrivateInputLinuxACLRefusal/parent-default-before",
+        "TestOperatorPrivateInputLinuxACLRefusal/file-access-after",
+        "TestOperatorPrivateInputLinuxACLRefusal/parent-default-after"
+      ],
+      "top_level_passes": 29
+    }
+  ],
+  "version": 1,
+  "wallet_commit": "6a69ecfcfc20f5433b5a1ca75e6dbb3a4db725a0"
+}
