@@ -2859,6 +2859,13 @@ func handleGetTxOut(s *rpcServer, cmd interface{}, closeChan <-chan struct{}) (i
 	if c.IncludeMempool != nil {
 		includeMempool = *c.IncludeMempool
 	}
+	out := wire.OutPoint{Hash: *txHash, Index: c.Vout}
+	// SLUG recovery uses this RPC to check an interrupted transfer's escrow.
+	// Including the mempool must exclude outputs already spent there, whether
+	// their parent is confirmed or still in the pool.
+	if includeMempool && s.cfg.TxMemPool.CheckSpend(out) != nil {
+		return nil, nil
+	}
 	// TODO: This is racy.  It should attempt to fetch it directly and check
 	// the error.
 	if includeMempool && s.cfg.TxMemPool.HaveTransaction(txHash) {
@@ -2890,7 +2897,6 @@ func handleGetTxOut(s *rpcServer, cmd interface{}, closeChan <-chan struct{}) (i
 		pkScript = txOut.PkScript
 		isCoinbase = blockchain.IsCoinBaseTx(mtx)
 	} else {
-		out := wire.OutPoint{Hash: *txHash, Index: c.Vout}
 		entry, err := s.cfg.Chain.FetchUtxoEntry(out)
 		if err != nil {
 			return nil, rpcNoTxInfoError(txHash)
@@ -2898,9 +2904,8 @@ func handleGetTxOut(s *rpcServer, cmd interface{}, closeChan <-chan struct{}) (i
 
 		// To match the behavior of the reference client, return nil
 		// (JSON null) if the transaction output is spent by another
-		// transaction already in the main chain.  Mined transactions
-		// that are spent by a mempool transaction are not affected by
-		// this.
+		// transaction already in the main chain. Mempool spends are also
+		// excluded when includeMempool is true.
 		if entry == nil || entry.IsSpent() {
 			return nil, nil
 		}
@@ -2911,6 +2916,11 @@ func handleGetTxOut(s *rpcServer, cmd interface{}, closeChan <-chan struct{}) (i
 		value = entry.Amount()
 		pkScript = entry.PkScript()
 		isCoinbase = entry.IsCoinBase()
+	}
+	// Recheck after lookup so a spend accepted during the lookup is not
+	// reported as available. This is an observation, never a reservation.
+	if includeMempool && s.cfg.TxMemPool.CheckSpend(out) != nil {
+		return nil, nil
 	}
 
 	// Disassemble script into single line printable format.

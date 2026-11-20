@@ -175,8 +175,83 @@ The final joint D74 design review remains before product release.
 Wallet schema14/15, shared carrier/withdrawal exclusions, ownership-aware
 stable/event consumers and public replay are being integrated. The noon cutoff
 review found that freezing admission/checkpoint prefixes alone omitted the
-durable finality-frame prefix. A narrow contract/reference successor is being
-prepared so later frames cannot backdate ownership after a reorganization.
+durable finality-frame prefix. The narrow contract/reference successor is now
+implemented so later frames cannot backdate ownership after a reorganization.
 This implements D76/D83 without changing their timing or community doctrine.
 Full reviewed transfer, competing-send/finality/noon checks and packaged
 independent restored-gym use remain the acceptance milestone.
+
+## Concrete wallet and export qualification
+
+Schema14 starts the new typed allocation2 wallet; explicit restored schema15
+activation retains the original exported recovery bounds and watches issued
+paths in all four existing scopes. New spending remains native84. Carrier and
+withdrawal owners share permanent signed-input exclusions. Unsigned abandonment
+releases inputs without rewinding allocated return addresses. Reconciliation
+uses the original View or FighterTransfer capability before and after IO;
+post-commit authority loss preserves the write and poisons the original owner
+with an uncertain-outcome error. InspectPrepared recovers the exact lost-ack
+projection without minting a chain-authorized signing capability.
+
+Qualification is deliberately composed: carrier-owner-attempt3 passed normal
+and race (16.753/119.327s), but its tagged phase failed a test expectation.
+carrier-owner-tagged-attempt1 passed the corrected top-level refusal and vet
+(2.212/1.895s). Earlier schema placeholder and test-fixture failures are retained.
+The later carrier-funding-reconcile-attempt1 passed normal20.778/race106.083/
+profile4.707/vet0.709s with1,223 inputs unchanged. It verifies exact independent
+16-input signed bytes, insufficient15-input funding, lost-ack inspection and
+original-session reconciliation, not actual live-node acceptance.
+
+The typed inventory2 recovery export passed normal6.913/race16.984/vet4.784s
+in export2-focused-attempt1. Preparation does not publish; original RecoveryExport
+authority gates the retained destination. Reset/close clears prepared bytes and
+joins publication. Cross-version same-account exports remain mutually excluded.
+withdrawal2-focused-attempt1 passed normal23.838/race124.814/vet3.945s, including
+older allocation withdrawal regressions, exact journal reconciliation and
+reservations retained across reopen. These scopes do not replace file-only
+restored-gym and actual spending acceptance.
+
+## Public evidence reconstruction
+
+The public read transport serves only committed admission/publication rows,
+signed finality frames and retained cutoff records. Its reader pins the complete
+independently supplied ownership configuration and original endpoint/lifetime;
+HTTP is literal-loopback only, HTTPS requires normal certificate validation plus
+the expected SPKI hash. Requests, responses, work, deadlines and concurrency are
+bounded. Close joins actual calls, including decoding and signature checks.
+No private source database, account or operation journal is a recovery input.
+
+Remote replay imports signed frames as untrusted evidence and verifies their
+complete historical branches with normal work. It cannot sign as the source.
+Newly observed finality lacking required portable source evidence is reported
+unavailable for complete reconstruction, never as the former owner's ready
+state. A source publication followed by fresh replay completes that evidence.
+Exact abandoned work can be retired without deleting immutable records; a new
+frontier must be fully verified again.
+
+public-read-focused-attempt1 passed normal3.029/race8.400/profile2.013/vet0.829s.
+A peer review then tightened unsupported HTTP deadline refusal and typed
+cancellation. remote-abandon-attempt1 passed their successors with exact work
+restart and remote genesis replay in4.920/12.567/1.844/0.294s,625 inputs unchanged.
+Both are bounded local HTTP/genesis/model evidence, not funded transfer tests.
+The subsequent shared prospect/header hash gate and historical cutoff readiness
+correction passed public-core-hash-gate-attempt1: normal5.387/race14.930/
+profile2.477/vet0.384s,633 inputs unchanged and all groups joined. Core header
+work now uses the existing prospect verification mutex, preventing overlapping
+256MiB Argon work with prospect verification. Old Verify behavior is preserved.
+
+The desktop source and schema14 wallet adapters now compile in the explicit new
+route. Full controller/native review, public-history recovery, end-to-end
+acceptance, package checks and rollout are still outstanding. Nothing here
+authorizes or claims production genesis, public sign-up or completion of D74.
+
+owned-wallet-focused-attempt1 preserved three failures: the root public-source
+test used a temporary path containing macOS's /var symlink, and the wallet
+adapter tried initialization-only Resume on an inventory that already contained
+a committed recipient. The successor canonicalizes the test path (production
+path refusal stays strict) and opens a nonempty inventory using its independently
+reconstructed exact binding. It also fixes same-tip instance/revision cache
+reuse found by peer review. owned-wallet-focused-attempt2 passed normal15.178/
+race54.212/profile10.196/vet1.237s,1,880 inputs unchanged. It includes actual
+schema14 fixture setup/reopen and loopback normal-genesis replay; live wallet
+watch/READY and funded transfer acceptance remain outstanding.

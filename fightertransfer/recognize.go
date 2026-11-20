@@ -8,7 +8,6 @@ import (
 	"fmt"
 
 	"github.com/taytr-llc/slug/btcec/v2/ecdsa"
-	"github.com/taytr-llc/slug/chainhash/v2"
 	"github.com/taytr-llc/slug/txscript/v2"
 	"github.com/taytr-llc/slug/wire/v2"
 	"golang.org/x/crypto/ripemd160"
@@ -129,83 +128,11 @@ func ValidateSupplied(ctx context.Context, expected Expected, evidence Evidence)
 	if c.Version != 1 || c.LockTime != 0 || s.Version != 1 || s.LockTime != 0 {
 		return result, invalid("version or locktime")
 	}
-	ops := make([]wire.OutPoint, len(c.TxIn))
-	wanted := make(map[uint32]bool, len(c.TxIn))
-	parentsWanted := make(map[chainhash.Hash]bool, len(c.TxIn))
-	for n, in := range c.TxIn {
-		if in.Sequence != wire.MaxTxInSequenceNum || len(in.SignatureScript) != 0 || len(in.Witness) != 2 {
-			return result, invalid("native commit input")
-		}
-		if _, err = publicKey(in.Witness[1]); err != nil {
-			return result, err
-		}
-		ops[n] = in.PreviousOutPoint
-		wanted[in.PreviousOutPoint.Index] = true
-		parentsWanted[in.PreviousOutPoint.Hash] = true
-	}
-	funding, err := FundingDigest(ops)
+	checked, err := checkCommitFunding(ctx, c, evidence.FundingTransactions)
 	if err != nil {
 		return result, err
 	}
-	parents := make(map[chainhash.Hash]map[uint32]*wire.TxOut, len(evidence.FundingTransactions))
-	for _, raw := range evidence.FundingTransactions {
-		if len(raw) == 0 {
-			return result, fmt.Errorf("%w: empty parent", ErrUnavailable)
-		}
-		p, err := scanTransaction(ctx, raw, parentMode, wanted)
-		if err != nil {
-			return result, err
-		}
-		if _, exists := parents[p.hash]; exists {
-			return result, invalid("duplicate funding parent")
-		}
-		parents[p.hash] = p.outputs
-	}
-	fetch := txscript.NewMultiPrevOutFetcher(nil)
-	var total int64
-	for _, in := range c.TxIn {
-		p, exists := parents[in.PreviousOutPoint.Hash]
-		if !exists {
-			return result, fmt.Errorf("%w: funding parent", ErrUnavailable)
-		}
-		out, exists := p[in.PreviousOutPoint.Index]
-		if !exists {
-			return result, invalid("funding output index")
-		}
-		if !nativeProgram(out.PkScript) || out.Value <= 0 || out.Value > maxMoney-total {
-			return result, invalid("funding output")
-		}
-		keyHash := hash160(in.Witness[1])
-		if !bytes.Equal(out.PkScript[2:], keyHash[:]) {
-			return result, invalid("funding key program")
-		}
-		total += out.Value
-		fetch.AddPrevOut(in.PreviousOutPoint, out)
-	}
-	// Extra well-formed parents have no authority role and are refused only after
-	// missing required parents have been classified as unavailable.
-	if len(parents) != len(parentsWanted) {
-		return result, invalid("unreferenced funding parent")
-	}
-	if c.TxOut[0].Value != CommitAtoms || c.TxOut[1].Value != 0 || c.TxOut[2].Value < MinChangeAtoms || !nativeProgram(c.TxOut[2].PkScript) || total-c.TxOut[0].Value-c.TxOut[2].Value != LegFeeAtoms {
-		return result, invalid("commit values or return")
-	}
-	hashes := txscript.NewTxSigHashes(c, fetch)
-	for n, in := range c.TxIn {
-		if err = ctx.Err(); err != nil {
-			return result, err
-		}
-		out := fetch.FetchPrevOutput(in.PreviousOutPoint)
-		script := append([]byte{0x76, 0xa9, 0x14}, out.PkScript[2:]...)
-		script = append(script, 0x88, 0xac)
-		digest, e := txscript.CalcWitnessSigHash(script, hashes, txscript.SigHashAll, c, n, out.Value)
-		if e != nil {
-			return result, invalid("native signature hash")
-		}
-		if err = verifyDER(in.Witness[0], digest, in.Witness[1]); err != nil {
-			return result, err
-		}
-	}
+	ops, funding := checked.ops, checked.digest
 	in := s.TxIn[0]
 	if in.PreviousOutPoint.Hash != commit.hash || in.PreviousOutPoint.Index != 0 || in.Sequence != wire.MaxTxInSequenceNum || len(in.Witness) != 0 {
 		return result, invalid("spend input")

@@ -221,6 +221,9 @@ func (s *ManifestStore) RecordManifestJobChecked(proof prospect.Proof, auth gyma
 	batch := new(leveldb.Batch)
 	batch.Put(recordKey(id), raw)
 	batch.Put(sequenceKey(r.Sequence), []byte(id))
+	if err := s.appendPublicAdmission(batch, r); err != nil {
+		return ManifestRecord{}, false, err
+	}
 	s.mark("before-admission")
 	if err := s.commit(batch, next); err != nil {
 		return ManifestRecord{}, false, err

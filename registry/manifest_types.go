@@ -104,6 +104,7 @@ func (m manifestMetadata) pin() ManifestAuthorityPin {
 // It never migrates or enriches legacy evidence. Operations and Close serialize
 // under one gate; callbacks must not reenter it. Callers bound their own queues.
 type ManifestStore struct {
+	public     *publicManifestState // selected only by the explicit public constructor
 	mu         sync.Mutex
 	db         *leveldb.DB
 	meta       manifestMetadata

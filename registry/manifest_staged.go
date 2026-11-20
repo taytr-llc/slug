@@ -374,6 +374,9 @@ func (s *ManifestStore) CommitManifestAdmission(prepared *PreparedManifestAdmiss
 	batch := new(leveldb.Batch)
 	batch.Put(recordKey(id), raw)
 	batch.Put(sequenceKey(r.Sequence), []byte(id))
+	if err := s.appendPublicAdmission(batch, r); err != nil {
+		return ManifestRecord{}, false, err
+	}
 	if err := s.commit(batch, next); err != nil {
 		return ManifestRecord{}, false, err
 	}
