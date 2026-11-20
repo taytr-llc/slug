@@ -2,8 +2,9 @@
 
 Set74 adds `desktop/pooloperator` and the headless `desktop/cmd/slugpoold`.
 They use the existing paired desktop/wallet workspace; the seed daemon has no
-new wallet dependency. Component qualification is complete. Actual TLS mining,
-scheduled payment/restart and remote-host acceptance are still separate gates.
+new wallet dependency. Component qualification and isolated normal-PoW TLS
+mining, scheduled payment and restart acceptance pass. Remote-host acceptance
+and operator provisioning remain separate gates.
 
 ## Setup and custody
 

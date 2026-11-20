@@ -79,8 +79,10 @@ not implement the deferred hosted sign-in or onboarding flow.
 ## Remaining acceptance
 
 The dedicated encrypted wallet, immediate signing authority and public TLS
-runtime are connected; see `POOL_OPERATOR_RUNTIME.md`. Actual funded scheduler
-payout/restart and remote service acceptance remain. Component checks use
-independently derived public references and synthetic node responses; they are
-not evidence that a public service or real wallet has paid anyone.
+runtime are connected; see `POOL_OPERATOR_RUNTIME.md`. Two independent TLS
+miners and real normal-PoW nodes passed scheduled payout, maturity deferral and
+lost-response/restart acceptance with published synthetic custody. Operator
+provisioning, remote desktop attachment and remote service acceptance remain.
+This isolated evidence does not mean a public service or real wallet has paid
+anyone.
 Qualification and preserved failures are recorded in `CHANGESET_74_NOTES.md`.

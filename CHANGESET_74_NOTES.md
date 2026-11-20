@@ -2,8 +2,9 @@
 
 Branch `slug-public-pool-runtime`, stacked from completed Set73 maintenance
 `1aba70ca36dfbd8e492f64b33c8d329f682de56c`. The live seed remains release
-`e3eb4d495455383121bc1138f2cc010c90c6fb72`. This set is in progress; no public
-pool deployment or scheduled-payout acceptance is claimed.
+`e3eb4d495455383121bc1138f2cc010c90c6fb72`. This set is in progress. Isolated
+normal-PoW scheduled-payout and restart acceptance pass; public deployment,
+operator provisioning and the remote desktop attachment remain ahead.
 
 The work order is public mining service and scheduled payouts, then sign-in and
 onboarding. D74 remains the final joint product review. Preserve D58/D79/D80/D81:
@@ -237,10 +238,10 @@ The paired wallet topic at `40959793` adds an explicit schema16 encrypted fixed-
 wallet. It retains the original owner/guard and exposes settlement signing only
 through the immediate original-store capability. Generic wallet APIs refuse this
 purpose; explicit unlock/expiry and cleanup retain their original custody. The
-independent signing corpus includes exact signatures through256 inputs. See the
+independent signing corpus includes exact signatures through 256 inputs. See the
 paired `CHANGESET_74_NOTES.md` for the three preserved failed attempts and the
-successful composite: normal16.443s, race117.595s, legacy1.689s, supplemental
-cheap refusals3.329s and vet1.956s. The cheap successor changes only its test body
+successful composite: normal 16.443s, race 117.595s, legacy 1.689s, supplemental
+cheap refusals 3.329s and vet 1.956s. The cheap successor changes only its test body
 and selection; production and executed normal test bodies remain unchanged.
 
 `desktop/pooloperator` now composes the concrete authority, dedicated wallet,
@@ -252,10 +253,10 @@ supports init, serve, stopped-root status/credential management and public signe
 checkpoint import. It neither creates a wallet nor handles the checkpoint key.
 See `POOL_OPERATOR_RUNTIME.md` for the configuration and finite-run boundary.
 
-`artifacts/set74/runtime-focused-attempt1/report.json` passed compile6.905s,
-normal7.383s, race15.527s, unsupported no-CGO refusal7.243s, cheap controls7.108s
-and vet0.779s. Its4,515 source/profile inputs stayed unchanged and all process
-groups joined. Tests cover independent setup bytes/IDs,21 cross-field refusals,
+`artifacts/set74/runtime-focused-attempt1/report.json` passed compile 6.905s,
+normal 7.383s, race 15.527s, unsupported no-CGO refusal 7.243s, cheap controls 7.108s
+and vet 0.779s. Its 4,515 source/profile inputs stayed unchanged and all process
+groups joined. Tests cover independent setup bytes/IDs, 21 cross-field refusals,
 five raw refusals, private-file/ACL identity, original-root lock/partial restart,
 local actions, signed checkpoint import without chain-authority grant, canceled
 work joining and bounded command output. Action tests use real partial owners;
@@ -267,8 +268,8 @@ public maintenance share the original nonwaiting signing authority. Its raw
 `operatorauthority.ErrBusy` now reports busy and retries without discarding the
 retained replay. Retry requires every joined error to be a recognized retryable
 cause; busy cannot hide closed custody, integrity or cleanup failure. The
-successor `runtime-contention-attempt1` passed normal8.589s, race10.680s and
-vet0.386s with4,524 unchanged inputs and clean process joins. Twelve classification
+successor `runtime-contention-attempt1` passed normal 8.589s, race 10.680s and
+vet 0.386s with 4,524 unchanged inputs and clean process joins. Twelve classification
 controls cover this correction. This is a source-review finding, not a previously
 observed deployed outage.
 
@@ -277,17 +278,56 @@ two-miner probe, then stopped before miner startup: standalone wallet creation
 could not find the bdb driver. Both executable dependency inventories omitted
 that driver, while wallet-package test imports had registered it. The created
 fixture wallet directory remained empty. Both nodes and the process group joined
-cleanly; all2,409 source inputs, profile and binaries stayed unchanged. This
+cleanly; all 2,409 source inputs, profile and binaries stayed unchanged. This
 failed actual attempt is preserved. The concrete operator host now explicitly
 registers bdb, matching the existing desktop host convention; registration does
-no key or database I/O. `runtime-driver-attempt1` passed normal9.695s,
-race11.481s and vet0.453s, including a standalone driver regression check.
+no key or database I/O. `runtime-driver-attempt1` passed normal 9.695s,
+race 11.481s and vet 0.453s, including a standalone driver regression check.
+
+## Actual scheduled payout and restart
+
+Attempt2 passed standalone wallet creation and correctly refused the rehearsal's
+CA certificate as a server leaf. The fixture now uses a separate non-CA IP-SAN
+server certificate, CA-only client trust and leaf SPKI pinning. Product TLS
+validation stayed unchanged; the failed run and its clean shutdown are retained.
+
+`public-pool-actual-attempt3` passed in 382.080s on chain source `4a3f20da` and
+wallet `40959793`, using normal 256 MiB PoW and two isolated nodes. Two independent
+automatic miner processes used the actual TLS ingress, found canonical blocks 2
+and 3, resolved every saved pool/fighter receipt and reopened identical outboxes
+in separate processes. The bootstrap reward paid a different fixture address
+and never entered pool accounting.
+
+At the real UTC due time, both miners showed 9.9 SLUG confirmed, zero available,
+reason `immature`, and no attempted broadcast. The scheduler was cleanly stopped
+while the fixture mined both original coinbases to maturity; reopening the same
+runtime then prepared the daily transaction. The node accepted it, and the
+controlled relay discarded that response. Runtime, wallet and authority closed
+and reopened on their exact original paths. Recovery observed the retained
+transaction, which confirmed in block 104. It paid 990,000,000 atoms to each fixed
+payee, with 240 atoms of network fee taken only from the pool's 20,000,000-atom cut.
+
+Only one transaction was attempted/accepted: `c76ea513f07c9e0eba9c5aa91529345c3931743135294d7cb0c6bee51c545255`.
+After two more retry intervals, each miner still had exactly one same-day
+payment. The actual `slugpoold status` and `serve` processes reopened the stopped
+root, served the same confirmed histories and joined cleanly on SIGTERM. Both
+nodes, both miners, both outbox-reopen processes and both CLI processes joined
+without forced cleanup. All 2,434 selected inputs, profile, binaries and public
+evidence remained unchanged. This proves lost-response reconciliation without
+a second payment; this scenario did not need to retransmit the observed transaction.
+The source-bound summary is `docs/evidence/set74/operator-actual.json`.
+
+`all-module-builds-attempt1` also passed all six wallet modules, ten chain modules
+and the headless operator command (25.162s aggregate build time). Its 2,687
+repository inputs, 3,169 selected inputs, profile and output stayed unchanged.
+This is Darwin build/runtime evidence; Linux/container execution is not inferred.
 
 ## Remaining integration
 
-- Exercise the complete operator with two independent automatic TLS miners,
-  normal-PoW nodes, actual maturity/daily payout and original-byte lost-response
-  recovery after process shutdown/reopen.
+- Prepare operator-run offline provisioning and matching public Setup, without
+  exposing real private material to the agent or using fixture-default custody.
+- Add an explicit remote desktop attachment and OperatorV2 history adapters,
+  preserving original local wallet/recipient/recovery source bindings.
 - Capacity continuity or an explicit finite-run limit, then remote-host rehearsal.
 
 No real key or seed has been read or created. Existing fixture applications,

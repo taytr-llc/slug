@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "scope": "Isolated normal-PoW Darwin operator/miner/payout acceptance; no public pool deployment or real custody",
+  "chain_commit": "4a3f20daf59d0df40e5c57004edc2e9492fea8af",
+  "wallet_commit": "40959793789246fbccaa9c7ef58d7a2183b96aed",
+  "passed": true,
+  "elapsed_seconds": 382.080101375,
+  "final_height": 104,
+  "normal_block_limit": 180,
+  "miners": 2,
+  "miner_each_atoms": 990000000,
+  "payment": {
+    "change_atoms": 19999760,
+    "fee_atoms": 240,
+    "inputs": [
+      {
+        "Hash": "fa35ca90eb85bbf9a7f7d0dd1d2129e3db672aecebac24133bb5e490795abda6",
+        "Index": 0
+      },
+      {
+        "Hash": "a5cf47f6f375fe4d3fcba1d9f1ab5fab53eba38ef2e40b170550ebc20e425be2",
+        "Index": 0
+      }
+    ],
+    "miner_each_atoms": 990000000,
+    "raw_sha256": "26c3fd6506a8533783241b7c38a3880b11c3d5ae486476edfde5758fcba26c68",
+    "txid": "c76ea513f07c9e0eba9c5aa91529345c3931743135294d7cb0c6bee51c545255"
+  },
+  "attempted_broadcasts": 1,
+  "accepted_broadcasts": 1,
+  "clean_join": true,
+  "source_count": 2434,
+  "source_unchanged": true,
+  "profile_lock_artifacts_unchanged": true,
+  "operator_binary_sha256": "f48dd41e8fea5dc5496ecf4f5f84da7eb69f4a1800ddab79a2d67c62bba2e31c",
+  "public_reports": {
+    "artifacts/set74/public-pool-actual-attempt3/report.json": {
+      "bytes": 10955,
+      "sha256": "e38cd0bb9917102dabf13b0524ec09e92585accfc3dfbc96da64884e41c92a64"
+    },
+    "artifacts/set74/public-pool-actual-attempt3/owned/actual-report.json": {
+      "bytes": 4490,
+      "sha256": "fd514ad736a93d141ddbb70617acad25a1a3c8a42bc81fdb4056bbfbf05078ba"
+    },
+    "artifacts/set74/public-pool-actual-attempt3/owned/01-runtime-listening.json": {
+      "bytes": 1606,
+      "sha256": "92adef68071ae1cdfe10113b4abc00a12d615fdcfc501bca427ff0198eff3903"
+    },
+    "artifacts/set74/public-pool-actual-attempt3/owned/02-two-miners.json": {
+      "bytes": 48113,
+      "sha256": "aa5e9ae7c57f14930aa1a8d9dd90a111f120265f7815875a9611f98a02c2b47b"
+    },
+    "artifacts/set74/public-pool-actual-attempt3/owned/03-due-immature.json": {
+      "bytes": 3690,
+      "sha256": "ed84343de1a20e0bc4307022ef1240558a532747109da2bb3935057897c6cc6c"
+    },
+    "artifacts/set74/public-pool-actual-attempt3/owned/04-lost-accepted-payout.json": {
+      "bytes": 1485,
+      "sha256": "81c911f1d90183ba340faaeabfb8d364798c26677cc7f088249e20e1e7862675"
+    },
+    "artifacts/set74/public-pool-actual-attempt3/owned/05-recovered-confirmed-payment.json": {
+      "bytes": 5234,
+      "sha256": "b5cd16654be972ae9fdb65f9f57eed9d4b72960d538ebcb304ca5df495447579"
+    },
+    "artifacts/set74/public-pool-actual-attempt3/owned/06-same-day.json": {
+      "bytes": 5571,
+      "sha256": "4d1b1a04b23d70858f4849dea23e5b52ce87c5e0bb494ea2eede503e962f29e4"
+    },
+    "artifacts/set74/public-pool-actual-attempt3/owned/07-production-cli.json": {
+      "bytes": 2583,
+      "sha256": "1987215584a0aa919dfae96179456b95702efd1aadf0df54960d743bb1e6d16e"
+    }
+  },
+  "all_module_builds": {
+    "passed": true,
+    "targets": [
+      "wallet-root",
+      "wallet-wallet-txauthor",
+      "wallet-wallet-txrules",
+      "wallet-wallet-txsizes",
+      "wallet-walletdb",
+      "wallet-wtxmgr",
+      "chain-root",
+      "chain-address",
+      "chain-btcec",
+      "chain-btcutil",
+      "chain-chaincfg",
+      "chain-chainhash",
+      "chain-psbt",
+      "chain-txscript",
+      "chain-v2transport",
+      "chain-wire",
+      "desktop-slugpoold"
+    ],
+    "repository_count": 2687,
+    "source_count": 3169,
+    "repository_unchanged": true,
+    "source_unchanged": true
+  }
+}

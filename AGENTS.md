@@ -351,8 +351,12 @@ tests alone do not close public deployment and scheduled-payout acceptance.
   `1aba70ca`. Public operator service and scheduled payouts precede sign-in.
   Recovery-only settlement, original-store binding, operator admission/publication
   custody and ownership replay, recovery-first UTC scheduling and the concrete payout-node connection
-  passed focused normal, race and profile-refusal checks. Service/wallet
-  integration remains in progress. Scheduling retains the original settlement;
+  passed focused normal, race and profile-refusal checks. The dedicated schema16
+  wallet and standalone TLS operator passed a two-miner normal-PoW scheduled
+  payout/restart rehearsal at chain `4a3f20da` / wallet `40959793`: maturity deferral,
+  one batched payment, accepted lost-response recovery, no duplicate and clean
+  standalone CLI reopen. Real provisioning, remote desktop attachment and host
+  qualification remain; do not call the public pool deployed. Scheduling retains the original settlement;
   only completed daily batches advance its cursor. Node evidence grants no
   signing authority; uncertain delivery retries only the retained transaction.
   Operator ownership uses explicit issuer/replica roles and `/slug/ownership/v2`;

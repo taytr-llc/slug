@@ -496,6 +496,17 @@ of the ownership, transfer or independent restored-wallet flow. See
   Public pool/scheduled payouts follow transfer/recovery closeout, then
   sign-in/onboarding. See `CHANGESET_73_NOTES.md` for exact evidence and limits.
 
+- Set74's standalone operator and dedicated settlement wallet passed an isolated
+  two-miner TLS rehearsal with normal PoW: confirmation and maturity deferral,
+  one actual batched payout, accepted lost-response recovery, no duplicate daily
+  payment and clean CLI reopen. All six wallet modules, ten chain modules and
+  the headless command build. This is dated Darwin engineering evidence at
+  chain `4a3f20da` / wallet `40959793`, not an externally deployed public pool.
+  Operator-run provisioning, remote desktop/source attachment, finite-capacity
+  operation and Linux/remote-host qualification remain before that milestone.
+  Sign-in follows; the full joint D74 review stays last. See
+  `CHANGESET_74_NOTES.md` and `docs/evidence/set74/operator-actual.json`.
+
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
 `sim-handoff-intake.json` preserves archive and file checksums. They are reference
