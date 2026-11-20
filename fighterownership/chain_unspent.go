@@ -6,6 +6,7 @@ import (
 	"context"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"math"
 	"strconv"
 	"strings"
@@ -52,6 +53,10 @@ func chainAtoms(raw []byte) (int64, bool) {
 	return int64(n), true
 }
 
+// chainOutputAbsent is private: an arbitrary caller's unknown outpoint is not
+// proof of a spent escrow. PreparedRecovery adds the canonical commit authority.
+var chainOutputAbsent = errors.New("owned node output currently absent")
+
 // CheckUnspent freshly checks an exact confirmed output, including mempool
 // spends, within one unchanged node observation. It does not reserve funds or
 // establish ownership. The caller must also retain and check its original
@@ -76,6 +81,24 @@ func (s *OwnedChainSource) CheckUnspent(ctx context.Context, txid string, index 
 	raw, err := s.call(op, "gettxout", []any{txid, index, true}, 65536)
 	if err != nil {
 		return err
+	}
+	if bytes.Equal(bytes.TrimSpace(raw), []byte("null")) {
+		// Even absence is an original-node observation, not an RPC error or a
+		// shortcut around restart/ABA/network checks.
+		after, e := s.observe(op)
+		if e != nil {
+			return e
+		}
+		if after != before {
+			return ErrStale
+		}
+		if e = s.identity(op); e != nil {
+			return e
+		}
+		if e = op.Err(); e != nil {
+			return e
+		}
+		return errors.Join(ErrUnavailable, chainOutputAbsent)
 	}
 	fields, err := chainObject(raw, 65536)
 	if err != nil || len(fields) != 5 {

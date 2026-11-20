@@ -472,6 +472,17 @@ of the ownership, transfer or independent restored-wallet flow. See
   disaster recovery or installed-wallet replacement. D83 ownership/transfers
   and independent same-gym/fighter restoration follow; login and D74 stay deferred.
 
+- Set73 remains in progress on the fighter-ownership topic. Actual public
+  competing transfers and checkpoint/depth59/depth60 finality pass, including
+  retained official ownership after a reported chain conflict. A file-only
+  restored wallet has completed one actual transfer with the same gym/fighter.
+  The owned desktop route, native consent, exact saved-request recovery and
+  read-only recovery discovery are integrated and have scoped qualification.
+  Whole-mode actual transfer/noon, commit-only reveal and refund, packaged
+  restore command/native app and full closeout remain open. Public pool and
+  scheduled payments follow this milestone; sign-in/onboarding follow those.
+  See `CHANGESET_73_NOTES.md`; no release or D74 approval is implied.
+
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
 `sim-handoff-intake.json` preserves archive and file checksums. They are reference

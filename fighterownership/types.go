@@ -22,10 +22,13 @@ const (
 )
 
 var (
-	ErrInvalid        = errors.New("public ownership invalid input")
-	ErrSource         = errors.New("public ownership source mismatch")
-	ErrNotFound       = errors.New("public ownership not found")
-	ErrUnavailable    = errors.New("public ownership required evidence unavailable")
+	ErrInvalid     = errors.New("public ownership invalid input")
+	ErrSource      = errors.New("public ownership source mismatch")
+	ErrNotFound    = errors.New("public ownership not found")
+	ErrUnavailable = errors.New("public ownership required evidence unavailable")
+	// ErrEscrowSpent reports current exact absence of an authenticated canonical
+	// commit escrow, including a mempool spend; it is not permanent spend proof.
+	ErrEscrowSpent    = errors.New("public ownership canonical escrow currently absent")
 	ErrBusy           = errors.New("public ownership busy")
 	ErrCapacity       = errors.New("public ownership capacity")
 	ErrStale          = errors.New("public ownership stale head")

@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"time"
 
 	"github.com/taytr-llc/slug/fightertransfer"
@@ -104,8 +105,9 @@ func (p *PreparedRecovery) Check(ctx context.Context) error {
 	if e = p.node.Check(ctx, obs); e != nil {
 		return e
 	}
-	if e = p.node.CheckUnspent(ctx, p.commit.TxID, 0, fightertransfer.CommitAtoms, p.inspection.CommitScript[:]); e != nil {
-		return e
+	escrow := p.node.CheckUnspent(ctx, p.commit.TxID, 0, fightertransfer.CommitAtoms, p.inspection.CommitScript[:])
+	if escrow != nil && !errors.Is(escrow, chainOutputAbsent) {
+		return escrow
 	}
 	if e = p.node.Check(ctx, obs); e != nil {
 		return e
@@ -117,7 +119,13 @@ func (p *PreparedRecovery) Check(ctx context.Context) error {
 	if again != source || next != obs {
 		return ErrStale
 	}
-	return ctx.Err()
+	if e = ctx.Err(); e != nil {
+		return e
+	}
+	if errors.Is(escrow, chainOutputAbsent) {
+		return errors.Join(ErrUnavailable, ErrEscrowSpent)
+	}
+	return nil
 }
 func (s *Store) PrepareRecovery(ctx context.Context, h *HeadLease, commitID string) (*PreparedRecovery, error) {
 	if ctx == nil || h == nil || h.store != s || !hexValue(commitID, 32, true) {
@@ -139,24 +147,18 @@ func (s *Store) PrepareRecovery(ctx context.Context, h *HeadLease, commitID stri
 	}
 	commit := p.commit
 	raw, _ := hex.DecodeString(commit.Raw)
-	c, e := boundedTx(ctx, raw, 4096)
+	c, priorID, recipientKey, e := recoveryLocator(ctx, raw)
 	if e != nil {
 		return nil, e
-	}
-	if len(c.TxOut) != 3 || len(c.TxIn) < 1 || len(c.TxIn) > 16 {
-		return nil, ErrInvalid
-	}
-	script := c.TxOut[1].PkScript
-	if len(script) != 76 || script[0] != 0x6a || script[1] != 0x4a || string(script[2:11]) != "SLUGFCM1\x01" {
-		return nil, ErrInvalid
 	}
 	var pin, prior [32]byte
 	var recipient [33]byte
 	decoded, _ := hex.DecodeString(s.pinID)
 	copy(pin[:], decoded)
-	copy(prior[:], script[11:43])
-	copy(recipient[:], script[43:])
-	priorID := hex.EncodeToString(prior[:])
+	decoded, _ = hex.DecodeString(priorID)
+	copy(prior[:], decoded)
+	decoded, _ = hex.DecodeString(recipientKey)
+	copy(recipient[:], decoded)
 	if !s.mu.TryLock() {
 		return nil, ErrBusy
 	}

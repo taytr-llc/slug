@@ -297,7 +297,9 @@ func (s *OwnedChainSource) call(ctx context.Context, method string, params []any
 		return nil, ErrUnavailable
 	}
 	value, ok := fields["result"]
-	if !ok || bytes.Equal(value, []byte("null")) {
+	// gettxout alone defines an exact null result as output absence. Its
+	// caller still brackets identity/ABA and canonical recovery authority.
+	if !ok || (method != "gettxout" && bytes.Equal(value, []byte("null"))) {
 		return nil, ErrUnavailable
 	}
 	if len(value) > maxResult {

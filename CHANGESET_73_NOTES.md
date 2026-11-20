@@ -321,3 +321,60 @@ success. The successor changes only that bounded administrative test call;
 production observation deadlines and exact transaction assertions stay intact.
 The packaged native transfer and independent commit-only recovery milestone
 remain outstanding; this observation qualification does not close Set73.
+
+## Independent recovery and commit discovery
+
+`restored-carrier-actual-attempt5` passed in215.782s with4,898 inputs unchanged.
+It starts from the export2 file alone, resumes an interrupted schema12 scan,
+activates schema15, and retains the same gym and fighter. It recovers the exact
+lost preparation acknowledgment, reopens the signed pair before delivery, and
+completes one transfer: commit102/reveal103, sender at59 descendants, recipient
+at60 (height163), and fresh reconstruction through public evidence only. The
+original hosted tree/export stayed unchanged and both actual nodes joined.
+This uses independently owned components in one test process, not yet the
+packaged restore command, native UI, or commit-only reveal/refund acceptance.
+Earlier schema routing, signer, child-session logout and peer-relay harness
+failures remain preserved with their narrow diagnosed successors.
+
+The public replay now offers one opaque, fixed-head recovery-commit capture,
+at most4,096 compact indices and eight rows per page. It filters by authenticated
+historical predecessor ownership; candidate metadata cannot sign. Changed
+head/source/node identity invalidates the capture. `ErrEscrowSpent` distinguishes
+current exact escrow absence only after canonical commit and original node
+checks; it includes mempool spending and does not assert permanent spend proof.
+Missing/malformed evidence remains unavailable. `Store.Empty` requires the
+audited pristine metadata-only store, not merely absence of a ready head.
+
+`recovery-discovery-focused-attempt3` passed normal3.862/race9.153/tagged1.472/
+vet0.288s with574 inputs/profile unchanged and all processes joined. The first
+two attempts preserve sandbox preflight and a modeled fixture's missing map
+initialization. These are scoped public-read/lifetime checks, not automatic
+recovery from actual commit-only chain history. The wallet's separate intent-free
+match scan passed its focused checks, including more than128 lookup candidates
+while the journal stayed empty/held and the locked wallet DB stayed identical.
+
+## Desktop integration checkpoint
+
+The explicit owned mode is installed in the topic checkout. The native bridge
+retains immutable request correlation before preparation and distinguishes
+signing consent, broadcasting consent, delivery observations and public ownership
+finality. Cancelled/revoked/duplicate callbacks cannot sign or send. Menu clicks
+capture the original view before dispatch. Pending reset bootstrap exposes only
+the original childless source until recovery can load both complete scopes.
+Failed descriptor cleanup retains the actual owner and sticky uncertainty.
+
+`owned-child-focused-attempt2` passed normal16.837/race23.134/vet6.390s;
+`owned-native-focused-attempt1` passed native/bridge normal and race plus vet;
+`owned-checkout-focused-attempt1` passed bootstrap normal/race, native consent,
+all helper selectors and vet with6,125 inputs unchanged. The frontend's12
+behavior cases pass in `owned-ui-attempt3`, including account-switch clearing,
+disabled unavailable controls, exact saved requests and delivery/finality labels.
+These use mocked native boundaries and do not claim a visible GUI acceptance.
+
+The tagged calendar seam compiled with explicit ordinary-build exclusion. It
+uses a fixed offset only on the idle fixture's owned/calendar/source-authority
+clocks, with no later job/admission work; account, wallet and node clocks stay
+real. Whole-mode actual constructor/mining/recovery, funded transfer/noon,
+commit-only reveal/refund, packaged CLI/native app and set-wide smoke remain
+required. The prepared owned bundle keeps the existing fist artwork; D74's
+joint product/design review remains last. No Set73 release or deployment yet.

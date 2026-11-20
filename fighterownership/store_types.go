@@ -79,6 +79,7 @@ type Store struct {
 	work                       *replayWork
 	replay                     *Replay
 	commits                    map[string]TransactionWitness
+	recoveryCapture            *RecoveryCommitCapture
 	keySizes                   map[string]int
 	transferCounts             map[string]uint32
 	now                        func() time.Time
@@ -127,6 +128,11 @@ func (s *Store) Close() error {
 		s.closed = true
 		s.ready = false
 		s.generation++
+		if s.recoveryCapture != nil {
+			s.recoveryCapture.closed = true
+			s.recoveryCapture.entries = nil
+			s.recoveryCapture = nil
+		}
 		if s.db != nil {
 			s.closeErr = s.db.Close()
 		}
