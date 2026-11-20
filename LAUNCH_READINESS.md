@@ -484,9 +484,12 @@ of the ownership, transfer or independent restored-wallet flow. See
   preserved in `CHANGESET_73_NOTES.md`. Both ordinary noon ownership variants
   passed, including original birth/condition, immutable history after later
   finality and component reopen. These scoped-clock cases do not qualify native
-  dialogs or a full ordinary controller reopen after future clock offset. A final normal
-  bundle on the clean release source and release/provider verification are also
-  outstanding; no promotion, deployment or post-rollout success is claimed.
+  dialogs or a full ordinary controller reopen after future clock offset. The clean
+  normal release bundle passed; master and Railway run `e3eb4d49`. All 31
+  post-rollout samples across 900 seconds passed, followed by a clean local
+  observer restart; the original chain, checkpoint, volume and endpoint remain
+  verified. GitHub exposes a successful Railway status, but no Actions/check
+  runs; do not count absence as separate CI qualification.
   Neither native attempt validated the original funded-root GUI flow. Default
   fixture login/empty refresh does not qualify signing, mining, export or that
   funded flow; visible native acceptance and D74 remain open product gates.

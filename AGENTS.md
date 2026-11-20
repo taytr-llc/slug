@@ -340,7 +340,10 @@ tests alone do not close public deployment and scheduled-payout acceptance.
   public history, never copied private authorization journals. No noon cutoff
   may be backdated or replaced by current ownership. Actual CLI recovery and both
   noon ownership variants passed, including immutable history and component
-  reopen. Final clean packaging and release verification remain outstanding. See
+  reopen. Clean release packaging and the complete 900-second post-rollout
+  observation passed. Master and Railway run release `e3eb4d49`; source,
+  persistent volume and public endpoint were verified. Native/D74 product gates
+  remain open. See
   `PUBLIC_FIGHTER_OWNERSHIP.md`, `OWNED_GYM_DESKTOP.md`, `RESTORED_GYM_CLI.md` and
   `CHANGESET_73_NOTES.md`. Public pool/scheduled payouts follow this milestone;
   sign-in/onboarding and the final D74 product review remain later.

@@ -7,10 +7,11 @@ read back from origin; both master heads were unchanged. GitHub returned no
 checks, statuses or workflow runs at those exact commits: absence, not a pass.
 
 Functional transfer/recovery qualification passed on the recorded source
-composition, including both ordinary noon ownership cases. Final clean release
-packaging, promotion/provider verification and visible native/D74 product gates
-remain open. The chronology below preserves failures and the exact scope of
-each successor; the final checkpoint records the completed outcomes.
+composition, including both ordinary noon ownership cases. Clean release
+packaging, promotion/provider verification and the complete post-rollout
+observation passed. Visible native/D74 product gates remain open. The chronology
+below preserves failures and the exact scope of each successor; the release
+closeout at the end records the completed outcomes.
 
 D83 is recorded in `FIGHTER_TRANSFER_POLICY.md`: canonical chain order chooses
 the first valid competing send, ownership remains pending until its checkpoint
@@ -790,3 +791,58 @@ original and its catalog, SHA256
 `aa97b6f197d78d0f6245e5c122b482c5e5b1d6e34a74db5224e5f535cbda8d64`,
 and were deliberately preserved. Every other staged diff check was clean; this
 is a documented reference-input hygiene exception, not a production defect.
+
+
+## Release closeout — November 20, 2026
+
+Implementation `01d2650f7412b970b9bd6589ad65078f1986bcd1` and wallet
+`f2f2cbaf3ad5d2ff5063f9cca7ba378a3f566111` were pushed and verified at origin.
+The qualified implementation tree was promoted through release
+`e3eb4d495455383121bc1138f2cc010c90c6fb72`, retaining the previous master ancestry.
+No wallet-master promotion or pull request was made.
+
+Package attempt6 passed in 23.189 seconds on the clean release tree; all 7545
+source inputs were unchanged. All five embedded binaries report the exact
+release revision with `vcs.modified=false`. The normal-PoW, ordinary-clock
+version 0.6.0/build 73 bundle passed strict ad-hoc signing. This is engineering
+packaging evidence, not installation or native GUI acceptance.
+
+Prepromotion observer attempt1 failed because its RPC harness expected a
+three-field envelope; the existing node serializer includes the `jsonrpc`
+field. Its local cleanup used SIGTERM and is not relabeled graceful. The
+narrowly corrected, independently reviewed four-field check passed in attempt2
+(14.499 seconds, 1776 unchanged compiled inputs, clean graceful stop). No node
+protocol, acceptance threshold or public chain changed to satisfy the harness.
+
+Railway deployment `fcca9b77-78ce-43cd-bb23-d471be55e498` reached SUCCESS for the
+exact release. Build-stage normal gymresult, wire and chaincfg tests passed.
+The existing volume reopened height 61, hash
+`1f08a4ac11d4c60ebecbb8dc85401fa2756576c3d1920c45cad5f7113b587ee0`.
+The height 1 checkpoint remains report-only and finalized with 60 descendants;
+activation remains next height 62. Provider source/configuration, volume
+`0d74c49e-b04d-4a27-b995-f8d97b3b1f9f` and
+`junction.proxy.rlwy.net:16023` remained unchanged. Existing missing-default-
+config-file warnings persist; command-line configuration starts correctly.
+
+`artifacts/set73/observer-attempt1/report.json` passed with 31 observations over
+900.009774 seconds, then a clean local observer restart. Both owned processes
+exited 0 with empty groups, no signals or cleanup errors. Source/profile inputs
+remained unchanged. Report SHA256:
+`1f38ba305b0f8eea74098b042c487c3afded4f17e9d603f6b5ac6a882784e47a`.
+The raw sample field named `ping_seconds` actually contains the node RPC's
+microsecond value; it was not an acceptance threshold. Preserve the original
+samples and interpret that field as microseconds, not seconds.
+
+Final provider inspection found the same successful deployment, no staged
+changes, current CPU 0 and memory 0.156987392 GB. Exact-release GitHub inspection
+found no Actions/check runs and one successful Railway deployment status.
+That status confirms provider rollout; absent CI is not a separate test pass.
+Public evidence is retained in `set73-prep/closeout/provider-final.json` and
+`release-ci-assessment.json`, alongside the locked package/observer records.
+
+This closes the transfer/recovery engineering release. Original funded-root
+native acceptance, the full ordinary controller reopen after the scoped future
+clock and the joint D74 review remain product gates. Public mining service and
+scheduled payouts are the next work area, before sign-in/onboarding. This
+closeout maintenance commit changes documentation only and needs no new seed
+rollout.

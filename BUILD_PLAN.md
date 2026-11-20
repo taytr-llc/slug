@@ -317,7 +317,9 @@ transfers and checkpoint +59/+60 ownership, restored new transfers, and separate
 CLI commit-only reveal/refund have passed. Exact publication-recovery focused
 checks passed. Both ordinary noon ownership variants passed, preserving original
 birth/condition and immutable history through later finality and component
-reopen. Final clean packaging and release verification remain outstanding.
+reopen. Clean release packaging and the complete 900-second observation passed.
+Master and Railway run `e3eb4d49`, with the original chain, volume and endpoint
+verified after rollout.
 `CHANGESET_73_NOTES.md` records their exact scopes. Visible native acceptance and D74 remain product gates.
 
 After this transfer/recovery milestone, complete the public mining pool and
