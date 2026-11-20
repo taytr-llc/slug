@@ -34,11 +34,14 @@ func (h *Handle) parentMatches() error {
 	// h.dir, never this newly observed pathname or descriptor.
 	dir, _, e := walkDirectory(filepath.Dir(h.pin.Path), true)
 	if e != nil {
-		return ErrInvalid
+		return errors.Join(ErrInvalid, e)
 	}
 	st, se := stampFile(dir)
-	ce := dir.Close()
-	if se != nil || ce != nil || !st.directory || st.identity != h.pin.Parent {
+	ce := closeOwned(se, dir)
+	if ce != nil {
+		return errors.Join(ErrInvalid, ce)
+	}
+	if !st.directory || st.identity != h.pin.Parent {
 		return ErrInvalid
 	}
 	return nil
@@ -91,6 +94,11 @@ func (h *Handle) Publish(ctx context.Context, raw []byte, fence Fence) (resultEr
 		return e
 	}
 	defer h.mu.Unlock()
+	defer func() {
+		if errors.Is(resultErr, ErrCleanup) {
+			h.closeErr = errors.Join(h.closeErr, resultErr)
+		}
+	}()
 	if e := h.parentMatches(); e != nil {
 		return e
 	}
@@ -116,7 +124,7 @@ func (h *Handle) Publish(ctx context.Context, raw []byte, fence Fence) (resultEr
 		initial, se := stampFile(f)
 		defer func() {
 			if open {
-				err = errors.Join(err, h.ops.closeFile(f))
+				err = errors.Join(err, failedClose(f, h.ops.closeFile(f)))
 				open = false
 			}
 			if created {
@@ -148,7 +156,7 @@ func (h *Handle) Publish(ctx context.Context, raw []byte, fence Fence) (resultEr
 		if e != nil || !prepared.regular || prepared.identity != initial.identity || prepared.size != int64(len(owned)) {
 			return ErrInvalid
 		}
-		e = h.ops.closeFile(f)
+		e = failedClose(f, h.ops.closeFile(f))
 		open = false
 		if e != nil {
 			return e
@@ -197,9 +205,6 @@ func (h *Handle) Publish(ctx context.Context, raw []byte, fence Fence) (resultEr
 	if resultErr != nil && (linked || possiblyLinked) {
 		resultErr = errors.Join(ErrOutcomeUnknown, resultErr)
 	}
-	if errors.Is(resultErr, ErrCleanup) {
-		h.closeErr = errors.Join(h.closeErr, resultErr)
-	}
 	return resultErr
 }
 
@@ -213,6 +218,11 @@ func (h *Handle) Read(ctx context.Context, fence Fence) (out []byte, resultErr e
 		return nil, e
 	}
 	defer h.mu.Unlock()
+	defer func() {
+		if errors.Is(resultErr, ErrCleanup) {
+			h.closeErr = errors.Join(h.closeErr, resultErr)
+		}
+	}()
 	if e := h.parentMatches(); e != nil {
 		return nil, e
 	}

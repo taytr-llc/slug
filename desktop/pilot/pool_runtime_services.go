@@ -196,11 +196,17 @@ func (r *PoolRuntime) PrepareHostedRecoveryServices(ctx context.Context) error {
 }
 func (r *PoolRuntime) prepareServiceStores(ctx context.Context, ready poolRuntimeReady) error {
 	var e error
-	if e = r.prepareLeague(ctx); e != nil {
-		return e
-	}
-	if e = r.preparePipeline(ctx); e != nil {
-		return e
+	if r.ownedGym != nil {
+		if e = r.prepareOwnedLeague(ctx); e != nil {
+			return e
+		}
+	} else {
+		if e = r.prepareLeague(ctx); e != nil {
+			return e
+		}
+		if e = r.preparePipeline(ctx); e != nil {
+			return e
+		}
 	}
 	if r.backend == nil {
 		r.backend, e = poolsettlefixture.New(ctx, r.nodes.rpcConfig())

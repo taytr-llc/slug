@@ -28,13 +28,16 @@ func (p *Publisher) checkOwnerContext(ctx context.Context) error {
 		name    string
 		process OwnedProcess
 	}{{"primary", p.binding.Primary}, {"peer", p.binding.Peer}} {
-		c, e := configForMode(p.binding.Home, v.name, v.process, p.shared != nil)
+		c, e := configForMode(p.binding.Home, v.name, v.process, p.shared != nil || p.ownership != nil)
 		if e != nil || c != p.configs[i] {
 			return ErrOffline
 		}
 	}
 	if p.shared != nil {
 		return p.checkSharedOwner(ctx)
+	}
+	if p.ownership != nil {
+		return p.checkOwnershipOwner(ctx)
 	}
 	return checkMarker(p.binding, p.identity)
 }

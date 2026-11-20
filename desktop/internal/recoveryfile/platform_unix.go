@@ -87,28 +87,23 @@ func walkDirectory(path string, checkManaged bool) (*os.File, []Identity, error)
 		return nil
 	}
 	if e = inspect(string(filepath.Separator)); e != nil {
-		_ = current.Close()
-		return nil, nil, e
+		return nil, nil, closeOwned(e, current)
 	}
 	for _, part := range strings.Split(strings.TrimPrefix(path, string(filepath.Separator)), string(filepath.Separator)) {
 		if part == "" {
 			continue
 		}
 		next, e := openRelative(current, part, unix.O_RDONLY|unix.O_DIRECTORY, 0)
-		ce := current.Close()
-		if e != nil || ce != nil {
+		ce := closeOwned(e, current)
+		if ce != nil {
 			if next != nil {
-				_ = next.Close()
-			}
-			if e != nil {
-				return nil, nil, e
+				ce = closeOwned(ce, next)
 			}
 			return nil, nil, ce
 		}
 		current = next
 		if e = inspect(part); e != nil {
-			_ = current.Close()
-			return nil, nil, e
+			return nil, nil, closeOwned(e, current)
 		}
 	}
 	return current, ancestors, nil

@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "status": "root-reviewed successor3: exact finality prefix inherited from approved independent core",
+  "sources": {
+    "consumer_model.py": "71044f15d8727eb6db20378aaca7467686f5c6af09aae762e1ae65c156ca6e8b",
+    "generate_reference.py": "adfd626b56865e243da94a060f3aa9c1600972a322958e02f929eaa58e8fbc79",
+    "sizing_model.py": "a93fb9fd4b118483ab977dbe237bff0f86baa351408c66b3556dc7efb4909140",
+    "case-plan.json": "69783129291e8185360beb6364d22fa0df757700831747eea898bf5ffd716fb3",
+    "README.md": "83198940c990128ba0ddbf2ec2e4547b5b7989852c0f4ed9a8cf1dcae09e1c17"
+  },
+  "input_catalog_sha256": "a94fefa3ef62f5b87adf0b1494a6fd7960e23daf43ec2dedd0d599c5e7152aca",
+  "approved_by": "root",
+  "execution_authorized": true,
+  "approval": "Root message: Reviewed successor3 exact one-line prefix inheritance+4 independently approved inputs; approved generation under recorded source-ready b99f1098... and exact new lock. Preserve predecessor, reproduce versions, demonstrate stable cases unchanged again."
+}

@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "scope": "finite owned downstream byte/domain composition; no chain authority or complete simulation/finality claim",
+  "upstream_context": "event",
+  "upstream_snapshot": "transferred-before-noon",
+  "fixture_publisher_gym": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+  "fixture_seeds": [
+    "candidate seed declaration fixture",
+    "candidate seed checkpoint fixture",
+    "candidate result statement fixture",
+    "candidate result checkpoint fixture"
+  ],
+  "physical_engine_id": "slug-fighter-bout-candidate-v1",
+  "target_height": 17,
+  "target_hash": "7373737373737373737373737373737373737373737373737373737373737373",
+  "capture_offset_ms": 10,
+  "source_created_offset_ms": 20,
+  "result_created_offset_ms": 30,
+  "activation_offset_ms": 40,
+  "signature_wrong_message_cases": [
+    "hexadecimal-display",
+    "inherited-family",
+    "changed-body"
+  ],
+  "career_cases": [
+    "v1",
+    "prepared-v2",
+    "ready-v2",
+    "missing-activation",
+    "wrong-store",
+    "wrong-intent",
+    "timestamp-order",
+    "retired-old-namespace"
+  ],
+  "result_summary_source": "old-public/bout-record.json result winner/method/end_round/end_tick unchanged; conditional signature composition only, no new simulation"
+}

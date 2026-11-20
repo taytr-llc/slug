@@ -78,6 +78,8 @@ type walletVerificationState struct {
 // The controller drains mining before Close. This lock prevents concurrent
 // private operations from racing database closure.
 type walletRuntime struct {
+	allocation2           *wallet.HostedAllocator2
+	allocationGuard2      *waddrmgr.HostedAllocationGuard2
 	allocation            *wallet.HostedAllocator
 	allocationGuard       *waddrmgr.HostedAllocationGuard
 	allocationRecipientID string
@@ -507,6 +509,11 @@ func (r *walletRuntime) SignAccountChallenge(ctx context.Context, pinnedAuthorit
 	return result, nil
 }
 func (r *walletRuntime) Close() error {
+	if r.allocation2 != nil {
+		if e := r.allocation2.Close(); e != nil {
+			return e
+		}
+	}
 	// The concrete owner drains operations before closing this retained session.
 	// No wallet mutex spans the allocator's account fence or lifecycle join.
 	if r.allocation != nil {

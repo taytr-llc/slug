@@ -74,29 +74,25 @@ func Capture(path string, protected []string, mode string) (*Selection, error) {
 	s := &Selection{pin: p, dir: dir}
 	if mode == CreateMode {
 		if _, e = inspectRelative(dir, filepath.Base(path)); !os.IsNotExist(e) {
-			_ = s.Close()
 			if e == nil {
-				return nil, ErrConflict
+				return nil, closeOwned(ErrConflict, s)
 			}
-			return nil, ErrInvalid
+			return nil, closeOwned(ErrInvalid, s)
 		}
 	} else {
 		s.file, e = openReadRelative(dir, filepath.Base(path))
 		if e != nil {
-			_ = s.Close()
-			return nil, ErrInvalid
+			return nil, closeOwned(ErrInvalid, s)
 		}
 		st, e := stampFile(s.file)
 		if e != nil || !st.regular || st.size < 1 || st.size > MaxSize {
-			_ = s.Close()
-			return nil, ErrInvalid
+			return nil, closeOwned(ErrInvalid, s)
 		}
 		f := st.fileIdentity()
 		s.pin.File = &f
 	}
 	if ValidatePin(s.pin, mode) != nil {
-		_ = s.Close()
-		return nil, ErrInvalid
+		return nil, closeOwned(ErrInvalid, s)
 	}
 	return s, nil
 }
@@ -115,7 +111,7 @@ func Open(pin Pin, protected []string) (*Handle, error) {
 		return nil, e
 	}
 	h := &Handle{pin: ownedPin(pin), dir: dir, name: filepath.Base(pin.Path), ops: defaultOperations()}
-	fail := func(e error) (*Handle, error) { return nil, errors.Join(e, h.Close()) }
+	fail := func(e error) (*Handle, error) { return nil, closeOwned(e, h) }
 	if st.identity != pin.Parent {
 		return fail(ErrInvalid)
 	}
@@ -151,44 +147,46 @@ func openCheckedParent(path string, protected []string) (*os.File, fileStamp, er
 	parent := filepath.Dir(path)
 	dir, ancestors, e := walkDirectory(parent, true)
 	if e != nil {
-		return nil, fileStamp{}, ErrInvalid
+		return nil, fileStamp{}, errors.Join(ErrInvalid, e)
 	}
-	fail := func() (*os.File, fileStamp, error) { _ = dir.Close(); return nil, fileStamp{}, ErrInvalid }
+	fail := func(cause error) (*os.File, fileStamp, error) {
+		return nil, fileStamp{}, closeOwned(cause, dir)
+	}
 	for _, root := range protected {
 		if !filepath.IsAbs(root) || filepath.Clean(root) != root || strings.ContainsAny(root, "\x00\r\n\t") {
-			return fail()
+			return fail(ErrInvalid)
 		}
 		resolved, e := filepath.EvalSymlinks(root)
 		if e != nil {
 			if !os.IsNotExist(e) {
-				return fail()
+				return fail(ErrInvalid)
 			}
 			resolved = root
 		}
 		if within(resolved, path) {
-			return fail()
+			return fail(ErrInvalid)
 		}
 		protectedDir, _, e := walkDirectory(resolved, false)
 		if os.IsNotExist(e) {
 			continue
 		}
 		if e != nil {
-			return fail()
+			return fail(errors.Join(ErrInvalid, e))
 		}
 		protectedStamp, se := stampFile(protectedDir)
-		ce := protectedDir.Close()
-		if se != nil || ce != nil {
-			return fail()
+		ce := closeOwned(se, protectedDir)
+		if ce != nil {
+			return fail(errors.Join(ErrInvalid, ce))
 		}
 		for _, id := range ancestors {
 			if id == protectedStamp.identity {
-				return fail()
+				return fail(ErrInvalid)
 			}
 		}
 	}
 	st, e := stampFile(dir)
 	if e != nil || !st.directory {
-		return fail()
+		return fail(ErrInvalid)
 	}
 	return dir, st, nil
 }

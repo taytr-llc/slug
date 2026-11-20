@@ -12,6 +12,9 @@ import (
 )
 
 func (g *Gym) Mode() string {
+	if g.ownedHelper != nil {
+		return pilot.OwnedGymMode
+	}
 	if g.poolHelper != nil {
 		return g.poolHelper.Mode()
 	}
@@ -21,6 +24,14 @@ func (g *Gym) Mode() string {
 	return pilot.AccountMode
 }
 func (g *Gym) control(command string) error {
+	if g.ownedHelper != nil {
+		s, e := g.OwnedSnapshot()
+		if e != nil || s.View == nil {
+			return bridge.ErrUnavailable
+		}
+		_, e = g.ownedRequest(s.View.ViewID, pilot.OwnedGymRequest{Command: command})
+		return e
+	}
 	if g.poolHelper != nil {
 		b := g.poolHelper
 		if b.Mode() == pilot.HostedRecoveryPoolMode {
@@ -76,6 +87,21 @@ func (g *Gym) requestPath(command, path string) error {
 }
 func (g *Gym) closeHelper() (resultErr error) {
 	defer func() { resultErr = errors.Join(resultErr, g.joinedEvidenceSelection()) }()
+	if g.ownedHelper != nil {
+		g.owned.mu.Lock()
+		if a := g.owned.action; a != nil {
+			a.answered = true
+			a.state = "revoked"
+		}
+		g.owned.mu.Unlock()
+		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+		defer cancel()
+		e := g.ownedHelper.Close(ctx)
+		if e != nil {
+			return e
+		}
+		return errors.Join(g.ownedIntents.Close(), g.joinedOwnedRecovery())
+	}
 	if g.poolHelper != nil {
 		return g.poolHelper.Close()
 	}

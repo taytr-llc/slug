@@ -21,6 +21,7 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 	flags.SetOutput(stderr)
 	data := flags.String("data-dir", "", "Explicit disposable pilot directory")
 	node := flags.String("node-binary", "", "Explicit bundled normal SLUG node binary")
+	owned := flags.Bool("candidate-owned-gym", false, "Use the separate owned-fighter gym")
 	pool := flags.Bool("candidate-pool", false, "Use the separate shared public-fixture pool desktop")
 	hosted := flags.Bool("candidate-hosted-pool", false, "Use the separate signed public-fixture hosted pool desktop")
 	recovery := flags.Bool("candidate-hosted-recovery", false, "Use the separate hosted allocation recovery fixture desktop")
@@ -41,9 +42,11 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 	if flags.NArg() != 0 || *data == "" || *node == "" {
 		return errors.New("explicit data-dir and node-binary are required")
 	}
-	dataExplicit, poolExplicit, nameExplicit, legacyExplicit, hostedExplicit, recoveryExplicit := false, false, false, false, false, false
+	dataExplicit, poolExplicit, nameExplicit, legacyExplicit, hostedExplicit, recoveryExplicit, ownedExplicit := false, false, false, false, false, false, false
 	flags.Visit(func(f *flag.Flag) {
 		switch f.Name {
+		case "candidate-owned-gym":
+			ownedExplicit = true
 		case "data-dir":
 			dataExplicit = true
 		case "candidate-pool":
@@ -59,6 +62,28 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 			legacyExplicit = true
 		}
 	})
+	if ownedExplicit {
+		if !*owned || legacyExplicit || hostedExplicit || recoveryExplicit {
+			return errors.New("candidate-owned-gym requires a separate explicit true selection")
+		}
+		options, e := poolselection.Options(true, true, *nameVersion, nameExplicit, *data, dataExplicit)
+		if e != nil {
+			return e
+		}
+		input, ok := stdin.(io.ReadCloser)
+		if !ok {
+			return errors.New("owned input must be closeable")
+		}
+		output, ok := stdout.(io.WriteCloser)
+		if !ok {
+			return errors.New("owned output must be closeable")
+		}
+		c, e := accountpilot.NewOwnedGymPool(ctx, pilot.Config{DataDir: *data, NodeBinary: *node}, options)
+		if e != nil {
+			return e
+		}
+		return pilot.ServeOwnedGym(ctx, input, output, c)
+	}
 	if *recovery {
 		if legacyExplicit || hostedExplicit {
 			return errors.New("candidate-hosted-recovery is a separate explicit mode")

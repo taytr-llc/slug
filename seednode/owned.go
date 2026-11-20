@@ -36,6 +36,7 @@ type Publisher struct {
 	watchDone chan struct{}
 	binding   OwnerBinding
 	shared    *SharedPoolOwnerBinding
+	ownership *OwnershipPoolOwnerBinding
 	identity  ChainIdentity
 	configs   [2]ownedConfig
 	nodes     [2]*nodeRPC
@@ -249,11 +250,18 @@ func attachOwned(ctx context.Context, b OwnerBinding, shared *SharedPoolOwnerBin
 			return nil, e
 		}
 	}
-	a, e := configForMode(b.Home, "primary", b.Primary, shared != nil)
+	return attachNodes(ctx, b, id, shared, nil)
+}
+
+// attachNodes owns only process/RPC lifecycle mechanics. A caller must first
+// validate exactly one concrete owner family; it cannot create source authority.
+func attachNodes(ctx context.Context, b OwnerBinding, id ChainIdentity, shared *SharedPoolOwnerBinding, ownership *OwnershipPoolOwnerBinding) (*Publisher, error) {
+	sharedConfig := shared != nil || ownership != nil
+	a, e := configForMode(b.Home, "primary", b.Primary, sharedConfig)
 	if e != nil {
 		return nil, e
 	}
-	z, e := configForMode(b.Home, "peer", b.Peer, shared != nil)
+	z, e := configForMode(b.Home, "peer", b.Peer, sharedConfig)
 	if e != nil {
 		return nil, e
 	}
@@ -268,10 +276,13 @@ func attachOwned(ctx context.Context, b OwnerBinding, shared *SharedPoolOwnerBin
 		seen[v] = true
 	}
 	child, cancel := context.WithTimeout(ctx, 30*time.Second)
-	p := &Publisher{ctx: child, cancel: cancel, watchDone: make(chan struct{}), binding: b, shared: shared, identity: id, configs: [2]ownedConfig{a, z}, nodes: [2]*nodeRPC{newRPC(a), newRPC(z)}, checked: map[string]string{}}
+	p := &Publisher{ctx: child, cancel: cancel, watchDone: make(chan struct{}), binding: b, shared: shared, ownership: ownership, identity: id, configs: [2]ownedConfig{a, z}, nodes: [2]*nodeRPC{newRPC(a), newRPC(z)}, checked: map[string]string{}}
 	var ownerDone <-chan struct{}
 	if shared != nil {
 		ownerDone = shared.Life.Done()
+	}
+	if ownership != nil {
+		ownerDone = ownership.Life.Done()
 	}
 	go func() {
 		defer close(p.watchDone)
@@ -322,7 +333,7 @@ func (p *Publisher) begin(ctx context.Context) (context.Context, func(), error) 
 	c, cancel := context.WithCancel(p.ctx)
 	stop := context.AfterFunc(ctx, cancel)
 	end := func() { stop(); cancel(); p.mu.Unlock() }
-	if p.shared != nil {
+	if p.shared != nil || p.ownership != nil {
 		if err := p.checkOwnerContext(c); err != nil {
 			end()
 			return nil, nil, err

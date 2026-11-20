@@ -1,0 +1,13 @@
+{
+  "approved_by": "root",
+  "execution_authorized": true,
+  "input_catalog_sha256": "658156e6fe852d56a6430a6618477df566838cb655737891dba9cf3523cf0119",
+  "review_scope": "Root reviewed and approved exact two-field cutoff finality prefix successor on November 19, 2026. Prior source, contract, corpus and evidence preserved. Conditional model, not live chain authority.",
+  "sources": {
+    "README.md": "6e5d52a33660c34f58442d3dcee10e54cfc76f6953d5daa757e42959b498caaf",
+    "case-plan.json": "2b14653c44daf5d60bff50a50d366e0b3b682239164d7730b985a58eb67f3e24",
+    "core_model.py": "6ff06eb7c83a9fcc428cbb28056565f0abd7456b0bd3fe072092f254731172f2",
+    "generate_reference.py": "6f539448e37f4de25ba0a28cf0637a31444b21166ed9bd6fefd37b36e404559d"
+  },
+  "version": 1
+}

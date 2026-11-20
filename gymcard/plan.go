@@ -5,6 +5,7 @@ import (
 	"github.com/taytr-llc/slug/fighterdescriptor"
 	"github.com/taytr-llc/slug/fightermanifest"
 	"github.com/taytr-llc/slug/gymseed"
+	"github.com/taytr-llc/slug/gymstable"
 	"sort"
 )
 
@@ -49,20 +50,13 @@ func derivePlanValidated(p Pin, source gymseed.CardSource) (Plan, error) {
 				return Plan{}, ErrInvalid
 			}
 			seen[m.Assignment.ProspectID] = true
-			// CardSource validation already bound this assignment to its participant.
-			descriptor, e := fighterdescriptor.ResolveCandidate(m.Assignment.DescriptorID)
+			// Source validation binds the historical corner independently of this
+			// deterministic appearance projection.
+			entrant, e := entrantFromBirth(m.Assignment, part.Owner.GymID, part.Owner.AccountID, m.Class, uint32(m.ConditionAtCutoff.RatingHundredths), m.Eligibility)
 			if e != nil {
-				return Plan{}, ErrInvalid
+				return Plan{}, e
 			}
-			manifest, e := fightermanifest.GenerateText(descriptor.ManifestVersion, m.Assignment.WorkHash)
-			if e != nil {
-				return Plan{}, ErrInvalid
-			}
-			digest, e := fightermanifest.Digest(manifest)
-			if e != nil || digest != m.Assignment.ManifestDigest {
-				return Plan{}, ErrInvalid
-			}
-			v.Entrants = append(v.Entrants, Entrant{ProspectID: m.Assignment.ProspectID, GymID: part.Owner.GymID, AccountID: part.Owner.AccountID, DisplayName: manifest.Name.Display, Class: m.Class, RatingHundredths: uint32(m.ConditionAtCutoff.RatingHundredths), CutoffEligibility: m.Eligibility, State: "unmatched"})
+			v.Entrants = append(v.Entrants, entrant)
 		}
 	}
 	sort.Slice(v.Entrants, func(i, j int) bool {
@@ -80,6 +74,22 @@ func derivePlanValidated(p Pin, source gymseed.CardSource) (Plan, error) {
 		return Plan{}, ErrInvalid
 	}
 	return v, nil
+}
+
+func entrantFromBirth(birth gymstable.Assignment, gym, account, class string, rating uint32, eligibility string) (Entrant, error) {
+	descriptor, e := fighterdescriptor.ResolveCandidate(birth.DescriptorID)
+	if e != nil {
+		return Entrant{}, ErrInvalid
+	}
+	manifest, e := fightermanifest.GenerateText(descriptor.ManifestVersion, birth.WorkHash)
+	if e != nil {
+		return Entrant{}, ErrInvalid
+	}
+	digest, e := fightermanifest.Digest(manifest)
+	if e != nil || digest != birth.ManifestDigest {
+		return Entrant{}, ErrInvalid
+	}
+	return Entrant{ProspectID: birth.ProspectID, GymID: gym, AccountID: account, DisplayName: manifest.Name.Display, Class: class, RatingHundredths: rating, CutoffEligibility: eligibility, State: "unmatched"}, nil
 }
 func addCount(c *Counts, x Entrant) {
 	c.TotalCount++
@@ -105,13 +115,23 @@ func addCount(c *Counts, x Entrant) {
 	}
 }
 func match(p Pin, v Plan) Plan {
+	gyms := make([]string, 0, len(p.SourcePin.SourcePin.Participants))
+	for _, part := range p.SourcePin.SourcePin.Participants {
+		gyms = append(gyms, part.StablePin.Identity.GymID)
+	}
+	return matchGyms(gyms, v)
+}
+
+// matchGyms is the single physical C1 matching engine. The caller supplies
+// already authenticated corner identities; this function grants no ownership.
+func matchGyms(gyms []string, v Plan) Plan {
 	v.Entrants = append([]Entrant{}, v.Entrants...)
 	v.Bouts = []Bout{}
 	v.Gyms = []GymCounts{}
 	v.Counts = Counts{}
 	v.BoutCount = 0
-	for _, part := range p.SourcePin.SourcePin.Participants {
-		v.Gyms = append(v.Gyms, GymCounts{GymID: part.StablePin.Identity.GymID})
+	for _, gym := range gyms {
+		v.Gyms = append(v.Gyms, GymCounts{GymID: gym})
 	}
 	sort.Slice(v.Gyms, func(i, j int) bool { return v.Gyms[i].GymID < v.Gyms[j].GymID })
 	for i := range v.Entrants {

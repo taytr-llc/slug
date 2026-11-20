@@ -26,7 +26,7 @@ import (
 	"github.com/wailsapp/wails/v3/pkg/events"
 )
 
-//go:embed frontend/index.html frontend/style.css frontend/app.js frontend/manifest.html frontend/manifest.js frontend/manifest.css frontend/stable.html frontend/stable.js frontend/stable.css frontend/slug-transparent.png
+//go:embed frontend/index.html frontend/style.css frontend/app.js frontend/manifest.html frontend/manifest.js frontend/manifest.css frontend/stable.html frontend/stable.js frontend/stable.css frontend/slug-transparent.png frontend/owned.html frontend/owned.js
 var assets embed.FS
 
 // Only the separate candidate bundle build sets this private mode default.
@@ -40,10 +40,14 @@ var boutBuild string
 var resultBuild string
 var careerBuild string
 var poolBuild string
+var ownedBuild string
 
 // Gym exposes only public pilot controls and receipt selection to the webview.
 // Paths, process arguments, and keys cannot be supplied through the web bridge.
 type Gym struct {
+	ownedHelper    *bridge.OwnedBridge
+	ownedIntents   *bridge.OwnedIntentLog
+	owned          nativeOwnedState
 	hostedReceive  nativeHostedReceiveState
 	withdrawal     nativeWithdrawalState
 	payout         nativePayoutState
@@ -72,6 +76,9 @@ func (g *Gym) Snapshot() (pilot.Snapshot, error) {
 func (g *Gym) Start() error { return g.control("start") }
 func (g *Gym) Stop() error  { return g.control("stop") }
 func (g *Gym) LoginFixture(fixture string) error {
+	if g.ownedHelper != nil {
+		return g.OwnedLoginFixture(fixture)
+	}
 	if g.poolHelper != nil {
 		if g.poolHelper.Mode() == pilot.HostedRecoveryPoolMode {
 			_, e := g.poolHelper.HostedRecoveryRequest(context.Background(), pilot.HostedRecoveryRequest{Command: "hosted_recovery_login_fixture", Fixture: fixture})
@@ -153,6 +160,13 @@ func (g *Gym) ExportReceipt(sequence uint64) (string, error) {
 // Recovery paths are chosen by native dialogs, never supplied by the webview.
 // The helper writes and verifies the file without returning its private data.
 func (g *Gym) ExportRecovery() (string, error) {
+	if g.ownedHelper != nil {
+		s, e := g.OwnedSnapshot()
+		if e != nil || s.View == nil {
+			return "", bridge.ErrUnavailable
+		}
+		return g.ownedRecovery(s.View.ViewID, true)
+	}
 	if g.poolHelper != nil {
 		return g.poolRecovery(true)
 	}
@@ -192,6 +206,13 @@ func (g *Gym) ExportRecovery() (string, error) {
 }
 
 func (g *Gym) VerifyBackup() (string, error) {
+	if g.ownedHelper != nil {
+		s, e := g.OwnedSnapshot()
+		if e != nil || s.View == nil {
+			return "", bridge.ErrUnavailable
+		}
+		return g.ownedRecovery(s.View.ViewID, false)
+	}
 	if g.poolHelper != nil {
 		return g.poolRecovery(false)
 	}
@@ -242,6 +263,7 @@ func run() (resultErr error) {
 		dataDefault = value
 	}
 	data := flag.String("data-dir", dataDefault, "Explicit local pilot data directory")
+	owned := flag.Bool("candidate-owned-gym", ownedBuild == "1", "Use the separate owned-fighter transfer and recovery gym")
 	pool := flag.Bool("candidate-pool", poolBuild == "1", "Use the separate shared pool desktop")
 	hosted := flag.Bool("candidate-hosted-pool", false, "Use the separate signed public-fixture hosted pool desktop")
 	hostedRecovery := flag.Bool("candidate-hosted-recovery", false, "Use the separate hosted allocation recovery fixture desktop")
@@ -256,9 +278,11 @@ func run() (resultErr error) {
 	candidateResults := flag.Bool("candidate-results", resultBuild == "1", "Enable saved candidate result publication within candidate bouts")
 	candidateCareers := flag.Bool("candidate-careers", careerBuild == "1", "Enable finality-timed candidate careers within candidate results")
 	flag.Parse()
-	dataExplicit, poolExplicit, nameExplicit, legacyExplicit, hostedExplicit, recoveryExplicit := false, false, false, false, false, false
+	dataExplicit, poolExplicit, nameExplicit, legacyExplicit, hostedExplicit, recoveryExplicit, ownedExplicit := false, false, false, false, false, false, false
 	flag.Visit(func(f *flag.Flag) {
 		switch f.Name {
+		case "candidate-owned-gym":
+			ownedExplicit = true
 		case "data-dir":
 			dataExplicit = true
 		case "candidate-pool":
@@ -274,6 +298,22 @@ func run() (resultErr error) {
 			legacyExplicit = true
 		}
 	})
+	if ownedExplicit && !*owned {
+		return errors.New("Owned gym mode requires explicit true selection.")
+	}
+	if *owned {
+		if legacyExplicit || hostedExplicit || recoveryExplicit {
+			return errors.New("Owned gym mode requires a separate explicit selection.")
+		}
+		*pool, *candidates, *stable, *entries, *candidateEvents, *candidateSeeds = false, false, false, false, false, false
+		*candidateCards, *candidateBouts, *candidateResults, *candidateCareers = false, false, false, false
+		if !dataExplicit {
+			if os.Getenv("SLUG_PILOT_DATA_DIR") != "" {
+				return errors.New("Choose an explicit owned gym directory when a legacy pilot directory is configured.")
+			}
+			*data = filepath.Join(configDir, "SLUG", "LocalOwnedGymPilot")
+		}
+	}
 	if *hosted || *hostedRecovery {
 		if legacyExplicit || *hostedRecovery && hostedExplicit || *hosted && recoveryExplicit {
 			return errors.New("Hosted public-fixture mode requires a separate explicit selection.")
@@ -315,7 +355,9 @@ func run() (resultErr error) {
 	}
 	var poolOptions pilot.PoolOptions
 	var selectionErr error
-	if *hostedRecovery {
+	if *owned {
+		poolOptions, selectionErr = poolselection.Options(true, true, *nameVersion, nameExplicit, *data, dataExplicit)
+	} else if *hostedRecovery {
 		poolOptions, selectionErr = poolselection.HostedRecoveryOptions(*nameVersion, nameExplicit, *data, dataExplicit)
 	} else if *hosted {
 		poolOptions, selectionErr = poolselection.HostedOptions(*nameVersion, nameExplicit, *data, dataExplicit)
@@ -342,7 +384,9 @@ func run() (resultErr error) {
 	}
 	resources := filepath.Clean(filepath.Join(filepath.Dir(executable), "..", "Resources", "bin"))
 	helperPath, nodePath := filepath.Join(resources, "slugpilot"), filepath.Join(resources, "slugd")
-	if *hostedRecovery {
+	if *owned {
+		err = prepareModeDataParent(filepath.Clean(*data), configDir, !dataExplicit, "LocalOwnedGymPilot", "SLUG-OWNED-GYM-INIT.json")
+	} else if *hostedRecovery {
 		err = prepareHostedRecoveryDataParent(filepath.Clean(*data), configDir)
 	} else if *hosted {
 		err = prepareHostedPoolDataParent(filepath.Clean(*data), configDir)
@@ -364,9 +408,17 @@ func run() (resultErr error) {
 		filepath.Join(filepath.Dir(filepath.Clean(*data)), "LocalPoolPilot"),
 		filepath.Join(filepath.Dir(filepath.Clean(*data)), "LocalHostedPoolPilot"),
 		filepath.Join(filepath.Dir(filepath.Clean(*data)), "LocalHostedRecoveryPilot"),
+		filepath.Join(filepath.Dir(filepath.Clean(*data)), "LocalOwnedGymPilot"),
+		filepath.Clean(*data) + "-native",
 		filepath.Clean(filepath.Join(resources, "..", "..")),
 	}}
-	if *hostedRecovery {
+	defer func() { resultErr = errors.Join(resultErr, gym.closeHelper()) }()
+	if *owned {
+		gym.ownedHelper, err = bridge.LaunchOwnedGymWithOptions(context.Background(), helperPath, filepath.Clean(*data), nodePath, poolOptions)
+		if err == nil {
+			gym.ownedIntents, err = bridge.OpenOwnedIntentLog(context.Background(), filepath.Clean(*data)+"-native")
+		}
+	} else if *hostedRecovery {
 		gym.poolHelper, err = bridge.LaunchHostedRecoveryWithOptions(helperPath, filepath.Clean(*data), nodePath, poolOptions)
 		if err == nil {
 			gym.stableHelper = gym.poolHelper.StableBridge
@@ -429,7 +481,6 @@ func run() (resultErr error) {
 	if err != nil {
 		return err
 	}
-	defer func() { resultErr = errors.Join(resultErr, gym.closeHelper()) }()
 	title, startURL := "SLUG Account Pilot", "/"
 	if *pool || *hosted {
 		title, startURL = "SLUG Pool Pilot", "/stable.html"
@@ -439,6 +490,9 @@ func run() (resultErr error) {
 		if *stable {
 			startURL = "/stable.html"
 		}
+	}
+	if *owned {
+		title, startURL = "SLUG Candidate Pilot", "/owned.html"
 	}
 	if configDir, err := os.UserConfigDir(); err == nil {
 		gym.protectedRoots = append(gym.protectedRoots, filepath.Join(configDir, "SLUG"))
@@ -475,18 +529,24 @@ func run() (resultErr error) {
 	gym.window = window
 	window.RegisterHook(events.Common.WindowClosing, func(event *application.WindowEvent) { window.Hide(); event.Cancel() })
 	menuGate := make(chan struct{}, 1)
-	action := func(fn func() error) func(*application.Context) {
+	action := func(command string, fn func() error) func(*application.Context) {
 		return func(*application.Context) {
 			select {
 			case menuGate <- struct{}{}:
 			default:
 				return
 			}
+			// Capture the owned view at the click, before scheduling work.
+			// A busy helper must not turn this click into a later account's action.
+			dispatch, attempts := fn, 5
+			if gym.ownedHelper != nil {
+				dispatch, attempts = gym.ownedMenuAction(command), 1
+			}
 			go func() {
 				defer func() { <-menuGate }()
 				var err error
-				for i := 0; i < 5; i++ {
-					err = fn()
+				for i := 0; i < attempts; i++ {
+					err = dispatch()
 					if !errors.Is(err, bridge.ErrBusy) {
 						break
 					}
@@ -502,8 +562,8 @@ func run() (resultErr error) {
 	menu := app.NewMenu()
 	controls := menu.AddSubmenu(title)
 	controls.Add("Show gym").OnClick(func(*application.Context) { window.Show(); window.Focus() })
-	controls.Add("Start mining").OnClick(action(gym.Start))
-	controls.Add("Stop mining").OnClick(action(gym.Stop))
+	controls.Add("Start mining").OnClick(action("start", gym.Start))
+	controls.Add("Stop mining").OnClick(action("stop", gym.Stop))
 	controls.AddSeparator()
 	controls.Add("Quit").OnClick(func(*application.Context) { app.Quit() })
 	app.Menu.Set(menu)
@@ -514,8 +574,8 @@ func run() (resultErr error) {
 	tray.SetTooltip(title)
 	trayMenu := app.NewMenu()
 	trayMenu.Add("Show gym").OnClick(func(*application.Context) { window.Show(); window.Focus() })
-	trayMenu.Add("Start mining").OnClick(action(gym.Start))
-	trayMenu.Add("Stop mining").OnClick(action(gym.Stop))
+	trayMenu.Add("Start mining").OnClick(action("start", gym.Start))
+	trayMenu.Add("Stop mining").OnClick(action("stop", gym.Stop))
 	trayMenu.AddSeparator()
 	trayMenu.Add("Quit").OnClick(func(*application.Context) { app.Quit() })
 	tray.SetMenu(trayMenu)

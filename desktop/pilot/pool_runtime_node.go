@@ -11,6 +11,9 @@ import (
 func (r *PoolRuntime) openPoolNodes(ctx context.Context) (*pilotNodes, error) {
 	ports := make([]uint16, 4)
 	seen := map[uint16]bool{r.marker.PoolPort: true, r.marker.AdmissionPort: true}
+	if r.owned != nil {
+		seen[r.owned.config.PublicReadPort] = true
+	}
 	for i := range ports {
 		for attempts := 0; attempts < 16; attempts++ {
 			port, e := unusedPort()

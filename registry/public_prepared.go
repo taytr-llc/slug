@@ -95,6 +95,29 @@ func (p *ManifestPublication) PrepareChainPublication(ctx context.Context, refer
 	}
 	return p.prepareExternal(ctx, "chain", raw, nil)
 }
+
+// PendingChainPublication returns only this original owner's exact retained
+// chain intent. A nil result means no pending chain, not an empty publication
+// queue: another kind remains untouched for its original concrete publisher.
+// Reading never stages a replacement or samples a new timestamp.
+func (p *ManifestPublication) PendingChainPublication(ctx context.Context) (*PreparedPublicPublication, error) {
+	ctx, done, e := p.acquire(ctx)
+	if e != nil {
+		return nil, e
+	}
+	defer done()
+	pending, e := p.readPending()
+	if e != nil {
+		return nil, e
+	}
+	if pending == nil || pending.Kind != "chain" {
+		return nil, nil
+	}
+	if e = ctx.Err(); e != nil {
+		return nil, e
+	}
+	return &PreparedPublicPublication{owner: p, intent: *pending}, nil
+}
 func (p *ManifestPublication) PrepareCutoffPublication(ctx context.Context, cutoff PublicCutoffRecord) (*PreparedPublicPublication, error) {
 	id, e := PublicCutoffID(p.pin, cutoff)
 	if e != nil {

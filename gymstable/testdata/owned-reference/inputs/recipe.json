@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "scope": "independent owned-consumer composition; no source authority or real-chain ownership claim",
+  "fixtures": [
+    "v1/zero256-unawarded",
+    "v2/zero256-awarded",
+    "v2/incrementing256-awarded"
+  ],
+  "states": [
+    "initial",
+    "final",
+    "reacquired"
+  ],
+  "view_id": "8282828282828282828282828282828282828282828282828282828282828282",
+  "operation_id": "8383838383838383838383838383838383838383838383838383838383838383",
+  "generation": 7,
+  "saturday": "2026-11-21",
+  "cutoff_ms": 1795291200000,
+  "prepared_at_ms": 1795291190000,
+  "committed_at_ms": 1795291191000,
+  "as_of_ms": 1795982400000,
+  "source_status": "complete only in conditional model",
+  "core_sha256": "1145dede4fcfa453e8bb1cdffff01079f6cca1df3bbe810dc32868207292b507",
+  "career_sources": "at most two concrete sources; sole nonzero wins, all-zero current; dual nonzero refused",
+  "invalid_namespace_id": "8181818181818181818181818181818181818181818181818181818181818181"
+}

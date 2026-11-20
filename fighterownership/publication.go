@@ -56,6 +56,12 @@ func (s *Store) RecordChainObservation(ctx context.Context, source *PublicSource
 		return nil, PublicationEntry{}, e
 	}
 	defer done()
+	// Complete at most one original chain intent before sampling a new tip.
+	// Moving tips cannot replace an already synchronized publication body.
+	source, _, e = s.resumeChainPublication(ctx, source, node)
+	if e != nil {
+		return nil, PublicationEntry{}, e
+	}
 	if e = source.Check(ctx); e != nil {
 		return nil, PublicationEntry{}, e
 	}

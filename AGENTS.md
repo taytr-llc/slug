@@ -328,6 +328,22 @@ tests alone do not close public deployment and scheduled-payout acceptance.
   its narrow successor. See `HOSTED_ALLOCATION_RECOVERY.md` and
   `CHANGESET_72_NOTES.md`. No seed input changed. Continue D83 ownership/direct
   transfer and independently restored-gym use; login and D74 remain deferred.
+- Set73 on `slug-fighter-ownership` adds public ownership replay and the explicit
+  owned-gym route, with schema14 hosted carriers and file-only schema12-to15
+  restored-gym use. Preserve canonical first-valid transfer order, immutable
+  birth/history, signed checkpoint plus 60-descendant effectiveness, original
+  View/D72 fences and exact request/sign/delivery separation. Public source
+  gaps refuse complete reconstruction; a saved delivery receipt is not current
+  ownership. A pending chain publication whose named block is no longer
+  canonical stays held; never retarget it. Reference recovery never grants ready
+  ownership. Independent recovery uses the original exported ranges and fresh
+  public history, never copied private authorization journals. No noon cutoff
+  may be backdated or replaced by current ownership. Actual CLI recovery and both
+  noon ownership variants passed, including immutable history and component
+  reopen. Final clean packaging and release verification remain outstanding. See
+  `PUBLIC_FIGHTER_OWNERSHIP.md`, `OWNED_GYM_DESKTOP.md`, `RESTORED_GYM_CLI.md` and
+  `CHANGESET_73_NOTES.md`. Public pool/scheduled payouts follow this milestone;
+  sign-in/onboarding and the final D74 product review remain later.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

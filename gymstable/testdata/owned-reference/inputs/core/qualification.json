@@ -1,0 +1,49 @@
+{
+  "status": "passed",
+  "scope": "cutoff-prefix successor independent codec/conditional model, no normal-work verdict",
+  "previous_bundle": "/Users/taytrrip/slug/set73-prep/public-core-installed-pre-cutoff-prefix",
+  "generation": {
+    "status": "passed",
+    "returncode": 0,
+    "seconds": 1.361,
+    "forced_cleanup": false,
+    "command": [
+      "/opt/homebrew/bin/python3.14",
+      "/Users/taytrrip/slug/set73-prep/public-core-reference/generate_reference.py",
+      "--execute",
+      "--input-root",
+      "/Users/taytrrip/slug/set73-prep/public-core-reference/inputs",
+      "--input-catalog",
+      "/Users/taytrrip/slug/set73-prep/public-core-reference/input-catalog.json",
+      "--approved-producer-lock",
+      "/Users/taytrrip/slug/set73-prep/public-core-reference/producer-lock.cutoff-prefix.approved.json",
+      "--approved-lock-sha256",
+      "4adad7fb1655c747077201a815ef9149b0ac303232f262ae3f5864e873cb4fd7",
+      "--output",
+      "/Users/taytrrip/slug/artifacts/set73/public-core-reference-cutoff-attempt1/generated"
+    ]
+  },
+  "reproduction": {
+    "status": "passed",
+    "returncode": 0,
+    "seconds": 1.369,
+    "forced_cleanup": false,
+    "byte_equal": true,
+    "sha256": "1145dede4fcfa453e8bb1cdffff01079f6cca1df3bbe810dc32868207292b507",
+    "command": [
+      "/usr/bin/python3",
+      "/Users/taytrrip/slug/artifacts/set73/public-core-reference-cutoff-reproduction-attempt1/portable/generate_reference.py",
+      "--execute",
+      "--input-root",
+      "/Users/taytrrip/slug/artifacts/set73/public-core-reference-cutoff-reproduction-attempt1/portable/inputs",
+      "--input-catalog",
+      "/Users/taytrrip/slug/artifacts/set73/public-core-reference-cutoff-reproduction-attempt1/portable/input-catalog.json",
+      "--approved-producer-lock",
+      "/Users/taytrrip/slug/artifacts/set73/public-core-reference-cutoff-reproduction-attempt1/portable/producer-lock.cutoff-prefix.approved.json",
+      "--approved-lock-sha256",
+      "4adad7fb1655c747077201a815ef9149b0ac303232f262ae3f5864e873cb4fd7",
+      "--output",
+      "/Users/taytrrip/slug/artifacts/set73/public-core-reference-cutoff-reproduction-attempt1/generated"
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "activation": "prior public genesis at height0; original cursor floor; explicit greater cursors for model cases only",
+  "fixtures": [
+    "zero256",
+    "incrementing256"
+  ],
+  "id_rule": {
+    "first_setup_integer": 740001,
+    "format": "64 lowercase hex digits",
+    "offsets": {
+      "carrier_journal_id": 2,
+      "ownership_store_id": 3,
+      "setup_id": 0,
+      "wallet_owner_id": 1
+    },
+    "per_fixture_stride": 10
+  },
+  "labels": "synthetic local IDs and setup bytes, not authority/replay/spendability proof; original file bytes synthesized only from published fixture export",
+  "node_binding_input": {
+    "ca_certificate_ascii": "",
+    "url": "http://127.0.0.1:47302/"
+  },
+  "original_case": "<fixture>/restored/transfer/one/guard15",
+  "pin_case": {
+    "family": "pin",
+    "name": "v1/zero256-awarded"
+  },
+  "public_read": {
+    "tls_spki_sha256": "",
+    "url": "http://127.0.0.1:47301/slug/ownership/v1"
+  },
+  "version": 1
+}

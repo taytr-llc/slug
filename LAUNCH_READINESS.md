@@ -472,16 +472,26 @@ of the ownership, transfer or independent restored-wallet flow. See
   disaster recovery or installed-wallet replacement. D83 ownership/transfers
   and independent same-gym/fighter restoration follow; login and D74 stay deferred.
 
-- Set73 remains in progress on the fighter-ownership topic. Actual public
-  competing transfers and checkpoint/depth59/depth60 finality pass, including
-  retained official ownership after a reported chain conflict. A file-only
-  restored wallet has completed one actual transfer with the same gym/fighter.
-  The owned desktop route, native consent, exact saved-request recovery and
-  read-only recovery discovery are integrated and have scoped qualification.
-  Whole-mode actual transfer/noon, commit-only reveal and refund, packaged
-  restore command/native app and full closeout remain open. Public pool and
-  scheduled payments follow this milestone; sign-in/onboarding follow those.
-  See `CHANGESET_73_NOTES.md`; no release or D74 approval is implied.
+- Set73 implements public ownership replay and the explicit owned-gym route.
+  Actual competing transfers and checkpoint +59/+60 finality passed, including
+  retained official ownership after a reported chain conflict. File-only
+  restored new transfers and the separate CLI's automatic commit discovery,
+  reviewed reveal/refund, signed restart and independent delivery passed.
+  Real helper/controller flows, native consent/cleanup tests and frontend tests
+  provide scoped engineering evidence. Recorded full suites compose with focused
+  terminal-Observe, startup-readiness, continuation, publication-recovery and
+  career-fence corrections; the initial failed focus and actual attempts remain
+  preserved in `CHANGESET_73_NOTES.md`. Both ordinary noon ownership variants
+  passed, including original birth/condition, immutable history after later
+  finality and component reopen. These scoped-clock cases do not qualify native
+  dialogs or a full ordinary controller reopen after future clock offset. A final normal
+  bundle on the clean release source and release/provider verification are also
+  outstanding; no promotion, deployment or post-rollout success is claimed.
+  Neither native attempt validated the original funded-root GUI flow. Default
+  fixture login/empty refresh does not qualify signing, mining, export or that
+  funded flow; visible native acceptance and D74 remain open product gates.
+  Public pool/scheduled payouts follow transfer/recovery closeout, then
+  sign-in/onboarding. See `CHANGESET_73_NOTES.md` for exact evidence and limits.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace

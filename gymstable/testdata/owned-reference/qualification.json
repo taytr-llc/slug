@@ -1,0 +1,77 @@
+{
+  "passed": true,
+  "scope": "conditional independent codecs/composition only; no runtime authority",
+  "output_sha256": "44f3d12b96a94f6d2d071270b6c90296cae1db50249ff4725ec5e28adc9bfa15",
+  "lock_sha256": "33abcb0ae36b29dbc8c3ae17f7ef46269773f90edece8d210af744a100c16958",
+  "cross_python_equal": true,
+  "portable_equal": true,
+  "stable_families_byte_identical": true,
+  "changes": [
+    [
+      "positives",
+      "entry_pin",
+      "initial",
+      "changed"
+    ],
+    [
+      "positives",
+      "entry_pin",
+      "final",
+      "changed"
+    ],
+    [
+      "positives",
+      "snapshot",
+      "transferred-before-noon",
+      "changed"
+    ],
+    [
+      "negatives",
+      "entry_pin",
+      "initial/foreign_namespace",
+      "added"
+    ],
+    [
+      "negatives",
+      "entry_pin",
+      "final/foreign_namespace",
+      "added"
+    ],
+    [
+      "negatives",
+      "snapshot",
+      "cutoff_event",
+      "changed"
+    ],
+    [
+      "negatives",
+      "snapshot",
+      "cutoff_time",
+      "changed"
+    ],
+    [
+      "negatives",
+      "snapshot",
+      "ownership_basis",
+      "changed"
+    ],
+    [
+      "negatives",
+      "snapshot",
+      "missing_partition",
+      "changed"
+    ],
+    [
+      "negatives",
+      "snapshot",
+      "duplicate_fighter",
+      "changed"
+    ],
+    [
+      "negatives",
+      "snapshot",
+      "birth_as_owner",
+      "changed"
+    ]
+  ]
+}

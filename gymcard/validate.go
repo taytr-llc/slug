@@ -59,7 +59,10 @@ func validateGymCounts(p Pin, v GymCounts) error {
 	return nil
 }
 func validateEntrant(p Pin, v Entrant) error {
-	if !hashID(v.ProspectID) || gymAccounts(p)[v.GymID] != v.AccountID || v.AccountID == "" || len(v.DisplayName) < 1 || len(v.DisplayName) > 128 || !ascii(v.DisplayName) || classIndex(v.Class) < 0 || v.RatingHundredths > 100000 || validateProfessionalRecord(p, v.ProfessionalRecord) != nil {
+	return validateEntrantGyms(gymAccounts(p), v)
+}
+func validateEntrantGyms(gyms map[string]string, v Entrant) error {
+	if !hashID(v.ProspectID) || gyms[v.GymID] != v.AccountID || v.AccountID == "" || len(v.DisplayName) < 1 || len(v.DisplayName) > 128 || !ascii(v.DisplayName) || classIndex(v.Class) < 0 || v.RatingHundredths > 100000 || v.ProfessionalRecord != (ProfessionalRecord{}) {
 		return ErrInvalid
 	}
 	switch v.CutoffEligibility {
@@ -96,6 +99,9 @@ func validateBout(_ Pin, v Bout) error {
 	return nil
 }
 func validatePlan(p Pin, v Plan) error {
+	return validatePlanGyms(gymAccounts(p), v)
+}
+func validatePlanGyms(gyms map[string]string, v Plan) error {
 	if v.Version != 1 || !hashID(v.CardID) || !hashID(v.InputID) || !hashID(v.Seed) || v.RecordBasis != RecordBasis || v.Gyms == nil || len(v.Gyms) != 2 || v.Entrants == nil || len(v.Entrants) > 10 || v.Bouts == nil || len(v.Bouts) > 5 {
 		return ErrInvalid
 	}
@@ -104,14 +110,18 @@ func validatePlan(p Pin, v Plan) error {
 	last := ""
 	for _, x := range v.Entrants {
 		order := string(rune('0'+classIndex(x.Class))) + x.GymID + x.ProspectID
-		if validateEntrant(p, x) != nil || seen[x.ProspectID] || pairs[x.GymID+"/"+x.Class] || order <= last {
+		if validateEntrantGyms(gyms, x) != nil || seen[x.ProspectID] || pairs[x.GymID+"/"+x.Class] || order <= last {
 			return ErrInvalid
 		}
 		seen[x.ProspectID] = true
 		pairs[x.GymID+"/"+x.Class] = true
 		last = order
 	}
-	if !equal(v, match(p, v)) {
+	keys := make([]string, 0, len(gyms))
+	for gym := range gyms {
+		keys = append(keys, gym)
+	}
+	if !equal(v, matchGyms(keys, v)) {
 		return ErrInvalid
 	}
 	return nil

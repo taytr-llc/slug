@@ -311,10 +311,24 @@ The frozen contract is `HOSTED_ALLOCATION_RECOVERY.md`; qualification and limits
 are in `CHANGESET_72_NOTES.md`. Actual loss without a preloss export, current-file
 verification and an independent restored spend passed. The inspection route does
 not install a replacement wallet or reconstruct missing signed-payment authority.
-The next usable milestone is D83 authoritative ownership, actual direct transfers
-and independent same-gym/owned-fighter restoration with a subsequent transfer.
-Complete public history and real restored-key use belong in that milestone;
-initial ownership alone cannot close it. Provider preparation remains deferred.
+Set73 implements D83 public ownership replay, reviewed direct transfers and
+independent file-only restoration of the same gym/fighters. Actual competing
+transfers and checkpoint +59/+60 ownership, restored new transfers, and separate
+CLI commit-only reveal/refund have passed. Exact publication-recovery focused
+checks passed. Both ordinary noon ownership variants passed, preserving original
+birth/condition and immutable history through later finality and component
+reopen. Final clean packaging and release verification remain outstanding.
+`CHANGESET_73_NOTES.md` records their exact scopes. Visible native acceptance and D74 remain product gates.
+
+After this transfer/recovery milestone, complete the public mining pool and
+scheduled payouts. The current desktop already has a joined 30-second scheduler
+and durable settlement journals. The concrete missing integration is an
+operator-owned public service for external miners, with a nonfixture settlement
+signer/backend and its operational lifetime. Current fixed-fixture/loopback
+transports and the public scalar-3 test signer do not qualify that service.
+Preserve existing payout policies and exact-byte recovery while proving actual
+scheduled rollover, maturity, deferrals, restart/lost-reply recovery and on-chain
+payout reporting. Sign-in/provider/MFA work remains deferred until afterward.
 Never repin solo event histories. Keep the existing layout/logos until the final
 joint D74 review. Public hosting, production signer custody/capacity, real account
 configuration and permanent genesis remain separate gates. The implemented

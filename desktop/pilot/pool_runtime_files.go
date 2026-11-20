@@ -120,15 +120,24 @@ func poolRuntimeExists(path string) (bool, error) {
 // Immutable intent/publication only. Matching bytes after a lost directory
 // sync are synchronized again; another value is never silently overwritten.
 func writePoolRuntimeRecord(path string, value any) error {
+	return writePoolRuntimeRecordLimit(path, value, poolRuntimeMarkerLimit)
+}
+
+// The owned league's complete nested pin has its own closed64KiB framing.
+// Preserve the legacy32KiB wrapper, including matching-existing and retry paths.
+func writePoolRuntimeRecordLimit(path string, value any, limit int64) error {
+	if limit != poolRuntimeMarkerLimit && limit != ownedLeagueMarkerLimit {
+		return ErrPoolRuntime
+	}
 	raw, e := json.Marshal(value)
-	if e != nil || len(raw)+1 > poolRuntimeMarkerLimit {
+	if e != nil || int64(len(raw)+1) > limit {
 		return ErrPoolRuntime
 	}
 	if exists, e := poolRuntimeExists(path); e != nil {
 		return e
 	} else if exists {
 		var existing json.RawMessage
-		if readManifestJSON(path, poolRuntimeMarkerLimit, &existing) != nil || !bytes.Equal(existing, raw) {
+		if readManifestJSON(path, limit, &existing) != nil || !bytes.Equal(existing, raw) {
 			return ErrPoolRuntime
 		}
 		return syncDirectory(filepath.Dir(path))
@@ -152,7 +161,7 @@ func writePoolRuntimeRecord(path string, value any) error {
 	}
 	if e = os.Link(name, path); e != nil {
 		if os.IsExist(e) {
-			return writePoolRuntimeRecord(path, value)
+			return writePoolRuntimeRecordLimit(path, value, limit)
 		}
 		return ErrPoolRuntime
 	}
@@ -172,9 +181,17 @@ func readPoolRuntimeRecord(path string, expected any) error {
 }
 
 func poolRuntimeRootFiles(root string) error {
+	return poolRuntimeRootFilesMode(root, false)
+}
+func poolRuntimeRootFilesMode(root string, owned bool) error {
 	allowed := map[string]bool{poolRuntimeMarkerName: true, poolRuntimeSourceName: true, poolRuntimeCoreName: true, poolRuntimeReadyName: true, "instance-lock": true, "issuer": true, "shares": true, "rounds": true, "settlement": true, "gyms": true, poolLeagueDirectory: true, poolPipelineDirectory: true,
 		poolWithdrawalGuardName: true, poolWithdrawalDirectory: true,
 		"primary-chain": true, "primary-logs": true, "primary.conf": true, "primary-process.log": true, "peer-chain": true, "peer-logs": true, "peer.conf": true, "peer-process.log": true}
+	if owned {
+		allowed[ownedSourceConfigName] = true
+		allowed[ownedSourceDirectory] = true
+		allowed["owned-league"] = true
+	}
 	entries, e := os.ReadDir(root)
 	if e != nil {
 		return ErrPoolRuntime
@@ -188,6 +205,9 @@ func poolRuntimeRootFiles(root string) error {
 }
 
 func (r *PoolRuntime) loadPoolRecipients() error {
+	if r.ownedGym != nil {
+		return r.loadOwnedGymRecipients()
+	}
 	r.gymAccounts = make(map[string]string)
 	dir := filepath.Join(r.config.DataDir, "gyms")
 	if e := plainChild(dir, true); e != nil {

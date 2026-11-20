@@ -1,0 +1,71 @@
+{
+  "execution_authorized": false,
+  "files": {
+    "contracts/ownership.md": {
+      "bytes": 47731,
+      "provenance": "prior independent public reference/model or approved source-only contract; no runtime/Go-produced expected values",
+      "sha256": "4d82b4ebc907356dc89e714e004955bae35c16a0dcfa091ff68da69710f98853",
+      "source": "/Users/taytrrip/slug/slug/PUBLIC_FIGHTER_OWNERSHIP.md"
+    },
+    "contracts/setup.md": {
+      "bytes": 16580,
+      "provenance": "prior independent public reference/model or approved source-only contract; no runtime/Go-produced expected values",
+      "sha256": "f5581b7039908e0beef4e525b20522c5981672952feae32ccb13ef60d25afe25",
+      "source": "/Users/taytrrip/slug/set73-prep/restored-cli/SETUP.candidate.md"
+    },
+    "contracts/wallet.md": {
+      "bytes": 36362,
+      "provenance": "prior independent public reference/model or approved source-only contract; no runtime/Go-produced expected values",
+      "sha256": "eec5306bf2b088ef2ce5ed5c42df2907b94f6afd137df03c8c89d541eb20a789",
+      "source": "/Users/taytrrip/slug/slug/FIGHTER_CARRIER_WALLET.md"
+    },
+    "inherited/core_model.py": {
+      "bytes": 16555,
+      "provenance": "prior independent public reference/model or approved source-only contract; no runtime/Go-produced expected values",
+      "sha256": "6ff06eb7c83a9fcc428cbb28056565f0abd7456b0bd3fe072092f254731172f2",
+      "source": "/Users/taytrrip/slug/set73-prep/public-core-reference/core_model.py"
+    },
+    "inherited/wallet_model.py": {
+      "bytes": 37509,
+      "provenance": "prior independent public reference/model or approved source-only contract; no runtime/Go-produced expected values",
+      "sha256": "faa8fee9f1d0b68a97eb65f68157238a46e021706e1288b9e085636170fee2e0",
+      "source": "/Users/taytrrip/slug/set73-prep/wallet-reference/codec_model.py"
+    },
+    "provenance/core-lock.json": {
+      "bytes": 769,
+      "provenance": "prior independent public reference/model or approved source-only contract; no runtime/Go-produced expected values",
+      "sha256": "4adad7fb1655c747077201a815ef9149b0ac303232f262ae3f5864e873cb4fd7",
+      "source": "/Users/taytrrip/slug/slug/fighterownership/testdata/reference/producer-lock.approved.json"
+    },
+    "provenance/wallet-lock.json": {
+      "bytes": 1109,
+      "provenance": "prior independent public reference/model or approved source-only contract; no runtime/Go-produced expected values",
+      "sha256": "889afaa2b8a924d3a07d2f3dece19e759cba95250c7506fca5a44561e21b2e8e",
+      "source": "/Users/taytrrip/slug/set73-prep/wallet-reference/execution-lock.successor1.approved.json"
+    },
+    "public/core-v1.json": {
+      "bytes": 336499,
+      "provenance": "prior independent public reference/model or approved source-only contract; no runtime/Go-produced expected values",
+      "sha256": "1145dede4fcfa453e8bb1cdffff01079f6cca1df3bbe810dc32868207292b507",
+      "source": "/Users/taytrrip/slug/slug/fighterownership/testdata/reference/public-core-v1.json"
+    },
+    "public/recovery-v1.json": {
+      "bytes": 16064,
+      "provenance": "prior independent public reference/model or approved source-only contract; no runtime/Go-produced expected values",
+      "sha256": "d5141f4a8ee4378d77d483b09f6ecd809f8b328f82e79a69ff83164e73bc799a",
+      "source": "/Users/taytrrip/slug/set73-prep/public-core-actual/inputs/published-recovery-v1.json"
+    },
+    "public/wallet-v1.json": {
+      "bytes": 10360340,
+      "provenance": "prior independent public reference/model or approved source-only contract; no runtime/Go-produced expected values",
+      "sha256": "8648ac23d5e077df1a4dd1e3b8f07157922e650e92e9eea99c233a6993283495",
+      "source": "/Users/taytrrip/slug/slug/fightercarrier/testdata/reference/wallet-v1.json"
+    },
+    "recipe.json": {
+      "bytes": 959,
+      "sha256": "47127ff541c653fbabe0c208c8e0429d922aa92650c58ee5e58eb0b895c629f5",
+      "source": "literal source-only recipe"
+    }
+  },
+  "version": 1
+}

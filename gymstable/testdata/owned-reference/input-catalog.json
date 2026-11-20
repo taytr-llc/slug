@@ -1,0 +1,594 @@
+{
+  "version": 1,
+  "status": "frozen before producer execution; original intake preserved",
+  "files": [
+    {
+      "path": "actual/v1/incrementing256-awarded/admission.json",
+      "bytes": 3697,
+      "sha256": "03f0af5e084cb6db2823758ba064c0daed80ed8e9203ec082eb127c088a4efcb",
+      "source": "slug/fighterevidence/testdata/reference/actual-inputs/v1/incrementing256-awarded/admission.json",
+      "origin": "qualified Set64/65 public receipt/career extraction"
+    },
+    {
+      "path": "actual/v1/incrementing256-awarded/capture.json",
+      "bytes": 2803,
+      "sha256": "438aab38a11634117f593c0915918683eadd067b66677ad0c5d400ed01ec018b",
+      "source": "slug/fighterevidence/testdata/reference/actual-inputs/v1/incrementing256-awarded/capture.json",
+      "origin": "qualified Set64/65 public receipt/career extraction"
+    },
+    {
+      "path": "actual/v1/incrementing256-awarded/expected-pin.json",
+      "bytes": 992,
+      "sha256": "1bc1ce36d914f357c7d4676fcde4b8989d9db8ee6d1f30c5025ad13cf1eb318e",
+      "source": "slug/fighterevidence/testdata/reference/actual-inputs/v1/incrementing256-awarded/expected-pin.json",
+      "origin": "qualified Set64/65 public receipt/career extraction"
+    },
+    {
+      "path": "actual/v1/incrementing256-awarded/rows.json",
+      "bytes": 1500,
+      "sha256": "ab644d173194133d754532629e19649b372cbd018be9ab3a56e1befe04855ca6",
+      "source": "slug/fighterevidence/testdata/reference/actual-inputs/v1/incrementing256-awarded/rows.json",
+      "origin": "qualified Set64/65 public receipt/career extraction"
+    },
+    {
+      "path": "actual/v1/zero256-awarded/admission.json",
+      "bytes": 3698,
+      "sha256": "b88f6f7dfeb785756480a64df97e074dde496e88443e24417dc836e5f445d6b1",
+      "source": "slug/fighterevidence/testdata/reference/actual-inputs/v1/zero256-awarded/admission.json",
+      "origin": "qualified Set64/65 public receipt/career extraction"
+    },
+    {
+      "path": "actual/v1/zero256-awarded/capture.json",
+      "bytes": 2803,
+      "sha256": "d2b2ce06147cb83d698f716191772d1a1ae918fb5a5695400708abb832e970b4",
+      "source": "slug/fighterevidence/testdata/reference/actual-inputs/v1/zero256-awarded/capture.json",
+      "origin": "qualified Set64/65 public receipt/career extraction"
+    },
+    {
+      "path": "actual/v1/zero256-awarded/expected-pin.json",
+      "bytes": 992,
+      "sha256": "0ba127c98025ed7f16c302c662017193bb5a633ff1bf0d4a5b03acdc3a674daa",
+      "source": "slug/fighterevidence/testdata/reference/actual-inputs/v1/zero256-awarded/expected-pin.json",
+      "origin": "qualified Set64/65 public receipt/career extraction"
+    },
+    {
+      "path": "actual/v1/zero256-awarded/rows.json",
+      "bytes": 1502,
+      "sha256": "0b4889fc600d503be64343602b0396b4c7cd9c808a7ae5aa8175e34d474b2ca3",
+      "source": "slug/fighterevidence/testdata/reference/actual-inputs/v1/zero256-awarded/rows.json",
+      "origin": "qualified Set64/65 public receipt/career extraction"
+    },
+    {
+      "path": "actual/v1/zero256-unawarded/admission.json",
+      "bytes": 3697,
+      "sha256": "af868d73e6949e5e74f678abc7cc3c64600069415d709dcf0dd9dc2c35a3d5e7",
+      "source": "slug/fighterevidence/testdata/reference/actual-inputs/v1/zero256-unawarded/admission.json",
+      "origin": "qualified Set64/65 public receipt/career extraction"
+    },
+    {
+      "path": "actual/v1/zero256-unawarded/capture.json",
+      "bytes": 2802,
+      "sha256": "a9e2244558ade3fdea3098a095e684b67c8b73fb615a8c048abb942cdb858d3a",
+      "source": "slug/fighterevidence/testdata/reference/actual-inputs/v1/zero256-unawarded/capture.json",
+      "origin": "qualified Set64/65 public receipt/career extraction"
+    },
+    {
+      "path": "actual/v1/zero256-unawarded/expected-pin.json",
+      "bytes": 992,
+      "sha256": "0ba127c98025ed7f16c302c662017193bb5a633ff1bf0d4a5b03acdc3a674daa",
+      "source": "slug/fighterevidence/testdata/reference/actual-inputs/v1/zero256-unawarded/expected-pin.json",
+      "origin": "qualified Set64/65 public receipt/career extraction"
+    },
+    {
+      "path": "actual/v1/zero256-unawarded/rows.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "source": "slug/fighterevidence/testdata/reference/actual-inputs/v1/zero256-unawarded/rows.json",
+      "origin": "qualified Set64/65 public receipt/career extraction"
+    },
+    {
+      "path": "actual/v2/incrementing256-awarded/admission.json",
+      "bytes": 3686,
+      "sha256": "90a2e6844ee0b0be10e28620862f0b3d76467047bd3932bf346bbc9fee5bd81b",
+      "source": "slug/fighterevidence/testdata/reference/actual-inputs/v2/incrementing256-awarded/admission.json",
+      "origin": "qualified Set64/65 public receipt/career extraction"
+    },
+    {
+      "path": "actual/v2/incrementing256-awarded/capture.json",
+      "bytes": 2803,
+      "sha256": "d0f73bdfb1126d314f9554067a3f8f2329067698627840e5bb6a3de9f2fd7254",
+      "source": "slug/fighterevidence/testdata/reference/actual-inputs/v2/incrementing256-awarded/capture.json",
+      "origin": "qualified Set64/65 public receipt/career extraction"
+    },
+    {
+      "path": "actual/v2/incrementing256-awarded/expected-pin.json",
+      "bytes": 992,
+      "sha256": "fc4227b209800ec59b300340da7348433168c56f557a14da10708ab8a4fefea9",
+      "source": "slug/fighterevidence/testdata/reference/actual-inputs/v2/incrementing256-awarded/expected-pin.json",
+      "origin": "qualified Set64/65 public receipt/career extraction"
+    },
+    {
+      "path": "actual/v2/incrementing256-awarded/rows.json",
+      "bytes": 1502,
+      "sha256": "8751c8fb5b4679c9dd2227782759124563eaf6d4267192c88d7d47b7cd632654",
+      "source": "slug/fighterevidence/testdata/reference/actual-inputs/v2/incrementing256-awarded/rows.json",
+      "origin": "qualified Set64/65 public receipt/career extraction"
+    },
+    {
+      "path": "actual/v2/zero256-awarded/admission.json",
+      "bytes": 3698,
+      "sha256": "a023a5b850a4492d35db3302abcd26b830694c029e4278333f9eb279b382123d",
+      "source": "slug/fighterevidence/testdata/reference/actual-inputs/v2/zero256-awarded/admission.json",
+      "origin": "qualified Set64/65 public receipt/career extraction"
+    },
+    {
+      "path": "actual/v2/zero256-awarded/capture.json",
+      "bytes": 2802,
+      "sha256": "1f1edfc237dfe7dd959bef8a90387a4f542397b2a3be8bc0ae817a49d072c866",
+      "source": "slug/fighterevidence/testdata/reference/actual-inputs/v2/zero256-awarded/capture.json",
+      "origin": "qualified Set64/65 public receipt/career extraction"
+    },
+    {
+      "path": "actual/v2/zero256-awarded/expected-pin.json",
+      "bytes": 992,
+      "sha256": "2981d0ef863116901eaff23b48b6425b35a5b27614a8312b97a4a8a51dbb6def",
+      "source": "slug/fighterevidence/testdata/reference/actual-inputs/v2/zero256-awarded/expected-pin.json",
+      "origin": "qualified Set64/65 public receipt/career extraction"
+    },
+    {
+      "path": "actual/v2/zero256-awarded/rows.json",
+      "bytes": 1500,
+      "sha256": "045685f98bb532c302d6b828c6486e871eecc4186a69e39ce0b1a2345762112b",
+      "source": "slug/fighterevidence/testdata/reference/actual-inputs/v2/zero256-awarded/rows.json",
+      "origin": "qualified Set64/65 public receipt/career extraction"
+    },
+    {
+      "path": "actual/v2/zero256-unawarded/admission.json",
+      "bytes": 3690,
+      "sha256": "7a65051f8338e5cb8e15c4692829819566787893941a9bcf3a24f0f17999fb4e",
+      "source": "slug/fighterevidence/testdata/reference/actual-inputs/v2/zero256-unawarded/admission.json",
+      "origin": "qualified Set64/65 public receipt/career extraction"
+    },
+    {
+      "path": "actual/v2/zero256-unawarded/capture.json",
+      "bytes": 2802,
+      "sha256": "06a0eed7a91ebe090c22b0dc6a9b2d29f55d602b9c23d149c64acbe86aad7ee9",
+      "source": "slug/fighterevidence/testdata/reference/actual-inputs/v2/zero256-unawarded/capture.json",
+      "origin": "qualified Set64/65 public receipt/career extraction"
+    },
+    {
+      "path": "actual/v2/zero256-unawarded/expected-pin.json",
+      "bytes": 992,
+      "sha256": "2981d0ef863116901eaff23b48b6425b35a5b27614a8312b97a4a8a51dbb6def",
+      "source": "slug/fighterevidence/testdata/reference/actual-inputs/v2/zero256-unawarded/expected-pin.json",
+      "origin": "qualified Set64/65 public receipt/career extraction"
+    },
+    {
+      "path": "actual/v2/zero256-unawarded/rows.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "source": "slug/fighterevidence/testdata/reference/actual-inputs/v2/zero256-unawarded/rows.json",
+      "origin": "qualified Set64/65 public receipt/career extraction"
+    },
+    {
+      "path": "appearance/approval.json",
+      "bytes": 2416,
+      "sha256": "993792280545137c30e44da3f47406c2cfe71061eb3433ddc136f6088994caf4",
+      "source": "slug/fighterdescriptor/testdata/name-v2/approval.json",
+      "origin": "old independently frozen v1/v2 manifest and portrait oracle"
+    },
+    {
+      "path": "appearance/fighter-manifest-v2-contract.md",
+      "bytes": 9616,
+      "sha256": "0283415807d33b362aaeffbb1570504085cd975bf9f3adc0b497d0c8b79856a7",
+      "source": "slug/fighterdescriptor/testdata/name-v2/fighter-manifest-v2-contract.md",
+      "origin": "old independently frozen v1/v2 manifest and portrait oracle"
+    },
+    {
+      "path": "appearance/independent/README.md",
+      "bytes": 3226,
+      "sha256": "cadfd97c20a5021cb76b77a51bbc54a7744654a1ed2297576d0d185ed695b47c",
+      "source": "slug/fighterdescriptor/testdata/name-v2/independent/README.md",
+      "origin": "old independently frozen v1/v2 manifest and portrait oracle"
+    },
+    {
+      "path": "appearance/independent/input-lock.json",
+      "bytes": 2703,
+      "sha256": "bae736a305e6e9019db0396740c7f57c9b66ced1f484c53863d23ddbd3b88b43",
+      "source": "slug/fighterdescriptor/testdata/name-v2/independent/input-lock.json",
+      "origin": "old independently frozen v1/v2 manifest and portrait oracle"
+    },
+    {
+      "path": "appearance/independent/inputs/portrait-v1/input_hashes.json",
+      "bytes": 1670,
+      "sha256": "108b6911cc622b9510d1f8de96086964fb6718bc3e6029f28ea42a2db821ca19",
+      "source": "slug/fighterdescriptor/testdata/name-v2/independent/inputs/portrait-v1/input_hashes.json",
+      "origin": "old independently frozen v1/v2 manifest and portrait oracle"
+    },
+    {
+      "path": "appearance/independent/inputs/portrait-v1/inputs/fighter-manifest-contract.md",
+      "bytes": 13247,
+      "sha256": "ba8d33dbad3722eed6b4406ef120f946d7e06e1ea04305cbe8648889ba169e80",
+      "source": "slug/fighterdescriptor/testdata/name-v2/independent/inputs/portrait-v1/inputs/fighter-manifest-contract.md",
+      "origin": "old independently frozen v1/v2 manifest and portrait oracle"
+    },
+    {
+      "path": "appearance/independent/inputs/portrait-v1/inputs/manifest/baseline/dna_v1.json",
+      "bytes": 2658,
+      "sha256": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+      "source": "slug/fighterdescriptor/testdata/name-v2/independent/inputs/portrait-v1/inputs/manifest/baseline/dna_v1.json",
+      "origin": "old independently frozen v1/v2 manifest and portrait oracle"
+    },
+    {
+      "path": "appearance/independent/inputs/portrait-v1/inputs/manifest/baseline/reference_dna.py",
+      "bytes": 8283,
+      "sha256": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+      "source": "slug/fighterdescriptor/testdata/name-v2/independent/inputs/portrait-v1/inputs/manifest/baseline/reference_dna.py",
+      "origin": "old independently frozen v1/v2 manifest and portrait oracle"
+    },
+    {
+      "path": "appearance/independent/inputs/portrait-v1/inputs/manifest/manifests_v1.json",
+      "bytes": 289470,
+      "sha256": "75eb01acb79f45b74a6445edf956c5e3f3b68024998ae56ab44a7ed07cf15f3d",
+      "source": "slug/fighterdescriptor/testdata/name-v2/independent/inputs/portrait-v1/inputs/manifest/manifests_v1.json",
+      "origin": "old independently frozen v1/v2 manifest and portrait oracle"
+    },
+    {
+      "path": "appearance/independent/inputs/portrait-v1/inputs/manifest/reference_manifest.py",
+      "bytes": 24912,
+      "sha256": "9fb1a814047f2329066bb19596e910ac7c4c7aadfce4b8f994e02dab81e51b4f",
+      "source": "slug/fighterdescriptor/testdata/name-v2/independent/inputs/portrait-v1/inputs/manifest/reference_manifest.py",
+      "origin": "old independently frozen v1/v2 manifest and portrait oracle"
+    },
+    {
+      "path": "appearance/independent/inputs/portrait-v1/inputs/manifest/tables_v1.json",
+      "bytes": 2578,
+      "sha256": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+      "source": "slug/fighterdescriptor/testdata/name-v2/independent/inputs/portrait-v1/inputs/manifest/tables_v1.json",
+      "origin": "old independently frozen v1/v2 manifest and portrait oracle"
+    },
+    {
+      "path": "appearance/independent/inputs/portrait-v1/inputs/portrait-renderer-contract.md",
+      "bytes": 28710,
+      "sha256": "8ae3c8dbe92fbef719880227e107cb98cbfd6419d984cad08ebb5d5e0a9c0df5",
+      "source": "slug/fighterdescriptor/testdata/name-v2/independent/inputs/portrait-v1/inputs/portrait-renderer-contract.md",
+      "origin": "old independently frozen v1/v2 manifest and portrait oracle"
+    },
+    {
+      "path": "appearance/independent/inputs/portrait-v1/inputs/portraits.py",
+      "bytes": 15381,
+      "sha256": "9bac3d966e7093e0665cd9c9a683e7a6ab73381948dccfd0dc8cac8c98a75a72",
+      "source": "slug/fighterdescriptor/testdata/name-v2/independent/inputs/portrait-v1/inputs/portraits.py",
+      "origin": "old independently frozen v1/v2 manifest and portrait oracle"
+    },
+    {
+      "path": "appearance/independent/inputs/portrait-v1/portraits_v1.json",
+      "bytes": 302628,
+      "sha256": "03df75cbf923a6dfc8fcac78e98d704641c0edf65ce563cf307f20a52f250670",
+      "source": "slug/fighterdescriptor/testdata/name-v2/independent/inputs/portrait-v1/portraits_v1.json",
+      "origin": "old independently frozen v1/v2 manifest and portrait oracle"
+    },
+    {
+      "path": "appearance/independent/inputs/portrait-v1/reference_portraits.py",
+      "bytes": 28065,
+      "sha256": "1a44c0506944211cf699b653f63905c6802e2012928855354f4053d03d209093",
+      "source": "slug/fighterdescriptor/testdata/name-v2/independent/inputs/portrait-v1/reference_portraits.py",
+      "origin": "old independently frozen v1/v2 manifest and portrait oracle"
+    },
+    {
+      "path": "appearance/independent/provenance.json",
+      "bytes": 4700,
+      "sha256": "062ddfd4c920a0a9b644a24e8db76000a4651580a878b9da53338c2c583a4197",
+      "source": "slug/fighterdescriptor/testdata/name-v2/independent/provenance.json",
+      "origin": "old independently frozen v1/v2 manifest and portrait oracle"
+    },
+    {
+      "path": "appearance/independent/public-inputs.json",
+      "bytes": 2766,
+      "sha256": "1bb6eb19386a74bd8c97ebf6f99201d43659e06d18d04f6eaa43f7578ad8f90e",
+      "source": "slug/fighterdescriptor/testdata/name-v2/independent/public-inputs.json",
+      "origin": "old independently frozen v1/v2 manifest and portrait oracle"
+    },
+    {
+      "path": "appearance/independent/reference_v2.py",
+      "bytes": 18977,
+      "sha256": "44feef72ff87781e4c4fcfb53c335e3d9a2e1152af24a17d1145fd04133c4b1f",
+      "source": "slug/fighterdescriptor/testdata/name-v2/independent/reference_v2.py",
+      "origin": "old independently frozen v1/v2 manifest and portrait oracle"
+    },
+    {
+      "path": "appearance/inherited/fighter-manifest-v1-contract.md",
+      "bytes": 13247,
+      "sha256": "ba8d33dbad3722eed6b4406ef120f946d7e06e1ea04305cbe8648889ba169e80",
+      "source": "slug/fighterdescriptor/testdata/name-v2/inherited/fighter-manifest-v1-contract.md",
+      "origin": "old independently frozen v1/v2 manifest and portrait oracle"
+    },
+    {
+      "path": "appearance/inherited/full-tables-v1.json",
+      "bytes": 2578,
+      "sha256": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+      "source": "slug/fighterdescriptor/testdata/name-v2/inherited/full-tables-v1.json",
+      "origin": "old independently frozen v1/v2 manifest and portrait oracle"
+    },
+    {
+      "path": "appearance/inherited/portrait-renderer-v1-contract.md",
+      "bytes": 28710,
+      "sha256": "8ae3c8dbe92fbef719880227e107cb98cbfd6419d984cad08ebb5d5e0a9c0df5",
+      "source": "slug/fighterdescriptor/testdata/name-v2/inherited/portrait-renderer-v1-contract.md",
+      "origin": "old independently frozen v1/v2 manifest and portrait oracle"
+    },
+    {
+      "path": "appearance/portrait-renderer-v2-contract.md",
+      "bytes": 7254,
+      "sha256": "6044ce174e9a7a466783985e34b02b34ae2785719ca77b1268f7e6ad3c717677",
+      "source": "slug/fighterdescriptor/testdata/name-v2/portrait-renderer-v2-contract.md",
+      "origin": "old independently frozen v1/v2 manifest and portrait oracle"
+    },
+    {
+      "path": "appearance/tables_v2.json",
+      "bytes": 9017,
+      "sha256": "96e7ae3eaae038932355e44ef4a3a88ecab4c8f5fa1dea7371d748b6fab0b051",
+      "source": "slug/fighterdescriptor/testdata/name-v2/tables_v2.json",
+      "origin": "old independently frozen v1/v2 manifest and portrait oracle"
+    },
+    {
+      "path": "condition/input_hashes.json",
+      "bytes": 1384,
+      "sha256": "1ab9a78f6246236c87fb9b0304fe5b786b9d5f880f50d18a33ef3b12725419a3",
+      "source": "slug/fightercondition/testdata/reference/input_hashes.json",
+      "origin": "old independent exact-integer condition oracle"
+    },
+    {
+      "path": "condition/inputs/BRAWLCHAIN_SPEC.md",
+      "bytes": 35451,
+      "sha256": "fe7dc0dc404c35886d6119576722e5b9556b150e1f4f98738562f387d928751d",
+      "source": "slug/fightercondition/testdata/reference/inputs/BRAWLCHAIN_SPEC.md",
+      "origin": "old independent exact-integer condition oracle"
+    },
+    {
+      "path": "condition/inputs/baseline/dna_v1.json",
+      "bytes": 2658,
+      "sha256": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+      "source": "slug/fightercondition/testdata/reference/inputs/baseline/dna_v1.json",
+      "origin": "old independent exact-integer condition oracle"
+    },
+    {
+      "path": "condition/inputs/baseline/reference_dna.py",
+      "bytes": 8283,
+      "sha256": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+      "source": "slug/fightercondition/testdata/reference/inputs/baseline/reference_dna.py",
+      "origin": "old independent exact-integer condition oracle"
+    },
+    {
+      "path": "condition/inputs/fight_sim.py",
+      "bytes": 50586,
+      "sha256": "37ff08917ed720e3d9c4f3b14508c57b08d830f9f4cb01833fa412dbca9b6422",
+      "source": "slug/fightercondition/testdata/reference/inputs/fight_sim.py",
+      "origin": "old independent exact-integer condition oracle"
+    },
+    {
+      "path": "condition/inputs/fighter-condition-contract.md",
+      "bytes": 10367,
+      "sha256": "8ee75162fcd631cae15b33804c787690e60bf4997fae6b7cd536bb771908e654",
+      "source": "slug/fightercondition/testdata/reference/inputs/fighter-condition-contract.md",
+      "origin": "old independent exact-integer condition oracle"
+    },
+    {
+      "path": "condition/inputs/lifecycle_rating_reference.py.txt",
+      "bytes": 1838,
+      "sha256": "aa97b6f197d78d0f6245e5c122b482c5e5b1d6e34a74db5224e5f535cbda8d64",
+      "source": "slug/fightercondition/testdata/reference/inputs/lifecycle_rating_reference.py.txt",
+      "origin": "old independent exact-integer condition oracle"
+    },
+    {
+      "path": "condition/inputs/rating_study.py",
+      "bytes": 7594,
+      "sha256": "e561ea57a5dc674f82ce9b881c9de5b83c31d2caf21c209d538c03554384bc70",
+      "source": "slug/fightercondition/testdata/reference/inputs/rating_study.py",
+      "origin": "old independent exact-integer condition oracle"
+    },
+    {
+      "path": "condition/reference_condition.py",
+      "bytes": 18218,
+      "sha256": "924152a89241e9fa6d60aa27ba19666d3a3f65fdf53bd3c0cf6f89c8db4e946c",
+      "source": "slug/fightercondition/testdata/reference/reference_condition.py",
+      "origin": "old independent exact-integer condition oracle"
+    },
+    {
+      "path": "contracts/owned.md",
+      "bytes": 31121,
+      "sha256": "6b0d7fe70d3a1d698170e93a282d6278660510fc7cf42e013a331b37be7cbfdf",
+      "source": "slug/OWNED_FIGHTER_CONSUMERS.md",
+      "origin": "root-adopted owned contract or unchanged inherited scalar/calendar grammar"
+    },
+    {
+      "path": "core/core_model.py",
+      "bytes": 16555,
+      "sha256": "6ff06eb7c83a9fcc428cbb28056565f0abd7456b0bd3fe072092f254731172f2",
+      "source": "slug/fighterownership/testdata/reference/core_model.py",
+      "origin": "approved independent public core; conditional chain facts, no new work"
+    },
+    {
+      "path": "core/inputs/inherited/crypto.py",
+      "bytes": 10124,
+      "sha256": "ea87b9021e14712b1ac7130daa73cd12fb8acf2fd8995ca5ce9e32d0d770fd1c",
+      "source": "slug/fighterownership/testdata/reference/inputs/inherited/crypto.py",
+      "origin": "approved independent public core; conditional chain facts, no new work"
+    },
+    {
+      "path": "core/inputs/recipe.json",
+      "bytes": 563,
+      "sha256": "a36ea9f9c9f4b847a99da2266561f58322b86a3bd45054b19f749df1b43c7eb4",
+      "source": "slug/fighterownership/testdata/reference/inputs/recipe.json",
+      "origin": "approved independent public core; conditional chain facts, no new work"
+    },
+    {
+      "path": "core/public-core-v1.json",
+      "bytes": 336499,
+      "sha256": "1145dede4fcfa453e8bb1cdffff01079f6cca1df3bbe810dc32868207292b507",
+      "source": "slug/fighterownership/testdata/reference/public-core-v1.json",
+      "origin": "approved independent public core; conditional chain facts, no new work"
+    },
+    {
+      "path": "core/qualification.json",
+      "bytes": 2178,
+      "sha256": "972e2da681bd1324579956be7671239b2271029f655279c4511cec9272d92c39",
+      "source": "slug/fighterownership/testdata/reference/qualification.json",
+      "origin": "approved independent public core; conditional chain facts, no new work"
+    },
+    {
+      "path": "inherited/FIGHTER_TRANSFER_POLICY.md",
+      "bytes": 3780,
+      "sha256": "de59533a494ffbbfca99996f0e1d6054a98a1ef4dba95f0c47d1675414543969",
+      "source": "slug/FIGHTER_TRANSFER_POLICY.md",
+      "origin": "unchanged old consumer grammar or adopted source policy; never new expectations"
+    },
+    {
+      "path": "inherited/PUBLIC_FIGHTER_OWNERSHIP.md",
+      "bytes": 46399,
+      "sha256": "8df78d55aa064acacb25441338ddf36b9f11309ef726e7db4f8633702c21b7d2",
+      "source": "slug/PUBLIC_FIGHTER_OWNERSHIP.md",
+      "origin": "unchanged old consumer grammar or adopted source policy; never new expectations"
+    },
+    {
+      "path": "inherited/fightercareer/career.go",
+      "bytes": 3564,
+      "sha256": "ceedee1a864b9d41048e8f7873f7f19da66d187862b68abbf93a4acb559aeac7",
+      "source": "slug/fightercareer/career.go",
+      "origin": "root-adopted owned contract or unchanged inherited scalar/calendar grammar"
+    },
+    {
+      "path": "inherited/gymauth/auth.go",
+      "bytes": 10173,
+      "sha256": "22d5850201b529795e153485f94ec3aa6611590b425ac054da5cf5d0fccef4cd",
+      "source": "slug/gymauth/auth.go",
+      "origin": "root-adopted owned contract or unchanged inherited scalar/calendar grammar"
+    },
+    {
+      "path": "inherited/gymbout/result_types.go",
+      "bytes": 1311,
+      "sha256": "6558d21b94d1aa04c579265644e0413355ff0cd72873ac2e64534b5eff5f4132",
+      "source": "slug/gymbout/result_types.go",
+      "origin": "unchanged old consumer grammar or adopted source policy; never new expectations"
+    },
+    {
+      "path": "inherited/gymbout/types.go",
+      "bytes": 4590,
+      "sha256": "1404574a6dee76ccd510a8a9b8dfb5c2d6a8b11dba952e5e76ae3af8ebf93c64",
+      "source": "slug/gymbout/types.go",
+      "origin": "unchanged old consumer grammar or adopted source policy; never new expectations"
+    },
+    {
+      "path": "inherited/gymcard/bout_types.go",
+      "bytes": 2795,
+      "sha256": "230179d3efc519586dab70547de56ed6b31480e1e11923cc76a27cef4ae35802",
+      "source": "slug/gymcard/bout_types.go",
+      "origin": "unchanged old consumer grammar or adopted source policy; never new expectations"
+    },
+    {
+      "path": "inherited/gymcard/types.go",
+      "bytes": 6404,
+      "sha256": "d9f97e6cc7565f77ae7057883915ea5a193514904e686aca7306947db722ecef",
+      "source": "slug/gymcard/types.go",
+      "origin": "unchanged old consumer grammar or adopted source policy; never new expectations"
+    },
+    {
+      "path": "inherited/gymentry/calendar.go",
+      "bytes": 3955,
+      "sha256": "8c396216b830fd1ffdf35a38ab98767e9bdaf2bb3d7c861408304f7f84eb9d0d",
+      "source": "slug/gymentry/calendar.go",
+      "origin": "root-adopted owned contract or unchanged inherited scalar/calendar grammar"
+    },
+    {
+      "path": "inherited/gymentry/calendar/America_Los_Angeles.tzif",
+      "bytes": 1294,
+      "sha256": "200d05754f6d83a371cf408d7085125797657b3b0bebeba1e508cffe86a3e5c8",
+      "source": "slug/gymentry/calendar/America_Los_Angeles.tzif",
+      "origin": "root-adopted owned contract or unchanged inherited scalar/calendar grammar"
+    },
+    {
+      "path": "inherited/gymentry/cutoff_types.go",
+      "bytes": 1129,
+      "sha256": "6c58591c12d7d5a4af89490c557ff7d0be430060571b7e5235d8898d0b09802d",
+      "source": "slug/gymentry/cutoff_types.go",
+      "origin": "unchanged old consumer grammar or adopted source policy; never new expectations"
+    },
+    {
+      "path": "inherited/gymentry/incident_calendar.go",
+      "bytes": 696,
+      "sha256": "53e0b3cab40557568d92f631e97e9825aa86639ae682880844c4746acdacd4ea",
+      "source": "slug/gymentry/incident_calendar.go",
+      "origin": "unchanged calendar/rule grammar"
+    },
+    {
+      "path": "inherited/gymentry/types.go",
+      "bytes": 6834,
+      "sha256": "684b52c7f3b5f982302b67c413d24f3330173598f6cd030f41b68b0d151c9ce0",
+      "source": "slug/gymentry/types.go",
+      "origin": "unchanged old consumer grammar or adopted source policy; never new expectations"
+    },
+    {
+      "path": "inherited/gymevent/calendar.go",
+      "bytes": 2967,
+      "sha256": "0bd5c11e5ef70f00203d1587d51952de4cde74f22aca89724fbd86af083df1e9",
+      "source": "slug/gymevent/calendar.go",
+      "origin": "unchanged calendar/rule grammar"
+    },
+    {
+      "path": "inherited/gymevent/types.go",
+      "bytes": 6445,
+      "sha256": "d399967e54ef8296b44812a9b88daed63bf03ac81c1e29d6912c39f9289d89be",
+      "source": "slug/gymevent/types.go",
+      "origin": "unchanged old consumer grammar or adopted source policy; never new expectations"
+    },
+    {
+      "path": "inherited/gymresult/types.go",
+      "bytes": 13076,
+      "sha256": "ca63b5bbfafcbbdd749fa471b6652743ef8c39c0fa1031129a547a9fd68666df",
+      "source": "slug/gymresult/types.go",
+      "origin": "unchanged old consumer grammar or adopted source policy; never new expectations"
+    },
+    {
+      "path": "inherited/gymseed/card_types.go",
+      "bytes": 1333,
+      "sha256": "7568889d427b118bbaff79c2df02bcbda7e1dd285f969a8b939d87b9761b1074",
+      "source": "slug/gymseed/card_types.go",
+      "origin": "unchanged old consumer grammar or adopted source policy; never new expectations"
+    },
+    {
+      "path": "inherited/gymseed/types.go",
+      "bytes": 10976,
+      "sha256": "7082afd592303779486ac868c2070b4c610a6121ea40910b57be42ee2c40220a",
+      "source": "slug/gymseed/types.go",
+      "origin": "unchanged old consumer grammar or adopted source policy; never new expectations"
+    },
+    {
+      "path": "inherited/gymstable/cutoff_types.go",
+      "bytes": 1498,
+      "sha256": "28ad482c9de6051561eaca7fcc157b19c1c200fbc033faa94807e5e69701c5c4",
+      "source": "slug/gymstable/cutoff_types.go",
+      "origin": "unchanged old consumer grammar or adopted source policy; never new expectations"
+    },
+    {
+      "path": "inherited/gymstable/history_types.go",
+      "bytes": 1347,
+      "sha256": "2c45b16e00049bd4221f4bbe289a9e26995dc681220b2b0f422dd2d0de42046e",
+      "source": "slug/gymstable/history_types.go",
+      "origin": "unchanged old consumer grammar or adopted source policy; never new expectations"
+    },
+    {
+      "path": "inherited/gymstable/types.go",
+      "bytes": 6760,
+      "sha256": "1f0038aa844869c59b5f2e8f38e2ec69380aac88d66000b28d9d1471daccb2f0",
+      "source": "slug/gymstable/types.go",
+      "origin": "unchanged old consumer grammar or adopted source policy; never new expectations"
+    },
+    {
+      "path": "recipe.json",
+      "bytes": 986,
+      "sha256": "72107a8106ef736ea4d90ec8c66b8af4ce6492f469c9ecb6929f67598e472807",
+      "source": "literal proposed consumer composition recipe",
+      "origin": "synthetic IDs/times, not capabilities"
+    }
+  ]
+}

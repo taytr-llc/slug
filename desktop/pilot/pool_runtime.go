@@ -60,6 +60,8 @@ type poolRuntimeBorrow struct {
 // PoolRuntime owns only the dedicated fixture pool environment. Its account
 // store is borrowed, its children borrow sources, and nothing here mines.
 type PoolRuntime struct {
+	ownedGym                     *ownedGymRuntimeResources
+	owned                        *ownedRuntimeResources
 	hosted                       *hostedPoolResources
 	mu                           sync.Mutex
 	gate                         chan struct{}
@@ -133,6 +135,14 @@ func NewPoolRuntime(ctx context.Context, config Config, accounts *gymaccount.Sto
 }
 
 func NewPoolRuntimeWithOptions(ctx context.Context, config Config, accounts *gymaccount.Store, options PoolOptions) (_ *PoolRuntime, resultErr error) {
+	return newPoolRuntimeWithOptions(ctx, config, accounts, options, nil)
+}
+
+func newPoolRuntimeWithOptions(ctx context.Context, config Config, accounts *gymaccount.Store, options PoolOptions, owned *OwnedSourceConfig) (_ *PoolRuntime, resultErr error) {
+	return newPoolRuntimeSelected(ctx, config, accounts, options, owned, nil)
+}
+
+func newPoolRuntimeSelected(ctx context.Context, config Config, accounts *gymaccount.Store, options PoolOptions, owned *OwnedSourceConfig, gym *ownedGymRuntimeResources) (out *PoolRuntime, resultErr error) {
 	options, optionErr := ResolvePoolOptions(options)
 	if optionErr != nil {
 		return nil, optionErr
@@ -142,6 +152,11 @@ func NewPoolRuntimeWithOptions(ctx context.Context, config Config, accounts *gym
 	}
 	if e := CheckPoolRuntimeSelection(config.DataDir, accounts.AuthorityID(), options); e != nil {
 		return nil, e
+	}
+	if owned != nil {
+		if e := validateOwnedSourceConfig(*owned, options); e != nil {
+			return nil, e
+		}
 	}
 	if i, e := os.Stat(config.NodeBinary); e != nil || !i.Mode().IsRegular() {
 		return nil, ErrPoolRuntime
@@ -167,10 +182,18 @@ func NewPoolRuntimeWithOptions(ctx context.Context, config Config, accounts *gym
 	}
 	life, cancel := context.WithCancel(context.Background())
 	r := &PoolRuntime{config: config, accounts: accounts, gate: make(chan struct{}, 1), life: life, cancel: cancel, recipients: make(map[string]PoolRecipientBinding), withdrawals: make(map[string]poolWithdrawalScope), verified: make(map[string]bool), borrows: make(map[*poolRuntimeBorrow]bool)}
+	r.ownedGym = gym
+	if owned != nil {
+		r.owned = &ownedRuntimeResources{config: *owned}
+	}
 	keep := false
 	defer func() {
 		if !keep {
-			resultErr = errors.Join(resultErr, r.Close())
+			cleanup := r.Close()
+			resultErr = errors.Join(resultErr, cleanup)
+			if gym != nil && cleanup != nil {
+				out = r
+			}
 		}
 	}()
 	markerPath := filepath.Join(config.DataDir, poolRuntimeMarkerName)
@@ -187,8 +210,30 @@ func NewPoolRuntimeWithOptions(ctx context.Context, config Config, accounts *gym
 		if e != nil {
 			return nil, e
 		}
+		if owned != nil {
+			for tries := 0; poolPort == owned.PublicReadPort && tries < 8; tries++ {
+				poolPort, e = unusedPort()
+				if e != nil {
+					return nil, e
+				}
+			}
+			if poolPort == owned.PublicReadPort {
+				return nil, ErrPoolRuntime
+			}
+		}
 		admissionPort, e := unusedPort()
-		if e != nil || admissionPort == poolPort {
+		if e != nil {
+			return nil, e
+		}
+		if owned != nil {
+			for tries := 0; (admissionPort == poolPort || admissionPort == owned.PublicReadPort) && tries < 8; tries++ {
+				admissionPort, e = unusedPort()
+				if e != nil {
+					return nil, e
+				}
+			}
+		}
+		if admissionPort == poolPort || owned != nil && admissionPort == owned.PublicReadPort {
 			return nil, ErrPoolRuntime
 		}
 		r.marker = poolRuntimeMarker{"slug-shared-pool-runtime", 1, accounts.AuthorityID(), policy().Network, genesis, chaincfg.PhaseAActivationHeight, recovery.ProfileID, options.CandidateDescriptorID, true, poolPort, admissionPort}
@@ -198,7 +243,10 @@ func NewPoolRuntimeWithOptions(ctx context.Context, config Config, accounts *gym
 	} else if readManifestJSON(markerPath, poolRuntimeMarkerLimit, &r.marker) != nil || !r.marker.validFor(accounts.AuthorityID(), options.CandidateDescriptorID) {
 		return nil, ErrPoolRuntime
 	}
-	if e = poolRuntimeRootFiles(config.DataDir); e != nil {
+	if r.owned != nil && (r.owned.config.PublicReadPort == r.marker.PoolPort || r.owned.config.PublicReadPort == r.marker.AdmissionPort) {
+		return nil, ErrPoolRuntime
+	}
+	if e = poolRuntimeRootFilesMode(config.DataDir, owned != nil); e != nil {
 		return nil, e
 	}
 	if e = plainChild(filepath.Join(config.DataDir, "instance-lock"), true); e != nil {
@@ -242,6 +290,11 @@ func NewPoolRuntimeWithOptions(ctx context.Context, config Config, accounts *gym
 	if e != nil {
 		return nil, e
 	}
+	if r.owned != nil {
+		if e = r.openOwnedSource(ctx, coreExists); e != nil {
+			return nil, e
+		}
+	}
 	sessions := poolRuntimeSessions{accounts}
 	sharesPath := filepath.Join(config.DataDir, "shares")
 	sharesExist, e := poolRuntimeExists(sharesPath)
@@ -273,8 +326,10 @@ func NewPoolRuntimeWithOptions(ctx context.Context, config Config, accounts *gym
 	if e = r.loadPoolRecipients(); e != nil {
 		return nil, e
 	}
-	if e = r.validateWithdrawalRoot(); e != nil {
-		return nil, e
+	if r.ownedGym == nil {
+		if e = r.validateWithdrawalRoot(); e != nil {
+			return nil, e
+		}
 	}
 	core, e := r.coreRecord()
 	if e != nil {
@@ -308,6 +363,9 @@ func NewPoolRuntimeWithOptions(ctx context.Context, config Config, accounts *gym
 }
 
 func (r *PoolRuntime) openPoolIssuer(established bool) error {
+	if r.owned != nil {
+		return r.openOwnedIssuer(established)
+	}
 	root := r.config.DataDir
 	sourcePath := filepath.Join(root, poolRuntimeSourceName)
 	issuerPath := filepath.Join(root, "issuer")
@@ -467,11 +525,17 @@ func (r *PoolRuntime) Close() error {
 		for _, closeChild := range closers {
 			failures = append(failures, closeChild())
 		}
-		if r.hosted != nil {
+		if r.hosted != nil || r.ownedGym != nil {
 			r.gate <- struct{}{} // Join setup before inspecting retained loader failure.
 			r.services.Wait()
 			r.mu.Lock()
-			hostedFailure := r.hosted.failure
+			var hostedFailure error
+			if r.hosted != nil {
+				hostedFailure = r.hosted.failure
+			}
+			if r.ownedGym != nil {
+				hostedFailure = errors.Join(hostedFailure, r.ownedGym.failure)
+			}
 			r.mu.Unlock()
 			if errors.Join(failures...) != nil || hostedFailure != nil {
 				r.closeErr = errors.Join(errors.Join(failures...), hostedFailure)
@@ -482,9 +546,16 @@ func (r *PoolRuntime) Close() error {
 		for _, b := range borrows {
 			<-b.done
 		}
-		if r.hosted == nil {
+		if r.hosted == nil && r.ownedGym == nil {
 			r.gate <- struct{}{}
 			r.services.Wait()
+		}
+		if r.ownedGym != nil && r.ownedGym.league != nil {
+			if e := r.ownedGym.league.Close(); e != nil {
+				r.closeErr = e
+				<-r.gate
+				return
+			}
 		}
 		if r.results != nil {
 			failures = append(failures, r.results.Close())
@@ -509,6 +580,9 @@ func (r *PoolRuntime) Close() error {
 		}
 		if r.pool != nil {
 			failures = append(failures, r.pool.Close())
+		}
+		if r.owned != nil {
+			failures = append(failures, r.owned.Close())
 		}
 		if r.issuer != nil {
 			failures = append(failures, r.issuer.Close())

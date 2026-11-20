@@ -28,8 +28,8 @@ var (
 // Identity is supplied by the retained setup or independently selected restored
 // owner. Open never adopts either identity field from a marker on disk.
 type Identity struct {
-	JournalID string
-	Pin       Pin
+	JournalID string `json:"JournalID"`
+	Pin       Pin    `json:"Pin"`
 }
 
 type Snapshot struct {

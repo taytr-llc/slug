@@ -69,11 +69,15 @@ func ValidateCareerHistoryCapture(c CareerHistoryCapture) (CareerHistoryCapture,
 	}
 	return c, nil
 }
-func historyRowValid(r CareerHistoryRow, c CareerHistoryCapture) bool {
-	if r.Ordinal < 1 || r.Ordinal > c.EventCount || !careerPreviewBound(r.Event, MaxCareerHistoryEventSize) {
+
+// historyRowPhysicalValid checks immutable event/arithmetic facts. The caller
+// supplies its route-specific viewing rule separately; transfer never rewrites
+// an original event corner or weakens the legacy account/birth-gym rule.
+func historyRowPhysicalValid(r CareerHistoryRow, pid string, activation careerstate.Activation, asOf int64, eventCount uint32, totals fightercareer.Totals) bool {
+	if r.Ordinal < 1 || r.Ordinal > eventCount || !careerPreviewBound(r.Event, MaxCareerHistoryEventSize) {
 		return false
 	}
-	if _, e := careerstate.ValidateIndex(c.Activation, []careerstate.Event{r.Event}); e != nil {
+	if _, e := careerstate.ValidateIndex(activation, []careerstate.Event{r.Event}); e != nil {
 		return false
 	}
 	e := r.Event
@@ -82,8 +86,7 @@ func historyRowValid(r CareerHistoryRow, c CareerHistoryCapture) bool {
 	if len(e.Saturday) != 10 || e.Saturday[:4] == "0000" {
 		return false
 	}
-	pid := c.Assignment.ProspectID
-	if e.EffectiveAtMS > c.AsOfMS {
+	if e.EffectiveAtMS > asOf {
 		return false
 	}
 	corner := e.CornerA
@@ -92,7 +95,7 @@ func historyRowValid(r CareerHistoryRow, c CareerHistoryCapture) bool {
 		corner = e.CornerB
 		which = 1
 	}
-	if corner.ProspectID != pid || corner.AccountID != c.Status.Pin.AccountID || corner.GymID != c.Assignment.GymID {
+	if corner.ProspectID != pid {
 		return false
 	}
 	winner := "draw"
@@ -110,8 +113,19 @@ func historyRowValid(r CareerHistoryRow, c CareerHistoryCapture) bool {
 		return false
 	}
 	prior := fightercareer.Totals{Wins: t.Wins - r.Earned.Wins, Losses: t.Losses - r.Earned.Losses, Draws: t.Draws - r.Earned.Draws, XP: r.XPBefore, BasePoints: t.BasePoints - r.Earned.BasePoints}
-	return historyTotalsValid(prior, r.Ordinal-1) && (r.Ordinal != c.EventCount || t == c.Totals) && careerPreviewBound(r, MaxCareerHistoryRowSize)
+	return historyTotalsValid(prior, r.Ordinal-1) && (r.Ordinal != eventCount || t == totals) && careerPreviewBound(r, MaxCareerHistoryRowSize)
 }
+func historyRowValid(r CareerHistoryRow, c CareerHistoryCapture) bool {
+	if !historyRowPhysicalValid(r, c.Assignment.ProspectID, c.Activation, c.AsOfMS, c.EventCount, c.Totals) {
+		return false
+	}
+	corner := r.Event.CornerA
+	if corner.ProspectID != c.Assignment.ProspectID {
+		corner = r.Event.CornerB
+	}
+	return corner.AccountID == c.Status.Pin.AccountID && corner.GymID == c.Assignment.GymID
+}
+
 func ValidateCareerHistoryRow(r CareerHistoryRow, c CareerHistoryCapture) (CareerHistoryRow, error) {
 	if _, e := ValidateCareerHistoryCapture(c); e != nil || !historyRowValid(r, c) {
 		return CareerHistoryRow{}, ErrInvalid

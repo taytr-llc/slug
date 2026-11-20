@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "status": "root-reviewed successor2: only generated entry save->replace and model closed action check",
+  "sources": {
+    "consumer_model.py": "71044f15d8727eb6db20378aaca7467686f5c6af09aae762e1ae65c156ca6e8b",
+    "generate_reference.py": "2842d24116c92420b1058127ff806e1554571b66ffc8d08e37f6c553dc775faa",
+    "sizing_model.py": "a93fb9fd4b118483ab977dbe237bff0f86baa351408c66b3556dc7efb4909140",
+    "case-plan.json": "69783129291e8185360beb6364d22fa0df757700831747eea898bf5ffd716fb3",
+    "README.md": "83198940c990128ba0ddbf2ec2e4547b5b7989852c0f4ed9a8cf1dcae09e1c17"
+  },
+  "input_catalog_sha256": "e18294281673bec77ac0ce4aabc952496f5d4048ab98e3dabb1d659940e8e49d",
+  "approved_by": "root",
+  "execution_authorized": true,
+  "approval": "Root message: Authorized to create execution-lock.successor2.approved.json from the exact reviewed current source-ready SHA6be76698\u2026feb1 and record my approval message with preserved predecessor lock. No other source/input change."
+}

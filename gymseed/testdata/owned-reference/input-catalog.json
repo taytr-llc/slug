@@ -1,0 +1,188 @@
+{
+  "version": 1,
+  "status": "publisher literal correction independently crosschecked against unchanged locked old public seed pin; source review pending",
+  "inputs": [
+    {
+      "path": "contracts/owned.md",
+      "bytes": 32795,
+      "sha256": "d8c43ccfe50cc651024de7531f6d0025c71d938f775e159ad47e76aa5430ef25",
+      "origin": "/Users/taytrrip/slug/slug/OWNED_FIGHTER_CONSUMERS.md",
+      "role": "adopted field/domain and result-career transition contract"
+    },
+    {
+      "path": "contracts/public-core.md",
+      "bytes": 47731,
+      "sha256": "4d82b4ebc907356dc89e714e004955bae35c16a0dcfa091ff68da69710f98853",
+      "origin": "/Users/taytrrip/slug/slug/PUBLIC_FIGHTER_OWNERSHIP.md",
+      "role": "inherited exact cutoff id domain"
+    },
+    {
+      "path": "crypto/crypto.py",
+      "bytes": 10124,
+      "sha256": "ea87b9021e14712b1ac7130daa73cd12fb8acf2fd8995ca5ce9e32d0d770fd1c",
+      "origin": "/Users/taytrrip/slug/slug/gymseed/testdata/reference/crypto.py",
+      "role": "unchanged published Set45 independent Ed25519/secp256k1 arithmetic; import only after execution gate"
+    },
+    {
+      "path": "inherited/gymbout/identity.go",
+      "bytes": 2234,
+      "sha256": "8955a3b7ab1fc3c19c1ef6952bbf61e3ab4f1337f2f67920fd6971258dd08e08",
+      "origin": "git HEAD:gymbout/identity.go",
+      "role": "pre73 type/order or fixed physical recipe; not new implementation"
+    },
+    {
+      "path": "inherited/gymbout/types.go",
+      "bytes": 4590,
+      "sha256": "1404574a6dee76ccd510a8a9b8dfb5c2d6a8b11dba952e5e76ae3af8ebf93c64",
+      "origin": "git HEAD:gymbout/types.go",
+      "role": "pre73 type/order or fixed physical recipe; not new implementation"
+    },
+    {
+      "path": "inherited/gymcard/identity.go",
+      "bytes": 2439,
+      "sha256": "5988e00bf620e236604e19ac6ddb12b941184ce6e6ec625d371aade6c64aceb6",
+      "origin": "git HEAD:gymcard/identity.go",
+      "role": "pre73 type/order or fixed physical recipe; not new implementation"
+    },
+    {
+      "path": "inherited/gymcard/types.go",
+      "bytes": 6404,
+      "sha256": "d9f97e6cc7565f77ae7057883915ea5a193514904e686aca7306947db722ecef",
+      "origin": "git HEAD:gymcard/types.go",
+      "role": "pre73 type/order or fixed physical recipe; not new implementation"
+    },
+    {
+      "path": "inherited/gymevent/types.go",
+      "bytes": 6445,
+      "sha256": "d399967e54ef8296b44812a9b88daed63bf03ac81c1e29d6912c39f9289d89be",
+      "origin": "git HEAD:gymevent/types.go",
+      "role": "pre73 type/order or fixed physical recipe; not new implementation"
+    },
+    {
+      "path": "inherited/gymevent/validate.go",
+      "bytes": 11620,
+      "sha256": "03455a87e0ac2f41c0b0830ae39636b0af13c1b7973866e7d8117a0f64802d73",
+      "origin": "git HEAD:gymevent/validate.go",
+      "role": "pre73 type/order or fixed physical recipe; not new implementation"
+    },
+    {
+      "path": "inherited/gymresult/identity.go",
+      "bytes": 5110,
+      "sha256": "c91db2517471ee0418b8e3bf80ce8347e3abf260c040331b27e4ca0932dd835c",
+      "origin": "git HEAD:gymresult/identity.go",
+      "role": "pre73 type/order or fixed physical recipe; not new implementation"
+    },
+    {
+      "path": "inherited/gymresult/types.go",
+      "bytes": 13076,
+      "sha256": "ca63b5bbfafcbbdd749fa471b6652743ef8c39c0fa1031129a547a9fd68666df",
+      "origin": "git HEAD:gymresult/types.go",
+      "role": "pre73 type/order or fixed physical recipe; not new implementation"
+    },
+    {
+      "path": "inherited/gymseed/identity.go",
+      "bytes": 5442,
+      "sha256": "89c6a2842168fa6027150a2f7cefd6ed30ed2d29f580f996235cf03653428aa2",
+      "origin": "git HEAD:gymseed/identity.go",
+      "role": "pre73 type/order or fixed physical recipe; not new implementation"
+    },
+    {
+      "path": "inherited/gymseed/types.go",
+      "bytes": 10976,
+      "sha256": "7082afd592303779486ac868c2070b4c610a6121ea40910b57be42ee2c40220a",
+      "origin": "git HEAD:gymseed/types.go",
+      "role": "pre73 type/order or fixed physical recipe; not new implementation"
+    },
+    {
+      "path": "inherited/gymstable/cutoff_types.go",
+      "bytes": 1498,
+      "sha256": "28ad482c9de6051561eaca7fcc157b19c1c200fbc033faa94807e5e69701c5c4",
+      "origin": "git HEAD:gymstable/cutoff_types.go",
+      "role": "pre73 type/order or fixed physical recipe; not new implementation"
+    },
+    {
+      "path": "inherited/internal/careerstate/state.go",
+      "bytes": 11341,
+      "sha256": "eaedd8f52777cbb11b1e085474a1b51d2a144bd5179542156f5c2d8713463528",
+      "origin": "git HEAD:internal/careerstate/state.go",
+      "role": "pre73 type/order or fixed physical recipe; not new implementation"
+    },
+    {
+      "path": "old-model/bout.py",
+      "bytes": 13569,
+      "sha256": "ff1bf9705985ba087e10af61d692171f87513e500d8108dec282fd8fac1da36f",
+      "origin": "/Users/taytrrip/slug/slug/gymbout/testdata/reference/common.py",
+      "role": "published pre73 independent recipe provenance; never imported"
+    },
+    {
+      "path": "old-model/card.py",
+      "bytes": 10860,
+      "sha256": "44f336de5601292540f77181c3eec13d15e1f9f690771bcd0727da1bbc0f5748",
+      "origin": "/Users/taytrrip/slug/slug/gymcard/testdata/reference/common.py",
+      "role": "published pre73 independent recipe provenance; never imported"
+    },
+    {
+      "path": "old-model/result.py",
+      "bytes": 8079,
+      "sha256": "d8fc772dd33919fa2d048eed9cee3d41c577cdc9d35a5b03edb793223662d9d9",
+      "origin": "/Users/taytrrip/slug/slug/gymresult/testdata/reference/crypto_result.py",
+      "role": "published pre73 independent recipe provenance; never imported"
+    },
+    {
+      "path": "old-model/seed.py",
+      "bytes": 7850,
+      "sha256": "d83bcfb4b255d6f95adfe7986764d46d1bf31d7aa858bab55a38421148313caf",
+      "origin": "/Users/taytrrip/slug/slug/gymseed/testdata/reference/common.py",
+      "role": "published pre73 independent recipe provenance; never imported"
+    },
+    {
+      "path": "old-public/bout-record.json",
+      "bytes": 153578,
+      "sha256": "2675c392cb7ce82e779898d03170daba76eed6155c947221d6e5ecbe55733692",
+      "origin": "/Users/taytrrip/slug/slug/gymresult/testdata/reference/inputs/actual47/bout_record.json",
+      "role": "original public actual47 source bytes used ONLY as opaque structural result-body template; no new authority or simulated outcome claim"
+    },
+    {
+      "path": "old-public/card-pin.json",
+      "bytes": 4242,
+      "sha256": "89ba839c6f1cd143d16ee9431363dff672f40496afc2686675e61707a4e09cc8",
+      "origin": "/Users/taytrrip/slug/slug/gymbout/testdata/reference/inputs/card46/pin.json",
+      "role": "old independently generated nested pin; inherited rules crosscheck"
+    },
+    {
+      "path": "old-public/card-rules.json",
+      "bytes": 460,
+      "sha256": "c8c109ccbf405784a82e44a8e40481f8b5a284232a92434d921300694b526581",
+      "origin": "/Users/taytrrip/slug/slug/gymbout/testdata/reference/inputs/card46/rules.json",
+      "role": "old independently generated physical rules"
+    },
+    {
+      "path": "old-public/seed-pin.json",
+      "bytes": 3964,
+      "sha256": "4daa740ed3362ff2059f828ced6a095e5daa40181c40cdb6094a4bad397f570c",
+      "origin": "/Users/taytrrip/slug/slug/gymcard/testdata/reference/inputs/seed45/Pin-candidate.json",
+      "role": "old independently generated pin; inherited rules/fixture identity crosscheck"
+    },
+    {
+      "path": "recipe.json",
+      "bytes": 1264,
+      "sha256": "de0c780ada6738f470836663f54f3aa2ae897add75bb7fc78ce1993946280a75",
+      "origin": "literal recipe before first execution; source-only summary provenance correction preserved in owned-downstream-before-summary",
+      "role": "only explicit conditional times/IDs; no actual observed chain facts"
+    },
+    {
+      "path": "upstream/owned-consumers-v1.json",
+      "bytes": 2695617,
+      "sha256": "44f3d12b96a94f6d2d071270b6c90296cae1db50249ff4725ec5e28adc9bfa15",
+      "origin": "/Users/taytrrip/slug/slug/gymstable/testdata/owned-reference/owned-consumers-v1.json",
+      "role": "approved independent upstream composition; no Go output"
+    },
+    {
+      "path": "upstream/qualification.json",
+      "bytes": 1399,
+      "sha256": "08dbf39cdeb700f21d6a60d98b637f09d8619d4d002a1abc0919e347d9e93d4e",
+      "origin": "/Users/taytrrip/slug/slug/gymstable/testdata/owned-reference/qualification.json",
+      "role": "independent cross-version/portable provenance"
+    }
+  ]
+}

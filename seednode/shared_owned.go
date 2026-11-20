@@ -164,7 +164,7 @@ func awaitSharedIssuer(ctx, life context.Context, read func() (registry.Manifest
 }
 
 func (p *Publisher) finishShared(ctx context.Context) error {
-	if p.shared != nil {
+	if p.shared != nil || p.ownership != nil {
 		return p.checkOwnerContext(ctx)
 	}
 	return nil

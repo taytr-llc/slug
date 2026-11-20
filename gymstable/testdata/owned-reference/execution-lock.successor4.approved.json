@@ -1,0 +1,14 @@
+{
+  "approved_by": "root",
+  "execution_authorized": true,
+  "input_catalog_sha256": "2b79ed5d6b9454ed17465f6c1c464ccb2c130f4dcc80552a753e838e308e24f8",
+  "sources": {
+    "README.md": "750dcc6db055f4de19c8162e1fc36120c958132f1668380eb93d95319dc7ba08",
+    "case-plan.json": "ee94b88cdc334fdb393d44292cb4e900286cf306568b0cd4986aa97903a4487e",
+    "consumer_model.py": "2bbb295eefc6356d7a05ea9a44571c0eba85672b1a8732d51d59a92a825f3b34",
+    "generate_reference.py": "cc9a3251ac8e5c3f76364a689028da0c9e54e45e413f349e9c95ed02ff083849",
+    "sizing_model.py": "a93fb9fd4b118483ab977dbe237bff0f86baa351408c66b3556dc7efb4909140"
+  },
+  "status": "root-approved source successor4; derive namespace by inherited independent reference formula; original corpus failure preserved",
+  "version": 1
+}
