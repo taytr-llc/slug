@@ -298,7 +298,7 @@ func (s *Store) runSettlement(ctx context.Context, recoveryOnly bool) (Report, e
 	if err != nil {
 		return Report{}, err
 	}
-	raw, err := s.backend.Sign(ctx, clone(ready), append([]byte{}, unsigned...))
+	raw, err := s.signSettlementRequest(ctx, ready, payments, change, fee, unsigned)
 	if err != nil {
 		return s.finish(ctx, st, day, "deferred", "signing-unavailable", ready, reasons)
 	}

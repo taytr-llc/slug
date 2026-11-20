@@ -163,6 +163,30 @@ stage is preserved externally. This component qualification does not establish
 an actual funded operator transfer, remote service deployment or native V2 gym
 integration.
 
+## Completed component: immediate settlement signing authority
+
+The original settlement now attaches a private, active capability only around
+its synchronous backend Sign call. It binds the exact store/backend pointers,
+source/configuration, verified inputs/claims, plan and unsigned bytes. The
+dedicated wallet can check this without reentering the already-held settlement
+gate. Retained or cancellation-stripped contexts cannot revive it; it expires
+before signature validation, durable batch publication or broadcast. Existing
+backends still receive the same inputs and the financial ledger is unchanged.
+
+`CheckBackendBinding` audits the original store during constructor binding;
+`ConfigBindingID` provides only public configuration correlation. No DTO or
+matching digest grants signing authority. The independent wallet16 corpus
+reproduced byte-identically under Python 3.14 and 3.9 and supplies three config
+positives and six refusals here; wallet-specific vectors await their consumer.
+
+`artifacts/set74/signing-capability-attempt1/report.json` passed: normal 8.836
+seconds, race 29.072 seconds, cheap-profile/config controls 2.752 seconds and vet
+0.451 seconds. All 3,883 inputs/profile remained unchanged; four process groups
+joined cleanly. Controls include active/expired/foreign capability, cancellation,
+noncomparable backend refusal, no reentrant gate, and the existing durable-before-
+broadcast, exact retry, midnight, uncertain-write and signer-mutation tests.
+This capability is not the dedicated wallet implementation or an actual payout.
+
 ## Remaining integration
 
 - Compose the qualified operator issuer/replay with standalone pool issuance and

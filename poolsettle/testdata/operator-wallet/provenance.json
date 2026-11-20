@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "scope": "single canonical independent synthetic wallet16/config/transaction corpus; no Go-derived expected bytes",
+  "output_sha256": "c1f2d725fcdbc3af7ba1b0a30f4dd4dfc6983352ffb0b4f72d83f7c09ac7b087",
+  "bytes": 603047,
+  "byte_identical_python314_and39": true,
+  "inputs": {
+    "set74-prep/pool-wallet/BYTES.md": {
+      "bytes": 5525,
+      "sha256": "0f3d61cc7adcb7ec6c6f598f5a04dca0a34c6a426697b9a1a223bc380b0803b5"
+    },
+    "set74-prep/pool-wallet-reference/input-catalog.json": {
+      "bytes": 3341,
+      "sha256": "eb28f75850d5c3bf9ef8e098ac005adc4eb58a409c8119dd4942c5ffa0c687c4"
+    },
+    "set74-prep/pool-wallet-reference/execution-lock.approved.json": {
+      "bytes": 4262,
+      "sha256": "11185001dfbcdd92f663e7cd787bdcc0c844d80022be58349e9d842b7841e611"
+    },
+    "set74-prep/pool-wallet-reference/model.py": {
+      "bytes": 12715,
+      "sha256": "0a560f350ab0c1eff2025528d8f58b3ea14c237214f31d197ce0c5094fc47e25"
+    },
+    "set74-prep/pool-wallet-reference/generate.py": {
+      "bytes": 3419,
+      "sha256": "e08a42368f9720d29b99729a31656129611314691607565740a12fcdf6bec248"
+    },
+    "artifacts/set74/pool-wallet-reference-py314-attempt1/report.json": {
+      "bytes": 647,
+      "sha256": "dc04582398f075c99c3d9f10a83e6b955167aa4c7de6d4aed85237459f988ae9"
+    },
+    "artifacts/set74/pool-wallet-reference-py39-attempt1/report.json": {
+      "bytes": 651,
+      "sha256": "d51c5788f5d52490b276c3d6c9b5bad250fd0c06c2c6006695fb629195db049b"
+    }
+  }
+}
