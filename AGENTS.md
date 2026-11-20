@@ -329,6 +329,11 @@ version.
 
 ## Hosted authentication requirement (D82)
 
+- Mike deferred login-flow/provider/MFA implementation and account-recovery UX
+  work until wallet recovery, fighter ownership/transfer and full gym/fighter
+  restoration are done. Keep the requirements below recorded for later. Existing
+  fixture authentication may support core tests; do not turn it into real-login
+  work or resume screen/navigation design before the final joint D74 review.
 - Mike requires strict mandatory MFA for email/password login and wants passkey
   support (November 19). Record and preserve these release requirements in
   `HOSTED_AUTHENTICATION.md`; the current signed fixture buttons do not prove MFA.

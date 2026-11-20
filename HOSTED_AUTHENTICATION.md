@@ -1,9 +1,17 @@
 # D82 — Mandatory MFA and passkey support
 
-**Status:** Accepted product requirement; proposed delivery design.
+**Status:** Accepted product requirement; delivery design and implementation
+deferred behind wallet/gym/fighter ownership and recovery work.
 **Date:** November 19, 2026 Pacific.
 **Decider:** Mike. Mandatory MFA, passkey support and no support bypass are
 accepted. Provider selection and the exact recovery-proof contract remain open.
+
+Mike subsequently asked to stop focusing on login flow until wallet recovery,
+fighter ownership/transfer and full gym/fighter restoration are complete. Preserve
+the requirements and proposals below as future work; do not advance provider
+selection, signup/MFA implementation or account-recovery UX in parallel. The
+existing fixture sessions can still support tests of the core asset flows. This
+sequencing change does not waive MFA or the final joint D74 design review.
 
 ## Context and accepted requirement
 

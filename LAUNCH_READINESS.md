@@ -16,6 +16,14 @@ unapplied; it is not the next engineering set.
 Routine authorized engineering pushes and Phase-A seed verification continue;
 they do not count as completion of this product-release gate.
 
+**Current work order, Mike's November 19 clarification:** defer login-flow,
+provider, MFA implementation and account-recovery UX work until wallet recovery,
+fighter ownership/transfer and recovery of the same gym and its fighters are
+complete. D82's mandatory MFA, passkey support and no-support-bypass requirements
+remain recorded for later. Existing fixture login may support functional tests;
+it is not the real onboarding deliverable. Key restoration alone does not close
+the fighter-ownership/recovery gate, and D74 remains the final joint review.
+
 ## Current evidence
 
 - Chain core, production-PoW tests and report-only signed checkpoints are built.

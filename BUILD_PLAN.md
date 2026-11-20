@@ -284,16 +284,23 @@ passkey support. Email/password must include a second factor; the proposed
 passkey route requires server-verified user verification. Mike requires a backup
 factor/code with no support bypass. The real provider, exact account-recovery
 proof contract and final screens remain open; distinguish account codes from
-the 24-word wallet backup. Preserve the
-approved same-wallet verified reset and 24-hour hold without an MFA bypass.
+the 24-word wallet backup. Preserve the approved same-wallet verified reset and
+24-hour hold without an MFA bypass.
 See `HOSTED_AUTHENTICATION.md` for accepted requirements, proposed mechanisms and
 the provider/assurance/recovery acceptance work still required.
+Mike has deferred login-flow work until the wallet/gym/fighter ownership and
+recovery foundations are complete. Keep D82 recorded, but stop provider selection,
+signup/MFA flow implementation and account-recovery UX design for now. Continue
+with evolving-wallet recovery, authoritative fighter ownership and direct
+transfers, then end-to-end restoration of the same gym and its owned fighters.
+Using the existing fixture sessions to verify these foundations is not real-login
+work. The final joint D74 review still follows the major functional flows.
 The next recovery milestone is durable address-issuance inventory and deliberate
 recovery when the local wallet is missing. A dated export does not protect
 later allocations continuously, and a seed/cursor restore must never recreate
 missing signed-payment authority. Define and qualify that boundary before
-claiming original-device-loss recovery; real provider route preparation can
-proceed separately. The proposed scope is recorded in the workspace's
+claiming original-device-loss recovery. Provider preparation is deferred under
+Mike's sequencing instruction. The proposed scope is recorded in the workspace's
 `set72-next-functional-review.md`, not yet an adopted byte contract.
 Never repin solo event histories. Keep the existing layout/logos until the final
 joint D74 review. Public hosting, production signer custody/capacity, real account
