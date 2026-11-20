@@ -18,10 +18,11 @@ import (
 func HostedPoolPolicy() prospectnode.Policy { return policy() }
 
 type hostedPoolResources struct {
-	vault    *recoveryvault.HostedVault
-	current  *recoveryvault.CurrentStore
-	owners   map[string]string
-	bindings map[string]recoveryvault.CurrentBinding
+	allocation *HostedAllocationSetup
+	vault      *recoveryvault.HostedVault
+	current    *recoveryvault.CurrentStore
+	owners     map[string]string
+	bindings   map[string]recoveryvault.CurrentBinding
 	// One accounted 16MiB recovery operation across all child generations; no queue.
 	recoveryPermit chan struct{}
 	failedWallet   *walletRuntime
@@ -88,7 +89,10 @@ func (r *PoolRuntime) HostedBinding(fixture string) (recoveryvault.CurrentBindin
 func (r *PoolRuntime) AttachHostedCurrent(store *recoveryvault.CurrentStore, bindings []recoveryvault.CurrentBinding) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
-	if r.closed || r.hosted == nil || r.hosted.current != nil || store == nil || len(bindings) != 2 || r.hosted.failure != nil {
+	if r.closed || r.hosted == nil || store == nil || len(bindings) != 2 || r.hosted.failure != nil {
+		return ErrPoolRuntime
+	}
+	if r.hosted.current != nil && r.hosted.current != store {
 		return ErrPoolRuntime
 	}
 	if bindings[0] != r.hosted.bindings["zero256"] || bindings[1] != r.hosted.bindings["incrementing256"] {
@@ -188,4 +192,18 @@ func (h *hostedPoolResources) acquireRecovery() (func(), error) {
 	default:
 		return nil, ErrPoolRuntimeBusy
 	}
+}
+
+// NewHostedRecoveryPoolRuntime borrows independently initialized inventories;
+// their parent owner outlives this runtime and all children.
+func NewHostedRecoveryPoolRuntime(ctx context.Context, config Config, accounts *gymaccount.Store, options PoolOptions, vault *recoveryvault.HostedVault, zeroOwner, incrementingOwner string, allocation *HostedAllocationSetup) (*PoolRuntime, error) {
+	if allocation == nil || allocation.accounts != accounts {
+		return nil, ErrPoolRuntime
+	}
+	r, e := NewHostedPoolRuntime(ctx, config, accounts, options, vault, zeroOwner, incrementingOwner)
+	if e != nil {
+		return nil, e
+	}
+	r.hosted.allocation = allocation
+	return r, nil
 }

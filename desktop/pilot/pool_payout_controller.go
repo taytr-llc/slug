@@ -155,7 +155,7 @@ func (c *PoolChild) BeginPoolPayoutHistory(ctx context.Context, v, id string) (P
 			out = j
 			return nil
 		}
-		if c.backup != nil || c.payoutOp != nil {
+		if c.receiveOp != nil || c.backup != nil || c.payoutOp != nil {
 			return gymstable.ErrBusy
 		}
 		if c.payoutScratch != 0 {
@@ -187,7 +187,7 @@ func (c *PoolChild) BeginPoolPayoutHistory(ctx context.Context, v, id string) (P
 	return out, nil
 }
 func (c *PoolChild) payoutOperationLocked(op *poolPayoutOperation) error {
-	if c.payoutOp != op || c.backup != nil || c.payoutBindingLocked() != op.job.Binding {
+	if c.payoutOp != op || c.receiveOp != nil || c.backup != nil || c.payoutBindingLocked() != op.job.Binding {
 		return gymstable.ErrStaleView
 	}
 	return op.ctx.Err()
@@ -330,7 +330,7 @@ func (c *PoolChild) ReadPoolPayoutTransaction(parent context.Context, v, id, txi
 	var out PoolPayoutObservation
 	admitted := false
 	e := c.payoutFence(ctx, v, func() error {
-		if c.backup != nil || c.payoutOp != nil {
+		if c.receiveOp != nil || c.backup != nil || c.payoutOp != nil {
 			return gymstable.ErrBusy
 		}
 		if c.payoutScratch != 0 {

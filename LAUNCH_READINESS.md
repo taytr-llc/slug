@@ -24,6 +24,13 @@ remain recorded for later. Existing fixture login may support functional tests;
 it is not the real onboarding deliverable. Key restoration alone does not close
 the fighter-ownership/recovery gate, and D74 remains the final joint review.
 
+**D83 transfer policy, approved November 19:** first valid competing send in
+canonical chain order wins; later competing sends are void. Transfers remain
+pending until a signed checkpoint and sixty descendants, and noon locks use the
+owner of record at lock time. This settles ordering/effectiveness, not delivery
+of the ownership, transfer or independent restored-wallet flow. See
+`FIGHTER_TRANSFER_POLICY.md`.
+
 ## Current evidence
 
 - Chain core, production-PoW tests and report-only signed checkpoints are built.
@@ -449,6 +456,17 @@ the fighter-ownership/recovery gate, and D74 remains the final joint review.
   proof, cross-device service behavior, continuous disaster recovery
   and production key custody remain release work. The full joint D74 review
   stays last.
+
+- Set72 adds explicit schema13 hosted allocation recovery: address coverage is
+  reserved before receive/change use, and a surviving fixture account can export
+  and verify a current file after exact wallet-file or directory loss. The funded
+  rehearsal proved loss without a preloss export, current change recovery and an
+  independent restored spend. Full wallet, frontend, smoke and the documented
+  desktop/package composite passed. Preserve the failed legacy setup attempts
+  and narrow correction; see `CHANGESET_72_NOTES.md`. This remains co-located
+  fixture recovery with required surviving journals, not off-device hosted
+  disaster recovery or installed-wallet replacement. D83 ownership/transfers
+  and independent same-gym/fighter restoration follow; login and D74 stay deferred.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace

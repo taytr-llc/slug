@@ -29,6 +29,9 @@ func LaunchPoolWithOptions(helper, dataDir, node string, options pilot.PoolOptio
 func LaunchHostedPoolWithOptions(helper, dataDir, node string, options pilot.PoolOptions) (*PoolBridge, error) {
 	return launchPoolMode(helper, dataDir, node, options, pilot.HostedPoolMode)
 }
+func LaunchHostedRecoveryWithOptions(helper, dataDir, node string, options pilot.PoolOptions) (*PoolBridge, error) {
+	return launchPoolMode(helper, dataDir, node, options, pilot.HostedRecoveryPoolMode)
+}
 
 func launchPoolMode(helper, dataDir, node string, options pilot.PoolOptions, mode string) (*PoolBridge, error) {
 	options, e := pilot.ResolvePoolOptions(options)
@@ -36,7 +39,9 @@ func launchPoolMode(helper, dataDir, node string, options pilot.PoolOptions, mod
 		return nil, ErrUnavailable
 	}
 	flag := "--candidate-pool"
-	if mode == pilot.HostedPoolMode {
+	if mode == pilot.HostedRecoveryPoolMode {
+		flag = "--candidate-hosted-recovery"
+	} else if mode == pilot.HostedPoolMode {
 		flag = "--candidate-hosted-pool"
 	} else if mode != pilot.PoolMode {
 		return nil, ErrUnavailable

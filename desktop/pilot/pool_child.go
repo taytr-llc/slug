@@ -39,6 +39,11 @@ type poolChildWorker interface {
 // PoolChild owns one original account view. Shared chain and source resources
 // are borrowed until every worker, proof lane and wallet operation has joined.
 type PoolChild struct {
+	allocationScope                            HostedAllocationScope
+	allocationStatus                           wallet.AllocationInventoryStatus
+	receiveOp                                  *hostedReceiveOperation
+	receiveLast                                *HostedReceiveJob
+	receiveLastCommand                         string
 	hostedCurrent                              *recoveryvault.CurrentSource
 	activityOp                                 *walletActivityOperation
 	activityCache                              *walletActivityCache
@@ -163,6 +168,9 @@ func newPoolChild(ctx context.Context, r poolChildResources, account StableAccou
 	c := &PoolChild{account: account, resources: r, authority: authority, admission: &poolChildAdmission{fence: admissionFence, config: wc}, ctx: life, cancel: cancel, refreshDone: make(chan struct{}), closeDone: make(chan struct{}), snapshot: BlankPoolSnapshot()}
 	if r.Hosted != nil {
 		c.snapshot.Mode = HostedPoolMode
+		if r.Hosted.allocation != nil {
+			c.snapshot.Mode = HostedRecoveryPoolMode
+		}
 	}
 	return c, nil
 }
@@ -212,7 +220,19 @@ func (c *PoolChild) Prepare(parent context.Context) error {
 	if err != nil {
 		return err
 	}
-	c.wallet, err = openAccountFixtureWallet(filepath.Join(r.Config.DataDir, "wallet"), a.Account.Fixture, false)
+	if r.Hosted != nil && r.Hosted.allocation != nil {
+		sourceID, e := poolservice.BindingID(r.Source)
+		if e != nil {
+			return e
+		}
+		locked, bound, _, e := r.Hosted.allocation.walletGuards(a.Account.Fixture, a.Account.AccountID, r.Hosted.owners[a.Account.Fixture], sourceID)
+		if e != nil {
+			return e
+		}
+		c.wallet, err = openHostedAllocationWallet(ctx, filepath.Join(r.Config.DataDir, "wallet"), a.Account.Fixture, false, locked, bound, false)
+	} else {
+		c.wallet, err = openAccountFixtureWallet(filepath.Join(r.Config.DataDir, "wallet"), a.Account.Fixture, false)
+	}
 	if err != nil {
 		return err
 	}
@@ -220,6 +240,9 @@ func (c *PoolChild) Prepare(parent context.Context) error {
 		return err
 	}
 	if err = waitPoolChildWallet(ctx, c.wallet); err != nil {
+		return err
+	}
+	if err = c.attachHostedAllocator(ctx); err != nil {
 		return err
 	}
 	binding, err := ensurePoolRecipientBinding(ctx, r.Config.DataDir, r.Recipient.Config, a, c.wallet, false)
@@ -456,7 +479,7 @@ func (c *PoolChild) Start() error {
 		s.stableMu.Lock()
 		evidenceBusy := s.evidenceBusyLocked()
 		s.stableMu.Unlock()
-		if c.backup != nil || c.backupCloseErr != nil || evidenceBusy {
+		if c.receiveOp != nil || c.backup != nil || c.backupCloseErr != nil || evidenceBusy {
 			return gymstable.ErrBusy
 		}
 		if c.run != nil {
@@ -554,6 +577,7 @@ func (c *PoolChild) copyWorkerLocked(run *poolChildRun, s prospectworker.Status)
 }
 func (c *PoolChild) Stop() { c.stopMu.Lock(); defer c.stopMu.Unlock(); c.stop() }
 func (c *PoolChild) stop() {
+	c.cancelHostedReceive()
 	c.cancelWithdrawal()
 	c.cancelPoolBackup()
 	c.cancelPoolPayout()

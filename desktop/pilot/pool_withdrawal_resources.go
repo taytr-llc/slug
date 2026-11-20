@@ -20,7 +20,7 @@ type poolWithdrawalResources struct {
 	Journal  *walletwithdraw.Journal
 	Scope    poolWithdrawalScope
 	wallet   *walletRuntime
-	seam     *wallet.CandidateWithdrawals
+	seam     poolWithdrawalWallet
 	node     *withdrawalNode
 	life     context.Context
 	cancel   context.CancelFunc
@@ -34,7 +34,12 @@ func openPoolWithdrawal(ctx context.Context, r poolChildResources, w *walletRunt
 	if ctx == nil || ctx.Err() != nil || r.Life == nil || r.Life.Err() != nil || r.Withdrawal == nil || r.Withdrawal.check() != nil || w == nil || !w.mu.TryLock() {
 		return nil, walletwithdraw.ErrInvalid
 	}
-	defer w.mu.Unlock()
+	locked := true
+	defer func() {
+		if locked {
+			w.mu.Unlock()
+		}
+	}()
 	scope := *r.Withdrawal
 	pin := scope.Identity.Pin
 	source, sourceErr := poolservice.BindingID(r.Source)
@@ -66,7 +71,14 @@ func openPoolWithdrawal(ctx context.Context, r poolChildResources, w *walletRunt
 	if e != nil {
 		return nil, e
 	}
-	p.seam, e = w.wallet.OpenCandidateWithdrawals(ctx, scope.BindingID)
+	if w.allocation != nil {
+		allocator := w.allocation
+		w.mu.Unlock()
+		locked = false
+		p.seam, e = openAllocatedWithdrawalWallet(ctx, allocator, scope.BindingID, false)
+	} else {
+		p.seam, e = w.wallet.OpenCandidateWithdrawals(ctx, scope.BindingID)
+	}
 	if e != nil {
 		return nil, e
 	}
@@ -157,6 +169,14 @@ func (p *poolWithdrawalResources) begin(ctx context.Context) (context.Context, f
 	return work, func() { stop(); cancel(); <-p.gate }, nil
 }
 func (p *poolWithdrawalResources) withWallet(ctx context.Context, fn func(*wallet.Wallet) error) error {
+	if p.wallet.allocation != nil {
+		// The admitted resource owner outlives this call; allocator methods own their
+		// wallet transactions and original fences, with no outer wallet mutex held.
+		if ctx.Err() != nil {
+			return ctx.Err()
+		}
+		return fn(p.wallet.wallet)
+	}
 	w := p.wallet
 	if !w.mu.TryLock() {
 		return walletwithdraw.ErrBusy
@@ -282,8 +302,10 @@ func (p *poolWithdrawalResources) Sign(ctx context.Context, d walletwithdraw.Dra
 	if e = p.inspect(work, d); e != nil {
 		return nil, e
 	}
-	if e = p.watchChange(work, d); e != nil {
-		return nil, e
+	if p.wallet.allocation == nil {
+		if e = p.watchChange(work, d); e != nil {
+			return nil, e
+		}
 	}
 	digest, e := walletwithdraw.DraftDigest(d)
 	if e != nil {
@@ -403,4 +425,16 @@ func (p *poolWithdrawalResources) Close() error {
 		p.node.close()
 	})
 	return p.closeErr
+}
+
+func (p *poolWithdrawalResources) AbandonUnprepared(ctx context.Context, id string) error {
+	work, end, e := p.begin(ctx)
+	if e != nil {
+		return e
+	}
+	defer end()
+	if s, ok := p.seam.(*allocatedWithdrawalWallet); ok {
+		return s.abandonUnprepared(work, id)
+	}
+	return nil
 }

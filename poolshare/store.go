@@ -130,7 +130,11 @@ func Create(path string, c Config, authority *registry.ManifestStore, node Node,
 // verifies every retained proof/index before exposing evidence. No migration,
 // repair, live node call or acceptance replay occurs during this audit.
 func Open(path string, c Config, authority *registry.ManifestStore, node Node, sessions prospectservice.SessionAuthorizer) (*Pool, error) {
-	if err := validateConfig(c, authority, node, sessions); err != nil {
+	return openMode(path, c, authority, node, sessions, false)
+}
+
+func openMode(path string, c Config, authority *registry.ManifestStore, node Node, sessions prospectservice.SessionAuthorizer, auditOnly bool) (*Pool, error) {
+	if err := validateConfigMode(c, authority, node, sessions, auditOnly); err != nil {
 		return nil, err
 	}
 	if !directory(path) || !directory(filepath.Join(path, "db")) {
@@ -153,12 +157,12 @@ func Open(path string, c Config, authority *registry.ManifestStore, node Node, s
 	if decode(raw, maxMetadataSize, &m) != nil || m.Application != application || m.Version != Version1 || m.Config != c {
 		return nil, ErrCorrupt
 	}
-	db, err := leveldb.OpenFile(filepath.Join(path, "db"), &opt.Options{ErrorIfMissing: true, Strict: opt.StrictAll})
+	db, err := leveldb.OpenFile(filepath.Join(path, "db"), &opt.Options{ErrorIfMissing: true, ReadOnly: auditOnly, Strict: opt.StrictAll})
 	if err != nil {
 		return nil, ErrCorrupt
 	}
 	p := newPool(c, authority, node, sessions)
-	p.db, p.writeBatch = db, db.Write
+	p.db, p.writeBatch, p.auditOnly = db, db.Write, auditOnly
 	if err := p.audit(); err != nil {
 		_ = db.Close()
 		return nil, err
@@ -186,6 +190,9 @@ func (p *Pool) mark(stage string) {
 }
 
 func (p *Pool) commit(batch *leveldb.Batch, next metadata) error {
+	if p.auditOnly {
+		return ErrInvalid
+	}
 	if p.poisoned {
 		return ErrPoisoned
 	}

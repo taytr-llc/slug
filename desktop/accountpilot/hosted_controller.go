@@ -22,6 +22,7 @@ import (
 )
 
 type hostedPoolOwner struct {
+	allocation  *hostedAllocationOwner
 	init        HostedInit
 	ready       HostedReady
 	hadReady    bool
@@ -54,7 +55,13 @@ func hostedIdentityConfig(verifier string) gymaccount.IdentityConfig {
 func hostedVaultConfig() recoveryvault.Config {
 	return recoveryvault.Config{Version: 1, WrapperID: hostedWrapperID, RecoveryKeyRef: "fixture-recovery-v1", GymKeyRef: "fixture-gym-v1", AllowedRecoveryKeyRefs: []string{"fixture-recovery-v1"}, AllowedGymKeyRefs: []string{"fixture-gym-v1"}, MaxOperations: 128, Policy: pilot.HostedPoolPolicy()}
 }
-func NewHostedFixturePool(ctx context.Context, config pilot.Config, options pilot.PoolOptions) (_ *PoolController, resultErr error) {
+func NewHostedFixturePool(ctx context.Context, config pilot.Config, options pilot.PoolOptions) (*PoolController, error) {
+	return newHostedFixturePool(ctx, config, options, false)
+}
+func NewHostedRecoveryPool(ctx context.Context, config pilot.Config, options pilot.PoolOptions) (*PoolController, error) {
+	return newHostedFixturePool(ctx, config, options, true)
+}
+func newHostedFixturePool(ctx context.Context, config pilot.Config, options pilot.PoolOptions, allocation bool) (_ *PoolController, resultErr error) {
 	options, e := pilot.ResolvePoolOptions(options)
 	if e != nil {
 		return nil, e
@@ -64,7 +71,11 @@ func NewHostedFixturePool(ctx context.Context, config pilot.Config, options pilo
 	}
 	ctx, cancel := context.WithTimeout(ctx, 180*time.Second)
 	defer cancel()
-	lock, e := openHostedRoot(config.DataDir, options)
+	openRoot := openHostedRoot
+	if allocation {
+		openRoot = openHostedAllocationRoot
+	}
+	lock, e := openRoot(config.DataDir, options)
 	if e != nil {
 		return nil, e
 	}
@@ -84,6 +95,9 @@ func NewHostedFixturePool(ctx context.Context, config pilot.Config, options pilo
 		}
 	}()
 	h := c.hosted
+	if allocation {
+		h.allocation = &hostedAllocationOwner{}
+	}
 	v, e := gymidentity.NewVerifier(gymprovider.FixtureVerifierConfig())
 	if e != nil {
 		return nil, e
@@ -91,6 +105,15 @@ func NewHostedFixturePool(ctx context.Context, config pilot.Config, options pilo
 	h.init, _, e = readHostedInit(config.DataDir)
 	if e != nil {
 		return nil, e
+	}
+	if allocation && h.init.Version == 0 {
+		guard, exists, e := readHostedAllocationGuard(config.DataDir)
+		if e != nil {
+			return nil, e
+		}
+		if exists {
+			h.init = guard.HostedInit
+		}
 	}
 	if h.init.Version == 0 {
 		ids := make([]string, 5)
@@ -105,8 +128,25 @@ func NewHostedFixturePool(ctx context.Context, config pilot.Config, options pilo
 			return nil, e
 		}
 		h.init = HostedInit{Version: 1, Mode: pilot.HostedPoolMode, DescriptorID: options.CandidateDescriptorID, AuthorityID: ids[0], CoordinatorID: ids[1], HostedVaultID: ids[2], ProviderDriverID: hostedDriverID, WrapperID: hostedWrapperID, VerifierConfigHash: v.ConfigDigest(), IdentityConfigSHA256: hostedCanonicalHash(hostedIdentityConfig(v.ConfigDigest())), ProviderConfigSHA256: hostedCanonicalHash(pc), VaultConfigSHA256: hostedCanonicalHash(hostedVaultConfig()), Wallets: []WalletOwnerPin{{"zero256", ids[3]}, {"incrementing256", ids[4]}}}
+		if allocation {
+			if e = c.prepareHostedAllocationGuard(); e != nil {
+				return nil, e
+			}
+		}
 		if e = writeHostedInit(config.DataDir, h.init); e != nil {
 			return nil, e
+		}
+	}
+	if allocation {
+		if e = c.prepareHostedAllocationGuard(); e != nil {
+			return nil, e
+		}
+		if _, exists, e := readHostedInit(config.DataDir); e != nil {
+			return nil, e
+		} else if !exists {
+			if e = writeHostedInit(config.DataDir, h.init); e != nil {
+				return nil, e
+			}
 		}
 	}
 	pc, e := hostedProviderConfig(h.init.AuthorityID)
@@ -117,7 +157,7 @@ func NewHostedFixturePool(ctx context.Context, config pilot.Config, options pilo
 	if h.init.DescriptorID != options.CandidateDescriptorID || h.init.VerifierConfigHash != v.ConfigDigest() || h.init.IdentityConfigSHA256 != hostedCanonicalHash(ic) || h.init.ProviderConfigSHA256 != hostedCanonicalHash(pc) || h.init.VaultConfigSHA256 != hostedCanonicalHash(hostedVaultConfig()) {
 		return nil, pilot.ErrManifestInitialization
 	}
-	h.prefix, e = readHostedSetupPrefix(config.DataDir, h.init)
+	h.prefix, e = readHostedSetupPrefixMode(config.DataDir, h.init, allocation)
 	if e != nil {
 		return nil, e
 	}
@@ -210,7 +250,7 @@ func (c *PoolController) hostedStage(stage, identity string) error {
 	if h.hadReady {
 		return pilot.ErrManifestInitialization
 	}
-	if e := writeHostedSetupReceipt(c.config.DataDir, want); e != nil {
+	if e := writeHostedSetupReceiptMode(c.config.DataDir, want, h.allocation != nil); e != nil {
 		return e
 	}
 	h.prefix = append(h.prefix, want)
@@ -315,6 +355,25 @@ func (c *PoolController) resumeHostedSetup(ctx context.Context) (resultErr error
 	c.mu.Unlock()
 	defer func() { c.mu.Lock(); h.setupEpoch = ""; c.mu.Unlock() }()
 	fence := c.hostedSetupFence(epoch)
+	if h.allocation != nil && h.allocation.setup == nil {
+		pins := make([]pilot.HostedInventoryPin, 0, 2)
+		for _, p := range h.allocation.guard.Inventories {
+			pins = append(pins, pilot.HostedInventoryPin{Fixture: p.Fixture, InventoryID: p.InventoryID})
+		}
+		completed := []string{}
+		for _, r := range h.prefix {
+			if r.Stage == "fixture-zero256" {
+				completed = append(completed, "zero256")
+			}
+			if r.Stage == "fixture-incrementing256" {
+				completed = append(completed, "incrementing256")
+			}
+		}
+		h.allocation.setup, e = pilot.OpenHostedAllocationSetup(ctx, filepath.Join(c.config.DataDir, "allocation-recovery"), c.store, hostedCanonicalHash(h.allocation.guard), pins, h.hadReady, completed)
+		if e != nil {
+			return e
+		}
+	}
 	path := filepath.Join(c.config.DataDir, "hosted-vault")
 	if h.vault == nil {
 		exists, e := hostedComponentExists(path)
@@ -333,8 +392,27 @@ func (c *PoolController) resumeHostedSetup(ctx context.Context) (resultErr error
 	if e = c.hostedStage("vault", hostedInitialStageHash(h.init, "vault")); e != nil {
 		return e
 	}
+	if h.allocation != nil && h.allocation.setup.Ready() {
+		if e = c.auditHostedAllocationReady(ctx); e != nil {
+			return e
+		}
+	}
+	if h.allocation != nil && h.hadReady {
+		missing, e := c.classifyHostedWallets()
+		if e != nil {
+			return e
+		}
+		if missing {
+			return c.openHostedRecoveryArchive(ctx)
+		}
+	}
 	if c.runtime == nil {
-		c.runtime, e = pilot.NewHostedPoolRuntime(ctx, pilot.Config{DataDir: filepath.Join(c.config.DataDir, "shared"), NodeBinary: c.config.NodeBinary}, c.store, h.options, h.vault, h.init.Wallets[0].WalletOwnerID, h.init.Wallets[1].WalletOwnerID)
+		config := pilot.Config{DataDir: filepath.Join(c.config.DataDir, "shared"), NodeBinary: c.config.NodeBinary}
+		if h.allocation != nil {
+			c.runtime, e = pilot.NewHostedRecoveryPoolRuntime(ctx, config, c.store, h.options, h.vault, h.init.Wallets[0].WalletOwnerID, h.init.Wallets[1].WalletOwnerID, h.allocation.setup)
+		} else {
+			c.runtime, e = pilot.NewHostedPoolRuntime(ctx, config, c.store, h.options, h.vault, h.init.Wallets[0].WalletOwnerID, h.init.Wallets[1].WalletOwnerID)
+		}
 		if e != nil {
 			return e
 		}
@@ -390,9 +468,9 @@ func (c *PoolController) resumeHostedSetup(ctx context.Context) (resultErr error
 		if e != nil {
 			return e
 		}
-		if e = c.runtime.AttachHostedCurrent(h.current, bindings); e != nil {
-			return e
-		}
+	}
+	if e = c.runtime.AttachHostedCurrent(h.current, bindings); e != nil {
+		return e
 	}
 	currentHash := hostedCanonicalHash(struct {
 		Version  uint32                         `json:"version"`
@@ -401,8 +479,16 @@ func (c *PoolController) resumeHostedSetup(ctx context.Context) (resultErr error
 	if e = c.hostedStage("current", currentHash); e != nil {
 		return e
 	}
-	if !c.runtime.Ready() {
+	if h.allocation == nil && !c.runtime.Ready() {
 		if e = c.runtime.StartServices(ctx); e != nil {
+			return e
+		}
+	}
+	if h.allocation != nil {
+		if e = c.runtime.PrepareHostedRecoveryServices(ctx); e != nil {
+			return e
+		}
+		if e = h.allocation.setup.PublishReady(c.sourceID); e != nil {
 			return e
 		}
 	}
@@ -412,10 +498,15 @@ func (c *PoolController) resumeHostedSetup(ctx context.Context) (resultErr error
 			return pilot.ErrManifestInitialization
 		}
 	} else {
-		if e = writeHostedReady(c.config.DataDir, ready); e != nil {
+		if e = writeHostedReadyMode(c.config.DataDir, ready, h.allocation != nil); e != nil {
 			return e
 		}
 		h.ready, h.hadReady = ready, true
+	}
+	if h.allocation != nil && !c.runtime.Ready() {
+		if e = c.runtime.StartServices(ctx); e != nil {
+			return e
+		}
 	}
 	c.newChild = func(ctx context.Context, r *pilot.PoolRuntime, a pilot.StableAccountConfig) (poolChild, error) {
 		return pilot.NewPoolChild(ctx, r, a)
@@ -431,10 +522,26 @@ func (c *PoolController) loginHosted(ctx context.Context, fixture string) error 
 	} else if !errors.Is(e, gymprovider.ErrNotFound) {
 		return e
 	}
+	if c.hostedAllocationMode() && c.hosted.allocation.archive != nil {
+		session, _, e := c.hostedSignedLogin(ctx, fixture)
+		if e != nil {
+			return e
+		}
+		if !c.hosted.allocation.missing[fixture] {
+			c.mu.Lock()
+			c.fixture = fixture
+			c.mu.Unlock()
+			return errors.Join(pilot.ErrHostedRecoveryUnavailable, c.store.Logout(context.Background(), session.Token))
+		}
+		return c.installRecoverySession(ctx, fixture, session)
+	}
 	if c.runtime == nil || !c.runtime.Ready() {
 		if e := c.resumeHostedSetup(ctx); e != nil {
 			return e
 		}
+	}
+	if c.hostedAllocationMode() && c.hosted.allocation.archive != nil {
+		return c.loginHosted(ctx, fixture)
 	}
 	session, at, e := c.hostedSignedLogin(ctx, fixture)
 	if e != nil {
@@ -497,6 +604,28 @@ func (h *hostedPoolOwner) close() error {
 		return nil
 	}
 	var e error
+	if h.allocation != nil {
+		if h.allocation.failedRecovery != nil {
+			if e = h.allocation.failedRecovery.Close(); e != nil {
+				return e
+			}
+		}
+		if h.allocation.recovery != nil {
+			if e = h.allocation.recovery.Close(); e != nil {
+				return e
+			}
+		}
+		if h.allocation.archive != nil {
+			if e = h.allocation.archive.Close(); e != nil {
+				return e
+			}
+		}
+		if h.allocation.setup != nil {
+			if e = h.allocation.setup.Close(); e != nil {
+				return e
+			}
+		}
+	}
 	if h.current != nil {
 		e = h.current.Close()
 		if e != nil {

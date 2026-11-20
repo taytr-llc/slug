@@ -54,38 +54,7 @@ func (r *PoolRuntime) StartServices(ctx context.Context) error {
 	if e != nil {
 		return e
 	}
-	if e = r.prepareLeague(work); e != nil {
-		return e
-	}
-	if e = r.preparePipeline(work); e != nil {
-		return e
-	}
-	if r.backend == nil {
-		r.backend, e = poolsettlefixture.New(work, r.nodes.rpcConfig())
-		if e != nil {
-			return e
-		}
-	}
-	c := poolsettle.Config{Version: 1, ChangeScript: poolsettlefixture.PoolScript(), MaxRounds: 256, MaxBatches: 366}
-	for _, b := range ready.Recipients {
-		c.Destinations = append(c.Destinations, poolsettle.Destination{GymID: b.Config.Identity.GymID, Script: b.Recipient.Script})
-	}
-	path := filepath.Join(r.config.DataDir, "settlement")
-	if r.settlement == nil {
-		exists, err := poolRuntimeExists(path)
-		if err != nil {
-			return err
-		}
-		if exists {
-			r.settlement, e = poolsettle.Open(path, c, r.rounds, r.backend)
-		} else {
-			r.settlement, e = poolsettle.Create(path, c, r.rounds, r.backend)
-		}
-		if e != nil {
-			return e
-		}
-	}
-	if e = writePoolRuntimeRecord(filepath.Join(r.config.DataDir, poolRuntimeReadyName), ready); e != nil {
+	if e = r.prepareServiceStores(work, ready); e != nil {
 		return e
 	}
 	sessions := poolRuntimeSessions{r.accounts}
@@ -206,4 +175,61 @@ func (r *PoolRuntime) maintainPool(ctx context.Context, cursor *uint64) error {
 	}
 	_, e = r.settlement.RunDaily(ctx)
 	return e
+}
+
+// PrepareHostedRecoveryServices establishes every journal before the outer
+// allocation/hosted READY markers. It launches no server or scheduler.
+func (r *PoolRuntime) PrepareHostedRecoveryServices(ctx context.Context) error {
+	work, end, e := r.begin(ctx)
+	if e != nil {
+		return e
+	}
+	defer end()
+	if r.hosted == nil || r.hosted.allocation == nil || !r.verified["zero256"] || !r.verified["incrementing256"] {
+		return ErrPoolRuntime
+	}
+	ready, e := r.readyRecord()
+	if e != nil {
+		return e
+	}
+	return r.prepareServiceStores(work, ready)
+}
+func (r *PoolRuntime) prepareServiceStores(ctx context.Context, ready poolRuntimeReady) error {
+	var e error
+	if e = r.prepareLeague(ctx); e != nil {
+		return e
+	}
+	if e = r.preparePipeline(ctx); e != nil {
+		return e
+	}
+	if r.backend == nil {
+		r.backend, e = poolsettlefixture.New(ctx, r.nodes.rpcConfig())
+		if e != nil {
+			return e
+		}
+	}
+	c := poolsettle.Config{Version: 1, ChangeScript: poolsettlefixture.PoolScript(), MaxRounds: 256, MaxBatches: 366}
+	for _, b := range ready.Recipients {
+		c.Destinations = append(c.Destinations, poolsettle.Destination{GymID: b.Config.Identity.GymID, Script: b.Recipient.Script})
+	}
+	path := filepath.Join(r.config.DataDir, "settlement")
+	if r.settlement == nil {
+		exists, err := poolRuntimeExists(path)
+		if err != nil {
+			return err
+		}
+		if exists {
+			r.settlement, e = poolsettle.Open(path, c, r.rounds, r.backend)
+		} else {
+			r.settlement, e = poolsettle.Create(path, c, r.rounds, r.backend)
+		}
+		if e != nil {
+			return e
+		}
+	}
+	if e = writePoolRuntimeRecord(filepath.Join(r.config.DataDir, poolRuntimeReadyName), ready); e != nil {
+		return e
+	}
+
+	return nil
 }

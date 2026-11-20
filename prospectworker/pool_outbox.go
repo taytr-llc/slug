@@ -246,6 +246,15 @@ func readPoolMarker(path string, c PoolConfig) error {
 	return nil
 }
 func OpenPoolOutbox(path string, config PoolConfig) (*PoolOutbox, error) {
+	return openPoolOutboxAudit(path, config, false)
+}
+
+// OpenPoolOutboxAudit requires the exact established configuration and audits
+// all rows read-only. It cannot publish a capacity/configuration change.
+func OpenPoolOutboxAudit(path string, config PoolConfig) (*PoolOutbox, error) {
+	return openPoolOutboxAudit(path, config, true)
+}
+func openPoolOutboxAudit(path string, config PoolConfig, readOnly bool) (*PoolOutbox, error) {
 	if e := manifestProduction(); e != nil {
 		return nil, e
 	}
@@ -256,7 +265,7 @@ func OpenPoolOutbox(path string, config PoolConfig) (*PoolOutbox, error) {
 	if e = readPoolMarker(path, c); e != nil {
 		return nil, e
 	}
-	db, e := leveldb.OpenFile(filepath.Join(path, "db"), &opt.Options{ErrorIfMissing: true, Strict: opt.StrictAll})
+	db, e := leveldb.OpenFile(filepath.Join(path, "db"), &opt.Options{ErrorIfMissing: true, Strict: opt.StrictAll, ReadOnly: readOnly})
 	if e != nil {
 		return nil, errors.New("could not open existing pool outbox")
 	}
@@ -266,6 +275,10 @@ func OpenPoolOutbox(path string, config PoolConfig) (*PoolOutbox, error) {
 		return nil, e
 	}
 	if b.meta.Config != c {
+		if readOnly {
+			_ = db.Close()
+			return nil, ErrCorrupt
+		}
 		next := b.meta
 		next.Config = c
 		if e = b.commit(new(leveldb.Batch), next); e != nil {

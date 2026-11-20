@@ -22,6 +22,31 @@ func (g *Gym) Mode() string {
 }
 func (g *Gym) control(command string) error {
 	if g.poolHelper != nil {
+		b := g.poolHelper
+		if b.Mode() == pilot.HostedRecoveryPoolMode {
+			request := pilot.HostedRecoveryRequest{Command: "hosted_recovery_" + command}
+			var owner *bridge.HostedRecoveryContext
+			if command == "start" || command == "stop" {
+				s, e := g.HostedRecoverySnapshot()
+				if e != nil || s.Healthy == nil || g.poolHelper != b {
+					return bridge.ErrUnavailable
+				}
+				captured, e := bridge.HostedContextForSnapshot(s)
+				if e != nil || !b.HostedContextMatches(captured) {
+					return bridge.ErrUnavailable
+				}
+				owner = &captured
+				request.ViewID = s.Healthy.Pool.View.ViewID
+			}
+			if g.poolHelper != b {
+				return bridge.ErrUnavailable
+			}
+			_, e := b.HostedRecoveryRequest(context.Background(), request)
+			if g.poolHelper != b || owner != nil && !b.HostedContextMatches(*owner) {
+				return bridge.ErrUnavailable
+			}
+			return e
+		}
 		_, e := g.poolHelper.PoolRequest(context.Background(), pilot.PoolRequest{Command: command})
 		return e
 	}
@@ -64,6 +89,13 @@ func (g *Gym) closeHelper() (resultErr error) {
 }
 func (g *Gym) recoveryAccount() (*pilot.AccountSnapshot, error) {
 	if g.poolHelper != nil {
+		if g.poolHelper.Mode() == pilot.HostedRecoveryPoolMode {
+			s, e := g.HostedRecoverySnapshot()
+			if e != nil {
+				return nil, e
+			}
+			return &s.Account, nil
+		}
 		s, e := g.PoolSnapshot()
 		if e != nil {
 			return nil, e

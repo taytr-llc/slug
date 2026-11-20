@@ -103,6 +103,7 @@ func (c *PoolChild) beginPoolBackup(parent context.Context, verify bool) (*poolB
 		c.mu.Unlock()
 		return nil, err
 	}
+	c.cancelHostedReceive()
 	c.cancelWithdrawal()
 	c.cancelPoolPayout()
 	c.cancelWalletActivity()

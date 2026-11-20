@@ -148,7 +148,7 @@ func (c *PoolController) LoginFixture(fixture string) error {
 		return errors.New("unknown fixture account")
 	}
 	c.mu.Lock()
-	allowed := c.child == nil
+	allowed := c.child == nil && c.recoveryOwner() == nil
 	c.mu.Unlock()
 	if !allowed {
 		return errors.New("sign out before choosing an account")
@@ -373,6 +373,10 @@ func (c *PoolController) cleanupAccount(ctx context.Context, token string, child
 func (c *PoolController) detach(ctx context.Context) error {
 	c.mu.Lock()
 	child, token := c.child, c.session.Token
+	recoveryOwner := c.recoveryOwner()
+	if recoveryOwner != nil {
+		c.hosted.allocation.recovery = nil
+	}
 	c.child = nil
 	c.viewID = ""
 	c.session, c.mining = gymaccount.Session{}, gymaccount.Session{}
@@ -383,6 +387,9 @@ func (c *PoolController) detach(ctx context.Context) error {
 	c.expiry, c.expiryDone = nil, nil
 	c.mu.Unlock()
 	err := c.cleanupAccount(ctx, token, child)
+	if recoveryOwner != nil {
+		err = errors.Join(err, c.cleanupRecovery(ctx, "", recoveryOwner))
+	}
 	if wait != nil {
 		<-wait
 	}
@@ -404,12 +411,13 @@ func (c *PoolController) Logout() error {
 func (c *PoolController) ResetFixtureAccount() error {
 	c.mu.Lock()
 	fixture, child := c.fixture, c.child
+	recoveryOwner := c.recoveryOwner()
 	c.mu.Unlock()
 	if c.hosted != nil {
 		if fixture == "" {
 			return errors.New("select the fixture first")
 		}
-		if child == nil {
+		if child == nil && recoveryOwner == nil {
 			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 			_, err := c.hosted.driver.PendingReset(ctx, fixture)
 			cancel()
@@ -459,12 +467,16 @@ func (c *PoolController) Start() error {
 func (c *PoolController) Stop() {
 	c.mu.Lock()
 	child, cancel := c.child, c.cancel
+	recoveryOwner := c.recoveryOwner()
 	c.mu.Unlock()
 	if cancel != nil {
 		cancel()
 	}
 	if child != nil {
 		child.Stop()
+	}
+	if recoveryOwner != nil {
+		_ = recoveryOwner.CancelBackup(context.Background())
 	}
 }
 
@@ -474,9 +486,7 @@ func (c *PoolController) Snapshot() pilot.PoolSnapshot {
 	state, fixture, last, busy, closed := c.state, c.fixture, c.lastError, c.operation, c.closed
 	c.mu.Unlock()
 	blank := pilot.BlankPoolSnapshot()
-	if c.hosted != nil {
-		blank.Mode = pilot.HostedPoolMode
-	}
+	blank.Mode = c.poolMode()
 	blank.Account = pilot.AccountSnapshot{State: state, Fixture: fixture, LastError: last}
 	if closed || busy || state != "signed_in" || child == nil || viewID == "" {
 		if closed {

@@ -244,8 +244,11 @@ independent reference, including an older fighter outside Recent. Original-actio
 recovery, complete desktop, package and smoke checks pass; see
 `PUBLIC_FIGHTER_EVIDENCE.md` and `CHANGESET_66_NOTES.md`. Supplied consistency
 does not establish issuer timing, actual awards/finality, current ownership or
-complete authoritative history. Transfer timing and competing-transfer ordering
-still require an explicit policy decision.
+complete authoritative history. D83 subsequently settles transfer timing and
+competing-transfer ordering: first valid canonical chain-ordered send wins;
+ownership changes at signed checkpoint plus sixty descendants. Noon locks use
+the then-effective owner. See `FIGHTER_TRANSFER_POLICY.md`; the transfer and
+independent-restoration implementation remains ahead.
 Set67 implements authenticated own-payout history with fixed local pages and
 a separate dated observation of the selected transaction output in the owned
 wallet. Preserve daily accounting, original-view authorization and the distinction
@@ -295,13 +298,16 @@ with evolving-wallet recovery, authoritative fighter ownership and direct
 transfers, then end-to-end restoration of the same gym and its owned fighters.
 Using the existing fixture sessions to verify these foundations is not real-login
 work. The final joint D74 review still follows the major functional flows.
-The next recovery milestone is durable address-issuance inventory and deliberate
-recovery when the local wallet is missing. A dated export does not protect
-later allocations continuously, and a seed/cursor restore must never recreate
-missing signed-payment authority. Define and qualify that boundary before
-claiming original-device-loss recovery. Provider preparation is deferred under
-Mike's sequencing instruction. The proposed scope is recorded in the workspace's
-`set72-next-functional-review.md`, not yet an adopted byte contract.
+Set72 implements durable address-issuance inventory and deliberate recovery when
+the exact local wallet payload is missing, in a separate explicit fixture mode.
+The frozen contract is `HOSTED_ALLOCATION_RECOVERY.md`; qualification and limits
+are in `CHANGESET_72_NOTES.md`. Actual loss without a preloss export, current-file
+verification and an independent restored spend passed. The inspection route does
+not install a replacement wallet or reconstruct missing signed-payment authority.
+The next usable milestone is D83 authoritative ownership, actual direct transfers
+and independent same-gym/owned-fighter restoration with a subsequent transfer.
+Complete public history and real restored-key use belong in that milestone;
+initial ownership alone cannot close it. Provider preparation remains deferred.
 Never repin solo event histories. Keep the existing layout/logos until the final
 joint D74 review. Public hosting, production signer custody/capacity, real account
 configuration and permanent genesis remain separate gates. The implemented

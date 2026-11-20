@@ -349,13 +349,13 @@ var poolPayoutPattern = regexp.MustCompile(`^slug1q[023456789acdefghjklmnpqrstuv
 func ValidatePoolSnapshot(s PoolSnapshot) error {
 	bad := gymstable.ErrInvalid
 	a := s.Account
-	if s.Version != 1 || !stableOne(s.Mode, PoolMode, HostedPoolMode) || !stableOne(s.State, "stopped", "starting", "running", "stopping", "failed") || !stableOne(s.WalletState, "closed", "connecting", "syncing", "ready", "failed") || !poolBackupValid(s) || !PoolStatusCode(s.LastError) || !PoolStatusCode(s.RecoveryError) {
+	if s.Version != 1 || !stableOne(s.Mode, PoolMode, HostedPoolMode, HostedRecoveryPoolMode) || !stableOne(s.State, "stopped", "starting", "running", "stopping", "failed") || !stableOne(s.WalletState, "closed", "connecting", "syncing", "ready", "failed") || !poolBackupValid(s) || !PoolStatusCode(s.LastError) || !PoolStatusCode(s.RecoveryError) {
 		return bad
 	}
 	if s.Attempts > gymstable.MaxSafeInteger || s.Height > gymstable.MaxSafeInteger || s.WalletHeight > gymstable.MaxSafeInteger || s.Pending > 1000 || s.AssignmentCount > 1000 || s.SpendableAtoms < 0 || s.SpendableAtoms > poolsettle.MaxMoney || s.ImmatureAtoms < 0 || s.ImmatureAtoms > poolsettle.MaxMoney || math.IsNaN(s.HashesPerSecond) || math.IsInf(s.HashesPerSecond, 0) || s.HashesPerSecond < 0 {
 		return bad
 	}
-	pendingReset := s.Mode == HostedPoolMode && a.LastError == "hosted_reset_pending" && stableOne(a.State, "signed_out", "failed") && stableOne(a.Fixture, "zero256", "incrementing256")
+	pendingReset := stableOne(s.Mode, HostedPoolMode, HostedRecoveryPoolMode) && a.LastError == "hosted_reset_pending" && stableOne(a.State, "signed_out", "failed") && stableOne(a.Fixture, "zero256", "incrementing256")
 	if !stableOne(a.State, "signed_out", "signing_in", "signed_in", "resetting", "signing_out", "failed", "expired") || !stableOne(a.Fixture, "", "zero256", "incrementing256") || !(stableOne(a.LastError, "", "account_unavailable") || pendingReset) || a.Generation > gymstable.MaxSafeInteger || a.HoldUntilMS < 0 || a.HoldUntilMS > 8640000000000000 || a.Held && (a.CanExport || a.HoldUntilMS == 0) {
 		return bad
 	}
@@ -582,6 +582,10 @@ func poolDecode(raw []byte, limit, maxDepth int, out any) (map[string]bool, erro
 	return root, nil
 }
 func ServePool(ctx context.Context, input io.Reader, output io.Writer, c PoolControllerAPI) (resultErr error) {
+	return servePool(ctx, input, output, c, nil)
+}
+
+func servePool(ctx context.Context, input io.Reader, output io.Writer, c PoolControllerAPI, hosted HostedRecoverySurfaceAPI) (resultErr error) {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 	type line struct {
@@ -642,7 +646,19 @@ func ServePool(ctx context.Context, input io.Reader, output io.Writer, c PoolCon
 			if json.Unmarshal(value.data, &selector) != nil {
 				return gymstable.ErrInvalid
 			}
-			if raw, handled, err := poolCycleResponse(ctx, value.data, selector.ID, selector.Command, c); handled {
+			if strings.HasPrefix(selector.Command, "hosted_recovery_") && hosted != nil {
+				response := HostedRecoveryResponse{ID: selector.ID, Version: 1, Error: "invalid_request"}
+				if req, e := ParseHostedRecoveryRequest(value.data); e == nil {
+					response = HandleHostedRecoveryRequest(ctx, req, hosted)
+				}
+				raw, e := MarshalHostedRecoveryResponse(response)
+				if e != nil {
+					return e
+				}
+				if e = respondPoolFamily(output, raw); e != nil {
+					return e
+				}
+			} else if raw, handled, err := poolCycleResponse(ctx, value.data, selector.ID, selector.Command, c); handled {
 				if err != nil {
 					return err
 				}
@@ -696,7 +712,11 @@ func ServePool(ctx context.Context, input io.Reader, output io.Writer, c PoolCon
 				if err != nil {
 					response = PoolResponse{ID: req.ID, Error: "invalid_request"}
 				} else {
-					response = handlePoolRequest(ctx, req, c)
+					if hosted != nil && stableOne(req.Command, "snapshot", "start", "stop", "login_fixture", "logout", "reset_fixture", "export_recovery", "verify_backup", "cancel_pool_backup") {
+						response = PoolResponse{ID: req.ID, Error: "invalid_request"}
+					} else {
+						response = handlePoolRequest(ctx, req, c)
+					}
 				}
 				if err = respondPool(output, response); err != nil {
 					return err

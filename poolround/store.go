@@ -65,10 +65,14 @@ func sourceError(err error) error {
 }
 
 func configuration(l Limits, source *poolshare.Pool, node Observer) (poolshare.Config, error) {
+	return configurationMode(l, source, node, false)
+}
+
+func configurationMode(l Limits, source *poolshare.Pool, node Observer, auditOnly bool) (poolshare.Config, error) {
 	if wire.TestPoW {
 		return poolshare.Config{}, ErrProfile
 	}
-	if !validLimits(l) || source == nil || !nonnil(node) {
+	if !validLimits(l) || source == nil || (!auditOnly && !nonnil(node)) {
 		return poolshare.Config{}, ErrConfig
 	}
 	page, err := source.AccountingPage(context.Background(), 0, 0, 1)
@@ -185,7 +189,11 @@ func Create(path string, l Limits, source *poolshare.Pool, node Observer) (*Stor
 // Open requires the exact limits/source identity and checks all stored windows
 // against the original accepted prefix. It performs no new node observations.
 func Open(path string, l Limits, source *poolshare.Pool, node Observer) (*Store, error) {
-	c, err := configuration(l, source, node)
+	return openMode(path, l, source, node, false)
+}
+
+func openMode(path string, l Limits, source *poolshare.Pool, node Observer, auditOnly bool) (*Store, error) {
+	c, err := configurationMode(l, source, node, auditOnly)
 	if err != nil {
 		return nil, err
 	}
@@ -209,12 +217,12 @@ func Open(path string, l Limits, source *poolshare.Pool, node Observer) (*Store,
 	if decode(raw, maxMetadataSize, &m) != nil || m.Application != application || m.Version != Version1 || m.Limits != l || m.Source != c {
 		return nil, ErrSourceChanged
 	}
-	db, err := leveldb.OpenFile(filepath.Join(path, "db"), &opt.Options{ErrorIfMissing: true, Strict: opt.StrictAll})
+	db, err := leveldb.OpenFile(filepath.Join(path, "db"), &opt.Options{ErrorIfMissing: true, ReadOnly: auditOnly, Strict: opt.StrictAll})
 	if err != nil {
 		return nil, ErrCorrupt
 	}
 	s := newStore(l, c, source, node)
-	s.db, s.writeBatch = db, db.Write
+	s.db, s.writeBatch, s.auditOnly = db, db.Write, auditOnly
 	raw, err = db.Get([]byte("meta"), nil)
 	if err != nil || decode(raw, maxMetadataSize, &s.meta) != nil || !s.validMetadata(s.meta) {
 		_ = db.Close()
@@ -240,6 +248,9 @@ func (s *Store) validMetadata(m metadata) bool {
 }
 
 func (s *Store) commit(batch *leveldb.Batch, m metadata) error {
+	if s.auditOnly {
+		return ErrInvalid
+	}
 	if s.poisoned {
 		return ErrPoisoned
 	}

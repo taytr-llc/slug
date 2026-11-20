@@ -282,6 +282,15 @@ func (c *PoolChild) abandonWithdrawal(t *withdrawalTask, owner *walletwithdraw.O
 	if o.DraftDigest != t.request.DraftDigest || o.Signed != nil {
 		return o, walletwithdraw.ErrConflict
 	}
+	if o.Draft == nil {
+		if adapter, ok := c.withdrawalIO.(interface {
+			AbandonUnprepared(context.Context, string) error
+		}); ok {
+			if e := adapter.AbandonUnprepared(t.ctx, o.OperationID); e != nil {
+				return o, e
+			}
+		}
+	}
 	p, e := owner.StageAbandon(o.OperationID)
 	if e != nil {
 		return o, e

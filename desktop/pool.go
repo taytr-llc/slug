@@ -11,6 +11,13 @@ func (g *Gym) PoolSnapshot() (pilot.PoolSnapshot, error) {
 	if g.poolHelper == nil {
 		return pilot.PoolSnapshot{}, bridge.ErrUnavailable
 	}
+	if g.poolHelper.Mode() == pilot.HostedRecoveryPoolMode {
+		s, e := g.HostedRecoverySnapshot()
+		if e != nil || s.Healthy == nil {
+			return pilot.PoolSnapshot{}, bridge.ErrUnavailable
+		}
+		return s.Healthy.Pool, nil
+	}
 	r, e := g.poolHelper.PoolRequest(context.Background(), pilot.PoolRequest{Command: "snapshot"})
 	if e != nil {
 		return pilot.PoolSnapshot{}, e

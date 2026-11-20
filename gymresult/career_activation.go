@@ -219,6 +219,15 @@ func (s *Store) replaceCareerMarker(ctx context.Context, path string, old, next 
 	return nil
 }
 func openCareer(ctx context.Context, path string, expected Pin, bouts *gymbout.Store, clock func() time.Time, mode string, checkpoint func(string)) (*Store, error) {
+	return openCareerAudit(ctx, path, expected, bouts, clock, mode, checkpoint, false)
+}
+
+// OpenCareerAudit requires the original completed career activation and never
+// resumes activation, repairs markers or changes journal bytes.
+func OpenCareerAudit(ctx context.Context, path string, p Pin, bouts *gymbout.Store) (*Store, error) {
+	return openCareerAudit(ctx, path, p, bouts, time.Now, "open", nil, true)
+}
+func openCareerAudit(ctx context.Context, path string, expected Pin, bouts *gymbout.Store, clock func() time.Time, mode string, checkpoint func(string), readOnly bool) (*Store, error) {
 	if e := normal(); e != nil {
 		return nil, e
 	}
@@ -246,7 +255,7 @@ func openCareer(ctx context.Context, path string, expected Pin, bouts *gymbout.S
 	if ctx.Err() != nil {
 		return nil, ErrCancelled
 	}
-	db, e := leveldb.OpenFile(filepath.Join(path, "db"), &opt.Options{Strict: opt.StrictAll, ErrorIfMissing: true})
+	db, e := leveldb.OpenFile(filepath.Join(path, "db"), &opt.Options{Strict: opt.StrictAll, ErrorIfMissing: true, ReadOnly: readOnly})
 	if e != nil {
 		return nil, ErrUnavailable
 	}

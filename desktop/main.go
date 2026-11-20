@@ -44,6 +44,7 @@ var poolBuild string
 // Gym exposes only public pilot controls and receipt selection to the webview.
 // Paths, process arguments, and keys cannot be supplied through the web bridge.
 type Gym struct {
+	hostedReceive  nativeHostedReceiveState
 	withdrawal     nativeWithdrawalState
 	payout         nativePayoutState
 	walletActivity nativeWalletActivityState
@@ -72,6 +73,10 @@ func (g *Gym) Start() error { return g.control("start") }
 func (g *Gym) Stop() error  { return g.control("stop") }
 func (g *Gym) LoginFixture(fixture string) error {
 	if g.poolHelper != nil {
+		if g.poolHelper.Mode() == pilot.HostedRecoveryPoolMode {
+			_, e := g.poolHelper.HostedRecoveryRequest(context.Background(), pilot.HostedRecoveryRequest{Command: "hosted_recovery_login_fixture", Fixture: fixture})
+			return e
+		}
 		_, e := g.poolHelper.PoolRequest(context.Background(), pilot.PoolRequest{Command: "login_fixture", Fixture: fixture})
 		return e
 	}
@@ -239,6 +244,7 @@ func run() (resultErr error) {
 	data := flag.String("data-dir", dataDefault, "Explicit local pilot data directory")
 	pool := flag.Bool("candidate-pool", poolBuild == "1", "Use the separate shared pool desktop")
 	hosted := flag.Bool("candidate-hosted-pool", false, "Use the separate signed public-fixture hosted pool desktop")
+	hostedRecovery := flag.Bool("candidate-hosted-recovery", false, "Use the separate hosted allocation recovery fixture desktop")
 	nameVersion := flag.String("candidate-name-version", "1", "Explicit immutable pool candidate name version (1 or 2)")
 	candidates := flag.Bool("candidate-manifests", candidateBuild == "1", "Use the separate candidate fixture desktop")
 	stable := flag.Bool("candidate-stable", stableBuild == "1", "Use candidate stable and roster within the candidate fixture desktop")
@@ -250,7 +256,7 @@ func run() (resultErr error) {
 	candidateResults := flag.Bool("candidate-results", resultBuild == "1", "Enable saved candidate result publication within candidate bouts")
 	candidateCareers := flag.Bool("candidate-careers", careerBuild == "1", "Enable finality-timed candidate careers within candidate results")
 	flag.Parse()
-	dataExplicit, poolExplicit, nameExplicit, legacyExplicit := false, false, false, false
+	dataExplicit, poolExplicit, nameExplicit, legacyExplicit, hostedExplicit, recoveryExplicit := false, false, false, false, false, false
 	flag.Visit(func(f *flag.Flag) {
 		switch f.Name {
 		case "data-dir":
@@ -260,18 +266,25 @@ func run() (resultErr error) {
 			legacyExplicit = true
 		case "candidate-name-version":
 			nameExplicit = true
+		case "candidate-hosted-pool":
+			hostedExplicit = true
+		case "candidate-hosted-recovery":
+			recoveryExplicit = true
 		case "candidate-manifests", "candidate-stable", "candidate-entries", "candidate-events", "candidate-seeds", "candidate-cards", "candidate-bouts", "candidate-results", "candidate-careers":
 			legacyExplicit = true
 		}
 	})
-	if *hosted {
-		if legacyExplicit {
+	if *hosted || *hostedRecovery {
+		if legacyExplicit || *hostedRecovery && hostedExplicit || *hosted && recoveryExplicit {
 			return errors.New("Hosted public-fixture mode requires a separate explicit selection.")
 		}
 		// Explicit hosted mode supersedes compiled bundle defaults only. A
 		// supplied legacy flag, even false, was rejected above before any I/O.
 		*pool, *candidates, *stable, *entries, *candidateEvents, *candidateSeeds = false, false, false, false, false, false
 		*candidateCards, *candidateBouts, *candidateResults, *candidateCareers = false, false, false, false
+	}
+	if recoveryExplicit && !*hostedRecovery {
+		return errors.New("Hosted allocation recovery requires explicit true selection.")
 	}
 	if *pool && (*candidates || *stable || *entries || *candidateEvents || *candidateSeeds || *candidateCards || *candidateBouts || *candidateResults || *candidateCareers) {
 		return errors.New("Pool mode is separate from existing candidate modes.")
@@ -302,7 +315,9 @@ func run() (resultErr error) {
 	}
 	var poolOptions pilot.PoolOptions
 	var selectionErr error
-	if *hosted {
+	if *hostedRecovery {
+		poolOptions, selectionErr = poolselection.HostedRecoveryOptions(*nameVersion, nameExplicit, *data, dataExplicit)
+	} else if *hosted {
 		poolOptions, selectionErr = poolselection.HostedOptions(*nameVersion, nameExplicit, *data, dataExplicit)
 	} else {
 		poolOptions, selectionErr = poolselection.Options(*pool, poolExplicit, *nameVersion, nameExplicit, *data, dataExplicit)
@@ -327,7 +342,9 @@ func run() (resultErr error) {
 	}
 	resources := filepath.Clean(filepath.Join(filepath.Dir(executable), "..", "Resources", "bin"))
 	helperPath, nodePath := filepath.Join(resources, "slugpilot"), filepath.Join(resources, "slugd")
-	if *hosted {
+	if *hostedRecovery {
+		err = prepareHostedRecoveryDataParent(filepath.Clean(*data), configDir)
+	} else if *hosted {
 		err = prepareHostedPoolDataParent(filepath.Clean(*data), configDir)
 	} else if *pool {
 		err = preparePoolDataParent(filepath.Clean(*data), configDir, poolDefault)
@@ -346,9 +363,15 @@ func run() (resultErr error) {
 		filepath.Join(filepath.Dir(filepath.Clean(*data)), "LocalManifestPilot"),
 		filepath.Join(filepath.Dir(filepath.Clean(*data)), "LocalPoolPilot"),
 		filepath.Join(filepath.Dir(filepath.Clean(*data)), "LocalHostedPoolPilot"),
+		filepath.Join(filepath.Dir(filepath.Clean(*data)), "LocalHostedRecoveryPilot"),
 		filepath.Clean(filepath.Join(resources, "..", "..")),
 	}}
-	if *hosted {
+	if *hostedRecovery {
+		gym.poolHelper, err = bridge.LaunchHostedRecoveryWithOptions(helperPath, filepath.Clean(*data), nodePath, poolOptions)
+		if err == nil {
+			gym.stableHelper = gym.poolHelper.StableBridge
+		}
+	} else if *hosted {
 		gym.poolHelper, err = bridge.LaunchHostedPoolWithOptions(helperPath, filepath.Clean(*data), nodePath, poolOptions)
 		if err == nil {
 			gym.stableHelper = gym.poolHelper.StableBridge

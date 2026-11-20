@@ -75,7 +75,7 @@ func (p *Pool) withSession(ctx context.Context, token string, fn func(context.Co
 	if wire.TestPoW {
 		return ErrProfile
 	}
-	if p == nil || ctx == nil || len(token) == 0 || len(token) > 4096 {
+	if p == nil || p.auditOnly || ctx == nil || len(token) == 0 || len(token) > 4096 {
 		return ErrInvalid
 	}
 	if p.gate == nil || p.db == nil {

@@ -7,7 +7,7 @@ root=$(CDPATH= cd -- "$here/.." && pwd)
 profile_go="$root/scripts/candidate-go.sh"
 export GOENV=off GOTOOLCHAIN=local GOFLAGS= GOEXPERIMENT=
 sh "$profile_go" check
-output=${1:-"$root/../artifacts/set71"}
+output=${1:-"$root/../artifacts/set72"}
 case "$output" in /*) ;; *) printf '%s\n' 'Build output must be an absolute directory.' >&2; exit 1;; esac
 if [ "$(uname -s)" != Darwin ]; then printf '%s\n' 'This script builds the native macOS bundle on macOS.' >&2; exit 1; fi
 mkdir -p "$output"
@@ -62,8 +62,8 @@ cat > "$bundle/Contents/Info.plist" <<'PLIST'
 <key>CFBundleExecutable</key><string>SLUGPilot</string>
 <key>CFBundleIconFile</key><string>SLUG.icns</string>
 <key>CFBundlePackageType</key><string>APPL</string>
-<key>CFBundleShortVersionString</key><string>0.5.10</string>
-<key>CFBundleVersion</key><string>71</string>
+<key>CFBundleShortVersionString</key><string>0.5.11</string>
+<key>CFBundleVersion</key><string>72</string>
 <key>LSMinimumSystemVersion</key><string>13.0</string>
 <key>NSHighResolutionCapable</key><true/>
 <key>LSUIElement</key><false/>

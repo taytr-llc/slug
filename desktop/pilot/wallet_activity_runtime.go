@@ -41,7 +41,12 @@ func (r *walletRuntime) captureWalletActivity(ctx context.Context, config prospe
 		if !r.mu.TryLock() {
 			return walletActivityRead{}, localTip{}, gymstable.ErrBusy
 		}
-		defer r.mu.Unlock()
+		locked := true
+		defer func() {
+			if locked {
+				r.mu.Unlock()
+			}
+		}()
 		sample := func() (localTip, error) {
 			if r.closed || r.wallet == nil || r.wallet.Manager == nil || r.backend == nil || r.backend.Disconnected() || !r.wallet.ChainSynced() {
 				return localTip{}, ErrActivityUnavailable
@@ -58,7 +63,18 @@ func (r *walletRuntime) captureWalletActivity(ctx context.Context, config prospe
 		}
 		var out walletActivityRead
 		if read {
-			out.snapshot, e = r.wallet.CaptureOwnActivity(ctx)
+			if r.allocation != nil {
+				allocator := r.allocation
+				r.mu.Unlock()
+				locked = false
+				out.snapshot, e = allocator.CaptureOwnActivity(ctx)
+				if !r.mu.TryLock() {
+					return walletActivityRead{}, localTip{}, gymstable.ErrBusy
+				}
+				locked = true
+			} else {
+				out.snapshot, e = r.wallet.CaptureOwnActivity(ctx)
+			}
 			if e != nil {
 				return walletActivityRead{}, localTip{}, e
 			}

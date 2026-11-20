@@ -51,6 +51,9 @@ func Open(ctx context.Context, path string, i Identity) (*Journal, error) {
 	return openJournal(ctx, path, i, false)
 }
 func openJournal(ctx context.Context, path string, i Identity, create bool) (j *Journal, err error) {
+	return openJournalMode(ctx, path, i, create, false)
+}
+func openJournalMode(ctx context.Context, path string, i Identity, create, auditOnly bool) (j *Journal, err error) {
 	if wire.TestPoW || !supportedPlatform() {
 		return nil, ErrProfile
 	}
@@ -165,7 +168,7 @@ func openJournal(ctx context.Context, path string, i Identity, create bool) (j *
 		if e != nil || !privateFile(s) {
 			return nil, ErrCorrupt
 		}
-		if removeAt(c.dir(), stage) != nil || c.dir().Sync() != nil {
+		if !auditOnly && (removeAt(c.dir(), stage) != nil || c.dir().Sync() != nil) {
 			return nil, ErrStorage
 		}
 	}

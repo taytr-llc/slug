@@ -63,10 +63,11 @@ func (c *PoolChild) refreshLoop() {
 		if !time.Now().Before(next) {
 			c.refreshMu.Lock()
 			c.mu.Lock()
-			paused := c.backup != nil || c.closed
+			paused := c.receiveOp != nil || c.backup != nil || c.closed
 			c.mu.Unlock()
 			if !paused {
 				c.refreshWalletAndStable()
+				_ = c.refreshHostedAllocation(c.ctx)
 				_ = c.refreshPoolBalance(c.ctx)
 			}
 			c.refreshMu.Unlock()

@@ -251,7 +251,7 @@ func (c *PoolChild) withdrawalOperation(ctx context.Context, v, id string) (out 
 	defer release()
 	ctx = work
 	c.mu.Lock()
-	busy := c.backup != nil || c.withdrawalTask != nil
+	busy := c.receiveOp != nil || c.backup != nil || c.withdrawalTask != nil
 	c.mu.Unlock()
 	if busy {
 		return WithdrawalOperation{}, gymstable.ErrBusy
@@ -332,7 +332,7 @@ func (c *PoolChild) withdrawalReview(ctx context.Context, r WithdrawalRequest) (
 	}
 	c.mu.Lock()
 	old := c.withdrawalReviewValue
-	busy := c.backup != nil || c.withdrawalTask != nil
+	busy := c.receiveOp != nil || c.backup != nil || c.withdrawalTask != nil
 	c.mu.Unlock()
 	if busy {
 		return WithdrawalReview{}, gymstable.ErrBusy
@@ -379,7 +379,7 @@ func (c *PoolChild) withdrawalReview(ctx context.Context, r WithdrawalRequest) (
 	e = c.withdrawalFence(ctx, r.ViewID, gymaccount.Withdrawal, nil)(func(check func() error) error {
 		c.mu.Lock()
 		defer c.mu.Unlock()
-		if c.backup != nil || c.withdrawalTask != nil {
+		if c.receiveOp != nil || c.backup != nil || c.withdrawalTask != nil {
 			return gymstable.ErrBusy
 		}
 		if a := c.withdrawalLast; a != nil && a.State == "review" && a.ActionID != r.ActionID {
@@ -406,7 +406,7 @@ func ownedWithdrawalRequest(r WithdrawalRequest) WithdrawalRequest {
 // its bounded context is linked to child close, and all cleanup is joined.
 func (c *PoolChild) reserveWithdrawalRead(ctx context.Context) (context.Context, func(), error) {
 	c.mu.Lock()
-	if c.backup != nil || c.withdrawalTask != nil || c.withdrawalScratch != 0 {
+	if c.receiveOp != nil || c.backup != nil || c.withdrawalTask != nil || c.withdrawalScratch != 0 {
 		c.mu.Unlock()
 		return nil, nil, gymstable.ErrBusy
 	}

@@ -128,7 +128,7 @@ func (c *PoolChild) BeginWalletActivity(ctx context.Context, v, id string) (Wall
 			out = j
 			return nil
 		}
-		if c.backup != nil || c.activityOp != nil {
+		if c.receiveOp != nil || c.backup != nil || c.activityOp != nil {
 			return gymstable.ErrBusy
 		}
 		if c.activityScratch != 0 {
@@ -171,7 +171,7 @@ func (c *PoolChild) BeginWalletActivity(ctx context.Context, v, id string) (Wall
 	return out, nil
 }
 func (c *PoolChild) activityOperationLocked(op *walletActivityOperation) error {
-	if c.activityOp != op || c.backup != nil || c.activityBindingLocked() != op.job.Binding {
+	if c.activityOp != op || c.receiveOp != nil || c.backup != nil || c.activityBindingLocked() != op.job.Binding {
 		return gymstable.ErrStaleView
 	}
 	return op.ctx.Err()
@@ -288,7 +288,7 @@ func (c *PoolChild) WalletActivityPage(parent context.Context, v, id string, aft
 	admitted := false
 	var out WalletActivityPage
 	e := c.payoutFence(p.ctx, v, func() error {
-		if c.backup != nil || c.activityProjection != nil {
+		if c.receiveOp != nil || c.backup != nil || c.activityProjection != nil {
 			return gymstable.ErrBusy
 		}
 		x := c.activityCache
@@ -349,7 +349,7 @@ func (c *PoolChild) WalletActivityDetail(parent context.Context, v, id, txid str
 	var selected wallet.OwnActivityRecord
 	admitted := false
 	e := c.payoutFence(p.ctx, v, func() error {
-		if c.backup != nil || c.activityOp != nil || c.activityProjection != nil {
+		if c.receiveOp != nil || c.backup != nil || c.activityOp != nil || c.activityProjection != nil {
 			return gymstable.ErrBusy
 		}
 		if c.activityScratch != 0 {

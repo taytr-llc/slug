@@ -191,7 +191,12 @@ func (r *PoolRuntime) ensureWithdrawalScope(ctx context.Context, b PoolRecipient
 	if walletwithdraw.ValidatePin(pin) != nil || !w.mu.TryLock() {
 		return scope, ErrPoolRuntime
 	}
-	defer w.mu.Unlock()
+	locked := true
+	defer func() {
+		if locked {
+			w.mu.Unlock()
+		}
+	}()
 	if w.closed || w.wallet == nil || w.identity != (walletIdentity{pin.RootPublicKey, pin.GymPublicKey, pin.GymID}) {
 		return scope, ErrPoolRuntime
 	}
@@ -232,7 +237,20 @@ func (r *PoolRuntime) ensureWithdrawalScope(ctx context.Context, b PoolRecipient
 	}
 	// Presence is checked before creating any journal. An established wallet
 	// namespace cannot authorize reconstruction of a missing journal or INIT.
-	seam, walletErr := w.wallet.OpenCandidateWithdrawals(ctx, binding)
+	var seam poolWithdrawalWallet
+	var walletErr error
+	if w.allocation != nil {
+		allocator := w.allocation
+		w.mu.Unlock()
+		locked = false
+		seam, walletErr = openAllocatedWithdrawalWallet(ctx, allocator, binding, false)
+	} else {
+		var legacy *wallet.CandidateWithdrawals
+		legacy, walletErr = w.wallet.OpenCandidateWithdrawals(ctx, binding)
+		if walletErr == nil {
+			seam = legacy
+		}
+	}
 	if walletErr != nil && !errors.Is(walletErr, wallet.ErrWithdrawalNotFound) {
 		return scope, walletErr
 	}
@@ -268,7 +286,11 @@ func (r *PoolRuntime) ensureWithdrawalScope(ctx context.Context, b PoolRecipient
 			return scope, ErrPoolRuntime
 		}
 		if seam == nil {
-			seam, e = w.wallet.CreateCandidateWithdrawals(ctx, binding)
+			if w.allocation != nil {
+				seam, e = openAllocatedWithdrawalWallet(ctx, w.allocation, binding, true)
+			} else {
+				seam, e = w.wallet.CreateCandidateWithdrawals(ctx, binding)
+			}
 			if e != nil {
 				return scope, e
 			}

@@ -144,3 +144,9 @@ func (s *Store) SharedStatus(ctx context.Context, session Session) (SharedStatus
 	}
 	return out, nil
 }
+
+// OpenSharedCareerAudit opens only an established exact career-bound archive.
+// It audits all existing rows without changing source highwaters or DB files.
+func OpenSharedCareerAudit(path string, expected Pin, source *registry.ManifestStore, activation careerstate.Activation) (*Store, error) {
+	return openModeAudit(path, expected, source, time.Now, &activation, false, SharedPinVersion2, true)
+}

@@ -125,7 +125,7 @@ func poolLaneWork[T any](ctx context.Context, c *PoolChild, fn func(*StableContr
 	defer c.stopMu.Unlock()
 	c.mu.Lock()
 	s := c.stable
-	closed, busy := c.closed || !c.prepared, c.backup != nil || c.backupCloseErr != nil
+	closed, busy := c.closed || !c.prepared, c.receiveOp != nil || c.backup != nil || c.backupCloseErr != nil
 	c.mu.Unlock()
 	if closed || s == nil {
 		return zero, gymstable.ErrClosed

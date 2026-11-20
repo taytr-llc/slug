@@ -21,6 +21,9 @@ func summary(through uint64, rounds []Round) Summary {
 // winning shares and never moves members when delivery or chain status changes.
 // It makes no new node observation and grants no confirmation by itself.
 func (s *Store) Sync(ctx context.Context) (Summary, error) {
+	if s != nil && s.auditOnly {
+		return Summary{}, ErrInvalid
+	}
 	end, err := s.begin(ctx)
 	if err != nil {
 		return Summary{}, err
@@ -183,6 +186,9 @@ func (s *Store) checkWinner(ctx context.Context, r Round) error {
 // The first sixty-descendant lock is never removed by later branch conflicts.
 // A transport error leaves all prior observations and confirmation untouched.
 func (s *Store) Refresh(ctx context.Context, blockHash string) (Record, error) {
+	if s != nil && s.auditOnly {
+		return Record{}, ErrInvalid
+	}
 	end, err := s.begin(ctx)
 	if err != nil {
 		return Record{}, err

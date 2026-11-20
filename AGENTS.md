@@ -307,6 +307,21 @@ version.
   payment journals. See `HOSTED_CURRENT_RECOVERY.md`, the portable independent
   references and `CHANGESET_71_NOTES.md` for qualification and limits. Real
   provider/custody and permanent identity remain gates; D74 stays last.
+- Set72 on `slug-hosted-allocation-recovery` adds explicit
+  `--candidate-hosted-recovery` / `LocalHostedRecoveryPilot` with fresh schema13.
+  Reserve the complete supported address prefix before consumption/disclosure;
+  burned, unused, uncertain and abandoned ranges remain covered. Keep exact
+  Plan/Reserve/Consume/Ack/Finalize owner and operation identity, read-only lookup,
+  original-view disclosure and fresh process-local Resume/Redisplay actions.
+  Only exact wallet-file/directory absence with all other required authorities
+  intact permits recovery-only export and schema12 inspection. Never recreate
+  missing payment journals or install a replacement spending wallet through it.
+  Preserve physically read-only archives, D72 holds and sticky cleanup ownership.
+  Full wallet, funded loss/restore/spend, frontend, smoke and explicitly composed
+  desktop/package qualification passed; retain the legacy typed-nil failure and
+  its narrow successor. See `HOSTED_ALLOCATION_RECOVERY.md` and
+  `CHANGESET_72_NOTES.md`. No seed input changed. Continue D83 ownership/direct
+  transfer and independently restored-gym use; login and D74 remain deferred.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review
@@ -345,6 +360,20 @@ version.
   Freeze a separately versioned trusted assurance contract before implementing;
   do not reinterpret old fixture assertions, freshness timestamps or schemas as
   MFA evidence. Provider selection and final D74 screens remain separate work.
+
+## Fighter transfer order and finality (D83)
+
+- Mike approved public chain order and checkpoint finality on November 19.
+  First valid competing send in canonical block/transaction order wins; later
+  competing sends are void. Pending transfers do not change the effective owner.
+  Ownership changes at a signed checkpoint plus sixty descendant blocks; noon
+  locks use the owner of record at that time. Later checkpoint conflict retains
+  official history and follows the community doctrine, never consensus veto.
+- See `FIGHTER_TRANSFER_POLICY.md`. This closes the previously open timing/order
+  question, not implementation. Preserve immutable birth, old event/result gym
+  attribution, D27 ownership/roster distinction and D72 held-transfer refusal.
+  The next usable milestone includes actual transfer and independently restored
+  gym ownership; login work remains deferred and the D74 review remains last.
 
 ## Build and test
 

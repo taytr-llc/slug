@@ -34,6 +34,12 @@ func validateHostedPoolChild(r poolChildResources, a StableAccountConfig) error 
 	return nil
 }
 func (c *PoolChild) attachHostedCurrent(ctx context.Context) error {
+	if c.resources.Hosted != nil && c.resources.Hosted.allocation != nil {
+		if c.wallet == nil || c.wallet.allocation == nil {
+			return ErrPoolRuntime
+		}
+		return nil
+	}
 	if c.resources.Hosted == nil {
 		return nil
 	}
@@ -65,7 +71,7 @@ func (c *PoolChild) attachHostedCurrent(ctx context.Context) error {
 // The concrete hosted adapter captures one original mining token per signature.
 // Vault errors are final; the installed wallet is never a signer fallback.
 func (c *PoolChild) hostedSigner(ctx context.Context) (prospectworker.Signer, error) {
-	if c.resources.Hosted == nil || c.account.Hosted == nil || c.hostedCurrent == nil || c.authority.checkView(ctx) != nil {
+	if c.resources.Hosted == nil || c.account.Hosted == nil || (c.hostedCurrent == nil && (c.wallet == nil || c.wallet.allocation == nil)) || c.authority.checkView(ctx) != nil {
 		return nil, gymaccount.ErrUnauthorized
 	}
 	return func(ctx context.Context, initial prospect.Context, proof prospect.Proof) (gymauth.Authorization, error) {
@@ -99,6 +105,9 @@ func (c *PoolChild) hostedSigner(ctx context.Context) (prospectworker.Signer, er
 	}, nil
 }
 func (c *PoolChild) exportHostedRecovery(op *poolBackupOperation, pin recoveryfile.Pin) (code string, resultErr error) {
+	if c.resources.Hosted != nil && c.resources.Hosted.allocation != nil {
+		return c.exportHostedInventoryRecovery(op, pin)
+	}
 	code = "backup_unavailable"
 	if c.hostedCurrent == nil || c.resources.Hosted == nil || recoveryfile.ValidatePin(pin, recoveryfile.CreateMode) != nil {
 		return code, ErrPoolRuntime

@@ -113,6 +113,9 @@ func (r *walletRuntime) verifyPoolRecipient(ctx context.Context, want walletPool
 // after dispatch therefore requires Close and a fresh attachment before retry;
 // that attachment also re-establishes watches for retained active addresses.
 func (r *walletRuntime) EnsurePoolRecipient(ctx context.Context, expected *walletPoolRecipient) (walletPoolRecipient, error) {
+	if r != nil && r.allocation != nil {
+		return (&allocatedRecipientWallet{wallet: r, allocator: r.allocation, operationID: r.allocationRecipientID}).EnsurePoolRecipient(ctx, expected)
+	}
 	if r == nil || ctx == nil || wire.TestPoW {
 		return walletPoolRecipient{}, ErrPoolRecipient
 	}

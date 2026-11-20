@@ -91,12 +91,32 @@ func (g *Gym) poolRecovery(export bool) (string, error) {
 			CanChooseFiles(true).CanChooseDirectories(false).ResolvesAliases(false).
 			PromptForSingleSelection()
 	}
+	if g.poolHelper.Mode() == pilot.HostedRecoveryPoolMode {
+		original := g.poolHelper
+		return hostedRecoveryAction(context.Background(), original, func() bool { return g.poolHelper == original }, choose, g.protectedRoots, export)
+	}
 	return poolRecoveryAction(context.Background(), g.poolHelper.PoolRequest, choose, g.protectedRoots, export)
 }
 
 func (g *Gym) CancelPoolBackup() error {
-	if g.poolHelper == nil {
+	b := g.poolHelper
+	if b == nil {
 		return bridge.ErrUnavailable
+	}
+	if b.Mode() == pilot.HostedRecoveryPoolMode {
+		s, e := g.HostedRecoverySnapshot()
+		if e != nil || g.poolHelper != b {
+			return bridge.ErrUnavailable
+		}
+		owner, e := bridge.HostedContextForSnapshot(s)
+		if e != nil || !b.HostedContextMatches(owner) {
+			return bridge.ErrUnavailable
+		}
+		_, e = b.HostedRecoveryRequest(context.Background(), pilot.HostedRecoveryRequest{Command: "hosted_recovery_cancel_pool_backup", OwnerKind: owner.Kind, ViewID: owner.ViewID})
+		if g.poolHelper != b || !b.HostedContextMatches(owner) {
+			return bridge.ErrUnavailable
+		}
+		return e
 	}
 	s, err := g.PoolSnapshot()
 	if err != nil || s.View == nil || s.Account.State != "signed_in" {

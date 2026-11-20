@@ -142,6 +142,7 @@ type state struct {
 	Report      Report           `json:"report"`
 }
 type Store struct {
+	auditOnly  bool
 	db         *leveldb.DB
 	state      state
 	source     *poolround.Store

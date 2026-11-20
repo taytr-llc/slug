@@ -50,10 +50,14 @@ func nonnil(value any) bool {
 }
 
 func validateConfig(c Config, authority *registry.ManifestStore, node Node, sessions prospectservice.SessionAuthorizer) error {
+	return validateConfigMode(c, authority, node, sessions, false)
+}
+
+func validateConfigMode(c Config, authority *registry.ManifestStore, node Node, sessions prospectservice.SessionAuthorizer, auditOnly bool) error {
 	if wire.TestPoW {
 		return ErrProfile
 	}
-	if c.Version != Version1 || c.MaxWorks == 0 || c.MaxWorks > maxWorks || c.MaxSubmissions == 0 || c.MaxSubmissions > maxSubmissions || c.MaxBytes < maxSubmissionSize || c.MaxBytes > 1<<30 || !canonicalHash(c.PoolTarget, true) || len(c.PayoutAddress) > 128 || !nonnil(authority) || !nonnil(node) || !nonnil(sessions) {
+	if c.Version != Version1 || c.MaxWorks == 0 || c.MaxWorks > maxWorks || c.MaxSubmissions == 0 || c.MaxSubmissions > maxSubmissions || c.MaxBytes < maxSubmissionSize || c.MaxBytes > 1<<30 || !canonicalHash(c.PoolTarget, true) || len(c.PayoutAddress) > 128 || !nonnil(authority) || (!auditOnly && (!nonnil(node) || !nonnil(sessions))) {
 		return ErrConfig
 	}
 	raw, _ := json.Marshal(c.Policy)
@@ -79,7 +83,7 @@ func validateConfig(c Config, authority *registry.ManifestStore, node Node, sess
 		return ErrConfig
 	}
 	info, err := authority.Info()
-	if err != nil || info.ReadOnly || info.Pin != c.AuthorityPin {
+	if err != nil || (!auditOnly && info.ReadOnly) || info.Pin != c.AuthorityPin {
 		return ErrConfig
 	}
 	return nil

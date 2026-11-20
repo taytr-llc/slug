@@ -23,6 +23,7 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 	node := flags.String("node-binary", "", "Explicit bundled normal SLUG node binary")
 	pool := flags.Bool("candidate-pool", false, "Use the separate shared public-fixture pool desktop")
 	hosted := flags.Bool("candidate-hosted-pool", false, "Use the separate signed public-fixture hosted pool desktop")
+	recovery := flags.Bool("candidate-hosted-recovery", false, "Use the separate hosted allocation recovery fixture desktop")
 	nameVersion := flags.String("candidate-name-version", "1", "Explicit immutable pool candidate name version (1 or 2)")
 	accounts := flags.Bool("account-fixtures", false, "Use the separate two-public-fixture account pilot")
 	candidates := flags.Bool("candidate-manifests", false, "Use the separate candidate fixture desktop")
@@ -40,7 +41,7 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 	if flags.NArg() != 0 || *data == "" || *node == "" {
 		return errors.New("explicit data-dir and node-binary are required")
 	}
-	dataExplicit, poolExplicit, nameExplicit, legacyExplicit := false, false, false, false
+	dataExplicit, poolExplicit, nameExplicit, legacyExplicit, hostedExplicit, recoveryExplicit := false, false, false, false, false, false
 	flags.Visit(func(f *flag.Flag) {
 		switch f.Name {
 		case "data-dir":
@@ -50,12 +51,30 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 			legacyExplicit = true
 		case "candidate-name-version":
 			nameExplicit = true
+		case "candidate-hosted-pool":
+			hostedExplicit = true
+		case "candidate-hosted-recovery":
+			recoveryExplicit = true
 		case "account-fixtures", "candidate-manifests", "candidate-stable", "candidate-entries", "candidate-events", "candidate-seeds", "candidate-cards", "candidate-bouts", "candidate-results", "career":
 			legacyExplicit = true
 		}
 	})
+	if *recovery {
+		if legacyExplicit || hostedExplicit {
+			return errors.New("candidate-hosted-recovery is a separate explicit mode")
+		}
+		options, err := poolselection.HostedRecoveryOptions(*nameVersion, nameExplicit, *data, dataExplicit)
+		if err != nil {
+			return err
+		}
+		c, err := accountpilot.NewHostedRecoveryPool(ctx, pilot.Config{DataDir: *data, NodeBinary: *node}, options)
+		if err != nil {
+			return err
+		}
+		return pilot.ServeHostedRecovery(ctx, stdin, stdout, c)
+	}
 	if *hosted {
-		if legacyExplicit {
+		if legacyExplicit || recoveryExplicit {
 			return errors.New("candidate-hosted-pool is a separate explicit mode")
 		}
 		options, err := poolselection.HostedOptions(*nameVersion, nameExplicit, *data, dataExplicit)
@@ -67,6 +86,9 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 			return err
 		}
 		return pilot.ServePool(ctx, stdin, stdout, c)
+	}
+	if recoveryExplicit {
+		return errors.New("candidate-hosted-recovery requires explicit true selection")
 	}
 	options, selectionErr := poolselection.Options(*pool, poolExplicit, *nameVersion, nameExplicit, *data, dataExplicit)
 	if selectionErr != nil {

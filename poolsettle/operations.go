@@ -168,6 +168,9 @@ func (s *Store) inspect(ctx context.Context, coins []Coin) ([]Coin, map[string]s
 // is prepared that day's slot is permanently occupied. A pending transaction
 // blocks later batches and can only be recovered or rebroadcast byte-for-byte.
 func (s *Store) RunDaily(ctx context.Context) (Report, error) {
+	if s != nil && s.auditOnly {
+		return Report{}, ErrInvalid
+	}
 	end, err := s.begin(ctx)
 	if err != nil {
 		return Report{}, err

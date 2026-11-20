@@ -11,7 +11,9 @@ import (
 	"time"
 
 	"github.com/taytr-llc/slug/gymaccount"
+	"github.com/taytr-llc/slug/poolservice"
 	"github.com/taytr-llc/slugwallet/recoveryvault"
+	"github.com/taytr-llc/slugwallet/wallet"
 )
 
 // ProvisionFixture verifies a concrete retained wallet under one original
@@ -125,8 +127,24 @@ func (r *PoolRuntime) provisionFixture(ctx context.Context, fixture string, logi
 	if !walletExists && (hasReady || account.Enrollment != nil) {
 		return binding, ErrPoolRuntime
 	}
-	w, e := openAccountFixtureWallet(walletDir, fixture, !walletExists)
+	var w *walletRuntime
+	if r.hosted != nil && r.hosted.allocation != nil {
+		sourceID, e := poolservice.BindingID(r.source)
+		if e != nil {
+			return binding, e
+		}
+		locked, bound, allow, e := r.hosted.allocation.walletGuards(fixture, account.ID, r.hosted.owners[fixture], sourceID)
+		if e != nil {
+			return binding, e
+		}
+		w, e = openHostedAllocationWallet(work, walletDir, fixture, !walletExists, locked, bound, allow)
+	} else {
+		w, e = openAccountFixtureWallet(walletDir, fixture, !walletExists)
+	}
 	if e != nil {
+		if w != nil {
+			r.retainHostedWallet(w, e)
+		}
 		return binding, e
 	}
 	walletClosed := false
@@ -183,6 +201,28 @@ func (r *PoolRuntime) provisionFixture(ctx context.Context, fixture string, logi
 			return binding, e
 		}
 	}
+	var recipientWallet poolRecipientWallet = w
+	if r.hosted != nil && r.hosted.allocation != nil {
+		locked := w.allocationGuard != nil && w.allocationGuard.State == "locked"
+		inv, poolID, e := r.hosted.allocation.ensureInventory(work, fixture, current, locked)
+		if e != nil {
+			return binding, e
+		}
+		// Bind only the exact locked guard opened for first-time setup. An
+		// established wallet already has allocations and must pass Attach's
+		// complete wallet/inventory pairing audit without rebinding.
+		if locked {
+			if e = inv.BindWallet(work, w.wallet, login.Token, wallet.HostedAllocationEpochFence(epoch)); e != nil {
+				return binding, e
+			}
+		}
+		w.allocation, e = inv.Attach(work, w.wallet, login.Token, wallet.HostedAllocationEpochFence(epoch))
+		if e != nil {
+			return binding, e
+		}
+		w.allocationRecipientID = poolID
+		recipientWallet = &allocatedRecipientWallet{wallet: w, allocator: w.allocation, operationID: poolID}
+	}
 	mining, e := r.accounts.MintMining(work, login.Token)
 	if e != nil {
 		return binding, e
@@ -193,7 +233,7 @@ func (r *PoolRuntime) provisionFixture(ctx context.Context, fixture string, logi
 	}
 	view := ManifestAccountConfig{Account: AccountConfig{Fixture: fixture, AccountID: account.ID, AuthorityID: r.marker.AccountAuthorityID, RequireExisting: hasReady, Authorizer: poolRuntimeSessions{r.accounts}, MiningToken: func(context.Context) (string, error) { return mining.Token, nil }}, ViewID: hex.EncodeToString(random[:]), Generation: account.Generation, ViewLease: lease}
 	c := PoolRecipientConfig{Version: 1, AccountAuthorityID: r.marker.AccountAuthorityID, AccountID: account.ID, Fixture: fixture, Identity: identity, Source: r.source}
-	binding, e = ensurePoolRecipientBinding(work, root, c, view, w, !hasReady)
+	binding, e = ensurePoolRecipientBinding(work, root, c, view, recipientWallet, !hasReady)
 	if e != nil {
 		return PoolRecipientBinding{}, e
 	}

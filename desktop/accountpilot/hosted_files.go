@@ -260,14 +260,25 @@ func hostedReadyStageHash(init HostedInit, ready HostedReady, stage string) stri
 // store's validity. The constructor still audits each concrete store and checks
 // its exact expected identity before accepting or recovering its receipt.
 func readHostedSetupPrefix(root string, init HostedInit) ([]SetupReceipt, error) {
+	return readHostedSetupPrefixMode(root, init, false)
+}
+func readHostedSetupPrefixMode(root string, init HostedInit, allocation bool) ([]SetupReceipt, error) {
 	if !validHostedInit(init) {
 		return nil, pilot.ErrManifestInitialization
 	}
-	entries, err := hostedDirectoryEntries(root, 11)
+	limit := 11
+	if allocation {
+		limit += 2
+	}
+	entries, err := hostedDirectoryEntries(root, limit)
 	if err != nil {
 		return nil, err
 	}
 	known := map[string]bool{"instance-lock": true, hostedInitName: true, hostedReadyName: true, "setup": true}
+	if allocation {
+		known[hostedAllocationGuardName] = true
+		known["allocation-recovery"] = true
+	}
 	for _, name := range hostedStageDirectories {
 		if name != "" {
 			known[name] = true
@@ -429,11 +440,14 @@ func writeHostedInit(root string, init HostedInit) error {
 	return errors.Join(parent.Sync(), parent.Close())
 }
 func writeHostedSetupReceipt(root string, receipt SetupReceipt) error {
+	return writeHostedSetupReceiptMode(root, receipt, false)
+}
+func writeHostedSetupReceiptMode(root string, receipt SetupReceipt, allocation bool) error {
 	init, found, err := readHostedInit(root)
 	if err != nil || !found {
 		return pilot.ErrManifestInitialization
 	}
-	prefix, err := readHostedSetupPrefix(root, init)
+	prefix, err := readHostedSetupPrefixMode(root, init, allocation)
 	if err != nil {
 		return err
 	}
@@ -463,11 +477,14 @@ func writeHostedSetupReceipt(root string, receipt SetupReceipt) error {
 	return errors.Join(f.Sync(), f.Close())
 }
 func writeHostedReady(root string, ready HostedReady) error {
+	return writeHostedReadyMode(root, ready, false)
+}
+func writeHostedReadyMode(root string, ready HostedReady, allocation bool) error {
 	init, found, err := readHostedInit(root)
 	if err != nil || !found || !hostedReadyMatches(init, ready) {
 		return pilot.ErrManifestInitialization
 	}
-	prefix, err := readHostedSetupPrefix(root, init)
+	prefix, err := readHostedSetupPrefixMode(root, init, allocation)
 	if err != nil || len(prefix) != len(hostedStages) {
 		return pilot.ErrManifestInitialization
 	}
@@ -479,7 +496,8 @@ func writeHostedReady(root string, ready HostedReady) error {
 	return writeHostedControl(filepath.Join(root, hostedReadyName), ready, hostedMarkerMax)
 }
 
-func hostedRootPath(root string) error {
+func hostedRootPath(root string) error { return hostedRootPathMode(root, false) }
+func hostedRootPathMode(root string, allocation bool) error {
 	if !filepath.IsAbs(root) || filepath.Clean(root) != root || strings.ContainsAny(root, "\x00\r\n\t") {
 		return pilot.ErrManifestInitialization
 	}
@@ -487,7 +505,13 @@ func hostedRootPath(root string) error {
 	if err != nil || parent != filepath.Dir(root) {
 		return pilot.ErrManifestInitialization
 	}
-	for _, name := range []string{"LocalPilot", "LocalWalletPilot", "LocalAccountPilot", "LocalManifestPilot", "LocalPoolPilot"} {
+	names := []string{"LocalPilot", "LocalWalletPilot", "LocalAccountPilot", "LocalManifestPilot", "LocalPoolPilot"}
+	if allocation {
+		names = append(names, "LocalHostedPoolPilot")
+	} else {
+		names = append(names, "LocalHostedRecoveryPilot")
+	}
+	for _, name := range names {
 		paths := []string{filepath.Join(parent, name)}
 		if config, e := os.UserConfigDir(); e == nil {
 			paths = append(paths, filepath.Join(config, "SLUG", name))
@@ -502,8 +526,8 @@ func hostedRootPath(root string) error {
 		}
 	}
 	for dir := root; ; dir = filepath.Dir(dir) {
-		for _, name := range []string{"SLUG-ACCOUNTS.json", "SLUG-PILOT.json", "SLUG-MANIFEST-ACCOUNTS.json", "SLUG-MANIFEST-PILOT.json", "SLUG-POOL-ACCOUNTS.json", "SLUG-POOL-RUNTIME.json", hostedInitName, hostedReadyName} {
-			if dir == root && (name == hostedInitName || name == hostedReadyName) {
+		for _, name := range []string{"SLUG-ACCOUNTS.json", "SLUG-PILOT.json", "SLUG-MANIFEST-ACCOUNTS.json", "SLUG-MANIFEST-PILOT.json", "SLUG-POOL-ACCOUNTS.json", "SLUG-POOL-RUNTIME.json", hostedInitName, hostedReadyName, hostedAllocationGuardName} {
+			if dir == root && (name == hostedInitName || name == hostedReadyName || allocation && name == hostedAllocationGuardName) {
 				continue
 			}
 			if _, err := os.Lstat(filepath.Join(dir, name)); !os.IsNotExist(err) {

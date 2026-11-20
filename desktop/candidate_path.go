@@ -23,6 +23,9 @@ func preparePoolDataParent(dataDir, configDir string, defaultSelection bool) err
 func prepareHostedPoolDataParent(dataDir, configDir string) error {
 	return prepareModeDataParent(dataDir, configDir, false, "LocalHostedPoolPilot", "SLUG-HOSTED-POOL-INIT.json")
 }
+func prepareHostedRecoveryDataParent(dataDir, configDir string) error {
+	return prepareModeDataParent(dataDir, configDir, false, "LocalHostedRecoveryPilot", "SLUG-HOSTED-ALLOCATION-V1.json")
+}
 func prepareModeDataParent(dataDir, configDir string, defaultSelection bool, modeName, markerName string) error {
 	if !filepath.IsAbs(dataDir) || filepath.Clean(dataDir) != dataDir || strings.ContainsAny(dataDir, "\x00\r\n\t") {
 		return errCandidateDataPath
@@ -101,7 +104,7 @@ func modeSafeAncestors(path, selected, modeName, markerName string) (os.FileInfo
 		switch filepath.Base(p) {
 		case "LocalPilot", "LocalWalletPilot", "LocalAccountPilot":
 			return nil, errCandidateDataPath
-		case "LocalManifestPilot", "LocalPoolPilot", "LocalHostedPoolPilot":
+		case "LocalManifestPilot", "LocalPoolPilot", "LocalHostedPoolPilot", "LocalHostedRecoveryPilot":
 			if p != selected || filepath.Base(p) != modeName {
 				return nil, errCandidateDataPath
 			}
@@ -111,8 +114,9 @@ func modeSafeAncestors(path, selected, modeName, markerName string) (os.FileInfo
 			"SLUG-MANIFEST-PILOT.json", "SLUG-MANIFEST-PILOT-READY.json", "SLUG-MANIFEST-PILOT-CHAINS.json",
 			"SLUG-MANIFEST-ACCOUNTS.json", "SLUG-POOL-ACCOUNTS.json", "SLUG-POOL-RUNTIME.json",
 			"SLUG-HOSTED-POOL-INIT.json", "SLUG-HOSTED-POOL-READY.json",
+			"SLUG-HOSTED-ALLOCATION-V1.json",
 		} {
-			if p == selected && (marker == markerName || modeName == "LocalHostedPoolPilot" && marker == "SLUG-HOSTED-POOL-READY.json") {
+			if p == selected && (marker == markerName || modeName == "LocalHostedPoolPilot" && marker == "SLUG-HOSTED-POOL-READY.json" || modeName == "LocalHostedRecoveryPilot" && (marker == "SLUG-HOSTED-POOL-INIT.json" || marker == "SLUG-HOSTED-POOL-READY.json")) {
 				continue
 			}
 			if _, err = os.Lstat(filepath.Join(p, marker)); !os.IsNotExist(err) {

@@ -25,6 +25,11 @@
     <section class="panel" aria-labelledby="wallet-heading"><div class="section-top"><h2 id="wallet-heading">Demo wallet</h2><span id="wallet-state">Wallet closed</span></div>
       <div class="balances"><div><span>Spendable test SLUG</span><strong id="spendable">—</strong></div><div><span>Waiting to mature</span><strong id="immature">—</strong></div><p id="wallet-height">Mining rewards mature after 100 blocks.</p></div>
       <dl class="identity"><dt>Reward address</dt><dd id="payout">Sign in to load the demo wallet</dd><dt>Gym identity</dt><dd id="gym-id">—</dd></dl>
+      <div id="hosted-receive-panel" hidden>
+        <h3>Receive test SLUG</h3>
+        <div class="actions"><button id="hosted-receive-new" type="button" disabled>New receive address</button><button id="hosted-receive-resume" type="button" hidden disabled>Resume reserved address</button><button id="hosted-receive-show" type="button" hidden disabled>Show previously issued address</button><button id="hosted-receive-check" type="button" disabled>Check address request</button><button id="hosted-receive-cancel" type="button" disabled>Cancel address request</button></div>
+        <p id="hosted-receive-status" class="note" role="status"></p><p id="hosted-receive-address" class="identity"></p><button id="hosted-receive-copy" type="button" disabled>Copy receive address</button>
+      </div>
       <div id="pool-balance" hidden>
         <h3>Pool earnings</h3>
         <dl class="identity"><dt>Confirmed, unpaid SLUG</dt><dd id="pool-confirmed">—</dd><dt>Available for settlement</dt><dd id="pool-available">—</dd><dt>Payment pending</dt><dd id="pool-reserved">—</dd><dt>Paid to this wallet</dt><dd id="pool-paid">—</dd></dl>

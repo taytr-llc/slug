@@ -43,3 +43,9 @@ func HostedOptions(version string, versionExplicit bool, data string, dataExplic
 	}
 	return Options(true, true, version, versionExplicit, data, true)
 }
+
+// HostedRecoveryOptions shares only immutable name selection with Set71. Mode
+// and namespace selection remain explicit at both entry points.
+func HostedRecoveryOptions(version string, versionExplicit bool, data string, dataExplicit bool) (pilot.PoolOptions, error) {
+	return HostedOptions(version, versionExplicit, data, dataExplicit)
+}

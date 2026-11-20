@@ -135,6 +135,7 @@ type metadata struct {
 // trusted observer alive until Close drains active work. No adapter callback
 // may reenter this store. There is no public transport or caller receipt import.
 type Store struct {
+	auditOnly    bool
 	db           *leveldb.DB
 	meta         metadata
 	limits       Limits

@@ -194,6 +194,9 @@ func openCareerWithClock(path string, expected Pin, source *registry.ManifestSto
 	return openMode(path, expected, source, clock, activation, prepared, Version1)
 }
 func openMode(path string, expected Pin, source *registry.ManifestStore, clock func() time.Time, activation *careerstate.Activation, prepared bool, version uint32) (*Store, error) {
+	return openModeAudit(path, expected, source, clock, activation, prepared, version, false)
+}
+func openModeAudit(path string, expected Pin, source *registry.ManifestStore, clock func() time.Time, activation *careerstate.Activation, prepared bool, version uint32, readOnly bool) (*Store, error) {
 	if e := normal(); e != nil {
 		return nil, e
 	}
@@ -236,7 +239,7 @@ func openMode(path string, expected Pin, source *registry.ManifestStore, clock f
 	if m != wantMarker {
 		return nil, ErrCorrupt
 	}
-	db, e := leveldb.OpenFile(filepath.Join(path, "db"), &opt.Options{Strict: opt.StrictAll, ErrorIfMissing: true})
+	db, e := leveldb.OpenFile(filepath.Join(path, "db"), &opt.Options{Strict: opt.StrictAll, ErrorIfMissing: true, ReadOnly: readOnly})
 	if e != nil {
 		return nil, ErrClosed
 	}
@@ -253,7 +256,7 @@ func openMode(path string, expected Pin, source *registry.ManifestStore, clock f
 	}
 	// Opening has already observed this authenticated source count. Retain that
 	// highwater even before the first authorized page, without assigning rows.
-	if info.Records > s.meta.ObservedSourceCount {
+	if !readOnly && info.Records > s.meta.ObservedSourceCount {
 		next := s.meta
 		next.ObservedSourceCount = info.Records
 		if e = s.commitLocked(new(leveldb.Batch), next); e != nil {

@@ -4,6 +4,7 @@ import { Call } from '/wails/runtime.js';
 const MODE = 'local-manifest-pilot';
 const POOL_MODE = 'local-pool-pilot';
 const HOSTED_POOL_MODE = 'local-hosted-fixture-pool';
+const HOSTED_RECOVERY_MODE = 'local-hosted-recovery-pool';
 const DESCRIPTOR = 'c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303';
 // Frozen compiled candidate tuples. Membership never replaces source equality.
 // The native bridge validates descriptor IDs; the browser checks their exact shapes.
@@ -192,7 +193,7 @@ function validPoolBackup(v) {
 }
 function normalizePool(v) {
   exact(v, ['version', 'mode', 'state', 'attempts', 'hashes_per_second', 'height', 'pending', 'last_error', 'recovery_error', 'wallet_state', 'wallet_height', 'payout_address', 'gym_id', 'gym_public_key', 'spendable_atoms', 'immature_atoms', 'backup_state', 'backup_phase', 'backup_error', 'account', 'view', 'assignment_count', 'source_binding_id', 'balance']);
-  requireValue(v.version === 1 && v.mode === (hostedPoolMode ? HOSTED_POOL_MODE : POOL_MODE) && states.includes(v.state) && walletStates.includes(v.wallet_state));
+  requireValue(v.version === 1 && v.mode === (hostedRecoveryMode ? HOSTED_RECOVERY_MODE : hostedPoolMode ? HOSTED_POOL_MODE : POOL_MODE) && states.includes(v.state) && walletStates.includes(v.wallet_state));
   requireValue(['attempts', 'height', 'wallet_height'].every((k) => int(v[k])) && ['spendable_atoms', 'immature_atoms'].every((k) => int(v[k], 0, MAX_ATOMS)) && int(v.pending, 0, 4096) && int(v.assignment_count, 0, 1000));
   requireValue(typeof v.hashes_per_second === 'number' && Number.isFinite(v.hashes_per_second) && v.hashes_per_second >= 0 && statusErrors.has(v.last_error) && statusErrors.has(v.recovery_error));
   validPoolBackup(v);
@@ -216,7 +217,7 @@ function poolAmount(f) {
   return `${whole}${decimal ? `.${decimal}` : ''}${n % d ? ' + fraction of an atom' : ''}`;
 }
 function renderPool() {
-  poolUI['pool-balance'].hidden = poolUI['pool-features'].hidden = !poolMode;
+  poolUI['pool-balance'].hidden = poolUI['pool-features'].hidden = !poolMode || (hostedRecoveryMode && hostedRoot?.kind !== 'healthy');
   if (!poolMode) return;
   const visible = accountReady(), value = visible && current.balance.state === 'ready' ? current.balance.value : null;
   const b = value?.balance;
@@ -400,7 +401,7 @@ function response(v, kind, manifest, stable, allowNull = false) {
   return { ok: true, value: own(o) };
 }
 
-let poolMode = false, hostedPoolMode = false, careerMode = false, careerPage = null, careerActivation = null, careerSelectedJob = "";
+let poolMode = false, hostedPoolMode = false, hostedRecoveryMode = false, careerMode = false, careerPage = null, careerActivation = null, careerSelectedJob = "";
 let current = null, stable = null, enabled = false, disposed = false, epoch = 0;
 let background = null, activeCall = null, timer = null, pollWanted = false, command = '';
 let tasks = [], watched = null, flow = null, savedOperation = null, lastViewedJob = '';
@@ -420,6 +421,7 @@ function ready() { return accountReady() && stable?.view && currentKey() === vie
 function canEdit() { return ready() && stable.status.caught_up && !stable.status.pending_operation_id && !watched && !flow && !command && !['failed', 'unavailable'].includes(stable.state); }
 function clearCards() { for (const c of cards.values()) { c.image.removeAttribute('src'); c.article.remove(); } cards.clear(); images.clear(); imageAttempts.clear(); }
 function forgetView(clearFlow = true) {
+  clearHostedReceive();
   inventoryCursors = new Set([0]);
   clearPayout();
   clearActivity();
@@ -427,7 +429,7 @@ function forgetView(clearFlow = true) {
   epoch++; careerPage = null; careerSelectedJob = ""; clearHistory(); clearEvent(); clearEntry(); clearPreview(); clearCards(); pageItems = []; watched = null; savedOperation = null; lastViewedJob = ''; pageAfter = pageNext = 0; rosterFirst = 1; rosterNext = 0; pageRevision = null; mode = 'recent';
   if (clearFlow) { flow = null; mutationMessage = ''; }
 }
-function disconnected() { forgetView(false); current = stable = null; connectionError = 'The local gym is unavailable. Saved changes remain on disk; reconnect before continuing.'; render(); }
+function disconnected() { forgetView(false); hostedRoot = null; current = stable = null; connectionError = 'The local gym is unavailable. Saved changes remain on disk; reconnect before continuing.'; render(); }
 function textError(code) {
   return ({ career_candidate_ineligible: 'C1 bookings require zero professional records. The affected fighters remain in your inventory.', career_inactive: 'Career accounting is waiting for both fixture gyms.', career_unfenced: 'Career accounting has not sealed this noon cutoff yet.', career_unavailable: 'Career evidence is unavailable. No zero-record fallback was used.', career_capacity: 'Career cutoff storage reached its bounded capacity.', busy: 'Another local task is finishing. Try again shortly.', stable_sync_required: 'Saved candidates are still syncing. Resume syncing, then retry this choice.', stable_conflict: 'The roster changed. Refresh it before making a new choice.', stable_pending: 'A saved choice is awaiting reconciliation.', stable_capacity: 'This demo store reached its supported capacity. Existing candidates and outcomes remain available.', stable_clock: 'The authority clock needs attention. Condition and edits are unavailable.', stable_cancelled: 'The request was cancelled.', stale_view: 'This account view has expired. Sign in again.', unauthorized: 'Sign in again to continue.', forbidden: 'This action is unavailable for the current session.', stable_not_found: 'That saved result is unavailable. Reload the page or check the saved change.', outcome_unknown: 'The change may have been saved. Check its recorded outcome before trying another choice.' })[code] ?? 'The local stable could not complete the request. Its saved data has been retained.';
 }
@@ -588,19 +590,27 @@ function render() {
   ui['apply-saved'].disabled = !signed || !!command || !!watched || !pending || pending.intent.view_id !== s.view.view_id || pending.intent.generation !== s.view.generation || !st.caught_up;
   ui.abandon.disabled = !signed || !!command || !!watched || !pending;
   content(ui.alert, connectionError || message || (stable?.error ? textError(stable.error) : '') || (poolMode && s?.last_error ? ['capacity', 'pool_capacity'].includes(s.last_error) ? 'Mining is paused because the demo pool reached its retained capacity. Existing earnings and fighters are saved.' : 'The pool miner needs attention. Stop and retry when the local service is available.' : '')); ui.alert.hidden = !ui.alert.textContent;
-  renderPool(); renderRoster(); renderCards(); renderPreview(); renderEntry(); renderEvent(); renderSeed(); renderCard(); renderBooked(); renderPublication(); renderHistory();
+  renderPool(); renderRoster(); renderCards(); renderPreview(); renderEntry(); renderEvent(); renderSeed(); renderCard(); renderBooked(); renderPublication(); renderHistory(); renderHostedRecovery();
 }
 async function call(method, ...args) { requireValue(!activeCall); const p = Call.ByName(`main.Gym.${method}`, ...args); activeCall = p; try { return await p; } finally { activeCall = null; } }
 function schedule() { if (timer !== null) clearTimeout(timer); timer = null; if (!disposed && enabled && !document.hidden) timer = setTimeout(() => { timer = null; pollWanted = true; pump(); }, 1000); }
 function queue(fn, name, invalidate = false) {
   if (!enabled || disposed || command) return;
-  if (invalidate) { forgetView(); current = stable = null; rememberedView = ''; }
+  if (invalidate) { forgetView(); hostedRoot = null; current = stable = null; rememberedView = ''; }
   command = name; render(); tasks.unshift(async () => { try { await fn(); } finally { command = ''; render(); pollWanted = true; } }); pump();
 }
 async function fetchSnapshots() {
-  const captured = epoch;
+  let captured = epoch;
   try {
-    const m = poolMode ? normalizePool(await call('PoolSnapshot')) : normalize(await call('ManifestSnapshot')); if (disposed || captured !== epoch) return;
+    let m;
+    if (hostedRecoveryMode) {
+      const root = normalizeHosted(await call('HostedRecoverySnapshot')); if (disposed || captured !== epoch) return;
+      if (hostedOwnerKey(root) !== hostedOwnerKey()) { forgetView(); captured = epoch; rememberedView = ''; current = stable = null; message = ''; }
+      hostedRoot = root; connectionError = '';
+      if (root.kind !== 'healthy') { current = stable = null; render(); return; }
+      m = normalizePool(root.healthy.pool);
+    } else m = poolMode ? normalizePool(await call('PoolSnapshot')) : normalize(await call('ManifestSnapshot'));
+    if (disposed || captured !== epoch) return;
     const r = response(await call('StableSnapshot'), 'snapshot', m, stable); if (disposed || captured !== epoch) return;
     requireValue(r.ok); const next = r.value, nextKey = viewKey(m.view);
     if (nextKey !== rememberedView) { forgetView(); rememberedView = nextKey; stable = null; message = ''; }
@@ -620,6 +630,7 @@ async function fetchSnapshots() {
     if (!disposed && ready() && !tasks.length) await fetchPublicationSnapshot();
     if (!disposed && ready() && !tasks.length && careerMode && (historySelection || historyUnknown)) await fetchHistorySnapshot();
     if (!disposed && ready() && !tasks.length && evidenceBusy()) await fetchEvidenceSnapshot();
+    if (!disposed && accountReady() && !tasks.length && hostedRecoveryMode && hostedReceiveBusy()) await fetchHostedReceive();
     if (!disposed && accountReady() && !tasks.length && payoutBusy()) await fetchPayout();
     if (!disposed && accountReady() && !tasks.length && activityBusy()) await fetchActivity();
     if (!disposed && accountReady() && !tasks.length && poolMode && (!withdrawalBinding || withdrawalBusy())) await fetchWithdrawal();
@@ -751,14 +762,14 @@ async function oldAction(method, args = [], expectedID = '') {
   if (!enabled || command) return;
   pauseBooked();
   if (method === 'Stop') { clearHistory(); entryChanged(); if (eventStatus && eventAutoAttempted.size < 256) eventAutoAttempted.add(eventStatus.event.event_id); }
-  const capturedView = currentKey(); if (expectedID && !pageItems.some((i) => i.assignment.prospect_id === expectedID)) return;
+  const capturedView = actionOwnerKey(); if (expectedID && !pageItems.some((i) => i.assignment.prospect_id === expectedID)) return;
   const invalidate = ['LoginFixture', 'Logout', 'ResetFixtureAccount'].includes(method);
   queue(async () => {
     let result, failed = false;
     try { result = await call(method, ...args); const allowed = { ExportManifestReceipt: ['', 'Receipt saved.'], ExportRecovery: ['', 'Test wallet recovery file saved.'], VerifyBackup: ['', 'Backup verification started.'] }; if (allowed[method]) requireValue(allowed[method].includes(result)); }
     catch { failed = true; }
     await fetchSnapshots();
-    if (disposed || (!invalidate && capturedView !== currentKey())) return;
+    if (disposed || (!invalidate && capturedView !== actionOwnerKey())) return;
     message = failed ? poolMode && method === 'ExportRecovery' ? 'Recovery export did not report completion. Check the selected destination before trying again.' : 'The requested action did not complete. Check the current gym and try again.' : typeof result === 'string' ? result : '';
   }, method, invalidate);
 }
@@ -3165,6 +3176,150 @@ payoutUI.cancel.addEventListener('click', () => queue(cancelPayout, 'pool-histor
 payoutUI.previous.addEventListener('click', () => queue(() => readPayoutPage(Math.max(0, (payoutPage?.after ?? 0) - 8)), 'pool-history-page'));
 payoutUI.next.addEventListener('click', () => queue(() => payoutPage?.has_more ? readPayoutPage(payoutPage.next) : undefined, 'pool-history-page'));
 
+// The native bridge seals the exact allocation digest and retained helper owner.
+// Browser validation preserves that complete public scope and original View;
+// it does not manufacture a wallet child for an archive-only session.
+const HOSTED_ERRORS = new Set(['invalid_request', 'unauthorized', 'forbidden', 'stale_view', 'busy', 'cancelled', 'outcome_unknown', 'hosted_recovery_unavailable', 'hosted_reset_pending', 'allocation_capacity', 'allocation_conflict', 'allocation_not_found', 'allocation_resume_required', 'allocation_unavailable', 'wallet_missing', 'backup_invalid', 'backup_mismatch', 'backup_unavailable', 'backup_storage_failed', 'backup_export_uncertain']);
+let hostedRoot = null, hostedReceiveDisplayed = null, hostedReceive = null, hostedReceiveUnknown = false, hostedReceivePrior = '', hostedReceiveMessage = '', hostedReceiveSerial = 0, hostedReceiveOperation = '';
+const hostedUI = Object.fromEntries(['panel', 'new', 'resume', 'show', 'check', 'cancel', 'copy', 'address', 'status'].map(k => [k, document.getElementById(`hosted-receive-${k}`)]));
+function hostedAccount(a, active) {
+  exact(a, ['state', 'fixture', 'id', 'generation', 'hold_until_ms', 'held', 'can_export', 'last_error']);
+  requireValue(accountStates.includes(a.state) && ['', ...Object.keys(fixtures)].includes(a.fixture) && int(a.generation) && int(a.hold_until_ms, 0, DATE_MAX) && typeof a.held === 'boolean' && typeof a.can_export === 'boolean' && (!a.held || (!a.can_export && a.hold_until_ms > 0)));
+  if (active) requireValue(a.state === 'signed_in' && Object.hasOwn(fixtures, a.fixture) && payoutID(a.id) && a.generation > 0 && a.last_error === '');
+  else requireValue(a.state !== 'signed_in' && a.id === '' && a.generation === 0 && a.hold_until_ms === 0 && !a.held && !a.can_export && (['', 'account_unavailable'].includes(a.last_error) || a.last_error === 'hosted_reset_pending' && ['signed_out', 'failed'].includes(a.state) && Object.hasOwn(fixtures, a.fixture)));
+}
+function hostedScope(s, a, authority, source = '') {
+  exact(s, ['version', 'inventory_id', 'inventory_binding_id', 'current_binding']);
+  requireValue(s.version === 1 && payoutID(s.inventory_id) && payoutID(s.inventory_binding_id));
+  const c = s.current_binding; exact(c, ['version', 'hosted_vault_id', 'vault_binding', 'retention_id', 'wallet_owner_id', 'source_binding_id']);
+  requireValue(c.version === 1 && ['hosted_vault_id', 'retention_id', 'wallet_owner_id', 'source_binding_id'].every(k => payoutID(c[k])) && (!source || c.source_binding_id === source));
+  const v = c.vault_binding; exact(v, ['version', 'authority_id', 'account_id', 'principal_id', 'provision_id', 'network', 'genesis', 'profile', 'root_public_key', 'gym_public_key', 'gym_id']);
+  requireValue(v.version === 1 && ['authority_id', 'account_id', 'principal_id', 'provision_id'].every(k => payoutID(v[k])) && v.authority_id === authority && v.account_id === a.id && v.network === 0x534c5547 && v.genesis === GENESIS && v.profile === 'slug-phase-a-fixture-bip39-v1' && v.root_public_key === ROOTS[a.fixture] && v.gym_public_key === fixtures[a.fixture][1] && v.gym_id === fixtures[a.fixture][0]);
+  return own(s);
+}
+function normalizeHosted(v) {
+  exact(v, ['version', 'mode', 'kind', 'account', 'healthy', 'recovery', 'error']);
+  requireValue(hostedRecoveryMode && v.version === 1 && v.mode === HOSTED_RECOVERY_MODE && ['inactive', 'healthy', 'recovery_only'].includes(v.kind) && entryBytes(v) < 262144);
+  hostedAccount(v.account, v.kind !== 'inactive');
+  if (v.kind === 'inactive') {
+    requireValue(v.healthy === null && v.recovery === null && ['', 'hosted_recovery_unavailable', 'hosted_reset_pending'].includes(v.error));
+    requireValue((v.error === 'hosted_reset_pending') === (v.account.last_error === 'hosted_reset_pending'));
+    if (v.error === 'hosted_recovery_unavailable') requireValue(v.account.state === 'failed' && v.account.fixture !== '' && v.account.last_error === 'account_unavailable');
+  } else if (v.kind === 'healthy') {
+    requireValue(v.error === '' && v.recovery === null); exact(v.healthy, ['pool', 'allocation', 'pending_receive_id', 'issued_receive_id']);
+    const h = v.healthy, p = normalizePool(h.pool); requireValue(same(p.account, v.account));
+    hostedScope(h.allocation, v.account, p.view.account_authority_id, p.source_binding_id);
+    requireValue(payoutID(h.pending_receive_id, true) && payoutID(h.issued_receive_id, true) && (!h.pending_receive_id || h.pending_receive_id !== h.issued_receive_id));
+  } else {
+    requireValue(v.error === '' && v.healthy === null); const r = v.recovery;
+    exact(r, ['view', 'allocation', 'local_wallet', 'inventory_revision', 'observed_at_ms', 'backup']);
+    const p = r.view; exact(p, ['version', 'view_id', 'account_authority_id', 'account_id', 'generation', 'fixture', 'root_public_key', 'gym_public_key', 'gym_id']);
+    requireValue(p.version === 1 && ['view_id', 'account_authority_id', 'account_id'].every(k => payoutID(p[k])) && p.account_id === v.account.id && p.generation === v.account.generation && p.fixture === v.account.fixture && p.root_public_key === ROOTS[p.fixture] && p.gym_public_key === fixtures[p.fixture][1] && p.gym_id === fixtures[p.fixture][0]);
+    hostedScope(r.allocation, v.account, p.account_authority_id);
+    requireValue(r.local_wallet === 'missing' && int(r.inventory_revision, 1, 4294967295) && int(r.observed_at_ms, 1, PAYOUT_TIME_MAX));
+    exact(r.backup, ['state', 'phase', 'error']); requireValue(r.backup.state !== 'unavailable');
+    validPoolBackup({ state: 'stopped', backup_state: r.backup.state, backup_phase: r.backup.phase, backup_error: r.backup.error });
+  }
+  return own(v);
+}
+function hostedOwnerKey(v = hostedRoot) {
+  if (!v || v.kind === 'inactive') return '';
+  return JSON.stringify([v.kind, v.kind === 'healthy' ? v.healthy.pool.view : v.recovery.view, v.kind === 'healthy' ? v.healthy.allocation : v.recovery.allocation]);
+}
+function actionOwnerKey() { return hostedRecoveryMode ? hostedOwnerKey() : currentKey(); }
+function hostedBackup() { return hostedRoot?.kind === 'recovery_only' ? hostedRoot.recovery.backup : hostedRoot?.kind === 'healthy' ? {state: current?.backup_state, phase: current?.backup_phase, error: current?.backup_error} : null; }
+function clearHostedReceive() { hostedReceiveSerial++; hostedReceiveDisplayed = null; hostedReceive = null; hostedReceiveUnknown = false; hostedReceivePrior = ''; hostedReceiveMessage = ''; hostedReceiveOperation = ''; }
+function hostedReceiveBusy() { return hostedReceiveUnknown || ['running', 'unknown'].includes(hostedReceive?.state); }
+function hostedReceiveContext() { return { epoch, serial: hostedReceiveSerial, owner: hostedOwnerKey() }; }
+function hostedReceiveCurrent(c) { return !disposed && !connectionError && hostedRecoveryMode && hostedRoot?.kind === 'healthy' && accountReady() && c.epoch === epoch && c.serial === hostedReceiveSerial && c.owner === hostedOwnerKey(); }
+function hostedReceiveValue(v, c) {
+  requireValue(hostedReceiveCurrent(c)); exact(v, ['version', 'action_id', 'operation_id', 'view_id', 'allocation', 'state', 'error', 'address']);
+  requireValue(v.version === 1 && payoutID(v.action_id) && payoutID(v.operation_id) && v.action_id !== hostedReceivePrior && v.view_id === current.view.view_id && same(v.allocation, hostedRoot.healthy.allocation) && entryBytes(v) < 16384);
+  requireValue(!hostedReceiveOperation || v.operation_id === hostedReceiveOperation);
+  if (hostedReceive) requireValue(v.action_id === hostedReceive.action_id && v.operation_id === hostedReceive.operation_id && (!['ready', 'failed', 'cancelled', 'needs_resume'].includes(hostedReceive.state) || same(v, hostedReceive)));
+  if (v.state === 'ready') {
+    requireValue(v.error === ''); const a = v.address; exact(a, ['address', 'script', 'purpose', 'coin', 'account', 'branch', 'index', 'inventory_revision']);
+    requireValue(a.purpose === 84 && a.coin === 0 && a.account === 0 && a.branch === 0 && int(a.index, 1, 4095) && int(a.inventory_revision, 1, 4294967295) && typeof a.address === 'string' && /^slug1q[023456789acdefghjklmnpqrstuvwxyz]{38}$/.test(a.address) && /^0014[0-9a-f]{40}$/.test(a.script));
+  } else {
+    requireValue(v.address === null && (v.state === 'running' && v.error === '' || v.state === 'needs_resume' && v.error === 'allocation_resume_required' || v.state === 'cancelled' && v.error === 'cancelled' || v.state === 'unknown' && v.error === 'outcome_unknown' || v.state === 'failed' && HOSTED_ERRORS.has(v.error)));
+  }
+  return own(v);
+}
+function hostedReceiveError(code) {
+  return ({ allocation_capacity: 'This wallet reached its supported address allocation capacity.', allocation_resume_required: 'The reserved address needs an explicit resume.', allocation_not_found: 'The exact request did not start. You can make a new request.', busy: 'Another wallet task is finishing. Try again when it has stopped.', cancelled: 'Address work was cancelled. A saved reservation remains retained.', outcome_unknown: 'The address request may have been saved. Check this exact request before starting another.', allocation_conflict: 'The saved allocation conflicts with the current wallet. Reopen this account before continuing.' })[code] || 'The receive address is unavailable. Its saved reservation is retained.';
+}
+async function beginHostedReceive(method) {
+  if (!hostedRecoveryMode || hostedRoot?.kind !== 'healthy' || !accountReady() || hostedReceiveBusy() || current.state !== 'stopped' || poolBackupRunning()) return;
+  const h = hostedRoot.healthy, expected = method === 'ResumeReceiveAddress' ? h.pending_receive_id : method === 'RedisplayReceiveAddress' ? h.issued_receive_id : '';
+  if (method === 'NewReceiveAddress' ? !!h.pending_receive_id : !expected) return;
+  hostedReceivePrior = hostedReceive?.action_id || hostedReceivePrior; hostedReceive = null; hostedReceiveUnknown = true; hostedReceiveMessage = ''; hostedReceiveOperation = expected; const c = hostedReceiveContext(); renderHostedReceive();
+  try {
+    const reply = await call(method); if (!hostedReceiveCurrent(c)) return; const j = hostedReceiveValue(reply, c);
+    requireValue(!expected || j.operation_id === expected); hostedReceive = j; hostedReceiveOperation = j.operation_id; hostedReceiveUnknown = j.state === 'unknown';
+    if (j.state === 'ready') hostedReceiveDisplayed = {owner: c.owner, action: j.action_id, address: own(j.address)};
+  } catch { if (hostedReceiveCurrent(c)) hostedReceiveMessage = hostedReceiveError('outcome_unknown'); }
+  renderHostedReceive();
+}
+function hostedNativeError(e) {
+  const text = typeof e === 'string' ? e : e?.message;
+  if (typeof text !== 'string') return '';
+  const match = /^The hosted recovery request could not complete \(([a-z_]+)\)\.$/.exec(text);
+  return match && HOSTED_ERRORS.has(match[1]) ? match[1] : '';
+}
+async function fetchHostedReceive(cancel = false) {
+  if (!hostedRecoveryMode || hostedRoot?.kind !== 'healthy' || !accountReady() || !hostedReceiveBusy()) return;
+  const c = hostedReceiveContext();
+  try { const reply = await call(cancel ? 'CancelReceiveAddress' : 'ReceiveAddressStatus'); if (!hostedReceiveCurrent(c)) return; hostedReceive = hostedReceiveValue(reply, c); hostedReceiveOperation = hostedReceive.operation_id; hostedReceiveUnknown = hostedReceive.state === 'unknown'; hostedReceiveMessage = ''; if (hostedReceive.state === 'ready') hostedReceiveDisplayed = {owner: c.owner, action: hostedReceive.action_id, address: own(hostedReceive.address)}; }
+  catch (e) { if (hostedReceiveCurrent(c)) {
+    const code = hostedNativeError(e);
+    if (!cancel && ['allocation_not_found', 'allocation_resume_required'].includes(code)) {
+      hostedReceivePrior = hostedReceive?.action_id || hostedReceivePrior; hostedReceive = null; hostedReceiveUnknown = false;
+      hostedReceiveMessage = hostedReceiveError(code);
+    } else hostedReceiveMessage = hostedReceiveError('outcome_unknown');
+  } }
+  renderHostedReceive();
+}
+function renderHostedReceive() {
+  if (!hostedUI.panel) return;
+  const h = hostedRecoveryMode && hostedRoot?.kind === 'healthy' && accountReady() ? hostedRoot.healthy : null, busy = hostedReceiveBusy(), blocked = !h || !!command || current?.state !== 'stopped' || poolBackupRunning();
+  hostedUI.panel.hidden = !hostedRecoveryMode || !h;
+  hostedUI.new.disabled = blocked || busy || !!h?.pending_receive_id;
+  hostedUI.resume.hidden = !h?.pending_receive_id; hostedUI.resume.disabled = blocked || busy || !h?.pending_receive_id;
+  hostedUI.show.hidden = !h?.issued_receive_id; hostedUI.show.disabled = blocked || busy || !h?.issued_receive_id;
+  hostedUI.check.disabled = !h || !!command || !busy; hostedUI.cancel.disabled = !h || !!command || !busy;
+  const a = h && hostedReceiveDisplayed?.owner === hostedOwnerKey() ? hostedReceiveDisplayed.address : null;
+  const currentAddress = a && hostedReceive?.state === 'ready' && !hostedReceiveUnknown && hostedReceiveDisplayed.action === hostedReceive.action_id;
+  content(hostedUI.address, a?.address || ''); hostedUI.copy.disabled = !a || !!command || busy;
+  const status = hostedReceiveMessage || (currentAddress ? `Receive address ${a.index} is ready. Its recovery inventory includes this address.` : busy ? hostedReceiveError('outcome_unknown') : hostedReceive ? hostedReceiveError(hostedReceive.error) : h?.pending_receive_id ? 'A reserved address needs an explicit resume.' : 'Create an address explicitly, or show the previously issued address. Mining must be stopped.');
+  content(hostedUI.status, `${status}${a && !currentAddress ? ` Previously issued address ${a.index} is shown below; it is not the outcome of the new request.` : ''}`);
+}
+async function copyHostedReceive() {
+  if (!hostedRecoveryMode || hostedRoot?.kind !== 'healthy' || !accountReady() || hostedReceiveBusy() || command || hostedReceiveDisplayed?.owner !== hostedOwnerKey()) return;
+  const c = hostedReceiveContext(), value = hostedReceiveDisplayed.address.address;
+  try { requireValue(typeof navigator?.clipboard?.writeText === 'function'); await navigator.clipboard.writeText(value); if (hostedReceiveCurrent(c) && hostedReceiveDisplayed?.address?.address === value) hostedReceiveMessage = 'Receive address copied.'; }
+  catch { if (hostedReceiveCurrent(c)) hostedReceiveMessage = 'Copy is unavailable. Select the displayed receive address.'; }
+  renderHostedReceive();
+}
+function renderHostedRecovery() {
+  renderHostedReceive(); if (!hostedRecoveryMode || hostedRoot?.kind === 'healthy') return;
+  const a = hostedRoot?.account, signed = !!a && a.state === 'signed_in' && hostedRoot.kind === 'recovery_only' && !connectionError, b = signed ? hostedRoot.recovery.backup : null;
+  const pending = a?.last_error === 'hosted_reset_pending';
+  content(ui.state, signed ? 'Recovery only' : hostedRoot ? label(a.state) : 'Connecting'); content(ui['account-state'], label(a?.state || 'signed_out'));
+  const caption = document.getElementById('hosted-fixture-caption'); if (caption) { caption.hidden = false; content(caption, 'Hosted public-fixture recovery pilot'); }
+  content(ui['account-copy'], signed ? 'The local wallet is missing. Recovery export and file-only verification use this account’s retained recovery inventory.' : pending ? 'The verified fixture reset needs to finish. Resume that same reset.' : hostedRoot?.error === 'hosted_recovery_unavailable' ? 'Shared wallet services are unavailable. This selected wallet has not been reported missing.' : 'Choose a demo account to open its retained wallet or available recovery inventory.');
+  for (const id of ['login-a', 'login-b']) ui[id].disabled = !enabled || !!command || !a || !['signed_out', 'failed', 'expired'].includes(a.state);
+  ui.logout.disabled = !signed || !!command; ui.reset.disabled = (!signed && !pending) || !!command; content(ui.reset, pending ? 'Resume fixture reset' : 'Simulate verified password reset');
+  content(ui.hold, a?.held ? 'The 24-hour recovery hold is active. Backup verification is available; recovery export remains held.' : '');
+  ui.mining.disabled = true; content(ui.mining, 'Start mining'); content(ui['mining-copy'], signed ? 'Mining and payments require the installed wallet. No wallet has been recreated.' : 'Wallet services are not active.');
+  for (const k of ['attempts', 'accepted', 'pending', 'height', 'spendable', 'immature']) content(ui[k], '—');
+  content(ui['wallet-state'], signed ? 'Local wallet missing' : 'Unavailable'); content(ui['wallet-height'], 'No installed wallet observation'); content(ui.payout, 'Unavailable'); content(ui['gym-id'], signed ? hostedRoot.recovery.view.gym_id : '—');
+  content(ui['stable-count'], signed ? 'Fighter history is unavailable without the installed wallet services.' : 'Sign in to load your retained demo gym.');
+  ui['export-recovery'].disabled = !signed || !!command || !a.can_export || b?.state === 'running'; ui['verify-backup'].disabled = !signed || !!command;
+  content(ui['verify-backup'], b?.state === 'running' ? 'Cancel backup verification' : 'Verify backup');
+  content(ui.backup, b?.error === 'backup_export_uncertain' ? 'The recovery file may already be saved. Check the selected destination before trying again.' : b?.state === 'running' ? `${backupPhases[b.phase]}…` : b?.state === 'succeeded' ? 'Backup verification completed. The installed wallet and payment journal were not replaced.' : b?.state === 'failed' ? 'The backup operation could not complete. The retained recovery inventory is unchanged.' : b?.state === 'cancelled' ? 'Backup verification cancelled.' : signed ? 'Export a recovery file or verify one in a disposable wallet. This does not reinstall payment authority.' : 'Sign in to access retained recovery.');
+  content(ui.alert, connectionError || message || (hostedRoot?.error === 'hosted_recovery_unavailable' ? 'The shared wallet services are unavailable.' : '')); ui.alert.hidden = !ui.alert.textContent;
+}
+
 for (const kind of ['publish', 'reconcile', 'attest', 'export']) ui[`result-${kind}`].addEventListener('click', () => { const c = publicationContext(); queue(() => publicationCurrent(c, true) ? publicationBegin(kind) : undefined, `result-${kind}`); });
 ui['result-read'].addEventListener('click', () => { const c = publicationContext(); queue(() => publicationCurrent(c, true) ? publicationRead() : undefined, 'result-read'); });
 ui['result-cancel'].addEventListener('click', () => queue(publicationCancel, 'result-cancel'));
@@ -3244,8 +3399,10 @@ ui.abandon.addEventListener('click', () => queue(async () => {
 }, 'abandon'));
 ui['cancel-job'].addEventListener('click', () => queue(() => cancelJob(watched?.id || stable?.active_job_id || stable?.queued_job_id), 'cancel'));
 poolUI['pool-refresh'].addEventListener('click', () => queue(async () => { if (!poolMode || !accountReady()) return; await call('RefreshPoolBalance'); await fetchSnapshots(); }, 'pool-balance'));
-ui['export-recovery'].addEventListener('click', () => oldAction('ExportRecovery')); ui['verify-backup'].addEventListener('click', () => oldAction(poolMode && current?.backup_state === 'running' ? 'CancelPoolBackup' : 'VerifyBackup'));
+for (const [id, method] of [['new', 'NewReceiveAddress'], ['resume', 'ResumeReceiveAddress'], ['show', 'RedisplayReceiveAddress']]) hostedUI[id].addEventListener('click', () => queue(() => beginHostedReceive(method), 'receive'));
+hostedUI.check.addEventListener('click', () => queue(() => fetchHostedReceive(), 'receive-check')); hostedUI.cancel.addEventListener('click', () => queue(() => fetchHostedReceive(true), 'receive-cancel')); hostedUI.copy.addEventListener('click', copyHostedReceive);
+ui['export-recovery'].addEventListener('click', () => oldAction('ExportRecovery')); ui['verify-backup'].addEventListener('click', () => oldAction((hostedRecoveryMode ? hostedBackup()?.state === 'running' : poolMode && current?.backup_state === 'running') ? 'CancelPoolBackup' : 'VerifyBackup'));
 document.addEventListener('visibilitychange', () => { if (document.hidden) { pausePreview(); pauseBooked(); } if (!document.hidden && enabled) { pollWanted = true; pump(); } else if (timer !== null) { clearTimeout(timer); timer = null; } });
-window.addEventListener('pagehide', () => { disposed = true; epoch++; clearHistory(); clearEvent(); clearEntry(); clearPreview(); tasks = []; if (timer !== null) clearTimeout(timer); timer = null; clearCards(); pageItems = []; current = stable = null; });
+window.addEventListener('pagehide', () => { disposed = true; epoch++; clearHistory(); clearEvent(); clearEntry(); clearPreview(); tasks = []; if (timer !== null) clearTimeout(timer); timer = null; clearCards(); pageItems = []; hostedRoot = null; clearHostedReceive(); current = stable = null; });
 render();
-(async () => { try { const selectedMode = await call('Mode'); requireValue([MODE, POOL_MODE, HOSTED_POOL_MODE].includes(selectedMode)); hostedPoolMode = selectedMode === HOSTED_POOL_MODE; poolMode = selectedMode === POOL_MODE || hostedPoolMode; const selectedCareer = await call('CareerMode'); requireValue(typeof selectedCareer === 'boolean'); careerMode = selectedCareer; if (disposed) return; enabled = true; pollWanted = true; pump(); } catch { connectionError = 'Open this page through the candidate stable mode.'; render(); } })();
+(async () => { try { const selectedMode = await call('Mode'); requireValue([MODE, POOL_MODE, HOSTED_POOL_MODE, HOSTED_RECOVERY_MODE].includes(selectedMode)); hostedRecoveryMode = selectedMode === HOSTED_RECOVERY_MODE; hostedPoolMode = selectedMode === HOSTED_POOL_MODE || hostedRecoveryMode; poolMode = selectedMode === POOL_MODE || hostedPoolMode; const selectedCareer = await call('CareerMode'); requireValue(typeof selectedCareer === 'boolean'); careerMode = selectedCareer; if (disposed) return; enabled = true; pollWanted = true; pump(); } catch { connectionError = 'Open this page through the candidate stable mode.'; render(); } })();

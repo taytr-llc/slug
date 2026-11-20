@@ -123,6 +123,7 @@ type metadata struct {
 // its total job count bounds incomplete issuance as well as returned pool work.
 // No method may be reentered by its adapters or session callbacks.
 type Pool struct {
+	auditOnly  bool
 	db         *leveldb.DB
 	meta       metadata
 	config     Config

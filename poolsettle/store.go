@@ -53,10 +53,14 @@ func clone[T any](v T) T {
 }
 
 func initial(c Config, source *poolround.Store, backend Backend) (state, error) {
+	return initialMode(c, source, backend, false)
+}
+
+func initialMode(c Config, source *poolround.Store, backend Backend, auditOnly bool) (state, error) {
 	if wire.TestPoW {
 		return state{}, ErrProfile
 	}
-	if validateConfig(c) != nil || source == nil || !nonnil(backend) {
+	if validateConfig(c) != nil || source == nil || (!auditOnly && !nonnil(backend)) {
 		return state{}, ErrConfig
 	}
 	snapshot, err := source.SettlementSnapshot(context.Background())
@@ -132,14 +136,18 @@ func decode(raw []byte, st *state) error {
 }
 
 func Open(path string, c Config, source *poolround.Store, backend Backend) (*Store, error) {
-	expected, err := initial(c, source, backend)
+	return openMode(path, c, source, backend, false)
+}
+
+func openMode(path string, c Config, source *poolround.Store, backend Backend, auditOnly bool) (*Store, error) {
+	expected, err := initialMode(c, source, backend, auditOnly)
 	if err != nil {
 		return nil, err
 	}
 	if !directory(path) || !directory(filepath.Join(path, "db")) {
 		return nil, ErrCorrupt
 	}
-	db, err := leveldb.OpenFile(filepath.Join(path, "db"), &opt.Options{ErrorIfMissing: true, Strict: opt.StrictAll})
+	db, err := leveldb.OpenFile(filepath.Join(path, "db"), &opt.Options{ErrorIfMissing: true, ReadOnly: auditOnly, Strict: opt.StrictAll})
 	if err != nil {
 		return nil, ErrCorrupt
 	}
@@ -150,7 +158,7 @@ func Open(path string, c Config, source *poolround.Store, backend Backend) (*Sto
 		return nil, ErrCorrupt
 	}
 	s := newStore(st, source, backend)
-	s.db, s.writeBatch = db, db.Write
+	s.db, s.writeBatch, s.auditOnly = db, db.Write, auditOnly
 	if err = s.verify(context.Background()); err != nil {
 		_ = db.Close()
 		return nil, err
@@ -159,6 +167,9 @@ func Open(path string, c Config, source *poolround.Store, backend Backend) (*Sto
 }
 
 func (s *Store) commit(st state, reserve bool) error {
+	if s.auditOnly {
+		return ErrInvalid
+	}
 	if s.poisoned {
 		return ErrPoisoned
 	}

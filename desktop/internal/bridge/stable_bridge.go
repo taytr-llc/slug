@@ -21,6 +21,8 @@ import (
 // The pending command, never a response-controlled discriminator, selects the
 // decoder. A stable failure stays a typed code across the webview boundary.
 type StableBridge struct {
+	hostedOwner                      *hostedOwnerExpectation
+	hostedReceive                    *hostedReceiveExpectation
 	activityBinding                  *pilot.WalletActivityBinding
 	activityAttempt, activityCapture *activityExpectation
 	activityRows                     *pilot.WalletActivityPage
@@ -101,42 +103,44 @@ type stableJobExpectation struct {
 	terminal bool
 }
 type stableExpected struct {
-	activity      bool
-	withdrawal    bool
-	payout        bool
-	evidence      bool
-	pool          bool
-	history       bool
-	careerPreview bool
-	career        bool
-	id            uint64
-	stable        bool
-	preview       bool
-	entry         bool
-	event         bool
-	seed          bool
-	bout          bool
-	result        bool
-	card          bool
+	hostedRecovery bool
+	activity       bool
+	withdrawal     bool
+	payout         bool
+	evidence       bool
+	pool           bool
+	history        bool
+	careerPreview  bool
+	career         bool
+	id             uint64
+	stable         bool
+	preview        bool
+	entry          bool
+	event          bool
+	seed           bool
+	bout           bool
+	result         bool
+	card           bool
 }
 type stableFrame struct {
-	activity      *pilot.WalletActivityResponse
-	withdrawal    *pilot.WithdrawalResponse
-	payout        *pilot.PoolPayoutResponse
-	evidence      *pilot.FighterEvidenceResponse
-	pool          *pilot.PoolResponse
-	history       *pilot.CareerHistoryResponse
-	careerPreview *pilot.CareerPreviewResponse
-	career        *pilot.CareerResponse
-	manifest      *pilot.ManifestResponse
-	stable        *pilot.StableResponse
-	preview       *pilot.PreviewResponse
-	entry         *pilot.EntryResponse
-	event         *pilot.EventResponse
-	seed          *pilot.SeedResponse
-	bout          *pilot.BoutResponse
-	result        *pilot.ResultResponse
-	card          *pilot.CardResponse
+	hostedRecovery *pilot.HostedRecoveryResponse
+	activity       *pilot.WalletActivityResponse
+	withdrawal     *pilot.WithdrawalResponse
+	payout         *pilot.PoolPayoutResponse
+	evidence       *pilot.FighterEvidenceResponse
+	pool           *pilot.PoolResponse
+	history        *pilot.CareerHistoryResponse
+	careerPreview  *pilot.CareerPreviewResponse
+	career         *pilot.CareerResponse
+	manifest       *pilot.ManifestResponse
+	stable         *pilot.StableResponse
+	preview        *pilot.PreviewResponse
+	entry          *pilot.EntryResponse
+	event          *pilot.EventResponse
+	seed           *pilot.SeedResponse
+	bout           *pilot.BoutResponse
+	result         *pilot.ResultResponse
+	card           *pilot.CardResponse
 }
 
 func LaunchStable(helper, dataDir, node string) (*StableBridge, error) {
@@ -174,6 +178,7 @@ func (b *StableBridge) fail(err error) {
 	b.once.Do(func() {
 		b.mu.Lock()
 		b.failure = err
+		b.hostedOwner, b.hostedReceive = nil, nil
 		b.payoutBinding, b.payoutAttempt, b.payoutCapture, b.payoutRows = nil, nil, nil, nil
 		b.activityBinding, b.activityAttempt, b.activityCapture, b.activityRows = nil, nil, nil, nil
 		b.withdrawalPool, b.withdrawalBinding, b.withdrawalExpected, b.withdrawalOperation = nil, nil, nil, nil
@@ -207,7 +212,14 @@ func (b *StableBridge) read(r io.Reader) {
 			return
 		}
 		var frame stableFrame
-		if expected.activity {
+		if expected.hostedRecovery {
+			value, err := pilot.ParseHostedRecoveryResponse(scanner.Bytes())
+			if err != nil || value.ID != expected.id || b.selectedPoolMode() != pilot.HostedRecoveryPoolMode {
+				b.fail(ErrUnavailable)
+				return
+			}
+			frame.hostedRecovery = &value
+		} else if expected.activity {
 			value, err := pilot.ParseWalletActivityResponse(scanner.Bytes())
 			if err != nil || value.ID != expected.id {
 				b.fail(ErrUnavailable)
