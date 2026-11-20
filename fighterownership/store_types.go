@@ -60,6 +60,7 @@ type Store struct {
 	node                       *OwnedChainSource
 	observation                ChainObservation
 	effective, states          map[string]EffectiveState
+	transfers                  map[string]TransferStatus
 	admissions                 map[uint32]AdmissionStatement
 	admissionByProspect        map[string]uint32
 	maps                       map[string]OwnershipMap

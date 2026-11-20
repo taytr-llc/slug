@@ -68,6 +68,7 @@ type replayBranch struct {
 	next         uint32
 	effective    map[string]EffectiveState
 	winners      map[string]string
+	transfers    map[string]TransferStatus
 	commits      map[string]TransactionWitness
 	recognized   uint32
 	checkpoints  map[string]PublicationEntry
@@ -701,6 +702,7 @@ func (r *Replay) stepChain(ctx context.Context) error {
 		b.hashes = nil
 		b.effective = nil
 		b.winners = nil
+		b.transfers = nil
 		b.commits = nil
 		b.checkpoints = nil
 		b.conflicted = nil

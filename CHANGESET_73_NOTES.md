@@ -255,3 +255,43 @@ reuse found by peer review. owned-wallet-focused-attempt2 passed normal15.178/
 race54.212/profile10.196/vet1.237s,1,880 inputs unchanged. It includes actual
 schema14 fixture setup/reopen and loopback normal-genesis replay; live wallet
 watch/READY and funded transfer acceptance remain outstanding.
+
+## Actual public transfer order and finality
+
+The completed replay now classifies authenticated canonical competing sends as
+pending/void, and identifies finalized transfers only through the effective
+state's verified ancestry. An orphan-only witness or unrelated historical state
+cannot appear finalized. Same semantic representations do not void their own
+winner. `public-core-transfer-status-attempt2` passed normal3.601/race12.744/
+profile2.116/vet0.285s with635 bound inputs unchanged. Attempt1 preserves an
+inherited hash-cancellation test that could finish from cache before its polling
+probe; its successor synchronizes at the real gate and uses a fresh nonce,
+without changing production hashing or weakening cancellation/join assertions.
+
+`public-core-actual-attempt2` passed in208.259 seconds with1,897 inputs and the
+candidate profile/approved lock unchanged. Two fresh normal-PoW loopback nodes
+mined164 blocks. Actual admission, two independently funded competing reveals,
+local and public-only pending/void classification, sender ownership at59,
+winner finality at60, and exact public HTTP/node reconstruction all passed.
+Missing signed finality evidence correctly prevented a ready remote owner.
+Explicit owned-node invalidation of reveal block104 returned the nodes to103;
+local and fresh reopened public replay retained the same official final owner
+and reported the same conflict. This is an administrative canonical-switch
+rehearsal, not an organically propagated fork. Both nodes joined cleanly, with
+no forced kills or remaining process group.
+
+Attempt1 remains failed: its copied mechanical fixture writer authored version2
+transactions, while the frozen carrier contract requires version1. Production
+recognition correctly rejected them. The successor changes only the external
+fixture writer, adds the exact version1 preflight and bounded typed diagnostics,
+and retains the independent semantic-ID derivation and all finality assertions.
+This completes the actual public-core scenario, not restored-wallet signing,
+noon attachment, native dialogs, the normal app package or deployment.
+
+Native delivery component checks passed normal8.617/race34.008/profile19.875/
+vet10.367s in `owned-transfer-actions-attempt1`, with bound sources/profile
+unchanged and clean process groups. The checks cover fixed signed-leg selection,
+exact node bytes and canonical inclusion, changed instance/revision refusal,
+missing evidence and joined cancellation using independent carrier bytes and
+explicitly synthetic transport framing. The later unsigned-reservation burn
+adapter has its own pending qualification; no native end-to-end claim follows.

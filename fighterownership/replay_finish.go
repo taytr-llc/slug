@@ -56,6 +56,10 @@ func (r *Replay) finish(ctx context.Context) (Progress, error) {
 	if needFrame && r.source.reader != nil {
 		return Progress{}, ErrUnavailable
 	}
+	transfers, e := completedTransferStatuses(ctx, b, r.states)
+	if e != nil {
+		return Progress{}, e
+	}
 	meta := s.meta
 	newWitnesses := map[string]FinalityWitness{}
 	var frame *FinalityFrame
@@ -186,6 +190,7 @@ func (r *Replay) finish(ctx context.Context) (Progress, error) {
 	s.work = nil
 	s.ready = false
 	s.effective = b.effective
+	s.transfers = transfers
 	s.commits = b.commits
 	s.source = r.source
 	s.node = r.node
@@ -233,41 +238,4 @@ func (r *Replay) finish(ctx context.Context) (Progress, error) {
 	r.cancel()
 	r.releaseMemory()
 	return Progress{WorkID: r.id, Phase: "ready", NextAdmission: h.AdmissionSequence + 1, NextPublication: h.PublicationSequence + 1, NextHeight: h.ChainHeight + 1, Ready: true, Head: &h}, nil
-}
-func (s *Store) TransferStatus(ctx context.Context, id string) (TransferStatus, error) {
-	if !hexValue(id, 32, true) {
-		return TransferStatus{}, ErrInvalid
-	}
-	if e := s.readLock(ctx); e != nil {
-		return TransferStatus{}, e
-	}
-	defer s.mu.Unlock()
-	out := TransferStatus{TransferID: id, ConflictID: s.head.ConflictID}
-	found := false
-	for _, w := range s.witnesses {
-		if w.TransferID == id {
-			found = true
-			out.State = "pending"
-			break
-		}
-	}
-	if !found {
-		return TransferStatus{}, ErrNotFound
-	}
-	for _, v := range s.states {
-		if v.Generation == 0 {
-			continue
-		}
-		var ev FinalStateEvidence
-		json.Unmarshal(v.Evidence, &ev)
-		if ev.TransferID != id {
-			continue
-		}
-		out.State = "finalized"
-		owned := cloneState(v)
-		out.EffectiveState = &owned
-		out.PublicEvidencePending = !s.portable[v.StateID]
-		return out, nil
-	}
-	return out, nil
 }

@@ -20,6 +20,7 @@ import (
 func (r *Replay) startBranch(b *replayBranch) error {
 	b.effective = map[string]EffectiveState{}
 	b.winners = map[string]string{}
+	b.transfers = map[string]TransferStatus{}
 	b.commits = map[string]TransactionWitness{}
 	b.checkpoints = map[string]PublicationEntry{}
 	b.conflicted = map[string]EffectiveState{}
@@ -78,6 +79,10 @@ func cloneBranch(b *replayBranch) *replayBranch {
 	x.winners = map[string]string{}
 	for k, v := range b.winners {
 		x.winners[k] = v
+	}
+	x.transfers = map[string]TransferStatus{}
+	for k, v := range b.transfers {
+		x.transfers[k] = v
 	}
 	x.commits = map[string]TransactionWitness{}
 	for k, v := range b.commits {
@@ -180,9 +185,10 @@ func (r *Replay) carrier(ctx context.Context, b *replayBranch, h HeaderRow, txs 
 		return nil, nil
 	} // Complete earlier chain and signed prefixes close the reachable state set.
 	current, ok := b.effective[prior.ProspectID]
-	if !ok || current.StateID != priorID {
+	if !ok {
 		return nil, nil
 	}
+	eligible := current.StateID == priorID
 	commit, ok := b.commits[spend.TxIn[0].PreviousOutPoint.Hash.String()]
 	if !ok {
 		return nil, nil
@@ -266,12 +272,11 @@ func (r *Replay) carrier(ctx context.Context, b *replayBranch, h HeaderRow, txs 
 	if report.Kind == fightertransfer.Refund {
 		return &w, nil
 	}
-	if old, exists := b.winners[priorID]; exists {
-		if old != tid {
-			return &w, nil
-		}
-	} else {
-		b.winners[priorID] = tid
+	// Authentication above is still required for an obsolete predecessor. Such
+	// canonical reveals are void, not pending, and remain public evidence even
+	// when an earlier reveal finalized while this block was being scanned.
+	if !b.recordReveal(priorID, tid, eligible) {
+		return &w, nil
 	}
 	if len(b.conflicted) > 0 {
 		return &w, nil

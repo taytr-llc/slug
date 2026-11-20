@@ -8,7 +8,7 @@ import (
 	"context"
 	"encoding/hex"
 	"errors"
-	"runtime"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -38,51 +38,65 @@ func TestTryHashHeaderIndependentAndSharedGate(t *testing.T) {
 		}
 	}
 }
+
+// The second Err call is the last cancellation check under the shared gate
+// before synchronous hashing. Hold that exact boundary instead of polling a
+// gate that may be released before the observer is scheduled (or hit a cache).
+// The captured nil result linearizes before the test cancels the parent.
+type headerCancellationContext struct {
+	context.Context
+	calls            atomic.Int32
+	entered, proceed chan struct{}
+}
+
+func (c *headerCancellationContext) Err() error {
+	e := c.Context.Err()
+	if c.calls.Add(1) == 2 {
+		close(c.entered)
+		<-c.proceed
+	}
+	return e
+}
+
+var cancellationNonce atomic.Uint32
+
 func TestTryHashHeaderCancellationJoinsActualWork(t *testing.T) {
 	f := proofFixtures(t)[0]
 	raw, _ := hex.DecodeString(f.Proof.Header)
 	var h wire.BlockHeader
 	h.Deserialize(bytes.NewReader(raw))
-	ctx, cancel := context.WithCancel(context.Background())
+	// This test has no expected digest; avoid the exact-header cache warmed by
+	// the independent fixture test, including repeated tests in one process.
+	h.Nonce = 0x73310000 + cancellationNonce.Add(1)
+	parent, cancel := context.WithCancel(context.Background())
 	defer cancel()
+	ctx := &headerCancellationContext{Context: parent, entered: make(chan struct{}), proceed: make(chan struct{})}
 	done := make(chan error, 1)
 	go func() {
-		var got chainhash.Hash
-		var e error
-		for {
-			got, e = TryHashHeader(ctx, h)
-			if !errors.Is(e, ErrHeaderHashBusy) {
-				break
-			}
-			runtime.Gosched()
-		}
+		got, e := TryHashHeader(ctx, h)
 		if got != (chainhash.Hash{}) && e != nil {
 			done <- errors.New("cancel returned a hash")
 			return
 		}
 		done <- e
 	}()
-	deadline := time.Now().Add(2 * time.Second)
-	for {
-		if !hashMu.TryLock() {
-			break
-		}
+	select {
+	case <-ctx.entered:
+	case e := <-done:
+		t.Fatal("hash failed before owned gate", e)
+	case <-time.After(2 * time.Second):
+		t.Fatal("hash never acquired existing gate")
+	}
+	held := !hashMu.TryLock()
+	if !held {
 		hashMu.Unlock()
-		select {
-		case e := <-done:
-			t.Fatal("hash finished before cancellation probe", e)
-		default:
-		}
-		if time.Now().After(deadline) {
-			t.Fatal("hash never acquired existing gate")
-		}
-		runtime.Gosched()
 	}
 	cancel()
+	close(ctx.proceed)
 	select {
 	case e := <-done:
-		if !errors.Is(e, context.Canceled) {
-			t.Fatal(e)
+		if !held || !errors.Is(e, context.Canceled) {
+			t.Fatal("owned synchronous cancellation", held, e)
 		}
 	case <-time.After(5 * time.Second):
 		t.Fatal("cancelled hash did not join")
