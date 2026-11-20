@@ -231,15 +231,42 @@ uncertain writes, escaped rechecks, callback panic, original file identity and
 close while an original operation is active. This is pre-enrolled mining access,
 not hosted login, wallet ownership or public signup.
 
+## Dedicated wallet and operator process
+
+The paired wallet topic at `40959793` adds an explicit schema16 encrypted fixed-path operator
+wallet. It retains the original owner/guard and exposes settlement signing only
+through the immediate original-store capability. Generic wallet APIs refuse this
+purpose; explicit unlock/expiry and cleanup retain their original custody. The
+independent signing corpus includes exact signatures through256 inputs. See the
+paired `CHANGESET_74_NOTES.md` for the three preserved failed attempts and the
+successful composite: normal16.443s, race117.595s, legacy1.689s, supplemental
+cheap refusals3.329s and vet1.956s. The cheap successor changes only its test body
+and selection; production and executed normal test bodies remain unchanged.
+
+`desktop/pooloperator` now composes the concrete authority, dedicated wallet,
+issuer, credential store, pool, rounds, settlement, scheduler, ownership replay
+and TLS ingress. It binds the original settlement backend before READY, owns
+bounded maintenance and unlock renewal, and joins all work before custody release.
+Missing established children fail closed. The new headless `slugpoold` command
+supports init, serve, stopped-root status/credential management and public signed
+checkpoint import. It neither creates a wallet nor handles the checkpoint key.
+See `POOL_OPERATOR_RUNTIME.md` for the configuration and finite-run boundary.
+
+`artifacts/set74/runtime-focused-attempt1/report.json` passed compile6.905s,
+normal7.383s, race15.527s, unsupported no-CGO refusal7.243s, cheap controls7.108s
+and vet0.779s. Its4,515 source/profile inputs stayed unchanged and all process
+groups joined. Tests cover independent setup bytes/IDs,21 cross-field refusals,
+five raw refusals, private-file/ACL identity, original-root lock/partial restart,
+local actions, signed checkpoint import without chain-authority grant, canceled
+work joining and bounded command output. Action tests use real partial owners;
+they do not claim full funded Runtime.Run acceptance. The portable independent
+reference producer and its public inputs reproduce the exact setup corpus.
+
 ## Remaining integration
 
-- Compose the qualified operator issuer/replay with standalone pool issuance and
-  maintenance. The official checkpoint key stays offline; signed checkpoint
-  import verifies public evidence only.
-- Independently running public pool with authenticated TLS miner transport,
-  immutable enrollment/payees and joined operator lifetime.
-- Concrete guarded wallet settlement backend and persisted recovery-first UTC
-  scheduling, followed by actual payout, restart and lost-reply acceptance.
+- Exercise the complete operator with two independent automatic TLS miners,
+  normal-PoW nodes, actual maturity/daily payout and original-byte lost-response
+  recovery after process shutdown/reopen.
 - Capacity continuity or an explicit finite-run limit, then remote-host rehearsal.
 
 No real key or seed has been read or created. Existing fixture applications,

@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "inputs_unchanged": true,
+  "sha256": "ee81ba3c98de3fd9fe1a456f5dbe68edb66fb28a2ec9cb78fc124ee8ec31be9d",
+  "bytes": 288946,
+  "positives": 3,
+  "refusals": 21,
+  "raw_refusals": 5,
+  "python_current": "3.14.3 (main, Feb  3 2026, 15:32:20) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "python_secondary": "Python 3.9.6"
+}

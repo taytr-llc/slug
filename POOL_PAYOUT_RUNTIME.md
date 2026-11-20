@@ -1,7 +1,6 @@
 # Public pool payout runtime components
 
-Set74 is in progress. These components do not activate a public pool or provide
-a wallet signer. They preserve D58/D79/D80/D81: fixed per-block rounds, confirmed
+Set74 is in progress. These components preserve D58/D79/D80/D81: fixed per-block rounds, confirmed
 earnings at sixty descendants, spendable coinbase funding only, a daily batch,
 one-SLUG minimum, fractional carry and fees paid from the pool's one-percent cut.
 
@@ -79,8 +78,9 @@ not implement the deferred hosted sign-in or onboarding flow.
 
 ## Remaining acceptance
 
-The dedicated encrypted wallet, immediate signing authority, public TLS runtime
-and actual funded scheduler payout/restart are still being connected. Component
-checks use independently derived public references and synthetic node responses;
-they are not evidence that a public service or real wallet has paid anyone.
+The dedicated encrypted wallet, immediate signing authority and public TLS
+runtime are connected; see `POOL_OPERATOR_RUNTIME.md`. Actual funded scheduler
+payout/restart and remote service acceptance remain. Component checks use
+independently derived public references and synthetic node responses; they are
+not evidence that a public service or real wallet has paid anyone.
 Qualification and preserved failures are recorded in `CHANGESET_74_NOTES.md`.
