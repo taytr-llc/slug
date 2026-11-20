@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "scope": "Published synthetic fixture input recipes only; no production material or key-loading",
+  "network": 1397511495,
+  "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+  "checkpoint_public_key": "811349556ea792060edbb0518dd3a513c5906abe495a81eaf629abd5900c44a3",
+  "supported_descriptor_ids": [
+    "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303",
+    "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75"
+  ],
+  "fixtures": [
+    "zero256",
+    "incrementing256",
+    "official-leading-zero-account"
+  ],
+  "request_id_bytes": [
+    161,
+    162,
+    163
+  ],
+  "created_at_ms": 1795305600000,
+  "certificate": {
+    "ca_seed_ascii": "SLUG set74 public offline provision certificate CA\u0000v1\u0000",
+    "leaf_seed_ascii": "SLUG set74 public offline provision certificate leaf\u0000v1\u0000",
+    "dns_name": "pool.example.test",
+    "ip": "127.0.0.1"
+  },
+  "max_output_bytes": 2097152,
+  "claims": "Public policy/namespace/setup/backup bytes and synthetic derivation only; no private creation, authority activation, money, network or runtime claim"
+}

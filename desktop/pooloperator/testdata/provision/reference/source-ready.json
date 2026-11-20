@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "status": "source-only; AST syntax parsed; producer not executed",
+  "plan_sha256": "9af9bccda4728b4d47142f67b86e75282f518ddd7da1c3517d7b7d77b428b8bf",
+  "model_sha256": "06ecfb6d100ad471840d3bf0fb0dc77ec71a1713c0f18eae188222ab79851f68",
+  "certificate_sha256": "668c95c2f694b0eb73c0540705def37b7b919cbe8152d6b5adabf2fe00ceefd5",
+  "generator_sha256": "347cb4c5682f13265424d970e3e0835775ed9e2e7e8d81031b6a78e24b4c92b6",
+  "input_catalog_sha256": "216b5f299b3bdeed6fe70da870349ab7987d39a11c8f2611a52807510dedce6e",
+  "proposed_lock_sha256": "0e276671cdab0d926bf356f8918e94fd6d8835a0f9a27a423a3d7c1e11cf0bb6",
+  "contract_sha256": "3e0c1d771b99ca05e817e841c3ca3016550002484f0f926cb48193483da0a26e",
+  "bytes_sha256": "f938004d817ffa5b07cac64d24a470130180d2cb6743a5a0bc5ff40546df1948"
+}

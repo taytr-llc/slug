@@ -1,0 +1,120 @@
+{
+  "version": 1,
+  "approved_by": "root",
+  "scope": "Independent public-only provision Policy/namespace/Setup/backup corpus",
+  "inputs": [
+    {
+      "path": "inputs/authority-seed-recipe.json",
+      "bytes": 1732,
+      "sha256": "4de611d99f258dc40e8413c3fead1fc5da3471d7e93216707283cf28758101d1"
+    },
+    {
+      "path": "inputs/inherited/crypto.py",
+      "bytes": 10124,
+      "sha256": "ea87b9021e14712b1ac7130daa73cd12fb8acf2fd8995ca5ce9e32d0d770fd1c"
+    },
+    {
+      "path": "inputs/inherited/recovery/reference.py",
+      "bytes": 15839,
+      "sha256": "60e1527ce408213fd89bc2cf6b4d2d8ecaedbd3c811ef4d40b6f888bb608202f"
+    },
+    {
+      "path": "inputs/inherited/recovery/sources/english.txt",
+      "bytes": 13116,
+      "sha256": "2f5eed53a4727b4bf8880d8f3f199efc90e58503646d9ff8eff3a2ed3b24dbda"
+    },
+    {
+      "path": "inputs/policy/operator-profile.md",
+      "bytes": 14817,
+      "sha256": "892aa290062a8730a5cf0986eee0a50e0dab24c1321b5d5fbd3a01402d72e3c6"
+    },
+    {
+      "path": "inputs/policy/provision-BYTES.md",
+      "bytes": 10163,
+      "sha256": "f938004d817ffa5b07cac64d24a470130180d2cb6743a5a0bc5ff40546df1948"
+    },
+    {
+      "path": "inputs/policy/provision-CONTRACT.md",
+      "bytes": 14065,
+      "sha256": "3e0c1d771b99ca05e817e841c3ca3016550002484f0f926cb48193483da0a26e"
+    },
+    {
+      "path": "inputs/policy/setup-bytes.md",
+      "bytes": 3491,
+      "sha256": "0c63dab5bcb0a63e6d48f50a53eabf9d77644b6ebc1783d4f5852004aeeb68cc"
+    },
+    {
+      "path": "inputs/policy/wallet16-bytes.md",
+      "bytes": 5525,
+      "sha256": "0f3d61cc7adcb7ec6c6f598f5a04dca0a34c6a426697b9a1a223bc380b0803b5"
+    },
+    {
+      "path": "inputs/public-authority-v2.json",
+      "bytes": 622582,
+      "sha256": "7328ea2102c9ac993281bd732590c3e734eda26a3d180c2fa98bbd37da02c6b4"
+    },
+    {
+      "path": "inputs/public-recipients.json",
+      "bytes": 3500,
+      "sha256": "7bf54bc34de877bef5afd296cbdb9bf30f59d3589057e818a363bb7c6fd8547f"
+    },
+    {
+      "path": "inputs/public-setup-v1.json",
+      "bytes": 288946,
+      "sha256": "ee81ba3c98de3fd9fe1a456f5dbe68edb66fb28a2ec9cb78fc124ee8ec31be9d"
+    },
+    {
+      "path": "inputs/public-wallet16.json",
+      "bytes": 603047,
+      "sha256": "c1f2d725fcdbc3af7ba1b0a30f4dd4dfc6983352ffb0b4f72d83f7c09ac7b087"
+    },
+    {
+      "path": "inputs/published-recovery-v1.json",
+      "bytes": 16064,
+      "sha256": "d5141f4a8ee4378d77d483b09f6ecd809f8b328f82e79a69ff83164e73bc799a"
+    },
+    {
+      "path": "inputs/recipe.json",
+      "bytes": 1144,
+      "sha256": "fb8ed8b04334b440a26b96759ae4e77a467b45259e1c65ef80af8ccc34458e82"
+    },
+    {
+      "path": "model.py",
+      "bytes": 27174,
+      "sha256": "06ecfb6d100ad471840d3bf0fb0dc77ec71a1713c0f18eae188222ab79851f68"
+    },
+    {
+      "path": "certificate.py",
+      "bytes": 3323,
+      "sha256": "668c95c2f694b0eb73c0540705def37b7b919cbe8152d6b5adabf2fe00ceefd5"
+    },
+    {
+      "path": "generate.py",
+      "bytes": 2936,
+      "sha256": "347cb4c5682f13265424d970e3e0835775ed9e2e7e8d81031b6a78e24b4c92b6"
+    },
+    {
+      "path": "PLAN.md",
+      "bytes": 4337,
+      "sha256": "9af9bccda4728b4d47142f67b86e75282f518ddd7da1c3517d7b7d77b428b8bf"
+    },
+    {
+      "path": "input-catalog.json",
+      "bytes": 2541,
+      "sha256": "216b5f299b3bdeed6fe70da870349ab7987d39a11c8f2611a52807510dedce6e"
+    },
+    {
+      "path": "input-copy-provenance.json",
+      "bytes": 3776,
+      "sha256": "d2ff65dc2ba8baae30fca08e4a5b9b6e0f708b8b0564b4e56ba095c59cb8d44f"
+    }
+  ],
+  "output_max_bytes": 2097152,
+  "expected_counts": {
+    "positives": 6,
+    "refusals": 61,
+    "raw_cases": 18
+  },
+  "no_go": true,
+  "no_private_creation": true
+}

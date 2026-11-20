@@ -502,8 +502,11 @@ of the ownership, transfer or independent restored-wallet flow. See
   payment and clean CLI reopen. All six wallet modules, ten chain modules and
   the headless command build. This is dated Darwin engineering evidence at
   chain `4a3f20da` / wallet `40959793`, not an externally deployed public pool.
-  Operator-run provisioning, remote desktop/source attachment, finite-capacity
-  operation and Linux/remote-host qualification remain before that milestone.
+  Offline provisioning now passes normal/race/refusal/build checks with published
+  fixtures; the tool leaves real key creation to the operator. Remote public
+  configuration/credential custody also passes focused checks. The concrete
+  operator handoff, remote desktop/source attachment, safe capacity handling
+  and Linux/remote-host qualification remain before that milestone.
   Sign-in follows; the full joint D74 review stays last. See
   `CHANGESET_74_NOTES.md` and `docs/evidence/set74/operator-actual.json`.
 

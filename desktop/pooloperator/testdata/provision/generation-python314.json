@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "interpreter": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+  "version": "Python 3.14.3",
+  "interpreter_sha256": "f13707ff725eb3675d57e0f04527a4dada0511cebfb7cbd80f5cab72733a2a9d",
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "/Users/taytrrip/slug/set74-prep/operator-provision/reference/generate.py",
+    "--execute",
+    "--lock",
+    "/Users/taytrrip/slug/set74-prep/operator-provision/reference/producer-lock.approved.json",
+    "--lock-sha",
+    "5c0fdea7c7d827b0f6bb12936d00edabc0c10868f76fc79ecfb4945d6b10fce9",
+    "--output",
+    "/Users/taytrrip/slug/artifacts/set74/provision-reference-py314-attempt1/provision-v1.json"
+  ],
+  "returncode": 0,
+  "elapsed_seconds": 0.898,
+  "error": null,
+  "forced": false,
+  "group_empty": true,
+  "inputs_unchanged": true,
+  "lock_sha256": "5c0fdea7c7d827b0f6bb12936d00edabc0c10868f76fc79ecfb4945d6b10fce9",
+  "lock_unchanged": true,
+  "output": "/Users/taytrrip/slug/artifacts/set74/provision-reference-py314-attempt1/provision-v1.json",
+  "bytes": 543515,
+  "sha256": "8c3cde66c35b69dbc0f4daf516c271fb91358a988b591c363f65a106f25a401f",
+  "counts": {
+    "positives": 6,
+    "refusals": 61,
+    "raw_cases": 18
+  },
+  "scope": "independent published synthetic bytes; no Go/network/private creation"
+}

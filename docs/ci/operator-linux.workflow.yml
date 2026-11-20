@@ -1,0 +1,56 @@
+name: Operator Linux qualification
+on:
+  push:
+    branches: [slug-public-pool-runtime]
+permissions:
+  contents: read
+concurrency:
+  group: operator-linux-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  operator-linux:
+    if: github.repository == 'taytr-llc/slug'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      GOENV: 'off'
+      GOTOOLCHAIN: local
+      GOFLAGS: ''
+      GOEXPERIMENT: ''
+      GOMAXPROCS: '2'
+      SLUG_EXPECTED_CHAIN: ${{ github.sha }}
+      SLUG_EXPECTED_WALLET: 6a69ecfcfc20f5433b5a1ca75e6dbb3a4db725a0
+      SLUG_LINUX_ARTIFACTS: ${{ runner.temp }}/operator-linux-${{ github.run_id }}-${{ github.run_attempt }}
+    steps:
+      - name: Exact topic source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          repository: taytr-llc/slug
+          ref: ${{ github.sha }}
+          path: slug
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Exact paired wallet source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          repository: taytr-llc/slugwallet
+          ref: 6a69ecfcfc20f5433b5a1ca75e6dbb3a4db725a0
+          path: slugwallet
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Pinned candidate Go
+        uses: actions/setup-go@d8cbb8045d7f43706b9177cceb36c1f91a6644d5 # v7
+        with:
+          go-version: '1.27.4'
+          cache: false
+      - name: Bounded focused Linux gate
+        working-directory: slug
+        run: python3 scripts/qualify-operator-linux.py
+      - name: Retain exact public qualification evidence
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: operator-linux-${{ github.sha }}-${{ github.run_attempt }}
+          path: ${{ env.SLUG_LINUX_ARTIFACTS }}
+          retention-days: 14
+          if-no-files-found: error

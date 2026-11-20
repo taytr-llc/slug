@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "scope": "independent modeled operator funding fixture successor, no Go expectation derivation",
+  "lock": {
+    "bytes": 2019,
+    "sha256": "ea96035eb6dd3eea6cffd498b83993cbee39145adb9733c98a18e29531ed20a9"
+  },
+  "diff": {
+    "bytes": 4789,
+    "sha256": "8f374a49d5b90b8ef75fb1579376926d62517f088670c2ad3fe3c18905095833"
+  },
+  "model": {
+    "bytes": 13779,
+    "sha256": "2636ad193f206ffc62aa547c4c43421a06e8e438a0bfb38501cad4fac8ffe3ea"
+  },
+  "recipe": {
+    "bytes": 1281,
+    "sha256": "c56c5dbec593772d40037a48e6ccbec3155d6d431bccd863111733ecb9bbd669"
+  },
+  "preserved_predecessor": "/Users/taytrrip/slug/set74-prep/remote-native-boundary/reference/before-change-payee-collision",
+  "old_corpus": {
+    "bytes": 555150,
+    "sha256": "1c987a3cf20fa188db7376ec7634eee65af0cc674473fee4e1adfabecc1db675"
+  }
+}

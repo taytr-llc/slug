@@ -4,7 +4,8 @@ Set74 adds `desktop/pooloperator` and the headless `desktop/cmd/slugpoold`.
 They use the existing paired desktop/wallet workspace; the seed daemon has no
 new wallet dependency. Component qualification and isolated normal-PoW TLS
 mining, scheduled payment and restart acceptance pass. Remote-host acceptance
-and operator provisioning remain separate gates.
+remains a separate gate. The companion offline provisioning tool is described
+in `POOL_OPERATOR_PROVISIONING.md`.
 
 ## Setup and custody
 
@@ -75,8 +76,9 @@ requires these explicit local paths:
 --rpc-config-file --tls-certificate-file --tls-key-file
 ```
 
-The wallet must already exist with the matching schema16 guard. The command does
-not generate keys or create a wallet. Init constructs/resumes the exact runtime;
+The wallet must already exist with the matching schema16 guard, prepared by the
+operator using `slugpool-provision`. The runtime command does not generate keys
+or create a wallet. Init constructs/resumes the exact runtime;
 other commands require READY. Stop serve before local management commands so the
 original exclusive root is available. Rotate additionally requires `--gym-id`,
 `--audience`, `--expected-generation`, `--token-file`, `--expires-at-ms`. Revoke

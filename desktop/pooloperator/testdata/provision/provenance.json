@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "scope": "Independent published synthetic provisioning bytes; no production private material or runtime authority",
+  "corpus_sha256": "8c3cde66c35b69dbc0f4daf516c271fb91358a988b591c363f65a106f25a401f",
+  "corpus_bytes": 543515,
+  "approved_producer_lock_sha256": "5c0fdea7c7d827b0f6bb12936d00edabc0c10868f76fc79ecfb4945d6b10fce9",
+  "source_evidence": {
+    "/Users/taytrrip/slug/set74-prep/operator-provision/reference/producer-lock.approved.json": "5c0fdea7c7d827b0f6bb12936d00edabc0c10868f76fc79ecfb4945d6b10fce9",
+    "/Users/taytrrip/slug/set74-prep/operator-provision/reference/source-ready.json": "6691017ac63abcf00823497f08f6d4cc8e4803b47f0a4002a5a66759ad4f77f5",
+    "/Users/taytrrip/slug/artifacts/set74/provision-reference-reproduction.json": "73c2995a74a285a43e3d6e0109900db9b2e4acd67a9d7e84a0268b4e2496c43e",
+    "/Users/taytrrip/slug/artifacts/set74/provision-reference-py314-attempt1/report.json": "e3b98d61d3a75dc44ed67726fedfc50aaefa4506d973b6c27e041bb81a7c5664",
+    "/Users/taytrrip/slug/artifacts/set74/provision-reference-py39-attempt1/report.json": "4675576a1b2c038f5e2eade5c71360121887b4f61405fba183144e21cd1c8a99"
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "scope": "Offline provisioning with published synthetic capsules; stopped-runtime constructor metadata fixture only; no real custody or deployment",
+  "base_commit": "2b40847b4ddd5e1d90563fd157c85d8b9886e98b",
+  "wallet_commit": "6a69ecfcfc20f5433b5a1ca75e6dbb3a4db725a0",
+  "passed": true,
+  "composite": "Complete normal command in attempt6 plus successful bounded provision race groups and remaining gates in attempt7. The aggregate attempt6 race timeout is preserved as failed.",
+  "selected_source_sha256": {
+    "desktop/cmd/slugpool-provision/main.go": "4251b33d7937db2592294d3f060bcdb06050a43b6d27ab1ed7197543aa8aa4e7",
+    "desktop/pooloperator/provision_codec.go": "c68e82d045d96917ec74ebb9fad22a081645b8aa2ef6ce4c0d4ca0e407e1bf9b",
+    "desktop/pooloperator/provision_command.go": "3b7d7a1674ad62d9f7f89f3932dd66f4e6dd7f2bf7302d3850eee33bbd1770c3",
+    "desktop/pooloperator/provision_config.go": "7e715286a28b38351eb96da0810867a1818de066debc8a7a29cee5cf1c1dcf98",
+    "desktop/pooloperator/provision_files_unix.go": "a6c8110bd00d8fa2db61627bbd4a935a18e7f940089a0e6abbd694642742cc7a",
+    "desktop/pooloperator/provision_files_unsupported.go": "0c4190847aed290adebd2f60cfdb919ec0e73f5fc15865d48e807f3d15f1c0f7",
+    "desktop/pooloperator/provision_lifecycle_test.go": "27280b9ca64b670212233f040c5832234281f6b944d8daaee9e66588ae566e23",
+    "desktop/pooloperator/provision_profile_test.go": "754609616b4d4e90b6cf41a578441f32ed68edd9b361ea092b5fa246a693ee38",
+    "desktop/pooloperator/provision_test.go": "79e81f61c650370131e626d4dd2e7f521e4095f532f5f6dad0d9a573ba23622c"
+  },
+  "input_count": 4595,
+  "inputs_unchanged": true,
+  "provision_tests_passed_under_race": [
+    "TestProvisionCertificateAndCommandRefusals",
+    "TestProvisionCreateVerifyLostReadyAndRuntimeInit",
+    "TestProvisionFinitePartialPrefixes",
+    "TestProvisionHoldsAndEstablishedMissing",
+    "TestProvisionIndependentBytes",
+    "TestProvisionIndependentRefusals",
+    "TestProvisionOriginalFilesAndStickyCleanup",
+    "TestProvisionWrongPassCancellationAndLostOutput"
+  ],
+  "commands": [
+    {
+      "name": "normal",
+      "seconds": 33.079,
+      "exit_code": 0,
+      "clean_join": true
+    },
+    {
+      "name": "race-init",
+      "seconds": 52.816,
+      "exit_code": 0,
+      "clean_join": true
+    },
+    {
+      "name": "race-prefixes",
+      "seconds": 118.203,
+      "exit_code": 0,
+      "clean_join": true
+    },
+    {
+      "name": "race-controls",
+      "seconds": 55.153,
+      "exit_code": 0,
+      "clean_join": true
+    },
+    {
+      "name": "no-cgo",
+      "seconds": 2.699,
+      "exit_code": 0,
+      "clean_join": true
+    },
+    {
+      "name": "cheap",
+      "seconds": 2.83,
+      "exit_code": 0,
+      "clean_join": true
+    },
+    {
+      "name": "vet",
+      "seconds": 1.303,
+      "exit_code": 0,
+      "clean_join": true
+    },
+    {
+      "name": "build",
+      "seconds": 3.357,
+      "exit_code": 0,
+      "clean_join": true
+    },
+    {
+      "name": "build-info",
+      "seconds": 0.042,
+      "exit_code": 0,
+      "clean_join": true
+    }
+  ],
+  "reports_sha256": {
+    "artifacts/set74/provision-attempt7/report.json": "6b2c9d012378793cb3c7e0b6e58fd17d74db57f3c962f7070e5d400d76d48613",
+    "artifacts/set74/provision-attempt7/source-before.json": "14066cbad0c1de7aae039c9723deec7d8290438e0e2b68959e4a6f56a3fb501a",
+    "artifacts/set74/provision-attempt6/report.json": "132d0fe6434c2130d65348e4c2341f8a25cbdc75706016421eb0280183e3d38e",
+    "artifacts/set74/provision-attempt6/source-before.json": "8b6077eec824aef618ff5e3d2506411ad245c12792f8c27ba3c8000be39ac05c"
+  },
+  "binary_sha256": "1073f7138768704c81b7510ab6ade4daf0db8a07684d25a73c91c5d71132a455",
+  "independent_reference_sha256": "8c3cde66c35b69dbc0f4daf516c271fb91358a988b591c363f65a106f25a401f",
+  "preserved_failures": [
+    "attempt1 harness command selector before execution",
+    "attempt2 bounded RetryMS type conversion",
+    "attempt3 wallet basename mismatch; actual constant slugwallet.db",
+    "attempt4/5 incomplete constructor RPC fixture; production checks retained",
+    "attempt6 aggregate race timeout during scrypt at unchanged3m bound; no race reported"
+  ]
+}

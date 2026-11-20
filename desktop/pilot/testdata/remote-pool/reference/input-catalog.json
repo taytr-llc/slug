@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "inputs": [
+    {
+      "path": "operator-setup-v1.json",
+      "source": "/Users/taytrrip/slug/set74-prep/operator-runtime/reference/setup-v1.json",
+      "bytes": 288946,
+      "sha256": "ee81ba3c98de3fd9fe1a456f5dbe68edb66fb28a2ec9cb78fc124ee8ec31be9d"
+    },
+    {
+      "path": "original-recipients.json",
+      "source": "/Users/taytrrip/slug/set74-prep/operator-runtime/reference/inputs/recipients.json",
+      "bytes": 3500,
+      "sha256": "7bf54bc34de877bef5afd296cbdb9bf30f59d3589057e818a363bb7c6fd8547f"
+    },
+    {
+      "path": "published-ca.pem",
+      "source": "/Users/taytrrip/slug/slug/prospectservice/testdata/manifest/inputs/go_localhost.pem",
+      "bytes": 1200,
+      "sha256": "4bf9786af942540c8b9f0b5275dbf658d9950f523b199b77b07aa8921c6cbdbf"
+    },
+    {
+      "path": "BYTES.md",
+      "source": "/Users/taytrrip/slug/set74-prep/remote-native-boundary/BYTES.md",
+      "bytes": 7106,
+      "sha256": "641297da441c33ce3a49eeceb4f462f7bb5f894f2cd85ac3a8acce072331ad80"
+    },
+    {
+      "path": "operator-setup-model.py",
+      "source": "/Users/taytrrip/slug/set74-prep/operator-runtime/reference/model.py",
+      "bytes": 5739,
+      "sha256": "8709331398175952116bbc2a938f7b315e0220e0f0e2600845defcf21d115cdf"
+    },
+    {
+      "path": "manifest-service-model.py",
+      "source": "/Users/taytrrip/slug/slug/prospectservice/testdata/manifest/reference_manifest_service.py",
+      "bytes": 31378,
+      "sha256": "b03f3235e663c8a77fb4fcf62794ac98ce3201a3784d3cc276c470ecc130420d"
+    },
+    {
+      "path": "recipe.json",
+      "source": "literal recipe",
+      "bytes": 1281,
+      "sha256": "c56c5dbec593772d40037a48e6ccbec3155d6d431bccd863111733ecb9bbd669"
+    }
+  ]
+}

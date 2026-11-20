@@ -322,9 +322,93 @@ and the headless operator command (25.162s aggregate build time). Its 2,687
 repository inputs, 3,169 selected inputs, profile and output stayed unchanged.
 This is Darwin build/runtime evidence; Linux/container execution is not inferred.
 
+`operator-linux-build-attempt1` cross-built the untagged operator for Linux
+amd64 (13.972s) and arm64 (34.688s), with CGO disabled and the same Go 1.27.4
+no-CSE profile. Embedded settings match both targets; 2,708 inputs, the profile
+and both binaries remained unchanged. This is cross-build evidence only. The
+local Docker client has no running daemon; Linux process, filesystem/ACL and
+container qualification remain outstanding. The explicit fork's topic branch
+has no Actions runs, so remote CI is not counted as a pass.
+
+## Remote desktop configuration and credentials
+
+The first remote desktop slice validates a complete OperatorV2 source, fixed
+payees, HTTPS/CA selection and the existing schema14 wallet's original recipient.
+Two separately protected audience credentials retain their original descriptors,
+bounded leases, cancellation and sticky cleanup. Interrupted mutations retain
+the audience-specific unknown-outcome error used by exact worker recovery.
+There is no native route, attached wallet or automatic miner in this slice.
+
+`remote-credentials-attempt2` passed normal (10.429s), race (21.620s), no-CGO
+refusal (14.742s), cheap-profile controls (14.350s) and vet (1.512s), with 4,579
+unchanged inputs and clean process joins. The first failed attempt exposed a
+reference collision between operator change and miner payout. The independent
+successor uses an already published third operator wallet, preserves both local
+recipient vectors and adds a collision refusal; production validation is intact.
+Python 3.14 and 3.9 produced identical bytes; the portable committed producer
+also reproduced them exactly. See `REMOTE_POOL_ATTACHMENT.md` and
+`docs/evidence/set74/remote-credentials.json`.
+
+## Native Linux qualification workflow
+
+The topic-only Linux job checks the exact pushed chain revision with wallet
+`6a69ecfc`, uses the same Go 1.27.4 no-CSE profile, builds normal Linux binaries
+and runs focused authority, wallet16 and operator normal/race checks. Its five
+actual POSIX ACL controls test refusal before and after descriptor selection.
+It retains bounded public logs and source/binary bindings, joins process groups
+and removes synthetic test custody before uploading evidence. It neither deploys
+nor accesses production secrets. Provisioning and deployed-host acceptance are
+explicitly excluded from this initial job. GitHub rejected its installation:
+the existing OAuth login lacks the `workflow` scope. The reviewed file is staged
+as `docs/ci/operator-linux.workflow.yml`; it is not an active Actions workflow.
+The rejected unpublished commits are preserved on local
+`archive/set74-workflow-scope-815334e0`; the code-only topic push remains a normal
+fast-forward from `2b40847b`. Linux execution is pending authentication scope,
+not counted as a pass. No broader credential was requested or read.
+
+## Offline operator provisioning
+
+The separate operator-run `slugpool-provision` command creates a dedicated
+schema16 wallet, three online signing roles and their matching public Setup.
+Its public entry point uses only OS randomness and selected protected files;
+it has no seed argument, fixture default or checkpoint-private-key input.
+The original capsule and operator-specific 24-word backup stay offline.
+Neither backup recreates shares, earnings, pending transactions or the scheduler.
+Interrupted setup preserves original identities, opens an existing wallet rather
+than replacing it, and refuses missing established files. See
+`POOL_OPERATOR_PROVISIONING.md` for the concrete outputs and recovery procedure.
+
+The portable independent reference contains six positive derivations, 61
+structured refusals and 18 raw cases. Python 3.14 and 3.9 produced identical
+543,515-byte output before Go used those expected values. Test entropy consists
+only of these published synthetic capsules; no real key has been generated.
+
+Preserved failed checks found a bounded schedule conversion that needed an
+explicit uint32 cast, then an inventory mismatch: the actual wallet basename is
+`wallet.WalletDBName` (`slugwallet.db`), not `wallet.db`. The implementation and
+current documentation use that existing constant; the frozen reference contract
+is preserved with a separate erratum. Subsequent stopped-runtime checks exposed
+an incomplete test RPC fixture. Runtime construction requires ownership identity
+and settlement tip/activation metadata, with the exact JSON-RPC envelope. The
+bounded corrected fixture serves only those constructor reads and grants no
+actual chain, mining or Runtime.Run evidence.
+
+The complete normal check passed in 33.079s. The aggregate race attempt reached
+its unchanged three-minute limit during encrypted-wallet derivation, after the
+create/reopen and all seven interrupted-prefix cases passed. It is preserved as
+a timeout, not a pass. Bounded successor groups cover the same race checks;
+`provision-attempt7` completed them in 52.816s, 118.203s and 55.153s, each
+with the original three-minute bound. All eight provision tests passed under
+race. No-CGO refusal (2.699s), cheap-profile rejection before effects (2.830s),
+vet (1.303s), build (3.357s) and binary-profile inspection also passed. The
+composite normal/race evidence binds identical source files, with 4,595 inputs
+unchanged and all process groups joined. The resulting normal provisioner SHA256
+is `1073f7138768704c81b7510ab6ade4daf0db8a07684d25a73c91c5d71132a455`.
+See `docs/evidence/set74/operator-provision.json` for the exact composite.
+
 ## Remaining integration
 
-- Prepare operator-run offline provisioning and matching public Setup, without
+- Prepare the concrete operator handoff and deployment selections without
   exposing real private material to the agent or using fixture-default custody.
 - Add an explicit remote desktop attachment and OperatorV2 history adapters,
   preserving original local wallet/recipient/recovery source bindings.

@@ -355,7 +355,10 @@ tests alone do not close public deployment and scheduled-payout acceptance.
   wallet and standalone TLS operator passed a two-miner normal-PoW scheduled
   payout/restart rehearsal at chain `4a3f20da` / wallet `40959793`: maturity deferral,
   one batched payment, accepted lost-response recovery, no duplicate and clean
-  standalone CLI reopen. Real provisioning, remote desktop attachment and host
+  standalone CLI reopen. Offline provisioning and remote public configuration/
+  credential custody now pass focused normal/race/refusal qualification. Only
+  the operator runs real provisioning; no private key is an agent input. The
+  concrete host handoff, remote wallet/worker attachment and capacity/host
   qualification remain; do not call the public pool deployed. Scheduling retains the original settlement;
   only completed daily batches advance its cursor. Node evidence grants no
   signing authority; uncertain delivery retries only the retained transaction.

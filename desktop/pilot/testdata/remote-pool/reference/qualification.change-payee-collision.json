@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "status": "pass",
+  "scope": "independent conditional public fixture composition only; no Go or live wallet/TLS qualification",
+  "python_versions": [
+    "Python 3.14.3",
+    "Python 3.9.6"
+  ],
+  "outputs": [
+    {
+      "path": "/Users/taytrrip/slug/set74-prep/remote-native-boundary/reference/attempt2-py314/reference-v1.json",
+      "bytes": 563867,
+      "sha256": "5f67fcaaba0c78b97b0f116a4c598eb0ec62ee1436bbcf280edcc747856e5177"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set74-prep/remote-native-boundary/reference/attempt2-py39/reference-v1.json",
+      "bytes": 563867,
+      "sha256": "5f67fcaaba0c78b97b0f116a4c598eb0ec62ee1436bbcf280edcc747856e5177"
+    }
+  ],
+  "byte_equal": true,
+  "all_four_expected_local_bindings_unchanged": true,
+  "locked_inputs_unchanged": true,
+  "counts": {
+    "positives": 4,
+    "refusals": 32,
+    "raw_refusals": 10,
+    "credentials": 4
+  },
+  "producer_lock": {
+    "bytes": 2019,
+    "sha256": "ea96035eb6dd3eea6cffd498b83993cbee39145adb9733c98a18e29531ed20a9"
+  },
+  "predecessor_scope": "first corpus independently reproducible but invalid positive settlement composition; preserved unchanged with failed Go attempt1"
+}
