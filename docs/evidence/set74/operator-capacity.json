@@ -1,0 +1,527 @@
+{
+  "all_groups_joined": true,
+  "approved_lock_sha256": "72d0752b574daf6f760490efeb5447869ba30544efeb37995b1e6164d9ca45ba",
+  "commands": [
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "before-deps-root-normal",
+      "seconds": 0.331,
+      "tests": null
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "before-deps-root-race",
+      "seconds": 0.333,
+      "tests": null
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "before-deps-root-cheap",
+      "seconds": 0.254,
+      "tests": null
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "before-deps-desktop-normal",
+      "seconds": 0.327,
+      "tests": null
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "before-deps-desktop-race",
+      "seconds": 0.294,
+      "tests": null
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "before-deps-desktop-cheap",
+      "seconds": 0.275,
+      "tests": null
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "normal-registry",
+      "seconds": 2.016,
+      "tests": {
+        "failed": [],
+        "packages": [
+          "github.com/taytr-llc/slug/registry"
+        ],
+        "passed": [
+          "TestPublicBothAdmissionPathsAtomicOutbox",
+          "TestPublicCapacityClassificationAndPrewriteRefusal",
+          "TestPublicCutoffCapacityChecksPredecessorAndStoredNamespaces",
+          "TestPublicLogicalCapacityDoesNotMaskInvalidMetadata",
+          "TestPublicPendingCutoffExactReadAndReopen",
+          "TestPublicPreparedChainExactIntentAndReopen"
+        ],
+        "required": [
+          "TestPublicCapacityClassificationAndPrewriteRefusal",
+          "TestPublicCutoffCapacityChecksPredecessorAndStoredNamespaces",
+          "TestPublicLogicalCapacityDoesNotMaskInvalidMetadata",
+          "TestPublicPreparedChainExactIntentAndReopen",
+          "TestPublicPendingCutoffExactReadAndReopen",
+          "TestPublicBothAdmissionPathsAtomicOutbox"
+        ],
+        "skipped": []
+      }
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "normal-poolshare",
+      "seconds": 3.021,
+      "tests": {
+        "failed": [],
+        "packages": [
+          "github.com/taytr-llc/slug/poolshare"
+        ],
+        "passed": [
+          "TestOperatorAdmissionDrainJoinsOriginalWriter",
+          "TestOperatorAdmissionFiniteRowsAndSavedRecovery",
+          "TestOperatorAdmissionOriginalBindingCountersAndLegacyHold",
+          "TestOperatorAdmissionPublicCapacityOriginalGateOnly",
+          "TestPoolCapacityStillAllowsRetainedWinnerRecovery",
+          "TestPoolLateWinnerRecoveryAndNoBirth",
+          "TestPoolSessionFencePostCommitFailureRecoversExactlyOnce",
+          "TestPoolUncertainIntentNeverBroadcastsUntilReopen"
+        ],
+        "required": [
+          "TestOperatorAdmissionPublicCapacityOriginalGateOnly",
+          "TestOperatorAdmissionFiniteRowsAndSavedRecovery",
+          "TestOperatorAdmissionOriginalBindingCountersAndLegacyHold",
+          "TestOperatorAdmissionDrainJoinsOriginalWriter",
+          "TestPoolLateWinnerRecoveryAndNoBirth",
+          "TestPoolUncertainIntentNeverBroadcastsUntilReopen",
+          "TestPoolCapacityStillAllowsRetainedWinnerRecovery",
+          "TestPoolSessionFencePostCommitFailureRecoversExactlyOnce"
+        ],
+        "skipped": []
+      }
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "normal-prospectservice",
+      "seconds": 2.822,
+      "tests": {
+        "failed": [],
+        "packages": [
+          "github.com/taytr-llc/slug/prospectservice"
+        ],
+        "passed": [
+          "TestFencedManifestAdmissionNodeWorkReleasesOriginalLease",
+          "TestFencedManifestAdmissionUnknownCommitRecoversExactReceipt",
+          "TestOperatorAdmissionControllerJoinsAndCloses",
+          "TestOperatorAdmissionPausedDrainAndHistoricalReceipt",
+          "TestOperatorAdmissionPublicCapacityErrorBoundary"
+        ],
+        "required": [
+          "TestOperatorAdmissionPublicCapacityErrorBoundary",
+          "TestOperatorAdmissionPausedDrainAndHistoricalReceipt",
+          "TestOperatorAdmissionControllerJoinsAndCloses",
+          "TestFencedManifestAdmissionNodeWorkReleasesOriginalLease",
+          "TestFencedManifestAdmissionUnknownCommitRecoversExactReceipt"
+        ],
+        "skipped": []
+      }
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "normal-poolsettle",
+      "seconds": 4.323,
+      "tests": {
+        "failed": [],
+        "packages": [
+          "github.com/taytr-llc/slug/poolsettle"
+        ],
+        "passed": [
+          "TestModelDeferralsAndUnknownDestination",
+          "TestModelFractionalCarryAndFeeOnce",
+          "TestSettlementCapacityRootAndChangeOnlyLineage",
+          "TestSettlementCreditCapacityDoesNotBlockPendingRecovery",
+          "TestSettlementOriginalPoolDrainKeepsFundingAndExactRecovery",
+          "TestSettlementRecoverPendingExactRetryAndNextDay"
+        ],
+        "required": [
+          "TestSettlementCapacityRootAndChangeOnlyLineage",
+          "TestSettlementOriginalPoolDrainKeepsFundingAndExactRecovery",
+          "TestSettlementCreditCapacityDoesNotBlockPendingRecovery",
+          "TestSettlementRecoverPendingExactRetryAndNextDay",
+          "TestModelFractionalCarryAndFeeOnce",
+          "TestModelDeferralsAndUnknownDestination"
+        ],
+        "skipped": []
+      }
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "normal-pooloperator",
+      "seconds": 8.99,
+      "tests": {
+        "failed": [],
+        "packages": [
+          "github.com/taytr-llc/slug/desktop/pooloperator"
+        ],
+        "passed": [
+          "TestOperatorCapacityIndependentEdges",
+          "TestOperatorCapacityMixedErrorsRemainFatal",
+          "TestOperatorCapacityOriginalStartupAndPermanentDrain",
+          "TestOperatorPublicMaintenanceContention",
+          "TestOperatorRuntimeCheckpointImportNoHead",
+          "TestOperatorRuntimeCompletionClassification"
+        ],
+        "required": [
+          "TestOperatorCapacityIndependentEdges",
+          "TestOperatorCapacityMixedErrorsRemainFatal",
+          "TestOperatorCapacityOriginalStartupAndPermanentDrain",
+          "TestOperatorPublicMaintenanceContention",
+          "TestOperatorRuntimeCompletionClassification",
+          "TestOperatorRuntimeCheckpointImportNoHead"
+        ],
+        "skipped": []
+      }
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "race-registry",
+      "seconds": 8.791,
+      "tests": {
+        "failed": [],
+        "packages": [
+          "github.com/taytr-llc/slug/registry"
+        ],
+        "passed": [
+          "TestPublicBothAdmissionPathsAtomicOutbox",
+          "TestPublicCapacityClassificationAndPrewriteRefusal",
+          "TestPublicCutoffCapacityChecksPredecessorAndStoredNamespaces",
+          "TestPublicLogicalCapacityDoesNotMaskInvalidMetadata",
+          "TestPublicPendingCutoffExactReadAndReopen",
+          "TestPublicPreparedChainExactIntentAndReopen"
+        ],
+        "required": [
+          "TestPublicCapacityClassificationAndPrewriteRefusal",
+          "TestPublicCutoffCapacityChecksPredecessorAndStoredNamespaces",
+          "TestPublicLogicalCapacityDoesNotMaskInvalidMetadata",
+          "TestPublicPreparedChainExactIntentAndReopen",
+          "TestPublicPendingCutoffExactReadAndReopen",
+          "TestPublicBothAdmissionPathsAtomicOutbox"
+        ],
+        "skipped": []
+      }
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "race-poolshare",
+      "seconds": 10.542,
+      "tests": {
+        "failed": [],
+        "packages": [
+          "github.com/taytr-llc/slug/poolshare"
+        ],
+        "passed": [
+          "TestOperatorAdmissionDrainJoinsOriginalWriter",
+          "TestOperatorAdmissionFiniteRowsAndSavedRecovery",
+          "TestOperatorAdmissionOriginalBindingCountersAndLegacyHold",
+          "TestOperatorAdmissionPublicCapacityOriginalGateOnly",
+          "TestPoolCapacityStillAllowsRetainedWinnerRecovery",
+          "TestPoolLateWinnerRecoveryAndNoBirth",
+          "TestPoolSessionFencePostCommitFailureRecoversExactlyOnce",
+          "TestPoolUncertainIntentNeverBroadcastsUntilReopen"
+        ],
+        "required": [
+          "TestOperatorAdmissionPublicCapacityOriginalGateOnly",
+          "TestOperatorAdmissionFiniteRowsAndSavedRecovery",
+          "TestOperatorAdmissionOriginalBindingCountersAndLegacyHold",
+          "TestOperatorAdmissionDrainJoinsOriginalWriter",
+          "TestPoolLateWinnerRecoveryAndNoBirth",
+          "TestPoolUncertainIntentNeverBroadcastsUntilReopen",
+          "TestPoolCapacityStillAllowsRetainedWinnerRecovery",
+          "TestPoolSessionFencePostCommitFailureRecoversExactlyOnce"
+        ],
+        "skipped": []
+      }
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "race-prospectservice",
+      "seconds": 14.711,
+      "tests": {
+        "failed": [],
+        "packages": [
+          "github.com/taytr-llc/slug/prospectservice"
+        ],
+        "passed": [
+          "TestFencedManifestAdmissionNodeWorkReleasesOriginalLease",
+          "TestFencedManifestAdmissionUnknownCommitRecoversExactReceipt",
+          "TestOperatorAdmissionControllerJoinsAndCloses",
+          "TestOperatorAdmissionPausedDrainAndHistoricalReceipt",
+          "TestOperatorAdmissionPublicCapacityErrorBoundary"
+        ],
+        "required": [
+          "TestOperatorAdmissionPublicCapacityErrorBoundary",
+          "TestOperatorAdmissionPausedDrainAndHistoricalReceipt",
+          "TestOperatorAdmissionControllerJoinsAndCloses",
+          "TestFencedManifestAdmissionNodeWorkReleasesOriginalLease",
+          "TestFencedManifestAdmissionUnknownCommitRecoversExactReceipt"
+        ],
+        "skipped": []
+      }
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "race-poolsettle",
+      "seconds": 21.279,
+      "tests": {
+        "failed": [],
+        "packages": [
+          "github.com/taytr-llc/slug/poolsettle"
+        ],
+        "passed": [
+          "TestModelDeferralsAndUnknownDestination",
+          "TestModelFractionalCarryAndFeeOnce",
+          "TestSettlementCapacityRootAndChangeOnlyLineage",
+          "TestSettlementCreditCapacityDoesNotBlockPendingRecovery",
+          "TestSettlementOriginalPoolDrainKeepsFundingAndExactRecovery",
+          "TestSettlementRecoverPendingExactRetryAndNextDay"
+        ],
+        "required": [
+          "TestSettlementCapacityRootAndChangeOnlyLineage",
+          "TestSettlementOriginalPoolDrainKeepsFundingAndExactRecovery",
+          "TestSettlementCreditCapacityDoesNotBlockPendingRecovery",
+          "TestSettlementRecoverPendingExactRetryAndNextDay",
+          "TestModelFractionalCarryAndFeeOnce",
+          "TestModelDeferralsAndUnknownDestination"
+        ],
+        "skipped": []
+      }
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "race-pooloperator",
+      "seconds": 16.71,
+      "tests": {
+        "failed": [],
+        "packages": [
+          "github.com/taytr-llc/slug/desktop/pooloperator"
+        ],
+        "passed": [
+          "TestOperatorCapacityIndependentEdges",
+          "TestOperatorCapacityMixedErrorsRemainFatal",
+          "TestOperatorCapacityOriginalStartupAndPermanentDrain",
+          "TestOperatorPublicMaintenanceContention",
+          "TestOperatorRuntimeCheckpointImportNoHead",
+          "TestOperatorRuntimeCompletionClassification"
+        ],
+        "required": [
+          "TestOperatorCapacityIndependentEdges",
+          "TestOperatorCapacityMixedErrorsRemainFatal",
+          "TestOperatorCapacityOriginalStartupAndPermanentDrain",
+          "TestOperatorPublicMaintenanceContention",
+          "TestOperatorRuntimeCompletionClassification",
+          "TestOperatorRuntimeCheckpointImportNoHead"
+        ],
+        "skipped": []
+      }
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "cheap-poolshare",
+      "seconds": 3.024,
+      "tests": {
+        "failed": [],
+        "packages": [
+          "github.com/taytr-llc/slug/poolshare"
+        ],
+        "passed": [
+          "TestOperatorAdmissionCheapRefusal",
+          "TestPoolCheapProfileRefusesBeforeStorage"
+        ],
+        "required": [
+          "TestOperatorAdmissionCheapRefusal",
+          "TestPoolCheapProfileRefusesBeforeStorage"
+        ],
+        "skipped": []
+      }
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "cheap-prospectservice",
+      "seconds": 1.591,
+      "tests": {
+        "failed": [],
+        "packages": [
+          "github.com/taytr-llc/slug/prospectservice"
+        ],
+        "passed": [
+          "TestFencedManifestAdmissionRefusesCheapProfile",
+          "TestServerRefusesCheapProfileBeforeInitialization"
+        ],
+        "required": [
+          "TestServerRefusesCheapProfileBeforeInitialization",
+          "TestFencedManifestAdmissionRefusesCheapProfile"
+        ],
+        "skipped": []
+      }
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "cheap-poolsettle",
+      "seconds": 1.777,
+      "tests": {
+        "failed": [],
+        "packages": [
+          "github.com/taytr-llc/slug/poolsettle"
+        ],
+        "passed": [
+          "TestSettlementRecoverPendingRejectsCheapProfile"
+        ],
+        "required": [
+          "TestSettlementRecoverPendingRejectsCheapProfile"
+        ],
+        "skipped": []
+      }
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "cheap-pooloperator",
+      "seconds": 8.136,
+      "tests": {
+        "failed": [],
+        "packages": [
+          "github.com/taytr-llc/slug/desktop/pooloperator"
+        ],
+        "passed": [
+          "TestOperatorCapacityIndependentEdges",
+          "TestOperatorCapacityMixedErrorsRemainFatal"
+        ],
+        "required": [
+          "TestOperatorCapacityIndependentEdges",
+          "TestOperatorCapacityMixedErrorsRemainFatal"
+        ],
+        "skipped": []
+      }
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "vet-root",
+      "seconds": 0.888,
+      "tests": null
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "vet-desktop",
+      "seconds": 1.034,
+      "tests": null
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "after-deps-root-normal",
+      "seconds": 0.333,
+      "tests": null
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "after-deps-root-race",
+      "seconds": 0.383,
+      "tests": null
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "after-deps-root-cheap",
+      "seconds": 0.273,
+      "tests": null
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "after-deps-desktop-normal",
+      "seconds": 0.331,
+      "tests": null
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "after-deps-desktop-race",
+      "seconds": 0.296,
+      "tests": null
+    },
+    {
+      "exit_code": 0,
+      "group_empty": true,
+      "name": "after-deps-desktop-cheap",
+      "seconds": 0.296,
+      "tests": null
+    }
+  ],
+  "lineage_test_manifest": "96f243d1545db9d79c81b2f2f7a243d29b85602cd2b61657e1052b0832c01cf3",
+  "passed": true,
+  "preserved_failure": {
+    "attempt": "operator-capacity-attempt1",
+    "reason": "new lineage test supplied reversed live-coin order; preserved as an explicit negative control in successor",
+    "report_sha256": "1034d474286dfe318a32bf94b03d46d75334f676aaddfd59b34bff4a74c6a404"
+  },
+  "public_readiness": false,
+  "report_sha256": "2779eb97a8a3ffbf865fa430f6d0be1584590fb503f1d4c61493e2a54c7254ce",
+  "scope": "Finite saved-row reservation, new-intake drain and retained payment recovery; continuous public operation and unseen canonical D80 winners remain unresolved",
+  "seconds": 117.632,
+  "selected_files": {
+    "desktop/pooloperator/capacity_drain.go": "acfce852eb30de96df23dde90dccc0e50c7763fc2d9253963e3b2a606cf7ee82",
+    "desktop/pooloperator/capacity_envelope.go": "e6f4bb77dd18b7e14f5a398fdf68c25cea0cb45500e9bbad28ad399a1549db7f",
+    "desktop/pooloperator/capacity_envelope_test.go": "a39933e4a37514c75cc62b08469e62b5ec8b051c14185938457cd1f86668c44b",
+    "desktop/pooloperator/capacity_lifecycle_test.go": "e13d65eedab24c340cee1f6663a88f6d07af5600a09e59f7db0863cf1382328b",
+    "desktop/pooloperator/construction.go": "1b6c2a8bd0cf4a869b7de44ace411458853cecb05e4148fd4c72a7f5e7aa94e3",
+    "desktop/pooloperator/local_actions.go": "81c5b4bb6969c405d774cf4ff380eb8fc4f2db7c45c8d400f2d29940840a1f5d",
+    "desktop/pooloperator/maintenance.go": "c04697dfe15c64015fbcb91565753f939dd8481c7e4706b6c0f17105bc63791b",
+    "desktop/pooloperator/runtime.go": "3d210664b21941f850deb1c283c696ad347292d070e07cab88dedd0e88f9c3af",
+    "desktop/pooloperator/testdata/capacity/bounds-v2.py": "4cc4d7d687193fe8add679d53879eda747c1a190a0135ade3fdc6779d624ad74",
+    "desktop/pooloperator/testdata/capacity/edges-input-lock.json": "231ec3211a87f3db329471216bd5b1b06578a044bd1a83ba4688d2f0feb5cf42",
+    "desktop/pooloperator/testdata/capacity/edges-v2.json": "afa13b15904568a370678e9d6ef4ef9ba92940202aefd3b07330e3820edcfe42",
+    "desktop/pooloperator/testdata/capacity/edges-v2.py": "949831e212d2f1d8707dfb83a36c07a0131e172218656ca51ef5cfeb731d5a3f",
+    "poolsettle/operator_drain_test.go": "0df68e06617765386149179348aacb29ea5e2fbafb6ea067081b2dbae6186226",
+    "poolshare/operator_admission.go": "21db94af084ebdd4c698520d84d033633a310405128f58fe142d305457aa354f",
+    "poolshare/operator_admission_test.go": "b0cec4e545f6cc3b833b079e77df323c451402029c38a737aa647c3ba4b02f74",
+    "poolshare/pool.go": "35d72a9e43cb1090e71eaf52256489ac2588a07aa015bedd99685408e0f3ed1e",
+    "poolshare/types.go": "8218d0f83d8165ae8a0dbae113bda056e4061252be0c16319e5213e3ac652f30",
+    "prospectservice/manifest_fenced_server.go": "181e7c5a9055eff411bb820ff20769829ac5bac4d3410fa463b5f9512fd7fb35",
+    "prospectservice/manifest_server.go": "9b495ab1224e91361ea9a87f684a2aa35ae25420ae0ec86799c6f87e6a09bfb0",
+    "prospectservice/operator_intake.go": "ac0e120c5c734fb0d5da705ae5519d0a6a73ab49c03515bc7a3dcc4a7fc104bb",
+    "prospectservice/operator_intake_test.go": "2af7a31490ecc8e3cfda80886460a46e747a246299bdcdd290bf557de3083ecb",
+    "registry/public_capacity.go": "e265cbb186d0eb87c0a11a52f12fd421124323c2654908425f7692ae6979be59",
+    "registry/public_capacity_test.go": "9bd775f35d7d8bf85d512f0d8e2332b774146f0d7bc4bd7a3a77fcd6f2be42a1",
+    "registry/public_prepared.go": "1249efe0de144092b3695e02655750d4ebe94981fe094a45c4aabbab7bd11e19",
+    "registry/public_publish.go": "dfe134ba9dcf10568770129dc93c4e4e411d1152170ea5f5c698da516dfa288e",
+    "registry/public_store.go": "4a4bfed447f0c4a40c6a36dc77b10f4fdce3ba8c0e0abecb7ac139a4a9c104d6"
+  },
+  "source_count": 7424,
+  "source_inventory_sha256": "80610f4ad6343c8f186f5c9ed3956c56e75a152d9fa381e565c4ee3658687145",
+  "source_manifests": [
+    "854c66175065f04903fabdbb1c7e05fed62a0b63328c4d5d4ecab41429104c16",
+    "babc2f0a2713f44ad8661cfe2381c1167a03bf2455f30ce70a4370c2ed35055e"
+  ],
+  "source_unchanged": true,
+  "version": 1
+}

@@ -289,7 +289,13 @@ func (s *ManifestStore) appendPublicAdmission(batch *leveldb.Batch, r ManifestRe
 	if s.public.boundary {
 		return ErrBusy
 	}
-	if r.Sequence == 0 || r.Sequence > uint64(s.public.pin.Limits.Admissions) || r.Sequence != uint64(s.public.meta.AcceptedSequence)+1 {
+	if r.Sequence == 0 || r.Sequence != uint64(s.public.meta.AcceptedSequence)+1 {
+		return ErrPublicOwnership
+	}
+	if r.Sequence > uint64(s.public.pin.Limits.Admissions) {
+		if s.public.meta.AcceptedSequence == s.public.pin.Limits.Admissions {
+			return ErrPublicCapacity
+		}
 		return ErrPublicOwnership
 	}
 	v := publicOutbox{1, uint32(r.Sequence), r.Verified.ProspectID}
@@ -325,6 +331,9 @@ func (s *ManifestStore) stagePublicBatch(batch *leveldb.Batch, next manifestMeta
 	}
 	m.AcceptedSequence = uint32(next.LastSequence)
 	if next.LastSequence > uint64(s.public.pin.Limits.Admissions) {
+		if s.public.meta.AcceptedSequence == s.public.pin.Limits.Admissions && next.LastSequence == uint64(s.public.meta.AcceptedSequence)+1 {
+			return m, ErrPublicCapacity
+		}
 		return m, ErrPublicOwnership
 	}
 	if m.ClockHighWaterMS < next.LastClockMS {
@@ -360,13 +369,16 @@ func (s *ManifestStore) stagePublicBatch(batch *leveldb.Batch, next manifestMeta
 			return m, ErrPublicOwnership
 		}
 		want := total + int64(len(publicMetaKey)+len(raw))
-		if want < 0 || want > int64(s.public.pin.Limits.LogicalBytes) {
+		if want < 0 || s.public.meta.LogicalBytes > s.public.pin.Limits.LogicalBytes || m.SignedAdmissionSequence > m.AcceptedSequence {
 			return m, ErrPublicOwnership
+		}
+		if want > int64(s.public.pin.Limits.LogicalBytes) {
+			return m, ErrPublicCapacity
 		}
 		if m.LogicalBytes == uint32(want) {
 			reserve := int64(m.AcceptedSequence-m.SignedAdmissionSequence) * int64(MaxPublicAdmissionSize+MaxPublicSmallSize)
 			if want+reserve > int64(s.public.pin.Limits.LogicalBytes) {
-				return m, ErrPublicOwnership
+				return m, ErrPublicCapacity
 			}
 			batch.Put([]byte(publicMetaKey), raw)
 			return m, nil

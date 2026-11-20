@@ -61,6 +61,11 @@ func (m *publicMaintenance) step(ctx context.Context) (p fighterownership.Progre
 		if e != nil {
 			return m.progress, e
 		}
+		// Reopen must not briefly re-enable intake from a fully consumed
+		// publication prefix merely because the current node tip is unchanged.
+		if status.PublicationSequence == m.profile.Pin().Limits.Publications {
+			return m.progress, registry.ErrPublicCapacity
+		}
 		for n := 0; n < 8 && status.PublicEvidencePending; n++ {
 			status, e = m.publisher.PublishNext(ctx)
 			if e != nil {
@@ -144,15 +149,28 @@ func (m *roundMaintenance) step(ctx context.Context) (poolround.Summary, error) 
 	if m.cursor >= summary.Rounds {
 		m.cursor = 0
 	}
+	return summary, m.refresh(ctx)
+}
+
+// refresh never imports a blocked tail or invents new rounds. List verifies the
+// retained Through prefix; Refresh rechecks each exact original winning block.
+func (m *roundMaintenance) refresh(ctx context.Context) error {
 	rows, e := m.store.List(ctx, m.cursor, poolround.MaxPage)
 	if e != nil {
-		return summary, e
+		return e
+	}
+	if len(rows) == 0 && m.cursor != 0 {
+		m.cursor = 0
+		rows, e = m.store.List(ctx, 0, poolround.MaxPage)
+		if e != nil {
+			return e
+		}
 	}
 	for _, row := range rows {
-		if _, e := m.store.Refresh(ctx, row.Round.BlockHash); e != nil {
-			return summary, e
+		if _, e = m.store.Refresh(ctx, row.Round.BlockHash); e != nil {
+			return e
 		}
 		m.cursor = row.Round.Sequence
 	}
-	return summary, ctx.Err()
+	return ctx.Err()
 }

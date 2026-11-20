@@ -364,8 +364,16 @@ authorization must be repository-limited, not an account-wide OAuth expansion.
   standalone CLI reopen. Offline provisioning and remote public configuration/
   credential custody now pass focused normal/race/refusal qualification. Only
   the operator runs real provisioning; no private key is an agent input. The
-  concrete host handoff, remote wallet/worker attachment and capacity/host
-  qualification remain; do not call the public pool deployed. Scheduling retains the original settlement;
+  existing schema14 wallet also passed actual TLS mining, accepted share/fighter
+  receipt audit and exact stopped reopen. Native Linux qualification passed at
+  chain `c41cc337` / wallet `6a69ecfc`, including normal/race custody checks and
+  real ACL controls. Concrete host handoff, remote native/history attachment and
+  continuous capacity/host qualification remain; do not call the pool deployed.
+  The finite reservation covers saved submission rows only. D80's previously
+  issued but unseen canonical winner after intake drain is an explicit release
+  blocker: retain pending work and implement continuation-backed credit; never
+  bypass financial bounds or redefine D80 to discard it.
+  Scheduling retains the original settlement;
   only completed daily batches advance its cursor. Node evidence grants no
   signing authority; uncertain delivery retries only the retained transaction.
   Operator ownership uses explicit issuer/replica roles and `/slug/ownership/v2`;

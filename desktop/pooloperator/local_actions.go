@@ -127,6 +127,11 @@ func (r *Runtime) ImportCheckpoint(ctx context.Context, checkpoint chaincfg.Sign
 	}
 	defer done()
 	entry, e := r.publisher.PublishCheckpoint(work, checkpoint)
+	if e == registry.ErrPublicCapacity {
+		// Preserve the original ambiguous action result even if draining or
+		// its cleanup also fails; never retry the checkpoint automatically.
+		e = errors.Join(e, r.updateIntake(work, false, false, "public_capacity"))
+	}
 	// Once the concrete publisher is entered, a durable pending reference or
 	// signed entry may exist. Never blindly retry based on a transport/close error.
 	if e != nil {

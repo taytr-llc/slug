@@ -471,6 +471,43 @@ the retained descriptor before cleanup. Production ACL policy is unchanged.
 That failed run and its complete public artifact remain preserved; the successor
 requires actual Linux execution rather than a local Mac pass.
 
+Successor run `44821053057` passed on native Ubuntu amd64 at exact chain
+`c41cc337` / wallet `6a69ecfc` in 301.248 seconds. It ran the normal PoW guard,
+built/verified both Linux binaries, and passed 13 authority, 12 wallet and 26
+operator top-level cases in both normal and race modes, including all five
+required operator ACL cases. Vet passed, sources/binaries stayed unchanged,
+all children joined and private temporary test material was removed before
+public artifact upload. `docs/evidence/set74/operator-linux.json` binds the
+run/report/logs. Provisioning and deployed-host qualification remain separate.
+
+## Capacity continuation finding
+
+The finite capacity candidate derives a conservative saved-submission ceiling
+from the existing round, batch and byte bounds. The original pool and admission
+writers start paused and enter permanent intake drain at a validated limit,
+while saved receipt recovery, retained round observation, custody renewal and
+daily pending/due settlement remain available. Mixed corruption, uncertain
+writes and cleanup errors stay failures. The largest supported envelope is 183
+rows, which can fill before maturity and is not a public-service horizon.
+
+`operator-capacity-attempt2` passed 31 selected cases in normal and race modes,
+seven cheap-profile controls and vet across five packages in 117.632 seconds.
+All 7,424 bound inputs and dependency selections stayed unchanged; all 28
+command groups joined. The failed first attempt used reversed live-coin order
+in a new lineage fixture. The corrected positive preserves all original amounts
+and inequalities, and retains that reversed order as a required refusal; no
+production planner changed. See `docs/evidence/set74/operator-capacity.json`.
+
+The finite reservation/drain candidate covers already retained submission rows.
+A further audit found that an unseen nonce from an already issued job is checked
+against capacity before canonical-block verification. The real worker broadcasts
+and observes a winning block first, so that block can already be canonical and
+pay the pool while its client outbox stays pending without an operator credit.
+Saved-row retry coverage does not prove D80 for this different case. Continuous
+storage/reservation-backed acceptance is a public release blocker; neither a
+cap bypass nor discarding that reward is authorized. This is an implementation
+gap under the existing decision, not a proposed economic change.
+
 ## Remaining integration
 
 - Prepare the concrete operator handoff and deployment selections without

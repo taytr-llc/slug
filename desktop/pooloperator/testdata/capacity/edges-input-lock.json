@@ -1,0 +1,31 @@
+{
+  "version": 2,
+  "scope": "frozen independent edge source/output before Go implementation",
+  "files": [
+    {
+      "path": "set74-prep/capacity-boundary/proof/bounds-v2.py",
+      "sha256": "4cc4d7d687193fe8add679d53879eda747c1a190a0135ade3fdc6779d624ad74",
+      "bytes": 5628
+    },
+    {
+      "path": "set74-prep/capacity-boundary/proof/edges-v2.py",
+      "sha256": "949831e212d2f1d8707dfb83a36c07a0131e172218656ca51ef5cfeb731d5a3f",
+      "bytes": 2570
+    },
+    {
+      "path": "set74-prep/capacity-boundary/proof/edges-v2.json",
+      "sha256": "afa13b15904568a370678e9d6ef4ef9ba92940202aefd3b07330e3820edcfe42",
+      "bytes": 5845
+    },
+    {
+      "path": "set74-prep/capacity-boundary/CONTRACT.v2.proposed.md",
+      "sha256": "383ec9d126c1478aec6fee0c153ca43f9706a56f16d5eee2831e4c54864176c8",
+      "bytes": 10819
+    },
+    {
+      "path": "set74-prep/capacity-boundary/source-lock-v2.json",
+      "sha256": "8d058b04797d1718c0e0521d6bc1386c15fc1a3f70eea3daf2f6e9a91abcd4fe",
+      "bytes": 3292
+    }
+  ]
+}

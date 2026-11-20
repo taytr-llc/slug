@@ -504,9 +504,17 @@ of the ownership, transfer or independent restored-wallet flow. See
   chain `4a3f20da` / wallet `40959793`, not an externally deployed public pool.
   Offline provisioning now passes normal/race/refusal/build checks with published
   fixtures; the tool leaves real key creation to the operator. Remote public
-  configuration/credential custody also passes focused checks. The concrete
-  operator handoff, remote desktop/source attachment, safe capacity handling
-  and Linux/remote-host qualification remain before that milestone.
+  configuration/credential custody also passes focused checks. The existing
+  schema14 wallet passed actual TLS mining, accepted share/fighter audit and
+  stopped reopen. Native Linux normal/race authority, wallet and operator checks,
+  PoW guard, binaries and ACL controls passed at `c41cc337` / wallet `6a69ecfc`.
+  The concrete operator handoff, remote native/history attachment, continuous
+  capacity and remote-host qualification remain before that milestone.
+  A previously issued job can yield an unseen canonical pool-paying winner after
+  intake drains. Its client outbox remains pending, but no operator row/credit
+  exists yet. D80 requires continuation-backed acceptance; saved-row recovery
+  alone does not close this release blocker. Never bypass the financial bound,
+  drop the reward, reset journals or treat 183 lifetime rows as public readiness.
   Sign-in follows; the full joint D74 review stays last. See
   `CHANGESET_74_NOTES.md` and `docs/evidence/set74/operator-actual.json`.
 

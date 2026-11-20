@@ -32,6 +32,7 @@ import (
 // Status consists of dated local observations, never current funding, signing,
 // ownership or credential authority. Public/round failures clear success flags.
 type Status struct {
+	Capacity       CapacityStatus            `json:"capacity"`
 	Version        uint32                    `json:"version"`
 	RuntimeID      string                    `json:"runtime_id"`
 	SetupID        string                    `json:"setup_id"`
@@ -52,6 +53,11 @@ type Status struct {
 // Runtime owns created children and transports, and borrows exactly the two
 // supplied custody owners. It exposes no child/store/wallet/authority getter.
 type Runtime struct {
+	intakeMu                            sync.Mutex
+	intake                              *poolshare.OperatorAdmission
+	reservation                         CapacityReservation
+	intakeReason                        string
+	intakePublicReady, intakeRoundReady bool
 	mu                                  sync.Mutex
 	closeMu                             sync.Mutex
 	inputMu                             sync.Mutex
@@ -313,16 +319,26 @@ func maintenanceCode(e error) string {
 	if errors.Is(e, fighterownership.ErrBusy) || errors.Is(e, registry.ErrBusy) || errors.Is(e, poolround.ErrBusy) || errors.Is(e, operatorauthority.ErrBusy) {
 		return "busy"
 	}
-	if errors.Is(e, fighterownership.ErrCapacity) || errors.Is(e, poolround.ErrCapacity) {
+	if errors.Is(e, fighterownership.ErrCapacity) || errors.Is(e, registry.ErrPublicCapacity) || errors.Is(e, poolround.ErrCapacity) {
 		return "capacity"
 	}
 	return "unavailable"
 }
 func (r *Runtime) publicLoop(ctx context.Context) (result error) {
 	defer func() { result = errors.Join(result, r.public.close()) }()
+	stopped := false
 	for {
 		if e := r.checkInputs(ctx); e != nil {
 			return e
+		}
+		if stopped {
+			if e := r.updateIntake(ctx, false, false, ""); e != nil {
+				return e
+			}
+			if e := pause(ctx, time.Duration(r.setup.MaintenanceIntervalMS)*time.Millisecond); e != nil {
+				return e
+			}
+			continue
 		}
 		step, cancel := context.WithTimeout(ctx, 20*time.Second)
 		p, e := r.public.step(step)
@@ -335,8 +351,21 @@ func (r *Runtime) publicLoop(ctx context.Context) (result error) {
 		if ctx.Err() != nil {
 			return ctx.Err()
 		}
+		if capacityOnly(e) {
+			if x := r.updateIntake(ctx, false, false, "public_capacity"); x != nil {
+				return errors.Join(e, x)
+			}
+			if x := r.public.close(); x != nil {
+				return errors.Join(e, x)
+			}
+			stopped = true
+			continue
+		}
 		if e != nil && !publicRetry(e) {
 			return e
+		}
+		if x := r.updateIntake(ctx, e == nil && p.Ready, false, ""); x != nil {
+			return x
 		}
 		delay := time.Duration(r.setup.MaintenanceIntervalMS) * time.Millisecond
 		if e == nil && !p.Ready || errors.Is(e, context.DeadlineExceeded) {
@@ -363,8 +392,25 @@ func (r *Runtime) roundLoop(ctx context.Context) error {
 		if ctx.Err() != nil {
 			return ctx.Err()
 		}
-		if e != nil && !roundRetry(e) {
-			return e
+		if capacityOnly(e) {
+			if x := r.updateIntake(ctx, false, false, "round_capacity"); x != nil {
+				return errors.Join(e, x)
+			}
+			// Only importing new rounds is held. Recheck existing winners under their
+			// original source/node so confirmation and mature funding can still advance.
+			step, cancel = context.WithTimeout(ctx, 30*time.Second)
+			refresh := r.round.refresh(step)
+			cancel()
+			if refresh != nil && !retainedRoundRetry(refresh) {
+				return errors.Join(e, refresh)
+			}
+		} else {
+			if e != nil && !retainedRoundRetry(e) {
+				return e
+			}
+			if x := r.updateIntake(ctx, false, e == nil, ""); x != nil {
+				return x
+			}
 		}
 		if e = pause(ctx, time.Duration(r.setup.MaintenanceIntervalMS)*time.Millisecond); e != nil {
 			return e
@@ -466,6 +512,9 @@ func (r *Runtime) Run(ctx context.Context, onReady func(string)) (result error) 
 		return e
 	}
 	if e := r.renewWallet(work); e != nil {
+		return e
+	}
+	if e := r.updateIntake(work, false, false, ""); e != nil {
 		return e
 	}
 	ready := make(chan string, 3)

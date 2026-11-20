@@ -123,21 +123,22 @@ type metadata struct {
 // its total job count bounds incomplete issuance as well as returned pool work.
 // No method may be reentered by its adapters or session callbacks.
 type Pool struct {
-	auditOnly  bool
-	db         *leveldb.DB
-	meta       metadata
-	config     Config
-	authority  *registry.ManifestStore
-	node       Node
-	sessions   prospectservice.SessionAuthorizer
-	gate       chan struct{}
-	lifecycle  sync.Mutex
-	closing    bool
-	closeDone  chan struct{}
-	closeErr   error
-	poisoned   bool
-	clockSeen  int64
-	now        func() time.Time
-	writeBatch func(*leveldb.Batch, *opt.WriteOptions) error
-	checkpoint func(string)
+	operatorAdmission *OperatorAdmission // original gate; never detached or replaced
+	auditOnly         bool
+	db                *leveldb.DB
+	meta              metadata
+	config            Config
+	authority         *registry.ManifestStore
+	node              Node
+	sessions          prospectservice.SessionAuthorizer
+	gate              chan struct{}
+	lifecycle         sync.Mutex
+	closing           bool
+	closeDone         chan struct{}
+	closeErr          error
+	poisoned          bool
+	clockSeen         int64
+	now               func() time.Time
+	writeBatch        func(*leveldb.Batch, *opt.WriteOptions) error
+	checkpoint        func(string)
 }

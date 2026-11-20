@@ -40,6 +40,12 @@ func NewFencedManifestAdmissionServer(config ManifestServerConfig, policy prospe
 }
 
 func fencedAdmissionFailure(server *ManifestServer, err error) *responseError {
+	// The exact prewrite sentinel can close only this attached intake. Mixed
+	// integrity/session/unknown errors retain their original failure semantics.
+	if err == registry.ErrPublicCapacity && server.operatorIntake != nil {
+		server.operatorIntake.draining = true
+		return server.storeFailure(errCapacity)
+	}
 	if errors.Is(err, mininglease.ErrOutcomeUnknown) {
 		return &responseError{"outcome_unknown", 503, true}
 	}
@@ -81,7 +87,18 @@ func (server *ManifestServer) admitFenced(ctx context.Context, token string, cre
 	}
 	observation := registry.Eligibility{}
 	if !prepared.Historical() {
+		if intake := server.operatorIntake; intake != nil {
+			if intake.draining {
+				return nil, apiError("capacity", 503)
+			}
+			if !intake.enabled {
+				return nil, apiError("busy", 503)
+			}
+		}
 		if info.Records >= server.config.MaxRecords {
+			if server.operatorIntake != nil {
+				server.operatorIntake.draining = true
+			}
 			return nil, server.storeFailure(errCapacity)
 		}
 		initial := prepared.Context()

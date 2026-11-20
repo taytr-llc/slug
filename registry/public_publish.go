@@ -150,6 +150,17 @@ func (p *ManifestPublication) stage(ctx context.Context, kind string, payload js
 		return v, ErrBusy
 	}
 	if m.PublicationSequence >= 16384 {
+		if m.PublicationSequence == 16384 && validatePublicPayload(p.pin, PublicPublicationEntry{Kind: kind, Payload: payload}) == nil {
+			// Capacity cannot hide a different chain predecessor. This exact
+			// identity check precedes the drain classification even at the cap.
+			if kind == "chain" {
+				var ref PublicChainReference
+				if json.Unmarshal(payload, &ref) != nil || ref.PreviousChainEntryID != m.ChainEntryID {
+					return v, ErrConflict
+				}
+			}
+			return v, ErrPublicCapacity
+		}
 		return v, ErrPublicOwnership
 	}
 	now, e := s.clockMillis()
@@ -272,7 +283,7 @@ func (p *ManifestPublication) commitSigned(ctx context.Context, v publicPublicat
 		m.ChainEntryID = id
 	}
 	if v.Kind == "cutoff" {
-		if cutoff == nil || p.codec.ValidatePublicCutoff(p.pin, *cutoff) != nil || m.CutoffCount >= 256 {
+		if cutoff == nil || p.codec.ValidatePublicCutoff(p.pin, *cutoff) != nil || m.CutoffCount > 256 {
 			return PublicPublicationEntry{}, ErrPublicOwnership
 		}
 		cid, er := p.codec.PublicCutoffID(p.pin, *cutoff)
@@ -287,6 +298,9 @@ func (p *ManifestPublication) commitSigned(ctx context.Context, v publicPublicat
 		}
 		if _, er = s.db.Get(publicIDKey("ownership/cutoff/", cutoff.EventID), nil); !errors.Is(er, leveldb.ErrNotFound) {
 			return PublicPublicationEntry{}, ErrConflict
+		}
+		if m.CutoffCount == 256 {
+			return PublicPublicationEntry{}, ErrPublicCapacity
 		}
 		raw, _ := json.Marshal(cutoff)
 		batch.Put(publicIDKey("ownership/cutoff/", cutoff.EventID), raw)
@@ -416,9 +430,12 @@ func (p *ManifestPublication) PublishCheckpoint(ctx context.Context, c chaincfg.
 		s.mu.Unlock()
 		return PublicPublicationEntry{}, e
 	}
-	full := s.public.meta.CheckpointCount >= 1024
+	count := s.public.meta.CheckpointCount
 	s.mu.Unlock()
-	if full {
+	if count == 1024 {
+		return PublicPublicationEntry{}, ErrPublicCapacity
+	}
+	if count > 1024 {
 		return PublicPublicationEntry{}, ErrPublicOwnership
 	}
 	payload, _ := json.Marshal(struct {

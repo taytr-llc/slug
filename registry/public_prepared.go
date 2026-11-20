@@ -243,9 +243,6 @@ func (l *PublicBoundaryLease) CommitIntent(ctx context.Context, v PublicCutoffIn
 	if !errors.Is(e, leveldb.ErrNotFound) {
 		return e
 	}
-	if s.public.meta.CutoffCount >= 256 {
-		return ErrPublicOwnership
-	}
 	prior, e := s.previousPublicCutoff(v.CutoffMS)
 	if e != nil {
 		return e
@@ -276,6 +273,14 @@ func (l *PublicBoundaryLease) CommitIntent(ctx context.Context, v PublicCutoffIn
 	}
 	if pending != 0 {
 		return ErrBusy
+	}
+	// Original predecessor and stored pending/cutoff namespaces must have
+	// passed before a full count can be classified as a recoverable limit.
+	if s.public.meta.CutoffCount == 256 {
+		return ErrPublicCapacity
+	}
+	if s.public.meta.CutoffCount > 256 {
+		return ErrPublicOwnership
 	}
 	batch := new(leveldb.Batch)
 	batch.Put(key, raw)

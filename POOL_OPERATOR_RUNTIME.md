@@ -93,11 +93,36 @@ are not printed. A listening process does not imply a public mining launch.
 
 ## Operational limits
 
-The initial operator is a finite controlled run. Setup pins at most256 jobs,
-4096 submissions,64 enrolled gyms,4096 historical credential issuances and
-explicit round/batch/byte limits. Authority history also has fixed quotas. Full
-capacity stops work visibly while retaining liabilities; rollover and compaction
-are not implemented. Do not remove financial journals to resume mining.
+The initial operator is a finite controlled run. Setup pins at most 256 jobs,
+4,096 submissions, 64 enrolled gyms, 4,096 historical credential issuances and
+explicit round/batch/byte limits. Authority history also has fixed quotas.
+
+The runtime derives a smaller submission ceiling that reserves room for the
+original rounds and settlement history, including exact fractional claims and
+change-only batches. Even the largest currently supported setup admits at most
+183 submission rows. Pending rows count, and separate nonces in one job consume
+separate rows. A smaller setup can permit fewer rows or recovery only. These
+limits can be reached before coinbase maturity; they do not provide continuous
+public operation or guarantee payment of below-minimum or otherwise held carry.
+
+New intake starts paused until original public replay and round synchronization
+are ready. Reaching a validated limit permanently drains new job/share/fighter
+intake for that runtime lifetime. Exact saved submissions and historical receipts
+remain recoverable; retained rounds can confirm, custody renewal continues, and
+the original daily scheduler still settles eligible earnings or recovers its
+retained transaction. Status reports the reservation, count and drain reason.
+Corruption, uncertain writes, custody and cleanup failures remain failures; they
+cannot masquerade as ordinary capacity. Reopening an already over-bound old
+journal permits drain only and cannot claim a retroactive reservation.
+
+Rollover and compaction are not implemented. Do not remove financial journals,
+repin a source or discard fractional balances to resume mining.
+
+There is also an unresolved D80 boundary: a previously issued job can produce an
+unseen canonical winner after intake drains. Its client evidence remains pending,
+but the full journal has no operator row or credit yet. Continuation-backed
+acceptance is required before public operation; saved-row recovery is insufficient.
+The unallocated coinbase is not authority to spend or discard the miner's reward.
 
 Retain the complete operator root, independently selected public Setup, wallet
 and protected custody. Public hostname/TLS, real online authority, enrolled

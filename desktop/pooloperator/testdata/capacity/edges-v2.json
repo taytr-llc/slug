@@ -1,0 +1,275 @@
+{
+  "version": 2,
+  "scope": "independent logical reservation bounds, not financial or runtime authority",
+  "cases": [
+    {
+      "name": "maximum-existing",
+      "inputs": {
+        "source_max": 4096,
+        "rounds": 256,
+        "round_bytes": 268435456,
+        "credit_rounds": 256,
+        "batches": 366,
+        "gyms": 64
+      },
+      "expected": {
+        "submissions": 183,
+        "max_batches": 365,
+        "state_bytes": 43920734,
+        "round_bytes": 12869658,
+        "largest_round_bytes": 104632
+      }
+    },
+    {
+      "name": "larger-round-journal",
+      "inputs": {
+        "source_max": 4096,
+        "rounds": 256,
+        "round_bytes": 1073741824,
+        "credit_rounds": 256,
+        "batches": 366,
+        "gyms": 64
+      },
+      "expected": {
+        "submissions": 183,
+        "max_batches": 365,
+        "state_bytes": 43920734,
+        "round_bytes": 12869658,
+        "largest_round_bytes": 104632
+      }
+    },
+    {
+      "name": "batch-364",
+      "inputs": {
+        "source_max": 4096,
+        "rounds": 256,
+        "round_bytes": 268435456,
+        "credit_rounds": 256,
+        "batches": 364,
+        "gyms": 64
+      },
+      "expected": {
+        "submissions": 182,
+        "max_batches": 363,
+        "state_bytes": 43526267,
+        "round_bytes": 12799332,
+        "largest_round_bytes": 104421
+      }
+    },
+    {
+      "name": "batch-365",
+      "inputs": {
+        "source_max": 4096,
+        "rounds": 256,
+        "round_bytes": 268435456,
+        "credit_rounds": 256,
+        "batches": 365,
+        "gyms": 64
+      },
+      "expected": {
+        "submissions": 183,
+        "max_batches": 365,
+        "state_bytes": 43920734,
+        "round_bytes": 12869658,
+        "largest_round_bytes": 104632
+      }
+    },
+    {
+      "name": "source-four",
+      "inputs": {
+        "source_max": 4,
+        "rounds": 256,
+        "round_bytes": 268435456,
+        "credit_rounds": 256,
+        "batches": 366,
+        "gyms": 64
+      },
+      "expected": {
+        "submissions": 4,
+        "max_batches": 7,
+        "state_bytes": 4825425,
+        "round_bytes": 281256,
+        "largest_round_bytes": 66833
+      }
+    },
+    {
+      "name": "round-four",
+      "inputs": {
+        "source_max": 4096,
+        "rounds": 4,
+        "round_bytes": 268435456,
+        "credit_rounds": 256,
+        "batches": 366,
+        "gyms": 64
+      },
+      "expected": {
+        "submissions": 4,
+        "max_batches": 7,
+        "state_bytes": 4825425,
+        "round_bytes": 281256,
+        "largest_round_bytes": 66833
+      }
+    },
+    {
+      "name": "credit-four",
+      "inputs": {
+        "source_max": 4096,
+        "rounds": 256,
+        "round_bytes": 268435456,
+        "credit_rounds": 4,
+        "batches": 366,
+        "gyms": 64
+      },
+      "expected": {
+        "submissions": 4,
+        "max_batches": 7,
+        "state_bytes": 4825425,
+        "round_bytes": 281256,
+        "largest_round_bytes": 66833
+      }
+    },
+    {
+      "name": "small-selected",
+      "inputs": {
+        "source_max": 4,
+        "rounds": 4,
+        "round_bytes": 8388608,
+        "credit_rounds": 4,
+        "batches": 8,
+        "gyms": 2
+      },
+      "expected": {
+        "submissions": 4,
+        "max_batches": 7,
+        "state_bytes": 4822331,
+        "round_bytes": 281256,
+        "largest_round_bytes": 66833
+      }
+    },
+    {
+      "name": "exact-round-byte-edge",
+      "inputs": {
+        "source_max": 4,
+        "rounds": 256,
+        "round_bytes": 281256,
+        "credit_rounds": 256,
+        "batches": 366,
+        "gyms": 2
+      },
+      "expected": {
+        "submissions": 4,
+        "max_batches": 7,
+        "state_bytes": 4822331,
+        "round_bytes": 281256,
+        "largest_round_bytes": 66833
+      }
+    },
+    {
+      "name": "below-round-byte-edge",
+      "inputs": {
+        "source_max": 4,
+        "rounds": 256,
+        "round_bytes": 281255,
+        "credit_rounds": 256,
+        "batches": 366,
+        "gyms": 2
+      },
+      "expected": {
+        "submissions": 3,
+        "max_batches": 5,
+        "state_bytes": 4810404,
+        "round_bytes": 210942,
+        "largest_round_bytes": 66628
+      }
+    },
+    {
+      "name": "zero-reservation",
+      "inputs": {
+        "source_max": 4096,
+        "rounds": 256,
+        "round_bytes": 4096,
+        "credit_rounds": 256,
+        "batches": 366,
+        "gyms": 64
+      },
+      "expected": {
+        "submissions": 0,
+        "max_batches": 0,
+        "state_bytes": 0,
+        "round_bytes": 0,
+        "largest_round_bytes": 0
+      }
+    },
+    {
+      "name": "one-batch",
+      "inputs": {
+        "source_max": 4096,
+        "rounds": 256,
+        "round_bytes": 268435456,
+        "credit_rounds": 256,
+        "batches": 1,
+        "gyms": 64
+      },
+      "expected": {
+        "submissions": 1,
+        "max_batches": 1,
+        "state_bytes": 4792281,
+        "round_bytes": 70314,
+        "largest_round_bytes": 66218
+      }
+    },
+    {
+      "name": "one-payee",
+      "inputs": {
+        "source_max": 4096,
+        "rounds": 256,
+        "round_bytes": 268435456,
+        "credit_rounds": 256,
+        "batches": 366,
+        "gyms": 1
+      },
+      "expected": {
+        "submissions": 183,
+        "max_batches": 365,
+        "state_bytes": 38838839,
+        "round_bytes": 12869658,
+        "largest_round_bytes": 104632
+      }
+    }
+  ],
+  "refused_inputs": [
+    {
+      "source_max": 0
+    },
+    {
+      "source_max": 4097
+    },
+    {
+      "rounds": 0
+    },
+    {
+      "rounds": 257
+    },
+    {
+      "round_bytes": 4095
+    },
+    {
+      "round_bytes": 1073741825
+    },
+    {
+      "credit_rounds": 257
+    },
+    {
+      "batches": 0
+    },
+    {
+      "batches": 367
+    },
+    {
+      "gyms": 0
+    },
+    {
+      "gyms": 65
+    }
+  ]
+}

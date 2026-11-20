@@ -113,6 +113,9 @@ func (p *Pool) withSession(ctx context.Context, token string, fn func(context.Co
 	}
 	session := &poolSession{lease: lease}
 	err = fn(ctx, key, session)
+	if (err == ErrCapacity || err == registry.ErrPublicCapacity) && p.operatorAdmission != nil {
+		p.operatorAdmission.draining = true
+	}
 	if err == nil {
 		err = session.check()
 	}
@@ -139,6 +142,9 @@ func (p *Pool) issue(ctx context.Context, token string) (savedWork, Work, error)
 	var retained savedWork
 	var result Work
 	err := p.withSession(ctx, token, func(ctx context.Context, key string, session *poolSession) error {
+		if err := p.operatorIntake(); err != nil {
+			return err
+		}
 		info, err := p.authority.Info()
 		if err != nil || info.Pin != p.config.AuthorityPin || info.ReadOnly {
 			return ErrCorrupt
@@ -289,6 +295,9 @@ func (p *Pool) Submit(ctx context.Context, token, jobID string, nonce uint32) (S
 			return err
 		}
 		if !errors.Is(err, ErrNotFound) {
+			return err
+		}
+		if err := p.operatorIntake(); err != nil {
 			return err
 		}
 		if p.meta.Submissions >= p.config.MaxSubmissions || maxSubmissionSize > p.config.MaxBytes-p.meta.Bytes {

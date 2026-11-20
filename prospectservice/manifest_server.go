@@ -51,7 +51,8 @@ type ManifestServer struct {
 	started       bool
 	handlers      sync.WaitGroup
 
-	fencedAdmission bool // explicit shared-runtime path; legacy session contract is unchanged
+	operatorIntake  *operatorIntakeState // protected by active; never detached
+	fencedAdmission bool                 // explicit shared-runtime path; legacy session contract is unchanged
 }
 
 // NewManifestServer selects static per-gym credentials for protocol 3.

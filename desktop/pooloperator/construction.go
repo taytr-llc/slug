@@ -87,6 +87,10 @@ func construct(ctx context.Context, root string, expected Setup, borrowed Borrow
 	if e != nil {
 		return nil, e
 	}
+	reservation, e := CapacityEnvelope(owned)
+	if e != nil {
+		return nil, e
+	}
 	profile, e := registry.NewOperatorProfile(owned.Authority)
 	if e != nil {
 		return nil, e
@@ -112,7 +116,8 @@ func construct(ctx context.Context, root string, expected Setup, borrowed Borrow
 	life, cancel := context.WithCancel(ctx)
 	id, _ := SetupID(owned)
 	r = &Runtime{setup: owned, setupID: id, profile: profile, borrowed: borrowed, binding: binding, life: life, cancel: cancel, runDone: make(chan struct{}), localGate: make(chan struct{}, 1)}
-	r.status = Status{Version: 1, RuntimeID: owned.RuntimeID, SetupID: id, Custody: "locked", PublicCode: "not_started", RoundCode: "not_started"}
+	r.reservation = reservation
+	r.status = Status{Version: 1, RuntimeID: owned.RuntimeID, SetupID: id, Custody: "locked", Capacity: CapacityStatus{Reservation: reservation, Mode: "paused"}, PublicCode: "not_started", RoundCode: "not_started"}
 	defer func() {
 		if err != nil {
 			// Concrete child cleanup errors carry their original owner. Keep that cause
@@ -250,6 +255,10 @@ func (r *Runtime) constructStores(ctx context.Context) error {
 	if e = r.files.adopt("pool"); e != nil {
 		return e
 	}
+	r.intake, e = r.pool.AttachOperatorAdmission(ctx, r.setup.Pool, r.reservation.Submissions)
+	if e != nil {
+		return e
+	}
 	path, fresh, e = r.files.child("rounds")
 	if e != nil {
 		return e
@@ -317,7 +326,7 @@ func (r *Runtime) constructServices() error {
 	if e != nil {
 		return e
 	}
-	r.admissionServer, e = prospectservice.NewFencedManifestAdmissionServer(prospectservice.ManifestServerConfig{Version: 3, Listen: privateListen(r.setup.Ingress.AdmissionURL), AuthorityPin: r.setup.Pool.AuthorityPin, Clients: []prospectservice.Credential{}, MaxJobs: r.setup.Pool.MaxWorks, MaxRecords: uint64(r.setup.Authority.Limits.Admissions)}, r.setup.Pool.Policy, r.node, r.issuer, r.miners.AdmissionSessions())
+	r.admissionServer, e = prospectservice.NewPausedFencedManifestAdmissionServer(prospectservice.ManifestServerConfig{Version: 3, Listen: privateListen(r.setup.Ingress.AdmissionURL), AuthorityPin: r.setup.Pool.AuthorityPin, Clients: []prospectservice.Credential{}, MaxJobs: r.setup.Pool.MaxWorks, MaxRecords: uint64(r.setup.Authority.Limits.Admissions)}, r.setup.Pool.Policy, r.node, r.issuer, r.miners.AdmissionSessions())
 	if e != nil {
 		return e
 	}
