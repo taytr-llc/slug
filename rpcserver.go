@@ -163,6 +163,7 @@ var rpcHandlersBeforeInit = map[string]commandHandler{
 	"gethashespersec":        handleGetHashesPerSec,
 	"getheaders":             handleGetHeaders,
 	"getinfo":                handleGetInfo,
+	"getmempoolentry":        handleGetMempoolEntry,
 	"getmempoolinfo":         handleGetMempoolInfo,
 	"getmininginfo":          handleGetMiningInfo,
 	"getnettotals":           handleGetNetTotals,
@@ -243,7 +244,6 @@ var rpcAskWallet = map[string]struct{}{
 // Commands that are currently unimplemented, but should ultimately be.
 var rpcUnimplemented = map[string]struct{}{
 	"estimatepriority": {},
-	"getmempoolentry":  {},
 	"getnetworkinfo":   {},
 	"getwork":          {},
 	"preciousblock":    {},
@@ -286,6 +286,7 @@ var rpcLimited = map[string]struct{}{
 	"getinfo":               {},
 	"getnettotals":          {},
 	"getnetworkhashps":      {},
+	"getmempoolentry":       {},
 	"getrawmempool":         {},
 	"getrawtransaction":     {},
 	"gettxout":              {},

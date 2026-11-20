@@ -295,3 +295,29 @@ exact node bytes and canonical inclusion, changed instance/revision refusal,
 missing evidence and joined cancellation using independent carrier bytes and
 explicitly synthetic transport framing. The later unsigned-reservation burn
 adapter has its own pending qualification; no native end-to-end claim follows.
+
+## Exact node transaction observations
+
+The node now implements the bounded single-transaction `getmempoolentry` read.
+It returns the eight supported fields from one original mempool lock, with
+distinct absent/busy/capacity failures and no whole-pool or ancestor traversal.
+The existing broader JSON type remains unchanged. `VerifyBlockTransaction`
+checks canonical transaction framing, unique transaction IDs, the Merkle root
+and exact saved bytes; it makes no independent header-work or canonicality claim.
+
+`owned-observation-focused-attempt2` passed the scoped node/core and desktop
+normal, race, tagged and vet checks with4,723 inputs/profile unchanged.
+`owned-observation-actual-attempt3` passed in26.159s with4,640 inputs unchanged:
+two actual nodes reopened isolated copies of the previous closed acceptance
+chain, confirmed exact commit inclusion, accepted one retained reveal into the
+mempool, and verified both reveal transactions after reconsidering existing
+blocks104–164. This used no new mining or signing and no private authority tree.
+Both nodes and all process groups joined without forced cleanup.
+
+Attempts1 and2 remain preserved failures: the administrative reconsider call
+needed more than the inherited five-second observation timeout, then the test
+helper incorrectly required non-null JSON result/error fields for a valid null
+success. The successor changes only that bounded administrative test call;
+production observation deadlines and exact transaction assertions stay intact.
+The packaged native transfer and independent commit-only recovery milestone
+remain outstanding; this observation qualification does not close Set73.

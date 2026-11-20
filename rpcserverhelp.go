@@ -534,6 +534,18 @@ var helpDescsEnUS = map[string]string{
 	// GetPeerInfoCmd help.
 	"getpeerinfo--synopsis": "Returns data about each connected network peer as an array of json objects.",
 
+	// GetMempoolEntryCmd and the supported single-entry projection.
+	"getmempoolentry--synopsis":             "Returns one current main-pool entry by exact canonical transaction ID. The supported fields are size, vsize, weight, height, wtxid, time, fee and depends; ancestry and priority statistics are not returned. Busy or over-capacity reads fail visibly.",
+	"getmempoolentry-txid":                  "The 64-character lowercase transaction ID; absent entries return error -5",
+	"getmempoolentrysnapshotresult-size":    "Exact serialized transaction bytes including witness",
+	"getmempoolentrysnapshotresult-vsize":   "Transaction virtual size, rounded up from weight divided by four",
+	"getmempoolentrysnapshotresult-weight":  "Transaction weight",
+	"getmempoolentrysnapshotresult-height":  "Chain height when the transaction entered the main pool; may exceed the current height after a rollback",
+	"getmempoolentrysnapshotresult-wtxid":   "Witness transaction ID",
+	"getmempoolentrysnapshotresult-time":    "Local entry time in Unix seconds",
+	"getmempoolentrysnapshotresult-fee":     "Transaction fee in SLUG; informational floating-point RPC value",
+	"getmempoolentrysnapshotresult-depends": "Unique direct main-pool input parents, in first-input order; not a transitive ancestry claim",
+
 	// GetRawMempoolVerboseResult help.
 	"getrawmempoolverboseresult-size":             "Transaction size in bytes",
 	"getrawmempoolverboseresult-fee":              "Transaction fee in bitcoins",
@@ -823,6 +835,7 @@ var rpcResultTypes = map[string][]interface{}{
 	"getnetworkhashps":       {(*float64)(nil)},
 	"getnodeaddresses":       {(*[]btcjson.GetNodeAddressesResult)(nil)},
 	"getpeerinfo":            {(*[]btcjson.GetPeerInfoResult)(nil)},
+	"getmempoolentry":        {(*btcjson.GetMempoolEntrySnapshotResult)(nil)},
 	"getrawmempool":          {(*[]string)(nil), (*btcjson.GetRawMempoolVerboseResult)(nil)},
 	"getrawtransaction":      {(*string)(nil), (*btcjson.TxRawResult)(nil)},
 	"gettxout":               {(*btcjson.GetTxOutResult)(nil)},
