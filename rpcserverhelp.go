@@ -283,6 +283,14 @@ var helpDescsEnUS = map[string]string{
 	"getblockcount--synopsis": "Returns the number of blocks in the longest block chain.",
 	"getblockcount--result0":  "The current block count",
 
+	"getchainobservation--synopsis":         "Returns one atomic local best-chain observation with an RPC lifetime identity and revision.",
+	"getchainobservation--result0":          "A read-only local observation; not finality or global agreement.",
+	"getchainobservationresult-version":     "Observation format version (1)",
+	"getchainobservationresult-instance_id": "Nonzero public 32-byte hex RPC lifetime identity",
+	"getchainobservationresult-revision":    "Unsigned decimal revision text; changes on every best-chain connect or disconnect",
+	"getchainobservationresult-hash":        "Best-block hash in display hex",
+	"getchainobservationresult-height":      "Best-block height",
+
 	// GetBlockHashCmd help.
 	"getblockhash--synopsis": "Returns hash of the block in best block chain at the given height.",
 	"getblockhash-index":     "The block height",
@@ -793,6 +801,7 @@ var rpcResultTypes = map[string][]interface{}{
 	"getbestblockhash":       {(*string)(nil)},
 	"getblock":               {(*string)(nil), (*btcjson.GetBlockVerboseResult)(nil)},
 	"getblockcount":          {(*int64)(nil)},
+	"getchainobservation":    {(*btcjson.GetChainObservationResult)(nil)},
 	"getblockhash":           {(*string)(nil)},
 	"getblockheader":         {(*string)(nil), (*btcjson.GetBlockHeaderVerboseResult)(nil)},
 	"getblocktemplate":       {(*btcjson.GetBlockTemplateResult)(nil), (*string)(nil), nil},

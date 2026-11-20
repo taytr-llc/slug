@@ -164,8 +164,10 @@ type BlockChain struct {
 	//
 	// In addition, some of the fields are stored in the database so the
 	// chain state can be quickly reconstructed on load.
-	stateLock     sync.RWMutex
-	stateSnapshot *BestState
+	stateLock            sync.RWMutex
+	stateSnapshot        *BestState
+	observationRevision  uint64
+	observationExhausted bool
 
 	// The following caches are used to efficiently keep track of the
 	// current deployment threshold state of each rule change deployment.
@@ -704,6 +706,7 @@ func (b *BlockChain) connectBlock(node *blockNode, block *btcutil.Block,
 	// comments on the state variable for more details.
 	b.stateLock.Lock()
 	b.stateSnapshot = state
+	b.advanceObservationLocked()
 	b.stateLock.Unlock()
 
 	// Notify the caller that the block was connected to the main chain.
@@ -838,6 +841,7 @@ func (b *BlockChain) disconnectBlock(node *blockNode, block *btcutil.Block, view
 	// comments on the state variable for more details.
 	b.stateLock.Lock()
 	b.stateSnapshot = state
+	b.advanceObservationLocked()
 	b.stateLock.Unlock()
 
 	// Notify the caller that the block was disconnected from the main
@@ -2336,6 +2340,10 @@ func New(config *Config) (*BlockChain, error) {
 	log.Infof("Chain state (height %d, hash %v, totaltx %d, work %v)",
 		bestNode.height, bestNode.hash, b.stateSnapshot.TotalTxns,
 		bestNode.workSum)
+	// Startup is a new observation epoch. RPC lifetime identity distinguishes
+	// this chain from an earlier process using the same database and tip.
+	b.observationRevision = 1
+	b.observationExhausted = false
 
 	return &b, nil
 }

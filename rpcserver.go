@@ -7,6 +7,7 @@ package main
 
 import (
 	"bytes"
+	cryptorand "crypto/rand"
 	"crypto/sha256"
 	"crypto/subtle"
 	"encoding/base64"
@@ -147,6 +148,7 @@ var rpcHandlersBeforeInit = map[string]commandHandler{
 	"getblock":               handleGetBlock,
 	"getblockchaininfo":      handleGetBlockChainInfo,
 	"getblockcount":          handleGetBlockCount,
+	"getchainobservation":    handleGetChainObservation,
 	"getblockhash":           handleGetBlockHash,
 	"getblockheader":         handleGetBlockHeader,
 	"getblocktemplate":       handleGetBlockTemplate,
@@ -271,6 +273,7 @@ var rpcLimited = map[string]struct{}{
 	"getbestblockhash":      {},
 	"getblock":              {},
 	"getblockcount":         {},
+	"getchainobservation":   {},
 	"getblockhash":          {},
 	"getblockheader":        {},
 	"getchaintips":          {},
@@ -4086,20 +4089,21 @@ func validateFeeRate(feeSats btcutil.Amount, txSize int64,
 
 // rpcServer provides a concurrent safe RPC server to a chain server.
 type rpcServer struct {
-	started                int32
-	shutdown               int32
-	cfg                    rpcserverConfig
-	authsha                [sha256.Size]byte
-	limitauthsha           [sha256.Size]byte
-	ntfnMgr                *wsNotificationManager
-	numClients             int32
-	statusLines            map[int]string
-	statusLock             sync.RWMutex
-	wg                     sync.WaitGroup
-	gbtWorkState           *gbtWorkState
-	helpCacher             *helpCacher
-	requestProcessShutdown chan struct{}
-	quit                   chan int
+	started                  int32
+	shutdown                 int32
+	cfg                      rpcserverConfig
+	authsha                  [sha256.Size]byte
+	limitauthsha             [sha256.Size]byte
+	ntfnMgr                  *wsNotificationManager
+	numClients               int32
+	statusLines              map[int]string
+	statusLock               sync.RWMutex
+	wg                       sync.WaitGroup
+	gbtWorkState             *gbtWorkState
+	helpCacher               *helpCacher
+	requestProcessShutdown   chan struct{}
+	quit                     chan int
+	chainObservationInstance string
 }
 
 // httpStatusLine returns a response Status-Line (RFC 2616 Section 6.1)
@@ -4934,13 +4938,18 @@ type rpcserverConfig struct {
 
 // newRPCServer returns a new instance of the rpcServer struct.
 func newRPCServer(config *rpcserverConfig) (*rpcServer, error) {
+	instance, err := newChainObservationInstance(cryptorand.Reader)
+	if err != nil {
+		return nil, err
+	}
 	rpc := rpcServer{
-		cfg:                    *config,
-		statusLines:            make(map[int]string),
-		gbtWorkState:           newGbtWorkState(config.TimeSource),
-		helpCacher:             newHelpCacher(),
-		requestProcessShutdown: make(chan struct{}),
-		quit:                   make(chan int),
+		cfg:                      *config,
+		statusLines:              make(map[int]string),
+		gbtWorkState:             newGbtWorkState(config.TimeSource),
+		helpCacher:               newHelpCacher(),
+		requestProcessShutdown:   make(chan struct{}),
+		quit:                     make(chan int),
+		chainObservationInstance: instance,
 	}
 	if cfg.RPCUser != "" && cfg.RPCPass != "" {
 		login := cfg.RPCUser + ":" + cfg.RPCPass
