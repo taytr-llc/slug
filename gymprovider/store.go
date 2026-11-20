@@ -92,6 +92,7 @@ type resetRecord struct {
 // Never reenter it from an authority callback. No JWT or session token is stored.
 type Coordinator struct {
 	gate             chan struct{}
+	coordinatorID    string
 	db               *leveldb.DB
 	authority        *gymaccount.Store
 	verifier         *gymidentity.Verifier
@@ -199,16 +200,31 @@ func readMarker(path string) (marker, error) {
 	return m, nil
 }
 func newHandle(db *leveldb.DB, a *gymaccount.Store, v *gymidentity.Verifier, m metadata) *Coordinator {
-	return &Coordinator{gate: make(chan struct{}, 1), db: db, authority: a, verifier: v, meta: m, now: time.Now, random: rand.Reader, writeBatch: db.Write}
+	return &Coordinator{gate: make(chan struct{}, 1), coordinatorID: m.Marker.CoordinatorID, db: db, authority: a, verifier: v, meta: m, now: time.Now, random: rand.Reader, writeBatch: db.Write}
 }
 func Create(ctx context.Context, path string, cfg Config, a *gymaccount.Store, v *gymidentity.Verifier) (*Coordinator, error) {
+	return createPinned(ctx, path, cfg, a, v, "")
+}
+
+// CreatePinned creates only a new journal using the identity already retained
+// by its owner. The legacy Create API continues to select a random identity.
+func CreatePinned(ctx context.Context, path string, cfg Config, a *gymaccount.Store, v *gymidentity.Verifier, coordinatorID string) (*Coordinator, error) {
+	if !validID(coordinatorID) || coordinatorID == strings.Repeat("0", 64) {
+		return nil, ErrConfig
+	}
+	return createPinned(ctx, path, cfg, a, v, coordinatorID)
+}
+
+func createPinned(ctx context.Context, path string, cfg Config, a *gymaccount.Store, v *gymidentity.Verifier, id string) (*Coordinator, error) {
 	info, e := validConfig(ctx, cfg, a, v)
 	if e != nil {
 		return nil, e
 	}
-	id, e := randomID(rand.Reader)
-	if e != nil {
-		return nil, e
+	if id == "" {
+		id, e = randomID(rand.Reader)
+		if e != nil {
+			return nil, e
+		}
 	}
 	m := marker{application, 1, id, cfg, info}
 	raw, e := json.Marshal(m)
@@ -253,6 +269,19 @@ func Create(ctx context.Context, path string, cfg Config, a *gymaccount.Store, v
 	return s, nil
 }
 func Open(ctx context.Context, path string, cfg Config, a *gymaccount.Store, v *gymidentity.Verifier) (*Coordinator, error) {
+	return openPinned(ctx, path, cfg, a, v, "")
+}
+
+// OpenPinned compares the separately retained coordinator identity before
+// opening or recovering LevelDB. It never treats a marker as an identity source.
+func OpenPinned(ctx context.Context, path string, cfg Config, a *gymaccount.Store, v *gymidentity.Verifier, coordinatorID string) (*Coordinator, error) {
+	if !validID(coordinatorID) || coordinatorID == strings.Repeat("0", 64) {
+		return nil, ErrConfig
+	}
+	return openPinned(ctx, path, cfg, a, v, coordinatorID)
+}
+
+func openPinned(ctx context.Context, path string, cfg Config, a *gymaccount.Store, v *gymidentity.Verifier, coordinatorID string) (*Coordinator, error) {
 	info, e := validConfig(ctx, cfg, a, v)
 	if e != nil {
 		return nil, e
@@ -262,6 +291,9 @@ func Open(ctx context.Context, path string, cfg Config, a *gymaccount.Store, v *
 	}
 	m, e := readMarker(filepath.Join(path, markerName))
 	if e != nil || m.Application != application || m.Version != 1 || !validID(m.CoordinatorID) || m.Config != cfg || m.Authority != info {
+		return nil, ErrCorrupt
+	}
+	if coordinatorID != "" && m.CoordinatorID != coordinatorID {
 		return nil, ErrCorrupt
 	}
 	entries, e := os.ReadDir(filepath.Join(path, "db"))
@@ -277,7 +309,7 @@ func Open(ctx context.Context, path string, cfg Config, a *gymaccount.Store, v *
 	if e != nil {
 		return nil, ErrUnavailable
 	}
-	s := newHandle(db, a, v, metadata{})
+	s := newHandle(db, a, v, metadata{Marker: m})
 	if e = s.load("meta", &s.meta); e != nil || s.meta.Marker != m || s.audit() != nil {
 		db.Close()
 		return nil, ErrCorrupt
@@ -288,6 +320,9 @@ func Open(ctx context.Context, path string, cfg Config, a *gymaccount.Store, v *
 	}
 	return s, nil
 }
+
+// CoordinatorID is immutable for this handle's lifetime, including after Close.
+func (s *Coordinator) CoordinatorID() string { return s.coordinatorID }
 func (s *Coordinator) lock(ctx context.Context) error {
 	if ctx == nil {
 		return ErrUnavailable

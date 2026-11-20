@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "execution_authorized_by_root": false,
+  "status": "Proposal before any fixture generation; plan only has been serialized",
+  "files": {
+    "wire_reference.py": {
+      "sha256": "1729aaf5ad877959f390a7935c32f0ecc163ffc668b312a0ba76753d2ca009f8",
+      "bytes": 21075
+    },
+    "wire-plan.json": {
+      "sha256": "0797f26b0de8d03ac451454730f8ca23741a3fafba41ad63cfbb10bced8bf30f",
+      "bytes": 1611
+    },
+    "contract.md": {
+      "sha256": "be2053422fb57adfd7839624bb545c237aea265547891917ff1f028335ed9feb",
+      "bytes": 29039
+    }
+  },
+  "repository_inputs": {
+    "fighterevidence/testdata/reference/reference-v1.json": "eb51028daf2ebbda44dfbfdb79f58353137ed03f1836fad5b8db8cf428300772"
+  },
+  "normal_work_calls": 0,
+  "production_implementation_used": false
+}

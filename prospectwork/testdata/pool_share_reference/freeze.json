@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "scope": "pre-runtime independent reference freeze",
+  "source_fixture_sha256": "34b9484db90fd6d9ca9d704ee1ac76843a717bddaeb38194df1932f77fe754ad",
+  "files": {
+    "reference.py": "aa8243080bf1d0cfd500504b8ce9016a49ffd59ee9f594d0faf33ec8c14a74c8",
+    "pool_share_v1.json": "2210d992e618b7a0952736dede1263b678f1a7a2d55d14ccde1cc6b29317de87",
+    "argon/argon_oracle.go": "52905aee2450496aa4e67684d1121a9c94e74aec1a31dae6a3e9b668adc3e27e",
+    "argon/go.mod": "a6f877804daa32c034e5c8056c67681f6f77d97f45d6d909f49b9a00ec821e09",
+    "argon/go.sum": "bff0eacd6a478f51dbac17b3ea35dff6a617bb776f34074f48c81b97a9ce33d5",
+    "README.md": "2fb3a42c2db7c265abcc9990d2f844cb410d90c4b565bf2b4845c31143b27e63"
+  },
+  "preserved_first_generation": {
+    "reference.py": "829dc86ba3a509a722013a5ea1efed95db34b4f4160f7dd417e3f00362ebd730",
+    "pool_share_v1.json": "4fbd61c2a825f5e1f241f3637816e1520ccc4b8b909b1eb0a6811f6a4da2ff7b"
+  },
+  "external_original_freeze_sha256": "cf79b1d897c2a5e07b2a0dc729d9bbe422458c1ea38269c7a5a1b12759757b68",
+  "portability_delta": "Repository-relative fixture resolution and provenance only; preserved first generation remains external."
+}

@@ -8,6 +8,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/taytr-llc/slug/desktop/accountpilot"
+	"github.com/taytr-llc/slug/desktop/internal/poolselection"
 	"github.com/taytr-llc/slug/desktop/pilot"
 	"io"
 	"os"
@@ -20,6 +21,11 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 	flags.SetOutput(stderr)
 	data := flags.String("data-dir", "", "Explicit disposable pilot directory")
 	node := flags.String("node-binary", "", "Explicit bundled normal SLUG node binary")
+	owned := flags.Bool("candidate-owned-gym", false, "Use the separate owned-fighter gym")
+	pool := flags.Bool("candidate-pool", false, "Use the separate shared public-fixture pool desktop")
+	hosted := flags.Bool("candidate-hosted-pool", false, "Use the separate signed public-fixture hosted pool desktop")
+	recovery := flags.Bool("candidate-hosted-recovery", false, "Use the separate hosted allocation recovery fixture desktop")
+	nameVersion := flags.String("candidate-name-version", "1", "Explicit immutable pool candidate name version (1 or 2)")
 	accounts := flags.Bool("account-fixtures", false, "Use the separate two-public-fixture account pilot")
 	candidates := flags.Bool("candidate-manifests", false, "Use the separate candidate fixture desktop")
 	stable := flags.Bool("candidate-stable", false, "Enable the candidate stable within candidate-manifests")
@@ -35,6 +41,93 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 	}
 	if flags.NArg() != 0 || *data == "" || *node == "" {
 		return errors.New("explicit data-dir and node-binary are required")
+	}
+	dataExplicit, poolExplicit, nameExplicit, legacyExplicit, hostedExplicit, recoveryExplicit, ownedExplicit := false, false, false, false, false, false, false
+	flags.Visit(func(f *flag.Flag) {
+		switch f.Name {
+		case "candidate-owned-gym":
+			ownedExplicit = true
+		case "data-dir":
+			dataExplicit = true
+		case "candidate-pool":
+			poolExplicit = true
+			legacyExplicit = true
+		case "candidate-name-version":
+			nameExplicit = true
+		case "candidate-hosted-pool":
+			hostedExplicit = true
+		case "candidate-hosted-recovery":
+			recoveryExplicit = true
+		case "account-fixtures", "candidate-manifests", "candidate-stable", "candidate-entries", "candidate-events", "candidate-seeds", "candidate-cards", "candidate-bouts", "candidate-results", "career":
+			legacyExplicit = true
+		}
+	})
+	if ownedExplicit {
+		if !*owned || legacyExplicit || hostedExplicit || recoveryExplicit {
+			return errors.New("candidate-owned-gym requires a separate explicit true selection")
+		}
+		options, e := poolselection.Options(true, true, *nameVersion, nameExplicit, *data, dataExplicit)
+		if e != nil {
+			return e
+		}
+		input, ok := stdin.(io.ReadCloser)
+		if !ok {
+			return errors.New("owned input must be closeable")
+		}
+		output, ok := stdout.(io.WriteCloser)
+		if !ok {
+			return errors.New("owned output must be closeable")
+		}
+		c, e := accountpilot.NewOwnedGymPool(ctx, pilot.Config{DataDir: *data, NodeBinary: *node}, options)
+		if e != nil {
+			return e
+		}
+		return pilot.ServeOwnedGym(ctx, input, output, c)
+	}
+	if *recovery {
+		if legacyExplicit || hostedExplicit {
+			return errors.New("candidate-hosted-recovery is a separate explicit mode")
+		}
+		options, err := poolselection.HostedRecoveryOptions(*nameVersion, nameExplicit, *data, dataExplicit)
+		if err != nil {
+			return err
+		}
+		c, err := accountpilot.NewHostedRecoveryPool(ctx, pilot.Config{DataDir: *data, NodeBinary: *node}, options)
+		if err != nil {
+			return err
+		}
+		return pilot.ServeHostedRecovery(ctx, stdin, stdout, c)
+	}
+	if *hosted {
+		if legacyExplicit || recoveryExplicit {
+			return errors.New("candidate-hosted-pool is a separate explicit mode")
+		}
+		options, err := poolselection.HostedOptions(*nameVersion, nameExplicit, *data, dataExplicit)
+		if err != nil {
+			return err
+		}
+		c, err := accountpilot.NewHostedFixturePool(ctx, pilot.Config{DataDir: *data, NodeBinary: *node}, options)
+		if err != nil {
+			return err
+		}
+		return pilot.ServePool(ctx, stdin, stdout, c)
+	}
+	if recoveryExplicit {
+		return errors.New("candidate-hosted-recovery requires explicit true selection")
+	}
+	options, selectionErr := poolselection.Options(*pool, poolExplicit, *nameVersion, nameExplicit, *data, dataExplicit)
+	if selectionErr != nil {
+		return selectionErr
+	}
+	if *pool {
+		if *accounts || *candidates || *stable || *entries || *candidateEvents || *candidateSeeds || *candidateCards || *candidateBouts || *candidateResults || *career {
+			return errors.New("candidate-pool is a separate mode")
+		}
+		c, e := accountpilot.NewPoolWithOptions(ctx, pilot.Config{DataDir: *data, NodeBinary: *node}, options)
+		if e != nil {
+			return e
+		}
+		return pilot.ServePool(ctx, stdin, stdout, c)
 	}
 	if *stable && (!*candidates || *accounts) {
 		return errors.New("candidate-stable requires candidate-manifests")

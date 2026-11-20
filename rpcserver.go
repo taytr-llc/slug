@@ -7,6 +7,7 @@ package main
 
 import (
 	"bytes"
+	cryptorand "crypto/rand"
 	"crypto/sha256"
 	"crypto/subtle"
 	"encoding/base64"
@@ -147,6 +148,7 @@ var rpcHandlersBeforeInit = map[string]commandHandler{
 	"getblock":               handleGetBlock,
 	"getblockchaininfo":      handleGetBlockChainInfo,
 	"getblockcount":          handleGetBlockCount,
+	"getchainobservation":    handleGetChainObservation,
 	"getblockhash":           handleGetBlockHash,
 	"getblockheader":         handleGetBlockHeader,
 	"getblocktemplate":       handleGetBlockTemplate,
@@ -161,6 +163,7 @@ var rpcHandlersBeforeInit = map[string]commandHandler{
 	"gethashespersec":        handleGetHashesPerSec,
 	"getheaders":             handleGetHeaders,
 	"getinfo":                handleGetInfo,
+	"getmempoolentry":        handleGetMempoolEntry,
 	"getmempoolinfo":         handleGetMempoolInfo,
 	"getmininginfo":          handleGetMiningInfo,
 	"getnettotals":           handleGetNetTotals,
@@ -241,7 +244,6 @@ var rpcAskWallet = map[string]struct{}{
 // Commands that are currently unimplemented, but should ultimately be.
 var rpcUnimplemented = map[string]struct{}{
 	"estimatepriority": {},
-	"getmempoolentry":  {},
 	"getnetworkinfo":   {},
 	"getwork":          {},
 	"preciousblock":    {},
@@ -271,6 +273,7 @@ var rpcLimited = map[string]struct{}{
 	"getbestblockhash":      {},
 	"getblock":              {},
 	"getblockcount":         {},
+	"getchainobservation":   {},
 	"getblockhash":          {},
 	"getblockheader":        {},
 	"getchaintips":          {},
@@ -283,6 +286,7 @@ var rpcLimited = map[string]struct{}{
 	"getinfo":               {},
 	"getnettotals":          {},
 	"getnetworkhashps":      {},
+	"getmempoolentry":       {},
 	"getrawmempool":         {},
 	"getrawtransaction":     {},
 	"gettxout":              {},
@@ -2856,6 +2860,13 @@ func handleGetTxOut(s *rpcServer, cmd interface{}, closeChan <-chan struct{}) (i
 	if c.IncludeMempool != nil {
 		includeMempool = *c.IncludeMempool
 	}
+	out := wire.OutPoint{Hash: *txHash, Index: c.Vout}
+	// SLUG recovery uses this RPC to check an interrupted transfer's escrow.
+	// Including the mempool must exclude outputs already spent there, whether
+	// their parent is confirmed or still in the pool.
+	if includeMempool && s.cfg.TxMemPool.CheckSpend(out) != nil {
+		return nil, nil
+	}
 	// TODO: This is racy.  It should attempt to fetch it directly and check
 	// the error.
 	if includeMempool && s.cfg.TxMemPool.HaveTransaction(txHash) {
@@ -2887,7 +2898,6 @@ func handleGetTxOut(s *rpcServer, cmd interface{}, closeChan <-chan struct{}) (i
 		pkScript = txOut.PkScript
 		isCoinbase = blockchain.IsCoinBaseTx(mtx)
 	} else {
-		out := wire.OutPoint{Hash: *txHash, Index: c.Vout}
 		entry, err := s.cfg.Chain.FetchUtxoEntry(out)
 		if err != nil {
 			return nil, rpcNoTxInfoError(txHash)
@@ -2895,9 +2905,8 @@ func handleGetTxOut(s *rpcServer, cmd interface{}, closeChan <-chan struct{}) (i
 
 		// To match the behavior of the reference client, return nil
 		// (JSON null) if the transaction output is spent by another
-		// transaction already in the main chain.  Mined transactions
-		// that are spent by a mempool transaction are not affected by
-		// this.
+		// transaction already in the main chain. Mempool spends are also
+		// excluded when includeMempool is true.
 		if entry == nil || entry.IsSpent() {
 			return nil, nil
 		}
@@ -2908,6 +2917,11 @@ func handleGetTxOut(s *rpcServer, cmd interface{}, closeChan <-chan struct{}) (i
 		value = entry.Amount()
 		pkScript = entry.PkScript()
 		isCoinbase = entry.IsCoinBase()
+	}
+	// Recheck after lookup so a spend accepted during the lookup is not
+	// reported as available. This is an observation, never a reservation.
+	if includeMempool && s.cfg.TxMemPool.CheckSpend(out) != nil {
+		return nil, nil
 	}
 
 	// Disassemble script into single line printable format.
@@ -4086,20 +4100,21 @@ func validateFeeRate(feeSats btcutil.Amount, txSize int64,
 
 // rpcServer provides a concurrent safe RPC server to a chain server.
 type rpcServer struct {
-	started                int32
-	shutdown               int32
-	cfg                    rpcserverConfig
-	authsha                [sha256.Size]byte
-	limitauthsha           [sha256.Size]byte
-	ntfnMgr                *wsNotificationManager
-	numClients             int32
-	statusLines            map[int]string
-	statusLock             sync.RWMutex
-	wg                     sync.WaitGroup
-	gbtWorkState           *gbtWorkState
-	helpCacher             *helpCacher
-	requestProcessShutdown chan struct{}
-	quit                   chan int
+	started                  int32
+	shutdown                 int32
+	cfg                      rpcserverConfig
+	authsha                  [sha256.Size]byte
+	limitauthsha             [sha256.Size]byte
+	ntfnMgr                  *wsNotificationManager
+	numClients               int32
+	statusLines              map[int]string
+	statusLock               sync.RWMutex
+	wg                       sync.WaitGroup
+	gbtWorkState             *gbtWorkState
+	helpCacher               *helpCacher
+	requestProcessShutdown   chan struct{}
+	quit                     chan int
+	chainObservationInstance string
 }
 
 // httpStatusLine returns a response Status-Line (RFC 2616 Section 6.1)
@@ -4934,13 +4949,18 @@ type rpcserverConfig struct {
 
 // newRPCServer returns a new instance of the rpcServer struct.
 func newRPCServer(config *rpcserverConfig) (*rpcServer, error) {
+	instance, err := newChainObservationInstance(cryptorand.Reader)
+	if err != nil {
+		return nil, err
+	}
 	rpc := rpcServer{
-		cfg:                    *config,
-		statusLines:            make(map[int]string),
-		gbtWorkState:           newGbtWorkState(config.TimeSource),
-		helpCacher:             newHelpCacher(),
-		requestProcessShutdown: make(chan struct{}),
-		quit:                   make(chan int),
+		cfg:                      *config,
+		statusLines:              make(map[int]string),
+		gbtWorkState:             newGbtWorkState(config.TimeSource),
+		helpCacher:               newHelpCacher(),
+		requestProcessShutdown:   make(chan struct{}),
+		quit:                     make(chan int),
+		chainObservationInstance: instance,
 	}
 	if cfg.RPCUser != "" && cfg.RPCPass != "" {
 		login := cfg.RPCUser + ":" + cfg.RPCPass

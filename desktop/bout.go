@@ -8,6 +8,9 @@ import (
 )
 
 func (g *Gym) boutRequest(r pilot.BoutRequest) pilot.BoutResponse {
+	if g.poolHelper != nil {
+		return g.poolHelper.BoutRequest(context.Background(), r)
+	}
 	if g.stableHelper == nil {
 		return pilot.BoutResponse{ID: 1, Error: "bout_unavailable"}
 	}
@@ -36,6 +39,9 @@ func (g *Gym) CancelBoutJob(viewID, jobID string) pilot.BoutResponse {
 }
 
 func (g *Gym) BoutPortrait(viewID, saturday, boutID, prospectID string) bridge.BoutPortraitResponse {
+	if g.poolHelper != nil {
+		return g.poolHelper.BoutPortrait(context.Background(), viewID, saturday, boutID, prospectID)
+	}
 	if g.stableHelper == nil {
 		return bridge.BoutPortraitResponse{Version: 1, Error: "bout_unavailable"}
 	}

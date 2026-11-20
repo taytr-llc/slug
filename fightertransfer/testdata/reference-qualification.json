@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "output_sha256": "365e2997171b5f06706d628866f2cbc64cf0d7a3ac4205015def259a5340f4af",
+  "first": "artifacts/set73/carrier-reference-attempt1",
+  "cross_python": "artifacts/set73/carrier-reference-python39-attempt1",
+  "both_passed": true,
+  "portable_reproduction": "artifacts/set73/carrier-reference-portable-attempt1",
+  "scope": "independent mathematical supplied-evidence vectors; no chain/ownership/restore authority",
+  "portable_passed": true
+}

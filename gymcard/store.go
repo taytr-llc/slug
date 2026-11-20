@@ -318,6 +318,9 @@ func open(ctx context.Context, path string, expected Pin, events *gymseed.Store,
 	return openWithCareer(ctx, path, expected, events, clock, resume, nil, false)
 }
 func openWithCareer(ctx context.Context, path string, expected Pin, events *gymseed.Store, clock func() time.Time, resume bool, activation *careerstate.Activation, prepared bool) (*Store, error) {
+	return openWithCareerAudit(ctx, path, expected, events, clock, resume, activation, prepared, false)
+}
+func openWithCareerAudit(ctx context.Context, path string, expected Pin, events *gymseed.Store, clock func() time.Time, resume bool, activation *careerstate.Activation, prepared, readOnly bool) (*Store, error) {
 	if e := normal(); e != nil {
 		return nil, e
 	}
@@ -362,7 +365,7 @@ func openWithCareer(ctx context.Context, path string, expected Pin, events *gyms
 		}
 		createDB = true
 	}
-	db, e := leveldb.OpenFile(dbpath, &opt.Options{Strict: opt.StrictAll, ErrorIfMissing: !createDB, ErrorIfExist: createDB})
+	db, e := leveldb.OpenFile(dbpath, &opt.Options{Strict: opt.StrictAll, ErrorIfMissing: !createDB, ErrorIfExist: createDB, ReadOnly: readOnly})
 	if e != nil {
 		return nil, ErrUnavailable
 	}

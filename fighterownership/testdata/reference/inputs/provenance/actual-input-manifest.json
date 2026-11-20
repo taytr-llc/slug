@@ -1,0 +1,132 @@
+{
+  "version": 1,
+  "status": "actual_public_inputs_proposed_for_root_freeze",
+  "source_extraction_inventory_sha256": "292b93a37c9b249c059a8e732068d79bcffc5a195b5cc9966dc63f1ee4ecb860",
+  "expected_pin_provenance": "Independent original stable markers cross-checked original accepted entry gym IDs before archive assembly; frozen existing-API extraction copies. Not inferred as trust from claimant archive.",
+  "files": {
+    "provenance/independent-expected-inputs.json": {
+      "bytes": 6353,
+      "sha256": "488379042e4e16d792600d54e25574003d7d9e86f681d4146ca80a425f360c8a"
+    },
+    "provenance/original-source-after.json": {
+      "bytes": 59881,
+      "sha256": "c4c9bf5dbeef2f2e126642b10b809fb1d4aa84d6724c4cd013fac9634732ffbd"
+    },
+    "provenance/original-source-before.json": {
+      "bytes": 59881,
+      "sha256": "c4c9bf5dbeef2f2e126642b10b809fb1d4aa84d6724c4cd013fac9634732ffbd"
+    },
+    "provenance/public-input-inventory.json": {
+      "bytes": 4766,
+      "sha256": "292b93a37c9b249c059a8e732068d79bcffc5a195b5cc9966dc63f1ee4ecb860"
+    },
+    "provenance/report.json": {
+      "bytes": 3095,
+      "sha256": "f0b5e2a710333e4827c1d8ba8beb1debf6f15b07ab43387323fb77be4f0a4ea3"
+    },
+    "v1/incrementing256-awarded/admission.json": {
+      "bytes": 3697,
+      "sha256": "03f0af5e084cb6db2823758ba064c0daed80ed8e9203ec082eb127c088a4efcb"
+    },
+    "v1/incrementing256-awarded/capture.json": {
+      "bytes": 2803,
+      "sha256": "438aab38a11634117f593c0915918683eadd067b66677ad0c5d400ed01ec018b"
+    },
+    "v1/incrementing256-awarded/expected-pin.json": {
+      "bytes": 992,
+      "sha256": "1bc1ce36d914f357c7d4676fcde4b8989d9db8ee6d1f30c5025ad13cf1eb318e"
+    },
+    "v1/incrementing256-awarded/rows.json": {
+      "bytes": 1500,
+      "sha256": "ab644d173194133d754532629e19649b372cbd018be9ab3a56e1befe04855ca6"
+    },
+    "v1/report.json": {
+      "bytes": 338,
+      "sha256": "d9a268507b02dc117ed7163132d1398c785493515c1c13128abcaae4503c574d"
+    },
+    "v1/zero256-awarded/admission.json": {
+      "bytes": 3698,
+      "sha256": "b88f6f7dfeb785756480a64df97e074dde496e88443e24417dc836e5f445d6b1"
+    },
+    "v1/zero256-awarded/capture.json": {
+      "bytes": 2803,
+      "sha256": "d2b2ce06147cb83d698f716191772d1a1ae918fb5a5695400708abb832e970b4"
+    },
+    "v1/zero256-awarded/expected-pin.json": {
+      "bytes": 992,
+      "sha256": "0ba127c98025ed7f16c302c662017193bb5a633ff1bf0d4a5b03acdc3a674daa"
+    },
+    "v1/zero256-awarded/rows.json": {
+      "bytes": 1502,
+      "sha256": "0b4889fc600d503be64343602b0396b4c7cd9c808a7ae5aa8175e34d474b2ca3"
+    },
+    "v1/zero256-unawarded/admission.json": {
+      "bytes": 3697,
+      "sha256": "af868d73e6949e5e74f678abc7cc3c64600069415d709dcf0dd9dc2c35a3d5e7"
+    },
+    "v1/zero256-unawarded/capture.json": {
+      "bytes": 2802,
+      "sha256": "a9e2244558ade3fdea3098a095e684b67c8b73fb615a8c048abb942cdb858d3a"
+    },
+    "v1/zero256-unawarded/expected-pin.json": {
+      "bytes": 992,
+      "sha256": "0ba127c98025ed7f16c302c662017193bb5a633ff1bf0d4a5b03acdc3a674daa"
+    },
+    "v1/zero256-unawarded/rows.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "v2/incrementing256-awarded/admission.json": {
+      "bytes": 3686,
+      "sha256": "90a2e6844ee0b0be10e28620862f0b3d76467047bd3932bf346bbc9fee5bd81b"
+    },
+    "v2/incrementing256-awarded/capture.json": {
+      "bytes": 2803,
+      "sha256": "d0f73bdfb1126d314f9554067a3f8f2329067698627840e5bb6a3de9f2fd7254"
+    },
+    "v2/incrementing256-awarded/expected-pin.json": {
+      "bytes": 992,
+      "sha256": "fc4227b209800ec59b300340da7348433168c56f557a14da10708ab8a4fefea9"
+    },
+    "v2/incrementing256-awarded/rows.json": {
+      "bytes": 1502,
+      "sha256": "8751c8fb5b4679c9dd2227782759124563eaf6d4267192c88d7d47b7cd632654"
+    },
+    "v2/report.json": {
+      "bytes": 338,
+      "sha256": "f20ac1166c931fcdf7000a12f096d39ae9857120e12d6f754e0c30a575f10a24"
+    },
+    "v2/zero256-awarded/admission.json": {
+      "bytes": 3698,
+      "sha256": "a023a5b850a4492d35db3302abcd26b830694c029e4278333f9eb279b382123d"
+    },
+    "v2/zero256-awarded/capture.json": {
+      "bytes": 2802,
+      "sha256": "1f1edfc237dfe7dd959bef8a90387a4f542397b2a3be8bc0ae817a49d072c866"
+    },
+    "v2/zero256-awarded/expected-pin.json": {
+      "bytes": 992,
+      "sha256": "2981d0ef863116901eaff23b48b6425b35a5b27614a8312b97a4a8a51dbb6def"
+    },
+    "v2/zero256-awarded/rows.json": {
+      "bytes": 1500,
+      "sha256": "045685f98bb532c302d6b828c6486e871eecc4186a69e39ce0b1a2345762112b"
+    },
+    "v2/zero256-unawarded/admission.json": {
+      "bytes": 3690,
+      "sha256": "7a65051f8338e5cb8e15c4692829819566787893941a9bcf3a24f0f17999fb4e"
+    },
+    "v2/zero256-unawarded/capture.json": {
+      "bytes": 2802,
+      "sha256": "06a0eed7a91ebe090c22b0dc6a9b2d29f55d602b9c23d149c64acbe86aad7ee9"
+    },
+    "v2/zero256-unawarded/expected-pin.json": {
+      "bytes": 992,
+      "sha256": "2981d0ef863116901eaff23b48b6425b35a5b27614a8312b97a4a8a51dbb6def"
+    },
+    "v2/zero256-unawarded/rows.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    }
+  }
+}

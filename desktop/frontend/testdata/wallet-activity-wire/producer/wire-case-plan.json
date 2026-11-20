@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "status": "source-only-pending-independent-root-review-and-producer-lock",
+  "input_lock_sha256": "177734937ccfeaf12c6618fbd15d757b86a9a85731b06460b9a8d3e1269c2ee0",
+  "contract_sha256": "71bff8b11210aab89e324fc96d296a41e3a0248c5ae6e2293face8e51de51138",
+  "sources": ["wire_model.py", "generate_wire.py", "wire-case-plan.json"],
+  "independence": {
+    "inputs": "Only the 18 copied public old-source files in the approved input lock; all are rechecked before and after generation.",
+    "implementation": "No imports, execution or expected values from new Go, frontend, wallet activity implementation, or the separately owned core producer outputs.",
+    "identity": "Two old independent payout View/source bindings are paired with the matching previously frozen public manifest root/gym tuple. They are symbolic transport inputs, not authenticated sessions.",
+    "money": "Four old transaction projections use integer amounts from the two prior independent withdrawal drafts and exact signed bytes. Legacy RPC floating amount, fee and details fields are ignored. Outgoing recorded time uses the old sender timereceived; incoming first-seen is absent and explicitly modeled as0, never borrowed from the sender.",
+    "crypto": "Raw SHA256 is calculated over locked prior signed bytes. This producer does not reimplement transaction decoding, signing, key derivation or storage ownership. Those separate reference scopes remain with the core producer.",
+    "closed_world": "Canonical root/gym and address positives are restricted to locked public fixture tuples and four inherited addresses. This is not a general canonical key/address implementation.",
+    "synthetic": "New capture timestamps, native job IDs, source-context variants, modeled rows and lifecycle tables are explicitly synthetic transport cases, not current wallet facts, chain membership or finality. Zero/maximum boundary shape controls are not asserted to have occurred on chain."
+  },
+  "positive_families": [
+    {"name":"two-fixture-routing", "scope":"All six commands and corresponding response arms for each original binding; reciprocal incoming/outgoing details from old independent integer drafts."},
+    {"name":"snapshot-state-matrix", "scope":"Exactly blank unavailable; initial idle; retained capture; replacement capture running; selected detail running; failed/cancelled refresh keeping old dated capture; successful replacement."},
+    {"name":"job-and-error-matrix", "scope":"Running, cancelled, each of busy/capacity/activity_unavailable failed jobs, successful empty capture, and all nine envelope errors with no payload."},
+    {"name":"local-pages", "scope":"Empty, exact end, interior, last eight and final offset256 over a256-row modeled capture; count256 with has_older; no global cursor or new data lookup."},
+    {"name":"record-order", "scope":"Unmined recorded-time descending before mined height descending; lexical lowercase txid tie sorting in the two actual same-height rows; lexical zero txid/raw SHA accepted."},
+    {"name":"integer-output-semantics", "scope":"Self payment, partial-input unknown fee, known zero fee, zero-valued recorded ownership, coinbase, no owned outputs, MaxMoney credit, all256 output slots including empty-address owned outputs."},
+    {"name":"domain-boundaries", "scope":"ID/generation MaxSafeInteger, inherited zero ViewID, maximum capture/record/block times, height2147483647 and confirmations2147483648."},
+    {"name":"integer-formatting", "scope":"Negative MaxMoney, actual negative debit, fractional negative values, zero, one atom,141 atoms, one SLUG and positive MaxMoney, using string/integer arithmetic only."}
+  ],
+  "negative_families": [
+    {"name":"request-closure", "scope":"Missing each required field, unknown field/command, bad version/ID/JobID, null IDs, command-specific forbidden selectors, page caps and invalid selected txid."},
+    {"name":"response-closure", "scope":"Missing each required field, wrong version, no/two success arms, error plus payload, wrong command arm and mismatched correlation ID."},
+    {"name":"original-binding", "scope":"Foreign view/generation/account/account authority/source/wallet/job; inconsistent root/gym tuple, wrong inherited origin/trust/descriptor. Contextual foreign values are distinguished from shape-invalid values."},
+    {"name":"job-capture-state", "scope":"Unknown state; missing capture on done; capture on running; illegal error; zero/excess timestamp; unequal wallet/node tip or height; count257; has_older under256; zero tip."},
+    {"name":"snapshot-state", "scope":"Idle with active ID/activity/error; available null binding; all-zero retained JobID."},
+    {"name":"page-membership", "scope":"Wrong cursor/more/length, null rows, offset/limit violations, duplicate or unsorted IDs, fresh timestamp/row facts substituted into an old capture, alternate valid local offset answering an old request."},
+    {"name":"detail-integrity", "scope":"Null/short outputs; index gaps; negative atoms; unowned change; invalid/long address; inconsistent owned counts/sums/change/net/fee; zero or excessive input/output ownership counts; block beyond captured tip, wrong confirmations/zero block hash; unknown fee substituted for known fee."},
+    {"name":"fee-knowledge", "scope":"Invented partial-input fee; coinbase fee/two inputs; no recorded ownership; no owned inputs with positive debit even when net arithmetic is made consistent."},
+    {"name":"selection-correlation", "scope":"Different selected txid/raw SHA and lost Begin B attempting to adopt an older successful A on the same original view/source/history."}
+  ],
+  "raw_families": [
+    "Legal whitespace and reordered fields.",
+    "Duplicate top-level and nested keys.",
+    "Negative-zero, fraction, exponent, nonfinite and unsafe numeric tokens.",
+    "Invalid UTF-8, trailing values and excessive token depth.",
+    "Otherwise valid request padded to1024 versus1025 bytes, small response to16384 versus16385, detail to98304 versus98305; all count the transport LF.",
+    "Negative-zero detail fee and trailing detail value."
+  ],
+  "native_lifecycle_tables": [
+    "Lost new Begin B never adopts generic older A; exact B running retains A dated; exact B done replaces A.",
+    "Definitive exact B not_found retires B while retaining A, allowing a later explicit C.",
+    "Definite predispatch busy retires only a never-dispatched B.",
+    "A later local busy cannot retire an already-dispatched unknown B or authorize C.",
+    "Failed refresh preserves A with its original dated facts.",
+    "Original-view revocation clears and joins, late B is discarded, replacement view cannot reuse old handles."
+  ],
+  "verdict_method": {
+    "positive":"Both independent shape and supplied original-context validation must accept before output.",
+    "shape_negative":"Independent shape validation must refuse, and context validation must refuse.",
+    "correlation_negative":"Independent shape validation must accept, then original-context validation must refuse.",
+    "raw":"Whole frame cap, UTF-8, duplicate-aware integer-only parser, token depth, typed exact fields and original context are evaluated; expected bool is fixed in source before execution.",
+    "lifecycle":"Finite declarative expected-decision tables from the frozen contract. They are not runtime race tests or authentication proofs."
+  },
+  "execution": {
+    "gate":"No producer invocation/import/compilation/generation before root source review and separately approved source-lock SHA. Input-reading provenance inspection is not generation.",
+    "lock_shape":"Object with input_lock_sha256 and sources mapping each of the three source filenames to SHA256; additional separately owned sources may be present in a shared approved lock.",
+    "command":"python3 -B generate_wire.py --execute --input-root INPUTS --approved-producer-lock LOCK --approved-lock-sha256 APPROVED_SHA --output FRESH_PATH",
+    "output":"Exclusive creation of one deterministic compact UTF-8 JSON corpus plus LF; counts and SHA printed only after success. Exact same bytes must reproduce under a second available Python and portable copied input/source layout.",
+    "failures":"Preserve any first failed attempt and its source/input bindings. Any producer correction is a reviewed successor lock, never silently rewritten expected output.",
+    "safety":"No wallets, credentials, network, node, signature creation, repository edits or Go/runtime calls. Python bytecode writes disabled."
+  },
+  "not_claimed": [
+    "Current or complete wallet/chain history, actual mempool presence, conflict absence, finality or account authorization.",
+    "General arbitrary root/gym key or destination parsing beyond the inherited public fixture inputs.",
+    "Raw wire parser, storage framing, atomic DB ownership, cancellation joins or allocation caps implemented correctly; separate core/runtime tests must cover those.",
+    "A measured whole-process memory limit or proof that asynchronous race behavior follows the declarative lifecycle tables.",
+    "Mixed malformed mutations isolate every parser stage; specific raw/shape failures only establish the stated overall refusal."
+  ]
+}

@@ -104,8 +104,10 @@ func newResultsMode(parent context.Context, config pilot.Config, deps resultAcco
 		session, view := base.session, base.viewID
 		base.mu.Unlock()
 		var child *pilot.StableController
-		child, e := deps.bout.card.seed.event.child(cfg, pilot.StableAccountConfig{Manifest: a, Lease: func(ctx context.Context, cap gymaccount.Capability, fn func(gymaccount.Account, func() error) error) error {
+		child, e := deps.bout.card.seed.event.child(cfg, pilot.StableAccountConfig{EvidencePermit: &base.evidencePermit, Manifest: a, Lease: func(ctx context.Context, cap gymaccount.Capability, fn func(gymaccount.Account, func() error) error) error {
 			return base.withCapability(ctx, session, view, child, cap, fn)
+		}, HistoryPublicationLease: func(ctx context.Context, fn func(gymaccount.Account, func() error) error) error {
+			return base.withHistoryPublicationLease(ctx, session, view, child, fn)
 		}, ResultNodeLease: func(ctx context.Context, fn func(gymaccount.Account, func() error) error) error {
 			return base.withResultNodeLease(ctx, session, view, child, fn)
 		}})

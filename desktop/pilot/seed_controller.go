@@ -241,6 +241,9 @@ func (s *StableController) unregisterSeedNodes(n *pilotNodes) {
 	<-s.laneGate
 }
 func (s *StableController) seedNodesReadyLocked() bool {
+	if s.sharedPublisher != nil {
+		return sharedPoolNodesReady(s.sharedPublisher)
+	}
 	n := s.seedNodes
 	if n == nil || n.primary == nil || n.peer == nil {
 		return false
@@ -262,6 +265,11 @@ func (s *StableController) borrowSeedPublisher(ctx context.Context) (*seednode.P
 	if !s.seedNodesReadyLocked() || s.stableClosed || s.stopping || s.account.AccountID != s.seedPin.PublisherAccountID {
 		s.stableMu.Unlock()
 		return nil, gymseed.ErrNodeOffline
+	}
+	if s.sharedPublisher != nil {
+		binding := *s.sharedPublisher
+		s.stableMu.Unlock()
+		return seednode.AttachSharedPool(ctx, binding)
 	}
 	n := s.seedNodes
 	binding := seednode.OwnerBinding{Source: s.seedPin.SourcePin, Home: s.config.DataDir, Primary: seednode.OwnedProcess{Cmd: n.primary.cmd, Done: n.primary.done}, Peer: seednode.OwnedProcess{Cmd: n.peer.cmd, Done: n.peer.done}}

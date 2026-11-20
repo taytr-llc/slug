@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "status": "source-only; no imports/execution; review pending",
+  "input_catalog_sha256": "11aaa12021cb5b33ac338f7e74d8487cef630ee8683814aa7e6f701170a21da7",
+  "sources": {
+    "downstream_model.py": "b73184e7853702db68d16b856b986fc632cac95099268ca548d15c5528c8d722",
+    "generate_reference.py": "1291c308d2e83338962c78fcae0de805ae46a7d82b452a423468a33b5a01512f",
+    "sizing_model.py": "1a56347501974170774c7872c7a434414026df7d02475143b430c619f37b96a2",
+    "case-plan.json": "3db3ec55d2444ca971f0ecee01a70c9f2faa0f08ffd3275242225ec82ae16706",
+    "README.md": "139051e15f4ad3430c66ee06a558cba12a677250b0fc8f359e7b60d374c1fa5b"
+  },
+  "syntax_only": true,
+  "review": "Root finite source review; added inherited primitive selftest before generating compositions."
+}

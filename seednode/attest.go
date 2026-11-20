@@ -125,7 +125,7 @@ func (p *Publisher) AttestTarget(ctx context.Context, anchor Anchor, target Head
 	if e := p.finalMembership(c, anchor, target, tip); e != nil {
 		return empty, Tip{}, e
 	}
-	if e := p.checkOwner(); e != nil {
+	if e := p.checkOwnerContext(c); e != nil {
 		return empty, Tip{}, e
 	}
 	genesis, _ := chainhash.NewHashFromStr(p.identity.Genesis)

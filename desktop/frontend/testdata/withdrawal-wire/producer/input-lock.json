@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "status": "locked before producer source and execution",
+  "inputs": {
+    "journal-reference-v1.json": {
+      "source": "/Users/taytrrip/slug/slug/walletwithdraw/testdata/reference/reference-v1.json",
+      "sha256": "ee4ba4ecc89289b76e2ce805e4d8f88ced79c6b69542d71ee74a7a37b1c1bd29"
+    },
+    "original-ready.json": {
+      "source": "/Users/taytrrip/slug/slug/poolsettle/testdata/payout-history/inputs/original-ready.json",
+      "sha256": "7bf54bc34de877bef5afd296cbdb9bf30f59d3589057e818a363bb7c6fd8547f"
+    },
+    "fixture-recovery-v1.json": {
+      "source": "/Users/taytrrip/slug/set68-prep/reference-inputs/public/fixture-recovery-v1.json",
+      "sha256": "d5141f4a8ee4378d77d483b09f6ecd809f8b328f82e79a69ff83164e73bc799a"
+    },
+    "desktop-v1.md": {
+      "source": "/Users/taytrrip/slug/set68-prep/frozen/desktop-v1.md",
+      "sha256": "114f9ca1c968d4e8dcf35efbe73cae110b940321d09f700ecf05e6cf5f03aab9"
+    },
+    "journal-v1.md": {
+      "source": "/Users/taytrrip/slug/set68-prep/frozen/journal-v1.md",
+      "sha256": "33bcf03ea830a3d87fc7e174fc5b874690c80969a2656f36bf31b730c2022386"
+    }
+  }
+}

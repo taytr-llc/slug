@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "reference_sha256": "7aaf45191dc4ac5d34d5ab930c2e6461d50f389ac22611278a897da938cc1825",
+  "reference_bytes": 2945128,
+  "core_positive": 34,
+  "core_negative": 43,
+  "core_raw": 12,
+  "transaction_cases": 36,
+  "wallet_cases": 37,
+  "production_calls": 0,
+  "normal_work_calls": 0,
+  "actual_originals": 2,
+  "modeled_wallet_observations_only": true
+}

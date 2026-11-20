@@ -15,6 +15,11 @@ const MaxBoutCacheSize = 393216
 
 type BoutControllerAPI interface {
 	CardControllerAPI
+	BoutSurfaceAPI
+}
+
+// BoutSurfaceAPI is the closed bout family shared by solo and pool routes.
+type BoutSurfaceAPI interface {
 	BoutSnapshot() BoutSnapshot
 	BoutCardStatus(context.Context, string, string) (gymbout.CardStatus, error)
 	BoutStatus(context.Context, string, string, string) (gymbout.Status, error)

@@ -78,15 +78,22 @@ type walletVerificationState struct {
 // The controller drains mining before Close. This lock prevents concurrent
 // private operations from racing database closure.
 type walletRuntime struct {
-	mu       sync.Mutex
-	loader   *wallet.Loader
-	wallet   *wallet.Wallet
-	backend  *chain.RPCClient
-	server   *legacyrpc.Server
-	rpc      *walletHTTPClient
-	identity walletIdentity
-	closed   bool
-	closeErr error
+	allocation2           *wallet.HostedAllocator2
+	allocationGuard2      *waddrmgr.HostedAllocationGuard2
+	allocation            *wallet.HostedAllocator
+	allocationGuard       *waddrmgr.HostedAllocationGuard
+	allocationRecipientID string
+	mu                    sync.Mutex
+	loader                *wallet.Loader
+	wallet                *wallet.Wallet
+	backend               *chain.RPCClient
+	server                *legacyrpc.Server
+	rpc                   *walletHTTPClient
+	identity              walletIdentity
+	closed                bool
+	closeErr              error
+
+	poolRecipientUncertain bool
 }
 
 func prepareWalletDirectory(dir string, create bool) error {
@@ -359,6 +366,14 @@ func (r *walletRuntime) snapshot(ctx context.Context) (walletView, error) {
 	return walletView{Synced: r.wallet.ChainSynced(), Height: height, Spendable: int64(spendable), Immature: int64(balances.ImmatureReward), Unconfirmed: int64(pending)}, nil
 }
 func (r *walletRuntime) VerificationState(ctx context.Context) (walletVerificationState, error) {
+	var allocationAccounts []recovery.Account
+	if r.allocation != nil {
+		m, e := r.allocation.CapturePublicRecovery(ctx)
+		if e != nil {
+			return walletVerificationState{}, e
+		}
+		allocationAccounts = m.Accounts
+	}
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	var result walletVerificationState
@@ -368,26 +383,30 @@ func (r *walletRuntime) VerificationState(ctx context.Context) (walletVerificati
 		return result, err
 	}
 	result.Accounts = recovery.DefaultAccounts()
-	err = walletdb.View(r.wallet.Database(), func(tx walletdb.ReadTx) error {
-		states, err := waddrmgr.RecoveryAccounts(tx.ReadBucket([]byte("waddrmgr")))
-		if err != nil {
-			return err
-		}
-		for i := range result.Accounts {
-			found := false
-			for _, state := range states {
-				if state.Scope.Purpose == result.Accounts[i].Purpose && state.Scope.Coin == result.Accounts[i].Coin {
-					result.Accounts[i].NextExternal = state.NextExternal
-					result.Accounts[i].NextInternal = state.NextInternal
-					found = true
+	if allocationAccounts != nil {
+		result.Accounts = allocationAccounts
+	} else {
+		err = walletdb.View(r.wallet.Database(), func(tx walletdb.ReadTx) error {
+			states, err := waddrmgr.RecoveryAccounts(tx.ReadBucket([]byte("waddrmgr")))
+			if err != nil {
+				return err
+			}
+			for i := range result.Accounts {
+				found := false
+				for _, state := range states {
+					if state.Scope.Purpose == result.Accounts[i].Purpose && state.Scope.Coin == result.Accounts[i].Coin {
+						result.Accounts[i].NextExternal = state.NextExternal
+						result.Accounts[i].NextInternal = state.NextInternal
+						found = true
+					}
+				}
+				if !found {
+					return errors.New("wallet inventory unavailable")
 				}
 			}
-			if !found {
-				return errors.New("wallet inventory unavailable")
-			}
-		}
-		return nil
-	})
+			return nil
+		})
+	}
 	if err != nil {
 		return walletVerificationState{}, errors.New("wallet inventory unavailable")
 	}
@@ -490,6 +509,18 @@ func (r *walletRuntime) SignAccountChallenge(ctx context.Context, pinnedAuthorit
 	return result, nil
 }
 func (r *walletRuntime) Close() error {
+	if r.allocation2 != nil {
+		if e := r.allocation2.Close(); e != nil {
+			return e
+		}
+	}
+	// The concrete owner drains operations before closing this retained session.
+	// No wallet mutex spans the allocator's account fence or lifecycle join.
+	if r.allocation != nil {
+		if e := r.allocation.Close(); e != nil {
+			return e
+		}
+	}
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	if r.closed {

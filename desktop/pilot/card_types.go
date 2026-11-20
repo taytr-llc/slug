@@ -14,6 +14,11 @@ const MaxCardMetadataSize = 49152
 
 type CardControllerAPI interface {
 	SeedControllerAPI
+	CardSurfaceAPI
+}
+
+// CardSurfaceAPI is the closed card family shared by solo and pool routes.
+type CardSurfaceAPI interface {
 	CardSnapshot() CardSnapshot
 	CardStatus(context.Context, string, string) (gymcard.Status, error)
 	CardRecord(context.Context, string, string) (gymcard.ReadResult, error)

@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "status": "passed",
+  "findings": [],
+  "scope": "Narrow independent core/input/assembly review rebind; wire/native-discovery model source is reviewer-authored and explicitly excluded from independent approval.",
+  "prior_review": {
+    "path": "/Users/taytrrip/slug/set51-reference-core-independent-review.json",
+    "sha256": "c651ec670952cdbb6c18c28b0cd471606e17fb40f989ecc1bcfa868d44f224fe"
+  },
+  "candidate": {
+    "directory": "/Users/taytrrip/slug/set51-fighter-history-reference",
+    "file_index_sha256": "c76bea7a2b3270f07968746ae07e216a4e266756f415ae21b6f559ab02ad2712",
+    "file_count": 140,
+    "bytes": 34315296,
+    "corpus_sha256": "18e51e25c6760f756159e12a92265b517438152533d439d541d4696044e60283",
+    "input_index_sha256": "cae11a8fb9a1707051626330161d6523795228c01d765dc920d8db3af13e9ae6",
+    "verification_path": "verification/attempt3/report.json",
+    "verification_sha256": "4bdbb06a49fdf0c6f0b7cd57bbb9f186bf8333cffc105de8155babf26cc7efca"
+  },
+  "independently_reviewed_source_sha256": {
+    "common.py": "bd348290836084323c738cfcdaab35a18c76cd36233b582c88e207de095c8988",
+    "history_math.py": "a029c39d622123da3dac699aca154eb8f143ddaf0e754e3c6aa515a04d93c6c2",
+    "reference_history.py": "128706b6b109a6b66bfff043f9517b54d5d83d90fa9e67792f53d5824637b421",
+    "extract_inputs.py": "2e61fd3f50eb167b8262e11a8900b8ee6f0ebb93329bb3c27fe458bb80506ae1",
+    "generate.py": "ecdc6eb24e3bbe17007fa81bc0f9991c7e7d1bc17d6b8bce2bcfb0b3b2746147",
+    "verify_reference.py": "376a5239afaa57f258a0addec177bd62154f25ab65bb898ea6adfb2b5939086c",
+    "check_reproducibility.py": "5ffbd94f0ea8d89b357750febbaa44591e29dce3a4914d2e5d6c093590a11457",
+    "README.md": "28f22ae2fc5bf1b1ac4e5c5e74bd5010d158edb2332f8ce5f20b2438c9b80a2c",
+    "input_index.json": "cae11a8fb9a1707051626330161d6523795228c01d765dc920d8db3af13e9ae6"
+  },
+  "excluded_authored_source_sha256": {
+    "schema_wire.py": "af8d700bb8f7cf45231197e9c022f6e793e5926451d29ce23af986f864e2e20e",
+    "reference_wire.py": "ba4d876e17d77cc82eb159474c583abcee55d15fbf6e04c6ea21d9439970fe9b",
+    "state_models.py": "f51ecc5897bbbc73f80f5e5f940a3584b83b4e3b60a435e43157fa687a1f06ca",
+    "fragments/wire.json": "13fa57ec623196d3117f6ea751d406d05f91ce87a5a6c42b982fc44b4f1a1259",
+    "fragments/state.json": "7dd42929ef8cae3b9b9d220a497715f54d9293e22a7dfa6cb20ad78bd85430f2"
+  },
+  "verified_carry": {
+    "all_core_math_extraction_and_assembly_producers_byte_identical": true,
+    "history_fragment_byte_identical": true,
+    "all28_history_expected_cases_equal": true,
+    "all96_input_bytes_and_manifest_unchanged": true,
+    "previous65_dtos_67_codecs_45_protocols_equal": true,
+    "previous57_models_equal": true,
+    "new_symbolic_discovery_cases": 12,
+    "readme_delta": "Only provenance and separation of pre-admission native discovery from post-admission exchange correlation clarified."
+  },
+  "provenance": {
+    "files": 96,
+    "bytes": 570294,
+    "distinct_origins": 33,
+    "exact_json_pointer_extracts": 67,
+    "selected_public_artifacts_match_old_runner_and_independent_report": 4,
+    "prior_proofs_rerun": false
+  },
+  "resolved_findings_carried": [
+    {
+      "id": "within_page_duplicate_identity",
+      "problem": "Two individually valid older/newer rows could share ResultKey/AwardID while retaining chronological order and internally consistent totals.",
+      "correction": "Both identifiers now unique within each at-most8-row page, before ordinal and adjacency checks.",
+      "control": "coherent_duplicate_result_key_and_award",
+      "negative_control_sha256": "0db33118e6ec77bf1715c3e5cac6336554914639a8322aa622733074e365df54",
+      "preserved_path": "preserved/before-page-uniqueness"
+    },
+    {
+      "id": "transport_input_isolation",
+      "correction": "Immutable documentary scalar constants captured once at initialization; parser no longer loads inputs repeatedly.",
+      "scope": "Reviewer read core change; authored wire trap is separately owned evidence."
+    },
+    {
+      "id": "negative_control_internal_errors",
+      "correction": "Core control runner catches only Refusal, so internal KeyError/TypeError cannot count as successful rejection.",
+      "preserved_path": "preserved/before-control-exception-hardening"
+    }
+  ],
+  "reproduction_evidence": {
+    "author_executed": true,
+    "reviewer_reexecuted": false,
+    "counts": {
+      "histories": 28,
+      "core_controls": 35,
+      "index_controls": 4,
+      "wire_dtos": 65,
+      "wire_codecs": 67,
+      "protocols": 45,
+      "state_models": 69
+    },
+    "source_corpus_exit_fresh_report_bindings_checked": true,
+    "all140_indexed_files_rehashed": true
+  },
+  "preserved_predecessor": {
+    "path": "/Users/taytrrip/slug/set51-reference-before-native-discovery",
+    "file_index_sha256": "836bf113a7f414297442ee01d29dfd7b01ca79482c042211d7f4b23f2dcb9b75"
+  },
+  "authored_delta": {
+    "path": "/Users/taytrrip/slug/set51-native-discovery-reference-delta.json",
+    "sha256": "e93516d9379d60554d45c4697d7360f808921ffbf9d54315e08ed7b9b8f3a7ab"
+  },
+  "limits": [
+    "I authored wire/schema/models and do not independently approve them; root/envelope separate review is required.",
+    "No Go/runtime/source proof/signature/Argon/engine/DB/network or performance execution by this review. Genuine source facts inherit explicit Set49 scoped-clock proof provenance; new captures are derived expectations, not actual Set51 executions.",
+    "Finite typed acceptance and partial-page consistency do not establish sealed authority or whole-index/league completeness.",
+    "No compiler/heap/liveness/GUI/ranking/title qualification. Retained-byte arithmetic and runtime work counters remain separate future gates."
+  ]
+}

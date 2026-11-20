@@ -7,6 +7,8 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"github.com/taytr-llc/slug/fighterbout"
+	"github.com/taytr-llc/slug/fighterdescriptor"
+	"github.com/taytr-llc/slug/fightermanifest"
 	"github.com/taytr-llc/slug/gymbout"
 	"github.com/taytr-llc/slug/gymcard"
 	"github.com/taytr-llc/slug/gymstable"
@@ -206,11 +208,24 @@ func boutRecordShape(r gymbout.Record) bool {
 	}
 	for i, f := range []fighterbout.FighterInput{in.A, in.B} {
 		a := s.Corners[i].Member.Assignment
-		if f.ProspectID != a.ProspectID || f.BornAtMS != a.BornAtMS || f.ProXP != 0 || f.TrainingSkill != 0 || !stableManifestShape(f.Manifest, a.WorkHash) || f.Manifest.Physical.Class != s.Bout.Class {
+		if f.ProspectID != a.ProspectID || f.BornAtMS != a.BornAtMS || f.ProXP != 0 || f.TrainingSkill != 0 || !stableManifestShapeFor(f.Manifest, a.WorkHash, a.DescriptorID) || f.Manifest.Physical.Class != s.Bout.Class {
 			return false
 		}
 		raw, _ := json.Marshal(f.Manifest)
-		if len(raw) > 8192 || previewHash("SLUG fighter manifest digest\x00v1\x00", raw, false) != a.ManifestDigest {
+		descriptor, err := fighterdescriptor.ResolveCandidate(a.DescriptorID)
+		if err != nil {
+			return false
+		}
+		var domain string
+		switch descriptor.ManifestVersion {
+		case fightermanifest.Version1:
+			domain = "SLUG fighter manifest digest\x00v1\x00"
+		case fightermanifest.Version2:
+			domain = "SLUG fighter manifest digest\x00v2\x00"
+		default:
+			return false
+		}
+		if len(raw) > 8192 || previewHash(domain, raw, false) != a.ManifestDigest {
 			return false
 		}
 	}

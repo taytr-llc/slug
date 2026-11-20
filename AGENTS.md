@@ -10,6 +10,12 @@ Read HANDOVER.md before starting. It has the full state, the remaining work
 spec, and the verification gates. This file is the short standing-rules
 version.
 
+Mike's current work order (November 19): finish fighter transfers and recovery
+first; then complete the public mining pool and scheduled payouts; then sign-in
+and onboarding. Preserve D82 requirements for that later work and D74's full
+joint design review as the final product review before release. Fixture pool
+tests alone do not close public deployment and scheduled-payout acceptance.
+
 ## Branch discipline (do not break this)
 
 - Mike explicitly authorized the Phase A master merge and seed deployment
@@ -70,19 +76,285 @@ version.
   → `slug-event-card` (set 46, released on master at `5c11cbaf`)
   → `slug-event-bouts` (set 47, released on master at `ba218f55`)
   → `slug-result-publication` (set 48, released on master at `cc4f41e4`)
-  → `slug-career-awards` (set 49, released on master at `0a4374de`).
+  → `slug-career-awards` (set 49, released on master at `0a4374de`)
+  → `slug-career-preview` (set 50, released on master at `592e143c`).
   Set 49 implementation is `5b590f40`, stacked from completed Set 48 topic
   `dd74828f`; its normal package and complete 900-second closeout passed.
-  Set 50 continues on `slug-career-preview`, stacked from Set 49's completed
-  topic maintenance tip `b3150b49`. Its additive unrecorded practice contract
-  is `CAREER_PREVIEW.md`; freeze and independently review reference expectations
-  before runtime implementation. Preserve the old XP0 Preview family and engine.
+  Set 50 implementation is `99d36ef2`, stacked from Set 49's completed topic
+  maintenance tip `b3150b49`. Its independently frozen `CAREER_PREVIEW.md`
+  family passed scoped awarded-fighter and normal XP0 package acceptance;
+  practice remains unrecorded and grants no awards. Preserve the old XP0
+  Preview family/engine and every failed acceptance/checker attempt. Final
+  observation and provider closeout passed: 900.03 seconds, 31 successful
+  samples at height 61 with 60 checkpoint descendants, and a clean restart.
+  Railway remained healthy on the exact release, with configuration, volume
+  and TCP endpoint unchanged.
+  Remote CI absence is assessed, not a pass. One local signed-out header-logo
+  and user-confirmed menu-bar fist check does not replace the full D74 review.
+- Set 51 on `slug-fighter-history`, implementation `751b947b`, completes the
+  authenticated finalized fighter-history candidate. Local, scoped actual,
+  cold-capacity, normal Mac package and eleven independent package checks pass.
+  Preserve its failed first package attempt and unresolved original cause;
+  the focused diagnostic and fresh strict package pass are successor evidence.
+  Version 0.4.11/build 51 is a verified desktop build. No compiled seed-node
+  source or deployment configuration changed, so master and the live seed
+  remain at Set 50 (`592e143c`). See `CHANGESET_51_NOTES.md`.
+- Set 52 on `slug-pool-shares` adds immutable manifest pool-work verification
+  with independent pool/prospect/block targets. Its focused normal/race/profile
+  refusal tests and vet pass. No durable share acceptance, credits, payments or
+  live pool are enabled, and no seed rollout is needed. See `CHANGESET_52_NOTES.md`.
+- Set 53 on `slug-pool-acceptance` adds durable issued pool work, authenticated
+  share acceptance, duplicate recovery and canonical-only D80 late credit.
+  Normal/race/profile-refusal checks and vet pass. Use its dedicated manifest
+  issuer and preserve exact pending block evidence on uncertainty. The journal
+  grants no fighter admission, monetary balance or payment. Public pool/miner
+  integration and round accounting remain ahead. See `CHANGESET_53_NOTES.md`.
+- Set 54 on `slug-pool-rounds` adds operator-only accepted-work pages, fixed
+  pool rounds, exact fractional gross allocations and fresh 60-descendant
+  confirmation locks. D81 orphan/return never changes membership; later
+  conflicts preserve confirmed gross earnings. Normal/race/profile-refusal
+  checks and vet pass. This is not maturity, spendability or payout authority;
+  no changed package is linked by the seed. See `CHANGESET_54_NOTES.md`.
+- Set 55 on `slug-pool-settlement` completes D58's daily settlement contract
+  with exact fractional carry, original mature funding and a durable signed
+  batch before broadcast. Network fees use the operator's 1% only; deferrals
+  stay visible and retries cannot create another payment. The isolated public
+  fixture signer is not a production wallet. See `CHANGESET_55_NOTES.md` for
+  validation and the remaining service integration boundary.
+- Set 56 on `slug-pool-service` adds authenticated work/share/balance HTTP and
+  the desktop's original-view credential adapter. Pin the complete pool source,
+  transport and expected gym; preserve exact job/nonce recovery on uncertainty.
+  The concrete pool and settlement take their own account leases: never nest
+  those calls under a service/view lease. Pool receipts never grant fighter
+  birth. Shared runtime and a dedicated durable pool worker remain next; do not
+  silently switch the existing solo worker or rewrite its wallet payout marker.
+  See `POOL_SERVICE.md` and `CHANGESET_56_NOTES.md`.
+- Set 57 on `slug-pool-worker` adds a separate `PoolWorker`/`PoolOutbox` v1.
+  Mine only exact issued templates with extra nonce zero; preserve independent
+  pool, block and prospect outcomes before transport. Recover original job and
+  nonce after uncertainty; a sequence-zero receipt is not credit. Broadcast
+  blocks before signing, never sign new expired births, and allow historical
+  signed-receipt recovery without changing birth. Use the admission-only v3
+  service when sharing a pool issuer; never expose outside job issuance.
+  Capacity pauses mining while preserving pending recovery. The shared desktop
+  runtime and balance view follow; do not silently replace the solo route.
+  See `POOL_WORKER.md` and `CHANGESET_57_NOTES.md`.
+- Set 58 on `slug-pool-gym-binding` adds separately pinned native84/index0
+  pool recipients for the two published fixture wallets. Preserve the old
+  scope44 payout and markers. Persist account/source intent before allocating;
+  a lost address-allocation response requires wallet close/reopen/reattachment
+  and recovery of the original index0 address, never blind reallocation.
+  READY requires synchronized wallet ownership/path checks and the original
+  token/view recheck. Matching existing markers must be synchronized again
+  after uncertain publication. Shared-source stable isolation and parent
+  runtime follow; no current app route or production custody is activated.
+  See `POOL_RECIPIENTS.md` and `CHANGESET_58_NOTES.md`.
+- Set 59 on `slug-shared-gym-source` adds explicit Pin2 shared-source stables.
+  Verify every global source row before filtering by gym; retain original
+  sequences and complete assignment-or-skip audit coverage. The global cursor
+  is not a fighter count: use SharedStatus.AssignmentCount. Follow Recent must
+  select the local tail, preserving opaque career read/session fences. Keep
+  legacy Pin1 namespaces and projection semantics unchanged; shared typed pages
+  cannot publish a contiguous legacy projection. No current app route switches
+  implicitly. See `SHARED_GYM_STABLE.md` and `CHANGESET_59_NOTES.md`.
+- Set 60 on `slug-pool-session-fences` releases account leases during pool
+  proof/node/source work and balance verification. Capture the original token
+  and key; reacquire that same authority around each actual local commit and
+  final disclosure. Do not weaken WithSession or retain its temporary recheck.
+  Registry staged commits use TryLock; retry busy outside the account lease.
+  The shared issuer must select NewFencedManifestAdmissionServer with one
+  admission writer and pool-only job issuance. Preserve exact pending evidence,
+  outcome-unknown recovery, old schemas and legacy isolated APIs. Next deliver
+  the runnable explicit shared fixture app: parent-owned nodes/issuer/journals,
+  two actual recipient-bound wallets, separate workers/outboxes/Pin2 stables,
+  visible authenticated balances and bounded daily scheduling. Preserve the
+  solo route and D74 gate. See `POOL_SESSION_FENCES.md` and
+  `CHANGESET_60_NOTES.md`.
+- Set 61 on `slug-shared-pool-desktop` adds the explicit `--candidate-pool`
+  route and separate `SLUG Pool Pilot` / `LocalPoolPilot` namespace. One parent
+  owns the nodes, shared issuer and accounting journals; original-view children
+  own their wallet, worker, outbox and Pin2 stable. Both actual fixture recipients
+  must verify before services start. Only Start mines; logout/reset joins the
+  child while retaining the source, and Quit joins all owners. Preserve exact
+  source/transport/recipient markers; missing established components fail closed.
+  Shared counts are gym-local; balances retain exact fractions and observation
+  timestamps. Preserve the solo route. Shared-wallet recovery follows in Set62,
+  then explicit shared league attachment; never repin old histories or reorganize
+  navigation. See `SHARED_POOL_DESKTOP.md` and `CHANGESET_61_NOTES.md`; D74 stays last.
+- Set62 on `slug-shared-pool-recovery` connects native recovery export and
+  file-only fresh verification to the actual Pool Pilot wallet. Capture the
+  original view before the dialog, retain directory/file descriptors through
+  helper handoff, and publish owner-only files exclusively under the original
+  RecoveryExport capability. D72 blocks export during a hold but allows viewing
+  and existing-file verification. Wait for actual synchronization even at
+  genesis; retain complete confirmed-state comparison and retry when pending
+  transactions or changing observations prevent a stable comparison. Uncertain
+  publication must tell the user to inspect the destination before retrying.
+  Cancel/Close join cleanup; verification never spends or starts mining. The
+  funded file-only restore/spend, package, full desktop and smoke checks pass.
+  Shared league attachment is next; preserve solo histories and the final D74
+  gate. See `SHARED_POOL_RECOVERY.md` and `CHANGESET_62_NOTES.md`.
+- Set63 on `slug-shared-pool-entries` connects shared mined fighters to Saturday
+  entries and a parent-owned noon coordinator. Preserve exact Pin2 participants,
+  original global receipt sequences, immutable setup intent/READY identities and
+  child-owned entry handles. Missing established stores fail closed. Recheck the
+  original view through native dispatch and commit; backup drains active lane
+  work outside account leases and does not restart mining. A Recent page does
+  not prove complete shared-source synchronization: roster/entry mutations still
+  require caught-up authority. Normal-PoW noon/reset/restart acceptance and exact
+  normal-package before-noon/recovery checks passed. Next attach the complete
+  shared publication/card/result/career cycle, activating career authority before
+  its new lock and first finality. Preserve prior snapshots without backdating
+  activation. Keep publication funding separate from pool earnings. See
+  `SHARED_POOL_LEAGUE.md` and `CHANGESET_63_NOTES.md`; D74 remains last.
+- Set64 on `slug-shared-event-cycle` attaches the full shared event/career
+  pipeline. Activate the parent-owned result reader before publishing children;
+  persist the exact source/store/activation chain and fail closed on missing
+  established components. Borrow the concrete existing node pair, retaining
+  source pins, owner handles and original-view capabilities. Retry only transient
+  issuer contention within the existing request/lifetime bounds, outside account
+  leases. Keep scalar1/2 fixture publication funding separate from scalar3 pool
+  settlement. Genuine seed/result finality, exact-once careers, restart and C1
+  refusal pass on the normal-PoW fixture chain. Pre-enrollment never exempts an
+  awarded fighter from C1's later zero-record cutoff. The normal package retains
+  explicit Start-only mining, recovery and existing panels; practice stays off.
+  See `SHARED_EVENT_CYCLE.md` and `CHANGESET_64_NOTES.md`. Continue functional
+  blockers with frozen-history compatibility; D74 remains the final joint gate.
+- Set65 on `slug-name-diversity` adds the explicitly selected name-v2 candidate
+  with 512 first names and 512 surnames. Default constructors and existing
+  sources remain v1; never infer a version from saved data or repin history.
+  Resolve the complete original descriptor at admission, reconstruction and
+  every transport/portrait boundary, including the manifest hash domain in a
+  saved bout response. The frozen independent corpus covers all name indices;
+  the reproducible collision sample is a scenario, not a population forecast.
+  Normal-PoW v2 event/finality/career acceptance, v1/v2 package recovery and the
+  full desktop suite pass. Preserve the failed first bout-response acceptance
+  and independent diagnosis. See `NAME_DIVERSITY.md` and `CHANGESET_65_NOTES.md`.
+  Continue portable public evidence without claiming ownership, authenticated
+  admission time or complete authoritative history from unsigned summaries.
+  Transfer timing/order remains a later policy question; D74 remains last.
+- Set66 on `slug-public-fighter-evidence` adds bounded original-receipt/history
+  export and a separate offline consistency checker. Require a separately
+  established full expected source Pin; the file authenticates neither issuance
+  time, actual awards/finality, current ownership nor global history completeness.
+  Use one concrete source proof, the original opaque history capture and exact
+  native action ID. Never recover a new export by adopting an older latest job.
+  Stop/Close join proof and file cleanup; asynchronous account transition
+  acknowledgments do not prove cleanup. Preserve possible-publication uncertainty
+  and the old recovery-file limit. Normal/race/reference, six actual exports,
+  complete desktop, normal package and smoke checks pass; retain the sandbox
+  failure and explicit composite rerun evidence. See `CHANGESET_66_NOTES.md`.
+  Own-payout history follows in Set67; no transfer policy or navigation redesign
+  is implied.
+- Set67 on `slug-payout-history` adds an authenticated own-payment capture,
+  fixed local pages and a separate dated observation of a selected output in
+  the owned wallet. Preserve the original recipient, source, view and exact
+  native action through reads and uncertain replies. Pool-recorded state and
+  wallet-reported confirmation are separate facts; neither authorizes another
+  payment. Stop/backup/Close join the independent payout slot before reusing
+  resources. Keep errors distinct from a verified empty history and keep the
+  former capture after a failed refresh. See `POOL_PAYOUT_HISTORY.md`,
+  `POOL_PAYOUT_DESKTOP.md` and `CHANGESET_67_NOTES.md` for qualification status.
+  Continue remaining wallet/lifecycle work under settled policies; transfers
+  and general league matching still need their own decisions. D74 stays last.
+- Set68 on `slug-reviewed-withdrawals` adds separately reviewed, durable personal
+  withdrawals to the fixture Pool Pilot. Keep exact intent/draft/signed bytes,
+  wallet reservations and the paired journal across interrupted replies and
+  reopen. Fresh original-view D72 authorization gates signing, explicit retry
+  and unsigned abandonment; a send acknowledgment is not an observed payment.
+  Never automatically resend or replace a signed transaction. Native review
+  displays the full recipient and exact amount/fee/total. Keep the candidate
+  fee ceiling, bounded selection, concrete resource provenance and paired-store
+  audits; missing established components fail closed. The two-wallet actual
+  rehearsal proves lost-ack retry with one debit. See the frozen contracts in
+  `REVIEWED_WITHDRAWALS_ADOPTION.md` and qualification in `CHANGESET_68_NOTES.md`.
+  This remains schema-9 public-fixture engineering, not production issuance or
+  full evolving-wallet recovery. D74 and permanent identity/custody gates remain.
+- Set69 on `slug-resumable-phase-a-backup` adds explicit schema-12 bounded
+  restoration of the existing version-1 Phase-A recovery file. Preserve coin-0
+  paths, mixed49 branches, root/gym identity and original imported manifest;
+  never migrate installed wallets or recreate withdrawal authorization from a
+  recovery file. Keep 128-attempt steps, clipped 4096-per-branch limits and exact
+  private wallet/node tip comparisons. Failed cleanup retains its owner and
+  scratch directory; a later no-op Close cannot clear the first failure. The
+  completed scanner audit permits later live allocation and retained orphan
+  discovery without equating historical rows to the current wallet ledger.
+  `CHANGESET_69_NOTES.md` records qualification and its precise limits. Hosted
+  evolving metadata, production custody and D74 remain separate gates.
+- Set70 on `slug-wallet-activity` adds a bounded, immutable own-wallet activity
+  capture, eight-row pages and selected transaction details in the existing
+  wallet section. Keep integer amounts, the atomic public identity/history/sync
+  snapshot, exact wallet/node hash and height checks, original View/source/gym
+  binding, native-known job IDs and explicit refresh. Failed refresh retains the
+  dated prior capture; old success never resolves a new uncertain action.
+  Capture/detail cancellation must join before wallet unload or backup. Read no
+  private recovery material; do not infer pool earnings, spendability, finality
+  or a new send permission from activity. Preserve the independently frozen
+  corpora and bounded storage/raw-transaction checks. See `WALLET_ACTIVITY.md`
+  and `CHANGESET_70_NOTES.md` for qualification and limits. Hosted evolving
+  recovery remains separate; D74 remains last.
+- Set71 on `slug-hosted-current-recovery` adds the explicit
+  `--candidate-hosted-pool` route in a separate selected namespace. Preserve
+  legacy Pool defaults and stores. Pin authority/coordinator/vault/wallet-owner
+  IDs before setup, retain ordered immutable receipts and fail closed on missing
+  established storage. Signed published-fixture login/reset is not a real
+  provider: retain the original authentication epoch, exact reset event and
+  durable barrier before credential changes or child joins. Pending reset must
+  remain reachable while signed out; replay never extends the hold.
+  Current recovery captures only bounded public committed wallet metadata from
+  the retained concrete schema-9 owner. Join captures before unloading; do not
+  hold wallet/parent mutexes across account fences. Current checkpoints and
+  exports are separate from old immutable vault APIs. Keep recovery and gym
+  envelopes distinct, no local signer fallback, and no recovery unwrap for held
+  mining. Prepare export outside account leases, then use the original
+  RecoveryExport fence only for bounded publication to the pinned destination.
+  Preserve uncertain outcomes and cleanup ownership. A current export is a dated
+  capture, not continuous disaster recovery or permission to recreate missing
+  payment journals. See `HOSTED_CURRENT_RECOVERY.md`, the portable independent
+  references and `CHANGESET_71_NOTES.md` for qualification and limits. Real
+  provider/custody and permanent identity remain gates; D74 stays last.
+- Set72 on `slug-hosted-allocation-recovery` adds explicit
+  `--candidate-hosted-recovery` / `LocalHostedRecoveryPilot` with fresh schema13.
+  Reserve the complete supported address prefix before consumption/disclosure;
+  burned, unused, uncertain and abandoned ranges remain covered. Keep exact
+  Plan/Reserve/Consume/Ack/Finalize owner and operation identity, read-only lookup,
+  original-view disclosure and fresh process-local Resume/Redisplay actions.
+  Only exact wallet-file/directory absence with all other required authorities
+  intact permits recovery-only export and schema12 inspection. Never recreate
+  missing payment journals or install a replacement spending wallet through it.
+  Preserve physically read-only archives, D72 holds and sticky cleanup ownership.
+  Full wallet, funded loss/restore/spend, frontend, smoke and explicitly composed
+  desktop/package qualification passed; retain the legacy typed-nil failure and
+  its narrow successor. See `HOSTED_ALLOCATION_RECOVERY.md` and
+  `CHANGESET_72_NOTES.md`. No seed input changed. Continue D83 ownership/direct
+  transfer and independently restored-gym use; login and D74 remain deferred.
+- Set73 on `slug-fighter-ownership` adds public ownership replay and the explicit
+  owned-gym route, with schema14 hosted carriers and file-only schema12-to15
+  restored-gym use. Preserve canonical first-valid transfer order, immutable
+  birth/history, signed checkpoint plus 60-descendant effectiveness, original
+  View/D72 fences and exact request/sign/delivery separation. Public source
+  gaps refuse complete reconstruction; a saved delivery receipt is not current
+  ownership. A pending chain publication whose named block is no longer
+  canonical stays held; never retarget it. Reference recovery never grants ready
+  ownership. Independent recovery uses the original exported ranges and fresh
+  public history, never copied private authorization journals. No noon cutoff
+  may be backdated or replaced by current ownership. Actual CLI recovery and both
+  noon ownership variants passed, including immutable history and component
+  reopen. Final clean packaging and release verification remain outstanding. See
+  `PUBLIC_FIGHTER_OWNERSHIP.md`, `OWNED_GYM_DESKTOP.md`, `RESTORED_GYM_CLI.md` and
+  `CHANGESET_73_NOTES.md`. Public pool/scheduled payouts follow this milestone;
+  sign-in/onboarding and the final D74 product review remain later.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review
   at the end once all major flows are ready, rather than partial design reviews.
   Continue authorized engineering deployments, but do not treat them as product
   launch approval.
+  On November 18 Mike clarified that app organization and navigation changes
+  also belong in that final session. The external Gym/Fighters/Saturday draft
+  is stopped and unapplied; do not resume it as the next engineering set.
+  Continue functional release blockers and avoid redundant seed rollouts for
+  desktop-only work when compiled node source and deployment config are unchanged.
 - Branch each next change set off the latest completed implementation tip,
   never the live seed branch by default. Use `slug-<topic>` names; set 7 is
   `slug-signed-checkpoints`. HANDOVER.md records the original takeover state.
@@ -91,6 +363,39 @@ version.
 - One change set = one branch = one (or a few) well-explained commits.
   Commit messages: short summary line, then a body that says what changed
   and why, including any deliberate non-changes.
+
+## Hosted authentication requirement (D82)
+
+- Mike deferred login-flow/provider/MFA implementation and account-recovery UX
+  work until wallet recovery, fighter ownership/transfer and full gym/fighter
+  restoration are done. Keep the requirements below recorded for later. Existing
+  fixture authentication may support core tests; do not turn it into real-login
+  work or resume screen/navigation design before the final joint D74 review.
+- Mike requires strict mandatory MFA for email/password login and wants passkey
+  support (November 19). Record and preserve these release requirements in
+  `HOSTED_AUTHENTICATION.md`; the current signed fixture buttons do not prove MFA.
+- Preserve D72's same-wallet reset, revocation and hold. Password reset must not
+  remove the second factor or create an email-only bypass. Mike requires a backup
+  factor/code with no support bypass. Separate single-use login recovery codes
+  remain proposed; never assume the 24-word wallet phrase is a login reset code.
+- Passkey user verification and password-plus-authenticator are proposed paths.
+  Freeze a separately versioned trusted assurance contract before implementing;
+  do not reinterpret old fixture assertions, freshness timestamps or schemas as
+  MFA evidence. Provider selection and final D74 screens remain separate work.
+
+## Fighter transfer order and finality (D83)
+
+- Mike approved public chain order and checkpoint finality on November 19.
+  First valid competing send in canonical block/transaction order wins; later
+  competing sends are void. Pending transfers do not change the effective owner.
+  Ownership changes at a signed checkpoint plus sixty descendant blocks; noon
+  locks use the owner of record at that time. Later checkpoint conflict retains
+  official history and follows the community doctrine, never consensus veto.
+- See `FIGHTER_TRANSFER_POLICY.md`. This closes the previously open timing/order
+  question, not implementation. Preserve immutable birth, old event/result gym
+  attribution, D27 ownership/roster distinction and D72 held-transfer refusal.
+  The next usable milestone includes actual transfer and independently restored
+  gym ownership; login work remains deferred and the D74 review remains last.
 
 ## Build and test
 
@@ -434,6 +739,35 @@ does not understand. Never detach, replace, or clear the /data volume.
   independent retirement/time-driven vacancy rules, D65 and C1's zero-record
   boundary. Do not infer transferable ownership, production authority or new
   matchmaking/title-selection policy from this timing decision.
+
+- D79 (Mike, November 18) uses difficulty-weighted per-block pool rounds,
+  including the winning share, with daily settlement only. Earnings lock at
+  sixty descendants; payment waits for the funding coinbase's 100-block
+  consensus maturity. Never advance pool reserves. Apply the 1% fee once,
+  pay balances of at least 1 SLUG and carry the rest. A later loss of the
+  funding coinbase blocks payment without erasing locked earnings. Resolve
+  incident policy separately for conflicted funding;
+  see `POOL_ACCOUNTING_POLICY.md`. Work classification alone is not credit.
+- D80 (Mike, November 18) includes an expired-job winning share only when its
+  exact block becomes canonical and pays the configured pool address. Count
+  that share and distribute its block reward under D79; reject ordinary late
+  shares. Never grant fighter admission or birth from the expired job. A node
+  submission acknowledgment is not canonical membership, and observed
+  canonicality is not irreversible finality.
+- D81 (Mike) keeps an orphaned pool round's shares fixed, with no earnings
+  before confirmation while its block is orphaned. The exact block's return
+  resumes the same round; never reuse shares in another round. Preserve D79's
+  already-confirmed earnings through later conflict and never advance reserves.
+
+- Mike completed D58's settlement details on November 18: preserve exact
+  fractional net balances, pay whole atoms at the 1-SLUG threshold, and batch
+  the daily payments into one transaction. Network fees come only from the
+  pool's earned 1%; defer visibly rather than surcharge miners or drop their
+  change into fees. Pin recipient authority, retain original matured funding
+  provenance and persist the exact signed transaction and all reservations
+  before broadcast. Retry only those bytes; unknown delivery never releases
+  funds or creates another payment. Do not label this a new daily-payout rule.
+  Real wallet custody and product release gates remain separate.
 
 - Set 46 retains immutable candidate cards in a separate explicit journal.
   Preserve the complete noon source, fixed seed, pairings, unmatched reasons and

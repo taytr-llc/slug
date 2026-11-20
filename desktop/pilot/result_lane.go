@@ -35,7 +35,7 @@ func (s *StableController) beginResult(ctx context.Context, v, date, bid, kind, 
 		if s.resultStore == nil {
 			return errResultSetup
 		}
-		if s.stopping {
+		if s.stopping || s.evidenceBusyLocked() {
 			return gymresult.ErrBusy
 		}
 		s.expireQueuedLocked()
@@ -53,7 +53,7 @@ func (s *StableController) beginResult(ctx context.Context, v, date, bid, kind, 
 		s.mu.Lock()
 		defer s.mu.Unlock()
 		oldBytes = s.resultBytes
-		if !stableCacheFits(s.cache, s.receiptSlot, s.careerBytes+s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+s.boutBytes+MaxResultCacheSize) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.historyBytes+s.careerBytes+s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+s.boutBytes+MaxResultCacheSize) {
 			return gymresult.ErrCapacity
 		}
 		var id [32]byte
@@ -109,7 +109,7 @@ func (s *StableController) retainResultLocked(j ResultJob) {
 	s.resultLast = &owned
 	raw, _ := json.Marshal(owned)
 	s.mu.Lock()
-	s.resultBytes = MaxResultMetadataSize + len(raw)
+	s.resultBytes = resultRetainedMetadataBytes + len(raw)
 	s.mu.Unlock()
 }
 func (s *StableController) cancelQueuedResultLocked() {

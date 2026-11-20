@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "status": "source-only; no producer import or execution before root-approved exact lock",
+  "input_scope": "approved independent public core bytes; exact old public birth/career evidence and Python appearance/condition models",
+  "fixtures": [
+    "v1/zero256-unawarded",
+    "v2/zero256-awarded",
+    "v2/incrementing256-awarded"
+  ],
+  "phases": [
+    "initial",
+    "final to other published fixture gym",
+    "reacquired with a new state ID"
+  ],
+  "positives": [
+    "complete owned pin/status",
+    "current-owned full item/page with original birth",
+    "prepared/committed/abandoned roster operation",
+    "immutable history capture/page with previous gym corner",
+    "entry pins",
+    "modeled exact-noon transferred-out exclusion and recipient entrant",
+    "original winning fighter keeps total wins while recipient current_gym_wins is zero"
+  ],
+  "negatives": [
+    "birth gym rewrite",
+    "state ID mismatch",
+    "owner mismatch",
+    "foreign source",
+    "manifest/DNA mismatch",
+    "XP projection mismatch",
+    "boolean version",
+    "duplicate slots",
+    "foreign store",
+    "operation cap",
+    "receipt/request mismatch",
+    "revision mismatch",
+    "commit before preparation",
+    "missing terminal receipt",
+    "wrong cutoff event/time",
+    "legacy assignment ownership basis",
+    "incomplete cutoff partition",
+    "duplicate physical fighter",
+    "birth key substituted for current owner",
+    "entry namespace not derived from exact network/genesis/account authority"
+  ],
+  "raw_cases": [
+    "canonical",
+    "trailing LF",
+    "duplicate version",
+    "float",
+    "nested order",
+    "top order",
+    "null items"
+  ],
+  "scope_limits": [
+    "Conditional state/head/cutoff bytes are not actual chain or ownership proofs.",
+    "Old work/admission/row bytes remain exact; no Go73 expected outputs.",
+    "Awarded fighter history remains visible but existing C1 eligibility is not widened.",
+    "Downstream physical matching/simulation remains inherited independent coverage plus new concrete integration; this corpus does not claim newly simulated fight outcomes.",
+    "Runtime reset/Close/source lease correctness is tested separately, not inferred from these codec cases.",
+    "At most two concrete career sources; sole nonzero source preserved, dual nonzero refused under candidate C1 compatibility."
+  ],
+  "execution": "--execute --input-root --approved-producer-lock --approved-lock-sha256 --output; approved_by root and execution_authorized true; exact source and input inventories; exclusive output"
+}

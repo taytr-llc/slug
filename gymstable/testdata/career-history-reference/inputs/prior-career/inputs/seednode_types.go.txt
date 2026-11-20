@@ -1,0 +1,18 @@
+type Tip struct {
+	Height uint32 `json:"height"`
+	Hash   string `json:"hash"`
+}
+
+type Anchor struct {
+	Height       uint32   `json:"height"`
+	Hash         string   `json:"hash"`
+	Header       string   `json:"header"`
+	TxID         string   `json:"txid"`
+	RawTxDigest  string   `json:"raw_tx_digest"`
+	RawTxSize    uint32   `json:"raw_tx_size"`
+	TxCount      uint32   `json:"tx_count"`
+	TxIndex      uint32   `json:"tx_index"`
+	OutputIndex  uint32   `json:"output_index"`
+	Payload      string   `json:"payload"`
+	MerkleBranch []string `json:"merkle_branch"`
+}

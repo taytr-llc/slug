@@ -2,7 +2,43 @@ import { Call } from '/wails/runtime.js';
 
 // Separate stable entry: only typed, current-view, candidate-only native data.
 const MODE = 'local-manifest-pilot';
+const POOL_MODE = 'local-pool-pilot';
+const HOSTED_POOL_MODE = 'local-hosted-fixture-pool';
+const HOSTED_RECOVERY_MODE = 'local-hosted-recovery-pool';
 const DESCRIPTOR = 'c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303';
+// Frozen compiled candidate tuples. Membership never replaces source equality.
+// The native bridge validates descriptor IDs; the browser checks their exact shapes.
+const CANDIDATE_DESCRIPTORS = Object.freeze({
+  [DESCRIPTOR]: Object.freeze({
+    version: 1, dna_version: 1, manifest_version: 1,
+    generator_id: 'slug-fighter-manifest-candidate-v1',
+    manifest_table_hash: '72231fbe707cea9a65dd5b92f7b2719953795bceadbbf9e3b8e0b8f4aaef3f44',
+    manifest_contract_hash: 'ba8d33dbad3722eed6b4406ef120f946d7e06e1ea04305cbe8648889ba169e80',
+    portrait_trait_version: 1, renderer_version: 1,
+    renderer_id: 'slug-fighter-portrait-candidate-v1',
+    renderer_contract_hash: '8ae3c8dbe92fbef719880227e107cb98cbfd6419d984cad08ebb5d5e0a9c0df5',
+  }),
+  cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75: Object.freeze({
+    version: 1, dna_version: 1, manifest_version: 2,
+    generator_id: 'slug-fighter-manifest-candidate-v2',
+    manifest_table_hash: 'b537490e1e602e27de01975aeec36f5fb53ba9a3a35f98143e8ecb7f9e2687c2',
+    manifest_contract_hash: '0283415807d33b362aaeffbb1570504085cd975bf9f3adc0b497d0c8b79856a7',
+    portrait_trait_version: 1, renderer_version: 2,
+    renderer_id: 'slug-fighter-portrait-candidate-v2',
+    renderer_contract_hash: '6044ce174e9a7a466783985e34b02b34ae2785719ca77b1268f7e6ad3c717677',
+  }),
+});
+function candidateDescriptor(id) {
+  requireValue(Object.hasOwn(CANDIDATE_DESCRIPTORS, id));
+  return CANDIDATE_DESCRIPTORS[id];
+}
+function candidateName(value, descriptorID, boundedASCIIName = false) {
+  const d = candidateDescriptor(descriptorID);
+  if (typeof value !== 'string') return false;
+  if (d.manifest_version === 2) return value.length <= 32 && /^[A-Za-z]+(?:['-][A-Za-z]+)*$/.test(value);
+  return boundedASCIIName ? /^[\x00-\x7f]{1,64}$/.test(value) : /^[A-Za-z][A-Za-z '\-]{0,63}$/.test(value);
+}
+
 const GENESIS = '7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd';
 const DATE_MAX = 8640000000000000;
 const CACHE_MAX = 1 << 20;
@@ -14,7 +50,10 @@ ids.push('seed-state', 'seed-refresh', 'seed-prepare', 'seed-publish', 'seed-rec
 ids.push('card-state', 'card-refresh', 'card-begin', 'card-cancel', 'card-record', 'card-clear', 'card-history', 'card-history-next', 'card-message', 'card-totals', 'card-source', 'card-conflict', 'card-incident', 'card-evidence', 'card-gyms', 'card-bouts', 'card-unmatched', 'card-reasons', 'card-history-list', 'card-detail-hint');
 ids.push('bout-state', 'bout-refresh', 'bout-list', 'bout-empty', 'bout-run', 'bout-open', 'bout-check', 'bout-cancel', 'bout-clear', 'bout-message', 'bout-source', 'bout-overlay', 'bout-replay', 'bout-asof', 'bout-fighters', 'bout-play', 'bout-previous', 'bout-next', 'bout-restart', 'bout-result', 'bout-motion', 'bout-step', 'bout-events', 'bout-outcome', 'bout-finish', 'bout-scores', 'bout-evidence');
 ids.push('result-panel', 'result-state', 'result-connection', 'result-observation', 'result-read', 'result-publish', 'result-reconcile', 'result-attest', 'result-export', 'result-cancel', 'result-disconnect', 'result-clear', 'result-message', 'result-finality', 'result-conflict', 'result-exported', 'result-evidence');
+ids.push('history-panel', 'history-state', 'history-fighter', 'history-asof', 'history-totals', 'history-message', 'history-list', 'history-previous', 'history-next', 'history-page-label', 'history-refresh', 'history-cancel', 'history-clear', 'history-result', 'history-export', 'history-export-status');
 const ui = Object.fromEntries(ids.map((id) => [id, document.getElementById(id)]));
+const poolUI = Object.fromEntries(['pool-balance', 'pool-confirmed', 'pool-available', 'pool-reserved', 'pool-paid', 'pool-observed', 'pool-reason', 'pool-refresh', 'pool-features'].map((id) => [id, document.getElementById(id)]));
+const payoutUI = Object.fromEntries(['refresh', 'cancel', 'status', 'capture', 'list', 'previous', 'page', 'next', 'wallet'].map((name) => [name, document.getElementById(`pool-history-${name}`)]));
 const attrs = ['power', 'speed', 'chin', 'stamina', 'skill'];
 const rarity = ['club', 'professional', 'contender', 'elite', 'generational'];
 const styles = ['slugger', 'outfighter', 'boxer_puncher', 'pressure', 'boxer'];
@@ -28,6 +67,7 @@ const backupErrors = ['', 'backup_unavailable', 'backup_invalid', 'backup_mismat
 const projectionStates = ['idle', 'loading', 'ready', 'failed', 'cancelled'];
 const projectionErrors = ['', 'projection_unavailable', 'projection_corrupt', 'projection_cancelled'];
 const statusErrors = new Set(['', 'unavailable', 'outcome_unknown', 'busy', 'capacity', 'rate_limited', 'expired', 'rejected', 'unknown_job', 'unauthorized', 'forbidden', 'invalid_request', 'too_large', 'signer_unavailable', 'clock', 'stale', 'observer_unavailable', 'storage_failed', 'storage_close_failed', 'chain_data_missing', 'node_shutdown_failed', 'node_start_failed', 'wallet_unavailable', 'wallet_shutdown_failed', 'wallet_connection_failed', 'wallet_payout_failed', 'wallet_identity_mismatch', 'wallet_status_failed', 'node_unavailable', 'authority_unavailable', 'authority_identity_mismatch', 'authority_port_busy', 'wallet_signer_unavailable', 'worker_unavailable', 'worker_failed', 'node_exited', 'authority_exited', 'initialization_incomplete', 'initialization_failed', ...projectionErrors]);
+for (const code of ['pool_unavailable', 'pool_shutdown_failed', 'pool_capacity', 'balance_unavailable']) statusErrors.add(code);
 const fixtures = {
   zero256: ['a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5', '03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519'],
   incrementing256: ['28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510', '033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92'],
@@ -46,7 +86,7 @@ function checkedView(v) {
   requireValue(v.version === 1 && ['view_id', 'account_authority_id', 'account_id', 'transport_trust_id'].every((key) => hex(v[key])) && int(v.generation, 1));
   exact(v.authority_pin, ['version', 'network', 'genesis', 'authority_id', 'descriptor_id']);
   const p = v.authority_pin;
-  requireValue(p.version === 5 && p.network === 0x534c5547 && p.genesis === GENESIS && hex(p.authority_id) && p.descriptor_id === DESCRIPTOR && p.authority_id !== v.account_authority_id);
+  requireValue(p.version === 5 && p.network === 0x534c5547 && p.genesis === GENESIS && hex(p.authority_id) && Object.hasOwn(CANDIDATE_DESCRIPTORS, p.descriptor_id) && (poolMode || p.descriptor_id === DESCRIPTOR) && p.authority_id !== v.account_authority_id);
   requireValue(typeof v.authority_origin === 'string' && /^http:\/\/127\.0\.0\.1:[1-9][0-9]{0,4}$/.test(v.authority_origin));
   requireValue(int(Number(v.authority_origin.split(':').pop()), 1, 65535));
   return { ...v, authority_pin: { ...p } };
@@ -54,12 +94,13 @@ function checkedView(v) {
 function viewKey(v) {
   return v ? [v.version, v.view_id, v.account_authority_id, v.account_id, v.generation, v.authority_pin.version, v.authority_pin.network, v.authority_pin.genesis, v.authority_pin.authority_id, v.authority_pin.descriptor_id, v.authority_origin, v.transport_trust_id].join('|') : '';
 }
-function checkedItem(p) {
+function checkedItem(p, descriptorID) {
+  candidateDescriptor(descriptorID);
   exact(p, ['sequence', 'id', 'work_hash', 'born_at_ms', 'accepted_at_ms', 'name', 'physical', 'style', 'rarity', 'talent_budget', 'attributes', 'descriptor_id', 'manifest_digest', 'portrait_digest', 'eligibility_mode']);
-  requireValue(int(p.sequence, 1, 1000) && ['id', 'work_hash', 'manifest_digest', 'portrait_digest'].every((key) => hex(p[key])) && p.descriptor_id === DESCRIPTOR);
+  requireValue(int(p.sequence, 1, 1000) && ['id', 'work_hash', 'manifest_digest', 'portrait_digest'].every((key) => hex(p[key])) && p.descriptor_id === descriptorID);
   requireValue(int(p.born_at_ms, 1, DATE_MAX) && int(p.accepted_at_ms, p.born_at_ms, Math.min(DATE_MAX, p.born_at_ms + 299999)));
   exact(p.name, ['first', 'last', 'display']);
-  requireValue(['first', 'last'].every((key) => typeof p.name[key] === 'string' && /^[A-Za-z][A-Za-z '\-]{0,63}$/.test(p.name[key])) && p.name.display === `${p.name.first} ${p.name.last}`);
+  requireValue(['first', 'last'].every((key) => candidateName(p.name[key], descriptorID)) && p.name.display === `${p.name.first} ${p.name.last}`);
   exact(p.physical, ['height_in', 'reach_in', 'stance', 'weight_lb', 'weight_class']);
   const q = p.physical;
   requireValue(int(q.height_in, 62, 80) && int(q.reach_in, q.height_in - 2, q.height_in + 4) && int(q.weight_lb, 128, 268) && ['orthodox', 'southpaw'].includes(q.stance) && classes.includes(q.weight_class));
@@ -82,7 +123,7 @@ function normalize(v) {
   const p = v.projection;
   requireValue(projectionStates.includes(p.state) && projectionErrors.includes(p.error) && int(p.revision) && int(p.through_sequence, 0, 1000) && typeof p.has_older === 'boolean' && typeof p.complete_recent === 'boolean' && Array.isArray(p.items) && p.items.length <= 8 && p.items.length <= v.accepted_count);
   requireValue((p.state === 'failed' ? ['projection_corrupt', 'projection_unavailable'].includes(p.error) : p.state === 'cancelled' ? ['', 'projection_cancelled'].includes(p.error) : p.error === ''));
-  const items = p.items.map(checkedItem);
+  const items = p.items.map((item) => checkedItem(item, DESCRIPTOR));
   const unique = new Set(); let previousSequence = 1001;
   for (const item of items) { requireValue(!unique.has(item.id) && item.sequence < previousSequence && item.sequence <= v.accepted_count); unique.add(item.id); previousSequence = item.sequence; }
   requireValue(p.through_sequence === (items[0]?.sequence ?? 0) && p.has_older === (v.accepted_count > items.length));
@@ -90,7 +131,7 @@ function normalize(v) {
   requireValue(p.complete_recent === (v.view !== null && complete) && (p.state === 'ready' || items.length === 0));
   let view = null;
   if (a.state === 'signed_in') {
-    view = checkedView(v.view);
+    view = checkedView(v.view); requireValue(view.authority_pin.descriptor_id === DESCRIPTOR);
     requireValue(hex(a.id) && a.generation > 0 && view.account_id === a.id && view.generation === a.generation && Object.hasOwn(fixtures, a.fixture));
     requireValue(v.gym_id === fixtures[a.fixture][0] && v.gym_public_key === fixtures[a.fixture][1] && typeof v.payout_address === 'string' && /^[1-9A-HJ-NP-Za-km-z]{26,60}$/.test(v.payout_address));
   } else {
@@ -99,7 +140,102 @@ function normalize(v) {
   return { ...v, account: { ...a }, view, projection: { ...p, items } };
 }
 
-function imageOnlySVG(svg) {
+const poolReasons = {
+  '': '',
+  'payout-pending': 'Payment is waiting for confirmation.',
+  'broadcast-unknown': 'Payment delivery is being checked. The same transaction will be retried.',
+  'transaction-unavailable': 'Payment confirmation is temporarily unavailable.',
+  'payout-conflict': 'A payment conflict needs attention. Your earnings remain recorded.',
+  'funding-unavailable': 'Reward funding could not be checked yet.',
+  'funding-conflict': 'The reward is on a conflicting chain. Payment is deferred.',
+  'funding-changed': 'Reward funding changed during the check. Payment is deferred.',
+  immature: 'Confirmed earnings are waiting for the reward to mature at 100 blocks.',
+  'awaiting-confirmation': 'Reward funding is waiting for confirmation.',
+  'below-minimum': 'The balance carries forward until it reaches 1 SLUG.',
+  'destination-unavailable': 'The wallet recipient needs verification before payment.',
+  'daily-batch-complete': 'Today’s batch is complete. Remaining earnings carry forward.',
+  'fee-unavailable': 'A network fee could not be checked. Payment is deferred.',
+  'fee-budget': 'Payment is deferred until the pool’s 1% cut covers the network fee.',
+  'change-dust': 'Payment is deferred to preserve the remaining balance.',
+  'signing-unavailable': 'The pool could not sign the payment yet.',
+  capacity: 'The demo pool reached its retained capacity. Earnings remain recorded.',
+};
+const MAX_ATOMS = 2100000000000000;
+function poolFraction(f) {
+  exact(f, ['numerator', 'denominator']);
+  requireValue(typeof f.numerator === 'string' && /^(0|[1-9][0-9]{0,4095})$/.test(f.numerator) && typeof f.denominator === 'string' && /^[1-9][0-9]{0,4095}$/.test(f.denominator));
+  const n = BigInt(f.numerator), d = BigInt(f.denominator);
+  let a = n, b = d; while (b) [a, b] = [b, a % b];
+  requireValue(a === 1n && n <= BigInt(MAX_ATOMS) * d);
+  return { n, d };
+}
+function poolBalance(v, gym, binding) {
+  exact(v, ['state', 'error', 'value']);
+  requireValue(['unavailable', 'loading', 'ready', 'failed'].includes(v.state) && v.error === (v.state === 'failed' ? 'balance_unavailable' : ''));
+  if (v.state !== 'ready') { requireValue(v.value === null); return own(v); }
+  const r = v.value; exact(r, ['version', 'binding_id', 'balance', 'observed_at_ms']);
+  requireValue(r.version === 1 && r.binding_id === binding && hex(binding) && int(r.observed_at_ms, 0, DATE_MAX));
+  const b = r.balance; exact(b, ['gym_id', 'confirmed', 'available', 'reserved_atoms', 'paid_atoms', 'reason']);
+  requireValue(hex(gym) && b.gym_id === gym && int(b.reserved_atoms, 0, MAX_ATOMS) && int(b.paid_atoms, 0, MAX_ATOMS) && Object.hasOwn(poolReasons, b.reason));
+  const confirmed = poolFraction(b.confirmed), available = poolFraction(b.available);
+  const remaining = confirmed.n - BigInt(b.reserved_atoms) * confirmed.d;
+  requireValue(remaining >= 0n && available.n * confirmed.d <= remaining * available.d && (confirmed.n !== 0n || b.reason === ''));
+  requireValue(r.observed_at_ms !== 0 || (confirmed.n === 0n && available.n === 0n && b.reserved_atoms === 0 && b.paid_atoms === 0 && b.reason === ''));
+  return own(v);
+}
+function validPoolBackup(v) {
+  requireValue(['unavailable', ...backupStates].includes(v.backup_state) && Object.hasOwn(backupPhases, v.backup_phase) && [...backupErrors, 'backup_export_uncertain'].includes(v.backup_error));
+  const phase = v.backup_phase, error = v.backup_error;
+  if (['unavailable', 'idle', 'cancelled'].includes(v.backup_state)) requireValue(phase === '' && error === '');
+  else if (v.backup_state === 'running') requireValue(phase !== '' && phase !== 'complete' && error === '' && ['stopped', 'failed'].includes(v.state));
+  else if (v.backup_state === 'succeeded') requireValue(phase === 'complete' && error === '');
+  else requireValue(error !== '' && phase !== 'complete');
+}
+function normalizePool(v) {
+  exact(v, ['version', 'mode', 'state', 'attempts', 'hashes_per_second', 'height', 'pending', 'last_error', 'recovery_error', 'wallet_state', 'wallet_height', 'payout_address', 'gym_id', 'gym_public_key', 'spendable_atoms', 'immature_atoms', 'backup_state', 'backup_phase', 'backup_error', 'account', 'view', 'assignment_count', 'source_binding_id', 'balance']);
+  requireValue(v.version === 1 && v.mode === (hostedRecoveryMode ? HOSTED_RECOVERY_MODE : hostedPoolMode ? HOSTED_POOL_MODE : POOL_MODE) && states.includes(v.state) && walletStates.includes(v.wallet_state));
+  requireValue(['attempts', 'height', 'wallet_height'].every((k) => int(v[k])) && ['spendable_atoms', 'immature_atoms'].every((k) => int(v[k], 0, MAX_ATOMS)) && int(v.pending, 0, 4096) && int(v.assignment_count, 0, 1000));
+  requireValue(typeof v.hashes_per_second === 'number' && Number.isFinite(v.hashes_per_second) && v.hashes_per_second >= 0 && statusErrors.has(v.last_error) && statusErrors.has(v.recovery_error));
+  validPoolBackup(v);
+  const a = v.account; exact(a, ['state', 'fixture', 'id', 'generation', 'hold_until_ms', 'held', 'can_export', 'last_error']);
+  const pendingReset = hostedPoolMode && a.last_error === 'hosted_reset_pending' && ['signed_out', 'failed'].includes(a.state) && Object.hasOwn(fixtures, a.fixture);
+  requireValue(accountStates.includes(a.state) && ['', ...Object.keys(fixtures)].includes(a.fixture) && (['', 'account_unavailable'].includes(a.last_error) || pendingReset) && int(a.generation) && int(a.hold_until_ms, 0, DATE_MAX) && typeof a.held === 'boolean' && typeof a.can_export === 'boolean' && (!a.held || (!a.can_export && a.hold_until_ms > 0)));
+  let view = null;
+  if (a.state === 'signed_in') {
+    view = checkedView(v.view);
+    requireValue(hex(a.id) && a.generation > 0 && view.account_id === a.id && view.generation === a.generation && Object.hasOwn(fixtures, a.fixture) && hex(v.source_binding_id));
+    const recipients = { zero256: 'slug1qzmtrqsfuaf6l6kkcsseumq26ukaphfj9s9ptme', incrementing256: 'slug1qslk39wvggqa0vl8nd6jckaz54dw3vk45c8educ' };
+    requireValue(v.gym_id === fixtures[a.fixture][0] && v.gym_public_key === fixtures[a.fixture][1] && v.payout_address === recipients[a.fixture]);
+  } else {
+    requireValue(v.view === null && a.id === '' && a.generation === 0 && a.hold_until_ms === 0 && !a.held && v.gym_id === '' && v.gym_public_key === '' && v.payout_address === '' && v.source_binding_id === '' && ['attempts', 'height', 'wallet_height', 'pending', 'spendable_atoms', 'immature_atoms', 'assignment_count', 'hashes_per_second'].every((k) => v[k] === 0) && v.balance.state === 'unavailable' && !a.can_export && v.backup_state === 'unavailable');
+  }
+  return { ...v, account: { ...a }, view, balance: poolBalance(v.balance, v.gym_id, v.source_binding_id) };
+}
+function poolAmount(f) {
+  const { n, d } = poolFraction(f), atoms = n / d;
+  const whole = atoms / 100000000n, decimal = (atoms % 100000000n).toString().padStart(8, '0').replace(/0+$/, '');
+  return `${whole}${decimal ? `.${decimal}` : ''}${n % d ? ' + fraction of an atom' : ''}`;
+}
+function renderPool() {
+  poolUI['pool-balance'].hidden = poolUI['pool-features'].hidden = !poolMode || (hostedRecoveryMode && hostedRoot?.kind !== 'healthy');
+  if (!poolMode) return;
+  const visible = accountReady(), value = visible && current.balance.state === 'ready' ? current.balance.value : null;
+  const b = value?.balance;
+  for (const [id, amount] of [['pool-confirmed', b?.confirmed], ['pool-available', b?.available], ['pool-reserved', b ? { numerator: String(b.reserved_atoms), denominator: '1' } : null], ['pool-paid', b ? { numerator: String(b.paid_atoms), denominator: '1' } : null]]) {
+    content(poolUI[id], amount ? poolAmount(amount) : '—');
+    if (amount) poolUI[id].setAttribute('title', `${amount.numerator}/${amount.denominator} atoms`); else poolUI[id].removeAttribute('title');
+  }
+  content(poolUI['pool-observed'], !visible ? 'Sign in to view your pool balance.' : value ? value.observed_at_ms ? `Observed ${date.format(new Date(value.observed_at_ms))}.` : 'No settlement observation yet.' : current.balance.state === 'loading' ? 'Checking your pool balance…' : current.balance.state === 'failed' ? 'The pool balance is unavailable. Refresh to check again.' : 'Your pool balance has not been checked yet.');
+  content(poolUI['pool-reason'], b ? poolReasons[b.reason] : '');
+  poolUI['pool-refresh'].disabled = !visible || !!command || current.balance.state === 'loading';
+  renderPayout();
+  renderActivity();
+  renderWithdrawal();
+}
+
+function imageOnlySVG(svg, descriptorID) {
+  if (!Object.hasOwn(CANDIDATE_DESCRIPTORS, descriptorID)) return false;
+  const expectedRenderer = CANDIDATE_DESCRIPTORS[descriptorID].renderer_id;
   if (typeof svg !== 'string' || svg.length < 1 || svg.length > 32768 || !/^[\x20-\x7e]+$/.test(svg) || !svg.startsWith('<svg xmlns="http://www.w3.org/2000/svg" ') || !svg.endsWith('</svg>') || /&(?!(?:amp|lt|gt|quot|apos);)|<\s*[!?]|url\s*\(/i.test(svg)) return false;
   const allowed = {
     svg: 'xmlns width height viewBox preserveAspectRatio overflow role aria-label data-renderer', title: '', desc: '',
@@ -118,7 +254,7 @@ function imageOnlySVG(svg) {
     for (const a of body.matchAll(/ ([A-Za-z][A-Za-z-]*)="([^"<>]*)"/g)) {
       if (a.index !== used || seen.has(a[1]) || !allowed[name].split(' ').includes(a[1])) return false;
       seen.add(a[1]); used += a[0].length;
-      if (a[1] === 'data-renderer' && a[2] !== 'slug-fighter-portrait-candidate-v1') return false;
+      if (a[1] === 'data-renderer' && a[2] !== expectedRenderer) return false;
     }
     if (used !== body.length || (name === 'svg' && !seen.has('data-renderer'))) return false;
     if (!selfClosing) stack.push(name);
@@ -149,7 +285,7 @@ function status(v, view, fixture) {
   requireValue(optionalID(v.pending_operation_id) && optionalID(v.last_operation_id) && ((v.operation_count === 0) === (v.last_operation_id === '')) && (!v.pending_operation_id || v.pending_operation_id === v.last_operation_id));
   slots(v.slots); requireValue(v.slots.filter(Boolean).length <= v.checkpoint);
   const p = v.pin; exact(p, ['version', 'account_authority_id', 'account_id', 'identity', 'source', 'condition_version', 'projector_id']);
-  requireValue(p.version === 1 && p.account_authority_id === view.account_authority_id && p.account_id === view.account_id && p.condition_version === 1 && p.projector_id === 'slug-fighter-condition-candidate-v1');
+  requireValue(p.version === (poolMode ? 2 : 1) && p.account_authority_id === view.account_authority_id && p.account_id === view.account_id && p.condition_version === 1 && p.projector_id === 'slug-fighter-condition-candidate-v1');
   exact(p.source, ['version', 'network', 'genesis', 'authority_id', 'descriptor_id']); requireValue(same(p.source, view.authority_pin));
   exact(p.identity, ['network', 'genesis', 'profile', 'root_public_key', 'gym_public_key', 'gym_id']);
   requireValue(Object.hasOwn(ROOTS, fixture) && p.identity.network === 0x534c5547 && p.identity.genesis === GENESIS && p.identity.profile === 'slug-phase-a-fixture-bip39-v1' && p.identity.root_public_key === ROOTS[fixture] && p.identity.gym_id === fixtures[fixture][0] && p.identity.gym_public_key === fixtures[fixture][1]);
@@ -169,22 +305,24 @@ function stableSnapshot(v, manifest) {
   }
   return own(v);
 }
-function assignment(v, identity) {
+function assignment(v, identity, descriptorID) {
+  candidateDescriptor(descriptorID);
   exact(v, ['version', 'sequence', 'prospect_id', 'gym_id', 'work_hash', 'born_at_ms', 'accepted_at_ms', 'descriptor_id', 'manifest_digest', 'portrait_digest', 'source_record_digest']);
-  requireValue(v.version === 1 && int(v.sequence, 1, 1000) && ['prospect_id', 'gym_id', 'work_hash', 'manifest_digest', 'portrait_digest', 'source_record_digest'].every((k) => hex(v[k])) && v.gym_id === identity.gym_id && v.descriptor_id === DESCRIPTOR && int(v.born_at_ms, 1, DATE_MAX) && int(v.accepted_at_ms, v.born_at_ms, Math.min(DATE_MAX, v.born_at_ms + 299999)));
+  requireValue(v.version === 1 && int(v.sequence, 1, 1000) && ['prospect_id', 'gym_id', 'work_hash', 'manifest_digest', 'portrait_digest', 'source_record_digest'].every((k) => hex(v[k])) && v.gym_id === identity.gym_id && v.descriptor_id === descriptorID && int(v.born_at_ms, 1, DATE_MAX) && int(v.accepted_at_ms, v.born_at_ms, Math.min(DATE_MAX, v.born_at_ms + 299999)));
 }
-function manifestValue(m, seed, boundedASCIIName = false) {
+function manifestValue(m, seed, descriptorID, boundedASCIIName = false) {
+  const dsc = candidateDescriptor(descriptorID);
   exact(m, ['manifest_version', 'generator_id', 'table_hash', 'dna', 'name', 'physical', 'style', 'portrait']);
-  requireValue(m.manifest_version === 1 && m.generator_id === 'slug-fighter-manifest-candidate-v1' && m.table_hash === '72231fbe707cea9a65dd5b92f7b2719953795bceadbbf9e3b8e0b8f4aaef3f44');
+  requireValue(m.manifest_version === dsc.manifest_version && m.generator_id === dsc.generator_id && m.table_hash === dsc.manifest_table_hash);
   const d = m.dna; exact(d, ['dna_version', 'seed', 'rarity', 'talent_budget', 'attributes', 'prime_weeks', 'decline_weeks']);
-  requireValue(d.dna_version === 1 && d.seed === seed && rarity.includes(d.rarity) && int(d.talent_budget, 250, 489) && int(d.prime_weeks, 26, 52) && int(d.decline_weeks, 13, 39));
+  requireValue(d.dna_version === dsc.dna_version && d.seed === seed && rarity.includes(d.rarity) && int(d.talent_budget, 250, 489) && int(d.prime_weeks, 26, 52) && int(d.decline_weeks, 13, 39));
   exact(d.attributes, attrs); requireValue(attrs.every((k) => int(d.attributes[k], 1, 100)) && attrs.reduce((n, k) => n + d.attributes[k], 0) === d.talent_budget);
   const limits = [[250, 299], [300, 349], [350, 399], [400, 449], [450, 489]][rarity.indexOf(d.rarity)]; requireValue(int(d.talent_budget, ...limits));
-  exact(m.name, ['first', 'last', 'display']); requireValue(['first', 'last'].every((k) => typeof m.name[k] === 'string' && (boundedASCIIName ? /^[\x00-\x7f]{1,64}$/.test(m.name[k]) : /^[A-Za-z][A-Za-z '\-]{0,63}$/.test(m.name[k]))) && m.name.display === `${m.name.first} ${m.name.last}`);
+  exact(m.name, ['first', 'last', 'display']); requireValue(['first', 'last'].every((k) => candidateName(m.name[k], descriptorID, boundedASCIIName)) && m.name.display === `${m.name.first} ${m.name.last}`);
   exact(m.physical, ['height_in', 'reach_in', 'stance', 'weight_lb', 'weight_class']); const p = m.physical;
   requireValue(int(p.height_in, 62, 80) && int(p.reach_in, p.height_in - 2, p.height_in + 4) && int(p.weight_lb, 128, 268) && ['orthodox', 'southpaw'].includes(p.stance) && p.weight_class === classes[p.weight_lb <= 145 ? 0 : p.weight_lb <= 170 ? 1 : p.weight_lb <= 195 ? 2 : p.weight_lb <= 225 ? 3 : 4] && styles.includes(m.style));
   const r = m.portrait; exact(r, ['portrait_version', 'skin', 'hair_style', 'hair_color', 'facial_hair', 'head_shape', 'mouth', 'brow', 'background', 'scar', 'shoulder_jitter']);
-  requireValue(r.portrait_version === 1 && int(r.skin, 0, 5) && int(r.hair_style, 0, 7) && int(r.hair_color, 0, 5) && int(r.facial_hair, 0, 4) && int(r.head_shape, 0, 3) && int(r.mouth, 0, 3) && int(r.brow, 0, 2) && int(r.background, 0, 7) && ['none', 'left_brow', 'right_cheek'].includes(r.scar) && int(r.shoulder_jitter, -6, 6) && !Object.is(r.shoulder_jitter, -0));
+  requireValue(r.portrait_version === dsc.portrait_trait_version && int(r.skin, 0, 5) && int(r.hair_style, 0, 7) && int(r.hair_color, 0, 5) && int(r.facial_hair, 0, 4) && int(r.head_shape, 0, 3) && int(r.mouth, 0, 3) && int(r.brow, 0, 2) && int(r.background, 0, 7) && ['none', 'left_brow', 'right_cheek'].includes(r.scar) && int(r.shoulder_jitter, -6, 6) && !Object.is(r.shoulder_jitter, -0));
 }
 function halfEven(n, d) { const q = Math.floor(n / d), r = n % d; return q + (2 * r > d || (2 * r === d && q % 2 === 1) ? 1 : 0); }
 function condition(c, item, asOf) {
@@ -198,7 +336,7 @@ function condition(c, item, asOf) {
   for (const [i, k] of attrs.entries()) { const wanted = halfEven(d.attributes[k] * (100 * d.decline_weeks - [20, 40, 30, 30, 10][i] * step), 10 * d.decline_weeks); requireValue(c.aged_attributes_tenths[k] === wanted && c.league_attributes_tenths[k] === wanted); }
   requireValue(c.rating_hundredths === attrs.reduce((sum, k, i) => sum + c.league_attributes_tenths[k] * [10, 25, 2, 4, 8][i], 0));
 }
-function fullItem(i, st, asOf) { exact(i, ['assignment', 'manifest', 'condition']); assignment(i.assignment, st.pin.identity); manifestValue(i.manifest, i.assignment.work_hash); condition(i.condition, i, asOf); requireValue(i.assignment.sequence <= st.checkpoint && JSON.stringify(i).length <= 8192); return own(i); }
+function fullItem(i, st, asOf) { exact(i, ['assignment', 'manifest', 'condition']); assignment(i.assignment, st.pin.identity, st.pin.source.descriptor_id); manifestValue(i.manifest, i.assignment.work_hash, st.pin.source.descriptor_id); condition(i.condition, i, asOf); requireValue(i.assignment.sequence <= st.checkpoint && JSON.stringify(i).length <= 8192); return own(i); }
 function request(r) { exact(r, ['expected_revision', 'slot', 'prospect_id']); requireValue(int(r.expected_revision, 0, 4096) && int(r.slot, 1, 10) && optionalID(r.prospect_id)); }
 function intent(v) { exact(v, ['version', 'sequence', 'operation_id', 'generation', 'view_id', 'request', 'prepared_at_ms']); requireValue(v.version === 1 && int(v.sequence, 1, 4096) && hex(v.operation_id) && int(v.generation, 1) && hex(v.view_id) && int(v.prepared_at_ms, 1, DATE_MAX)); request(v.request); return own(v); }
 function receipt(v) {
@@ -221,8 +359,14 @@ function pageValue(p, kind, view, fixture) {
     const i = fullItem(kind === 'roster' ? row.item : row, st, p.as_of_ms); requireValue(!seen.has(i.assignment.prospect_id)); seen.add(i.assignment.prospect_id);
     if (kind === 'roster') requireValue(st.slots[row.slot - 1] === i.assignment.prospect_id); else { requireValue(i.assignment.sequence > last); last = i.assignment.sequence; }
   }
-  if (kind === 'inventory') requireValue(int(p.after, 0, st.checkpoint) && int(p.next_after, p.after, st.checkpoint) && p.next_after === (p.items.at(-1)?.assignment.sequence ?? p.after) && p.items.every((i, n) => i.assignment.sequence === p.after + n + 1) && p.has_more === (p.next_after < st.checkpoint));
-  if (kind === 'sync') requireValue(p.items.length === 0 || p.items.every((i, n) => i.assignment.sequence === st.checkpoint - p.items.length + n + 1));
+  if (kind === 'inventory') {
+    requireValue(int(p.after, 0, st.checkpoint) && int(p.next_after, p.after, st.checkpoint) && typeof p.has_more === 'boolean');
+    if (st.pin.version === 2) {
+      requireValue(p.items.every((i) => i.assignment.sequence > p.after));
+      requireValue(p.has_more ? p.items.length > 0 && p.next_after === p.items.at(-1).assignment.sequence && p.next_after < st.checkpoint : p.next_after === st.checkpoint);
+    } else requireValue(p.next_after === (p.items.at(-1)?.assignment.sequence ?? p.after) && p.items.every((i, n) => i.assignment.sequence === p.after + n + 1) && p.has_more === (p.next_after < st.checkpoint));
+  }
+  if (kind === 'sync') requireValue(p.items.length === 0 || (st.pin.version === 2 ? p.items.every((i) => i.assignment.sequence > Math.max(0, st.checkpoint - 8)) : p.items.every((i, n) => i.assignment.sequence === st.checkpoint - p.items.length + n + 1)));
   if (kind === 'roster') {
     requireValue(int(p.first_slot, 1, 10) && (p.next_slot === 0 || int(p.next_slot, p.first_slot + 1, 10)));
     const end = p.next_slot || 11, expected = st.slots.map((id, n) => ({ id, slot: n + 1 })).filter((r) => r.id && r.slot >= p.first_slot && r.slot < end);
@@ -257,12 +401,14 @@ function response(v, kind, manifest, stable, allowNull = false) {
   return { ok: true, value: own(o) };
 }
 
-let careerMode = false, careerPage = null, careerActivation = null, careerSelectedJob = "";
+let poolMode = false, hostedPoolMode = false, hostedRecoveryMode = false, careerMode = false, careerPage = null, careerActivation = null, careerSelectedJob = "";
 let current = null, stable = null, enabled = false, disposed = false, epoch = 0;
 let background = null, activeCall = null, timer = null, pollWanted = false, command = '';
 let tasks = [], watched = null, flow = null, savedOperation = null, lastViewedJob = '';
 let rememberedView = '', connectionError = '', message = '', mutationMessage = '';
 let mode = 'recent', pageAfter = 0, pageNext = 0, rosterFirst = 1, rosterNext = 0, pageItems = [], pageRevision = null;
+let inventoryCursors = new Set([0]);
+function previousInventoryCursor() { return poolMode ? Math.max(0, ...[...inventoryCursors].filter((v) => v < pageAfter)) : Math.max(0, pageAfter - 8); }
 const cards = new Map(), images = new Map(), imageAttempts = new Set(), rosterNodes = [];
 function content(node, value) { const s = String(value); if (node.textContent !== s) node.textContent = s; }
 function element(tag, className = '', value) { const n = document.createElement(tag); n.className = className; if (value !== undefined) n.textContent = value; return n; }
@@ -275,10 +421,15 @@ function ready() { return accountReady() && stable?.view && currentKey() === vie
 function canEdit() { return ready() && stable.status.caught_up && !stable.status.pending_operation_id && !watched && !flow && !command && !['failed', 'unavailable'].includes(stable.state); }
 function clearCards() { for (const c of cards.values()) { c.image.removeAttribute('src'); c.article.remove(); } cards.clear(); images.clear(); imageAttempts.clear(); }
 function forgetView(clearFlow = true) {
-  epoch++; careerPage = null; careerSelectedJob = ""; clearEvent(); clearEntry(); clearPreview(); clearCards(); pageItems = []; watched = null; savedOperation = null; lastViewedJob = ''; pageAfter = pageNext = 0; rosterFirst = 1; rosterNext = 0; pageRevision = null; mode = 'recent';
+  clearHostedReceive();
+  inventoryCursors = new Set([0]);
+  clearPayout();
+  clearActivity();
+  clearWithdrawal();
+  epoch++; careerPage = null; careerSelectedJob = ""; clearHistory(); clearEvent(); clearEntry(); clearPreview(); clearCards(); pageItems = []; watched = null; savedOperation = null; lastViewedJob = ''; pageAfter = pageNext = 0; rosterFirst = 1; rosterNext = 0; pageRevision = null; mode = 'recent';
   if (clearFlow) { flow = null; mutationMessage = ''; }
 }
-function disconnected() { forgetView(false); current = stable = null; connectionError = 'The local gym is unavailable. Saved changes remain on disk; reconnect before continuing.'; render(); }
+function disconnected() { forgetView(false); hostedRoot = null; current = stable = null; connectionError = 'The local gym is unavailable. Saved changes remain on disk; reconnect before continuing.'; render(); }
 function textError(code) {
   return ({ career_candidate_ineligible: 'C1 bookings require zero professional records. The affected fighters remain in your inventory.', career_inactive: 'Career accounting is waiting for both fixture gyms.', career_unfenced: 'Career accounting has not sealed this noon cutoff yet.', career_unavailable: 'Career evidence is unavailable. No zero-record fallback was used.', career_capacity: 'Career cutoff storage reached its bounded capacity.', busy: 'Another local task is finishing. Try again shortly.', stable_sync_required: 'Saved candidates are still syncing. Resume syncing, then retry this choice.', stable_conflict: 'The roster changed. Refresh it before making a new choice.', stable_pending: 'A saved choice is awaiting reconciliation.', stable_capacity: 'This demo store reached its supported capacity. Existing candidates and outcomes remain available.', stable_clock: 'The authority clock needs attention. Condition and edits are unavailable.', stable_cancelled: 'The request was cancelled.', stale_view: 'This account view has expired. Sign in again.', unauthorized: 'Sign in again to continue.', forbidden: 'This action is unavailable for the current session.', stable_not_found: 'That saved result is unavailable. Reload the page or check the saved change.', outcome_unknown: 'The change may have been saved. Check its recorded outcome before trying another choice.' })[code] ?? 'The local stable could not complete the request. Its saved data has been retained.';
 }
@@ -371,10 +522,11 @@ function makeCard(i) {
   const preview = element('button', '', 'Select for preview'); preview.type = 'button'; preview.addEventListener('click', () => selectPreview(i));
   const entry = element('button', '', 'Add to Saturday draft'); entry.type = 'button'; entry.addEventListener('click', () => selectEntry(i));
   actions.append(assign, save, retry, preview, entry); article.append(actions);
+  const history = element('button', '', 'View finalized history'); history.type = 'button'; history.hidden = !careerMode; history.addEventListener('click', () => selectHistory(i)); actions.append(history);
   const details = element('details'), summary = element('summary', '', 'Verified identity'); details.append(summary); const dl = element('dl');
   for (const [name, value] of [['Prospect ID', a.prospect_id], ['Assignment sequence', a.sequence], ['Accepted', date.format(new Date(a.accepted_at_ms))], ['Manifest digest', a.manifest_digest], ['Portrait digest', a.portrait_digest], ['Source receipt digest', a.source_record_digest]]) dl.append(element('dt', '', name), element('dd', '', value));
   details.append(dl); article.append(details);
-  return { article, image, placeholder, assign, save, retry, preview, entry, select, details, item: i, fingerprint: JSON.stringify([i, careerForItem(i)]) };
+  return { article, image, placeholder, assign, save, retry, preview, entry, history, select, details, item: i, fingerprint: JSON.stringify([i, careerForItem(i)]) };
 }
 function renderCards() {
   const want = new Set(pageItems.map((i) => i.assignment.prospect_id));
@@ -390,8 +542,9 @@ function renderCards() {
     if (c && c.fingerprint !== JSON.stringify([i, careerForItem(i)])) { const previous = c; requireValue(same(c.item.assignment, i.assignment) && same(c.item.manifest, i.manifest)); c = makeCard(i); c.select.value = previous.select.value; c.details.open = previous.details.open; previous.image.removeAttribute('src'); previous.article.remove(); cards.set(id, c); }
     if (!c) { c = makeCard(i); cards.set(id, c); }
     if (ui.cards.children[position] !== c.article) ui.cards.insertBefore(c.article, ui.cards.children[position] ?? null);
-    c.preview.disabled = (careerMode && (!careerForItem(i) || !careerPreviewReady())) || !ready() || !!command || previewSelected.some((v) => v.id === id) || previewSelected.length >= 2;
+    c.preview.disabled = poolMode || (careerMode && (!careerForItem(i) || !careerPreviewReady())) || !ready() || !!command || previewSelected.some((v) => v.id === id) || previewSelected.length >= 2;
     c.entry.disabled = (careerMode && (!careerForItem(i) || careerForItem(i).totals.xp > 0)) || !entryReady() || !!command || entryDraft.length >= 5 || entryDraft.some((d) => d.id === id) || !stable.status.slots.includes(id) || i.condition.phase === 'retired';
+    c.history.hidden = !careerMode; c.history.disabled = !ready() || !!command || !!historyWatch || historyUnknown || evidenceBusy();
     c.assign.disabled = !canEdit(); c.select.disabled = !canEdit(); c.save.disabled = !ready() || !!command || !!watched; c.retry.disabled = !ready() || !!command;
     if (images.has(key(i))) { c.image.setAttribute('src', images.get(key(i))); c.image.hidden = false; c.placeholder.hidden = true; }
   }
@@ -401,19 +554,26 @@ function render() {
   const navigationBusy = !!watched && !['sync', 'inventory', 'roster'].includes(watched.kind);
   const s = current, signed = ready(), accountSigned = accountReady(), live = ['starting', 'running'].includes(s?.state), preparing = ['signing_in', 'resetting'].includes(s?.account.state), st = stable?.status;
   content(ui.state, s ? label(s.state) : 'Connecting'); content(ui['account-state'], label(s?.account.state ?? 'signed_out'));
-  content(ui['account-copy'], accountSigned ? `${s.account.fixture === 'zero256' ? 'Demo A' : 'Demo B'} keeps the same wallet, gym and candidate stable.` : preparing ? 'Preparing the retained demo gym…' : 'Choose a demo account. Saved candidates sync automatically; mining starts only with Start.');
+  const resetPending = hostedPoolMode && s?.account.last_error === 'hosted_reset_pending' && ['signed_out', 'failed'].includes(s?.account.state) && Object.hasOwn(fixtures, s?.account.fixture);
+  const hostedCaption = document.getElementById('hosted-fixture-caption');
+  if (hostedCaption) hostedCaption.hidden = !hostedPoolMode;
+  content(ui['account-copy'], resetPending ? `The verified reset for ${s.account.fixture === 'zero256' ? 'Demo A' : 'Demo B'} needs to finish. Resume the same reset to recover access to its retained wallet.` : accountSigned ? `${s.account.fixture === 'zero256' ? 'Demo A' : 'Demo B'} keeps the same wallet, gym and candidate stable.` : preparing ? 'Preparing the retained demo gym…' : 'Choose a demo account. Saved candidates sync automatically; mining starts only with Start.');
   content(ui.hold, s?.account.held ? 'The 24-hour recovery hold is active. Viewing, mining and reversible roster moves are available; recovery backup export and test-result signing remain held.' : '');
   for (const id of ['login-a', 'login-b']) ui[id].disabled = !enabled || !!command || !s || !['signed_out', 'failed', 'expired'].includes(s.account.state) || !!s.view;
-  ui.logout.disabled = !accountSigned || !!command; ui.reset.disabled = !accountSigned || !!command;
-  ui.mining.disabled = !enabled || !!command || (!accountSigned && !preparing) || s?.state === 'stopping'; content(ui.mining, live ? 'Stop mining' : preparing ? 'Stop preparing' : 'Start mining');
+  ui.logout.disabled = !accountSigned || !!command; ui.reset.disabled = (!accountSigned && !resetPending) || !!command;
+  content(ui.reset, resetPending ? 'Resume fixture reset' : 'Simulate verified password reset');
+  ui.mining.disabled = !enabled || !!command || (!accountSigned && !preparing) || s?.state === 'stopping' || (!live && evidenceBusy()) || (poolMode && s?.backup_state === 'running'); content(ui.mining, live ? 'Stop mining' : preparing ? 'Stop preparing' : 'Start mining');
   content(ui['mining-copy'], publicationNodeConnected() ? 'Connected for publication. Start mining when ready, or disconnect the test nodes below.' : preparing ? 'Preparing your retained identity. Stop drains work already in progress.' : live ? 'Mining is active. New saved candidates update the stable automatically.' : 'Syncing and viewing do not create mining jobs. Start only when you are ready.');
-  for (const [id, value] of [['attempts', s?.attempts ?? 0], ['accepted', s?.accepted_count ?? 0], ['pending', s?.pending ?? 0], ['height', s?.height ?? 0]]) content(ui[id], number.format(value));
+  for (const [id, value] of [['attempts', s?.attempts ?? 0], ['accepted', (poolMode ? s?.assignment_count : s?.accepted_count) ?? 0], ['pending', s?.pending ?? 0], ['height', s?.height ?? 0]]) content(ui[id], number.format(value));
   content(ui.rate, live ? `${number.format(s.hashes_per_second)} hashes / second` : 'Not mining'); content(ui['wallet-state'], label(s?.wallet_state ?? 'closed'));
   content(ui.spendable, accountSigned ? coin.format(s.spendable_atoms / 1e8) : '—'); content(ui.immature, accountSigned ? coin.format(s.immature_atoms / 1e8) : '—'); content(ui['wallet-height'], accountSigned ? `Wallet height ${number.format(s.wallet_height)} · Rewards mature after 100 blocks.` : 'Rewards mature after 100 blocks.');
   content(ui.payout, accountSigned ? s.payout_address : 'Sign in to load the demo wallet'); content(ui['gym-id'], accountSigned ? s.gym_id : '—');
-  ui['export-recovery'].disabled = !accountSigned || !!command || live || publicationNodeConnected() || !!watched || !s.account.can_export || s.backup_state === 'running'; ui['verify-backup'].disabled = !accountSigned || !!command || live || publicationNodeConnected() || !!watched || s.backup_state === 'running';
-  content(ui.backup, s?.backup_state === 'running' ? `${backupPhases[s.backup_phase] || 'Checking the backup'}…` : s?.backup_state === 'succeeded' ? 'Backup verification completed.' : s?.backup_state === 'failed' ? 'Backup verification failed; the original wallet remains retained.' : publicationNodeConnected() ? 'Disconnect test nodes before saving or verifying a wallet backup.' : 'Stop mining to save or verify a wallet backup.');
-  content(ui['stable-state'], stable ? label(stable.state) : 'Not connected'); content(ui['stable-count'], signed ? `${number.format(st.checkpoint)} assigned candidates · ${number.format(st.observed_source_count)} saved receipts last observed` : 'Sign in to load your assigned candidates.');
+  const poolBackupRunning = poolMode && s?.backup_state === 'running';
+  ui['export-recovery'].disabled = !accountSigned || !!command || live || publicationNodeConnected() || !!watched || !s.account.can_export || s.backup_state === 'running';
+  ui['verify-backup'].disabled = !accountSigned || !!command || (!poolBackupRunning && (live || publicationNodeConnected() || !!watched || s.backup_state === 'running'));
+  content(ui['verify-backup'], poolBackupRunning ? 'Cancel backup verification' : 'Verify backup');
+  content(ui.backup, poolMode && s?.backup_error === 'backup_export_uncertain' ? 'The recovery file may already be saved. Check the selected destination before trying again.' : poolMode && s?.backup_error === 'backup_unavailable' ? 'The backup operation is temporarily unavailable. Retry after pending payments confirm and the test node is available.' : s?.backup_state === 'running' ? `${backupPhases[s.backup_phase] || 'Checking the backup'}…` : s?.backup_state === 'succeeded' ? 'Backup verification completed.' : s?.backup_state === 'failed' ? poolMode ? 'The backup operation failed; the original wallet remains retained.' : 'Backup verification failed; the original wallet remains retained.' : s?.backup_state === 'cancelled' ? 'Backup verification cancelled; the original wallet remains retained.' : publicationNodeConnected() ? 'Disconnect test nodes before saving or verifying a wallet backup.' : 'Stop mining to save or verify a wallet backup.');
+  content(ui['stable-state'], stable ? label(stable.state) : 'Not connected'); content(ui['stable-count'], signed ? `${number.format(poolMode ? s.assignment_count : st.checkpoint)} assigned candidates · ${number.format(st.observed_source_count)} ${poolMode ? 'shared ' : ''}saved receipts last observed` : 'Sign in to load your assigned candidates.');
   content(ui['stable-progress'], signed ? (st.caught_up ? 'Caught up to the last observed receipt count. New arrivals are checked automatically.' : `Syncing saved history: ${st.checkpoint} of ${st.observed_source_count}. Verified partial pages remain available.`) : '');
   ui.sync.disabled = !signed || !!command || !!watched; ui['pause-sync'].disabled = !signed || !!command || (!stable.active_job_id && !stable.queued_job_id && stable.state !== 'syncing');
   ui['cancel-job'].disabled = !signed || !!command || !(watched?.id || stable.active_job_id || stable.queued_job_id);
@@ -423,42 +583,57 @@ function render() {
   content(ui['candidates-heading'], mode === 'roster' ? 'Roster details' : mode === 'inventory' ? 'Candidate inventory' : 'Recent candidates');
   content(ui['page-label'], pageItems.length ? (mode === 'roster' ? `Roster slots ${rosterFirst}–${Math.min(rosterFirst + 7, 10)}` : `Showing ${pageItems.length} verified candidates${mode === 'inventory' ? ` after sequence ${pageAfter}` : ''}`) : 'No verified page loaded');
   content(ui.coverage, 'Condition is dated by the authority on each card. Browser time never changes its attributes or rating. Selecting a roster does not grant fight eligibility.');
-  content(ui['empty-copy'], signed ? (st.checkpoint ? 'Choose Recent, Full inventory or Roster details to load a verified page.' : 'Saved history is syncing. Start mining separately when you are ready.') : 'Sign in to load your retained demo gym.');
+  content(ui['empty-copy'], signed ? ((poolMode ? s.assignment_count : st.checkpoint) ? 'Choose Recent, Full inventory or Roster details to load a verified page.' : 'Saved history is syncing. Start mining separately when you are ready.') : 'Sign in to load your retained demo gym.');
   content(ui['mutation-state'], signed ? mutationMessage || (st.pending_operation_id ? 'A saved roster choice needs review before another change.' : 'Roster choices take effect only after their durable outcome is confirmed.') : '');
   ui.reconcile.disabled = !signed || !!command || !!watched || !(flow || st.pending_operation_id || st.last_operation_id);
   const pending = savedOperation?.state === 'prepared' ? savedOperation : null;
   ui['apply-saved'].disabled = !signed || !!command || !!watched || !pending || pending.intent.view_id !== s.view.view_id || pending.intent.generation !== s.view.generation || !st.caught_up;
   ui.abandon.disabled = !signed || !!command || !!watched || !pending;
-  content(ui.alert, connectionError || message || (stable?.error ? textError(stable.error) : '')); ui.alert.hidden = !ui.alert.textContent;
-  renderRoster(); renderCards(); renderPreview(); renderEntry(); renderEvent(); renderSeed(); renderCard(); renderBooked(); renderPublication();
+  content(ui.alert, connectionError || message || (stable?.error ? textError(stable.error) : '') || (poolMode && s?.last_error ? ['capacity', 'pool_capacity'].includes(s.last_error) ? 'Mining is paused because the demo pool reached its retained capacity. Existing earnings and fighters are saved.' : 'The pool miner needs attention. Stop and retry when the local service is available.' : '')); ui.alert.hidden = !ui.alert.textContent;
+  renderPool(); renderRoster(); renderCards(); renderPreview(); renderEntry(); renderEvent(); renderSeed(); renderCard(); renderBooked(); renderPublication(); renderHistory(); renderHostedRecovery();
 }
 async function call(method, ...args) { requireValue(!activeCall); const p = Call.ByName(`main.Gym.${method}`, ...args); activeCall = p; try { return await p; } finally { activeCall = null; } }
 function schedule() { if (timer !== null) clearTimeout(timer); timer = null; if (!disposed && enabled && !document.hidden) timer = setTimeout(() => { timer = null; pollWanted = true; pump(); }, 1000); }
 function queue(fn, name, invalidate = false) {
   if (!enabled || disposed || command) return;
-  if (invalidate) { forgetView(); current = stable = null; rememberedView = ''; }
+  if (invalidate) { forgetView(); hostedRoot = null; current = stable = null; rememberedView = ''; }
   command = name; render(); tasks.unshift(async () => { try { await fn(); } finally { command = ''; render(); pollWanted = true; } }); pump();
 }
 async function fetchSnapshots() {
-  const captured = epoch;
+  let captured = epoch;
   try {
-    const m = normalize(await call('ManifestSnapshot')); if (disposed || captured !== epoch) return;
+    let m;
+    if (hostedRecoveryMode) {
+      const root = normalizeHosted(await call('HostedRecoverySnapshot')); if (disposed || captured !== epoch) return;
+      if (hostedOwnerKey(root) !== hostedOwnerKey()) { forgetView(); captured = epoch; rememberedView = ''; current = stable = null; message = ''; }
+      hostedRoot = root; connectionError = '';
+      if (root.kind !== 'healthy') { current = stable = null; render(); return; }
+      m = normalizePool(root.healthy.pool);
+    } else m = poolMode ? normalizePool(await call('PoolSnapshot')) : normalize(await call('ManifestSnapshot'));
+    if (disposed || captured !== epoch) return;
     const r = response(await call('StableSnapshot'), 'snapshot', m, stable); if (disposed || captured !== epoch) return;
     requireValue(r.ok); const next = r.value, nextKey = viewKey(m.view);
     if (nextKey !== rememberedView) { forgetView(); rememberedView = nextKey; stable = null; message = ''; }
     if (!nextKey) { current = m; stable = next; connectionError = ''; render(); return; }
+    if (poolMode && current?.view && nextKey === viewKey(current.view)) requireValue(m.source_binding_id === current.source_binding_id && m.assignment_count >= current.assignment_count);
     freshStatus(next); current = m; stable = next; connectionError = '';
     if (mode === 'roster' && pageRevision !== null && stablyChangedRoster()) { clearCards(); pageItems = []; pageRevision = null; message = 'The roster changed. Reload its details to view the current selection.'; }
     render();
     const id = watched?.id || next.last_job_id;
     if (id && (watched || id !== lastViewedJob)) await fetchJob(id);
-    if (!disposed && ready() && !tasks.length) await fetchPreviewSnapshot();
+    if (!poolMode && !disposed && ready() && !tasks.length) await fetchPreviewSnapshot();
     if (!disposed && ready() && !tasks.length) await fetchEntrySnapshot();
     if (!disposed && ready() && !tasks.length) await fetchEventSnapshot();
     if (!disposed && ready() && !tasks.length) await fetchSeedSnapshot();
     if (!disposed && ready() && !tasks.length) await fetchCardSnapshot();
     if (!disposed && ready() && !tasks.length) await fetchBookedSnapshot();
     if (!disposed && ready() && !tasks.length) await fetchPublicationSnapshot();
+    if (!disposed && ready() && !tasks.length && careerMode && (historySelection || historyUnknown)) await fetchHistorySnapshot();
+    if (!disposed && ready() && !tasks.length && evidenceBusy()) await fetchEvidenceSnapshot();
+    if (!disposed && accountReady() && !tasks.length && hostedRecoveryMode && hostedReceiveBusy()) await fetchHostedReceive();
+    if (!disposed && accountReady() && !tasks.length && payoutBusy()) await fetchPayout();
+    if (!disposed && accountReady() && !tasks.length && activityBusy()) await fetchActivity();
+    if (!disposed && accountReady() && !tasks.length && poolMode && (!withdrawalBinding || withdrawalBusy())) await fetchWithdrawal();
   } catch { if (!disposed && captured === epoch) disconnected(); }
 }
 function stablyChangedRoster() { return stable.status.roster_revision !== pageRevision; }
@@ -475,6 +650,7 @@ function acceptItems(items, kind, data) {
   }
   requireValue(pageItems.length <= 8);
   if (!previewCapacity()) { [pageItems, mode, pageAfter, pageNext, pageRevision, rosterFirst, rosterNext] = priorPage; message = 'The display cache is full. Clear a detail or replay before loading another page; the current page is retained.'; render(); return; }
+  if (poolMode && kind === 'inventory' && mode === 'inventory') { inventoryCursors.add(data.after); if (inventoryCursors.size > 128) inventoryCursors.delete(Math.min(...[...inventoryCursors].filter((v) => v > 0))); }
   render(); content(ui.announcement, `${pageItems.length} verified candidates shown. Conditions keep their stated observation time.`);
 }
 async function fetchJob(id) {
@@ -502,7 +678,7 @@ async function fetchJob(id) {
       flow = null; savedOperation = null; mutationMessage = j.mutation.receipt.changed ? 'Roster saved. Refreshing the current selection…' : 'The roster was already set to that choice.'; pollWanted = true;
     } else {
       const data = j[{ sync: 'sync', inventory: 'page', roster: 'roster' }[j.kind]];
-      if (w?.id === id && w.args) { if (j.kind === 'inventory') requireValue(w.recent ? data.after === Math.max(data.status.checkpoint - 8, 0) && data.next_after === data.status.checkpoint && data.items.length <= 8 : data.after === w.args[0] && data.items.length <= w.args[1]); if (j.kind === 'roster') requireValue(data.first_slot === w.args[0] && data.next_slot === (w.args[0] + w.args[1] > 10 ? 0 : w.args[0] + w.args[1])); }
+      if (w?.id === id && w.args) { if (j.kind === 'inventory') requireValue(w.recent ? (poolMode || data.after === Math.max(data.status.checkpoint - 8, 0)) && !data.has_more && data.next_after === data.status.checkpoint && data.items.length <= 8 : data.after === w.args[0] && data.items.length <= w.args[1]); if (j.kind === 'roster') requireValue(data.first_slot === w.args[0] && data.next_slot === (w.args[0] + w.args[1] > 10 ? 0 : w.args[0] + w.args[1])); }
       if (j.kind === 'roster' && data.status.roster_revision !== stable.status.roster_revision) message = 'The roster changed. Reload its details.';
       else if (j.kind === 'sync' || w?.id === id) {
         if (!careerMode) acceptItems(data.items, j.kind, data);
@@ -585,16 +761,16 @@ async function cancelJob(id) {
 async function oldAction(method, args = [], expectedID = '') {
   if (!enabled || command) return;
   pauseBooked();
-  if (method === 'Stop') { entryChanged(); if (eventStatus && eventAutoAttempted.size < 256) eventAutoAttempted.add(eventStatus.event.event_id); }
-  const capturedView = currentKey(); if (expectedID && !pageItems.some((i) => i.assignment.prospect_id === expectedID)) return;
+  if (method === 'Stop') { clearHistory(); entryChanged(); if (eventStatus && eventAutoAttempted.size < 256) eventAutoAttempted.add(eventStatus.event.event_id); }
+  const capturedView = actionOwnerKey(); if (expectedID && !pageItems.some((i) => i.assignment.prospect_id === expectedID)) return;
   const invalidate = ['LoginFixture', 'Logout', 'ResetFixtureAccount'].includes(method);
   queue(async () => {
     let result, failed = false;
     try { result = await call(method, ...args); const allowed = { ExportManifestReceipt: ['', 'Receipt saved.'], ExportRecovery: ['', 'Test wallet recovery file saved.'], VerifyBackup: ['', 'Backup verification started.'] }; if (allowed[method]) requireValue(allowed[method].includes(result)); }
     catch { failed = true; }
     await fetchSnapshots();
-    if (disposed || (!invalidate && capturedView !== currentKey())) return;
-    message = failed ? 'The requested action did not complete. Check the current gym and try again.' : typeof result === 'string' ? result : '';
+    if (disposed || (!invalidate && capturedView !== actionOwnerKey())) return;
+    message = failed ? poolMode && method === 'ExportRecovery' ? 'Recovery export did not report completion. Check the selected destination before trying again.' : 'The requested action did not complete. Check the current gym and try again.' : typeof result === 'string' ? result : '';
   }, method, invalidate);
 }
 async function loadPortrait(i) {
@@ -603,8 +779,8 @@ async function loadPortrait(i) {
   try {
     const p = await call('ManifestPortrait', i.assignment.sequence); if (!remains()) return;
     exact(p, ['version', 'view', 'sequence', 'id', 'manifest_digest', 'portrait_digest', 'svg']); const a = i.assignment;
-    requireValue(p.version === 1 && viewKey(checkedView(p.view)) === view && p.sequence === a.sequence && p.id === a.prospect_id && p.manifest_digest === a.manifest_digest && p.portrait_digest === a.portrait_digest && imageOnlySVG(p.svg));
-    const src = `data:image/svg+xml;base64,${btoa(p.svg)}`; requireValue([...images.entries()].reduce((n, [other, v]) => n + (other === k ? 0 : 2 * v.length), 2 * src.length) + JSON.stringify(pageItems).length + careerRetainedBytes() + previewRetainedBytes() + entryRetainedBytes() + eventRetainedBytes() + seedRetainedBytes() + cardRetainedBytes() + bookedRetainedBytes() + publicationRetainedBytes() <= CACHE_MAX && images.size <= 8);
+    requireValue(p.version === 1 && viewKey(checkedView(p.view)) === view && p.sequence === a.sequence && p.id === a.prospect_id && p.manifest_digest === a.manifest_digest && p.portrait_digest === a.portrait_digest && imageOnlySVG(p.svg, a.descriptor_id));
+    const src = `data:image/svg+xml;base64,${btoa(p.svg)}`; requireValue([...images.entries()].reduce((n, [other, v]) => n + (other === k ? 0 : 2 * v.length), 2 * src.length) + JSON.stringify(pageItems).length + careerRetainedBytes() + previewRetainedBytes() + entryRetainedBytes() + eventRetainedBytes() + seedRetainedBytes() + cardRetainedBytes() + bookedRetainedBytes() + publicationRetainedBytes() + historyRetainedBytes() <= CACHE_MAX && images.size <= 8);
     if (!remains()) return; images.set(k, src); const c = cards.get(a.prospect_id); c.image.setAttribute('src', src); c.image.hidden = false; c.placeholder.hidden = true;
   } catch { if (remains()) { const c = cards.get(i.assignment.prospect_id); c.image.removeAttribute('src'); c.image.hidden = true; c.placeholder.hidden = false; content(c.placeholder, 'Portrait unavailable. Reload it from the current verified page.'); } }
 }
@@ -682,7 +858,7 @@ function previewEnvelope(v, kind) {
       const p = r.pair; exact(p, ['version', 'status', 'as_of_ms', 'fighters']); requireValue(p.version === 1 && int(p.as_of_ms, 1, DATE_MAX) && p.status.last_as_of_ms === p.as_of_ms && p.status.store_id === value.store_id && same(p.status.pin, stable.status.pin) && JSON.stringify(p).length <= 24576); status(p.status, value.view, current.account.fixture); pairArray(p.fighters, (i) => fullItem(i, p.status, p.as_of_ms));
       const ids = [value.fighter_a_id, value.fighter_b_id]; requireValue(p.fighters.every((i, n) => i.assignment.prospect_id === ids[n]) && p.fighters[0].manifest.physical.weight_class === p.fighters[1].manifest.physical.weight_class);
       const recipe = r.recipe; exact(recipe, ['version', 'engine_version', 'engine_id', 'network', 'genesis', 'store_id', 'source_authority_id', 'descriptor_id', 'as_of_ms', 'rounds', 'training', 'fighters']);
-      requireValue(recipe.version === 1 && recipe.engine_version === 1 && recipe.engine_id === PREVIEW_ENGINE && recipe.network === 0x534c5547 && recipe.genesis === GENESIS && recipe.store_id === value.store_id && recipe.source_authority_id === p.status.pin.source.authority_id && recipe.descriptor_id === DESCRIPTOR && recipe.as_of_ms === p.as_of_ms && recipe.rounds === 3 && JSON.stringify(recipe).length <= 4096);
+      requireValue(recipe.version === 1 && recipe.engine_version === 1 && recipe.engine_id === PREVIEW_ENGINE && recipe.network === 0x534c5547 && recipe.genesis === GENESIS && recipe.store_id === value.store_id && recipe.source_authority_id === p.status.pin.source.authority_id && recipe.descriptor_id === p.status.pin.source.descriptor_id && recipe.as_of_ms === p.as_of_ms && recipe.rounds === 3 && JSON.stringify(recipe).length <= 4096);
       pairArray(recipe.training, (x) => requireValue(x === 0)); pairArray(recipe.fighters, (f, n) => { exact(f, ['prospect_id', 'source_record_digest', 'manifest_digest', 'condition_digest']); const a = p.fighters[n].assignment; requireValue(f.prospect_id === ids[n] && f.source_record_digest === a.source_record_digest && f.manifest_digest === a.manifest_digest && hex(f.condition_digest)); }); boutValue(r.engine_result, ids);
     }
   }
@@ -696,7 +872,7 @@ function careerPreviewActivationValue(a) {
   if (publicationAuthority) requireValue(a.result_store_id === publicationAuthority.storeID && a.result_created_at_ms === publicationAuthority.createdMS && a.source_created_at_ms === publicationAuthority.sourceCreatedMS);
 }
 function careerPreviewFighter(i, st, asOf) {
-  exact(i, ['assignment','manifest','totals','condition']); assignment(i.assignment, st.pin.identity); manifestValue(i.manifest, i.assignment.work_hash);
+  exact(i, ['assignment','manifest','totals','condition']); assignment(i.assignment, st.pin.identity, st.pin.source.descriptor_id); manifestValue(i.manifest, i.assignment.work_hash, st.pin.source.descriptor_id);
   const t=i.totals; exact(t,['wins','losses','draws','xp','base_points']);
   requireValue(['wins','losses','draws'].every(k=>int(t[k],0,256)) && t.wins+t.losses+t.draws<=256 && t.xp===Math.min(15,t.wins+t.losses+t.draws) && int(t.base_points,10*t.wins+4*t.draws,14*t.wins+4*t.draws) && (t.base_points-10*t.wins-4*t.draws)%4===0);
   careerCondition(i.condition,i,asOf,t.xp); requireValue(i.assignment.sequence <= st.checkpoint && entryBytes(i)<=8448);
@@ -723,7 +899,7 @@ function careerPreviewEnvelope(v, kind) {
       const p = r.pair; exact(p, ['version', 'status', 'activation', 'career_digest', 'as_of_ms', 'fighters']); requireValue(p.version === 1 && int(p.as_of_ms, 1, DATE_MAX) && p.status.last_as_of_ms === p.as_of_ms && p.status.store_id === value.store_id && same(p.status.pin, stable.status.pin) && JSON.stringify(p).length <= 24576); status(p.status, value.view, current.account.fixture); careerPreviewActivationValue(p.activation); requireValue(p.activation.activation_id === value.activation_id && hex(p.career_digest) && p.as_of_ms >= p.activation.activated_at_ms); pairArray(p.fighters, (i) => careerPreviewFighter(i, p.status, p.as_of_ms));
       const ids = [value.fighter_a_id, value.fighter_b_id]; requireValue(p.fighters.every((i, n) => i.assignment.prospect_id === ids[n]) && p.fighters[0].manifest.physical.weight_class === p.fighters[1].manifest.physical.weight_class);
       const recipe = r.recipe; exact(recipe, ['version', 'engine_version', 'engine_id', 'network', 'genesis', 'store_id', 'source_authority_id', 'descriptor_id', 'activation_id', 'career_digest', 'as_of_ms', 'rounds', 'training', 'fighters']);
-      requireValue(recipe.version === 1 && recipe.engine_version === 1 && recipe.engine_id === PREVIEW_ENGINE && recipe.network === 0x534c5547 && recipe.genesis === GENESIS && recipe.store_id === value.store_id && recipe.source_authority_id === p.status.pin.source.authority_id && recipe.descriptor_id === DESCRIPTOR && recipe.activation_id === value.activation_id && recipe.career_digest === p.career_digest && recipe.as_of_ms === p.as_of_ms && recipe.rounds === 3 && JSON.stringify(recipe).length <= 4096);
+      requireValue(recipe.version === 1 && recipe.engine_version === 1 && recipe.engine_id === PREVIEW_ENGINE && recipe.network === 0x534c5547 && recipe.genesis === GENESIS && recipe.store_id === value.store_id && recipe.source_authority_id === p.status.pin.source.authority_id && recipe.descriptor_id === p.status.pin.source.descriptor_id && recipe.activation_id === value.activation_id && recipe.career_digest === p.career_digest && recipe.as_of_ms === p.as_of_ms && recipe.rounds === 3 && JSON.stringify(recipe).length <= 4096);
       pairArray(recipe.training, (x) => requireValue(x === 0)); pairArray(recipe.fighters, (f, n) => { exact(f, ['prospect_id', 'source_record_digest', 'manifest_digest', 'condition_digest', 'totals']); const a = p.fighters[n].assignment; requireValue(f.prospect_id === ids[n] && f.source_record_digest === a.source_record_digest && f.manifest_digest === a.manifest_digest && hex(f.condition_digest) && same(f.totals, p.fighters[n].totals)); }); boutValue(r.engine_result, ids);
     }
   }
@@ -738,7 +914,7 @@ function pausePreview() { if (playbackTimer !== null) clearTimeout(playbackTimer
 function discardPreviewResult() { pausePreview(); previewResult = null; playbackSteps = []; playbackIndex = 0; previewImages.clear(); previewImageAttempts.clear(); previewRendered = ''; ui['preview-fighters'].textContent = ''; ui['preview-events'].textContent = ''; ui['preview-scores'].textContent = ''; }
 function clearPreview() { previewSerial++; discardPreviewResult(); previewSelected = []; previewWatch = null; previewDiscovery = null; previewSnapshot = null; previewMessage = ''; ui['preview-selection'].textContent = ''; }
 function previewRetainedBytes() { return JSON.stringify(previewSelected).length + (previewResult ? JSON.stringify(previewResult).length + 65536 : 0) + [...previewImages.values()].reduce((n, src) => n + 2 * src.length, 0); }
-function previewCapacity(extra = 0) { return careerRetainedBytes() + previewRetainedBytes() + entryRetainedBytes() + eventRetainedBytes() + seedRetainedBytes() + cardRetainedBytes() + bookedRetainedBytes() + publicationRetainedBytes() + JSON.stringify(pageItems).length + [...images.values()].reduce((n, src) => n + 2 * src.length, 0) + extra <= CACHE_MAX; }
+function previewCapacity(extra = 0) { return careerRetainedBytes() + previewRetainedBytes() + entryRetainedBytes() + eventRetainedBytes() + seedRetainedBytes() + cardRetainedBytes() + bookedRetainedBytes() + publicationRetainedBytes() + historyRetainedBytes() + JSON.stringify(pageItems).length + [...images.values()].reduce((n, src) => n + 2 * src.length, 0) + extra <= CACHE_MAX; }
 function previewError(code) { return ({ preview_class_mismatch: 'Choose two candidates from the same weight class.', preview_not_found: 'This preview is no longer retained. Select your pair and explicitly preview again.', preview_capacity: 'The local preview cache is full. Clear the preview and retry.', preview_cancelled: 'Preview cancelled. No fight was recorded.', preview_observation_unknown: 'The authority could not confirm its clock observation. Reopen the gym before another preview. No fight was recorded.', outcome_unknown: 'The preview may have started. Check its status before explicitly trying again.', preview_unavailable: 'Fight preview is unavailable. Your saved candidates are retained.' })[code] ?? textError(code); }
 function previewRefusal(code) {
   if (['unauthorized', 'stale_view'].includes(code)) clearPreview();
@@ -754,6 +930,7 @@ function selectionChanged(next) {
   render(); pump();
 }
 function selectPreview(i) {
+  if (poolMode) return;
   if (careerMode && (!careerForItem(i) || !careerPreviewReady())) { previewMessage = 'Career practice is unavailable. Refresh the career page and try again.'; renderPreview(); return; }
   if (!ready() || command || previewSelected.length >= 2 || previewSelected.some((v) => v.id === i.assignment.prospect_id)) return;
   const next = { id: i.assignment.prospect_id, name: i.manifest.name.display, weightClass: i.manifest.physical.weight_class };
@@ -820,7 +997,7 @@ async function loadPreviewPortrait(item) {
     exact(r, ['version', 'ok', 'portrait']); const p = r.portrait;
     exact(p, ['version', 'view', 'store_id', 'job_id', 'prospect_id', ...(careerMode?['activation_id','career_digest']:[]), 'result_digest', 'descriptor_id', 'manifest_digest', 'portrait_digest', 'svg']);
     if(careerMode) requireValue(p.activation_id===j.activation_id && p.career_digest===j.result.pair.career_digest);
-    requireValue(p.version === 1 && viewKey(checkedView(p.view)) === currentKey() && p.store_id === j.store_id && p.job_id === j.job_id && p.prospect_id === a.prospect_id && p.result_digest === j.result.engine_result_digest && p.descriptor_id === DESCRIPTOR && p.manifest_digest === a.manifest_digest && p.portrait_digest === a.portrait_digest && imageOnlySVG(p.svg));
+    requireValue(p.version === 1 && viewKey(checkedView(p.view)) === currentKey() && p.store_id === j.store_id && p.job_id === j.job_id && p.prospect_id === a.prospect_id && p.result_digest === j.result.engine_result_digest && p.descriptor_id === a.descriptor_id && p.manifest_digest === a.manifest_digest && p.portrait_digest === a.portrait_digest && imageOnlySVG(p.svg, a.descriptor_id));
     const src = `data:image/svg+xml;base64,${btoa(p.svg)}`; requireValue(previewCapacity(2 * src.length) && previewImages.size < 2); if (!remains()) return; previewImages.set(a.prospect_id, src); renderPreview();
   } catch { if (remains()) { previewRefusal('preview_unavailable'); renderPreview(); } }
 }
@@ -869,6 +1046,7 @@ const ENTRY_MAX = 131072;
 const ENTRY_ERRORS = new Set([...CAREER_ACTION_ERRORS, 'invalid_request', 'unauthorized', 'forbidden', 'stale_view', 'busy', 'entry_unavailable', 'entry_corrupt', 'entry_capacity', 'entry_clock', 'entry_calendar', 'entry_closed', 'entry_conflict', 'entry_pending', 'entry_not_found', 'entry_sync_required', 'entry_not_rostered', 'entry_retired', 'entry_class_conflict', 'entry_cancelled', 'outcome_unknown']);
 let entrySnapshot = null, entryStore = '', entryNamespace = '', entryUnavailable = false, entryDate = '', entryStatus = null;
 let entryDraft = [], entrySerial = 0, entryWatch = null, entryFlow = null, entryOperation = null, entryTerminal = null, entryHistory = null, entryMessage = '', entryUnknown = false;
+function poolBackupRunning() { return poolMode && current?.backup_state === 'running'; }
 function entryReady() { return ready() && !entryUnavailable && !!entrySnapshot?.view && entryStore === entrySnapshot.store_id; }
 function entryBytes(value) { return JSON.stringify(value).length; } // All validated text is bounded ASCII.
 function entryRetainedBytes() { return entryBytes([entrySnapshot, entryDate, entryStatus, entryDraft, entryWatch, entryFlow, entryOperation, entryTerminal, entryHistory, entryMessage]) + (entryWatch ? 65536 : 0); }
@@ -905,7 +1083,7 @@ function entryReceipt(r) {
   exact(r, ['version', 'store_id', 'entry_id', 'event', 'operation_id', 'operation_sequence', 'generation', 'view_id', 'action', 'previous_revision', 'revision', 'roster_revision', 'stable_checkpoint', 'observed_source_count', 'committed_at_ms', 'members']); entryEvent(r.event);
   requireValue(r.version === 1 && r.store_id === entryStore && ['entry_id', 'operation_id', 'view_id'].every((k) => hex(r[k])) && int(r.operation_sequence, 1, 4096) && int(r.generation, 1) && ['replace', 'withdraw'].includes(r.action) && int(r.previous_revision, 0, 4095) && r.revision === r.previous_revision + 1 && int(r.roster_revision, 0, 4096) && int(r.stable_checkpoint, 0, 1000) && int(r.observed_source_count, r.stable_checkpoint, 1000) && int(r.committed_at_ms, 1, r.event.cutoff_ms - 1));
   requireValue(Array.isArray(r.members) && r.members.length <= 5 && (r.action === 'replace' ? r.members.length > 0 : r.members.length === 0 && r.roster_revision === 0)); const seenSlots = new Set(), seenClasses = new Set(); let previous = '';
-  for (const m of r.members) { exact(m, ['slot', 'assignment', 'class', 'condition_at_save']); assignment(m.assignment, stable.status.pin.identity); requireValue(int(m.slot, 1, 10) && classes.includes(m.class) && !seenSlots.has(m.slot) && !seenClasses.has(m.class) && m.assignment.prospect_id > previous && m.assignment.sequence <= r.stable_checkpoint); seenSlots.add(m.slot); seenClasses.add(m.class); previous = m.assignment.prospect_id; entrySavedCondition(m.condition_at_save, m.assignment, r.committed_at_ms); }
+  for (const m of r.members) { exact(m, ['slot', 'assignment', 'class', 'condition_at_save']); assignment(m.assignment, stable.status.pin.identity, stable.status.pin.source.descriptor_id); requireValue(int(m.slot, 1, 10) && classes.includes(m.class) && !seenSlots.has(m.slot) && !seenClasses.has(m.class) && m.assignment.prospect_id > previous && m.assignment.sequence <= r.stable_checkpoint); seenSlots.add(m.slot); seenClasses.add(m.class); previous = m.assignment.prospect_id; entrySavedCondition(m.condition_at_save, m.assignment, r.committed_at_ms); }
   return r;
 }
 function entryOperationValue(o) {
@@ -991,7 +1169,7 @@ async function fetchEntrySnapshot() {
   } catch { if (entryCurrent(c)) { entryUnavailable = true; entryMessage = entryError('entry_unavailable'); renderEntry(); } }
 }
 async function entryBegin(kind, q = null, op = null, auto = false) {
-  if (!entryReady() || entryWatch) return; const c = entryContext(); const selected = kind === 'apply' ? op.intent.request : q; const target = selected || { event_id: entryStatus?.event.event_id, saturday: entryDate };
+  if (!entryReady() || entryWatch || poolBackupRunning()) return; const c = entryContext(); const selected = kind === 'apply' ? op.intent.request : q; const target = selected || { event_id: entryStatus?.event.event_id, saturday: entryDate };
   if (kind === 'apply') requireValue(op.state === 'prepared' && op.intent.view_id === c.viewID && op.intent.generation === current.view.generation);
   const prior = entryTerminal; entryTerminal = null; const reservation = { id: '', kind, eventID: target.event_id, saturday: target.saturday, operationID: op?.intent.operation_id ?? '', request: selected ? own(selected) : null, context: c }; entryWatch = reservation;
   if (!entryCapacity()) { entryWatch = null; entryTerminal = prior; entryMessage = entryError('entry_capacity'); return; }
@@ -1031,7 +1209,7 @@ async function entryCancel() {
   catch { if (entryCurrent(c)) { entryUnknown = w.kind !== 'check'; entryMessage = entryError('outcome_unknown'); } } render();
 }
 async function entryAbandon() {
-  if (!entryReady() || entryOperation?.state !== 'prepared') return; const c = entryContext(), id = entryOperation.intent.operation_id; if (entryFlow) entryFlow.auto = false;
+  if (!entryReady() || poolBackupRunning() || entryOperation?.state !== 'prepared') return; const c = entryContext(), id = entryOperation.intent.operation_id; if (entryFlow) entryFlow.auto = false;
   try { const r = entryEnvelope(await call('AbandonEntryOperation', c.viewID, id), 'operation'); if (!entryCurrent(c)) return; if (!r.ok) { entryRefusal(r.error); if (r.error === 'outcome_unknown') { entryUnknown = true; await entryQuery(id); } return; } requireValue(r.value.operation.intent.operation_id === id && r.value.operation.state !== 'prepared'); entryOperation = r.value.operation; entryFlow = null; entryUnknown = false; entryMessage = entryOperation.state === 'abandoned' ? 'Prepared choice abandoned. Any prior saved entry is unchanged.' : 'This choice had already committed; abandoning does not withdraw it.'; await entryReadStatus(); }
   catch { if (entryCurrent(c)) { entryUnknown = true; entryMessage = entryError('outcome_unknown'); await entryQuery(id); } } render();
 }
@@ -1044,8 +1222,8 @@ function entryNavigate(dateValue) {
   queue(() => entryReadStatus(), 'entry-date'); render();
 }
 function renderEntry() {
-  const active = entryReady(), s = entryStatus, pending = entryOperation?.state === 'prepared' ? entryOperation : null, busy = !!command || !!entryWatch, accepting = active && s?.event.saturday === entryDate && s.phase === 'accepting';
-  content(ui['entry-state'], entryUnavailable ? 'Unavailable' : !active ? 'Sign in to view entries' : entryWatch ? 'Entry request in progress' : s?.phase === 'closed_pending_lock' ? 'Intake closed' : 'Candidate intake');
+  const active = entryReady(), s = entryStatus, pending = entryOperation?.state === 'prepared' ? entryOperation : null, busy = !!command || !!entryWatch || poolBackupRunning(), accepting = active && s?.event.saturday === entryDate && s.phase === 'accepting';
+  content(ui['entry-state'], entryUnavailable ? 'Unavailable' : !active ? 'Sign in to view entries' : poolBackupRunning() ? 'Wallet backup in progress' : entryWatch ? 'Entry request in progress' : s?.phase === 'closed_pending_lock' ? 'Intake closed' : 'Candidate intake');
   if (ui['entry-date'].value !== entryDate) ui['entry-date'].value = entryDate; ui['entry-date'].disabled = !active; ui['entry-upcoming'].disabled = !active || !!command; ui['entry-status'].disabled = !active || !entryDate || !!command;
   content(ui['entry-cutoff'], s ? `Saturday ${s.event.saturday} · Noon Pacific cutoff · ${new Date(s.event.cutoff_ms).toISOString()} (authority UTC)` : 'Choose an authority-provided Upcoming Saturday or a supported Saturday date.');
   content(ui['entry-saved'], s ? s.revision ? `Saved entry revision ${s.revision} · ${s.saved_ids.length} fighter${s.saved_ids.length === 1 ? '' : 's'} · Saved ${date.format(new Date(s.saved_at_ms))}.` : s.exists ? 'A choice is prepared; no entry has been saved yet.' : 'No saved entry for this Saturday.' : '');
@@ -1094,9 +1272,10 @@ function eventCurrent(c, selection = false) { return !disposed && ready() && c.e
 function eventPinValue(p) {
   exact(p, ['version', 'calendar_id', 'rules_id', 'participants']); requireValue(p.version === 1 && p.calendar_id === ENTRY_CALENDAR && hex(p.rules_id)); pairArray(p.participants, (e) => {
     exact(e, ['version', 'namespace_id', 'calendar_id', 'rules_id', 'stable_store_id', 'stable_pin']); requireValue(e.version === 1 && hex(e.namespace_id) && e.calendar_id === ENTRY_CALENDAR && e.rules_id === ENTRY_RULES && hex(e.stable_store_id));
-    const s = e.stable_pin; exact(s, ['version', 'account_authority_id', 'account_id', 'identity', 'source', 'condition_version', 'projector_id']); requireValue(s.version === 1 && s.account_authority_id === current.view.account_authority_id && hex(s.account_id) && s.condition_version === 1 && s.projector_id === 'slug-fighter-condition-candidate-v1');
+    const s = e.stable_pin; exact(s, ['version', 'account_authority_id', 'account_id', 'identity', 'source', 'condition_version', 'projector_id']); requireValue(s.version === (poolMode ? 2 : 1) && s.account_authority_id === current.view.account_authority_id && hex(s.account_id) && s.condition_version === 1 && s.projector_id === 'slug-fighter-condition-candidate-v1');
     const i = s.identity, a = s.source; exact(i, ['network', 'genesis', 'profile', 'root_public_key', 'gym_public_key', 'gym_id']); const f = Object.keys(fixtures).find((name) => fixtures[name][0] === i.gym_id); requireValue(!!f && i.network === 0x534c5547 && i.genesis === GENESIS && i.profile === 'slug-phase-a-fixture-bip39-v1' && i.root_public_key === ROOTS[f] && i.gym_public_key === fixtures[f][1]);
-    exact(a, ['version', 'network', 'genesis', 'authority_id', 'descriptor_id']); requireValue(a.version === 5 && a.network === i.network && a.genesis === i.genesis && a.descriptor_id === DESCRIPTOR && hex(a.authority_id));
+    exact(a, ['version', 'network', 'genesis', 'authority_id', 'descriptor_id']); requireValue(a.version === 5 && a.network === i.network && a.genesis === i.genesis && a.descriptor_id === current.view.authority_pin.descriptor_id && hex(a.authority_id));
+    if (poolMode) requireValue(same(a, current.view.authority_pin));
   });
   const [a, b] = p.participants; requireValue(a.stable_pin.identity.gym_id < b.stable_pin.identity.gym_id && a.stable_pin.account_id !== b.stable_pin.account_id && a.stable_store_id !== b.stable_store_id && a.namespace_id === b.namespace_id);
   const ownPin = p.participants.find((x) => x.stable_pin.identity.gym_id === current.gym_id); requireValue(!!ownPin && same(ownPin.stable_pin, stable.status.pin) && ownPin.stable_store_id === stable.status.store_id && (!entryNamespace || ownPin.namespace_id === entryNamespace)); return p;
@@ -1123,7 +1302,7 @@ function eventSavedReceipt(r, p, e, store) {
   exact(r, ['version', 'store_id', 'entry_id', 'event', 'operation_id', 'operation_sequence', 'generation', 'view_id', 'action', 'previous_revision', 'revision', 'roster_revision', 'stable_checkpoint', 'observed_source_count', 'committed_at_ms', 'members']); entryEvent(r.event);
   requireValue(r.version === 1 && r.store_id === store && r.event.event_id === e.source_event_id && r.event.saturday === e.saturday && r.event.cutoff_ms === e.cutoff_ms && ['entry_id', 'operation_id', 'view_id'].every((k) => hex(r[k])) && int(r.operation_sequence, 1, 4096) && int(r.generation, 1) && ['replace', 'withdraw'].includes(r.action) && int(r.previous_revision, 0, 4095) && r.revision === r.previous_revision + 1 && int(r.roster_revision, 0, 4096) && int(r.stable_checkpoint, 0, 1000) && int(r.observed_source_count, r.stable_checkpoint, 1000) && int(r.committed_at_ms, 1, e.cutoff_ms - 1));
   requireValue(Array.isArray(r.members) && r.members.length <= 5 && (r.action === 'replace' ? r.members.length > 0 : r.members.length === 0 && r.roster_revision === 0)); const slotsSeen = new Set(), classSeen = new Set(); let previous = '';
-  for (const m of r.members) { exact(m, ['slot', 'assignment', 'class', 'condition_at_save']); assignment(m.assignment, p.stable_pin.identity); requireValue(int(m.slot, 1, 10) && classes.includes(m.class) && !slotsSeen.has(m.slot) && !classSeen.has(m.class) && m.assignment.prospect_id > previous && m.assignment.sequence <= r.stable_checkpoint); slotsSeen.add(m.slot); classSeen.add(m.class); previous = m.assignment.prospect_id; entrySavedCondition(m.condition_at_save, m.assignment, r.committed_at_ms); }
+  for (const m of r.members) { exact(m, ['slot', 'assignment', 'class', 'condition_at_save']); assignment(m.assignment, p.stable_pin.identity, p.stable_pin.source.descriptor_id); requireValue(int(m.slot, 1, 10) && classes.includes(m.class) && !slotsSeen.has(m.slot) && !classSeen.has(m.class) && m.assignment.prospect_id > previous && m.assignment.sequence <= r.stable_checkpoint); slotsSeen.add(m.slot); classSeen.add(m.class); previous = m.assignment.prospect_id; entrySavedCondition(m.condition_at_save, m.assignment, r.committed_at_ms); }
 }
 function eventParticipant(s, e) {
   exact(s, ['version', 'participant_id', 'entry_store_id', 'owner', 'roster', 'entry', 'members']); const p = eventAuthority.pin.participants.find((x) => x.stable_pin.identity.gym_id === s.participant_id); requireValue(s.version === 1 && !!p && hex(s.entry_store_id));
@@ -1132,7 +1311,7 @@ function eventParticipant(s, e) {
   const t = s.entry; exact(t, ['version', 'store_id', 'event', 'entry_id', 'committed_count', 'last_sequence', 'history_digest', 'latest_receipt']); entryEvent(t.event); requireValue(t.version === 1 && t.store_id === s.entry_store_id && t.event.event_id === e.source_event_id && t.event.cutoff_ms === e.cutoff_ms && t.event.saturday === e.saturday && hex(t.entry_id) && hex(t.history_digest) && int(t.committed_count, 0, 4096) && int(t.last_sequence, t.committed_count, 4096));
   if (t.latest_receipt !== null) { eventSavedReceipt(t.latest_receipt, p, e, s.entry_store_id); requireValue(t.committed_count > 0 && t.latest_receipt.entry_id === t.entry_id && t.latest_receipt.operation_sequence === t.last_sequence); } else requireValue(t.committed_count === 0 && t.last_sequence === 0);
   const saved = t.latest_receipt?.members ?? []; requireValue(Array.isArray(s.members) && s.members.length === saved.length && s.members.length <= 5);
-  for (const [n, m] of s.members.entries()) { exact(m, ['slot', 'slot_assigned_at_ms', 'assignment', 'class', 'condition_at_cutoff', 'eligibility']); assignment(m.assignment, p.stable_pin.identity); requireValue(same(m.assignment, saved[n].assignment) && m.class === saved[n].class && int(m.slot, 0, 10) && m.slot === r.slots.indexOf(m.assignment.prospect_id) + 1 && (m.slot ? m.slot_assigned_at_ms === r.assigned_at_ms[m.slot - 1] && m.slot_assigned_at_ms >= m.assignment.accepted_at_ms : m.slot_assigned_at_ms === 0)); eventCondition(m.condition_at_cutoff, m.assignment, e.cutoff_ms); requireValue(m.eligibility === (m.condition_at_cutoff.phase === 'retired' ? 'retired' : m.slot ? 'eligible' : 'not_rostered')); } return s;
+  for (const [n, m] of s.members.entries()) { exact(m, ['slot', 'slot_assigned_at_ms', 'assignment', 'class', 'condition_at_cutoff', 'eligibility']); assignment(m.assignment, p.stable_pin.identity, p.stable_pin.source.descriptor_id); requireValue(same(m.assignment, saved[n].assignment) && m.class === saved[n].class && int(m.slot, 0, 10) && m.slot === r.slots.indexOf(m.assignment.prospect_id) + 1 && (m.slot ? m.slot_assigned_at_ms === r.assigned_at_ms[m.slot - 1] && m.slot_assigned_at_ms >= m.assignment.accepted_at_ms : m.slot_assigned_at_ms === 0)); eventCondition(m.condition_at_cutoff, m.assignment, e.cutoff_ms); requireValue(m.eligibility === (m.condition_at_cutoff.phase === 'retired' ? 'retired' : m.slot ? 'eligible' : 'not_rostered')); } return s;
 }
 function eventEvidence(v, s, e) { exact(v, ['version', 'participant_id', 'stable_fence', 'entry_fence', 'captured_at_ms']); requireValue(v.version === 1 && v.participant_id === s.participant_id); eventFence(v.stable_fence, s.roster.store_id, e.cutoff_ms); eventFence(v.entry_fence, s.entry_store_id, e.cutoff_ms); requireValue(v.entry_fence.observed_at_ms >= v.stable_fence.observed_at_ms && int(v.captured_at_ms, v.entry_fence.observed_at_ms, DATE_MAX) && v.stable_fence.operation_count >= s.roster.last_sequence && v.entry_fence.operation_count >= s.entry.last_sequence); }
 function eventCapture(v, e) { exact(v, ['version', 'snapshot', 'evidence']); requireValue(v.version === 1); eventParticipant(v.snapshot, e); eventEvidence(v.evidence, v.snapshot, e); return v; }
@@ -1174,7 +1353,7 @@ function eventAdoptStatus(s) {
 async function eventReadStatus(auto = false) {
   if (!eventReady() || !entryDate) return; const c = eventContext(), dateValue = entryDate;
   try { const r = eventEnvelope(await call('EventStatus', c.viewID, dateValue), 'status'); if (!eventCurrent(c, true)) return; if (!r.ok) { eventRefusal(r.error); return; } requireValue(r.value.event.saturday === dateValue); eventAdoptStatus(r.value); if (r.value.captured_participants.includes(current.gym_id)) eventUnknown = false;
-    const s = eventStatus; if (auto && s && s.event.cutoff_ms <= s.observed_at_ms && s.coordinator_created_at_ms < s.event.cutoff_ms && !s.captured_participants.includes(current.gym_id) && !eventWatch && !eventAutoAttempted.has(s.event.event_id) && eventAutoAttempted.size < 256 && !tasks.length && eventSnapshot.state === 'ready') { eventAutoAttempted.add(s.event.event_id); await eventBegin(); }
+    const s = eventStatus; if (auto && !poolBackupRunning() && s && s.event.cutoff_ms <= s.observed_at_ms && s.coordinator_created_at_ms < s.event.cutoff_ms && !s.captured_participants.includes(current.gym_id) && !eventWatch && !eventAutoAttempted.has(s.event.event_id) && eventAutoAttempted.size < 256 && !tasks.length && eventSnapshot.state === 'ready') { eventAutoAttempted.add(s.event.event_id); await eventBegin(); }
   } catch { if (eventCurrent(c)) eventMessage = eventError('event_unavailable'); } renderEvent();
 }
 async function fetchEventSnapshot() {
@@ -1189,7 +1368,7 @@ async function fetchEventSnapshot() {
   } catch { if (eventCurrent(c)) { eventUnavailable = true; eventMessage = eventError('event_unavailable'); } } finally { renderEvent(); }
 }
 async function eventBegin() {
-  if (!eventReady() || !eventStatus || eventStatus.event.saturday !== entryDate || eventWatch || eventUnknown || eventStatus.coordinator_created_at_ms >= eventStatus.event.cutoff_ms || eventStatus.observed_at_ms < eventStatus.event.cutoff_ms) return;
+  if (!eventReady() || poolBackupRunning() || !eventStatus || eventStatus.event.saturday !== entryDate || eventWatch || eventUnknown || eventStatus.coordinator_created_at_ms >= eventStatus.event.cutoff_ms || eventStatus.observed_at_ms < eventStatus.event.cutoff_ms) return;
   const c = eventContext(), e = eventStatus.event, reservation = { id: '', eventID: e.event_id, saturday: e.saturday, participantID: current.gym_id }; eventWatch = reservation; if (!eventCapacity()) { eventWatch = null; eventMessage = eventError('event_capacity'); renderEvent(); return; }
   try { const r = eventEnvelope(await call('BeginEventCapture', c.viewID, e.saturday), 'job'); if (!eventCurrent(c)) return; if (!r.ok) { eventWatch = null; eventRefusal(r.error, true); return; } const j = r.value; requireValue(j.state === 'queued' && j.event_id === e.event_id && j.saturday === e.saturday && j.participant_id === reservation.participantID); eventDetail = null; eventWatch = { ...reservation, id: j.job_id }; eventMessage = 'Reconstructing and verifying this gym at noon Pacific…'; pollWanted = true;
   } catch { if (eventCurrent(c)) { eventWatch = null; eventUnknown = true; eventMessage = eventError('outcome_unknown'); } } renderEvent();
@@ -1224,8 +1403,8 @@ function eventDetailRenderKey(details) {
 }
 function eventHistoryRenderKey(history) { return history ? JSON.stringify(history.events.map((e) => [e.event.event_id, e.phase, e.captured_participants.length])) : ''; }
 function renderEvent() {
-  const active = eventReady(), s = eventStatus?.event.saturday === entryDate ? eventStatus : null, busy = !!command || !!eventWatch || eventSnapshot?.state === 'busy';
-  content(ui['event-state'], eventUnavailable ? 'Unavailable' : !ready() ? 'Sign in to view snapshots' : eventSnapshot?.state === 'setup_incomplete' ? 'Setup incomplete' : eventWatch ? 'Capturing noon state' : s?.phase === 'snapshotted' ? 'Snapshot complete' : s?.phase === 'capturing' ? 'One gym captured' : 'Candidate snapshot');
+  const active = eventReady(), s = eventStatus?.event.saturday === entryDate ? eventStatus : null, busy = !!command || !!eventWatch || eventSnapshot?.state === 'busy' || poolBackupRunning();
+  content(ui['event-state'], eventUnavailable ? 'Unavailable' : !ready() ? 'Sign in to view snapshots' : poolBackupRunning() ? 'Wallet backup in progress' : eventSnapshot?.state === 'setup_incomplete' ? 'Setup incomplete' : eventWatch ? 'Capturing noon state' : s?.phase === 'snapshotted' ? 'Snapshot complete' : s?.phase === 'capturing' ? 'One gym captured' : 'Candidate snapshot');
   content(ui['event-cutoff'], s ? `Saturday ${s.event.saturday} · State fixed at noon Pacific · ${new Date(s.event.cutoff_ms).toISOString()}` : 'Select a Saturday in the entry panel.');
   content(ui['event-progress'], s ? s.coordinator_created_at_ms >= s.event.cutoff_ms ? eventError('event_created_too_late') : `${s.captured_participants.length} of 2 gyms captured.${s.phase === 'before_cutoff' ? ' Waiting for noon Pacific.' : s.phase !== 'snapshotted' ? ' Each demo gym captures its own historical state after sign-in.' : ' The complete snapshot is immutable.'}` : '');
   content(ui['event-message'], eventMessage); content(ui['event-deadline'], s ? `If the required seed is still unfinalized at the following lock (${new Date(s.event.incident_deadline_ms).toISOString()}), escalate to the operator as a chain incident. This is the policy deadline; the seed panel reports observed evidence.` : '');
@@ -1329,7 +1508,7 @@ async function seedRead(field = 'status', after = '') {
   } catch { if (seedCurrent(c)) seedMessage = seedError('seed_unavailable'); } renderSeed();
 }
 async function seedBegin(kind) {
-  if (!seedReady() || !entryDate || seedWatch || seedUnknown && kind !== 'reconcile' || seedSnapshot.state === 'busy' || !['prepare', 'publish', 'reconcile', 'attest'].includes(kind)) return;
+  if (!seedReady() || poolBackupRunning() || !entryDate || seedWatch || seedUnknown && kind !== 'reconcile' || seedSnapshot.state === 'busy' || !['prepare', 'publish', 'reconcile', 'attest'].includes(kind)) return;
   if (['publish', 'attest'].includes(kind) && (current.account.held || current.account.id !== seedAuthority.pin.publisher_account_id)) { seedRefusal('forbidden'); return; }
   const c = seedContext(); seedWatch = { id: '', kind, saturday: c.date, eventKey: '' }; if (!seedCapacity()) { seedWatch = null; seedMessage = seedError('seed_capacity'); return; }
   try { const raw = await call({ prepare: 'BeginSeedPrepare', publish: 'BeginSeedPublish', reconcile: 'BeginSeedReconcile', attest: 'BeginSeedAttest' }[kind], c.viewID, c.date); if (!seedCurrent(c)) return; const r = seedEnvelope(raw, 'job'); if (!r.ok) { seedWatch = null; seedRefusal(r.error, true, kind); return; } const j = r.value; requireValue(j.kind === kind && j.saturday === c.date && j.state === 'queued'); seedDetail = seedHistory = null; seedWatch = { id: j.job_id, kind, saturday: j.saturday, eventKey: j.event_key }; seedMessage = 'Seed request queued.';
@@ -1350,10 +1529,10 @@ async function seedCancel() {
 function seedRecordPhase(r) { return r.conflicts.length || r.conflict_overflow ? 'conflict' : r.finality ? 'finalized' : r.target ? 'provisional' : r.anchor ? 'waiting_target' : r.publication ? 'waiting_anchor' : 'prepared'; }
 function renderSeed() {
   const active = seedReady(), s = seedStatus?.event.saturday === entryDate ? seedStatus : null, r = seedDetail?.source_receipt.input.event.saturday === entryDate ? seedDetail : null;
-  const busy = !!command || !!seedWatch || seedSnapshot?.state === 'busy', publisher = active && !current.account.held && current.account.id === seedAuthority.pin.publisher_account_id;
+  const busy = !!command || poolBackupRunning() || !!seedWatch || seedSnapshot?.state === 'busy', publisher = active && !current.account.held && current.account.id === seedAuthority.pin.publisher_account_id;
   content(ui['seed-state'], !ready() ? 'Sign in to view seed evidence' : seedUnavailable ? 'Unavailable in this route' : seedSnapshot?.state === 'setup_incomplete' ? 'Setup incomplete' : seedWatch ? `${label(seedWatch.kind)} in progress` : s ? label(s.phase) : r ? label(seedRecordPhase(r)) : 'Candidate seed evidence');
   content(ui['seed-message'], seedMessage); const o = r?.observation, chainTime = o?.chain_observed_at_ms ?? s?.chain_observed_at_ms ?? 0;
-  content(ui['seed-observation'], `Fixed Demo A nodes: ${seedSnapshot?.node_state ?? 'offline'}. ${chainTime ? `Last verified chain observation: ${new Date(chainTime).toISOString()}.` : 'No verified chain observation yet.'} ${s ? `Funding: ${label(s.funding_state)}. Scan through height ${s.scan_height}.` : ''}`);
+  content(ui['seed-observation'], `${poolMode ? 'Shared test chain' : 'Fixed Demo A nodes'}: ${seedSnapshot?.node_state ?? 'offline'}. ${chainTime ? `Last verified chain observation: ${new Date(chainTime).toISOString()}.` : 'No verified chain observation yet.'} ${s ? `Funding: ${label(s.funding_state)}. Scan through height ${s.scan_height}.` : ''}`);
   const finalized = r?.finality?.observed_at_ms ?? s?.finalized_at_ms ?? 0, eligible = o?.current_finality ?? s?.current_finality ?? false, depth = o?.target_descendants ?? s?.target_descendants ?? 0;
   content(ui['seed-finality'], finalized ? `First finality recorded ${new Date(finalized).toISOString()}. Eligible at the last verified observation: ${eligible ? 'yes' : 'no'}; ${depth} target descendants. This is retained candidate evidence, not continuous chain monitoring.` : 'Waiting for the exact seed block and its checkpoint with 60 descendants. No substitute seed or automatic cancellation.');
   const incident = r?.incident_at_ms ?? s?.incident_at_ms ?? 0; content(ui['seed-incident'], incident ? `Chain incident first recorded ${new Date(incident).toISOString()}. Refer the evidence to the operator under the checkpoint/community rule.` : s?.escalation_due ? 'Chain incident escalation is due; no first incident has been journaled for this event.' : s ? `Escalation boundary: ${new Date(s.event.incident_deadline_ms).toISOString()}. The event waits.` : '');
@@ -1585,7 +1764,7 @@ async function cardRead(kind, after = '') {
   } catch (e) { if (cardCurrent(c, kind !== 'history')) cardRefusal(e.cardCode ?? 'card_unavailable'); } renderCard();
 }
 async function cardBegin() {
-  if (!cardReady() || !entryDate || cardWatch || cardUnknown || cardSnapshot.state === 'busy') return;
+  if (!cardReady() || poolBackupRunning() || !entryDate || cardWatch || cardUnknown || cardSnapshot.state === 'busy') return;
   const c = cardContext(); cardWatch = { id: '', kind: 'build', state: 'queued', saturday: c.date, cardID: '' };
   if (!cardCapacity()) { cardWatch = null; cardMessage = cardError('card_capacity'); return; }
   try {
@@ -1631,7 +1810,7 @@ function cardGymName(id) { return id === fixtures.zero256[0] ? 'Demo A' : id ===
 function renderCard() {
   const active = cardReady(), s = cardStatus?.event.saturday === entryDate ? cardStatus : null;
   const r = cardDetail?.source.source_receipt.input.event.saturday === entryDate ? cardDetail : null, plan = r?.plan;
-  const busy = !!command || !!cardWatch || cardSnapshot?.state === 'busy';
+  const busy = !!command || poolBackupRunning() || !!cardWatch || cardSnapshot?.state === 'busy';
   const conflict = !!s && (s.source.status.conflict_count > 0 || s.source.status.conflict_overflow);
   content(ui['card-state'], !ready() ? 'Sign in to view cards' : cardUnavailable ? 'Unavailable in this route' : cardSnapshot?.state === 'setup_incomplete' ? 'Setup incomplete' : cardWatch ? 'Card request in progress' : s?.exists ? !cardOverlayKnown ? 'Saved card · source status unavailable' : conflict ? 'Saved card · seed conflict' : !s.usable ? 'Saved card · source unavailable' : 'Candidate card saved' : 'No saved card');
   content(ui['card-message'], cardMessage);
@@ -1738,7 +1917,7 @@ function bookedSourceValue(s) {
   const owners = new Set(); pairArray(s.corners, (v, n) => {
     exact(v, ['owner', 'member']); const o = v.owner, m = v.member; exact(o, ['ownership_basis', 'account_authority_id', 'account_id', 'gym_id']);
     const p = eventAuthority.pin.participants.find(p => p.stable_pin.identity.gym_id === o.gym_id); requireValue(!!p && !owners.has(o.gym_id) && o.ownership_basis === 'candidate_assignment' && o.account_authority_id === p.stable_pin.account_authority_id && o.account_id === p.stable_pin.account_id); owners.add(o.gym_id);
-    exact(m, ['slot', 'slot_assigned_at_ms', 'assignment', 'class', 'condition_at_cutoff', 'eligibility']); assignment(m.assignment, p.stable_pin.identity); eventCondition(m.condition_at_cutoff, m.assignment, s.event.cutoff_ms);
+    exact(m, ['slot', 'slot_assigned_at_ms', 'assignment', 'class', 'condition_at_cutoff', 'eligibility']); assignment(m.assignment, p.stable_pin.identity, p.stable_pin.source.descriptor_id); eventCondition(m.condition_at_cutoff, m.assignment, s.event.cutoff_ms);
     requireValue(m.assignment.prospect_id === [s.bout.corner_a, s.bout.corner_b][n] && m.class === s.bout.class && m.eligibility === 'eligible' && int(m.slot, 1, 10) && int(m.slot_assigned_at_ms, m.assignment.accepted_at_ms, s.event.cutoff_ms - 1));
     const c = m.condition_at_cutoff; requireValue(['prime', 'decline'].includes(c.phase) && int(c.age_weeks, 0, 90) && int(c.elapsed_decline_weeks, 0, 38) && attrs.every(k => int(c.aged_attributes_tenths[k], 1, 1000)) && (c.phase === 'prime' ? c.elapsed_decline_weeks === 0 && c.prime_remaining_weeks > 0 : c.prime_remaining_weeks === 0 && c.prime_remaining_ms === 0));
   });
@@ -1749,7 +1928,7 @@ function bookedRecordValue(r) {
   requireValue(r.version === 1 && r.store_id === bookedAuthority.storeID && r.card_id === r.source.card_id && r.bout_id === r.source.bout.bout_id && ['source_digest', 'input_id', 'result_digest'].every(k => hex(r[k])) && int(r.created_at_ms, Math.max(bookedAuthority.createdMS, r.source.card_created_at_ms), DATE_MAX) && entryBytes(r) <= 237568);
   const i = r.input; exact(i, ['version', 'engine_id', 'mode', 'seed_kind', 'as_of_ms', 'seed', 'a', 'b']);
   requireValue(i.version === 1 && i.engine_id === PREVIEW_ENGINE && i.mode === 'standard' && i.seed_kind === 'explicit' && i.seed === r.source.bout.seed && i.as_of_ms === r.source.event.cutoff_ms && entryBytes(i) <= 16384);
-  for (const [n, f] of [i.a, i.b].entries()) { exact(f, ['prospect_id', 'born_at_ms', 'manifest', 'pro_xp', 'training_skill']); const m = r.source.corners[n].member; requireValue(f.prospect_id === m.assignment.prospect_id && f.born_at_ms === m.assignment.born_at_ms && f.pro_xp === 0 && f.training_skill === 0); manifestValue(f.manifest, m.assignment.work_hash, true); requireValue(f.manifest.physical.weight_class === m.class); }
+  for (const [n, f] of [i.a, i.b].entries()) { exact(f, ['prospect_id', 'born_at_ms', 'manifest', 'pro_xp', 'training_skill']); const m = r.source.corners[n].member; requireValue(f.prospect_id === m.assignment.prospect_id && f.born_at_ms === m.assignment.born_at_ms && f.pro_xp === 0 && f.training_skill === 0); manifestValue(f.manifest, m.assignment.work_hash, m.assignment.descriptor_id, true); requireValue(f.manifest.physical.weight_class === m.class); }
   boutValue(r.result, [i.a.prospect_id, i.b.prospect_id]); requireValue(r.result.input_id === r.input_id); return r;
 }
 function bookedMatchRecord(r, s) {
@@ -1854,7 +2033,7 @@ function bookedCheck() {
 }
 async function bookedBegin() {
   const selected = bookedStatus?.saved;
-  if (!bookedReady() || !bookedSelected || bookedWatch || bookedUnknown || bookedSnapshot.state === 'busy' || !bookedOverlayKnown || !bookedStatus?.source.usable || !selected || selected.exists || bookedRecord || selected.bout.bout_id !== bookedSelected) return;
+  if (!bookedReady() || poolBackupRunning() || !bookedSelected || bookedWatch || bookedUnknown || bookedSnapshot.state === 'busy' || !bookedOverlayKnown || !bookedStatus?.source.usable || !selected || selected.exists || bookedRecord || selected.bout.bout_id !== bookedSelected) return;
   const c = bookedContext(), priorWatch = bookedWatch; bookedWatch = { id: '', state: 'queued', date: c.date, boutID: c.boutID, cardID: bookedStatus.card_id };
   if (!bookedCapacity()) { bookedWatch = priorWatch; bookedMessage = bookedError('bout_capacity'); return; } pauseBooked();
   try {
@@ -1898,7 +2077,7 @@ async function loadBookedPortrait(corner) {
     if (!r.ok) { requireValue(r.portrait === null && r.status === null && BOOKED_ERRORS.has(r.error) && r.error !== 'bout_setup_incomplete'); bookedRefusal(r.error); renderBooked(); return; }
     requireValue(r.error === ''); const p = r.portrait;
     exact(p, ['version', 'view', 'store_id', 'card_id', 'saturday', 'bout_id', 'prospect_id', 'record_digest', 'input_id', 'result_digest', 'descriptor_id', 'manifest_digest', 'portrait_digest', 'svg']);
-    requireValue(p.version === 1 && viewKey(checkedView(p.view)) === c.view && p.store_id === bookedAuthority.storeID && p.card_id === record.card_id && p.saturday === c.date && p.bout_id === c.boutID && p.prospect_id === a.prospect_id && p.record_digest === bookedStatus.saved.record_digest && p.input_id === record.input_id && p.result_digest === record.result_digest && p.descriptor_id === DESCRIPTOR && p.manifest_digest === a.manifest_digest && p.portrait_digest === a.portrait_digest && entryBytes(p.svg) <= 32768 && imageOnlySVG(p.svg));
+    requireValue(p.version === 1 && viewKey(checkedView(p.view)) === c.view && p.store_id === bookedAuthority.storeID && p.card_id === record.card_id && p.saturday === c.date && p.bout_id === c.boutID && p.prospect_id === a.prospect_id && p.record_digest === bookedStatus.saved.record_digest && p.input_id === record.input_id && p.result_digest === record.result_digest && p.descriptor_id === a.descriptor_id && p.manifest_digest === a.manifest_digest && p.portrait_digest === a.portrait_digest && entryBytes(p.svg) <= 32768 && imageOnlySVG(p.svg, a.descriptor_id));
     bookedStatusValue(r.status); bookedMatchRecord(record, r.status); const old = [bookedStatus, bookedOverlayKnown, bookedOverlayRead]; bookedAdoptStatus(r.status);
     const src = `data:image/svg+xml;base64,${btoa(p.svg)}`, priorImage = bookedImages.get(a.prospect_id); bookedImages.set(a.prospect_id, src);
     if (!bookedCapacity()) { if (priorImage) bookedImages.set(a.prospect_id, priorImage); else bookedImages.delete(a.prospect_id); [bookedStatus, bookedOverlayKnown, bookedOverlayRead] = old; throw bookedCacheError(); }
@@ -1912,7 +2091,7 @@ function playBooked() {
   const c = bookedContext(), r = bookedRecord; const tick = () => { bookedTimer = null; if (!bookedCurrent(c, true) || bookedRecord !== r || document.hidden || motionPreference?.matches || command) return; bookedStep++; if (bookedStep < bookedTicks()) bookedTimer = setTimeout(tick, 250); renderBooked(); }; bookedTimer = setTimeout(tick, 250); renderBooked();
 }
 function renderBooked() {
-  const active = bookedReady(), selected = bookedStatus?.saved, busy = !!command || !!bookedWatch || bookedSnapshot?.state === 'busy';
+  const active = bookedReady(), selected = bookedStatus?.saved, busy = !!command || poolBackupRunning() || !!bookedWatch || bookedSnapshot?.state === 'busy';
   const publication = publicationForSelectedBout(), outcome = publicationOutcomeLabel(publication);
   content(ui['bout-state'], !ready() ? 'Sign in to view saved bouts' : bookedUnavailable ? 'Unavailable in this route' : bookedSnapshot?.state === 'setup_incomplete' ? 'Setup incomplete' : bookedWatch ? 'Candidate bout in progress' : bookedRecord ? `Saved candidate transcript · ${outcome}` : 'Booked bouts'); content(ui['bout-message'], bookedUnknown ? `${bookedError('outcome_unknown', true)} Pending Saturday ${bookedUnknown.date || 'unknown'} · ${bookedUnknown.boutID || 'waiting for job identity'}.` : bookedMessage);
   ui['bout-refresh'].disabled = !active || busy || !entryDate; ui['bout-run'].disabled = !active || busy || !selected || selected.exists || !!bookedRecord || !bookedOverlayKnown || !bookedStatus.source.usable || !!bookedUnknown;
@@ -2054,7 +2233,7 @@ function publicationEnvelope(r, field) {
   if (field === 'snapshot') {
     exact(v, ['version', 'state', 'error', 'view', 'store_id', 'pin', 'source_created_at_ms', 'created_at_ms', 'publisher_account_id', 'node_state', 'node_owner', 'active_job_id', 'queued_job_id', 'last_job_id']);
     requireValue(v.version === 1 && ['ready', 'busy', 'setup_incomplete', 'unavailable', 'failed'].includes(v.state) && int(v.source_created_at_ms, 0, DATE_MAX) && int(v.created_at_ms, 0, DATE_MAX) && ['active_job_id', 'queued_job_id', 'last_job_id'].every(k => optionalID(v[k])) && same(r.view, v.view) && r.store_id === v.store_id);
-    requireValue(['offline', 'starting', 'online'].includes(v.node_state) && (v.node_state === 'offline' ? v.node_owner === 'none' : v.node_state === 'starting' ? v.node_owner === 'publication' : ['publication', 'mining'].includes(v.node_owner)));
+    requireValue(['offline', 'starting', 'online'].includes(v.node_state) && (v.node_state === 'offline' ? v.node_owner === 'none' : v.node_state === 'starting' ? !poolMode && v.node_owner === 'publication' : (poolMode ? v.node_owner === 'shared_pool' : ['publication', 'mining'].includes(v.node_owner))));
     if (['unavailable', 'setup_incomplete'].includes(v.state)) { requireValue(v.pin === null && v.store_id === '' && v.publisher_account_id === '' && v.source_created_at_ms === 0 && v.created_at_ms === 0 && v.node_state === 'offline' && !v.active_job_id && !v.queued_job_id && !v.last_job_id && v.error === (v.state === 'unavailable' ? 'result_unavailable' : 'result_setup_incomplete')); requireValue(v.state === 'unavailable' ? v.view === null : viewKey(checkedView(v.view)) === currentKey()); }
     else {
       requireValue(viewKey(checkedView(v.view)) === currentKey() && hex(v.store_id)); publicationPin(v.pin); requireValue(v.publisher_account_id === v.pin.publisher_account_id && v.source_created_at_ms === bookedAuthority.createdMS && int(v.created_at_ms, v.source_created_at_ms, DATE_MAX));
@@ -2150,7 +2329,7 @@ async function publicationRead() {
   renderPublication(); renderBooked();
 }
 function publicationCanAct(kind) {
-  if (!publicationReady() || !entryDate || !bookedSelected || publicationWatch || publicationSnapshot.state === 'busy' || !['publish', 'reconcile', 'attest', 'export'].includes(kind)) return false;
+  if (!publicationReady() || poolBackupRunning() || !entryDate || !bookedSelected || publicationWatch || publicationSnapshot.state === 'busy' || !['publish', 'reconcile', 'attest', 'export'].includes(kind)) return false;
   if (current?.view?.account_id !== publicationAuthority.pin.publisher_account_id) return false;
   const s = publicationStatus, selected = bookedStatus?.saved;
   if (['publish', 'attest'].includes(kind)) {
@@ -2225,12 +2404,12 @@ function publicationForSelectedBout() {
 // observation. Seed finality, connection state and the phase badge cannot grant it.
 function publicationOutcomeLabel(s) { return s?.finalized_at_ms > 0 ? 'Finalized result' : 'Provisional result'; }
 function renderPublication() {
-  const active = publicationReady(), s = publicationForSelectedBout(), busy = !!command || !!publicationWatch || publicationSnapshot?.state === 'busy';
+  const active = publicationReady(), s = publicationForSelectedBout(), busy = !!command || poolBackupRunning() || !!publicationWatch || publicationSnapshot?.state === 'busy';
   const selected = bookedStatus?.saved, connected = publicationNodeConnected();
   ui['result-panel'].hidden = publicationUnavailable;
   const outcome = publicationOutcomeLabel(s);
   content(ui['result-state'], !ready() ? 'Sign in to view publication' : publicationSnapshot?.state === 'setup_incomplete' ? 'Setup incomplete' : !selected?.exists ? 'Choose a saved bout' : `${outcome} · ${!s ? 'Publication not read' : s.phase === 'absent' ? 'Saved outcome · unpublished' : s.phase === 'conflict' ? 'Conflicting evidence' : s.finalized_at_ms ? 'Historical test finality' : s.inclusion_height ? 'Included' : s.publication_state === 'dispatch_unknown' ? 'Submission uncertain' : s.publication_state === 'submitted' ? 'Submitted · not included' : 'Prepared · not published'}`);
-  content(ui['result-connection'], publicationSnapshot?.node_state === 'starting' ? 'Connecting test nodes. Mining remains stopped.' : publicationSnapshot?.node_state === 'online' ? publicationSnapshot.node_owner === 'publication' ? 'Test nodes connected for publication. No mining or admission worker is running for this connection.' : 'Using the existing mining connection.' : 'Test nodes are disconnected. An explicit publication action can connect Demo A’s nodes.');
+  content(ui['result-connection'], poolMode ? publicationSnapshot?.node_state === 'online' ? 'Using the shared test chain. Only Start begins mining; publication uses separately funded test outputs.' : 'The shared test chain is unavailable. Saved evidence is retained.' : publicationSnapshot?.node_state === 'starting' ? 'Connecting test nodes. Mining remains stopped.' : publicationSnapshot?.node_state === 'online' ? publicationSnapshot.node_owner === 'publication' ? 'Test nodes connected for publication. No mining or admission worker is running for this connection.' : 'Using the existing mining connection.' : 'Test nodes are disconnected. An explicit publication action can connect Demo A’s nodes.');
   content(ui['result-observation'], s ? `${s.chain_observed_at_ms ? `Last chain check ${date.format(s.chain_observed_at_ms)}.` : 'No chain inclusion check is retained.'} Local evidence read ${date.format(s.observed_at_ms)}. Disconnection does not erase historical evidence.` : 'Read saved publication to inspect retained evidence without connecting nodes.');
   content(ui['result-message'], publicationUnknown ? `${publicationError('outcome_unknown', publicationUnknown.kind)} The pending request belongs to Saturday ${publicationUnknown.date}.` : publicationMessage);
   content(ui['result-finality'], s?.finalized_at_ms ? `First test finality observed ${date.format(s.finalized_at_ms)}. ${s.current_finality ? 'The inclusion met the depth rule at its last chain check.' : 'Current chain finality is not confirmed by the last check.'}` : s?.inclusion_height ? `${s.descendants} descendant blocks observed for this result. ${s.descendants < 60 ? '60 are required, followed by its own signed test checkpoint.' : 'The depth threshold is reached; finalization is a separate explicit action.'}` : 'A finalized event seed does not finalize this result. Signed preparation and submission are not chain inclusion.');
@@ -2241,9 +2420,904 @@ function renderPublication() {
   ui['result-read'].disabled = !active || busy || !bookedSelected;
   for (const kind of ['publish', 'reconcile', 'attest', 'export']) ui[`result-${kind}`].disabled = busy || !publicationCanAct(kind);
   ui['result-cancel'].disabled = !active || !!command || !publicationWatch?.id;
-  ui['result-disconnect'].disabled = !active || !!command || !connected;
+  ui['result-disconnect'].hidden = poolMode;
+  ui['result-disconnect'].disabled = poolMode || !active || !!command || !connected;
   ui['result-clear'].disabled = !publicationRecord && !publicationStatus && !publicationExport;
   requireValue(entryBytes([ui['result-evidence'].textContent, ui['result-state'].textContent]) <= 4096);
+}
+
+// Finalized history is a captured read. Native owns source verification,
+// cryptographic identities, original authority and cross-page commitments.
+const HISTORY_ERRORS = new Set(['invalid_request', 'unauthorized', 'forbidden', 'stale_view', 'busy', 'outcome_unknown', 'career_inactive', 'history_unavailable', 'history_corrupt', 'history_clock', 'history_capacity', 'history_not_found', 'history_source_changed', 'history_cancelled', 'history_observation_unknown']);
+const HISTORY_TOTALS = ['wins', 'losses', 'draws', 'xp', 'base_points'];
+let historySnapshot = null, historySelection = null, historyJob = null, historyPage = null, historyWatch = '', historyUnknown = false, historyMessage = '', historyOverlay = null, historyIntent = null, historySerial = 0;
+function historyMetadataBytes() { return entryBytes([historySnapshot, historySelection, historyJob, historyWatch, historyUnknown, historyMessage, historyOverlay, historyIntent]) + 512; }
+function historyRetainedBytes() { return evidenceRetainedBytes() + (historyWatch || historyUnknown ? 49152 : historySelection || historySnapshot ? historyMetadataBytes() + (historyPage ? entryBytes(historyPage) : 0) : 0); }
+function historyCapacity() { return historyMetadataBytes() <= 16384 && (!historyPage || entryBytes(historyPage) <= 32768) && previewCapacity(); }
+function clearHistory() { clearEvidence(); historySerial++; historySnapshot = historySelection = historyJob = historyPage = historyOverlay = historyIntent = null; historyWatch = historyMessage = ''; historyUnknown = false; }
+function historyContext() { return {epoch, view: currentKey(), serial: historySerial, viewID: current?.view?.view_id}; }
+function historyCurrent(c) { return !disposed && ready() && c.epoch === epoch && c.view === currentKey() && c.serial === historySerial; }
+function historyError(code) { return ({history_not_found: 'This captured history is no longer selected. Open a new history from the fighter’s card.', history_source_changed: 'The source changed. Open a new history from the fighter’s card.', history_corrupt: 'History evidence could not be validated.', history_clock: 'The authority clock needs attention.', history_unavailable: 'History is currently unavailable.', history_capacity: 'The display or history cache is full. Clear a detail before trying again.', history_cancelled: 'The history request was cancelled.', history_observation_unknown: 'The source observation is uncertain. History is unavailable until the original store is recovered.', outcome_unknown: 'The request may have started. Check its recorded state before starting another history.'})[code] ?? textError(code); }
+function historyRefusal(code) {
+  historyMessage = historyError(code);
+  if (['unauthorized', 'stale_view', 'forbidden'].includes(code)) { clearHistory(); historyMessage = historyError(code); }
+  else if (['history_unavailable', 'history_corrupt', 'history_clock', 'history_observation_unknown', 'career_inactive'].includes(code)) { clearEvidence(); historySerial++; historySnapshot = historyJob = historyPage = historyOverlay = historyIntent = historySelection = null; historyWatch = ''; historyUnknown = false; }
+  else if (['history_source_changed', 'history_not_found'].includes(code)) { clearEvidence(); historySerial++; historyJob = historyPage = historyOverlay = historyIntent = historySelection = null; historyWatch = ''; historyUnknown = false; }
+  else if (code === 'outcome_unknown') historyUnknown = true;
+}
+function historyActivation(a) {
+  exact(a, ['version','policy_id','activation_id','result_store_id','result_created_at_ms','source_created_at_ms','activated_at_ms']);
+  requireValue(a.version === 1 && a.policy_id === CAREER_POLICY && hex(a.activation_id) && hex(a.result_store_id) && int(a.source_created_at_ms,1,DATE_MAX) && int(a.result_created_at_ms,a.source_created_at_ms,DATE_MAX) && int(a.activated_at_ms,a.result_created_at_ms,DATE_MAX));
+  requireValue(!careerActivation || same(careerActivation,a));
+  if (historySnapshot?.activation) requireValue(same(historySnapshot.activation,a));
+  if (publicationAuthority) requireValue(a.result_store_id === publicationAuthority.storeID && a.result_created_at_ms === publicationAuthority.createdMS && a.source_created_at_ms === bookedAuthority?.createdMS);
+}
+function historyTotals(t, count) {
+  exact(t,HISTORY_TOTALS); const n=t.wins+t.losses+t.draws;
+  requireValue(['wins','losses','draws'].every(k=>int(t[k],0,256)) && n<=256 && (count===undefined || n===count) && t.xp===Math.min(15,n) && int(t.base_points,10*t.wins+4*t.draws,14*t.wins+4*t.draws) && (t.base_points-10*t.wins-4*t.draws)%4===0);
+}
+function historyCapture(c) {
+  exact(c,['version','status','activation','career_digest','as_of_ms','assignment','prefix_count','event_count','totals','history_id']);
+  requireValue(c.version===1 && hex(c.career_digest) && hex(c.history_id) && entryBytes(c)<=8192 && entryBytes(c.status)<=4096);
+  status(c.status,current.view,current.account.fixture); historyActivation(c.activation); assignment(c.assignment,c.status.pin.identity,c.status.pin.source.descriptor_id);
+  requireValue(c.status.store_id===stable.status.store_id && same(c.status.pin,stable.status.pin) && c.assignment.sequence<=c.status.checkpoint && int(c.as_of_ms,Math.max(c.activation.activated_at_ms,c.assignment.accepted_at_ms),DATE_MAX) && c.status.last_as_of_ms===c.as_of_ms && int(c.prefix_count,0,256) && int(c.event_count,0,c.prefix_count));
+  historyTotals(c.totals,c.event_count); return c;
+}
+function historyRow(row,c) {
+  exact(row,['ordinal','event','earned','xp_before','xp_applied','totals_after']); requireValue(int(row.ordinal,1,c.event_count) && entryBytes(row)<=1536);
+  const e=row.event, pid=c.assignment.prospect_id;
+  exact(e,['version','award_id','result_key','card_id','bout_id','source_record_digest','input_id','result_digest','finality_digest','effective_at_ms','saturday','corner_a','corner_b','winner','method']);
+  requireValue(e.version===1 && ['award_id','result_key','card_id','bout_id','source_record_digest','input_id','result_digest','finality_digest'].every(k=>hex(e[k])) && int(e.effective_at_ms,c.activation.activated_at_ms,c.as_of_ms) && entryBytes(e)<=1344);
+  requireValue(typeof e.saturday==='string' && /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(e.saturday)); const day=new Date(`${e.saturday}T00:00:00.000Z`); requireValue(!Number.isNaN(day.getTime()) && day.getUTCFullYear()>=1 && day.getUTCDay()===6 && day.toISOString().slice(0,10)===e.saturday);
+  for(const corner of [e.corner_a,e.corner_b]) { exact(corner,['prospect_id','account_id','gym_id']); requireValue(Object.values(corner).every(hex)); }
+  requireValue(['prospect_id','account_id','gym_id'].every(k=>e.corner_a[k]!==e.corner_b[k]));
+  const corner=e.corner_a.prospect_id===pid?e.corner_a:e.corner_b; requireValue(corner.prospect_id===pid && corner.account_id===c.status.pin.account_id && corner.gym_id===c.assignment.gym_id);
+  const draw=['decision_draw','double_corner_stoppage'].includes(e.method); requireValue(FINISHES.includes(e.method) && (draw?e.winner==='':[e.corner_a.prospect_id,e.corner_b.prospect_id].includes(e.winner)));
+  const won=e.winner===pid, earned={wins:won?1:0,losses:!draw&&!won?1:0,draws:draw?1:0,xp:1,base_points:draw?4:won?(e.method==='decision'?10:14):0};
+  exact(row.earned,HISTORY_TOTALS); requireValue(same(row.earned,earned) && row.xp_before===Math.min(15,row.ordinal-1) && row.xp_applied===Math.min(15,row.ordinal)-row.xp_before);
+  historyTotals(row.totals_after,row.ordinal); const prior={...row.totals_after,xp:row.xp_before}; for(const k of ['wins','losses','draws','base_points'])prior[k]-=earned[k]; historyTotals(prior,row.ordinal-1);
+  if(row.ordinal===c.event_count)requireValue(same(row.totals_after,c.totals)); return row;
+}
+function historyPageValue(p,after,limit) {
+  exact(p,['version','capture','after','next','has_more','items']); requireValue(p.version===1 && entryBytes(p)<=32768); const c=historyCapture(p.capture);
+  requireValue(historyJob?.state==='done' && same(c,historyJob.capture) && p.after===after && int(after,0,c.event_count) && int(limit,1,8) && Array.isArray(p.items) && p.items.length===Math.min(limit,c.event_count-after) && p.next===after+p.items.length && p.has_more===(p.next<c.event_count));
+  const awards=new Set(),results=new Set();
+  p.items.forEach((r,n)=>{historyRow(r,c);requireValue(r.ordinal===c.event_count-after-n && !awards.has(r.event.award_id) && !results.has(r.event.result_key));awards.add(r.event.award_id);results.add(r.event.result_key);
+    if(n){const newer=p.items[n-1];requireValue(r.event.effective_at_ms<newer.event.effective_at_ms || r.event.effective_at_ms===newer.event.effective_at_ms && r.event.award_id<newer.event.award_id);for(const k of ['wins','losses','draws','base_points'])requireValue(r.totals_after[k]+newer.earned[k]===newer.totals_after[k]);requireValue(Math.min(15,r.totals_after.xp+newer.earned.xp)===newer.totals_after.xp);}
+  }); return p;
+}
+function historyPins(v) { requireValue(viewKey(checkedView(v.view))===currentKey() && v.store_id===stable?.status.store_id); }
+function historyEnvelope(v,kind,after=0,limit=8) {
+  exact(v,['id','version','ok','snapshot','job','page','error']); requireValue(int(v.id,1) && v.version===1 && typeof v.ok==='boolean' && entryBytes(v)<=36863);
+  const arms=['snapshot','job','page'];
+  if(!v.ok){requireValue(arms.every(k=>v[k]===null) && HISTORY_ERRORS.has(v.error));return {ok:false,error:v.error};}
+  requireValue(v.error==='' && arms.every(k=>k===kind?v[k]!==null:v[k]===null)); const x=v[kind];
+  if(kind==='snapshot') {
+    exact(x,['version','state','error','view','store_id','activation','active_job_id','queued_job_id','last_job_id']); requireValue(x.version===1 && entryBytes(x)<=4096 && ['active_job_id','queued_job_id','last_job_id'].every(k=>optionalID(x[k])));
+    if(x.state==='unavailable')requireValue(x.view===null && x.activation===null && x.store_id==='' && ['active_job_id','queued_job_id','last_job_id'].every(k=>x[k]==='') && ['history_unavailable','career_inactive','history_clock','history_corrupt'].includes(x.error));
+    else {historyPins(x);historyActivation(x.activation);requireValue(['idle','busy','ready','failed','cancelled'].includes(x.state));
+      if(x.state==='busy')requireValue(!!x.active_job_id!==!!x.queued_job_id && x.last_job_id==='' && x.error==='');
+      else {requireValue(!x.active_job_id&&!x.queued_job_id);if(x.state==='idle')requireValue(!x.last_job_id&&!x.error);else {requireValue(hex(x.last_job_id));if(x.state==='ready')requireValue(!x.error);else requireValue(x.state==='cancelled'?x.error==='history_cancelled':HISTORY_ERRORS.has(x.error)&&!['busy','outcome_unknown','history_cancelled'].includes(x.error));}}
+    }
+  } else if(kind==='job') {
+    exact(x,['version','job_id','state','view','store_id','activation_id','prospect_id','error','capture']); historyPins(x);
+    requireValue(x.version===1 && ['job_id','activation_id','prospect_id'].every(k=>hex(x[k])) && x.activation_id===historySnapshot?.activation?.activation_id && ['queued','running','done','failed','cancelled'].includes(x.state) && entryBytes(x)<=(x.capture?12288:2048));
+    if(x.state==='done'){const c=historyCapture(x.capture);requireValue(x.error===''&&c.activation.activation_id===x.activation_id&&c.assignment.prospect_id===x.prospect_id);}
+    else {requireValue(x.capture===null);if(['queued','running'].includes(x.state))requireValue(x.error==='');else requireValue(x.state==='cancelled'?x.error==='history_cancelled':HISTORY_ERRORS.has(x.error)&&!['busy','outcome_unknown','history_cancelled'].includes(x.error));}
+    if(historyJob?.job_id===x.job_id){requireValue(!(['done','failed','cancelled'].includes(historyJob.state))||same(historyJob,x));requireValue(!(historyJob.state==='running'&&x.state==='queued'));}
+  } else {
+    exact(x,['view','store_id','job_id','page']); historyPins(x); requireValue(x.job_id===historyJob?.job_id); historyPageValue(x.page,after,limit);
+  }
+  return {ok:true,value:own(x)};
+}
+async function fetchHistorySnapshot() {
+  if(!ready()||!careerMode)return;const c=historyContext();
+  try {const r=historyEnvelope(await call('CareerHistorySnapshot'),'snapshot');if(!historyCurrent(c))return;if(!r.ok){historyRefusal(r.error);return;}
+    const previous=historySnapshot;historySnapshot=r.value;if(!historyCapacity()){historySnapshot=previous;historyRefusal('history_capacity');return;}
+    if(r.value.state==='unavailable'){historyRefusal(r.value.error);return;}
+    const id=r.value.active_job_id||r.value.queued_job_id||r.value.last_job_id;
+    if(id&&(historyUnknown||historyWatch||id!==historyJob?.job_id))await fetchHistoryJob(id);
+    else if(historyUnknown&&!id){historyUnknown=false;historyIntent=null;historyMessage='No history request is retained. Choose View finalized history to start a new capture.';}
+  } catch {if(historyCurrent(c))historyRefusal('outcome_unknown');} finally {renderHistory();}
+}
+async function selectHistory(i) {
+  if(!ready()||!careerMode||command||historyWatch||historyUnknown||evidenceBusy())return;
+  ui['history-panel'].scrollIntoView?.({block:'start',behavior:motionPreference?.matches?'auto':'smooth'});document.getElementById('history-heading').focus?.({preventScroll:true});
+  const chosen={id:i.assignment.prospect_id,name:i.manifest.name.display,assignment:own(i.assignment)}, c=historyContext();
+  queue(async()=>{
+    if(!historyCurrent(c))return;
+    await fetchHistorySnapshot(); if(!historyCurrent(c)||!historySnapshot?.activation||historyWatch||historyUnknown)return;
+    if(!previewCapacity(Math.max(0,49152-historyRetainedBytes()))){historyRefusal('history_capacity');return;}historyIntent=chosen;
+    try {const r=historyEnvelope(await call('BeginCareerHistory',c.viewID,chosen.id),'job');if(!historyCurrent(c))return;if(!r.ok){historyIntent=null;historyRefusal(r.error);return;}
+      requireValue(r.value.state==='queued'&&r.value.prospect_id===chosen.id);clearEvidence();historySerial++;historySelection=chosen;historyJob=r.value;historyPage=historyOverlay=null;historyWatch=r.value.job_id;historyUnknown=false;historyIntent=null;historyMessage='Capturing finalized history...';
+    } catch {if(historyCurrent(c)){historyUnknown=true;historyMessage=historyError('outcome_unknown');}}
+    renderHistory();
+  },'history-begin');
+}
+async function fetchHistoryJob(id) {
+  if(!ready()||!historySnapshot?.activation)return;const c=historyContext();
+  try {const r=historyEnvelope(await call('CareerHistoryJob',c.viewID,id),'job');if(!historyCurrent(c))return;if(!r.ok){historyRefusal(r.error);return;}
+    const j=r.value;requireValue(j.job_id===id); if(j.state==='done'&&(historyIntent||historySelection)?.assignment)requireValue(same((historyIntent||historySelection).assignment,j.capture.assignment)); if((historyIntent||historySelection)&&j.prospect_id!==(historyIntent||historySelection).id){historyUnknown=false;historyIntent=null;historyMessage='A different history request is retained. Choose this fighter again to replace it.';return;}
+    if(historyJob?.job_id!==j.job_id)clearEvidence();
+    const before=[historyJob,historyWatch,historyUnknown,historySelection,historyPage,historyOverlay,historyIntent];if(historyIntent){historySelection=historyIntent;historyPage=historyOverlay=null;}historyJob=j;historyWatch=['queued','running'].includes(j.state)?id:'';historyUnknown=false;historyIntent=null;
+    if(!historySelection)historySelection={id:j.prospect_id,name:'Selected fighter',assignment:j.capture?.assignment??null};
+    if(!historyCapacity()){[historyJob,historyWatch,historyUnknown,historySelection,historyPage,historyOverlay,historyIntent]=before;historyRefusal('history_capacity');return;}
+    if(j.state==='done'){historyMessage='Finalized history captured. New awards appear in a new capture.';if(!historyPage)await readHistoryPage(0);}
+    else if(!historyWatch)historyRefusal(j.error);
+  } catch {if(historyCurrent(c))historyRefusal('outcome_unknown');} finally {renderHistory();}
+}
+async function readHistoryPage(after) {
+  if(!ready()||historyJob?.state!=='done'||historyUnknown)return;const c=historyContext(),jid=historyJob.job_id;
+  try {const raw=await call('CareerHistoryPage',c.viewID,jid,after,8);if(!historyCurrent(c)||historyJob?.job_id!==jid)return;const r=historyEnvelope(raw,'page',after,8);if(!r.ok){historyRefusal(r.error);return;}
+    const before=[historyPage,historyOverlay];historyPage=r.value.page;historyOverlay=null;if(!historyCapacity()){[historyPage,historyOverlay]=before;historyRefusal('history_capacity');return;}historyMessage='';
+  } catch {if(historyCurrent(c))historyMessage='The page could not be validated. The previous captured page is retained.';} finally {renderHistory();}
+}
+async function cancelHistory() {
+  if(!historyWatch||!ready())return;const c=historyContext(),id=historyWatch;
+  try {const r=historyEnvelope(await call('CancelCareerHistory',c.viewID,id),'job');if(!historyCurrent(c))return;if(!r.ok){historyRefusal(r.error);return;}requireValue(r.value.job_id===id);await fetchHistoryJob(id);}
+  catch {if(historyCurrent(c))historyRefusal('outcome_unknown');}finally {renderHistory();}
+}
+async function historyReadResult(ordinal) {
+  if(!ready()||!historyPage||historyUnknown)return;const row=historyPage.items.find(r=>r.ordinal===ordinal);if(!row)return;const c=historyContext(),jid=historyJob.job_id,e=row.event;
+  historyOverlay=null;
+  try {const r=await call('CareerHistoryResult',c.viewID,jid,ordinal);if(!historyCurrent(c)||historyJob?.job_id!==jid||!historyPage?.items.some(x=>x.ordinal===ordinal))return;
+    const checked=publicationEnvelope(r,'record');
+    if(!checked.ok){if(['unauthorized','stale_view','forbidden'].includes(checked.error))historyRefusal(checked.error);else historyMessage='Current result detail is unavailable. The captured finalized award is retained.';return;}
+    requireValue(r.store_id===historyJob.capture.activation.result_store_id);
+    const value=checked.value,rec=value.record,s=value.status,src=rec.statement.statement.source,b=src.source.bout;
+    requireValue(rec.result_key===e.result_key&&src.record_digest===e.source_record_digest&&src.input_id===e.input_id&&src.result_digest===e.result_digest&&src.source.card_id===e.card_id&&b.bout_id===e.bout_id&&b.corner_a===e.corner_a.prospect_id&&b.corner_b===e.corner_b.prospect_id&&src.summary.winner===e.winner&&src.summary.method===e.method&&s.event.saturday===e.saturday&&rec.finality?.observed_at_ms===e.effective_at_ms);
+    // The native link also checks the retained first-Finality digest and original
+    // corner/account identities. Only this small fresh overlay is retained here.
+    historyOverlay={ordinal,observed_at_ms:s.observed_at_ms,chain_observed_at_ms:s.chain_observed_at_ms,conflict:s.conflict_count>0||s.conflict_overflow||!s.source.saved.usable,current_finality:s.current_finality,result_key:e.result_key};requireValue(historyCapacity());historyMessage='Saved result read. This action did not connect nodes or check the chain.';
+  }catch {if(historyCurrent(c)){historyOverlay=null;historyMessage='Current result detail could not be matched to the captured award. The award is retained.';}}finally {renderHistory();}
+}
+function renderHistory() {
+  ui['history-panel'].hidden=!careerMode;const c=historyJob?.capture,p=historyPage,busy=!!command||!!historyWatch,active=ready()&&careerMode;
+  content(ui['history-state'],!active?'Sign in to view history':historyUnknown?'Request needs reconciliation':historyWatch?'Capturing history':c?'Captured finalized results':'Choose a fighter');
+  content(ui['history-fighter'],historySelection?`${historySelection.name} · ${historySelection.id}`:'Use “View finalized history” on a fighter’s card.');
+  content(ui['history-asof'],c?`Captured ${date.format(c.as_of_ms)}. Later awards do not change these pages.`:'');
+  content(ui['history-totals'],c?`${c.totals.wins} wins · ${c.totals.losses} losses · ${c.totals.draws} draws · Applied professional XP ${c.totals.xp}/15 · Base points (not ranking): ${c.totals.base_points}`:'');
+  content(ui['history-message'],historyMessage);content(ui['history-page-label'],p?`${p.items.length?p.after+1:0}–${p.next} of ${p.capture.event_count}`:'');
+  const renderedKey=[historyJob?.job_id,p?.capture.history_id,p?.after,p?.next,active,busy,historyUnknown].join('|');
+  if(ui['history-list']._historyKey!==renderedKey){ui['history-list']._historyKey=renderedKey;
+  ui['history-list'].textContent='';if(p&&!p.capture.event_count)ui['history-list'].append(element('li','','No finalized fights at this capture.'));
+  for(const row of p?.items??[]){const e=row.event,pid=p.capture.assignment.prospect_id,opponent=(e.corner_a.prospect_id===pid?e.corner_b:e.corner_a).prospect_id,outcome=e.winner===pid?'Win':e.winner?'Loss':'Draw';
+    const li=element('li'),open=element('button','','Read current result');open.type='button';open.disabled=!active||busy||historyUnknown;open.setAttribute('aria-label',`Read current result for ${e.saturday}, fight ${row.ordinal}`);open.addEventListener('click',()=>queue(()=>historyReadResult(row.ordinal),'history-result'));
+    li.append(element('strong','',`${e.saturday} · ${outcome} · ${label(e.method)}`),element('p','note',`Opponent ${opponent}`),element('p','note',`Finalized ${date.format(e.effective_at_ms)} · Earned XP ${row.earned.xp} · Applied XP ${row.xp_applied} · Base points +${row.earned.base_points}`),open);ui['history-list'].append(li);
+  }}
+  const o=historyOverlay;content(ui['history-result'],o?`Fight ${o.ordinal}: ${o.conflict?'Conflict reported; finalized award retained.':'No conflict in this saved result read.'} Local evidence read ${date.format(o.observed_at_ms)}. ${o.chain_observed_at_ms?`Chain last checked ${date.format(o.chain_observed_at_ms)}; ${o.current_finality?'finality met at that check.':'current finality was not confirmed.'}`:'Current chain status not checked.'}`:'Current status not checked.');
+  ui['history-previous'].disabled=!active||busy||historyUnknown||!p||p.after===0;ui['history-next'].disabled=!active||busy||historyUnknown||!p?.has_more;
+  ui['history-refresh'].disabled=!active||!!command||(!historySelection&&!historyUnknown);ui['history-cancel'].disabled=!active||!!command||!historyWatch;ui['history-clear'].disabled=busy||evidenceBusy()||(!historySelection&&!historyPage);renderEvidence();
+}
+
+// Public evidence exports retain metadata only. Native owns the selected path,
+// original operation ID, source verification and exclusive file publication.
+const EVIDENCE_ERRORS = new Set(['invalid_request', 'stale_view', 'unauthorized', 'forbidden', 'busy', 'history_not_found', 'history_unavailable', 'evidence_not_found', 'evidence_capacity', 'evidence_operation_conflict', 'evidence_unavailable', 'evidence_profile', 'outcome_unknown']);
+const EVIDENCE_TERMINAL = new Set(['evidence_invalid', 'evidence_source_changed', 'evidence_unavailable', 'evidence_destination_conflict', 'evidence_storage_failed', 'evidence_export_uncertain']);
+let evidenceIntent = null, evidenceJob = null, evidenceUnknown = false, evidenceMessage = '', evidencePriorJobID = '';
+function evidenceBusy() { return evidenceUnknown || evidenceJob?.state === 'running'; }
+function clearEvidence() { evidenceIntent = evidenceJob = null; evidenceUnknown = false; evidenceMessage = ''; evidencePriorJobID = ''; }
+function evidenceRetainedBytes() { return evidenceIntent || evidenceJob || evidenceUnknown ? 16384 : evidenceMessage ? 1024 : 0; }
+function evidenceBinding() {
+  requireValue(historyJob?.state === 'done' && !historyUnknown && !historyWatch);
+  const c = historyCapture(historyJob.capture);
+  return {view: own(current.view), store_id: c.status.store_id, history_job_id: historyJob.job_id,
+    history_id: c.history_id, prospect_id: c.assignment.prospect_id, source_record_digest: c.assignment.source_record_digest,
+    event_count: c.event_count, captured_as_of_ms: c.as_of_ms};
+}
+function evidenceContext() { return {...historyContext(), historyJobID: historyJob?.job_id, historyID: historyJob?.capture?.history_id}; }
+function evidenceCurrent(c) { return historyCurrent(c) && c.historyJobID === historyJob?.job_id && c.historyID === historyJob?.capture?.history_id; }
+function evidencePins(v, b = evidenceIntent) {
+  requireValue(b && viewKey(checkedView(v.view)) === currentKey() && same(v.view, b.view) && v.store_id === b.store_id);
+}
+function evidenceSummary(v, b = evidenceIntent) {
+  exact(v, ['version', 'file_sha256', 'file_bytes', 'prospect_id', 'history_id', 'source_record_digest', 'event_count', 'captured_as_of_ms']);
+  requireValue(b && v.version === 1 && entryBytes(v) <= 2048 && hex(v.file_sha256) && int(v.file_bytes, 1, 524288) && int(v.event_count, 0, 256) && int(v.captured_as_of_ms, 1, DATE_MAX));
+  requireValue(['prospect_id', 'history_id', 'source_record_digest'].every(k => hex(v[k])));
+  requireValue(['prospect_id', 'history_id', 'source_record_digest', 'event_count', 'captured_as_of_ms'].every(k => v[k] === b[k]));
+  return v;
+}
+function evidenceJobValue(v, expectedID = '', previous = evidenceJob) {
+  exact(v, ['version', 'job_id', 'state', 'view', 'store_id', 'history_job_id', 'history_id', 'prospect_id', 'error', 'summary']);
+  evidencePins(v); requireValue(v.version === 1 && entryBytes(v) <= 4096 && ['job_id', 'history_job_id', 'history_id', 'prospect_id'].every(k => hex(v[k])));
+  requireValue(v.job_id !== evidencePriorJobID && (!expectedID || v.job_id === expectedID) && ['history_job_id', 'history_id', 'prospect_id'].every(k => v[k] === evidenceIntent[k]));
+  if (v.state === 'done') { requireValue(v.error === ''); evidenceSummary(v.summary); }
+  else { requireValue(v.summary === null); if (v.state === 'running') requireValue(v.error === '');
+    else if (v.state === 'failed') requireValue(EVIDENCE_TERMINAL.has(v.error));
+    else requireValue(v.state === 'cancelled' && v.error === 'evidence_cancelled'); }
+  if (previous?.job_id === v.job_id && previous.state !== 'running') requireValue(same(previous, v));
+  return v;
+}
+function evidenceSnapshotValue(v) {
+  exact(v, ['version', 'state', 'error', 'view', 'store_id', 'active_job_id', 'last_job_id']);
+  requireValue(v.version === 1 && entryBytes(v) <= 4096 && ['active_job_id', 'last_job_id'].every(k => optionalID(v[k])));
+  if (v.state === 'unavailable') requireValue(v.error === 'evidence_unavailable' && v.view === null && v.store_id === '' && !v.active_job_id && !v.last_job_id);
+  else { evidencePins(v); requireValue(['idle', 'busy'].includes(v.state) && v.error === '' && (v.state === 'busy') === !!v.active_job_id);
+    requireValue(['active_job_id', 'last_job_id'].every(k => !v[k] || v[k] !== evidencePriorJobID));
+    // With a known operation, never substitute another helper's latest ID.
+    // During a lost begin, native admits only its own previously recorded ID.
+    if (evidenceJob) requireValue(['active_job_id', 'last_job_id'].every(k => !v[k] || v[k] === evidenceJob.job_id)); }
+  return v;
+}
+function evidenceEnvelope(v, kind, expectedID = '') {
+  exact(v, ['id', 'version', 'ok', 'snapshot', 'job', 'error']);
+  requireValue(int(v.id, 1) && v.version === 1 && typeof v.ok === 'boolean' && entryBytes(v) <= 8192);
+  if (!v.ok) { requireValue(v.snapshot === null && v.job === null && EVIDENCE_ERRORS.has(v.error)); return {ok: false, error: v.error}; }
+  requireValue(v.error === '' && (kind === 'snapshot' ? v.job === null && v.snapshot !== null : v.snapshot === null && v.job !== null));
+  const x = kind === 'snapshot' ? evidenceSnapshotValue(v.snapshot) : evidenceJobValue(v.job, expectedID);
+  return {ok: true, value: own(x)};
+}
+function evidenceError(code) {
+  return ({busy: 'Stop mining and wait for the current task to finish before exporting public evidence.', evidence_capacity: 'The evidence export is at capacity. Finish the current task before trying again.',
+    evidence_destination_conflict: 'The selected destination already exists or changed. Choose a new destination.',
+    evidence_export_uncertain: 'The evidence file may already be saved. Check the selected destination before trying again.',
+    outcome_unknown: 'The export could not be confirmed. Check the selected destination before trying again.',
+    evidence_cancelled: 'Evidence export cancelled.', evidence_source_changed: 'The source changed. Open a new history before exporting.',
+    history_not_found: 'Open a new finalized history before exporting.', evidence_profile: 'Public evidence export is unavailable in this build.'})[code] || 'Public evidence export is unavailable. The captured history is retained.';
+}
+function evidenceRefusal(code) {
+  if (['unauthorized', 'stale_view', 'forbidden'].includes(code)) { clearHistory(); historyMessage = historyError(code); return; }
+  evidenceMessage = evidenceError(code);
+  if (code === 'outcome_unknown') evidenceUnknown = true;
+}
+function acceptEvidenceJob(j) {
+  evidenceJob = j; evidenceUnknown = false;
+  evidenceMessage = j.state === 'running' ? 'Saving the original receipt and captured history…' : j.state === 'done' ?
+    `Public evidence saved: ${number.format(j.summary.file_bytes)} bytes · File SHA256 ${j.summary.file_sha256}. This export is not an offline verification report.` : evidenceError(j.error);
+}
+function evidenceCanBegin() {
+  return ready() && careerMode && historyJob?.state === 'done' && !historyUnknown && !historyWatch && !evidenceBusy() &&
+    ['stopped', 'failed'].includes(current?.state) && current?.backup_state !== 'running' && !watched && !stable?.active_job_id && !stable?.queued_job_id && stable?.state !== 'syncing';
+}
+async function beginEvidence() {
+  if (!evidenceCanBegin()) { evidenceMessage = evidenceError('busy'); renderHistory(); return; }
+  const c = evidenceContext();
+  if (!previewCapacity(Math.max(0, 16384 - evidenceRetainedBytes()))) { evidenceMessage = evidenceError('evidence_capacity'); renderHistory(); return; }
+  // A lost new begin may recover only the new native-held action, never the
+  // previous successful export of the very same captured history.
+  evidencePriorJobID = evidenceJob?.job_id || evidencePriorJobID;
+  evidenceIntent = evidenceBinding(); evidenceJob = null; evidenceUnknown = true; evidenceMessage = 'Choose where to save public evidence.';
+  try {
+    const raw = await call('BeginFighterEvidenceExport', c.viewID, c.historyJobID);
+    if (!evidenceCurrent(c)) return;
+    if (raw === null) { clearEvidence(); return; } // Native dialog cancelled before dispatch.
+    const r = evidenceEnvelope(raw, 'job');
+    if (!r.ok) { if (r.error !== 'outcome_unknown') { evidenceUnknown = false; evidenceIntent = null; } evidenceRefusal(r.error); return; }
+    acceptEvidenceJob(r.value);
+  } catch { if (evidenceCurrent(c)) { evidenceUnknown = true; evidenceMessage = 'Checking whether the export started.'; } }
+  finally { renderHistory(); }
+}
+async function fetchEvidenceJob(id) {
+  if (!ready() || !evidenceIntent) return; const c = evidenceContext();
+  try { const raw = await call('FighterEvidenceJob', c.viewID, id); if (!evidenceCurrent(c)) return;
+    const r = evidenceEnvelope(raw, 'job', id); if (!r.ok) { evidenceRefusal(r.error); return; } acceptEvidenceJob(r.value);
+  } catch { if (evidenceCurrent(c)) evidenceRefusal('outcome_unknown'); } finally { renderHistory(); }
+}
+async function fetchEvidenceSnapshot() {
+  if (!ready() || !evidenceIntent || !evidenceBusy()) return; const c = evidenceContext();
+  try {
+    if (evidenceJob) { await fetchEvidenceJob(evidenceJob.job_id); return; }
+    const raw = await call('FighterEvidenceSnapshot'); if (!evidenceCurrent(c)) return;
+    const r = evidenceEnvelope(raw, 'snapshot'); if (!r.ok) { evidenceRefusal(r.error); return; }
+    if (r.value.state === 'unavailable') { evidenceRefusal(r.value.error); return; }
+    const id = r.value.active_job_id || r.value.last_job_id;
+    if (id) await fetchEvidenceJob(id);
+    else { evidenceUnknown = false; evidenceIntent = null; evidenceMessage = 'No evidence export was started. Choose Export public evidence to try again.'; }
+  } catch { if (evidenceCurrent(c)) evidenceRefusal('outcome_unknown'); } finally { renderHistory(); }
+}
+async function cancelEvidence() {
+  if (!ready() || !evidenceJob || !evidenceBusy()) return; const c = evidenceContext(), id = evidenceJob.job_id;
+  try { const raw = await call('CancelFighterEvidence', c.viewID, id); if (!evidenceCurrent(c)) return;
+    const r = evidenceEnvelope(raw, 'job', id); if (!r.ok) { evidenceRefusal(r.error); return; } acceptEvidenceJob(r.value);
+  } catch { if (evidenceCurrent(c)) evidenceRefusal('outcome_unknown'); } finally { renderHistory(); }
+}
+function renderEvidence() {
+  const busy = evidenceBusy(); content(ui['history-export'], busy && evidenceJob ? 'Cancel evidence export' : 'Export public evidence');
+  ui['history-export'].disabled = !ready() || !careerMode || !!command || (busy ? !evidenceJob : !evidenceCanBegin());
+  content(ui['history-export-status'], evidenceMessage || (historyJob?.state === 'done' && !evidenceCanBegin() ? evidenceError('busy') : ''));
+}
+
+// Read-only, original-view payout captures. One retained page and observation;
+// a failed refresh never turns a previously dated capture into a new success.
+const PAYOUT_TIME_MAX = 253402300799999;
+const PAYOUT_ERRORS = new Set(['invalid_request', 'unauthorized', 'stale_view', 'busy', 'capacity', 'payout_unavailable', 'payout_not_found', 'operation_conflict', 'outcome_unknown']);
+const PAYOUT_SCRIPTS = Object.freeze({ zero256: '001416d630413cea75fd5ad88433cd815ae5ba1ba645', incrementing256: '001487ed12b988403af67cf36ea58b7454ab5d165ab4' });
+let payoutAttempt = null, payoutCaptureJob = null, payoutPage = null, payoutObservation = null;
+let payoutUnknown = false, payoutPriorID = '', payoutMessage = '', payoutSerial = 0, payoutWalletPending = false;
+function clearPayout() { payoutSerial++; payoutAttempt = payoutCaptureJob = payoutPage = payoutObservation = null; payoutUnknown = payoutWalletPending = false; payoutPriorID = payoutMessage = ''; }
+function payoutBusy() { return poolMode && (payoutUnknown || payoutAttempt?.state === 'running'); }
+function payoutContext() { return { epoch, serial: payoutSerial, view: currentKey() }; }
+function payoutCurrent(c) { return poolMode && accountReady() && c.epoch === epoch && c.serial === payoutSerial && c.view === currentKey(); }
+function payoutSize(v, max) { requireValue(JSON.stringify(v).length <= max); }
+function payoutID(v, empty = false) { return (empty && v === '') || (hex(v) && v !== '0'.repeat(64)); }
+function payoutBinding(v) {
+  exact(v, ['view', 'source_binding_id', 'recipient_script']);
+  requireValue(poolMode && accountReady() && viewKey(checkedView(v.view)) === currentKey() && v.source_binding_id === current.source_binding_id && payoutID(v.source_binding_id) && v.recipient_script === PAYOUT_SCRIPTS[current.account.fixture]);
+  payoutSize(v, 4096); return own(v);
+}
+function payoutItem(v, observed = PAYOUT_TIME_MAX) {
+  exact(v, ['day', 'created_at_ms', 'txid', 'output_index', 'atoms', 'recorded_state']);
+  requireValue(int(v.created_at_ms, 1, observed) && int(v.created_at_ms, 1, PAYOUT_TIME_MAX) && typeof v.day === 'string' && /^\d{4}-\d\d-\d\d$/.test(v.day) && new Date(v.created_at_ms).toISOString().slice(0, 10) === v.day && hex(v.txid) && int(v.output_index, 0, 255) && int(v.atoms, 100000000, MAX_ATOMS) && ['prepared', 'broadcast', 'confirmed'].includes(v.recorded_state));
+  payoutSize(v, 256); return own(v);
+}
+function payoutCapture(v) {
+  exact(v, ['version', 'count', 'paid_atoms', 'reserved_atoms', 'settlement_observed_at_ms', 'captured_at_ms']);
+  requireValue(v.version === 1 && int(v.count, 0, 366) && int(v.paid_atoms, 0, MAX_ATOMS) && int(v.reserved_atoms, 0, MAX_ATOMS) && v.paid_atoms + v.reserved_atoms <= MAX_ATOMS && int(v.settlement_observed_at_ms, 0, PAYOUT_TIME_MAX) && int(v.captured_at_ms, 1, PAYOUT_TIME_MAX));
+  requireValue(v.settlement_observed_at_ms !== 0 || (v.count === 0 && v.paid_atoms === 0 && v.reserved_atoms === 0));
+  payoutSize(v, 512); return own(v);
+}
+function payoutSnapshotValue(v) {
+  exact(v, ['version', 'state', 'error', 'binding', 'activity', 'active_job_id', 'last_job_id', 'capture_job_id']);
+  requireValue(v.version === 1 && ['unavailable', 'idle', 'busy'].includes(v.state) && ['active_job_id', 'last_job_id', 'capture_job_id'].every(k => payoutID(v[k], true)));
+  if (v.state === 'unavailable') requireValue(v.error === 'payout_unavailable' && v.binding === null && v.activity === 'none' && v.active_job_id === '' && v.last_job_id === '' && v.capture_job_id === '');
+  else {
+    payoutBinding(v.binding); requireValue(v.error === '');
+    requireValue(v.state === 'idle' ? v.activity === 'none' && v.active_job_id === '' : ['capture', 'wallet'].includes(v.activity) && v.active_job_id !== '');
+    if (v.activity === 'wallet') requireValue(v.active_job_id === v.capture_job_id);
+  }
+  payoutSize(v, 5120); return own(v);
+}
+function payoutJobValue(v) {
+  exact(v, ['version', 'job_id', 'state', 'binding', 'error', 'capture']);
+  requireValue(v.version === 1 && payoutID(v.job_id) && ['running', 'done', 'failed', 'cancelled'].includes(v.state)); payoutBinding(v.binding);
+  if (v.state === 'done') { requireValue(v.error === ''); payoutCapture(v.capture); }
+  else if (v.state === 'failed') requireValue(v.capture === null && ['busy', 'capacity', 'payout_unavailable'].includes(v.error));
+  else requireValue(v.capture === null && v.error === '');
+  const prior = [payoutAttempt, payoutCaptureJob].find(j => j?.job_id === v.job_id);
+  if (prior && prior.state !== 'running') requireValue(same(prior, v));
+  payoutSize(v, 6144); return own(v);
+}
+function payoutPageValue(v) {
+  exact(v, ['version', 'binding', 'job_id', 'capture', 'after', 'limit', 'next', 'has_more', 'items']);
+  requireValue(v.version === 1 && payoutID(v.job_id)); payoutBinding(v.binding); payoutCapture(v.capture);
+  requireValue(int(v.after, 0, v.capture.count) && int(v.limit, 1, 8) && Array.isArray(v.items) && v.items.length === Math.min(v.limit, v.capture.count - v.after) && int(v.next, 0, 366) && v.next === v.after + v.items.length && typeof v.has_more === 'boolean' && v.has_more === (v.next < v.capture.count));
+  let prior = null; const ids = new Set();
+  for (const row of v.items) { payoutItem(row, v.capture.settlement_observed_at_ms); requireValue(!ids.has(row.txid) && (!prior || row.day < prior.day && row.created_at_ms < prior.created_at_ms)); ids.add(row.txid); prior = row; }
+  payoutSize(v, 10240); return own(v);
+}
+function payoutObservationValue(v) {
+  exact(v, ['version', 'binding', 'job_id', 'capture', 'payment', 'observed_at_ms', 'state', 'error', 'wallet_synced', 'wallet_height', 'wallet_tip', 'confirmations', 'block_hash']);
+  requireValue(v.version === 1 && payoutID(v.job_id) && int(v.observed_at_ms, 1, PAYOUT_TIME_MAX) && ['not_observed', 'unconfirmed', 'confirmed', 'unavailable'].includes(v.state) && typeof v.wallet_synced === 'boolean' && int(v.wallet_height, 0, 2147483647) && int(v.confirmations, 0, 2147483648));
+  payoutBinding(v.binding); payoutCapture(v.capture); payoutItem(v.payment, v.capture.settlement_observed_at_ms);
+  if (v.state === 'unavailable') requireValue(v.error === 'wallet_unavailable' && !v.wallet_synced && v.wallet_height === 0 && v.wallet_tip === '' && v.confirmations === 0 && v.block_hash === '');
+  else {
+    requireValue(v.error === '' && v.wallet_synced && payoutID(v.wallet_tip));
+    requireValue(v.state === 'confirmed' ? int(v.confirmations, 1, v.wallet_height + 1) && payoutID(v.block_hash) : v.confirmations === 0 && v.block_hash === '');
+  }
+  payoutSize(v, 7168); return own(v);
+}
+function payoutEnvelope(v, arm, jobID = '') {
+  exact(v, ['id', 'version', 'ok', 'snapshot', 'job', 'page', 'observation', 'error']);
+  requireValue(int(v.id, 1) && v.version === 1 && typeof v.ok === 'boolean'); payoutSize(v, 12287);
+  const arms = ['snapshot', 'job', 'page', 'observation'];
+  if (!v.ok) { requireValue(arms.every(k => v[k] === null) && PAYOUT_ERRORS.has(v.error)); return { ok: false, error: v.error }; }
+  requireValue(v.error === '' && arms.every(k => k === arm ? v[k] !== null : v[k] === null));
+  const value = ({ snapshot: payoutSnapshotValue, job: payoutJobValue, page: payoutPageValue, observation: payoutObservationValue })[arm](v[arm]);
+  if (jobID) requireValue(value.job_id === jobID);
+  return { ok: true, value };
+}
+function payoutAtoms(value) { requireValue(int(value, 0, MAX_ATOMS)); const n = BigInt(value); return `${n / 100000000n}.${(n % 100000000n).toString().padStart(8, '0')}`; }
+function payoutRetained(attempt = payoutAttempt, capture = payoutCaptureJob, page = payoutPage, observation = payoutObservation) { requireValue(JSON.stringify([attempt, capture, page, observation]).length <= 32768); }
+function payoutRefusal(error) {
+  if (['unauthorized', 'stale_view'].includes(error)) { disconnected(); return; }
+  payoutMessage = error === 'busy' ? 'Another pool or wallet read is finishing. Retry shortly; the dated history is retained.' : error === 'capacity' ? 'Payment history reached its bounded capacity. The dated history is retained.' : error === 'outcome_unknown' ? 'Checking whether this history refresh started. The previous capture stays dated.' : 'This payment-history read is unavailable. Retry to check again; a previous dated capture is retained.';
+}
+async function acceptPayoutJob(j) {
+  payoutRetained(j, j.state === 'done' ? j : payoutCaptureJob, j.state === 'done' && j.job_id !== payoutCaptureJob?.job_id ? null : payoutPage, j.state === 'done' && j.job_id !== payoutCaptureJob?.job_id ? null : payoutObservation);
+  payoutAttempt = j; payoutUnknown = false;
+  if (j.state === 'done') {
+    if (payoutCaptureJob?.job_id !== j.job_id) { payoutCaptureJob = j; payoutPage = payoutObservation = null; }
+    payoutMessage = 'Recorded payment history captured. Wallet checks are separate.';
+    if (!payoutPage) await readPayoutPage(0);
+  } else if (j.state === 'failed') payoutRefusal(j.error);
+  else payoutMessage = j.state === 'cancelled' ? 'History refresh cancelled. The previous dated capture is retained.' : 'Reading your recorded pool payments…';
+}
+async function readPayoutPage(after) {
+  if (!poolMode || !accountReady() || !payoutCaptureJob || payoutWalletPending) return;
+  const c = payoutContext(), capture = payoutCaptureJob, limit = 8;
+  try {
+    const raw = await call('PoolPayoutPage', current.view.view_id, capture.job_id, after, limit); if (!payoutCurrent(c) || payoutCaptureJob?.job_id !== capture.job_id) return;
+    const r = payoutEnvelope(raw, 'page', capture.job_id); if (!r.ok) { payoutRefusal(r.error); return; }
+    requireValue(same(r.value.capture, capture.capture) && same(r.value.binding, capture.binding) && r.value.after === after && r.value.limit === limit);
+    payoutRetained(payoutAttempt, payoutCaptureJob, r.value, payoutObservation); payoutPage = r.value;
+  } catch { if (payoutCurrent(c)) payoutRefusal('payout_unavailable'); } finally { renderPayout(); }
+}
+async function beginPayout() {
+  if (!poolMode || !accountReady() || payoutBusy() || payoutWalletPending || poolBackupRunning()) return;
+  const c = payoutContext(); payoutPriorID = payoutAttempt?.job_id || payoutCaptureJob?.job_id || ''; payoutAttempt = null; payoutUnknown = true; payoutMessage = 'Starting a payment-history refresh…'; renderPayout();
+  try {
+    const raw = await call('BeginPoolPayoutHistory', current.view.view_id); if (!payoutCurrent(c)) return;
+    const r = payoutEnvelope(raw, 'job'); if (!r.ok) { payoutUnknown = r.error === 'outcome_unknown'; payoutRefusal(r.error); return; }
+    requireValue(r.value.job_id !== payoutPriorID && r.value.job_id !== payoutCaptureJob?.job_id); await acceptPayoutJob(r.value);
+  } catch { if (payoutCurrent(c)) { payoutUnknown = true; payoutRefusal('outcome_unknown'); } } finally { renderPayout(); }
+}
+async function fetchPayout() {
+  if (!poolMode || !accountReady() || !payoutBusy()) return; const c = payoutContext();
+  try {
+    let id = payoutAttempt?.job_id;
+    if (!id) {
+      const raw = await call('PoolPayoutSnapshot'); if (!payoutCurrent(c)) return;
+      const r = payoutEnvelope(raw, 'snapshot'); if (!r.ok) { payoutRefusal(r.error); return; }
+      if (r.value.state === 'unavailable') { payoutRefusal('payout_unavailable'); return; }
+      id = r.value.active_job_id || r.value.last_job_id;
+      if (!id || id === payoutPriorID || id === payoutCaptureJob?.job_id) { payoutUnknown = false; payoutMessage = 'The new history refresh did not start. The previous capture is unchanged; retry when ready.'; return; }
+    }
+    const raw = await call('PoolPayoutJob', current.view.view_id, id); if (!payoutCurrent(c)) return;
+    const r = payoutEnvelope(raw, 'job', id); if (!r.ok) { if (r.error === 'payout_not_found') { payoutUnknown = false; payoutAttempt = null; } payoutRefusal(r.error); return; }
+    await acceptPayoutJob(r.value);
+  } catch { if (payoutCurrent(c)) payoutRefusal('outcome_unknown'); } finally { renderPayout(); }
+}
+async function cancelPayout() {
+  if (!poolMode || !accountReady() || payoutAttempt?.state !== 'running') return; const c = payoutContext(), id = payoutAttempt.job_id;
+  try { const raw = await call('CancelPoolPayoutHistory', current.view.view_id, id); if (!payoutCurrent(c)) return; const r = payoutEnvelope(raw, 'job', id); if (r.ok) await acceptPayoutJob(r.value); else payoutRefusal(r.error); }
+  catch { if (payoutCurrent(c)) payoutRefusal('outcome_unknown'); } finally { renderPayout(); }
+}
+async function readPayoutWallet(row) {
+  if (!poolMode || !accountReady() || payoutBusy() || payoutWalletPending || poolBackupRunning() || !payoutCaptureJob || !payoutPage?.items.some(i => same(i, row))) return;
+  const c = payoutContext(), capture = payoutCaptureJob; payoutWalletPending = true; payoutMessage = 'Checking the selected transaction in this wallet…'; renderPayout();
+  try {
+    const raw = await call('ReadPoolPayoutTransaction', current.view.view_id, capture.job_id, row.txid, row.output_index); if (!payoutCurrent(c) || payoutCaptureJob?.job_id !== capture.job_id) return;
+    const r = payoutEnvelope(raw, 'observation', capture.job_id); if (!r.ok) { payoutRefusal(r.error); return; }
+    requireValue(same(r.value.capture, capture.capture) && same(r.value.binding, capture.binding) && same(r.value.payment, row));
+    payoutRetained(payoutAttempt, payoutCaptureJob, payoutPage, r.value); payoutObservation = r.value;
+    payoutMessage = r.value.state === 'unavailable' ? 'The wallet check is unavailable. This does not mean the payment failed.' : 'Dated wallet check completed; recorded pool history is unchanged.';
+  } catch { if (payoutCurrent(c)) payoutRefusal('payout_unavailable'); } finally { if (payoutCurrent(c)) payoutWalletPending = false; renderPayout(); }
+}
+function renderPayout() {
+  const visible = poolMode && accountReady(), busy = payoutBusy() || payoutWalletPending, blocked = !visible || !!command || poolBackupRunning();
+  payoutUI.refresh.disabled = blocked || busy; content(payoutUI.refresh, payoutCaptureJob ? 'Refresh payment history' : 'Load payment history');
+  payoutUI.cancel.disabled = !visible || !!command || payoutAttempt?.state !== 'running';
+  payoutUI.previous.disabled = blocked || busy || !payoutPage || payoutPage.after === 0;
+  payoutUI.next.disabled = blocked || busy || !payoutPage?.has_more;
+  content(payoutUI.status, visible ? payoutMessage || 'Load a dated copy of your recorded pool payments.' : 'Sign in to view your recorded payments.');
+  const capture = visible ? payoutCaptureJob?.capture : null;
+  content(payoutUI.capture, capture ? `Captured ${new Date(capture.captured_at_ms).toISOString()}. Pool report ${capture.settlement_observed_at_ms ? new Date(capture.settlement_observed_at_ms).toISOString() : 'not yet observed'}. Recorded paid: ${payoutAtoms(capture.paid_atoms)} SLUG; reserved: ${payoutAtoms(capture.reserved_atoms)} SLUG.` : '');
+  content(payoutUI.page, visible && payoutPage ? payoutPage.capture.count === 0 ? 'No recorded payments in this capture.' : `Payments ${payoutPage.after + 1}–${payoutPage.next} of ${payoutPage.capture.count}` : '');
+  payoutUI.list.textContent = '';
+  for (const row of visible ? payoutPage?.items ?? [] : []) {
+    const li = element('li'), text = element('p', '', `${row.day} · ${payoutAtoms(row.atoms)} SLUG · Pool-recorded ${row.recorded_state}.`), id = element('p', 'note', `Transaction ${row.txid}, output ${row.output_index}. Prepared ${new Date(row.created_at_ms).toISOString()}.`), button = element('button', '', 'Check in wallet');
+    button.disabled = blocked || busy; button.addEventListener('click', () => { const c = payoutContext(); queue(() => payoutCurrent(c) ? readPayoutWallet(row) : undefined, 'pool-payment-wallet'); }); li.append(text, id, button); payoutUI.list.append(li);
+  }
+  const o = visible ? payoutObservation : null;
+  const status = o ? o.state === 'unavailable' ? 'Unavailable; no wallet status was established.' : o.state === 'not_observed' ? 'Not observed in the saved wallet transaction view.' : o.state === 'unconfirmed' ? 'Wallet-reported unconfirmed.' : `Wallet-reported confirmed with ${o.confirmations} confirmation${o.confirmations === 1 ? '' : 's'}.` : '';
+  content(payoutUI.wallet, o ? `Wallet check ${new Date(o.observed_at_ms).toISOString()} for ${o.payment.txid}, output ${o.payment.output_index}: ${status}${o.wallet_synced ? ` Wallet-reported synchronized at height ${o.wallet_height}, tip ${o.wallet_tip}.` : ''}` : '');
+}
+
+// Immutable own-wallet observations. Refresh is explicit; rows are never summed
+// into a balance or used as payment, ownership, spendability or finality authority.
+const activityUI = Object.fromEntries(['refresh','cancel','previous','next','status','capture','page','list','detail'].map(k => [k, document.getElementById(`wallet-activity-${k}`)]));
+const ACTIVITY_ERRORS = new Set(['invalid_request','unauthorized','stale_view','busy','capacity','activity_unavailable','activity_not_found','operation_conflict','outcome_unknown']);
+let activityAttempt = null, activityCaptureJob = null, activityPage = null, activityDetail = null;
+let activityUnknown = false, activityPriorID = '', activityMessage = '', activitySerial = 0, activityProjectionPending = false;
+function clearActivity() { activitySerial++; activityAttempt = activityCaptureJob = activityPage = activityDetail = null; activityUnknown = activityProjectionPending = false; activityPriorID = activityMessage = ''; }
+function activityBusy() { return poolMode && (activityUnknown || activityAttempt?.state === 'running'); }
+function activityContext() { return {epoch, serial:activitySerial, view:currentKey()}; }
+function activityCurrent(c) { return poolMode && accountReady() && c.epoch === epoch && c.serial === activitySerial && c.view === currentKey(); }
+function activityBinding(v) {
+  exact(v,['view','source_binding_id','root_public_key','gym_public_key','gym_id']);
+  const f = current?.account?.fixture;
+  requireValue(poolMode && accountReady() && Object.hasOwn(ROOTS,f) && viewKey(checkedView(v.view)) === currentKey() && v.source_binding_id === current.source_binding_id && hex(v.source_binding_id) && v.root_public_key === ROOTS[f] && v.gym_public_key === fixtures[f][1] && v.gym_id === fixtures[f][0]);
+  return v;
+}
+function activityCapture(v) {
+  exact(v,['version','captured_at_ms','wallet_height','wallet_tip','node_height','node_tip','count','has_older']);
+  requireValue(v.version === 1 && int(v.captured_at_ms,1,PAYOUT_TIME_MAX) && int(v.wallet_height,0,2147483647) && int(v.node_height,0,2147483647) && payoutID(v.wallet_tip) && payoutID(v.node_tip) && v.wallet_height === v.node_height && v.wallet_tip === v.node_tip && int(v.count,0,256) && typeof v.has_older === 'boolean' && (!v.has_older || v.count === 256));
+  return v;
+}
+function activityItem(v,capture) {
+  exact(v,['txid','raw_sha256','recorded_at_ms','coinbase','block','confirmations','received_atoms','spent_atoms','change_atoms','net_atoms','fee_atoms','input_count','output_count','owned_input_count','owned_output_count']);
+  requireValue(hex(v.txid) && hex(v.raw_sha256) && int(v.recorded_at_ms,0,PAYOUT_TIME_MAX) && typeof v.coinbase === 'boolean' && int(v.confirmations,0,2147483648));
+  for (const k of ['received_atoms','spent_atoms','change_atoms']) requireValue(int(v[k],0,MAX_ATOMS));
+  requireValue(int(v.net_atoms,-MAX_ATOMS,MAX_ATOMS) && v.net_atoms === v.received_atoms-v.spent_atoms && v.change_atoms <= v.received_atoms);
+  requireValue(int(v.input_count,1,256) && int(v.output_count,1,256) && int(v.owned_input_count,0,v.input_count) && int(v.owned_output_count,0,v.output_count) && v.owned_input_count+v.owned_output_count > 0);
+  requireValue((v.owned_input_count !== 0 || v.spent_atoms === 0) && (v.owned_output_count !== 0 || v.received_atoms === 0 && v.change_atoms === 0));
+  if (v.block === null) requireValue(v.confirmations === 0);
+  else { exact(v.block,['height','hash','time_ms']); requireValue(int(v.block.height,0,capture.wallet_height) && payoutID(v.block.hash) && int(v.block.time_ms,0,PAYOUT_TIME_MAX) && v.confirmations === capture.wallet_height-v.block.height+1); }
+  const unknown = v.coinbase || v.owned_input_count < v.input_count;
+  requireValue(unknown ? v.fee_atoms === null : int(v.fee_atoms,0,v.spent_atoms));
+  if (v.coinbase) requireValue(v.input_count === 1 && v.owned_input_count === 0 && v.spent_atoms === 0);
+  return v;
+}
+function activityOrder(a,b) {
+  if ((a.block === null) !== (b.block === null)) return a.block === null ? -1 : 1;
+  const d = a.block === null ? b.recorded_at_ms-a.recorded_at_ms : b.block.height-a.block.height;
+  return d || (a.txid < b.txid ? -1 : a.txid > b.txid ? 1 : 0);
+}
+function activitySnapshotValue(v) {
+  exact(v,['version','state','error','binding','activity','active_job_id','last_job_id','capture_job_id']);
+  requireValue(v.version === 1 && ['active_job_id','last_job_id','capture_job_id'].every(k=>payoutID(v[k],true)));
+  if (v.state === 'unavailable') requireValue(v.error === 'activity_unavailable' && v.binding === null && v.activity === 'none' && !v.active_job_id && !v.last_job_id && !v.capture_job_id);
+  else { activityBinding(v.binding); requireValue(v.error === '' && ['idle','busy'].includes(v.state)); requireValue(v.state === 'idle' ? v.activity === 'none' && v.active_job_id === '' : ['capture','detail'].includes(v.activity) && !!v.active_job_id); if (v.activity === 'detail') requireValue(v.active_job_id === v.capture_job_id); }
+  return v;
+}
+function activityJobValue(v) {
+  exact(v,['version','job_id','state','binding','error','capture']); activityBinding(v.binding);
+  requireValue(v.version === 1 && payoutID(v.job_id) && ['running','done','failed','cancelled'].includes(v.state));
+  if (v.state === 'done') { requireValue(v.error === ''); activityCapture(v.capture); }
+  else if (v.state === 'failed') requireValue(v.capture === null && ['busy','capacity','activity_unavailable'].includes(v.error));
+  else requireValue(v.capture === null && v.error === '');
+  const old = [activityAttempt,activityCaptureJob].find(x=>x?.job_id === v.job_id);
+  if (old && old.state !== 'running') requireValue(same(old,v));
+  return v;
+}
+function activityPageValue(v) {
+  exact(v,['version','binding','job_id','capture','after','limit','next','has_more','items']); activityBinding(v.binding); activityCapture(v.capture);
+  requireValue(v.version === 1 && payoutID(v.job_id) && int(v.after,0,v.capture.count) && int(v.limit,1,8) && Array.isArray(v.items) && v.items.length === Math.min(v.limit,v.capture.count-v.after) && int(v.next,0,256) && v.next === v.after+v.items.length && typeof v.has_more === 'boolean' && v.has_more === (v.next<v.capture.count));
+  const ids = new Set(); let previous = null;
+  for (const row of v.items) { activityItem(row,v.capture); requireValue(!ids.has(row.txid) && (!previous || activityOrder(previous,row)<0)); ids.add(row.txid); previous=row; }
+  return v;
+}
+function activityDetailValue(v) {
+  exact(v,['version','binding','job_id','capture','item','outputs']); activityBinding(v.binding); activityCapture(v.capture); activityItem(v.item,v.capture);
+  requireValue(v.version === 1 && payoutID(v.job_id) && Array.isArray(v.outputs) && v.outputs.length === v.item.output_count);
+  let total=0,c=0,k=0,owned=0;
+  v.outputs.forEach((o,i)=>{
+    exact(o,['index','atoms','owned','change','address']); requireValue(int(o.index,i,i) && int(o.atoms,0,MAX_ATOMS) && typeof o.owned === 'boolean' && typeof o.change === 'boolean' && (!o.change || o.owned));
+    // The native codec validates the actual chain address/checksum; the browser
+    // accepts only bounded printable encodings, never a URL or injected markup.
+    requireValue(typeof o.address === 'string' && o.address.length <= 90 && (o.address === '' || /^(slug1[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{8,84}|[1-9A-HJ-NP-Za-km-z]{26,60})$/.test(o.address)));
+    total+=o.atoms; requireValue(int(total,0,MAX_ATOMS)); if(o.owned){c+=o.atoms;owned++;} if(o.change)k+=o.atoms;
+  });
+  requireValue(c === v.item.received_atoms && k === v.item.change_atoms && owned === v.item.owned_output_count && (v.item.fee_atoms === null || total+v.item.fee_atoms === v.item.spent_atoms));
+  return v;
+}
+function activityEnvelope(v,arm,jobID='') {
+  exact(v,['id','version','ok','snapshot','job','page','detail','error']);
+  requireValue(int(v.id,1) && v.version === 1 && typeof v.ok === 'boolean'); payoutSize(v,arm === 'detail' ? 98303 : 16383);
+  const arms=['snapshot','job','page','detail'];
+  if(!v.ok){requireValue(arms.every(k=>v[k]===null) && ACTIVITY_ERRORS.has(v.error));return {ok:false,error:v.error};}
+  requireValue(v.error === '' && arms.every(k=>k === arm ? v[k] !== null : v[k] === null));
+  const value=({snapshot:activitySnapshotValue,job:activityJobValue,page:activityPageValue,detail:activityDetailValue})[arm](v[arm]);
+  if(jobID)requireValue(value.job_id===jobID);
+  return {ok:true,value:own(value)};
+}
+function activityAtoms(value) { requireValue(int(value,-MAX_ATOMS,MAX_ATOMS)); const n=BigInt(value),a=n<0n?-n:n; return `${n<0n?'-':''}${a/100000000n}.${(a%100000000n).toString().padStart(8,'0')}`; }
+function activityRetained(attempt=activityAttempt,capture=activityCaptureJob,page=activityPage,detail=activityDetail) { payoutSize([attempt,capture,page,detail],131072); }
+function activityRefusal(code) {
+  if(['unauthorized','stale_view'].includes(code)){disconnected();return;}
+  activityMessage=({busy:'Another wallet task is finishing. The previous dated capture is retained.',capacity:'This wallet activity exceeds the current display limit. The previous dated capture is retained.',outcome_unknown:'Checking whether this exact refresh started. The previous capture stays dated.',activity_not_found:'The requested capture is no longer available. Choose Refresh to capture again.'})[code] || 'Wallet activity is unavailable. The previous dated capture is retained; choose Refresh to try again.';
+}
+async function acceptActivityJob(j) {
+  const replaced=j.state==='done' && j.job_id!==activityCaptureJob?.job_id;
+  activityRetained(j,j.state==='done'?j:activityCaptureJob,replaced?null:activityPage,replaced?null:activityDetail);
+  activityAttempt=j;activityUnknown=false;
+  if(j.state==='done'){if(replaced){activityCaptureJob=j;activityPage=activityDetail=null;}activityMessage='Wallet activity captured. Refresh explicitly to update it.';if(!activityPage)await readActivityPage(0);}
+  else if(j.state==='failed')activityRefusal(j.error);
+  else activityMessage=j.state==='cancelled'?'Refresh cancelled. The previous dated capture is retained.':'Reading wallet activity…';
+}
+async function readActivityPage(after) {
+  if(!poolMode || !accountReady() || !activityCaptureJob || activityProjectionPending)return;
+  const c=activityContext(),capture=activityCaptureJob,limit=8;activityProjectionPending=true;
+  try{
+    const raw=await call('WalletActivityPage',current.view.view_id,capture.job_id,after,limit);if(!activityCurrent(c) || activityCaptureJob?.job_id!==capture.job_id)return;
+    const r=activityEnvelope(raw,'page',capture.job_id);if(!r.ok){activityRefusal(r.error);return;}
+    requireValue(same(r.value.capture,capture.capture) && same(r.value.binding,capture.binding) && r.value.after===after && r.value.limit===limit);
+    if(activityPage){const old=activityPage; for(let i=0;i<r.value.items.length;i++){const oldIndex=after+i-old.after;if(oldIndex>=0 && oldIndex<old.items.length)requireValue(same(r.value.items[i],old.items[oldIndex]));}
+      if(old.next===after && old.items.length && r.value.items.length)requireValue(activityOrder(old.items.at(-1),r.value.items[0])<0);
+      if(r.value.next===old.after && old.items.length && r.value.items.length)requireValue(activityOrder(r.value.items.at(-1),old.items[0])<0);
+    }
+    activityRetained(activityAttempt,activityCaptureJob,r.value,null);activityPage=r.value;activityDetail=null;
+  }catch{if(activityCurrent(c))activityRefusal('activity_unavailable');}finally{if(activityCurrent(c))activityProjectionPending=false;renderActivity();}
+}
+async function beginActivity() {
+  if(!poolMode || !accountReady() || activityBusy() || activityProjectionPending || poolBackupRunning())return;
+  const c=activityContext();activityPriorID=activityAttempt?.job_id || activityCaptureJob?.job_id || '';activityAttempt=null;activityUnknown=true;activityMessage='Starting wallet activity refresh…';renderActivity();
+  try{const raw=await call('BeginWalletActivity',current.view.view_id);if(!activityCurrent(c))return;const r=activityEnvelope(raw,'job');if(!r.ok){activityUnknown=r.error==='outcome_unknown';activityRefusal(r.error);return;}
+    requireValue(r.value.job_id!==activityPriorID && r.value.job_id!==activityCaptureJob?.job_id);await acceptActivityJob(r.value);
+  }catch{if(activityCurrent(c)){activityUnknown=true;activityRefusal('outcome_unknown');}}finally{renderActivity();}
+}
+async function fetchActivity() {
+  if(!poolMode || !accountReady() || !activityBusy())return;const c=activityContext();
+  try{let id=activityAttempt?.job_id;
+    if(!id){const raw=await call('WalletActivitySnapshot');if(!activityCurrent(c))return;const r=activityEnvelope(raw,'snapshot');if(!r.ok){activityRefusal(r.error);return;}if(r.value.state==='unavailable'){activityRefusal('activity_unavailable');return;}
+      id=r.value.activity==='capture'?r.value.active_job_id:r.value.last_job_id;
+      if(!id || id===activityPriorID || id===activityCaptureJob?.job_id){activityUnknown=false;activityMessage='The new refresh did not start. The previous capture is unchanged; choose Refresh when ready.';return;}
+    }
+    const raw=await call('WalletActivityJob',current.view.view_id,id);if(!activityCurrent(c))return;const r=activityEnvelope(raw,'job',id);
+    if(!r.ok){if(r.error==='activity_not_found'){activityUnknown=false;activityAttempt=null;}activityRefusal(r.error);return;}await acceptActivityJob(r.value);
+  }catch{if(activityCurrent(c))activityRefusal('outcome_unknown');}finally{renderActivity();}
+}
+async function cancelActivity() {
+  if(!poolMode || !accountReady() || activityAttempt?.state!=='running')return;const c=activityContext(),id=activityAttempt.job_id;
+  try{const raw=await call('CancelWalletActivity',current.view.view_id,id);if(!activityCurrent(c))return;const r=activityEnvelope(raw,'job',id);if(r.ok)await acceptActivityJob(r.value);else activityRefusal(r.error);}
+  catch{if(activityCurrent(c))activityRefusal('outcome_unknown');}finally{renderActivity();}
+}
+async function readActivityDetail(row) {
+  if(!poolMode || !accountReady() || activityBusy() || activityProjectionPending || poolBackupRunning() || !activityCaptureJob || !activityPage?.items.some(i=>same(i,row)))return;
+  const c=activityContext(),capture=activityCaptureJob;activityProjectionPending=true;activityMessage='Reading the selected captured transaction…';renderActivity();
+  try{const raw=await call('WalletActivityDetail',current.view.view_id,capture.job_id,row.txid);if(!activityCurrent(c) || activityCaptureJob?.job_id!==capture.job_id)return;const r=activityEnvelope(raw,'detail',capture.job_id);if(!r.ok){activityRefusal(r.error);return;}
+    requireValue(same(r.value.capture,capture.capture) && same(r.value.binding,capture.binding) && same(r.value.item,row));activityRetained(activityAttempt,activityCaptureJob,activityPage,r.value);activityDetail=r.value;activityMessage='Transaction details from the same dated capture.';
+  }catch{if(activityCurrent(c))activityRefusal('activity_unavailable');}finally{if(activityCurrent(c))activityProjectionPending=false;renderActivity();}
+}
+function activityConfirmation(row) { return row.block===null?'Unconfirmed wallet record':`Wallet records ${row.confirmations} confirmation${row.confirmations===1?'':'s'}`; }
+function renderActivity() {
+  const visible=poolMode && accountReady(),busy=activityBusy() || activityProjectionPending,blocked=!visible || !!command || poolBackupRunning();
+  activityUI.refresh.disabled=blocked || busy;content(activityUI.refresh,activityCaptureJob?'Refresh wallet activity':'Load wallet activity');activityUI.cancel.disabled=!visible || !!command || activityAttempt?.state!=='running';
+  activityUI.previous.disabled=blocked || busy || !activityPage || activityPage.after===0;activityUI.next.disabled=blocked || busy || !activityPage?.has_more;
+  content(activityUI.status,visible?activityMessage || 'Load a dated view of incoming and outgoing wallet transactions.':'Sign in to view wallet activity.');
+  const cap=visible?activityCaptureJob?.capture:null;
+  content(activityUI.capture,cap?`Captured ${new Date(cap.captured_at_ms).toISOString()} at wallet height ${cap.wallet_height}, tip ${cap.wallet_tip}. ${cap.has_older?'Showing the most recent 256 records; older records exist.':'This is a bounded wallet observation.'}`:'');
+  content(activityUI.page,visible && activityPage?activityPage.capture.count===0?'No recorded wallet transactions in this capture.':`Transactions ${activityPage.after+1}–${activityPage.next} of ${activityPage.capture.count}`:'');activityUI.list.textContent='';
+  for(const row of visible?activityPage?.items??[]:[]){const li=element('li'),button=element('button','','View transaction details');button.disabled=blocked || busy;button.addEventListener('click',()=>{const c=activityContext();queue(()=>activityCurrent(c)?readActivityDetail(row):undefined,'wallet-activity-detail');});li.append(element('p','',`Net change ${activityAtoms(row.net_atoms)} SLUG · ${activityConfirmation(row)}${row.coinbase?' · Mining reward':''}.`),element('p','note',`Transaction ${row.txid}. Wallet recorded ${new Date(row.recorded_at_ms).toISOString()}.`),button);activityUI.list.append(li);}
+  activityUI.detail.textContent='';const d=visible?activityDetail:null;
+  if(d){const i=d.item;activityUI.detail.append(element('p','',`Transaction ${i.txid}. Net change ${activityAtoms(i.net_atoms)} SLUG. Received, including change: ${activityAtoms(i.received_atoms)} SLUG. Spent from wallet inputs: ${activityAtoms(i.spent_atoms)} SLUG. Recorded change: ${activityAtoms(i.change_atoms)} SLUG. ${i.fee_atoms===null?'Fee unknown.':`Fee ${activityAtoms(i.fee_atoms)} SLUG.`}`),element('p','note',`${activityConfirmation(i)} as captured ${new Date(d.capture.captured_at_ms).toISOString()}. Raw transaction SHA256 ${i.raw_sha256}.`));
+    const list=element('ol');for(const o of d.outputs)list.append(element('li','',`Output ${o.index}: ${activityAtoms(o.atoms)} SLUG · ${o.owned?'Wallet-recorded ownership':'Not recorded as owned'}${o.change?' · Recorded change':''}. ${o.address || 'No address representation available.'}`));activityUI.detail.append(list);
+  }
+}
+activityUI.refresh.addEventListener('click',()=>queue(beginActivity,'wallet-activity'));
+activityUI.cancel.addEventListener('click',()=>queue(cancelActivity,'wallet-activity-cancel'));
+activityUI.previous.addEventListener('click',()=>queue(()=>readActivityPage(Math.max(0,(activityPage?.after??0)-8)),'wallet-activity-page'));
+activityUI.next.addEventListener('click',()=>queue(()=>activityPage?.has_more?readActivityPage(activityPage.next):undefined,'wallet-activity-page'));
+
+// Candidate withdrawals retain exact native operation/action correlation. The
+// browser never approves raw transactions or refreshes an action's authority.
+const withdrawalUI = Object.fromEntries(['destination', 'amount', 'prepare', 'refresh', 'review', 'retry', 'observe', 'stop', 'abandon', 'status', 'detail', 'observation'].map(k => [k, document.getElementById(`withdrawal-${k}`)]));
+const WITHDRAWAL_ERRORS = new Set(['invalid_request', 'unauthorized', 'stale_view', 'held', 'reauthentication_required', 'busy', 'capacity', 'withdrawal_unavailable', 'withdrawal_not_found', 'operation_conflict', 'draft_stale', 'insufficient_funds', 'fee_limit', 'outcome_unknown']);
+let withdrawalBinding = null, withdrawalSaved = null, withdrawalAction = null, withdrawalReview = null, withdrawalUnknown = false, withdrawalMessage = '', withdrawalPriorAction = '', withdrawalSerial = 0;
+function clearWithdrawal() { withdrawalSerial++; withdrawalBinding = withdrawalSaved = withdrawalAction = withdrawalReview = null; withdrawalUnknown = false; withdrawalMessage = withdrawalPriorAction = ''; if (withdrawalUI.destination) withdrawalUI.destination.value = ''; if (withdrawalUI.amount) withdrawalUI.amount.value = ''; }
+function withdrawalContext() { return {epoch, serial: withdrawalSerial, view: currentKey()}; }
+function withdrawalCurrent(c) { return poolMode && accountReady() && c.epoch === epoch && c.serial === withdrawalSerial && c.view === currentKey(); }
+function withdrawalBusy() { return withdrawalUnknown || ['running', 'review'].includes(withdrawalAction?.state) || !!withdrawalReview; }
+function withdrawalBindingValue(v, establish = false) {
+  exact(v, ['view', 'source_binding_id', 'journal_id', 'withdrawal_binding_id']); checkedView(v.view);
+  requireValue(poolMode && accountReady() && viewKey(v.view) === currentKey() && v.source_binding_id === current.source_binding_id && ['source_binding_id', 'journal_id'].every(k => payoutID(v[k])) && hex(v.withdrawal_binding_id)); payoutSize(v, 4096);
+  if (withdrawalBinding) requireValue(same(v, withdrawalBinding)); else requireValue(establish);
+  return own(v);
+}
+function withdrawalIntentValue(v) {
+  exact(v, ['destination', 'recipient_script', 'amount_atoms', 'fee_rate_atoms_per_kb', 'fee_limit_atoms']);
+  requireValue(typeof v.destination === 'string' && /^[\x21-\x7e]{1,90}$/.test(v.destination) && typeof v.recipient_script === 'string' && /^(?:76a914[0-9a-f]{40}88ac|a914[0-9a-f]{40}87|0014[0-9a-f]{40}|5120[0-9a-f]{64})$/.test(v.recipient_script) && int(v.amount_atoms, 1, MAX_ATOMS) && v.fee_rate_atoms_per_kb === 1000 && v.fee_limit_atoms === 100000); payoutSize(v, 512); return v;
+}
+function withdrawalDraftValue(v) {
+  exact(v, ['version', 'draft_digest', 'unsigned_txid', 'destination', 'recipient_script', 'amount_atoms', 'fee_atoms', 'total_debit_atoms', 'input_count', 'input_atoms', 'recipient_output_index', 'change_atoms', 'change_output_index', 'prepared_at_ms', 'observed_tip', 'observed_height']);
+  withdrawalIntentValue({destination:v.destination, recipient_script:v.recipient_script, amount_atoms:v.amount_atoms, fee_rate_atoms_per_kb:1000, fee_limit_atoms:100000});
+  requireValue(v.version === 1 && ['draft_digest', 'unsigned_txid', 'observed_tip'].every(k => hex(v[k])) && int(v.fee_atoms, 1, 100000) && int(v.total_debit_atoms, 1, MAX_ATOMS) && v.total_debit_atoms === v.amount_atoms + v.fee_atoms && int(v.change_atoms, 0, MAX_ATOMS) && int(v.input_atoms, 1, MAX_ATOMS) && v.input_atoms === v.total_debit_atoms + v.change_atoms && int(v.input_count, 1, 16) && int(v.recipient_output_index, 0, 1) && int(v.prepared_at_ms, 1, PAYOUT_TIME_MAX) && int(v.observed_height, 0, 2147483647));
+  requireValue(v.change_atoms === 0 ? v.change_output_index === -1 && v.recipient_output_index === 0 : int(v.change_output_index, 0, 1) && v.change_output_index !== v.recipient_output_index); payoutSize(v, 2048); return v;
+}
+function withdrawalOperationValue(v, expectedID = '') {
+  exact(v, ['version', 'operation_id', 'journal_id', 'withdrawal_binding_id', 'sequence', 'revision', 'created_at_ms', 'updated_at_ms', 'prepared_at_ms', 'stage', 'intent', 'intent_digest', 'draft', 'txid', 'signed_sha256', 'dispatch', 'observation']);
+  requireValue(withdrawalBinding && v.journal_id === withdrawalBinding.journal_id && v.withdrawal_binding_id === withdrawalBinding.withdrawal_binding_id && v.version === 1 && payoutID(v.operation_id) && (!expectedID || v.operation_id === expectedID) && hex(v.intent_digest) && int(v.sequence, 1, 128) && int(v.revision, 1, 4294967295) && int(v.created_at_ms, 1, PAYOUT_TIME_MAX) && int(v.updated_at_ms, v.created_at_ms, PAYOUT_TIME_MAX) && int(v.prepared_at_ms, 0, v.updated_at_ms)); withdrawalIntentValue(v.intent);
+  const stages = ['intent', 'prepared', 'signed', 'dispatching', 'submitted', 'abandoned']; requireValue(stages.includes(v.stage));
+  if (v.draft !== null) { withdrawalDraftValue(v.draft); requireValue(v.prepared_at_ms === v.draft.prepared_at_ms && v.prepared_at_ms >= v.created_at_ms && ['destination', 'recipient_script', 'amount_atoms'].every(k => v.intent[k] === v.draft[k])); } else requireValue(v.prepared_at_ms === 0);
+  if (['signed', 'dispatching', 'submitted'].includes(v.stage)) requireValue(v.draft !== null && v.txid === v.draft.unsigned_txid && hex(v.signed_sha256));
+  else requireValue(v.txid === '' && v.signed_sha256 === '' && v.dispatch === null && v.observation === null);
+  if (v.stage === 'intent') requireValue(v.draft === null); if (v.stage === 'prepared') requireValue(v.draft !== null); if (v.stage === 'signed') requireValue(v.dispatch === null); if (v.stage === 'dispatching') requireValue(v.dispatch !== null); if (v.stage === 'submitted') requireValue(v.observation !== null);
+  if (v.dispatch !== null) {
+    const d = v.dispatch; exact(d, ['attempt', 'authorization', 'intent_at_ms', 'result', 'result_at_ms', 'error']); const a = d.authorization; exact(a, ['action_id', 'review_id', 'view_id', 'generation', 'authorized_at_ms']);
+    requireValue(int(d.attempt, 1, 4294967295) && ['action_id', 'review_id', 'view_id'].every(k => payoutID(a[k])) && int(a.generation, 1) && int(a.authorized_at_ms, v.created_at_ms, v.updated_at_ms) && int(d.intent_at_ms, a.authorized_at_ms, v.updated_at_ms));
+    if (d.result === 'pending') requireValue(d.result_at_ms === 0 && d.error === ''); else requireValue(int(d.result_at_ms, d.intent_at_ms, v.updated_at_ms) && ({acknowledged:'', unknown:'node_unavailable', rejected:'node_rejected'})[d.result] === d.error);
+  }
+  if (v.observation !== null) {
+    const o = v.observation; exact(o, ['version', 'txid', 'observed_at_ms', 'state', 'node_tip', 'node_height', 'confirmations', 'block_hash', 'error']);
+    requireValue(o.version === 1 && o.txid === v.txid && int(o.observed_at_ms, v.created_at_ms, v.updated_at_ms) && int(o.node_height, 0, 2147483647));
+    if (o.state === 'unknown') requireValue(o.node_tip === '' && o.node_height === 0 && o.confirmations === 0 && o.block_hash === '' && o.error === 'node_unavailable');
+    else { requireValue(o.error === '' && payoutID(o.node_tip)); if (o.state === 'confirmed') requireValue(int(o.confirmations, 1, o.node_height + 1) && payoutID(o.block_hash)); else requireValue(['not_observed', 'mempool'].includes(o.state) && o.confirmations === 0 && o.block_hash === ''); }
+    payoutSize(o, 2048);
+  }
+  if (withdrawalSaved?.operation_id === v.operation_id) {
+    const old = withdrawalSaved; requireValue(v.sequence === old.sequence && v.revision >= old.revision && v.updated_at_ms >= old.updated_at_ms && v.created_at_ms === old.created_at_ms && same(v.intent, old.intent) && v.intent_digest === old.intent_digest && (!old.draft || same(v.draft, old.draft)) && (!old.txid || v.txid === old.txid && v.signed_sha256 === old.signed_sha256));
+    requireValue(v.revision !== old.revision || same(v, old)); requireValue(stages.indexOf(v.stage) >= stages.indexOf(old.stage) && (!['submitted', 'abandoned'].includes(old.stage) || old.stage === v.stage));
+  }
+  payoutSize(v, 8192); return own(v);
+}
+function withdrawalActionValue(v, expectedID = '') {
+  exact(v, ['version', 'binding', 'operation_id', 'action_id', 'kind', 'state', 'review_id', 'error', 'operation']); withdrawalBindingValue(v.binding);
+  requireValue(v.version === 1 && payoutID(v.operation_id) && payoutID(v.action_id) && (!expectedID || v.action_id === expectedID) && v.action_id !== withdrawalPriorAction && ['prepare', 'send', 'retry', 'abandon', 'observe'].includes(v.kind) && payoutID(v.review_id, true) && ['send', 'retry'].includes(v.kind) === !!v.review_id);
+  requireValue(['running', 'review', 'done', 'failed', 'stopped', 'outcome_unknown'].includes(v.state)); if (['running', 'review', 'done', 'stopped'].includes(v.state)) requireValue(v.error === ''); else requireValue(WITHDRAWAL_ERRORS.has(v.error) && (v.state === 'outcome_unknown') === (v.error === 'outcome_unknown'));
+  if (v.operation !== null) withdrawalOperationValue(v.operation, v.operation_id); if (v.state === 'review') requireValue(['send', 'retry'].includes(v.kind) && v.operation !== null && (v.kind === 'send' ? v.operation.stage === 'prepared' : ['signed', 'dispatching'].includes(v.operation.stage)));
+  if (withdrawalAction?.action_id === v.action_id && !['running', 'review'].includes(withdrawalAction.state)) requireValue(same(v, withdrawalAction)); payoutSize(v, 14336); return own(v);
+}
+function withdrawalReviewValue(v) {
+  exact(v, ['version', 'binding', 'operation_id', 'action_id', 'review_id', 'kind', 'draft', 'txid', 'reviewed_at_ms', 'expires_at_ms']); withdrawalBindingValue(v.binding); withdrawalDraftValue(v.draft);
+  requireValue(v.version === 1 && ['operation_id', 'action_id', 'review_id'].every(k => payoutID(v[k])) && v.action_id !== withdrawalPriorAction && ['send', 'retry'].includes(v.kind) && int(v.reviewed_at_ms, 1, PAYOUT_TIME_MAX) && int(v.expires_at_ms, v.reviewed_at_ms + 1, Math.min(PAYOUT_TIME_MAX, v.reviewed_at_ms + 300000)) && (v.kind === 'send' ? v.txid === '' : v.txid === v.draft.unsigned_txid));
+  requireValue(withdrawalSaved?.operation_id === v.operation_id && same(v.draft, withdrawalSaved.draft)); payoutSize(v, 8192); return own(v);
+}
+function withdrawalSnapshotValue(v) {
+  exact(v, ['version', 'state', 'error', 'binding', 'active_action_id', 'last_action_id', 'unresolved_operation_id', 'latest_operation_id', 'can_prepare', 'can_review']);
+  requireValue(v.version === 1 && ['active_action_id', 'last_action_id', 'unresolved_operation_id', 'latest_operation_id'].every(k => payoutID(v[k], true)) && typeof v.can_prepare === 'boolean' && typeof v.can_review === 'boolean');
+  if (v.state === 'unavailable') requireValue(v.error === 'withdrawal_unavailable' && v.binding === null && ['active_action_id', 'last_action_id', 'unresolved_operation_id', 'latest_operation_id'].every(k => v[k] === '') && !v.can_prepare && !v.can_review);
+  else { withdrawalBindingValue(v.binding, true); requireValue(['idle', 'busy'].includes(v.state) && v.error === '' && (v.state === 'busy') === !!v.active_action_id && (!v.can_prepare || v.state === 'idle' && !v.unresolved_operation_id)); }
+  payoutSize(v, 5120); return own(v);
+}
+function withdrawalEnvelope(v, arm, id = '') {
+  exact(v, ['id', 'version', 'ok', 'snapshot', 'operation', 'review', 'action', 'error']); requireValue(int(v.id, 1) && v.version === 1 && typeof v.ok === 'boolean'); payoutSize(v, 16383);
+  if (!v.ok) { requireValue(['snapshot', 'operation', 'review', 'action'].every(k => v[k] === null) && WITHDRAWAL_ERRORS.has(v.error)); return {ok:false,error:v.error}; }
+  requireValue(v.error === '' && ['snapshot', 'operation', 'review', 'action'].every(k => k === arm ? v[k] !== null : v[k] === null));
+  const value = ({snapshot:withdrawalSnapshotValue,operation:withdrawalOperationValue,review:withdrawalReviewValue,action:withdrawalActionValue})[arm](v[arm],id); return {ok:true,value};
+}
+function withdrawalRefusal(code) {
+  if (['unauthorized', 'stale_view'].includes(code)) { withdrawalReview = null; withdrawalUnknown = false; }
+  withdrawalMessage = ({held:'The security hold blocks new payments and retries. You can still check saved transactions.', reauthentication_required:'Sign out and sign in again, then review this same payment.', unauthorized:'Sign out and sign in again before reviewing this payment.', busy:'Another wallet task is finishing. Check the saved withdrawal before retrying.', outcome_unknown:'Checking this exact withdrawal. Do not prepare another payment to retry it.', capacity:'This candidate wallet has reached its retained-withdrawal capacity.', withdrawal_not_found:'No matching saved withdrawal was found.', operation_conflict:'The saved payment differs from this action. Check its current state.', insufficient_funds:'The wallet cannot fund this amount with eligible inputs.', fee_limit:'The payment exceeds the fixed candidate fee limit.'})[code] || 'The withdrawal is unavailable. Check the saved operation before trying again.';
+}
+function acceptWithdrawalAction(a) { withdrawalAction = a; withdrawalUnknown = false; if (a.operation) withdrawalSaved = a.operation; if (a.state !== 'review') withdrawalReview = null; withdrawalMessage = a.state === 'running' ? 'Working on the reviewed withdrawal…' : a.state === 'review' ? 'Choose in the native payment review.' : a.state === 'stopped' ? 'Task stopped. Saved payment state is retained; submitted bytes cannot be recalled.' : a.state === 'done' ? 'Withdrawal state saved. Transaction observations are separate from finality.' : ''; if (['failed', 'outcome_unknown'].includes(a.state)) withdrawalRefusal(a.error); }
+async function fetchWithdrawal(force = false) {
+  if (!poolMode || !accountReady() || (!force && withdrawalBinding && !withdrawalBusy())) return; const c = withdrawalContext();
+  try {
+    const raw = await call('WithdrawalSnapshot'); if (!withdrawalCurrent(c)) return; const r = withdrawalEnvelope(raw,'snapshot'); if (!r.ok) { withdrawalRefusal(r.error); return; } const s = r.value;
+    if (!s.binding) { withdrawalRefusal(s.error); return; } withdrawalBinding = s.binding;
+    const actionID = withdrawalAction?.action_id || withdrawalReview?.action_id || (withdrawalUnknown ? s.active_action_id || s.last_action_id : '');
+    if (actionID && actionID !== withdrawalPriorAction) {
+      const opID = withdrawalAction?.operation_id || withdrawalReview?.operation_id || '';
+      const aRaw = await call('WithdrawalAction', current.view.view_id, opID, actionID); if (!withdrawalCurrent(c)) return; const a = withdrawalEnvelope(aRaw,'action',actionID); if (a.ok) acceptWithdrawalAction(a.value); else { if (a.error === 'withdrawal_not_found') withdrawalUnknown = false; withdrawalRefusal(a.error); }
+    } else { if (withdrawalUnknown) {withdrawalUnknown = false; withdrawalMessage = 'The new action was not started. Check any saved withdrawal before trying again.';} const opID = s.unresolved_operation_id || s.latest_operation_id; if (opID && (!withdrawalSaved || force)) { const oRaw = await call('WithdrawalOperation', current.view.view_id, opID); if (!withdrawalCurrent(c)) return; const o = withdrawalEnvelope(oRaw,'operation',opID); if (o.ok) {withdrawalSaved = o.value; withdrawalMessage = 'Recovered saved withdrawal. A new send or retry requires a fresh native review.';} else withdrawalRefusal(o.error); } }
+  } catch { if (withdrawalCurrent(c)) withdrawalRefusal('withdrawal_unavailable'); } finally {renderWithdrawal();}
+}
+async function invokeWithdrawal(kind) {
+  if (!poolMode || !accountReady() || poolBackupRunning()) return; const c = withdrawalContext();
+  if (!withdrawalBinding) await fetchWithdrawal(true); if (!withdrawalCurrent(c) || !withdrawalBinding) return;
+  const previous = withdrawalAction?.action_id || withdrawalReview?.action_id || '';
+  if (kind !== 'stop') {withdrawalPriorAction = previous;withdrawalAction = withdrawalReview = null;withdrawalUnknown = true;}
+  renderWithdrawal();
+  try {
+    let raw, arm = 'action'; const view = current.view.view_id, id = withdrawalSaved?.operation_id;
+    if (kind === 'prepare') raw = await call('BeginWithdrawal',view,withdrawalUI.destination.value,withdrawalUI.amount.value);
+    else if (kind === 'review' || kind === 'retry') {arm = 'review';raw = await call(kind === 'review' ? 'ReviewWithdrawal' : 'RetryWithdrawal',view,id);}
+    else if (kind === 'stop') raw = await call('StopWithdrawal',view,withdrawalAction?.operation_id || withdrawalReview?.operation_id,previous);
+    else raw = await call(kind === 'abandon' ? 'AbandonWithdrawal' : 'ObserveWithdrawal',view,id);
+    if (!withdrawalCurrent(c)) return; const r = withdrawalEnvelope(raw,arm);
+    if (!r.ok) {withdrawalUnknown = r.error === 'outcome_unknown';withdrawalRefusal(r.error);return;}
+    if (arm === 'review') {withdrawalReview = r.value;withdrawalUnknown = false;withdrawalMessage = 'Review the full payment in the native confirmation. Cancelling the review does not abandon its saved draft.';} else acceptWithdrawalAction(r.value);
+  } catch {if (withdrawalCurrent(c)) {withdrawalUnknown = true;withdrawalRefusal('outcome_unknown');}} finally {renderWithdrawal();}
+}
+function renderWithdrawal() {
+  if (!withdrawalUI.prepare) return; const visible = poolMode && accountReady(), busy = withdrawalBusy(), blocked = !visible || !!command || poolBackupRunning(), held = current?.account?.held, stage = withdrawalSaved?.stage;
+  for (const k of ['destination', 'amount', 'prepare']) withdrawalUI[k].disabled = blocked || busy || held || !!stage && !['submitted', 'abandoned'].includes(stage);
+  withdrawalUI.refresh.disabled = blocked; withdrawalUI.review.disabled = blocked || busy || held || stage !== 'prepared'; withdrawalUI.retry.disabled = blocked || busy || held || !['signed', 'dispatching'].includes(stage); withdrawalUI.observe.disabled = blocked || busy || !withdrawalSaved?.txid; withdrawalUI.abandon.disabled = blocked || busy || held || !['intent', 'prepared'].includes(stage); withdrawalUI.stop.disabled = blocked || !withdrawalAction && !withdrawalReview || !busy;
+  content(withdrawalUI.status,visible ? withdrawalMessage || (held ? 'The security hold blocks sending. Saved transactions remain viewable.' : 'Prepare a test payment to review its exact amount and fee.') : 'Sign in to view withdrawals.');
+  const o = visible ? withdrawalSaved : null, d = o?.draft;
+  content(withdrawalUI.detail,o ? `Operation ${o.operation_id}. Saved state: ${o.stage}. Destination ${o.intent.destination}. Recipient ${payoutAtoms(o.intent.amount_atoms)} SLUG.${d ? ` Fee ${payoutAtoms(d.fee_atoms)} SLUG. Total debit ${payoutAtoms(d.total_debit_atoms)} SLUG.` : ''}${o.txid ? ` Transaction ${o.txid}.` : ''}` : '');
+  const x = o?.observation; content(withdrawalUI.observation,x ? `Node observation ${new Date(x.observed_at_ms).toISOString()}: ${x.state === 'unknown' ? 'unavailable; no absence claim' : x.state === 'not_observed' ? 'not observed under the recorded tip' : x.state === 'mempool' ? 'exact transaction observed in the mempool' : `exact transaction observed with ${x.confirmations} confirmations`}. This is dated evidence, not finality.` : '');
+}
+for (const kind of ['prepare', 'review', 'retry', 'observe', 'stop', 'abandon']) withdrawalUI[kind].addEventListener('click',()=>queue(()=>invokeWithdrawal(kind),`withdrawal-${kind}`));
+withdrawalUI.refresh.addEventListener('click',()=>queue(()=>fetchWithdrawal(true),'withdrawal-refresh'));
+
+payoutUI.refresh.addEventListener('click', () => queue(beginPayout, 'pool-history'));
+payoutUI.cancel.addEventListener('click', () => queue(cancelPayout, 'pool-history-cancel'));
+payoutUI.previous.addEventListener('click', () => queue(() => readPayoutPage(Math.max(0, (payoutPage?.after ?? 0) - 8)), 'pool-history-page'));
+payoutUI.next.addEventListener('click', () => queue(() => payoutPage?.has_more ? readPayoutPage(payoutPage.next) : undefined, 'pool-history-page'));
+
+// The native bridge seals the exact allocation digest and retained helper owner.
+// Browser validation preserves that complete public scope and original View;
+// it does not manufacture a wallet child for an archive-only session.
+const HOSTED_ERRORS = new Set(['invalid_request', 'unauthorized', 'forbidden', 'stale_view', 'busy', 'cancelled', 'outcome_unknown', 'hosted_recovery_unavailable', 'hosted_reset_pending', 'allocation_capacity', 'allocation_conflict', 'allocation_not_found', 'allocation_resume_required', 'allocation_unavailable', 'wallet_missing', 'backup_invalid', 'backup_mismatch', 'backup_unavailable', 'backup_storage_failed', 'backup_export_uncertain']);
+let hostedRoot = null, hostedReceiveDisplayed = null, hostedReceive = null, hostedReceiveUnknown = false, hostedReceivePrior = '', hostedReceiveMessage = '', hostedReceiveSerial = 0, hostedReceiveOperation = '';
+const hostedUI = Object.fromEntries(['panel', 'new', 'resume', 'show', 'check', 'cancel', 'copy', 'address', 'status'].map(k => [k, document.getElementById(`hosted-receive-${k}`)]));
+function hostedAccount(a, active) {
+  exact(a, ['state', 'fixture', 'id', 'generation', 'hold_until_ms', 'held', 'can_export', 'last_error']);
+  requireValue(accountStates.includes(a.state) && ['', ...Object.keys(fixtures)].includes(a.fixture) && int(a.generation) && int(a.hold_until_ms, 0, DATE_MAX) && typeof a.held === 'boolean' && typeof a.can_export === 'boolean' && (!a.held || (!a.can_export && a.hold_until_ms > 0)));
+  if (active) requireValue(a.state === 'signed_in' && Object.hasOwn(fixtures, a.fixture) && payoutID(a.id) && a.generation > 0 && a.last_error === '');
+  else requireValue(a.state !== 'signed_in' && a.id === '' && a.generation === 0 && a.hold_until_ms === 0 && !a.held && !a.can_export && (['', 'account_unavailable'].includes(a.last_error) || a.last_error === 'hosted_reset_pending' && ['signed_out', 'failed'].includes(a.state) && Object.hasOwn(fixtures, a.fixture)));
+}
+function hostedScope(s, a, authority, source = '') {
+  exact(s, ['version', 'inventory_id', 'inventory_binding_id', 'current_binding']);
+  requireValue(s.version === 1 && payoutID(s.inventory_id) && payoutID(s.inventory_binding_id));
+  const c = s.current_binding; exact(c, ['version', 'hosted_vault_id', 'vault_binding', 'retention_id', 'wallet_owner_id', 'source_binding_id']);
+  requireValue(c.version === 1 && ['hosted_vault_id', 'retention_id', 'wallet_owner_id', 'source_binding_id'].every(k => payoutID(c[k])) && (!source || c.source_binding_id === source));
+  const v = c.vault_binding; exact(v, ['version', 'authority_id', 'account_id', 'principal_id', 'provision_id', 'network', 'genesis', 'profile', 'root_public_key', 'gym_public_key', 'gym_id']);
+  requireValue(v.version === 1 && ['authority_id', 'account_id', 'principal_id', 'provision_id'].every(k => payoutID(v[k])) && v.authority_id === authority && v.account_id === a.id && v.network === 0x534c5547 && v.genesis === GENESIS && v.profile === 'slug-phase-a-fixture-bip39-v1' && v.root_public_key === ROOTS[a.fixture] && v.gym_public_key === fixtures[a.fixture][1] && v.gym_id === fixtures[a.fixture][0]);
+  return own(s);
+}
+function normalizeHosted(v) {
+  exact(v, ['version', 'mode', 'kind', 'account', 'healthy', 'recovery', 'error']);
+  requireValue(hostedRecoveryMode && v.version === 1 && v.mode === HOSTED_RECOVERY_MODE && ['inactive', 'healthy', 'recovery_only'].includes(v.kind) && entryBytes(v) < 262144);
+  hostedAccount(v.account, v.kind !== 'inactive');
+  if (v.kind === 'inactive') {
+    requireValue(v.healthy === null && v.recovery === null && ['', 'hosted_recovery_unavailable', 'hosted_reset_pending'].includes(v.error));
+    requireValue((v.error === 'hosted_reset_pending') === (v.account.last_error === 'hosted_reset_pending'));
+    if (v.error === 'hosted_recovery_unavailable') requireValue(v.account.state === 'failed' && v.account.fixture !== '' && v.account.last_error === 'account_unavailable');
+  } else if (v.kind === 'healthy') {
+    requireValue(v.error === '' && v.recovery === null); exact(v.healthy, ['pool', 'allocation', 'pending_receive_id', 'issued_receive_id']);
+    const h = v.healthy, p = normalizePool(h.pool); requireValue(same(p.account, v.account));
+    hostedScope(h.allocation, v.account, p.view.account_authority_id, p.source_binding_id);
+    requireValue(payoutID(h.pending_receive_id, true) && payoutID(h.issued_receive_id, true) && (!h.pending_receive_id || h.pending_receive_id !== h.issued_receive_id));
+  } else {
+    requireValue(v.error === '' && v.healthy === null); const r = v.recovery;
+    exact(r, ['view', 'allocation', 'local_wallet', 'inventory_revision', 'observed_at_ms', 'backup']);
+    const p = r.view; exact(p, ['version', 'view_id', 'account_authority_id', 'account_id', 'generation', 'fixture', 'root_public_key', 'gym_public_key', 'gym_id']);
+    requireValue(p.version === 1 && ['view_id', 'account_authority_id', 'account_id'].every(k => payoutID(p[k])) && p.account_id === v.account.id && p.generation === v.account.generation && p.fixture === v.account.fixture && p.root_public_key === ROOTS[p.fixture] && p.gym_public_key === fixtures[p.fixture][1] && p.gym_id === fixtures[p.fixture][0]);
+    hostedScope(r.allocation, v.account, p.account_authority_id);
+    requireValue(r.local_wallet === 'missing' && int(r.inventory_revision, 1, 4294967295) && int(r.observed_at_ms, 1, PAYOUT_TIME_MAX));
+    exact(r.backup, ['state', 'phase', 'error']); requireValue(r.backup.state !== 'unavailable');
+    validPoolBackup({ state: 'stopped', backup_state: r.backup.state, backup_phase: r.backup.phase, backup_error: r.backup.error });
+  }
+  return own(v);
+}
+function hostedOwnerKey(v = hostedRoot) {
+  if (!v || v.kind === 'inactive') return '';
+  return JSON.stringify([v.kind, v.kind === 'healthy' ? v.healthy.pool.view : v.recovery.view, v.kind === 'healthy' ? v.healthy.allocation : v.recovery.allocation]);
+}
+function actionOwnerKey() { return hostedRecoveryMode ? hostedOwnerKey() : currentKey(); }
+function hostedBackup() { return hostedRoot?.kind === 'recovery_only' ? hostedRoot.recovery.backup : hostedRoot?.kind === 'healthy' ? {state: current?.backup_state, phase: current?.backup_phase, error: current?.backup_error} : null; }
+function clearHostedReceive() { hostedReceiveSerial++; hostedReceiveDisplayed = null; hostedReceive = null; hostedReceiveUnknown = false; hostedReceivePrior = ''; hostedReceiveMessage = ''; hostedReceiveOperation = ''; }
+function hostedReceiveBusy() { return hostedReceiveUnknown || ['running', 'unknown'].includes(hostedReceive?.state); }
+function hostedReceiveContext() { return { epoch, serial: hostedReceiveSerial, owner: hostedOwnerKey() }; }
+function hostedReceiveCurrent(c) { return !disposed && !connectionError && hostedRecoveryMode && hostedRoot?.kind === 'healthy' && accountReady() && c.epoch === epoch && c.serial === hostedReceiveSerial && c.owner === hostedOwnerKey(); }
+function hostedReceiveValue(v, c) {
+  requireValue(hostedReceiveCurrent(c)); exact(v, ['version', 'action_id', 'operation_id', 'view_id', 'allocation', 'state', 'error', 'address']);
+  requireValue(v.version === 1 && payoutID(v.action_id) && payoutID(v.operation_id) && v.action_id !== hostedReceivePrior && v.view_id === current.view.view_id && same(v.allocation, hostedRoot.healthy.allocation) && entryBytes(v) < 16384);
+  requireValue(!hostedReceiveOperation || v.operation_id === hostedReceiveOperation);
+  if (hostedReceive) requireValue(v.action_id === hostedReceive.action_id && v.operation_id === hostedReceive.operation_id && (!['ready', 'failed', 'cancelled', 'needs_resume'].includes(hostedReceive.state) || same(v, hostedReceive)));
+  if (v.state === 'ready') {
+    requireValue(v.error === ''); const a = v.address; exact(a, ['address', 'script', 'purpose', 'coin', 'account', 'branch', 'index', 'inventory_revision']);
+    requireValue(a.purpose === 84 && a.coin === 0 && a.account === 0 && a.branch === 0 && int(a.index, 1, 4095) && int(a.inventory_revision, 1, 4294967295) && typeof a.address === 'string' && /^slug1q[023456789acdefghjklmnpqrstuvwxyz]{38}$/.test(a.address) && /^0014[0-9a-f]{40}$/.test(a.script));
+  } else {
+    requireValue(v.address === null && (v.state === 'running' && v.error === '' || v.state === 'needs_resume' && v.error === 'allocation_resume_required' || v.state === 'cancelled' && v.error === 'cancelled' || v.state === 'unknown' && v.error === 'outcome_unknown' || v.state === 'failed' && HOSTED_ERRORS.has(v.error)));
+  }
+  return own(v);
+}
+function hostedReceiveError(code) {
+  return ({ allocation_capacity: 'This wallet reached its supported address allocation capacity.', allocation_resume_required: 'The reserved address needs an explicit resume.', allocation_not_found: 'The exact request did not start. You can make a new request.', busy: 'Another wallet task is finishing. Try again when it has stopped.', cancelled: 'Address work was cancelled. A saved reservation remains retained.', outcome_unknown: 'The address request may have been saved. Check this exact request before starting another.', allocation_conflict: 'The saved allocation conflicts with the current wallet. Reopen this account before continuing.' })[code] || 'The receive address is unavailable. Its saved reservation is retained.';
+}
+async function beginHostedReceive(method) {
+  if (!hostedRecoveryMode || hostedRoot?.kind !== 'healthy' || !accountReady() || hostedReceiveBusy() || current.state !== 'stopped' || poolBackupRunning()) return;
+  const h = hostedRoot.healthy, expected = method === 'ResumeReceiveAddress' ? h.pending_receive_id : method === 'RedisplayReceiveAddress' ? h.issued_receive_id : '';
+  if (method === 'NewReceiveAddress' ? !!h.pending_receive_id : !expected) return;
+  hostedReceivePrior = hostedReceive?.action_id || hostedReceivePrior; hostedReceive = null; hostedReceiveUnknown = true; hostedReceiveMessage = ''; hostedReceiveOperation = expected; const c = hostedReceiveContext(); renderHostedReceive();
+  try {
+    const reply = await call(method); if (!hostedReceiveCurrent(c)) return; const j = hostedReceiveValue(reply, c);
+    requireValue(!expected || j.operation_id === expected); hostedReceive = j; hostedReceiveOperation = j.operation_id; hostedReceiveUnknown = j.state === 'unknown';
+    if (j.state === 'ready') hostedReceiveDisplayed = {owner: c.owner, action: j.action_id, address: own(j.address)};
+  } catch { if (hostedReceiveCurrent(c)) hostedReceiveMessage = hostedReceiveError('outcome_unknown'); }
+  renderHostedReceive();
+}
+function hostedNativeError(e) {
+  const text = typeof e === 'string' ? e : e?.message;
+  if (typeof text !== 'string') return '';
+  const match = /^The hosted recovery request could not complete \(([a-z_]+)\)\.$/.exec(text);
+  return match && HOSTED_ERRORS.has(match[1]) ? match[1] : '';
+}
+async function fetchHostedReceive(cancel = false) {
+  if (!hostedRecoveryMode || hostedRoot?.kind !== 'healthy' || !accountReady() || !hostedReceiveBusy()) return;
+  const c = hostedReceiveContext();
+  try { const reply = await call(cancel ? 'CancelReceiveAddress' : 'ReceiveAddressStatus'); if (!hostedReceiveCurrent(c)) return; hostedReceive = hostedReceiveValue(reply, c); hostedReceiveOperation = hostedReceive.operation_id; hostedReceiveUnknown = hostedReceive.state === 'unknown'; hostedReceiveMessage = ''; if (hostedReceive.state === 'ready') hostedReceiveDisplayed = {owner: c.owner, action: hostedReceive.action_id, address: own(hostedReceive.address)}; }
+  catch (e) { if (hostedReceiveCurrent(c)) {
+    const code = hostedNativeError(e);
+    if (!cancel && ['allocation_not_found', 'allocation_resume_required'].includes(code)) {
+      hostedReceivePrior = hostedReceive?.action_id || hostedReceivePrior; hostedReceive = null; hostedReceiveUnknown = false;
+      hostedReceiveMessage = hostedReceiveError(code);
+    } else hostedReceiveMessage = hostedReceiveError('outcome_unknown');
+  } }
+  renderHostedReceive();
+}
+function renderHostedReceive() {
+  if (!hostedUI.panel) return;
+  const h = hostedRecoveryMode && hostedRoot?.kind === 'healthy' && accountReady() ? hostedRoot.healthy : null, busy = hostedReceiveBusy(), blocked = !h || !!command || current?.state !== 'stopped' || poolBackupRunning();
+  hostedUI.panel.hidden = !hostedRecoveryMode || !h;
+  hostedUI.new.disabled = blocked || busy || !!h?.pending_receive_id;
+  hostedUI.resume.hidden = !h?.pending_receive_id; hostedUI.resume.disabled = blocked || busy || !h?.pending_receive_id;
+  hostedUI.show.hidden = !h?.issued_receive_id; hostedUI.show.disabled = blocked || busy || !h?.issued_receive_id;
+  hostedUI.check.disabled = !h || !!command || !busy; hostedUI.cancel.disabled = !h || !!command || !busy;
+  const a = h && hostedReceiveDisplayed?.owner === hostedOwnerKey() ? hostedReceiveDisplayed.address : null;
+  const currentAddress = a && hostedReceive?.state === 'ready' && !hostedReceiveUnknown && hostedReceiveDisplayed.action === hostedReceive.action_id;
+  content(hostedUI.address, a?.address || ''); hostedUI.copy.disabled = !a || !!command || busy;
+  const status = hostedReceiveMessage || (currentAddress ? `Receive address ${a.index} is ready. Its recovery inventory includes this address.` : busy ? hostedReceiveError('outcome_unknown') : hostedReceive ? hostedReceiveError(hostedReceive.error) : h?.pending_receive_id ? 'A reserved address needs an explicit resume.' : 'Create an address explicitly, or show the previously issued address. Mining must be stopped.');
+  content(hostedUI.status, `${status}${a && !currentAddress ? ` Previously issued address ${a.index} is shown below; it is not the outcome of the new request.` : ''}`);
+}
+async function copyHostedReceive() {
+  if (!hostedRecoveryMode || hostedRoot?.kind !== 'healthy' || !accountReady() || hostedReceiveBusy() || command || hostedReceiveDisplayed?.owner !== hostedOwnerKey()) return;
+  const c = hostedReceiveContext(), value = hostedReceiveDisplayed.address.address;
+  try { requireValue(typeof navigator?.clipboard?.writeText === 'function'); await navigator.clipboard.writeText(value); if (hostedReceiveCurrent(c) && hostedReceiveDisplayed?.address?.address === value) hostedReceiveMessage = 'Receive address copied.'; }
+  catch { if (hostedReceiveCurrent(c)) hostedReceiveMessage = 'Copy is unavailable. Select the displayed receive address.'; }
+  renderHostedReceive();
+}
+function renderHostedRecovery() {
+  renderHostedReceive(); if (!hostedRecoveryMode || hostedRoot?.kind === 'healthy') return;
+  const a = hostedRoot?.account, signed = !!a && a.state === 'signed_in' && hostedRoot.kind === 'recovery_only' && !connectionError, b = signed ? hostedRoot.recovery.backup : null;
+  const pending = a?.last_error === 'hosted_reset_pending';
+  content(ui.state, signed ? 'Recovery only' : hostedRoot ? label(a.state) : 'Connecting'); content(ui['account-state'], label(a?.state || 'signed_out'));
+  const caption = document.getElementById('hosted-fixture-caption'); if (caption) { caption.hidden = false; content(caption, 'Hosted public-fixture recovery pilot'); }
+  content(ui['account-copy'], signed ? 'The local wallet is missing. Recovery export and file-only verification use this account’s retained recovery inventory.' : pending ? 'The verified fixture reset needs to finish. Resume that same reset.' : hostedRoot?.error === 'hosted_recovery_unavailable' ? 'Shared wallet services are unavailable. This selected wallet has not been reported missing.' : 'Choose a demo account to open its retained wallet or available recovery inventory.');
+  for (const id of ['login-a', 'login-b']) ui[id].disabled = !enabled || !!command || !a || !['signed_out', 'failed', 'expired'].includes(a.state);
+  ui.logout.disabled = !signed || !!command; ui.reset.disabled = (!signed && !pending) || !!command; content(ui.reset, pending ? 'Resume fixture reset' : 'Simulate verified password reset');
+  content(ui.hold, a?.held ? 'The 24-hour recovery hold is active. Backup verification is available; recovery export remains held.' : '');
+  ui.mining.disabled = true; content(ui.mining, 'Start mining'); content(ui['mining-copy'], signed ? 'Mining and payments require the installed wallet. No wallet has been recreated.' : 'Wallet services are not active.');
+  for (const k of ['attempts', 'accepted', 'pending', 'height', 'spendable', 'immature']) content(ui[k], '—');
+  content(ui['wallet-state'], signed ? 'Local wallet missing' : 'Unavailable'); content(ui['wallet-height'], 'No installed wallet observation'); content(ui.payout, 'Unavailable'); content(ui['gym-id'], signed ? hostedRoot.recovery.view.gym_id : '—');
+  content(ui['stable-count'], signed ? 'Fighter history is unavailable without the installed wallet services.' : 'Sign in to load your retained demo gym.');
+  ui['export-recovery'].disabled = !signed || !!command || !a.can_export || b?.state === 'running'; ui['verify-backup'].disabled = !signed || !!command;
+  content(ui['verify-backup'], b?.state === 'running' ? 'Cancel backup verification' : 'Verify backup');
+  content(ui.backup, b?.error === 'backup_export_uncertain' ? 'The recovery file may already be saved. Check the selected destination before trying again.' : b?.state === 'running' ? `${backupPhases[b.phase]}…` : b?.state === 'succeeded' ? 'Backup verification completed. The installed wallet and payment journal were not replaced.' : b?.state === 'failed' ? 'The backup operation could not complete. The retained recovery inventory is unchanged.' : b?.state === 'cancelled' ? 'Backup verification cancelled.' : signed ? 'Export a recovery file or verify one in a disposable wallet. This does not reinstall payment authority.' : 'Sign in to access retained recovery.');
+  content(ui.alert, connectionError || message || (hostedRoot?.error === 'hosted_recovery_unavailable' ? 'The shared wallet services are unavailable.' : '')); ui.alert.hidden = !ui.alert.textContent;
 }
 
 for (const kind of ['publish', 'reconcile', 'attest', 'export']) ui[`result-${kind}`].addEventListener('click', () => { const c = publicationContext(); queue(() => publicationCurrent(c, true) ? publicationBegin(kind) : undefined, `result-${kind}`); });
@@ -2251,6 +3325,13 @@ ui['result-read'].addEventListener('click', () => { const c = publicationContext
 ui['result-cancel'].addEventListener('click', () => queue(publicationCancel, 'result-cancel'));
 ui['result-disconnect'].addEventListener('click', () => oldAction('Stop'));
 ui['result-clear'].addEventListener('click', () => { publicationSelect(); renderBooked(); });
+
+ui['history-refresh'].addEventListener('click',()=>queue(fetchHistorySnapshot,'history-status'));
+ui['history-cancel'].addEventListener('click',()=>queue(cancelHistory,'history-cancel'));
+ui['history-previous'].addEventListener('click',()=>queue(()=>readHistoryPage(Math.max(0,(historyPage?.after??0)-8)),'history-page'));
+ui['history-next'].addEventListener('click',()=>queue(()=>historyPage?.has_more?readHistoryPage(historyPage.next):undefined,'history-page'));
+ui['history-clear'].addEventListener('click',()=>{if(!evidenceBusy()){clearHistory();renderHistory();}});
+ui['history-export'].addEventListener('click',()=>queue(evidenceBusy()?cancelEvidence:beginEvidence,'history-export'));
 
 ui['event-refresh'].addEventListener('click', () => queueEventSelection(() => eventReadStatus(), 'event-status'));
 ui['event-capture'].addEventListener('click', () => queueEventSelection(eventBegin, 'event-capture'));
@@ -2307,7 +3388,7 @@ ui['pause-sync'].addEventListener('click', () => oldAction('Stop'));
 ui.sync.addEventListener('click', () => queue(() => beginJob('sync'), 'sync'));
 ui.recent.addEventListener('click', () => navigate('recent')); ui.inventory.addEventListener('click', () => navigate('inventory')); ui['roster-details'].addEventListener('click', () => navigate('roster', 1));
 ui.refresh.addEventListener('click', () => navigate(mode, mode === 'roster' ? rosterFirst : pageAfter));
-ui.previous.addEventListener('click', () => navigate(mode, mode === 'roster' ? 1 : Math.max(0, pageAfter - 8)));
+ui.previous.addEventListener('click', () => navigate(mode, mode === 'roster' ? 1 : previousInventoryCursor()));
 ui.next.addEventListener('click', () => navigate(mode, mode === 'roster' ? rosterNext : pageNext));
 ui.reconcile.addEventListener('click', () => queue(() => reconcile(flow?.id || stable?.status?.pending_operation_id || stable?.status?.last_operation_id || ''), 'reconcile'));
 ui['apply-saved'].addEventListener('click', () => { if (savedOperation?.state === 'prepared' && ready() && savedOperation.intent.view_id === current.view.view_id && savedOperation.intent.generation === current.view.generation) queue(() => beginJob('apply', [savedOperation.intent.operation_id], { operationID: savedOperation.intent.operation_id }), 'apply'); });
@@ -2317,8 +3398,11 @@ ui.abandon.addEventListener('click', () => queue(async () => {
   catch { if (captured === epoch) { mutationMessage = textError('outcome_unknown'); await reconcile(id); } }
 }, 'abandon'));
 ui['cancel-job'].addEventListener('click', () => queue(() => cancelJob(watched?.id || stable?.active_job_id || stable?.queued_job_id), 'cancel'));
-ui['export-recovery'].addEventListener('click', () => oldAction('ExportRecovery')); ui['verify-backup'].addEventListener('click', () => oldAction('VerifyBackup'));
+poolUI['pool-refresh'].addEventListener('click', () => queue(async () => { if (!poolMode || !accountReady()) return; await call('RefreshPoolBalance'); await fetchSnapshots(); }, 'pool-balance'));
+for (const [id, method] of [['new', 'NewReceiveAddress'], ['resume', 'ResumeReceiveAddress'], ['show', 'RedisplayReceiveAddress']]) hostedUI[id].addEventListener('click', () => queue(() => beginHostedReceive(method), 'receive'));
+hostedUI.check.addEventListener('click', () => queue(() => fetchHostedReceive(), 'receive-check')); hostedUI.cancel.addEventListener('click', () => queue(() => fetchHostedReceive(true), 'receive-cancel')); hostedUI.copy.addEventListener('click', copyHostedReceive);
+ui['export-recovery'].addEventListener('click', () => oldAction('ExportRecovery')); ui['verify-backup'].addEventListener('click', () => oldAction((hostedRecoveryMode ? hostedBackup()?.state === 'running' : poolMode && current?.backup_state === 'running') ? 'CancelPoolBackup' : 'VerifyBackup'));
 document.addEventListener('visibilitychange', () => { if (document.hidden) { pausePreview(); pauseBooked(); } if (!document.hidden && enabled) { pollWanted = true; pump(); } else if (timer !== null) { clearTimeout(timer); timer = null; } });
-window.addEventListener('pagehide', () => { disposed = true; epoch++; clearEvent(); clearEntry(); clearPreview(); tasks = []; if (timer !== null) clearTimeout(timer); timer = null; clearCards(); pageItems = []; current = stable = null; });
+window.addEventListener('pagehide', () => { disposed = true; epoch++; clearHistory(); clearEvent(); clearEntry(); clearPreview(); tasks = []; if (timer !== null) clearTimeout(timer); timer = null; clearCards(); pageItems = []; hostedRoot = null; clearHostedReceive(); current = stable = null; });
 render();
-(async () => { try { requireValue(await call('Mode') === MODE); const selectedCareer = await call('CareerMode'); requireValue(typeof selectedCareer === 'boolean'); careerMode = selectedCareer; if (disposed) return; enabled = true; pollWanted = true; pump(); } catch { connectionError = 'Open this page through the candidate stable mode.'; render(); } })();
+(async () => { try { const selectedMode = await call('Mode'); requireValue([MODE, POOL_MODE, HOSTED_POOL_MODE, HOSTED_RECOVERY_MODE].includes(selectedMode)); hostedRecoveryMode = selectedMode === HOSTED_RECOVERY_MODE; hostedPoolMode = selectedMode === HOSTED_POOL_MODE || hostedRecoveryMode; poolMode = selectedMode === POOL_MODE || hostedPoolMode; const selectedCareer = await call('CareerMode'); requireValue(typeof selectedCareer === 'boolean'); careerMode = selectedCareer; if (disposed) return; enabled = true; pollWanted = true; pump(); } catch { connectionError = 'Open this page through the candidate stable mode.'; render(); } })();

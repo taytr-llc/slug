@@ -52,7 +52,9 @@ func resultFailure(id uint64, code string) pilot.ResultResponse {
 func (b *StableBridge) clearResultView() {
 	b.mu.Lock()
 	b.result = nil
-
+	if b.history != nil {
+		b.history, b.historyFatal = nil, true
+	}
 	b.mu.Unlock()
 }
 func (b *StableBridge) resultContext() (resultAuthority, pilot.ManifestViewPin, bool) {

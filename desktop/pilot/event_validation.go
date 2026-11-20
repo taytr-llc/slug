@@ -9,6 +9,7 @@ import (
 	"reflect"
 
 	"github.com/taytr-llc/slug/fightercondition"
+	"github.com/taytr-llc/slug/fighterdescriptor"
 	"github.com/taytr-llc/slug/gymentry"
 	"github.com/taytr-llc/slug/gymevent"
 	"github.com/taytr-llc/slug/gymstable"
@@ -199,8 +200,15 @@ func eventConditionShape(c fightercondition.Snapshot, a gymstable.Assignment, at
 	}
 	return c.RatingHundredths == 10*v.Power+25*v.Speed+2*v.Chin+4*v.Stamina+8*v.Skill
 }
+
+// A record shape has no participant pin. The original helper source validator
+// and native retained-pin validator still bind each assignment to its exact
+// participant; catalog membership here is only a structural prerequisite.
 func eventAssignmentShape(a gymstable.Assignment) bool {
-	if a.Version != 1 || a.Sequence < 1 || a.Sequence > 1000 || !stableTime(a.BornAtMS) || !stableTime(a.AcceptedAtMS) || a.BornAtMS > a.AcceptedAtMS || a.DescriptorID != manifestDescriptorID {
+	if _, err := fighterdescriptor.ResolveCandidate(a.DescriptorID); err != nil {
+		return false
+	}
+	if a.Version != 1 || a.Sequence < 1 || a.Sequence > 1000 || !stableTime(a.BornAtMS) || !stableTime(a.AcceptedAtMS) || a.BornAtMS > a.AcceptedAtMS {
 		return false
 	}
 	for _, x := range []string{a.ProspectID, a.GymID, a.WorkHash, a.DescriptorID, a.ManifestDigest, a.PortraitDigest, a.SourceRecordDigest} {

@@ -45,7 +45,7 @@ func cardProtocolError(err error) string {
 
 var errCardSetup = errors.New("card_setup_incomplete")
 
-func handleCardRequest(ctx context.Context, r CardRequest, c CardControllerAPI) CardResponse {
+func handleCardRequest(ctx context.Context, r CardRequest, c CardSurfaceAPI) CardResponse {
 	out := CardResponse{ID: r.ID, OK: true}
 	var err error
 	switch r.Command {

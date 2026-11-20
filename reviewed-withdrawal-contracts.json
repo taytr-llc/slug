@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "scope": "Engineering contracts adopted for Set68 candidate fixture withdrawals; no new consensus/product policy decision",
+  "chain_contracts": {
+    "REVIEWED_WITHDRAWALS.md": "33bcf03ea830a3d87fc7e174fc5b874690c80969a2656f36bf31b730c2022386",
+    "REVIEWED_WITHDRAWALS_DESKTOP.md": "114f9ca1c968d4e8dcf35efbe73cae110b940321d09f700ecf05e6cf5f03aab9",
+    "REVIEWED_WITHDRAWAL_ADAPTER.md": "bd5266284166df19c35cbcbad1f404dd9efde8fb11768d3422192bdc3eb0aab9",
+    "REVIEWED_WITHDRAWAL_PROVENANCE.md": "ef1d5b6e11947bbdf32c220ea718d4b0aa4a3c6130ba95e1b9db553513fd327a",
+    "REVIEWED_WITHDRAWAL_WATCH.md": "0f931de7e8730bbace34201e00d6d6fd3663c3ad3e4ca5a29b437dcc53f1bc19",
+    "REVIEWED_WITHDRAWAL_RPC_ERRATUM.md": "0a281f1378d88a8149f00f8cc792fe2d4d38fe56f3e06632205377d8414718fc",
+    "REVIEWED_WITHDRAWAL_NATIVE_RECOVERY.md": "905786abf059a34301fab666bae68b47b53ce3ded4a7f0e77718609bd54562a1"
+  },
+  "wallet_contracts": {
+    "CANDIDATE_WITHDRAWALS.md": "e1da62fdf3785cd6e7cf1c24ae5269ff2d7409b4b9366a13f95a5c88d7fa8524",
+    "CANDIDATE_WITHDRAWAL_SETUP.md": "3cd13dae1771ed29facf356aa67b83c745858a6abbbd214519caa7a7ea7bece2",
+    "CANDIDATE_WITHDRAWAL_INVENTORY.md": "cdd99a97053eec48c6e64ed655f4a5dcc862d847fad787f17f33c9f3bccebd96"
+  },
+  "reference_outputs": {
+    "wallet": "d7c7b1e4c94e02f734a162b5974749853c91828ea1a0a4c4446c379bddc841c3",
+    "journal": "ee4ba4ecc89289b76e2ce805e4d8f88ced79c6b69542d71ee74a7a37b1c1bd29",
+    "desktop_wire": "60fe12e20e0c842a43cfc8f41892a8fcf4a7c991592363b17f87a8180098af9c"
+  },
+  "provenance": "Original proposal headings remain in frozen source documents. Separate freeze records preceded dependent implementation and reference execution; additive setup, inventory, provenance, watch and native-recovery contracts preserve those bytes. The RPC erratum corrects integer verbose arguments from inherited command definitions."
+}

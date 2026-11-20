@@ -1,0 +1,327 @@
+{
+  "version": 1,
+  "source_sha256": "29f6a1302c2e04ade612fe2775c085c65b8bf33587c010060b727833182d2057",
+  "generator_sha256": "f739c8d27cb2aae6999acca06ee253903de7ba187ee937f3594e7dd57e7c5290",
+  "pins": [
+    {
+      "fixture": "zero256",
+      "pin": {
+        "version": 2,
+        "account_authority_id": "9aaf6440e3eaa9dd14b90222bb5f857e2df8ea32a365e670da12e8cc4adde394",
+        "account_id": "5277ed842b3a0404dc1db532ed55c11e86ca7075e084936bc10249945c53a5bc",
+        "identity": {
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "profile": "slug-phase-a-fixture-bip39-v1",
+          "root_public_key": "JgduaQiYjRcnjcD9t1MfTP1qo8eWaAWPQtS9nChXwtAeyTsoEGVZ8SjVqa5qxxvvKqX8tqC77wMSjaMHXNY8JSYEASdzX6PT31ktXqKPJvkhyy31",
+          "gym_public_key": "03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519",
+          "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5"
+        },
+        "source": {
+          "version": 5,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "authority_id": "def06b4036f8dae71ef934cae29fa0f583e16234db153a82e75cfd9423309239",
+          "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303"
+        },
+        "condition_version": 1,
+        "projector_id": "slug-fighter-condition-candidate-v1"
+      },
+      "canonical": "{\"version\":2,\"account_authority_id\":\"9aaf6440e3eaa9dd14b90222bb5f857e2df8ea32a365e670da12e8cc4adde394\",\"account_id\":\"5277ed842b3a0404dc1db532ed55c11e86ca7075e084936bc10249945c53a5bc\",\"identity\":{\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"profile\":\"slug-phase-a-fixture-bip39-v1\",\"root_public_key\":\"JgduaQiYjRcnjcD9t1MfTP1qo8eWaAWPQtS9nChXwtAeyTsoEGVZ8SjVqa5qxxvvKqX8tqC77wMSjaMHXNY8JSYEASdzX6PT31ktXqKPJvkhyy31\",\"gym_public_key\":\"03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519\",\"gym_id\":\"a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5\"},\"source\":{\"version\":5,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"authority_id\":\"def06b4036f8dae71ef934cae29fa0f583e16234db153a82e75cfd9423309239\",\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\"},\"condition_version\":1,\"projector_id\":\"slug-fighter-condition-candidate-v1\"}",
+      "preimage": "534c55472063616e6469646174652073686172656420737461626c6500763100e00300007b2276657273696f6e223a322c226163636f756e745f617574686f726974795f6964223a2239616166363434306533656161396464313462393032323262623566383537653264663865613332613336356536373064613132653863633461646465333934222c226163636f756e745f6964223a2235323737656438343262336130343034646331646235333265643535633131653836636137303735653038343933366263313032343939343563353361356263222c226964656e74697479223a7b226e6574776f726b223a313339373531313439352c2267656e65736973223a2237383933363736303939636639393835626231393864666236613334376439343232613139663234323263663333323661393939613732333063653234366364222c2270726f66696c65223a22736c75672d70686173652d612d666978747572652d62697033392d7631222c22726f6f745f7075626c69635f6b6579223a224a676475615169596a52636e6a63443974314d66545031716f38655761415750517453396e436858777441657954736f4547565a38536a5671613571787876764b7158387471433737774d536a614d48584e59384a5359454153647a5836505433316b7458714b504a766b6879793331222c2267796d5f7075626c69635f6b6579223a22303365633734383836363766643534346234613164653866623061653033373330633961326463333436633635326362616135396130373764626564646361353139222c2267796d5f6964223a2261323237353837643833373530376462636235663964373831393637333339643831363037306662376264353734393331633639306261363933376238386535227d2c22736f75726365223a7b2276657273696f6e223a352c226e6574776f726b223a313339373531313439352c2267656e65736973223a2237383933363736303939636639393835626231393864666236613334376439343232613139663234323263663333323661393939613732333063653234366364222c22617574686f726974795f6964223a2264656630366234303336663864616537316566393334636165323966613066353833653136323334646231353361383265373563666439343233333039323339222c2264657363726970746f725f6964223a2263316138363530613339663639353831346462363766646466373938313565663234396131336135633063633561663062393036623036316334633361333033227d2c22636f6e646974696f6e5f76657273696f6e223a312c2270726f6a6563746f725f6964223a22736c75672d666967687465722d636f6e646974696f6e2d63616e6469646174652d7631227d",
+      "id": "992e1d03e708ee716cfa22c3117b60afa0b47f7da28893985254c0ba680b1fef",
+      "marker": "{\"application\":\"slug-candidate-shared-stable\",\"version\":2,\"store_id\":\"992e1d03e708ee716cfa22c3117b60afa0b47f7da28893985254c0ba680b1fef\",\"pin\":{\"version\":2,\"account_authority_id\":\"9aaf6440e3eaa9dd14b90222bb5f857e2df8ea32a365e670da12e8cc4adde394\",\"account_id\":\"5277ed842b3a0404dc1db532ed55c11e86ca7075e084936bc10249945c53a5bc\",\"identity\":{\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"profile\":\"slug-phase-a-fixture-bip39-v1\",\"root_public_key\":\"JgduaQiYjRcnjcD9t1MfTP1qo8eWaAWPQtS9nChXwtAeyTsoEGVZ8SjVqa5qxxvvKqX8tqC77wMSjaMHXNY8JSYEASdzX6PT31ktXqKPJvkhyy31\",\"gym_public_key\":\"03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519\",\"gym_id\":\"a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5\"},\"source\":{\"version\":5,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"authority_id\":\"def06b4036f8dae71ef934cae29fa0f583e16234db153a82e75cfd9423309239\",\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\"},\"condition_version\":1,\"projector_id\":\"slug-fighter-condition-candidate-v1\"}}\n",
+      "legacy_id": "4177b6b9828650086745db5b308e92f3955c772eb4123dd8637b2b0f0006c5ca"
+    },
+    {
+      "fixture": "incrementing256",
+      "pin": {
+        "version": 2,
+        "account_authority_id": "9aaf6440e3eaa9dd14b90222bb5f857e2df8ea32a365e670da12e8cc4adde394",
+        "account_id": "f86f9d7f9e1ffc3796df3eb8488dc14a680ea58c10b42d8e77ee5a2e9258321d",
+        "identity": {
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "profile": "slug-phase-a-fixture-bip39-v1",
+          "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+          "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+        },
+        "source": {
+          "version": 5,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "authority_id": "def06b4036f8dae71ef934cae29fa0f583e16234db153a82e75cfd9423309239",
+          "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303"
+        },
+        "condition_version": 1,
+        "projector_id": "slug-fighter-condition-candidate-v1"
+      },
+      "canonical": "{\"version\":2,\"account_authority_id\":\"9aaf6440e3eaa9dd14b90222bb5f857e2df8ea32a365e670da12e8cc4adde394\",\"account_id\":\"f86f9d7f9e1ffc3796df3eb8488dc14a680ea58c10b42d8e77ee5a2e9258321d\",\"identity\":{\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"profile\":\"slug-phase-a-fixture-bip39-v1\",\"root_public_key\":\"JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC\",\"gym_public_key\":\"033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92\",\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\"},\"source\":{\"version\":5,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"authority_id\":\"def06b4036f8dae71ef934cae29fa0f583e16234db153a82e75cfd9423309239\",\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\"},\"condition_version\":1,\"projector_id\":\"slug-fighter-condition-candidate-v1\"}",
+      "preimage": "534c55472063616e6469646174652073686172656420737461626c6500763100e00300007b2276657273696f6e223a322c226163636f756e745f617574686f726974795f6964223a2239616166363434306533656161396464313462393032323262623566383537653264663865613332613336356536373064613132653863633461646465333934222c226163636f756e745f6964223a2266383666396437663965316666633337393664663365623834383864633134613638306561353863313062343264386537376565356132653932353833323164222c226964656e74697479223a7b226e6574776f726b223a313339373531313439352c2267656e65736973223a2237383933363736303939636639393835626231393864666236613334376439343232613139663234323263663333323661393939613732333063653234366364222c2270726f66696c65223a22736c75672d70686173652d612d666978747572652d62697033392d7631222c22726f6f745f7075626c69635f6b6579223a224a676475615169596a52636e6a63443973794e44663478337478545a6b6738487076544b5a74706f735454773762544c70527a7664376962563362755269784d4571417756417972655833367041773544784c5877473567573645474e576552634a664a69746b78326b434a35347043222c2267796d5f7075626c69635f6b6579223a22303333646535653265336435616430366636313635373266636233643631663038396365313130356566343836646562663330383032376233623636336436643932222c2267796d5f6964223a2232383435326663386134373864323866323834646665363731636663353765376361626563613038656139353361656633373166353637346433663463353130227d2c22736f75726365223a7b2276657273696f6e223a352c226e6574776f726b223a313339373531313439352c2267656e65736973223a2237383933363736303939636639393835626231393864666236613334376439343232613139663234323263663333323661393939613732333063653234366364222c22617574686f726974795f6964223a2264656630366234303336663864616537316566393334636165323966613066353833653136323334646231353361383265373563666439343233333039323339222c2264657363726970746f725f6964223a2263316138363530613339663639353831346462363766646466373938313565663234396131336135633063633561663062393036623036316334633361333033227d2c22636f6e646974696f6e5f76657273696f6e223a312c2270726f6a6563746f725f6964223a22736c75672d666967687465722d636f6e646974696f6e2d63616e6469646174652d7631227d",
+      "id": "497be305eb4bae7fe5ebf376e176dda342d62cb7d50e13df6ece0b8ecc61d966",
+      "marker": "{\"application\":\"slug-candidate-shared-stable\",\"version\":2,\"store_id\":\"497be305eb4bae7fe5ebf376e176dda342d62cb7d50e13df6ece0b8ecc61d966\",\"pin\":{\"version\":2,\"account_authority_id\":\"9aaf6440e3eaa9dd14b90222bb5f857e2df8ea32a365e670da12e8cc4adde394\",\"account_id\":\"f86f9d7f9e1ffc3796df3eb8488dc14a680ea58c10b42d8e77ee5a2e9258321d\",\"identity\":{\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"profile\":\"slug-phase-a-fixture-bip39-v1\",\"root_public_key\":\"JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC\",\"gym_public_key\":\"033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92\",\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\"},\"source\":{\"version\":5,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"authority_id\":\"def06b4036f8dae71ef934cae29fa0f583e16234db153a82e75cfd9423309239\",\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\"},\"condition_version\":1,\"projector_id\":\"slug-fighter-condition-candidate-v1\"}}\n",
+      "legacy_id": "841e923c4da4eeab60530b382a29cf83ca2b80a54adedc8b03b30ed3c94e8d8a"
+    }
+  ],
+  "modeled_owners": [
+    "B",
+    "A",
+    "B",
+    "B",
+    "A",
+    "B",
+    "B",
+    "B",
+    "B",
+    "A",
+    "B",
+    "B"
+  ],
+  "models": [
+    {
+      "owner": "A",
+      "owned": [
+        2,
+        5,
+        10
+      ],
+      "sync": [
+        {
+          "start": 0,
+          "checkpoint": 8,
+          "assignment_count": 2,
+          "items": [
+            2,
+            5
+          ],
+          "skips": [
+            1,
+            3,
+            4,
+            6,
+            7,
+            8
+          ]
+        },
+        {
+          "start": 8,
+          "checkpoint": 12,
+          "assignment_count": 3,
+          "items": [
+            10
+          ],
+          "skips": [
+            9,
+            11,
+            12
+          ]
+        }
+      ],
+      "pages": [
+        {
+          "after": 0,
+          "limit": 2,
+          "items": [
+            2,
+            5
+          ],
+          "next_after": 5,
+          "has_more": true
+        },
+        {
+          "after": 5,
+          "limit": 2,
+          "items": [
+            10
+          ],
+          "next_after": 12,
+          "has_more": false
+        },
+        {
+          "after": 11,
+          "limit": 2,
+          "items": [],
+          "next_after": 12,
+          "has_more": false
+        },
+        {
+          "after": 12,
+          "limit": 8,
+          "items": [],
+          "next_after": 12,
+          "has_more": false
+        }
+      ],
+      "recent": [
+        {
+          "after": 5,
+          "limit": 1,
+          "items": [
+            10
+          ],
+          "next_after": 12,
+          "has_more": false
+        },
+        {
+          "after": 2,
+          "limit": 2,
+          "items": [
+            5,
+            10
+          ],
+          "next_after": 12,
+          "has_more": false
+        },
+        {
+          "after": 0,
+          "limit": 8,
+          "items": [
+            2,
+            5,
+            10
+          ],
+          "next_after": 12,
+          "has_more": false
+        }
+      ]
+    },
+    {
+      "owner": "B",
+      "owned": [
+        1,
+        3,
+        4,
+        6,
+        7,
+        8,
+        9,
+        11,
+        12
+      ],
+      "sync": [
+        {
+          "start": 0,
+          "checkpoint": 8,
+          "assignment_count": 6,
+          "items": [
+            1,
+            3,
+            4,
+            6,
+            7,
+            8
+          ],
+          "skips": [
+            2,
+            5
+          ]
+        },
+        {
+          "start": 8,
+          "checkpoint": 12,
+          "assignment_count": 9,
+          "items": [
+            9,
+            11,
+            12
+          ],
+          "skips": [
+            10
+          ]
+        }
+      ],
+      "pages": [
+        {
+          "after": 0,
+          "limit": 2,
+          "items": [
+            1,
+            3
+          ],
+          "next_after": 3,
+          "has_more": true
+        },
+        {
+          "after": 5,
+          "limit": 2,
+          "items": [
+            6,
+            7
+          ],
+          "next_after": 7,
+          "has_more": true
+        },
+        {
+          "after": 11,
+          "limit": 2,
+          "items": [
+            12
+          ],
+          "next_after": 12,
+          "has_more": false
+        },
+        {
+          "after": 12,
+          "limit": 8,
+          "items": [],
+          "next_after": 12,
+          "has_more": false
+        }
+      ],
+      "recent": [
+        {
+          "after": 11,
+          "limit": 1,
+          "items": [
+            12
+          ],
+          "next_after": 12,
+          "has_more": false
+        },
+        {
+          "after": 9,
+          "limit": 2,
+          "items": [
+            11,
+            12
+          ],
+          "next_after": 12,
+          "has_more": false
+        },
+        {
+          "after": 1,
+          "limit": 8,
+          "items": [
+            3,
+            4,
+            6,
+            7,
+            8,
+            9,
+            11,
+            12
+          ],
+          "next_after": 12,
+          "has_more": false
+        }
+      ]
+    }
+  ],
+  "foreign_only_first_page": [
+    {
+      "checkpoint": 8,
+      "assignment_count": 0,
+      "items": []
+    },
+    {
+      "checkpoint": 9,
+      "assignment_count": 1,
+      "items": [
+        9
+      ]
+    }
+  ],
+  "global_source_limit": 1000,
+  "page_verification_limit": 8
+}

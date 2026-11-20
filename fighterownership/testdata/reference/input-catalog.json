@@ -1,0 +1,157 @@
+{
+  "version": 1,
+  "status": "root_approved_cutoff_prefix_successor",
+  "public_only": true,
+  "files": [
+    {
+      "path": "actual/v1/incrementing256-awarded/admission.json",
+      "original": "/Users/taytrrip/slug/slug/fighterevidence/testdata/reference/actual-inputs/v1/incrementing256-awarded/admission.json",
+      "bytes": 3697,
+      "sha256": "03f0af5e084cb6db2823758ba064c0daed80ed8e9203ec082eb127c088a4efcb"
+    },
+    {
+      "path": "actual/v1/incrementing256-awarded/expected-pin.json",
+      "original": "/Users/taytrrip/slug/slug/fighterevidence/testdata/reference/actual-inputs/v1/incrementing256-awarded/expected-pin.json",
+      "bytes": 992,
+      "sha256": "1bc1ce36d914f357c7d4676fcde4b8989d9db8ee6d1f30c5025ad13cf1eb318e"
+    },
+    {
+      "path": "actual/v1/zero256-awarded/admission.json",
+      "original": "/Users/taytrrip/slug/slug/fighterevidence/testdata/reference/actual-inputs/v1/zero256-awarded/admission.json",
+      "bytes": 3698,
+      "sha256": "b88f6f7dfeb785756480a64df97e074dde496e88443e24417dc836e5f445d6b1"
+    },
+    {
+      "path": "actual/v1/zero256-awarded/expected-pin.json",
+      "original": "/Users/taytrrip/slug/slug/fighterevidence/testdata/reference/actual-inputs/v1/zero256-awarded/expected-pin.json",
+      "bytes": 992,
+      "sha256": "0ba127c98025ed7f16c302c662017193bb5a633ff1bf0d4a5b03acdc3a674daa"
+    },
+    {
+      "path": "actual/v1/zero256-unawarded/admission.json",
+      "original": "/Users/taytrrip/slug/slug/fighterevidence/testdata/reference/actual-inputs/v1/zero256-unawarded/admission.json",
+      "bytes": 3697,
+      "sha256": "af868d73e6949e5e74f678abc7cc3c64600069415d709dcf0dd9dc2c35a3d5e7"
+    },
+    {
+      "path": "actual/v1/zero256-unawarded/expected-pin.json",
+      "original": "/Users/taytrrip/slug/slug/fighterevidence/testdata/reference/actual-inputs/v1/zero256-unawarded/expected-pin.json",
+      "bytes": 992,
+      "sha256": "0ba127c98025ed7f16c302c662017193bb5a633ff1bf0d4a5b03acdc3a674daa"
+    },
+    {
+      "path": "actual/v2/incrementing256-awarded/admission.json",
+      "original": "/Users/taytrrip/slug/slug/fighterevidence/testdata/reference/actual-inputs/v2/incrementing256-awarded/admission.json",
+      "bytes": 3686,
+      "sha256": "90a2e6844ee0b0be10e28620862f0b3d76467047bd3932bf346bbc9fee5bd81b"
+    },
+    {
+      "path": "actual/v2/incrementing256-awarded/expected-pin.json",
+      "original": "/Users/taytrrip/slug/slug/fighterevidence/testdata/reference/actual-inputs/v2/incrementing256-awarded/expected-pin.json",
+      "bytes": 992,
+      "sha256": "fc4227b209800ec59b300340da7348433168c56f557a14da10708ab8a4fefea9"
+    },
+    {
+      "path": "actual/v2/zero256-awarded/admission.json",
+      "original": "/Users/taytrrip/slug/slug/fighterevidence/testdata/reference/actual-inputs/v2/zero256-awarded/admission.json",
+      "bytes": 3698,
+      "sha256": "a023a5b850a4492d35db3302abcd26b830694c029e4278333f9eb279b382123d"
+    },
+    {
+      "path": "actual/v2/zero256-awarded/expected-pin.json",
+      "original": "/Users/taytrrip/slug/slug/fighterevidence/testdata/reference/actual-inputs/v2/zero256-awarded/expected-pin.json",
+      "bytes": 992,
+      "sha256": "2981d0ef863116901eaff23b48b6425b35a5b27614a8312b97a4a8a51dbb6def"
+    },
+    {
+      "path": "actual/v2/zero256-unawarded/admission.json",
+      "original": "/Users/taytrrip/slug/slug/fighterevidence/testdata/reference/actual-inputs/v2/zero256-unawarded/admission.json",
+      "bytes": 3690,
+      "sha256": "7a65051f8338e5cb8e15c4692829819566787893941a9bcf3a24f0f17999fb4e"
+    },
+    {
+      "path": "actual/v2/zero256-unawarded/expected-pin.json",
+      "original": "/Users/taytrrip/slug/slug/fighterevidence/testdata/reference/actual-inputs/v2/zero256-unawarded/expected-pin.json",
+      "bytes": 992,
+      "sha256": "2981d0ef863116901eaff23b48b6425b35a5b27614a8312b97a4a8a51dbb6def"
+    },
+    {
+      "path": "contracts/adopted-core.md",
+      "original": "/Users/taytrrip/slug/slug/PUBLIC_FIGHTER_OWNERSHIP.md",
+      "bytes": 47731,
+      "sha256": "4d82b4ebc907356dc89e714e004955bae35c16a0dcfa091ff68da69710f98853"
+    },
+    {
+      "path": "contracts/chronology.md",
+      "original": "/Users/taytrrip/slug/set73-prep/predecessor-cutoff-freeze-recommendation.md",
+      "bytes": 11181,
+      "sha256": "f65a2500fdf49e18affc9241bd9154949f677e5fbb3fab7bb42490d7ce43ac63"
+    },
+    {
+      "path": "contracts/core.md",
+      "original": "/Users/taytrrip/slug/set73-prep/PUBLIC_OWNERSHIP_CORE.final-candidate.md",
+      "bytes": 26901,
+      "sha256": "af7fa5a86e6e5df6626c9d95e206b37163e7d619ae10f61030dd59a9bd6ef02c"
+    },
+    {
+      "path": "contracts/store-codec.md",
+      "original": "/Users/taytrrip/slug/set73-prep/PUBLIC_OWNERSHIP_STORE_CODEC.candidate.md",
+      "bytes": 19366,
+      "sha256": "abbc56da1752a714ad2ddf9366d7d33433a69e7c333e57732d95f9dfc37f39a5"
+    },
+    {
+      "path": "inherited/crypto.py",
+      "original": "/Users/taytrrip/slug/slug/gymseed/testdata/reference/crypto.py",
+      "bytes": 10124,
+      "sha256": "ea87b9021e14712b1ac7130daa73cd12fb8acf2fd8995ca5ce9e32d0d770fd1c"
+    },
+    {
+      "path": "inherited/manifest-types.go",
+      "original": "/Users/taytrrip/slug/slug/registry/manifest_types.go",
+      "bytes": 4733,
+      "sha256": "03a4fd3ee8e1de92b1edc8b09c61bb01933c7e1ad923660c10d8bdb82b41cfbb"
+    },
+    {
+      "path": "inherited/seed-common.py",
+      "original": "/Users/taytrrip/slug/slug/gymseed/testdata/reference/common.py",
+      "bytes": 7850,
+      "sha256": "d83bcfb4b255d6f95adfe7986764d46d1bf31d7aa858bab55a38421148313caf"
+    },
+    {
+      "path": "inherited/seednode-attest.go",
+      "original": "/Users/taytrrip/slug/slug/seednode/attest.go",
+      "bytes": 4818,
+      "sha256": "46228718fdec3a930d461636d96310c7ac8b3644c32f89ea59325cd9b588d7d6"
+    },
+    {
+      "path": "inherited/signedcheckpoints.go",
+      "original": "/Users/taytrrip/slug/slug/chaincfg/signedcheckpoints.go",
+      "bytes": 7810,
+      "sha256": "10a438b2875b9095bbdc6f37db25d4ba8193e0bef47a210bb2f6888e89ad73a0"
+    },
+    {
+      "path": "policy/event-lock.md",
+      "original": "/Users/taytrrip/slug/slug/EVENT_LOCK_POLICY.md",
+      "bytes": 5212,
+      "sha256": "0ba09bce00b7ea1c66e628c5eaa85a05121bd164a5fa390c3a0c2d2c4f2ba7cd"
+    },
+    {
+      "path": "policy/transfer.md",
+      "original": "/Users/taytrrip/slug/slug/FIGHTER_TRANSFER_POLICY.md",
+      "bytes": 3780,
+      "sha256": "de59533a494ffbbfca99996f0e1d6054a98a1ef4dba95f0c47d1675414543969"
+    },
+    {
+      "path": "provenance/actual-input-manifest.json",
+      "original": "/Users/taytrrip/slug/slug/fighterevidence/testdata/reference/actual-input-manifest.json",
+      "bytes": 5221,
+      "sha256": "e2240ea9e896959f761d0e905eb1871dfcf1606f571af4e145e2c005f3d5ee00"
+    },
+    {
+      "path": "recipe.json",
+      "original": "root-selected literals; public modeled identity recipe",
+      "bytes": 563,
+      "sha256": "a36ea9f9c9f4b847a99da2266561f58322b86a3bd45054b19f749df1b43c7eb4"
+    }
+  ]
+}

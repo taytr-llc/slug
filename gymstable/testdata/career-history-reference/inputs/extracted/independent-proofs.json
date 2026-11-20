@@ -1,0 +1,56 @@
+[
+  {
+    "label": "first-inclusion",
+    "path": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-result-proof-first-inclusion.json",
+    "sha256": "666b99c7c9d45b4e3567b4737880bc18a5597596a6e9963a0aab3dc757835e53",
+    "bytes": 146379,
+    "headers": 216,
+    "blocks": 3,
+    "record_digest": "521391ee62bff7d2e8d3ae9d46f3b832ae2568f6f57600db637366ed37e587ec"
+  },
+  {
+    "label": "reincluded",
+    "path": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-result-proof-reincluded.json",
+    "sha256": "33c1fdf363bdbc0d8e65f201391f034922f673844d2838c928cb03015920b0fc",
+    "bytes": 147937,
+    "headers": 216,
+    "blocks": 3,
+    "record_digest": "bcd0b59808ed83b477974e51c39b51f6f2e5499bc75b816c91de0006c891812d"
+  },
+  {
+    "label": "finalized60",
+    "path": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-result-proof-finalized60.json",
+    "sha256": "c717d1e7cb5b9ec309c19d5c453ec5e9683e0a28b7becc5dbe9978cd3349c04d",
+    "bytes": 165438,
+    "headers": 276,
+    "blocks": 3,
+    "record_digest": "1d0512e41cacb099fcc0a48f2d01ebe14d8f852b57e0b3ba7b5de0af6da39133"
+  },
+  {
+    "label": "finalized61",
+    "path": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-result-proof-finalized61.json",
+    "sha256": "5e9b57d85e69203e20806e240cd89a307a93310471e4fbdcd12a0748a7ff4cd0",
+    "bytes": 165699,
+    "headers": 277,
+    "blocks": 3,
+    "record_digest": "cb12d36be4023d1acd34c6944e8dc3250e009e2b9e9bac60124d126b739ac9fc"
+  },
+  {
+    "label": "conflict",
+    "path": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-result-proof-conflict.json",
+    "sha256": "efb4dd96cc4fcce4dba79e72adaa835cbb0df4e4c463e6312ff70e14c5556651",
+    "bytes": 166389,
+    "headers": 277,
+    "blocks": 3,
+    "record_digest": "71f1ee262c512a52eb94ffc833153ba132338e023ea4339f5ca160f69a76c5b1"
+  },
+  {
+    "label": "held-conflict",
+    "path": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-result-proof-held-conflict.json",
+    "sha256": "efb4dd96cc4fcce4dba79e72adaa835cbb0df4e4c463e6312ff70e14c5556651",
+    "bytes": 166389,
+    "headers": 277,
+    "blocks": 3,
+    "record_digest": "71f1ee262c512a52eb94ffc833153ba132338e023ea4339f5ca160f69a76c5b1"
+  }
+]

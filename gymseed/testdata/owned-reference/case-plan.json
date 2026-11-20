@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "status": "source-only; exact root review/execution lock required",
+  "codec_positives": {
+    "count": 8,
+    "families": ["seed_pin", "card_pin", "bout_pin", "result_pin", "event_receipt", "seed_declaration", "seed_signed_declaration", "seed_record"],
+    "note": "event receipt/seed prepared record are conditional original-input compositions; no live source authority"
+  },
+  "compositions": {
+    "count": 17,
+    "families": {"private_v1_markers":4,"object_hash_preimages":5,"signature_messages":2,"carrier_payloads":2,"card_result_id_tuple":1,"opaque_result_source":1,"career_prefixes":1,"custom_checkpoint_json":1},
+    "result_source_boundary": "Not a semantic parser positive. Old physical public source template is rebound only to exercise complete typed owned signature bytes; no matching, simulation, chain, checkpoint finality or ownership claim."
+  },
+  "negative_cases": {
+    "count": 41,
+    "pin": "4 families x7: boolean version, source ID, rules ID, nested source, unknown, missing, reordered field",
+    "signature": "2 families x3: hexadecimal display message, inherited family message, changed signed body",
+    "career": "7 exact-prefix mutations: missing activation, wrong store, wrong intent, timestamp order, old marker LF omission, premature activation, legacy format"
+  },
+  "raw_cases": {
+    "count":12,
+    "scope":"seed pin and inherited custom checkpoint each canonical/leading-space/LF/trailing-value/reorder/duplicate-version; exact closed byte-shape only"
+  },
+  "sizing": "8 finite encoded witnesses, no worst-case or heap claim",
+  "excluded_expectations": ["actual normal PoW", "actual finalized owned event", "complete source replay", "new physical matching or simulation", "live career award authority", "general dual-source career merge", "title tenure", "Go-derived golden values"],
+  "provenance": "26 input files locked before producer authoring; exact adopted contract, independently frozen upstream values, pre73 Go type/recipe provenance and old independent arithmetic; no private DB or keys"
+}

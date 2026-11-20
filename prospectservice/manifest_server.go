@@ -29,24 +29,29 @@ import (
 	"golang.org/x/time/rate"
 )
 
-// ManifestServer owns exclusive access to the borrowed manifest store until
-// Run drains. It has no account authority of its own; session mode delegates
-// the complete account-before-registry lease without static fallback.
+// ManifestServer borrows its manifest store until Run drains. Full servers own
+// exclusive issuance; admission-only servers may share a pool's issuer without
+// issuing jobs outside its durable work journal. It has no account authority of
+// its own; legacy session mode delegates the account-before-registry lease.
+// Explicit fenced admission stages proof/node work before its short commit lease.
 type ManifestServer struct {
-	config    ManifestServerConfig
-	policy    prospectnode.Policy
-	node      ManifestNode
-	store     *registry.ManifestStore
-	clients   []clientCredential
-	sessions  SessionAuthorizer
-	clientMu  sync.Mutex
-	dynamic   map[string]*clientCredential
-	active    chan struct{}
-	poisoned  atomic.Bool
-	lifecycle sync.Mutex
-	closing   bool
-	started   bool
-	handlers  sync.WaitGroup
+	config        ManifestServerConfig
+	policy        prospectnode.Policy
+	node          ManifestNode
+	store         *registry.ManifestStore
+	clients       []clientCredential
+	sessions      SessionAuthorizer
+	admissionOnly bool
+	clientMu      sync.Mutex
+	dynamic       map[string]*clientCredential
+	active        chan struct{}
+	poisoned      atomic.Bool
+	lifecycle     sync.Mutex
+	closing       bool
+	started       bool
+	handlers      sync.WaitGroup
+
+	fencedAdmission bool // explicit shared-runtime path; legacy session contract is unchanged
 }
 
 // NewManifestServer selects static per-gym credentials for protocol 3.
@@ -61,6 +66,19 @@ func NewManifestSessionServer(config ManifestServerConfig, policy prospectnode.P
 		return nil, errors.New("account session authorizer is required")
 	}
 	return newManifestServer(config, policy, node, store, sessions)
+}
+
+// NewManifestAdmissionServer exposes only protocol-3 admission and historical
+// receipt recovery for a separately owned issuer, such as a concrete pool.
+// The owner must keep the same store, node and session authority alive until
+// Run drains. No route can create jobs outside that owner's issuance journal.
+func NewManifestAdmissionServer(config ManifestServerConfig, policy prospectnode.Policy, node ManifestNode, store *registry.ManifestStore, sessions SessionAuthorizer) (*ManifestServer, error) {
+	server, err := NewManifestSessionServer(config, policy, node, store, sessions)
+	if err != nil {
+		return nil, err
+	}
+	server.admissionOnly = true
+	return server, nil
 }
 
 func newManifestServer(config ManifestServerConfig, policy prospectnode.Policy, node ManifestNode, store *registry.ManifestStore, sessions SessionAuthorizer) (*ManifestServer, error) {
@@ -197,6 +215,9 @@ func (server *ManifestServer) beginHandler() bool {
 }
 
 func (server *ManifestServer) requestShape(request *http.Request) bool {
+	if server.admissionOnly && request.URL.Path != apiPath(server.config.Version, "admissions") {
+		return false
+	}
 	if request.Method != http.MethodPost || (request.URL.Path != apiPath(server.config.Version, "jobs") && request.URL.Path != apiPath(server.config.Version, "admissions")) ||
 		request.URL.RawQuery != "" || request.URL.ForceQuery || request.URL.IsAbs() || request.URL.Host != "" ||
 		request.URL.RawPath != "" || len(request.Header.Values("Content-Encoding")) != 0 {
@@ -353,7 +374,9 @@ func (server *ManifestServer) ServeHTTP(writer http.ResponseWriter, request *htt
 				result, operationErr = server.admit(ctx, activeCredential, body)
 			}
 		}
-		if server.sessions == nil {
+		if server.fencedAdmission {
+			result, operationErr = server.admitFenced(ctx, bearerToken(request), credential, body)
+		} else if server.sessions == nil {
 			operate(credential)
 		} else {
 			err := server.sessions.WithSession(ctx, bearerToken(request), func(key string, recheck func() error) error {

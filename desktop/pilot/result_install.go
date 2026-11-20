@@ -128,7 +128,7 @@ func (s *StableController) AttachResults(ctx context.Context, x *gymresult.Store
 		}
 		s.mu.Lock()
 		defer s.mu.Unlock()
-		if !stableCacheFits(s.cache, s.receiptSlot, s.careerBytes+s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+s.boutBytes+MaxResultMetadataSize) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.historyBytes+s.careerBytes+s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+s.boutBytes+resultRetainedMetadataBytes) {
 			return gymresult.ErrCapacity
 		}
 		s.resultStore = x
@@ -137,7 +137,7 @@ func (s *StableController) AttachResults(ctx context.Context, x *gymresult.Store
 		s.resultCreated = created
 		s.resultSourceCreated = sourceCreated
 		s.resultAttached = true
-		s.resultBytes = MaxResultMetadataSize
+		s.resultBytes = resultRetainedMetadataBytes
 		return nil
 	})
 }

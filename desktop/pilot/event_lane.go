@@ -28,7 +28,7 @@ func (s *StableController) BeginEventCapture(ctx context.Context, v, date string
 		if s.eventStore == nil {
 			return errEventSetup
 		}
-		if s.stopping {
+		if s.stopping || s.evidenceBusyLocked() {
 			return gymevent.ErrBusy
 		}
 		s.expireQueuedLocked()
@@ -42,7 +42,7 @@ func (s *StableController) BeginEventCapture(ctx context.Context, v, date string
 		s.mu.Lock()
 		defer s.mu.Unlock()
 		oldBytes = s.eventBytes
-		if !stableCacheFits(s.cache, s.receiptSlot, s.careerBytes+s.previewBytes+s.entryBytes+MaxEventCacheSize+s.seedBytes+s.cardBytes+s.boutBytes+s.resultBytes) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.historyBytes+s.careerBytes+s.previewBytes+s.entryBytes+MaxEventCacheSize+s.seedBytes+s.cardBytes+s.boutBytes+s.resultBytes) {
 			return gymevent.ErrCapacity
 		}
 		var id [32]byte

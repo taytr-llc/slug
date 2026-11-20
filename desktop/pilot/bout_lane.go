@@ -33,7 +33,7 @@ func (s *StableController) beginBout(ctx context.Context, v, date, bid, kind str
 		if s.boutStore == nil {
 			return errBoutSetup
 		}
-		if s.stopping {
+		if s.stopping || s.evidenceBusyLocked() {
 			return gymbout.ErrBusy
 		}
 		s.expireQueuedLocked()
@@ -51,7 +51,7 @@ func (s *StableController) beginBout(ctx context.Context, v, date, bid, kind str
 		s.mu.Lock()
 		defer s.mu.Unlock()
 		oldBytes = s.boutBytes
-		if !stableCacheFits(s.cache, s.receiptSlot, s.careerBytes+s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+MaxBoutCacheSize+s.resultBytes) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.historyBytes+s.careerBytes+s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+MaxBoutCacheSize+s.resultBytes) {
 			return gymbout.ErrCapacity
 		}
 		var id [32]byte
@@ -107,7 +107,7 @@ func (s *StableController) retainBoutLocked(j BoutJob) {
 	s.boutLast = &owned
 	raw, _ := json.Marshal(owned)
 	s.mu.Lock()
-	s.boutBytes = MaxBoutMetadataSize + len(raw)
+	s.boutBytes = boutRetainedMetadataBytes + len(raw)
 	s.mu.Unlock()
 }
 func (s *StableController) cancelQueuedBoutLocked() {

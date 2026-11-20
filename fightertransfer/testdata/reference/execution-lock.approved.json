@@ -1,0 +1,15 @@
+{
+  "approved_by": "root",
+  "contract_sha256": "70e1ff02bd335a7436014fbe34ee76aca4b9046cb1167c4f2ea0d9fbe80e0dc7",
+  "execution_authorized": true,
+  "input_catalog_sha256": "a31401c83331e5b672a42c093bf0a7d86e24b7e732e74b16d529d7e92e49f407",
+  "review": "Root read complete model/generator and full-parent successor; actual parent mutation corrected before first execution. Public modeled fixture corpus only.",
+  "scope": "First independent mathematical carrier references with full modeled parent transactions; no Go/new runtime outputs.",
+  "sources": {
+    "README.md": "a0ae2f58d27eb606c76ea34d289f3d64b20a6ec94b1036712c5453aa69242ddb",
+    "carrier_model.py": "e1a56302ac779f72177a37a43a5f52c4934af3d4f57d255cdb70bec98f62d211",
+    "case-plan.json": "c3df32fed9c48c37d2c1da737918bb74a4ad1bb5d3736ba86c47b3112b95012d",
+    "generate_reference.py": "fd920741172669a7d139e35e0752ae88e8c56e51248c0bee0af57dc365a5c045"
+  },
+  "version": 1
+}

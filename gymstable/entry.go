@@ -108,6 +108,9 @@ func (s *Store) entrySelection(ctx context.Context, session Session, cap gymacco
 			return ErrCorrupt
 		}
 	}
+	if e = s.sharedSourceFence(ctx); e != nil {
+		return e
+	}
 	return s.withLease(ctx, session, cap, func(check func() error) error {
 		s.mu.Lock()
 		defer s.mu.Unlock()

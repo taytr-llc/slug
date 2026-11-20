@@ -310,7 +310,16 @@ func Open(ctx context.Context, path string, expected Pin, events *gymcard.Store)
 func ResumePrepared(ctx context.Context, path string, expected Pin, events *gymcard.Store) (*Store, error) {
 	return open(ctx, path, expected, events, time.Now, true)
 }
+
+// OpenAudit opens an established journal with complete validation and a
+// physically read-only database; it never creates or resumes partial state.
+func OpenAudit(ctx context.Context, path string, expected Pin, events *gymcard.Store) (*Store, error) {
+	return openAudit(ctx, path, expected, events, time.Now, false, true)
+}
 func open(ctx context.Context, path string, expected Pin, events *gymcard.Store, clock func() time.Time, resume bool) (*Store, error) {
+	return openAudit(ctx, path, expected, events, clock, resume, false)
+}
+func openAudit(ctx context.Context, path string, expected Pin, events *gymcard.Store, clock func() time.Time, resume, readOnly bool) (*Store, error) {
 	if e := normal(); e != nil {
 		return nil, e
 	}
@@ -355,7 +364,7 @@ func open(ctx context.Context, path string, expected Pin, events *gymcard.Store,
 		}
 		createDB = true
 	}
-	db, e := leveldb.OpenFile(dbpath, &opt.Options{Strict: opt.StrictAll, ErrorIfMissing: !createDB, ErrorIfExist: createDB})
+	db, e := leveldb.OpenFile(dbpath, &opt.Options{Strict: opt.StrictAll, ErrorIfMissing: !createDB, ErrorIfExist: createDB, ReadOnly: readOnly})
 	if e != nil {
 		return nil, ErrUnavailable
 	}

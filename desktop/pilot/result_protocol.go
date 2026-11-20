@@ -46,7 +46,7 @@ func resultProtocolError(err error) string {
 	}
 	return "result_unavailable"
 }
-func handleResultRequest(ctx context.Context, r ResultRequest, c ResultControllerAPI) ResultResponse {
+func handleResultRequest(ctx context.Context, r ResultRequest, c ResultSurfaceAPI) ResultResponse {
 	out := ResultResponse{ID: r.ID, OK: true}
 	var err error
 	switch r.Command {
@@ -165,7 +165,57 @@ func serveResults(ctx context.Context, c ResultControllerAPI, input io.Reader, o
 			if json.Unmarshal(value.data, &selector) != nil {
 				return gymstable.ErrInvalid
 			}
-			if strings.HasPrefix(selector.Command, "career_preview_") {
+			if strings.HasPrefix(selector.Command, "fighter_evidence_") {
+				req, e := ParseFighterEvidenceRequest(value.data)
+				id := selector.ID
+				if id == 0 || id > gymstable.MaxSafeInteger {
+					id = 1
+				}
+				response := FighterEvidenceResponse{ID: id, Version: 1, Error: "invalid_request"}
+				if surface, ok := career.(FighterEvidenceSurfaceAPI); e == nil && ok {
+					response = handleFighterEvidenceRequest(ctx, req, surface)
+				}
+				raw, e := MarshalFighterEvidenceResponse(response)
+				if e != nil {
+					return e
+				}
+				if d, ok := output.(interface{ SetWriteDeadline(time.Time) error }); ok {
+					_ = d.SetWriteDeadline(time.Now().Add(5 * time.Second))
+				}
+				raw = append(raw, '\n')
+				n, e := output.Write(raw)
+				if e != nil {
+					return e
+				}
+				if n != len(raw) {
+					return io.ErrShortWrite
+				}
+			} else if strings.HasPrefix(selector.Command, "career_history_") {
+				req, e := ParseCareerHistoryRequest(value.data)
+				id := selector.ID
+				if id == 0 || id > gymstable.MaxSafeInteger {
+					id = 1
+				}
+				response := CareerHistoryResponse{ID: id, Version: 1, Error: "invalid_request"}
+				if history, ok := career.(CareerHistoryControllerAPI); e == nil && ok {
+					response = handleCareerHistoryRequest(ctx, req, history)
+				}
+				raw, e := MarshalCareerHistoryResponse(response)
+				if e != nil {
+					return e
+				}
+				if d, ok := output.(interface{ SetWriteDeadline(time.Time) error }); ok {
+					_ = d.SetWriteDeadline(time.Now().Add(5 * time.Second))
+				}
+				raw = append(raw, '\n')
+				n, e := output.Write(raw)
+				if e != nil {
+					return e
+				}
+				if n != len(raw) {
+					return io.ErrShortWrite
+				}
+			} else if strings.HasPrefix(selector.Command, "career_preview_") {
 				req, e := ParseCareerPreviewRequest(value.data)
 				response := CareerPreviewResponse{ID: selector.ID, Version: 1, Error: "invalid_request"}
 				if preview, ok := career.(CareerPreviewControllerAPI); e == nil && ok {

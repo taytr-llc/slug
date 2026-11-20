@@ -1,0 +1,26 @@
+{
+  "paid_atoms": {
+    "incrementing256": 4950000000,
+    "zero256": 2970000000
+  },
+  "settlement_observations": {
+    "incrementing256": {
+      "carried_reason": "",
+      "confirmed_unpaid_atoms": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "paid_atoms": 4950000000
+    },
+    "zero256": {
+      "carried_reason": "",
+      "confirmed_unpaid_atoms": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "paid_atoms": 2970000000
+    }
+  },
+  "source_binding_id": "6790f2f5c9a7e6749ca8309c34d32c83d0ece3b0fa9b9c428f4ea5677b564c8f",
+  "version": 1
+}

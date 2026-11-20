@@ -60,10 +60,20 @@ type StableOperation struct {
 	Operation *gymstable.Operation `json:"operation"`
 }
 type StableAccountConfig struct {
-	Manifest ManifestAccountConfig
-	Lease    gymstable.Lease
+	// Hosted is accepted only with the matching explicit hosted runtime.
+	Hosted *HostedPoolSession
+	// Original login times are private authority metadata, never token-derived.
+	AuthenticatedAtMS  int64
+	SessionExpiresAtMS int64
+	// EvidencePermit is borrowed from the account parent across child generations.
+	EvidencePermit *EvidencePermit
+	Manifest       ManifestAccountConfig
+	Lease          gymstable.Lease
 	// ResultNodeLease fences only explicit Result node readiness admission.
 	ResultNodeLease ManifestViewLease
+	// HistoryPublicationLease holds the original parent epoch through a short
+	// cache/queue publication. It never spans proof or capture work.
+	HistoryPublicationLease ManifestViewLease
 }
 
 type StableControllerAPI interface {

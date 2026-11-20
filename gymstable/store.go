@@ -43,6 +43,8 @@ type metadata struct {
 	LastOperationID     string `json:"last_operation_id"`
 	ClockMS             int64  `json:"clock_ms"`
 	LastAsOfMS          int64  `json:"last_as_of_ms"`
+	// Shared count lives in its own versioned row, preserving legacy JSON.
+	assignmentCount uint64
 }
 type rosterRow struct {
 	Version  uint32     `json:"version"`
@@ -113,12 +115,15 @@ func Create(path string, pin Pin, source *registry.ManifestStore) (*Store, error
 	return create(path, pin, source, time.Now, nil)
 }
 func create(path string, pin Pin, source *registry.ManifestStore, clock func() time.Time, checkpoint func(string)) (*Store, error) {
+	return createMode(path, pin, source, clock, checkpoint, Version1)
+}
+func createMode(path string, pin Pin, source *registry.ManifestStore, clock func() time.Time, checkpoint func(string), version uint32) (*Store, error) {
 	if e := normal(); e != nil {
 		return nil, e
 	}
 	p, e := ValidatePin(pin)
-	if e != nil {
-		return nil, e
+	if e != nil || p.Version != version || clock == nil {
+		return nil, ErrInvalid
 	}
 	info, e := sourceValid(source, p)
 	if e != nil {
@@ -132,7 +137,7 @@ func create(path string, pin Pin, source *registry.ManifestStore, clock func() t
 	if now <= 0 || now > MaxTimestampMS {
 		return nil, ErrClock
 	}
-	m := marker{"slug-candidate-stable", Version1, id, p}
+	name, m := stableMarker(p, id)
 	raw, _ := json.Marshal(m)
 	if len(raw)+1 > MaxMarkerSize {
 		return nil, ErrInvalid
@@ -140,7 +145,7 @@ func create(path string, pin Pin, source *registry.ManifestStore, clock func() t
 	if e = os.Mkdir(path, 0700); e != nil {
 		return nil, ErrClosed
 	}
-	f, e := os.OpenFile(filepath.Join(path, markerName), os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
+	f, e := os.OpenFile(filepath.Join(path, name), os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
 	if e != nil {
 		return nil, ErrClosed
 	}
@@ -186,12 +191,18 @@ func openWithClock(path string, expected Pin, source *registry.ManifestStore, cl
 	return openCareerWithClock(path, expected, source, clock, nil, false)
 }
 func openCareerWithClock(path string, expected Pin, source *registry.ManifestStore, clock func() time.Time, activation *careerstate.Activation, prepared bool) (*Store, error) {
+	return openMode(path, expected, source, clock, activation, prepared, Version1)
+}
+func openMode(path string, expected Pin, source *registry.ManifestStore, clock func() time.Time, activation *careerstate.Activation, prepared bool, version uint32) (*Store, error) {
+	return openModeAudit(path, expected, source, clock, activation, prepared, version, false)
+}
+func openModeAudit(path string, expected Pin, source *registry.ManifestStore, clock func() time.Time, activation *careerstate.Activation, prepared bool, version uint32, readOnly bool) (*Store, error) {
 	if e := normal(); e != nil {
 		return nil, e
 	}
 	p, e := ValidatePin(expected)
-	if e != nil {
-		return nil, e
+	if e != nil || p.Version != version || clock == nil {
+		return nil, ErrInvalid
 	}
 	info, e := sourceValid(source, p)
 	if e != nil {
@@ -200,7 +211,9 @@ func openCareerWithClock(path string, expected Pin, source *registry.ManifestSto
 	if !filepath.IsAbs(path) || filepath.Clean(path) != path || !directory(path) || !directory(filepath.Join(path, "db")) {
 		return nil, ErrCorrupt
 	}
-	file := filepath.Join(path, markerName)
+	id, _ := ID(p)
+	name, wantMarker := stableMarker(p, id)
+	file := filepath.Join(path, name)
 	before, e := os.Lstat(file)
 	if e != nil || !before.Mode().IsRegular() || before.Size() > MaxMarkerSize {
 		return nil, ErrCorrupt
@@ -223,11 +236,10 @@ func openCareerWithClock(path string, expected Pin, source *registry.ManifestSto
 	if decode(raw[:len(raw)-1], MaxMarkerSize, 5, &m, true) != nil {
 		return nil, ErrCorrupt
 	}
-	id, _ := ID(p)
-	if m != (marker{"slug-candidate-stable", Version1, id, p}) {
+	if m != wantMarker {
 		return nil, ErrCorrupt
 	}
-	db, e := leveldb.OpenFile(filepath.Join(path, "db"), &opt.Options{Strict: opt.StrictAll, ErrorIfMissing: true})
+	db, e := leveldb.OpenFile(filepath.Join(path, "db"), &opt.Options{Strict: opt.StrictAll, ErrorIfMissing: true, ReadOnly: readOnly})
 	if e != nil {
 		return nil, ErrClosed
 	}
@@ -244,7 +256,7 @@ func openCareerWithClock(path string, expected Pin, source *registry.ManifestSto
 	}
 	// Opening has already observed this authenticated source count. Retain that
 	// highwater even before the first authorized page, without assigning rows.
-	if info.Records > s.meta.ObservedSourceCount {
+	if !readOnly && info.Records > s.meta.ObservedSourceCount {
 		next := s.meta
 		next.ObservedSourceCount = info.Records
 		if e = s.commitLocked(new(leveldb.Batch), next); e != nil {
@@ -274,6 +286,14 @@ func (s *Store) commitLocked(b *leveldb.Batch, m metadata) error {
 		return ErrCorrupt
 	}
 	b.Put([]byte("meta"), raw)
+	if m.Pin.Version == SharedPinVersion2 {
+		if m.assignmentCount > m.Checkpoint || m.Checkpoint > m.ObservedSourceCount || m.ObservedSourceCount > MaxAssignments {
+			return ErrCorrupt
+		}
+		if e = encodedPut(b, []byte("shared"), sharedMetadata{Version1, m.assignmentCount}, MaxMetadataSize); e != nil {
+			return e
+		}
+	}
 	if e = s.writeBatch(b, &opt.WriteOptions{Sync: true}); e != nil {
 		s.poisoned = true
 		return ErrOutcomeUnknown
@@ -425,10 +445,24 @@ func (s *Store) withLease(ctx context.Context, session Session, cap gymaccount.C
 	return mapped(err)
 }
 func (s *Store) sourceInfo(ctx context.Context) (uint64, error) {
+	return s.sourceInfoMode(ctx, false)
+}
+
+// The history family cannot downgrade learned source failures to cancellation.
+// Existing consumers retain their original cancellation order.
+func (s *Store) sourceInfoMode(ctx context.Context, fatalFirst bool) (uint64, error) {
 	if ctx.Err() != nil {
 		return 0, ErrCancelled
 	}
 	i, e := sourceValid(s.source, s.meta.Pin)
+	if fatalFirst {
+		if e != nil {
+			return 0, e
+		}
+		if i.Records < s.meta.ObservedSourceCount || i.Records < s.meta.Checkpoint {
+			return 0, ErrCorrupt
+		}
+	}
 	if ctx.Err() != nil {
 		return 0, ErrCancelled
 	}

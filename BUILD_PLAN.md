@@ -4,6 +4,13 @@ Consolidated November 15, 2026. The rules live in BRAWLCHAIN_SPEC.md;
 this is the work list: what gets built, in what order, and what each
 piece depends on. Decision numbers point back to the spec.
 
+Current execution order (Mike, November 19): finish fighter transfers and
+independent same-gym/fighter recovery first. Complete the public mining pool
+and scheduled payouts next, before sign-in and onboarding. Existing fixture
+implementations require public service and operational qualification; they do
+not make that milestone complete. The full joint D74 design review stays last,
+before friends/tester or public release.
+
 ## Workstreams
 
 ### 1. Chain core
@@ -165,6 +172,170 @@ prospect shares to the fighter layer. Solo mining needs no pool work;
 it is served by the chain and the gym clients directly.
 Depends on: chain core (stratum surface), fighter layer (prospect
 attestation format).
+
+D79 fixes accounting to difficulty-weighted per-block rounds, including the
+winning share. Earnings lock at sixty descendants; daily settlement waits for
+the funding coinbase's 100-block maturity, with no reserve advances. The 1%
+fee applies once and balances below 1 SLUG carry forward. See
+`POOL_ACCOUNTING_POLICY.md` for D58's approved exact carry-forward, single daily
+batch and network-fee funding from the operator's 1% only. Insufficient fees
+defer visibly; conflicted-funding incident resolution remains separate.
+Set 52 implements and tests nonce-only manifest share verification with
+separate pool/prospect/block targets and stable duplicate identities. Durable
+acceptance follows in Set 53; no live pool or framework adaptation is implied.
+Set 53's bounded `poolshare` journal now persists issued work, authenticated
+share acceptance and block delivery, recovering exact duplicates and applying
+D80 only to exact canonical payout-bound winners. Public transport and miner
+integration and payouts remain ahead. Set 54 adds fixed D81 rounds, exact gross
+allocations and fresh 60-descendant confirmation locks. Orphaning and return
+change status without reusing shares; a later funding conflict retains locked
+earnings. Set 55 adds exact net balances, original mature funding, one durable
+daily batch, visible deferrals and identical-byte payout recovery. Its first
+adapter signs only with published fixtures on an isolated chain. Public
+transport, miner integration, the daily service scheduler, authoritative payout
+address enrollment and production signer custody remain ahead.
+Set 56 connects these components through authenticated pool HTTP and a pinned
+Go client. The desktop credential adapter refreshes tokens between calls while
+retaining its original account/view and pool trust. A real two-account isolated
+chain demonstrates HTTP work, lost-response recovery, shared payout and
+reset-scoped balance/mining access. The existing solo worker is preserved:
+Set 57 adds the dedicated automatic pool worker and separate durable outbox.
+Found work survives cancellation and lost acknowledgments; pool credit and
+fighter admission recover independently against the original issued job.
+An admission-only service shares the pool issuer without creating jobs outside
+its work journal. Next connect the shared desktop runtime and separate
+native-SegWit recipient binding, then the balance view and daily scheduler.
+Set 58 supplies the separate native84 wallet-recipient binding, preserving
+legacy payout markers and recovering uncertain allocation without another
+address. Set 59 supplies explicit Pin2 per-gym stable scoping for a shared
+issuer, preserving original source sequence/evidence and separating global
+cursor progress from local assignment count. Sparse inventory, local Recent,
+roster, noon entry and career reads reuse their original authority fences.
+Legacy single-gym stores and contiguous projections keep their semantics.
+Set 60 removes the account lease from slow pool proofs, node/source calls and
+balance verification while retaining original-token authorization through each
+actual local commit. Additive staged registry commits fail fast on lock contention;
+the new shared runtime must select the explicit fenced admission-only server.
+Legacy registry/session APIs and wire/journal formats remain unchanged.
+
+Set 61 connects these components through the explicit shared fixture Pool Pilot:
+one parent owns the nodes, issuer, pool and accounting journals; two actual
+wallets retain their Set58 recipients; each original account view owns its
+worker, outbox and Pin2 stable. Authenticated balances expose exact carry and
+bounded daily settlement. Only Start mines. Account switch/reset drains the
+child without replacing the source; Quit joins the complete runtime. The solo
+route retains its namespace. See `CHANGESET_61_NOTES.md` for the actual payout,
+isolation, reset/restart and package qualification.
+
+Set62 connects shared-wallet export and fresh restoration to these actual pool
+recipients, preserving the original view and D72 hold through publication. The
+funded independent restore/spend and exact-package checks pass, including fresh
+wallets at genesis. See `SHARED_POOL_RECOVERY.md` and `CHANGESET_62_NOTES.md`.
+Set63 connects shared-pool fighters to Saturday entries and durable noon
+snapshots in an explicit parent-owned coordinator. Both gyms retain original
+Pin2 participant pins and source sequences across reset and restart. See
+`SHARED_POOL_LEAGUE.md` and `CHANGESET_63_NOTES.md`.
+Set64 connects shared publication, cards, fights, results and career awards,
+activating career authority before the new event's lock and first finality.
+Actual normal-PoW acceptance proves both finalities and exactly-once careers
+through retry/restart. Publication funding stays separate from share-accounted
+pool rewards. See `SHARED_EVENT_CYCLE.md` and `CHANGESET_64_NOTES.md`.
+Set65 qualifies an explicit name-v2 candidate with 512-by-512 names, complete
+independent manifest/portrait references and a fixed 100,000-seed collision
+study. Both package routes and the actual v2 event/finality/career cycle pass;
+existing fighters, source pins and defaults remain v1. See `NAME_DIVERSITY.md`
+and `CHANGESET_65_NOTES.md`.
+Set66 completes bounded original-receipt/history export from the existing panel
+and a packaged offline consistency checker. Six actual v1/v2 exports match the
+independent reference, including an older fighter outside Recent. Original-action
+recovery, complete desktop, package and smoke checks pass; see
+`PUBLIC_FIGHTER_EVIDENCE.md` and `CHANGESET_66_NOTES.md`. Supplied consistency
+does not establish issuer timing, actual awards/finality, current ownership or
+complete authoritative history. D83 subsequently settles transfer timing and
+competing-transfer ordering: first valid canonical chain-ordered send wins;
+ownership changes at signed checkpoint plus sixty descendants. Noon locks use
+the then-effective owner. See `FIGHTER_TRANSFER_POLICY.md`; the transfer and
+independent-restoration implementation remains ahead.
+Set67 implements authenticated own-payout history with fixed local pages and
+a separate dated observation of the selected transaction output in the owned
+wallet. Preserve daily accounting, original-view authorization and the distinction
+between retained pool state and current wallet observation. No new send,
+settlement or fee authority is added. See `POOL_PAYOUT_HISTORY.md`,
+`POOL_PAYOUT_DESKTOP.md` and `CHANGESET_67_NOTES.md` for qualification status.
+Set68 implements reviewed personal withdrawals with original-view D72 gates,
+paired durable wallet/journal reservations, exact signed-byte recovery and
+explicit native approval of recipient, amount, fee and total. Its actual
+two-wallet rehearsal includes a lost acknowledgment, same-byte retry, one debit,
+live change detection and restart. See `REVIEWED_WITHDRAWALS_ADOPTION.md` and
+`CHANGESET_68_NOTES.md` for contracts and qualification. The candidate is limited
+to public schema-9 fixture wallets.
+Set69 adds bounded schema-12 restoration of existing Phase-A version-1 files,
+with unchanged derivation/root/gym identity, explicit library resume, joined
+scratch cleanup and exact synchronized tip comparisons. Live exports already
+track current issued/change cursors. The separate hosted-vault path still needs
+authoritative evolving metadata and integration; successful scratch verification
+does not restore the installed payment journal or authorization. See
+`PHASE_A_BACKUP_RECOVERY.md`, `PHASE_A_RECOVERY_CLEANUP.md` and
+`CHANGESET_69_NOTES.md` for qualification and limits. Transfers and general
+matchmaking still require their own decisions.
+Set70 adds bounded own-wallet activity: immutable incoming/outgoing transaction
+pages, exact selected output details, integer amounts and dated wallet/node
+confirmation observations. Explicit refresh preserves the previous capture on
+failure. It reads the existing wallet under its original account/source binding
+and adds no spending or address-allocation authority. See `WALLET_ACTIVITY.md`
+and `CHANGESET_70_NOTES.md`. Set71 implements the current-wallet to
+hosted-recovery integration in an explicit, isolated fixture mode, preserving the
+old immutable vault API while adding concrete public wallet captures and signed
+schema-2 account login/reset. `HOSTED_CURRENT_RECOVERY.md` freezes the contract;
+`CHANGESET_71_NOTES.md` records the qualification status and limits. This supplies
+local hosted-account plumbing, not a live signup provider, continuous recovery
+coverage or production custody. D82 requires mandatory MFA for hosted login and
+passkey support. Email/password must include a second factor; the proposed
+passkey route requires server-verified user verification. Mike requires a backup
+factor/code with no support bypass. The real provider, exact account-recovery
+proof contract and final screens remain open; distinguish account codes from
+the 24-word wallet backup. Preserve the approved same-wallet verified reset and
+24-hour hold without an MFA bypass.
+See `HOSTED_AUTHENTICATION.md` for accepted requirements, proposed mechanisms and
+the provider/assurance/recovery acceptance work still required.
+Mike has deferred login-flow work until the wallet/gym/fighter ownership and
+recovery foundations are complete. Keep D82 recorded, but stop provider selection,
+signup/MFA flow implementation and account-recovery UX design for now. Continue
+with evolving-wallet recovery, authoritative fighter ownership and direct
+transfers, then end-to-end restoration of the same gym and its owned fighters.
+Using the existing fixture sessions to verify these foundations is not real-login
+work. The final joint D74 review still follows the major functional flows.
+Set72 implements durable address-issuance inventory and deliberate recovery when
+the exact local wallet payload is missing, in a separate explicit fixture mode.
+The frozen contract is `HOSTED_ALLOCATION_RECOVERY.md`; qualification and limits
+are in `CHANGESET_72_NOTES.md`. Actual loss without a preloss export, current-file
+verification and an independent restored spend passed. The inspection route does
+not install a replacement wallet or reconstruct missing signed-payment authority.
+Set73 implements D83 public ownership replay, reviewed direct transfers and
+independent file-only restoration of the same gym/fighters. Actual competing
+transfers and checkpoint +59/+60 ownership, restored new transfers, and separate
+CLI commit-only reveal/refund have passed. Exact publication-recovery focused
+checks passed. Both ordinary noon ownership variants passed, preserving original
+birth/condition and immutable history through later finality and component
+reopen. Final clean packaging and release verification remain outstanding.
+`CHANGESET_73_NOTES.md` records their exact scopes. Visible native acceptance and D74 remain product gates.
+
+After this transfer/recovery milestone, complete the public mining pool and
+scheduled payouts. The current desktop already has a joined 30-second scheduler
+and durable settlement journals. The concrete missing integration is an
+operator-owned public service for external miners, with a nonfixture settlement
+signer/backend and its operational lifetime. Current fixed-fixture/loopback
+transports and the public scalar-3 test signer do not qualify that service.
+Preserve existing payout policies and exact-byte recovery while proving actual
+scheduled rollover, maturity, deferrals, restart/lost-reply recovery and on-chain
+payout reporting. Sign-in/provider/MFA work remains deferred until afterward.
+Never repin solo event histories. Keep the existing layout/logos until the final
+joint D74 review. Public hosting, production signer custody/capacity, real account
+configuration and permanent genesis remain separate gates. The implemented
+contract is `SHARED_POOL_DESKTOP.md`; the earlier workspace runtime proposal
+remains historical context. See `CHANGESET_52_NOTES.md` through
+`CHANGESET_71_NOTES.md`, `POOL_WORKER.md`, `POOL_RECIPIENTS.md`,
+`SHARED_GYM_STABLE.md` and `POOL_SESSION_FENCES.md`.
 
 ### 4. Wallet
 btcwallet from the btcd suite. Hosted wallet at signup with full
@@ -370,12 +541,28 @@ Mac package and nine independent reports separately passed zero-award current
 Career pages and recovery, followed by the full 900-second/31-sample deployment
 observation and restart. Remote CI absence is assessed, not a pass. C1 still
 refuses awarded fighters; historical noon inputs remain fixed. The shipped
-legacy practice preview still uses XP0. Set50 on `slug-career-preview` adds a
-separate career-aware practice path under `CAREER_PREVIEW.md`; local, independent
-arithmetic and scoped awarded-fighter checks pass, with final package/deployment
-verification in progress. Practice grants no permanent awards. Complete
-rankings/title authority and D74 remain open. See
-`CHANGESET_49_NOTES.md` and `RESULT_AWARD_POLICY.md`.
+legacy practice preview still uses XP0. Set 50 implementation `99d36ef2` adds a
+separate career-aware practice path under `CAREER_PREVIEW.md`. Local checks,
+all 249 frontend tests, three scoped awarded-fighter jobs/two distinct
+compositions, and five normal-package XP0 jobs/ten typed portraits passed.
+The final ten independent package checks include nine unchanged-input-bound
+reused reports and the corrected tenth check; failed attempts remain preserved.
+Release `592e143c` is deployed. Final observation and provider closeout
+passed: 900.03 seconds, 31 successful samples at height 61 with 60 checkpoint
+descendants, and a clean restart.
+Railway remained healthy on the exact release, with configuration, volume and
+TCP endpoint unchanged. Remote CI absence is assessed, not
+a pass. Practice grants no permanent awards. Complete rankings/title authority,
+production gates and D74 remain open. See
+`CHANGESET_49_NOTES.md`, `CHANGESET_50_NOTES.md` and `RESULT_AWARD_POLICY.md`.
+Set 51 implementation `751b947b` completes authenticated finalized fighter
+history: one captured prefix, bounded newest-first pages and per-result
+base-point/earned/applied-XP explanations. Local, scoped actual, cold-capacity,
+normal Mac package and eleven independent package checks pass. The candidate
+desktop build is 0.4.11/build 51; the unchanged seed stays on Set 50. Preserve
+the failed first package attempt and its unresolved cause separately from the
+successful diagnostic and strict successor package. Full ranking/title policy
+stays separate. See `CHANGESET_51_NOTES.md`.
 
 The Saturday operation: entry collection and lock (Saturday noon
 PT), matchmaking in the D52 ratio band with random draw (D13, D28),
@@ -419,6 +606,9 @@ the agreed findings through validation. Routine engineering deployment and
 automated/code review do not replace that session.
 Mike wants this as one full review once all major flows are ready, at the end
 before release.
+He clarified on November 18 that app organization and navigation belong in
+that final session too. The external navigation draft is deferred and unapplied;
+it is not the next engineering set. Continue the functional workstreams below.
 
 The November 15 chain-core handover and seed rollout are a milestone within
 Phase A, not completion of all three Phase A workstreams. Prospect

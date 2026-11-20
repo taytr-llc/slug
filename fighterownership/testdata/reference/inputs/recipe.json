@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "public_fixture_seed_byte": 115,
+  "public_fixture_seed_bytes": 32,
+  "rule_ascii": "SLUG ownership and direct transfer\u0000v1\u0000",
+  "checkpoint_seed_ascii": "SLUG candidate seed checkpoint fixture\u0000v1\u0000",
+  "base_ms": 1795291200000,
+  "publication_id_first_byte": 17,
+  "store_id_first_byte": 33,
+  "zero_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+  "labels": "synthetic source attestations wrap unchanged previously qualified public admissions; modeled headers are not PoW/canonicality proofs"
+}

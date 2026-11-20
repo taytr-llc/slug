@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/taytr-llc/slug/desktop/pilot"
+	"github.com/taytr-llc/slug/fighterdescriptor"
 	"github.com/taytr-llc/slug/fighterportrait"
 	"github.com/taytr-llc/slug/gymbout"
 	"time"
@@ -141,8 +142,14 @@ func (b *StableBridge) BoutPortrait(ctx context.Context, viewID, saturday, boutI
 		manifest = p.record.Input.B.Manifest
 	}
 	b.mu.Unlock()
+	descriptor, err := fighterdescriptor.ResolveCandidate(assignment.DescriptorID)
+	domain, ok := manifestPortraitDomain(assignment.DescriptorID)
+	if err != nil || !ok || !b.validBoutRecord(a, p.record) {
+		b.clearBoutPresentation()
+		return fail("bout_corrupt")
+	}
 	if svg == "" {
-		raw, e := fighterportrait.Render(fighterportrait.Version1, manifest)
+		raw, e := fighterportrait.Render(descriptor.RendererVersion, manifest)
 		if e != nil {
 			b.clearBoutPresentation()
 			return fail("bout_corrupt")
@@ -154,7 +161,7 @@ func (b *StableBridge) BoutPortrait(ctx context.Context, viewID, saturday, boutI
 		b.clearBoutPresentation()
 		return fail("bout_capacity")
 	}
-	h := sha256.Sum256(append([]byte("SLUG fighter portrait SVG\x00v1\x00"), []byte(svg)...))
+	h := sha256.Sum256(append([]byte(domain), []byte(svg)...))
 	if hex.EncodeToString(h[:]) != assignment.PortraitDigest {
 		b.clearBoutPresentation()
 		return fail("bout_corrupt")

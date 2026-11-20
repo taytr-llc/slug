@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "fixture_order": [
+    "zero256",
+    "incrementing256"
+  ],
+  "fixture_ids": {
+    "zero256": {
+      "inventory_id": "0000000000000000000000000000000000000000000000000000000000731400",
+      "wallet_owner_id": "0000000000000000000000000000000000000000000000000000000000731500",
+      "carrier_journal_id": "0000000000000000000000000000000000000000000000000000000000731600",
+      "withdrawal_journal_id": "0000000000000000000000000000000000000000000000000000000000731700"
+    },
+    "incrementing256": {
+      "inventory_id": "0000000000000000000000000000000000000000000000000000000000731401",
+      "wallet_owner_id": "0000000000000000000000000000000000000000000000000000000000731501",
+      "carrier_journal_id": "0000000000000000000000000000000000000000000000000000000000731601",
+      "withdrawal_journal_id": "0000000000000000000000000000000000000000000000000000000000731701"
+    }
+  },
+  "ownership_pin_id": "0100000000000000000000000000000000000000000000000000000000000000",
+  "prior_state_id": "0200000000000000000000000000000000000000000000000000000000000000",
+  "request_sequence_start": 7553024,
+  "action_sequence_start": 7618560,
+  "base_time_ms": 1795123456789,
+  "tip_height": 110,
+  "tip_hash": "0000000000000000000000000000000000000000000000000000000000731100",
+  "ownership_head_digest": "0000000000000000000000000000000000000000000000000000000000731800",
+  "notice": "All Set73 IDs/times/tips are visibly modeled public literals. Prior Set72 authority bindings and paths remain independent modeled fixtures. No actual admission/finality, restored DB, live account or node fact is claimed. Only public already-published fixture material is permitted.",
+  "wallet_selection_case": {
+    "count": 16,
+    "each_input_atoms": 32000,
+    "construction": "same locked independent carrier model with copied recipe parent atoms32000 and suffix wallet-smallest-prefix; public fixture keys only",
+    "scope": "separate independently generated math case after approval, not Go-derived and not yet executed"
+  }
+}

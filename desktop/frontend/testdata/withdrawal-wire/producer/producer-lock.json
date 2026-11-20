@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "status": "frozen before first execution",
+  "input_lock_sha256": "b07e6cbfb2d1d0d3cc870b17dab286d08157c36c4faaeb2686e9d9dafcfbe7dd",
+  "sources": {
+    "model.py": "191bb1966035f4a2bb4310b7bc20b9535f8b073646110f07db8db8b14b35f246",
+    "generate.py": "1b15b01a070aa559a7f564c078705e11b4e3f68afbbffac1ef91665ddeb1c893"
+  },
+  "review_sha256": "ca8d345a10c828fc83809ab3c23302099851b5359d39b6056493a0370fe9a7e4",
+  "review_resolution": "Split lexical hash versus nonzero native IDs, require positive fee/add zero-fee rejection, and fix/enforce signed retry-review operations before execution. No production/runtime values imported."
+}

@@ -124,7 +124,7 @@ func (s *StableController) AttachBouts(ctx context.Context, x *gymbout.Store) er
 		}
 		s.mu.Lock()
 		defer s.mu.Unlock()
-		if !stableCacheFits(s.cache, s.receiptSlot, s.careerBytes+s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+MaxBoutMetadataSize+s.resultBytes) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.historyBytes+s.careerBytes+s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+boutRetainedMetadataBytes+s.resultBytes) {
 			return gymbout.ErrCapacity
 		}
 		s.boutStore = x
@@ -133,7 +133,7 @@ func (s *StableController) AttachBouts(ctx context.Context, x *gymbout.Store) er
 		s.boutCreated = created
 		s.boutSourceCreated = sourceCreated
 		s.boutAttached = true
-		s.boutBytes = MaxBoutMetadataSize
+		s.boutBytes = boutRetainedMetadataBytes
 		return nil
 	})
 }

@@ -248,6 +248,9 @@ func (s *Store) WithCutoffSelection(ctx context.Context, session Session, cutoff
 	if ctx.Err() != nil {
 		return ErrCancelled
 	}
+	if e = s.sharedSourceFence(ctx); e != nil {
+		return e
+	}
 	return s.withLease(ctx, session, gymaccount.View, func(check func() error) error {
 		s.mu.Lock()
 		defer s.mu.Unlock()

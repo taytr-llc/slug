@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "status": "SOURCE ONLY; no import/execution or expected outputs before root review and exact producer lock",
+  "contract_sha256": "92b247a5c3f47e637ed0dbf09d08c8f580a881cc80ff114a4c22d2e119572a86",
+  "input_lock_sha256": "f7809a938be24d9a320beeff9f8ed09fb2a43f9245864ca7ab0d4f5bb7a16dd9",
+  "source_files": ["common.py", "provider_model.py", "marker_model.py", "generate_provider_reference.py", "provider-case-plan.json"],
+  "predecessor": "The never-imported service scaffolds were preserved under set71-prep/source-pre-split before ownership handoff; adopted code is source provenance, not an expected-output oracle.",
+  "input_policy": "Only locked inherited public contract/source/vector bytes and the literal fixture recipe. No new Go output, other Set71 producer output, account capability, wallet database, real key or network.",
+  "baseline": "Reproduce the complete old independent identity corpus and exact RFC7515 A.2 signature from the locked old Python source before new token generation. Compare old key and corpus bytes; never rewrite them.",
+  "canonical_records": [
+    "Normalized schema2 IdentityConfig with PrincipalID ordering distinct from fixed fixture iteration",
+    "Exact coordinator/vault config and normalized verifier digest preimage",
+    "Preselected HostedInit, all eight ordered SetupReceipt files and HostedReady",
+    "Current store marker independently built from literal modeled IDs plus inherited public manifest identity, without importing current_model",
+    "Driver empty, two original authentications, verified reset, committed credential, completed reset, new-epoch login, retired-reset retained state",
+    "Exact selected FixturePendingReset owned result"
+  ],
+  "signed_tokens": [
+    "Both fixture fresh login evidence",
+    "Fresh transport with same retained original authentication",
+    "Reset begin and completion with raw provider event distinct from derived account barrier ID",
+    "Fresh login at epoch2",
+    "Cryptographically valid old-epoch authentication after reset, explicitly not an account-authorization claim",
+    "Fresh completion transport over an old immutable verified time",
+    "Correctly signed cross-authority/coordinator/tenant/audience/nonce or future-auth rejection",
+    "Correctly signed wrong reset event/nonce/consecutive epoch/stage rejection"
+  ],
+  "driver_transitions": [
+    "Fresh flow insertion, exact replay and changed-nonce conflict",
+    "Verified reset reserves its exact fixture pending slot",
+    "Pending reset refuses new login",
+    "Completion before credential CAS refuses without mutation",
+    "Acknowledged pending barrier permits one FromEpoch-to-ToEpoch mutation",
+    "Exact credential-CAS and completed-result replay do not mutate again or extend hold",
+    "Changed completed hold conflicts",
+    "New explicit fresh authentication uses the new epoch",
+    "Second fixture pending reset remains independent",
+    "Only an expired issued request with explicitly modeled absent barrier retires; early or pending-barrier cases refuse",
+    "Clock rollback refuses without mutation"
+  ],
+  "closed_state_and_raw_cases": [
+    "Wrong owner/config, revision below the minimum retained transitions, epoch, dangling pending reference, sequence gap, omitted field, zero generated identity, relabeled millisecond time, wrong account, extended hold, retired acknowledgment and stale highwater",
+    "Pinned INIT authority/coordinator/vault/mode/descriptor/config substitution",
+    "Canonical files, reordered nested request, duplicate decoded keys, unknown key, fractional and negative-zero integer, missing/double LF, trailing value and invalid UTF8"
+  ],
+  "bounded_capacity": [
+    "Fully constructed/audited1024-auth state, emit only count/byte/hash and last row;1025th insertion refuses",
+    "Fully constructed/audited256-retired-reset state with successive request windows after prior expiry, emit only count/byte/hash and last row;257th insertion refuses",
+    "Direct uint32 revision-overflow seam is synthetic, not a valid reachable bounded history; overflow refuses",
+    "Direct uint64 epoch-overflow seam is synthetic and explicitly not a complete history possible within256 retained resets"
+  ],
+  "not_proven": [
+    "No live provider verification, account authorization, actual session token, opaque wallet source or filesystem ownership",
+    "No disk crash/sync/rename/link atomicity, cleanup or real lock/reset fence scheduling",
+    "No current checkpoint CAS implementation or new current-model expected outputs",
+    "No assertion that a mathematically valid old-epoch token authorizes the reset account",
+    "No real randomness or production authentication strength from public fixture keys"
+  ],
+  "execution_guard": "Require --execute, locked input root, exact --approved-producer-lock SHA, approved_by root, execution_authorized true and exact five-file source map; recheck all source/input hashes before exclusive output creation. Disable Python bytecode writes. Root approves source lock before first execution; preserve any failed attempt.",
+  "output": "One canonical provider-reference-v1.json with full bounded example bytes/signatures and finite model outcomes; maximum-capacity states summarized rather than duplicated in full. No timestamps or host paths in expected output. Reproduce with second Python and portable exact source/input layout after approved first execution."
+}

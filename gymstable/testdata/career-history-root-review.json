@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "status": "passed",
+  "findings": [],
+  "reviewed_at": "2026-11-19T00:11:36.262368+00:00",
+  "file_index_sha256": "c76bea7a2b3270f07968746ae07e216a4e266756f415ae21b6f559ab02ad2712",
+  "corpus_sha256": "18e51e25c6760f756159e12a92265b517438152533d439d541d4696044e60283",
+  "file_count": 140,
+  "bytes": 34315296,
+  "reproduction_report_sha256": "4bdbb06a49fdf0c6f0b7cd57bbb9f186bf8333cffc105de8155babf26cc7efca",
+  "predecessor_receipt_sha256": "33953e51f0f5cbf128fe1fadf7fa745a20bef5515c3e7d6e0c6c957bb89cb66c",
+  "predecessor_preserved_and_checked": true,
+  "all_membership_bytes_and_child_reports_checked": true,
+  "reference_regenerated_by_root": false,
+  "read_source_review": "Root read narrow native discovery function, all 12 new cases and exchange scope; unchanged 57 models, core math, inputs and exact DTO/codec/protocol payloads verified. Complete prior source/provenance review retained. Separate independent wire and core reviews required.",
+  "runtime_implemented": false,
+  "repository_head": "1cdfdb8a156624c97fbad512cb5386d1c5797f4c",
+  "repository_branch": "slug-fighter-history",
+  "scope": "Reference inventory and semantic delta review, not actual runtime or GUI evidence."
+}

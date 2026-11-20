@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "status": "passed",
+  "findings": [],
+  "scope": "Independent exact-source Event/row/wrapper/retained-byte formula review only; no implementation, expected vectors, chain, engine, build or performance qualification.",
+  "contract_sha256": "24d9ef135ca949947c29ed1a887b517209d9ae932ca8286ad9a2ad9046b53e53",
+  "source_sha256": {
+    "/Users/taytrrip/slug/set51-fighter-history-contract.md": "24d9ef135ca949947c29ed1a887b517209d9ae932ca8286ad9a2ad9046b53e53",
+    "/Users/taytrrip/slug/set51-history-bound-candidate.json": "c46640bd90d36f026e39cb1c60edd91cc718e629d7ac33e594a6e2b90a832280",
+    "/private/tmp/slug-set51-history-bounds.py": "59ee50589c91d4f191ae7ff19f9071be5f7e7ba6a6b33b021dc9ce42f9c8de77",
+    "/Users/taytrrip/slug/slug/internal/careerstate/state.go": "eaedd8f52777cbb11b1e085474a1b51d2a144bd5179542156f5c2d8713463528",
+    "/Users/taytrrip/slug/slug/fightercareer/career.go": "ceedee1a864b9d41048e8f7873f7f19da66d187862b68abbf93a4acb559aeac7",
+    "/Users/taytrrip/slug/slug/gymstable/types.go": "1f0038aa844869c59b5f2e8f38e2ec69380aac88d66000b28d9d1471daccb2f0",
+    "/Users/taytrrip/slug/slug/desktop/pilot/manifest_types.go": "ef9d572bd086e32e5ac7ad55b6c402e9eb7e924b08e4bd8e5833a8f0d24a34fc",
+    "/Users/taytrrip/slug/slug/desktop/pilot/stable_lane.go": "4a10bc933cb760d12695f7dba44986f5f4042104724114279f9401c07d8132ce",
+    "/Users/taytrrip/slug/slug/gymaccount/types.go": "6331c46e206e6ebda14b56275f984587b35ed1882d3f5ada0c1b1734c230f4a7",
+    "/Users/taytrrip/slug/slug/registry/manifest_types.go": "03a4fd3ee8e1de92b1edc8b09c61bb01933c7e1ad923660c10d8bdb82b41cfbb",
+    "/Users/taytrrip/slug/slug/desktop/pilot/career_controller.go": "bf74d0b2d3bb7f1e14a2f98af98f15fe438b8b628f244a20d0c5fb3959a24752"
+  },
+  "independent_calculator": {
+    "path": "/private/tmp/slug-set51-independent-history-bounds.py",
+    "sha256": "fe53f9745e5543e713b5dce08b43da9f45444ba6adf2acabce40e2e03ad8104b"
+  },
+  "independent_arithmetic": {
+    "path": "/Users/taytrrip/slug/set51-history-independent-bounds.json",
+    "sha256": "aa92a637380da325091e83c9124699a69df4d0b5677577fb6f19c5712b7d659e"
+  },
+  "bounds_bytes": {
+    "corner": 238,
+    "event": 1330,
+    "earned": 55,
+    "totals": 64,
+    "row": 1529,
+    "activation": 375,
+    "capture_with_nested_caps": 7073,
+    "page_with_nested_caps": 20562,
+    "null_capture_job": 1436,
+    "terminal_job": 9624,
+    "snapshot": 1956,
+    "page_result_with_page_cap": 33963,
+    "response_with_lf": 34083,
+    "request_with_lf": 328,
+    "native_tuple_superset": 1670,
+    "native_metadata_including_1024_bookkeeping": 16214,
+    "retained_capture": 406789,
+    "helper_components": 487424,
+    "helper_margin": 36864,
+    "shared_baseline": 868352,
+    "shared_remaining": 180224
+  },
+  "conclusions": [
+    "All old Event fields were checked against careerstate.ValidateIndex and fightercareer.Award: fixed ASCII identities, fixed10-character date, safe16-digit timestamp, original Winner empty/64hex and longest22-character method. The1330 upper bound includes the complete old Event grammar; the existing2048 stored Event cap/bytes are unchanged.",
+    "Rows fold standard awards from zero; count256, points3584, XP15 yield conservative1529 bytes. Using1536 row cap gives393473-byte array; one8192 header +1028 offsets +4096 owner allowance totals406789<425984.",
+    "Nested capped shapes fit all declared header/Job/Snapshot/Page/frame bounds. Both frames include LF; raw limits remain cap-1. Maximum declared response container depth is7, below12; requests have one root container.",
+    "Helper family416+12+16+32=476KiB leaves36KiB within512KiB. Existing Stable136+Career200+History512=848KiB leaves176KiB for all actual additional payloads; admission and subsequent lazy cache growth must both enforce the aggregate without silent eviction.",
+    "Native fixed row hashes+bitmap8224, three redundant1670-byte tuple supersets, one1956-byte Snapshot/current authority and1024 bookkeeping total16214<16384. This assumes only those compact metadata objects; no extra complete Capture/Job/history or second page is retained outside the separately charged one page.",
+    "Public returns and decode/marshal/atomic State copies are bounded transient allocations, not included falsely inside the retained-cache limit. Duplicate global index/decoded history graphs must be released before retaining the capture."
+  ],
+  "implementation_obligations": [
+    "Count actual serialized/retained metadata against declared charges, including private commitments and all shared other-family payloads; no uncharged second Snapshot/Job/Capture copy.",
+    "Keep ordinary eight-fighter selected Career page while admitting a maximal History; separately demonstrate genuine aggregate-capacity refusal.",
+    "Measure cold one-proof capture and cheap pages using original account pre/post checks; confirm no proof/engine/RPC or Current reconstruction on later pages and preserve shorter deadlines.",
+    "Retain canonical row bytes and fixed offsets only; verify copies cannot mutate the owner and selection replacement does not double-retain captures."
+  ],
+  "limits": [
+    "No Set51 runtime or reference corpus exists in this review; these relaxations are not accepted semantic fixtures or authoritative history.",
+    "Source/lifecycle review belongs to the separately preserved set51-history-contract-independent-review.json; this report does not broaden its claims.",
+    "No GUI, whole-league completeness, new award/rank/title policy or future qualification is asserted."
+  ]
+}

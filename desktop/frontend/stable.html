@@ -14,6 +14,7 @@
     <p class="caveat">Demo wallets and candidates on a private training chain. Local candidate assignment and reversible roster selection; no official league activation or transferable ownership.</p>
     <section class="panel account-panel" aria-labelledby="account-heading">
       <div class="section-top"><h2 id="account-heading">Choose a demo account</h2><span id="account-state">Signed out</span></div>
+      <p id="hosted-fixture-caption" class="note" hidden>Hosted public-fixture pilot</p>
       <p id="account-copy">Choose a demo account to load its saved candidates. Mining starts only when you choose Start.</p>
       <div class="actions"><button id="login-a" type="button" disabled>Sign in as Demo A</button><button id="login-b" type="button" disabled>Sign in as Demo B</button><button id="logout" type="button" disabled>Sign out</button><button id="reset" type="button" disabled>Simulate verified password reset</button></div>
       <p id="hold" class="note"></p>
@@ -24,10 +25,45 @@
     <section class="panel" aria-labelledby="wallet-heading"><div class="section-top"><h2 id="wallet-heading">Demo wallet</h2><span id="wallet-state">Wallet closed</span></div>
       <div class="balances"><div><span>Spendable test SLUG</span><strong id="spendable">—</strong></div><div><span>Waiting to mature</span><strong id="immature">—</strong></div><p id="wallet-height">Mining rewards mature after 100 blocks.</p></div>
       <dl class="identity"><dt>Reward address</dt><dd id="payout">Sign in to load the demo wallet</dd><dt>Gym identity</dt><dd id="gym-id">—</dd></dl>
+      <div id="hosted-receive-panel" hidden>
+        <h3>Receive test SLUG</h3>
+        <div class="actions"><button id="hosted-receive-new" type="button" disabled>New receive address</button><button id="hosted-receive-resume" type="button" hidden disabled>Resume reserved address</button><button id="hosted-receive-show" type="button" hidden disabled>Show previously issued address</button><button id="hosted-receive-check" type="button" disabled>Check address request</button><button id="hosted-receive-cancel" type="button" disabled>Cancel address request</button></div>
+        <p id="hosted-receive-status" class="note" role="status"></p><p id="hosted-receive-address" class="identity"></p><button id="hosted-receive-copy" type="button" disabled>Copy receive address</button>
+      </div>
+      <div id="pool-balance" hidden>
+        <h3>Pool earnings</h3>
+        <dl class="identity"><dt>Confirmed, unpaid SLUG</dt><dd id="pool-confirmed">—</dd><dt>Available for settlement</dt><dd id="pool-available">—</dd><dt>Payment pending</dt><dd id="pool-reserved">—</dd><dt>Paid to this wallet</dt><dd id="pool-paid">—</dd></dl>
+        <p id="pool-observed" class="note">Sign in to view your pool balance.</p>
+        <p id="pool-reason" class="note" role="status"></p>
+        <button id="pool-refresh" type="button" disabled>Refresh pool balance</button>
+        <p class="note">Earnings include the 1% pool fee. Payments batch daily after rewards mature, once your balance reaches 1 SLUG. Smaller amounts carry forward.</p>
+        <h3>Send test SLUG</h3>
+        <p class="note">Prepare a candidate-network payment, then review its full destination, amount and fee in the native confirmation.</p>
+        <label for="withdrawal-destination">Destination</label><input id="withdrawal-destination" type="text" maxlength="90" autocomplete="off" spellcheck="false" disabled>
+        <label for="withdrawal-amount">SLUG amount</label><input id="withdrawal-amount" type="text" inputmode="decimal" maxlength="25" autocomplete="off" disabled>
+        <div class="actions"><button id="withdrawal-prepare" type="button" disabled>Prepare payment</button><button id="withdrawal-refresh" type="button" disabled>Check saved withdrawal</button><button id="withdrawal-review" type="button" disabled>Review and send</button><button id="withdrawal-retry" type="button" disabled>Review same-payment retry</button><button id="withdrawal-observe" type="button" disabled>Check transaction</button><button id="withdrawal-stop" type="button" disabled>Stop current task</button><button id="withdrawal-abandon" type="button" disabled>Abandon unsigned payment</button></div>
+        <p id="withdrawal-status" class="note" role="status"></p><p id="withdrawal-detail" class="note"></p><p id="withdrawal-observation" class="note"></p>
+        <h3>Wallet activity</h3>
+        <div class="actions"><button id="wallet-activity-refresh" type="button" disabled>Load wallet activity</button><button id="wallet-activity-cancel" type="button" disabled>Cancel activity refresh</button></div>
+        <p id="wallet-activity-status" class="note" role="status">Load a dated view of incoming and outgoing wallet transactions.</p>
+        <p id="wallet-activity-capture" class="note"></p><ol id="wallet-activity-list"></ol>
+        <div class="actions"><button id="wallet-activity-previous" type="button" disabled>Previous transactions</button><span id="wallet-activity-page" class="note"></span><button id="wallet-activity-next" type="button" disabled>Next transactions</button></div>
+        <div id="wallet-activity-detail" aria-live="polite"></div>
+        <p class="note">These are dated wallet records. Confirmations do not establish finality, conflict absence or spendability. Refresh explicitly to update this view.</p>
+        <h3>Payment history</h3>
+        <div class="actions"><button id="pool-history-refresh" type="button" disabled>Load payment history</button><button id="pool-history-cancel" type="button" disabled>Cancel history refresh</button></div>
+        <p id="pool-history-status" class="note" role="status">Load a dated copy of your recorded pool payments.</p>
+        <p id="pool-history-capture" class="note"></p>
+        <ol id="pool-history-list"></ol>
+        <div class="actions"><button id="pool-history-previous" type="button" disabled>Previous payments</button><span id="pool-history-page" class="note"></span><button id="pool-history-next" type="button" disabled>Next payments</button></div>
+        <p id="pool-history-wallet" class="note" role="status"></p>
+        <p class="note">Recorded pool state and wallet checks are separate observations. A wallet check does not prove current chain finality, conflict absence, or spendability.</p>
+      </div>
       <div class="actions"><button id="export-recovery" type="button" disabled>Export recovery backup</button><button id="verify-backup" type="button" disabled>Verify backup</button></div>
       <p id="backup" class="note">Stop mining to save or verify a demo wallet backup.</p><p class="note">The service retains recovery authority. Exporting a backup does not remove that authority.</p>
     </section>
     <section class="panel" aria-labelledby="stable-heading">
+      <p id="pool-features" class="note" hidden>Shared-pool fighters support roster selection, Saturday entries, fights and finalized career history. Practice previews remain unavailable in this demo mode.</p>
       <div class="section-top"><h2 id="stable-heading">Gym stable</h2><span id="stable-state">Not connected</span></div>
       <p id="stable-count" class="note">Sign in to load your assigned candidates.</p><p id="stable-progress" class="note"></p>
       <div class="actions"><button id="sync" type="button" disabled>Sync saved candidates</button><button id="pause-sync" type="button" disabled>Pause syncing</button><button id="cancel-job" type="button" disabled>Cancel current request</button></div>
@@ -38,6 +74,20 @@
       <ol id="roster-slots" class="roster-slots"></ol>
       <p id="mutation-state" class="note" role="status"></p>
       <div class="actions"><button id="reconcile" type="button" disabled>Check saved change</button><button id="apply-saved" type="button" disabled>Apply saved choice</button><button id="abandon" type="button" disabled>Discard saved choice</button></div>
+    </section>
+    <section id="history-panel" class="panel fighter-history" aria-labelledby="history-heading" hidden>
+      <div class="section-top"><h2 id="history-heading" tabindex="-1">Finalized history</h2><span id="history-state">Choose a fighter</span></div>
+      <p id="history-fighter" class="note">Use “View finalized history” on a fighter’s card.</p>
+      <p id="history-asof" class="note"></p><p id="history-totals" class="note"></p>
+      <p class="note">Only finalized results appear here. Earned XP continues after the 15-XP cap; applied XP explains this capture’s total. Base points are not rankings.</p>
+      <div class="actions"><button id="history-refresh" type="button" disabled>Check history request</button><button id="history-cancel" type="button" disabled>Cancel history request</button><button id="history-clear" type="button" disabled>Clear history</button></div>
+      <p id="history-message" class="note" role="status"></p>
+      <div class="actions"><button id="history-export" type="button" disabled>Export public evidence</button></div>
+      <p class="note">Saves the original receipt and this captured history. Offline checks confirm supplied work and record consistency; they do not prove admission time, actual awards, ownership or a complete career.</p>
+      <p id="history-export-status" class="note" role="status"></p>
+      <ol id="history-list" class="entry-history"></ol>
+      <div class="actions"><button id="history-previous" type="button" disabled>Newer results</button><span id="history-page-label"></span><button id="history-next" type="button" disabled>Older results</button></div>
+      <p id="history-result" class="note" role="status">Current status not checked.</p>
     </section>
     <section class="panel saturday-entry" aria-labelledby="entry-heading">
       <div class="section-top"><h2 id="entry-heading">Saturday entry</h2><span id="entry-state">Sign in to view entries</span></div>

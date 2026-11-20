@@ -15,6 +15,9 @@ import (
 )
 
 type stableTask struct {
+	history           *CareerHistoryJob
+	historyPriorBytes int
+	historyEpoch      uint64
 	previewPriorBytes int
 	careerPage        bool
 	publication       *ResultJob
@@ -41,6 +44,10 @@ type stableTask struct {
 func (s *StableController) expireQueuedLocked() {
 	if s.queued != nil && s.queued.ctx.Err() != nil {
 		s.queued.cancel()
+		if s.queued.history != nil {
+			s.cancelQueuedHistoryLocked()
+			return
+		}
 		if s.queued.publication != nil {
 			s.cancelQueuedResultLocked()
 			return
@@ -86,12 +93,17 @@ func (s *StableController) expireQueuedLocked() {
 	}
 }
 func (s *StableController) cancelTasksLocked() {
+	s.invalidateHistoryLocked()
 	s.clearCareerReadLocked()
 	if s.active != nil {
 		s.active.cancel()
 	}
 	if s.queued != nil {
 		s.queued.cancel()
+		if s.queued.history != nil {
+			s.cancelQueuedHistoryLocked()
+			return
+		}
 		if s.queued.publication != nil {
 			s.cancelQueuedResultLocked()
 			return
@@ -144,7 +156,7 @@ func (s *StableController) beginStable(ctx context.Context, view, kind, operatio
 		if s.stableClosed || !s.installed || s.stableStatus == nil {
 			return gymstable.ErrClosed
 		}
-		if s.stopping {
+		if s.stopping || s.evidenceBusyLocked() {
 			return gymstable.ErrBusy
 		}
 		s.expireQueuedLocked()
@@ -281,6 +293,9 @@ func (s *StableController) cycle(ctx context.Context) error {
 		s.stableMu.Unlock()
 		return nil
 	}
+	if task.history != nil {
+		task.history.State = "running"
+	}
 	if task.publication != nil {
 		task.publication.State = "running"
 	}
@@ -303,6 +318,9 @@ func (s *StableController) cycle(ctx context.Context) error {
 	}
 	s.active = task
 	s.stableMu.Unlock()
+	if task.history != nil {
+		return s.runHistoryTask(ctx, task)
+	}
 	if task.publication != nil {
 		return s.runResultTask(ctx, task)
 	}
@@ -355,6 +373,7 @@ func (s *StableController) cycle(ctx context.Context) error {
 				status = &r.Status
 			}
 		case "inventory":
+			sharedRecent := false
 			if task.followLatest {
 				current, e := s.stableStore.Status(task.ctx, s.session())
 				if e != nil {
@@ -362,7 +381,8 @@ func (s *StableController) cycle(ctx context.Context) error {
 					break
 				}
 				task.after = 0
-				if current.Checkpoint > 8 {
+				sharedRecent = current.Pin.Version == gymstable.SharedPinVersion2
+				if !sharedRecent && current.Checkpoint > 8 {
 					task.after = current.Checkpoint - 8
 				}
 				task.limit = 8
@@ -370,12 +390,23 @@ func (s *StableController) cycle(ctx context.Context) error {
 			var r gymstable.Page
 			if task.careerPage {
 				var p gymstable.CareerPage
-				p, careerHandle, err = s.stableStore.PrepareCareerInventory(task.ctx, s.session(), task.after, task.limit)
+				if sharedRecent {
+					p, careerHandle, err = s.stableStore.PrepareCareerSharedRecent(task.ctx, s.session(), task.limit)
+				} else {
+					p, careerHandle, err = s.stableStore.PrepareCareerInventory(task.ctx, s.session(), task.after, task.limit)
+				}
 				r = p.Source
+			} else if sharedRecent {
+				r, err = s.stableStore.SharedRecent(task.ctx, s.session(), task.limit)
 			} else {
 				r, err = s.stableStore.Inventory(task.ctx, s.session(), task.after, task.limit)
 			}
 			if err == nil {
+				if sharedRecent {
+					// Preserve the exact local-tail selection in the opaque career
+					// read fence; a later caller cannot substitute another page.
+					task.after = r.After
+				}
 				result.Page = &r
 				items = r.Items
 				status = &r.Status
@@ -512,6 +543,9 @@ func (s *StableController) cycle(ctx context.Context) error {
 	return nil
 }
 func (s *StableController) publishStableItems(ctx context.Context, items []gymstable.Item, selected, followLatest bool) error {
+	s.stableMu.Lock()
+	shared := s.stableStatus != nil && s.stableStatus.Pin.Version == gymstable.SharedPinVersion2
+	s.stableMu.Unlock()
 	next := make(map[uint64]*manifestCached, len(items))
 	for _, item := range items {
 		v, err := s.projectManifest(item.Receipt())
@@ -546,10 +580,21 @@ func (s *StableController) publishStableItems(ctx context.Context, items []gymst
 				delete(next, low)
 			}
 		}
-		if !manifestCacheFits(next, s.receiptSlot) || !stableCacheFits(next, s.receiptSlot, s.careerBytes+s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+s.boutBytes+s.resultBytes) {
+		if !manifestCacheFits(next, s.receiptSlot) || !stableCacheFits(next, s.receiptSlot, s.historyBytes+s.careerBytes+s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+s.boutBytes+s.resultBytes) {
 			return gymstable.ErrCapacity
 		}
 		s.cache = next
+		if shared {
+			// The legacy projection equates count with consecutive source sequence.
+			// Shared typed Stable/Career pages retain the real sparse sequences;
+			// only their owned receipts enter this private portrait/export cache.
+			// A future Pool snapshot must expose the separate local assignment count.
+			s.snapshot.AcceptedCount = 0
+			s.stableSelected, s.stableProtected = true, selected
+			s.snapshot.Projection.Revision++
+			s.recomputeProjectionLocked()
+			return nil
+		}
 		for seq := range next {
 			s.snapshot.AcceptedCount = max(s.snapshot.AcceptedCount, seq)
 		}
@@ -767,6 +812,9 @@ func (s *StableController) RefreshManifestProspects(ctx context.Context) error {
 }
 
 func (t *stableTask) family() string {
+	if t.history != nil {
+		return "career_history"
+	}
 	if t.publication != nil {
 		return "result"
 	}

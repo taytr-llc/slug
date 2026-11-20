@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "contract_sha256": "be2053422fb57adfd7839624bb545c237aea265547891917ff1f028335ed9feb",
+  "core_corpus_sha256": "eb51028daf2ebbda44dfbfdb79f58353137ed03f1836fad5b8db8cf428300772",
+  "source_cases": [
+    "actual/v1/zero256-awarded",
+    "actual/v2/incrementing256-awarded",
+    "actual/v2/zero256-unawarded"
+  ],
+  "synthetic_domain_hex": "534c55472053657436362077697265206669787475726500",
+  "synthetic_origin": "http://127.0.0.1:19666",
+  "synthetic_generation": 7,
+  "synthetic_selection_path": "/tmp/slug-public-evidence-fixture.json",
+  "synthetic_parent": {
+    "device": "0000000000000001",
+    "inode": "0000000000000002"
+  },
+  "request_commands": [
+    "fighter_evidence_snapshot",
+    "fighter_evidence_begin",
+    "fighter_evidence_job",
+    "fighter_evidence_cancel"
+  ],
+  "envelope_errors": [
+    "invalid_request",
+    "stale_view",
+    "unauthorized",
+    "forbidden",
+    "busy",
+    "history_not_found",
+    "history_unavailable",
+    "evidence_not_found",
+    "evidence_capacity",
+    "evidence_operation_conflict",
+    "evidence_unavailable",
+    "evidence_profile",
+    "outcome_unknown"
+  ],
+  "terminal_errors": [
+    "evidence_invalid",
+    "evidence_source_changed",
+    "evidence_unavailable",
+    "evidence_destination_conflict",
+    "evidence_storage_failed",
+    "evidence_export_uncertain"
+  ],
+  "controls": "All named finite controls are fixed in wire_reference.py before execution; source hash binds every mutation.",
+  "planned_positive_count": 112,
+  "planned_negative_count": 38,
+  "planned_raw_negative_count": 4,
+  "normal_work_calls": 0,
+  "production_implementation_used": false
+}

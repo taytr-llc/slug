@@ -135,7 +135,7 @@ func (s *StableController) AttachEvents(ctx context.Context, x *gymevent.Store) 
 		}
 		s.mu.Lock()
 		defer s.mu.Unlock()
-		if !stableCacheFits(s.cache, s.receiptSlot, s.careerBytes+s.previewBytes+s.entryBytes+eventMetadataBytes+s.seedBytes+s.cardBytes+s.boutBytes+s.resultBytes) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.historyBytes+s.careerBytes+s.previewBytes+s.entryBytes+eventMetadataBytes+s.seedBytes+s.cardBytes+s.boutBytes+s.resultBytes) {
 			return gymevent.ErrCapacity
 		}
 		s.eventStore = x
@@ -166,6 +166,36 @@ func (s *StableController) createStableStore(p string, pin gymstable.Pin, source
 	return gymstable.Create(p, pin, source)
 }
 func (s *StableController) openStableStore(p string, pin gymstable.Pin, source *registry.ManifestStore) (*gymstable.Store, error) {
+	if s.sharedPin != nil {
+		if pin != *s.sharedPin || source != s.sharedSource || s.eventFactories != nil {
+			return nil, gymstable.ErrInvalid
+		}
+		if s.careerEnabled {
+			if s.careerReader == nil || s.sharedFactories == nil || s.sharedFactories.openSharedCareer == nil {
+				return nil, gymstable.ErrInvalid
+			}
+			a, e := s.careerReader.Activation()
+			if e != nil {
+				return nil, e
+			}
+			x, e := s.sharedFactories.openSharedCareer(p, pin, source, a)
+			if e != nil {
+				return nil, e
+			}
+			if e = x.AttachCareer(context.Background(), s.careerReader); e != nil {
+				_ = x.Close()
+				return nil, e
+			}
+			return x, nil
+		}
+		if s.careerReader != nil {
+			return nil, gymstable.ErrInvalid
+		}
+		if s.sharedFactories != nil {
+			return s.sharedFactories.openStable(p, pin, source)
+		}
+		return gymstable.OpenShared(p, pin, source)
+	}
 	if s.careerReader != nil {
 		a, e := s.careerReader.Activation()
 		if e != nil {
@@ -193,6 +223,15 @@ func (s *StableController) createEntryStore(ctx context.Context, p string, pin g
 	return gymentry.Create(ctx, p, pin, source)
 }
 func (s *StableController) openEntryStore(ctx context.Context, p string, pin gymentry.Pin, source *gymstable.Store) (*gymentry.Store, error) {
+	if s.sharedPin != nil {
+		if pin != s.entryPin || pin.StablePin != *s.sharedPin || s.eventFactories != nil {
+			return nil, gymentry.ErrInvalid
+		}
+		if s.sharedFactories != nil {
+			return s.sharedFactories.openEntry(ctx, p, pin, source)
+		}
+		return gymentry.Open(ctx, p, pin, source)
+	}
 	if s.eventFactories != nil {
 		return s.eventFactories.openEntry(ctx, p, pin, source)
 	}

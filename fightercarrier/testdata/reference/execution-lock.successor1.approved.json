@@ -1,0 +1,16 @@
+{
+  "approved_by": "root",
+  "execution_authorized": true,
+  "input_catalog_sha256": "d4efda8e6e1baa2346f704e7b7c45c7e7b9bf1ddfb115980f123c98fd22a64a9",
+  "notice": "Source-only candidate; parent root must approve exact locked source/input set before any model import or expected output run.",
+  "review_scope": "Root reviewed narrow successor1.diff; authorization chronology and retained prior commit dispatch;30 additional negative cases; unchanged independently derived positive bytes must be compared with predecessor output.",
+  "sources": {
+    "README.md": "752aa81c01958052bf1906f36937b858e2616af87a9fa307cd3c27f7399dcd9c",
+    "case-plan.json": "177a5510fdeec26e0c81fcc92a32aed024caac1ef71a8bd61516cf85e6223acc",
+    "codec_model.py": "faa8fee9f1d0b68a97eb65f68157238a46e021706e1288b9e085636170fee2e0",
+    "generate_reference.py": "a3676c2160994f9cdd103251fbf6b674cf21e783229121ac54cb041daa511c5b",
+    "reproduce.py": "30ad442ad28971ef23e78e2e94965a59796c22f9257679710286f91ac64a2eb2",
+    "sizing_model.py": "838acfb4365330b302c9f2aa7b37738bc9844faeb04e05e7b1b3f1faab678332"
+  },
+  "version": 1
+}

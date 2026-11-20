@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "scope": "independent finite composition only; not full source/simulation/finality authority",
+  "output_sha256": "018049df53a0e381bbd6233d58e6438efc9f159bc56fffe9b4dd75fb4ed75a2c",
+  "output_bytes": 2563806,
+  "attempts": [
+    {
+      "path": "owned-downstream-reference-attempt3",
+      "report_sha256": "b1b3a403faf938ce402186daa7765685d224c0ea83585794935aec9a6384d11f",
+      "python": "3.14.3 (main, Feb  3 2026, 15:32:20) [Clang 17.0.0 (clang-1700.6.3.2)]"
+    },
+    {
+      "path": "owned-downstream-reference-python39-attempt3",
+      "report_sha256": "9282124eb13e92b5d89abe9924720dde08051771f4de9f4be407ca722e96fd56",
+      "python": "3.9.6 (default, Oct 19 2026, 19:18:13) \n[Clang 21.0.0 (clang-2100.4.1.1)]"
+    },
+    {
+      "path": "owned-downstream-reference-portable-attempt3",
+      "report_sha256": "9282124eb13e92b5d89abe9924720dde08051771f4de9f4be407ca722e96fd56",
+      "python": "3.9.6 (default, Oct 19 2026, 19:18:13) \n[Clang 21.0.0 (clang-2100.4.1.1)]"
+    }
+  ],
+  "source_and_inputs_unchanged": true,
+  "producer_lock_sha256": "3491f63623a1329ab75d50d7f851dd788d1be9f173a644d32a7cb6a46afaa21f"
+}

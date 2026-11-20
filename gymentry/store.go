@@ -210,6 +210,15 @@ func Open(ctx context.Context, path string, expected Pin, source *gymstable.Stor
 	return openWithClock(ctx, path, expected, source, time.Now)
 }
 func openWithClock(ctx context.Context, path string, expected Pin, source *gymstable.Store, clock func() time.Time) (*Store, error) {
+	return openAudit(ctx, path, expected, source, clock, false)
+}
+
+// OpenAudit validates the complete established journal without merging source
+// highwaters or opening the database for writes.
+func OpenAudit(ctx context.Context, path string, expected Pin, source *gymstable.Store) (*Store, error) {
+	return openAudit(ctx, path, expected, source, time.Now, true)
+}
+func openAudit(ctx context.Context, path string, expected Pin, source *gymstable.Store, clock func() time.Time, readOnly bool) (*Store, error) {
 	if e := normal(); e != nil {
 		return nil, e
 	}
@@ -254,7 +263,7 @@ func openWithClock(ctx context.Context, path string, expected Pin, source *gymst
 	if ctx.Err() != nil {
 		return nil, ErrCancelled
 	}
-	db, e := leveldb.OpenFile(filepath.Join(path, "db"), &opt.Options{Strict: opt.StrictAll, ErrorIfMissing: true})
+	db, e := leveldb.OpenFile(filepath.Join(path, "db"), &opt.Options{Strict: opt.StrictAll, ErrorIfMissing: true, ReadOnly: readOnly})
 	if e != nil {
 		return nil, ErrUnavailable
 	}
@@ -273,7 +282,7 @@ func openWithClock(ctx context.Context, path string, expected Pin, source *gymst
 		s.Close()
 		return nil, e
 	}
-	if next != s.meta {
+	if !readOnly && next != s.meta {
 		if e = s.commitLocked(new(leveldb.Batch), next); e != nil {
 			s.Close()
 			return nil, e

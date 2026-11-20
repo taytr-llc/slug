@@ -37,7 +37,7 @@ original key again before enabling mining. For 24 hours, the account authority
 blocks withdrawals, fighter transfers, recovery export, recovery-authority
 changes, marketplace purchases and listings. Viewing and existing-wallet mining
 remain available. Another distinct reset restarts the hold; exact event replay
-retains its original result. The demo does not implement withdrawals, transfers
+retains its original result. The base Account Pilot does not implement withdrawals, transfers
 or marketplace actions, but their capability checks are covered by store tests.
 The service retains recovery authority: backup export is not exclusive migration.
 The hold cannot freeze independent copies of previously exported wallet keys.
@@ -83,8 +83,8 @@ births, and authorized historical recovery does not renew eligibility. See
 ## Build on macOS
 
 Go 1.27.4, the candidate compiler profile and the macOS command-line SDK are
-required. See `../BUILD_TOOLCHAIN.md` for the temporary workaround and pending
-qualification. Check out the
+required. See `../BUILD_TOOLCHAIN.md` for the temporary workaround, finite
+candidate qualification and remaining platform limits. Check out the
 paired `slugwallet` topic beside `slug`; desktop has its own workspace covering
 both repositories, while the ten-module chain workspace stays independent.
 
@@ -175,8 +175,66 @@ history navigation never create a card. A repeated explicit request recovers
 the same card rather than reshuffling it.
 
 The new `--candidate-cards` route requires all preceding candidate flags and
-uses the recoverable v6 parent installation. The ordinary candidate build
-script now defaults to version0.4.8/build48 with normal PoW and no test-clock tag.
-It preserves the original detailed app icon and letterless menu-bar fist.
+uses the recoverable v6 parent installation. The current candidate build
+script defaults to version 0.4.10/build 50 with normal PoW and no test-clock tag.
+It retains the detailed app icon and letterless menu-bar fist assets; asset
+integrity does not prove actual menu-bar visibility.
 See [`EVENT_CARDS.md`](../EVENT_CARDS.md) for C1's scope and
 [`CHANGESET_46_NOTES.md`](../CHANGESET_46_NOTES.md) for acceptance status.
+
+## Career-aware practice (set 50)
+
+The current v9 `--career` route offers explicit same-gym, same-class practice
+using one captured prefix of already effective career XP and original DNA/birth.
+It shares the existing work lane with legacy XP0 practice. Replaying a completed
+practice or reading its typed portraits reauthorizes the original session; it
+does not capture new XP or grant records, points, titles or training.
+
+Version 0.4.10/build 50 package acceptance passed five normal-calendar XP0 jobs
+and ten typed portrait outputs. Separate scoped-clock normal-PoW evidence covers
+three awarded-fighter jobs and two distinct compositions. The final package
+aggregate passed ten independent checks, with nine unchanged-input-bound
+reports reused after correcting the tenth checker's inherited-envelope handling.
+Failed attempts stay preserved; these checks do not establish general GUI,
+native chooser, screen-reader or production-wallet acceptance.
+
+One local signed-out spot check showed the detailed header logo and one running
+instance. Mike confirmed the menu-bar fist visible after its already-on macOS
+Allow in Menu Bar setting was toggled off/on. No source fix or established root
+cause is claimed. This narrow observation does not complete general GUI, native
+chooser, screen-reader or joint D74 acceptance. Deployment observation/provider
+closeout belongs in `CHANGESET_50_NOTES.md`, not an inference from opening the
+app. See `CAREER_PREVIEW.md` for the exact family.
+
+## Reviewed fixture withdrawals (set 68)
+
+The separate Pool Pilot adds payments to its existing balance panel. Enter a
+destination and exact amount, choose **Prepare**, then use **Review and send**.
+The native confirmation shows the complete destination, received amount,
+network fee and total debit. Cancel leaves an unsigned draft available for
+later review or explicit abandonment. Stop joins work; it cannot recall a
+payment already handed to the node.
+
+If a reply is lost, recover the saved operation. An explicit retry reviews and
+sends the same signed transaction. Reopening or polling never sends it
+automatically. Submitted means the owned node observed the exact transaction;
+it does not mean irreversible finality. Later observations remain separately
+dated. The 24-hour reset hold permits viewing saved operations but blocks a
+new preparation, signature, retry or unsigned abandonment. Fresh sign-in is
+required for payment actions.
+
+This candidate route uses only the two published fixture wallets and the
+existing private chain. The recipient amount is exact; the displayed network
+fee is a separate wallet debit. Candidate fees are fixed at1000 atoms/kB with
+a100000-atom ceiling. Pool settlement's1% fee policy does not subsidize personal
+withdrawals. No real custody keys, production wallet or public-network funds
+are introduced.
+
+The new wallet namespace and app journal are paired before use. An immutable
+upgrade marker makes earlier Pool Pilot versions refuse the upgraded shared
+root. Missing established components are reported as unavailable; they are
+never silently recreated. Keep the paired chain and wallet checkout together.
+`sh desktop/scripts/build-pool-macos.sh /absolute/output` builds version0.5.7,
+build68. See `../CHANGESET_68_NOTES.md` for qualification and
+`../REVIEWED_WITHDRAWALS_ADOPTION.md` for exact contracts. The joint D74 review
+still comes last.

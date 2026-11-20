@@ -19,11 +19,23 @@ import (
 	"github.com/taytr-llc/slug/gymstable"
 	"github.com/taytr-llc/slug/internal/careerstate"
 	"github.com/taytr-llc/slug/registry"
+	"github.com/taytr-llc/slug/seednode"
 )
 
 // StableController owns one serial work lane. Its source lifetime is fenced by
 // laneGate, never by the legacy resource mutex across an account callback.
 type StableController struct {
+	evidenceCheckpoint  func(string)
+	evidenceOp          *fighterEvidenceOperation
+	evidenceLast        *FighterEvidenceJob
+	evidenceFailure     error
+	localEvidencePermit EvidencePermit
+	// Explicit pool children borrow this source for their entire lifetime. They
+	// never fall back to the isolated manifest-authority directory.
+	sharedPin                          *gymstable.Pin
+	sharedSource                       *registry.ManifestStore
+	sharedFactories                    *poolLeagueFactories
+	sharedPublisher                    *seednode.SharedPoolOwnerBinding
 	careerHandle                       *gymstable.CareerRead
 	careerJobID                        string
 	careerView                         ManifestViewPin
@@ -96,6 +108,11 @@ type StableController struct {
 	stableClosed, installed, mining, paused, needSync bool
 	active, queued                                    *stableTask
 	last                                              *StableJob
+	historyFailure                                    error
+	historyLast                                       *CareerHistoryJob
+	historyHandle                                     *gymstable.CareerHistoryRead
+	historyEpoch                                      uint64
+	historyCheckpoint                                 func(string)
 	careerPreviewFailure                              error
 	careerPreviewLast                                 *CareerPreviewJob
 	careerPreviewCheckpoint                           func(string)
@@ -211,6 +228,12 @@ func (s *StableController) openPair(source *registry.ManifestStore) error {
 	pin, err := s.StablePin()
 	if err != nil {
 		return err
+	}
+	if s.sharedPin != nil {
+		if s.sharedSource == nil || (source != nil && source != s.sharedSource) {
+			return gymstable.ErrInvalid
+		}
+		source = s.sharedSource
 	}
 	owned := source == nil
 	if owned {
@@ -371,7 +394,7 @@ func (s *StableController) Start() error {
 		s.stableMu.Unlock()
 		return gymstable.ErrClosed
 	}
-	if s.stopping {
+	if s.stopping || s.evidenceBusyLocked() {
 		s.stableMu.Unlock()
 		return gymstable.ErrBusy
 	}
@@ -448,6 +471,8 @@ func (s *StableController) Close() error {
 		s.last = nil
 		s.previewLast = nil
 		s.careerPreviewLast = nil
+		s.historyLast = nil
+		s.historyHandle = nil
 		s.entryLast = nil
 		s.resultLast = nil
 		s.boutLast = nil
@@ -462,6 +487,7 @@ func (s *StableController) Close() error {
 		s.mu.Lock()
 		s.previewBytes = 0
 		s.careerBytes = 0
+		s.historyBytes = 0
 		s.entryBytes = 0
 		s.eventBytes = 0
 		s.seedBytes = 0
@@ -471,7 +497,7 @@ func (s *StableController) Close() error {
 		s.mu.Unlock()
 		s.stableMu.Unlock()
 		s.Stop()
-		s.stableCloseErr = s.ManifestController.Close()
+		s.stableCloseErr = errors.Join(s.ManifestController.Close(), s.evidenceFailure)
 	})
 	return s.stableCloseErr
 }
@@ -498,6 +524,10 @@ func (s *StableController) closeLive() {
 }
 func (s *StableController) setStableFailure(err error) {
 	s.stableMu.Lock()
+	s.invalidateHistoryLocked()
+	if historyFatal(err) || errors.Is(err, gymstable.ErrOutcomeUnknown) {
+		s.latchHistoryFailureLocked(err)
+	}
 	s.clearCareerReadLocked()
 	s.needSync = false
 	s.stableState = "failed"

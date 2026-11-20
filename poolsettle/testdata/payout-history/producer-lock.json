@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "status": "Source/input/recipe lock before any expected-output execution; root review requested",
+  "contracts": {
+    "core": "d219a14449b84aed9552e2679e9c9ecd15930349ae117455aeb36e86a4b36fc4",
+    "desktop": "88c8ba350e44869b9c22f90cb2e168c011f351625c3ba750d70a5203ea91e9e5"
+  },
+  "case_plan": "CASE_PLAN.md",
+  "bundle_files": {
+    "CASE_PLAN.md": {
+      "sha256": "0c254430790a73c501d719e90bf6e91019aba2b7b4fecd1e47197e71a11fe877",
+      "bytes": 6295
+    },
+    "contracts/core-http-v1.md": {
+      "sha256": "d219a14449b84aed9552e2679e9c9ecd15930349ae117455aeb36e86a4b36fc4",
+      "bytes": 17971
+    },
+    "contracts/desktop-wallet-v1.md": {
+      "sha256": "88c8ba350e44869b9c22f90cb2e168c011f351625c3ba750d70a5203ea91e9e5",
+      "bytes": 26934
+    },
+    "inherited/btcjson/walletsvrresults.go": {
+      "sha256": "bfa6ddde9429f35fed585d9f12b7843f8cb655c6b1242afed43f0b4df23dbec5",
+      "bytes": 14415
+    },
+    "inherited/poolservice/client.go": {
+      "sha256": "f13bbfc53c768075aee9af00bbaaf76e6cb5ddf44fc5816f4ac39e6801240b69",
+      "bytes": 11318
+    },
+    "inherited/poolservice/config.go": {
+      "sha256": "f4a9ae50b23e0c02e03b9b1fcc17421aa8301e3fac601b4736f1c5cc273a49c9",
+      "bytes": 6785
+    },
+    "inputs/original-ready.json": {
+      "sha256": "7bf54bc34de877bef5afd296cbdb9bf30f59d3589057e818a363bb7c6fd8547f",
+      "bytes": 3500
+    },
+    "inputs/original-state-public.json": {
+      "sha256": "d1808376a6f54b8d5816f33c390f3314e91f38013db83583683657370a0749da",
+      "bytes": 11877
+    },
+    "inputs/original-summary.json": {
+      "sha256": "d4bb7732a7a54eb5f6d7a4da646b3786b2d9af6a842228ded6d6552e4bd63914",
+      "bytes": 595
+    },
+    "producer/common.py": {
+      "sha256": "0e041ebca683773cd844aa7ffb4920c7ba0e8d7ba988ec2eefaaaf5173eae72a",
+      "bytes": 5618
+    },
+    "producer/generate.py": {
+      "sha256": "19d7f7ff6a4f9898c7f57c0a8c74147ff395dea74e8c357d0eb776889fdf8102",
+      "bytes": 18072
+    },
+    "producer/transaction.py": {
+      "sha256": "7c05bee8cafc91ccea04bb2e666b1131413d081891fd7ba55e051d89f8dd090c",
+      "bytes": 3519
+    },
+    "producer/wallet.py": {
+      "sha256": "010f7448f9894a5be3cf2141a6adaa2b499ea947ee85d2a03381eade128f880b",
+      "bytes": 2930
+    },
+    "reproduce.py": {
+      "sha256": "be5059582ce7d706163f54cf5fd6f16b1584f99671518b0c4a03570d1d4abef6",
+      "bytes": 933
+    }
+  },
+  "repository_dependencies": {},
+  "recipe_counts": {
+    "core_positive": 34,
+    "core_negative": 43,
+    "core_raw": 12,
+    "transactions": 36,
+    "wallet_rpc": 37
+  },
+  "expected_outputs_generated": false,
+  "production_invocation_permitted": false,
+  "normal_work_calls": 0,
+  "inherited_references": {
+    "poolservice/client.go": {
+      "base_commit": "247edc868a620dd39ac3bfdf678241066fa4f844",
+      "bundle_path": "inherited/poolservice/client.go",
+      "sha256": "f13bbfc53c768075aee9af00bbaaf76e6cb5ddf44fc5816f4ac39e6801240b69",
+      "bytes": 11318
+    },
+    "poolservice/config.go": {
+      "base_commit": "247edc868a620dd39ac3bfdf678241066fa4f844",
+      "bundle_path": "inherited/poolservice/config.go",
+      "sha256": "f4a9ae50b23e0c02e03b9b1fcc17421aa8301e3fac601b4736f1c5cc273a49c9",
+      "bytes": 6785
+    },
+    "btcjson/walletsvrresults.go": {
+      "base_commit": "247edc868a620dd39ac3bfdf678241066fa4f844",
+      "bundle_path": "inherited/btcjson/walletsvrresults.go",
+      "sha256": "bfa6ddde9429f35fed585d9f12b7843f8cb655c6b1242afed43f0b4df23dbec5",
+      "bytes": 14415
+    }
+  },
+  "supersedes_preexecution_lock_sha256": "8dcaa1f94d4fd9b36cda6a8412c8f6ce9e680283903126a440135dbeb845dd75",
+  "correction": "Before any expected execution: exact Set66 base copies replace references to a changing current worktree. Pure model and case recipes unchanged; no expectation outcomes exist."
+}

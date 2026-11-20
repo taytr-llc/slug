@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "scope": "Public ownership canonical bytes, cryptographic statements and conditional replay model",
+  "inherited_inputs": {
+    "ed25519": "unchanged Set45 independent crypto.py; RFC8032 selftest before output generation",
+    "admissions": "six exact Set66 archived public receipts and separately retained expected pins, with original source IDs/sequences",
+    "checkpoint": "inherited seed checkpoint fixture domain and signed-checkpoint preimage; no operator key"
+  },
+  "cases": [
+    "Two descriptor source pins, fixed root-selected public signer and separate inherited checkpoint key",
+    "Six signed admission wrappers; no complete-prefix claim for non-one original sequences",
+    "Two original sequence-one initial states, public admission/checkpoint/chain prefixes, modeled final/reacquired states and maps",
+    "Head/replay digest and unsigned frame BodyID chain computed before signatures; distinct signed FrameID",
+    "Finality witness next to StateID, public publication gap, retained postfinal owner and missing portable evidence",
+    "Noncircular signed boundary plus cutoff; node instance/revision ABA, restart, exact straddling and bounded call refusals",
+    "Exact key bytes, metadata field order and logical key/value fixed-point accounting; duplicate-key refusal",
+    "Canonical raw JSON duplicate/unknown/order/nested-order/uppercase/whitespace controls",
+    "Conditional first-valid competing order, 59/60 descendants, checkpoint absence and known missing evidence",
+    "Closed-frontier unknown/future prior is invalid; required known dependency or incomplete frontier is unavailable",
+    "Strict predecessor sixtieth-descendant height before successor commit; immutable lineage and partition-independent map",
+    "Grammar-derived conservative map/frame/statement/page/witness size arithmetic"
+  ],
+  "claim_limits": [
+    "Synthetic new statements wrap inherited records; they are not actual new authoritative admissions",
+    "Modeled header hashes, carrier validity and canonical branch facts are explicit conditional inputs, not normal-PoW or transaction verdicts",
+    "Storage fixture is codec/accounting only, not a complete evidence store acceptable to production Open",
+    "State-model rows do not prove crash atomicity, cancellation, original-session fences or real filesystem lifecycle",
+    "Sizing composes grammar maxima, including deliberately invalid repeated map IDs; it does not claim Go heap size or all independent limits fit simultaneously",
+    "No real keys, private exports, database files, live node access or Go73 output is used"
+  ],
+  "execution": {
+    "requires": [
+      "--execute",
+      "--approved-producer-lock",
+      "--approved-lock-sha256",
+      "--output"
+    ],
+    "lock": "exact source set, approved_by root, execution_authorized true, exact input catalog hash",
+    "output": "exclusive directory; public-core-v1.json and report.json; at most 16 MiB corpus",
+    "work": "zero normal-header hashes; local public fixture cryptography only",
+    "portable_reproduction": "Python 3.14 and 3.9 must produce identical canonical corpus bytes"
+  },
+  "cutoff_finality_prefix_successor": {
+    "scope": "two ordered cutoff intent fields only; no D76/D83 or carrier/state-ID change",
+    "fields": [
+      "finality_sequence",
+      "finality_body_head"
+    ],
+    "controls": [
+      "later same-height/same-publication frames excluded",
+      "zero captured prefix does not adopt latest",
+      "missing frozen signature unavailable",
+      "signed FrameID cannot substitute for unsigned BodyID",
+      "empty/head consistency and 4096 cap"
+    ],
+    "predecessor": "../public-core-pre-cutoff-finality-prefix"
+  }
+}

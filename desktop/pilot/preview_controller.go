@@ -70,7 +70,7 @@ func (s *StableController) BeginFightPreview(ctx context.Context, v, a, b string
 		if s.stableClosed || !s.installed || s.stableStatus == nil {
 			return gymstable.ErrClosed
 		}
-		if s.stopping {
+		if s.stopping || s.evidenceBusyLocked() {
 			return gymstable.ErrBusy
 		}
 		s.expireQueuedLocked()
@@ -80,7 +80,7 @@ func (s *StableController) BeginFightPreview(ctx context.Context, v, a, b string
 		s.mu.Lock()
 		defer s.mu.Unlock()
 		oldBytes = s.previewBytes
-		if !stableCacheFits(s.cache, s.receiptSlot, s.careerBytes+max(oldBytes, previewAllowance)+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+s.boutBytes+s.resultBytes) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.historyBytes+s.careerBytes+max(oldBytes, previewAllowance)+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+s.boutBytes+s.resultBytes) {
 			return gymstable.ErrCapacity
 		}
 		var id [32]byte

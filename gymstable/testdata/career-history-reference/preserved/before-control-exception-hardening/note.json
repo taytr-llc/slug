@@ -1,0 +1,6 @@
+{
+  "reason": "Narrow false-pass hardening: only intentional Refusal counts as expected rejection; programmer KeyError/TypeError/ValueError must fail generation.",
+  "prior_source_sha256": "5cb08b9c93dc38da99740d47a9768eb023fff10a72702edd38d17bbdf2b814f9",
+  "prior_successful_reproduction": "verification/attempt1/report.json",
+  "corpus_unchanged": true
+}

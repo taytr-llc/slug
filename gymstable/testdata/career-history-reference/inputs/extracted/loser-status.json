@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "store_id": "cd271a55cb9e5596b6af30b17b6a0d918fcbe5733557afc6c505c5b4d37b3f5b",
+  "pin": {
+    "version": 1,
+    "account_authority_id": "1f1a174df7de619495774f261c7933adbaff55f9ae2e0bac89875ce8f7473d45",
+    "account_id": "ce595facc5e523469b498c89b4ae1bc2c7a7cf07b94063a217a7f263f779d5ab",
+    "identity": {
+      "network": 1397511495,
+      "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+      "profile": "slug-phase-a-fixture-bip39-v1",
+      "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+      "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+      "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+    },
+    "source": {
+      "version": 5,
+      "network": 1397511495,
+      "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+      "authority_id": "c2aa5bde3e1b8dede5080dcd287454714e32f8c893f24d59792c8ed02b0597e4",
+      "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303"
+    },
+    "condition_version": 1,
+    "projector_id": "slug-fighter-condition-candidate-v1"
+  },
+  "checkpoint": 4,
+  "observed_source_count": 4,
+  "caught_up": true,
+  "roster_revision": 1,
+  "slots": [
+    "22a2c799c122ac002a3ca277e0f7f84dd89c8b5f1fe1e1a18e098b1aad27e717",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "operation_count": 1,
+  "pending_operation_id": "",
+  "last_operation_id": "7ec0611c7f03265297edf2641aeef61e306f30148510d8bf29a2822884a9f3ce",
+  "last_as_of_ms": 1796500801001
+}

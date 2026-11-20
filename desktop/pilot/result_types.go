@@ -14,6 +14,11 @@ const MaxResultCacheSize = 294912
 
 type ResultControllerAPI interface {
 	BoutControllerAPI
+	ResultSurfaceAPI
+}
+
+// ResultSurfaceAPI is the closed result family shared by solo and pool routes.
+type ResultSurfaceAPI interface {
 	ResultSnapshot() ResultSnapshot
 	ResultStatus(context.Context, string, string, string) (gymresult.Status, error)
 	ResultRecord(context.Context, string, string, string) (gymresult.ReadResult, error)

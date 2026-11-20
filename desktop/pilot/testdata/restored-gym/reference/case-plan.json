@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "executed": false,
+  "expected_counts": {
+    "positives": 24,
+    "negatives": 54,
+    "raw_cases": 48
+  },
+  "positive_variants_per_fixture": [
+    "base-with-higher-activation-cursor",
+    "maximum-cursors",
+    "original-file-whitespace",
+    "public-https-with-explicit-trust-and-loopback-http-node"
+  ],
+  "markers": [
+    "init",
+    "activate",
+    "ready"
+  ],
+  "semantic_refusals_per_fixture": 27,
+  "raw_refusals_per_marker_per_fixture": [
+    "missing-LF",
+    "extra-LF",
+    "trailing-bytes",
+    "duplicate",
+    "escaped-duplicate",
+    "float",
+    "capacity",
+    "reordered"
+  ],
+  "provenance": "Only approved setup contract, earlier independent public core/wallet/recovery fixtures and earlier independent Python codec definitions; no product Go or runtime outputs.",
+  "guards": [
+    "explicit execute",
+    "root approval and execution_authorized true",
+    "exact approval SHA",
+    "closed owned source set",
+    "exact input catalog SHA and all file sizes/hashes before model import",
+    "source and input recheck before exclusive output",
+    "no output replacement"
+  ],
+  "sizing": "Measured accepted complete marker bytes and independent worst escaping bound for both2048-byte URLs, fixed nested fields; individualcaps32768/16384/4096 and aggregate65536. Not process-wide memory proof.",
+  "not_proved": [
+    "fsync or exclusive publication",
+    "descriptor continuity",
+    "actual crash or sticky close",
+    "wallet restoration",
+    "public replay/canonicality",
+    "opaque authority",
+    "transaction signing",
+    "escrow spendability",
+    "automatic recovery discovery"
+  ],
+  "reproduction": "Root-approved first execution, separately byte-identical Python3.9 reproduction, then portable source reproduction; failures preserved. No model imports or execution before lock.",
+  "transport_profile": "Node literal-loopback HTTP only; public reader may use its existing verified HTTPS profile. Two self-consistent expected endpoint negatives independently test node HTTPS and non-loopback refusal."
+}

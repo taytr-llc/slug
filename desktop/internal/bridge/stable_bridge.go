@@ -14,15 +14,41 @@ import (
 	"github.com/taytr-llc/slug/desktop/pilot"
 	"github.com/taytr-llc/slug/gymstable"
 	"github.com/taytr-llc/slug/internal/careerstate"
+	"github.com/taytr-llc/slug/registry"
 )
 
 // StableBridge runs both closed command families on one owned helper pipe.
 // The pending command, never a response-controlled discriminator, selects the
 // decoder. A stable failure stays a typed code across the webview boundary.
 type StableBridge struct {
-	careersEnabled            bool
-	careerActivation          *careerstate.Activation
-	careerSelection           *careerPageExpectation
+	hostedOwner                      *hostedOwnerExpectation
+	hostedReceive                    *hostedReceiveExpectation
+	activityBinding                  *pilot.WalletActivityBinding
+	activityAttempt, activityCapture *activityExpectation
+	activityRows                     *pilot.WalletActivityPage
+	withdrawalPool                   *pilot.PoolSnapshot
+	withdrawalBinding                *pilot.WithdrawalBinding
+	withdrawalExpected               *withdrawalExpectation
+	withdrawalOperation              *pilot.WithdrawalOperation
+	payoutBinding                    *pilot.PoolPayoutBinding
+	payoutAttempt, payoutCapture     *payoutExpectation
+	payoutRows                       *pilot.PoolPayoutPage
+	evidence                         [2]*evidenceExpectation
+	evidenceSerial                   uint64
+	poolStartupComplete              bool
+	poolHandshakeUsed                bool
+	poolHandshakePending             bool
+	poolMode                         bool
+	poolExpectedMode                 string
+	poolSourceID                     string
+	poolExpectedDescriptor           string
+	poolSourcePin                    *registry.ManifestAuthorityPin
+	careersEnabled                   bool
+	careerActivation                 *careerstate.Activation
+	careerSelection                  *careerPageExpectation
+	// History state is also invalidated by the reader failure path under mu.
+	history                   *careerHistoryCorrelation
+	historyFatal              bool
 	cmd                       *exec.Cmd
 	input                     io.WriteCloser
 	responses                 chan stableFrame
@@ -77,30 +103,44 @@ type stableJobExpectation struct {
 	terminal bool
 }
 type stableExpected struct {
-	careerPreview bool
-	career        bool
-	id            uint64
-	stable        bool
-	preview       bool
-	entry         bool
-	event         bool
-	seed          bool
-	bout          bool
-	result        bool
-	card          bool
+	hostedRecovery bool
+	activity       bool
+	withdrawal     bool
+	payout         bool
+	evidence       bool
+	pool           bool
+	history        bool
+	careerPreview  bool
+	career         bool
+	id             uint64
+	stable         bool
+	preview        bool
+	entry          bool
+	event          bool
+	seed           bool
+	bout           bool
+	result         bool
+	card           bool
 }
 type stableFrame struct {
-	careerPreview *pilot.CareerPreviewResponse
-	career        *pilot.CareerResponse
-	manifest      *pilot.ManifestResponse
-	stable        *pilot.StableResponse
-	preview       *pilot.PreviewResponse
-	entry         *pilot.EntryResponse
-	event         *pilot.EventResponse
-	seed          *pilot.SeedResponse
-	bout          *pilot.BoutResponse
-	result        *pilot.ResultResponse
-	card          *pilot.CardResponse
+	hostedRecovery *pilot.HostedRecoveryResponse
+	activity       *pilot.WalletActivityResponse
+	withdrawal     *pilot.WithdrawalResponse
+	payout         *pilot.PoolPayoutResponse
+	evidence       *pilot.FighterEvidenceResponse
+	pool           *pilot.PoolResponse
+	history        *pilot.CareerHistoryResponse
+	careerPreview  *pilot.CareerPreviewResponse
+	career         *pilot.CareerResponse
+	manifest       *pilot.ManifestResponse
+	stable         *pilot.StableResponse
+	preview        *pilot.PreviewResponse
+	entry          *pilot.EntryResponse
+	event          *pilot.EventResponse
+	seed           *pilot.SeedResponse
+	bout           *pilot.BoutResponse
+	result         *pilot.ResultResponse
+	card           *pilot.CardResponse
 }
 
 func LaunchStable(helper, dataDir, node string) (*StableBridge, error) {
@@ -138,7 +178,13 @@ func (b *StableBridge) fail(err error) {
 	b.once.Do(func() {
 		b.mu.Lock()
 		b.failure = err
+		b.hostedOwner, b.hostedReceive = nil, nil
+		b.payoutBinding, b.payoutAttempt, b.payoutCapture, b.payoutRows = nil, nil, nil, nil
+		b.activityBinding, b.activityAttempt, b.activityCapture, b.activityRows = nil, nil, nil, nil
+		b.withdrawalPool, b.withdrawalBinding, b.withdrawalExpected, b.withdrawalOperation = nil, nil, nil, nil
 		b.careerSelection = nil
+		b.history = nil
+		b.historyFatal = true
 		b.presentation = nil
 		b.previewSelection = nil
 		b.entry = nil
@@ -166,7 +212,56 @@ func (b *StableBridge) read(r io.Reader) {
 			return
 		}
 		var frame stableFrame
-		if expected.careerPreview {
+		if expected.hostedRecovery {
+			value, err := pilot.ParseHostedRecoveryResponse(scanner.Bytes())
+			if err != nil || value.ID != expected.id || b.selectedPoolMode() != pilot.HostedRecoveryPoolMode {
+				b.fail(ErrUnavailable)
+				return
+			}
+			frame.hostedRecovery = &value
+		} else if expected.activity {
+			value, err := pilot.ParseWalletActivityResponse(scanner.Bytes())
+			if err != nil || value.ID != expected.id {
+				b.fail(ErrUnavailable)
+				return
+			}
+			frame.activity = &value
+		} else if expected.withdrawal {
+			value, err := pilot.ParseWithdrawalResponse(scanner.Bytes())
+			if err != nil {
+				b.fail(ErrUnavailable)
+				return
+			}
+			frame.withdrawal = &value
+		} else if expected.payout {
+			value, err := pilot.ParsePoolPayoutResponse(scanner.Bytes())
+			if err != nil || value.ID != expected.id {
+				b.fail(ErrUnavailable)
+				return
+			}
+			frame.payout = &value
+		} else if expected.evidence {
+			value, err := pilot.ParseFighterEvidenceResponse(scanner.Bytes())
+			if err != nil || value.ID != expected.id {
+				b.fail(ErrUnavailable)
+				return
+			}
+			frame.evidence = &value
+		} else if expected.pool {
+			value, err := pilot.ParsePoolResponse(scanner.Bytes())
+			if err != nil || value.ID != expected.id || value.Snapshot != nil && value.Snapshot.Mode != b.selectedPoolMode() {
+				b.fail(ErrUnavailable)
+				return
+			}
+			frame.pool = &value
+		} else if expected.history {
+			value, err := pilot.ParseCareerHistoryResponse(scanner.Bytes())
+			if err != nil || value.ID != expected.id {
+				b.fail(ErrUnavailable)
+				return
+			}
+			frame.history = &value
+		} else if expected.careerPreview {
 			value, err := pilot.ParseCareerPreviewResponse(scanner.Bytes())
 			if err != nil || value.ID != expected.id {
 				b.fail(ErrUnavailable)
@@ -313,8 +408,14 @@ func (b *StableBridge) exchangeCareerFamily(ctx context.Context, id uint64, stab
 	return b.exchangeCareerPreviewFamily(ctx, id, stable, preview, entry, event, seed, card, bout, result, career, false, raw)
 }
 func (b *StableBridge) exchangeCareerPreviewFamily(ctx context.Context, id uint64, stable, preview, entry, event, seed, card, bout, result, career, careerPreview bool, raw []byte) (stableFrame, error) {
+	return b.exchangeHistoryFamily(ctx, id, stable, preview, entry, event, seed, card, bout, result, career, careerPreview, false, raw)
+}
+func (b *StableBridge) exchangeHistoryFamily(ctx context.Context, id uint64, stable, preview, entry, event, seed, card, bout, result, career, careerPreview, history bool, raw []byte) (stableFrame, error) {
+	return b.exchangeExpected(ctx, &stableExpected{history: history, careerPreview: careerPreview, career: career, id: id, stable: stable, preview: preview, entry: entry, event: event, seed: seed, card: card, bout: bout, result: result}, raw)
+}
+func (b *StableBridge) exchangeExpected(ctx context.Context, expected *stableExpected, raw []byte) (stableFrame, error) {
 	b.mu.Lock()
-	b.expected = &stableExpected{careerPreview: careerPreview, career: career, id: id, stable: stable, preview: preview, entry: entry, event: event, seed: seed, card: card, bout: bout, result: result}
+	b.expected = expected
 	b.mu.Unlock()
 	raw = append(raw, '\n')
 	if d, ok := b.input.(interface{ SetWriteDeadline(time.Time) error }); ok {
@@ -392,6 +493,9 @@ func (b *StableBridge) ReleaseManifest(ctx context.Context, viewID, prospectID s
 	return b.manifestRequest(ctx, pilot.ManifestRequest{Command: "release_manifest_receipt", ViewID: viewID, ProspectID: prospectID})
 }
 func (b *StableBridge) manifestRequest(ctx context.Context, req pilot.ManifestRequest) (pilot.ManifestResponse, error) {
+	if b.poolMode {
+		return pilot.ManifestResponse{}, ErrUnavailable
+	}
 	id, err := b.begin(ctx)
 	if err != nil {
 		return pilot.ManifestResponse{}, err
@@ -407,6 +511,11 @@ func (b *StableBridge) manifestRequest(ctx context.Context, req pilot.ManifestRe
 	if oneOf(req.Command, "login_fixture", "logout", "reset_fixture") {
 		b.clearStableView()
 		b.manifestView = nil
+	}
+	if req.Command == "stop" {
+		// Stop replaces the concrete Stable owner. A lost ACK cannot leave a
+		// pageable handle claiming that the previous owner is still live.
+		b.clearCareerHistory(false)
 	}
 	ctx, cancel := context.WithTimeout(ctx, 30*time.Second)
 	defer cancel()
@@ -496,12 +605,15 @@ func (b *StableBridge) StableRequest(ctx context.Context, req pilot.StableReques
 		if oneOf(response.Error, "unauthorized", "stale_view") {
 			b.clearStableView()
 		}
+		if oneOf(response.Error, "stable_unavailable", "stable_corrupt", "stable_clock", "stable_observation_unknown") {
+			b.clearCareerHistory(true)
+		}
 		if unknown && oneOf(response.Error, "unauthorized", "stale_view", "stable_unavailable", "stable_not_found") {
 			return fail(id, "outcome_unknown")
 		}
 		return response
 	}
-	if !b.correlateStable(req, response) {
+	if b.poolMode && response.Snapshot != nil && response.Snapshot.Status != nil && response.Snapshot.Status.Pin.Version != gymstable.SharedPinVersion2 || !b.correlateStable(req, response) {
 		b.fail(ErrUnavailable)
 		if unknown {
 			return fail(id, "outcome_unknown")
@@ -534,7 +646,13 @@ func stableMutation(command string) bool {
 func stableTerminal(state string) bool { return state != "queued" && state != "running" }
 func (b *StableBridge) clearStableView() {
 	b.mu.Lock()
+	b.evidence = [2]*evidenceExpectation{}
+	b.payoutBinding, b.payoutAttempt, b.payoutCapture, b.payoutRows = nil, nil, nil, nil
+	b.activityBinding, b.activityAttempt, b.activityCapture, b.activityRows = nil, nil, nil, nil
+	b.withdrawalPool, b.withdrawalBinding, b.withdrawalExpected, b.withdrawalOperation = nil, nil, nil, nil
 	b.careerSelection = nil
+	b.history = nil
+	b.historyFatal = false
 	b.mu.Unlock()
 	b.view = nil
 	b.storeID = ""

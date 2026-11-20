@@ -189,7 +189,7 @@ func OpenManifestAuthority(path string, expected ManifestAuthorityPin, readOnly 
 }
 
 func (s *ManifestStore) state(write bool) error {
-	if s.closed || s.db == nil {
+	if s.closed || s.db == nil || s.public != nil && s.public.closing {
 		return ErrClosed
 	}
 	if s.poisoned != nil {
@@ -210,11 +210,22 @@ func (s *ManifestStore) commit(batch *leveldb.Batch, next manifestMetadata) erro
 		return fmt.Errorf("%w: manifest metadata encoding", ErrCorrupt)
 	}
 	batch.Put([]byte(metadataKey), raw)
+	var publicNext publicManifestMetadata
+	if s.public != nil {
+		var err error
+		publicNext, err = s.stagePublicBatch(batch, next)
+		if err != nil {
+			return err
+		}
+	}
 	if err := s.writeBatch(batch, &opt.WriteOptions{Sync: true}); err != nil {
 		s.poisoned = err
 		return fmt.Errorf("%w: %w", ErrPoisoned, err)
 	}
 	s.meta = next
+	if s.public != nil {
+		s.public.meta = publicNext
+	}
 	return nil
 }
 
@@ -230,6 +241,9 @@ func (s *ManifestStore) Info() (ManifestAuthorityInfo, error) {
 
 // Close drains the current operation, closes once, and retains the close error.
 func (s *ManifestStore) Close() error {
+	if s.public != nil {
+		s.closePublic()
+	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	if s.closed {
@@ -307,6 +321,8 @@ func (s *ManifestStore) audit(m manifestMarker) error {
 				return ErrCorrupt
 			}
 			sequences++
+		case s.publicKeyAllowed(key):
+			// The explicit mode performs its complete closed crosslink audit next.
 		default:
 			return fmt.Errorf("%w: unknown manifest authority key", ErrCorrupt)
 		}

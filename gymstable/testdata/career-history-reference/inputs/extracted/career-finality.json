@@ -1,0 +1,40 @@
+{
+  "checkpoint": {
+    "version": 1,
+    "network": 1397511495,
+    "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+    "height": 215,
+    "hash": "3ccc91982fa5c3def57f11992481a5b67f96e992627eff13d19feff153cac4a9",
+    "signature": "0da9497a7b16f58e60da43df92204be32c8f7deaa29e5e87f569b15b2a5fc895c57b522f205abd77a0dfeb3ef3cd49998fbcf597cc1ced54c8824e28e369fc09"
+  },
+  "inclusion": {
+    "version": 1,
+    "generation": 1,
+    "anchor": {
+      "height": 215,
+      "hash": "3ccc91982fa5c3def57f11992481a5b67f96e992627eff13d19feff153cac4a9",
+      "header": "000000201f96ebe3bbf31a3ebc1128987d5c75690fee47f0a29b301fccf2b66232f8713d324ba7b2af3f622e31065149a76005400f59edd058867c7c0549d675b190b0b60318fe6affff7f2000000000",
+      "txid": "973fb578703fc51cee1eeb545b12c85a795ffe555dda62e97870d25dfdc6480d",
+      "raw_tx_digest": "5127d4ca0c1637cc7344db2bcb3b7a9ba2f5097955b5fe921b2b943f8444d703",
+      "raw_tx_size": 276,
+      "tx_count": 2,
+      "tx_index": 1,
+      "output_index": 0,
+      "payload": "534c554752534c54018e475149c6ae5d630e7d1a2278f7a7fdca8e577bf58937872821dcfaedfe2fbb82f3ec051438e578dc8417be11843a4b1ed158d57e8e8a17f70d040ed8fe1295",
+      "merkle_branch": [
+        "8930ea5aab2e7d856382ff30ebf8c4714481617a549facecc3b9e709f4b6b069"
+      ]
+    },
+    "observed_at_ms": 1796500801001,
+    "observed_tip": {
+      "height": 215,
+      "hash": "3ccc91982fa5c3def57f11992481a5b67f96e992627eff13d19feff153cac4a9"
+    }
+  },
+  "observed_at_ms": 1796500801001,
+  "observed_tip": {
+    "height": 275,
+    "hash": "6f4d822ce8e91ac9519a40cf1dbc06e0fc5888d8838c277d2413bf0ca32e641d"
+  },
+  "descendants": 60
+}

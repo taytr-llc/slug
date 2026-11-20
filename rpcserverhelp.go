@@ -283,6 +283,14 @@ var helpDescsEnUS = map[string]string{
 	"getblockcount--synopsis": "Returns the number of blocks in the longest block chain.",
 	"getblockcount--result0":  "The current block count",
 
+	"getchainobservation--synopsis":         "Returns one atomic local best-chain observation with an RPC lifetime identity and revision.",
+	"getchainobservation--result0":          "A read-only local observation; not finality or global agreement.",
+	"getchainobservationresult-version":     "Observation format version (1)",
+	"getchainobservationresult-instance_id": "Nonzero public 32-byte hex RPC lifetime identity",
+	"getchainobservationresult-revision":    "Unsigned decimal revision text; changes on every best-chain connect or disconnect",
+	"getchainobservationresult-hash":        "Best-block hash in display hex",
+	"getchainobservationresult-height":      "Best-block height",
+
 	// GetBlockHashCmd help.
 	"getblockhash--synopsis": "Returns hash of the block in best block chain at the given height.",
 	"getblockhash-index":     "The block height",
@@ -525,6 +533,18 @@ var helpDescsEnUS = map[string]string{
 
 	// GetPeerInfoCmd help.
 	"getpeerinfo--synopsis": "Returns data about each connected network peer as an array of json objects.",
+
+	// GetMempoolEntryCmd and the supported single-entry projection.
+	"getmempoolentry--synopsis":             "Returns one current main-pool entry by exact canonical transaction ID. The supported fields are size, vsize, weight, height, wtxid, time, fee and depends; ancestry and priority statistics are not returned. Busy or over-capacity reads fail visibly.",
+	"getmempoolentry-txid":                  "The 64-character lowercase transaction ID; absent entries return error -5",
+	"getmempoolentrysnapshotresult-size":    "Exact serialized transaction bytes including witness",
+	"getmempoolentrysnapshotresult-vsize":   "Transaction virtual size, rounded up from weight divided by four",
+	"getmempoolentrysnapshotresult-weight":  "Transaction weight",
+	"getmempoolentrysnapshotresult-height":  "Chain height when the transaction entered the main pool; may exceed the current height after a rollback",
+	"getmempoolentrysnapshotresult-wtxid":   "Witness transaction ID",
+	"getmempoolentrysnapshotresult-time":    "Local entry time in Unix seconds",
+	"getmempoolentrysnapshotresult-fee":     "Transaction fee in SLUG; informational floating-point RPC value",
+	"getmempoolentrysnapshotresult-depends": "Unique direct main-pool input parents, in first-input order; not a transitive ancestry claim",
 
 	// GetRawMempoolVerboseResult help.
 	"getrawmempoolverboseresult-size":             "Transaction size in bytes",
@@ -793,6 +813,7 @@ var rpcResultTypes = map[string][]interface{}{
 	"getbestblockhash":       {(*string)(nil)},
 	"getblock":               {(*string)(nil), (*btcjson.GetBlockVerboseResult)(nil)},
 	"getblockcount":          {(*int64)(nil)},
+	"getchainobservation":    {(*btcjson.GetChainObservationResult)(nil)},
 	"getblockhash":           {(*string)(nil)},
 	"getblockheader":         {(*string)(nil), (*btcjson.GetBlockHeaderVerboseResult)(nil)},
 	"getblocktemplate":       {(*btcjson.GetBlockTemplateResult)(nil), (*string)(nil), nil},
@@ -814,6 +835,7 @@ var rpcResultTypes = map[string][]interface{}{
 	"getnetworkhashps":       {(*float64)(nil)},
 	"getnodeaddresses":       {(*[]btcjson.GetNodeAddressesResult)(nil)},
 	"getpeerinfo":            {(*[]btcjson.GetPeerInfoResult)(nil)},
+	"getmempoolentry":        {(*btcjson.GetMempoolEntrySnapshotResult)(nil)},
 	"getrawmempool":          {(*[]string)(nil), (*btcjson.GetRawMempoolVerboseResult)(nil)},
 	"getrawtransaction":      {(*string)(nil), (*btcjson.TxRawResult)(nil)},
 	"gettxout":               {(*btcjson.GetTxOutResult)(nil)},

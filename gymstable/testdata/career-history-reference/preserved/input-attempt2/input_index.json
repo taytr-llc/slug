@@ -1,0 +1,618 @@
+{
+  "version": 1,
+  "status": "inputs_frozen_before_new_reference_math",
+  "ownership": {
+    "checkpoint_design_audit": [
+      "common.py",
+      "history_math.py",
+      "reference_history.py",
+      "extract_inputs.py",
+      "input_index.json",
+      "generate.py",
+      "verify_reference.py",
+      "check_reproducibility.py",
+      "README.md",
+      "file_index.json",
+      "fragments/history.json",
+      "inputs/**"
+    ],
+    "checkpoint_tool": [
+      "schema_wire.py",
+      "reference_wire.py",
+      "state_models.py",
+      "fragments/wire.json",
+      "fragments/state.json"
+    ]
+  },
+  "inputs": {
+    "inputs/contracts/set51-fighter-history-contract.md": {
+      "sha256": "24d9ef135ca949947c29ed1a887b517209d9ae932ca8286ad9a2ad9046b53e53",
+      "bytes": 30286,
+      "origin": "/Users/taytrrip/slug/set51-fighter-history-contract.md",
+      "origin_sha256": "24d9ef135ca949947c29ed1a887b517209d9ae932ca8286ad9a2ad9046b53e53",
+      "role": "Frozen Set51 contract/review/provenance; not new output"
+    },
+    "inputs/contracts/set51-history-contract-freeze.json": {
+      "sha256": "533a6e13ef737179e17a8e8b5390a9e83fa2e2aba3f0cd2304d6a67af356eb33",
+      "bytes": 1719,
+      "origin": "/Users/taytrrip/slug/set51-history-contract-freeze.json",
+      "origin_sha256": "533a6e13ef737179e17a8e8b5390a9e83fa2e2aba3f0cd2304d6a67af356eb33",
+      "role": "Frozen Set51 contract/review/provenance; not new output"
+    },
+    "inputs/contracts/set51-history-contract-independent-review.json": {
+      "sha256": "089d7cfaa2287f66ef00121631caf8f3969d2abb7ded795a43bcb98d744eae08",
+      "bytes": 7429,
+      "origin": "/Users/taytrrip/slug/set51-history-contract-independent-review.json",
+      "origin_sha256": "089d7cfaa2287f66ef00121631caf8f3969d2abb7ded795a43bcb98d744eae08",
+      "role": "Frozen Set51 contract/review/provenance; not new output"
+    },
+    "inputs/contracts/set51-history-bound-independent-review.json": {
+      "sha256": "305f532f730d4f03479185bb94c5102533f52302b52ce59f1e0c3a110deec4b4",
+      "bytes": 5555,
+      "origin": "/Users/taytrrip/slug/set51-history-bound-independent-review.json",
+      "origin_sha256": "305f532f730d4f03479185bb94c5102533f52302b52ce59f1e0c3a110deec4b4",
+      "role": "Frozen Set51 contract/review/provenance; not new output"
+    },
+    "inputs/contracts/set51-history-reference-intake.md": {
+      "sha256": "2ad33786f79128cb6c6551f0bccfb2f8ab6c23c8faed66c374d1e70f85221fd7",
+      "bytes": 3379,
+      "origin": "/Users/taytrrip/slug/set51-history-reference-intake.md",
+      "origin_sha256": "2ad33786f79128cb6c6551f0bccfb2f8ab6c23c8faed66c374d1e70f85221fd7",
+      "role": "Frozen Set51 contract/review/provenance; not new output"
+    },
+    "inputs/contracts/CAREER_ACCOUNTING.md": {
+      "sha256": "aab64b01450aa2d6c7bae5cd48f725cc339b6ca455ee509d72af145934398fec",
+      "bytes": 21346,
+      "origin": "/Users/taytrrip/slug/slug/CAREER_ACCOUNTING.md",
+      "origin_sha256": "aab64b01450aa2d6c7bae5cd48f725cc339b6ca455ee509d72af145934398fec",
+      "role": "Existing approved prose"
+    },
+    "inputs/contracts/CAREER_CONSUMERS.md": {
+      "sha256": "622e7b96d6a784555dd96c6eb86e5c4e1c66db5cf441aeb8e655e3a1dc7945a6",
+      "bytes": 10291,
+      "origin": "/Users/taytrrip/slug/slug/CAREER_CONSUMERS.md",
+      "origin_sha256": "622e7b96d6a784555dd96c6eb86e5c4e1c66db5cf441aeb8e655e3a1dc7945a6",
+      "role": "Existing approved prose"
+    },
+    "inputs/contracts/FIGHTER_CAREER.md": {
+      "sha256": "07de417554cf2a61085e8545f78fbf43bb5b02fc63a3d3d4d6889acadbe193d1",
+      "bytes": 3076,
+      "origin": "/Users/taytrrip/slug/slug/FIGHTER_CAREER.md",
+      "origin_sha256": "07de417554cf2a61085e8545f78fbf43bb5b02fc63a3d3d4d6889acadbe193d1",
+      "role": "Existing approved prose"
+    },
+    "inputs/contracts/ADR_002_CAREER_FINALITY.md": {
+      "sha256": "e78e7a3bc0afa08b45c8cdbda849c9b215d5cfa909604af1f73ff96b542538b6",
+      "bytes": 4867,
+      "origin": "/Users/taytrrip/slug/slug/ADR_002_CAREER_FINALITY.md",
+      "origin_sha256": "e78e7a3bc0afa08b45c8cdbda849c9b215d5cfa909604af1f73ff96b542538b6",
+      "role": "Existing approved prose"
+    },
+    "inputs/prior-career/generate.py": {
+      "sha256": "9cd4b150c274ef4bc54b0a21e35013d86b540405bbf003c8b7b0dd8899a53bdc",
+      "bytes": 18734,
+      "origin": "/Users/taytrrip/slug/slug/internal/careerstate/testdata/reference/generate.py",
+      "origin_sha256": "9cd4b150c274ef4bc54b0a21e35013d86b540405bbf003c8b7b0dd8899a53bdc",
+      "role": "Frozen independent career equations/finite modeled oracle; no new Go input"
+    },
+    "inputs/prior-career/corpus.json": {
+      "sha256": "89fbf2b1d16793b544d84922311017303832cdba89203f8a73fe4b79b3d66d42",
+      "bytes": 200207,
+      "origin": "/Users/taytrrip/slug/slug/internal/careerstate/testdata/reference/corpus.json",
+      "origin_sha256": "89fbf2b1d16793b544d84922311017303832cdba89203f8a73fe4b79b3d66d42",
+      "role": "Frozen independent career equations/finite modeled oracle; no new Go input"
+    },
+    "inputs/prior-career/input_index.json": {
+      "sha256": "e3b2e43e5f05813dde7fcf03ebfd542175b47668eb083b163b0b7431d4086be6",
+      "bytes": 2976,
+      "origin": "/Users/taytrrip/slug/slug/internal/careerstate/testdata/reference/input_index.json",
+      "origin_sha256": "e3b2e43e5f05813dde7fcf03ebfd542175b47668eb083b163b0b7431d4086be6",
+      "role": "Frozen independent career equations/finite modeled oracle; no new Go input"
+    },
+    "inputs/prior-career/README.md": {
+      "sha256": "0588b0c293cdca32de844ebe3f095dc574921ea7f49493e96a87425582ab6b42",
+      "bytes": 5264,
+      "origin": "/Users/taytrrip/slug/slug/internal/careerstate/testdata/reference/README.md",
+      "origin_sha256": "0588b0c293cdca32de844ebe3f095dc574921ea7f49493e96a87425582ab6b42",
+      "role": "Frozen independent career equations/finite modeled oracle; no new Go input"
+    },
+    "inputs/prior-career/inputs/CAREER_ACCOUNTING-preflight.md": {
+      "sha256": "8088f39815369f5d4840f9f33f1a7761f5b46486a4c97aa717337eda905b48bd",
+      "bytes": 20627,
+      "origin": "/Users/taytrrip/slug/slug/internal/careerstate/testdata/reference/inputs/CAREER_ACCOUNTING-preflight.md",
+      "origin_sha256": "8088f39815369f5d4840f9f33f1a7761f5b46486a4c97aa717337eda905b48bd",
+      "role": "Transitive pinned old career producer input"
+    },
+    "inputs/prior-career/inputs/CAREER_ACCOUNTING.md": {
+      "sha256": "d676a63454dc19360b94337227cd96d56b4f4879e89bf143e89d229ab4c0cfa1",
+      "bytes": 20392,
+      "origin": "/Users/taytrrip/slug/slug/internal/careerstate/testdata/reference/inputs/CAREER_ACCOUNTING.md",
+      "origin_sha256": "d676a63454dc19360b94337227cd96d56b4f4879e89bf143e89d229ab4c0cfa1",
+      "role": "Transitive pinned old career producer input"
+    },
+    "inputs/prior-career/inputs/FIGHTER_CAREER.md": {
+      "sha256": "07de417554cf2a61085e8545f78fbf43bb5b02fc63a3d3d4d6889acadbe193d1",
+      "bytes": 3076,
+      "origin": "/Users/taytrrip/slug/slug/internal/careerstate/testdata/reference/inputs/FIGHTER_CAREER.md",
+      "origin_sha256": "07de417554cf2a61085e8545f78fbf43bb5b02fc63a3d3d4d6889acadbe193d1",
+      "role": "Transitive pinned old career producer input"
+    },
+    "inputs/prior-career/inputs/chaincfg_SignedCheckpoint_MarshalJSON.txt": {
+      "sha256": "4c069820c1183838fe03ce39e62393c0bb9661557028d52f05bfd7ab5b76bfab",
+      "bytes": 718,
+      "origin": "/Users/taytrrip/slug/slug/internal/careerstate/testdata/reference/inputs/chaincfg_SignedCheckpoint_MarshalJSON.txt",
+      "origin_sha256": "4c069820c1183838fe03ce39e62393c0bb9661557028d52f05bfd7ab5b76bfab",
+      "role": "Transitive pinned old career producer input"
+    },
+    "inputs/prior-career/inputs/constructor-preflight.diff": {
+      "sha256": "a23f76a4b5ac3480cebc62b292abfd8a0086a79f49e5256ae95c386102048f9f",
+      "bytes": 1142,
+      "origin": "/Users/taytrrip/slug/slug/internal/careerstate/testdata/reference/inputs/constructor-preflight.diff",
+      "origin_sha256": "a23f76a4b5ac3480cebc62b292abfd8a0086a79f49e5256ae95c386102048f9f",
+      "role": "Transitive pinned old career producer input"
+    },
+    "inputs/prior-career/inputs/gymresult_types.go.txt": {
+      "sha256": "6d05c2a2f68c9fdf38cc74e71b230ac4172b1d7b149c1f9a85892c848545e506",
+      "bytes": 562,
+      "origin": "/Users/taytrrip/slug/slug/internal/careerstate/testdata/reference/inputs/gymresult_types.go.txt",
+      "origin_sha256": "6d05c2a2f68c9fdf38cc74e71b230ac4172b1d7b149c1f9a85892c848545e506",
+      "role": "Transitive pinned old career producer input"
+    },
+    "inputs/prior-career/inputs/seednode_types.go.txt": {
+      "sha256": "f53dff124db30f2da93f831a494ce5e9561bb6ea2aa1134ce809da7b2c195e1d",
+      "bytes": 559,
+      "origin": "/Users/taytrrip/slug/slug/internal/careerstate/testdata/reference/inputs/seednode_types.go.txt",
+      "origin_sha256": "f53dff124db30f2da93f831a494ce5e9561bb6ea2aa1134ce809da7b2c195e1d",
+      "role": "Transitive pinned old career producer input"
+    },
+    "inputs/prior-arithmetic.py": {
+      "sha256": "506cb30affe74039b16bd0254f236fbfea4cf4b69f8a35760b0373666565857c",
+      "bytes": 10067,
+      "origin": "/Users/taytrrip/slug/slug/fightercareer/testdata/reference/generate.py",
+      "origin_sha256": "506cb30affe74039b16bd0254f236fbfea4cf4b69f8a35760b0373666565857c",
+      "role": "Frozen independent standard arithmetic; history uses standard only"
+    },
+    "inputs/grammar/gymstable__types.go.txt": {
+      "sha256": "1f0038aa844869c59b5f2e8f38e2ec69380aac88d66000b28d9d1471daccb2f0",
+      "bytes": 6760,
+      "origin": "/Users/taytrrip/slug/slug/gymstable/types.go",
+      "origin_sha256": "1f0038aa844869c59b5f2e8f38e2ec69380aac88d66000b28d9d1471daccb2f0",
+      "role": "Existing inherited DTO/validation grammar only; not new Go outputs"
+    },
+    "inputs/grammar/gymstable__codec.go.txt": {
+      "sha256": "e83d4d9d91ad6ff429051d12cedb612c031b607cf5156ef725330d997a245df4",
+      "bytes": 6351,
+      "origin": "/Users/taytrrip/slug/slug/gymstable/codec.go",
+      "origin_sha256": "e83d4d9d91ad6ff429051d12cedb612c031b607cf5156ef725330d997a245df4",
+      "role": "Existing inherited DTO/validation grammar only; not new Go outputs"
+    },
+    "inputs/grammar/desktop__pilot__manifest_types.go.txt": {
+      "sha256": "ef9d572bd086e32e5ac7ad55b6c402e9eb7e924b08e4bd8e5833a8f0d24a34fc",
+      "bytes": 6180,
+      "origin": "/Users/taytrrip/slug/slug/desktop/pilot/manifest_types.go",
+      "origin_sha256": "ef9d572bd086e32e5ac7ad55b6c402e9eb7e924b08e4bd8e5833a8f0d24a34fc",
+      "role": "Existing inherited DTO/validation grammar only; not new Go outputs"
+    },
+    "inputs/grammar/desktop__pilot__stable_validation.go.txt": {
+      "sha256": "03616e20c1a2d73ed2365cdfbb12df2aeee12fc660341c99070f0605f4b1130b",
+      "bytes": 13924,
+      "origin": "/Users/taytrrip/slug/slug/desktop/pilot/stable_validation.go",
+      "origin_sha256": "03616e20c1a2d73ed2365cdfbb12df2aeee12fc660341c99070f0605f4b1130b",
+      "role": "Existing inherited DTO/validation grammar only; not new Go outputs"
+    },
+    "inputs/grammar/gymaccount__types.go.txt": {
+      "sha256": "6331c46e206e6ebda14b56275f984587b35ed1882d3f5ada0c1b1734c230f4a7",
+      "bytes": 4760,
+      "origin": "/Users/taytrrip/slug/slug/gymaccount/types.go",
+      "origin_sha256": "6331c46e206e6ebda14b56275f984587b35ed1882d3f5ada0c1b1734c230f4a7",
+      "role": "Existing inherited DTO/validation grammar only; not new Go outputs"
+    },
+    "inputs/grammar/gymstable__audit.go.txt": {
+      "sha256": "dd602eda7e7582ca315ba2c027db193b4833ad8e8644e9462c0369130d0c9fdc",
+      "bytes": 7115,
+      "origin": "/Users/taytrrip/slug/slug/gymstable/audit.go",
+      "origin_sha256": "dd602eda7e7582ca315ba2c027db193b4833ad8e8644e9462c0369130d0c9fdc",
+      "role": "Existing inherited DTO/validation grammar only; not new Go outputs"
+    },
+    "inputs/grammar/prospectservice__manifest_config.go.txt": {
+      "sha256": "291db23448450a44b6f42a17641b78ce38c8c5e5dcfd98fe90dd160dc4274b8f",
+      "bytes": 10004,
+      "origin": "/Users/taytrrip/slug/slug/prospectservice/manifest_config.go",
+      "origin_sha256": "291db23448450a44b6f42a17641b78ce38c8c5e5dcfd98fe90dd160dc4274b8f",
+      "role": "Existing inherited DTO/validation grammar only; not new Go outputs"
+    },
+    "inputs/grammar/internal__careerstate__state.go.txt": {
+      "sha256": "eaedd8f52777cbb11b1e085474a1b51d2a144bd5179542156f5c2d8713463528",
+      "bytes": 11341,
+      "origin": "/Users/taytrrip/slug/slug/internal/careerstate/state.go",
+      "origin_sha256": "eaedd8f52777cbb11b1e085474a1b51d2a144bd5179542156f5c2d8713463528",
+      "role": "Existing inherited DTO/validation grammar only; not new Go outputs"
+    },
+    "inputs/extracted/actual-status.json": {
+      "sha256": "94a5fc07ee2e130610140f0ca8bc72b14def780332b1b3c4d3ec6c7855e432e8",
+      "bytes": 9,
+      "origin": "/Users/taytrrip/slug/set49-actual-careers-attempt3.json",
+      "origin_sha256": "b519b928b83c2de2dfd8bbc5c59c250b6ce51a99802de51affe1b57ac95ba267",
+      "role": "Historical Set49 runner provenance, not reexecution",
+      "json_pointer": "/status",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/actual-scope.json": {
+      "sha256": "5ed588db10b99a4a1c298bdbe9b9933999a5719e3c4ca61db26ffd794a86be84",
+      "bytes": 222,
+      "origin": "/Users/taytrrip/slug/set49-actual-careers-attempt3.json",
+      "origin_sha256": "b519b928b83c2de2dfd8bbc5c59c250b6ce51a99802de51affe1b57ac95ba267",
+      "role": "Historical Set49 runner provenance, not reexecution",
+      "json_pointer": "/scope",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/actual-public_evidence_sha256.json": {
+      "sha256": "48ce2bd6d1f47bc4370dcba684b6360c5039e4bd28b36d8d3ba33c37e2c12c36",
+      "bytes": 1955,
+      "origin": "/Users/taytrrip/slug/set49-actual-careers-attempt3.json",
+      "origin_sha256": "b519b928b83c2de2dfd8bbc5c59c250b6ce51a99802de51affe1b57ac95ba267",
+      "role": "Historical Set49 runner provenance, not reexecution",
+      "json_pointer": "/public_evidence_sha256",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/actual-career_evidence_checked.json": {
+      "sha256": "a17fcf0a2f50e2d495e4f90ce263410edc183add6c62699a2facbccf60410f74",
+      "bytes": 5,
+      "origin": "/Users/taytrrip/slug/set49-actual-careers-attempt3.json",
+      "origin_sha256": "b519b928b83c2de2dfd8bbc5c59c250b6ce51a99802de51affe1b57ac95ba267",
+      "role": "Historical Set49 runner provenance, not reexecution",
+      "json_pointer": "/career_evidence_checked",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/actual-career_rows.json": {
+      "sha256": "a1fb50e6c86fae1679ef3351296fd6713411a08cf8dd1790a4fd05fae8688164",
+      "bytes": 3,
+      "origin": "/Users/taytrrip/slug/set49-actual-careers-attempt3.json",
+      "origin_sha256": "b519b928b83c2de2dfd8bbc5c59c250b6ce51a99802de51affe1b57ac95ba267",
+      "role": "Historical Set49 runner provenance, not reexecution",
+      "json_pointer": "/career_rows",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/actual-candidate_awarded_bouts.json": {
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2,
+      "origin": "/Users/taytrrip/slug/set49-actual-careers-attempt3.json",
+      "origin_sha256": "b519b928b83c2de2dfd8bbc5c59c250b6ce51a99802de51affe1b57ac95ba267",
+      "role": "Historical Set49 runner provenance, not reexecution",
+      "json_pointer": "/candidate_awarded_bouts",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/actual-source_files_unchanged.json": {
+      "sha256": "a17fcf0a2f50e2d495e4f90ce263410edc183add6c62699a2facbccf60410f74",
+      "bytes": 5,
+      "origin": "/Users/taytrrip/slug/set49-actual-careers-attempt3.json",
+      "origin_sha256": "b519b928b83c2de2dfd8bbc5c59c250b6ce51a99802de51affe1b57ac95ba267",
+      "role": "Historical Set49 runner provenance, not reexecution",
+      "json_pointer": "/source_files_unchanged",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/actual-original_tree_unchanged.json": {
+      "sha256": "a17fcf0a2f50e2d495e4f90ce263410edc183add6c62699a2facbccf60410f74",
+      "bytes": 5,
+      "origin": "/Users/taytrrip/slug/set49-actual-careers-attempt3.json",
+      "origin_sha256": "b519b928b83c2de2dfd8bbc5c59c250b6ce51a99802de51affe1b57ac95ba267",
+      "role": "Historical Set49 runner provenance, not reexecution",
+      "json_pointer": "/original_tree_unchanged",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/actual-automatic_admissions.json": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2,
+      "origin": "/Users/taytrrip/slug/set49-actual-careers-attempt3.json",
+      "origin_sha256": "b519b928b83c2de2dfd8bbc5c59c250b6ce51a99802de51affe1b57ac95ba267",
+      "role": "Historical Set49 runner provenance, not reexecution",
+      "json_pointer": "/automatic_admissions",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/independent-status.json": {
+      "sha256": "94a5fc07ee2e130610140f0ca8bc72b14def780332b1b3c4d3ec6c7855e432e8",
+      "bytes": 9,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/independent-careers-attempt3/result-report.json",
+      "origin_sha256": "b62b6cad5a51d3fe5447a113c748c978d909fe7b52ff014e85740aceaaeeaf34",
+      "role": "Previously independent public proof/career verification provenance; not newly verified",
+      "json_pointer": "/status",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/independent-scope.json": {
+      "sha256": "2ccc0d441a1aa8c4e2147e4cdc8749284e9bcca029834eeed6e16cbda9a9611a",
+      "bytes": 143,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/independent-careers-attempt3/result-report.json",
+      "origin_sha256": "b62b6cad5a51d3fe5447a113c748c978d909fe7b52ff014e85740aceaaeeaf34",
+      "role": "Previously independent public proof/career verification provenance; not newly verified",
+      "json_pointer": "/scope",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/independent-career.json": {
+      "sha256": "9ae23c548dd9f86f4dc0d4060cab42e2af2bf942ca767858bb9a2721fa18666a",
+      "bytes": 56874,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/independent-careers-attempt3/result-report.json",
+      "origin_sha256": "b62b6cad5a51d3fe5447a113c748c978d909fe7b52ff014e85740aceaaeeaf34",
+      "role": "Previously independent public proof/career verification provenance; not newly verified",
+      "json_pointer": "/career",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/independent-proofs.json": {
+      "sha256": "a6d282bac01b6e48a7857cb298ba1b6c5c83723a2aaa7aa7cd85b9bccc3e0ad9",
+      "bytes": 2263,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/independent-careers-attempt3/result-report.json",
+      "origin_sha256": "b62b6cad5a51d3fe5447a113c748c978d909fe7b52ff014e85740aceaaeeaf34",
+      "role": "Previously independent public proof/career verification provenance; not newly verified",
+      "json_pointer": "/proofs",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/independent-evidence_sha256.json": {
+      "sha256": "311106cd104a5b4e5b41e1906eccdf7f4ebc48066326e7fed6c6d5967db31732",
+      "bytes": 2353,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/independent-careers-attempt3/result-report.json",
+      "origin_sha256": "b62b6cad5a51d3fe5447a113c748c978d909fe7b52ff014e85740aceaaeeaf34",
+      "role": "Previously independent public proof/career verification provenance; not newly verified",
+      "json_pointer": "/evidence_sha256",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/independent-limitations.json": {
+      "sha256": "991bb5194a62c8e6236de7483f42a4ede63b68f7f10720d9d3b2c6f43c240302",
+      "bytes": 841,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/independent-careers-attempt3/result-report.json",
+      "origin_sha256": "b62b6cad5a51d3fe5447a113c748c978d909fe7b52ff014e85740aceaaeeaf34",
+      "role": "Previously independent public proof/career verification provenance; not newly verified",
+      "json_pointer": "/limitations",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/independent-verifier_sha256.json": {
+      "sha256": "44bea37990d8f8914e7801473cf93ef2af59b2b5aacce5514531e86e2d32c149",
+      "bytes": 67,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/independent-careers-attempt3/result-report.json",
+      "origin_sha256": "b62b6cad5a51d3fe5447a113c748c978d909fe7b52ff014e85740aceaaeeaf34",
+      "role": "Previously independent public proof/career verification provenance; not newly verified",
+      "json_pointer": "/verifier_sha256",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/independent-source_verifier_sha256.json": {
+      "sha256": "4148194785a6a6c26f4f5dff4b1b4731b908fd50bd3dca65db56e5d17d6c6772",
+      "bytes": 67,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/independent-careers-attempt3/result-report.json",
+      "origin_sha256": "b62b6cad5a51d3fe5447a113c748c978d909fe7b52ff014e85740aceaaeeaf34",
+      "role": "Previously independent public proof/career verification provenance; not newly verified",
+      "json_pointer": "/source_verifier_sha256",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/career-activation.json": {
+      "sha256": "b1a979aa286dd7dd1d1a3f7f0f7bc933cfb12d9f09dadd8657898da908892ad8",
+      "bytes": 396,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-career-native-evidence.json",
+      "origin_sha256": "91934c45ba3609a52b3ed64847c988e33c19cef2ea7055d5337af00b6e805069",
+      "role": "Genuine previously executed candidate public evidence; scoped clock",
+      "json_pointer": "/activation",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/career-finality.json": {
+      "sha256": "f6165a782a992ea09239533cfe28a98859278e1a5cdff1e88f39a7e9e364cd04",
+      "bytes": 1655,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-career-native-evidence.json",
+      "origin_sha256": "91934c45ba3609a52b3ed64847c988e33c19cef2ea7055d5337af00b6e805069",
+      "role": "Genuine previously executed candidate public evidence; scoped clock",
+      "json_pointer": "/finality",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/career-normal_pow.json": {
+      "sha256": "a17fcf0a2f50e2d495e4f90ce263410edc183add6c62699a2facbccf60410f74",
+      "bytes": 5,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-career-native-evidence.json",
+      "origin_sha256": "91934c45ba3609a52b3ed64847c988e33c19cef2ea7055d5337af00b6e805069",
+      "role": "Genuine previously executed candidate public evidence; scoped clock",
+      "json_pointer": "/normal_pow",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/career-tagged_clock.json": {
+      "sha256": "a17fcf0a2f50e2d495e4f90ce263410edc183add6c62699a2facbccf60410f74",
+      "bytes": 5,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-career-native-evidence.json",
+      "origin_sha256": "91934c45ba3609a52b3ed64847c988e33c19cef2ea7055d5337af00b6e805069",
+      "role": "Genuine previously executed candidate public evidence; scoped clock",
+      "json_pointer": "/tagged_clock",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/career-automatic_admissions.json": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-career-native-evidence.json",
+      "origin_sha256": "91934c45ba3609a52b3ed64847c988e33c19cef2ea7055d5337af00b6e805069",
+      "role": "Genuine previously executed candidate public evidence; scoped clock",
+      "json_pointer": "/automatic_admissions",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/career-scope.json": {
+      "sha256": "ecfaaed25eac5bd9ce3176ce5bbe15f76aec93d59e92e1ecfcab126dbee36e19",
+      "bytes": 301,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-career-native-evidence.json",
+      "origin_sha256": "91934c45ba3609a52b3ed64847c988e33c19cef2ea7055d5337af00b6e805069",
+      "role": "Genuine previously executed candidate public evidence; scoped clock",
+      "json_pointer": "/scope",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/career-result_key.json": {
+      "sha256": "a020db8582c607d84d2cfc04845f5b7a1cc2c984a626a5c235eb333f86426d1f",
+      "bytes": 67,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-career-native-evidence.json",
+      "origin_sha256": "91934c45ba3609a52b3ed64847c988e33c19cef2ea7055d5337af00b6e805069",
+      "role": "Genuine previously executed candidate public evidence; scoped clock",
+      "json_pointer": "/result_key",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/provisional-view.json": {
+      "sha256": "806dbde91a8f9c46a432abdaeb7d28a9b32611bfcbe79e8b94fddf60646eda33",
+      "bytes": 767,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-career-native-evidence.json",
+      "origin_sha256": "91934c45ba3609a52b3ed64847c988e33c19cef2ea7055d5337af00b6e805069",
+      "role": "Historical original public View (not a current session)",
+      "json_pointer": "/rows/0/view",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/provisional-status.json": {
+      "sha256": "c685604b670be7d55fe408c0580521368038e69fa5382e4320b20b04aa202202",
+      "bytes": 1747,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-career-native-evidence.json",
+      "origin_sha256": "91934c45ba3609a52b3ed64847c988e33c19cef2ea7055d5337af00b6e805069",
+      "role": "Genuine captured Stable status, original source identity",
+      "json_pointer": "/rows/0/inventory/0/page/source/status",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/provisional-assignment.json": {
+      "sha256": "8a3619bb78f51eadd306928dc940f2d8dd01523760ba7d060138802a409b842e",
+      "bytes": 709,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-career-native-evidence.json",
+      "origin_sha256": "91934c45ba3609a52b3ed64847c988e33c19cef2ea7055d5337af00b6e805069",
+      "role": "Genuine consumed assignment, previously verified public admission; no proof rerun",
+      "json_pointer": "/rows/0/inventory/0/page/source/items/1/assignment",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/winner-view.json": {
+      "sha256": "b83327ec979ec3f959703631fe38b229b7b15588bf5b53a90ddb13289c8217c9",
+      "bytes": 767,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-career-native-evidence.json",
+      "origin_sha256": "91934c45ba3609a52b3ed64847c988e33c19cef2ea7055d5337af00b6e805069",
+      "role": "Historical original public View (not a current session)",
+      "json_pointer": "/rows/4/view",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/winner-status.json": {
+      "sha256": "c685604b670be7d55fe408c0580521368038e69fa5382e4320b20b04aa202202",
+      "bytes": 1747,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-career-native-evidence.json",
+      "origin_sha256": "91934c45ba3609a52b3ed64847c988e33c19cef2ea7055d5337af00b6e805069",
+      "role": "Genuine captured Stable status, original source identity",
+      "json_pointer": "/rows/4/inventory/0/page/source/status",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/winner-assignment.json": {
+      "sha256": "8a3619bb78f51eadd306928dc940f2d8dd01523760ba7d060138802a409b842e",
+      "bytes": 709,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-career-native-evidence.json",
+      "origin_sha256": "91934c45ba3609a52b3ed64847c988e33c19cef2ea7055d5337af00b6e805069",
+      "role": "Genuine consumed assignment, previously verified public admission; no proof rerun",
+      "json_pointer": "/rows/4/inventory/0/page/source/items/1/assignment",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/conflict-view.json": {
+      "sha256": "ca07dba95801a7dad9f547791428ed3b99d92171b02f815da732f12a0552c92c",
+      "bytes": 767,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-career-native-evidence.json",
+      "origin_sha256": "91934c45ba3609a52b3ed64847c988e33c19cef2ea7055d5337af00b6e805069",
+      "role": "Historical original public View (not a current session)",
+      "json_pointer": "/rows/8/view",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/conflict-status.json": {
+      "sha256": "c685604b670be7d55fe408c0580521368038e69fa5382e4320b20b04aa202202",
+      "bytes": 1747,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-career-native-evidence.json",
+      "origin_sha256": "91934c45ba3609a52b3ed64847c988e33c19cef2ea7055d5337af00b6e805069",
+      "role": "Genuine captured Stable status, original source identity",
+      "json_pointer": "/rows/8/inventory/0/page/source/status",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/conflict-assignment.json": {
+      "sha256": "8a3619bb78f51eadd306928dc940f2d8dd01523760ba7d060138802a409b842e",
+      "bytes": 709,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-career-native-evidence.json",
+      "origin_sha256": "91934c45ba3609a52b3ed64847c988e33c19cef2ea7055d5337af00b6e805069",
+      "role": "Genuine consumed assignment, previously verified public admission; no proof rerun",
+      "json_pointer": "/rows/8/inventory/0/page/source/items/1/assignment",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/held-view.json": {
+      "sha256": "7251376abf4dc75457caf31c5efb6e6aaf53eb9bffd514fb4b2e1790d31cf814",
+      "bytes": 767,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-career-native-evidence.json",
+      "origin_sha256": "91934c45ba3609a52b3ed64847c988e33c19cef2ea7055d5337af00b6e805069",
+      "role": "Historical original public View (not a current session)",
+      "json_pointer": "/rows/9/view",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/held-status.json": {
+      "sha256": "c685604b670be7d55fe408c0580521368038e69fa5382e4320b20b04aa202202",
+      "bytes": 1747,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-career-native-evidence.json",
+      "origin_sha256": "91934c45ba3609a52b3ed64847c988e33c19cef2ea7055d5337af00b6e805069",
+      "role": "Genuine captured Stable status, original source identity",
+      "json_pointer": "/rows/9/inventory/0/page/source/status",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/held-assignment.json": {
+      "sha256": "8a3619bb78f51eadd306928dc940f2d8dd01523760ba7d060138802a409b842e",
+      "bytes": 709,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-career-native-evidence.json",
+      "origin_sha256": "91934c45ba3609a52b3ed64847c988e33c19cef2ea7055d5337af00b6e805069",
+      "role": "Genuine consumed assignment, previously verified public admission; no proof rerun",
+      "json_pointer": "/rows/9/inventory/0/page/source/items/1/assignment",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/loser-view.json": {
+      "sha256": "6d690b2f15d388122d54984dbcad6fa34caeaa38cb23c471c6eba5af524ea493",
+      "bytes": 767,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-career-native-evidence.json",
+      "origin_sha256": "91934c45ba3609a52b3ed64847c988e33c19cef2ea7055d5337af00b6e805069",
+      "role": "Historical original public View (not a current session)",
+      "json_pointer": "/rows/10/view",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/loser-status.json": {
+      "sha256": "458a738e9812c7ca8ea368202fd17604b43d91eb363227a726d54da182d4011b",
+      "bytes": 1681,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-career-native-evidence.json",
+      "origin_sha256": "91934c45ba3609a52b3ed64847c988e33c19cef2ea7055d5337af00b6e805069",
+      "role": "Genuine captured Stable status, original source identity",
+      "json_pointer": "/rows/10/inventory/0/page/source/status",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/loser-assignment.json": {
+      "sha256": "934c4f570bcbdf12e6f9d3ae2ae71903db6f7c820614fba3356757ac586173aa",
+      "bytes": 709,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-career-native-evidence.json",
+      "origin_sha256": "91934c45ba3609a52b3ed64847c988e33c19cef2ea7055d5337af00b6e805069",
+      "role": "Genuine consumed assignment, previously verified public admission; no proof rerun",
+      "json_pointer": "/rows/10/inventory/0/page/source/items/2/assignment",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/result-finalized.json": {
+      "sha256": "8dbdf9e681912d4a2ba1871e1c803bdc97d282f2885639fcb92608d430943063",
+      "bytes": 16894,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-result-native-evidence.json",
+      "origin_sha256": "2d1c2e97ada528e90c6d4e10c93e208fa8aaa666f05a37873b3ddb100d854b17",
+      "role": "Genuine retained public Result record; no new result/engine/chain validation",
+      "json_pointer": "/finalized/record",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/result-conflict.json": {
+      "sha256": "4c344e69a94480f78ec253ead9aef53710eac8afbdc0ba3249451629a9631168",
+      "bytes": 17774,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-result-native-evidence.json",
+      "origin_sha256": "2d1c2e97ada528e90c6d4e10c93e208fa8aaa666f05a37873b3ddb100d854b17",
+      "role": "Genuine retained public Result record; no new result/engine/chain validation",
+      "json_pointer": "/conflict/record",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    },
+    "inputs/extracted/result-provisional.json": {
+      "sha256": "fecb07feb264299029c3d486e9dc393fcff56e2b951881bc9718b388671b3b23",
+      "bytes": 12750,
+      "origin": "/Users/taytrrip/slug/artifacts/set49/career-chain-attempt3/public-result-native-evidence.json",
+      "origin_sha256": "2d1c2e97ada528e90c6d4e10c93e208fa8aaa666f05a37873b3ddb100d854b17",
+      "role": "Genuine retained public Result record; no new result/engine/chain validation",
+      "json_pointer": "/first_inclusion/record",
+      "extraction_encoding": "json.dumps ensure_ascii=False indent=2 + LF; original insertion order preserved"
+    }
+  },
+  "origins_are_read_only": true,
+  "limits": [
+    "No private database or secret read. Published fixture identities are historical public inputs.",
+    "Genuine one-bout finality reuses Set49 independent verification; new histories/IDs/pages are independently derived here.",
+    "Additional count/tie/capacity histories are modeled only; no new engine, proof, signing or mining.",
+    "No new runtime source or outputs are oracle inputs."
+  ],
+  "extractor_sha256": "13c156600841c124ee303d7fd3bdd5e91079d097e52535d970cd0f48de9703ef"
+}

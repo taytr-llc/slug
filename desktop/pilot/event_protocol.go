@@ -34,7 +34,7 @@ func eventProtocolError(err error) string {
 
 var errEventSetup = errors.New("event_setup_incomplete")
 
-func handleEventRequest(ctx context.Context, r EventRequest, c EventControllerAPI) EventResponse {
+func handleEventRequest(ctx context.Context, r EventRequest, c EventSurfaceAPI) EventResponse {
 	out := EventResponse{ID: r.ID, OK: true}
 	var err error
 	switch r.Command {

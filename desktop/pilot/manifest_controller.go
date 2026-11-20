@@ -18,6 +18,7 @@ import (
 type ManifestController struct {
 	resultBytes           int
 	careerBytes           int
+	historyBytes          int // guarded by mu, charged to every shared-cache admission
 	boutBytes             int // guarded by mu; retained/reserved Bout family bytes
 	cardBytes             int // guarded by mu; retained/reserved Card family bytes
 	seedBytes             int // guarded by mu; retained/reserved seed family bytes

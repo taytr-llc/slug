@@ -1,0 +1,14 @@
+{
+  "approved_by": "root",
+  "execution_authorized": true,
+  "input_catalog_sha256": "a4bd0ac29d3e1143ece6858c1d3515c2068468ede30b3763a58309a01965322b",
+  "predecessor_lock_sha256": "44e88067c43be30fcf7715aa4ddcef625141df029bfc826db9fd785fb7ba7902",
+  "scope": "restored setup marker byte reference only",
+  "source_only_correction": "Accepted peer review: node literal-loopback HTTP only; public reader HTTPS retained; add two grammar negatives per fixture with exact changed expected endpoint. Original-export read-only matching and typed-spent prose is not a byte oracle proof.",
+  "sources": {
+    "case-plan.json": "a8bb6d3befa33445715e0db53d66ae76d2529681e14a458efb11067dcd8d1a48",
+    "generate_setup_reference.py": "4c4eeaf24f79c9e5bc4927e0c752bc84d0e498924682eb220e79749cb4a48d3b",
+    "setup_model.py": "6158f219773f6008badf4dbcef61c99d38827e905e63bfd9ace92618d64f4ac0"
+  },
+  "version": 1
+}

@@ -90,3 +90,8 @@ func (s *Store) careerSelection(ctx context.Context, plan Plan, cutoff int64) (c
 	}
 	return view, ids, nil
 }
+
+// OpenCareerAudit validates an established activated card archive read-only.
+func OpenCareerAudit(ctx context.Context, path string, p Pin, source *gymseed.Store, activation careerstate.Activation) (*Store, error) {
+	return openWithCareerAudit(ctx, path, p, source, time.Now, false, &activation, false, true)
+}

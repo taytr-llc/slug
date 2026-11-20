@@ -158,3 +158,68 @@ test('render identities are bounded and clearing the view retains no full result
   assert.ok(h.run('eventRetainedBytes()') >= h.run('entryBytes([eventDetail, eventHistory])') + 4096);
   h.run('clearEvent()'); assert.equal(h.elements.get('event-members')._key, ''); assert.equal(h.elements.get('event-history-list')._key, ''); assert.equal(h.run('eventDetail'), null);
 });
+
+
+const sharedReference = JSON.parse(readFileSync(new URL('../../gymstable/testdata/shared-reference/shared_v1.json', import.meta.url), 'utf8'));
+// These are transport-state adaptations using independent Pin2 inputs. The
+// original frozen corpus remains unchanged; actual store digests are verified
+// by the native/core and normal-PoW integration acceptance.
+function poolEventHarness(fixture = 'zero256') {
+  const h = harness(fixture), own = sharedReference.pins.find((p) => p.fixture === fixture);
+  const view = { ...clone(h.fixture.current_view), authority_pin: clone(own.pin.source) };
+  const current = clone(h.run('current')), stable = clone(h.run('stable')), snapshot = clone(h.snapshot);
+  current.view = clone(view); current.backup_state = 'idle';
+  stable.view = clone(view); stable.status.pin = clone(own.pin); stable.status.store_id = own.id;
+  snapshot.view = clone(view);
+  for (const participant of snapshot.pin.participants) {
+    const shared = sharedReference.pins.find((p) => p.pin.identity.gym_id === participant.stable_pin.identity.gym_id);
+    participant.stable_pin = clone(shared.pin); participant.stable_store_id = shared.id;
+  }
+  h.set('current', current); h.set('stable', stable); h.run('poolMode = true; eventAuthority = eventSnapshot = null');
+  const originalReply = h.reply;
+  h.reply = (kind, value) => { const result = originalReply(kind, value); result.view = clone(view); if (result[kind]?.view) result[kind].view = clone(view); return result; };
+  h.context.input = h.reply('snapshot', snapshot); h.run("eventSnapshot = eventEnvelope(input, 'snapshot').value");
+  h.snapshot = snapshot; h.view = view;
+  return h;
+}
+
+test('pool event controls pin both gyms to the same shared source and retain original capture views', async () => {
+  for (const fixture of ['zero256', 'incrementing256']) {
+    const h = poolEventHarness(fixture), status = dto('EventStatus', fixture, (s) => s.phase === 'awaiting_capture' && s.observed_at_ms >= s.event.cutoff_ms && s.coordinator_created_at_ms < s.event.cutoff_ms);
+    const queued = dto('EventJob', fixture, (j) => j.state === 'queued'); select(h, status);
+    h.handlers.EventStatus = () => h.reply('status', status); h.handlers.BeginEventCapture = () => h.reply('job', queued);
+    await h.run('eventReadStatus(true)'); assert.equal(h.count('BeginEventCapture'), 1);
+    assert.equal(h.calls.find((c) => c.method === 'BeginEventCapture').args[0], h.view.view_id);
+    assert.equal(h.run('eventAuthority.pin.participants.every(p => p.stable_pin.version === 2)'), true);
+    assert.equal(h.count('Start'), 0); assert.equal(h.count('ManifestSnapshot'), 0);
+    assert.match(h.elements.get('event-seed').textContent, /never receives a substitute seed/);
+  }
+});
+test('pool event snapshots reject mixed versions and a foreign counterparty source', async (t) => {
+  for (const mutation of ['pin1', 'foreign-source']) await t.test(mutation, () => {
+    const h = poolEventHarness(), altered = clone(h.snapshot);
+    const peer = altered.pin.participants.find((p) => p.stable_pin.identity.gym_id !== h.fixture.participant_id);
+    if (mutation === 'pin1') peer.stable_pin.version = 1;
+    else peer.stable_pin.source.authority_id = 'e'.repeat(64);
+    h.context.input = h.reply('snapshot', altered); h.run('eventAuthority = null');
+    assert.throws(() => h.run("eventEnvelope(input, 'snapshot')"));
+  });
+});
+test('pool backup delays automatic noon capture without consuming its automatic attempt', async () => {
+  const h = poolEventHarness(), status = dto('EventStatus', 'zero256', (s) => s.phase === 'awaiting_capture' && s.observed_at_ms >= s.event.cutoff_ms && s.coordinator_created_at_ms < s.event.cutoff_ms);
+  const queued = dto('EventJob', 'zero256', (j) => j.state === 'queued'); select(h, status);
+  h.handlers.EventStatus = () => h.reply('status', status); h.handlers.BeginEventCapture = () => h.reply('job', queued);
+  h.run("current.backup_state = 'running'"); await h.run('eventReadStatus(true)');
+  assert.equal(h.count('BeginEventCapture'), 0); assert.equal(h.run('eventAutoAttempted.size'), 0);
+  assert.equal(h.elements.get('event-capture').disabled, true);
+  h.run("current.backup_state = 'idle'"); await h.run('eventReadStatus(true)'); assert.equal(h.count('BeginEventCapture'), 1);
+  h.run("current.backup_state = 'running'; renderEvent()"); assert.equal(h.elements.get('event-cancel').disabled, false);
+});
+test('late pool capture cannot restore its old account view after logout', async () => {
+  const h = poolEventHarness(), j = dto('EventJob', 'zero256', (v) => v.state === 'completed'), gate = deferred();
+  h.set('entryDate', j.saturday); h.set('eventWatch', { id: j.job_id, eventID: j.event_id, saturday: j.saturday, participantID: j.participant_id });
+  h.handlers.EventJob = () => gate.promise;
+  const pending = h.run(`eventFetchJob('${j.job_id}')`); h.run('epoch++; clearEvent(); current = null; stable = null');
+  gate.resolve(h.reply('job', j)); await pending;
+  assert.equal(h.run('eventDetail'), null); assert.equal(h.elements.get('event-members').textContent, '');
+});

@@ -23,7 +23,7 @@ func (s *StableController) beginEntry(ctx context.Context, view, kind, date, op 
 		if !s.entryEnabled || !s.installed || s.stableClosed || s.entryStoreID == "" {
 			return gymentry.ErrUnavailable
 		}
-		if s.stopping {
+		if s.stopping || s.evidenceBusyLocked() {
 			return gymentry.ErrBusy
 		}
 		s.expireQueuedLocked()
@@ -37,7 +37,7 @@ func (s *StableController) beginEntry(ctx context.Context, view, kind, date, op 
 		s.mu.Lock()
 		defer s.mu.Unlock()
 		oldBytes = s.entryBytes
-		if !stableCacheFits(s.cache, s.receiptSlot, s.careerBytes+s.previewBytes+MaxEntryCacheSize+s.eventBytes+s.seedBytes+s.cardBytes+s.boutBytes+s.resultBytes) {
+		if !stableCacheFits(s.cache, s.receiptSlot, s.historyBytes+s.careerBytes+s.previewBytes+MaxEntryCacheSize+s.eventBytes+s.seedBytes+s.cardBytes+s.boutBytes+s.resultBytes) {
 			return gymentry.ErrCapacity
 		}
 		var id [32]byte

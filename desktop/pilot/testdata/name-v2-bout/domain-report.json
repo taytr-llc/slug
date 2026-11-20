@@ -1,0 +1,25 @@
+{
+  "record_sha256": "849c5566b32135a5d89c5defcd36fc429ac5e624d6afb7640de6417d24692996",
+  "record_bytes": 72006,
+  "independent_python_domain_checks": [
+    {
+      "corner": "a",
+      "name": "Imad Ruiz",
+      "manifest_version": 2,
+      "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+      "recorded_manifest_digest": "ef47cdbb623a77afb7ffd673f4ff79f8ec66f35b41b392994bdecc42a59ea147",
+      "v1_raw_digest": "ae436b1522cba381097387ece95a5ca25024d26f83f5615928d97e9cbfd79bea",
+      "v2_raw_digest": "ef47cdbb623a77afb7ffd673f4ff79f8ec66f35b41b392994bdecc42a59ea147"
+    },
+    {
+      "corner": "b",
+      "name": "Aditya Collins",
+      "manifest_version": 2,
+      "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+      "recorded_manifest_digest": "9dc3c6537c672ca56103b0ba34f64e8aa447da2828fe4e5326969d61e528fdff",
+      "v1_raw_digest": "28a2d810ca6f3641bae3db57aacd2c21ba42ed277c6afa1f608ea159b7cc759a",
+      "v2_raw_digest": "9dc3c6537c672ca56103b0ba34f64e8aa447da2828fe4e5326969d61e528fdff"
+    }
+  ],
+  "claim": "Input copied unchanged from the actual failed run. Domain SHA256 is independently recomputed; this is not a new fight engine oracle."
+}

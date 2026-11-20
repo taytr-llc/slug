@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "seconds": 5.428736208,
+  "bytes": 2820282,
+  "sha256": "eb51028daf2ebbda44dfbfdb79f58353137ed03f1836fad5b8db8cf428300772",
+  "positives": 28,
+  "negatives": 44,
+  "normal_work_unique_headers": 6,
+  "execution_lock_sha256": "43aec989297bb766ad07244f07a4f40e7d341c8d5940c6e66a9a7cb383c8303f",
+  "python": "3.9.6 (default, Oct 19 2026, 19:18:13) \n[Clang 21.0.0 (clang-2100.4.1.1)]",
+  "scope": "Conditional supplied-evidence consistency; actual public source inputs and explicitly modeled histories, no admission-time/award/completeness/ownership authentication"
+}

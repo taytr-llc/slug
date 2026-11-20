@@ -42,7 +42,7 @@ func seedProtocolError(err error) string {
 
 var errSeedSetup = errors.New("seed_setup_incomplete")
 
-func handleSeedRequest(ctx context.Context, r SeedRequest, c SeedControllerAPI) SeedResponse {
+func handleSeedRequest(ctx context.Context, r SeedRequest, c SeedSurfaceAPI) SeedResponse {
 	out := SeedResponse{ID: r.ID, OK: true}
 	var err error
 	switch r.Command {

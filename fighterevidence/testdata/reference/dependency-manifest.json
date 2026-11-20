@@ -1,0 +1,950 @@
+{
+  "version": 1,
+  "basis_commit": "7bf924f6a11f496060633c58623242e18b1e3004",
+  "scope": "Existing committed immutable reference inputs; no inherited directories are copied into new testdata or written during reproduction.",
+  "roots": {
+    "admission": "registry/testdata/manifest/reference",
+    "history": "gymstable/testdata/career-history-reference",
+    "name_v2": "fighterdescriptor/testdata/name-v2"
+  },
+  "files": {
+    "fighterdescriptor/testdata/name-v2/BUNDLE.md": {
+      "bytes": 872,
+      "sha256": "a11d2c6b86eb6a06bf65a1b7be6df914991f5ab931b05cadd5f3ccb52826d484"
+    },
+    "fighterdescriptor/testdata/name-v2/README.md": {
+      "bytes": 5209,
+      "sha256": "3b654dc54dbf962b35019174c86b1de03b5315e55f599052d8e8e651b9ad90d3"
+    },
+    "fighterdescriptor/testdata/name-v2/RESULTS.md": {
+      "bytes": 4940,
+      "sha256": "b8d586d8a0a0d8eb9ed8b00ee7abf0dca704346027ff9a9606efee3c07dc1dbf"
+    },
+    "fighterdescriptor/testdata/name-v2/approval.json": {
+      "bytes": 2416,
+      "sha256": "993792280545137c30e44da3f47406c2cfe71061eb3433ddc136f6088994caf4"
+    },
+    "fighterdescriptor/testdata/name-v2/audit-report.json": {
+      "bytes": 3048,
+      "sha256": "2a41eaf17520245fb900b4b33fc39712bb903fe3ccc4580c524c65c7bd5521c9"
+    },
+    "fighterdescriptor/testdata/name-v2/audit_names.py": {
+      "bytes": 3578,
+      "sha256": "19bbea5840a0dd3958e13a704ae893470a05528f96cebc27cc344374ca0091ec"
+    },
+    "fighterdescriptor/testdata/name-v2/candidate_names.json": {
+      "bytes": 14153,
+      "sha256": "ccdcef67912f03cdc2fa9f54e30f5a909152f7b417dd8933faf7d2fa17047813"
+    },
+    "fighterdescriptor/testdata/name-v2/compatibility-review.md": {
+      "bytes": 15123,
+      "sha256": "632093e73aad0b06de4351ad8d5a421932fd3ce51d51a3677571bdb380885e58"
+    },
+    "fighterdescriptor/testdata/name-v2/derivation.json": {
+      "bytes": 1769,
+      "sha256": "9aa84423158a992a120f475306e5c45067c0d5b44a0407256f2a8bee68529e57"
+    },
+    "fighterdescriptor/testdata/name-v2/fighter-manifest-v2-contract.md": {
+      "bytes": 9616,
+      "sha256": "0283415807d33b362aaeffbb1570504085cd975bf9f3adc0b497d0c8b79856a7"
+    },
+    "fighterdescriptor/testdata/name-v2/first-names-draft.txt": {
+      "bytes": 5210,
+      "sha256": "dc72724844c60f760c3c82f2537740d506b654612ac9c567754c68bb8942a2bd"
+    },
+    "fighterdescriptor/testdata/name-v2/independent/README.md": {
+      "bytes": 3226,
+      "sha256": "cadfd97c20a5021cb76b77a51bbc54a7744654a1ed2297576d0d185ed695b47c"
+    },
+    "fighterdescriptor/testdata/name-v2/independent/attempt1/corpus-check.json": {
+      "bytes": 138,
+      "sha256": "b4a05426bff98bb7861f9b6c9925de029de59dcc62b1bfb83541f85506dd73f9"
+    },
+    "fighterdescriptor/testdata/name-v2/independent/attempt1/corpus-generate.json": {
+      "bytes": 138,
+      "sha256": "02784b839078e831fbd5d08cec2ee9e81d6084639c1b724ddf2d3234c2e49f3b"
+    },
+    "fighterdescriptor/testdata/name-v2/independent/attempt1/sample-check.json": {
+      "bytes": 140,
+      "sha256": "83fbe439bc5737a9eb58aa87cbea0a274e85ec27650faa83e2d3d9c0ae585a82"
+    },
+    "fighterdescriptor/testdata/name-v2/independent/attempt1/sample-generate.json": {
+      "bytes": 140,
+      "sha256": "66bfb989117f5dd36d5547e00a09be88721e0eea11abded73c475a828d0dcb88"
+    },
+    "fighterdescriptor/testdata/name-v2/independent/attempt1/secondary-hash-check.json": {
+      "bytes": 258,
+      "sha256": "9c090ca7c06a3ff47b4956af6ecdd0435b46e2017d911e705e1e673561539144"
+    },
+    "fighterdescriptor/testdata/name-v2/independent/collision-report.json": {
+      "bytes": 24866,
+      "sha256": "18b5dcc0e344dd3d207c06ba4f31d48a5bc4bbcfdc6435fd4d076796f8ef870b"
+    },
+    "fighterdescriptor/testdata/name-v2/independent/input-lock.json": {
+      "bytes": 2703,
+      "sha256": "bae736a305e6e9019db0396740c7f57c9b66ced1f484c53863d23ddbd3b88b43"
+    },
+    "fighterdescriptor/testdata/name-v2/independent/inputs/portrait-v1/input_hashes.json": {
+      "bytes": 1670,
+      "sha256": "108b6911cc622b9510d1f8de96086964fb6718bc3e6029f28ea42a2db821ca19"
+    },
+    "fighterdescriptor/testdata/name-v2/independent/inputs/portrait-v1/inputs/fighter-manifest-contract.md": {
+      "bytes": 13247,
+      "sha256": "ba8d33dbad3722eed6b4406ef120f946d7e06e1ea04305cbe8648889ba169e80"
+    },
+    "fighterdescriptor/testdata/name-v2/independent/inputs/portrait-v1/inputs/manifest/baseline/dna_v1.json": {
+      "bytes": 2658,
+      "sha256": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71"
+    },
+    "fighterdescriptor/testdata/name-v2/independent/inputs/portrait-v1/inputs/manifest/baseline/reference_dna.py": {
+      "bytes": 8283,
+      "sha256": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2"
+    },
+    "fighterdescriptor/testdata/name-v2/independent/inputs/portrait-v1/inputs/manifest/manifests_v1.json": {
+      "bytes": 289470,
+      "sha256": "75eb01acb79f45b74a6445edf956c5e3f3b68024998ae56ab44a7ed07cf15f3d"
+    },
+    "fighterdescriptor/testdata/name-v2/independent/inputs/portrait-v1/inputs/manifest/reference_manifest.py": {
+      "bytes": 24912,
+      "sha256": "9fb1a814047f2329066bb19596e910ac7c4c7aadfce4b8f994e02dab81e51b4f"
+    },
+    "fighterdescriptor/testdata/name-v2/independent/inputs/portrait-v1/inputs/manifest/tables_v1.json": {
+      "bytes": 2578,
+      "sha256": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7"
+    },
+    "fighterdescriptor/testdata/name-v2/independent/inputs/portrait-v1/inputs/portrait-renderer-contract.md": {
+      "bytes": 28710,
+      "sha256": "8ae3c8dbe92fbef719880227e107cb98cbfd6419d984cad08ebb5d5e0a9c0df5"
+    },
+    "fighterdescriptor/testdata/name-v2/independent/inputs/portrait-v1/inputs/portraits.py": {
+      "bytes": 15381,
+      "sha256": "9bac3d966e7093e0665cd9c9a683e7a6ab73381948dccfd0dc8cac8c98a75a72"
+    },
+    "fighterdescriptor/testdata/name-v2/independent/inputs/portrait-v1/portraits_v1.json": {
+      "bytes": 302628,
+      "sha256": "03df75cbf923a6dfc8fcac78e98d704641c0edf65ce563cf307f20a52f250670"
+    },
+    "fighterdescriptor/testdata/name-v2/independent/inputs/portrait-v1/reference_portraits.py": {
+      "bytes": 28065,
+      "sha256": "1a44c0506944211cf699b653f63905c6802e2012928855354f4053d03d209093"
+    },
+    "fighterdescriptor/testdata/name-v2/independent/provenance.json": {
+      "bytes": 4700,
+      "sha256": "062ddfd4c920a0a9b644a24e8db76000a4651580a878b9da53338c2c583a4197"
+    },
+    "fighterdescriptor/testdata/name-v2/independent/public-inputs.json": {
+      "bytes": 2766,
+      "sha256": "1bb6eb19386a74bd8c97ebf6f99201d43659e06d18d04f6eaa43f7578ad8f90e"
+    },
+    "fighterdescriptor/testdata/name-v2/independent/reference-v2.json": {
+      "bytes": 5529861,
+      "sha256": "62c4cd102341476548b9d388437af83750be407b8cbf534b34896719e2fa281b"
+    },
+    "fighterdescriptor/testdata/name-v2/independent/reference_v2.py": {
+      "bytes": 18977,
+      "sha256": "44feef72ff87781e4c4fcfb53c335e3d9a2e1152af24a17d1145fd04133c4b1f"
+    },
+    "fighterdescriptor/testdata/name-v2/inherited/fighter-manifest-v1-contract.md": {
+      "bytes": 13247,
+      "sha256": "ba8d33dbad3722eed6b4406ef120f946d7e06e1ea04305cbe8648889ba169e80"
+    },
+    "fighterdescriptor/testdata/name-v2/inherited/full-tables-v1.json": {
+      "bytes": 2578,
+      "sha256": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7"
+    },
+    "fighterdescriptor/testdata/name-v2/inherited/portrait-renderer-v1-contract.md": {
+      "bytes": 28710,
+      "sha256": "8ae3c8dbe92fbef719880227e107cb98cbfd6419d984cad08ebb5d5e0a9c0df5"
+    },
+    "fighterdescriptor/testdata/name-v2/portrait-renderer-v2-contract.md": {
+      "bytes": 7254,
+      "sha256": "6044ce174e9a7a466783985e34b02b34ae2785719ca77b1268f7e6ad3c717677"
+    },
+    "fighterdescriptor/testdata/name-v2/proposed-contract-bindings.json": {
+      "bytes": 1125,
+      "sha256": "151bfd984c7225f69c7a0abe1d2cfc544958365eb0941ba1b23156f2a679af7e"
+    },
+    "fighterdescriptor/testdata/name-v2/proposed-table-bindings.json": {
+      "bytes": 667,
+      "sha256": "7886c8cf227790e0b9fe7b7d3e2e88aabe39ef340778e6932d371c2405eaa646"
+    },
+    "fighterdescriptor/testdata/name-v2/reviewed-proposals/fighter-manifest-v2-contract.md": {
+      "bytes": 9726,
+      "sha256": "8421f24e32a05147282754a85458078b734f82446d9b647af6bc827be36c82a5"
+    },
+    "fighterdescriptor/testdata/name-v2/reviewed-proposals/portrait-renderer-v2-contract.md": {
+      "bytes": 7281,
+      "sha256": "efe8797c7fb76ddebbe5022546320f450ac1af1f7f6792e7ad1f9e3e12219ac1"
+    },
+    "fighterdescriptor/testdata/name-v2/reviewed-proposals/proposed-contract-bindings.json": {
+      "bytes": 1125,
+      "sha256": "151bfd984c7225f69c7a0abe1d2cfc544958365eb0941ba1b23156f2a679af7e"
+    },
+    "fighterdescriptor/testdata/name-v2/reviewed-proposals/proposed-table-bindings.json": {
+      "bytes": 667,
+      "sha256": "7886c8cf227790e0b9fe7b7d3e2e88aabe39ef340778e6932d371c2405eaa646"
+    },
+    "fighterdescriptor/testdata/name-v2/selection_provenance.json": {
+      "bytes": 17544,
+      "sha256": "5b64866a6a06415abf406a98ae204e40cd4bc37714e87879ab81ed2e691b447c"
+    },
+    "fighterdescriptor/testdata/name-v2/surnames-draft.txt": {
+      "bytes": 7803,
+      "sha256": "0ae3cc5db93e158832d7e31382d73812264ae02f0554dcbeb70d794241d4349f"
+    },
+    "fighterdescriptor/testdata/name-v2/tables_v2.json": {
+      "bytes": 9017,
+      "sha256": "96e7ae3eaae038932355e44ef4a3a88ecab4c8f5fa1dea7371d748b6fab0b051"
+    },
+    "gymstable/testdata/career-history-reference/README.md": {
+      "bytes": 8036,
+      "sha256": "28f22ae2fc5bf1b1ac4e5c5e74bd5010d158edb2332f8ce5f20b2438c9b80a2c"
+    },
+    "gymstable/testdata/career-history-reference/check_reproducibility.py": {
+      "bytes": 3268,
+      "sha256": "5ffbd94f0ea8d89b357750febbaa44591e29dce3a4914d2e5d6c093590a11457"
+    },
+    "gymstable/testdata/career-history-reference/common.py": {
+      "bytes": 2801,
+      "sha256": "bd348290836084323c738cfcdaab35a18c76cd36233b582c88e207de095c8988"
+    },
+    "gymstable/testdata/career-history-reference/corpus.json": {
+      "bytes": 7886276,
+      "sha256": "18e51e25c6760f756159e12a92265b517438152533d439d541d4696044e60283"
+    },
+    "gymstable/testdata/career-history-reference/extract_inputs.py": {
+      "bytes": 6990,
+      "sha256": "2e61fd3f50eb167b8262e11a8900b8ee6f0ebb93329bb3c27fe458bb80506ae1"
+    },
+    "gymstable/testdata/career-history-reference/file_index.json": {
+      "bytes": 22769,
+      "sha256": "c76bea7a2b3270f07968746ae07e216a4e266756f415ae21b6f559ab02ad2712"
+    },
+    "gymstable/testdata/career-history-reference/fragments/history.json": {
+      "bytes": 8352193,
+      "sha256": "d055b0b5d16161f1bc227f1e2591b5d67aaa0ac7a7445d1f720ac70ed575f728"
+    },
+    "gymstable/testdata/career-history-reference/fragments/state.json": {
+      "bytes": 35779,
+      "sha256": "7dd42929ef8cae3b9b9d220a497715f54d9293e22a7dfa6cb20ad78bd85430f2"
+    },
+    "gymstable/testdata/career-history-reference/fragments/wire.json": {
+      "bytes": 971330,
+      "sha256": "13fa57ec623196d3117f6ea751d406d05f91ce87a5a6c42b982fc44b4f1a1259"
+    },
+    "gymstable/testdata/career-history-reference/generate.py": {
+      "bytes": 2422,
+      "sha256": "ecdc6eb24e3bbe17007fa81bc0f9991c7e7d1bc17d6b8bce2bcfb0b3b2746147"
+    },
+    "gymstable/testdata/career-history-reference/history_math.py": {
+      "bytes": 17445,
+      "sha256": "a029c39d622123da3dac699aca154eb8f143ddaf0e754e3c6aa515a04d93c6c2"
+    },
+    "gymstable/testdata/career-history-reference/input_index.json": {
+      "bytes": 53407,
+      "sha256": "cae11a8fb9a1707051626330161d6523795228c01d765dc920d8db3af13e9ae6"
+    },
+    "gymstable/testdata/career-history-reference/inputs/contracts/ADR_002_CAREER_FINALITY.md": {
+      "bytes": 4867,
+      "sha256": "e78e7a3bc0afa08b45c8cdbda849c9b215d5cfa909604af1f73ff96b542538b6"
+    },
+    "gymstable/testdata/career-history-reference/inputs/contracts/CAREER_ACCOUNTING.md": {
+      "bytes": 21346,
+      "sha256": "aab64b01450aa2d6c7bae5cd48f725cc339b6ca455ee509d72af145934398fec"
+    },
+    "gymstable/testdata/career-history-reference/inputs/contracts/CAREER_CONSUMERS.md": {
+      "bytes": 10291,
+      "sha256": "622e7b96d6a784555dd96c6eb86e5c4e1c66db5cf441aeb8e655e3a1dc7945a6"
+    },
+    "gymstable/testdata/career-history-reference/inputs/contracts/FIGHTER_CAREER.md": {
+      "bytes": 3076,
+      "sha256": "07de417554cf2a61085e8545f78fbf43bb5b02fc63a3d3d4d6889acadbe193d1"
+    },
+    "gymstable/testdata/career-history-reference/inputs/contracts/set51-fighter-history-contract.md": {
+      "bytes": 30286,
+      "sha256": "24d9ef135ca949947c29ed1a887b517209d9ae932ca8286ad9a2ad9046b53e53"
+    },
+    "gymstable/testdata/career-history-reference/inputs/contracts/set51-history-bound-independent-review.json": {
+      "bytes": 5555,
+      "sha256": "305f532f730d4f03479185bb94c5102533f52302b52ce59f1e0c3a110deec4b4"
+    },
+    "gymstable/testdata/career-history-reference/inputs/contracts/set51-history-contract-freeze.json": {
+      "bytes": 1719,
+      "sha256": "533a6e13ef737179e17a8e8b5390a9e83fa2e2aba3f0cd2304d6a67af356eb33"
+    },
+    "gymstable/testdata/career-history-reference/inputs/contracts/set51-history-contract-independent-review.json": {
+      "bytes": 7429,
+      "sha256": "089d7cfaa2287f66ef00121631caf8f3969d2abb7ded795a43bcb98d744eae08"
+    },
+    "gymstable/testdata/career-history-reference/inputs/contracts/set51-history-reference-intake.md": {
+      "bytes": 3379,
+      "sha256": "2ad33786f79128cb6c6551f0bccfb2f8ab6c23c8faed66c374d1e70f85221fd7"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/actual-automatic_admissions.json": {
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/actual-candidate_awarded_bouts.json": {
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/actual-career_evidence_checked.json": {
+      "bytes": 5,
+      "sha256": "a17fcf0a2f50e2d495e4f90ce263410edc183add6c62699a2facbccf60410f74"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/actual-career_rows.json": {
+      "bytes": 3,
+      "sha256": "a1fb50e6c86fae1679ef3351296fd6713411a08cf8dd1790a4fd05fae8688164"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/actual-original_tree_unchanged.json": {
+      "bytes": 5,
+      "sha256": "a17fcf0a2f50e2d495e4f90ce263410edc183add6c62699a2facbccf60410f74"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/actual-public_evidence_sha256.json": {
+      "bytes": 1955,
+      "sha256": "48ce2bd6d1f47bc4370dcba684b6360c5039e4bd28b36d8d3ba33c37e2c12c36"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/actual-scope.json": {
+      "bytes": 222,
+      "sha256": "5ed588db10b99a4a1c298bdbe9b9933999a5719e3c4ca61db26ffd794a86be84"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/actual-source_files_unchanged.json": {
+      "bytes": 5,
+      "sha256": "a17fcf0a2f50e2d495e4f90ce263410edc183add6c62699a2facbccf60410f74"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/actual-status.json": {
+      "bytes": 9,
+      "sha256": "94a5fc07ee2e130610140f0ca8bc72b14def780332b1b3c4d3ec6c7855e432e8"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/career-activation.json": {
+      "bytes": 396,
+      "sha256": "b1a979aa286dd7dd1d1a3f7f0f7bc933cfb12d9f09dadd8657898da908892ad8"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/career-automatic_admissions.json": {
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/career-finality.json": {
+      "bytes": 1655,
+      "sha256": "f6165a782a992ea09239533cfe28a98859278e1a5cdff1e88f39a7e9e364cd04"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/career-normal_pow.json": {
+      "bytes": 5,
+      "sha256": "a17fcf0a2f50e2d495e4f90ce263410edc183add6c62699a2facbccf60410f74"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/career-result_key.json": {
+      "bytes": 67,
+      "sha256": "a020db8582c607d84d2cfc04845f5b7a1cc2c984a626a5c235eb333f86426d1f"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/career-scope.json": {
+      "bytes": 301,
+      "sha256": "ecfaaed25eac5bd9ce3176ce5bbe15f76aec93d59e92e1ecfcab126dbee36e19"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/career-tagged_clock.json": {
+      "bytes": 5,
+      "sha256": "a17fcf0a2f50e2d495e4f90ce263410edc183add6c62699a2facbccf60410f74"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/conflict-assignment.json": {
+      "bytes": 709,
+      "sha256": "8a3619bb78f51eadd306928dc940f2d8dd01523760ba7d060138802a409b842e"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/conflict-awarded.json": {
+      "bytes": 5,
+      "sha256": "a17fcf0a2f50e2d495e4f90ce263410edc183add6c62699a2facbccf60410f74"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/conflict-expected_totals.json": {
+      "bytes": 77,
+      "sha256": "56c77c2964024204466e4a7bdeded7f38d540e70105bc0c196c67eaf09f91bd0"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/conflict-held.json": {
+      "bytes": 6,
+      "sha256": "2ed27c1421e6928dbe13dbfdb5c59e1045b30341fe7ebe05700006bc5ac572c0"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/conflict-prospect_id.json": {
+      "bytes": 67,
+      "sha256": "961d55122b5e0b3a2b9613673d8d443f97ffaf2137046e622e20c332a7309a68"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/conflict-stage.json": {
+      "bytes": 26,
+      "sha256": "e69d6a458cf0fa8ca9b5dc44ea0645cd7fd7a5ff50355c1d8db5d0b3c3c64f2a"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/conflict-status.json": {
+      "bytes": 1747,
+      "sha256": "c685604b670be7d55fe408c0580521368038e69fa5382e4320b20b04aa202202"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/conflict-view.json": {
+      "bytes": 767,
+      "sha256": "ca07dba95801a7dad9f547791428ed3b99d92171b02f815da732f12a0552c92c"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/held-assignment.json": {
+      "bytes": 709,
+      "sha256": "8a3619bb78f51eadd306928dc940f2d8dd01523760ba7d060138802a409b842e"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/held-awarded.json": {
+      "bytes": 5,
+      "sha256": "a17fcf0a2f50e2d495e4f90ce263410edc183add6c62699a2facbccf60410f74"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/held-expected_totals.json": {
+      "bytes": 77,
+      "sha256": "56c77c2964024204466e4a7bdeded7f38d540e70105bc0c196c67eaf09f91bd0"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/held-held.json": {
+      "bytes": 5,
+      "sha256": "a17fcf0a2f50e2d495e4f90ce263410edc183add6c62699a2facbccf60410f74"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/held-prospect_id.json": {
+      "bytes": 67,
+      "sha256": "961d55122b5e0b3a2b9613673d8d443f97ffaf2137046e622e20c332a7309a68"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/held-stage.json": {
+      "bytes": 19,
+      "sha256": "df69cbbfd9938ba898bd8142e0415873e2dd4678008549427dd382a4ea0c6d68"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/held-status.json": {
+      "bytes": 1747,
+      "sha256": "c685604b670be7d55fe408c0580521368038e69fa5382e4320b20b04aa202202"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/held-view.json": {
+      "bytes": 767,
+      "sha256": "7251376abf4dc75457caf31c5efb6e6aaf53eb9bffd514fb4b2e1790d31cf814"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/independent-career.json": {
+      "bytes": 56874,
+      "sha256": "9ae23c548dd9f86f4dc0d4060cab42e2af2bf942ca767858bb9a2721fa18666a"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/independent-evidence_sha256.json": {
+      "bytes": 2353,
+      "sha256": "311106cd104a5b4e5b41e1906eccdf7f4ebc48066326e7fed6c6d5967db31732"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/independent-limitations.json": {
+      "bytes": 841,
+      "sha256": "991bb5194a62c8e6236de7483f42a4ede63b68f7f10720d9d3b2c6f43c240302"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/independent-proofs.json": {
+      "bytes": 2263,
+      "sha256": "a6d282bac01b6e48a7857cb298ba1b6c5c83723a2aaa7aa7cd85b9bccc3e0ad9"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/independent-scope.json": {
+      "bytes": 143,
+      "sha256": "2ccc0d441a1aa8c4e2147e4cdc8749284e9bcca029834eeed6e16cbda9a9611a"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/independent-source_verifier_sha256.json": {
+      "bytes": 67,
+      "sha256": "4148194785a6a6c26f4f5dff4b1b4731b908fd50bd3dca65db56e5d17d6c6772"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/independent-status.json": {
+      "bytes": 9,
+      "sha256": "94a5fc07ee2e130610140f0ca8bc72b14def780332b1b3c4d3ec6c7855e432e8"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/independent-verifier_sha256.json": {
+      "bytes": 67,
+      "sha256": "44bea37990d8f8914e7801473cf93ef2af59b2b5aacce5514531e86e2d32c149"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/loser-assignment.json": {
+      "bytes": 709,
+      "sha256": "934c4f570bcbdf12e6f9d3ae2ae71903db6f7c820614fba3356757ac586173aa"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/loser-awarded.json": {
+      "bytes": 5,
+      "sha256": "a17fcf0a2f50e2d495e4f90ce263410edc183add6c62699a2facbccf60410f74"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/loser-expected_totals.json": {
+      "bytes": 76,
+      "sha256": "c089de3e98fdf64f67570f71950d65e23d299b27cdd939a4d6863c00d6ea8f76"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/loser-held.json": {
+      "bytes": 6,
+      "sha256": "2ed27c1421e6928dbe13dbfdb5c59e1045b30341fe7ebe05700006bc5ac572c0"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/loser-prospect_id.json": {
+      "bytes": 67,
+      "sha256": "8f2f920922bad36089f8bda86a99d3b2777ea0f030e0088bda0650069fc91e40"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/loser-stage.json": {
+      "bytes": 12,
+      "sha256": "a35bd18a6c6da31c01c0154742e9b2683868255a22053bb9397594910a271eda"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/loser-status.json": {
+      "bytes": 1681,
+      "sha256": "458a738e9812c7ca8ea368202fd17604b43d91eb363227a726d54da182d4011b"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/loser-view.json": {
+      "bytes": 767,
+      "sha256": "6d690b2f15d388122d54984dbcad6fa34caeaa38cb23c471c6eba5af524ea493"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/provisional-assignment.json": {
+      "bytes": 709,
+      "sha256": "8a3619bb78f51eadd306928dc940f2d8dd01523760ba7d060138802a409b842e"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/provisional-awarded.json": {
+      "bytes": 6,
+      "sha256": "2ed27c1421e6928dbe13dbfdb5c59e1045b30341fe7ebe05700006bc5ac572c0"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/provisional-expected_totals.json": {
+      "bytes": 76,
+      "sha256": "acc057f0b7c3a4f18d200789c0e26efdfb8ec81bf96756e6b4175fee5ec5a327"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/provisional-held.json": {
+      "bytes": 6,
+      "sha256": "2ed27c1421e6928dbe13dbfdb5c59e1045b30341fe7ebe05700006bc5ac572c0"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/provisional-prospect_id.json": {
+      "bytes": 67,
+      "sha256": "961d55122b5e0b3a2b9613673d8d443f97ffaf2137046e622e20c332a7309a68"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/provisional-stage.json": {
+      "bytes": 20,
+      "sha256": "463dd9d69cc86eda69eb9e2c956bf10acb95bd3acb0333b9620f3dc36f746a17"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/provisional-status.json": {
+      "bytes": 1747,
+      "sha256": "c685604b670be7d55fe408c0580521368038e69fa5382e4320b20b04aa202202"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/provisional-view.json": {
+      "bytes": 767,
+      "sha256": "806dbde91a8f9c46a432abdaeb7d28a9b32611bfcbe79e8b94fddf60646eda33"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/result-conflict.json": {
+      "bytes": 17774,
+      "sha256": "4c344e69a94480f78ec253ead9aef53710eac8afbdc0ba3249451629a9631168"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/result-finalized.json": {
+      "bytes": 16894,
+      "sha256": "8dbdf9e681912d4a2ba1871e1c803bdc97d282f2885639fcb92608d430943063"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/result-provisional.json": {
+      "bytes": 12750,
+      "sha256": "fecb07feb264299029c3d486e9dc393fcff56e2b951881bc9718b388671b3b23"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/winner-assignment.json": {
+      "bytes": 709,
+      "sha256": "8a3619bb78f51eadd306928dc940f2d8dd01523760ba7d060138802a409b842e"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/winner-awarded.json": {
+      "bytes": 5,
+      "sha256": "a17fcf0a2f50e2d495e4f90ce263410edc183add6c62699a2facbccf60410f74"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/winner-expected_totals.json": {
+      "bytes": 77,
+      "sha256": "56c77c2964024204466e4a7bdeded7f38d540e70105bc0c196c67eaf09f91bd0"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/winner-held.json": {
+      "bytes": 6,
+      "sha256": "2ed27c1421e6928dbe13dbfdb5c59e1045b30341fe7ebe05700006bc5ac572c0"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/winner-prospect_id.json": {
+      "bytes": 67,
+      "sha256": "961d55122b5e0b3a2b9613673d8d443f97ffaf2137046e622e20c332a7309a68"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/winner-stage.json": {
+      "bytes": 14,
+      "sha256": "b84658c7aa76e4ec52248682eda60ea7ab08c9b674b965e513d077320c76d317"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/winner-status.json": {
+      "bytes": 1747,
+      "sha256": "c685604b670be7d55fe408c0580521368038e69fa5382e4320b20b04aa202202"
+    },
+    "gymstable/testdata/career-history-reference/inputs/extracted/winner-view.json": {
+      "bytes": 767,
+      "sha256": "b83327ec979ec3f959703631fe38b229b7b15588bf5b53a90ddb13289c8217c9"
+    },
+    "gymstable/testdata/career-history-reference/inputs/grammar/desktop__pilot__manifest_types.go.txt": {
+      "bytes": 6180,
+      "sha256": "ef9d572bd086e32e5ac7ad55b6c402e9eb7e924b08e4bd8e5833a8f0d24a34fc"
+    },
+    "gymstable/testdata/career-history-reference/inputs/grammar/desktop__pilot__stable_validation.go.txt": {
+      "bytes": 13924,
+      "sha256": "03616e20c1a2d73ed2365cdfbb12df2aeee12fc660341c99070f0605f4b1130b"
+    },
+    "gymstable/testdata/career-history-reference/inputs/grammar/gymaccount__types.go.txt": {
+      "bytes": 4760,
+      "sha256": "6331c46e206e6ebda14b56275f984587b35ed1882d3f5ada0c1b1734c230f4a7"
+    },
+    "gymstable/testdata/career-history-reference/inputs/grammar/gymstable__audit.go.txt": {
+      "bytes": 7115,
+      "sha256": "dd602eda7e7582ca315ba2c027db193b4833ad8e8644e9462c0369130d0c9fdc"
+    },
+    "gymstable/testdata/career-history-reference/inputs/grammar/gymstable__codec.go.txt": {
+      "bytes": 6351,
+      "sha256": "e83d4d9d91ad6ff429051d12cedb612c031b607cf5156ef725330d997a245df4"
+    },
+    "gymstable/testdata/career-history-reference/inputs/grammar/gymstable__types.go.txt": {
+      "bytes": 6760,
+      "sha256": "1f0038aa844869c59b5f2e8f38e2ec69380aac88d66000b28d9d1471daccb2f0"
+    },
+    "gymstable/testdata/career-history-reference/inputs/grammar/internal__careerstate__state.go.txt": {
+      "bytes": 11341,
+      "sha256": "eaedd8f52777cbb11b1e085474a1b51d2a144bd5179542156f5c2d8713463528"
+    },
+    "gymstable/testdata/career-history-reference/inputs/grammar/prospectservice__manifest_config.go.txt": {
+      "bytes": 10004,
+      "sha256": "291db23448450a44b6f42a17641b78ce38c8c5e5dcfd98fe90dd160dc4274b8f"
+    },
+    "gymstable/testdata/career-history-reference/inputs/prior-arithmetic.py": {
+      "bytes": 10067,
+      "sha256": "506cb30affe74039b16bd0254f236fbfea4cf4b69f8a35760b0373666565857c"
+    },
+    "gymstable/testdata/career-history-reference/inputs/prior-career/README.md": {
+      "bytes": 5264,
+      "sha256": "0588b0c293cdca32de844ebe3f095dc574921ea7f49493e96a87425582ab6b42"
+    },
+    "gymstable/testdata/career-history-reference/inputs/prior-career/corpus.json": {
+      "bytes": 200207,
+      "sha256": "89fbf2b1d16793b544d84922311017303832cdba89203f8a73fe4b79b3d66d42"
+    },
+    "gymstable/testdata/career-history-reference/inputs/prior-career/generate.py": {
+      "bytes": 18734,
+      "sha256": "9cd4b150c274ef4bc54b0a21e35013d86b540405bbf003c8b7b0dd8899a53bdc"
+    },
+    "gymstable/testdata/career-history-reference/inputs/prior-career/input_index.json": {
+      "bytes": 2976,
+      "sha256": "e3b2e43e5f05813dde7fcf03ebfd542175b47668eb083b163b0b7431d4086be6"
+    },
+    "gymstable/testdata/career-history-reference/inputs/prior-career/inputs/CAREER_ACCOUNTING-preflight.md": {
+      "bytes": 20627,
+      "sha256": "8088f39815369f5d4840f9f33f1a7761f5b46486a4c97aa717337eda905b48bd"
+    },
+    "gymstable/testdata/career-history-reference/inputs/prior-career/inputs/CAREER_ACCOUNTING.md": {
+      "bytes": 20392,
+      "sha256": "d676a63454dc19360b94337227cd96d56b4f4879e89bf143e89d229ab4c0cfa1"
+    },
+    "gymstable/testdata/career-history-reference/inputs/prior-career/inputs/FIGHTER_CAREER.md": {
+      "bytes": 3076,
+      "sha256": "07de417554cf2a61085e8545f78fbf43bb5b02fc63a3d3d4d6889acadbe193d1"
+    },
+    "gymstable/testdata/career-history-reference/inputs/prior-career/inputs/chaincfg_SignedCheckpoint_MarshalJSON.txt": {
+      "bytes": 718,
+      "sha256": "4c069820c1183838fe03ce39e62393c0bb9661557028d52f05bfd7ab5b76bfab"
+    },
+    "gymstable/testdata/career-history-reference/inputs/prior-career/inputs/constructor-preflight.diff": {
+      "bytes": 1142,
+      "sha256": "a23f76a4b5ac3480cebc62b292abfd8a0086a79f49e5256ae95c386102048f9f"
+    },
+    "gymstable/testdata/career-history-reference/inputs/prior-career/inputs/gymresult_types.go.txt": {
+      "bytes": 562,
+      "sha256": "6d05c2a2f68c9fdf38cc74e71b230ac4172b1d7b149c1f9a85892c848545e506"
+    },
+    "gymstable/testdata/career-history-reference/inputs/prior-career/inputs/seednode_types.go.txt": {
+      "bytes": 559,
+      "sha256": "f53dff124db30f2da93f831a494ce5e9561bb6ea2aa1134ce809da7b2c195e1d"
+    },
+    "gymstable/testdata/career-history-reference/observed_bounds.json": {
+      "bytes": 1272,
+      "sha256": "bc292a02e43f20fb91395925caa62ef61394ef8e46e9736e8fbdc7aa1074e796"
+    },
+    "gymstable/testdata/career-history-reference/preserved/before-control-exception-hardening/note.json": {
+      "bytes": 358,
+      "sha256": "ce90f709311903dc0b98893218ac792cfb1a30f0f564b517d99d87d60a400aea"
+    },
+    "gymstable/testdata/career-history-reference/preserved/before-control-exception-hardening/reference_history.py": {
+      "bytes": 11470,
+      "sha256": "5cb08b9c93dc38da99740d47a9768eb023fff10a72702edd38d17bbdf2b814f9"
+    },
+    "gymstable/testdata/career-history-reference/preserved/before-page-uniqueness/corpus.json": {
+      "bytes": 7859230,
+      "sha256": "78865b9d998daf33032c55c79d6e156a86595141fa0fbf43ed7c893845be9aed"
+    },
+    "gymstable/testdata/career-history-reference/preserved/before-page-uniqueness/fragments/history.json": {
+      "bytes": 8330258,
+      "sha256": "343c72bf7af3b8faf2f4465483d156d8137db54bb7459f2f5f21177a76513e78"
+    },
+    "gymstable/testdata/career-history-reference/preserved/before-page-uniqueness/history_math.py": {
+      "bytes": 17335,
+      "sha256": "55ed98604676012d25222847d2bbb5acd02199b5cd530a5f79abb618541cc25d"
+    },
+    "gymstable/testdata/career-history-reference/preserved/before-page-uniqueness/preservation.json": {
+      "bytes": 553,
+      "sha256": "243efd9afd240cd0f04a81f01db52ad17d2324574c1a30448958607961406bf4"
+    },
+    "gymstable/testdata/career-history-reference/preserved/before-page-uniqueness/reference_history.py": {
+      "bytes": 11162,
+      "sha256": "03ba3d435e1914f2320b69e13f767447586352d865b4a6a1611bb8a78f5185b0"
+    },
+    "gymstable/testdata/career-history-reference/preserved/input-attempt1/extract_inputs.py": {
+      "bytes": 6670,
+      "sha256": "94bb12439f27edfaacc731c4e2be9a3b5c2ca028079a6f17ee56564cdf09208d"
+    },
+    "gymstable/testdata/career-history-reference/preserved/input-attempt1/input_index.json": {
+      "bytes": 37146,
+      "sha256": "edd6527084975baffd4e4f0c650c6eb0d6a270ff90c24ec744ee2a978ee0f22d"
+    },
+    "gymstable/testdata/career-history-reference/preserved/input-attempt2/extract_inputs.py": {
+      "bytes": 6760,
+      "sha256": "13c156600841c124ee303d7fd3bdd5e91079d097e52535d970cd0f48de9703ef"
+    },
+    "gymstable/testdata/career-history-reference/preserved/input-attempt2/input_index.json": {
+      "bytes": 38397,
+      "sha256": "f99c3896ac227254012bb771c45f7802512c938cc89a750fa0ce3df6e5df8e67"
+    },
+    "gymstable/testdata/career-history-reference/preserved/native-discovery.json": {
+      "bytes": 552,
+      "sha256": "1d47d061d4bb69e78683077361479747a4f822cd48eadcf54a0e5eeaa9bbb7f9"
+    },
+    "gymstable/testdata/career-history-reference/reference_history.py": {
+      "bytes": 11438,
+      "sha256": "128706b6b109a6b66bfff043f9517b54d5d83d90fa9e67792f53d5824637b421"
+    },
+    "gymstable/testdata/career-history-reference/reference_wire.py": {
+      "bytes": 15353,
+      "sha256": "ba4d876e17d77cc82eb159474c583abcee55d15fbf6e04c6ea21d9439970fe9b"
+    },
+    "gymstable/testdata/career-history-reference/schema_wire.py": {
+      "bytes": 8903,
+      "sha256": "af8d700bb8f7cf45231197e9c022f6e793e5926451d29ce23af986f864e2e20e"
+    },
+    "gymstable/testdata/career-history-reference/state_models.py": {
+      "bytes": 16046,
+      "sha256": "f51ecc5897bbbc73f80f5e5f940a3584b83b4e3b60a435e43157fa687a1f06ca"
+    },
+    "gymstable/testdata/career-history-reference/verification/attempt1/python1.json": {
+      "bytes": 2579,
+      "sha256": "6a4bc994c30e62150efefab792f0b18618c0516bfc2a40b914f9b6cc4b825ea9"
+    },
+    "gymstable/testdata/career-history-reference/verification/attempt1/python1.log": {
+      "bytes": 344,
+      "sha256": "8d52315d9c4d14a2089d776807a1d1246fb5ef2992b5afb5a97f4f1c9b00ddfc"
+    },
+    "gymstable/testdata/career-history-reference/verification/attempt1/python2.json": {
+      "bytes": 2590,
+      "sha256": "f91bc4e7fab30d34eae378e27b30e6c89b06a5eef5b28b339c6546a319f394f1"
+    },
+    "gymstable/testdata/career-history-reference/verification/attempt1/python2.log": {
+      "bytes": 344,
+      "sha256": "067a4f1262898d7abddbac368915a1330ef4f1028adc9ef3547480b7792b13c9"
+    },
+    "gymstable/testdata/career-history-reference/verification/attempt1/report.json": {
+      "bytes": 4061,
+      "sha256": "e119c57466207f0c7c01ad9be33e11f19b4f5c1fc43f3ae406fb2fd9906720ff"
+    },
+    "gymstable/testdata/career-history-reference/verification/attempt2/python1.json": {
+      "bytes": 2579,
+      "sha256": "c7b3a6fd3325ff7dec8ae83007050f94e51991cff1d5c798da89ac41e95b706a"
+    },
+    "gymstable/testdata/career-history-reference/verification/attempt2/python1.log": {
+      "bytes": 344,
+      "sha256": "4feba568e02db285435dc76646f6cc23b9ad2a17dba80a17f64e4a29d73b572b"
+    },
+    "gymstable/testdata/career-history-reference/verification/attempt2/python2.json": {
+      "bytes": 2590,
+      "sha256": "47ec4e630e437d7c334508e283590978ac120740ef7a32f764fac9aa5faf46a9"
+    },
+    "gymstable/testdata/career-history-reference/verification/attempt2/python2.log": {
+      "bytes": 344,
+      "sha256": "0453e84c5e2efbc2b4263f9ac07dc5e253a5dad6865b64422526fb7dad9ad035"
+    },
+    "gymstable/testdata/career-history-reference/verification/attempt2/report.json": {
+      "bytes": 4060,
+      "sha256": "0c48ff333b455b86136b41a080b3b56ab8da55fc7a325bc8de438e0ead73f10e"
+    },
+    "gymstable/testdata/career-history-reference/verification/attempt3/python1.json": {
+      "bytes": 2586,
+      "sha256": "03d479c607c794cfa37a6db218a68b987d9c7820da53c15717e478434dc80504"
+    },
+    "gymstable/testdata/career-history-reference/verification/attempt3/python1.log": {
+      "bytes": 344,
+      "sha256": "10984a9daabdb596f99883a692ea904c0fcb2358b32013392e24f68f0f2f42fa"
+    },
+    "gymstable/testdata/career-history-reference/verification/attempt3/python2.json": {
+      "bytes": 2590,
+      "sha256": "d22fd71575814859537459bdb4f9a2c4955e1223af7ca251cc23fc5b9f9804d6"
+    },
+    "gymstable/testdata/career-history-reference/verification/attempt3/python2.log": {
+      "bytes": 344,
+      "sha256": "075ed39091551fc40629a5be6e797e568dd590b078298ada38ca91890de9b1cb"
+    },
+    "gymstable/testdata/career-history-reference/verification/attempt3/report.json": {
+      "bytes": 4062,
+      "sha256": "4bdbb06a49fdf0c6f0b7cd57bbb9f186bf8333cffc105de8155babf26cc7efca"
+    },
+    "gymstable/testdata/career-history-reference/verify_reference.py": {
+      "bytes": 2391,
+      "sha256": "376a5239afaa57f258a0addec177bd62154f25ab65bb898ea6adfb2b5939086c"
+    },
+    "registry/testdata/manifest/reference/README.md": {
+      "bytes": 10446,
+      "sha256": "2f11a23913150a41e49e361745f4d76f36a201b05754363cf3f8908685d71ab8"
+    },
+    "registry/testdata/manifest/reference/approval.json": {
+      "bytes": 593,
+      "sha256": "98d9a2cd8974dabd0292fb40de3894c7ed97007f3968012f827f03ad32efe2a7"
+    },
+    "registry/testdata/manifest/reference/argon/argon_oracle.go": {
+      "bytes": 1532,
+      "sha256": "2acdec93813fb3a7feb3635e4e3d226a35797bb08306df7fe05b35ff4b81dbe9"
+    },
+    "registry/testdata/manifest/reference/argon/go.mod": {
+      "bytes": 132,
+      "sha256": "a6f877804daa32c034e5c8056c67681f6f77d97f45d6d909f49b9a00ec821e09"
+    },
+    "registry/testdata/manifest/reference/argon/go.sum": {
+      "bytes": 312,
+      "sha256": "bff0eacd6a478f51dbac17b3ea35dff6a617bb776f34074f48c81b97a9ce33d5"
+    },
+    "registry/testdata/manifest/reference/input_hashes.json": {
+      "bytes": 8645,
+      "sha256": "eec4eeeff7ee78504af105312761e7d6da0a5558798ebd3f2d140146dc243fcd"
+    },
+    "registry/testdata/manifest/reference/inputs/job_reference/README.md": {
+      "bytes": 8356,
+      "sha256": "ef16b00f6c33c4c24383129d8fa85ec59cf8178bbacc149fcb6a463ed43cb1b9"
+    },
+    "registry/testdata/manifest/reference/inputs/job_reference/approval.json": {
+      "bytes": 370,
+      "sha256": "ade040749430cac4e93b0d6c4a8bece724ddfb856c0dc3dadbf24fcc0b2d4276"
+    },
+    "registry/testdata/manifest/reference/inputs/job_reference/input_hashes.json": {
+      "bytes": 3184,
+      "sha256": "d23e9a1c12f4a10256e167b94d768e6ae35f24a6f42a3430b430916b1fdaba7b"
+    },
+    "registry/testdata/manifest/reference/inputs/job_reference/inputs/fighter-manifest-contract.md": {
+      "bytes": 13247,
+      "sha256": "ba8d33dbad3722eed6b4406ef120f946d7e06e1ea04305cbe8648889ba169e80"
+    },
+    "registry/testdata/manifest/reference/inputs/job_reference/inputs/manifest-job-contract.md": {
+      "bytes": 22651,
+      "sha256": "6a761c2e78081178e45c493953b78759f721ad3772a4e1fe684f38ec5fb0cd66"
+    },
+    "registry/testdata/manifest/reference/inputs/job_reference/inputs/portrait-renderer-contract.md": {
+      "bytes": 28710,
+      "sha256": "8ae3c8dbe92fbef719880227e107cb98cbfd6419d984cad08ebb5d5e0a9c0df5"
+    },
+    "registry/testdata/manifest/reference/inputs/job_reference/inputs/reference_repo/fighter/testdata/dna_v1.json": {
+      "bytes": 2658,
+      "sha256": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71"
+    },
+    "registry/testdata/manifest/reference/inputs/job_reference/inputs/reference_repo/fighter/testdata/reference_dna.py": {
+      "bytes": 8283,
+      "sha256": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2"
+    },
+    "registry/testdata/manifest/reference/inputs/job_reference/inputs/reference_repo/gymauth/testdata/authorizations_v1.json": {
+      "bytes": 6312,
+      "sha256": "7e302f4d4f919b7e33c6c4cd80b81668277867ddbfa6d932ae68d897364b87f7"
+    },
+    "registry/testdata/manifest/reference/inputs/job_reference/inputs/reference_repo/gymauth/testdata/reference_authorizations.py": {
+      "bytes": 9946,
+      "sha256": "0490d6e7931cf0edb30e632a2fa213c8660e88afe916d3ed09421e34954b84d9"
+    },
+    "registry/testdata/manifest/reference/inputs/job_reference/inputs/reference_repo/prospect/testdata/proofs_v1.json": {
+      "bytes": 4791,
+      "sha256": "021fc596aeb9c0d8c383f6c5b20bfc89ae2e170be95846337c505773c318171b"
+    },
+    "registry/testdata/manifest/reference/inputs/job_reference/inputs/reference_repo/prospect/testdata/reference_proofs.py": {
+      "bytes": 9132,
+      "sha256": "db2b6bbe9aeb4aebe4052cf33aa1271f2e60351ad82d32a9b5ed20822e19c753"
+    },
+    "registry/testdata/manifest/reference/inputs/job_reference/inputs/reference_repo/prospectjob/testdata/jobs_v1.json": {
+      "bytes": 9045,
+      "sha256": "f95b04c39bc4b5ca648761908fc56f656376a9c41f55f406bb3a3ebe4bd0dd35"
+    },
+    "registry/testdata/manifest/reference/inputs/job_reference/inputs/reference_repo/prospectjob/testdata/reference_jobs.py": {
+      "bytes": 8449,
+      "sha256": "6b78563a0eeb92ed04c8f6df7e6b5aa240afacb1064cf23466dd57a1d2727f9e"
+    },
+    "registry/testdata/manifest/reference/inputs/job_reference/inputs/reference_repo/prospectwork/testdata/reference_templates.py": {
+      "bytes": 10050,
+      "sha256": "cfd10fb0690a100fecbf9abd5c42f00f6da80143535e46d3d8f9231320ac4fda"
+    },
+    "registry/testdata/manifest/reference/inputs/job_reference/inputs/reference_repo/prospectwork/testdata/templates_v1.json": {
+      "bytes": 17646,
+      "sha256": "1f2e6865f298a2647daa0fb3f4fca4a31546142481905e3fd30864d50ac70103"
+    },
+    "registry/testdata/manifest/reference/inputs/job_reference/inputs/tables_v1.json": {
+      "bytes": 2578,
+      "sha256": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7"
+    },
+    "registry/testdata/manifest/reference/inputs/job_reference/manifest_job_v1.json": {
+      "bytes": 586790,
+      "sha256": "34b9484db90fd6d9ca9d704ee1ac76843a717bddaeb38194df1932f77fe754ad"
+    },
+    "registry/testdata/manifest/reference/inputs/job_reference/reference_manifest_jobs.py": {
+      "bytes": 32005,
+      "sha256": "2beaf985ae5f7851df4c945104e1c16559915dfb4ef23d6dfa4c019c0e8a4159"
+    },
+    "registry/testdata/manifest/reference/inputs/job_reference/verification.json": {
+      "bytes": 13857,
+      "sha256": "4c4509b3ce50acaf3747b41f221ccba35d1aef98cfaa3dfb165c73d5f0460025"
+    },
+    "registry/testdata/manifest/reference/inputs/job_reference/verification.log": {
+      "bytes": 3538,
+      "sha256": "20c62a1bae4f897cddefceb255636c28ddb946f6ca832389f5489a475f611b4a"
+    },
+    "registry/testdata/manifest/reference/inputs/manifest-admission-contract.md": {
+      "bytes": 31179,
+      "sha256": "d51178db1decf13ad09986802bb3eb7861827d372a7f35e99c13adc739420f27"
+    },
+    "registry/testdata/manifest/reference/inputs/portrait_reference/input_hashes.json": {
+      "bytes": 1670,
+      "sha256": "108b6911cc622b9510d1f8de96086964fb6718bc3e6029f28ea42a2db821ca19"
+    },
+    "registry/testdata/manifest/reference/inputs/portrait_reference/inputs/fighter-manifest-contract.md": {
+      "bytes": 13247,
+      "sha256": "ba8d33dbad3722eed6b4406ef120f946d7e06e1ea04305cbe8648889ba169e80"
+    },
+    "registry/testdata/manifest/reference/inputs/portrait_reference/inputs/manifest/baseline/dna_v1.json": {
+      "bytes": 2658,
+      "sha256": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71"
+    },
+    "registry/testdata/manifest/reference/inputs/portrait_reference/inputs/manifest/baseline/reference_dna.py": {
+      "bytes": 8283,
+      "sha256": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2"
+    },
+    "registry/testdata/manifest/reference/inputs/portrait_reference/inputs/manifest/manifests_v1.json": {
+      "bytes": 289470,
+      "sha256": "75eb01acb79f45b74a6445edf956c5e3f3b68024998ae56ab44a7ed07cf15f3d"
+    },
+    "registry/testdata/manifest/reference/inputs/portrait_reference/inputs/manifest/reference_manifest.py": {
+      "bytes": 24912,
+      "sha256": "9fb1a814047f2329066bb19596e910ac7c4c7aadfce4b8f994e02dab81e51b4f"
+    },
+    "registry/testdata/manifest/reference/inputs/portrait_reference/inputs/manifest/tables_v1.json": {
+      "bytes": 2578,
+      "sha256": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7"
+    },
+    "registry/testdata/manifest/reference/inputs/portrait_reference/inputs/portrait-renderer-contract.md": {
+      "bytes": 28710,
+      "sha256": "8ae3c8dbe92fbef719880227e107cb98cbfd6419d984cad08ebb5d5e0a9c0df5"
+    },
+    "registry/testdata/manifest/reference/inputs/portrait_reference/inputs/portraits.py": {
+      "bytes": 15381,
+      "sha256": "9bac3d966e7093e0665cd9c9a683e7a6ab73381948dccfd0dc8cac8c98a75a72"
+    },
+    "registry/testdata/manifest/reference/inputs/portrait_reference/portraits_v1.json": {
+      "bytes": 302628,
+      "sha256": "03df75cbf923a6dfc8fcac78e98d704641c0edf65ce563cf307f20a52f250670"
+    },
+    "registry/testdata/manifest/reference/inputs/portrait_reference/reference_portraits.py": {
+      "bytes": 28065,
+      "sha256": "1a44c0506944211cf699b653f63905c6802e2012928855354f4053d03d209093"
+    },
+    "registry/testdata/manifest/reference/manifest_admission_v1.json": {
+      "bytes": 1207894,
+      "sha256": "d32a8653c76c643addb3df091ca8d7dfdba66c2486f2ca305e718113f71d5794"
+    },
+    "registry/testdata/manifest/reference/reference_manifest_admission.py": {
+      "bytes": 26833,
+      "sha256": "ab65e2c63fb288c3d117416825edc44a8a5596f31e54b50f12f476b96c883bbc"
+    },
+    "registry/testdata/manifest/reference/verification.json": {
+      "bytes": 27024,
+      "sha256": "168628eec0094c9547b9c7d5935003e3838092bb68d92dfb02b4cc46d2f314c5"
+    }
+  },
+  "excluded_unneeded_external_logs": [
+    {
+      "path": "fighterdescriptor/testdata/name-v2/independent/attempt1/corpus-check.log",
+      "reason": "Historical authoring stdout log; not a loaded/locked producer input. Preserved in external archive; not needed for reproduction."
+    },
+    {
+      "path": "fighterdescriptor/testdata/name-v2/independent/attempt1/corpus-generate.log",
+      "reason": "Historical authoring stdout log; not a loaded/locked producer input. Preserved in external archive; not needed for reproduction."
+    },
+    {
+      "path": "fighterdescriptor/testdata/name-v2/independent/attempt1/sample-check.log",
+      "reason": "Historical authoring stdout log; not a loaded/locked producer input. Preserved in external archive; not needed for reproduction."
+    },
+    {
+      "path": "fighterdescriptor/testdata/name-v2/independent/attempt1/sample-generate.log",
+      "reason": "Historical authoring stdout log; not a loaded/locked producer input. Preserved in external archive; not needed for reproduction."
+    }
+  ]
+}

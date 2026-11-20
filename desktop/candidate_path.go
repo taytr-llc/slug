@@ -15,22 +15,34 @@ var errCandidateDataPath = errors.New("candidate application storage is unavaila
 // for the actual default selection. The helper owns candidate-root creation and
 // exact marker validation; this preflight must not modify an older mode first.
 func prepareCandidateDataParent(dataDir, configDir string, defaultSelection bool) error {
+	return prepareModeDataParent(dataDir, configDir, defaultSelection, "LocalManifestPilot", "SLUG-MANIFEST-ACCOUNTS.json")
+}
+func preparePoolDataParent(dataDir, configDir string, defaultSelection bool) error {
+	return prepareModeDataParent(dataDir, configDir, defaultSelection, "LocalPoolPilot", "SLUG-POOL-ACCOUNTS.json")
+}
+func prepareHostedPoolDataParent(dataDir, configDir string) error {
+	return prepareModeDataParent(dataDir, configDir, false, "LocalHostedPoolPilot", "SLUG-HOSTED-POOL-INIT.json")
+}
+func prepareHostedRecoveryDataParent(dataDir, configDir string) error {
+	return prepareModeDataParent(dataDir, configDir, false, "LocalHostedRecoveryPilot", "SLUG-HOSTED-ALLOCATION-V1.json")
+}
+func prepareModeDataParent(dataDir, configDir string, defaultSelection bool, modeName, markerName string) error {
 	if !filepath.IsAbs(dataDir) || filepath.Clean(dataDir) != dataDir || strings.ContainsAny(dataDir, "\x00\r\n\t") {
 		return errCandidateDataPath
 	}
 	parent := filepath.Dir(dataDir)
 	if defaultSelection && (!filepath.IsAbs(configDir) || filepath.Clean(configDir) != configDir ||
-		dataDir != filepath.Join(configDir, "SLUG", "LocalManifestPilot")) {
+		dataDir != filepath.Join(configDir, "SLUG", modeName)) {
 		return errCandidateDataPath
 	}
 	if _, err := os.Lstat(parent); err == nil {
-		if _, err = candidateSafeAncestors(parent, dataDir); err != nil {
+		if _, err = modeSafeAncestors(parent, dataDir, modeName, markerName); err != nil {
 			return errCandidateDataPath
 		}
 	} else if !os.IsNotExist(err) || !defaultSelection {
 		return errCandidateDataPath
 	} else {
-		before, err := candidateSafeAncestors(configDir, dataDir)
+		before, err := modeSafeAncestors(configDir, dataDir, modeName, markerName)
 		if err != nil {
 			return errCandidateDataPath
 		}
@@ -60,7 +72,7 @@ func prepareCandidateDataParent(dataDir, configDir string, defaultSelection bool
 		if err = dir.Sync(); err != nil {
 			return errCandidateDataPath
 		}
-		if _, err = candidateSafeAncestors(parent, dataDir); err != nil {
+		if _, err = modeSafeAncestors(parent, dataDir, modeName, markerName); err != nil {
 			return errCandidateDataPath
 		}
 	}
@@ -69,7 +81,7 @@ func prepareCandidateDataParent(dataDir, configDir string, defaultSelection bool
 	} else if err != nil {
 		return errCandidateDataPath
 	}
-	_, err := candidateSafeAncestors(dataDir, dataDir)
+	_, err := modeSafeAncestors(dataDir, dataDir, modeName, markerName)
 	return err
 }
 
@@ -77,6 +89,9 @@ func prepareCandidateDataParent(dataDir, configDir string, defaultSelection bool
 // are not trusted here: their mere presence excludes a foreign managed root.
 // Only the selected candidate account root may contain its own outer marker.
 func candidateSafeAncestors(path, selected string) (os.FileInfo, error) {
+	return modeSafeAncestors(path, selected, "LocalManifestPilot", "SLUG-MANIFEST-ACCOUNTS.json")
+}
+func modeSafeAncestors(path, selected, modeName, markerName string) (os.FileInfo, error) {
 	var initial os.FileInfo
 	for p := path; ; p = filepath.Dir(p) {
 		info, err := os.Lstat(p)
@@ -89,17 +104,19 @@ func candidateSafeAncestors(path, selected string) (os.FileInfo, error) {
 		switch filepath.Base(p) {
 		case "LocalPilot", "LocalWalletPilot", "LocalAccountPilot":
 			return nil, errCandidateDataPath
-		case "LocalManifestPilot":
-			if p != selected {
+		case "LocalManifestPilot", "LocalPoolPilot", "LocalHostedPoolPilot", "LocalHostedRecoveryPilot", "LocalOwnedGymPilot":
+			if p != selected || filepath.Base(p) != modeName {
 				return nil, errCandidateDataPath
 			}
 		}
 		for _, marker := range []string{
 			"SLUG-PILOT.json", "SLUG-PILOT-READY.json", "SLUG-PILOT-CHAINS.json", "SLUG-ACCOUNTS.json",
 			"SLUG-MANIFEST-PILOT.json", "SLUG-MANIFEST-PILOT-READY.json", "SLUG-MANIFEST-PILOT-CHAINS.json",
-			"SLUG-MANIFEST-ACCOUNTS.json",
+			"SLUG-MANIFEST-ACCOUNTS.json", "SLUG-POOL-ACCOUNTS.json", "SLUG-POOL-RUNTIME.json",
+			"SLUG-HOSTED-POOL-INIT.json", "SLUG-HOSTED-POOL-READY.json",
+			"SLUG-HOSTED-ALLOCATION-V1.json", "SLUG-OWNED-GYM-INIT.json", "SLUG-OWNED-GYM-READY.json",
 		} {
-			if marker == "SLUG-MANIFEST-ACCOUNTS.json" && p == selected {
+			if p == selected && (marker == markerName || modeName == "LocalOwnedGymPilot" && marker == "SLUG-OWNED-GYM-READY.json" || modeName == "LocalHostedPoolPilot" && marker == "SLUG-HOSTED-POOL-READY.json" || modeName == "LocalHostedRecoveryPilot" && (marker == "SLUG-HOSTED-POOL-INIT.json" || marker == "SLUG-HOSTED-POOL-READY.json")) {
 				continue
 			}
 			if _, err = os.Lstat(filepath.Join(p, marker)); !os.IsNotExist(err) {

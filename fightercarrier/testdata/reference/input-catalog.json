@@ -1,0 +1,190 @@
+{
+  "version": 1,
+  "status": "source-only final candidate inputs; no execution approval",
+  "files": [
+    {
+      "path": "contracts/FIGHTER_CARRIER_WALLET.md",
+      "bytes": 36362,
+      "sha256": "eec5306bf2b088ef2ce5ed5c42df2907b94f6afd137df03c8c89d541eb20a789",
+      "source": "slug/FIGHTER_CARRIER_WALLET.md",
+      "source_commit": null,
+      "role": "adopted contract"
+    },
+    {
+      "path": "contracts/FIGHTER_TRANSFER_CARRIER.md",
+      "bytes": 11769,
+      "sha256": "70e1ff02bd335a7436014fbe34ee76aca4b9046cb1167c4f2ea0d9fbe80e0dc7",
+      "source": "slug/FIGHTER_TRANSFER_CARRIER.md",
+      "source_commit": null,
+      "role": "adopted contract"
+    },
+    {
+      "path": "public/allocation-v1.json",
+      "bytes": 4004018,
+      "sha256": "221fc42f6848fed27912a43454a1fa9ebe2d4e16b383aad9e294c31316424e6b",
+      "source": "slugwallet/wallet/testdata/hosted-allocation/reference.json",
+      "source_commit": "21f8d65494a6193f3071705cfad86f7c0e942eb2",
+      "role": "previously committed independent public reference, not Go73 output"
+    },
+    {
+      "path": "public/addresses-v1.json",
+      "bytes": 67032,
+      "sha256": "1558bf4a134ab01acfe84fdbb2edc3e8af842b602cb5150feaa9ce2df26b9cf7",
+      "source": "slugwallet/wallet/testdata/phase-a-recovery/addresses-v1.json",
+      "source_commit": "21f8d65494a6193f3071705cfad86f7c0e942eb2",
+      "role": "previously committed independent public reference, not Go73 output"
+    },
+    {
+      "path": "public/withdrawals-v1.json",
+      "bytes": 230798,
+      "sha256": "d7c7b1e4c94e02f734a162b5974749853c91828ea1a0a4c4446c379bddc841c3",
+      "source": "slugwallet/wallet/testdata/candidate-withdrawals/reference-v1.json",
+      "source_commit": "21f8d65494a6193f3071705cfad86f7c0e942eb2",
+      "role": "previously committed independent public reference, not Go73 output"
+    },
+    {
+      "path": "inherited/common.py",
+      "bytes": 3466,
+      "sha256": "77d04d88185063b06dcfad5a8f30afb6aefaaa1846737d92fdb467ac2da763a2",
+      "source": "slugwallet/wallet/testdata/hosted-allocation/reference-producer/common.py",
+      "source_commit": "21f8d65494a6193f3071705cfad86f7c0e942eb2",
+      "role": "previously committed independent public reference, not Go73 output"
+    },
+    {
+      "path": "inherited/public_derivation.py",
+      "bytes": 5013,
+      "sha256": "65b0417e4ace996009a9a6a3a271a6083a4738d76cdd135e15a6f4a4e3993dcf",
+      "source": "slugwallet/wallet/testdata/hosted-allocation/reference-producer/public_derivation.py",
+      "source_commit": "21f8d65494a6193f3071705cfad86f7c0e942eb2",
+      "role": "previously committed independent public reference, not Go73 output"
+    },
+    {
+      "path": "inherited/allocation_v1.py",
+      "bytes": 19688,
+      "sha256": "c8e832bd2baf32c811932e1f84f2b02ba62a1446193a6f9bc9e98471a8c4177c",
+      "source": "slugwallet/wallet/testdata/hosted-allocation/reference-producer/allocation_model.py",
+      "source_commit": "21f8d65494a6193f3071705cfad86f7c0e942eb2",
+      "role": "previously committed independent public reference, not Go73 output"
+    },
+    {
+      "path": "inherited/recovery/reference.py",
+      "bytes": 15839,
+      "sha256": "60e1527ce408213fd89bc2cf6b4d2d8ecaedbd3c811ef4d40b6f888bb608202f",
+      "source": "slugwallet/wallet/testdata/hosted-allocation/reference-inputs/inputs/inherited/slugwallet/recovery/testdata/oracle/reference.py",
+      "source_commit": "21f8d65494a6193f3071705cfad86f7c0e942eb2",
+      "role": "previously committed independent public reference, not Go73 output"
+    },
+    {
+      "path": "inherited/recovery/sources/english.txt",
+      "bytes": 13116,
+      "sha256": "2f5eed53a4727b4bf8880d8f3f199efc90e58503646d9ff8eff3a2ed3b24dbda",
+      "source": "slugwallet/wallet/testdata/hosted-allocation/reference-inputs/inputs/inherited/slugwallet/recovery/testdata/oracle/sources/english.txt",
+      "source_commit": "21f8d65494a6193f3071705cfad86f7c0e942eb2",
+      "role": "previously committed independent public reference, not Go73 output"
+    },
+    {
+      "path": "recipe.json",
+      "bytes": 2044,
+      "sha256": "4acfba53abb9da70b910e9de69d756c651e1a835fc9596bf900d6d986db0d448",
+      "source": "literal proposed engineering recipe, fixed before outcomes",
+      "source_commit": null,
+      "role": "modeled public IDs/time/source only"
+    },
+    {
+      "path": "carrier/carrier-v1.json",
+      "bytes": 180257,
+      "sha256": "365e2997171b5f06706d628866f2cbc64cf0d7a3ac4205015def259a5340f4af",
+      "source": "artifacts/set73/carrier-reference-attempt1/carrier-v1.json",
+      "source_commit": null,
+      "role": "reviewed independent pure carrier corpus/producer public input; no Go73 outputs"
+    },
+    {
+      "path": "carrier/carrier_model.py",
+      "bytes": 19178,
+      "sha256": "e1a56302ac779f72177a37a43a5f52c4934af3d4f57d255cdb70bec98f62d211",
+      "source": "set73-prep/carrier-reference/carrier_model.py",
+      "source_commit": null,
+      "role": "reviewed independent pure carrier corpus/producer public input; no Go73 outputs"
+    },
+    {
+      "path": "carrier/execution-lock.approved.json",
+      "bytes": 942,
+      "sha256": "087b9f0e88e490cfd1bbf5109fe4d4e45a12f797830f98c5da26111116a3b5c6",
+      "source": "set73-prep/carrier-reference/execution-lock.approved.json",
+      "source_commit": null,
+      "role": "reviewed independent pure carrier corpus/producer public input; no Go73 outputs"
+    },
+    {
+      "path": "carrier/input-catalog.json",
+      "bytes": 2378,
+      "sha256": "a31401c83331e5b672a42c093bf0a7d86e24b7e732e74b16d529d7e92e49f407",
+      "source": "set73-prep/carrier-reference/input-catalog.json",
+      "source_commit": null,
+      "role": "reviewed independent pure carrier corpus/producer public input; no Go73 outputs"
+    },
+    {
+      "path": "carrier/inputs/contract/FIGHTER_TRANSFER_CARRIER.md",
+      "bytes": 11769,
+      "sha256": "70e1ff02bd335a7436014fbe34ee76aca4b9046cb1167c4f2ea0d9fbe80e0dc7",
+      "source": "set73-prep/carrier-reference/inputs/contract/FIGHTER_TRANSFER_CARRIER.md",
+      "source_commit": null,
+      "role": "reviewed independent pure carrier corpus/producer public input; no Go73 outputs"
+    },
+    {
+      "path": "carrier/inputs/inherited/ecdsa/reference_authorizations.py",
+      "bytes": 9946,
+      "sha256": "0490d6e7931cf0edb30e632a2fa213c8660e88afe916d3ed09421e34954b84d9",
+      "source": "set73-prep/carrier-reference/inputs/inherited/ecdsa/reference_authorizations.py",
+      "source_commit": null,
+      "role": "reviewed independent pure carrier corpus/producer public input; no Go73 outputs"
+    },
+    {
+      "path": "carrier/inputs/inherited/recovery/reference.py",
+      "bytes": 15839,
+      "sha256": "60e1527ce408213fd89bc2cf6b4d2d8ecaedbd3c811ef4d40b6f888bb608202f",
+      "source": "set73-prep/carrier-reference/inputs/inherited/recovery/reference.py",
+      "source_commit": null,
+      "role": "reviewed independent pure carrier corpus/producer public input; no Go73 outputs"
+    },
+    {
+      "path": "carrier/inputs/inherited/recovery/sources/english.txt",
+      "bytes": 13116,
+      "sha256": "2f5eed53a4727b4bf8880d8f3f199efc90e58503646d9ff8eff3a2ed3b24dbda",
+      "source": "set73-prep/carrier-reference/inputs/inherited/recovery/sources/english.txt",
+      "source_commit": null,
+      "role": "reviewed independent pure carrier corpus/producer public input; no Go73 outputs"
+    },
+    {
+      "path": "carrier/inputs/inherited/withdrawal-transaction-model.py",
+      "bytes": 6572,
+      "sha256": "05ee7a66d91dd436663cf6081203e9d7bc053407eeee0867298ee0037cdbb6f3",
+      "source": "set73-prep/carrier-reference/inputs/inherited/withdrawal-transaction-model.py",
+      "source_commit": null,
+      "role": "reviewed independent pure carrier corpus/producer public input; no Go73 outputs"
+    },
+    {
+      "path": "carrier/inputs/policy/FIGHTER_TRANSFER_POLICY.md",
+      "bytes": 3780,
+      "sha256": "de59533a494ffbbfca99996f0e1d6054a98a1ef4dba95f0c47d1675414543969",
+      "source": "set73-prep/carrier-reference/inputs/policy/FIGHTER_TRANSFER_POLICY.md",
+      "source_commit": null,
+      "role": "reviewed independent pure carrier corpus/producer public input; no Go73 outputs"
+    },
+    {
+      "path": "carrier/inputs/published-recovery-v1.json",
+      "bytes": 16064,
+      "sha256": "d5141f4a8ee4378d77d483b09f6ecd809f8b328f82e79a69ff83164e73bc799a",
+      "source": "set73-prep/carrier-reference/inputs/published-recovery-v1.json",
+      "source_commit": null,
+      "role": "reviewed independent pure carrier corpus/producer public input; no Go73 outputs"
+    },
+    {
+      "path": "carrier/inputs/recipe.json",
+      "bytes": 1497,
+      "sha256": "488f80df155d10226d61e9dfd87c32bfc7132c23e1c9a31e1978a9da7324dee9",
+      "source": "set73-prep/carrier-reference/inputs/recipe.json",
+      "source_commit": null,
+      "role": "reviewed independent pure carrier corpus/producer public input; no Go73 outputs"
+    }
+  ]
+}

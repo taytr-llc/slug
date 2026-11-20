@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "status": "passed",
+  "findings": [],
+  "scope": "Independent source/provenance/core arithmetic/assembly review of design-authored partition only. Reviewer-authored wire/model partition explicitly excluded from independent approval.",
+  "candidate": {
+    "directory": "/Users/taytrrip/slug/set51-fighter-history-reference",
+    "file_index_sha256": "836bf113a7f414297442ee01d29dfd7b01ca79482c042211d7f4b23f2dcb9b75",
+    "file_count": 134,
+    "bytes": 34276350,
+    "corpus_sha256": "d1970ec177f61519a3f1c54968a4179f3dfb2ea2e6ca7f1a5f492b98de5bd2a8",
+    "input_index_sha256": "cae11a8fb9a1707051626330161d6523795228c01d765dc920d8db3af13e9ae6",
+    "verification_path": "verification/attempt2/report.json",
+    "verification_sha256": "0c48ff333b455b86136b41a080b3b56ab8da55fc7a325bc8de438e0ead73f10e"
+  },
+  "independently_reviewed_source_sha256": {
+    "common.py": "bd348290836084323c738cfcdaab35a18c76cd36233b582c88e207de095c8988",
+    "history_math.py": "a029c39d622123da3dac699aca154eb8f143ddaf0e754e3c6aa515a04d93c6c2",
+    "reference_history.py": "128706b6b109a6b66bfff043f9517b54d5d83d90fa9e67792f53d5824637b421",
+    "extract_inputs.py": "2e61fd3f50eb167b8262e11a8900b8ee6f0ebb93329bb3c27fe458bb80506ae1",
+    "generate.py": "ecdc6eb24e3bbe17007fa81bc0f9991c7e7d1bc17d6b8bce2bcfb0b3b2746147",
+    "verify_reference.py": "376a5239afaa57f258a0addec177bd62154f25ab65bb898ea6adfb2b5939086c",
+    "check_reproducibility.py": "5ffbd94f0ea8d89b357750febbaa44591e29dce3a4914d2e5d6c093590a11457",
+    "README.md": "0c2092c7c7aafd92d6f66e042cf17c0116014e72959476e3f8ea2c1f7a8bb449",
+    "input_index.json": "cae11a8fb9a1707051626330161d6523795228c01d765dc920d8db3af13e9ae6"
+  },
+  "excluded_authored_source_sha256": {
+    "schema_wire.py": "48a69083341cd3f69f5d16660db4d709ee516090362b01e5fbafc1e589f3af1f",
+    "reference_wire.py": "76ad717074e9e55771186507acb2756d32b816decbcd11a1092b38dabb614a15",
+    "state_models.py": "721237b1ea1cd126b92fee07069f30a71c8982cf8b85a09e961aa4d4cbd8bd03",
+    "fragments/wire.json": "e060a4c7bd1d098bb06b4756e32eb4ddf36a205ee2d57a7a7e54e416642a67a4",
+    "fragments/state.json": "33497369b390d8f2029d4d3bb4893872819ddbc4563d15fe6b7781356969ab8e"
+  },
+  "input_provenance": {
+    "files": 96,
+    "bytes": 570294,
+    "distinct_origins": 33,
+    "exact_json_pointer_extracts": 67,
+    "selected_public_artifacts_match_old_runner_and_independent_report": 4,
+    "prior_proofs_rerun": false
+  },
+  "reviewed_equations": [
+    "Policy/Activation/EventAward/Finality domains and canonical framing follow pinned unchanged independent Career prose/producer.",
+    "Current capture validates the full owned modeled index including future/unrelated events before filtering; selected rows/totals and full-prefix digest are derived from that same data.",
+    "Standard method/corner W-L-D/base points and XP15 saturation; newest-first pages preserve chronological cumulative totals; equal-time insertion changes only future capture-relative applied-XP explanation.",
+    "HistoryID uses exact domain, raw IDs, LE64/LE32 and LP ordered Assignment/Totals; full captured Status is intentionally not all committed by HistoryID.",
+    "Capture/Page/Event validators check strict integer types, field closure, scalar/caps, original selected corner, chronology, ordinal, within-page unique AwardID/ResultKey, adjacent totals and requested page length.",
+    "Fixed documentary inherited identities/network constants load once, while account/source authority IDs remain generic; no new Go or chain outcome is an oracle input."
+  ],
+  "resolved_findings": [
+    {
+      "id": "within_page_duplicate_identity",
+      "problem": "Two individually valid older/newer rows could share ResultKey/AwardID while retaining chronological order and internally consistent totals.",
+      "correction": "Both identifiers now unique within each at-most8-row page, before ordinal and adjacency checks.",
+      "control": "coherent_duplicate_result_key_and_award",
+      "negative_control_sha256": "0db33118e6ec77bf1715c3e5cac6336554914639a8322aa622733074e365df54",
+      "preserved_path": "preserved/before-page-uniqueness"
+    },
+    {
+      "id": "transport_input_isolation",
+      "correction": "Immutable documentary scalar constants captured once at initialization; parser no longer loads inputs repeatedly.",
+      "scope": "Reviewer read core change; authored wire trap is separately owned evidence."
+    },
+    {
+      "id": "negative_control_internal_errors",
+      "correction": "Core control runner catches only Refusal, so internal KeyError/TypeError cannot count as successful rejection.",
+      "preserved_path": "preserved/before-control-exception-hardening"
+    }
+  ],
+  "reproduction_evidence": {
+    "author_executed": true,
+    "reviewer_reexecuted": false,
+    "counts": {
+      "histories": 28,
+      "core_controls": 35,
+      "index_controls": 4,
+      "wire_dtos": 65,
+      "wire_codecs": 67,
+      "protocols": 45,
+      "state_models": 57
+    },
+    "two_python_reports_source_and_corpus_bound": true,
+    "child_exit_codes": [
+      0,
+      0
+    ],
+    "exact_fragment_regeneration_required": true,
+    "missing_report_cannot_pass": true
+  },
+  "limits": [
+    "I authored wire/schema/models and do not independently approve them; root/envelope separate review is required.",
+    "No Go/runtime/source proof/signature/Argon/engine/DB/network or performance execution by this review. Genuine source facts inherit explicit Set49 scoped-clock proof provenance; new captures are derived expectations, not actual Set51 executions.",
+    "Finite typed acceptance and partial-page consistency do not establish sealed authority or whole-index/league completeness.",
+    "No compiler/heap/liveness/GUI/ranking/title qualification. Retained-byte arithmetic and runtime work counters remain separate future gates."
+  ]
+}

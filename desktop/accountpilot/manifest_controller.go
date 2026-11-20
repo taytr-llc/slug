@@ -38,6 +38,7 @@ type manifestChild interface {
 // separately typed manifest child. Its immutable view lease never substitutes a
 // later token, even when a callback finishes after a reset or failed login.
 type ManifestController struct {
+	evidencePermit                    pilot.EvidencePermit
 	boutOwner                         *boutAccountOwner
 	careerOwner                       *careerAccountOwner
 	resultOwner                       *resultAccountOwner

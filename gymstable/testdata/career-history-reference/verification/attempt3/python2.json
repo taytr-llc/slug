@@ -1,0 +1,61 @@
+{
+  "status": "passed",
+  "findings": [],
+  "python": "3.14.3 (main, Feb  3 2026, 15:32:20) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "executable": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "environment": {
+    "TZ": "Pacific/Auckland",
+    "PYTHONHASHSEED": "981",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "inputs": {
+    "input_index_sha256": "cae11a8fb9a1707051626330161d6523795228c01d765dc920d8db3af13e9ae6",
+    "count": 96,
+    "bytes": 570294
+  },
+  "source_sha256": {
+    "common.py": "bd348290836084323c738cfcdaab35a18c76cd36233b582c88e207de095c8988",
+    "history_math.py": "a029c39d622123da3dac699aca154eb8f143ddaf0e754e3c6aa515a04d93c6c2",
+    "reference_history.py": "128706b6b109a6b66bfff043f9517b54d5d83d90fa9e67792f53d5824637b421",
+    "schema_wire.py": "af8d700bb8f7cf45231197e9c022f6e793e5926451d29ce23af986f864e2e20e",
+    "reference_wire.py": "ba4d876e17d77cc82eb159474c583abcee55d15fbf6e04c6ea21d9439970fe9b",
+    "state_models.py": "f51ecc5897bbbc73f80f5e5f940a3584b83b4e3b60a435e43157fa687a1f06ca",
+    "generate.py": "ecdc6eb24e3bbe17007fa81bc0f9991c7e7d1bc17d6b8bce2bcfb0b3b2746147",
+    "verify_reference.py": "376a5239afaa57f258a0addec177bd62154f25ab65bb898ea6adfb2b5939086c",
+    "check_reproducibility.py": "5ffbd94f0ea8d89b357750febbaa44591e29dce3a4914d2e5d6c093590a11457",
+    "extract_inputs.py": "2e61fd3f50eb167b8262e11a8900b8ee6f0ebb93329bb3c27fe458bb80506ae1"
+  },
+  "corpus_sha256": "18e51e25c6760f756159e12a92265b517438152533d439d541d4696044e60283",
+  "corpus_bytes": 7886276,
+  "counts": {
+    "histories": 28,
+    "core_controls": 35,
+    "index_controls": 4,
+    "wire_dtos": 65,
+    "wire_codecs": 67,
+    "protocols": 45,
+    "state_models": 69
+  },
+  "transport_trap": {
+    "status": "passed",
+    "dtos": 65,
+    "codecs": 67,
+    "protocols": 45,
+    "forbidden_calls": {
+      "input_reads": 0,
+      "history_derivation": 0,
+      "process": 0,
+      "network": 0
+    },
+    "scope": "Python parser isolation only; no actual runtime counters, source proof or sealed authority."
+  },
+  "genuine_event_rederived_from_retained_first_finality": true,
+  "pinned_prior_current_equations_equal": true,
+  "limitations": [
+    "No new Go/runtime, admission proof, engine, Argon, signing, chain RPC, mining or database access.",
+    "Genuine inputs inherit Set49 public proof report; those proofs are not rerun.",
+    "Synthetic histories and finite lane/cache models do not establish runtime authority, races, duration or physical heap limits."
+  ],
+  "elapsed_seconds": 0.5578857919899747
+}

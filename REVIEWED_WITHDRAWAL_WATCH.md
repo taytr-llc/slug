@@ -1,0 +1,7 @@
+# Set68 retained change-watch addendum
+
+The bounded unsigned wallet seam commits its change address locally and deliberately does no network I/O. The concrete adapter must register that exact saved address on the borrowed wallet's existing websocket before scratch signing. It must not use a separate websocket, guess a successor address, or mark the wallet transaction as unmined. This applies even when dust removal leaves no change output, because the issued address is still retained.
+
+The inherited NotifyReceived call has no context argument. Bound the synchronous call to five seconds by installing a cancellation callback that shuts down that exact borrowed RPC client's transport. Join the callback before returning; do not detach a goroutine blocked on a reply. A cancellation or watch failure poisons withdrawal resources until the child is closed and reopened. Shutdown of this owned transport is deliberately fail-closed and may make this child's other wallet work unavailable until reopen. No transaction is sent by this call.
+
+An existing signed operation reopened in a new child uses the wallet's normal startup issued-address rescan/watch registration; require synchronized wallet and retained connected backend before any newly authorized dispatch. The adapter must verify both live notification learning and reopen/rescan on actual public fixture wallets. A node acknowledgment never substitutes for wallet observation. There is no automatic transaction retry.

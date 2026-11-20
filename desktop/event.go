@@ -8,6 +8,9 @@ import (
 )
 
 func (g *Gym) eventRequest(r pilot.EventRequest) pilot.EventResponse {
+	if g.poolHelper != nil {
+		return g.poolHelper.EventRequest(context.Background(), r)
+	}
 	if g.stableHelper == nil {
 		return pilot.EventResponse{ID: 1, Error: "event_unavailable"}
 	}

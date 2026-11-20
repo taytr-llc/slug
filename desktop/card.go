@@ -7,6 +7,9 @@ import (
 )
 
 func (g *Gym) cardRequest(r pilot.CardRequest) pilot.CardResponse {
+	if g.poolHelper != nil {
+		return g.poolHelper.CardRequest(context.Background(), r)
+	}
 	if g.stableHelper == nil {
 		return pilot.CardResponse{ID: 1, Error: "card_unavailable"}
 	}

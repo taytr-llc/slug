@@ -145,7 +145,7 @@ func (s *StableController) reserveCareerReadLocked() (int, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	old := s.careerBytes
-	if !stableCacheFits(s.cache, s.receiptSlot, MaxCareerCacheSize+s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+s.boutBytes+s.resultBytes) {
+	if !stableCacheFits(s.cache, s.receiptSlot, s.historyBytes+MaxCareerCacheSize+s.previewBytes+s.entryBytes+s.eventBytes+s.seedBytes+s.cardBytes+s.boutBytes+s.resultBytes) {
 		return old, gymstable.ErrCapacity
 	}
 	s.careerBytes = MaxCareerCacheSize

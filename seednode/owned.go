@@ -35,6 +35,8 @@ type Publisher struct {
 	cancel    context.CancelFunc
 	watchDone chan struct{}
 	binding   OwnerBinding
+	shared    *SharedPoolOwnerBinding
+	ownership *OwnershipPoolOwnerBinding
 	identity  ChainIdentity
 	configs   [2]ownedConfig
 	nodes     [2]*nodeRPC
@@ -101,6 +103,10 @@ func live(p OwnedProcess) bool {
 }
 
 func configFor(home, name string, p OwnedProcess) (ownedConfig, error) {
+	return configForMode(home, name, p, false)
+}
+
+func configForMode(home, name string, p OwnedProcess, shared bool) (ownedConfig, error) {
 	var c ownedConfig
 	if !live(p) || safeDirectory(home) != nil {
 		return c, ErrOffline
@@ -123,7 +129,11 @@ func configFor(home, name string, p OwnedProcess) (ownedConfig, error) {
 		return c, ErrInvalid
 	}
 	lines := strings.Split(string(b[:len(b)-1]), "\n")
-	if len(lines) != 10 {
+	count := 10
+	if shared && name == "primary" {
+		count++
+	}
+	if len(lines) != count {
 		return c, ErrInvalid
 	}
 	m := make(map[string]string, 10)
@@ -144,7 +154,7 @@ func configFor(home, name string, p OwnedProcess) (ownedConfig, error) {
 		return c, ErrInvalid
 	}
 	if name == "primary" {
-		if m["nolisten"] != "1" {
+		if m["nolisten"] != "1" || shared && m["txindex"] != "1" {
 			return c, ErrInvalid
 		}
 	} else {
@@ -213,6 +223,10 @@ func checkMarker(b OwnerBinding, id ChainIdentity) error {
 }
 
 func AttachOwned(ctx context.Context, b OwnerBinding) (*Publisher, error) {
+	return attachOwned(ctx, b, nil)
+}
+
+func attachOwned(ctx context.Context, b OwnerBinding, shared *SharedPoolOwnerBinding) (*Publisher, error) {
 	if wire.TestPoW {
 		return nil, ErrProfile
 	}
@@ -231,14 +245,23 @@ func AttachOwned(ctx context.Context, b OwnerBinding) (*Publisher, error) {
 	if !live(b.Primary) || !live(b.Peer) || b.Primary.Cmd.Process.Pid == b.Peer.Cmd.Process.Pid {
 		return nil, ErrOffline
 	}
-	if e = checkMarker(b, id); e != nil {
-		return nil, e
+	if shared == nil {
+		if e = checkMarker(b, id); e != nil {
+			return nil, e
+		}
 	}
-	a, e := configFor(b.Home, "primary", b.Primary)
+	return attachNodes(ctx, b, id, shared, nil)
+}
+
+// attachNodes owns only process/RPC lifecycle mechanics. A caller must first
+// validate exactly one concrete owner family; it cannot create source authority.
+func attachNodes(ctx context.Context, b OwnerBinding, id ChainIdentity, shared *SharedPoolOwnerBinding, ownership *OwnershipPoolOwnerBinding) (*Publisher, error) {
+	sharedConfig := shared != nil || ownership != nil
+	a, e := configForMode(b.Home, "primary", b.Primary, sharedConfig)
 	if e != nil {
 		return nil, e
 	}
-	z, e := configFor(b.Home, "peer", b.Peer)
+	z, e := configForMode(b.Home, "peer", b.Peer, sharedConfig)
 	if e != nil {
 		return nil, e
 	}
@@ -253,12 +276,20 @@ func AttachOwned(ctx context.Context, b OwnerBinding) (*Publisher, error) {
 		seen[v] = true
 	}
 	child, cancel := context.WithTimeout(ctx, 30*time.Second)
-	p := &Publisher{ctx: child, cancel: cancel, watchDone: make(chan struct{}), binding: b, identity: id, configs: [2]ownedConfig{a, z}, nodes: [2]*nodeRPC{newRPC(a), newRPC(z)}, checked: map[string]string{}}
+	p := &Publisher{ctx: child, cancel: cancel, watchDone: make(chan struct{}), binding: b, shared: shared, ownership: ownership, identity: id, configs: [2]ownedConfig{a, z}, nodes: [2]*nodeRPC{newRPC(a), newRPC(z)}, checked: map[string]string{}}
+	var ownerDone <-chan struct{}
+	if shared != nil {
+		ownerDone = shared.Life.Done()
+	}
+	if ownership != nil {
+		ownerDone = ownership.Life.Done()
+	}
 	go func() {
 		defer close(p.watchDone)
 		select {
 		case <-b.Primary.Done:
 		case <-b.Peer.Done:
+		case <-ownerDone:
 		case <-child.Done():
 		}
 		cancel()
@@ -301,7 +332,14 @@ func (p *Publisher) begin(ctx context.Context) (context.Context, func(), error) 
 	}
 	c, cancel := context.WithCancel(p.ctx)
 	stop := context.AfterFunc(ctx, cancel)
-	return c, func() { stop(); cancel(); p.mu.Unlock() }, nil
+	end := func() { stop(); cancel(); p.mu.Unlock() }
+	if p.shared != nil || p.ownership != nil {
+		if err := p.checkOwnerContext(c); err != nil {
+			end()
+			return nil, nil, err
+		}
+	}
+	return c, end, nil
 }
 
 func hexValue(s string, n int, nonzero bool) bool {

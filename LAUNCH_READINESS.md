@@ -1,6 +1,6 @@
 # SLUG launch readiness
 
-Updated November 18, 2026. Numbered change sets are reviewable engineering
+Updated November 19, 2026. Numbered change sets are reviewable engineering
 increments, not a fixed countdown to launch. This checklist tracks the actual
 finish line and must be updated from evidence rather than a branch number.
 
@@ -9,9 +9,31 @@ product release, hold a thorough joint design review and address or explicitly
 agree to defer its findings. Mike requested this gate on November 16 (D74).
 Mike wants one full joint design review once all major flows are ready, at the
 end before release. Partial reviews do not replace that session.
+On November 18 Mike clarified that app organization and navigation changes
+belong in that final session. The external navigation draft is stopped and
+unapplied; it is not the next engineering set.
 
 Routine authorized engineering pushes and Phase-A seed verification continue;
 they do not count as completion of this product-release gate.
+
+**Current work order, Mike's November 19 clarification:** defer login-flow,
+provider, MFA implementation and account-recovery UX work until wallet recovery,
+fighter ownership/transfer and recovery of the same gym and its fighters are
+complete. D82's mandatory MFA, passkey support and no-support-bypass requirements
+remain recorded for later. Existing fixture login may support functional tests;
+it is not the real onboarding deliverable. Key restoration alone does not close
+the fighter-ownership/recovery gate, and D74 remains the final joint review.
+Mike's subsequent explicit order is: finish fighter transfers and recovery;
+then finish the public mining pool and scheduled payouts; then sign-in and
+onboarding. Existing fixture pool and payout evidence does not close the public
+deployment, operation or scheduled-settlement acceptance gate.
+
+**D83 transfer policy, approved November 19:** first valid competing send in
+canonical chain order wins; later competing sends are void. Transfers remain
+pending until a signed checkpoint and sixty descendants, and noon locks use the
+owner of record at lock time. This settles ordering/effectiveness, not delivery
+of the ownership, transfer or independent restored-wallet flow. See
+`FIGHTER_TRANSFER_POLICY.md`.
 
 ## Current evidence
 
@@ -222,15 +244,254 @@ they do not count as completion of this product-release gate.
   production authority, portrait/GUI/accessibility and D74 remain open. C1 and
   D65 are unchanged. See `CHANGESET_49_NOTES.md` and `RESULT_AWARD_POLICY.md`.
 
-- Set 50 is under validation on `slug-career-preview`. The additive practice
-  path captures finalized XP with original DNA and birth, preserves the saved
-  result across later awards, and grants no records, XP, points or titles.
-  Local tests, independent arithmetic and a scoped awarded-fighter composition
-  passed again after a narrow logout classification fix.
-  Normal-calendar Mac packaging and deployment verification remain pending.
-  The legacy XP0 preview, fight engine, D65, C1 and D78 remain unchanged.
-  See `CAREER_PREVIEW.md` and `CHANGESET_50_NOTES.md`. This does not close any
-  production authority, GUI/accessibility or joint D74 review gate.
+- Set 50 implementation `99d36ef2` is released as `592e143c` on the seed. Its
+  additive practice path captures finalized XP with original DNA and birth,
+  retains that captured result across later awards, and grants no records,
+  XP, points or titles. All 249 frontend tests, independent arithmetic and
+  three scoped awarded-fighter jobs/two distinct compositions pass. The normal
+  Mac package passed five XP0 jobs/ten typed portraits and all ten independent
+  checks: nine passed reports were hash-reused after a corrected tenth checker.
+  The initial missing-snapshot producer failure and checker-envelope failure
+  remain preserved. The live observation and provider closeout passed: 900.03
+  seconds, 31 successful samples at height 61 with 60 checkpoint descendants,
+  and a clean restart.
+  Railway remained healthy on the exact release, with configuration, volume
+  and TCP endpoint unchanged. Remote CI absence is assessed, not
+  passed. The legacy XP0 preview, fight engine, D65, C1 and D78 are unchanged.
+  One local signed-out spot check showed the detailed header logo and one
+  running instance. Mike explicitly confirmed the menu-bar fist visible after
+  its already-on macOS Allow in Menu Bar setting was toggled off/on. No source
+  fix or established root cause is claimed. This narrow logo/tray observation
+  does not close full GUI, native chooser, screen-reader or D74 acceptance.
+  See `CAREER_PREVIEW.md` and `CHANGESET_50_NOTES.md`; production authority
+  and the remaining product gates stay open.
+
+- Set 51 implementation `751b947b` passed local, cold-capacity, scoped actual,
+  normal Mac package and eleven independent package checks for authenticated
+  finalized fighter history. The candidate build is 0.4.11/build 51. Its first
+  package attempt failed an inherited missing-source restart probe; a focused
+  diagnostic did not reproduce it and the fresh full package passed without
+  relaxed assertions or deadlines. The original cause remains unproven.
+  Approved icon bytes are unchanged. No compiled seed-node source or deployment
+  configuration changed, so the verified desktop build does not trigger a
+  Set 51 seed rollout; master/live remain Set 50. Remote CI absence is not a
+  pass. GUI/accessibility, production authority, rankings/titles, permanent
+  genesis and the final joint D74 review remain open. See `CHANGESET_51_NOTES.md`.
+
+- Set 52 validates immutable manifest-bound pool work against independent
+  pool/prospect/block targets, with stable duplicate keys. Normal/race/profile
+  refusal tests and vet pass. D79 accounting and maturity policy is recorded;
+  durable acceptance, a live pool and payouts remain open. This additive library
+  work requires no seed or desktop rollout. See `CHANGESET_52_NOTES.md`.
+
+- Set 53 adds durable pool work/share acceptance and restart recovery, including
+  D80's canonical late-winner exception. Focused normal/race/profile-refusal
+  checks and vet pass; no fighter admission or payment is granted by the pool
+  journal. Public service/miner integration, round earnings and settlement
+  remain open. No seed or desktop rollout is needed for this unconnected
+  component. See `CHANGESET_53_NOTES.md`.
+
+- Set 54 retains fixed pool rounds and exact gross allocations, with first
+  confirmation at sixty descendants. D81 orphan/return and post-confirmation
+  funding conflicts pass focused normal/race/profile-refusal checks and vet.
+  Maturity, unspent funding, fee/rounding policy and payment remain separate;
+  this adds no public service or desktop route. See `CHANGESET_54_NOTES.md`.
+
+- Set 55 implements D58's approved settlement contract: exact net carry-forward,
+  a 1-SLUG minimum, one daily transaction, fees paid from the pool's 1% and
+  explicit deferral reasons. An isolated normal-PoW chain has demonstrated
+  confirmed earnings becoming one actual two-miner payout, including recovery
+  after a deliberately lost broadcast acknowledgment without another payment.
+  Final scoped checks and the reviewed source binding are recorded in
+  `CHANGESET_55_NOTES.md`. The fixture signer is not production custody;
+  public service/miner integration, recipient enrollment and scheduling remain
+  release work. The joint D74 design review remains last.
+
+- Set 56 connects pool work, share recovery and each gym's balance over bounded
+  authenticated HTTP. Its Go client pins source/gym/transport, and the desktop
+  adapter preserves the original login while refreshing mining credentials.
+  Two fixture accounts complete a shared actual payout over that transport;
+  a lost receipt and account reset preserve duplicate and isolation rules.
+  This does not switch the app's existing solo worker, create public hosting
+  or expose settlement controls. The dedicated pool worker, shared app runtime,
+  recipient binding and balance presentation remain next. See
+  `CHANGESET_56_NOTES.md`.
+
+- Set 57 adds automatic pool mining with a separate durable outbox. Recovery
+  retains the original job/nonce, and independent fighter admission preserves
+  D68/D69/D80 rather than treating a share receipt as birth. The pool owns
+  issuance; its companion admission-only service cannot issue extra jobs.
+  Validation is recorded in `CHANGESET_57_NOTES.md`. Shared desktop runtime,
+  recipient binding, visible balances and daily scheduling remain ahead.
+  This engineering slice does not replace the final joint D74 design review.
+
+- Set 58 binds each published gym to its actual native84 wallet recipient,
+  separately from the legacy solo payout and gym-signing key. Durable intent,
+  uncertain-allocation recovery and original-session publication checks prevent
+  recipient drift across retry/reset. See `POOL_RECIPIENTS.md` and
+  `CHANGESET_58_NOTES.md` for verification. The shared issuer also needs explicit
+  per-gym stable/projection scoping; existing contiguous single-gym readers
+  must not silently receive its multi-gym record stream. Shared runtime,
+  balance presentation and daily scheduling remain functional integration work.
+
+- Set 59 adds explicit shared-issuer stable scoping. Each gym keeps only its
+  own verified assignments while accounting for every consumed global record.
+  Sparse typed pages, local Recent and career fences preserve original source
+  sequences; legacy contiguous projections remain separate. See
+  `SHARED_GYM_STABLE.md` and `CHANGESET_59_NOTES.md`. Shared parent runtime,
+  visible pool balances and daily scheduling remain next. No app navigation
+  reorganization or D74 design approval is implied.
+
+- Set 60 removes long account leases from pool node/proof work and balance
+  verification. Original-token fences still cover actual commits and final
+  disclosure; staged registry commits fail fast rather than waiting behind
+  proof readers while holding account authority. The new admission-only
+  constructor is explicit, with one writer per shared issuer. See
+  `POOL_SESSION_FENCES.md` and `CHANGESET_60_NOTES.md` for the implementation
+  boundary and evidence. This does not activate a new app route or production
+  service. Next is the runnable shared fixture desktop integration: one parent
+  runtime, two actual recipient-bound wallets, separate workers/outboxes and
+  Pin2 stables, visible authenticated balances, daily scheduling, and actual
+  payout/restart/reset acceptance. Preserve the current solo route and layout;
+  the thorough joint D74 review remains last.
+
+- Set 61 connects the actual shared fixture Pool Pilot: one parent runtime,
+  two recipient-bound wallets, per-gym workers/outboxes/Pin2 stables and visible
+  authenticated balances. The normal-PoW acceptance paid 29.7 and 49.5 test SLUG
+  in one confirmed batch, preserved separate inventories and retained wallet,
+  source and payments through reset and restart. Exact evidence and limits are
+  in `CHANGESET_61_NOTES.md`. Set62 adds shared recovery; league attachment still follows;
+  production accounts, hosting/custody and public-release gates remain open.
+  This does not approve a friends build or replace the final joint D74 review.
+
+- Set62 connects the Pool Pilot's native recovery controls to its real fixture
+  wallet. Original-view, pinned owner-only export, reset holds, cancellation and
+  fresh verification pass. A funded independent file-only restore recovered
+  39.6 test SLUG and made a confirmed, independently inspected spend with the
+  original database unavailable. Genesis-wallet synchronization, both exact
+  packaged fixture restores, full desktop suites and per-set smoke passed.
+  See `CHANGESET_62_NOTES.md`. This fixture evidence does not close production
+  custody/profile or native chooser rendering, and does not replace D74.
+
+- Set63 connects actual shared-pool fighters to Saturday entries and durable
+  noon snapshots. The normal-PoW fixture acceptance preserves original receipts,
+  post-noon historical roster state, both participants, reset holds and exact
+  snapshot bytes through replay/restart. The normal Mac package verifies both
+  gyms' shared authority, recovery and before-noon refusal. See
+  `CHANGESET_63_NOTES.md`. Shared seed/card/fight/result/career integration follows;
+  activate career accounting before the new event lock and first result finality.
+  Existing solo history and earlier shared snapshots remain unchanged. This is
+  candidate engineering and does not replace the final joint D74 review.
+
+- Set64 completes the shared fixture seed/card/bout/result/career connection.
+  The normal-PoW acceptance finalizes seed118 at178 and result180 at240, grants
+  each fighter one XP exactly once, and preserves awards and the original noon
+  through retry/restart. It also proves C1's awarded-fighter refusal at entry
+  application and later cutoff. The exact normal package retains both recovery
+  paths, shared authorities and zero implicit mining. See `CHANGESET_64_NOTES.md`.
+  This proves the candidate cycle, not general matchmaking, titles/rankings,
+  transferable ownership, production custody, distribution or D74 approval.
+
+- Set65 qualifies a separately selected name-v2 source with 512 first names
+  and 512 surnames. Its 764 independent manifest/portrait cases cover every name
+  index, and Go reproduces the frozen 100,000-seed collision study. At 10,000
+  sampled fighters, 3.99% have a namesake; at 100,000, 31.969% do. Those are
+  scenarios, not production forecasts or adopted release thresholds. Old names,
+  complete v1 bytes and defaults remain unchanged. Actual normal-PoW v2 seed/
+  result finality and exact-once careers, both packaged routes with recovery,
+  the full normal desktop suite and required smoke pass. See
+  `CHANGESET_65_NOTES.md`; source activation/population assumptions and remaining
+  duplicate-name presentation still belong to the final D74 session.
+
+- Set66 completes public original-receipt/history export and conditional offline
+  consistency checking against an independently selected full source Pin.
+  Six actual v1/v2 exports, independent references, original-action recovery,
+  full desktop, normal Mac package and required smoke pass. The file does not
+  establish admission time, actual result finality, ownership or complete/fresh
+  authoritative history. Preserve the initial sandbox failure and composite
+  qualification record. See `CHANGESET_66_NOTES.md`. The seed inputs are unchanged;
+  no new rollout or product-release approval is implied.
+
+- Set67 implements each authenticated gym's historical payment capture and
+  local pages, with a separate dated check of the exact output in its owned
+  wallet. Original source/recipient/view and native action identities remain
+  bound through refresh, cancellation and lost replies. A missing wallet
+  observation cannot undo a recorded payment or authorize another one.
+  `CHANGESET_67_NOTES.md` tracks focused, actual, package and smoke qualification;
+  this entry does not replace that evidence. Set68 supplies the next reviewed
+  withdrawal flow; transferable ownership, general league policy, real
+  custody/hosting and distribution remain open.
+
+- Set68 adds native-reviewed personal withdrawals for the two public fixture
+  wallets, with durable reservations, original-session D72 enforcement and
+  explicit retry of the exact signed transaction. Actual funded acceptance
+  proves both complete drafts/signatures against independent fixtures, lost-ack
+  retry with one debit, live change detection, inclusion and reopen. See
+  `CHANGESET_68_NOTES.md` for the complete qualification state. This does not
+  supply real custody, production-wallet activation or full evolving-wallet
+  recovery. The joint D74 review remains the final product gate.
+
+- Set69 replaces synchronous reconstruction in the Pool backup verifier with
+  bounded schema-12 recovery of its unchanged version-1 files. It retains the
+  original gym/root and address paths, supports explicit library resume, and
+  checks the exact synchronized wallet/node tip before comparing restored state.
+  The app still joins and deletes successfully closed scratch work; it does not
+  install the restore or recover payment authorization. See
+  `CHANGESET_69_NOTES.md` for qualification and limits. Current live exports
+  already include issued change cursors; the separate hosted-vault integration
+  still needs authoritative evolving metadata. D74 remains last.
+
+- Set70 adds ordinary own-wallet activity alongside the existing pool-payment
+  and withdrawal views. A bounded immutable capture provides incoming/outgoing
+  records, exact integer amounts and selected outputs at a dated wallet/node
+  tip. The concrete funded-fixture check matches the independently retained
+  transactions without changing wallet state. See `CHANGESET_70_NOTES.md` for
+  the complete qualification state and limits. This does not close hosted
+  recovery, real account or production identity gates; D74 remains last.
+
+- Set71's explicit hosted-fixture mode connects signed login/reset to the same
+  wallet, separate recovery/gym vault envelopes, public current cursor captures
+  and authorized current-file export. Independent references, actual funded
+  file-only restore/spend, reset/hold/restart, complete wallet/desktop suites,
+  normal packaged-helper acceptance and the required smoke passed. See
+  `HOSTED_CURRENT_RECOVERY.md` and `CHANGESET_71_NOTES.md`. The two buttons remain
+  published test identities, not MFA-qualified accounts. D82 now requires
+  mandatory MFA and passkey support; provider selection, exact factor-recovery
+  proof, cross-device service behavior, continuous disaster recovery
+  and production key custody remain release work. The full joint D74 review
+  stays last.
+
+- Set72 adds explicit schema13 hosted allocation recovery: address coverage is
+  reserved before receive/change use, and a surviving fixture account can export
+  and verify a current file after exact wallet-file or directory loss. The funded
+  rehearsal proved loss without a preloss export, current change recovery and an
+  independent restored spend. Full wallet, frontend, smoke and the documented
+  desktop/package composite passed. Preserve the failed legacy setup attempts
+  and narrow correction; see `CHANGESET_72_NOTES.md`. This remains co-located
+  fixture recovery with required surviving journals, not off-device hosted
+  disaster recovery or installed-wallet replacement. D83 ownership/transfers
+  and independent same-gym/fighter restoration follow; login and D74 stay deferred.
+
+- Set73 implements public ownership replay and the explicit owned-gym route.
+  Actual competing transfers and checkpoint +59/+60 finality passed, including
+  retained official ownership after a reported chain conflict. File-only
+  restored new transfers and the separate CLI's automatic commit discovery,
+  reviewed reveal/refund, signed restart and independent delivery passed.
+  Real helper/controller flows, native consent/cleanup tests and frontend tests
+  provide scoped engineering evidence. Recorded full suites compose with focused
+  terminal-Observe, startup-readiness, continuation, publication-recovery and
+  career-fence corrections; the initial failed focus and actual attempts remain
+  preserved in `CHANGESET_73_NOTES.md`. Both ordinary noon ownership variants
+  passed, including original birth/condition, immutable history after later
+  finality and component reopen. These scoped-clock cases do not qualify native
+  dialogs or a full ordinary controller reopen after future clock offset. A final normal
+  bundle on the clean release source and release/provider verification are also
+  outstanding; no promotion, deployment or post-rollout success is claimed.
+  Neither native attempt validated the original funded-root GUI flow. Default
+  fixture login/empty refresh does not qualify signing, mining, export or that
+  funded flow; visible native acceptance and D74 remain open product gates.
+  Public pool/scheduled payouts follow transfer/recovery closeout, then
+  sign-in/onboarding. See `CHANGESET_73_NOTES.md` for exact evidence and limits.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
@@ -243,11 +504,11 @@ and their intake does not replace the D74 review of the working product.
 | Milestone | Remaining acceptance |
 | --- | --- |
 | Production wallet and recovery | Freeze the approved profile and exact chain/coin identity; prove actual export, independent fresh restore and spending. Complete authoritative address metadata and bounded resumable scanning before claiming full evolving-wallet recovery. Real entropy and custody must use the operator-owned runtime, never assistant-visible keys. |
-| Real accounts and hosted custody | Demonstrate provider authentication/reset ordering, original-authentication epochs, durable retry/reconciliation and abandoned-flow behavior. Provision the reviewed operator-owned provider/vault configuration; prove same-wallet recovery, hold enforcement, backups, key rotation and disaster recovery. |
-| Desktop product | Integrate real signup/login, wallet views and controlled mining with the service. Complete native error/recovery flows, cross-device behavior, macOS signing/notarization and Windows runtime acceptance. Review distribution/update behavior. |
-| Mining and fighter services | Complete the official pool/share validation and payout path in the build plan, authoritative fighter lifecycle/ownership and portable history. Preserve automatic jobs, birth, canonical-winning-block rules and report-only checkpoint doctrine. |
+| Real accounts and hosted custody | Implement D82 mandatory MFA and passkey support with trusted assurance, user verification and fresh sensitive-action authentication. Qualify backup-factor/code recovery under the approved no-support-bypass rule, clearly distinguish login recovery codes from the 24-word wallet backup, and prove enrollment, replacement, replay/rate limits, refresh downgrade refusal and reset/session revocation without an MFA bypass. Demonstrate provider authentication/reset ordering, original-authentication epochs, durable retry/reconciliation and abandoned-flow behavior. Provision the reviewed operator-owned provider/vault configuration; prove same-wallet recovery, D72 hold enforcement, backups, key rotation and disaster recovery. See HOSTED_AUTHENTICATION.md. |
+| Desktop product | Integrate real signup/login, wallet views and controlled mining with the service. Complete native error/recovery flows, cross-device behavior, macOS signing/notarization and Windows runtime acceptance. Review distribution/update behavior. The expanded-name candidate is qualified for explicit fixture use; production activation remains separate. |
+| Mining and fighter services | Qualify hosted official-pool operations and production signer custody/capacity for the implemented share, round and settlement path; complete authoritative fighter lifecycle/ownership and portable history. Preserve automatic jobs, birth, canonical-winning-block rules and report-only checkpoint doctrine. |
 | League, marketplace and presentation | Wire the fight/league operation, entries, matching, results/finality, rankings and required gym/fighter flows. Complete the agreed launch marketplace/transfer behavior and reset-hold restrictions. Prototype/simulation output does not substitute for deployed acceptance. |
-| Fighter-name diversity and collisions | Before launch, substantially expand the candidate name pool and measure collision frequency at expected fighter populations. Fighter IDs remain the identity keys. Use deterministic, versioned generation so existing identities, assigned names and manifests remain stable; do not rewrite the frozen generator or historical fighters. Bring population assumptions and remaining duplicate-name behavior to the D74 review. |
+| Fighter-name diversity and collisions | Set65 completes the explicit versioned expansion and reproducible collision scenarios. Confirm the launch population assumptions, acceptable prevalence, disambiguation and source activation at D74. Fighter IDs remain identity keys; preserve all existing assigned names/manifests and never rewrite historical fighters. |
 | Thorough design review with Mike (D74) | Review a working representative build together: onboarding, mining controls/status, wallet/recovery/reset holds, roster/fighter lifecycle, fights/league, marketplace/transfers, navigation, visual hierarchy, accessibility, loading/empty/error/offline states and trust/irreversible-action wording. Record findings and agreed changes. Recheck affected flows before product release. |
 | Launch hardening and operations | Run end-to-end rehearsals and security review of the final system; verify capacity, monitoring, backups/recovery and rollback procedures. Complete the launch legal/operational items in the spec, including any external work requiring Mike's accounts or decisions. |
 | Permanent genesis and coordinated launch | Mike approves the exact permanent genesis and final parameters. Freeze release sources/configuration and deploy compatible nodes/services/clients. Rehearse the genesis procedure and verify the first permanent history. D1/D2's public-from-genesis and permanent tester-history commitments remain in force. |
@@ -266,7 +527,7 @@ than the original simulator under its different score-tie rule. Review those
 findings as matchmaking/gameplay questions; changing a summary rating alone
 does not change a fight. Neither finding authorizes a policy or engine change.
 
-The current frozen name tables contain 32 distinct first and 32 distinct last
+The retained v1 name tables contain 32 distinct first and 32 distinct last
 names, yielding 1,024 display names. Under an independent-uniform draw model,
 the probability of at least one shared name exceeds 50% at 38 fighters; at
 100 fighters, the expected fraction with a namesake is about 9.22%. These are
@@ -275,6 +536,9 @@ duplicates. Review acceptable prevalence and disambiguation at an explicit
 population scope, then assess the expanded version against that target while
 preserving existing assignments. The workspace's
 `set48-name-collision-prelaunch-note.md` records the assumptions and calculations.
+Set65's separately selected 512-by-512 candidate and its complete reproducible
+scenario results are documented in `NAME_DIVERSITY.md`; no launch population or
+numeric collision tolerance has been silently adopted.
 
 The approved logo handoff is preserved byte-for-byte in the workspace's
 `../brand-assets`: gray background, white front-facing fist, black linework and

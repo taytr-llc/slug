@@ -176,8 +176,8 @@ test('native modal pauses polling and stale dialog success is discarded', async 
   h.state = blank(); gate.resolve('Receipt saved.'); await exporting; await flush(); assert.equal(h.cards.length, 0); assert.doesNotMatch(h.elements.get('alert').textContent, /Receipt saved/); assert.equal(h.peak, 1);
 });
 test('independent image-only SVG consumer accepts all50 frozen bytes and refuses active content', async () => {
-  const h = harness(blank()); await h.start(); for (const p of portraits.cases) { h.context.svg = p.svg; assert.equal(vm.runInContext('imageOnlySVG(svg)', h.context), true); }
-  h.context.svg = portraits.cases[0].svg.replace('</svg>', '<script>bad()</script></svg>'); assert.equal(vm.runInContext('imageOnlySVG(svg)', h.context), false);
+  const h = harness(blank()); await h.start(); for (const p of portraits.cases) { h.context.svg = p.svg; assert.equal(vm.runInContext('imageOnlySVG(svg, DESCRIPTOR)', h.context), true); }
+  h.context.svg = portraits.cases[0].svg.replace('</svg>', '<script>bad()</script></svg>'); assert.equal(vm.runInContext('imageOnlySVG(svg, DESCRIPTOR)', h.context), false);
 });
 test('pagehide joins no new UI calls and drops images/results from a late reply', async () => {
   const h = harness(); await h.start(); const gate = deferred(); h.handlers.ManifestSnapshot = () => gate.promise; const ticking = h.tick(); await flush(); await h.window.dispatch('pagehide'); const count = h.calls.length; gate.resolve(clone(h.state.manifest)); await ticking; await flush(); assert.equal(h.calls.length, count); assert.equal(h.cards.length, 0); assert.equal(h.timers.size, 0);
@@ -470,3 +470,212 @@ test('zero-XP C1 draft eligibility is independent of unavailable Career practice
   assert.equal(h.count('BeginCareerFightPreview'),0);assert.equal(h.count('BeginFightPreview'),0);
   assert.equal(h.count('BeginEntryPrepare'),0);assert.equal(h.count('BeginEntryApply'),0);
 });
+
+// Pool transport models use the independently frozen Pin2 contract. Modified
+// sequences below test sparse UI handling; they do not claim new mined goldens.
+const sharedReference = JSON.parse(readFileSync(new URL('../../gymstable/testdata/shared-reference/shared_v1.json', import.meta.url), 'utf8'));
+function poolEnvironment(sequences = [2, 5], checkpoint = 12, fixture = 'zero256') {
+  const c = reference.cases.find((v) => v.fixture === fixture), list = sequences.map((sequence, n) => {
+    const v = item(c); v.assignment.sequence = sequence; v.assignment.prospect_id = hash(10000 + n); return v;
+  });
+  const e = environment(fixture, list), p = sharedReference.pins.find((v) => v.fixture === fixture);
+  e.stable.status.pin = clone(p.pin); e.stable.status.store_id = p.id;
+  e.manifest.view.authority_pin = clone(p.pin.source); e.stable.view = clone(e.manifest.view);
+  e.stable.status.checkpoint = e.stable.status.observed_source_count = checkpoint;
+  const m = e.manifest; delete m.accepted_count; delete m.projection;
+  Object.assign(m, { mode: 'local-pool-pilot', assignment_count: sequences.length, source_binding_id: hash(1234), payout_address: fixture === 'zero256' ? 'slug1qzmtrqsfuaf6l6kkcsseumq26ukaphfj9s9ptme' : 'slug1qslk39wvggqa0vl8nd6jckaz54dw3vk45c8educ', backup_state: 'idle' });
+  m.account.can_export = true;
+  m.balance = { state: 'ready', error: '', value: { version: 1, binding_id: m.source_binding_id, observed_at_ms: m.view ? 1794893590614 : 0, balance: { gym_id: m.gym_id, confirmed: { numerator: '990000001', denominator: '2' }, available: { numerator: '0', denominator: '1' }, reserved_atoms: 0, paid_atoms: 0, reason: 'immature' } } };
+  return e;
+}
+function poolHarness(initial = poolEnvironment(), mode = 'local-pool-pilot') {
+  const h = harness(initial, mode); h.state.stable.last_job_id = '';
+  h.handlers.PoolSnapshot = () => clone(h.state.manifest);
+  h.handlers.RefreshPoolBalance = () => {};
+  h.handlers.EntrySnapshot = () => ({ id: 1000 + h.calls.length, ok: false, view: null, store_id: '', snapshot: null, status: null, history: null, job: null, operation: null, error: 'entry_unavailable' });
+  h.handlers.EventSnapshot = () => ({ id: 1000 + h.calls.length, ok: false, view: null, store_id: '', snapshot: null, status: null, record: null, history: null, job: null, error: 'event_unavailable' });
+  h.handlers.SeedSnapshot = () => ({ id: 1000 + h.calls.length, ok: false, view: null, store_id: '', snapshot: null, status: null, record: null, history: null, job: null, error: 'seed_unavailable' });
+  const page = (after, limit) => {
+    const candidates = h.state.items.filter((i) => i.assignment.sequence > after), list = candidates.slice(0, limit), more = candidates.length > list.length;
+    return h.publish('inventory', { version: 1, status: clone(h.state.stable.status), as_of_ms: h.state.stable.status.last_as_of_ms || 1794893590614, after, next_after: more ? list.at(-1).assignment.sequence : h.state.stable.status.checkpoint, has_more: more, items: clone(list) });
+  };
+  h.handlers.BeginStableInventory = (_, after, limit) => page(after, limit);
+  h.handlers.BeginStableRecent = () => page(h.state.items.length > 8 ? h.state.items.at(-9).assignment.sequence : 0, 8);
+  return h;
+}
+
+test('hosted mode pins its snapshot and preserves explicit Start', async () => {
+  const initial = poolEnvironment(); initial.manifest.mode = 'local-hosted-fixture-pool';
+  const h = poolHarness(initial, initial.manifest.mode); await h.start();
+  assert.equal(h.elements.get('hosted-fixture-caption').hidden, false);
+  assert.equal(h.count('Start'), 0); assert.equal(h.count('PoolSnapshot'), 1);
+  h.context.testSnapshot = clone(initial.manifest);
+  assert.doesNotThrow(() => vm.runInContext('normalizePool(testSnapshot)', h.context));
+  h.context.testSnapshot.mode = 'local-pool-pilot';
+  assert.throws(() => vm.runInContext('normalizePool(testSnapshot)', h.context));
+  const old = poolHarness(); await old.start();
+  old.context.testSnapshot = clone(initial.manifest);
+  assert.throws(() => vm.runInContext('normalizePool(testSnapshot)', old.context));
+  assert.equal(old.elements.get('hosted-fixture-caption').hidden, true);
+});
+
+test('exact hosted pending fixture can resume while signed out without creating a login', async () => {
+  const initial = blank(); delete initial.manifest.accepted_count; delete initial.manifest.projection;
+  Object.assign(initial.manifest, { mode: 'local-hosted-fixture-pool', assignment_count: 0, source_binding_id: '', backup_state: 'unavailable', balance: { state: 'unavailable', error: '', value: null } });
+  Object.assign(initial.manifest.account, { fixture: 'zero256', last_error: 'hosted_reset_pending' });
+  const h = poolHarness(initial, initial.manifest.mode);
+  h.handlers.ResetFixtureAccount = () => { h.state.manifest.account.last_error = ''; };
+  await h.start();
+  assert.equal(h.elements.get('reset').disabled, false);
+  assert.equal(h.elements.get('reset').textContent, 'Resume fixture reset');
+  assert.match(h.elements.get('account-copy').textContent, /Demo A/);
+  assert.equal(h.elements.get('mining').disabled, true);
+  assert.equal(h.elements.get('export-recovery').disabled, true);
+  h.context.testSnapshot = clone(initial.manifest); h.context.testSnapshot.account.fixture = '';
+  assert.throws(() => vm.runInContext('normalizePool(testSnapshot)', h.context));
+  await h.click('reset');
+  assert.equal(h.count('ResetFixtureAccount'), 1);
+  assert.equal(h.count('LoginFixture'), 0); assert.equal(h.count('Start'), 0);
+  assert.equal(h.elements.get('reset').disabled, true);
+});
+test('pool mode reports local count, exact fractional carry and maturity reason without mining or legacy reads', async () => {
+  const h = poolHarness(); await h.start();
+  assert.match(h.elements.get('stable-count').textContent, /^2 assigned candidates · 12 shared/);
+  assert.equal(h.elements.get('accepted').textContent, '2');
+  assert.equal(h.elements.get('pool-confirmed').textContent, '4.95 + fraction of an atom');
+  assert.equal(h.elements.get('pool-confirmed').attributes.get('title'), '990000001/2 atoms');
+  assert.match(h.elements.get('pool-reason').textContent, /mature at 100 blocks/);
+  assert.equal(h.elements.get('export-recovery').disabled, false); assert.equal(h.elements.get('verify-backup').disabled, false);
+  for (const method of ['Start', 'ManifestSnapshot', 'PreviewSnapshot', 'CardSnapshot']) assert.equal(h.count(method), 0);
+  assert.equal(h.count('EntrySnapshot'), 1); assert.equal(h.count('EventSnapshot'), 1);
+  assert.equal(h.count('CareerMode'), 1); assert.equal(h.count('SeedSnapshot'), 1);
+  await h.click('pool-refresh'); assert.equal(h.count('RefreshPoolBalance'), 1); assert.equal(h.peak, 1);
+});
+test('pool sparse inventory and Follow Recent retain old local rows behind a foreign tail', async () => {
+  const h = poolHarness(); await h.start(); await h.click('inventory');
+  assert.equal(h.cards.length, 2); assert.equal(h.elements.get('next').disabled, true);
+  await h.click('recent'); assert.equal(h.cards.length, 2);
+  assert.equal(h.buttons('Select for preview')[0].disabled, true);
+  assert.equal(h.buttons('Add to Saturday draft')[0].disabled, true);
+  assert.equal(h.buttons('Save to slot')[0].disabled, false);
+  assert.equal(h.count('Start'), 0);
+});
+
+test('shared career mode renders finalized totals on the original Pin2 inventory page', async () => {
+  const e = poolEnvironment([2], 2), h = poolHarness(e), result = careerReply(e);
+  result.page.source.next_after = 2;
+  h.handlers.CareerMode = () => true;
+  h.handlers.CareerInventory = (_, jobID) => ({...clone(result), job_id: jobID});
+  await h.start(); await h.click('inventory');
+  assert.equal(h.count('CareerMode'), 1); assert.equal(h.count('CareerInventory'), 1);
+  assert.equal(h.cards.length, 1); assert.match(h.cards[0].textContent, /Finalized professional record: 1–0–0/);
+  assert.match(h.cards[0].textContent, /professional XP: 1/);
+  assert.equal(vm.runInContext('pageItems[0].assignment.sequence', h.context), 2);
+  assert.equal(vm.runInContext('pageItems[0].condition.pro_xp', h.context), 0);
+  assert.equal(h.count('Start'), 0); assert.equal(h.buttons('Select for preview')[0].disabled, true);
+});
+test('pool previous-page uses learned sparse cursors rather than subtracting eight global rows', async () => {
+  const sequences = Array.from({ length: 19 }, (_, n) => 2 + n * 5), h = poolHarness(poolEnvironment(sequences, 100));
+  await h.start(); await h.click('inventory'); assert.equal(h.cards.length, 8);
+  await h.click('next'); assert.equal(h.cards.length, 8);
+  await h.click('next'); assert.equal(h.cards.length, 3); assert.equal(h.elements.get('next').disabled, true);
+  await h.click('previous'); assert.equal(h.cards.length, 8);
+  await h.click('previous'); assert.equal(h.cards.length, 8); assert.equal(h.elements.get('previous').disabled, true);
+  assert.deepEqual(h.calls.filter((c) => c.method === 'BeginStableInventory').map((c) => c.args[1]), [0, 37, 77, 37, 0]);
+});
+test('pool foreign-only sync advances coverage without inventing fighters', async () => {
+  const h = poolHarness(poolEnvironment([], 8)); h.state.stable.status.last_as_of_ms = 1794893590614;
+  await h.start(); h.publish('sync', { version: 1, status: clone(h.state.stable.status), as_of_ms: 1794893590614, items: [] }); await h.tick();
+  assert.equal(h.cards.length, 0); assert.match(h.elements.get('stable-count').textContent, /^0 assigned/); assert.equal(h.elements.get('accepted').textContent, '0');
+});
+test('pool mode refuses foreign balances, noncanonical fractions and solo pins before rendering', async (t) => {
+  for (const [name, mutate] of Object.entries({
+    gym: (e) => { e.manifest.balance.value.balance.gym_id = hash(7); },
+    binding: (e) => { e.manifest.balance.value.binding_id = hash(9); },
+    fraction: (e) => { e.manifest.balance.value.balance.confirmed = { numerator: '2', denominator: '2' }; },
+    negative: (e) => { e.manifest.balance.value.balance.confirmed.numerator = '-1'; },
+    overflow: (e) => { e.manifest.balance.value.balance.confirmed = { numerator: '2100000000000001', denominator: '1' }; },
+    reservation: (e) => { e.manifest.balance.value.balance.reserved_atoms = 495000001; },
+    availability: (e) => { e.manifest.balance.value.balance.available = { numerator: '495000001', denominator: '1' }; },
+    noObservation: (e) => { e.manifest.balance.value.observed_at_ms = 0; },
+    errorPayload: (e) => { e.manifest.balance.state = 'failed'; e.manifest.balance.error = 'balance_unavailable'; },
+    legacyPin: (e) => { e.stable.status.pin.version = 1; },
+    oldProjection: (e) => { e.manifest.accepted_count = 12; },
+    wrongRecipient: (e) => { e.manifest.payout_address = 'slug1qslk39wvggqa0vl8nd6jckaz54dw3vk45c8educ'; },
+  })) await t.test(name, async () => { const e = poolEnvironment(); mutate(e); const h = poolHarness(e); await h.start(); assert.equal(h.cards.length, 0); assert.equal(h.elements.get('mining').disabled, true); assert.equal(h.elements.get('pool-confirmed').textContent, '—'); });
+});
+test('failed pool balance clears values rather than presenting a fresh zero', async () => {
+  const h = poolHarness(); await h.start(); h.state.manifest.balance = { state: 'failed', error: 'balance_unavailable', value: null }; await h.tick();
+  assert.equal(h.elements.get('pool-confirmed').textContent, '—'); assert.equal(h.elements.get('pool-confirmed').attributes.has('title'), false); assert.match(h.elements.get('pool-observed').textContent, /unavailable/);
+  assert.equal(h.elements.get('pool-reason').textContent, ''); assert.equal(h.elements.get('mining').disabled, false);
+});
+test('signed-out pool view refuses any retained account balance', async () => {
+  const e = poolEnvironment(), m = e.manifest; Object.assign(m, { view: null, gym_id: '', gym_public_key: '', payout_address: '', assignment_count: 0, source_binding_id: '' });
+  m.account = { state: 'signed_out', fixture: '', id: '', generation: 0, hold_until_ms: 0, held: false, can_export: false, last_error: '' };
+  const h = poolHarness(e); await h.start(); assert.equal(h.elements.get('mining').disabled, true); assert.equal(h.elements.get('pool-confirmed').textContent, '—');
+});
+
+test('pool recovery controls use native dialogs and preserve the reset hold', async () => {
+  const h = poolHarness(); await h.start();
+  await h.click('export-recovery'); await h.click('verify-backup');
+  assert.deepEqual(h.calls.filter((c) => ['ExportRecovery', 'VerifyBackup'].includes(c.method)).map((c) => c.args), [[], []]);
+  assert.equal(h.count('Start'), 0);
+  Object.assign(h.state.manifest.account, { held: true, hold_until_ms: 1795093590614, can_export: false }); await h.tick();
+  assert.equal(h.elements.get('export-recovery').disabled, true);
+  assert.equal(h.elements.get('verify-backup').disabled, false);
+  assert.equal(h.elements.get('mining').disabled, false);
+});
+test('pool verification blocks Start, supports cancellation and never restarts mining', async () => {
+  const h = poolHarness();
+  h.handlers.VerifyBackup = () => { Object.assign(h.state.manifest, { backup_state: 'running', backup_phase: 'restoring' }); return 'Backup verification started.'; };
+  h.handlers.CancelPoolBackup = () => { Object.assign(h.state.manifest, { backup_state: 'cancelled', backup_phase: '' }); };
+  await h.start(); await h.click('verify-backup');
+  assert.equal(h.elements.get('mining').disabled, true); assert.equal(h.elements.get('export-recovery').disabled, true);
+  assert.equal(h.elements.get('verify-backup').textContent, 'Cancel backup verification');
+  assert.equal(h.elements.get('logout').disabled, false); assert.equal(h.elements.get('reset').disabled, false);
+  await h.click('verify-backup');
+  assert.equal(h.count('CancelPoolBackup'), 1); assert.deepEqual(h.calls.find((c) => c.method === 'CancelPoolBackup').args, []);
+  assert.equal(h.elements.get('mining').disabled, false); assert.equal(h.count('Start'), 0);
+  assert.match(h.elements.get('backup').textContent, /cancelled/);
+});
+test('uncertain pool export warns to inspect the destination and never echoes backend text', async () => {
+  const h = poolHarness();
+  h.handlers.ExportRecovery = () => { Object.assign(h.state.manifest, { backup_state: 'failed', backup_phase: 'opening', backup_error: 'backup_export_uncertain' }); throw new Error('private recovery bytes and path'); };
+  await h.start(); await h.click('export-recovery');
+  assert.match(h.elements.get('backup').textContent, /may already be saved/);
+  assert.match(h.elements.get('alert').textContent, /Check the selected destination before trying again/);
+  assert.doesNotMatch(h.elements.get('alert').textContent, /private recovery/);
+  assert.equal(h.count('ExportRecovery'), 1);
+});
+test('temporarily unavailable pool backup offers retry without claiming a bad file', async () => {
+  const h = poolHarness(); await h.start();
+  Object.assign(h.state.manifest, { backup_state: 'failed', backup_phase: 'verifying', backup_error: 'backup_unavailable' }); await h.tick();
+  assert.match(h.elements.get('backup').textContent, /Retry after pending payments confirm/);
+  assert.doesNotMatch(h.elements.get('backup').textContent, /mismatch|invalid|completed/);
+  assert.equal(h.elements.get('verify-backup').disabled, false);
+});
+test('pool backup state cannot forge verification success or bypass a hold', async (t) => {
+  for (const [name, mutate] of Object.entries({
+    incompleteSuccess: (s) => { s.backup_state = 'succeeded'; s.backup_phase = 'restoring'; },
+    successWithError: (s) => { s.backup_state = 'succeeded'; s.backup_phase = 'complete'; s.backup_error = 'backup_mismatch'; },
+    runningWithoutPhase: (s) => { s.backup_state = 'running'; },
+    miningDuringVerification: (s) => { s.state = 'running'; s.backup_state = 'running'; s.backup_phase = 'restoring'; },
+    heldExport: (s) => { s.account.held = true; s.account.hold_until_ms = 1795093590614; },
+  })) await t.test(name, async () => {
+    const e = poolEnvironment(); mutate(e.manifest); const h = poolHarness(e); await h.start();
+    assert.equal(h.elements.get('mining').disabled, true); assert.equal(h.elements.get('export-recovery').disabled, true);
+    assert.doesNotMatch(h.elements.get('backup').textContent, /verification completed/);
+  });
+});
+test('late pool verification success from a replaced account does not display', async () => {
+  const h = poolHarness(), gate = deferred();
+  h.handlers.VerifyBackup = () => gate.promise;
+  await h.start(); const checking = h.click('verify-backup'); await flush();
+  h.state = poolEnvironment([], 0, 'incrementing256');
+  gate.resolve('Backup verification started.'); await checking; await flush();
+  assert.doesNotMatch(h.elements.get('alert').textContent, /verification started/);
+  assert.equal(h.elements.get('gym-id').textContent, fixturesFromReference('incrementing256'));
+  assert.doesNotMatch(h.elements.get('alert').textContent, /verification started/);
+  assert.doesNotMatch(h.elements.get('backup').textContent, /verification completed/);
+});
+function fixturesFromReference(fixture) { return sharedReference.pins.find((v) => v.fixture === fixture).pin.identity.gym_id; }

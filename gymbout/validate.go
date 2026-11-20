@@ -4,6 +4,7 @@ package gymbout
 import (
 	"context"
 	"github.com/taytr-llc/slug/fighterbout"
+	"github.com/taytr-llc/slug/fighterdescriptor"
 	"github.com/taytr-llc/slug/fightermanifest"
 	"github.com/taytr-llc/slug/gymcard"
 )
@@ -45,7 +46,12 @@ func DeriveInput(p Pin, s gymcard.BoutSource) (fighterbout.Input, error) {
 	var f [2]fighterbout.FighterInput
 	for i, c := range s.Corners {
 		a := c.Member.Assignment
-		man, e := fightermanifest.GenerateText(1, a.WorkHash)
+		// ValidateBoutSource has already checked the exact participant descriptor.
+		descriptor, e := fighterdescriptor.ResolveCandidate(a.DescriptorID)
+		if e != nil {
+			return fighterbout.Input{}, ErrInvalid
+		}
+		man, e := fightermanifest.GenerateText(descriptor.ManifestVersion, a.WorkHash)
 		if e != nil {
 			return fighterbout.Input{}, ErrInvalid
 		}

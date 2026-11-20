@@ -8,7 +8,7 @@ import (
 )
 
 func (g *Gym) careerPreviewRequest(r pilot.CareerPreviewRequest) pilot.CareerPreviewResponse {
-	if g.stableHelper == nil {
+	if g.poolHelper != nil || g.stableHelper == nil {
 		return pilot.CareerPreviewResponse{ID: 1, Version: 1, Error: "career_inactive"}
 	}
 	return g.stableHelper.CareerPreviewRequest(context.Background(), r)
@@ -26,7 +26,7 @@ func (g *Gym) CancelCareerFightPreview(viewID, jobID string) pilot.CareerPreview
 	return g.careerPreviewRequest(pilot.CareerPreviewRequest{Command: "career_preview_cancel", ViewID: viewID, JobID: jobID})
 }
 func (g *Gym) CareerFightPreviewPortrait(viewID, jobID, prospectID string) bridge.CareerPreviewPortraitResponse {
-	if g.stableHelper == nil {
+	if g.poolHelper != nil || g.stableHelper == nil {
 		return bridge.CareerPreviewPortraitResponse{Version: 1, Error: "career_inactive"}
 	}
 	return g.stableHelper.CareerFightPreviewPortrait(context.Background(), viewID, jobID, prospectID)

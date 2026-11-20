@@ -188,7 +188,7 @@ func ID(d Descriptor) (string, error) {
 	return hex.EncodeToString(h.Sum(nil)), nil
 }
 
-// CandidateDescriptor returns a fresh copy of the sole reviewed static bundle.
+// CandidateDescriptor returns a fresh copy of the original default static bundle.
 // Its artifact hashes identify archived bytes, not mutable documentation paths.
 func CandidateDescriptor() Descriptor {
 	return Descriptor{
@@ -205,15 +205,16 @@ func ResolveCandidate(descriptorID string) (Descriptor, error) {
 	if !canonicalID(descriptorID) {
 		return Descriptor{}, ErrDescriptor
 	}
-	d := CandidateDescriptor()
-	id, err := ID(d)
-	if err != nil {
-		return Descriptor{}, err
+	for _, d := range []Descriptor{CandidateDescriptor(), CandidateNameV2Descriptor()} {
+		id, err := ID(d)
+		if err != nil {
+			return Descriptor{}, err
+		}
+		if descriptorID == id {
+			return d, nil
+		}
 	}
-	if descriptorID != id {
-		return Descriptor{}, ErrUnsupportedDescriptor
-	}
-	return d, nil
+	return Descriptor{}, ErrUnsupportedDescriptor
 }
 
 // ResolveProduction has no activated entries, including the candidate tuple.

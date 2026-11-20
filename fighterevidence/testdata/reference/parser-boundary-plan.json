@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "scope": "Parser-only signed64 inherited int boundary; no value is valid DNA or work evidence",
+  "source": "v1/zero256-unawarded",
+  "fields": [
+    "talent_budget",
+    "attributes.power",
+    "attributes.speed",
+    "attributes.chin",
+    "attributes.stamina",
+    "attributes.skill",
+    "prime_weeks",
+    "decline_weeks"
+  ],
+  "values_decimal": [
+    "4294967296",
+    "9223372036854775807",
+    "9223372036854775808"
+  ],
+  "expected_parse_accept": [
+    true,
+    true,
+    false
+  ],
+  "expected_semantic_accept": false,
+  "normal_work_calls": 0
+}

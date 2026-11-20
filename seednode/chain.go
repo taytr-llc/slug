@@ -14,6 +14,13 @@ import (
 )
 
 func (p *Publisher) checkOwner() error {
+	return p.checkOwnerContext(p.ctx)
+}
+
+func (p *Publisher) checkOwnerContext(ctx context.Context) error {
+	if ctx.Err() != nil {
+		return ErrOffline
+	}
 	if !live(p.binding.Primary) || !live(p.binding.Peer) {
 		return ErrOffline
 	}
@@ -21,16 +28,22 @@ func (p *Publisher) checkOwner() error {
 		name    string
 		process OwnedProcess
 	}{{"primary", p.binding.Primary}, {"peer", p.binding.Peer}} {
-		c, e := configFor(p.binding.Home, v.name, v.process)
+		c, e := configForMode(p.binding.Home, v.name, v.process, p.shared != nil || p.ownership != nil)
 		if e != nil || c != p.configs[i] {
 			return ErrOffline
 		}
+	}
+	if p.shared != nil {
+		return p.checkSharedOwner(ctx)
+	}
+	if p.ownership != nil {
+		return p.checkOwnershipOwner(ctx)
 	}
 	return checkMarker(p.binding, p.identity)
 }
 
 func (p *Publisher) observe(ctx context.Context) (Tip, error) {
-	if e := p.checkOwner(); e != nil {
+	if e := p.checkOwnerContext(ctx); e != nil {
 		return Tip{}, e
 	}
 	for i, r := range p.nodes {
@@ -92,7 +105,7 @@ func (p *Publisher) observe(ctx context.Context) (Tip, error) {
 	if hash, e := p.canonical(ctx, tip.Height); e != nil || hash != tip.Hash {
 		return Tip{}, ErrUnavailable
 	}
-	if ctx.Err() != nil || p.checkOwner() != nil {
+	if ctx.Err() != nil || p.checkOwnerContext(ctx) != nil {
 		return Tip{}, ErrOffline
 	}
 	return tip, nil
@@ -124,7 +137,14 @@ func (p *Publisher) CanonicalHash(ctx context.Context, height uint32) (string, e
 		return "", e
 	}
 	defer end()
-	return p.canonical(c, height)
+	hash, e := p.canonical(c, height)
+	if e == nil {
+		e = p.finishShared(c)
+	}
+	if e != nil {
+		return "", e
+	}
+	return hash, nil
 }
 
 func headerHex(h *wire.BlockHeader) string {
@@ -253,7 +273,14 @@ func (p *Publisher) Block(ctx context.Context, height uint32) (*wire.MsgBlock, e
 		return nil, e
 	}
 	defer end()
-	return p.block(c, height)
+	block, e := p.block(c, height)
+	if e == nil {
+		e = p.finishShared(c)
+	}
+	if e != nil {
+		return nil, e
+	}
+	return block, nil
 }
 
 func (p *Publisher) header(ctx context.Context, ref HeaderRef) (wire.BlockHeader, error) {
