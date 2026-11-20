@@ -5,8 +5,10 @@
 package rpctest
 
 import (
+	"debug/buildinfo"
 	"fmt"
 	"math/rand/v2"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
@@ -26,16 +28,17 @@ var (
 	executablePath string
 )
 
-// btcdBuildArgs explicitly selects the same PoW profile as the harness. An
-// empty -tags value is required for production too: it overrides a conflicting
-// GOFLAGS setting inherited by the nested go command.
-func btcdBuildArgs(outputPath string) []string {
+// btcdBuildArgs selects the original compiler settings and the same PoW
+// profile as the harness. Its command additionally uses btcdBuildEnv so no
+// inherited per-package GOFLAGS matcher can alter dependency compilation.
+func btcdBuildArgs(outputPath string, profile btcdCompilerProfile) []string {
 	tags := ""
 	if wire.TestPoW {
 		tags = "slugtestpow"
 	}
 	return []string{
 		"build", "-o", outputPath, "-tags=" + tags,
+		"-compiler=" + profile.compiler, "-gcflags=" + profile.gcflags,
 		"github.com/taytr-llc/slug",
 	}
 }
@@ -69,9 +72,23 @@ func btcdExecutablePath() (string, error) {
 	if runtime.GOOS == "windows" {
 		outputPath += ".exe"
 	}
-	output, err := exec.Command("go", btcdBuildArgs(outputPath)...).CombinedOutput()
+	profile, err := btcdOriginalCompilerProfile()
+	if err != nil {
+		return "", err
+	}
+	command := exec.Command("go", btcdBuildArgs(outputPath, profile)...)
+	command.Env = btcdBuildEnv(os.Environ())
+	output, err := command.CombinedOutput()
 	if err != nil {
 		return "", fmt.Errorf("failed to build btcd: %w\n%s", err, output)
+	}
+
+	info, err := buildinfo.ReadFile(outputPath)
+	if err != nil {
+		return "", fmt.Errorf("read nested btcd build information: %w", err)
+	}
+	if err := btcdVerifyBuildInfo(info, profile, wire.TestPoW); err != nil {
+		return "", err
 	}
 
 	// Save executable path so future calls do not recompile.

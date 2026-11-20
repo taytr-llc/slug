@@ -16,8 +16,9 @@ func TestBtcdBuildArgsSelectPoWProfile(t *testing.T) {
 		tags += "slugtestpow"
 		t.Setenv("GOFLAGS", "-tags=rpctest")
 	}
-	want := []string{"build", "-o", "test daemon", tags, "github.com/taytr-llc/slug"}
-	if got := btcdBuildArgs("test daemon"); !reflect.DeepEqual(got, want) {
+	profile := btcdCompilerProfile{goVersion: "go1.26.10", compiler: "gc"}
+	want := []string{"build", "-o", "test daemon", tags, "-compiler=gc", "-gcflags=", "github.com/taytr-llc/slug"}
+	if got := btcdBuildArgs("test daemon", profile); !reflect.DeepEqual(got, want) {
 		t.Fatalf("daemon build arguments = %q, want %q", got, want)
 	}
 }

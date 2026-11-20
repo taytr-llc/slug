@@ -278,27 +278,62 @@ func TestConnectContextCancelsStalledSOCKS(t *testing.T) {
 func TestConnectContextSuccessDetachesCancellationAndConnectCompatibility(t *testing.T) {
 	upgrader := websocket.Upgrader{}
 	var mutex sync.Mutex
+	var handlers sync.WaitGroup
 	var peers []*websocket.Conn
+	closing := false
+	stop := make(chan struct{})
+	publish := make(chan struct{})
+	published := make(chan *websocket.Conn, 2)
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		mutex.Lock()
+		if closing {
+			mutex.Unlock()
+			return
+		}
+		handlers.Add(1)
+		mutex.Unlock()
+		defer handlers.Done()
 		conn, err := upgrader.Upgrade(w, r, nil)
 		if err != nil {
 			return
 		}
 		mutex.Lock()
+		if closing {
+			mutex.Unlock()
+			_ = conn.Close()
+			return
+		}
 		peers = append(peers, conn)
 		mutex.Unlock()
+		// Upgrade can complete at the client before the handler publishes its
+		// peer. Hold that window open deterministically for both client APIs.
+		select {
+		case <-publish:
+		case <-stop:
+			return
+		}
+		select {
+		case published <- conn:
+		case <-stop:
+		}
 	}))
-	defer server.Close()
 	defer func() {
 		mutex.Lock()
-		defer mutex.Unlock()
-		for _, peer := range peers {
+		closing = true
+		close(stop)
+		retained := append([]*websocket.Conn(nil), peers...)
+		mutex.Unlock()
+		for _, peer := range retained {
 			_ = peer.Close()
 		}
+		server.Close()
+		// No handler can register after closing was set under the same mutex.
+		handlers.Wait()
 	}()
 	for _, legacy := range []bool{false, true} {
 		client := contextClient(t, func(c *ConnConfig) { c.Host = strings.TrimPrefix(server.URL, "http://") })
 		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
 		var err error
 		if legacy {
 			err = client.Connect(1)
@@ -312,10 +347,23 @@ func TestConnectContextSuccessDetachesCancellationAndConnectCompatibility(t *tes
 		if err = client.ConnectContext(context.Background(), 1); !errors.Is(err, ErrClientAlreadyConnected) {
 			t.Fatal(err)
 		}
+		select {
+		case <-published:
+			t.Fatal("fixture published peer before its release")
+		default:
+		}
+		select {
+		case publish <- struct{}{}:
+		case <-time.After(2 * time.Second):
+			t.Fatal("fixture did not reach peer publication")
+		}
+		var peer *websocket.Conn
+		select {
+		case peer = <-published:
+		case <-time.After(2 * time.Second):
+			t.Fatal("fixture did not publish connected peer")
+		}
 		// Cancellation after a completed handshake must not close the live socket.
-		mutex.Lock()
-		peer := peers[len(peers)-1]
-		mutex.Unlock()
 		if err = peer.WriteMessage(websocket.TextMessage, []byte(`{"id":999,"result":null,"error":null}`)); err != nil {
 			t.Fatal("connection canceled after success", err)
 		}

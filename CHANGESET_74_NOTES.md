@@ -520,13 +520,53 @@ storage/reservation-backed acceptance is a public release blocker; neither a
 cap bypass nor discarding that reward is authorized. This is an implementation
 gap under the existing decision, not a proposed economic change.
 
+## General CI repair
+
+The successful focused Linux operator gate did not make the broader Build and
+Test workflow green. Run `44821053055` compiled successfully, but its test jobs
+exposed four fixture/configuration defects: a preview test still rejecting the
+supported manifest v2, lock-time boundaries measured before their setup block,
+a fork fixture using a persistent connection that could reconnect, and a
+WebSocket fixture reading its peer before the server published it. The latter
+panicked while holding its cleanup mutex and appeared as a ten-minute timeout.
+The fixed tests preserve the original output, rejection, fork and cancellation
+assertions. V2 preview expectations come from the frozen independent name corpus.
+
+CI now enumerates every root package and runs the 81 non-chain packages plus all
+nine nested modules with normal PoW. The complete seven-package blockchain and
+integration families run with the existing explicit test-only PoW tags, including
+race and separate coverage runs. The independent 256 MiB production proof remains
+a separate normal-profile check. Build/release recipes do not acquire test tags.
+The test harness also carries its original compiler settings into nested daemon
+builds, clears hidden child-only compiler environment overrides, and checks the
+resulting binary before caching it. Plain/default and compatibility profiles
+remain distinct from the candidate no-CSE profile.
+
+The source diagnosis also identified an existing persistent-peer removal path
+that can schedule reconnection after `addnode remove`. The fork fixture now uses
+an explicit temporary connection and disconnect; this test correction does not
+claim to repair the daemon's persistent-peer control. The observed occasional
+normal-PoW harness startup timeout remains preserved in the failed run; the new
+full test-PoW suites must demonstrate their own result.
+
+Local qualification passed: preview normal/race, complete RPC client normal/race
+and the deterministic coverage regression; the corrected fork test with normal
+PoW (34.107 seconds); the corrected MTP activation test with normal PoW (256.217
+seconds) and test PoW; original/default/cheap compiler-profile controls; the
+normal production proof; and the complete blockchain/integration test-PoW
+suites (48.845 and 30.359 seconds). Every owned process group joined without
+signals. The initial MTP/fork checks preceded nested compiler propagation; the
+complete successor suites enforce it. See `docs/evidence/set74/ci-repair-local.json`.
+Remote CI for this successor must still be observed; local success is not a
+substitute for its result.
+
 ## Remaining integration
 
 - Prepare the concrete operator handoff and deployment selections without
   exposing real private material to the agent or using fixture-default custody.
 - Add an explicit remote desktop attachment and OperatorV2 history adapters,
   preserving original local wallet/recipient/recovery source bindings.
-- Capacity continuity or an explicit finite-run limit, then remote-host rehearsal.
+- Capacity continuity and continuation-backed D80 credit, then remote-host rehearsal.
 
 No real key or seed has been read or created. Existing fixture applications,
 production genesis/custody gates and final native/design acceptance remain

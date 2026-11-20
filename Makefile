@@ -41,6 +41,10 @@ GOINSTALL := $(PROFILE_GO) install -v
 DEV_TAGS := rpctest
 GOTEST_DEV = $(PROFILE_GO) test -v -tags=$(DEV_TAGS)
 GOTEST := $(PROFILE_GO) test -v
+# CI runs the complete chain/integration suites separately with test-only PoW.
+# Local targets retain their historical default unless explicitly selected.
+ROOT_UNIT_PACKAGES ?= ./...
+CHAIN_TEST_FLAGS ?=
 COVER_FLAGS = -coverprofile=coverage.txt -covermode=atomic -coverpkg=$(PKG)/...
 
 # Linting uses a lot of memory, so keep it under control by limiting the number
@@ -119,13 +123,13 @@ check: unit
 
 #? test-chain: Run complete blockchain and integration suites with test-only PoW
 test-chain:
-	$(PROFILE_GO) test -tags=slugtestpow -count=1 -timeout=30m ./blockchain/...
-	$(PROFILE_GO) test -tags=slugtestpow,rpctest -count=1 -timeout=30m ./integration/...
+	$(PROFILE_GO) test $(CHAIN_TEST_FLAGS) -tags=slugtestpow -count=1 -timeout=30m ./blockchain/...
+	$(PROFILE_GO) test $(CHAIN_TEST_FLAGS) -tags=slugtestpow,rpctest -count=1 -timeout=30m ./integration/...
 
 #? unit: Run unit tests
 unit:
 	@$(call print, "Running unit tests.")
-	$(GOTEST_DEV) ./... -test.timeout=20m
+	$(GOTEST_DEV) $(ROOT_UNIT_PACKAGES) -test.timeout=20m
 	cd address && $(GOTEST_DEV) ./... -test.timeout=20m
 	cd btcec && $(GOTEST_DEV) ./... -test.timeout=20m
 	cd btcutil && $(GOTEST_DEV) ./... -test.timeout=20m
@@ -139,7 +143,7 @@ unit:
 #? unit-cover: Run unit coverage tests
 unit-cover:
 	@$(call print, "Running unit coverage tests.")
-	$(GOTEST) $(COVER_FLAGS) ./...
+	$(GOTEST) $(COVER_FLAGS) $(ROOT_UNIT_PACKAGES)
 
 	# We need to remove the /v2 pathing from the module to have it work
 	# nicely with the CI tool we use to render live code coverage.
@@ -156,7 +160,7 @@ unit-cover:
 #? unit-race: Run unit race tests
 unit-race:
 	@$(call print, "Running unit race tests.")
-	env CGO_ENABLED=1 GORACE="history_size=7 halt_on_errors=1" $(GOTEST) -race -test.timeout=20m ./...
+	env CGO_ENABLED=1 GORACE="history_size=7 halt_on_errors=1" $(GOTEST) -race -test.timeout=20m $(ROOT_UNIT_PACKAGES)
 	cd address && env CGO_ENABLED=1 GORACE="history_size=7 halt_on_errors=1" $(GOTEST) -race -test.timeout=20m ./...
 	cd btcec && env CGO_ENABLED=1 GORACE="history_size=7 halt_on_errors=1" $(GOTEST) -race -test.timeout=20m ./...
 	cd btcutil && env CGO_ENABLED=1 GORACE="history_size=7 halt_on_errors=1" $(GOTEST) -race -test.timeout=20m ./...

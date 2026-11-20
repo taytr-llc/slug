@@ -1,0 +1,540 @@
+{
+  "complete_suite_counts": {
+    "blockchain-complete": {
+      "passed_packages": [
+        "github.com/taytr-llc/slug/blockchain",
+        "github.com/taytr-llc/slug/blockchain/indexers",
+        "github.com/taytr-llc/slug/blockchain/internal/workmath"
+      ],
+      "passed_tests": 106
+    },
+    "integration-complete": {
+      "passed_packages": [
+        "github.com/taytr-llc/slug/integration",
+        "github.com/taytr-llc/slug/integration/rpctest"
+      ],
+      "passed_tests": 21
+    }
+  },
+  "failed_predecessors": [
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set74/legacy-ci-44819933887-failed.log",
+      "sha256": "2123e4f26face42da6f72db732652f642b37155207c28792a34305ba920523ab"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set74/legacy-ci-44821053055-failed.log",
+      "sha256": "bf0d1f44c3cb0a2c115de6348db2a376353a75c253d1489142bb4546502dbcc1"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set74/legacy-ci-reorg-attempt1/report.json",
+      "sha256": "5cc85ca638a1530cb4b91274d685dcaf41fcda38bb664cc70c71d60e91cf7459"
+    }
+  ],
+  "nested_profile_note": "Initial normal MTP/reorg diagnosis preceded child compiler propagation; the complete successor suites enforce original child compiler settings.",
+  "package_partition": {
+    "nested_modules_normal": 9,
+    "normal": 81,
+    "root_total": 88,
+    "test_pow_chain_integration": 7
+  },
+  "results": [
+    {
+      "attempt": "legacy-ci-fixes-attempt1",
+      "commands": [
+        {
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 66238,
+            "pid": 66238,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "test",
+            "-json",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=75s",
+            "-tags=",
+            "-run=^TestManifestPreview",
+            "./cmd/slugfighter"
+          ],
+          "exit_code": 0,
+          "seconds": 1.446,
+          "timed_out": false
+        },
+        {
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 66255,
+            "pid": 66255,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "test",
+            "-json",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=75s",
+            "-race",
+            "-tags=",
+            "-run=^TestManifestPreview",
+            "./cmd/slugfighter"
+          ],
+          "exit_code": 0,
+          "seconds": 2.707,
+          "timed_out": false
+        },
+        {
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 66281,
+            "pid": 66281,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "test",
+            "-json",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=165s",
+            "-tags=slugtestpow,rpctest",
+            "-run=^TestBIP0113Activation$",
+            "./integration"
+          ],
+          "exit_code": 0,
+          "seconds": 4.425,
+          "timed_out": false
+        },
+        {
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 66310,
+            "pid": 66310,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "test",
+            "-json",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=405s",
+            "-tags=rpctest",
+            "-run=^TestBIP0113Activation$",
+            "./integration"
+          ],
+          "exit_code": 0,
+          "seconds": 256.217,
+          "timed_out": false
+        }
+      ],
+      "passed": true,
+      "report_sha256": "8374ad72cdd7e5f738dd952bad849363b635e5f3df4164fcaaf01e66257ee55b",
+      "selected_source_unchanged": true,
+      "source_before": {
+        ".github/workflows/main.yml": {
+          "bytes": 6567,
+          "sha256": "b79263ad7494ebcf350de5ed0770a2bff00933ffb89a3bf44cb9425559cf387f"
+        },
+        "Makefile": {
+          "bytes": 8210,
+          "sha256": "f3d6518a25afa1dfdb7ca8c6c6657d2e33333bd3b0af2a97e7d847aa93bf84a3"
+        },
+        "cmd/slugfighter/preview_test.go": {
+          "bytes": 2599,
+          "sha256": "9218670d9a147683d277fdbd1990ba19aacdf7331fdae09ae9176f66e4a4dbcd"
+        },
+        "integration/csv_fork_test.go": {
+          "bytes": 22789,
+          "sha256": "023a43fdffd144ec8a0a540c1f29485422c0ce6051c301a1aee03115034084f2"
+        },
+        "scripts/ci-unit.sh": {
+          "bytes": 1760,
+          "sha256": "8d72090e47d30fd097d6716fe5032ed0799d6dbf17fa4af1f2b2687b3f23ea6d"
+        }
+      }
+    },
+    {
+      "attempt": "legacy-ci-rpcclient-attempt1",
+      "commands": [
+        {
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 67606,
+            "pid": 67606,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "test",
+            "-json",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=165s",
+            "-tags=",
+            "./rpcclient"
+          ],
+          "exit_code": 0,
+          "seconds": 5.293,
+          "timed_out": false
+        },
+        {
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 67624,
+            "pid": 67624,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "test",
+            "-json",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=165s",
+            "-race",
+            "-tags=",
+            "./rpcclient"
+          ],
+          "exit_code": 0,
+          "seconds": 7.52,
+          "timed_out": false
+        },
+        {
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 67650,
+            "pid": 67650,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "test",
+            "-json",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=165s",
+            "-covermode=atomic",
+            "-coverpkg=github.com/taytr-llc/slug/...",
+            "-tags=",
+            "-run=^TestConnectContextSuccessDetachesCancellationAndConnectCompatibility$",
+            "./rpcclient"
+          ],
+          "exit_code": 0,
+          "seconds": 6.149,
+          "timed_out": false
+        }
+      ],
+      "passed": true,
+      "report_sha256": "aab46e715ae06799287b70230a6b81e93fa7cbc13620a16b59feb3957129d677",
+      "selected_source_unchanged": true,
+      "source_before": {
+        "rpcclient/connect_context_test.go": {
+          "bytes": 12886,
+          "sha256": "eff8522b68f2bd9ea2370fc69f41d6a348c54ed8d64e4db9262f4d50ef40e952"
+        },
+        "rpcclient/infrastructure.go": {
+          "bytes": 62453,
+          "sha256": "c5083aa61aea629530d643ba6f8797af17952deb499d3f1c460664f532c99cad"
+        }
+      }
+    },
+    {
+      "attempt": "legacy-ci-chain-attempt1",
+      "commands": [
+        {
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 67839,
+            "pid": 67839,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "test",
+            "-json",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=90s",
+            "-tags=",
+            "-run=^(TestBtcd|TestNodeConfig)",
+            "./integration/rpctest"
+          ],
+          "exit_code": 0,
+          "seconds": 1.936,
+          "timed_out": false
+        },
+        {
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 67874,
+            "pid": 67874,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "test",
+            "-json",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=90s",
+            "-tags=slugtestpow",
+            "-run=^(TestBtcd|TestNodeConfig)",
+            "./integration/rpctest"
+          ],
+          "exit_code": 0,
+          "seconds": 0.996,
+          "timed_out": false
+        },
+        {
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 67892,
+            "pid": 67892,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "go",
+            "test",
+            "-json",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=90s",
+            "-tags=",
+            "-run=^(TestBtcd|TestNodeConfig)",
+            "./integration/rpctest"
+          ],
+          "exit_code": 0,
+          "seconds": 1.441,
+          "timed_out": false
+        },
+        {
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 67915,
+            "pid": 67915,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "test",
+            "-json",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=90s",
+            "-tags=",
+            "-run=^TestProductionProofVector$",
+            "./blockchain"
+          ],
+          "exit_code": 0,
+          "seconds": 1.504,
+          "timed_out": false
+        },
+        {
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 67928,
+            "pid": 67928,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "test",
+            "-json",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=1800s",
+            "-tags=slugtestpow",
+            "./blockchain/..."
+          ],
+          "exit_code": 0,
+          "seconds": 48.845,
+          "timed_out": false
+        },
+        {
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 68046,
+            "pid": 68046,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "test",
+            "-json",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=1800s",
+            "-tags=slugtestpow,rpctest",
+            "./integration/..."
+          ],
+          "exit_code": 0,
+          "seconds": 30.359,
+          "timed_out": false
+        }
+      ],
+      "passed": true,
+      "report_sha256": "8529eeda715328c00a1dbe7174ed37c592479162aac76550f2b05f592c408610",
+      "selected_source_unchanged": true,
+      "source_before": {
+        ".github/workflows/main.yml": {
+          "bytes": 6567,
+          "sha256": "b79263ad7494ebcf350de5ed0770a2bff00933ffb89a3bf44cb9425559cf387f"
+        },
+        "Makefile": {
+          "bytes": 8210,
+          "sha256": "f3d6518a25afa1dfdb7ca8c6c6657d2e33333bd3b0af2a97e7d847aa93bf84a3"
+        },
+        "build-profile.json": {
+          "bytes": 179,
+          "sha256": "e5ddb9d30e8048ad3b656358134632e48852f44deef44bdd93df7dda13208295"
+        },
+        "cmd/slugfighter/preview_test.go": {
+          "bytes": 2599,
+          "sha256": "9218670d9a147683d277fdbd1990ba19aacdf7331fdae09ae9176f66e4a4dbcd"
+        },
+        "integration/csv_fork_test.go": {
+          "bytes": 22789,
+          "sha256": "023a43fdffd144ec8a0a540c1f29485422c0ce6051c301a1aee03115034084f2"
+        },
+        "integration/reorg_test.go": {
+          "bytes": 4922,
+          "sha256": "128723107c91216d3881965f060fcec628be59b230319495523a6b2d6722c722"
+        },
+        "integration/rpctest/btcd.go": {
+          "bytes": 2985,
+          "sha256": "d81d62e0ae498c6ed7dfa2fa776c5655558066cebef248ff6b7155fd966eecb9"
+        },
+        "integration/rpctest/btcd_profile.go": {
+          "bytes": 3012,
+          "sha256": "285839439e0c0ce72a72c6d0345e2a55c0847228c2f6287559b2c2c446ad5cfe"
+        },
+        "integration/rpctest/btcd_profile_test.go": {
+          "bytes": 5625,
+          "sha256": "5674ff0d76257812481154ffe0a4b48508f621bf312d9f34a5c23ccdaedee8a9"
+        },
+        "integration/rpctest/btcd_test.go": {
+          "bytes": 760,
+          "sha256": "1ee3c2e92e18a91fdf6149812ef19074ab7251196ecbc9cf5bf8bdbc1b597076"
+        },
+        "rpcclient/connect_context_test.go": {
+          "bytes": 12886,
+          "sha256": "eff8522b68f2bd9ea2370fc69f41d6a348c54ed8d64e4db9262f4d50ef40e952"
+        },
+        "scripts/candidate-go.sh": {
+          "bytes": 2725,
+          "sha256": "64e073ba868e42b04e3e93a51826b2e6ee1b99103b92b417868cbf74f9b6436e"
+        },
+        "scripts/ci-unit.sh": {
+          "bytes": 1858,
+          "sha256": "02807b9ab79c7947bcd798f3c1c460701b354f344f8483b305659c8bcc3fc124"
+        }
+      }
+    },
+    {
+      "attempt": "legacy-ci-reorg-attempt2",
+      "commands": [
+        {
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 67170,
+            "pid": 67170,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "test",
+            "-json",
+            "-tags=",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=3m",
+            "-run=^TestReorgFromForkPoint$",
+            "./integration"
+          ],
+          "exit_code": 0,
+          "seconds": 34.107,
+          "timed_out": false
+        }
+      ],
+      "passed": true,
+      "report_sha256": "d6d9e8cf5039ff9368b65d0c3e426604778f013d5c86b652804b7abf72a7f473",
+      "selected_source_unchanged": null,
+      "source_before": null
+    }
+  ],
+  "scope": "local regression and complete test-PoW chain suite evidence; remote CI still pending",
+  "version": 1
+}

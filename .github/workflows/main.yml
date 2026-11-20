@@ -50,7 +50,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Test
-        run: make unit-cover
+        run: sh scripts/ci-unit.sh unit-cover
 
       - name: Send top-level coverage
         uses: coverallsapp/github-action@v2
@@ -158,7 +158,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Test
-        run: make unit-race
+        run: sh scripts/ci-unit.sh unit-race
 
   test-rpctest:
     name: Unit rpctest
@@ -173,7 +173,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Test
-        run: make unit
+        run: sh scripts/ci-unit.sh unit
 
   # Builds and tests with the minimum Go version from go.mod, so code that
   # needs a newer Go than go.mod promises fails here (see the Go version policy
@@ -198,7 +198,7 @@ jobs:
         run: make GO_PROFILE=compatibility build
 
       - name: Test
-        run: make GO_PROFILE=compatibility unit
+        run: GO_PROFILE=compatibility sh scripts/ci-unit.sh unit
 
   # The go.mod files require the published versions of the other modules in
   # this repo. This job builds and tests all modules against each other's
@@ -231,4 +231,4 @@ jobs:
       # modules. make unit tests each module from its own directory, which
       # also builds all of their packages.
       - name: Test
-        run: make unit
+        run: sh scripts/ci-unit.sh unit

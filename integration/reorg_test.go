@@ -49,14 +49,18 @@ func TestReorgFromForkPoint(t *testing.T) {
 	require.NoError(t, err)
 
 	// Connect and let the shorter node sync the shared chain.
-	require.NoError(t, rpctest.ConnectNode(shorter, longer))
+	// The initial sync link is temporary: the fork fixture must not own a
+	// persistent connection that can reconnect while the branches are mined.
+	require.NoError(t, shorter.Client.AddNode(
+		longer.P2PAddress(), rpcclient.ANOneTry,
+	))
 	require.NoError(t, rpctest.JoinNodes(
 		[]*rpctest.Harness{longer, shorter}, rpctest.Blocks,
 	))
 
 	// Disconnect so they can mine independently.
-	require.NoError(t, shorter.Client.AddNode(
-		longer.P2PAddress(), rpcclient.ANRemove,
+	require.NoError(t, shorter.Client.Node(
+		btcjson.NDisconnect, longer.P2PAddress(), nil,
 	))
 
 	// Wait for both sides to see the disconnect.

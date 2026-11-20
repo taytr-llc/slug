@@ -223,18 +223,20 @@ func TestBIP0113Activation(t *testing.T) {
 	// rejected.
 	timeLockDeltas := []int64{-1, 0, 1}
 	for _, timeLockDelta := range timeLockDeltas {
-		chainInfo, err = r.Client.GetBlockChainInfo()
-		if err != nil {
-			t.Fatalf("unable to query for chain info: %v", err)
-		}
-		medianTimePast := chainInfo.MedianTime
-
 		// Create another test output to be spent shortly below.
 		outputKey, testOutput, testPkScript, err = makeTestOutput(r, t,
 			outputValue)
 		if err != nil {
 			t.Fatalf("unable to create test output: %v", err)
 		}
+		// Creating the output mines a block. Read MTP afterward so each
+		// boundary is relative to the tip that actually evaluates the spend,
+		// including when normal Argon2 mining advances wall-clock seconds.
+		chainInfo, err = r.Client.GetBlockChainInfo()
+		if err != nil {
+			t.Fatalf("unable to query for chain info: %v", err)
+		}
+		medianTimePast := chainInfo.MedianTime
 
 		// Create a new transaction with a lock-time past the current known
 		// MTP.
