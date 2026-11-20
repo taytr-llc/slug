@@ -12,7 +12,6 @@ import (
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/taytr-llc/slug/chaincfg/v2"
 	"github.com/taytr-llc/slug/fightertransfer"
-	"github.com/taytr-llc/slug/registry"
 	"github.com/taytr-llc/slug/txscript/v2"
 	"github.com/taytr-llc/slug/wire/v2"
 )
@@ -29,7 +28,7 @@ func (r *Replay) startBranch(b *replayBranch) error {
 		if !ok || !r.verifiedAdmissions[n] {
 			return ErrUnavailable
 		}
-		v, e := InitialState(r.store.pin, a)
+		v, e := r.store.codec.InitialState(r.store.pin, a)
 		if e != nil {
 			return e
 		}
@@ -266,7 +265,7 @@ func (r *Replay) carrier(ctx context.Context, b *replayBranch, h HeaderRow, txs 
 	envelope, _ := fightertransfer.MarshalEnvelope(report.Envelope)
 	tid := hex.EncodeToString(report.TransferID[:])
 	w := CarrierWitness{1, r.store.pinID, tid, priorID, commit, transactionWitness(h, txs, index), prevouts, hex.EncodeToString(envelope), string(report.Kind)}
-	if e = validateWitness(r.store.pin, w); e != nil {
+	if e = r.store.codec.validateWitness(r.store.pin, w); e != nil {
 		return nil, e
 	}
 	if report.Kind == fightertransfer.Refund {
@@ -292,7 +291,7 @@ func (r *Replay) carrier(ctx context.Context, b *replayBranch, h HeaderRow, txs 
 	if checkpoint.Checkpoint.Height != int32(h.Height) {
 		return nil, ErrCorrupt
 	}
-	cpid, _ := registry.PublicPublicationID(r.store.pin, cp)
+	cpid, _ := r.store.codec.PublicPublicationID(r.store.pin, cp)
 	ev := FinalStateEvidence{1, r.store.pinID, prior.ProspectID, priorID, tid, cpid, h.Height + 60, b.hashes[h.Height+60], hex.EncodeToString(env.Intent.RecipientGym[:])}
 	stateID, e := objectDigest("SLUG fighter ownership state", ev)
 	if e != nil {
@@ -300,7 +299,7 @@ func (r *Replay) carrier(ctx context.Context, b *replayBranch, h HeaderRow, txs 
 	}
 	raw, _ := json.Marshal(ev)
 	state := EffectiveState{1, r.store.pinID, prior.ProspectID, stateID, ev.OwnerPublicKey, prior.BirthAdmissionID, prior.Generation + 1, raw}
-	if ValidateEffectiveState(r.store.pin, state) != nil {
+	if r.store.codec.ValidateEffectiveState(r.store.pin, state) != nil {
 		return nil, ErrCorrupt
 	}
 	b.effective[state.ProspectID] = state
@@ -408,23 +407,23 @@ func (r *Replay) branchMap(b *replayBranch) (OwnershipMap, error) {
 		}
 		mp.Items = append(mp.Items, MapItem{n, state.ProspectID, state.StateID})
 	}
-	return mp, ValidateOwnershipMap(r.store.pin, mp)
+	return mp, r.store.codec.ValidateOwnershipMap(r.store.pin, mp)
 }
 func (r *Replay) completeBranch(ctx context.Context, b *replayBranch) error {
 	mp, e := r.branchMap(b)
 	if e != nil {
 		return e
 	}
-	id, e := OwnershipMapID(r.store.pin, mp)
+	id, e := r.store.codec.OwnershipMapID(r.store.pin, mp)
 	if e != nil {
 		return e
 	}
-	fp, _ := FinalizedPrefixID(r.store.pin, mp)
+	fp, _ := r.store.codec.FinalizedPrefixID(r.store.pin, mp)
 	if b.frame != nil {
 		if id != b.frame.OwnershipMapID || fp != b.frame.FinalizedPrefixID {
 			return ErrCorrupt
 		}
-		fid, _ := FinalityFrameID(r.store.pin, *b.frame)
+		fid, _ := r.store.codec.FinalityFrameID(r.store.pin, *b.frame)
 		for prospect, state := range b.effective {
 			if state.Generation > 0 {
 				r.official[prospect] = state

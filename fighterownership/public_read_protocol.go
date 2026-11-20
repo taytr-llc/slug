@@ -53,7 +53,10 @@ func publicReadLimit(method string) int {
 	}
 }
 func (r publicReadRequest) validate(pinID string) error {
-	if r.Version != 1 || r.PinID != pinID || r.ID == 0 || publicReadLimit(r.Method) == 0 {
+	return r.validateSelected(pinID, 1)
+}
+func (r publicReadRequest) validateSelected(pinID string, version uint32) error {
+	if r.Version != version || r.PinID != pinID || r.ID == 0 || publicReadLimit(r.Method) == 0 {
 		return ErrInvalid
 	}
 	switch r.Method {
@@ -80,9 +83,12 @@ func (r publicReadRequest) validate(pinID string) error {
 	return nil
 }
 func validatePublicReadStatus(pin Pin, v PublicReadStatus) error {
-	id, e := ID(pin)
+	return (ownershipCodec{}).validatePublicReadStatus(pin, v)
+}
+func (codec ownershipCodec) validatePublicReadStatus(pin Pin, v PublicReadStatus) error {
+	id, e := codec.ID(pin)
 	p := v.Publication
-	if e != nil || v.Version != 1 || v.PinID != id || p.Version != 1 || p.PinID != id ||
+	if e != nil || v.Version != codec.wireVersion() || v.PinID != id || p.Version != 1 || p.PinID != id ||
 		p.AcceptedSequence > pin.Limits.Admissions || p.SignedAdmissionSequence > p.AcceptedSequence ||
 		p.PublicationSequence > pin.Limits.Publications || p.SignedAdmissionSequence > p.PublicationSequence ||
 		!validPrefix(p.SignedAdmissionSequence, p.AdmissionHead) || !validPrefix(p.PublicationSequence, p.PublicationHead) ||

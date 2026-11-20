@@ -5,6 +5,7 @@ import (
 	"context"
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/opt"
+	"github.com/taytr-llc/slug/internal/operatorauthority"
 	"github.com/taytr-llc/slug/wire/v2"
 	"sync"
 	"time"
@@ -36,11 +37,15 @@ type storeMetadata struct {
 	FinalitySequence          uint32      `json:"finality_sequence"`
 	PublishedFinalitySequence uint32      `json:"published_finality_sequence"`
 	FinalityHead              string      `json:"finality_head"`
+	OperatorRole              string      `json:"operator_role,omitempty"`
 }
 
 // Store owns only public evidence. Persisted heads are unavailable after reopen
 // until replay re-establishes required work and exact concrete observation.
 type Store struct {
+	codec                      ownershipCodec
+	operatorRole               string
+	operator                   *operatorauthority.Owner
 	mu                         sync.Mutex
 	gate, projection           chan struct{}
 	life                       context.Context
@@ -98,6 +103,11 @@ func (s *Store) state() error {
 	}
 	if s == nil || s.closed || s.life == nil || s.life.Err() != nil {
 		return ErrClosed
+	}
+	if s.operator != nil {
+		if e := s.operator.Check(context.Background(), s.operator.Binding()); e != nil {
+			return e
+		}
 	}
 	if s.poisoned {
 		return ErrOutcomeUnknown

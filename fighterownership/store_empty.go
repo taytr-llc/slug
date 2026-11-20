@@ -29,7 +29,7 @@ func (s *Store) Empty(ctx context.Context) (bool, error) {
 	if e := s.state(); e != nil {
 		return false, e
 	}
-	want := storeMetadata{Version: 1, PinID: s.pinID, StoreID: s.identity.StoreID,
+	want := storeMetadata{OperatorRole: s.operatorRole, Version: 1, PinID: s.pinID, StoreID: s.identity.StoreID,
 		LogicalBytes: s.meta.LogicalBytes, FinalityHead: zeroID}
 	if s.meta != want || s.ready || s.head != (HeadRef{}) || s.work != nil || s.replay != nil ||
 		len(s.keySizes) != 1 || len(s.admissions)+len(s.publications)+len(s.headers)+len(s.canonical)+

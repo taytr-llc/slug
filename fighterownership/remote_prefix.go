@@ -15,7 +15,7 @@ func (r *Replay) stepFrame(ctx context.Context) error {
 	if e != nil {
 		return e
 	}
-	if f.Sequence != n || ValidateFinalityFrame(r.store.pin, f) != nil {
+	if f.Sequence != n || r.store.codec.ValidateFinalityFrame(r.store.pin, f) != nil {
 		return ErrCorrupt
 	}
 	previous := zeroID
@@ -48,7 +48,7 @@ func (r *Replay) stepFrame(ctx context.Context) error {
 				return ErrCorrupt
 			}
 		} else {
-			signed, e := FinalityFrameID(r.store.pin, f)
+			signed, e := r.store.codec.FinalityFrameID(r.store.pin, f)
 			if e != nil {
 				return e
 			}
@@ -88,7 +88,7 @@ func (r *Replay) retainFrame(b *replayBranch, batch *leveldb.Batch) (*storeMetad
 	if f.Sequence != s.meta.PublishedFinalitySequence+1 || s.meta.PublishedFinalitySequence != s.meta.FinalitySequence {
 		return nil, nil, ErrUnavailable
 	}
-	fid, e := FinalityFrameID(s.pin, f)
+	fid, e := s.codec.FinalityFrameID(s.pin, f)
 	if e != nil {
 		return nil, nil, e
 	}

@@ -15,6 +15,7 @@ import (
 // PublicReadServer borrows two original public-evidence owners. It does not
 // create a listener or expose any mutation or locally verified state map.
 type PublicReadServer struct {
+	codec     ownershipCodec
 	pin       Pin
 	pinID     string
 	publisher *registry.ManifestPublication
@@ -29,6 +30,9 @@ type PublicReadServer struct {
 }
 
 func NewPublicReadServer(expected Pin, publisher *registry.ManifestPublication, store *Store, life context.Context) (*PublicReadServer, error) {
+	return newSelectedPublicReadServer(expected, publisher, store, life, ownershipCodec{})
+}
+func newSelectedPublicReadServer(expected Pin, publisher *registry.ManifestPublication, store *Store, life context.Context, codec ownershipCodec) (*PublicReadServer, error) {
 	if e := normal(); e != nil {
 		return nil, e
 	}
@@ -38,12 +42,22 @@ func NewPublicReadServer(expected Pin, publisher *registry.ManifestPublication, 
 	if e := life.Err(); e != nil {
 		return nil, e
 	}
-	id, e := ID(expected)
-	if e != nil || publisher.Pin() != expected || store.Pin() != expected {
+	id, e := codec.ID(expected)
+	if e != nil || publisher.Pin() != expected || store.Pin() != expected || store.codec != codec {
 		return nil, ErrSource
 	}
+	if codec.operator {
+		if store.operatorRole != OperatorIssuer {
+			return nil, ErrSource
+		}
+		if !store.readOnly {
+			if e := publisher.CheckOperatorOwner(life, store.operator); e != nil {
+				return nil, e
+			}
+		}
+	}
 	owned, cancel := context.WithCancel(life)
-	s := &PublicReadServer{pin: expected, pinID: id, publisher: publisher, store: store, life: owned, cancel: cancel, active: make(chan struct{}, 8)}
+	s := &PublicReadServer{codec: codec, pin: expected, pinID: id, publisher: publisher, store: store, life: owned, cancel: cancel, active: make(chan struct{}, 8)}
 	if _, e = s.status(owned); e != nil {
 		cancel()
 		return nil, e
@@ -120,8 +134,8 @@ func (s *PublicReadServer) status(ctx context.Context) (PublicReadStatus, error)
 			return PublicReadStatus{}, e
 		}
 	}
-	v := PublicReadStatus{Version: 1, PinID: s.pinID, Publication: p, FinalitySequence: o.meta.FinalitySequence, PublishedFinalitySequence: o.meta.PublishedFinalitySequence, FinalityBodyHead: head, FinalityHead: o.meta.FinalityHead}
-	if e = validatePublicReadStatus(s.pin, v); e != nil {
+	v := PublicReadStatus{Version: s.codec.wireVersion(), PinID: s.pinID, Publication: p, FinalitySequence: o.meta.FinalitySequence, PublishedFinalitySequence: o.meta.PublishedFinalitySequence, FinalityBodyHead: head, FinalityHead: o.meta.FinalityHead}
+	if e = s.codec.validatePublicReadStatus(s.pin, v); e != nil {
 		return PublicReadStatus{}, e
 	}
 	return v, nil
@@ -154,7 +168,7 @@ func (s *PublicReadServer) read(ctx context.Context, r publicReadRequest) (any, 
 		if !ok || r.Sequence > o.meta.PublishedFinalitySequence {
 			return nil, registry.ErrNotFound
 		}
-		if e := ValidateFinalityFrame(s.pin, frame); e != nil {
+		if e := s.codec.ValidateFinalityFrame(s.pin, frame); e != nil {
 			return nil, e
 		}
 		return frame, nil
@@ -173,7 +187,7 @@ func (s *PublicReadServer) coreAlive() error {
 func (s *PublicReadServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Cache-Control", "no-store")
 	w.Header().Set("X-Content-Type-Options", "nosniff")
-	if r.URL.Path != publicReadPath || r.URL.RawPath != "" || r.URL.RawQuery != "" || r.URL.ForceQuery {
+	if r.URL.Path != s.codec.readPath() || r.URL.RawPath != "" || r.URL.RawQuery != "" || r.URL.ForceQuery {
 		http.Error(w, "not found", http.StatusNotFound)
 		return
 	}
@@ -213,7 +227,7 @@ func (s *PublicReadServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var request publicReadRequest
-	if decode(raw, 1024, &request) != nil || request.validate(s.pinID) != nil {
+	if decode(raw, 1024, &request) != nil || request.validateSelected(s.pinID, s.codec.wireVersion()) != nil {
 		http.Error(w, "invalid request", http.StatusBadRequest)
 		return
 	}
@@ -237,7 +251,7 @@ func (s *PublicReadServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if e != nil {
 		result = []byte("null")
 	}
-	response := publicReadResponse{Version: 1, PinID: s.pinID, ID: request.ID, Method: request.Method, Result: result, Error: publicReadError(e)}
+	response := publicReadResponse{Version: s.codec.wireVersion(), PinID: s.pinID, ID: request.ID, Method: request.Method, Result: result, Error: publicReadError(e)}
 	body, marshalErr := json.Marshal(response)
 	if marshalErr != nil {
 		http.Error(w, "unavailable", http.StatusServiceUnavailable)

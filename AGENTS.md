@@ -350,11 +350,14 @@ tests alone do not close public deployment and scheduled-payout acceptance.
 - Set74 on `slug-public-pool-runtime` follows completed Set73 maintenance
   `1aba70ca`. Public operator service and scheduled payouts precede sign-in.
   Recovery-only settlement, original-store binding, operator admission/publication
-  custody, recovery-first UTC scheduling and the concrete payout-node connection
+  custody and ownership replay, recovery-first UTC scheduling and the concrete payout-node connection
   passed focused normal, race and profile-refusal checks. Service/wallet
   integration remains in progress. Scheduling retains the original settlement;
   only completed daily batches advance its cursor. Node evidence grants no
   signing authority; uncertain delivery retries only the retained transaction.
+  Operator ownership uses explicit issuer/replica roles and `/slug/ownership/v2`;
+  retain the original issuer owner and keep replicas/audits without signing
+  authority. Never migrate V1 history or load the offline checkpoint key online.
   Keep exact retained transaction recovery separate from daily preparation.
   See `CHANGESET_74_NOTES.md`; no public pool readiness is implied.
 - Mike requires a thorough joint design review before friends/tester or public

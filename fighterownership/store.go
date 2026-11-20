@@ -17,16 +17,18 @@ import (
 
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/opt"
+	"github.com/taytr-llc/slug/internal/operatorauthority"
 )
 
 const markerName = "SLUG-FIGHTER-OWNERSHIP-V1.json"
 
 type storeMarker struct {
-	Application string `json:"application"`
-	Version     uint32 `json:"version"`
-	StoreID     string `json:"store_id"`
-	Pin         Pin    `json:"pin"`
-	PinID       string `json:"pin_id"`
+	Application  string `json:"application"`
+	Version      uint32 `json:"version"`
+	StoreID      string `json:"store_id"`
+	Pin          Pin    `json:"pin"`
+	PinID        string `json:"pin_id"`
+	OperatorRole string `json:"operator_role,omitempty"`
 }
 
 func countKey(prefix string, n uint32) []byte {
@@ -49,17 +51,26 @@ func fundingOrder(id string, index uint32) string {
 	return string(append(b, v[:]...))
 }
 func newStore(p Pin, id StoreIdentity, db *leveldb.DB, readOnly bool) *Store {
+	return newSelectedStore(p, id, db, readOnly, ownershipCodec{}, "", nil)
+}
+func newSelectedStore(p Pin, id StoreIdentity, db *leveldb.DB, readOnly bool, codec ownershipCodec, role string, owner *operatorauthority.Owner) *Store {
 	life, cancel := context.WithCancel(context.Background())
-	pid, _ := ID(p)
-	return &Store{gate: make(chan struct{}, 1), projection: make(chan struct{}, 1), life: life, cancel: cancel, db: db, pin: p, pinID: pid, identity: id, readOnly: readOnly, generation: 1,
+	pid, _ := codec.ID(p)
+	return &Store{codec: codec, operatorRole: role, operator: owner, gate: make(chan struct{}, 1), projection: make(chan struct{}, 1), life: life, cancel: cancel, db: db, pin: p, pinID: pid, identity: id, readOnly: readOnly, generation: 1,
 		effective: map[string]EffectiveState{}, states: map[string]EffectiveState{}, admissions: map[uint32]AdmissionStatement{}, admissionByProspect: map[string]uint32{}, maps: map[string]OwnershipMap{}, cutoffs: map[string]CutoffRecord{}, cutoffByID: map[string]string{}, portable: map[string]bool{}, keySizes: map[string]int{}, transferCounts: map[string]uint32{}, publications: map[uint32]PublicationEntry{}, headers: map[string]HeaderRow{}, canonical: map[uint32]string{}, witnesses: map[string]CarrierWitness{}, frames: map[uint32]FinalityFrame{}, frameBodies: map[uint32]FinalityFrameBody{}, finalities: map[string]FinalityWitness{}, boundaries: map[string]SignedBoundary{}, conflicts: map[string]ConflictRecord{}, now: time.Now, writeBatch: db.Write}
 }
 func markerFor(p Pin, id StoreIdentity) (storeMarker, error) {
-	pid, e := ID(p)
+	return selectedMarkerFor(p, id, ownershipCodec{}, "")
+}
+func selectedMarkerFor(p Pin, id StoreIdentity, codec ownershipCodec, role string) (storeMarker, error) {
+	pid, e := codec.ID(p)
 	if e != nil || !hexValue(id.StoreID, 32, true) {
 		return storeMarker{}, ErrInvalid
 	}
-	return storeMarker{"slug-fighter-ownership", 1, id.StoreID, p, pid}, nil
+	if codec.operator && role != OperatorIssuer && role != OperatorReplica || !codec.operator && role != "" {
+		return storeMarker{}, ErrSource
+	}
+	return storeMarker{"slug-fighter-ownership", codec.wireVersion(), id.StoreID, p, pid, role}, nil
 }
 func syncDirectory(path string) error {
 	d, e := os.Open(path)
@@ -69,10 +80,13 @@ func syncDirectory(path string) error {
 	return errors.Join(d.Sync(), d.Close())
 }
 func Create(dir string, p Pin, id StoreIdentity) (*Store, error) {
+	return createSelectedStore(dir, p, id, ownershipCodec{}, "", nil)
+}
+func createSelectedStore(dir string, p Pin, id StoreIdentity, codec ownershipCodec, role string, owner *operatorauthority.Owner) (*Store, error) {
 	if e := normal(); e != nil {
 		return nil, e
 	}
-	marker, e := markerFor(p, id)
+	marker, e := selectedMarkerFor(p, id, codec, role)
 	if e != nil {
 		return nil, e
 	}
@@ -98,7 +112,7 @@ func Create(dir string, p Pin, id StoreIdentity) (*Store, error) {
 	if len(raw) > 8192 {
 		return nil, ErrCapacity
 	}
-	f, e := os.OpenFile(filepath.Join(dir, markerName), os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
+	f, e := os.OpenFile(filepath.Join(dir, codec.markerName()), os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
 	if e != nil {
 		return nil, e
 	}
@@ -117,8 +131,8 @@ func Create(dir string, p Pin, id StoreIdentity) (*Store, error) {
 	if e != nil {
 		return nil, e
 	}
-	s := newStore(p, id, db, false)
-	s.meta = storeMetadata{Version: 1, PinID: s.pinID, StoreID: id.StoreID, FinalityHead: zeroID}
+	s := newSelectedStore(p, id, db, false, codec, role, owner)
+	s.meta = storeMetadata{OperatorRole: role, Version: 1, PinID: s.pinID, StoreID: id.StoreID, FinalityHead: zeroID}
 	for n := 0; n < 8; n++ {
 		raw, _ = json.Marshal(s.meta)
 		size := uint32(4 + len(raw))
@@ -144,10 +158,13 @@ func OpenAudit(dir string, p Pin, id StoreIdentity) (*Store, error) {
 	return openStore(dir, p, id, true)
 }
 func openStore(dir string, p Pin, id StoreIdentity, ro bool) (*Store, error) {
+	return openSelectedStore(dir, p, id, ro, ownershipCodec{}, "", nil)
+}
+func openSelectedStore(dir string, p Pin, id StoreIdentity, ro bool, codec ownershipCodec, role string, owner *operatorauthority.Owner) (*Store, error) {
 	if e := normal(); e != nil {
 		return nil, e
 	}
-	want, e := markerFor(p, id)
+	want, e := selectedMarkerFor(p, id, codec, role)
 	if e != nil {
 		return nil, e
 	}
@@ -163,14 +180,14 @@ func openStore(dir string, p Pin, id StoreIdentity, ro bool) (*Store, error) {
 		return nil, ErrCorrupt
 	}
 	for _, x := range entries {
-		if x.Name() != markerName && x.Name() != "db" {
+		if x.Name() != codec.markerName() && x.Name() != "db" {
 			return nil, ErrCorrupt
 		}
 		if x.Type()&os.ModeSymlink != 0 {
 			return nil, ErrCorrupt
 		}
 	}
-	path := filepath.Join(dir, markerName)
+	path := filepath.Join(dir, codec.markerName())
 	before, e := os.Lstat(path)
 	if e != nil || !before.Mode().IsRegular() || before.Size() < 2 || before.Size() > 8192 {
 		return nil, ErrCorrupt
@@ -202,7 +219,7 @@ func openStore(dir string, p Pin, id StoreIdentity, ro bool) (*Store, error) {
 	if e != nil {
 		return nil, e
 	}
-	s := newStore(p, id, db, ro)
+	s := newSelectedStore(p, id, db, ro, codec, role, owner)
 	if e = s.audit(); e != nil {
 		return nil, errors.Join(e, s.Close())
 	}

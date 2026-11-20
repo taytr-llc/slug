@@ -22,6 +22,14 @@ func (s *Store) ResumeChainPublication(ctx context.Context, source *PublicSource
 		return nil, false, e
 	}
 	defer done()
+	if e = s.selectedSource(ctx, source, node); e != nil {
+		return nil, false, e
+	}
+	ctx, release, e := s.beginOperatorSigning(ctx, source)
+	if e != nil {
+		return nil, false, e
+	}
+	defer release()
 	return s.resumeChainPublication(ctx, source, node)
 }
 
@@ -76,7 +84,7 @@ func (s *Store) resumeChainPublication(ctx context.Context, source *PublicSource
 	if e = prepared.Check(ctx); e != nil {
 		return nil, false, e
 	}
-	entry.Signature, e = signObject("SLUG fighter ownership publication statement", entry)
+	entry.Signature, e = s.signSelectedObject(ctx, "SLUG fighter ownership publication statement", entry)
 	if e != nil {
 		return nil, false, e
 	}
@@ -86,9 +94,9 @@ func (s *Store) resumeChainPublication(ctx context.Context, source *PublicSource
 	if e = source.Check(ctx); e != nil {
 		return nil, false, e
 	}
-	if _, e = prepared.CommitSigned(ctx, entry); e != nil {
+	if _, e = s.commitSelectedPublication(ctx, prepared, entry); e != nil {
 		return nil, false, e
 	}
-	next, e := NewPublicSource(ctx, s.pin, source.publisher)
+	next, e := s.recaptureSource(ctx, source)
 	return next, true, e
 }

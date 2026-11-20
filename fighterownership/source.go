@@ -3,12 +3,15 @@ package fighterownership
 
 import (
 	"context"
+	"github.com/taytr-llc/slug/internal/operatorauthority"
 	"github.com/taytr-llc/slug/registry"
 )
 
 // PublicSource borrows one exact concrete local publisher or remote public
 // reader. Parsed DTOs cannot replace either original lifetime/authority.
 type PublicSource struct {
+	codec        ownershipCodec
+	operator     *operatorauthority.Owner
 	publisher    *registry.ManifestPublication
 	reader       *PublicReader
 	pin          Pin
@@ -17,30 +20,47 @@ type PublicSource struct {
 }
 
 func NewPublicSource(ctx context.Context, expected Pin, publisher *registry.ManifestPublication) (*PublicSource, error) {
+	return newSelectedPublicSource(ctx, expected, publisher, ownershipCodec{}, nil)
+}
+func newSelectedPublicSource(ctx context.Context, expected Pin, publisher *registry.ManifestPublication, codec ownershipCodec, owner *operatorauthority.Owner) (*PublicSource, error) {
 	if ctx == nil || publisher == nil || publisher.Pin() != expected {
 		return nil, ErrSource
 	}
-	if _, e := ValidatePin(expected); e != nil {
+	if _, e := codec.ID(expected); e != nil {
 		return nil, e
 	}
 	status, e := publisher.Status(ctx)
 	if e != nil {
 		return nil, e
 	}
-	return &PublicSource{publisher: publisher, pin: expected, status: status}, nil
+	if codec.operator {
+		if owner == nil {
+			return nil, ErrSource
+		}
+		if e := publisher.CheckOperatorOwner(ctx, owner); e != nil {
+			return nil, e
+		}
+	}
+	return &PublicSource{codec: codec, operator: owner, publisher: publisher, pin: expected, status: status}, nil
 }
 func NewRemotePublicSource(ctx context.Context, expected Pin, reader *PublicReader) (*PublicSource, error) {
+	return newSelectedRemotePublicSource(ctx, expected, reader, ownershipCodec{})
+}
+func newSelectedRemotePublicSource(ctx context.Context, expected Pin, reader *PublicReader, codec ownershipCodec) (*PublicSource, error) {
 	if ctx == nil || reader == nil || reader.Pin() != expected {
 		return nil, ErrSource
 	}
-	if _, e := ValidatePin(expected); e != nil {
+	if _, e := codec.ID(expected); e != nil {
 		return nil, e
 	}
 	status, e := reader.Status(ctx)
 	if e != nil {
 		return nil, e
 	}
-	return &PublicSource{reader: reader, pin: expected, status: status.Publication, remoteStatus: status}, nil
+	if reader.codec != codec {
+		return nil, ErrSource
+	}
+	return &PublicSource{codec: codec, reader: reader, pin: expected, status: status.Publication, remoteStatus: status}, nil
 }
 func (s *PublicSource) Check(ctx context.Context) error {
 	if ctx == nil || s == nil {
@@ -81,7 +101,7 @@ func (s *PublicSource) Alive() error {
 	return s.publisher.Alive()
 }
 func (s *PublicSource) sameOwner(other *PublicSource) bool {
-	if s == nil || other == nil || s.pin != other.pin {
+	if s == nil || other == nil || s.pin != other.pin || s.codec != other.codec || s.operator != other.operator {
 		return false
 	}
 	if s.reader != nil {

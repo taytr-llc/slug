@@ -131,10 +131,42 @@ compiled but the sandbox denied its local listener; unchanged sources passed
 with local-listener permission. This is not an actual funded-wallet payout.
 See `POOL_PAYOUT_RUNTIME.md` for the component contract and remaining integration.
 
+## Completed component: operator ownership and public reader
+
+Explicit operator issuer/replica/audit constructors select the V2 profile and
+persist the expected role in both marker and metadata. Issuer operations retain
+the same concrete online owner as the original registry; replicas and audit
+readers have no signer. An immediate original-owner operation spans signing and
+durable commit, including exact pending chain/cutoff recovery. The offline
+checkpoint key is not loaded. Existing V1 APIs and record bytes remain intact.
+
+The separate `/slug/ownership/v2` route uses independently expected profile and
+version selection. Remote reconstruction verifies signed public evidence and
+normal work; it cannot create a missing finality frame. Changed persisted roles,
+substituted equal-key owners, mixed guards and incomplete public evidence refuse.
+No constructor migrates an old history or changes chain order/finality.
+
+`artifacts/set74/ownership-core-attempt1/report.json` passed with all 3,879
+source/reference inputs and the profile unchanged: complete fighterownership
+normal tests 9.120 seconds, complete race tests 18.126 seconds, operator
+cheap-profile controls 2.334 seconds, no-CGO public/replica checks 2.810 seconds,
+and fighterownership/registry vet 0.458 seconds. Five process groups joined
+cleanly. The independent corpus supplies six frame positives, ten frame refusals
+and six conditional compositions. Concrete tests cover public normal-work
+admission reconstruction, pending reopen, boundary/cutoff, owner cancellation
+during commit, ownerless serving and remote refusal to sign. Synthetic branches
+in the pure corpus are not claimed as normal-work chain evidence.
+
+Pre-execution source review corrected the new final operation check to occur
+before successful cutoff completion cancels its own replay context; the original
+stage is preserved externally. This component qualification does not establish
+an actual funded operator transfer, remote service deployment or native V2 gym
+integration.
+
 ## Remaining integration
 
-- Connect the qualified operator profile/owner to ownership replay and public
-  pool issuance. The official checkpoint key stays offline; signed checkpoint
+- Compose the qualified operator issuer/replay with standalone pool issuance and
+  maintenance. The official checkpoint key stays offline; signed checkpoint
   import verifies public evidence only.
 - Independently running public pool with authenticated TLS miner transport,
   immutable enrollment/payees and joined operator lifetime.

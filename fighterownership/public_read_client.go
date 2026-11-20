@@ -8,7 +8,6 @@ import (
 	"crypto/tls"
 	"encoding/hex"
 	"encoding/json"
-	"github.com/taytr-llc/slug/registry"
 	"io"
 	"math"
 	"net"
@@ -30,6 +29,7 @@ type PublicReadConfig struct {
 }
 
 type PublicReader struct {
+	codec           ownershipCodec
 	pin             Pin
 	pinID, endpoint string
 	http            *http.Client
@@ -44,6 +44,9 @@ type PublicReader struct {
 }
 
 func NewPublicReader(ctx context.Context, expected Pin, config PublicReadConfig, life context.Context) (*PublicReader, error) {
+	return newSelectedPublicReader(ctx, expected, config, life, ownershipCodec{})
+}
+func newSelectedPublicReader(ctx context.Context, expected Pin, config PublicReadConfig, life context.Context, codec ownershipCodec) (*PublicReader, error) {
 	if e := normal(); e != nil {
 		return nil, e
 	}
@@ -56,12 +59,12 @@ func NewPublicReader(ctx context.Context, expected Pin, config PublicReadConfig,
 	if e := life.Err(); e != nil {
 		return nil, e
 	}
-	id, e := ID(expected)
+	id, e := codec.ID(expected)
 	if e != nil {
 		return nil, e
 	}
 	u, e := url.Parse(config.URL)
-	if e != nil || len(config.URL) > 2048 || u.User != nil || u.Opaque != "" || u.Fragment != "" || u.RawQuery != "" || u.ForceQuery || u.RawPath != "" || u.Path != publicReadPath || u.Hostname() == "" || strings.ContainsAny(config.URL, "\r\n\t") {
+	if e != nil || len(config.URL) > 2048 || u.User != nil || u.Opaque != "" || u.Fragment != "" || u.RawQuery != "" || u.ForceQuery || u.RawPath != "" || u.Path != codec.readPath() || u.Hostname() == "" || strings.ContainsAny(config.URL, "\r\n\t") {
 		return nil, ErrInvalid
 	}
 	if p := u.Port(); p != "" {
@@ -97,7 +100,7 @@ func NewPublicReader(ctx context.Context, expected Pin, config PublicReadConfig,
 	}
 	transport := &http.Transport{Proxy: nil, DialContext: (&net.Dialer{Timeout: 5 * time.Second}).DialContext, TLSClientConfig: tlsConfig, TLSHandshakeTimeout: 5 * time.Second, ResponseHeaderTimeout: 5 * time.Second, MaxResponseHeaderBytes: 8192, DisableCompression: true, DisableKeepAlives: true}
 	owned, cancel := context.WithCancel(life)
-	r := &PublicReader{pin: expected, pinID: id, endpoint: u.String(), life: owned, cancel: cancel, active: make(chan struct{}, 8), http: &http.Client{Transport: transport, Timeout: 5 * time.Second, CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }}}
+	r := &PublicReader{codec: codec, pin: expected, pinID: id, endpoint: u.String(), life: owned, cancel: cancel, active: make(chan struct{}, 8), http: &http.Client{Transport: transport, Timeout: 5 * time.Second, CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }}}
 	if _, e = r.Status(ctx); e != nil {
 		_ = r.Close()
 		return nil, e
@@ -170,8 +173,8 @@ func (r *PublicReader) read(ctx context.Context, method string, sequence uint32,
 			break
 		}
 	}
-	v := publicReadRequest{Version: 1, PinID: r.pinID, ID: id, Method: method, Sequence: sequence, EventID: event}
-	if e := v.validate(r.pinID); e != nil {
+	v := publicReadRequest{Version: r.codec.wireVersion(), PinID: r.pinID, ID: id, Method: method, Sequence: sequence, EventID: event}
+	if e := v.validateSelected(r.pinID, r.codec.wireVersion()); e != nil {
 		return nil, e
 	}
 	raw, e := json.Marshal(v)
@@ -204,7 +207,7 @@ func (r *PublicReader) read(ctx context.Context, method string, sequence uint32,
 		return nil, ErrUnavailable
 	}
 	var out publicReadResponse
-	if decode(raw, limit+2048, &out) != nil || out.Version != 1 || out.PinID != r.pinID || out.ID != id || out.Method != method {
+	if decode(raw, limit+2048, &out) != nil || out.Version != r.codec.wireVersion() || out.PinID != r.pinID || out.ID != id || out.Method != method {
 		return nil, ErrUnavailable
 	}
 	if e = ctx.Err(); e != nil {
@@ -236,7 +239,7 @@ func (r *PublicReader) Status(ctx context.Context) (PublicReadStatus, error) {
 		e = decode(raw, 2048, &v)
 	}
 	if e == nil {
-		e = validatePublicReadStatus(r.pin, v)
+		e = r.codec.validatePublicReadStatus(r.pin, v)
 	}
 	if e == nil {
 		e = ctx.Err()
@@ -256,7 +259,7 @@ func (r *PublicReader) Admission(ctx context.Context, n uint32) (AdmissionStatem
 	if e != nil {
 		return AdmissionStatement{}, e
 	}
-	v, e := registry.ParsePublicAdmission(r.pin, raw)
+	v, e := r.codec.ParsePublicAdmission(r.pin, raw)
 	if e == nil && v.AdmissionSequence != n {
 		e = ErrInvalid
 	}
@@ -278,7 +281,7 @@ func (r *PublicReader) Publication(ctx context.Context, n uint32) (PublicationEn
 	if e != nil {
 		return PublicationEntry{}, e
 	}
-	v, e := registry.ParsePublicPublication(r.pin, raw)
+	v, e := r.codec.ParsePublicPublication(r.pin, raw)
 	if e == nil && v.Sequence != n {
 		e = ErrInvalid
 	}
@@ -302,7 +305,7 @@ func (r *PublicReader) FinalityFrame(ctx context.Context, n uint32) (FinalityFra
 		e = decode(raw, 8192, &v)
 	}
 	if e == nil {
-		e = ValidateFinalityFrame(r.pin, v)
+		e = r.codec.ValidateFinalityFrame(r.pin, v)
 	}
 	if e == nil && v.Sequence != n {
 		e = ErrInvalid
@@ -327,7 +330,7 @@ func (r *PublicReader) CutoffIntent(ctx context.Context, event string) (CutoffIn
 		e = decode(raw, 4096, &v)
 	}
 	if e == nil {
-		e = registry.ValidatePublicCutoffIntent(r.pin, v)
+		e = r.codec.ValidatePublicCutoffIntent(r.pin, v)
 	}
 	if e == nil && v.EventID != event {
 		e = ErrInvalid
@@ -350,7 +353,7 @@ func (r *PublicReader) Cutoff(ctx context.Context, event string) (CutoffRecord, 
 	if e != nil {
 		return CutoffRecord{}, e
 	}
-	v, e := registry.ParsePublicCutoff(r.pin, raw)
+	v, e := r.codec.ParsePublicCutoff(r.pin, raw)
 	if e == nil && v.EventID != event {
 		e = ErrInvalid
 	}

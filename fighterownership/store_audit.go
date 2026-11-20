@@ -18,6 +18,9 @@ func (s *Store) audit() error {
 		return ErrCorrupt
 	}
 	m := s.meta
+	if m.OperatorRole != s.operatorRole {
+		return ErrCorrupt
+	}
 	if m.Version != 1 || m.PinID != s.pinID || m.StoreID != s.identity.StoreID || m.ClockHighWaterMS < 0 || m.ClockHighWaterMS > MaxTimestampMS || !countsBound(m.Counts) || m.FinalitySequence > 4096 || m.PublishedFinalitySequence > m.FinalitySequence || !validPrefix(m.PublishedFinalitySequence, m.FinalityHead) || (m.WorkID != "" && !hexValue(m.WorkID, 32, true)) {
 		return ErrCorrupt
 	}
@@ -58,7 +61,7 @@ func (s *Store) audit() error {
 			}
 		case strings.HasPrefix(key, "a/") && len(k) == 6:
 			n := binary.BigEndian.Uint32(k[2:])
-			x, er := registry.ParsePublicAdmission(s.pin, v)
+			x, er := s.codec.ParsePublicAdmission(s.pin, v)
 			fail = er != nil || n != x.AdmissionSequence || n == 0 || s.admissionByProspect[x.Record.Verified.ProspectID] != 0
 			if !fail {
 				s.admissions[n] = x
@@ -66,7 +69,7 @@ func (s *Store) audit() error {
 			}
 		case strings.HasPrefix(key, "p/") && len(k) == 6:
 			n := binary.BigEndian.Uint32(k[2:])
-			x, er := registry.ParsePublicPublication(s.pin, v)
+			x, er := s.codec.ParsePublicPublication(s.pin, v)
 			fail = er != nil || n != x.Sequence || n == 0
 			if !fail {
 				s.publications[n] = x
@@ -87,7 +90,7 @@ func (s *Store) audit() error {
 		case strings.HasPrefix(key, "w/") && len(k) == 34:
 			id, _ := suffix("w/", 32)
 			var x CarrierWitness
-			fail = decode(v, 65536, &x) != nil || validateWitness(s.pin, x) != nil
+			fail = decode(v, 65536, &x) != nil || s.codec.validateWitness(s.pin, x) != nil
 			got, er := objectDigest("SLUG fighter ownership witness", x)
 			fail = fail || er != nil || got != id
 			if !fail {
@@ -101,7 +104,7 @@ func (s *Store) audit() error {
 			}
 		case strings.HasPrefix(key, "s/") && len(k) == 34:
 			id, _ := suffix("s/", 32)
-			x, er := ParseEffectiveState(s.pin, v)
+			x, er := s.codec.ParseEffectiveState(s.pin, v)
 			fail = er != nil || x.StateID != id
 			if !fail {
 				s.states[id] = x
@@ -110,7 +113,7 @@ func (s *Store) audit() error {
 			state := hex.EncodeToString(k[2:34])
 			front := hex.EncodeToString(k[34:])
 			var x FinalityWitness
-			fail = decode(v, 4096, &x) != nil || validateFinalityWitness(s.pin, x) != nil || x.StateID != state
+			fail = decode(v, 4096, &x) != nil || s.codec.validateFinalityWitness(s.pin, x) != nil || x.StateID != state
 			got, er := objectDigest("SLUG fighter ownership frontier evidence", x.Frontier)
 			fail = fail || er != nil || got != front
 			if !fail {
@@ -118,16 +121,16 @@ func (s *Store) audit() error {
 			}
 		case strings.HasPrefix(key, "m/") && len(k) == 34:
 			id, _ := suffix("m/", 32)
-			x, er := ParseOwnershipMap(s.pin, v)
-			got, ge := OwnershipMapID(s.pin, x)
+			x, er := s.codec.ParseOwnershipMap(s.pin, v)
+			got, ge := s.codec.OwnershipMapID(s.pin, x)
 			fail = er != nil || ge != nil || got != id
 			if !fail {
 				s.maps[id] = x
 			}
 		case strings.HasPrefix(key, "k/") && len(k) == 34:
 			event, _ := suffix("k/", 32)
-			x, er := registry.ParsePublicCutoff(s.pin, v)
-			id, ie := registry.PublicCutoffID(s.pin, x)
+			x, er := s.codec.ParsePublicCutoff(s.pin, v)
+			id, ie := s.codec.PublicCutoffID(s.pin, x)
 			fail = er != nil || ie != nil || x.EventID != event
 			if !fail {
 				s.cutoffs[event] = x
@@ -136,7 +139,7 @@ func (s *Store) audit() error {
 		case strings.HasPrefix(key, "x/") && len(k) == 34:
 			id, _ := suffix("x/", 32)
 			var x ConflictRecord
-			fail = decode(v, 8192, &x) != nil || validateConflict(s.pin, x) != nil
+			fail = decode(v, 8192, &x) != nil || s.codec.validateConflict(s.pin, x) != nil
 			got, er := objectDigest("SLUG fighter ownership conflict", x)
 			fail = fail || er != nil || got != id
 			if !fail {
@@ -145,20 +148,20 @@ func (s *Store) audit() error {
 		case strings.HasPrefix(key, "f/") && len(k) == 6:
 			n := binary.BigEndian.Uint32(k[2:])
 			var x FinalityFrame
-			fail = decode(v, 8192, &x) != nil || ValidateFinalityFrame(s.pin, x) != nil || n != x.Sequence
+			fail = decode(v, 8192, &x) != nil || s.codec.ValidateFinalityFrame(s.pin, x) != nil || n != x.Sequence
 			if !fail {
 				s.frames[n] = x
 			}
 		case strings.HasPrefix(key, "fo/") && len(k) == 7:
 			n := binary.BigEndian.Uint32(k[3:])
 			var x FinalityFrameBody
-			fail = decode(v, 8192, &x) != nil || validateFrameBody(s.pin, x) != nil || n != x.Sequence
+			fail = decode(v, 8192, &x) != nil || s.codec.validateFrameBody(s.pin, x) != nil || n != x.Sequence
 			if !fail {
 				s.frameBodies[n] = x
 			}
 		case strings.HasPrefix(key, "b/") && len(k) == 34:
 			event, _ := suffix("b/", 32)
-			x, er := registry.ParsePublicBoundary(s.pin, v)
+			x, er := s.codec.ParsePublicBoundary(s.pin, v)
 			fail = er != nil || x.Intent.EventID != event
 			if !fail {
 				s.boundaries[event] = x
@@ -186,7 +189,7 @@ func (s *Store) audit() error {
 		if !ok || a.PreviousAdmissionID != ah {
 			return ErrCorrupt
 		}
-		ah, e = registry.PublicAdmissionID(s.pin, a)
+		ah, e = s.codec.PublicAdmissionID(s.pin, a)
 		if e != nil {
 			return ErrCorrupt
 		}
@@ -195,14 +198,14 @@ func (s *Store) audit() error {
 	for n := uint32(1); n <= counts.Publications; n++ {
 		prefix = append(prefix, s.publications[n])
 	}
-	if verifyPublicationPrefix(s.pin, prefix) != nil {
+	if s.codec.verifyPublicationPrefix(s.pin, prefix) != nil {
 		return ErrCorrupt
 	}
 	frames := make([]FinalityFrame, 0, m.PublishedFinalitySequence)
 	for n := uint32(1); n <= m.PublishedFinalitySequence; n++ {
 		frames = append(frames, s.frames[n])
 	}
-	if verifyFramePrefix(s.pin, frames) != nil {
+	if s.codec.verifyFramePrefix(s.pin, frames) != nil {
 		return ErrCorrupt
 	}
 	ph := zeroID
@@ -213,7 +216,7 @@ func (s *Store) audit() error {
 		if !ok || p.PreviousID != ph {
 			return ErrCorrupt
 		}
-		ph, e = registry.PublicPublicationID(s.pin, p)
+		ph, e = s.codec.PublicPublicationID(s.pin, p)
 		if e != nil {
 			return ErrCorrupt
 		}
@@ -224,7 +227,7 @@ func (s *Store) audit() error {
 				return ErrCorrupt
 			}
 			a, ok := s.admissions[ref.AdmissionSequence]
-			id, er := registry.PublicAdmissionID(s.pin, a)
+			id, er := s.codec.PublicAdmissionID(s.pin, a)
 			if !ok || er != nil || id != ref.AdmissionID {
 				return ErrCorrupt
 			}
@@ -280,12 +283,12 @@ func (s *Store) audit() error {
 	}
 	for _, state := range s.states {
 		a, ok := s.admissions[s.admissionByProspect[state.ProspectID]]
-		aid, er := registry.PublicAdmissionID(s.pin, a)
+		aid, er := s.codec.PublicAdmissionID(s.pin, a)
 		if !ok || er != nil || aid != state.BirthAdmissionID {
 			return ErrCorrupt
 		}
 		if state.Generation == 0 {
-			expected, er := InitialState(s.pin, a)
+			expected, er := s.codec.InitialState(s.pin, a)
 			if er != nil || expected.StateID != state.StateID {
 				return ErrCorrupt
 			}
@@ -329,7 +332,7 @@ func (s *Store) audit() error {
 			return ErrCorrupt
 		}
 		mp, ok := s.maps[body.OwnershipMapID]
-		fp, er := FinalizedPrefixID(s.pin, mp)
+		fp, er := s.codec.FinalizedPrefixID(s.pin, mp)
 		if !ok || er != nil || fp != body.FinalizedPrefixID || len(mp.Items) != int(body.AdmissionSequence) {
 			return ErrCorrupt
 		}
@@ -338,7 +341,7 @@ func (s *Store) audit() error {
 			if !ok || frame.FinalityFrameBody != body {
 				return ErrCorrupt
 			}
-			frameHead, e = FinalityFrameID(s.pin, frame)
+			frameHead, e = s.codec.FinalityFrameID(s.pin, frame)
 			if e != nil {
 				return ErrCorrupt
 			}
@@ -391,14 +394,14 @@ func (s *Store) frontierExists(f FrontierEvidence) bool {
 	switch f.Kind {
 	case "finality_frame":
 		for _, v := range s.frames {
-			id, _ := FinalityFrameID(s.pin, v)
+			id, _ := s.codec.FinalityFrameID(s.pin, v)
 			if id == f.ID {
 				return true
 			}
 		}
 	case "boundary":
 		for _, v := range s.boundaries {
-			id, _ := registry.PublicBoundaryID(s.pin, v)
+			id, _ := s.codec.PublicBoundaryID(s.pin, v)
 			if id == f.ID {
 				return true
 			}
@@ -406,7 +409,7 @@ func (s *Store) frontierExists(f FrontierEvidence) bool {
 	case "publication":
 		for _, v := range s.publications {
 			if v.Kind == "chain" {
-				id, _ := registry.PublicPublicationID(s.pin, v)
+				id, _ := s.codec.PublicPublicationID(s.pin, v)
 				if id == f.ID {
 					return true
 				}
@@ -416,14 +419,14 @@ func (s *Store) frontierExists(f FrontierEvidence) bool {
 	return false
 }
 func (s *Store) validateHeadMap(h HeadRef, m OwnershipMap) error {
-	if ValidateHead(s.pin, h) != nil || len(m.Items) != int(h.AdmissionSequence) {
+	if s.codec.ValidateHead(s.pin, h) != nil || len(m.Items) != int(h.AdmissionSequence) {
 		return ErrCorrupt
 	}
-	mid, e := OwnershipMapID(s.pin, m)
+	mid, e := s.codec.OwnershipMapID(s.pin, m)
 	if e != nil {
 		return e
 	}
-	fp, e := FinalizedPrefixID(s.pin, m)
+	fp, e := s.codec.FinalizedPrefixID(s.pin, m)
 	if e != nil || fp != h.FinalizedPrefixID {
 		return ErrCorrupt
 	}
@@ -433,14 +436,14 @@ func (s *Store) validateHeadMap(h HeadRef, m OwnershipMap) error {
 	}
 	if h.AdmissionSequence > 0 {
 		a, ok := s.admissions[h.AdmissionSequence]
-		id, e := registry.PublicAdmissionID(s.pin, a)
+		id, e := s.codec.PublicAdmissionID(s.pin, a)
 		if !ok || e != nil || id != h.AdmissionHead {
 			return ErrCorrupt
 		}
 	}
 	if h.PublicationSequence > 0 {
 		p, ok := s.publications[h.PublicationSequence]
-		id, e := registry.PublicPublicationID(s.pin, p)
+		id, e := s.codec.PublicPublicationID(s.pin, p)
 		if !ok || e != nil || id != h.PublicationHead {
 			return ErrCorrupt
 		}

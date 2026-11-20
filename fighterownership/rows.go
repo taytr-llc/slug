@@ -6,7 +6,6 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"math"
-	"sort"
 	"strings"
 )
 
@@ -95,29 +94,10 @@ func validTransactionWitness(v TransactionWitness, max int) bool {
 	return true
 }
 func validateWitness(p Pin, v CarrierWitness) error {
-	id, e := ID(p)
-	if e != nil || v.Version != 1 || v.PinID != id || !hexValue(v.TransferID, 32, true) || !hexValue(v.PriorStateID, 32, true) || !hexValue(v.Envelope, 202, true) || (v.Kind != "reveal" && v.Kind != "refund") || !validTransactionWitness(v.Commit, 4096) || !validTransactionWitness(v.Spend, 12000) || len(v.FundingPrevouts) < 1 || len(v.FundingPrevouts) > 16 {
-		return ErrInvalid
-	}
-	prev := ""
-	for _, f := range v.FundingPrevouts {
-		if !hexValue(f.TxID, 32, true) || f.Atoms < 1 || f.Atoms > 21000000*100000000 || !hexValue(f.Script, 22, true) || !strings.HasPrefix(f.Script, "0014") {
-			return ErrInvalid
-		}
-		k := fundingOrder(f.TxID, f.Index)
-		if k <= prev {
-			return ErrInvalid
-		}
-		prev = k
-	}
-	return nil
+	return (ownershipCodec{}).validateWitness(p, v)
 }
 func validateFrameBody(p Pin, v FinalityFrameBody) error {
-	id, e := ID(p)
-	if e != nil || v.Version != 1 || v.PinID != id || v.Sequence < 1 || v.Sequence > 4096 || !validPrefix(v.Sequence-1, v.PreviousBodyID) || v.AdmissionSequence > 1000 || v.PublicationSequence > 16384 || !validPrefix(v.AdmissionSequence, v.AdmissionHead) || !validPrefix(v.PublicationSequence, v.PublicationHead) || v.ChainHeight > math.MaxInt32 || !hexValue(v.ChainHash, 32, true) || !hexValue(v.OwnershipMapID, 32, true) || !hexValue(v.FinalizedPrefixID, 32, true) {
-		return ErrInvalid
-	}
-	return nil
+	return (ownershipCodec{}).validateFrameBody(p, v)
 }
 func signObject(domain string, v any) (string, error) {
 	raw, e := json.Marshal(v)
@@ -161,46 +141,16 @@ func verifyObject(domain, key string, v any, signature string) error {
 	return nil
 }
 func ValidateFinalityFrame(p Pin, v FinalityFrame) error {
-	if e := validateFrameBody(p, v.FinalityFrameBody); e != nil {
-		return e
-	}
-	return verifyObject("SLUG fighter ownership finality statement", p.PublicationKey, v, v.Signature)
+	return (ownershipCodec{}).ValidateFinalityFrame(p, v)
 }
 func FinalityFrameID(p Pin, v FinalityFrame) (string, error) {
-	if e := ValidateFinalityFrame(p, v); e != nil {
-		return "", e
-	}
-	return objectDigest("SLUG fighter ownership finality id", v)
+	return (ownershipCodec{}).FinalityFrameID(p, v)
 }
 func validateFinalityWitness(p Pin, v FinalityWitness) error {
-	id, e := ID(p)
-	if e != nil || v.Version != 1 || v.PinID != id || !hexValue(v.StateID, 32, true) || !validFrontier(v.Frontier) || !hexValue(v.CheckpointPublicationID, 32, true) || v.SixtiethDescendantHeight < 60 || v.SixtiethDescendantHeight > math.MaxInt32 || !hexValue(v.SixtiethDescendantHash, 32, true) {
-		return ErrInvalid
-	}
-	return nil
+	return (ownershipCodec{}).validateFinalityWitness(p, v)
 }
 func validateConflict(p Pin, v ConflictRecord) error {
-	id, e := ID(p)
-	if e != nil || v.Version != 1 || v.PinID != id || (v.Kind != "publication_equivocation" && v.Kind != "checkpoint_conflict" && v.Kind != "finalized_branch_conflict") || len(v.EvidenceIDs) < 2 || len(v.EvidenceIDs) > 16 || !sort.StringsAreSorted(v.EvidenceIDs) {
-		return ErrInvalid
-	}
-	if v.Kind != "publication_equivocation" && (!hexValue(v.ProspectID, 32, true) || !hexValue(v.RetainedStateID, 32, true)) {
-		return ErrInvalid
-	}
-	if (v.ProspectID != "" && !hexValue(v.ProspectID, 32, true)) || (v.RetainedStateID != "" && !hexValue(v.RetainedStateID, 32, true)) {
-		return ErrInvalid
-	}
-	for _, f := range []*FrontierEvidence{v.RetainedFrontier, v.ContradictoryFrontier} {
-		if f != nil && !validFrontier(*f) {
-			return ErrInvalid
-		}
-	}
-	for n, x := range v.EvidenceIDs {
-		if !hexValue(x, 32, true) || n > 0 && v.EvidenceIDs[n-1] == x {
-			return ErrInvalid
-		}
-	}
-	return nil
+	return (ownershipCodec{}).validateConflict(p, v)
 }
 func validTarget(v ReplayTarget) bool {
 	return v.AdmissionSequence <= 1000 && v.PublicationSequence <= 16384 && validPrefix(v.AdmissionSequence, v.AdmissionHead) && validPrefix(v.PublicationSequence, v.PublicationHead) && v.ChainHeight <= math.MaxInt32 && hexValue(v.ChainHash, 32, true) && (v.Frontier == nil || validFrontier(*v.Frontier))

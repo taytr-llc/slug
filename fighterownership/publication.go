@@ -56,6 +56,14 @@ func (s *Store) RecordChainObservation(ctx context.Context, source *PublicSource
 		return nil, PublicationEntry{}, e
 	}
 	defer done()
+	if e = s.selectedSource(ctx, source, node); e != nil {
+		return nil, PublicationEntry{}, e
+	}
+	ctx, release, e := s.beginOperatorSigning(ctx, source)
+	if e != nil {
+		return nil, PublicationEntry{}, e
+	}
+	defer release()
 	// Complete at most one original chain intent before sampling a new tip.
 	// Moving tips cannot replace an already synchronized publication body.
 	source, _, e = s.resumeChainPublication(ctx, source, node)
@@ -84,7 +92,7 @@ func (s *Store) RecordChainObservation(ctx context.Context, source *PublicSource
 	if e = node.Check(ctx, observation); e != nil {
 		return nil, PublicationEntry{}, e
 	}
-	entry.Signature, e = signObject("SLUG fighter ownership publication statement", entry)
+	entry.Signature, e = s.signSelectedObject(ctx, "SLUG fighter ownership publication statement", entry)
 	if e != nil {
 		return nil, PublicationEntry{}, e
 	}
@@ -94,11 +102,11 @@ func (s *Store) RecordChainObservation(ctx context.Context, source *PublicSource
 	if e = node.Check(ctx, observation); e != nil {
 		return nil, PublicationEntry{}, e
 	}
-	entry, e = prepared.CommitSigned(ctx, entry)
+	entry, e = s.commitSelectedPublication(ctx, prepared, entry)
 	if e != nil {
 		return nil, PublicationEntry{}, e
 	}
-	next, e := NewPublicSource(ctx, s.pin, source.publisher)
+	next, e := s.recaptureSource(ctx, source)
 	return next, entry, e
 }
 
@@ -114,6 +122,14 @@ func (s *Store) CaptureBoundary(ctx context.Context, source *PublicSource, node 
 		return SignedBoundary{}, e
 	}
 	defer done()
+	if e = s.selectedSource(ctx, source, node); e != nil {
+		return SignedBoundary{}, e
+	}
+	ctx, release, e := s.beginOperatorSigning(ctx, source)
+	if e != nil {
+		return SignedBoundary{}, e
+	}
+	defer release()
 	if e = source.Check(ctx); e != nil {
 		return SignedBoundary{}, e
 	}
@@ -193,7 +209,7 @@ func (s *Store) CaptureBoundary(ctx context.Context, source *PublicSource, node 
 		Second:                    BoundaryObservation{RequestStartMS: secondStart, ResponseEndMS: end, InstanceID: second.InstanceID, Revision: second.Revision, Height: second.Height, Hash: second.Hash},
 		AcceptedAdmissionSequence: status.AcceptedSequence, PublicationSequence: status.PublicationSequence, PublicationHead: status.PublicationHead,
 		FinalitySequence: finalitySequence, FinalityBodyHead: finalityHead, PriorCutoffID: previous}
-	if e = registry.ValidatePublicCutoffIntent(s.pin, intent); e != nil {
+	if e = s.codec.ValidatePublicCutoffIntent(s.pin, intent); e != nil {
 		return SignedBoundary{}, e
 	}
 	if e = lease.CommitIntent(bounded, intent); e != nil {
@@ -213,11 +229,11 @@ func (s *Store) persistBoundary(ctx context.Context, source *PublicSource, inten
 	}
 	boundary := SignedBoundary{Version: 1, PinID: s.pinID, Intent: intent}
 	var e error
-	boundary.Signature, e = signObject("SLUG fighter ownership boundary statement", boundary)
+	boundary.Signature, e = s.signSelectedObject(ctx, "SLUG fighter ownership boundary statement", boundary)
 	if e != nil {
 		return SignedBoundary{}, e
 	}
-	if e = registry.ValidatePublicBoundary(s.pin, boundary); e != nil {
+	if e = s.codec.ValidatePublicBoundary(s.pin, boundary); e != nil {
 		return SignedBoundary{}, e
 	}
 	s.mu.Lock()
@@ -228,6 +244,9 @@ func (s *Store) persistBoundary(ctx context.Context, source *PublicSource, inten
 	if old, ok := s.boundaries[intent.EventID]; ok {
 		if old != boundary {
 			return SignedBoundary{}, ErrConflict
+		}
+		if e = s.checkOperatorSigning(ctx); e != nil {
+			return SignedBoundary{}, e
 		}
 		return old, nil
 	}
@@ -241,9 +260,15 @@ func (s *Store) persistBoundary(ctx context.Context, source *PublicSource, inten
 	if intent.Second.ResponseEndMS > meta.ClockHighWaterMS {
 		meta.ClockHighWaterMS = intent.Second.ResponseEndMS
 	}
+	if e = s.checkOperatorSigning(ctx); e != nil {
+		return SignedBoundary{}, e
+	}
 	if e = s.commit(batch, meta); e != nil {
 		return SignedBoundary{}, e
 	}
 	s.boundaries[intent.EventID] = boundary
+	if e = s.checkOperatorSigning(ctx); e != nil {
+		return SignedBoundary{}, e
+	}
 	return boundary, nil
 }

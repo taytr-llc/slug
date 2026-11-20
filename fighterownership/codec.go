@@ -8,7 +8,6 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"io"
-	"math"
 	"strings"
 
 	"github.com/taytr-llc/slug/btcec/v2"
@@ -152,107 +151,37 @@ func cloneItem(v OwnedItem) OwnedItem {
 	return OwnedItem{cloneAdmission(v.Admission), cloneState(v.State)}
 }
 func ValidateEffectiveState(p Pin, v EffectiveState) error {
-	id, e := ID(p)
-	if e != nil || v.Version != 1 || v.PinID != id || !hexValue(v.ProspectID, 32, true) || !hexValue(v.StateID, 32, true) || !hexValue(v.BirthAdmissionID, 32, true) || !gymKey(v.OwnerPublicKey) || v.Generation > 4096 {
-		return ErrInvalid
-	}
-	var stateID string
-	if v.Generation == 0 {
-		var evidence InitialStateEvidence
-		if decode(v.Evidence, 4096, &evidence) != nil || evidence.Version != 1 || evidence.PinID != id || evidence.ProspectID != v.ProspectID || evidence.AdmissionID != v.BirthAdmissionID || evidence.OwnerPublicKey != v.OwnerPublicKey {
-			return ErrInvalid
-		}
-		stateID, e = objectDigest("SLUG fighter ownership state", evidence)
-	} else {
-		var evidence FinalStateEvidence
-		if decode(v.Evidence, 4096, &evidence) != nil || evidence.Version != 1 || evidence.PinID != id || evidence.ProspectID != v.ProspectID || evidence.OwnerPublicKey != v.OwnerPublicKey || !hexValue(evidence.PriorStateID, 32, true) || !hexValue(evidence.TransferID, 32, true) || !hexValue(evidence.CheckpointPublicationID, 32, true) || !hexValue(evidence.SixtiethDescendantHash, 32, true) || evidence.SixtiethDescendantHeight < 60 || evidence.SixtiethDescendantHeight > math.MaxInt32 {
-			return ErrInvalid
-		}
-		stateID, e = objectDigest("SLUG fighter ownership state", evidence)
-	}
-	if e != nil || stateID != v.StateID {
-		return ErrInvalid
-	}
-	return nil
+	return (ownershipCodec{}).ValidateEffectiveState(p, v)
 }
 func ParseEffectiveState(p Pin, raw []byte) (EffectiveState, error) {
-	var v EffectiveState
-	if e := decode(raw, 4096, &v); e != nil {
-		return v, e
-	}
-	return v, ValidateEffectiveState(p, v)
+	return (ownershipCodec{}).ParseEffectiveState(p, raw)
 }
 func MarshalEffectiveState(p Pin, v EffectiveState) ([]byte, error) {
-	if e := ValidateEffectiveState(p, v); e != nil {
-		return nil, e
-	}
-	return json.Marshal(v)
+	return (ownershipCodec{}).MarshalEffectiveState(p, v)
 }
 
 // InitialState computes a public projection; it grants no live Store capability.
 func InitialState(p Pin, a AdmissionStatement) (EffectiveState, error) {
-	aid, e := registry.PublicAdmissionID(p, a)
-	if e != nil {
-		return EffectiveState{}, ErrInvalid
-	}
-	pid, _ := ID(p)
-	ev := InitialStateEvidence{1, pid, a.Record.Verified.ProspectID, aid, a.Record.Authorization.PublicKey}
-	sid, e := objectDigest("SLUG fighter ownership state", ev)
-	if e != nil {
-		return EffectiveState{}, e
-	}
-	raw, _ := json.Marshal(ev)
-	v := EffectiveState{1, pid, ev.ProspectID, sid, ev.OwnerPublicKey, aid, 0, raw}
-	return v, ValidateEffectiveState(p, v)
+	return (ownershipCodec{}).InitialState(p, a)
 }
 func ValidateOwnershipMap(p Pin, m OwnershipMap) error {
-	id, e := ID(p)
-	if e != nil || m.Version != 1 || m.PinID != id || m.Items == nil || len(m.Items) > 1000 {
-		return ErrInvalid
-	}
-	seen := map[string]bool{}
-	var previous uint32
-	for _, x := range m.Items {
-		if x.AdmissionSequence != previous+1 || !hexValue(x.ProspectID, 32, true) || !hexValue(x.StateID, 32, true) || seen[x.ProspectID] {
-			return ErrInvalid
-		}
-		previous = x.AdmissionSequence
-		seen[x.ProspectID] = true
-	}
-	return nil
+	return (ownershipCodec{}).ValidateOwnershipMap(p, m)
 }
 func OwnershipMapID(p Pin, m OwnershipMap) (string, error) {
-	if e := ValidateOwnershipMap(p, m); e != nil {
-		return "", e
-	}
-	return objectDigest("SLUG fighter ownership map", m)
+	return (ownershipCodec{}).OwnershipMapID(p, m)
 }
 func FinalizedPrefixID(p Pin, m OwnershipMap) (string, error) {
-	if e := ValidateOwnershipMap(p, m); e != nil {
-		return "", e
-	}
-	return objectDigest("SLUG fighter ownership finalized prefix", m)
+	return (ownershipCodec{}).FinalizedPrefixID(p, m)
 }
 func ParseOwnershipMap(p Pin, raw []byte) (OwnershipMap, error) {
-	var m OwnershipMap
-	if e := decode(raw, 262144, &m); e != nil {
-		return m, e
-	}
-	return m, ValidateOwnershipMap(p, m)
+	return (ownershipCodec{}).ParseOwnershipMap(p, raw)
 }
 func validPrefix(n uint32, id string) bool {
 	return hexValue(id, 32, false) && (n == 0) == (id == zeroID)
 }
 func ValidateHead(p Pin, h HeadRef) error {
-	id, e := ID(p)
-	if e != nil || h.Version != 1 || h.PinID != id || h.AdmissionSequence > 1000 || h.PublicationSequence > 16384 || !validPrefix(h.AdmissionSequence, h.AdmissionHead) || !validPrefix(h.PublicationSequence, h.PublicationHead) || h.ChainHeight > math.MaxInt32 || !hexValue(h.ChainHash, 32, true) || !hexValue(h.ReplayDigest, 32, true) || !hexValue(h.FinalizedPrefixID, 32, true) || h.ConflictID != "" && !hexValue(h.ConflictID, 32, true) {
-		return ErrInvalid
-	}
-	return nil
+	return (ownershipCodec{}).ValidateHead(p, h)
 }
 func HeadID(p Pin, h HeadRef) (string, error) {
-	if e := ValidateHead(p, h); e != nil {
-		return "", e
-	}
-	return objectDigest("SLUG fighter ownership head", h)
+	return (ownershipCodec{}).HeadID(p, h)
 }

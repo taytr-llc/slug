@@ -1,9 +1,10 @@
 // Copyright (c) 2026 The SLUG developers. ISC license.
 package fighterownership
 
-import "github.com/taytr-llc/slug/registry"
-
 func verifyPublicationPrefix(pin Pin, values []PublicationEntry) error {
+	return (ownershipCodec{}).verifyPublicationPrefix(pin, values)
+}
+func (codec ownershipCodec) verifyPublicationPrefix(pin Pin, values []PublicationEntry) error {
 	if len(values) > 16384 {
 		return ErrCapacity
 	}
@@ -13,7 +14,7 @@ func verifyPublicationPrefix(pin Pin, values []PublicationEntry) error {
 		if v.Sequence != uint32(n+1) || v.PreviousID != previous || v.AttestedAtMS < clock {
 			return ErrCorrupt
 		}
-		id, e := registry.PublicPublicationID(pin, v)
+		id, e := codec.PublicPublicationID(pin, v)
 		if e != nil {
 			return e
 		}
@@ -23,6 +24,9 @@ func verifyPublicationPrefix(pin Pin, values []PublicationEntry) error {
 	return nil
 }
 func verifyFramePrefix(pin Pin, values []FinalityFrame) error {
+	return (ownershipCodec{}).verifyFramePrefix(pin, values)
+}
+func (codec ownershipCodec) verifyFramePrefix(pin Pin, values []FinalityFrame) error {
 	if len(values) > 4096 {
 		return ErrCapacity
 	}
@@ -31,7 +35,7 @@ func verifyFramePrefix(pin Pin, values []FinalityFrame) error {
 		if v.Sequence != uint32(n+1) || v.PreviousBodyID != previous {
 			return ErrCorrupt
 		}
-		if e := ValidateFinalityFrame(pin, v); e != nil {
+		if e := codec.ValidateFinalityFrame(pin, v); e != nil {
 			return e
 		}
 		id, e := objectDigest("SLUG fighter ownership finality body", v.FinalityFrameBody)

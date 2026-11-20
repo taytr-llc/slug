@@ -82,6 +82,9 @@ func (s *Store) beginReplay(ctx context.Context, source *PublicSource, node *Own
 	if s == nil || ctx == nil || source == nil || node == nil || source.pin != s.pin || node.pin != s.pin {
 		return nil, ErrSource
 	}
+	if e := s.selectedSource(ctx, source, node); e != nil {
+		return nil, e
+	}
 	if e := normal(); e != nil {
 		return nil, e
 	}
@@ -109,7 +112,7 @@ func (s *Store) beginReplay(ctx context.Context, source *PublicSource, node *Own
 			return nil, ErrUnavailable
 		}
 	} else {
-		if registry.ValidatePublicBoundary(s.pin, *boundary) != nil {
+		if s.codec.ValidatePublicBoundary(s.pin, *boundary) != nil {
 			return nil, ErrInvalid
 		}
 		intent, e := source.cutoffIntent(ctx, boundary.Intent.EventID)
@@ -128,12 +131,12 @@ func (s *Store) beginReplay(ctx context.Context, source *PublicSource, node *Own
 			if er != nil {
 				return nil, er
 			}
-			admissionHead, er = registry.PublicAdmissionID(s.pin, a)
+			admissionHead, er = s.codec.PublicAdmissionID(s.pin, a)
 			if er != nil {
 				return nil, er
 			}
 		}
-		bid, er := registry.PublicBoundaryID(s.pin, *boundary)
+		bid, er := s.codec.PublicBoundaryID(s.pin, *boundary)
 		if er != nil {
 			return nil, er
 		}
@@ -173,7 +176,7 @@ func (s *Store) beginReplay(ctx context.Context, source *PublicSource, node *Own
 		}
 	} else {
 		if source.reader == nil {
-			if _, e = cutoffFrames(s.pin, boundary.Intent, s.frames, s.frameBodies); e != nil {
+			if _, e = s.codec.cutoffFrames(s.pin, boundary.Intent, s.frames, s.frameBodies); e != nil {
 				return nil, e
 			}
 		} else if boundary.Intent.FinalitySequence > frameLimit {
@@ -385,7 +388,7 @@ func (r *Replay) stepAdmission(ctx context.Context) error {
 	if e != nil {
 		return e
 	}
-	if registry.ValidatePublicAdmission(r.store.pin, a) != nil {
+	if r.store.codec.ValidatePublicAdmission(r.store.pin, a) != nil {
 		return ErrCorrupt
 	}
 	prev := zeroID
@@ -396,7 +399,7 @@ func (r *Replay) stepAdmission(ctx context.Context) error {
 		if !ok {
 			return ErrUnavailable
 		}
-		prev, e = registry.PublicAdmissionID(r.store.pin, old)
+		prev, e = r.store.codec.PublicAdmissionID(r.store.pin, old)
 		if e != nil {
 			return e
 		}
@@ -417,7 +420,7 @@ func (r *Replay) stepAdmission(ctx context.Context) error {
 	if e = ctx.Err(); e != nil {
 		return e
 	}
-	initial, e := InitialState(r.store.pin, a)
+	initial, e := r.store.codec.InitialState(r.store.pin, a)
 	if e != nil {
 		return e
 	}
@@ -429,7 +432,7 @@ func (r *Replay) stepAdmission(ctx context.Context) error {
 	work := r.work
 	work.NextAdmission++
 	if n == work.Target.AdmissionSequence {
-		id, _ := registry.PublicAdmissionID(r.store.pin, a)
+		id, _ := r.store.codec.PublicAdmissionID(r.store.pin, a)
 		if id != work.Target.AdmissionHead {
 			return ErrSource
 		}
@@ -453,7 +456,7 @@ func (r *Replay) stepPublication(ctx context.Context) error {
 	if e != nil {
 		return e
 	}
-	if registry.ValidatePublicPublication(r.store.pin, p) != nil {
+	if r.store.codec.ValidatePublicPublication(r.store.pin, p) != nil {
 		return ErrCorrupt
 	}
 	previous := zeroID
@@ -464,7 +467,7 @@ func (r *Replay) stepPublication(ctx context.Context) error {
 		if !ok {
 			return ErrUnavailable
 		}
-		previous, e = registry.PublicPublicationID(r.store.pin, old)
+		previous, e = r.store.codec.PublicPublicationID(r.store.pin, old)
 		if e != nil {
 			return e
 		}
@@ -479,7 +482,7 @@ func (r *Replay) stepPublication(ctx context.Context) error {
 		var ref registry.PublicAdmissionReference
 		json.Unmarshal(p.Payload, &ref)
 		a, ok := r.store.admissions[ref.AdmissionSequence]
-		id, er := registry.PublicAdmissionID(r.store.pin, a)
+		id, er := r.store.codec.PublicAdmissionID(r.store.pin, a)
 		if !ok || er != nil || id != ref.AdmissionID {
 			return ErrUnavailable
 		}
@@ -490,7 +493,7 @@ func (r *Replay) stepPublication(ctx context.Context) error {
 	work := r.work
 	work.NextPublication++
 	if n == work.Target.PublicationSequence {
-		id, _ := registry.PublicPublicationID(r.store.pin, p)
+		id, _ := r.store.codec.PublicPublicationID(r.store.pin, p)
 		if id != work.Target.PublicationHead {
 			return ErrSource
 		}
@@ -512,7 +515,7 @@ func (r *Replay) buildBranches() error {
 		if frame.AdmissionSequence > r.work.Target.AdmissionSequence || frame.PublicationSequence > r.work.Target.PublicationSequence {
 			return ErrUnavailable
 		}
-		fid, e := FinalityFrameID(s.pin, frame)
+		fid, e := s.codec.FinalityFrameID(s.pin, frame)
 		if e != nil {
 			return e
 		}

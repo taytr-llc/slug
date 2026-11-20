@@ -20,7 +20,6 @@ import (
 	"time"
 
 	"github.com/taytr-llc/slug/prospectnode"
-	"github.com/taytr-llc/slug/registry"
 	"github.com/taytr-llc/slug/wire/v2"
 )
 
@@ -43,6 +42,7 @@ type ChainHeader struct {
 // loopback endpoint. Every operation rechecks network/genesis. Replay must also
 // bracket its traversal with Check to detect restart, ABA and advancing tips.
 type OwnedChainSource struct {
+	codec                        ownershipCodec
 	pin                          Pin
 	endpoint, username, password string
 	http                         *http.Client
@@ -57,6 +57,9 @@ type OwnedChainSource struct {
 }
 
 func NewOwnedChainSource(ctx context.Context, expected Pin, config prospectnode.RPCConfig, life context.Context) (*OwnedChainSource, error) {
+	return newSelectedOwnedChainSource(ctx, expected, config, life, ownershipCodec{})
+}
+func newSelectedOwnedChainSource(ctx context.Context, expected Pin, config prospectnode.RPCConfig, life context.Context, codec ownershipCodec) (*OwnedChainSource, error) {
 	if wire.TestPoW {
 		return nil, ErrProfile
 	}
@@ -69,7 +72,7 @@ func NewOwnedChainSource(ctx context.Context, expected Pin, config prospectnode.
 	if err := life.Err(); err != nil {
 		return nil, err
 	}
-	if registry.ValidatePublicManifestPin(expected) != nil {
+	if _, e := codec.ID(expected); e != nil {
 		return nil, ErrSource
 	}
 	raw, err := json.Marshal(config)
@@ -93,7 +96,7 @@ func NewOwnedChainSource(ctx context.Context, expected Pin, config prospectnode.
 	}
 	transport := &http.Transport{Proxy: nil, DialContext: (&net.Dialer{Timeout: 5 * time.Second}).DialContext, TLSClientConfig: tlsConfig, TLSHandshakeTimeout: 5 * time.Second, ResponseHeaderTimeout: 5 * time.Second, MaxResponseHeaderBytes: 65536, DisableCompression: true, DisableKeepAlives: true}
 	owned, cancel := context.WithCancel(life)
-	s := &OwnedChainSource{pin: expected, endpoint: u.String(), username: config.Username, password: config.Password, ctx: owned, cancel: cancel, closeDone: make(chan struct{}), http: &http.Client{Transport: transport, Timeout: 5 * time.Second, CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }}}
+	s := &OwnedChainSource{codec: codec, pin: expected, endpoint: u.String(), username: config.Username, password: config.Password, ctx: owned, cancel: cancel, closeDone: make(chan struct{}), http: &http.Client{Transport: transport, Timeout: 5 * time.Second, CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }}}
 	op, done, err := s.begin(ctx)
 	if err == nil {
 		err = s.identity(op)

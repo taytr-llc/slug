@@ -10,6 +10,11 @@ import (
 )
 
 func (r *Replay) finish(ctx context.Context) (Progress, error) {
+	ctx, release, e := r.store.beginOperatorSigning(ctx, r.source)
+	if e != nil {
+		return Progress{}, e
+	}
+	defer release()
 	if len(r.branches) == 0 || r.branch != len(r.branches) {
 		return Progress{}, ErrUnavailable
 	}
@@ -18,11 +23,11 @@ func (r *Replay) finish(ctx context.Context) (Progress, error) {
 	if e != nil {
 		return Progress{}, e
 	}
-	mapID, e := OwnershipMapID(r.store.pin, mp)
+	mapID, e := r.store.codec.OwnershipMapID(r.store.pin, mp)
 	if e != nil {
 		return Progress{}, e
 	}
-	fp, _ := FinalizedPrefixID(r.store.pin, mp)
+	fp, _ := r.store.codec.FinalizedPrefixID(r.store.pin, mp)
 	if r.cutoff != nil {
 		return r.finishCutoff(ctx, b, mp, mapID, fp)
 	}
@@ -44,7 +49,7 @@ func (r *Replay) finish(ctx context.Context) (Progress, error) {
 		for n := uint32(1); n <= r.frameLimit; n++ {
 			f, ok := r.frames[n]
 			if ok && f.ChainHash == b.target.ChainHash && f.ChainHeight == b.target.ChainHeight && f.OwnershipMapID == mapID && f.FinalizedPrefixID == fp {
-				contradictionFrameID, _ = FinalityFrameID(s.pin, f)
+				contradictionFrameID, _ = s.codec.FinalityFrameID(s.pin, f)
 			}
 		}
 		if contradictionFrameID == "" {
@@ -78,11 +83,11 @@ func (r *Replay) finish(ctx context.Context) (Progress, error) {
 		}
 		body := FinalityFrameBody{1, s.pinID, meta.FinalitySequence + 1, previous, b.target.AdmissionSequence, b.target.AdmissionHead, b.target.PublicationSequence, b.target.PublicationHead, b.target.ChainHeight, b.target.ChainHash, mapID, fp}
 		f := FinalityFrame{FinalityFrameBody: body}
-		f.Signature, e = signObject("SLUG fighter ownership finality statement", f)
+		f.Signature, e = s.signSelectedObject(ctx, "SLUG fighter ownership finality statement", f)
 		if e != nil {
 			return Progress{}, e
 		}
-		fid, e := FinalityFrameID(s.pin, f)
+		fid, e := s.codec.FinalityFrameID(s.pin, f)
 		if e != nil {
 			return Progress{}, e
 		}
@@ -124,7 +129,7 @@ func (r *Replay) finish(ctx context.Context) (Progress, error) {
 			old := r.officialFrontier[v.StateID]
 			current := FrontierEvidence{"finality_frame", contradictionFrameID}
 			c := ConflictRecord{1, s.pinID, "finalized_branch_conflict", v.ProspectID, v.StateID, &old, &current, sortedIDs(old.ID, contradictionFrameID)}
-			if validateConflict(s.pin, c) != nil {
+			if s.codec.validateConflict(s.pin, c) != nil {
 				return Progress{}, ErrCorrupt
 			}
 			conflictID, e = objectDigest("SLUG fighter ownership conflict", c)
@@ -181,6 +186,10 @@ func (r *Replay) finish(ctx context.Context) (Progress, error) {
 			batch.Delete(countKey("c/", n))
 		}
 	}
+	if e = s.checkOperatorSigning(ctx); e != nil {
+		s.mu.Unlock()
+		return Progress{}, e
+	}
 	if e = s.commit(batch, meta); e != nil {
 		s.mu.Unlock()
 		return Progress{}, e
@@ -216,6 +225,9 @@ func (r *Replay) finish(ctx context.Context) (Progress, error) {
 	}
 	if e == nil {
 		e = ctx.Err()
+	}
+	if e == nil {
+		e = s.checkOperatorSigning(ctx)
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()

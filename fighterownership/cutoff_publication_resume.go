@@ -21,6 +21,11 @@ func (s *Store) ResumeCutoffPublication(ctx context.Context, source *PublicSourc
 		return nil, false, e
 	}
 	defer done()
+	ctx, release, e := s.beginOperatorSigning(ctx, source)
+	if e != nil {
+		return nil, false, e
+	}
+	defer release()
 	if e = source.Check(ctx); e != nil {
 		return nil, false, e
 	}
@@ -46,7 +51,7 @@ func (s *Store) ResumeCutoffPublication(ctx context.Context, source *PublicSourc
 	if !indexed || !present || !hasBoundary {
 		return nil, false, ErrUnavailable
 	}
-	id, e := registry.PublicCutoffID(s.pin, cutoff)
+	id, e := s.codec.PublicCutoffID(s.pin, cutoff)
 	if e != nil || id != reference.CutoffID || cutoff.EventID != event || cutoff.Boundary != boundary {
 		return nil, false, ErrConflict
 	}
@@ -63,16 +68,16 @@ func (s *Store) ResumeCutoffPublication(ctx context.Context, source *PublicSourc
 	if e = prepared.Check(ctx); e != nil {
 		return nil, false, e
 	}
-	entry.Signature, e = signObject("SLUG fighter ownership publication statement", entry)
+	entry.Signature, e = s.signSelectedObject(ctx, "SLUG fighter ownership publication statement", entry)
 	if e != nil {
 		return nil, false, e
 	}
 	if e = source.Check(ctx); e != nil {
 		return nil, false, e
 	}
-	if _, e = prepared.CommitCutoffSigned(ctx, entry, cutoff); e != nil {
+	if _, e = s.commitSelectedCutoffPublication(ctx, prepared, entry, cutoff); e != nil {
 		return nil, false, e
 	}
-	next, e := NewPublicSource(ctx, s.pin, source.publisher)
+	next, e := s.recaptureSource(ctx, source)
 	return next, true, e
 }

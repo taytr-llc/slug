@@ -13,7 +13,10 @@ import (
 // cutoffFrames selects only the immutable unsigned prefix captured at the lock.
 // A later signed frame is irrelevant; a hole inside the captured prefix is not.
 func cutoffFrames(pin Pin, intent CutoffIntent, frames map[uint32]FinalityFrame, bodies map[uint32]FinalityFrameBody) ([]FinalityFrame, error) {
-	if registry.ValidatePublicCutoffIntent(pin, intent) != nil {
+	return (ownershipCodec{}).cutoffFrames(pin, intent, frames, bodies)
+}
+func (codec ownershipCodec) cutoffFrames(pin Pin, intent CutoffIntent, frames map[uint32]FinalityFrame, bodies map[uint32]FinalityFrameBody) ([]FinalityFrame, error) {
+	if codec.ValidatePublicCutoffIntent(pin, intent) != nil {
 		return nil, ErrInvalid
 	}
 	values := make([]FinalityFrame, 0, intent.FinalitySequence)
@@ -24,7 +27,7 @@ func cutoffFrames(pin Pin, intent CutoffIntent, frames map[uint32]FinalityFrame,
 		if !ok || !present {
 			return nil, ErrUnavailable
 		}
-		if f.Sequence != n || f.FinalityFrameBody != body || body.PreviousBodyID != previous || ValidateFinalityFrame(pin, f) != nil {
+		if f.Sequence != n || f.FinalityFrameBody != body || body.PreviousBodyID != previous || codec.ValidateFinalityFrame(pin, f) != nil {
 			return nil, ErrCorrupt
 		}
 		id, e := objectDigest("SLUG fighter ownership finality body", body)
@@ -50,7 +53,7 @@ func (s *Store) BeginCutoffReplay(ctx context.Context, source *PublicSource, nod
 func (r *Replay) finishCutoff(ctx context.Context, b *replayBranch, mp OwnershipMap, mapID, fp string) (Progress, error) {
 	s := r.store
 	boundary := *r.cutoff
-	if _, e := cutoffFrames(s.pin, boundary.Intent, s.frames, s.frameBodies); e != nil {
+	if _, e := s.codec.cutoffFrames(s.pin, boundary.Intent, s.frames, s.frameBodies); e != nil {
 		return Progress{}, e
 	}
 	batch := new(leveldb.Batch)
@@ -64,10 +67,10 @@ func (r *Replay) finishCutoff(ctx context.Context, b *replayBranch, mp Ownership
 			continue
 		}
 		old := r.officialFrontier[v.StateID]
-		bid, _ := registry.PublicBoundaryID(s.pin, boundary)
+		bid, _ := s.codec.PublicBoundaryID(s.pin, boundary)
 		current := FrontierEvidence{"boundary", bid}
 		c := ConflictRecord{1, s.pinID, "finalized_branch_conflict", v.ProspectID, v.StateID, &old, &current, sortedIDs(old.ID, bid)}
-		if validateConflict(s.pin, c) != nil {
+		if s.codec.validateConflict(s.pin, c) != nil {
 			return Progress{}, ErrCorrupt
 		}
 		var e error
@@ -99,12 +102,12 @@ func (r *Replay) finishCutoff(ctx context.Context, b *replayBranch, mp Ownership
 		}
 		c = published
 	} else {
-		c.Signature, e = signObject("SLUG fighter ownership cutoff statement", c)
+		c.Signature, e = s.signSelectedObject(ctx, "SLUG fighter ownership cutoff statement", c)
 		if e != nil {
 			return Progress{}, e
 		}
 	}
-	cid, e := registry.PublicCutoffID(s.pin, c)
+	cid, e := s.codec.PublicCutoffID(s.pin, c)
 	if e != nil {
 		return Progress{}, e
 	}
@@ -141,6 +144,9 @@ func (r *Replay) finishCutoff(ctx context.Context, b *replayBranch, mp Ownership
 	if e = ctx.Err(); e != nil {
 		return Progress{}, e
 	}
+	if e = s.checkOperatorSigning(ctx); e != nil {
+		return Progress{}, e
+	}
 	if e = s.commit(batch, meta); e != nil {
 		return Progress{}, e
 	}
@@ -151,10 +157,16 @@ func (r *Replay) finishCutoff(ctx context.Context, b *replayBranch, mp Ownership
 	if conflict != nil {
 		s.conflicts[conflictID] = *conflict
 	}
+	// Check the original operation before this successful completion cancels
+	// its own replay lifetime. Preserve cleanup even when the check refuses.
+	e = s.checkOperatorSigning(ctx)
 	s.replay = nil
 	r.closed.Store(true)
 	r.cancel()
 	r.releaseMemory()
+	if e != nil {
+		return Progress{}, e
+	}
 	return Progress{WorkID: r.id, Phase: "ready", NextAdmission: h.AdmissionSequence + 1, NextPublication: h.PublicationSequence + 1, NextHeight: h.ChainHeight + 1, Ready: true, Head: &h, Cutoff: &c}, nil
 }
 
@@ -169,6 +181,11 @@ func (s *Store) PublishCutoff(ctx context.Context, source *PublicSource, eventID
 		return nil, PublicationEntry{}, e
 	}
 	defer done()
+	ctx, release, e := s.beginOperatorSigning(ctx, source)
+	if e != nil {
+		return nil, PublicationEntry{}, e
+	}
+	defer release()
 	if e = source.Check(ctx); e != nil {
 		return nil, PublicationEntry{}, e
 	}
@@ -185,7 +202,7 @@ func (s *Store) PublishCutoff(ctx context.Context, source *PublicSource, eventID
 			return nil, PublicationEntry{}, ErrConflict
 		}
 		// Find the one exact retained index through the original bounded prefix.
-		id, _ := registry.PublicCutoffID(s.pin, c)
+		id, _ := s.codec.PublicCutoffID(s.pin, c)
 		for n := uint32(1); n <= source.status.PublicationSequence; n++ {
 			entry, er := source.publisher.Publication(ctx, n)
 			if er != nil {
@@ -209,17 +226,17 @@ func (s *Store) PublishCutoff(ctx context.Context, source *PublicSource, eventID
 		return nil, PublicationEntry{}, e
 	}
 	entry := prepared.Entry()
-	entry.Signature, e = signObject("SLUG fighter ownership publication statement", entry)
+	entry.Signature, e = s.signSelectedObject(ctx, "SLUG fighter ownership publication statement", entry)
 	if e != nil {
 		return nil, PublicationEntry{}, e
 	}
 	if e = source.Check(ctx); e != nil {
 		return nil, PublicationEntry{}, e
 	}
-	entry, e = prepared.CommitSigned(ctx, entry)
+	entry, e = s.commitSelectedPublication(ctx, prepared, entry)
 	if e != nil {
 		return nil, PublicationEntry{}, e
 	}
-	next, e := NewPublicSource(ctx, s.pin, source.publisher)
+	next, e := s.recaptureSource(ctx, source)
 	return next, entry, e
 }
