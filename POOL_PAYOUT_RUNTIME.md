@@ -57,6 +57,16 @@ settlement journal, not this client, proves which signed transaction is authoriz
 and owns reservations/exact-byte retry. An uncertain response cannot create a
 replacement payment.
 
+## Public transport
+
+`poolingress` exposes only the six existing pool POST routes, admission/recovery
+and public ownership V2 through a selected TLS 1.3 origin/certificate. Private
+services retain authentication and authority. The ingress admits bounded bodies,
+responses and concurrency, discards forwarded identity, and never retries a
+request after uncertain delivery. Shutdown joins its handlers before the owning
+runtime releases those private services. Miner enrollment and wallet integration
+remain separate from this transport component.
+
 ## Remaining acceptance
 
 The dedicated encrypted wallet, immediate signing authority, public TLS runtime

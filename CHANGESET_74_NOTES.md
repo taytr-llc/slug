@@ -187,6 +187,29 @@ noncomparable backend refusal, no reentrant gate, and the existing durable-befor
 broadcast, exact retry, midnight, uncertain-write and signer-mutation tests.
 This capability is not the dedicated wallet implementation or an actual payout.
 
+## Completed component: bounded public TLS ingress
+
+`poolingress` owns a TLS 1.3 listener pinned to the selected HTTPS origin,
+certificate identity and eight exact existing routes. It forwards only bounded
+requests to three original private loopback services. It rejects forwarded
+identity, alternate routes, ambiguous framing and redirects; uncertain upstream
+responses never trigger an automatic retry. Connection/request caps and joined
+shutdown cover partial bodies and active upstream work. It has no wallet or
+administrative route.
+
+`artifacts/set74/pool-ingress-attempt3/report.json` passed all eleven tests,
+race checks and vet: 1.003, 3.105 and 0.288 seconds respectively, with 3,889
+source/reference inputs unchanged and all process groups joined. Fifty literal
+protocol cases independently specify accepted/refused request shapes.
+
+Attempts 1 and 2 remain failed, preserved evidence. Two cancellation fixtures
+waited for server request cancellation without first consuming their request
+bodies. Local Go 1.27.4 HTTP source confirms disconnect monitoring starts after
+body consumption. The successor fixtures assert the exact body before waiting,
+and add cleanup-only release paths. The original three-second cancellation
+assertions and production ingress source remain unchanged. This component pass
+does not establish public deployment or an actual payout.
+
 ## Remaining integration
 
 - Compose the qualified operator issuer/replay with standalone pool issuance and

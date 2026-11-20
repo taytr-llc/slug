@@ -1,0 +1,409 @@
+{
+  "version": 1,
+  "origin": "https://pool.example",
+  "cases": [
+    {
+      "name": "/pool/v1/issue",
+      "path": "/pool/v1/issue",
+      "method": "POST",
+      "accept": true,
+      "upstream": "pool",
+      "request_limit": 1024,
+      "response_limit": 16842752
+    },
+    {
+      "name": "/pool/v1/work",
+      "path": "/pool/v1/work",
+      "method": "POST",
+      "accept": true,
+      "upstream": "pool",
+      "request_limit": 1024,
+      "response_limit": 16842752
+    },
+    {
+      "name": "/pool/v1/submit",
+      "path": "/pool/v1/submit",
+      "method": "POST",
+      "accept": true,
+      "upstream": "pool",
+      "request_limit": 1024,
+      "response_limit": 65536
+    },
+    {
+      "name": "/pool/v1/lookup",
+      "path": "/pool/v1/lookup",
+      "method": "POST",
+      "accept": true,
+      "upstream": "pool",
+      "request_limit": 1024,
+      "response_limit": 65536
+    },
+    {
+      "name": "/pool/v1/balance",
+      "path": "/pool/v1/balance",
+      "method": "POST",
+      "accept": true,
+      "upstream": "pool",
+      "request_limit": 1024,
+      "response_limit": 65536
+    },
+    {
+      "name": "/pool/v1/payouts",
+      "path": "/pool/v1/payouts",
+      "method": "POST",
+      "accept": true,
+      "upstream": "pool",
+      "request_limit": 1024,
+      "response_limit": 131072
+    },
+    {
+      "name": "/v3/admissions",
+      "path": "/v3/admissions",
+      "method": "POST",
+      "accept": true,
+      "upstream": "admission",
+      "request_limit": 65536,
+      "response_limit": 73728
+    },
+    {
+      "name": "/slug/ownership/v2",
+      "path": "/slug/ownership/v2",
+      "method": "POST",
+      "accept": true,
+      "upstream": "ownership",
+      "request_limit": 1024,
+      "response_limit": 73728
+    },
+    {
+      "name": "forbidden path /",
+      "path": "/",
+      "method": "POST",
+      "accept": false
+    },
+    {
+      "name": "forbidden path /pool/v1",
+      "path": "/pool/v1",
+      "method": "POST",
+      "accept": false
+    },
+    {
+      "name": "forbidden path /pool/v1/issue/",
+      "path": "/pool/v1/issue/",
+      "method": "POST",
+      "accept": false
+    },
+    {
+      "name": "forbidden path /pool/v2/issue",
+      "path": "/pool/v2/issue",
+      "method": "POST",
+      "accept": false
+    },
+    {
+      "name": "forbidden path /slug/pool/v1/issue",
+      "path": "/slug/pool/v1/issue",
+      "method": "POST",
+      "accept": false
+    },
+    {
+      "name": "forbidden path /v3/jobs",
+      "path": "/v3/jobs",
+      "method": "POST",
+      "accept": false
+    },
+    {
+      "name": "forbidden path /v3/receipts",
+      "path": "/v3/receipts",
+      "method": "POST",
+      "accept": false
+    },
+    {
+      "name": "forbidden path /v2/admissions",
+      "path": "/v2/admissions",
+      "method": "POST",
+      "accept": false
+    },
+    {
+      "name": "forbidden path /slug/ownership/v1",
+      "path": "/slug/ownership/v1",
+      "method": "POST",
+      "accept": false
+    },
+    {
+      "name": "forbidden path /rpc",
+      "path": "/rpc",
+      "method": "POST",
+      "accept": false
+    },
+    {
+      "name": "forbidden path /admin",
+      "path": "/admin",
+      "method": "POST",
+      "accept": false
+    },
+    {
+      "name": "forbidden path /sign",
+      "path": "/sign",
+      "method": "POST",
+      "accept": false
+    },
+    {
+      "name": "forbidden path /settlement/run",
+      "path": "/settlement/run",
+      "method": "POST",
+      "accept": false
+    },
+    {
+      "name": "forbidden path //pool/v1/issue",
+      "path": "//pool/v1/issue",
+      "method": "POST",
+      "accept": false
+    },
+    {
+      "name": "forbidden path /pool/v1/../v1/issue",
+      "path": "/pool/v1/../v1/issue",
+      "method": "POST",
+      "accept": false
+    },
+    {
+      "name": "forbidden method GET",
+      "path": "/pool/v1/issue",
+      "method": "GET",
+      "accept": false
+    },
+    {
+      "name": "forbidden method HEAD",
+      "path": "/pool/v1/issue",
+      "method": "HEAD",
+      "accept": false
+    },
+    {
+      "name": "forbidden method PUT",
+      "path": "/pool/v1/issue",
+      "method": "PUT",
+      "accept": false
+    },
+    {
+      "name": "forbidden method DELETE",
+      "path": "/pool/v1/issue",
+      "method": "DELETE",
+      "accept": false
+    },
+    {
+      "name": "forbidden method OPTIONS",
+      "path": "/pool/v1/issue",
+      "method": "OPTIONS",
+      "accept": false
+    },
+    {
+      "name": "forbidden method CONNECT",
+      "path": "/pool/v1/issue",
+      "method": "CONNECT",
+      "accept": false
+    },
+    {
+      "name": "forbidden method post",
+      "path": "/pool/v1/issue",
+      "method": "post",
+      "accept": false
+    },
+    {
+      "name": "wrong host",
+      "path": "/pool/v1/issue",
+      "method": "POST",
+      "accept": false,
+      "host": "other.invalid"
+    },
+    {
+      "name": "query",
+      "path": "/pool/v1/issue",
+      "method": "POST",
+      "accept": false,
+      "query": "x=1"
+    },
+    {
+      "name": "bare query",
+      "path": "/pool/v1/issue",
+      "method": "POST",
+      "accept": false,
+      "force_query": true
+    },
+    {
+      "name": "raw path",
+      "path": "/pool/v1/issue",
+      "method": "POST",
+      "accept": false,
+      "raw_path": "/pool/v1/%69ssue"
+    },
+    {
+      "name": "absolute URL",
+      "path": "/pool/v1/issue",
+      "method": "POST",
+      "accept": false,
+      "absolute": true
+    },
+    {
+      "name": "browser origin",
+      "path": "/pool/v1/issue",
+      "method": "POST",
+      "accept": false,
+      "headers": {
+        "Origin": [
+          "https://pool.example"
+        ]
+      }
+    },
+    {
+      "name": "forwarded",
+      "path": "/pool/v1/issue",
+      "method": "POST",
+      "accept": false,
+      "headers": {
+        "Forwarded": [
+          "for=127.0.0.1"
+        ]
+      }
+    },
+    {
+      "name": "x forwarded",
+      "path": "/pool/v1/issue",
+      "method": "POST",
+      "accept": false,
+      "headers": {
+        "X-Forwarded-For": [
+          "127.0.0.1"
+        ]
+      }
+    },
+    {
+      "name": "x real ip",
+      "path": "/pool/v1/issue",
+      "method": "POST",
+      "accept": false,
+      "headers": {
+        "X-Real-IP": [
+          "127.0.0.1"
+        ]
+      }
+    },
+    {
+      "name": "upgrade",
+      "path": "/pool/v1/issue",
+      "method": "POST",
+      "accept": false,
+      "headers": {
+        "Upgrade": [
+          "websocket"
+        ]
+      }
+    },
+    {
+      "name": "expect",
+      "path": "/pool/v1/issue",
+      "method": "POST",
+      "accept": false,
+      "headers": {
+        "Expect": [
+          "100-continue"
+        ]
+      }
+    },
+    {
+      "name": "encoded",
+      "path": "/pool/v1/issue",
+      "method": "POST",
+      "accept": false,
+      "headers": {
+        "Content-Encoding": [
+          "gzip"
+        ]
+      }
+    },
+    {
+      "name": "duplicate media",
+      "path": "/pool/v1/issue",
+      "method": "POST",
+      "accept": false,
+      "headers": {
+        "Content-Type": [
+          "application/json",
+          "application/json"
+        ]
+      }
+    },
+    {
+      "name": "duplicate auth",
+      "path": "/pool/v1/issue",
+      "method": "POST",
+      "accept": false,
+      "headers": {
+        "Authorization": [
+          "Bearer 1111111111111111111111111111111111111111111111111111111111111111",
+          "Bearer 1111111111111111111111111111111111111111111111111111111111111111"
+        ]
+      }
+    },
+    {
+      "name": "missing auth",
+      "path": "/pool/v1/issue",
+      "method": "POST",
+      "accept": false,
+      "headers": {
+        "Authorization": []
+      }
+    },
+    {
+      "name": "malformed bearer",
+      "path": "/pool/v1/issue",
+      "method": "POST",
+      "accept": false,
+      "headers": {
+        "Authorization": [
+          "Bearer not-a-credential"
+        ]
+      }
+    },
+    {
+      "name": "unrecognized media parameter",
+      "path": "/pool/v1/issue",
+      "method": "POST",
+      "accept": false,
+      "headers": {
+        "Content-Type": [
+          "application/json; boundary=x"
+        ]
+      }
+    },
+    {
+      "name": "trailer",
+      "path": "/pool/v1/issue",
+      "method": "POST",
+      "accept": false,
+      "trailer": true
+    },
+    {
+      "name": "ownership bearer forbidden",
+      "path": "/slug/ownership/v2",
+      "method": "POST",
+      "accept": false,
+      "headers": {
+        "Authorization": [
+          "Bearer 1111111111111111111111111111111111111111111111111111111111111111"
+        ]
+      }
+    },
+    {
+      "name": "json utf8 retained",
+      "path": "/v3/admissions",
+      "method": "POST",
+      "accept": true,
+      "upstream": "admission",
+      "request_limit": 65536,
+      "response_limit": 73728,
+      "headers": {
+        "Content-Type": [
+          "application/json; charset=UTF-8"
+        ]
+      }
+    }
+  ]
+}
