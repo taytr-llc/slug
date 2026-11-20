@@ -462,6 +462,15 @@ directories writable after all children join. Local controls reproduced both
 conditions and passed; remote execution remains pending. Both failed runs and
 the downloaded second-run report remain preserved.
 
+Run `44820451298` then passed the normal PoW guard and both Linux binary builds,
+and exposed a Linux-only ACL test-fixture defect: its synthetic directory ACL
+removed the owner's execute bit, preventing TempDir cleanup and allowing mode
+refusal to mask the intended ACL refusal. The corrected fixture preserves the
+original owner mode/object, verifies the actual kernel ACL, and removes it using
+the retained descriptor before cleanup. Production ACL policy is unchanged.
+That failed run and its complete public artifact remain preserved; the successor
+requires actual Linux execution rather than a local Mac pass.
+
 ## Remaining integration
 
 - Prepare the concrete operator handoff and deployment selections without
