@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "status": "pass",
+  "python": "3.14.3",
+  "source_unchanged": true,
+  "corpus": {
+    "bytes": 490221,
+    "sha256": "001430345f09c1fc8e1c924db18564250df6b5f32e21a2cddcfbc8d6be83a865"
+  },
+  "counts": {
+    "configs": 3,
+    "requests": 12,
+    "request_refusals": 12,
+    "positives": 31,
+    "refusals": 47,
+    "raw_refusals": 17,
+    "raw_acceptances": 2,
+    "framing": 4,
+    "traces": 8
+  },
+  "elapsed_seconds": 0.055319,
+  "execution_lock": {
+    "bytes": 2352,
+    "sha256": "4ebba17aec6c0d153b9d98775fcc2e0347b59f267d0fd682a8a77f7265a87401"
+  }
+}

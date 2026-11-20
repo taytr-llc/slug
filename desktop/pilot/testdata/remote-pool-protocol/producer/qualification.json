@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "status": "pass",
+  "scope": "Independent conditional wire bytes and original-helper/view specification traces only; no Go, store, process, wallet, mining or GUI qualification.",
+  "contract": {
+    "path": "CONTRACT.md",
+    "bytes": 15606,
+    "sha256": "f934e5a9151f4efba59ea458cde09569ad6a4bd63ce641d80d1c3d9a371f0818"
+  },
+  "source_ready": {
+    "path": "reference/source-ready.json",
+    "bytes": 2060,
+    "sha256": "7026bb8971ee630ac36f19eef9c24a346fa1cf85a723f5cff2c8d3f4455757ee"
+  },
+  "execution_lock": {
+    "path": "reference/execution-lock.json",
+    "bytes": 2352,
+    "sha256": "4ebba17aec6c0d153b9d98775fcc2e0347b59f267d0fd682a8a77f7265a87401"
+  },
+  "python_versions": [
+    "3.14.3",
+    "3.9.6"
+  ],
+  "reports": [
+    {
+      "path": "reference/attempt1-py314/report.json",
+      "bytes": 578,
+      "sha256": "f3bc458f1ca27fefe00aaccdbd147b9fc2218b9bd51a366f55217ca08e2caf84"
+    },
+    {
+      "path": "reference/attempt1-py39/report.json",
+      "bytes": 577,
+      "sha256": "8874c3285c86913614ad2a2f5f867e1fc056d61dc24ac877ad4f3725e0cf3db0"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "reference/attempt1-py314/reference-v1.json",
+      "bytes": 490221,
+      "sha256": "001430345f09c1fc8e1c924db18564250df6b5f32e21a2cddcfbc8d6be83a865"
+    },
+    {
+      "path": "reference/attempt1-py39/reference-v1.json",
+      "bytes": 490221,
+      "sha256": "001430345f09c1fc8e1c924db18564250df6b5f32e21a2cddcfbc8d6be83a865"
+    }
+  ],
+  "canonical_corpus": {
+    "path": "reference/reference-v1.json",
+    "bytes": 490221,
+    "sha256": "001430345f09c1fc8e1c924db18564250df6b5f32e21a2cddcfbc8d6be83a865"
+  },
+  "byte_equal": true,
+  "all_locked_inputs_unchanged": true,
+  "counts": {
+    "configs": 3,
+    "requests": 12,
+    "request_refusals": 12,
+    "positives": 31,
+    "refusals": 47,
+    "raw_refusals": 17,
+    "raw_acceptances": 2,
+    "framing": 4,
+    "traces": 8
+  }
+}

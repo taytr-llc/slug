@@ -557,8 +557,8 @@ normal production proof; and the complete blockchain/integration test-PoW
 suites (48.845 and 30.359 seconds). Every owned process group joined without
 signals. The initial MTP/fork checks preceded nested compiler propagation; the
 complete successor suites enforce it. See `docs/evidence/set74/ci-repair-local.json`.
-Remote CI for this successor must still be observed; local success is not a
-substitute for its result.
+Remote run `44826929376` passed these root checks but subsequently failed in
+the address module; the address correction and completed successor are below.
 
 
 ### Address-fixture successor
@@ -579,19 +579,64 @@ The complete address module passes normal, race and coverage checks. The other
 eight nested modules pass complete normal and race runs (42.254 and 542.841
 seconds). All process groups joined without signals and selected inputs stayed
 unchanged. See `docs/evidence/set74/ci-address-local.json`; the original failed
-run remains failed. This successor still requires a completed GitHub run.
+run remains failed. Commit `47e1ce84` then passed all six Build and Test jobs in
+run `44829516379`, including full race and minimum-Go compatibility, plus the
+operator Linux job in run `44829516303`. All twelve coverage profiles were
+retained; the Linux artifact verifies unchanged sources and clean cleanup. See
+`docs/evidence/set74/ci-repair-remote.json`. No seed deployment was needed.
 
 Coverage files now remain available as GitHub artifacts, with normal and
 explicit test-PoW reports separately named. The three previously mandatory
 Coveralls uploads follow the other seven uploads' informational policy. Test
 commands remain mandatory; coverage reporting does not turn failed tests green.
 
+
+## Remote helper and native route
+
+The explicit existing-wallet remote route now has a strict five-command helper
+protocol, original-process/view bridge and separate native app. The native page
+reuses the existing upper layout and logos; it exposes only fixture login,
+Start/Stop, sign out and the attached wallet status. Private RPC/credential
+values remain inside their existing protected owners. The GUI reads only its
+independently selected public config. Stop and Quit join actual owners; failed
+cleanup and unknown mutations cannot silently create a replacement helper.
+
+Protocol/helper/bridge normal and race checks passed in 38.342 and 66.044
+seconds; helper profile refusals and the complete helper command package also
+passed. The real helper rehearsal then passed in 13.608 seconds, with both
+accepted share and fighter receipt, two clean helper lifetimes, exact stopped
+reopen and signed-in EOF cleanup. The chain stayed at height 2. All 3,041
+sources and 226 protected copied-history paths remained unchanged, alongside
+the original fixture; every owned process group joined without signals.
+
+The native facade passed normal/race tests (6.953/11.708 seconds), DOM fixtures,
+vet and separate ad hoc signed macOS packaging. The unsupported-input no-CGO
+leaf also passed; Wails' default native profile still requires CGO.
+
+The visible packaged-app rehearsal passed in 241.213 seconds. The original
+window showed stopped login with its exact gym/payee, Start, a one-row capacity
+notice with no pending deliveries, native-menu Stop with zero rate, cleared
+identity fields after sign-out, and native Quit. The app and its sole helper,
+operator and both nodes joined without signals. Closed audits matched one
+accepted pool share and its separately signed fighter receipt. The chain stayed
+at height 2; this run claims no block win. All 3,365 inputs, the original fixture
+and 226 protected copied-history paths stayed unchanged.
+
+Preserve two earlier failed attempts: the first checker incorrectly required
+linker flags in trimpath build metadata; the second launcher selected name v2
+against the original v1 fixture, which the app correctly refused. The successor
+verified exact successful packaging provenance and selected the original v1
+without changing the app binary, history or test bounds. See
+`REMOTE_POOL_ATTACHMENT.md` and `docs/evidence/set74/remote-native.json`.
+Public hosting, OperatorV2 history/payout presentation, D80 capacity continuity
+and D74 remain open.
+
 ## Remaining integration
 
 - Prepare the concrete operator handoff and deployment selections without
   exposing real private material to the agent or using fixture-default custody.
-- Add an explicit remote desktop attachment and OperatorV2 history adapters,
-  preserving original local wallet/recipient/recovery source bindings.
+- Add OperatorV2 history and payout presentation to the explicit remote desktop
+  attachment, preserving original local wallet/recipient/recovery source bindings.
 - Capacity continuity and continuation-backed D80 credit, then remote-host rehearsal.
 
 No real key or seed has been read or created. Existing fixture applications,

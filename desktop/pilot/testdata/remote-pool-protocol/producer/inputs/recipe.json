@@ -1,0 +1,347 @@
+{
+  "version": 1,
+  "config_names": [
+    "zero256-default",
+    "zero256-maximum",
+    "incrementing256-default"
+  ],
+  "default_names": [
+    "zero256-default",
+    "incrementing256-default"
+  ],
+  "maximum_name": "zero256-maximum",
+  "hold_until_ms": 1795219200000,
+  "view_id_domain_ascii": "SLUG remote native protocol public view\\0v1\\0",
+  "observations": "Public modeled literal values only, not live balance/mining evidence",
+  "traces": [
+    {
+      "name": "original-helper-view-flow",
+      "steps": [
+        {
+          "helper": "original",
+          "id": 1,
+          "command": "snapshot",
+          "view": "",
+          "outcome": "success",
+          "accept": true
+        },
+        {
+          "helper": "original",
+          "id": 2,
+          "command": "login_fixture",
+          "view": "",
+          "outcome": "success",
+          "accept": true,
+          "new_view": "first"
+        },
+        {
+          "helper": "original",
+          "id": 3,
+          "command": "start",
+          "view": "first",
+          "outcome": "success",
+          "accept": true
+        },
+        {
+          "helper": "original",
+          "id": 4,
+          "command": "stop",
+          "view": "first",
+          "outcome": "success",
+          "accept": true
+        },
+        {
+          "helper": "original",
+          "id": 5,
+          "command": "logout",
+          "view": "first",
+          "outcome": "success",
+          "accept": true
+        },
+        {
+          "helper": "original",
+          "id": 6,
+          "command": "snapshot",
+          "view": "",
+          "outcome": "success",
+          "accept": true
+        }
+      ]
+    },
+    {
+      "name": "other-helper-same-public-view",
+      "steps": [
+        {
+          "helper": "original",
+          "id": 1,
+          "command": "snapshot",
+          "view": "",
+          "outcome": "success",
+          "accept": true
+        },
+        {
+          "helper": "original",
+          "id": 2,
+          "command": "login_fixture",
+          "view": "",
+          "outcome": "success",
+          "accept": true,
+          "new_view": "first"
+        },
+        {
+          "helper": "replacement",
+          "id": 3,
+          "command": "start",
+          "view": "first",
+          "outcome": "success",
+          "accept": false
+        },
+        {
+          "helper": "original",
+          "id": 3,
+          "command": "start",
+          "view": "first",
+          "outcome": "success",
+          "accept": true
+        }
+      ]
+    },
+    {
+      "name": "wrong-view-before-dispatch",
+      "steps": [
+        {
+          "helper": "original",
+          "id": 1,
+          "command": "snapshot",
+          "view": "",
+          "outcome": "success",
+          "accept": true
+        },
+        {
+          "helper": "original",
+          "id": 2,
+          "command": "login_fixture",
+          "view": "",
+          "outcome": "success",
+          "accept": true,
+          "new_view": "first"
+        },
+        {
+          "helper": "original",
+          "id": 3,
+          "command": "start",
+          "view": "second",
+          "outcome": "success",
+          "accept": false
+        },
+        {
+          "helper": "original",
+          "id": 4,
+          "command": "stop",
+          "view": "first",
+          "outcome": "success",
+          "accept": true
+        }
+      ]
+    },
+    {
+      "name": "replayed-id-retires-helper",
+      "steps": [
+        {
+          "helper": "original",
+          "id": 1,
+          "command": "snapshot",
+          "view": "",
+          "outcome": "success",
+          "accept": true
+        },
+        {
+          "helper": "original",
+          "id": 2,
+          "command": "login_fixture",
+          "view": "",
+          "outcome": "success",
+          "accept": true,
+          "new_view": "first"
+        },
+        {
+          "helper": "original",
+          "id": 2,
+          "command": "start",
+          "view": "first",
+          "outcome": "success",
+          "accept": false
+        },
+        {
+          "helper": "original",
+          "id": 3,
+          "command": "start",
+          "view": "first",
+          "outcome": "success",
+          "accept": false
+        }
+      ]
+    },
+    {
+      "name": "unknown-mutation-retires-helper",
+      "steps": [
+        {
+          "helper": "original",
+          "id": 1,
+          "command": "snapshot",
+          "view": "",
+          "outcome": "success",
+          "accept": true
+        },
+        {
+          "helper": "original",
+          "id": 2,
+          "command": "login_fixture",
+          "view": "",
+          "outcome": "success",
+          "accept": true,
+          "new_view": "first"
+        },
+        {
+          "helper": "original",
+          "id": 3,
+          "command": "start",
+          "view": "first",
+          "outcome": "unknown",
+          "accept": true
+        },
+        {
+          "helper": "original",
+          "id": 4,
+          "command": "snapshot",
+          "view": "first",
+          "outcome": "success",
+          "accept": false
+        }
+      ]
+    },
+    {
+      "name": "prebusy-read-keeps-owner",
+      "steps": [
+        {
+          "helper": "original",
+          "id": 1,
+          "command": "snapshot",
+          "view": "",
+          "outcome": "success",
+          "accept": true
+        },
+        {
+          "helper": "original",
+          "id": 2,
+          "command": "login_fixture",
+          "view": "",
+          "outcome": "success",
+          "accept": true,
+          "new_view": "first"
+        },
+        {
+          "helper": "original",
+          "id": 3,
+          "command": "snapshot",
+          "view": "first",
+          "outcome": "pre_busy",
+          "accept": true
+        },
+        {
+          "helper": "original",
+          "id": 4,
+          "command": "snapshot",
+          "view": "first",
+          "outcome": "success",
+          "accept": true
+        }
+      ]
+    },
+    {
+      "name": "expiry-then-explicit-new-login",
+      "steps": [
+        {
+          "helper": "original",
+          "id": 1,
+          "command": "snapshot",
+          "view": "",
+          "outcome": "success",
+          "accept": true
+        },
+        {
+          "helper": "original",
+          "id": 2,
+          "command": "login_fixture",
+          "view": "",
+          "outcome": "success",
+          "accept": true,
+          "new_view": "first"
+        },
+        {
+          "helper": "original",
+          "id": 3,
+          "command": "snapshot",
+          "view": "first",
+          "outcome": "expire",
+          "accept": true
+        },
+        {
+          "helper": "original",
+          "id": 4,
+          "command": "login_fixture",
+          "view": "",
+          "outcome": "success",
+          "accept": true,
+          "new_view": "second"
+        },
+        {
+          "helper": "original",
+          "id": 5,
+          "command": "start",
+          "view": "second",
+          "outcome": "success",
+          "accept": true
+        }
+      ]
+    },
+    {
+      "name": "empty-read-cannot-adopt-view",
+      "steps": [
+        {
+          "helper": "original",
+          "id": 1,
+          "command": "snapshot",
+          "view": "",
+          "outcome": "success",
+          "accept": true
+        },
+        {
+          "helper": "original",
+          "id": 2,
+          "command": "login_fixture",
+          "view": "",
+          "outcome": "success",
+          "accept": true,
+          "new_view": "first"
+        },
+        {
+          "helper": "original",
+          "id": 3,
+          "command": "snapshot",
+          "view": "",
+          "outcome": "success",
+          "accept": false
+        },
+        {
+          "helper": "original",
+          "id": 4,
+          "command": "snapshot",
+          "view": "first",
+          "outcome": "success",
+          "accept": true
+        }
+      ]
+    }
+  ]
+}

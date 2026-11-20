@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "scope": "Independent conditional public wire composition; no live owner, wallet, process or UI claim",
+  "corpus": {
+    "bytes": 490221,
+    "sha256": "001430345f09c1fc8e1c924db18564250df6b5f32e21a2cddcfbc8d6be83a865"
+  },
+  "contract": {
+    "bytes": 15606,
+    "sha256": "f934e5a9151f4efba59ea458cde09569ad6a4bd63ce641d80d1c3d9a371f0818"
+  },
+  "execution_lock": {
+    "bytes": 2352,
+    "sha256": "4ebba17aec6c0d153b9d98775fcc2e0347b59f267d0fd682a8a77f7265a87401"
+  },
+  "qualification": {
+    "bytes": 1922,
+    "sha256": "bca5baa0227a7a6510066222b088b7e0bf957b8c22ff99f60422ce79d4043a9a"
+  },
+  "python_versions": [
+    "3.14.3",
+    "3.9.6"
+  ],
+  "portable_producer": "producer/generate.py",
+  "reproduction": "PYTHONDONTWRITEBYTECODE=1 python3.14 producer/generate.py /absolute/new-output-dir",
+  "old_controller_bytes": "unchanged; new explicit wire DTO only"
+}

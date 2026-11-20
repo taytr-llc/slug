@@ -26,7 +26,7 @@ import (
 	"github.com/wailsapp/wails/v3/pkg/events"
 )
 
-//go:embed frontend/index.html frontend/style.css frontend/app.js frontend/manifest.html frontend/manifest.js frontend/manifest.css frontend/stable.html frontend/stable.js frontend/stable.css frontend/slug-transparent.png frontend/owned.html frontend/owned.js
+//go:embed frontend/index.html frontend/style.css frontend/app.js frontend/manifest.html frontend/manifest.js frontend/manifest.css frontend/stable.html frontend/stable.js frontend/stable.css frontend/slug-transparent.png frontend/owned.html frontend/owned.js frontend/remote.html frontend/remote.js
 var assets embed.FS
 
 // Only the separate candidate bundle build sets this private mode default.
@@ -41,6 +41,9 @@ var resultBuild string
 var careerBuild string
 var poolBuild string
 var ownedBuild string
+
+// The separate remote bundle still requires explicit paths and mode selection.
+var remoteBuild string
 
 // Gym exposes only public pilot controls and receipt selection to the webview.
 // Paths, process arguments, and keys cannot be supplied through the web bridge.
@@ -253,6 +256,9 @@ func assetSecurity(next http.Handler) http.Handler {
 	})
 }
 func run() (resultErr error) {
+	if remoteBuild == "1" || nativeRemoteRequested(os.Args[1:]) {
+		return runNativeRemote(os.Args[1:])
+	}
 	dataDefault, err := os.UserConfigDir()
 	if err != nil {
 		return errors.New("Local application storage is unavailable.")

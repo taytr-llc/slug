@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "approved_by": "root",
+  "approval": "Parent approved CONTRACT f934e5a9 and external bounded two-version independent generation; freeze input/case plan before execution.",
+  "contract_sha256": "f934e5a9151f4efba59ea458cde09569ad6a4bd63ce641d80d1c3d9a371f0818",
+  "files": [
+    {
+      "path": "model.py",
+      "bytes": 25566,
+      "sha256": "210827d1477b460fece812b110bcbb2c6c05e8b4e0a5075ac5e100dc4e3fd470"
+    },
+    {
+      "path": "generate.py",
+      "bytes": 2973,
+      "sha256": "c5653d1e23cc86f8b04cebcdf5540848b8edda870d10aa410bc3b59c536e6081"
+    },
+    {
+      "path": "input-catalog.json",
+      "bytes": 1443,
+      "sha256": "d387dda280dbb8110590331320cd7e632a6f358cbccf3bf7d196dc25b527ba96"
+    },
+    {
+      "path": "inputs/CASE_PLAN.md",
+      "bytes": 4662,
+      "sha256": "6f240db97f39534a4c5f5121bec3fca81ff4f88f9e4ccc6b13eac38559486ed7"
+    },
+    {
+      "path": "inputs/CONTRACT.md",
+      "bytes": 15606,
+      "sha256": "f934e5a9151f4efba59ea458cde09569ad6a4bd63ce641d80d1c3d9a371f0818"
+    },
+    {
+      "path": "inputs/recipe.json",
+      "bytes": 7936,
+      "sha256": "bb2ff44642071640f7caad13936c79b5529d259d1f59cd8669a9d74440495fd2"
+    },
+    {
+      "path": "inputs/remote-config-lock.json",
+      "bytes": 2019,
+      "sha256": "ea96035eb6dd3eea6cffd498b83993cbee39145adb9733c98a18e29531ed20a9"
+    },
+    {
+      "path": "inputs/remote-config-qualification.json",
+      "bytes": 1199,
+      "sha256": "98d6285ce57ef6389d964575c700530126f0096429a186495698eb0153f6e705"
+    },
+    {
+      "path": "inputs/remote-config-recipe.json",
+      "bytes": 1281,
+      "sha256": "c56c5dbec593772d40037a48e6ccbec3155d6d431bccd863111733ecb9bbd669"
+    },
+    {
+      "path": "inputs/remote-config-source-ready.json",
+      "bytes": 840,
+      "sha256": "263db59ee055f4534587f01a1f180a488bdea40bd751214ce46f91f2581bc5fd"
+    },
+    {
+      "path": "inputs/remote-config-v1.json",
+      "bytes": 563867,
+      "sha256": "5f67fcaaba0c78b97b0f116a4c598eb0ec62ee1436bbcf280edcc747856e5177"
+    }
+  ],
+  "limits": {
+    "cpu_seconds": 30,
+    "wall_seconds": 60,
+    "max_file_bytes": 4194304
+  },
+  "counts": {
+    "configs": 3,
+    "requests": 12,
+    "request_refusals": 12,
+    "positives": 31,
+    "refusals": 47,
+    "raw_refusals": 17,
+    "raw_acceptances": 2,
+    "framing": 4,
+    "traces": 8
+  }
+}

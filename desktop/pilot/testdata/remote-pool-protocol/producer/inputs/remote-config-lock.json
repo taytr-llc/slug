@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "approval": "Root authorized exact successor from locked operator Setup index2, validated recipe selector and change/payee invariant, explicit collision refusal, then bounded Python3.14/3.9 reproduction. No product validator or original recipient changes.",
+  "approved_by": "root",
+  "predecessor_lock": {
+    "bytes": 1787,
+    "sha256": "9fa4389490a1240e2b38ea4644aee46cb16b52a06718b0cf76c0845267366738"
+  },
+  "files": [
+    {
+      "path": "model.py",
+      "bytes": 13779,
+      "sha256": "2636ad193f206ffc62aa547c4c43421a06e8e438a0bfb38501cad4fac8ffe3ea"
+    },
+    {
+      "path": "reproduce.py",
+      "bytes": 940,
+      "sha256": "e80f3cdd7347d0e415797a5b2cdeb572bcf80a5fa5cba1ec6639a75bc0e61d6f"
+    },
+    {
+      "path": "input-catalog.json",
+      "bytes": 1723,
+      "sha256": "747f3a0f582bf0feec073e0fb6f82cb08fe7293f53d338af785e58516c174a95"
+    },
+    {
+      "path": "inputs/BYTES.md",
+      "bytes": 7106,
+      "sha256": "641297da441c33ce3a49eeceb4f462f7bb5f894f2cd85ac3a8acce072331ad80"
+    },
+    {
+      "path": "inputs/manifest-service-model.py",
+      "bytes": 31378,
+      "sha256": "b03f3235e663c8a77fb4fcf62794ac98ce3201a3784d3cc276c470ecc130420d"
+    },
+    {
+      "path": "inputs/operator-setup-model.py",
+      "bytes": 5739,
+      "sha256": "8709331398175952116bbc2a938f7b315e0220e0f0e2600845defcf21d115cdf"
+    },
+    {
+      "path": "inputs/operator-setup-v1.json",
+      "bytes": 288946,
+      "sha256": "ee81ba3c98de3fd9fe1a456f5dbe68edb66fb28a2ec9cb78fc124ee8ec31be9d"
+    },
+    {
+      "path": "inputs/original-recipients.json",
+      "bytes": 3500,
+      "sha256": "7bf54bc34de877bef5afd296cbdb9bf30f59d3589057e818a363bb7c6fd8547f"
+    },
+    {
+      "path": "inputs/published-ca.pem",
+      "bytes": 1200,
+      "sha256": "4bf9786af942540c8b9f0b5275dbf658d9950f523b199b77b07aa8921c6cbdbf"
+    },
+    {
+      "path": "inputs/recipe.json",
+      "bytes": 1281,
+      "sha256": "c56c5dbec593772d40037a48e6ccbec3155d6d431bccd863111733ecb9bbd669"
+    }
+  ]
+}

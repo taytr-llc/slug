@@ -367,7 +367,17 @@ authorization must be repository-limited, not an account-wide OAuth expansion.
   existing schema14 wallet also passed actual TLS mining, accepted share/fighter
   receipt audit and exact stopped reopen. Native Linux qualification passed at
   chain `c41cc337` / wallet `6a69ecfc`, including normal/race custody checks and
-  real ACL controls. Concrete host handoff, remote native/history attachment and
+  real ACL controls. GitHub CI repair is verified at `47e1ce84`: all six
+  Build and Test jobs and the Linux operator job passed. Independent SLUG
+  address vectors retain original payloads; full chain/race suites remain
+  enabled under their explicit test-PoW profile, with the normal proof checked
+  separately. See `docs/evidence/set74/ci-repair-remote.json`.
+  The separate remote native app now passes visible fixture login, Start,
+  native-menu Stop, sign out and Quit. Closed audits match an accepted share
+  and separate fighter receipt; every owner joined, with original history
+  unchanged. Preserve the two failed harness attempts and their corrections.
+  See `docs/evidence/set74/remote-native.json`; this is not hosted login or D74.
+  Concrete host handoff, remote history/payout presentation and
   continuous capacity/host qualification remain; do not call the pool deployed.
   The finite reservation covers saved submission rows only. D80's previously
   issued but unseen canonical winner after intake drain is an explicit release

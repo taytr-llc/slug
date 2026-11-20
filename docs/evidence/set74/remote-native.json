@@ -1,0 +1,1684 @@
+{
+  "version": 1,
+  "scope": "explicit remote helper/protocol/native implementation with visible native acceptance",
+  "reference_corpus": {
+    "path": "desktop/pilot/testdata/remote-pool-protocol/reference-v1.json",
+    "bytes": 490221,
+    "sha256": "001430345f09c1fc8e1c924db18564250df6b5f32e21a2cddcfbc8d6be83a865"
+  },
+  "results": {
+    "remote-native-protocol-attempt1": {
+      "report_sha256": "927b7078a6943e1c3282603511f6e05be5c3cc141683a86fbd1888d34945a55d",
+      "passed": true,
+      "selected_source_count": 37,
+      "source_unchanged": true,
+      "commands": [
+        {
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "test",
+            "-json",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=225s",
+            "-tags=",
+            "-run=^(TestRemotePool(Protocol|Wire|Bridge)|TestServeRemotePool|TestRemoteHelper)",
+            "./pilot",
+            "./accountpilot",
+            "./internal/bridge",
+            "./cmd/slugpilot"
+          ],
+          "pid": 70608,
+          "pgid": 70608,
+          "exit_code": 0,
+          "seconds": 38.342,
+          "timed_out": false,
+          "log_limit_exceeded": false,
+          "log_joined": true,
+          "capture_errors": [],
+          "log_errors": [],
+          "cleanup": {
+            "pid": 70608,
+            "pgid": 70608,
+            "leftover_after_exit": false,
+            "signals": [],
+            "group_empty": true,
+            "errors": [],
+            "return_code": 0
+          }
+        },
+        {
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "test",
+            "-json",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=285s",
+            "-race",
+            "-tags=",
+            "-run=^(TestRemotePool(Protocol|Wire|Bridge)|TestServeRemotePool|TestRemoteHelper)",
+            "./pilot",
+            "./accountpilot",
+            "./internal/bridge",
+            "./cmd/slugpilot"
+          ],
+          "pid": 70982,
+          "pgid": 70982,
+          "exit_code": 0,
+          "seconds": 66.044,
+          "timed_out": false,
+          "log_limit_exceeded": false,
+          "log_joined": true,
+          "capture_errors": [],
+          "log_errors": [],
+          "cleanup": {
+            "pid": 70982,
+            "pgid": 70982,
+            "leftover_after_exit": false,
+            "signals": [],
+            "group_empty": true,
+            "errors": [],
+            "return_code": 0
+          }
+        }
+      ]
+    },
+    "remote-native-profile-refusals-attempt1": {
+      "report_sha256": "96b4c29adb1602017d6e83da10aff180e7d02ce41e44ddf10ccd15509ce44486",
+      "passed": true,
+      "selected_source_count": 37,
+      "source_unchanged": true,
+      "commands": [
+        {
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "test",
+            "-json",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=105s",
+            "-tags=",
+            "-run=^TestRemoteHelperUnsupportedPrivateInputs$",
+            "./cmd/slugpilot"
+          ],
+          "pid": 2692,
+          "pgid": 2692,
+          "exit_code": 0,
+          "seconds": 22.039,
+          "timed_out": false,
+          "log_limit_exceeded": false,
+          "log_joined": true,
+          "capture_errors": [],
+          "log_errors": [],
+          "cleanup": {
+            "pid": 2692,
+            "pgid": 2692,
+            "leftover_after_exit": false,
+            "signals": [],
+            "group_empty": true,
+            "errors": [],
+            "return_code": 0
+          }
+        },
+        {
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "test",
+            "-json",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=105s",
+            "-tags=slugtestpow",
+            "-run=^TestRemoteHelperCheapRefusalBeforeEffects$",
+            "./cmd/slugpilot"
+          ],
+          "pid": 2836,
+          "pgid": 2836,
+          "exit_code": 0,
+          "seconds": 15.617,
+          "timed_out": false,
+          "log_limit_exceeded": false,
+          "log_joined": true,
+          "capture_errors": [],
+          "log_errors": [],
+          "cleanup": {
+            "pid": 2836,
+            "pgid": 2836,
+            "leftover_after_exit": false,
+            "signals": [],
+            "group_empty": true,
+            "errors": [],
+            "return_code": 0
+          }
+        }
+      ]
+    },
+    "remote-helper-complete-attempt1": {
+      "report_sha256": "bbd69fd8515e7cf9345ab72c82f3fd6eca8c4f32682cc9af60c390363c12b4b8",
+      "passed": true,
+      "selected_source_count": 48,
+      "source_unchanged": true,
+      "commands": [
+        {
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "test",
+            "-json",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=165s",
+            "-tags=",
+            "./cmd/slugpilot"
+          ],
+          "pid": 3861,
+          "pgid": 3861,
+          "exit_code": 0,
+          "seconds": 4.308,
+          "timed_out": false,
+          "log_limit_exceeded": false,
+          "log_joined": true,
+          "capture_errors": [],
+          "log_errors": [],
+          "cleanup": {
+            "pid": 3861,
+            "pgid": 3861,
+            "leftover_after_exit": false,
+            "signals": [],
+            "group_empty": true,
+            "errors": [],
+            "return_code": 0
+          }
+        }
+      ]
+    },
+    "remote-native-ui-attempt1": {
+      "report_sha256": "e65c65eca8f2a7b6572bdbbf3129b13894ff3a98110087b9fbb8a7419a664802",
+      "passed": true,
+      "selected_source_count": 54,
+      "source_unchanged": true,
+      "commands": [
+        {
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "test",
+            "-json",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=225s",
+            "-tags=",
+            "-run=^TestNativeRemote",
+            "."
+          ],
+          "pid": 5109,
+          "pgid": 5109,
+          "exit_code": 0,
+          "seconds": 6.953,
+          "timed_out": false,
+          "log_limit_exceeded": false,
+          "log_joined": true,
+          "capture_errors": [],
+          "log_errors": [],
+          "cleanup": {
+            "pid": 5109,
+            "pgid": 5109,
+            "leftover_after_exit": false,
+            "signals": [],
+            "group_empty": true,
+            "errors": [],
+            "return_code": 0
+          }
+        },
+        {
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "test",
+            "-json",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=285s",
+            "-race",
+            "-tags=",
+            "-run=^TestNativeRemote",
+            "."
+          ],
+          "pid": 5161,
+          "pgid": 5161,
+          "exit_code": 0,
+          "seconds": 11.708,
+          "timed_out": false,
+          "log_limit_exceeded": false,
+          "log_joined": true,
+          "capture_errors": [],
+          "log_errors": [],
+          "cleanup": {
+            "pid": 5161,
+            "pgid": 5161,
+            "leftover_after_exit": false,
+            "signals": [],
+            "group_empty": true,
+            "errors": [],
+            "return_code": 0
+          }
+        }
+      ]
+    },
+    "remote-native-package-attempt1": {
+      "report_sha256": "a6a732ac0ddb58cc8fdca50a34629bcd3c1e6286ed5650eea190876f289a5607",
+      "passed": true,
+      "selected_source_count": 59,
+      "source_unchanged": true,
+      "commands": [
+        {
+          "command": [
+            "node",
+            "--test",
+            "frontend/remote.test.mjs"
+          ],
+          "pid": 5328,
+          "pgid": 5328,
+          "exit_code": 0,
+          "seconds": 0.237,
+          "timed_out": false,
+          "log_limit_exceeded": false,
+          "log_joined": true,
+          "capture_errors": [],
+          "log_errors": [],
+          "cleanup": {
+            "pid": 5328,
+            "pgid": 5328,
+            "leftover_after_exit": false,
+            "signals": [],
+            "group_empty": true,
+            "errors": [],
+            "return_code": 0
+          }
+        },
+        {
+          "command": [
+            "go",
+            "vet",
+            "-gcflags=all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+            "."
+          ],
+          "pid": 5330,
+          "pgid": 5330,
+          "exit_code": 0,
+          "seconds": 1.784,
+          "timed_out": false,
+          "log_limit_exceeded": false,
+          "log_joined": true,
+          "capture_errors": [],
+          "log_errors": [],
+          "cleanup": {
+            "pid": 5330,
+            "pgid": 5330,
+            "leftover_after_exit": false,
+            "signals": [],
+            "group_empty": true,
+            "errors": [],
+            "return_code": 0
+          }
+        },
+        {
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/desktop/scripts/build-remote-macos.sh",
+            "/Users/taytrrip/slug/artifacts/set74/remote-native-package-attempt1/package"
+          ],
+          "pid": 5355,
+          "pgid": 5355,
+          "exit_code": 0,
+          "seconds": 17.575,
+          "timed_out": false,
+          "log_limit_exceeded": false,
+          "log_joined": true,
+          "capture_errors": [],
+          "log_errors": [],
+          "cleanup": {
+            "pid": 5355,
+            "pgid": 5355,
+            "leftover_after_exit": false,
+            "signals": [],
+            "group_empty": true,
+            "errors": [],
+            "return_code": 0
+          }
+        }
+      ]
+    },
+    "remote-native-nocgo-leaf-attempt1": {
+      "report_sha256": "19d2d50615e58158d0a88d69883597f9121f0301b1c290c8253f6b2b47698e62",
+      "passed": true,
+      "selected_source_count": 54,
+      "source_unchanged": true,
+      "commands": [
+        {
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "test",
+            "-json",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=105s",
+            "-tags=",
+            "-run=^TestNativeRemoteUnsupportedProtectedInput$",
+            "remote_pool.go",
+            "remote_file_unsupported.go",
+            "remote_pool_unsupported_test.go"
+          ],
+          "pid": 5858,
+          "pgid": 5858,
+          "exit_code": 0,
+          "seconds": 4.127,
+          "timed_out": false,
+          "log_limit_exceeded": false,
+          "log_joined": true,
+          "capture_errors": [],
+          "log_errors": [],
+          "cleanup": {
+            "pid": 5858,
+            "pgid": 5858,
+            "leftover_after_exit": false,
+            "signals": [],
+            "group_empty": true,
+            "errors": [],
+            "return_code": 0
+          }
+        }
+      ]
+    },
+    "real_helper": {
+      "report_sha256": "6a17da60d62203a549ddc43ad00c434ac203a01a0c018622f1f96a7956b5b1f2",
+      "actual_report_sha256": "94d3bc0e09fe34f6f0c9af65f7fdc26d3a592a1ba13b1670f001d47e02fc900d",
+      "source_count": 3041,
+      "source_unchanged": true,
+      "immutable_history_paths": 226,
+      "original_unchanged": true,
+      "commands": [
+        {
+          "capture_errors": [],
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 4197,
+            "pid": 4197,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "go",
+            "list",
+            "-deps",
+            "-json",
+            "."
+          ],
+          "exit_code": 0,
+          "log_errors": [],
+          "log_joined": true,
+          "log_limit_exceeded": false,
+          "pgid": 4197,
+          "pid": 4197,
+          "seconds": 0.786,
+          "timed_out": false
+        },
+        {
+          "capture_errors": [],
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 4208,
+            "pid": 4208,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "go",
+            "list",
+            "-deps",
+            "-json",
+            "."
+          ],
+          "exit_code": 0,
+          "log_errors": [],
+          "log_joined": true,
+          "log_limit_exceeded": false,
+          "pgid": 4208,
+          "pid": 4208,
+          "seconds": 0.54,
+          "timed_out": false
+        },
+        {
+          "capture_errors": [],
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 4225,
+            "pid": 4225,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "go",
+            "list",
+            "-deps",
+            "-json",
+            "."
+          ],
+          "exit_code": 0,
+          "log_errors": [],
+          "log_joined": true,
+          "log_limit_exceeded": false,
+          "pgid": 4225,
+          "pid": 4225,
+          "seconds": 0.241,
+          "timed_out": false
+        },
+        {
+          "capture_errors": [],
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 4233,
+            "pid": 4233,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "build",
+            "-p=1",
+            "-mod=readonly",
+            "-trimpath",
+            "-tags=",
+            "-o",
+            "/Users/taytrrip/slug/artifacts/set74/remote-native-helper-actual-attempt1/bin/slugd",
+            "."
+          ],
+          "exit_code": 0,
+          "log_errors": [],
+          "log_joined": true,
+          "log_limit_exceeded": false,
+          "pgid": 4233,
+          "pid": 4233,
+          "seconds": 2.453,
+          "timed_out": false
+        },
+        {
+          "capture_errors": [],
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 4265,
+            "pid": 4265,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "build",
+            "-p=1",
+            "-mod=readonly",
+            "-trimpath",
+            "-tags=",
+            "-o",
+            "/Users/taytrrip/slug/artifacts/set74/remote-native-helper-actual-attempt1/bin/slugpilot",
+            "."
+          ],
+          "exit_code": 0,
+          "log_errors": [],
+          "log_joined": true,
+          "log_limit_exceeded": false,
+          "pgid": 4265,
+          "pid": 4265,
+          "seconds": 10.954,
+          "timed_out": false
+        },
+        {
+          "capture_errors": [],
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 4363,
+            "pid": 4363,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "build",
+            "-p=1",
+            "-mod=readonly",
+            "-trimpath",
+            "-tags=",
+            "-o",
+            "/Users/taytrrip/slug/artifacts/set74/remote-native-helper-actual-attempt1/bin/remote-native-helper-actual",
+            "."
+          ],
+          "exit_code": 0,
+          "log_errors": [],
+          "log_joined": true,
+          "log_limit_exceeded": false,
+          "pgid": 4363,
+          "pid": 4363,
+          "seconds": 3.552,
+          "timed_out": false
+        },
+        {
+          "capture_errors": [],
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 4406,
+            "pid": 4406,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "/Users/taytrrip/slug/artifacts/set74/remote-native-helper-actual-attempt1/bin/remote-native-helper-actual",
+            "--node",
+            "/Users/taytrrip/slug/artifacts/set74/remote-native-helper-actual-attempt1/bin/slugd",
+            "--helper",
+            "/Users/taytrrip/slug/artifacts/set74/remote-native-helper-actual-attempt1/bin/slugpilot",
+            "--artifacts",
+            "/Users/taytrrip/slug/artifacts/set74/remote-native-helper-actual-attempt1/owned",
+            "--setup-reference",
+            "/Users/taytrrip/slug/set74-prep/operator-runtime/reference/setup-v1.json",
+            "--fixture-public",
+            "/Users/taytrrip/slug/set74-prep/remote-native-protocol/actual-acceptance/probe/fixture-public.json"
+          ],
+          "exit_code": 0,
+          "log_errors": [],
+          "log_joined": true,
+          "log_limit_exceeded": false,
+          "pgid": 4406,
+          "pid": 4406,
+          "seconds": 13.608,
+          "timed_out": false
+        }
+      ],
+      "public_actual": {
+        "accepted_fighter": true,
+        "accepted_share": true,
+        "admission_contexts_released": true,
+        "bootstrap_mining": false,
+        "clean_join": true,
+        "cleanup_errors": [],
+        "completed": true,
+        "config_id": "557111724c8a28c0a2022c05ed7e995c69a26c07d2c26ed74033a9c31f38d647",
+        "final_height": 2,
+        "five_commands": true,
+        "helper_joins": 2,
+        "helper_launches": 2,
+        "initial_height": 2,
+        "initial_tip": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+        "max_new_blocks": 1,
+        "node_cleanup": [
+          {
+            "clean": true,
+            "forced_kill": false,
+            "joined": true,
+            "log_close_error": false,
+            "stop_rpc_error": false,
+            "unexpected_exit": false,
+            "wait_error": ""
+          },
+          {
+            "clean": true,
+            "forced_kill": false,
+            "joined": true,
+            "log_close_error": false,
+            "stop_rpc_error": false,
+            "unexpected_exit": false,
+            "wait_error": ""
+          }
+        ],
+        "old_context_refused": true,
+        "one_resolved_row": true,
+        "open_login_contexts_canceled": true,
+        "operator_audit_exact": true,
+        "original_context_preserved": true,
+        "passed": true,
+        "public_seed_mining": false,
+        "real_helper_used": true,
+        "reopened_same_rows": true,
+        "rows": 1,
+        "same_rows_after_reopen": true,
+        "scope": "real remote helper and stdio bridge with existing schema14 wallet/TLS operator",
+        "signed_in_eof_close_joined": true,
+        "stopped_reopen_without_start": true,
+        "version": 1
+      }
+    }
+  },
+  "limits": {
+    "native_gui_acceptance": true,
+    "public_host_deployment": false,
+    "scheduled_payout_ui": false,
+    "operator_v2_history": false,
+    "d80_continuation": false,
+    "d74_review": false,
+    "no_cgo_native_package_supported": false,
+    "no_cgo_check_scope": "Selected native facade and unsupported-input files only; Wails and main are excluded."
+  },
+  "native_gui_attempts": {
+    "remote-native-gui-actual-attempt1": {
+      "report_sha256": "fd1356760b3a776463e1e6f957da6832e5cde0b9eccb81b619e2892f62596375",
+      "passed": false,
+      "actual_started": false,
+      "reason": "Checker expected -ldflags in embedded build settings, which the qualified trimpath binary omits. Builds passed; fixture copy and native launch did not start.",
+      "source_unchanged": true,
+      "package_unchanged": true,
+      "original_fixture_unchanged": true,
+      "commands": [
+        {
+          "capture_errors": [],
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 7459,
+            "pid": 7459,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "go",
+            "list",
+            "-deps",
+            "-json",
+            "-tags=",
+            "."
+          ],
+          "exit_code": 0,
+          "log_errors": [],
+          "log_joined": true,
+          "log_limit_exceeded": false,
+          "pgid": 7459,
+          "pid": 7459,
+          "seconds": 0.585,
+          "timed_out": false
+        },
+        {
+          "capture_errors": [],
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 7465,
+            "pid": 7465,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "go",
+            "list",
+            "-deps",
+            "-json",
+            "-tags=",
+            "."
+          ],
+          "exit_code": 0,
+          "log_errors": [],
+          "log_joined": true,
+          "log_limit_exceeded": false,
+          "pgid": 7465,
+          "pid": 7465,
+          "seconds": 0.49,
+          "timed_out": false
+        },
+        {
+          "capture_errors": [],
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 7475,
+            "pid": 7475,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "go",
+            "list",
+            "-deps",
+            "-json",
+            "-tags=production",
+            "."
+          ],
+          "exit_code": 0,
+          "log_errors": [],
+          "log_joined": true,
+          "log_limit_exceeded": false,
+          "pgid": 7475,
+          "pid": 7475,
+          "seconds": 0.383,
+          "timed_out": false
+        },
+        {
+          "capture_errors": [],
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 7485,
+            "pid": 7485,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "go",
+            "list",
+            "-deps",
+            "-json",
+            "-tags=",
+            "."
+          ],
+          "exit_code": 0,
+          "log_errors": [],
+          "log_joined": true,
+          "log_limit_exceeded": false,
+          "pgid": 7485,
+          "pid": 7485,
+          "seconds": 0.235,
+          "timed_out": false
+        },
+        {
+          "capture_errors": [],
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 7496,
+            "pid": 7496,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "build",
+            "-p=1",
+            "-mod=readonly",
+            "-trimpath",
+            "-tags=",
+            "-o",
+            "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt1/bin/slugd",
+            "."
+          ],
+          "exit_code": 0,
+          "log_errors": [],
+          "log_joined": true,
+          "log_limit_exceeded": false,
+          "pgid": 7496,
+          "pid": 7496,
+          "seconds": 1.509,
+          "timed_out": false
+        },
+        {
+          "capture_errors": [],
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 7514,
+            "pid": 7514,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "build",
+            "-p=1",
+            "-mod=readonly",
+            "-trimpath",
+            "-tags=",
+            "-o",
+            "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt1/bin/remote-native-gui-supervisor",
+            "."
+          ],
+          "exit_code": 0,
+          "log_errors": [],
+          "log_joined": true,
+          "log_limit_exceeded": false,
+          "pgid": 7514,
+          "pid": 7514,
+          "seconds": 2.772,
+          "timed_out": false
+        }
+      ]
+    },
+    "remote-native-gui-actual-attempt2": {
+      "report_sha256": "dd370c6f78206d17d14973b0e678222f0c823f7c550a7c03633b889655c9081f",
+      "passed": false,
+      "actual_started": true,
+      "reason": "Supervisor hardcoded name version 2; frozen original wallet/config use version 1. Native correctly refused descriptor mismatch before helper launch. No visible actions or mining occurred.",
+      "source_unchanged": true,
+      "package_unchanged": true,
+      "fixture_preservation": {
+        "allowed_changed_paths": [],
+        "copied": true,
+        "immutable_paths": 226,
+        "old_histories_unchanged": true,
+        "original_unchanged": true
+      },
+      "commands": [
+        {
+          "capture_errors": [],
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 7980,
+            "pid": 7980,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "go",
+            "list",
+            "-deps",
+            "-json",
+            "-tags=",
+            "."
+          ],
+          "exit_code": 0,
+          "log_errors": [],
+          "log_joined": true,
+          "log_limit_exceeded": false,
+          "pgid": 7980,
+          "pid": 7980,
+          "seconds": 0.63,
+          "timed_out": false
+        },
+        {
+          "capture_errors": [],
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 7986,
+            "pid": 7986,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "go",
+            "list",
+            "-deps",
+            "-json",
+            "-tags=",
+            "."
+          ],
+          "exit_code": 0,
+          "log_errors": [],
+          "log_joined": true,
+          "log_limit_exceeded": false,
+          "pgid": 7986,
+          "pid": 7986,
+          "seconds": 0.491,
+          "timed_out": false
+        },
+        {
+          "capture_errors": [],
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 7995,
+            "pid": 7995,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "go",
+            "list",
+            "-deps",
+            "-json",
+            "-tags=production",
+            "."
+          ],
+          "exit_code": 0,
+          "log_errors": [],
+          "log_joined": true,
+          "log_limit_exceeded": false,
+          "pgid": 7995,
+          "pid": 7995,
+          "seconds": 0.378,
+          "timed_out": false
+        },
+        {
+          "capture_errors": [],
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 8007,
+            "pid": 8007,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "go",
+            "list",
+            "-deps",
+            "-json",
+            "-tags=",
+            "."
+          ],
+          "exit_code": 0,
+          "log_errors": [],
+          "log_joined": true,
+          "log_limit_exceeded": false,
+          "pgid": 8007,
+          "pid": 8007,
+          "seconds": 0.23,
+          "timed_out": false
+        },
+        {
+          "capture_errors": [],
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 8018,
+            "pid": 8018,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "build",
+            "-p=1",
+            "-mod=readonly",
+            "-trimpath",
+            "-tags=",
+            "-o",
+            "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt2/bin/slugd",
+            "."
+          ],
+          "exit_code": 0,
+          "log_errors": [],
+          "log_joined": true,
+          "log_limit_exceeded": false,
+          "pgid": 8018,
+          "pid": 8018,
+          "seconds": 1.598,
+          "timed_out": false
+        },
+        {
+          "capture_errors": [],
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 8037,
+            "pid": 8037,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "build",
+            "-p=1",
+            "-mod=readonly",
+            "-trimpath",
+            "-tags=",
+            "-o",
+            "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt2/bin/remote-native-gui-supervisor",
+            "."
+          ],
+          "exit_code": 0,
+          "log_errors": [],
+          "log_joined": true,
+          "log_limit_exceeded": false,
+          "pgid": 8037,
+          "pid": 8037,
+          "seconds": 2.458,
+          "timed_out": false
+        },
+        {
+          "capture_errors": [],
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 8069,
+            "pid": 8069,
+            "return_code": 1,
+            "signals": []
+          },
+          "command": [
+            "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt2/bin/remote-native-gui-supervisor",
+            "--node",
+            "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt2/bin/slugd",
+            "--app",
+            "/Users/taytrrip/slug/artifacts/set74/remote-native-package-attempt1/package/SLUG Remote Pool Pilot.app/Contents/MacOS/SLUGPilot",
+            "--helper",
+            "/Users/taytrrip/slug/artifacts/set74/remote-native-package-attempt1/package/SLUG Remote Pool Pilot.app/Contents/Resources/bin/slugpilot",
+            "--artifacts",
+            "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt2/owned",
+            "--setup-reference",
+            "/Users/taytrrip/slug/set74-prep/operator-runtime/reference/setup-v1.json",
+            "--fixture-public",
+            "/Users/taytrrip/slug/set74-prep/remote-native-ui/native-acceptance/implementation/fixture-public.json"
+          ],
+          "exit_code": 1,
+          "log_errors": [],
+          "log_joined": true,
+          "log_limit_exceeded": false,
+          "pgid": 8069,
+          "pid": 8069,
+          "seconds": 5.038,
+          "timed_out": false
+        }
+      ]
+    },
+    "remote-native-gui-actual-attempt3": {
+      "report_sha256": "bda54fb72f7a57c0fa0560fe4e2732ddaf2178d94b4344baac6856a6e1bb72c7",
+      "passed": true,
+      "source_count": 3365,
+      "source_unchanged": true,
+      "package_unchanged": true,
+      "fixture_preservation": {
+        "allowed_changed_paths": [
+          "authority/db/000002.ldb",
+          "authority/db/000003.log",
+          "authority/db/000005.ldb",
+          "authority/db/000006.log",
+          "authority/db/000008.ldb",
+          "authority/db/CURRENT",
+          "authority/db/CURRENT.bak",
+          "authority/db/LOG",
+          "authority/db/MANIFEST-000004",
+          "authority/db/MANIFEST-000007",
+          "coordinator/db/000003.log",
+          "coordinator/db/000005.ldb",
+          "coordinator/db/000006.log",
+          "coordinator/db/CURRENT",
+          "coordinator/db/CURRENT.bak",
+          "coordinator/db/LOG",
+          "coordinator/db/MANIFEST-000004",
+          "coordinator/db/MANIFEST-000007",
+          "fixture-provider/instance-lock/000002.log",
+          "fixture-provider/instance-lock/000004.log",
+          "fixture-provider/instance-lock/CURRENT",
+          "fixture-provider/instance-lock/CURRENT.bak",
+          "fixture-provider/instance-lock/LOG",
+          "fixture-provider/instance-lock/MANIFEST-000003",
+          "fixture-provider/instance-lock/MANIFEST-000005",
+          "fixture-provider/state.json",
+          "hosted-vault/db/000003.log",
+          "hosted-vault/db/000005.log",
+          "hosted-vault/db/CURRENT",
+          "hosted-vault/db/CURRENT.bak",
+          "hosted-vault/db/LOG",
+          "hosted-vault/db/MANIFEST-000004",
+          "hosted-vault/db/MANIFEST-000006",
+          "instance-lock/000002.log",
+          "instance-lock/000004.log",
+          "instance-lock/CURRENT",
+          "instance-lock/CURRENT.bak",
+          "instance-lock/LOG",
+          "instance-lock/MANIFEST-000003",
+          "instance-lock/MANIFEST-000005",
+          "shared/gyms/incrementing256/owned-wallet/inventory/db/000003.log",
+          "shared/gyms/incrementing256/owned-wallet/inventory/db/000005.log",
+          "shared/gyms/incrementing256/owned-wallet/inventory/db/CURRENT",
+          "shared/gyms/incrementing256/owned-wallet/inventory/db/CURRENT.bak",
+          "shared/gyms/incrementing256/owned-wallet/inventory/db/LOG",
+          "shared/gyms/incrementing256/owned-wallet/inventory/db/MANIFEST-000004",
+          "shared/gyms/incrementing256/owned-wallet/inventory/db/MANIFEST-000006",
+          "shared/gyms/incrementing256/owned-wallet/wallet/slugwallet.db"
+        ],
+        "copied": true,
+        "immutable_paths": 226,
+        "old_histories_unchanged": true,
+        "original_unchanged": true
+      },
+      "remote_guard_proof": {
+        "command": {
+          "bytes": 547,
+          "sha256": "21b10886143c2159e579218c4a661013f96767ebac25dd769be46cecb9c676fe"
+        },
+        "helper": {
+          "bytes": 34758176,
+          "sha256": "00c6df1128c35fb000a00396cb28d93433cf3cca6d4a14a4669f15e1aa858e90"
+        },
+        "mechanism": "source_bound_successful_fixed_package_command",
+        "native": {
+          "bytes": 24813840,
+          "sha256": "8263fdbd8dd189505ae617e1b7ba23581e52e28525c2eaae638ec2152ef03407"
+        },
+        "package_report": {
+          "bytes": 21665,
+          "sha256": "a6a732ac0ddb58cc8fdca50a34629bcd3c1e6286ed5650eea190876f289a5607"
+        },
+        "script": {
+          "bytes": 5160,
+          "sha256": "0914f35a65377ec40817107cb30f51224c6ff5d8e4e0a674c5bd98c5229981ea"
+        },
+        "transcript": {
+          "bytes": 4188,
+          "sha256": "a63dc33e9b1da4c9e15cecd3d13cf7252cfd36d155d0877696134e7aa4198364"
+        },
+        "value": "1"
+      },
+      "commands": [
+        {
+          "capture_errors": [],
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 8380,
+            "pid": 8380,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "go",
+            "list",
+            "-deps",
+            "-json",
+            "-tags=",
+            "."
+          ],
+          "exit_code": 0,
+          "log_errors": [],
+          "log_joined": true,
+          "log_limit_exceeded": false,
+          "pgid": 8380,
+          "pid": 8380,
+          "seconds": 0.277,
+          "timed_out": false
+        },
+        {
+          "capture_errors": [],
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 8397,
+            "pid": 8397,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "go",
+            "list",
+            "-deps",
+            "-json",
+            "-tags=",
+            "."
+          ],
+          "exit_code": 0,
+          "log_errors": [],
+          "log_joined": true,
+          "log_limit_exceeded": false,
+          "pgid": 8397,
+          "pid": 8397,
+          "seconds": 0.333,
+          "timed_out": false
+        },
+        {
+          "capture_errors": [],
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 8405,
+            "pid": 8405,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "go",
+            "list",
+            "-deps",
+            "-json",
+            "-tags=production",
+            "."
+          ],
+          "exit_code": 0,
+          "log_errors": [],
+          "log_joined": true,
+          "log_limit_exceeded": false,
+          "pgid": 8405,
+          "pid": 8405,
+          "seconds": 0.332,
+          "timed_out": false
+        },
+        {
+          "capture_errors": [],
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 8413,
+            "pid": 8413,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "go",
+            "list",
+            "-deps",
+            "-json",
+            "-tags=",
+            "."
+          ],
+          "exit_code": 0,
+          "log_errors": [],
+          "log_joined": true,
+          "log_limit_exceeded": false,
+          "pgid": 8413,
+          "pid": 8413,
+          "seconds": 0.24,
+          "timed_out": false
+        },
+        {
+          "capture_errors": [],
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 8419,
+            "pid": 8419,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "build",
+            "-p=1",
+            "-mod=readonly",
+            "-trimpath",
+            "-tags=",
+            "-o",
+            "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt3/bin/slugd",
+            "."
+          ],
+          "exit_code": 0,
+          "log_errors": [],
+          "log_joined": true,
+          "log_limit_exceeded": false,
+          "pgid": 8419,
+          "pid": 8419,
+          "seconds": 0.634,
+          "timed_out": false
+        },
+        {
+          "capture_errors": [],
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 8434,
+            "pid": 8434,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "sh",
+            "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+            "build",
+            "-p=1",
+            "-mod=readonly",
+            "-trimpath",
+            "-tags=",
+            "-o",
+            "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt3/bin/remote-native-gui-supervisor",
+            "."
+          ],
+          "exit_code": 0,
+          "log_errors": [],
+          "log_joined": true,
+          "log_limit_exceeded": false,
+          "pgid": 8434,
+          "pid": 8434,
+          "seconds": 2.265,
+          "timed_out": false
+        },
+        {
+          "capture_errors": [],
+          "cleanup": {
+            "errors": [],
+            "group_empty": true,
+            "leftover_after_exit": false,
+            "pgid": 8467,
+            "pid": 8467,
+            "return_code": 0,
+            "signals": []
+          },
+          "command": [
+            "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt3/bin/remote-native-gui-supervisor",
+            "--node",
+            "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt3/bin/slugd",
+            "--app",
+            "/Users/taytrrip/slug/artifacts/set74/remote-native-package-attempt1/package/SLUG Remote Pool Pilot.app/Contents/MacOS/SLUGPilot",
+            "--helper",
+            "/Users/taytrrip/slug/artifacts/set74/remote-native-package-attempt1/package/SLUG Remote Pool Pilot.app/Contents/Resources/bin/slugpilot",
+            "--artifacts",
+            "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt3/owned",
+            "--setup-reference",
+            "/Users/taytrrip/slug/set74-prep/operator-runtime/reference/setup-v1.json",
+            "--fixture-public",
+            "/Users/taytrrip/slug/set74-prep/remote-native-ui/native-acceptance/implementation/fixture-public.json"
+          ],
+          "exit_code": 0,
+          "log_errors": [],
+          "log_joined": true,
+          "log_limit_exceeded": false,
+          "pgid": 8467,
+          "pid": 8467,
+          "seconds": 241.213,
+          "timed_out": false
+        }
+      ],
+      "actual": {
+        "accepted_fighter": true,
+        "accepted_share": true,
+        "bootstrap_mining": false,
+        "clean_join": true,
+        "cleanup_errors": [],
+        "completed": true,
+        "config_id": "d82ec8ebd9e8c2dd80d5ef1098138174d1a51df8ef2e6a2f120591ae15a1513f",
+        "final_height": 2,
+        "five_visible_actions": true,
+        "initial_height": 2,
+        "initial_tip": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+        "max_new_blocks": 1,
+        "native_process": {
+          "app_pid": 8491,
+          "clean": true,
+          "closed": true,
+          "helper_pid": 8492,
+          "joined": true,
+          "pgid": 8467,
+          "signals": [],
+          "version": 1,
+          "visible_events": 7
+        },
+        "native_quit_joined": true,
+        "node_cleanup": [
+          {
+            "clean": true,
+            "forced_kill": false,
+            "joined": true,
+            "log_close_error": false,
+            "stop_rpc_error": false,
+            "unexpected_exit": false,
+            "wait_error": ""
+          },
+          {
+            "clean": true,
+            "forced_kill": false,
+            "joined": true,
+            "log_close_error": false,
+            "stop_rpc_error": false,
+            "unexpected_exit": false,
+            "wait_error": ""
+          }
+        ],
+        "one_resolved_row": true,
+        "operator_audit_exact": true,
+        "passed": true,
+        "public_seed_mining": false,
+        "rows": 1,
+        "scope": "visible native remote fixture route with closed public audit",
+        "version": 1,
+        "visible_actions": [
+          {
+            "version": 1,
+            "phase": "bootstrap",
+            "app_pid": 8491,
+            "config_id": "d82ec8ebd9e8c2dd80d5ef1098138174d1a51df8ef2e6a2f120591ae15a1513f",
+            "surface_id": "local.slug.gym.remotepoolpilot:8491",
+            "evidence_id": "cua-remote-bootstrap-1795217013175",
+            "observed_at_ms": 1795217013175,
+            "original_process_confirmed": true,
+            "action": "none",
+            "state": "signed_out",
+            "attempts": 0,
+            "rate_milli": 0,
+            "pending": 0,
+            "gym_public_key": "",
+            "payout_address": "",
+            "capacity_visible": false
+          },
+          {
+            "version": 1,
+            "phase": "login",
+            "app_pid": 8491,
+            "config_id": "d82ec8ebd9e8c2dd80d5ef1098138174d1a51df8ef2e6a2f120591ae15a1513f",
+            "surface_id": "local.slug.gym.remotepoolpilot:8491",
+            "evidence_id": "cua-remote-login-complete-1795217041580",
+            "observed_at_ms": 1795217041580,
+            "original_process_confirmed": true,
+            "action": "login_fixture",
+            "state": "stopped",
+            "attempts": 0,
+            "rate_milli": 0,
+            "pending": 0,
+            "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+            "payout_address": "slug1qslk39wvggqa0vl8nd6jckaz54dw3vk45c8educ",
+            "capacity_visible": false
+          },
+          {
+            "version": 1,
+            "phase": "start",
+            "app_pid": 8491,
+            "config_id": "d82ec8ebd9e8c2dd80d5ef1098138174d1a51df8ef2e6a2f120591ae15a1513f",
+            "surface_id": "local.slug.gym.remotepoolpilot:8491",
+            "evidence_id": "cua-remote-start-click-1795217067881",
+            "observed_at_ms": 1795217067881,
+            "original_process_confirmed": true,
+            "action": "start",
+            "state": "running",
+            "attempts": 0,
+            "rate_milli": 0,
+            "pending": 0,
+            "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+            "payout_address": "slug1qslk39wvggqa0vl8nd6jckaz54dw3vk45c8educ",
+            "capacity_visible": false
+          },
+          {
+            "version": 1,
+            "phase": "capacity",
+            "app_pid": 8491,
+            "config_id": "d82ec8ebd9e8c2dd80d5ef1098138174d1a51df8ef2e6a2f120591ae15a1513f",
+            "surface_id": "local.slug.gym.remotepoolpilot:8491",
+            "evidence_id": "cua-remote-completion-cue-1795217081064",
+            "observed_at_ms": 1795217081064,
+            "original_process_confirmed": true,
+            "action": "none",
+            "state": "running",
+            "attempts": 1,
+            "rate_milli": 1170,
+            "pending": 0,
+            "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+            "payout_address": "slug1qslk39wvggqa0vl8nd6jckaz54dw3vk45c8educ",
+            "capacity_visible": true
+          },
+          {
+            "version": 1,
+            "phase": "stop",
+            "app_pid": 8491,
+            "config_id": "d82ec8ebd9e8c2dd80d5ef1098138174d1a51df8ef2e6a2f120591ae15a1513f",
+            "surface_id": "local.slug.gym.remotepoolpilot:8491",
+            "evidence_id": "cua-remote-stop-complete-1795217111521",
+            "observed_at_ms": 1795217111521,
+            "original_process_confirmed": true,
+            "action": "menu_stop",
+            "state": "stopped",
+            "attempts": 1,
+            "rate_milli": 0,
+            "pending": 0,
+            "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+            "payout_address": "slug1qslk39wvggqa0vl8nd6jckaz54dw3vk45c8educ",
+            "capacity_visible": false
+          },
+          {
+            "version": 1,
+            "phase": "logout",
+            "app_pid": 8491,
+            "config_id": "d82ec8ebd9e8c2dd80d5ef1098138174d1a51df8ef2e6a2f120591ae15a1513f",
+            "surface_id": "local.slug.gym.remotepoolpilot:8491",
+            "evidence_id": "cua-remote-signout-1795217133979",
+            "observed_at_ms": 1795217133979,
+            "original_process_confirmed": true,
+            "action": "logout",
+            "state": "signed_out",
+            "attempts": 0,
+            "rate_milli": 0,
+            "pending": 0,
+            "gym_public_key": "",
+            "payout_address": "",
+            "capacity_visible": false
+          },
+          {
+            "version": 1,
+            "phase": "quit",
+            "app_pid": 8491,
+            "config_id": "d82ec8ebd9e8c2dd80d5ef1098138174d1a51df8ef2e6a2f120591ae15a1513f",
+            "surface_id": "local.slug.gym.remotepoolpilot:8491",
+            "evidence_id": "cua-native-quit-tool-observed-App-quit",
+            "observed_at_ms": 1795217167006,
+            "original_process_confirmed": true,
+            "action": "menu_quit",
+            "state": "signed_out",
+            "attempts": 0,
+            "rate_milli": 0,
+            "pending": 0,
+            "gym_public_key": "",
+            "payout_address": "",
+            "capacity_visible": false
+          }
+        ],
+        "visible_native_used": true
+      },
+      "public_evidence": {
+        "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt3/owned/01-runtime-and-selection.json": {
+          "bytes": 13927,
+          "sha256": "d9a64b410c7be1aa4190e32c8215c0411031e6ac1aa18bb456622420b918fea4"
+        },
+        "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt3/owned/04-closed-rows.json": {
+          "bytes": 12939,
+          "sha256": "96b5cbe165843bb4d7999b997092b2d1a0f5399652fe3ba8791bf4a7fd08f9a2"
+        },
+        "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt3/owned/actual-report.json": {
+          "bytes": 5832,
+          "sha256": "68639f814b352267b79d0e9f2e474059d114ef5a7631e432a81fae342653b8e9"
+        },
+        "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt3/owned/native-process.json": {
+          "bytes": 1406,
+          "sha256": "a386e3457b5586e8440e8753155f007c25a83394fedcde4df53e891a77947b63"
+        },
+        "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt3/owned/native-ready.json": {
+          "bytes": 2147,
+          "sha256": "ca34fd248aa3ed46f13f18e9b4e075e4580c48c75a91b9cd0cd7f92be8519058"
+        },
+        "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt3/owned/native-start-armed.json": {
+          "bytes": 358,
+          "sha256": "a5948c6666e0cb70cc49d270b229d9bed8d6337ef1638031ca1ed87f38f68f32"
+        },
+        "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt3/owned/selected-public-setup.json": {
+          "bytes": 6177,
+          "sha256": "c2d2ec2d238614aeeb586c8e1d8f91bb49c94cac85f425d44ac36a61f1b55607"
+        },
+        "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt3/owned/ui-accepted-01.json": {
+          "bytes": 164,
+          "sha256": "0815e0c1ebd23597b78bbc293ca4918d079628b1cf1f45e68bd6cf1feac75af5"
+        },
+        "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt3/owned/ui-accepted-02.json": {
+          "bytes": 160,
+          "sha256": "09061fd967cddce90092fe392a6f27220e5cd20b8142afafb014e779c8412809"
+        },
+        "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt3/owned/ui-accepted-03.json": {
+          "bytes": 160,
+          "sha256": "159ba22641c1b6e0ea0764aab95c7f30940566e7328900012f75977ec1889149"
+        },
+        "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt3/owned/ui-accepted-04.json": {
+          "bytes": 163,
+          "sha256": "22c81ca524982844a660088542097e8cbeb070d3b8a9e9913691a5ceda2c4a48"
+        },
+        "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt3/owned/ui-accepted-05.json": {
+          "bytes": 159,
+          "sha256": "dc863801a3f2929387f90e62204d0ed91e8457b734ccba12a1905e6b3eb92981"
+        },
+        "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt3/owned/ui-accepted-06.json": {
+          "bytes": 161,
+          "sha256": "41de643a4599391609dd28e5588b90e574d65e44e1baad43cf48ad6a7f699e57"
+        },
+        "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt3/owned/ui-accepted-07.json": {
+          "bytes": 159,
+          "sha256": "397023d17d52654142ffc0f2dad788983e253227b3c82d1db1f6e78f6a312c7d"
+        },
+        "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt3/owned/ui/01-bootstrap.json": {
+          "bytes": 502,
+          "sha256": "baab6e7839e1450d15719ffea522d8b7763b8603b58e562ae22fc5a1134bb685"
+        },
+        "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt3/owned/ui/02-login.json": {
+          "bytes": 619,
+          "sha256": "a12c0a81d0e9fabde9b952126ac7912932d6e0e1d69bce30f92eb30aac5e4b7e"
+        },
+        "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt3/owned/ui/03-start.json": {
+          "bytes": 608,
+          "sha256": "d6e9c4cc01eebcd17803b7763fdcdee2b27a5510e512363e7414c177a703c2be"
+        },
+        "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt3/owned/ui/04-capacity.json": {
+          "bytes": 615,
+          "sha256": "1d49b2246793f23a50f3c98b16a78a547fbf385b04d1c207247f75752b8b6ee9"
+        },
+        "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt3/owned/ui/05-stop.json": {
+          "bytes": 613,
+          "sha256": "96e97ba78e2e5d3b4d4b3949e5d6cb554d4e6888866bbe229dd6a7e0c09f9f26"
+        },
+        "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt3/owned/ui/06-logout.json": {
+          "bytes": 499,
+          "sha256": "78e9acc23589aebe7fdf9826d39233549da67b7fe025ceaf6312c242e3c9b2f0"
+        },
+        "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt3/owned/ui/07-quit.json": {
+          "bytes": 506,
+          "sha256": "9510b13826320d0eda88baab000530b3815c9fc3262ca0728c9bbe0b8e59e7a5"
+        },
+        "/Users/taytrrip/slug/artifacts/set74/remote-native-gui-actual-attempt3/owned/ui/start-arm.json": {
+          "bytes": 212,
+          "sha256": "9c08a6fcb4f4c8bc9f8151035741f11d2d2dda1eeaaa4ca4872e78177f04594f"
+        }
+      },
+      "observation_note": "Actions and state were observed through the original native app accessibility surface. Quit returned App quit; its evidence timestamp records the immediate post-observation capture. Displayed mining rate is rounded to two decimals. Closed receipt and process audits are separate from these observations."
+    }
+  }
+}

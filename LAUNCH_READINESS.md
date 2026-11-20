@@ -508,7 +508,13 @@ of the ownership, transfer or independent restored-wallet flow. See
   schema14 wallet passed actual TLS mining, accepted share/fighter audit and
   stopped reopen. Native Linux normal/race authority, wallet and operator checks,
   PoW guard, binaries and ACL controls passed at `c41cc337` / wallet `6a69ecfc`.
-  The concrete operator handoff, remote native/history attachment, continuous
+  The remote native route now passes visible fixture login, explicit Start,
+  native-menu Stop, sign out and Quit, followed by exact accepted share/fighter
+  audit and clean process joins. The original history stayed unchanged; its
+  chain remained at height 2. See `docs/evidence/set74/remote-native.json`.
+  GitHub's six build/test jobs and Linux operator check also passed at
+  `47e1ce84`; see `docs/evidence/set74/ci-repair-remote.json`.
+  The concrete operator handoff, remote history/payout presentation, continuous
   capacity and remote-host qualification remain before that milestone.
   A previously issued job can yield an unseen canonical pool-paying winner after
   intake drains. Its client outbox remains pending, but no operator row/credit

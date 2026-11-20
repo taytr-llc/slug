@@ -1,5 +1,5 @@
-// slugpilot owns only a disposable loopback mining environment and public
-// fixture signer. Its stdout is exclusively the bounded JSON-lines protocol.
+// slugpilot owns explicit local fixture modes or an existing-wallet remote
+// pool attachment; remote mode never starts a node. Its stdout is exclusively the bounded JSON-lines protocol.
 package main
 
 import (
@@ -19,8 +19,18 @@ import (
 func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.Writer) error {
 	flags := flag.NewFlagSet("slugpilot", flag.ContinueOnError)
 	flags.SetOutput(stderr)
+	remoteArgs := remoteLaunchRequested(args)
+	if remoteArgs {
+		flags.SetOutput(io.Discard)
+	}
 	data := flags.String("data-dir", "", "Explicit disposable pilot directory")
 	node := flags.String("node-binary", "", "Explicit bundled normal SLUG node binary")
+	remote := flags.Bool("candidate-remote-pool", false, "Attach the original wallet to an explicit remote pool")
+	attachment := flags.String("remote-attachment-root", "", "Explicit remote attachment directory")
+	remoteConfig := flags.String("remote-config", "", "Protected public remote configuration file")
+	remoteRPC := flags.String("remote-node-rpc", "", "Protected existing loopback RPC configuration file")
+	poolCredential := flags.String("remote-pool-credential", "", "Protected pool credential file")
+	admissionCredential := flags.String("remote-admission-credential", "", "Protected admission credential file")
 	owned := flags.Bool("candidate-owned-gym", false, "Use the separate owned-fighter gym")
 	pool := flags.Bool("candidate-pool", false, "Use the separate shared public-fixture pool desktop")
 	hosted := flags.Bool("candidate-hosted-pool", false, "Use the separate signed public-fixture hosted pool desktop")
@@ -37,10 +47,10 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 	candidateResults := flags.Bool("candidate-results", false, "Enable saved candidate result publication within candidate-bouts")
 	career := flags.Bool("career", false, "Enable finality-timed candidate career accounting within candidate-results")
 	if e := flags.Parse(args); e != nil {
+		if remoteArgs {
+			return errRemoteLaunchInvalid
+		}
 		return e
-	}
-	if flags.NArg() != 0 || *data == "" || *node == "" {
-		return errors.New("explicit data-dir and node-binary are required")
 	}
 	dataExplicit, poolExplicit, nameExplicit, legacyExplicit, hostedExplicit, recoveryExplicit, ownedExplicit := false, false, false, false, false, false, false
 	flags.Visit(func(f *flag.Flag) {
@@ -62,6 +72,27 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 			legacyExplicit = true
 		}
 	})
+	if remoteArgs {
+		if !*remote || legacyExplicit || hostedExplicit || recoveryExplicit || ownedExplicit || flags.NArg() != 0 || validateRemoteLaunchArgs(args) != nil {
+			return errRemoteLaunchInvalid
+		}
+		options, e := poolselection.HostedOptions(*nameVersion, nameExplicit, *data, dataExplicit)
+		if e != nil {
+			return errRemoteLaunchInvalid
+		}
+		input, ok := stdin.(io.ReadCloser)
+		if !ok {
+			return errRemoteLaunchInvalid
+		}
+		output, ok := stdout.(io.WriteCloser)
+		if !ok {
+			return errRemoteLaunchInvalid
+		}
+		return runRemoteLaunch(ctx, input, output, remoteLaunchPaths{*data, *attachment, *remoteConfig, *remoteRPC, *poolCredential, *admissionCredential}, options)
+	}
+	if flags.NArg() != 0 || *data == "" || *node == "" {
+		return errors.New("explicit data-dir and node-binary are required")
+	}
 	if ownedExplicit {
 		if !*owned || legacyExplicit || hostedExplicit || recoveryExplicit {
 			return errors.New("candidate-owned-gym requires a separate explicit true selection")

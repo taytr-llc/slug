@@ -1,0 +1,151 @@
+{
+  "version": 1,
+  "scope": "completed GitHub CI repair verification",
+  "chain_commit": "47e1ce84a9e0ade6cc44368640f20732e1f328c5",
+  "runs": [
+    {
+      "id": 44829516379,
+      "name": "Build and Test",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44829516379",
+      "head_sha": "47e1ce84a9e0ade6cc44368640f20732e1f328c5",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-20T22:30:32Z",
+      "updated_at": "2026-11-20T22:49:05Z",
+      "jobs": [
+        {
+          "id": 136610605447,
+          "name": "In-tree modules",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-20T22:30:35Z",
+          "completed_at": "2026-11-20T22:35:57Z"
+        },
+        {
+          "id": 136610605734,
+          "name": "Minimum Go version (compatibility)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-20T22:30:35Z",
+          "completed_at": "2026-11-20T22:35:15Z"
+        },
+        {
+          "id": 136610605759,
+          "name": "Unit coverage",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-20T22:30:35Z",
+          "completed_at": "2026-11-20T22:36:30Z"
+        },
+        {
+          "id": 136610605788,
+          "name": "Build",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-20T22:30:35Z",
+          "completed_at": "2026-11-20T22:31:32Z"
+        },
+        {
+          "id": 136610606047,
+          "name": "Unit rpctest",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-20T22:30:35Z",
+          "completed_at": "2026-11-20T22:34:20Z"
+        },
+        {
+          "id": 136610606148,
+          "name": "Unit race",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-20T22:30:35Z",
+          "completed_at": "2026-11-20T22:49:04Z"
+        }
+      ],
+      "informational_step_failures": []
+    },
+    {
+      "id": 44829516303,
+      "name": "Operator Linux qualification",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44829516303",
+      "head_sha": "47e1ce84a9e0ade6cc44368640f20732e1f328c5",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-20T22:30:32Z",
+      "updated_at": "2026-11-20T22:36:03Z",
+      "jobs": [
+        {
+          "id": 136610606639,
+          "name": "operator-linux",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-20T22:30:35Z",
+          "completed_at": "2026-11-20T22:36:02Z"
+        }
+      ],
+      "informational_step_failures": []
+    }
+  ],
+  "coverage_profiles": {
+    "address/coverage.txt": {
+      "bytes": 170243,
+      "sha256": "474ec579b01d92f605286bab211eb823c2cbedf519ec570deb94b8ecd50084da"
+    },
+    "btcec/coverage.txt": {
+      "bytes": 270673,
+      "sha256": "e8bda145a2ca486946b0e8af941cd9f154935d42d680621f5bd9e0577991e171"
+    },
+    "btcutil/coverage.txt": {
+      "bytes": 1506174,
+      "sha256": "3887583ed693b48da10cadc2118cee9c73a33028557cb33f86052ad15286dbd6"
+    },
+    "chaincfg/coverage.txt": {
+      "bytes": 111330,
+      "sha256": "f4815836290c70eff0a9fdcb9d0b86310d2f793aa688d186ff29d7b4c4a495c7"
+    },
+    "chainhash/coverage.txt": {
+      "bytes": 3908,
+      "sha256": "737bd271ce2afed47b82e1ccc589e4dbdfe831c43cf26fd360284bc0ff9e3b17"
+    },
+    "coverage-chain-testpow.txt": {
+      "bytes": 234962,
+      "sha256": "87f2e58240fa28cca1d0f5f5f2eefda7a42378779efe02d8a01b9366188d75b6"
+    },
+    "coverage-integration-testpow.txt": {
+      "bytes": 35514,
+      "sha256": "5ac485d2b1e2c8ccf207450ad4e19f1ee7fed5dc94150fd39ff150f65641b3d8"
+    },
+    "coverage.txt": {
+      "bytes": 227740558,
+      "sha256": "4721f884d88c1a96f9a10b5c51225dd31c463bfd905ad435135a69e0da02c0b1"
+    },
+    "psbt/coverage.txt": {
+      "bytes": 357259,
+      "sha256": "c9ca4510c8a373911036499c874eff3a6f9bd47787677f3bce6a8fb078eb97d5"
+    },
+    "txscript/coverage.txt": {
+      "bytes": 277008,
+      "sha256": "5955ec8fb751abb34856bebe05bc4161fa0865069ff22264c7af75d35bd079fa"
+    },
+    "v2transport/coverage.txt": {
+      "bytes": 33280,
+      "sha256": "3be2a3f682685708ef2166adaad149aef3440b50408feffe2f509bd370bc4aa1"
+    },
+    "wire/coverage.txt": {
+      "bytes": 103969,
+      "sha256": "1e86a511340b7126a577f022574eb55cb3a895e9a55e846e5064a5b95c6e1876"
+    }
+  },
+  "operator_artifact": {
+    "report_sha256": "23f6a35c9b381b9ced7be5f5a6294673ce7c82a5fbc2911f7d5fc71aaf8ee8e3",
+    "passed": true,
+    "source_unchanged": true,
+    "clean_join": true,
+    "temporary_material_removed": true,
+    "seconds": 306.016,
+    "deployed_host_qualified": false,
+    "provisioning_qualified": false
+  },
+  "historical_failures_preserved": true,
+  "live_seed_deployment": false
+}
