@@ -12,7 +12,8 @@ import (
 // historical jobs/proofs or completed rounds. All V1 duplicate guards, bounds,
 // prefix bytes and per-round arithmetic remain in force. The caller holds the
 // original store gate, so rows and observations cannot change during the audit.
-func (s *Store) verifyStream(ctx context.Context) error {
+func (s *Store) verifyStream(ctx context.Context) (err error) {
+	defer func() { s.revokeLiveOnErrorLocked(err) }()
 	if !s.validMetadata(s.meta) {
 		return ErrCorrupt
 	}
@@ -115,6 +116,9 @@ func (s *Store) verifyStreamRound(expected Round) (uint64, error) {
 	if err != nil || decode(raw, maxRecordSize, &record) != nil || !sameRound(record.Round, expected) || !validRecord(record) {
 		return 0, ErrCorrupt
 	}
+	if err := s.checkLiveRecordBytesLocked(expected.BlockHash, expected.Sequence, raw); err != nil {
+		return 0, err
+	}
 	budget, err := roundBudget(expected)
 	if err != nil || uint64(len(raw)) > budget {
 		return 0, ErrCorrupt
@@ -166,7 +170,8 @@ func (s *Store) verifyStreamKeys(ctx context.Context) error {
 // walkRecords reads only already-verified, gate-protected rows. Each page owns
 // its nested data and is discarded here after the callback. No database handle
 // or snapshot escapes the operation or needs an independent Close lifecycle.
-func (s *Store) walkRecords(ctx context.Context, visit func([]Record) error) error {
+func (s *Store) walkRecords(ctx context.Context, visit func([]Record) error) (err error) {
+	defer func() { s.revokeLiveOnErrorLocked(err) }()
 	if visit == nil {
 		return ctx.Err()
 	}

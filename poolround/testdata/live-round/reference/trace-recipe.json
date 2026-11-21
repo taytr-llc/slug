@@ -1,0 +1,55 @@
+{
+  "version": 2,
+  "scope": "Conditional full-Sync and targeted List/Refresh trace; no PoW or source authority",
+  "rescinds": "version1 page-step trace",
+  "old_oracle": {
+    "path": "inputs/rounds_v1.json",
+    "sha256": "83697deac6c14bafc7051f603d232328fbda52dc46466a9db51cc7ce010ec17c",
+    "require_all_original_cases_exact": true
+  },
+  "long_input": {
+    "repeat_original_events": 3,
+    "renumber": "Global accepted sequence1..21; share_key is sequence as64 lowercase hex; work_hash is100+sequence as64 lowercase hex",
+    "append_ordinary_gyms": ["A", "B"],
+    "appended_sequences": [22, 23],
+    "appended_reward_atoms": 0,
+    "derive": "Unchanged original Fraction arithmetic; global round sequence; no reset between repetitions"
+  },
+  "transcript": [
+    {"op": "original_full_sync", "source_through": 7, "expect_committed_through": 7},
+    {"op": "begin_live", "expect_full_audit": true},
+    {"op": "source_append", "source_through": 23, "expect_committed_through": 7},
+    {"op": "original_full_sync_error", "at": 23, "cause": "context-canceled", "expect_committed_through": 7},
+    {"op": "original_full_sync_error", "at": 23, "cause": "last-row-corrupt", "expect_committed_through": 7},
+    {"op": "restore_exact_fixture_and_reanchor", "expect_full_audit": true},
+    {"op": "original_full_sync", "source_through": 23, "expect_committed_through": 23},
+    {"op": "live_list", "after": 0, "expected_round_sequences": [1, 2, 3, 4, 5, 6, 7, 8]},
+    {"op": "live_list", "after": 8, "expected_round_sequences": [9]},
+    {"op": "live_list", "after": 9, "expected_round_sequences": []},
+    {"op": "live_refresh", "round": 1, "canonical": true, "descendants": 59, "expect_confirmation": false},
+    {"op": "live_refresh", "round": 1, "canonical": true, "descendants": 60, "expect_confirmation": true},
+    {"op": "live_refresh", "round": 1, "canonical": false, "descendants": 0, "expect_confirmation": true},
+    {"op": "full_walk", "expect_original_allocations_and_locked_confirmation": true},
+    {"op": "close_reopen_full_audit", "expect_old_handle": "invalid", "expect_committed_through": 23}
+  ],
+  "literal_count_checks": [
+    {"through": 7, "rounds": 3, "pending": 0},
+    {"through": 23, "rounds": 9, "pending": 2}
+  ],
+  "warm_read_bounds": {
+    "list_index_record_pairs": 8,
+    "list_source_gate_calls": 1,
+    "list_source_entries_nonzero_prefix": 0,
+    "list_source_entries_zero_prefix": 1,
+    "refresh_index_record_pairs": 1,
+    "refresh_targeted_source_entries": 2,
+    "refresh_node_observations": 1,
+    "namespace_iterators": 0
+  },
+  "invariants": [
+    "No partial captured Sync tail committed",
+    "Unrelated namespace corruption still rejected by full APIs and financial audit",
+    "No cached canonicality, spendability or pending-payment authority",
+    "Original owner/config/source identity unchanged"
+  ]
+}

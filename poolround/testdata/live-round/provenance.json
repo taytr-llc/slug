@@ -1,0 +1,71 @@
+{
+  "scope": "Verbatim independent conditional arithmetic/trace reference, not PoW or store authority. Both interpreter results are bound by qualification.json. All original inputs and producer copied unchanged.",
+  "files": [
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set77/live-round-reference-attempt1/python314.json",
+      "stage": "reference.json",
+      "bytes": 52592,
+      "sha256": "e26f0045170f1a25b91663e45d69309a420f310884cdd091fbf92710c37985fc"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set77/live-round-reference-attempt1/report.json",
+      "stage": "qualification.json",
+      "bytes": 686,
+      "sha256": "e89a3c075f9bb0b90a28ce014802c2e85ae38bc66048241aae62aa8bd69bfd1d"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set77/live-round-reference-attempt1/approved-lock.json",
+      "stage": "approved-lock.json",
+      "bytes": 1185,
+      "sha256": "1452e8e9c35b1eedd4f46122a1dd844d75a0ab489940cd4504db8b6dcbf7e3f2"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set77-prep/live-round/CONTRACT.md",
+      "stage": "CONTRACT.md",
+      "bytes": 8552,
+      "sha256": "ece2031c5d0619a2d573c0c39e646faa475a4a43af531e7f10cb5626baa3feb3"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set77-prep/live-round/reference/PLAN.md",
+      "stage": "reference/PLAN.md",
+      "bytes": 3894,
+      "sha256": "982cb93c98816095ed45f43291572b2425f135b7612e448d8dfebed51cacbb37"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set77-prep/live-round/reference/PRODUCER.md",
+      "stage": "reference/PRODUCER.md",
+      "bytes": 2461,
+      "sha256": "aba692473d319e8209eaa3b9ba2fc2c220eb36f8241f333e91708b508a587dcf"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set77-prep/live-round/reference/inputs/reference.py",
+      "stage": "reference/inputs/reference.py",
+      "bytes": 2215,
+      "sha256": "6955f98db2ba6265618790ea8394db877726b6953ef66883dec3b5b6cbd422d3"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set77-prep/live-round/reference/inputs/rounds_v1.json",
+      "stage": "reference/inputs/rounds_v1.json",
+      "bytes": 8703,
+      "sha256": "83697deac6c14bafc7051f603d232328fbda52dc46466a9db51cc7ce010ec17c"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set77-prep/live-round/reference/produce.py",
+      "stage": "reference/produce.py",
+      "bytes": 12543,
+      "sha256": "97213773f7c86c0513597ddf8b305e8965a788a40f4602510e9e1aefc1a08aa9"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set77-prep/live-round/reference/producer-lock.proposed.json",
+      "stage": "reference/producer-lock.proposed.json",
+      "bytes": 2063,
+      "sha256": "8be52e3085b6f6d6bcfa5b79196334e41e63d51d946709d0747f3a2479db71da"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set77-prep/live-round/reference/trace-recipe.json",
+      "stage": "reference/trace-recipe.json",
+      "bytes": 2858,
+      "sha256": "81227908ba5cc4ccd01ece430f63c5bcf7016a652208058862da54ea92a624db"
+    }
+  ]
+}

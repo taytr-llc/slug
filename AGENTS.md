@@ -433,7 +433,8 @@ authorization must be repository-limited, not an account-wide OAuth expansion.
   retains the wire hash cache and is not fresh-process replay evidence.
   Fresh-process attempt4 passes with a 142.534-second cold source audit, exact
   A/B recovery and no additional broadcast; all owners and nodes join cleanly.
-  Exact-tip CI is tracked separately. The isolated proof does not model
+  Exact-tip GitHub CI passes all seven jobs on chain2ca9fc16/walletdfc5d9dd.
+  See docs/evidence/set76/ci.json. The isolated proof does not model
   continuous mining by 64 miners, ordinary share traffic
   or job refresh/expiry. Do not treat it as public readiness. Explicit V2 public
   transport/operator/native integration, signed-authority capacity, original
@@ -441,6 +442,18 @@ authorization must be repository-limited, not an account-wide OAuth expansion.
   scheduled operation remain gates. Never silently enlarge a signed profile or
   repin an old wallet. See `CHANGESET_76_NOTES.md` and
   `POOL_CAPACITY_CONTINUATION.md`; sign-in follows public pool work and D74 is last.
+- Set77 on `slug-pool-live-rounds` adds explicitly selected live round List and
+  Refresh on the original fully audited Store. Full Sync stays atomic over its
+  complete captured tail; full financial audits and D84 remain unchanged. The
+  live directory checks exact touched bytes and caches no chain observation.
+  Unknown/uncertain writes and failed full audits revoke it; Close joins work.
+  Original pre-Run runtime selection preserves defaults and permits only one
+  exact-stale reanchor within the existing deadline. All 17 builds, full
+  accounting/operator normal/race, profile refusal and vet checks pass. Preserve
+  the first test-only two-gym balance assertion failure and its exact correction.
+  This is not V2 public-runtime or continuous-capacity acceptance. Continue
+  explicit daily intake/reservation and public integration before onboarding;
+  D74 stays last. See `CHANGESET_77_NOTES.md` and `POOL_LIVE_ROUNDS.md`.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

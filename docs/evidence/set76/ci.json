@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "passed": true,
+  "chain_commit": "2ca9fc161c8761fd5b9fc4f165d352d3ac006b17",
+  "wallet_commit": "dfc5d9dd7e0f604486fbac812d0413fce1f45cd6",
+  "jobs": 7,
+  "runs": [
+    {
+      "id": 44870746115,
+      "name": "Build and Test",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44870746115",
+      "jobs": [
+        {
+          "id": 136744477834,
+          "name": "Unit coverage",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/taytr-llc/slug/actions/runs/44870746115/job/136744477834",
+          "started_at": "2026-11-21T05:24:33Z",
+          "completed_at": "2026-11-21T05:30:24Z"
+        },
+        {
+          "id": 136744478003,
+          "name": "Unit race",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/taytr-llc/slug/actions/runs/44870746115/job/136744478003",
+          "started_at": "2026-11-21T05:24:33Z",
+          "completed_at": "2026-11-21T05:39:39Z"
+        },
+        {
+          "id": 136744478007,
+          "name": "Build",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/taytr-llc/slug/actions/runs/44870746115/job/136744478007",
+          "started_at": "2026-11-21T05:24:33Z",
+          "completed_at": "2026-11-21T05:25:51Z"
+        },
+        {
+          "id": 136744478027,
+          "name": "Minimum Go version (compatibility)",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/taytr-llc/slug/actions/runs/44870746115/job/136744478027",
+          "started_at": "2026-11-21T05:24:33Z",
+          "completed_at": "2026-11-21T05:28:40Z"
+        },
+        {
+          "id": 136744478119,
+          "name": "In-tree modules",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/taytr-llc/slug/actions/runs/44870746115/job/136744478119",
+          "started_at": "2026-11-21T05:24:33Z",
+          "completed_at": "2026-11-21T05:29:54Z"
+        },
+        {
+          "id": 136744478253,
+          "name": "Unit rpctest",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/taytr-llc/slug/actions/runs/44870746115/job/136744478253",
+          "started_at": "2026-11-21T05:24:33Z",
+          "completed_at": "2026-11-21T05:29:58Z"
+        }
+      ]
+    },
+    {
+      "id": 44870746125,
+      "name": "Operator Linux qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44870746125",
+      "jobs": [
+        {
+          "id": 136744478159,
+          "name": "operator-linux",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/taytr-llc/slug/actions/runs/44870746125/job/136744478159",
+          "started_at": "2026-11-21T05:24:33Z",
+          "completed_at": "2026-11-21T05:33:31Z"
+        }
+      ]
+    }
+  ],
+  "ci_report_sha256": "7c0704e1636f249d6a05d0a1dc4a69f81dec47e35b72ab5b3aaa4264941fa011",
+  "paired_linux": {
+    "report": "artifacts/set76/linux-run-44870746125/operator-linux-2ca9fc161c8761fd5b9fc4f165d352d3ac006b17-1/report.json",
+    "sha256": "889c542969f40e10506a9fd6e7025f7f6d002a6b7766c30cf083e9fd91b76168",
+    "seconds": 512.245,
+    "source_unchanged": true,
+    "clean_join": true,
+    "exact_before_after_commits_verified": true
+  },
+  "scope": "Exact paired source CI; local normal-PoW actual acceptance is separate. No public-pool deployment."
+}

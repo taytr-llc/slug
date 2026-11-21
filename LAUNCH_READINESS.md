@@ -554,7 +554,8 @@ of the ownership, transfer or independent restored-wallet flow. See
   hash cache survives owner Close/Open, so this is not fresh-process replay.
   Fresh-process attempt4 passes: 142.534-second cold source audit, exact payout
   recovery without another broadcast, unchanged balances and clean joins.
-  Exact-tip CI remains a separate gate. This financial proof does not establish
+  All seven exact-tip GitHub checks pass (chain2ca9fc16, walletdfc5d9dd).
+  This financial proof does not establish
   continuous operation by 64 miners: Source2 retains
   lifetime caps of 8,192 works and 16,384 receipts, and the test does not generate
   continuous ordinary shares or refresh/expiry traffic. V2 public clients and
@@ -562,6 +563,14 @@ of the ownership, transfer or independent restored-wallet flow. See
   winners, history continuation and real hosted scheduled payouts still need
   implementation or acceptance. See `CHANGESET_76_NOTES.md` and
   `POOL_CAPACITY_CONTINUATION.md`. No public deployment or product launch is claimed.
+
+- Set77 qualifies the original-owner live round read/refresh path and its
+  explicit pre-Run operator selection. Complete captured-tail Sync, financial
+  source/namespace audits, pending payments and D84 remain unchanged. Seventeen
+  builds and full accounting/operator normal/race checks pass. This reduces
+  repeated maintenance audits; it does not enable public V2 intake or enlarge
+  finite history limits. Daily reservations and real hosted scheduling remain
+  integration gates. See `CHANGESET_77_NOTES.md`.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace

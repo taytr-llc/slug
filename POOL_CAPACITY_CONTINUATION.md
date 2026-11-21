@@ -1,8 +1,8 @@
 # Pool capacity continuation
 
 Status: Set75 streaming and the fresh Set76 V2 daily foundation are locally
-qualified, including fresh-process financial recovery. Exact-tip CI is tracked
-separately from the completed local qualification.
+qualified, including fresh-process financial recovery and all seven exact-tip
+GitHub checks on chain2ca9fc16 and walletdfc5d9dd.
 This is engineering under D58/D79–D81/D84, not public deployment or launch approval.
 
 ## Identity and compatibility
@@ -50,8 +50,7 @@ smoke/restart pass. Actual attempt3 passes 721 canonical rewards, a 721-input/
 with 721 origins. Its owner reopen uses the same process and retained wire hash
 cache. Fresh-process attempt4 also passes: its cold source audit took 142.534
 seconds, exact B recovery added no broadcast, all balances and reserved bodies
-stayed unchanged, and every owner/node joined. Exact-tip CI is tracked
-separately. The test-only settlement day does not qualify real-day
+stayed unchanged, and every owner/node joined. Exact-tip CI also passes. The test-only settlement day does not qualify real-day
 scheduling. Winning jobs alone do not model continuous mining by 64 miners,
 ordinary share volume or refresh/expiry traffic, nor do they cross Source2's
 lifetime caps. See `CHANGESET_76_NOTES.md` for evidence and preserved results.

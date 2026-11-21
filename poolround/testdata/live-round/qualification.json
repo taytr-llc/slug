@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "scope": "independent conditional full-Sync arithmetic/live-read reference only",
+  "sources_unchanged": true,
+  "output_bytes": 52592,
+  "output_sha256": "e26f0045170f1a25b91663e45d69309a420f310884cdd091fbf92710c37985fc",
+  "counts": {
+    "events": 23,
+    "extended_cases": 2,
+    "list_pages": 3,
+    "modeled_refusals": 2,
+    "original_cases": 5,
+    "refresh_states": 3,
+    "trace_steps": 15
+  },
+  "executions": [
+    {
+      "interpreter": "/opt/homebrew/bin/python3",
+      "exit_code": 0,
+      "seconds": 0.03862720797769725
+    },
+    {
+      "interpreter": "/usr/bin/python3",
+      "exit_code": 0,
+      "seconds": 0.050795082992408425
+    }
+  ]
+}

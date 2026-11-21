@@ -312,7 +312,11 @@ def main():
                                 "TestDailyPoolWalletBindingReference",
                                 "TestDailyPoolWalletFreshOwnerAndLegacyRefusal"])
             gate.test(mode + "-operator", desktop, ["./pooloperator"], desktop / "go.work", race,
-                      run="^TestOperator", required=[ACL_TEST] + [ACL_TEST + "/" + case for case in ACL_CASES])
+                      run="^TestOperator", required=[ACL_TEST] + [ACL_TEST + "/" + case for case in ACL_CASES] + [
+                          "TestOperatorLiveRoundOriginalCatchupAndDefault",
+                          "TestOperatorLiveRoundCapacityRefresh",
+                          "TestOperatorLiveRoundSelectionRefusals",
+                          "TestOperatorLiveRoundCloseJoinsSelection"])
             # These complete package suites preserve V1 controls as well as
             # requiring the new daily boundary cases. No actual-test build tag.
             gate.test(mode + "-daily-source-round", root, ["./poolshare", "./poolround"],
@@ -324,7 +328,17 @@ def main():
                           "TestDailySourceMemoOwnedWarmColdAndTamper",
                           "TestDailyRoundIndependentBytes",
                           "TestDailyRoundLifetimeAndWindowBounds",
-                          "TestDailyRoundOriginalSourceRestartAndFences"])
+                          "TestDailyRoundOriginalSourceRestartAndFences",
+                          "TestRoundLiveOriginalOwnerSyncAndRefresh",
+                          "TestRoundLiveLateWinnerAndReopen",
+                          "TestRoundLiveTouchedCorruptionRevokes",
+                          "TestRoundLiveDoesNotWeakenFullAudits",
+                          "TestRoundLiveUncertainWriteAndExplicitReanchor",
+                          "TestRoundLiveSourceFencesCancellationAndOwnership",
+                          "TestRoundLiveOriginalCloseJoins",
+                          "TestRoundLiveReadOnlyRefusal",
+                          "TestRoundLiveFullSyncFailureIsAtomic",
+                          "TestRoundLiveIndependentModeledPages"])
             gate.test(mode + "-daily-source-fences", root, ["./registry", "./poolservice"],
                       desktop / "go.work", race,
                       run="^(TestManifestTryJob|TestPoolServiceDoesNotAdoptDailySource)", required=[
@@ -371,7 +385,7 @@ def main():
                       "TestDailyRoundProfileRefusal", "TestDailyNodeCheapProfile",
                       "TestDailyLedgerCheapRefusalBeforeEffects", "TestDailySigningCheapRefusal",
                       "TestDailyScheduleCheapAndCanceledBeforeEffects",
-                      "TestManifestTryJobCheapRefusesBeforeOwner"]
+                      "TestManifestTryJobCheapRefusesBeforeOwner", "TestRoundLiveCheapProfileRefusal"]
         gate.test("cheap-daily-core", root,
                   ["./poolshare", "./poolround", "./poolsettlenode", "./poolsettle",
                    "./poolschedule", "./registry"], desktop / "go.work",

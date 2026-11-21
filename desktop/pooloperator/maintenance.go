@@ -139,6 +139,7 @@ func (m *publicMaintenance) step(ctx context.Context) (p fighterownership.Progre
 type roundMaintenance struct {
 	store  *poolround.Store
 	cursor uint64
+	live   *poolround.Live // selected only before Run; same original store
 }
 
 func (m *roundMaintenance) step(ctx context.Context) (poolround.Summary, error) {
@@ -155,6 +156,9 @@ func (m *roundMaintenance) step(ctx context.Context) (poolround.Summary, error) 
 // refresh never imports a blocked tail or invents new rounds. List verifies the
 // retained Through prefix; Refresh rechecks each exact original winning block.
 func (m *roundMaintenance) refresh(ctx context.Context) error {
+	if m.live != nil {
+		return m.refreshLive(ctx)
+	}
 	rows, e := m.store.List(ctx, m.cursor, poolround.MaxPage)
 	if e != nil {
 		return e

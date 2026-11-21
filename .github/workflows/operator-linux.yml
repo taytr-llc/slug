@@ -1,7 +1,7 @@
 name: Operator Linux qualification
 on:
   push:
-    branches: [slug-public-pool-runtime, slug-pool-capacity, slug-pool-daily-capacity]
+    branches: [slug-public-pool-runtime, slug-pool-capacity, slug-pool-daily-capacity, slug-pool-live-rounds]
 permissions:
   contents: read
 concurrency:

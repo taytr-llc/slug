@@ -279,6 +279,11 @@ func (s *Store) validMetadata(m metadata) bool {
 }
 
 func (s *Store) commit(batch *leveldb.Batch, m metadata) error {
+	return s.commitWithLiveLocked(batch, m, nil)
+}
+
+func (s *Store) commitWithLiveLocked(batch *leveldb.Batch, m metadata, delta *liveDelta) (err error) {
+	defer func() { s.revokeLiveOnErrorLocked(err) }()
 	if s.auditOnly {
 		return ErrInvalid
 	}
@@ -292,12 +297,16 @@ func (s *Store) commit(batch *leveldb.Batch, m metadata) error {
 	if err != nil || len(raw) > maxMetadataSize {
 		return ErrCorrupt
 	}
+	if err := s.checkLiveDeltaLocked(delta, m); err != nil {
+		return err
+	}
 	batch.Put([]byte("meta"), raw)
 	if s.writeBatch(batch, &opt.WriteOptions{Sync: true}) != nil {
 		s.poisoned = true
 		return ErrPoisoned
 	}
 	s.meta = m
+	s.applyLiveDeltaLocked(delta, m, raw)
 	return nil
 }
 
@@ -330,12 +339,13 @@ func sameRound(a, b Round) bool {
 	return e == nil && bytes.Equal(x, y)
 }
 
-func (s *Store) verifyStored(ctx context.Context) ([]Record, error) {
+func (s *Store) verifyStored(ctx context.Context) (records []Record, err error) {
+	defer func() { s.revokeLiveOnErrorLocked(err) }()
 	if err := s.verifyStream(ctx); err != nil {
 		return nil, err
 	}
-	records := make([]Record, 0, s.meta.Rounds)
-	err := s.walkRecords(ctx, func(page []Record) error {
+	records = make([]Record, 0, s.meta.Rounds)
+	err = s.walkRecords(ctx, func(page []Record) error {
 		records = append(records, page...)
 		return nil
 	})
@@ -392,6 +402,7 @@ func (s *Store) Close() error {
 	s.closing = true
 	s.lifecycle.Unlock()
 	s.gate <- struct{}{}
+	s.invalidateLiveLocked()
 	if s.db.Close() != nil {
 		s.closeErr = ErrPoisoned
 	}

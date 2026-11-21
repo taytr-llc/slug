@@ -71,6 +71,7 @@ type Runtime struct {
 	life                                context.Context
 	cancel                              context.CancelFunc
 	started, closing, closed            bool
+	selectingLiveRounds                 bool
 	runDone                             chan struct{}
 	closeErr                            error
 	unreleasedChild                     error
@@ -462,6 +463,10 @@ func (r *Runtime) Run(ctx context.Context, onReady func(string)) (result error) 
 		return e
 	}
 	r.mu.Lock()
+	if r.selectingLiveRounds {
+		r.mu.Unlock()
+		return ErrActionBusy
+	}
 	if r.started || r.closing || r.closed {
 		r.mu.Unlock()
 		return ErrUnavailable

@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "approved_by": null,
+  "status": "source-only; root review required before execution",
+  "entrypoint": "produce.py",
+  "arguments": ["--output", "FRESH_ABSOLUTE_OUTPUT_FILE"],
+  "bounds": {"per_interpreter_seconds": 30, "log_bytes": 32768, "output_bytes": 262144},
+  "files": [
+    {"path": "produce.py", "bytes": 12543, "sha256": "97213773f7c86c0513597ddf8b305e8965a788a40f4602510e9e1aefc1a08aa9"},
+    {"path": "PRODUCER.md", "bytes": 2461, "sha256": "aba692473d319e8209eaa3b9ba2fc2c220eb36f8241f333e91708b508a587dcf"},
+    {"path": "trace-recipe.json", "bytes": 2858, "sha256": "81227908ba5cc4ccd01ece430f63c5bcf7016a652208058862da54ea92a624db"},
+    {"path": "inputs/rounds_v1.json", "bytes": 8703, "sha256": "83697deac6c14bafc7051f603d232328fbda52dc46466a9db51cc7ce010ec17c"},
+    {"path": "inputs/reference.py", "bytes": 2215, "sha256": "6955f98db2ba6265618790ea8394db877726b6953ef66883dec3b5b6cbd422d3"},
+    {"path": "../CONTRACT.md", "bytes": 8552, "sha256": "ece2031c5d0619a2d573c0c39e646faa475a4a43af531e7f10cb5626baa3feb3"}
+  ],
+  "expected_counts": {
+    "original_cases": 5,
+    "extended_cases": 2,
+    "events": 23,
+    "trace_steps": 15,
+    "modeled_refusals": 2,
+    "list_pages": 3,
+    "refresh_states": 3
+  },
+  "output_sha256": null,
+  "execution_status": "not executed; no expected output generated",
+  "review": "Source self-review checked original Fraction parity, complete original case retention, candidate-only failure derivation, global identities, locked confirmation, fixed bounds, fresh-only output and no product imports",
+  "root_execution_requirements": [
+    "Preserve this proposed lock and approve a separate exact successor before execution",
+    "Run the two existing Python interpreters at separate fresh output paths",
+    "Retain any failed attempt; bound elapsed time, log and output size",
+    "Verify exact output reproducibility, expected counts and all source hashes before/after",
+    "Treat output as conditional model expectations, not real source/node/storage or measured-work proof"
+  ]
+}

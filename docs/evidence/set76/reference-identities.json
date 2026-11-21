@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "status": "local-qualified-fresh-process-pass-exact-tip-ci-separate",
-  "scope": "Public independent references and passed component, build, operator, smoke and fresh-process financial evidence. Exact-tip CI separately reported; no continuous-miner or deployment claim.",
+  "status": "local-and-exact-tip-ci-qualified",
+  "scope": "Public independent references and passed component, build, operator, smoke, fresh-process financial and exact-tip paired CI evidence. No continuous-miner or deployment claim.",
   "references": [
     {
       "name": "native-transaction-shape",
@@ -241,7 +241,12 @@
     "signed admission and ownership publication capacity",
     "V2 full-intake original late-winner and pending-payout restart proof",
     "host retention/disk-full and long-running scheduled payout acceptance",
-    "final exact-source CI",
     "D74 final joint design review"
-  ]
+  ],
+  "remote_ci": {
+    "path": "docs/evidence/set76/ci.json",
+    "sha256": "f3ebb442c092a7fc88400c9a380dcd49ff9cb30fff0d097cc1711c65b5a97fa1",
+    "passed": true,
+    "jobs": 7
+  }
 }

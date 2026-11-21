@@ -31,6 +31,7 @@ var (
 	ErrSourceUnavailable = errors.New("pool acceptance source unavailable")
 	ErrCapacity          = errors.New("pool round journal capacity reached")
 	ErrNotFound          = errors.New("pool round not found")
+	ErrLiveStale         = errors.New("live round verification is stale")
 	ErrNode              = errors.New("fresh pool block observation unavailable")
 )
 
@@ -149,5 +150,6 @@ type Store struct {
 	closeDone    chan struct{}
 	closeErr     error
 	poisoned     bool
+	live         *liveDirectory
 	writeBatch   func(*leveldb.Batch, *opt.WriteOptions) error
 }

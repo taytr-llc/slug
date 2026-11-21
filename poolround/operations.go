@@ -12,7 +12,7 @@ import (
 // Sync consumes one fixed accepted tail. It closes rounds only at accepted
 // winning shares and never moves members when delivery or chain status changes.
 // It makes no new node observation and grants no confirmation by itself.
-func (s *Store) Sync(ctx context.Context) (Summary, error) {
+func (s *Store) Sync(ctx context.Context) (result Summary, err error) {
 	if s != nil && s.auditOnly {
 		return Summary{}, ErrInvalid
 	}
@@ -21,6 +21,8 @@ func (s *Store) Sync(ctx context.Context) (Summary, error) {
 		return Summary{}, err
 	}
 	defer end()
+	defer func() { s.revokeLiveOnErrorLocked(err) }()
+	delta := s.newLiveDeltaLocked()
 	if !s.validMetadata(s.meta) {
 		return Summary{}, ErrCorrupt
 	}
@@ -81,6 +83,7 @@ func (s *Store) Sync(ctx context.Context) (Summary, error) {
 				return ErrCorrupt
 			}
 		}
+		delta.add(round.BlockHash, round.Sequence, raw)
 		batch.Put(roundKey(round.BlockHash), raw)
 		batch.Put(indexKey(round.Sequence), []byte(round.BlockHash))
 		next.Bytes += budget
@@ -103,7 +106,7 @@ func (s *Store) Sync(ctx context.Context) (Summary, error) {
 	if capacity {
 		return Summary{}, ErrCapacity
 	}
-	result := Summary{Through: through, Rounds: builder.rounds, PendingShares: through - (builder.first - 1)}
+	result = Summary{Through: through, Rounds: builder.rounds, PendingShares: through - (builder.first - 1)}
 	if through == s.meta.Through {
 		return result, ctx.Err()
 	}
@@ -111,7 +114,7 @@ func (s *Store) Sync(ctx context.Context) (Summary, error) {
 	if err := ctx.Err(); err != nil {
 		return Summary{}, err
 	}
-	if err := s.commit(batch, next); err != nil {
+	if err := s.commitWithLiveLocked(batch, next, delta); err != nil {
 		return Summary{}, err
 	}
 	return result, nil
@@ -203,7 +206,7 @@ func (s *Store) checkWinner(ctx context.Context, r Round) error {
 // has no earnings; returning that exact block resumes this same fixed round.
 // The first sixty-descendant lock is never removed by later branch conflicts.
 // A transport error leaves all prior observations and confirmation untouched.
-func (s *Store) Refresh(ctx context.Context, blockHash string) (Record, error) {
+func (s *Store) Refresh(ctx context.Context, blockHash string) (result Record, err error) {
 	if s != nil && s.auditOnly {
 		return Record{}, ErrInvalid
 	}
@@ -212,6 +215,7 @@ func (s *Store) Refresh(ctx context.Context, blockHash string) (Record, error) {
 		return Record{}, err
 	}
 	defer end()
+	defer func() { s.revokeLiveOnErrorLocked(err) }()
 	records, err := s.verifyStored(ctx)
 	if err != nil {
 		return Record{}, err
@@ -220,6 +224,10 @@ func (s *Store) Refresh(ctx context.Context, blockHash string) (Record, error) {
 	if err != nil {
 		return Record{}, err
 	}
+	return s.refreshRecordLocked(ctx, record)
+}
+
+func (s *Store) refreshRecordLocked(ctx context.Context, record Record) (Record, error) {
 	if record.Round.Winner.Proof == nil {
 		return Record{}, ErrCorrupt
 	}
@@ -250,9 +258,13 @@ func (s *Store) Refresh(ctx context.Context, blockHash string) (Record, error) {
 	if err := ctx.Err(); err != nil {
 		return Record{}, err
 	}
+	delta := s.newLiveDeltaLocked()
+	if delta != nil {
+		delta.add(record.Round.BlockHash, record.Round.Sequence, raw)
+	}
 	batch := new(leveldb.Batch)
-	batch.Put(roundKey(blockHash), raw)
-	if err := s.commit(batch, s.meta); err != nil {
+	batch.Put(roundKey(record.Round.BlockHash), raw)
+	if err := s.commitWithLiveLocked(batch, s.meta, delta); err != nil {
 		return Record{}, err
 	}
 	return next, nil
