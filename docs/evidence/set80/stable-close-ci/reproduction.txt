@@ -1,0 +1,9 @@
+{"Time":"2026-11-21T05:38:49.683904-08:00","Action":"start","Package":"github.com/taytr-llc/slug/gymstable"}
+{"Time":"2026-11-21T05:38:50.127623-08:00","Action":"run","Package":"github.com/taytr-llc/slug/gymstable","Test":"TestSharedStableCloseObservesLifetimeBeforeCallback"}
+{"Time":"2026-11-21T05:38:50.1277-08:00","Action":"output","Package":"github.com/taytr-llc/slug/gymstable","Test":"TestSharedStableCloseObservesLifetimeBeforeCallback","Output":"=== RUN   TestSharedStableCloseObservesLifetimeBeforeCallback\n","OutputType":"frame"}
+{"Time":"2026-11-21T05:38:50.733546-08:00","Action":"output","Package":"github.com/taytr-llc/slug/gymstable","Test":"TestSharedStableCloseObservesLifetimeBeforeCallback","Output":"    close_lifetime_test.go:99: owner closure allowed another proof or commit: reads=2 error=\u003cnil\u003e\n","OutputType":"error"}
+{"Time":"2026-11-21T05:38:50.735636-08:00","Action":"output","Package":"github.com/taytr-llc/slug/gymstable","Test":"TestSharedStableCloseObservesLifetimeBeforeCallback","Output":"--- FAIL: TestSharedStableCloseObservesLifetimeBeforeCallback (0.61s)\n","OutputType":"frame"}
+{"Time":"2026-11-21T05:38:50.735649-08:00","Action":"fail","Package":"github.com/taytr-llc/slug/gymstable","Test":"TestSharedStableCloseObservesLifetimeBeforeCallback","Elapsed":0.61}
+{"Time":"2026-11-21T05:38:50.73568-08:00","Action":"output","Package":"github.com/taytr-llc/slug/gymstable","Output":"FAIL\n","OutputType":"frame"}
+{"Time":"2026-11-21T05:38:50.741955-08:00","Action":"output","Package":"github.com/taytr-llc/slug/gymstable","Output":"FAIL\tgithub.com/taytr-llc/slug/gymstable\t1.058s\n","OutputType":"frame"}
+{"Time":"2026-11-21T05:38:50.741982-08:00","Action":"fail","Package":"github.com/taytr-llc/slug/gymstable","Elapsed":1.058}

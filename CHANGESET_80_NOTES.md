@@ -164,7 +164,21 @@ retroactively qualify it.
 
 ## Continuing boundaries
 
-Exact-tip CI remains pending. Actual B independently proves real expiry before
+Exact-tip CI at `ce9eac74` exposed a gym-stable shutdown race in the In-tree
+modules job. `Close` canceled the original lifetime, but its `AfterFunc`
+notification could reach an active operation later, allowing another source
+proof before cancellation. A deterministic regression held that notification
+and reproduced two proof calls with a successful operation. The follow-up
+checks the original lifetime directly at the existing source and lease
+boundaries. It preserves learned source/clock/write-error precedence and the
+distinction between an active canceled call and a later closed-owner call.
+The unchanged regression and complete gym-stable suite pass normally and under
+the race detector (76 top-level tests / 499 assertions each); vet passes.
+Sources/profile remain unchanged during each run and all owners join. The
+original CI failure and pre-fix reproduction remain failed evidence in
+`docs/evidence/set80/stable-close-ci/`; follow-up exact-tip CI is pending.
+
+Actual B independently proves real expiry before
 source publication, an unchanged `issued_unused` terminal and zero work/credit/
 payment. Both actuals prove one intentional operator kill, complete original-
 owner audits, precise child/relay/node joins and unchanged source/profile/public

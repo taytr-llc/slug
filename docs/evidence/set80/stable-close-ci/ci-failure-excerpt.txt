@@ -1,0 +1,17 @@
+2026-11-21T13:27:14.7998780Z === RUN   TestSharedStableCloseJoinsForeignVerification
+2026-11-21T13:27:14.7999200Z panic: close of closed channel
+2026-11-21T13:27:14.7999399Z 
+2026-11-21T13:27:14.7999537Z goroutine 3277 [running]:
+2026-11-21T13:27:14.8000093Z github.com/taytr-llc/slug/gymstable.TestSharedStableCloseJoinsForeignVerification.func1()
+2026-11-21T13:27:14.8000843Z 	/home/runner/work/slug/slug/gymstable/shared_core_test.go:282 +0x25
+2026-11-21T13:27:14.8001553Z github.com/taytr-llc/slug/gymstable.(*Store).readVerifiedSource(_, {_, _}, _, {_, _}, _)
+2026-11-21T13:27:14.8002169Z 	/home/runner/work/slug/slug/gymstable/read.go:129 +0xb6
+2026-11-21T13:27:14.8002718Z github.com/taytr-llc/slug/gymstable.(*Store).syncShared(_, {_, _}, {_, {_, _}, _})
+2026-11-21T13:27:14.8003340Z 	/home/runner/work/slug/slug/gymstable/shared_read.go:55 +0x30c
+2026-11-21T13:27:14.8003900Z github.com/taytr-llc/slug/gymstable.(*Store).Sync(_, {_, _}, {_, {_, _}, _})
+2026-11-21T13:27:14.8004459Z 	/home/runner/work/slug/slug/gymstable/read.go:178 +0x225
+2026-11-21T13:27:14.8005113Z github.com/taytr-llc/slug/gymstable.TestSharedStableCloseJoinsForeignVerification.func2()
+2026-11-21T13:27:14.8005840Z 	/home/runner/work/slug/slug/gymstable/shared_core_test.go:284 +0x69
+2026-11-21T13:27:14.8006610Z created by github.com/taytr-llc/slug/gymstable.TestSharedStableCloseJoinsForeignVerification in goroutine 3325
+2026-11-21T13:27:14.8007394Z 	/home/runner/work/slug/slug/gymstable/shared_core_test.go:284 +0x17d
+2026-11-21T13:27:14.8007879Z FAIL	github.com/taytr-llc/slug/gymstable	46.027s

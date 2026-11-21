@@ -408,7 +408,7 @@ func (s *Store) withLease(ctx context.Context, session Session, cap gymaccount.C
 		}
 		called = true
 		check := func() error {
-			if ctx.Err() != nil {
+			if ctx.Err() != nil || s.life.Err() != nil {
 				return ErrCancelled
 			}
 			if a.ID != s.meta.Pin.AccountID || a.Generation != session.Generation {
@@ -439,7 +439,7 @@ func (s *Store) withLease(ctx context.Context, session Session, cap gymaccount.C
 	if callbackErr != nil {
 		return mapped(callbackErr)
 	}
-	if ctx.Err() != nil {
+	if ctx.Err() != nil || s.life.Err() != nil {
 		return ErrCancelled
 	}
 	return mapped(err)
@@ -451,7 +451,7 @@ func (s *Store) sourceInfo(ctx context.Context) (uint64, error) {
 // The history family cannot downgrade learned source failures to cancellation.
 // Existing consumers retain their original cancellation order.
 func (s *Store) sourceInfoMode(ctx context.Context, fatalFirst bool) (uint64, error) {
-	if ctx.Err() != nil {
+	if ctx.Err() != nil || s.life.Err() != nil {
 		return 0, ErrCancelled
 	}
 	i, e := sourceValid(s.source, s.meta.Pin)
@@ -463,7 +463,7 @@ func (s *Store) sourceInfoMode(ctx context.Context, fatalFirst bool) (uint64, er
 			return 0, ErrCorrupt
 		}
 	}
-	if ctx.Err() != nil {
+	if ctx.Err() != nil || s.life.Err() != nil {
 		return 0, ErrCancelled
 	}
 	if e != nil {

@@ -1,0 +1,75 @@
+{
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 89365,
+        "pid": 89365,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./gymstable"
+      ],
+      "exit_code": 0,
+      "label": "deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 89365,
+      "pid": 89365,
+      "seconds": 0.485,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 89380,
+        "pid": 89380,
+        "return_code": 1,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "test",
+        "-count=1",
+        "-p=1",
+        "-timeout=450s",
+        "-json",
+        "-run",
+        "^TestSharedStableCloseObservesLifetimeBeforeCallback$",
+        "./gymstable"
+      ],
+      "exit_code": 1,
+      "label": "normal",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 89380,
+      "pid": 89380,
+      "seconds": 3.823,
+      "timed_out": false
+    }
+  ],
+  "error": "RuntimeError: failed normal",
+  "passed": false,
+  "pattern": "^TestSharedStableCloseObservesLifetimeBeforeCallback$",
+  "scope": "Set80 stable close maintenance stable normal",
+  "sources_unchanged": true,
+  "version": 1
+}

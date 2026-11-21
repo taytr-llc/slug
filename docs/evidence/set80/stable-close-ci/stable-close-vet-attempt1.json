@@ -1,0 +1,68 @@
+{
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 89801,
+        "pid": 89801,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./gymstable"
+      ],
+      "exit_code": 0,
+      "label": "deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 89801,
+      "pid": 89801,
+      "seconds": 0.547,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 89813,
+        "pid": 89813,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "vet",
+        "./gymstable"
+      ],
+      "exit_code": 0,
+      "label": "vet",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 89813,
+      "pid": 89813,
+      "seconds": 3.419,
+      "timed_out": false
+    }
+  ],
+  "passed": true,
+  "pattern": "^Test(DailyRetained|ManifestAdmissionPreflight)",
+  "profile_unchanged": true,
+  "scope": "Set80 stable close maintenance stable vet",
+  "sources_unchanged": true,
+  "version": 1
+}

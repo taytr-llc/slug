@@ -122,13 +122,16 @@ func (s *Store) readSourceMode(ctx context.Context, sequence uint64, id string, 
 }
 
 func (s *Store) readVerifiedSource(ctx context.Context, sequence uint64, id string, fatalFirst bool) (registry.ManifestRecord, error) {
-	if ctx.Err() != nil {
+	// AfterFunc wakes blocked operations, but its callback can run after the
+	// owner's lifetime closes. Observe that original lifetime synchronously at
+	// each source boundary rather than beginning another proof in that gap.
+	if ctx.Err() != nil || s.life.Err() != nil {
 		return registry.ManifestRecord{}, ErrCancelled
 	}
 	if s.proofRead != nil {
 		s.proofRead()
 	}
-	if ctx.Err() != nil {
+	if ctx.Err() != nil || s.life.Err() != nil {
 		return registry.ManifestRecord{}, ErrCancelled
 	}
 	var r registry.ManifestRecord
@@ -156,7 +159,7 @@ func (s *Store) readVerifiedSource(ctx context.Context, sequence uint64, id stri
 	if fatalFirst && e != nil {
 		return registry.ManifestRecord{}, ErrCorrupt
 	}
-	if ctx.Err() != nil {
+	if ctx.Err() != nil || s.life.Err() != nil {
 		return registry.ManifestRecord{}, ErrCancelled
 	}
 	if e != nil {

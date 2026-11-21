@@ -512,7 +512,12 @@ authorization must be repository-limited, not an account-wide OAuth expansion.
   A1 is explicitly disqualified for checker source mutation during execution;
   A2 retains its omitted live error as unexplained. Never relabel either passed.
   A3's diagnostics do not change acceptance/retry/deadline rules. Exact-tip CI
-  is pending until separately recorded. See `CHANGESET_80_NOTES.md` and
+  at `ce9eac74` exposed delayed lifetime cancellation in the gym-stable close
+  path. A deterministic pre-fix reproduction is retained; direct original-life
+  checks pass the full stable normal/race suites and vet. Preserve source/clock
+  failure precedence and distinguish active cancellation from later ErrClosed.
+  Follow-up exact-tip CI is pending until separately recorded. See
+  `docs/evidence/set80/stable-close-ci/`, `CHANGESET_80_NOTES.md` and
   `POOL_ISSUE_RECOVERY.md`. Continue retained original-job fighter delivery at
   pool-only drain, then capacity and hosted operation. Independent signed limits,
   D80's no-late-birth rule and D84 remain; onboarding follows and D74 stays last.

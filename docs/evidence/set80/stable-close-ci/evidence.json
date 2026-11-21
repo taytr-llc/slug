@@ -1,0 +1,128 @@
+{
+  "version": 1,
+  "failed_ci_head": "ce9eac7463a75d2ba7e0cefc8924f55d6c77b0a9",
+  "failed_job_url": "https://github.com/taytr-llc/slug/actions/runs/44908764974/job/136859858453",
+  "full_ci_log": {
+    "path": "/Users/taytrrip/slug/artifacts/set80/ci-attempt1/job-136859858453.log",
+    "bytes": 2550827,
+    "sha256": "d104d7260c66b71319b477c5e67d0a9c2a86d1bf85cb6e040c8a1ef4399620ef"
+  },
+  "scope": "synchronous original Store lifetime checks at existing proof/source and lease boundaries",
+  "pre_fix_expected": "in-flight operation cancels before second proof; no assignment; Close joins; later calls closed",
+  "pre_fix_observed": "two proof calls and nil operation error with AfterFunc callback held",
+  "unchanged_regression": {
+    "path": "/Users/taytrrip/slug/slug/gymstable/close_lifetime_test.go",
+    "bytes": 3125,
+    "sha256": "723e6a8cc9a4c407e301f49105f313f8f876f4914fac028b0b88e72e37c995d8"
+  },
+  "implementation": [
+    {
+      "path": "/Users/taytrrip/slug/slug/gymstable/read.go",
+      "bytes": 11955,
+      "sha256": "a271340b4cd2ea7ada5a506a5bc2157f46fd4ec3138858382e1daf664e36644d"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/gymstable/store.go",
+      "bytes": 17079,
+      "sha256": "2e7dde37ab66f54d3a2d2a605ebd8cfebba7c30953cd445c6591664bc9c50a08"
+    }
+  ],
+  "qualification": [
+    {
+      "attempt": "stable-close-repro-normal-attempt1",
+      "report": {
+        "path": "/Users/taytrrip/slug/artifacts/set80/stable-close-repro-normal-attempt1/report.json",
+        "bytes": 1698,
+        "sha256": "6d95731e54f0d8296f664aef96c372ff33fc183cc7c2dbb5666527a1de93ca87"
+      },
+      "expected_pass": false,
+      "sources": [
+        {
+          "path": "/Users/taytrrip/slug/artifacts/set80/stable-close-repro-normal-attempt1/sources-before.json",
+          "bytes": 727337,
+          "sha256": "598e85fd603e1e46ca2ba22aab47cd4c0a8f29dbe1945fc5ceb0b25c474532eb"
+        },
+        {
+          "path": "/Users/taytrrip/slug/artifacts/set80/stable-close-repro-normal-attempt1/sources-after.json",
+          "bytes": 727337,
+          "sha256": "598e85fd603e1e46ca2ba22aab47cd4c0a8f29dbe1945fc5ceb0b25c474532eb"
+        }
+      ]
+    },
+    {
+      "attempt": "stable-close-full-normal-attempt1",
+      "report": {
+        "path": "/Users/taytrrip/slug/artifacts/set80/stable-close-full-normal-attempt1/report.json",
+        "bytes": 58252,
+        "sha256": "450939f65784161ddf1b477b6ebbee11f09eef6354b9d0e9b9fcca13a25380b2"
+      },
+      "expected_pass": true,
+      "sources": [
+        {
+          "path": "/Users/taytrrip/slug/artifacts/set80/stable-close-full-normal-attempt1/sources-before.json",
+          "bytes": 727337,
+          "sha256": "ee477cbcd59613439069bdd282ed53b11a6e9585007243ab3089e4e1596793c3"
+        },
+        {
+          "path": "/Users/taytrrip/slug/artifacts/set80/stable-close-full-normal-attempt1/sources-after.json",
+          "bytes": 727337,
+          "sha256": "ee477cbcd59613439069bdd282ed53b11a6e9585007243ab3089e4e1596793c3"
+        }
+      ],
+      "top_level_passes": 76,
+      "passing_assertions": 499,
+      "skips": [
+        "github.com/taytr-llc/slug/gymstable/TestCareerEvidenceCheapProfileBeforeHandle"
+      ]
+    },
+    {
+      "attempt": "stable-close-full-race-attempt1",
+      "report": {
+        "path": "/Users/taytrrip/slug/artifacts/set80/stable-close-full-race-attempt1/report.json",
+        "bytes": 58267,
+        "sha256": "d06847ca9452999fc05cc7720f23202309a230183f25f5f413777979a6b67ca2"
+      },
+      "expected_pass": true,
+      "sources": [
+        {
+          "path": "/Users/taytrrip/slug/artifacts/set80/stable-close-full-race-attempt1/sources-before.json",
+          "bytes": 727337,
+          "sha256": "ee477cbcd59613439069bdd282ed53b11a6e9585007243ab3089e4e1596793c3"
+        },
+        {
+          "path": "/Users/taytrrip/slug/artifacts/set80/stable-close-full-race-attempt1/sources-after.json",
+          "bytes": 727337,
+          "sha256": "ee477cbcd59613439069bdd282ed53b11a6e9585007243ab3089e4e1596793c3"
+        }
+      ],
+      "top_level_passes": 76,
+      "passing_assertions": 499,
+      "skips": [
+        "github.com/taytr-llc/slug/gymstable/TestCareerEvidenceCheapProfileBeforeHandle"
+      ]
+    },
+    {
+      "attempt": "stable-close-vet-attempt1",
+      "report": {
+        "path": "/Users/taytrrip/slug/artifacts/set80/stable-close-vet-attempt1/report.json",
+        "bytes": 1451,
+        "sha256": "884646ec26c395c659abcd1ba5c29cf277cd5499dae8c30df8d64407f55727ab"
+      },
+      "expected_pass": true,
+      "sources": [
+        {
+          "path": "/Users/taytrrip/slug/artifacts/set80/stable-close-vet-attempt1/sources-before.json",
+          "bytes": 727337,
+          "sha256": "ee477cbcd59613439069bdd282ed53b11a6e9585007243ab3089e4e1596793c3"
+        },
+        {
+          "path": "/Users/taytrrip/slug/artifacts/set80/stable-close-vet-attempt1/sources-after.json",
+          "bytes": 727337,
+          "sha256": "ee477cbcd59613439069bdd282ed53b11a6e9585007243ab3089e4e1596793c3"
+        }
+      ]
+    }
+  ],
+  "exact_maintenance_tip_ci": "pending",
+  "node_deployment_changed": false
+}
