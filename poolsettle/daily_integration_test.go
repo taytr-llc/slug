@@ -22,6 +22,7 @@ import (
 	"github.com/taytr-llc/slug/fighterdescriptor"
 	"github.com/taytr-llc/slug/gymauth"
 	"github.com/taytr-llc/slug/internal/operatorauthority"
+	"github.com/taytr-llc/slug/internal/poolcapacity"
 	"github.com/taytr-llc/slug/poolround"
 	"github.com/taytr-llc/slug/poolshare"
 	"github.com/taytr-llc/slug/prospectnode"
@@ -34,6 +35,12 @@ import (
 // the existing normal-PoW fixture leaves. Node observations and the signing
 // backend are controlled: this is not the actual-node/schema16-wallet proof.
 func dailyIntegrationFixture(t *testing.T) *lateWinnerOwners {
+	return dailyIntegrationFixtureWithCapacity(t, nil)
+}
+
+// An explicit independently selected profile creates fresh daily owners. The
+// existing fixture retains its exact original limits when selection is nil.
+func dailyIntegrationFixtureWithCapacity(t *testing.T, selected *poolcapacity.DailyInputs) *lateWinnerOwners {
 	t.Helper()
 	h := &lateWinnerOwners{clock: time.Date(2030, 1, 1, 12, 0, 0, 0, time.UTC)}
 	t.Cleanup(func() {
@@ -147,6 +154,15 @@ func dailyIntegrationFixture(t *testing.T) *lateWinnerOwners {
 	h.settleConfig = Config{Version: 2, ChangeScript: poolScript, MaxRounds: 4, MaxBatches: 4, Destinations: []Destination{{GymID: ga, Script: payA}, {GymID: gb, Script: payB}}}
 	if h.settleConfig.Destinations[0].GymID > h.settleConfig.Destinations[1].GymID {
 		h.settleConfig.Destinations[0], h.settleConfig.Destinations[1] = h.settleConfig.Destinations[1], h.settleConfig.Destinations[0]
+	}
+	if selected != nil {
+		if selected.Gyms != uint64(len(h.settleConfig.Destinations)) {
+			t.Fatal("selected capacity destination count")
+		}
+		h.poolConfig.MaxWorks = 8 // independent Set78 three-job fixture limit
+		h.poolConfig.MaxSubmissions, h.poolConfig.MaxBytes = selected.SourceMax, selected.SourceBytes
+		h.roundLimits.MaxRounds, h.roundLimits.MaxBytes = selected.Rounds, selected.RoundBytes
+		h.settleConfig.MaxRounds, h.settleConfig.MaxBatches = uint32(selected.CreditRounds), uint32(selected.Batches)
 	}
 	h.pool, e = poolshare.CreateDaily(context.Background(), filepath.Join(h.root, "pool"), h.poolConfig, h.issuer, h.node, h.sessions)
 	if e != nil {

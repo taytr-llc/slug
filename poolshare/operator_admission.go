@@ -17,6 +17,7 @@ type OperatorAdmission struct {
 	maximum           uint64
 	enabled, draining bool
 	recovery          *RecoveryBudget
+	daily             *dailyAdmission
 }
 
 // OperatorAdmissionStatus is a local counter observation, never funding or
@@ -132,6 +133,9 @@ func (a *OperatorAdmission) with(ctx context.Context, fn func() error) error {
 	})
 }
 func (a *OperatorAdmission) Enable(ctx context.Context) error {
+	if a != nil && a.daily != nil {
+		return a.enableDaily(ctx)
+	}
 	return a.with(ctx, func() error {
 		if a.draining || a.pool.meta.Submissions >= a.maximum {
 			a.draining = true
@@ -149,6 +153,9 @@ func (a *OperatorAdmission) Drain(ctx context.Context) error {
 }
 func (a *OperatorAdmission) Close() error { return a.Drain(context.Background()) }
 func (a *OperatorAdmission) Status(ctx context.Context) (OperatorAdmissionStatus, error) {
+	if a != nil && a.daily != nil {
+		return a.dailyStatus(ctx)
+	}
 	var out OperatorAdmissionStatus
 	err := a.with(ctx, func() error {
 		m := a.pool.meta

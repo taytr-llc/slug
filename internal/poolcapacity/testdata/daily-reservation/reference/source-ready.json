@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "status": "contract/input freeze candidate for root review; no producer outputs, Go or runtime",
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "bytes": 15288,
+      "sha256": "1b1094e4e9ad47b62436b2b72588a109b530ae2f7e0a84d1a4cfb7718ff23d66"
+    },
+    {
+      "path": "BYTES.md",
+      "bytes": 7166,
+      "sha256": "6e7b30ddc6205d4975348457b467ae685d33e464abeac66b1f127a0102b71394"
+    },
+    {
+      "path": "PLAN.md",
+      "bytes": 2409,
+      "sha256": "0a1c5b73aed3a59c33754499f474ff3d5cd9d652f4af05f22edef23c0d3c28af"
+    },
+    {
+      "path": "inputs/frames.json",
+      "bytes": 4946,
+      "sha256": "0dc72b08c53112f1fd638463dc498106dc1beb727b0057c730127fa90601a361"
+    },
+    {
+      "path": "inputs/cases.json",
+      "bytes": 6174,
+      "sha256": "2f3bec3a25bf0983e945a314006e265950115995d4b177d4c26fcfacc125edf4"
+    },
+    {
+      "path": "inputs/PROPOSAL.md",
+      "bytes": 13712,
+      "sha256": "45c0b384a480f981aced9d5147f258a18d014cd7b39d4db7a81055e396d1bfdd"
+    }
+  ],
+  "source_map": {
+    "path": "../daily-capacity-sources.json",
+    "sha256": "2ee531eb9fa0077ce8c1ecce9963f95be96f64b47f9ebeb4eb93c670d7949b5f"
+  },
+  "premise_review": {
+    "path": "../daily-capacity-peer-review.md",
+    "sha256": "4d5d44effb2ad02b38eaacefe7946eb05164d66b16d96aefa81157b429699593"
+  },
+  "not_authorized": "Product implementation or execution before root selection and producer/output review.",
+  "predecessor": "pre-root-precision/source-ready.json"
+}

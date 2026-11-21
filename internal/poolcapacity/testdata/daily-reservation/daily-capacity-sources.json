@@ -1,0 +1,89 @@
+{
+  "status": "source-only proposed scope; no implementation, producer or runtime qualification",
+  "draft": {
+    "path": "set78-prep/daily-capacity-plan.md",
+    "sha256": "45c0b384a480f981aced9d5147f258a18d014cd7b39d4db7a81055e396d1bfdd"
+  },
+  "source_inputs": [
+    {
+      "path": "/Users/taytrrip/slug/slug/poolshare/operator_admission.go",
+      "sha256": "fb21fc233a0e588f453570f56a5d889a9249ea390fc6a2ffa29a23f2cd5c95fe"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolshare/operator_recovery.go",
+      "sha256": "91fa0191d04304f87f65ddb451977295c81d1f03e82f127ec483db88011abb4d"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolshare/pool.go",
+      "sha256": "214055d278c39598848af8922dfe7be14da1be259dd3c10f508824651460252d"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolshare/store.go",
+      "sha256": "eadfebeeba6ab39961e0ea7eff619ea74ecdfab88caaf424a644027b8ce32b08"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolshare/config.go",
+      "sha256": "73c830ca911fd77d3b71aa46d772847ccaa9edf3fd914bfa2fbe0c615425c73c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/internal/poolcapacity/capacity.go",
+      "sha256": "8d22bd7b5617c050d1b2d8724574cbbe9d528cc68c200370951e911042428c56"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolround/model.go",
+      "sha256": "6c70a79351e0a966d98dfdb224337be14c7c61d6b740d84fc8e1ddf791356143"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolround/daily.go",
+      "sha256": "83657a0588adc0b014aa512d4ff0c5916a52265465aa160962e587c0763f8521"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolsettle/daily_config.go",
+      "sha256": "ac7ae93fb5c2331cf662850b88f59c51d1723be5975e05c2cd9f2c87f8324926"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolsettle/daily_types.go",
+      "sha256": "06a794809de4b1db67dd45913a70d574ca71d3c80e915537caf789a3863ebc51"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolsettle/daily_commit.go",
+      "sha256": "0711ba7c5665dea0d4276ee6eccafaf9468aca73b96a85d013194204919be296"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolsettle/daily_audit.go",
+      "sha256": "340ea31bdda0bdb527f049e9e04f17b71c85d912e2601c6b50a215e389062596"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolsettle/daily_operations.go",
+      "sha256": "334ac168c4a3fbf0a93a1edf2d4fa2d14cbd74ce2eb109fe57a457f04dac5547"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolsettle/daily_candidate.go",
+      "sha256": "976489c40f6a5f801cb00a6a338f60303e53f07eb6f3527f610782a5c1893313"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolsettle/model.go",
+      "sha256": "604d95fb8cfde897f00e13d086ffd343ad7dc28853157860649564fa26d2a2f4"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolsettle/replay.go",
+      "sha256": "750d90b30a0284a4faff5c5eb88c1a4ced58af38f196743b76a9bbf46b4547f5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolsettle/testdata/daily-ledger/reference.py",
+      "sha256": "1372c8c33e2d57bb739cd8b64013ac032b5400bfb67defd60137ef9c4f85d4e8"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolsettle/testdata/daily-ledger/reference.json",
+      "sha256": "c490b5b918dd155008ff67013c87d708239a17394554f1a8e6eca05053722af5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/pooltxshape/native.go",
+      "sha256": "8b338a83505d57d66267e219b8a9835e2efa4454979a44d7beecb1c7614fb883"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/POOL_CAPACITY_CONTINUATION.md",
+      "sha256": "08d0aa5986f1c9cc60e9973f9353cca39d90cd97b3446f5688abd145509f53cf"
+    }
+  ]
+}

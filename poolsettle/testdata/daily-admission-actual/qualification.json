@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "source_unchanged": true,
+  "attempts": [
+    {
+      "name": "py314",
+      "interpreter": "/opt/homebrew/bin/python3",
+      "version": "Python 3.14.3",
+      "exit_code": 0,
+      "elapsed_seconds": 0.1290122089558281,
+      "bytes": 29980,
+      "sha256": "1d2b1462296bd022c53df9dc583db3c38cd13a8e13e84f9983f2505b3aefb08f"
+    },
+    {
+      "name": "py39",
+      "interpreter": "/usr/bin/python3",
+      "version": "Python 3.9.6",
+      "exit_code": 0,
+      "elapsed_seconds": 0.1308398749679327,
+      "bytes": 29980,
+      "sha256": "1d2b1462296bd022c53df9dc583db3c38cd13a8e13e84f9983f2505b3aefb08f"
+    }
+  ],
+  "byte_identical": true,
+  "elapsed_seconds": 0.2969407089985907
+}

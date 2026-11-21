@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "status": "passed",
+  "chain_sha": "21da8ea51de20ed5d1e0587f4a3afd4e079a6bfe",
+  "wallet_sha": "dfc5d9dd7e0f604486fbac812d0413fce1f45cd6",
+  "jobs": [
+    {
+      "name": "In-tree modules",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44872684570/job/136750497281"
+    },
+    {
+      "name": "Unit rpctest",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44872684570/job/136750497452"
+    },
+    {
+      "name": "Unit race",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44872684570/job/136750497501"
+    },
+    {
+      "name": "Minimum Go version (compatibility)",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44872684570/job/136750497517"
+    },
+    {
+      "name": "Build",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44872684570/job/136750497530"
+    },
+    {
+      "name": "Unit coverage",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44872684570/job/136750497545"
+    },
+    {
+      "name": "operator-linux",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44872684616/job/136750497521"
+    }
+  ],
+  "linux_evidence": {
+    "scope": "Set77 exact Linux operator qualification; other CI jobs tracked separately",
+    "chain_sha": "21da8ea51de20ed5d1e0587f4a3afd4e079a6bfe",
+    "wallet_sha": "dfc5d9dd7e0f604486fbac812d0413fce1f45cd6",
+    "run_url": "https://github.com/taytr-llc/slug/actions/runs/44872684616",
+    "report": "/Users/taytrrip/slug/artifacts/set77/linux-run-44872684616/operator-linux-21da8ea51de20ed5d1e0587f4a3afd4e079a6bfe-1/report.json",
+    "report_sha256": "a275c5383a115a296c8f0700cd85182b4a2a7de650133c73404dd7e1c0511850",
+    "passed": true,
+    "source_unchanged": true,
+    "clean_join": true,
+    "elapsed_seconds": 541.046,
+    "before_after_heads_verified": true,
+    "daily_actual_qualified": false,
+    "deployed_host_qualified": false
+  },
+  "live_seed_unchanged": true,
+  "no_seed_deploy_needed": "No changed code linked into seed binary",
+  "public_pool_enabled": false
+}

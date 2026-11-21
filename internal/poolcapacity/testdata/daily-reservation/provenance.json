@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "scope": "Verbatim independent Python source/inputs/corpus; no Go outputs used as expectations. Source maps describe review provenance only, not replacement authority.",
+  "source_ready_sha256": "625fc3cb19afe403bb4782051152e966dbbb077e13cc6d9ef38fb24534168e89",
+  "corpus_sha256": "2db086115f51b0c7e22d2fd7688ad5b46c56e238fa1346d709c9a19bebb7aa78",
+  "copies": [
+    {
+      "from": "set78-prep/daily-capacity-reference/source-ready.json",
+      "to": "reference/source-ready.json",
+      "bytes": 1498,
+      "sha256": "625fc3cb19afe403bb4782051152e966dbbb077e13cc6d9ef38fb24534168e89"
+    },
+    {
+      "from": "set78-prep/daily-capacity-reference/root-approval.json",
+      "to": "reference/root-approval.json",
+      "bytes": 1029,
+      "sha256": "0ac22e61089d46fb9f4fa8199d2dba31cfd65682c75a4e8e27f9dbea0d55ea2d"
+    },
+    {
+      "from": "set78-prep/daily-capacity-reference/CONTRACT.md",
+      "to": "reference/CONTRACT.md",
+      "bytes": 15288,
+      "sha256": "1b1094e4e9ad47b62436b2b72588a109b530ae2f7e0a84d1a4cfb7718ff23d66"
+    },
+    {
+      "from": "set78-prep/daily-capacity-reference/BYTES.md",
+      "to": "reference/BYTES.md",
+      "bytes": 7166,
+      "sha256": "6e7b30ddc6205d4975348457b467ae685d33e464abeac66b1f127a0102b71394"
+    },
+    {
+      "from": "set78-prep/daily-capacity-reference/PLAN.md",
+      "to": "reference/PLAN.md",
+      "bytes": 2409,
+      "sha256": "0a1c5b73aed3a59c33754499f474ff3d5cd9d652f4af05f22edef23c0d3c28af"
+    },
+    {
+      "from": "set78-prep/daily-capacity-reference/inputs/frames.json",
+      "to": "reference/inputs/frames.json",
+      "bytes": 4946,
+      "sha256": "0dc72b08c53112f1fd638463dc498106dc1beb727b0057c730127fa90601a361"
+    },
+    {
+      "from": "set78-prep/daily-capacity-reference/inputs/cases.json",
+      "to": "reference/inputs/cases.json",
+      "bytes": 6174,
+      "sha256": "2f3bec3a25bf0983e945a314006e265950115995d4b177d4c26fcfacc125edf4"
+    },
+    {
+      "from": "set78-prep/daily-capacity-reference/inputs/PROPOSAL.md",
+      "to": "reference/inputs/PROPOSAL.md",
+      "bytes": 13712,
+      "sha256": "45c0b384a480f981aced9d5147f258a18d014cd7b39d4db7a81055e396d1bfdd"
+    },
+    {
+      "from": "set78-prep/daily-capacity-reference/produce.py",
+      "to": "reference/produce.py",
+      "bytes": 25316,
+      "sha256": "9a0ab5fa457f8a154b6ce73581eef811888507c9f22780c3eee30dc6aae109c9"
+    },
+    {
+      "from": "set78-prep/daily-capacity-reference/PRODUCER.md",
+      "to": "reference/PRODUCER.md",
+      "bytes": 3157,
+      "sha256": "76c0e9453c7d810aef26c2f1088f48b2c81d2621fc76783a11e4ac283a0d0217"
+    },
+    {
+      "from": "set78-prep/daily-capacity-sources.json",
+      "to": "daily-capacity-sources.json",
+      "bytes": 3598,
+      "sha256": "2ee531eb9fa0077ce8c1ecce9963f95be96f64b47f9ebeb4eb93c670d7949b5f"
+    },
+    {
+      "from": "set78-prep/daily-capacity-peer-review.md",
+      "to": "daily-capacity-peer-review.md",
+      "bytes": 4054,
+      "sha256": "4d5d44effb2ad02b38eaacefe7946eb05164d66b16d96aefa81157b429699593"
+    },
+    {
+      "from": "artifacts/set78/capacity-reference-attempt1/py314.json",
+      "to": "reference-v1.json",
+      "bytes": 81247,
+      "sha256": "2db086115f51b0c7e22d2fd7688ad5b46c56e238fa1346d709c9a19bebb7aa78"
+    },
+    {
+      "from": "artifacts/set78/capacity-reference-attempt1/report.json",
+      "to": "qualification.json",
+      "bytes": 711,
+      "sha256": "2c81ff41902f136c5e3739d4964f6015d3d69063e2d53c16da1212b985abe9d3"
+    },
+    {
+      "from": "artifacts/set78/capacity-reference-attempt1/producer-lock.approved.json",
+      "to": "reference/producer-lock.approved.json",
+      "bytes": 2924,
+      "sha256": "f93968228147ce6332c929dd8e86f7ac3d03434df788032d29f3cf010ddea442"
+    }
+  ]
+}

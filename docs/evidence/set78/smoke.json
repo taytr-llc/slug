@@ -1,0 +1,294 @@
+{
+  "version": 1,
+  "status": "passed",
+  "checkpoint": "/Users/taytrrip/slug/slug/checkpoints/phase-a/height-1.json",
+  "seed_endpoint": "junction.proxy.rlwy.net:16023",
+  "public_chain_mined": false,
+  "isolated_blocks_before_public_connection": 2,
+  "sync_limit_seconds": 300,
+  "run": "/private/tmp/slug-set78-smoke-nx7km1b8",
+  "source": "21da8ea51de20ed5d1e0587f4a3afd4e079a6bfe",
+  "source_inputs_sha256": "b6c2be09036c1e7bdd447eacd19de63066d44e5b24b29d117ae70f247dfe4363",
+  "build_profile_binding_sha256": "81b56d4d3dae9bc52e22be57262771dcd6d7c773ed89ca78d219af836bd86b48",
+  "build_artifacts_sha256": "6c23c5142c02ba6bc62938c4d298b14f37a5b60353466aa2bc666108d4400e7d",
+  "node_version": "slugd version 0.27.0",
+  "node_arguments": [
+    "/Users/taytrrip/slug/artifacts/set78/smoke-attempt1/bin/slugd",
+    "--notls",
+    "--rpcuser=u",
+    "--rpcpass=p",
+    "--datadir=/private/tmp/slug-set78-smoke-nx7km1b8/data",
+    "--logdir=/private/tmp/slug-set78-smoke-nx7km1b8/logs",
+    "--configfile=/private/tmp/slug-set78-smoke-nx7km1b8/slug.conf",
+    "--nolisten",
+    "--nodnsseed",
+    "--rpclisten=127.0.0.1:54415",
+    "--signedcheckpoint=/Users/taytrrip/slug/slug/checkpoints/phase-a/height-1.json",
+    "--miningaddr=amkchND9pP6STAzbb4M6U4SzU2anReC4R4"
+  ],
+  "initial": {
+    "mode": "report-only",
+    "authorityconfigured": true,
+    "publickey": "811349556ea792060edbb0518dd3a513c5906abe495a81eaf629abd5900c44a3",
+    "requireddescendants": 60,
+    "bestheight": 0,
+    "besthash": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+    "conflict": false,
+    "checkpoints": [
+      {
+        "version": 1,
+        "network": 1397511495,
+        "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "height": 1,
+        "hash": "729d92f2de29fa6415f4920df49164a8a9824971ff972d42037ee7c9d41f470f",
+        "signature": "06042aeb0e15e81e4871a968c7ff14f88d2e3f4946485b939ac9d3db13710301ac59f9b91b683924220d5483ca8a09d08bb64e7294ed4545a534ee2e8af48e0b",
+        "status": "pending",
+        "descendants": 0
+      }
+    ]
+  },
+  "mined": [
+    "6f7e198d786df4f3dca4d09eff59f975c4e6a5ffb36d0d5777a1e0da53ac9728",
+    "415f949ed67ae432c503c191623b9f621607623e31f704f73f0ec659751ba04a"
+  ],
+  "coinbase_value": 10,
+  "conflicting_branch": {
+    "mode": "report-only",
+    "authorityconfigured": true,
+    "publickey": "811349556ea792060edbb0518dd3a513c5906abe495a81eaf629abd5900c44a3",
+    "requireddescendants": 60,
+    "bestheight": 2,
+    "besthash": "415f949ed67ae432c503c191623b9f621607623e31f704f73f0ec659751ba04a",
+    "conflict": true,
+    "checkpoints": [
+      {
+        "version": 1,
+        "network": 1397511495,
+        "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "height": 1,
+        "hash": "729d92f2de29fa6415f4920df49164a8a9824971ff972d42037ee7c9d41f470f",
+        "signature": "06042aeb0e15e81e4871a968c7ff14f88d2e3f4946485b939ac9d3db13710301ac59f9b91b683924220d5483ca8a09d08bb64e7294ed4545a534ee2e8af48e0b",
+        "status": "conflict",
+        "localhash": "6f7e198d786df4f3dca4d09eff59f975c4e6a5ffb36d0d5777a1e0da53ac9728",
+        "descendants": 0
+      }
+    ]
+  },
+  "peers": [
+    {
+      "id": 1,
+      "addr": "66.33.22.241:16023",
+      "addrlocal": "192.168.1.89:54431",
+      "services": "00001101",
+      "relaytxes": true,
+      "lastsend": 1795243968,
+      "lastrecv": 1795243968,
+      "bytessent": 2587,
+      "bytesrecv": 18128,
+      "conntime": 1795243956,
+      "timeoffset": 0,
+      "pingtime": 0,
+      "version": 70016,
+      "subver": "/btcwire:0.5.0/slug:0.27.0/",
+      "inbound": false,
+      "startingheight": 61,
+      "currentheight": 61,
+      "banscore": 0,
+      "feefilter": 0,
+      "syncnode": true,
+      "v2_connection": false
+    }
+  ],
+  "chain": {
+    "chain": "mainnet",
+    "blocks": 61,
+    "headers": 61,
+    "bestblockhash": "1f08a4ac11d4c60ebecbb8dc85401fa2756576c3d1920c45cad5f7113b587ee0",
+    "difficulty": 1,
+    "mediantime": 1794799792,
+    "pruned": false,
+    "warnings": null,
+    "bip9_softforks": {
+      "csv": {
+        "status": "active",
+        "bit": 0,
+        "startTime": 0,
+        "start_time": 1462060800,
+        "timeout": 1493596800,
+        "since": 0,
+        "min_activation_height": 0,
+        "always_active_height": 62
+      },
+      "dummy": {
+        "status": "defined",
+        "bit": 28,
+        "startTime": 0,
+        "start_time": 11991456010,
+        "timeout": 1230767999,
+        "since": 0,
+        "min_activation_height": 0
+      },
+      "dummy-always-active": {
+        "status": "active",
+        "bit": 30,
+        "startTime": 0,
+        "start_time": -62135596800,
+        "timeout": -62135596800,
+        "since": 0,
+        "min_activation_height": 0,
+        "always_active_height": 1
+      },
+      "dummy-min-activation": {
+        "status": "defined",
+        "bit": 22,
+        "startTime": 0,
+        "start_time": -62135596800,
+        "timeout": -62135596800,
+        "since": 0,
+        "min_activation_height": 100000
+      },
+      "segwit": {
+        "status": "active",
+        "bit": 1,
+        "startTime": 0,
+        "start_time": 1479168000,
+        "timeout": 1510704000,
+        "since": 0,
+        "min_activation_height": 0,
+        "always_active_height": 62
+      },
+      "taproot": {
+        "status": "active",
+        "bit": 2,
+        "startTime": 0,
+        "start_time": 1619222400,
+        "timeout": 1628640000,
+        "since": 0,
+        "min_activation_height": 709632,
+        "always_active_height": 62
+      }
+    },
+    "softforks": [
+      {
+        "id": "bip34",
+        "version": 2,
+        "reject": {
+          "status": false
+        }
+      },
+      {
+        "id": "bip66",
+        "version": 3,
+        "reject": {
+          "status": false
+        }
+      },
+      {
+        "id": "bip65",
+        "version": 4,
+        "reject": {
+          "status": false
+        }
+      }
+    ]
+  },
+  "sync_seconds": 12.656066625,
+  "finalized": {
+    "mode": "report-only",
+    "authorityconfigured": true,
+    "publickey": "811349556ea792060edbb0518dd3a513c5906abe495a81eaf629abd5900c44a3",
+    "requireddescendants": 60,
+    "bestheight": 61,
+    "besthash": "1f08a4ac11d4c60ebecbb8dc85401fa2756576c3d1920c45cad5f7113b587ee0",
+    "conflict": false,
+    "checkpoints": [
+      {
+        "version": 1,
+        "network": 1397511495,
+        "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "height": 1,
+        "hash": "729d92f2de29fa6415f4920df49164a8a9824971ff972d42037ee7c9d41f470f",
+        "signature": "06042aeb0e15e81e4871a968c7ff14f88d2e3f4946485b939ac9d3db13710301ac59f9b91b683924220d5483ca8a09d08bb64e7294ed4545a534ee2e8af48e0b",
+        "status": "finalized",
+        "localhash": "729d92f2de29fa6415f4920df49164a8a9824971ff972d42037ee7c9d41f470f",
+        "descendants": 60
+      }
+    ]
+  },
+  "next_block_activation": {
+    "candidate_height": 62,
+    "csv": true,
+    "segwit": true,
+    "taproot": true
+  },
+  "verifychain": true,
+  "normal_stale_template_refused": true,
+  "after_restart": {
+    "mode": "report-only",
+    "authorityconfigured": true,
+    "publickey": "811349556ea792060edbb0518dd3a513c5906abe495a81eaf629abd5900c44a3",
+    "requireddescendants": 60,
+    "bestheight": 61,
+    "besthash": "1f08a4ac11d4c60ebecbb8dc85401fa2756576c3d1920c45cad5f7113b587ee0",
+    "conflict": false,
+    "checkpoints": [
+      {
+        "version": 1,
+        "network": 1397511495,
+        "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "height": 1,
+        "hash": "729d92f2de29fa6415f4920df49164a8a9824971ff972d42037ee7c9d41f470f",
+        "signature": "06042aeb0e15e81e4871a968c7ff14f88d2e3f4946485b939ac9d3db13710301ac59f9b91b683924220d5483ca8a09d08bb64e7294ed4545a534ee2e8af48e0b",
+        "status": "finalized",
+        "localhash": "729d92f2de29fa6415f4920df49164a8a9824971ff972d42037ee7c9d41f470f",
+        "descendants": 60
+      }
+    ]
+  },
+  "exit": 0,
+  "startup_checkpoint_log_verified": true,
+  "cleanup": {
+    "owned_pid": 46968,
+    "forced": false,
+    "joined": true,
+    "exit_code": 0,
+    "groups": [
+      {
+        "pid": 46968,
+        "pgid": 46968,
+        "leftover_after_exit": false,
+        "signals": [],
+        "group_empty": true,
+        "errors": [],
+        "return_code": 0,
+        "stop_errors": [],
+        "clean": true
+      },
+      {
+        "pid": 46925,
+        "pgid": 46925,
+        "leftover_after_exit": false,
+        "signals": [],
+        "group_empty": true,
+        "errors": [],
+        "return_code": 0,
+        "stop_errors": [],
+        "clean": true
+      }
+    ],
+    "remaining_process_groups": []
+  },
+  "final_checks": {
+    "sources": true,
+    "profile": true,
+    "artifact-slugd": true,
+    "artifact-slugctl": true,
+    "binary-slugd": true,
+    "binary-slugctl": true,
+    "evidence-runner.py": true,
+    "evidence-source-inputs.json": true,
+    "evidence-build-profile-binding.json": true,
+    "evidence-build-artifacts.json": true,
+    "evidence-build-result.json": true
+  }
+}

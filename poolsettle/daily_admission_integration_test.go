@@ -1,0 +1,284 @@
+//go:build !slugtestpow && (linux || (darwin && cgo))
+
+// Copyright (c) 2026 The SLUG developers. ISC license.
+package poolsettle
+
+import (
+	"bytes"
+	"context"
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
+	"os"
+	"reflect"
+	"strconv"
+	"strings"
+	"testing"
+
+	"github.com/taytr-llc/slug/internal/poolcapacity"
+	"github.com/taytr-llc/slug/poolshare"
+)
+
+type dailyAdmissionKernelReference struct {
+	Capacity struct {
+		Input   poolcapacity.DailyInputs `json:"input"`
+		Maximum uint64                   `json:"maximum"`
+	} `json:"capacity"`
+	Kernel struct {
+		Fee      int64      `json:"a_fee_atoms"`
+		Payment  int64      `json:"a_payment_atoms"`
+		Change   int64      `json:"a_change_atoms"`
+		Reward   int64      `json:"b_reward_atoms"`
+		Net      []Fraction `json:"round_b_net_by_gym"`
+		Gross    []Fraction `json:"round_b_gross_by_gym"`
+		Operator Fraction   `json:"operator_b_earned"`
+	} `json:"kernel_economics"`
+}
+
+func dailyAdmissionKernelReferenceRead(t *testing.T) dailyAdmissionKernelReference {
+	t.Helper()
+	raw, err := os.ReadFile("testdata/daily-admission-actual/reference-v1.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	sum := sha256.Sum256(raw)
+	if hex.EncodeToString(sum[:]) != "1d2b1462296bd022c53df9dc583db3c38cd13a8e13e84f9983f2505b3aefb08f" {
+		t.Fatal("independent daily recovery reference changed")
+	}
+	var r dailyAdmissionKernelReference
+	if err = json.Unmarshal(raw, &r); err != nil {
+		t.Fatal(err)
+	}
+	if r.Capacity.Maximum != 2 || r.Capacity.Input.Gyms != 2 || len(r.Kernel.Net) != 2 || len(r.Kernel.Gross) != 2 {
+		t.Fatal("reference inventory")
+	}
+	return r
+}
+
+func dailyAdmissionKernelAttach(t *testing.T, h *lateWinnerOwners, ref dailyAdmissionKernelReference, enable bool) {
+	t.Helper()
+	ctx := context.Background()
+	limits, source, err := h.rounds.DailyBinding(ctx)
+	if err != nil || limits != h.roundLimits || source != h.poolConfig {
+		t.Fatal("original round/source binding", err)
+	}
+	config, ledgerSource, err := h.settlement.DailySchedulerBinding(ctx)
+	if err != nil || !reflect.DeepEqual(config, h.settleConfig) || ledgerSource != source {
+		t.Fatal("original ledger/source binding", err)
+	}
+	gyms := make([]string, len(config.Destinations))
+	for i, d := range config.Destinations {
+		gyms[i] = d.GymID
+	}
+	in := poolcapacity.DailyInputs{SourceMax: source.MaxSubmissions, SourceBytes: source.MaxBytes, Rounds: limits.MaxRounds, RoundBytes: limits.MaxBytes, CreditRounds: uint64(config.MaxRounds), Batches: uint64(config.MaxBatches), Gyms: uint64(len(gyms))}
+	if in != ref.Capacity.Input {
+		t.Fatal("original selected limits differ from independent profile")
+	}
+	h.intake, err = h.pool.AttachDailyOperatorAdmission(ctx, source, poolshare.DailyRecoveryBudget{Rounds: limits.MaxRounds, RoundBytes: limits.MaxBytes, CreditRounds: uint64(config.MaxRounds), Batches: uint64(config.MaxBatches), GymIDs: gyms})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if st, err := h.intake.Status(ctx); err != nil || st.Maximum != ref.Capacity.Maximum || !st.CanonicalRecovery || st.OverBound {
+		t.Fatal("original derived controller", st, err)
+	}
+	if enable {
+		if err := h.intake.Enable(ctx); err != nil {
+			t.Fatal(err)
+		}
+	}
+}
+
+// Real normal-PoW original source/round/ledger; canonicality, funding and the
+// signing backend are controlled. Real wall expiry/schema16/fresh process are
+// qualified separately by TestDailyAdmissionActualLateWinnerFreshProcess.
+func TestDailyAdmissionFullIntakePreservesPendingPayoutAcrossOwners(t *testing.T) {
+	ref := dailyAdmissionKernelReferenceRead(t)
+	h := dailyIntegrationFixtureWithCapacity(t, &ref.Capacity.Input)
+	ctx := context.Background()
+	dailyAdmissionKernelAttach(t, h, ref, true)
+	a, err := h.pool.Issue(ctx, "gym-a")
+	if err != nil {
+		t.Fatal(err)
+	}
+	wa, _ := lateWinnerSearch(t, h, a, false)
+	h.node.canonical[wa.WorkHash], h.node.tip = true, a.Job.Context.ParentHeight+61
+	if r, err := h.pool.Submit(ctx, "gym-a", a.Job.ID, wa.Nonce); err != nil || r.AcceptedSequence != 1 {
+		t.Fatal(r, err)
+	}
+	if _, err := h.rounds.Sync(ctx); err != nil {
+		t.Fatal(err)
+	}
+	if r, err := h.rounds.Refresh(ctx, wa.WorkHash); err != nil || r.Confirmation == nil {
+		t.Fatal(r, err)
+	}
+	base := h.backend.Backend.(*settlementBackend)
+	base.loseAck = true
+	report, err := h.settlement.RunDaily(ctx)
+	if err != nil || report.State != "pending" || report.Reason != "broadcast-unknown" {
+		t.Fatal(report, err)
+	}
+	v := dailyIntegrationView(t, h, 1, 1, 1)
+	if v.pending == nil {
+		t.Fatal("original A missing")
+	}
+	original := clone(*v.pending)
+	body := dailyIntegrationRaw(t, h.settlement, dailyNumber("b/", 1))
+	if len(original.Inputs) != 1 || len(original.Payments) != 1 || original.Payments[0].GymID != a.Job.GymID || original.Payments[0].Atoms != ref.Kernel.Payment || original.FeeAtoms != ref.Kernel.Fee || original.Change == nil || original.Change.Atoms != ref.Kernel.Change {
+		t.Fatal("independent pending A economics", original)
+	}
+	assertA := func() {
+		t.Helper()
+		if !bytes.Equal(body, dailyIntegrationRaw(t, h.settlement, dailyNumber("b/", 1))) || h.backend.signs != 1 || h.backend.quotes != 1 || base.signCalls != 1 || base.broadcasts != 1 || len(base.broadcastBytes) != 1 || hex.EncodeToString(base.broadcastBytes[0]) != original.Raw {
+			t.Fatal("A rewritten, resigned or sent again")
+		}
+	}
+	dailyIntegrationBalance(t, report, a.Job.GymID, strconv.FormatInt(ref.Kernel.Payment, 10), "0", ref.Kernel.Payment, 0)
+	// Distinct same-parent jobs are needed because every original job is gym-bound.
+	h.node.template.Context.ParentHash = strings.Repeat("a", 64)
+	h.node.template.Context.ParentHeight = h.node.tip
+	h.node.template.Block.PreviousHash = h.node.template.Context.ParentHash
+	h.node.template.Block.Height = int64(h.node.tip) + 1
+	b, err := h.pool.Issue(ctx, "gym-b")
+	if err != nil {
+		t.Fatal(err)
+	}
+	wb, _ := lateWinnerSearch(t, h, b, false)
+	c, err := h.pool.Issue(ctx, "gym-a")
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, sc := lateWinnerSearch(t, h, c, true)
+	ordinary, err := h.pool.Submit(ctx, "gym-a", c.Job.ID, sc.Nonce)
+	if err != nil || ordinary.Block || ordinary.Sequence != 2 || ordinary.AcceptedSequence != 2 {
+		t.Fatal(ordinary, err)
+	}
+	if st, err := h.intake.Status(ctx); err != nil || st.Mode != "draining" || st.Maximum != 2 || st.Submissions != 2 || st.Accepted != 2 || st.OverBound {
+		t.Fatal(st, err)
+	}
+	info, err := h.issuer.Info()
+	if err != nil || info.Jobs != 3 || info.Records != 0 {
+		t.Fatal(info, err)
+	}
+	if _, err := h.pool.Issue(ctx, "gym-a"); err != poolshare.ErrCapacity {
+		t.Fatal("ordinary issue did not drain", err)
+	}
+	if after, err := h.issuer.Info(); err != nil || !reflect.DeepEqual(after, info) {
+		t.Fatal("drain changed issuer", after, err)
+	}
+	if _, err := h.pool.Submit(ctx, "gym-b", b.Job.ID, wb.Nonce); err != poolshare.ErrNode {
+		t.Fatal("noncanonical new winner admitted", err)
+	}
+	h.node.canonical[wb.WorkHash], h.node.tip = true, b.Job.Context.ParentHeight+1
+	late, err := h.pool.Submit(ctx, "gym-b", b.Job.ID, wb.Nonce)
+	if err != nil || late.Sequence != 3 || late.AcceptedSequence != 3 || !late.Block || late.BlockState != "canonical-observed" || late.Acceptance != "canonical-winning-block" {
+		t.Fatal(late, err)
+	}
+	if _, err := h.rounds.Sync(ctx); err != nil {
+		t.Fatal(err)
+	}
+	if row, err := h.rounds.Refresh(ctx, wb.WorkHash); err != nil || row.Confirmation != nil || row.Round.Sequence != 2 || row.Round.FirstAccepted != 2 || row.Round.LastAccepted != 3 || len(row.Round.ShareKeys) != 2 || len(row.Round.Allocations) != 2 || row.Round.RewardAtoms != ref.Kernel.Reward {
+		t.Fatal("original two-share round", row, err)
+	}
+	dailyIntegrationView(t, h, 1, 1, 1)
+	assertA()
+	if report, err = h.settlement.RunDaily(ctx); err != nil || report.State != "pending" {
+		t.Fatal(report, err)
+	}
+	dailyIntegrationView(t, h, 1, 1, 1)
+	assertA()
+	old := h.intake
+	dailyIntegrationReopen(t, h)
+	if _, err := old.Status(ctx); err != poolshare.ErrClosed {
+		t.Fatal("old intake survived", err)
+	}
+	dailyAdmissionKernelAttach(t, h, ref, false)
+	if got, err := h.pool.Submit(ctx, "gym-b", b.Job.ID, wb.Nonce); err != nil || got != late {
+		t.Fatal("original nonce changed on reopen", got, late, err)
+	}
+	if st, err := h.intake.Status(ctx); err != nil || st.Submissions != 3 || st.Accepted != 3 || st.RecoveryBlocks != 2 || st.Mode != "draining" || st.OverBound {
+		t.Fatal(st, err)
+	}
+	dailyIntegrationView(t, h, 1, 1, 1)
+	assertA()
+	// Existing signed A recovers before any new credit/import or candidate.
+	if report, err = h.settlement.RecoverPending(ctx); err != nil || report.State != "pending" {
+		t.Fatal(report, err)
+	}
+	assertA()
+	base.confirmations = 1
+	if report, err = h.settlement.RecoverPending(ctx); err != nil || report.State != "complete" {
+		t.Fatal(report, err)
+	}
+	dailyIntegrationView(t, h, 1, 1, 0)
+	assertA()
+	// Explicit controlled funding: A change is ready, B coinbase is immature.
+	h.backend.inspect = func(_ context.Context, coins []Coin) ([]Funding, error) {
+		out := make([]Funding, len(coins))
+		for i, coin := range coins {
+			state := "ready"
+			if coin.BlockHash == wb.WorkHash {
+				state = "immature"
+			}
+			out[i] = Funding{TxID: coin.TxID, Index: coin.Index, State: state}
+		}
+		return out, nil
+	}
+	h.node.tip = b.Job.Context.ParentHeight + 60
+	if row, err := h.rounds.Refresh(ctx, wb.WorkHash); err != nil || row.Confirmation != nil {
+		t.Fatal("B confirmed at59 descendants", row, err)
+	}
+	if report, err = h.settlement.RunDaily(ctx); err != nil || report.Reason != "daily-batch-complete" {
+		t.Fatal(report, err)
+	}
+	dailyIntegrationView(t, h, 1, 1, 0)
+	assertA()
+	h.node.tip++
+	if row, err := h.rounds.Refresh(ctx, wb.WorkHash); err != nil || row.Confirmation == nil {
+		t.Fatal("B failed60 descendants", row, err)
+	}
+	for retry := 0; retry < 2; retry++ {
+		if got, err := h.pool.Submit(ctx, "gym-b", b.Job.ID, wb.Nonce); err != nil || got != late {
+			t.Fatal("duplicate B receipt", got, err)
+		}
+		if report, err = h.settlement.RunDaily(ctx); err != nil || report.State != "complete" || report.Reason != "daily-batch-complete" {
+			t.Fatal(report, err)
+		}
+		dailyIntegrationView(t, h, 2, 1, 0)
+		assertA()
+		if len(report.Balances) != 2 {
+			t.Fatal("exact configured balance inventory")
+		}
+		for _, balance := range report.Balances {
+			i, paid := 1, int64(0)
+			if balance.GymID == a.Job.GymID {
+				i, paid = 0, ref.Kernel.Payment
+			} else if balance.GymID != b.Job.GymID {
+				t.Fatal("unexpected balance gym")
+			}
+			if balance.Confirmed != ref.Kernel.Net[i] || balance.Available != (Fraction{"0", "1"}) || balance.ReservedAtoms != 0 || balance.PaidAtoms != paid || balance.Reason != "daily-batch-complete" {
+				t.Fatal("independent remaining balance", balance)
+			}
+		}
+	}
+	var credit Credit
+	if dailyDecode(dailyIntegrationRaw(t, h.settlement, dailyNumber("c/", 2)), dailyCreditLimit, &credit) != nil || credit.RoundHash != wb.WorkHash || credit.Coin.Atoms != ref.Kernel.Reward {
+		t.Fatal("one original B credit", credit)
+	}
+	want := map[string]Fraction{"": ref.Kernel.Operator, a.Job.GymID: ref.Kernel.Net[0], b.Job.GymID: ref.Kernel.Net[1]}
+	if len(credit.Coin.Claims) != len(want) {
+		t.Fatal("B original claim count")
+	}
+	for _, claim := range credit.Coin.Claims {
+		expected, ok := want[claim.GymID]
+		if !ok || claim.Amount != expected || claim.RoundHash != wb.WorkHash {
+			t.Fatal("B original claim", claim)
+		}
+		delete(want, claim.GymID)
+	}
+	if len(want) != 0 {
+		t.Fatal("missing original claim")
+	}
+	if info, err := h.issuer.Info(); err != nil || info.Jobs != 3 || info.Records != 0 {
+		t.Fatal("unexpected issuance or fighter birth", info, err)
+	}
+}

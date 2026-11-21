@@ -72,7 +72,12 @@ func (n *lateWinnerNode) ObservePoolBlock(ctx context.Context, c prospect.Contex
 		return prospectnode.PoolBlockObservation{}, e
 	}
 	height := c.ParentHeight + 1
-	return prospectnode.PoolBlockObservation{BlockHash: hash, BlockHeight: height, TipHash: strings.Repeat("a", 64), TipHeight: n.tip, Canonical: true, Descendants: n.tip - height}, nil
+	tipHash := strings.Repeat("a", 64)
+	if n.tip == height {
+		// A zero-descendant canonical block is itself the observed tip.
+		tipHash = hash
+	}
+	return prospectnode.PoolBlockObservation{BlockHash: hash, BlockHeight: height, TipHash: tipHash, TipHeight: n.tip, Canonical: true, Descendants: n.tip - height}, nil
 }
 
 type lateWinnerSessions map[string]string

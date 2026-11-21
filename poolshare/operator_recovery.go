@@ -31,7 +31,7 @@ func (a *OperatorAdmission) recoveryInputs(b RecoveryBudget) poolcapacity.Inputs
 // Physical receipt/byte limits still apply; there is no unbounded continuation.
 func (a *OperatorAdmission) EnableCanonicalRecovery(ctx context.Context, budget RecoveryBudget) error {
 	return a.with(ctx, func() error {
-		if a.recovery != nil {
+		if a.recovery != nil || a.daily != nil {
 			return ErrConfig
 		}
 		bound, err := poolcapacity.Envelope(a.recoveryInputs(budget))
@@ -108,11 +108,21 @@ func (a *OperatorAdmission) recoveryBound(ctx context.Context, additionalGym str
 
 func (p *Pool) recoverCanonical(ctx context.Context, w savedWork, check prospectwork.ShareCheck, received int64, session *poolSession) (Submission, error) {
 	a := p.operatorAdmission
-	if a == nil || a.recovery == nil || !check.Block || check.Candidate == nil {
+	if a == nil || (a.recovery == nil && a.daily == nil) {
 		return Submission{}, ErrCapacity
 	}
-	if _, _, err := a.recoveryBound(ctx, w.Job.GymID); err != nil {
-		return Submission{}, err
+	if a.daily != nil {
+		if err := a.dailyRecoveryBound(ctx); err != nil {
+			return Submission{}, err
+		}
+	}
+	if !check.Block || check.Candidate == nil {
+		return Submission{}, ErrCapacity
+	}
+	if a.daily == nil {
+		if _, _, err := a.recoveryBound(ctx, w.Job.GymID); err != nil {
+			return Submission{}, err
+		}
 	}
 	if err := session.check(); err != nil {
 		return Submission{}, err

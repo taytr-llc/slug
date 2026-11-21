@@ -1,0 +1,438 @@
+{
+  "capacity-attempt1": {
+    "clean_join": null,
+    "commands": [
+      {
+        "exit_code": 0,
+        "seconds": 0.38
+      },
+      {
+        "exit_code": 0,
+        "seconds": 1.389
+      },
+      {
+        "exit_code": 0,
+        "seconds": 2.454
+      },
+      {
+        "exit_code": 0,
+        "seconds": 0.632
+      },
+      {
+        "exit_code": 0,
+        "seconds": 0.236
+      }
+    ],
+    "passed": true,
+    "path": "/Users/taytrrip/slug/artifacts/set78/capacity-attempt1/report.json",
+    "profile_unchanged": true,
+    "sha256": "15869aab539e6d20e116858d6d586d4e3b3b3e4f2c7880644af2e1d14d035afb",
+    "sources_unchanged": true
+  },
+  "closeout-attempt1": {
+    "clean_join": true,
+    "commands": [
+      {
+        "exit_code": 0,
+        "label": "inventory-before-chain",
+        "seconds": 0.077
+      },
+      {
+        "exit_code": 0,
+        "label": "inventory-before-wallet",
+        "seconds": 0.042
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-chain-0",
+        "seconds": 0.946
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-chain-1",
+        "seconds": 0.328
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-chain-2",
+        "seconds": 0.437
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-chain-3",
+        "seconds": 0.382
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-chain-4",
+        "seconds": 0.326
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-chain-5",
+        "seconds": 0.296
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-chain-6",
+        "seconds": 0.329
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-chain-7",
+        "seconds": 0.326
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-chain-8",
+        "seconds": 0.277
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-chain-9",
+        "seconds": 0.33
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-wallet-0",
+        "seconds": 0.441
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-wallet-1",
+        "seconds": 0.181
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-wallet-2",
+        "seconds": 0.127
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-wallet-3",
+        "seconds": 0.184
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-wallet-4",
+        "seconds": 0.177
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-wallet-5",
+        "seconds": 0.237
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-desktop-0",
+        "seconds": 0.737
+      },
+      {
+        "exit_code": 0,
+        "label": "build-chain-0",
+        "seconds": 14.304
+      },
+      {
+        "exit_code": 0,
+        "label": "build-chain-1",
+        "seconds": 0.184
+      },
+      {
+        "exit_code": 0,
+        "label": "build-chain-2",
+        "seconds": 0.127
+      },
+      {
+        "exit_code": 0,
+        "label": "build-chain-3",
+        "seconds": 0.184
+      },
+      {
+        "exit_code": 0,
+        "label": "build-chain-4",
+        "seconds": 0.13
+      },
+      {
+        "exit_code": 0,
+        "label": "build-chain-5",
+        "seconds": 0.131
+      },
+      {
+        "exit_code": 0,
+        "label": "build-chain-6",
+        "seconds": 0.183
+      },
+      {
+        "exit_code": 0,
+        "label": "build-chain-7",
+        "seconds": 0.183
+      },
+      {
+        "exit_code": 0,
+        "label": "build-chain-8",
+        "seconds": 0.127
+      },
+      {
+        "exit_code": 0,
+        "label": "build-chain-9",
+        "seconds": 0.13
+      },
+      {
+        "exit_code": 0,
+        "label": "build-wallet-0",
+        "seconds": 10.153
+      },
+      {
+        "exit_code": 0,
+        "label": "build-wallet-1",
+        "seconds": 0.188
+      },
+      {
+        "exit_code": 0,
+        "label": "build-wallet-2",
+        "seconds": 0.179
+      },
+      {
+        "exit_code": 0,
+        "label": "build-wallet-3",
+        "seconds": 0.183
+      },
+      {
+        "exit_code": 0,
+        "label": "build-wallet-4",
+        "seconds": 0.127
+      },
+      {
+        "exit_code": 0,
+        "label": "build-wallet-5",
+        "seconds": 0.185
+      },
+      {
+        "exit_code": 0,
+        "label": "build-desktop-0",
+        "seconds": 20.753
+      },
+      {
+        "exit_code": 1,
+        "label": "accounting-normal",
+        "seconds": 78.181
+      },
+      {
+        "exit_code": 0,
+        "label": "inventory-after-chain",
+        "seconds": 0.075
+      },
+      {
+        "exit_code": 0,
+        "label": "inventory-after-wallet",
+        "seconds": 0.042
+      }
+    ],
+    "passed": false,
+    "path": "/Users/taytrrip/slug/artifacts/set78/closeout-attempt1/report.json",
+    "profile_unchanged": true,
+    "sha256": "a76967563841407c9f477d32ab4ebd5246a34cfcfc65c70c289b7a0ddcc31f5f",
+    "sources_unchanged": true
+  },
+  "closeout-attempt2": {
+    "clean_join": true,
+    "commands": [
+      {
+        "exit_code": 0,
+        "label": "inventory-before-chain",
+        "seconds": 0.072
+      },
+      {
+        "exit_code": 0,
+        "label": "inventory-before-wallet",
+        "seconds": 0.042
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-chain-0",
+        "seconds": 0.737
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-chain-1",
+        "seconds": 0.238
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-chain-2",
+        "seconds": 0.231
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-chain-3",
+        "seconds": 0.233
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-chain-4",
+        "seconds": 0.239
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-chain-5",
+        "seconds": 0.185
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-chain-6",
+        "seconds": 0.24
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-chain-7",
+        "seconds": 0.239
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-chain-8",
+        "seconds": 0.177
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-chain-9",
+        "seconds": 0.232
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-wallet-0",
+        "seconds": 0.433
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-wallet-1",
+        "seconds": 0.183
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-wallet-2",
+        "seconds": 0.127
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-wallet-3",
+        "seconds": 0.186
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-wallet-4",
+        "seconds": 0.18
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-wallet-5",
+        "seconds": 0.235
+      },
+      {
+        "exit_code": 0,
+        "label": "deps-desktop-0",
+        "seconds": 0.495
+      },
+      {
+        "exit_code": 0,
+        "label": "accounting-normal",
+        "seconds": 30.304
+      },
+      {
+        "exit_code": 0,
+        "label": "accounting-race",
+        "seconds": 315.094
+      },
+      {
+        "exit_code": 0,
+        "label": "live-round-cheap-refusal",
+        "seconds": 3.022
+      },
+      {
+        "exit_code": 0,
+        "label": "daily-admission-cheap-refusal",
+        "seconds": 1.697
+      },
+      {
+        "exit_code": 0,
+        "label": "accounting-vet",
+        "seconds": 0.769
+      },
+      {
+        "exit_code": 0,
+        "label": "pooloperator-normal",
+        "seconds": 42.586
+      },
+      {
+        "exit_code": 0,
+        "label": "pooloperator-race",
+        "seconds": 272.355
+      },
+      {
+        "exit_code": 0,
+        "label": "pooloperator-vet",
+        "seconds": 1.852
+      },
+      {
+        "exit_code": 0,
+        "label": "gofmt-chain",
+        "seconds": 1.014
+      },
+      {
+        "exit_code": 0,
+        "label": "diff-chain",
+        "seconds": 0.079
+      },
+      {
+        "exit_code": 0,
+        "label": "gofmt-wallet",
+        "seconds": 0.236
+      },
+      {
+        "exit_code": 0,
+        "label": "diff-wallet",
+        "seconds": 0.022
+      },
+      {
+        "exit_code": 0,
+        "label": "inventory-after-chain",
+        "seconds": 0.077
+      },
+      {
+        "exit_code": 0,
+        "label": "inventory-after-wallet",
+        "seconds": 0.022
+      }
+    ],
+    "passed": true,
+    "path": "/Users/taytrrip/slug/artifacts/set78/closeout-attempt2/report.json",
+    "profile_unchanged": true,
+    "sha256": "aff76878d0581b0d4008b10a22e9f6ae0dcb3e3c6292c539673c73d71d7c47a6",
+    "sources_unchanged": true
+  },
+  "first_attempt_unaffected_normal_packages": [
+    "github.com/taytr-llc/slug/internal/poolcapacity",
+    "github.com/taytr-llc/slug/poolround",
+    "github.com/taytr-llc/slug/poolschedule",
+    "github.com/taytr-llc/slug/poolshare"
+  ],
+  "passed": true,
+  "preserved_failure": "closeout-attempt1 accounting normal: controlled zero-descendant observation used the wrong tip hash; production correctly refused it. Only the test fixture was corrected.",
+  "production_changed_after_initial_qualification": false,
+  "scope": "set78-composite-local-qualification",
+  "second_attempt_sole_changed_input": {
+    "after_sha256": "e8956f0f4b409c65284fcc737b5046f92c1bc201165f33ca4e1f5914a8863087",
+    "before_sha256": "5e67d314cb22b91f1269f8e2c75d4a38e99473bd0f54debf657d08e2266b5fb1",
+    "path": "poolsettle/late_winner_operator_test.go"
+  },
+  "verification_summary": {
+    "accounting_normal_packages": 5,
+    "accounting_race_packages": 5,
+    "format": true,
+    "module_builds": 17,
+    "operator_normal": true,
+    "operator_race": true,
+    "original_v1_regressions": true,
+    "profile_refusals": true,
+    "vet": true
+  }
+}

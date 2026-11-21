@@ -23,6 +23,7 @@ import (
 type poolSession struct {
 	lease   *mininglease.Lease
 	ctx     context.Context // original bounded operation; never a replacement
+	gym     string          // derived from the original captured key and policy
 	effects bool            // issued work, retained share, or attempted block transmission
 }
 
@@ -112,10 +113,11 @@ func (p *Pool) withSession(ctx context.Context, token string, fn func(context.Co
 	}
 	key := lease.PublicKey()
 	identity := prospect.Context{Version: p.config.Policy.Version, Network: p.config.Policy.Network, Genesis: p.config.Policy.Genesis, DNAVersion: p.config.Policy.DNAVersion}
-	if _, err := gymauth.GymID(identity, key); err != nil {
+	gym, err := gymauth.GymID(identity, key)
+	if err != nil {
 		return ErrUnauthorized
 	}
-	session := &poolSession{lease: lease, ctx: ctx}
+	session := &poolSession{lease: lease, ctx: ctx, gym: gym}
 	err = fn(ctx, key, session)
 	if (err == ErrCapacity || err == registry.ErrPublicCapacity) && p.operatorAdmission != nil {
 		p.operatorAdmission.draining = true
@@ -146,6 +148,9 @@ func (p *Pool) issue(ctx context.Context, token string) (savedWork, Work, error)
 	var retained savedWork
 	var result Work
 	err := p.withSession(ctx, token, func(ctx context.Context, key string, session *poolSession) error {
+		if err := p.dailyRequestMember(session.gym); err != nil {
+			return err
+		}
 		if err := p.operatorIntake(); err != nil {
 			return err
 		}
@@ -158,6 +163,9 @@ func (p *Pool) issue(ctx context.Context, token string) (savedWork, Work, error)
 		}
 		if info.Jobs >= p.config.MaxWorks || p.meta.Works >= p.config.MaxWorks || p.meta.Submissions >= p.config.MaxSubmissions || maxSubmissionSize >= p.config.MaxBytes-p.meta.Bytes {
 			return ErrCapacity
+		}
+		if err := p.dailyWorkHeadroom(maxWorkSize); err != nil {
+			return err
 		}
 		template, err := p.node.ResolveTemplate(ctx, p.config.Policy)
 		if err != nil || !p.samePolicy(template.Context) || !templateBounds(template) {
@@ -304,12 +312,15 @@ func (p *Pool) Submit(ctx context.Context, token, jobID string, nonce uint32) (S
 		if !errors.Is(err, ErrNotFound) {
 			return err
 		}
+		if err := p.dailyRequestMember(session.gym); err != nil {
+			return err
+		}
 		intakeErr := p.operatorIntake()
-		canonicalRecovery := intakeErr == ErrCapacity && p.operatorAdmission != nil && p.operatorAdmission.recovery != nil
+		canonicalRecovery := intakeErr == ErrCapacity && p.operatorAdmission != nil && (p.operatorAdmission.recovery != nil || p.operatorAdmission.daily != nil)
 		if intakeErr != nil && !canonicalRecovery {
 			return intakeErr
 		}
-		if p.meta.Submissions >= p.config.MaxSubmissions || maxSubmissionSize > p.config.MaxBytes-p.meta.Bytes {
+		if !(canonicalRecovery && p.operatorAdmission.daily != nil) && (p.meta.Submissions >= p.config.MaxSubmissions || maxSubmissionSize > p.config.MaxBytes-p.meta.Bytes) {
 			return ErrCapacity
 		}
 		received, err := p.sessionClock(session)

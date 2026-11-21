@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "approved_by": "root",
+  "scope": "Source-only frozen independent DAILY capacity producer. Root must approve a copied lock before execution; no output generated.",
+  "source_ready_sha256": "625fc3cb19afe403bb4782051152e966dbbb077e13cc6d9ef38fb24534168e89",
+  "files": [
+    {
+      "path": "source-ready.json",
+      "bytes": 1498,
+      "sha256": "625fc3cb19afe403bb4782051152e966dbbb077e13cc6d9ef38fb24534168e89"
+    },
+    {
+      "path": "root-approval.json",
+      "bytes": 1029,
+      "sha256": "0ac22e61089d46fb9f4fa8199d2dba31cfd65682c75a4e8e27f9dbea0d55ea2d"
+    },
+    {
+      "path": "CONTRACT.md",
+      "bytes": 15288,
+      "sha256": "1b1094e4e9ad47b62436b2b72588a109b530ae2f7e0a84d1a4cfb7718ff23d66"
+    },
+    {
+      "path": "BYTES.md",
+      "bytes": 7166,
+      "sha256": "6e7b30ddc6205d4975348457b467ae685d33e464abeac66b1f127a0102b71394"
+    },
+    {
+      "path": "PLAN.md",
+      "bytes": 2409,
+      "sha256": "0a1c5b73aed3a59c33754499f474ff3d5cd9d652f4af05f22edef23c0d3c28af"
+    },
+    {
+      "path": "inputs/frames.json",
+      "bytes": 4946,
+      "sha256": "0dc72b08c53112f1fd638463dc498106dc1beb727b0057c730127fa90601a361"
+    },
+    {
+      "path": "inputs/cases.json",
+      "bytes": 6174,
+      "sha256": "2f3bec3a25bf0983e945a314006e265950115995d4b177d4c26fcfacc125edf4"
+    },
+    {
+      "path": "inputs/PROPOSAL.md",
+      "bytes": 13712,
+      "sha256": "45c0b384a480f981aced9d5147f258a18d014cd7b39d4db7a81055e396d1bfdd"
+    },
+    {
+      "path": "../daily-capacity-sources.json",
+      "bytes": 3598,
+      "sha256": "2ee531eb9fa0077ce8c1ecce9963f95be96f64b47f9ebeb4eb93c670d7949b5f"
+    },
+    {
+      "path": "../daily-capacity-peer-review.md",
+      "bytes": 4054,
+      "sha256": "4d5d44effb2ad02b38eaacefe7946eb05164d66b16d96aefa81157b429699593"
+    },
+    {
+      "path": "produce.py",
+      "bytes": 25316,
+      "sha256": "9a0ab5fa457f8a154b6ce73581eef811888507c9f22780c3eee30dc6aae109c9"
+    },
+    {
+      "path": "PRODUCER.md",
+      "bytes": 3157,
+      "sha256": "76c0e9453c7d810aef26c2f1088f48b2c81d2621fc76783a11e4ac283a0d0217"
+    }
+  ],
+  "dependencies": {
+    "local_modules": [],
+    "standard_library": [
+      "argparse",
+      "hashlib",
+      "json",
+      "math",
+      "pathlib"
+    ],
+    "interpreters": [
+      "existing Python 3.14",
+      "existing Python 3.9"
+    ],
+    "product_outputs_or_imports": false
+  },
+  "invocation": {
+    "cwd": "/Users/taytrrip/slug/set78-prep/daily-capacity-reference",
+    "argv": [
+      "<existing-python>",
+      "produce.py",
+      "--lock",
+      "/absolute/producer-lock.approved.json",
+      "--output",
+      "/absolute/fresh/reference.json"
+    ],
+    "timeout_seconds": 60,
+    "maximum_output_bytes": 2097152,
+    "maximum_log_bytes": 65536,
+    "fresh_outputs_per_interpreter": true,
+    "require_byte_identical_reproduction": true,
+    "require_final_source_hashes_unchanged": true
+  }
+}

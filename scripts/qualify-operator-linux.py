@@ -319,8 +319,22 @@ def main():
                           "TestOperatorLiveRoundCloseJoinsSelection"])
             # These complete package suites preserve V1 controls as well as
             # requiring the new daily boundary cases. No actual-test build tag.
-            gate.test(mode + "-daily-source-round", root, ["./poolshare", "./poolround"],
+            gate.test(mode + "-daily-source-round", root, ["./internal/poolcapacity", "./poolshare", "./poolround"],
                       desktop / "go.work", race, required=[
+                          "TestDailyRecoveryIndependentReference",
+                          "TestDailyEnvelopeIndependentReference",
+                          "TestDailyCapacityProofFrames",
+                          "TestRecoveryIndependentTwoAxisReference",
+                          "TestDailyOperatorDerivedFullUnseenCanonicalReopen",
+                          "TestDailyOperatorSelectionMembershipAndOwnedBudget",
+                          "TestDailyOperatorSourceHoldbackBeforeIssuer",
+                          "TestDailyOperatorAuditPrecedenceAndOriginalMetadata",
+                          "TestDailyOperatorUncertainCommitAndExactSavedRecovery",
+                          "TestDailyOperatorDrainOnlyPendingAndPostCeilingHold",
+                          "TestDailyOperatorOriginalCancellationCloseAndErrorClass",
+                          "TestDailyOperatorAliasesCountWholeBudget",
+                          "TestDailyOperatorPhysicalFullAuditAndLegacyParity",
+                          "TestDailyOperatorFinalSessionClockAndCapacityError",
                           "TestDailySourceIndependentGrammarAndKeys",
                           "TestDailySource721OriginalJobsAndReopen",
                           "TestDailySourceCanonicalStorageRefusals",
@@ -364,6 +378,7 @@ def main():
                           "TestDailyLedgerStagedImportAtomic",
                           "TestDailyLedgerWriteUncertaintyRetainsExactSignedHistory",
                           "TestDailyLedgerConditionalWholeFrontierWeightDeferral",
+                          "TestDailyAdmissionFullIntakePreservesPendingPayoutAcrossOwners",
                           "TestDailyOperatorSourcePendingRecoveryAndNextDay",
                           "TestDailySigningIndependentBytes",
                           "TestDailySigningOpaqueOriginalLifetime",
@@ -381,7 +396,7 @@ def main():
                 "pow_testpow.go" not in cheap_wire["GoFiles"] or
                 "pow_production.go" in cheap_wire["GoFiles"]):
             raise RuntimeError("cheap refusal proof-of-work source not selected")
-        cheap_core = ["TestDailySourceCheapRefusesBeforeEffects",
+        cheap_core = ["TestDailyOperatorCheapRefusal", "TestDailySourceCheapRefusesBeforeEffects",
                       "TestDailyRoundProfileRefusal", "TestDailyNodeCheapProfile",
                       "TestDailyLedgerCheapRefusalBeforeEffects", "TestDailySigningCheapRefusal",
                       "TestDailyScheduleCheapAndCanceledBeforeEffects",
@@ -398,7 +413,7 @@ def main():
             ("wallet", wallet, ["./waddrmgr", "./wallet"], wallet / "go.work"),
             ("operator", desktop, ["./pooloperator"], desktop / "go.work"),
             ("daily-components", root,
-             ["./poolshare", "./poolround", "./pooltxshape", "./poolsettlenode",
+             ["./internal/poolcapacity", "./poolshare", "./poolround", "./pooltxshape", "./poolsettlenode",
               "./poolsettle", "./poolschedule", "./registry", "./poolservice"], desktop / "go.work")):
             gate.run("vet-" + label, ["go", "vet", "-p=1", "-tags=", "-gcflags=" + PROFILE["gcflags"]] + packages,
                      cwd, 300, {"GOWORK": str(workspace)})

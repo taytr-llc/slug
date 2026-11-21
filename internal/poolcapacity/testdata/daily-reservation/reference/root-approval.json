@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "approved_by": "root",
+  "at": "2026-11-21T05:59:53.444550+00:00",
+  "source_ready_sha256": "625fc3cb19afe403bb4782051152e966dbbb077e13cc6d9ef38fb24534168e89",
+  "scope": "Finite explicit daily reservation and original intake/controller; subsequent public transport integration is separate",
+  "selected_contract": {
+    "path": "CONTRACT.md",
+    "bytes": 15288,
+    "sha256": "1b1094e4e9ad47b62436b2b72588a109b530ae2f7e0a84d1a4cfb7718ff23d66"
+  },
+  "selected_bytes": {
+    "path": "BYTES.md",
+    "bytes": 7166,
+    "sha256": "6e7b30ddc6205d4975348457b467ae685d33e464abeac66b1f127a0102b71394"
+  },
+  "stage_allowed": "Independent producer source authoring only; no output until root source review. Go product authoring waits for reproducible independent output.",
+  "search_bound": "one initial plus at most12 binary probes,13 total",
+  "required_actual": "original daily owners, real jobexpiry, derived ordinary full, freshprocess retry, one credit and exact pending A",
+  "user_policy_unchanged": true
+}

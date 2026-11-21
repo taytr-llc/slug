@@ -1,0 +1,336 @@
+{
+  "version": 1,
+  "scope": "symbolic native84 shape only; no signature, funding, ledger or daily payout execution",
+  "input_sha256": "eb270e0b4cc22ecc5b3b6c768e58611da9588b301cdf0075e8bc1b80cb404715",
+  "contract_sha256": "671997100f7dfe07e726249e0121bafad3fbd095e81c289ed196b200617df16b",
+  "cases": [
+    {
+      "name": "minimum-no-change",
+      "inputs": 1,
+      "payees": 1,
+      "change": false,
+      "result": "ok",
+      "dimensions": {
+        "stripped_bytes": 82,
+        "witness_bytes": 111,
+        "raw_bytes": 193,
+        "weight": 439,
+        "vsize": 110
+      }
+    },
+    {
+      "name": "minimum-with-change",
+      "inputs": 1,
+      "payees": 1,
+      "change": true,
+      "result": "ok",
+      "dimensions": {
+        "stripped_bytes": 113,
+        "witness_bytes": 111,
+        "raw_bytes": 224,
+        "weight": 563,
+        "vsize": 141
+      }
+    },
+    {
+      "name": "input-compact-252",
+      "inputs": 252,
+      "payees": 1,
+      "change": false,
+      "result": "ok",
+      "dimensions": {
+        "stripped_bytes": 10373,
+        "witness_bytes": 27470,
+        "raw_bytes": 37843,
+        "weight": 68962,
+        "vsize": 17241
+      }
+    },
+    {
+      "name": "input-compact-253",
+      "inputs": 253,
+      "payees": 1,
+      "change": false,
+      "result": "ok",
+      "dimensions": {
+        "stripped_bytes": 10416,
+        "witness_bytes": 27579,
+        "raw_bytes": 37995,
+        "weight": 69243,
+        "vsize": 17311
+      }
+    },
+    {
+      "name": "output-252-with-change",
+      "inputs": 1,
+      "payees": 251,
+      "change": true,
+      "result": "ok",
+      "dimensions": {
+        "stripped_bytes": 7863,
+        "witness_bytes": 111,
+        "raw_bytes": 7974,
+        "weight": 31563,
+        "vsize": 7891
+      }
+    },
+    {
+      "name": "output-252-no-change",
+      "inputs": 1,
+      "payees": 252,
+      "change": false,
+      "result": "ok",
+      "dimensions": {
+        "stripped_bytes": 7863,
+        "witness_bytes": 111,
+        "raw_bytes": 7974,
+        "weight": 31563,
+        "vsize": 7891
+      }
+    },
+    {
+      "name": "output-253-with-change",
+      "inputs": 1,
+      "payees": 252,
+      "change": true,
+      "result": "ok",
+      "dimensions": {
+        "stripped_bytes": 7896,
+        "witness_bytes": 111,
+        "raw_bytes": 8007,
+        "weight": 31695,
+        "vsize": 7924
+      }
+    },
+    {
+      "name": "output-253-no-change",
+      "inputs": 1,
+      "payees": 253,
+      "change": false,
+      "result": "ok",
+      "dimensions": {
+        "stripped_bytes": 7896,
+        "witness_bytes": 111,
+        "raw_bytes": 8007,
+        "weight": 31695,
+        "vsize": 7924
+      }
+    },
+    {
+      "name": "daily-721-64",
+      "inputs": 721,
+      "payees": 64,
+      "change": true,
+      "result": "ok",
+      "dimensions": {
+        "stripped_bytes": 31588,
+        "witness_bytes": 78591,
+        "raw_bytes": 110179,
+        "weight": 204943,
+        "vsize": 51236
+      }
+    },
+    {
+      "name": "daily-721-64-no-change",
+      "inputs": 721,
+      "payees": 64,
+      "change": false,
+      "result": "ok",
+      "dimensions": {
+        "stripped_bytes": 31557,
+        "witness_bytes": 78591,
+        "raw_bytes": 110148,
+        "weight": 204819,
+        "vsize": 51205
+      }
+    },
+    {
+      "name": "daily-721-256",
+      "inputs": 721,
+      "payees": 256,
+      "change": true,
+      "result": "ok",
+      "dimensions": {
+        "stripped_bytes": 37542,
+        "witness_bytes": 78591,
+        "raw_bytes": 116133,
+        "weight": 228759,
+        "vsize": 57190
+      }
+    },
+    {
+      "name": "daily-721-256-no-change",
+      "inputs": 721,
+      "payees": 256,
+      "change": false,
+      "result": "ok",
+      "dimensions": {
+        "stripped_bytes": 37511,
+        "witness_bytes": 78591,
+        "raw_bytes": 116102,
+        "weight": 228635,
+        "vsize": 57159
+      }
+    },
+    {
+      "name": "full-payees-1348",
+      "inputs": 1348,
+      "payees": 256,
+      "change": true,
+      "result": "ok",
+      "dimensions": {
+        "stripped_bytes": 63249,
+        "witness_bytes": 146934,
+        "raw_bytes": 210183,
+        "weight": 399930,
+        "vsize": 99983
+      }
+    },
+    {
+      "name": "full-payees-1349",
+      "inputs": 1349,
+      "payees": 256,
+      "change": true,
+      "result": "capacity",
+      "dimensions": {
+        "stripped_bytes": 63290,
+        "witness_bytes": 147043,
+        "raw_bytes": 210333,
+        "weight": 400203,
+        "vsize": 100051
+      }
+    },
+    {
+      "name": "exact-weight",
+      "inputs": 1366,
+      "payees": 218,
+      "change": false,
+      "result": "ok",
+      "dimensions": {
+        "stripped_bytes": 62776,
+        "witness_bytes": 148896,
+        "raw_bytes": 211672,
+        "weight": 400000,
+        "vsize": 100000
+      }
+    },
+    {
+      "name": "exact-weight-with-change",
+      "inputs": 1366,
+      "payees": 217,
+      "change": true,
+      "result": "ok",
+      "dimensions": {
+        "stripped_bytes": 62776,
+        "witness_bytes": 148896,
+        "raw_bytes": 211672,
+        "weight": 400000,
+        "vsize": 100000
+      }
+    },
+    {
+      "name": "over-exact-weight",
+      "inputs": 1366,
+      "payees": 219,
+      "change": false,
+      "result": "capacity",
+      "dimensions": {
+        "stripped_bytes": 62807,
+        "witness_bytes": 148896,
+        "raw_bytes": 211703,
+        "weight": 400124,
+        "vsize": 100031
+      }
+    },
+    {
+      "name": "maximum-inputs",
+      "inputs": 1464,
+      "payees": 1,
+      "change": true,
+      "result": "ok",
+      "dimensions": {
+        "stripped_bytes": 60098,
+        "witness_bytes": 159578,
+        "raw_bytes": 219676,
+        "weight": 399970,
+        "vsize": 99993
+      }
+    },
+    {
+      "name": "maximum-inputs-no-change",
+      "inputs": 1464,
+      "payees": 1,
+      "change": false,
+      "result": "ok",
+      "dimensions": {
+        "stripped_bytes": 60067,
+        "witness_bytes": 159578,
+        "raw_bytes": 219645,
+        "weight": 399846,
+        "vsize": 99962
+      }
+    },
+    {
+      "name": "maximum-inputs-full-payees",
+      "inputs": 1464,
+      "payees": 256,
+      "change": true,
+      "result": "capacity",
+      "dimensions": {
+        "stripped_bytes": 68005,
+        "witness_bytes": 159578,
+        "raw_bytes": 227583,
+        "weight": 431598,
+        "vsize": 107900
+      }
+    },
+    {
+      "name": "input-limit-plus-one",
+      "inputs": 1465,
+      "payees": 1,
+      "change": false,
+      "result": "invalid",
+      "dimensions": null
+    },
+    {
+      "name": "zero-inputs",
+      "inputs": 0,
+      "payees": 1,
+      "change": false,
+      "result": "invalid",
+      "dimensions": null
+    },
+    {
+      "name": "negative-inputs",
+      "inputs": -1,
+      "payees": 1,
+      "change": true,
+      "result": "invalid",
+      "dimensions": null
+    },
+    {
+      "name": "zero-payees",
+      "inputs": 1,
+      "payees": 0,
+      "change": false,
+      "result": "invalid",
+      "dimensions": null
+    },
+    {
+      "name": "negative-payees",
+      "inputs": 1,
+      "payees": -1,
+      "change": true,
+      "result": "invalid",
+      "dimensions": null
+    },
+    {
+      "name": "payee-limit-plus-one",
+      "inputs": 1,
+      "payees": 257,
+      "change": false,
+      "result": "invalid",
+      "dimensions": null
+    }
+  ]
+}

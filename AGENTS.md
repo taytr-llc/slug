@@ -454,6 +454,22 @@ authorization must be repository-limited, not an account-wide OAuth expansion.
   This is not V2 public-runtime or continuous-capacity acceptance. Continue
   explicit daily intake/reservation and public integration before onboarding;
   D74 stays last. See `CHANGESET_77_NOTES.md` and `POOL_LIVE_ROUNDS.md`.
+- Set78 adds finite daily intake reservation on the original Source2 owner.
+  Derive ordinary capacity (at most 4,095), reserve a canonical receipt before
+  issuer effects, audit all retained liabilities/indexes/membership and require
+  fresh canonical proof for unseen post-drain recovery. Physical/work/byte and
+  signed-authority limits remain; no rollover, V1 adoption or profile widening.
+  Keep original source/round/ledger/backend bindings, exact pending payout bytes
+  and D84 whole-payout deferral. Independent oracles, all 17 builds, accounting
+  and operator normal/race, cheap refusal and vet pass. Preserve the first
+  kernel test's zero-descendant tip-hash fixture failure and its test-only fix.
+  Normal-node/schema16 fresh-process two-to-three receipt recovery and seed
+  smoke/restart pass; preserve the actual runner/checker failures and exact
+  checker-only correction. Set78 exact-tip CI remains pending. This is not
+  miner-load or public TLS/runtime acceptance. Set77's seven predecessor CI jobs
+  are green at chain `21da8ea51de2` / wallet `dfc5d9dd7e0f`.
+  Continue explicit V2 public integration and hosted payouts before onboarding;
+  D74 remains last. See `POOL_DAILY_ADMISSION.md` and `CHANGESET_78_NOTES.md`.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

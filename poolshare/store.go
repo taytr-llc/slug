@@ -354,6 +354,9 @@ func (p *Pool) saveWork(w savedWork, recheck func() error) error {
 	if p.meta.Works >= p.config.MaxWorks || p.meta.Submissions >= p.config.MaxSubmissions || uint64(len(raw))+maxSubmissionSize > p.config.MaxBytes-p.meta.Bytes {
 		return ErrCapacity
 	}
+	if err := p.dailyWorkHeadroom(uint64(len(raw))); err != nil {
+		return err
+	}
 	ms, err := p.observeClock(recheck)
 	if err != nil {
 		return err
@@ -582,6 +585,12 @@ func (p *Pool) auditContext(ctx context.Context) error {
 	if err != nil || decode(raw, maxMetadataSize, &p.meta) != nil || p.meta.Application != application || p.meta.Version != p.config.Version || p.meta.Config != p.config || p.meta.Works > p.config.MaxWorks || p.meta.Submissions > p.config.MaxSubmissions || p.meta.Accepted > p.meta.Submissions || p.meta.Bytes > p.config.MaxBytes || p.meta.LastClockMS < 0 {
 		return ErrCorrupt
 	}
+	return p.auditRowsContext(ctx)
+}
+
+// auditRowsContext uses the already selected original metadata. The daily
+// controller first compares a local candidate, so a failed audit cannot adopt it.
+func (p *Pool) auditRowsContext(ctx context.Context) error {
 	var works, submissions, nonces, sequences, accepted, size uint64
 	it := p.db.NewIterator(nil, nil)
 	defer it.Release()

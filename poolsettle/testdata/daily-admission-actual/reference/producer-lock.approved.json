@@ -1,0 +1,123 @@
+{
+  "version": 1,
+  "approved_by": "root",
+  "scope": "Independent public fixture composition and separate actual/kernel economics; source-only, no execution or expected output yet.",
+  "files": [
+    {
+      "path": "PROPOSAL.md",
+      "bytes": 7910,
+      "sha256": "4b481fe50d2723c156d8fe8771f448346b1363dad9f9bde55bcbedb8e4ee6e0a"
+    },
+    {
+      "path": "recipe.json",
+      "bytes": 2513,
+      "sha256": "d28b8d326bd3df28dd525ab3e592d1c661341bbd92cbe5c664133ea8528bb000"
+    },
+    {
+      "path": "inputs/accounting-policy.md",
+      "bytes": 6396,
+      "sha256": "b7769251fbe4d46a8e077fdfd1ba7b5e5f8bb015833aff9d20310ca8739ae081"
+    },
+    {
+      "path": "inputs/capacity-report.json",
+      "bytes": 711,
+      "sha256": "2c81ff41902f136c5e3739d4964f6015d3d69063e2d53c16da1212b985abe9d3"
+    },
+    {
+      "path": "inputs/capacity-v1.json",
+      "bytes": 81247,
+      "sha256": "2db086115f51b0c7e22d2fd7688ad5b46c56e238fa1346d709c9a19bebb7aa78"
+    },
+    {
+      "path": "inputs/crypto.py",
+      "bytes": 10124,
+      "sha256": "ea87b9021e14712b1ac7130daa73cd12fb8acf2fd8995ca5ce9e32d0d770fd1c"
+    },
+    {
+      "path": "inputs/gym-reference.py",
+      "bytes": 9946,
+      "sha256": "0490d6e7931cf0edb30e632a2fa213c8660e88afe916d3ed09421e34954b84d9"
+    },
+    {
+      "path": "inputs/native84-v1.json",
+      "bytes": 7411,
+      "sha256": "482c9e42ecb154cc0e38fad962cc5df4e08705f933e13cc7f571f0d5bf75ff33"
+    },
+    {
+      "path": "inputs/set76-actual-v1.json",
+      "bytes": 85070,
+      "sha256": "9bcb4b64505e38de193411dcf51fb19f4d1332cbb2af53d21904663848cb4955"
+    },
+    {
+      "path": "inputs/set76-model.py",
+      "bytes": 6841,
+      "sha256": "a586661c97acaefa690d2ec7ffaaca6a786d22cb26c72ad4ba361b04b187d61a"
+    },
+    {
+      "path": "inputs/setup-v1.json",
+      "bytes": 28735,
+      "sha256": "97fa4879bf955f2f321202c34a95dfc335e684031152e100979e27f0d98da0b3"
+    },
+    {
+      "path": "inputs/wallet-daily-v1.json",
+      "bytes": 63872,
+      "sha256": "9b8e52f41690db7ca1fee37c34f99dfcd0a7266b81a7793859871bd9b006ae30"
+    },
+    {
+      "path": "model.py",
+      "bytes": 15048,
+      "sha256": "1fbb77065d436f25f6a255e72ad68b09e09fb941e6875844530ea42da3f93bdc"
+    },
+    {
+      "path": "PRODUCER.md",
+      "bytes": 2027,
+      "sha256": "d9172cf9cc2f1d5dcbdbf979d0b4554e71d12c1762e65d70bf2a8cf7ced36b9a"
+    }
+  ],
+  "provenance": {
+    "inherited_public_sources": "set76-prep/daily-actual-stage/reference, unchanged copied independent sources/outputs",
+    "capacity_output": "artifacts/set78/capacity-reference-attempt1/py314.json, identical to py39.json; passed original report copied",
+    "product_outputs_used": false,
+    "expected_output_generated": false
+  },
+  "invocation": {
+    "cwd": "/Users/taytrrip/slug/set78-prep/daily-actual-reference",
+    "argv": [
+      "<existing-python>",
+      "model.py",
+      "--lock",
+      "/absolute/producer-lock.approved.json",
+      "--out",
+      "/absolute/fresh/reference.json"
+    ],
+    "timeout_seconds": 60,
+    "maximum_output_bytes": 1048576,
+    "maximum_log_bytes": 65536,
+    "interpreters": [
+      "existing Python3.14",
+      "existing Python3.9"
+    ],
+    "require_byte_identical_reproduction": true,
+    "require_final_source_hashes_unchanged": true
+  },
+  "dependencies": {
+    "standard_library": [
+      "argparse",
+      "copy",
+      "fractions",
+      "functools",
+      "hashlib",
+      "hmac",
+      "json",
+      "pathlib",
+      "runpy",
+      "struct"
+    ],
+    "local_helpers": [
+      "inputs/crypto.py",
+      "inputs/gym-reference.py",
+      "inputs/set76-model.py"
+    ],
+    "third_party": []
+  }
+}

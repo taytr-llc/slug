@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "scope": "Independent public synthetic daily late-winner kernel and actual economics; no mined proof, signature, transaction ID or runtime result generated.",
+  "namespace_ascii": "SLUG Set78 daily late winner actual\u0000v1\u0000",
+  "source": {"version":2,"max_works":8,"max_submissions":8,"max_bytes":67108864},
+  "round_limits": {"version":2,"max_rounds":8,"max_bytes":33554432},
+  "settlement": {"version":2,"max_rounds":8,"max_batches":6},
+  "capacity_profile": "kernel-actual-derived-limit",
+  "accounts": {"published_scalars":[1,2],"labels":["gym1","gym2"],"gym_domain_ascii":"SLUG gym identity\u0000v1\u0000","payee":"native v0 HASH160(compressed public key)"},
+  "domains": {
+    "source_ascii":"SLUG pool share daily source\u0000v2\u0000",
+    "config_ascii":"SLUG operator pool settlement config\u0000v2\u0000",
+    "guard_ascii":"SLUG operator pool wallet guard\u0000v1\u0000"
+  },
+  "jobs": [
+    {"name":"A","gym":"gym1","accepted_sequence":1,"kind":"canonical-block","issued_after":"one-uncredited-bootstrap-block"},
+    {"name":"B","gym":"gym2","accepted_sequence":3,"kind":"canonical-late-winner","issued_after":"A-payment-accepted-in-mempool"},
+    {"name":"C","gym":"gym1","accepted_sequence":2,"kind":"current-parent-nonblock","issued_after":"B-job-retained"}
+  ],
+  "actual": {
+    "reward_atoms":1000000000,
+    "miner_numerator":99,
+    "miner_denominator":100,
+    "fee_rate_atoms_per_kvb":1000,
+    "a_inputs":1,"a_payees":1,"a_change":true,
+    "b_includes_exact_a_transaction":true,
+    "b_window_shares":[1,1],
+    "bootstrap_blocks":1,"a_height":2,"a_maturity_descendants":100,
+    "b_height":103,"b_lock_descendants":60,
+    "job_lifetime_ms":300000,
+    "overall_seconds":900,"outer_seconds":1080,
+    "maximum_height":163,"nonce_search_per_job":64,
+    "actual_clock":"real UTC and real node/job clocks only; refuse start within900s of UTC midnight, fail if the selected UTC day changes",
+    "signed_batches":1,"broadcast_attempts":1,"accepted_broadcasts":1,"fresh_recovery_broadcasts":0,
+    "source_jobs":3,"source_rows":3,"accepted_rows":3,"block_rows":2,"fighter_admissions":0
+  },
+  "kernel": {
+    "scope":"Controlled node/backend original-owner integration, no actual expiry/mining/wallet claim",
+    "reward_atoms":1000000000,"miner_numerator":99,"miner_denominator":100,
+    "fee_atoms":1000,"b_includes_exact_a_transaction":false,"b_window_shares":[1,1],
+    "signed_batches":1,"source_jobs":3,"source_rows":3,"accepted_rows":3,"block_rows":2
+  }
+}

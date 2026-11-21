@@ -1,0 +1,272 @@
+{
+  "version": 1,
+  "scope": "Frozen independent inputs/planned classifications only; no product-derived expected values. Pure budgets do not certify source topology or funding.",
+  "profiles": {
+    "daily64": {
+      "source_max": 16384,
+      "source_bytes": 8589934592,
+      "rounds": 16384,
+      "round_bytes": 8589934592,
+      "credit_rounds": 16384,
+      "batches": 32767,
+      "gyms": 64
+    },
+    "daily256": {
+      "source_max": 16384,
+      "source_bytes": 8589934592,
+      "rounds": 16384,
+      "round_bytes": 8589934592,
+      "credit_rounds": 16384,
+      "batches": 32767,
+      "gyms": 256
+    },
+    "kernel": {
+      "source_max": 8,
+      "source_bytes": 67108864,
+      "rounds": 8,
+      "round_bytes": 33554432,
+      "credit_rounds": 8,
+      "batches": 6,
+      "gyms": 2
+    },
+    "byte_limited": {
+      "source_max": 8,
+      "source_bytes": 16805887,
+      "rounds": 8,
+      "round_bytes": 33554432,
+      "credit_rounds": 8,
+      "batches": 6,
+      "gyms": 2
+    },
+    "no_work_room": {
+      "source_max": 8,
+      "source_bytes": 4096,
+      "rounds": 8,
+      "round_bytes": 33554432,
+      "credit_rounds": 8,
+      "batches": 6,
+      "gyms": 2
+    },
+    "zero_ordinary": {
+      "source_max": 8,
+      "source_bytes": 67108864,
+      "rounds": 8,
+      "round_bytes": 33554432,
+      "credit_rounds": 8,
+      "batches": 1,
+      "gyms": 2
+    }
+  },
+  "envelopes": [
+    {
+      "name": "daily64",
+      "profile": "daily64",
+      "expected_maximum": 4095
+    },
+    {
+      "name": "daily256",
+      "profile": "daily256",
+      "expected_maximum": 4095
+    },
+    {
+      "name": "kernel-actual-derived-limit",
+      "profile": "kernel",
+      "expected_maximum": 2
+    },
+    {
+      "name": "source-byte-derived-limit",
+      "profile": "byte_limited",
+      "expected_maximum": 1
+    },
+    {
+      "name": "drain-only",
+      "profile": "zero_ordinary",
+      "expected_maximum": 0
+    },
+    {
+      "name": "no-work-room",
+      "profile": "no_work_room",
+      "expected_error": "capacity"
+    }
+  ],
+  "recoveries": [
+    {
+      "name": "empty",
+      "profile": "daily64",
+      "n": 0,
+      "r": 0,
+      "expected": "accept"
+    },
+    {
+      "name": "only-unclosed-rows",
+      "profile": "daily64",
+      "n": 4095,
+      "r": 0,
+      "expected": "accept"
+    },
+    {
+      "name": "full-ordinary-worst",
+      "profile": "daily64",
+      "n": 4095,
+      "r": 4095,
+      "expected": "accept"
+    },
+    {
+      "name": "reserved-unseen-window-close",
+      "profile": "daily64",
+      "n": 4096,
+      "r": 4096,
+      "expected": "accept"
+    },
+    {
+      "name": "later-canonical-headroom",
+      "profile": "daily64",
+      "n": 4097,
+      "r": 4097,
+      "expected": "accept"
+    },
+    {
+      "name": "last-conservative-monetary-root",
+      "profile": "daily64",
+      "n": 4392,
+      "r": 4392,
+      "expected": "accept"
+    },
+    {
+      "name": "monetary-tally-overflow",
+      "profile": "daily64",
+      "n": 4393,
+      "r": 4393,
+      "expected": "capacity"
+    },
+    {
+      "name": "largest-count-math-with-small-r",
+      "profile": "daily256",
+      "n": 16384,
+      "r": 2,
+      "expected": "accept",
+      "conditional_only": "Counts alone do not establish actual admission/window topology."
+    },
+    {
+      "name": "source-overflow",
+      "profile": "daily64",
+      "n": 16385,
+      "r": 1,
+      "expected": "capacity"
+    },
+    {
+      "name": "invalid-tuple",
+      "profile": "daily64",
+      "n": 2,
+      "r": 3,
+      "expected": "invalid"
+    },
+    {
+      "name": "kernel-full",
+      "profile": "kernel",
+      "n": 2,
+      "r": 1,
+      "expected": "accept"
+    },
+    {
+      "name": "kernel-unseen-winner",
+      "profile": "kernel",
+      "n": 3,
+      "r": 2,
+      "expected": "accept"
+    },
+    {
+      "name": "kernel-reserved-worst",
+      "profile": "kernel",
+      "n": 3,
+      "r": 3,
+      "expected": "accept"
+    },
+    {
+      "name": "kernel-next-too-many-bodies",
+      "profile": "kernel",
+      "n": 4,
+      "r": 4,
+      "expected": "capacity"
+    }
+  ],
+  "invalid_inputs": [
+    {
+      "field": "source_max",
+      "value": 0
+    },
+    {
+      "field": "source_max",
+      "value": 16385
+    },
+    {
+      "field": "source_bytes",
+      "value": 4095
+    },
+    {
+      "field": "source_bytes",
+      "value": 8589934593
+    },
+    {
+      "field": "rounds",
+      "value": 0
+    },
+    {
+      "field": "rounds",
+      "value": 16385
+    },
+    {
+      "field": "round_bytes",
+      "value": 4095
+    },
+    {
+      "field": "round_bytes",
+      "value": 8589934593
+    },
+    {
+      "field": "credit_rounds",
+      "value": 0
+    },
+    {
+      "field": "credit_rounds",
+      "value": 16385
+    },
+    {
+      "field": "batches",
+      "value": 0
+    },
+    {
+      "field": "batches",
+      "value": 32768
+    },
+    {
+      "field": "gyms",
+      "value": 0
+    },
+    {
+      "field": "gyms",
+      "value": 257
+    }
+  ],
+  "byte_edges": [
+    "each accepted case at exact required ledger/round/credit/body/report/source margin and one-byte-below where configurable; fixed grammar maxima are diagnostics, not configurable product limits",
+    "maxMoney*N calculation beyond uint64 must remain exact; no wrap classification",
+    "input-plus-change claim copying, each max32768, plus fixed8MiB frame"
+  ],
+  "ordering_cases": [
+    "duplicate/unknown/reordered JSON fields",
+    "true/false instead of integer",
+    "negative/nonintegral/out-of-range uint64"
+  ],
+  "monotonicity": "Verify every n0..4095 ordinary predicate for the fixed profile set independently as oracle work; product must use one initial fit check plus<=12 binary probes,<=13 total. Verify sampled one-axis N/R increases never reduce byte/count bounds. No Go imports or outputs.",
+  "proof_edges": [
+    "report-state-and-reason-each-32-bytes",
+    "manager-input-copy-32768-claims-320MiB",
+    "signing-input-and-change-copies-640MiB",
+    "search-all-fit-13-total-max",
+    "search-none-fit-1-probe",
+    "nonmember-request-unauthorized-no-poison-or-drain",
+    "retained-valid-nonmember-config",
+    "retained-malformed-gym-corrupt"
+  ]
+}

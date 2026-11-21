@@ -572,6 +572,24 @@ of the ownership, transfer or independent restored-wallet flow. See
   finite history limits. Daily reservations and real hosted scheduling remain
   integration gates. See `CHANGESET_77_NOTES.md`.
 
+- Set78 adds a finite, explicit daily reservation/controller kernel. At most
+  4,095 ordinary rows are derived from original limits, with conditional unseen
+  canonical recovery after complete liability/index/window audits. Work bytes,
+  physical source capacity and signed-authority limits still stop intake; this
+  is not continuous capacity. D84 entire-payout deferral and exact original
+  pending-payment recovery remain unchanged. Independent oracles and local
+  build/normal/race/profile/vet checks pass. The first kernel fixture's inconsistent
+  zero-descendant tip was corrected without production or economics changes;
+  the failed attempt is preserved. Normal-node/schema16 fresh-process actual
+  and seed smoke/restart pass. The original runner and second checker failures
+  remain preserved; checker3 verifies the unchanged execution/evidence.
+  **Set78 exact-tip CI remains pending**. The true-derived two-to-three receipt
+  proof is not sustained mining or public TLS/runtime deployment. Set77's seven
+  predecessor checks pass at
+  chain `21da8ea51de2` / wallet `dfc5d9dd7e0f`. Preserve explicit V2 public integration,
+  signed capacity, retention/load and hosted-payout gates. Public pool/payouts
+  precede onboarding; D74 remains last. See `CHANGESET_78_NOTES.md`.
+
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
 `sim-handoff-intake.json` preserves archive and file checksums. They are reference

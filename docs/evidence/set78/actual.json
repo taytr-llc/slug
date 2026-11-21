@@ -1,0 +1,91 @@
+{
+  "actual_execution_seconds": 429.478605834,
+  "actual_rerun": false,
+  "checker_corrections": [
+    "AccountingPage intentionally clears only block_state and block_observed_at_ms; compare its exact immutable projection while retaining full receipt equality across restart.",
+    "Pre-forward attempts have empty txid; successful sends retain the original node-returned txid. Exact raw bytes, one attempt/send and timestamp order remain required.",
+    "Absent optional Report.reason represents its declared empty string; each Balance.reason remains required."
+  ],
+  "clean_join": true,
+  "cold_source_seconds": 0.740017792,
+  "fresh_process_seconds": 47.78,
+  "passed": true,
+  "preserved_failed_reports": [
+    {
+      "passed": false,
+      "path": "/Users/taytrrip/slug/artifacts/set78/daily-actual-attempt1/report.json",
+      "sha256": "2b21fab51bfa25894f3cadfeccffd94508343137565284446fc23a734c48a8a5"
+    },
+    {
+      "passed": false,
+      "path": "/Users/taytrrip/slug/artifacts/set78/actual-checker-attempt2/report.json",
+      "sha256": "db36b88c34ebb69e5789b7be971fe1931b48c7c2f34eff5675900781abaf5654"
+    }
+  ],
+  "proof": {
+    "block_b_descendants": 60,
+    "block_b_funding_still_immature": true,
+    "broadcast_attempts": 1,
+    "credits_after_finality": 2,
+    "credits_before_finality": 1,
+    "final_height": 163,
+    "late_winner_submissions": 3,
+    "ordinary_maximum": 2,
+    "ordinary_submissions": 2,
+    "original_payout_txid": "f8684338aea85428666794de7804d81a3c5b1e0d923804a9be54b26f06c07bbc",
+    "payout_body_sha256": "74a3825cb2fd109af88b46262b653ab1b21f437699001439f5c2b9d4a5341ab2",
+    "receipt_acceptance": "canonical-late-winner",
+    "reopens": 1,
+    "same_full_receipt_after_restart": true,
+    "same_immutable_payout_body": true,
+    "successful_broadcasts": 1
+  },
+  "public_evidence": {
+    "/Users/taytrrip/slug/artifacts/set78/daily-actual-attempt1/public/01-A.json": {
+      "bytes": 10007,
+      "sha256": "808bb653ce06d2982555d5b6fa9baaf6873cf9568cd2e7efd0886522976b5f75"
+    },
+    "/Users/taytrrip/slug/artifacts/set78/daily-actual-attempt1/public/02-B-pending.json": {
+      "bytes": 22031,
+      "sha256": "3f5fda24221ef81e47a1c2d68dce64289a523d9bd5303fefb504937410d82b37"
+    },
+    "/Users/taytrrip/slug/artifacts/set78/daily-actual-attempt1/public/03-complete.json": {
+      "bytes": 37215,
+      "sha256": "496de2526198c87145f9358358c29746acf0191a2e1f95ed5d8d3134f5a9fd75"
+    },
+    "/Users/taytrrip/slug/artifacts/set78/daily-actual-attempt1/public/actual-report.json": {
+      "bytes": 41866,
+      "sha256": "8fd2f28a57ec0ab10bed075845b50ef61084df3f6978ddcc68c654190ec893c9"
+    },
+    "/Users/taytrrip/slug/artifacts/set78/daily-actual-attempt1/public/recovery-child-report.json": {
+      "bytes": 555,
+      "sha256": "9f617b3b0641be94a3dc5586455d26e14c4ab2d164ed3a7d36a591da725bca4a"
+    },
+    "/Users/taytrrip/slug/artifacts/set78/daily-actual-attempt1/public/recovery-child.log": {
+      "bytes": 106,
+      "sha256": "9424a317929b927dd02a72fd8163dcd24db89f8b44115be52fce6b9c48f7c962"
+    },
+    "/Users/taytrrip/slug/artifacts/set78/daily-actual-attempt1/public/recovery-handoff.json": {
+      "bytes": 703,
+      "sha256": "30df3aca574634a3b51c1c66aa8ed39fdc72c22cc79d4f0bc0d0cd30c6b17633"
+    }
+  },
+  "qualified_reports": [
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set78/daily-actual-attempt1/public/actual-report.json",
+      "sha256": "8fd2f28a57ec0ab10bed075845b50ef61084df3f6978ddcc68c654190ec893c9"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set78/daily-actual-attempt1/public/recovery-child-report.json",
+      "sha256": "9f617b3b0641be94a3dc5586455d26e14c4ab2d164ed3a7d36a591da725bca4a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set78/actual-checker-attempt3/report.json",
+      "sha256": "1b9e7582fbe1a2ce8aa0f63bb9cb09204520622d32dae0769d5ae33aea5f5f71"
+    }
+  ],
+  "scope": "Set78 finite daily original-owner full-intake late-winner proof; normal PoW and schema16 wallet; no public transport or scheduler acceptance",
+  "source_count": 2486,
+  "source_profile_binary_public_evidence_unchanged": true,
+  "version": 1
+}

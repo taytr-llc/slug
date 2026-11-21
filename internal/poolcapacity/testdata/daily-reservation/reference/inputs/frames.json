@@ -1,0 +1,143 @@
+{
+  "version": 1,
+  "scope": "Independent literal upper-bound grammar frames; not valid funded transactions, source proofs or expected Go serialization.",
+  "constants": {
+    "max_money": 2100000000000000,
+    "max_int64": 9223372036854775807,
+    "max_rows": 16384,
+    "max_batches": 32767,
+    "window": 4096,
+    "head_reserve": 131072,
+    "report_reserve": 8388608,
+    "delivery_reserve": 256,
+    "logical_limit": 8589934592,
+    "credit_limit": 131072,
+    "batch_limit": 2097152,
+    "round_limit": 2097152,
+    "round_status_reserve": 4096,
+    "winner_entry_limit": 65536,
+    "submission_reserve": 4096,
+    "worst_work_bytes": 16793600,
+    "fraction_numerator_digits": 2490,
+    "fraction_denominator_digits": 2468,
+    "shape_inputs": 1464,
+    "shape_payees": 256,
+    "raw_limit": 400000,
+    "signing_stream_limit": 671088640,
+    "manager_copy_bytes": 335544320
+  },
+  "frames": {
+    "credit": {
+      "round_hash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "round_digest": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "coin": {
+        "txid": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "index": 4294967295,
+        "atoms": 2100000000000000,
+        "script": "0014ffffffffffffffffffffffffffffffffffffffff",
+        "coinbase": false,
+        "block_hash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "block_height": 2147483647,
+        "claims": []
+      }
+    },
+    "original_claim": {
+      "round_hash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "round_height": 2147483647,
+      "gym_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "amount": {
+        "numerator": "860160000000000000000",
+        "denominator": "409600"
+      }
+    },
+    "input_reference": {
+      "txid": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "index": 4294967295
+    },
+    "payment": {
+      "gym_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "script": "0014ffffffffffffffffffffffffffffffffffffffff",
+      "atoms": 2100000000000000
+    },
+    "change": {
+      "index": 256,
+      "atoms": 2100000000000000,
+      "script": "0014ffffffffffffffffffffffffffffffffffffffff",
+      "claim_count": 32768,
+      "claims_digest": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+    },
+    "batch": {
+      "version": 2,
+      "sequence": 32767,
+      "day": "9999-12-31",
+      "created_at_ms": 253402300799999,
+      "inputs": [],
+      "payments": [],
+      "fee_atoms": 2100000000000000,
+      "change": {
+        "index": 256,
+        "atoms": 2100000000000000,
+        "script": "0014ffffffffffffffffffffffffffffffffffffffff",
+        "claim_count": 32768,
+        "claims_digest": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "txid": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "raw": ""
+    },
+    "reference": {
+      "kind": "credit",
+      "sequence": 32767
+    },
+    "allocation": {
+      "gym_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "shares": 4096,
+      "numerator": "8601600000000000000",
+      "denominator": "4096"
+    },
+    "round": {
+      "version": 1,
+      "sequence": 16384,
+      "block_hash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "block_height": 2147483647,
+      "first_accepted": 16384,
+      "last_accepted": 16384,
+      "share_keys": [],
+      "pool_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "payout_address": "pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp",
+      "reward_atoms": 2100000000000000,
+      "allocations": [],
+      "winner": null
+    },
+    "balance": {
+      "gym_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "confirmed": {
+        "numerator": "",
+        "denominator": ""
+      },
+      "available": {
+        "numerator": "",
+        "denominator": ""
+      },
+      "reserved_atoms": 9223372036854775807,
+      "paid_atoms": 9223372036854775807,
+      "reason": "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr"
+    },
+    "report": {
+      "day": "9999-12-31",
+      "observed_at_ms": 253402300799999,
+      "txid": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "state": "ssssssssssssssssssssssssssssssss",
+      "reason": "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",
+      "balances": []
+    },
+    "residual_claim": {
+      "round_hash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "round_height": 2147483647,
+      "gym_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "amount": {
+        "numerator": "",
+        "denominator": ""
+      }
+    }
+  }
+}
