@@ -1,0 +1,105 @@
+name: Hosted pool package
+on:
+  push:
+    branches: [slug-hosted-pool-test]
+permissions:
+  contents: read
+concurrency:
+  group: hosted-pool-package-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  linux-image:
+    if: github.repository == 'taytr-llc/slug'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Package source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          repository: taytr-llc/slug
+          ref: ${{ github.sha }}
+          path: package
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Pinned qualified chain source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          repository: taytr-llc/slug
+          ref: 138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c
+          path: slug
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Pinned paired wallet
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          repository: taytr-llc/slugwallet
+          ref: dfc5d9dd7e0f604486fbac812d0413fce1f45cd6
+          path: slugwallet
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Export public committed source
+        env:
+          PACKAGE_CONTEXT: ${{ runner.temp }}/pool-package-context
+          PACKAGE_EVIDENCE: ${{ runner.temp }}/pool-package-evidence
+        run: |
+          mkdir "$PACKAGE_EVIDENCE"
+          python3 package/deploy/pool/export-context.py --chain-checkout slug --wallet-checkout slugwallet --output "$PACKAGE_CONTEXT" > "$PACKAGE_EVIDENCE/context.json"
+          cp package/deploy/pool/Dockerfile package/deploy/pool/.dockerignore package/deploy/pool/export-context.py "$PACKAGE_EVIDENCE/"
+          git -C package rev-parse HEAD > "$PACKAGE_EVIDENCE/package-revision.txt"
+          docker version > "$PACKAGE_EVIDENCE/docker-version.txt"
+      - name: Build native operator image
+        env:
+          PACKAGE_CONTEXT: ${{ runner.temp }}/pool-package-context
+          PACKAGE_EVIDENCE: ${{ runner.temp }}/pool-package-evidence
+        run: |
+          chain_archive_sha=$(sha256sum "$PACKAGE_CONTEXT/chain.tar" | cut -d' ' -f1)
+          wallet_archive_sha=$(sha256sum "$PACKAGE_CONTEXT/wallet.tar" | cut -d' ' -f1)
+          docker build --platform linux/amd64 --progress plain --build-arg CHAIN_ARCHIVE_SHA256="$chain_archive_sha" --build-arg WALLET_ARCHIVE_SHA256="$wallet_archive_sha" --tag slug-operator:qualification "$PACKAGE_CONTEXT" 2>&1 | tee "$PACKAGE_EVIDENCE/build.log"
+          docker image inspect slug-operator:qualification > "$PACKAGE_EVIDENCE/image.json"
+      - name: Execute unprivileged image commands
+        env:
+          PACKAGE_EVIDENCE: ${{ runner.temp }}/pool-package-evidence
+        run: |
+          docker run --name pool-package-help --network none --read-only --cap-drop ALL --security-opt no-new-privileges:true slug-operator:qualification help > "$PACKAGE_EVIDENCE/operator-help.txt"
+          docker run --name pool-package-provision-help --network none --read-only --cap-drop ALL --security-opt no-new-privileges:true --entrypoint /usr/local/bin/slugpool-provision slug-operator:qualification help > "$PACKAGE_EVIDENCE/provision-help.txt"
+          docker inspect pool-package-help pool-package-provision-help > "$PACKAGE_EVIDENCE/containers.json"
+          docker cp pool-package-help:/usr/share/slug/build "$PACKAGE_EVIDENCE/build"
+          python3 - "$PACKAGE_EVIDENCE" <<'PY'
+          import json, pathlib, sys
+          root = pathlib.Path(sys.argv[1])
+          images = json.loads((root / 'image.json').read_text())
+          assert len(images) == 1 and images[0]['Architecture'] == 'amd64'
+          assert images[0]['Os'] == 'linux' and images[0]['Config']['User'] == '10001:10001'
+          rows = json.loads((root / 'containers.json').read_text())
+          assert len(rows) == 2
+          for row in rows:
+              assert row['State']['Status'] == 'exited' and row['State']['ExitCode'] == 0
+              assert not row['State']['OOMKilled'] and row['Config']['User'] == '10001:10001'
+          for name in ('operator-help.txt', 'provision-help.txt'):
+              assert '--daily-recoverable-issue' in (root / name).read_text()
+          required = {
+              'operator-tests.jsonl': ['TestOperatorPrivateInputOwnedReadAndLifetime', 'TestOperatorPrivateInputAdmissionRefusals', 'TestOperatorPrivateInputOriginalIdentityRefusals', 'TestOperatorPrivateInputLinuxACLRefusal', 'TestOperatorFilesLockAndIdentity', 'TestOperatorCommandBlockedOutputJoins', 'TestOperatorRuntimeCloseJoinsAdmittedLocalAction'],
+              'authority-tests.jsonl': ['TestOperatorAuthorityExtendedACLRefusal'],
+              'ingress-tests.jsonl': ['TestRecoverableIngressOriginalTLSAndJoin', 'TestIngressCloseCancelsAndJoins'],
+          }
+          required['operator-tests.jsonl'] += ['TestOperatorPrivateInputLinuxACLRefusal/' + case for case in ('file-access-before', 'parent-access-before', 'parent-default-before', 'file-access-after', 'parent-default-after')]
+          for name, names in required.items():
+              events = [json.loads(line) for line in (root / 'build' / name).read_text().splitlines()]
+              assert not any(event.get('Action') in ('fail', 'skip') for event in events)
+              passed = {event.get('Test') for event in events if event.get('Action') == 'pass'}
+              assert set(names) <= passed, (name, set(names) - passed)
+          uid = (root / 'build' / 'check-user.txt').read_text()
+          assert 'uid=10001' in uid and 'gid=10001' in uid
+          (root / 'result.json').write_text(json.dumps({'passed': True, 'scope': 'native image build, UID10001 component controls and unprivileged help execution', 'required_assertions': sum(map(len, required.values())), 'hosted_payout_qualified': False, 'image_id': images[0]['Id']}, indent=2) + '\n')
+          PY
+      - name: Retain package evidence
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: hosted-pool-package-${{ github.sha }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pool-package-evidence
+          retention-days: 14
+          if-no-files-found: error

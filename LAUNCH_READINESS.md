@@ -26,6 +26,8 @@ The current order is:
    custody and enrolled miner flow, scheduled payout, restart and exact retry.
    Declare and stay inside a finite test envelope; preserve recovery and visible
    holds. Synthetic loopback proofs alone do not count as hosted acceptance.
+   [Set82](CHANGESET_82_NOTES.md) is preparing the separate Linux operator
+   package and target execution; no hosted deployment is claimed yet.
 2. **Wallet balances and history.** Connect and verify the existing authenticated
    balance, payout and wallet-activity paths against the hosted test service,
    including dated observations and visible pending/deferred states.
