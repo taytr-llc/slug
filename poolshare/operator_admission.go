@@ -8,26 +8,31 @@ import (
 	"github.com/taytr-llc/slug/wire/v2"
 )
 
-// OperatorAdmission belongs to one original Pool. It reserves a finite number
-// of submission rows, not jobs or winners. All state is protected by that Pool's
-// gate. No exported value or replacement config can enlarge its bound.
+// OperatorAdmission belongs to one original Pool. Its ordinary submission-row
+// ceiling is immutable. Canonical recovery separately proves whole-history
+// headroom within the original physical and financial limits. All state is
+// protected by that Pool's gate.
 type OperatorAdmission struct {
 	pool              *Pool
 	maximum           uint64
 	enabled, draining bool
+	recovery          *RecoveryBudget
 }
 
 // OperatorAdmissionStatus is a local counter observation, never funding or
-// settlement authority. OverBound identifies an old journal outside the new
-// reservation; drain/recovery cannot retrospectively qualify its obligations.
+// settlement authority. OverBound identifies a journal outside its attached
+// reservation; with canonical recovery attached this uses the separate audited
+// row/block bound, never an assumption that draining removed old obligations.
 type OperatorAdmissionStatus struct {
-	Maximum     uint64 `json:"maximum"`
-	Submissions uint64 `json:"submissions"`
-	Accepted    uint64 `json:"accepted"`
-	Works       uint64 `json:"works"`
-	Bytes       uint64 `json:"bytes"`
-	Mode        string `json:"mode"`
-	OverBound   bool   `json:"over_bound"`
+	Maximum           uint64 `json:"maximum"`
+	Submissions       uint64 `json:"submissions"`
+	Accepted          uint64 `json:"accepted"`
+	Works             uint64 `json:"works"`
+	Bytes             uint64 `json:"bytes"`
+	Mode              string `json:"mode"`
+	OverBound         bool   `json:"over_bound"`
+	CanonicalRecovery bool   `json:"canonical_recovery"`
+	RecoveryBlocks    uint64 `json:"recovery_blocks"`
 }
 
 // AttachOperatorAdmission is additive: unattached legacy pools retain their
@@ -155,7 +160,17 @@ func (a *OperatorAdmission) Status(ctx context.Context) (OperatorAdmissionStatus
 			mode = "draining"
 			a.draining = true
 		}
-		out = OperatorAdmissionStatus{Maximum: a.maximum, Submissions: m.Submissions, Accepted: m.Accepted, Works: m.Works, Bytes: m.Bytes, Mode: mode, OverBound: m.Submissions > a.maximum}
+		over := m.Submissions > a.maximum
+		var blocks uint64
+		if a.recovery != nil {
+			_, count, err := a.recoveryBound(ctx, "")
+			if err != nil && err != ErrCapacity {
+				return err
+			}
+			blocks = count
+			over = err != nil
+		}
+		out = OperatorAdmissionStatus{Maximum: a.maximum, Submissions: m.Submissions, Accepted: m.Accepted, Works: m.Works, Bytes: m.Bytes, Mode: mode, OverBound: over, CanonicalRecovery: a.recovery != nil, RecoveryBlocks: blocks}
 		return nil
 	})
 	return out, err

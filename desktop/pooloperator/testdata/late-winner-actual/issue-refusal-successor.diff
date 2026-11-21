@@ -1,0 +1,232 @@
+--- before/late_flow.go
++++ after/late_flow.go
+@@ -97,21 +97,62 @@
+ 		if e == nil {
+ 			return v
+ 		}
+-		var ce *poolservice.ClientError
+-		if !errors.As(e, &ce) {
+-			panic("Issue refused code=non_client_error outcome_unknown=true")
+-		}
+-		if ce.OutcomeUnknown || (ce.Code != "busy" && ce.Code != "rate_limited") {
+-			// Emit only the closed public protocol vocabulary, never arbitrary
+-			// error text, credentials, request bodies or private paths.
+-			code := "unrecognized"
+-			switch ce.Code {
+-			case "invalid_request", "unauthorized", "forbidden", "not_found", "expired", "rejected", "too_large", "rate_limited", "busy", "capacity", "unavailable", "outcome_unknown":
+-				code = ce.Code
+-			}
+-			panic(fmt.Sprintf("Issue refused code=%s outcome_unknown=%t", code, ce.OutcomeUnknown))
++		failure := lateFailure(e)
++		if failure.OutcomeUnknown || (failure.Code != "busy" && failure.Code != "rate_limited") {
++			panic(fmt.Sprintf("Issue refused code=%s outcome_unknown=%t", failure.Code, failure.OutcomeUnknown))
+ 		}
+ 		check(pauseActual(work, time.Second), "definite Issue retry deadline")
++	}
++}
++
++type lateServiceFailure struct {
++	Code           string `json:"code"`
++	OutcomeUnknown bool   `json:"outcome_unknown"`
++}
++
++// Closed diagnostic vocabulary only; never echo arbitrary error text or inputs.
++func lateFailure(err error) lateServiceFailure {
++	if err == nil {
++		return lateServiceFailure{Code: "success"}
++	}
++	var ce *poolservice.ClientError
++	if !errors.As(err, &ce) {
++		return lateServiceFailure{Code: "non_client_error", OutcomeUnknown: true}
++	}
++	code := "unrecognized"
++	switch ce.Code {
++	case "invalid_request", "unauthorized", "forbidden", "not_found", "expired", "rejected", "too_large", "rate_limited", "busy", "capacity", "unavailable", "outcome_unknown":
++		code = ce.Code
++	}
++	return lateServiceFailure{Code: code, OutcomeUnknown: ce.OutcomeUnknown}
++}
++
++func lateRequireFailure(err error, code string, unknown bool, label string) lateServiceFailure {
++	got := lateFailure(err)
++	require(got.Code == code && got.OutcomeUnknown == unknown,
++		fmt.Sprintf("%s: code=%s outcome_unknown=%t expected_code=%s expected_unknown=%t", label, got.Code, got.OutcomeUnknown, code, unknown))
++	return got
++}
++
++func lateIssueClosed(ctx context.Context, c *poolservice.Client) lateServiceFailure {
++	work, cancel := context.WithTimeout(ctx, 20*time.Second)
++	defer cancel()
++	last := lateServiceFailure{Code: "not_called"}
++	for {
++		// Pace before the first request too: the last original Issue may have
++		// consumed its allowance. Only definite pre-admission failures retry.
++		if pauseActual(work, time.Second) != nil {
++			panic(fmt.Sprintf("closed Issue deadline: code=%s outcome_unknown=%t", last.Code, last.OutcomeUnknown))
++		}
++		_, err := c.Issue(work)
++		last = lateFailure(err)
++		if !last.OutcomeUnknown && (last.Code == "busy" || last.Code == "rate_limited") {
++			continue
++		}
++		// Issue conservatively maps every underlying non-Busy error (including
++		// capacity) to unknown. Never retry that reply: close and audit exact
++		// original issuer Jobs and pool Works/rows before claiming no issuance.
++		return lateRequireFailure(err, "outcome_unknown", true, "ordinary issuance is closed")
+ 	}
+ }
+ 
+@@ -185,7 +226,7 @@
+ 	require(len(relay.sends()) == 0, "held payout never reached node")
+ 	payment := validatePayment(held.Raw, s, inputs)
+ 	first := lateClosedAudit(ctx, root, s)
+-	require(first.Submissions == 2 && first.Accepted == 2 && first.Works == 2 && len(first.Batches) == 1 && len(first.Credits) == 2 && len(first.Entries) == 2 && len(first.Rounds) == 2 && first.Births == 0, "original two-reward fixture")
++	require(first.Submissions == 2 && first.Accepted == 2 && first.Works == 2 && first.AuthorityJobs == 2 && len(first.Batches) == 1 && len(first.Credits) == 2 && len(first.Entries) == 2 && len(first.Rounds) == 2 && first.Births == 0, "original two-reward fixture")
+ 	original := first.Batches[0]
+ 	require(original.Raw == held.Raw && original.TxID == payment["txid"] && original.State == "prepared", "original synchronized signed reservation")
+ 	require(first.Report.Balances[0].ReservedAtoms == minerPayment && first.Report.Balances[1].ReservedAtoms == minerPayment, "both original9.9SLUG reserved")
+@@ -228,18 +269,16 @@
+ 		return v.Capacity.Mode == "draining" && v.Capacity.Submissions == 4
+ 	})
+ 	require(full.Capacity.Reservation.Submissions == 4 && !full.Capacity.OverBound, "real CapacityEnvelope four, never manual attachment")
+-	_, e = clients[0].Issue(ctx)
+-	var denied *poolservice.ClientError
+-	require(errors.As(e, &denied) && denied.Code == "capacity" && !denied.OutcomeUnknown, "ordinary issuance is closed")
++	issueDenial := lateIssueClosed(ctx, clients[0])
+ 	check((*running).stop(), "join before real expiry")
+ 	*running = nil
+ 	filled := lateClosedAudit(ctx, root, s)
+ 	lateSameBatch(original, filled)
+-	require(filled.Submissions == 4 && filled.Accepted == 4 && filled.Works == 3 && len(filled.Entries) == 4 && len(filled.Rounds) == 2 && len(filled.Credits) == 2 && filled.Births == first.Births, "full intake before unseen winner")
++	require(filled.Submissions == 4 && filled.Accepted == 4 && filled.Works == 3 && filled.AuthorityJobs == 3 && len(filled.Entries) == 4 && len(filled.Rounds) == 2 && len(filled.Credits) == 2 && filled.Births == first.Births, "full intake before unseen winner")
+ 	for _, v := range filled.Entries {
+ 		require(v.Job.ID != work.Job.ID || !v.Share.Block, "no B winner row before expiry")
+ 	}
+-	write(filepath.Join(root, "05-full-intake.json"), map[string]any{"status": full, "work": work, "filler": filler, "audit": filled})
++	write(filepath.Join(root, "05-full-intake.json"), map[string]any{"status": full, "work": work, "filler": filler, "audit": filled, "issue_denial": issueDenial})
+ 
+ 	phase = "real five-minute job expiry and actual normal winner search"
+ 	if d := time.Until(time.UnixMilli(work.Job.ExpiresAtMS)); d > 0 {
+@@ -264,12 +303,13 @@
+ 	require(time.Now().UnixMilli() >= work.Job.ExpiresAtMS, "winner found only after expiry")
+ 	*running = constructRuntime(ctx, root, private, s, rpcConfig, false)
+ 	(*running).run(ctx, s.Ingress.Origin)
++	// The original full4/4 attachment is draining before listeners start.
++	// Recovery does not depend on public-replay readiness; these are one-shot
++	// submissions, and an unexpected Busy/uncertainty stops this scenario.
+ 	_, ordinaryErr := clients[0].Submit(ctx, work, ordinary.Nonce)
+-	var ordinaryFailure *poolservice.ClientError
+-	require(errors.As(ordinaryErr, &ordinaryFailure) && !ordinaryFailure.OutcomeUnknown && ordinaryFailure.Code == "capacity", "ordinary late row remains refused at drain")
++	ordinaryFailure := lateRequireFailure(ordinaryErr, "capacity", false, "ordinary late row remains refused at drain")
+ 	_, winnerErr := clients[0].Submit(ctx, work, winner.Nonce)
+-	var winnerFailure *poolservice.ClientError
+-	require(errors.As(winnerErr, &winnerFailure) && winnerFailure.OutcomeUnknown && winnerFailure.Code == "outcome_unknown", "conservative mutating node-proof failure")
++	winnerFailure := lateRequireFailure(winnerErr, "outcome_unknown", true, "conservative mutating node-proof failure")
+ 	// The HTTP boundary conservatively labels ErrNode unknown. Do not retry it:
+ 	// close and audit the exact original row/chain before later canonical recovery.
+ 
+@@ -280,7 +320,7 @@
+ 	*running = nil
+ 	absent := lateClosedAudit(ctx, root, s)
+ 	lateSameBatch(original, absent)
+-	require(absent.Submissions == 4 && absent.Accepted == 4 && absent.Works == 3 && reflect.DeepEqual(absent.Entries, filled.Entries) && len(absent.Credits) == 2 && absent.Births == first.Births, "refused late candidates changed no accepted rows/births")
++	require(absent.Submissions == 4 && absent.Accepted == 4 && absent.Works == 3 && absent.AuthorityJobs == 3 && reflect.DeepEqual(absent.Entries, filled.Entries) && len(absent.Credits) == 2 && absent.Births == first.Births, "refused late candidates changed no accepted rows/births")
+ 
+ 	phase = "publish exact original B block after expiry"
+ 	var reply any
+@@ -308,7 +348,7 @@
+ 	for _, v := range inputs {
+ 		require(v != lateCoin, "late funding distinct from reserved A inputs")
+ 	}
+-	write(filepath.Join(root, "06-canonical-late.json"), map[string]any{"job": work.Job, "proof": winner, "block_hash": hash, "height": 104, "coin": lateCoin, "observed_at_ms": time.Now().UnixMilli()})
++	write(filepath.Join(root, "06-canonical-late.json"), map[string]any{"job": work.Job, "proof": winner, "block_hash": hash, "height": 104, "coin": lateCoin, "observed_at_ms": time.Now().UnixMilli(), "ordinary_refusal": ordinaryFailure, "noncanonical_refusal": winnerFailure, "absent_audit": absent})
+ 
+ 	phase = "reopen original operator and accept unseen canonical B at drain"
+ 	started := time.Now().UnixMilli()
+--- before/late_audit.go
++++ after/late_audit.go
+@@ -20,6 +20,7 @@
+ 	Submissions       uint64                      `json:"submissions"`
+ 	Accepted          uint64                      `json:"accepted"`
+ 	Works             uint64                      `json:"works"`
++	AuthorityJobs     uint64                      `json:"authority_jobs"`
+ 	Births            uint64                      `json:"births"`
+ 	Entries           []poolshare.AccountingEntry `json:"entries"`
+ 	Rounds            []poolround.Record          `json:"rounds"`
+@@ -71,6 +72,7 @@
+ 	info, e := issuer.Info()
+ 	check(e, "public birth count")
+ 	out.Births = info.Records
++	out.AuthorityJobs = info.Jobs
+ 	pool, e := poolshare.OpenAudit(filepath.Join(root, "operator", "pool"), s.Pool, issuer)
+ 	check(e, "original pool physical audit")
+ 	closers = append(closers, pool.Close)
+@@ -141,7 +143,7 @@
+ }
+ 
+ func lateAssertWinner(a lateAudit, w poolshare.MiningWork, r poolshare.Submission, births uint64, confirmed bool) {
+-	require(a.Submissions == 5 && a.Accepted == 5 && a.Works == 3 && len(a.Entries) == 5 && len(a.Rounds) == 3 && a.Births == births, "one accepted row/round, no expired birth")
++	require(a.Submissions == 5 && a.Accepted == 5 && a.Works == 3 && a.AuthorityJobs == 3 && len(a.Entries) == 5 && len(a.Rounds) == 3 && a.Births == births, "one accepted row/round, no expired birth")
+ 	count := 0
+ 	for _, entry := range a.Entries {
+ 		if entry.Share.DuplicateKey == r.DuplicateKey {
+--- before/run.py
++++ after/run.py
+@@ -294,12 +294,26 @@
+         row['receipt']['block_height'] == i+2 and row['ordinary_submissions'] == 0 and
+         row['fighter_submissions'] == 0 and row['searched_nonces'] >= 1 and row['searched_nonces'] <= 64
+         for i, row in enumerate(bootstrap)), 'deterministic block-only bootstrap incomplete')
++    full = read_json(owned / '05-full-intake.json', 65 << 20)
++    need(full.get('issue_denial') == dict(code='outcome_unknown', outcome_unknown=True) and
++         full['audit'].get('authority_jobs') == 3 and full['audit'].get('works') == 3 and
++         full['audit'].get('submissions') == 4 and full['audit'].get('accepted') == 4,
++         'closed Issue uncertainty not reconciled against original issuer/pool')
++    canonical = read_json(owned / '06-canonical-late.json', 65 << 20)
++    need(canonical.get('ordinary_refusal') == dict(code='capacity', outcome_unknown=False) and
++         canonical.get('noncanonical_refusal') == dict(code='outcome_unknown', outcome_unknown=True) and
++         canonical['absent_audit'].get('authority_jobs') == 3 and
++         canonical['absent_audit'].get('works') == 3 and
++         canonical['absent_audit'].get('submissions') == 4 and
++         canonical['absent_audit'].get('accepted') == 4,
++         'one-shot negative submissions not reconciled')
+     # All are public, originally closed physical audits. No private fixture file is read.
+     final = read_json(owned / '09-combined-final.json', 65 << 20)
+     need(final.get('late_credit_count') == 1 and final.get('original_batch_unchanged') is True and
+          final.get('final_height') == 165 and final['audit'].get('read_only_unchanged') is True and
+          len(final['audit']['entries']) == 5 and len(final['audit']['rounds']) == 3 and
+-         len(final['audit']['credits']) == 3 and len(final['audit']['batches']) == 1,
++         len(final['audit']['credits']) == 3 and len(final['audit']['batches']) == 1 and
++         final['audit'].get('authority_jobs') == 3,
+          'closed final public audit incomplete')
+     return evidence
+ 
+--- before/README.md
++++ after/README.md
+@@ -3,6 +3,8 @@
+ Successor source-only until root reviews its exact execution lock. Attempt1 is preserved as a failed earlier run: it stopped during initial Issue after4.766 seconds with both nodes cleanly joined. Its public status was paused/not_started; the error code was not captured, so rate limiting is a source-backed hypothesis, not an observed cause. The exact earlier source/manifests/approval remain under `pre-rate-control/`. All custody inputs are generated only during the admitted future rehearsal from the existing published synthetic authority/gym/wallet recipes. The agent has read no private fixture artifact.
+ 
+ This is a narrow successor of `set74-prep/public-pool-actual`, whose original files and reports remain unchanged. `inherited-source.json` binds the reused source. Two normal loopback nodes, original TLS work/share clients, schema16 custody, scheduled payout, real CLI restart and joined cleanup remain concrete. The former automatic-worker bootstrap is preserved under `pre-root-bootstrap-assumption/` and was never executed: its independent pool/prospect successes could fill intake before two block wins. This successor submits only the two discovered winning nonces; prior worker/outbox qualification is separate evidence. No private signing/settlement getter, forced clock, journal edit, fake hash or enlarged physical journal is used.
++
++Attempt2 is also preserved, with its exact source/approval under `pre-issue-refusal/`. It cleanly stopped after205.931 seconds at the ordinary-Issue refusal assertion, after public audit proved two accepted rewards, zero births and one reserved signed batch. Its error code was not recorded. Independent source inspection proves the existing Issue handler maps every underlying non-Busy error, including capacity, to `outcome_unknown`; this successor respects that conservative boundary and proves no new job only after joined physical audit.
+ 
+ ## Frozen fixture before implementation
+ 
+@@ -16,8 +18,8 @@
+ 
+ 1. Mine one initial block to a separate fixture address. For each of the two gyms, issue one original TLS job and search at most64 nonces with normal `CheckNonce` under a four-minute context. Skip ordinary candidates without submitting them. Publish the exact winning block to the real node, prove its canonical bytes/height/pool reward, then submit that original winning nonce through TLS. Require exactly Sequence1/2 and Accepted1/2, canonical block rows at heights2/3. No fighter admission or worker/outbox runs: the birth counter stays0. Node-first publication legitimately changes the current parent; the canonical receipt, not a current-parent label, is required. Mine descendants to the real daily due, verify immature deferral, then stop the original runtime and mature both pool coinbases at height103.
+ 2. Reopen the original runtime. A bounded RPC relay records the first signed payout **before forwarding** and returns an unavailable response. Wait for the public prepared/reserved payout, then join all original owners. Closed audit records batch A: exact two original inputs and their claims, two9.9-SLUG payees, operator-funded fee/change, raw bytes/txid/day/creation time. It has never reached the node.
+-3. Reopen and issue distinct job B for gym0 at parent103. Submit exactly two timely, actually hashed **nonblock** shares from B, filling the original ordinary envelope:2 old winning rows +2 ordinary rows =4. B's winning nonce is still absent. Require runtime draining and new Issue refusal; close. Audit physically validated pool counters Submissions4/Accepted4/Works3, not merely the accepted-page count.
+-4. With the operator stopped and node tip unchanged, wait until B's actual five-minute expiry. Search at most64 further nonces through `prospectwork.ManifestWork.CheckNonce` under a four-minute child context for one normal network winner and one ordinary late share. Header/template/payout/extraNonce0 remain exact; no target override. Reopen: ordinary late submission is capacity-refused; the unobserved winning block's submission is conservatively `outcome_unknown` because node proof is missing. Do not retry this uncertainty. Join and closed-audit Submissions4/Accepted4, original A and unchanged node height; this rules out a secretly saved unaccepted B row.
++3. Reopen and issue distinct job B for gym0 at parent103. Submit exactly two timely, actually hashed **nonblock** shares from B, filling the original ordinary envelope:2 old winning rows +2 ordinary rows =4. B's winning nonce is still absent. Require runtime draining. The final Issue uses a20-second bound and one-second pacing only for definite pre-admission busy/rate_limited. Its first terminal response must be the existing conservative outcome_unknown; never retry it. Close and audit issuer Jobs3 plus physically validated pool counters Submissions4/Accepted4/Works3, not merely the accepted-page count. Persist its observed public code/uncertainty in phase05.
++4. With the operator stopped and node tip unchanged, wait until B's actual five-minute expiry. Search at most64 further nonces through `prospectwork.ManifestWork.CheckNonce` under a four-minute child context for one normal network winner and one ordinary late share. Header/template/payout/extraNonce0 remain exact; no target override. Reopen: ordinary late submission is capacity-refused; the unobserved winning block's submission is conservatively `outcome_unknown` because node proof is missing. Do not retry this uncertainty. Persist both negative replies through one closed-code diagnostic helper; Submit remains one-shot. The full4/4 original attachment selects draining before listeners, so this phase adds no public-replay readiness gate. Join and closed-audit issuer Jobs3, pool Works3/Submissions4/Accepted4, original A and unchanged node height; this rules out a secretly saved unaccepted B row.
+ 5. Submit B's exact retained candidate to the real node after expiry. Verify canonical height104, exact raw block, normal coinbase payout and a funding outpoint distinct from A. Reopen the original operator and Submit original B: require Sequence5/Accepted5, `canonical-late-winner`, canonical observation and receipt time after expiry. Wait for actual round refresh through5, then close/audit one B round with immutable window3..5. No B birth and no B credit yet.
+ 6. Start a separate production `slugpoold serve` process on the same root/inputs. Submit and Lookup the exact original B; both equal the saved receipt. Join that process; repeat closed audit with exactly5 physical rows,5 accepted rows and3 rounds. This proves process restart/idempotence. The genuine transport lost-response control below applies to A; the harness does not claim a lost B acknowledgement.
+ 7. Keep A withheld. Mine to B+59, reopen/refresh/close and require no B confirmation/credit. Mine one more block, reopen/refresh/close: B is locked at exactly60 descendants, but RecoverPending still imports no B credit while A is pending. Every audit compares all A economic fields; only its recorded delivery state may differ.
+--- before/RUNNER.md
++++ after/RUNNER.md
+@@ -7,3 +7,5 @@
+ `source-manifest.json` and `runner-manifest.json` describe the external snapshot; neither authorizes execution. `execution-lock.proposed.json` must be freshly bound to the installed qualified product source and approved by root. All compiled/embedded/native dependency inputs are additionally recorded before/after. A timeout, log overflow, source/profile/artifact change, process uncertainty, forced cleanup or incomplete combined public audit fails qualification.
+ 
+ The root-approved setup outputs were generated before harness implementation. The new budget model is independently supplied by `reference/inputs/two-axis-v1.json`; no fixture or expected financial bound is calculated by Go. The runnable command is in README. This snapshot is designed for eventual public testdata retention; generated secrets and runtime artifacts are excluded.
++
++The Issue-refusal successor preserves attempts1/2. Phase05 now checks the observed conservative Issue unknown plus issuer Jobs3/pool Works3/rows4; phase06 checks both one-shot negative replies and unchanged physical counts. All900/1080-second,180-block and process/log bounds remain unchanged.

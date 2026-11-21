@@ -17,12 +17,14 @@ import (
 // settlement scheduler, exact pending transactions and retained round refresh
 // alive. It never promises payment of below-minimum, fee- or funding-held carry.
 type CapacityStatus struct {
-	Reservation CapacityReservation `json:"reservation"`
-	Mode        string              `json:"mode"`
-	Reason      string              `json:"reason"`
-	Submissions uint64              `json:"submissions"`
-	OverBound   bool                `json:"over_bound"`
-	AtMS        int64               `json:"at_ms"`
+	Reservation       CapacityReservation `json:"reservation"`
+	Mode              string              `json:"mode"`
+	Reason            string              `json:"reason"`
+	Submissions       uint64              `json:"submissions"`
+	OverBound         bool                `json:"over_bound"`
+	CanonicalRecovery bool                `json:"canonical_recovery"`
+	RecoveryBlocks    uint64              `json:"recovery_blocks"`
+	AtMS              int64               `json:"at_ms"`
 }
 
 // Only a nonempty error tree made entirely of known capacity leaves can enter
@@ -84,8 +86,9 @@ func (r *Runtime) updateIntake(ctx context.Context, publicReady, roundReady bool
 		r.intakeReason = cause
 	}
 	if r.intakeReason != "" {
-		// Do not release custody or close the pool: existing saved submissions
-		// may still prove a late canonical winner within their reservation.
+		// Keep custody and the original pool alive: saved submissions retain
+		// exact recovery, and unseen canonical winners have their own audited
+		// whole-history reservation. Ordinary intake remains closed.
 		if err = r.admissionServer.DrainOperatorIntake(ctx); err != nil {
 			return err
 		}
@@ -115,7 +118,7 @@ func (r *Runtime) updateIntake(ctx context.Context, publicReady, roundReady bool
 		}
 	}
 	r.mu.Lock()
-	r.status.Capacity = CapacityStatus{Reservation: r.reservation, Mode: pool.Mode, Reason: r.intakeReason, Submissions: pool.Submissions, OverBound: pool.OverBound, AtMS: time.Now().UTC().UnixMilli()}
+	r.status.Capacity = CapacityStatus{Reservation: r.reservation, Mode: pool.Mode, Reason: r.intakeReason, Submissions: pool.Submissions, OverBound: pool.OverBound, CanonicalRecovery: pool.CanonicalRecovery, RecoveryBlocks: pool.RecoveryBlocks, AtMS: time.Now().UTC().UnixMilli()}
 	r.mu.Unlock()
 	return ctx.Err()
 }

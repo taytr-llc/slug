@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "scope": "source-only inherited actual leaves; original files/reports unmodified",
+  "sources": {
+    "set74-prep/public-pool-actual/main.go": {
+      "bytes": 38824,
+      "sha256": "08c5db54884825f574f375c3bb8e8d41ae18224a22fe7749e21537ba55ceeea8"
+    },
+    "set74-prep/public-pool-actual/miner.go": {
+      "bytes": 17210,
+      "sha256": "bee9953ac0ce0d93f7ad0fe7cc1fcd7fd25aac389e474d0757ab473717661205"
+    },
+    "set74-prep/public-pool-actual/node_helpers.go": {
+      "bytes": 8444,
+      "sha256": "330ba64bdff3836b3a4d12f426e90e55fb2f4e2c6ecc3272b290597ac405e92b"
+    },
+    "set74-prep/public-pool-actual/go.mod": {
+      "bytes": 1360,
+      "sha256": "4a229ba8da00190ba4c1caa73e8cec78a261c43eebcbf28b82ddd5da3dc13b15"
+    },
+    "set74-prep/public-pool-actual/run.py": {
+      "bytes": 20907,
+      "sha256": "17f4d04272703c936b058714d0d3ca1f18dafc5ce4b7d34a65605f6b0ed5c084"
+    },
+    "set74-prep/public-pool-actual/runner_support.py": {
+      "bytes": 3888,
+      "sha256": "54bb3e7caf33e744ce76bf366dd23a4eff4d370d9246b85758089b57dd2439d7"
+    }
+  },
+  "removed_predecessor_source": {
+    "miner.go": "Automatic worker/outbox bootstrap was not executed; its nondeterministic initial row count is replaced by block-only original TLS submissions. Source remains in pre-root-bootstrap-assumption/miner.go."
+  }
+}

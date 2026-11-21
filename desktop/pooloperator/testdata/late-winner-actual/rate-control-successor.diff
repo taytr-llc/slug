@@ -1,0 +1,103 @@
+--- before/main.go
++++ after/main.go
+@@ -793,7 +793,7 @@
+ 	}
+ 	write(filepath.Join(root, "01-runtime-listening.json"), runtimeStatus(ctx, running.runtime))
+ 	phase = "two deterministic block-only original TLS submissions"
+-	poolInputs, reports := lateBootstrap(ctx, s, a, b, configs, clients)
++	poolInputs, reports := lateBootstrap(ctx, s, a, b, running, configs, clients)
+ 	highest := uint32(3)
+ 	write(filepath.Join(root, "02-two-blocks.json"), reports)
+ 	phase = "sixty descendants then due immature deferral"
+--- before/late_flow.go
++++ after/late_flow.go
+@@ -5,6 +5,7 @@
+ 	"bytes"
+ 	"context"
+ 	"errors"
++	"fmt"
+ 	"path/filepath"
+ 	"reflect"
+ 	"time"
+@@ -29,11 +30,11 @@
+ // Each gym contributes exactly one block row. Ordinary candidates are hashed
+ // but never submitted; no worker or fighter signer runs in this accounting
+ // bootstrap. A lucky first nonce is not a prerequisite for the fixed row count.
+-func lateBootstrap(ctx context.Context, s pooloperator.Setup, a, b *node, configs []publicFixtureMinerConfig, clients []*poolservice.Client) ([]wire.OutPoint, []lateBootstrapReport) {
++func lateBootstrap(ctx context.Context, s pooloperator.Setup, a, b *node, r *runningOperator, configs []publicFixtureMinerConfig, clients []*poolservice.Client) ([]wire.OutPoint, []lateBootstrapReport) {
+ 	var inputs []wire.OutPoint
+ 	var reports []lateBootstrapReport
+ 	for i, client := range clients {
+-		work := lateIssue(ctx, client)
++		work := lateIssue(ctx, client, r)
+ 		require(work.Job.Context.ParentHeight == uint32(i+1) && work.Job.PublicKey == configs[i].GymPublicKey, "original per-gym issued bootstrap work")
+ 		prepared, e := poolservice.PrepareWork(s.Pool, configs[i].GymPublicKey, work)
+ 		check(e, "bootstrap fixed original candidate")
+@@ -81,17 +82,36 @@
+ 	return inputs, reports
+ }
+ 
+-func lateIssue(ctx context.Context, c *poolservice.Client) poolshare.MiningWork {
++func lateIssue(ctx context.Context, c *poolservice.Client, r *runningOperator) poolshare.MiningWork {
+ 	work, cancel := context.WithTimeout(ctx, 20*time.Second)
+ 	defer cancel()
+ 	for {
++		// Intake and public replay readiness consume this same original20s
++		// budget. They never renew it or authorize a replacement runtime.
++		status := runtimeStatus(work, r.runtime)
++		if status.Capacity.Mode != "enabled" || !status.Public.Ready {
++			check(pauseActual(work, time.Second), "original Issue readiness deadline")
++			continue
++		}
+ 		v, e := c.Issue(work)
+ 		if e == nil {
+ 			return v
+ 		}
+ 		var ce *poolservice.ClientError
+-		require(errors.As(e, &ce) && ce.Code == "busy" && !ce.OutcomeUnknown, "only definite pre-admission Issue Busy retry")
+-		check(pauseActual(work, 100*time.Millisecond), "Issue Busy deadline")
++		if !errors.As(e, &ce) {
++			panic("Issue refused code=non_client_error outcome_unknown=true")
++		}
++		if ce.OutcomeUnknown || (ce.Code != "busy" && ce.Code != "rate_limited") {
++			// Emit only the closed public protocol vocabulary, never arbitrary
++			// error text, credentials, request bodies or private paths.
++			code := "unrecognized"
++			switch ce.Code {
++			case "invalid_request", "unauthorized", "forbidden", "not_found", "expired", "rejected", "too_large", "rate_limited", "busy", "capacity", "unavailable", "outcome_unknown":
++				code = ce.Code
++			}
++			panic(fmt.Sprintf("Issue refused code=%s outcome_unknown=%t", code, ce.OutcomeUnknown))
++		}
++		check(pauseActual(work, time.Second), "definite Issue retry deadline")
+ 	}
+ }
+ 
+@@ -176,7 +196,7 @@
+ 	rpcConfig.URL = relay.url
+ 	*running = constructRuntime(ctx, root, private, s, rpcConfig, false)
+ 	(*running).run(ctx, s.Ingress.Origin)
+-	work := lateIssue(ctx, clients[0])
++	work := lateIssue(ctx, clients[0], *running)
+ 	require(work.Job.Context.ParentHeight == 103, "original late job parent")
+ 	for _, entry := range first.Entries {
+ 		require(entry.Job.ID != work.Job.ID, "B must be distinct original job")
+--- before/README.md
++++ after/README.md
+@@ -1,6 +1,6 @@
+ # Full-intake unseen D80 winner: combined actual proof
+ 
+-Source-only until root reviews an exact execution lock. No Go build, node, wallet or operator has been run from this stage. All custody inputs are generated only during the admitted future rehearsal from the existing published synthetic authority/gym/wallet recipes. The agent has read no private fixture artifact.
++Successor source-only until root reviews its exact execution lock. Attempt1 is preserved as a failed earlier run: it stopped during initial Issue after4.766 seconds with both nodes cleanly joined. Its public status was paused/not_started; the error code was not captured, so rate limiting is a source-backed hypothesis, not an observed cause. The exact earlier source/manifests/approval remain under `pre-rate-control/`. All custody inputs are generated only during the admitted future rehearsal from the existing published synthetic authority/gym/wallet recipes. The agent has read no private fixture artifact.
+ 
+ This is a narrow successor of `set74-prep/public-pool-actual`, whose original files and reports remain unchanged. `inherited-source.json` binds the reused source. Two normal loopback nodes, original TLS work/share clients, schema16 custody, scheduled payout, real CLI restart and joined cleanup remain concrete. The former automatic-worker bootstrap is preserved under `pre-root-bootstrap-assumption/` and was never executed: its independent pool/prospect successes could fill intake before two block wins. This successor submits only the two discovered winning nonces; prior worker/outbox qualification is separate evidence. No private signing/settlement getter, forced clock, journal edit, fake hash or enlarged physical journal is used.
+ 
+@@ -11,6 +11,8 @@
+ The real `CapacityEnvelope` must return ordinary intake4; runtime Status must independently show4 rows and draining. It is not manually attached at an artificial lower ceiling. The unseen fifth row/third block uses the new attached canonical-recovery path and unchanged V1 storage. The independent `two-axis-v1.json` case bounds N5/R3/G2 at MaxBatches5, state4,813,932 bytes, rounds211,357 bytes and largest round67,043 bytes. Its round/credit4 and8MiB limits are stricter than this actual fixture; the runner verifies the exact case and containment. This is finite reservation proof, not unlimited host capacity.
+ 
+ ## Exact combined sequence
++
++Each original Issue retains its existing20-second context for both runtime capacity/public readiness and issuance. Only definite `busy` or `rate_limited` with `outcome_unknown=false` permits a one-second-paced retry; the server rate check occurs before body decoding/admission. Every other failure stops with only its closed public code and uncertainty flag. No admission deadline, source pin or runtime owner is replaced.
+ 
+ 1. Mine one initial block to a separate fixture address. For each of the two gyms, issue one original TLS job and search at most64 nonces with normal `CheckNonce` under a four-minute context. Skip ordinary candidates without submitting them. Publish the exact winning block to the real node, prove its canonical bytes/height/pool reward, then submit that original winning nonce through TLS. Require exactly Sequence1/2 and Accepted1/2, canonical block rows at heights2/3. No fighter admission or worker/outbox runs: the birth counter stays0. Node-first publication legitimately changes the current parent; the canonical receipt, not a current-parent label, is required. Mine descendants to the real daily due, verify immature deferral, then stop the original runtime and mature both pool coinbases at height103.
+ 2. Reopen the original runtime. A bounded RPC relay records the first signed payout **before forwarding** and returns an unavailable response. Wait for the public prepared/reserved payout, then join all original owners. Closed audit records batch A: exact two original inputs and their claims, two9.9-SLUG payees, operator-funded fee/change, raw bytes/txid/day/creation time. It has never reached the node.

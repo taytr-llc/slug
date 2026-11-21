@@ -379,10 +379,18 @@ authorization must be repository-limited, not an account-wide OAuth expansion.
   See `docs/evidence/set74/remote-native.json`; this is not hosted login or D74.
   Concrete host handoff, remote history/payout presentation and
   continuous capacity/host qualification remain; do not call the pool deployed.
-  The finite reservation covers saved submission rows only. D80's previously
-  issued but unseen canonical winner after intake drain is an explicit release
-  blocker: retain pending work and implement continuation-backed credit; never
-  bypass financial bounds or redefine D80 to discard it.
+  Unseen canonical winners from original issued jobs can now cross the ordinary
+  intake ceiling after a separate two-axis whole-history reservation, within
+  unchanged V1 physical and financial limits. Normal/race regressions include
+  full-owner reopen, one added credit and unchanged reserved payout bytes.
+  Actual normal-PoW acceptance now passes full ordinary intake, real job expiry,
+  unseen canonical recovery, exact receipt retry after original-owner restart,
+  one additional B credit and unchanged signed/reserved payout A through lost
+  reply and confirmation. Preserve all four failed harness attempts. Physically
+  full or financially unbacked journals still hold; broader capacity continuation
+  remains a release blocker. Never discard D80 rights, reset histories or
+  bypass a reservation. See `docs/evidence/set74/late-winner-regression.json`
+  and `docs/evidence/set74/late-winner-actual.json`. No host deployment is proved.
   Scheduling retains the original settlement;
   only completed daily batches advance its cursor. Node evidence grants no
   signing authority; uncertain delivery retries only the retained transaction.

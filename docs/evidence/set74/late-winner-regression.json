@@ -1,0 +1,1213 @@
+{
+  "version": 1,
+  "status": "regressions_and_bounded_actual_passed",
+  "regression_passed": true,
+  "public_readiness": false,
+  "scope": "Bounded unseen canonical recovery beyond ordinary intake within original V1 physical/financial limits; normal/race regressions and isolated normal-PoW actual acceptance passed. No continuous-capacity or public-deployment claim.",
+  "predecessor_native_commit": "798df3c9403c92eff041f04f8d6dcc6df6fb1de8",
+  "broad_qualification": {
+    "report": {
+      "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-qualification-attempt1/report.json",
+      "sha256": "151ad98d5ec8bd83779ececa058ee1e02c22f9bffc76b9b98d4de8c186e7b150",
+      "bytes": 3843
+    },
+    "source_inventory": {
+      "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-qualification-attempt1/source-before.json",
+      "sha256": "7897f5672c0689c7c55ad9519a7f69e89d3bbb55ca92712df2fd3b79d0ab7075",
+      "bytes": 369998
+    },
+    "source_count": 2790,
+    "source_unchanged_during_run": true,
+    "normal_pow": true,
+    "normal_test_events": 652,
+    "race_test_events": 652,
+    "commands": [
+      {
+        "name": "normal-root",
+        "command": [
+          "sh",
+          "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+          "test",
+          "-json",
+          "-p=1",
+          "-count=1",
+          "-timeout=600s",
+          "./internal/poolcapacity",
+          "./poolshare",
+          "./poolround",
+          "./poolsettle",
+          "./poolservice"
+        ],
+        "cwd": "/Users/taytrrip/slug/slug",
+        "exit_code": 0,
+        "seconds": 39.004,
+        "packages": [
+          {
+            "package": "github.com/taytr-llc/slug/internal/poolcapacity",
+            "action": "pass",
+            "seconds": 0.311
+          },
+          {
+            "package": "github.com/taytr-llc/slug/poolshare",
+            "action": "pass",
+            "seconds": 7.731
+          },
+          {
+            "package": "github.com/taytr-llc/slug/poolround",
+            "action": "pass",
+            "seconds": 4.567
+          },
+          {
+            "package": "github.com/taytr-llc/slug/poolsettle",
+            "action": "pass",
+            "seconds": 18.045
+          },
+          {
+            "package": "github.com/taytr-llc/slug/poolservice",
+            "action": "pass",
+            "seconds": 3.753
+          }
+        ],
+        "tests_passed": 422,
+        "tests_failed": []
+      },
+      {
+        "name": "normal-operator",
+        "command": [
+          "sh",
+          "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+          "test",
+          "-json",
+          "-p=1",
+          "-count=1",
+          "-timeout=600s",
+          "./pooloperator"
+        ],
+        "cwd": "/Users/taytrrip/slug/slug/desktop",
+        "exit_code": 0,
+        "seconds": 41.922,
+        "packages": [
+          {
+            "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+            "action": "pass",
+            "seconds": 34.188
+          }
+        ],
+        "tests_passed": 230,
+        "tests_failed": []
+      },
+      {
+        "name": "race-root",
+        "command": [
+          "sh",
+          "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+          "test",
+          "-json",
+          "-p=1",
+          "-count=1",
+          "-timeout=600s",
+          "-race",
+          "./internal/poolcapacity",
+          "./poolshare",
+          "./poolround",
+          "./poolsettle",
+          "./poolservice"
+        ],
+        "cwd": "/Users/taytrrip/slug/slug",
+        "exit_code": 0,
+        "seconds": 184.128,
+        "packages": [
+          {
+            "package": "github.com/taytr-llc/slug/internal/poolcapacity",
+            "action": "pass",
+            "seconds": 1.4809999999999999
+          },
+          {
+            "package": "github.com/taytr-llc/slug/poolshare",
+            "action": "pass",
+            "seconds": 22.5
+          },
+          {
+            "package": "github.com/taytr-llc/slug/poolround",
+            "action": "pass",
+            "seconds": 12.975999999999999
+          },
+          {
+            "package": "github.com/taytr-llc/slug/poolsettle",
+            "action": "pass",
+            "seconds": 121.322
+          },
+          {
+            "package": "github.com/taytr-llc/slug/poolservice",
+            "action": "pass",
+            "seconds": 13.892
+          }
+        ],
+        "tests_passed": 422,
+        "tests_failed": []
+      },
+      {
+        "name": "race-operator",
+        "command": [
+          "sh",
+          "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+          "test",
+          "-json",
+          "-p=1",
+          "-count=1",
+          "-timeout=600s",
+          "-race",
+          "./pooloperator"
+        ],
+        "cwd": "/Users/taytrrip/slug/slug/desktop",
+        "exit_code": 0,
+        "seconds": 239.992,
+        "packages": [
+          {
+            "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+            "action": "pass",
+            "seconds": 231.163
+          }
+        ],
+        "tests_passed": 230,
+        "tests_failed": []
+      }
+    ]
+  },
+  "initial_focused": {
+    "poolshare": {
+      "input": {
+        "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-tests-attempt1/poolshare-focused.jsonl",
+        "sha256": "c1ff65a90f3b05de02a584681d98951ea2b513e27a103b85791a4a466e6fb496",
+        "bytes": 15287
+      },
+      "packages": [
+        {
+          "Package": "github.com/taytr-llc/slug/poolshare",
+          "Action": "pass",
+          "Elapsed": 2.814
+        }
+      ],
+      "passed_test_events": 15,
+      "failed": [],
+      "top_level_passes": [
+        "TestOperatorCanonicalRecoveryUnseenAfterDrainAndReopen",
+        "TestOperatorCanonicalRecoveryRefusesNoncanonicalAndWrongSession",
+        "TestOperatorCanonicalRecoveryRevocationAndFinalClock",
+        "TestOperatorCanonicalRecoveryUncertainCommitReopen",
+        "TestOperatorCanonicalRecoveryPhysicalAndFinancialRefusal",
+        "TestOperatorCanonicalRecoveryAliasesRetainDistinctRows"
+      ]
+    },
+    "combined_poolsettle": {
+      "input": {
+        "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-tests-attempt1/poolsettle-focused.jsonl",
+        "sha256": "d467619457ba2bd933bb8a826dfa6e14eb113e639e6c581c841b08ffa353b347",
+        "bytes": 1578
+      },
+      "packages": [
+        {
+          "Package": "github.com/taytr-llc/slug/poolsettle",
+          "Action": "pass",
+          "Elapsed": 2.063
+        }
+      ],
+      "passed_test_events": 1,
+      "failed": [],
+      "top_level_passes": [
+        "TestOperatorV2UnseenCanonicalRecoveryPreservesPendingPayoutAcrossOwners"
+      ]
+    }
+  },
+  "final_focused_race": {
+    "input": {
+      "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-tests-attempt1/final-focused-race.jsonl",
+      "sha256": "488b542667a56c0ef4987e8de0b98dcec05f93c2b673557d1399fa8bd76db6ff",
+      "bytes": 53949
+    },
+    "packages": [
+      {
+        "Package": "github.com/taytr-llc/slug/internal/poolcapacity",
+        "Action": "pass",
+        "Elapsed": 1.522
+      },
+      {
+        "Package": "github.com/taytr-llc/slug/poolshare",
+        "Action": "pass",
+        "Elapsed": 11.342
+      },
+      {
+        "Package": "github.com/taytr-llc/slug/poolsettle",
+        "Action": "pass",
+        "Elapsed": 9.652
+      },
+      {
+        "Package": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "Action": "pass",
+        "Elapsed": 4.645
+      }
+    ],
+    "passed_test_events": 53,
+    "failed": [],
+    "top_level_passes": [
+      "TestRecoveryIndependentTwoAxisReference",
+      "TestOperatorCanonicalRecoveryUnseenAfterDrainAndReopen",
+      "TestOperatorCanonicalRecoveryRefusesNoncanonicalAndWrongSession",
+      "TestOperatorCanonicalRecoveryRevocationAndFinalClock",
+      "TestOperatorCanonicalRecoveryUncertainCommitReopen",
+      "TestOperatorCanonicalRecoveryPhysicalAndFinancialRefusal",
+      "TestOperatorCanonicalRecoveryAliasesRetainDistinctRows",
+      "TestOperatorV2UnseenCanonicalRecoveryPreservesPendingPayoutAcrossOwners",
+      "TestOperatorCapacityIndependentEdges"
+    ]
+  },
+  "profile_refusal": {
+    "input": {
+      "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-tests-attempt1/profile-refusal.jsonl",
+      "sha256": "521e40c2eb6dd529a60b16a51fb956efee69f972820773c991e4dd6a9c149ece",
+      "bytes": 9868
+    },
+    "packages": [
+      {
+        "Package": "github.com/taytr-llc/slug/poolshare",
+        "Action": "pass",
+        "Elapsed": 0.317
+      },
+      {
+        "Package": "github.com/taytr-llc/slug/poolround",
+        "Action": "pass",
+        "Elapsed": 0.339
+      },
+      {
+        "Package": "github.com/taytr-llc/slug/poolsettle",
+        "Action": "pass",
+        "Elapsed": 0.324
+      },
+      {
+        "Package": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "Action": "pass",
+        "Elapsed": 0.34
+      }
+    ],
+    "passed_test_events": 9,
+    "failed": [],
+    "top_level_passes": [
+      "TestOperatorAdmissionCheapRefusal",
+      "TestPoolCheapProfileRefusesBeforeStorage",
+      "TestRoundCheapProfileRefusesBeforeStorage",
+      "TestPayoutHistoryProfileRefusalBeforeState",
+      "TestSettlementRecoverPendingRejectsCheapProfile",
+      "TestSettlementSchedulerBindingRejectsCheapProfile",
+      "TestSettlementSigningRequestRejectsCheapProfile",
+      "TestSettlementRejectsCheapProfile",
+      "TestProvisionCheapCommandRefusalBeforeEffects"
+    ]
+  },
+  "preserved_setup_failure": {
+    "input": {
+      "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-tests-attempt1/initial-workspace-diagnostic.json",
+      "sha256": "fffefed44b4a3dbffd3a1bd15122cc1e2d66d1a4a0fcc8315430864c6badf4bd",
+      "bytes": 429
+    },
+    "details": {
+      "passed": false,
+      "scope": "initial focused command setup; product poolshare test passed",
+      "cause": "Included desktop/pooloperator under root go.work; desktop is separate module",
+      "output": "main module does not contain package github.com/taytr-llc/slug/desktop/pooloperator",
+      "successor": "same unchanged source with desktop/go.work: TestOperatorCapacityIndependentEdges PASS 0.607s",
+      "assertions_changed": false
+    }
+  },
+  "vet": {
+    "initial": {
+      "input": {
+        "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-tests-attempt1/vet.log",
+        "sha256": "94123f8bf330710e65498043af077114186b736661bbf897c7dcabd44203d278",
+        "bytes": 146
+      },
+      "status": "warning_preserved",
+      "diagnostic": "desktop/pooloperator/capacity_envelope.go:15:26: github.com/taytr-llc/slug/desktop/pooloperator.capacityInputs struct literal uses unkeyed fields"
+    },
+    "corrected": {
+      "input": {
+        "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-tests-attempt1/vet-corrected.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "status": "passed",
+      "basis": "Root execution confirmation; corrected log contains no diagnostics"
+    }
+  },
+  "source_composition": {
+    "broad_precedes_final_correction": true,
+    "unchanged_since_broad": 2788,
+    "changed_files": [
+      {
+        "path": "desktop/pooloperator/capacity_envelope.go",
+        "qualified_sha256": "454327bfb155bff91291bf3ad5f4a36274d4a3d62ffb6162ab9089f7ad5599c9",
+        "current_sha256": "78da90e37dbf86b81343b5d39a711cdb64f9a2d61e56c444c205583863386097"
+      },
+      {
+        "path": "poolshare/operator_admission.go",
+        "qualified_sha256": "df059066eac91b55633c710bd0ddf9fa7b3bd8e59889e6f364580728cf024725",
+        "current_sha256": "9892fb8a13596c830c8b1d91b9a7cca781b9d90cea6a3694f3ad24a8659fc4ac"
+      }
+    ],
+    "change_scope": "Keyed capacity-input struct literal replacing unkeyed alias literal, plus two comment clarifications. Root confirmed no algorithm/assertion changes.",
+    "latest_coverage": "Final focused race covers current corrected source; full normal/race package qualification was not rerun after these edits.",
+    "current_selected": [
+      {
+        "path": "internal/poolcapacity/capacity.go",
+        "sha256": "8d22bd7b5617c050d1b2d8724574cbbe9d528cc68c200370951e911042428c56"
+      },
+      {
+        "path": "internal/poolcapacity/reference_test.go",
+        "sha256": "1aa127631dec6021acdac586d0b561dc1741e445c5fcf0c0c7d983a324408c76"
+      },
+      {
+        "path": "poolshare/operator_recovery.go",
+        "sha256": "91fa0191d04304f87f65ddb451977295c81d1f03e82f127ec483db88011abb4d"
+      },
+      {
+        "path": "poolshare/operator_recovery_test.go",
+        "sha256": "d3d7ff31f15c6e142e28f530f05f67aec8d98077e17edd13b738c46c0ba7bf68"
+      },
+      {
+        "path": "poolsettle/late_winner_operator_test.go",
+        "sha256": "5e67d314cb22b91f1269f8e2c75d4a38e99473bd0f54debf657d08e2266b5fb1"
+      },
+      {
+        "path": "poolshare/operator_admission.go",
+        "sha256": "9892fb8a13596c830c8b1d91b9a7cca781b9d90cea6a3694f3ad24a8659fc4ac"
+      },
+      {
+        "path": "poolshare/pool.go",
+        "sha256": "5d67c1963ddf5a2ef2820c011491c8a99873876d2700824b3b494f19c95583e2"
+      },
+      {
+        "path": "poolshare/store.go",
+        "sha256": "12f42fc0f35b45ca9fce38841a7ca528bbb0545295e0f575c4a434bc2ef4b792"
+      },
+      {
+        "path": "desktop/pooloperator/capacity_envelope.go",
+        "sha256": "78da90e37dbf86b81343b5d39a711cdb64f9a2d61e56c444c205583863386097"
+      },
+      {
+        "path": "desktop/pooloperator/construction.go",
+        "sha256": "437d746968bbb7546727410fc82cbb918a15429d4fcbc9f077c48374ad0bac81"
+      },
+      {
+        "path": "desktop/pooloperator/capacity_drain.go",
+        "sha256": "5e7d61076e8cbf77ad8ed9874e805a0004188ec49a415cef36e758baeeb80637"
+      }
+    ],
+    "actual_successor_binding": {
+      "evidence": {
+        "path": "/Users/taytrrip/slug/set74-prep/late-winner-proof/closeout/late-winner-actual.draft.json",
+        "sha256": "e4ea6c2afd465542c8ea30922ffad9d122a721b4082f394c820b0550f2d7cdfd",
+        "bytes": 14756
+      },
+      "source_count": 2452,
+      "source_unchanged": true,
+      "qualification_scope": "Actual normal builds and complete isolated scenario on the same final corrected production bytes; no wholesale normal/race repeat claimed."
+    }
+  },
+  "independent_reference": {
+    "report": {
+      "path": "/Users/taytrrip/slug/set74-prep/late-winner-proof/reference/report.json",
+      "sha256": "cb8d69482a77cf2435aa58db571bc49dfa9074bfb90481cc0fb72b40d995074e",
+      "bytes": 480
+    },
+    "corpus": {
+      "path": "/Users/taytrrip/slug/set74-prep/late-winner-proof/reference/two-axis-v1.json",
+      "sha256": "699cf788958f4f11e64582a2d31b37102db0afc76fdcf19403337e226405a03c",
+      "bytes": 11917
+    },
+    "cases": 22,
+    "legacy_equivalence": 7,
+    "invalid_limit_controls": 12,
+    "python_versions": [
+      "3.14.3",
+      "3.9.6"
+    ],
+    "comparison": "Exact granted reservation fields and zero-valued refusal; private error-category names are not an exact Go-classification contract."
+  },
+  "actual_acceptance": {
+    "status": "passed",
+    "passed": true,
+    "report": {
+      "path": "/Users/taytrrip/slug/set74-prep/late-winner-proof/closeout/late-winner-actual.draft.json",
+      "sha256": "e4ea6c2afd465542c8ea30922ffad9d122a721b4082f394c820b0550f2d7cdfd",
+      "bytes": 14756
+    },
+    "required": "Original OperatorV2 source; true full ordinary intake; unseen original winner after real expiry; actual normal-PoW canonical node proof; original owner restart/retry; exactly one added credit; unchanged pre-existing signed payout inputs/outputs/fee/claims/raw/TxID; joined cleanup and unchanged sources.",
+    "attempts": [
+      {
+        "name": "late-winner-actual-attempt1",
+        "passed": false,
+        "outer_report": {
+          "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt1/report.json",
+          "sha256": "9148a9f7a8ecb42b7c53284cc80a84f305018a0b1a20cd78abbc200fbc68830f",
+          "bytes": 8201
+        },
+        "actual_report": {
+          "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt1/owned/actual-report.json",
+          "sha256": "94c33216c5b95ac8be1167b82cdd137dd1e19df724450d85874662768e965384",
+          "bytes": 1111
+        },
+        "execution_lock": {
+          "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt1/execution-lock.json",
+          "sha256": "d11ba6801982e8ff3b7cca68a6beca1b949b2fcf7ab2ba488418e94e29793438",
+          "bytes": 10265
+        },
+        "source_before": {
+          "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt1/source-before.json",
+          "sha256": "25e214884341ebaf3652e6afbe10dafc812a8099b7101e18fa46420ba9186ef0",
+          "bytes": 439158
+        },
+        "source_after": {
+          "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt1/source-after.json",
+          "sha256": "25e214884341ebaf3652e6afbe10dafc812a8099b7101e18fa46420ba9186ef0",
+          "bytes": 439158
+        },
+        "phase": "two deterministic block-only original TLS submissions",
+        "failure": "only definite pre-admission Issue Busy retry",
+        "elapsed_fixture_seconds": 4.766343458,
+        "elapsed_outer_command_seconds": 5.295,
+        "source_count": 2448,
+        "source_unchanged": true,
+        "profile_artifacts_unchanged": true,
+        "clean_join": true,
+        "node_cleanup": [
+          {
+            "clean": true,
+            "forced_kill": false,
+            "joined": true,
+            "log_close_error": false,
+            "stop_rpc_error": false,
+            "unexpected_exit": false,
+            "wait_error": ""
+          },
+          {
+            "clean": true,
+            "forced_kill": false,
+            "joined": true,
+            "log_close_error": false,
+            "stop_rpc_error": false,
+            "unexpected_exit": false,
+            "wait_error": ""
+          }
+        ],
+        "all_command_groups_empty": true,
+        "forced_signals": [],
+        "target_full_intake_late_winner_payout_phases_reached": false,
+        "underlying_issue_error_code": null,
+        "cause_limit": "Report did not capture the original closed Issue error code. Rate limiting is a source-supported hypothesis only, not the proven raw cause.",
+        "locked_harness_sources": {
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/README.md": {
+            "bytes": 9167,
+            "sha256": "a4ecb87ff07578b2766e31463e94d4e789521b79bc1b9f437268c3e201e9bbf5"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/RUNNER.md": {
+            "bytes": 2090,
+            "sha256": "c5afc350412f84dfe34c1527bf5bb470513af8ac81ef2de5b6d7b904d3672110"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/bootstrap-successor.diff": {
+            "bytes": 42765,
+            "sha256": "8849f02489f803c66285ca03ee2b27c46d46bf03f5106a0e2633f4ce9941707a"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/go.mod": {
+            "bytes": 1360,
+            "sha256": "11678705c4f5742d80187297492035fd884fdf33345ae40b240224c3112d3538"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/inherited-source.json": {
+            "bytes": 1349,
+            "sha256": "792b0cded1c82f90fe097038ae52060ba35747c036a27fc55d56c93c29d477be"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/late_audit.go": {
+            "bytes": 7572,
+            "sha256": "e24523d2911a1985d22cdd2a1408bb9b52a66c7969a7833755f068ee368baca2"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/late_flow.go": {
+            "bytes": 21607,
+            "sha256": "d2580a9f9dce6efee1808018881cce41d1c7c0d179c767354c292d8e20cfb1b7"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/main.go": {
+            "bytes": 32435,
+            "sha256": "5aab77f5b14c373d0e9bb147447eec548857e55846b9850b2f2feb30384cf6d1"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/node-helpers-provenance.json": {
+            "bytes": 440,
+            "sha256": "e165cb5c1c4bb6c8b8e116c388defce12dc785ed22a2a22822b24b9d50e986f0"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/node_helpers.go": {
+            "bytes": 8444,
+            "sha256": "330ba64bdff3836b3a4d12f426e90e55fb2f4e2c6ecc3272b290597ac405e92b"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/inputs/POOL_ACCOUNTING_POLICY.md": {
+            "bytes": 6396,
+            "sha256": "b7769251fbe4d46a8e077fdfd1ba7b5e5f8bb015833aff9d20310ca8739ae081"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/inputs/setup-BYTES.md": {
+            "bytes": 3491,
+            "sha256": "0c63dab5bcb0a63e6d48f50a53eabf9d77644b6ebc1783d4f5852004aeeb68cc"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/inputs/setup-model.py": {
+            "bytes": 5739,
+            "sha256": "8709331398175952116bbc2a938f7b315e0220e0f0e2600845defcf21d115cdf"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/inputs/setup-v1.json": {
+            "bytes": 288946,
+            "sha256": "ee81ba3c98de3fd9fe1a456f5dbe68edb66fb28a2ec9cb78fc124ee8ec31be9d"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/inputs/two-axis-v1.json": {
+            "bytes": 11917,
+            "sha256": "699cf788958f4f11e64582a2d31b37102db0afc76fdcf19403337e226405a03c"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/inputs/wallet-BYTES.md": {
+            "bytes": 5525,
+            "sha256": "0f3d61cc7adcb7ec6c6f598f5a04dca0a34c6a426697b9a1a223bc380b0803b5"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/produce.py": {
+            "bytes": 3376,
+            "sha256": "376fb1b92caae7ae5f6468ac0f14f329d00dc778118e102f288aef1948ec6ad9"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/recipe.json": {
+            "bytes": 1310,
+            "sha256": "97cd4411468c95d98d0e6277e518cdecebb890c8afcebdfd8e2e987b55743253"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/setup-late-winner-v1.python313.json": {
+            "bytes": 28735,
+            "sha256": "97fa4879bf955f2f321202c34a95dfc335e684031152e100979e27f0d98da0b3"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/setup-late-winner-v1.python314.json": {
+            "bytes": 28735,
+            "sha256": "97fa4879bf955f2f321202c34a95dfc335e684031152e100979e27f0d98da0b3"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/source-ready.json": {
+            "bytes": 1103,
+            "sha256": "6790636282c494d69ea6a781c84798e913a78f120904f4beb7f0f3074185cea4"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/run.py": {
+            "bytes": 22800,
+            "sha256": "322a1388dbb0e985fb0e38a81fafecb275d146f497f59d1abeb1170d5903c511"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/runner-manifest.json": {
+            "bytes": 800,
+            "sha256": "701d08c73838b35780a00a6eeda39a594b1d068d9d5b3092f45027f23deadc20"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/runner-provenance.json": {
+            "bytes": 646,
+            "sha256": "87ec5a4a49de60907088889f4a56b148f7282b7a756ab3b722f60bdc922b263e"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/runner_support.py": {
+            "bytes": 3888,
+            "sha256": "54bb3e7caf33e744ce76bf366dd23a4eff4d370d9246b85758089b57dd2439d7"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/source-manifest.json": {
+            "bytes": 4237,
+            "sha256": "63afccdcbbbf6312e41dceb0eab5011341654c30c5ef83a6f68cc0bf26fd312e"
+          }
+        },
+        "probe_artifact_sha256": "b12979fefea52a7730eaa078b4bad4efde70c073df2c3619a90bb4c9b4bd4ff8"
+      },
+      {
+        "name": "late-winner-actual-attempt2",
+        "passed": false,
+        "outer_report": {
+          "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt2/report.json",
+          "sha256": "b2b1651a65f16f3255cbb1357d6d59cb72245b6126198b33f7906113fa7f2abb",
+          "bytes": 8202
+        },
+        "actual_report": {
+          "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt2/owned/actual-report.json",
+          "sha256": "583e121bbb5960b7cacf324c67a310334a1558ff21bae5da304e6450e6fa68e9",
+          "bytes": 2865
+        },
+        "execution_lock": {
+          "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt2/execution-lock.json",
+          "sha256": "6dd8857d4c44201f57b12c881675d612870d7621143524ef6e0e781891d0a0a2",
+          "bytes": 10554
+        },
+        "source_before": {
+          "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt2/source-before.json",
+          "sha256": "2c31bcf648884cd23190531532fb06d9b36dc3f0ad7d895d3d11ba8ed49ddfd9",
+          "bytes": 439368
+        },
+        "source_after": {
+          "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt2/source-after.json",
+          "sha256": "2c31bcf648884cd23190531532fb06d9b36dc3f0ad7d895d3d11ba8ed49ddfd9",
+          "bytes": 439368
+        },
+        "original_pending_payout_phase": {
+          "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt2/owned/04-original-pending.json",
+          "sha256": "7d34881e23f6545dd9591ee6455919562e9833c76a567bd22ae2e6106d7011d4",
+          "bytes": 25521
+        },
+        "phase": "issue distinct original B then fill real ordinary intake",
+        "failure": "ordinary issuance is closed",
+        "elapsed_fixture_seconds": 205.930543458,
+        "elapsed_outer_command_seconds": 206.568,
+        "source_count": 2449,
+        "source_unchanged": true,
+        "profile_artifacts_unchanged": true,
+        "clean_join": true,
+        "node_cleanup": [
+          {
+            "clean": true,
+            "forced_kill": false,
+            "joined": true,
+            "log_close_error": false,
+            "stop_rpc_error": false,
+            "unexpected_exit": false,
+            "wait_error": ""
+          },
+          {
+            "clean": true,
+            "forced_kill": false,
+            "joined": true,
+            "log_close_error": false,
+            "stop_rpc_error": false,
+            "unexpected_exit": false,
+            "wait_error": ""
+          }
+        ],
+        "all_command_groups_empty": true,
+        "forced_signals": [],
+        "original_signed_reserved_payout_reached": true,
+        "target_late_winner_restart_one_credit_phases_reached": false,
+        "underlying_issue_error_code": null,
+        "cause_limit": "Source-level assertion mismatch: poolservice/server.go maps Issue errors other than poolshare.ErrBusy to outcome_unknown, including capacity. The attempt did not record the response code, so this is not evidence of the observed raw code.",
+        "locked_harness_sources": {
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/README.md": {
+            "bytes": 9888,
+            "sha256": "92f7b809d5a2f9dc298c693cc32d0f4100cde5085c80960cbb7e5ed7d87d1bab"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/RUNNER.md": {
+            "bytes": 2090,
+            "sha256": "c5afc350412f84dfe34c1527bf5bb470513af8ac81ef2de5b6d7b904d3672110"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/bootstrap-successor.diff": {
+            "bytes": 42765,
+            "sha256": "8849f02489f803c66285ca03ee2b27c46d46bf03f5106a0e2633f4ce9941707a"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/go.mod": {
+            "bytes": 1360,
+            "sha256": "11678705c4f5742d80187297492035fd884fdf33345ae40b240224c3112d3538"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/inherited-source.json": {
+            "bytes": 1349,
+            "sha256": "792b0cded1c82f90fe097038ae52060ba35747c036a27fc55d56c93c29d477be"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/late_audit.go": {
+            "bytes": 7572,
+            "sha256": "e24523d2911a1985d22cdd2a1408bb9b52a66c7969a7833755f068ee368baca2"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/late_flow.go": {
+            "bytes": 22540,
+            "sha256": "60fd1fe1e3f089d6c253ec3838f9383b3413a017f013ec86b6f0cc49c7fd3e1b"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/main.go": {
+            "bytes": 32444,
+            "sha256": "ad727bc588a740fabc01c3b886c88f31cae936fcf5aa8a5cbacc6e1aff9634f9"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/node-helpers-provenance.json": {
+            "bytes": 440,
+            "sha256": "e165cb5c1c4bb6c8b8e116c388defce12dc785ed22a2a22822b24b9d50e986f0"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/node_helpers.go": {
+            "bytes": 8444,
+            "sha256": "330ba64bdff3836b3a4d12f426e90e55fb2f4e2c6ecc3272b290597ac405e92b"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/rate-control-successor.diff": {
+            "bytes": 7993,
+            "sha256": "0941eee0d4318bef2cb722d95100ea036c66b513bceec205b7f4fde0795547d4"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/inputs/POOL_ACCOUNTING_POLICY.md": {
+            "bytes": 6396,
+            "sha256": "b7769251fbe4d46a8e077fdfd1ba7b5e5f8bb015833aff9d20310ca8739ae081"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/inputs/setup-BYTES.md": {
+            "bytes": 3491,
+            "sha256": "0c63dab5bcb0a63e6d48f50a53eabf9d77644b6ebc1783d4f5852004aeeb68cc"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/inputs/setup-model.py": {
+            "bytes": 5739,
+            "sha256": "8709331398175952116bbc2a938f7b315e0220e0f0e2600845defcf21d115cdf"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/inputs/setup-v1.json": {
+            "bytes": 288946,
+            "sha256": "ee81ba3c98de3fd9fe1a456f5dbe68edb66fb28a2ec9cb78fc124ee8ec31be9d"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/inputs/two-axis-v1.json": {
+            "bytes": 11917,
+            "sha256": "699cf788958f4f11e64582a2d31b37102db0afc76fdcf19403337e226405a03c"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/inputs/wallet-BYTES.md": {
+            "bytes": 5525,
+            "sha256": "0f3d61cc7adcb7ec6c6f598f5a04dca0a34c6a426697b9a1a223bc380b0803b5"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/produce.py": {
+            "bytes": 3376,
+            "sha256": "376fb1b92caae7ae5f6468ac0f14f329d00dc778118e102f288aef1948ec6ad9"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/recipe.json": {
+            "bytes": 1310,
+            "sha256": "97cd4411468c95d98d0e6277e518cdecebb890c8afcebdfd8e2e987b55743253"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/setup-late-winner-v1.python313.json": {
+            "bytes": 28735,
+            "sha256": "97fa4879bf955f2f321202c34a95dfc335e684031152e100979e27f0d98da0b3"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/setup-late-winner-v1.python314.json": {
+            "bytes": 28735,
+            "sha256": "97fa4879bf955f2f321202c34a95dfc335e684031152e100979e27f0d98da0b3"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/source-ready.json": {
+            "bytes": 1103,
+            "sha256": "6790636282c494d69ea6a781c84798e913a78f120904f4beb7f0f3074185cea4"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/run.py": {
+            "bytes": 22800,
+            "sha256": "322a1388dbb0e985fb0e38a81fafecb275d146f497f59d1abeb1170d5903c511"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/runner-manifest.json": {
+            "bytes": 800,
+            "sha256": "701d08c73838b35780a00a6eeda39a594b1d068d9d5b3092f45027f23deadc20"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/runner-provenance.json": {
+            "bytes": 646,
+            "sha256": "87ec5a4a49de60907088889f4a56b148f7282b7a756ab3b722f60bdc922b263e"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/runner_support.py": {
+            "bytes": 3888,
+            "sha256": "54bb3e7caf33e744ce76bf366dd23a4eff4d370d9246b85758089b57dd2439d7"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/source-manifest.json": {
+            "bytes": 4918,
+            "sha256": "24c4d7f1ec7286edd464081a084ff914370776f38de47fb7e42dd7a66bb0311f"
+          }
+        },
+        "probe_artifact_sha256": "448fab200c5ba3d50751b1a3bf085a0a5dcf77c7d06fefb230f3d79a4bf50722"
+      },
+      {
+        "name": "late-winner-actual-attempt3",
+        "passed": false,
+        "outer_report": {
+          "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt3/report.json",
+          "sha256": "d7fb7b68d90196a32a23e505cbbf3ba348e995c6fd127ae9b6c5c664e23148b3",
+          "bytes": 8203
+        },
+        "actual_report": {
+          "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt3/owned/actual-report.json",
+          "sha256": "094b8115cdcfa5a4264ba56951d3ebec96f8198dede977583ad79106dd3deda9",
+          "bytes": 1977
+        },
+        "execution_lock": {
+          "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt3/execution-lock.json",
+          "sha256": "e4e9cbdef70a2697cb75579996065f0931be52694fa086b0e3542f623dcb9fc1",
+          "bytes": 10785
+        },
+        "source_before": {
+          "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt3/source-before.json",
+          "sha256": "f24cc90421817a0acd7813303e9ec72ae3c96aaf7f362cc015a3497b761bb5b8",
+          "bytes": 439569
+        },
+        "source_after": {
+          "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt3/source-after.json",
+          "sha256": "f24cc90421817a0acd7813303e9ec72ae3c96aaf7f362cc015a3497b761bb5b8",
+          "bytes": 439569
+        },
+        "original_pending_payout_phase": {
+          "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt3/owned/04-original-pending.json",
+          "sha256": "6fe014d20f3ebb9219f55238886d3808feaf3383b6187cf657a9185b6cf47e64",
+          "bytes": 25544
+        },
+        "full_intake_phase": {
+          "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt3/owned/05-full-intake.json",
+          "sha256": "dd452528e42cb13fe6660db704c4d65968d026aeece388e3751f390795c069bd",
+          "bytes": 37530
+        },
+        "phase": "real five-minute job expiry and actual normal winner search",
+        "failure": "no clock substitution",
+        "elapsed_fixture_seconds": 523.820802917,
+        "elapsed_outer_command_seconds": 524.342,
+        "source_count": 2450,
+        "source_unchanged": true,
+        "profile_artifacts_unchanged": true,
+        "clean_join": true,
+        "node_cleanup": [
+          {
+            "clean": true,
+            "forced_kill": false,
+            "joined": true,
+            "log_close_error": false,
+            "stop_rpc_error": false,
+            "unexpected_exit": false,
+            "wait_error": ""
+          },
+          {
+            "clean": true,
+            "forced_kill": false,
+            "joined": true,
+            "log_close_error": false,
+            "stop_rpc_error": false,
+            "unexpected_exit": false,
+            "wait_error": ""
+          }
+        ],
+        "all_command_groups_empty": true,
+        "forced_signals": [],
+        "true_full_ordinary_intake_reached": true,
+        "ordinary_envelope": 4,
+        "full_intake_counts": {
+          "submissions": 4,
+          "accepted": 4,
+          "works": 3,
+          "authority_jobs": 3
+        },
+        "issue_denial": {
+          "code": "outcome_unknown",
+          "outcome_unknown": true
+        },
+        "original_reserved_batch_equal_between_phases04_and05": true,
+        "target_late_winner_restart_one_credit_phases_reached": false,
+        "expiry_early_gap_ms": null,
+        "cause_limit": "The one-shot expiry timer completed, then the real wall-clock assertion failed. The early gap was not recorded; no specific clock cause is established. Real expiry and the late winner were not proved by this attempt.",
+        "locked_harness_sources": {
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/README.md": {
+            "bytes": 10937,
+            "sha256": "14887134e6139c56b70ace9be4fc7fd771f3f385ca5d76d28e09daa45ebc2a9f"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/RUNNER.md": {
+            "bytes": 2385,
+            "sha256": "afa6a85831a8fa84408ac568f82cfec729c11f68b046ef163a6da0e273b83fb8"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/bootstrap-successor.diff": {
+            "bytes": 42765,
+            "sha256": "8849f02489f803c66285ca03ee2b27c46d46bf03f5106a0e2633f4ce9941707a"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/go.mod": {
+            "bytes": 1360,
+            "sha256": "11678705c4f5742d80187297492035fd884fdf33345ae40b240224c3112d3538"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/inherited-source.json": {
+            "bytes": 1349,
+            "sha256": "792b0cded1c82f90fe097038ae52060ba35747c036a27fc55d56c93c29d477be"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/issue-refusal-successor.diff": {
+            "bytes": 20663,
+            "sha256": "78c3213731bd4ba0c3582284fb402f9c46bc701173f476f9b5327d592dd7c6f6"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/late_audit.go": {
+            "bytes": 7698,
+            "sha256": "1f08e2fd39ea155fb7ea5caa155d4c5f921044d2b887716627806ae63c147b13"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/late_flow.go": {
+            "bytes": 24279,
+            "sha256": "cbffcfcfbb0ec1e4c26f158419a330f6b73b8835ab3dc1e8f8ca206932769300"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/main.go": {
+            "bytes": 32444,
+            "sha256": "ad727bc588a740fabc01c3b886c88f31cae936fcf5aa8a5cbacc6e1aff9634f9"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/node-helpers-provenance.json": {
+            "bytes": 440,
+            "sha256": "e165cb5c1c4bb6c8b8e116c388defce12dc785ed22a2a22822b24b9d50e986f0"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/node_helpers.go": {
+            "bytes": 8444,
+            "sha256": "330ba64bdff3836b3a4d12f426e90e55fb2f4e2c6ecc3272b290597ac405e92b"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/rate-control-successor.diff": {
+            "bytes": 7993,
+            "sha256": "0941eee0d4318bef2cb722d95100ea036c66b513bceec205b7f4fde0795547d4"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/inputs/POOL_ACCOUNTING_POLICY.md": {
+            "bytes": 6396,
+            "sha256": "b7769251fbe4d46a8e077fdfd1ba7b5e5f8bb015833aff9d20310ca8739ae081"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/inputs/setup-BYTES.md": {
+            "bytes": 3491,
+            "sha256": "0c63dab5bcb0a63e6d48f50a53eabf9d77644b6ebc1783d4f5852004aeeb68cc"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/inputs/setup-model.py": {
+            "bytes": 5739,
+            "sha256": "8709331398175952116bbc2a938f7b315e0220e0f0e2600845defcf21d115cdf"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/inputs/setup-v1.json": {
+            "bytes": 288946,
+            "sha256": "ee81ba3c98de3fd9fe1a456f5dbe68edb66fb28a2ec9cb78fc124ee8ec31be9d"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/inputs/two-axis-v1.json": {
+            "bytes": 11917,
+            "sha256": "699cf788958f4f11e64582a2d31b37102db0afc76fdcf19403337e226405a03c"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/inputs/wallet-BYTES.md": {
+            "bytes": 5525,
+            "sha256": "0f3d61cc7adcb7ec6c6f598f5a04dca0a34c6a426697b9a1a223bc380b0803b5"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/produce.py": {
+            "bytes": 3376,
+            "sha256": "376fb1b92caae7ae5f6468ac0f14f329d00dc778118e102f288aef1948ec6ad9"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/recipe.json": {
+            "bytes": 1310,
+            "sha256": "97cd4411468c95d98d0e6277e518cdecebb890c8afcebdfd8e2e987b55743253"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/setup-late-winner-v1.python313.json": {
+            "bytes": 28735,
+            "sha256": "97fa4879bf955f2f321202c34a95dfc335e684031152e100979e27f0d98da0b3"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/setup-late-winner-v1.python314.json": {
+            "bytes": 28735,
+            "sha256": "97fa4879bf955f2f321202c34a95dfc335e684031152e100979e27f0d98da0b3"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/source-ready.json": {
+            "bytes": 1103,
+            "sha256": "6790636282c494d69ea6a781c84798e913a78f120904f4beb7f0f3074185cea4"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/run.py": {
+            "bytes": 23837,
+            "sha256": "3d560d15f660087677dd4cad203f728731568e6c1652db86a2540c0436612c6c"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/runner-manifest.json": {
+            "bytes": 800,
+            "sha256": "8f1b4ffc29c4b7821773ac547514ec2ecb1de11d0973a07c03ef1bee8a4f9501"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/runner-provenance.json": {
+            "bytes": 646,
+            "sha256": "87ec5a4a49de60907088889f4a56b148f7282b7a756ab3b722f60bdc922b263e"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/runner_support.py": {
+            "bytes": 3888,
+            "sha256": "54bb3e7caf33e744ce76bf366dd23a4eff4d370d9246b85758089b57dd2439d7"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/source-manifest.json": {
+            "bytes": 5591,
+            "sha256": "56947aa8db2bf73d1c2a3d3f9b20264f9f94cc7fa90b1918417cb0f9a77c7bf1"
+          }
+        },
+        "probe_artifact_sha256": "36f140cbf24306784fd86a0b042a4a46598ad3ff6e44df705811eb942ce62301"
+      },
+      {
+        "name": "late-winner-actual-attempt4",
+        "passed": false,
+        "outer_report": {
+          "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt4/report.json",
+          "sha256": "06839f4533c1c4060e1ac75e65f11e6eadc459a80c241af01f40c7a0d6303b81",
+          "bytes": 8202
+        },
+        "actual_report": {
+          "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt4/owned/actual-report.json",
+          "sha256": "a49624e5cce521002613a2c508c65a843bcffe947bf081e1ed243fc7636a07d6",
+          "bytes": 2958
+        },
+        "execution_lock": {
+          "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt4/execution-lock.json",
+          "sha256": "ffda3eef958a144e3600fd7bb19c95e2beb4bb957dbc1fceded6cd775b9450eb",
+          "bytes": 11019
+        },
+        "source_before": {
+          "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt4/source-before.json",
+          "sha256": "4b4f92606721f19a54546e1188f9ea98a137fe719c6093a2ead38e3cc1da7f93",
+          "bytes": 439763
+        },
+        "source_after": {
+          "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt4/source-after.json",
+          "sha256": "4b4f92606721f19a54546e1188f9ea98a137fe719c6093a2ead38e3cc1da7f93",
+          "bytes": 439763
+        },
+        "phase": "real five-minute job expiry and actual normal winner search",
+        "failure": "ordinary late row remains refused at drain: code=busy outcome_unknown=false expected_code=capacity expected_unknown=false",
+        "elapsed_fixture_seconds": 556.219832458,
+        "elapsed_outer_command_seconds": 556.793,
+        "source_count": 2451,
+        "source_unchanged": true,
+        "profile_artifacts_unchanged": true,
+        "clean_join": true,
+        "node_cleanup": [
+          {
+            "clean": true,
+            "forced_kill": false,
+            "joined": true,
+            "log_close_error": false,
+            "stop_rpc_error": false,
+            "unexpected_exit": false,
+            "wait_error": ""
+          },
+          {
+            "clean": true,
+            "forced_kill": false,
+            "joined": true,
+            "log_close_error": false,
+            "stop_rpc_error": false,
+            "unexpected_exit": false,
+            "wait_error": ""
+          }
+        ],
+        "all_command_groups_empty": true,
+        "forced_signals": [],
+        "real_expiry_reached": true,
+        "target_late_winner_restart_one_credit_phases_reached": false,
+        "observed_submission_error": {
+          "code": "busy",
+          "outcome_unknown": false
+        },
+        "successor": "Bounded exact-identity retry only for definite pre-admission Busy/rate_limited; unknown outcomes remain non-retryable and deadlines unchanged.",
+        "locked_harness_sources": {
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/README.md": {
+            "bytes": 11479,
+            "sha256": "f17015ee7b365dfa2badd55fa430d702a77f07d2efc07d199083536cdd2ef4b5"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/RUNNER.md": {
+            "bytes": 2385,
+            "sha256": "afa6a85831a8fa84408ac568f82cfec729c11f68b046ef163a6da0e273b83fb8"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/bootstrap-successor.diff": {
+            "bytes": 42765,
+            "sha256": "8849f02489f803c66285ca03ee2b27c46d46bf03f5106a0e2633f4ce9941707a"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/go.mod": {
+            "bytes": 1360,
+            "sha256": "11678705c4f5742d80187297492035fd884fdf33345ae40b240224c3112d3538"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/inherited-source.json": {
+            "bytes": 1349,
+            "sha256": "792b0cded1c82f90fe097038ae52060ba35747c036a27fc55d56c93c29d477be"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/issue-refusal-successor.diff": {
+            "bytes": 20663,
+            "sha256": "78c3213731bd4ba0c3582284fb402f9c46bc701173f476f9b5327d592dd7c6f6"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/late_audit.go": {
+            "bytes": 7698,
+            "sha256": "1f08e2fd39ea155fb7ea5caa155d4c5f921044d2b887716627806ae63c147b13"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/late_flow.go": {
+            "bytes": 25145,
+            "sha256": "12d1aea701bbab46c289ee257104b77b81f196b3f6c070b212e480f9ae10954c"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/main.go": {
+            "bytes": 32518,
+            "sha256": "192a64606b2c16204f221ce815d11a256f1d542135c2829cf724240501fef885"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/node-helpers-provenance.json": {
+            "bytes": 440,
+            "sha256": "e165cb5c1c4bb6c8b8e116c388defce12dc785ed22a2a22822b24b9d50e986f0"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/node_helpers.go": {
+            "bytes": 8444,
+            "sha256": "330ba64bdff3836b3a4d12f426e90e55fb2f4e2c6ecc3272b290597ac405e92b"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/rate-control-successor.diff": {
+            "bytes": 7993,
+            "sha256": "0941eee0d4318bef2cb722d95100ea036c66b513bceec205b7f4fde0795547d4"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/inputs/POOL_ACCOUNTING_POLICY.md": {
+            "bytes": 6396,
+            "sha256": "b7769251fbe4d46a8e077fdfd1ba7b5e5f8bb015833aff9d20310ca8739ae081"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/inputs/setup-BYTES.md": {
+            "bytes": 3491,
+            "sha256": "0c63dab5bcb0a63e6d48f50a53eabf9d77644b6ebc1783d4f5852004aeeb68cc"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/inputs/setup-model.py": {
+            "bytes": 5739,
+            "sha256": "8709331398175952116bbc2a938f7b315e0220e0f0e2600845defcf21d115cdf"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/inputs/setup-v1.json": {
+            "bytes": 288946,
+            "sha256": "ee81ba3c98de3fd9fe1a456f5dbe68edb66fb28a2ec9cb78fc124ee8ec31be9d"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/inputs/two-axis-v1.json": {
+            "bytes": 11917,
+            "sha256": "699cf788958f4f11e64582a2d31b37102db0afc76fdcf19403337e226405a03c"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/inputs/wallet-BYTES.md": {
+            "bytes": 5525,
+            "sha256": "0f3d61cc7adcb7ec6c6f598f5a04dca0a34c6a426697b9a1a223bc380b0803b5"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/produce.py": {
+            "bytes": 3376,
+            "sha256": "376fb1b92caae7ae5f6468ac0f14f329d00dc778118e102f288aef1948ec6ad9"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/recipe.json": {
+            "bytes": 1310,
+            "sha256": "97cd4411468c95d98d0e6277e518cdecebb890c8afcebdfd8e2e987b55743253"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/setup-late-winner-v1.python313.json": {
+            "bytes": 28735,
+            "sha256": "97fa4879bf955f2f321202c34a95dfc335e684031152e100979e27f0d98da0b3"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/setup-late-winner-v1.python314.json": {
+            "bytes": 28735,
+            "sha256": "97fa4879bf955f2f321202c34a95dfc335e684031152e100979e27f0d98da0b3"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/reference/source-ready.json": {
+            "bytes": 1103,
+            "sha256": "6790636282c494d69ea6a781c84798e913a78f120904f4beb7f0f3074185cea4"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/run.py": {
+            "bytes": 24137,
+            "sha256": "177da08847cc362fcc045bd382d75a0ee5e7ec6b802fbeb5020e8b0c29b283bc"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/runner-manifest.json": {
+            "bytes": 800,
+            "sha256": "1e6896fa3c93efe9ad4e33b6cb2ece4ed6ce547ccde20d5856b97dfdffe112fd"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/runner-provenance.json": {
+            "bytes": 646,
+            "sha256": "87ec5a4a49de60907088889f4a56b148f7282b7a756ab3b722f60bdc922b263e"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/runner_support.py": {
+            "bytes": 3888,
+            "sha256": "54bb3e7caf33e744ce76bf366dd23a4eff4d370d9246b85758089b57dd2439d7"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/source-manifest.json": {
+            "bytes": 6236,
+            "sha256": "80af77e7b773f2a4606e7b0d9893c4bd087ffd8a767a0f923abc38201fcdac3e"
+          },
+          "/Users/taytrrip/slug/set74-prep/late-winner-proof/actual/wall-expiry-successor.diff": {
+            "bytes": 7122,
+            "sha256": "8e82dda8e3cb9f1006537b8524816784ad8cb33f7d8f552c5012ae28db05bbb8"
+          }
+        },
+        "probe_artifact_sha256": "48b13cae174f6cfc02b350986efa26d186f7f6e299ec3ebb62f0a81ec1c59125"
+      },
+      {
+        "name": "late-winner-actual-attempt5",
+        "passed": true,
+        "outer_report": {
+          "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt5/report.json",
+          "sha256": "8b82912bcbc776f377a7e376d7761a5a0ee060e99c71fa82de219f08f09da51f",
+          "bytes": 10526
+        },
+        "actual_report": {
+          "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt5/owned/actual-report.json",
+          "sha256": "50d7848b43dc814b88ecad5f00878781353ae9f9ab7fc5cfc496d9cce8ec8028",
+          "bytes": 5028
+        },
+        "public_final": {
+          "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt5/owned/09-combined-final.json",
+          "sha256": "ee65feb1832c291061bb38d5d9fa67a10cf9673e35603c7b9e27c1614d605d8b",
+          "bytes": 43619
+        },
+        "elapsed_fixture_seconds": 698.49590925,
+        "source_count": 2452,
+        "source_unchanged": true,
+        "clean_join": true,
+        "complete_scope": "Isolated normal-PoW OperatorV2 ordinary-intake-full unseen canonical late winner, exact original-owner restart/retry, one added B credit, and unchanged reserved payout A. Original V1 physical and financial limits remain enforced."
+      }
+    ],
+    "commit_binding": "Containing implementation commit; exact tested file hashes are recorded in source_composition and the bound actual evidence."
+  },
+  "retained_limits": [
+    "Original physical submission/work/byte bounds remain enforced.",
+    "Insufficient round/credit/batch/byte backing refuses without speculative broadcast or append.",
+    "Physically full continuation remains unresolved; D80 rights are not extinguished.",
+    "Reserved signed payouts are neither replaced nor funded from later rewards.",
+    "Controlled combined regression and separate actual-node/real-expiry acceptance are independently scoped; neither proves physical-full continuation or public deployment."
+  ],
+  "commit_binding": "Containing implementation commit; exact tested file hashes are recorded in source_composition and the bound actual evidence."
+}

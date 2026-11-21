@@ -317,7 +317,17 @@ func (r *Runtime) constructStores(ctx context.Context) error {
 	if e != nil {
 		return e
 	}
-	return r.files.adopt("ownership")
+	if e = r.files.adopt("ownership"); e != nil {
+		return e
+	}
+	// All original concrete journals, scheduler and custody bindings have been
+	// reopened and audited before granting the canonical-only recovery lane.
+	// The ordinary reservation and every persisted setup limit stay unchanged.
+	return r.intake.EnableCanonicalRecovery(ctx, poolshare.RecoveryBudget{
+		Rounds: r.setup.RoundLimits.MaxRounds, RoundBytes: r.setup.RoundLimits.MaxBytes,
+		CreditRounds: uint64(r.setup.Settlement.MaxRounds), Batches: uint64(r.setup.Settlement.MaxBatches),
+		Gyms: uint64(len(r.setup.Settlement.Destinations)),
+	})
 }
 func privateListen(origin string) string { u, _ := url.Parse(origin); return u.Host }
 func (r *Runtime) constructServices() error {

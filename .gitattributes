@@ -1,3 +1,8 @@
 # Preserve the hash-pinned verbatim lifecycle/rating excerpt, including its
 # original terminal blank line; ordinary code whitespace checks stay enabled.
 fightercondition/testdata/reference/inputs/lifecycle_rating_reference.py.txt whitespace=-blank-at-eof
+
+# Preserve hash-pinned rehearsal patches (including diff context prefixes) and
+# the inherited runner helper's terminal blank line exactly as qualified.
+desktop/pooloperator/testdata/late-winner-actual/*-successor.diff -whitespace
+desktop/pooloperator/testdata/late-winner-actual/runner_support.py whitespace=-blank-at-eof

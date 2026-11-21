@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "scope": "copied generic identity/exclusive-write/cleanup/census leaves only; no execution",
+  "sources": {
+    "/Users/taytrrip/slug/set73-prep/restored-cli-actual/runner_support.py": "748f62245d5506cd64dc2f228eb62a2e4be3cc7c5accb5a7902de9d031258e24",
+    "/Users/taytrrip/slug/set73-prep/restored-cli-actual/run.py": "2511d627244fcfaa9743173bc54e5a1cba43f3a55eb3ae172aa1242d7b6f0c53"
+  },
+  "adaptation": "Set74 runner owns finite exact lock, three normal artifact builds, paired workspace, captured go-list closure and public two-miner/payout reports; support contains no scope-specific legacy lock or CLI cleanup code."
+}

@@ -297,8 +297,10 @@ func (p *Pool) Submit(ctx context.Context, token, jobID string, nonce uint32) (S
 		if !errors.Is(err, ErrNotFound) {
 			return err
 		}
-		if err := p.operatorIntake(); err != nil {
-			return err
+		intakeErr := p.operatorIntake()
+		canonicalRecovery := intakeErr == ErrCapacity && p.operatorAdmission != nil && p.operatorAdmission.recovery != nil
+		if intakeErr != nil && !canonicalRecovery {
+			return intakeErr
 		}
 		if p.meta.Submissions >= p.config.MaxSubmissions || maxSubmissionSize > p.config.MaxBytes-p.meta.Bytes {
 			return ErrCapacity
@@ -312,6 +314,10 @@ func (p *Pool) Submit(ctx context.Context, token, jobID string, nonce uint32) (S
 		}
 		check, err := prepared.CheckNonce(ctx, nonce)
 		if err != nil {
+			return err
+		}
+		if canonicalRecovery {
+			result, err = p.recoverCanonical(ctx, w, check, received, session)
 			return err
 		}
 		observed, err := p.sessionClock(session)

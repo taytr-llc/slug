@@ -510,15 +510,107 @@ and all 226 protected copied history/control paths preserved. See
 `docs/evidence/set74/remote-attachment-capacity-actual.json`. These repeat the
 qualified finite slice; neither proves continuous capacity or D80 completion.
 
-The finite reservation/drain candidate covers already retained submission rows.
-A further audit found that an unseen nonce from an already issued job is checked
+The finite reservation/drain candidate at `64b3aa50` covers already retained
+submission rows. A further audit found that an unseen nonce from an already issued job is checked
 against capacity before canonical-block verification. The real worker broadcasts
 and observes a winning block first, so that block can already be canonical and
 pay the pool while its client outbox stays pending without an operator credit.
-Saved-row retry coverage does not prove D80 for this different case. Continuous
-storage/reservation-backed acceptance is a public release blocker; neither a
-cap bypass nor discarding that reward is authorized. This is an implementation
-gap under the existing decision, not a proposed economic change.
+Saved-row retry coverage does not prove D80 for this different case. That
+finding motivates the bounded successor below; no cap bypass or discarded
+reward is authorized. Physical-full continuation remains a separate public
+release blocker under the same economic policy.
+
+## Unseen canonical recovery within original V1 limits
+
+The successor separates total retained submission rows N from retained block
+rows R, including pending, orphaned and alias winners. Ordinary issuance/share
+intake stays closed at its original ceiling. An attached original pool can
+accept an unseen canonical winner only after normal-PoW verification, original
+session/source checks, exact canonical payout-bound evidence and a conservative
+whole-history reservation at N+1/R+1. It neither broadcasts speculatively nor
+changes selected physical/round/credit/batch/byte limits. The original receipt,
+round and settlement formats remain V1; existing signed payout recovery runs
+before any new credit or signature. Header aliases are distinct retained rows,
+not extra spendable funding. Post-confirmation conflicts retain their existing
+hold semantics; no incident resolution is invented.
+
+Independent Python 3.14/3.9 outputs match for 22 two-axis cases, seven original
+N=R comparisons and 12 invalid-limit controls. These include the actual ordinary
+ceiling2 with recovery N3/R2, ceiling4 with N5/R3, and 183 rows followed by a
+canonical winner. They prove bounded arithmetic only, not fresh canonical or
+funding authority. The original inherited byte formulas and source inputs were
+frozen before generation; no expected values came from new Go output.
+
+`late-winner-qualification-attempt1` passed all six affected packages in normal
+and race modes: 652 passing test/subtest events per profile, with 2,790 inputs
+unchanged during qualification. The concrete OperatorV2 combined regression
+closes/reopens the issuer, pool, round and settlement owners on their original
+paths, then checks full receipt equality, one additional credit and the same
+reserved transaction's inputs, outputs, fee, claims, raw bytes and TxID. Its
+canonical/funding leaves are controlled; it makes no real-expiry or actual-node
+claim. Separate leaf controls cover expiry, authorization/cancellation,
+pre/post-commit uncertainty, physical/financial refusal and alias rows.
+
+Preserve the initial focused-command workspace failure: a desktop package was
+selected under the root workspace; the corrected desktop workspace passed on
+unchanged source. Also preserve the initial vet warning about an unkeyed aliased
+capacity-input literal. The correction uses keyed fields and clarifies two
+comments without changing the algorithm or assertions. The full-package result
+precedes those changes. Final focused race checks on the successor passed nine
+top-level cases (53 test/subtest events); nine cheap-profile refusals and corrected
+vet also passed. The evidence file keeps these scopes and source hashes separate.
+
+**Bounded actual-node acceptance: PASS.** `late-winner-actual-attempt5` completed
+in 698.49590925 seconds (outer actual command 699.083 seconds). All 2,452 bound
+source inputs, profile selections and built/public artifacts stayed unchanged;
+two nodes, the separate retry CLI and every outer command joined without forced
+signals. The original limits remained 900 seconds for the fixture, 1,080 seconds
+including cleanup and 180 blocks; the final height was 165. No public seed was
+mined. See `docs/evidence/set74/late-winner-actual.json` for exact source, report
+and public phase05/06/07/08/09 hashes.
+
+The real derived ordinary envelope was four retained submissions. Public phase05
+shows four accepted rows, three works and three authority jobs. The terminal
+Issue refusal was conservatively `outcome_unknown`; a closed original-store
+audit proved no added work/job, without retrying unknown issuance. The original
+signed/reserved payout A stayed unchanged. After actual wall-clock job expiry,
+the original unseen nonce produced a canonical normal-PoW winner at height104.
+A separate process recovered exactly receipt5 after closing and reopening the
+original owners; five accepted rows, three jobs and zero fighter births remained.
+
+B had no confirmation at 59 descendants and exact confirmation at 60. While A
+remained pending, only the original two credits existed. Releasing A, losing its
+accepted reply and reopening recovered the original transaction: all three
+attempted raw transactions and the one accepted send match A, and its complete
+batch differs only in state (`prepared` to `confirmed`). Inputs, payments, fee,
+change, claims, raw bytes and TxID are unchanged. The final public audit contains
+one batch and three credits: exactly one distinct B coinbase credit with the
+original 990,000,000-atom miner and 10,000,000-atom operator claims. Original D81
+round membership and accepted identities are unchanged; no replacement payout
+was journaled or sent. The evidence binds this implementation through its containing
+commit and exact tested file hashes, without a self-referential commit field.
+
+All four failed harness attempts remain preserved, with unchanged bound sources,
+clean joins and no production changes between attempts:
+
+| Attempt | Fixture seconds | Preserved failure and narrow harness correction |
+| --- | ---: | --- |
+| 1 | 4.766343458 | Initial Issue retry guard; its raw error code was not recorded. Rate limiting was a hypothesis only. Pace only definite pre-admission Busy/rate-limited responses. |
+| 2 | 205.930543458 | Issuance-closed assertion after signed A; source maps non-Busy Issue failures to conservative unknown. The raw code was not recorded. Preserve unknown/no retry and audit no added work. |
+| 3 | 523.820802917 | Real wall-clock expiry assertion after a one-shot timer; early gap and specific clock cause were unrecorded. Loop on real wall time under the original context. |
+| 4 | 556.219832458 | Observed definite `busy`, unknown=false, at ordinary late-row refusal. Retry only that same identity for definite pre-admission Busy/rate-limited errors within the original bound. |
+
+The successful run used those harness corrections without a clock substitution,
+unknown-outcome retry, product change or deadline enlargement. Regression and
+actual evidence retain separate scopes in
+`docs/evidence/set74/late-winner-regression.json` and
+`docs/evidence/set74/late-winner-actual.json`.
+
+The fix does not admit a row beyond original physical capacity or unproved
+financial headroom, does not provide unbounded receipt/round history, and does
+not promise that below-minimum, fee-held or funding-held balances can drain.
+Continuation for physically full journals and continuous public operation
+remain open; the settled D80 entitlement is not waived at those boundaries.
 
 ## General CI repair
 
@@ -637,7 +729,8 @@ and D74 remain open.
   exposing real private material to the agent or using fixture-default custody.
 - Add OperatorV2 history and payout presentation to the explicit remote desktop
   attachment, preserving original local wallet/recipient/recovery source bindings.
-- Capacity continuity and continuation-backed D80 credit, then remote-host rehearsal.
+- Physical-full capacity continuation and remote-host rehearsal; the bounded
+  unseen canonical recovery proof above is complete.
 
 No real key or seed has been read or created. Existing fixture applications,
 production genesis/custody gates and final native/design acceptance remain

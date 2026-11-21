@@ -1,0 +1,13 @@
+# Bounded late-winner runner
+
+`run.py` retains the already-reviewed public-pool runner's exclusive attempt directory, exact root-approved input lock, offline dependency discovery, source-copy/profile/artifact comparisons on all outcomes, bounded read1 log drain, exact PID/PGID ownership and nested-finally joins. Three normal no-tag binaries: slugd CGO0, slugpoold CGO1 and the external probe CGO1. Candidate noCSE profile, offline cache and GOMAXPROCS2 stay unchanged.
+
+Only scenario selection, frozen setup/reference admission, added two Go leaves, the nine named public phases, the single operator CLI child and combined final assertions change. The preserved pre-bootstrap successor used automatic miners and was not executed; this runner instead requires two exact canonical block-only TLS receipts and zero fighter submissions. No miner/outbox source, child mode or result is part of this proof. Go runs at most900 seconds/180 blocks; outer capture1080 seconds includes cleanup only. Dependency queries120 seconds, builds240 seconds, logs16MiB (dependency metadata32MiB). No source installation or old artifact/private fixture reuse occurs. The runner never reads generated private files; it reads only explicit public JSON artifacts.
+
+`source-manifest.json` and `runner-manifest.json` describe the external snapshot; neither authorizes execution. `execution-lock.proposed.json` must be freshly bound to the installed qualified product source and approved by root. All compiled/embedded/native dependency inputs are additionally recorded before/after. A timeout, log overflow, source/profile/artifact change, process uncertainty, forced cleanup or incomplete combined public audit fails qualification.
+
+The root-approved setup outputs were generated before harness implementation. The new budget model is independently supplied by `reference/inputs/two-axis-v1.json`; no fixture or expected financial bound is calculated by Go. The runnable command is in README. This snapshot is designed for eventual public testdata retention; generated secrets and runtime artifacts are excluded.
+
+The Issue-refusal successor preserves attempts1/2. Phase05 now checks the observed conservative Issue unknown plus issuer Jobs3/pool Works3/rows4; phase06 checks both terminal negative replies and unchanged physical counts. All900/1080-second,180-block and process/log bounds remain unchanged.
+
+The Submit-contention successor changes only original-identity request pacing: definite Busy/rate_limited may retry at1second within20seconds; no unknown/other error or successful receipt is retried. The existing exact Lookup gets the same bounded read policy; full saved-receipt equality remains mandatory.

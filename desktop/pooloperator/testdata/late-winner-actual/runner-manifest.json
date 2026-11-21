@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "scope": "source-only bounded normal runner",
+  "files": {
+    "run.py": {
+      "bytes": 24143,
+      "sha256": "b81af69c02a18b7f74ed96e08ae4dba8548e94a4958aeacb721c62dcbf8ba05e"
+    },
+    "runner_support.py": {
+      "bytes": 3888,
+      "sha256": "54bb3e7caf33e744ce76bf366dd23a4eff4d370d9246b85758089b57dd2439d7"
+    },
+    "RUNNER.md": {
+      "bytes": 2694,
+      "sha256": "874a2c995cf03c391b6d92e5a46b38e5f102ed99a98d57259c67a8006a94d595"
+    }
+  },
+  "scenario_seconds": 900,
+  "outer_seconds": 1080,
+  "max_blocks": 180,
+  "max_attempted_payout_sends": 16,
+  "python_ast_only": true,
+  "go_executed": false,
+  "child_processes": [
+    "slugpoold-late-retry"
+  ],
+  "bootstrap": "two bounded normal-PoW original TLS jobs; block-only submissions; no fighter admission"
+}

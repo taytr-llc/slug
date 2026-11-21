@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "scope": "independent public synthetic late-winner actual setup composition; no keys or execution authority",
+  "source": "inputs/setup-v1.json",
+  "source_sha256": "ee81ba3c98de3fd9fe1a456f5dbe68edb66fb28a2ec9cb78fc124ee8ec31be9d",
+  "source_positive_index": 0,
+  "changes": {
+    "pool.max_works": 4,
+    "pool.max_submissions": 8,
+    "round_limits.max_rounds": 8,
+    "settlement.max_rounds": 8,
+    "settlement.max_batches": 8
+  },
+  "expected_scenario": {
+    "ordinary_intake": 4,
+    "late_total_rows": 5,
+    "late_block_rows": 3,
+    "old_funding_rewards": 2,
+    "old_payment_atoms_per_gym": 990000000,
+    "late_reward_atoms": 1000000000,
+    "late_gym_claim_numerator": "990000000",
+    "late_gym_claim_denominator": "1",
+    "late_operator_atoms": 10000000,
+    "late_new_credits": 1
+  },
+  "dynamic_actual_fields_only": ["schedule.daily_utc_minute", "schedule.retry_ms", "maintenance_interval_ms", "ingress"],
+  "preserve": ["authority", "pool.policy", "pool.pool_target", "pool.payout_address", "round_limits.max_bytes", "settlement.change_script", "settlement.destinations", "wallet_guard.derivation_id", "wallet_guard.root_public_key", "wallet_guard.funding_public_key", "wallet_guard.funding_script", "node", "online_role_public_keys", "offline_checkpoint_public_key"]
+}

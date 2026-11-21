@@ -516,11 +516,19 @@ of the ownership, transfer or independent restored-wallet flow. See
   `47e1ce84`; see `docs/evidence/set74/ci-repair-remote.json`.
   The concrete operator handoff, remote history/payout presentation, continuous
   capacity and remote-host qualification remain before that milestone.
-  A previously issued job can yield an unseen canonical pool-paying winner after
-  intake drains. Its client outbox remains pending, but no operator row/credit
-  exists yet. D80 requires continuation-backed acceptance; saved-row recovery
-  alone does not close this release blocker. Never bypass the financial bound,
-  drop the reward, reset journals or treat 183 lifetime rows as public readiness.
+  The ordinary-intake D80 gap now has a bounded V1 implementation: original
+  unseen canonical winners receive a separate whole-history reservation before
+  receipt insertion. Full-owner reopen and unchanged reserved-payout/one-credit
+  regressions pass normal/race checks. Actual-node acceptance with real job
+  expiry, full ordinary intake and restart passed in isolated normal-PoW
+  attempt5: one B credit, unchanged reserved payout A through lost reply and
+  confirmation, and clean joined owners. All four failed harness attempts are
+  preserved. This proves the bounded V1 case, not physically full continuation
+  or a public host deployment. See `docs/evidence/set74/late-winner-actual.json`.
+  Physical journal exhaustion and insufficient financial headroom still hold,
+  so continuous capacity remains open. Never bypass those bounds, drop the
+  reward, reset journals or treat the ordinary 183-row ceiling as public readiness.
+  See `docs/evidence/set74/late-winner-regression.json`.
   Sign-in follows; the full joint D74 review stays last. See
   `CHANGESET_74_NOTES.md` and `docs/evidence/set74/operator-actual.json`.
 

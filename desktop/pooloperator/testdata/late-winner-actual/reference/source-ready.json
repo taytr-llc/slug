@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "scope": "frozen independent fixture source before generation; no Go outputs",
+  "files": {
+    "inputs/POOL_ACCOUNTING_POLICY.md": {
+      "bytes": 6396,
+      "sha256": "b7769251fbe4d46a8e077fdfd1ba7b5e5f8bb015833aff9d20310ca8739ae081"
+    },
+    "inputs/setup-BYTES.md": {
+      "bytes": 3491,
+      "sha256": "0c63dab5bcb0a63e6d48f50a53eabf9d77644b6ebc1783d4f5852004aeeb68cc"
+    },
+    "inputs/setup-model.py": {
+      "bytes": 5739,
+      "sha256": "8709331398175952116bbc2a938f7b315e0220e0f0e2600845defcf21d115cdf"
+    },
+    "inputs/setup-v1.json": {
+      "bytes": 288946,
+      "sha256": "ee81ba3c98de3fd9fe1a456f5dbe68edb66fb28a2ec9cb78fc124ee8ec31be9d"
+    },
+    "inputs/wallet-BYTES.md": {
+      "bytes": 5525,
+      "sha256": "0f3d61cc7adcb7ec6c6f598f5a04dca0a34c6a426697b9a1a223bc380b0803b5"
+    },
+    "produce.py": {
+      "bytes": 3376,
+      "sha256": "376fb1b92caae7ae5f6468ac0f14f329d00dc778118e102f288aef1948ec6ad9"
+    },
+    "recipe.json": {
+      "bytes": 1310,
+      "sha256": "97cd4411468c95d98d0e6277e518cdecebb890c8afcebdfd8e2e987b55743253"
+    }
+  }
+}

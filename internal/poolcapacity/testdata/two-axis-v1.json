@@ -1,0 +1,557 @@
+{
+  "version": 1,
+  "scope": "independent arithmetic only; no spendability or canonical authority",
+  "inherited_sha256": "4cc4d7d687193fe8add679d53879eda747c1a190a0135ade3fdc6779d624ad74",
+  "cases": [
+    {
+      "name": "empty",
+      "inputs": {
+        "source_max": 4096,
+        "rounds": 256,
+        "round_bytes": 268435456,
+        "credit_rounds": 256,
+        "batches": 366,
+        "gyms": 64
+      },
+      "submissions": 0,
+      "blocks": 0,
+      "expected": {
+        "submissions": 0,
+        "max_batches": 0,
+        "state_bytes": 0,
+        "round_bytes": 0,
+        "largest_round_bytes": 0
+      },
+      "error": ""
+    },
+    {
+      "name": "ordinary-only",
+      "inputs": {
+        "source_max": 4096,
+        "rounds": 256,
+        "round_bytes": 268435456,
+        "credit_rounds": 256,
+        "batches": 366,
+        "gyms": 64
+      },
+      "submissions": 183,
+      "blocks": 0,
+      "expected": {
+        "submissions": 183,
+        "max_batches": 0,
+        "state_bytes": 0,
+        "round_bytes": 0,
+        "largest_round_bytes": 0
+      },
+      "error": ""
+    },
+    {
+      "name": "first-winner",
+      "inputs": {
+        "source_max": 4096,
+        "rounds": 256,
+        "round_bytes": 268435456,
+        "credit_rounds": 256,
+        "batches": 366,
+        "gyms": 64
+      },
+      "submissions": 1,
+      "blocks": 1,
+      "expected": {
+        "submissions": 1,
+        "max_batches": 1,
+        "state_bytes": 4792281,
+        "round_bytes": 70314,
+        "largest_round_bytes": 66218
+      },
+      "error": ""
+    },
+    {
+      "name": "actual-ordinary-two",
+      "inputs": {
+        "source_max": 4,
+        "rounds": 4,
+        "round_bytes": 8388608,
+        "credit_rounds": 4,
+        "batches": 4,
+        "gyms": 2
+      },
+      "submissions": 2,
+      "blocks": 2,
+      "expected": {
+        "submissions": 2,
+        "max_batches": 3,
+        "state_bytes": 4800461,
+        "round_bytes": 140628,
+        "largest_round_bytes": 66423
+      },
+      "error": ""
+    },
+    {
+      "name": "late-third-row-second-block",
+      "inputs": {
+        "source_max": 4,
+        "rounds": 4,
+        "round_bytes": 8388608,
+        "credit_rounds": 4,
+        "batches": 4,
+        "gyms": 2
+      },
+      "submissions": 3,
+      "blocks": 2,
+      "expected": {
+        "submissions": 3,
+        "max_batches": 3,
+        "state_bytes": 4801701,
+        "round_bytes": 140833,
+        "largest_round_bytes": 66628
+      },
+      "error": ""
+    },
+    {
+      "name": "third-block-does-not-fit-four-batches",
+      "inputs": {
+        "source_max": 4,
+        "rounds": 4,
+        "round_bytes": 8388608,
+        "credit_rounds": 4,
+        "batches": 4,
+        "gyms": 2
+      },
+      "submissions": 4,
+      "blocks": 3,
+      "expected": null,
+      "error": "capacity"
+    },
+    {
+      "name": "actual-ordinary-four",
+      "inputs": {
+        "source_max": 8,
+        "rounds": 4,
+        "round_bytes": 8388608,
+        "credit_rounds": 4,
+        "batches": 8,
+        "gyms": 2
+      },
+      "submissions": 4,
+      "blocks": 4,
+      "expected": {
+        "submissions": 4,
+        "max_batches": 7,
+        "state_bytes": 4822331,
+        "round_bytes": 281256,
+        "largest_round_bytes": 66833
+      },
+      "error": ""
+    },
+    {
+      "name": "actual-late-fifth-row-third-block",
+      "inputs": {
+        "source_max": 8,
+        "rounds": 4,
+        "round_bytes": 8388608,
+        "credit_rounds": 4,
+        "batches": 8,
+        "gyms": 2
+      },
+      "submissions": 5,
+      "blocks": 3,
+      "expected": {
+        "submissions": 5,
+        "max_batches": 5,
+        "state_bytes": 4813932,
+        "round_bytes": 211357,
+        "largest_round_bytes": 67043
+      },
+      "error": ""
+    },
+    {
+      "name": "183-ordinary-then-first-block",
+      "inputs": {
+        "source_max": 4096,
+        "rounds": 256,
+        "round_bytes": 268435456,
+        "credit_rounds": 256,
+        "batches": 366,
+        "gyms": 64
+      },
+      "submissions": 184,
+      "blocks": 1,
+      "expected": {
+        "submissions": 184,
+        "max_batches": 1,
+        "state_bytes": 5031156,
+        "round_bytes": 108939,
+        "largest_round_bytes": 104843
+      },
+      "error": ""
+    },
+    {
+      "name": "183-rows-then-second-block",
+      "inputs": {
+        "source_max": 4096,
+        "rounds": 256,
+        "round_bytes": 268435456,
+        "credit_rounds": 256,
+        "batches": 366,
+        "gyms": 64
+      },
+      "submissions": 184,
+      "blocks": 2,
+      "expected": {
+        "submissions": 184,
+        "max_batches": 3,
+        "state_bytes": 5216047,
+        "round_bytes": 179054,
+        "largest_round_bytes": 104843
+      },
+      "error": ""
+    },
+    {
+      "name": "183-rows-then-184th-block",
+      "inputs": {
+        "source_max": 4096,
+        "rounds": 256,
+        "round_bytes": 268435456,
+        "credit_rounds": 256,
+        "batches": 366,
+        "gyms": 64
+      },
+      "submissions": 184,
+      "blocks": 184,
+      "expected": null,
+      "error": "capacity"
+    },
+    {
+      "name": "physical-last-row-single-block",
+      "inputs": {
+        "source_max": 4096,
+        "rounds": 256,
+        "round_bytes": 268435456,
+        "credit_rounds": 256,
+        "batches": 366,
+        "gyms": 64
+      },
+      "submissions": 4096,
+      "blocks": 1,
+      "expected": {
+        "submissions": 4096,
+        "max_batches": 1,
+        "state_bytes": 51682590,
+        "round_bytes": 946662,
+        "largest_round_bytes": 942566
+      },
+      "error": ""
+    },
+    {
+      "name": "physical-overflow",
+      "inputs": {
+        "source_max": 4096,
+        "rounds": 256,
+        "round_bytes": 268435456,
+        "credit_rounds": 256,
+        "batches": 366,
+        "gyms": 64
+      },
+      "submissions": 4097,
+      "blocks": 1,
+      "expected": null,
+      "error": "invalid"
+    },
+    {
+      "name": "block-count-exceeds-row-count",
+      "inputs": {
+        "source_max": 4096,
+        "rounds": 256,
+        "round_bytes": 268435456,
+        "credit_rounds": 256,
+        "batches": 366,
+        "gyms": 64
+      },
+      "submissions": 1,
+      "blocks": 2,
+      "expected": null,
+      "error": "invalid"
+    },
+    {
+      "name": "credit-bound",
+      "inputs": {
+        "source_max": 4096,
+        "rounds": 256,
+        "round_bytes": 268435456,
+        "credit_rounds": 2,
+        "batches": 366,
+        "gyms": 64
+      },
+      "submissions": 5,
+      "blocks": 3,
+      "expected": null,
+      "error": "capacity"
+    },
+    {
+      "name": "round-bound",
+      "inputs": {
+        "source_max": 4096,
+        "rounds": 2,
+        "round_bytes": 268435456,
+        "credit_rounds": 256,
+        "batches": 366,
+        "gyms": 64
+      },
+      "submissions": 5,
+      "blocks": 3,
+      "expected": null,
+      "error": "capacity"
+    },
+    {
+      "name": "byte-bound",
+      "inputs": {
+        "source_max": 4096,
+        "rounds": 256,
+        "round_bytes": 4096,
+        "credit_rounds": 256,
+        "batches": 366,
+        "gyms": 64
+      },
+      "submissions": 5,
+      "blocks": 3,
+      "expected": null,
+      "error": "capacity"
+    },
+    {
+      "name": "zero-row-nonzero-block",
+      "inputs": {
+        "source_max": 4096,
+        "rounds": 256,
+        "round_bytes": 268435456,
+        "credit_rounds": 256,
+        "batches": 366,
+        "gyms": 64
+      },
+      "submissions": 0,
+      "blocks": 1,
+      "expected": null,
+      "error": "invalid"
+    },
+    {
+      "name": "state-byte-bound",
+      "inputs": {
+        "source_max": 4096,
+        "rounds": 256,
+        "round_bytes": 268435456,
+        "credit_rounds": 256,
+        "batches": 366,
+        "gyms": 64
+      },
+      "submissions": 4096,
+      "blocks": 183,
+      "expected": null,
+      "error": "capacity"
+    },
+    {
+      "name": "unknown-payee-count-conservative",
+      "inputs": {
+        "source_max": 4096,
+        "rounds": 256,
+        "round_bytes": 268435456,
+        "credit_rounds": 256,
+        "batches": 366,
+        "gyms": 1
+      },
+      "submissions": 256,
+      "blocks": 2,
+      "expected": {
+        "submissions": 256,
+        "max_batches": 3,
+        "state_bytes": 5394688,
+        "round_bytes": 194246,
+        "largest_round_bytes": 120035
+      },
+      "error": ""
+    },
+    {
+      "name": "exact-round-byte-edge",
+      "inputs": {
+        "source_max": 4,
+        "rounds": 4,
+        "round_bytes": 140833,
+        "credit_rounds": 4,
+        "batches": 4,
+        "gyms": 2
+      },
+      "submissions": 3,
+      "blocks": 2,
+      "expected": {
+        "submissions": 3,
+        "max_batches": 3,
+        "state_bytes": 4801701,
+        "round_bytes": 140833,
+        "largest_round_bytes": 66628
+      },
+      "error": ""
+    },
+    {
+      "name": "below-round-byte-edge",
+      "inputs": {
+        "source_max": 4,
+        "rounds": 4,
+        "round_bytes": 140832,
+        "credit_rounds": 4,
+        "batches": 4,
+        "gyms": 2
+      },
+      "submissions": 3,
+      "blocks": 2,
+      "expected": null,
+      "error": "capacity"
+    }
+  ],
+  "legacy_equivalence": [
+    {
+      "submissions": 1,
+      "blocks": 1,
+      "gyms": 64,
+      "expected": {
+        "submissions": 1,
+        "max_batches": 1,
+        "state_bytes": 4792281,
+        "round_bytes": 70314,
+        "largest_round_bytes": 66218
+      }
+    },
+    {
+      "submissions": 4,
+      "blocks": 4,
+      "gyms": 64,
+      "expected": {
+        "submissions": 4,
+        "max_batches": 7,
+        "state_bytes": 4825425,
+        "round_bytes": 281256,
+        "largest_round_bytes": 66833
+      }
+    },
+    {
+      "submissions": 16,
+      "blocks": 16,
+      "gyms": 64,
+      "expected": {
+        "submissions": 16,
+        "max_batches": 31,
+        "state_bytes": 5216121,
+        "round_bytes": 1125120,
+        "largest_round_bytes": 69344
+      }
+    },
+    {
+      "submissions": 64,
+      "blocks": 64,
+      "gyms": 64,
+      "expected": {
+        "submissions": 64,
+        "max_batches": 127,
+        "state_bytes": 10908825,
+        "round_bytes": 4500544,
+        "largest_round_bytes": 79392
+      }
+    },
+    {
+      "submissions": 127,
+      "blocks": 127,
+      "gyms": 64,
+      "expected": {
+        "submissions": 127,
+        "max_batches": 253,
+        "state_bytes": 24885942,
+        "round_bytes": 8931402,
+        "largest_round_bytes": 92816
+      }
+    },
+    {
+      "submissions": 128,
+      "blocks": 128,
+      "gyms": 64,
+      "expected": {
+        "submissions": 128,
+        "max_batches": 255,
+        "state_bytes": 25171289,
+        "round_bytes": 9001728,
+        "largest_round_bytes": 93027
+      }
+    },
+    {
+      "submissions": 183,
+      "blocks": 183,
+      "gyms": 64,
+      "expected": {
+        "submissions": 183,
+        "max_batches": 365,
+        "state_bytes": 43920734,
+        "round_bytes": 12869658,
+        "largest_round_bytes": 104632
+      }
+    }
+  ],
+  "invalid_inputs": [
+    {
+      "source_max": 0
+    },
+    {
+      "source_max": 4097
+    },
+    {
+      "rounds": 0
+    },
+    {
+      "rounds": 257
+    },
+    {
+      "round_bytes": 4095
+    },
+    {
+      "round_bytes": 1073741825
+    },
+    {
+      "credit_rounds": 0
+    },
+    {
+      "credit_rounds": 257
+    },
+    {
+      "batches": 0
+    },
+    {
+      "batches": 367
+    },
+    {
+      "gyms": 0
+    },
+    {
+      "gyms": 65
+    }
+  ],
+  "true_ordinary_ceilings": [
+    {
+      "inputs": {
+        "source_max": 4,
+        "rounds": 4,
+        "round_bytes": 8388608,
+        "credit_rounds": 4,
+        "batches": 4,
+        "gyms": 2
+      },
+      "expected": 2
+    },
+    {
+      "inputs": {
+        "source_max": 8,
+        "rounds": 4,
+        "round_bytes": 8388608,
+        "credit_rounds": 4,
+        "batches": 8,
+        "gyms": 2
+      },
+      "expected": 4
+    }
+  ]
+}

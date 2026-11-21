@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "source": "/Users/taytrrip/slug/set73-prep/public-core-actual/node_helpers.go",
+  "source_sha256": "5221c3595d4d3f030e5eb62b31a4904872cd36e1da4ed9b44ed10166e1f3f323",
+  "scope": "Inherited normal-node literal-loopback RPC/start/generate/block/stop helpers; removes carrier signing/funding leaves; distinct public fixture credentials; strict response ID, no redirect/keepalive, log close evidence added. No execution."
+}

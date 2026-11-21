@@ -1,0 +1,393 @@
+{
+  "version": 1,
+  "status": "completed_public_reports_passed",
+  "attempt": "late-winner-actual-attempt5",
+  "reports": [
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt5/report.json",
+      "bytes": 10526,
+      "sha256": "8b82912bcbc776f377a7e376d7761a5a0ee060e99c71fa82de219f08f09da51f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt5/owned/actual-report.json",
+      "bytes": 5028,
+      "sha256": "50d7848b43dc814b88ecad5f00878781353ae9f9ab7fc5cfc496d9cce8ec8028"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt5/owned/09-combined-final.json",
+      "bytes": 43619,
+      "sha256": "ee65feb1832c291061bb38d5d9fa67a10cf9673e35603c7b9e27c1614d605d8b"
+    }
+  ],
+  "source_count": 2452,
+  "source_unchanged": true,
+  "clean_join": true,
+  "fixture_seconds": 698.49590925,
+  "outer_actual_seconds": 699.083,
+  "counts": {
+    "version": 1,
+    "final_height": 165,
+    "normal_blocks_max": 180,
+    "late_credit_count": 1,
+    "ordinary_intake": 4,
+    "late_rows": 5,
+    "late_block_rows": 3,
+    "late_births": 0
+  },
+  "one_original_payout": {
+    "txid": "ab9dad0fe183e472085680187921678cd1f441f46c28148203874d2bec9e01e7",
+    "raw_sha256": "702b38b28341f3117e7643ff6b062a61f1605c036ec1aa498ca8e8e7f7dd0042",
+    "accepted_sends": 1,
+    "attempts": 3
+  },
+  "commit_binding": "Containing commit; exact tested source identities remain bound by the original execution/source manifests.",
+  "limitations": [
+    "No physical-full journal continuation or continuous public readiness claim.",
+    "Report corroboration only; this reader does not rerun the actual or inspect private stores."
+  ],
+  "passed": true,
+  "scope": "Isolated normal-PoW OperatorV2 ordinary-intake-full unseen canonical late winner, exact original-owner restart/retry, one added B credit, and unchanged reserved payout A. Original V1 physical and financial limits remain enforced.",
+  "public_readiness": false,
+  "public_seed_mining": false,
+  "profile_lock_artifacts_unchanged": true,
+  "execution_lock": {
+    "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt5/execution-lock.json",
+    "sha256": "64670bfe096218da602daa153accb59b2137ddce3330c5133e3dee9ea20edfe9",
+    "bytes": 11284
+  },
+  "source_before": {
+    "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt5/source-before.json",
+    "sha256": "1244fa9320d6f7a263b961dc2837991e314b23b8f64fed09240ca7a365643310",
+    "bytes": 439972
+  },
+  "source_after": {
+    "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt5/source-after.json",
+    "sha256": "1244fa9320d6f7a263b961dc2837991e314b23b8f64fed09240ca7a365643310",
+    "bytes": 439972
+  },
+  "reader": {
+    "path": "/Users/taytrrip/slug/set74-prep/late-winner-proof/closeout/read-final-public.py",
+    "sha256": "abab60097dee19d9d0d09e938d2ee826577e81bd6b53fcfd04a50f5e5c256b16",
+    "bytes": 7536
+  },
+  "public_phases": {
+    "04-original-pending.json": {
+      "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt5/owned/04-original-pending.json",
+      "sha256": "330c6cad520ec248fa85903ecc25b7106efb8d82ffefa1eec1ba28a88a61e281",
+      "bytes": 25542
+    },
+    "05-full-intake.json": {
+      "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt5/owned/05-full-intake.json",
+      "sha256": "eb1f7dbdc46f8497677a0fb3c6f4641c03658dd5f0424519638ca334f632bd24",
+      "bytes": 37516
+    },
+    "06-canonical-late.json": {
+      "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt5/owned/06-canonical-late.json",
+      "sha256": "702baa9c38048088fb61211a28b7572497d906c2a1d98a3ae0119919a4807036",
+      "bytes": 33640
+    },
+    "07-late-restart.json": {
+      "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt5/owned/07-late-restart.json",
+      "sha256": "0367af67ca4e6f6e7f1ed1499012a809a2caf3046ef9b9ad93170f2a25f53eb1",
+      "bytes": 39983
+    },
+    "08-confirmed-reservation.json": {
+      "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt5/owned/08-confirmed-reservation.json",
+      "sha256": "97d685fee2eaec39fafb9f31fff2c759d7b4f887c37222b8f6eb6fd3c1fafee1",
+      "bytes": 75989
+    },
+    "09-combined-final.json": {
+      "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt5/owned/09-combined-final.json",
+      "sha256": "ee65feb1832c291061bb38d5d9fa67a10cf9673e35603c7b9e27c1614d605d8b",
+      "bytes": 43619
+    }
+  },
+  "full_intake": {
+    "ordinary_envelope": 4,
+    "submissions": 4,
+    "accepted": 4,
+    "works": 3,
+    "authority_jobs": 3,
+    "issue_denial": {
+      "code": "outcome_unknown",
+      "outcome_unknown": true
+    },
+    "no_additional_issue_audited": true
+  },
+  "late_winner": {
+    "block_hash": "11aa9cadbf340eea234d7479ab6ddb89077d60ee7bf4b5ee88e25b3185ef6748",
+    "height": 104,
+    "job_expires_at_ms": 1795224231756,
+    "expiry_observed_at_ms": 1795224231759,
+    "winner_observed_at_ms": 1795224232183,
+    "acceptance": "canonical-late-winner",
+    "sequence": 5,
+    "accepted_sequence": 5,
+    "exact_original_receipt_after_process_restart": true,
+    "ordinary_refusal": {
+      "code": "capacity",
+      "outcome_unknown": false
+    },
+    "noncanonical_refusal": {
+      "code": "outcome_unknown",
+      "outcome_unknown": true
+    },
+    "births": 0
+  },
+  "confirmation_boundary": {
+    "before_descendants": 59,
+    "before_confirmation": null,
+    "confirmed_descendants": 60,
+    "credits_while_A_pending": 2,
+    "original_A_unchanged": true
+  },
+  "final_accounting": {
+    "submissions": 5,
+    "accepted": 5,
+    "works": 3,
+    "authority_jobs": 3,
+    "rounds": 3,
+    "total_credits": 3,
+    "late_credit_count": 1,
+    "late_credit": {
+      "round_hash": "11aa9cadbf340eea234d7479ab6ddb89077d60ee7bf4b5ee88e25b3185ef6748",
+      "round_digest": "158d411ae36643afec42223bc131c9056355f3c58b64537c7f8b8e2c210b45be",
+      "coin": {
+        "txid": "27fb55eee371b597c74ebe7d29065843ddba02e6d2ecdbe64e655c6c55562d8a",
+        "index": 0,
+        "atoms": 1000000000,
+        "script": "001416d630413cea75fd5ad88433cd815ae5ba1ba645",
+        "coinbase": true,
+        "block_hash": "11aa9cadbf340eea234d7479ab6ddb89077d60ee7bf4b5ee88e25b3185ef6748",
+        "block_height": 104,
+        "claims": [
+          {
+            "round_hash": "11aa9cadbf340eea234d7479ab6ddb89077d60ee7bf4b5ee88e25b3185ef6748",
+            "round_height": 104,
+            "gym_id": "",
+            "amount": {
+              "numerator": "10000000",
+              "denominator": "1"
+            }
+          },
+          {
+            "round_hash": "11aa9cadbf340eea234d7479ab6ddb89077d60ee7bf4b5ee88e25b3185ef6748",
+            "round_height": 104,
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "amount": {
+              "numerator": "990000000",
+              "denominator": "1"
+            }
+          }
+        ]
+      }
+    },
+    "sole_batch": true,
+    "original_batch_equal_except_state": true,
+    "state_transition": [
+      "prepared",
+      "confirmed"
+    ],
+    "original_D81_round_membership_unchanged": true,
+    "payment": {
+      "change_atoms": 19999760,
+      "fee_atoms": 240,
+      "inputs": [
+        {
+          "Hash": "66405275dfeb68fd826a3e8dac76f128ef008c4717853dfe6eab9e894d157e46",
+          "Index": 0
+        },
+        {
+          "Hash": "38967a8f09a0a4b572d4f7bdf7af8176e31ca882bfb2e0e5aed3b84fba5ac6dd",
+          "Index": 0
+        }
+      ],
+      "miner_each_atoms": 990000000,
+      "raw_sha256": "702b38b28341f3117e7643ff6b062a61f1605c036ec1aa498ca8e8e7f7dd0042",
+      "txid": "ab9dad0fe183e472085680187921678cd1f441f46c28148203874d2bec9e01e7"
+    }
+  },
+  "artifacts": {
+    "node": {
+      "sha256": "5e0cdc718687610797ccd488e8deeaf42423296ba69b43d00d6eae32b306c24d",
+      "build_info_sha256": "1b4951e84be672a85f0dfe9aad5504587e9bbfe878a9a977b44d91268b7d7128",
+      "settings": {
+        "-buildmode": "exe",
+        "-compiler": "gc",
+        "-gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "-trimpath": "true",
+        "CGO_ENABLED": "0",
+        "GOARCH": "arm64",
+        "GOARM64": "v8.0",
+        "GOOS": "darwin",
+        "vcs": "git",
+        "vcs.modified": "true",
+        "vcs.revision": "798df3c9403c92eff041f04f8d6dcc6df6fb1de8",
+        "vcs.time": "2026-11-20T23:27:42Z"
+      }
+    },
+    "operator": {
+      "sha256": "1cd15c08c959ad4de9400ed2d082cd80836dc5580a3d7fcc47cae80d4645f5c2",
+      "build_info_sha256": "2827232fe47bc6689fcfb98b8355cc9d1193096fbd48e389b938394e97063388",
+      "settings": {
+        "-buildmode": "exe",
+        "-compiler": "gc",
+        "-gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "-trimpath": "true",
+        "CGO_ENABLED": "1",
+        "GOARCH": "arm64",
+        "GOARM64": "v8.0",
+        "GOOS": "darwin",
+        "vcs": "git",
+        "vcs.modified": "true",
+        "vcs.revision": "798df3c9403c92eff041f04f8d6dcc6df6fb1de8",
+        "vcs.time": "2026-11-20T23:27:42Z"
+      }
+    },
+    "probe": {
+      "sha256": "6400d27be897027a9ad2b75ff09d264cd91644304707ae6763157e8f50edcbdb",
+      "build_info_sha256": "1fb03e33714e4ca23ea49530893cfc866bf9a4413d649639462303fdc35dbff5",
+      "settings": {
+        "-buildmode": "exe",
+        "-compiler": "gc",
+        "-gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "-trimpath": "true",
+        "CGO_ENABLED": "1",
+        "GOARCH": "arm64",
+        "GOARM64": "v8.0",
+        "GOOS": "darwin"
+      }
+    }
+  },
+  "failed_attempts": [
+    {
+      "name": "late-winner-actual-attempt1",
+      "passed": false,
+      "outer_report": {
+        "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt1/report.json",
+        "sha256": "9148a9f7a8ecb42b7c53284cc80a84f305018a0b1a20cd78abbc200fbc68830f",
+        "bytes": 8201
+      },
+      "actual_report": {
+        "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt1/owned/actual-report.json",
+        "sha256": "94c33216c5b95ac8be1167b82cdd137dd1e19df724450d85874662768e965384",
+        "bytes": 1111
+      },
+      "phase": "two deterministic block-only original TLS submissions",
+      "failure": "only definite pre-admission Issue Busy retry",
+      "elapsed_fixture_seconds": 4.766343458,
+      "source_count": 2448,
+      "source_unchanged": true,
+      "clean_join": true
+    },
+    {
+      "name": "late-winner-actual-attempt2",
+      "passed": false,
+      "outer_report": {
+        "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt2/report.json",
+        "sha256": "b2b1651a65f16f3255cbb1357d6d59cb72245b6126198b33f7906113fa7f2abb",
+        "bytes": 8202
+      },
+      "actual_report": {
+        "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt2/owned/actual-report.json",
+        "sha256": "583e121bbb5960b7cacf324c67a310334a1558ff21bae5da304e6450e6fa68e9",
+        "bytes": 2865
+      },
+      "phase": "issue distinct original B then fill real ordinary intake",
+      "failure": "ordinary issuance is closed",
+      "elapsed_fixture_seconds": 205.930543458,
+      "source_count": 2449,
+      "source_unchanged": true,
+      "clean_join": true
+    },
+    {
+      "name": "late-winner-actual-attempt3",
+      "passed": false,
+      "outer_report": {
+        "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt3/report.json",
+        "sha256": "d7fb7b68d90196a32a23e505cbbf3ba348e995c6fd127ae9b6c5c664e23148b3",
+        "bytes": 8203
+      },
+      "actual_report": {
+        "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt3/owned/actual-report.json",
+        "sha256": "094b8115cdcfa5a4264ba56951d3ebec96f8198dede977583ad79106dd3deda9",
+        "bytes": 1977
+      },
+      "phase": "real five-minute job expiry and actual normal winner search",
+      "failure": "no clock substitution",
+      "elapsed_fixture_seconds": 523.820802917,
+      "source_count": 2450,
+      "source_unchanged": true,
+      "clean_join": true
+    },
+    {
+      "name": "late-winner-actual-attempt4",
+      "passed": false,
+      "outer_report": {
+        "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt4/report.json",
+        "sha256": "06839f4533c1c4060e1ac75e65f11e6eadc459a80c241af01f40c7a0d6303b81",
+        "bytes": 8202
+      },
+      "actual_report": {
+        "path": "/Users/taytrrip/slug/artifacts/set74/late-winner-actual-attempt4/owned/actual-report.json",
+        "sha256": "a49624e5cce521002613a2c508c65a843bcffe947bf081e1ed243fc7636a07d6",
+        "bytes": 2958
+      },
+      "phase": "real five-minute job expiry and actual normal winner search",
+      "failure": "ordinary late row remains refused at drain: code=busy outcome_unknown=false expected_code=capacity expected_unknown=false",
+      "elapsed_fixture_seconds": 556.219832458,
+      "source_count": 2451,
+      "source_unchanged": true,
+      "clean_join": true
+    }
+  ],
+  "limits": {
+    "fixture_seconds": 900,
+    "outer_seconds": 1080,
+    "max_blocks": 180,
+    "actual_final_height": 165
+  },
+  "semantic_checks": "Source-bound actual assertions plus full public-record comparisons above; reader alone is report corroboration, not an independent transaction or allocation implementation.",
+  "tested_production_files": [
+    {
+      "path": "internal/poolcapacity/capacity.go",
+      "bytes": 6838,
+      "sha256": "8d22bd7b5617c050d1b2d8724574cbbe9d528cc68c200370951e911042428c56"
+    },
+    {
+      "path": "poolshare/operator_recovery.go",
+      "bytes": 5503,
+      "sha256": "91fa0191d04304f87f65ddb451977295c81d1f03e82f127ec483db88011abb4d"
+    },
+    {
+      "path": "poolshare/operator_admission.go",
+      "bytes": 6975,
+      "sha256": "9892fb8a13596c830c8b1d91b9a7cca781b9d90cea6a3694f3ad24a8659fc4ac"
+    },
+    {
+      "path": "poolshare/pool.go",
+      "bytes": 13007,
+      "sha256": "5d67c1963ddf5a2ef2820c011491c8a99873876d2700824b3b494f19c95583e2"
+    },
+    {
+      "path": "poolshare/store.go",
+      "bytes": 19410,
+      "sha256": "12f42fc0f35b45ca9fce38841a7ca528bbb0545295e0f575c4a434bc2ef4b792"
+    },
+    {
+      "path": "desktop/pooloperator/capacity_envelope.go",
+      "bytes": 1017,
+      "sha256": "78da90e37dbf86b81343b5d39a711cdb64f9a2d61e56c444c205583863386097"
+    },
+    {
+      "path": "desktop/pooloperator/construction.go",
+      "bytes": 11890,
+      "sha256": "437d746968bbb7546727410fc82cbb918a15429d4fcbc9f077c48374ad0bac81"
+    },
+    {
+      "path": "desktop/pooloperator/capacity_drain.go",
+      "bytes": 4759,
+      "sha256": "5e7d61076e8cbf77ad8ed9874e805a0004188ec49a415cef36e758baeeb80637"
+    }
+  ]
+}

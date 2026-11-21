@@ -1,0 +1,140 @@
+--- before/late_flow.go
++++ after/late_flow.go
+@@ -73,7 +73,7 @@
+ 		require(found, "bootstrap pays original pool script")
+ 		// Publication changed the parent; canonical admission is valid even
+ 		// though the timely current-parent branch is now false.
+-		receipt, e := client.Submit(ctx, work, winner.Nonce)
++		receipt, e := lateSubmit(ctx, client, work, winner.Nonce)
+ 		check(e, "original TLS block-only submission")
+ 		require(receipt.Sequence == uint64(i+1) && receipt.AcceptedSequence == uint64(i+1) && receipt.Block && receipt.BlockState == "canonical-observed" && receipt.WorkHash == winner.WorkHash && receipt.BlockHeight == uint32(i+2), "exact one bootstrap accepted block row")
+ 		inputs = append(inputs, coin)
+@@ -134,6 +134,40 @@
+ 	return got
+ }
+ 
++// Retry only a definite pre-admission refusal of this exact original identity.
++// A successful receipt or any uncertainty/other error is terminal for this call.
++func lateSubmit(ctx context.Context, c *poolservice.Client, original poolshare.MiningWork, nonce uint32) (poolshare.Submission, error) {
++	work, cancel := context.WithTimeout(ctx, 20*time.Second)
++	defer cancel()
++	for {
++		receipt, err := c.Submit(work, original, nonce)
++		failure := lateFailure(err)
++		if err == nil || failure.OutcomeUnknown || (failure.Code != "busy" && failure.Code != "rate_limited") {
++			return receipt, err
++		}
++		if err = pauseActual(work, time.Second); err != nil {
++			return poolshare.Submission{}, err
++		}
++	}
++}
++
++// Lookup uses the same bounded pre-admission policy and original identity;
++// callers still compare the complete saved receipt, never infer a replacement.
++func lateLookup(ctx context.Context, c *poolservice.Client, original poolshare.MiningWork, nonce uint32) (poolshare.Submission, error) {
++	work, cancel := context.WithTimeout(ctx, 20*time.Second)
++	defer cancel()
++	for {
++		receipt, err := c.Lookup(work, original, nonce)
++		failure := lateFailure(err)
++		if err == nil || failure.OutcomeUnknown || (failure.Code != "busy" && failure.Code != "rate_limited") {
++			return receipt, err
++		}
++		if err = pauseActual(work, time.Second); err != nil {
++			return poolshare.Submission{}, err
++		}
++	}
++}
++
+ func lateIssueClosed(ctx context.Context, c *poolservice.Client) lateServiceFailure {
+ 	work, cancel := context.WithTimeout(ctx, 20*time.Second)
+ 	defer cancel()
+@@ -271,7 +305,7 @@
+ 		if !v.Pool || v.Block {
+ 			continue
+ 		}
+-		row, e := clients[0].Submit(hashCtx, work, nonce)
++		row, e := lateSubmit(hashCtx, clients[0], work, nonce)
+ 		check(e, "timely nonblock filler")
+ 		require(row.Acceptance == "current-parent" && row.AcceptedSequence == uint64(3+len(filler)) && !row.Block, "exact ordinary accepted filler")
+ 		filler = append(filler, row)
+@@ -321,11 +355,11 @@
+ 	*running = constructRuntime(ctx, root, private, s, rpcConfig, false)
+ 	(*running).run(ctx, s.Ingress.Origin)
+ 	// The original full4/4 attachment is draining before listeners start.
+-	// Recovery does not depend on public-replay readiness; these are one-shot
+-	// submissions, and an unexpected Busy/uncertainty stops this scenario.
+-	_, ordinaryErr := clients[0].Submit(ctx, work, ordinary.Nonce)
++	// Recovery does not depend on public-replay readiness. Each exact original
++	// identity retries only definite pre-admission contention, never uncertainty.
++	_, ordinaryErr := lateSubmit(ctx, clients[0], work, ordinary.Nonce)
+ 	ordinaryFailure := lateRequireFailure(ordinaryErr, "capacity", false, "ordinary late row remains refused at drain")
+-	_, winnerErr := clients[0].Submit(ctx, work, winner.Nonce)
++	_, winnerErr := lateSubmit(ctx, clients[0], work, winner.Nonce)
+ 	winnerFailure := lateRequireFailure(winnerErr, "outcome_unknown", true, "conservative mutating node-proof failure")
+ 	// The HTTP boundary conservatively labels ErrNode unknown. Do not retry it:
+ 	// close and audit the exact original row/chain before later canonical recovery.
+@@ -371,7 +405,7 @@
+ 	started := time.Now().UnixMilli()
+ 	*running = constructRuntime(ctx, root, private, s, rpcConfig, false)
+ 	(*running).run(ctx, s.Ingress.Origin)
+-	receipt, e := clients[0].Submit(ctx, work, winner.Nonce)
++	receipt, e := lateSubmit(ctx, clients[0], work, winner.Nonce)
+ 	check(e, "D80 unseen winner at full ordinary intake")
+ 	require(receipt.Sequence == 5 && receipt.AcceptedSequence == 5 && receipt.Acceptance == "canonical-late-winner" && receipt.AcceptedAtMS >= work.Job.ExpiresAtMS && receipt.BlockState == "canonical-observed" && receipt.WorkHash == winner.WorkHash, "one late canonical acceptance")
+ 	lateWaitRounds(ctx, *running, started, 5)
+@@ -384,10 +418,10 @@
+ 
+ 	phase = "separate production operator process retries exact B"
+ 	cli := lateStartCLI(ctx, binary, root, private, "slugpoold-late-retry", s, children)
+-	duplicate, e := clients[0].Submit(ctx, work, winner.Nonce)
++	duplicate, e := lateSubmit(ctx, clients[0], work, winner.Nonce)
+ 	check(e, "same original B retry after process restart")
+ 	require(reflect.DeepEqual(receipt, duplicate), "byte-equivalent saved receipt after process restart")
+-	looked, e := clients[0].Lookup(ctx, work, winner.Nonce)
++	looked, e := lateLookup(ctx, clients[0], work, winner.Nonce)
+ 	check(e, "original B lookup")
+ 	require(reflect.DeepEqual(receipt, looked), "lookup must not substitute receipt")
+ 	cli.stop()
+--- before/run.py
++++ after/run.py
+@@ -310,7 +310,7 @@
+          canonical['absent_audit'].get('works') == 3 and
+          canonical['absent_audit'].get('submissions') == 4 and
+          canonical['absent_audit'].get('accepted') == 4,
+-         'one-shot negative submissions not reconciled')
++         'exact original negative submissions not reconciled')
+     # All are public, originally closed physical audits. No private fixture file is read.
+     final = read_json(owned / '09-combined-final.json', 65 << 20)
+     need(final.get('late_credit_count') == 1 and final.get('original_batch_unchanged') is True and
+--- before/README.md
++++ after/README.md
+@@ -7,6 +7,8 @@
+ Attempt2 is also preserved, with its exact source/approval under `pre-issue-refusal/`. It cleanly stopped after205.931 seconds at the ordinary-Issue refusal assertion, after public audit proved two accepted rewards, zero births and one reserved signed batch. Its error code was not recorded. Independent source inspection proves the existing Issue handler maps every underlying non-Busy error, including capacity, to `outcome_unknown`; this successor respects that conservative boundary and proves no new job only after joined physical audit.
+ 
+ Attempt3 is preserved with exact source/approval under `pre-wall-expiry/`: it passed phase05 then cleanly failed the post-sleep wall-expiry assertion at523.821 seconds. The precise wall gap and cause were not recorded; no clock-adjustment cause is claimed. One shared wait now rechecks actual UnixMilli after each context-bound timer wake for both original daily due and job expiry. It retains the same targets/global900-second deadline, records observed/target milliseconds on failures, and phase06 binds observed expiry/winner wall times.
++
++Attempt4 is preserved with exact source/approval under `pre-submit-contention/`. Real wall expiry passed; the ordinary late Submit returned the observed public `busy` with `outcome_unknown=false` at556.220 seconds, and all owners joined. Submit and the exact saved Lookup now share a fixed20-second child limit per original call and retry only definite Busy/rate_limited after one second. Client, saved work and nonce never change; success, uncertainty and every other error return immediately. Global900/1080-second and180-block bounds remain fixed.
+ 
+ ## Frozen fixture before implementation
+ 
+@@ -21,7 +23,7 @@
+ 1. Mine one initial block to a separate fixture address. For each of the two gyms, issue one original TLS job and search at most64 nonces with normal `CheckNonce` under a four-minute context. Skip ordinary candidates without submitting them. Publish the exact winning block to the real node, prove its canonical bytes/height/pool reward, then submit that original winning nonce through TLS. Require exactly Sequence1/2 and Accepted1/2, canonical block rows at heights2/3. No fighter admission or worker/outbox runs: the birth counter stays0. Node-first publication legitimately changes the current parent; the canonical receipt, not a current-parent label, is required. Mine descendants to the real daily due, verify immature deferral, then stop the original runtime and mature both pool coinbases at height103.
+ 2. Reopen the original runtime. A bounded RPC relay records the first signed payout **before forwarding** and returns an unavailable response. Wait for the public prepared/reserved payout, then join all original owners. Closed audit records batch A: exact two original inputs and their claims, two9.9-SLUG payees, operator-funded fee/change, raw bytes/txid/day/creation time. It has never reached the node.
+ 3. Reopen and issue distinct job B for gym0 at parent103. Submit exactly two timely, actually hashed **nonblock** shares from B, filling the original ordinary envelope:2 old winning rows +2 ordinary rows =4. B's winning nonce is still absent. Require runtime draining. The final Issue uses a20-second bound and one-second pacing only for definite pre-admission busy/rate_limited. Its first terminal response must be the existing conservative outcome_unknown; never retry it. Close and audit issuer Jobs3 plus physically validated pool counters Submissions4/Accepted4/Works3, not merely the accepted-page count. Persist its observed public code/uncertainty in phase05.
+-4. With the operator stopped and node tip unchanged, wait until B's actual five-minute expiry. Search at most64 further nonces through `prospectwork.ManifestWork.CheckNonce` under a four-minute child context for one normal network winner and one ordinary late share. Header/template/payout/extraNonce0 remain exact; no target override. Reopen: ordinary late submission is capacity-refused; the unobserved winning block's submission is conservatively `outcome_unknown` because node proof is missing. Do not retry this uncertainty. Persist both negative replies through one closed-code diagnostic helper; Submit remains one-shot. The full4/4 original attachment selects draining before listeners, so this phase adds no public-replay readiness gate. Join and closed-audit issuer Jobs3, pool Works3/Submissions4/Accepted4, original A and unchanged node height; this rules out a secretly saved unaccepted B row.
++4. With the operator stopped and node tip unchanged, wait until B's actual five-minute expiry. Search at most64 further nonces through `prospectwork.ManifestWork.CheckNonce` under a four-minute child context for one normal network winner and one ordinary late share. Header/template/payout/extraNonce0 remain exact; no target override. Reopen: ordinary late submission is capacity-refused; the unobserved winning block's submission is conservatively `outcome_unknown` because node proof is missing. Do not retry this uncertainty. Persist both terminal negative replies through one closed-code diagnostic helper. Only definite pre-admission Busy/rate_limited may retry the same identity; the expected noncanonical unknown is terminal and is never retried. The full4/4 original attachment selects draining before listeners, so this phase adds no public-replay readiness gate. Join and closed-audit issuer Jobs3, pool Works3/Submissions4/Accepted4, original A and unchanged node height; this rules out a secretly saved unaccepted B row.
+ 5. Submit B's exact retained candidate to the real node after expiry. Verify canonical height104, exact raw block, normal coinbase payout and a funding outpoint distinct from A. Reopen the original operator and Submit original B: require Sequence5/Accepted5, `canonical-late-winner`, canonical observation and receipt time after expiry. Wait for actual round refresh through5, then close/audit one B round with immutable window3..5. No B birth and no B credit yet.
+ 6. Start a separate production `slugpoold serve` process on the same root/inputs. Submit and Lookup the exact original B; both equal the saved receipt. Join that process; repeat closed audit with exactly5 physical rows,5 accepted rows and3 rounds. This proves process restart/idempotence. The genuine transport lost-response control below applies to A; the harness does not claim a lost B acknowledgement.
+ 7. Keep A withheld. Mine to B+59, reopen/refresh/close and require no B confirmation/credit. Mine one more block, reopen/refresh/close: B is locked at exactly60 descendants, but RecoverPending still imports no B credit while A is pending. Every audit compares all A economic fields; only its recorded delivery state may differ.
+--- before/RUNNER.md
++++ after/RUNNER.md
+@@ -8,4 +8,6 @@
+ 
+ The root-approved setup outputs were generated before harness implementation. The new budget model is independently supplied by `reference/inputs/two-axis-v1.json`; no fixture or expected financial bound is calculated by Go. The runnable command is in README. This snapshot is designed for eventual public testdata retention; generated secrets and runtime artifacts are excluded.
+ 
+-The Issue-refusal successor preserves attempts1/2. Phase05 now checks the observed conservative Issue unknown plus issuer Jobs3/pool Works3/rows4; phase06 checks both one-shot negative replies and unchanged physical counts. All900/1080-second,180-block and process/log bounds remain unchanged.
++The Issue-refusal successor preserves attempts1/2. Phase05 now checks the observed conservative Issue unknown plus issuer Jobs3/pool Works3/rows4; phase06 checks both terminal negative replies and unchanged physical counts. All900/1080-second,180-block and process/log bounds remain unchanged.
++
++The Submit-contention successor changes only original-identity request pacing: definite Busy/rate_limited may retry at1second within20seconds; no unknown/other error or successful receipt is retried. The existing exact Lookup gets the same bounded read policy; full saved-receipt equality remains mandatory.

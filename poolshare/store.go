@@ -424,7 +424,7 @@ func (p *Pool) saveSubmission(job prospectjob.ManifestJob, r Submission, previou
 			}
 		}
 	}
-	if previous != nil && r.BlockState != "pending" {
+	if (previous != nil && r.BlockState != "pending") || r.BlockState == "canonical-observed" {
 		r.BlockObservedAtMS = ms
 	}
 	if r.AcceptedSequence != 0 && (previous == nil || previous.AcceptedSequence == 0) {

@@ -1,0 +1,102 @@
+--- before/main.go
++++ after/main.go
+@@ -805,13 +805,12 @@
+ 		}
+ 		generate(ctx, a, b)
+ 	}
+-	if remaining := time.Until(due); remaining > 0 {
+-		check(pauseActual(ctx, remaining), "real UTC daily due")
+-	}
++	lateWaitWall(ctx, due.UnixMilli(), "real UTC daily due")
+ 	immature := pollBalances(ctx, clients, func(v poolservice.BalanceResponse) bool {
+ 		return v.Balance.Confirmed.Numerator == "990000000" && v.Balance.Confirmed.Denominator == "1" && v.Balance.Available.Numerator == "0" && v.Balance.Reason == "immature" && v.Balance.PaidAtoms == 0 && v.Balance.ReservedAtoms == 0
+ 	}, 3*time.Minute)
+-	require(!time.Now().UTC().Before(due) && len(relay.sends()) == 0, "due reached without premature broadcast")
++	dueObservedMS := time.Now().UnixMilli()
++	require(dueObservedMS >= due.UnixMilli() && len(relay.sends()) == 0, fmt.Sprintf("due reached without premature broadcast: observed_wall_ms=%d target_wall_ms=%d", dueObservedMS, due.UnixMilli()))
+ 	var st pooloperator.Status
+ 	wait(ctx, 45*time.Second, func() bool {
+ 		candidate, e := running.runtime.Status(ctx)
+--- before/late_flow.go
++++ after/late_flow.go
+@@ -156,6 +156,25 @@
+ 	}
+ }
+ 
++// A timer wake is not proof that a wall-clock target has passed. The original
++// scenario context bounds every wait; neither target nor deadline is replaced.
++func lateWaitWall(ctx context.Context, targetMS int64, label string) int64 {
++	for {
++		observedMS := time.Now().UnixMilli()
++		require(ctx.Err() == nil, fmt.Sprintf("%s canceled: observed_wall_ms=%d target_wall_ms=%d", label, observedMS, targetMS))
++		if observedMS >= targetMS {
++			return observedMS
++		}
++		remaining := time.Duration(targetMS-observedMS) * time.Millisecond
++		if remaining < time.Millisecond {
++			remaining = time.Millisecond
++		}
++		if pauseActual(ctx, remaining) != nil {
++			panic(fmt.Sprintf("%s canceled: observed_wall_ms=%d target_wall_ms=%d", label, time.Now().UnixMilli(), targetMS))
++		}
++	}
++}
++
+ func lateCheck(ctx context.Context, p *prospectwork.ManifestWork, nonce uint32) prospectwork.ShareCheck {
+ 	for {
+ 		v, e := p.CheckNonce(ctx, nonce)
+@@ -281,10 +300,7 @@
+ 	write(filepath.Join(root, "05-full-intake.json"), map[string]any{"status": full, "work": work, "filler": filler, "audit": filled, "issue_denial": issueDenial})
+ 
+ 	phase = "real five-minute job expiry and actual normal winner search"
+-	if d := time.Until(time.UnixMilli(work.Job.ExpiresAtMS)); d > 0 {
+-		check(pauseActual(ctx, d), "original real expiry")
+-	}
+-	require(time.Now().UnixMilli() >= work.Job.ExpiresAtMS, "no clock substitution")
++	expiryObservedMS := lateWaitWall(ctx, work.Job.ExpiresAtMS, "original real expiry")
+ 	hashCtx, cancelHash = context.WithTimeout(ctx, 4*time.Minute)
+ 	var winner prospectwork.ShareCheck
+ 	var ordinary prospectwork.ShareCheck
+@@ -300,7 +316,8 @@
+ 	}
+ 	cancelHash()
+ 	require(winner.Block && winner.Candidate != nil && ordinary.Candidate != nil, "bounded actual winner plus late nonblock")
+-	require(time.Now().UnixMilli() >= work.Job.ExpiresAtMS, "winner found only after expiry")
++	winnerObservedMS := time.Now().UnixMilli()
++	require(winnerObservedMS >= work.Job.ExpiresAtMS, fmt.Sprintf("winner found only after expiry: observed_wall_ms=%d expires_at_ms=%d", winnerObservedMS, work.Job.ExpiresAtMS))
+ 	*running = constructRuntime(ctx, root, private, s, rpcConfig, false)
+ 	(*running).run(ctx, s.Ingress.Origin)
+ 	// The original full4/4 attachment is draining before listeners start.
+@@ -348,7 +365,7 @@
+ 	for _, v := range inputs {
+ 		require(v != lateCoin, "late funding distinct from reserved A inputs")
+ 	}
+-	write(filepath.Join(root, "06-canonical-late.json"), map[string]any{"job": work.Job, "proof": winner, "block_hash": hash, "height": 104, "coin": lateCoin, "observed_at_ms": time.Now().UnixMilli(), "ordinary_refusal": ordinaryFailure, "noncanonical_refusal": winnerFailure, "absent_audit": absent})
++	write(filepath.Join(root, "06-canonical-late.json"), map[string]any{"job": work.Job, "proof": winner, "block_hash": hash, "height": 104, "coin": lateCoin, "observed_at_ms": time.Now().UnixMilli(), "expiry_observed_at_ms": expiryObservedMS, "winner_observed_at_ms": winnerObservedMS, "ordinary_refusal": ordinaryFailure, "noncanonical_refusal": winnerFailure, "absent_audit": absent})
+ 
+ 	phase = "reopen original operator and accept unseen canonical B at drain"
+ 	started := time.Now().UnixMilli()
+--- before/run.py
++++ after/run.py
+@@ -302,6 +302,10 @@
+     canonical = read_json(owned / '06-canonical-late.json', 65 << 20)
+     need(canonical.get('ordinary_refusal') == dict(code='capacity', outcome_unknown=False) and
+          canonical.get('noncanonical_refusal') == dict(code='outcome_unknown', outcome_unknown=True) and
++         type(canonical.get('expiry_observed_at_ms')) is int and
++         canonical['expiry_observed_at_ms'] >= canonical['job']['expires_at_ms'] and
++         type(canonical.get('winner_observed_at_ms')) is int and
++         canonical['winner_observed_at_ms'] >= canonical['job']['expires_at_ms'] and
+          canonical['absent_audit'].get('authority_jobs') == 3 and
+          canonical['absent_audit'].get('works') == 3 and
+          canonical['absent_audit'].get('submissions') == 4 and
+--- before/README.md
++++ after/README.md
+@@ -5,6 +5,8 @@
+ This is a narrow successor of `set74-prep/public-pool-actual`, whose original files and reports remain unchanged. `inherited-source.json` binds the reused source. Two normal loopback nodes, original TLS work/share clients, schema16 custody, scheduled payout, real CLI restart and joined cleanup remain concrete. The former automatic-worker bootstrap is preserved under `pre-root-bootstrap-assumption/` and was never executed: its independent pool/prospect successes could fill intake before two block wins. This successor submits only the two discovered winning nonces; prior worker/outbox qualification is separate evidence. No private signing/settlement getter, forced clock, journal edit, fake hash or enlarged physical journal is used.
+ 
+ Attempt2 is also preserved, with its exact source/approval under `pre-issue-refusal/`. It cleanly stopped after205.931 seconds at the ordinary-Issue refusal assertion, after public audit proved two accepted rewards, zero births and one reserved signed batch. Its error code was not recorded. Independent source inspection proves the existing Issue handler maps every underlying non-Busy error, including capacity, to `outcome_unknown`; this successor respects that conservative boundary and proves no new job only after joined physical audit.
++
++Attempt3 is preserved with exact source/approval under `pre-wall-expiry/`: it passed phase05 then cleanly failed the post-sleep wall-expiry assertion at523.821 seconds. The precise wall gap and cause were not recorded; no clock-adjustment cause is claimed. One shared wait now rechecks actual UnixMilli after each context-bound timer wake for both original daily due and job expiry. It retains the same targets/global900-second deadline, records observed/target milliseconds on failures, and phase06 binds observed expiry/winner wall times.
+ 
+ ## Frozen fixture before implementation
+ 

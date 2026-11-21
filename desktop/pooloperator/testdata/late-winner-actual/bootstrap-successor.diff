@@ -1,0 +1,800 @@
+--- before/main.go
++++ after/main.go
+@@ -48,6 +48,15 @@
+ const setupReferenceSHA = "97fa4879bf955f2f321202c34a95dfc335e684031152e100979e27f0d98da0b3"
+ const publicPass = "published pool wallet public passphrase"
+ const privatePass = "published pool wallet private passphrase"
++
++type publicFixtureMinerConfig struct {
++	Setup         pooloperator.Setup
++	RPC           prospectnode.RPCConfig
++	CACertificate string
++	GymPublicKey  string
++	PoolToken     string
++}
++
+ const minerPayment int64 = 990000000 // 10 SLUG minus fixed operator 1%, one gym per round.
+ 
+ func privateWrite(path string, raw []byte) {
+@@ -529,12 +538,6 @@
+ 	return map[string]any{"name": c.name, "pid": c.cmd.Process.Pid, "joined": c.joined, "forced": c.forced, "wait_error": c.waitErr, "log_close_error": c.closeErr, "clean": c.clean()}
+ }
+ 
+-func loadMinerReport(path string) actualMinerReport {
+-	var r actualMinerReport
+-	check(json.Unmarshal(readBound(path, 65<<20), &r), "miner evidence")
+-	require(r.Complete && r.RunJoined && r.OutboxClosed && len(r.Canonical) == 1, "one completed canonical automatic miner block")
+-	return r
+-}
+ func clientFor(s pooloperator.Setup, c publicFixtureMinerConfig) *poolservice.Client {
+ 	client, e := poolservice.NewClient(poolservice.ClientConfig{Version: 1, URL: s.Ingress.Origin, Token: c.PoolToken, CACertificate: c.CACertificate, PublicKey: c.GymPublicKey, Source: s.Pool})
+ 	check(e, "pinned TLS read client")
+@@ -776,68 +779,23 @@
+ 	phase = "construct exact operator runtime"
+ 	running = constructRuntime(ctx, root, private, s, rpcConfig, true)
+ 	configs := make([]publicFixtureMinerConfig, 2)
+-	configPaths := make([]string, 2)
+-	minerRoots := make([]string, 2)
+ 	require(len(s.Miners.Enrollments) == 2, "two fixed enrollments")
+ 	for i, en := range s.Miners.Enrollments {
+ 		poolToken := hx(digest([]byte(fmt.Sprintf("Set74 public rehearsal pool token %d", i))))
+-		admissionToken := hx(digest([]byte(fmt.Sprintf("Set74 public rehearsal admission token %d", i))))
+ 		expiry := time.Now().Add(time.Hour).UnixMilli()
+ 		_, e = running.runtime.RotateCredential(ctx, en.GymID, poolminer.PoolAudience, 0, poolToken, expiry)
+ 		check(e, "pool audience credential")
+-		_, e = running.runtime.RotateCredential(ctx, en.GymID, poolminer.AdmissionAudience, 0, admissionToken, expiry)
+-		check(e, "admission audience credential")
+-		configs[i] = publicFixtureMinerConfig{Setup: s, RPC: prospectnode.RPCConfig{Version: 1, URL: a.rpc.endpoint, Username: "fixture", Password: "public-pool-actual"}, CACertificate: cert, GymPublicKey: en.PublicKey, PoolToken: poolToken, AdmissionToken: admissionToken}
+-		configPaths[i] = filepath.Join(private, fmt.Sprintf("miner%d.json", i))
+-		raw, e := json.Marshal(configs[i])
+-		check(e, "miner config")
+-		privateWrite(configPaths[i], raw)
+-		minerRoots[i] = filepath.Join(root, fmt.Sprintf("miner%d", i))
++		configs[i] = publicFixtureMinerConfig{Setup: s, RPC: prospectnode.RPCConfig{Version: 1, URL: a.rpc.endpoint, Username: "fixture", Password: "public-pool-actual"}, CACertificate: cert, GymPublicKey: en.PublicKey, PoolToken: poolToken}
+ 	}
+ 	running.run(ctx, s.Ingress.Origin)
+ 	for _, c := range configs {
+ 		clients = append(clients, clientFor(s, c))
+ 	}
+ 	write(filepath.Join(root, "01-runtime-listening.json"), runtimeStatus(ctx, running.runtime))
+-	phase = "two separate automatic TLS miners"
+-	self, e := os.Executable()
+-	check(e, "actual executable")
+-	var reports []actualMinerReport
+-	var poolInputs []wire.OutPoint
+-	var highest uint32
+-	for i := range configs {
+-		c := startChild(self, fmt.Sprintf("miner%d", i), filepath.Join(root, fmt.Sprintf("miner%d.log", i)), "--miner", configPaths[i], "--out", minerRoots[i])
+-		children = append(children, c)
+-		c.wait(ctx, 4*time.Minute)
+-		mr := loadMinerReport(filepath.Join(minerRoots[i], "miner-public.json"))
+-		require(mr.GymPublicKey == configs[i].GymPublicKey, "exact original miner identity")
+-		row := mr.Canonical[0]
+-		require(row.Height == uint32(i+2) && row.NodeChecked, "exact sequential pool block")
+-		var hash string
+-		a.rpc.must(ctx, "getblockhash", []any{row.Height}, &hash)
+-		require(hash == row.WorkHash, "actual miner canonical membership")
+-		sameTip(ctx, a, b)
+-		blk := block(ctx, a, hash)
+-		cb := blk.Transactions[0]
+-		found := false
+-		for n, o := range cb.TxOut {
+-			if hx(o.PkScript) == s.WalletGuard.FundingScript {
+-				require(!found && o.Value == 1000000000, "exact tenSLUG pool coinbase")
+-				found = true
+-				poolInputs = append(poolInputs, wire.OutPoint{Hash: cb.TxHash(), Index: uint32(n)})
+-			}
+-		}
+-		require(found, "actual pool coinbase funding")
+-		highest = row.Height
+-		reports = append(reports, mr)
+-		reopened := startChild(self, fmt.Sprintf("miner%d-reopen", i), filepath.Join(root, fmt.Sprintf("miner%d-reopen.log", i)), "--miner-reopen", configPaths[i], "--out", minerRoots[i])
+-		children = append(children, reopened)
+-		reopened.wait(ctx, 30*time.Second)
+-		var reopenReport actualMinerReport
+-		check(json.Unmarshal(readBound(filepath.Join(minerRoots[i], "miner-reopen-public.json"), 65<<20), &reopenReport), "separate-process original outbox reopen")
+-		require(reopenReport.Complete && reopenReport.ReopenClosed && reopenReport.ReadOnlyReopen && reopenReport.ReopenNeverRanWorker && reopenReport.SetupID == mr.SetupID && reopenReport.GymPublicKey == mr.GymPublicKey && reopenReport.RowsSHA256 == mr.RowsSHA256 && reflect.DeepEqual(reopenReport.Rows, mr.Rows), "separate-process exact read-only outbox")
+-	}
+-	write(filepath.Join(root, "02-two-miners.json"), reports)
++	phase = "two deterministic block-only original TLS submissions"
++	poolInputs, reports := lateBootstrap(ctx, s, a, b, configs, clients)
++	highest := uint32(3)
++	write(filepath.Join(root, "02-two-blocks.json"), reports)
+ 	phase = "sixty descendants then due immature deferral"
+ 	for {
+ 		var h uint32
+@@ -907,29 +865,12 @@
+ 	operatorBinary := flag.String("operator-binary", "", "exact slugpoold")
+ 	root := flag.String("artifacts", "", "fresh absolute owned root")
+ 	reference := flag.String("setup-reference", "", "independent setup corpus")
+-	miner := flag.String("miner", "", "exact miner config")
+-	reopen := flag.String("miner-reopen", "", "exact original miner config")
+-	output := flag.String("out", "", "original miner output root")
+ 	flag.Parse()
+ 	signal.Ignore(syscall.SIGPIPE)
+ 	signalCtx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+ 	defer stop()
+ 	ctx, cancel := context.WithTimeout(signalCtx, 15*time.Minute)
+ 	defer cancel()
+-	if *miner != "" || *reopen != "" {
+-		require((*miner == "") != (*reopen == ""), "one child mode")
+-		var e error
+-		if *miner != "" {
+-			e = runMiner(ctx, *miner, *output)
+-		} else {
+-			e = runMinerReopen(ctx, *reopen, *output)
+-		}
+-		if e != nil {
+-			fmt.Fprintln(os.Stderr, e)
+-			os.Exit(1)
+-		}
+-		return
+-	}
+ 	result := runActual(ctx, *nodeBinary, *operatorBinary, *root, *reference)
+ 	fmt.Println("Set74 public pool rehearsal", result["pass"], phase)
+ 	if result["pass"] != true {
+--- before/late_flow.go
++++ after/late_flow.go
+@@ -4,7 +4,6 @@
+ import (
+ 	"bytes"
+ 	"context"
+-	"encoding/json"
+ 	"errors"
+ 	"path/filepath"
+ 	"reflect"
+@@ -17,6 +16,70 @@
+ 	"github.com/taytr-llc/slug/prospectwork"
+ 	"github.com/taytr-llc/slug/wire/v2"
+ )
++
++type lateBootstrapReport struct {
++	Work                poolshare.MiningWork `json:"work"`
++	Receipt             poolshare.Submission `json:"receipt"`
++	SearchedNonces      uint32               `json:"searched_nonces"`
++	OrdinarySubmissions uint32               `json:"ordinary_submissions"`
++	FighterSubmissions  uint32               `json:"fighter_submissions"`
++	Coin                wire.OutPoint        `json:"coin"`
++}
++
++// Each gym contributes exactly one block row. Ordinary candidates are hashed
++// but never submitted; no worker or fighter signer runs in this accounting
++// bootstrap. A lucky first nonce is not a prerequisite for the fixed row count.
++func lateBootstrap(ctx context.Context, s pooloperator.Setup, a, b *node, configs []publicFixtureMinerConfig, clients []*poolservice.Client) ([]wire.OutPoint, []lateBootstrapReport) {
++	var inputs []wire.OutPoint
++	var reports []lateBootstrapReport
++	for i, client := range clients {
++		work := lateIssue(ctx, client)
++		require(work.Job.Context.ParentHeight == uint32(i+1) && work.Job.PublicKey == configs[i].GymPublicKey, "original per-gym issued bootstrap work")
++		prepared, e := poolservice.PrepareWork(s.Pool, configs[i].GymPublicKey, work)
++		check(e, "bootstrap fixed original candidate")
++		hashing, cancel := context.WithTimeout(ctx, 4*time.Minute)
++		var winner prospectwork.ShareCheck
++		var searched uint32
++		for nonce := uint32(0); nonce < 64; nonce++ {
++			candidate := lateCheck(hashing, prepared, nonce)
++			searched++
++			if candidate.Block {
++				winner = candidate
++				break
++			}
++		}
++		cancel()
++		require(winner.Block && winner.Candidate != nil, "bounded normal bootstrap block search")
++		var reply any
++		a.rpc.must(ctx, "submitblock", []any{winner.Candidate.BlockHex}, &reply)
++		require(reply == nil && sameTip(ctx, a, b) == winner.WorkHash, "exact bootstrap block accepted and canonical")
++		var hash string
++		a.rpc.must(ctx, "getblockhash", []any{i + 2}, &hash)
++		require(hash == winner.WorkHash, "original bootstrap height membership")
++		block := block(ctx, a, hash)
++		var encoded bytes.Buffer
++		check(block.Serialize(&encoded), "bootstrap canonical block serialization")
++		require(hx(encoded.Bytes()) == winner.Candidate.BlockHex, "canonical bootstrap bytes unchanged")
++		var coin wire.OutPoint
++		found := false
++		for index, output := range block.Transactions[0].TxOut {
++			if hx(output.PkScript) == s.WalletGuard.FundingScript {
++				require(!found && output.Value == 1000000000, "exact bootstrap pool reward")
++				coin = wire.OutPoint{Hash: block.Transactions[0].TxHash(), Index: uint32(index)}
++				found = true
++			}
++		}
++		require(found, "bootstrap pays original pool script")
++		// Publication changed the parent; canonical admission is valid even
++		// though the timely current-parent branch is now false.
++		receipt, e := client.Submit(ctx, work, winner.Nonce)
++		check(e, "original TLS block-only submission")
++		require(receipt.Sequence == uint64(i+1) && receipt.AcceptedSequence == uint64(i+1) && receipt.Block && receipt.BlockState == "canonical-observed" && receipt.WorkHash == winner.WorkHash && receipt.BlockHeight == uint32(i+2), "exact one bootstrap accepted block row")
++		inputs = append(inputs, coin)
++		reports = append(reports, lateBootstrapReport{Work: work, Receipt: receipt, SearchedNonces: searched, Coin: coin})
++	}
++	return inputs, reports
++}
+ 
+ func lateIssue(ctx context.Context, c *poolservice.Client) poolshare.MiningWork {
+ 	work, cancel := context.WithTimeout(ctx, 20*time.Second)
+@@ -102,7 +165,7 @@
+ 	require(len(relay.sends()) == 0, "held payout never reached node")
+ 	payment := validatePayment(held.Raw, s, inputs)
+ 	first := lateClosedAudit(ctx, root, s)
+-	require(first.Submissions == 2 && first.Accepted == 2 && first.Works == 2 && len(first.Batches) == 1 && len(first.Credits) == 2 && len(first.Entries) == 2 && len(first.Rounds) == 2 && first.Births == 2, "original two-reward fixture")
++	require(first.Submissions == 2 && first.Accepted == 2 && first.Works == 2 && len(first.Batches) == 1 && len(first.Credits) == 2 && len(first.Entries) == 2 && len(first.Rounds) == 2 && first.Births == 0, "original two-reward fixture")
+ 	original := first.Batches[0]
+ 	require(original.Raw == held.Raw && original.TxID == payment["txid"] && original.State == "prepared", "original synchronized signed reservation")
+ 	require(first.Report.Balances[0].ReservedAtoms == minerPayment && first.Report.Balances[1].ReservedAtoms == minerPayment, "both original9.9SLUG reserved")
+--- before/run.py
++++ after/run.py
+@@ -22,12 +22,12 @@
+ SETUP_REFERENCE = HERE / 'reference/setup-late-winner-v1.python313.json'
+ SETUP_SHA = '97fa4879bf955f2f321202c34a95dfc335e684031152e100979e27f0d98da0b3'
+ SCOPE = 'set74-late-winner-actual'
+-SOURCES = ('main.go', 'miner.go', 'node_helpers.go', 'late_flow.go', 'late_audit.go', 'go.mod')
+-PHASES = ('01-runtime-listening.json', '02-two-miners.json',
++SOURCES = ('main.go', 'node_helpers.go', 'late_flow.go', 'late_audit.go', 'go.mod')
++PHASES = ('01-runtime-listening.json', '02-two-blocks.json',
+           '03-due-immature.json', '04-original-pending.json', '05-full-intake.json',
+           '06-canonical-late.json', '07-late-restart.json',
+           '08-confirmed-reservation.json', '09-combined-final.json')
+-CHILDREN = {'miner0', 'miner1', 'miner0-reopen', 'miner1-reopen', 'slugpoold-late-retry'}
++CHILDREN = {'slugpoold-late-retry'}
+ MAX_ACTUAL_SECONDS = 1080  # Go scenario900s, remaining180s only bounded cleanup.
+ 
+ 
+@@ -265,7 +265,7 @@
+         n.get('unexpected_exit') is False and n.get('wait_error') == '' and
+         n.get('log_close_error') is False and n.get('stop_rpc_error') is False for n in nodes),
+         'node cleanup incomplete')
+-    need(isinstance(children, list) and len(children) == 5 and
++    need(isinstance(children, list) and len(children) == 1 and
+          {c.get('name') for c in children} == CHILDREN and all(
+         c.get('clean') is True and c.get('joined') is True and c.get('forced') is False and
+         c.get('wait_error') == '' and c.get('log_close_error') == '' and
+@@ -287,22 +287,13 @@
+         p = owned / name
+         read_json(p, 65 << 20)
+         evidence[str(p)] = support.identity(p)
+-    for i in range(2):
+-        root = owned / f'miner{i}'
+-        original = read_json(root / 'miner-public.json', 65 << 20)
+-        reopened = read_json(root / 'miner-reopen-public.json', 65 << 20)
+-        need(original.get('complete') is True and original.get('run_joined') is True and
+-             original.get('outbox_closed') is True and original.get('reopened_exact') is True and
+-             original.get('reopen_closed') is True and original.get('read_only_reopen') is True and
+-             original.get('reopen_never_ran_worker') is True and
+-             len(original.get('canonical', [])) == 1, 'miner acceptance incomplete')
+-        need(reopened.get('complete') is True and reopened.get('phase') == 'physical-audit-only' and
+-             reopened.get('read_only_reopen') is True and reopened.get('reopen_never_ran_worker') is True and
+-             reopened.get('reopen_closed') is True and original['rows_sha256'] == reopened.get('rows_sha256') and
+-             original['rows'] == reopened.get('rows') and original['setup_id'] == reopened.get('setup_id') and
+-             original['gym_public_key'] == reopened.get('gym_public_key'), 'physical audit mismatch')
+-        for name in ('miner-public.json', 'miner-reopen-public.json'):
+-            evidence[str(root / name)] = support.identity(root / name)
++    bootstrap = read_json(owned / '02-two-blocks.json', 2 << 20)
++    need(isinstance(bootstrap, list) and len(bootstrap) == 2 and all(
++        row['receipt']['sequence'] == i+1 and row['receipt']['accepted_sequence'] == i+1 and
++        row['receipt']['block'] is True and row['receipt']['block_state'] == 'canonical-observed' and
++        row['receipt']['block_height'] == i+2 and row['ordinary_submissions'] == 0 and
++        row['fighter_submissions'] == 0 and row['searched_nonces'] >= 1 and row['searched_nonces'] <= 64
++        for i, row in enumerate(bootstrap)), 'deterministic block-only bootstrap incomplete')
+     # All are public, originally closed physical audits. No private fixture file is read.
+     final = read_json(owned / '09-combined-final.json', 65 << 20)
+     need(final.get('late_credit_count') == 1 and final.get('original_batch_unchanged') is True and
+--- before/README.md
++++ after/README.md
+@@ -2,7 +2,7 @@
+ 
+ Source-only until root reviews an exact execution lock. No Go build, node, wallet or operator has been run from this stage. All custody inputs are generated only during the admitted future rehearsal from the existing published synthetic authority/gym/wallet recipes. The agent has read no private fixture artifact.
+ 
+-This is a narrow successor of `set74-prep/public-pool-actual`, whose original files and reports remain unchanged. `inherited-source.json` binds the reused source. The normal automatic miners, two normal loopback nodes, TLS ingress, original schema16 custody, scheduled payout, real CLI restart and joined cleanup remain concrete. No private signing/settlement getter, forced clock, journal edit, fake hash or enlarged physical journal is used.
++This is a narrow successor of `set74-prep/public-pool-actual`, whose original files and reports remain unchanged. `inherited-source.json` binds the reused source. Two normal loopback nodes, original TLS work/share clients, schema16 custody, scheduled payout, real CLI restart and joined cleanup remain concrete. The former automatic-worker bootstrap is preserved under `pre-root-bootstrap-assumption/` and was never executed: its independent pool/prospect successes could fill intake before two block wins. This successor submits only the two discovered winning nonces; prior worker/outbox qualification is separate evidence. No private signing/settlement getter, forced clock, journal edit, fake hash or enlarged physical journal is used.
+ 
+ ## Frozen fixture before implementation
+ 
+@@ -12,7 +12,7 @@
+ 
+ ## Exact combined sequence
+ 
+-1. Reuse two separate real automatic TLS miners, each producing one canonical reward and a fighter receipt; separately reopen their durable outboxes read-only. Bootstrap rewards pay a different fixture address. Mine descendants to the real daily due, verify immature deferral, then stop the original runtime and mature both original pool coinbases at height103.
++1. Mine one initial block to a separate fixture address. For each of the two gyms, issue one original TLS job and search at most64 nonces with normal `CheckNonce` under a four-minute context. Skip ordinary candidates without submitting them. Publish the exact winning block to the real node, prove its canonical bytes/height/pool reward, then submit that original winning nonce through TLS. Require exactly Sequence1/2 and Accepted1/2, canonical block rows at heights2/3. No fighter admission or worker/outbox runs: the birth counter stays0. Node-first publication legitimately changes the current parent; the canonical receipt, not a current-parent label, is required. Mine descendants to the real daily due, verify immature deferral, then stop the original runtime and mature both pool coinbases at height103.
+ 2. Reopen the original runtime. A bounded RPC relay records the first signed payout **before forwarding** and returns an unavailable response. Wait for the public prepared/reserved payout, then join all original owners. Closed audit records batch A: exact two original inputs and their claims, two9.9-SLUG payees, operator-funded fee/change, raw bytes/txid/day/creation time. It has never reached the node.
+ 3. Reopen and issue distinct job B for gym0 at parent103. Submit exactly two timely, actually hashed **nonblock** shares from B, filling the original ordinary envelope:2 old winning rows +2 ordinary rows =4. B's winning nonce is still absent. Require runtime draining and new Issue refusal; close. Audit physically validated pool counters Submissions4/Accepted4/Works3, not merely the accepted-page count.
+ 4. With the operator stopped and node tip unchanged, wait until B's actual five-minute expiry. Search at most64 further nonces through `prospectwork.ManifestWork.CheckNonce` under a four-minute child context for one normal network winner and one ordinary late share. Header/template/payout/extraNonce0 remain exact; no target override. Reopen: ordinary late submission is capacity-refused; the unobserved winning block's submission is conservatively `outcome_unknown` because node proof is missing. Do not retry this uncertainty. Join and closed-audit Submissions4/Accepted4, original A and unchanged node height; this rules out a secretly saved unaccepted B row.
+@@ -27,9 +27,9 @@
+ 
+ `lateClosedAudit` is reachable only after the original runtime or exact CLI child joins. It uses original `OpenOperatorManifestAuthorityAudit`, `poolshare.OpenAudit`, `poolround.OpenAudit` and `poolsettle.OpenAudit`, then closes them. These audit all physical rows and crosslinks. Two bounded, strict, read-only Gets project the public pool metadata and existing settlement financial state (`pool/db:meta`, `settlement/db:slug-pool-settlement-v1`); they read no wallet or key storage. Before/after hashes of only issuer/pool/rounds/settlement must match. Public JSON contains selected jobs, receipts, accounting, original signed payout and cleanup facts, never credentials/RPC secrets/seed bytes.
+ 
+-Five child processes are expected: two miners, two never-mining outbox reopens and one actual operator retry. Both nodes and every original runtime/HTTP/custody owner must join cleanly. There is one heavy lane, no process-name cleanup, no concurrent external UI and no reuse of an old private fixture tree. Failure preserves its exact phase/report/log and cannot become pass after forced cleanup.
++Exactly one child process is expected: the production operator CLI retry. There are no automatic-miner or outbox-reopen children in this successor. Both nodes and every original runtime/HTTP/custody owner must join cleanly. There is one heavy lane, no process-name cleanup, no concurrent external UI and no reuse of an old private fixture tree. Failure preserves its exact phase/report/log and cannot become pass after forced cleanup.
+ 
+-Bounds remain the inherited15-minute Go scenario,180 normal blocks,1080-second outer actual limit including cleanup, four-minute nonce/miner phases,16 attempted payout sends and capped logs. The expected final height is exactly165. Real expiry consumes five minutes inside those limits; failure to finish is failure, not permission to extend them.
++Bounds remain the inherited15-minute Go scenario,180 normal blocks,1080-second outer actual limit including cleanup, four-minute nonce-search phases,16 attempted payout sends and capped logs. The expected final height is exactly165. Real expiry consumes five minutes inside those limits; failure to finish is failure, not permission to extend them.
+ 
+ Root invocation after exact review/approval:
+ 
+--- before/RUNNER.md
++++ after/RUNNER.md
+@@ -2,7 +2,7 @@
+ 
+ `run.py` retains the already-reviewed public-pool runner's exclusive attempt directory, exact root-approved input lock, offline dependency discovery, source-copy/profile/artifact comparisons on all outcomes, bounded read1 log drain, exact PID/PGID ownership and nested-finally joins. Three normal no-tag binaries: slugd CGO0, slugpoold CGO1 and the external probe CGO1. Candidate noCSE profile, offline cache and GOMAXPROCS2 stay unchanged.
+ 
+-Only scenario selection, frozen setup/reference admission, added two Go leaves, the nine named public phases, five child names and combined final assertions change. Go runs at most900 seconds/180 blocks; outer capture1080 seconds includes cleanup only. Dependency queries120 seconds, builds240 seconds, logs16MiB (dependency metadata32MiB). No source installation or old artifact/private fixture reuse occurs. The runner never reads generated private files; it reads only explicit public JSON artifacts.
++Only scenario selection, frozen setup/reference admission, added two Go leaves, the nine named public phases, the single operator CLI child and combined final assertions change. The preserved pre-bootstrap successor used automatic miners and was not executed; this runner instead requires two exact canonical block-only TLS receipts and zero fighter submissions. No miner/outbox source, child mode or result is part of this proof. Go runs at most900 seconds/180 blocks; outer capture1080 seconds includes cleanup only. Dependency queries120 seconds, builds240 seconds, logs16MiB (dependency metadata32MiB). No source installation or old artifact/private fixture reuse occurs. The runner never reads generated private files; it reads only explicit public JSON artifacts.
+ 
+ `source-manifest.json` and `runner-manifest.json` describe the external snapshot; neither authorizes execution. `execution-lock.proposed.json` must be freshly bound to the installed qualified product source and approved by root. All compiled/embedded/native dependency inputs are additionally recorded before/after. A timeout, log overflow, source/profile/artifact change, process uncertainty, forced cleanup or incomplete combined public audit fails qualification.
+ 
+--- before/inherited-source.json
++++ after/inherited-source.json
+@@ -26,5 +26,8 @@
+       "bytes": 3888,
+       "sha256": "54bb3e7caf33e744ce76bf366dd23a4eff4d370d9246b85758089b57dd2439d7"
+     }
++  },
++  "removed_predecessor_source": {
++    "miner.go": "Automatic worker/outbox bootstrap was not executed; its nondeterministic initial row count is replaced by block-only original TLS submissions. Source remains in pre-root-bootstrap-assumption/miner.go."
+   }
+ }
+--- before/miner.go
++++ after/miner.go
+@@ -1,461 +0,0 @@
+-// External Set74 rehearsal only. Never installed as a product signing endpoint.
+-package main
+-
+-import (
+-	"bytes"
+-	"context"
+-	"crypto/sha256"
+-	"encoding/hex"
+-	"encoding/json"
+-	"errors"
+-	"fmt"
+-	"io"
+-	"net"
+-	"net/url"
+-	"os"
+-	"path/filepath"
+-	"reflect"
+-	"time"
+-
+-	"github.com/taytr-llc/slug/btcec/v2"
+-	"github.com/taytr-llc/slug/desktop/pooloperator"
+-	"github.com/taytr-llc/slug/gymauth"
+-	"github.com/taytr-llc/slug/poolservice"
+-	"github.com/taytr-llc/slug/poolshare"
+-	"github.com/taytr-llc/slug/prospect"
+-	"github.com/taytr-llc/slug/prospectnode"
+-	"github.com/taytr-llc/slug/prospectservice"
+-	"github.com/taytr-llc/slug/prospectworker"
+-	"github.com/taytr-llc/slug/registry"
+-	"github.com/taytr-llc/slug/wire/v2"
+-)
+-
+-const actualMinerMaxConfig = 1 << 20
+-const actualMinerMaxRecords = 64
+-const actualMinerMaxBytes = 64 << 20
+-
+-// This private fixture file is compact canonical JSON, mode0600, <=1MiB.
+-// The two bearer tokens and node credentials are never included in reports.
+-type publicFixtureMinerConfig struct {
+-	Setup          pooloperator.Setup     `json:"setup"`
+-	RPC            prospectnode.RPCConfig `json:"rpc"`
+-	CACertificate  string                 `json:"ca_certificate"`
+-	GymPublicKey   string                 `json:"gym_public_key"`
+-	PoolToken      string                 `json:"pool_token"`
+-	AdmissionToken string                 `json:"admission_token"`
+-}
+-
+-type actualMinerCanonical struct {
+-	Sequence    uint64 `json:"sequence"`
+-	WorkHash    string `json:"work_hash"`
+-	Height      uint32 `json:"height"`
+-	ParentHash  string `json:"parent_hash"`
+-	Header      string `json:"header"`
+-	ObservedMS  int64  `json:"observed_ms"`
+-	NodeChecked bool   `json:"node_checked"`
+-}
+-
+-type actualMinerReport struct {
+-	Version              uint32                     `json:"version"`
+-	Complete             bool                       `json:"complete"`
+-	Phase                string                     `json:"phase"`
+-	SetupID              string                     `json:"setup_id"`
+-	GymPublicKey         string                     `json:"gym_public_key"`
+-	WorkerConfig         prospectworker.PoolConfig  `json:"worker_config"`
+-	Status               prospectworker.Status      `json:"status"`
+-	Rows                 []prospectworker.PoolEntry `json:"rows"`
+-	RowsSHA256           string                     `json:"rows_sha256"`
+-	Canonical            []actualMinerCanonical     `json:"canonical"`
+-	ObservedProspectIDs  []string                   `json:"observed_prospect_ids"`
+-	SignCalls            uint64                     `json:"sign_calls"`
+-	RunJoined            bool                       `json:"run_joined"`
+-	OutboxClosed         bool                       `json:"outbox_closed"`
+-	ReopenedExact        bool                       `json:"reopened_exact"`
+-	ReopenClosed         bool                       `json:"reopen_closed"`
+-	ReadOnlyReopen       bool                       `json:"read_only_reopen"`
+-	ReopenNeverRanWorker bool                       `json:"reopen_never_ran_worker"`
+-}
+-
+-func actualMinerError(phase string) error { return fmt.Errorf("public fixture miner: %s", phase) }
+-
+-func actualMinerLoopback(raw string, tls bool) bool {
+-	u, e := url.Parse(raw)
+-	if e != nil || u.User != nil || u.Hostname() == "" || u.Port() == "" {
+-		return false
+-	}
+-	ip := net.ParseIP(u.Hostname())
+-	return ip != nil && ip.IsLoopback() && ((!tls && (u.Scheme == "http" || u.Scheme == "https")) || tls && u.Scheme == "https")
+-}
+-
+-func actualMinerFixtureScalar(pub string) string {
+-	// Exact published public fixtures: gymaccount/store_test.go accountTestKey,
+-	// with the public points already published in gymaccount/fixtures.go.
+-	switch pub {
+-	case "03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519":
+-		return "9d3035e7440dd3737fe58ffb69ca3576257d424b6e6172b3199a66a8897bddf6"
+-	case "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92":
+-		return "948996ecaa9fa9707693267d6d4abefe0b5fb28b6ebae34f542e106244d254e1"
+-	}
+-	return ""
+-}
+-
+-func actualMinerLoad(path string) (publicFixtureMinerConfig, error) {
+-	var c publicFixtureMinerConfig
+-	info, e := os.Lstat(path)
+-	if !filepath.IsAbs(path) || e != nil || !info.Mode().IsRegular() || info.Mode().Perm() != 0600 || info.Size() <= 0 || info.Size() > actualMinerMaxConfig {
+-		return c, actualMinerError("config identity")
+-	}
+-	f, e := os.Open(path)
+-	if e != nil {
+-		return c, actualMinerError("config open")
+-	}
+-	selected, se := f.Stat()
+-	raw, re := io.ReadAll(io.LimitReader(f, actualMinerMaxConfig+1))
+-	ce := f.Close()
+-	current, pe := os.Lstat(path)
+-	defer clear(raw)
+-	if se != nil || re != nil || ce != nil || pe != nil || !os.SameFile(info, selected) || !os.SameFile(info, current) || current.Mode() != info.Mode() || current.Size() != info.Size() || !current.ModTime().Equal(info.ModTime()) || len(raw) > actualMinerMaxConfig {
+-		return c, actualMinerError("config read")
+-	}
+-	d := json.NewDecoder(bytes.NewReader(raw))
+-	d.DisallowUnknownFields()
+-	if d.Decode(&c) != nil {
+-		return publicFixtureMinerConfig{}, actualMinerError("config decode")
+-	}
+-	canonical, e := json.Marshal(c)
+-	defer clear(canonical)
+-	if e != nil || !bytes.Equal(bytes.TrimSpace(raw), canonical) || pooloperator.ValidateSetup(c.Setup) != nil || actualMinerFixtureScalar(c.GymPublicKey) == "" || c.CACertificate == "" || c.PoolToken == c.AdmissionToken || !actualMinerLoopback(c.Setup.Ingress.Origin, true) || !actualMinerLoopback(c.RPC.URL, false) {
+-		return publicFixtureMinerConfig{}, actualMinerError("config refused")
+-	}
+-	found := false
+-	for _, enrollment := range c.Setup.Miners.Enrollments {
+-		if enrollment.PublicKey == c.GymPublicKey {
+-			found = true
+-		}
+-	}
+-	if !found {
+-		return publicFixtureMinerConfig{}, actualMinerError("fixture not enrolled")
+-	}
+-	return c, nil
+-}
+-
+-func actualMinerWorkerConfig(c publicFixtureMinerConfig) (prospectworker.PoolConfig, poolservice.ClientConfig, prospectservice.ManifestClientConfig, error) {
+-	pc := poolservice.ClientConfig{Version: 1, URL: c.Setup.Ingress.Origin, Token: c.PoolToken, PublicKey: c.GymPublicKey, Source: c.Setup.Pool, CACertificate: c.CACertificate}
+-	ac := prospectservice.ManifestClientConfig{Version: 3, URL: c.Setup.Ingress.Origin, Token: c.AdmissionToken, AuthorityPin: c.Setup.Pool.AuthorityPin, CACertificate: c.CACertificate}
+-	pt, e := poolservice.TransportTrustID(pc)
+-	if e != nil {
+-		return prospectworker.PoolConfig{}, pc, ac, actualMinerError("pool trust")
+-	}
+-	at, e := prospectservice.ManifestTransportTrustID(ac)
+-	if e != nil {
+-		return prospectworker.PoolConfig{}, pc, ac, actualMinerError("admission trust")
+-	}
+-	wc, e := prospectworker.ValidatePoolConfig(prospectworker.PoolConfig{Version: 1, Source: c.Setup.Pool, PublicKey: c.GymPublicKey, AuthorityOrigin: c.Setup.Ingress.Origin, TransportTrustID: pt, AdmissionOrigin: c.Setup.Ingress.Origin, AdmissionTrustID: at, MaxRecords: actualMinerMaxRecords, MaxBytes: actualMinerMaxBytes})
+-	return wc, pc, ac, e
+-}
+-
+-func actualMinerEntries(box *prospectworker.PoolOutbox) ([]prospectworker.PoolEntry, error) {
+-	rows := make([]prospectworker.PoolEntry, 0)
+-	var after uint64
+-	for len(rows) < actualMinerMaxRecords {
+-		page, e := box.List(after, actualMinerMaxRecords-len(rows))
+-		if e != nil {
+-			return nil, e
+-		}
+-		if len(page) == 0 {
+-			return rows, nil
+-		}
+-		for _, row := range page {
+-			if row.Sequence != after+1 {
+-				return nil, actualMinerError("outbox sequence")
+-			}
+-			after = row.Sequence
+-			rows = append(rows, row)
+-		}
+-	}
+-	page, e := box.List(after, 1)
+-	if e != nil || len(page) != 0 {
+-		return nil, actualMinerError("outbox capacity")
+-	}
+-	return rows, nil
+-}
+-
+-// This adapter changes only job issuance. Recovery/Submit/Lookup still use the
+-// exact immutable real TLS client. A saved block win closes the new-work fence,
+-// while Run continues reconciling its original durable pending rows.
+-type actualMinerAuthority struct {
+-	*poolservice.Client
+-	box *prospectworker.PoolOutbox
+-}
+-
+-func (a *actualMinerAuthority) Issue(ctx context.Context) (poolshare.MiningWork, error) {
+-	rows, e := actualMinerEntries(a.box)
+-	if e != nil {
+-		return poolshare.MiningWork{}, e
+-	}
+-	for _, row := range rows {
+-		if row.Fighter != nil && row.Fighter.BlockWin {
+-			return poolshare.MiningWork{}, &poolservice.ClientError{Code: "busy"}
+-		}
+-	}
+-	return a.Client.Issue(ctx)
+-}
+-
+-func actualMinerResolved(row prospectworker.PoolEntry) bool {
+-	switch row.PoolState {
+-	case "accepted", "not-applicable", "expired", "rejected":
+-	default:
+-		return false
+-	}
+-	if f := row.Fighter; f != nil {
+-		switch f.BlockState {
+-		case "not-applicable", "canonical", "rejected":
+-		default:
+-			return false
+-		}
+-		switch f.AdmissionState {
+-		case "not-applicable", "accepted", "expired", "rejected":
+-		default:
+-			return false
+-		}
+-	}
+-	return true
+-}
+-
+-func actualMinerRowsHash(rows []prospectworker.PoolEntry) (string, error) {
+-	raw, e := json.Marshal(rows)
+-	if e != nil || len(raw) > actualMinerMaxBytes {
+-		return "", actualMinerError("public rows size")
+-	}
+-	sum := sha256.Sum256(raw)
+-	return hex.EncodeToString(sum[:]), nil
+-}
+-
+-func actualMinerWrite(path string, value any) error {
+-	raw, e := json.Marshal(value)
+-	if e != nil || len(raw) > actualMinerMaxBytes+(1<<20) {
+-		return actualMinerError("public evidence size")
+-	}
+-	f, e := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0600)
+-	if e != nil {
+-		return actualMinerError("public evidence create")
+-	}
+-	_, we := f.Write(append(raw, '\n'))
+-	se, ce := f.Sync(), f.Close()
+-	if we != nil || se != nil || ce != nil {
+-		return actualMinerError("public evidence close")
+-	}
+-	return nil
+-}
+-
+-// runMiner is called in a separate child process, once per enrolled public
+-// fixture. It cannot choose another key, payee, source, target or issued work.
+-func runMiner(ctx context.Context, configFile, outputDir string) (runErr error) {
+-	if ctx == nil || wire.TestPoW || !filepath.IsAbs(outputDir) {
+-		return actualMinerError("profile or path")
+-	}
+-	if e := ctx.Err(); e != nil {
+-		return e
+-	}
+-	c, e := actualMinerLoad(configFile)
+-	if e != nil {
+-		return e
+-	}
+-	wc, pc, ac, e := actualMinerWorkerConfig(c)
+-	if e != nil {
+-		return actualMinerError("worker config")
+-	}
+-	if e = os.Mkdir(outputDir, 0700); e != nil {
+-		return actualMinerError("fresh output required")
+-	}
+-	report := actualMinerReport{Version: 1, Phase: "construct", GymPublicKey: c.GymPublicKey, WorkerConfig: wc}
+-	report.SetupID, _ = pooloperator.SetupID(c.Setup)
+-	defer func() {
+-		report.Complete = runErr == nil && report.RunJoined && report.OutboxClosed && report.ReopenedExact && report.ReopenClosed && len(report.Canonical) != 0
+-		if e := actualMinerWrite(filepath.Join(outputDir, "miner-public.json"), report); e != nil {
+-			runErr = errors.Join(runErr, e)
+-		}
+-	}()
+-	pool, e := poolservice.NewClient(pc)
+-	if e != nil {
+-		return actualMinerError("pool client")
+-	}
+-	defer pool.Close()
+-	admission, e := prospectservice.NewManifestClient(ac, c.Setup.Pool.Policy)
+-	if e != nil {
+-		return actualMinerError("admission client")
+-	}
+-	defer admission.Close()
+-	node, e := prospectnode.NewClient(c.RPC)
+-	if e != nil {
+-		return actualMinerError("node client")
+-	}
+-	defer node.Close()
+-	raw, _ := hex.DecodeString(actualMinerFixtureScalar(c.GymPublicKey))
+-	key, point := btcec.PrivKeyFromBytes(raw)
+-	clear(raw)
+-	defer key.Zero()
+-	if hex.EncodeToString(point.SerializeCompressed()) != c.GymPublicKey {
+-		return actualMinerError("published key mismatch")
+-	}
+-	path := filepath.Join(outputDir, "outbox")
+-	box, e := prospectworker.CreatePoolOutbox(path, wc)
+-	if e != nil {
+-		return actualMinerError("outbox create")
+-	}
+-	defer func() {
+-		if !report.OutboxClosed {
+-			if e := box.Close(); e != nil {
+-				runErr = errors.Join(runErr, actualMinerError("outbox cleanup"))
+-			} else {
+-				report.OutboxClosed = true
+-			}
+-		}
+-	}()
+-	work, stop := context.WithTimeout(ctx, 4*time.Minute)
+-	defer stop()
+-	done := false
+-	signer := func(call context.Context, scope prospect.Context, proof prospect.Proof) (gymauth.Authorization, error) {
+-		if e := call.Err(); e != nil {
+-			return gymauth.Authorization{}, e
+-		}
+-		rows, e := actualMinerEntries(box)
+-		if e != nil {
+-			return gymauth.Authorization{}, e
+-		}
+-		for _, row := range rows {
+-			f := row.Fighter
+-			if f != nil && f.ProspectWin && f.Authorization == nil && f.AdmissionState == "needs-signature" && f.Job.Context == scope && reflect.DeepEqual(f.Candidate.Proof, proof) && f.Job.PublicKey == c.GymPublicKey {
+-				auth, e := gymauth.SignAdmission(scope, proof, key)
+-				if e == nil {
+-					report.SignCalls++
+-				}
+-				return auth, e
+-			}
+-		}
+-		return gymauth.Authorization{}, actualMinerError("unretained signing request")
+-	}
+-	observer := func(call context.Context, record registry.ManifestRecord) error {
+-		if e := call.Err(); e != nil {
+-			return e
+-		}
+-		if len(report.ObservedProspectIDs) >= actualMinerMaxRecords {
+-			return actualMinerError("observer capacity")
+-		}
+-		report.ObservedProspectIDs = append(report.ObservedProspectIDs, record.Verified.ProspectID)
+-		return nil
+-	}
+-	hook := func(call context.Context) error {
+-		rows, e := actualMinerEntries(box)
+-		if e != nil {
+-			return e
+-		}
+-		for _, row := range rows {
+-			if f := row.Fighter; f != nil && f.BlockWin {
+-				// Successful canonical delivery clears PoolWorker's current scan.
+-				// If that did not happen, fail with its original durable evidence
+-				// instead of allowing the finite rehearsal to hash another nonce.
+-				if f.BlockState != "canonical" || row.Sequence != uint64(len(rows)) {
+-					return actualMinerError("first block delivery unresolved")
+-				}
+-			}
+-		}
+-		for _, row := range rows {
+-			if !actualMinerResolved(row) {
+-				return nil
+-			}
+-		}
+-		var checked []actualMinerCanonical
+-		for _, row := range rows {
+-			r, f := row.PoolReceipt, row.Fighter
+-			if r == nil || !r.Block || row.PoolState != "accepted" || r.AcceptedSequence == 0 || f == nil || !f.BlockWin || f.BlockState != "canonical" {
+-				continue
+-			}
+-			if r.WorkHash != row.WorkHash || r.Header != f.Candidate.Proof.Header || r.BlockHeight != f.Job.Context.ParentHeight+1 {
+-				return actualMinerError("block receipt mismatch")
+-			}
+-			probe, cancel := context.WithTimeout(call, 20*time.Second)
+-			e = node.CanonicalBlock(probe, f.Job.Context, f.Candidate.Proof, row.WorkHash)
+-			cancel()
+-			if e != nil {
+-				return actualMinerError("canonical block check")
+-			}
+-			checked = append(checked, actualMinerCanonical{row.Sequence, row.WorkHash, r.BlockHeight, f.Job.Context.ParentHash, r.Header, time.Now().UnixMilli(), true})
+-		}
+-		if len(checked) != 0 {
+-			if len(checked) != 1 || checked[0].Sequence != uint64(len(rows)) {
+-				return actualMinerError("work continued beyond first canonical block")
+-			}
+-			report.Canonical = checked
+-			done = true
+-			stop()
+-		}
+-		return nil
+-	}
+-	worker, e := prospectworker.NewPoolWithHooks(wc, &actualMinerAuthority{Client: pool, box: box}, admission, node, signer, box, observer, hook)
+-	if e != nil {
+-		return actualMinerError("worker construct")
+-	}
+-	report.Phase = "mining"
+-	e = worker.Run(work) // synchronous: cancellation joins the one normal hash.
+-	report.RunJoined, report.Status = true, worker.Status()
+-	report.Rows, runErr = actualMinerEntries(box)
+-	if runErr != nil {
+-		return actualMinerError("joined outbox read")
+-	}
+-	report.RowsSHA256, runErr = actualMinerRowsHash(report.Rows)
+-	if runErr != nil {
+-		return runErr
+-	}
+-	if e != nil || !done || ctx.Err() != nil || report.Status.Pending != 0 {
+-		return actualMinerError("worker did not finish canonical resolved work")
+-	}
+-	report.Phase = "close-and-reopen"
+-	if e = box.Close(); e != nil {
+-		return actualMinerError("outbox close")
+-	}
+-	report.OutboxClosed = true
+-	reopened, e := prospectworker.OpenPoolOutboxAudit(path, wc)
+-	if e != nil {
+-		return actualMinerError("outbox audit reopen")
+-	}
+-	rows, re := actualMinerEntries(reopened)
+-	ce := reopened.Close()
+-	report.ReopenClosed, report.ReadOnlyReopen, report.ReopenNeverRanWorker = ce == nil, true, true
+-	if re != nil || ce != nil || !reflect.DeepEqual(rows, report.Rows) {
+-		return actualMinerError("outbox reopened evidence changed")
+-	}
+-	report.ReopenedExact, report.Phase = true, "complete"
+-	return nil
+-}
+-
+-// runMinerReopen is an optional separate-process physical audit. It constructs
+-// no node, key or worker and never issues work, signs, broadcasts or mines.
+-func runMinerReopen(ctx context.Context, configFile, outputDir string) error {
+-	if ctx == nil || ctx.Err() != nil || wire.TestPoW || !filepath.IsAbs(outputDir) {
+-		return actualMinerError("reopen admission")
+-	}
+-	c, e := actualMinerLoad(configFile)
+-	if e != nil {
+-		return e
+-	}
+-	wc, _, _, e := actualMinerWorkerConfig(c)
+-	if e != nil {
+-		return actualMinerError("reopen config")
+-	}
+-	box, e := prospectworker.OpenPoolOutboxAudit(filepath.Join(outputDir, "outbox"), wc)
+-	if e != nil {
+-		return actualMinerError("reopen audit")
+-	}
+-	rows, re := actualMinerEntries(box)
+-	ce := box.Close()
+-	if re != nil || ce != nil || ctx.Err() != nil {
+-		return actualMinerError("reopen read or close")
+-	}
+-	digest, e := actualMinerRowsHash(rows)
+-	if e != nil {
+-		return e
+-	}
+-	id, _ := pooloperator.SetupID(c.Setup)
+-	return actualMinerWrite(filepath.Join(outputDir, "miner-reopen-public.json"), actualMinerReport{Version: 1, Complete: true, Phase: "physical-audit-only", SetupID: id, GymPublicKey: c.GymPublicKey, WorkerConfig: wc, Rows: rows, RowsSHA256: digest, ReopenClosed: true, ReadOnlyReopen: true, ReopenNeverRanWorker: true})
+-}

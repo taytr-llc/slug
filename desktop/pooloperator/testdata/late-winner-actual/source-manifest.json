@@ -1,0 +1,188 @@
+{
+  "version": 1,
+  "scope": "source-only full-intake unseen D80 and immutable reserved payout; not executed",
+  "files": {
+    "main.go": {
+      "bytes": 32518,
+      "sha256": "192a64606b2c16204f221ce815d11a256f1d542135c2829cf724240501fef885"
+    },
+    "late_flow.go": {
+      "bytes": 26576,
+      "sha256": "5cf46bb0e264301d52ea2303bdfaa3fe282bb454da7242e3e965a62bb8dc9988"
+    },
+    "late_audit.go": {
+      "bytes": 7698,
+      "sha256": "1f08e2fd39ea155fb7ea5caa155d4c5f921044d2b887716627806ae63c147b13"
+    },
+    "node_helpers.go": {
+      "bytes": 8444,
+      "sha256": "330ba64bdff3836b3a4d12f426e90e55fb2f4e2c6ecc3272b290597ac405e92b"
+    },
+    "go.mod": {
+      "bytes": 1360,
+      "sha256": "11678705c4f5742d80187297492035fd884fdf33345ae40b240224c3112d3538"
+    },
+    "run.py": {
+      "bytes": 24143,
+      "sha256": "b81af69c02a18b7f74ed96e08ae4dba8548e94a4958aeacb721c62dcbf8ba05e"
+    },
+    "runner_support.py": {
+      "bytes": 3888,
+      "sha256": "54bb3e7caf33e744ce76bf366dd23a4eff4d370d9246b85758089b57dd2439d7"
+    },
+    "README.md": {
+      "bytes": 12158,
+      "sha256": "abb8989c45088c5fea7c58e70cd04259302e1e2400dc835c22c9f7d168d3633e"
+    },
+    "RUNNER.md": {
+      "bytes": 2694,
+      "sha256": "874a2c995cf03c391b6d92e5a46b38e5f102ed99a98d57259c67a8006a94d595"
+    },
+    "inherited-source.json": {
+      "bytes": 1349,
+      "sha256": "792b0cded1c82f90fe097038ae52060ba35747c036a27fc55d56c93c29d477be"
+    },
+    "runner-provenance.json": {
+      "bytes": 646,
+      "sha256": "87ec5a4a49de60907088889f4a56b148f7282b7a756ab3b722f60bdc922b263e"
+    },
+    "node-helpers-provenance.json": {
+      "bytes": 440,
+      "sha256": "e165cb5c1c4bb6c8b8e116c388defce12dc785ed22a2a22822b24b9d50e986f0"
+    },
+    "reference/inputs/POOL_ACCOUNTING_POLICY.md": {
+      "bytes": 6396,
+      "sha256": "b7769251fbe4d46a8e077fdfd1ba7b5e5f8bb015833aff9d20310ca8739ae081"
+    },
+    "reference/inputs/setup-BYTES.md": {
+      "bytes": 3491,
+      "sha256": "0c63dab5bcb0a63e6d48f50a53eabf9d77644b6ebc1783d4f5852004aeeb68cc"
+    },
+    "reference/inputs/setup-model.py": {
+      "bytes": 5739,
+      "sha256": "8709331398175952116bbc2a938f7b315e0220e0f0e2600845defcf21d115cdf"
+    },
+    "reference/inputs/setup-v1.json": {
+      "bytes": 288946,
+      "sha256": "ee81ba3c98de3fd9fe1a456f5dbe68edb66fb28a2ec9cb78fc124ee8ec31be9d"
+    },
+    "reference/inputs/two-axis-v1.json": {
+      "bytes": 11917,
+      "sha256": "699cf788958f4f11e64582a2d31b37102db0afc76fdcf19403337e226405a03c"
+    },
+    "reference/inputs/wallet-BYTES.md": {
+      "bytes": 5525,
+      "sha256": "0f3d61cc7adcb7ec6c6f598f5a04dca0a34c6a426697b9a1a223bc380b0803b5"
+    },
+    "reference/produce.py": {
+      "bytes": 3376,
+      "sha256": "376fb1b92caae7ae5f6468ac0f14f329d00dc778118e102f288aef1948ec6ad9"
+    },
+    "reference/recipe.json": {
+      "bytes": 1310,
+      "sha256": "97cd4411468c95d98d0e6277e518cdecebb890c8afcebdfd8e2e987b55743253"
+    },
+    "reference/setup-late-winner-v1.python313.json": {
+      "bytes": 28735,
+      "sha256": "97fa4879bf955f2f321202c34a95dfc335e684031152e100979e27f0d98da0b3"
+    },
+    "reference/setup-late-winner-v1.python314.json": {
+      "bytes": 28735,
+      "sha256": "97fa4879bf955f2f321202c34a95dfc335e684031152e100979e27f0d98da0b3"
+    },
+    "reference/source-ready.json": {
+      "bytes": 1103,
+      "sha256": "6790636282c494d69ea6a781c84798e913a78f120904f4beb7f0f3074185cea4"
+    },
+    "bootstrap-successor.diff": {
+      "bytes": 42765,
+      "sha256": "8849f02489f803c66285ca03ee2b27c46d46bf03f5106a0e2633f4ce9941707a"
+    },
+    "rate-control-successor.diff": {
+      "bytes": 7993,
+      "sha256": "0941eee0d4318bef2cb722d95100ea036c66b513bceec205b7f4fde0795547d4"
+    },
+    "issue-refusal-successor.diff": {
+      "bytes": 20663,
+      "sha256": "78c3213731bd4ba0c3582284fb402f9c46bc701173f476f9b5327d592dd7c6f6"
+    },
+    "wall-expiry-successor.diff": {
+      "bytes": 7122,
+      "sha256": "8e82dda8e3cb9f1006537b8524816784ad8cb33f7d8f552c5012ae28db05bbb8"
+    },
+    "submit-contention-successor.diff": {
+      "bytes": 14054,
+      "sha256": "225f794ea167278824a9ef0b874d2f37c24a91f40598319b30538ffc6a21e2cf"
+    }
+  },
+  "predecessor": "set74-prep/public-pool-actual",
+  "commit_snapshot_target": "desktop/pooloperator/testdata/late-winner-actual",
+  "exclude_from_snapshot": [
+    "pre-peer-physical-count",
+    "execution-lock.proposed.json",
+    "execution-lock.approved.json",
+    "owned",
+    "artifacts",
+    "pre-root-bootstrap-assumption",
+    "pre-rate-control",
+    "pre-issue-refusal",
+    "pre-wall-expiry",
+    "pre-submit-contention"
+  ],
+  "preserved_predecessor": {
+    "directory": "pre-root-bootstrap-assumption",
+    "source_manifest": {
+      "bytes": 3866,
+      "sha256": "81030ad3bfa289ac78167ad96ef3692c5ddb3fff391de213853db463ca19b5e1"
+    },
+    "reason": "Unexecuted automatic-worker bootstrap did not guarantee exactly two initial rows."
+  },
+  "rate_control_predecessor": {
+    "directory": "pre-rate-control",
+    "source_manifest": {
+      "bytes": 4237,
+      "sha256": "63afccdcbbbf6312e41dceb0eab5011341654c30c5ef83a6f68cc0bf26fd312e"
+    },
+    "approved_lock": {
+      "bytes": 10265,
+      "sha256": "7e244edc29942e4590dfb5c5581f4fc1730a39f0dba879c31d35d106fe008c1c"
+    },
+    "failure": "late-winner-actual-attempt1: early initial Issue refusal; rate_limited is probable but code was not recorded; both nodes joined, sources unchanged"
+  },
+  "issue_refusal_predecessor": {
+    "directory": "pre-issue-refusal",
+    "source_manifest": {
+      "bytes": 4918,
+      "sha256": "24c4d7f1ec7286edd464081a084ff914370776f38de47fb7e42dd7a66bb0311f"
+    },
+    "approved_lock": {
+      "bytes": 10265,
+      "sha256": "7e244edc29942e4590dfb5c5581f4fc1730a39f0dba879c31d35d106fe008c1c"
+    },
+    "failure": "attempt2: ordinary issuance assertion failed; no error code captured; public04 original batch/2rows/0births and clean join preserved"
+  },
+  "wall_expiry_predecessor": {
+    "directory": "pre-wall-expiry",
+    "source_manifest": {
+      "bytes": 5591,
+      "sha256": "56947aa8db2bf73d1c2a3d3f9b20264f9f94cc7fa90b1918417cb0f9a77c7bf1"
+    },
+    "approved_lock": {
+      "bytes": 10265,
+      "sha256": "7e244edc29942e4590dfb5c5581f4fc1730a39f0dba879c31d35d106fe008c1c"
+    },
+    "failure": "attempt3: post-sleep wall expiry assertion; precise gap/cause unrecorded; phase05 passed and owners joined cleanly"
+  },
+  "submit_contention_predecessor": {
+    "directory": "pre-submit-contention",
+    "source_manifest": {
+      "bytes": 6236,
+      "sha256": "80af77e7b773f2a4606e7b0d9893c4bd087ffd8a767a0f923abc38201fcdac3e"
+    },
+    "approved_lock": {
+      "bytes": 10265,
+      "sha256": "7e244edc29942e4590dfb5c5581f4fc1730a39f0dba879c31d35d106fe008c1c"
+    },
+    "failure": "attempt4: ordinary late Submit observed busy/outcome_unknown=false after real expiry; original owners joined cleanly"
+  }
+}
