@@ -4,12 +4,18 @@ Consolidated November 15, 2026. The rules live in BRAWLCHAIN_SPEC.md;
 this is the work list: what gets built, in what order, and what each
 piece depends on. Decision numbers point back to the spec.
 
-Current execution order (Mike, November 19): finish fighter transfers and
-independent same-gym/fighter recovery first. Complete the public mining pool
-and scheduled payouts next, before sign-in and onboarding. Existing fixture
-implementations require public service and operational qualification; they do
-not make that milestone complete. The full joint D74 design review stays last,
-before friends/tester or public release.
+Current execution order (Mike, November 21): hosted pool and scheduled payouts;
+then wallet balances and history; then sign-in/onboarding; then the full joint
+D74 design review. Marketplace is on hold. Completed fighter transfers and
+same-gym recovery remain foundations; preserve their behavior.
+
+The [active burn list](LAUNCH_READINESS.md#active-test-build-burn-list) separates
+safe test-build work from public-launch requirements. Log nonblocking issues in
+[EDGE_CASE_FOLLOW_UPS.md](docs/EDGE_CASE_FOLLOW_UPS.md) instead of fixing them on
+discovery. Fix now only for the agreed test flow, funds/data-loss risk, security
+or payout correctness. A public-launch-only limit must not delay a safe bounded
+test build. Existing guards, history, custody and D84 remain mandatory; this is
+not permission to bypass them or declare launch. D74 stays last before release.
 
 ## Workstreams
 
@@ -323,8 +329,9 @@ verified after rollout.
 `CHANGESET_73_NOTES.md` records their exact scopes. Visible native acceptance and D74 remain product gates.
 
 Set75 starts the capacity prerequisite with streaming original round audits.
-It preserves V1 limits and custody; explicit durable continuation and source/
-client/authority capacity still precede host qualification. D84 requires full
+It preserves V1 limits and custody. Under Mike's November 21 scope, general
+continuation and larger source/client/authority capacity are public-launch
+follow-ups; they do not precede a safe bounded hosted test. D84 requires full
 payout deferral when one complete transaction cannot fit, with all earnings
 carried and a visible reason. See `POOL_CAPACITY_CONTINUATION.md`.
 
@@ -581,6 +588,10 @@ D64), and the monthly team exhibition event (D59).
 Depends on: fighter layer, chain core (checkpoint signing).
 
 ### 7. Marketplace
+
+**On hold by Mike's November 21 instruction.** Retain the specification below;
+do not implement it while completing the current test-build burn list.
+
 Fixed-price listings at launch (D57), listings showing age, career
 phase, current effective attributes, and prime remaining (D48),
 settlement in SLUG with the 5% commission on official sales (D56),

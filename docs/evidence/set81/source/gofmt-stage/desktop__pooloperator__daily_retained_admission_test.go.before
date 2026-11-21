@@ -1,0 +1,237 @@
+//go:build !slugtestpow && (linux || (darwin && cgo))
+
+// Copyright (c) 2026 The SLUG developers. ISC license.
+package pooloperator
+
+import (
+	"context"
+	"errors"
+	"path/filepath"
+	"reflect"
+	"testing"
+	"time"
+
+	"github.com/taytr-llc/slug/poolround"
+	"github.com/taytr-llc/slug/poolsettle"
+	"github.com/taytr-llc/slug/poolshare"
+	"github.com/taytr-llc/slug/prospectservice"
+	"github.com/taytr-llc/slug/prospectwork"
+)
+
+// This borrows the existing real issuer/source/round/ledger fixture. Only
+// readiness and node/session observations are controlled; no READY runtime,
+// actual wallet, public server, or remaining birth capacity is fabricated.
+func selectRetainedAdmissionControl(t *testing.T, h *intakeBusyHarness, daily bool) {
+	t.Helper()
+	config := prospectservice.ManifestServerConfig{Version: 3, Listen: "127.0.0.1:0", AuthorityPin: h.source.AuthorityPin, Clients: []prospectservice.Credential{}, MaxJobs: h.source.MaxWorks, MaxRecords: uint64(opSetupTestReference(t).Positives[0].Setup.Authority.Limits.Admissions)}
+	var server *prospectservice.ManifestServer
+	var e error
+	if daily {
+		server, e = prospectservice.NewPausedDailyFencedManifestAdmissionServer(config, h.source.Policy, capacityUnusedNode{t}, h.issuer, opLiveSessions(h.publicKey))
+	} else {
+		server, e = prospectservice.NewPausedFencedManifestAdmissionServer(config, h.source.Policy, capacityUnusedNode{t}, h.issuer, opLiveSessions(h.publicKey))
+	}
+	if e != nil {
+		t.Fatal(e)
+	}
+	h.control = &Runtime{daily: daily, intake: h.control.intake, admissionServer: server}
+}
+
+func retainedAdmissionModes(t *testing.T, h *intakeBusyHarness, poolMode, admissionMode string) {
+	t.Helper()
+	p, e := h.control.intake.Status(context.Background())
+	if e != nil || p.Mode != poolMode {
+		t.Fatal("original pool mode", p, e)
+	}
+	a, e := h.control.admissionServer.OperatorIntakeMode(context.Background())
+	if e != nil || a != admissionMode {
+		t.Fatal("original admission mode", a, e)
+	}
+}
+
+// Frozen hand cases startup-neither-ready/public-only/round-only, ready-normal,
+// pool-drain-delivery and cross-mode. Mode observes intake, not a free birth.
+func TestDailyRetainedAdmissionSelectionReadinessAndDirectDrain(t *testing.T) {
+	for _, daily := range []bool{false, true} {
+		name := "legacy"
+		if daily { name = "daily" }
+		t.Run(name, func(t *testing.T) {
+			h := newIntakeBusyHarness(t)
+			selectRetainedAdmissionControl(t, h, daily)
+			ctx := context.Background()
+			for _, ready := range [][2]bool{{false, false}, {false, true}, {true, false}} {
+				if e := h.control.updateIntake(ctx, ready[0], ready[1], ""); e != nil { t.Fatal(e) }
+				mode := "paused"
+				if ready[0] { mode = "enabled" }
+				retainedAdmissionModes(t, h, mode, mode)
+			}
+			if e := h.control.updateIntake(ctx, false, false, "pool_capacity"); e != nil { t.Fatal(e) }
+			admission := "draining"
+			if daily { admission = "enabled" }
+			retainedAdmissionModes(t, h, "draining", admission)
+			if _, e := h.pool.IssueMiningWork(ctx, "published-live-round-session"); e != poolshare.ErrCapacity { t.Fatal("mining reopened", e) }
+			if e := h.control.admissionServer.DrainOperatorIntake(ctx); e != nil { t.Fatal(e) }
+			if e := h.control.admissionServer.EnableOperatorIntake(ctx); e != prospectservice.ErrIntakeDraining { t.Fatal("direct drain changed", e) }
+			if e := h.control.updateIntake(ctx, true, true, ""); e != nil { t.Fatal(e) }
+			retainedAdmissionModes(t, h, "draining", "draining")
+			if daily && h.control.status.Capacity.Reason != "admission_capacity" { t.Fatal("pool reason masked observed admission drain") }
+		})
+	}
+}
+
+// Use a second actual normal-PoW pool-only nonce to reach the independently
+// derived ordinary limit2. This adds no second round/reward/payment to fixture A.
+func fillRetainedAdmissionSource(t *testing.T, h *intakeBusyHarness) (poolshare.MiningWork, prospectwork.ShareCheck) {
+	t.Helper()
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	w, e := h.pool.IssueMiningWork(ctx, "published-live-round-session")
+	if e != nil { t.Fatal(e) }
+	p, e := prospectwork.PrepareManifestWork(w.Job, w.Template, h.source.PayoutAddress, 0, h.source.PoolTarget)
+	if e != nil { t.Fatal(e) }
+	for nonce := uint32(0); nonce < 64; nonce++ {
+		v, e := p.CheckNonce(ctx, nonce)
+		if e != nil { t.Fatal(e) }
+		if !v.Pool || v.Block { continue }
+		r, e := h.pool.Submit(ctx, "published-live-round-session", w.Job.ID, nonce)
+		if e != nil || r.AcceptedSequence != 2 || r.Block || !r.Pool { t.Fatal("exact second ordinary row", r, e) }
+		status, e := h.control.intake.Status(ctx)
+		if e != nil || status.Maximum != 2 || status.Submissions != 2 || status.Accepted != 2 || status.Mode != "draining" || status.OverBound { t.Fatal("real derived full source", status, e) }
+		return w, v
+	}
+	t.Fatal("bounded normal-PoW ordinary search exhausted")
+	return poolshare.MiningWork{}, prospectwork.ShareCheck{}
+}
+
+// Close all borrowing accounting owners, then the source; reopen the exact
+// physical paths against the original issuer/node/backend. Manual lifetime
+// causes are not saved metadata and are not invented on this fresh attachment.
+func reopenRetainedAdmissionSource(t *testing.T, h *intakeBusyHarness, node *retainedAdmissionDeliveryNode) {
+	t.Helper()
+	if e := h.ledger.Close(); e != nil { t.Fatal(e) }; h.ledger = nil
+	if e := h.rounds.Close(); e != nil { t.Fatal(e) }; h.rounds = nil
+	if e := h.pool.Close(); e != nil { t.Fatal(e) }; h.pool = nil
+	ctx := context.Background()
+	root := filepath.Dir(h.ledgerPath)
+	var e error
+	h.pool, e = poolshare.OpenDaily(ctx, filepath.Join(root, "pool"), h.source, h.issuer, h.node, opLiveSessions(h.publicKey))
+	if e != nil { t.Fatal(e) }
+	h.rounds, e = poolround.OpenDaily(ctx, filepath.Join(root, "rounds"), poolround.Limits{Version: 2, MaxRounds: 8, MaxBytes: 32 << 20}, h.pool, h.node)
+	if e != nil { t.Fatal(e) }
+	h.ledger, e = poolsettle.OpenDaily(ctx, h.ledgerPath, h.config, h.rounds, h.backend)
+	if e != nil { t.Fatal(e) }
+	gyms := make([]string, len(h.config.Destinations))
+	for i, d := range h.config.Destinations { gyms[i] = d.GymID }
+	intake, e := h.pool.AttachDailyOperatorAdmission(ctx, h.source, poolshare.DailyRecoveryBudget{Rounds: 8, RoundBytes: 32 << 20, CreditRounds: 8, Batches: 6, GymIDs: gyms})
+	if e != nil { t.Fatal(e) }
+	h.control = &Runtime{intake: intake}
+	selectRetainedAdmissionDelivery(t, h, node)
+}
+
+func TestDailyRetainedAdmissionFullSourceReopenPreservesPayment(t *testing.T) {
+	h := newIntakeBusyHarness(t)
+	selectRetainedAdmissionControl(t, h, true)
+	h.reserveA(t)
+	before := h.ledgerSnapshot(t)
+	raw := append([]byte(nil), h.backend.raw...)
+	quotes, signs, sends := h.backend.quotes, h.backend.signs, h.backend.sends
+	work, ordinary := fillRetainedAdmissionSource(t, h)
+	ctx := context.Background()
+	if e := h.control.updateIntake(ctx, false, false, ""); e != nil { t.Fatal(e) }
+	retainedAdmissionModes(t, h, "draining", "enabled")
+	node := &retainedAdmissionDeliveryNode{original: h.node, work: work, proofs: map[string]prospectwork.ShareCheck{ordinary.WorkHash: ordinary}}
+	reopenRetainedAdmissionSource(t, h, node)
+	// Frozen full-source-reopen-paused/public-only/ready expectations. An
+	// enabled observation still requires each original request's full checks.
+	for _, ready := range [][2]bool{{false, false}, {true, false}, {false, true}} {
+		if e := h.control.updateIntake(ctx, ready[0], ready[1], ""); e != nil { t.Fatal(e) }
+		mode := "paused"
+		if ready[1] { mode = "enabled" }
+		retainedAdmissionModes(t, h, "draining", mode)
+		if _, e := h.pool.IssueMiningWork(ctx, "published-live-round-session"); e != poolshare.ErrCapacity { t.Fatal("reopen issued replacement work", e) }
+	}
+	exerciseRetainedAdmissionDelivery(t, h, node, work, ordinary)
+	if after := h.ledgerSnapshot(t); !reflect.DeepEqual(before, after) { t.Fatal("retained admission changed original payment body/claims/report") }
+	if !reflect.DeepEqual(raw, h.backend.raw) || quotes != h.backend.quotes || signs != h.backend.signs || sends != h.backend.sends { t.Fatal("retained admission repriced/resigned/resent payment") }
+}
+
+func TestDailyRetainedAdmissionHardEscalationAndConcurrentReadiness(t *testing.T) {
+	for _, cause := range []string{"public_capacity", "admission_capacity", "round_capacity", "no_reservation", "legacy_over_bound", "unknown_future_cause"} {
+		t.Run(cause, func(t *testing.T) {
+			h := newIntakeBusyHarness(t)
+			selectRetainedAdmissionControl(t, h, true)
+			ctx := context.Background()
+			if e := h.control.updateIntake(ctx, true, true, "pool_capacity"); e != nil { t.Fatal(e) }
+			retainedAdmissionModes(t, h, "draining", "enabled")
+			done := make(chan error, 5)
+			go func() { done <- h.control.updateIntake(ctx, false, false, cause) }()
+			for i := 0; i < 4; i++ { go func() { done <- h.control.updateIntake(ctx, true, true, "") }() }
+			for i := 0; i < 5; i++ { if e := <-done; e != nil { t.Error(e) } }
+			retainedAdmissionModes(t, h, "draining", "draining")
+			if h.control.intakeAdmissionReason != cause || h.control.status.Capacity.Reason != cause { t.Fatal("hard cause lost behind first pool reason", h.control.status.Capacity) }
+			if e := h.control.updateIntake(ctx, true, true, "pool_capacity"); e != nil { t.Fatal(e) }
+			retainedAdmissionModes(t, h, "draining", "draining")
+		})
+	}
+}
+
+func TestDailyRetainedAdmissionHardCauseSurvivesSourceBusy(t *testing.T) {
+	for _, inferred := range []bool{false, true} {
+		name := "explicit"
+		if inferred { name = "original-admission-mode" }
+		t.Run(name, func(t *testing.T) {
+			h := newIntakeBusyHarness(t)
+			selectRetainedAdmissionControl(t, h, true)
+			cause, want := "public_capacity", "public_capacity"
+			if inferred {
+				if e := h.control.admissionServer.DrainOperatorIntake(context.Background()); e != nil { t.Fatal(e) }
+				cause, want = "", "admission_capacity"
+			}
+			join := h.holdIssuer(t)
+			// Inspect one original transition pass while the concrete issuer
+			// gate is held. The existing retry tests cover the outer 30s owner;
+			// no scheduling delay is used to infer that this pass reached Busy.
+			h.control.intakeMu.Lock()
+			e := h.control.updateIntakeLocked(context.Background(), true, true, cause)
+			h.control.intakeMu.Unlock()
+			if e != poolshare.ErrBusy { t.Error("original source did not report known contention", e) }
+			if h.control.intakeAdmissionReason != want { t.Error("fallible source audit lost hard hold", h.control.intakeAdmissionReason) }
+			join()
+			if e = h.control.updateIntake(context.Background(), true, true, ""); e != nil { t.Fatal(e) }
+			retainedAdmissionModes(t, h, "draining", "draining")
+			if h.control.status.Capacity.Reason != want { t.Fatal("retry changed original hard reason") }
+		})
+	}
+}
+
+func TestDailyRetainedAdmissionEnableErrorsKeepOriginalOwner(t *testing.T) {
+	h := newIntakeBusyHarness(t)
+	selectRetainedAdmissionControl(t, h, true)
+	ctx := context.Background()
+	if e := h.control.intake.Drain(ctx); e != nil { t.Fatal(e) }
+	poolErr := h.control.intake.Enable(ctx)
+	if poolErr != poolshare.ErrCapacity { t.Fatal(poolErr) }
+	if e := h.control.dailyEnableFailure(poolErr, false); e != nil || h.control.intakeAdmissionReason != "" { t.Fatal("original pool refusal became admission hold", e) }
+	if e := h.control.updateIntake(ctx, true, true, ""); e != nil { t.Fatal(e) }
+	retainedAdmissionModes(t, h, "draining", "enabled")
+	if e := h.control.admissionServer.DrainOperatorIntake(ctx); e != nil { t.Fatal(e) }
+	admissionErr := h.control.admissionServer.EnableOperatorIntake(ctx)
+	if admissionErr != prospectservice.ErrIntakeDraining { t.Fatal(admissionErr) }
+	if e := h.control.dailyEnableFailure(admissionErr, true); e != nil || h.control.intakeAdmissionReason != "admission_capacity" { t.Fatal("admission refusal became pool-only hold", e) }
+	for _, tc := range []struct{ err error; admission bool }{
+		{poolErr, true}, {admissionErr, false}, {context.Canceled, false},
+		{errors.Join(poolErr, poolshare.ErrCorrupt), false},
+		{errors.Join(admissionErr, prospectservice.ErrIntakeUnavailable), true},
+	} {
+		var untouched Runtime
+		if got := untouched.dailyEnableFailure(tc.err, tc.admission); got != tc.err || untouched.intakeReason != "" || untouched.intakeAdmissionReason != "" { t.Fatal("foreign/mixed enable failure relaxed", got) }
+	}
+}
+
+func TestDailyRetainedAdmissionCanceledBeforeTransition(t *testing.T) {
+	r := &Runtime{daily: true}
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	if e := r.updateIntake(ctx, true, true, "public_capacity"); e != context.Canceled { t.Fatal(e) }
+	if r.intakePublicReady || r.intakeRoundReady || r.intakeReason != "" || r.intakeAdmissionReason != "" { t.Fatal("canceled transition changed state") }
+}

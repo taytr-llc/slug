@@ -1,0 +1,162 @@
+{
+  "version": 1,
+  "scope": "Explicit public qualification reports; original failures preserved. No private fixtures or databases copied. Actual acceptance and Set81 CI are not yet complete.",
+  "files": [
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/core-normal-attempt1/report.json",
+      "archive": "components/core-normal.json",
+      "bytes": 3658,
+      "sha256": "9a6dc069d52efe3cb9b6f564d5e02e9fb8be32ec693d2b7691dd87a56716ad72"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/core-race-attempt1/report.json",
+      "archive": "components/core-race.json",
+      "bytes": 3672,
+      "sha256": "11808f2f36d89ebc4c115c653f2806698b2afa5de4fc7d8dd427f4099d3aea30"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/service-normal-attempt1/report.json",
+      "archive": "components/service-normal.json",
+      "bytes": 5225,
+      "sha256": "7f27608827a622ddcebf40f24171715b7b141cdb2139f561039b73e72669f0d0"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/service-race-attempt1/report.json",
+      "archive": "components/service-race.json",
+      "bytes": 5239,
+      "sha256": "7b7de55738e84e695eb8eea4979ab321caeb023cdc02e6fef8a3c8a42ffe66ac"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/worker-normal-attempt1/report.json",
+      "archive": "components/worker-normal.json",
+      "bytes": 2610,
+      "sha256": "80a6e20a78b41bb9cf4585f4c8bb614def14f226a928cdf0260af5589dfcd3ce"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/worker-race-attempt1/report.json",
+      "archive": "components/worker-race.json",
+      "bytes": 2622,
+      "sha256": "2a26d78e70ced8d849cadd428636351e3b02f2e1c9257c43d82046ef8b558309"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/operator-normal-attempt1/report.json",
+      "archive": "components/operator-normal.json",
+      "bytes": 4296,
+      "sha256": "62442620af755e44edb7dc1089e8c15afad41136198d03d8c410f1df1c35ba4c"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/operator-race-attempt1/report.json",
+      "archive": "components/operator-race.json",
+      "bytes": 4309,
+      "sha256": "0b821a5f5789a629898d6aaf9c2d3a35631409fc179f074f4cfa851641a62e8f"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/core-cheap-attempt1/report.json",
+      "archive": "components/core-cheap.json",
+      "bytes": 2098,
+      "sha256": "2160b2b7de620bba8fde526699d00728e82b783fa8ab6ba1cff2aa824848cc16"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/service-cheap-attempt1/report.json",
+      "archive": "components/service-cheap.json",
+      "bytes": 2119,
+      "sha256": "b2d014467214d38777be1872215ec860bba2d51ea6fcbff935b0bc915669b288"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/full-core-normal-attempt2/report.json",
+      "archive": "regressions/full-core-normal.json",
+      "bytes": 104863,
+      "sha256": "3459bb6fb3c1dede84aeecafe0810391c98dfad17091574b0afeb2d591bdecbc"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/full-core-race-attempt1/report.json",
+      "archive": "regressions/full-core-race.json",
+      "bytes": 104894,
+      "sha256": "f7753e6ec882d4d444b617f552c1e01e975f4ccfe5822d1ec6ad7d60be38147a"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/full-service-normal-attempt1/report.json",
+      "archive": "regressions/full-service-normal.json",
+      "bytes": 109092,
+      "sha256": "eaf6629923c07a8ec1ea696d2c4520d3ba341078bfaadbd0e44e794434e1d35b"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/full-service-race-attempt1/report.json",
+      "archive": "regressions/full-service-race.json",
+      "bytes": 109123,
+      "sha256": "5fa96d8bcafaf8ac8f5e60875b0a11f1122c8433aad3dc5950700c2df9c7482b"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/full-worker-normal-attempt1/report.json",
+      "archive": "regressions/full-worker-normal.json",
+      "bytes": 42714,
+      "sha256": "49f15b66ea9c7ce6b96420c1e82453b9302638c7ca3e59a03f90763dfff82015"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/full-worker-race-attempt1/report.json",
+      "archive": "regressions/full-worker-race.json",
+      "bytes": 42746,
+      "sha256": "36cb68cea9a0b8521443bdd6b5d789b7a33750ecaa2d33af547a6470642c4a38"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/full-operator-normal-attempt2/report.json",
+      "archive": "regressions/full-operator-normal.json",
+      "bytes": 51534,
+      "sha256": "8e96210ad08672840a52722cb37cc8756c07c5b6f087982f2d260fc10646ab83"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/full-operator-race-attempt1/report.json",
+      "archive": "regressions/full-operator-race.json",
+      "bytes": 51565,
+      "sha256": "5954660817461e16ef1a249f59539e62340a9ac32c5ad7a71a1ddc7b377f00da"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/full-core-normal-attempt1/report.json",
+      "archive": "regressions/failed-sandbox-core.json",
+      "bytes": 102341,
+      "sha256": "d70dfabece6e09f3cc991bd436aeb792464577dcbe3cc4ad75f5865013138e60"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/full-operator-normal-attempt1/report.json",
+      "archive": "regressions/failed-sandbox-operator.json",
+      "bytes": 14762,
+      "sha256": "ed07cb186e99db7b88e9d216c729ab30d3627eeffc5ec51db7d59048a1a044a9"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/sandbox-bind-failures.json",
+      "archive": "regressions/sandbox-bind-failures.json",
+      "bytes": 1492,
+      "sha256": "0c83503eb3ed12bae800ab6ea2e6faf30b3ace44e9c7256f8696df59e6b94e50"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/final-builds-attempt1/report.json",
+      "archive": "build/report.json",
+      "bytes": 29187,
+      "sha256": "5127e653074af5a509715a113202f99cc84b768f3cffdcebd86228c682e08df1"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/smoke-attempt1/build-result.json",
+      "archive": "smoke/build-result.json",
+      "bytes": 5993,
+      "sha256": "d32b40750fcdcb94f4f44acfb2e4cc57f55168cc3ae23f0cd1ba36bf6817883d"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/smoke-attempt1/result.json",
+      "archive": "smoke/result.json",
+      "bytes": 9119,
+      "sha256": "b3907023013e89e712dc37e4dd7af806658878b977cdba18c6fbe3c78badd418"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/smoke-attempt1/release-closure.json",
+      "archive": "smoke/release-closure.json",
+      "bytes": 539,
+      "sha256": "515a872f97910757dace24347f21f649f5bf639a713368e96862150204909850"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/smoke-attempt1/release-compiled-closure.json",
+      "archive": "smoke/release-compiled-closure.json",
+      "bytes": 756,
+      "sha256": "664d5c7e37ae26410f34483cdd6a4d8b0e57eed091f915387b5961059e50ebb4"
+    }
+  ]
+}

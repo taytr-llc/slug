@@ -316,11 +316,21 @@ def main():
                                 "TestDailyPoolWalletBindingReference",
                                 "TestDailyPoolWalletFreshOwnerAndLegacyRefusal"])
             gate.test(mode + "-operator", desktop, ["./pooloperator"], desktop / "go.work", race,
-                      run="^Test(Operator|DailyOperator|DailyProvision|DailyIntake|Recoverable)", required=[ACL_TEST] + [ACL_TEST + "/" + case for case in ACL_CASES] + [
+                      run="^Test(Operator|DailyOperator|DailyProvision|DailyIntake|DailyRetained|Recoverable)", required=[ACL_TEST] + [ACL_TEST + "/" + case for case in ACL_CASES] + [
                           "TestOperatorIntakeSourceBusyErrorTrees",
                           "TestOperatorIntakeMutexCancellationJoinsHolder",
                           "TestDailyIntakeOriginalIssuerBusyPreservesDrainAndPayout",
                           "TestDailyIntakeOriginalIssuerCancellationNeverEnables",
+                          "TestDailyRetainedAdmissionSelectionReadinessAndDirectDrain",
+                          "TestDailyRetainedAdmissionFullSourceReopenPreservesPayment",
+                          "TestDailyRetainedAdmissionHardEscalationAndConcurrentReadiness",
+                          "TestDailyRetainedAdmissionHardCauseSurvivesSourceBusy",
+                          "TestDailyRetainedAdmissionEnableErrorsKeepOriginalOwner",
+                          "TestDailyRetainedAdmissionCanceledBeforeTransition",
+                          "TestDailyRetainedRoundOriginalIssuerReconciles",
+                          "TestDailyRetainedRoundCancellationJoinsWhileIssuerHeld",
+                          "TestDailyRetainedRoundRetryClassifiesExactBusy",
+                          "TestDailyRetainedRoundRetryKeepsOriginalDeadline",
                           "TestDailyOperatorIndependentComposition",
                           "TestDailyOperatorIndependentFraming",
                           "TestDailyProvisionOriginalWalletAndRuntimeReopen",
@@ -468,6 +478,19 @@ def main():
                           "TestRecoverableIssuerAuditReverseAndUncertainCommit",
                           "TestRecoverableIssuerFailedFileCloseRetainsOriginal",
                           "TestRecoverableIssuerFileSuccessAndFailureOwnership"])
+            gate.test(mode + "-retained-admission", root,
+                      ["./registry", "./prospectservice", "./prospectworker"], desktop / "go.work", race,
+                      run="^Test(ManifestAdmissionPreflight|DailyFencedAdmission|RetainedPoolAdmission)", required=[
+                          "TestManifestAdmissionPreflightOriginalOwnerAndHistory",
+                          "TestManifestAdmissionPreflightExpiryAndRestart",
+                          "TestManifestAdmissionPreflightClockCapacityAndUncertainty",
+                          "TestManifestAdmissionPreflightPublicCounts",
+                          "TestDailyFencedAdmissionExpiryBeforeIntake",
+                          "TestDailyFencedAdmissionSessionAndDuplicateFences",
+                          "TestDailyFencedAdmissionHistoricalAndLegacy",
+                          "TestDailyFencedAdmissionErrorProvenance",
+                          "TestDailyFencedAdmissionLiveCapacityReopen",
+                          "TestRetainedPoolAdmissionDefiniteExpiryAndUnknownReopen"])
             gate.test(mode + "-daily-node-shape", root, ["./pooltxshape", "./poolsettlenode"],
                       desktop / "go.work", race, required=[
                           "TestNativeP2WPKHIndependentReference",
@@ -542,6 +565,9 @@ def main():
                   ["./poolshare", "./poolround", "./poolsettlenode", "./poolsettle",
                    "./poolschedule", "./registry"], desktop / "go.work",
                   run="^(" + "|".join(cheap_core) + ")$", required=cheap_core, tags="slugtestpow")
+        retained_cheap = ["TestManifestAdmissionPreflightCheapRefuses", "TestDailyFencedAdmissionCheapRefuses"]
+        gate.test("cheap-retained-admission", root, ["./registry", "./prospectservice"], desktop / "go.work",
+                  run="^(" + "|".join(retained_cheap) + ")$", required=retained_cheap, tags="slugtestpow")
         cheap_wallet = ["TestDailyPoolSettlementCheapRefusal", "TestDailyPoolWalletCheapRefusal"]
         gate.test("cheap-daily-wallet", wallet, ["./waddrmgr", "./wallet"], wallet / "go.work",
                   run="^(" + "|".join(cheap_wallet) + ")$", required=cheap_wallet, tags="slugtestpow")

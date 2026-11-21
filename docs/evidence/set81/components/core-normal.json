@@ -1,0 +1,103 @@
+{
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 93097,
+        "pid": 93097,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./registry"
+      ],
+      "exit_code": 0,
+      "label": "deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 93097,
+      "pid": 93097,
+      "seconds": 0.43,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 93124,
+        "pid": 93124,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "test",
+        "-count=1",
+        "-p=1",
+        "-timeout=450s",
+        "-json",
+        "-run",
+        "^Test(DailyRetained|ManifestAdmissionPreflight|DailyFencedAdmission|RetainedPoolAdmission)",
+        "./registry"
+      ],
+      "exit_code": 0,
+      "label": "normal",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 93124,
+      "pid": 93124,
+      "seconds": 3.979,
+      "timed_out": false
+    }
+  ],
+  "expected_profile_skips": [],
+  "failed_tests": [],
+  "passed": true,
+  "passing_packages": [
+    "github.com/taytr-llc/slug/registry"
+  ],
+  "passing_tests": [
+    "github.com/taytr-llc/slug/registry/TestManifestAdmissionPreflightOriginalOwnerAndHistory/missing-job",
+    "github.com/taytr-llc/slug/registry/TestManifestAdmissionPreflightOriginalOwnerAndHistory/changed-job",
+    "github.com/taytr-llc/slug/registry/TestManifestAdmissionPreflightOriginalOwnerAndHistory/read-only",
+    "github.com/taytr-llc/slug/registry/TestManifestAdmissionPreflightOriginalOwnerAndHistory/closed",
+    "github.com/taytr-llc/slug/registry/TestManifestAdmissionPreflightOriginalOwnerAndHistory",
+    "github.com/taytr-llc/slug/registry/TestManifestAdmissionPreflightExpiryAndRestart/preflight-expired",
+    "github.com/taytr-llc/slug/registry/TestManifestAdmissionPreflightExpiryAndRestart/commit-crosses-expiry",
+    "github.com/taytr-llc/slug/registry/TestManifestAdmissionPreflightExpiryAndRestart",
+    "github.com/taytr-llc/slug/registry/TestManifestAdmissionPreflightClockCapacityAndUncertainty/logical-clock-capacity",
+    "github.com/taytr-llc/slug/registry/TestManifestAdmissionPreflightClockCapacityAndUncertainty/integrity-before-capacity",
+    "github.com/taytr-llc/slug/registry/TestManifestAdmissionPreflightClockCapacityAndUncertainty/before-clock-write",
+    "github.com/taytr-llc/slug/registry/TestManifestAdmissionPreflightClockCapacityAndUncertainty/clock-write-ack-lost",
+    "github.com/taytr-llc/slug/registry/TestManifestAdmissionPreflightClockCapacityAndUncertainty",
+    "github.com/taytr-llc/slug/registry/TestManifestAdmissionPreflightPublicCounts"
+  ],
+  "pattern": "^Test(DailyRetained|ManifestAdmissionPreflight|DailyFencedAdmission|RetainedPoolAdmission)",
+  "profile_unchanged": true,
+  "required_tests": [
+    "TestManifestAdmissionPreflightOriginalOwnerAndHistory",
+    "TestManifestAdmissionPreflightExpiryAndRestart",
+    "TestManifestAdmissionPreflightClockCapacityAndUncertainty",
+    "TestManifestAdmissionPreflightPublicCounts"
+  ],
+  "scope": "Set81 core normal",
+  "skipped_tests": [],
+  "sources_unchanged": true,
+  "version": 1
+}

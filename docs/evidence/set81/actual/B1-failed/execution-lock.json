@@ -1,0 +1,491 @@
+{
+  "approved_by": "root",
+  "case": "B",
+  "execution_authorized": true,
+  "files": {
+    "/Users/taytrrip/slug/artifacts/set81/actual-selection-attempt1/primary.json": {
+      "bytes": 174293,
+      "sha256": "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/final-builds-attempt2/report.json": {
+      "bytes": 29183,
+      "sha256": "dd03f5901e092db03deebfa015fa9db8c06dc5e23ecc8f40ff43ef426dac1374"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/full-operator-normal-attempt3/report.json": {
+      "bytes": 55117,
+      "sha256": "241b7407ccd6954442b64974d7fdaf76e9fd05f783dacd9b9b8a979e03cd92b2"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/round-successor-race-attempt1/report.json": {
+      "bytes": 10591,
+      "sha256": "bf8d808325ed007285e06c5c5cc3cffdc9e21d1ad5fe36bbc229e5ccc1c1ade1"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/run.py": {
+      "bytes": 32403,
+      "sha256": "d5bed85d6b29771ff9f084d27ba1056bdf38ef52bde66ec83216893968d1a573"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/runner_support.py": {
+      "bytes": 3888,
+      "sha256": "54bb3e7caf33e744ce76bf366dd23a4eff4d370d9246b85758089b57dd2439d7"
+    },
+    "/Users/taytrrip/slug/set80-prep/check-actual.py": {
+      "bytes": 65246,
+      "sha256": "87cb6364644db35b707a90a4bcf1c97467915aa3d691e65c81e3b9fc4539736e"
+    },
+    "/Users/taytrrip/slug/set81-prep/CHECK_RETAINED_ACTUAL.md": {
+      "bytes": 4555,
+      "sha256": "4fabd632e8809b437b3e195ff8bdf2bf608a7152e41ec0a2f5c25692375e65d4"
+    },
+    "/Users/taytrrip/slug/set81-prep/RETAINED_ADMISSION_ACTUAL_PLAN.md": {
+      "bytes": 12412,
+      "sha256": "62ddde39c811001865cd91c9b11152aa7166c4a7f69044d5946afd018ee23a72"
+    },
+    "/Users/taytrrip/slug/set81-prep/SET81_PLAN.md": {
+      "bytes": 17882,
+      "sha256": "a1ab25c4627a82be49164dc3acd7f0131d37911b2b93c848e3ceaed1762f6f0a"
+    },
+    "/Users/taytrrip/slug/set81-prep/actual-a1-failure.json": {
+      "bytes": 1994,
+      "sha256": "aea0b713ac50cef6596c7a5a4f9691a72e619f2a67b415bbb4ac071e0edfad56"
+    },
+    "/Users/taytrrip/slug/set81-prep/actual-helper-format/admission_audit.go.before.txt": {
+      "bytes": 11454,
+      "sha256": "41a587c840eeb5148cada24d1e23625f2d056c76dd8801280c781e0d5174164c"
+    },
+    "/Users/taytrrip/slug/set81-prep/actual-helper-format/admission_relay.go.before.txt": {
+      "bytes": 19233,
+      "sha256": "a7f2b23a4fbae542f2077b1b6bf071fe056a0c7edef93ed54ccf5325911f66ec"
+    },
+    "/Users/taytrrip/slug/set81-prep/actual-helper-format/cli_process.go.before.txt": {
+      "bytes": 9484,
+      "sha256": "9e0d2fbcb97382e9f8ba16284f96b08da2d1cd9260e479edd847463e3e143149"
+    },
+    "/Users/taytrrip/slug/set81-prep/actual-helper-format/fixture_setup.go.before.txt": {
+      "bytes": 5416,
+      "sha256": "7b3ddd36d8c8e6098f6db7f3d04e74ffb77533cdcfdc10e480b2b66f38063dd0"
+    },
+    "/Users/taytrrip/slug/set81-prep/actual-helper-format/issue_audit.go.before.txt": {
+      "bytes": 12822,
+      "sha256": "f1dda87812b30e59e6408ebedaa32518fe1073dc8da8adc67eaacf7dd0179833"
+    },
+    "/Users/taytrrip/slug/set81-prep/actual-helper-format/main.go.before.txt": {
+      "bytes": 13366,
+      "sha256": "cf2f367ac2270873ea9aa0da4bd0c15f8d928d4fd8e2960b1d27ca8694f1ade7"
+    },
+    "/Users/taytrrip/slug/set81-prep/actual-helper-format/node_helpers.go.before.txt": {
+      "bytes": 8810,
+      "sha256": "331190728f79c5f5b0aaae4109426ffc4e41768a087b86126f31799940fb66cd"
+    },
+    "/Users/taytrrip/slug/set81-prep/actual-helper-format/operator_audit.go.before.txt": {
+      "bytes": 14293,
+      "sha256": "14d463c15ae4438ef6172b89d2e8714d1591ce0869efad3b2a28dfda6e45b2bc"
+    },
+    "/Users/taytrrip/slug/set81-prep/actual-helper-format/operator_process.go.before.txt": {
+      "bytes": 9743,
+      "sha256": "4e62812e828e3ec6cef2a9c605527d23c1478ee0da701cb2b5d14666ecfd6417"
+    },
+    "/Users/taytrrip/slug/set81-prep/actual-helper-format/outbox_audit.go.before.txt": {
+      "bytes": 11444,
+      "sha256": "84fa9a045b9f1edb607cbfdec7948902cdc8f344595bebbc62922862bc8e0f77"
+    },
+    "/Users/taytrrip/slug/set81-prep/actual-helper-format/payment.go.before.txt": {
+      "bytes": 10011,
+      "sha256": "1483c0ec3882de879d2a2b8570422a45f4b6df70319c291cc6e1adea4b17edc8"
+    },
+    "/Users/taytrrip/slug/set81-prep/actual-helper-format/proposal_relay.go.before.txt": {
+      "bytes": 6312,
+      "sha256": "f14227d8b135f7bf66f5c7937acb636d05471ef3e953fca87396caac957e9a91"
+    },
+    "/Users/taytrrip/slug/set81-prep/actual-helper-format/report.json": {
+      "bytes": 4891,
+      "sha256": "9840d9659a01f4bf301d2d04619ec73cd05b8e41faaad55ab6809cbab076460a"
+    },
+    "/Users/taytrrip/slug/set81-prep/actual-helper-format/retained_flow.go.before.txt": {
+      "bytes": 16593,
+      "sha256": "75f8679abea36b91eec33f07c11faac6e16b4cbf9193060f8b071c18666f8592"
+    },
+    "/Users/taytrrip/slug/set81-prep/actual-helper-format/selection.go.before.txt": {
+      "bytes": 11354,
+      "sha256": "51c93cb88544290d04828d8afd3260f4095608f11f1a1ae0c2490be5dd8d0beb"
+    },
+    "/Users/taytrrip/slug/set81-prep/actual-helper-format/source-manifest.before.json": {
+      "bytes": 8662,
+      "sha256": "b9050df64a6f1981ad60dca21cd8c6b954014e5ad3b29e8c788831bf3dd92719"
+    },
+    "/Users/taytrrip/slug/set81-prep/actual-helper-format/work_evidence.go.before.txt": {
+      "bytes": 10191,
+      "sha256": "c806ecdc4bf8584a8bc3d67af0abb8ab1dbb3594975d06ccd0022cd01857f956"
+    },
+    "/Users/taytrrip/slug/set81-prep/actual-selection-lock.root.json": {
+      "bytes": 3534,
+      "sha256": "4ae8d1a5fcd395875d5eae545acd3f4a254a5719564cf60c033a20b5b72feaf8"
+    },
+    "/Users/taytrrip/slug/set81-prep/check-retained-actual-manifest.json": {
+      "bytes": 13843,
+      "sha256": "e50c4a1b200d019c74e3e7e3f8efd5f51e4ba67d3c96d153f20ea20d6937f89d"
+    },
+    "/Users/taytrrip/slug/set81-prep/check-retained-actual.py": {
+      "bytes": 61546,
+      "sha256": "f315b30288e8a50e57d0bec6672f8cf884f09fde44ac7be301f59f6bca4468cb"
+    },
+    "/Users/taytrrip/slug/set81-prep/checker-completed-context-successor/REVIEW.md": {
+      "bytes": 893,
+      "sha256": "d0fd9e7dd64152c488ebf03d70b2b810c7ec85731df97a21c9387361de44de28"
+    },
+    "/Users/taytrrip/slug/set81-prep/checker-completed-context-successor/changes.diff": {
+      "bytes": 2439,
+      "sha256": "c19c59c6c4b7f272a294d1cec5405b17d89c7ddf52a39a675ac652bc042bf0f6"
+    },
+    "/Users/taytrrip/slug/set81-prep/checker-completed-context-successor/predecessor/CHECK_RETAINED_ACTUAL.md": {
+      "bytes": 4045,
+      "sha256": "f09381c571aca54cbc075d249d876b1ddfc89b4290358c99fefb09f2e77f35a1"
+    },
+    "/Users/taytrrip/slug/set81-prep/checker-completed-context-successor/predecessor/check-retained-actual-manifest.json": {
+      "bytes": 12647,
+      "sha256": "51e9a225ca37e4cd019d630d201642a0dc92f0434696f10293926c0edd596868"
+    },
+    "/Users/taytrrip/slug/set81-prep/checker-completed-context-successor/predecessor/check-retained-actual.py": {
+      "bytes": 61594,
+      "sha256": "7ae01f10b1a92e5060676fb93401e2dbb9938c352b55ef92e2011cb918d7d244"
+    },
+    "/Users/taytrrip/slug/set81-prep/checker-context-successor/REVIEW.md": {
+      "bytes": 995,
+      "sha256": "9ebf845ff29d3cd98caf10bcf94f4c3749b56c899734b50701df5c5e93e6395e"
+    },
+    "/Users/taytrrip/slug/set81-prep/checker-context-successor/changes.diff": {
+      "bytes": 1465,
+      "sha256": "c8f8a056c39a7b05d2941c1f40a769ee24c181330ffb2d3fc166f477ebf14319"
+    },
+    "/Users/taytrrip/slug/set81-prep/checker-context-successor/predecessor/check-retained-actual-manifest.json": {
+      "bytes": 11497,
+      "sha256": "5fab8e8a93205a667220d8971b3b7d9b8bce29913ac5e28403354caffb613abf"
+    },
+    "/Users/taytrrip/slug/set81-prep/checker-context-successor/predecessor/check-retained-actual.py": {
+      "bytes": 61108,
+      "sha256": "505e74d468ac3dd01a4438baaaecc8b73f2b9099f31f5840f3165d562f5119fc"
+    },
+    "/Users/taytrrip/slug/set81-prep/implementation-selection-lease-addendum.json": {
+      "bytes": 920,
+      "sha256": "f87295eb33353d94c8722d5a63dc29107779cfdfd29aac06dabd69473bc0287a"
+    },
+    "/Users/taytrrip/slug/set81-prep/implementation-selection.json": {
+      "bytes": 6562,
+      "sha256": "3b270d9c4933cc0fe1b4a6c64bccbbbb2f66f30acdbb66bba12afbf0594f728f"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/PLAN_CADENCE_SUCCESSOR.md": {
+      "bytes": 3455,
+      "sha256": "6c48b90a10b5081bf0cd24e3cd3c8cc321d5cbf8fa8de322bd2c8ff0b7efe046"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/PUBLIC_SCHEMA.md": {
+      "bytes": 8533,
+      "sha256": "2e8fd250cf3f51972f7fd694499da62792650224a69b6f9bcdc1f1c19452b41e"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/README.md": {
+      "bytes": 4112,
+      "sha256": "bbaa288c527bdb512c7cb2b6ca78defa6135650c21a79967e032175be2fd9eea"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/admission-audit-manifest.json": {
+      "bytes": 3191,
+      "sha256": "ca3d6a749a75f7b5ff9b1533b05198a0b3709b8e7b6fa1fd939df0f87dd4968d"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/admission_audit.go": {
+      "bytes": 12759,
+      "sha256": "52b10cc7a6f39b385546be67d439a135d26fe44c7e27d416d970743e89a3de9a"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/admission_relay.go": {
+      "bytes": 23181,
+      "sha256": "f6882d735b4e4316efa143cf346f9bc7466a82b4e7a0fc78738230de6f046409"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/b-maturity-order.diff": {
+      "bytes": 8265,
+      "sha256": "9b6ca10121682059278d94c5d5d9e48028adeb3a3338566f111e4bd35609e8eb"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/cli_process.go": {
+      "bytes": 9484,
+      "sha256": "9e0d2fbcb97382e9f8ba16284f96b08da2d1cd9260e479edd847463e3e143149"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/fixture-catalog.json": {
+      "bytes": 66249,
+      "sha256": "2637978c2e08637dae2a21bf7fcb8e9ab37edb3476e2b9512c73ff16809b7e55"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/fixture-public.json": {
+      "bytes": 7244,
+      "sha256": "83bfe6cdd6020524199ba6abada82614fb67987b32b9fb96111bf6bddf879f23"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/fixture_setup.go": {
+      "bytes": 5416,
+      "sha256": "7b3ddd36d8c8e6098f6db7f3d04e74ffb77533cdcfdc10e480b2b66f38063dd0"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/go.mod": {
+      "bytes": 1375,
+      "sha256": "847ddca78d2ff5bd8a9dffa306a6f3c81f72d6e01c962c1863832db45851cecf"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inheritance.diff": {
+      "bytes": 8137,
+      "sha256": "fc4d7cf1640d720add5f4d74254a0c050ca99c8785dfb5ad5539b84263884189"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/RETAINED_ADMISSION_ACTUAL_PLAN.md": {
+      "bytes": 12412,
+      "sha256": "62ddde39c811001865cd91c9b11152aa7166c4a7f69044d5946afd018ee23a72"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/base-reference.json": {
+      "bytes": 3176583,
+      "sha256": "a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/original-helper-source-manifest.json": {
+      "bytes": 15800,
+      "sha256": "0ad1f3f0a9b9d22bfcde4682ecdd1530837311e4261ba3a47b57544c861c056b"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/path-c-reference.json": {
+      "bytes": 46498,
+      "sha256": "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/reference-v1.json": {
+      "bytes": 174293,
+      "sha256": "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/relay-peer-review.json": {
+      "bytes": 3193,
+      "sha256": "e43abbdc61e29e383dc2978670d95a310a9e637373f8c12a7531369d4c810f31"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/relay-quiescence-review.json": {
+      "bytes": 1692,
+      "sha256": "12de4ea990923ead63ff8f7e1d6da75e09a89ce496d8f2a78b1e50eade66b16f"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/selection-producer-lock.proposed.json": {
+      "bytes": 3533,
+      "sha256": "6ca36571de3b5e307888b5b5ba5eeb081fec4601729830970d4a71bd5607f80f"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/selection-qualification.json": {
+      "bytes": 830,
+      "sha256": "dfab9f630198ecbd2923ba2524c72725bc6853ba930e2081c6b0d4f4ed6e2b46"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/selection-source-ready.json": {
+      "bytes": 3004,
+      "sha256": "d9af099dbb1595897ca25be1842d83ccd9d934a9a7a508e813a8efb68a282519"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/issue_audit.go": {
+      "bytes": 12822,
+      "sha256": "f1dda87812b30e59e6408ebedaa32518fe1073dc8da8adc67eaacf7dd0179833"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/main.go": {
+      "bytes": 13366,
+      "sha256": "cf2f367ac2270873ea9aa0da4bd0c15f8d928d4fd8e2960b1d27ca8694f1ade7"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/node_helpers.go": {
+      "bytes": 8810,
+      "sha256": "331190728f79c5f5b0aaae4109426ffc4e41768a087b86126f31799940fb66cd"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/operator_audit.go": {
+      "bytes": 14293,
+      "sha256": "14d463c15ae4438ef6172b89d2e8714d1591ce0869efad3b2a28dfda6e45b2bc"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/operator_process.go": {
+      "bytes": 9743,
+      "sha256": "4e62812e828e3ec6cef2a9c605527d23c1478ee0da701cb2b5d14666ecfd6417"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/outbox_audit.go": {
+      "bytes": 11444,
+      "sha256": "84fa9a045b9f1edb607cbfdec7948902cdc8f344595bebbc62922862bc8e0f77"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/payment.go": {
+      "bytes": 10011,
+      "sha256": "1483c0ec3882de879d2a2b8570422a45f4b6df70319c291cc6e1adea4b17edc8"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/pre-b-maturity/PLAN_CADENCE_SUCCESSOR.md": {
+      "bytes": 2427,
+      "sha256": "678f29482e2fe5e4c7a862915b670add20c08b9fd481fa6463f09f837fc8f8b3"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/pre-b-maturity/PUBLIC_SCHEMA.md": {
+      "bytes": 7821,
+      "sha256": "78df6cdc468839521269771cea875ba1b68d2b10bf433869cd5eefc3a7fad5a4"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/pre-b-maturity/README.md": {
+      "bytes": 4031,
+      "sha256": "442157533d641acbcd9992b3b0b7368f4d93296f69a6e07fb5c69238e9364caa"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/pre-b-maturity/retained_flow.go.txt": {
+      "bytes": 15836,
+      "sha256": "a3f3d0b0bcb98e9153d6cf2a1da6188ab295d1e624eeac0f818749572390dc2e"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/pre-b-maturity/source-manifest.json": {
+      "bytes": 7083,
+      "sha256": "501034e6545e2cefd5107da773ea749c857cf4289cb733e04c2365d0f82da924"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/pre-last-observation-note/PUBLIC_SCHEMA.md": {
+      "bytes": 7980,
+      "sha256": "9b6d720f4942077dbd7910a626632f2f603a4e3050358441a1db95659867f004"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/pre-last-observation-note/source-manifest.json": {
+      "bytes": 8304,
+      "sha256": "d3fd1f13a58982574d2e1ff3efb57652dff743983c99ba5bc2e4ebfa10b7f2a1"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/preimages/cli_process.go.txt": {
+      "bytes": 9473,
+      "sha256": "a25c7a14f56d3b4a0a2a90f4807d87a8cc048a6ffccaec7dc6747f4ed4b007b2"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/preimages/go.mod.txt": {
+      "bytes": 1371,
+      "sha256": "2acab03476a5fbe3c41af0d387342778f499e97d6e876c7f0d936f704021d4c1"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/preimages/main.go.txt": {
+      "bytes": 14859,
+      "sha256": "2a090aed63d5f74f4a959f2cf9de6bede10762df74891ae5a974ba318110f979"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/preimages/selection.go.txt": {
+      "bytes": 10439,
+      "sha256": "8ec99e0040b490592c62b49fe3a084f6a2359d21f6773b0748f07bd83fc176b3"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/proposal_relay.go": {
+      "bytes": 6312,
+      "sha256": "f14227d8b135f7bf66f5c7937acb636d05471ef3e953fca87396caac957e9a91"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/retained_flow.go": {
+      "bytes": 17904,
+      "sha256": "ea19d6a022de5c54fe92298734f4652b8e822e077a3572a79fea4b604f09cc37"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/reuse-manifest.json": {
+      "bytes": 10563,
+      "sha256": "253d64d58eee5e31816fea1f246ac6bcd52d0ff685b9a1b04d5708f8028ec0b9"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/reuse-preimages.json": {
+      "bytes": 5181,
+      "sha256": "90415d520bab93319c9b671220c57ad61412c0dc1f1a4d25c337b0b136400e52"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/selection.go": {
+      "bytes": 11497,
+      "sha256": "6d263214a096aa60325bdfe760edcbe24c68aa0c3731472a5c136225c04ae7ee"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/source-manifest.json": {
+      "bytes": 9099,
+      "sha256": "85b88843e1dd60173f1453b924712152758d8b53c8ff5f95477cf29d7d820074"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-actual/work_evidence.go": {
+      "bytes": 10191,
+      "sha256": "c806ecdc4bf8584a8bc3d67af0abb8ab1dbb3594975d06ccd0022cd01857f956"
+    },
+    "/Users/taytrrip/slug/set81-prep/retained-admission-b-actual-attempt1-final.superseded.json": {
+      "bytes": 433,
+      "sha256": "4359dd948af8b3b4c8bd397ee7a512a87d118d6b19a490dfc185aaa34770bf63"
+    },
+    "/Users/taytrrip/slug/set81-prep/round-contention-stage/RATIONALE.md": {
+      "bytes": 4478,
+      "sha256": "04ecbcfb9728d31a8cc5161664b38a0e6ed0add141a601acbf392ea928b4f4ff"
+    },
+    "/Users/taytrrip/slug/set81-prep/round-contention-stage/after/desktop/pooloperator/daily_round_contention.go": {
+      "bytes": 1598,
+      "sha256": "596973605b091a326680a2415e981a44cf22fadef7db8fd0348bca847cda793f"
+    },
+    "/Users/taytrrip/slug/set81-prep/round-contention-stage/after/desktop/pooloperator/live_round.go": {
+      "bytes": 3392,
+      "sha256": "45b19a96542db28f8e1f311f9e5dce2bbb85da5e17ec042116e8f1fe032a013f"
+    },
+    "/Users/taytrrip/slug/set81-prep/round-contention-stage/after/desktop/pooloperator/maintenance.go": {
+      "bytes": 6149,
+      "sha256": "5c3f45154dcc7032fa0ea13f05771dc79efead789c406eb26fedd6f9f9a27b25"
+    },
+    "/Users/taytrrip/slug/set81-prep/round-contention-stage/after/desktop/pooloperator/runtime.go": {
+      "bytes": 21329,
+      "sha256": "30a6de0ee527127635d4e8e9dec33b233ca9b17890d8ced06aff8902c0e1397c"
+    },
+    "/Users/taytrrip/slug/set81-prep/round-contention-stage/before/desktop/pooloperator/live_round.go": {
+      "bytes": 2670,
+      "sha256": "0894e1c05cb77937a761b677a227ce3ccc53b01701bc6b6b021e84412eb54b18"
+    },
+    "/Users/taytrrip/slug/set81-prep/round-contention-stage/before/desktop/pooloperator/maintenance.go": {
+      "bytes": 5272,
+      "sha256": "e42e84f2842a73070b57ebdd466bfa1d619fe2f20692db0066d595bbe8c66a90"
+    },
+    "/Users/taytrrip/slug/set81-prep/round-contention-stage/before/desktop/pooloperator/runtime.go": {
+      "bytes": 21295,
+      "sha256": "21f1d92f3b769fe58cdf56f14ec48df3fecc2c5c015e1560aa49926465270c6d"
+    },
+    "/Users/taytrrip/slug/set81-prep/round-contention-stage/production-manifest.json": {
+      "bytes": 5027,
+      "sha256": "2815ca59d8720b8e0c2adef8aae6ae89ea18ef522eb88a14cdf17045f47e98e4"
+    },
+    "/Users/taytrrip/slug/set81-prep/round-contention-stage/production.diff": {
+      "bytes": 6980,
+      "sha256": "48a9c8aa2a17e4c92c7744017959b8ba17d82156821f500ec9026fc5edacee23"
+    },
+    "/Users/taytrrip/slug/set81-prep/round-contention-stage/qualify-operator-linux.before.py.txt": {
+      "bytes": 44765,
+      "sha256": "7d0a459f25f1e0b73ffede13ac763d633a34f23c2de3e6825c700cdf118c7dc0"
+    },
+    "/Users/taytrrip/slug/set81-prep/round-contention-stage/root-formatted-selection.json": {
+      "bytes": 1202,
+      "sha256": "e67cda99b56d134913cb7c81e03e9d607cbd49319e4cceaadab40e3e14bf5d2b"
+    },
+    "/Users/taytrrip/slug/set81-prep/round-contention-stage/root-selection.json": {
+      "bytes": 449,
+      "sha256": "967397a26ff5116f578c04cbe6eb5fab7a59859c4abab1bdfc05d88ce286cc43"
+    },
+    "/Users/taytrrip/slug/set81-prep/round-contention-tests/EXPECTED.md": {
+      "bytes": 3528,
+      "sha256": "6b1b0a33e9d7cf355624148df6bcf9644d321816b5a069ac0be3c2a1a68fb5e9"
+    },
+    "/Users/taytrrip/slug/set81-prep/round-contention-tests/after/desktop/pooloperator/daily_round_contention_test.go": {
+      "bytes": 11832,
+      "sha256": "86da5ee0aebe636505b67c92086ceea9ec951b36b00f109a9fb2e9ad905114a3"
+    },
+    "/Users/taytrrip/slug/set81-prep/round-contention-tests/manifest.json": {
+      "bytes": 2924,
+      "sha256": "3b44d69373054e9acb905643241e5aea0723bb91b04c76a73bf7697cd6f4120b"
+    },
+    "/Users/taytrrip/slug/set81-prep/run-actual.py": {
+      "bytes": 11659,
+      "sha256": "4782f8292163cf68af375483f53012b21d5ae6f938e96878306c68e20a217b4e"
+    },
+    "/Users/taytrrip/slug/set81-prep/run-round-successor.py": {
+      "bytes": 8070,
+      "sha256": "c157038f3a94c2d1eb9aa987ced4f3b32ac9fb016096c55aedc362219aa98f09"
+    },
+    "/Users/taytrrip/slug/slug/build-profile.json": {
+      "bytes": 179,
+      "sha256": "e5ddb9d30e8048ad3b656358134632e48852f44deef44bdd93df7dda13208295"
+    },
+    "/Users/taytrrip/slug/slug/desktop/go.sum": {
+      "bytes": 1922,
+      "sha256": "8db3d7c6bb03f449ea27eb139be2a55912e2e409a50922274171436fdf914555"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_round_contention.go": {
+      "bytes": 1598,
+      "sha256": "596973605b091a326680a2415e981a44cf22fadef7db8fd0348bca847cda793f"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_round_contention_test.go": {
+      "bytes": 11849,
+      "sha256": "984ef70f36a080c50321150b97618dd6fd5cbede6cfb642b90bd4a605aeec361"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pooloperator/live_round.go": {
+      "bytes": 3392,
+      "sha256": "45b19a96542db28f8e1f311f9e5dce2bbb85da5e17ec042116e8f1fe032a013f"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pooloperator/maintenance.go": {
+      "bytes": 6159,
+      "sha256": "ebe50426735ab814677a506e6170c1d719684bc56faaa7dcc4d0f4580bce0e1e"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pooloperator/runtime.go": {
+      "bytes": 21329,
+      "sha256": "30a6de0ee527127635d4e8e9dec33b233ca9b17890d8ced06aff8902c0e1397c"
+    },
+    "/Users/taytrrip/slug/slug/scripts/candidate-go.sh": {
+      "bytes": 2725,
+      "sha256": "64e073ba868e42b04e3e93a51826b2e6ee1b99103b92b417868cbf74f9b6436e"
+    },
+    "/Users/taytrrip/slug/slug/scripts/qualify-operator-linux.py": {
+      "bytes": 45079,
+      "sha256": "a475f757abd61627b05a5c9564cbb6813e1f314b490ee29f409a447d1bc9eaf8"
+    },
+    "/private/tmp/slug_set48_build_profile.py": {
+      "bytes": 4753,
+      "sha256": "b6033d66edb4d24a57a7fac4e59ddaeee6964f0943aca21fddc6f65c7f5e6ee4"
+    }
+  },
+  "maximum_chain_height": 180,
+  "outer_seconds": 1080,
+  "required_accepted_rewards": 2,
+  "root_review": "Pre-execution review of original selection, plan/cadence/B-maturity successor, helper source and independent checker; full exact target/lifetime/financial/source/cleanup predicates remain. No runtime evidence used to derive expectations. Final pre-execution peer closure f315b302/e50c4a1b applies normal deferred cleanup only to exactly complete responses; canceled client, unknown outcome and partial wire remain failures. A1 remains failed. Approved product successor uses phase-specific exact-Busy retries only, original30s budget and original actual acceptance unchanged. Four concrete regressions, full69-test operator normal suite, selected16-test race suite, and final17-module/static gate passed before this selection.",
+  "scenario_seconds": 900,
+  "scope": "set81-retained-fighter-admission-actual",
+  "source_base": "1f559221c3735227e8475731f2c73a74282db5b0",
+  "version": 1
+}

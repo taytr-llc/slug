@@ -1,7 +1,8 @@
 # Set80 qualification evidence
 
-Local qualification is complete. Exact-tip GitHub CI is pending at this commit;
-its later observation must identify the exact chain and wallet commits. These
+Local qualification is complete. [Final CI closeout](ci-closeout/README.md)
+records all seven jobs passing at maintenance tip `1f559221`, paired with wallet
+`dfc5d9dd`, while preserving the original `ce9eac74` shutdown failure. These
 are finite synthetic-fixture tests, not a deployed public pool or release.
 
 - [Payment recovery A3](actual-A3/execution/report.json): PASS, 440.362 seconds.

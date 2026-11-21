@@ -1,0 +1,335 @@
+//go:build !slugtestpow && (linux || (darwin && cgo))
+
+// Copyright (c) 2026 The SLUG developers. ISC license.
+package pooloperator
+
+import (
+	"bytes"
+	"context"
+	"errors"
+	"fmt"
+	"reflect"
+	"testing"
+	"time"
+
+	"github.com/taytr-llc/slug/poolround"
+	"github.com/taytr-llc/slug/registry"
+)
+
+type retainedRoundResult struct {
+	summary poolround.Summary
+	err     error
+	calls   int
+}
+
+// The callback is the ORIGINAL Store.Sync, not a simulated source result. The
+// notification occurs only after that original store returns exact Busy while
+// the original issuer commit owns its gate. Thus gate release never depends on
+// a sleep or on guessing whether the maintenance goroutine has started.
+func retainedRoundSyncAttempt(ctx context.Context, h *intakeBusyHarness, busy chan<- struct{}) retainedRoundResult {
+	deadline, ok := ctx.Deadline()
+	if !ok {
+		return retainedRoundResult{err: errors.New("missing original slice deadline")}
+	}
+	var first context.Context
+	calls := 0
+	summary, err := dailyRoundCall(ctx, true, func(work context.Context) (poolround.Summary, error) {
+		calls++
+		got, present := work.Deadline()
+		if !present || !got.Equal(deadline) {
+			return poolround.Summary{}, errors.New("retry replaced original slice deadline")
+		}
+		if first == nil {
+			first = work
+		} else if first != work {
+			return poolround.Summary{}, errors.New("retry replaced original work context")
+		}
+		value, err := h.rounds.Sync(work)
+		if err == poolround.ErrBusy {
+			select {
+			case busy <- struct{}{}:
+			default:
+			}
+		}
+		return value, err
+	})
+	return retainedRoundResult{summary: summary, err: err, calls: calls}
+}
+
+// This fixture contains original issuer/source/round/ledger owners, actual
+// normal-PoW accepted rows and a signed reserved A. Node/session observations
+// and the published scalar3 signer remain controlled, as in the borrowed
+// fixture. It does not claim actual-node, public TLS or real custody acceptance.
+func TestDailyRetainedRoundOriginalIssuerReconciles(t *testing.T) {
+	h := newIntakeBusyHarness(t)
+	beforeReport := h.reserveA(t)
+	beforeLedger := h.ledgerSnapshot(t)
+	beforeBackend := *h.backend
+	beforeRaw := append([]byte(nil), h.backend.raw...)
+	beforeRounds, err := h.rounds.List(context.Background(), 0, poolround.MaxPage)
+	if err != nil || len(beforeRounds) != 1 || beforeRounds[0].Confirmation == nil {
+		t.Fatal("original confirmed round", beforeRounds, err)
+	}
+	fillRetainedAdmissionSource(t, h)
+	maintenance := roundMaintenance{store: h.rounds}
+	release := h.holdIssuer(t)
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	// Explicit baseline: the legacy one-shot path still returns the exact Busy.
+	// This is not presented as a pre-fix run of the new selected API.
+	if got, e := maintenance.step(ctx); e != poolround.ErrBusy || got != (poolround.Summary{}) {
+		t.Fatal("legacy maintenance no longer fails fast on original contention", got, e)
+	}
+	busy := make(chan struct{}, 1)
+	done := make(chan retainedRoundResult, 1)
+	go func() { done <- retainedRoundSyncAttempt(ctx, h, busy) }()
+	joined := false
+	t.Cleanup(func() {
+		cancel()
+		release()
+		if !joined {
+			select {
+			case <-done:
+				joined = true
+			case <-time.After(10 * time.Second):
+				t.Error("selected original round call did not join")
+			}
+		}
+	})
+	select {
+	case <-busy:
+	case result := <-done:
+		joined = true
+		t.Fatal("selected call escaped before a real contended source attempt", result)
+	case <-ctx.Done():
+		t.Fatal("original source never reported contention", ctx.Err())
+	}
+	if _, e := h.issuer.TryInfo(); e != registry.ErrBusy {
+		t.Fatal("issuer was not held at the original Busy barrier", e)
+	}
+	release()
+	var result retainedRoundResult
+	select {
+	case result = <-done:
+		joined = true
+	case <-ctx.Done():
+		t.Fatal("same selected invocation did not reconcile", ctx.Err())
+	}
+	want := poolround.Summary{Through: 2, Rounds: 1, PendingShares: 1}
+	if result.err != nil || result.summary != want || result.calls < 2 {
+		t.Fatal("original full source reconciliation", result)
+	}
+	// The complete selected path uses these same owners after reconciliation.
+	// Exercise both ordinary and explicitly selected live reads without replacing
+	// the Store or bypassing full Sync. Each successful step refreshes once.
+	observed := len(h.node.observed)
+	if got, e := maintenance.stepSelected(ctx, true); e != nil || got != want || maintenance.cursor != 1 {
+		t.Fatal("selected full maintenance", got, maintenance.cursor, e)
+	}
+	live, e := h.rounds.BeginLive(ctx)
+	if e != nil {
+		t.Fatal(e)
+	}
+	maintenance.live = live
+	if got, e := maintenance.stepSelected(ctx, true); e != nil || got != want || maintenance.cursor != 1 {
+		t.Fatal("selected live full maintenance", got, maintenance.cursor, e)
+	}
+	if len(h.node.observed) != observed+2 {
+		t.Fatal("successful maintenance phases repeated an original observation")
+	}
+	afterRounds, e := h.rounds.List(ctx, 0, poolround.MaxPage)
+	if e != nil || !reflect.DeepEqual(beforeRounds, afterRounds) {
+		t.Fatal("original fixed round or confirmation changed", e)
+	}
+	status, e := h.control.intake.Status(ctx)
+	if e != nil || status.Mode != "draining" || status.Maximum != 2 || status.Accepted != 2 || status.Submissions != 2 {
+		t.Fatal("source reopened or receipt census changed", status, e)
+	}
+	if !reflect.DeepEqual(beforeLedger, h.ledgerSnapshot(t)) {
+		t.Fatal("round maintenance changed the original pending ledger")
+	}
+	afterReport, e := h.ledger.View(context.Background())
+	if e != nil || !reflect.DeepEqual(beforeReport, afterReport) || !reflect.DeepEqual(beforeBackend, *h.backend) || !bytes.Equal(beforeRaw, h.backend.raw) {
+		t.Fatal("round maintenance changed A or performed a financial operation", e)
+	}
+}
+
+func TestDailyRetainedRoundCancellationJoinsWhileIssuerHeld(t *testing.T) {
+	h := newIntakeBusyHarness(t)
+	h.reserveA(t)
+	beforeLedger := h.ledgerSnapshot(t)
+	beforeBackend := *h.backend
+	beforeRaw := append([]byte(nil), h.backend.raw...)
+	beforeRounds, err := h.rounds.List(context.Background(), 0, poolround.MaxPage)
+	if err != nil || len(beforeRounds) != 1 {
+		t.Fatal(beforeRounds, err)
+	}
+	fillRetainedAdmissionSource(t, h)
+	release := h.holdIssuer(t)
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	busy := make(chan struct{}, 1)
+	done := make(chan retainedRoundResult, 1)
+	go func() { done <- retainedRoundSyncAttempt(ctx, h, busy) }()
+	joined := false
+	t.Cleanup(func() {
+		cancel()
+		release()
+		if !joined {
+			select {
+			case <-done:
+				joined = true
+			case <-time.After(10 * time.Second):
+				t.Error("canceled original round call did not join")
+			}
+		}
+	})
+	select {
+	case <-busy:
+	case result := <-done:
+		joined = true
+		t.Fatal("selected call escaped original contention", result)
+	case <-ctx.Done():
+		t.Fatal("no original contended attempt", ctx.Err())
+	}
+	cancel()
+	select {
+	case result := <-done:
+		joined = true
+		if result.err != context.Canceled || result.summary != (poolround.Summary{}) || result.calls < 1 {
+			t.Fatal("cancellation provenance or result", result)
+		}
+	case <-time.After(10 * time.Second):
+		t.Fatal("cancellation required original issuer release")
+	}
+	// The selected call has joined while the ORIGINAL issuer is still occupied.
+	if _, e := h.issuer.TryInfo(); e != registry.ErrBusy {
+		t.Fatal("gate was released to make cancellation pass", e)
+	}
+	release()
+	afterRounds, e := h.rounds.List(context.Background(), 0, poolround.MaxPage)
+	if e != nil || !reflect.DeepEqual(beforeRounds, afterRounds) {
+		t.Fatal("failed Sync changed a retained round", e)
+	}
+	if !reflect.DeepEqual(beforeLedger, h.ledgerSnapshot(t)) || !reflect.DeepEqual(beforeBackend, *h.backend) || !bytes.Equal(beforeRaw, h.backend.raw) {
+		t.Fatal("canceled retry changed reserved A or financial call counts")
+	}
+}
+
+func TestDailyRetainedRoundRetryClassifiesExactBusy(t *testing.T) {
+	unknown := errors.New("unknown original operation failure")
+	cases := []struct {
+		name string
+		err  error
+	}{
+		{"wrapped-busy", fmt.Errorf("wrapped: %w", poolround.ErrBusy)},
+		{"single-joined-busy", errors.Join(poolround.ErrBusy)},
+		{"mixed-busy-unknown", errors.Join(poolround.ErrBusy, unknown)},
+		{"mixed-busy-cancel", errors.Join(poolround.ErrBusy, context.Canceled)},
+		{"mixed-busy-deadline", errors.Join(poolround.ErrBusy, context.DeadlineExceeded)},
+		{"unknown", unknown},
+		{"source-unavailable", poolround.ErrSourceUnavailable},
+		{"source-changed", poolround.ErrSourceChanged},
+		{"poisoned", poolround.ErrPoisoned},
+		{"corrupt", poolround.ErrCorrupt},
+		{"node", poolround.ErrNode},
+		{"closed", poolround.ErrClosed},
+		{"capacity", poolround.ErrCapacity},
+		{"stale", poolround.ErrLiveStale},
+		{"canceled", context.Canceled},
+		{"deadline", context.DeadlineExceeded},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			calls := 0
+			value, err := dailyRoundCall(context.Background(), true, func(context.Context) (int, error) {
+				calls++
+				if calls > 1 {
+					return 0, errors.New("terminal original failure retried")
+				}
+				return 17, tc.err
+			})
+			if calls != 1 || err != tc.err || value != 17 {
+				t.Fatal("non-exact Busy was relaxed", calls, value, err)
+			}
+		})
+	}
+	t.Run("legacy-original-context-once", func(t *testing.T) {
+		ctx := context.Background()
+		calls := 0
+		value, err := dailyRoundCall(ctx, false, func(work context.Context) (int, error) {
+			calls++
+			if work != ctx {
+				t.Error("legacy context replaced")
+			}
+			return 19, poolround.ErrBusy
+		})
+		if calls != 1 || value != 19 || err != poolround.ErrBusy {
+			t.Fatal("legacy retry behavior changed", calls, value, err)
+		}
+	})
+	t.Run("observed-mixed-error-survives-cancel", func(t *testing.T) {
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+		mixed := errors.Join(poolround.ErrBusy, unknown)
+		calls := 0
+		_, err := dailyRoundCall(ctx, true, func(context.Context) (int, error) {
+			calls++
+			cancel()
+			return 0, mixed
+		})
+		if calls != 1 || err != mixed {
+			t.Fatal("cancellation erased an observed independent failure", calls, err)
+		}
+	})
+}
+
+func TestDailyRetainedRoundRetryKeepsOriginalDeadline(t *testing.T) {
+	t.Run("same-context-deadline-across-retry", func(t *testing.T) {
+		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+		defer cancel()
+		deadline, _ := ctx.Deadline()
+		var first context.Context
+		calls := 0
+		value, err := dailyRoundCall(ctx, true, func(work context.Context) (int, error) {
+			calls++
+			got, ok := work.Deadline()
+			if !ok || !got.Equal(deadline) || first != nil && first != work {
+				return 0, errors.New("original deadline/context changed")
+			}
+			first = work
+			if calls == 1 {
+				return 0, poolround.ErrBusy
+			}
+			return 23, nil
+		})
+		if err != nil || value != 23 || calls != 2 {
+			t.Fatal(value, calls, err)
+		}
+	})
+	t.Run("background-bounded-without-authority-extension", func(t *testing.T) {
+		start := time.Now()
+		var captured context.Context
+		stop := errors.New("observed terminal failure")
+		_, err := dailyRoundCall(context.Background(), true, func(work context.Context) (int, error) {
+			captured = work
+			deadline, ok := work.Deadline()
+			if !ok || deadline.Before(start) || deadline.After(time.Now().Add(30*time.Second)) {
+				return 0, errors.New("missing or extended private 30s bound")
+			}
+			return 0, stop
+		})
+		if err != stop || captured == nil || captured.Err() != context.Canceled {
+			t.Fatal("bounded call lifetime not joined", err)
+		}
+	})
+	t.Run("expired-parent-no-call", func(t *testing.T) {
+		ctx, cancel := context.WithDeadline(context.Background(), time.Now().Add(-time.Second))
+		defer cancel()
+		calls := 0
+		_, err := dailyRoundCall(ctx, true, func(context.Context) (int, error) { calls++; return 0, nil })
+		if calls != 0 || err != context.DeadlineExceeded {
+			t.Fatal("expired parent was replaced", calls, err)
+		}
+	})
+}

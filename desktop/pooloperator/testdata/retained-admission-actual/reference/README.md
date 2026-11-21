@@ -1,0 +1,13 @@
+# Set81 actual selection source freeze
+
+This independent, standard-library-only producer changes one already-supported setting: the original DAILY setup's maintenance interval from30000ms to1000ms. It derives the exact changed Setup2 ID, recoverable profile/setup/remote/trust IDs and their existing canonical marker/credential frames. Source, targets, money bindings, limits, accounts, recipients and all old formats remain unchanged. The prospective output is not actual execution evidence.
+
+The original selected pool target is asserted at `setup.base.pool.pool_target`, independently decoded from compact bits207fffff and compared with every embedded source and the inherited block target. Passing this drain scenario requires exactly two accepted canonical pool rewards. The inherited one-reward branch remains byte-identical reference history; it is explicitly not an accepted Set81 substitute.
+
+The two-input native shape is independently counted:154 stripped bytes,220 witness bytes including marker/flag,836 weight and209 virtual bytes. At1000atoms/kvB, fee is209atoms. Two1,000,000,000atom rewards split99/1 yield1,980,000,000atoms for the miner and20,000,000atoms gross operator allocation, leaving19,999,791atoms change. The producer compares this independently derived row to the inherited two-reward row. These are conditional fixture economics, not a claim about an observed transaction or inclusion of arbitrary fees.
+
+Only explicitly named public inputs/provenance are copied. `input-catalog.json` records their exact committed identities. The old producer is retained as inert `.py.txt` provenance and is never imported. The executable imports only Python standard-library modules; it validates the old selected IDs/frames itself before deriving the new selection. No private runtime tree is read.
+
+CLI after root approval: `python selection_reference.py --lock /absolute/root-approved-lock.json --output /absolute/fresh/reference.json`. Root must create a separate approved lock with `approved_by: "root"` and `execution_authorized: true`. All lock inventory paths resolve from this source directory, not the artifact directory. Output must be fresh, exclusive and outside this tree, bounded at1MiB; root owns the60-second process bound and the two-interpreter reproducibility check. Proposed locks deny execution. Static source/AST and identity checks are not producer execution.
+
+The original actual plan62ddde39 and implementation selection3b270d9c are copied unchanged. Original Set80/79 qualifiers remain separately scoped; neither this source freeze nor its future deterministic output claims Set81 product or actual success.

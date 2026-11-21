@@ -1,0 +1,1021 @@
+{
+  "version": 1,
+  "derivation": "Hand-authored logical acceptance table from selected policy and static original interfaces; serialized only, no product/model execution",
+  "base_commit": "ce9eac7463a75d2ba7e0cefc8924f55d6c77b0a9",
+  "selected_plan_sha256": "a1ab25c4627a82be49164dc3acd7f0131d37911b2b93c848e3ceaed1762f6f0a",
+  "scope": "Conditional component controls unless separately qualified with original actual owners",
+  "count_tuple": [
+    "manifest_records",
+    "receipt_sequence",
+    "ownership_admission_outbox_items",
+    "signed_publications"
+  ],
+  "common_invariants": {
+    "new_jobs": 0,
+    "new_issue_requests": 0,
+    "new_pool_works": 0,
+    "new_pool_submissions": 0,
+    "new_pool_accepted_shares": 0,
+    "new_credit_rounds": 0,
+    "new_payment_batches": 0,
+    "quote_calls_from_fighter_recovery": 0,
+    "payment_sign_calls_from_fighter_recovery": 0,
+    "payment_broadcast_calls_from_fighter_recovery": 0,
+    "same_pending_payment_body_raw_txid_claims": true,
+    "no_target_cap_schema_pin_format_changes": true
+  },
+  "write_uncertainty": "unknown_clock_only means failed clock sync may have persisted metadata; no record/publication was staged by preflight; poison prevents further use until original reopen audit",
+  "wire_outcomes": {
+    "busy": [
+      503,
+      false
+    ],
+    "capacity": [
+      503,
+      false
+    ],
+    "expired": [
+      409,
+      false
+    ],
+    "outcome_unknown": [
+      503,
+      true
+    ],
+    "unauthorized": [
+      401,
+      false
+    ],
+    "unknown_job": [
+      404,
+      false
+    ],
+    "unavailable_node": [
+      503,
+      false
+    ],
+    "unavailable_clock": [
+      503,
+      false
+    ]
+  },
+  "non_wire_categories": "Other outcome labels specify invariant classes, not new serialized response codes. Preserve original exact error and uncertainty; never synthesize expired/capacity from mixed or foreign causes.",
+  "cases": [
+    {
+      "id": "ready-normal",
+      "state": "ready; both prerequisites true; no drain",
+      "request": "live exact original proof",
+      "expected": {
+        "pool_mode": "enabled",
+        "admission_mode": "enabled",
+        "outcome": "new_admission",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          1,
+          1,
+          1,
+          0
+        ],
+        "clock": "original final commit",
+        "effects": "one original node eligibility check"
+      }
+    },
+    {
+      "id": "startup-neither-ready",
+      "state": "startup; neither prerequisite",
+      "request": "live exact original proof",
+      "expected": {
+        "pool_mode": "paused",
+        "admission_mode": "paused",
+        "outcome": "busy",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "no authoritative expiry requested",
+        "effects": "no node admission"
+      }
+    },
+    {
+      "id": "startup-public-only",
+      "state": "only public readiness",
+      "request": "live exact original proof",
+      "expected": {
+        "pool_mode": "paused",
+        "admission_mode": "paused",
+        "outcome": "busy",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "unchanged",
+        "effects": "no node admission"
+      }
+    },
+    {
+      "id": "startup-round-only",
+      "state": "only round readiness",
+      "request": "live exact original proof",
+      "expected": {
+        "pool_mode": "paused",
+        "admission_mode": "paused",
+        "outcome": "busy",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "unchanged",
+        "effects": "no node admission"
+      }
+    },
+    {
+      "id": "pool-drain-delivery",
+      "state": "exact pool_capacity; both prerequisites",
+      "request": "live original job; independent birth authority has room",
+      "expected": {
+        "pool_mode": "draining",
+        "admission_mode": "enabled",
+        "outcome": "new_admission",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          1,
+          1,
+          1,
+          0
+        ],
+        "clock": "original final commit",
+        "effects": "original eligibility required"
+      }
+    },
+    {
+      "id": "pool-drain-prospect-only",
+      "state": "exact pool_capacity; both prerequisites",
+      "request": "prospect true, pool false; no pool receipt",
+      "expected": {
+        "pool_mode": "draining",
+        "admission_mode": "enabled",
+        "outcome": "new_admission",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          1,
+          1,
+          1,
+          0
+        ],
+        "clock": "original final commit",
+        "effects": "current parent or original permitted canonical winner"
+      }
+    },
+    {
+      "id": "block-first-canonical",
+      "state": "exact pool_capacity; both prerequisites",
+      "request": "block broadcast precedes signing; exact canonical winner; live job",
+      "expected": {
+        "pool_mode": "draining",
+        "admission_mode": "enabled",
+        "outcome": "new_admission",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          1,
+          1,
+          1,
+          0
+        ],
+        "clock": "original final commit",
+        "effects": "exact canonical-winning-block observation"
+      }
+    },
+    {
+      "id": "block-side-branch",
+      "state": "exact pool_capacity; both prerequisites",
+      "request": "not current parent and winner is a side branch",
+      "expected": {
+        "pool_mode": "draining",
+        "admission_mode": "enabled",
+        "outcome": "unavailable_node",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "preflight may persist high water",
+        "effects": "no eligible observation accepted"
+      }
+    },
+    {
+      "id": "stale-nonblock",
+      "state": "exact pool_capacity; both prerequisites",
+      "request": "ordinary nonblock proof lacks current-parent eligibility",
+      "expected": {
+        "pool_mode": "draining",
+        "admission_mode": "enabled",
+        "outcome": "unavailable_node",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "preflight may persist high water",
+        "effects": "no canonical exception invented"
+      }
+    },
+    {
+      "id": "full-source-reopen-paused",
+      "state": "same physical full source reopened; no fresh readiness",
+      "request": "retained live proof",
+      "expected": {
+        "pool_mode": "draining",
+        "admission_mode": "paused",
+        "outcome": "busy",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "no authority substitution",
+        "effects": "no node admission"
+      }
+    },
+    {
+      "id": "full-source-reopen-public-only",
+      "state": "same full source; only fresh public readiness",
+      "request": "retained live proof",
+      "expected": {
+        "pool_mode": "draining",
+        "admission_mode": "paused",
+        "outcome": "busy",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "unchanged",
+        "effects": "no node admission"
+      }
+    },
+    {
+      "id": "full-source-reopen-ready",
+      "state": "same full source; both fresh prerequisites",
+      "request": "retained live proof; independent authority room",
+      "expected": {
+        "pool_mode": "draining",
+        "admission_mode": "enabled",
+        "outcome": "new_admission",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          1,
+          1,
+          1,
+          0
+        ],
+        "clock": "original final commit",
+        "effects": "original eligibility required"
+      }
+    },
+    {
+      "id": "escalate-public-after-pool",
+      "state": "pool_capacity then public_capacity",
+      "request": "retained live proof",
+      "expected": {
+        "pool_mode": "draining",
+        "admission_mode": "hard_hold",
+        "outcome": "capacity",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "clock checks do not clear hold",
+        "effects": "no new node admission"
+      }
+    },
+    {
+      "id": "escalate-admission-after-pool",
+      "state": "pool_capacity then admission_capacity",
+      "request": "retained live proof",
+      "expected": {
+        "pool_mode": "draining",
+        "admission_mode": "hard_hold",
+        "outcome": "capacity",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "clock checks do not clear hold",
+        "effects": "no new node admission"
+      }
+    },
+    {
+      "id": "hard-hold-readiness-repeat",
+      "state": "hard hold then repeated concurrent readiness",
+      "request": "retained live proof",
+      "expected": {
+        "pool_mode": "draining",
+        "admission_mode": "hard_hold",
+        "outcome": "capacity",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "no hold downgrade",
+        "effects": "no new node admission"
+      }
+    },
+    {
+      "id": "hard-hold-reopen",
+      "state": "reopen same roots with original hard-cap evidence still exhausted",
+      "request": "retained live proof",
+      "expected": {
+        "pool_mode": "draining",
+        "admission_mode": "hard_hold",
+        "outcome": "capacity",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "fresh readiness cannot mask durable exhaustion",
+        "effects": "no new node admission"
+      }
+    },
+    {
+      "id": "other-hold-reasons",
+      "state": "round_capacity/no_reservation/legacy_over_bound/unknown",
+      "request": "retained live proof",
+      "expected": {
+        "pool_mode": "fail_closed",
+        "admission_mode": "no_relaxation",
+        "outcome": "existing_refusal",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "no new rule",
+        "effects": "no new authority"
+      }
+    },
+    {
+      "id": "historical-after-expiry-hard-hold",
+      "state": "hard hold and original wall beyond expiry",
+      "request": "same existing admitted receipt",
+      "expected": {
+        "pool_mode": "draining",
+        "admission_mode": "hard_hold",
+        "outcome": "historical_receipt",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "zero clock samples/writes",
+        "effects": "zero node calls"
+      }
+    },
+    {
+      "id": "historical-startup-paused",
+      "state": "startup paused",
+      "request": "same existing admitted receipt",
+      "expected": {
+        "pool_mode": "paused",
+        "admission_mode": "paused",
+        "outcome": "historical_receipt",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "zero clock samples/writes",
+        "effects": "zero node calls"
+      }
+    },
+    {
+      "id": "historical-rollback-clock",
+      "state": "original store healthy; wall would roll backward if sampled",
+      "request": "same existing admitted receipt",
+      "expected": {
+        "pool_mode": "unchanged",
+        "admission_mode": "unchanged",
+        "outcome": "historical_receipt",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "clock not sampled",
+        "effects": "zero node calls"
+      }
+    },
+    {
+      "id": "historical-reopen-lost-ack",
+      "state": "prior successful insert, lost reply, close/reopen same owners",
+      "request": "same proof and original stored record",
+      "expected": {
+        "pool_mode": "unchanged",
+        "admission_mode": "unchanged",
+        "outcome": "historical_receipt",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "zero new clock samples/writes",
+        "effects": "zero new node calls"
+      }
+    },
+    {
+      "id": "historical-corrupt-index",
+      "state": "original historical record/index mismatch",
+      "request": "otherwise exact request",
+      "expected": {
+        "pool_mode": "fail_closed",
+        "admission_mode": "no_relaxation",
+        "outcome": "integrity_refusal",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "no expiry conversion",
+        "effects": "zero node admission"
+      }
+    },
+    {
+      "id": "historical-revoked-session",
+      "state": "same historical record; original session revoked/replaced",
+      "request": "same proof under invalid original lease",
+      "expected": {
+        "pool_mode": "unchanged",
+        "admission_mode": "unchanged",
+        "outcome": "unauthorized",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "zero clock samples/writes",
+        "effects": "zero node admission"
+      }
+    },
+    {
+      "id": "new-expiry-minus-one",
+      "state": "pool-only drain, ready; accepted final clock expires-1",
+      "request": "never-admitted valid proof",
+      "expected": {
+        "pool_mode": "draining",
+        "admission_mode": "enabled",
+        "outcome": "new_admission",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          1,
+          1,
+          1,
+          0
+        ],
+        "clock": "final accepted sample strictly below expiry",
+        "effects": "original eligibility required"
+      }
+    },
+    {
+      "id": "new-expiry-equality",
+      "state": "pool-only drain, ready; original sampled/persisted clock equals expiry",
+      "request": "never-admitted signed proof",
+      "expected": {
+        "pool_mode": "draining",
+        "admission_mode": "enabled",
+        "outcome": "expired",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "high water persists if it advances",
+        "effects": "zero node admission after terminal preflight"
+      }
+    },
+    {
+      "id": "new-expiry-after",
+      "state": "pool-only drain, ready; original sampled/persisted clock beyond expiry",
+      "request": "never-admitted signed proof",
+      "expected": {
+        "pool_mode": "draining",
+        "admission_mode": "enabled",
+        "outcome": "expired",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "high water persists if it advances",
+        "effects": "zero node admission after terminal preflight"
+      }
+    },
+    {
+      "id": "expired-with-admission-count-hold",
+      "state": "admission-count full/hard hold; healthy clock commit",
+      "request": "never-admitted signed proof; issuer time at expiry",
+      "expected": {
+        "pool_mode": "draining",
+        "admission_mode": "hard_hold",
+        "outcome": "expired",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "clock-only validation is not new-birth capacity",
+        "effects": "zero node admission"
+      }
+    },
+    {
+      "id": "commit-crosses-expiry",
+      "state": "live preflight; final original commit sample equals expiry",
+      "request": "never-admitted proof passed original node checks",
+      "expected": {
+        "pool_mode": "draining",
+        "admission_mode": "enabled",
+        "outcome": "expired",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "persist authoritative terminal high water",
+        "effects": "original node check may already have run"
+      }
+    },
+    {
+      "id": "expiry-clock-write-capacity",
+      "state": "required advancing clock sync returns exact ErrPublicCapacity",
+      "request": "never-admitted proof; wall beyond expiry",
+      "expected": {
+        "pool_mode": "draining",
+        "admission_mode": "hard_hold",
+        "outcome": "capacity",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "clock failed; no expired claim",
+        "effects": "zero node admission"
+      }
+    },
+    {
+      "id": "expiry-clock-write-poison",
+      "state": "required clock batch write fails/poisons owner",
+      "request": "never-admitted proof; wall beyond expiry",
+      "expected": {
+        "pool_mode": "fail_closed",
+        "admission_mode": "no_relaxation",
+        "outcome": "outcome_unknown",
+        "record_sequence_ownership_outbox_signed_publication_delta": "unknown_clock_only",
+        "clock": "reopen original owner; durable metadata outcome unknown",
+        "effects": "zero node admission"
+      }
+    },
+    {
+      "id": "expiry-existing-poison",
+      "state": "owner already poisoned",
+      "request": "otherwise exact proof and expired wall",
+      "expected": {
+        "pool_mode": "fail_closed",
+        "admission_mode": "no_relaxation",
+        "outcome": "outcome_unknown",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "state failure before clock",
+        "effects": "zero node admission"
+      }
+    },
+    {
+      "id": "expiry-clock-rollback",
+      "state": "original sample below persisted or in-process high water",
+      "request": "never-admitted signed proof",
+      "expected": {
+        "pool_mode": "fail_closed",
+        "admission_mode": "no_relaxation",
+        "outcome": "unavailable_clock",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "no backward high-water write",
+        "effects": "zero node admission"
+      }
+    },
+    {
+      "id": "expiry-session-before-preflight",
+      "state": "original lease check refuses before clock",
+      "request": "otherwise exact expired proof",
+      "expected": {
+        "pool_mode": "unchanged",
+        "admission_mode": "unchanged",
+        "outcome": "unauthorized",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "zero clock effects",
+        "effects": "zero node admission"
+      }
+    },
+    {
+      "id": "expiry-looking-session-error",
+      "state": "session error wraps/joins or directly supplies expiry-looking cause",
+      "request": "no successful original clock branch",
+      "expected": {
+        "pool_mode": "fail_closed",
+        "admission_mode": "no_relaxation",
+        "outcome": "nonterminal_original_failure",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "must not return authoritative expired",
+        "effects": "zero node admission"
+      }
+    },
+    {
+      "id": "missing-original-job",
+      "state": "matching public DTO but no job in original ManifestStore",
+      "request": "otherwise plausible proof",
+      "expected": {
+        "pool_mode": "unchanged",
+        "admission_mode": "unchanged",
+        "outcome": "unknown_job",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "no accepted clock authority",
+        "effects": "zero node admission"
+      }
+    },
+    {
+      "id": "foreign-prepared-owner",
+      "state": "prepared token from another original store/pin/job",
+      "request": "matching public DTO fields insufficient",
+      "expected": {
+        "pool_mode": "fail_closed",
+        "admission_mode": "no_relaxation",
+        "outcome": "authority_refusal",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "no authority transfer",
+        "effects": "zero node admission"
+      }
+    },
+    {
+      "id": "wrong-gym-key-signature-proof",
+      "state": "wrong gym/key/signature/proof/descriptor",
+      "request": "not a valid original prepared admission",
+      "expected": {
+        "pool_mode": "unchanged",
+        "admission_mode": "unchanged",
+        "outcome": "existing_auth_or_proof_refusal",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "no expiry laundering",
+        "effects": "zero node admission"
+      }
+    },
+    {
+      "id": "mixed-capacity-integrity",
+      "state": "capacity joined with corruption/poison/cleanup/cancellation",
+      "request": "any new-admission attempt",
+      "expected": {
+        "pool_mode": "fail_closed",
+        "admission_mode": "no_relaxation",
+        "outcome": "original_fatal_or_unknown",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "no exact-capacity relaxation",
+        "effects": "no added effects"
+      }
+    },
+    {
+      "id": "preflight-canceled-owner",
+      "state": "caller canceled or original owner closing",
+      "request": "otherwise valid prepared proof",
+      "expected": {
+        "pool_mode": "fail_closed",
+        "admission_mode": "no_relaxation",
+        "outcome": "nonterminal_original_failure",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "no late commit/enable",
+        "effects": "all original calls join"
+      }
+    },
+    {
+      "id": "failed-close-retained",
+      "state": "original Close fails",
+      "request": "repeat original Close/cleanup, never a replacement owner",
+      "expected": {
+        "pool_mode": "fail_closed",
+        "admission_mode": "no_relaxation",
+        "outcome": "original_close_failure",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "no replacement owner",
+        "effects": "failed owner retained; no double Close"
+      }
+    },
+    {
+      "id": "duplicate-race",
+      "state": "another same-proof commit wins after preparation",
+      "request": "same proof retried under original owner",
+      "expected": {
+        "pool_mode": "unchanged",
+        "admission_mode": "unchanged",
+        "outcome": "busy_then_historical",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "one aggregate original record only",
+        "effects": "no second admission after historical preparation"
+      }
+    },
+    {
+      "id": "two-distinct-proof-job",
+      "state": "same original job; two distinct valid proofs; room for both",
+      "request": "each full admission independently eligible",
+      "expected": {
+        "pool_mode": "draining",
+        "admission_mode": "enabled",
+        "outcome": "two_new_admissions",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          2,
+          2,
+          2,
+          0
+        ],
+        "clock": "each final sample before original expiry",
+        "effects": "two original eligibility decisions"
+      }
+    },
+    {
+      "id": "worker-definite-expired-reopen",
+      "state": "authenticated exact expired false-unknown response",
+      "request": "retained original signed pending entry",
+      "expected": {
+        "pool_mode": "draining",
+        "admission_mode": "unchanged",
+        "outcome": "durable_worker_expired",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "no replacement job/request/signature",
+        "effects": "same outbox row retained across reopen"
+      }
+    },
+    {
+      "id": "worker-unknown-or-capacity",
+      "state": "unknown/cancel/malformed/definite capacity response",
+      "request": "retained original signed pending entry",
+      "expected": {
+        "pool_mode": "unchanged",
+        "admission_mode": "unchanged",
+        "outcome": "durable_worker_pending",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "no inferred expired terminal",
+        "effects": "same exact identity retained"
+      }
+    },
+    {
+      "id": "pending-payment-coexistence",
+      "state": "original signed pending A exists during fighter recovery",
+      "request": "one new valid original fighter admission with signed pending A already retained",
+      "expected": {
+        "pool_mode": "draining",
+        "admission_mode": "selected_rule",
+        "outcome": "same_original_payment",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          1,
+          1,
+          1,
+          0
+        ],
+        "clock": "financial clock/dispatch not invoked by admission",
+        "effects": "quote/sign/send deltas0 for recovery operation"
+      }
+    },
+    {
+      "id": "d84-overweight-coexistence",
+      "state": "whole original ready payout set exceeds existing transaction bound",
+      "request": "historical fighter recovery independent of whole-frontier financial dispatch",
+      "expected": {
+        "pool_mode": "draining",
+        "admission_mode": "selected_rule",
+        "outcome": "whole_financial_deferral",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "no partial payout/day slot",
+        "effects": "all earnings/claims remain exact"
+      }
+    },
+    {
+      "id": "legacy-direct-drain",
+      "state": "V1 or old direct constructor/API explicitly drained",
+      "request": "live nonhistorical original proof",
+      "expected": {
+        "pool_mode": "draining",
+        "admission_mode": "draining",
+        "outcome": "capacity",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "legacy behavior unchanged",
+        "effects": "no selected relaxation"
+      }
+    },
+    {
+      "id": "cheap-profile",
+      "state": "cheap PoW selected",
+      "request": "create/run selected owners",
+      "expected": {
+        "pool_mode": "not_created",
+        "admission_mode": "not_created",
+        "outcome": "profile_refusal",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "no owner/clock effects",
+        "effects": "no node/signing"
+      }
+    },
+    {
+      "id": "preflight-success-postcheck-revocation",
+      "state": "preflight succeeds; exact original post-Do lease.Check returns unauthorized",
+      "request": "same original nonhistorical proof; no final commit attempted",
+      "expected": {
+        "pool_mode": "unchanged",
+        "admission_mode": "no_relaxation",
+        "outcome": "unauthorized",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "high water may already be durably advanced",
+        "effects": "no node admission/record/publication; preserve original error uncertainty"
+      }
+    },
+    {
+      "id": "preflight-expired-postcheck-revocation",
+      "state": "helper exact ErrJobExpired and Do same exact error; final original Check returns unauthorized",
+      "request": "same original nonhistorical proof; no final commit attempted",
+      "expected": {
+        "pool_mode": "unchanged",
+        "admission_mode": "no_relaxation",
+        "outcome": "unauthorized",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "authoritative time alone does not authorize terminal disclosure",
+        "effects": "no node admission/record/publication; preserve original error uncertainty"
+      }
+    },
+    {
+      "id": "preflight-expired-postcheck-unknown",
+      "state": "helper exact ErrJobExpired; final original lease is canceled/lost with unknown outcome",
+      "request": "same original nonhistorical proof; no final commit attempted",
+      "expected": {
+        "pool_mode": "unchanged",
+        "admission_mode": "no_relaxation",
+        "outcome": "original_fatal_or_unknown",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "no expired disclosure after loss",
+        "effects": "no node admission/record/publication; preserve original error uncertainty"
+      }
+    },
+    {
+      "id": "preflight-expired-wrapped-do-result",
+      "state": "captured helper ErrJobExpired but lease.Do result wraps/joins it",
+      "request": "same original nonhistorical proof; no final commit attempted",
+      "expected": {
+        "pool_mode": "unchanged",
+        "admission_mode": "no_relaxation",
+        "outcome": "nonterminal_original_failure",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "no legacy errors.Is shortcut",
+        "effects": "no node admission/record/publication; preserve original error uncertainty"
+      }
+    },
+    {
+      "id": "preflight-success-expired-looking-do-result",
+      "state": "helper succeeded; Do/session error equals or wraps ErrJobExpired",
+      "request": "same original nonhistorical proof; no final commit attempted",
+      "expected": {
+        "pool_mode": "unchanged",
+        "admission_mode": "no_relaxation",
+        "outcome": "nonterminal_original_failure",
+        "record_sequence_ownership_outbox_signed_publication_delta": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "clock": "uncaptured authority cannot mint terminal expiry",
+        "effects": "no node admission/record/publication; preserve original error uncertainty"
+      }
+    }
+  ],
+  "case_count": 53,
+  "terminal_expiry_provenance": {
+    "private_captured_preflight_error": "exact registry.ErrJobExpired",
+    "original_lease_do_return": "same exact error, not wrapped/joined",
+    "final_original_lease_check": "successful immediately before terminal disclosure",
+    "historical_path": "never enters this preflight"
+  }
+}

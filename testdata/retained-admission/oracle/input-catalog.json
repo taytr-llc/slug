@@ -1,0 +1,201 @@
+{
+  "version": 1,
+  "scope": "Seven allowlisted independent public inputs, committed Set80 provenance; source-only static copy",
+  "repository": "/Users/taytrrip/slug/slug",
+  "commit": "ce9eac7463a75d2ba7e0cefc8924f55d6c77b0a9",
+  "copied_input_count": 7,
+  "total_bytes": 10803458,
+  "no_product_execution": true,
+  "no_generator_execution": true,
+  "files": [
+    {
+      "path": "inputs/manifest-admission.json",
+      "repository_path": "registry/testdata/manifest/reference/manifest_admission_v1.json",
+      "commit": "ce9eac7463a75d2ba7e0cefc8924f55d6c77b0a9",
+      "git_blob": "c020385f3502dc0e04f8cb1358417d3f0351ff68",
+      "bytes": 1207894,
+      "sha256": "d32a8653c76c643addb3df091ca8d7dfdba66c2486f2ca305e718113f71d5794",
+      "role": "Inherited independent manifest/job/proof/authorization/birth/receipt bytes",
+      "provenance": [
+        {
+          "role": "producer_or_provenance",
+          "repository_path": "registry/testdata/manifest/reference/reference_manifest_admission.py",
+          "bytes": 26833,
+          "sha256": "ab65e2c63fb288c3d117416825edc44a8a5596f31e54b50f12f476b96c883bbc",
+          "copied": false
+        },
+        {
+          "role": "qualification_or_source_lock",
+          "repository_path": "registry/testdata/manifest/reference/verification.json",
+          "bytes": 27024,
+          "sha256": "168628eec0094c9547b9c7d5935003e3838092bb68d92dfb02b4cc46d2f314c5",
+          "copied": false
+        }
+      ],
+      "copy": "exact committed bytes; independently equal to current checkout; no regeneration"
+    },
+    {
+      "path": "inputs/pool-share.json",
+      "repository_path": "prospectwork/testdata/pool_share_reference/pool_share_v1.json",
+      "commit": "ce9eac7463a75d2ba7e0cefc8924f55d6c77b0a9",
+      "git_blob": "0c321764edda3a1d741a0cf1ff8014baa972ca62",
+      "bytes": 33879,
+      "sha256": "2210d992e618b7a0952736dede1263b678f1a7a2d55d14ccde1cc6b29317de87",
+      "role": "Inherited independent normal Argon2 pool/prospect/block target cases",
+      "provenance": [
+        {
+          "role": "producer_or_provenance",
+          "repository_path": "prospectwork/testdata/pool_share_reference/reference.py",
+          "bytes": 9091,
+          "sha256": "aa8243080bf1d0cfd500504b8ce9016a49ffd59ee9f594d0faf33ec8c14a74c8",
+          "copied": false
+        },
+        {
+          "role": "qualification_or_source_lock",
+          "repository_path": "prospectwork/testdata/pool_share_reference/freeze.json",
+          "bytes": 1182,
+          "sha256": "dbfaaeebf9591a10f6ffab6cfda2ba7aa47ce5f546fd26a948c4eed811d674ff",
+          "copied": false
+        }
+      ],
+      "copy": "exact committed bytes; independently equal to current checkout; no regeneration"
+    },
+    {
+      "path": "inputs/daily-admission-actual.json",
+      "repository_path": "poolsettle/testdata/daily-admission-actual/reference-v1.json",
+      "commit": "ce9eac7463a75d2ba7e0cefc8924f55d6c77b0a9",
+      "git_blob": "92a4ac9b6dee797ada653ad7805bfcc43ce4cf26",
+      "bytes": 29980,
+      "sha256": "1d2b1462296bd022c53df9dc583db3c38cd13a8e13e84f9983f2505b3aefb08f",
+      "role": "Set78 independently derived true ordinary2 capacity and separated actual/kernel economics",
+      "provenance": [
+        {
+          "role": "producer_or_provenance",
+          "repository_path": "poolsettle/testdata/daily-admission-actual/reference/model.py",
+          "bytes": 15048,
+          "sha256": "1fbb77065d436f25f6a255e72ad68b09e09fb941e6875844530ea42da3f93bdc",
+          "copied": false
+        },
+        {
+          "role": "qualification_or_source_lock",
+          "repository_path": "poolsettle/testdata/daily-admission-actual/qualification.json",
+          "bytes": 709,
+          "sha256": "46750fd8407f29959124c709b3ffe9fb7c2d8dbbcd8a4dae8c16014db3293999",
+          "copied": false
+        }
+      ],
+      "copy": "exact committed bytes; independently equal to current checkout; no regeneration"
+    },
+    {
+      "path": "inputs/public-daily.json",
+      "repository_path": "testdata/public-daily/reference-v1.json",
+      "commit": "ce9eac7463a75d2ba7e0cefc8924f55d6c77b0a9",
+      "git_blob": "f5b545c4f081136103d07b8ea69408374fda191b",
+      "bytes": 3176583,
+      "sha256": "a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3",
+      "role": "Set79 corrected independent DAILY composition/credential/transport/payment/outbox corpus",
+      "provenance": [
+        {
+          "role": "producer_or_provenance",
+          "repository_path": "testdata/public-daily/reference/generate.py",
+          "bytes": 10650,
+          "sha256": "3ca84c3b3e5a0a621d6133c51c3338502dd172cd392607db76e2824ac920c14e",
+          "copied": false
+        },
+        {
+          "role": "qualification_or_source_lock",
+          "repository_path": "testdata/public-daily/qualification.json",
+          "bytes": 3620,
+          "sha256": "93509efd34524d269b521b444f52dc750f986db6b1308180798c1b0b751136fe",
+          "copied": false
+        }
+      ],
+      "copy": "exact committed bytes; independently equal to current checkout; no regeneration"
+    },
+    {
+      "path": "inputs/issue-recovery.json",
+      "repository_path": "testdata/issue-recovery/reference-v1.json",
+      "commit": "ce9eac7463a75d2ba7e0cefc8924f55d6c77b0a9",
+      "git_blob": "19ff4f133f5c7d9112ac9337976e35919535de7b",
+      "bytes": 6134980,
+      "sha256": "4bbe4eb9556ed5a894cee6ff565b0dcca805f27fea2d77cfe3a56242dc3dac91",
+      "role": "Set80 independent original-request selected-mode/census/reservation/state corpus",
+      "provenance": [
+        {
+          "role": "producer_or_provenance",
+          "repository_path": "testdata/issue-recovery/producer/generate.py",
+          "bytes": 11411,
+          "sha256": "d5d88ad586e8db47f57314c5d63af764be1c0c28733acee9b947f06925010e01",
+          "copied": false
+        },
+        {
+          "role": "qualification_or_source_lock",
+          "repository_path": "testdata/issue-recovery/qualification.json",
+          "bytes": 1366,
+          "sha256": "4a413e41968b0b4921d21a199281ec541ff352eea5c4e41af7c1988688045d13",
+          "copied": false
+        }
+      ],
+      "copy": "exact committed bytes; independently equal to current checkout; no regeneration"
+    },
+    {
+      "path": "inputs/actual-selection.json",
+      "repository_path": "desktop/pooloperator/testdata/issue-recovery-actual/inputs/actual-reference.json",
+      "commit": "ce9eac7463a75d2ba7e0cefc8924f55d6c77b0a9",
+      "git_blob": "474a33b69b7882142a86ed02f5503b30c7fa1460",
+      "bytes": 173644,
+      "sha256": "0f0890e529b64c10ed000673aab7861b9bd526057cc3c2bbbe05b868028f3d10",
+      "role": "Set80 independently qualified selected actual wrapper; original two-account profile and money bindings",
+      "provenance": [
+        {
+          "role": "producer_or_provenance",
+          "repository_path": "desktop/pooloperator/testdata/issue-recovery-actual/selection_reference.py",
+          "bytes": 9287,
+          "sha256": "fb56a5ce58cb04f250ceb8b4a0498dd2f996dd2a2fe9a86629f7c19b9d12cc76",
+          "copied": false
+        },
+        {
+          "role": "qualification_or_source_lock",
+          "repository_path": "desktop/pooloperator/testdata/issue-recovery-actual/selection-lock.proposed.json",
+          "bytes": 1307,
+          "sha256": "1bc724edaef7fdb6396484f2b7c9220aa5fde17d8f99db999a8b6662fca33493",
+          "copied": false
+        },
+        {
+          "role": "qualified_actual_wrapper_reference_report",
+          "repository_path": "docs/evidence/set80/components/reports/actual-reference-attempt1.json",
+          "bytes": 4479,
+          "sha256": "c00b9b36a0c047a1854cc4efb278f101a4935d433413a4aeb11259ef5b967f50",
+          "copied": false
+        }
+      ],
+      "copy": "exact committed bytes; independently equal to current checkout; no regeneration"
+    },
+    {
+      "path": "inputs/attachment-actual.json",
+      "repository_path": "desktop/pooloperator/testdata/issue-recovery-actual/inputs/path-c-reference.json",
+      "commit": "ce9eac7463a75d2ba7e0cefc8924f55d6c77b0a9",
+      "git_blob": "9dee2af8fd6b163c1a8d5c215957bd912dec866d",
+      "bytes": 46498,
+      "sha256": "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386",
+      "role": "Set79 independent original-wallet attachment profile and 1-or2 reward economics",
+      "provenance": [
+        {
+          "role": "producer_or_provenance",
+          "repository_path": "desktop/pooloperator/testdata/issue-recovery-actual/copied-inputs.json",
+          "bytes": 7453,
+          "sha256": "5d1ce505b66dc6865bef53b15bdb5755d719a699b1b02e0cde4ddf2518fa533c",
+          "copied": false
+        },
+        {
+          "role": "qualification_or_source_lock",
+          "repository_path": "desktop/pooloperator/testdata/issue-recovery-actual/source-manifest.json",
+          "bytes": 14956,
+          "sha256": "087cfdadf9ca2816a42afe168d60a721ab3793c2cb58993b38189aa44b2e601f",
+          "copied": false
+        }
+      ],
+      "copy": "exact committed bytes; independently equal to current checkout; no regeneration"
+    }
+  ]
+}

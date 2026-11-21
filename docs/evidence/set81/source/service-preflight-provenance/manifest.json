@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "original_path": "/Users/taytrrip/slug/slug/prospectservice/daily_fenced_admission.go",
+  "before": {
+    "path": "before.go.txt",
+    "bytes": 2589,
+    "sha256": "e91d4292f343170c00a61e4348768bb60ce9c8146a3bf745d7a14945f79becad"
+  },
+  "product_executed": false,
+  "selection": "root-approved captured helper error; nil callback return; original Do and Check provenance"
+}

@@ -1,0 +1,17 @@
+--- 505e74d4/check-retained-actual.py
++++ successor/check-retained-actual.py
+@@ -638,7 +638,13 @@
+                        and e['request_bytes'] == len(request) and e['request_sha256'] == b.sha(request)]
+             b.need(len(matches) == 1 and matches[0]['ordinal'] not in used, 'one correlated actual lookup exchange')
+             event = matches[0]; used.add(event['ordinal'])
+-            b.need(event['forwarded_at_ms'] > 0 and not event['failure'] and not event['context'], 'original lookup delivered without transport failure')
++            b.need(event['forwarded_at_ms'] > 0 and not event['failure'], 'original lookup delivered without transport failure')
++            # A successful client can cancel/close after consuming the whole
++            # reply but before the relay's deferred context observation. The
++            # exact complete response below and uncanceled client attempt above
++            # are still mandatory; refusal attempts retain the empty-context rule.
++            allowed_contexts = ('', 'canceled') if attempt['returned'] is not None else ('',)
++            b.need(event['context'] in allowed_contexts, 'original lookup completion-time context')
+             if attempt['returned'] is None:
+                 envelope = dict(version=3, error=dict(code=attempt['code'], outcome_unknown=False))
+                 b.need(event['status'] == (429 if attempt['code'] == 'rate_limited' else 503), 'actual definite server read refusal')

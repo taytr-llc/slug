@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "scope": "Reviewed round-contention successor, public qualification reports",
+  "files": [
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/full-operator-normal-attempt3/report.json",
+      "target": "docs/evidence/set81/regressions/full-operator-normal-successor.json",
+      "bytes": 55117,
+      "sha256": "241b7407ccd6954442b64974d7fdaf76e9fd05f783dacd9b9b8a979e03cd92b2"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/round-successor-race-attempt1/report.json",
+      "target": "docs/evidence/set81/regressions/round-successor-race.json",
+      "bytes": 10591,
+      "sha256": "bf8d808325ed007285e06c5c5cc3cffdc9e21d1ad5fe36bbc229e5ccc1c1ade1"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/final-builds-attempt2/report.json",
+      "target": "docs/evidence/set81/build/successor-report.json",
+      "bytes": 29183,
+      "sha256": "dd03f5901e092db03deebfa015fa9db8c06dc5e23ecc8f40ff43ef426dac1374"
+    }
+  ]
+}

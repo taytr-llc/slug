@@ -53,6 +53,7 @@ type ManifestServer struct {
 
 	operatorIntake  *operatorIntakeState // protected by active; never detached
 	fencedAdmission bool                 // explicit shared-runtime path; legacy session contract is unchanged
+	dailyAdmission  bool                 // constructor-only retained DAILY expiry selection
 }
 
 // NewManifestServer selects static per-gym credentials for protocol 3.

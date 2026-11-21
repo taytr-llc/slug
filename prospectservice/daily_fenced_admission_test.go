@@ -1,0 +1,341 @@
+//go:build !slugtestpow
+
+// Copyright (c) 2026 The SLUG developers. ISC license.
+package prospectservice
+
+import (
+	"context"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"reflect"
+	"strings"
+	"testing"
+	"time"
+
+	"github.com/taytr-llc/slug/internal/mininglease"
+	"github.com/taytr-llc/slug/registry"
+)
+
+// This is a conditional original-store fixture, not a new issuance. Retain the
+// independently encoded jobs and an exact receipt prefix; the omitted suffix
+// supplies valid, never-admitted proofs whose original lifetime has elapsed.
+func dailyAdmissionExpiredFixture(t *testing.T, retained int) (*ManifestServer, *registry.ManifestStore, *mbNode, mbCase, *mfSessions) {
+	t.Helper()
+	f := mbLoad(t)
+	if retained < 0 || retained >= len(f.Cases) {
+		t.Fatal("bad retained prefix")
+	}
+	tc := f.Cases[retained]
+	if time.Now().UnixMilli() < tc.Job.ExpiresAtMS {
+		t.Fatal("independent historical job is not yet expired")
+	}
+	old := fmt.Sprintf("\"last_sequence\":%d", len(f.Cases))
+	if strings.Count(f.Rows.Meta, old) != 1 {
+		t.Fatal("independent metadata counter shape")
+	}
+	f.Rows.Meta = strings.Replace(f.Rows.Meta, old, fmt.Sprintf("\"last_sequence\":%d", retained), 1)
+	f.Rows.Records = f.Rows.Records[:retained]
+	f.Rows.Sequences = f.Rows.Sequences[:retained]
+	store, _ := mbSeed(t, f)
+	sessions := &mfSessions{key: tc.Job.PublicKey}
+	node := &mbNode{initial: tc.Job.Context, source: "current-parent"}
+	cfg := mbConfig(f.Pin, tc.Job.PublicKey)
+	cfg.Clients = nil
+	if retained > 0 {
+		cfg.MaxRecords = uint64(retained)
+	}
+	s, err := NewPausedDailyFencedManifestAdmissionServer(cfg, mbPolicy(tc.Job.Context), node, store, sessions)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return s, store, node, tc, sessions
+}
+
+func TestDailyFencedAdmissionExpiryBeforeIntake(t *testing.T) {
+	for _, mode := range []string{"paused", "drained", "record-count-full"} {
+		t.Run(mode, func(t *testing.T) {
+			retained := 0
+			if mode == "record-count-full" {
+				retained = 1
+			}
+			s, store, node, tc, _ := dailyAdmissionExpiredFixture(t, retained)
+			ctx := context.Background()
+			if mode == "drained" {
+				if err := s.DrainOperatorIntake(ctx); err != nil {
+					t.Fatal(err)
+				}
+			}
+			if mode == "record-count-full" {
+				if err := s.EnableOperatorIntake(ctx); err != nil {
+					t.Fatal(err)
+				}
+			}
+			before, err := store.Info()
+			if err != nil {
+				t.Fatal(err)
+			}
+			mbError(t, mbRequest(t, s, mbToken, "/v3/admissions", mbSubmit(tc.Proof, tc.Authorization)), 409, "expired", false)
+			after, err := store.Info()
+			if err != nil || after != before || node.checks.Load() != 0 {
+				t.Fatal("expired preflight allocated or reached node", err)
+			}
+			if _, err = store.GetManifestAdmission(tc.Record.Verified.ProspectID); !errors.Is(err, registry.ErrNotFound) {
+				t.Fatal("expiry created receipt", err)
+			}
+			// A healthy authoritative clock may establish expiry before a birth
+			// count hold. It neither resets nor relaxes an explicit intake drain.
+			if mode == "drained" {
+				if err = s.EnableOperatorIntake(ctx); err != ErrIntakeDraining {
+					t.Fatal("expiry reset drain", err)
+				}
+			}
+		})
+	}
+}
+
+// The authorizer retains the original concrete key and counts short leases.
+// Hooks run only in this serialized fixture, without goroutines or a new public
+// authority seam. Call1 is Capture,2 is preflight Do,3 is its final Check.
+type dailyPreflightSessions struct {
+	key     string
+	calls   int
+	revoked bool
+	before  func(int) error
+	after   func(int, error) error
+}
+
+func (s *dailyPreflightSessions) WithSession(ctx context.Context, token string, fn func(string, func() error) error) error {
+	s.calls++
+	if s.before != nil {
+		if err := s.before(s.calls); err != nil {
+			return err
+		}
+	}
+	check := func() error {
+		if token != mbToken || s.revoked || ctx.Err() != nil {
+			return errors.New("original selected session unavailable")
+		}
+		return nil
+	}
+	if err := check(); err != nil {
+		return err
+	}
+	err := fn(s.key, check)
+	if s.after != nil {
+		return s.after(s.calls, err)
+	}
+	return err
+}
+
+func TestDailyFencedAdmissionSessionAndDuplicateFences(t *testing.T) {
+	for _, expired := range []bool{false, true} {
+		for _, loss := range []string{"post-revoked", "post-canceled", "do-unknown", "foreign-expiry", "joined-outer"} {
+			t.Run(fmt.Sprintf("expired-%v/%s", expired, loss), func(t *testing.T) {
+				var s *ManifestServer
+				var store *registry.ManifestStore
+				var prepared *registry.PreparedManifestAdmission
+				var key string
+				if expired {
+					var tc mbCase
+					s, store, _, tc, _ = dailyAdmissionExpiredFixture(t, 0)
+					key = tc.Job.PublicKey
+					var err error
+					prepared, err = store.PrepareManifestAdmission(tc.Proof, tc.Authorization)
+					if err != nil {
+						t.Fatal(err)
+					}
+				} else {
+					base, st, node, session, body := mfSetup(t)
+					store = st
+					key = session.key
+					var err error
+					s, err = NewPausedDailyFencedManifestAdmissionServer(base.config, base.policy, node, store, session)
+					if err != nil {
+						t.Fatal(err)
+					}
+					raw, err := json.Marshal(body)
+					if err != nil {
+						t.Fatal(err)
+					}
+					proof, auth, err := ParseSubmission(raw)
+					if err != nil {
+						t.Fatal(err)
+					}
+					prepared, err = store.PrepareManifestAdmission(proof, auth)
+					if err != nil {
+						t.Fatal(err)
+					}
+				}
+				ctx, cancel := context.WithCancel(context.Background())
+				defer cancel()
+				sessions := &dailyPreflightSessions{key: key}
+				want, unknown := "unauthorized", false
+				switch loss {
+				case "post-revoked":
+					sessions.after = func(n int, e error) error {
+						if n == 2 {
+							sessions.revoked = true
+						}
+						return e
+					}
+				case "post-canceled":
+					sessions.after = func(n int, e error) error {
+						if n == 2 {
+							cancel()
+						}
+						return e
+					}
+					want, unknown = "outcome_unknown", true
+				case "do-unknown":
+					sessions.after = func(n int, e error) error {
+						if n == 3 && e == nil {
+							return errors.New("post-check acknowledgement lost")
+						}
+						return e
+					}
+					want, unknown = "outcome_unknown", true
+				case "foreign-expiry":
+					sessions.before = func(n int) error {
+						if n == 2 {
+							return fmt.Errorf("foreign session cause: %w", registry.ErrJobExpired)
+						}
+						return nil
+					}
+				case "joined-outer":
+					sessions.after = func(n int, e error) error {
+						if n == 2 {
+							return errors.Join(e, registry.ErrJobExpired, errors.New("independent authorizer failure"))
+						}
+						return e
+					}
+					want, unknown = "outcome_unknown", true
+				}
+				lease, err := mininglease.Capture(ctx, sessions, mbToken)
+				if err != nil {
+					t.Fatal(err)
+				}
+				failure := s.preflightDailyAdmission(lease, prepared)
+				if failure == nil || failure.code != want || failure.unknown != unknown {
+					t.Fatalf("lost original session became terminal: %+v want %s/%v", failure, want, unknown)
+				}
+				if loss == "joined-outer" {
+					if err = lease.Check(); err != nil {
+						t.Fatal("later healthy lease must not repair the failed call", err)
+					}
+				}
+				info, err := store.Info()
+				if err != nil || info.Records != 0 {
+					t.Fatal("session failure created receipt", err)
+				}
+			})
+		}
+	}
+	// A same-proof insert between preparation and preflight wins; only a fresh
+	// original historical preparation can recover it, without another node call.
+	base, store, node, sessions, body := mfSetup(t)
+	s, err := NewPausedDailyFencedManifestAdmissionServer(base.config, base.policy, node, store, sessions)
+	if err != nil {
+		t.Fatal(err)
+	}
+	raw, _ := json.Marshal(body)
+	proof, auth, err := ParseSubmission(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	p, err := store.PrepareManifestAdmission(proof, auth)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = s.EnableOperatorIntake(context.Background()); err != nil {
+		t.Fatal(err)
+	}
+	response := mbRequest(t, s, mbToken, "/v3/admissions", body)
+	var original ManifestAdmissionResult
+	if response.Code != 200 || json.Unmarshal(response.Body.Bytes(), &original) != nil || !original.Inserted {
+		t.Fatal("initial selected admission", response.Body.String())
+	}
+	lease, err := mininglease.Capture(context.Background(), sessions, mbToken)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if failure := s.preflightDailyAdmission(lease, p); failure == nil || failure.code != "busy" || failure.unknown {
+		t.Fatal("stale preparation used", failure)
+	}
+	checks := node.checks.Load()
+	if err = s.DrainOperatorIntake(context.Background()); err != nil {
+		t.Fatal(err)
+	}
+	response = mbRequest(t, s, mbToken, "/v3/admissions", body)
+	var recovered ManifestAdmissionResult
+	if response.Code != 200 || json.Unmarshal(response.Body.Bytes(), &recovered) != nil || recovered.Inserted || !reflect.DeepEqual(recovered.Record, original.Record) || node.checks.Load() != checks {
+		t.Fatal("exact historical recovery", response.Body.String())
+	}
+}
+
+func TestDailyFencedAdmissionHistoricalAndLegacy(t *testing.T) {
+	f := mbLoad(t)
+	store, _ := mbSeed(t, f)
+	tc := f.Cases[0]
+	node := &mbNode{initial: tc.Job.Context, guard: func(context.Context) error { t.Fatal("history consulted node"); return nil }}
+	sessions := &mfSessions{key: tc.Job.PublicKey}
+	cfg := mbConfig(f.Pin, tc.Job.PublicKey)
+	cfg.Clients = nil
+	s, err := NewPausedDailyFencedManifestAdmissionServer(cfg, mbPolicy(tc.Job.Context), node, store, sessions)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = s.DrainOperatorIntake(context.Background()); err != nil {
+		t.Fatal(err)
+	}
+	response := mbRequest(t, s, mbToken, "/v3/admissions", mbSubmit(tc.Proof, tc.Authorization))
+	var result ManifestAdmissionResult
+	if response.Code != 200 || json.Unmarshal(response.Body.Bytes(), &result) != nil || result.Inserted || result.CurrentNodeChecked || !reflect.DeepEqual(result.Record, tc.Record) {
+		t.Fatal("independent historical bytes", response.Body.String())
+	}
+	selected, oldStore, oldNode, expired, oldSessions := dailyAdmissionExpiredFixture(t, 0)
+	legacy, err := NewPausedFencedManifestAdmissionServer(selected.config, selected.policy, oldNode, oldStore, oldSessions)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if legacy.dailyAdmission || !selected.dailyAdmission {
+		t.Fatal("selection leaked across constructors")
+	}
+	if err = legacy.DrainOperatorIntake(context.Background()); err != nil {
+		t.Fatal(err)
+	}
+	mbError(t, mbRequest(t, legacy, mbToken, "/v3/admissions", mbSubmit(expired.Proof, expired.Authorization)), 503, "capacity", false)
+}
+
+func TestDailyFencedAdmissionErrorProvenance(t *testing.T) {
+	for _, tc := range []struct {
+		name    string
+		err     error
+		code    string
+		unknown bool
+	}{
+		{"uncaptured-exact-expiry", registry.ErrJobExpired, "unavailable", false},
+		{"wrapped-expiry", fmt.Errorf("foreign: %w", registry.ErrJobExpired), "unavailable", false},
+		{"mixed-expiry-integrity", errors.Join(registry.ErrJobExpired, registry.ErrCorrupt), "unavailable", false},
+		{"mixed-expiry-poison", errors.Join(registry.ErrJobExpired, registry.ErrPoisoned), "outcome_unknown", true},
+		{"mixed-poison-session", errors.Join(registry.ErrPoisoned, mininglease.ErrUnauthorized), "outcome_unknown", true},
+		{"mixed-expiry-unknown", errors.Join(registry.ErrJobExpired, mininglease.ErrOutcomeUnknown), "outcome_unknown", true},
+		{"mixed-expiry-session", errors.Join(registry.ErrJobExpired, mininglease.ErrUnauthorized), "unauthorized", false},
+		{"exact-clock-capacity", registry.ErrPublicCapacity, "capacity", false},
+		{"mixed-clock-capacity", errors.Join(registry.ErrPublicCapacity, registry.ErrCorrupt), "unavailable", false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			s := &ManifestServer{operatorIntake: &operatorIntakeState{enabled: true}}
+			failure := s.dailyPreflightFailure(tc.err)
+			if failure.code != tc.code || failure.unknown != tc.unknown {
+				t.Fatal(failure)
+			}
+			if s.operatorIntake.draining != (tc.err == registry.ErrPublicCapacity) {
+				t.Fatal("mixed failure changed intake")
+			}
+			if s.poisoned.Load() != errors.Is(tc.err, registry.ErrPoisoned) {
+				t.Fatal("poisoned original owner lost service poison latch")
+			}
+		})
+	}
+}

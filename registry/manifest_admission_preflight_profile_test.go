@@ -1,0 +1,20 @@
+//go:build slugtestpow
+
+// Copyright (c) 2026 The SLUG developers. ISC license.
+package registry
+
+import (
+	"strings"
+	"testing"
+	"time"
+
+	"github.com/syndtr/goleveldb/leveldb"
+)
+
+func TestManifestAdmissionPreflightCheapRefuses(t *testing.T) {
+	s := &ManifestStore{db: &leveldb.DB{}, now: func() time.Time { t.Fatal("cheap preflight read clock"); return time.Time{} }}
+	err := s.PreflightManifestAdmission(nil, func() error { t.Fatal("cheap preflight reached session"); return nil })
+	if err == nil || !strings.Contains(err.Error(), "slugtestpow") || s.meta != (manifestMetadata{}) || s.clockSeen != 0 {
+		t.Fatal("cheap preflight changed state", err)
+	}
+}

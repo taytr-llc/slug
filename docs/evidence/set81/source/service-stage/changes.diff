@@ -1,0 +1,608 @@
+--- before/registry/manifest_admission_preflight.go
++++ after/registry/manifest_admission_preflight.go
+@@ -0,0 +1,88 @@
++// Copyright (c) 2026 The SLUG developers. ISC license.
++package registry
++
++import (
++	"errors"
++	"fmt"
++	"math"
++
++	"github.com/syndtr/goleveldb/leveldb"
++)
++
++// PreflightManifestAdmission observes the original issuer's expiry before an
++// explicitly selected service applies its intake hold. It grants no reservation
++// or later admission authority: CommitManifestAdmission still performs every
++// original check, including its final expiry sample.
++//
++// Like the staged commits, this method never waits for the registry gate. check
++// must recheck an already-held original account lease, without external work or
++// reacquiring a lease. Only the exact ErrJobExpired returned by this method's
++// clock branch is authoritative expiry; errors supplied by check are wrapped.
++func (s *ManifestStore) PreflightManifestAdmission(prepared *PreparedManifestAdmission, check func() error) error {
++	if s == nil {
++		return ErrClosed
++	}
++	// Reuse the original historical validation rather than maintaining a second
++	// copy of its record/index/session rules. This branch cannot create a record
++	// or sample a clock. Selected services normally bypass preflight for history.
++	if prepared != nil && prepared.state != nil && prepared.state.historical {
++		_, _, err := s.CommitManifestAdmission(prepared, Eligibility{}, check)
++		return err
++	}
++	if !s.mu.TryLock() {
++		return ErrBusy
++	}
++	defer s.mu.Unlock()
++	if err := s.state(true); err != nil {
++		return err
++	}
++	if prepared == nil || prepared.state == nil || prepared.state.store != s {
++		return ErrManifestAuthority
++	}
++	p := prepared.state
++	if p.pin != s.meta.pin() || p.descriptor != s.meta.Descriptor {
++		return ErrManifestAuthority
++	}
++	if check == nil {
++		return errors.New("manifest admission preflight requires an original-session recheck")
++	}
++	job, err := s.loadJob(p.record.Job.ID)
++	if err != nil {
++		return err
++	}
++	if job != p.record.Job {
++		return ErrConflict
++	}
++	_, err = s.db.Get(recordKey(p.record.Verified.ProspectID), nil)
++	if err == nil {
++		// A concurrent insert requires a fresh preparation and the original
++		// historical path; an old nonhistorical token cannot decide expiry.
++		return ErrConflict
++	}
++	if !errors.Is(err, leveldb.ErrNotFound) {
++		return err
++	}
++	if s.meta.LastSequence == math.MaxUint64 {
++		return errors.New("manifest receipt sequence exhausted")
++	}
++	if err := check(); err != nil {
++		return fmt.Errorf("manifest admission preflight session check: %w", err)
++	}
++	observed, err := s.clockMillis()
++	if err != nil {
++		return err
++	}
++	// A clock-only write retains the original logical-byte/reservation and
++	// poison semantics. A full birth count is not itself a clock-write failure.
++	// Never turn a refused or uncertain sync into an expired response.
++	if err := s.persistClock(observed); err != nil {
++		return err
++	}
++	if observed < job.IssuedAtMS {
++		return ErrClock
++	}
++	if observed >= job.ExpiresAtMS {
++		return ErrJobExpired
++	}
++	return nil
++}
+--- before/registry/manifest_admission_preflight_test.go
++++ after/registry/manifest_admission_preflight_test.go
+@@ -0,0 +1,198 @@
++//go:build !slugtestpow
++
++// Copyright (c) 2026 The SLUG developers. ISC license.
++package registry
++
++import (
++	"bytes"
++	"encoding/hex"
++	"errors"
++	"reflect"
++	"testing"
++	"time"
++
++	"github.com/syndtr/goleveldb/leveldb"
++	"github.com/syndtr/goleveldb/leveldb/opt"
++)
++
++func TestManifestAdmissionPreflightOriginalOwnerAndHistory(t *testing.T) {
++	f := readManifestCorpus(t)
++	tc := f.Cases[0]
++	s, _, now := manifestCorpusStore(t, f)
++	p, err := s.PrepareManifestAdmission(tc.Proof, tc.Authorization)
++	if err != nil { t.Fatal(err) }
++	before := s.meta
++	for _, bad := range []*PreparedManifestAdmission{nil, {}} {
++		if err = s.PreflightManifestAdmission(bad, func() error { t.Fatal("invalid preparation reached lease"); return nil }); err != ErrManifestAuthority { t.Fatal(err) }
++	}
++	other, _, _ := manifestCorpusStore(t, f)
++	if err = other.PreflightManifestAdmission(p, func() error { t.Fatal("foreign preparation reached lease"); return nil }); err != ErrManifestAuthority { t.Fatal(err) }
++	if err = s.PreflightManifestAdmission(p, nil); err == nil { t.Fatal("nil session check accepted") }
++	for _, refusal := range []error{errors.New("original session revoked"), ErrJobExpired, errors.Join(ErrJobExpired, ErrCorrupt)} {
++		if err = s.PreflightManifestAdmission(p, func() error { return refusal }); !errors.Is(err, refusal) || err == ErrJobExpired || s.meta != before { t.Fatal("session cause became authoritative expiry or wrote", err) }
++	}
++	s.mu.Lock()
++	done := make(chan error, 1)
++	go func() { done <- s.PreflightManifestAdmission(p, func() error { t.Error("busy preparation reached lease"); return nil }) }()
++	select {
++	case err = <-done:
++		s.mu.Unlock()
++		if err != ErrBusy { t.Fatal(err) }
++	case <-time.After(2*time.Second):
++		s.mu.Unlock(); <-done; t.Fatal("preflight waited under original account lease")
++	}
++	*now = tc.Accepted
++	if err = s.PreflightManifestAdmission(p, func() error { return nil }); err != nil { t.Fatal(err) }
++	if s.meta.LastSequence != 0 || s.meta.JobCount != before.JobCount || s.meta.LastClockMS != tc.Accepted { t.Fatal("preflight changed non-clock state") }
++	admitManifestCase(t, s, now, tc)
++	if err = s.PreflightManifestAdmission(p, func() error { t.Fatal("stale token reached lease"); return nil }); err != ErrConflict { t.Fatal("new duplicate did not require reprepare", err) }
++	history, err := s.PrepareManifestAdmission(tc.Proof, tc.Authorization)
++	if err != nil || !history.Historical() { t.Fatal(err) }
++	s.now = func() time.Time { t.Fatal("historical preflight sampled time"); return time.Time{} }
++	s.writeBatch = func(*leveldb.Batch, *opt.WriteOptions) error { t.Fatal("historical preflight wrote"); return nil }
++	if err = s.PreflightManifestAdmission(history, func() error { return nil }); err != nil { t.Fatal(err) }
++	got, err := s.GetManifestAdmission(tc.Verified.ProspectID)
++	if err != nil || !reflect.DeepEqual(got, tc.Record) { t.Fatal("historical evidence changed", err) }
++	if err = s.db.Delete(sequenceKey(tc.Record.Sequence), &opt.WriteOptions{Sync:true}); err != nil { t.Fatal(err) }
++	if err = s.PreflightManifestAdmission(history, func() error { t.Fatal("corrupt index reached lease"); return nil }); err != ErrConflict { t.Fatal("cached history hid changed index", err) }
++	for _, mode := range []string{"missing-job","changed-job","read-only","closed"} {
++		t.Run(mode,func(t *testing.T){
++			original,path,_:=manifestCorpusStore(t,f)
++			p,e:=original.PrepareManifestAdmission(tc.Proof,tc.Authorization);if e!=nil{t.Fatal(e)}
++			owner:=original
++			want:=ErrJobNotFound
++			switch mode {
++			case "missing-job": e=owner.db.Delete(jobKey(tc.Job.ID),&opt.WriteOptions{Sync:true})
++			case "changed-job":
++				e=owner.db.Put(jobKey(tc.Job.ID),[]byte(f.Jobs[1].Canonical),&opt.WriteOptions{Sync:true});want=ErrCorrupt
++			case "read-only":
++				e=original.Close();if e==nil{owner,e=OpenManifestAuthority(path,f.Pin,true)}
++				if owner!=nil{defer func(){if closeErr:=owner.Close();closeErr!=nil{t.Error(closeErr)}}()};want=ErrReadOnly
++			case "closed":e=owner.Close();want=ErrClosed
++			}
++			if e!=nil{t.Fatal(e)}
++			owner.now=func()time.Time{t.Fatal("invalid original owner/job reached clock");return time.Time{}}
++			if e=owner.PreflightManifestAdmission(p,func()error{t.Fatal("invalid original owner/job reached lease");return nil});!errors.Is(e,want){t.Fatal(e)}
++		})
++	}
++}
++
++func TestManifestAdmissionPreflightExpiryAndRestart(t *testing.T) {
++	f := readManifestCorpus(t)
++	tc := f.Cases[0]
++	for _, final := range []bool{false, true} {
++		t.Run(map[bool]string{false:"preflight-expired",true:"commit-crosses-expiry"}[final], func(t *testing.T) {
++			s, path, now := manifestCorpusStore(t, f)
++			p, err := s.PrepareManifestAdmission(tc.Proof, tc.Authorization)
++			if err != nil { t.Fatal(err) }
++			*now = tc.Job.ExpiresAtMS
++			if final { *now-- }
++			err = s.PreflightManifestAdmission(p, func() error { return nil })
++			if final {
++				if err != nil { t.Fatal(err) }
++				*now = tc.Job.ExpiresAtMS
++				_, inserted, e := s.CommitManifestAdmission(p, tc.Eligibility, func() error { return nil })
++				if inserted { t.Fatal("preflight reserved a post-expiry birth") }
++				err = e
++			}
++			if err != ErrJobExpired || s.meta.LastSequence != 0 || s.meta.LastClockMS != tc.Job.ExpiresAtMS { t.Fatal("expiry/high water", err) }
++			// An already persisted equal sample is a genuine no-write observation.
++			s.writeBatch = func(*leveldb.Batch, *opt.WriteOptions) error { t.Fatal("equal clock rewrote metadata"); return nil }
++			if err = s.PreflightManifestAdmission(p, func() error { return nil }); err != ErrJobExpired { t.Fatal(err) }
++			if err = s.Close(); err != nil { t.Fatal(err) }
++			reopened, err := OpenManifestAuthority(path, f.Pin, false)
++			if err != nil { t.Fatal(err) }
++			defer func() { if e:=reopened.Close();e!=nil {t.Error(e)} }()
++			if err = reopened.PreflightManifestAdmission(p, func() error { t.Fatal("old owner token reached lease"); return nil }); err != ErrManifestAuthority { t.Fatal(err) }
++			reopened.now = func() time.Time { return time.UnixMilli(tc.Job.ExpiresAtMS-1) }
++			fresh, err := reopened.PrepareManifestAdmission(tc.Proof, tc.Authorization)
++			if err != nil { t.Fatal(err) }
++			if err = reopened.PreflightManifestAdmission(fresh, func() error { return nil }); err != ErrClock { t.Fatal("restart forgot observed expiry", err) }
++		})
++	}
++}
++
++func TestManifestAdmissionPreflightClockCapacityAndUncertainty(t *testing.T) {
++	f := readManifestCorpus(t)
++	tc := f.Cases[0]
++	for _, corrupt := range []bool{false,true} {
++		t.Run(map[bool]string{false:"logical-clock-capacity",true:"integrity-before-capacity"}[corrupt],func(t *testing.T){
++			s, _, _, _ := publicTestStore(t)
++			random, err := hex.DecodeString(f.Random)
++			if err != nil { t.Fatal(err) }
++			// The public constructor retains the independent pin; the first32
++			// bytes of this published stream were its authority ID, not a job.
++			s.random=bytes.NewReader(random[32:])
++			s.now=func()time.Time{return time.UnixMilli(f.Issued)}
++			for _, row:=range f.Jobs {
++				job,e:=s.IssueManifestJob(row.Job.Context,row.Job.PublicKey,func()error{return nil})
++				if e!=nil || job!=row.Job {t.Fatal("independent original job",e)}
++			}
++			p,err:=s.PrepareManifestAdmission(tc.Proof,tc.Authorization)
++			if err!=nil {t.Fatal(err)}
++			before:=s.meta
++			publicBefore:=s.public.meta
++			originalLimit:=s.public.pin.Limits.LogicalBytes
++			defer func(){s.public.pin.Limits.LogicalBytes=originalLimit;s.public.meta=publicBefore}()
++			// Conditional prewrite boundary only: no modified pin is published
++			// or reopened as signed authority. Advancing to15 digits grows both
++			// metadata clocks beyond the exact occupied byte allowance.
++			s.public.pin.Limits.LogicalBytes=s.public.meta.LogicalBytes
++			if corrupt {s.public.meta.SignedAdmissionSequence=s.public.meta.AcceptedSequence+1}
++			s.now=func()time.Time{return time.UnixMilli(MaxPublicTimestampMS)}
++			s.writeBatch=func(*leveldb.Batch,*opt.WriteOptions)error{t.Fatal("refused clock reached write");return nil}
++			err=s.PreflightManifestAdmission(p,func()error{return nil})
++			if corrupt {if err!=ErrPublicOwnership {t.Fatal(err)}} else if err!=ErrPublicCapacity {t.Fatal("logical refusal became expiry",err)}
++			if s.meta!=before {t.Fatal("refused clock changed durable metadata")}
++		})
++	}
++	for _, after:=range []bool{false,true} {
++		t.Run(map[bool]string{false:"before-clock-write",true:"clock-write-ack-lost"}[after],func(t *testing.T){
++			s,path,now:=manifestCorpusStore(t,f)
++			p,err:=s.PrepareManifestAdmission(tc.Proof,tc.Authorization)
++			if err!=nil {t.Fatal(err)}
++			*now=tc.Job.ExpiresAtMS
++			s.writeBatch=func(b *leveldb.Batch,o *opt.WriteOptions)error{
++				if o==nil || !o.Sync {t.Fatal("clock not synchronized")}
++				if after {if e:=s.db.Write(b,o);e!=nil{return e}}
++				return errors.New("controlled clock acknowledgment lost")
++			}
++			if err=s.PreflightManifestAdmission(p,func()error{return nil});!errors.Is(err,ErrPoisoned)||err==ErrJobExpired {t.Fatal("uncertain clock became terminal",err)}
++			if err=s.PreflightManifestAdmission(p,func()error{t.Fatal("poison retried");return nil});!errors.Is(err,ErrPoisoned){t.Fatal(err)}
++			if err=s.Close();err!=nil{t.Fatal(err)}
++			reopened,err:=OpenManifestAuthority(path,f.Pin,false)
++			if err!=nil{t.Fatal(err)}
++			defer func(){if e:=reopened.Close();e!=nil{t.Error(e)}}()
++			if reopened.meta.LastSequence!=0 || reopened.meta.JobCount!=uint64(len(f.Jobs)){t.Fatal("clock-only failure allocated admission")}
++			want:=f.Issued;if after{want=tc.Job.ExpiresAtMS}
++			if reopened.meta.LastClockMS!=want{t.Fatal("original reopen did not resolve controlled clock outcome")}
++		})
++	}
++}
++
++func TestManifestAdmissionPreflightPublicCounts(t *testing.T) {
++	f:=readManifestCorpus(t)
++	s,p,_,_:=publicTestStore(t)
++	random,err:=hex.DecodeString(f.Random);if err!=nil{t.Fatal(err)}
++	s.random=bytes.NewReader(random[32:])
++	now:=f.Issued;s.now=func()time.Time{return time.UnixMilli(now)}
++	for _,row:=range f.Jobs{job,e:=s.IssueManifestJob(row.Job.Context,row.Job.PublicKey,func()error{return nil});if e!=nil||job!=row.Job{t.Fatal(e)}}
++	tc:=f.Cases[0]
++	prepared,err:=s.PrepareManifestAdmission(tc.Proof,tc.Authorization);if err!=nil{t.Fatal(err)}
++	now=tc.Accepted
++	if err=s.PreflightManifestAdmission(prepared,func()error{return nil});err!=nil{t.Fatal(err)}
++	if s.meta.LastSequence!=0||s.public.meta.AcceptedSequence!=0||s.public.meta.PublicationSequence!=0||s.public.meta.SignedAdmissionSequence!=0{t.Fatal("clock-only preflight allocated birth/publication")}
++	if _,err=s.db.Get(publicCounterKey("ownership/outbox/",1),nil);!errors.Is(err,leveldb.ErrNotFound){t.Fatal("preflight staged admission outbox",err)}
++	record,inserted,err:=s.CommitManifestAdmission(prepared,tc.Eligibility,func()error{return nil})
++	if err!=nil||!inserted||!reflect.DeepEqual(record,tc.Record){t.Fatal("original final admission differs",err)}
++	// Quiescent original publisher: record+sequence+ownership outbox each1,
++	// signed publications0. Admission itself did not sign a publication.
++	if s.meta.LastSequence!=1||s.public.meta.AcceptedSequence!=1||s.public.meta.PublicationSequence!=0||s.public.meta.SignedAdmissionSequence!=0{t.Fatal("admission count units changed")}
++	if _,err=s.db.Get(publicCounterKey("ownership/outbox/",1),nil);err!=nil{t.Fatal(err)}
++	if _,err=s.db.Get(sequenceKey(1),nil);err!=nil{t.Fatal(err)}
++	if _,err=s.db.Get(publicCounterKey("ownership/outbox/",2),nil);!errors.Is(err,leveldb.ErrNotFound){t.Fatal("extra outbox",err)}
++	history,err:=s.PrepareManifestAdmission(tc.Proof,tc.Authorization);if err!=nil{t.Fatal(err)}
++	s.now=func()time.Time{t.Fatal("historical public preflight sampled clock");return time.Time{}}
++	if err=s.PreflightManifestAdmission(history,func()error{return nil});err!=nil{t.Fatal(err)}
++	if p==nil||s.public.meta.AcceptedSequence!=1||s.public.meta.PublicationSequence!=0{t.Fatal("historical preflight published")}
++}
+--- before/registry/manifest_admission_preflight_profile_test.go
++++ after/registry/manifest_admission_preflight_profile_test.go
+@@ -0,0 +1,18 @@
++//go:build slugtestpow
++
++// Copyright (c) 2026 The SLUG developers. ISC license.
++package registry
++
++import (
++	"strings"
++	"testing"
++	"time"
++
++	"github.com/syndtr/goleveldb/leveldb"
++)
++
++func TestManifestAdmissionPreflightCheapRefuses(t *testing.T) {
++	s:=&ManifestStore{db:&leveldb.DB{},now:func()time.Time{t.Fatal("cheap preflight read clock");return time.Time{}}}
++	err:=s.PreflightManifestAdmission(nil,func()error{t.Fatal("cheap preflight reached session");return nil})
++	if err==nil||!strings.Contains(err.Error(),"slugtestpow")||s.meta!=(manifestMetadata{})||s.clockSeen!=0{t.Fatal("cheap preflight changed state",err)}
++}
+--- before/prospectservice/daily_fenced_admission.go
++++ after/prospectservice/daily_fenced_admission.go
+@@ -0,0 +1,71 @@
++// Copyright (c) 2026 The SLUG developers. ISC license.
++package prospectservice
++
++import (
++	"errors"
++
++	"github.com/taytr-llc/slug/internal/mininglease"
++	"github.com/taytr-llc/slug/prospectnode"
++	"github.com/taytr-llc/slug/registry"
++)
++
++// NewPausedDailyFencedManifestAdmissionServer explicitly selects authoritative
++// expiry preflight for retained DAILY work. It borrows the same original issuer,
++// node and session owners as the old constructor and exposes no issuance route.
++// Intake still starts paused; DrainOperatorIntake remains permanent. The DAILY
++// operator independently decides when its original-job admission can be enabled.
++func NewPausedDailyFencedManifestAdmissionServer(config ManifestServerConfig, policy prospectnode.Policy, node ManifestNode, store *registry.ManifestStore, sessions SessionAuthorizer) (*ManifestServer, error) {
++	s, err := NewPausedFencedManifestAdmissionServer(config, policy, node, store, sessions)
++	if err != nil {
++		return nil, err
++	}
++	s.dailyAdmission = true
++	return s, nil
++}
++
++func (server *ManifestServer) preflightDailyAdmission(lease *mininglease.Lease, prepared *registry.PreparedManifestAdmission) *responseError {
++	var original error
++	err := lease.Do(func(check func() error) error {
++		original = server.store.PreflightManifestAdmission(prepared, check)
++		// Do must observe the outer authorizer's result independently of the
++		// helper result. Its legacy operation-error precedence can otherwise
++		// discard a mixed outer failure behind an expired callback error.
++		return nil
++	})
++	// Preserve the source of the terminal decision. A session/wrapper error
++	// that merely contains ErrJobExpired cannot authorize clearing retained work.
++	if err != nil {
++		return server.dailyPreflightFailure(errors.Join(err, original))
++	}
++	// Reauthorize the original session after the short operation lease, even
++	// when only the clock changed. No terminal disclosure or node work follows
++	// a lost/replaced/canceled original session.
++	if err := lease.Check(); err != nil {
++		return server.dailyPreflightFailure(errors.Join(err, original))
++	}
++	if original == registry.ErrJobExpired {
++		return apiError("expired", 409)
++	}
++	if original != nil {
++		return server.dailyPreflightFailure(original)
++	}
++	return nil
++}
++
++func (server *ManifestServer) dailyPreflightFailure(err error) *responseError {
++	if errors.Is(err, registry.ErrPoisoned) {
++		server.poisoned.Store(true)
++		return &responseError{"outcome_unknown", 503, true}
++	}
++	if errors.Is(err, mininglease.ErrOutcomeUnknown) {
++		return &responseError{"outcome_unknown", 503, true}
++	}
++	if errors.Is(err, mininglease.ErrUnauthorized) {
++		return apiError("unauthorized", 401)
++	}
++	if errors.Is(err, registry.ErrJobExpired) {
++		// Only preflightDailyAdmission's exact original result can emit expired.
++		return apiError("unavailable", 503)
++	}
++	return fencedAdmissionFailure(server, err)
++}
+--- before/prospectservice/daily_fenced_admission_test.go
++++ after/prospectservice/daily_fenced_admission_test.go
+@@ -0,0 +1,175 @@
++//go:build !slugtestpow
++
++// Copyright (c) 2026 The SLUG developers. ISC license.
++package prospectservice
++
++import (
++	"context"
++	"encoding/json"
++	"errors"
++	"fmt"
++	"reflect"
++	"strings"
++	"testing"
++	"time"
++
++	"github.com/taytr-llc/slug/internal/mininglease"
++	"github.com/taytr-llc/slug/registry"
++)
++
++// This is a conditional original-store fixture, not a new issuance. Retain the
++// independently encoded jobs and an exact receipt prefix; the omitted suffix
++// supplies valid, never-admitted proofs whose original lifetime has elapsed.
++func dailyAdmissionExpiredFixture(t *testing.T, retained int) (*ManifestServer,*registry.ManifestStore,*mbNode,mbCase,*mfSessions) {
++	t.Helper()
++	f:=mbLoad(t)
++	if retained<0 || retained>=len(f.Cases) {t.Fatal("bad retained prefix")}
++	tc:=f.Cases[retained]
++	if time.Now().UnixMilli()<tc.Job.ExpiresAtMS {t.Fatal("independent historical job is not yet expired")}
++	old:=fmt.Sprintf("\"last_sequence\":%d",len(f.Cases))
++	if strings.Count(f.Rows.Meta,old)!=1 {t.Fatal("independent metadata counter shape")}
++	f.Rows.Meta=strings.Replace(f.Rows.Meta,old,fmt.Sprintf("\"last_sequence\":%d",retained),1)
++	f.Rows.Records=f.Rows.Records[:retained]
++	f.Rows.Sequences=f.Rows.Sequences[:retained]
++	store,_:=mbSeed(t,f)
++	sessions:=&mfSessions{key:tc.Job.PublicKey}
++	node:=&mbNode{initial:tc.Job.Context,source:"current-parent"}
++	cfg:=mbConfig(f.Pin,tc.Job.PublicKey);cfg.Clients=nil
++	if retained>0 {cfg.MaxRecords=uint64(retained)}
++	s,err:=NewPausedDailyFencedManifestAdmissionServer(cfg,mbPolicy(tc.Job.Context),node,store,sessions)
++	if err!=nil {t.Fatal(err)}
++	return s,store,node,tc,sessions
++}
++
++func TestDailyFencedAdmissionExpiryBeforeIntake(t *testing.T) {
++	for _,mode:=range []string{"paused","drained","record-count-full"} {
++		t.Run(mode,func(t *testing.T){
++			retained:=0;if mode=="record-count-full" {retained=1}
++			s,store,node,tc,_:=dailyAdmissionExpiredFixture(t,retained)
++			ctx:=context.Background()
++			if mode=="drained" {if err:=s.DrainOperatorIntake(ctx);err!=nil {t.Fatal(err)}}
++			if mode=="record-count-full" {if err:=s.EnableOperatorIntake(ctx);err!=nil {t.Fatal(err)}}
++			before,err:=store.Info();if err!=nil{t.Fatal(err)}
++			mbError(t,mbRequest(t,s,mbToken,"/v3/admissions",mbSubmit(tc.Proof,tc.Authorization)),409,"expired",false)
++			after,err:=store.Info()
++			if err!=nil||after!=before||node.checks.Load()!=0 {t.Fatal("expired preflight allocated or reached node",err)}
++			if _,err=store.GetManifestAdmission(tc.Record.Verified.ProspectID);!errors.Is(err,registry.ErrNotFound){t.Fatal("expiry created receipt",err)}
++			// A healthy authoritative clock may establish expiry before a birth
++			// count hold. It neither resets nor relaxes an explicit intake drain.
++			if mode=="drained" {if err=s.EnableOperatorIntake(ctx);err!=ErrIntakeDraining{t.Fatal("expiry reset drain",err)}}
++		})
++	}
++}
++
++// The authorizer retains the original concrete key and counts short leases.
++// Hooks run only in this serialized fixture, without goroutines or a new public
++// authority seam. Call1 is Capture,2 is preflight Do,3 is its final Check.
++type dailyPreflightSessions struct {
++	key string
++	calls int
++	revoked bool
++	before func(int) error
++	after func(int,error) error
++}
++func (s *dailyPreflightSessions) WithSession(ctx context.Context,token string,fn func(string,func()error)error)error{
++	s.calls++
++	if s.before!=nil {if err:=s.before(s.calls);err!=nil{return err}}
++	check:=func()error{if token!=mbToken||s.revoked||ctx.Err()!=nil{return errors.New("original selected session unavailable")};return nil}
++	if err:=check();err!=nil{return err}
++	err:=fn(s.key,check)
++	if s.after!=nil {return s.after(s.calls,err)}
++	return err
++}
++
++func TestDailyFencedAdmissionSessionAndDuplicateFences(t *testing.T) {
++	for _,expired:=range []bool{false,true} {
++		for _,loss:=range []string{"post-revoked","post-canceled","do-unknown","foreign-expiry","joined-outer"} {
++			t.Run(fmt.Sprintf("expired-%v/%s",expired,loss),func(t *testing.T){
++				var s *ManifestServer
++				var store *registry.ManifestStore
++				var prepared *registry.PreparedManifestAdmission
++				var key string
++				if expired {
++					var tc mbCase
++					s,store,_,tc,_=dailyAdmissionExpiredFixture(t,0)
++					key=tc.Job.PublicKey
++					var err error;prepared,err=store.PrepareManifestAdmission(tc.Proof,tc.Authorization);if err!=nil{t.Fatal(err)}
++				} else {
++					base,st,node,session,body:=mfSetup(t);store=st;key=session.key
++					var err error;s,err=NewPausedDailyFencedManifestAdmissionServer(base.config,base.policy,node,store,session);if err!=nil{t.Fatal(err)}
++					raw,err:=json.Marshal(body);if err!=nil{t.Fatal(err)}
++					proof,auth,err:=ParseSubmission(raw);if err!=nil{t.Fatal(err)}
++					prepared,err=store.PrepareManifestAdmission(proof,auth);if err!=nil{t.Fatal(err)}
++				}
++				ctx,cancel:=context.WithCancel(context.Background());defer cancel()
++				sessions:=&dailyPreflightSessions{key:key}
++				want,unknown:="unauthorized",false
++				switch loss {
++				case "post-revoked": sessions.after=func(n int,e error)error{if n==2{sessions.revoked=true};return e}
++				case "post-canceled": sessions.after=func(n int,e error)error{if n==2{cancel()};return e};want,unknown="outcome_unknown",true
++				case "do-unknown": sessions.after=func(n int,e error)error{if n==3&&e==nil{return errors.New("post-check acknowledgement lost")};return e};want,unknown="outcome_unknown",true
++				case "foreign-expiry": sessions.before=func(n int)error{if n==2{return fmt.Errorf("foreign session cause: %w",registry.ErrJobExpired)};return nil}
++				case "joined-outer": sessions.after=func(n int,e error)error{if n==2{return errors.Join(e,registry.ErrJobExpired,errors.New("independent authorizer failure"))};return e};want,unknown="outcome_unknown",true
++				}
++				lease,err:=mininglease.Capture(ctx,sessions,mbToken);if err!=nil{t.Fatal(err)}
++				failure:=s.preflightDailyAdmission(lease,prepared)
++				if failure==nil||failure.code!=want||failure.unknown!=unknown {t.Fatalf("lost original session became terminal: %+v want %s/%v",failure,want,unknown)}
++				if loss=="joined-outer" {if err=lease.Check();err!=nil{t.Fatal("later healthy lease must not repair the failed call",err)}}
++				info,err:=store.Info();if err!=nil||info.Records!=0{t.Fatal("session failure created receipt",err)}
++			})
++		}
++	}
++	// A same-proof insert between preparation and preflight wins; only a fresh
++	// original historical preparation can recover it, without another node call.
++	base,store,node,sessions,body:=mfSetup(t)
++	s,err:=NewPausedDailyFencedManifestAdmissionServer(base.config,base.policy,node,store,sessions);if err!=nil{t.Fatal(err)}
++	raw,_:=json.Marshal(body);proof,auth,err:=ParseSubmission(raw);if err!=nil{t.Fatal(err)}
++	p,err:=store.PrepareManifestAdmission(proof,auth);if err!=nil{t.Fatal(err)}
++	if err=s.EnableOperatorIntake(context.Background());err!=nil{t.Fatal(err)}
++	response:=mbRequest(t,s,mbToken,"/v3/admissions",body)
++	var original ManifestAdmissionResult
++	if response.Code!=200||json.Unmarshal(response.Body.Bytes(),&original)!=nil||!original.Inserted{t.Fatal("initial selected admission",response.Body.String())}
++	lease,err:=mininglease.Capture(context.Background(),sessions,mbToken);if err!=nil{t.Fatal(err)}
++	if failure:=s.preflightDailyAdmission(lease,p);failure==nil||failure.code!="busy"||failure.unknown{t.Fatal("stale preparation used",failure)}
++	checks:=node.checks.Load()
++	if err=s.DrainOperatorIntake(context.Background());err!=nil{t.Fatal(err)}
++	response=mbRequest(t,s,mbToken,"/v3/admissions",body)
++	var recovered ManifestAdmissionResult
++	if response.Code!=200||json.Unmarshal(response.Body.Bytes(),&recovered)!=nil||recovered.Inserted||!reflect.DeepEqual(recovered.Record,original.Record)||node.checks.Load()!=checks{t.Fatal("exact historical recovery",response.Body.String())}
++}
++
++func TestDailyFencedAdmissionHistoricalAndLegacy(t *testing.T) {
++	f:=mbLoad(t);store,_:=mbSeed(t,f);tc:=f.Cases[0]
++	node:=&mbNode{initial:tc.Job.Context,guard:func(context.Context)error{t.Fatal("history consulted node");return nil}}
++	sessions:=&mfSessions{key:tc.Job.PublicKey};cfg:=mbConfig(f.Pin,tc.Job.PublicKey);cfg.Clients=nil
++	s,err:=NewPausedDailyFencedManifestAdmissionServer(cfg,mbPolicy(tc.Job.Context),node,store,sessions);if err!=nil{t.Fatal(err)}
++	if err=s.DrainOperatorIntake(context.Background());err!=nil{t.Fatal(err)}
++	response:=mbRequest(t,s,mbToken,"/v3/admissions",mbSubmit(tc.Proof,tc.Authorization))
++	var result ManifestAdmissionResult
++	if response.Code!=200||json.Unmarshal(response.Body.Bytes(),&result)!=nil||result.Inserted||result.CurrentNodeChecked||!reflect.DeepEqual(result.Record,tc.Record){t.Fatal("independent historical bytes",response.Body.String())}
++	selected,oldStore,oldNode,expired,oldSessions:=dailyAdmissionExpiredFixture(t,0)
++	legacy,err:=NewPausedFencedManifestAdmissionServer(selected.config,selected.policy,oldNode,oldStore,oldSessions);if err!=nil{t.Fatal(err)}
++	if legacy.dailyAdmission||!selected.dailyAdmission{t.Fatal("selection leaked across constructors")}
++	if err=legacy.DrainOperatorIntake(context.Background());err!=nil{t.Fatal(err)}
++	mbError(t,mbRequest(t,legacy,mbToken,"/v3/admissions",mbSubmit(expired.Proof,expired.Authorization)),503,"capacity",false)
++}
++
++func TestDailyFencedAdmissionErrorProvenance(t *testing.T) {
++	for _,tc:=range []struct{name string;err error;code string;unknown bool}{
++		{"uncaptured-exact-expiry",registry.ErrJobExpired,"unavailable",false},
++		{"wrapped-expiry",fmt.Errorf("foreign: %w",registry.ErrJobExpired),"unavailable",false},
++		{"mixed-expiry-integrity",errors.Join(registry.ErrJobExpired,registry.ErrCorrupt),"unavailable",false},
++		{"mixed-expiry-poison",errors.Join(registry.ErrJobExpired,registry.ErrPoisoned),"outcome_unknown",true},
++		{"mixed-poison-session",errors.Join(registry.ErrPoisoned,mininglease.ErrUnauthorized),"outcome_unknown",true},
++		{"mixed-expiry-unknown",errors.Join(registry.ErrJobExpired,mininglease.ErrOutcomeUnknown),"outcome_unknown",true},
++		{"mixed-expiry-session",errors.Join(registry.ErrJobExpired,mininglease.ErrUnauthorized),"unauthorized",false},
++		{"exact-clock-capacity",registry.ErrPublicCapacity,"capacity",false},
++		{"mixed-clock-capacity",errors.Join(registry.ErrPublicCapacity,registry.ErrCorrupt),"unavailable",false},
++	}{t.Run(tc.name,func(t *testing.T){
++		s:=&ManifestServer{operatorIntake:&operatorIntakeState{enabled:true}}
++		failure:=s.dailyPreflightFailure(tc.err)
++		if failure.code!=tc.code||failure.unknown!=tc.unknown{t.Fatal(failure)}
++		if s.operatorIntake.draining!=(tc.err==registry.ErrPublicCapacity){t.Fatal("mixed failure changed intake")}
++		if s.poisoned.Load()!=errors.Is(tc.err,registry.ErrPoisoned){t.Fatal("poisoned original owner lost service poison latch")}
++	})}
++}
+--- before/prospectservice/daily_fenced_profile_test.go
++++ after/prospectservice/daily_fenced_profile_test.go
+@@ -0,0 +1,16 @@
++//go:build slugtestpow
++
++// Copyright (c) 2026 The SLUG developers. ISC license.
++package prospectservice
++
++import (
++	"strings"
++	"testing"
++
++	"github.com/taytr-llc/slug/prospectnode"
++)
++
++func TestDailyFencedAdmissionCheapRefuses(t *testing.T) {
++	s,err:=NewPausedDailyFencedManifestAdmissionServer(ManifestServerConfig{},prospectnode.Policy{},nil,nil,fencedProfileSessions{t})
++	if s!=nil||err==nil||!strings.Contains(err.Error(),"production PoW"){t.Fatal("cheap selected admission reached owner initialization",err)}
++}
+--- before/prospectservice/manifest_fenced_server.go
++++ after/prospectservice/manifest_fenced_server.go
+@@ -87,6 +87,11 @@
+ 	}
+ 	observation := registry.Eligibility{}
+ 	if !prepared.Historical() {
++		if server.dailyAdmission {
++			if failure := server.preflightDailyAdmission(lease, prepared); failure != nil {
++				return nil, failure
++			}
++		}
+ 		if intake := server.operatorIntake; intake != nil {
+ 			if intake.draining {
+ 				return nil, apiError("capacity", 503)
+--- before/prospectservice/manifest_server.go
++++ after/prospectservice/manifest_server.go
+@@ -53,6 +53,7 @@
+ 
+ 	operatorIntake  *operatorIntakeState // protected by active; never detached
+ 	fencedAdmission bool                 // explicit shared-runtime path; legacy session contract is unchanged
++	dailyAdmission  bool                 // constructor-only retained DAILY expiry selection
+ }
+ 
+ // NewManifestServer selects static per-gym credentials for protocol 3.

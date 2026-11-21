@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "approved_by": "root",
+  "scope": "Formatting-only successor and approved four concrete contention regressions; original expectations frozen before execution",
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_round_contention.go",
+      "bytes": 1598,
+      "sha256": "596973605b091a326680a2415e981a44cf22fadef7db8fd0348bca847cda793f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_round_contention_test.go",
+      "bytes": 11849,
+      "sha256": "984ef70f36a080c50321150b97618dd6fd5cbede6cfb642b90bd4a605aeec361"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/live_round.go",
+      "bytes": 3392,
+      "sha256": "45b19a96542db28f8e1f311f9e5dce2bbb85da5e17ec042116e8f1fe032a013f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/maintenance.go",
+      "bytes": 6159,
+      "sha256": "ebe50426735ab814677a506e6170c1d719684bc56faaa7dcc4d0f4580bce0e1e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/runtime.go",
+      "bytes": 21329,
+      "sha256": "30a6de0ee527127635d4e8e9dec33b233ca9b17890d8ced06aff8902c0e1397c"
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "scope": "One new normal-profile service test; original eight leaves remain exact root-formatted successors. Source-only, root owns Go/format/execution.",
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/slug/registry/manifest_admission_preflight.go",
+      "bytes": 2904,
+      "sha256": "71959959569287de81119db62b7d0c864188e9dd883ef970b49176ddd4ad61b2"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/registry/manifest_admission_preflight_test.go",
+      "bytes": 12807,
+      "sha256": "ff6102914a978e885d899eeb53186cee0075ebc11b5f97ba816c30d2199f510f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/registry/manifest_admission_preflight_profile_test.go",
+      "bytes": 657,
+      "sha256": "d0d8067d1daabdad0fec6a6ede485722a5743daebbff71686187a592ee2418a0"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/daily_fenced_admission.go",
+      "bytes": 2865,
+      "sha256": "d5af6dd0e350a92b3f2fc742c58e0f253f5ecd6ae7fe9fa1859c5a4ccfe78fac"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/daily_fenced_admission_test.go",
+      "bytes": 12017,
+      "sha256": "80c3fa74dc5f9879cd7309307fdfcfe00bf5e64400ab6854f9f744f46d491f14"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/daily_fenced_profile_test.go",
+      "bytes": 536,
+      "sha256": "d2b7efaa31e341db468faf5a85e04f97ec5b0bc4c5c52f9fe0c8b0975b4f6ef6"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/manifest_server.go",
+      "bytes": 19449,
+      "sha256": "6b72e50148d6c2b034b9d4d174815af1c22af170817d3d4bf6f62a34f536802d"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/manifest_fenced_server.go",
+      "bytes": 5654,
+      "sha256": "8dbc991e1521cb1a9504fc96e92498e3d6cf6fdee727f37e051d180ded0fb4ef"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/daily_fenced_capacity_reopen_test.go",
+      "bytes": 4760,
+      "sha256": "c6c5cd567d1bb7e884d799f89bf47ccae9e12ea7a7a25cc6bb269835e90e5847"
+    }
+  ],
+  "new_file": "/Users/taytrrip/slug/slug/prospectservice/daily_fenced_capacity_reopen_test.go",
+  "predecessor": {
+    "path": "/Users/taytrrip/slug/set81-prep/service-stage/source-checkpoint.pre-live-capacity.json",
+    "bytes": 5031,
+    "sha256": "5fb5c8fb041d25f470f5839f0bf452cd5f917aca7c7760a5d3bf24e4425bc05d"
+  },
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/gofmt-stage/report.json",
+      "bytes": 4709,
+      "sha256": "132576464d6b705ae7316e16e1bd7ed06a05af9f316cda636e9eec3db5cf3d1e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/implementation-selection.json",
+      "bytes": 6562,
+      "sha256": "3b270d9c4933cc0fe1b4a6c64bccbbbb2f66f30acdbb66bba12afbf0594f728f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/registry/testdata/manifest/reference/manifest_admission_v1.json",
+      "bytes": 1207894,
+      "sha256": "d32a8653c76c643addb3df091ca8d7dfdba66c2486f2ca305e718113f71d5794"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/manifest_behavior_test.go",
+      "bytes": 19717,
+      "sha256": "bc4939d7bedb7500df47666ab41ed9bd07c8154fc672140b600168f98513391f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/manifest_fenced_server_test.go",
+      "bytes": 7831,
+      "sha256": "1661cc292b7fcdc38ff63f1fc87458b9da59ec63d03de926930af4127b730223"
+    }
+  ],
+  "required_new_normal_race": [
+    "TestDailyFencedAdmissionLiveCapacityReopen"
+  ],
+  "cheap": false,
+  "limitations": [
+    "MaxRecords1 is an explicit conditional service limit, not exhaustion of the separately signed public-authority publication/birth limit.",
+    "Original same-job proofs are independently verified with the normal profile; original persisted record count and exact receipt survive physical issuer reopen.",
+    "No production, authority limit, clock, fixture, or expected corpus change; no Go commands were executed."
+  ]
+}

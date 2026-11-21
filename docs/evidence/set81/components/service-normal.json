@@ -1,0 +1,117 @@
+{
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 93285,
+        "pid": 93285,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./prospectservice"
+      ],
+      "exit_code": 0,
+      "label": "deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 93285,
+      "pid": 93285,
+      "seconds": 0.324,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 93302,
+        "pid": 93302,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "test",
+        "-count=1",
+        "-p=1",
+        "-timeout=450s",
+        "-json",
+        "-run",
+        "^Test(DailyRetained|ManifestAdmissionPreflight|DailyFencedAdmission|RetainedPoolAdmission)",
+        "./prospectservice"
+      ],
+      "exit_code": 0,
+      "label": "normal",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 93302,
+      "pid": 93302,
+      "seconds": 4.934,
+      "timed_out": false
+    }
+  ],
+  "expected_profile_skips": [],
+  "failed_tests": [],
+  "passed": true,
+  "passing_packages": [
+    "github.com/taytr-llc/slug/prospectservice"
+  ],
+  "passing_tests": [
+    "github.com/taytr-llc/slug/prospectservice/TestDailyFencedAdmissionExpiryBeforeIntake/paused",
+    "github.com/taytr-llc/slug/prospectservice/TestDailyFencedAdmissionExpiryBeforeIntake/drained",
+    "github.com/taytr-llc/slug/prospectservice/TestDailyFencedAdmissionExpiryBeforeIntake/record-count-full",
+    "github.com/taytr-llc/slug/prospectservice/TestDailyFencedAdmissionExpiryBeforeIntake",
+    "github.com/taytr-llc/slug/prospectservice/TestDailyFencedAdmissionSessionAndDuplicateFences/expired-false/post-revoked",
+    "github.com/taytr-llc/slug/prospectservice/TestDailyFencedAdmissionSessionAndDuplicateFences/expired-false/post-canceled",
+    "github.com/taytr-llc/slug/prospectservice/TestDailyFencedAdmissionSessionAndDuplicateFences/expired-false/do-unknown",
+    "github.com/taytr-llc/slug/prospectservice/TestDailyFencedAdmissionSessionAndDuplicateFences/expired-false/foreign-expiry",
+    "github.com/taytr-llc/slug/prospectservice/TestDailyFencedAdmissionSessionAndDuplicateFences/expired-false/joined-outer",
+    "github.com/taytr-llc/slug/prospectservice/TestDailyFencedAdmissionSessionAndDuplicateFences/expired-true/post-revoked",
+    "github.com/taytr-llc/slug/prospectservice/TestDailyFencedAdmissionSessionAndDuplicateFences/expired-true/post-canceled",
+    "github.com/taytr-llc/slug/prospectservice/TestDailyFencedAdmissionSessionAndDuplicateFences/expired-true/do-unknown",
+    "github.com/taytr-llc/slug/prospectservice/TestDailyFencedAdmissionSessionAndDuplicateFences/expired-true/foreign-expiry",
+    "github.com/taytr-llc/slug/prospectservice/TestDailyFencedAdmissionSessionAndDuplicateFences/expired-true/joined-outer",
+    "github.com/taytr-llc/slug/prospectservice/TestDailyFencedAdmissionSessionAndDuplicateFences",
+    "github.com/taytr-llc/slug/prospectservice/TestDailyFencedAdmissionHistoricalAndLegacy",
+    "github.com/taytr-llc/slug/prospectservice/TestDailyFencedAdmissionErrorProvenance/uncaptured-exact-expiry",
+    "github.com/taytr-llc/slug/prospectservice/TestDailyFencedAdmissionErrorProvenance/wrapped-expiry",
+    "github.com/taytr-llc/slug/prospectservice/TestDailyFencedAdmissionErrorProvenance/mixed-expiry-integrity",
+    "github.com/taytr-llc/slug/prospectservice/TestDailyFencedAdmissionErrorProvenance/mixed-expiry-poison",
+    "github.com/taytr-llc/slug/prospectservice/TestDailyFencedAdmissionErrorProvenance/mixed-poison-session",
+    "github.com/taytr-llc/slug/prospectservice/TestDailyFencedAdmissionErrorProvenance/mixed-expiry-unknown",
+    "github.com/taytr-llc/slug/prospectservice/TestDailyFencedAdmissionErrorProvenance/mixed-expiry-session",
+    "github.com/taytr-llc/slug/prospectservice/TestDailyFencedAdmissionErrorProvenance/exact-clock-capacity",
+    "github.com/taytr-llc/slug/prospectservice/TestDailyFencedAdmissionErrorProvenance/mixed-clock-capacity",
+    "github.com/taytr-llc/slug/prospectservice/TestDailyFencedAdmissionErrorProvenance",
+    "github.com/taytr-llc/slug/prospectservice/TestDailyFencedAdmissionLiveCapacityReopen"
+  ],
+  "pattern": "^Test(DailyRetained|ManifestAdmissionPreflight|DailyFencedAdmission|RetainedPoolAdmission)",
+  "profile_unchanged": true,
+  "required_tests": [
+    "TestDailyFencedAdmissionExpiryBeforeIntake",
+    "TestDailyFencedAdmissionSessionAndDuplicateFences",
+    "TestDailyFencedAdmissionHistoricalAndLegacy",
+    "TestDailyFencedAdmissionErrorProvenance",
+    "TestDailyFencedAdmissionLiveCapacityReopen"
+  ],
+  "scope": "Set81 service normal",
+  "skipped_tests": [],
+  "sources_unchanged": true,
+  "version": 1
+}

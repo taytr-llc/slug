@@ -1,0 +1,154 @@
+--- before/cli_process.go
++++ after/cli_process.go
+@@ -96,7 +96,7 @@
+ 							c.ioFailure(errors.New("CLI worker state"))
+ 						}
+ 						switch v.Code {
+-						case "", "unavailable", "outcome_unknown", "busy", "capacity", "rate_limited":
++						case "", "unavailable", "outcome_unknown", "busy", "capacity", "rate_limited", "expired":
+ 						default:
+ 							c.ioFailure(errors.New("CLI worker refusal"))
+ 						}
+--- before/go.mod
++++ after/go.mod
+@@ -1,4 +1,4 @@
+-module github.com/taytr-llc/slug/desktop/issuerecoveryactual
++module github.com/taytr-llc/slug/desktop/retainedadmissionactual
+ 
+ go 1.27.3
+ 
+--- before/main.go
++++ after/main.go
+@@ -1,4 +1,4 @@
+-// Set80 finite original-owner A/B acceptance. Root alone executes this helper.
++// Set81 retained original-job fighter delivery. Root alone executes this helper.
+ package main
+ 
+ import (
+@@ -42,7 +42,7 @@
+ 	nodes      []*node
+ 	clients    []*poolservice.Client
+ 	rpc        *rpcRelay
+-	tls        *issueTLSRelay
++	tls        *admissionTLSRelay
+ 	controller *accountpilot.RemotePoolController
+ }
+ type scenario struct {
+@@ -90,7 +90,7 @@
+ func (v *scenario) phase(name string, value any) { write(filepath.Join(v.root, name+".json"), value) }
+ func runActual(ctx context.Context, kind, binary, operator, helper, root, reference, oldReference, base string) (out map[string]any) {
+ 	start := time.Now()
+-	out = map[string]any{"version": 1, "case": kind, "passed": false, "completed": false, "start_ms": start.UnixMilli(), "scope": "finite original request recovery on standalone operator and headless CLI", "public_seed_mining": false}
++	out = map[string]any{"version": 1, "case": kind, "passed": false, "completed": false, "start_ms": start.UnixMilli(), "scope": "finite retained fighter admission at pool-only drain with original operator and headless CLI", "public_seed_mining": false}
+ 	owners := &actualOwners{}
+ 	v := &scenario{ctx: ctx, kind: kind, binary: binary, operator: operator, helper: helper, root: root, owners: owners, out: out}
+ 	defer func() {
+@@ -160,16 +160,12 @@
+ 		out["cleanup_errors"] = cleanup
+ 		out["clean_join"] = len(cleanup) == 0
+ 		out["seconds"] = time.Since(start).Seconds()
+-		out["passed"] = out["completed"] == true && len(cleanup) == 0 && crashes == 1
+-		if owners.tls != nil {
+-			wire := owners.tls.receiptWireEvidence()
+-			require(len(encode(wire)) <= 16<<20, "bounded public receipt wire diagnostics")
+-			write(filepath.Join(root, "receipt-lookup-wire.json"), wire)
+-		}
++		out["passed"] = out["completed"] == true && len(cleanup) == 0 && crashes == 0
++
+ 		write(filepath.Join(root, "actual-report.json"), out)
+ 	}()
+ 	phase = "independent wrapper and original published fixture"
+-	ref, mnemonic := loadSelection(reference, "0f0890e529b64c10ed000673aab7861b9bd526057cc3c2bbbe05b868028f3d10", oldReference, base)
++	ref, mnemonic := loadSelection(reference, "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a", oldReference, base)
+ 	v.ref = ref
+ 	v.private = filepath.Join(root, "private-fixture")
+ 	check(os.Mkdir(v.private, 0700), "fresh synthetic private fixture")
+@@ -273,44 +269,11 @@
+ 	privateWrite(filepath.Join(v.private, "remote-config.json"), raw)
+ 	v.in = pilot.RecoverableRemotePoolInputs{AttachmentRoot: filepath.Join(root, "remote-attachment"), Config: v.c, NodeRPC: walletRPC, PoolCredentialPath: filepath.Join(v.private, "pool.credential"), AdmissionCredentialPath: filepath.Join(v.private, "admission.credential")}
+ 	firstToken := hx(digest([]byte("SLUG Set79 Path A pool " + gym)))
+-	owners.tls = startIssueTLS(ctx, v.private, v.s.Base.Ingress.Listen, recoveryClientConfig(v.s, v.c, 0, firstToken))
++	owners.tls = startAdmissionTLS(ctx, v.private, v.s.Base.Ingress.Listen, recoveryClientConfig(v.s, v.c, 0, firstToken))
+ 	v.serve("operator-serve-1")
+ 	v.phase("01-selection", map[string]any{"setup": v.s, "remote": v.c, "setup_id": v.setupID, "remote_id": v.remoteID, "due_ms": v.due, "start_ms": start.UnixMilli(), "initial_height": height})
+-	phase = "real original post-issuer proposal barrier"
+-	owners.rpc.armProposal()
+-	cli := v.launch("cli-1")
+-	var ack proposalBarrier
+-	select {
+-	case ack = <-owners.rpc.proposal:
+-	case <-ctx.Done():
+-		panic("proposal barrier deadline")
+-	case <-time.After(150 * time.Second):
+-		panic("proposal barrier bound")
+-	}
+-	check(v.current.stop(true, ack.AtMS), "one intentional original operator crash")
+-	owners.rpc.proposalJoined(ctx)
+-	check(cli.stop(), "original interrupted CLI joined")
+-	owners.tls.mu.Lock()
+-	v.id = owners.tls.originalID
+-	owners.tls.mu.Unlock()
+-	require(len(v.id) == 64, "exact retained original request")
+-	phase = "closed complete pending issued gap"
+-	v.gap = auditIssue(ctx, root, v.s, v.id)
+-	requireGap(v.gap, ack, v.s)
+-	v.phase("02-gap", map[string]any{"barrier": ack, "audit": v.gap, "operator": v.current.evidence()})
+-	result, local := readRequest(v.in.AttachmentRoot, v.c, v.id)
+-	require(result == nil && local.ActiveRequestID == v.id && local.Requests == 1 && local.Records == 0, "synced original local intent still null")
+-	v.phase("03-local-gap", local)
+-	out["request_id"] = v.id
+-	out["intent_id"] = v.gap.Request.IntentID
+-	out["job_id"] = v.gap.Job.ID
+-	out["issued_at_ms"] = v.gap.Job.IssuedAtMS
+-	out["expires_at_ms"] = v.gap.Job.ExpiresAtMS
+-	if kind == "A" {
+-		v.runA(a, b)
+-	} else {
+-		v.runB(a, b)
+-	}
++	v.runRetained(a, b)
++
+ 	out["completed"] = true
+ 	return
+ }
+@@ -334,5 +297,5 @@
+ 	if out["passed"] != true {
+ 		os.Exit(1)
+ 	}
+-	fmt.Println("finite original issue recovery actual passed")
+-}
++	fmt.Println("finite retained admission actual passed")
++}
+--- before/selection.go
++++ after/selection.go
+@@ -111,16 +111,27 @@
+ 	Profile   registry.IssueProfile
+ 	ProfileID string `json:"profile_id"`
+ 	Worker    prospectworker.RecoverablePoolConfig
++	RequiredAcceptedRewards int `json:"required_accepted_rewards"`
++	SelectedEconomics economicBranch `json:"selected_economics"`
+ }
+ 
+ func loadSelection(path, expectedHash, oldPath, base string) (recoveryReference, string) {
+ 	old, mnemonic := loadBaseSelection(oldPath, base)
+ 	raw := readBound(path, 1<<20)
+-	require(expectedHash == "0f0890e529b64c10ed000673aab7861b9bd526057cc3c2bbbe05b868028f3d10" && len(raw) == 173644 && hx(digest(raw)) == expectedHash, "root-qualified independent wrapper output")
++	require(expectedHash == "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a" && len(raw) == 174293 && hx(digest(raw)) == expectedHash, "root-qualified independent Set81 selection")
+ 	var v recoveryReference
+ 	check(json.Unmarshal(raw, &v), "wrapper reference")
+-	require(v.Version == 1 && reflect.DeepEqual(v.Base, old), "exact inherited selection and economics")
+-	require(reflect.DeepEqual(v.Setup.Base, old.Setup) && reflect.DeepEqual(v.Remote.Base, old.Remote) && v.Profile == v.Setup.IssueProfile && v.Profile == v.Remote.IssueProfile, "independent original base/profile")
++	require(old.Setup.MaintenanceIntervalMS == 30000 && v.Base.Setup.MaintenanceIntervalMS == 1000, "one independently selected maintenance interval")
++	expected := old
++	expected.Setup.MaintenanceIntervalMS = 1000
++	selectedRaw, e := pooloperator.MarshalDailySetup(expected.Setup)
++	check(e, "selected base setup grammar")
++	expected.SetupHex = hx(selectedRaw)
++	expected.SetupID, e = pooloperator.DailySetupID(expected.Setup)
++	check(e, "selected base setup identity")
++	require(v.Version == 1 && reflect.DeepEqual(v.Base, expected), "only selected interval and dependent setup bytes changed")
++	require(reflect.DeepEqual(v.Setup.Base, expected.Setup) && reflect.DeepEqual(v.Remote.Base, old.Remote) && v.Profile == v.Setup.IssueProfile && v.Profile == v.Remote.IssueProfile, "independent original base/profile")
++	require(v.RequiredAcceptedRewards == 2 && reflect.DeepEqual(v.SelectedEconomics, selectedEconomics(old, 2)) && v.SelectedEconomics.MinerAtoms == 1980000000 && v.SelectedEconomics.FeeAtoms == 209 && v.SelectedEconomics.ChangeAtoms == 19999791, "mandatory independently derived two-reward economics")
+ 	id, e := pooloperator.RecoverableDailySetupID(v.Setup)
+ 	check(e, "wrapper setup")
+ 	require(id == v.SetupID, "independent setup wrapper ID")

@@ -1,0 +1,240 @@
+{
+  "expiry_ms": 1795273653615,
+  "height": 104,
+  "mature_at_ms": 1795273458735,
+  "observed_at_ms": 1795273653616,
+  "target": {
+    "request_id": "fbd609bb930ba1b492883f1256367f7123e98027bfc4276c83e6d4b4b3452b8a",
+    "work": {
+      "job": {
+        "version": 2,
+        "rule_version": 1,
+        "id": "9163cd273df85d902a87e529c280e05cc5176599625b038ea106899ac47360a6",
+        "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+        "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+        "context": {
+          "version": 1,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "dna_version": 1,
+          "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "parent_hash": "3fe8fea47ba8e51a6247712d58eed1d046d361c93b8044806f45d41da8280c6d",
+          "parent_height": 3,
+          "expected_bits": 545259519,
+          "min_timestamp": 1795170122,
+          "max_timestamp": 1795280553
+        },
+        "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+        "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+        "challenge": "ff84469312d795c90c71f5e2c52204dd2b1d97ea4ed5917798f5d8f976fbfdd4",
+        "issued_at_ms": 1795273353615,
+        "expires_at_ms": 1795273653615
+      },
+      "template": {
+        "context": {
+          "version": 1,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "dna_version": 1,
+          "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "parent_hash": "3fe8fea47ba8e51a6247712d58eed1d046d361c93b8044806f45d41da8280c6d",
+          "parent_height": 3,
+          "expected_bits": 545259519,
+          "min_timestamp": 1795170122,
+          "max_timestamp": 1795280553
+        },
+        "block": {
+          "bits": "207fffff",
+          "curtime": 1795273353,
+          "height": 4,
+          "previousblockhash": "3fe8fea47ba8e51a6247712d58eed1d046d361c93b8044806f45d41da8280c6d",
+          "sigoplimit": 80000,
+          "sizelimit": 4000000,
+          "weightlimit": 4000000,
+          "transactions": [],
+          "version": 536870912,
+          "coinbaseaux": {
+            "flags": "0b2f503253482f627463642f"
+          },
+          "coinbasevalue": 1000000000,
+          "longpollid": "3fe8fea47ba8e51a6247712d58eed1d046d361c93b8044806f45d41da8280c6d-1795273352",
+          "target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+          "maxtime": 1795280553,
+          "mintime": 1795170122,
+          "mutable": [
+            "time",
+            "transactions/add",
+            "prevblock",
+            "coinbase/append"
+          ],
+          "noncerange": "00000000ffffffff",
+          "capabilities": [
+            "proposal"
+          ]
+        }
+      }
+    },
+    "proof": {
+      "version": 2,
+      "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+      "header": "000000206d0c28a81dd4456f8044803bc961d346d0d1ee582d7147621ae5a87ba4fee83f6c874960e4005231689e2e93fc7cda6a6f375d7645bfbcd0ac0c93ee5c89bc6689b2016bffff7f2000000000",
+      "coinbase": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff16540800000000000000000b2f503253482f627463642fffffffff0200ca9a3b00000000160014810816db7129a0ac531ca0eaea0d47a04a71a77d00000000000000002a6a28534c554750523032dd34aa7c26dddcf71716941bfa42b72e972299442c368f266559299aa6b5c4d400000000",
+      "merkle_branch": [],
+      "job_id": "9163cd273df85d902a87e529c280e05cc5176599625b038ea106899ac47360a6"
+    },
+    "authorization": {
+      "version": 2,
+      "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+      "signature": "3044022034e232407d3a381e12da2594201076c4b710b38826ac51f84c0f846a98594341022070c0a6a949d45638d2e5f4e354346b17920e81c3e95400e6466f41d9afa11b8b"
+    },
+    "receipt": {
+      "version": 1,
+      "sequence": 2,
+      "accepted_sequence": 2,
+      "job_id": "9163cd273df85d902a87e529c280e05cc5176599625b038ea106899ac47360a6",
+      "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+      "nonce": 0,
+      "pool_target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+      "header": "000000206d0c28a81dd4456f8044803bc961d346d0d1ee582d7147621ae5a87ba4fee83f6c874960e4005231689e2e93fc7cda6a6f375d7645bfbcd0ac0c93ee5c89bc6689b2016bffff7f2000000000",
+      "work_hash": "4a7fd51468c0d3c6dd7b8c83328537d606c4aa1041f8cd4f78d4fbdcc0495eb3",
+      "duplicate_key": "b7eefbf79ba7324c1539016f0c9392383e5a38da7dc29feddc5d43cc7fbf9085",
+      "pool": true,
+      "prospect": true,
+      "block": true,
+      "block_height": 4,
+      "received_at_ms": 1795273354704,
+      "accepted_at_ms": 1795273355353,
+      "acceptance": "canonical-winning-block",
+      "block_state": "canonical-observed",
+      "block_observed_at_ms": 1795273355353
+    },
+    "first_receipt": {
+      "version": 1,
+      "sequence": 1,
+      "accepted_sequence": 1,
+      "job_id": "77d3973303912bde44c452af683932b93d3036efd0e04b64bbb914409a49f019",
+      "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+      "nonce": 1,
+      "pool_target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+      "header": "000000202d3e62a4e954656cfd09c7f2fc6c7aa3bd89dc4bf0ad965946e0bb42ffe3c8118aa6dfe78ce51b72fba580cd39049b7a9d07f3d80b58c99ea99ca5b4ae52ac3885b2016bffff7f2001000000",
+      "work_hash": "3fe8fea47ba8e51a6247712d58eed1d046d361c93b8044806f45d41da8280c6d",
+      "duplicate_key": "3ee62391d6cd2eda818b061c61870757263af9f25dd4b2163bfa8d9d64815d9b",
+      "pool": true,
+      "prospect": true,
+      "block": true,
+      "block_height": 3,
+      "received_at_ms": 1795273352052,
+      "accepted_at_ms": 1795273352728,
+      "acceptance": "canonical-winning-block",
+      "block_state": "canonical-observed",
+      "block_observed_at_ms": 1795273352728
+    },
+    "first_admission": {
+      "version": 3,
+      "context_source": "trusted-node-snapshot",
+      "current_node_checked": true,
+      "authentication": "gym-key-control",
+      "birth_rule": "job-issuance",
+      "inserted": true,
+      "record": {
+        "version": 5,
+        "sequence": 2,
+        "context": {
+          "version": 1,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "dna_version": 1,
+          "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+          "parent_height": 2,
+          "expected_bits": 545259519,
+          "min_timestamp": 1795170106,
+          "max_timestamp": 1795280549
+        },
+        "proof": {
+          "version": 2,
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+          "header": "000000202d3e62a4e954656cfd09c7f2fc6c7aa3bd89dc4bf0ad965946e0bb42ffe3c8118aa6dfe78ce51b72fba580cd39049b7a9d07f3d80b58c99ea99ca5b4ae52ac3885b2016bffff7f2001000000",
+          "coinbase": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff16530800000000000000000b2f503253482f627463642fffffffff0200ca9a3b00000000160014810816db7129a0ac531ca0eaea0d47a04a71a77d00000000000000002a6a28534c55475052303270ad0a62b358f6dcfd0ca73bacda0f9af1139f371a8b0707f2be2223ff4d198300000000",
+          "merkle_branch": [],
+          "job_id": "77d3973303912bde44c452af683932b93d3036efd0e04b64bbb914409a49f019"
+        },
+        "verified": {
+          "version": 2,
+          "verification": "supplied-context",
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "prospect_id": "de28aefc3dacd323490f4d0af020dc66462188e7fc0e7489e25ff839b2d1351b",
+          "policy_id": "2dd6301ce9989bc383f942f3d1520e8bc61ee2564761a7f754eb09677b24fb8c",
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+          "work_hash": "3fe8fea47ba8e51a6247712d58eed1d046d361c93b8044806f45d41da8280c6d",
+          "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+          "parent_height": 2,
+          "dna": {
+            "dna_version": 1,
+            "seed": "3fe8fea47ba8e51a6247712d58eed1d046d361c93b8044806f45d41da8280c6d",
+            "rarity": "professional",
+            "talent_budget": 335,
+            "attributes": {
+              "power": 55,
+              "speed": 92,
+              "chin": 83,
+              "stamina": 41,
+              "skill": 64
+            },
+            "prime_weeks": 39,
+            "decline_weeks": 29
+          }
+        },
+        "authorization": {
+          "version": 2,
+          "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+          "signature": "30450221009b79c38aae22ca670f3f742fb4922e574c11681c322706d15a47ccf24e04644702203a16b820e3ddabbaf5c64bac8aee2695ed3a7eacd8a1a7ded4bbbfcf05bcf5e9"
+        },
+        "job": {
+          "version": 2,
+          "rule_version": 1,
+          "id": "77d3973303912bde44c452af683932b93d3036efd0e04b64bbb914409a49f019",
+          "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+          "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+          "context": {
+            "version": 1,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "dna_version": 1,
+            "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+            "parent_height": 2,
+            "expected_bits": 545259519,
+            "min_timestamp": 1795170106,
+            "max_timestamp": 1795280549
+          },
+          "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+          "challenge": "de4d52e52c4bc0499e17149a85ec8f5ad6e1b0102719940229eccbcbd037a1e1",
+          "issued_at_ms": 1795273349816,
+          "expires_at_ms": 1795273649816
+        },
+        "birth": {
+          "rule_version": 1,
+          "born_at_ms": 1795273349816,
+          "accepted_at_ms": 1795273353360
+        },
+        "eligibility": {
+          "rule_version": 2,
+          "source": "canonical-winning-block",
+          "hash": "3fe8fea47ba8e51a6247712d58eed1d046d361c93b8044806f45d41da8280c6d",
+          "height": 3
+        },
+        "static_binding": {
+          "version": 1,
+          "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+          "manifest_digest": "2d3dc7aa45f80c4ad9efdbc64fc05b36c8af839e3870d172f23641a2b4e1db5a",
+          "portrait_digest": "4db660f1518b106e980defb010f8804ad40be4a572641accc2e0a33bfa84be98"
+        }
+      }
+    },
+    "admission_body_sha256": "7a79930dc69b94a638d33b44bfb9259b1cce53b10d3073f8e40bea261d71ef98",
+    "first_held_at_ms": 1795273355825
+  }
+}

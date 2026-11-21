@@ -1,0 +1,11 @@
+{
+  "release_master": "e3eb4d495455383121bc1138f2cc010c90c6fb72",
+  "build_source_head": "1f559221c3735227e8475731f2c73a74282db5b0",
+  "selected_node_and_ctl_dependency_files": 281,
+  "changed_selected_files_since_release": [
+    "desktop/pooloperator/testdata/late-winner-actual/run.py",
+    "desktop/pooloperator/testdata/late-winner-actual/runner_support.py"
+  ],
+  "binary_runtime_source_unchanged_since_release": false,
+  "scope": "Source closure comparison only; read-only seed synchronization/restart is separate smoke evidence."
+}

@@ -29,3 +29,10 @@ desktop/pooloperator/testdata/issue-recovery-actual/pre-root-format/operator_pro
 docs/evidence/set80/diagnostics/A2-readonly/execution/build-info.txt whitespace=-blank-at-eol
 # GitHub's raw job log retains its timestamped empty line byte for byte.
 docs/evidence/set80/stable-close-ci/ci-failure-excerpt.txt whitespace=-blank-at-eol
+
+# Set81 preserves hash-pinned patch context, pre-format inputs and raw build info.
+desktop/pooloperator/testdata/retained-admission-actual/*.diff -whitespace
+desktop/pooloperator/testdata/retained-admission-actual/pre-b-maturity/retained_flow.go.txt whitespace=-blank-at-eof
+desktop/pooloperator/testdata/retained-admission-actual/pre-format/retained_flow.go.before.txt whitespace=-blank-at-eof
+docs/evidence/set81/**/*.diff -whitespace
+docs/evidence/set81/actual/A2-qualified/execution/*-build-info.txt whitespace=-blank-at-eol

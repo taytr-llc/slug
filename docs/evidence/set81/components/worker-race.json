@@ -1,0 +1,92 @@
+{
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 93590,
+        "pid": 93590,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./prospectworker"
+      ],
+      "exit_code": 0,
+      "label": "deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 93590,
+      "pid": 93590,
+      "seconds": 0.329,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 93608,
+        "pid": 93608,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "test",
+        "-count=1",
+        "-p=1",
+        "-timeout=450s",
+        "-json",
+        "-race",
+        "-run",
+        "^Test(DailyRetained|ManifestAdmissionPreflight|DailyFencedAdmission|RetainedPoolAdmission)",
+        "./prospectworker"
+      ],
+      "exit_code": 0,
+      "label": "race",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 93608,
+      "pid": 93608,
+      "seconds": 6.49,
+      "timed_out": false
+    }
+  ],
+  "expected_profile_skips": [],
+  "failed_tests": [],
+  "passed": true,
+  "passing_packages": [
+    "github.com/taytr-llc/slug/prospectworker"
+  ],
+  "passing_tests": [
+    "github.com/taytr-llc/slug/prospectworker/TestRetainedPoolAdmissionDefiniteExpiryAndUnknownReopen/definite-expired",
+    "github.com/taytr-llc/slug/prospectworker/TestRetainedPoolAdmissionDefiniteExpiryAndUnknownReopen/unknown-expired",
+    "github.com/taytr-llc/slug/prospectworker/TestRetainedPoolAdmissionDefiniteExpiryAndUnknownReopen/capacity-after-expiry",
+    "github.com/taytr-llc/slug/prospectworker/TestRetainedPoolAdmissionDefiniteExpiryAndUnknownReopen/unavailable-after-expiry",
+    "github.com/taytr-llc/slug/prospectworker/TestRetainedPoolAdmissionDefiniteExpiryAndUnknownReopen"
+  ],
+  "pattern": "^Test(DailyRetained|ManifestAdmissionPreflight|DailyFencedAdmission|RetainedPoolAdmission)",
+  "profile_unchanged": true,
+  "required_tests": [
+    "TestRetainedPoolAdmissionDefiniteExpiryAndUnknownReopen"
+  ],
+  "scope": "Set81 worker race",
+  "skipped_tests": [],
+  "sources_unchanged": true,
+  "version": 1
+}

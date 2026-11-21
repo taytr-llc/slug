@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "scope": "Failed A1 public reports only; runtime databases and credentials excluded",
+  "files": [
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt1/report.json",
+      "target": "docs/evidence/set81/actual/A1-failed/report.json",
+      "bytes": 13971,
+      "sha256": "4fd7bfc99e34dcb6a1d822b9ca539b86ac45463cfd8ff3fbf797333d47eb09c2"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt1/execution-lock.json",
+      "target": "docs/evidence/set81/actual/A1-failed/execution-lock.json",
+      "bytes": 18854,
+      "sha256": "5117f7585ea2584f60dcf8aeb734419533688ac4479b3b62c13b2d27ffba16f9"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt1/profile.json",
+      "target": "docs/evidence/set81/actual/A1-failed/profile.json",
+      "bytes": 962,
+      "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt1/source-copies.json",
+      "target": "docs/evidence/set81/actual/A1-failed/source-copies.json",
+      "bytes": 5153,
+      "sha256": "6ecb558799f8c89c8ec1deb9f15926c8d2f1d73634cfc06cb44a8985959c986d"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt1/actual.log",
+      "target": "docs/evidence/set81/actual/A1-failed/actual.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt1/owned/actual-report.json",
+      "target": "docs/evidence/set81/actual/A1-failed/owned/actual-report.json",
+      "bytes": 60796,
+      "sha256": "f662ac4688fde2c8b6651cbb28a5f333e443d19c36ca65148ae6226275c6644a"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set81-prep/actual-a1-failure.json",
+      "target": "docs/evidence/set81/actual/A1-failed/disposition.json",
+      "bytes": 1994,
+      "sha256": "aea0b713ac50cef6596c7a5a4f9691a72e619f2a67b415bbb4ac071e0edfad56"
+    }
+  ]
+}

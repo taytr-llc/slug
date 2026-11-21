@@ -1,0 +1,36 @@
+{
+  "cause": "Sandbox denied IPv6 localhost listener for httptest fixtures.",
+  "runs": [
+    {
+      "attempt": "full-core-normal-attempt1",
+      "passed": false,
+      "sources_unchanged": true,
+      "profile_unchanged": true,
+      "clean_join": true,
+      "failure": {
+        "Time": "2026-11-21T06:16:18.641124-08:00",
+        "Action": "output",
+        "Package": "github.com/taytr-llc/slug/poolshare",
+        "Test": "TestLateWinnerRealRPCBinding",
+        "Output": "panic: httptest: failed to listen on a port: listen tcp6 [::1]:0: bind: operation not permitted [recovered, repanicked]\n"
+      },
+      "log_sha256": "99b5159a863affbe4df4c4d36a770bfd61f9fe5f9d7d04a122ebdf46dd662b60"
+    },
+    {
+      "attempt": "full-operator-normal-attempt1",
+      "passed": false,
+      "sources_unchanged": true,
+      "profile_unchanged": true,
+      "clean_join": true,
+      "failure": {
+        "Time": "2026-11-21T06:15:48.626747-08:00",
+        "Action": "output",
+        "Package": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "Test": "TestDailyProvisionOriginalWalletAndRuntimeReopen",
+        "Output": "panic: httptest: failed to listen on a port: listen tcp6 [::1]:0: bind: operation not permitted [recovered, repanicked]\n"
+      },
+      "log_sha256": "3e4c187c76f8ad038d385a8fb999d3f5e076f4ae95eee234b13f2669058c8a41"
+    }
+  ],
+  "successor": "Same source, assertions, test list and runtime bounds; run with localhost access. No failed result relabeled."
+}

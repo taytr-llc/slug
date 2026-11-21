@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "scope": "Narrow all-handler quiescence delta after prior target-only closure",
+  "predecessor_review": {
+    "path": "/Users/taytrrip/slug/set81-prep/service-stage/admission-relay-peer-review.json",
+    "bytes": 3193,
+    "sha256": "e43abbdc61e29e383dc2978670d95a310a9e637373f8c12a7531369d4c810f31"
+  },
+  "reviewed": [
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/admission_relay.go",
+      "bytes": 19233,
+      "sha256": "a7f2b23a4fbae542f2077b1b6bf071fe056a0c7edef93ed54ccf5325911f66ec"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/retained_flow.go",
+      "bytes": 15764,
+      "sha256": "21b213137623d38d85a05fbfb2a402ed20b1224f729b892cb8e76dfd3cee6d58"
+    }
+  ],
+  "exact_inverse_delta_matches_predecessor_hashes": true,
+  "result": "No actionable finding.",
+  "checks": [
+    "All admitted relay handlers increment the counter under the original closing/Add gate.",
+    "Final handler defer publishes its event/failure and decrements target and all-handler counts under the same mutex; no original I/O or state mutation remains after zero observation.",
+    "The bounded original targetJoined wait now requires both counts zero without holding the mutex during wait.",
+    "All original worker children are stopped/joined before initial audits; serial audit phases launch no new requests. Extra checks cover retained request reads and final stopped outbox audit.",
+    "Listener/maps persist for the same selected origin across operator generations; no request deadline, expiry, response, acceptance or cleanup policy changed."
+  ],
+  "go_executed": false,
+  "repository_edits": false
+}

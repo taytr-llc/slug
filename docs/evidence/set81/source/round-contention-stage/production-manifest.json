@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "status": "source-only-unexecuted-production-freeze",
+  "scope": "Selected DAILY phase-specific exact-Busy retry, original 30-second budget",
+  "targets": [
+    {
+      "target": "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_round_contention.go",
+      "after": {
+        "path": "/Users/taytrrip/slug/set81-prep/round-contention-stage/after/desktop/pooloperator/daily_round_contention.go",
+        "bytes": 1598,
+        "sha256": "596973605b091a326680a2415e981a44cf22fadef7db8fd0348bca847cda793f"
+      },
+      "before": null
+    },
+    {
+      "target": "/Users/taytrrip/slug/slug/desktop/pooloperator/live_round.go",
+      "after": {
+        "path": "/Users/taytrrip/slug/set81-prep/round-contention-stage/after/desktop/pooloperator/live_round.go",
+        "bytes": 3392,
+        "sha256": "45b19a96542db28f8e1f311f9e5dce2bbb85da5e17ec042116e8f1fe032a013f"
+      },
+      "before": {
+        "path": "/Users/taytrrip/slug/set81-prep/round-contention-stage/before/desktop/pooloperator/live_round.go",
+        "bytes": 2670,
+        "sha256": "0894e1c05cb77937a761b677a227ce3ccc53b01701bc6b6b021e84412eb54b18"
+      }
+    },
+    {
+      "target": "/Users/taytrrip/slug/slug/desktop/pooloperator/maintenance.go",
+      "after": {
+        "path": "/Users/taytrrip/slug/set81-prep/round-contention-stage/after/desktop/pooloperator/maintenance.go",
+        "bytes": 6149,
+        "sha256": "5c3f45154dcc7032fa0ea13f05771dc79efead789c406eb26fedd6f9f9a27b25"
+      },
+      "before": {
+        "path": "/Users/taytrrip/slug/set81-prep/round-contention-stage/before/desktop/pooloperator/maintenance.go",
+        "bytes": 5272,
+        "sha256": "e42e84f2842a73070b57ebdd466bfa1d619fe2f20692db0066d595bbe8c66a90"
+      }
+    },
+    {
+      "target": "/Users/taytrrip/slug/slug/desktop/pooloperator/runtime.go",
+      "after": {
+        "path": "/Users/taytrrip/slug/set81-prep/round-contention-stage/after/desktop/pooloperator/runtime.go",
+        "bytes": 21329,
+        "sha256": "30a6de0ee527127635d4e8e9dec33b233ca9b17890d8ced06aff8902c0e1397c"
+      },
+      "before": {
+        "path": "/Users/taytrrip/slug/set81-prep/round-contention-stage/before/desktop/pooloperator/runtime.go",
+        "bytes": 21295,
+        "sha256": "21f1d92f3b769fe58cdf56f14ec48df3fecc2c5c015e1560aa49926465270c6d"
+      }
+    }
+  ],
+  "documentation": [
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/round-contention-stage/RATIONALE.md",
+      "bytes": 4478,
+      "sha256": "04ecbcfb9728d31a8cc5161664b38a0e6ed0add141a601acbf392ea928b4f4ff"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/round-contention-stage/production.diff",
+      "bytes": 6980,
+      "sha256": "48a9c8aa2a17e4c92c7744017959b8ba17d82156821f500ec9026fc5edacee23"
+    }
+  ],
+  "source_inputs": [
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_intake.go",
+      "bytes": 4382,
+      "sha256": "fec434fb14e40edf791e267d9b8c33a5b4d0de9850c23217d790b93390ddf3e9"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/capacity_drain.go",
+      "bytes": 6596,
+      "sha256": "960ad2b753b6e426004e72c7eb5fcc9613363c19333b5a621533a4614d71c734"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolshare/accounting.go",
+      "bytes": 3737,
+      "sha256": "8523604cc7c3abdf1d8c302d722a5cd740f424a1a9c64f0ce1ccd4905608dccc"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolshare/daily.go",
+      "bytes": 4311,
+      "sha256": "b1514a1c9527d4498b049ce7215f34682ecac70c1cb254296896c258892b288b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolshare/daily_operator_audit.go",
+      "bytes": 4751,
+      "sha256": "7dacebd6ea2abc12701892cf822b6ccb83603cb92dad96183d949d0810f88540"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolshare/store.go",
+      "bytes": 23347,
+      "sha256": "67d5929b4bcaf6322b36e32393e4acb51e34748f865ded5e6f77fec8e8edb22b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolround/operations.go",
+      "bytes": 7751,
+      "sha256": "5d8875d7bec8801aca2457b479c6edad5c1fd743c4196984c540d0f6be4ae11b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolround/store.go",
+      "bytes": 11697,
+      "sha256": "eb5b41998328c3c4bb5661164e12598a1e8193cd331764ecb541e4ea88fab822"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolround/stream.go",
+      "bytes": 6215,
+      "sha256": "dacc3896a5a6f90e9cbf7c75ae238ca5624dbcafe321e8b68601d1591b2cc675"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/registry/manifest_job_try.go",
+      "bytes": 1223,
+      "sha256": "a44e78048fd2827f90fcd4277d2c6e46ca5f038bab8538b8b68035267d8be8b9"
+    }
+  ],
+  "failure_input": {
+    "path": "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt1/owned/actual-report.json",
+    "bytes": 60796,
+    "sha256": "f662ac4688fde2c8b6651cbb28a5f333e443d19c36ca65148ae6226275c6644a"
+  },
+  "tests": "separate desktop-owned test checkpoint; not yet frozen",
+  "root_only": "gofmt, Go, build, runtime, install"
+}

@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "scope": "Single source-only closed original-owner retained-admission audit helper; no product edits or runtime execution",
+  "source": {
+    "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/admission_audit.go",
+    "bytes": 11454,
+    "sha256": "41a587c840eeb5148cada24d1e23625f2d056c76dd8801280c781e0d5174164c"
+  },
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/reference-v1.json",
+      "bytes": 174293,
+      "sha256": "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/operator_audit.go",
+      "bytes": 14293,
+      "sha256": "14d463c15ae4438ef6172b89d2e8714d1591ce0869efad3b2a28dfda6e45b2bc"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/registry/public_types.go",
+      "bytes": 7123,
+      "sha256": "776145f1c80d28d23a26431dbc64198ef1945f90f0efcc4647ccd7bbd271a1c9"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/registry/public_store.go",
+      "bytes": 13648,
+      "sha256": "72f9877a8305e8bffef9164eafc10a3a3e3fd1334bbf1473c3e62442f87b68a2"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/registry/public_audit.go",
+      "bytes": 8099,
+      "sha256": "4a2ea45d19d2bb241f6a8fadc625b624190684bb3ef1753b997159c697cbebda"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/registry/public_owner.go",
+      "bytes": 3299,
+      "sha256": "461d72adfb06fca8d69c408ac047abecd67eed86dd50d6ac8d8e297586023848"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/registry/operator_codec.go",
+      "bytes": 3610,
+      "sha256": "462f6c010b919c42e166bb18117fc366da24c2416a4c96856b9c0d255457067b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/registry/issue_store.go",
+      "bytes": 11872,
+      "sha256": "f0b6b0f22a531a90fb36147cfa42d1c9876d80beb9a39f7f6b1432241c5797ab"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolshare/accounting.go",
+      "bytes": 3737,
+      "sha256": "8523604cc7c3abdf1d8c302d722a5cd740f424a1a9c64f0ce1ccd4905608dccc"
+    }
+  ],
+  "proof": [
+    "Full original selected issuer/source/round/ledger audits and checked owner closure precede every bounded StrictAll projection.",
+    "Exact original second accepted winning proof and gym authorization are reverified against original issued job.",
+    "Target record, reverse sequence, permanent ownership outbox, signed admission and publication reference are correlated; unrelated prospects remain allowed within inherited 64-record helper bound.",
+    "Complete public file identities before/after and exact complete issuer row hashes match the inherited full audit.",
+    "ownership/outbox remains a permanent journal after publication; target outbox is one for both pending-publication and published states."
+  ],
+  "limitations": [
+    "Caller must join original processes/handlers before this helper; no live DB or private wallet/credential read is authorized.",
+    "Conditional helper evidence does not mint response provenance or establish actual acceptance until root execution.",
+    "No Go parser, formatter, compiler or runtime invoked by this author."
+  ]
+}

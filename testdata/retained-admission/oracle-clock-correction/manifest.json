@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "scope": "Exact additive overlay; all predecessor inputs unchanged",
+  "base_commit": "ce9eac7463a75d2ba7e0cefc8924f55d6c77b0a9",
+  "predecessor": {
+    "path": "oracle/manifest.json",
+    "bytes": 2385,
+    "sha256": "0d7df95e552b7a94078e9ccd536bbb827d93a69753c9051ece06901cbec28a62"
+  },
+  "files": [
+    {
+      "path": "oracle-clock-correction/CORRECTION.json",
+      "bytes": 3701,
+      "sha256": "81a8cf9ee2542612266225c52c0168b3fa268d3cf04b5f2503d5f6c2a680185f"
+    },
+    {
+      "path": "oracle-clock-correction/README.md",
+      "bytes": 1124,
+      "sha256": "e1d956f7a5e97fe339084d9c3f7f5040aacf5d662deab584353207f3768431b9"
+    }
+  ],
+  "correction_count": 5,
+  "hand_case_count": 53,
+  "product_execution": false,
+  "producer_execution": false,
+  "repository_edits": false,
+  "implementation_authorized": false
+}

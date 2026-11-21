@@ -1,0 +1,32 @@
+{
+  "accepted_fighters": 2,
+  "accepted_rewards": 2,
+  "attempts": [
+    {
+      "raw": "0200000000010254c507464e347d918e8f29d43989d4e3a7535e8546115c849414642f243203240000000000ffffffff9b80878097393a7c49ff1c855d0c96703335fddad1cb3d12c9816a0d3cc3dec50000000000ffffffff02006704760000000016001487ed12b988403af67cf36ea58b7454ab5d165ab42f2c310100000000160014810816db7129a0ac531ca0eaea0d47a04a71a77d0247304402201306b5164bba424539a528ea8716f6fb020856fa7dabf33b831d9b8a4682e3d0022074a79331f06fa28deb4f555926ea3dcdb5054ac7a0b3f38aa0a62dfd7040ecd30121033c82426e79a02318e797eec2021a10a8d7a8edfcd889adc82df78b303380bcc502483045022100c1c03fdd3e7f3a02329ebdfbe296f5e1363ba2285ad4fe6bd646db4418e27f42022078428d38db036236421a963cf92884bd3ab80ccfa45a4205eed3781c7d0a95d10121033c82426e79a02318e797eec2021a10a8d7a8edfcd889adc82df78b303380bcc500000000",
+      "txid": "",
+      "at_ms": 1795273440067
+    }
+  ],
+  "case": "A",
+  "completed": true,
+  "fee_atoms": 209,
+  "final_audit_unchanged": true,
+  "final_height": 105,
+  "final_issuer_requests": 2,
+  "final_outbox_requests": 3,
+  "final_source_requests": 2,
+  "initial_issuer_requests": 2,
+  "initial_outbox_requests": 2,
+  "initial_source_requests": 2,
+  "job_id": "c41d5d53e93dd151220eb85c0a7f7889c430769e7a2e60e66a61df5746fa0c0a",
+  "original_signatures": 2,
+  "paid_atoms": 1980000000,
+  "pending_fighters": 0,
+  "request_id": "ea4c9dae2299c39f47229895a3764a016480c7ebeea07a17485c303c8057909e",
+  "send_count": 1,
+  "stopped_reopen": true,
+  "target_prospect_id": "047227bffb0f43cdc60b9044537e63e438f246baad8dbaca9ad0ae69fe36464d",
+  "target_records": 1,
+  "target_state": "accepted"
+}

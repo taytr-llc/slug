@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "qualified": false,
+  "reason": "bounded wait",
+  "phase": "second accepted canonical pool winner held before original fighter admission",
+  "seconds": 109.429459833,
+  "sources_unchanged": true,
+  "profile_lock_binaries_unchanged": true,
+  "clean_join": true,
+  "observations": [
+    {
+      "observed_at_ms": 1795272109295,
+      "capacity": {
+        "mode": "draining",
+        "reason": "pool_capacity",
+        "submissions": 2
+      },
+      "public_ready": true,
+      "public_code": "",
+      "rounds": {
+        "through": 0,
+        "rounds": 0,
+        "pending_shares": 0
+      },
+      "round_code": "busy"
+    },
+    {
+      "observed_at_ms": 1795272139292,
+      "capacity": {
+        "mode": "draining",
+        "reason": "pool_capacity",
+        "submissions": 2
+      },
+      "public_ready": true,
+      "public_code": "",
+      "rounds": {
+        "through": 0,
+        "rounds": 0,
+        "pending_shares": 0
+      },
+      "round_code": "busy"
+    },
+    {
+      "observed_at_ms": 1795272169293,
+      "capacity": {
+        "mode": "draining",
+        "reason": "pool_capacity",
+        "submissions": 2
+      },
+      "public_ready": true,
+      "public_code": "",
+      "rounds": {
+        "through": 0,
+        "rounds": 0,
+        "pending_shares": 0
+      },
+      "round_code": "busy"
+    }
+  ],
+  "interpretation": "Round readiness never succeeded during the original90-second gate after full ordinary intake and joined CLI. Exact cause under investigation; no timeout increase or acceptance relaxation approved.",
+  "evidence": {
+    "report.json": {
+      "bytes": 13971,
+      "sha256": "4fd7bfc99e34dcb6a1d822b9ca539b86ac45463cfd8ff3fbf797333d47eb09c2"
+    },
+    "owned/actual-report.json": {
+      "bytes": 60796,
+      "sha256": "f662ac4688fde2c8b6651cbb28a5f333e443d19c36ca65148ae6226275c6644a"
+    },
+    "actual.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

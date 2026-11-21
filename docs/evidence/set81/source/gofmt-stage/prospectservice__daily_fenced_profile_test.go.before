@@ -1,0 +1,16 @@
+//go:build slugtestpow
+
+// Copyright (c) 2026 The SLUG developers. ISC license.
+package prospectservice
+
+import (
+	"strings"
+	"testing"
+
+	"github.com/taytr-llc/slug/prospectnode"
+)
+
+func TestDailyFencedAdmissionCheapRefuses(t *testing.T) {
+	s,err:=NewPausedDailyFencedManifestAdmissionServer(ManifestServerConfig{},prospectnode.Policy{},nil,nil,fencedProfileSessions{t})
+	if s!=nil||err==nil||!strings.Contains(err.Error(),"production PoW"){t.Fatal("cheap selected admission reached owner initialization",err)}
+}

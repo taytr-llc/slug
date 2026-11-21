@@ -1,0 +1,111 @@
+{
+  "files": [
+    {
+      "path": "desktop/pooloperator/capacity_drain.go",
+      "before_sha256": "960ad2b753b6e426004e72c7eb5fcc9613363c19333b5a621533a4614d71c734",
+      "before_bytes": 6596,
+      "after_bytes": 6596,
+      "after_sha256": "960ad2b753b6e426004e72c7eb5fcc9613363c19333b5a621533a4614d71c734"
+    },
+    {
+      "path": "desktop/pooloperator/construction.go",
+      "before_sha256": "8b7e48b5c053cad52d7b9f467906936bb3181f2f7d3313a3237327876dfdebb5",
+      "before_bytes": 16552,
+      "after_bytes": 16552,
+      "after_sha256": "8b7e48b5c053cad52d7b9f467906936bb3181f2f7d3313a3237327876dfdebb5"
+    },
+    {
+      "path": "desktop/pooloperator/daily_intake.go",
+      "before_sha256": "fec434fb14e40edf791e267d9b8c33a5b4d0de9850c23217d790b93390ddf3e9",
+      "before_bytes": 4382,
+      "after_bytes": 4382,
+      "after_sha256": "fec434fb14e40edf791e267d9b8c33a5b4d0de9850c23217d790b93390ddf3e9"
+    },
+    {
+      "path": "desktop/pooloperator/daily_retained_admission_test.go",
+      "before_sha256": "aa34711ae59f57269db211f9e845ae409357dd4c592f6bf804fab6c2e8e393d2",
+      "before_bytes": 12648,
+      "after_bytes": 12923,
+      "after_sha256": "94001cf1d7a3508adb63dbef2ff21a36565d9c02fc26f85e1ac6b6b5bf714f03"
+    },
+    {
+      "path": "desktop/pooloperator/daily_retained_delivery_test.go",
+      "before_sha256": "30dd7f472946eeaafe49b1e5077c720e68db947ab36ee2999427c3c448b46a3e",
+      "before_bytes": 10214,
+      "after_bytes": 10320,
+      "after_sha256": "576897f6d04dcf5f9c822bf1d8ceb884006762b545b90973a6b0505987cca5f6"
+    },
+    {
+      "path": "desktop/pooloperator/runtime.go",
+      "before_sha256": "21f1d92f3b769fe58cdf56f14ec48df3fecc2c5c015e1560aa49926465270c6d",
+      "before_bytes": 21295,
+      "after_bytes": 21295,
+      "after_sha256": "21f1d92f3b769fe58cdf56f14ec48df3fecc2c5c015e1560aa49926465270c6d"
+    },
+    {
+      "path": "prospectservice/daily_fenced_admission.go",
+      "before_sha256": "d5af6dd0e350a92b3f2fc742c58e0f253f5ecd6ae7fe9fa1859c5a4ccfe78fac",
+      "before_bytes": 2865,
+      "after_bytes": 2865,
+      "after_sha256": "d5af6dd0e350a92b3f2fc742c58e0f253f5ecd6ae7fe9fa1859c5a4ccfe78fac"
+    },
+    {
+      "path": "prospectservice/daily_fenced_admission_test.go",
+      "before_sha256": "7c8916e982606702fe632ef4a38ae011fb63c626109375fda71f0f945d3d1387",
+      "before_bytes": 10665,
+      "after_bytes": 12017,
+      "after_sha256": "80c3fa74dc5f9879cd7309307fdfcfe00bf5e64400ab6854f9f744f46d491f14"
+    },
+    {
+      "path": "prospectservice/daily_fenced_profile_test.go",
+      "before_sha256": "4e73435d3019a3caff61e7d2e5c599719189a8c4fd321d1268ccf46ace326606",
+      "before_bytes": 513,
+      "after_bytes": 536,
+      "after_sha256": "d2b7efaa31e341db468faf5a85e04f97ec5b0bc4c5c52f9fe0c8b0975b4f6ef6"
+    },
+    {
+      "path": "prospectservice/manifest_fenced_server.go",
+      "before_sha256": "8dbc991e1521cb1a9504fc96e92498e3d6cf6fdee727f37e051d180ded0fb4ef",
+      "before_bytes": 5654,
+      "after_bytes": 5654,
+      "after_sha256": "8dbc991e1521cb1a9504fc96e92498e3d6cf6fdee727f37e051d180ded0fb4ef"
+    },
+    {
+      "path": "prospectservice/manifest_server.go",
+      "before_sha256": "6b72e50148d6c2b034b9d4d174815af1c22af170817d3d4bf6f62a34f536802d",
+      "before_bytes": 19449,
+      "after_bytes": 19449,
+      "after_sha256": "6b72e50148d6c2b034b9d4d174815af1c22af170817d3d4bf6f62a34f536802d"
+    },
+    {
+      "path": "prospectworker/pool_retained_admission_test.go",
+      "before_sha256": "bfa83577f9d12eaf7915c35216db41604aba0bcce43f8f61122fdb4133073d7e",
+      "before_bytes": 3628,
+      "after_bytes": 3628,
+      "after_sha256": "bfa83577f9d12eaf7915c35216db41604aba0bcce43f8f61122fdb4133073d7e"
+    },
+    {
+      "path": "registry/manifest_admission_preflight.go",
+      "before_sha256": "71959959569287de81119db62b7d0c864188e9dd883ef970b49176ddd4ad61b2",
+      "before_bytes": 2904,
+      "after_bytes": 2904,
+      "after_sha256": "71959959569287de81119db62b7d0c864188e9dd883ef970b49176ddd4ad61b2"
+    },
+    {
+      "path": "registry/manifest_admission_preflight_profile_test.go",
+      "before_sha256": "206bbb85ba69a0a722eb3d9117ec7acb8421090aaabbdc950fdc321b35c78ff9",
+      "before_bytes": 619,
+      "after_bytes": 657,
+      "after_sha256": "d0d8067d1daabdad0fec6a6ede485722a5743daebbff71686187a592ee2418a0"
+    },
+    {
+      "path": "registry/manifest_admission_preflight_test.go",
+      "before_sha256": "d033593e9628d3d98b576d1aed2cccc313b1566824c3b6bd9d9fff4d40b69c9d",
+      "before_bytes": 11808,
+      "after_bytes": 12807,
+      "after_sha256": "ff6102914a978e885d899eeb53186cee0075ebc11b5f97ba816c30d2199f510f"
+    }
+  ],
+  "format_only": true,
+  "product_execution": false
+}

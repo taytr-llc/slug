@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "scope": "Selected clock-only preflight observes complete original lease outcome without changing legacy Lease.Do",
+  "base_commit": "1f559221c3735227e8475731f2c73a74282db5b0",
+  "predecessors": [
+    {
+      "path": "../oracle/manifest.json",
+      "bytes": 2385,
+      "sha256": "0d7df95e552b7a94078e9ccd536bbb827d93a69753c9051ece06901cbec28a62"
+    },
+    {
+      "path": "../oracle-clock-correction/manifest.json",
+      "bytes": 848,
+      "sha256": "15b91a9690cd9b215ea3e0dfa8373697c22fd72686a2b477caf7b1ea491a067a"
+    }
+  ],
+  "files": [
+    {
+      "path": "oracle-lease-provenance-correction/CORRECTION.json",
+      "bytes": 4795,
+      "sha256": "689f47d3708137c01ac7a55fc55f30cfedf9cacd46c3f08ddd134d5dab9a626f"
+    },
+    {
+      "path": "oracle-lease-provenance-correction/README.md",
+      "bytes": 1321,
+      "sha256": "d6b5a12c91de2dc27adcfe79ecc5ed09dd6ee20997c54dcb983e4b61424d06d0"
+    }
+  ],
+  "corrected_hand_cases": 54,
+  "added_hand_cases": 1,
+  "product_execution": false,
+  "producer_execution": false,
+  "repository_edits": false
+}

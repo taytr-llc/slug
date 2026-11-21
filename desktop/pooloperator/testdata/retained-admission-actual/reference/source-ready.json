@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "scope": "Set81 independent actual selection source, unexecuted",
+  "base_commit": "1f559221c3735227e8475731f2c73a74282db5b0",
+  "files": [
+    {
+      "path": "selection_reference.py",
+      "bytes": 15788,
+      "sha256": "1145a73dafd82c007c69a3d3dd3056e20b6f77f69f7d97bdefd7c2deb342c264"
+    },
+    {
+      "path": "selection-recipe.json",
+      "bytes": 2499,
+      "sha256": "f7c85beb968eff152bf8449010054fe28d6fcbfd5a69ed2ea03406c12042f066"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2651,
+      "sha256": "3c7119a1ffbf0eaeeac962ffae82ffa5a0b703ae34498529a7f7d46eefe48254"
+    },
+    {
+      "path": "input-catalog.json",
+      "bytes": 5698,
+      "sha256": "2672896cc39baa1609b96caadbfe4075154d08729092ec50a79b4e1901a3d46e"
+    },
+    {
+      "path": "inputs/actual-reference.json",
+      "bytes": 173644,
+      "sha256": "0f0890e529b64c10ed000673aab7861b9bd526057cc3c2bbbe05b868028f3d10"
+    },
+    {
+      "path": "inputs/path-c-reference.json",
+      "bytes": 46498,
+      "sha256": "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386"
+    },
+    {
+      "path": "inputs/original-selection-producer.py.txt",
+      "bytes": 9287,
+      "sha256": "fb56a5ce58cb04f250ceb8b4a0498dd2f996dd2a2fe9a86629f7c19b9d12cc76"
+    },
+    {
+      "path": "inputs/original-selection-lock.json",
+      "bytes": 1307,
+      "sha256": "1bc724edaef7fdb6396484f2b7c9220aa5fde17d8f99db999a8b6662fca33493"
+    },
+    {
+      "path": "inputs/original-selection-recipe.json",
+      "bytes": 1039,
+      "sha256": "0b418f9cc6317aa7b02786bfd807c4b503d9746eef8666b4d58616a7e37d3173"
+    },
+    {
+      "path": "inputs/original-selection-qualification.json",
+      "bytes": 4479,
+      "sha256": "c00b9b36a0c047a1854cc4efb278f101a4935d433413a4aeb11259ef5b967f50"
+    },
+    {
+      "path": "inputs/ISSUE_RECOVERY_CONTRACT.md",
+      "bytes": 27904,
+      "sha256": "f3e019a840d6b69d853350763364a3fc41f10ea899f00ed6f164db5d58a95610"
+    },
+    {
+      "path": "inputs/original-copied-inputs.json",
+      "bytes": 7453,
+      "sha256": "5d1ce505b66dc6865bef53b15bdb5755d719a699b1b02e0cde4ddf2518fa533c"
+    },
+    {
+      "path": "inputs/setup-declaration.go.txt",
+      "bytes": 7325,
+      "sha256": "5f919758ad747386157ebe08427714f9a0b5421a8a947da56e8510c49dea0494"
+    },
+    {
+      "path": "inputs/profile-declaration.go.txt",
+      "bytes": 4350,
+      "sha256": "e9448b49808a33c8d7b75d3512b7477e5c45fc4d54e31471ad22362b54391a46"
+    },
+    {
+      "path": "inputs/RETAINED_ADMISSION_ACTUAL_PLAN.md",
+      "bytes": 12412,
+      "sha256": "62ddde39c811001865cd91c9b11152aa7166c4a7f69044d5946afd018ee23a72"
+    },
+    {
+      "path": "inputs/implementation-selection.json",
+      "bytes": 6562,
+      "sha256": "3b270d9c4933cc0fe1b4a6c64bccbbbb2f66f30acdbb66bba12afbf0594f728f"
+    }
+  ],
+  "copied_public_inputs": 12,
+  "input_bytes": 302260,
+  "product_execution": false,
+  "producer_execution": false,
+  "expected_output_generated": false,
+  "repository_edits": false
+}

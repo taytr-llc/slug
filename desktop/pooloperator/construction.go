@@ -450,7 +450,12 @@ func (r *Runtime) constructServices() error {
 	if e != nil {
 		return e
 	}
-	r.admissionServer, e = prospectservice.NewPausedFencedManifestAdmissionServer(prospectservice.ManifestServerConfig{Version: 3, Listen: privateListen(r.setup.Ingress.AdmissionURL), AuthorityPin: r.setup.Pool.AuthorityPin, Clients: []prospectservice.Credential{}, MaxJobs: r.setup.Pool.MaxWorks, MaxRecords: uint64(r.setup.Authority.Limits.Admissions)}, r.setup.Pool.Policy, r.node, r.issuer, r.miners.AdmissionSessions())
+	admissionConfig := prospectservice.ManifestServerConfig{Version: 3, Listen: privateListen(r.setup.Ingress.AdmissionURL), AuthorityPin: r.setup.Pool.AuthorityPin, Clients: []prospectservice.Credential{}, MaxJobs: r.setup.Pool.MaxWorks, MaxRecords: uint64(r.setup.Authority.Limits.Admissions)}
+	if r.daily {
+		r.admissionServer, e = prospectservice.NewPausedDailyFencedManifestAdmissionServer(admissionConfig, r.setup.Pool.Policy, r.node, r.issuer, r.miners.AdmissionSessions())
+	} else {
+		r.admissionServer, e = prospectservice.NewPausedFencedManifestAdmissionServer(admissionConfig, r.setup.Pool.Policy, r.node, r.issuer, r.miners.AdmissionSessions())
+	}
 	if e != nil {
 		return e
 	}

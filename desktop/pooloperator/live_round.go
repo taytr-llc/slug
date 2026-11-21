@@ -65,13 +65,22 @@ func (r *Runtime) EnableLiveRoundMaintenance(ctx context.Context) error {
 // explicit, at most once per refresh, and shares the caller's existing budget.
 // Exact stale handles may reanchor; corruption/unknown/closed errors never do.
 func (m *roundMaintenance) refreshLive(ctx context.Context) error {
+	return m.refreshLiveSelected(ctx, false)
+}
+
+func (m *roundMaintenance) refreshLiveSelected(ctx context.Context, daily bool) error {
+	if daily {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, 30*time.Second)
+		defer cancel()
+	}
 	reanchored := false
 	reanchor := func(e error) error {
 		if e != poolround.ErrLiveStale || reanchored {
 			return e
 		}
 		reanchored = true
-		live, err := m.store.BeginLive(ctx)
+		live, err := dailyRoundCall(ctx, daily, func(work context.Context) (*poolround.Live, error) { return m.store.BeginLive(work) })
 		if err != nil {
 			return err
 		}
@@ -82,10 +91,10 @@ func (m *roundMaintenance) refreshLive(ctx context.Context) error {
 		return nil
 	}
 	list := func(after uint64) ([]poolround.Record, error) {
-		rows, e := m.live.List(ctx, after)
+		rows, e := dailyRoundCall(ctx, daily, func(work context.Context) ([]poolround.Record, error) { return m.live.List(work, after) })
 		if e == poolround.ErrLiveStale {
 			if e = reanchor(e); e == nil {
-				rows, e = m.live.List(ctx, after)
+				rows, e = dailyRoundCall(ctx, daily, func(work context.Context) ([]poolround.Record, error) { return m.live.List(work, after) })
 			}
 		}
 		return rows, e
@@ -102,10 +111,10 @@ func (m *roundMaintenance) refreshLive(ctx context.Context) error {
 		}
 	}
 	for _, row := range rows {
-		_, e = m.live.Refresh(ctx, row.Round.BlockHash)
+		_, e = dailyRoundCall(ctx, daily, func(work context.Context) (poolround.Record, error) { return m.live.Refresh(work, row.Round.BlockHash) })
 		if e == poolround.ErrLiveStale {
 			if e = reanchor(e); e == nil {
-				_, e = m.live.Refresh(ctx, row.Round.BlockHash)
+				_, e = dailyRoundCall(ctx, daily, func(work context.Context) (poolround.Record, error) { return m.live.Refresh(work, row.Round.BlockHash) })
 			}
 		}
 		if e != nil {

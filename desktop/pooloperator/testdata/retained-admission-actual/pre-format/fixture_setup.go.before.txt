@@ -1,0 +1,125 @@
+// Extracted from frozen Path B; no observation/broadcast fault is included.
+package main
+
+import (
+	"context"
+	"crypto/ed25519"
+	"crypto/rand"
+	"crypto/x509"
+	"crypto/x509/pkix"
+	"encoding/pem"
+	"errors"
+	"github.com/taytr-llc/slug/btcutil/v2/hdkeychain"
+	"github.com/taytr-llc/slug/chainhash/v2"
+	"github.com/taytr-llc/slug/desktop/pooloperator"
+	"github.com/taytr-llc/slug/internal/operatorauthority"
+	"github.com/taytr-llc/slug/registry"
+	"github.com/taytr-llc/slug/wire/v2"
+	"github.com/taytr-llc/slugwallet/recovery"
+	"github.com/taytr-llc/slugwallet/wallet"
+	_ "github.com/taytr-llc/slugwallet/walletdb/bdb"
+	"io"
+	"math/big"
+	"net"
+	"os"
+	"path/filepath"
+	"time"
+)
+
+const publicPass = "published pool wallet public passphrase"
+const privatePass = "published pool wallet private passphrase"
+
+func privateWrite(path string, raw []byte) {
+	f, e := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0600)
+	check(e, "exclusive fixture input")
+	n, we := f.Write(raw)
+	se := f.Sync()
+	ce := f.Close()
+	require(n == len(raw), "complete fixture input")
+	check(errors.Join(we, se, ce), "fixture input sync/close")
+}
+func readBound(path string, n int64) []byte {
+	f, e := os.Open(path)
+	check(e, "bounded input open")
+	b, e := io.ReadAll(io.LimitReader(f, n+1))
+	ce := f.Close()
+	check(errors.Join(e, ce), "bounded input read/close")
+	require(int64(len(b)) <= n, "bounded input cap")
+	return b
+}
+
+func fixtureBinding(s pooloperator.Setup) wallet.PoolWalletBinding {
+	return wallet.PoolWalletBinding{Version: 2, WalletOwnerID: s.WalletGuard.WalletOwnerID, OperatorProfileID: s.WalletGuard.OperatorProfileID, Source: s.Pool, Settlement: s.Settlement, Guard: s.WalletGuard}
+}
+func fixtureAuthorityBinding(s pooloperator.Setup) operatorauthority.Binding {
+	p, e := registry.NewOperatorProfile(s.Authority)
+	check(e, "operator profile")
+	g, e := chainhash.NewHashFromStr(s.Authority.Source.Genesis)
+	check(e, "operator genesis")
+	return operatorauthority.Binding{Version: 2, PinID: p.ID(), Network: wire.BitcoinNet(s.Authority.Source.Network), Genesis: *g, Keys: operatorauthority.Keys{Admission: s.Authority.AdmissionKey, Publication: s.Authority.PublicationKey, Cutoff: s.Authority.CutoffKey, Checkpoint: s.Authority.CheckpointKey}}
+}
+func fixtureTLS(root string) (trustCA, key, spki string) {
+	caPub, caPriv, e := ed25519.GenerateKey(rand.Reader)
+	check(e, "synthetic TLS CA key")
+	defer clear(caPriv)
+	pub, priv, e := ed25519.GenerateKey(rand.Reader)
+	check(e, "synthetic TLS leaf key")
+	defer clear(priv)
+	now := time.Now().UTC()
+	caTemplate := &x509.Certificate{SerialNumber: big.NewInt(74), Subject: pkix.Name{CommonName: "Set74 isolated pool rehearsal CA"}, NotBefore: now.Add(-time.Minute), NotAfter: now.Add(time.Hour), KeyUsage: x509.KeyUsageCertSign, BasicConstraintsValid: true, IsCA: true}
+	caDER, e := x509.CreateCertificate(rand.Reader, caTemplate, caTemplate, caPub, caPriv)
+	check(e, "synthetic TLS CA certificate")
+	ca, e := x509.ParseCertificate(caDER)
+	check(e, "synthetic TLS CA parse")
+	template := &x509.Certificate{SerialNumber: big.NewInt(75), Subject: pkix.Name{CommonName: "Set74 isolated pool rehearsal server"}, NotBefore: now.Add(-time.Minute), NotAfter: now.Add(time.Hour), KeyUsage: x509.KeyUsageDigitalSignature, ExtKeyUsage: []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth}, BasicConstraintsValid: true, IsCA: false, IPAddresses: []net.IP{net.ParseIP("127.0.0.1")}}
+	der, e := x509.CreateCertificate(rand.Reader, template, ca, pub, caPriv)
+	check(e, "synthetic TLS server certificate")
+	leaf, e := x509.ParseCertificate(der)
+	check(e, "synthetic server certificate parse")
+	roots := x509.NewCertPool()
+	roots.AddCert(ca)
+	_, e = leaf.Verify(x509.VerifyOptions{Roots: roots, CurrentTime: now, DNSName: "127.0.0.1", KeyUsages: []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth}})
+	check(e, "synthetic leaf chain/IP/server-auth preflight")
+	require(!leaf.IsCA, "server certificate is not a CA")
+	pk, e := x509.MarshalPKCS8PrivateKey(priv)
+	check(e, "synthetic TLS private encoding")
+	defer clear(pk)
+	trustCA = string(pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: caDER}))
+	chain := append(pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: der}), []byte(trustCA)...)
+	key = string(pem.EncodeToMemory(&pem.Block{Type: "PRIVATE KEY", Bytes: pk}))
+	spki = hx(digest(leaf.RawSubjectPublicKeyInfo))
+	privateWrite(filepath.Join(root, "tls-cert.pem"), chain)
+	privateWrite(filepath.Join(root, "tls-key.pem"), []byte(key))
+	return
+}
+func uniquePorts(n int) []string {
+	out := make([]string, 0, n)
+	seen := map[string]bool{}
+	for len(out) < n {
+		p := port()
+		if !seen[p] {
+			seen[p] = true
+			out = append(out, p)
+		}
+	}
+	return out
+}
+
+func createFixtureWallet(ctx context.Context, root string, s pooloperator.Setup, mnemonic string) {
+	custody, cancel := context.WithCancel(ctx)
+	defer cancel()
+	seed, e := recovery.Seed(mnemonic)
+	check(e, "published original BIP39 fixture")
+	master, e := hdkeychain.NewMaster(seed[:], params)
+	clear(seed[:])
+	check(e, "published original master")
+	w, e := wallet.CreateDailyPoolSettlementWallet(custody, filepath.Join(root, "wallet16"), fixtureBinding(s), []byte(publicPass), []byte(privatePass), master, time.Now().Add(-24*time.Hour))
+	master.Zero()
+	if e != nil {
+		if w != nil {
+			e = errors.Join(e, w.Close())
+		}
+		check(e, "original fixture wallet creation")
+	}
+	check(w.Close(), "original fixture wallet joined before operator CLI")
+}

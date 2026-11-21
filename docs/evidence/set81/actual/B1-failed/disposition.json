@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "qualified": false,
+  "failure": "bounded wait",
+  "phase": "same full original source reopened before authenticated expiry replay",
+  "seconds": 407.345713375,
+  "sources_unchanged": true,
+  "profile_lock_binaries_unchanged": true,
+  "clean_join": true,
+  "observations": [
+    {
+      "observed_at_ms": 1795273684820,
+      "public_code": "busy",
+      "public": {
+        "phase": "admissions",
+        "ready": false,
+        "next_admission": 2,
+        "next_publication": 1,
+        "next_height": 0
+      },
+      "round_code": "",
+      "rounds": {
+        "through": 2,
+        "rounds": 2,
+        "pending_shares": 0
+      }
+    },
+    {
+      "observed_at_ms": 1795273714820,
+      "public_code": "busy",
+      "public": {
+        "phase": "publications",
+        "ready": false,
+        "next_admission": 3,
+        "next_publication": 1,
+        "next_height": 0
+      },
+      "round_code": "",
+      "rounds": {
+        "through": 2,
+        "rounds": 2,
+        "pending_shares": 0
+      }
+    },
+    {
+      "observed_at_ms": 1795273744820,
+      "public_code": "busy",
+      "public": {
+        "phase": "publications",
+        "ready": false,
+        "next_admission": 3,
+        "next_publication": 1,
+        "next_height": 0
+      },
+      "round_code": "",
+      "rounds": {
+        "through": 2,
+        "rounds": 2,
+        "pending_shares": 0
+      }
+    }
+  ],
+  "recorded_send_attempts": 1,
+  "recorded_sends": 1,
+  "scope": "Extended100-block offline catch-up failed its90-second readiness gate before expiry replay; no actual expiry/final payout acceptance claim. Preserve and track under November21 triage; promote if it blocks agreed bounded hosted flow."
+}

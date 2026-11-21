@@ -1,0 +1,900 @@
+{
+  "version": 1,
+  "scope": "Finite read-only mapping of54 corrected hand-specification cases; not a new oracle or runtime result",
+  "case_count": 54,
+  "review": "No actionable production enforcement discrepancy found in formatted selected registry/service source.",
+  "test_aliases": {
+    "R-owner": {
+      "path": "/Users/taytrrip/slug/slug/registry/manifest_admission_preflight_test.go",
+      "test": "TestManifestAdmissionPreflightOriginalOwnerAndHistory"
+    },
+    "R-expiry": {
+      "path": "/Users/taytrrip/slug/slug/registry/manifest_admission_preflight_test.go",
+      "test": "TestManifestAdmissionPreflightExpiryAndRestart"
+    },
+    "R-clock": {
+      "path": "/Users/taytrrip/slug/slug/registry/manifest_admission_preflight_test.go",
+      "test": "TestManifestAdmissionPreflightClockCapacityAndUncertainty"
+    },
+    "R-counts": {
+      "path": "/Users/taytrrip/slug/slug/registry/manifest_admission_preflight_test.go",
+      "test": "TestManifestAdmissionPreflightPublicCounts"
+    },
+    "R-cheap": {
+      "path": "/Users/taytrrip/slug/slug/registry/manifest_admission_preflight_profile_test.go",
+      "test": "TestManifestAdmissionPreflightCheapRefuses"
+    },
+    "S-expiry": {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/daily_fenced_admission_test.go",
+      "test": "TestDailyFencedAdmissionExpiryBeforeIntake"
+    },
+    "S-fences": {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/daily_fenced_admission_test.go",
+      "test": "TestDailyFencedAdmissionSessionAndDuplicateFences"
+    },
+    "S-history": {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/daily_fenced_admission_test.go",
+      "test": "TestDailyFencedAdmissionHistoricalAndLegacy"
+    },
+    "S-errors": {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/daily_fenced_admission_test.go",
+      "test": "TestDailyFencedAdmissionErrorProvenance"
+    },
+    "S-cap-reopen": {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/daily_fenced_capacity_reopen_test.go",
+      "test": "TestDailyFencedAdmissionLiveCapacityReopen"
+    },
+    "S-cheap": {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/daily_fenced_profile_test.go",
+      "test": "TestDailyFencedAdmissionCheapRefuses"
+    },
+    "O-ready": {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_retained_admission_test.go",
+      "test": "TestDailyRetainedAdmissionSelectionReadinessAndDirectDrain"
+    },
+    "O-reopen": {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_retained_admission_test.go",
+      "test": "TestDailyRetainedAdmissionFullSourceReopenPreservesPayment"
+    },
+    "O-escalate": {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_retained_admission_test.go",
+      "test": "TestDailyRetainedAdmissionHardEscalationAndConcurrentReadiness"
+    },
+    "O-busy": {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_retained_admission_test.go",
+      "test": "TestDailyRetainedAdmissionHardCauseSurvivesSourceBusy"
+    },
+    "O-origin": {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_retained_admission_test.go",
+      "test": "TestDailyRetainedAdmissionEnableErrorsKeepOriginalOwner"
+    },
+    "O-cancel": {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_retained_admission_test.go",
+      "test": "TestDailyRetainedAdmissionCanceledBeforeTransition"
+    },
+    "W-terminal": {
+      "path": "/Users/taytrrip/slug/slug/prospectworker/pool_retained_admission_test.go",
+      "test": "TestRetainedPoolAdmissionDefiniteExpiryAndUnknownReopen"
+    },
+    "W-prospect": {
+      "path": "/Users/taytrrip/slug/slug/prospectworker/pool_worker_test.go",
+      "test": "TestPoolWorkerProspectOnlyRemainsIndependent"
+    },
+    "W-hold": {
+      "path": "/Users/taytrrip/slug/slug/prospectworker/pool_worker_test.go",
+      "test": "TestPoolWorkerByteCapacityStaysPausedAcrossExpiryAndRecoversPending"
+    },
+    "W-history": {
+      "path": "/Users/taytrrip/slug/slug/prospectworker/pool_delivery_test.go",
+      "test": "TestPoolDeliverySignedExpiredWorkRecoversOriginalFighter"
+    },
+    "W-order": {
+      "path": "/Users/taytrrip/slug/slug/prospectworker/pool_delivery_test.go",
+      "test": "TestPoolDeliveryBroadcastPrecedesSigningDespitePoolFailure"
+    },
+    "N-current": {
+      "path": "/Users/taytrrip/slug/slug/prospectnode/admission_test.go",
+      "test": "TestRecheckAdmissionCurrentParentAndCanonicalWinner"
+    },
+    "N-reorg": {
+      "path": "/Users/taytrrip/slug/slug/prospectnode/admission_test.go",
+      "test": "TestCanonicalWinnerAllowsTipProgressButRejectsReorgs"
+    },
+    "N-target": {
+      "path": "/Users/taytrrip/slug/slug/prospectnode/admission_test.go",
+      "test": "TestAdmissionRejectsWrongBindingAndNonWinningWork"
+    },
+    "R-staged": {
+      "path": "/Users/taytrrip/slug/slug/registry/manifest_staged_test.go",
+      "test": "TestManifestStagedAdmissionsMatchIndependentEvidenceAndOwnSlices"
+    },
+    "R-final": {
+      "path": "/Users/taytrrip/slug/slug/registry/manifest_staged_test.go",
+      "test": "TestManifestStagedAdmissionExpiryPersistsAcrossRestart"
+    },
+    "R-uncertain": {
+      "path": "/Users/taytrrip/slug/slug/registry/manifest_staged_test.go",
+      "test": "TestManifestStagedAdmissionFinalGuardAndUncertainty"
+    },
+    "R-proof": {
+      "path": "/Users/taytrrip/slug/slug/registry/manifest_admission_test.go",
+      "test": "TestManifestRejectedEvidenceNeverAllocates"
+    },
+    "R-public-cap": {
+      "path": "/Users/taytrrip/slug/slug/registry/public_capacity_test.go",
+      "test": "TestPublicCapacityClassificationAndPrewriteRefusal"
+    },
+    "R-public-bytes": {
+      "path": "/Users/taytrrip/slug/slug/registry/public_capacity_test.go",
+      "test": "TestPublicLogicalCapacityDoesNotMaskInvalidMetadata"
+    },
+    "R-close": {
+      "path": "/Users/taytrrip/slug/slug/registry/issue_files_test.go",
+      "test": "TestRecoverableIssuerFailedFileCloseRetainsOriginal"
+    },
+    "S-legacy-pause": {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/operator_intake_test.go",
+      "test": "TestOperatorAdmissionPausedDrainAndHistoricalReceipt"
+    },
+    "S-join": {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/operator_intake_test.go",
+      "test": "TestOperatorAdmissionControllerJoinsAndCloses"
+    },
+    "S-lease": {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/manifest_fenced_server_test.go",
+      "test": "TestFencedManifestAdmissionNodeWorkReleasesOriginalLease"
+    },
+    "S-lost": {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/manifest_fenced_server_test.go",
+      "test": "TestFencedManifestAdmissionUnknownCommitRecoversExactReceipt"
+    },
+    "S-security": {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/manifest_security_test.go",
+      "test": "TestManifestSecurityEarlyGatesAndBodyBounds"
+    },
+    "D84": {
+      "path": "/Users/taytrrip/slug/slug/poolsettle/daily_codec_test.go",
+      "test": "TestDailyLedgerConditionalWholeFrontierWeightDeferral"
+    }
+  },
+  "cases": [
+    {
+      "case_id": "ready-normal",
+      "coverage": "composed",
+      "tests": [
+        "O-ready",
+        "S-cap-reopen",
+        "R-counts"
+      ],
+      "scope_note": "Mode and real selected insertion are separate concrete tests; quiescent registry counts explicitly cover record/index/permanent outbox +1 and signed-publication +0.",
+      "planned_actual": "A/B setup"
+    },
+    {
+      "case_id": "startup-neither-ready",
+      "coverage": "composed",
+      "tests": [
+        "O-ready",
+        "R-owner",
+        "S-legacy-pause"
+      ],
+      "scope_note": "Operator mode and old paused HTTP branch are covered; selected live paused preflight clock advance is source-order coverage, not a dedicated end-to-end assertion.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "startup-public-only",
+      "coverage": "composed",
+      "tests": [
+        "O-ready",
+        "O-reopen",
+        "R-owner",
+        "S-legacy-pause"
+      ],
+      "scope_note": "Fresh public-only is directly checked in full-source reopen. Normal startup sequence accumulates readiness, so do not call its third iteration fresh public-only; selected live paused clock advance remains source-order coverage.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "startup-round-only",
+      "coverage": "composed",
+      "tests": [
+        "O-ready",
+        "R-owner",
+        "S-legacy-pause"
+      ],
+      "scope_note": "Fresh round-only mode checked; selected live paused HTTP clock advance is not separately asserted.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "pool-drain-delivery",
+      "coverage": "direct_component",
+      "tests": [
+        "O-reopen",
+        "R-counts"
+      ],
+      "scope_note": "Real derived-full2 source and signed pending A; original authenticated selected service inserts retained proof while source remains drained. Controlled node/session, no TLS claim.",
+      "planned_actual": "A"
+    },
+    {
+      "case_id": "pool-drain-prospect-only",
+      "coverage": "partial",
+      "tests": [
+        "W-prospect",
+        "O-reopen"
+      ],
+      "scope_note": "Independent worker proves prospect=true/PoolWin=false with no pool receipt; operator same-job second proof has no new pool submission but all-f pool target. No direct selected full-source PoolWin=false integration.",
+      "planned_actual": "not a required A/B target"
+    },
+    {
+      "case_id": "block-first-canonical",
+      "coverage": "composed",
+      "tests": [
+        "W-order",
+        "N-current",
+        "R-staged"
+      ],
+      "scope_note": "Unchanged worker ordering and exact original canonical eligibility components; selected operator positive currently uses current-parent ordinary proof.",
+      "planned_actual": "A: genuine canonical second block, then original admission"
+    },
+    {
+      "case_id": "block-side-branch",
+      "coverage": "composed",
+      "tests": [
+        "N-reorg",
+        "R-proof"
+      ],
+      "scope_note": "Original exact node membership/reorg and invalid eligibility refusal; no new selected pool-drain side-branch integration.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "stale-nonblock",
+      "coverage": "composed",
+      "tests": [
+        "N-target",
+        "R-proof"
+      ],
+      "scope_note": "Original nonwinning canonical-target and guard refusal; selected service retains same node/final-commit path.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "full-source-reopen-paused",
+      "coverage": "composed",
+      "tests": [
+        "O-reopen",
+        "R-owner",
+        "S-legacy-pause"
+      ],
+      "scope_note": "Physical full-source reopen mode directly covered; live selected paused HTTP/no-node assertion is composed from unchanged gate and selected preflight ordering.",
+      "planned_actual": "A/B restart readiness observations"
+    },
+    {
+      "case_id": "full-source-reopen-public-only",
+      "coverage": "composed",
+      "tests": [
+        "O-reopen",
+        "R-owner"
+      ],
+      "scope_note": "Physical reopen fresh public-only mode checked; no dedicated HTTP clock-advance assertion.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "full-source-reopen-ready",
+      "coverage": "direct_component",
+      "tests": [
+        "O-reopen"
+      ],
+      "scope_note": "Same physical source/round/ledger reopen against original issuer/node/backend; fresh sticky readiness enables admission without mining.",
+      "planned_actual": "A/B"
+    },
+    {
+      "case_id": "escalate-public-after-pool",
+      "coverage": "direct_component",
+      "tests": [
+        "O-escalate",
+        "O-busy"
+      ],
+      "scope_note": "Explicit public hard cause remains sticky and is captured before fallible source census; no successful new-node admission in these mode tests.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "escalate-admission-after-pool",
+      "coverage": "direct_component",
+      "tests": [
+        "O-escalate",
+        "O-origin"
+      ],
+      "scope_note": "Exact original admission drain escalates independently of earlier pool reason.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "hard-hold-readiness-repeat",
+      "coverage": "direct_component",
+      "tests": [
+        "O-escalate"
+      ],
+      "scope_note": "Five concurrent readiness/cause operations join; later pool_capacity cannot downgrade hard admission reason.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "hard-hold-reopen",
+      "coverage": "partial",
+      "tests": [
+        "S-cap-reopen",
+        "R-public-cap",
+        "R-public-bytes"
+      ],
+      "scope_note": "Original live MaxRecords1 count survives physical issuer reopen, refuses new distinct proof before node and preserves history. Signed-authority full-prefix/byte-cap physical reopen is not instantiated; legacy cap tests are explicitly conditional counter/byte injections.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "other-hold-reasons",
+      "coverage": "direct_component",
+      "tests": [
+        "O-escalate",
+        "O-origin"
+      ],
+      "scope_note": "Round/no-reservation/legacy-over-bound/unknown reasons hard-latch; wrong-origin/mixed Enable errors do not become soft pool-only causes.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "historical-after-expiry-hard-hold",
+      "coverage": "composed",
+      "tests": [
+        "S-history",
+        "R-owner",
+        "R-counts",
+        "W-history"
+      ],
+      "scope_note": "Selected drained expired original receipt is exact; registry historical path makes injected clock/write fatal to prove bypass, with no new node.",
+      "planned_actual": "A verifies history before expiry; expired boundary remains component scope"
+    },
+    {
+      "case_id": "historical-startup-paused",
+      "coverage": "composed",
+      "tests": [
+        "R-owner",
+        "S-legacy-pause",
+        "S-history"
+      ],
+      "scope_note": "Historical original validation bypasses new preflight and unchanged intake branch. Selected service test sets drain before replay rather than explicitly replaying while initially paused.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "historical-rollback-clock",
+      "coverage": "direct_component",
+      "tests": [
+        "R-owner"
+      ],
+      "scope_note": "Historical prepared path replaces now/write with fatal guards, proving it does not sample even if a wall clock would roll back.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "historical-reopen-lost-ack",
+      "coverage": "composed",
+      "tests": [
+        "R-uncertain",
+        "S-lost",
+        "S-cap-reopen",
+        "W-history"
+      ],
+      "scope_note": "Original sync-ack loss + physical issuer reopen/clock-free history; selected service count-full reopen and exact stored response separately checked.",
+      "planned_actual": "A: actual success lost, physical original restart, exact historical replay"
+    },
+    {
+      "case_id": "historical-corrupt-index",
+      "coverage": "direct_component",
+      "tests": [
+        "R-owner"
+      ],
+      "scope_note": "Delete original sequence index after historical preparation; old handle refuses before lease; no cached receipt.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "historical-revoked-session",
+      "coverage": "composed",
+      "tests": [
+        "S-security",
+        "S-lease",
+        "R-uncertain"
+      ],
+      "scope_note": "Original authentication/lease guards are retained, but no new selected historical+revoked combination has its own test.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "new-expiry-minus-one",
+      "coverage": "partial",
+      "tests": [
+        "R-expiry",
+        "R-staged"
+      ],
+      "scope_note": "New test proves preflight succeeds at expiry-1, then final commit at equality fails. Valid earlier final commits are covered; successful final acceptance exactly at expiry-1 is not a new explicit Manifest staged assertion.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "new-expiry-equality",
+      "coverage": "direct_component",
+      "tests": [
+        "R-expiry"
+      ],
+      "scope_note": "Exact boundary persists high water and creates no record; equal persisted repeat performs no clock write.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "new-expiry-after",
+      "coverage": "composed",
+      "tests": [
+        "S-expiry",
+        "R-clock"
+      ],
+      "scope_note": "Real-current-time expired independent jobs yield definite expiry before intake/node; exact count and clock semantics covered separately.",
+      "planned_actual": "B: real original lifetime passes with worker stopped"
+    },
+    {
+      "case_id": "expired-with-admission-count-hold",
+      "coverage": "direct_component",
+      "tests": [
+        "S-expiry"
+      ],
+      "scope_note": "Selected record-count-full and permanently drained original owners can return authoritative expiry; no invented birth-cap check in clock-only preflight.",
+      "planned_actual": "B: pool-only drain; signed-public-cap not exhausted"
+    },
+    {
+      "case_id": "commit-crosses-expiry",
+      "coverage": "direct_component",
+      "tests": [
+        "R-expiry",
+        "R-final"
+      ],
+      "scope_note": "Preflight at expiry-1 grants no reservation; unchanged final Commit persists equality and refuses birth.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "expiry-clock-write-capacity",
+      "coverage": "composed",
+      "tests": [
+        "R-clock",
+        "S-errors"
+      ],
+      "scope_note": "Real public store, privately lowered logical-byte allowance for a conditional prewrite boundary; exact original ErrPublicCapacity beats expired and selected mapping drains. Not a fully audited published cap change.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "expiry-clock-write-poison",
+      "coverage": "composed",
+      "tests": [
+        "R-clock",
+        "S-errors"
+      ],
+      "scope_note": "Before-write and after-sync-lost-ack produce poison, no record/sequence; physical reopen distinguishes durable clock outcomes. Selected poison-first latch tested including unauthorized join.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "expiry-existing-poison",
+      "coverage": "composed",
+      "tests": [
+        "R-clock",
+        "S-errors"
+      ],
+      "scope_note": "Second helper call refuses existing poison before callback; selected mapping preserves uncertainty.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "expiry-clock-rollback",
+      "coverage": "direct_component",
+      "tests": [
+        "R-expiry"
+      ],
+      "scope_note": "Original physical reopen retains expiry high water; fresh preparation with earlier wall returns ErrClock.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "expiry-session-before-preflight",
+      "coverage": "composed",
+      "tests": [
+        "R-owner",
+        "S-fences"
+      ],
+      "scope_note": "Original check refusal leaves metadata unchanged; selected foreign session errors cannot disclose terminal expiry.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "expiry-looking-session-error",
+      "coverage": "direct_component",
+      "tests": [
+        "R-owner",
+        "S-fences",
+        "S-errors"
+      ],
+      "scope_note": "Exact/wrapped/joined external expiry-looking causes never become captured authoritative expiry.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "missing-original-job",
+      "coverage": "composed",
+      "tests": [
+        "R-owner",
+        "R-proof"
+      ],
+      "scope_note": "Prepared owner reload refuses deleted original job; independent unknown-job request also rejects before node/clock.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "foreign-prepared-owner",
+      "coverage": "direct_component",
+      "tests": [
+        "R-owner",
+        "R-expiry"
+      ],
+      "scope_note": "Foreign/zero prepared handles, reopened old-owner handle, changed original job and readonly/closed owners refuse before callback/time.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "wrong-gym-key-signature-proof",
+      "coverage": "inherited_component",
+      "tests": [
+        "R-proof",
+        "S-security"
+      ],
+      "scope_note": "Original authenticated preparation remains before the selected preflight. Independent mutated proof/key/gym/signature/descriptor controls are reused; no change to validator.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "mixed-capacity-integrity",
+      "coverage": "composed",
+      "tests": [
+        "R-clock",
+        "S-errors",
+        "O-origin"
+      ],
+      "scope_note": "Conditional original invalid public metadata wins capacity; selected mixed errors do not latch capacity; poison+unauthorized remains unknown and latches poison.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "preflight-canceled-owner",
+      "coverage": "composed",
+      "tests": [
+        "R-owner",
+        "S-fences",
+        "O-cancel",
+        "S-join"
+      ],
+      "scope_note": "Canceled original postcheck/no owner enable, closed/read-only helper, TryLock and original join behavior covered in separate controls.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "failed-close-retained",
+      "coverage": "inherited_component",
+      "tests": [
+        "R-close"
+      ],
+      "scope_note": "Existing sticky original file-close failure test and unchanged owner cleanup; no new selected-admission Close fault injection. Actuals require clean joins rather than causing Close failure.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "duplicate-race",
+      "coverage": "direct_component",
+      "tests": [
+        "R-owner",
+        "S-fences"
+      ],
+      "scope_note": "Original same-proof insert invalidates old preparation; fresh historical preparation recovers exactly with no additional node.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "two-distinct-proof-job",
+      "coverage": "direct_component",
+      "tests": [
+        "O-reopen"
+      ],
+      "scope_note": "Two normal-PoW distinct proofs of same original job both inserted, record/index/ownership counts2, signed publications0; no second pool share or one-proof-per-job restriction.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "worker-definite-expired-reopen",
+      "coverage": "direct_component",
+      "tests": [
+        "W-terminal"
+      ],
+      "scope_note": "Inherited independent prospect-only proof and original durable outbox; definite expired state persists with original auth/identity and no issuing/resigning. Controlled authority response.",
+      "planned_actual": "B: actual authenticated terminal and original stopped reopen"
+    },
+    {
+      "case_id": "worker-unknown-or-capacity",
+      "coverage": "composed",
+      "tests": [
+        "W-terminal",
+        "W-hold"
+      ],
+      "scope_note": "Explicit unknown-expired, capacity and unavailable remain pending after physical reopen. Generic canceled/malformed controls rely on unchanged delivery/client validation, not new named subcases.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "pending-payment-coexistence",
+      "coverage": "direct_component",
+      "tests": [
+        "O-reopen"
+      ],
+      "scope_note": "Real original pending signed A plus two selected admissions/history; full ledger row/body/raw equality and zero extra quote/sign/send.",
+      "planned_actual": "A/B scheduled payout continuation, not necessarily pending A during target"
+    },
+    {
+      "case_id": "d84-overweight-coexistence",
+      "coverage": "inherited_component",
+      "tests": [
+        "D84",
+        "O-reopen"
+      ],
+      "scope_note": "Whole-frontier1349-credit conditional deferral retains day/batch/claims; separate original admission does not call financial dispatch. No combined overweight+admission scenario, financial production unchanged.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "legacy-direct-drain",
+      "coverage": "composed",
+      "tests": [
+        "O-ready",
+        "S-history",
+        "S-legacy-pause"
+      ],
+      "scope_note": "Legacy branch and direct permanent Drain remain strict; old expired drained service returns capacity, selected changes are constructor-only.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "cheap-profile",
+      "coverage": "direct_component",
+      "tests": [
+        "R-cheap",
+        "S-cheap"
+      ],
+      "scope_note": "Both cheap selected paths refuse before original authority/clock/node effects; normal-positive tests remain build-excluded.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "preflight-success-postcheck-revocation",
+      "coverage": "direct_component",
+      "tests": [
+        "S-fences"
+      ],
+      "scope_note": "Live case/post-revoked refuses unauthorized after successful short operation, no node/new record.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "preflight-expired-postcheck-revocation",
+      "coverage": "direct_component",
+      "tests": [
+        "S-fences"
+      ],
+      "scope_note": "Expired case/post-revoked cannot disclose authoritative expiry after original session loss.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "preflight-expired-postcheck-unknown",
+      "coverage": "direct_component",
+      "tests": [
+        "S-fences"
+      ],
+      "scope_note": "Expired post-canceled and final check acknowledgment loss retain unknown; no terminal expiry or record.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "preflight-expired-wrapped-do-result",
+      "coverage": "direct_component",
+      "tests": [
+        "S-fences",
+        "S-errors"
+      ],
+      "scope_note": "Expired joined outer authorizer failure is retained because callback captures result and returns nil to unchanged Do.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "preflight-success-expired-looking-do-result",
+      "coverage": "direct_component",
+      "tests": [
+        "S-fences",
+        "S-errors"
+      ],
+      "scope_note": "Live foreign-expiry and joined-outer controls preserve source of failure; no uncaptured terminal.",
+      "planned_actual": "none"
+    },
+    {
+      "case_id": "preflight-expired-outer-joined-failure-healthy-next-check",
+      "coverage": "direct_component",
+      "tests": [
+        "S-fences"
+      ],
+      "scope_note": "Exact explicit expired/joined-outer case then successful later lease.Check cannot repair failed complete Do.",
+      "planned_actual": "none"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/oracle/manifest.json",
+      "bytes": 2385,
+      "sha256": "0d7df95e552b7a94078e9ccd536bbb827d93a69753c9051ece06901cbec28a62"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/oracle/acceptance.json",
+      "bytes": 31598,
+      "sha256": "1e31fb64f0bf90a10284f74b09d2642b6b394dce69da688265c44f45c24066aa"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/oracle-clock-correction/manifest.json",
+      "bytes": 848,
+      "sha256": "15b91a9690cd9b215ea3e0dfa8373697c22fd72686a2b477caf7b1ea491a067a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/oracle-clock-correction/CORRECTION.json",
+      "bytes": 3701,
+      "sha256": "81a8cf9ee2542612266225c52c0168b3fa268d3cf04b5f2503d5f6c2a680185f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/oracle-lease-provenance-correction/manifest.json",
+      "bytes": 1080,
+      "sha256": "760e60d3093557ba5b54e1e5dbe2155197efc9435a1b7cf33f74a7f5fce786bf"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/oracle-lease-provenance-correction/CORRECTION.json",
+      "bytes": 4795,
+      "sha256": "689f47d3708137c01ac7a55fc55f30cfedf9cacd46c3f08ddd134d5dab9a626f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/RETAINED_ADMISSION_ACTUAL_PLAN.md",
+      "bytes": 12412,
+      "sha256": "62ddde39c811001865cd91c9b11152aa7166c4a7f69044d5946afd018ee23a72"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/reference-v1.json",
+      "bytes": 174293,
+      "sha256": "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a"
+    }
+  ],
+  "source_identities": [
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_intake.go",
+      "bytes": 4382,
+      "sha256": "fec434fb14e40edf791e267d9b8c33a5b4d0de9850c23217d790b93390ddf3e9"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_retained_admission_test.go",
+      "bytes": 12923,
+      "sha256": "94001cf1d7a3508adb63dbef2ff21a36565d9c02fc26f85e1ac6b6b5bf714f03"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_retained_delivery_test.go",
+      "bytes": 10320,
+      "sha256": "576897f6d04dcf5f9c822bf1d8ceb884006762b545b90973a6b0505987cca5f6"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/internal/mininglease/lease.go",
+      "bytes": 4296,
+      "sha256": "fa419ebc7337deffabd67df4976bde2d7ba9fd77fdf3c7157b615c457f9df8d4"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolsettle/daily_codec_test.go",
+      "bytes": 16432,
+      "sha256": "4d1b3f858875e7cc26be8b32bcb836653e46dc38b6494185357d00566ebf4583"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectnode/admission_test.go",
+      "bytes": 9485,
+      "sha256": "5b4f5d553d00100b1f08a24b01be5988169861e71795373b7a59f973e4deb50a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/daily_fenced_admission.go",
+      "bytes": 2865,
+      "sha256": "d5af6dd0e350a92b3f2fc742c58e0f253f5ecd6ae7fe9fa1859c5a4ccfe78fac"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/daily_fenced_admission_test.go",
+      "bytes": 12017,
+      "sha256": "80c3fa74dc5f9879cd7309307fdfcfe00bf5e64400ab6854f9f744f46d491f14"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/daily_fenced_capacity_reopen_test.go",
+      "bytes": 4760,
+      "sha256": "c6c5cd567d1bb7e884d799f89bf47ccae9e12ea7a7a25cc6bb269835e90e5847"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/daily_fenced_profile_test.go",
+      "bytes": 536,
+      "sha256": "d2b7efaa31e341db468faf5a85e04f97ec5b0bc4c5c52f9fe0c8b0975b4f6ef6"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/manifest_fenced_server.go",
+      "bytes": 5654,
+      "sha256": "8dbc991e1521cb1a9504fc96e92498e3d6cf6fdee727f37e051d180ded0fb4ef"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/manifest_fenced_server_test.go",
+      "bytes": 7831,
+      "sha256": "1661cc292b7fcdc38ff63f1fc87458b9da59ec63d03de926930af4127b730223"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/manifest_security_test.go",
+      "bytes": 12170,
+      "sha256": "f84014434275dd5da9ed1c4aced5b9d2a94c0b3d1e9977599becbb7d6aa34db1"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/manifest_server.go",
+      "bytes": 19449,
+      "sha256": "6b72e50148d6c2b034b9d4d174815af1c22af170817d3d4bf6f62a34f536802d"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/operator_intake_test.go",
+      "bytes": 4944,
+      "sha256": "2af7a31490ecc8e3cfda80886460a46e747a246299bdcdd290bf557de3083ecb"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectworker/pool_delivery.go",
+      "bytes": 9930,
+      "sha256": "e529e1ab594428bf3dfc3018f45085b218fc8ad474c15edbf9dc9d6d8faf7129"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectworker/pool_delivery_test.go",
+      "bytes": 7370,
+      "sha256": "0d20e6230a4a7416f8270b18b50cae86fb07aa08328165dc125085fd9a25a39b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectworker/pool_retained_admission_test.go",
+      "bytes": 3628,
+      "sha256": "bfa83577f9d12eaf7915c35216db41604aba0bcce43f8f61122fdb4133073d7e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectworker/pool_worker_test.go",
+      "bytes": 20919,
+      "sha256": "240edbdf98958ff74a6430d174ac114ff3ff82c83d3cfe0852b3c70c0996ceb2"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/registry/issue_files_test.go",
+      "bytes": 2272,
+      "sha256": "54472fc96674a6dfdd4882c0e66d51e8f332b65bab64bb84afe544e11606f3be"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/registry/manifest_admission_preflight.go",
+      "bytes": 2904,
+      "sha256": "71959959569287de81119db62b7d0c864188e9dd883ef970b49176ddd4ad61b2"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/registry/manifest_admission_preflight_profile_test.go",
+      "bytes": 657,
+      "sha256": "d0d8067d1daabdad0fec6a6ede485722a5743daebbff71686187a592ee2418a0"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/registry/manifest_admission_preflight_test.go",
+      "bytes": 12807,
+      "sha256": "ff6102914a978e885d899eeb53186cee0075ebc11b5f97ba816c30d2199f510f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/registry/manifest_admission_test.go",
+      "bytes": 13061,
+      "sha256": "c11771fdeef98b7ddf9cfe7b96f8833afe6b4ea102bb6445785285e16f4bb0a9"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/registry/manifest_staged.go",
+      "bytes": 13620,
+      "sha256": "3ca973cab91643639d2c37ff600b17d9ae5b7db52693c92583061392cf1c530d"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/registry/manifest_staged_test.go",
+      "bytes": 12504,
+      "sha256": "611d331a90aebe9237e13eae66a6b045d60383ca2cee68651e4e9d43a9c3bf33"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/registry/public_capacity_test.go",
+      "bytes": 6281,
+      "sha256": "9bd775f35d7d8bf85d512f0d8e2332b774146f0d7bc4bd7a3a77fcd6f2be42a1"
+    }
+  ],
+  "actual_status": "A/B are planned acceptance, not executed or qualified by this report. Their final helper/phase schema remains under root freeze.",
+  "execution_status": "Source-read only; root owns all Go execution and runtime reports. No PASS result is inferred from source coverage.",
+  "repository_edits": false,
+  "go_executed": false,
+  "material_scope_limits": [
+    "No direct selected full-source PoolWin=false admission integration; worker independent prospect-only + original service lacking a pool-receipt predicate is compositional evidence.",
+    "Live MaxRecords1 physical reopen is not signed-authority Admissions/Publications/LogicalBytes exhaustion or continuous capacity.",
+    "Clock logical-capacity fixture is an expressly conditional prewrite bound, not a newly signed smaller pin or fully audited exhausted history.",
+    "D84 deferral and admission coexistence are separate components; actual two-input payouts cannot prove overweight deferral."
+  ],
+  "smaller_uncombined_edges": [
+    "Successful final Manifest commit exactly expiry-1 not singled out; preflight at expiry-1 and final equality refusal plus ordinary valid commits are present.",
+    "Selected live paused HTTP clock advance and historical revoked/paused combinations rely partly on unchanged source composition.",
+    "Failed Close is inherited conditional ownership coverage; A/B require clean joins and do not intentionally inject Close failure."
+  ]
+}

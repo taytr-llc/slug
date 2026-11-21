@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "scope": "Source-only finite coverage review",
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/service-stage/oracle-coverage.json",
+      "bytes": 35453,
+      "sha256": "c5193cce1eb7e5669cb39e630a76560494eb288c3cfb5e4e7f65985e2c832766"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/service-stage/ORACLE_COVERAGE.md",
+      "bytes": 3916,
+      "sha256": "d23bcb436dc78d10cf9750f58434c5f89c0320cac0a904639c06f25e672c9d24"
+    }
+  ],
+  "case_count": 54,
+  "coverage_categories": {
+    "composed": 23,
+    "direct_component": 25,
+    "partial": 3,
+    "inherited_component": 3
+  },
+  "go_executed": false,
+  "repository_edits": false
+}

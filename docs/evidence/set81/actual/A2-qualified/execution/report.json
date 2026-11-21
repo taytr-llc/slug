@@ -1,0 +1,582 @@
+{
+  "actual_started": true,
+  "artifacts": {
+    "helper": {
+      "build_info": "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/helper-build-info.txt",
+      "build_info_sha256": "695c273486b2b008223bb392b86d3fb2cc6947e19b2077bc2e7b1d20fc780c3b",
+      "compiler_setting_evidence": "embedded_build_info",
+      "go_version": "go1.27.4",
+      "path": "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/bin/slugpilot",
+      "settings": {
+        "-buildmode": "exe",
+        "-compiler": "gc",
+        "-gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "-trimpath": "true",
+        "CGO_ENABLED": "1",
+        "GOARCH": "arm64",
+        "GOARM64": "v8.0",
+        "GOOS": "darwin",
+        "vcs": "git",
+        "vcs.modified": "true",
+        "vcs.revision": "1f559221c3735227e8475731f2c73a74282db5b0",
+        "vcs.time": "2026-11-21T13:46:03Z"
+      },
+      "sha256": "b384b0aa430bf68f3f3a18a3e65b478f63106351f217d3de02f553edb8bd475c"
+    },
+    "node": {
+      "build_info": "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/node-build-info.txt",
+      "build_info_sha256": "1a1e7d8c2cfbbce3e5c9c0815643d9c1b96c745cc72ad4d17f0cf0e342dc612b",
+      "compiler_setting_evidence": "embedded_build_info",
+      "go_version": "go1.27.4",
+      "path": "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/bin/slugd",
+      "settings": {
+        "-buildmode": "exe",
+        "-compiler": "gc",
+        "-gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "-trimpath": "true",
+        "CGO_ENABLED": "0",
+        "GOARCH": "arm64",
+        "GOARM64": "v8.0",
+        "GOOS": "darwin",
+        "vcs": "git",
+        "vcs.modified": "true",
+        "vcs.revision": "1f559221c3735227e8475731f2c73a74282db5b0",
+        "vcs.time": "2026-11-21T13:46:03Z"
+      },
+      "sha256": "6114e608fb15ec61f34bb3e558c211f5fcc70f03e137769b25b15b9d2fbd51eb"
+    },
+    "operator": {
+      "build_info": "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/operator-build-info.txt",
+      "build_info_sha256": "541c4444cded6806401ce6281391184f07790128922913ef271d2e4cf04f0382",
+      "compiler_setting_evidence": "embedded_build_info",
+      "go_version": "go1.27.4",
+      "path": "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/bin/slugpoold",
+      "settings": {
+        "-buildmode": "exe",
+        "-compiler": "gc",
+        "-gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "-trimpath": "true",
+        "CGO_ENABLED": "1",
+        "GOARCH": "arm64",
+        "GOARM64": "v8.0",
+        "GOOS": "darwin",
+        "vcs": "git",
+        "vcs.modified": "true",
+        "vcs.revision": "1f559221c3735227e8475731f2c73a74282db5b0",
+        "vcs.time": "2026-11-21T13:46:03Z"
+      },
+      "sha256": "f6a9c617daba6432cc3027a0e89278c73a7c9e6fd5c6a3494f46e85f6785afbf"
+    },
+    "probe": {
+      "build_info": "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/probe-build-info.txt",
+      "build_info_sha256": "4098a79c4bb379831439b518353585886c4262b008094ec86059176b3c461e5d",
+      "compiler_setting_evidence": "embedded_build_info",
+      "go_version": "go1.27.4",
+      "path": "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/bin/retained-admission-actual",
+      "settings": {
+        "-buildmode": "exe",
+        "-compiler": "gc",
+        "-gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "-trimpath": "true",
+        "CGO_ENABLED": "1",
+        "GOARCH": "arm64",
+        "GOARM64": "v8.0",
+        "GOOS": "darwin"
+      },
+      "sha256": "927f0c195defa0b6c224141fbe9c01c38354aa66f9cd78fc7a670108b74ace3e"
+    }
+  },
+  "case": "A",
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 98854,
+        "pid": 98854,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-json",
+        "-mod=readonly",
+        "."
+      ],
+      "exit_code": 0,
+      "label": "node-deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 98854,
+      "pid": 98854,
+      "seconds": 0.329,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 98862,
+        "pid": 98862,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-json",
+        "-mod=readonly",
+        "./cmd/slugpoold"
+      ],
+      "exit_code": 0,
+      "label": "operator-deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 98862,
+      "pid": 98862,
+      "seconds": 0.291,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 98870,
+        "pid": 98870,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-json",
+        "-mod=readonly",
+        "./cmd/slugpilot"
+      ],
+      "exit_code": 0,
+      "label": "helper-deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 98870,
+      "pid": 98870,
+      "seconds": 0.326,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 98878,
+        "pid": 98878,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-json",
+        "-mod=readonly",
+        "."
+      ],
+      "exit_code": 0,
+      "label": "probe-deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 98878,
+      "pid": 98878,
+      "seconds": 0.242,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 98885,
+        "pid": 98885,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-trimpath",
+        "-tags=",
+        "-o",
+        "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/bin/slugd",
+        "."
+      ],
+      "exit_code": 0,
+      "label": "node-build",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 98885,
+      "pid": 98885,
+      "seconds": 1.254,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 98899,
+        "pid": 98899,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-trimpath",
+        "-tags=",
+        "-o",
+        "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/bin/slugpoold",
+        "./cmd/slugpoold"
+      ],
+      "exit_code": 0,
+      "label": "operator-build",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 98899,
+      "pid": 98899,
+      "seconds": 3.026,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 98951,
+        "pid": 98951,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-trimpath",
+        "-tags=",
+        "-o",
+        "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/bin/slugpilot",
+        "./cmd/slugpilot"
+      ],
+      "exit_code": 0,
+      "label": "helper-build",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 98951,
+      "pid": 98951,
+      "seconds": 2.965,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 98981,
+        "pid": 98981,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-trimpath",
+        "-tags=",
+        "-o",
+        "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/bin/retained-admission-actual",
+        "."
+      ],
+      "exit_code": 0,
+      "label": "probe-build",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 98981,
+      "pid": 98981,
+      "seconds": 2.657,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 99013,
+        "pid": 99013,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/bin/retained-admission-actual",
+        "--case",
+        "A",
+        "--node",
+        "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/bin/slugd",
+        "--operator",
+        "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/bin/slugpoold",
+        "--helper",
+        "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/bin/slugpilot",
+        "--artifacts",
+        "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned",
+        "--reference",
+        "/Users/taytrrip/slug/artifacts/set81/actual-selection-attempt1/primary.json",
+        "--old-reference",
+        "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/path-c-reference.json",
+        "--base-reference",
+        "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/base-reference.json"
+      ],
+      "exit_code": 0,
+      "label": "actual",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 99013,
+      "pid": 99013,
+      "seconds": 422.646,
+      "timed_out": false
+    }
+  ],
+  "fixture_preservation": {
+    "allowed_changed_paths": [
+      "authority/db/000002.ldb",
+      "authority/db/000003.log",
+      "authority/db/000017.ldb",
+      "authority/db/000018.log",
+      "authority/db/000020.ldb",
+      "authority/db/CURRENT",
+      "authority/db/CURRENT.bak",
+      "authority/db/LOG",
+      "authority/db/MANIFEST-000004",
+      "authority/db/MANIFEST-000019",
+      "coordinator/db/000002.ldb",
+      "coordinator/db/000003.log",
+      "coordinator/db/000014.ldb",
+      "coordinator/db/000015.ldb",
+      "coordinator/db/000016.log",
+      "coordinator/db/CURRENT",
+      "coordinator/db/CURRENT.bak",
+      "coordinator/db/LOG",
+      "coordinator/db/MANIFEST-000004",
+      "coordinator/db/MANIFEST-000017",
+      "fixture-provider/instance-lock/000002.log",
+      "fixture-provider/instance-lock/000010.log",
+      "fixture-provider/instance-lock/CURRENT",
+      "fixture-provider/instance-lock/CURRENT.bak",
+      "fixture-provider/instance-lock/LOG",
+      "fixture-provider/instance-lock/MANIFEST-000003",
+      "fixture-provider/instance-lock/MANIFEST-000011",
+      "fixture-provider/state.json",
+      "hosted-vault/db/000003.log",
+      "hosted-vault/db/000011.log",
+      "hosted-vault/db/CURRENT",
+      "hosted-vault/db/CURRENT.bak",
+      "hosted-vault/db/LOG",
+      "hosted-vault/db/MANIFEST-000004",
+      "hosted-vault/db/MANIFEST-000012",
+      "instance-lock/000002.log",
+      "instance-lock/000010.log",
+      "instance-lock/CURRENT",
+      "instance-lock/CURRENT.bak",
+      "instance-lock/LOG",
+      "instance-lock/MANIFEST-000003",
+      "instance-lock/MANIFEST-000011",
+      "shared/gyms/incrementing256/owned-wallet/inventory/db/000003.log",
+      "shared/gyms/incrementing256/owned-wallet/inventory/db/000011.log",
+      "shared/gyms/incrementing256/owned-wallet/inventory/db/CURRENT",
+      "shared/gyms/incrementing256/owned-wallet/inventory/db/CURRENT.bak",
+      "shared/gyms/incrementing256/owned-wallet/inventory/db/LOG",
+      "shared/gyms/incrementing256/owned-wallet/inventory/db/MANIFEST-000004",
+      "shared/gyms/incrementing256/owned-wallet/inventory/db/MANIFEST-000012",
+      "shared/gyms/incrementing256/owned-wallet/wallet/slugwallet.db"
+    ],
+    "copied": true,
+    "immutable_paths": 226,
+    "old_histories_unchanged": true,
+    "original_unchanged": true
+  },
+  "maximum_chain_height": 180,
+  "outer_seconds": 1080,
+  "passed": true,
+  "profile_lock_binaries_unchanged": true,
+  "public_evidence": {
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/01-selection.json": {
+      "bytes": 15218,
+      "sha256": "ac32c02a84284f1b778219bdbebda461b4146492031233c9bb94f691e1193398"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/02-retained-before-forward.json": {
+      "bytes": 114177,
+      "sha256": "614c29a9f1e6da9a40f4c02336f98de99eb59793b10ec7ae083ba1519066f817"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/03-lost-success.json": {
+      "bytes": 133388,
+      "sha256": "8e50cb2a109bfe6845ae5857baf0fee3c80752060af00f1564732d54d316e5d5"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/04-completed-delivery.json": {
+      "bytes": 68429,
+      "sha256": "ad0d2fdf27b661b5ef9b4c9deb6797a54e90eb45728ed452787875e17d759ff6"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/05-stopped-reopen.json": {
+      "bytes": 2434,
+      "sha256": "d862ef17d4f702ce7757738e31a6bc3f30cd927b5bad529d0b359362cb16e7f5"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/06-mature.json": {
+      "bytes": 2886,
+      "sha256": "a8adb9b4b01f679e6563784d4b8bf5ea3c41f510ccac7e9e39b94b9076a55a5d"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/07-confirmed-payment.json": {
+      "bytes": 1216,
+      "sha256": "24fc90d07d21346df22604e1d64718cdbb737ae3fe2cdf0070aebce3c647a465"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/08-payment-wallet.json": {
+      "bytes": 9847,
+      "sha256": "7b43238100d0f9dd34346e73fc9c8cf39449e01da82c9469f4afc998fbc6e6a4"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/09-final-audit.json": {
+      "bytes": 125257,
+      "sha256": "125c239a0c81eaf00195f75165fca4486544a6a03f5b73b85ba6c8895312b681"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/10-complete.json": {
+      "bytes": 1626,
+      "sha256": "37c8dc0f7796ba4293492d095efe65c963cc6556345ee285369b9960bab365c6"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/actual-report.json": {
+      "bytes": 111104,
+      "sha256": "d1b8cb20e033dfa9635f226fed7ef3cda3b9d3796607fccaa7fbf32ae0284d35"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/cli-1-stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/cli-1-stdout.jsonl": {
+      "bytes": 1028,
+      "sha256": "b525ad8f5e4cc6588313b5b181c3f73d71e12cfebec0efdd9a71e2cc8c2e68d3"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/cli-2-stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/cli-2-stdout.jsonl": {
+      "bytes": 206,
+      "sha256": "44fbf83d4db737d986c56e97146d5d7f5ae82530a6323ba83dd006828184ae4f"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/cli-3-stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/cli-3-stdout.jsonl": {
+      "bytes": 425,
+      "sha256": "ab2db75f6d8b24bd0c00dcfeaf1d16dc8972b86b23d56cd94f12e068be56dc9a"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/money-read-evidence.json": {
+      "bytes": 5082,
+      "sha256": "cafd23cee8c124e03c491630c4f1d93305ee4325fed4e0b9c033ee4cedc7f1d3"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/operator-init-stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/operator-init-stdout.jsonl": {
+      "bytes": 1667,
+      "sha256": "4d5423ef557bc0711fc2e4ace67e165ca2465e904454d95fe631c60c43ade276"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/operator-rotate-admission-stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/operator-rotate-admission-stdout.jsonl": {
+      "bytes": 444,
+      "sha256": "6979018b2e9cf307b1928427c555307a696439c52b83c0f62597991ebca603fc"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/operator-rotate-pool-0-stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/operator-rotate-pool-0-stdout.jsonl": {
+      "bytes": 439,
+      "sha256": "67bd5f42d3e191249396e1ff4090df23164726cff0e877a43922a82b74a41f8c"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/operator-rotate-pool-1-stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/operator-rotate-pool-1-stdout.jsonl": {
+      "bytes": 439,
+      "sha256": "8d03a32edd04a16ab26349ef58b3ef47e55f0ee055851b967e473d806ca3dfa8"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/operator-serve-1-stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/operator-serve-1-stdout.jsonl": {
+      "bytes": 2713,
+      "sha256": "c7b2c18649c53b078d319e21da2e4924f6da19f41b1adc5cd46a5b0eade8c322"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/operator-serve-2-stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/operator-serve-2-stdout.jsonl": {
+      "bytes": 2713,
+      "sha256": "ccf532161bdf20ea19b2af634825606a479b2aa3cfd5bb9201e2fac8001a0d98"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/operator-serve-3-stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/operator-serve-3-stdout.jsonl": {
+      "bytes": 22785,
+      "sha256": "5dc16e0b8ee779ae41c50ceb514a752fc47222af90380d4ae4f96fea8dd568b6"
+    },
+    "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt2/owned/receipt-lookup-evidence.json": {
+      "bytes": 30554,
+      "sha256": "9a1e514c8c65997537c41271baf171e614adc4e1cc77aa3c28fc2e6c1b470929"
+    }
+  },
+  "public_evidence_unchanged": true,
+  "scenario_seconds": 900,
+  "scope": "set81-retained-fighter-admission-actual",
+  "sources_unchanged": true,
+  "version": 1
+}

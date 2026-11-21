@@ -1,0 +1,88 @@
+{
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 93762,
+        "pid": 93762,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=slugtestpow",
+        "./registry"
+      ],
+      "exit_code": 0,
+      "label": "deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 93762,
+      "pid": 93762,
+      "seconds": 0.296,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 93780,
+        "pid": 93780,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "test",
+        "-count=1",
+        "-p=1",
+        "-timeout=450s",
+        "-json",
+        "-tags=slugtestpow",
+        "-run",
+        "^Test(DailyRetained|ManifestAdmissionPreflight|DailyFencedAdmission|RetainedPoolAdmission)",
+        "./registry"
+      ],
+      "exit_code": 0,
+      "label": "cheap",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 93780,
+      "pid": 93780,
+      "seconds": 1.7,
+      "timed_out": false
+    }
+  ],
+  "expected_profile_skips": [],
+  "failed_tests": [],
+  "passed": true,
+  "passing_packages": [
+    "github.com/taytr-llc/slug/registry"
+  ],
+  "passing_tests": [
+    "github.com/taytr-llc/slug/registry/TestManifestAdmissionPreflightCheapRefuses"
+  ],
+  "pattern": "^Test(DailyRetained|ManifestAdmissionPreflight|DailyFencedAdmission|RetainedPoolAdmission)",
+  "profile_unchanged": true,
+  "required_tests": [
+    "TestManifestAdmissionPreflightCheapRefuses"
+  ],
+  "scope": "Set81 core cheap",
+  "skipped_tests": [],
+  "sources_unchanged": true,
+  "version": 1
+}

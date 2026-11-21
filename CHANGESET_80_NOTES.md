@@ -176,7 +176,11 @@ The unchanged regression and complete gym-stable suite pass normally and under
 the race detector (76 top-level tests / 499 assertions each); vet passes.
 Sources/profile remain unchanged during each run and all owners join. The
 original CI failure and pre-fix reproduction remain failed evidence in
-`docs/evidence/set80/stable-close-ci/`; follow-up exact-tip CI is pending.
+`docs/evidence/set80/stable-close-ci/`. All seven follow-up exact-tip CI jobs pass
+at `1f559221c3735227e8475731f2c73a74282db5b0`, paired with wallet `dfc5d9dd`.
+The downloaded Linux artifact verifies all 428 required assertions in 29 groups,
+all 61 command logs, unchanged sources and clean joins. See
+`docs/evidence/set80/ci-closeout/`; the original `ce9eac74` failure is not relabeled.
 
 Actual B independently proves real expiry before
 source publication, an unchanged `issued_unused` terminal and zero work/credit/

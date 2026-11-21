@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "passed": true,
+  "scope": "independent actual fixture selection only; no Go/product execution",
+  "source_lock_sha256": "4ae8d1a5fcd395875d5eae545acd3f4a254a5719564cf60c033a20b5b72feaf8",
+  "commands": [
+    {
+      "interpreter": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "version": "Python 3.14.3",
+      "exit_code": 0,
+      "seconds": 0.059,
+      "bytes": 174293,
+      "sha256": "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a"
+    },
+    {
+      "interpreter": "/Library/Developer/CommandLineTools/usr/bin/python3",
+      "version": "Python 3.9.6",
+      "exit_code": 0,
+      "seconds": 0.171,
+      "bytes": 174293,
+      "sha256": "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a"
+    }
+  ],
+  "identical_outputs": true,
+  "sources_unchanged": true
+}

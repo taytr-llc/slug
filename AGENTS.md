@@ -10,11 +10,22 @@ Read HANDOVER.md before starting. It has the full state, the remaining work
 spec, and the verification gates. This file is the short standing-rules
 version.
 
-Mike's current work order (November 19): finish fighter transfers and recovery
-first; then complete the public mining pool and scheduled payouts; then sign-in
-and onboarding. Preserve D82 requirements for that later work and D74's full
-joint design review as the final product review before release. Fixture pool
-tests alone do not close public deployment and scheduled-payout acceptance.
+Mike's current work order (November 21) is: hosted pool and scheduled payouts;
+then wallet balances and history; then sign-in/onboarding; then the full joint
+D74 design review. Marketplace work is on hold. Preserve completed fighter
+transfer/recovery work and D82's mandatory authentication requirements.
+
+Fix a newly found issue immediately only if it blocks the agreed test flow,
+risks funds or lost data, or breaks security or payout correctness. Record all
+other known open edge cases in `docs/EDGE_CASE_FOLLOW_UPS.md`, with trigger,
+player impact, evidence, workaround and revisit point. Public-launch-only
+limits must be labeled and must not delay a safe, explicitly bounded test build.
+This supersedes earlier sequencing that required general capacity continuation
+before any hosted test qualification. Never bypass existing capacity, reset
+histories, discard recovery rights or weaken D84 to make a test pass. The active
+burn list is in `LAUNCH_READINESS.md`; keep it linked to the follow-up log.
+Fixture proofs alone still do not establish hosted operation or launch approval.
+D74 remains the final joint review before friends/tester or public release.
 
 Mike explicitly excludes Wandercom and Growmaple from agent access. Do not
 query or operate on either organization's repositories or other resources.
@@ -516,11 +527,25 @@ authorization must be repository-limited, not an account-wide OAuth expansion.
   path. A deterministic pre-fix reproduction is retained; direct original-life
   checks pass the full stable normal/race suites and vet. Preserve source/clock
   failure precedence and distinguish active cancellation from later ErrClosed.
-  Follow-up exact-tip CI is pending until separately recorded. See
+  All seven follow-up exact-tip CI jobs pass at `1f559221`; downloaded Linux
+  evidence verifies 428 required assertions, unchanged sources and clean joins.
+  See `docs/evidence/set80/ci-closeout/` and
   `docs/evidence/set80/stable-close-ci/`, `CHANGESET_80_NOTES.md` and
-  `POOL_ISSUE_RECOVERY.md`. Continue retained original-job fighter delivery at
-  pool-only drain, then capacity and hosted operation. Independent signed limits,
-  D80's no-late-birth rule and D84 remain; onboarding follows and D74 stays last.
+  `POOL_ISSUE_RECOVERY.md`. The November 21 active work order above supersedes
+  the previous general-capacity-before-host sequencing. Independent signed
+  limits, D80's no-late-birth rule and D84 remain.
+- Set81 on `slug-pool-retained-admission` preserves original-job admission at
+  an ordinary DAILY pool-only drain, with authoritative expiry preflight and
+  bounded exact-Busy round retries. Initial full affected normal/race suites
+  pass; the successor passes all 69 operator normal tests, 16 targeted race
+  tests, all 17 module builds/static checks and unchanged-node smoke. Actual A2
+  passes full intake, restarts, lost admission reply, identical replay and one
+  scheduled 19.8-SLUG payment. B1 fails extended offline publication readiness
+  before expiry replay/final wallet verification; preserve it as EF-12, not a
+  pass. Exact-tip CI is pending. See `CHANGESET_81_NOTES.md` and
+  `docs/evidence/set81/`. Continue bounded hosted pool/payouts; general capacity
+  and long-outage follow-ups do not block that test unless they meet the triage
+  rule. Wallet balances/history follow, then sign-in and the full D74 review.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

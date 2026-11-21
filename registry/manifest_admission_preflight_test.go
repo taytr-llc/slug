@@ -1,0 +1,355 @@
+//go:build !slugtestpow
+
+// Copyright (c) 2026 The SLUG developers. ISC license.
+package registry
+
+import (
+	"bytes"
+	"encoding/hex"
+	"errors"
+	"reflect"
+	"testing"
+	"time"
+
+	"github.com/syndtr/goleveldb/leveldb"
+	"github.com/syndtr/goleveldb/leveldb/opt"
+)
+
+func TestManifestAdmissionPreflightOriginalOwnerAndHistory(t *testing.T) {
+	f := readManifestCorpus(t)
+	tc := f.Cases[0]
+	s, _, now := manifestCorpusStore(t, f)
+	p, err := s.PrepareManifestAdmission(tc.Proof, tc.Authorization)
+	if err != nil {
+		t.Fatal(err)
+	}
+	before := s.meta
+	for _, bad := range []*PreparedManifestAdmission{nil, {}} {
+		if err = s.PreflightManifestAdmission(bad, func() error { t.Fatal("invalid preparation reached lease"); return nil }); err != ErrManifestAuthority {
+			t.Fatal(err)
+		}
+	}
+	other, _, _ := manifestCorpusStore(t, f)
+	if err = other.PreflightManifestAdmission(p, func() error { t.Fatal("foreign preparation reached lease"); return nil }); err != ErrManifestAuthority {
+		t.Fatal(err)
+	}
+	if err = s.PreflightManifestAdmission(p, nil); err == nil {
+		t.Fatal("nil session check accepted")
+	}
+	for _, refusal := range []error{errors.New("original session revoked"), ErrJobExpired, errors.Join(ErrJobExpired, ErrCorrupt)} {
+		if err = s.PreflightManifestAdmission(p, func() error { return refusal }); !errors.Is(err, refusal) || err == ErrJobExpired || s.meta != before {
+			t.Fatal("session cause became authoritative expiry or wrote", err)
+		}
+	}
+	s.mu.Lock()
+	done := make(chan error, 1)
+	go func() {
+		done <- s.PreflightManifestAdmission(p, func() error { t.Error("busy preparation reached lease"); return nil })
+	}()
+	select {
+	case err = <-done:
+		s.mu.Unlock()
+		if err != ErrBusy {
+			t.Fatal(err)
+		}
+	case <-time.After(2 * time.Second):
+		s.mu.Unlock()
+		<-done
+		t.Fatal("preflight waited under original account lease")
+	}
+	*now = tc.Accepted
+	if err = s.PreflightManifestAdmission(p, func() error { return nil }); err != nil {
+		t.Fatal(err)
+	}
+	if s.meta.LastSequence != 0 || s.meta.JobCount != before.JobCount || s.meta.LastClockMS != tc.Accepted {
+		t.Fatal("preflight changed non-clock state")
+	}
+	admitManifestCase(t, s, now, tc)
+	if err = s.PreflightManifestAdmission(p, func() error { t.Fatal("stale token reached lease"); return nil }); err != ErrConflict {
+		t.Fatal("new duplicate did not require reprepare", err)
+	}
+	history, err := s.PrepareManifestAdmission(tc.Proof, tc.Authorization)
+	if err != nil || !history.Historical() {
+		t.Fatal(err)
+	}
+	s.now = func() time.Time { t.Fatal("historical preflight sampled time"); return time.Time{} }
+	s.writeBatch = func(*leveldb.Batch, *opt.WriteOptions) error { t.Fatal("historical preflight wrote"); return nil }
+	if err = s.PreflightManifestAdmission(history, func() error { return nil }); err != nil {
+		t.Fatal(err)
+	}
+	got, err := s.GetManifestAdmission(tc.Verified.ProspectID)
+	if err != nil || !reflect.DeepEqual(got, tc.Record) {
+		t.Fatal("historical evidence changed", err)
+	}
+	if err = s.db.Delete(sequenceKey(tc.Record.Sequence), &opt.WriteOptions{Sync: true}); err != nil {
+		t.Fatal(err)
+	}
+	if err = s.PreflightManifestAdmission(history, func() error { t.Fatal("corrupt index reached lease"); return nil }); err != ErrConflict {
+		t.Fatal("cached history hid changed index", err)
+	}
+	for _, mode := range []string{"missing-job", "changed-job", "read-only", "closed"} {
+		t.Run(mode, func(t *testing.T) {
+			original, path, _ := manifestCorpusStore(t, f)
+			p, e := original.PrepareManifestAdmission(tc.Proof, tc.Authorization)
+			if e != nil {
+				t.Fatal(e)
+			}
+			owner := original
+			want := ErrJobNotFound
+			switch mode {
+			case "missing-job":
+				e = owner.db.Delete(jobKey(tc.Job.ID), &opt.WriteOptions{Sync: true})
+			case "changed-job":
+				e = owner.db.Put(jobKey(tc.Job.ID), []byte(f.Jobs[1].Canonical), &opt.WriteOptions{Sync: true})
+				want = ErrCorrupt
+			case "read-only":
+				e = original.Close()
+				if e == nil {
+					owner, e = OpenManifestAuthority(path, f.Pin, true)
+				}
+				if owner != nil {
+					defer func() {
+						if closeErr := owner.Close(); closeErr != nil {
+							t.Error(closeErr)
+						}
+					}()
+				}
+				want = ErrReadOnly
+			case "closed":
+				e = owner.Close()
+				want = ErrClosed
+			}
+			if e != nil {
+				t.Fatal(e)
+			}
+			owner.now = func() time.Time { t.Fatal("invalid original owner/job reached clock"); return time.Time{} }
+			if e = owner.PreflightManifestAdmission(p, func() error { t.Fatal("invalid original owner/job reached lease"); return nil }); !errors.Is(e, want) {
+				t.Fatal(e)
+			}
+		})
+	}
+}
+
+func TestManifestAdmissionPreflightExpiryAndRestart(t *testing.T) {
+	f := readManifestCorpus(t)
+	tc := f.Cases[0]
+	for _, final := range []bool{false, true} {
+		t.Run(map[bool]string{false: "preflight-expired", true: "commit-crosses-expiry"}[final], func(t *testing.T) {
+			s, path, now := manifestCorpusStore(t, f)
+			p, err := s.PrepareManifestAdmission(tc.Proof, tc.Authorization)
+			if err != nil {
+				t.Fatal(err)
+			}
+			*now = tc.Job.ExpiresAtMS
+			if final {
+				*now--
+			}
+			err = s.PreflightManifestAdmission(p, func() error { return nil })
+			if final {
+				if err != nil {
+					t.Fatal(err)
+				}
+				*now = tc.Job.ExpiresAtMS
+				_, inserted, e := s.CommitManifestAdmission(p, tc.Eligibility, func() error { return nil })
+				if inserted {
+					t.Fatal("preflight reserved a post-expiry birth")
+				}
+				err = e
+			}
+			if err != ErrJobExpired || s.meta.LastSequence != 0 || s.meta.LastClockMS != tc.Job.ExpiresAtMS {
+				t.Fatal("expiry/high water", err)
+			}
+			// An already persisted equal sample is a genuine no-write observation.
+			s.writeBatch = func(*leveldb.Batch, *opt.WriteOptions) error { t.Fatal("equal clock rewrote metadata"); return nil }
+			if err = s.PreflightManifestAdmission(p, func() error { return nil }); err != ErrJobExpired {
+				t.Fatal(err)
+			}
+			if err = s.Close(); err != nil {
+				t.Fatal(err)
+			}
+			reopened, err := OpenManifestAuthority(path, f.Pin, false)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer func() {
+				if e := reopened.Close(); e != nil {
+					t.Error(e)
+				}
+			}()
+			if err = reopened.PreflightManifestAdmission(p, func() error { t.Fatal("old owner token reached lease"); return nil }); err != ErrManifestAuthority {
+				t.Fatal(err)
+			}
+			reopened.now = func() time.Time { return time.UnixMilli(tc.Job.ExpiresAtMS - 1) }
+			fresh, err := reopened.PrepareManifestAdmission(tc.Proof, tc.Authorization)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err = reopened.PreflightManifestAdmission(fresh, func() error { return nil }); err != ErrClock {
+				t.Fatal("restart forgot observed expiry", err)
+			}
+		})
+	}
+}
+
+func TestManifestAdmissionPreflightClockCapacityAndUncertainty(t *testing.T) {
+	f := readManifestCorpus(t)
+	tc := f.Cases[0]
+	for _, corrupt := range []bool{false, true} {
+		t.Run(map[bool]string{false: "logical-clock-capacity", true: "integrity-before-capacity"}[corrupt], func(t *testing.T) {
+			s, _, _, _ := publicTestStore(t)
+			random, err := hex.DecodeString(f.Random)
+			if err != nil {
+				t.Fatal(err)
+			}
+			// The public constructor retains the independent pin; the first32
+			// bytes of this published stream were its authority ID, not a job.
+			s.random = bytes.NewReader(random[32:])
+			s.now = func() time.Time { return time.UnixMilli(f.Issued) }
+			for _, row := range f.Jobs {
+				job, e := s.IssueManifestJob(row.Job.Context, row.Job.PublicKey, func() error { return nil })
+				if e != nil || job != row.Job {
+					t.Fatal("independent original job", e)
+				}
+			}
+			p, err := s.PrepareManifestAdmission(tc.Proof, tc.Authorization)
+			if err != nil {
+				t.Fatal(err)
+			}
+			before := s.meta
+			publicBefore := s.public.meta
+			originalLimit := s.public.pin.Limits.LogicalBytes
+			defer func() { s.public.pin.Limits.LogicalBytes = originalLimit; s.public.meta = publicBefore }()
+			// Conditional prewrite boundary only: no modified pin is published
+			// or reopened as signed authority. Advancing to15 digits grows both
+			// metadata clocks beyond the exact occupied byte allowance.
+			s.public.pin.Limits.LogicalBytes = s.public.meta.LogicalBytes
+			if corrupt {
+				s.public.meta.SignedAdmissionSequence = s.public.meta.AcceptedSequence + 1
+			}
+			s.now = func() time.Time { return time.UnixMilli(MaxPublicTimestampMS) }
+			s.writeBatch = func(*leveldb.Batch, *opt.WriteOptions) error { t.Fatal("refused clock reached write"); return nil }
+			err = s.PreflightManifestAdmission(p, func() error { return nil })
+			if corrupt {
+				if err != ErrPublicOwnership {
+					t.Fatal(err)
+				}
+			} else if err != ErrPublicCapacity {
+				t.Fatal("logical refusal became expiry", err)
+			}
+			if s.meta != before {
+				t.Fatal("refused clock changed durable metadata")
+			}
+		})
+	}
+	for _, after := range []bool{false, true} {
+		t.Run(map[bool]string{false: "before-clock-write", true: "clock-write-ack-lost"}[after], func(t *testing.T) {
+			s, path, now := manifestCorpusStore(t, f)
+			p, err := s.PrepareManifestAdmission(tc.Proof, tc.Authorization)
+			if err != nil {
+				t.Fatal(err)
+			}
+			*now = tc.Job.ExpiresAtMS
+			s.writeBatch = func(b *leveldb.Batch, o *opt.WriteOptions) error {
+				if o == nil || !o.Sync {
+					t.Fatal("clock not synchronized")
+				}
+				if after {
+					if e := s.db.Write(b, o); e != nil {
+						return e
+					}
+				}
+				return errors.New("controlled clock acknowledgment lost")
+			}
+			if err = s.PreflightManifestAdmission(p, func() error { return nil }); !errors.Is(err, ErrPoisoned) || err == ErrJobExpired {
+				t.Fatal("uncertain clock became terminal", err)
+			}
+			if err = s.PreflightManifestAdmission(p, func() error { t.Fatal("poison retried"); return nil }); !errors.Is(err, ErrPoisoned) {
+				t.Fatal(err)
+			}
+			if err = s.Close(); err != nil {
+				t.Fatal(err)
+			}
+			reopened, err := OpenManifestAuthority(path, f.Pin, false)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer func() {
+				if e := reopened.Close(); e != nil {
+					t.Error(e)
+				}
+			}()
+			if reopened.meta.LastSequence != 0 || reopened.meta.JobCount != uint64(len(f.Jobs)) {
+				t.Fatal("clock-only failure allocated admission")
+			}
+			want := f.Issued
+			if after {
+				want = tc.Job.ExpiresAtMS
+			}
+			if reopened.meta.LastClockMS != want {
+				t.Fatal("original reopen did not resolve controlled clock outcome")
+			}
+		})
+	}
+}
+
+func TestManifestAdmissionPreflightPublicCounts(t *testing.T) {
+	f := readManifestCorpus(t)
+	s, p, _, _ := publicTestStore(t)
+	random, err := hex.DecodeString(f.Random)
+	if err != nil {
+		t.Fatal(err)
+	}
+	s.random = bytes.NewReader(random[32:])
+	now := f.Issued
+	s.now = func() time.Time { return time.UnixMilli(now) }
+	for _, row := range f.Jobs {
+		job, e := s.IssueManifestJob(row.Job.Context, row.Job.PublicKey, func() error { return nil })
+		if e != nil || job != row.Job {
+			t.Fatal(e)
+		}
+	}
+	tc := f.Cases[0]
+	prepared, err := s.PrepareManifestAdmission(tc.Proof, tc.Authorization)
+	if err != nil {
+		t.Fatal(err)
+	}
+	now = tc.Accepted
+	if err = s.PreflightManifestAdmission(prepared, func() error { return nil }); err != nil {
+		t.Fatal(err)
+	}
+	if s.meta.LastSequence != 0 || s.public.meta.AcceptedSequence != 0 || s.public.meta.PublicationSequence != 0 || s.public.meta.SignedAdmissionSequence != 0 {
+		t.Fatal("clock-only preflight allocated birth/publication")
+	}
+	if _, err = s.db.Get(publicCounterKey("ownership/outbox/", 1), nil); !errors.Is(err, leveldb.ErrNotFound) {
+		t.Fatal("preflight staged admission outbox", err)
+	}
+	record, inserted, err := s.CommitManifestAdmission(prepared, tc.Eligibility, func() error { return nil })
+	if err != nil || !inserted || !reflect.DeepEqual(record, tc.Record) {
+		t.Fatal("original final admission differs", err)
+	}
+	// Quiescent original publisher: record+sequence+ownership outbox each1,
+	// signed publications0. Admission itself did not sign a publication.
+	if s.meta.LastSequence != 1 || s.public.meta.AcceptedSequence != 1 || s.public.meta.PublicationSequence != 0 || s.public.meta.SignedAdmissionSequence != 0 {
+		t.Fatal("admission count units changed")
+	}
+	if _, err = s.db.Get(publicCounterKey("ownership/outbox/", 1), nil); err != nil {
+		t.Fatal(err)
+	}
+	if _, err = s.db.Get(sequenceKey(1), nil); err != nil {
+		t.Fatal(err)
+	}
+	if _, err = s.db.Get(publicCounterKey("ownership/outbox/", 2), nil); !errors.Is(err, leveldb.ErrNotFound) {
+		t.Fatal("extra outbox", err)
+	}
+	history, err := s.PrepareManifestAdmission(tc.Proof, tc.Authorization)
+	if err != nil {
+		t.Fatal(err)
+	}
+	s.now = func() time.Time { t.Fatal("historical public preflight sampled clock"); return time.Time{} }
+	if err = s.PreflightManifestAdmission(history, func() error { return nil }); err != nil {
+		t.Fatal(err)
+	}
+	if p == nil || s.public.meta.AcceptedSequence != 1 || s.public.meta.PublicationSequence != 0 {
+		t.Fatal("historical preflight published")
+	}
+}

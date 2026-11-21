@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "base_commit": "1f559221c3735227e8475731f2c73a74282db5b0",
+  "original_oracle_commit": "ce9eac7463a75d2ba7e0cefc8924f55d6c77b0a9",
+  "scope": "Explicit public input copies only; original producer/declarations inert and never imported",
+  "files": [
+    {
+      "path": "inputs/actual-reference.json",
+      "bytes": 173644,
+      "sha256": "0f0890e529b64c10ed000673aab7861b9bd526057cc3c2bbbe05b868028f3d10",
+      "source_commit": "1f559221c3735227e8475731f2c73a74282db5b0",
+      "repository_path": "desktop/pooloperator/testdata/issue-recovery-actual/inputs/actual-reference.json",
+      "git_blob": "474a33b69b7882142a86ed02f5503b30c7fa1460",
+      "scope": "public committed input/provenance; no code import or execution"
+    },
+    {
+      "path": "inputs/path-c-reference.json",
+      "bytes": 46498,
+      "sha256": "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386",
+      "source_commit": "1f559221c3735227e8475731f2c73a74282db5b0",
+      "repository_path": "desktop/pooloperator/testdata/issue-recovery-actual/inputs/path-c-reference.json",
+      "git_blob": "9dee2af8fd6b163c1a8d5c215957bd912dec866d",
+      "scope": "public committed input/provenance; no code import or execution"
+    },
+    {
+      "path": "inputs/original-selection-producer.py.txt",
+      "bytes": 9287,
+      "sha256": "fb56a5ce58cb04f250ceb8b4a0498dd2f996dd2a2fe9a86629f7c19b9d12cc76",
+      "source_commit": "1f559221c3735227e8475731f2c73a74282db5b0",
+      "repository_path": "desktop/pooloperator/testdata/issue-recovery-actual/selection_reference.py",
+      "git_blob": "74825b98bbb04930b2a7fd40d804150fc01da4f2",
+      "scope": "public committed input/provenance; no code import or execution"
+    },
+    {
+      "path": "inputs/original-selection-lock.json",
+      "bytes": 1307,
+      "sha256": "1bc724edaef7fdb6396484f2b7c9220aa5fde17d8f99db999a8b6662fca33493",
+      "source_commit": "1f559221c3735227e8475731f2c73a74282db5b0",
+      "repository_path": "desktop/pooloperator/testdata/issue-recovery-actual/selection-lock.proposed.json",
+      "git_blob": "c5f96cf3677c2972f13d078803d97fc63ba92910",
+      "scope": "public committed input/provenance; no code import or execution"
+    },
+    {
+      "path": "inputs/original-selection-recipe.json",
+      "bytes": 1039,
+      "sha256": "0b418f9cc6317aa7b02786bfd807c4b503d9746eef8666b4d58616a7e37d3173",
+      "source_commit": "1f559221c3735227e8475731f2c73a74282db5b0",
+      "repository_path": "desktop/pooloperator/testdata/issue-recovery-actual/selection-recipe.json",
+      "git_blob": "2fb8fb47ea731ddd30c2520877c850d243ff5461",
+      "scope": "public committed input/provenance; no code import or execution"
+    },
+    {
+      "path": "inputs/original-selection-qualification.json",
+      "bytes": 4479,
+      "sha256": "c00b9b36a0c047a1854cc4efb278f101a4935d433413a4aeb11259ef5b967f50",
+      "source_commit": "1f559221c3735227e8475731f2c73a74282db5b0",
+      "repository_path": "docs/evidence/set80/components/reports/actual-reference-attempt1.json",
+      "git_blob": "3d71e3f65f8806280aef5ff99ce210150edb184e",
+      "scope": "public committed input/provenance; no code import or execution"
+    },
+    {
+      "path": "inputs/ISSUE_RECOVERY_CONTRACT.md",
+      "bytes": 27904,
+      "sha256": "f3e019a840d6b69d853350763364a3fc41f10ea899f00ed6f164db5d58a95610",
+      "source_commit": "1f559221c3735227e8475731f2c73a74282db5b0",
+      "repository_path": "desktop/pooloperator/testdata/issue-recovery-actual/inputs/ISSUE_RECOVERY_CONTRACT.md",
+      "git_blob": "ad95ba4c8e0d84b0341e13694ed0d151bb49ead7",
+      "scope": "public committed input/provenance; no code import or execution"
+    },
+    {
+      "path": "inputs/original-copied-inputs.json",
+      "bytes": 7453,
+      "sha256": "5d1ce505b66dc6865bef53b15bdb5755d719a699b1b02e0cde4ddf2518fa533c",
+      "source_commit": "1f559221c3735227e8475731f2c73a74282db5b0",
+      "repository_path": "desktop/pooloperator/testdata/issue-recovery-actual/copied-inputs.json",
+      "git_blob": "088c726d4558c4c6f9346b2fe41f6fb39331bd5b",
+      "scope": "public committed input/provenance; no code import or execution"
+    },
+    {
+      "path": "inputs/setup-declaration.go.txt",
+      "bytes": 7325,
+      "sha256": "5f919758ad747386157ebe08427714f9a0b5421a8a947da56e8510c49dea0494",
+      "source_commit": "1f559221c3735227e8475731f2c73a74282db5b0",
+      "repository_path": "desktop/pooloperator/setup.go",
+      "git_blob": "53370a873764fe1958d28988e102d968f5365a83",
+      "scope": "public committed input/provenance; no code import or execution"
+    },
+    {
+      "path": "inputs/profile-declaration.go.txt",
+      "bytes": 4350,
+      "sha256": "e9448b49808a33c8d7b75d3512b7477e5c45fc4d54e31471ad22362b54391a46",
+      "source_commit": "1f559221c3735227e8475731f2c73a74282db5b0",
+      "repository_path": "registry/issue_types.go",
+      "git_blob": "f79ef6b14c3af05a484d743c946b12a639f8d335",
+      "scope": "public committed input/provenance; no code import or execution"
+    },
+    {
+      "path": "inputs/RETAINED_ADMISSION_ACTUAL_PLAN.md",
+      "bytes": 12412,
+      "sha256": "62ddde39c811001865cd91c9b11152aa7166c4a7f69044d5946afd018ee23a72",
+      "source_path": "/Users/taytrrip/slug/set81-prep/RETAINED_ADMISSION_ACTUAL_PLAN.md",
+      "scope": "root-approved external selection; exact documentary copy"
+    },
+    {
+      "path": "inputs/implementation-selection.json",
+      "bytes": 6562,
+      "sha256": "3b270d9c4933cc0fe1b4a6c64bccbbbb2f66f30acdbb66bba12afbf0594f728f",
+      "source_path": "/Users/taytrrip/slug/set81-prep/implementation-selection.json",
+      "scope": "root-approved external selection; exact documentary copy"
+    }
+  ]
+}

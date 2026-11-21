@@ -1,0 +1,144 @@
+{
+  "version": 1,
+  "base_commit": "1f559221c3735227e8475731f2c73a74282db5b0",
+  "original_oracle_commit": "ce9eac7463a75d2ba7e0cefc8924f55d6c77b0a9",
+  "oracle_manifest_sha256": "0d7df95e552b7a94078e9ccd536bbb827d93a69753c9051ece06901cbec28a62",
+  "overlay_manifest_sha256": "15b91a9690cd9b215ea3e0dfa8373697c22fd72686a2b477caf7b1ea491a067a",
+  "corrected_hand_cases": 53,
+  "unchanged_committed_inputs_and_provenance": {
+    "registry/testdata/manifest/reference/manifest_admission_v1.json": {
+      "bytes": 1207894,
+      "sha256": "d32a8653c76c643addb3df091ca8d7dfdba66c2486f2ca305e718113f71d5794"
+    },
+    "registry/testdata/manifest/reference/reference_manifest_admission.py": {
+      "bytes": 26833,
+      "sha256": "ab65e2c63fb288c3d117416825edc44a8a5596f31e54b50f12f476b96c883bbc"
+    },
+    "registry/testdata/manifest/reference/verification.json": {
+      "bytes": 27024,
+      "sha256": "168628eec0094c9547b9c7d5935003e3838092bb68d92dfb02b4cc46d2f314c5"
+    },
+    "prospectwork/testdata/pool_share_reference/pool_share_v1.json": {
+      "bytes": 33879,
+      "sha256": "2210d992e618b7a0952736dede1263b678f1a7a2d55d14ccde1cc6b29317de87"
+    },
+    "prospectwork/testdata/pool_share_reference/reference.py": {
+      "bytes": 9091,
+      "sha256": "aa8243080bf1d0cfd500504b8ce9016a49ffd59ee9f594d0faf33ec8c14a74c8"
+    },
+    "prospectwork/testdata/pool_share_reference/freeze.json": {
+      "bytes": 1182,
+      "sha256": "dbfaaeebf9591a10f6ffab6cfda2ba7aa47ce5f546fd26a948c4eed811d674ff"
+    },
+    "poolsettle/testdata/daily-admission-actual/reference-v1.json": {
+      "bytes": 29980,
+      "sha256": "1d2b1462296bd022c53df9dc583db3c38cd13a8e13e84f9983f2505b3aefb08f"
+    },
+    "poolsettle/testdata/daily-admission-actual/reference/model.py": {
+      "bytes": 15048,
+      "sha256": "1fbb77065d436f25f6a255e72ad68b09e09fb941e6875844530ea42da3f93bdc"
+    },
+    "poolsettle/testdata/daily-admission-actual/qualification.json": {
+      "bytes": 709,
+      "sha256": "46750fd8407f29959124c709b3ffe9fb7c2d8dbbcd8a4dae8c16014db3293999"
+    },
+    "testdata/public-daily/reference-v1.json": {
+      "bytes": 3176583,
+      "sha256": "a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3"
+    },
+    "testdata/public-daily/reference/generate.py": {
+      "bytes": 10650,
+      "sha256": "3ca84c3b3e5a0a621d6133c51c3338502dd172cd392607db76e2824ac920c14e"
+    },
+    "testdata/public-daily/qualification.json": {
+      "bytes": 3620,
+      "sha256": "93509efd34524d269b521b444f52dc750f986db6b1308180798c1b0b751136fe"
+    },
+    "testdata/issue-recovery/reference-v1.json": {
+      "bytes": 6134980,
+      "sha256": "4bbe4eb9556ed5a894cee6ff565b0dcca805f27fea2d77cfe3a56242dc3dac91"
+    },
+    "testdata/issue-recovery/producer/generate.py": {
+      "bytes": 11411,
+      "sha256": "d5d88ad586e8db47f57314c5d63af764be1c0c28733acee9b947f06925010e01"
+    },
+    "testdata/issue-recovery/qualification.json": {
+      "bytes": 1366,
+      "sha256": "4a413e41968b0b4921d21a199281ec541ff352eea5c4e41af7c1988688045d13"
+    },
+    "desktop/pooloperator/testdata/issue-recovery-actual/inputs/actual-reference.json": {
+      "bytes": 173644,
+      "sha256": "0f0890e529b64c10ed000673aab7861b9bd526057cc3c2bbbe05b868028f3d10"
+    },
+    "desktop/pooloperator/testdata/issue-recovery-actual/selection_reference.py": {
+      "bytes": 9287,
+      "sha256": "fb56a5ce58cb04f250ceb8b4a0498dd2f996dd2a2fe9a86629f7c19b9d12cc76"
+    },
+    "desktop/pooloperator/testdata/issue-recovery-actual/selection-lock.proposed.json": {
+      "bytes": 1307,
+      "sha256": "1bc724edaef7fdb6396484f2b7c9220aa5fde17d8f99db999a8b6662fca33493"
+    },
+    "docs/evidence/set80/components/reports/actual-reference-attempt1.json": {
+      "bytes": 4479,
+      "sha256": "c00b9b36a0c047a1854cc4efb278f101a4935d433413a4aeb11259ef5b967f50"
+    },
+    "desktop/pooloperator/testdata/issue-recovery-actual/inputs/path-c-reference.json": {
+      "bytes": 46498,
+      "sha256": "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386"
+    },
+    "desktop/pooloperator/testdata/issue-recovery-actual/copied-inputs.json": {
+      "bytes": 7453,
+      "sha256": "5d1ce505b66dc6865bef53b15bdb5755d719a699b1b02e0cde4ddf2518fa533c"
+    },
+    "desktop/pooloperator/testdata/issue-recovery-actual/source-manifest.json": {
+      "bytes": 14956,
+      "sha256": "087cfdadf9ca2816a42afe168d60a721ab3793c2cb58993b38189aa44b2e601f"
+    },
+    "desktop/pooloperator/capacity_drain.go": {
+      "bytes": 6507,
+      "sha256": "f78d3613a6db6169e3562c67fa36418c66afffa8b6f1f7cca771a43e0024f21e"
+    },
+    "desktop/pooloperator/runtime.go": {
+      "bytes": 21184,
+      "sha256": "39e93745f9059e0f4b2e636476ff7c2d4e889b771349f44156c4cc20c097746e"
+    },
+    "desktop/pooloperator/construction.go": {
+      "bytes": 16317,
+      "sha256": "37fa71d3465de9267275df106deae584b9a75314aaefb62d074b2401a7b9ad54"
+    },
+    "prospectservice/manifest_fenced_server.go": {
+      "bytes": 5509,
+      "sha256": "181e7c5a9055eff411bb820ff20769829ac5bac4d3410fa463b5f9512fd7fb35"
+    },
+    "prospectservice/manifest_server.go": {
+      "bytes": 19359,
+      "sha256": "9b495ab1224e91361ea9a87f684a2aa35ae25420ae0ec86799c6f87e6a09bfb0"
+    },
+    "registry/manifest_staged.go": {
+      "bytes": 13620,
+      "sha256": "3ca973cab91643639d2c37ff600b17d9ae5b7db52693c92583061392cf1c530d"
+    },
+    "registry/manifest_jobs.go": {
+      "bytes": 5159,
+      "sha256": "1584c21138ac520dcd9698a9f2311dbeb1ecb2b740a298bc3bf8f78ca5e5fc6e"
+    },
+    "registry/manifest_store.go": {
+      "bytes": 12852,
+      "sha256": "995b6a7a5e8e1ef8e92ca593eea67e9e39c13a8fbab39ffc38664668922023b3"
+    },
+    "registry/public_store.go": {
+      "bytes": 13648,
+      "sha256": "72f9877a8305e8bffef9164eafc10a3a3e3fd1334bbf1473c3e62442f87b68a2"
+    },
+    "prospectworker/pool_delivery.go": {
+      "bytes": 9930,
+      "sha256": "e529e1ab594428bf3dfc3018f45085b218fc8ad474c15edbf9dc9d6d8faf7129"
+    }
+  },
+  "maintenance_scope": "gymstable shutdown cancellation and evidence only; all Set81 inputs and source anchors unchanged",
+  "maintenance_local_checks": "complete gymstable normal/race suites and vet passed",
+  "exact_tip_ci": "pending; ce9eac74 first failure preserved",
+  "root_review": "approved corrected pre-implementation expected states, counts and expiry provenance",
+  "implementation_scope": "registry staged preflight; explicitly selected DAILY fenced service; DAILY independent retained admission readiness and sticky hard hold; tests, evidence and CI",
+  "production_execution_before_freeze": false
+}

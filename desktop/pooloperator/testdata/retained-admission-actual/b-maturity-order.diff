@@ -1,0 +1,53 @@
+--- before/retained_flow.go
++++ after/retained_flow.go
+@@ -89,10 +89,17 @@
+   reopenedAt=time.Now().UnixMilli();v.serve("operator-serve-3");ready=v.drainReady(reopenedAt)
+   v.owners.tls.arm("replay");cli=v.launch("cli-3")
+  }else{
++  phase="normal maturity while all original operator and CLI owners are stopped"
++  for _,owner:=range v.owners.clis{require(owner.joined&&owner.closed,"all original CLI owners joined before offline maturity")}
++  for _,owner:=range v.owners.operators{require(owner.joined&&owner.closed,"all original operator owners joined before offline maturity")}
++  v.owners.tls.targetJoined(v.ctx)
++  var matureHeight uint32
++  for{a.rpc.must(v.ctx,"getblockcount",nil,&matureHeight);require(matureHeight>=4&&matureHeight<=104,"bounded stopped-owner descendant height");if matureHeight==104{break};generate(v.ctx,a,b)}
++  matureAt:=time.Now().UnixMilli();require(matureAt<v.due,"offline maturity still before original UTC due")
+   phase="actual original expiry with worker and operator fully stopped"
+   for time.Now().UnixMilli()<t.Work.Job.ExpiresAtMS{d:=time.Until(time.UnixMilli(t.Work.Job.ExpiresAtMS));if d>time.Second{d=time.Second};check(pauseActual(v.ctx,d),"original wall expiry")}
+   observed:=time.Now().UnixMilli();require(observed>=t.Work.Job.ExpiresAtMS,"actual expiry without clock replacement")
+-  v.phase("03-expired-before-retry",map[string]any{"target":t,"expiry_ms":t.Work.Job.ExpiresAtMS,"observed_at_ms":observed})
++  v.phase("03-expired-before-retry",map[string]any{"target":t,"expiry_ms":t.Work.Job.ExpiresAtMS,"observed_at_ms":observed,"mature_at_ms":matureAt,"height":matureHeight})
+   phase="same full original source reopened before authenticated expiry replay"
+   reopenedAt:=time.Now().UnixMilli();v.serve("operator-serve-2");ready=v.drainReady(reopenedAt)
+   v.owners.tls.arm("expired");cli=v.launch("cli-2")
+--- before/PUBLIC_SCHEMA.md
++++ after/PUBLIC_SCHEMA.md
+@@ -11,7 +11,7 @@
+ | `01-selection.json` | `{setup,remote,setup_id,remote_id,due_ms,start_ms,initial_height}`; same selected original setup/root, baseline height2 |
+ | `02-retained-before-forward.json` | `{target,rows,outbox,target_entry,request,audit,drain_status,cli,operator}`; signed target pending, target admission absent; CLI and operator joined before closed audits |
+ | A `03-lost-success.json` | `{target,rows,outbox,target_entry,request,response,audit,drain_status,cli,operator}`; exact inserted canonical response lost before headers, target still pending, original issuer has exactly one target record |
+-| B `03-expired-before-retry.json` | `{target,expiry_ms,observed_at_ms}`; actual observed time at/after exact original expiry, all CLI/operator generations stopped during wait |
++| B `03-expired-before-retry.json` | `{target,expiry_ms,observed_at_ms,mature_at_ms,height}`; height104, maturity timestamp before original due and no later than expiry observation; actual observed time at/after exact original expiry; all CLI/operator generations stopped throughout the 100 normal descendant blocks and remaining wait |
+ | `04-completed-delivery.json` | `{target,rows,target_entry,request,drain_status,response,api_error,cli}`; `rows` is original `rowEvidence`, complete accepted sequence1/2 with no missing pool lookup; target accepted with historical receipt in A or expired without receipt in B; CLI joined |
+ | `05-stopped-reopen.json` | Original `RemotePoolControllerSnapshot`, same schema14/view/recipient, stopped remote, zero attempts |
+ | `06-mature.json` | `{snapshot,due_ms,observed_at_ms,height,economics}`; actual height104 and two-input economics before original UTC due |
+--- before/PLAN_CADENCE_SUCCESSOR.md
++++ after/PLAN_CADENCE_SUCCESSOR.md
+@@ -12,3 +12,7 @@
+ No request deadline or ten-second relay hold is increased; no manual submission, clock, signature or replacement target is introduced. Every target request/job/proof/authorization remains identical. The overall900/1080-second and180-block ceilings, actual two-reward requirement and fixed economics remain. Unrelated finite terminal q rows are retained and reported as already selected.
+ 
+ This adds lifecycle evidence rather than depending on lucky alignment between mining and the CLI ticker. A failure to stop/join, reach fresh readiness, remain live for CaseA, or finish the originally selected UTC due window still fails the attempt.
++
++## Additional B ordering correction before execution
++
++Root reviewed the frozen helper501034e6 before any build/run and identified an avoidable serial timing dependency: waiting the full job expiry and fresh 30-second operator status before mining100 descendants could consume the original360–420-second due window. The approved successor moves only CaseB descendant generation into the already stopped interval after phase02's full audit. All CLI/operator owners and relay handlers are joined; the two original accepted blocks remain unchanged. Normal nodes generate exactly to104, the helper records actual `mature_at_ms` and `height:104`, then waits only the remaining original wall expiry. Phase03 includes these values. Phase06 still requires real wallet maturity at104 before the unchanged original UTC due and zero early payout. No source/issuer/ledger mutation, new payout, held network call, changed expiry, clock or deadline is introduced. Original501034 source/manifest/preimages are retained under pre-b-maturity.
+--- before/README.md
++++ after/README.md
+@@ -4,7 +4,7 @@
+ 
+ The parent plan62ddde39 and pre-execution cadence successor define two cases. Both require exactly two canonical pool rewards at the selected real block target; the target is the fighter proof corresponding to accepted sequence2. The relay observes actual issued work and pool submit/lookup replies, validates each target, and retains the same captures across operator generations. It never manually submits a proof or creates a response. Its only fault is an explicitly bounded preforward hold and, for A, loss of one genuine inserted admission reply before headers. Initial hold is canceled by joining the CLI, then no HTTP request is held while original operator stdout establishes pool-only drain/readiness.
+ 
+-A reopens the same owners for live admission, loses that genuine success, closes/audits the committed original record and pending local row, then reopens for exact historical replay. B keeps the initial target unforwarded, stops all worker/operator lifetimes through its real original expiry, then obtains authenticated definite expired and proves the target has no record/ownership evidence. Both reopen the original controller stopped, mature the two original coinbases, use the actual initial UTC due and original schema16 signer, confirm the one whole payout, and prove the exact wallet increase plus stopped outbox invariance. No Set80 issuance-gap/SIGKILL scenario is repeated.
++A reopens the same owners for live admission, loses that genuine success, closes/audits the committed original record and pending local row, then reopens for exact historical replay. B keeps the initial target unforwarded, stops all worker/operator lifetimes, generates the100 normal descendants to104 during that stopped interval, waits the remaining real original expiry, then obtains authenticated definite expired and proves the target has no record/ownership evidence. Both reopen the original controller stopped, mature the two original coinbases, use the actual initial UTC due and original schema16 signer, confirm the one whole payout, and prove the exact wallet increase plus stopped outbox invariance. No Set80 issuance-gap/SIGKILL scenario is repeated.
+ 
+ The independent17557b28 selection changes only an existing-supported maintenance interval to1000 and its dependent IDs. Limits, target, source and money semantics remain exact. Two-reward economics are fixed at miner1,980,000,000, fee209, change19,999,791. Due is still initial start+7minutes, minute-truncated; scenario900s/outer1080s and chain180 limits remain. The actual operator status cadence stays30s. The 90s read-only readiness wait has no held request; every target hold remains at most10s and cannot outlive its original job expiry. A missed live/due window fails this attempt rather than selecting replacement work or changing the schedule.
+ 

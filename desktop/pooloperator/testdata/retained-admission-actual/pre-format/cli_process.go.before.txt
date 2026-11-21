@@ -1,0 +1,281 @@
+// One actual headless DAILY miner, in the parent-owned outer process group.
+package main
+
+import (
+	"bufio"
+	"bytes"
+	"encoding/json"
+	"errors"
+	"io"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"sync"
+	"syscall"
+	"time"
+)
+
+type cliStatus struct {
+	Version      uint32 `json:"version"`
+	ObservedAtMS int64  `json:"observed_at_ms"`
+	ConfigID     string `json:"config_id"`
+	State        string `json:"state"`
+	WorkerState  string `json:"worker_state"`
+	Code         string `json:"code"`
+	Records      uint64 `json:"records"`
+	Pending      uint64 `json:"pending"`
+}
+type cliOwner struct {
+	parentPID, pgid                                                         int
+	cmd                                                                     *exec.Cmd
+	done                                                                    chan error
+	stdoutDone, stderrDone                                                  chan struct{}
+	stdoutRead, stdoutWrite, stderrRead, stderrWrite                        *os.File
+	stdoutLog, stderrLog                                                    *os.File
+	started, joined, closed, unexpected, forced, stdoutJoined, stderrJoined bool
+	stopAttempted                                                           bool
+	signalCount                                                             int
+	waitErr, stopErr                                                        error
+	mu                                                                      sync.Mutex
+	ioErr                                                                   error
+	statuses                                                                []cliStatus
+	configID                                                                string
+}
+
+func (c *cliOwner) ioFailure(e error) {
+	if e == nil {
+		return
+	}
+	c.mu.Lock()
+	if c.ioErr == nil {
+		c.ioErr = e
+	}
+	c.mu.Unlock()
+}
+func (c *cliOwner) readOutput(file, log *os.File, stdout bool, done chan struct{}) {
+	defer close(done)
+	defer func() { c.ioFailure(errors.Join(file.Close(), log.Sync(), log.Close())) }()
+	reader := bufio.NewReaderSize(file, 4096)
+	total := 0
+	for {
+		raw, e := reader.ReadSlice('\n')
+		if len(raw) > 0 {
+			if total+len(raw) > 1<<20 {
+				c.ioFailure(errors.New("CLI output cap"))
+			}
+			if total < 1<<20 {
+				piece := raw[:min(len(raw), (1<<20)-total)]
+				n, x := log.Write(piece)
+				c.ioFailure(x)
+				if n != len(piece) {
+					c.ioFailure(io.ErrShortWrite)
+				}
+			}
+			total = min((1<<20)+1, total+len(raw))
+			if !stdout {
+				c.ioFailure(errors.New("unexpected CLI diagnostic output"))
+			} else if total <= 1<<20 {
+				if e != nil || len(raw) >= 4096 || raw[len(raw)-1] != '\n' || bytes.ContainsRune(raw, '\r') {
+					c.ioFailure(errors.New("CLI frame shape"))
+				} else {
+					body := raw[:len(raw)-1]
+					var v cliStatus
+					d := json.NewDecoder(bytes.NewReader(body))
+					d.DisallowUnknownFields()
+					x := d.Decode(&v)
+					canonical, ce := json.Marshal(v)
+					if x != nil || ce != nil || !bytes.Equal(body, canonical) || v.Version != 2 || v.ConfigID != c.configID || v.State != "signed_in" || v.ObservedAtMS <= 0 || v.Records > 64 || v.Pending > v.Records {
+						c.ioFailure(errors.New("CLI status correlation"))
+					} else {
+						valid := false
+						switch v.WorkerState {
+						case "ready", "stopped", "failed", "paused", "preparing", "retrying", "hashing", "delivering", "unavailable":
+							valid = true
+						}
+						if !valid {
+							c.ioFailure(errors.New("CLI worker state"))
+						}
+						switch v.Code {
+						case "", "unavailable", "outcome_unknown", "busy", "capacity", "rate_limited", "expired":
+						default:
+							c.ioFailure(errors.New("CLI worker refusal"))
+						}
+						c.mu.Lock()
+						if len(c.statuses) >= 1024 {
+							if c.ioErr == nil {
+								c.ioErr = errors.New("CLI status count")
+							}
+						} else {
+							if len(c.statuses) > 0 && v.Records < c.statuses[len(c.statuses)-1].Records {
+								if c.ioErr == nil {
+									c.ioErr = errors.New("CLI record regression")
+								}
+							}
+							c.statuses = append(c.statuses, v)
+						}
+						c.mu.Unlock()
+					}
+				}
+			}
+		}
+		if errors.Is(e, io.EOF) {
+			return
+		}
+		if e != nil && !errors.Is(e, bufio.ErrBufferFull) {
+			c.ioFailure(errors.New("CLI output read"))
+			return
+		}
+	}
+}
+func launchCLI(binary, root, private, configID, generation string, owner **cliOwner) {
+	c := &cliOwner{configID: configID, statuses: []cliStatus{}, done: make(chan error, 1), stdoutDone: make(chan struct{}), stderrDone: make(chan struct{})}
+	*owner = c
+	var e error
+	c.stdoutRead, c.stdoutWrite, e = os.Pipe()
+	check(e, "CLI stdout pipe")
+	c.stderrRead, c.stderrWrite, e = os.Pipe()
+	check(e, "CLI stderr pipe")
+	c.stdoutLog, e = os.OpenFile(filepath.Join(root, generation+"-stdout.jsonl"), os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
+	check(e, "CLI stdout log")
+	c.stderrLog, e = os.OpenFile(filepath.Join(root, generation+"-stderr.log"), os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
+	check(e, "CLI stderr log")
+	args := []string{"--daily-recoverable-issue", "--candidate-name-version=1", "--data-dir", filepath.Join(root, "owned-gym"), "--remote-attachment-root", filepath.Join(root, "remote-attachment"), "--remote-config", filepath.Join(private, "remote-config.json"), "--remote-node-rpc", filepath.Join(private, "remote-rpc.json"), "--remote-pool-credential", filepath.Join(private, "pool.credential"), "--remote-admission-credential", filepath.Join(private, "admission.credential")}
+	c.cmd = exec.Command(binary, args...)
+	c.cmd.Stdout, c.cmd.Stderr = c.stdoutWrite, c.stderrWrite
+	// No process group/session override: the exact child inherits the outer owner.
+	check(c.cmd.Start(), "actual CLI start")
+	c.started = true
+	c.parentPID = os.Getpid()
+	c.pgid, e = syscall.Getpgid(c.cmd.Process.Pid)
+	parentGroup, pe := syscall.Getpgid(0)
+	groupErr := errors.Join(e, pe)
+	go c.readOutput(c.stdoutRead, c.stdoutLog, true, c.stdoutDone)
+	go c.readOutput(c.stderrRead, c.stderrLog, false, c.stderrDone)
+	go func() { c.done <- c.cmd.Wait() }()
+	var writerErr error
+	for _, p := range []**os.File{&c.stdoutWrite, &c.stderrWrite} {
+		e := (*p).Close()
+		c.ioFailure(e)
+		if e == nil {
+			*p = nil
+		}
+		writerErr = errors.Join(writerErr, e)
+	}
+	check(errors.Join(groupErr, writerErr), "original CLI group/writer ownership")
+	require(c.pgid == parentGroup && c.pgid == c.parentPID, "CLI inherits original outer process group")
+}
+func (c *cliOwner) observe() {
+	if c == nil || !c.started || c.joined {
+		return
+	}
+	select {
+	case e := <-c.done:
+		c.joined = true
+		c.waitErr = e
+		c.unexpected = true
+	default:
+	}
+}
+func (c *cliOwner) status() (cliStatus, bool) {
+	c.observe()
+	require(c != nil && c.started && !c.joined, "actual CLI remains original and running")
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	check(c.ioErr, "CLI public output")
+	if len(c.statuses) == 0 {
+		return cliStatus{}, false
+	}
+	return c.statuses[len(c.statuses)-1], true
+}
+func (c *cliOwner) stop() error {
+	if c == nil {
+		return nil
+	}
+	if c.stopAttempted {
+		return c.stopErr
+	}
+	c.stopAttempted = true
+	if !c.started {
+		var e error
+		for _, f := range []*os.File{c.stdoutRead, c.stdoutWrite, c.stderrRead, c.stderrWrite, c.stdoutLog, c.stderrLog} {
+			if f != nil {
+				e = errors.Join(e, f.Close())
+			}
+		}
+		c.closed = true
+		c.stopErr = e
+		return e
+	}
+	c.observe()
+	var e error
+	if !c.joined {
+		e = c.cmd.Process.Signal(syscall.SIGTERM)
+		if e == nil {
+			c.signalCount++
+		}
+		select {
+		case x := <-c.done:
+			c.joined = true
+			c.waitErr = x
+		case <-time.After(30 * time.Second):
+			c.forced = true
+			e = errors.Join(e, errors.New("CLI stop bound"), c.cmd.Process.Kill())
+			select {
+			case x := <-c.done:
+				c.joined = true
+				c.waitErr = x
+			case <-time.After(5 * time.Second):
+				e = errors.Join(e, errors.New("CLI did not join"))
+			}
+		}
+	}
+	// The two reader goroutines own their read ends/logs and close them once.
+	for _, v := range []struct {
+		done   chan struct{}
+		file   *os.File
+		joined *bool
+	}{{c.stdoutDone, c.stdoutRead, &c.stdoutJoined}, {c.stderrDone, c.stderrRead, &c.stderrJoined}} {
+		select {
+		case <-v.done:
+			*v.joined = true
+		case <-time.After(5 * time.Second):
+			e = errors.Join(e, errors.New("CLI output join bound"), v.file.Close())
+			select {
+			case <-v.done:
+				*v.joined = true
+			case <-time.After(5 * time.Second):
+				e = errors.Join(e, errors.New("CLI output did not join"))
+			}
+		}
+	}
+	c.mu.Lock()
+	ie := c.ioErr
+	c.mu.Unlock()
+	e = errors.Join(e, c.waitErr, ie)
+	if c.unexpected || c.forced || !c.joined || !c.stdoutJoined || !c.stderrJoined || c.signalCount != 1 {
+		e = errors.Join(e, errors.New("CLI lifetime incomplete"))
+	}
+	c.closed = c.joined && c.stdoutJoined && c.stderrJoined
+	c.stopErr = e
+	return e
+}
+func (c *cliOwner) evidence() map[string]any {
+	if c == nil {
+		return nil
+	}
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	var last cliStatus
+	if len(c.statuses) > 0 {
+		last = c.statuses[len(c.statuses)-1]
+	}
+	pid := 0
+	exit := -1
+	if c.started {
+		pid = c.cmd.Process.Pid
+	}
+	if c.joined && c.cmd.ProcessState != nil {
+		exit = c.cmd.ProcessState.ExitCode()
+	}
+	return map[string]any{"pid": pid, "parent_pid": c.parentPID, "pgid": c.pgid, "joined": c.joined, "exit_code": exit, "signal": "SIGTERM", "signal_count": c.signalCount, "forced_kill": c.forced, "unexpected_exit": c.unexpected, "wait_error": c.waitErr != nil, "stdout_joined": c.stdoutJoined, "stderr_joined": c.stderrJoined, "io_error": c.ioErr != nil, "status_count": len(c.statuses), "config_id": c.configID, "last_status": last}
+}

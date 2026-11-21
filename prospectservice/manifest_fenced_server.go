@@ -87,6 +87,11 @@ func (server *ManifestServer) admitFenced(ctx context.Context, token string, cre
 	}
 	observation := registry.Eligibility{}
 	if !prepared.Historical() {
+		if server.dailyAdmission {
+			if failure := server.preflightDailyAdmission(lease, prepared); failure != nil {
+				return nil, failure
+			}
+		}
 		if intake := server.operatorIntake; intake != nil {
 			if intake.draining {
 				return nil, apiError("capacity", 503)

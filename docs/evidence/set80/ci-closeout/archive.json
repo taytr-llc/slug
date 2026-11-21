@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "scope": "Explicit public CI artifacts only; before/after Linux inventory is byte-identical and archived once. Full command logs remain in local downloaded artifact; every log was independently length/hash verified.",
+  "files": [
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set80/ci-attempt2/report.json",
+      "archive": "original-ci-failed.json",
+      "bytes": 3177,
+      "sha256": "a851767810d48dd50c5aec3cb6fa41f37eb6329757468cdd07f503e00bf12e27"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set80/ci-attempt3/report.json",
+      "archive": "final-ci-passed.json",
+      "bytes": 3178,
+      "sha256": "cf9a21c608ef314902eeefef76a2c11ed2f13c614660605f70f1c5be1f109d90"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set80/linux-run-44908764977/download-verification.json",
+      "archive": "original-linux-verification.json",
+      "bytes": 864,
+      "sha256": "db4820ab71438003b0c576a879a12da97fd3ef4eb25c3dca5d6485224d891176"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set80/linux-run-44910515890/download-verification.json",
+      "archive": "final-linux-verification.json",
+      "bytes": 867,
+      "sha256": "78b72503aa20baae5e7ef9744f39e45ccf3ddd78640aab93b3c2a44331f7d8b7"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set80/linux-run-44910515890/operator-linux-1f559221c3735227e8475731f2c73a74282db5b0-1/report.json",
+      "archive": "final-linux-report.json",
+      "bytes": 1314108,
+      "sha256": "a72290fa7b31dd89a6a5bc41590453a2e17243719dd3205b075d05b626c681b7"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set80/linux-run-44910515890/operator-linux-1f559221c3735227e8475731f2c73a74282db5b0-1/sources-before.json",
+      "archive": "final-linux-sources.json",
+      "bytes": 2221687,
+      "sha256": "81c87247e3501ad5008eff20a56ae12ae9741010eed7b5d322324a16eaaf06d9"
+    }
+  ]
+}

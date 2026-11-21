@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "status": "source-only-unexecuted-test-freeze",
+  "target": "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_round_contention_test.go",
+  "before": null,
+  "after": {
+    "path": "/Users/taytrrip/slug/set81-prep/round-contention-tests/after/desktop/pooloperator/daily_round_contention_test.go",
+    "bytes": 11832,
+    "sha256": "86da5ee0aebe636505b67c92086ceea9ec951b36b00f109a9fb2e9ad905114a3"
+  },
+  "expected": {
+    "path": "/Users/taytrrip/slug/set81-prep/round-contention-tests/EXPECTED.md",
+    "bytes": 3528,
+    "sha256": "6b1b0a33e9d7cf355624148df6bcf9644d321816b5a069ac0be3c2a1a68fb5e9"
+  },
+  "tests": [
+    "TestDailyRetainedRoundOriginalIssuerReconciles",
+    "TestDailyRetainedRoundCancellationJoinsWhileIssuerHeld",
+    "TestDailyRetainedRoundRetryClassifiesExactBusy",
+    "TestDailyRetainedRoundRetryKeepsOriginalDeadline"
+  ],
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/round-contention-stage/production-manifest.json",
+      "bytes": 5027,
+      "sha256": "2815ca59d8720b8e0c2adef8aae6ae89ea18ef522eb88a14cdf17045f47e98e4"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/intake_source_busy_test.go",
+      "bytes": 17355,
+      "sha256": "c903a46429aa2a82192b33b2aecde71052d51196d6f723b55de3b3773022a916"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_retained_admission_test.go",
+      "bytes": 12923,
+      "sha256": "94001cf1d7a3508adb63dbef2ff21a36565d9c02fc26f85e1ac6b6b5bf714f03"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/live_round_test.go",
+      "bytes": 14660,
+      "sha256": "56c32aa3f3cbfd005eca735769c15007ab0739c15b1e913870207ec41fce985d"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolround/types.go",
+      "bytes": 5799,
+      "sha256": "bd1eab6b72e1cff8f381e609454a3aa575fe19a444c962d18f86bb6add69c81c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolround/operations.go",
+      "bytes": 7751,
+      "sha256": "5d8875d7bec8801aca2457b479c6edad5c1fd743c4196984c540d0f6be4ae11b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolround/store.go",
+      "bytes": 11697,
+      "sha256": "eb5b41998328c3c4bb5661164e12598a1e8193cd331764ecb541e4ea88fab822"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolround/stream.go",
+      "bytes": 6215,
+      "sha256": "dacc3896a5a6f90e9cbf7c75ae238ca5624dbcafe321e8b68601d1591b2cc675"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolshare/accounting.go",
+      "bytes": 3737,
+      "sha256": "8523604cc7c3abdf1d8c302d722a5cd740f424a1a9c64f0ce1ccd4905608dccc"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectwork/testdata/pool_share_reference/pool_share_v1.json",
+      "bytes": 33879,
+      "sha256": "2210d992e618b7a0952736dede1263b678f1a7a2d55d14ccde1cc6b29317de87"
+    }
+  ],
+  "execution": "root only; no Go/gofmt/test/runtime by author"
+}

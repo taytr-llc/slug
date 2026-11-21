@@ -1,0 +1,5 @@
+{"version":2,"observed_at_ms":1795273076232,"config_id":"7c91d0ddff28003c667a0e0474d0ce13875ced9dfe65269f18eb86c322f16fa0","state":"signed_in","worker_state":"preparing","code":"","records":0,"pending":0}
+{"version":2,"observed_at_ms":1795273077228,"config_id":"7c91d0ddff28003c667a0e0474d0ce13875ced9dfe65269f18eb86c322f16fa0","state":"signed_in","worker_state":"delivering","code":"","records":1,"pending":1}
+{"version":2,"observed_at_ms":1795273078186,"config_id":"7c91d0ddff28003c667a0e0474d0ce13875ced9dfe65269f18eb86c322f16fa0","state":"signed_in","worker_state":"delivering","code":"","records":1,"pending":1}
+{"version":2,"observed_at_ms":1795273079199,"config_id":"7c91d0ddff28003c667a0e0474d0ce13875ced9dfe65269f18eb86c322f16fa0","state":"signed_in","worker_state":"preparing","code":"","records":1,"pending":0}
+{"version":2,"observed_at_ms":1795273080193,"config_id":"7c91d0ddff28003c667a0e0474d0ce13875ced9dfe65269f18eb86c322f16fa0","state":"signed_in","worker_state":"delivering","code":"","records":2,"pending":1}

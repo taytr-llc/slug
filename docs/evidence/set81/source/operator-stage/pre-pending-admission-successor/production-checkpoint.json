@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "scope": "Set81 selected DAILY intake production, source only; root owns formatting/execution",
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/capacity_drain.go",
+      "bytes": 6596,
+      "sha256": "960ad2b753b6e426004e72c7eb5fcc9613363c19333b5a621533a4614d71c734"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/runtime.go",
+      "bytes": 21295,
+      "sha256": "21f1d92f3b769fe58cdf56f14ec48df3fecc2c5c015e1560aa49926465270c6d"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/construction.go",
+      "bytes": 16552,
+      "sha256": "8b7e48b5c053cad52d7b9f467906936bb3181f2f7d3313a3237327876dfdebb5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_intake.go",
+      "bytes": 4382,
+      "sha256": "fec434fb14e40edf791e267d9b8c33a5b4d0de9850c23217d790b93390ddf3e9"
+    }
+  ]
+}

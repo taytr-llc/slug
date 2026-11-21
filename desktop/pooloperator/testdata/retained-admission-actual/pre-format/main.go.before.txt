@@ -1,0 +1,301 @@
+// Set81 retained original-job fighter delivery. Root alone executes this helper.
+package main
+
+import (
+	"context"
+	"crypto/sha256"
+	"encoding/json"
+	"flag"
+	"fmt"
+	"github.com/taytr-llc/slug/desktop/accountpilot"
+	"github.com/taytr-llc/slug/desktop/pilot"
+	"github.com/taytr-llc/slug/desktop/pooloperator"
+	"github.com/taytr-llc/slug/poolminer"
+	"github.com/taytr-llc/slug/poolservice"
+	"github.com/taytr-llc/slug/poolsettlefixture"
+	"github.com/taytr-llc/slug/prospectnode"
+	"github.com/taytr-llc/slug/registry"
+	"github.com/taytr-llc/slug/wire/v2"
+	"os"
+	"path/filepath"
+	"strconv"
+	"time"
+)
+
+type credentialFile struct {
+	Version     uint32 `json:"version"`
+	ConfigID    string `json:"config_id"`
+	GymID       string `json:"gym_id"`
+	Audience    string `json:"audience"`
+	Generation  uint32 `json:"generation"`
+	ExpiresAtMS int64  `json:"expires_at_ms"`
+	Token       string `json:"token"`
+}
+type selectedCredential struct {
+	Version        uint32         `json:"version"`
+	Base           credentialFile `json:"base"`
+	IssueProfileID string         `json:"issue_profile_id"`
+}
+type actualOwners struct {
+	operators  []*operatorProcess
+	clis       []*cliOwner
+	nodes      []*node
+	clients    []*poolservice.Client
+	rpc        *rpcRelay
+	tls        *admissionTLSRelay
+	controller *accountpilot.RemotePoolController
+}
+type scenario struct {
+	ctx                                           context.Context
+	kind, binary, operator, helper, root, private string
+	ref                                           recoveryReference
+	s                                             pooloperator.RecoverableDailySetup
+	c                                             pilot.RecoverableRemotePoolConfig
+	due                                           int64
+	owners                                        *actualOwners
+	current                                       *operatorProcess
+	in                                            pilot.RecoverableRemotePoolInputs
+	id, remoteID, setupID                         string
+	gap                                           issueAudit
+	out                                           map[string]any
+}
+
+func (v *scenario) serve(name string) {
+	v.current = launchOperator(v.operator, v.root, v.private, name, "serve", v.setupID, nil, &v.owners.operators)
+	for _, n := range v.owners.nodes {
+		require(v.current.pid != n.cmd.Process.Pid, "distinct original operator and nodes")
+	}
+	v.current.ready(v.ctx, v.s.Base.Ingress.Origin)
+}
+func (v *scenario) launch(name string) *cliOwner {
+	var c *cliOwner
+	defer func() {
+		if c != nil {
+			v.owners.clis = append(v.owners.clis, c)
+		}
+	}()
+	launchCLI(v.helper, v.root, v.private, v.remoteID, name, &c)
+	require(c.cmd.Process.Pid != v.current.pid, "distinct original CLI and operator")
+	for _, n := range v.owners.nodes {
+		require(c.cmd.Process.Pid != n.cmd.Process.Pid, "distinct original CLI and node children")
+	}
+	return c
+}
+func (v *scenario) command(name, command string, extra []string) operatorFrame {
+	p := launchOperator(v.operator, v.root, v.private, name, command, v.setupID, extra, &v.owners.operators)
+	ctx, cancel := context.WithTimeout(v.ctx, 90*time.Second)
+	defer cancel()
+	return p.finishCommand(ctx)
+}
+func (v *scenario) phase(name string, value any) { write(filepath.Join(v.root, name+".json"), value) }
+func runActual(ctx context.Context, kind, binary, operator, helper, root, reference, oldReference, base string) (out map[string]any) {
+	start := time.Now()
+	out = map[string]any{"version": 1, "case": kind, "passed": false, "completed": false, "start_ms": start.UnixMilli(), "scope": "finite retained fighter admission at pool-only drain with original operator and headless CLI", "public_seed_mining": false}
+	owners := &actualOwners{}
+	v := &scenario{ctx: ctx, kind: kind, binary: binary, operator: operator, helper: helper, root: root, owners: owners, out: out}
+	defer func() {
+		if p := recover(); p != nil {
+			out["failure_phase"] = phase
+			out["failure"] = fmt.Sprintf("%.512s", p)
+		}
+		cleanup := []string{}
+		for i := len(owners.clis) - 1; i >= 0; i-- {
+			if e := owners.clis[i].stop(); e != nil {
+				cleanup = append(cleanup, "headless_cli")
+			}
+		}
+		if owners.controller != nil {
+			if e := owners.controller.Close(); e != nil {
+				cleanup = append(cleanup, "controller")
+			}
+		}
+		for i := len(owners.operators) - 1; i >= 0; i-- {
+			if e := owners.operators[i].stop(false, 0); e != nil {
+				cleanup = append(cleanup, "operator")
+			}
+		}
+		for _, c := range owners.clients {
+			c.Close()
+		}
+		if owners.tls != nil {
+			if e := owners.tls.close(); e != nil {
+				cleanup = append(cleanup, "TLS_relay")
+			}
+			out["tls_relay"] = owners.tls.evidence()
+		}
+		if owners.rpc != nil {
+			if e := owners.rpc.close(); e != nil {
+				cleanup = append(cleanup, "RPC_relay")
+			}
+			calls, attempts, e := owners.rpc.sends()
+			out["send_error"] = e != nil
+			out["sends"] = calls
+			out["send_attempts"] = attempts
+		}
+		ns := []any{}
+		for i := len(owners.nodes) - 1; i >= 0; i-- {
+			n := owners.nodes[i]
+			n.stop()
+			ns = append(ns, n.cleanupReport())
+			if !n.clean() {
+				cleanup = append(cleanup, "node")
+			}
+		}
+		ops := []any{}
+		crashes := 0
+		for _, p := range owners.operators {
+			ops = append(ops, p.evidence())
+			if p.killed {
+				crashes++
+			}
+		}
+		cs := []any{}
+		for _, c := range owners.clis {
+			cs = append(cs, c.evidence())
+		}
+		out["operator_generations"] = ops
+		out["cli_generations"] = cs
+		out["node_cleanup"] = ns
+		out["intentional_crash_count"] = crashes
+		out["cleanup_errors"] = cleanup
+		out["clean_join"] = len(cleanup) == 0
+		out["seconds"] = time.Since(start).Seconds()
+		out["passed"] = out["completed"] == true && len(cleanup) == 0 && crashes == 0
+
+		write(filepath.Join(root, "actual-report.json"), out)
+	}()
+	phase = "independent wrapper and original published fixture"
+	ref, mnemonic := loadSelection(reference, "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a", oldReference, base)
+	v.ref = ref
+	v.private = filepath.Join(root, "private-fixture")
+	check(os.Mkdir(v.private, 0700), "fresh synthetic private fixture")
+	v.s, v.c, v.due = actualSelect(ref, v.private, start)
+	out["due_ms"] = v.due
+	var e error
+	v.setupID, e = pooloperator.RecoverableDailySetupID(v.s)
+	check(e, "actual selected setup")
+	v.remoteID, e = pilot.RecoverableRemotePoolConfigID(v.c)
+	check(e, "actual selected remote")
+	out["setup_id"] = v.setupID
+	out["remote_id"] = v.remoteID
+	out["issue_profile_id"], e = registry.IssueProfileID(v.s.IssueProfile)
+	check(e, "actual profile ID")
+	for _, role := range []string{"admission", "publication", "cutoff"} {
+		seed := sha256.Sum256([]byte("SLUG set74 public synthetic operator " + role + "\x00v1\x00"))
+		privateWrite(filepath.Join(v.private, role+".seed"), seed[:])
+		clear(seed[:])
+	}
+	privateWrite(filepath.Join(v.private, "public.pass"), []byte(publicPass))
+	privateWrite(filepath.Join(v.private, "unlock.pass"), []byte(privatePass))
+	raw, e := pooloperator.MarshalRecoverableDailySetup(v.s)
+	check(e, "protected selected setup")
+	privateWrite(filepath.Join(v.private, "selected-setup.json"), raw)
+	phase = "two original copied normal chains"
+	ports := uniquePorts(2)
+	a := startNode(ctx, binary, root, "node-primary", ports[0], ports[1], poolsettlefixture.PoolAddress())
+	owners.nodes = append(owners.nodes, a)
+	check(a.groupError, "original node group capture")
+	require(a.pgid == a.parentPID, "original node inherited group")
+	b := startNode(ctx, binary, root, "node-peer", ports[1], ports[0], poolsettlefixture.PoolAddress())
+	owners.nodes = append(owners.nodes, b)
+	check(b.groupError, "original peer group capture")
+	require(b.pgid == b.parentPID, "original peer inherited group")
+	ready(ctx, a)
+	ready(ctx, b)
+	tip := sameTip(ctx, a, b)
+	for _, n := range owners.nodes {
+		wait(ctx, 30*time.Second, func() bool {
+			var peers []any
+			return n.rpc.call(ctx, "getpeerinfo", nil, &peers) == nil && len(peers) > 0
+		})
+		peers(ctx, n)
+	}
+	var height uint32
+	a.rpc.must(ctx, "getblockcount", nil, &height)
+	require(height == 2 && block(ctx, a, tip).Header.Bits == 0x207fffff, "original normal baseline2")
+	out["initial_height"] = height
+	out["initial_tip"] = tip
+	owners.rpc = startRPCRelay(ctx, a.rpc.endpoint)
+	rpcConfig := prospectnode.RPCConfig{Version: 1, URL: owners.rpc.url, Username: "fixture", Password: "public-pool-actual"}
+	walletRPC := rpcConfig
+	walletRPC.URL = a.rpc.endpoint
+	raw, e = json.Marshal(rpcConfig)
+	check(e, "original RPC config")
+	privateWrite(filepath.Join(v.private, "rpc.json"), raw)
+	raw, e = json.Marshal(walletRPC)
+	check(e, "wallet RPC config")
+	privateWrite(filepath.Join(v.private, "remote-rpc.json"), raw)
+	createFixtureWallet(ctx, root, v.s.Base, mnemonic)
+	mnemonic = ""
+	phase = "original standalone init and credentials"
+	v.command("operator-init", "init", nil)
+	oldRemote, e := pilot.DailyRemotePoolConfigID(v.c.Base)
+	check(e, "unchanged base credential ID")
+	pid, e := registry.IssueProfileID(v.s.IssueProfile)
+	check(e, "selected profile ID")
+	gym := ref.Base.Fixture.ExpectedLocal.Recipient.Config.Identity.GymID
+	require(v.s.Base.Miners.Enrollments[0].GymID == gym, "original first gym")
+	for i, en := range v.s.Base.Miners.Enrollments {
+		token := hx(digest([]byte("SLUG Set79 Path A pool " + en.GymID)))
+		expires := start.Add(time.Hour).UnixMilli()
+		file := filepath.Join(v.private, fmt.Sprintf("pool-token-%d", i))
+		privateWrite(file, []byte(token))
+		frame := v.command(fmt.Sprintf("operator-rotate-pool-%d", i), "rotate", []string{"--gym-id", en.GymID, "--audience", poolminer.PoolAudience, "--expected-generation", "0", "--token-file", file, "--expires-at-ms", strconv.FormatInt(expires, 10)})
+		var credential poolminer.Credential
+		check(json.Unmarshal(frame.Result, &credential), "real original credential result")
+		require(credential.Generation == 1 && credential.GymID == en.GymID && credential.Audience == poolminer.PoolAudience && credential.ExpiresAtMS == expires, "exact original enrollment")
+		c, e := poolservice.NewRecoverableDailyClient(recoveryClientConfig(v.s, v.c, i, token))
+		check(e, "selected original TLS client")
+		owners.clients = append(owners.clients, c)
+		if i == 0 {
+			raw, e := json.Marshal(selectedCredential{1, credentialFile{2, oldRemote, gym, poolminer.PoolAudience, 1, expires, token}, pid})
+			check(e, "selected pool credential")
+			privateWrite(filepath.Join(v.private, "pool.credential"), append(raw, '\n'))
+		}
+	}
+	token := hx(digest([]byte("SLUG Set79 Path A admission " + gym)))
+	expires := start.Add(time.Hour).UnixMilli()
+	file := filepath.Join(v.private, "admission-token")
+	privateWrite(file, []byte(token))
+	frame := v.command("operator-rotate-admission", "rotate", []string{"--gym-id", gym, "--audience", poolminer.AdmissionAudience, "--expected-generation", "0", "--token-file", file, "--expires-at-ms", strconv.FormatInt(expires, 10)})
+	var credential poolminer.Credential
+	check(json.Unmarshal(frame.Result, &credential), "real admission credential")
+	require(credential.Generation == 1 && credential.GymID == gym && credential.Audience == poolminer.AdmissionAudience, "exact admission enrollment")
+	raw, e = json.Marshal(selectedCredential{1, credentialFile{2, oldRemote, gym, poolminer.AdmissionAudience, 1, expires, token}, pid})
+	check(e, "selected admission file")
+	privateWrite(filepath.Join(v.private, "admission.credential"), append(raw, '\n'))
+	raw, e = pilot.MarshalRecoverableRemotePoolConfig(v.c)
+	check(e, "selected remote config")
+	privateWrite(filepath.Join(v.private, "remote-config.json"), raw)
+	v.in = pilot.RecoverableRemotePoolInputs{AttachmentRoot: filepath.Join(root, "remote-attachment"), Config: v.c, NodeRPC: walletRPC, PoolCredentialPath: filepath.Join(v.private, "pool.credential"), AdmissionCredentialPath: filepath.Join(v.private, "admission.credential")}
+	firstToken := hx(digest([]byte("SLUG Set79 Path A pool " + gym)))
+	owners.tls = startAdmissionTLS(ctx, v.private, v.s.Base.Ingress.Listen, recoveryClientConfig(v.s, v.c, 0, firstToken))
+	v.serve("operator-serve-1")
+	v.phase("01-selection", map[string]any{"setup": v.s, "remote": v.c, "setup_id": v.setupID, "remote_id": v.remoteID, "due_ms": v.due, "start_ms": start.UnixMilli(), "initial_height": height})
+	v.runRetained(a, b)
+
+	out["completed"] = true
+	return
+}
+func main() {
+	kind := flag.String("case", "", "A or B")
+	node := flag.String("node", "", "normal node")
+	operator := flag.String("operator", "", "normal standalone operator")
+	helper := flag.String("helper", "", "headless original-wallet CLI")
+	root := flag.String("artifacts", "", "fresh fixture root")
+	reference := flag.String("reference", "", "qualified selected wrappers")
+	old := flag.String("old-reference", "", "exact a48 inherited selection")
+	base := flag.String("base-reference", "", "exact a5c original public fixture corpus")
+	flag.Parse()
+	require(flag.NArg() == 0 && !wire.TestPoW && (*kind == "A" || *kind == "B"), "explicit normal finite case")
+	for _, p := range []string{*node, *operator, *helper, *root, *reference, *old, *base} {
+		require(filepath.IsAbs(p) && filepath.Clean(p) == p, "absolute frozen input")
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 900*time.Second)
+	defer cancel()
+	out := runActual(ctx, *kind, *node, *operator, *helper, *root, *reference, *old, *base)
+	if out["passed"] != true {
+		os.Exit(1)
+	}
+	fmt.Println("finite retained admission actual passed")
+}

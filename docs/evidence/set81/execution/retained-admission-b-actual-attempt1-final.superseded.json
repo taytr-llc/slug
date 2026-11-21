@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "prior_lock": {
+    "path": "/Users/taytrrip/slug/set81-prep/retained-admission-b-actual-attempt1-final.lock.json",
+    "bytes": 18854,
+    "sha256": "7421bbdfee229cc03cd33b71922ec3d17ad10bd49c44148f9c8da69bf54981f2"
+  },
+  "executed": false,
+  "disposition": "Never executed. Superseded after A1 failed readiness; a new lock must explicitly select the reviewed DAILY round-contention successor before B runs."
+}

@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "scope": "Set81 pre-implementation independent hand-derived state/error/count freeze",
+  "base_commit": "ce9eac7463a75d2ba7e0cefc8924f55d6c77b0a9",
+  "copied_public_inputs": 7,
+  "input_bytes": 10803458,
+  "hand_case_count": 53,
+  "product_execution": false,
+  "producer_execution": false,
+  "repository_edits": false,
+  "implementation_authorized_by_this_manifest": false,
+  "exact_tip_ci_pass_claim": false,
+  "plan": {
+    "path": "/Users/taytrrip/slug/set81-prep/SET81_PLAN.md",
+    "bytes": 17882,
+    "sha256": "a1ab25c4627a82be49164dc3acd7f0131d37911b2b93c848e3ceaed1762f6f0a"
+  },
+  "files": [
+    {
+      "path": "ACCEPTANCE.md",
+      "bytes": 7383,
+      "sha256": "f0c66a138e64e97c648b69fca13171e68f11cd47b03168b52ac4b5c6dbefdab6"
+    },
+    {
+      "path": "acceptance.json",
+      "bytes": 31598,
+      "sha256": "1e31fb64f0bf90a10284f74b09d2642b6b394dce69da688265c44f45c24066aa"
+    },
+    {
+      "path": "input-catalog.json",
+      "bytes": 9104,
+      "sha256": "6ecc33f05098284f70bdae30cd875ef0b80499225e50614ef158c0b06d0d9141"
+    },
+    {
+      "path": "source-anchors.json",
+      "bytes": 3770,
+      "sha256": "9f8e284026cf4c51e35caca357b01848fbcd12d4ab5cabfb39cfe4979815a955"
+    },
+    {
+      "path": "inputs/manifest-admission.json",
+      "bytes": 1207894,
+      "sha256": "d32a8653c76c643addb3df091ca8d7dfdba66c2486f2ca305e718113f71d5794"
+    },
+    {
+      "path": "inputs/pool-share.json",
+      "bytes": 33879,
+      "sha256": "2210d992e618b7a0952736dede1263b678f1a7a2d55d14ccde1cc6b29317de87"
+    },
+    {
+      "path": "inputs/daily-admission-actual.json",
+      "bytes": 29980,
+      "sha256": "1d2b1462296bd022c53df9dc583db3c38cd13a8e13e84f9983f2505b3aefb08f"
+    },
+    {
+      "path": "inputs/public-daily.json",
+      "bytes": 3176583,
+      "sha256": "a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3"
+    },
+    {
+      "path": "inputs/issue-recovery.json",
+      "bytes": 6134980,
+      "sha256": "4bbe4eb9556ed5a894cee6ff565b0dcca805f27fea2d77cfe3a56242dc3dac91"
+    },
+    {
+      "path": "inputs/actual-selection.json",
+      "bytes": 173644,
+      "sha256": "0f0890e529b64c10ed000673aab7861b9bd526057cc3c2bbbe05b868028f3d10"
+    },
+    {
+      "path": "inputs/attachment-actual.json",
+      "bytes": 46498,
+      "sha256": "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386"
+    }
+  ]
+}

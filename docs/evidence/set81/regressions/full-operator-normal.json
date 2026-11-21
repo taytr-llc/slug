@@ -1,0 +1,786 @@
+{
+  "actual_acceptance_claim": false,
+  "aggregate_capture_seconds": 720,
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 94093,
+        "pid": 94093,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-p=1",
+        "-mod=readonly",
+        "-tags=",
+        "./pooloperator"
+      ],
+      "exit_code": 0,
+      "label": "deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 94093,
+      "pid": 94093,
+      "seconds": 0.332,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 94117,
+        "pid": 94117,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "test",
+        "-count=1",
+        "-p=1",
+        "-timeout=600s",
+        "-json",
+        "-tags=",
+        "./pooloperator"
+      ],
+      "exit_code": 0,
+      "label": "normal",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 94117,
+      "pid": 94117,
+      "seconds": 66.436,
+      "timed_out": false
+    }
+  ],
+  "dependency_capture_complete": true,
+  "dependency_capture_seconds": 120,
+  "environment": {
+    "actual_optins": "all inherited SLUG_* removed; no actual tags selected",
+    "cgo": "1",
+    "go_parallelism": 1,
+    "go_work": "/Users/taytrrip/slug/slug/desktop/go.work",
+    "gomaxprocs": "2",
+    "tags": ""
+  },
+  "failed_tests": [],
+  "missing_tests": [],
+  "mode": "normal",
+  "package_timeout_seconds": 600,
+  "packages": [
+    "github.com/taytr-llc/slug/desktop/pooloperator"
+  ],
+  "passed": true,
+  "passing_packages": [
+    "github.com/taytr-llc/slug/desktop/pooloperator"
+  ],
+  "passing_tests": [
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyIntakeOriginalIssuerBusyPreservesDrainAndPayout",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyIntakeOriginalIssuerCancellationNeverEnables",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyIntakeOriginalIssuerCancellationNeverEnables/parent-cancel",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyIntakeOriginalIssuerCancellationNeverEnables/parent-deadline",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorCanceledCommandBeforeEffects",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorCommandExplicitSelection",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorFilesSelectedMarkers",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentComposition",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentComposition/64-enrollments",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentComposition/65-enrollments",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentComposition/baseline",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentComposition/batches-over",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentComposition/bytes-over",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentComposition/change-payee-collision",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentComposition/changed-selected-schedule",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentComposition/checkpoint",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentComposition/descriptor",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentComposition/duplicate-enrollment",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentComposition/genesis",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentComposition/network",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentComposition/new-request",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentComposition/no-enrollment",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentComposition/one-enrollment",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentComposition/order",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentComposition/policy-v1",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentComposition/rounds-below-work",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentComposition/rounds-over",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentComposition/scope",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentComposition/submissions-over",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentComposition/two-enrollments",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentComposition/utc-over",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentComposition/works-over",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentComposition/zero-request",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentFraming",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentFraming/policy-canonical",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentFraming/policy-duplicate-field",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentFraming/policy-extra-LF",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentFraming/policy-inner-space",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentFraming/policy-leading-space",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentFraming/policy-missing-field",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentFraming/policy-null",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentFraming/policy-reordered-field",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentFraming/policy-second-value",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentFraming/policy-two-LFs",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentFraming/policy-unknown-field",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentFraming/setup-canonical",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentFraming/setup-duplicate-field",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentFraming/setup-extra-LF",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentFraming/setup-inner-space",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentFraming/setup-leading-space",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentFraming/setup-missing-field",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentFraming/setup-null",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentFraming/setup-reordered-field",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentFraming/setup-second-value",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyOperatorIndependentFraming/setup-unknown-field",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyProvisionCapacityBeforeCreation",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyProvisionOriginalWalletAndRuntimeReopen",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyProvisionResumesOriginalMaterialAndRefusesOtherMode",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyProvisionResumesOriginalMaterialAndRefusesOtherMode/2",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyProvisionResumesOriginalMaterialAndRefusesOtherMode/7",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionCanceledBeforeTransition",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionEnableErrorsKeepOriginalOwner",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionFullSourceReopenPreservesPayment",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionHardCauseSurvivesSourceBusy",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionHardCauseSurvivesSourceBusy/explicit",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionHardCauseSurvivesSourceBusy/original-admission-mode",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionHardEscalationAndConcurrentReadiness",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionHardEscalationAndConcurrentReadiness/admission_capacity",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionHardEscalationAndConcurrentReadiness/legacy_over_bound",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionHardEscalationAndConcurrentReadiness/no_reservation",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionHardEscalationAndConcurrentReadiness/public_capacity",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionHardEscalationAndConcurrentReadiness/round_capacity",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionHardEscalationAndConcurrentReadiness/unknown_future_cause",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionSelectionReadinessAndDirectDrain",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionSelectionReadinessAndDirectDrain/daily",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionSelectionReadinessAndDirectDrain/legacy",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorCapacityIndependentEdges",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorCapacityIndependentEdges/batch-364",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorCapacityIndependentEdges/batch-365",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorCapacityIndependentEdges/below-round-byte-edge",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorCapacityIndependentEdges/credit-four",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorCapacityIndependentEdges/exact-round-byte-edge",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorCapacityIndependentEdges/larger-round-journal",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorCapacityIndependentEdges/maximum-existing",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorCapacityIndependentEdges/one-batch",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorCapacityIndependentEdges/one-payee",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorCapacityIndependentEdges/round-four",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorCapacityIndependentEdges/small-selected",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorCapacityIndependentEdges/source-four",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorCapacityIndependentEdges/zero-reservation",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorCapacityMixedErrorsRemainFatal",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorCapacityOriginalStartupAndPermanentDrain",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorCommandBlockedOutputJoins",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorCommandFinalDiagnosticBound",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorCommandFlags",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorCommandNoSecretOutput",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorCommandPrivateInputAndCleanup",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorCommandPublicParsing",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorCommandUnknownPrecedence",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorFilesCreateResumeReady",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorFilesFailedCloseRetainsRootLock",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorFilesFailedCloseRetainsRootLock/ancestor",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorFilesFailedCloseRetainsRootLock/child",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorFilesFailedCloseRetainsRootLock/intent",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorFilesFailedCloseRetainsRootLock/temporary",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorFilesLockAndIdentity",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorFilesNamespaceAndSymlinkRefusals",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorFilesNamespaceAndSymlinkRefusals/broad-root",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorFilesNamespaceAndSymlinkRefusals/component-symlink",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorFilesNamespaceAndSymlinkRefusals/foreign-entry",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorFilesNamespaceAndSymlinkRefusals/intent-symlink",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorFilesNamespaceAndSymlinkRefusals/ready-byte-change",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorFilesNamespaceAndSymlinkRefusals/root-symlink",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorFilesOriginalSetupAndMissingChild",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorIntakeMutexCancellationJoinsHolder",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorIntakeSourceBusyErrorTrees",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorIntakeSourceBusyErrorTrees/busy_and_cancel",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorIntakeSourceBusyErrorTrees/busy_and_deadline",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorIntakeSourceBusyErrorTrees/busy_and_integrity",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorIntakeSourceBusyErrorTrees/busy_and_unavailable",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorIntakeSourceBusyErrorTrees/cancel",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorIntakeSourceBusyErrorTrees/capacity",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorIntakeSourceBusyErrorTrees/corrupt",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorIntakeSourceBusyErrorTrees/deadline",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorIntakeSourceBusyErrorTrees/empty_multi_unwrap",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorIntakeSourceBusyErrorTrees/empty_single_unwrap",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorIntakeSourceBusyErrorTrees/exact_source_busy",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorIntakeSourceBusyErrorTrees/joined_source_busy",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorIntakeSourceBusyErrorTrees/nested_source_busy",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorIntakeSourceBusyErrorTrees/nil",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorIntakeSourceBusyErrorTrees/nil_child",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorIntakeSourceBusyErrorTrees/nil_mixed_child",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorIntakeSourceBusyErrorTrees/poisoned",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorIntakeSourceBusyErrorTrees/registry_busy",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorIntakeSourceBusyErrorTrees/round_busy",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorIntakeSourceBusyErrorTrees/same_text_is_not_sentinel",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorIntakeSourceBusyErrorTrees/single_wrapper",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorIntakeSourceBusyErrorTrees/unavailable",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorIntakeSourceBusyErrorTrees/wrapped_mixed_fatal",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorIntakeSourceBusyErrorTrees/wrapped_source_busy",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorLiveRoundCapacityRefresh",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorLiveRoundCloseJoinsSelection",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorLiveRoundOriginalCatchupAndDefault",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorLiveRoundSelectionRefusals",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPrivateInputAdmissionRefusals",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPrivateInputAdmissionRefusals/broad-file",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPrivateInputAdmissionRefusals/broad-parent",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPrivateInputAdmissionRefusals/directory",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPrivateInputAdmissionRefusals/empty",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPrivateInputAdmissionRefusals/fifo",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPrivateInputAdmissionRefusals/hardlink",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPrivateInputAdmissionRefusals/oversize",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPrivateInputAdmissionRefusals/symlink-file",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPrivateInputAdmissionRefusals/symlink-parent",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPrivateInputCleanupFailureRetained",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPrivateInputCleanupFailureRetained/file",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPrivateInputCleanupFailureRetained/parent",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPrivateInputDarwinACLRefusal",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPrivateInputDarwinACLRefusal/file-after",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPrivateInputDarwinACLRefusal/file-before",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPrivateInputDarwinACLRefusal/parent-before",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPrivateInputOriginalIdentityRefusals",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPrivateInputOriginalIdentityRefusals/append",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPrivateInputOriginalIdentityRefusals/file-mode",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPrivateInputOriginalIdentityRefusals/parent-mode",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPrivateInputOriginalIdentityRefusals/renamed-parent",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPrivateInputOriginalIdentityRefusals/replace-same-bytes",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPrivateInputOwnedReadAndLifetime",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPrivateInputOwnedReadAndLifetime/-r--------",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPrivateInputOwnedReadAndLifetime/-rw-------",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPublicMaintenanceContention",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPublicMaintenanceContention/busy_with_cleanup",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPublicMaintenanceContention/busy_with_closed",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPublicMaintenanceContention/canceled",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPublicMaintenanceContention/joined_known_retry",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPublicMaintenanceContention/nil",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPublicMaintenanceContention/owner_binding",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPublicMaintenanceContention/owner_busy",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPublicMaintenanceContention/owner_closed",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPublicMaintenanceContention/owner_integrity",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPublicMaintenanceContention/stale_replay",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPublicMaintenanceContention/stale_with_cleanup",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorPublicMaintenanceContention/wrapped_owner_busy",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorRuntimeCheckpointImportNoHead",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorRuntimeCloseJoinsAdmittedLocalAction",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorRuntimeCompletionClassification",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorRuntimeCompletionClassification/active_nil_completion",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorRuntimeCompletionClassification/active_unexpected_cancellation",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorRuntimeCompletionClassification/canceled_cleanup_failure",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorRuntimeCompletionClassification/canceled_earlier_action_deadline",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorRuntimeCompletionClassification/canceled_leaf",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorRuntimeCompletionClassification/canceled_nil_completion",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorRuntimeCompletionClassification/canceled_service_failure",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorRuntimeCompletionClassification/canceled_siblings",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorRuntimeCompletionClassification/canceled_unknown_action",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorRuntimeCompletionClassification/canceled_wrapped_leaf",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorRuntimeCredentialActions",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorRuntimeOriginalPrivateInputAndOwner",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorRuntimeOriginalPrivateInputAndOwner/original_authority_canceled",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorRuntimeOriginalPrivateInputAndOwner/selected_file_metadata_changed",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentCodec",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentCodec/incrementing256",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentCodec/official-leading-zero-account",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentCodec/zero256",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentRefusals",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentRefusals/different-miner-runtime",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentRefusals/different-node-genesis",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentRefusals/different-node-script",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentRefusals/different-payee",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentRefusals/different-schedule-binding",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentRefusals/different-schedule-runtime",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentRefusals/different-source",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentRefusals/different-wallet-profile",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentRefusals/different-wallet-settlement",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentRefusals/different-wallet-source",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentRefusals/ephemeral-public-port",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentRefusals/legacy-authority",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentRefusals/maintenance-fast",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentRefusals/ownership-zero",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentRefusals/raw-duplicate-version",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentRefusals/raw-leading-space",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentRefusals/raw-missing-version",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentRefusals/raw-trailing-lf",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentRefusals/raw-unknown-member",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentRefusals/renewal-too-late",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentRefusals/rounds-below-jobs",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentRefusals/runtime-zero",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentRefusals/same-upstream",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentRefusals/schedule-minute",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentRefusals/unlock-too-long",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorSetupIndependentRefusals/version",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestOperatorWalletDriverRegistered",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionCertificateAndCommandRefusals",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionCreateVerifyLostReadyAndRuntimeInit",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionFinitePartialPrefixes",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionFinitePartialPrefixes/1",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionFinitePartialPrefixes/2",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionFinitePartialPrefixes/3",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionFinitePartialPrefixes/4",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionFinitePartialPrefixes/5",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionFinitePartialPrefixes/6",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionFinitePartialPrefixes/7",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionHoldsAndEstablishedMissing",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionHoldsAndEstablishedMissing/empty-wallet",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionHoldsAndEstablishedMissing/mismatched-seed",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionHoldsAndEstablishedMissing/missing-established",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionHoldsAndEstablishedMissing/partial-material",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentBytes",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentBytes/incrementing256",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentBytes/official-leading-zero-account",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentBytes/same-material-new-request",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentBytes/same-policy-later-material-time",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentBytes/same-request-explicit-node-fee",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentBytes/zero256",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/backup/backup-funding",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/backup/backup-kind",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/backup/backup-network",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/backup/backup-other-valid-phrase",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/backup/backup-path",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/backup/backup-phrase-checksum",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/backup/backup-policy",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/backup/backup-profile",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/backup/backup-request",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/backup/backup-setup",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/backup/backup-time",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/certificate/certificate-upper-spki",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/certificate/certificate-version",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/certificate/certificate-zero-file",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/composition/payee-funding-collision",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/daily-minute",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/duplicate-enrollment",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/duplicate-payee",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/empty-enrollments",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/excess-batches",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/excess-submissions",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/excess-works",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/fixed-has-target",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/fixture-checkpoint",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/hostname-upstream",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/insecure-origin",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/invalid-point",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/maintenance-under",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/non-native-payee",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/origin-path",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/origin-userinfo",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/pool-bytes-under",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/public-upstream",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/rate-over-cap",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/renewal-after-half",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/repeated-upstream",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/retry-under",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/rounds-below-works",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/scope",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/unknown-descriptor",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/unknown-fee-mode",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/unlock-over",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/unsorted-enrollments",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/uppercase-request",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/version",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/wrong-dna",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/wrong-genesis",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/wrong-network",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/zero-listen-port",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/zero-max-fee",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/zero-pool-target",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/zero-prospect-target",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/zero-request",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/policy/zero-works",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/public_material/material-fixture-online",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/public_material/material-funding-point",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/public_material/material-root",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/public_material/material-time-over",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/public_material/material-time-zero",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/public_material/material-version",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/public_material/material-zero-online",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/raw/boolean",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/raw/canonical",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/raw/crlf",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/raw/duplicate",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/raw/escaped-alias",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/raw/float",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/raw/leading-space",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/raw/missing",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/raw/negative-zero",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/raw/nul",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/raw/null",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/raw/one-terminal-lf",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/raw/over-cap",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/raw/trailing-object",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/raw/trailing-space",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/raw/truncated",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/raw/two-lf",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionIndependentRefusals/raw/unknown",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionOriginalFilesAndStickyCleanup",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestProvisionWrongPassCancellationAndLostOutput",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorCommandExplicitSelection",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorFilesRefuseOtherModes",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentSetupFraming",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentSetupFraming/one-enrollment-setup/alternate-number",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentSetupFraming/one-enrollment-setup/canonical",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentSetupFraming/one-enrollment-setup/duplicate-field",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentSetupFraming/one-enrollment-setup/invalid-utf8",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentSetupFraming/one-enrollment-setup/missing-field",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentSetupFraming/one-enrollment-setup/reordered-fields",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentSetupFraming/one-enrollment-setup/trailing-value",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentSetupFraming/one-enrollment-setup/unexpected-final-lf",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentSetupFraming/one-enrollment-setup/unknown-field",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentSetupFraming/one-enrollment-setup/vertical-tab-prefix",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentWrappers",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentWrappers/64-enrollments",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentWrappers/one-enrollment",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentWrappers/two-enrollments",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableProvisionCapacityBeforeEffects",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableProvisionOriginalMaterialLostReady"
+  ],
+  "profile_unchanged": true,
+  "scope": "full affected legacy and Set81 regression",
+  "skipped_tests": [],
+  "slice": "operator",
+  "sources_unchanged": true,
+  "test_exclusions": [],
+  "top_level_pass_count": 65,
+  "top_level_skip_count": 0,
+  "top_level_tests": [
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestDailyIntakeOriginalIssuerBusyPreservesDrainAndPayout"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestDailyIntakeOriginalIssuerCancellationNeverEnables"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestDailyOperatorCanceledCommandBeforeEffects"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestDailyOperatorCommandExplicitSelection"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestDailyOperatorFilesSelectedMarkers"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestDailyOperatorIndependentComposition"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestDailyOperatorIndependentFraming"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestDailyProvisionCapacityBeforeCreation"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestDailyProvisionOriginalWalletAndRuntimeReopen"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestDailyProvisionResumesOriginalMaterialAndRefusesOtherMode"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestDailyRetainedAdmissionCanceledBeforeTransition"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestDailyRetainedAdmissionEnableErrorsKeepOriginalOwner"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestDailyRetainedAdmissionFullSourceReopenPreservesPayment"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestDailyRetainedAdmissionHardCauseSurvivesSourceBusy"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestDailyRetainedAdmissionHardEscalationAndConcurrentReadiness"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestDailyRetainedAdmissionSelectionReadinessAndDirectDrain"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorCapacityIndependentEdges"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorCapacityMixedErrorsRemainFatal"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorCapacityOriginalStartupAndPermanentDrain"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorCommandBlockedOutputJoins"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorCommandFinalDiagnosticBound"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorCommandFlags"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorCommandNoSecretOutput"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorCommandPrivateInputAndCleanup"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorCommandPublicParsing"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorCommandUnknownPrecedence"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorFilesCreateResumeReady"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorFilesFailedCloseRetainsRootLock"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorFilesLockAndIdentity"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorFilesNamespaceAndSymlinkRefusals"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorFilesOriginalSetupAndMissingChild"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorIntakeMutexCancellationJoinsHolder"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorIntakeSourceBusyErrorTrees"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorLiveRoundCapacityRefresh"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorLiveRoundCloseJoinsSelection"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorLiveRoundOriginalCatchupAndDefault"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorLiveRoundSelectionRefusals"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorPrivateInputAdmissionRefusals"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorPrivateInputCleanupFailureRetained"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorPrivateInputDarwinACLRefusal"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorPrivateInputOriginalIdentityRefusals"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorPrivateInputOwnedReadAndLifetime"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorPublicMaintenanceContention"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorRuntimeCheckpointImportNoHead"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorRuntimeCloseJoinsAdmittedLocalAction"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorRuntimeCompletionClassification"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorRuntimeCredentialActions"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorRuntimeOriginalPrivateInputAndOwner"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorSetupIndependentCodec"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorSetupIndependentRefusals"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestOperatorWalletDriverRegistered"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestProvisionCertificateAndCommandRefusals"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestProvisionCreateVerifyLostReadyAndRuntimeInit"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestProvisionFinitePartialPrefixes"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestProvisionHoldsAndEstablishedMissing"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestProvisionIndependentBytes"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestProvisionIndependentRefusals"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestProvisionOriginalFilesAndStickyCleanup"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestProvisionWrongPassCancellationAndLostOutput"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestRecoverableOperatorCommandExplicitSelection"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestRecoverableOperatorFilesRefuseOtherModes"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestRecoverableOperatorIndependentSetupFraming"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestRecoverableOperatorIndependentWrappers"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestRecoverableProvisionCapacityBeforeEffects"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "test": "TestRecoverableProvisionOriginalMaterialLostReady"
+    }
+  ],
+  "unexpected_skips": [],
+  "version": 1
+}

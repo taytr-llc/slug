@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "scope": "Finite independent source-only review of selected target TLS relay and retained A/B lifecycle",
+  "reviewed": [
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/admission_relay.go",
+      "bytes": 19178,
+      "sha256": "cbce430127a9d2a0fd80e4c4236d60297f903a32333c7822007649123866e6ae"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/retained_flow.go",
+      "bytes": 15696,
+      "sha256": "bf948ca99a092f39087485f91c8045812c669aea7bb5bf82ba7a9a442ddc3699"
+    }
+  ],
+  "support_read": [
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/main.go",
+      "bytes": 13366,
+      "sha256": "cf2f367ac2270873ea9aa0da4bd0c15f8d928d4fd8e2960b1d27ca8694f1ade7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/cli_process.go",
+      "bytes": 9484,
+      "sha256": "9e0d2fbcb97382e9f8ba16284f96b08da2d1cd9260e479edd847463e3e143149"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/admission_audit.go",
+      "bytes": 11454,
+      "sha256": "41a587c840eeb5148cada24d1e23625f2d056c76dd8801280c781e0d5174164c"
+    }
+  ],
+  "result": "No actionable finding in the reviewed target selection, bounded hold, genuine response loss/replay, real expiry and mutex/join scope.",
+  "checks": [
+    "Target selected only after independently rechecked original accepted receipt2 and prior first-winner admission; job/header/full signed request identity retained.",
+    "Original authenticated upstream exchange is forwarded, held or lost; no fabricated successful receipt or expiry response is created.",
+    "Each hold is bounded by10 seconds, original request context and captured job expiry; initial worker Stop/handler join occurs before dated drain observations. No request remains held through real expiry.",
+    "A loses one genuine inserted canonical admission, keeps local pending identity, physically rejoins original operators, and requires exact historical response/durable record across final full audit.",
+    "B never forwards target before expiry, stops original owners, waits real captured lifetime, and requires definite expired plus durable identical target with zero corresponding authority record.",
+    "All require/check operations under the relay mutex use deferred unlock; forwarding and wait operations release the mutex. Closing prevents new WaitGroup additions before joining.",
+    "Original CLI/operator ownership and observed completion remain required; scenario proves local durable completion rather than relying only on a response event.",
+    "Full target/public/cross-owner audits and exact financial continuation remain mandatory; extra unrelated prospects/requests remain bounded and visible."
+  ],
+  "limitations": [
+    "Source review is not compilation, runtime qualification, cryptographic independent execution, or proof of actual cleanup.",
+    "Actual plans/helper remain under root final review/freeze. Main was read only for cleanup/owner integration, not independently closed as a full new harness review."
+  ],
+  "go_executed": false,
+  "repository_edits": false
+}

@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "scope": "Static interface/behavior provenance only, not outputs or new source implementation",
+  "commit": "ce9eac7463a75d2ba7e0cefc8924f55d6c77b0a9",
+  "files": [
+    {
+      "repository_path": "desktop/pooloperator/capacity_drain.go",
+      "commit": "ce9eac7463a75d2ba7e0cefc8924f55d6c77b0a9",
+      "bytes": 6507,
+      "sha256": "f78d3613a6db6169e3562c67fa36418c66afffa8b6f1f7cca771a43e0024f21e",
+      "role": "original readiness, first-reason latch, bounded Busy retry and all-leaf capacity classification",
+      "copied": false
+    },
+    {
+      "repository_path": "desktop/pooloperator/runtime.go",
+      "commit": "ce9eac7463a75d2ba7e0cefc8924f55d6c77b0a9",
+      "bytes": 21184,
+      "sha256": "39e93745f9059e0f4b2e636476ff7c2d4e889b771349f44156c4cc20c097746e",
+      "role": "original intake/readiness state and joined Run owners",
+      "copied": false
+    },
+    {
+      "repository_path": "desktop/pooloperator/construction.go",
+      "commit": "ce9eac7463a75d2ba7e0cefc8924f55d6c77b0a9",
+      "bytes": 16317,
+      "sha256": "37fa71d3465de9267275df106deae584b9a75314aaefb62d074b2401a7b9ad54",
+      "role": "original paused fenced admission constructor and concrete daily composition",
+      "copied": false
+    },
+    {
+      "repository_path": "prospectservice/manifest_fenced_server.go",
+      "commit": "ce9eac7463a75d2ba7e0cefc8924f55d6c77b0a9",
+      "bytes": 5509,
+      "sha256": "181e7c5a9055eff411bb820ff20769829ac5bac4d3410fa463b5f9512fd7fb35",
+      "role": "historical-first preparation, original session capture/Do/recheck, drain before node",
+      "copied": false
+    },
+    {
+      "repository_path": "prospectservice/manifest_server.go",
+      "commit": "ce9eac7463a75d2ba7e0cefc8924f55d6c77b0a9",
+      "bytes": 19359,
+      "sha256": "9b495ab1224e91361ea9a87f684a2aa35ae25420ae0ec86799c6f87e6a09bfb0",
+      "role": "existing wire errors/poison precedence; no new serialized code",
+      "copied": false
+    },
+    {
+      "repository_path": "registry/manifest_staged.go",
+      "commit": "ce9eac7463a75d2ba7e0cefc8924f55d6c77b0a9",
+      "bytes": 13620,
+      "sha256": "3ca973cab91643639d2c37ff600b17d9ae5b7db52693c92583061392cf1c530d",
+      "role": "prepared owner/pin/job identity, historical replay, original final expiry and atomic admission",
+      "copied": false
+    },
+    {
+      "repository_path": "registry/manifest_jobs.go",
+      "commit": "ce9eac7463a75d2ba7e0cefc8924f55d6c77b0a9",
+      "bytes": 5159,
+      "sha256": "1584c21138ac520dcd9698a9f2311dbeb1ecb2b740a298bc3bf8f78ca5e5fc6e",
+      "role": "persisted/in-process clock high water and conditional clock write",
+      "copied": false
+    },
+    {
+      "repository_path": "registry/manifest_store.go",
+      "commit": "ce9eac7463a75d2ba7e0cefc8924f55d6c77b0a9",
+      "bytes": 12852,
+      "sha256": "995b6a7a5e8e1ef8e92ca593eea67e9e39c13a8fbab39ffc38664668922023b3",
+      "role": "original lifecycle, poison and synchronized write failure semantics",
+      "copied": false
+    },
+    {
+      "repository_path": "registry/public_store.go",
+      "commit": "ce9eac7463a75d2ba7e0cefc8924f55d6c77b0a9",
+      "bytes": 13648,
+      "sha256": "72f9877a8305e8bffef9164eafc10a3a3e3fd1334bbf1473c3e62442f87b68a2",
+      "role": "one ownership-outbox append, separate publication, logical reserve check on clock commit",
+      "copied": false
+    },
+    {
+      "repository_path": "prospectworker/pool_delivery.go",
+      "commit": "ce9eac7463a75d2ba7e0cefc8924f55d6c77b0a9",
+      "bytes": 9930,
+      "sha256": "e529e1ab594428bf3dfc3018f45085b218fc8ad474c15edbf9dc9d6d8faf7129",
+      "role": "block-before-signing, independent prospect path, signed historical recovery and definite expired persistence",
+      "copied": false
+    }
+  ]
+}

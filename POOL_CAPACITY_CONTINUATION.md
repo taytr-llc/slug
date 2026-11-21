@@ -6,8 +6,18 @@ selected full-intake late-winner reservation/recovery, and Set79 adds public
 transport, original-wallet worker/headless composition and real UTC payouts.
 All seven Set79 exact-tip checks pass at chain fdd40d8e with the paired wallet
 binding recorded in its evidence. Set80 exact-request recovery passes local full affected regressions and both
-standalone actuals. Its exact-tip CI remains pending.
+standalone actuals. All seven exact-tip CI jobs pass at maintenance successor
+`1f559221`, with the original shutdown failure preserved.
 This is engineering under D58/D79–D81/D84, not public deployment or launch approval.
+
+**November 21 scope update:** Mike directs a safe bounded hosted test build
+before general continuation/public-launch hardening. The remaining capacity and
+large-history items below are [public-launch follow-ups](docs/EDGE_CASE_FOLLOW_UPS.md),
+not prerequisites to that bounded test unless its declared flow reaches them.
+Keep every existing cap, recovery right and payout guard. Pause new intake at a
+hold; never reset history or silently enlarge a signed profile. The active order
+is hosted pool/payouts, wallet balances/history, sign-in, then joint D74 review.
+Marketplace remains on hold.
 
 ## Identity and compatibility
 
@@ -95,8 +105,10 @@ Set80's explicitly selected request-recovery mode retains those economic and
 financial identities. Its byte/state/capacity reference, focused components,
 real-expiry financial regression and local intent-crash control pass. Standalone
 B confirms never-published expiry after the operator crash; A3 proves the
-original-wallet scheduled payment after crash/reply-loss recovery. Exact-tip CI
-remains pending; no Set79 result is relabeled as that new-mode proof.
+original-wallet scheduled payment after crash/reply-loss recovery. All seven
+exact-tip CI jobs pass at maintenance successor `1f559221`; the original
+`ce9eac74` shutdown failure remains preserved. No Set79 result is relabeled as
+that new-mode proof. See `docs/evidence/set80/ci-closeout/`.
 
 ## Remaining capacity and deployment work
 
@@ -111,7 +123,7 @@ remains pending; no Set79 result is relabeled as that new-mode proof.
 - Sustained ordinary-share/job-refresh load for the intended miner population,
   disk-full/retention/recovery operations and the selected public host. Existing
   real scheduled-payout proofs do not settle those operational/load gates.
-- Record Set80 exact-tip CI, then finish retained original-job fighter delivery
+- Finish retained original-job fighter delivery
   at pool-only intake drain without weakening expiry or signed authority limits.
   Any later native presentation/onboarding work retains the already qualified
   public protocol and custody boundaries; it must not be described as missing

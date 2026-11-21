@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "scope": "Selected clock-only preflight observes complete original lease outcome without changing legacy Lease.Do",
+  "base_commit": "1f559221c3735227e8475731f2c73a74282db5b0",
+  "predecessors": [
+    {
+      "path": "../oracle/manifest.json",
+      "bytes": 2385,
+      "sha256": "0d7df95e552b7a94078e9ccd536bbb827d93a69753c9051ece06901cbec28a62"
+    },
+    {
+      "path": "../oracle-clock-correction/manifest.json",
+      "bytes": 848,
+      "sha256": "15b91a9690cd9b215ea3e0dfa8373697c22fd72686a2b477caf7b1ea491a067a"
+    }
+  ],
+  "application": "Apply after the five-field clock overlay. Match each exact before value in the immutable original table, apply these replacements, then append the one unique new hand-derived case. No copied corpus, old format or economic expectation changes.",
+  "replacements": [
+    {
+      "path": "terminal_expiry_provenance.original_lease_do_return",
+      "before": "same exact error, not wrapped/joined",
+      "after": "nil from a complete original Lease.Do whose callback privately captures the helper result and returns nil; any outer authorizer/lease failure must be retained as failure"
+    },
+    {
+      "case_id": "preflight-expired-postcheck-revocation",
+      "field": "state",
+      "before": "helper exact ErrJobExpired and Do same exact error; final original Check returns unauthorized",
+      "after": "privately captured helper exact ErrJobExpired and complete original Do succeeds; final original Check returns unauthorized"
+    },
+    {
+      "path": "case_count",
+      "before": 53,
+      "after": 54
+    }
+  ],
+  "added_cases": [
+    {
+      "id": "preflight-expired-outer-joined-failure-healthy-next-check",
+      "state": "helper samples and persists original expiry; the authorizer invokes the callback exactly once then returns a joined expiry-looking and independent failure; a later Check would be healthy",
+      "request": "same never-admitted original signed proof under selected capture-only preflight",
+      "expected": {
+        "pool_mode": "unchanged",
+        "admission_mode": "no_relaxation",
+        "outcome": "outcome_unknown",
+        "record_sequence_ownership_outbox_signed_publication_delta": [0, 0, 0, 0],
+        "clock": "original high water may already be durably advanced; complete lease failure cannot be erased by captured expiry or a later healthy lease",
+        "effects": "no node admission or terminal expired disclosure; retain original signed pending identity",
+        "preflight_callback_return": "nil, with helper ErrJobExpired privately retained",
+        "complete_lease_return": "original mininglease.ErrOutcomeUnknown",
+        "post_failure_reauthorization_cannot_rescue": true
+      }
+    }
+  ],
+  "documentary_override": {
+    "path": "../oracle/ACCEPTANCE.md",
+    "before": "The selected service must capture the exact helper result privately, require both that result and the original lease.Do return to be the same exact `registry.ErrJobExpired`, then pass the original lease.Check immediately before terminal disclosure.",
+    "after": "The selected service must capture the exact helper result privately while returning nil from its clock-only callback to the unchanged original lease.Do. Only complete lease success, exact captured registry.ErrJobExpired and a successful original lease.Check immediately before disclosure authorize expired. Any outer authorizer or lease failure remains a failure; a later healthy check cannot erase it."
+  },
+  "clarifications": [
+    "Legacy Lease.Do can otherwise return a nonnil callback error while discarding a different outer authorizer failure. The selected capture-only callback avoids that existing branch; it neither changes Lease.Do nor adds a new lease/authority API.",
+    "Keep the callback's captured original source failure when classifying a failed complete lease. In particular, a captured poisoned clock write plus an outer unauthorized/unknown failure must still latch the selected server's poison state and return outcome_unknown. Delegating a poison+unauthorized join to the old unauthorized-first classifier is insufficient.",
+    "The existing wrapped/joined expiry-looking refusal cases remain failures. Their labels do not authorize a new serialized error or reinterpret a foreign expiry as the original clock branch.",
+    "Exact clock capacity may latch the existing intake hold only after complete original lease success. Clock metadata uncertainty remains separate from the exactly zero admission-count tuple.",
+    "All changes are frozen before Set81 product execution. The original table, first overlay, seven input copies and their provenance remain byte-identical."
+  ],
+  "hand_case_count": 54,
+  "product_execution": false,
+  "producer_execution": false,
+  "repository_edits": false
+}

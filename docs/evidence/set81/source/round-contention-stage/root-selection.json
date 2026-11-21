@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "approved_by": "root",
+  "production_manifest": {
+    "bytes": 5027,
+    "sha256": "2815ca59d8720b8e0c2adef8aae6ae89ea18ef522eb88a14cdf17045f47e98e4"
+  },
+  "reason": "A1 failed unchanged readiness gate with sampled pre-Sync Busy. Retain phase-specific original-owner retries only for exact Busy under original deadline; preserve legacy behavior, financial effects and failed evidence.",
+  "applied": true,
+  "executed": false
+}

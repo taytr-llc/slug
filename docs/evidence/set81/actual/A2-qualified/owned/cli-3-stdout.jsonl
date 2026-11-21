@@ -1,0 +1,2 @@
+{"version":2,"observed_at_ms":1795273200844,"config_id":"7c91d0ddff28003c667a0e0474d0ce13875ced9dfe65269f18eb86c322f16fa0","state":"signed_in","worker_state":"delivering","code":"","records":2,"pending":1}
+{"version":2,"observed_at_ms":1795273201841,"config_id":"7c91d0ddff28003c667a0e0474d0ce13875ced9dfe65269f18eb86c322f16fa0","state":"signed_in","worker_state":"retrying","code":"outcome_unknown","records":2,"pending":0}

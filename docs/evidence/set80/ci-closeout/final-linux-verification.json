@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "passed": true,
+  "scope": "Downloaded Set80 final maintenance-tip Linux operator qualification",
+  "head": "1f559221c3735227e8475731f2c73a74282db5b0",
+  "wallet": "dfc5d9dd7e0f604486fbac812d0413fce1f45cd6",
+  "required_passes": 428,
+  "test_groups": 29,
+  "commands_verified": 61,
+  "sources_equal": true,
+  "clean_join": true,
+  "actual_or_deployment_claim": false,
+  "report": {
+    "bytes": 1314108,
+    "sha256": "a72290fa7b31dd89a6a5bc41590453a2e17243719dd3205b075d05b626c681b7"
+  },
+  "sources_before": {
+    "bytes": 2221687,
+    "sha256": "81c87247e3501ad5008eff20a56ae12ae9741010eed7b5d322324a16eaaf06d9"
+  },
+  "sources_after": {
+    "bytes": 2221687,
+    "sha256": "81c87247e3501ad5008eff20a56ae12ae9741010eed7b5d322324a16eaaf06d9"
+  },
+  "overall_ci": "All seven exact-tip jobs passed; original ce9eac74 failure remains preserved."
+}

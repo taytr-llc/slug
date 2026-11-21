@@ -1,0 +1,1461 @@
+{
+  "case": "A",
+  "clean_join": true,
+  "cleanup_errors": [],
+  "cli_generations": [
+    {
+      "config_id": "c51cc8321c80dc808fe9e5ad17da7787698b990efc78d1775385e64f303037c4",
+      "exit_code": 0,
+      "forced_kill": false,
+      "io_error": false,
+      "joined": true,
+      "last_status": {
+        "version": 2,
+        "observed_at_ms": 1795272090952,
+        "config_id": "c51cc8321c80dc808fe9e5ad17da7787698b990efc78d1775385e64f303037c4",
+        "state": "signed_in",
+        "worker_state": "delivering",
+        "code": "",
+        "records": 4,
+        "pending": 1
+      },
+      "parent_pid": 97100,
+      "pgid": 97100,
+      "pid": 97141,
+      "signal": "SIGTERM",
+      "signal_count": 1,
+      "status_count": 8,
+      "stderr_joined": true,
+      "stdout_joined": true,
+      "unexpected_exit": false,
+      "wait_error": false
+    }
+  ],
+  "completed": false,
+  "due_ms": 1795272480000,
+  "failure": "bounded wait",
+  "failure_phase": "second accepted canonical pool winner held before original fighter admission",
+  "initial_height": 2,
+  "initial_tip": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+  "intentional_crash_count": 0,
+  "issue_profile_id": "53603dbc4c56a80e891c4a1c7bc8e446631737aac7b3e15156a99a33a0938a70",
+  "node_cleanup": [
+    {
+      "clean": true,
+      "forced_kill": false,
+      "group_error": false,
+      "joined": true,
+      "log_close_error": false,
+      "parent_pid": 97100,
+      "pgid": 97100,
+      "pid": 97105,
+      "stop_rpc_error": false,
+      "unexpected_exit": false,
+      "wait_error": ""
+    },
+    {
+      "clean": true,
+      "forced_kill": false,
+      "group_error": false,
+      "joined": true,
+      "log_close_error": false,
+      "parent_pid": 97100,
+      "pgid": 97100,
+      "pid": 97104,
+      "stop_rpc_error": false,
+      "unexpected_exit": false,
+      "wait_error": ""
+    }
+  ],
+  "operator_generations": [
+    {
+      "cleanup_error": false,
+      "command": "init",
+      "exit_code": 0,
+      "frames": [
+        {
+          "version": 2,
+          "command": "init",
+          "observed_at_ms": 1795272076397,
+          "code": "complete",
+          "result": {
+            "capacity": {
+              "daily_reservation": {
+                "ordinary_maximum": 2,
+                "reservation": {
+                  "submissions": 3,
+                  "blocks": 3,
+                  "max_batches": 5,
+                  "claim_leaves": 6,
+                  "ledger_bytes": 8534577,
+                  "round_bytes": 211005,
+                  "largest_round_bytes": 66520,
+                  "largest_credit_bytes": 1243,
+                  "largest_batch_bytes": 980210,
+                  "report_bytes": 20628,
+                  "receipt_bytes": 12288,
+                  "signing_bytes": 8450828,
+                  "manager_copy_bytes": 1181620
+                }
+              },
+              "reservation": {
+                "submissions": 0,
+                "max_batches": 0,
+                "state_bytes": 0,
+                "round_bytes": 0,
+                "largest_round_bytes": 0
+              },
+              "mode": "paused",
+              "reason": "",
+              "submissions": 0,
+              "over_bound": false,
+              "canonical_recovery": false,
+              "recovery_blocks": 0,
+              "at_ms": 0
+            },
+            "version": 2,
+            "runtime_id": "3ccd61b5c0e78f0743d97cc8d5cf0d72332a2981cac7bd17c9febb50d9116119",
+            "setup_id": "590dfc4ac6f6064c8ce489259bc76f28854609e7f3926e21169e89614f8f7e97",
+            "running": false,
+            "closing": false,
+            "custody": "locked",
+            "custody_at_ms": 0,
+            "custody_until_ms": 0,
+            "public": {
+              "work_id": "",
+              "phase": "",
+              "next_admission": 0,
+              "next_publication": 0,
+              "next_height": 0,
+              "ready": false,
+              "head": null
+            },
+            "public_code": "not_started",
+            "public_at_ms": 0,
+            "rounds": {
+              "through": 0,
+              "rounds": 0,
+              "pending_shares": 0
+            },
+            "round_code": "not_started",
+            "round_at_ms": 0,
+            "schedule": {
+              "state": {
+                "version": 2,
+                "config": {
+                  "version": 2,
+                  "scheduler_id": "ba73e624dd9cac964c482933a6d54b0ba1e66c28e69581087cebc13e32104a89",
+                  "runtime_id": "3ccd61b5c0e78f0743d97cc8d5cf0d72332a2981cac7bd17c9febb50d9116119",
+                  "settlement_binding_id": "1a8f11297217a9d3ef471be9070ede3df0291d353fbf17c3cbce693571631035",
+                  "daily_utc_minute": 888,
+                  "retry_ms": 30000
+                },
+                "revision": 1,
+                "last_clock_ms": 1795272076355,
+                "daily_cursor": "",
+                "next_wake_ms": 0,
+                "attempt": null
+              },
+              "running": false,
+              "poisoned": false
+            }
+          }
+        }
+      ],
+      "generation": "operator-init",
+      "intentional_crash": false,
+      "io_error": false,
+      "joined": true,
+      "parent_pid": 97100,
+      "pgid": 97100,
+      "pid": 97119,
+      "signal": "",
+      "signal_count": 0,
+      "unexpected_exit": false
+    },
+    {
+      "cleanup_error": false,
+      "command": "rotate",
+      "exit_code": 0,
+      "frames": [
+        {
+          "version": 2,
+          "command": "rotate",
+          "observed_at_ms": 1795272077147,
+          "code": "complete",
+          "result": {
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "audience": "pool",
+            "generation": 1,
+            "token_hash": "a2228093647f4f5dba8031abacb93e45234f11bd1422eef0d6716b4627d7030d",
+            "reuse_hash": "65a38d36193d92f27a577be632c84322cd7f781521b37a0e9d8fd764155cba70",
+            "issued_at_ms": 1795272077125,
+            "expires_at_ms": 1795275672296,
+            "revoked_at_ms": 0
+          }
+        }
+      ],
+      "generation": "operator-rotate-pool-0",
+      "intentional_crash": false,
+      "io_error": false,
+      "joined": true,
+      "parent_pid": 97100,
+      "pgid": 97100,
+      "pid": 97130,
+      "signal": "",
+      "signal_count": 0,
+      "unexpected_exit": false
+    },
+    {
+      "cleanup_error": false,
+      "command": "rotate",
+      "exit_code": 0,
+      "frames": [
+        {
+          "version": 2,
+          "command": "rotate",
+          "observed_at_ms": 1795272077861,
+          "code": "complete",
+          "result": {
+            "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+            "audience": "pool",
+            "generation": 1,
+            "token_hash": "daf162d0b29bbed3e7f1a48ee17db235d640e5350436526e305d587caf794c29",
+            "reuse_hash": "9b4914df4b631ea0c0887ca15206ad72b820c838b302d6efdaecac4dc124da33",
+            "issued_at_ms": 1795272077852,
+            "expires_at_ms": 1795275672296,
+            "revoked_at_ms": 0
+          }
+        }
+      ],
+      "generation": "operator-rotate-pool-1",
+      "intentional_crash": false,
+      "io_error": false,
+      "joined": true,
+      "parent_pid": 97100,
+      "pgid": 97100,
+      "pid": 97133,
+      "signal": "",
+      "signal_count": 0,
+      "unexpected_exit": false
+    },
+    {
+      "cleanup_error": false,
+      "command": "rotate",
+      "exit_code": 0,
+      "frames": [
+        {
+          "version": 2,
+          "command": "rotate",
+          "observed_at_ms": 1795272078578,
+          "code": "complete",
+          "result": {
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "audience": "admission",
+            "generation": 1,
+            "token_hash": "2283da69b73fe83b5d9689b13d3d35374090e94ed0e0ec17175f44c142ff19aa",
+            "reuse_hash": "04d7bacc7386ba685009c2929e5fe7c3b500dc34492d72e843aaf9c48f268c41",
+            "issued_at_ms": 1795272078569,
+            "expires_at_ms": 1795275672296,
+            "revoked_at_ms": 0
+          }
+        }
+      ],
+      "generation": "operator-rotate-admission",
+      "intentional_crash": false,
+      "io_error": false,
+      "joined": true,
+      "parent_pid": 97100,
+      "pgid": 97100,
+      "pid": 97136,
+      "signal": "",
+      "signal_count": 0,
+      "unexpected_exit": false
+    },
+    {
+      "cleanup_error": false,
+      "command": "serve",
+      "exit_code": 0,
+      "frames": [
+        {
+          "version": 2,
+          "command": "serve",
+          "observed_at_ms": 1795272079856,
+          "code": "listening",
+          "result": {
+            "origin": "https://127.0.0.1:64606"
+          }
+        },
+        {
+          "version": 2,
+          "command": "serve",
+          "observed_at_ms": 1795272109295,
+          "code": "status",
+          "result": {
+            "capacity": {
+              "daily_reservation": {
+                "ordinary_maximum": 2,
+                "reservation": {
+                  "submissions": 3,
+                  "blocks": 3,
+                  "max_batches": 5,
+                  "claim_leaves": 6,
+                  "ledger_bytes": 8534577,
+                  "round_bytes": 211005,
+                  "largest_round_bytes": 66520,
+                  "largest_credit_bytes": 1243,
+                  "largest_batch_bytes": 980210,
+                  "report_bytes": 20628,
+                  "receipt_bytes": 12288,
+                  "signing_bytes": 8450828,
+                  "manager_copy_bytes": 1181620
+                }
+              },
+              "reservation": {
+                "submissions": 0,
+                "max_batches": 0,
+                "state_bytes": 0,
+                "round_bytes": 0,
+                "largest_round_bytes": 0
+              },
+              "mode": "draining",
+              "reason": "pool_capacity",
+              "submissions": 2,
+              "over_bound": false,
+              "canonical_recovery": true,
+              "recovery_blocks": 2,
+              "at_ms": 1795272108638
+            },
+            "version": 2,
+            "runtime_id": "3ccd61b5c0e78f0743d97cc8d5cf0d72332a2981cac7bd17c9febb50d9116119",
+            "setup_id": "590dfc4ac6f6064c8ce489259bc76f28854609e7f3926e21169e89614f8f7e97",
+            "running": true,
+            "closing": false,
+            "custody": "unlocked",
+            "custody_at_ms": 1795272079856,
+            "custody_until_ms": 1795275679292,
+            "public": {
+              "work_id": "0f31a64d290eaf849e55494550eed387070654832390e0c271ccbac8ff9a20ef",
+              "phase": "ready",
+              "next_admission": 4,
+              "next_publication": 7,
+              "next_height": 5,
+              "ready": true,
+              "head": {
+                "version": 1,
+                "pin_id": "d72ac8e5f8d0ab01264b0bbcc5f9c1274df8e44dc0106149366df72f1321a018",
+                "admission_sequence": 3,
+                "admission_head": "314b6083186ad48e10c275215b4e7a946a46ed6e9616139a6fce395676be3bcb",
+                "publication_sequence": 6,
+                "publication_head": "6db5bbcc8993c00b14fab5590b0b27bd9d55a2d1f0438a8cfec19c4c31596caf",
+                "chain_height": 4,
+                "chain_hash": "74cc525c14f04e49bb0e25fdb8fa6b506d439e55b523042d1b687143359479dd",
+                "replay_digest": "f0600e2a4ddce56611cf2d46de15457136379ba64b46cdc05eba22d67557f9e2",
+                "finalized_prefix_id": "38c1072c073ae8ddf342d94ab32a87533cc676527fa049d4b3351f08ff913cd1",
+                "conflict_id": ""
+              }
+            },
+            "public_code": "",
+            "public_at_ms": 1795272108608,
+            "rounds": {
+              "through": 0,
+              "rounds": 0,
+              "pending_shares": 0
+            },
+            "round_code": "busy",
+            "round_at_ms": 1795272108611,
+            "schedule": {
+              "state": {
+                "version": 2,
+                "config": {
+                  "version": 2,
+                  "scheduler_id": "ba73e624dd9cac964c482933a6d54b0ba1e66c28e69581087cebc13e32104a89",
+                  "runtime_id": "3ccd61b5c0e78f0743d97cc8d5cf0d72332a2981cac7bd17c9febb50d9116119",
+                  "settlement_binding_id": "1a8f11297217a9d3ef471be9070ede3df0291d353fbf17c3cbce693571631035",
+                  "daily_utc_minute": 888,
+                  "retry_ms": 30000
+                },
+                "revision": 3,
+                "last_clock_ms": 1795272079868,
+                "daily_cursor": "",
+                "next_wake_ms": 1795272109868,
+                "attempt": {
+                  "sequence": 1,
+                  "kind": "recovery",
+                  "admitted_day": "2026-11-21",
+                  "started_at_ms": 1795272079857,
+                  "finished_at_ms": 1795272079868,
+                  "result": "returned",
+                  "report_state": "complete",
+                  "report_reason": "",
+                  "error_code": ""
+                }
+              },
+              "running": true,
+              "poisoned": false
+            }
+          }
+        },
+        {
+          "version": 2,
+          "command": "serve",
+          "observed_at_ms": 1795272139292,
+          "code": "status",
+          "result": {
+            "capacity": {
+              "daily_reservation": {
+                "ordinary_maximum": 2,
+                "reservation": {
+                  "submissions": 3,
+                  "blocks": 3,
+                  "max_batches": 5,
+                  "claim_leaves": 6,
+                  "ledger_bytes": 8534577,
+                  "round_bytes": 211005,
+                  "largest_round_bytes": 66520,
+                  "largest_credit_bytes": 1243,
+                  "largest_batch_bytes": 980210,
+                  "report_bytes": 20628,
+                  "receipt_bytes": 12288,
+                  "signing_bytes": 8450828,
+                  "manager_copy_bytes": 1181620
+                }
+              },
+              "reservation": {
+                "submissions": 0,
+                "max_batches": 0,
+                "state_bytes": 0,
+                "round_bytes": 0,
+                "largest_round_bytes": 0
+              },
+              "mode": "draining",
+              "reason": "pool_capacity",
+              "submissions": 2,
+              "over_bound": false,
+              "canonical_recovery": true,
+              "recovery_blocks": 2,
+              "at_ms": 1795272139256
+            },
+            "version": 2,
+            "runtime_id": "3ccd61b5c0e78f0743d97cc8d5cf0d72332a2981cac7bd17c9febb50d9116119",
+            "setup_id": "590dfc4ac6f6064c8ce489259bc76f28854609e7f3926e21169e89614f8f7e97",
+            "running": true,
+            "closing": false,
+            "custody": "unlocked",
+            "custody_at_ms": 1795272079856,
+            "custody_until_ms": 1795275679292,
+            "public": {
+              "work_id": "0f31a64d290eaf849e55494550eed387070654832390e0c271ccbac8ff9a20ef",
+              "phase": "ready",
+              "next_admission": 4,
+              "next_publication": 7,
+              "next_height": 5,
+              "ready": true,
+              "head": {
+                "version": 1,
+                "pin_id": "d72ac8e5f8d0ab01264b0bbcc5f9c1274df8e44dc0106149366df72f1321a018",
+                "admission_sequence": 3,
+                "admission_head": "314b6083186ad48e10c275215b4e7a946a46ed6e9616139a6fce395676be3bcb",
+                "publication_sequence": 6,
+                "publication_head": "6db5bbcc8993c00b14fab5590b0b27bd9d55a2d1f0438a8cfec19c4c31596caf",
+                "chain_height": 4,
+                "chain_hash": "74cc525c14f04e49bb0e25fdb8fa6b506d439e55b523042d1b687143359479dd",
+                "replay_digest": "f0600e2a4ddce56611cf2d46de15457136379ba64b46cdc05eba22d67557f9e2",
+                "finalized_prefix_id": "38c1072c073ae8ddf342d94ab32a87533cc676527fa049d4b3351f08ff913cd1",
+                "conflict_id": ""
+              }
+            },
+            "public_code": "",
+            "public_at_ms": 1795272139234,
+            "rounds": {
+              "through": 0,
+              "rounds": 0,
+              "pending_shares": 0
+            },
+            "round_code": "busy",
+            "round_at_ms": 1795272139239,
+            "schedule": {
+              "state": {
+                "version": 2,
+                "config": {
+                  "version": 2,
+                  "scheduler_id": "ba73e624dd9cac964c482933a6d54b0ba1e66c28e69581087cebc13e32104a89",
+                  "runtime_id": "3ccd61b5c0e78f0743d97cc8d5cf0d72332a2981cac7bd17c9febb50d9116119",
+                  "settlement_binding_id": "1a8f11297217a9d3ef471be9070ede3df0291d353fbf17c3cbce693571631035",
+                  "daily_utc_minute": 888,
+                  "retry_ms": 30000
+                },
+                "revision": 5,
+                "last_clock_ms": 1795272109891,
+                "daily_cursor": "",
+                "next_wake_ms": 1795272139891,
+                "attempt": {
+                  "sequence": 2,
+                  "kind": "recovery",
+                  "admitted_day": "2026-11-21",
+                  "started_at_ms": 1795272109870,
+                  "finished_at_ms": 1795272109891,
+                  "result": "returned",
+                  "report_state": "complete",
+                  "report_reason": "",
+                  "error_code": ""
+                }
+              },
+              "running": true,
+              "poisoned": false
+            }
+          }
+        },
+        {
+          "version": 2,
+          "command": "serve",
+          "observed_at_ms": 1795272169293,
+          "code": "status",
+          "result": {
+            "capacity": {
+              "daily_reservation": {
+                "ordinary_maximum": 2,
+                "reservation": {
+                  "submissions": 3,
+                  "blocks": 3,
+                  "max_batches": 5,
+                  "claim_leaves": 6,
+                  "ledger_bytes": 8534577,
+                  "round_bytes": 211005,
+                  "largest_round_bytes": 66520,
+                  "largest_credit_bytes": 1243,
+                  "largest_batch_bytes": 980210,
+                  "report_bytes": 20628,
+                  "receipt_bytes": 12288,
+                  "signing_bytes": 8450828,
+                  "manager_copy_bytes": 1181620
+                }
+              },
+              "reservation": {
+                "submissions": 0,
+                "max_batches": 0,
+                "state_bytes": 0,
+                "round_bytes": 0,
+                "largest_round_bytes": 0
+              },
+              "mode": "draining",
+              "reason": "pool_capacity",
+              "submissions": 2,
+              "over_bound": false,
+              "canonical_recovery": true,
+              "recovery_blocks": 2,
+              "at_ms": 1795272168815
+            },
+            "version": 2,
+            "runtime_id": "3ccd61b5c0e78f0743d97cc8d5cf0d72332a2981cac7bd17c9febb50d9116119",
+            "setup_id": "590dfc4ac6f6064c8ce489259bc76f28854609e7f3926e21169e89614f8f7e97",
+            "running": true,
+            "closing": false,
+            "custody": "unlocked",
+            "custody_at_ms": 1795272079856,
+            "custody_until_ms": 1795275679292,
+            "public": {
+              "work_id": "0f31a64d290eaf849e55494550eed387070654832390e0c271ccbac8ff9a20ef",
+              "phase": "ready",
+              "next_admission": 4,
+              "next_publication": 7,
+              "next_height": 5,
+              "ready": true,
+              "head": {
+                "version": 1,
+                "pin_id": "d72ac8e5f8d0ab01264b0bbcc5f9c1274df8e44dc0106149366df72f1321a018",
+                "admission_sequence": 3,
+                "admission_head": "314b6083186ad48e10c275215b4e7a946a46ed6e9616139a6fce395676be3bcb",
+                "publication_sequence": 6,
+                "publication_head": "6db5bbcc8993c00b14fab5590b0b27bd9d55a2d1f0438a8cfec19c4c31596caf",
+                "chain_height": 4,
+                "chain_hash": "74cc525c14f04e49bb0e25fdb8fa6b506d439e55b523042d1b687143359479dd",
+                "replay_digest": "f0600e2a4ddce56611cf2d46de15457136379ba64b46cdc05eba22d67557f9e2",
+                "finalized_prefix_id": "38c1072c073ae8ddf342d94ab32a87533cc676527fa049d4b3351f08ff913cd1",
+                "conflict_id": ""
+              }
+            },
+            "public_code": "",
+            "public_at_ms": 1795272168790,
+            "rounds": {
+              "through": 0,
+              "rounds": 0,
+              "pending_shares": 0
+            },
+            "round_code": "busy",
+            "round_at_ms": 1795272168793,
+            "schedule": {
+              "state": {
+                "version": 2,
+                "config": {
+                  "version": 2,
+                  "scheduler_id": "ba73e624dd9cac964c482933a6d54b0ba1e66c28e69581087cebc13e32104a89",
+                  "runtime_id": "3ccd61b5c0e78f0743d97cc8d5cf0d72332a2981cac7bd17c9febb50d9116119",
+                  "settlement_binding_id": "1a8f11297217a9d3ef471be9070ede3df0291d353fbf17c3cbce693571631035",
+                  "daily_utc_minute": 888,
+                  "retry_ms": 30000
+                },
+                "revision": 7,
+                "last_clock_ms": 1795272139908,
+                "daily_cursor": "",
+                "next_wake_ms": 1795272169908,
+                "attempt": {
+                  "sequence": 3,
+                  "kind": "recovery",
+                  "admitted_day": "2026-11-21",
+                  "started_at_ms": 1795272139894,
+                  "finished_at_ms": 1795272139908,
+                  "result": "returned",
+                  "report_state": "complete",
+                  "report_reason": "",
+                  "error_code": ""
+                }
+              },
+              "running": true,
+              "poisoned": false
+            }
+          }
+        }
+      ],
+      "generation": "operator-serve-1",
+      "intentional_crash": false,
+      "io_error": false,
+      "joined": true,
+      "parent_pid": 97100,
+      "pgid": 97100,
+      "pid": 97139,
+      "signal": "SIGTERM",
+      "signal_count": 1,
+      "unexpected_exit": false
+    }
+  ],
+  "passed": false,
+  "public_seed_mining": false,
+  "remote_id": "c51cc8321c80dc808fe9e5ad17da7787698b990efc78d1775385e64f303037c4",
+  "scope": "finite retained fighter admission at pool-only drain with original operator and headless CLI",
+  "seconds": 109.429459833,
+  "send_attempts": [],
+  "send_error": false,
+  "sends": [],
+  "setup_id": "590dfc4ac6f6064c8ce489259bc76f28854609e7f3926e21169e89614f8f7e97",
+  "start_ms": 1795272072296,
+  "tls_relay": {
+    "version": 1,
+    "max_events": 512,
+    "target": {
+      "request_id": "08a7eeeda88e198319e304d04ad5619bdf278ad4fe4d1d86b7c19bd40591afee",
+      "work": {
+        "job": {
+          "version": 2,
+          "rule_version": 1,
+          "id": "c397418c50760f9d876a6c815828559e7c7a0802e0779a085a2c91c68ef15ec8",
+          "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+          "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+          "context": {
+            "version": 1,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "dna_version": 1,
+            "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "parent_hash": "6be334483f1313c9d7ea7144106ad212246dce1b1d108b43f7d928bf0dded5e4",
+            "parent_height": 3,
+            "expected_bits": 545259519,
+            "min_timestamp": 1795170122,
+            "max_timestamp": 1795279289
+          },
+          "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+          "challenge": "f309527483f7cfc4e074e0c79049905a1fa3fc1b1cf4dd9fda9a67109fa90bf6",
+          "issued_at_ms": 1795272089209,
+          "expires_at_ms": 1795272389209
+        },
+        "template": {
+          "context": {
+            "version": 1,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "dna_version": 1,
+            "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "parent_hash": "6be334483f1313c9d7ea7144106ad212246dce1b1d108b43f7d928bf0dded5e4",
+            "parent_height": 3,
+            "expected_bits": 545259519,
+            "min_timestamp": 1795170122,
+            "max_timestamp": 1795279289
+          },
+          "block": {
+            "bits": "207fffff",
+            "curtime": 1795272089,
+            "height": 4,
+            "previousblockhash": "6be334483f1313c9d7ea7144106ad212246dce1b1d108b43f7d928bf0dded5e4",
+            "sigoplimit": 80000,
+            "sizelimit": 4000000,
+            "weightlimit": 4000000,
+            "transactions": [],
+            "version": 536870912,
+            "coinbaseaux": {
+              "flags": "0b2f503253482f627463642f"
+            },
+            "coinbasevalue": 1000000000,
+            "longpollid": "6be334483f1313c9d7ea7144106ad212246dce1b1d108b43f7d928bf0dded5e4-1795272088",
+            "target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+            "maxtime": 1795279289,
+            "mintime": 1795170122,
+            "mutable": [
+              "time",
+              "transactions/add",
+              "prevblock",
+              "coinbase/append"
+            ],
+            "noncerange": "00000000ffffffff",
+            "capabilities": [
+              "proposal"
+            ]
+          }
+        }
+      },
+      "proof": {
+        "version": 2,
+        "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+        "header": "00000020e4d5de0dbf28d9f7438b101d1bce6d2412d26a104471ead7c913133f4834e36ba66c5cc2254ae8ded3f8e1b54cccf7c591edd7b668a66d67c0b9aee42aff5bac99ad016bffff7f2000000000",
+        "coinbase": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff16540800000000000000000b2f503253482f627463642fffffffff0200ca9a3b00000000160014810816db7129a0ac531ca0eaea0d47a04a71a77d00000000000000002a6a28534c5547505230322e6ce5cf9a5b000884f51a58bdfea11db393d81b2ab649fade9e5eeb2a0ea03700000000",
+        "merkle_branch": [],
+        "job_id": "c397418c50760f9d876a6c815828559e7c7a0802e0779a085a2c91c68ef15ec8"
+      },
+      "authorization": {
+        "version": 2,
+        "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+        "signature": "3045022100d3e68c6d7e97c778ac061d08bf1261a0c60f543e0414f9f821a8016184e1af3c022018f08f24e113c3e41fdaf79ea73b84614cc0aabe65676ab1489b79c95b5506c4"
+      },
+      "receipt": {
+        "version": 1,
+        "sequence": 2,
+        "accepted_sequence": 2,
+        "job_id": "c397418c50760f9d876a6c815828559e7c7a0802e0779a085a2c91c68ef15ec8",
+        "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+        "nonce": 0,
+        "pool_target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+        "header": "00000020e4d5de0dbf28d9f7438b101d1bce6d2412d26a104471ead7c913133f4834e36ba66c5cc2254ae8ded3f8e1b54cccf7c591edd7b668a66d67c0b9aee42aff5bac99ad016bffff7f2000000000",
+        "work_hash": "74cc525c14f04e49bb0e25fdb8fa6b506d439e55b523042d1b687143359479dd",
+        "duplicate_key": "bd7bcd3a33cf9fc131d6d694dbb214866fcdc616a149ccab46c2bb86a7e7977d",
+        "pool": true,
+        "prospect": true,
+        "block": true,
+        "block_height": 4,
+        "received_at_ms": 1795272090255,
+        "accepted_at_ms": 1795272091019,
+        "acceptance": "canonical-winning-block",
+        "block_state": "canonical-observed",
+        "block_observed_at_ms": 1795272091019
+      },
+      "first_receipt": {
+        "version": 1,
+        "sequence": 1,
+        "accepted_sequence": 1,
+        "job_id": "2e35e33cac68d4eb1d0730fbc5860c76dcdd58edb973fb867a3cc9797875c6d8",
+        "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+        "nonce": 2,
+        "pool_target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+        "header": "000000202d3e62a4e954656cfd09c7f2fc6c7aa3bd89dc4bf0ad965946e0bb42ffe3c811d0afdac5fe01bd81ff0267de313aa0a85b60c400932a8e1a0b6ae7d3bd40bb1f93ad016bffff7f2002000000",
+        "work_hash": "6be334483f1313c9d7ea7144106ad212246dce1b1d108b43f7d928bf0dded5e4",
+        "duplicate_key": "ece05f98b98cc6637b2a4a68454411a0a273cdc2495efa5d8798e26cdbefccea",
+        "pool": true,
+        "prospect": true,
+        "block": true,
+        "block_height": 3,
+        "received_at_ms": 1795272087541,
+        "accepted_at_ms": 1795272088187,
+        "acceptance": "canonical-winning-block",
+        "block_state": "canonical-observed",
+        "block_observed_at_ms": 1795272088187
+      },
+      "first_admission": {
+        "version": 3,
+        "context_source": "trusted-node-snapshot",
+        "current_node_checked": true,
+        "authentication": "gym-key-control",
+        "birth_rule": "job-issuance",
+        "inserted": true,
+        "record": {
+          "version": 5,
+          "sequence": 3,
+          "context": {
+            "version": 1,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "dna_version": 1,
+            "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+            "parent_height": 2,
+            "expected_bits": 545259519,
+            "min_timestamp": 1795170106,
+            "max_timestamp": 1795279283
+          },
+          "proof": {
+            "version": 2,
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "header": "000000202d3e62a4e954656cfd09c7f2fc6c7aa3bd89dc4bf0ad965946e0bb42ffe3c811d0afdac5fe01bd81ff0267de313aa0a85b60c400932a8e1a0b6ae7d3bd40bb1f93ad016bffff7f2002000000",
+            "coinbase": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff16530800000000000000000b2f503253482f627463642fffffffff0200ca9a3b00000000160014810816db7129a0ac531ca0eaea0d47a04a71a77d00000000000000002a6a28534c5547505230328d6ba05461e945182a618dc0408eb0e002dc7a1844e688a0d314b8039cd6280d00000000",
+            "merkle_branch": [],
+            "job_id": "2e35e33cac68d4eb1d0730fbc5860c76dcdd58edb973fb867a3cc9797875c6d8"
+          },
+          "verified": {
+            "version": 2,
+            "verification": "supplied-context",
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "prospect_id": "2f264849dee93c9168e85e9e962713a32b402ee91450291722691093c08ba089",
+            "policy_id": "2dd6301ce9989bc383f942f3d1520e8bc61ee2564761a7f754eb09677b24fb8c",
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "work_hash": "6be334483f1313c9d7ea7144106ad212246dce1b1d108b43f7d928bf0dded5e4",
+            "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+            "parent_height": 2,
+            "dna": {
+              "dna_version": 1,
+              "seed": "6be334483f1313c9d7ea7144106ad212246dce1b1d108b43f7d928bf0dded5e4",
+              "rarity": "club",
+              "talent_budget": 271,
+              "attributes": {
+                "power": 22,
+                "speed": 90,
+                "chin": 20,
+                "stamina": 56,
+                "skill": 83
+              },
+              "prime_weeks": 44,
+              "decline_weeks": 15
+            }
+          },
+          "authorization": {
+            "version": 2,
+            "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+            "signature": "30440220008183dd0ac50e3b29c570a828dc6542fe59cc4ba08f7f09f107540c7235f5f402204e3bef1a9186c7b3c6188b4ece9addb2ec96d850e747166511a496144b7e734d"
+          },
+          "job": {
+            "version": 2,
+            "rule_version": 1,
+            "id": "2e35e33cac68d4eb1d0730fbc5860c76dcdd58edb973fb867a3cc9797875c6d8",
+            "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+            "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+            "context": {
+              "version": 1,
+              "network": 1397511495,
+              "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+              "dna_version": 1,
+              "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+              "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+              "parent_height": 2,
+              "expected_bits": 545259519,
+              "min_timestamp": 1795170106,
+              "max_timestamp": 1795279283
+            },
+            "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "challenge": "467b4ea46ffafa775923333038aaa5614c9f142ab71d0b8ecace899afc2f6d6a",
+            "issued_at_ms": 1795272084055,
+            "expires_at_ms": 1795272384055
+          },
+          "birth": {
+            "rule_version": 1,
+            "born_at_ms": 1795272084055,
+            "accepted_at_ms": 1795272088862
+          },
+          "eligibility": {
+            "rule_version": 2,
+            "source": "canonical-winning-block",
+            "hash": "6be334483f1313c9d7ea7144106ad212246dce1b1d108b43f7d928bf0dded5e4",
+            "height": 3
+          },
+          "static_binding": {
+            "version": 1,
+            "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+            "manifest_digest": "ce7075926a09f4399ef7f0a7f5f91c208be16b9b24e57cfd0639db6cf44b1b87",
+            "portrait_digest": "76cd3c2061ba1d786f31a1db93a1733c50cc32d26b4c6b933284e8f93deeeb9f"
+          }
+        }
+      },
+      "admission_body_sha256": "75db00a34348e79828584b79d425c80a5d0c9d7528f96eb7ae9e4f16d3254dc8",
+      "first_held_at_ms": 1795272091488
+    },
+    "mode": "retain",
+    "lost": false,
+    "lost_response": null,
+    "events": [
+      {
+        "ordinal": 1,
+        "path": "/pool/v3/issue",
+        "started_at_ms": 1795272083937,
+        "ended_at_ms": 1795272084420,
+        "request_id": "dbe7937933522d8ebf3805b9e54376fae964839348f6bf7d7e01436d21729bb3",
+        "job_id": "",
+        "header": "",
+        "request_bytes": 81,
+        "request_sha256": "70a3081b327ef2ef108a7259b2b0d501d401d22aca4ebf54ef08add22039cbc7",
+        "target": false,
+        "mode": "",
+        "held_at_ms": 0,
+        "hold_deadline_ms": 0,
+        "released_at_ms": 0,
+        "forwarded_at_ms": 1795272083937,
+        "status": 200,
+        "response_bytes": 2867,
+        "response_sha256": "0ec0a429c84a5867673cb708ae29411f8e48228b811c593cb640e7b1c6bcda77",
+        "lost": false,
+        "downstream_bytes": 2867,
+        "context": "",
+        "failure": "",
+        "admission": null,
+        "api_error": null
+      },
+      {
+        "ordinal": 2,
+        "path": "/v3/admissions",
+        "started_at_ms": 1795272084895,
+        "ended_at_ms": 1795272085482,
+        "request_id": "",
+        "job_id": "2e35e33cac68d4eb1d0730fbc5860c76dcdd58edb973fb867a3cc9797875c6d8",
+        "header": "000000202d3e62a4e954656cfd09c7f2fc6c7aa3bd89dc4bf0ad965946e0bb42ffe3c811d0afdac5fe01bd81ff0267de313aa0a85b60c400932a8e1a0b6ae7d3bd40bb1f93ad016bffff7f2000000000",
+        "request_bytes": 959,
+        "request_sha256": "4470a925726e2cd34788d453aeb869b2770d1b1003db64d64352fcc23974e8d2",
+        "target": false,
+        "mode": "",
+        "held_at_ms": 0,
+        "hold_deadline_ms": 0,
+        "released_at_ms": 0,
+        "forwarded_at_ms": 1795272085133,
+        "status": 200,
+        "response_bytes": 3855,
+        "response_sha256": "eaa36da882e1ed4612123da1a9e760e11607623e1bc1ddb729245360ee3d108c",
+        "lost": false,
+        "downstream_bytes": 3855,
+        "context": "",
+        "failure": "",
+        "admission": {
+          "version": 3,
+          "context_source": "trusted-node-snapshot",
+          "current_node_checked": true,
+          "authentication": "gym-key-control",
+          "birth_rule": "job-issuance",
+          "inserted": true,
+          "record": {
+            "version": 5,
+            "sequence": 1,
+            "context": {
+              "version": 1,
+              "network": 1397511495,
+              "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+              "dna_version": 1,
+              "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+              "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+              "parent_height": 2,
+              "expected_bits": 545259519,
+              "min_timestamp": 1795170106,
+              "max_timestamp": 1795279283
+            },
+            "proof": {
+              "version": 2,
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "header": "000000202d3e62a4e954656cfd09c7f2fc6c7aa3bd89dc4bf0ad965946e0bb42ffe3c811d0afdac5fe01bd81ff0267de313aa0a85b60c400932a8e1a0b6ae7d3bd40bb1f93ad016bffff7f2000000000",
+              "coinbase": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff16530800000000000000000b2f503253482f627463642fffffffff0200ca9a3b00000000160014810816db7129a0ac531ca0eaea0d47a04a71a77d00000000000000002a6a28534c5547505230328d6ba05461e945182a618dc0408eb0e002dc7a1844e688a0d314b8039cd6280d00000000",
+              "merkle_branch": [],
+              "job_id": "2e35e33cac68d4eb1d0730fbc5860c76dcdd58edb973fb867a3cc9797875c6d8"
+            },
+            "verified": {
+              "version": 2,
+              "verification": "supplied-context",
+              "network": 1397511495,
+              "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+              "prospect_id": "765e14b83635d3906cc3dc983461c9c25974fcbf507d9840fb28a6ff4d585e61",
+              "policy_id": "2dd6301ce9989bc383f942f3d1520e8bc61ee2564761a7f754eb09677b24fb8c",
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "work_hash": "d64404fa4b6e0aea307d405ad586175e31b45b664c85d18db82f74e156ec32b0",
+              "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+              "parent_height": 2,
+              "dna": {
+                "dna_version": 1,
+                "seed": "d64404fa4b6e0aea307d405ad586175e31b45b664c85d18db82f74e156ec32b0",
+                "rarity": "club",
+                "talent_budget": 278,
+                "attributes": {
+                  "power": 58,
+                  "speed": 74,
+                  "chin": 51,
+                  "stamina": 32,
+                  "skill": 63
+                },
+                "prime_weeks": 50,
+                "decline_weeks": 28
+              }
+            },
+            "authorization": {
+              "version": 2,
+              "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+              "signature": "30450221009b52696af2051a801cd387e972aebf4ee7d98e72edd59c8d81f29a454b23e9c502207581a0350cae493aba9ba2c843369be79a2c1290aa5173932a681e0c62c5fc35"
+            },
+            "job": {
+              "version": 2,
+              "rule_version": 1,
+              "id": "2e35e33cac68d4eb1d0730fbc5860c76dcdd58edb973fb867a3cc9797875c6d8",
+              "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+              "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+              "context": {
+                "version": 1,
+                "network": 1397511495,
+                "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+                "dna_version": 1,
+                "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+                "parent_height": 2,
+                "expected_bits": 545259519,
+                "min_timestamp": 1795170106,
+                "max_timestamp": 1795279283
+              },
+              "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "challenge": "467b4ea46ffafa775923333038aaa5614c9f142ab71d0b8ecace899afc2f6d6a",
+              "issued_at_ms": 1795272084055,
+              "expires_at_ms": 1795272384055
+            },
+            "birth": {
+              "rule_version": 1,
+              "born_at_ms": 1795272084055,
+              "accepted_at_ms": 1795272085450
+            },
+            "eligibility": {
+              "rule_version": 2,
+              "source": "current-parent",
+              "hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+              "height": 2
+            },
+            "static_binding": {
+              "version": 1,
+              "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+              "manifest_digest": "9b99cf75337299ef39c31841ba56a76d779e18e25eb8135f073b1beb8c1db227",
+              "portrait_digest": "633946fcbbaff1f62c22ff619671eec878a21c27d8be1ed49110b2d776447698"
+            }
+          }
+        },
+        "api_error": null
+      },
+      {
+        "ordinal": 3,
+        "path": "/v3/admissions",
+        "started_at_ms": 1795272085998,
+        "ended_at_ms": 1795272086686,
+        "request_id": "",
+        "job_id": "2e35e33cac68d4eb1d0730fbc5860c76dcdd58edb973fb867a3cc9797875c6d8",
+        "header": "000000202d3e62a4e954656cfd09c7f2fc6c7aa3bd89dc4bf0ad965946e0bb42ffe3c811d0afdac5fe01bd81ff0267de313aa0a85b60c400932a8e1a0b6ae7d3bd40bb1f93ad016bffff7f2001000000",
+        "request_bytes": 959,
+        "request_sha256": "d376d6144ab4389b145512654e58c826a7f8ba2defbf0c9e4c382800db2327c8",
+        "target": false,
+        "mode": "",
+        "held_at_ms": 0,
+        "hold_deadline_ms": 0,
+        "released_at_ms": 0,
+        "forwarded_at_ms": 1795272086255,
+        "status": 200,
+        "response_bytes": 3854,
+        "response_sha256": "62b372b93c4bd89b5f72a8ae4a09e0f2dda46cfc163b0ed2608e7503983d2930",
+        "lost": false,
+        "downstream_bytes": 3854,
+        "context": "",
+        "failure": "",
+        "admission": {
+          "version": 3,
+          "context_source": "trusted-node-snapshot",
+          "current_node_checked": true,
+          "authentication": "gym-key-control",
+          "birth_rule": "job-issuance",
+          "inserted": true,
+          "record": {
+            "version": 5,
+            "sequence": 2,
+            "context": {
+              "version": 1,
+              "network": 1397511495,
+              "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+              "dna_version": 1,
+              "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+              "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+              "parent_height": 2,
+              "expected_bits": 545259519,
+              "min_timestamp": 1795170106,
+              "max_timestamp": 1795279283
+            },
+            "proof": {
+              "version": 2,
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "header": "000000202d3e62a4e954656cfd09c7f2fc6c7aa3bd89dc4bf0ad965946e0bb42ffe3c811d0afdac5fe01bd81ff0267de313aa0a85b60c400932a8e1a0b6ae7d3bd40bb1f93ad016bffff7f2001000000",
+              "coinbase": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff16530800000000000000000b2f503253482f627463642fffffffff0200ca9a3b00000000160014810816db7129a0ac531ca0eaea0d47a04a71a77d00000000000000002a6a28534c5547505230328d6ba05461e945182a618dc0408eb0e002dc7a1844e688a0d314b8039cd6280d00000000",
+              "merkle_branch": [],
+              "job_id": "2e35e33cac68d4eb1d0730fbc5860c76dcdd58edb973fb867a3cc9797875c6d8"
+            },
+            "verified": {
+              "version": 2,
+              "verification": "supplied-context",
+              "network": 1397511495,
+              "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+              "prospect_id": "3961cad04db02568d9eefd1869c9e1b1f44727c86c2273e80488fdf139d6475b",
+              "policy_id": "2dd6301ce9989bc383f942f3d1520e8bc61ee2564761a7f754eb09677b24fb8c",
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "work_hash": "9b8da23aa197c0a7863703f95301d6eeecbdb4072e4919f0a10a582ad10a2c6f",
+              "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+              "parent_height": 2,
+              "dna": {
+                "dna_version": 1,
+                "seed": "9b8da23aa197c0a7863703f95301d6eeecbdb4072e4919f0a10a582ad10a2c6f",
+                "rarity": "club",
+                "talent_budget": 264,
+                "attributes": {
+                  "power": 98,
+                  "speed": 58,
+                  "chin": 3,
+                  "stamina": 71,
+                  "skill": 34
+                },
+                "prime_weeks": 29,
+                "decline_weeks": 22
+              }
+            },
+            "authorization": {
+              "version": 2,
+              "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+              "signature": "3045022100aac5f81fbfad6b28bf4d7c05b2bccf878eb8d177a98c854212c34b4c3e437a4e02205743b7eb9be9d75524cd4265d73065584597c1b4ac4d774b20127b1cff5760c6"
+            },
+            "job": {
+              "version": 2,
+              "rule_version": 1,
+              "id": "2e35e33cac68d4eb1d0730fbc5860c76dcdd58edb973fb867a3cc9797875c6d8",
+              "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+              "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+              "context": {
+                "version": 1,
+                "network": 1397511495,
+                "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+                "dna_version": 1,
+                "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+                "parent_height": 2,
+                "expected_bits": 545259519,
+                "min_timestamp": 1795170106,
+                "max_timestamp": 1795279283
+              },
+              "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "challenge": "467b4ea46ffafa775923333038aaa5614c9f142ab71d0b8ecace899afc2f6d6a",
+              "issued_at_ms": 1795272084055,
+              "expires_at_ms": 1795272384055
+            },
+            "birth": {
+              "rule_version": 1,
+              "born_at_ms": 1795272084055,
+              "accepted_at_ms": 1795272086641
+            },
+            "eligibility": {
+              "rule_version": 2,
+              "source": "current-parent",
+              "hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+              "height": 2
+            },
+            "static_binding": {
+              "version": 1,
+              "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+              "manifest_digest": "29e06fd84b7380d821c8f0d334139802de3e56ed72e81e606c3ddf6503f56171",
+              "portrait_digest": "f85b1849f626ba7b2b45ac82770be4c3ddecfd1d8dc7fa1d65e51b2bcbf834a1"
+            }
+          }
+        },
+        "api_error": null
+      },
+      {
+        "ordinal": 4,
+        "path": "/pool/v3/lookup",
+        "started_at_ms": 1795272087350,
+        "ended_at_ms": 1795272087383,
+        "request_id": "",
+        "job_id": "2e35e33cac68d4eb1d0730fbc5860c76dcdd58edb973fb867a3cc9797875c6d8",
+        "header": "",
+        "request_bytes": 87,
+        "request_sha256": "e58d314fc862166af13d2bf7367fdf71e94ef9643319c91f89abdf99b559e433",
+        "target": false,
+        "mode": "",
+        "held_at_ms": 0,
+        "hold_deadline_ms": 0,
+        "released_at_ms": 0,
+        "forwarded_at_ms": 1795272087350,
+        "status": 404,
+        "response_bytes": 67,
+        "response_sha256": "0d9d04cda7131333f6c941b3173121425824ba279e96725cf7167abb974dd7c0",
+        "lost": false,
+        "downstream_bytes": 67,
+        "context": "",
+        "failure": "",
+        "admission": null,
+        "api_error": null
+      },
+      {
+        "ordinal": 5,
+        "path": "/pool/v3/submit",
+        "started_at_ms": 1795272087459,
+        "ended_at_ms": 1795272088528,
+        "request_id": "",
+        "job_id": "2e35e33cac68d4eb1d0730fbc5860c76dcdd58edb973fb867a3cc9797875c6d8",
+        "header": "",
+        "request_bytes": 87,
+        "request_sha256": "e58d314fc862166af13d2bf7367fdf71e94ef9643319c91f89abdf99b559e433",
+        "target": false,
+        "mode": "",
+        "held_at_ms": 0,
+        "hold_deadline_ms": 0,
+        "released_at_ms": 0,
+        "forwarded_at_ms": 1795272087459,
+        "status": 200,
+        "response_bytes": 1206,
+        "response_sha256": "4bdc15ab811e78b6eb2998f91cb7389e1fdb2bea313f196e16d3e1f89abc6738",
+        "lost": false,
+        "downstream_bytes": 1206,
+        "context": "",
+        "failure": "",
+        "admission": null,
+        "api_error": null
+      },
+      {
+        "ordinal": 6,
+        "path": "/v3/admissions",
+        "started_at_ms": 1795272088735,
+        "ended_at_ms": 1795272088948,
+        "request_id": "",
+        "job_id": "2e35e33cac68d4eb1d0730fbc5860c76dcdd58edb973fb867a3cc9797875c6d8",
+        "header": "000000202d3e62a4e954656cfd09c7f2fc6c7aa3bd89dc4bf0ad965946e0bb42ffe3c811d0afdac5fe01bd81ff0267de313aa0a85b60c400932a8e1a0b6ae7d3bd40bb1f93ad016bffff7f2002000000",
+        "request_bytes": 957,
+        "request_sha256": "80046e7ad038917636f3032ec9b6da50732ba07deb00dfd85486a679adc0339f",
+        "target": false,
+        "mode": "",
+        "held_at_ms": 0,
+        "hold_deadline_ms": 0,
+        "released_at_ms": 0,
+        "forwarded_at_ms": 1795272088735,
+        "status": 200,
+        "response_bytes": 3862,
+        "response_sha256": "7c9753a02e2490fdee5fe7b9c5676ce8bd827615db4987409576f124e80d8d43",
+        "lost": false,
+        "downstream_bytes": 3862,
+        "context": "",
+        "failure": "",
+        "admission": {
+          "version": 3,
+          "context_source": "trusted-node-snapshot",
+          "current_node_checked": true,
+          "authentication": "gym-key-control",
+          "birth_rule": "job-issuance",
+          "inserted": true,
+          "record": {
+            "version": 5,
+            "sequence": 3,
+            "context": {
+              "version": 1,
+              "network": 1397511495,
+              "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+              "dna_version": 1,
+              "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+              "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+              "parent_height": 2,
+              "expected_bits": 545259519,
+              "min_timestamp": 1795170106,
+              "max_timestamp": 1795279283
+            },
+            "proof": {
+              "version": 2,
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "header": "000000202d3e62a4e954656cfd09c7f2fc6c7aa3bd89dc4bf0ad965946e0bb42ffe3c811d0afdac5fe01bd81ff0267de313aa0a85b60c400932a8e1a0b6ae7d3bd40bb1f93ad016bffff7f2002000000",
+              "coinbase": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff16530800000000000000000b2f503253482f627463642fffffffff0200ca9a3b00000000160014810816db7129a0ac531ca0eaea0d47a04a71a77d00000000000000002a6a28534c5547505230328d6ba05461e945182a618dc0408eb0e002dc7a1844e688a0d314b8039cd6280d00000000",
+              "merkle_branch": [],
+              "job_id": "2e35e33cac68d4eb1d0730fbc5860c76dcdd58edb973fb867a3cc9797875c6d8"
+            },
+            "verified": {
+              "version": 2,
+              "verification": "supplied-context",
+              "network": 1397511495,
+              "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+              "prospect_id": "2f264849dee93c9168e85e9e962713a32b402ee91450291722691093c08ba089",
+              "policy_id": "2dd6301ce9989bc383f942f3d1520e8bc61ee2564761a7f754eb09677b24fb8c",
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "work_hash": "6be334483f1313c9d7ea7144106ad212246dce1b1d108b43f7d928bf0dded5e4",
+              "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+              "parent_height": 2,
+              "dna": {
+                "dna_version": 1,
+                "seed": "6be334483f1313c9d7ea7144106ad212246dce1b1d108b43f7d928bf0dded5e4",
+                "rarity": "club",
+                "talent_budget": 271,
+                "attributes": {
+                  "power": 22,
+                  "speed": 90,
+                  "chin": 20,
+                  "stamina": 56,
+                  "skill": 83
+                },
+                "prime_weeks": 44,
+                "decline_weeks": 15
+              }
+            },
+            "authorization": {
+              "version": 2,
+              "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+              "signature": "30440220008183dd0ac50e3b29c570a828dc6542fe59cc4ba08f7f09f107540c7235f5f402204e3bef1a9186c7b3c6188b4ece9addb2ec96d850e747166511a496144b7e734d"
+            },
+            "job": {
+              "version": 2,
+              "rule_version": 1,
+              "id": "2e35e33cac68d4eb1d0730fbc5860c76dcdd58edb973fb867a3cc9797875c6d8",
+              "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+              "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+              "context": {
+                "version": 1,
+                "network": 1397511495,
+                "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+                "dna_version": 1,
+                "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+                "parent_height": 2,
+                "expected_bits": 545259519,
+                "min_timestamp": 1795170106,
+                "max_timestamp": 1795279283
+              },
+              "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "challenge": "467b4ea46ffafa775923333038aaa5614c9f142ab71d0b8ecace899afc2f6d6a",
+              "issued_at_ms": 1795272084055,
+              "expires_at_ms": 1795272384055
+            },
+            "birth": {
+              "rule_version": 1,
+              "born_at_ms": 1795272084055,
+              "accepted_at_ms": 1795272088862
+            },
+            "eligibility": {
+              "rule_version": 2,
+              "source": "canonical-winning-block",
+              "hash": "6be334483f1313c9d7ea7144106ad212246dce1b1d108b43f7d928bf0dded5e4",
+              "height": 3
+            },
+            "static_binding": {
+              "version": 1,
+              "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+              "manifest_digest": "ce7075926a09f4399ef7f0a7f5f91c208be16b9b24e57cfd0639db6cf44b1b87",
+              "portrait_digest": "76cd3c2061ba1d786f31a1db93a1733c50cc32d26b4c6b933284e8f93deeeb9f"
+            }
+          }
+        },
+        "api_error": null
+      },
+      {
+        "ordinal": 7,
+        "path": "/pool/v3/issue",
+        "started_at_ms": 1795272089056,
+        "ended_at_ms": 1795272089572,
+        "request_id": "08a7eeeda88e198319e304d04ad5619bdf278ad4fe4d1d86b7c19bd40591afee",
+        "job_id": "",
+        "header": "",
+        "request_bytes": 81,
+        "request_sha256": "085f784458973b8528b58cd78118258a2e0bf6e1ce4b814ae09ec6ed6584a157",
+        "target": false,
+        "mode": "",
+        "held_at_ms": 0,
+        "hold_deadline_ms": 0,
+        "released_at_ms": 0,
+        "forwarded_at_ms": 1795272089056,
+        "status": 200,
+        "response_bytes": 2867,
+        "response_sha256": "fe821220c7af99c95f49c6e0bccf54e4441267b3ff4319eb7cfb2ed337efa6ed",
+        "lost": false,
+        "downstream_bytes": 2867,
+        "context": "",
+        "failure": "",
+        "admission": null,
+        "api_error": null
+      },
+      {
+        "ordinal": 8,
+        "path": "/pool/v3/lookup",
+        "started_at_ms": 1795272090092,
+        "ended_at_ms": 1795272090127,
+        "request_id": "",
+        "job_id": "c397418c50760f9d876a6c815828559e7c7a0802e0779a085a2c91c68ef15ec8",
+        "header": "",
+        "request_bytes": 87,
+        "request_sha256": "a4d42ff49a952428b07be9895eed87434b3b69667aa17cbad5d321621a94c8ce",
+        "target": false,
+        "mode": "",
+        "held_at_ms": 0,
+        "hold_deadline_ms": 0,
+        "released_at_ms": 0,
+        "forwarded_at_ms": 1795272090092,
+        "status": 404,
+        "response_bytes": 67,
+        "response_sha256": "0d9d04cda7131333f6c941b3173121425824ba279e96725cf7167abb974dd7c0",
+        "lost": false,
+        "downstream_bytes": 67,
+        "context": "",
+        "failure": "",
+        "admission": null,
+        "api_error": null
+      },
+      {
+        "ordinal": 9,
+        "path": "/pool/v3/submit",
+        "started_at_ms": 1795272090210,
+        "ended_at_ms": 1795272091285,
+        "request_id": "",
+        "job_id": "c397418c50760f9d876a6c815828559e7c7a0802e0779a085a2c91c68ef15ec8",
+        "header": "",
+        "request_bytes": 87,
+        "request_sha256": "a4d42ff49a952428b07be9895eed87434b3b69667aa17cbad5d321621a94c8ce",
+        "target": false,
+        "mode": "",
+        "held_at_ms": 0,
+        "hold_deadline_ms": 0,
+        "released_at_ms": 0,
+        "forwarded_at_ms": 1795272090210,
+        "status": 200,
+        "response_bytes": 1206,
+        "response_sha256": "9eb98a1fc9b7b8b47e94c4465e659064ef78bfe048202b8f2c34c6fa3f726549",
+        "lost": false,
+        "downstream_bytes": 1206,
+        "context": "",
+        "failure": "",
+        "admission": null,
+        "api_error": null
+      },
+      {
+        "ordinal": 10,
+        "path": "/v3/admissions",
+        "started_at_ms": 1795272091488,
+        "ended_at_ms": 1795272091534,
+        "request_id": "08a7eeeda88e198319e304d04ad5619bdf278ad4fe4d1d86b7c19bd40591afee",
+        "job_id": "c397418c50760f9d876a6c815828559e7c7a0802e0779a085a2c91c68ef15ec8",
+        "header": "00000020e4d5de0dbf28d9f7438b101d1bce6d2412d26a104471ead7c913133f4834e36ba66c5cc2254ae8ded3f8e1b54cccf7c591edd7b668a66d67c0b9aee42aff5bac99ad016bffff7f2000000000",
+        "request_bytes": 959,
+        "request_sha256": "75db00a34348e79828584b79d425c80a5d0c9d7528f96eb7ae9e4f16d3254dc8",
+        "target": true,
+        "mode": "retain",
+        "held_at_ms": 1795272091488,
+        "hold_deadline_ms": 1795272101488,
+        "released_at_ms": 0,
+        "forwarded_at_ms": 0,
+        "status": 0,
+        "response_bytes": 0,
+        "response_sha256": "",
+        "lost": false,
+        "downstream_bytes": 0,
+        "context": "canceled",
+        "failure": "",
+        "admission": null,
+        "api_error": null
+      }
+    ],
+    "failure": false,
+    "closed": true,
+    "handlers_joined": true
+  },
+  "version": 1
+}

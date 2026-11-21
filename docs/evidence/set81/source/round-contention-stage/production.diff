@@ -1,0 +1,195 @@
+--- before/desktop/pooloperator/daily_round_contention.go
++++ after/desktop/pooloperator/daily_round_contention.go
+@@ -0,0 +1,46 @@
++// Copyright (c) 2026 The SLUG developers. ISC license.
++package pooloperator
++
++import (
++	"context"
++	"time"
++
++	"github.com/taytr-llc/slug/poolround"
++)
++
++// dailyRoundCall is private to the joined serial round-maintenance loop. Its
++// caller supplies the existing single 30-second step context: retries never
++// reset that budget. A background private caller is bounded to 30 seconds too.
++// Legacy mode invokes the original operation exactly once with its original ctx.
++// Each selected call retries only its current Sync, List, Refresh or BeginLive;
++// completed earlier phases and their durable observations are not repeated.
++func dailyRoundCall[T any](ctx context.Context, daily bool, call func(context.Context) (T, error)) (T, error) {
++	if !daily {
++		return call(ctx)
++	}
++	work, cancel := context.WithTimeout(ctx, 30*time.Second)
++	defer cancel()
++	var zero T
++	for {
++		if err := work.Err(); err != nil {
++			return zero, err
++		}
++		value, err := call(work)
++		// All participating concrete owners return this exact sentinel for
++		// known gate contention. Do not retry wrappers, mixed failures, node
++		// errors, source-unavailable, corruption, poison or uncertain writes.
++		if err != poolround.ErrBusy {
++			return value, err
++		}
++		// The original operation released every concrete gate before returning.
++		// A short cancellable pause avoids coupling to the public/intake loop's
++		// identical maintenance cadence; no owner or lifecycle mutex is held.
++		timer := time.NewTimer(10 * time.Millisecond)
++		select {
++		case <-work.Done():
++			timer.Stop()
++			return zero, work.Err()
++		case <-timer.C:
++		}
++	}
++}
+--- before/desktop/pooloperator/live_round.go
++++ after/desktop/pooloperator/live_round.go
+@@ -65,13 +65,22 @@
+ // explicit, at most once per refresh, and shares the caller's existing budget.
+ // Exact stale handles may reanchor; corruption/unknown/closed errors never do.
+ func (m *roundMaintenance) refreshLive(ctx context.Context) error {
++	return m.refreshLiveSelected(ctx, false)
++}
++
++func (m *roundMaintenance) refreshLiveSelected(ctx context.Context, daily bool) error {
++	if daily {
++		var cancel context.CancelFunc
++		ctx, cancel = context.WithTimeout(ctx, 30*time.Second)
++		defer cancel()
++	}
+ 	reanchored := false
+ 	reanchor := func(e error) error {
+ 		if e != poolround.ErrLiveStale || reanchored {
+ 			return e
+ 		}
+ 		reanchored = true
+-		live, err := m.store.BeginLive(ctx)
++		live, err := dailyRoundCall(ctx, daily, func(work context.Context) (*poolround.Live, error) { return m.store.BeginLive(work) })
+ 		if err != nil {
+ 			return err
+ 		}
+@@ -82,10 +91,10 @@
+ 		return nil
+ 	}
+ 	list := func(after uint64) ([]poolround.Record, error) {
+-		rows, e := m.live.List(ctx, after)
++		rows, e := dailyRoundCall(ctx, daily, func(work context.Context) ([]poolround.Record, error) { return m.live.List(work, after) })
+ 		if e == poolround.ErrLiveStale {
+ 			if e = reanchor(e); e == nil {
+-				rows, e = m.live.List(ctx, after)
++				rows, e = dailyRoundCall(ctx, daily, func(work context.Context) ([]poolround.Record, error) { return m.live.List(work, after) })
+ 			}
+ 		}
+ 		return rows, e
+@@ -102,10 +111,10 @@
+ 		}
+ 	}
+ 	for _, row := range rows {
+-		_, e = m.live.Refresh(ctx, row.Round.BlockHash)
++		_, e = dailyRoundCall(ctx, daily, func(work context.Context) (poolround.Record, error) { return m.live.Refresh(work, row.Round.BlockHash) })
+ 		if e == poolround.ErrLiveStale {
+ 			if e = reanchor(e); e == nil {
+-				_, e = m.live.Refresh(ctx, row.Round.BlockHash)
++				_, e = dailyRoundCall(ctx, daily, func(work context.Context) (poolround.Record, error) { return m.live.Refresh(work, row.Round.BlockHash) })
+ 			}
+ 		}
+ 		if e != nil {
+--- before/desktop/pooloperator/maintenance.go
++++ after/desktop/pooloperator/maintenance.go
+@@ -4,6 +4,7 @@
+ import (
+ 	"context"
+ 	"errors"
++	"time"
+ 
+ 	"github.com/taytr-llc/slug/fighterownership"
+ 	"github.com/taytr-llc/slug/internal/operatorauthority"
+@@ -143,35 +144,56 @@
+ }
+ 
+ func (m *roundMaintenance) step(ctx context.Context) (poolround.Summary, error) {
+-	summary, e := m.store.Sync(ctx)
++	return m.stepSelected(ctx, false)
++}
++
++func (m *roundMaintenance) stepSelected(ctx context.Context, daily bool) (poolround.Summary, error) {
++	if daily {
++		var cancel context.CancelFunc
++		ctx, cancel = context.WithTimeout(ctx, 30*time.Second)
++		defer cancel()
++	}
++	summary, e := dailyRoundCall(ctx, daily, func(work context.Context) (poolround.Summary, error) { return m.store.Sync(work) })
+ 	if e != nil {
+ 		return poolround.Summary{}, e
+ 	}
+ 	if m.cursor >= summary.Rounds {
+ 		m.cursor = 0
+ 	}
+-	return summary, m.refresh(ctx)
++	return summary, m.refreshSelected(ctx, daily)
+ }
+ 
+ // refresh never imports a blocked tail or invents new rounds. List verifies the
+ // retained Through prefix; Refresh rechecks each exact original winning block.
+ func (m *roundMaintenance) refresh(ctx context.Context) error {
++	return m.refreshSelected(ctx, false)
++}
++
++func (m *roundMaintenance) refreshSelected(ctx context.Context, daily bool) error {
++	if daily {
++		var cancel context.CancelFunc
++		ctx, cancel = context.WithTimeout(ctx, 30*time.Second)
++		defer cancel()
++	}
+ 	if m.live != nil {
+-		return m.refreshLive(ctx)
+-	}
+-	rows, e := m.store.List(ctx, m.cursor, poolround.MaxPage)
++		return m.refreshLiveSelected(ctx, daily)
++	}
++	list := func(after uint64) ([]poolround.Record, error) {
++		return dailyRoundCall(ctx, daily, func(work context.Context) ([]poolround.Record, error) { return m.store.List(work, after, poolround.MaxPage) })
++	}
++	rows, e := list(m.cursor)
+ 	if e != nil {
+ 		return e
+ 	}
+ 	if len(rows) == 0 && m.cursor != 0 {
+ 		m.cursor = 0
+-		rows, e = m.store.List(ctx, 0, poolround.MaxPage)
++		rows, e = list(0)
+ 		if e != nil {
+ 			return e
+ 		}
+ 	}
+ 	for _, row := range rows {
+-		if _, e = m.store.Refresh(ctx, row.Round.BlockHash); e != nil {
++		if _, e = dailyRoundCall(ctx, daily, func(work context.Context) (poolround.Record, error) { return m.store.Refresh(work, row.Round.BlockHash) }); e != nil {
+ 			return e
+ 		}
+ 		m.cursor = row.Round.Sequence
+--- before/desktop/pooloperator/runtime.go
++++ after/desktop/pooloperator/runtime.go
+@@ -387,7 +387,7 @@
+ 			return e
+ 		}
+ 		step, cancel := context.WithTimeout(ctx, 30*time.Second)
+-		summary, e := r.round.step(step)
++		summary, e := r.round.stepSelected(step, r.daily)
+ 		cancel()
+ 		r.mu.Lock()
+ 		r.status.Rounds = summary
+@@ -404,7 +404,7 @@
+ 			// Only importing new rounds is held. Recheck existing winners under their
+ 			// original source/node so confirmation and mature funding can still advance.
+ 			step, cancel = context.WithTimeout(ctx, 30*time.Second)
+-			refresh := r.round.refresh(step)
++			refresh := r.round.refreshSelected(step, r.daily)
+ 			cancel()
+ 			if refresh != nil && !retainedRoundRetry(refresh) {
+ 				return errors.Join(e, refresh)

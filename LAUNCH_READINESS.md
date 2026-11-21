@@ -16,17 +16,35 @@ unapplied; it is not the next engineering set.
 Routine authorized engineering pushes and Phase-A seed verification continue;
 they do not count as completion of this product-release gate.
 
-**Current work order, Mike's November 19 clarification:** defer login-flow,
-provider, MFA implementation and account-recovery UX work until wallet recovery,
-fighter ownership/transfer and recovery of the same gym and its fighters are
-complete. D82's mandatory MFA, passkey support and no-support-bypass requirements
-remain recorded for later. Existing fixture login may support functional tests;
-it is not the real onboarding deliverable. Key restoration alone does not close
-the fighter-ownership/recovery gate, and D74 remains the final joint review.
-Mike's subsequent explicit order is: finish fighter transfers and recovery;
-then finish the public mining pool and scheduled payouts; then sign-in and
-onboarding. Existing fixture pool and payout evidence does not close the public
-deployment, operation or scheduled-settlement acceptance gate.
+## Active test-build burn list
+
+Mike's November 21 instruction supersedes earlier capacity-before-host sequencing.
+The current order is:
+
+1. **Hosted pool and scheduled payouts.** Finish the current admission/payout
+   acceptance, then qualify an operator-owned hosted test endpoint, original
+   custody and enrolled miner flow, scheduled payout, restart and exact retry.
+   Declare and stay inside a finite test envelope; preserve recovery and visible
+   holds. Synthetic loopback proofs alone do not count as hosted acceptance.
+2. **Wallet balances and history.** Connect and verify the existing authenticated
+   balance, payout and wallet-activity paths against the hosted test service,
+   including dated observations and visible pending/deferred states.
+3. **Sign-in and onboarding.** Complete D82 mandatory MFA/passkey support and the
+   approved recovery/reset controls after the pool and wallet flows. Fixture
+   buttons are not real authentication; no security requirement is deferred.
+4. **Full joint design review with Mike (D74).** Review the working major flows
+   together, including app organization. Keep this last before friends/tester or
+   public release; an engineering test build is not that release approval.
+
+**Marketplace: on hold.** Do not pull it into the active build or design scope
+without Mike resuming it.
+
+[Known nonblocking edge cases and public-launch follow-ups](docs/EDGE_CASE_FOLLOW_UPS.md)
+are tracked separately. New findings go there unless they block the agreed test
+flow, risk funds or lost data, or break security or payout correctness. Those
+four categories require action now. Public-launch-only requirements remain
+visible below but must not hold up a safe bounded test build. Never reset a
+journal, discard old rights, repin a wallet or relax a payout rule to avoid a hold.
 
 **D83 transfer policy, approved November 19:** first valid competing send in
 canonical chain order wins; later competing sends are void. Transfers remain
@@ -627,9 +645,23 @@ of the ownership, transfer or independent restored-wallet flow. See
   mutation disqualification and A2's unexplained live lookup failure remain
   preserved; neither is relabeled passed. The desktop cumulative timeout remains
   failed, with complete unchanged-budget partition coverage separately passing.
-  Exact-tip CI is pending. Retained fighter delivery at pool-only drain, capacity,
-  sustained load and hosted operation remain before onboarding. D74 stays last;
+  All seven exact-tip CI jobs pass at maintenance tip `1f559221`, including
+  downloaded Linux evidence for 428 required assertions. The original shutdown
+  failure and its deterministic reproduction remain preserved. See
+  `docs/evidence/set80/ci-closeout/`. The active burn list now prioritizes bounded
+  hosted operation; general capacity and sustained load are deferred follow-ups.
+  D74 stays last;
   no node change requires a redundant seed rollout. See `CHANGESET_80_NOTES.md`.
+
+- Set81's retained admission and exact-Busy round successor pass the local
+  component, regression, build/static and unchanged-node smoke checks. Actual
+  A2 proves full intake, original-owner restart, lost reply, exact replay and one
+  scheduled 19.8-SLUG payment to the original wallet after maturity. B1 fails
+  publication readiness after a 100-block offline interval, before expiry retry
+  and final wallet verification; it remains failed and logged as EF-12. That
+  extended outage gap is deferred under the latest triage unless it blocks the
+  agreed hosted test. Exact-tip CI remains pending. See `CHANGESET_81_NOTES.md`
+  and `docs/evidence/set81/`; these fixture results do not establish hosting.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
@@ -637,7 +669,11 @@ on November 16. `README_HANDOFF.md` records their provenance; workspace
 implementations and first-pass mockups. The canonical spec takes precedence,
 and their intake does not replace the D74 review of the working product.
 
-## Release milestones
+## Public-release milestones
+
+These remain release obligations, not an instruction to complete every item
+before the bounded engineering test build. The active burn list above controls
+current work; marketplace is expressly on hold.
 
 | Milestone | Remaining acceptance |
 | --- | --- |
@@ -645,9 +681,9 @@ and their intake does not replace the D74 review of the working product.
 | Real accounts and hosted custody | Implement D82 mandatory MFA and passkey support with trusted assurance, user verification and fresh sensitive-action authentication. Qualify backup-factor/code recovery under the approved no-support-bypass rule, clearly distinguish login recovery codes from the 24-word wallet backup, and prove enrollment, replacement, replay/rate limits, refresh downgrade refusal and reset/session revocation without an MFA bypass. Demonstrate provider authentication/reset ordering, original-authentication epochs, durable retry/reconciliation and abandoned-flow behavior. Provision the reviewed operator-owned provider/vault configuration; prove same-wallet recovery, D72 hold enforcement, backups, key rotation and disaster recovery. See HOSTED_AUTHENTICATION.md. |
 | Desktop product | Integrate real signup/login, wallet views and controlled mining with the service. Complete native error/recovery flows, cross-device behavior, macOS signing/notarization and Windows runtime acceptance. Review distribution/update behavior. The expanded-name candidate is qualified for explicit fixture use; production activation remains separate. |
 | Mining and fighter services | Qualify hosted official-pool operations and production signer custody/capacity for the implemented share, round and settlement path; complete authoritative fighter lifecycle/ownership and portable history. Preserve automatic jobs, birth, canonical-winning-block rules and report-only checkpoint doctrine. |
-| League, marketplace and presentation | Wire the fight/league operation, entries, matching, results/finality, rankings and required gym/fighter flows. Complete the agreed launch marketplace/transfer behavior and reset-hold restrictions. Prototype/simulation output does not substitute for deployed acceptance. |
+| League and presentation; marketplace on hold | Wire the fight/league operation, entries, matching, results/finality, rankings and required gym/fighter flows. Preserve completed direct transfers and reset-hold restrictions. Marketplace implementation remains on hold until Mike resumes it. Prototype/simulation output does not substitute for deployed acceptance. |
 | Fighter-name diversity and collisions | Set65 completes the explicit versioned expansion and reproducible collision scenarios. Confirm the launch population assumptions, acceptable prevalence, disambiguation and source activation at D74. Fighter IDs remain identity keys; preserve all existing assigned names/manifests and never rewrite historical fighters. |
-| Thorough design review with Mike (D74) | Review a working representative build together: onboarding, mining controls/status, wallet/recovery/reset holds, roster/fighter lifecycle, fights/league, marketplace/transfers, navigation, visual hierarchy, accessibility, loading/empty/error/offline states and trust/irreversible-action wording. Record findings and agreed changes. Recheck affected flows before product release. |
+| Thorough design review with Mike (D74) | Review a working representative build together: onboarding, mining controls/status, wallet/recovery/reset holds, roster/fighter lifecycle, fights/league, direct transfers, navigation, visual hierarchy, accessibility, loading/empty/error/offline states and trust/irreversible-action wording. Record findings and agreed changes. Recheck affected flows before product release. |
 | Launch hardening and operations | Run end-to-end rehearsals and security review of the final system; verify capacity, monitoring, backups/recovery and rollback procedures. Complete the launch legal/operational items in the spec, including any external work requiring Mike's accounts or decisions. |
 | Permanent genesis and coordinated launch | Mike approves the exact permanent genesis and final parameters. Freeze release sources/configuration and deploy compatible nodes/services/clients. Rehearse the genesis procedure and verify the first permanent history. D1/D2's public-from-genesis and permanent tester-history commitments remain in force. |
 

@@ -1,0 +1,132 @@
+{
+  "version": 1,
+  "original_manifest_sha256": "0ad1f3f0a9b9d22bfcde4682ecdd1530837311e4261ba3a47b57544c861c056b",
+  "files": [
+    {
+      "path": "node_helpers.go",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/node_helpers.go",
+      "bytes": 8810,
+      "sha256": "331190728f79c5f5b0aaae4109426ffc4e41768a087b86126f31799940fb66cd",
+      "mode": "exact-reuse"
+    },
+    {
+      "path": "cli_process.go",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/cli_process.go",
+      "bytes": 9473,
+      "sha256": "a25c7a14f56d3b4a0a2a90f4807d87a8cc048a6ffccaec7dc6747f4ed4b007b2",
+      "mode": "exact-reuse"
+    },
+    {
+      "path": "operator_process.go",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/operator_process.go",
+      "bytes": 9743,
+      "sha256": "4e62812e828e3ec6cef2a9c605527d23c1478ee0da701cb2b5d14666ecfd6417",
+      "mode": "exact-reuse"
+    },
+    {
+      "path": "fixture_setup.go",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/fixture_setup.go",
+      "bytes": 5416,
+      "sha256": "7b3ddd36d8c8e6098f6db7f3d04e74ffb77533cdcfdc10e480b2b66f38063dd0",
+      "mode": "exact-reuse"
+    },
+    {
+      "path": "operator_audit.go",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/operator_audit.go",
+      "bytes": 14293,
+      "sha256": "14d463c15ae4438ef6172b89d2e8714d1591ce0869efad3b2a28dfda6e45b2bc",
+      "mode": "exact-reuse"
+    },
+    {
+      "path": "outbox_audit.go",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/outbox_audit.go",
+      "bytes": 11444,
+      "sha256": "84fa9a045b9f1edb607cbfdec7948902cdc8f344595bebbc62922862bc8e0f77",
+      "mode": "exact-reuse"
+    },
+    {
+      "path": "issue_audit.go",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/issue_audit.go",
+      "bytes": 12822,
+      "sha256": "f1dda87812b30e59e6408ebedaa32518fe1073dc8da8adc67eaacf7dd0179833",
+      "mode": "exact-reuse"
+    },
+    {
+      "path": "proposal_relay.go",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/proposal_relay.go",
+      "bytes": 6312,
+      "sha256": "f14227d8b135f7bf66f5c7937acb636d05471ef3e953fca87396caac957e9a91",
+      "mode": "exact-reuse"
+    },
+    {
+      "path": "payment.go",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/payment.go",
+      "bytes": 10011,
+      "sha256": "1483c0ec3882de879d2a2b8570422a45f4b6df70319c291cc6e1adea4b17edc8",
+      "mode": "exact-reuse"
+    },
+    {
+      "path": "work_evidence.go",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/work_evidence.go",
+      "bytes": 10191,
+      "sha256": "c806ecdc4bf8584a8bc3d67af0abb8ab1dbb3594975d06ccd0022cd01857f956",
+      "mode": "exact-reuse"
+    },
+    {
+      "path": "go.mod",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/go.mod",
+      "bytes": 1371,
+      "sha256": "2acab03476a5fbe3c41af0d387342778f499e97d6e876c7f0d936f704021d4c1",
+      "mode": "exact-reuse"
+    },
+    {
+      "path": "fixture-catalog.json",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/fixture-catalog.json",
+      "bytes": 66249,
+      "sha256": "2637978c2e08637dae2a21bf7fcb8e9ab37edb3476e2b9512c73ff16809b7e55",
+      "mode": "exact-reuse"
+    },
+    {
+      "path": "fixture-public.json",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/fixture-public.json",
+      "bytes": 7244,
+      "sha256": "83bfe6cdd6020524199ba6abada82614fb67987b32b9fb96111bf6bddf879f23",
+      "mode": "exact-reuse"
+    },
+    {
+      "path": "main.go",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/main.go",
+      "bytes": 14859,
+      "sha256": "2a090aed63d5f74f4a959f2cf9de6bede10762df74891ae5a974ba318110f979",
+      "mode": "adapted-preimage"
+    },
+    {
+      "path": "selection.go",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/selection.go",
+      "bytes": 10439,
+      "sha256": "8ec99e0040b490592c62b49fe3a084f6a2359d21f6773b0748f07bd83fc176b3",
+      "mode": "adapted-preimage"
+    },
+    {
+      "path": "inputs/reference-v1.json",
+      "source": "/Users/taytrrip/slug/artifacts/set81/actual-selection-attempt1/primary.json",
+      "bytes": 174293,
+      "sha256": "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a",
+      "mode": "qualified-public-input"
+    },
+    {
+      "path": "inputs/path-c-reference.json",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inputs/path-c-reference.json",
+      "bytes": 46498,
+      "sha256": "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386",
+      "mode": "qualified-public-input"
+    },
+    {
+      "path": "inputs/base-reference.json",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inputs/base-reference.json",
+      "bytes": 3176583,
+      "sha256": "a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3",
+      "mode": "qualified-public-input"
+    }
+  ]
+}

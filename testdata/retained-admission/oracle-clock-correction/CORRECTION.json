@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "scope": "Narrow pre-implementation clarification of selected nonhistorical clock preflight and clock-only write uncertainty",
+  "base_commit": "ce9eac7463a75d2ba7e0cefc8924f55d6c77b0a9",
+  "predecessor_manifest": {
+    "path": "../oracle/manifest.json",
+    "bytes": 2385,
+    "sha256": "0d7df95e552b7a94078e9ccd536bbb827d93a69753c9051ece06901cbec28a62"
+  },
+  "predecessor_table": {
+    "path": "../oracle/acceptance.json",
+    "bytes": 31598,
+    "sha256": "1e31fb64f0bf90a10284f74b09d2642b6b394dce69da688265c44f45c24066aa"
+  },
+  "application": "Apply only these exact field replacements by unique case ID to the pinned predecessor. Every before value must match. All other cases, fields, seven input copies, provenance and conditional scope remain unchanged. The original files remain immutable; this overlay and its manifest define the corrected candidate.",
+  "replacements": [
+    {
+      "case_id": "startup-neither-ready",
+      "field": "expected.clock",
+      "before": "no authoritative expiry requested",
+      "after": "selected nonhistorical preflight samples the original clock before the paused guard; required high-water persistence may advance metadata"
+    },
+    {
+      "case_id": "startup-public-only",
+      "field": "expected.clock",
+      "before": "unchanged",
+      "after": "selected nonhistorical preflight samples the original clock before the paused guard; required high-water persistence may advance metadata"
+    },
+    {
+      "case_id": "startup-round-only",
+      "field": "expected.clock",
+      "before": "unchanged",
+      "after": "selected nonhistorical preflight samples the original clock before the paused guard; required high-water persistence may advance metadata"
+    },
+    {
+      "case_id": "full-source-reopen-public-only",
+      "field": "expected.clock",
+      "before": "unchanged",
+      "after": "selected nonhistorical preflight samples the original clock before the paused guard; required high-water persistence may advance metadata"
+    },
+    {
+      "case_id": "expiry-clock-write-poison",
+      "field": "expected.record_sequence_ownership_outbox_signed_publication_delta",
+      "before": "unknown_clock_only",
+      "after": [0, 0, 0, 0]
+    }
+  ],
+  "clarifications": [
+    "The four paused rows assume the original nonhistorical preflight and lease checks succeed for live work. Their busy result remains after preflight; node admission and all four admission-count deltas remain zero. A preflight failure instead follows the separately frozen failure-precedence rows.",
+    "The same preflight ordering applies to full-source-reopen-paused: its existing phrase no authority substitution does not assert zero clock work. Readiness never substitutes for the original issuer clock authority.",
+    "Historical recovery bypasses this new preflight and retains its zero new clock samples/writes and zero node calls. Other explicit pre-clock refusals retain their existing zero-effect scope.",
+    "A failed clock-only batch may leave metadata durability unknown and poisons the original owner. Preflight stages no manifest record, receipt sequence, ownership admission outbox item or signed publication, so those four deltas are exactly zero. Outcome remains outcome_unknown; no successful expiry or rollback is inferred.",
+    "The predecessor top-level write_uncertainty text still describes metadata durability only; unknown_clock_only is no longer a count-tuple value. No new byte format, runtime authority, CI result or implementation authorization is introduced."
+  ],
+  "hand_case_count": 53,
+  "replacement_count": 5,
+  "product_execution": false,
+  "producer_execution": false,
+  "repository_edits": false
+}

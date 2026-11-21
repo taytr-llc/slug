@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "passed": true,
+  "scope": "downloaded Set80 ce9eac74 focused Linux operator qualification only",
+  "head": "ce9eac7463a75d2ba7e0cefc8924f55d6c77b0a9",
+  "wallet": "dfc5d9dd7e0f604486fbac812d0413fce1f45cd6",
+  "required_passes": 428,
+  "test_groups": 29,
+  "commands_verified": 61,
+  "sources_equal": true,
+  "clean_join": true,
+  "actual_or_deployment_claim": false,
+  "report": {
+    "bytes": 1314006,
+    "sha256": "725643c2090f4f4ae467caee656343448ab75ea82301f55561ce85d6e2fc8697"
+  },
+  "sources_before": {
+    "bytes": 2219215,
+    "sha256": "f94bafa024c4ccb4d1a0d3f387a6bbf6e91413a174d0935593e21a45191aa3bf"
+  },
+  "sources_after": {
+    "bytes": 2219215,
+    "sha256": "f94bafa024c4ccb4d1a0d3f387a6bbf6e91413a174d0935593e21a45191aa3bf"
+  },
+  "overall_ce9eac74_ci": "failed In-tree modules; shutdown maintenance qualified separately"
+}

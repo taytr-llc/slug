@@ -60,6 +60,7 @@ type Runtime struct {
 	intake                              *poolshare.OperatorAdmission
 	reservation                         CapacityReservation
 	intakeReason                        string
+	intakeAdmissionReason               string // DAILY lifetime-only hard hold; never saved or adopted on reopen
 	intakePublicReady, intakeRoundReady bool
 	mu                                  sync.Mutex
 	closeMu                             sync.Mutex
@@ -386,7 +387,7 @@ func (r *Runtime) roundLoop(ctx context.Context) error {
 			return e
 		}
 		step, cancel := context.WithTimeout(ctx, 30*time.Second)
-		summary, e := r.round.step(step)
+		summary, e := r.round.stepSelected(step, r.daily)
 		cancel()
 		r.mu.Lock()
 		r.status.Rounds = summary
@@ -403,7 +404,7 @@ func (r *Runtime) roundLoop(ctx context.Context) error {
 			// Only importing new rounds is held. Recheck existing winners under their
 			// original source/node so confirmation and mature funding can still advance.
 			step, cancel = context.WithTimeout(ctx, 30*time.Second)
-			refresh := r.round.refresh(step)
+			refresh := r.round.refreshSelected(step, r.daily)
 			cancel()
 			if refresh != nil && !retainedRoundRetry(refresh) {
 				return errors.Join(e, refresh)

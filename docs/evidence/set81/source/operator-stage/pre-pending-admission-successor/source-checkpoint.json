@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "scope": "Source-only Set81 DAILY operator retained admission; root owns formatting/build/test/runtime",
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/capacity_drain.go",
+      "bytes": 6596,
+      "sha256": "960ad2b753b6e426004e72c7eb5fcc9613363c19333b5a621533a4614d71c734"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/runtime.go",
+      "bytes": 21295,
+      "sha256": "21f1d92f3b769fe58cdf56f14ec48df3fecc2c5c015e1560aa49926465270c6d"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/construction.go",
+      "bytes": 16552,
+      "sha256": "8b7e48b5c053cad52d7b9f467906936bb3181f2f7d3313a3237327876dfdebb5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_intake.go",
+      "bytes": 4382,
+      "sha256": "fec434fb14e40edf791e267d9b8c33a5b4d0de9850c23217d790b93390ddf3e9"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_retained_admission_test.go",
+      "bytes": 12269,
+      "sha256": "e3e5ed1ed714def5bd5ec3527cbf6c016fcb24f64006af1359bd91658be2eb26"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/operator-stage/preimages.json",
+      "bytes": 527,
+      "sha256": "20a3d4940b63133515d75cea170527e916c41c97c5bbbe5269886cdaddfdfb36"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/implementation-selection.json",
+      "bytes": 6562,
+      "sha256": "3b270d9c4933cc0fe1b4a6c64bccbbbb2f66f30acdbb66bba12afbf0594f728f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/SET81_PLAN.md",
+      "bytes": 17882,
+      "sha256": "a1ab25c4627a82be49164dc3acd7f0131d37911b2b93c848e3ceaed1762f6f0a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/oracle/manifest.json",
+      "bytes": 2385,
+      "sha256": "0d7df95e552b7a94078e9ccd536bbb827d93a69753c9051ece06901cbec28a62"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/oracle-clock-correction/manifest.json",
+      "bytes": 848,
+      "sha256": "15b91a9690cd9b215ea3e0dfa8373697c22fd72686a2b477caf7b1ea491a067a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/operator-stage/changes.diff",
+      "bytes": 19278,
+      "sha256": "b0acdc72751b6e93118242a5c085a5e823c304e3f467110be16158ba80c24b38"
+    }
+  ],
+  "new_tests": [
+    "TestDailyRetainedAdmissionSelectionReadinessAndDirectDrain",
+    "TestDailyRetainedAdmissionFullSourceReopenPreservesPayment",
+    "TestDailyRetainedAdmissionHardEscalationAndConcurrentReadiness",
+    "TestDailyRetainedAdmissionHardCauseSurvivesSourceBusy",
+    "TestDailyRetainedAdmissionEnableErrorsKeepOriginalOwner",
+    "TestDailyRetainedAdmissionCanceledBeforeTransition"
+  ],
+  "unchanged_legacy_controls": [
+    "TestOperatorCapacityOriginalStartupAndPermanentDrain",
+    "TestDailyIntakeOriginalIssuerBusyPreservesDrainAndPayout",
+    "TestDailyIntakeOriginalIssuerCancellationNeverEnables",
+    "TestOperatorIntakeMutexCancellationJoinsHolder",
+    "TestOperatorCapacityMixedErrorsRemainFatal"
+  ],
+  "limitations": [
+    "Readiness booleans and node/session observations are conditional component inputs; no READY runtime/public TLS or actual wallet proof is claimed.",
+    "Real original Source2/issuer/round/ledger owners and production normal CheckNonce supply the two-row physical source and pending signed-payment fixture.",
+    "Hard admission reasons are runtime-lifetime state, not saved metadata; persisted issuer/public caps remain independently checked.",
+    "Original selected server enabled mode is an intake observation, not an assertion of remaining birth capacity."
+  ],
+  "go_executed": false
+}

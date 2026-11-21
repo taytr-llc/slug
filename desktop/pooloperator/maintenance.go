@@ -4,6 +4,7 @@ package pooloperator
 import (
 	"context"
 	"errors"
+	"time"
 
 	"github.com/taytr-llc/slug/fighterownership"
 	"github.com/taytr-llc/slug/internal/operatorauthority"
@@ -143,35 +144,60 @@ type roundMaintenance struct {
 }
 
 func (m *roundMaintenance) step(ctx context.Context) (poolround.Summary, error) {
-	summary, e := m.store.Sync(ctx)
+	return m.stepSelected(ctx, false)
+}
+
+func (m *roundMaintenance) stepSelected(ctx context.Context, daily bool) (poolround.Summary, error) {
+	if daily {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, 30*time.Second)
+		defer cancel()
+	}
+	summary, e := dailyRoundCall(ctx, daily, func(work context.Context) (poolround.Summary, error) { return m.store.Sync(work) })
 	if e != nil {
 		return poolround.Summary{}, e
 	}
 	if m.cursor >= summary.Rounds {
 		m.cursor = 0
 	}
-	return summary, m.refresh(ctx)
+	return summary, m.refreshSelected(ctx, daily)
 }
 
 // refresh never imports a blocked tail or invents new rounds. List verifies the
 // retained Through prefix; Refresh rechecks each exact original winning block.
 func (m *roundMaintenance) refresh(ctx context.Context) error {
-	if m.live != nil {
-		return m.refreshLive(ctx)
+	return m.refreshSelected(ctx, false)
+}
+
+func (m *roundMaintenance) refreshSelected(ctx context.Context, daily bool) error {
+	if daily {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, 30*time.Second)
+		defer cancel()
 	}
-	rows, e := m.store.List(ctx, m.cursor, poolround.MaxPage)
+	if m.live != nil {
+		return m.refreshLiveSelected(ctx, daily)
+	}
+	list := func(after uint64) ([]poolround.Record, error) {
+		return dailyRoundCall(ctx, daily, func(work context.Context) ([]poolround.Record, error) {
+			return m.store.List(work, after, poolround.MaxPage)
+		})
+	}
+	rows, e := list(m.cursor)
 	if e != nil {
 		return e
 	}
 	if len(rows) == 0 && m.cursor != 0 {
 		m.cursor = 0
-		rows, e = m.store.List(ctx, 0, poolround.MaxPage)
+		rows, e = list(0)
 		if e != nil {
 			return e
 		}
 	}
 	for _, row := range rows {
-		if _, e = m.store.Refresh(ctx, row.Round.BlockHash); e != nil {
+		if _, e = dailyRoundCall(ctx, daily, func(work context.Context) (poolround.Record, error) {
+			return m.store.Refresh(work, row.Round.BlockHash)
+		}); e != nil {
 			return e
 		}
 		m.cursor = row.Round.Sequence

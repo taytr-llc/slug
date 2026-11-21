@@ -1,0 +1,12 @@
+{
+  "release_master": "e3eb4d495455383121bc1138f2cc010c90c6fb72",
+  "build_source_head": "1f559221c3735227e8475731f2c73a74282db5b0",
+  "compiled_node_and_ctl_source_changed": false,
+  "qualification_helpers_changed": [
+    "desktop/pooloperator/testdata/late-winner-actual/run.py",
+    "desktop/pooloperator/testdata/late-winner-actual/runner_support.py"
+  ],
+  "predecessor_report_sha256": "515a872f97910757dace24347f21f649f5bf639a713368e96862150204909850",
+  "classification": "The original input binding includes these two Python capture helpers explicitly. They are qualification source, not inputs to either Go binary. All selected compiled sources and module/workspace files match release master.",
+  "seed_rollout_required_for_this_change": false
+}

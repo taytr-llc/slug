@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "scope": "Set81 source-only registry clock preflight and explicit DAILY fenced admission; root owns formatting and all execution",
+  "base_commit": "1f559221c3735227e8475731f2c73a74282db5b0",
+  "corrected_hand_cases": 54,
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/slug/registry/manifest_admission_preflight.go",
+      "bytes": 2904,
+      "sha256": "71959959569287de81119db62b7d0c864188e9dd883ef970b49176ddd4ad61b2",
+      "new_file": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/registry/manifest_admission_preflight_test.go",
+      "bytes": 11808,
+      "sha256": "d033593e9628d3d98b576d1aed2cccc313b1566824c3b6bd9d9fff4d40b69c9d",
+      "new_file": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/registry/manifest_admission_preflight_profile_test.go",
+      "bytes": 619,
+      "sha256": "206bbb85ba69a0a722eb3d9117ec7acb8421090aaabbdc950fdc321b35c78ff9",
+      "new_file": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/daily_fenced_admission.go",
+      "bytes": 2865,
+      "sha256": "d5af6dd0e350a92b3f2fc742c58e0f253f5ecd6ae7fe9fa1859c5a4ccfe78fac",
+      "new_file": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/daily_fenced_admission_test.go",
+      "bytes": 10665,
+      "sha256": "7c8916e982606702fe632ef4a38ae011fb63c626109375fda71f0f945d3d1387",
+      "new_file": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/daily_fenced_profile_test.go",
+      "bytes": 513,
+      "sha256": "4e73435d3019a3caff61e7d2e5c599719189a8c4fd321d1268ccf46ace326606",
+      "new_file": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/manifest_fenced_server.go",
+      "bytes": 5654,
+      "sha256": "8dbc991e1521cb1a9504fc96e92498e3d6cf6fdee727f37e051d180ded0fb4ef",
+      "new_file": false
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectservice/manifest_server.go",
+      "bytes": 19449,
+      "sha256": "6b72e50148d6c2b034b9d4d174815af1c22af170817d3d4bf6f62a34f536802d",
+      "new_file": false
+    }
+  ],
+  "preimages": [
+    {
+      "repository_path": "prospectservice/manifest_fenced_server.go",
+      "path": "/Users/taytrrip/slug/set81-prep/service-stage/prospectservice__manifest_fenced_server.go.before.txt",
+      "bytes": 5509,
+      "sha256": "181e7c5a9055eff411bb820ff20769829ac5bac4d3410fa463b5f9512fd7fb35"
+    },
+    {
+      "repository_path": "prospectservice/manifest_server.go",
+      "path": "/Users/taytrrip/slug/set81-prep/service-stage/prospectservice__manifest_server.go.before.txt",
+      "bytes": 19359,
+      "sha256": "9b495ab1224e91361ea9a87f684a2aa35ae25420ae0ec86799c6f87e6a09bfb0"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/implementation-selection.json",
+      "bytes": 6562,
+      "sha256": "3b270d9c4933cc0fe1b4a6c64bccbbbb2f66f30acdbb66bba12afbf0594f728f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/oracle/manifest.json",
+      "bytes": 2385,
+      "sha256": "0d7df95e552b7a94078e9ccd536bbb827d93a69753c9051ece06901cbec28a62"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/oracle-clock-correction/manifest.json",
+      "bytes": 848,
+      "sha256": "15b91a9690cd9b215ea3e0dfa8373697c22fd72686a2b477caf7b1ea491a067a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/oracle-lease-provenance-correction/manifest.json",
+      "bytes": 1080,
+      "sha256": "760e60d3093557ba5b54e1e5dbe2155197efc9435a1b7cf33f74a7f5fce786bf"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/service-preflight-provenance/manifest.json",
+      "bytes": 395,
+      "sha256": "a5263ca715740941c8e568fd8b868b358c22b5a9ac6afb223e56cab853fd8ea0"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/service-preflight-provenance/before.go.txt",
+      "bytes": 2589,
+      "sha256": "e91d4292f343170c00a61e4348768bb60ce9c8146a3bf745d7a14945f79becad"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/service-stage/changes.diff",
+      "bytes": 31658,
+      "sha256": "a79aa15bcee3115da9a7fe8c424c54971e50d99c412fe0ef3e6205b7b096611e"
+    }
+  ],
+  "normal_race_required": [
+    "TestManifestAdmissionPreflightOriginalOwnerAndHistory",
+    "TestManifestAdmissionPreflightExpiryAndRestart",
+    "TestManifestAdmissionPreflightClockCapacityAndUncertainty",
+    "TestManifestAdmissionPreflightPublicCounts",
+    "TestDailyFencedAdmissionExpiryBeforeIntake",
+    "TestDailyFencedAdmissionSessionAndDuplicateFences",
+    "TestDailyFencedAdmissionHistoricalAndLegacy",
+    "TestDailyFencedAdmissionErrorProvenance"
+  ],
+  "cheap_required": [
+    "TestManifestAdmissionPreflightCheapRefuses",
+    "TestDailyFencedAdmissionCheapRefuses"
+  ],
+  "legacy_final_commit_and_lease_unchanged": true,
+  "go_executed": false,
+  "gofmt_executed": false,
+  "test_scope": "Original stores with independent normal-PoW/job/receipt fixtures; controlled session/clock/write fault and private logical cap boundary labeled conditional. No actual network/custody claim."
+}

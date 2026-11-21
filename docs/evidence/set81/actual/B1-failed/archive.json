@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "scope": "Explicit failedB1 public reports only; private runtime excluded",
+  "files": [
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/retained-admission-b-actual-attempt1/report.json",
+      "target": "docs/evidence/set81/actual/B1-failed/report.json",
+      "bytes": 13970,
+      "sha256": "ca50136df8a4cc17f4d1f6d0a1b1542ebfeff244ddc74398368e6a3820bafb18"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/retained-admission-b-actual-attempt1/execution-lock.json",
+      "target": "docs/evidence/set81/actual/B1-failed/execution-lock.json",
+      "bytes": 24750,
+      "sha256": "4966f418b3c7ee9c0202e2c5e84c3c2efd699d0010202896105e00973dd9721f"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/retained-admission-b-actual-attempt1/profile.json",
+      "target": "docs/evidence/set81/actual/B1-failed/profile.json",
+      "bytes": 962,
+      "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/retained-admission-b-actual-attempt1/source-copies.json",
+      "target": "docs/evidence/set81/actual/B1-failed/source-copies.json",
+      "bytes": 5153,
+      "sha256": "0fb9ed020cdd394f220b003d7859e9ff178a891abd23d79c30c346c47d32e5dd"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/retained-admission-b-actual-attempt1/actual.log",
+      "target": "docs/evidence/set81/actual/B1-failed/actual.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/retained-admission-b-actual-attempt1/owned/actual-report.json",
+      "target": "docs/evidence/set81/actual/B1-failed/owned/actual-report.json",
+      "bytes": 58647,
+      "sha256": "88f716ddb0ec604b617f128270ff23313b41a4076ecf6849f5a44a059bad5f36"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/retained-admission-b-actual-attempt1/owned/01-selection.json",
+      "target": "docs/evidence/set81/actual/B1-failed/owned/01-selection.json",
+      "bytes": 15218,
+      "sha256": "f75170d29d6b5d4a1cf3207dcc4f43414192ebe841e43c5ebcdad00464bafa17"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set81/retained-admission-b-actual-attempt1/owned/03-expired-before-retry.json",
+      "target": "docs/evidence/set81/actual/B1-failed/owned/03-expired-before-retry.json",
+      "bytes": 11410,
+      "sha256": "6af777fc935b7b62d4c4bfaa01175335fe001a8f3d370e22f23dae5dd9d8d5ed"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set81-prep/actual-b1-failure.json",
+      "target": "docs/evidence/set81/actual/B1-failed/disposition.json",
+      "bytes": 1712,
+      "sha256": "37f68d5c8b8e4e456642bdfc3365b317aaac6f9508bd9af29925b741f884d0ad"
+    }
+  ]
+}

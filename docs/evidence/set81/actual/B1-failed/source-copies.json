@@ -1,0 +1,87 @@
+{
+  "/Users/taytrrip/slug/artifacts/set81/retained-admission-b-actual-attempt1/probe-source/admission_audit.go": {
+    "bytes": 12759,
+    "sha256": "52b10cc7a6f39b385546be67d439a135d26fe44c7e27d416d970743e89a3de9a",
+    "source": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/admission_audit.go"
+  },
+  "/Users/taytrrip/slug/artifacts/set81/retained-admission-b-actual-attempt1/probe-source/admission_relay.go": {
+    "bytes": 23181,
+    "sha256": "f6882d735b4e4316efa143cf346f9bc7466a82b4e7a0fc78738230de6f046409",
+    "source": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/admission_relay.go"
+  },
+  "/Users/taytrrip/slug/artifacts/set81/retained-admission-b-actual-attempt1/probe-source/cli_process.go": {
+    "bytes": 9484,
+    "sha256": "9e0d2fbcb97382e9f8ba16284f96b08da2d1cd9260e479edd847463e3e143149",
+    "source": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/cli_process.go"
+  },
+  "/Users/taytrrip/slug/artifacts/set81/retained-admission-b-actual-attempt1/probe-source/fixture_setup.go": {
+    "bytes": 5416,
+    "sha256": "7b3ddd36d8c8e6098f6db7f3d04e74ffb77533cdcfdc10e480b2b66f38063dd0",
+    "source": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/fixture_setup.go"
+  },
+  "/Users/taytrrip/slug/artifacts/set81/retained-admission-b-actual-attempt1/probe-source/go.mod": {
+    "bytes": 1375,
+    "sha256": "847ddca78d2ff5bd8a9dffa306a6f3c81f72d6e01c962c1863832db45851cecf",
+    "source": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/go.mod"
+  },
+  "/Users/taytrrip/slug/artifacts/set81/retained-admission-b-actual-attempt1/probe-source/go.sum": {
+    "bytes": 1922,
+    "sha256": "8db3d7c6bb03f449ea27eb139be2a55912e2e409a50922274171436fdf914555",
+    "source": "/Users/taytrrip/slug/slug/desktop/go.sum"
+  },
+  "/Users/taytrrip/slug/artifacts/set81/retained-admission-b-actual-attempt1/probe-source/issue_audit.go": {
+    "bytes": 12822,
+    "sha256": "f1dda87812b30e59e6408ebedaa32518fe1073dc8da8adc67eaacf7dd0179833",
+    "source": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/issue_audit.go"
+  },
+  "/Users/taytrrip/slug/artifacts/set81/retained-admission-b-actual-attempt1/probe-source/main.go": {
+    "bytes": 13366,
+    "sha256": "cf2f367ac2270873ea9aa0da4bd0c15f8d928d4fd8e2960b1d27ca8694f1ade7",
+    "source": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/main.go"
+  },
+  "/Users/taytrrip/slug/artifacts/set81/retained-admission-b-actual-attempt1/probe-source/node_helpers.go": {
+    "bytes": 8810,
+    "sha256": "331190728f79c5f5b0aaae4109426ffc4e41768a087b86126f31799940fb66cd",
+    "source": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/node_helpers.go"
+  },
+  "/Users/taytrrip/slug/artifacts/set81/retained-admission-b-actual-attempt1/probe-source/operator_audit.go": {
+    "bytes": 14293,
+    "sha256": "14d463c15ae4438ef6172b89d2e8714d1591ce0869efad3b2a28dfda6e45b2bc",
+    "source": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/operator_audit.go"
+  },
+  "/Users/taytrrip/slug/artifacts/set81/retained-admission-b-actual-attempt1/probe-source/operator_process.go": {
+    "bytes": 9743,
+    "sha256": "4e62812e828e3ec6cef2a9c605527d23c1478ee0da701cb2b5d14666ecfd6417",
+    "source": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/operator_process.go"
+  },
+  "/Users/taytrrip/slug/artifacts/set81/retained-admission-b-actual-attempt1/probe-source/outbox_audit.go": {
+    "bytes": 11444,
+    "sha256": "84fa9a045b9f1edb607cbfdec7948902cdc8f344595bebbc62922862bc8e0f77",
+    "source": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/outbox_audit.go"
+  },
+  "/Users/taytrrip/slug/artifacts/set81/retained-admission-b-actual-attempt1/probe-source/payment.go": {
+    "bytes": 10011,
+    "sha256": "1483c0ec3882de879d2a2b8570422a45f4b6df70319c291cc6e1adea4b17edc8",
+    "source": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/payment.go"
+  },
+  "/Users/taytrrip/slug/artifacts/set81/retained-admission-b-actual-attempt1/probe-source/proposal_relay.go": {
+    "bytes": 6312,
+    "sha256": "f14227d8b135f7bf66f5c7937acb636d05471ef3e953fca87396caac957e9a91",
+    "source": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/proposal_relay.go"
+  },
+  "/Users/taytrrip/slug/artifacts/set81/retained-admission-b-actual-attempt1/probe-source/retained_flow.go": {
+    "bytes": 17904,
+    "sha256": "ea19d6a022de5c54fe92298734f4652b8e822e077a3572a79fea4b604f09cc37",
+    "source": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/retained_flow.go"
+  },
+  "/Users/taytrrip/slug/artifacts/set81/retained-admission-b-actual-attempt1/probe-source/selection.go": {
+    "bytes": 11497,
+    "sha256": "6d263214a096aa60325bdfe760edcbe24c68aa0c3731472a5c136225c04ae7ee",
+    "source": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/selection.go"
+  },
+  "/Users/taytrrip/slug/artifacts/set81/retained-admission-b-actual-attempt1/probe-source/work_evidence.go": {
+    "bytes": 10191,
+    "sha256": "c806ecdc4bf8584a8bc3d67af0abb8ab1dbb3594975d06ccd0022cd01857f956",
+    "source": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/work_evidence.go"
+  }
+}

@@ -1,0 +1,2702 @@
+{
+  "version": 1,
+  "scope": "Explicit PUBLIC Set81 archive successor proposal only; no copies/install; post-fix source provenance added, all new running reports excluded",
+  "repository_root": "/Users/taytrrip/slug/slug",
+  "original_external_root": "/Users/taytrrip/slug/set81-prep",
+  "source_pins": [
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/source-manifest.json",
+      "bytes": 9099,
+      "sha256": "85b88843e1dd60173f1453b924712152758d8b53c8ff5f95477cf29d7d820074"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/check-retained-actual-manifest.json",
+      "bytes": 13843,
+      "sha256": "e50c4a1b200d019c74e3e7e3f8efd5f51e4ba67d3c96d153f20ea20d6937f89d"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/round-contention-stage/production-manifest.json",
+      "bytes": 5027,
+      "sha256": "2815ca59d8720b8e0c2adef8aae6ae89ea18ef522eb88a14cdf17045f47e98e4"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/round-contention-tests/manifest.json",
+      "bytes": 2924,
+      "sha256": "3b44d69373054e9acb905643241e5aea0723bb91b04c76a73bf7697cd6f4120b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/round-contention-stage/root-formatted-selection.json",
+      "bytes": 1202,
+      "sha256": "e67cda99b56d134913cb7c81e03e9d607cbd49319e4cceaadab40e3e14bf5d2b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/run-round-successor.py",
+      "bytes": 8070,
+      "sha256": "c157038f3a94c2d1eb9aa987ced4f3b32ac9fb016096c55aedc362219aa98f09"
+    }
+  ],
+  "policy": {
+    "no_recursive_copy": true,
+    "no_symlinks_or_hardlinks": true,
+    "no_private_fixtures_databases_credentials_runtime_trees": true,
+    "preserve_exact_source_bytes": true,
+    "preserve_original_absolute_execution_paths": true,
+    "no_portability_or_actual_pass_claim": true,
+    "copy_requires_root_release_and_fresh_identity_check": true,
+    "existing_targets_must_match_exactly": true,
+    "planned_copy_targets_must_not_exist": true,
+    "all_references_are_content_identity_not_authority": true
+  },
+  "files": [
+    {
+      "source_path": "/Users/taytrrip/slug/artifacts/set81/actual-selection-attempt1/primary.json",
+      "bytes": 174293,
+      "sha256": "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/qualification/primary.json",
+      "role": "independent-dual-interpreter-qualification",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/qualification/primary.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/artifacts/set81/actual-selection-attempt1/report.json",
+      "bytes": 830,
+      "sha256": "dfab9f630198ecbd2923ba2524c72725bc6853ba930e2081c6b0d4f4ed6e2b46",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/qualification/report.json",
+      "role": "independent-dual-interpreter-qualification",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/qualification/report.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/artifacts/set81/actual-selection-attempt1/system.json",
+      "bytes": 174293,
+      "sha256": "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/qualification/system.json",
+      "role": "independent-dual-interpreter-qualification",
+      "action": "reference_planned",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/qualification/primary.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set80-prep/check-actual.py",
+      "bytes": 65246,
+      "sha256": "87cb6364644db35b707a90a4bcf1c97467915aa3d691e65c81e3b9fc4539736e",
+      "logical_snapshot_path": "docs/evidence/set81/execution/inherited/check-actual.py",
+      "role": "immutable-inherited-public-checker-library",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set80/execution-supplement/check-actual.py"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/ARCHIVE_PLAN.md",
+      "bytes": 2726,
+      "sha256": "3a0067744ebd1c52cf802a8f8c74868620fa260cde65a3ea5972b68b5732df85",
+      "logical_snapshot_path": "docs/evidence/set81/source/ARCHIVE_PLAN.original.md",
+      "role": "preserved-original-archive-rationale",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/ARCHIVE_PLAN.original.md"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/CHECK_RETAINED_ACTUAL.md",
+      "bytes": 4555,
+      "sha256": "4fabd632e8809b437b3e195ff8bdf2bf608a7152e41ec0a2f5c25692375e65d4",
+      "logical_snapshot_path": "docs/evidence/set81/execution/CHECK_RETAINED_ACTUAL.md",
+      "role": "independent-public-result-checker",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/execution/CHECK_RETAINED_ACTUAL.md"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/RETAINED_ADMISSION_ACTUAL_PLAN.md",
+      "bytes": 12412,
+      "sha256": "62ddde39c811001865cd91c9b11152aa7166c4a7f69044d5946afd018ee23a72",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/RETAINED_ADMISSION_ACTUAL_PLAN.md",
+      "role": "approved-actual-scope",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/RETAINED_ADMISSION_ACTUAL_PLAN.md"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/SET81_PLAN.md",
+      "bytes": 17882,
+      "sha256": "a1ab25c4627a82be49164dc3acd7f0131d37911b2b93c848e3ceaed1762f6f0a",
+      "logical_snapshot_path": "docs/evidence/set81/source/SET81_PLAN.md",
+      "role": "approved-scope-and-mode-selection",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/SET81_PLAN.md"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-helper-format/admission_audit.go.before.txt",
+      "bytes": 11454,
+      "sha256": "41a587c840eeb5148cada24d1e23625f2d056c76dd8801280c781e0d5174164c",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/admission_audit.go.before.txt",
+      "role": "helper-pre-format-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/admission_audit.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-helper-format/admission_relay.go.before.txt",
+      "bytes": 19233,
+      "sha256": "a7f2b23a4fbae542f2077b1b6bf071fe056a0c7edef93ed54ccf5325911f66ec",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/admission_relay.go.before.txt",
+      "role": "helper-pre-format-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/admission_relay.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-helper-format/cli_process.go.before.txt",
+      "bytes": 9484,
+      "sha256": "9e0d2fbcb97382e9f8ba16284f96b08da2d1cd9260e479edd847463e3e143149",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/cli_process.go.before.txt",
+      "role": "helper-pre-format-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/cli_process.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-helper-format/fixture_setup.go.before.txt",
+      "bytes": 5416,
+      "sha256": "7b3ddd36d8c8e6098f6db7f3d04e74ffb77533cdcfdc10e480b2b66f38063dd0",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/fixture_setup.go.before.txt",
+      "role": "helper-pre-format-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/fixture_setup.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-helper-format/issue_audit.go.before.txt",
+      "bytes": 12822,
+      "sha256": "f1dda87812b30e59e6408ebedaa32518fe1073dc8da8adc67eaacf7dd0179833",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/issue_audit.go.before.txt",
+      "role": "helper-pre-format-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/issue_audit.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-helper-format/main.go.before.txt",
+      "bytes": 13366,
+      "sha256": "cf2f367ac2270873ea9aa0da4bd0c15f8d928d4fd8e2960b1d27ca8694f1ade7",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/main.go.before.txt",
+      "role": "helper-pre-format-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/main.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-helper-format/node_helpers.go.before.txt",
+      "bytes": 8810,
+      "sha256": "331190728f79c5f5b0aaae4109426ffc4e41768a087b86126f31799940fb66cd",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/node_helpers.go.before.txt",
+      "role": "helper-pre-format-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/node_helpers.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-helper-format/operator_audit.go.before.txt",
+      "bytes": 14293,
+      "sha256": "14d463c15ae4438ef6172b89d2e8714d1591ce0869efad3b2a28dfda6e45b2bc",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/operator_audit.go.before.txt",
+      "role": "helper-pre-format-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/operator_audit.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-helper-format/operator_process.go.before.txt",
+      "bytes": 9743,
+      "sha256": "4e62812e828e3ec6cef2a9c605527d23c1478ee0da701cb2b5d14666ecfd6417",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/operator_process.go.before.txt",
+      "role": "helper-pre-format-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/operator_process.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-helper-format/outbox_audit.go.before.txt",
+      "bytes": 11444,
+      "sha256": "84fa9a045b9f1edb607cbfdec7948902cdc8f344595bebbc62922862bc8e0f77",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/outbox_audit.go.before.txt",
+      "role": "helper-pre-format-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/outbox_audit.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-helper-format/payment.go.before.txt",
+      "bytes": 10011,
+      "sha256": "1483c0ec3882de879d2a2b8570422a45f4b6df70319c291cc6e1adea4b17edc8",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/payment.go.before.txt",
+      "role": "helper-pre-format-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/payment.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-helper-format/proposal_relay.go.before.txt",
+      "bytes": 6312,
+      "sha256": "f14227d8b135f7bf66f5c7937acb636d05471ef3e953fca87396caac957e9a91",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/proposal_relay.go.before.txt",
+      "role": "helper-pre-format-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/proposal_relay.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-helper-format/report.json",
+      "bytes": 4891,
+      "sha256": "9840d9659a01f4bf301d2d04619ec73cd05b8e41faaad55ab6809cbab076460a",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/report.json",
+      "role": "helper-format-provenance",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/report.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-helper-format/retained_flow.go.before.txt",
+      "bytes": 16593,
+      "sha256": "75f8679abea36b91eec33f07c11faac6e16b4cbf9193060f8b071c18666f8592",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/retained_flow.go.before.txt",
+      "role": "helper-pre-format-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/retained_flow.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-helper-format/selection.go.before.txt",
+      "bytes": 11354,
+      "sha256": "51c93cb88544290d04828d8afd3260f4095608f11f1a1ae0c2490be5dd8d0beb",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/selection.go.before.txt",
+      "role": "helper-pre-format-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/selection.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-helper-format/source-manifest.before.json",
+      "bytes": 8662,
+      "sha256": "b9050df64a6f1981ad60dca21cd8c6b954014e5ad3b29e8c788831bf3dd92719",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/source-manifest.before.json",
+      "role": "helper-format-provenance",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/source-manifest.before.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-helper-format/work_evidence.go.before.txt",
+      "bytes": 10191,
+      "sha256": "c806ecdc4bf8584a8bc3d67af0abb8ab1dbb3594975d06ccd0022cd01857f956",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/work_evidence.go.before.txt",
+      "role": "helper-pre-format-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/work_evidence.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-selection-lock.root.json",
+      "bytes": 3534,
+      "sha256": "4ae8d1a5fcd395875d5eae545acd3f4a254a5719564cf60c033a20b5b72feaf8",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/producer-lock.root.json",
+      "role": "root-approved-producer-lock",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/producer-lock.root.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-selection/README.md",
+      "bytes": 2651,
+      "sha256": "3c7119a1ffbf0eaeeac962ffae82ffa5a0b703ae34498529a7f7d46eefe48254",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/README.md",
+      "role": "actual-selection-independent-source",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/README.md"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-selection/input-catalog.json",
+      "bytes": 5698,
+      "sha256": "2672896cc39baa1609b96caadbfe4075154d08729092ec50a79b4e1901a3d46e",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/input-catalog.json",
+      "role": "actual-selection-independent-source",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/input-catalog.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-selection/inputs/ISSUE_RECOVERY_CONTRACT.md",
+      "bytes": 27904,
+      "sha256": "f3e019a840d6b69d853350763364a3fc41f10ea899f00ed6f164db5d58a95610",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/inputs/ISSUE_RECOVERY_CONTRACT.md",
+      "role": "actual-selection-independent-source",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/testdata/issue-recovery-actual/inputs/ISSUE_RECOVERY_CONTRACT.md"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-selection/inputs/RETAINED_ADMISSION_ACTUAL_PLAN.md",
+      "bytes": 12412,
+      "sha256": "62ddde39c811001865cd91c9b11152aa7166c4a7f69044d5946afd018ee23a72",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/inputs/RETAINED_ADMISSION_ACTUAL_PLAN.md",
+      "role": "actual-selection-independent-source",
+      "action": "reference_planned",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/RETAINED_ADMISSION_ACTUAL_PLAN.md"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-selection/inputs/actual-reference.json",
+      "bytes": 173644,
+      "sha256": "0f0890e529b64c10ed000673aab7861b9bd526057cc3c2bbbe05b868028f3d10",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/inputs/actual-reference.json",
+      "role": "actual-selection-independent-source",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/testdata/issue-recovery-actual/inputs/actual-reference.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-selection/inputs/implementation-selection.json",
+      "bytes": 6562,
+      "sha256": "3b270d9c4933cc0fe1b4a6c64bccbbbb2f66f30acdbb66bba12afbf0594f728f",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/inputs/implementation-selection.json",
+      "role": "actual-selection-independent-source",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/inputs/implementation-selection.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-selection/inputs/original-copied-inputs.json",
+      "bytes": 7453,
+      "sha256": "5d1ce505b66dc6865bef53b15bdb5755d719a699b1b02e0cde4ddf2518fa533c",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/inputs/original-copied-inputs.json",
+      "role": "actual-selection-independent-source",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/testdata/issue-recovery-actual/copied-inputs.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-selection/inputs/original-selection-lock.json",
+      "bytes": 1307,
+      "sha256": "1bc724edaef7fdb6396484f2b7c9220aa5fde17d8f99db999a8b6662fca33493",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/inputs/original-selection-lock.json",
+      "role": "actual-selection-independent-source",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/testdata/issue-recovery-actual/selection-lock.proposed.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-selection/inputs/original-selection-producer.py.txt",
+      "bytes": 9287,
+      "sha256": "fb56a5ce58cb04f250ceb8b4a0498dd2f996dd2a2fe9a86629f7c19b9d12cc76",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/inputs/original-selection-producer.py.txt",
+      "role": "actual-selection-independent-source",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/testdata/issue-recovery-actual/selection_reference.py"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-selection/inputs/original-selection-qualification.json",
+      "bytes": 4479,
+      "sha256": "c00b9b36a0c047a1854cc4efb278f101a4935d433413a4aeb11259ef5b967f50",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/inputs/original-selection-qualification.json",
+      "role": "actual-selection-independent-source",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set80/components/reports/actual-reference-attempt1.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-selection/inputs/original-selection-recipe.json",
+      "bytes": 1039,
+      "sha256": "0b418f9cc6317aa7b02786bfd807c4b503d9746eef8666b4d58616a7e37d3173",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/inputs/original-selection-recipe.json",
+      "role": "actual-selection-independent-source",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/testdata/issue-recovery-actual/selection-recipe.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-selection/inputs/path-c-reference.json",
+      "bytes": 46498,
+      "sha256": "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/inputs/path-c-reference.json",
+      "role": "actual-selection-independent-source",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/testdata/issue-recovery-actual/inputs/path-c-reference.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-selection/inputs/profile-declaration.go.txt",
+      "bytes": 4350,
+      "sha256": "e9448b49808a33c8d7b75d3512b7477e5c45fc4d54e31471ad22362b54391a46",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/inputs/profile-declaration.go.txt",
+      "role": "actual-selection-independent-source",
+      "action": "reference_existing",
+      "repository_path": "registry/issue_types.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-selection/inputs/setup-declaration.go.txt",
+      "bytes": 7325,
+      "sha256": "5f919758ad747386157ebe08427714f9a0b5421a8a947da56e8510c49dea0494",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/inputs/setup-declaration.go.txt",
+      "role": "actual-selection-independent-source",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/setup.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-selection/producer-lock.proposed.json",
+      "bytes": 3533,
+      "sha256": "6ca36571de3b5e307888b5b5ba5eeb081fec4601729830970d4a71bd5607f80f",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/producer-lock.proposed.json",
+      "role": "actual-selection-independent-source",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/producer-lock.proposed.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-selection/selection-recipe.json",
+      "bytes": 2499,
+      "sha256": "f7c85beb968eff152bf8449010054fe28d6fcbfd5a69ed2ea03406c12042f066",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/selection-recipe.json",
+      "role": "actual-selection-independent-source",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/selection-recipe.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-selection/selection_reference.py",
+      "bytes": 15788,
+      "sha256": "1145a73dafd82c007c69a3d3dd3056e20b6f77f69f7d97bdefd7c2deb342c264",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/selection_reference.py",
+      "role": "actual-selection-independent-source",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/selection_reference.py"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/actual-selection/source-ready.json",
+      "bytes": 3004,
+      "sha256": "d9af099dbb1595897ca25be1842d83ccd9d934a9a7a508e813a8efb68a282519",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/source-ready.json",
+      "role": "actual-selection-independent-source",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/source-ready.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/archive-plan.json",
+      "bytes": 119430,
+      "sha256": "5dbf2a8682ede6316c9231a5945b26ea42279b00a1ccf81bc9a904c8e9e172c2",
+      "logical_snapshot_path": "docs/evidence/set81/source/archive-plan.original.json",
+      "role": "preserved-original-archive-proposal",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/archive-plan.original.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/check-retained-actual-manifest.json",
+      "bytes": 13843,
+      "sha256": "e50c4a1b200d019c74e3e7e3f8efd5f51e4ba67d3c96d153f20ea20d6937f89d",
+      "logical_snapshot_path": "docs/evidence/set81/execution/check-retained-actual-manifest.json",
+      "role": "independent-public-result-checker",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/execution/check-retained-actual-manifest.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/check-retained-actual.py",
+      "bytes": 61546,
+      "sha256": "f315b30288e8a50e57d0bec6672f8cf884f09fde44ac7be301f59f6bca4468cb",
+      "logical_snapshot_path": "docs/evidence/set81/execution/check-retained-actual.py",
+      "role": "independent-public-result-checker",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/execution/check-retained-actual.py"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/checker-completed-context-successor/REVIEW.md",
+      "bytes": 893,
+      "sha256": "d0fd9e7dd64152c488ebf03d70b2b810c7ec85731df97a21c9387361de44de28",
+      "logical_snapshot_path": "docs/evidence/set81/execution/checker-completed-context-successor/REVIEW.md",
+      "role": "checker-dependency-or-preserved-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/execution/checker-completed-context-successor/REVIEW.md"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/checker-completed-context-successor/changes.diff",
+      "bytes": 2439,
+      "sha256": "c19c59c6c4b7f272a294d1cec5405b17d89c7ddf52a39a675ac652bc042bf0f6",
+      "logical_snapshot_path": "docs/evidence/set81/execution/checker-completed-context-successor/changes.diff",
+      "role": "checker-dependency-or-preserved-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/execution/checker-completed-context-successor/changes.diff"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/checker-completed-context-successor/predecessor/CHECK_RETAINED_ACTUAL.md",
+      "bytes": 4045,
+      "sha256": "f09381c571aca54cbc075d249d876b1ddfc89b4290358c99fefb09f2e77f35a1",
+      "logical_snapshot_path": "docs/evidence/set81/execution/checker-completed-context-successor/predecessor/CHECK_RETAINED_ACTUAL.md",
+      "role": "checker-dependency-or-preserved-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/execution/checker-completed-context-successor/predecessor/CHECK_RETAINED_ACTUAL.md"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/checker-completed-context-successor/predecessor/check-retained-actual-manifest.json",
+      "bytes": 12647,
+      "sha256": "51e9a225ca37e4cd019d630d201642a0dc92f0434696f10293926c0edd596868",
+      "logical_snapshot_path": "docs/evidence/set81/execution/checker-completed-context-successor/predecessor/check-retained-actual-manifest.json",
+      "role": "checker-dependency-or-preserved-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/execution/checker-completed-context-successor/predecessor/check-retained-actual-manifest.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/checker-completed-context-successor/predecessor/check-retained-actual.py",
+      "bytes": 61594,
+      "sha256": "7ae01f10b1a92e5060676fb93401e2dbb9938c352b55ef92e2011cb918d7d244",
+      "logical_snapshot_path": "docs/evidence/set81/execution/checker-completed-context-successor/predecessor/check-retained-actual.py",
+      "role": "checker-dependency-or-preserved-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/execution/checker-completed-context-successor/predecessor/check-retained-actual.py"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/checker-context-successor/REVIEW.md",
+      "bytes": 995,
+      "sha256": "9ebf845ff29d3cd98caf10bcf94f4c3749b56c899734b50701df5c5e93e6395e",
+      "logical_snapshot_path": "docs/evidence/set81/execution/checker-context-successor/REVIEW.md",
+      "role": "checker-dependency-or-preserved-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/execution/checker-context-successor/REVIEW.md"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/checker-context-successor/changes.diff",
+      "bytes": 1465,
+      "sha256": "c8f8a056c39a7b05d2941c1f40a769ee24c181330ffb2d3fc166f477ebf14319",
+      "logical_snapshot_path": "docs/evidence/set81/execution/checker-context-successor/changes.diff",
+      "role": "checker-dependency-or-preserved-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/execution/checker-context-successor/changes.diff"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/checker-context-successor/predecessor/check-retained-actual-manifest.json",
+      "bytes": 11497,
+      "sha256": "5fab8e8a93205a667220d8971b3b7d9b8bce29913ac5e28403354caffb613abf",
+      "logical_snapshot_path": "docs/evidence/set81/execution/checker-context-successor/predecessor/check-retained-actual-manifest.json",
+      "role": "checker-dependency-or-preserved-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/execution/checker-context-successor/predecessor/check-retained-actual-manifest.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/checker-context-successor/predecessor/check-retained-actual.py",
+      "bytes": 61108,
+      "sha256": "505e74d468ac3dd01a4438baaaecc8b73f2b9099f31f5840f3165d562f5119fc",
+      "logical_snapshot_path": "docs/evidence/set81/execution/checker-context-successor/predecessor/check-retained-actual.py",
+      "role": "checker-dependency-or-preserved-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/execution/checker-context-successor/predecessor/check-retained-actual.py"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/gofmt-stage/desktop__pooloperator__capacity_drain.go.before",
+      "bytes": 6596,
+      "sha256": "960ad2b753b6e426004e72c7eb5fcc9613363c19333b5a621533a4614d71c734",
+      "logical_snapshot_path": "docs/evidence/set81/source/gofmt-stage/desktop__pooloperator__capacity_drain.go.before",
+      "role": "original-product-test-format-preimage",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/capacity_drain.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/gofmt-stage/desktop__pooloperator__construction.go.before",
+      "bytes": 16552,
+      "sha256": "8b7e48b5c053cad52d7b9f467906936bb3181f2f7d3313a3237327876dfdebb5",
+      "logical_snapshot_path": "docs/evidence/set81/source/gofmt-stage/desktop__pooloperator__construction.go.before",
+      "role": "original-product-test-format-preimage",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/construction.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/gofmt-stage/desktop__pooloperator__daily_intake.go.before",
+      "bytes": 4382,
+      "sha256": "fec434fb14e40edf791e267d9b8c33a5b4d0de9850c23217d790b93390ddf3e9",
+      "logical_snapshot_path": "docs/evidence/set81/source/gofmt-stage/desktop__pooloperator__daily_intake.go.before",
+      "role": "original-product-test-format-preimage",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/daily_intake.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/gofmt-stage/desktop__pooloperator__daily_retained_admission_test.go.before",
+      "bytes": 12648,
+      "sha256": "aa34711ae59f57269db211f9e845ae409357dd4c592f6bf804fab6c2e8e393d2",
+      "logical_snapshot_path": "docs/evidence/set81/source/gofmt-stage/desktop__pooloperator__daily_retained_admission_test.go.before",
+      "role": "original-product-test-format-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/gofmt-stage/desktop__pooloperator__daily_retained_admission_test.go.before"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/gofmt-stage/desktop__pooloperator__daily_retained_delivery_test.go.before",
+      "bytes": 10214,
+      "sha256": "30dd7f472946eeaafe49b1e5077c720e68db947ab36ee2999427c3c448b46a3e",
+      "logical_snapshot_path": "docs/evidence/set81/source/gofmt-stage/desktop__pooloperator__daily_retained_delivery_test.go.before",
+      "role": "original-product-test-format-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/gofmt-stage/desktop__pooloperator__daily_retained_delivery_test.go.before"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/gofmt-stage/desktop__pooloperator__runtime.go.before",
+      "bytes": 21295,
+      "sha256": "21f1d92f3b769fe58cdf56f14ec48df3fecc2c5c015e1560aa49926465270c6d",
+      "logical_snapshot_path": "docs/evidence/set81/source/gofmt-stage/desktop__pooloperator__runtime.go.before",
+      "role": "original-product-test-format-preimage",
+      "action": "reference_planned",
+      "repository_path": "docs/evidence/set81/source/round-contention-stage/before/desktop/pooloperator/runtime.go.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/gofmt-stage/live-capacity.json",
+      "bytes": 291,
+      "sha256": "4356aff28ee5b8963bd62f7c29697fcfadd869e8dc5df9099e5f7c909fd70b3a",
+      "logical_snapshot_path": "docs/evidence/set81/source/gofmt-stage/live-capacity.json",
+      "role": "format-provenance",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/gofmt-stage/live-capacity.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/gofmt-stage/prospectservice__daily_fenced_admission.go.before",
+      "bytes": 2865,
+      "sha256": "d5af6dd0e350a92b3f2fc742c58e0f253f5ecd6ae7fe9fa1859c5a4ccfe78fac",
+      "logical_snapshot_path": "docs/evidence/set81/source/gofmt-stage/prospectservice__daily_fenced_admission.go.before",
+      "role": "original-product-test-format-preimage",
+      "action": "reference_existing",
+      "repository_path": "prospectservice/daily_fenced_admission.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/gofmt-stage/prospectservice__daily_fenced_admission_test.go.before",
+      "bytes": 10665,
+      "sha256": "7c8916e982606702fe632ef4a38ae011fb63c626109375fda71f0f945d3d1387",
+      "logical_snapshot_path": "docs/evidence/set81/source/gofmt-stage/prospectservice__daily_fenced_admission_test.go.before",
+      "role": "original-product-test-format-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/gofmt-stage/prospectservice__daily_fenced_admission_test.go.before"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/gofmt-stage/prospectservice__daily_fenced_profile_test.go.before",
+      "bytes": 513,
+      "sha256": "4e73435d3019a3caff61e7d2e5c599719189a8c4fd321d1268ccf46ace326606",
+      "logical_snapshot_path": "docs/evidence/set81/source/gofmt-stage/prospectservice__daily_fenced_profile_test.go.before",
+      "role": "original-product-test-format-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/gofmt-stage/prospectservice__daily_fenced_profile_test.go.before"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/gofmt-stage/prospectservice__manifest_fenced_server.go.before",
+      "bytes": 5654,
+      "sha256": "8dbc991e1521cb1a9504fc96e92498e3d6cf6fdee727f37e051d180ded0fb4ef",
+      "logical_snapshot_path": "docs/evidence/set81/source/gofmt-stage/prospectservice__manifest_fenced_server.go.before",
+      "role": "original-product-test-format-preimage",
+      "action": "reference_existing",
+      "repository_path": "prospectservice/manifest_fenced_server.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/gofmt-stage/prospectservice__manifest_server.go.before",
+      "bytes": 19449,
+      "sha256": "6b72e50148d6c2b034b9d4d174815af1c22af170817d3d4bf6f62a34f536802d",
+      "logical_snapshot_path": "docs/evidence/set81/source/gofmt-stage/prospectservice__manifest_server.go.before",
+      "role": "original-product-test-format-preimage",
+      "action": "reference_existing",
+      "repository_path": "prospectservice/manifest_server.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/gofmt-stage/prospectworker__pool_retained_admission_test.go.before",
+      "bytes": 3628,
+      "sha256": "bfa83577f9d12eaf7915c35216db41604aba0bcce43f8f61122fdb4133073d7e",
+      "logical_snapshot_path": "docs/evidence/set81/source/gofmt-stage/prospectworker__pool_retained_admission_test.go.before",
+      "role": "original-product-test-format-preimage",
+      "action": "reference_existing",
+      "repository_path": "prospectworker/pool_retained_admission_test.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/gofmt-stage/registry__manifest_admission_preflight.go.before",
+      "bytes": 2904,
+      "sha256": "71959959569287de81119db62b7d0c864188e9dd883ef970b49176ddd4ad61b2",
+      "logical_snapshot_path": "docs/evidence/set81/source/gofmt-stage/registry__manifest_admission_preflight.go.before",
+      "role": "original-product-test-format-preimage",
+      "action": "reference_existing",
+      "repository_path": "registry/manifest_admission_preflight.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/gofmt-stage/registry__manifest_admission_preflight_profile_test.go.before",
+      "bytes": 619,
+      "sha256": "206bbb85ba69a0a722eb3d9117ec7acb8421090aaabbdc950fdc321b35c78ff9",
+      "logical_snapshot_path": "docs/evidence/set81/source/gofmt-stage/registry__manifest_admission_preflight_profile_test.go.before",
+      "role": "original-product-test-format-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/gofmt-stage/registry__manifest_admission_preflight_profile_test.go.before"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/gofmt-stage/registry__manifest_admission_preflight_test.go.before",
+      "bytes": 11808,
+      "sha256": "d033593e9628d3d98b576d1aed2cccc313b1566824c3b6bd9d9fff4d40b69c9d",
+      "logical_snapshot_path": "docs/evidence/set81/source/gofmt-stage/registry__manifest_admission_preflight_test.go.before",
+      "role": "original-product-test-format-preimage",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/gofmt-stage/registry__manifest_admission_preflight_test.go.before"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/gofmt-stage/report.json",
+      "bytes": 4709,
+      "sha256": "132576464d6b705ae7316e16e1bd7ed06a05af9f316cda636e9eec3db5cf3d1e",
+      "logical_snapshot_path": "docs/evidence/set81/source/gofmt-stage/report.json",
+      "role": "format-provenance",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/gofmt-stage/report.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/implementation-selection-lease-addendum.json",
+      "bytes": 920,
+      "sha256": "f87295eb33353d94c8722d5a63dc29107779cfdfd29aac06dabd69473bc0287a",
+      "logical_snapshot_path": "docs/evidence/set81/source/implementation-selection-lease-addendum.json",
+      "role": "approved-scope-and-mode-selection",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/implementation-selection-lease-addendum.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/implementation-selection.json",
+      "bytes": 6562,
+      "sha256": "3b270d9c4933cc0fe1b4a6c64bccbbbb2f66f30acdbb66bba12afbf0594f728f",
+      "logical_snapshot_path": "docs/evidence/set81/source/implementation-selection.json",
+      "role": "approved-scope-and-mode-selection",
+      "action": "reference_planned",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/inputs/implementation-selection.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/before/capacity_drain.go",
+      "bytes": 6507,
+      "sha256": "f78d3613a6db6169e3562c67fa36418c66afffa8b6f1f7cca771a43e0024f21e",
+      "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/before/capacity_drain.go.txt",
+      "role": "operator-source-and-test-successor",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/operator-stage/before/capacity_drain.go.txt",
+      "original_logical_snapshot_path": "docs/evidence/set81/source/operator-stage/before/capacity_drain.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/before/construction.go",
+      "bytes": 16317,
+      "sha256": "37fa71d3465de9267275df106deae584b9a75314aaefb62d074b2401a7b9ad54",
+      "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/before/construction.go.txt",
+      "role": "operator-source-and-test-successor",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/operator-stage/before/construction.go.txt",
+      "original_logical_snapshot_path": "docs/evidence/set81/source/operator-stage/before/construction.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/before/runtime.go",
+      "bytes": 21184,
+      "sha256": "39e93745f9059e0f4b2e636476ff7c2d4e889b771349f44156c4cc20c097746e",
+      "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/before/runtime.go.txt",
+      "role": "operator-source-and-test-successor",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/operator-stage/before/runtime.go.txt",
+      "original_logical_snapshot_path": "docs/evidence/set81/source/operator-stage/before/runtime.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/changes.diff",
+      "bytes": 19278,
+      "sha256": "b0acdc72751b6e93118242a5c085a5e823c304e3f467110be16158ba80c24b38",
+      "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/changes.diff",
+      "role": "operator-source-and-test-successor",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/operator-stage/changes.diff"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/pending-admission-checkpoint.json",
+      "bytes": 5167,
+      "sha256": "369d3208631f697d6be473f928755b092f60014ab137aeccb77e3a9a47b6287b",
+      "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pending-admission-checkpoint.json",
+      "role": "operator-source-and-test-successor",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/operator-stage/pending-admission-checkpoint.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/pending-admission-successor.diff",
+      "bytes": 14061,
+      "sha256": "0fefc4243aa7b74f322dcf6a52b9538235e9cdc5de866cb60e5a56a55bac9aed",
+      "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pending-admission-successor.diff",
+      "role": "operator-source-and-test-successor",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/operator-stage/pending-admission-successor.diff"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/pre-pending-admission-successor/capacity_drain.go",
+      "bytes": 6596,
+      "sha256": "960ad2b753b6e426004e72c7eb5fcc9613363c19333b5a621533a4614d71c734",
+      "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/capacity_drain.go.txt",
+      "role": "operator-source-and-test-successor",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/capacity_drain.go",
+      "original_logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/capacity_drain.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/pre-pending-admission-successor/changes.diff",
+      "bytes": 19278,
+      "sha256": "b0acdc72751b6e93118242a5c085a5e823c304e3f467110be16158ba80c24b38",
+      "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/changes.diff",
+      "role": "operator-source-and-test-successor",
+      "action": "reference_planned",
+      "repository_path": "docs/evidence/set81/source/operator-stage/changes.diff"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/pre-pending-admission-successor/construction.go",
+      "bytes": 16552,
+      "sha256": "8b7e48b5c053cad52d7b9f467906936bb3181f2f7d3313a3237327876dfdebb5",
+      "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/construction.go.txt",
+      "role": "operator-source-and-test-successor",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/construction.go",
+      "original_logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/construction.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/pre-pending-admission-successor/daily_intake.go",
+      "bytes": 4382,
+      "sha256": "fec434fb14e40edf791e267d9b8c33a5b4d0de9850c23217d790b93390ddf3e9",
+      "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/daily_intake.go.txt",
+      "role": "operator-source-and-test-successor",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/daily_intake.go",
+      "original_logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/daily_intake.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/pre-pending-admission-successor/daily_retained_admission_test.go",
+      "bytes": 12269,
+      "sha256": "e3e5ed1ed714def5bd5ec3527cbf6c016fcb24f64006af1359bd91658be2eb26",
+      "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/daily_retained_admission_test.go.txt",
+      "role": "operator-source-and-test-successor",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/daily_retained_admission_test.go.txt",
+      "original_logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/daily_retained_admission_test.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/pre-pending-admission-successor/production-checkpoint.json",
+      "bytes": 921,
+      "sha256": "ec78b3094eb3149624baabf025e6f631cca3e13eafc08d4c2f39bb36a492a222",
+      "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/production-checkpoint.json",
+      "role": "operator-source-and-test-successor",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/production-checkpoint.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/pre-pending-admission-successor/runtime.go",
+      "bytes": 21295,
+      "sha256": "21f1d92f3b769fe58cdf56f14ec48df3fecc2c5c015e1560aa49926465270c6d",
+      "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/runtime.go.txt",
+      "role": "operator-source-and-test-successor",
+      "action": "reference_planned",
+      "repository_path": "docs/evidence/set81/source/round-contention-stage/before/desktop/pooloperator/runtime.go.txt",
+      "original_logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/runtime.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/pre-pending-admission-successor/source-checkpoint.json",
+      "bytes": 3665,
+      "sha256": "0b11f2fc85cd162c629049888675f078dfc1f5942f244520994a4184da6dceb0",
+      "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/source-checkpoint.json",
+      "role": "operator-source-and-test-successor",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/source-checkpoint.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/preimages.json",
+      "bytes": 527,
+      "sha256": "20a3d4940b63133515d75cea170527e916c41c97c5bbbe5269886cdaddfdfb36",
+      "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/preimages.json",
+      "role": "operator-source-and-test-successor",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/operator-stage/preimages.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/production-checkpoint.json",
+      "bytes": 921,
+      "sha256": "ec78b3094eb3149624baabf025e6f631cca3e13eafc08d4c2f39bb36a492a222",
+      "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/production-checkpoint.json",
+      "role": "operator-source-and-test-successor",
+      "action": "reference_planned",
+      "repository_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/production-checkpoint.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/source-checkpoint.json",
+      "bytes": 3665,
+      "sha256": "0b11f2fc85cd162c629049888675f078dfc1f5942f244520994a4184da6dceb0",
+      "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/source-checkpoint.json",
+      "role": "operator-source-and-test-successor",
+      "action": "reference_planned",
+      "repository_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/source-checkpoint.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/oracle-clock-correction/CORRECTION.json",
+      "bytes": 3701,
+      "sha256": "81a8cf9ee2542612266225c52c0168b3fa268d3cf04b5f2503d5f6c2a680185f",
+      "logical_snapshot_path": "testdata/retained-admission/oracle-clock-correction/CORRECTION.json",
+      "role": "independent-oracle-correction",
+      "action": "copy_after_authorization",
+      "repository_path": "testdata/retained-admission/oracle-clock-correction/CORRECTION.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/oracle-clock-correction/README.md",
+      "bytes": 1124,
+      "sha256": "e1d956f7a5e97fe339084d9c3f7f5040aacf5d662deab584353207f3768431b9",
+      "logical_snapshot_path": "testdata/retained-admission/oracle-clock-correction/README.md",
+      "role": "independent-oracle-correction",
+      "action": "copy_after_authorization",
+      "repository_path": "testdata/retained-admission/oracle-clock-correction/README.md"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/oracle-clock-correction/manifest.json",
+      "bytes": 848,
+      "sha256": "15b91a9690cd9b215ea3e0dfa8373697c22fd72686a2b477caf7b1ea491a067a",
+      "logical_snapshot_path": "testdata/retained-admission/oracle-clock-correction/manifest.json",
+      "role": "independent-oracle-correction",
+      "action": "copy_after_authorization",
+      "repository_path": "testdata/retained-admission/oracle-clock-correction/manifest.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/oracle-lease-provenance-correction/CORRECTION.json",
+      "bytes": 4795,
+      "sha256": "689f47d3708137c01ac7a55fc55f30cfedf9cacd46c3f08ddd134d5dab9a626f",
+      "logical_snapshot_path": "testdata/retained-admission/oracle-lease-provenance-correction/CORRECTION.json",
+      "role": "independent-oracle-correction",
+      "action": "copy_after_authorization",
+      "repository_path": "testdata/retained-admission/oracle-lease-provenance-correction/CORRECTION.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/oracle-lease-provenance-correction/README.md",
+      "bytes": 1321,
+      "sha256": "d6b5a12c91de2dc27adcfe79ecc5ed09dd6ee20997c54dcb983e4b61424d06d0",
+      "logical_snapshot_path": "testdata/retained-admission/oracle-lease-provenance-correction/README.md",
+      "role": "independent-oracle-correction",
+      "action": "copy_after_authorization",
+      "repository_path": "testdata/retained-admission/oracle-lease-provenance-correction/README.md"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/oracle-lease-provenance-correction/manifest.json",
+      "bytes": 1080,
+      "sha256": "760e60d3093557ba5b54e1e5dbe2155197efc9435a1b7cf33f74a7f5fce786bf",
+      "logical_snapshot_path": "testdata/retained-admission/oracle-lease-provenance-correction/manifest.json",
+      "role": "independent-oracle-correction",
+      "action": "copy_after_authorization",
+      "repository_path": "testdata/retained-admission/oracle-lease-provenance-correction/manifest.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/oracle/ACCEPTANCE.md",
+      "bytes": 7383,
+      "sha256": "f0c66a138e64e97c648b69fca13171e68f11cd47b03168b52ac4b5c6dbefdab6",
+      "logical_snapshot_path": "testdata/retained-admission/oracle/ACCEPTANCE.md",
+      "role": "independent-state-oracle",
+      "action": "copy_after_authorization",
+      "repository_path": "testdata/retained-admission/oracle/ACCEPTANCE.md"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/oracle/acceptance.json",
+      "bytes": 31598,
+      "sha256": "1e31fb64f0bf90a10284f74b09d2642b6b394dce69da688265c44f45c24066aa",
+      "logical_snapshot_path": "testdata/retained-admission/oracle/acceptance.json",
+      "role": "independent-state-oracle",
+      "action": "copy_after_authorization",
+      "repository_path": "testdata/retained-admission/oracle/acceptance.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/oracle/input-catalog.json",
+      "bytes": 9104,
+      "sha256": "6ecc33f05098284f70bdae30cd875ef0b80499225e50614ef158c0b06d0d9141",
+      "logical_snapshot_path": "testdata/retained-admission/oracle/input-catalog.json",
+      "role": "independent-state-oracle",
+      "action": "copy_after_authorization",
+      "repository_path": "testdata/retained-admission/oracle/input-catalog.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/oracle/inputs/actual-selection.json",
+      "bytes": 173644,
+      "sha256": "0f0890e529b64c10ed000673aab7861b9bd526057cc3c2bbbe05b868028f3d10",
+      "logical_snapshot_path": "testdata/retained-admission/oracle/inputs/actual-selection.json",
+      "role": "independent-state-oracle-input",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/testdata/issue-recovery-actual/inputs/actual-reference.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/oracle/inputs/attachment-actual.json",
+      "bytes": 46498,
+      "sha256": "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386",
+      "logical_snapshot_path": "testdata/retained-admission/oracle/inputs/attachment-actual.json",
+      "role": "independent-state-oracle-input",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/testdata/issue-recovery-actual/inputs/path-c-reference.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/oracle/inputs/daily-admission-actual.json",
+      "bytes": 29980,
+      "sha256": "1d2b1462296bd022c53df9dc583db3c38cd13a8e13e84f9983f2505b3aefb08f",
+      "logical_snapshot_path": "testdata/retained-admission/oracle/inputs/daily-admission-actual.json",
+      "role": "independent-state-oracle-input",
+      "action": "reference_existing",
+      "repository_path": "poolsettle/testdata/daily-admission-actual/reference-v1.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/oracle/inputs/issue-recovery.json",
+      "bytes": 6134980,
+      "sha256": "4bbe4eb9556ed5a894cee6ff565b0dcca805f27fea2d77cfe3a56242dc3dac91",
+      "logical_snapshot_path": "testdata/retained-admission/oracle/inputs/issue-recovery.json",
+      "role": "independent-state-oracle-input",
+      "action": "reference_existing",
+      "repository_path": "testdata/issue-recovery/reference-v1.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/oracle/inputs/manifest-admission.json",
+      "bytes": 1207894,
+      "sha256": "d32a8653c76c643addb3df091ca8d7dfdba66c2486f2ca305e718113f71d5794",
+      "logical_snapshot_path": "testdata/retained-admission/oracle/inputs/manifest-admission.json",
+      "role": "independent-state-oracle-input",
+      "action": "reference_existing",
+      "repository_path": "registry/testdata/manifest/reference/manifest_admission_v1.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/oracle/inputs/pool-share.json",
+      "bytes": 33879,
+      "sha256": "2210d992e618b7a0952736dede1263b678f1a7a2d55d14ccde1cc6b29317de87",
+      "logical_snapshot_path": "testdata/retained-admission/oracle/inputs/pool-share.json",
+      "role": "independent-state-oracle-input",
+      "action": "reference_existing",
+      "repository_path": "prospectwork/testdata/pool_share_reference/pool_share_v1.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/oracle/inputs/public-daily.json",
+      "bytes": 3176583,
+      "sha256": "a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3",
+      "logical_snapshot_path": "testdata/retained-admission/oracle/inputs/public-daily.json",
+      "role": "independent-state-oracle-input",
+      "action": "reference_existing",
+      "repository_path": "testdata/public-daily/reference-v1.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/oracle/manifest.json",
+      "bytes": 2385,
+      "sha256": "0d7df95e552b7a94078e9ccd536bbb827d93a69753c9051ece06901cbec28a62",
+      "logical_snapshot_path": "testdata/retained-admission/oracle/manifest.json",
+      "role": "independent-state-oracle",
+      "action": "copy_after_authorization",
+      "repository_path": "testdata/retained-admission/oracle/manifest.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/oracle/source-anchors.json",
+      "bytes": 3770,
+      "sha256": "9f8e284026cf4c51e35caca357b01848fbcd12d4ab5cabfb39cfe4979815a955",
+      "logical_snapshot_path": "testdata/retained-admission/oracle/source-anchors.json",
+      "role": "independent-state-oracle",
+      "action": "copy_after_authorization",
+      "repository_path": "testdata/retained-admission/oracle/source-anchors.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/qualify-final-builds.py",
+      "bytes": 8824,
+      "sha256": "5a050f14d943008e6d04baafc7ece82734017d83838d51f1aa4d5f818a0f4dc3",
+      "logical_snapshot_path": "docs/evidence/set81/execution/qualify-final-builds.py",
+      "role": "runner-or-explicit-execution-selection",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/execution/qualify-final-builds.py"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/read-ci-job.py",
+      "bytes": 849,
+      "sha256": "75c18abe5f57324e6c7a9f0265263f591cb9a36dd3b513b2625fd9591f42642d",
+      "logical_snapshot_path": "docs/evidence/set81/execution/read-ci-job.py",
+      "role": "runner-or-explicit-execution-selection",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/execution/read-ci-job.py"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/regression-skips.json",
+      "bytes": 17188,
+      "sha256": "5a8328c7983c0e4c358e0b6f4ee247735b48449638ff94b7e554859f45150c33",
+      "logical_snapshot_path": "docs/evidence/set81/execution/regression-skips.json",
+      "role": "runner-or-explicit-execution-selection",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/execution/regression-skips.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-a-actual-attempt1-final.lock.json",
+      "bytes": 18854,
+      "sha256": "5117f7585ea2584f60dcf8aeb734419533688ac4479b3b62c13b2d27ffba16f9",
+      "logical_snapshot_path": "docs/evidence/set81/execution/retained-admission-a-actual-attempt1-final.lock.json",
+      "role": "runner-or-explicit-execution-selection",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/execution/retained-admission-a-actual-attempt1-final.lock.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-a-actual-attempt1.lock.json",
+      "bytes": 16761,
+      "sha256": "f27870e6f4616e4409f807cfc2eebd6f473a4556a158928a71c123781be0c4ec",
+      "logical_snapshot_path": "docs/evidence/set81/execution/retained-admission-a-actual-attempt1.lock.json",
+      "role": "runner-or-explicit-execution-selection",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/execution/retained-admission-a-actual-attempt1.lock.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-a-actual-attempt1.superseded.json",
+      "bytes": 409,
+      "sha256": "81861f7ebf7162e4f6ca2ddf2f395b43f6583dd3205543b65e6a302b71ef62d3",
+      "logical_snapshot_path": "docs/evidence/set81/execution/retained-admission-a-actual-attempt1.superseded.json",
+      "role": "runner-or-explicit-execution-selection",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/execution/retained-admission-a-actual-attempt1.superseded.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/PLAN_CADENCE_SUCCESSOR.md",
+      "bytes": 3455,
+      "sha256": "6c48b90a10b5081bf0cd24e3cd3c8cc321d5cbf8fa8de322bd2c8ff0b7efe046",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/PLAN_CADENCE_SUCCESSOR.md",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/PLAN_CADENCE_SUCCESSOR.md"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/PUBLIC_SCHEMA.md",
+      "bytes": 8533,
+      "sha256": "2e8fd250cf3f51972f7fd694499da62792650224a69b6f9bcdc1f1c19452b41e",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/PUBLIC_SCHEMA.md",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/PUBLIC_SCHEMA.md"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/README.md",
+      "bytes": 4112,
+      "sha256": "bbaa288c527bdb512c7cb2b6ca78defa6135650c21a79967e032175be2fd9eea",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/README.md",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/README.md"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/admission-audit-manifest.json",
+      "bytes": 3191,
+      "sha256": "ca3d6a749a75f7b5ff9b1533b05198a0b3709b8e7b6fa1fd939df0f87dd4968d",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/admission-audit-manifest.json",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/admission-audit-manifest.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/admission_audit.go",
+      "bytes": 12759,
+      "sha256": "52b10cc7a6f39b385546be67d439a135d26fe44c7e27d416d970743e89a3de9a",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/admission_audit.go",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/admission_audit.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/admission_relay.go",
+      "bytes": 23181,
+      "sha256": "f6882d735b4e4316efa143cf346f9bc7466a82b4e7a0fc78738230de6f046409",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/admission_relay.go",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/admission_relay.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/b-maturity-order.diff",
+      "bytes": 8265,
+      "sha256": "9b6ca10121682059278d94c5d5d9e48028adeb3a3338566f111e4bd35609e8eb",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/b-maturity-order.diff",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/b-maturity-order.diff"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/cli_process.go",
+      "bytes": 9484,
+      "sha256": "9e0d2fbcb97382e9f8ba16284f96b08da2d1cd9260e479edd847463e3e143149",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/cli_process.go",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "reference_planned",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/cli_process.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/fixture-catalog.json",
+      "bytes": 66249,
+      "sha256": "2637978c2e08637dae2a21bf7fcb8e9ab37edb3476e2b9512c73ff16809b7e55",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/fixture-catalog.json",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/fixture-catalog.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/fixture-public.json",
+      "bytes": 7244,
+      "sha256": "83bfe6cdd6020524199ba6abada82614fb67987b32b9fb96111bf6bddf879f23",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/fixture-public.json",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/fixture-public.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/fixture_setup.go",
+      "bytes": 5416,
+      "sha256": "7b3ddd36d8c8e6098f6db7f3d04e74ffb77533cdcfdc10e480b2b66f38063dd0",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/fixture_setup.go",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "reference_planned",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/fixture_setup.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/go.mod",
+      "bytes": 1375,
+      "sha256": "847ddca78d2ff5bd8a9dffa306a6f3c81f72d6e01c962c1863832db45851cecf",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/go.mod",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/go.mod"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inheritance.diff",
+      "bytes": 8137,
+      "sha256": "fc4d7cf1640d720add5f4d74254a0c050ca99c8785dfb5ad5539b84263884189",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/inheritance.diff",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/inheritance.diff"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/RETAINED_ADMISSION_ACTUAL_PLAN.md",
+      "bytes": 12412,
+      "sha256": "62ddde39c811001865cd91c9b11152aa7166c4a7f69044d5946afd018ee23a72",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/inputs/RETAINED_ADMISSION_ACTUAL_PLAN.md",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "reference_planned",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/RETAINED_ADMISSION_ACTUAL_PLAN.md"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/base-reference.json",
+      "bytes": 3176583,
+      "sha256": "a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/inputs/base-reference.json",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "reference_existing",
+      "repository_path": "testdata/public-daily/reference-v1.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/original-helper-source-manifest.json",
+      "bytes": 15800,
+      "sha256": "0ad1f3f0a9b9d22bfcde4682ecdd1530837311e4261ba3a47b57544c861c056b",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/inputs/original-helper-source-manifest.json",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/inputs/original-helper-source-manifest.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/path-c-reference.json",
+      "bytes": 46498,
+      "sha256": "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/inputs/path-c-reference.json",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/testdata/issue-recovery-actual/inputs/path-c-reference.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/reference-v1.json",
+      "bytes": 174293,
+      "sha256": "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/inputs/reference-v1.json",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "reference_planned",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/qualification/primary.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/relay-peer-review.json",
+      "bytes": 3193,
+      "sha256": "e43abbdc61e29e383dc2978670d95a310a9e637373f8c12a7531369d4c810f31",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/inputs/relay-peer-review.json",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/inputs/relay-peer-review.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/relay-quiescence-review.json",
+      "bytes": 1692,
+      "sha256": "12de4ea990923ead63ff8f7e1d6da75e09a89ce496d8f2a78b1e50eade66b16f",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/inputs/relay-quiescence-review.json",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/inputs/relay-quiescence-review.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/selection-producer-lock.proposed.json",
+      "bytes": 3533,
+      "sha256": "6ca36571de3b5e307888b5b5ba5eeb081fec4601729830970d4a71bd5607f80f",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/inputs/selection-producer-lock.proposed.json",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "reference_planned",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/producer-lock.proposed.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/selection-qualification.json",
+      "bytes": 830,
+      "sha256": "dfab9f630198ecbd2923ba2524c72725bc6853ba930e2081c6b0d4f4ed6e2b46",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/inputs/selection-qualification.json",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "reference_planned",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/qualification/report.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/selection-source-ready.json",
+      "bytes": 3004,
+      "sha256": "d9af099dbb1595897ca25be1842d83ccd9d934a9a7a508e813a8efb68a282519",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/inputs/selection-source-ready.json",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "reference_planned",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/reference/source-ready.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/issue_audit.go",
+      "bytes": 12822,
+      "sha256": "f1dda87812b30e59e6408ebedaa32518fe1073dc8da8adc67eaacf7dd0179833",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/issue_audit.go",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "reference_planned",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/issue_audit.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/main.go",
+      "bytes": 13366,
+      "sha256": "cf2f367ac2270873ea9aa0da4bd0c15f8d928d4fd8e2960b1d27ca8694f1ade7",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/main.go",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "reference_planned",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/main.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/node_helpers.go",
+      "bytes": 8810,
+      "sha256": "331190728f79c5f5b0aaae4109426ffc4e41768a087b86126f31799940fb66cd",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/node_helpers.go",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "reference_planned",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/node_helpers.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/operator_audit.go",
+      "bytes": 14293,
+      "sha256": "14d463c15ae4438ef6172b89d2e8714d1591ce0869efad3b2a28dfda6e45b2bc",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/operator_audit.go",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "reference_planned",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/operator_audit.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/operator_process.go",
+      "bytes": 9743,
+      "sha256": "4e62812e828e3ec6cef2a9c605527d23c1478ee0da701cb2b5d14666ecfd6417",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/operator_process.go",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "reference_planned",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/operator_process.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/outbox_audit.go",
+      "bytes": 11444,
+      "sha256": "84fa9a045b9f1edb607cbfdec7948902cdc8f344595bebbc62922862bc8e0f77",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/outbox_audit.go",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "reference_planned",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/outbox_audit.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/payment.go",
+      "bytes": 10011,
+      "sha256": "1483c0ec3882de879d2a2b8570422a45f4b6df70319c291cc6e1adea4b17edc8",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/payment.go",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "reference_planned",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/payment.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/pre-b-maturity/PLAN_CADENCE_SUCCESSOR.md",
+      "bytes": 2427,
+      "sha256": "678f29482e2fe5e4c7a862915b670add20c08b9fd481fa6463f09f837fc8f8b3",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-b-maturity/PLAN_CADENCE_SUCCESSOR.md",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-b-maturity/PLAN_CADENCE_SUCCESSOR.md"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/pre-b-maturity/PUBLIC_SCHEMA.md",
+      "bytes": 7821,
+      "sha256": "78df6cdc468839521269771cea875ba1b68d2b10bf433869cd5eefc3a7fad5a4",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-b-maturity/PUBLIC_SCHEMA.md",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-b-maturity/PUBLIC_SCHEMA.md"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/pre-b-maturity/README.md",
+      "bytes": 4031,
+      "sha256": "442157533d641acbcd9992b3b0b7368f4d93296f69a6e07fb5c69238e9364caa",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-b-maturity/README.md",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-b-maturity/README.md"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/pre-b-maturity/retained_flow.go.txt",
+      "bytes": 15836,
+      "sha256": "a3f3d0b0bcb98e9153d6cf2a1da6188ab295d1e624eeac0f818749572390dc2e",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-b-maturity/retained_flow.go.txt",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-b-maturity/retained_flow.go.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/pre-b-maturity/source-manifest.json",
+      "bytes": 7083,
+      "sha256": "501034e6545e2cefd5107da773ea749c857cf4289cb733e04c2365d0f82da924",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-b-maturity/source-manifest.json",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-b-maturity/source-manifest.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/pre-last-observation-note/PUBLIC_SCHEMA.md",
+      "bytes": 7980,
+      "sha256": "9b6d720f4942077dbd7910a626632f2f603a4e3050358441a1db95659867f004",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-last-observation-note/PUBLIC_SCHEMA.md",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-last-observation-note/PUBLIC_SCHEMA.md"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/pre-last-observation-note/source-manifest.json",
+      "bytes": 8304,
+      "sha256": "d3fd1f13a58982574d2e1ff3efb57652dff743983c99ba5bc2e4ebfa10b7f2a1",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-last-observation-note/source-manifest.json",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-last-observation-note/source-manifest.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/preimages/cli_process.go.txt",
+      "bytes": 9473,
+      "sha256": "a25c7a14f56d3b4a0a2a90f4807d87a8cc048a6ffccaec7dc6747f4ed4b007b2",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/preimages/cli_process.go.txt",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/preimages/cli_process.go.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/preimages/go.mod.txt",
+      "bytes": 1371,
+      "sha256": "2acab03476a5fbe3c41af0d387342778f499e97d6e876c7f0d936f704021d4c1",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/preimages/go.mod.txt",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/preimages/go.mod.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/preimages/main.go.txt",
+      "bytes": 14859,
+      "sha256": "2a090aed63d5f74f4a959f2cf9de6bede10762df74891ae5a974ba318110f979",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/preimages/main.go.txt",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/preimages/main.go.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/preimages/selection.go.txt",
+      "bytes": 10439,
+      "sha256": "8ec99e0040b490592c62b49fe3a084f6a2359d21f6773b0748f07bd83fc176b3",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/preimages/selection.go.txt",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/preimages/selection.go.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/proposal_relay.go",
+      "bytes": 6312,
+      "sha256": "f14227d8b135f7bf66f5c7937acb636d05471ef3e953fca87396caac957e9a91",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/proposal_relay.go",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "reference_planned",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/proposal_relay.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/retained_flow.go",
+      "bytes": 17904,
+      "sha256": "ea19d6a022de5c54fe92298734f4652b8e822e077a3572a79fea4b604f09cc37",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/retained_flow.go",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/retained_flow.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/reuse-manifest.json",
+      "bytes": 10563,
+      "sha256": "253d64d58eee5e31816fea1f246ac6bcd52d0ff685b9a1b04d5708f8028ec0b9",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/reuse-manifest.json",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/reuse-manifest.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/reuse-preimages.json",
+      "bytes": 5181,
+      "sha256": "90415d520bab93319c9b671220c57ad61412c0dc1f1a4d25c337b0b136400e52",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/reuse-preimages.json",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/reuse-preimages.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/selection.go",
+      "bytes": 11497,
+      "sha256": "6d263214a096aa60325bdfe760edcbe24c68aa0c3731472a5c136225c04ae7ee",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/selection.go",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/selection.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/source-manifest.json",
+      "bytes": 9099,
+      "sha256": "85b88843e1dd60173f1453b924712152758d8b53c8ff5f95477cf29d7d820074",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/source-manifest.json",
+      "role": "final-helper-source-manifest",
+      "action": "copy_after_authorization",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/source-manifest.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/work_evidence.go",
+      "bytes": 10191,
+      "sha256": "c806ecdc4bf8584a8bc3d67af0abb8ab1dbb3594975d06ccd0022cd01857f956",
+      "logical_snapshot_path": "desktop/pooloperator/testdata/retained-admission-actual/work_evidence.go",
+      "role": "actual-helper-source-or-explicit-public-input",
+      "action": "reference_planned",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/pre-format/work_evidence.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-b-actual-attempt1-final.lock.json",
+      "bytes": 18854,
+      "sha256": "7421bbdfee229cc03cd33b71922ec3d17ad10bd49c44148f9c8da69bf54981f2",
+      "logical_snapshot_path": "docs/evidence/set81/execution/retained-admission-b-actual-attempt1-final.lock.json",
+      "role": "runner-or-explicit-execution-selection",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/execution/retained-admission-b-actual-attempt1-final.lock.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/retained-admission-b-actual-attempt1-final.superseded.json",
+      "bytes": 433,
+      "sha256": "4359dd948af8b3b4c8bd397ee7a512a87d118d6b19a490dfc185aaa34770bf63",
+      "logical_snapshot_path": "docs/evidence/set81/execution/retained-admission-b-actual-attempt1-final.superseded.json",
+      "role": "bounded-runner-or-explicit-never-executed-B-disposition",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/execution/retained-admission-b-actual-attempt1-final.superseded.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/round-contention-stage/RATIONALE.md",
+      "bytes": 4478,
+      "sha256": "04ecbcfb9728d31a8cc5161664b38a0e6ed0add141a601acbf392ea928b4f4ff",
+      "logical_snapshot_path": "docs/evidence/set81/source/round-contention-stage/RATIONALE.md",
+      "role": "round-contention-rationale-and-diff",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/round-contention-stage/RATIONALE.md"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/round-contention-stage/after/desktop/pooloperator/daily_round_contention.go",
+      "bytes": 1598,
+      "sha256": "596973605b091a326680a2415e981a44cf22fadef7db8fd0348bca847cda793f",
+      "logical_snapshot_path": "docs/evidence/set81/source/round-contention-stage/after/desktop/pooloperator/daily_round_contention.go.txt",
+      "role": "round-contention-production-after",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/daily_round_contention.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/round-contention-stage/after/desktop/pooloperator/live_round.go",
+      "bytes": 3392,
+      "sha256": "45b19a96542db28f8e1f311f9e5dce2bbb85da5e17ec042116e8f1fe032a013f",
+      "logical_snapshot_path": "docs/evidence/set81/source/round-contention-stage/after/desktop/pooloperator/live_round.go.txt",
+      "role": "round-contention-production-after",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/live_round.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/round-contention-stage/after/desktop/pooloperator/maintenance.go",
+      "bytes": 6149,
+      "sha256": "5c3f45154dcc7032fa0ea13f05771dc79efead789c406eb26fedd6f9f9a27b25",
+      "logical_snapshot_path": "docs/evidence/set81/source/round-contention-stage/after/desktop/pooloperator/maintenance.go.txt",
+      "role": "round-contention-production-after",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/round-contention-stage/after/desktop/pooloperator/maintenance.go.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/round-contention-stage/after/desktop/pooloperator/runtime.go",
+      "bytes": 21329,
+      "sha256": "30a6de0ee527127635d4e8e9dec33b233ca9b17890d8ced06aff8902c0e1397c",
+      "logical_snapshot_path": "docs/evidence/set81/source/round-contention-stage/after/desktop/pooloperator/runtime.go.txt",
+      "role": "round-contention-production-after",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/runtime.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/round-contention-stage/before/desktop/pooloperator/live_round.go",
+      "bytes": 2670,
+      "sha256": "0894e1c05cb77937a761b677a227ce3ccc53b01701bc6b6b021e84412eb54b18",
+      "logical_snapshot_path": "docs/evidence/set81/source/round-contention-stage/before/desktop/pooloperator/live_round.go.txt",
+      "role": "round-contention-production-before",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/round-contention-stage/before/desktop/pooloperator/live_round.go.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/round-contention-stage/before/desktop/pooloperator/maintenance.go",
+      "bytes": 5272,
+      "sha256": "e42e84f2842a73070b57ebdd466bfa1d619fe2f20692db0066d595bbe8c66a90",
+      "logical_snapshot_path": "docs/evidence/set81/source/round-contention-stage/before/desktop/pooloperator/maintenance.go.txt",
+      "role": "round-contention-production-before",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/round-contention-stage/before/desktop/pooloperator/maintenance.go.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/round-contention-stage/before/desktop/pooloperator/runtime.go",
+      "bytes": 21295,
+      "sha256": "21f1d92f3b769fe58cdf56f14ec48df3fecc2c5c015e1560aa49926465270c6d",
+      "logical_snapshot_path": "docs/evidence/set81/source/round-contention-stage/before/desktop/pooloperator/runtime.go.txt",
+      "role": "preserved-pre-contention-source-reference",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/round-contention-stage/before/desktop/pooloperator/runtime.go.txt",
+      "original_source_path": "/Users/taytrrip/slug/slug/desktop/pooloperator/runtime.go",
+      "original_logical_snapshot_path": "desktop/pooloperator/runtime.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/round-contention-stage/production-manifest.json",
+      "bytes": 5027,
+      "sha256": "2815ca59d8720b8e0c2adef8aae6ae89ea18ef522eb88a14cdf17045f47e98e4",
+      "logical_snapshot_path": "docs/evidence/set81/source/round-contention-stage/production-manifest.json",
+      "role": "round-contention-production-manifest",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/round-contention-stage/production-manifest.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/round-contention-stage/production.diff",
+      "bytes": 6980,
+      "sha256": "48a9c8aa2a17e4c92c7744017959b8ba17d82156821f500ec9026fc5edacee23",
+      "logical_snapshot_path": "docs/evidence/set81/source/round-contention-stage/production.diff",
+      "role": "round-contention-rationale-and-diff",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/round-contention-stage/production.diff"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/round-contention-stage/qualify-operator-linux.before.py.txt",
+      "bytes": 44765,
+      "sha256": "7d0a459f25f1e0b73ffede13ac763d633a34f23c2de3e6825c700cdf118c7dc0",
+      "logical_snapshot_path": "docs/evidence/set81/source/round-contention-stage/qualify-operator-linux.before.py.txt",
+      "role": "root-selected-round-contention-provenance",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/round-contention-stage/qualify-operator-linux.before.py.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/round-contention-stage/root-formatted-selection.json",
+      "bytes": 1202,
+      "sha256": "e67cda99b56d134913cb7c81e03e9d607cbd49319e4cceaadab40e3e14bf5d2b",
+      "logical_snapshot_path": "docs/evidence/set81/source/round-contention-stage/root-formatted-selection.json",
+      "role": "root-selected-round-contention-provenance",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/round-contention-stage/root-formatted-selection.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/round-contention-stage/root-selection.json",
+      "bytes": 449,
+      "sha256": "967397a26ff5116f578c04cbe6eb5fab7a59859c4abab1bdfc05d88ce286cc43",
+      "logical_snapshot_path": "docs/evidence/set81/source/round-contention-stage/root-selection.json",
+      "role": "root-selected-round-contention-provenance",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/round-contention-stage/root-selection.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/round-contention-tests/EXPECTED.md",
+      "bytes": 3528,
+      "sha256": "6b1b0a33e9d7cf355624148df6bcf9644d321816b5a069ac0be3c2a1a68fb5e9",
+      "logical_snapshot_path": "docs/evidence/set81/source/round-contention-tests/EXPECTED.md",
+      "role": "round-contention-unexecuted-tests-and-expectations",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/round-contention-tests/EXPECTED.md"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/round-contention-tests/after/desktop/pooloperator/daily_round_contention_test.go",
+      "bytes": 11832,
+      "sha256": "86da5ee0aebe636505b67c92086ceea9ec951b36b00f109a9fb2e9ad905114a3",
+      "logical_snapshot_path": "docs/evidence/set81/source/round-contention-tests/after/desktop/pooloperator/daily_round_contention_test.go.txt",
+      "role": "round-contention-unexecuted-tests-and-expectations",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/round-contention-tests/after/desktop/pooloperator/daily_round_contention_test.go.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/round-contention-tests/manifest.json",
+      "bytes": 2924,
+      "sha256": "3b44d69373054e9acb905643241e5aea0723bb91b04c76a73bf7697cd6f4120b",
+      "logical_snapshot_path": "docs/evidence/set81/source/round-contention-tests/manifest.json",
+      "role": "round-contention-test-manifest",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/round-contention-tests/manifest.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/run-actual.py",
+      "bytes": 11659,
+      "sha256": "4782f8292163cf68af375483f53012b21d5ae6f938e96878306c68e20a217b4e",
+      "logical_snapshot_path": "docs/evidence/set81/execution/run-actual.py",
+      "role": "runner-or-explicit-execution-selection",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/execution/run-actual.py"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/run-components.py",
+      "bytes": 7864,
+      "sha256": "a6f55dceec1b32f5024332f0fcbc658a8c610515e7b0cbe3ad8902aa864a262c",
+      "logical_snapshot_path": "docs/evidence/set81/execution/run-components.py",
+      "role": "runner-or-explicit-execution-selection",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/execution/run-components.py"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/run-regressions.py",
+      "bytes": 16269,
+      "sha256": "0ca869a947d0ef9e4ce6ad569473b9718643c53d65aebae0c37bc45e7f74ea5e",
+      "logical_snapshot_path": "docs/evidence/set81/execution/run-regressions.py",
+      "role": "runner-or-explicit-execution-selection",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/execution/run-regressions.py"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/run-round-successor.py",
+      "bytes": 8070,
+      "sha256": "c157038f3a94c2d1eb9aa987ced4f3b32ac9fb016096c55aedc362219aa98f09",
+      "logical_snapshot_path": "docs/evidence/set81/execution/run-round-successor.py",
+      "role": "bounded-runner-or-explicit-never-executed-B-disposition",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/execution/run-round-successor.py"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/service-preflight-provenance/README.md",
+      "bytes": 453,
+      "sha256": "d8f8d660f235d2d545161d0fee2f514283148c0d78a860867389ad0f8c2b07dd",
+      "logical_snapshot_path": "docs/evidence/set81/source/service-preflight-provenance/README.md",
+      "role": "observed-lease-provenance-successor",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/service-preflight-provenance/README.md"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/service-preflight-provenance/before.go.txt",
+      "bytes": 2589,
+      "sha256": "e91d4292f343170c00a61e4348768bb60ce9c8146a3bf745d7a14945f79becad",
+      "logical_snapshot_path": "docs/evidence/set81/source/service-preflight-provenance/before.go.txt",
+      "role": "observed-lease-provenance-successor",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/service-preflight-provenance/before.go.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/service-preflight-provenance/manifest.json",
+      "bytes": 395,
+      "sha256": "a5263ca715740941c8e568fd8b868b358c22b5a9ac6afb223e56cab853fd8ea0",
+      "logical_snapshot_path": "docs/evidence/set81/source/service-preflight-provenance/manifest.json",
+      "role": "observed-lease-provenance-successor",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/service-preflight-provenance/manifest.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/service-stage/ORACLE_COVERAGE.md",
+      "bytes": 3916,
+      "sha256": "d23bcb436dc78d10cf9750f58434c5f89c0320cac0a904639c06f25e672c9d24",
+      "logical_snapshot_path": "docs/evidence/set81/source/service-stage/ORACLE_COVERAGE.md",
+      "role": "source-coverage-and-peer-review",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/service-stage/ORACLE_COVERAGE.md"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/service-stage/admission-relay-peer-review.json",
+      "bytes": 3193,
+      "sha256": "e43abbdc61e29e383dc2978670d95a310a9e637373f8c12a7531369d4c810f31",
+      "logical_snapshot_path": "docs/evidence/set81/source/service-stage/admission-relay-peer-review.json",
+      "role": "source-coverage-and-peer-review",
+      "action": "reference_planned",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/inputs/relay-peer-review.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/service-stage/admission-relay-quiescence-review.json",
+      "bytes": 1692,
+      "sha256": "12de4ea990923ead63ff8f7e1d6da75e09a89ce496d8f2a78b1e50eade66b16f",
+      "logical_snapshot_path": "docs/evidence/set81/source/service-stage/admission-relay-quiescence-review.json",
+      "role": "source-coverage-and-peer-review",
+      "action": "reference_planned",
+      "repository_path": "desktop/pooloperator/testdata/retained-admission-actual/inputs/relay-quiescence-review.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/service-stage/changes.diff",
+      "bytes": 31658,
+      "sha256": "a79aa15bcee3115da9a7fe8c424c54971e50d99c412fe0ef3e6205b7b096611e",
+      "logical_snapshot_path": "docs/evidence/set81/source/service-stage/changes.diff",
+      "role": "source-coverage-and-peer-review",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/service-stage/changes.diff"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/service-stage/live-capacity-checkpoint.json",
+      "bytes": 3950,
+      "sha256": "a95523c2965c17da8f56d68228462ff397821751877920660c04996fcbe692cc",
+      "logical_snapshot_path": "docs/evidence/set81/source/service-stage/live-capacity-checkpoint.json",
+      "role": "source-coverage-and-peer-review",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/service-stage/live-capacity-checkpoint.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/service-stage/oracle-coverage-manifest.json",
+      "bytes": 686,
+      "sha256": "114f3291081324ccf71aaeefb5988511f0d1ac3676893ea3143ed319d2fd5082",
+      "logical_snapshot_path": "docs/evidence/set81/source/service-stage/oracle-coverage-manifest.json",
+      "role": "source-coverage-and-peer-review",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/service-stage/oracle-coverage-manifest.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/service-stage/oracle-coverage.json",
+      "bytes": 35453,
+      "sha256": "c5193cce1eb7e5669cb39e630a76560494eb288c3cfb5e4e7f65985e2c832766",
+      "logical_snapshot_path": "docs/evidence/set81/source/service-stage/oracle-coverage.json",
+      "role": "source-coverage-and-peer-review",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/service-stage/oracle-coverage.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/service-stage/prospectservice__manifest_fenced_server.go.before.txt",
+      "bytes": 5509,
+      "sha256": "181e7c5a9055eff411bb820ff20769829ac5bac4d3410fa463b5f9512fd7fb35",
+      "logical_snapshot_path": "docs/evidence/set81/source/service-stage/prospectservice__manifest_fenced_server.go.before.txt",
+      "role": "source-coverage-and-peer-review",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/service-stage/prospectservice__manifest_fenced_server.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/service-stage/prospectservice__manifest_server.go.before.txt",
+      "bytes": 19359,
+      "sha256": "9b495ab1224e91361ea9a87f684a2aa35ae25420ae0ec86799c6f87e6a09bfb0",
+      "logical_snapshot_path": "docs/evidence/set81/source/service-stage/prospectservice__manifest_server.go.before.txt",
+      "role": "source-coverage-and-peer-review",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/service-stage/prospectservice__manifest_server.go.before.txt"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/service-stage/source-checkpoint.json",
+      "bytes": 5031,
+      "sha256": "5fb5c8fb041d25f470f5839f0bf452cd5f917aca7c7760a5d3bf24e4425bc05d",
+      "logical_snapshot_path": "docs/evidence/set81/source/service-stage/source-checkpoint.json",
+      "role": "source-coverage-and-peer-review",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/source/service-stage/source-checkpoint.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/service-stage/source-checkpoint.pre-live-capacity.json",
+      "bytes": 5031,
+      "sha256": "5fb5c8fb041d25f470f5839f0bf452cd5f917aca7c7760a5d3bf24e4425bc05d",
+      "logical_snapshot_path": "docs/evidence/set81/source/service-stage/source-checkpoint.pre-live-capacity.json",
+      "role": "source-coverage-and-peer-review",
+      "action": "reference_planned",
+      "repository_path": "docs/evidence/set81/source/service-stage/source-checkpoint.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set81-prep/smoke.py",
+      "bytes": 20460,
+      "sha256": "8f7aced4be7533b4f3adb69036e573daf45bf9dc20c8ef85c4bc2062dadeb6be",
+      "logical_snapshot_path": "docs/evidence/set81/execution/smoke.py",
+      "role": "runner-or-explicit-execution-selection",
+      "action": "copy_after_authorization",
+      "repository_path": "docs/evidence/set81/execution/smoke.py"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/desktop/pooloperator/capacity_drain.go",
+      "bytes": 6596,
+      "sha256": "960ad2b753b6e426004e72c7eb5fcc9613363c19333b5a621533a4614d71c734",
+      "logical_snapshot_path": "desktop/pooloperator/capacity_drain.go",
+      "role": "current-product-source-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/capacity_drain.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/desktop/pooloperator/construction.go",
+      "bytes": 16552,
+      "sha256": "8b7e48b5c053cad52d7b9f467906936bb3181f2f7d3313a3237327876dfdebb5",
+      "logical_snapshot_path": "desktop/pooloperator/construction.go",
+      "role": "current-product-source-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/construction.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_intake.go",
+      "bytes": 4382,
+      "sha256": "fec434fb14e40edf791e267d9b8c33a5b4d0de9850c23217d790b93390ddf3e9",
+      "logical_snapshot_path": "desktop/pooloperator/daily_intake.go",
+      "role": "current-product-source-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/daily_intake.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_retained_admission_test.go",
+      "bytes": 12923,
+      "sha256": "94001cf1d7a3508adb63dbef2ff21a36565d9c02fc26f85e1ac6b6b5bf714f03",
+      "logical_snapshot_path": "desktop/pooloperator/daily_retained_admission_test.go",
+      "role": "current-product-source-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/daily_retained_admission_test.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_retained_delivery_test.go",
+      "bytes": 10320,
+      "sha256": "576897f6d04dcf5f9c822bf1d8ceb884006762b545b90973a6b0505987cca5f6",
+      "logical_snapshot_path": "desktop/pooloperator/daily_retained_delivery_test.go",
+      "role": "current-product-source-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/daily_retained_delivery_test.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_round_contention.go",
+      "bytes": 1598,
+      "sha256": "596973605b091a326680a2415e981a44cf22fadef7db8fd0348bca847cda793f",
+      "logical_snapshot_path": "desktop/pooloperator/daily_round_contention.go",
+      "role": "root-formatted-current-production-or-test",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/daily_round_contention.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_round_contention_test.go",
+      "bytes": 11849,
+      "sha256": "984ef70f36a080c50321150b97618dd6fd5cbede6cfb642b90bd4a605aeec361",
+      "logical_snapshot_path": "desktop/pooloperator/daily_round_contention_test.go",
+      "role": "root-formatted-current-production-or-test",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/daily_round_contention_test.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/desktop/pooloperator/intake_source_busy_test.go",
+      "bytes": 17355,
+      "sha256": "c903a46429aa2a82192b33b2aecde71052d51196d6f723b55de3b3773022a916",
+      "logical_snapshot_path": "desktop/pooloperator/intake_source_busy_test.go",
+      "role": "original-test-input-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/intake_source_busy_test.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/desktop/pooloperator/live_round.go",
+      "bytes": 3392,
+      "sha256": "45b19a96542db28f8e1f311f9e5dce2bbb85da5e17ec042116e8f1fe032a013f",
+      "logical_snapshot_path": "desktop/pooloperator/live_round.go",
+      "role": "root-formatted-current-production-or-test",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/live_round.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/desktop/pooloperator/live_round_test.go",
+      "bytes": 14660,
+      "sha256": "56c32aa3f3cbfd005eca735769c15007ab0739c15b1e913870207ec41fce985d",
+      "logical_snapshot_path": "desktop/pooloperator/live_round_test.go",
+      "role": "original-test-input-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/live_round_test.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/desktop/pooloperator/maintenance.go",
+      "bytes": 6159,
+      "sha256": "ebe50426735ab814677a506e6170c1d719684bc56faaa7dcc4d0f4580bce0e1e",
+      "logical_snapshot_path": "desktop/pooloperator/maintenance.go",
+      "role": "root-formatted-current-production-or-test",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/maintenance.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/desktop/pooloperator/runtime.go",
+      "bytes": 21329,
+      "sha256": "30a6de0ee527127635d4e8e9dec33b233ca9b17890d8ced06aff8902c0e1397c",
+      "logical_snapshot_path": "desktop/pooloperator/runtime.go",
+      "role": "root-formatted-current-production-or-test",
+      "action": "reference_existing",
+      "repository_path": "desktop/pooloperator/runtime.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/docs/evidence/set81/archive-initial.json",
+      "bytes": 6994,
+      "sha256": "0214d88d2c5df72b963eaf4116af91bd833ccb80ea04f74366c2a2342962b772",
+      "logical_snapshot_path": "docs/evidence/set81/archive-initial.json",
+      "role": "existing-component-evidence-index",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set81/archive-initial.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/docs/evidence/set81/build/report.json",
+      "bytes": 29187,
+      "sha256": "5127e653074af5a509715a113202f99cc84b768f3cffdcebd86228c682e08df1",
+      "logical_snapshot_path": "docs/evidence/set81/build/report.json",
+      "role": "existing-component-regression-build-smoke-evidence",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set81/build/report.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/docs/evidence/set81/components/core-cheap.json",
+      "bytes": 2098,
+      "sha256": "2160b2b7de620bba8fde526699d00728e82b783fa8ab6ba1cff2aa824848cc16",
+      "logical_snapshot_path": "docs/evidence/set81/components/core-cheap.json",
+      "role": "existing-component-regression-build-smoke-evidence",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set81/components/core-cheap.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/docs/evidence/set81/components/core-normal.json",
+      "bytes": 3658,
+      "sha256": "9a6dc069d52efe3cb9b6f564d5e02e9fb8be32ec693d2b7691dd87a56716ad72",
+      "logical_snapshot_path": "docs/evidence/set81/components/core-normal.json",
+      "role": "existing-component-regression-build-smoke-evidence",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set81/components/core-normal.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/docs/evidence/set81/components/core-race.json",
+      "bytes": 3672,
+      "sha256": "11808f2f36d89ebc4c115c653f2806698b2afa5de4fc7d8dd427f4099d3aea30",
+      "logical_snapshot_path": "docs/evidence/set81/components/core-race.json",
+      "role": "existing-component-regression-build-smoke-evidence",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set81/components/core-race.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/docs/evidence/set81/components/operator-normal.json",
+      "bytes": 4296,
+      "sha256": "62442620af755e44edb7dc1089e8c15afad41136198d03d8c410f1df1c35ba4c",
+      "logical_snapshot_path": "docs/evidence/set81/components/operator-normal.json",
+      "role": "existing-component-regression-build-smoke-evidence",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set81/components/operator-normal.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/docs/evidence/set81/components/operator-race.json",
+      "bytes": 4309,
+      "sha256": "0b821a5f5789a629898d6aaf9c2d3a35631409fc179f074f4cfa851641a62e8f",
+      "logical_snapshot_path": "docs/evidence/set81/components/operator-race.json",
+      "role": "existing-component-regression-build-smoke-evidence",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set81/components/operator-race.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/docs/evidence/set81/components/service-cheap.json",
+      "bytes": 2119,
+      "sha256": "b2d014467214d38777be1872215ec860bba2d51ea6fcbff935b0bc915669b288",
+      "logical_snapshot_path": "docs/evidence/set81/components/service-cheap.json",
+      "role": "existing-component-regression-build-smoke-evidence",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set81/components/service-cheap.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/docs/evidence/set81/components/service-normal.json",
+      "bytes": 5225,
+      "sha256": "7f27608827a622ddcebf40f24171715b7b141cdb2139f561039b73e72669f0d0",
+      "logical_snapshot_path": "docs/evidence/set81/components/service-normal.json",
+      "role": "existing-component-regression-build-smoke-evidence",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set81/components/service-normal.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/docs/evidence/set81/components/service-race.json",
+      "bytes": 5239,
+      "sha256": "7b7de55738e84e695eb8eea4979ab321caeb023cdc02e6fef8a3c8a42ffe66ac",
+      "logical_snapshot_path": "docs/evidence/set81/components/service-race.json",
+      "role": "existing-component-regression-build-smoke-evidence",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set81/components/service-race.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/docs/evidence/set81/components/worker-normal.json",
+      "bytes": 2610,
+      "sha256": "80a6e20a78b41bb9cf4585f4c8bb614def14f226a928cdf0260af5589dfcd3ce",
+      "logical_snapshot_path": "docs/evidence/set81/components/worker-normal.json",
+      "role": "existing-component-regression-build-smoke-evidence",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set81/components/worker-normal.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/docs/evidence/set81/components/worker-race.json",
+      "bytes": 2622,
+      "sha256": "2a26d78e70ced8d849cadd428636351e3b02f2e1c9257c43d82046ef8b558309",
+      "logical_snapshot_path": "docs/evidence/set81/components/worker-race.json",
+      "role": "existing-component-regression-build-smoke-evidence",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set81/components/worker-race.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/docs/evidence/set81/regressions/failed-sandbox-core.json",
+      "bytes": 102341,
+      "sha256": "d70dfabece6e09f3cc991bd436aeb792464577dcbe3cc4ad75f5865013138e60",
+      "logical_snapshot_path": "docs/evidence/set81/regressions/failed-sandbox-core.json",
+      "role": "existing-component-regression-build-smoke-evidence",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set81/regressions/failed-sandbox-core.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/docs/evidence/set81/regressions/failed-sandbox-operator.json",
+      "bytes": 14762,
+      "sha256": "ed07cb186e99db7b88e9d216c729ab30d3627eeffc5ec51db7d59048a1a044a9",
+      "logical_snapshot_path": "docs/evidence/set81/regressions/failed-sandbox-operator.json",
+      "role": "existing-component-regression-build-smoke-evidence",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set81/regressions/failed-sandbox-operator.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/docs/evidence/set81/regressions/full-core-normal.json",
+      "bytes": 104863,
+      "sha256": "3459bb6fb3c1dede84aeecafe0810391c98dfad17091574b0afeb2d591bdecbc",
+      "logical_snapshot_path": "docs/evidence/set81/regressions/full-core-normal.json",
+      "role": "existing-component-regression-build-smoke-evidence",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set81/regressions/full-core-normal.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/docs/evidence/set81/regressions/full-core-race.json",
+      "bytes": 104894,
+      "sha256": "f7753e6ec882d4d444b617f552c1e01e975f4ccfe5822d1ec6ad7d60be38147a",
+      "logical_snapshot_path": "docs/evidence/set81/regressions/full-core-race.json",
+      "role": "existing-component-regression-build-smoke-evidence",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set81/regressions/full-core-race.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/docs/evidence/set81/regressions/full-operator-normal.json",
+      "bytes": 51534,
+      "sha256": "8e96210ad08672840a52722cb37cc8756c07c5b6f087982f2d260fc10646ab83",
+      "logical_snapshot_path": "docs/evidence/set81/regressions/full-operator-normal.json",
+      "role": "existing-component-regression-build-smoke-evidence",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set81/regressions/full-operator-normal.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/docs/evidence/set81/regressions/full-operator-race.json",
+      "bytes": 51565,
+      "sha256": "5954660817461e16ef1a249f59539e62340a9ac32c5ad7a71a1ddc7b377f00da",
+      "logical_snapshot_path": "docs/evidence/set81/regressions/full-operator-race.json",
+      "role": "existing-component-regression-build-smoke-evidence",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set81/regressions/full-operator-race.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/docs/evidence/set81/regressions/full-service-normal.json",
+      "bytes": 109092,
+      "sha256": "eaf6629923c07a8ec1ea696d2c4520d3ba341078bfaadbd0e44e794434e1d35b",
+      "logical_snapshot_path": "docs/evidence/set81/regressions/full-service-normal.json",
+      "role": "existing-component-regression-build-smoke-evidence",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set81/regressions/full-service-normal.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/docs/evidence/set81/regressions/full-service-race.json",
+      "bytes": 109123,
+      "sha256": "5fa96d8bcafaf8ac8f5e60875b0a11f1122c8433aad3dc5950700c2df9c7482b",
+      "logical_snapshot_path": "docs/evidence/set81/regressions/full-service-race.json",
+      "role": "existing-component-regression-build-smoke-evidence",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set81/regressions/full-service-race.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/docs/evidence/set81/regressions/full-worker-normal.json",
+      "bytes": 42714,
+      "sha256": "49f15b66ea9c7ce6b96420c1e82453b9302638c7ca3e59a03f90763dfff82015",
+      "logical_snapshot_path": "docs/evidence/set81/regressions/full-worker-normal.json",
+      "role": "existing-component-regression-build-smoke-evidence",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set81/regressions/full-worker-normal.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/docs/evidence/set81/regressions/full-worker-race.json",
+      "bytes": 42746,
+      "sha256": "36cb68cea9a0b8521443bdd6b5d789b7a33750ecaa2d33af547a6470642c4a38",
+      "logical_snapshot_path": "docs/evidence/set81/regressions/full-worker-race.json",
+      "role": "existing-component-regression-build-smoke-evidence",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set81/regressions/full-worker-race.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/docs/evidence/set81/regressions/sandbox-bind-failures.json",
+      "bytes": 1492,
+      "sha256": "0c83503eb3ed12bae800ab6ea2e6faf30b3ace44e9c7256f8696df59e6b94e50",
+      "logical_snapshot_path": "docs/evidence/set81/regressions/sandbox-bind-failures.json",
+      "role": "existing-component-regression-build-smoke-evidence",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set81/regressions/sandbox-bind-failures.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/docs/evidence/set81/smoke/build-result.json",
+      "bytes": 5993,
+      "sha256": "d32b40750fcdcb94f4f44acfb2e4cc57f55168cc3ae23f0cd1ba36bf6817883d",
+      "logical_snapshot_path": "docs/evidence/set81/smoke/build-result.json",
+      "role": "existing-component-regression-build-smoke-evidence",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set81/smoke/build-result.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/docs/evidence/set81/smoke/release-closure.json",
+      "bytes": 539,
+      "sha256": "515a872f97910757dace24347f21f649f5bf639a713368e96862150204909850",
+      "logical_snapshot_path": "docs/evidence/set81/smoke/release-closure.json",
+      "role": "existing-component-regression-build-smoke-evidence",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set81/smoke/release-closure.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/docs/evidence/set81/smoke/release-compiled-closure.json",
+      "bytes": 756,
+      "sha256": "664d5c7e37ae26410f34483cdd6a4d8b0e57eed091f915387b5961059e50ebb4",
+      "logical_snapshot_path": "docs/evidence/set81/smoke/release-compiled-closure.json",
+      "role": "existing-component-regression-build-smoke-evidence",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set81/smoke/release-compiled-closure.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/docs/evidence/set81/smoke/result.json",
+      "bytes": 9119,
+      "sha256": "b3907023013e89e712dc37e4dd7af806658878b977cdba18c6fbe3c78badd418",
+      "logical_snapshot_path": "docs/evidence/set81/smoke/result.json",
+      "role": "existing-component-regression-build-smoke-evidence",
+      "action": "reference_existing",
+      "repository_path": "docs/evidence/set81/smoke/result.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/poolround/operations.go",
+      "bytes": 7751,
+      "sha256": "5d8875d7bec8801aca2457b479c6edad5c1fd743c4196984c540d0f6be4ae11b",
+      "logical_snapshot_path": "poolround/operations.go",
+      "role": "original-production-input-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "poolround/operations.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/poolround/store.go",
+      "bytes": 11697,
+      "sha256": "eb5b41998328c3c4bb5661164e12598a1e8193cd331764ecb541e4ea88fab822",
+      "logical_snapshot_path": "poolround/store.go",
+      "role": "original-production-input-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "poolround/store.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/poolround/stream.go",
+      "bytes": 6215,
+      "sha256": "dacc3896a5a6f90e9cbf7c75ae238ca5624dbcafe321e8b68601d1591b2cc675",
+      "logical_snapshot_path": "poolround/stream.go",
+      "role": "original-production-input-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "poolround/stream.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/poolround/types.go",
+      "bytes": 5799,
+      "sha256": "bd1eab6b72e1cff8f381e609454a3aa575fe19a444c962d18f86bb6add69c81c",
+      "logical_snapshot_path": "poolround/types.go",
+      "role": "original-test-input-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "poolround/types.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/poolshare/accounting.go",
+      "bytes": 3737,
+      "sha256": "8523604cc7c3abdf1d8c302d722a5cd740f424a1a9c64f0ce1ccd4905608dccc",
+      "logical_snapshot_path": "poolshare/accounting.go",
+      "role": "original-production-input-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "poolshare/accounting.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/poolshare/daily.go",
+      "bytes": 4311,
+      "sha256": "b1514a1c9527d4498b049ce7215f34682ecac70c1cb254296896c258892b288b",
+      "logical_snapshot_path": "poolshare/daily.go",
+      "role": "original-production-input-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "poolshare/daily.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/poolshare/daily_operator_audit.go",
+      "bytes": 4751,
+      "sha256": "7dacebd6ea2abc12701892cf822b6ccb83603cb92dad96183d949d0810f88540",
+      "logical_snapshot_path": "poolshare/daily_operator_audit.go",
+      "role": "original-production-input-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "poolshare/daily_operator_audit.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/poolshare/store.go",
+      "bytes": 23347,
+      "sha256": "67d5929b4bcaf6322b36e32393e4acb51e34748f865ded5e6f77fec8e8edb22b",
+      "logical_snapshot_path": "poolshare/store.go",
+      "role": "original-production-input-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "poolshare/store.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/prospectservice/daily_fenced_admission.go",
+      "bytes": 2865,
+      "sha256": "d5af6dd0e350a92b3f2fc742c58e0f253f5ecd6ae7fe9fa1859c5a4ccfe78fac",
+      "logical_snapshot_path": "prospectservice/daily_fenced_admission.go",
+      "role": "current-product-source-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "prospectservice/daily_fenced_admission.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/prospectservice/daily_fenced_admission_test.go",
+      "bytes": 12017,
+      "sha256": "80c3fa74dc5f9879cd7309307fdfcfe00bf5e64400ab6854f9f744f46d491f14",
+      "logical_snapshot_path": "prospectservice/daily_fenced_admission_test.go",
+      "role": "current-product-source-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "prospectservice/daily_fenced_admission_test.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/prospectservice/daily_fenced_capacity_reopen_test.go",
+      "bytes": 4760,
+      "sha256": "c6c5cd567d1bb7e884d799f89bf47ccae9e12ea7a7a25cc6bb269835e90e5847",
+      "logical_snapshot_path": "prospectservice/daily_fenced_capacity_reopen_test.go",
+      "role": "current-product-source-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "prospectservice/daily_fenced_capacity_reopen_test.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/prospectservice/daily_fenced_profile_test.go",
+      "bytes": 536,
+      "sha256": "d2b7efaa31e341db468faf5a85e04f97ec5b0bc4c5c52f9fe0c8b0975b4f6ef6",
+      "logical_snapshot_path": "prospectservice/daily_fenced_profile_test.go",
+      "role": "current-product-source-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "prospectservice/daily_fenced_profile_test.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/prospectservice/manifest_fenced_server.go",
+      "bytes": 5654,
+      "sha256": "8dbc991e1521cb1a9504fc96e92498e3d6cf6fdee727f37e051d180ded0fb4ef",
+      "logical_snapshot_path": "prospectservice/manifest_fenced_server.go",
+      "role": "current-product-source-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "prospectservice/manifest_fenced_server.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/prospectservice/manifest_server.go",
+      "bytes": 19449,
+      "sha256": "6b72e50148d6c2b034b9d4d174815af1c22af170817d3d4bf6f62a34f536802d",
+      "logical_snapshot_path": "prospectservice/manifest_server.go",
+      "role": "current-product-source-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "prospectservice/manifest_server.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/prospectwork/testdata/pool_share_reference/pool_share_v1.json",
+      "bytes": 33879,
+      "sha256": "2210d992e618b7a0952736dede1263b678f1a7a2d55d14ccde1cc6b29317de87",
+      "logical_snapshot_path": "prospectwork/testdata/pool_share_reference/pool_share_v1.json",
+      "role": "original-test-input-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "prospectwork/testdata/pool_share_reference/pool_share_v1.json"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/prospectworker/pool_retained_admission_test.go",
+      "bytes": 3628,
+      "sha256": "bfa83577f9d12eaf7915c35216db41604aba0bcce43f8f61122fdb4133073d7e",
+      "logical_snapshot_path": "prospectworker/pool_retained_admission_test.go",
+      "role": "current-product-source-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "prospectworker/pool_retained_admission_test.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/registry/manifest_admission_preflight.go",
+      "bytes": 2904,
+      "sha256": "71959959569287de81119db62b7d0c864188e9dd883ef970b49176ddd4ad61b2",
+      "logical_snapshot_path": "registry/manifest_admission_preflight.go",
+      "role": "current-product-source-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "registry/manifest_admission_preflight.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/registry/manifest_admission_preflight_profile_test.go",
+      "bytes": 657,
+      "sha256": "d0d8067d1daabdad0fec6a6ede485722a5743daebbff71686187a592ee2418a0",
+      "logical_snapshot_path": "registry/manifest_admission_preflight_profile_test.go",
+      "role": "current-product-source-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "registry/manifest_admission_preflight_profile_test.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/registry/manifest_admission_preflight_test.go",
+      "bytes": 12807,
+      "sha256": "ff6102914a978e885d899eeb53186cee0075ebc11b5f97ba816c30d2199f510f",
+      "logical_snapshot_path": "registry/manifest_admission_preflight_test.go",
+      "role": "current-product-source-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "registry/manifest_admission_preflight_test.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/registry/manifest_job_try.go",
+      "bytes": 1223,
+      "sha256": "a44e78048fd2827f90fcd4277d2c6e46ca5f038bab8538b8b68035267d8be8b9",
+      "logical_snapshot_path": "registry/manifest_job_try.go",
+      "role": "original-production-input-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "registry/manifest_job_try.go"
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/slug/scripts/qualify-operator-linux.py",
+      "bytes": 45079,
+      "sha256": "a475f757abd61627b05a5c9564cbb6813e1f314b490ee29f409a447d1bc9eaf8",
+      "logical_snapshot_path": "scripts/qualify-operator-linux.py",
+      "role": "current-required-test-selection-already-in-repository",
+      "action": "reference_existing",
+      "repository_path": "scripts/qualify-operator-linux.py"
+    }
+  ],
+  "counts": {
+    "explicit_sources": 261,
+    "new_unique_files": 140,
+    "new_unique_bytes": 1694058,
+    "references_existing": 94,
+    "references_planned": 27,
+    "avoided_repeated_bytes": 16230294
+  },
+  "actual_evidence": {
+    "disposition": "Root archives final actual public files separately after both runs and independent checker closure",
+    "source": "exact checker return inventory only, plus explicitly selected public root reports/dispositions",
+    "never_expand_to_runtime_directory": true,
+    "case_B": "Prior lock explicitly never executed and superseded; no B acceptance claim.",
+    "pre_fix_case_A": "Failed readiness; original failure retained. Runtime outputs remain outside this source proposal and require root explicit public archive selection."
+  },
+  "notes": [
+    "Every source path is individually named; manifest expansion was limited to frozen public source manifests and explicit public catalogs.",
+    "reference_existing and reference_planned are documentary mappings, not symlinks and not copies at logical_snapshot_path.",
+    "Original archived manifests retain their original relative/absolute paths and hashes. Reconstruct historical layout explicitly from this mapping if needed; do not rewrite qualified source to imply portability.",
+    "Current source/test leaves already in the repository remain references, not duplicate product copies.",
+    "Initial 26 component/regression/build/smoke reports and index remain in place. Original failure and superseded lock dispositions remain preserved.",
+    "Original archive-plan.json and ARCHIVE_PLAN.md remain unchanged documentary preimages.",
+    "Historical Go bodies under docs/evidence use .go.txt; original source paths and exact bytes remain recorded.",
+    "Old runtime21f references resolve to the exact preserved pre-fix source. Root-formatted current sources have separate identities; no earlier proof is relabeled.",
+    "Only explicit source/rationale/manifest/runner/lock-disposition files were added. No active normal/race report was read or added.",
+    "Deduplication uses only exact named existing repository bytes or an exact proposed copy, with no recursive runtime expansion."
+  ],
+  "predecessor": {
+    "path": "/Users/taytrrip/slug/set81-prep/archive-plan.json",
+    "bytes": 119430,
+    "sha256": "5dbf2a8682ede6316c9231a5945b26ea42279b00a1ccf81bc9a904c8e9e172c2"
+  },
+  "changes_from_predecessor": [
+    {
+      "before": {
+        "source_path": "/Users/taytrrip/slug/set81-prep/gofmt-stage/desktop__pooloperator__runtime.go.before",
+        "bytes": 21295,
+        "sha256": "21f1d92f3b769fe58cdf56f14ec48df3fecc2c5c015e1560aa49926465270c6d",
+        "logical_snapshot_path": "docs/evidence/set81/source/gofmt-stage/desktop__pooloperator__runtime.go.before",
+        "role": "original-product-test-format-preimage",
+        "action": "reference_existing",
+        "repository_path": "desktop/pooloperator/runtime.go"
+      },
+      "after": {
+        "source_path": "/Users/taytrrip/slug/set81-prep/gofmt-stage/desktop__pooloperator__runtime.go.before",
+        "bytes": 21295,
+        "sha256": "21f1d92f3b769fe58cdf56f14ec48df3fecc2c5c015e1560aa49926465270c6d",
+        "logical_snapshot_path": "docs/evidence/set81/source/gofmt-stage/desktop__pooloperator__runtime.go.before",
+        "role": "original-product-test-format-preimage",
+        "action": "reference_planned",
+        "repository_path": "docs/evidence/set81/source/round-contention-stage/before/desktop/pooloperator/runtime.go.txt"
+      }
+    },
+    {
+      "before": {
+        "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/before/capacity_drain.go",
+        "bytes": 6507,
+        "sha256": "f78d3613a6db6169e3562c67fa36418c66afffa8b6f1f7cca771a43e0024f21e",
+        "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/before/capacity_drain.go",
+        "role": "operator-source-and-test-successor",
+        "action": "copy_after_authorization",
+        "repository_path": "docs/evidence/set81/source/operator-stage/before/capacity_drain.go"
+      },
+      "after": {
+        "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/before/capacity_drain.go",
+        "bytes": 6507,
+        "sha256": "f78d3613a6db6169e3562c67fa36418c66afffa8b6f1f7cca771a43e0024f21e",
+        "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/before/capacity_drain.go.txt",
+        "role": "operator-source-and-test-successor",
+        "action": "copy_after_authorization",
+        "repository_path": "docs/evidence/set81/source/operator-stage/before/capacity_drain.go.txt",
+        "original_logical_snapshot_path": "docs/evidence/set81/source/operator-stage/before/capacity_drain.go"
+      }
+    },
+    {
+      "before": {
+        "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/before/construction.go",
+        "bytes": 16317,
+        "sha256": "37fa71d3465de9267275df106deae584b9a75314aaefb62d074b2401a7b9ad54",
+        "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/before/construction.go",
+        "role": "operator-source-and-test-successor",
+        "action": "copy_after_authorization",
+        "repository_path": "docs/evidence/set81/source/operator-stage/before/construction.go"
+      },
+      "after": {
+        "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/before/construction.go",
+        "bytes": 16317,
+        "sha256": "37fa71d3465de9267275df106deae584b9a75314aaefb62d074b2401a7b9ad54",
+        "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/before/construction.go.txt",
+        "role": "operator-source-and-test-successor",
+        "action": "copy_after_authorization",
+        "repository_path": "docs/evidence/set81/source/operator-stage/before/construction.go.txt",
+        "original_logical_snapshot_path": "docs/evidence/set81/source/operator-stage/before/construction.go"
+      }
+    },
+    {
+      "before": {
+        "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/before/runtime.go",
+        "bytes": 21184,
+        "sha256": "39e93745f9059e0f4b2e636476ff7c2d4e889b771349f44156c4cc20c097746e",
+        "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/before/runtime.go",
+        "role": "operator-source-and-test-successor",
+        "action": "copy_after_authorization",
+        "repository_path": "docs/evidence/set81/source/operator-stage/before/runtime.go"
+      },
+      "after": {
+        "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/before/runtime.go",
+        "bytes": 21184,
+        "sha256": "39e93745f9059e0f4b2e636476ff7c2d4e889b771349f44156c4cc20c097746e",
+        "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/before/runtime.go.txt",
+        "role": "operator-source-and-test-successor",
+        "action": "copy_after_authorization",
+        "repository_path": "docs/evidence/set81/source/operator-stage/before/runtime.go.txt",
+        "original_logical_snapshot_path": "docs/evidence/set81/source/operator-stage/before/runtime.go"
+      }
+    },
+    {
+      "before": {
+        "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/pre-pending-admission-successor/capacity_drain.go",
+        "bytes": 6596,
+        "sha256": "960ad2b753b6e426004e72c7eb5fcc9613363c19333b5a621533a4614d71c734",
+        "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/capacity_drain.go",
+        "role": "operator-source-and-test-successor",
+        "action": "reference_existing",
+        "repository_path": "desktop/pooloperator/capacity_drain.go"
+      },
+      "after": {
+        "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/pre-pending-admission-successor/capacity_drain.go",
+        "bytes": 6596,
+        "sha256": "960ad2b753b6e426004e72c7eb5fcc9613363c19333b5a621533a4614d71c734",
+        "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/capacity_drain.go.txt",
+        "role": "operator-source-and-test-successor",
+        "action": "reference_existing",
+        "repository_path": "desktop/pooloperator/capacity_drain.go",
+        "original_logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/capacity_drain.go"
+      }
+    },
+    {
+      "before": {
+        "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/pre-pending-admission-successor/construction.go",
+        "bytes": 16552,
+        "sha256": "8b7e48b5c053cad52d7b9f467906936bb3181f2f7d3313a3237327876dfdebb5",
+        "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/construction.go",
+        "role": "operator-source-and-test-successor",
+        "action": "reference_existing",
+        "repository_path": "desktop/pooloperator/construction.go"
+      },
+      "after": {
+        "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/pre-pending-admission-successor/construction.go",
+        "bytes": 16552,
+        "sha256": "8b7e48b5c053cad52d7b9f467906936bb3181f2f7d3313a3237327876dfdebb5",
+        "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/construction.go.txt",
+        "role": "operator-source-and-test-successor",
+        "action": "reference_existing",
+        "repository_path": "desktop/pooloperator/construction.go",
+        "original_logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/construction.go"
+      }
+    },
+    {
+      "before": {
+        "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/pre-pending-admission-successor/daily_intake.go",
+        "bytes": 4382,
+        "sha256": "fec434fb14e40edf791e267d9b8c33a5b4d0de9850c23217d790b93390ddf3e9",
+        "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/daily_intake.go",
+        "role": "operator-source-and-test-successor",
+        "action": "reference_existing",
+        "repository_path": "desktop/pooloperator/daily_intake.go"
+      },
+      "after": {
+        "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/pre-pending-admission-successor/daily_intake.go",
+        "bytes": 4382,
+        "sha256": "fec434fb14e40edf791e267d9b8c33a5b4d0de9850c23217d790b93390ddf3e9",
+        "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/daily_intake.go.txt",
+        "role": "operator-source-and-test-successor",
+        "action": "reference_existing",
+        "repository_path": "desktop/pooloperator/daily_intake.go",
+        "original_logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/daily_intake.go"
+      }
+    },
+    {
+      "before": {
+        "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/pre-pending-admission-successor/daily_retained_admission_test.go",
+        "bytes": 12269,
+        "sha256": "e3e5ed1ed714def5bd5ec3527cbf6c016fcb24f64006af1359bd91658be2eb26",
+        "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/daily_retained_admission_test.go",
+        "role": "operator-source-and-test-successor",
+        "action": "copy_after_authorization",
+        "repository_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/daily_retained_admission_test.go"
+      },
+      "after": {
+        "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/pre-pending-admission-successor/daily_retained_admission_test.go",
+        "bytes": 12269,
+        "sha256": "e3e5ed1ed714def5bd5ec3527cbf6c016fcb24f64006af1359bd91658be2eb26",
+        "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/daily_retained_admission_test.go.txt",
+        "role": "operator-source-and-test-successor",
+        "action": "copy_after_authorization",
+        "repository_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/daily_retained_admission_test.go.txt",
+        "original_logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/daily_retained_admission_test.go"
+      }
+    },
+    {
+      "before": {
+        "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/pre-pending-admission-successor/runtime.go",
+        "bytes": 21295,
+        "sha256": "21f1d92f3b769fe58cdf56f14ec48df3fecc2c5c015e1560aa49926465270c6d",
+        "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/runtime.go",
+        "role": "operator-source-and-test-successor",
+        "action": "reference_existing",
+        "repository_path": "desktop/pooloperator/runtime.go"
+      },
+      "after": {
+        "source_path": "/Users/taytrrip/slug/set81-prep/operator-stage/pre-pending-admission-successor/runtime.go",
+        "bytes": 21295,
+        "sha256": "21f1d92f3b769fe58cdf56f14ec48df3fecc2c5c015e1560aa49926465270c6d",
+        "logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/runtime.go.txt",
+        "role": "operator-source-and-test-successor",
+        "action": "reference_planned",
+        "repository_path": "docs/evidence/set81/source/round-contention-stage/before/desktop/pooloperator/runtime.go.txt",
+        "original_logical_snapshot_path": "docs/evidence/set81/source/operator-stage/pre-pending-admission-successor/runtime.go"
+      }
+    },
+    {
+      "before": {
+        "source_path": "/Users/taytrrip/slug/slug/desktop/pooloperator/runtime.go",
+        "bytes": 21295,
+        "sha256": "21f1d92f3b769fe58cdf56f14ec48df3fecc2c5c015e1560aa49926465270c6d",
+        "logical_snapshot_path": "desktop/pooloperator/runtime.go",
+        "role": "current-product-source-already-in-repository",
+        "action": "reference_existing",
+        "repository_path": "desktop/pooloperator/runtime.go"
+      },
+      "after": {
+        "source_path": "/Users/taytrrip/slug/set81-prep/round-contention-stage/before/desktop/pooloperator/runtime.go",
+        "bytes": 21295,
+        "sha256": "21f1d92f3b769fe58cdf56f14ec48df3fecc2c5c015e1560aa49926465270c6d",
+        "logical_snapshot_path": "docs/evidence/set81/source/round-contention-stage/before/desktop/pooloperator/runtime.go.txt",
+        "role": "preserved-pre-contention-source-reference",
+        "action": "copy_after_authorization",
+        "repository_path": "docs/evidence/set81/source/round-contention-stage/before/desktop/pooloperator/runtime.go.txt",
+        "original_source_path": "/Users/taytrrip/slug/slug/desktop/pooloperator/runtime.go",
+        "original_logical_snapshot_path": "desktop/pooloperator/runtime.go"
+      }
+    }
+  ],
+  "added_public_source_paths": [
+    "/Users/taytrrip/slug/set81-prep/round-contention-stage/after/desktop/pooloperator/daily_round_contention.go",
+    "/Users/taytrrip/slug/set81-prep/round-contention-stage/before/desktop/pooloperator/live_round.go",
+    "/Users/taytrrip/slug/set81-prep/round-contention-stage/after/desktop/pooloperator/live_round.go",
+    "/Users/taytrrip/slug/set81-prep/round-contention-stage/before/desktop/pooloperator/maintenance.go",
+    "/Users/taytrrip/slug/set81-prep/round-contention-stage/after/desktop/pooloperator/maintenance.go",
+    "/Users/taytrrip/slug/set81-prep/round-contention-stage/after/desktop/pooloperator/runtime.go",
+    "/Users/taytrrip/slug/set81-prep/round-contention-stage/RATIONALE.md",
+    "/Users/taytrrip/slug/set81-prep/round-contention-stage/production.diff",
+    "/Users/taytrrip/slug/slug/poolshare/accounting.go",
+    "/Users/taytrrip/slug/slug/poolshare/daily.go",
+    "/Users/taytrrip/slug/slug/poolshare/daily_operator_audit.go",
+    "/Users/taytrrip/slug/slug/poolshare/store.go",
+    "/Users/taytrrip/slug/slug/poolround/operations.go",
+    "/Users/taytrrip/slug/slug/poolround/store.go",
+    "/Users/taytrrip/slug/slug/poolround/stream.go",
+    "/Users/taytrrip/slug/slug/registry/manifest_job_try.go",
+    "/Users/taytrrip/slug/set81-prep/round-contention-stage/production-manifest.json",
+    "/Users/taytrrip/slug/set81-prep/round-contention-tests/after/desktop/pooloperator/daily_round_contention_test.go",
+    "/Users/taytrrip/slug/set81-prep/round-contention-tests/EXPECTED.md",
+    "/Users/taytrrip/slug/slug/desktop/pooloperator/intake_source_busy_test.go",
+    "/Users/taytrrip/slug/slug/desktop/pooloperator/live_round_test.go",
+    "/Users/taytrrip/slug/slug/poolround/types.go",
+    "/Users/taytrrip/slug/slug/prospectwork/testdata/pool_share_reference/pool_share_v1.json",
+    "/Users/taytrrip/slug/set81-prep/round-contention-tests/manifest.json",
+    "/Users/taytrrip/slug/set81-prep/round-contention-stage/root-selection.json",
+    "/Users/taytrrip/slug/set81-prep/round-contention-stage/root-formatted-selection.json",
+    "/Users/taytrrip/slug/set81-prep/round-contention-stage/qualify-operator-linux.before.py.txt",
+    "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_round_contention.go",
+    "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_round_contention_test.go",
+    "/Users/taytrrip/slug/slug/desktop/pooloperator/live_round.go",
+    "/Users/taytrrip/slug/slug/desktop/pooloperator/maintenance.go",
+    "/Users/taytrrip/slug/slug/desktop/pooloperator/runtime.go",
+    "/Users/taytrrip/slug/slug/scripts/qualify-operator-linux.py",
+    "/Users/taytrrip/slug/set81-prep/run-round-successor.py",
+    "/Users/taytrrip/slug/set81-prep/retained-admission-b-actual-attempt1-final.superseded.json",
+    "/Users/taytrrip/slug/set81-prep/archive-plan.json",
+    "/Users/taytrrip/slug/set81-prep/ARCHIVE_PLAN.md"
+  ],
+  "deferred_report_inputs": [
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set81/retained-admission-a-actual-attempt1/owned/actual-report.json",
+      "bytes": 60796,
+      "sha256": "f662ac4688fde2c8b6651cbb28a5f333e443d19c36ca65148ae6226275c6644a",
+      "reason": "Public A1 failed report is bound by original production manifest; root archives actual/failure evidence separately, not by expanding this manifest."
+    }
+  ]
+}

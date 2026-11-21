@@ -113,6 +113,9 @@ func (r *Runtime) updateIntakeLocked(ctx context.Context, publicReady, roundRead
 	if err := ctx.Err(); err != nil {
 		return err
 	}
+	if r.daily {
+		return r.updateDailyIntakeLocked(ctx, publicReady, roundReady, cause)
+	}
 	r.intakePublicReady = r.intakePublicReady || publicReady
 	r.intakeRoundReady = r.intakeRoundReady || roundReady
 	pool, err := r.intake.Status(ctx)

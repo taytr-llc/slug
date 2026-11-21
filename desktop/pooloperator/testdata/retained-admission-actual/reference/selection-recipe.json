@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "scope": "Set81 finite retained original-job admission at actual pool-only drain",
+  "base_commit": "1f559221c3735227e8475731f2c73a74282db5b0",
+  "original_selection_sha256": "0f0890e529b64c10ed000673aab7861b9bd526057cc3c2bbbe05b868028f3d10",
+  "original_attachment_sha256": "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386",
+  "semantic_change": {
+    "path": "setup.base.maintenance_interval_ms",
+    "before": 30000,
+    "after": 1000,
+    "existing_minimum": 1000,
+    "existing_maximum": 60000
+  },
+  "dependent_id_changes": [
+    "base_actual.setup_id",
+    "profile.base_setup_id",
+    "profile_id",
+    "setup_id",
+    "remote_id",
+    "worker.transport_trust_id",
+    "transport_trust_id",
+    "dependent canonical frame bytes, embedded profiles and marker hashes"
+  ],
+  "unchanged_target": {
+    "path": "setup.base.pool.pool_target",
+    "compact_bits": "207fffff",
+    "hex": "7fffff0000000000000000000000000000000000000000000000000000000000",
+    "equals_normal_block_target": true,
+    "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "required_accepted_rewards": 2,
+    "one_reward_is_not_a_passing_substitute": true
+  },
+  "economics": {
+    "subsidy_atoms_per_reward": 1000000000,
+    "accepted_rewards": 2,
+    "miner_numerator": 99,
+    "allocation_denominator": 100,
+    "atoms_per_kvb": 1000,
+    "native_inputs": 2,
+    "positive_payees": 1,
+    "native_change_outputs": 1,
+    "expected_payment_atoms": 1980000000,
+    "expected_fee_atoms": 209,
+    "expected_change_atoms": 19999791
+  },
+  "frames": 9,
+  "maximum_output_bytes": 1048576,
+  "maximum_runtime_seconds": 60,
+  "maximum_stdout_bytes": 4096,
+  "runtime_normalization": [
+    "original ephemeral loopback ingress/listener/origin/CA/SPKI fields",
+    "one immutable initial-start UTC due minute",
+    "dependent selection/profile/enclosing transport IDs only"
+  ],
+  "fixed": [
+    "all source and financial limits and targets",
+    "ordinary maximum2 and existing finite request limit",
+    "original schema14 account/recipient and schema16 wallet guard",
+    "complete base remote and worker selections",
+    "all financial policies, both inherited economics branches and marker grammars"
+  ],
+  "exclusions": [
+    "No new expected PoW, proof, signature or block bytes",
+    "No product code execution or import",
+    "No actual drain/readiness/admission/custody qualification",
+    "No helper source or runtime authorization"
+  ]
+}

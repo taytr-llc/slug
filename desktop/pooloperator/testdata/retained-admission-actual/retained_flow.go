@@ -1,0 +1,303 @@
+package main
+
+import (
+	"path/filepath"
+	"reflect"
+	"time"
+
+	"github.com/taytr-llc/slug/desktop/accountpilot"
+	"github.com/taytr-llc/slug/desktop/pooloperator"
+	"github.com/taytr-llc/slug/poolservice"
+	"github.com/taytr-llc/slug/prospectservice"
+	"github.com/taytr-llc/slug/prospectworker"
+)
+
+func sameIssue(a, b poolservice.IssueResponse) bool { return string(encode(a)) == string(encode(b)) }
+func targetEntry(rows []prospectworker.PoolEntry, t admissionTarget) prospectworker.PoolEntry {
+	var found *prospectworker.PoolEntry
+	for i := range rows {
+		r := &rows[i]
+		if r.Work.Job.ID != t.Work.Job.ID || r.WorkHash != t.Receipt.WorkHash {
+			continue
+		}
+		require(found == nil, "unique original retained target")
+		found = r
+	}
+	require(found != nil, "original target retained")
+	r := *found
+	require(reflect.DeepEqual(r.Work, t.Work) && r.Nonce == t.Receipt.Nonce && r.PoolWin && r.PoolReceipt != nil && sourceReceipt(*r.PoolReceipt) == sourceReceipt(t.Receipt), "exact original target work nonce and pool receipt")
+	require(r.Fighter != nil && r.Fighter.Authorization != nil && *r.Fighter.Authorization == t.Authorization && reflect.DeepEqual(r.Fighter.Candidate.Proof, t.Proof), "original signature and prospect proof unchanged")
+	return r
+}
+func requirePendingTarget(rows []prospectworker.PoolEntry, t admissionTarget) prospectworker.PoolEntry {
+	r := targetEntry(rows, t)
+	require(r.Fighter.AdmissionState == "pending" && r.Fighter.Receipt == nil, "target remains signed and pending without claimed birth")
+	return r
+}
+func (v *scenario) waitRelay(c *cliOwner, ch <-chan struct{}, budget time.Duration) {
+	wait(v.ctx, budget, func() bool {
+		v.current.running()
+		_, _ = c.status()
+		v.owners.tls.mu.Lock()
+		e := v.owners.tls.failure
+		v.owners.tls.mu.Unlock()
+		check(e, "original admission relay")
+		select {
+		case <-ch:
+			return true
+		default:
+			return false
+		}
+	})
+}
+
+// No network request remains held while this reads the original standalone
+// operator's dated stdout. Its thirty-second status cadence is unchanged.
+func (v *scenario) drainReady(after int64) pooloperator.Status {
+	var out pooloperator.Status
+	wait(v.ctx, 90*time.Second, func() bool {
+		s, ok := v.current.status()
+		if !ok {
+			return false
+		}
+		out = s
+		return s.Running && !s.Closing && s.Capacity.AtMS >= after && s.PublicAtMS >= after && s.RoundAtMS >= after && s.Capacity.Mode == "draining" && s.Capacity.Reason == "pool_capacity" && s.Capacity.Submissions == 2 && !s.Capacity.OverBound && s.Public.Ready && s.PublicCode == "" && s.RoundCode == "" && s.Rounds.Through == 2 && s.Rounds.Rounds == 2
+	})
+	require(out.Capacity.DailyReservation != nil && out.Capacity.DailyReservation.OrdinaryMaximum == 2, "original independent ordinary cap two")
+	return out
+}
+func (v *scenario) joinTarget(c *cliOwner) {
+	check(c.stop(), "original CLI SIGTERM and complete join")
+	v.owners.tls.targetJoined(v.ctx)
+}
+func (v *scenario) retainedRequest(t admissionTarget) poolservice.IssueResponse {
+	v.owners.tls.targetJoined(v.ctx)
+	r, state := readRequest(v.in.AttachmentRoot, v.c, t.RequestID)
+	require(r != nil && r.Result.State == "work" && r.Result.Work != nil && reflect.DeepEqual(*r.Result.Work, t.Work) && state.ActiveRequestID != t.RequestID, "target original completed request remains exact")
+	return *r
+}
+func (v *scenario) runRetained(a, b *node) {
+	phase = "second accepted canonical pool winner held before original fighter admission"
+	cli := v.launch("cli-1")
+	v.waitRelay(cli, v.owners.tls.held, 240*time.Second)
+	v.joinTarget(cli)
+	t := v.owners.tls.targetValue()
+	require(t.Receipt.AcceptedSequence == 2 && t.FirstReceipt.AcceptedSequence == 1 && t.FirstHeldAtMS < t.Work.Job.ExpiresAtMS, "original live second accepted target")
+	var height uint32
+	a.rpc.must(v.ctx, "getblockcount", nil, &height)
+	require(height == 4, "exact two original canonical rewards after baseline two")
+	for _, r := range []struct {
+		height uint32
+		hash   string
+	}{{t.FirstReceipt.BlockHeight, t.FirstReceipt.WorkHash}, {t.Receipt.BlockHeight, t.Receipt.WorkHash}} {
+		var hash string
+		a.rpc.must(v.ctx, "getblockhash", []any{r.height}, &hash)
+		require(hash == r.hash, "actual accepted winner canonical before drain")
+	}
+	ready := v.drainReady(t.FirstHeldAtMS)
+	check(v.current.stop(false, 0), "initial operator joined for retained audit")
+	rows, control := readOutbox(v.in.AttachmentRoot, v.c)
+	initialEntry := requirePendingTarget(rows, t)
+	initialControl := control
+	originalRequest := v.retainedRequest(t)
+	initial := auditRetainedAdmission(v.ctx, v.root, v.s, t.Proof, t.Authorization)
+	require(initial.Record == nil && initial.TargetOutbox == 0 && initial.OwnershipState == "absent", "held original target has no admission effect")
+	v.phase("02-retained-before-forward", map[string]any{"target": t, "rows": rows, "outbox": control, "target_entry": initialEntry, "request": originalRequest, "audit": initial, "drain_status": ready, "cli": cli.evidence(), "operator": v.current.evidence()})
+	var lost *prospectservice.ManifestAdmissionResult
+	if v.kind == "A" {
+		phase = "reopened full source readiness before original short held admission"
+		reopenedAt := time.Now().UnixMilli()
+		v.serve("operator-serve-2")
+		ready = v.drainReady(reopenedAt)
+		require(time.Now().UnixMilli() < t.Work.Job.ExpiresAtMS, "original job live before second held request")
+		v.owners.tls.arm("loss")
+		cli = v.launch("cli-2")
+		v.waitRelay(cli, v.owners.tls.held, 120*time.Second)
+		v.owners.tls.releaseTarget()
+		v.waitRelay(cli, v.owners.tls.loss, 30*time.Second)
+		v.joinTarget(cli)
+		check(v.current.stop(false, 0), "lost-success operator joined")
+		rows, control = readOutbox(v.in.AttachmentRoot, v.c)
+		entry := requirePendingTarget(rows, t)
+		require(sameIssue(originalRequest, v.retainedRequest(t)), "target request survives lost admission success")
+		committed := auditRetainedAdmission(v.ctx, v.root, v.s, t.Proof, t.Authorization)
+		v.owners.tls.mu.Lock()
+		lost = v.owners.tls.lostResponse
+		v.owners.tls.mu.Unlock()
+		require(lost != nil && lost.Inserted && committed.Record != nil && reflect.DeepEqual(lost.Record, *committed.Record) && committed.TargetRecords == 1 && committed.TargetOutbox == 1, "exact real lost success retained by original issuer")
+		require(committed.Financial.AuthorityJobs == initial.Financial.AuthorityJobs && committed.Financial.Works == initial.Financial.Works, "no replacement job or work after drain")
+		v.phase("03-lost-success", map[string]any{"target": t, "rows": rows, "outbox": control, "target_entry": entry, "request": originalRequest, "response": lost, "audit": committed, "drain_status": ready, "cli": cli.evidence(), "operator": v.current.evidence()})
+		phase = "third original operator and CLI historical retained delivery"
+		reopenedAt = time.Now().UnixMilli()
+		v.serve("operator-serve-3")
+		ready = v.drainReady(reopenedAt)
+		v.owners.tls.arm("replay")
+		cli = v.launch("cli-3")
+	} else {
+		phase = "normal maturity while all original operator and CLI owners are stopped"
+		for _, owner := range v.owners.clis {
+			require(owner.joined && owner.closed, "all original CLI owners joined before offline maturity")
+		}
+		for _, owner := range v.owners.operators {
+			require(owner.joined && owner.closed, "all original operator owners joined before offline maturity")
+		}
+		v.owners.tls.targetJoined(v.ctx)
+		var matureHeight uint32
+		for {
+			a.rpc.must(v.ctx, "getblockcount", nil, &matureHeight)
+			require(matureHeight >= 4 && matureHeight <= 104, "bounded stopped-owner descendant height")
+			if matureHeight == 104 {
+				break
+			}
+			generate(v.ctx, a, b)
+		}
+		matureAt := time.Now().UnixMilli()
+		require(matureAt < v.due, "offline maturity still before original UTC due")
+		phase = "actual original expiry with worker and operator fully stopped"
+		for time.Now().UnixMilli() < t.Work.Job.ExpiresAtMS {
+			d := time.Until(time.UnixMilli(t.Work.Job.ExpiresAtMS))
+			if d > time.Second {
+				d = time.Second
+			}
+			check(pauseActual(v.ctx, d), "original wall expiry")
+		}
+		observed := time.Now().UnixMilli()
+		require(observed >= t.Work.Job.ExpiresAtMS, "actual expiry without clock replacement")
+		v.phase("03-expired-before-retry", map[string]any{"target": t, "expiry_ms": t.Work.Job.ExpiresAtMS, "observed_at_ms": observed, "mature_at_ms": matureAt, "height": matureHeight})
+		phase = "same full original source reopened before authenticated expiry replay"
+		reopenedAt := time.Now().UnixMilli()
+		v.serve("operator-serve-2")
+		ready = v.drainReady(reopenedAt)
+		v.owners.tls.arm("expired")
+		cli = v.launch("cli-2")
+	}
+	// A successful wire response alone is not local completion. The original CLI
+	// must publish a smaller pending count before we signal Stop, then a closed
+	// full outbox audit proves this exact row's accepted/expired state.
+	v.waitRelay(cli, v.owners.tls.result, 120*time.Second)
+	wait(v.ctx, 30*time.Second, func() bool {
+		v.current.running()
+		s, ok := cli.status()
+		return ok && s.Pending < control.Pending && s.Records == control.Records
+	})
+	v.joinTarget(cli)
+	phase = "closed original target delivery and authenticated pool receipt audit"
+	ev := auditRows(v.ctx, v.in.AttachmentRoot, v.c, v.owners.clients[0], a, filepath.Join(v.root, "receipt-lookup-evidence.json"))
+	require(len(ev.Accepted) == 2 && len(ev.LookupMissing) == 0, "two complete accepted canonical rewards required")
+	entry := targetEntry(ev.Rows, t)
+	if v.kind == "A" {
+		require(entry.Fighter.AdmissionState == "accepted" && entry.Fighter.Receipt != nil && lost != nil && reflect.DeepEqual(entry.Fighter.Receipt.Record, lost.Record) && !entry.Fighter.Receipt.Inserted && !entry.Fighter.Receipt.CurrentNodeChecked && entry.Fighter.Receipt.ContextSource == "historical-receipt", "exact original historical receipt durably acknowledged")
+	} else {
+		require(entry.Fighter.AdmissionState == "expired" && entry.Fighter.LastError == "expired" && entry.Fighter.Receipt == nil, "original exact target durably terminal expired")
+	}
+	require(sameIssue(originalRequest, v.retainedRequest(t)), "no target request replacement or rewrite")
+	v.owners.tls.mu.Lock()
+	response, apiError := v.owners.tls.lastResponse, v.owners.tls.lastError
+	v.owners.tls.mu.Unlock()
+	v.phase("04-completed-delivery", map[string]any{"target": t, "rows": ev, "target_entry": entry, "request": originalRequest, "drain_status": ready, "response": response, "api_error": apiError, "cli": cli.evidence()})
+	v.payRetained(a, b, t, initial, initialControl, ev, entry, originalRequest, lost)
+}
+
+func (v *scenario) payRetained(a, b *node, t admissionTarget, initial retainedAdmissionAudit, initialControl outboxState, ev rowEvidence, entry prospectworker.PoolEntry, originalRequest poolservice.IssueResponse, lost *prospectservice.ManifestAdmissionResult) {
+	econ := selectedEconomics(v.ref.Base, 2)
+	require(econ == v.ref.SelectedEconomics && econ.MinerAtoms == 1980000000 && econ.FeeAtoms == 209 && econ.ChangeAtoms == 19999791, "unchanged independent mandatory two-reward economics")
+	inputs := funding(v.ctx, a, v.s.Base, ev.Accepted)
+	phase = "same stopped original schema14 controller and wallet reopen"
+	next := openController(v.ctx, filepath.Join(v.root, "owned-gym"), v.ref.Base.Fixture, v.in, &v.owners.controller)
+	reopened := snapshot(v.ctx, v.owners.controller)
+	require(reopened.Remote.Records == uint64(len(ev.Rows)) && reopened.Remote.Pending == ev.Outbox.Pending && reopened.Remote.Attempts == 0, "same stopped complete outbox")
+	v.phase("05-stopped-reopen", reopened)
+	phase = "actual two-reward maturity before original UTC due"
+	var last, height uint32
+	for _, r := range ev.Accepted {
+		if r.BlockHeight > last {
+			last = r.BlockHeight
+		}
+	}
+	for {
+		v.current.running()
+		a.rpc.must(v.ctx, "getblockcount", nil, &height)
+		if height >= last+100 {
+			break
+		}
+		require(time.Now().UnixMilli() < v.due, "maturity before immutable original due")
+		generate(v.ctx, a, b)
+	}
+	wait(v.ctx, 60*time.Second, func() bool {
+		s, ok := v.current.status()
+		return ok && s.RoundCode == "" && s.Rounds.Through == 2 && s.Rounds.Rounds == 2
+	})
+	var mature accountpilot.RemotePoolControllerSnapshot
+	wait(v.ctx, 60*time.Second, func() bool {
+		v.current.running()
+		mature = snapshot(v.ctx, v.owners.controller)
+		return mature.Remote.WalletState == "ready" && mature.Remote.WalletHeight >= height
+	})
+	sends, _, e := v.owners.rpc.sends()
+	check(e, "original relay before due")
+	require(len(sends) == 0 && time.Now().UnixMilli() < v.due, "no early payment")
+	v.phase("06-mature", map[string]any{"snapshot": mature, "due_ms": v.due, "observed_at_ms": time.Now().UnixMilli(), "height": height, "economics": econ})
+	phase = "original real UTC scheduler schema16 whole payout"
+	var send observedSend
+	wait(v.ctx, 300*time.Second, func() bool {
+		v.current.running()
+		calls, _, e := v.owners.rpc.sends()
+		check(e, "original payment observation")
+		require(len(calls) <= 1, "one original actual broadcast")
+		if len(calls) == 1 {
+			send = calls[0]
+			return true
+		}
+		return false
+	})
+	require(send.AtMS >= v.due, "actual configured UTC due")
+	payment := validatePayment(send, v.s.Base, inputs, econ)
+	confirmation := generate(v.ctx, a, b)
+	require(minedTx(v.ctx, a, confirmation, send.TxID).TxHash().String() == send.TxID, "actual canonical payout")
+	confirmed := time.Now().UnixMilli()
+	v.phase("07-confirmed-payment", map[string]any{"payment": payment, "confirmation_block": confirmation, "confirmed_at_ms": confirmed})
+	balances, pages := waitMoney(v.ctx, v.owners.clients, v.s.Base, econ, send.TxID, confirmed, filepath.Join(v.root, "money-read-evidence.json"))
+	var finalWallet accountpilot.RemotePoolControllerSnapshot
+	wait(v.ctx, 60*time.Second, func() bool {
+		v.current.running()
+		finalWallet = snapshot(v.ctx, v.owners.controller)
+		return finalWallet.Remote.WalletState == "ready" && finalWallet.Remote.WalletHeight >= height+1 && finalWallet.Remote.SpendableAtoms == mature.Remote.SpendableAtoms+econ.MinerAtoms
+	})
+	require(finalWallet.View != nil && finalWallet.View.ViewID == next && finalWallet.Remote.Attempts == 0, "same stopped original wallet exact output")
+	v.phase("08-payment-wallet", map[string]any{"payment": payment, "balances": balances, "pages": pages, "wallet_before": mature, "wallet_after": finalWallet, "confirmation_block": confirmation})
+	check(v.owners.controller.Logout(v.ctx, next), "original logout")
+	check(v.owners.controller.Close(), "stopped original controller joined")
+	v.owners.controller = nil
+	v.owners.tls.targetJoined(v.ctx)
+	rows, control := readOutbox(v.in.AttachmentRoot, v.c)
+	require(reflect.DeepEqual(rows, ev.Rows) && control == ev.Outbox, "stopped original complete control and row invariance")
+	require(reflect.DeepEqual(targetEntry(rows, t), entry) && sameIssue(originalRequest, v.retainedRequest(t)), "target durable terminal unchanged on stopped reopen")
+	phase = "final closed original financial admission and publication audit"
+	check(v.current.stop(false, 0), "final original operator joined")
+	final := auditRetainedAdmission(v.ctx, v.root, v.s, t.Proof, t.Authorization)
+	verifyFinal(final.Financial, v.s.Base, ev, econ, send)
+	require(final.Financial.Works == initial.Financial.Works && final.Financial.AuthorityJobs == initial.Financial.AuthorityJobs, "no issued job or source work after drain")
+	require(final.Financial.SourceRequests >= initial.Financial.SourceRequests && final.Financial.SourceRequests <= v.s.IssueProfile.MaxRequests && final.Financial.IssuerRequests <= final.Financial.SourceRequests, "all unrelated finite request consumption retained and counted")
+	if v.kind == "A" {
+		require(final.Record != nil && lost != nil && reflect.DeepEqual(*final.Record, lost.Record) && final.TargetRecords == 1 && final.TargetSequences == 1 && final.TargetOutbox == 1 && final.TargetSignedAdmissions == 1 && final.TargetPublications == 1 && final.OwnershipState == "published", "exactly one target birth and linked public ownership")
+	} else {
+		require(final.Record == nil && final.TargetRecords == 0 && final.TargetSequences == 0 && final.TargetOutbox == 0 && final.TargetSignedAdmissions == 0 && final.TargetPublications == 0 && final.OwnershipState == "absent", "expired original target has no birth or ownership evidence")
+	}
+	v.phase("09-final-audit", map[string]any{"audit": final, "outbox_after": control, "target_entry": entry, "request": originalRequest})
+	sends, attempts, e := v.owners.rpc.sends()
+	check(e, "final original send evidence")
+	require(len(sends) == 1 && len(attempts) >= 1 && len(attempts) <= 16, "one broadcast and bounded attempts")
+	for _, x := range attempts {
+		require(x.Raw == send.Raw, "only original signed raw")
+	}
+	a.rpc.must(v.ctx, "getblockcount", nil, &height)
+	require(height == 105 && sameTip(v.ctx, a, b) != "", "two rewards plus maturity and one payout block")
+	complete := map[string]any{"completed": true, "case": v.kind, "request_id": t.RequestID, "job_id": t.Work.Job.ID, "target_prospect_id": final.TargetProspectID, "target_state": entry.Fighter.AdmissionState, "target_records": final.TargetRecords, "accepted_rewards": 2, "accepted_fighters": ev.AcceptedFighters, "pending_fighters": ev.PendingFighters, "original_signatures": ev.Authorizations, "stopped_reopen": true, "paid_atoms": econ.MinerAtoms, "fee_atoms": econ.FeeAtoms, "send_count": len(sends), "attempts": attempts, "final_audit_unchanged": final.ReadOnlyUnchanged, "final_height": height, "initial_source_requests": initial.Financial.SourceRequests, "final_source_requests": final.Financial.SourceRequests, "initial_issuer_requests": initial.Financial.IssuerRequests, "final_issuer_requests": final.Financial.IssuerRequests, "initial_outbox_requests": initialControl.Requests, "final_outbox_requests": control.Requests}
+	v.phase("10-complete", complete)
+	for k, value := range complete {
+		v.out[k] = value
+	}
+	v.out["miner_atoms"] = econ.MinerAtoms
+	v.out["scheduled_payment"] = true
+	v.out["original_wallet_received"] = true
+}

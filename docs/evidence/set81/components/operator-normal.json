@@ -1,0 +1,107 @@
+{
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 93096,
+        "pid": 93096,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./pooloperator"
+      ],
+      "exit_code": 0,
+      "label": "deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 93096,
+      "pid": 93096,
+      "seconds": 0.509,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 93134,
+        "pid": 93134,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "test",
+        "-count=1",
+        "-p=1",
+        "-timeout=450s",
+        "-json",
+        "-run",
+        "^Test(DailyRetained|ManifestAdmissionPreflight|DailyFencedAdmission|RetainedPoolAdmission)",
+        "./pooloperator"
+      ],
+      "exit_code": 0,
+      "label": "normal",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 93134,
+      "pid": 93134,
+      "seconds": 14.307,
+      "timed_out": false
+    }
+  ],
+  "expected_profile_skips": [],
+  "failed_tests": [],
+  "passed": true,
+  "passing_packages": [
+    "github.com/taytr-llc/slug/desktop/pooloperator"
+  ],
+  "passing_tests": [
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionSelectionReadinessAndDirectDrain/legacy",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionSelectionReadinessAndDirectDrain/daily",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionSelectionReadinessAndDirectDrain",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionFullSourceReopenPreservesPayment",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionHardEscalationAndConcurrentReadiness/public_capacity",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionHardEscalationAndConcurrentReadiness/admission_capacity",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionHardEscalationAndConcurrentReadiness/round_capacity",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionHardEscalationAndConcurrentReadiness/no_reservation",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionHardEscalationAndConcurrentReadiness/legacy_over_bound",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionHardEscalationAndConcurrentReadiness/unknown_future_cause",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionHardEscalationAndConcurrentReadiness",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionHardCauseSurvivesSourceBusy/explicit",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionHardCauseSurvivesSourceBusy/original-admission-mode",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionHardCauseSurvivesSourceBusy",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionEnableErrorsKeepOriginalOwner",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestDailyRetainedAdmissionCanceledBeforeTransition"
+  ],
+  "pattern": "^Test(DailyRetained|ManifestAdmissionPreflight|DailyFencedAdmission|RetainedPoolAdmission)",
+  "profile_unchanged": true,
+  "required_tests": [
+    "TestDailyRetainedAdmissionSelectionReadinessAndDirectDrain",
+    "TestDailyRetainedAdmissionFullSourceReopenPreservesPayment",
+    "TestDailyRetainedAdmissionHardEscalationAndConcurrentReadiness",
+    "TestDailyRetainedAdmissionHardCauseSurvivesSourceBusy",
+    "TestDailyRetainedAdmissionEnableErrorsKeepOriginalOwner",
+    "TestDailyRetainedAdmissionCanceledBeforeTransition"
+  ],
+  "scope": "Set81 operator normal",
+  "skipped_tests": [],
+  "sources_unchanged": true,
+  "version": 1
+}

@@ -1,0 +1,10 @@
+{
+  "disposition": "Superseded before any helper build/runtime by the reviewed complete-HTTP-response cleanup correction. No product or helper change.",
+  "executed": false,
+  "prior_lock": {
+    "bytes": 16761,
+    "path": "/Users/taytrrip/slug/set81-prep/retained-admission-a-actual-attempt1.lock.json",
+    "sha256": "f27870e6f4616e4409f807cfc2eebd6f473a4556a158928a71c123781be0c4ec"
+  },
+  "version": 1
+}

@@ -1,0 +1,215 @@
+{
+  "version": 1,
+  "status": "passed",
+  "commands": [
+    {
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-json",
+        ".",
+        "./cmd/slugctl"
+      ],
+      "pid": 95834,
+      "pgid": 95834,
+      "exit_code": 0,
+      "seconds": 0.443,
+      "timed_out": false,
+      "log_limit_exceeded": false,
+      "log_joined": true,
+      "capture_errors": [],
+      "log_errors": [],
+      "cleanup": {
+        "pid": 95834,
+        "pgid": 95834,
+        "leftover_after_exit": false,
+        "signals": [],
+        "group_empty": true,
+        "errors": [],
+        "return_code": 0
+      }
+    },
+    {
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-o",
+        "/Users/taytrrip/slug/artifacts/set81/smoke-attempt1/bin/slugd",
+        "."
+      ],
+      "pid": 95845,
+      "pgid": 95845,
+      "exit_code": 0,
+      "seconds": 2.209,
+      "timed_out": false,
+      "log_limit_exceeded": false,
+      "log_joined": true,
+      "capture_errors": [],
+      "log_errors": [],
+      "cleanup": {
+        "pid": 95845,
+        "pgid": 95845,
+        "leftover_after_exit": false,
+        "signals": [],
+        "group_empty": true,
+        "errors": [],
+        "return_code": 0
+      }
+    },
+    {
+      "command": [
+        "go",
+        "version",
+        "-m",
+        "/Users/taytrrip/slug/artifacts/set81/smoke-attempt1/bin/slugd"
+      ],
+      "pid": 95863,
+      "pgid": 95863,
+      "exit_code": 0,
+      "seconds": 0.012,
+      "timed_out": false,
+      "log_limit_exceeded": false,
+      "log_joined": true,
+      "capture_errors": [],
+      "log_errors": [],
+      "cleanup": {
+        "pid": 95863,
+        "pgid": 95863,
+        "leftover_after_exit": false,
+        "signals": [],
+        "group_empty": true,
+        "errors": [],
+        "return_code": 0
+      }
+    },
+    {
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-o",
+        "/Users/taytrrip/slug/artifacts/set81/smoke-attempt1/bin/slugctl",
+        "./cmd/slugctl"
+      ],
+      "pid": 95864,
+      "pgid": 95864,
+      "exit_code": 0,
+      "seconds": 0.584,
+      "timed_out": false,
+      "log_limit_exceeded": false,
+      "log_joined": true,
+      "capture_errors": [],
+      "log_errors": [],
+      "cleanup": {
+        "pid": 95864,
+        "pgid": 95864,
+        "leftover_after_exit": false,
+        "signals": [],
+        "group_empty": true,
+        "errors": [],
+        "return_code": 0
+      }
+    },
+    {
+      "command": [
+        "go",
+        "version",
+        "-m",
+        "/Users/taytrrip/slug/artifacts/set81/smoke-attempt1/bin/slugctl"
+      ],
+      "pid": 95887,
+      "pgid": 95887,
+      "exit_code": 0,
+      "seconds": 0.011,
+      "timed_out": false,
+      "log_limit_exceeded": false,
+      "log_joined": true,
+      "capture_errors": [],
+      "log_errors": [],
+      "cleanup": {
+        "pid": 95887,
+        "pgid": 95887,
+        "leftover_after_exit": false,
+        "signals": [],
+        "group_empty": true,
+        "errors": [],
+        "return_code": 0
+      }
+    }
+  ],
+  "final_checks": {
+    "sources": true,
+    "profile": true,
+    "artifact-slugd": true,
+    "artifact-slugctl": true,
+    "binary-slugd": true,
+    "binary-slugctl": true,
+    "evidence-runner.py": true,
+    "evidence-build-profile-binding.json": true,
+    "evidence-source-inputs.json": true,
+    "evidence-build-artifacts.json": true
+  },
+  "artifacts": {
+    "slugd": {
+      "path": "/Users/taytrrip/slug/artifacts/set81/smoke-attempt1/bin/slugd",
+      "sha256": "8652000610baa0ab333fe99a12929ea313af5c8fe6903e43125047431be171fa",
+      "build_info": "/Users/taytrrip/slug/artifacts/set81/smoke-attempt1/slugd-build-info.txt",
+      "build_info_sha256": "73856498dc82f0b1622391a64fa9fdf2e637fab0196da4d8b0cbf956dc47fcc3",
+      "settings": {
+        "-buildmode": "exe",
+        "-compiler": "gc",
+        "-gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "DefaultGODEBUG": "tracebacklabels=0,x509sslcertoverrideplatform=0",
+        "CGO_ENABLED": "0",
+        "GOARCH": "arm64",
+        "GOOS": "darwin",
+        "GOARM64": "v8.0",
+        "vcs": "git",
+        "vcs.revision": "1f559221c3735227e8475731f2c73a74282db5b0",
+        "vcs.time": "2026-11-21T13:46:03Z",
+        "vcs.modified": "true"
+      },
+      "go_version": "go1.27.4",
+      "compiler_setting_evidence": "embedded_build_info"
+    },
+    "slugctl": {
+      "path": "/Users/taytrrip/slug/artifacts/set81/smoke-attempt1/bin/slugctl",
+      "sha256": "005dbcb449d792c1a209478aca9a702b6201769cfe94968d233f9730ee86314b",
+      "build_info": "/Users/taytrrip/slug/artifacts/set81/smoke-attempt1/slugctl-build-info.txt",
+      "build_info_sha256": "ec8242931746ebeae1dd4ff46453bef59d1d49065a9e7974c17137a43173f72d",
+      "settings": {
+        "-buildmode": "exe",
+        "-compiler": "gc",
+        "-gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "DefaultGODEBUG": "tracebacklabels=0,x509sslcertoverrideplatform=0",
+        "CGO_ENABLED": "0",
+        "GOARCH": "arm64",
+        "GOOS": "darwin",
+        "GOARM64": "v8.0",
+        "vcs": "git",
+        "vcs.revision": "1f559221c3735227e8475731f2c73a74282db5b0",
+        "vcs.time": "2026-11-21T13:46:03Z",
+        "vcs.modified": "true"
+      },
+      "go_version": "go1.27.4",
+      "compiler_setting_evidence": "embedded_build_info"
+    }
+  },
+  "binary_identities": {
+    "slugd": {
+      "path": "/Users/taytrrip/slug/artifacts/set81/smoke-attempt1/bin/slugd",
+      "bytes": 19360258,
+      "sha256": "8652000610baa0ab333fe99a12929ea313af5c8fe6903e43125047431be171fa"
+    },
+    "slugctl": {
+      "path": "/Users/taytrrip/slug/artifacts/set81/smoke-attempt1/bin/slugctl",
+      "bytes": 12037314,
+      "sha256": "005dbcb449d792c1a209478aca9a702b6201769cfe94968d233f9730ee86314b"
+    }
+  },
+  "clean_join": true
+}

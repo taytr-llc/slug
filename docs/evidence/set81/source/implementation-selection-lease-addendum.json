@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "base_commit": "1f559221c3735227e8475731f2c73a74282db5b0",
+  "predecessor": {
+    "path": "implementation-selection.json",
+    "bytes": 6562,
+    "sha256": "3b270d9c4933cc0fe1b4a6c64bccbbbb2f66f30acdbb66bba12afbf0594f728f"
+  },
+  "approved_successor": {
+    "path": "oracle-lease-provenance-correction/manifest.json",
+    "bytes": 1080,
+    "sha256": "760e60d3093557ba5b54e1e5dbe2155197efc9435a1b7cf33f74a7f5fce786bf"
+  },
+  "hand_cases": 54,
+  "root_review": "Complete original lease success is required before exact captured original issuer expiry can become terminal. The selected callback returns nil to preserve outer authorization failures. Poison remains latched on mixed failure. Legacy lease and final commit unchanged.",
+  "product_execution_before_approval": false,
+  "supersedes_original": "Only the explicitly listed corrections; immutable original and clock overlay remain evidence."
+}

@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "source_map": {
+    "bytes": 156771,
+    "sha256": "61dcdf94bd6fbe3687ad84870fa3b1df0040621dc575051588cc95773acef082"
+  },
+  "installed": true,
+  "all_target_identities_verified": true,
+  "files_copied": 140,
+  "bytes_copied": 1694058,
+  "scope": "Explicit public source/evidence only; no runtime-tree traversal or private material"
+}

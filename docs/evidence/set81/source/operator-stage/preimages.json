@@ -1,0 +1,14 @@
+{
+  "/Users/taytrrip/slug/slug/desktop/pooloperator/capacity_drain.go": {
+    "bytes": 6507,
+    "sha256": "f78d3613a6db6169e3562c67fa36418c66afffa8b6f1f7cca771a43e0024f21e"
+  },
+  "/Users/taytrrip/slug/slug/desktop/pooloperator/runtime.go": {
+    "bytes": 21184,
+    "sha256": "39e93745f9059e0f4b2e636476ff7c2d4e889b771349f44156c4cc20c097746e"
+  },
+  "/Users/taytrrip/slug/slug/desktop/pooloperator/construction.go": {
+    "bytes": 16317,
+    "sha256": "37fa71d3465de9267275df106deae584b9a75314aaefb62d074b2401a7b9ad54"
+  }
+}
