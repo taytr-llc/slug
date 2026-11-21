@@ -356,3 +356,30 @@ reconciled; no general upload reliability defect or ongoing failure is proven.
 - **Revisit:** If this recurs or prevents the agreed hosted test. Repeated or
   uncertain live-owner deployments become an active test blocker; a one-off
   reconciled upload does not require unrelated product work.
+
+## EF-17 — Cleanup cancellation can obscure the primary startup failure
+
+**Status:** Open diagnostic follow-up; not a payment-correctness change or a
+blocker once the concrete startup configuration is corrected.
+
+- **Trigger:** An operator startup task fails and `Runtime.Run` cancels its
+  siblings during joined cleanup. The resulting error tree contains both the
+  original failure and `context.Canceled`; the public command classifier reports
+  `cancelled` before generic unavailable/integrity failures.
+- **Player impact:** An operator may investigate a signal or user cancellation
+  when the actual cause is a listener/configuration failure. No mining or payout
+  occurred in the observed case; original child and monitor waits were retained.
+- **Evidence:** Set82 hosted attempt3 emitted `serve/cancelled` without an
+  external-signal marker. Its original owner records premature exit1 and joined
+  monitor0. An independent Go probe on that host confirmed generic TCP binding
+  of `0.0.0.0:8443` reports `[::]:8443`, failing the existing exact listener check;
+  explicit `[::]:8443` reports the selected literal. See
+  [Set82 hosted notes](../CHANGESET_82_NOTES.md),
+  `desktop/pooloperator/runtime.go` and `desktop/pooloperator/command.go`.
+- **Workaround:** Preserve original lifecycle evidence, inspect the concrete
+  startup selection, and verify the suspected boundary independently. Select
+  the explicit bound address on a fresh fixture. Do not print private error
+  trees, relabel failed runs, weaken address matching or reset existing roots.
+- **Revisit:** When improving operator diagnostics or before public operations
+  need actionable startup alerts. Promote immediately if ambiguity prevents
+  safe recovery of an active owner or a payout.

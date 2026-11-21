@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "passed": true,
+  "ended_ms": 1795282052522,
+  "selection": {
+    "version": 1,
+    "start_ms": 1795282037690,
+    "due_ms": 1795282440000,
+    "deadline_ms": 1795282937690,
+    "outer_deadline_ms": 1795283117690,
+    "due_utc": "2026-11-21T17:34:00Z"
+  }
+}

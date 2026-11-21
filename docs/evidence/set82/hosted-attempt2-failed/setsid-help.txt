@@ -1,0 +1,10 @@
+BusyBox v1.37.0 (2026-01-10 15:38:28 UTC) multi-call binary.
+
+Usage: setsid [-c] PROG ARGS
+
+Run PROG in a new session. PROG will have no controlling terminal
+and will not be affected by keyboard signals (^C etc).
+
+	-c	Set controlling terminal to stdin
+BusyBox v1.37.0 (2026-01-10 15:38:28 UTC) multi-call binary.
+BusyBox is copyrighted by many authors between 1998-2015.

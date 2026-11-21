@@ -30,7 +30,10 @@ The current order is:
    provider storage, endpoint and actual hosted payout remain to be verified.
    The first hosted initialization failed at an inherited desktop-only address
    rule. Its operator-only explicit-CA HTTPS correction passes normal/race and
-   refusal checks; a new hosted payout attempt is required. See
+   refusal checks. All seven corrected-tip CI jobs pass at `4a15e8c9`; hosted init now
+   succeeds. Two later launcher/listener startup failures are retained, and
+   a fresh explicit-listener attempt awaits the test-service restart permission.
+   A completed hosted payout remains required. See
    [Set82's retained failure and correction](CHANGESET_82_NOTES.md).
 2. **Wallet balances and history.** Connect and verify the existing authenticated
    balance, payout and wallet-activity paths against the hosted test service,

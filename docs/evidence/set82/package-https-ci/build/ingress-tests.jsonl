@@ -1,0 +1,12 @@
+{"Time":"2026-11-21T17:19:27.361139005Z","Action":"start","Package":"github.com/taytr-llc/slug/poolingress"}
+{"Time":"2026-11-21T17:19:27.362757931Z","Action":"run","Package":"github.com/taytr-llc/slug/poolingress","Test":"TestRecoverableIngressOriginalTLSAndJoin"}
+{"Time":"2026-11-21T17:19:27.362812799Z","Action":"output","Package":"github.com/taytr-llc/slug/poolingress","Test":"TestRecoverableIngressOriginalTLSAndJoin","Output":"=== RUN   TestRecoverableIngressOriginalTLSAndJoin\n","OutputType":"frame"}
+{"Time":"2026-11-21T17:19:27.366156366Z","Action":"output","Package":"github.com/taytr-llc/slug/poolingress","Test":"TestRecoverableIngressOriginalTLSAndJoin","Output":"--- PASS: TestRecoverableIngressOriginalTLSAndJoin (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-21T17:19:27.366173837Z","Action":"pass","Package":"github.com/taytr-llc/slug/poolingress","Test":"TestRecoverableIngressOriginalTLSAndJoin","Elapsed":0}
+{"Time":"2026-11-21T17:19:27.366185184Z","Action":"run","Package":"github.com/taytr-llc/slug/poolingress","Test":"TestIngressCloseCancelsAndJoins"}
+{"Time":"2026-11-21T17:19:27.366187549Z","Action":"output","Package":"github.com/taytr-llc/slug/poolingress","Test":"TestIngressCloseCancelsAndJoins","Output":"=== RUN   TestIngressCloseCancelsAndJoins\n","OutputType":"frame"}
+{"Time":"2026-11-21T17:19:27.367871573Z","Action":"output","Package":"github.com/taytr-llc/slug/poolingress","Test":"TestIngressCloseCancelsAndJoins","Output":"--- PASS: TestIngressCloseCancelsAndJoins (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-21T17:19:27.367894262Z","Action":"pass","Package":"github.com/taytr-llc/slug/poolingress","Test":"TestIngressCloseCancelsAndJoins","Elapsed":0}
+{"Time":"2026-11-21T17:19:27.367898816Z","Action":"output","Package":"github.com/taytr-llc/slug/poolingress","Output":"PASS\n","OutputType":"frame"}
+{"Time":"2026-11-21T17:19:27.368174275Z","Action":"output","Package":"github.com/taytr-llc/slug/poolingress","Output":"ok  \tgithub.com/taytr-llc/slug/poolingress\t0.007s\n"}
+{"Time":"2026-11-21T17:19:27.368185923Z","Action":"pass","Package":"github.com/taytr-llc/slug/poolingress","Elapsed":0.007}

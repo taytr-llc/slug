@@ -1,0 +1,67 @@
+{
+  "base_remote_id": "7f1f87f58ed83f3e7b48954412310c76acb2c94f928a09b5bed84483bc899476",
+  "base_setup_id": "20a3833970efa277971c6301c0c7adc99640722907072f82abfe28d9b6dcb186",
+  "due_at_ms": 1795282440000,
+  "economics": {
+    "change_atoms": 19999791,
+    "fee_atoms": 209,
+    "gross_atoms": 2000000000,
+    "miner_atoms": 1980000000,
+    "rewards": 2,
+    "shape_upper_bound": {
+      "raw_bytes": 374,
+      "vsize": 209,
+      "weight": 836
+    }
+  },
+  "inputs": [
+    {
+      "bytes": 174293,
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/reference-v1.json",
+      "sha256": "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a"
+    },
+    {
+      "bytes": 239,
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/public/endpoints.json",
+      "sha256": "e3e3ea2adb5fd4a82bfb29c119a8adddc84f0ee0be6a94a586c1b5d845427494"
+    },
+    {
+      "bytes": 5512,
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/public/setup.json",
+      "sha256": "d9b117bbfc89db7ad88d1a98ad32afa39cb565a68168a79939c96f350cb52b17"
+    },
+    {
+      "bytes": 6076,
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/public/remote.json",
+      "sha256": "977cf0c38e2013f5acc28227350999e041bb653aa683d7f279ed2e9648a8c605"
+    },
+    {
+      "bytes": 996,
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/public/prepared.json",
+      "sha256": "79ad3a7c17064d0875535aa219221c11d90cc19b15f74e9db4fec20e2ffa6d93"
+    },
+    {
+      "bytes": 497,
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/public/ca.pem",
+      "sha256": "6cec910c1fefc71289424ae639f352857762ac7d38c7cf0a13dcba9787ce952c"
+    },
+    {
+      "bytes": 1067,
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/public/tls-cert.pem",
+      "sha256": "f3ed9e9b3b536c4e2285d69958183b7b46341c268232c4e907a3db60aef93c76"
+    }
+  ],
+  "original_initial_start_ms": 1795282037690,
+  "passed": true,
+  "profile_id": "d9880f3316338692a4a2f7bedea26bc4dc722b2bae991485ee1be681fba7ad32",
+  "remote_id": "4fe5c5f4add041115b369dc605c986cf92084eafc69f3fa3196b8ba1d52f19a3",
+  "runtime_qualified": false,
+  "scope": "Public hosted selection and independent economic bindings only",
+  "setup_id": "e54614c284fea85e94b6725679d2313e9574bced428227453952b11fe8a78f7d",
+  "source_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+  "source_reference_sha256": "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a",
+  "tls_handshake_qualified": false,
+  "tls_spki": "71573d36d3c650f50c89490e6768447e45fe9c12e09b9eb6d9c9225972b3c96b",
+  "version": 1,
+  "wallet_qualified": false
+}

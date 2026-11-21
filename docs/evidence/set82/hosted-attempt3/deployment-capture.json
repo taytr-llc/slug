@@ -1,0 +1,65 @@
+[
+  {
+    "id": "ca9d1c8e-cb96-4dc9-992e-606ade4ebfd1",
+    "status": "SUCCESS",
+    "createdAt": "2026-11-21T17:20:09.810Z",
+    "meta": {
+      "buildOnly": false,
+      "cliMessage": "SLUG bounded hosted successor: operator-only verified HTTPS correction",
+      "fileServiceManifest": {},
+      "imageDigest": "sha256:5247a188ee785cad09cd967623526445df3fe5e257fcf38e1a4bf63a2633ae4a",
+      "logsV2": true,
+      "nixpacksProviders": [],
+      "plan": "pro",
+      "propertyFileMapping": {},
+      "reason": "deploy",
+      "rootDirectory": null,
+      "runtime": "V2",
+      "serviceManifest": {
+        "build": {
+          "buildCommand": null,
+          "buildEnvironment": "V3",
+          "builder": "DOCKERFILE",
+          "dockerfilePath": "/Dockerfile",
+          "nixpacksConfigPath": null,
+          "nixpacksPlan": null,
+          "watchPatterns": []
+        },
+        "deploy": {
+          "cronSchedule": null,
+          "drainingSeconds": 180,
+          "healthcheckPath": null,
+          "healthcheckTimeout": null,
+          "ipv6EgressEnabled": false,
+          "limitOverride": {
+            "containers": {
+              "cpu": 2,
+              "memoryBytes": 2000000000
+            }
+          },
+          "multiRegionConfig": {
+            "us-west2": {
+              "numReplicas": 1
+            }
+          },
+          "numReplicas": 1,
+          "overlapSeconds": 0,
+          "preDeployCommand": null,
+          "preDeployTimeoutSeconds": null,
+          "region": null,
+          "registryCredentials": null,
+          "requiredMountPath": null,
+          "restartPolicyMaxRetries": null,
+          "restartPolicyType": "NEVER",
+          "runtime": "V2",
+          "sleepApplication": false,
+          "startCommand": "",
+          "useLegacyStacker": false
+        }
+      },
+      "volumeMounts": [
+        "/data"
+      ]
+    }
+  }
+]

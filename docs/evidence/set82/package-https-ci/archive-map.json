@@ -1,0 +1,151 @@
+{
+  "version": 1,
+  "run": 44929223689,
+  "files": [
+    {
+      "path": "package-revision.txt",
+      "bytes": 41,
+      "sha256": "42200cae9dce26dc48e72c14d92343b599aa7180011655abd9cbc52f770516b1"
+    },
+    {
+      "path": "export-context.py",
+      "bytes": 2320,
+      "sha256": "dc38f0e903c569a6b5029f0de44c45063e4afa13ad30b2d579d21b49cef97e2d"
+    },
+    {
+      "path": "result.json",
+      "bytes": 269,
+      "sha256": "f810952d2d8a78819505f8c13e69362a3010856b5391388d01ffa1c6e6eb5e0f"
+    },
+    {
+      "path": "Dockerfile",
+      "bytes": 6424,
+      "sha256": "205eb7e6a4fafc80de0b99c92c2e8a607b3a0d91839dabeeefc1ed84545b8b40"
+    },
+    {
+      "path": "operator-help.txt",
+      "bytes": 1367,
+      "sha256": "158910675c4ae0d106249e90f678286470784fe892cf9f12d9419973c65d1c04"
+    },
+    {
+      "path": "containers.json",
+      "bytes": 16055,
+      "sha256": "b0a1647f95e0d5755440612a14f908d69c2c9a482784e13c5ff4bb6a375ea19f"
+    },
+    {
+      "path": "context.json",
+      "bytes": 608,
+      "sha256": "b89a774a87cf6f08ccf07188104cbd1c65a6eccd978bbfec3cab4c813497a1cd"
+    },
+    {
+      "path": "provision-help.txt",
+      "bytes": 914,
+      "sha256": "f402e3bb7f2728c0f8d184825fc394f816469a317905ef554d1bf25274cbbdb0"
+    },
+    {
+      "path": "image.json",
+      "bytes": 2819,
+      "sha256": "b6b7adae2b15114e926f72d62ad59c7ae9478ee8f84d238eef214d74e98df87e"
+    },
+    {
+      "path": "build.log",
+      "bytes": 10677,
+      "sha256": "7433af829b2bac1a1edbb1ee3d63c8adb716f9271c02f25f30de5a7fd6e5e130"
+    },
+    {
+      "path": "docker-version.txt",
+      "bytes": 769,
+      "sha256": "d08649ab21d0e73e37c3d07f05b7dee2c670f0e1afceb39f62fafed3ad74ecb6"
+    },
+    {
+      "path": "build/go-env.json",
+      "bytes": 165,
+      "sha256": "e5cdfa4ceb47eb4ae9482395c63fa79db62b692715ca6b14add1346c849dd252"
+    },
+    {
+      "path": "build/operator-symbols.txt",
+      "bytes": 853826,
+      "sha256": "a3fece3bc15aaee552e5d87cf276bccd58f5fc8f9a84aa4f59188429ec1cac77"
+    },
+    {
+      "path": "build/dependencies.json",
+      "bytes": 1162817,
+      "sha256": "4e933bb36103343f917c37085ede212624ef534146b53e8e006e4e970e0eafaf"
+    },
+    {
+      "path": "build/source-archives.sha256",
+      "bytes": 153,
+      "sha256": "c0ba8dfaf91a61a394d049591b8182742de0fc8519a81d2bd48c0d67daea7822"
+    },
+    {
+      "path": "build/ownership-https-tests.jsonl",
+      "bytes": 10643,
+      "sha256": "cbdc3d62ec658910726588a9b93c89f436ae661033328cbd230b7418059ec859"
+    },
+    {
+      "path": "build/workspace.json",
+      "bytes": 743,
+      "sha256": "172dc6e116b9b654d5222881a1bbf3139ff7a9e492d186548c454adb5032d098"
+    },
+    {
+      "path": "build/build-profile.json",
+      "bytes": 179,
+      "sha256": "e5ddb9d30e8048ad3b656358134632e48852f44deef44bdd93df7dda13208295"
+    },
+    {
+      "path": "build/binary-sha256.txt",
+      "bytes": 171,
+      "sha256": "3bceff8b29dd7eff12982a220529bf782d3a0fa2841fb321f03c7fe03ab03b93"
+    },
+    {
+      "path": "build/wire-files.txt",
+      "bytes": 613,
+      "sha256": "6d24b97eeefe011dc18b987ccf6f0760a985709551136f4696e98de746bbc250"
+    },
+    {
+      "path": "build/source-revisions.txt",
+      "bytes": 98,
+      "sha256": "2609179f7eca38f817fbbb0a111fef0d8525c51a7ad950825247a4a1ec407600"
+    },
+    {
+      "path": "build/ingress-tests.jsonl",
+      "bytes": 2153,
+      "sha256": "44e1329e9dfdbc6094723413c07687d17e884907ab1ab26bca851681821f278a"
+    },
+    {
+      "path": "build/check-user.txt",
+      "bytes": 33,
+      "sha256": "f538005296ee815ad51cd104a8780a7d78d693c2a98bb8e3dd0abebe708c972d"
+    },
+    {
+      "path": "build/source-after.sha256",
+      "bytes": 1217326,
+      "sha256": "52b4ebf6ff20335f6c63863e27a57094320ccd9bcdb408267e85fa488dd52dc3"
+    },
+    {
+      "path": "build/provision-symbols.txt",
+      "bytes": 625709,
+      "sha256": "dcbbf01293e4c7a4eb970d421ca0cb5027390823b8903cd36a30243026de88cc"
+    },
+    {
+      "path": "build/authority-tests.jsonl",
+      "bytes": 4319,
+      "sha256": "d21ff2bcbedb5e1f9e9dcd293036dff85f9f0782303b5d1d1de817b85fdbeaf4"
+    },
+    {
+      "path": "build/operator-tests.jsonl",
+      "bytes": 26733,
+      "sha256": "b03520adc16214a89bfb10fc4f18da83471da88e863790704bc6957727ef6e7a"
+    },
+    {
+      "path": "build/source-before.sha256",
+      "bytes": 1217326,
+      "sha256": "52b4ebf6ff20335f6c63863e27a57094320ccd9bcdb408267e85fa488dd52dc3"
+    },
+    {
+      "path": "build/build-info.txt",
+      "bytes": 6158,
+      "sha256": "6ee674eaa92a765f5a85f3ea6f426474f54df1fc1bc68b72d944fff9fa5e9d79"
+    }
+  ]
+}

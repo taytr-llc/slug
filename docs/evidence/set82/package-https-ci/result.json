@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "scope": "native image build, UID10001 component controls and unprivileged help execution",
+  "required_assertions": 26,
+  "hosted_payout_qualified": false,
+  "image_id": "sha256:37221a3135d3bc1a6241ab23cbe306fc862611ab46b653f463c8e6df78c9fa65"
+}

@@ -93,6 +93,8 @@ docker run --name slug-operator-bounded "${container_options[@]}" \
   slug-operator:359a2853 serve "${operator_files[@]}"
 ```
 
+On the selected dual-stack Railway Linux host, configure ingress listen as `[::]:8443` when forwarding port 8443. A host probe confirmed that generic TCP listen on `0.0.0.0:8443` reports `[::]:8443`; the original runtime correctly refuses a different literal from the selected configuration. Keep the exact address check, and verify the bound literal before selecting a fresh setup on another host.
+
 Bind the image by its recorded digest for execution. Port values must match the selected public transport and ingress listen configuration. Publish only ingress. Keep pool/admission/ownership upstreams on their configured literal loopback endpoints. The operator terminates its own TLS1.3/HTTP1.1 and verifies Host/SNI/certificate selection; use raw TCP forwarding. An HTTP edge that terminates TLS or inserts forwarded-identity headers is not a compatible substitute. No `$PORT` override or automatic repinning is introduced.
 
 Use a separately managed node with verified HTTPS RPC on its private hostname

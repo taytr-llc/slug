@@ -1,0 +1,12 @@
+[
+  {
+    "source": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/lifecycle/operator-lifecycle.sh",
+    "path": "/usr/local/bin/host-operator-lifecycle-3",
+    "sha256": "c45c893204e00f7875c59060bc60392b52c92c904fc688f5c6727c7be16252b7"
+  },
+  {
+    "source": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/package/bootstrap.sh",
+    "path": "/usr/local/bin/host-bootstrap-3",
+    "sha256": "b2335bfee2796f25d6ecd6291dab0c454c4ed45aa6a7800f1feb5dd3ffa2d933"
+  }
+]

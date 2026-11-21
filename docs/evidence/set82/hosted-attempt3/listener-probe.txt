@@ -1,0 +1,3 @@
+selected=0.0.0.0:8443 actual=[::]:8443 equal=false
+selected=[::]:8443 actual=[::]:8443 equal=true
+all_listeners_closed

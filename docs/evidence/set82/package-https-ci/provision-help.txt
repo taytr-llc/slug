@@ -1,0 +1,13 @@
+slugpool-provision create|resume|verify [local file selections]
+--daily explicitly selects fresh DAILY provisioning; defaults remain V1.
+--daily-recoverable-issue selects fresh exact-request issuance recovery.
+The two selections are mutually exclusive.
+Required: --policy-file --root --tls-certificate-file
+ --wallet-public-passphrase-file --wallet-unlock-passphrase-file
+Paths must be absolute and canonical; selected files must be protected regular
+files in private directories. Passphrases are exact raw file bytes. create uses
+OS randomness and a fresh root. resume keeps the original material and identities.
+verify requires READY and every original output. No command overwrites or resets
+files, contacts a node, starts services, mines, or accepts a checkpoint seed.
+The protected operator wallet backup is not a service-journal restoration file.
+Only bounded public JSON and closed error codes are printed.

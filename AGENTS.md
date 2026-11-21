@@ -564,6 +564,13 @@ authorization must be repository-limited, not an account-wide OAuth expansion.
   refusals, cheap-profile refusal and vet pass. The desktop rule stays strict.
   Preserve the failed attempt and original clock; a new hosted payout proof is
   required. EF-15/16 cover separate provider qualification/upload follow-ups.
+  Corrected package `4a15e8c9` passes all seven CI jobs, including full race
+  and Linux image CI (26 required assertions); see `https-fix-ci.json`.
+  Hosted init succeeds; retained attempts2/3 failed before mining/payouts at
+  SSH launch and wildcard-listener boundaries. Fresh attempt4 selects `[::]:8443`
+  and corrected fixture supervision; its clock has not started. Test-service
+  restart awaits explicit permission after automatic approval rejection.
+  EF-17 records diagnostic cancellation masking; do not fix it incidentally.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

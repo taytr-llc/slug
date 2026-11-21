@@ -1,0 +1,239 @@
+{
+  "version": 1,
+  "draft": false,
+  "actual_qualification": false,
+  "passed": false,
+  "scope": "Root failure disposition from retained original public evidence; no hosted payout qualification",
+  "phase": "Initial unauthenticated/incorrect-auth money proof before miners",
+  "observed_failure": {
+    "helper_error": "negative auth HTTP failure",
+    "auth_refusals_captured": 0,
+    "wrapper_error": "original proof child failed",
+    "exit_code": 1,
+    "child_joined": true,
+    "forced_kill": false,
+    "signal_count": 0,
+    "timed_out": false,
+    "interrupted": false,
+    "started_at_ms": 1795282079231,
+    "ended_at_ms": 1795282079910,
+    "captured_stderr": "host proof failed\n"
+  },
+  "successful_preceding_components": {
+    "init": {
+      "code": "complete",
+      "exit_code": 0,
+      "observed_at_ms": 1795282045465,
+      "running": false,
+      "submissions": 0
+    },
+    "rotations": [
+      {
+        "file": "rotate-pool-0.stdout.json",
+        "command": "rotate",
+        "observed_at_ms": 1795282047581,
+        "code": "complete",
+        "audience": "pool",
+        "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+        "generation": 1
+      },
+      {
+        "file": "rotate-pool-1.stdout.json",
+        "command": "rotate",
+        "observed_at_ms": 1795282049821,
+        "code": "complete",
+        "audience": "pool",
+        "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+        "generation": 1
+      },
+      {
+        "file": "rotate-admission.stdout.json",
+        "command": "rotate",
+        "observed_at_ms": 1795282052081,
+        "code": "complete",
+        "audience": "admission",
+        "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+        "generation": 1
+      }
+    ],
+    "setup_complete": true
+  },
+  "lifecycle_evidence": {
+    "start_ssh_exit_code": 0,
+    "start_wrapper_completed": true,
+    "start_result_is_not_original_operator_join": true,
+    "readiness_capture_exit_code": 1,
+    "readiness_observation": "generation01 stdout.jsonl absent",
+    "later_public_census": "host-bootstrap, sh, sleep only; no operator product process in recorded pool-service census",
+    "no_claim_of_successful_serve_generation": true,
+    "no_claim_of_final_scratch_pid1_cleanup": true
+  },
+  "root_reported_scope": {
+    "source": "root task instruction, corroborated by initial-money phase and public launch census",
+    "miner_started": false,
+    "no_product_alive_at_census": true,
+    "payout_test_started": false,
+    "do_not_infer_full_environment_shutdown": true
+  },
+  "input_recheck_distinction": {
+    "helper_selected_inputs_unchanged": true,
+    "wrapper_inputs_unchanged_field": false,
+    "meaning": "Wrapper returned at nonzero child exit before its success-only full recheck. False is not evidence of a detected input substitution; root final brackets remain required."
+  },
+  "selection": {
+    "version": 1,
+    "start_ms": 1795282037690,
+    "due_ms": 1795282440000,
+    "deadline_ms": 1795282937690,
+    "outer_deadline_ms": 1795283117690,
+    "due_utc": "2026-11-21T17:34:00Z"
+  },
+  "setup_id": "e54614c284fea85e94b6725679d2313e9574bced428227453952b11fe8a78f7d",
+  "remote_id": "4fe5c5f4add041115b369dc605c986cf92084eafc69f3fa3196b8ba1d52f19a3",
+  "reference_sha256": "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a",
+  "binary": {
+    "bytes": 14749442,
+    "path": "/Users/taytrrip/slug/artifacts/set82/proofclient-native-attempt2/slug-host-proof",
+    "sha256": "f52dd93daf6acabcba6282afef1c198504ebf97bc59d8f157a98e9563d24b09b"
+  },
+  "preservation": {
+    "attempt1_unchanged_required": true,
+    "attempt2_clock_and_files_unchanged_required": true,
+    "next_attempt_is_separate_fresh_roots_and_clock": true,
+    "no_retry_or_runtime_executed_by_this_draft": true
+  },
+  "unestablished": [
+    "No concrete HTTP status, TLS validation diagnosis or server auth refusal was captured by this helper failure",
+    "No authenticated miner work, source receipt, scheduled transaction or wallet credit was qualified",
+    "SSH exit0 does not establish a serve child ran or joined; missing stdout/census establish only the named observations",
+    "Root final source/input/provider disposition checks are not supplied by this draft"
+  ],
+  "public_evidence": [
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/attempt-selection.json",
+      "bytes": 182,
+      "sha256": "e9bedf56939f9caa9ba0f7655e848a375063f74c8575e5428fd3452e73bd96bc"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/execution-selection.json",
+      "bytes": 11838,
+      "sha256": "9fb25950fa4780784f294daae9e55cb4a9332053566963c8d05633e6610c3b8a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/binary-selection.json",
+      "bytes": 98,
+      "sha256": "de5f8633924615cdacba45fa929a7aaf3a1d187f6ff2f235f15abd1d452df3f5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/selection-check.json",
+      "bytes": 2734,
+      "sha256": "67172c63cda26ed1c580208d2d8f7db482def0c2f10dad2207cb1a79de245efd"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/operator-init.stdout.json",
+      "bytes": 1669,
+      "sha256": "92b34b3b8e6ac73e2a19dc123d13ab845f298f6d3743a5221b6ddb4c845f9562"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/operator-init.stdout.json.status.json",
+      "bytes": 240,
+      "sha256": "4becebea917bd8882b3bb6a79d6439853fdb8e3d4fc038af39185c4ea8400fd6"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/rotate-pool-0.stdout.json",
+      "bytes": 440,
+      "sha256": "a684dfd1ff310054445646636d077b13ef1797861a8b78537de31d182cbc692c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/rotate-pool-0.stdout.json.status.json",
+      "bytes": 241,
+      "sha256": "4a08f8724dfc3ee00ac2435faf65edc620f410c07eaa666926b92a5e02376fd1"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/rotate-pool-1.stdout.json",
+      "bytes": 440,
+      "sha256": "4a16fd068364f0a9177b39eb6fa3adc185dd278c03e3f0f04080d559260d9171"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/rotate-pool-1.stdout.json.status.json",
+      "bytes": 240,
+      "sha256": "cc6bbc7a1503713e8d7346b50aa745b1b3a1b2d529d7f723a2b41d875372ac18"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/rotate-admission.stdout.json",
+      "bytes": 445,
+      "sha256": "4dcc5d09d1f9312714cf3d499d178ec4e4103792f3660942af84a230952db1bf"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/rotate-admission.stdout.json.status.json",
+      "bytes": 242,
+      "sha256": "321d532f198c52f14360631889664b9fddc58565548704ec619efb06b93948e2"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/setup-complete.json",
+      "bytes": 278,
+      "sha256": "d21e06fdfa25b248b33adb4cb86bae70a43032004a8a428d1f317100e6bf04dd"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/operator-01-launch.log",
+      "bytes": 283,
+      "sha256": "b090578b2d4c342d22aa60370dbc65ad7144d7934df17fc11f7ba5478be315bb"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/operator-01-start.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/operator-01-start.txt.status.json",
+      "bytes": 236,
+      "sha256": "b26fca90fcc3cf9e75b819e64f865c1a1265ca793e14515ff5f55658554405ab"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/operator-01-readiness.jsonl",
+      "bytes": 92,
+      "sha256": "be98b785c7a97cd0214197329c261136262d38499f457012c34a8c0839ff4855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/operator-01-readiness.jsonl.status.json",
+      "bytes": 242,
+      "sha256": "eff5fcd51bd202e35864840f3002b8b145b9082a4bb3718d217f91ad3245621e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/launch-census.txt",
+      "bytes": 53,
+      "sha256": "2405995cbadb7e9e2770f55eaea109356107d2a904cb6c2750ef904ebd5bc7ac"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/launch-census.txt.status.json",
+      "bytes": 232,
+      "sha256": "9afa31bbc939e6839b1d4500d6c1bae3f87d18180e111cd2ba7244ebab0fa745"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/setsid-help.txt",
+      "bytes": 381,
+      "sha256": "70eec581fccb30f5d97c1edc6c9d9849e8e8d03b297ae12d8805c0463d4d5e5c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/proof-initial-money-launch.log",
+      "bytes": 150,
+      "sha256": "40df345dd4f8ef0cb1082dbbdb2b68921fdbd5336c181d9f1d30a47fed271286"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/proof-initial-money.json",
+      "bytes": 499,
+      "sha256": "35497908dafeab244b6b1d7fd03f97541c894c9bfcdb3766106e238092c64303"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/proof-initial-money.status.json",
+      "bytes": 953,
+      "sha256": "47f1774d74607fe3c24f7a55e6c9041c8336685925f130808260ac65f7c9b6f7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt2/proof-initial-money.stderr",
+      "bytes": 18,
+      "sha256": "e2dd6522e9e4c90e518ea2452aeb8f67cdfe8bd2090a15d04ae7afc6b565b8de"
+    }
+  ],
+  "reviewed_by": "root"
+}

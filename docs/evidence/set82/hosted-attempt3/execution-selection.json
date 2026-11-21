@@ -1,0 +1,264 @@
+{
+  "version": 1,
+  "chain": "359a2853ea092b17a832dd1fc824c5d47aec5f12",
+  "wallet": "dfc5d9dd7e0f604486fbac812d0413fce1f45cd6",
+  "deployment": "ca9d1c8e-cb96-4dc9-992e-606ade4ebfd1",
+  "image": "sha256:5247a188ee785cad09cd967623526445df3fe5e257fcf38e1a4bf63a2633ae4a",
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/client-binaries-attempt2/slugpilot",
+      "bytes": 35885730,
+      "sha256": "44a04caeb7b8c31115a70f01e682cb4a2732655d6280427b9a4aa31f2a2b8ab4"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/client-native-attempt2/slug-host-client",
+      "bytes": 20732674,
+      "sha256": "f51cb244cfb70b5a526a7858587d9bb2b138e6885cd7f075e1d56e8f68c24c0e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt3/binary-selection.json",
+      "bytes": 98,
+      "sha256": "de5f8633924615cdacba45fa929a7aaf3a1d187f6ff2f235f15abd1d452df3f5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt3/deployment-capture.json",
+      "bytes": 1871,
+      "sha256": "5560aeb4c9c2dc4c94fc1629dec45497d8187caf821fc0c08fd96b8170ec59fb"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt3/fixture-copied.json",
+      "bytes": 51657,
+      "sha256": "7d411a8c173390654f2b197eec68c7bbca8005be769451821c615d16b3742951"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt3/host-binaries.txt",
+      "bytes": 480,
+      "sha256": "e6bbce414975d9bab9368755922c07f6d3346126554c686ea3e87f98d3499fe2"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt3/installed-overlays.json",
+      "bytes": 468,
+      "sha256": "7e2d60457e82d36afdfb8679cb6cc9a6e8414e8856d306b8d1bdf04c9428d8e5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/proofclient-native-attempt2/slug-host-proof",
+      "bytes": 14749442,
+      "sha256": "f52dd93daf6acabcba6282afef1c198504ebf97bc59d8f157a98e9563d24b09b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-2/ACCEPTANCE.md",
+      "bytes": 15119,
+      "sha256": "eb1c38883a520d7811ce27697d995ab6deccba98ff5876a71a43339f36f6fc46"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-2/PROOF_CONTROL.md",
+      "bytes": 4779,
+      "sha256": "9f1f97945fe8d73db03fc6110fbc771dcc0f9e3aefbac58288b9be9ff884c0d8"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-2/advance-local.py",
+      "bytes": 1991,
+      "sha256": "e60835754664f9ed5ca0497a050fd27de59a6e328526008b7525c203b46a7815"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-2/check-selection.py",
+      "bytes": 15189,
+      "sha256": "04e6c11ac65c1c3693ef8074fcd8ef84b9318a3c6b172a0d7b63f7267e9bdbe7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-2/client-control.py",
+      "bytes": 2382,
+      "sha256": "3183dcd3a1ab093aab79eb03793e4c2ad215c2d048671fffaf84ef307c58194e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-2/client-flow/README.md",
+      "bytes": 13214,
+      "sha256": "60e434edaacaabc04d832d446eefa94bb82dc23eb8119ca952c9a9779b682853"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-2/client-flow/credentials.py",
+      "bytes": 8206,
+      "sha256": "903565d5434da7a526a4ab89364cbfd3912b498b9115fe391d73cca9dc588a16"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-2/client-flow/run-client.py",
+      "bytes": 11682,
+      "sha256": "8673e3394dfbad1d98fcd39fc515f9a7fc04c8e12f378a2d1f1eda93c1562b12"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-2/client-setup-source-manifest.json",
+      "bytes": 7880,
+      "sha256": "4d50d2a53d31d2155180869f2d60c55bc4180bab81d7987fbf1c1c429cdcd516"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-2/expectations.json",
+      "bytes": 2583,
+      "sha256": "4a9c10dbaade6784422d12ca436f00b333b9f001d6b2c5a1900b104ff7285236"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-2/fetch-selection.py",
+      "bytes": 1502,
+      "sha256": "88fc8e104ef16b762a32ee9a2a998c1616b2cd5a8635fac5c84db1cbbef1ae4c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-2/host-command.py",
+      "bytes": 1563,
+      "sha256": "99ada9109e4775584736830cba47ef36d89608c1b092b32361aeca2326f0cf2d"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-2/lifecycle/operator-lifecycle.sh",
+      "bytes": 10566,
+      "sha256": "80b52af5f74edfb5b9a5757387c3352722ec011e268141132ee490a0eb2acc44"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-2/operator-control.py",
+      "bytes": 5033,
+      "sha256": "6317b7bb4bc2bd11105aaee9457d99a9752103847bbb0f4cc985fd29200b6f9d"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-2/package/bootstrap.sh",
+      "bytes": 5027,
+      "sha256": "5f05a91b44dd22df83085ce656e32f95c110ad291cf001e36136d796f6e501bb"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-2/prepare-attempt.py",
+      "bytes": 6366,
+      "sha256": "1d38070b89333eb0cee805f14e46a23c2583b1f5712ed326c52a227dc4b11a79"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-2/proof-control-manifest.json",
+      "bytes": 2104,
+      "sha256": "105c197e012c7602666172b4132a321fb5b5fa08533e00413b761dfc42f60f10"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-2/proof-control.py",
+      "bytes": 14193,
+      "sha256": "a1760e586dbd4ed002432a4f4531e172f6dc6a2331f818f24ca252f0313db678"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-2/transport-source-manifest.json",
+      "bytes": 2330,
+      "sha256": "f2ec8905ed0abb1803db66f83ba151737bdfb4a6876ed88b1dcab07e34f578eb"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/ACCEPTANCE.md",
+      "bytes": 15119,
+      "sha256": "797c4622e4d48b68a3a1eec99bdb9273533848be33a907d9f02c05ce9c53d7b3"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/TRANSPORT_PATHS.md",
+      "bytes": 3398,
+      "sha256": "3ff97597327b883709e191f85c2e3bf22f50f5bf6eef2fc297512b86cbf3a951"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/advance-local.py",
+      "bytes": 1991,
+      "sha256": "e60835754664f9ed5ca0497a050fd27de59a6e328526008b7525c203b46a7815"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/check-selection.py",
+      "bytes": 15189,
+      "sha256": "04e6c11ac65c1c3693ef8074fcd8ef84b9318a3c6b172a0d7b63f7267e9bdbe7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/client-control.py",
+      "bytes": 2382,
+      "sha256": "ebe5786b69d51b98a92e8bc0049b749b2e50a2826ea8fb66fe7e477440185605"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/client-flow/README.md",
+      "bytes": 13214,
+      "sha256": "60e434edaacaabc04d832d446eefa94bb82dc23eb8119ca952c9a9779b682853"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/client-flow/credentials.py",
+      "bytes": 8206,
+      "sha256": "903565d5434da7a526a4ab89364cbfd3912b498b9115fe391d73cca9dc588a16"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/client-flow/run-client.py",
+      "bytes": 11682,
+      "sha256": "8673e3394dfbad1d98fcd39fc515f9a7fc04c8e12f378a2d1f1eda93c1562b12"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/client-setup-source-manifest.json",
+      "bytes": 6981,
+      "sha256": "411da612dbbe258daeb5fd1123e4590913d9fb24786800db2bf594638fa24a31"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/client-setup.diff",
+      "bytes": 16748,
+      "sha256": "6506ae2e37ac3cb7209ce132eb866230f88222b6d31f97600eb8b3ebcf99a33f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/expectations.json",
+      "bytes": 2583,
+      "sha256": "4a9c10dbaade6784422d12ca436f00b333b9f001d6b2c5a1900b104ff7285236"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/fetch-selection.py",
+      "bytes": 1502,
+      "sha256": "1f7fe26509a9b2c8e6b59d0d9394586dadbfde8c47c27386acc93fbc70850a0c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/host-command.py",
+      "bytes": 1563,
+      "sha256": "99ada9109e4775584736830cba47ef36d89608c1b092b32361aeca2326f0cf2d"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/lifecycle/operator-lifecycle.sh",
+      "bytes": 12061,
+      "sha256": "c45c893204e00f7875c59060bc60392b52c92c904fc688f5c6727c7be16252b7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/operator-control.py",
+      "bytes": 5033,
+      "sha256": "df9092ca93852560e9b355dc5e541bdb1e010991fc5937eb19f2af502c22bd7f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/package/bootstrap.sh",
+      "bytes": 6349,
+      "sha256": "b2335bfee2796f25d6ecd6291dab0c454c4ed45aa6a7800f1feb5dd3ffa2d933"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/prepare-attempt.py",
+      "bytes": 6366,
+      "sha256": "c2858e7ee7ba4baf0c78b4df7c2256b09d133f24e99daea1e67bc0c21ec1473b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/proof-control-manifest.json",
+      "bytes": 1634,
+      "sha256": "5cf7ab1244904cc3347c9317d4c72f3a25980d7b671d51891ac477ba12010e56"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/proof-control.diff",
+      "bytes": 623,
+      "sha256": "8ee1a962f038b18bea6446ba3867ec4785f61fb182484f5ca843c5ae8e9f6bde"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/proof-control.py",
+      "bytes": 14193,
+      "sha256": "40f9970f8b9744d2dfa58ff3da2311128a9ed483177ca125e811bebd9cc5f60c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/transport-paths.diff",
+      "bytes": 6947,
+      "sha256": "4ea6eaf17ec6a59bcc731b42f6f23a684244fde60660998bad86db0b44bcca1f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/transport-predecessors/bootstrap.sh",
+      "bytes": 5027,
+      "sha256": "5f05a91b44dd22df83085ce656e32f95c110ad291cf001e36136d796f6e501bb"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/transport-predecessors/operator-lifecycle.sh",
+      "bytes": 10566,
+      "sha256": "80b52af5f74edfb5b9a5757387c3352722ec011e268141132ee490a0eb2acc44"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/transport-source-manifest.json",
+      "bytes": 2340,
+      "sha256": "08a6fd2055082faa1eb3466617419510ca18f7c0af54b4a31360013f4941df35"
+    }
+  ]
+}

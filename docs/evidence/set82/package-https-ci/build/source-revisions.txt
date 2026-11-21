@@ -1,0 +1,2 @@
+slug=359a2853ea092b17a832dd1fc824c5d47aec5f12
+slugwallet=dfc5d9dd7e0f604486fbac812d0413fce1f45cd6

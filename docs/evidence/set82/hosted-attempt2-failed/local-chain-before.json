@@ -1,0 +1,98 @@
+{
+  "jsonrpc": "1.0",
+  "result": {
+    "chain": "mainnet",
+    "blocks": 62,
+    "headers": 62,
+    "bestblockhash": "06bd9d10f47a9e61a1d6ce1f6cdebed210b74f319215a0adba25e35cb89c1861",
+    "difficulty": 1,
+    "mediantime": 1795279763,
+    "pruned": false,
+    "warnings": null,
+    "bip9_softforks": {
+      "csv": {
+        "status": "active",
+        "bit": 0,
+        "startTime": 0,
+        "start_time": 1462060800,
+        "timeout": 1493596800,
+        "since": 0,
+        "min_activation_height": 0,
+        "always_active_height": 62
+      },
+      "dummy": {
+        "status": "defined",
+        "bit": 28,
+        "startTime": 0,
+        "start_time": 11991456010,
+        "timeout": 1230767999,
+        "since": 0,
+        "min_activation_height": 0
+      },
+      "dummy-always-active": {
+        "status": "active",
+        "bit": 30,
+        "startTime": 0,
+        "start_time": -62135596800,
+        "timeout": -62135596800,
+        "since": 0,
+        "min_activation_height": 0,
+        "always_active_height": 1
+      },
+      "dummy-min-activation": {
+        "status": "defined",
+        "bit": 22,
+        "startTime": 0,
+        "start_time": -62135596800,
+        "timeout": -62135596800,
+        "since": 0,
+        "min_activation_height": 100000
+      },
+      "segwit": {
+        "status": "active",
+        "bit": 1,
+        "startTime": 0,
+        "start_time": 1479168000,
+        "timeout": 1510704000,
+        "since": 0,
+        "min_activation_height": 0,
+        "always_active_height": 62
+      },
+      "taproot": {
+        "status": "active",
+        "bit": 2,
+        "startTime": 0,
+        "start_time": 1619222400,
+        "timeout": 1628640000,
+        "since": 0,
+        "min_activation_height": 709632,
+        "always_active_height": 62
+      }
+    },
+    "softforks": [
+      {
+        "id": "bip34",
+        "version": 2,
+        "reject": {
+          "status": true
+        }
+      },
+      {
+        "id": "bip66",
+        "version": 3,
+        "reject": {
+          "status": true
+        }
+      },
+      {
+        "id": "bip65",
+        "version": 4,
+        "reject": {
+          "status": true
+        }
+      }
+    ]
+  },
+  "error": null,
+  "id": "read-only-preflight"
+}

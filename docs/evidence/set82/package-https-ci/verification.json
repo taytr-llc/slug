@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "exact_sources_match": true,
+  "source_before_after_equal": true,
+  "required_assertions": 26,
+  "observed_test_passes": {
+    "operator-tests.jsonl": 28,
+    "authority-tests.jsonl": 4,
+    "ingress-tests.jsonl": 2,
+    "ownership-https-tests.jsonl": 11
+  },
+  "hosted_payout_qualified": false
+}

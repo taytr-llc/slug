@@ -1,0 +1,6 @@
+{"version":2,"command":"serve","observed_at_ms":1795282368016,"code":"cancelled"}
+/proc/1 host-bootstrap
+/proc/368 sh
+/proc/383 sleep
+/proc/384 sh
+/proc/6 sleep

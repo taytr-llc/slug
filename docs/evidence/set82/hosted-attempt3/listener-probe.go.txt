@@ -1,0 +1,3 @@
+package main
+import("net";"fmt";"os")
+func main(){ for _, address := range []string{"0.0.0.0:8443","[::]:8443"} { l,e:=net.Listen("tcp",address); if e!=nil {fmt.Printf("listen_error=%T\n",e);os.Exit(1)}; fmt.Printf("selected=%s actual=%s equal=%t\n",address,l.Addr().String(),address==l.Addr().String()); if e=l.Close();e!=nil{os.Exit(1)} };fmt.Println("all_listeners_closed") }

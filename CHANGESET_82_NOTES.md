@@ -21,6 +21,37 @@ cheap-profile refusal and vet pass; see the
 A corrected hosted attempt remains required. Final scratch PID1/provider
 shutdown and a reconciled one-off upload failure are logged as EF-15/16.
 
+All seven CI jobs pass at `4a15e8c9`, including the full race job; see
+[exact-commit CI completion](docs/evidence/set82/https-fix-ci.json).
+The corrected package also passes its native Linux image job
+[44929223689](https://github.com/taytr-llc/slug/actions/runs/44929223689).
+Its exported source archives match the selected `359a2853` product and
+`dfc5d9dd` wallet; 26 required assertions and 45 observed test/subtest PASS
+records cover UID10001, ACL/lifetime, ingress and real HTTPS controls. Both
+scratch-image help commands exit0. See
+[corrected package evidence](docs/evidence/set82/package-https-ci/).
+
+[Hosted attempt2](docs/evidence/set82/hosted-attempt2-failed/) successfully initialized and rotated all three fixture
+credentials, proving the private HTTPS constructor correction on the actual
+host. Its SSH/BusyBox launcher detached before the original owner began;
+no miner or payout ran. The corrected fixture launcher retains a foreground
+wait and five public launch-boundary artifacts; a harmless host probe passed.
+
+[Attempt3](docs/evidence/set82/hosted-attempt3/) reached the original operator, which exited before public readiness.
+Its child and monitor were joined; the run failed. The host's generic TCP
+listener normalized the selected IPv4 wildcard to `[::]:8443`, which the
+runtime's exact address guard rejected. A same-host Go probe reproduced the
+mismatch and confirmed that explicitly selecting `[::]:8443` matches. Attempt4
+is prepared with fresh roots, that explicit listen value and the unchanged
+binary; its timed run has not begun. All previous roots and clocks remain
+intact. The diagnostic cancellation label is deferred as EF-17.
+
+Automatic approval review rejected restarting only the idle disposable pool
+service, citing its attached volume and requiring explicit permission even
+after an owner-free/no-listener check. Permission is pending. The live seed is
+unchanged; no hosted payout pass is claimed. Wallet balance/history adapter
+preparation continues independently, without product/UI reorganization.
+
 The active work is a finite hosted operator and scheduled-payout test. General
 capacity continuation remains in [the follow-up log](docs/EDGE_CASE_FOLLOW_UPS.md).
 This slice packages the existing qualified source with the pinned paired wallet

@@ -1,0 +1,3 @@
+/proc/1 host-bootstrap
+/proc/125 sh
+/proc/6 sleep

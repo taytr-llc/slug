@@ -1,0 +1,26 @@
+{
+  "endpoints.json": {
+    "bytes": 239,
+    "sha256": "a591407e50e5040182a639e5f164c900e17c77e9c1a84975de7ec54aeae035c8"
+  },
+  "setup.json": {
+    "bytes": 5512,
+    "sha256": "b7fe6a62e4e3c2d356f39bc9d9edd0276364cf42a794f4083807f32c10ada596"
+  },
+  "remote.json": {
+    "bytes": 6076,
+    "sha256": "6a295cb7a5b15fe582b60ab869a55bf8cf9f6ffbdfee91cfe4bd4eaffe9a687e"
+  },
+  "prepared.json": {
+    "bytes": 996,
+    "sha256": "956363c9c28ff04455263a8d2e9e6ca08377b40ad9a551b500aa77bcea4f152a"
+  },
+  "ca.pem": {
+    "bytes": 497,
+    "sha256": "91847986384047bbc487820ed27ecd13605a1f2d75b1fa67b83d8805ccc69f5a"
+  },
+  "tls-cert.pem": {
+    "bytes": 1067,
+    "sha256": "2bbae1e881c6f4623b780a3b6c72f2f3b2eebae9ea5106e65075274a53fca6c0"
+  }
+}

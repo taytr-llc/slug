@@ -1,0 +1,56 @@
+{
+	"Go": "1.27.3",
+	"Use": [
+		{
+			"DiskPath": "."
+		},
+		{
+			"DiskPath": ".."
+		},
+		{
+			"DiskPath": "../address"
+		},
+		{
+			"DiskPath": "../btcec"
+		},
+		{
+			"DiskPath": "../btcutil"
+		},
+		{
+			"DiskPath": "../chaincfg"
+		},
+		{
+			"DiskPath": "../chainhash"
+		},
+		{
+			"DiskPath": "../psbt"
+		},
+		{
+			"DiskPath": "../txscript"
+		},
+		{
+			"DiskPath": "../v2transport"
+		},
+		{
+			"DiskPath": "../wire"
+		},
+		{
+			"DiskPath": "../../slugwallet"
+		},
+		{
+			"DiskPath": "../../slugwallet/wallet/txauthor"
+		},
+		{
+			"DiskPath": "../../slugwallet/wallet/txrules"
+		},
+		{
+			"DiskPath": "../../slugwallet/wallet/txsizes"
+		},
+		{
+			"DiskPath": "../../slugwallet/walletdb"
+		},
+		{
+			"DiskPath": "../../slugwallet/wtxmgr"
+		}
+	]
+}
