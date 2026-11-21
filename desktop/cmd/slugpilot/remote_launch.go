@@ -16,6 +16,7 @@ import (
 	"github.com/taytr-llc/slug/desktop/accountpilot"
 	"github.com/taytr-llc/slug/desktop/pilot"
 	"github.com/taytr-llc/slug/prospectnode"
+	"github.com/taytr-llc/slug/wire/v2"
 )
 
 var (
@@ -53,7 +54,7 @@ func remoteLaunchRequested(args []string) bool {
 			continue
 		}
 		name := strings.SplitN(strings.TrimLeft(a, "-"), "=", 2)[0]
-		if name == "daily" || name == "candidate-remote-pool" || strings.HasPrefix(name, "remote-") {
+		if name == "daily-recoverable-issue" || name == "daily" || name == "candidate-remote-pool" || strings.HasPrefix(name, "remote-") {
 			return true
 		}
 	}
@@ -79,7 +80,7 @@ func validateRemoteLaunchArgs(args []string) error {
 		}
 		seen[name] = true
 		value := ""
-		if name == "candidate-remote-pool" || name == "daily" {
+		if name == "daily-recoverable-issue" || name == "candidate-remote-pool" || name == "daily" {
 			if len(nameValue) == 2 && nameValue[1] != "true" {
 				return errRemoteLaunchInvalid
 			}
@@ -107,7 +108,14 @@ func validateRemoteLaunchArgs(args []string) error {
 			return errRemoteLaunchInvalid
 		}
 	}
-	for _, n := range []string{"candidate-remote-pool", "data-dir", "remote-attachment-root", "remote-config", "remote-node-rpc", "remote-pool-credential", "remote-admission-credential"} {
+	if seen["daily-recoverable-issue"] {
+		if seen["daily"] || seen["candidate-remote-pool"] {
+			return errRemoteLaunchInvalid
+		}
+	} else if !seen["candidate-remote-pool"] {
+		return errRemoteLaunchInvalid
+	}
+	for _, n := range []string{"data-dir", "remote-attachment-root", "remote-config", "remote-node-rpc", "remote-pool-credential", "remote-admission-credential"} {
 		if !seen[n] {
 			return errRemoteLaunchInvalid
 		}
@@ -201,7 +209,13 @@ func (o *remoteLaunchOwner) Close() error {
 func openRemoteLaunch(ctx context.Context, p remoteLaunchPaths, options pilot.PoolOptions) (*remoteLaunchOwner, pilot.RemotePoolConfig, error) {
 	return openRemoteLaunchMode(ctx, p, options, false)
 }
-func openRemoteLaunchMode(ctx context.Context, p remoteLaunchPaths, options pilot.PoolOptions, daily bool) (owner *remoteLaunchOwner, expected pilot.RemotePoolConfig, resultErr error) {
+func openRemoteLaunchMode(ctx context.Context, p remoteLaunchPaths, options pilot.PoolOptions, daily bool) (*remoteLaunchOwner, pilot.RemotePoolConfig, error) {
+	return openRemoteLaunchSelection(ctx, p, options, daily, false)
+}
+func openRemoteLaunchSelection(ctx context.Context, p remoteLaunchPaths, options pilot.PoolOptions, daily, recovery bool) (owner *remoteLaunchOwner, expected pilot.RemotePoolConfig, resultErr error) {
+	if recovery && wire.TestPoW {
+		return nil, expected, pilot.ErrRemotePoolProfile
+	}
 	if ctx == nil || ctx.Err() != nil {
 		return nil, expected, errRemoteLaunchUnavailable
 	}
@@ -223,7 +237,11 @@ func openRemoteLaunchMode(ctx context.Context, p remoteLaunchPaths, options pilo
 		}
 	}()
 	var e error
-	o.files[0], e = selectRemoteLaunchInput(ctx, p.config, pilot.RemotePoolMaxConfigBytes)
+	limit := pilot.RemotePoolMaxConfigBytes
+	if recovery {
+		limit = pilot.RecoverableRemotePoolMaxConfigBytes
+	}
+	o.files[0], e = selectRemoteLaunchInput(ctx, p.config, limit)
 	if e != nil {
 		return nil, expected, e
 	}
@@ -235,7 +253,13 @@ func openRemoteLaunchMode(ctx context.Context, p remoteLaunchPaths, options pilo
 	if daily {
 		parse = pilot.ParseDailyRemotePoolConfig
 	}
-	expected, e = parse(raw) // exact selected grammar; no LF stripping
+	var recoverable pilot.RecoverableRemotePoolConfig
+	if recovery {
+		recoverable, e = pilot.ParseRecoverableRemotePoolConfig(raw)
+		expected = recoverable.Base
+	} else {
+		expected, e = parse(raw)
+	} // exact grammar; no LF stripping
 	clear(raw)
 	if e != nil {
 		return nil, pilot.RemotePoolConfig{}, e
@@ -260,7 +284,11 @@ func openRemoteLaunchMode(ctx context.Context, p remoteLaunchPaths, options pilo
 	if daily {
 		open = accountpilot.OpenDailyRemotePoolController
 	}
-	o.controller, e = open(ctx, p.data, options, pilot.RemotePoolInputs{AttachmentRoot: p.attachment, Config: expected, NodeRPC: rpc, PoolCredentialPath: p.poolCredential, AdmissionCredentialPath: p.admissionCredential})
+	if recovery {
+		o.controller, e = accountpilot.OpenRecoverableDailyRemotePoolController(ctx, p.data, options, pilot.RecoverableRemotePoolInputs{AttachmentRoot: p.attachment, Config: recoverable, NodeRPC: rpc, PoolCredentialPath: p.poolCredential, AdmissionCredentialPath: p.admissionCredential})
+	} else {
+		o.controller, e = open(ctx, p.data, options, pilot.RemotePoolInputs{AttachmentRoot: p.attachment, Config: expected, NodeRPC: rpc, PoolCredentialPath: p.poolCredential, AdmissionCredentialPath: p.admissionCredential})
+	}
 	if e != nil {
 		return nil, expected, e
 	}

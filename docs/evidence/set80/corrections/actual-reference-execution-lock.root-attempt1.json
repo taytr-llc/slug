@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "execution_authorized": true,
+  "scope": "Reviewed independent wrapper model, dual-interpreter execution only",
+  "files": [
+    {
+      "path": "selection_reference.py",
+      "bytes": 9287,
+      "sha256": "fb56a5ce58cb04f250ceb8b4a0498dd2f996dd2a2fe9a86629f7c19b9d12cc76"
+    },
+    {
+      "path": "selection-recipe.json",
+      "bytes": 1039,
+      "sha256": "0b418f9cc6317aa7b02786bfd807c4b503d9746eef8666b4d58616a7e37d3173"
+    },
+    {
+      "path": "inputs/path-c-reference.json",
+      "bytes": 46498,
+      "sha256": "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386"
+    },
+    {
+      "path": "inputs/base-reference.json",
+      "bytes": 3176583,
+      "sha256": "a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3"
+    },
+    {
+      "path": "inputs/reference-v1.json",
+      "bytes": 6134980,
+      "sha256": "4bbe4eb9556ed5a894cee6ff565b0dcca805f27fea2d77cfe3a56242dc3dac91"
+    },
+    {
+      "path": "inputs/ISSUE_RECOVERY_ACCEPTANCE_PLAN.md",
+      "bytes": 13245,
+      "sha256": "1fcbd0b1e2216b9db33e1c477b06456c3adddf59a33d04353e4c43864111d9c1"
+    },
+    {
+      "path": "inputs/ISSUE_RECOVERY_CONTRACT.md",
+      "bytes": 27904,
+      "sha256": "f3e019a840d6b69d853350763364a3fc41f10ea899f00ed6f164db5d58a95610"
+    }
+  ],
+  "approved_by": "root",
+  "base_commit": "fdd40d8edd9a685613f1f667f0074e56ec4e7da5"
+}

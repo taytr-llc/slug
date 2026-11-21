@@ -1,0 +1,42 @@
+--- before/desktop/pilot/remote_pool_issue_custody_test.go
++++ after/desktop/pilot/remote_pool_issue_custody_test.go
+@@ -26,6 +26,9 @@
+ 	dir := remoteAttachmentTestDir(t)
+ 	s := remotePoolCredentialSelection{filepath.Join(dir, "pool.json"), filepath.Join(dir, "admission.json")}
+ 	for _, record := range v.Credentials {
++		// This live ownership test needs current credentials; the separate pure
++		// reference test preserves the frozen credential bytes and their expiry.
++		record.Base.ExpiresAtMS = time.Now().Add(time.Hour).UnixMilli()
+ 		path := s.PoolPath
+ 		if record.Base.Audience == "admission" {
+ 			path = s.AdmissionPath
+--- before/desktop/pilot/remote_pool_issue_postresponse_test.go
++++ after/desktop/pilot/remote_pool_issue_postresponse_test.go
+@@ -7,6 +7,7 @@
+ 	"context"
+ 	"encoding/hex"
+ 	"encoding/json"
++	"encoding/pem"
+ 	"errors"
+ 	"net/http"
+ 	"net/http/httptest"
+@@ -80,7 +81,7 @@
+ 	var wc prospectworker.RecoverablePoolConfig
+ 	var calls atomic.Int32
+ 	ready := make(chan struct{})
+-	server := httptest.NewServer(http.HandlerFunc(func(out http.ResponseWriter, in *http.Request) {
++	server := httptest.NewTLSServer(http.HandlerFunc(func(out http.ResponseWriter, in *http.Request) {
+ 		<-ready
+ 		calls.Add(1)
+ 		if in.URL.Path != "/pool/v3/issue" {
+@@ -101,7 +102,9 @@
+ 	}))
+ 	defer server.Close()
+ 	c.Base.Origin = server.URL
+-	c.Base.CACertificate = ""
++	// Keep the selected remote HTTPS boundary and explicitly trust this
++	// controlled server's public certificate.
++	c.Base.CACertificate = string(pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: server.Certificate().Raw}))
+ 	var e error
+ 	wc, e = remotePoolRecoverableWorkerConfig(c)
+ 	if e != nil {

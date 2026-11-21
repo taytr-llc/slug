@@ -1,0 +1,194 @@
+// A separate root-executed read-only diagnostic for the already joined A2 tree.
+// The original actualMain and other runtime helpers are linked but never called.
+package main
+
+import (
+	"bytes"
+	"context"
+	"encoding/json"
+	"flag"
+	"fmt"
+	"os"
+	"path/filepath"
+	"reflect"
+	"regexp"
+	"time"
+
+	"github.com/taytr-llc/slug/desktop/pilot"
+	"github.com/taytr-llc/slug/desktop/pooloperator"
+	"github.com/taytr-llc/slug/poolservice"
+	"github.com/taytr-llc/slug/poolshare"
+	"github.com/taytr-llc/slug/wire/v2"
+)
+
+const originalA2 = "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned"
+const diagnosticParent = "/Users/taytrrip/slug/artifacts/set80"
+
+type diagnosticSelection struct {
+	DueMS         int64                                    `json:"due_ms"`
+	InitialHeight uint32                                   `json:"initial_height"`
+	Remote        pilot.RecoverableRemotePoolConfig         `json:"remote"`
+	RemoteID      string                                   `json:"remote_id"`
+	Setup         pooloperator.RecoverableDailySetup        `json:"setup"`
+	SetupID       string                                   `json:"setup_id"`
+	StartMS       int64                                    `json:"start_ms"`
+}
+
+type diagnosticGap struct {
+	Audit    issueAudit      `json:"audit"`
+	Barrier  json.RawMessage `json:"barrier"`
+	Operator json.RawMessage `json:"operator"`
+}
+
+func diagnosticInput(name, expected string, size int) []byte {
+	p := filepath.Join(originalA2, name)
+	b := readBound(p, int64(size))
+	require(len(b) == size && hx(digest(b)) == expected, "exact original A2 public input")
+	return b
+}
+
+func diagnosticJSON(raw []byte, dst any) {
+	d := json.NewDecoder(bytes.NewReader(raw))
+	d.DisallowUnknownFields()
+	check(d.Decode(dst), "original public input decode")
+}
+
+func diagnosticRun(ctx context.Context) (out map[string]any) {
+	start := time.Now()
+	out = map[string]any{"version": 1, "diagnostic_passed": false, "actual_qualification": false,
+		"scope": "original joined A2 public stores and outbox only; no network, node, operator, wallet or signer",
+		"original_root": originalA2, "deadline_seconds": 60}
+	var before map[string]string
+	var outboxBefore map[string]string
+	defer func() {
+		if fault := recover(); fault != nil {
+			out["failure"] = fmt.Sprintf("%.1024s", fault)
+		}
+		out["seconds"] = time.Since(start).Seconds()
+		// These inventories name only the original public accounting stores and
+		// outbox. They never walk private-fixture, wallet, account or node homes.
+		func() {
+			defer func() {
+				if fault := recover(); fault != nil {
+					out["finalization_failure"] = fmt.Sprintf("%.1024s", fault)
+					out["diagnostic_passed"] = false
+				}
+			}()
+			if before != nil {
+				after := attachmentPublicFiles(originalA2)
+				out["public_files_after"] = after
+				out["public_files_unchanged"] = reflect.DeepEqual(before, after)
+				require(reflect.DeepEqual(before, after), "original public stores unchanged")
+			}
+			if outboxBefore != nil {
+				after := outboxPublicFiles(filepath.Join(originalA2, "remote-attachment", "outbox"))
+				out["outbox_files_after"] = after
+				require(reflect.DeepEqual(outboxBefore, after), "original outbox files unchanged")
+				out["outbox_files_unchanged"] = true
+			}
+			diagnosticInput("01-selection.json", "a2b4794f20a9422626d1dbced28ffa4ac355ae5b9e83553476a0f75d596b9884", 15219)
+			diagnosticInput("02-gap.json", "355f8f6b7c0cc144bec8047a57ce082809b47c4b6c1f060b6cd26bc0f1499188", 26174)
+			diagnosticInput("actual-report.json", "21f72745f1c225d8e8c0db7bceb358299aea637e72142b34d1b1a4d4c90f52b8", 18206)
+			out["public_inputs_unchanged"] = true
+		}()
+	}()
+	selectionRaw := diagnosticInput("01-selection.json", "a2b4794f20a9422626d1dbced28ffa4ac355ae5b9e83553476a0f75d596b9884", 15219)
+	gapRaw := diagnosticInput("02-gap.json", "355f8f6b7c0cc144bec8047a57ce082809b47c4b6c1f060b6cd26bc0f1499188", 26174)
+	reportRaw := diagnosticInput("actual-report.json", "21f72745f1c225d8e8c0db7bceb358299aea637e72142b34d1b1a4d4c90f52b8", 18206)
+	var selected diagnosticSelection
+	var gap diagnosticGap
+	diagnosticJSON(selectionRaw, &selected)
+	diagnosticJSON(gapRaw, &gap)
+	var closed map[string]json.RawMessage
+	check(json.Unmarshal(reportRaw, &closed), "original closed report")
+	require(string(closed["clean_join"]) == "true" && string(closed["passed"]) == "false" && string(closed["case"]) == `"A"`, "original failed A2 is joined")
+	check(pooloperator.ValidateRecoverableDailySetup(selected.Setup), "same public setup")
+	setupID, e := pooloperator.RecoverableDailySetupID(selected.Setup)
+	check(e, "setup ID")
+	remoteID, e := pilot.RecoverableRemotePoolConfigID(selected.Remote)
+	check(e, "remote ID")
+	require(setupID == selected.SetupID && remoteID == selected.RemoteID && selected.Setup.IssueProfile == selected.Remote.IssueProfile && selected.Setup.Base.Pool == selected.Remote.Base.Source, "same original public selections")
+	id := gap.Audit.Request.Intent.RequestID
+	_ = keyed("issue/r/", id)
+	out["request_id"] = id
+	out["setup_id"], out["remote_id"] = setupID, remoteID
+	out["original_input_hashes"] = map[string]string{"01-selection.json": hx(digest(selectionRaw)), "02-gap.json": hx(digest(gapRaw)), "actual-report.json": hx(digest(reportRaw))}
+	before = attachmentPublicFiles(originalA2)
+	out["public_files_before"] = before
+	attachment := filepath.Join(originalA2, "remote-attachment")
+	outboxBefore = outboxPublicFiles(filepath.Join(attachment, "outbox"))
+	out["outbox_files_before"] = outboxBefore
+	rows, state := readOutbox(attachment, selected.Remote)
+	out["rows"], out["outbox"] = rows, state
+	response, repeated := readRequest(attachment, selected.Remote, id)
+	require(repeated == state, "closed original outbox repeated control equality")
+	out["original_request_result"] = response
+	audit := auditIssue(ctx, originalA2, selected.Setup, id)
+	out["audit"] = audit
+	require(audit.ReadOnlyUnchanged && audit.Financial.ReadOnlyUnchanged && state.ReadOnlyUnchanged, "complete selected read-only audits")
+	stored := []poolshare.Submission{}
+	walkAuditRows(ctx, originalA2, "pool", func(k, raw []byte) {
+		if len(k) != 65 || k[0] != 's' {
+			return
+		}
+		require(audit.RowHashes["pool/"+hx(k)] == hx(digest(raw)), "same fully audited source row")
+		var receipt poolshare.Submission
+		check(json.Unmarshal(raw, &receipt), "exact retained source submission")
+		stored = append(stored, receipt)
+	})
+	require(uint64(len(stored)) == audit.Financial.Submissions, "complete physical submission inventory")
+	out["stored_submissions"] = stored
+	validation := []map[string]any{}
+	for _, row := range rows {
+		check(ctx.Err(), "bounded diagnostic nonce validation")
+		prepared, e := poolservice.PrepareDailyWork(selected.Remote.Base.Source, selected.Remote.Base.ExpectedLocal.Recipient.Config.Identity.GymPublicKey, row.Work)
+		check(e, "original retained work preparation")
+		nonce, e := prepared.CheckNonce(ctx, row.Nonce)
+		check(e, "original normal nonce validation")
+		v := map[string]any{"sequence": row.Sequence, "job_id": row.Work.Job.ID, "nonce": row.Nonce,
+			"pool_state": row.PoolState, "pool_receipt_present": row.PoolReceipt != nil, "stored_matches": 0,
+			"outbox_receipt_valid": row.PoolReceipt == nil || poolservice.SubmissionMatchesDaily(selected.Remote.Base.Source, row.Work, row.Nonce, nonce, *row.PoolReceipt)}
+		matches := 0
+		for _, receipt := range stored {
+			if receipt.JobID == row.Work.Job.ID && receipt.Nonce == row.Nonce {
+				matches++
+				v["stored_receipt_valid"] = poolservice.SubmissionMatchesDaily(selected.Remote.Base.Source, row.Work, row.Nonce, nonce, receipt)
+			}
+		}
+		v["stored_matches"] = matches
+		validation = append(validation, v)
+	}
+	out["pure_client_receipt_checks"] = validation
+	out["diagnostic_passed"] = true
+	return out
+}
+
+func main() {
+	original := flag.String("original-root", "", "exact original joined A2 root")
+	output := flag.String("artifacts", "", "fresh separate diagnostic result root")
+	flag.Parse()
+	require(flag.NArg() == 0 && !wire.TestPoW && *original == originalA2, "explicit original A2 normal read-only diagnostic")
+	require(filepath.Dir(*output) == diagnosticParent && regexp.MustCompile(`^issue-recovery-a2-readonly-diagnostic-attempt[1-9][0-9]*$`).MatchString(filepath.Base(*output)), "fresh separate diagnostic output name")
+	parent, e := filepath.EvalSymlinks(diagnosticParent)
+	check(e, "diagnostic output parent")
+	require(parent == diagnosticParent, "canonical diagnostic parent")
+	check(os.Mkdir(*output, 0700), "exclusive new diagnostic root")
+	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+	defer cancel()
+	out := diagnosticRun(ctx)
+	raw := encode(out)
+	require(len(raw) <= 16<<20, "bounded public diagnostic report")
+	f, e := os.OpenFile(filepath.Join(*output, "diagnostic-report.json"), os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0600)
+	check(e, "new diagnostic report")
+	n, e := f.Write(raw)
+	se := f.Sync()
+	ce := f.Close()
+	check(e, "diagnostic report write")
+	require(n == len(raw), "complete diagnostic report write")
+	check(se, "diagnostic report sync")
+	check(ce, "diagnostic report close")
+	if out["diagnostic_passed"] != true {
+		os.Exit(1)
+	}
+	fmt.Println("original A2 public read-only diagnostic complete; no actual qualification")
+}

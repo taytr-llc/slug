@@ -1,0 +1,21 @@
+{
+  "cause": "Set79 Setup2 selects the names-v2 descriptor cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75, absent from the old ManifestJob2 grammar corpus descriptor list.",
+  "correction": "Copy exact committed independent names-v2 reference and provenance; independently check canonical descriptor/domain/preimage/ID in producer before extending lookup. Old job grammar, all selected Setup/source/policy bytes, challenge/time recipe and declared counts unchanged.",
+  "failed_attempt": {
+    "bytes": 2127,
+    "clean_join": true,
+    "lock_unchanged": true,
+    "outputs": {},
+    "passed": false,
+    "path": "/Users/taytrrip/slug/artifacts/set80/reference-attempt1/report.json",
+    "sha256": "9d37cd74285d7e9faffd1f265790a113e20fcf52fd46b30d8685fbed41c946f1",
+    "sources_unchanged": true
+  },
+  "predecessor": {
+    "path": "/Users/taytrrip/slug/set80-prep/reference-before-descriptor-selection",
+    "producer_lock_sha256": "c2150feb2079948627ba7517bdefc10b86935b3fb53761f8bdf05ab69e0e9250",
+    "source_ready_sha256": "1469210de58515081476cb0e14a60a6e62300582a11288fc04e01d1ea0007276"
+  },
+  "successor_executed": false,
+  "version": 1
+}

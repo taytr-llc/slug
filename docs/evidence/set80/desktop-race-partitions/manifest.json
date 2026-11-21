@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "scope": "unexecuted source-only complete desktop race partition successor",
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/set80-prep/desktop-race-partitions/run.py",
+      "bytes": 19497,
+      "sha256": "69fad8455cfdb9ef7d1247821e737b671b5ce30753249d54b79ea4b3ca8eabc5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set80-prep/desktop-race-partitions/partition-plan.json",
+      "bytes": 178962,
+      "sha256": "508589c0f545e558a1637a70c558f462344a9d00b7673d17ecafe516f1a7b91d"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set80-prep/desktop-race-partitions/regression-skips.json",
+      "bytes": 17188,
+      "sha256": "5a8328c7983c0e4c358e0b6f4ee247735b48449638ff94b7e554859f45150c33"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set80-prep/desktop-race-partitions/REVIEW.md",
+      "bytes": 3252,
+      "sha256": "9d70aae55933f2efc38d87372233641a90c960a21b0a057372b530a086b443dc"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set80-prep/desktop-race-partitions/runner.diff",
+      "bytes": 27174,
+      "sha256": "bf89a0cd7adf3f2465a300cfc30196981f841b4948be316c693a2fe1bce231f5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set80-prep/desktop-race-partitions/before/run-regressions.py",
+      "bytes": 16233,
+      "sha256": "937db88c89bd4910eb6cbbdeb81cfe4c2beb5ebaeeeeeb68699aa8117a6e673a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set80-prep/desktop-race-partitions/before/regression-skips.json",
+      "bytes": 17188,
+      "sha256": "5a8328c7983c0e4c358e0b6f4ee247735b48449638ff94b7e554859f45150c33"
+    }
+  ]
+}

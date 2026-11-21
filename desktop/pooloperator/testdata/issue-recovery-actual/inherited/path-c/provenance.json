@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "scope": "Path C exact inherited Path A sources; qualified fixture and financial expectations unchanged",
+  "inputs": [
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/main.go",
+      "bytes": 13752,
+      "sha256": "80598e676f7442ac319038d8eb8c814928b5e36c6bde48561309c32d1cdbc0cb"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/selection.go",
+      "bytes": 6929,
+      "sha256": "e84e8563c197aae0795ed49e01cc41f6bf85efeed9979442192d5884d8052afc"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/runtime_helpers.go",
+      "bytes": 11411,
+      "sha256": "7b55b892d218f236ed0c4b6408f0f909996bb2ce1f8c20cea4a338de9ebb2caa"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/relay.go",
+      "bytes": 4206,
+      "sha256": "2abc55505b26b680a9cf321a04cd57e5227ca5cdccd8dfe4534a9d4a8d98c69c"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/work_evidence.go",
+      "bytes": 9503,
+      "sha256": "f6d1e31937ec003c88f5ef7b13952ac1ed34d5997b5b05bb7407e97e08bcae14"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/payment.go",
+      "bytes": 8216,
+      "sha256": "c27a58575749b654b0562ae72034723877c7a2cfa9d972f756b085aad91a6eee"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/operator_audit.go",
+      "bytes": 9605,
+      "sha256": "6f9c5e90841ed0b5362282749ceb6705380d1ab720dfc1ced2ea3653510d54fb"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/node_helpers.go",
+      "bytes": 8530,
+      "sha256": "2adf72c974e2a171e52c6d5275dd965f9e3020e54acd03f13766436a4a55cb8a"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/go.mod",
+      "bytes": 1373,
+      "sha256": "145a1639a11781fc24fa6f850c9fa71667af83cb1adf85c9b63985f0a541be35"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/runner_support.py",
+      "bytes": 3888,
+      "sha256": "54bb3e7caf33e744ce76bf366dd23a4eff4d370d9246b85758089b57dd2439d7"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/fixture-catalog.json",
+      "bytes": 66249,
+      "sha256": "2637978c2e08637dae2a21bf7fcb8e9ab37edb3476e2b9512c73ff16809b7e55"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/fixture-public.json",
+      "bytes": 7244,
+      "sha256": "83bfe6cdd6020524199ba6abada82614fb67987b32b9fb96111bf6bddf879f23"
+    }
+  ],
+  "reference_source": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference",
+  "reference_sha256": "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386"
+}

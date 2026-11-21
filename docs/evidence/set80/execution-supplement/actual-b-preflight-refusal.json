@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "actual_started": false,
+  "attempt_directory_created": false,
+  "reason": "Root passed the wrong literal lock SHA on the first B invocation. run-actual.py refused at root lock bytes before any import/build/fixture/runtime. The same uncreated attempt name was started afterward with the observed exact SHA.",
+  "supplied_sha256": "1b9fc5a48ff0b09b4fce21a76459e404a5e2d6c23579f13d9eb54ee503641664",
+  "verified_sha256": "1b5adca9c7327240939fc181b24399dac60eb8df261b21ccb929ba04d2076932"
+}

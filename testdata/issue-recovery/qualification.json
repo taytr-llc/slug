@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "scope": "Set80 independent dual-interpreter byte/state/capacity reference",
+  "base_commit": "fdd40d8edd9a685613f1f667f0074e56ec4e7da5",
+  "qualified": true,
+  "reference": {
+    "path": "reference-v1.json",
+    "bytes": 6134980,
+    "sha256": "4bbe4eb9556ed5a894cee6ff565b0dcca805f27fea2d77cfe3a56242dc3dac91"
+  },
+  "report_sha256": "b45a49976919efeb1e5cbc3d154165f311dba0aa02b219050e9c280f3ebf18de",
+  "producer_lock_sha256": "7721c67d6d0ff4b64104bc6caeb873c86086b8741e9ac4486232301b27275918",
+  "counts": {
+    "authority_refusals": 12,
+    "checked_arithmetic": 9,
+    "conditional_transport": 3,
+    "count_bounds": 5,
+    "framing_targets": 39,
+    "inherited_anchors": 6,
+    "inherited_entry_anchors": 8,
+    "lifecycle_traces": 19,
+    "matching_families": 3,
+    "mode_boundaries": 15,
+    "outbox_bounds": 9,
+    "outbox_cases": 47,
+    "outbox_request_rows": 6,
+    "profile_cases": 12,
+    "profiles": 3,
+    "raw_cases": 418,
+    "registry_bounds": 10,
+    "remote": 2,
+    "response_cases": 20,
+    "source_bounds": 13,
+    "state_pairs": 15,
+    "state_refusals": 31,
+    "wire_errors": 8,
+    "wire_responses": 120,
+    "wrapper_cases": 8,
+    "wrappers": 52
+  },
+  "implementations_started_after_reference": true,
+  "failed_attempts": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "runtime_qualified": false,
+  "host_deployed": false
+}

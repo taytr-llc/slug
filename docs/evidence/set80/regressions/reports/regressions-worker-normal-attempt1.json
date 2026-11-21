@@ -1,0 +1,743 @@
+{
+  "actual_acceptance_claim": false,
+  "aggregate_capture_seconds": 720,
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 83974,
+        "pid": 83974,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-p=1",
+        "-mod=readonly",
+        "-tags=",
+        "./prospectworker"
+      ],
+      "exit_code": 0,
+      "label": "deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 83974,
+      "pid": 83974,
+      "seconds": 0.762,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 83995,
+        "pid": 83995,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "test",
+        "-count=1",
+        "-p=1",
+        "-timeout=600s",
+        "-json",
+        "-tags=",
+        "./prospectworker"
+      ],
+      "exit_code": 0,
+      "label": "normal",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 83995,
+      "pid": 83995,
+      "seconds": 22.204,
+      "timed_out": false
+    }
+  ],
+  "dependency_capture_complete": true,
+  "dependency_capture_seconds": 120,
+  "environment": {
+    "actual_optins": "all inherited SLUG_* removed; no actual tags selected",
+    "cgo": "1",
+    "go_parallelism": 1,
+    "go_work": "/Users/taytrrip/slug/slug/desktop/go.work",
+    "gomaxprocs": "2",
+    "tags": ""
+  },
+  "failed_tests": [],
+  "missing_tests": [],
+  "mode": "normal",
+  "package_timeout_seconds": 600,
+  "packages": [
+    "github.com/taytr-llc/slug/prospectworker"
+  ],
+  "passed": true,
+  "passing_packages": [
+    "github.com/taytr-llc/slug/prospectworker"
+  ],
+  "passing_tests": [
+    "github.com/taytr-llc/slug/prospectworker/TestArchiveReadOnlyFullAudit",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolConstructorFailureRetainsOriginalCleanupOwner",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolHeldReopenStillReconcilesOriginalPending",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/config-bytes-decreased",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/config-bytes-increased",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/config-daily-exact",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/config-foreign-trust",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/config-records-decreased",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/config-records-increased",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/config-v1",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/entry-accepted-without-receipt",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/entry-pool-only-accepted",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/entry-pool-only-expired",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/entry-pool-only-pending",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/entry-pool-only-rejected",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/entry-receipt-must-remain-v1",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/entry-unexpected-fighter",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/entry-wrong-entry-mode",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/scan-coinbase-only-cursor-0",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/scan-coinbase-only-cursor-1",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/scan-coinbase-only-cursor-4294967296",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/scan-coinbase-only-cursor-over",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/scan-coinbase-only-job-version3",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/scan-coinbase-only-v1-scan",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/scan-modeled-all-three-miss-cursor-0",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/scan-modeled-all-three-miss-cursor-1",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/scan-modeled-all-three-miss-cursor-4294967296",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/scan-modeled-all-three-miss-cursor-over",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/scan-modeled-all-three-miss-job-version3",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/scan-modeled-all-three-miss-v1-scan",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/scan-witness-odd-two-level-dependent-cursor-0",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/scan-witness-odd-two-level-dependent-cursor-1",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/scan-witness-odd-two-level-dependent-cursor-4294967296",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/scan-witness-odd-two-level-dependent-cursor-over",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/scan-witness-odd-two-level-dependent-job-version3",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentBytesAndModes/scan-witness-odd-two-level-dependent-v1-scan",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/empty",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/held-accepted",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/held-empty",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/held-pending",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/hold-with-scan",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/known-scan",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/marker-changed-marker-limit",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/marker-daily-marker",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/marker-v1-marker",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/missing-bool",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/missing-hash-index",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/missing-pending-index",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/null-bool",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/numeric-bool",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/orphan-scan",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/pending-entry",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/pending-plus-scan",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/stored-busy-clear-after_sync",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/stored-busy-clear-before_sync",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/stored-busy-permits-new-definite-attempt",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/stored-cancel-reopen-holds",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/stored-crash-after-dispatch",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/stored-crash-after-response-before-commit",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/stored-crash-before-dispatch",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/stored-expired-known-work-is-saved",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/stored-foreign-attempt-cannot-clear",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/stored-held-pending-recovers",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/stored-malformed_success-reopen-holds",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/stored-other_error-reopen-holds",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/stored-premark-after_sync",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/stored-premark-before_sync",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/stored-rate_limited-permits-new-definite-attempt",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/stored-reopen-attempt-cannot-clear",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/stored-same-attempt-busy",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/stored-same-attempt-rate_limited",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/stored-scan-commit-after_sync",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/stored-scan-commit-before_sync",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/stored-timeout-reopen-holds",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/stored-unknown-reopen-holds",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/stored-unknown_busy-reopen-holds",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/stored-validated-scan-atomic",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/stored-wrapped_busy-reopen-holds",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/stored-wrong_money-reopen-holds",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/string-bool",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/unknown-namespace",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/v1-meta",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/wrong-byte-count",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/wrong-record-count",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIndependentJournalAuditAndReopen/wrong-reserve-count",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIssueOriginalAttemptAndUncertainty",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIssueOriginalAttemptAndUncertainty/busy",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIssueOriginalAttemptAndUncertainty/cancelled",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIssueOriginalAttemptAndUncertainty/capacity",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIssueOriginalAttemptAndUncertainty/foreign-attempt",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIssueOriginalAttemptAndUncertainty/joined",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIssueOriginalAttemptAndUncertainty/malformed",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIssueOriginalAttemptAndUncertainty/rate",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIssueOriginalAttemptAndUncertainty/unknown",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIssueOriginalAttemptAndUncertainty/unknown-busy",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIssueOriginalAttemptAndUncertainty/valid-expired",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIssueOriginalAttemptAndUncertainty/wrapped",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIssueSyncFailuresKeepOriginalEvidence",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIssueSyncFailuresKeepOriginalEvidence/clear-after-false",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIssueSyncFailuresKeepOriginalEvidence/clear-after-true",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIssueSyncFailuresKeepOriginalEvidence/premark-after-false",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIssueSyncFailuresKeepOriginalEvidence/premark-after-true",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIssueSyncFailuresKeepOriginalEvidence/scan-after-false",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolIssueSyncFailuresKeepOriginalEvidence/scan-after-true",
+    "github.com/taytr-llc/slug/prospectworker/TestDailyPoolRunUnknownIssuePersistsAcrossOriginalReopen",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestBlockOnlyCapacitySaturation",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestConfigStrictAndRoundTrip",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestCycleHookFailureAndActualDrain",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestCycleHookFailureAndActualDrain/cancel-before",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestCycleHookFailureAndActualDrain/cancel-during",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestCycleHookFailureAndActualDrain/cancel-return",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestCycleHookFailureAndActualDrain/error",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestCycleHookFailureAndActualDrain/panic",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestCycleHookPrecedesDispatchAndIsLockFree",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestCycleHookPrecedesDispatchAndIsLockFree/new",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestCycleHookPrecedesDispatchAndIsLockFree/pending",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestCycleNilPreservesOldDispatch",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestCycleNilPreservesOldDispatch/nil-hook",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestCycleNilPreservesOldDispatch/old",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestObserverDurableOwnedAndLockFree",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestObserverFailureAndCancellation",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestObserverFailureAndCancellation/bad-receipt",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestObserverFailureAndCancellation/cancel-before",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestObserverFailureAndCancellation/cancel-during",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestObserverFailureAndCancellation/error",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestObserverFailureAndCancellation/panic",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestObserverFailureAndCancellation/uncertain",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestObserverFailureAndCancellation/uncertain-committed",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestObserverHistoricalAcknowledgmentAfterUnknown",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestObserverRunStopsWithoutResubmission",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestOutboxCloseRetainsFailure",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestOutboxFutureReservationAndWidths",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestOutboxIdentityAndCanonicalIsolation",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestOutboxIndexAndStateCorruption",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestOutboxIndexAndStateCorruption/cursor-overflow",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestOutboxIndexAndStateCorruption/hash-index-long",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestOutboxIndexAndStateCorruption/hash-index-zero",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestOutboxIndexAndStateCorruption/missing-cursor",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestOutboxIndexAndStateCorruption/mixed-version",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestOutboxIndexAndStateCorruption/pending-index-long",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestOutboxIndexAndStateCorruption/pending-time-overflow",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestOutboxIndexAndStateCorruption/reserved",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestOutboxIndexAndStateCorruption/stored-null",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestOutboxIndexAndStateCorruption/unknown-array",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestOutboxListFullEncodedByteLimit",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestOutboxProcessCrash",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestOutboxProcessCrash/authorization",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestOutboxProcessCrash/found",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestOutboxProcessCrash/receipt",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestOutboxProcessCrash/scan",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestOutboxUncertainFoundAndReceiptReopen",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestOutboxUncertainReceipt",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestOutboxUncertainReceipt/false",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestOutboxUncertainReceipt/true",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestPrepareCancellationStopsLaterTransport",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestPrepareCancellationStopsLaterTransport/issuance",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestPrepareCancellationStopsLaterTransport/template",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestTypedBoundsAndStoredNull",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestWorkerAdapterTrustAndResultRefusal",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestWorkerCancellationDrainsFound",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestWorkerProductionBlockOnly",
+    "github.com/taytr-llc/slug/prospectworker/TestManifestWorkerProductionOrderingAndReceipt",
+    "github.com/taytr-llc/slug/prospectworker/TestNameV2IndependentStaticBindings",
+    "github.com/taytr-llc/slug/prospectworker/TestOutboxCorruptionFailsClosed",
+    "github.com/taytr-llc/slug/prospectworker/TestOutboxCorruptionFailsClosed/cursor-missing",
+    "github.com/taytr-llc/slug/prospectworker/TestOutboxCorruptionFailsClosed/cursor-range",
+    "github.com/taytr-llc/slug/prospectworker/TestOutboxCorruptionFailsClosed/pending-missing",
+    "github.com/taytr-llc/slug/prospectworker/TestOutboxCorruptionFailsClosed/pending-wrong",
+    "github.com/taytr-llc/slug/prospectworker/TestOutboxCorruptionFailsClosed/receipt-birth",
+    "github.com/taytr-llc/slug/prospectworker/TestOutboxCorruptionFailsClosed/receipt-dna",
+    "github.com/taytr-llc/slug/prospectworker/TestOutboxCorruptionFailsClosed/reservation",
+    "github.com/taytr-llc/slug/prospectworker/TestOutboxCorruptionFailsClosed/sequence-gap",
+    "github.com/taytr-llc/slug/prospectworker/TestOutboxCursorWritesAreSmallAndAtomic",
+    "github.com/taytr-llc/slug/prospectworker/TestOutboxDueIndexReservationsAndReceiptRelease",
+    "github.com/taytr-llc/slug/prospectworker/TestOutboxFutureReservationsBlockNewHashesButPermitRecovery",
+    "github.com/taytr-llc/slug/prospectworker/TestOutboxListBoundsAggregateLargePayload",
+    "github.com/taytr-llc/slug/prospectworker/TestOutboxMarkerMissingForeignAndCapacityRules",
+    "github.com/taytr-llc/slug/prospectworker/TestOutboxPolicyAndReceiptFieldsCannotBeRebound",
+    "github.com/taytr-llc/slug/prospectworker/TestOutboxUncertainFoundIncludesCursorAndPendingIndex",
+    "github.com/taytr-llc/slug/prospectworker/TestOutboxUncertainFoundIncludesCursorAndPendingIndex/false",
+    "github.com/taytr-llc/slug/prospectworker/TestOutboxUncertainFoundIncludesCursorAndPendingIndex/true",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolDeliveryBroadcastPrecedesSigningDespitePoolFailure",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolDeliveryExpiredWinnerCreditsPoolWithoutNewBirth",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolDeliverySignedExpiredWorkRecoversOriginalFighter",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolOutboxCanonicalAuditRejectsCorruption",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolOutboxCanonicalAuditRejectsCorruption/cursor-overflow",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolOutboxCanonicalAuditRejectsCorruption/duplicate-field",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolOutboxCanonicalAuditRejectsCorruption/duplicate-index-long",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolOutboxCanonicalAuditRejectsCorruption/duplicate-index-zero",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolOutboxCanonicalAuditRejectsCorruption/missing-cursor",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolOutboxCanonicalAuditRejectsCorruption/mixed-namespace",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolOutboxCanonicalAuditRejectsCorruption/nullable-required",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolOutboxCanonicalAuditRejectsCorruption/outer-whitespace",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolOutboxCanonicalAuditRejectsCorruption/pending-index-long",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolOutboxCanonicalAuditRejectsCorruption/pending-time-overflow",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolOutboxCanonicalAuditRejectsCorruption/reserved",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolOutboxCanonicalAuditRejectsCorruption/sequence-gap",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolOutboxCanonicalAuditRejectsCorruption/unknown-array",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolOutboxExhaustionAndIdentityIsolation",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolOutboxOwnedWorkAndAtomicCursor",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolOutboxRecoveryAtCapacityAndTerminalMonotonicity",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolOutboxTypedJSONBoundsAndNil",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolOutboxUncertainFoundAndReceipt",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolOutboxUncertainFoundAndReceipt/found/committed-false",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolOutboxUncertainFoundAndReceipt/found/committed-true",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolOutboxUncertainFoundAndReceipt/receipt/committed-false",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolOutboxUncertainFoundAndReceipt/receipt/committed-true",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolWorkerByteCapacityStaysPausedAcrossExpiryAndRecoversPending",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolWorkerCancellationDrainsHashAndSavesFoundNonce",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolWorkerLostPoolAckRecoversAtCapacityAfterRestart",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolWorkerPoolOnlyCreatesNoFighter",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolWorkerProspectOnlyRemainsIndependent",
+    "github.com/taytr-llc/slug/prospectworker/TestPoolWorkerRejectsSourceRebindingAndSecondRun",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolIndependentConfigRowsAndModes",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolIndependentConfigRowsAndModes/q-None",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolIndependentConfigRowsAndModes/q-cannot-retain-absent",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolIndependentConfigRowsAndModes/q-cannot-retain-pending",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolIndependentConfigRowsAndModes/q-issued_unused",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolIndependentConfigRowsAndModes/q-not_issued",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolIndependentConfigRowsAndModes/q-work",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolIntentCancellationCapacityAndUnknownSync",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolIntentCancellationCapacityAndUnknownSync/before-dispatch",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolIntentCancellationCapacityAndUnknownSync/capacity",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolIntentCancellationCapacityAndUnknownSync/unknown-sync",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolNamespaceRejectsMixedWrongLinks",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolNamespaceRejectsMixedWrongLinks/extra-key",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolNamespaceRejectsMixedWrongLinks/foreign-money",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolNamespaceRejectsMixedWrongLinks/null-scan",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolNamespaceRejectsMixedWrongLinks/orphan-cursor",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolNamespaceRejectsMixedWrongLinks/wrong-counter",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolPendingHistoryAndActiveRequestAudit",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolRejectsManufacturedDTOAuthority",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolRunReconcilesOriginalEntryBeforeResume",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolRunUnknownRestartExactRequest",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolTerminalClearsOnlyValidatedResult",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolTerminalClearsOnlyValidatedResult/issued_unused",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolTerminalClearsOnlyValidatedResult/not_issued",
+    "github.com/taytr-llc/slug/prospectworker/TestWorkerBlockAndProspectTargetsAreIndependent",
+    "github.com/taytr-llc/slug/prospectworker/TestWorkerBlockAndProspectTargetsAreIndependent/block-only",
+    "github.com/taytr-llc/slug/prospectworker/TestWorkerBlockAndProspectTargetsAreIndependent/prospect-only",
+    "github.com/taytr-llc/slug/prospectworker/TestWorkerCancellationDrainsHashAndPersistsFound",
+    "github.com/taytr-llc/slug/prospectworker/TestWorkerCancellationDrainsSignerWithoutSubmitting",
+    "github.com/taytr-llc/slug/prospectworker/TestWorkerExtraNonceExhaustionRequestsFreshJob",
+    "github.com/taytr-llc/slug/prospectworker/TestWorkerFreshBlockBypassesOlderDueSigner",
+    "github.com/taytr-llc/slug/prospectworker/TestWorkerLostAcknowledgmentReopensAfterExpiry",
+    "github.com/taytr-llc/slug/prospectworker/TestWorkerNonceExhaustionAndRenewal",
+    "github.com/taytr-llc/slug/prospectworker/TestWorkerNonceExhaustionAndRenewal/nonce",
+    "github.com/taytr-llc/slug/prospectworker/TestWorkerNonceExhaustionAndRenewal/parent",
+    "github.com/taytr-llc/slug/prospectworker/TestWorkerNonceExhaustionAndRenewal/renewal",
+    "github.com/taytr-llc/slug/prospectworker/TestWorkerOwnsAdapterTemplateContainers",
+    "github.com/taytr-llc/slug/prospectworker/TestWorkerProductionFoundBroadcastSignPersistSubmit",
+    "github.com/taytr-llc/slug/prospectworker/TestWorkerRejectsAdapterPolicyBeforeProposal",
+    "github.com/taytr-llc/slug/prospectworker/TestWorkerRequiresV2AndBoundAuthority",
+    "github.com/taytr-llc/slug/prospectworker/TestWorkerRetainedCapacityPausesBeforeMoreWork",
+    "github.com/taytr-llc/slug/prospectworker/TestWorkerUnresolvedBlockDoesNotStarveNewHash"
+  ],
+  "profile_unchanged": true,
+  "scope": "full affected legacy and Set80 regression",
+  "skipped_tests": [],
+  "slice": "worker",
+  "sources_unchanged": true,
+  "test_exclusions": [],
+  "top_level_pass_count": 76,
+  "top_level_skip_count": 0,
+  "top_level_tests": [
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestArchiveReadOnlyFullAudit"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestDailyPoolConstructorFailureRetainsOriginalCleanupOwner"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestDailyPoolHeldReopenStillReconcilesOriginalPending"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestDailyPoolIndependentBytesAndModes"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestDailyPoolIndependentJournalAuditAndReopen"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestDailyPoolIssueOriginalAttemptAndUncertainty"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestDailyPoolIssueSyncFailuresKeepOriginalEvidence"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestDailyPoolRunUnknownIssuePersistsAcrossOriginalReopen"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestManifestBlockOnlyCapacitySaturation"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestManifestConfigStrictAndRoundTrip"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestManifestCycleHookFailureAndActualDrain"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestManifestCycleHookPrecedesDispatchAndIsLockFree"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestManifestCycleNilPreservesOldDispatch"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestManifestObserverDurableOwnedAndLockFree"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestManifestObserverFailureAndCancellation"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestManifestObserverHistoricalAcknowledgmentAfterUnknown"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestManifestObserverRunStopsWithoutResubmission"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestManifestOutboxCloseRetainsFailure"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestManifestOutboxFutureReservationAndWidths"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestManifestOutboxIdentityAndCanonicalIsolation"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestManifestOutboxIndexAndStateCorruption"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestManifestOutboxListFullEncodedByteLimit"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestManifestOutboxProcessCrash"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestManifestOutboxUncertainFoundAndReceiptReopen"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestManifestOutboxUncertainReceipt"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestManifestPrepareCancellationStopsLaterTransport"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestManifestTypedBoundsAndStoredNull"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestManifestWorkerAdapterTrustAndResultRefusal"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestManifestWorkerCancellationDrainsFound"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestManifestWorkerProductionBlockOnly"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestManifestWorkerProductionOrderingAndReceipt"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestNameV2IndependentStaticBindings"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestOutboxCorruptionFailsClosed"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestOutboxCursorWritesAreSmallAndAtomic"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestOutboxDueIndexReservationsAndReceiptRelease"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestOutboxFutureReservationsBlockNewHashesButPermitRecovery"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestOutboxListBoundsAggregateLargePayload"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestOutboxMarkerMissingForeignAndCapacityRules"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestOutboxPolicyAndReceiptFieldsCannotBeRebound"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestOutboxUncertainFoundIncludesCursorAndPendingIndex"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestPoolDeliveryBroadcastPrecedesSigningDespitePoolFailure"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestPoolDeliveryExpiredWinnerCreditsPoolWithoutNewBirth"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestPoolDeliverySignedExpiredWorkRecoversOriginalFighter"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestPoolOutboxCanonicalAuditRejectsCorruption"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestPoolOutboxExhaustionAndIdentityIsolation"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestPoolOutboxOwnedWorkAndAtomicCursor"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestPoolOutboxRecoveryAtCapacityAndTerminalMonotonicity"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestPoolOutboxTypedJSONBoundsAndNil"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestPoolOutboxUncertainFoundAndReceipt"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestPoolWorkerByteCapacityStaysPausedAcrossExpiryAndRecoversPending"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestPoolWorkerCancellationDrainsHashAndSavesFoundNonce"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestPoolWorkerLostPoolAckRecoversAtCapacityAfterRestart"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestPoolWorkerPoolOnlyCreatesNoFighter"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestPoolWorkerProspectOnlyRemainsIndependent"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestPoolWorkerRejectsSourceRebindingAndSecondRun"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestRecoverablePoolIndependentConfigRowsAndModes"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestRecoverablePoolIntentCancellationCapacityAndUnknownSync"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestRecoverablePoolNamespaceRejectsMixedWrongLinks"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestRecoverablePoolPendingHistoryAndActiveRequestAudit"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestRecoverablePoolRejectsManufacturedDTOAuthority"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestRecoverablePoolRunReconcilesOriginalEntryBeforeResume"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestRecoverablePoolRunUnknownRestartExactRequest"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestRecoverablePoolTerminalClearsOnlyValidatedResult"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestWorkerBlockAndProspectTargetsAreIndependent"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestWorkerCancellationDrainsHashAndPersistsFound"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestWorkerCancellationDrainsSignerWithoutSubmitting"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestWorkerExtraNonceExhaustionRequestsFreshJob"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestWorkerFreshBlockBypassesOlderDueSigner"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestWorkerLostAcknowledgmentReopensAfterExpiry"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestWorkerNonceExhaustionAndRenewal"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestWorkerOwnsAdapterTemplateContainers"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestWorkerProductionFoundBroadcastSignPersistSubmit"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestWorkerRejectsAdapterPolicyBeforeProposal"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestWorkerRequiresV2AndBoundAuthority"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestWorkerRetainedCapacityPausesBeforeMoreWork"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/prospectworker",
+      "test": "TestWorkerUnresolvedBlockDoesNotStarveNewHash"
+    }
+  ],
+  "unexpected_skips": [],
+  "version": 1
+}

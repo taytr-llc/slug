@@ -87,6 +87,9 @@ func (s *ManifestStore) GetManifestJob(id string) (prospectjob.ManifestJob, erro
 func (s *ManifestStore) IssueManifestJob(context prospect.Context, publicKey string, check func() error) (prospectjob.ManifestJob, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	if s.issue != nil {
+		return prospectjob.ManifestJob{}, ErrManifestAuthority
+	}
 	if err := s.state(true); err != nil {
 		return prospectjob.ManifestJob{}, err
 	}

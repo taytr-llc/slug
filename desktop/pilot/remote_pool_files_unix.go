@@ -20,6 +20,7 @@ var remotePoolComponentNames = [...]string{"outbox"}
 type remotePoolFiles struct {
 	path                                  string
 	setup                                 RemotePoolConfig
+	recovery                              *RecoverableRemotePoolConfig
 	create, established, closed, poisoned bool
 	closeErr                              error
 	failedClosers                         []*os.File
@@ -40,7 +41,19 @@ func (f *remotePoolFiles) root() *os.File { return f.dirs[len(f.dirs)-1].file }
 
 // The returned partial owner must be closed even on failure. It retains every
 // descriptor/lock until cleanup actually completes; no ambiguous fd is retried.
-func openRemotePoolFiles(path string, s RemotePoolConfig, create bool) (f *remotePoolFiles, err error) {
+func openRemotePoolFiles(path string, s RemotePoolConfig, create bool) (*remotePoolFiles, error) {
+	return openRemotePoolFilesSelection(path, s, create, nil)
+}
+func (f *remotePoolFiles) markerBytes() ([]byte, []byte, error) {
+	if f.recovery != nil {
+		return remotePoolRecoverableMarkerBytes(*f.recovery)
+	}
+	return remotePoolMarkerBytes(f.setup)
+}
+func openRemotePoolFilesSelection(path string, s RemotePoolConfig, create bool, recovery *RecoverableRemotePoolConfig) (f *remotePoolFiles, err error) {
+	if recovery != nil && (ValidateRecoverableRemotePoolConfig(*recovery) != nil || !sameRecoverableRemoteBase(*recovery, s)) {
+		return nil, ErrRemotePoolConfig
+	}
 	if validateRemotePoolConfig(s, s.Version == 2) != nil || !filepath.IsAbs(path) || filepath.Clean(path) != path || len(path) > 4096 || strings.IndexByte(path, 0) >= 0 || os.Getuid() != os.Geteuid() {
 		return nil, ErrRemotePoolConfig
 	}
@@ -53,7 +66,7 @@ func openRemotePoolFiles(path string, s RemotePoolConfig, create bool) (f *remot
 			return nil, ErrRemotePoolConfig
 		}
 	}
-	f = &remotePoolFiles{path: path, setup: s, create: create, children: map[string]remotePoolDirectoryRef{}}
+	f = &remotePoolFiles{recovery: recovery, path: path, setup: s, create: create, children: map[string]remotePoolDirectoryRef{}}
 	fd, e := unix.Open("/", unix.O_RDONLY|unix.O_DIRECTORY|unix.O_NOFOLLOW|unix.O_CLOEXEC, 0)
 	if e != nil {
 		return f, ErrRemotePoolUnavailable
@@ -112,7 +125,7 @@ func openRemotePoolFiles(path string, s RemotePoolConfig, create bool) (f *remot
 		if !create || len(names) != 0 {
 			return f, ErrRemotePoolChanged
 		}
-		raw, _, e := remotePoolMarkerBytes(s)
+		raw, _, e := f.markerBytes()
 		if e != nil {
 			return f, e
 		}
@@ -120,7 +133,11 @@ func openRemotePoolFiles(path string, s RemotePoolConfig, create bool) (f *remot
 			return f, e
 		}
 	}
-	f.intent, e = selectRemotePoolPrivateInput(context.Background(), filepath.Join(path, remotePoolIntentName), RemotePoolMaxConfigBytes+512)
+	limit := RemotePoolMaxConfigBytes + 512
+	if recovery != nil {
+		limit = RecoverableRemotePoolMaxConfigBytes + 512
+	}
+	f.intent, e = selectRemotePoolPrivateInput(context.Background(), filepath.Join(path, remotePoolIntentName), limit)
 	if e != nil {
 		return f, e
 	}
@@ -128,7 +145,7 @@ func openRemotePoolFiles(path string, s RemotePoolConfig, create bool) (f *remot
 	if e != nil {
 		return f, e
 	}
-	want, _, _ := remotePoolMarkerBytes(s)
+	want, _, _ := f.markerBytes()
 	if !bytes.Equal(got, want) {
 		return f, ErrRemotePoolChanged
 	}
@@ -142,7 +159,7 @@ func openRemotePoolFiles(path string, s RemotePoolConfig, create bool) (f *remot
 		if e != nil {
 			return f, e
 		}
-		_, want, e = remotePoolMarkerBytes(s)
+		_, want, e = f.markerBytes()
 		if e != nil || !bytes.Equal(got, want) {
 			return f, ErrRemotePoolChanged
 		}
@@ -304,7 +321,7 @@ func (f *remotePoolFiles) markReady() error {
 	if len(f.children) != len(remotePoolComponentNames) {
 		return ErrRemotePoolChanged
 	}
-	_, raw, e := remotePoolMarkerBytes(f.setup)
+	_, raw, e := f.markerBytes()
 	if e != nil {
 		return e
 	}

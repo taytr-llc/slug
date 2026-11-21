@@ -1,0 +1,557 @@
+--- audit-before-selected-census/issue_audit.go
++++ issue_audit.go
+@@ -1,11 +1,13 @@
+ // Public original-owner audits; no private custody database access or repair.
+ package main
++
+ import (
+  "bytes"
+  "context"
+  "encoding/json"
+  "path/filepath"
+  "reflect"
++
+  "github.com/syndtr/goleveldb/leveldb"
+  "github.com/syndtr/goleveldb/leveldb/opt"
+  "github.com/taytr-llc/slug/desktop/pooloperator"
+@@ -14,54 +16,168 @@
+  "github.com/taytr-llc/slug/prospectwork"
+  "github.com/taytr-llc/slug/registry"
+ )
+-type sourceRequest struct {Version uint32 `json:"version"`;Intent registry.IssueIntent `json:"intent"`;IntentID string `json:"intent_id"`;State string `json:"state"`;JobID string `json:"job_id"`;ResolvedAtMS int64 `json:"resolved_at_ms"`;Reason string `json:"reason"`}
++
++type sourceRequest struct {
++ Version uint32 `json:"version"`
++ Intent registry.IssueIntent `json:"intent"`
++ IntentID string `json:"intent_id"`
++ State string `json:"state"`
++ JobID string `json:"job_id"`
++ ResolvedAtMS int64 `json:"resolved_at_ms"`
++ Reason string `json:"reason"`
++}
+ type issueAudit struct {
+  Financial attachmentOperatorAudit `json:"financial"`
+- Request sourceRequest `json:"source_request"`;Issuer registry.IssuerRequest `json:"issuer_request"`
+- Job prospectjob.ManifestJob `json:"job"`;Template prospectwork.Template `json:"template"`
+- TemplateSHA256 string `json:"template_sha256"`;SourceRequests uint64 `json:"source_requests"`;IssuerRequests uint64 `json:"issuer_requests"`
+- Work *poolshare.MiningWork `json:"work"`;RowHashes map[string]string `json:"row_hashes"`;ReadOnlyUnchanged bool `json:"read_only_unchanged"`
++ Request sourceRequest `json:"source_request"`
++ Issuer registry.IssuerRequest `json:"issuer_request"`
++ Job prospectjob.ManifestJob `json:"job"`
++ Template prospectwork.Template `json:"template"`
++ TemplateSHA256 string `json:"template_sha256"`
++ SourceRequests uint64 `json:"source_requests"`
++ IssuerRequests uint64 `json:"issuer_requests"`
++ SourceTemplates uint64 `json:"source_templates"`
++ SourceInverses uint64 `json:"source_inverses"`
++ IssuerInverses uint64 `json:"issuer_inverses"`
++ Requests []sourceRequest `json:"requests"`
++ IssuerRows []registry.IssuerRequest `json:"issuer_rows"`
++ Jobs []prospectjob.ManifestJob `json:"jobs"`
++ Work *poolshare.MiningWork `json:"work"`
++ RowHashes map[string]string `json:"row_hashes"`
++ ReadOnlyUnchanged bool `json:"read_only_unchanged"`
+ }
+-func keyed(prefix,id string) []byte {return append([]byte(prefix),dec(id)...)}
++
++// Only the new issue namespace uses raw 32-byte IDs. Original w and job: keys
++// deliberately retain their existing ASCII hexadecimal encodings.
++func keyed(prefix,id string) []byte {
++ raw:=dec(id);require(len(raw)==32 && hx(raw)==id && !bytes.Equal(raw,make([]byte,32)),"original canonical request/job ID")
++ return append([]byte(prefix),raw...)
++}
+ func auditIssue(ctx context.Context,root string,s pooloperator.RecoverableDailySetup,id string) (out issueAudit) {
++ require(ctx!=nil,"original issue audit context");check(ctx.Err(),"original issue audit context")
++ _=keyed("issue/r/",id)
+  before:=attachmentPublicFiles(root)
+- // Full original financial/source/issuer audits authenticate every namespace
+- // before the bounded request projections below.
+  out.Financial=auditOperator(ctx,root,s)
++ out.SourceRequests,out.IssuerRequests=out.Financial.SourceRequests,out.Financial.IssuerRequests
++ out.RowHashes=map[string]string{}
++ for k,v:=range out.Financial.PublicRows {out.RowHashes[k]=v}
++ var owners auditOwnerStack;defer owners.finish()
+  p,e:=registry.NewOperatorProfile(s.Base.Authority);check(e,"original audit profile")
+- issuer,e:=registry.OpenRecoverableOperatorManifestAuthorityAudit(ctx,filepath.Join(root,"operator","issuer"),p,s.IssueProfile);check(e,"selected issuer audit")
+- closed:=false;defer func(){if !closed {check(issuer.Close(),"partial selected issuer close")}}()
++ issuer,e:=registry.OpenRecoverableOperatorManifestAuthorityAudit(ctx,filepath.Join(root,"operator","issuer"),p,s.IssueProfile)
++ if issuer!=nil {owners.opened("exact original issuer",issuer.Close,e)}
++ check(e,"selected issuer audit")
+  info,n,e:=issuer.AuditIssueBinding(ctx,s.Base.Pool.AuthorityPin,s.IssueProfile);check(e,"complete selected issuer binding")
+- out.IssuerRequests=n;require(info.Jobs==out.Financial.AuthorityJobs,"audited complete job census")
+- out.Issuer,e=issuer.TryIssueRequest(ctx,id);check(e,"exact original issued request")
+- out.Job,e=issuer.TryGetManifestJob(ctx,out.Issuer.JobID);check(e,"exact original job")
+- check(issuer.Close(),"selected issuer audit joined");closed=true
++ require(info.ReadOnly && info.Jobs==out.Financial.AuthorityJobs && n==out.IssuerRequests,"same audited complete job/request census")
++ out.Issuer,e=issuer.TryIssueRequest(ctx,id);check(e,"exact original issuer request")
++ if out.Issuer.State=="issued" {
++  out.Job,e=issuer.TryGetManifestJob(ctx,out.Issuer.JobID);check(e,"exact original job")
++ } else {require(out.Issuer.State=="sealed" && out.Issuer.JobID=="","exact original terminal seal")}
++ check(owners.close(),"selected issuer audit joined")
++
++ // All namespaces have passed the concrete full audits. Independently count
++ // their bounded retained rows and bind every projected byte to that snapshot.
++ out.Requests=[]sourceRequest{};out.IssuerRows=[]registry.IssuerRequest{};out.Jobs=[]prospectjob.ManifestJob{}
++ for _,name:=range []string{"issuer","pool"} {
++  rows:=walkAuditRows(ctx,root,name,func(k,v []byte){
++   require(out.RowHashes[name+"/"+hx(k)]==hx(digest(v)),"same complete audited row snapshot")
++   switch {
++   case bytes.HasPrefix(k,[]byte("issue/r/")):
++    require(len(k)==40 && len(v)<=registry.MaxIssueRowSize,"bounded exact request key")
++    rid:=hx(k[8:]);var canonical []byte
++    if name=="pool" {
++     var r sourceRequest;check(json.Unmarshal(v,&r),"source request census")
++     canonical,e=json.Marshal(r);check(e,"source request encoding")
++     require(r.Intent.RequestID==rid && r.Version==1,"source request key identity")
++     out.Requests=append(out.Requests,r)
++    } else {
++     var r registry.IssuerRequest;check(json.Unmarshal(v,&r),"issuer request census")
++     canonical,e=json.Marshal(r);check(e,"issuer request encoding")
++     require(r.RequestID==rid && r.Version==1,"issuer request key identity")
++     out.IssuerRows=append(out.IssuerRows,r)
++    }
++    require(bytes.Equal(v,canonical),"exact original canonical request bytes")
++   case bytes.HasPrefix(k,[]byte("issue/t/")):
++    require(name=="pool" && len(k)==40,"source-only retained template")
++    out.SourceTemplates++
++   case bytes.HasPrefix(k,[]byte("issue/j/")):
++    require(len(k)==40 && len(v)==32,"exact inverse row shape")
++    if name=="pool" {out.SourceInverses++} else {out.IssuerInverses++}
++   case name=="issuer" && bytes.HasPrefix(k,[]byte("job:")):
++    require(len(k)==68 && len(v)<=prospectjob.MaxManifestJobSize,"bounded original job row")
++    var j prospectjob.ManifestJob;check(json.Unmarshal(v,&j),"original job census")
++    raw,e:=json.Marshal(j);check(e,"original job encoding")
++    require(bytes.Equal(raw,v) && j.ID==string(k[4:]),"original ASCII job key and bytes")
++    out.Jobs=append(out.Jobs,j)
++   }
++  })
++  count:=0;for k:=range out.RowHashes {if len(k)>len(name) && k[:len(name)+1]==name+"/" {count++}}
++  require(count==len(rows),"no omitted or new audited public rows")
++ }
++ require(uint64(len(out.Requests))==out.SourceRequests && uint64(len(out.IssuerRows))==out.IssuerRequests && uint64(len(out.Jobs))==out.Financial.AuthorityJobs && out.IssuerInverses==out.Financial.AuthorityJobs,"complete original request/job/reverse census")
++ require(out.SourceRequests<=s.IssueProfile.MaxRequests && out.SourceRequests>=out.IssuerRequests,"bounded original selected request census")
++ matched:=uint64(0);works:=uint64(0);inverses:=uint64(0)
++ for _,r:=range out.Requests {
++  found:=false
++  for _,ir:=range out.IssuerRows {if ir.RequestID==r.Intent.RequestID {
++   require(!found && ir.IntentID==r.IntentID && ir.ProfileID==r.Intent.ProfileID && ir.GymID==r.Intent.GymID && ir.PublicKey==r.Intent.PublicKey,"unique exact paired request")
++   found=true;matched++
++  }}
++  require(found || r.State=="pending","only pending source may precede issuer")
++  if r.State=="work" {works++}
++  if r.State=="work" || r.State=="issued_unused" {inverses++}
++ }
++ require(matched==out.IssuerRequests && works==out.Financial.Works && out.SourceTemplates==out.SourceRequests-works && out.SourceInverses==inverses,"complete matched issuer/source projection")
++
+  db,e:=leveldb.OpenFile(filepath.Join(root,"operator","pool","db"),&opt.Options{ReadOnly:true,ErrorIfMissing:true,Strict:opt.StrictAll});check(e,"selected source public projection")
+- dbclosed:=false;defer func(){if !dbclosed {check(db.Close(),"partial source projection close")}}()
+- out.RowHashes=map[string]string{}
+- get:=func(key []byte,limit int)[]byte{raw,e:=db.Get(key,nil);check(e,"audited exact request key");require(len(raw)>0 && len(raw)<=limit,"request projection bound");out.RowHashes[hx(key)]=hx(digest(raw));return raw}
+- var meta struct {Requests uint64 `json:"requests"`;IssueProfile registry.IssueProfile `json:"issue_profile"`}
+- check(json.Unmarshal(get([]byte("meta"),32768),&meta),"selected source metadata");require(meta.IssueProfile==s.IssueProfile,"same selected source");out.SourceRequests=meta.Requests
+- raw:=get(keyed("issue/r/",id),4096);check(json.Unmarshal(raw,&out.Request),"audited source request")
+- require(out.Request.Intent.RequestID==id && out.Request.IntentID==out.Issuer.IntentID && (out.Request.JobID==out.Job.ID || (out.Request.State=="pending" && out.Request.JobID=="")) && out.Issuer.JobID==out.Job.ID,"original request intent/job pair")
++ owners.add("exact source projection",db.Close)
++ get:=func(key []byte,limit int) []byte {
++  check(ctx.Err(),"exact request projection context")
++  raw,e:=db.Get(key,nil);check(e,"audited exact request key")
++  require(len(raw)>0 && len(raw)<=limit && out.RowHashes["pool/"+hx(key)]==hx(digest(raw)),"bounded same audited request row")
++  return raw
++ }
++ absent:=func(key []byte) {present,e:=db.Has(key,nil);check(e,"audited absence");require(!present,"exact original row absent")}
++ raw:=get(keyed("issue/r/",id),registry.MaxIssueRowSize);check(json.Unmarshal(raw,&out.Request),"audited exact source request")
++ iid,e:=registry.IssueIntentID(out.Request.Intent);check(e,"original intent identity")
++ pid,e:=registry.IssueProfileID(s.IssueProfile);check(e,"original profile identity")
++ require(out.Request.Intent.RequestID==id && iid==out.Request.IntentID && iid==out.Issuer.IntentID && out.Request.Intent.ProfileID==pid && out.Issuer.ProfileID==pid && out.Issuer.GymID==out.Request.Intent.GymID && out.Issuer.PublicKey==out.Request.Intent.PublicKey,"original complete request pairing")
++ if out.Issuer.State=="issued" {
++  require(out.Issuer.JobID==out.Job.ID && out.Job.GymID==out.Request.Intent.GymID && out.Job.PublicKey==out.Request.Intent.PublicKey,"original issued job identity")
++ }
+  if out.Request.State=="work" {
+-  var saved struct {Job prospectjob.ManifestJob `json:"job"`;Template prospectwork.Template `json:"template"`}
+-  raw=get(keyed("w",out.Job.ID),prospectwork.MaxTemplateSize+16384);check(json.Unmarshal(raw,&saved),"audited original saved work");require(saved.Job==out.Job,"same saved original job");out.Template=saved.Template
+-  out.Work=&poolshare.MiningWork{Job:out.Job,Template:out.Template}
+-  // Public source Work carries its own full selected projection; use the
+-  // original field grammar below rather than manufacture a winning nonce.
++  require(out.Issuer.State=="issued" && out.Request.JobID==out.Job.ID,"exact completed original work")
++  var saved poolshare.MiningWork
++  raw=get([]byte("w"+out.Job.ID),prospectwork.MaxTemplateSize+16384)
++  check(json.Unmarshal(raw,&saved),"audited original saved work")
++  require(saved.Job==out.Job,"same saved original job")
++  canonical,e:=json.Marshal(saved);check(e,"saved work encoding");require(bytes.Equal(raw,canonical),"exact original saved work bytes")
++  out.Template=saved.Template;out.Work=&saved
++  absent(keyed("issue/t/",id))
+   inverse:=get(keyed("issue/j/",out.Job.ID),32);require(bytes.Equal(inverse,dec(id)),"original work reverse")
+  } else {
+-  raw=get(keyed("issue/t/",id),prospectwork.MaxTemplateSize);check(json.Unmarshal(raw,&out.Template),"retained original template")
+-  present,e:=db.Has(keyed("w",out.Job.ID),nil);check(e,"no original work test");require(!present,"never published work")
+-  if out.Request.State=="pending" {present,e=db.Has(keyed("issue/j/",out.Job.ID),nil);check(e,"pending inverse absence");require(!present,"no pending inverse")} else {inverse:=get(keyed("issue/j/",out.Job.ID),32);require(bytes.Equal(inverse,dec(id)),"exact issued-unused inverse")}
++  raw=get(keyed("issue/t/",id),prospectwork.MaxTemplateSize)
++  check(json.Unmarshal(raw,&out.Template),"retained original template")
++  canonical,e:=json.Marshal(out.Template);check(e,"retained template encoding");require(bytes.Equal(raw,canonical),"exact original template bytes")
++  switch out.Request.State {
++  case "pending":
++   require(out.Request.JobID=="" && out.Request.ResolvedAtMS==0 && out.Request.Reason=="","original pending source row")
++   if out.Issuer.State=="issued" {absent([]byte("w"+out.Job.ID));absent(keyed("issue/j/",out.Job.ID))}
++  case "issued_unused":
++   require(out.Issuer.State=="issued" && out.Request.JobID==out.Job.ID && out.Request.ResolvedAtMS>=out.Job.ExpiresAtMS && out.Request.Reason=="expired_before_work","original expired unpublished job")
++   absent([]byte("w"+out.Job.ID));inverse:=get(keyed("issue/j/",out.Job.ID),32);require(bytes.Equal(inverse,dec(id)),"exact issued-unused inverse")
++  case "not_issued":
++   require(out.Issuer.State=="sealed" && out.Request.JobID=="" && out.Request.Reason==out.Issuer.Reason && out.Request.ResolvedAtMS>=out.Issuer.SealedAtMS,"original durable negative seal")
++  default:panic("unexpected original request state")
++  }
+  }
+- template,e:=json.Marshal(out.Template);check(e,"canonical original template");out.TemplateSHA256=hx(digest(template));require(out.TemplateSHA256==out.Request.Intent.TemplateSHA256,"exact durable template intent")
+- check(db.Close(),"selected source projection joined");dbclosed=true
+- require(reflect.DeepEqual(before,attachmentPublicFiles(root)),"full selected audit read only");out.ReadOnlyUnchanged=true;return
++ template,e:=json.Marshal(out.Template);check(e,"canonical original template")
++ out.TemplateSHA256=hx(digest(template));require(out.TemplateSHA256==out.Request.Intent.TemplateSHA256,"exact durable template intent")
++ if out.Issuer.State=="issued" {require(out.Job.Context==out.Template.Context,"original job/template context")}
++ check(owners.close(),"selected source projection joined")
++ require(reflect.DeepEqual(before,attachmentPublicFiles(root)),"full selected audit read only")
++ out.ReadOnlyUnchanged=true;return
+ }
+ func requireGap(v issueAudit,ack proposalBarrier,s pooloperator.RecoverableDailySetup) {
+- require(v.SourceRequests==1 && v.IssuerRequests==1 && v.Issuer.State=="issued" && v.Request.State=="pending" && v.Financial.AuthorityJobs==1 && v.Financial.Works==0 && v.Financial.Submissions==0 && v.Financial.Accepted==0 && v.Financial.Births==0 && v.Financial.Header.Credits==0 && v.Financial.Header.Batches==0,"exact pending/issued gap, no hidden effects")
++ require(v.ReadOnlyUnchanged && v.Financial.ReadOnlyUnchanged && v.SourceRequests==1 && v.IssuerRequests==1 && v.SourceTemplates==1 && v.SourceInverses==0 && v.IssuerInverses==1 && v.Issuer.State=="issued" && v.Request.State=="pending" && v.Work==nil && v.Financial.AuthorityJobs==1 && v.Financial.Works==0 && v.Financial.Submissions==0 && v.Financial.Accepted==0 && v.Financial.Births==0 && len(v.Financial.Entries)==0 && len(v.Financial.Rounds)==0 && v.Financial.Header.Credits==0 && v.Financial.Header.Batches==0,"exact pending/issued gap, no hidden effects")
+  w,e:=prospectwork.PrepareManifestWork(v.Job,v.Template,s.Base.Pool.PayoutAddress,0,s.Base.Pool.PoolTarget);check(e,"reconstruct original proposal")
+- require(w.Candidate().BlockHex==ack.Block,"captured proposal equals exact audited job/template")
++ require(w.Candidate().BlockHex==ack.Block && hx(digest(dec(ack.Block)))==ack.SHA256 && ack.AtMS>=v.Job.IssuedAtMS && ack.AtMS<v.Job.ExpiresAtMS,"captured successful proposal equals exact unexpired audited job/template")
+ }
+--- audit-before-selected-census/operator_audit.go
++++ operator_audit.go
+@@ -2,10 +2,14 @@
+ package main
+ 
+ import (
++	"bytes"
+ 	"context"
+ 	"encoding/binary"
+ 	"encoding/json"
++	"errors"
++	"fmt"
+ 	"io/fs"
++	"os"
+ 	"path/filepath"
+ 	"reflect"
+ 
+@@ -70,13 +74,22 @@
+ 	Delivery          string                      `json:"delivery"`
+ 	Report            poolsettle.Report           `json:"report"`
+ 	ReadOnlyUnchanged bool                        `json:"read_only_unchanged"`
++	SourceRequests uint64 `json:"source_requests"`
++	IssuerRequests uint64 `json:"issuer_requests"`
++	PublicRows map[string]string `json:"public_rows"`
++	PublicFilesBefore map[string]string `json:"public_files_before"`
++	PublicFilesAfter map[string]string `json:"public_files_after"`
+ }
+ 
+ // Only named public accounting stores; never wallets, credentials or seed files.
+ func attachmentPublicFiles(root string) map[string]string {
+ 	out := map[string]string{}
++	var total int64
+ 	for _, name := range []string{"issuer", "pool", "rounds", "settlement"} {
+ 		dir := filepath.Join(root, "operator", name)
++		canonical, e := filepath.EvalSymlinks(dir)
++		check(e, "public store path")
++		require(canonical == dir, "original public store path")
+ 		check(filepath.WalkDir(dir, func(path string, d fs.DirEntry, e error) error {
+ 			if e != nil {
+ 				return e
+@@ -84,11 +97,13 @@
+ 			if d.IsDir() {
+ 				return nil
+ 			}
+-			info, e := d.Info()
++			info, e := os.Lstat(path)
+ 			if e != nil {
+ 				return e
+ 			}
+ 			require(info.Mode().IsRegular() && info.Size() <= 128<<20 && len(out) < 4096, "bounded public audit inventory")
++			total += info.Size()
++			require(total <= 512<<20, "bounded complete public file inventory")
+ 			out[path] = hx(digest(readBound(path, 128<<20)))
+ 			return nil
+ 		}), "public audit inventory")
+@@ -102,140 +117,147 @@
+ 	return k
+ }
+ 
++// A failed Close is recorded once and never retried through this helper. The
++// outer scenario retains the original tree and fails; no replacement opens.
++type auditOwnedClose struct { name string; close func() error }
++type auditOwnerStack struct { open, failed []auditOwnedClose }
++func (s *auditOwnerStack) add(name string, close func() error) {
++ s.open=append(s.open,auditOwnedClose{name,close})
++}
++// Selected Open APIs return a nonnil error owner only after failed cleanup.
++// Retain that concrete owner without another Close attempt.
++func (s *auditOwnerStack) opened(name string, close func() error, err error) {
++ if err!=nil {s.failed=append(s.failed,auditOwnedClose{name,close});return};s.add(name,close)
++}
++func (s *auditOwnerStack) close() error {
++ var all error
++ for len(s.open)>0 {
++  i:=len(s.open)-1; c:=s.open[i]; s.open=s.open[:i]
++  if e:=c.close();e!=nil {s.failed=append(s.failed,c);all=errors.Join(all,fmt.Errorf("%s: %w",c.name,e))}
++ }
++ return all
++}
++func (s *auditOwnerStack) finish() {
++ fault:=recover(); e:=s.close()
++ if fault!=nil {if e!=nil {panic(fmt.Sprintf("%v; public audit cleanup: %v",fault,e))};panic(fault)}
++ check(e,"public audit cleanup")
++}
++
++// Only after all full original owners close, enumerate public logical rows.
++// The caps bound this tiny scenario, not a product capacity or a new authority.
++func walkAuditRows(ctx context.Context,root,name string,visit func([]byte,[]byte)) map[string]string {
++ check(ctx.Err(),"public row context")
++ db,e:=leveldb.OpenFile(filepath.Join(root,"operator",name,"db"),&opt.Options{ReadOnly:true,ErrorIfMissing:true,Strict:opt.StrictAll})
++ check(e,"readonly public row census")
++ var owners auditOwnerStack;owners.add(name+" projection",db.Close);defer owners.finish()
++ rows:=map[string]string{};var total uint64
++ func(){
++  it:=db.NewIterator(nil,nil);defer it.Release()
++  for it.Next(){
++   check(ctx.Err(),"public row census context")
++   k,v:=it.Key(),it.Value()
++   require(len(k)>0 && len(k)<=256 && len(v)<=40<<20 && len(rows)<4096,"bounded public logical row")
++   total+=uint64(len(k)+len(v));require(total<=256<<20,"bounded complete public row census")
++   key:=name+"/"+hx(k);_,exists:=rows[key];require(!exists,"unique public key")
++   rows[key]=hx(digest(v));if visit!=nil {visit(k,v)}
++  }
++  check(it.Error(),"complete public row iterator")
++ }()
++ check(owners.close(),"readonly public row census joined")
++ return rows
++}
++
+ // Called only after every original runtime/CLI has joined and released this root.
+-// Full production audits authorize the subsequent bounded public projection.
++// Full production audits authenticate the subsequent bounded public projection.
+ func auditOperator(ctx context.Context, root string, selected pooloperator.RecoverableDailySetup) (out attachmentOperatorAudit) {
+-	s:=selected.Base
+- before := attachmentPublicFiles(root)
+-	var closers []func() error
+-	failedClose := false
+-	defer func() {
+-		if failedClose {
+-			return
+-		}
+-		for i := len(closers) - 1; i >= 0; i-- {
+-			e := closers[i]()
+-			if e != nil {
+-				failedClose = true
+-				check(e, "partial original audit close")
+-				return
+-			}
+-		}
+-	}()
+-	profile, e := registry.NewOperatorProfile(s.Authority)
+-	check(e, "audit original profile")
+-	issuer, e := registry.OpenRecoverableOperatorManifestAuthorityAudit(ctx,filepath.Join(root, "operator", "issuer"), profile,selected.IssueProfile)
+-	check(e, "full issuer audit")
+-	closers = append(closers, issuer.Close)
+-	info, e := issuer.Info()
+-	check(e, "issuer counters")
+-	out.AuthorityJobs = info.Jobs
+-	out.Births = info.Records
+-	require(info.Records <= 64, "bounded original admission count")
+-	out.Admissions = []registry.ManifestRecord{}
+-	for uint64(len(out.Admissions)) < info.Records {
+-		page, e := issuer.ListManifestAdmissions(uint64(len(out.Admissions)), 8)
+-		check(e, "original verified admissions")
+-		require(len(page) > 0 && len(out.Admissions)+len(page) <= 64, "bounded complete admissions")
+-		out.Admissions = append(out.Admissions, page...)
+-	}
+-	require(uint64(len(out.Admissions)) == info.Records, "complete original admissions")
+-	pool, e := poolshare.OpenRecoverableDailyAudit(ctx, filepath.Join(root, "operator", "pool"), s.Pool,selected.IssueProfile, issuer)
+-	check(e, "full daily source audit")
+-	closers = append(closers, pool.Close)
+-	entries, e := pool.AccountingPage(ctx, 0, 0, 8)
+-	check(e, "complete bounded accepted prefix")
+-	require(entries.Config == s.Pool && entries.Through == uint64(len(entries.Entries)) && entries.Through <= 2, "original complete prefix")
+-	out.Entries = entries.Entries
+-	rounds, e := poolround.OpenDailyAudit(ctx, filepath.Join(root, "operator", "rounds"), s.RoundLimits, pool)
+-	check(e, "full daily round audit")
+-	closers = append(closers, rounds.Close)
+-	out.Rounds, e = rounds.List(ctx, 0, 8)
+-	check(e, "bounded rounds")
+-	settle, e := poolsettle.OpenDailyAudit(ctx, filepath.Join(root, "operator", "settlement"), s.Settlement, rounds)
+-	check(e, "full indexed settlement/source audit")
+-	closers = append(closers, settle.Close)
+-	out.Report, e = settle.View(ctx)
+-	check(e, "original saved report")
+-	for len(closers) > 0 {
+-		i := len(closers) - 1
+-		c := closers[i]
+-		closeErr := c()
+-		if closeErr != nil {
+-			failedClose = true
+-			check(closeErr, "original public audit close")
+-		}
+-		closers = closers[:i]
+-	}
+-	poolDB, e := leveldb.OpenFile(filepath.Join(root, "operator", "pool", "db"), &opt.Options{ReadOnly: true, ErrorIfMissing: true, Strict: opt.StrictAll})
+-	check(e, "readonly source counters")
+-	metaRaw, e := poolDB.Get([]byte("meta"), nil)
+-	ce := poolDB.Close()
+-	check(e, "exact source metadata")
+-	check(ce, "source projection close")
+-	require(len(metaRaw) > 0 && len(metaRaw) <= 16<<10, "source metadata bound")
+-	var meta struct {
+-		Config      poolshare.Config `json:"config"`
+-		Submissions uint64           `json:"submissions"`
+-		Accepted    uint64           `json:"accepted"`
+-		Works       uint64           `json:"works"`
+-	}
+-	var wrapped struct {Base json.RawMessage `json:"base"`;IssueProfile registry.IssueProfile `json:"issue_profile"`}
+- check(json.Unmarshal(metaRaw,&wrapped),"selected source counters")
+- require(wrapped.IssueProfile==selected.IssueProfile,"selected immutable profile")
+- check(json.Unmarshal(wrapped.Base, &meta), "audited source counters")
+-	require(meta.Config == s.Pool && meta.Accepted == entries.Through && meta.Submissions <= 2 && meta.Works <= s.Pool.MaxWorks, "all physical rows independently audited")
+-	out.Submissions, out.Accepted, out.Works = meta.Submissions, meta.Accepted, meta.Works
+-	db, e := leveldb.OpenFile(filepath.Join(root, "operator", "settlement", "db"), &opt.Options{ReadOnly: true, ErrorIfMissing: true, Strict: opt.StrictAll})
+-	check(e, "readonly indexed projection")
+-	closed := false
+-	defer func() {
+-		if !closed {
+-			check(db.Close(), "partial indexed projection close")
+-		}
+-	}()
+-	get := func(key []byte, limit int, target any) []byte {
+-		raw, e := db.Get(key, nil)
+-		check(e, "exact audited index key")
+-		require(len(raw) > 0 && len(raw) <= limit, "bounded exact index row")
+-		check(json.Unmarshal(raw, target), "public index projection")
+-		return raw
+-	}
+-	get([]byte("head"), 128<<10, &out.Header)
+-	require(out.Header.Version == 2 && out.Header.Application == "slug-pool-settlement-daily" && out.Header.ConfigID == s.WalletGuard.SettlementConfigID && out.Header.SourceID == s.WalletGuard.SourceBindingID && out.Header.Batches <= 1 && out.Header.Credits <= 2 && out.Header.Events == out.Header.Credits+out.Header.Batches, "fixed tiny original daily ledger")
+-	var report poolsettle.Report
+-	get([]byte("report"), 8<<20, &report)
+-	require(reflect.DeepEqual(report, out.Report), "audited original saved report")
+-	if out.Header.Batches==1 {
+- body := get(auditKey("b/", 1), 2<<20, &out.Body)
+-	out.BodySHA256 = hx(digest(body))
+-	out.BodyBytes = len(body)
+-	var state struct {
+-		State string `json:"state"`
+-	}
+-	get(auditKey("bs/", 1), 256, &state)
+-	out.Delivery = state.State
+- }
+-	out.Credits = []poolsettle.Credit{}
+-	for seq := uint64(1); seq <= out.Header.Credits; seq++ {
+-		var credit poolsettle.Credit
+-		get(auditKey("c/", seq), 128<<10, &credit)
+-		out.Credits = append(out.Credits, credit)
+-	}
+-	// The full audit above has already checked all e/ references and inverse keys.
+-	// Reading the exact three possible e/ bodies binds their tiny event projection.
+-	for seq := uint64(1); seq <= out.Header.Events; seq++ {
+-		var event struct {
+-			Kind     string `json:"kind"`
+-			Sequence uint64 `json:"sequence"`
+-		}
+-		get(auditKey("e/", seq), 256, &event)
+-		require((event.Kind == "credit" && event.Sequence <= out.Header.Credits) || (event.Kind == "batch" && event.Sequence == 1), "bounded original event references")
+-	}
+-	closeErr := db.Close()
+-	closed = true
+-	check(closeErr, "readonly indexed close")
+-	require(reflect.DeepEqual(before, attachmentPublicFiles(root)), "closed public audit changed files")
+-	out.ReadOnlyUnchanged = true
+-	return
+-}
++ require(ctx!=nil,"original audit context");check(ctx.Err(),"original audit context")
++ s:=selected.Base
++ before:=attachmentPublicFiles(root)
++ var owners auditOwnerStack;defer owners.finish()
++ profile,e:=registry.NewOperatorProfile(s.Authority);check(e,"audit original profile")
++ issuer,e:=registry.OpenRecoverableOperatorManifestAuthorityAudit(ctx,filepath.Join(root,"operator","issuer"),profile,selected.IssueProfile)
++ if issuer!=nil {owners.opened("original issuer",issuer.Close,e)}
++ check(e,"full selected issuer audit")
++ info,requests,e:=issuer.AuditIssueBinding(ctx,s.Pool.AuthorityPin,selected.IssueProfile);check(e,"full selected issuer binding")
++ require(info.ReadOnly && info.Pin==s.Pool.AuthorityPin && info.Jobs<=requests && requests<=selected.IssueProfile.MaxRequests,"same complete issuer selection")
++ out.IssuerRequests=requests;out.AuthorityJobs=info.Jobs;out.Births=info.Records
++ require(info.Records<=64,"bounded original admission count")
++ out.Admissions=[]registry.ManifestRecord{}
++ for uint64(len(out.Admissions))<info.Records {
++  check(ctx.Err(),"admission audit context")
++  page,e:=issuer.ListManifestAdmissions(uint64(len(out.Admissions)),8);check(e,"original verified admissions")
++  require(len(page)>0 && len(out.Admissions)+len(page)<=64,"bounded complete admissions")
++  out.Admissions=append(out.Admissions,page...)
++ }
++ require(uint64(len(out.Admissions))==info.Records,"complete original admissions")
++ pool,e:=poolshare.OpenRecoverableDailyAudit(ctx,filepath.Join(root,"operator","pool"),s.Pool,selected.IssueProfile,issuer)
++ if pool!=nil {owners.opened("original pool",pool.Close,e)}
++ check(e,"full selected source audit")
++ entries,e:=pool.AccountingPage(ctx,0,0,8);check(e,"complete bounded accepted prefix")
++ require(entries.Config==s.Pool && entries.Through==uint64(len(entries.Entries)) && entries.Through<=2,"original complete prefix")
++ out.Entries=entries.Entries
++ rounds,e:=poolround.OpenDailyAudit(ctx,filepath.Join(root,"operator","rounds"),s.RoundLimits,pool)
++ if rounds!=nil {owners.opened("original rounds",rounds.Close,e)}
++ check(e,"full daily round audit")
++ out.Rounds,e=rounds.List(ctx,0,8);check(e,"bounded complete rounds")
++ require(len(out.Rounds)<=2,"bounded original round count")
++ settle,e:=poolsettle.OpenDailyAudit(ctx,filepath.Join(root,"operator","settlement"),s.Settlement,rounds)
++ if settle!=nil {owners.opened("original settlement",settle.Close,e)}
++ check(e,"full indexed settlement/source audit")
++ out.Report,e=settle.View(ctx);check(e,"original saved report")
++ check(owners.close(),"all original public audits joined")
++
++ out.PublicRows=map[string]string{}
++ var workRows,submissionRows,acceptRows,sequenceRows,requestRows uint64
++ for _,name:=range []string{"issuer","pool","rounds","settlement"} {
++  rows:=walkAuditRows(ctx,root,name,func(k,v []byte){
++   if name!="pool" {return}
++   if bytes.Equal(k,[]byte("meta")) {
++    require(len(v)<=32768,"source metadata bound")
++    var meta struct {
++     Application string `json:"application"`;Version uint32 `json:"version"`
++     Base struct {Config poolshare.Config `json:"config"`;Works uint64 `json:"works"`;Submissions uint64 `json:"submissions"`;Accepted uint64 `json:"accepted"`} `json:"base"`
++     IssueProfile registry.IssueProfile `json:"issue_profile"`;Requests uint64 `json:"requests"`
++    }
++    check(json.Unmarshal(v,&meta),"selected source metadata")
++    require(meta.Application=="slug-pool-issue-recovery" && meta.Version==1 && meta.IssueProfile==selected.IssueProfile && meta.Base.Config==s.Pool && meta.Base.Accepted==entries.Through && meta.Base.Submissions<=2 && meta.Base.Works<=s.Pool.MaxWorks && meta.Requests<=selected.IssueProfile.MaxRequests,"exact selected physical metadata")
++    out.Submissions,out.Accepted,out.Works,out.SourceRequests=meta.Base.Submissions,meta.Base.Accepted,meta.Base.Works,meta.Requests
++   } else if len(k)==65 && k[0]=='w' {workRows++
++   } else if len(k)==65 && k[0]=='s' {submissionRows++
++   } else if len(k)==9 && k[0]=='a' {acceptRows++
++   } else if len(k)==9 && k[0]=='q' {sequenceRows++
++   } else if len(k)==40 && bytes.HasPrefix(k,[]byte("issue/r/")) {requestRows++}
++  })
++  for k,v:=range rows {out.PublicRows[k]=v}
++ }
++ require(workRows==out.Works && submissionRows==out.Submissions && sequenceRows==out.Submissions && acceptRows==out.Accepted && requestRows==out.SourceRequests,"complete physical source row census")
++ db,e:=leveldb.OpenFile(filepath.Join(root,"operator","settlement","db"),&opt.Options{ReadOnly:true,ErrorIfMissing:true,Strict:opt.StrictAll});check(e,"readonly indexed projection")
++ owners.add("indexed projection",db.Close)
++ get:=func(key []byte,limit int,target any) []byte {
++  check(ctx.Err(),"indexed projection context")
++  raw,e:=db.Get(key,nil);check(e,"exact audited index key")
++  require(len(raw)>0 && len(raw)<=limit && out.PublicRows["settlement/"+hx(key)]==hx(digest(raw)),"bounded same audited index row")
++  check(json.Unmarshal(raw,target),"public index projection");return raw
++ }
++ get([]byte("head"),128<<10,&out.Header)
++ require(out.Header.Version==2 && out.Header.Application=="slug-pool-settlement-daily" && out.Header.ConfigID==s.WalletGuard.SettlementConfigID && out.Header.SourceID==s.WalletGuard.SourceBindingID && out.Header.Batches<=1 && out.Header.Credits<=2 && out.Header.Events==out.Header.Credits+out.Header.Batches,"fixed tiny original daily ledger")
++ var report poolsettle.Report;get([]byte("report"),8<<20,&report)
++ require(reflect.DeepEqual(report,out.Report),"audited original saved report")
++ if out.Header.Batches==1 {
++  body:=get(auditKey("b/",1),2<<20,&out.Body);out.BodySHA256=hx(digest(body));out.BodyBytes=len(body)
++  var state struct {State string `json:"state"`};get(auditKey("bs/",1),256,&state);out.Delivery=state.State
++ }
++ out.Credits=[]poolsettle.Credit{}
++ for seq:=uint64(1);seq<=out.Header.Credits;seq++ {
++  var credit poolsettle.Credit;get(auditKey("c/",seq),128<<10,&credit);out.Credits=append(out.Credits,credit)
++ }
++ for seq:=uint64(1);seq<=out.Header.Events;seq++ {
++  var event struct {Kind string `json:"kind"`;Sequence uint64 `json:"sequence"`}
++  get(auditKey("e/",seq),256,&event)
++  require(event.Sequence>0 && ((event.Kind=="credit" && event.Sequence<=out.Header.Credits) || (event.Kind=="batch" && event.Sequence==1)),"bounded original event references")
++ }
++ check(owners.close(),"readonly indexed projection joined")
++ after:=attachmentPublicFiles(root);require(reflect.DeepEqual(before,after),"closed public audit changed files")
++ out.PublicFilesBefore,out.PublicFilesAfter=before,after;out.ReadOnlyUnchanged=true
++ return
++}

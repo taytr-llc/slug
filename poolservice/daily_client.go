@@ -10,6 +10,9 @@ import (
 )
 
 func (c *Client) dailyWork(ctx context.Context, id string, issue bool) (poolshare.MiningWork, error) {
+	if c.recoverable != nil && issue {
+		return poolshare.MiningWork{}, &ClientError{Code: "invalid_request"}
+	}
 	if err := c.ready(ctx); err != nil {
 		return poolshare.MiningWork{}, err
 	}
@@ -29,7 +32,7 @@ func (c *Client) dailyWork(ctx context.Context, id string, issue bool) (poolshar
 		return poolshare.MiningWork{}, err
 	}
 	var r DailyWorkResponse
-	if decodeDailyStrict(raw, MaxWorkResponseSize, &r) != nil || !c.dailyBinding(r.Version, r.BindingID, r.SettlementConfigID, r.RecipientScript) || !issue && r.Work.Job.ID != id {
+	if c.decodeSelectedWorkResponse(raw, &r) != nil || !c.dailyBinding(r.Version, r.BindingID, r.SettlementConfigID, r.RecipientScript) || !issue && r.Work.Job.ID != id {
 		return poolshare.MiningWork{}, failure(issue)
 	}
 	if _, err = PrepareDailyWork(c.config.Source, c.config.PublicKey, r.Work); err != nil || ctx.Err() != nil {
@@ -63,7 +66,7 @@ func (c *Client) dailySubmission(ctx context.Context, w poolshare.MiningWork, no
 		return poolshare.Submission{}, err
 	}
 	var r DailySubmissionResponse
-	if decodeDailyStrict(raw, MaxResponseSize, &r) != nil || !c.dailyBinding(r.Version, r.BindingID, r.SettlementConfigID, r.RecipientScript) || !SubmissionMatchesDaily(c.config.Source, w, nonce, check, r.Submission) || ctx.Err() != nil {
+	if c.decodeSelectedSubmissionResponse(raw, &r) != nil || !c.dailyBinding(r.Version, r.BindingID, r.SettlementConfigID, r.RecipientScript) || !SubmissionMatchesDaily(c.config.Source, w, nonce, check, r.Submission) || ctx.Err() != nil {
 		return poolshare.Submission{}, failure(submit)
 	}
 	return r.Submission, nil
@@ -85,7 +88,7 @@ func (c *Client) DailyBalance(ctx context.Context) (DailyBalanceResponse, error)
 		return DailyBalanceResponse{}, err
 	}
 	var r DailyBalanceResponse
-	if decodeDailyBalance(raw, &r) != nil || !c.dailyBinding(r.Version, r.BindingID, r.SettlementConfigID, r.RecipientScript) || poolsettle.ValidateDailyBalance(r.Balance, c.gym, r.ObservedAtMS) != nil || ctx.Err() != nil {
+	if c.decodeSelectedBalance(raw, &r) != nil || !c.dailyBinding(r.Version, r.BindingID, r.SettlementConfigID, r.RecipientScript) || poolsettle.ValidateDailyBalance(r.Balance, c.gym, r.ObservedAtMS) != nil || ctx.Err() != nil {
 		return DailyBalanceResponse{}, failure(false)
 	}
 	return r, nil
@@ -111,7 +114,7 @@ func (c *Client) PayoutsPage(ctx context.Context, q poolsettle.DailyPayoutReques
 		return poolsettle.DailyPayoutPage{}, err
 	}
 	var r poolsettle.DailyPayoutPage
-	if decodeDailyPage(raw, &r) != nil || !c.dailyBinding(r.Version, r.BindingID, r.SettlementConfigID, r.RecipientScript) {
+	if c.decodeSelectedPage(raw, &r) != nil || !c.dailyBinding(r.Version, r.BindingID, r.SettlementConfigID, r.RecipientScript) {
 		return poolsettle.DailyPayoutPage{}, failure(false)
 	}
 	if q.Revision == 0 {

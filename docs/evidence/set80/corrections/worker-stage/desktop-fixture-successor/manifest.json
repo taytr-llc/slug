@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "scope": "test-only live-fixture correction; no production or reference changes",
+  "targets": [
+    {
+      "target": "slug/desktop/pilot/remote_pool_issue_custody_test.go",
+      "before": {
+        "path": "set80-prep/worker-stage/desktop-fixture-successor/before/desktop/pilot/remote_pool_issue_custody_test.go",
+        "bytes": 3909,
+        "sha256": "a407bc749682dac2605f656f3b86a630ac03a189207065b58fe5b54f41783c45"
+      },
+      "after": {
+        "path": "set80-prep/worker-stage/desktop-fixture-successor/after/desktop/pilot/remote_pool_issue_custody_test.go",
+        "bytes": 4126,
+        "sha256": "596676f86053e0343ae8206cd2723dcae9a05a06f2e72951894bddd7fc8cd643"
+      }
+    },
+    {
+      "target": "slug/desktop/pilot/remote_pool_issue_postresponse_test.go",
+      "before": {
+        "path": "set80-prep/worker-stage/desktop-fixture-successor/before/desktop/pilot/remote_pool_issue_postresponse_test.go",
+        "bytes": 8196,
+        "sha256": "654a34acf4264c8c6294497a9a926ae99166c8423404b8f713f6ac4c78806042"
+      },
+      "after": {
+        "path": "set80-prep/worker-stage/desktop-fixture-successor/after/desktop/pilot/remote_pool_issue_postresponse_test.go",
+        "bytes": 8419,
+        "sha256": "009bf4d32cfacfc23658a77b49cc9b46706eb95fe8771849c4c1631bbb14979c"
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "path": "artifacts/set80/desktop-normal-attempt1/normal.log",
+      "bytes": 11315,
+      "sha256": "2c09f61c5b2f812a8cc64ed3a92101c2976d3719cb7c43db88afb6ca5cfb1ce2"
+    },
+    {
+      "path": "slug/testdata/issue-recovery/reference-v1.json",
+      "bytes": 6134980,
+      "sha256": "4bbe4eb9556ed5a894cee6ff565b0dcca805f27fea2d77cfe3a56242dc3dac91"
+    },
+    {
+      "path": "slug/desktop/pilot/remote_pool_credentials.go",
+      "bytes": 11664,
+      "sha256": "c4acd5c966e3e1adbc3658978c3d5ee493fbc4320d57cd67a26928620f062e15"
+    },
+    {
+      "path": "slug/desktop/pilot/remote_pool_config.go",
+      "bytes": 10582,
+      "sha256": "6d8e04f4e6a07c3e87acc8b441594970a0d0387f932b3161606a3ed37b47ec7e"
+    }
+  ],
+  "files": [
+    {
+      "path": "set80-prep/worker-stage/desktop-fixture-successor/changes.diff",
+      "bytes": 1689,
+      "sha256": "7921b1033e8f116529d4024a420c3d320be48398c4b3e72cbecaec93221bda5b"
+    },
+    {
+      "path": "set80-prep/worker-stage/desktop-fixture-successor/DIAGNOSIS.md",
+      "bytes": 1256,
+      "sha256": "efca0b7bbbbc0ceb0ec00b37a34dfa6ee7ca47dbdac04849d0e0d2d2dc4f0843"
+    }
+  ],
+  "tests": [
+    "TestRecoverableRemoteProtectedOriginalLeaseAndMarkers",
+    "TestRecoverableRemoteCredentialChangeAfterClientResponseRetainsIntent"
+  ],
+  "execution": "not run; root sole qualification lane"
+}

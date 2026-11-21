@@ -482,9 +482,11 @@ authorization must be repository-limited, not an account-wide OAuth expansion.
   headless command with one SIGTERM, exit 0, joined cleanup and wallet receipt.
   Both automatic paths paid 19.8 SLUG from two rewards in one transaction.
   Preserve the failed attempts and exact corrections. Public source/evidence
-  archives are path-bound, not a portable execution claim. Final build/static
-  and exact-tip CI status are recorded separately in `CHANGESET_79_NOTES.md`
-  and `docs/evidence/set79`; do not infer a deployment from these local proofs.
+  archives are path-bound, not a portable execution claim. Final builds/static
+  and all seven exact-tip CI jobs pass at `fdd40d8e`; downloaded Linux evidence
+  includes 339 required passing assertions with unchanged sources and clean
+  joins. See `CHANGESET_79_NOTES.md` and `docs/evidence/set79/ci.json`; do not
+  infer a public deployment from these proofs.
   DAILY contention retries only original-owner read/admission work within the
   fixed budget; never replay an entire quote/sign/broadcast on Busy. Completed
   daily slots may refresh accounting without preparing another payment.
@@ -495,6 +497,25 @@ authorization must be repository-limited, not an account-wide OAuth expansion.
   Source2 lifetime caps and signed-authority limits remain. The node closure
   is unchanged; avoid a redundant seed rollout. Sign-in follows public-pool
   work, and the joint D74 review remains last. See `POOL_PUBLIC_DAILY.md`.
+- Set80 on `slug-pool-issue-recovery` adds explicit
+  `--daily-recoverable-issue`: synchronize the exact request before network
+  dispatch, resume the original issuer job/template, and retain validated
+  completion or the original unused terminal without renewing expiry. V1 and
+  plain DAILY roots stay strict; no implicit migration or latest-job adoption.
+  Independent references, focused normal/race/profile controls, full affected
+  normal/race suites, all-module builds/vet and normal-node smoke pass. The
+  original cumulative desktop race timeout is preserved; four fixed complete
+  pilot partitions pass within the unchanged per-process limit.
+  Actual B proves real unused-job expiry after process crash with no birth or
+  money; A3 proves the crash/reply-loss/replay path and one real scheduled
+  9.9-SLUG payment to the original stopped wallet, with all owners joined.
+  A1 is explicitly disqualified for checker source mutation during execution;
+  A2 retains its omitted live error as unexplained. Never relabel either passed.
+  A3's diagnostics do not change acceptance/retry/deadline rules. Exact-tip CI
+  is pending until separately recorded. See `CHANGESET_80_NOTES.md` and
+  `POOL_ISSUE_RECOVERY.md`. Continue retained original-job fighter delivery at
+  pool-only drain, then capacity and hosted operation. Independent signed limits,
+  D80's no-late-birth rule and D84 remain; onboarding follows and D74 stays last.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

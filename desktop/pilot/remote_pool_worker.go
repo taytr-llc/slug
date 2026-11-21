@@ -50,11 +50,21 @@ type remotePoolAuthority struct {
 	lease *remotePoolPoolLease
 }
 
-func (p *remotePoolAuthority) ProtocolVersion() uint32        { return p.owner.config.Version }
+func (p *remotePoolAuthority) ProtocolVersion() uint32 {
+	if p.owner.recovery != nil {
+		return 3
+	}
+	return p.owner.config.Version
+}
 func (p *remotePoolAuthority) AuthorityOrigin() string        { return p.owner.config.Origin }
 func (p *remotePoolAuthority) SourceConfig() poolshare.Config { return p.owner.config.Source }
 func (p *remotePoolAuthority) PublicKey() string              { return p.owner.view.GymPublicKey }
-func (p *remotePoolAuthority) TransportTrustID() string       { return p.owner.workerConfig.TransportTrustID }
+func (p *remotePoolAuthority) TransportTrustID() string {
+	if p.owner.recovery != nil {
+		return p.owner.recoveryWorker.TransportTrustID
+	}
+	return p.owner.workerConfig.TransportTrustID
+}
 func (p *remotePoolAuthority) Issue(ctx context.Context) (poolshare.MiningWork, error) {
 	return remotePoolWorkerCall(ctx, p.owner, true, false, p.lease.Issue)
 }
@@ -173,7 +183,9 @@ func (a *RemotePoolAttachment) Start(ctx context.Context, view string) error {
 		return a.startCleanup(e, p, nil)
 	}
 	var w *prospectworker.PoolWorker
-	if a.config.Version == 2 {
+	if a.recovery != nil {
+		w, e = prospectworker.NewRecoverableDailyPool(a.recoveryWorker, p.lease.pool, &remotePoolAuthority{a, p}, &remotePoolAdmission{a, q}, a.node, a.signAdmission, a.box)
+	} else if a.config.Version == 2 {
 		w, e = prospectworker.NewDailyPool(a.workerConfig, &remotePoolAuthority{a, p}, &remotePoolAdmission{a, q}, a.node, a.signAdmission, a.box)
 	} else {
 		w, e = prospectworker.NewPool(a.workerConfig, &remotePoolAuthority{a, p}, &remotePoolAdmission{a, q}, a.node, a.signAdmission, a.box)

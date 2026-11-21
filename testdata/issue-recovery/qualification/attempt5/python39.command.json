@@ -1,0 +1,30 @@
+{
+  "capture_errors": [],
+  "cleanup": {
+    "errors": [],
+    "group_empty": true,
+    "leftover_after_exit": false,
+    "pgid": 76136,
+    "pid": 76136,
+    "return_code": 0,
+    "signals": []
+  },
+  "command": [
+    "/Library/Developer/CommandLineTools/usr/bin/python3",
+    "-B",
+    "-S",
+    "/Users/taytrrip/slug/set80-prep/reference/generate.py",
+    "--lock",
+    "/Users/taytrrip/slug/set80-prep/reference-execution-lock.root-attempt4.json",
+    "--output",
+    "/Users/taytrrip/slug/artifacts/set80/reference-attempt5/python39.json"
+  ],
+  "exit_code": 0,
+  "log_errors": [],
+  "log_joined": true,
+  "log_limit_exceeded": false,
+  "pgid": 76136,
+  "pid": 76136,
+  "seconds": 0.689,
+  "timed_out": false
+}

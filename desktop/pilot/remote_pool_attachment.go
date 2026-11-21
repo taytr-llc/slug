@@ -73,6 +73,8 @@ type remotePoolRun struct {
 // The session is borrowed, never closed here. Controller Close first joins this
 // owner, then closes its original wallet session/setup/vault/account/root owners.
 type RemotePoolAttachment struct {
+	recovery         *RecoverableRemotePoolConfig
+	recoveryWorker   prospectworker.RecoverablePoolConfig
 	config           RemotePoolConfig
 	configID         string
 	view             RemotePoolView
@@ -100,7 +102,10 @@ type RemotePoolAttachment struct {
 func OpenRemotePoolAttachment(ctx context.Context, session *OwnedWalletSession, viewID string, in RemotePoolInputs) (*RemotePoolAttachment, error) {
 	return openRemotePoolAttachment(ctx, session, viewID, in, false)
 }
-func openRemotePoolAttachment(ctx context.Context, session *OwnedWalletSession, viewID string, in RemotePoolInputs, daily bool) (out *RemotePoolAttachment, resultErr error) {
+func openRemotePoolAttachment(ctx context.Context, session *OwnedWalletSession, viewID string, in RemotePoolInputs, daily bool) (*RemotePoolAttachment, error) {
+	return openRemotePoolAttachmentSelection(ctx, session, viewID, in, daily, nil)
+}
+func openRemotePoolAttachmentSelection(ctx context.Context, session *OwnedWalletSession, viewID string, in RemotePoolInputs, daily bool, recovery *RecoverableRemotePoolConfig) (out *RemotePoolAttachment, resultErr error) {
 	if wire.TestPoW {
 		return nil, ErrRemotePoolProfile
 	}
@@ -135,8 +140,22 @@ func openRemotePoolAttachment(ctx context.Context, session *OwnedWalletSession, 
 	if e != nil {
 		return nil, e
 	}
+	var rw prospectworker.RecoverablePoolConfig
+	if recovery != nil {
+		if !daily || !sameRecoverableRemoteBase(*recovery, config) {
+			return nil, ErrRemotePoolConfig
+		}
+		id, e = RecoverableRemotePoolConfigID(*recovery)
+		if e != nil {
+			return nil, e
+		}
+		rw, e = remotePoolRecoverableWorkerConfig(*recovery)
+		if e != nil {
+			return nil, e
+		}
+	}
 	life, cancel := context.WithCancel(session.setup.ctx)
-	a := &RemotePoolAttachment{config: config, configID: id, workerConfig: wc, life: life, cancel: cancel, gate: make(chan struct{}, 1), closeDone: make(chan struct{}), state: "stopped"}
+	a := &RemotePoolAttachment{recovery: recovery, recoveryWorker: rw, config: config, configID: id, workerConfig: wc, life: life, cancel: cancel, gate: make(chan struct{}, 1), closeDone: make(chan struct{}), state: "stopped"}
 	defer func() {
 		if resultErr != nil {
 			ce := a.Close()
@@ -158,11 +177,11 @@ func openRemotePoolAttachment(ctx context.Context, session *OwnedWalletSession, 
 	}
 	f := config.ExpectedLocal.Recipient.Config
 	a.view = RemotePoolView{1, viewID, f.AccountAuthorityID, f.AccountID, session.login.Account.Generation, f.Fixture, f.Identity.RootPublicKey, f.Identity.GymPublicKey, f.Identity.GymID}
-	a.files, e = openRemotePoolFiles(in.AttachmentRoot, config, true)
+	a.files, e = openRemotePoolFilesSelection(in.AttachmentRoot, config, true, recovery)
 	if e != nil {
 		return nil, e
 	}
-	a.credentials, e = openSelectedRemotePoolCredentials(life, config, remotePoolCredentialSelection{in.PoolCredentialPath, in.AdmissionCredentialPath}, daily)
+	a.credentials, e = openRemotePoolCredentialsSelection(life, config, remotePoolCredentialSelection{in.PoolCredentialPath, in.AdmissionCredentialPath}, daily, recovery)
 	if e != nil {
 		return nil, e
 	}
@@ -180,7 +199,13 @@ func openRemotePoolAttachment(ctx context.Context, session *OwnedWalletSession, 
 	if e != nil {
 		return nil, e
 	}
-	if daily {
+	if recovery != nil {
+		if create {
+			a.box, e = prospectworker.CreateRecoverableDailyPoolOutbox(path, rw)
+		} else {
+			a.box, e = prospectworker.OpenRecoverableDailyPoolOutbox(path, rw)
+		}
+	} else if daily {
 		if create {
 			a.box, e = prospectworker.CreateDailyPoolOutbox(path, wc)
 		} else {

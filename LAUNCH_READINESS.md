@@ -603,8 +603,10 @@ of the ownership, transfer or independent restored-wallet flow. See
   19.8 SLUG from two rewards in one transaction, with fees from the pool cut.
   These are bounded TLS/schema16 fixture proofs, not a deployed public pool or
   sustained miner-load qualification. Earlier failed attempts remain preserved.
-  Final build/static and exact-tip CI results are tracked separately in
-  `CHANGESET_79_NOTES.md` and `docs/evidence/set79`.
+  Final builds/static checks and all seven exact-tip CI jobs pass at
+  `fdd40d8e`; downloaded Linux evidence includes 339 required passing assertions
+  with unchanged sources and clean joins. See `CHANGESET_79_NOTES.md` and
+  `docs/evidence/set79/ci.json` for the exact scope and source bindings.
   Both automatic runs preserved an unknown-issuance hold across restart.
   Recovering that exact request is the next availability fix; never replace its
   job or clear an unidentified old hold. Continuous source/outbox/signed-authority
@@ -613,6 +615,21 @@ of the ownership, transfer or independent restored-wallet flow. See
   whole-payout deferral remains intact. The live seed needs no redundant rollout
   for this unchanged node closure. See `POOL_PUBLIC_DAILY.md`; onboarding follows
   public-pool work, and the full joint D74 review remains last.
+
+- Set80 implements explicitly selected exact-request issuance recovery. Lost
+  replies and process restarts resume the original job and expiry; never-published
+  expired jobs resolve without new work, fighter birth or money. Local reference,
+  normal/race/profile, full affected regression, builds/static and smoke checks
+  pass. Actual B passes the real-expiry crash case. Actual A3 passes original
+  operator crash, successful reply loss, exact same-request replay, stopped-wallet
+  reopen and one scheduled 9.9-SLUG payment after maturity. The complete public
+  evidence and all original source/profile/cleanup checks pass. A1's checker
+  mutation disqualification and A2's unexplained live lookup failure remain
+  preserved; neither is relabeled passed. The desktop cumulative timeout remains
+  failed, with complete unchanged-budget partition coverage separately passing.
+  Exact-tip CI is pending. Retained fighter delivery at pool-only drain, capacity,
+  sustained load and hosted operation remain before onboarding. D74 stays last;
+  no node change requires a redundant seed rollout. See `CHANGESET_80_NOTES.md`.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace

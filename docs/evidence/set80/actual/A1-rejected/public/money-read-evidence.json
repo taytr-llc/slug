@@ -1,0 +1,238 @@
+{
+  "complete": true,
+  "deadline_ms": 1795264861105,
+  "refusal_count": 192,
+  "refusals": [
+    {
+      "read": "balance",
+      "gym_index": 0,
+      "at_ms": 1795264743359,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "payouts",
+      "gym_index": 0,
+      "at_ms": 1795264743581,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "payouts",
+      "gym_index": 0,
+      "at_ms": 1795264743789,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "payouts",
+      "gym_index": 0,
+      "at_ms": 1795264743987,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "balance",
+      "gym_index": 0,
+      "at_ms": 1795264744110,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "payouts",
+      "gym_index": 0,
+      "at_ms": 1795264744307,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "payouts",
+      "gym_index": 0,
+      "at_ms": 1795264744493,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "balance",
+      "gym_index": 0,
+      "at_ms": 1795264744615,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "payouts",
+      "gym_index": 0,
+      "at_ms": 1795264744812,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "payouts",
+      "gym_index": 0,
+      "at_ms": 1795264745007,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "payouts",
+      "gym_index": 0,
+      "at_ms": 1795264745214,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "balance",
+      "gym_index": 0,
+      "at_ms": 1795264745333,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "payouts",
+      "gym_index": 0,
+      "at_ms": 1795264745527,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "payouts",
+      "gym_index": 0,
+      "at_ms": 1795264745733,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "balance",
+      "gym_index": 0,
+      "at_ms": 1795264745853,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "payouts",
+      "gym_index": 0,
+      "at_ms": 1795264746049,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "payouts",
+      "gym_index": 0,
+      "at_ms": 1795264746247,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "balance",
+      "gym_index": 0,
+      "at_ms": 1795264746367,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "payouts",
+      "gym_index": 0,
+      "at_ms": 1795264746551,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "payouts",
+      "gym_index": 0,
+      "at_ms": 1795264746750,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "payouts",
+      "gym_index": 0,
+      "at_ms": 1795264746961,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "balance",
+      "gym_index": 0,
+      "at_ms": 1795264747081,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "payouts",
+      "gym_index": 0,
+      "at_ms": 1795264747282,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "payouts",
+      "gym_index": 0,
+      "at_ms": 1795264747473,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "balance",
+      "gym_index": 0,
+      "at_ms": 1795264747593,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "payouts",
+      "gym_index": 0,
+      "at_ms": 1795264747766,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "payouts",
+      "gym_index": 0,
+      "at_ms": 1795264747963,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "balance",
+      "gym_index": 0,
+      "at_ms": 1795264748084,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "payouts",
+      "gym_index": 0,
+      "at_ms": 1795264748275,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "payouts",
+      "gym_index": 0,
+      "at_ms": 1795264748466,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "balance",
+      "gym_index": 0,
+      "at_ms": 1795264748584,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    },
+    {
+      "read": "payouts",
+      "gym_index": 0,
+      "at_ms": 1795264748770,
+      "code": "rate_limited",
+      "outcome_unknown": false
+    }
+  ],
+  "last_refusal": {
+    "read": "balance",
+    "gym_index": 0,
+    "at_ms": 1795264777340,
+    "code": "rate_limited",
+    "outcome_unknown": false
+  }
+}

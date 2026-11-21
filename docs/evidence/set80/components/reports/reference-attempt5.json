@@ -1,0 +1,212 @@
+{
+  "base_commit": "fdd40d8edd9a685613f1f667f0074e56ec4e7da5",
+  "byte_identical": true,
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 76131,
+        "pid": 76131,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "/opt/homebrew/bin/python3",
+        "-B",
+        "-S",
+        "--version"
+      ],
+      "exit_code": 0,
+      "label": "python314-version",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 76131,
+      "pid": 76131,
+      "seconds": 0.021,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 76132,
+        "pid": 76132,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "/opt/homebrew/bin/python3",
+        "-B",
+        "-S",
+        "/Users/taytrrip/slug/set80-prep/reference/generate.py",
+        "--lock",
+        "/Users/taytrrip/slug/set80-prep/reference-execution-lock.root-attempt4.json",
+        "--output",
+        "/Users/taytrrip/slug/artifacts/set80/reference-attempt5/python314.json"
+      ],
+      "exit_code": 0,
+      "label": "python314",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 76132,
+      "pid": 76132,
+      "seconds": 0.498,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 76135,
+        "pid": 76135,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "-B",
+        "-S",
+        "--version"
+      ],
+      "exit_code": 0,
+      "label": "python39-version",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 76135,
+      "pid": 76135,
+      "seconds": 0.021,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 76136,
+        "pid": 76136,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "-B",
+        "-S",
+        "/Users/taytrrip/slug/set80-prep/reference/generate.py",
+        "--lock",
+        "/Users/taytrrip/slug/set80-prep/reference-execution-lock.root-attempt4.json",
+        "--output",
+        "/Users/taytrrip/slug/artifacts/set80/reference-attempt5/python39.json"
+      ],
+      "exit_code": 0,
+      "label": "python39",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 76136,
+      "pid": 76136,
+      "seconds": 0.689,
+      "timed_out": false
+    }
+  ],
+  "interpreters": {
+    "python314": {
+      "bytes": 52640,
+      "path": "/opt/homebrew/bin/python3",
+      "real_path": "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+      "sha256": "f13707ff725eb3675d57e0f04527a4dada0511cebfb7cbd80f5cab72733a2a9d",
+      "version": "Python 3.14.3"
+    },
+    "python39": {
+      "bytes": 53200,
+      "path": "/Library/Developer/CommandLineTools/usr/bin/python3",
+      "real_path": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+      "sha256": "6e7ae61f68a3838094fc56590f84c52069a97d7816f6bb79e0e85995b340e464",
+      "version": "Python 3.9.6"
+    }
+  },
+  "lock_unchanged": true,
+  "outputs": {
+    "python314": {
+      "bytes": 6134980,
+      "counts": {
+        "authority_refusals": 12,
+        "checked_arithmetic": 9,
+        "conditional_transport": 3,
+        "count_bounds": 5,
+        "framing_targets": 39,
+        "inherited_anchors": 6,
+        "inherited_entry_anchors": 8,
+        "lifecycle_traces": 19,
+        "matching_families": 3,
+        "mode_boundaries": 15,
+        "outbox_bounds": 9,
+        "outbox_cases": 47,
+        "outbox_request_rows": 6,
+        "profile_cases": 12,
+        "profiles": 3,
+        "raw_cases": 418,
+        "registry_bounds": 10,
+        "remote": 2,
+        "response_cases": 20,
+        "source_bounds": 13,
+        "state_pairs": 15,
+        "state_refusals": 31,
+        "wire_errors": 8,
+        "wire_responses": 120,
+        "wrapper_cases": 8,
+        "wrappers": 52
+      },
+      "path": "/Users/taytrrip/slug/artifacts/set80/reference-attempt5/python314.json",
+      "sha256": "4bbe4eb9556ed5a894cee6ff565b0dcca805f27fea2d77cfe3a56242dc3dac91"
+    },
+    "python39": {
+      "bytes": 6134980,
+      "counts": {
+        "authority_refusals": 12,
+        "checked_arithmetic": 9,
+        "conditional_transport": 3,
+        "count_bounds": 5,
+        "framing_targets": 39,
+        "inherited_anchors": 6,
+        "inherited_entry_anchors": 8,
+        "lifecycle_traces": 19,
+        "matching_families": 3,
+        "mode_boundaries": 15,
+        "outbox_bounds": 9,
+        "outbox_cases": 47,
+        "outbox_request_rows": 6,
+        "profile_cases": 12,
+        "profiles": 3,
+        "raw_cases": 418,
+        "registry_bounds": 10,
+        "remote": 2,
+        "response_cases": 20,
+        "source_bounds": 13,
+        "state_pairs": 15,
+        "state_refusals": 31,
+        "wire_errors": 8,
+        "wire_responses": 120,
+        "wrapper_cases": 8,
+        "wrappers": 52
+      },
+      "path": "/Users/taytrrip/slug/artifacts/set80/reference-attempt5/python39.json",
+      "sha256": "4bbe4eb9556ed5a894cee6ff565b0dcca805f27fea2d77cfe3a56242dc3dac91"
+    }
+  },
+  "passed": true,
+  "scope": "Set80 independent dual-interpreter byte/state/capacity reference",
+  "sources_unchanged": true,
+  "version": 1
+}

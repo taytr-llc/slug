@@ -1,0 +1,159 @@
+{
+  "version": 1,
+  "base_helper_manifest_sha256": "087cfdadf9ca2816a42afe168d60a721ab3793c2cb58993b38189aa44b2e601f",
+  "files": [
+    {
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery/cli_process.go",
+      "copy": "source/cli_process.go",
+      "source_bytes": 9473,
+      "source_sha256": "a25c7a14f56d3b4a0a2a90f4807d87a8cc048a6ffccaec7dc6747f4ed4b007b2",
+      "bytes": 9473,
+      "sha256": "a25c7a14f56d3b4a0a2a90f4807d87a8cc048a6ffccaec7dc6747f4ed4b007b2",
+      "change": "exact"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery/fixture_setup.go",
+      "copy": "source/fixture_setup.go",
+      "source_bytes": 5416,
+      "source_sha256": "7b3ddd36d8c8e6098f6db7f3d04e74ffb77533cdcfdc10e480b2b66f38063dd0",
+      "bytes": 5416,
+      "sha256": "7b3ddd36d8c8e6098f6db7f3d04e74ffb77533cdcfdc10e480b2b66f38063dd0",
+      "change": "exact"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery/go.mod",
+      "copy": "source/go.mod",
+      "source_bytes": 1371,
+      "source_sha256": "2acab03476a5fbe3c41af0d387342778f499e97d6e876c7f0d936f704021d4c1",
+      "bytes": 1371,
+      "sha256": "2acab03476a5fbe3c41af0d387342778f499e97d6e876c7f0d936f704021d4c1",
+      "change": "exact"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery/issue_audit.go",
+      "copy": "source/issue_audit.go",
+      "source_bytes": 12822,
+      "source_sha256": "f1dda87812b30e59e6408ebedaa32518fe1073dc8da8adc67eaacf7dd0179833",
+      "bytes": 12822,
+      "sha256": "f1dda87812b30e59e6408ebedaa32518fe1073dc8da8adc67eaacf7dd0179833",
+      "change": "exact"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery/issue_calls.go",
+      "copy": "source/issue_calls.go",
+      "source_bytes": 1344,
+      "source_sha256": "5d90599fbe133f46023ede7ddd90db66dce5a412af5f7ca234d484ea296c27be",
+      "bytes": 1344,
+      "sha256": "5d90599fbe133f46023ede7ddd90db66dce5a412af5f7ca234d484ea296c27be",
+      "change": "exact"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery/issue_tls_relay.go",
+      "copy": "source/issue_tls_relay.go",
+      "source_bytes": 9499,
+      "source_sha256": "3247e731168b2727ebf7fa5a7a0768888405dde0195305832a3c3a19f2450ab4",
+      "bytes": 9499,
+      "sha256": "3247e731168b2727ebf7fa5a7a0768888405dde0195305832a3c3a19f2450ab4",
+      "change": "exact"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery/main.go",
+      "copy": "source/main.go",
+      "source_bytes": 14639,
+      "source_sha256": "3ffbeb386db9bb498e182ff6a71c124a5a6be4bca8e12bbf7aba7bd1b77695a4",
+      "bytes": 14645,
+      "sha256": "ded80e26edcdcaf14e974d5d84296b501c81ae49343ed03d026e87946e1007da",
+      "change": "rename only main to actualMain"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery/node_helpers.go",
+      "copy": "source/node_helpers.go",
+      "source_bytes": 8810,
+      "source_sha256": "331190728f79c5f5b0aaae4109426ffc4e41768a087b86126f31799940fb66cd",
+      "bytes": 8810,
+      "sha256": "331190728f79c5f5b0aaae4109426ffc4e41768a087b86126f31799940fb66cd",
+      "change": "exact"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery/operator_audit.go",
+      "copy": "source/operator_audit.go",
+      "source_bytes": 14293,
+      "source_sha256": "14d463c15ae4438ef6172b89d2e8714d1591ce0869efad3b2a28dfda6e45b2bc",
+      "bytes": 14293,
+      "sha256": "14d463c15ae4438ef6172b89d2e8714d1591ce0869efad3b2a28dfda6e45b2bc",
+      "change": "exact"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery/operator_process.go",
+      "copy": "source/operator_process.go",
+      "source_bytes": 9743,
+      "source_sha256": "4e62812e828e3ec6cef2a9c605527d23c1478ee0da701cb2b5d14666ecfd6417",
+      "bytes": 9743,
+      "sha256": "4e62812e828e3ec6cef2a9c605527d23c1478ee0da701cb2b5d14666ecfd6417",
+      "change": "exact"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery/outbox_audit.go",
+      "copy": "source/outbox_audit.go",
+      "source_bytes": 11444,
+      "source_sha256": "84fa9a045b9f1edb607cbfdec7948902cdc8f344595bebbc62922862bc8e0f77",
+      "bytes": 11444,
+      "sha256": "84fa9a045b9f1edb607cbfdec7948902cdc8f344595bebbc62922862bc8e0f77",
+      "change": "exact"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery/payment.go",
+      "copy": "source/payment.go",
+      "source_bytes": 10011,
+      "source_sha256": "1483c0ec3882de879d2a2b8570422a45f4b6df70319c291cc6e1adea4b17edc8",
+      "bytes": 10011,
+      "sha256": "1483c0ec3882de879d2a2b8570422a45f4b6df70319c291cc6e1adea4b17edc8",
+      "change": "exact"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery/proposal_relay.go",
+      "copy": "source/proposal_relay.go",
+      "source_bytes": 6312,
+      "source_sha256": "f14227d8b135f7bf66f5c7937acb636d05471ef3e953fca87396caac957e9a91",
+      "bytes": 6312,
+      "sha256": "f14227d8b135f7bf66f5c7937acb636d05471ef3e953fca87396caac957e9a91",
+      "change": "exact"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery/scenario_a.go",
+      "copy": "source/scenario_a.go",
+      "source_bytes": 10501,
+      "source_sha256": "403ec4febc7c63a2e907ef4252fc8d6744bb233753f3095a2e5861c0564dcce8",
+      "bytes": 10501,
+      "sha256": "403ec4febc7c63a2e907ef4252fc8d6744bb233753f3095a2e5861c0564dcce8",
+      "change": "exact"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery/scenario_b.go",
+      "copy": "source/scenario_b.go",
+      "source_bytes": 3766,
+      "source_sha256": "a14e09cbb6c17522ba73e9390cb918dcebceb8789d8ab4c4e46c2d2300d21c0b",
+      "bytes": 3766,
+      "sha256": "a14e09cbb6c17522ba73e9390cb918dcebceb8789d8ab4c4e46c2d2300d21c0b",
+      "change": "exact"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery/selection.go",
+      "copy": "source/selection.go",
+      "source_bytes": 10439,
+      "source_sha256": "8ec99e0040b490592c62b49fe3a084f6a2359d21f6773b0748f07bd83fc176b3",
+      "bytes": 10439,
+      "sha256": "8ec99e0040b490592c62b49fe3a084f6a2359d21f6773b0748f07bd83fc176b3",
+      "change": "exact"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery/work_evidence.go",
+      "copy": "source/work_evidence.go",
+      "source_bytes": 7669,
+      "source_sha256": "42ef9e32843082665d2b3013ec79da8eaad923536857014c61141a0d824e58bc",
+      "bytes": 7669,
+      "sha256": "42ef9e32843082665d2b3013ec79da8eaad923536857014c61141a0d824e58bc",
+      "change": "exact"
+    }
+  ]
+}

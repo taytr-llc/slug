@@ -1,0 +1,1614 @@
+{
+  "actual_acceptance_claim": false,
+  "aggregate_capture_seconds": 1320,
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 84856,
+        "pid": 84856,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-p=1",
+        "-mod=readonly",
+        "-tags=",
+        "-race",
+        "./registry",
+        "./poolshare"
+      ],
+      "exit_code": 0,
+      "label": "deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 84856,
+      "pid": 84856,
+      "seconds": 0.289,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 84874,
+        "pid": 84874,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "test",
+        "-count=1",
+        "-p=1",
+        "-timeout=600s",
+        "-json",
+        "-tags=",
+        "-race",
+        "./registry",
+        "./poolshare"
+      ],
+      "exit_code": 0,
+      "label": "race",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 84874,
+      "pid": 84874,
+      "seconds": 130.84,
+      "timed_out": false
+    }
+  ],
+  "dependency_capture_complete": true,
+  "dependency_capture_seconds": 120,
+  "environment": {
+    "actual_optins": "all inherited SLUG_* removed; no actual tags selected",
+    "cgo": "1",
+    "go_parallelism": 1,
+    "go_work": "/Users/taytrrip/slug/slug/desktop/go.work",
+    "gomaxprocs": "2",
+    "tags": ""
+  },
+  "failed_tests": [],
+  "missing_tests": [],
+  "mode": "race",
+  "package_timeout_seconds": 600,
+  "packages": [
+    "github.com/taytr-llc/slug/poolshare",
+    "github.com/taytr-llc/slug/registry"
+  ],
+  "passed": true,
+  "passing_packages": [
+    "github.com/taytr-llc/slug/poolshare",
+    "github.com/taytr-llc/slug/registry"
+  ],
+  "passing_tests": [
+    "github.com/taytr-llc/slug/poolshare/TestAccountingFixedTailAndImmutableDeliveryProjection",
+    "github.com/taytr-llc/slug/poolshare/TestAccountingOmitsPendingAndRefusesInvalidAccess",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorAliasesCountWholeBudget",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorAuditPrecedenceAndOriginalMetadata",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorAuditPrecedenceAndOriginalMetadata/accepted",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorAuditPrecedenceAndOriginalMetadata/gym",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorAuditPrecedenceAndOriginalMetadata/late-corruption-before-physical-capacity",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorAuditPrecedenceAndOriginalMetadata/meta",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorAuditPrecedenceAndOriginalMetadata/missing-row",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorAuditPrecedenceAndOriginalMetadata/nonce",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorAuditPrecedenceAndOriginalMetadata/sequence",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorAuditPrecedenceAndOriginalMetadata/unknown-tail",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorAuditPrecedenceAndOriginalMetadata/valid-nonmember",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorAuditPrecedenceAndOriginalMetadata/work",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorDerivedFullUnseenCanonicalReopen",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorDrainOnlyPendingAndPostCeilingHold",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorDrainOnlyPendingAndPostCeilingHold/saved-pending",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorDrainOnlyPendingAndPostCeilingHold/selected-zero",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorDrainOnlyPendingAndPostCeilingHold/unqualified-current-parent-row",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorFinalSessionClockAndCapacityError",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorFinalSessionClockAndCapacityError/cancel-before-canonical-commit",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorFinalSessionClockAndCapacityError/final-clock-classification",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorFinalSessionClockAndCapacityError/none-fits-after-valid-audit",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorOriginalCancellationCloseAndErrorClass",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorPhysicalFullAuditAndLegacyParity",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorPhysicalFullAuditAndLegacyParity/legacy-unchanged",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorPhysicalFullAuditAndLegacyParity/physical-full",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorSelectionMembershipAndOwnedBudget",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorSourceHoldbackBeforeIssuer",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorUncertainCommitAndExactSavedRecovery",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorUncertainCommitAndExactSavedRecovery/after-sync",
+    "github.com/taytr-llc/slug/poolshare/TestDailyOperatorUncertainCommitAndExactSavedRecovery/before-sync",
+    "github.com/taytr-llc/slug/poolshare/TestDailyPublicBindingOriginalOwner",
+    "github.com/taytr-llc/slug/poolshare/TestDailySource721OriginalJobsAndReopen",
+    "github.com/taytr-llc/slug/poolshare/TestDailySourceCanonicalStorageRefusals",
+    "github.com/taytr-llc/slug/poolshare/TestDailySourceCanonicalStorageRefusals/marker-changed-pin",
+    "github.com/taytr-llc/slug/poolshare/TestDailySourceCanonicalStorageRefusals/marker-changed-selected-limit",
+    "github.com/taytr-llc/slug/poolshare/TestDailySourceCanonicalStorageRefusals/marker-duplicate-field",
+    "github.com/taytr-llc/slug/poolshare/TestDailySourceCanonicalStorageRefusals/marker-exponent-number",
+    "github.com/taytr-llc/slug/poolshare/TestDailySourceCanonicalStorageRefusals/marker-fractional-number",
+    "github.com/taytr-llc/slug/poolshare/TestDailySourceCanonicalStorageRefusals/marker-nested-version",
+    "github.com/taytr-llc/slug/poolshare/TestDailySourceCanonicalStorageRefusals/marker-outer-version",
+    "github.com/taytr-llc/slug/poolshare/TestDailySourceCanonicalStorageRefusals/marker-reordered-fields",
+    "github.com/taytr-llc/slug/poolshare/TestDailySourceCanonicalStorageRefusals/marker-trailing-lf",
+    "github.com/taytr-llc/slug/poolshare/TestDailySourceCanonicalStorageRefusals/marker-unknown-field",
+    "github.com/taytr-llc/slug/poolshare/TestDailySourceCanonicalStorageRefusals/metadata-accepted-over-submissions",
+    "github.com/taytr-llc/slug/poolshare/TestDailySourceCanonicalStorageRefusals/metadata-bytes-over-selected",
+    "github.com/taytr-llc/slug/poolshare/TestDailySourceCanonicalStorageRefusals/metadata-duplicate-field",
+    "github.com/taytr-llc/slug/poolshare/TestDailySourceCanonicalStorageRefusals/metadata-negative-clock",
+    "github.com/taytr-llc/slug/poolshare/TestDailySourceCanonicalStorageRefusals/metadata-nested-version",
+    "github.com/taytr-llc/slug/poolshare/TestDailySourceCanonicalStorageRefusals/metadata-outer-version",
+    "github.com/taytr-llc/slug/poolshare/TestDailySourceCanonicalStorageRefusals/metadata-submissions-over-selected",
+    "github.com/taytr-llc/slug/poolshare/TestDailySourceCanonicalStorageRefusals/metadata-trailing-lf",
+    "github.com/taytr-llc/slug/poolshare/TestDailySourceCanonicalStorageRefusals/metadata-unknown-field",
+    "github.com/taytr-llc/slug/poolshare/TestDailySourceCanonicalStorageRefusals/metadata-works-over-selected",
+    "github.com/taytr-llc/slug/poolshare/TestDailySourceCheapRefusesBeforeEffects",
+    "github.com/taytr-llc/slug/poolshare/TestDailySourceFailedFileCloseRetainsOwner",
+    "github.com/taytr-llc/slug/poolshare/TestDailySourceIndependentGrammarAndKeys",
+    "github.com/taytr-llc/slug/poolshare/TestDailySourceMemoOwnedWarmColdAndTamper",
+    "github.com/taytr-llc/slug/poolshare/TestDailySourceModesCancellationAndLimits",
+    "github.com/taytr-llc/slug/poolshare/TestLateWinnerRealRPCBinding",
+    "github.com/taytr-llc/slug/poolshare/TestLateWinnerRealRPCBinding/canonical",
+    "github.com/taytr-llc/slug/poolshare/TestLateWinnerRealRPCBinding/last-membership-reorg",
+    "github.com/taytr-llc/slug/poolshare/TestLateWinnerRealRPCBinding/wrong-header",
+    "github.com/taytr-llc/slug/poolshare/TestLateWinnerRealRPCBinding/wrong-parent",
+    "github.com/taytr-llc/slug/poolshare/TestLateWinnerRealRPCBinding/wrong-winner",
+    "github.com/taytr-llc/slug/poolshare/TestOperatorAdmissionDrainJoinsOriginalWriter",
+    "github.com/taytr-llc/slug/poolshare/TestOperatorAdmissionFiniteRowsAndSavedRecovery",
+    "github.com/taytr-llc/slug/poolshare/TestOperatorAdmissionOriginalBindingCountersAndLegacyHold",
+    "github.com/taytr-llc/slug/poolshare/TestOperatorAdmissionPublicCapacityOriginalGateOnly",
+    "github.com/taytr-llc/slug/poolshare/TestOperatorCanonicalRecoveryAliasesRetainDistinctRows",
+    "github.com/taytr-llc/slug/poolshare/TestOperatorCanonicalRecoveryPhysicalAndFinancialRefusal",
+    "github.com/taytr-llc/slug/poolshare/TestOperatorCanonicalRecoveryPhysicalAndFinancialRefusal/physical-full",
+    "github.com/taytr-llc/slug/poolshare/TestOperatorCanonicalRecoveryPhysicalAndFinancialRefusal/unchanged-one-batch-budget",
+    "github.com/taytr-llc/slug/poolshare/TestOperatorCanonicalRecoveryRefusesNoncanonicalAndWrongSession",
+    "github.com/taytr-llc/slug/poolshare/TestOperatorCanonicalRecoveryRefusesNoncanonicalAndWrongSession/noncanonical",
+    "github.com/taytr-llc/slug/poolshare/TestOperatorCanonicalRecoveryRefusesNoncanonicalAndWrongSession/ordinary",
+    "github.com/taytr-llc/slug/poolshare/TestOperatorCanonicalRecoveryRefusesNoncanonicalAndWrongSession/wrong-gym",
+    "github.com/taytr-llc/slug/poolshare/TestOperatorCanonicalRecoveryRevocationAndFinalClock",
+    "github.com/taytr-llc/slug/poolshare/TestOperatorCanonicalRecoveryRevocationAndFinalClock/final-clock-crosses-expiry",
+    "github.com/taytr-llc/slug/poolshare/TestOperatorCanonicalRecoveryRevocationAndFinalClock/revoked-during-canonical-check",
+    "github.com/taytr-llc/slug/poolshare/TestOperatorCanonicalRecoveryUncertainCommitReopen",
+    "github.com/taytr-llc/slug/poolshare/TestOperatorCanonicalRecoveryUncertainCommitReopen/after-sync",
+    "github.com/taytr-llc/slug/poolshare/TestOperatorCanonicalRecoveryUncertainCommitReopen/before-sync",
+    "github.com/taytr-llc/slug/poolshare/TestOperatorCanonicalRecoveryUnseenAfterDrainAndReopen",
+    "github.com/taytr-llc/slug/poolshare/TestPoolBlockOnlyNeedsCanonicalAndBroadcastIsDurable",
+    "github.com/taytr-llc/slug/poolshare/TestPoolBusyAndCloseDrain",
+    "github.com/taytr-llc/slug/poolshare/TestPoolCapacityStillAllowsRetainedWinnerRecovery",
+    "github.com/taytr-llc/slug/poolshare/TestPoolFinalAcceptanceDoesNotReusePreSyncTime",
+    "github.com/taytr-llc/slug/poolshare/TestPoolLateUnknownAndRejectedAreNotCanonical",
+    "github.com/taytr-llc/slug/poolshare/TestPoolLateUnknownAndRejectedAreNotCanonical/rejected",
+    "github.com/taytr-llc/slug/poolshare/TestPoolLateUnknownAndRejectedAreNotCanonical/unknown",
+    "github.com/taytr-llc/slug/poolshare/TestPoolLateWinnerRecoveryAndNoBirth",
+    "github.com/taytr-llc/slug/poolshare/TestPoolMiningWorkSingleIssuanceAndOwnedRecovery",
+    "github.com/taytr-llc/slug/poolshare/TestPoolOpenRejectsTamperedEvidenceAndConfig",
+    "github.com/taytr-llc/slug/poolshare/TestPoolOpenRejectsTamperedEvidenceAndConfig/classification",
+    "github.com/taytr-llc/slug/poolshare/TestPoolOpenRejectsTamperedEvidenceAndConfig/config",
+    "github.com/taytr-llc/slug/poolshare/TestPoolOpenRejectsTamperedEvidenceAndConfig/hash",
+    "github.com/taytr-llc/slug/poolshare/TestPoolOpenRejectsTamperedEvidenceAndConfig/nonce-index",
+    "github.com/taytr-llc/slug/poolshare/TestPoolOpenRejectsTamperedEvidenceAndConfig/unexpected-key",
+    "github.com/taytr-llc/slug/poolshare/TestPoolOrdinaryExpiryCurrentnessAndHistoricalDuplicate",
+    "github.com/taytr-llc/slug/poolshare/TestPoolOrdinaryExpiryCurrentnessAndHistoricalDuplicate/boundary",
+    "github.com/taytr-llc/slug/poolshare/TestPoolOrdinaryExpiryCurrentnessAndHistoricalDuplicate/clock-rollback",
+    "github.com/taytr-llc/slug/poolshare/TestPoolOrdinaryExpiryCurrentnessAndHistoricalDuplicate/guard-crosses-expiry",
+    "github.com/taytr-llc/slug/poolshare/TestPoolOrdinaryExpiryCurrentnessAndHistoricalDuplicate/node-unavailable",
+    "github.com/taytr-llc/slug/poolshare/TestPoolSessionFenceHoldsResetThroughActualBatch",
+    "github.com/taytr-llc/slug/poolshare/TestPoolSessionFencePostCommitFailureRecoversExactlyOnce",
+    "github.com/taytr-llc/slug/poolshare/TestPoolSessionFenceResetAndOtherGymDuringNodeWork",
+    "github.com/taytr-llc/slug/poolshare/TestPoolSessionFenceResetAndOtherGymDuringNodeWork/issue-current",
+    "github.com/taytr-llc/slug/poolshare/TestPoolSessionFenceResetAndOtherGymDuringNodeWork/issue-proposal",
+    "github.com/taytr-llc/slug/poolshare/TestPoolSessionFenceResetAndOtherGymDuringNodeWork/issue-resolve",
+    "github.com/taytr-llc/slug/poolshare/TestPoolSessionFenceResetAndOtherGymDuringNodeWork/share-current",
+    "github.com/taytr-llc/slug/poolshare/TestPoolSessionFenceResetAndOtherGymDuringNodeWork/winner-canonical",
+    "github.com/taytr-llc/slug/poolshare/TestPoolSessionFenceResetAndOtherGymDuringNodeWork/winner-submit",
+    "github.com/taytr-llc/slug/poolshare/TestPoolSessionGuardsAndIssue",
+    "github.com/taytr-llc/slug/poolshare/TestPoolSessionGuardsAndIssue/cancelled-final",
+    "github.com/taytr-llc/slug/poolshare/TestPoolSessionGuardsAndIssue/revoked-final",
+    "github.com/taytr-llc/slug/poolshare/TestPoolSessionGuardsAndIssue/wrong-gym",
+    "github.com/taytr-llc/slug/poolshare/TestPoolUncertainCanonicalAcceptanceReconcilesOnce",
+    "github.com/taytr-llc/slug/poolshare/TestPoolUncertainIntentNeverBroadcastsUntilReopen",
+    "github.com/taytr-llc/slug/poolshare/TestPoolUncertainIntentNeverBroadcastsUntilReopen/after-sync",
+    "github.com/taytr-llc/slug/poolshare/TestPoolUncertainIntentNeverBroadcastsUntilReopen/before-sync",
+    "github.com/taytr-llc/slug/poolshare/TestRecoverableSourceCancellationAndReservedBytes",
+    "github.com/taytr-llc/slug/poolshare/TestRecoverableSourceExpiredUnusedAndSealedAbsence",
+    "github.com/taytr-llc/slug/poolshare/TestRecoverableSourceExpiredUnusedAndSealedAbsence/issued-unused",
+    "github.com/taytr-llc/slug/poolshare/TestRecoverableSourceExpiredUnusedAndSealedAbsence/pending-absent-seal",
+    "github.com/taytr-llc/slug/poolshare/TestRecoverableSourceIndependentReservation",
+    "github.com/taytr-llc/slug/poolshare/TestRecoverableSourceProposalGapExactReopen",
+    "github.com/taytr-llc/slug/poolshare/TestRecoverableSourceUncertainCommitAndNamespaceCensus",
+    "github.com/taytr-llc/slug/registry/FuzzManifestStorageCodec",
+    "github.com/taytr-llc/slug/registry/FuzzManifestStorageCodec/seed#0",
+    "github.com/taytr-llc/slug/registry/FuzzManifestStorageCodec/seed#1",
+    "github.com/taytr-llc/slug/registry/TestAcknowledgedAdmissionSurvivesAbruptProcessExit",
+    "github.com/taytr-llc/slug/registry/TestAuthenticatedFirstAdmissionGuardFailureWritesNothing",
+    "github.com/taytr-llc/slug/registry/TestAuthenticatedSchemaAndImmutableReplay",
+    "github.com/taytr-llc/slug/registry/TestAuthenticatedWriteOutcomeAndCorruption",
+    "github.com/taytr-llc/slug/registry/TestAuthenticatedWriteOutcomeAndCorruption/after-commit",
+    "github.com/taytr-llc/slug/registry/TestAuthenticatedWriteOutcomeAndCorruption/before-commit",
+    "github.com/taytr-llc/slug/registry/TestBirthExpiryFinalCheckAndPersistentClock",
+    "github.com/taytr-llc/slug/registry/TestBirthExpiryFinalCheckAndPersistentClock/clock-rollback-during-check",
+    "github.com/taytr-llc/slug/registry/TestBirthExpiryFinalCheckAndPersistentClock/exact-expiry",
+    "github.com/taytr-llc/slug/registry/TestBirthExpiryFinalCheckAndPersistentClock/expired-during-check",
+    "github.com/taytr-llc/slug/registry/TestBirthExpiryFinalCheckAndPersistentClock/last-millisecond",
+    "github.com/taytr-llc/slug/registry/TestBirthFinalGuardCannotMutateVerifiedProof",
+    "github.com/taytr-llc/slug/registry/TestBirthHistoricalReplayAndMultipleProspects",
+    "github.com/taytr-llc/slug/registry/TestBirthRejectsUnknownJobsRebindingAndLegacyBypass",
+    "github.com/taytr-llc/slug/registry/TestBirthStoredJobAndClockCorruptionFailsClosed",
+    "github.com/taytr-llc/slug/registry/TestBirthStoredJobAndClockCorruptionFailsClosed/accepted_at_expiry",
+    "github.com/taytr-llc/slug/registry/TestBirthStoredJobAndClockCorruptionFailsClosed/accepted_before_issuance",
+    "github.com/taytr-llc/slug/registry/TestBirthStoredJobAndClockCorruptionFailsClosed/changed_birth_anchor",
+    "github.com/taytr-llc/slug/registry/TestBirthStoredJobAndClockCorruptionFailsClosed/changed_birth_rule",
+    "github.com/taytr-llc/slug/registry/TestBirthStoredJobAndClockCorruptionFailsClosed/changed_stored_challenge",
+    "github.com/taytr-llc/slug/registry/TestBirthStoredJobAndClockCorruptionFailsClosed/changed_stored_issuance",
+    "github.com/taytr-llc/slug/registry/TestBirthStoredJobAndClockCorruptionFailsClosed/clock_below_accepted_birth",
+    "github.com/taytr-llc/slug/registry/TestBirthStoredJobAndClockCorruptionFailsClosed/clock_below_issued_job",
+    "github.com/taytr-llc/slug/registry/TestBirthStoredJobAndClockCorruptionFailsClosed/context_differs_from_job",
+    "github.com/taytr-llc/slug/registry/TestBirthStoredJobAndClockCorruptionFailsClosed/job_count_mismatch",
+    "github.com/taytr-llc/slug/registry/TestBirthStoredJobAndClockCorruptionFailsClosed/mismatched_receipt_job",
+    "github.com/taytr-llc/slug/registry/TestBirthStoredJobAndClockCorruptionFailsClosed/mismatched_stored_job_ID",
+    "github.com/taytr-llc/slug/registry/TestBirthStoredJobAndClockCorruptionFailsClosed/missing_issued_job",
+    "github.com/taytr-llc/slug/registry/TestBirthStoredJobAndClockCorruptionFailsClosed/missing_receipt_birth",
+    "github.com/taytr-llc/slug/registry/TestBirthStoredJobAndClockCorruptionFailsClosed/missing_receipt_job",
+    "github.com/taytr-llc/slug/registry/TestBirthStoredJobAndClockCorruptionFailsClosed/negative_clock_metadata",
+    "github.com/taytr-llc/slug/registry/TestBirthStoredJobAndClockCorruptionFailsClosed/proof_references_other_job",
+    "github.com/taytr-llc/slug/registry/TestBirthSubprocessCrashHelper",
+    "github.com/taytr-llc/slug/registry/TestCheckedAdmissionGuardsWritesAndReplay",
+    "github.com/taytr-llc/slug/registry/TestConcurrentDuplicateAdmission",
+    "github.com/taytr-llc/slug/registry/TestCreateValidatesChainIdentity",
+    "github.com/taytr-llc/slug/registry/TestInfoTracksDurableCountsAndFailsClosed",
+    "github.com/taytr-llc/slug/registry/TestJobAndBirthUncertainWritesReconcile",
+    "github.com/taytr-llc/slug/registry/TestJobAndBirthUncertainWritesReconcile/birth-after",
+    "github.com/taytr-llc/slug/registry/TestJobAndBirthUncertainWritesReconcile/birth-before",
+    "github.com/taytr-llc/slug/registry/TestJobAndBirthUncertainWritesReconcile/issue-after",
+    "github.com/taytr-llc/slug/registry/TestJobAndBirthUncertainWritesReconcile/issue-before",
+    "github.com/taytr-llc/slug/registry/TestJobIssuanceDurabilityAndBoundaries",
+    "github.com/taytr-llc/slug/registry/TestLiveSequenceGapFailsClosed",
+    "github.com/taytr-llc/slug/registry/TestLiveSequenceGapFailsClosed/missing_sequence_1",
+    "github.com/taytr-llc/slug/registry/TestLiveSequenceGapFailsClosed/missing_sequence_2",
+    "github.com/taytr-llc/slug/registry/TestManifestAdmissionWriteUncertaintyReconciles",
+    "github.com/taytr-llc/slug/registry/TestManifestAdmissionWriteUncertaintyReconciles/committed-then-error",
+    "github.com/taytr-llc/slug/registry/TestManifestAdmissionWriteUncertaintyReconciles/definite-before",
+    "github.com/taytr-llc/slug/registry/TestManifestCanonicalOwnershipAndConcurrentDuplicates",
+    "github.com/taytr-llc/slug/registry/TestManifestCloseDrainsAndRetainsFailure",
+    "github.com/taytr-llc/slug/registry/TestManifestCodecLimits",
+    "github.com/taytr-llc/slug/registry/TestManifestCreateRefusesBeforeFilesystemAndRetainsIncomplete",
+    "github.com/taytr-llc/slug/registry/TestManifestCreateRefusesBeforeFilesystemAndRetainsIncomplete/descriptor",
+    "github.com/taytr-llc/slug/registry/TestManifestCreateRefusesBeforeFilesystemAndRetainsIncomplete/entropy",
+    "github.com/taytr-llc/slug/registry/TestManifestCreateRefusesBeforeFilesystemAndRetainsIncomplete/genesis",
+    "github.com/taytr-llc/slug/registry/TestManifestCreateRefusesBeforeFilesystemAndRetainsIncomplete/network",
+    "github.com/taytr-llc/slug/registry/TestManifestCreationPinsAndLegacyIsolation",
+    "github.com/taytr-llc/slug/registry/TestManifestDuplicateReuseRequiresCompleteProofEquality",
+    "github.com/taytr-llc/slug/registry/TestManifestFinalExpiryAndClockRecovery",
+    "github.com/taytr-llc/slug/registry/TestManifestFinalExpiryAndClockRecovery/bound",
+    "github.com/taytr-llc/slug/registry/TestManifestFinalExpiryAndClockRecovery/entry",
+    "github.com/taytr-llc/slug/registry/TestManifestFinalExpiryAndClockRecovery/guard",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentAdmissionAndHistoricalRecovery",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_application_case_alias",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_application_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_application_escaped_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_application_missing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_application_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_array",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_authority_id_case_alias",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_authority_id_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_authority_id_escaped_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_authority_id_missing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_authority_id_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_canonical",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_descriptor_case_alias",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_descriptor_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_descriptor_escaped_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_descriptor_id_case_alias",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_descriptor_id_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_descriptor_id_escaped_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_descriptor_id_missing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_descriptor_id_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_descriptor_missing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_descriptor_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_empty",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_extra_newline",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_genesis_case_alias",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_genesis_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_genesis_escaped_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_genesis_missing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_genesis_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_invalid_utf8",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_leading_space",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_missing_terminal_lf",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_network_case_alias",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_network_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_network_escaped_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_network_missing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_network_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_over_size",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_pretty",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_reordered",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_too_deep",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_trailing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_unknown",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_version_case_alias",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_version_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_version_escaped_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_version_missing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/marker/marker_version_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_array",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_authority_id_case_alias",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_authority_id_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_authority_id_escaped_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_authority_id_missing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_authority_id_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_canonical",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_descriptor_case_alias",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_descriptor_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_descriptor_escaped_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_descriptor_id_case_alias",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_descriptor_id_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_descriptor_id_escaped_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_descriptor_id_missing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_descriptor_id_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_descriptor_missing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_descriptor_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_empty",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_extra_newline",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_genesis_case_alias",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_genesis_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_genesis_escaped_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_genesis_missing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_genesis_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_invalid_utf8",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_job_count_case_alias",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_job_count_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_job_count_escaped_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_job_count_missing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_job_count_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_last_clock_ms_case_alias",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_last_clock_ms_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_last_clock_ms_escaped_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_last_clock_ms_missing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_last_clock_ms_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_last_sequence_case_alias",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_last_sequence_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_last_sequence_escaped_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_last_sequence_missing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_last_sequence_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_leading_space",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_network_case_alias",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_network_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_network_escaped_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_network_missing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_network_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_over_size",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_pretty",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_reordered",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_too_deep",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_trailing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_unknown",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_version_case_alias",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_version_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_version_escaped_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_version_missing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/metadata/metadata_version_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record-mutation/accepted_above_clock",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record-mutation/accepted_at_expiry",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record-mutation/accepted_before_issue",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record-mutation/authorization_key",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record-mutation/binding_descriptor",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record-mutation/binding_version",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record-mutation/birth_not_issue",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record-mutation/birth_rule",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record-mutation/context_chain",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record-mutation/eligibility_hash",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record-mutation/eligibility_height",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record-mutation/eligibility_rule",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record-mutation/eligibility_source",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record-mutation/foreign_job",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record-mutation/high_s_authorization",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record-mutation/manifest_digest",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record-mutation/nonwinner_winning_claim",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record-mutation/portrait_digest",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record-mutation/proof_job",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record-mutation/proof_uppercase",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record-mutation/sequence_above_meta",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record-mutation/verified_dna",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record-mutation/verified_hash",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record-mutation/verified_id",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record-mutation/version",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record-mutation/zero_sequence",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_array",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_authorization_case_alias",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_authorization_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_authorization_escaped_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_authorization_missing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_authorization_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_birth_case_alias",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_birth_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_birth_escaped_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_birth_missing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_birth_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_canonical",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_context_case_alias",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_context_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_context_escaped_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_context_missing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_context_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_eligibility_case_alias",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_eligibility_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_eligibility_escaped_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_eligibility_missing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_eligibility_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_empty",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_extra_newline",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_invalid_utf8",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_job_case_alias",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_job_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_job_escaped_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_job_missing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_job_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_leading_space",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_over_size",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_pretty",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_proof_case_alias",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_proof_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_proof_escaped_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_proof_missing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_proof_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_reordered",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_sequence_case_alias",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_sequence_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_sequence_escaped_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_sequence_missing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_sequence_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_static_binding_case_alias",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_static_binding_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_static_binding_escaped_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_static_binding_missing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_static_binding_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_too_deep",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_trailing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_unknown",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_verified_case_alias",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_verified_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_verified_escaped_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_verified_missing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_verified_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_version_case_alias",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_version_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_version_escaped_duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_version_missing",
+    "github.com/taytr-llc/slug/registry/TestManifestIndependentStorageBoundaries/record/record_version_null",
+    "github.com/taytr-llc/slug/registry/TestManifestIssuanceClockAndUncertainOutcome",
+    "github.com/taytr-llc/slug/registry/TestManifestIssuanceClockAndUncertainOutcome/after",
+    "github.com/taytr-llc/slug/registry/TestManifestIssuanceClockAndUncertainOutcome/before",
+    "github.com/taytr-llc/slug/registry/TestManifestMalformedIndexAndLivePageFailure",
+    "github.com/taytr-llc/slug/registry/TestManifestMalformedIndexAndLivePageFailure/gap",
+    "github.com/taytr-llc/slug/registry/TestManifestMalformedIndexAndLivePageFailure/long-index-key",
+    "github.com/taytr-llc/slug/registry/TestManifestMalformedIndexAndLivePageFailure/long-job-key",
+    "github.com/taytr-llc/slug/registry/TestManifestMalformedIndexAndLivePageFailure/missing-job",
+    "github.com/taytr-llc/slug/registry/TestManifestMalformedIndexAndLivePageFailure/missing-record",
+    "github.com/taytr-llc/slug/registry/TestManifestMalformedIndexAndLivePageFailure/oversized-index-value",
+    "github.com/taytr-llc/slug/registry/TestManifestMalformedIndexAndLivePageFailure/short-record-key",
+    "github.com/taytr-llc/slug/registry/TestManifestMalformedIndexAndLivePageFailure/unknown-key",
+    "github.com/taytr-llc/slug/registry/TestManifestMetadataCanonicalBoundsAndCorruption",
+    "github.com/taytr-llc/slug/registry/TestManifestMetadataCanonicalBoundsAndCorruption/alias",
+    "github.com/taytr-llc/slug/registry/TestManifestMetadataCanonicalBoundsAndCorruption/array",
+    "github.com/taytr-llc/slug/registry/TestManifestMetadataCanonicalBoundsAndCorruption/clock",
+    "github.com/taytr-llc/slug/registry/TestManifestMetadataCanonicalBoundsAndCorruption/count",
+    "github.com/taytr-llc/slug/registry/TestManifestMetadataCanonicalBoundsAndCorruption/decoded-duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestMetadataCanonicalBoundsAndCorruption/deep",
+    "github.com/taytr-llc/slug/registry/TestManifestMetadataCanonicalBoundsAndCorruption/descriptor",
+    "github.com/taytr-llc/slug/registry/TestManifestMetadataCanonicalBoundsAndCorruption/duplicate",
+    "github.com/taytr-llc/slug/registry/TestManifestMetadataCanonicalBoundsAndCorruption/missing",
+    "github.com/taytr-llc/slug/registry/TestManifestMetadataCanonicalBoundsAndCorruption/null",
+    "github.com/taytr-llc/slug/registry/TestManifestMetadataCanonicalBoundsAndCorruption/number",
+    "github.com/taytr-llc/slug/registry/TestManifestMetadataCanonicalBoundsAndCorruption/oversized",
+    "github.com/taytr-llc/slug/registry/TestManifestMetadataCanonicalBoundsAndCorruption/trailing",
+    "github.com/taytr-llc/slug/registry/TestManifestMetadataCanonicalBoundsAndCorruption/unknown",
+    "github.com/taytr-llc/slug/registry/TestManifestPageEightThenOneRealProductionProofs",
+    "github.com/taytr-llc/slug/registry/TestManifestReadsDoNotTrustStoredWorkSummaries",
+    "github.com/taytr-llc/slug/registry/TestManifestRealProcessKillDurability",
+    "github.com/taytr-llc/slug/registry/TestManifestRealProcessKillDurability/admitted",
+    "github.com/taytr-llc/slug/registry/TestManifestRealProcessKillDurability/before-admission",
+    "github.com/taytr-llc/slug/registry/TestManifestRealProcessKillDurability/before-issue",
+    "github.com/taytr-llc/slug/registry/TestManifestRealProcessKillDurability/bound",
+    "github.com/taytr-llc/slug/registry/TestManifestRealProcessKillDurability/clock",
+    "github.com/taytr-llc/slug/registry/TestManifestRealProcessKillDurability/expiry-clock",
+    "github.com/taytr-llc/slug/registry/TestManifestRealProcessKillDurability/initialized",
+    "github.com/taytr-llc/slug/registry/TestManifestRealProcessKillDurability/issued",
+    "github.com/taytr-llc/slug/registry/TestManifestRealProcessKillDurability/marker",
+    "github.com/taytr-llc/slug/registry/TestManifestRejectedEvidenceNeverAllocates",
+    "github.com/taytr-llc/slug/registry/TestManifestRejectedEvidenceNeverAllocates/bad-renderer",
+    "github.com/taytr-llc/slug/registry/TestManifestRejectedEvidenceNeverAllocates/bad-signature",
+    "github.com/taytr-llc/slug/registry/TestManifestRejectedEvidenceNeverAllocates/binding-dna",
+    "github.com/taytr-llc/slug/registry/TestManifestRejectedEvidenceNeverAllocates/false-winner",
+    "github.com/taytr-llc/slug/registry/TestManifestRejectedEvidenceNeverAllocates/foreign-gym",
+    "github.com/taytr-llc/slug/registry/TestManifestRejectedEvidenceNeverAllocates/guard-reject",
+    "github.com/taytr-llc/slug/registry/TestManifestRejectedEvidenceNeverAllocates/nil-guard",
+    "github.com/taytr-llc/slug/registry/TestManifestRejectedEvidenceNeverAllocates/oversized-coinbase",
+    "github.com/taytr-llc/slug/registry/TestManifestRejectedEvidenceNeverAllocates/too-many-siblings",
+    "github.com/taytr-llc/slug/registry/TestManifestRejectedEvidenceNeverAllocates/unknown-job",
+    "github.com/taytr-llc/slug/registry/TestManifestRejectedEvidenceNeverAllocates/version1",
+    "github.com/taytr-llc/slug/registry/TestManifestRejectedEvidenceNeverAllocates/wrong-key",
+    "github.com/taytr-llc/slug/registry/TestManifestStagedAdmissionChangedDuplicateAndSourceRejected",
+    "github.com/taytr-llc/slug/registry/TestManifestStagedAdmissionExpiryPersistsAcrossRestart",
+    "github.com/taytr-llc/slug/registry/TestManifestStagedAdmissionExpiryPersistsAcrossRestart/at-final-fence",
+    "github.com/taytr-llc/slug/registry/TestManifestStagedAdmissionExpiryPersistsAcrossRestart/before-commit",
+    "github.com/taytr-llc/slug/registry/TestManifestStagedAdmissionFinalGuardAndUncertainty",
+    "github.com/taytr-llc/slug/registry/TestManifestStagedAdmissionFinalGuardAndUncertainty/final-revoked",
+    "github.com/taytr-llc/slug/registry/TestManifestStagedAdmissionFinalGuardAndUncertainty/invalid-eligibility",
+    "github.com/taytr-llc/slug/registry/TestManifestStagedAdmissionFinalGuardAndUncertainty/lost-ack",
+    "github.com/taytr-llc/slug/registry/TestManifestStagedAdmissionFinalGuardAndUncertainty/nil",
+    "github.com/taytr-llc/slug/registry/TestManifestStagedAdmissionFinalGuardAndUncertainty/revoked",
+    "github.com/taytr-llc/slug/registry/TestManifestStagedAdmissionFinalGuardAndUncertainty/sequence-full",
+    "github.com/taytr-llc/slug/registry/TestManifestStagedAdmissionsMatchIndependentEvidenceAndOwnSlices",
+    "github.com/taytr-llc/slug/registry/TestManifestStagedCommitNeverWaitsForRegistryGate",
+    "github.com/taytr-llc/slug/registry/TestManifestStagedIssueMatchesIndependentJobs",
+    "github.com/taytr-llc/slug/registry/TestManifestStagedIssueRejectsStaleHandlesAndGuard",
+    "github.com/taytr-llc/slug/registry/TestManifestStagedNilHandleAccessors",
+    "github.com/taytr-llc/slug/registry/TestManifestSubprocessCrashHelper",
+    "github.com/taytr-llc/slug/registry/TestManifestTryInfoOwnedNonblockingState",
+    "github.com/taytr-llc/slug/registry/TestManifestTryJobCancellationAndClosedState",
+    "github.com/taytr-llc/slug/registry/TestManifestTryJobOriginalReadOnlyAndNonblocking",
+    "github.com/taytr-llc/slug/registry/TestMiningEligibilityCorruptionFailsClosedOnOpen",
+    "github.com/taytr-llc/slug/registry/TestMiningEligibilityCorruptionFailsClosedOnOpen/birth-expired",
+    "github.com/taytr-llc/slug/registry/TestMiningEligibilityCorruptionFailsClosedOnOpen/hash",
+    "github.com/taytr-llc/slug/registry/TestMiningEligibilityCorruptionFailsClosedOnOpen/height",
+    "github.com/taytr-llc/slug/registry/TestMiningEligibilityCorruptionFailsClosedOnOpen/job-missing",
+    "github.com/taytr-llc/slug/registry/TestMiningEligibilityCorruptionFailsClosedOnOpen/missing",
+    "github.com/taytr-llc/slug/registry/TestMiningEligibilityCorruptionFailsClosedOnOpen/source",
+    "github.com/taytr-llc/slug/registry/TestMiningEligibilityCorruptionFailsClosedOnOpen/version",
+    "github.com/taytr-llc/slug/registry/TestMiningEligibilityPersistsAndHistoricalReplayDoesNotReclassify",
+    "github.com/taytr-llc/slug/registry/TestMiningEligibilityPersistsAndHistoricalReplayDoesNotReclassify/canonical-winning-block",
+    "github.com/taytr-llc/slug/registry/TestMiningEligibilityPersistsAndHistoricalReplayDoesNotReclassify/current-parent",
+    "github.com/taytr-llc/slug/registry/TestMiningEligibilityTargetEqualityAndZeroDigest",
+    "github.com/taytr-llc/slug/registry/TestMiningEligibilityUncertainAtomicReceiptReconciles",
+    "github.com/taytr-llc/slug/registry/TestMiningEligibilityUncertainAtomicReceiptReconciles/after",
+    "github.com/taytr-llc/slug/registry/TestMiningEligibilityUncertainAtomicReceiptReconciles/before",
+    "github.com/taytr-llc/slug/registry/TestMiningFinalExpiryAfterEligibilityAndPersistentClock",
+    "github.com/taytr-llc/slug/registry/TestMiningRejectsUnboundObservationsAndNonwinningWork",
+    "github.com/taytr-llc/slug/registry/TestMiningRejectsUnboundObservationsAndNonwinningWork/case",
+    "github.com/taytr-llc/slug/registry/TestMiningRejectsUnboundObservationsAndNonwinningWork/hash",
+    "github.com/taytr-llc/slug/registry/TestMiningRejectsUnboundObservationsAndNonwinningWork/height",
+    "github.com/taytr-llc/slug/registry/TestMiningRejectsUnboundObservationsAndNonwinningWork/parent-hash",
+    "github.com/taytr-llc/slug/registry/TestMiningRejectsUnboundObservationsAndNonwinningWork/parent-height",
+    "github.com/taytr-llc/slug/registry/TestMiningRejectsUnboundObservationsAndNonwinningWork/rule",
+    "github.com/taytr-llc/slug/registry/TestMiningRejectsUnboundObservationsAndNonwinningWork/source",
+    "github.com/taytr-llc/slug/registry/TestMiningSchemaRequiresExplicitOptIn",
+    "github.com/taytr-llc/slug/registry/TestNameV2IndependentStaticBindings",
+    "github.com/taytr-llc/slug/registry/TestNameV2RegistryRetainsCompleteDescriptor",
+    "github.com/taytr-llc/slug/registry/TestOpenDoesNotCreateOrInitializeForeignDirectories",
+    "github.com/taytr-llc/slug/registry/TestOperatorCheckpointImportAndMissingCutoffRefusal",
+    "github.com/taytr-llc/slug/registry/TestOperatorManifestAdmissionOutboxAndSignerJoin",
+    "github.com/taytr-llc/slug/registry/TestOperatorManifestGuardsAndAudit",
+    "github.com/taytr-llc/slug/registry/TestOperatorPreparedChainExactOwnerAndReopen",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceGuardsCheckpointRoles",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceGuardsCheckpointRoles/v1/checkpoint-profile1-rejects2",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceGuardsCheckpointRoles/v1/checkpoint-profile2-rejects1",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceGuardsCheckpointRoles/v1/fixture_v1/reader1",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceGuardsCheckpointRoles/v1/fixture_v1/reader2",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceGuardsCheckpointRoles/v1/operator_v2_distinct/reader1",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceGuardsCheckpointRoles/v1/operator_v2_distinct/reader2",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceGuardsCheckpointRoles/v1/operator_v2_shared/reader1",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceGuardsCheckpointRoles/v1/operator_v2_shared/reader2",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceGuardsCheckpointRoles/v2/checkpoint-profile1-rejects2",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceGuardsCheckpointRoles/v2/checkpoint-profile2-rejects1",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceGuardsCheckpointRoles/v2/fixture_v1/reader1",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceGuardsCheckpointRoles/v2/fixture_v1/reader2",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceGuardsCheckpointRoles/v2/operator_v2_distinct/reader1",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceGuardsCheckpointRoles/v2/operator_v2_distinct/reader2",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceGuardsCheckpointRoles/v2/operator_v2_shared/reader1",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceGuardsCheckpointRoles/v2/operator_v2_shared/reader2",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v1/fixture_v1/admission",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v1/fixture_v1/admission/publication",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v1/fixture_v1/boundary",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v1/fixture_v1/chain/publication",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v1/fixture_v1/checkpoint",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v1/fixture_v1/checkpoint/publication",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v1/fixture_v1/cutoff",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v1/fixture_v1/pin",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v1/operator_v2_distinct/admission",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v1/operator_v2_distinct/admission/publication",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v1/operator_v2_distinct/boundary",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v1/operator_v2_distinct/chain/publication",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v1/operator_v2_distinct/checkpoint",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v1/operator_v2_distinct/checkpoint/publication",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v1/operator_v2_distinct/cutoff",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v1/operator_v2_distinct/pin",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v1/operator_v2_shared/admission",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v1/operator_v2_shared/admission/publication",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v1/operator_v2_shared/boundary",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v1/operator_v2_shared/chain/publication",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v1/operator_v2_shared/checkpoint",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v1/operator_v2_shared/checkpoint/publication",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v1/operator_v2_shared/cutoff",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v1/operator_v2_shared/pin",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v2/fixture_v1/admission",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v2/fixture_v1/admission/publication",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v2/fixture_v1/boundary",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v2/fixture_v1/chain/publication",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v2/fixture_v1/checkpoint",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v2/fixture_v1/checkpoint/publication",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v2/fixture_v1/cutoff",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v2/fixture_v1/pin",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v2/operator_v2_distinct/admission",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v2/operator_v2_distinct/admission/publication",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v2/operator_v2_distinct/boundary",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v2/operator_v2_distinct/chain/publication",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v2/operator_v2_distinct/checkpoint",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v2/operator_v2_distinct/checkpoint/publication",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v2/operator_v2_distinct/cutoff",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v2/operator_v2_distinct/pin",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v2/operator_v2_shared/admission",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v2/operator_v2_shared/admission/publication",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v2/operator_v2_shared/boundary",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v2/operator_v2_shared/chain/publication",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v2/operator_v2_shared/checkpoint",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v2/operator_v2_shared/checkpoint/publication",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v2/operator_v2_shared/cutoff",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryPositiveBytes/v2/operator_v2_shared/pin",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/admission/boolean-version",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/admission/excludes-ownership_log",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/admission/excludes-result_checkpoint",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/admission/excludes-result_statement",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/admission/excludes-seed_checkpoint",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/admission/excludes-seed_declaration",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/admission/statement-version-stays-one",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/admission/wrong-role",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/boolean-version",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/boundary/boolean-version",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/boundary/statement-version-stays-one",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/boundary/wrong-role",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/canonical",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/checkpoint/excludes-ownership_log",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/checkpoint/excludes-result_checkpoint",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/checkpoint/excludes-result_statement",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/checkpoint/excludes-seed_checkpoint",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/checkpoint/excludes-seed_declaration",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/cutoff/boolean-version",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/cutoff/excludes-ownership_log",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/cutoff/excludes-result_checkpoint",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/cutoff/excludes-result_statement",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/cutoff/excludes-seed_checkpoint",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/cutoff/excludes-seed_declaration",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/cutoff/statement-version-stays-one",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/cutoff/wrong-role",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/duplicate-version",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/float-version",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/newline",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/pin-version-0",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/pin-version-3",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/pin-version-True",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/profile1-rejects2/admission",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/profile1-rejects2/boundary",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/profile1-rejects2/cutoff",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/profile1-rejects2/pin",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/profile1-rejects2/publication",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/profile2-rejects1/admission",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/profile2-rejects1/boundary",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/profile2-rejects1/cutoff",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/profile2-rejects1/pin",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/profile2-rejects1/publication",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/publication/boolean-version",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/publication/excludes-ownership_log",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/publication/excludes-result_checkpoint",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/publication/excludes-result_statement",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/publication/excludes-seed_checkpoint",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/publication/excludes-seed_declaration",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/publication/statement-version-stays-one",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/publication/wrong-role",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/same-admission-key-foreign-pin",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v1/unknown-member",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/admission/boolean-version",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/admission/excludes-ownership_log",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/admission/excludes-result_checkpoint",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/admission/excludes-result_statement",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/admission/excludes-seed_checkpoint",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/admission/excludes-seed_declaration",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/admission/statement-version-stays-one",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/admission/wrong-role",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/boolean-version",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/boundary/boolean-version",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/boundary/statement-version-stays-one",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/boundary/wrong-role",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/canonical",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/checkpoint/excludes-ownership_log",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/checkpoint/excludes-result_checkpoint",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/checkpoint/excludes-result_statement",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/checkpoint/excludes-seed_checkpoint",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/checkpoint/excludes-seed_declaration",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/cutoff/boolean-version",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/cutoff/excludes-ownership_log",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/cutoff/excludes-result_checkpoint",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/cutoff/excludes-result_statement",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/cutoff/excludes-seed_checkpoint",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/cutoff/excludes-seed_declaration",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/cutoff/statement-version-stays-one",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/cutoff/wrong-role",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/duplicate-version",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/float-version",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/newline",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/pin-version-0",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/pin-version-3",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/pin-version-True",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/profile1-rejects2/admission",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/profile1-rejects2/boundary",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/profile1-rejects2/cutoff",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/profile1-rejects2/pin",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/profile1-rejects2/publication",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/profile2-rejects1/admission",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/profile2-rejects1/boundary",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/profile2-rejects1/cutoff",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/profile2-rejects1/pin",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/profile2-rejects1/publication",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/publication/boolean-version",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/publication/excludes-ownership_log",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/publication/excludes-result_checkpoint",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/publication/excludes-result_statement",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/publication/excludes-seed_checkpoint",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/publication/excludes-seed_declaration",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/publication/statement-version-stays-one",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/publication/wrong-role",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/same-admission-key-foreign-pin",
+    "github.com/taytr-llc/slug/registry/TestOperatorReferenceRegistryRefusals/v2/unknown-member",
+    "github.com/taytr-llc/slug/registry/TestPublicBothAdmissionPathsAtomicOutbox",
+    "github.com/taytr-llc/slug/registry/TestPublicBoundaryOriginalDeadlineAndOwnerClose",
+    "github.com/taytr-llc/slug/registry/TestPublicCapacityClassificationAndPrewriteRefusal",
+    "github.com/taytr-llc/slug/registry/TestPublicCutoffCapacityChecksPredecessorAndStoredNamespaces",
+    "github.com/taytr-llc/slug/registry/TestPublicLogicalCapacityDoesNotMaskInvalidMetadata",
+    "github.com/taytr-llc/slug/registry/TestPublicPendingChainExactOwnerReopen",
+    "github.com/taytr-llc/slug/registry/TestPublicPendingChainOtherKindUntouched",
+    "github.com/taytr-llc/slug/registry/TestPublicPendingCutoffExactReadAndReopen",
+    "github.com/taytr-llc/slug/registry/TestPublicPendingCutoffLeavesOtherKind",
+    "github.com/taytr-llc/slug/registry/TestPublicPreparedChainExactIntentAndReopen",
+    "github.com/taytr-llc/slug/registry/TestReadOnlyExportAndClosedHandle",
+    "github.com/taytr-llc/slug/registry/TestRecordDefensiveCopiesAndBoundedPages",
+    "github.com/taytr-llc/slug/registry/TestRecordReopenAndDuplicatePreserveFirstEvidence",
+    "github.com/taytr-llc/slug/registry/TestRecoverableIssueIndependentIntentsAndBounds",
+    "github.com/taytr-llc/slug/registry/TestRecoverableIssueIndependentProfiles",
+    "github.com/taytr-llc/slug/registry/TestRecoverableIssuerAuditReverseAndUncertainCommit",
+    "github.com/taytr-llc/slug/registry/TestRecoverableIssuerExactReplaySealAndReopen",
+    "github.com/taytr-llc/slug/registry/TestRecoverableIssuerFailedFileCloseRetainsOriginal",
+    "github.com/taytr-llc/slug/registry/TestRecoverableIssuerFileSuccessAndFailureOwnership",
+    "github.com/taytr-llc/slug/registry/TestRegistryCorruptionFailsClosed",
+    "github.com/taytr-llc/slug/registry/TestRegistryCorruptionFailsClosed/altered_stored_DNA",
+    "github.com/taytr-llc/slug/registry/TestRegistryCorruptionFailsClosed/invalid_record_JSON",
+    "github.com/taytr-llc/slug/registry/TestRegistryCorruptionFailsClosed/missing_metadata",
+    "github.com/taytr-llc/slug/registry/TestRegistryCorruptionFailsClosed/missing_sequence",
+    "github.com/taytr-llc/slug/registry/TestRegistryCorruptionFailsClosed/oversized_record",
+    "github.com/taytr-llc/slug/registry/TestRegistryCorruptionFailsClosed/unknown_key",
+    "github.com/taytr-llc/slug/registry/TestRegistryCorruptionFailsClosed/wrong_sequence_target",
+    "github.com/taytr-llc/slug/registry/TestRegistryCrossProcessLock",
+    "github.com/taytr-llc/slug/registry/TestRegistrySubprocessHelper",
+    "github.com/taytr-llc/slug/registry/TestRejectedEvidenceDoesNotConsumeSequence",
+    "github.com/taytr-llc/slug/registry/TestRejectedEvidenceDoesNotConsumeSequence/uncommitted_gym",
+    "github.com/taytr-llc/slug/registry/TestRejectedEvidenceDoesNotConsumeSequence/wrong_genesis",
+    "github.com/taytr-llc/slug/registry/TestRejectedEvidenceDoesNotConsumeSequence/wrong_network",
+    "github.com/taytr-llc/slug/registry/TestSynchronizedJobAndBirthSurviveProcessKill",
+    "github.com/taytr-llc/slug/registry/TestSynchronizedJobAndBirthSurviveProcessKill/birth",
+    "github.com/taytr-llc/slug/registry/TestSynchronizedJobAndBirthSurviveProcessKill/expired-observation",
+    "github.com/taytr-llc/slug/registry/TestSynchronizedJobAndBirthSurviveProcessKill/issue",
+    "github.com/taytr-llc/slug/registry/TestUnknownSchemaAndMarkerFailClosed",
+    "github.com/taytr-llc/slug/registry/TestUnknownSchemaAndMarkerFailClosed/foreign_application",
+    "github.com/taytr-llc/slug/registry/TestUnknownSchemaAndMarkerFailClosed/future_version",
+    "github.com/taytr-llc/slug/registry/TestUnknownSchemaAndMarkerFailClosed/missing",
+    "github.com/taytr-llc/slug/registry/TestWriteFailurePoisonsHandleAndReconcilesAfterReopen",
+    "github.com/taytr-llc/slug/registry/TestWriteFailurePoisonsHandleAndReconcilesAfterReopen/error_after_commit=false",
+    "github.com/taytr-llc/slug/registry/TestWriteFailurePoisonsHandleAndReconcilesAfterReopen/error_after_commit=true",
+    "github.com/taytr-llc/slug/registry/TestZeroDigestIsAValidAbsentIdentifier"
+  ],
+  "profile_unchanged": true,
+  "scope": "full affected legacy and Set80 regression",
+  "skipped_tests": [
+    {
+      "action": "skip",
+      "admitted": true,
+      "category": "normal-profile-only-cheap-control",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "reason": "cheap profile only",
+      "test": "TestDailyOperatorCheapRefusal"
+    },
+    {
+      "action": "skip",
+      "admitted": true,
+      "category": "normal-profile-only-cheap-control",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "reason": "cheap profile refusal",
+      "test": "TestDailyPublicBindingCheapRefusal"
+    },
+    {
+      "action": "skip",
+      "admitted": true,
+      "category": "normal-profile-only-cheap-control",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "reason": "cheap profile only",
+      "test": "TestOperatorAdmissionCheapRefusal"
+    },
+    {
+      "action": "skip",
+      "admitted": true,
+      "category": "normal-profile-only-cheap-control",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "reason": "explicit cheap-profile refusal",
+      "test": "TestPoolCheapProfileRefusesBeforeStorage"
+    },
+    {
+      "action": "skip",
+      "admitted": true,
+      "category": "normal-profile-only-cheap-control",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "reason": "cheap profile control",
+      "test": "TestRecoverableSourceCheapRefusesBeforeEffects"
+    },
+    {
+      "action": "skip",
+      "admitted": true,
+      "category": "normal-profile-only-cheap-control",
+      "package": "github.com/taytr-llc/slug/registry",
+      "reason": "cheap-profile refusal control",
+      "test": "TestOperatorReferenceCheapCheckpointRefusals"
+    }
+  ],
+  "slice": "core",
+  "sources_unchanged": true,
+  "test_exclusions": [],
+  "top_level_pass_count": 142,
+  "top_level_skip_count": 6,
+  "top_level_tests": [
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestAccountingFixedTailAndImmutableDeliveryProjection"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestAccountingOmitsPendingAndRefusesInvalidAccess"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestDailyOperatorAliasesCountWholeBudget"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestDailyOperatorAuditPrecedenceAndOriginalMetadata"
+    },
+    {
+      "action": "skip",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestDailyOperatorCheapRefusal"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestDailyOperatorDerivedFullUnseenCanonicalReopen"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestDailyOperatorDrainOnlyPendingAndPostCeilingHold"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestDailyOperatorFinalSessionClockAndCapacityError"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestDailyOperatorOriginalCancellationCloseAndErrorClass"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestDailyOperatorPhysicalFullAuditAndLegacyParity"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestDailyOperatorSelectionMembershipAndOwnedBudget"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestDailyOperatorSourceHoldbackBeforeIssuer"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestDailyOperatorUncertainCommitAndExactSavedRecovery"
+    },
+    {
+      "action": "skip",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestDailyPublicBindingCheapRefusal"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestDailyPublicBindingOriginalOwner"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestDailySource721OriginalJobsAndReopen"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestDailySourceCanonicalStorageRefusals"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestDailySourceCheapRefusesBeforeEffects"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestDailySourceFailedFileCloseRetainsOwner"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestDailySourceIndependentGrammarAndKeys"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestDailySourceMemoOwnedWarmColdAndTamper"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestDailySourceModesCancellationAndLimits"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestLateWinnerRealRPCBinding"
+    },
+    {
+      "action": "skip",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestOperatorAdmissionCheapRefusal"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestOperatorAdmissionDrainJoinsOriginalWriter"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestOperatorAdmissionFiniteRowsAndSavedRecovery"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestOperatorAdmissionOriginalBindingCountersAndLegacyHold"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestOperatorAdmissionPublicCapacityOriginalGateOnly"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestOperatorCanonicalRecoveryAliasesRetainDistinctRows"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestOperatorCanonicalRecoveryPhysicalAndFinancialRefusal"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestOperatorCanonicalRecoveryRefusesNoncanonicalAndWrongSession"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestOperatorCanonicalRecoveryRevocationAndFinalClock"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestOperatorCanonicalRecoveryUncertainCommitReopen"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestOperatorCanonicalRecoveryUnseenAfterDrainAndReopen"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestPoolBlockOnlyNeedsCanonicalAndBroadcastIsDurable"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestPoolBusyAndCloseDrain"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestPoolCapacityStillAllowsRetainedWinnerRecovery"
+    },
+    {
+      "action": "skip",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestPoolCheapProfileRefusesBeforeStorage"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestPoolFinalAcceptanceDoesNotReusePreSyncTime"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestPoolLateUnknownAndRejectedAreNotCanonical"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestPoolLateWinnerRecoveryAndNoBirth"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestPoolMiningWorkSingleIssuanceAndOwnedRecovery"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestPoolOpenRejectsTamperedEvidenceAndConfig"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestPoolOrdinaryExpiryCurrentnessAndHistoricalDuplicate"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestPoolSessionFenceHoldsResetThroughActualBatch"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestPoolSessionFencePostCommitFailureRecoversExactlyOnce"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestPoolSessionFenceResetAndOtherGymDuringNodeWork"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestPoolSessionGuardsAndIssue"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestPoolUncertainCanonicalAcceptanceReconcilesOnce"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestPoolUncertainIntentNeverBroadcastsUntilReopen"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestRecoverableSourceCancellationAndReservedBytes"
+    },
+    {
+      "action": "skip",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestRecoverableSourceCheapRefusesBeforeEffects"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestRecoverableSourceExpiredUnusedAndSealedAbsence"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestRecoverableSourceIndependentReservation"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestRecoverableSourceProposalGapExactReopen"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "test": "TestRecoverableSourceUncertainCommitAndNamespaceCensus"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "FuzzManifestStorageCodec"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestAcknowledgedAdmissionSurvivesAbruptProcessExit"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestAuthenticatedFirstAdmissionGuardFailureWritesNothing"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestAuthenticatedSchemaAndImmutableReplay"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestAuthenticatedWriteOutcomeAndCorruption"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestBirthExpiryFinalCheckAndPersistentClock"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestBirthFinalGuardCannotMutateVerifiedProof"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestBirthHistoricalReplayAndMultipleProspects"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestBirthRejectsUnknownJobsRebindingAndLegacyBypass"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestBirthStoredJobAndClockCorruptionFailsClosed"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestBirthSubprocessCrashHelper"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestCheckedAdmissionGuardsWritesAndReplay"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestConcurrentDuplicateAdmission"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestCreateValidatesChainIdentity"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestInfoTracksDurableCountsAndFailsClosed"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestJobAndBirthUncertainWritesReconcile"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestJobIssuanceDurabilityAndBoundaries"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestLiveSequenceGapFailsClosed"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestAdmissionWriteUncertaintyReconciles"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestCanonicalOwnershipAndConcurrentDuplicates"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestCloseDrainsAndRetainsFailure"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestCodecLimits"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestCreateRefusesBeforeFilesystemAndRetainsIncomplete"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestCreationPinsAndLegacyIsolation"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestDuplicateReuseRequiresCompleteProofEquality"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestFinalExpiryAndClockRecovery"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestIndependentAdmissionAndHistoricalRecovery"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestIndependentStorageBoundaries"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestIssuanceClockAndUncertainOutcome"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestMalformedIndexAndLivePageFailure"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestMetadataCanonicalBoundsAndCorruption"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestPageEightThenOneRealProductionProofs"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestReadsDoNotTrustStoredWorkSummaries"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestRealProcessKillDurability"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestRejectedEvidenceNeverAllocates"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestStagedAdmissionChangedDuplicateAndSourceRejected"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestStagedAdmissionExpiryPersistsAcrossRestart"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestStagedAdmissionFinalGuardAndUncertainty"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestStagedAdmissionsMatchIndependentEvidenceAndOwnSlices"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestStagedCommitNeverWaitsForRegistryGate"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestStagedIssueMatchesIndependentJobs"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestStagedIssueRejectsStaleHandlesAndGuard"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestStagedNilHandleAccessors"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestSubprocessCrashHelper"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestTryInfoOwnedNonblockingState"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestTryJobCancellationAndClosedState"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestManifestTryJobOriginalReadOnlyAndNonblocking"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestMiningEligibilityCorruptionFailsClosedOnOpen"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestMiningEligibilityPersistsAndHistoricalReplayDoesNotReclassify"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestMiningEligibilityTargetEqualityAndZeroDigest"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestMiningEligibilityUncertainAtomicReceiptReconciles"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestMiningFinalExpiryAfterEligibilityAndPersistentClock"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestMiningRejectsUnboundObservationsAndNonwinningWork"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestMiningSchemaRequiresExplicitOptIn"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestNameV2IndependentStaticBindings"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestNameV2RegistryRetainsCompleteDescriptor"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestOpenDoesNotCreateOrInitializeForeignDirectories"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestOperatorCheckpointImportAndMissingCutoffRefusal"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestOperatorManifestAdmissionOutboxAndSignerJoin"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestOperatorManifestGuardsAndAudit"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestOperatorPreparedChainExactOwnerAndReopen"
+    },
+    {
+      "action": "skip",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestOperatorReferenceCheapCheckpointRefusals"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestOperatorReferenceGuardsCheckpointRoles"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestOperatorReferenceRegistryPositiveBytes"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestOperatorReferenceRegistryRefusals"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestPublicBothAdmissionPathsAtomicOutbox"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestPublicBoundaryOriginalDeadlineAndOwnerClose"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestPublicCapacityClassificationAndPrewriteRefusal"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestPublicCutoffCapacityChecksPredecessorAndStoredNamespaces"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestPublicLogicalCapacityDoesNotMaskInvalidMetadata"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestPublicPendingChainExactOwnerReopen"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestPublicPendingChainOtherKindUntouched"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestPublicPendingCutoffExactReadAndReopen"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestPublicPendingCutoffLeavesOtherKind"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestPublicPreparedChainExactIntentAndReopen"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestReadOnlyExportAndClosedHandle"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestRecordDefensiveCopiesAndBoundedPages"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestRecordReopenAndDuplicatePreserveFirstEvidence"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestRecoverableIssueIndependentIntentsAndBounds"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestRecoverableIssueIndependentProfiles"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestRecoverableIssuerAuditReverseAndUncertainCommit"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestRecoverableIssuerExactReplaySealAndReopen"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestRecoverableIssuerFailedFileCloseRetainsOriginal"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestRecoverableIssuerFileSuccessAndFailureOwnership"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestRegistryCorruptionFailsClosed"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestRegistryCrossProcessLock"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestRegistrySubprocessHelper"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestRejectedEvidenceDoesNotConsumeSequence"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestSynchronizedJobAndBirthSurviveProcessKill"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestUnknownSchemaAndMarkerFailClosed"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestWriteFailurePoisonsHandleAndReconcilesAfterReopen"
+    },
+    {
+      "action": "pass",
+      "package": "github.com/taytr-llc/slug/registry",
+      "test": "TestZeroDigestIsAValidAbsentIdentifier"
+    }
+  ],
+  "unexpected_skips": [],
+  "version": 1
+}

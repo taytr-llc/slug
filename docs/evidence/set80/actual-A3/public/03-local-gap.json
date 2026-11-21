@@ -1,0 +1,19 @@
+{
+  "records": 0,
+  "pending": 0,
+  "requests": 1,
+  "active_request_id": "b21e3c3dc70121f8332365e615eefd01a14125b490ddf35a8d0875c46d89d382",
+  "logical_bytes": 119,
+  "reserved": 58785889,
+  "meta_sha256": "52f87a3b9e52c04480392d538a74c3196689b37d85ae47669c4cd19bb38e3702",
+  "meta_bytes": 1863,
+  "marker_sha256": "4be37ad9e1dd31a2a251d15f74b1107d4a6a980d82c54b01ef9263c97ac5cab7",
+  "scan_sha256": "",
+  "scan_request_id": "",
+  "cursor_sha256": "",
+  "next_nonce": 0,
+  "requests_sha256": "371fefc234f5d5423053444c810b3147a63bd9a055a0bd431e252eb6494939f1",
+  "rows_sha256": "b76015bdbdcc273956600674de4baef15d5ec16e1cfafeeeedb9e56636627ef4",
+  "namespace_rows": 2,
+  "read_only_unchanged": true
+}

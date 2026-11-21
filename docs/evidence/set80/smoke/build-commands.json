@@ -1,0 +1,140 @@
+[
+  {
+    "command": [
+      "go",
+      "list",
+      "-deps",
+      "-json",
+      ".",
+      "./cmd/slugctl"
+    ],
+    "pid": 82911,
+    "pgid": 82911,
+    "exit_code": 0,
+    "seconds": 0.258,
+    "timed_out": false,
+    "log_limit_exceeded": false,
+    "log_joined": true,
+    "capture_errors": [],
+    "log_errors": [],
+    "cleanup": {
+      "pid": 82911,
+      "pgid": 82911,
+      "leftover_after_exit": false,
+      "signals": [],
+      "group_empty": true,
+      "errors": [],
+      "return_code": 0
+    }
+  },
+  {
+    "command": [
+      "sh",
+      "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+      "build",
+      "-p=1",
+      "-o",
+      "/Users/taytrrip/slug/artifacts/set80/smoke-attempt1/bin/slugd",
+      "."
+    ],
+    "pid": 82920,
+    "pgid": 82920,
+    "exit_code": 0,
+    "seconds": 1.524,
+    "timed_out": false,
+    "log_limit_exceeded": false,
+    "log_joined": true,
+    "capture_errors": [],
+    "log_errors": [],
+    "cleanup": {
+      "pid": 82920,
+      "pgid": 82920,
+      "leftover_after_exit": false,
+      "signals": [],
+      "group_empty": true,
+      "errors": [],
+      "return_code": 0
+    }
+  },
+  {
+    "command": [
+      "go",
+      "version",
+      "-m",
+      "/Users/taytrrip/slug/artifacts/set80/smoke-attempt1/bin/slugd"
+    ],
+    "pid": 82941,
+    "pgid": 82941,
+    "exit_code": 0,
+    "seconds": 0.011,
+    "timed_out": false,
+    "log_limit_exceeded": false,
+    "log_joined": true,
+    "capture_errors": [],
+    "log_errors": [],
+    "cleanup": {
+      "pid": 82941,
+      "pgid": 82941,
+      "leftover_after_exit": false,
+      "signals": [],
+      "group_empty": true,
+      "errors": [],
+      "return_code": 0
+    }
+  },
+  {
+    "command": [
+      "sh",
+      "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+      "build",
+      "-p=1",
+      "-o",
+      "/Users/taytrrip/slug/artifacts/set80/smoke-attempt1/bin/slugctl",
+      "./cmd/slugctl"
+    ],
+    "pid": 82942,
+    "pgid": 82942,
+    "exit_code": 0,
+    "seconds": 0.528,
+    "timed_out": false,
+    "log_limit_exceeded": false,
+    "log_joined": true,
+    "capture_errors": [],
+    "log_errors": [],
+    "cleanup": {
+      "pid": 82942,
+      "pgid": 82942,
+      "leftover_after_exit": false,
+      "signals": [],
+      "group_empty": true,
+      "errors": [],
+      "return_code": 0
+    }
+  },
+  {
+    "command": [
+      "go",
+      "version",
+      "-m",
+      "/Users/taytrrip/slug/artifacts/set80/smoke-attempt1/bin/slugctl"
+    ],
+    "pid": 82960,
+    "pgid": 82960,
+    "exit_code": 0,
+    "seconds": 0.012,
+    "timed_out": false,
+    "log_limit_exceeded": false,
+    "log_joined": true,
+    "capture_errors": [],
+    "log_errors": [],
+    "cleanup": {
+      "pid": 82960,
+      "pgid": 82960,
+      "leftover_after_exit": false,
+      "signals": [],
+      "group_empty": true,
+      "errors": [],
+      "return_code": 0
+    }
+  }
+]

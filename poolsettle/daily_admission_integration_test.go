@@ -9,14 +9,17 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"fmt"
 	"os"
 	"reflect"
 	"strconv"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/taytr-llc/slug/internal/poolcapacity"
 	"github.com/taytr-llc/slug/poolshare"
+	"github.com/taytr-llc/slug/prospectwork"
 )
 
 type dailyAdmissionKernelReference struct {
@@ -92,11 +95,41 @@ func dailyAdmissionKernelAttach(t *testing.T, h *lateWinnerOwners, ref dailyAdmi
 // signing backend are controlled. Real wall expiry/schema16/fresh process are
 // qualified separately by TestDailyAdmissionActualLateWinnerFreshProcess.
 func TestDailyAdmissionFullIntakePreservesPendingPayoutAcrossOwners(t *testing.T) {
+	dailyAdmissionFullIntakePreservesPendingPayout(t, false)
+}
+
+// This selected-mode extension waits for the original job's real wall expiry.
+// It uses normal PoW and original durable owners; node canonicality and the
+// funding/signing backend remain explicitly controlled, not real-node evidence.
+func TestRecoverableDailyFullIntakeExpiredWinnerPreservesPendingPayout(t *testing.T) {
+	dailyAdmissionFullIntakePreservesPendingPayout(t, true)
+}
+
+func dailyAdmissionFullIntakePreservesPendingPayout(t *testing.T, recoverable bool) {
 	ref := dailyAdmissionKernelReferenceRead(t)
-	h := dailyIntegrationFixtureWithCapacity(t, &ref.Capacity.Input)
+	h := dailyIntegrationFixtureWithIssueSelection(t, &ref.Capacity.Input, 8, recoverable)
 	ctx := context.Background()
+	issue := func(token string) (poolshare.Work, error) {
+		if !recoverable {
+			return h.pool.Issue(ctx, token)
+		}
+		h.issueRequest++
+		requestID := fmt.Sprintf("%064x", h.issueRequest)
+		result, err := h.pool.ResumeIssue(ctx, token, requestID)
+		if err != nil {
+			return poolshare.Work{}, err
+		}
+		if result.State != "work" || result.Work == nil {
+			t.Fatal("expected exact completed issuance", result)
+		}
+		prepared, err := prospectwork.PrepareManifestWork(result.Work.Job, result.Work.Template, h.poolConfig.PayoutAddress, 0, h.poolConfig.PoolTarget)
+		if err != nil {
+			return poolshare.Work{}, err
+		}
+		return poolshare.Work{Job: result.Work.Job, PoolTarget: h.poolConfig.PoolTarget, Candidate: prepared.Candidate()}, nil
+	}
 	dailyAdmissionKernelAttach(t, h, ref, true)
-	a, err := h.pool.Issue(ctx, "gym-a")
+	a, err := issue("gym-a")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -123,11 +156,43 @@ func TestDailyAdmissionFullIntakePreservesPendingPayoutAcrossOwners(t *testing.T
 	}
 	original := clone(*v.pending)
 	body := dailyIntegrationRaw(t, h.settlement, dailyNumber("b/", 1))
+	retainedRows := make(map[string][]byte)
+	it := h.settlement.db.NewIterator(nil, nil)
+	for it.Next() {
+		key := string(it.Key())
+		if key != "head" && key != "report" && !strings.HasPrefix(key, "bs/") {
+			retainedRows[key] = append([]byte(nil), it.Value()...)
+		}
+	}
+	iteratorErr := it.Error()
+	it.Release()
+	if iteratorErr != nil {
+		t.Fatal(iteratorErr)
+	}
+	aPending := true
 	if len(original.Inputs) != 1 || len(original.Payments) != 1 || original.Payments[0].GymID != a.Job.GymID || original.Payments[0].Atoms != ref.Kernel.Payment || original.FeeAtoms != ref.Kernel.Fee || original.Change == nil || original.Change.Atoms != ref.Kernel.Change {
 		t.Fatal("independent pending A economics", original)
 	}
 	assertA := func() {
 		t.Helper()
+		for key, want := range retainedRows {
+			if !bytes.Equal(want, dailyIntegrationRaw(t, h.settlement, []byte(key))) {
+				t.Fatal("original A credit, claims, payment or index changed", key)
+			}
+		}
+		if aPending {
+			view := dailyIntegrationView(t, h, 1, 1, 1)
+			if view.pending == nil {
+				t.Fatal("original pending payout disappeared")
+			}
+			current := clone(*view.pending)
+			// Delivery may advance during RecoverPending; every signed payment,
+			// input claim and immutable body field must stay exactly original.
+			current.State = original.State
+			if !reflect.DeepEqual(current, original) {
+				t.Fatal("original complete reserved payout changed")
+			}
+		}
 		if !bytes.Equal(body, dailyIntegrationRaw(t, h.settlement, dailyNumber("b/", 1))) || h.backend.signs != 1 || h.backend.quotes != 1 || base.signCalls != 1 || base.broadcasts != 1 || len(base.broadcastBytes) != 1 || hex.EncodeToString(base.broadcastBytes[0]) != original.Raw {
 			t.Fatal("A rewritten, resigned or sent again")
 		}
@@ -138,12 +203,12 @@ func TestDailyAdmissionFullIntakePreservesPendingPayoutAcrossOwners(t *testing.T
 	h.node.template.Context.ParentHeight = h.node.tip
 	h.node.template.Block.PreviousHash = h.node.template.Context.ParentHash
 	h.node.template.Block.Height = int64(h.node.tip) + 1
-	b, err := h.pool.Issue(ctx, "gym-b")
+	b, err := issue("gym-b")
 	if err != nil {
 		t.Fatal(err)
 	}
 	wb, _ := lateWinnerSearch(t, h, b, false)
-	c, err := h.pool.Issue(ctx, "gym-a")
+	c, err := issue("gym-a")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -159,18 +224,45 @@ func TestDailyAdmissionFullIntakePreservesPendingPayoutAcrossOwners(t *testing.T
 	if err != nil || info.Jobs != 3 || info.Records != 0 {
 		t.Fatal(info, err)
 	}
-	if _, err := h.pool.Issue(ctx, "gym-a"); err != poolshare.ErrCapacity {
+	if _, err := issue("gym-a"); err != poolshare.ErrCapacity {
 		t.Fatal("ordinary issue did not drain", err)
 	}
 	if after, err := h.issuer.Info(); err != nil || !reflect.DeepEqual(after, info) {
 		t.Fatal("drain changed issuer", after, err)
+	}
+	if recoverable {
+		if _, err := h.pool.Submit(ctx, "gym-a", b.Job.ID, wb.Nonce); err != poolshare.ErrUnauthorized {
+			t.Fatal("wrong gym recovered B", err)
+		}
+		// No test clock or expiry rewrite: the same issued job must really expire.
+		waitCtx, cancel := context.WithTimeout(ctx, 330*time.Second)
+		defer cancel()
+		for time.Now().UnixMilli() < b.Job.ExpiresAtMS {
+			delay := time.Until(time.UnixMilli(b.Job.ExpiresAtMS))
+			if delay > time.Second {
+				delay = time.Second
+			}
+			timer := time.NewTimer(delay)
+			select {
+			case <-timer.C:
+			case <-waitCtx.Done():
+				timer.Stop()
+				t.Fatal("original real expiry deadline", waitCtx.Err())
+			}
+		}
+		t.Logf("original B expired: issued=%d expires=%d observed=%d", b.Job.IssuedAtMS, b.Job.ExpiresAtMS, time.Now().UnixMilli())
+		assertA()
 	}
 	if _, err := h.pool.Submit(ctx, "gym-b", b.Job.ID, wb.Nonce); err != poolshare.ErrNode {
 		t.Fatal("noncanonical new winner admitted", err)
 	}
 	h.node.canonical[wb.WorkHash], h.node.tip = true, b.Job.Context.ParentHeight+1
 	late, err := h.pool.Submit(ctx, "gym-b", b.Job.ID, wb.Nonce)
-	if err != nil || late.Sequence != 3 || late.AcceptedSequence != 3 || !late.Block || late.BlockState != "canonical-observed" || late.Acceptance != "canonical-winning-block" {
+	acceptance := "canonical-winning-block"
+	if recoverable {
+		acceptance = "canonical-late-winner"
+	}
+	if err != nil || late.Sequence != 3 || late.AcceptedSequence != 3 || !late.Block || late.BlockState != "canonical-observed" || late.Acceptance != acceptance {
 		t.Fatal(late, err)
 	}
 	if _, err := h.rounds.Sync(ctx); err != nil {
@@ -209,6 +301,7 @@ func TestDailyAdmissionFullIntakePreservesPendingPayoutAcrossOwners(t *testing.T
 	if report, err = h.settlement.RecoverPending(ctx); err != nil || report.State != "complete" {
 		t.Fatal(report, err)
 	}
+	aPending = false
 	dailyIntegrationView(t, h, 1, 1, 0)
 	assertA()
 	// Explicit controlled funding: A change is ready, B coinbase is immature.

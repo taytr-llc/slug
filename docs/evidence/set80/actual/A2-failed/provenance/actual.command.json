@@ -1,0 +1,39 @@
+{
+  "capture_errors": [],
+  "cleanup": {
+    "errors": [],
+    "group_empty": true,
+    "leftover_after_exit": false,
+    "pgid": 85367,
+    "pid": 85367,
+    "return_code": 1,
+    "signals": []
+  },
+  "command": [
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/bin/issue-recovery-actual",
+    "--case",
+    "A",
+    "--node",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/bin/slugd",
+    "--operator",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/bin/slugpoold",
+    "--helper",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/bin/slugpilot",
+    "--artifacts",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned",
+    "--reference",
+    "/Users/taytrrip/slug/artifacts/set80/actual-reference-attempt1/python314.json",
+    "--old-reference",
+    "/Users/taytrrip/slug/set80-prep/actual-recovery/inputs/path-c-reference.json",
+    "--base-reference",
+    "/Users/taytrrip/slug/set80-prep/actual-recovery/inputs/base-reference.json"
+  ],
+  "exit_code": 1,
+  "log_errors": [],
+  "log_joined": true,
+  "log_limit_exceeded": false,
+  "pgid": 85367,
+  "pid": 85367,
+  "seconds": 24.269,
+  "timed_out": false
+}

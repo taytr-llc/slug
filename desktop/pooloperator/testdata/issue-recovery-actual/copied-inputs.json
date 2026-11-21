@@ -1,0 +1,180 @@
+{
+  "version": 1,
+  "scope": "Exact public source/reference copies; no runtime/private fixture reads",
+  "files": [
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-headless/main.go",
+      "copy": "inherited/path-c/main.go",
+      "bytes": 14081,
+      "sha256": "1fc1060c68105d3807c568eb7217fe33ecfcf148dc2c13b288bd5c25e6434ea2"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-headless/selection.go",
+      "copy": "inherited/path-c/selection.go",
+      "bytes": 6929,
+      "sha256": "e84e8563c197aae0795ed49e01cc41f6bf85efeed9979442192d5884d8052afc"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-headless/node_helpers.go",
+      "copy": "inherited/path-c/node_helpers.go",
+      "bytes": 8556,
+      "sha256": "2aed24b4ca1543331f95bccfdffb6118d43a83ec490c8c1bcf8206d2a44ba451"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-headless/runtime_helpers.go",
+      "copy": "inherited/path-c/runtime_helpers.go",
+      "bytes": 11411,
+      "sha256": "7b55b892d218f236ed0c4b6408f0f909996bb2ce1f8c20cea4a338de9ebb2caa"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-headless/operator_audit.go",
+      "copy": "inherited/path-c/operator_audit.go",
+      "bytes": 9605,
+      "sha256": "6f9c5e90841ed0b5362282749ceb6705380d1ab720dfc1ced2ea3653510d54fb"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-headless/work_evidence.go",
+      "copy": "inherited/path-c/work_evidence.go",
+      "bytes": 9795,
+      "sha256": "8b33fb269929580dee3543421b8d55a952fa3c99464aaf5426b192d3b77096fa"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-headless/payment.go",
+      "copy": "inherited/path-c/payment.go",
+      "bytes": 10011,
+      "sha256": "1483c0ec3882de879d2a2b8570422a45f4b6df70319c291cc6e1adea4b17edc8"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-headless/relay.go",
+      "copy": "inherited/path-c/relay.go",
+      "bytes": 4206,
+      "sha256": "2abc55505b26b680a9cf321a04cd57e5227ca5cdccd8dfe4534a9d4a8d98c69c"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-headless/cli_process.go",
+      "copy": "inherited/path-c/cli_process.go",
+      "bytes": 9454,
+      "sha256": "aab907a4038b10804611e0d6ea49ea6bb27fc64ecee8315ec90448dddbf65fc7"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-headless/go.mod",
+      "copy": "inherited/path-c/go.mod",
+      "bytes": 1371,
+      "sha256": "2800011a777f0d44ad9c035bba09a64889780529d2fede1df8b710b36532c026"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-headless/fixture-catalog.json",
+      "copy": "inherited/path-c/fixture-catalog.json",
+      "bytes": 66249,
+      "sha256": "2637978c2e08637dae2a21bf7fcb8e9ab37edb3476e2b9512c73ff16809b7e55"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-headless/fixture-public.json",
+      "copy": "inherited/path-c/fixture-public.json",
+      "bytes": 7244,
+      "sha256": "83bfe6cdd6020524199ba6abada82614fb67987b32b9fb96111bf6bddf879f23"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-headless/PLAN.md",
+      "copy": "inherited/path-c/PLAN.md",
+      "bytes": 4034,
+      "sha256": "31141ea19126aa37fa54226552c75e3a5d9c1256cbba9d58ff06ae6d5ef47eb0"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-headless/README.md",
+      "copy": "inherited/path-c/README.md",
+      "bytes": 1707,
+      "sha256": "3293ca67314a8454b9440a9395bbeebbfa7927f81834b221506f545d1818f302"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-headless/source-manifest.json",
+      "copy": "inherited/path-c/source-manifest.json",
+      "bytes": 7207,
+      "sha256": "092fd06f36f300a7d17b43ad458bf58a814c4f8fa487c93ce7b535054138ccb4"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-headless/provenance.json",
+      "copy": "inherited/path-c/provenance.json",
+      "bytes": 2990,
+      "sha256": "aea1615cd731e731287d168916ed07e6ba62d6abf3e03f938d7585b956472e21"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-actual/main.go",
+      "copy": "inherited/path-b/main.go",
+      "bytes": 39307,
+      "sha256": "6413d9086f770bd6d5433c8e88f155841cb0c133facd396ade391c96aac356a9"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-actual/late_flow.go",
+      "copy": "inherited/path-b/late_flow.go",
+      "bytes": 25249,
+      "sha256": "b963fdbf562ea2916f076942380a020a9070c5c1c8a1192d4bfb7272b7f83603"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-actual/late_audit.go",
+      "copy": "inherited/path-b/late_audit.go",
+      "bytes": 9296,
+      "sha256": "e80bcf271bfb60f81451ee08f40774af964374bf395770666f1e59351f688d5f"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-actual/node_helpers.go",
+      "copy": "inherited/path-b/node_helpers.go",
+      "bytes": 8444,
+      "sha256": "330ba64bdff3836b3a4d12f426e90e55fb2f4e2c6ecc3272b290597ac405e92b"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-actual/source-manifest.json",
+      "copy": "inherited/path-b/source-manifest.json",
+      "bytes": 4793,
+      "sha256": "866c7f2e5c8c48465bae90d1e93e22bc94631a4adbf6f2c6e87855cf279f0ae6"
+    },
+    {
+      "source": "/Users/taytrrip/slug/slug/testdata/issue-recovery/reference-v1.json",
+      "copy": "inputs/reference-v1.json",
+      "bytes": 6134980,
+      "sha256": "4bbe4eb9556ed5a894cee6ff565b0dcca805f27fea2d77cfe3a56242dc3dac91"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set80-prep/ISSUE_RECOVERY_ACCEPTANCE_PLAN.md",
+      "copy": "inputs/ISSUE_RECOVERY_ACCEPTANCE_PLAN.md",
+      "bytes": 13245,
+      "sha256": "1fcbd0b1e2216b9db33e1c477b06456c3adddf59a33d04353e4c43864111d9c1"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set80-prep/ISSUE_RECOVERY_CONTRACT.md",
+      "copy": "inputs/ISSUE_RECOVERY_CONTRACT.md",
+      "bytes": 27904,
+      "sha256": "f3e019a840d6b69d853350763364a3fc41f10ea899f00ed6f164db5d58a95610"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set79/attachment-reference-attempt1/python314.json",
+      "copy": "inputs/path-c-reference.json",
+      "bytes": 46498,
+      "sha256": "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386"
+    },
+    {
+      "source": "/Users/taytrrip/slug/slug/testdata/public-daily/reference-v1.json",
+      "copy": "inputs/base-reference.json",
+      "bytes": 3176583,
+      "sha256": "a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set80/actual-reference-attempt1/python314.json",
+      "copy": "inputs/actual-reference.json",
+      "bytes": 173644,
+      "sha256": "0f0890e529b64c10ed000673aab7861b9bd526057cc3c2bbbe05b868028f3d10"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-headless/fixture-catalog.json",
+      "copy": "fixture-catalog.json",
+      "bytes": 66249,
+      "sha256": "2637978c2e08637dae2a21bf7fcb8e9ab37edb3476e2b9512c73ff16809b7e55"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-headless/fixture-public.json",
+      "copy": "fixture-public.json",
+      "bytes": 7244,
+      "sha256": "83bfe6cdd6020524199ba6abada82614fb67987b32b9fb96111bf6bddf879f23"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "accepted": 0,
+  "batches": 0,
+  "births": 0,
+  "case": "B",
+  "completed": true,
+  "credits": 0,
+  "expiry_ms": 1795264878093,
+  "final_height": 2,
+  "job_id": "8d7c83d80b2e6a7aea0084479b57c1d3bd04a25fed20714d592d633387e0c4b5",
+  "read_only_unchanged": true,
+  "request_id": "c27b9d581b004e5906ffdfc298e7deb8a93044f3ecc57c7562415e28c6bfd6b5",
+  "resumed_at_ms": 1795264908974,
+  "send_count": 0,
+  "state": "issued_unused",
+  "submissions": 0,
+  "works": 0
+}

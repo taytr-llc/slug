@@ -45,6 +45,10 @@ func dailyIntegrationFixtureWithCapacity(t *testing.T, selected *poolcapacity.Da
 }
 
 func dailyIntegrationFixtureWithWorkLimit(t *testing.T, selected *poolcapacity.DailyInputs, works uint64) *lateWinnerOwners {
+	return dailyIntegrationFixtureWithIssueSelection(t, selected, works, false)
+}
+
+func dailyIntegrationFixtureWithIssueSelection(t *testing.T, selected *poolcapacity.DailyInputs, works uint64, recoverable bool) *lateWinnerOwners {
 	t.Helper()
 	h := &lateWinnerOwners{clock: time.Date(2030, 1, 1, 12, 0, 0, 0, time.UTC)}
 	t.Cleanup(func() {
@@ -114,10 +118,6 @@ func dailyIntegrationFixtureWithWorkLimit(t *testing.T, selected *poolcapacity.D
 	if e != nil {
 		t.Fatal(e)
 	}
-	h.issuer, e = registry.CreateOperatorManifestAuthority(filepath.Join(h.root, "issuer"), d, h.profile, h.owner)
-	if e != nil {
-		t.Fatal(e)
-	}
 	var corpus struct {
 		Sources []struct {
 			Name     string
@@ -168,7 +168,26 @@ func dailyIntegrationFixtureWithWorkLimit(t *testing.T, selected *poolcapacity.D
 		h.roundLimits.MaxRounds, h.roundLimits.MaxBytes = selected.Rounds, selected.RoundBytes
 		h.settleConfig.MaxRounds, h.settleConfig.MaxBatches = uint32(selected.CreditRounds), uint32(selected.Batches)
 	}
-	h.pool, e = poolshare.CreateDaily(context.Background(), filepath.Join(h.root, "pool"), h.poolConfig, h.issuer, h.node, h.sessions)
+	if recoverable {
+		// A library-level conditional profile, not a claim of a desktop Setup.
+		// The base fixture and financial expectations remain independently pinned.
+		sourceID, err := poolshare.DailyConfigID(h.poolConfig)
+		if err != nil {
+			t.Fatal(err)
+		}
+		h.issueProfile = &registry.IssueProfile{Version: 1, BaseSetupID: strings.Repeat("c", 64), SourceConfigID: sourceID, MaxRequests: h.poolConfig.MaxWorks}
+		h.issuer, e = registry.CreateRecoverableOperatorManifestAuthority(context.Background(), filepath.Join(h.root, "issuer"), d, h.profile, *h.issueProfile, h.owner)
+	} else {
+		h.issuer, e = registry.CreateOperatorManifestAuthority(filepath.Join(h.root, "issuer"), d, h.profile, h.owner)
+	}
+	if e != nil {
+		t.Fatal(e)
+	}
+	if recoverable {
+		h.pool, e = poolshare.CreateRecoverableDaily(context.Background(), filepath.Join(h.root, "pool"), h.poolConfig, *h.issueProfile, h.issuer, h.node, h.sessions)
+	} else {
+		h.pool, e = poolshare.CreateDaily(context.Background(), filepath.Join(h.root, "pool"), h.poolConfig, h.issuer, h.node, h.sessions)
+	}
 	if e != nil {
 		t.Fatal(e)
 	}
@@ -204,7 +223,11 @@ func dailyIntegrationReopen(t *testing.T, h *lateWinnerOwners) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	h.issuer, err = registry.OpenOperatorManifestAuthority(filepath.Join(h.root, "issuer"), h.profile, h.owner)
+	if h.issueProfile != nil {
+		h.issuer, err = registry.OpenRecoverableOperatorManifestAuthority(ctx, filepath.Join(h.root, "issuer"), h.profile, *h.issueProfile, h.owner)
+	} else {
+		h.issuer, err = registry.OpenOperatorManifestAuthority(filepath.Join(h.root, "issuer"), h.profile, h.owner)
+	}
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -218,7 +241,17 @@ func dailyIntegrationReopen(t *testing.T, h *lateWinnerOwners) {
 		}
 		t.Fatal("legacy source adopted V2 root", e)
 	}
-	h.pool, err = poolshare.OpenDaily(ctx, filepath.Join(h.root, "pool"), h.poolConfig, h.issuer, h.node, h.sessions)
+	if h.issueProfile != nil {
+		if wrong, e := poolshare.OpenDaily(ctx, filepath.Join(h.root, "pool"), h.poolConfig, h.issuer, h.node, h.sessions); e == nil || wrong != nil {
+			if wrong != nil {
+				_ = wrong.Close()
+			}
+			t.Fatal("old daily source adopted selected issuance root", e)
+		}
+		h.pool, err = poolshare.OpenRecoverableDaily(ctx, filepath.Join(h.root, "pool"), h.poolConfig, *h.issueProfile, h.issuer, h.node, h.sessions)
+	} else {
+		h.pool, err = poolshare.OpenDaily(ctx, filepath.Join(h.root, "pool"), h.poolConfig, h.issuer, h.node, h.sessions)
+	}
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -1,0 +1,715 @@
+{
+  "base_commit": "fdd40d8edd9a685613f1f667f0074e56ec4e7da5",
+  "base_commit_binding": "root-confirmed committed Set79; copied exact current public leaves remain independently hash-bound",
+  "files": [
+    {
+      "bytes": 3620,
+      "path": "inputs/set79/qualification.json",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "93509efd34524d269b521b444f52dc750f986db6b1308180798c1b0b751136fe",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/qualification.json"
+    },
+    {
+      "bytes": 16140,
+      "path": "inputs/set79/reference/PROPOSAL.md",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "e7d63d84d63b055b76b73633cf22e9848982c4251268b42d3a3266c57cf222e7",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/PROPOSAL.md"
+    },
+    {
+      "bytes": 4070,
+      "path": "inputs/set79/reference/README.md",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "f58f51af416332d67548d14c0cde09246fc58481aba3f6678f4f7c075087d7b9",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/README.md"
+    },
+    {
+      "bytes": 14503,
+      "path": "inputs/set79/reference/composition.py",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "76f3791f16dea0374310414f74c31e74bc4bca894fec756bf5fc7c4e6001022d",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/composition.py"
+    },
+    {
+      "bytes": 8356,
+      "path": "inputs/set79/reference/copied-inputs.json",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "e973f5304e7f4c55ee08ac3aea74a4c2eea1629f257ac34f8fe10477ce48504e",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/copied-inputs.json"
+    },
+    {
+      "bytes": 5913,
+      "path": "inputs/set79/reference/core.py",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "f7554311b65ebd8773cc75d124698bd41680224dde75173f66cafea4eec60685",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/core.py"
+    },
+    {
+      "bytes": 10650,
+      "path": "inputs/set79/reference/generate.py",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "3ca84c3b3e5a0a621d6133c51c3338502dd172cd392607db76e2824ac920c14e",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/generate.py"
+    },
+    {
+      "bytes": 8356,
+      "path": "inputs/set79/reference/input-catalog.json",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "e973f5304e7f4c55ee08ac3aea74a4c2eea1629f257ac34f8fe10477ce48504e",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/input-catalog.json"
+    },
+    {
+      "bytes": 29980,
+      "path": "inputs/set79/reference/inputs/admission-actual.json",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "1d2b1462296bd022c53df9dc583db3c38cd13a8e13e84f9983f2505b3aefb08f",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/admission-actual.json"
+    },
+    {
+      "bytes": 1200,
+      "path": "inputs/set79/reference/inputs/ca.pem",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "4bf9786af942540c8b9f0b5275dbf658d9950f523b199b77b07aa8921c6cbdbf",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/ca.pem"
+    },
+    {
+      "bytes": 81247,
+      "path": "inputs/set79/reference/inputs/capacity.json",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "2db086115f51b0c7e22d2fd7688ad5b46c56e238fa1346d709c9a19bebb7aa78",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/capacity.json"
+    },
+    {
+      "bytes": 25102,
+      "path": "inputs/set79/reference/inputs/contract.md",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "a6a30ab580f6463d30bd29c00a4c60d7d7b32e6d6d70560b761a7661cbd0da05",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/contract.md"
+    },
+    {
+      "bytes": 85070,
+      "path": "inputs/set79/reference/inputs/daily-actual.json",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "9bcb4b64505e38de193411dcf51fb19f4d1332cbb2af53d21904663848cb4955",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/daily-actual.json"
+    },
+    {
+      "bytes": 137913,
+      "path": "inputs/set79/reference/inputs/daily-scheduler.json",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "e2d493d4dd4db21306e5d78d4b7bfcad7b96ccd20255d1d7ed4eba48d2c1a108",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/daily-scheduler.json"
+    },
+    {
+      "bytes": 1080,
+      "path": "inputs/set79/reference/inputs/daily-wallet-recipe.json",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "97035d76e3f34f02c7ac0f85969f8f38cc8d9843a1a29ab919fc7181e83907cb",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/daily-wallet-recipe.json"
+    },
+    {
+      "bytes": 63872,
+      "path": "inputs/set79/reference/inputs/daily-wallet.json",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "9b8e52f41690db7ca1fee37c34f99dfcd0a7266b81a7793859871bd9b006ae30",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/daily-wallet.json"
+    },
+    {
+      "bytes": 5249,
+      "path": "inputs/set79/reference/inputs/frame-bounds.md",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "f6fd5e1876fb3ceb9b53d96df2556c2a1f245cb0b9a46f6c6d0e8315f3499bae",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/frame-bounds.md"
+    },
+    {
+      "bytes": 3411,
+      "path": "inputs/set79/reference/inputs/identities.json",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "361a08179c56d024836c45646de215024096d3a234fab93fe9566dbcd3c37a1c",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/identities.json"
+    },
+    {
+      "bytes": 3558,
+      "path": "inputs/set79/reference/inputs/identity-model.py",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "b7b9c078d9f4d9a9b1db2647e480dcd5441c9378b7211889338b4122664accd8",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/identity-model.py"
+    },
+    {
+      "bytes": 1207894,
+      "path": "inputs/set79/reference/inputs/manifest-admission.json",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "d32a8653c76c643addb3df091ca8d7dfdba66c2486f2ca305e718113f71d5794",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/manifest-admission.json"
+    },
+    {
+      "bytes": 8137,
+      "path": "inputs/set79/reference/inputs/miner-model.py",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "b4d2f765b3ade0c94499ecab9792270600a24e57fcc309b6756e76e26cc172a8",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/miner-model.py"
+    },
+    {
+      "bytes": 113223,
+      "path": "inputs/set79/reference/inputs/miner-v1.json",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "d6b517f13cb0f738ab5579e366416c40482bd22935b09fe53d9fa8da4151f4c5",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/miner-v1.json"
+    },
+    {
+      "bytes": 6295,
+      "path": "inputs/set79/reference/inputs/payout-case-plan.md",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "0c254430790a73c501d719e90bf6e91019aba2b7b4fecd1e47197e71a11fe877",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/payout-case-plan.md"
+    },
+    {
+      "bytes": 5618,
+      "path": "inputs/set79/reference/inputs/payout-common.py",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "0e041ebca683773cd844aa7ffb4920c7ba0e8d7ba988ec2eefaaaf5173eae72a",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/payout-common.py"
+    },
+    {
+      "bytes": 18072,
+      "path": "inputs/set79/reference/inputs/payout-generate.py",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "19d7f7ff6a4f9898c7f57c0a8c74147ff395dea74e8c357d0eb776889fdf8102",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/payout-generate.py"
+    },
+    {
+      "bytes": 2945128,
+      "path": "inputs/set79/reference/inputs/payout-history.json",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "7aaf45191dc4ac5d34d5ab930c2e6461d50f389ac22611278a897da938cc1825",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/payout-history.json"
+    },
+    {
+      "bytes": 33879,
+      "path": "inputs/set79/reference/inputs/pool-share.json",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "2210d992e618b7a0952736dede1263b678f1a7a2d55d14ccde1cc6b29317de87",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/pool-share.json"
+    },
+    {
+      "bytes": 10163,
+      "path": "inputs/set79/reference/inputs/provision-bytes.md",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "f938004d817ffa5b07cac64d24a470130180d2cb6743a5a0bc5ff40546df1948",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/provision-bytes.md"
+    },
+    {
+      "bytes": 14065,
+      "path": "inputs/set79/reference/inputs/provision-contract.md",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "3e0c1d771b99ca05e817e841c3ca3016550002484f0f926cb48193483da0a26e",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/provision-contract.md"
+    },
+    {
+      "bytes": 543515,
+      "path": "inputs/set79/reference/inputs/provision.json",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "8c3cde66c35b69dbc0f4daf516c271fb91358a988b591c363f65a106f25a401f",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/provision.json"
+    },
+    {
+      "bytes": 3500,
+      "path": "inputs/set79/reference/inputs/recipients.json",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "7bf54bc34de877bef5afd296cbdb9bf30f59d3589057e818a363bb7c6fd8547f",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/recipients.json"
+    },
+    {
+      "bytes": 7106,
+      "path": "inputs/set79/reference/inputs/remote-bytes.md",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "641297da441c33ce3a49eeceb4f462f7bb5f894f2cd85ac3a8acce072331ad80",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/remote-bytes.md"
+    },
+    {
+      "bytes": 13779,
+      "path": "inputs/set79/reference/inputs/remote-model.py",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "2636ad193f206ffc62aa547c4c43421a06e8e438a0bfb38501cad4fac8ffe3ea",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/remote-model.py"
+    },
+    {
+      "bytes": 1281,
+      "path": "inputs/set79/reference/inputs/remote-recipe.json",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "c56c5dbec593772d40037a48e6ccbec3155d6d431bccd863111733ecb9bbd669",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/remote-recipe.json"
+    },
+    {
+      "bytes": 563867,
+      "path": "inputs/set79/reference/inputs/remote-v1.json",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "5f67fcaaba0c78b97b0f116a4c598eb0ec62ee1436bbcf280edcc747856e5177",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/remote-v1.json"
+    },
+    {
+      "bytes": 1516,
+      "path": "inputs/set79/reference/inputs/root-selection.json",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "e6533d4af294a0cd4f1baf4471c2f7cc1cc5db92f18aaf67a251a519dcc78a08",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/root-selection.json"
+    },
+    {
+      "bytes": 3491,
+      "path": "inputs/set79/reference/inputs/setup-bytes.md",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "0c63dab5bcb0a63e6d48f50a53eabf9d77644b6ebc1783d4f5852004aeeb68cc",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/setup-bytes.md"
+    },
+    {
+      "bytes": 14002,
+      "path": "inputs/set79/reference/inputs/test-plan.md",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "3896b45cb46aab155e90f54a67c1d5a5083cbbe9b4b8a3cd3217deb90aeb1e61",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/test-plan.md"
+    },
+    {
+      "bytes": 36753,
+      "path": "inputs/set79/reference/inputs/wire-declarations/gbt.go.txt",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "c937eb70080ac95bb812c2f04670896558ddc1e7ee3afaf1c1763da3563f845b",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/wire-declarations/gbt.go.txt"
+    },
+    {
+      "bytes": 5121,
+      "path": "inputs/set79/reference/inputs/wire-declarations/manifest-job.go.txt",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "01ccdea190ec433e0d2aeba2bf3b2879081f978b6d8cc0b7671501a1a1a4324e",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/wire-declarations/manifest-job.go.txt"
+    },
+    {
+      "bytes": 17735,
+      "path": "inputs/set79/reference/inputs/wire-declarations/prospect.go.txt",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "d6a173252ea782517ef82b344bd050aaef4e0189cfc7e38096dc1a4207e142af",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/wire-declarations/prospect.go.txt"
+    },
+    {
+      "bytes": 1465,
+      "path": "inputs/set79/reference/inputs/wire-declarations/template.go.txt",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "e8a2bf0f628483f47c41d4319c5e3e105a325225511524ff096984a7a7fb96ea",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/wire-declarations/template.go.txt"
+    },
+    {
+      "bytes": 2611,
+      "path": "inputs/set79/reference/inputs/work-wire-order.json",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "fcd3c6ae7f568fc53bdd2497a1b7e85d4e78dfb914335f1d9809aefcd043df26",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/inputs/work-wire-order.json"
+    },
+    {
+      "bytes": 20308,
+      "path": "inputs/set79/reference/outbox.py",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "2e4b8a400dca9d8e456c14ab1109ea5e107d5f1b6c59ef5fa6e51037cc7c2e09",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/outbox.py"
+    },
+    {
+      "bytes": 13496,
+      "path": "inputs/set79/reference/payments.py",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "78c90b5b6eb4647fa89d1e7e445c1c898c026a6fd94bb9721f06085c0fe36a2d",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/payments.py"
+    },
+    {
+      "bytes": 7985,
+      "path": "inputs/set79/reference/producer-lock.approved.json",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "2cd8c34d414b14ce29c8964bb2357a2179d5554f105faf282f9e2da06e0d4ea5",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/producer-lock.approved.json"
+    },
+    {
+      "bytes": 2924,
+      "path": "inputs/set79/reference/recipe.json",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "ef476a40bc15e8a84cbeb25de322675c6235d4879988c6b3948c758eb970befc",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/recipe.json"
+    },
+    {
+      "bytes": 8141,
+      "path": "inputs/set79/reference/source-ready.json",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "58aa915366644dc3fc6326abee88e65c7708879e48e94412b0f3c675ee21d608",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/source-ready.json"
+    },
+    {
+      "bytes": 15263,
+      "path": "inputs/set79/reference/transport.py",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "9c0c5f069a3b79ce53a211957b07ba7b506b10a03d45f7dd28741d297f535354",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference/transport.py"
+    },
+    {
+      "bytes": 3176583,
+      "path": "inputs/set79/reference-v1.json",
+      "scope": "inherited independent corpus/source/qualification; documentary Python is never imported",
+      "sha256": "a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3",
+      "source_path": "/Users/taytrrip/slug/slug/testdata/public-daily/reference-v1.json"
+    },
+    {
+      "bytes": 4818,
+      "path": "inputs/declarations/registry/manifest_types.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "b6e7d94dfec78488445c46f4a78189dd05e0aa23defddecfb7953e90d6860ad3",
+      "source_path": "/Users/taytrrip/slug/slug/registry/manifest_types.go"
+    },
+    {
+      "bytes": 5078,
+      "path": "inputs/declarations/registry/manifest_jobs.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "23ec0a7c93daf8eab477a41b2d86ce87dc93907b76940eade7af18d6f9253ed1",
+      "source_path": "/Users/taytrrip/slug/slug/registry/manifest_jobs.go"
+    },
+    {
+      "bytes": 13480,
+      "path": "inputs/declarations/registry/manifest_staged.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "1e23b1761068084b0090760a7d5fc80c9afb40e919f7a5be4d54df27cfa11adb",
+      "source_path": "/Users/taytrrip/slug/slug/registry/manifest_staged.go"
+    },
+    {
+      "bytes": 11132,
+      "path": "inputs/declarations/registry/manifest_store.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "4d904619d83451708f64283ddd293575736802606db17e13db198c72425a7280",
+      "source_path": "/Users/taytrrip/slug/slug/registry/manifest_store.go"
+    },
+    {
+      "bytes": 13503,
+      "path": "inputs/declarations/registry/public_store.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "4a4bfed447f0c4a40c6a36dc77b10f4fdce3ba8c0e0abecb7ac139a4a9c104d6",
+      "source_path": "/Users/taytrrip/slug/slug/registry/public_store.go"
+    },
+    {
+      "bytes": 7750,
+      "path": "inputs/declarations/registry/public_audit.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "e4c552b9d6f20d47beb0bfaf1cf792bea4954abe0cd0f655949c50c20cd98791",
+      "source_path": "/Users/taytrrip/slug/slug/registry/public_audit.go"
+    },
+    {
+      "bytes": 13537,
+      "path": "inputs/declarations/registry/public_codec.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "e193442dbbbca6ddacb1ee3cdec052de1cee93c6dc47019f20ddef3d4620b532",
+      "source_path": "/Users/taytrrip/slug/slug/registry/public_codec.go"
+    },
+    {
+      "bytes": 3299,
+      "path": "inputs/declarations/registry/public_owner.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "461d72adfb06fca8d69c408ac047abecd67eed86dd50d6ac8d8e297586023848",
+      "source_path": "/Users/taytrrip/slug/slug/registry/public_owner.go"
+    },
+    {
+      "bytes": 3319,
+      "path": "inputs/declarations/registry/operator_store.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "0f331ecd2f3fb444d878d0baf4e641a896ac86c451b3cca833167d85fbc41840",
+      "source_path": "/Users/taytrrip/slug/slug/registry/operator_store.go"
+    },
+    {
+      "bytes": 6576,
+      "path": "inputs/declarations/poolshare/types.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "1a92c755631b9225d45fb02ff99ea10314038db8aec2e19dac52e44a1c38f9e8",
+      "source_path": "/Users/taytrrip/slug/slug/poolshare/types.go"
+    },
+    {
+      "bytes": 6027,
+      "path": "inputs/declarations/poolshare/config.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "73c830ca911fd77d3b71aa46d772847ccaa9edf3fd914bfa2fbe0c615425c73c",
+      "source_path": "/Users/taytrrip/slug/slug/poolshare/config.go"
+    },
+    {
+      "bytes": 21998,
+      "path": "inputs/declarations/poolshare/store.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "f3d70bd5c99a8aa4d71f6cf14017a6031652de456504a478834ba22ffcae3350",
+      "source_path": "/Users/taytrrip/slug/slug/poolshare/store.go"
+    },
+    {
+      "bytes": 13770,
+      "path": "inputs/declarations/poolshare/pool.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "6596f164ec0af80f9398f16ea629da3da1b34777dfdf13160618a894e6b937c1",
+      "source_path": "/Users/taytrrip/slug/slug/poolshare/pool.go"
+    },
+    {
+      "bytes": 4311,
+      "path": "inputs/declarations/poolshare/daily.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "b1514a1c9527d4498b049ce7215f34682ecac70c1cb254296896c258892b288b",
+      "source_path": "/Users/taytrrip/slug/slug/poolshare/daily.go"
+    },
+    {
+      "bytes": 5652,
+      "path": "inputs/declarations/poolshare/daily_operator_admission.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "bb798acb94318b638ce081bd93b99245a4b0f673ad763abb4a48d535ccd5d966",
+      "source_path": "/Users/taytrrip/slug/slug/poolshare/daily_operator_admission.go"
+    },
+    {
+      "bytes": 4222,
+      "path": "inputs/declarations/poolshare/daily_operator_audit.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "22b034da08dfa9efb04038c9302e927493d10c74ba9c4e60f561f6a79d7a2934",
+      "source_path": "/Users/taytrrip/slug/slug/poolshare/daily_operator_audit.go"
+    },
+    {
+      "bytes": 3758,
+      "path": "inputs/declarations/poolservice/types.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "896579293bf0bc941da7af5e30925f8217a0e08ab2bac8e6c67011bb0698d647",
+      "source_path": "/Users/taytrrip/slug/slug/poolservice/types.go"
+    },
+    {
+      "bytes": 1947,
+      "path": "inputs/declarations/poolservice/daily_types.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "c832ac944d6fdbc8204f716fbf71c6d8f7d26f4cd90c58e39ba0266679818771",
+      "source_path": "/Users/taytrrip/slug/slug/poolservice/daily_types.go"
+    },
+    {
+      "bytes": 3786,
+      "path": "inputs/declarations/poolservice/daily_config.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "421c469dc294d81b2f305deed560cb2cc07220f7542b05ea245936b69cb0d747",
+      "source_path": "/Users/taytrrip/slug/slug/poolservice/daily_config.go"
+    },
+    {
+      "bytes": 5012,
+      "path": "inputs/declarations/poolservice/daily_client.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "6b564e216ac4bef6f6df8240416e4a2d6a0805d4117c9cce737c0ee0f1ad92a0",
+      "source_path": "/Users/taytrrip/slug/slug/poolservice/daily_client.go"
+    },
+    {
+      "bytes": 8027,
+      "path": "inputs/declarations/poolservice/daily_server.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "d961a65eb8b25ebe3f8a8b7229d6cb456e2d093b8f63ba4a298b272963f7d706",
+      "source_path": "/Users/taytrrip/slug/slug/poolservice/daily_server.go"
+    },
+    {
+      "bytes": 2170,
+      "path": "inputs/declarations/prospectworker/pool_types.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "b5de03df57270cecbba416f2d15493873e633167a19941c0da20b323bf252e8e",
+      "source_path": "/Users/taytrrip/slug/slug/prospectworker/pool_types.go"
+    },
+    {
+      "bytes": 4609,
+      "path": "inputs/declarations/prospectworker/pool_daily.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "9cd17eef203aa4d3bd2e0f2de811c7795a3952e818f250dd65c5ebf325132ed1",
+      "source_path": "/Users/taytrrip/slug/slug/prospectworker/pool_daily.go"
+    },
+    {
+      "bytes": 2955,
+      "path": "inputs/declarations/prospectworker/pool_daily_issue.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "3f7273aa2115c85a8e4cd71991dc2166f233c67cfe6e2357792d13f3a9a30bae",
+      "source_path": "/Users/taytrrip/slug/slug/prospectworker/pool_daily_issue.go"
+    },
+    {
+      "bytes": 24384,
+      "path": "inputs/declarations/prospectworker/pool_outbox.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "677f21cb7c3bc9281b155ebf6e04eb676ab9e917efac917b5abf6dcecb8d1d3b",
+      "source_path": "/Users/taytrrip/slug/slug/prospectworker/pool_outbox.go"
+    },
+    {
+      "bytes": 12359,
+      "path": "inputs/declarations/prospectworker/pool_worker.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "c41937ec1d83b3cd2d54922e285b18b3acf9fe593febc6484b8ed1ef3bbfc36e",
+      "source_path": "/Users/taytrrip/slug/slug/prospectworker/pool_worker.go"
+    },
+    {
+      "bytes": 5121,
+      "path": "inputs/declarations/prospectjob/manifest_job.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "01ccdea190ec433e0d2aeba2bf3b2879081f978b6d8cc0b7671501a1a1a4324e",
+      "source_path": "/Users/taytrrip/slug/slug/prospectjob/manifest_job.go"
+    },
+    {
+      "bytes": 3076,
+      "path": "inputs/declarations/prospectjob/manifest_json.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "193134c005d8f19a0bdafe36068024867f591531520256671c9e7474e90d9978",
+      "source_path": "/Users/taytrrip/slug/slug/prospectjob/manifest_json.go"
+    },
+    {
+      "bytes": 1465,
+      "path": "inputs/declarations/prospectwork/types.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "e8a2bf0f628483f47c41d4319c5e3e105a325225511524ff096984a7a7fb96ea",
+      "source_path": "/Users/taytrrip/slug/slug/prospectwork/types.go"
+    },
+    {
+      "bytes": 10582,
+      "path": "inputs/declarations/desktop/pilot/remote_pool_config.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "6d8e04f4e6a07c3e87acc8b441594970a0d0387f932b3161606a3ed37b47ec7e",
+      "source_path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_config.go"
+    },
+    {
+      "bytes": 3396,
+      "path": "inputs/declarations/desktop/pilot/remote_pool_daily.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "8ab99634b37bde5052576267c4741c2f233eb078944a07b6c32b084153bf5396",
+      "source_path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily.go"
+    },
+    {
+      "bytes": 10946,
+      "path": "inputs/declarations/desktop/pilot/remote_pool_credentials.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "ec48efb802b63e0bc6afaaa739054cfe0a7d20a54dd1bb42fec860c7d7b40148",
+      "source_path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_credentials.go"
+    },
+    {
+      "bytes": 10496,
+      "path": "inputs/declarations/desktop/pilot/remote_pool_files_unix.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "74ad43bdd8db710b57b49b06b179aa87432cc642d4559b7cf19b4c45769f4991",
+      "source_path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_files_unix.go"
+    },
+    {
+      "bytes": 7325,
+      "path": "inputs/declarations/desktop/pooloperator/setup.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "5f919758ad747386157ebe08427714f9a0b5421a8a947da56e8510c49dea0494",
+      "source_path": "/Users/taytrrip/slug/slug/desktop/pooloperator/setup.go"
+    },
+    {
+      "bytes": 3747,
+      "path": "inputs/declarations/desktop/pooloperator/daily_setup.go.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "6192c440d21a875fe9f7e8c503221548fde080907332e8da5270fc8ec8315d69",
+      "source_path": "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_setup.go"
+    },
+    {
+      "bytes": 70806,
+      "path": "inputs/declarations/AGENTS.md.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "34e923d5f71a765462c0fc9cec59fc6294e2c15e295e77706f931846e13dfc63",
+      "source_path": "/Users/taytrrip/slug/slug/AGENTS.md"
+    },
+    {
+      "bytes": 14963,
+      "path": "inputs/declarations/POOL_PUBLIC_DAILY.md.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "a6da6a72fe1695a7a850b6aa822c992e9793b149ae217c0698243a34f1d9e2c1",
+      "source_path": "/Users/taytrrip/slug/slug/POOL_PUBLIC_DAILY.md"
+    },
+    {
+      "bytes": 4063,
+      "path": "inputs/declarations/POOL_DAILY_ADMISSION.md.txt",
+      "scope": "source grammar evidence; never executable dependency",
+      "sha256": "30068e22e61a42f4316f5753d809893b3807b27ef379db068cc368c1e794ddea",
+      "source_path": "/Users/taytrrip/slug/slug/POOL_DAILY_ADMISSION.md"
+    },
+    {
+      "bytes": 32005,
+      "path": "inputs/manifest-job/reference_manifest_jobs.py",
+      "scope": "prior independent job grammar/model; no imports",
+      "sha256": "2beaf985ae5f7851df4c945104e1c16559915dfb4ef23d6dfa4c019c0e8a4159",
+      "source_path": "/Users/taytrrip/slug/slug/registry/testdata/manifest/reference/inputs/job_reference/reference_manifest_jobs.py"
+    },
+    {
+      "bytes": 586790,
+      "path": "inputs/manifest-job/manifest_job_v1.json",
+      "scope": "prior independent job grammar/model; no imports",
+      "sha256": "34b9484db90fd6d9ca9d704ee1ac76843a717bddaeb38194df1932f77fe754ad",
+      "source_path": "/Users/taytrrip/slug/slug/registry/testdata/manifest/reference/inputs/job_reference/manifest_job_v1.json"
+    },
+    {
+      "bytes": 22651,
+      "path": "inputs/manifest-job/inputs/manifest-job-contract.md",
+      "scope": "prior independent job grammar/model; no imports",
+      "sha256": "6a761c2e78081178e45c493953b78759f721ad3772a4e1fe684f38ec5fb0cd66",
+      "source_path": "/Users/taytrrip/slug/slug/registry/testdata/manifest/reference/inputs/job_reference/inputs/manifest-job-contract.md"
+    },
+    {
+      "bytes": 13857,
+      "path": "inputs/manifest-job/verification.json",
+      "scope": "prior independent job grammar/model; no imports",
+      "sha256": "4c4509b3ce50acaf3747b41f221ccba35d1aef98cfaa3dfb165c73d5f0460025",
+      "source_path": "/Users/taytrrip/slug/slug/registry/testdata/manifest/reference/inputs/job_reference/verification.json"
+    },
+    {
+      "bytes": 19728,
+      "path": "inputs/selection/EXACT_REQUEST_ISSUE_PLAN.md",
+      "scope": "root-selected public Set80 design/contract",
+      "sha256": "7136b5aacffc71fdaa4c5063c3428bacd5a2db44bf1ad26b73fb26ab20c31cf2",
+      "source_path": "/Users/taytrrip/slug/set80-prep/EXACT_REQUEST_ISSUE_PLAN.md"
+    },
+    {
+      "bytes": 27904,
+      "path": "inputs/selection/ISSUE_RECOVERY_CONTRACT.md",
+      "scope": "root-selected public Set80 design/contract",
+      "sha256": "f3e019a840d6b69d853350763364a3fc41f10ea899f00ed6f164db5d58a95610",
+      "source_path": "/Users/taytrrip/slug/set80-prep/ISSUE_RECOVERY_CONTRACT.md"
+    },
+    {
+      "bytes": 7068,
+      "path": "inputs/selection/REFERENCE_PLAN.md",
+      "scope": "root-selected public Set80 design/contract",
+      "sha256": "568251bda8d3589874c8dccd0652442c1be7b3b218f40518f70606ad1279c99d",
+      "source_path": "/Users/taytrrip/slug/set80-prep/REFERENCE_PLAN.md"
+    },
+    {
+      "bytes": 1276,
+      "path": "inputs/selection/contract-manifest.proposed.json",
+      "scope": "root-selected public Set80 design/contract",
+      "sha256": "e5ba6d5f87e421a30d8afc0e70499613c11becb458380a1fd4572c7090c7dda3",
+      "source_path": "/Users/taytrrip/slug/set80-prep/contract-manifest.proposed.json"
+    },
+    {
+      "bytes": 27600,
+      "path": "inputs/declarations/registry/store.go.txt",
+      "scope": "existing registry application marker declaration; documentary only",
+      "sha256": "d070afc2cc2476fb6007bf21a4c691d391d66ae321b4c0cb2775780b42df6683",
+      "source_path": "/Users/taytrrip/slug/slug/registry/store.go"
+    },
+    {
+      "bytes": 2479,
+      "path": "inputs/declarations/prospectservice/types.go.txt",
+      "scope": "public source declaration for inherited frame/cap only; never executable producer dependency",
+      "sha256": "4754c43b9f4fb864b05b2e45309ba09fd67c8f306b5dcc5fc3cd935df68a5653",
+      "source_path": "/Users/taytrrip/slug/slug/prospectservice/types.go"
+    },
+    {
+      "bytes": 15086,
+      "path": "inputs/declarations/desktop/pooloperator/provision_command.go.txt",
+      "scope": "public source declaration for inherited frame/cap only; never executable producer dependency",
+      "sha256": "41cd75f427d34130b78ae64793d10c9adce671b626bf56881a860612770eac16",
+      "source_path": "/Users/taytrrip/slug/slug/desktop/pooloperator/provision_command.go"
+    },
+    {
+      "bytes": 10928,
+      "path": "inputs/declarations/desktop/pooloperator/provision_codec.go.txt",
+      "scope": "public source declaration for inherited frame/cap only; never executable producer dependency",
+      "sha256": "682d1aadb4d124539a8b674a80cbf4b7d713d236d03f5e4778bc8d69042c5fd3",
+      "source_path": "/Users/taytrrip/slug/slug/desktop/pooloperator/provision_codec.go"
+    },
+    {
+      "bytes": 10201,
+      "path": "inputs/declarations/desktop/pooloperator/filesystem_unix.go.txt",
+      "scope": "public source declaration for inherited frame/cap only; never executable producer dependency",
+      "sha256": "002252bc61fbdf5ea7d0217cfbf95f4abc18b93ebaf0e3865aa14fc3ba1d482a",
+      "source_path": "/Users/taytrrip/slug/slug/desktop/pooloperator/filesystem_unix.go"
+    }
+  ],
+  "scope": "public allowlisted copied inputs only; no private runtime/credential/seed or downloaded module source",
+  "version": 1
+}

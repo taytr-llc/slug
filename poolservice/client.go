@@ -58,6 +58,9 @@ func newClient(c ClientConfig, binding, trust, gym string, daily *dailyClientBin
 	return &Client{daily: daily, config: c, binding: binding, trust: trust, gym: gym, http: &http.Client{Transport: transport, Timeout: 30 * time.Second, CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }}}, nil
 }
 func (c *Client) ProtocolVersion() uint32 {
+	if c != nil && c.recoverable != nil {
+		return Version3
+	}
 	if c != nil && c.daily != nil {
 		return Version2
 	}

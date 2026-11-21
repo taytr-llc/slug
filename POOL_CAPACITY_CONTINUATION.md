@@ -1,8 +1,12 @@
 # Pool capacity continuation
 
-Status: Set75 streaming and the fresh Set76 V2 daily foundation are locally
-qualified, including fresh-process financial recovery and all seven exact-tip
-GitHub checks on chain2ca9fc16 and walletdfc5d9dd.
+Status: the finite Set75–79 DAILY integration is qualified. Set76's indexed
+financial foundation and fresh-process recovery remain preserved; Set78 adds
+selected full-intake late-winner reservation/recovery, and Set79 adds public
+transport, original-wallet worker/headless composition and real UTC payouts.
+All seven Set79 exact-tip checks pass at chain fdd40d8e with the paired wallet
+binding recorded in its evidence. Set80 exact-request recovery passes local full affected regressions and both
+standalone actuals. Its exact-tip CI remains pending.
 This is engineering under D58/D79–D81/D84, not public deployment or launch approval.
 
 ## Identity and compatibility
@@ -69,21 +73,49 @@ complete 400,000-weight limit. Daily node evidence can inspect the full bounded
 funding frontier with four joined workers and the original 30-second operation
 limit. Waiting need not shrink an oversized batch; show the capacity hold.
 
-## Remaining integrated acceptance
+## Completed finite public integration
 
-- Explicit V2 public receipt/history transport, operator setup/ingress and
-  native composition, with independently selected source and recipient bindings.
-  Existing V1 clients must refuse the new identity and sequence range.
-- Signed admission/ownership publication capacity under its original authority
-  rules. Increasing local storage does not enlarge a signed profile.
+Set78 qualifies fresh DAILY liability reservation, derived ordinary intake and
+canonical original-job recovery after real expiry and restart, with one late
+credit and the original reserved payout unchanged. Set74's V1 proof remains a
+separate historical result. Set79's public Path B extends the selected DAILY
+proof through original TLS/standalone operator lifetimes: two ordinary receipts
+become three after the late winner; B gains one credit at 60 descendants while
+A remains the sole broadcast batch. Failed predecessors remain preserved.
+
+Set79 also qualifies explicit V2 public receipt/history transport, provisioning
+and ingress, exact source/settlement/recipient bindings, and strict V1 refusal.
+Path A proves the original-wallet worker and real UTC scheduled payout; Path C
+proves the explicit headless CLI, requested SIGTERM/clean join and stopped reopen.
+These are finite public protocol/headless compositions, not a native UI release,
+continuous 64-miner load acceptance or a deployed public host. See
+`CHANGESET_78_NOTES.md`, `CHANGESET_79_NOTES.md` and their public evidence indexes.
+
+Set80's explicitly selected request-recovery mode retains those economic and
+financial identities. Its byte/state/capacity reference, focused components,
+real-expiry financial regression and local intent-crash control pass. Standalone
+B confirms never-published expiry after the operator crash; A3 proves the
+original-wallet scheduled payment after crash/reply-loss recovery. Exact-tip CI
+remains pending; no Set79 result is relabeled as that new-mode proof.
+
+## Remaining capacity and deployment work
+
 - Continuous source and financial-history retention with bounded verification,
   global deduplication and exact carry. Any rollover or later adoption needs an
-  explicit format and crash/restart proof; old roots remain preserved.
-- Actual V2 full-intake late winners and boundary/restart recovery with a pending
-  payout: one credit, unchanged reserved transaction, no share reuse or duplicate
-  payment. Preserve Set74's V1 proof without relabeling it as V2 acceptance.
+  explicit format and crash/restart proof; old roots remain preserved. Finite
+  explicit exhaustion/drain can support a bounded pilot but does not establish
+  continuous service or allow resets to regain capacity.
+- Signed admission/ownership publication capacity under its original authority
+  rules. Increasing local storage does not enlarge a signed profile; retained
+  jobs include actual issue/renewal and parent-change traffic, not only blocks.
 - Sustained ordinary-share/job-refresh load for the intended miner population,
-  host disk-full/retention/recovery operations and real scheduled payouts.
+  disk-full/retention/recovery operations and the selected public host. Existing
+  real scheduled-payout proofs do not settle those operational/load gates.
+- Record Set80 exact-tip CI, then finish retained original-job fighter delivery
+  at pool-only intake drain without weakening expiry or signed authority limits.
+  Any later native presentation/onboarding work retains the already qualified
+  public protocol and custody boundaries; it must not be described as missing
+  V2 transport or missing finite DAILY late-winner proof.
 
 Public pool operation and payouts precede sign-in/onboarding. D74's full joint
 product organization/design review remains last before release.

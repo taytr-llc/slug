@@ -1,0 +1,23 @@
+{
+  "accepted_fighters": 1,
+  "accepted_rewards": 1,
+  "attempts": [
+    {
+      "raw": "0200000000010173464096d1fd61bf7fa13e6f896d1845dd7bce1d7d216fa3b650c99d1bfe25c40000000000ffffffff028033023b0000000016001487ed12b988403af67cf36ea58b7454ab5d165ab4f395980000000000160014810816db7129a0ac531ca0eaea0d47a04a71a77d02483045022100fcae939dd5ebefc1607d5a3422f45a30b8c54c697cd1e33296fbee898c027c3b0220463c2cb41134dddc8701f1530baae96eaa97ecb9fef4e3a72eb18732694610180121033c82426e79a02318e797eec2021a10a8d7a8edfcd889adc82df78b303380bcc500000000",
+      "txid": "",
+      "at_ms": 1795264740083
+    }
+  ],
+  "case": "A",
+  "completed": true,
+  "fee_atoms": 141,
+  "final_audit_unchanged": true,
+  "final_height": 104,
+  "job_id": "cdcbb7665d7ae4849f82cc9e3a8cafb92260f50482999b0ebb7319c649e71e7c",
+  "original_signatures": 1,
+  "paid_atoms": 990000000,
+  "pending_fighters": 0,
+  "request_id": "e065a06ba76623189f8fbe01db02a4b3bbb283534d44bcb68d41b2724f3eb1aa",
+  "send_count": 1,
+  "stopped_reopen": true
+}

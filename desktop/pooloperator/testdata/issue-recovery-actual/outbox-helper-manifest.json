@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "scope": "two external actual helper leaves only; full selected read-only owner audit before bounded public outbox projection; no runtime",
+  "files": [
+    {
+      "path": "set80-prep/actual-recovery/work_evidence.go",
+      "bytes": 7669,
+      "sha256": "42ef9e32843082665d2b3013ec79da8eaad923536857014c61141a0d824e58bc"
+    },
+    {
+      "path": "set80-prep/actual-recovery/outbox_audit.go",
+      "bytes": 11444,
+      "sha256": "84fa9a045b9f1edb607cbfdec7948902cdc8f344595bebbc62922862bc8e0f77"
+    }
+  ],
+  "preimages": [
+    {
+      "path": "set80-prep/actual-recovery/outbox-helper-preimages/work_evidence.go",
+      "bytes": 9795,
+      "sha256": "8b33fb269929580dee3543421b8d55a952fa3c99464aaf5426b192d3b77096fa"
+    }
+  ],
+  "diff": {
+    "path": "set80-prep/actual-recovery/outbox-helper.diff",
+    "bytes": 19450,
+    "sha256": "09e57ac4576c7f69237c3cf471d354150aaf2be735b80f95eaa26e81f5f03f45"
+  },
+  "inputs": [
+    {
+      "path": "slug/prospectworker/pool_issue_outbox.go",
+      "bytes": 11027,
+      "sha256": "12d7c0a66e7dfbb175c58a63f5fe1a7efdaf3b10b764aafc83a687f8fe9183f4"
+    },
+    {
+      "path": "slug/prospectworker/pool_outbox.go",
+      "bytes": 26226,
+      "sha256": "facc723a6d87112c21cea76859044cf6ea527e7ba0227f8423548f0c18c86ce6"
+    },
+    {
+      "path": "slug/poolservice/recoverable_types.go",
+      "bytes": 5194,
+      "sha256": "38f4e94e214b03ef1dfbd874cba3fc9f90f75197c72f99dfac2b3339408dbf45"
+    },
+    {
+      "path": "slug/poolservice/recoverable_issue.go",
+      "bytes": 5516,
+      "sha256": "31206f1dbfb476ff077103bae83f0b55b2727c15aa38781715daf641a281f670"
+    },
+    {
+      "path": "artifacts/set80/actual-reference-attempt1/python314.json",
+      "bytes": 173644,
+      "sha256": "0f0890e529b64c10ed000673aab7861b9bd526057cc3c2bbbe05b868028f3d10"
+    }
+  ],
+  "interfaces": [
+    "auditRows(ctx,root,RecoverableRemotePoolConfig,*poolservice.Client,*node) rowEvidence",
+    "readOutbox(root,RecoverableRemotePoolConfig)([]PoolEntry,outboxState)",
+    "readRequest(root,RecoverableRemotePoolConfig,requestID)(*IssueResponse,outboxState)",
+    "openController(ctx,root,publicFixture,RecoverableRemotePoolInputs,**RemotePoolController) string"
+  ],
+  "limitations": [
+    "Scenario caller must first join all original owners; no network/adoption during outbox audit.",
+    "Persisted IssueResponse is evidence only; pure validation cannot mint client provenance.",
+    "Concrete actual limits remain 64 found entries, 128MiB/file and 512MiB total public outbox inventory."
+  ]
+}

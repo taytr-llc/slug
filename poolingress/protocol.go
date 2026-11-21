@@ -16,16 +16,24 @@ type route struct {
 
 func routeFor(path string) (route, bool) { return selectedRouteFor(path, 1) }
 func selectedRouteFor(path string, version uint32) (route, bool) {
-	if version != 1 && version != 2 {
+	if version != 1 && version != 2 && version != 3 {
 		return route{}, false
 	}
 	prefix := "/pool/v1/"
 	if version == 2 {
 		prefix = "/pool/v2/"
 	}
+	if version == 3 {
+		prefix = "/pool/v3/"
+	}
 	r := route{requestLimit: 1024, responseLimit: 65536, timeout: 35 * time.Second}
 	switch path {
 	case prefix + "issue", prefix + "work":
+		r.responseLimit = 16842752
+	case prefix + "issue-lookup":
+		if version != 3 {
+			return route{}, false
+		}
 		r.responseLimit = 16842752
 	case prefix + "submit", prefix + "lookup", prefix + "balance":
 	case prefix + "payouts":

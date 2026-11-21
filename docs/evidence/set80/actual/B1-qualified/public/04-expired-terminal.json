@@ -1,0 +1,63 @@
+{
+  "expired_observed_at_ms": 1795264878094,
+  "original_expires_at_ms": 1795264878093,
+  "replays": [
+    {
+      "version": 3,
+      "binding_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+      "settlement_config_id": "744a4f6a8fa2160cf96353c396867021a1dbe0eaf6308978a753ebc326c546b9",
+      "recipient_script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+      "issue_profile_id": "dd140ae5237c5ea6cc2142f4567631667585c69a40f34dbcd66bc36ace8f39d7",
+      "request_id": "c27b9d581b004e5906ffdfc298e7deb8a93044f3ecc57c7562415e28c6bfd6b5",
+      "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+      "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+      "result": {
+        "version": 1,
+        "state": "issued_unused",
+        "intent_id": "6040c2847d26071031f1bd7930d6669d5be0ab1ac538fbc26c669fa5e9121285",
+        "job_id": "8d7c83d80b2e6a7aea0084479b57c1d3bd04a25fed20714d592d633387e0c4b5",
+        "resolved_at_ms": 1795264908974,
+        "reason": "expired_before_work",
+        "work": null
+      }
+    },
+    {
+      "version": 3,
+      "binding_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+      "settlement_config_id": "744a4f6a8fa2160cf96353c396867021a1dbe0eaf6308978a753ebc326c546b9",
+      "recipient_script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+      "issue_profile_id": "dd140ae5237c5ea6cc2142f4567631667585c69a40f34dbcd66bc36ace8f39d7",
+      "request_id": "c27b9d581b004e5906ffdfc298e7deb8a93044f3ecc57c7562415e28c6bfd6b5",
+      "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+      "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+      "result": {
+        "version": 1,
+        "state": "issued_unused",
+        "intent_id": "6040c2847d26071031f1bd7930d6669d5be0ab1ac538fbc26c669fa5e9121285",
+        "job_id": "8d7c83d80b2e6a7aea0084479b57c1d3bd04a25fed20714d592d633387e0c4b5",
+        "resolved_at_ms": 1795264908974,
+        "reason": "expired_before_work",
+        "work": null
+      }
+    }
+  ],
+  "terminal": {
+    "version": 3,
+    "binding_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+    "settlement_config_id": "744a4f6a8fa2160cf96353c396867021a1dbe0eaf6308978a753ebc326c546b9",
+    "recipient_script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+    "issue_profile_id": "dd140ae5237c5ea6cc2142f4567631667585c69a40f34dbcd66bc36ace8f39d7",
+    "request_id": "c27b9d581b004e5906ffdfc298e7deb8a93044f3ecc57c7562415e28c6bfd6b5",
+    "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+    "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+    "result": {
+      "version": 1,
+      "state": "issued_unused",
+      "intent_id": "6040c2847d26071031f1bd7930d6669d5be0ab1ac538fbc26c669fa5e9121285",
+      "job_id": "8d7c83d80b2e6a7aea0084479b57c1d3bd04a25fed20714d592d633387e0c4b5",
+      "resolved_at_ms": 1795264908974,
+      "reason": "expired_before_work",
+      "work": null
+    }
+  }
+}

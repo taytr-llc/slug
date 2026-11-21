@@ -1,0 +1,871 @@
+{
+  "version": 1,
+  "scope": "Independent public synthetic daily late-winner kernel and actual economics; no mined proof, signature, transaction ID or runtime result generated.",
+  "inputs": [
+    {
+      "path": "PROPOSAL.md",
+      "bytes": 7910,
+      "sha256": "4b481fe50d2723c156d8fe8771f448346b1363dad9f9bde55bcbedb8e4ee6e0a"
+    },
+    {
+      "path": "recipe.json",
+      "bytes": 2513,
+      "sha256": "d28b8d326bd3df28dd525ab3e592d1c661341bbd92cbe5c664133ea8528bb000"
+    },
+    {
+      "path": "inputs/accounting-policy.md",
+      "bytes": 6396,
+      "sha256": "b7769251fbe4d46a8e077fdfd1ba7b5e5f8bb015833aff9d20310ca8739ae081"
+    },
+    {
+      "path": "inputs/capacity-report.json",
+      "bytes": 711,
+      "sha256": "2c81ff41902f136c5e3739d4964f6015d3d69063e2d53c16da1212b985abe9d3"
+    },
+    {
+      "path": "inputs/capacity-v1.json",
+      "bytes": 81247,
+      "sha256": "2db086115f51b0c7e22d2fd7688ad5b46c56e238fa1346d709c9a19bebb7aa78"
+    },
+    {
+      "path": "inputs/crypto.py",
+      "bytes": 10124,
+      "sha256": "ea87b9021e14712b1ac7130daa73cd12fb8acf2fd8995ca5ce9e32d0d770fd1c"
+    },
+    {
+      "path": "inputs/gym-reference.py",
+      "bytes": 9946,
+      "sha256": "0490d6e7931cf0edb30e632a2fa213c8660e88afe916d3ed09421e34954b84d9"
+    },
+    {
+      "path": "inputs/native84-v1.json",
+      "bytes": 7411,
+      "sha256": "482c9e42ecb154cc0e38fad962cc5df4e08705f933e13cc7f571f0d5bf75ff33"
+    },
+    {
+      "path": "inputs/set76-actual-v1.json",
+      "bytes": 85070,
+      "sha256": "9bcb4b64505e38de193411dcf51fb19f4d1332cbb2af53d21904663848cb4955"
+    },
+    {
+      "path": "inputs/set76-model.py",
+      "bytes": 6841,
+      "sha256": "a586661c97acaefa690d2ec7ffaaca6a786d22cb26c72ad4ba361b04b187d61a"
+    },
+    {
+      "path": "inputs/setup-v1.json",
+      "bytes": 28735,
+      "sha256": "97fa4879bf955f2f321202c34a95dfc335e684031152e100979e27f0d98da0b3"
+    },
+    {
+      "path": "inputs/wallet-daily-v1.json",
+      "bytes": 63872,
+      "sha256": "9b8e52f41690db7ca1fee37c34f99dfcd0a7266b81a7793859871bd9b006ae30"
+    },
+    {
+      "path": "model.py",
+      "bytes": 15048,
+      "sha256": "1fbb77065d436f25f6a255e72ad68b09e09fb941e6875844530ea42da3f93bdc"
+    },
+    {
+      "path": "PRODUCER.md",
+      "bytes": 2027,
+      "sha256": "d9172cf9cc2f1d5dcbdbf979d0b4554e71d12c1762e65d70bf2a8cf7ced36b9a"
+    }
+  ],
+  "authority": {
+    "version": 2,
+    "source": {
+      "version": 5,
+      "network": 1397511495,
+      "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+      "authority_id": "d029e74f3638b8258384527408839bb7e3d5bdd9cc17dfaddfe43d0a379152f3",
+      "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75"
+    },
+    "publication_id": "1212121212121212121212121212121212121212121212121212121212121212",
+    "admission_key": "7553c62962d2bf238b10521cf40ed6053f4c60c902f5d610e415a7a8ca9ab5af",
+    "publication_key": "8b9ede3a118acb72bfd556975f0aa02a2dea3de57633c13ce312440ab26b74d1",
+    "cutoff_key": "d15f97a13dc524f992c83ecb4c56848fae4fa5f967ead21fab158b5743a54207",
+    "checkpoint_key": "5a0e51769ceebaa3e02ea856b17be16341bcf939f145fc1ae3bfd78cce451aff",
+    "rule_id": "59d5f82360fd78eb5372a2d8b501fdaea999428498d19a1c9805b0428ec4fbf8",
+    "scan_origin": {
+      "height": 0,
+      "hash": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd"
+    },
+    "limits": {
+      "admissions": 1000,
+      "publications": 16384,
+      "carriers": 4096,
+      "checkpoints": 1024,
+      "cutoffs": 256,
+      "headers": 65536,
+      "logical_bytes": 268435456
+    }
+  },
+  "binding": {
+    "version": 2,
+    "wallet_owner_id": "7e5ace563b940ab03bc45a3bf10983c29fd8c7e2488b7256901dea496e2bd595",
+    "operator_profile_id": "a41aa680cafecec6c27008c78cee2b6fbd4ec63016d592f7543b37b72dcffae8",
+    "source": {
+      "version": 2,
+      "authority_pin": {
+        "version": 5,
+        "network": 1397511495,
+        "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "authority_id": "d029e74f3638b8258384527408839bb7e3d5bdd9cc17dfaddfe43d0a379152f3",
+        "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75"
+      },
+      "policy": {
+        "version": 1,
+        "network": 1397511495,
+        "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "dna_version": 1,
+        "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "payout_address": "slug1qzmtrqsfuaf6l6kkcsseumq26ukaphfj9s9ptme",
+      "pool_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "max_works": 8,
+      "max_submissions": 8,
+      "max_bytes": 67108864
+    },
+    "settlement": {
+      "version": 2,
+      "change_script": "001416d630413cea75fd5ad88433cd815ae5ba1ba645",
+      "destinations": [
+        {
+          "gym_id": "75b4142cec114931d596877cb3770d9e19a3b1eb161e0f733a869b14f26e3cbf",
+          "script": "0014751e76e8199196d454941c45d1b3a323f1433bd6"
+        },
+        {
+          "gym_id": "ba2d33f3c3482bdaa2a64dafa3f2ab389b9e6f1faa40cbe646977540d56b6b3d",
+          "script": "001406afd46bcdfd22ef94ac122aa11f241244a37ecc"
+        }
+      ],
+      "max_rounds": 8,
+      "max_batches": 6
+    },
+    "guard": {
+      "version": 1,
+      "manager_schema": 16,
+      "wallet_owner_id": "7e5ace563b940ab03bc45a3bf10983c29fd8c7e2488b7256901dea496e2bd595",
+      "operator_profile_id": "a41aa680cafecec6c27008c78cee2b6fbd4ec63016d592f7543b37b72dcffae8",
+      "source_binding_id": "9fafbeb912d4af3a5d4ef7f51fb5c28ef5305f3507552950f5f68ef508792171",
+      "settlement_config_id": "796c0eb1f098dbe09b555c21ef2e0de2d3e9527b18ba39f2a48a82034a1ddd49",
+      "derivation_id": "slug-phase-a-operator-pool-native84-v1",
+      "network": 1397511495,
+      "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+      "root_public_key": "JgduaQiYjRcnjcD9t1MfTP1qo8eWaAWPQtS9nChXwtAeyTsoEGVZ8SjVqa5qxxvvKqX8tqC77wMSjaMHXNY8JSYEASdzX6PT31ktXqKPJvkhyy31",
+      "funding_public_key": "03c5db199831f23a3a1575518c8e9e948bfd495481aac442dec64b447ee76bd6fa",
+      "funding_script": "001416d630413cea75fd5ad88433cd815ae5ba1ba645"
+    }
+  },
+  "source_id": "9fafbeb912d4af3a5d4ef7f51fb5c28ef5305f3507552950f5f68ef508792171",
+  "config_id": "796c0eb1f098dbe09b555c21ef2e0de2d3e9527b18ba39f2a48a82034a1ddd49",
+  "guard_hex": "7b2276657273696f6e223a312c226d616e616765725f736368656d61223a31362c2277616c6c65745f6f776e65725f6964223a2237653561636535363362393430616230336263343561336266313039383363323966643863376532343838623732353639303164656134393665326264353935222c226f70657261746f725f70726f66696c655f6964223a2261343161613638306361666563656336633237303038633738636565326236666264346563363330313664353932663735343362333762373264636666616538222c22736f757263655f62696e64696e675f6964223a2239666166626562393132643461663361356434656637663531666235633238656635333035663335303735353239353066356636386566353038373932313731222c22736574746c656d656e745f636f6e6669675f6964223a2237393663306562316630393864626530396235353563323165663265306465326433653935323762313862613339663261343861383230333461316464643439222c2264657269766174696f6e5f6964223a22736c75672d70686173652d612d6f70657261746f722d706f6f6c2d6e617469766538342d7631222c226e6574776f726b223a313339373531313439352c2267656e65736973223a2237383933363736303939636639393835626231393864666236613334376439343232613139663234323263663333323661393939613732333063653234366364222c22726f6f745f7075626c69635f6b6579223a224a676475615169596a52636e6a63443974314d66545031716f38655761415750517453396e436858777441657954736f4547565a38536a5671613571787876764b7158387471433737774d536a614d48584e59384a5359454153647a5836505433316b7458714b504a766b6879793331222c2266756e64696e675f7075626c69635f6b6579223a22303363356462313939383331663233613361313537353531386338653965393438626664343935343831616163343432646563363462343437656537366264366661222c2266756e64696e675f736372697074223a223030313431366436333034313363656137356664356164383834333363643831356165356261316261363435227d",
+  "guard_digest": "c9ae42ff6e3b0e80205315cb0960a296569fbb848b98c3687df4140ccc4811f4",
+  "binding_hex": "7b2276657273696f6e223a322c2277616c6c65745f6f776e65725f6964223a2237653561636535363362393430616230336263343561336266313039383363323966643863376532343838623732353639303164656134393665326264353935222c226f70657261746f725f70726f66696c655f6964223a2261343161613638306361666563656336633237303038633738636565326236666264346563363330313664353932663735343362333762373264636666616538222c22736f75726365223a7b2276657273696f6e223a322c22617574686f726974795f70696e223a7b2276657273696f6e223a352c226e6574776f726b223a313339373531313439352c2267656e65736973223a2237383933363736303939636639393835626231393864666236613334376439343232613139663234323263663333323661393939613732333063653234366364222c22617574686f726974795f6964223a2264303239653734663336333862383235383338343532373430383833396262376533643562646439636331376466616464666534336430613337393135326633222c2264657363726970746f725f6964223a2263643032616535376235393138353438323434626532636162626536633063343333666562356131633136353734356532653563366266323335313238653735227d2c22706f6c696379223a7b2276657273696f6e223a312c226e6574776f726b223a313339373531313439352c2267656e65736973223a2237383933363736303939636639393835626231393864666236613334376439343232613139663234323263663333323661393939613732333063653234366364222c22646e615f76657273696f6e223a312c2270726f73706563745f746172676574223a2266666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666227d2c227061796f75745f61646472657373223a22736c756731717a6d7472717366756166366c366b6b63737365756d713236756b617068666a39733970746d65222c22706f6f6c5f746172676574223a2266666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666222c226d61785f776f726b73223a382c226d61785f7375626d697373696f6e73223a382c226d61785f6279746573223a36373130383836347d2c22736574746c656d656e74223a7b2276657273696f6e223a322c226368616e67655f736372697074223a223030313431366436333034313363656137356664356164383834333363643831356165356261316261363435222c2264657374696e6174696f6e73223a5b7b2267796d5f6964223a2237356234313432636563313134393331643539363837376362333737306439653139613362316562313631653066373333613836396231346632366533636266222c22736372697074223a223030313437353165373665383139393139366434353439343163343564316233613332336631343333626436227d2c7b2267796d5f6964223a2262613264333366336333343832626461613261363464616661336632616233383962396536663166616134306362653634363937373534306435366236623364222c22736372697074223a223030313430366166643436626364666432326566393461633132326161313166323431323434613337656363227d5d2c226d61785f726f756e6473223a382c226d61785f62617463686573223a367d2c226775617264223a7b2276657273696f6e223a312c226d616e616765725f736368656d61223a31362c2277616c6c65745f6f776e65725f6964223a2237653561636535363362393430616230336263343561336266313039383363323966643863376532343838623732353639303164656134393665326264353935222c226f70657261746f725f70726f66696c655f6964223a2261343161613638306361666563656336633237303038633738636565326236666264346563363330313664353932663735343362333762373264636666616538222c22736f757263655f62696e64696e675f6964223a2239666166626562393132643461663361356434656637663531666235633238656635333035663335303735353239353066356636386566353038373932313731222c22736574746c656d656e745f636f6e6669675f6964223a2237393663306562316630393864626530396235353563323165663265306465326433653935323762313862613339663261343861383230333461316464643439222c2264657269766174696f6e5f6964223a22736c75672d70686173652d612d6f70657261746f722d706f6f6c2d6e617469766538342d7631222c226e6574776f726b223a313339373531313439352c2267656e65736973223a2237383933363736303939636639393835626231393864666236613334376439343232613139663234323263663333323661393939613732333063653234366364222c22726f6f745f7075626c69635f6b6579223a224a676475615169596a52636e6a63443974314d66545031716f38655761415750517453396e436858777441657954736f4547565a38536a5671613571787876764b7158387471433737774d536a614d48584e59384a5359454153647a5836505433316b7458714b504a766b6879793331222c2266756e64696e675f7075626c69635f6b6579223a22303363356462313939383331663233613361313537353531386338653965393438626664343935343831616163343432646563363462343437656537366264366661222c2266756e64696e675f736372697074223a223030313431366436333034313363656137356664356164383834333363643831356165356261316261363435227d7d",
+  "round_limits": {
+    "version": 2,
+    "max_rounds": 8,
+    "max_bytes": 33554432
+  },
+  "node": {
+    "version": 1,
+    "network": 1397511495,
+    "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+    "pool_public_key": "03c5db199831f23a3a1575518c8e9e948bfd495481aac442dec64b447ee76bd6fa",
+    "pool_script": "001416d630413cea75fd5ad88433cd815ae5ba1ba645",
+    "fee": {
+      "mode": "fixed",
+      "confirmation_target": 0,
+      "atoms_per_kvb": 1000,
+      "max_atoms_per_kvb": 100000,
+      "max_fee_atoms": 1000000
+    }
+  },
+  "accounts": [
+    {
+      "index": 0,
+      "label": "gym1",
+      "published_scalar": 1,
+      "public_key": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+      "gym_id": "75b4142cec114931d596877cb3770d9e19a3b1eb161e0f733a869b14f26e3cbf",
+      "payee_script": "0014751e76e8199196d454941c45d1b3a323f1433bd6",
+      "public_fixture_token": "c099e3eb0e22d5000e23a87e11628ce783f7678f15bbd0063c3906590a22d5dc"
+    },
+    {
+      "index": 1,
+      "label": "gym2",
+      "published_scalar": 2,
+      "public_key": "02c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee5",
+      "gym_id": "ba2d33f3c3482bdaa2a64dafa3f2ab389b9e6f1faa40cbe646977540d56b6b3d",
+      "payee_script": "001406afd46bcdfd22ef94ac122aa11f241244a37ecc",
+      "public_fixture_token": "643b26756d22d60fbcb00291bd3ed527c8ed3d41744617f745a33a15f561b596"
+    }
+  ],
+  "capacity": {
+    "input": {
+      "source_max": 8,
+      "source_bytes": 67108864,
+      "rounds": 8,
+      "round_bytes": 33554432,
+      "credit_rounds": 8,
+      "batches": 6,
+      "gyms": 2
+    },
+    "maximum": 2,
+    "reserved": {
+      "submissions": 3,
+      "blocks": 3,
+      "max_batches": 5,
+      "claim_leaves": 6,
+      "ledger_bytes": 8534577,
+      "round_bytes": 211005,
+      "largest_round_bytes": 66520,
+      "largest_credit_bytes": 1243,
+      "largest_batch_bytes": 980210,
+      "report_bytes": 20628,
+      "receipt_bytes": 12288,
+      "signing_bytes": 8450828,
+      "manager_copy_bytes": 1181620
+    },
+    "actual_recovery": {
+      "submissions": 3,
+      "blocks": 2,
+      "max_batches": 3,
+      "claim_leaves": 5,
+      "ledger_bytes": 8529212,
+      "round_bytes": 140884,
+      "largest_round_bytes": 66520,
+      "largest_credit_bytes": 1243,
+      "largest_batch_bytes": 980210,
+      "report_bytes": 20628,
+      "receipt_bytes": 12288,
+      "signing_bytes": 8440458,
+      "manager_copy_bytes": 1176278
+    }
+  },
+  "jobs": [
+    {
+      "name": "A",
+      "gym": "gym1",
+      "accepted_sequence": 1,
+      "kind": "canonical-block",
+      "issued_after": "one-uncredited-bootstrap-block"
+    },
+    {
+      "name": "B",
+      "gym": "gym2",
+      "accepted_sequence": 3,
+      "kind": "canonical-late-winner",
+      "issued_after": "A-payment-accepted-in-mempool"
+    },
+    {
+      "name": "C",
+      "gym": "gym1",
+      "accepted_sequence": 2,
+      "kind": "current-parent-nonblock",
+      "issued_after": "B-job-retained"
+    }
+  ],
+  "actual_controls": {
+    "reward_atoms": 1000000000,
+    "miner_numerator": 99,
+    "miner_denominator": 100,
+    "fee_rate_atoms_per_kvb": 1000,
+    "a_inputs": 1,
+    "a_payees": 1,
+    "a_change": true,
+    "b_includes_exact_a_transaction": true,
+    "b_window_shares": [
+      1,
+      1
+    ],
+    "bootstrap_blocks": 1,
+    "a_height": 2,
+    "a_maturity_descendants": 100,
+    "b_height": 103,
+    "b_lock_descendants": 60,
+    "job_lifetime_ms": 300000,
+    "overall_seconds": 900,
+    "outer_seconds": 1080,
+    "maximum_height": 163,
+    "nonce_search_per_job": 64,
+    "actual_clock": "real UTC and real node/job clocks only; refuse start within900s of UTC midnight, fail if the selected UTC day changes",
+    "signed_batches": 1,
+    "broadcast_attempts": 1,
+    "accepted_broadcasts": 1,
+    "fresh_recovery_broadcasts": 0,
+    "source_jobs": 3,
+    "source_rows": 3,
+    "accepted_rows": 3,
+    "block_rows": 2,
+    "fighter_admissions": 0
+  },
+  "kernel_controls": {
+    "scope": "Controlled node/backend original-owner integration, no actual expiry/mining/wallet claim",
+    "reward_atoms": 1000000000,
+    "miner_numerator": 99,
+    "miner_denominator": 100,
+    "fee_atoms": 1000,
+    "b_includes_exact_a_transaction": false,
+    "b_window_shares": [
+      1,
+      1
+    ],
+    "signed_batches": 1,
+    "source_jobs": 3,
+    "source_rows": 3,
+    "accepted_rows": 3,
+    "block_rows": 2
+  },
+  "a_shape": {
+    "stripped_bytes": 113,
+    "witness_bytes": 111,
+    "raw_bytes": 224,
+    "weight": 563,
+    "vsize": 141
+  },
+  "actual_economics": {
+    "scope": "actual: exact A included in B",
+    "a_reward_atoms": 1000000000,
+    "b_reward_atoms": 1000000141,
+    "a_fee_atoms": 141,
+    "a_payment_atoms": 990000000,
+    "a_change_atoms": 9999859,
+    "a_inputs": 1,
+    "a_payments": 1,
+    "a_change_index": 1,
+    "round_a_net": {
+      "numerator": "990000000",
+      "denominator": "1"
+    },
+    "round_b_net_by_gym": [
+      {
+        "numerator": "99000013959",
+        "denominator": "200"
+      },
+      {
+        "numerator": "99000013959",
+        "denominator": "200"
+      }
+    ],
+    "round_b_gross_by_gym": [
+      {
+        "numerator": "1000000141",
+        "denominator": "2"
+      },
+      {
+        "numerator": "1000000141",
+        "denominator": "2"
+      }
+    ],
+    "lifetime_net_by_gym": [
+      {
+        "numerator": "297000013959",
+        "denominator": "200"
+      },
+      {
+        "numerator": "99000013959",
+        "denominator": "200"
+      }
+    ],
+    "outstanding_by_gym": [
+      {
+        "numerator": "99000013959",
+        "denominator": "200"
+      },
+      {
+        "numerator": "99000013959",
+        "denominator": "200"
+      }
+    ],
+    "operator_a_earned": {
+      "numerator": "10000000",
+      "denominator": "1"
+    },
+    "operator_b_earned": {
+      "numerator": "1000000141",
+      "denominator": "100"
+    },
+    "operator_a_residual": {
+      "numerator": "9999859",
+      "denominator": "1"
+    },
+    "operator_total_residual": {
+      "numerator": "1999986041",
+      "denominator": "100"
+    },
+    "final_frontier_atoms": 1010000000,
+    "final_frontier": [
+      {
+        "origin": "A-change",
+        "atoms": 9999859,
+        "claims": [
+          {
+            "gym": "operator",
+            "amount": {
+              "numerator": "9999859",
+              "denominator": "1"
+            }
+          }
+        ]
+      },
+      {
+        "origin": "B-coinbase",
+        "atoms": 1000000141,
+        "claims": [
+          {
+            "gym": "gym1",
+            "amount": {
+              "numerator": "99000013959",
+              "denominator": "200"
+            }
+          },
+          {
+            "gym": "gym2",
+            "amount": {
+              "numerator": "99000013959",
+              "denominator": "200"
+            }
+          },
+          {
+            "gym": "operator",
+            "amount": {
+              "numerator": "1000000141",
+              "denominator": "100"
+            }
+          }
+        ]
+      }
+    ],
+    "reports": {
+      "a_lost_reply": {
+        "state": "pending",
+        "reason": "broadcast-unknown",
+        "balances": [
+          {
+            "gym": "gym1",
+            "confirmed": {
+              "numerator": "990000000",
+              "denominator": "1"
+            },
+            "available": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "reserved_atoms": 990000000,
+            "paid_atoms": 0,
+            "reason": "broadcast-unknown"
+          },
+          {
+            "gym": "gym2",
+            "confirmed": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "available": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "reserved_atoms": 0,
+            "paid_atoms": 0,
+            "reason": ""
+          }
+        ]
+      },
+      "a_recovered_before_b_credit": {
+        "state": "complete",
+        "reason": "",
+        "balances": [
+          {
+            "gym": "gym1",
+            "confirmed": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "available": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "reserved_atoms": 0,
+            "paid_atoms": 990000000,
+            "reason": ""
+          },
+          {
+            "gym": "gym2",
+            "confirmed": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "available": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "reserved_atoms": 0,
+            "paid_atoms": 0,
+            "reason": ""
+          }
+        ]
+      },
+      "b59_same_day": {
+        "state": "complete",
+        "reason": "daily-batch-complete",
+        "balances": [
+          {
+            "gym": "gym1",
+            "confirmed": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "available": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "reserved_atoms": 0,
+            "paid_atoms": 990000000,
+            "reason": ""
+          },
+          {
+            "gym": "gym2",
+            "confirmed": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "available": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "reserved_atoms": 0,
+            "paid_atoms": 0,
+            "reason": ""
+          }
+        ]
+      },
+      "b60_same_day": {
+        "state": "complete",
+        "reason": "daily-batch-complete",
+        "balances": [
+          {
+            "gym": "gym1",
+            "confirmed": {
+              "numerator": "99000013959",
+              "denominator": "200"
+            },
+            "available": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "reserved_atoms": 0,
+            "paid_atoms": 990000000,
+            "reason": "daily-batch-complete"
+          },
+          {
+            "gym": "gym2",
+            "confirmed": {
+              "numerator": "99000013959",
+              "denominator": "200"
+            },
+            "available": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "reserved_atoms": 0,
+            "paid_atoms": 0,
+            "reason": "daily-batch-complete"
+          }
+        ]
+      }
+    },
+    "confirmation_semantics": "Confirmed=gross net earnings-Paid, includes Reserved; Available reflects original funding evidence, never lifetime gross."
+  },
+  "kernel_economics": {
+    "scope": "Controlled node/backend original-owner integration, no actual expiry/mining/wallet claim",
+    "a_reward_atoms": 1000000000,
+    "b_reward_atoms": 1000000000,
+    "a_fee_atoms": 1000,
+    "a_payment_atoms": 990000000,
+    "a_change_atoms": 9999000,
+    "a_inputs": 1,
+    "a_payments": 1,
+    "a_change_index": 1,
+    "round_a_net": {
+      "numerator": "990000000",
+      "denominator": "1"
+    },
+    "round_b_net_by_gym": [
+      {
+        "numerator": "495000000",
+        "denominator": "1"
+      },
+      {
+        "numerator": "495000000",
+        "denominator": "1"
+      }
+    ],
+    "round_b_gross_by_gym": [
+      {
+        "numerator": "500000000",
+        "denominator": "1"
+      },
+      {
+        "numerator": "500000000",
+        "denominator": "1"
+      }
+    ],
+    "lifetime_net_by_gym": [
+      {
+        "numerator": "1485000000",
+        "denominator": "1"
+      },
+      {
+        "numerator": "495000000",
+        "denominator": "1"
+      }
+    ],
+    "outstanding_by_gym": [
+      {
+        "numerator": "495000000",
+        "denominator": "1"
+      },
+      {
+        "numerator": "495000000",
+        "denominator": "1"
+      }
+    ],
+    "operator_a_earned": {
+      "numerator": "10000000",
+      "denominator": "1"
+    },
+    "operator_b_earned": {
+      "numerator": "10000000",
+      "denominator": "1"
+    },
+    "operator_a_residual": {
+      "numerator": "9999000",
+      "denominator": "1"
+    },
+    "operator_total_residual": {
+      "numerator": "19999000",
+      "denominator": "1"
+    },
+    "final_frontier_atoms": 1009999000,
+    "final_frontier": [
+      {
+        "origin": "A-change",
+        "atoms": 9999000,
+        "claims": [
+          {
+            "gym": "operator",
+            "amount": {
+              "numerator": "9999000",
+              "denominator": "1"
+            }
+          }
+        ]
+      },
+      {
+        "origin": "B-coinbase",
+        "atoms": 1000000000,
+        "claims": [
+          {
+            "gym": "gym1",
+            "amount": {
+              "numerator": "495000000",
+              "denominator": "1"
+            }
+          },
+          {
+            "gym": "gym2",
+            "amount": {
+              "numerator": "495000000",
+              "denominator": "1"
+            }
+          },
+          {
+            "gym": "operator",
+            "amount": {
+              "numerator": "10000000",
+              "denominator": "1"
+            }
+          }
+        ]
+      }
+    ],
+    "reports": {
+      "a_lost_reply": {
+        "state": "pending",
+        "reason": "broadcast-unknown",
+        "balances": [
+          {
+            "gym": "gym1",
+            "confirmed": {
+              "numerator": "990000000",
+              "denominator": "1"
+            },
+            "available": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "reserved_atoms": 990000000,
+            "paid_atoms": 0,
+            "reason": "broadcast-unknown"
+          },
+          {
+            "gym": "gym2",
+            "confirmed": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "available": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "reserved_atoms": 0,
+            "paid_atoms": 0,
+            "reason": ""
+          }
+        ]
+      },
+      "a_recovered_before_b_credit": {
+        "state": "complete",
+        "reason": "",
+        "balances": [
+          {
+            "gym": "gym1",
+            "confirmed": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "available": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "reserved_atoms": 0,
+            "paid_atoms": 990000000,
+            "reason": ""
+          },
+          {
+            "gym": "gym2",
+            "confirmed": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "available": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "reserved_atoms": 0,
+            "paid_atoms": 0,
+            "reason": ""
+          }
+        ]
+      },
+      "b59_same_day": {
+        "state": "complete",
+        "reason": "daily-batch-complete",
+        "balances": [
+          {
+            "gym": "gym1",
+            "confirmed": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "available": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "reserved_atoms": 0,
+            "paid_atoms": 990000000,
+            "reason": ""
+          },
+          {
+            "gym": "gym2",
+            "confirmed": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "available": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "reserved_atoms": 0,
+            "paid_atoms": 0,
+            "reason": ""
+          }
+        ]
+      },
+      "b60_same_day": {
+        "state": "complete",
+        "reason": "daily-batch-complete",
+        "balances": [
+          {
+            "gym": "gym1",
+            "confirmed": {
+              "numerator": "495000000",
+              "denominator": "1"
+            },
+            "available": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "reserved_atoms": 0,
+            "paid_atoms": 990000000,
+            "reason": "daily-batch-complete"
+          },
+          {
+            "gym": "gym2",
+            "confirmed": {
+              "numerator": "495000000",
+              "denominator": "1"
+            },
+            "available": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "reserved_atoms": 0,
+            "paid_atoms": 0,
+            "reason": "daily-batch-complete"
+          }
+        ]
+      }
+    },
+    "confirmation_semantics": "Confirmed=gross net earnings-Paid, includes Reserved; Available reflects original funding evidence, never lifetime gross."
+  },
+  "immutable_a": [
+    "day",
+    "created_at_ms",
+    "inputs",
+    "payments",
+    "fee_atoms",
+    "change",
+    "txid",
+    "raw"
+  ],
+  "mutable_a": [
+    "state only, prepared/broadcast to confirmed"
+  ],
+  "physical_counts": [
+    {
+      "phase": "A",
+      "jobs": 1,
+      "rows": 1,
+      "accepted": 1,
+      "blocks": 1
+    },
+    {
+      "phase": "ordinary-full",
+      "jobs": 3,
+      "rows": 2,
+      "accepted": 2,
+      "blocks": 1
+    },
+    {
+      "phase": "B-canonical-and-reopened",
+      "jobs": 3,
+      "rows": 3,
+      "accepted": 3,
+      "blocks": 2
+    }
+  ]
+}

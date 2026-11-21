@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "scope": "Source-only two-leaf actual harness audit; no Go/gofmt/runtime or private data read. Full selected original read-only audits close before bounded StrictAll projections. Financial fixture remains zero/one batch and zero/two credits. Original drafts retained.",
+  "files": [
+    {
+      "path": "issue_audit.go",
+      "bytes": 11735,
+      "sha256": "adf6de5de3652abfa0eea0cebf2bedeeeadad50824cd7be134ea86d798247418",
+      "before_path": "audit-before-selected-census/issue_audit.go",
+      "before_sha256": "2e8325283dd75fb01be007992a79a2ab3b1ea88a73af7f29d52ffd5e05fbb242"
+    },
+    {
+      "path": "operator_audit.go",
+      "bytes": 13462,
+      "sha256": "e3ea9d82b23c1857c8ba053a4703a87b6b312ef48da1844e1ae03b767a3b7a79",
+      "before_path": "audit-before-selected-census/operator_audit.go",
+      "before_sha256": "6652f909c24f7a819cb244ae6bdf432fff5e484447864e85df61e3c67f16fee1"
+    }
+  ],
+  "diff_sha256": "187b6cf7b176d00e890ef72ffe9925ef3ed0ab93ba851d023c318daba9b9e4f3",
+  "limits": {
+    "public_files": 4096,
+    "public_file_bytes": 134217728,
+    "public_files_total_bytes": 536870912,
+    "rows_per_public_store": 4096,
+    "row_bytes": 41943040,
+    "rows_total_bytes_per_store": 268435456
+  },
+  "evidence": "All original public logical row hashes; exact issuer/source request, job, template, reverse and physical receipt census; original proposal reconstruction; public file hashes unchanged before/after. No new authority, live DB read, shipping getter or production hook."
+}

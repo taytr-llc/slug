@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "scope": "selected registry descriptor close retention plus reference-consumer shape correction; source-only",
+  "reference_sha256": "4bbe4eb9556ed5a894cee6ff565b0dcca805f27fea2d77cfe3a56242dc3dac91",
+  "files": [
+    {
+      "path": "poolshare/issue_reference_test.go",
+      "before_sha256": "83b5e0a661eb2533e0f5869c9c845ac63075fb392c29a7e54653cf74194d0358",
+      "sha256": "7bd12f8e7e7da63b4c3d650ac4595eec0b114a570186fbd71be154f638836302",
+      "bytes": 4045
+    },
+    {
+      "path": "registry/issue_files.go",
+      "before_sha256": null,
+      "sha256": "9a01849f24061155358e6046ff1737a37471e65aeb83fd26626e6473a557fe42",
+      "bytes": 1883
+    },
+    {
+      "path": "registry/issue_files_test.go",
+      "before_sha256": null,
+      "sha256": "fea0f9ec1002352a6ac47237aa5053c758df5d670bbe4485acaf2847335140a7",
+      "bytes": 2034
+    },
+    {
+      "path": "registry/issue_store.go",
+      "before_sha256": "24ef090785c837bad20669955031fecec625da8a6d7a7b59e6a26fd0dbeec8bc",
+      "sha256": "385d848753addbe12db6a3c0a5ca3325730ff45f845828fc2856d27ff8d2e029",
+      "bytes": 11847
+    },
+    {
+      "path": "registry/manifest_store.go",
+      "before_sha256": "5aae7941a6320c5db99cda108c8d3ff9170286beb639860a1632598a8d731634",
+      "sha256": "995b6a7a5e8e1ef8e92ca593eea67e9e39c13a8fbab39ffc38664668922023b3",
+      "bytes": 12852
+    },
+    {
+      "path": "registry/manifest_types.go",
+      "before_sha256": "ca904e2f2eebeb1437f68e58a95b75699a8654a6dd7686b2c283597ab9fa7377",
+      "sha256": "941237bd83e7465deee69d4992947bd4e90986db5f447a277ed51ce31722dd1b",
+      "bytes": 4974
+    }
+  ],
+  "diff_sha256": "08aa793c90bab786872f2ee5643941168743764b6699cab510c7de43d32feed7",
+  "readme_sha256": "dd22c98b26be609c64cd6f129afc881641a4f4044c0184df17991baed8472382",
+  "failed_reference_consumer_report_sha256": "aea53e95049006154778703bfc8c8db527ff5a1f6de8077d5d57ca2886d8f963"
+}

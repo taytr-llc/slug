@@ -1,0 +1,93 @@
+{
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 81059,
+        "pid": 81059,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=slugtestpow",
+        "./registry",
+        "./poolshare"
+      ],
+      "exit_code": 0,
+      "label": "deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 81059,
+      "pid": 81059,
+      "seconds": 0.33,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 81070,
+        "pid": 81070,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "test",
+        "-count=1",
+        "-p=1",
+        "-timeout=450s",
+        "-json",
+        "-tags=slugtestpow",
+        "-run",
+        "^Test(Recoverable|IssueRecovery|IssueProfile|IssueIntent|IssueRequest)",
+        "./registry",
+        "./poolshare"
+      ],
+      "exit_code": 0,
+      "label": "cheap",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 81070,
+      "pid": 81070,
+      "seconds": 4.68,
+      "timed_out": false
+    }
+  ],
+  "expected_profile_skips": [],
+  "failed_tests": [],
+  "passed": true,
+  "passing_packages": [
+    "github.com/taytr-llc/slug/registry",
+    "github.com/taytr-llc/slug/poolshare"
+  ],
+  "passing_tests": [
+    "github.com/taytr-llc/slug/registry/TestRecoverableIssuerFailedFileCloseRetainsOriginal",
+    "github.com/taytr-llc/slug/registry/TestRecoverableIssuerFileSuccessAndFailureOwnership",
+    "github.com/taytr-llc/slug/registry/TestRecoverableIssueIndependentProfiles",
+    "github.com/taytr-llc/slug/registry/TestRecoverableIssueIndependentIntentsAndBounds",
+    "github.com/taytr-llc/slug/poolshare/TestRecoverableSourceIndependentReservation",
+    "github.com/taytr-llc/slug/poolshare/TestRecoverableSourceCheapRefusesBeforeEffects"
+  ],
+  "pattern": "^Test(Recoverable|IssueRecovery|IssueProfile|IssueIntent|IssueRequest)",
+  "profile_unchanged": true,
+  "scope": "Set80 core cheap",
+  "skipped_tests": [],
+  "sources_unchanged": true,
+  "version": 1
+}

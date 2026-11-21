@@ -1,0 +1,37 @@
+//go:build slugtestpow
+
+// Copyright (c) 2026 The SLUG developers. ISC license.
+package pooloperator
+
+import (
+	"context"
+	"errors"
+	"os"
+	"path/filepath"
+	"testing"
+)
+
+func TestRecoverableCommandsRejectCheapBeforeFiles(t *testing.T) {
+	root := filepath.Join(t.TempDir(), "never-created")
+	out, e := os.CreateTemp(t.TempDir(), "out-")
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer out.Close()
+	errout, e := os.CreateTemp(t.TempDir(), "err-")
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer errout.Close()
+	args := append(dailyCommandArguments(root), "--daily-recoverable-issue")
+	if e = RunCommand(context.Background(), args, out, errout); !errors.Is(e, ErrInvalid) {
+		t.Fatal("cheap operator reached selected input", e)
+	}
+	args = []string{"create", "--daily-recoverable-issue", "--policy-file", "/missing/policy", "--root", root, "--tls-certificate-file", "/missing/cert", "--wallet-public-passphrase-file", "/missing/public", "--wallet-unlock-passphrase-file", "/missing/private"}
+	if e = RunProvisionCommand(context.Background(), args, out, errout); !errors.Is(e, ErrProvisionInvalid) {
+		t.Fatal("cheap provisioning reached selected input", e)
+	}
+	if _, e = os.Lstat(root); !os.IsNotExist(e) {
+		t.Fatal("cheap profile created output", e)
+	}
+}

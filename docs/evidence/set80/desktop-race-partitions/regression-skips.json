@@ -1,0 +1,440 @@
+{
+  "scope": "Exact natural skips for normal/race full affected suites; no skipped test is a PASS. No broad name/category wildcard.",
+  "skips": [
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 356,
+      "package": "github.com/taytr-llc/slug/registry",
+      "reason": "cheap-profile refusal control",
+      "source": "registry/operator_reference_test.go",
+      "test": "TestOperatorReferenceCheapCheckpointRefusals"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 65,
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "reason": "cheap profile refusal",
+      "source": "poolshare/daily_binding_test.go",
+      "test": "TestDailyPublicBindingCheapRefusal"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 608,
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "reason": "cheap profile only",
+      "source": "poolshare/daily_operator_admission_test.go",
+      "test": "TestDailyOperatorCheapRefusal"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 95,
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "reason": "cheap profile control",
+      "source": "poolshare/issue_reference_test.go",
+      "test": "TestRecoverableSourceCheapRefusesBeforeEffects"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 212,
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "reason": "cheap profile only",
+      "source": "poolshare/operator_admission_test.go",
+      "test": "TestOperatorAdmissionCheapRefusal"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 273,
+      "package": "github.com/taytr-llc/slug/poolshare",
+      "reason": "explicit cheap-profile refusal",
+      "source": "poolshare/storage_test.go",
+      "test": "TestPoolCheapProfileRefusesBeforeStorage"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 334,
+      "package": "github.com/taytr-llc/slug/poolservice",
+      "reason": "cheap profile only",
+      "source": "poolservice/client_test.go",
+      "test": "TestPoolClientCheapProfileRefusal"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 329,
+      "package": "github.com/taytr-llc/slug/poolservice",
+      "reason": "cheap profile control",
+      "source": "poolservice/daily_reference_test.go",
+      "test": "TestDailyTransportCheapRefuses"
+    },
+    {
+      "category": "explicit-actual-opt-in-not-selected",
+      "line": 368,
+      "package": "github.com/taytr-llc/slug/poolservice",
+      "reason": "set SLUG_POOL_SERVICE_NODE to an explicit normal-PoW node",
+      "source": "poolservice/integration_test.go",
+      "test": "TestActualNormalPoolService"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 199,
+      "package": "github.com/taytr-llc/slug/poolservice",
+      "reason": "cheap profile only",
+      "source": "poolservice/payout_history_test.go",
+      "test": "TestPayoutHTTPProfileRefusal"
+    },
+    {
+      "category": "explicit-actual-opt-in-not-selected",
+      "line": 105,
+      "package": "github.com/taytr-llc/slug/poolservice",
+      "reason": "set SLUG_POOL_SERVICE_NODE to an explicit normal-PoW node",
+      "source": "poolservice/pool_worker_integration_test.go",
+      "test": "TestActualNormalPoolWorker"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 141,
+      "package": "github.com/taytr-llc/slug/poolservice",
+      "reason": "cheap profile refusal",
+      "source": "poolservice/recoverable_client_test.go",
+      "test": "TestRecoverableTransportCheapRefuses"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 339,
+      "package": "github.com/taytr-llc/slug/poolservice",
+      "reason": "cheap-profile-only guard",
+      "source": "poolservice/server_test.go",
+      "test": "TestServerRejectsCheapProfile"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 266,
+      "package": "github.com/taytr-llc/slug/poolsettle",
+      "reason": "cheap-only profile refusal",
+      "source": "poolsettle/daily_codec_test.go",
+      "test": "TestDailyLedgerCheapRefusalBeforeEffects"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 223,
+      "package": "github.com/taytr-llc/slug/poolsettle",
+      "reason": "cheap-profile refusal",
+      "source": "poolsettle/daily_signing_test.go",
+      "test": "TestDailySigningCheapRefusal"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 270,
+      "package": "github.com/taytr-llc/slug/poolsettle",
+      "reason": "cheap profile only",
+      "source": "poolsettle/payout_history_test.go",
+      "test": "TestPayoutHistoryProfileRefusalBeforeState"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 361,
+      "package": "github.com/taytr-llc/slug/poolsettle",
+      "reason": "cheap-profile refusal",
+      "source": "poolsettle/recovery_test.go",
+      "test": "TestSettlementRecoverPendingRejectsCheapProfile"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 134,
+      "package": "github.com/taytr-llc/slug/poolsettle",
+      "reason": "cheap-profile refusal",
+      "source": "poolsettle/scheduler_binding_test.go",
+      "test": "TestSettlementSchedulerBindingRejectsCheapProfile"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 225,
+      "package": "github.com/taytr-llc/slug/poolsettle",
+      "reason": "cheap profile only",
+      "source": "poolsettle/signing_request_test.go",
+      "test": "TestSettlementSigningRequestRejectsCheapProfile"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 390,
+      "package": "github.com/taytr-llc/slug/poolsettle",
+      "reason": "cheap-profile refusal",
+      "source": "poolsettle/store_test.go",
+      "test": "TestSettlementRejectsCheapProfile"
+    },
+    {
+      "category": "real-UTC-midnight-boundary",
+      "line": 81,
+      "package": "github.com/taytr-llc/slug/poolschedule",
+      "reason": "same-day refresh test requires two real UTC minutes before midnight",
+      "source": "poolschedule/completed_refresh_integration_test.go",
+      "test": "TestDailyScheduleCompletedRefreshImportsOnceAcrossReopen"
+    },
+    {
+      "category": "real-UTC-midnight-boundary",
+      "line": 24,
+      "package": "github.com/taytr-llc/slug/poolschedule",
+      "reason": "same-day contention test requires two real UTC minutes before midnight",
+      "source": "poolschedule/daily_admission_contention_integration_test.go",
+      "test": "TestDailyScheduleEmptyCursorContentionImportsOnce"
+    },
+    {
+      "category": "real-UTC-midnight-boundary",
+      "line": 86,
+      "package": "github.com/taytr-llc/slug/poolschedule",
+      "reason": "requires two real UTC minutes before midnight",
+      "source": "poolschedule/daily_schedule_test.go",
+      "test": "TestDailySchedulePendingRecoveryBeforeDue"
+    },
+    {
+      "category": "real-UTC-midnight-boundary",
+      "line": 75,
+      "package": "github.com/taytr-llc/slug/poolschedule",
+      "reason": "same-day contention test requires two real UTC minutes before midnight",
+      "source": "poolschedule/round_busy_integration_test.go",
+      "test": "TestDailyScheduleOriginalRoundBusyRecoversWithoutNewPayment"
+    },
+    {
+      "category": "real-UTC-midnight-boundary",
+      "line": 58,
+      "package": "github.com/taytr-llc/slug/poolschedule",
+      "reason": "pre-due test requires two real UTC minutes before midnight",
+      "source": "poolschedule/schedule_test.go",
+      "test": "TestScheduleBeforeDueAndExactRecovery"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 328,
+      "package": "github.com/taytr-llc/slug/poolschedule",
+      "reason": "cheap profile only",
+      "source": "poolschedule/schedule_test.go",
+      "test": "TestScheduleRejectsCheapProfile"
+    },
+    {
+      "category": "other-platform-only",
+      "line": 270,
+      "package": "github.com/taytr-llc/slug/desktop/pooloperator",
+      "platform": "linux",
+      "reason": "actual Darwin ACL semantics",
+      "source": "desktop/pooloperator/private_file_test.go",
+      "test": "TestOperatorPrivateInputDarwinACLRefusal"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 370,
+      "package": "github.com/taytr-llc/slug/desktop/pilot",
+      "reason": "cheap-profile refusal",
+      "source": "desktop/pilot/owned_wallet_setup_test.go",
+      "test": "TestOwnedWalletCheapProfileRefusesBeforeFilesystem"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 249,
+      "package": "github.com/taytr-llc/slug/desktop/pilot",
+      "reason": "cheap profile only",
+      "source": "desktop/pilot/pool_authority_test.go",
+      "test": "TestPoolDesktopCheapProfileRefusal"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 95,
+      "package": "github.com/taytr-llc/slug/desktop/pilot",
+      "reason": "refusal profile only",
+      "source": "desktop/pilot/remote_pool_attachment_test.go",
+      "test": "TestRemotePoolAttachmentCheapRefusalBeforeEffects"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 166,
+      "package": "github.com/taytr-llc/slug/desktop/pilot",
+      "reason": "cheap-profile-only refusal",
+      "source": "desktop/pilot/remote_pool_config_test.go",
+      "test": "TestRemotePoolCredentialProfileRefusal"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 129,
+      "package": "github.com/taytr-llc/slug/desktop/pilot",
+      "reason": "cheap profile only",
+      "source": "desktop/pilot/remote_pool_issue_recovery_test.go",
+      "test": "TestRecoverableRemoteCheapSelectionBeforeOwners"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 232,
+      "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+      "reason": "cheap-profile refusal",
+      "source": "desktop/accountpilot/account_lifecycle_test.go",
+      "test": "TestAccountPilotCheapProfileRefusal"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 175,
+      "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+      "reason": "cheap-only",
+      "source": "desktop/accountpilot/bout_files_test.go",
+      "test": "TestBoutRootCheapRefusalBeforeFilesystem"
+    },
+    {
+      "category": "explicit-actual-opt-in-not-selected",
+      "line": 40,
+      "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+      "reason": "explicit frozen normal node required",
+      "source": "desktop/accountpilot/bout_install_crash_test.go",
+      "test": "TestBoutInstallProcessCrash"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 163,
+      "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+      "reason": "cheap-only",
+      "source": "desktop/accountpilot/card_files_test.go",
+      "test": "TestCardRootCheapRefusalBeforeFilesystem"
+    },
+    {
+      "category": "explicit-actual-opt-in-not-selected",
+      "line": 38,
+      "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+      "reason": "explicit frozen normal node required",
+      "source": "desktop/accountpilot/card_install_crash_test.go",
+      "test": "TestCardInstallProcessCrash"
+    },
+    {
+      "category": "explicit-actual-opt-in-not-selected",
+      "line": 50,
+      "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+      "reason": "explicit frozen normal node required",
+      "source": "desktop/accountpilot/career_install_crash_test.go",
+      "test": "TestCareerInstallProcessCrash"
+    },
+    {
+      "category": "explicit-actual-opt-in-not-selected",
+      "line": 26,
+      "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+      "reason": "explicit frozen normal node required",
+      "source": "desktop/accountpilot/career_ready_test.go",
+      "test": "TestCareerParentReadyRecoveryAndRealAccountReads"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 86,
+      "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+      "reason": "cheap-only",
+      "source": "desktop/accountpilot/entry_files_test.go",
+      "test": "TestEntryRootCheapProfileBeforeUpgrade"
+    },
+    {
+      "category": "explicit-actual-opt-in-not-selected",
+      "line": 41,
+      "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+      "reason": "set SLUG_STABLE_NODE to an immutable normal-PoW slugd",
+      "source": "desktop/accountpilot/entry_install_crash_test.go",
+      "test": "TestEntryInstallProcessCrash"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 139,
+      "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+      "reason": "cheap-only",
+      "source": "desktop/accountpilot/event_files_test.go",
+      "test": "TestEventRootCheapRefusalBeforeFilesystem"
+    },
+    {
+      "category": "explicit-actual-opt-in-not-selected",
+      "line": 38,
+      "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+      "reason": "explicit frozen normal node required",
+      "source": "desktop/accountpilot/event_install_crash_test.go",
+      "test": "TestEventInstallProcessCrash"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 299,
+      "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+      "reason": "cheap-build refusal",
+      "source": "desktop/accountpilot/manifest_controller_test.go",
+      "test": "TestManifestAccountCheapProfileRefusesBeforeStorage"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 187,
+      "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+      "reason": "cheap-only",
+      "source": "desktop/accountpilot/result_files_test.go",
+      "test": "TestResultRootCheapRefusalBeforeFilesystem"
+    },
+    {
+      "category": "explicit-actual-opt-in-not-selected",
+      "line": 40,
+      "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+      "reason": "explicit frozen normal node required",
+      "source": "desktop/accountpilot/result_install_crash_test.go",
+      "test": "TestResultInstallProcessCrash"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 151,
+      "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+      "reason": "cheap-only",
+      "source": "desktop/accountpilot/seed_files_test.go",
+      "test": "TestSeedRootCheapRefusalBeforeFilesystem"
+    },
+    {
+      "category": "explicit-actual-opt-in-not-selected",
+      "line": 39,
+      "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+      "reason": "explicit frozen normal node required",
+      "source": "desktop/accountpilot/seed_install_crash_test.go",
+      "test": "TestSeedInstallProcessCrash"
+    },
+    {
+      "category": "normal-profile-only-cheap-control",
+      "line": 86,
+      "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+      "reason": "cheap-only",
+      "source": "desktop/accountpilot/stable_files_test.go",
+      "test": "TestStableRootCheapProfileBeforeUpgrade"
+    },
+    {
+      "category": "explicit-actual-opt-in-not-selected",
+      "line": 45,
+      "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+      "reason": "set SLUG_STABLE_NODE to an immutable normal-PoW slugd",
+      "source": "desktop/accountpilot/stable_install_crash_test.go",
+      "test": "TestStableInstallProcessCrash"
+    },
+    {
+      "category": "explicit-actual-opt-in-not-selected",
+      "line": 416,
+      "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+      "reason": "set SLUG_STABLE_NODE",
+      "source": "desktop/accountpilot/stable_install_crash_test.go",
+      "test": "TestStableInstallLegacyPreparationCrash"
+    },
+    {
+      "category": "typed-projection-not-raw-parser",
+      "line": 119,
+      "package": "github.com/taytr-llc/slug/desktop/pilot",
+      "reason": "fixture JSON spelling is erased before typed wallet DTO; not a wallet semantic claim",
+      "source": "desktop/pilot/wallet_activity_projection_test.go",
+      "test": "TestWalletActivityIndependentProjection/uppercase-raw"
+    },
+    {
+      "category": "typed-projection-not-raw-parser",
+      "line": 119,
+      "package": "github.com/taytr-llc/slug/desktop/pilot",
+      "reason": "fixture JSON spelling is erased before typed wallet DTO; not a wallet semantic claim",
+      "source": "desktop/pilot/wallet_activity_projection_test.go",
+      "test": "TestWalletActivityIndependentProjection/extra-field"
+    },
+    {
+      "category": "typed-projection-not-raw-parser",
+      "line": 119,
+      "package": "github.com/taytr-llc/slug/desktop/pilot",
+      "reason": "fixture JSON spelling is erased before typed wallet DTO; not a wallet semantic claim",
+      "source": "desktop/pilot/wallet_activity_projection_test.go",
+      "test": "TestWalletActivityIndependentProjection/wrong-change-type"
+    }
+  ],
+  "source_only_review": true,
+  "version": 1
+}

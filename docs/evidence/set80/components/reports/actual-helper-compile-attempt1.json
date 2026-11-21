@@ -1,0 +1,89 @@
+{
+  "actual_started": false,
+  "binary": {
+    "build_info": "/Users/taytrrip/slug/artifacts/set80/actual-helper-compile-attempt1/build-info.txt",
+    "build_info_sha256": "51adff2aabb68be264b6ec381e110dd0042ff5d928a4aa89908d9515fd53a78d",
+    "compiler_setting_evidence": "embedded_build_info",
+    "go_version": "go1.27.4",
+    "path": "/Users/taytrrip/slug/artifacts/set80/actual-helper-compile-attempt1/issue-recovery-actual",
+    "settings": {
+      "-buildmode": "exe",
+      "-compiler": "gc",
+      "-gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+      "-trimpath": "true",
+      "CGO_ENABLED": "1",
+      "GOARCH": "arm64",
+      "GOARM64": "v8.0",
+      "GOOS": "darwin"
+    },
+    "sha256": "64f5e27cf91028ef94f47daa685671727bb9bd517f296c4d0d71a6717dc29ffa"
+  },
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 81311,
+        "pid": 81311,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-json",
+        "-mod=readonly",
+        "."
+      ],
+      "exit_code": 0,
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 81311,
+      "pid": 81311,
+      "seconds": 0.296,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 81317,
+        "pid": 81317,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-trimpath",
+        "-tags=",
+        "-o",
+        "/Users/taytrrip/slug/artifacts/set80/actual-helper-compile-attempt1/issue-recovery-actual",
+        "."
+      ],
+      "exit_code": 0,
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 81317,
+      "pid": 81317,
+      "seconds": 22.437,
+      "timed_out": false
+    }
+  ],
+  "passed": true,
+  "profile_unchanged": true,
+  "scope": "Set80 actual helper compile only; no runtime acceptance",
+  "sources_unchanged": true,
+  "version": 1
+}

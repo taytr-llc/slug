@@ -19,3 +19,11 @@ docs/evidence/set79/actual-test-only-source-successor/two-defers.patch -whitespa
 docs/evidence/set79/attachment-actual-attempt2/*-build-info.txt whitespace=-blank-at-eol
 docs/evidence/set79/headless-actual-attempt1/*-build-info.txt whitespace=-blank-at-eol
 docs/evidence/set79/public-actual-attempt5/*-build-info.txt whitespace=-blank-at-eol
+
+# Set80 keeps archived patch context and inherited qualified helper bytes exact.
+desktop/pooloperator/testdata/issue-recovery-actual/*.diff -whitespace
+docs/evidence/set80/**/*.diff -whitespace
+docs/evidence/set80/execution/set79-prep/public-daily-headless/runner_support.py whitespace=-blank-at-eof
+desktop/pooloperator/testdata/issue-recovery-actual/pre-peer-process-relay/operator_process.go.txt whitespace=-blank-at-eol
+desktop/pooloperator/testdata/issue-recovery-actual/pre-root-format/operator_process.go.txt whitespace=-blank-at-eol
+docs/evidence/set80/diagnostics/A2-readonly/execution/build-info.txt whitespace=-blank-at-eol

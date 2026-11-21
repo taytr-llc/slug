@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "scope": "Unexecuted independent selected actual wrappers, old one/two-reward economics unchanged",
+  "base_path_c_sha256": "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386",
+  "base_reference_sha256": "a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3",
+  "issue_reference_sha256": "4bbe4eb9556ed5a894cee6ff565b0dcca805f27fea2d77cfe3a56242dc3dac91",
+  "frames": 9,
+  "expected_economic_branches": 2,
+  "maximum_output_bytes": 1048576,
+  "execution": "root only after source review; output outside source tree",
+  "runtime_normalization": [
+    "ephemeral loopback ingress/listener/Origin/CA/SPKI",
+    "one immutable initial-start UTC due selection",
+    "dependent BaseSetupID, outer profile/setup/remote/trust identities only"
+  ],
+  "fixed": [
+    "all economic fields",
+    "original schema14 account/recipient fixture",
+    "original schema16 fixture seed/guard IDs",
+    "source and financial limits",
+    "worker retained byte/record limits",
+    "target and name version"
+  ]
+}

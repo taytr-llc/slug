@@ -214,6 +214,14 @@ func (s *ManifestStore) state(write bool) error {
 }
 
 func (s *ManifestStore) commit(batch *leveldb.Batch, next manifestMetadata) error {
+	var requests uint64
+	if s.issue != nil {
+		requests = s.issue.requests
+	}
+	return s.commitIssue(batch, next, requests)
+}
+
+func (s *ManifestStore) commitIssue(batch *leveldb.Batch, next manifestMetadata, requests uint64) error {
 	if s.public != nil && s.public.codec.operator {
 		if err := s.state(true); err != nil {
 			return err
@@ -222,6 +230,15 @@ func (s *ManifestStore) commit(batch *leveldb.Batch, next manifestMetadata) erro
 	raw, err := json.Marshal(next)
 	if err != nil || len(raw) > MaxManifestMetadataSize {
 		return fmt.Errorf("%w: manifest metadata encoding", ErrCorrupt)
+	}
+	if s.issue != nil {
+		if requests > s.issue.profile.MaxRequests || next.JobCount > requests {
+			return ErrCorrupt
+		}
+		raw, err = json.Marshal(issueRegistryMetadata{issueApplication, IssueVersion1, next, s.issue.profile, requests})
+		if err != nil || len(raw) > maxIssueMetadataSize {
+			return ErrCorrupt
+		}
 	}
 	batch.Put([]byte(metadataKey), raw)
 	var publicNext publicManifestMetadata
@@ -237,6 +254,9 @@ func (s *ManifestStore) commit(batch *leveldb.Batch, next manifestMetadata) erro
 		return fmt.Errorf("%w: %w", ErrPoisoned, err)
 	}
 	s.meta = next
+	if s.issue != nil {
+		s.issue.requests = requests
+	}
 	if s.public != nil {
 		s.public.meta = publicNext
 	}
@@ -265,27 +285,53 @@ func (s *ManifestStore) Close() error {
 	}
 	s.closed = true
 	if s.db != nil {
-		s.closeErr = s.db.Close()
+		if s.failedIssueFile != nil {
+			s.closeErr = errors.Join(s.closeErr, s.db.Close())
+		} else {
+			s.closeErr = s.db.Close()
+		}
 	}
 	return s.closeErr
 }
 
-func (s *ManifestStore) audit(m manifestMarker) error {
+func (s *ManifestStore) audit(m manifestMarker) error { return s.auditContext(context.Background(), m) }
+
+func (s *ManifestStore) auditContext(ctx context.Context, m manifestMarker) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
 	raw, err := s.db.Get([]byte(metadataKey), nil)
 	if err != nil {
 		return fmt.Errorf("%w: missing manifest metadata: %w", ErrCorrupt, err)
 	}
-	if err := decodeManifestJSON(raw, MaxManifestMetadataSize, 2, &s.meta); err != nil {
-		return err
+	if s.issue == nil {
+		if err := decodeManifestJSON(raw, MaxManifestMetadataSize, 2, &s.meta); err != nil {
+			return err
+		}
+	} else {
+		var selected issueRegistryMetadata
+		if decodeManifestJSON(raw, maxIssueMetadataSize, 3, &selected) != nil || selected.Application != issueApplication || selected.Version != IssueVersion1 || selected.IssueProfile != s.issue.profile || selected.Requests > selected.IssueProfile.MaxRequests || selected.Base.JobCount > selected.Requests {
+			return ErrCorrupt
+		}
+		base, _ := json.Marshal(selected.Base)
+		if len(base) > MaxManifestMetadataSize {
+			return ErrCorrupt
+		}
+		s.meta, s.issue.requests = selected.Base, selected.Requests
 	}
 	if s.meta.pin() != m.pin() || s.meta.Descriptor != m.Descriptor || s.meta.LastClockMS < 0 {
 		return fmt.Errorf("%w: manifest metadata disagrees with marker", ErrCorrupt)
 	}
-	s.clockSeen = s.meta.LastClockMS
+	if s.clockSeen < s.meta.LastClockMS {
+		s.clockSeen = s.meta.LastClockMS
+	}
 	var records, sequences, jobs uint64
 	it := s.db.NewIterator(nil, nil)
 	defer it.Release()
 	for it.Next() {
+		if err := ctx.Err(); err != nil {
+			return err
+		}
 		key := it.Key()
 		switch {
 		case bytes.Equal(key, []byte(metadataKey)):
@@ -335,6 +381,8 @@ func (s *ManifestStore) audit(m manifestMarker) error {
 				return ErrCorrupt
 			}
 			sequences++
+		case s.issueKeyAllowed(key):
+			// The selected request census verifies all reverse references below.
 		case s.publicKeyAllowed(key):
 			// The explicit mode performs its complete closed crosslink audit next.
 		default:
@@ -347,5 +395,8 @@ func (s *ManifestStore) audit(m manifestMarker) error {
 	if records != s.meta.LastSequence || sequences != s.meta.LastSequence || jobs != s.meta.JobCount {
 		return fmt.Errorf("%w: manifest authority count or sequence gap", ErrCorrupt)
 	}
-	return nil
+	if s.issue != nil {
+		return s.auditIssueRows(ctx)
+	}
+	return ctx.Err()
 }

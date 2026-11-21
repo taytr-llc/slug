@@ -1,0 +1,44 @@
+{
+  "logs": [
+    {
+      "bytes": 1500188,
+      "path": "/Users/taytrrip/slug/artifacts/set80/regressions-desktop-race-partitions-attempt1/deps.log",
+      "sha256": "b39dede141daa8902a28c557c2451e7e9e44d857316aa994fe8591654b04e93c"
+    },
+    {
+      "bytes": 2212241,
+      "path": "/Users/taytrrip/slug/artifacts/set80/regressions-desktop-race-partitions-attempt1/race-pilot-1.log",
+      "sha256": "c1262bf8906d7e2af83ab3cc7a42abe8100bdef6b8e5448ef30b979d49d44d59"
+    },
+    {
+      "bytes": 945220,
+      "path": "/Users/taytrrip/slug/artifacts/set80/regressions-desktop-race-partitions-attempt1/race-pilot-2.log",
+      "sha256": "7e34e9713ab187fdeb2f135cd2bfcd891cd1549cc76c4a7d0e1d6a78181c9139"
+    },
+    {
+      "bytes": 1133575,
+      "path": "/Users/taytrrip/slug/artifacts/set80/regressions-desktop-race-partitions-attempt1/race-pilot-3.log",
+      "sha256": "9c2038d495b0d735dd5b7feb6bee986132b5c42d9f0fb65ce842202df45ce40f"
+    },
+    {
+      "bytes": 907296,
+      "path": "/Users/taytrrip/slug/artifacts/set80/regressions-desktop-race-partitions-attempt1/race-pilot-4.log",
+      "sha256": "bf61d6f1dce0a87f87411c4208026c26e43c8a086b095ac7f21f7e0f5b3bedf2"
+    }
+  ],
+  "prior_failed_aggregate": {
+    "aggregate_passed": false,
+    "attempt": "/Users/taytrrip/slug/artifacts/set80/regressions-desktop-race-attempt1",
+    "log_identity": {
+      "bytes": 3008485,
+      "sha256": "5f52cf41116e8a8599c784596296715e00f73b9d961fb52331e6224cf89af34f"
+    },
+    "report_existing_archive": "docs/evidence/set80/regressions/reports/regressions-desktop-race-attempt1.json",
+    "report_identity": {
+      "bytes": 440132,
+      "sha256": "11b1a98388847b253d0f74274073b3f0263ad212d12a73ccb35e0538dc9e10a1"
+    }
+  },
+  "scope": "Explicit public log identities; no raw log copies or replay execution",
+  "version": 1
+}

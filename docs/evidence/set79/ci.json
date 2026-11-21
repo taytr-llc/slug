@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "status": "passed",
+  "chain_sha": "fdd40d8edd9a685613f1f667f0074e56ec4e7da5",
+  "wallet_sha": "dfc5d9dd7e0f604486fbac812d0413fce1f45cd6",
+  "jobs": [
+    {
+      "name": "In-tree modules",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44895338644/job/136819666784"
+    },
+    {
+      "name": "Build",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44895338644/job/136819666945"
+    },
+    {
+      "name": "Unit coverage",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44895338644/job/136819666955"
+    },
+    {
+      "name": "Unit race",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44895338644/job/136819666974"
+    },
+    {
+      "name": "Minimum Go version (compatibility)",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44895338644/job/136819666980"
+    },
+    {
+      "name": "Unit rpctest",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44895338644/job/136819667023"
+    },
+    {
+      "name": "operator-linux",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44895338636/job/136819666950"
+    }
+  ],
+  "observed_at": "2026-11-21T11:03:17.443873+00:00",
+  "remote_observation": {
+    "path": "/Users/taytrrip/slug/artifacts/set79/ci-attempt1/report.json",
+    "bytes": 3176,
+    "sha256": "eb48cae1394eaf14aafe64abe1fe3a6678c12f70edfd711c10661a620866d046"
+  },
+  "linux_evidence": {
+    "report": {
+      "path": "/Users/taytrrip/slug/artifacts/set79/linux-run-44895338636/operator-linux-fdd40d8edd9a685613f1f667f0074e56ec4e7da5-1/report.json",
+      "bytes": 1146890,
+      "sha256": "dddb9ac560d9f1f7b2268d4593697476707cf586eadca532e6e2c8d94fb84138"
+    },
+    "sources_before": {
+      "path": "/Users/taytrrip/slug/artifacts/set79/linux-run-44895338636/operator-linux-fdd40d8edd9a685613f1f667f0074e56ec4e7da5-1/sources-before.json",
+      "bytes": 2048435,
+      "sha256": "99dee985c09f231607143031ce3ed436b00ea47f22b5cd0eb65c79d32bbb3158"
+    },
+    "sources_after": {
+      "path": "/Users/taytrrip/slug/artifacts/set79/linux-run-44895338636/operator-linux-fdd40d8edd9a685613f1f667f0074e56ec4e7da5-1/sources-after.json",
+      "bytes": 2048435,
+      "sha256": "99dee985c09f231607143031ce3ed436b00ea47f22b5cd0eb65c79d32bbb3158"
+    },
+    "elapsed_seconds": 1260.502,
+    "source_unchanged": true,
+    "clean_join": true,
+    "mandatory_pass_assertions": 339,
+    "daily_actual_qualified": false,
+    "deployed_host_qualified": false
+  },
+  "live_seed_unchanged": true,
+  "no_seed_deploy_needed": true,
+  "public_pool_enabled": false
+}

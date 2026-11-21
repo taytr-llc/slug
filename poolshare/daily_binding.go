@@ -47,7 +47,7 @@ func (p *Pool) DailyBinding(ctx context.Context) (Config, error) {
 	defer cancel()
 	raw, err := p.db.Get([]byte("meta"), nil)
 	var candidate metadata
-	if err != nil || decode(raw, maxMetadataSize, &candidate) != nil || candidate != p.meta || candidate.Application != application || candidate.Version != Version2 || candidate.Config != p.config || candidate.Works > p.config.MaxWorks || candidate.Submissions > p.config.MaxSubmissions || candidate.Accepted > candidate.Submissions || candidate.Bytes > p.config.MaxBytes || candidate.LastClockMS < 0 {
+	if err != nil || p.decodeStoredMetadata(raw, &candidate) != nil || candidate != p.meta || candidate.Application != application || candidate.Version != Version2 || candidate.Config != p.config || candidate.Works > p.config.MaxWorks || candidate.Submissions > p.config.MaxSubmissions || candidate.Accepted > candidate.Submissions || candidate.Bytes > p.config.MaxBytes || candidate.LastClockMS < 0 {
 		return Config{}, ErrCorrupt
 	}
 	info, err := p.originalInfo(ctx)

@@ -1,0 +1,312 @@
+--- before/poolshare/issue_reference_test.go
++++ after/poolshare/issue_reference_test.go
+@@ -31,6 +31,9 @@
+ 				Expected struct {
+ 					Reserved       uint64 `json:"pending_reserved"`
+ 					Classification string `json:"classification"`
++					Effective uint64 `json:"effective_bytes"`
++					SharedHoldback uint64 `json:"one_shared_canonical_holdback"`
++					Required uint64 `json:"required_bytes"`
+ 				}
+ 			}
+ 		}
+@@ -38,17 +41,40 @@
+ 	if json.Unmarshal(raw, &f) != nil || len(f.Bounds.Source) == 0 {
+ 		t.Fatal("bounds")
+ 	}
+-	for _, v := range f.Bounds.Source {
+-		if len(v.Inputs) != 6 {
+-			t.Fatal(v.Name)
+-		}
+-		if v.Expected.Classification == "invalid" {
+-			continue
+-		}
+-		if got := issuePendingReserve(int(v.Inputs[1]), int(v.Inputs[0])); got != v.Expected.Reserved {
+-			t.Fatal(v.Name, got, v.Expected.Reserved)
+-		}
+-	}
++ for _, v := range f.Bounds.Source {
++  if v.Expected.Classification == "outside_selected_bound" {
++   // This private reserve helper is called only after bounded canonical row
++   // and template decoding. These two input-domain refusals are not arithmetic
++   // results; retain their inventory without claiming helper error coverage.
++   if len(v.Inputs)!=6 || (v.Inputs[0]<=16<<20 && v.Inputs[1]<=4096) { t.Fatal("outside-domain case changed",v.Name) }
++   continue
++  }
++  var requests,templateBytes,rowBytes,baseBytes,limit,submissions,maximum uint64
++  requests=1
++  switch len(v.Inputs) {
++  case 6:
++   templateBytes,rowBytes,baseBytes,limit,submissions,maximum=v.Inputs[0],v.Inputs[1],v.Inputs[2],v.Inputs[3],v.Inputs[4],v.Inputs[5]
++  case 4:
++   requests,templateBytes,rowBytes,limit=v.Inputs[0],v.Inputs[1],v.Inputs[2],v.Inputs[3]
++  default:t.Fatal("unknown independent bound shape",v.Name)
++  }
++  reserve:=issuePendingReserve(int(rowBytes),int(templateBytes))
++  used:=(40+rowBytes+40+templateBytes)*requests
++  reserved:=reserve*requests
++  if v.Expected.Classification=="uint64_overflow" {
++   if issueOccupancyFits(baseBytes,used,reserved,limit) { t.Fatal("overflow admitted",v.Name) }
++   continue
++  }
++  if len(v.Inputs)==6 && reserve!=v.Expected.Reserved { t.Fatal(v.Name,reserve,v.Expected.Reserved) }
++  if len(v.Inputs)==4 && (used+reserved!=v.Expected.Effective || v.Expected.SharedHoldback!=4096 || v.Expected.Required!=used+reserved+v.Expected.SharedHoldback) { t.Fatal("aggregate/shared holdback",v.Name) }
++  // A scalar-only conditional owner exercises the actual pre-issuer headroom
++  // check. It has no database, session, node, job or signing capability.
++  p:=&Pool{config:Config{MaxBytes:limit},meta:metadata{Bytes:baseBytes,Submissions:submissions},issueRecovery:&issueState{bytes:used,reserved:reserved}}
++  p.operatorAdmission=&OperatorAdmission{pool:p,maximum:maximum,daily:&dailyAdmission{}}
++  err:=p.dailyWorkHeadroom(0)
++  if (err==nil)!=(v.Expected.Classification=="fits") || (err!=nil && err!=ErrCapacity) { t.Fatal("independent capacity classification",v.Name,err) }
++ }
++
+ 	if issueOccupancyFits(^uint64(0), 1, 1, ^uint64(0)) || issueOccupancyFits(1, ^uint64(0), 1, ^uint64(0)) || issueOccupancyFits(1, 1, ^uint64(0), ^uint64(0)) {
+ 		t.Fatal("overflow wrapped into fit")
+ 	}
+--- before/registry/issue_files.go
++++ after/registry/issue_files.go
+@@ -0,0 +1,55 @@
++// Copyright (c) 2026 The SLUG developers. ISC license.
++package registry
++
++import (
++ "encoding/json"
++ "errors"
++ "io"
++ "os"
++)
++
++// Only explicit recoverable constructors use these helpers. A failed Close
++// retains its exact descriptor for reporting, never for another Close attempt.
++func(s *ManifestStore) closeIssueFile(f *os.File,cause error)error{
++ closeErr:=f.Close()
++ if closeErr!=nil{
++  s.failedIssueFile=f
++  s.closeErr=errors.Join(cause,closeErr)
++  s.poisoned=s.closeErr
++  return s.closeErr
++ }
++ return cause
++}
++func failedIssueFileOwner(s *ManifestStore,cause error)(*ManifestStore,error){
++ if s.failedIssueFile!=nil{return s,cause}
++ return nil,cause
++}
++func(s *ManifestStore) writeIssueFile(path string,value any)error{
++ raw,err:=json.Marshal(value)
++ if err!=nil||len(raw)+1>maxIssueMetadataSize{return ErrManifestAuthority}
++ f,err:=os.OpenFile(path,os.O_WRONLY|os.O_CREATE|os.O_EXCL,0600)
++ if err!=nil{return err}
++ raw=append(raw,'\n')
++ n,writeErr:=f.Write(raw)
++ if writeErr==nil&&n!=len(raw){writeErr=io.ErrShortWrite}
++ var syncErr error
++ if writeErr==nil{syncErr=f.Sync()}
++ return s.closeIssueFile(f,errors.Join(writeErr,syncErr))
++}
++func(s *ManifestStore) readIssueFile(path string,limit int)([]byte,error){
++ before,err:=os.Lstat(path)
++ if err!=nil||!before.Mode().IsRegular()||before.Size()>int64(limit){return nil,ErrCorrupt}
++ f,err:=os.Open(path)
++ if err!=nil{return nil,err}
++ opened,err:=f.Stat()
++ if err!=nil||!opened.Mode().IsRegular()||!os.SameFile(before,opened){return nil,s.closeIssueFile(f,errors.Join(ErrCorrupt,err))}
++ raw,readErr:=io.ReadAll(io.LimitReader(f,int64(limit)+1))
++ if len(raw)>limit{readErr=errors.Join(readErr,ErrCorrupt)}
++ if err=s.closeIssueFile(f,readErr);err!=nil{return nil,err}
++ return raw,nil
++}
++func(s *ManifestStore) syncIssueDirectory(path string)error{
++ f,err:=os.Open(path)
++ if err!=nil{return err}
++ return s.closeIssueFile(f,f.Sync())
++}
+--- before/registry/issue_files_test.go
++++ after/registry/issue_files_test.go
+@@ -0,0 +1,41 @@
++// Copyright (c) 2026 The SLUG developers. ISC license.
++package registry
++
++import (
++ "bytes"
++ "encoding/json"
++ "errors"
++ "os"
++ "path/filepath"
++ "testing"
++)
++
++func TestRecoverableIssuerFailedFileCloseRetainsOriginal(t *testing.T){
++ f,err:=os.CreateTemp(t.TempDir(),"closed-")
++ if err!=nil{t.Fatal(err)}
++ if err=f.Close();err!=nil{t.Fatal(err)}
++ cause:=errors.New("conditional preceding read failure")
++ s:=new(ManifestStore)
++ got:=s.closeIssueFile(f,cause)
++ if !errors.Is(got,cause)||!errors.Is(got,os.ErrClosed)||s.failedIssueFile!=f{t.Fatal("exact original failed descriptor",got)}
++ retained,err:=failedIssueFileOwner(s,got)
++ if retained!=s||err!=got{t.Fatal("failed owner lost",err)}
++ // This is a conditional helper test using an already-closed descriptor, not
++ // a claim to have caused a kernel Close failure during a constructor.
++ for i:=0;i<2;i++{if err:=s.Close();err!=got{t.Fatal("sticky close changed or retried",err)}}
++ if s.failedIssueFile!=f{t.Fatal("descriptor replaced")}
++}
++func TestRecoverableIssuerFileSuccessAndFailureOwnership(t *testing.T){
++ root:=t.TempDir();path:=filepath.Join(root,"marker");s:=new(ManifestStore)
++ value:=struct{Version uint32 `json:"version"`;Name string `json:"name"`}{1,"public"}
++ if err:=s.writeIssueFile(path,value);err!=nil{t.Fatal(err)}
++ raw,err:=s.readIssueFile(path,maxIssueMetadataSize);want,_:=json.Marshal(value);want=append(want,'\n')
++ if err!=nil||!bytes.Equal(raw,want)||s.failedIssueFile!=nil{t.Fatal("unchanged canonical file",err)}
++ if err=s.writeIssueFile(path,value);!os.IsExist(err){t.Fatal("exclusive file",err)}
++ f,err:=os.Open(path);if err!=nil{t.Fatal(err)}
++ cause:=errors.New("conditional read failure with successful close")
++ if err=s.closeIssueFile(f,cause);err!=cause{t.Fatal(err)}
++ if retained,err:=failedIssueFileOwner(s,cause);retained!=nil||err!=cause{t.Fatal("successful close retained an owner",err)}
++ if _,err=s.readIssueFile(path,len(want)-1);err!=ErrCorrupt{t.Fatal("bounded read",err)}
++ if s.failedIssueFile!=nil{t.Fatal("successful close marked failed")}
++}
+--- before/registry/issue_store.go
++++ after/registry/issue_store.go
+@@ -6,7 +6,6 @@
+ 	"context"
+ 	"encoding/json"
+ 	"errors"
+-	"io"
+ 	"os"
+ 	"path/filepath"
+ 	"time"
+@@ -112,14 +111,15 @@
+ 	}
+ 	pin := p.Pin().Source
+ 	base := manifestMarker{application, Version5, pin.Network, pin.Genesis, pin.AuthorityID, pin.DescriptorID, d}
+-	if err := writePublicFile(filepath.Join(path, selected.codec.markerName()), selected.codec.guard(selected.pin)); err != nil {
+-		return nil, err
+-	}
+-	if err := writePublicFile(filepath.Join(path, markerName), issueRegistryMarker{issueApplication, IssueVersion1, base, i}); err != nil {
+-		return nil, err
+-	}
+-	if err := syncDirectory(path); err != nil {
+-		return nil, err
++	s := &ManifestStore{public: selected, issue: &issueRegistryState{profile: i}, meta: manifestMetadata{Version: Version5, Network: pin.Network, Genesis: pin.Genesis, AuthorityID: pin.AuthorityID, DescriptorID: pin.DescriptorID, Descriptor: d}}
++	if err := s.writeIssueFile(filepath.Join(path, selected.codec.markerName()), selected.codec.guard(selected.pin)); err != nil {
++		return failedIssueFileOwner(s, err)
++	}
++	if err := s.writeIssueFile(filepath.Join(path, markerName), issueRegistryMarker{issueApplication, IssueVersion1, base, i}); err != nil {
++		return failedIssueFileOwner(s, err)
++	}
++	if err := s.syncIssueDirectory(path); err != nil {
++		return failedIssueFileOwner(s, err)
+ 	}
+ 	if err := ctx.Err(); err != nil {
+ 		return nil, err
+@@ -132,7 +132,7 @@
+ 	if err != nil {
+ 		return nil, err
+ 	}
+-	s := &ManifestStore{db: db, writeBatch: db.Write, public: selected, issue: &issueRegistryState{profile: i}, meta: manifestMetadata{Version: Version5, Network: pin.Network, Genesis: pin.Genesis, AuthorityID: pin.AuthorityID, DescriptorID: pin.DescriptorID, Descriptor: d}}
++	s.db, s.writeBatch = db, db.Write
+ 	batch := new(leveldb.Batch)
+ 	guard, _ := json.Marshal(selected.codec.guard(selected.pin))
+ 	batch.Put([]byte("ownership/guard"), guard)
+@@ -141,7 +141,7 @@
+ 	}
+ 	if err == nil {
+ 		for _, dir := range []string{dbPath, path, filepath.Dir(path)} {
+-			if err = syncDirectory(dir); err != nil {
++			if err = s.syncIssueDirectory(dir); err != nil {
+ 				break
+ 			}
+ 		}
+@@ -159,25 +159,10 @@
+ 	return nil, cause
+ }
+ 
+-func readIssueMarker(path string, p IssueProfile) (manifestMarker, error) {
+-	var m issueRegistryMarker
+-	file := filepath.Join(path, markerName)
+-	before, err := os.Lstat(file)
+-	if err != nil || !before.Mode().IsRegular() || before.Size() > maxIssueMetadataSize {
+-		return m.Base, ErrCorrupt
+-	}
+-	f, err := os.Open(file)
+-	if err != nil {
+-		return m.Base, err
+-	}
+-	opened, err := f.Stat()
+-	if err != nil || !os.SameFile(before, opened) || !opened.Mode().IsRegular() {
+-		return m.Base, errors.Join(ErrCorrupt, f.Close())
+-	}
+-	raw, re := io.ReadAll(io.LimitReader(f, maxIssueMetadataSize+1))
+-	if err = errors.Join(re, f.Close()); err != nil {
+-		return m.Base, err
+-	}
++func (s *ManifestStore) readIssueMarker(path string, p IssueProfile) (manifestMarker, error) {
++ var m issueRegistryMarker
++ raw, err := s.readIssueFile(filepath.Join(path, markerName), maxIssueMetadataSize)
++ if err != nil { return m.Base, err }
+ 	if len(raw) < 2 || len(raw) > maxIssueMetadataSize || raw[len(raw)-1] != '\n' || decodeManifestJSON(raw[:len(raw)-1], maxIssueMetadataSize, 3, &m) != nil || m.Application != issueApplication || m.Version != IssueVersion1 || m.IssueProfile != p || m.Base.Application != application {
+ 		return manifestMarker{}, ErrCorrupt
+ 	}
+@@ -211,13 +196,14 @@
+ 	if err := manifestProduction(); err != nil {
+ 		return nil, err
+ 	}
+-	if _, err := readSelectedPublicGuard(path, selected.pin, selected.codec); err != nil {
+-		return nil, err
+-	}
+-	m, err := readIssueMarker(path, i)
+-	if err != nil {
+-		return nil, err
+-	}
++ s := &ManifestStore{public: selected, issue: &issueRegistryState{profile: i}, readOnly: readOnly}
++ if err := selectedPublicInventory(path, false, selected.codec); err != nil { return nil, err }
++ guardRaw, err := s.readIssueFile(filepath.Join(path, selected.codec.markerName()), MaxPublicSmallSize)
++ if err != nil { return failedIssueFileOwner(s, err) }
++ var guard publicGuard
++ if len(guardRaw)<2 || guardRaw[len(guardRaw)-1]!='\n' || publicDecode(guardRaw[:len(guardRaw)-1],MaxPublicSmallSize,&guard)!=nil || guard!=selected.codec.guard(selected.pin) { return nil, ErrCorrupt }
++ m, err := s.readIssueMarker(path, i)
++ if err != nil { return failedIssueFileOwner(s, err) }
+ 	if m.pin() != p.Pin().Source {
+ 		return nil, ErrManifestAuthority
+ 	}
+@@ -228,7 +214,7 @@
+ 	if err != nil {
+ 		return nil, err
+ 	}
+-	s := &ManifestStore{db: db, writeBatch: db.Write, public: selected, issue: &issueRegistryState{profile: i}, readOnly: readOnly}
++	s.db, s.writeBatch = db, db.Write
+ 	if err = s.auditContext(ctx, m); err == nil {
+ 		err = s.auditPublicContext(ctx)
+ 	}
+--- before/registry/manifest_store.go
++++ after/registry/manifest_store.go
+@@ -285,7 +285,11 @@
+ 	}
+ 	s.closed = true
+ 	if s.db != nil {
+-		s.closeErr = s.db.Close()
++		if s.failedIssueFile != nil {
++			s.closeErr = errors.Join(s.closeErr, s.db.Close())
++		} else {
++			s.closeErr = s.db.Close()
++		}
+ 	}
+ 	return s.closeErr
+ }
+--- before/registry/manifest_types.go
++++ after/registry/manifest_types.go
+@@ -5,6 +5,7 @@
+ import (
+ 	"errors"
+ 	"io"
++	"os"
+ 	"sync"
+ 	"time"
+ 
+@@ -104,6 +105,7 @@
+ // It never migrates or enriches legacy evidence. Operations and Close serialize
+ // under one gate; callbacks must not reenter it. Callers bound their own queues.
+ type ManifestStore struct {
++	failedIssueFile *os.File // exact failed-Close descriptor; never retried
+ 	issue      *issueRegistryState  // fresh explicitly selected recovery mode
+ 	public     *publicManifestState // selected only by the explicit public constructor
+ 	mu         sync.Mutex

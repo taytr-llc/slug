@@ -186,7 +186,7 @@ func (a *OperatorAdmission) Status(ctx context.Context) (OperatorAdmissionStatus
 func (p *Pool) auditOperatorCounters(ctx context.Context) error {
 	raw, err := p.db.Get([]byte("meta"), nil)
 	var meta metadata
-	if err != nil || decode(raw, maxMetadataSize, &meta) != nil || meta != p.meta || meta.Config != p.config {
+	if err != nil || p.decodeStoredMetadata(raw, &meta) != nil || meta != p.meta || meta.Config != p.config {
 		return ErrCorrupt
 	}
 	var works, rows, nonces, sequences, accepted, size uint64

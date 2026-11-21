@@ -1,0 +1,84 @@
+{
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 78310,
+        "pid": 78310,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./poolsettle",
+        "./poolschedule"
+      ],
+      "exit_code": 0,
+      "label": "deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 78310,
+      "pid": 78310,
+      "seconds": 0.33,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 78320,
+        "pid": 78320,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "test",
+        "-count=1",
+        "-p=1",
+        "-timeout=450s",
+        "-json",
+        "-run",
+        "^$",
+        "./poolsettle",
+        "./poolschedule"
+      ],
+      "exit_code": 0,
+      "label": "compile",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 78320,
+      "pid": 78320,
+      "seconds": 3.265,
+      "timed_out": false
+    }
+  ],
+  "failed_tests": [],
+  "passed": true,
+  "passing_packages": [
+    "github.com/taytr-llc/slug/poolsettle",
+    "github.com/taytr-llc/slug/poolschedule"
+  ],
+  "passing_tests": [],
+  "pattern": "^Test(Recoverable|IssueRecovery|IssueProfile|IssueIntent|IssueRequest)",
+  "profile_unchanged": true,
+  "scope": "Set80 financial compile",
+  "skipped_tests": [],
+  "sources_unchanged": true,
+  "version": 1
+}

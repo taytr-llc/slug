@@ -96,6 +96,9 @@ func createSelected(ctx context.Context, path string, c Config, authority *regis
 	if err := validateConfigSelected(ctx, c, authority, node, sessions, false, selected); err != nil {
 		return nil, err
 	}
+	if err := authority.CheckIssueSelection(ctx, nil); err != nil {
+		return nil, err
+	}
 	p := newPool(c, authority, node, sessions)
 	if err := os.Mkdir(path, 0700); err != nil {
 		return nil, ErrInvalid
@@ -154,6 +157,9 @@ func openMode(path string, c Config, authority *registry.ManifestStore, node Nod
 
 func openSelected(ctx context.Context, path string, c Config, authority *registry.ManifestStore, node Node, sessions prospectservice.SessionAuthorizer, auditOnly bool, selected uint32) (*Pool, error) {
 	if err := validateConfigSelected(ctx, c, authority, node, sessions, auditOnly, selected); err != nil {
+		return nil, err
+	}
+	if err := authority.CheckIssueSelection(ctx, nil); err != nil {
 		return nil, err
 	}
 	p := newPool(c, authority, node, sessions)
@@ -215,6 +221,10 @@ func (p *Pool) mark(stage string) {
 }
 
 func (p *Pool) commit(batch *leveldb.Batch, next metadata) error {
+	return p.commitIssue(batch, next, p.issueRecovery)
+}
+
+func (p *Pool) commitIssue(batch *leveldb.Batch, next metadata, selected *issueState) error {
 	if p.auditOnly {
 		return ErrInvalid
 	}
@@ -228,12 +238,25 @@ func (p *Pool) commit(batch *leveldb.Batch, next metadata) error {
 	if err != nil || len(raw) > maxMetadataSize {
 		return ErrCorrupt
 	}
+	if p.issueRecovery != nil {
+		if selected == nil || selected.profile != p.issueRecovery.profile || selected.requests > selected.profile.MaxRequests || next.Works > selected.requests || next.LastClockMS > registry.MaxPublicTimestampMS || !issueOccupancyFits(next.Bytes, selected.bytes, selected.reserved, p.config.MaxBytes) {
+			return ErrCorrupt
+		}
+		raw, err = json.Marshal(issueMetadata{issueApplication, registry.IssueVersion1, next, selected.profile, selected.requests, selected.bytes, selected.reserved})
+		if err != nil || len(raw) > 2*maxMetadataSize {
+			return ErrCorrupt
+		}
+	}
 	batch.Put([]byte("meta"), raw)
 	if p.writeBatch(batch, &opt.WriteOptions{Sync: true}) != nil {
 		p.poisoned = true
 		return ErrPoisoned
 	}
 	p.meta = next
+	if selected != nil {
+		copy := *selected
+		p.issueRecovery = &copy
+	}
 	p.mark("commit")
 	return nil
 }
@@ -252,7 +275,7 @@ func (p *Pool) observeClock(recheck func() error) (int64, error) {
 		now = p.now
 	}
 	ms := now().UnixMilli()
-	if ms <= 0 || ms < p.clockSeen || ms < p.meta.LastClockMS {
+	if ms <= 0 || ms < p.clockSeen || ms < p.meta.LastClockMS || p.issueRecovery != nil && ms > registry.MaxPublicTimestampMS {
 		return 0, ErrClock
 	}
 	p.clockSeen = ms
@@ -351,7 +374,7 @@ func (p *Pool) saveWork(w savedWork, recheck func() error) error {
 	} else if !errors.Is(err, leveldb.ErrNotFound) {
 		return ErrCorrupt
 	}
-	if p.meta.Works >= p.config.MaxWorks || p.meta.Submissions >= p.config.MaxSubmissions || uint64(len(raw))+maxSubmissionSize > p.config.MaxBytes-p.meta.Bytes {
+	if p.meta.Works >= p.config.MaxWorks || p.meta.Submissions >= p.config.MaxSubmissions || uint64(len(raw))+maxSubmissionSize > p.freeSourceBytes() {
 		return ErrCapacity
 	}
 	if err := p.dailyWorkHeadroom(uint64(len(raw))); err != nil {
@@ -411,7 +434,7 @@ func (p *Pool) saveSubmission(job prospectjob.ManifestJob, r Submission, previou
 	next := p.meta
 	batch := new(leveldb.Batch)
 	if previous == nil {
-		if p.meta.Submissions >= p.config.MaxSubmissions || maxSubmissionSize > p.config.MaxBytes-p.meta.Bytes {
+		if p.meta.Submissions >= p.config.MaxSubmissions || maxSubmissionSize > p.freeSourceBytes() {
 			return Submission{}, ErrCapacity
 		}
 		if r.Sequence != next.Submissions+1 {
@@ -582,7 +605,7 @@ func (p *Pool) auditContext(ctx context.Context) error {
 		return err
 	}
 	raw, err := p.db.Get([]byte("meta"), nil)
-	if err != nil || decode(raw, maxMetadataSize, &p.meta) != nil || p.meta.Application != application || p.meta.Version != p.config.Version || p.meta.Config != p.config || p.meta.Works > p.config.MaxWorks || p.meta.Submissions > p.config.MaxSubmissions || p.meta.Accepted > p.meta.Submissions || p.meta.Bytes > p.config.MaxBytes || p.meta.LastClockMS < 0 {
+	if err != nil || p.decodeStoredMetadata(raw, &p.meta) != nil || p.meta.Application != application || p.meta.Version != p.config.Version || p.meta.Config != p.config || p.meta.Works > p.config.MaxWorks || p.meta.Submissions > p.config.MaxSubmissions || p.meta.Accepted > p.meta.Submissions || p.meta.Bytes > p.config.MaxBytes || p.meta.LastClockMS < 0 {
 		return ErrCorrupt
 	}
 	return p.auditRowsContext(ctx)
@@ -604,6 +627,12 @@ func (p *Pool) auditRowsContext(ctx context.Context) error {
 		}
 		if len(k) == 0 {
 			return ErrCorrupt
+		}
+		if p.issueRecovery != nil && bytes.HasPrefix(k, []byte("issue/")) {
+			if len(k) != 40 || !(bytes.HasPrefix(k, []byte("issue/r/")) || bytes.HasPrefix(k, []byte("issue/t/")) || bytes.HasPrefix(k, []byte("issue/j/"))) {
+				return ErrCorrupt
+			}
+			continue
 		}
 		switch k[0] {
 		case 'w':
@@ -675,6 +704,9 @@ func (p *Pool) auditRowsContext(ctx context.Context) error {
 	}
 	if it.Error() != nil || works != p.meta.Works || submissions != p.meta.Submissions || nonces != submissions || sequences != submissions || accepted != p.meta.Accepted || size != p.meta.Bytes {
 		return ErrCorrupt
+	}
+	if p.issueRecovery != nil {
+		return p.auditIssueRows(ctx)
 	}
 	return ctx.Err()
 }

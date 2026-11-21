@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "scope": "External diagnostic-only helper successor; no live edits/runtime; root must review before install",
+  "base_helper_manifest": "087cfdadf9ca2816a42afe168d60a721ab3793c2cb58993b38189aa44b2e601f",
+  "files": [
+    {
+      "path": "DIAGNOSIS.md",
+      "bytes": 3688,
+      "sha256": "db3f29fce52952a9bb7bb3b1fc56f6a249900e38d9255e315f7ca332120edcb7"
+    },
+    {
+      "path": "after/scenario_a.go",
+      "bytes": 10556,
+      "sha256": "b76130ca6f24a98a43e2c7ff91a3237a3cfd2d8fc95fa9cbdaaa25a2c2741cef"
+    },
+    {
+      "path": "after/work_evidence.go",
+      "bytes": 9905,
+      "sha256": "5ab02c80981475dc9682dc6d4ce274cec131f31979f1373c01f39d98f937abca"
+    },
+    {
+      "path": "before/scenario_a.go",
+      "bytes": 10501,
+      "sha256": "403ec4febc7c63a2e907ef4252fc8d6744bb233753f3095a2e5861c0564dcce8"
+    },
+    {
+      "path": "before/work_evidence.go",
+      "bytes": 7669,
+      "sha256": "42ef9e32843082665d2b3013ec79da8eaad923536857014c61141a0d824e58bc"
+    },
+    {
+      "path": "changes.diff",
+      "bytes": 5444,
+      "sha256": "7d5c7dbdbd18c551618059b6408ccca1ec449b8d7672898a24d269e565839376"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/actual-report.json",
+      "bytes": 18206,
+      "sha256": "21f72745f1c225d8e8c0db7bceb358299aea637e72142b34d1b1a4d4c90f52b8"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/cli-3-stdout.jsonl",
+      "bytes": 616,
+      "sha256": "e9994e1c6b60d4c3816782bf6b53a32f5dd7bb8293add4ca66f787b1e07923f4"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolservice/client.go",
+      "bytes": 12225,
+      "sha256": "4a37ad46fa42c0bf06a4ffaa15f022ad40f240806e47841928efd1d86c5039d1"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolservice/daily_client.go",
+      "bytes": 5122,
+      "sha256": "e682850f1836f386d76c3d448634f383bba1fd33d7a3ae3f2d3607d8d14c09c1"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolservice/recoverable_json.go",
+      "bytes": 3145,
+      "sha256": "dbaf6cfa78981e2d25d48f871d9e5bb2c2392b0dd7c7a43c44109934e8395be3"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolservice/server.go",
+      "bytes": 14198,
+      "sha256": "ae7741e06fd6d510077d2075aa4dd68a9b515c4add0d723f9c08f50fefecb5f0"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolservice/daily_server.go",
+      "bytes": 10637,
+      "sha256": "f1b1d6b0d7f5fb37ad9439b9b3b4e900a83c8fd13ae0be941ea7f29ee6d2c368"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolshare/pool.go",
+      "bytes": 13802,
+      "sha256": "01436dc7dff54e168e117d0899f699f1d68abb907bdd31a2a56cae39b0754be6"
+    }
+  ],
+  "deadline_seconds": 20,
+  "new_retry_codes": [],
+  "new_accepted_errors": []
+}

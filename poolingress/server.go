@@ -21,6 +21,7 @@ import (
 // stores and signer owners remain caller-owned and must outlive Run's join.
 type Server struct {
 	config           Config
+	protocol         uint32
 	host             string
 	targets          [3]*url.URL
 	tls              *tls.Config
@@ -48,7 +49,7 @@ func newSelected(c Config, certificatePEM, privateKeyPEM []byte, version uint32)
 		return nil, e
 	}
 	transport := &http.Transport{Proxy: nil, DialContext: (&net.Dialer{Timeout: 5 * time.Second}).DialContext, ResponseHeaderTimeout: 30 * time.Second, MaxResponseHeaderBytes: 8192, DisableCompression: true, DisableKeepAlives: true, MaxConnsPerHost: 8, ForceAttemptHTTP2: false}
-	return &Server{config: c, host: external.Host, targets: targets, tls: tc, transport: transport, done: make(chan struct{}), slots: make(chan struct{}, 8)}, nil
+	return &Server{config: c, protocol: version, host: external.Host, targets: targets, tls: tc, transport: transport, done: make(chan struct{}), slots: make(chan struct{}, 8)}, nil
 }
 func (s *Server) Config() Config {
 	if s == nil {
@@ -160,7 +161,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		fail(w, http.StatusServiceUnavailable)
 		return
 	}
-	selected, ok := requestSelectedRoute(r, s.host, s.config.Version)
+	selected, ok := requestSelectedRoute(r, s.host, s.protocol)
 	if !ok || r.TLS == nil || r.Body == nil {
 		fail(w, http.StatusBadRequest)
 		return

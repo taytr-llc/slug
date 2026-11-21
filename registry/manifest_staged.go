@@ -93,6 +93,9 @@ func ownedManifestRecord(r ManifestRecord) ManifestRecord {
 func (s *ManifestStore) PrepareManifestIssue(context prospect.Context, publicKey string) (*PreparedManifestIssue, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	if s.issue != nil {
+		return nil, ErrManifestAuthority
+	}
 	if err := s.state(true); err != nil {
 		return nil, err
 	}
@@ -137,6 +140,9 @@ func (s *ManifestStore) CommitManifestIssue(prepared *PreparedManifestIssue, che
 		return prospectjob.ManifestJob{}, ErrBusy
 	}
 	defer s.mu.Unlock()
+	if s.issue != nil {
+		return prospectjob.ManifestJob{}, ErrManifestAuthority
+	}
 	if err := s.state(true); err != nil {
 		return prospectjob.ManifestJob{}, err
 	}

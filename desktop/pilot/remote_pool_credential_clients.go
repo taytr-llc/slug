@@ -14,13 +14,22 @@ import (
 )
 
 // Metadata is an immutable selected public binding, not a liveness assertion.
-func (l *remotePoolPoolLease) ProtocolVersion() uint32        { return l.lease.owner.config.Version }
+func (l *remotePoolPoolLease) ProtocolVersion() uint32 {
+	if l.lease.owner.recovery != nil {
+		return 3
+	}
+	return l.lease.owner.config.Version
+}
 func (l *remotePoolPoolLease) AuthorityOrigin() string        { return l.lease.owner.config.Origin }
 func (l *remotePoolPoolLease) SourceConfig() poolshare.Config { return l.lease.owner.config.Source }
 func (l *remotePoolPoolLease) PublicKey() string {
 	return l.lease.owner.config.ExpectedLocal.Recipient.Config.Identity.GymPublicKey
 }
 func (l *remotePoolPoolLease) TransportTrustID() string {
+	if l.lease.owner.recovery != nil {
+		c, _ := remotePoolRecoverableWorkerConfig(*l.lease.owner.recovery)
+		return c.TransportTrustID
+	}
 	return l.lease.owner.worker.TransportTrustID
 }
 func (l *remotePoolPoolLease) Issue(ctx context.Context) (poolshare.MiningWork, error) {

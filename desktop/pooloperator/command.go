@@ -19,12 +19,15 @@ import (
 	"github.com/taytr-llc/slug/poolminer"
 	"github.com/taytr-llc/slug/prospectnode"
 	"github.com/taytr-llc/slug/registry"
+	"github.com/taytr-llc/slug/wire/v2"
 	"github.com/taytr-llc/slugwallet/wallet"
 )
 
 const commandUsage = `slugpoold COMMAND [local file selections]
 Commands: init, serve, status, rotate, revoke, checkpoint
 --daily selects a fresh DAILY profile; defaults remain V1.
+--daily-recoverable-issue selects fresh exact-request issuance recovery.
+The two selections are mutually exclusive.
 Required selections: --setup-file --root --wallet-root
  --wallet-public-passphrase-file --wallet-unlock-passphrase-file
  --admission-seed-file --publication-seed-file --cutoff-seed-file
@@ -61,7 +64,7 @@ func (e *CommandError) GoString() string { return e.Error() }
 func (e *CommandError) Unwrap() error    { return e.cause }
 
 type commandOptions struct {
-	daily                                                             bool
+	daily, recoverableIssue                                           bool
 	command, setup, root, walletRoot, publicPass, unlockPass          string
 	admissionSeed, publicationSeed, cutoffSeed, rpc, certificate, key string
 	gym, audience, token, checkpoint                                  string
@@ -96,6 +99,7 @@ func parseCommand(args []string) (commandOptions, error) {
 	fs := flag.NewFlagSet("slugpoold", flag.ContinueOnError)
 	fs.SetOutput(io.Discard)
 	fs.BoolVar(&o.daily, "daily", false, "")
+	fs.BoolVar(&o.recoverableIssue, "daily-recoverable-issue", false, "")
 	for name, p := range map[string]*string{
 		"setup-file": &o.setup, "root": &o.root, "wallet-root": &o.walletRoot,
 		"wallet-public-passphrase-file": &o.publicPass, "wallet-unlock-passphrase-file": &o.unlockPass,
@@ -118,11 +122,11 @@ func parseCommand(args []string) (commandOptions, error) {
 		}
 		name := strings.TrimPrefix(strings.TrimPrefix(a, "-"), "-")
 		if j := strings.IndexByte(name, '='); j >= 0 {
-			if name[:j] == "daily" && name[j+1:] != "true" {
+			if (name[:j] == "daily" || name[:j] == "daily-recoverable-issue") && name[j+1:] != "true" {
 				return o, ErrCommandArguments
 			}
 			name = name[:j]
-		} else if name != "daily" {
+		} else if name != "daily" && name != "daily-recoverable-issue" {
 			i++
 			if i >= len(args) {
 				return o, ErrCommandArguments
@@ -133,7 +137,7 @@ func parseCommand(args []string) (commandOptions, error) {
 		}
 		seen[name] = true
 	}
-	if fs.Parse(args[1:]) != nil || fs.NArg() != 0 {
+	if fs.Parse(args[1:]) != nil || fs.NArg() != 0 || seen["daily"] && seen["daily-recoverable-issue"] {
 		return o, ErrCommandArguments
 	}
 	for _, p := range []string{o.setup, o.root, o.walletRoot, o.publicPass, o.unlockPass, o.admissionSeed, o.publicationSeed, o.cutoffSeed, o.rpc, o.certificate, o.key} {
@@ -538,17 +542,35 @@ func RunCommand(ctx context.Context, args []string, stdout, stderr *os.File) (re
 		return ErrCommandArguments
 	}
 	command = options.command
-	if options.daily {
+	if options.daily || options.recoverableIssue {
 		version = 2
 	}
 	if e = ctx.Err(); e != nil {
 		return e
 	}
-	raw, e := o.readInput(ctx, options.setup, MaxSetupBytes+1)
+	if options.recoverableIssue && wire.TestPoW {
+		return ErrInvalid
+	}
+	setupLimit := MaxSetupBytes
+	if options.recoverableIssue {
+		setupLimit = MaxRecoverableSetupBytes
+	}
+	raw, e := o.readInput(ctx, options.setup, setupLimit+1)
 	if e != nil {
 		return e
 	}
-	setup, e := parseCommandSetupVersion(raw, version)
+	var setup Setup
+	var issueSetup *RecoverableDailySetup
+	if options.recoverableIssue {
+		selected := raw
+		if len(selected) > 0 && selected[len(selected)-1] == '\n' {
+			selected = selected[:len(selected)-1]
+		}
+		v, x := ParseRecoverableDailySetup(selected)
+		setup, issueSetup, e = v.Base, &v, x
+	} else {
+		setup, e = parseCommandSetupVersion(raw, version)
+	}
 	clear(raw)
 	if e != nil {
 		return ErrInvalid
@@ -624,7 +646,7 @@ func RunCommand(ctx context.Context, args []string, stdout, stderr *os.File) (re
 		return e
 	}
 	openWallet := wallet.OpenPoolSettlementWallet
-	if options.daily {
+	if options.daily || options.recoverableIssue {
 		openWallet = wallet.OpenDailyPoolSettlementWallet
 	}
 	o.wallet, e = openWallet(custody, options.walletRoot, setup.walletBinding(), publicPass)
@@ -638,14 +660,22 @@ func RunCommand(ctx context.Context, args []string, stdout, stderr *os.File) (re
 	borrowed := BorrowedOwners{Authority: o.authority, Wallet: o.wallet}
 	private := PrivateInputs{NodeRPC: rpc, TLSCertificateFile: options.certificate, TLSPrivateKeyFile: options.key, UnlockPassphraseFile: options.unlockPass}
 	createRuntime, openRuntime := Create, Open
-	if options.daily {
+	if options.daily || options.recoverableIssue {
 		createRuntime, openRuntime = CreateDaily, OpenDaily
 	}
 	if command == "init" {
 		mutated = true
-		o.runtime, e = createRuntime(ctx, options.root, setup, borrowed, private)
+		if issueSetup != nil {
+			o.runtime, e = CreateRecoverableDaily(ctx, options.root, *issueSetup, borrowed, private)
+		} else {
+			o.runtime, e = createRuntime(ctx, options.root, setup, borrowed, private)
+		}
 	} else {
-		o.runtime, e = openRuntime(ctx, options.root, setup, borrowed, private)
+		if issueSetup != nil {
+			o.runtime, e = OpenRecoverableDaily(ctx, options.root, *issueSetup, borrowed, private)
+		} else {
+			o.runtime, e = openRuntime(ctx, options.root, setup, borrowed, private)
+		}
 	}
 	if e != nil {
 		if mutated {

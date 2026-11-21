@@ -1,0 +1,89 @@
+{
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82027,
+        "pid": 82027,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=slugtestpow",
+        "./pooloperator"
+      ],
+      "exit_code": 0,
+      "label": "deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82027,
+      "pid": 82027,
+      "seconds": 0.331,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82064,
+        "pid": 82064,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "test",
+        "-count=1",
+        "-p=1",
+        "-timeout=450s",
+        "-json",
+        "-tags=slugtestpow",
+        "-run",
+        "^Test(Recoverable|IssueRecovery|IssueProfile|IssueIntent|IssueRequest)",
+        "./pooloperator"
+      ],
+      "exit_code": 0,
+      "label": "cheap",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82064,
+      "pid": 82064,
+      "seconds": 9.549,
+      "timed_out": false
+    }
+  ],
+  "expected_profile_skips": [],
+  "failed_tests": [],
+  "passed": true,
+  "passing_packages": [
+    "github.com/taytr-llc/slug/desktop/pooloperator"
+  ],
+  "passing_tests": [
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableCommandsRejectCheapBeforeFiles",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorCommandExplicitSelection"
+  ],
+  "pattern": "^Test(Recoverable|IssueRecovery|IssueProfile|IssueIntent|IssueRequest)",
+  "profile_unchanged": true,
+  "scope": "Set80 operator cheap",
+  "skipped_tests": [
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentWrappers",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentSetupFraming"
+  ],
+  "sources_unchanged": true,
+  "version": 1
+}

@@ -1,0 +1,26 @@
+{
+  "capture_errors": [],
+  "cleanup": {
+    "errors": [],
+    "group_empty": true,
+    "leftover_after_exit": false,
+    "pgid": 76057,
+    "pid": 76057,
+    "return_code": 0,
+    "signals": []
+  },
+  "command": [
+    "/usr/bin/python3",
+    "-B",
+    "-S",
+    "--version"
+  ],
+  "exit_code": 0,
+  "log_errors": [],
+  "log_joined": true,
+  "log_limit_exceeded": false,
+  "pgid": 76057,
+  "pid": 76057,
+  "seconds": 3.021,
+  "timed_out": false
+}

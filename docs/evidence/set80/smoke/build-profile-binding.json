@@ -1,0 +1,18 @@
+{
+  "profile": {
+    "version": 1,
+    "id": "slug-go1274-no-cse-v1",
+    "go_version": "go1.27.4",
+    "gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+    "scope": "candidate_engineering"
+  },
+  "profile_sha256": "e5ddb9d30e8048ad3b656358134632e48852f44deef44bdd93df7dda13208295",
+  "wrapper_sha256": "64e073ba868e42b04e3e93a51826b2e6ee1b99103b92b417868cbf74f9b6436e",
+  "checker_sha256": "b6033d66edb4d24a57a7fac4e59ddaeee6964f0943aca21fddc6f65c7f5e6ee4",
+  "go_binary": "/opt/homebrew/Cellar/go/1.27.4/libexec/bin/go",
+  "go_sha256": "05f88ad8cc1e19f455104bd936e255e9ac9acf7b7725df96fb59e7260b425252",
+  "compiler": "/opt/homebrew/Cellar/go/1.27.4/libexec/pkg/tool/darwin_arm64/compile",
+  "compiler_sha256": "b99bfa9cd6aef71c0dbc722ea6449b23a3b8a5cf527043cf17fefe6c6294b74f",
+  "linker": "/opt/homebrew/Cellar/go/1.27.4/libexec/pkg/tool/darwin_arm64/link",
+  "linker_sha256": "b28e915ea2b7ad90d1650ed2916ea3480f3ae2d639e78d8ca938dc3e645932c9"
+}

@@ -1,0 +1,299 @@
+// Exact TLS forwarding at the immutable selected Origin, with one reply loss.
+package main
+
+import (
+	"bytes"
+	"context"
+	"crypto/tls"
+	"crypto/x509"
+	"encoding/json"
+	"errors"
+	"github.com/taytr-llc/slug/poolservice"
+	"io"
+	"net"
+	"net/http"
+	"net/url"
+	"path/filepath"
+	"sync"
+	"time"
+)
+
+type issueWireEvent struct {
+	RequestID string `json:"request_id"`
+	Path      string `json:"path"`
+	AtMS      int64  `json:"at_ms"`
+	Forwarded bool   `json:"forwarded"`
+	Status    int    `json:"status"`
+	SHA256    string `json:"response_sha256"`
+	Lost      bool   `json:"lost"`
+}
+type issueTLSRelay struct {
+	server           *http.Server
+	listener         net.Listener
+	client           *http.Client
+	done             chan error
+	mu               sync.Mutex
+	active           sync.WaitGroup
+	closing          bool
+	failure          error
+	expected         poolservice.RecoverableDailySelection
+	originalID       string
+	lose, held, lost bool
+	lostResult       poolservice.IssueResponse
+	lostRaw          []byte
+	loss             chan struct{}
+	release          chan struct{}
+	events           []issueWireEvent
+	replay           chan poolservice.IssueResponse
+	replayed         bool
+	receiptReads []receiptWireEvent
+	receiptReadsDropped uint64
+}
+
+func publicSelection(c poolservice.RecoverableDailyClientConfig) poolservice.RecoverableDailySelection {
+	b, e := poolservice.DailyTransportTrustID(c.Base)
+	check(e, "base TLS trust")
+	id, e := poolservice.RecoverableDailyTransportTrustID(c)
+	check(e, "issue TLS trust")
+	return poolservice.RecoverableDailySelection{Version: 1, BaseVersion: 2, URL: c.Base.URL, PublicKey: c.Base.PublicKey, Source: c.Base.Source, IssueProfile: c.IssueProfile, SettlementConfigID: c.Base.SettlementConfigID, RecipientScript: c.Base.RecipientScript, BaseTransportTrustID: b, TransportTrustID: id}
+}
+func startIssueTLS(ctx context.Context, private, backend string, c poolservice.RecoverableDailyClientConfig) *issueTLSRelay {
+	selected, e := url.Parse(c.Base.URL)
+	check(e, "selected TLS URL")
+	cert, e := tls.LoadX509KeyPair(filepath.Join(private, "tls-cert.pem"), filepath.Join(private, "tls-key.pem"))
+	check(e, "original TLS keypair")
+	roots := x509.NewCertPool()
+	require(roots.AppendCertsFromPEM([]byte(c.Base.CACertificate)), "original selected CA")
+	l, e := net.Listen("tcp4", selected.Host)
+	check(e, "selected external Origin listener")
+	tr := &http.Transport{Proxy: nil, DisableCompression: true, DisableKeepAlives: true, MaxResponseHeaderBytes: 65536, TLSClientConfig: &tls.Config{MinVersion: tls.VersionTLS13, MaxVersion: tls.VersionTLS13, RootCAs: roots, ServerName: selected.Hostname()}}
+	r := &issueTLSRelay{listener: tls.NewListener(l, &tls.Config{MinVersion: tls.VersionTLS13, MaxVersion: tls.VersionTLS13, Certificates: []tls.Certificate{cert}, NextProtos: []string{"http/1.1"}}), client: &http.Client{Timeout: 30 * time.Second, Transport: tr, CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }}, done: make(chan error, 1), expected: publicSelection(c), loss: make(chan struct{}), release: make(chan struct{}), replay: make(chan poolservice.IssueResponse, 1)}
+	r.server = &http.Server{ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 10 * time.Second, WriteTimeout: 35 * time.Second, MaxHeaderBytes: 16384, BaseContext: func(net.Listener) context.Context { return ctx }}
+	r.server.Handler = http.HandlerFunc(func(w http.ResponseWriter, q *http.Request) {
+		r.mu.Lock()
+		if r.closing {
+			r.mu.Unlock()
+			http.Error(w, "closed", 503)
+			return
+		}
+		r.active.Add(1)
+		r.mu.Unlock()
+		defer r.active.Done()
+		receiptIndex, receipt := r.beginReceiptWire(q)
+		defer r.endReceiptWire(receiptIndex, receipt, q.Context())
+		if q.Host != selected.Host || q.URL.RawQuery != "" || q.URL.Fragment != "" {
+			receipt.fail("origin", nil)
+			http.Error(w, "origin", 400)
+			return
+		}
+		if receipt != nil { receipt.OriginOK = true }
+		raw, e := io.ReadAll(io.LimitReader(q.Body, poolservice.MaxWorkResponseSize+1))
+		receipt.requestBody(raw)
+		if e != nil || len(raw) > poolservice.MaxWorkResponseSize {
+			receipt.fail("request_read", e)
+			http.Error(w, "bound", 400)
+			return
+		}
+		issue := q.URL.Path == "/pool/v3/issue"
+		lookup := q.URL.Path == "/pool/v3/issue-lookup"
+		id := ""
+		index := -1
+		if issue || lookup {
+			var v poolservice.IssueRequest
+			d := json.NewDecoder(bytes.NewReader(raw))
+			d.DisallowUnknownFields()
+			if d.Decode(&v) != nil || len(v.RequestID) != 64 {
+				http.Error(w, "request", 400)
+				return
+			}
+			canonical, _ := json.Marshal(v)
+			if !bytes.Equal(bytes.Trim(raw, " \t\r\n"), canonical) {
+				http.Error(w, "canonical request", 400)
+				return
+			}
+			id = v.RequestID
+			r.mu.Lock()
+			if len(r.events) >= 128 {
+				r.failure = errors.Join(r.failure, errors.New("issue event bound"))
+				r.mu.Unlock()
+				http.Error(w, "bound", 503)
+				return
+			}
+			if issue && r.originalID == "" {
+				r.originalID = id
+			}
+			blocked := issue && r.held
+			index = len(r.events)
+			r.events = append(r.events, issueWireEvent{RequestID: id, Path: q.URL.Path, AtMS: time.Now().UnixMilli()})
+			r.mu.Unlock()
+			if blocked {
+				select {
+				case <-q.Context().Done():
+					return
+				case <-r.release:
+				}
+				if q.Context().Err() != nil {
+					return
+				}
+			}
+		}
+		up, e := http.NewRequestWithContext(q.Context(), q.Method, "https://"+backend+q.URL.EscapedPath(), bytes.NewReader(raw))
+		if e != nil {
+			receipt.fail("request_create", e)
+			http.Error(w, "request", 502)
+			return
+		}
+		up.Host = selected.Host
+		up.Header = q.Header.Clone()
+		up.Header.Del("Connection")
+		up.Header.Del("Proxy-Authorization")
+		if index >= 0 {
+			r.mu.Lock()
+			r.events[index].Forwarded = true
+			r.mu.Unlock()
+		}
+		if receipt != nil { receipt.Forwarded = true }
+		response, e := r.client.Do(up)
+		if e != nil {
+			receipt.fail("upstream", e)
+			http.Error(w, "upstream", 502)
+			return
+		}
+		receipt.responseHeaders(response)
+		body, e := io.ReadAll(io.LimitReader(response.Body, poolservice.MaxWorkResponseSize+1))
+		ce := response.Body.Close()
+		receipt.responseBody(body, e, ce, r.expected)
+		if e != nil || ce != nil || len(body) > poolservice.MaxWorkResponseSize {
+			receipt.fail("response_read_close", errors.Join(e, ce))
+			http.Error(w, "response", 502)
+			return
+		}
+		if index >= 0 {
+			r.mu.Lock()
+			r.events[index].Status = response.StatusCode
+			r.events[index].SHA256 = hx(digest(body))
+			drop := issue && r.lose && !r.lost && id == r.originalID && response.StatusCode == http.StatusOK
+			r.mu.Unlock()
+			if drop {
+				var value poolservice.IssueResponse
+				d := json.NewDecoder(bytes.NewReader(body))
+				d.DisallowUnknownFields()
+				e = d.Decode(&value)
+				canonical, _ := json.Marshal(value)
+				if e != nil || !bytes.Equal(bytes.Trim(body, " \t\r\n"), canonical) || poolservice.ValidateRecoverableIssueResponse(r.expected, id, value, false) != nil || value.Result.State != "work" {
+					r.mu.Lock()
+					r.failure = errors.Join(r.failure, errors.New("loss did not capture exact selected work"))
+					r.mu.Unlock()
+					http.Error(w, "invalid selected response", 502)
+					return
+				}
+				h, ok := w.(http.Hijacker)
+				if !ok {
+					r.mu.Lock()
+					r.failure = errors.Join(r.failure, errors.New("missing original TLS hijacker"))
+					r.mu.Unlock()
+					return
+				}
+				conn, _, e := h.Hijack()
+				if e != nil {
+					r.mu.Lock()
+					r.failure = errors.Join(r.failure, e)
+					r.mu.Unlock()
+					return
+				}
+				r.mu.Lock()
+				r.lost = true
+				r.held = true
+				r.lostResult = value
+				r.lostRaw = append([]byte{}, body...)
+				r.events[index].Lost = true
+				r.mu.Unlock()
+				// No response headers or bytes have been emitted to this original client.
+				e = conn.Close()
+				r.mu.Lock()
+				r.failure = errors.Join(r.failure, e)
+				r.mu.Unlock()
+				close(r.loss)
+				return
+			}
+		}
+		if issue && response.StatusCode == http.StatusOK {
+			r.mu.Lock()
+			verify := r.lost && !r.held && !r.replayed && id == r.originalID
+			old := append([]byte{}, r.lostRaw...)
+			r.mu.Unlock()
+			if verify {
+				var v poolservice.IssueResponse
+				d := json.NewDecoder(bytes.NewReader(body))
+				d.DisallowUnknownFields()
+				e := d.Decode(&v)
+				canonical, _ := json.Marshal(v)
+				if e != nil || !bytes.Equal(bytes.Trim(body, " \t\r\n"), canonical) || !bytes.Equal(bytes.Trim(body, " \t\r\n"), bytes.Trim(old, " \t\r\n")) || poolservice.ValidateRecoverableIssueResponse(r.expected, id, v, false) != nil {
+					r.mu.Lock()
+					r.failure = errors.Join(r.failure, errors.New("original replay changed"))
+					r.mu.Unlock()
+					http.Error(w, "replay", 502)
+					return
+				}
+				r.mu.Lock()
+				r.replayed = true
+				r.mu.Unlock()
+				r.replay <- v
+			}
+		}
+		for key, values := range response.Header {
+			if key == "Connection" || key == "Transfer-Encoding" {
+				continue
+			}
+			for _, v := range values {
+				w.Header().Add(key, v)
+			}
+		}
+		w.WriteHeader(response.StatusCode)
+		n, writeErr := w.Write(body) // ordinary canceled downstream delivery is preserved by client unknown semantics
+		if receipt != nil {
+			receipt.DownstreamAttempted = true
+			receipt.DownstreamBytes = n
+			receipt.DownstreamError = receiptWireError(writeErr)
+		}
+	})
+	go func() { r.done <- r.server.Serve(r.listener) }()
+	return r
+}
+func (r *issueTLSRelay) armLoss(id string) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	require(r.originalID == id && !r.lose && !r.lost, "one loss for original request")
+	r.lose = true
+}
+func (r *issueTLSRelay) releaseAfterJoin() {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	require(r.lost && r.held, "original reply hold")
+	r.held = false
+	close(r.release)
+}
+func (r *issueTLSRelay) evidence() map[string]any {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	return map[string]any{"request_id": r.originalID, "lost": r.lost, "held": r.held, "response_sha256": hx(digest(r.lostRaw)), "response": r.lostResult, "events": append([]issueWireEvent{}, r.events...), "error": r.failure != nil}
+}
+func (r *issueTLSRelay) close() error {
+	if r == nil {
+		return nil
+	}
+	r.mu.Lock()
+	r.closing = true
+	r.mu.Unlock()
+	e := r.server.Close()
+	se := <-r.done
+	r.active.Wait()
+	r.client.CloseIdleConnections()
+	if errors.Is(se, http.ErrServerClosed) {
+		se = nil
+	}
+	r.mu.Lock()
+	e = errors.Join(e, se, r.failure)
+	r.mu.Unlock()
+	return e
+}

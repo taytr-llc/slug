@@ -34,6 +34,7 @@ type PoolWorker struct {
 	current        *PoolScan
 	lastTime       int64
 	capacityPaused bool
+	recovery       *poolRecoveryWorker
 }
 
 func NewPool(c PoolConfig, a poolservice.Authority, admission ManifestAuthority, node Node, signer Signer, outbox *PoolOutbox) (*PoolWorker, error) {
@@ -61,12 +62,15 @@ func newPool(c PoolConfig, a poolservice.Authority, admission ManifestAuthority,
 	}
 	outbox.mu.Lock()
 	defer outbox.mu.Unlock()
-	if outbox.state() != nil || !reflect.DeepEqual(outbox.config, c) {
+	if outbox.state() != nil || outbox.recovery != nil || !reflect.DeepEqual(outbox.config, c) {
 		return nil, ErrCorrupt
 	}
 	return w, nil
 }
 func (w *PoolWorker) authorityMatches() bool {
+	if w.recovery != nil {
+		return w.recoverableAuthorityMatches()
+	}
 	c, a, m := w.config, w.authority, w.admission
 	return a.ProtocolVersion() == c.Version && a.AuthorityOrigin() == c.AuthorityOrigin && a.SourceConfig() == c.Source && a.TransportTrustID() == c.TransportTrustID && a.PublicKey() == c.PublicKey && m.ProtocolVersion() == 3 && m.AuthorityOrigin() == c.AdmissionOrigin && m.AuthorityPin() == c.Source.AuthorityPin && m.TransportTrustID() == c.AdmissionTrustID
 }
@@ -144,6 +148,9 @@ func (w *PoolWorker) Run(ctx context.Context) (runErr error) {
 		w.outbox.mu.Lock()
 		w.outbox.running = false
 		w.outbox.issueAttempt = nil
+		if w.outbox.recovery != nil {
+			w.outbox.recovery.attempt = nil
+		}
 		w.outbox.mu.Unlock()
 		s := w.Status()
 		if runErr != nil {
@@ -212,6 +219,9 @@ func (w *PoolWorker) Run(ctx context.Context) (runErr error) {
 			w.outbox.mu.Lock()
 			full := w.outbox.meta.Records >= w.config.MaxRecords
 			held := w.outbox.meta.IssuePending
+			if w.recovery != nil {
+				full = w.recoveryIssueFull()
+			}
 			w.outbox.mu.Unlock()
 			if held {
 				w.set("paused", "issue_unknown")
@@ -229,7 +239,32 @@ func (w *PoolWorker) Run(ctx context.Context) (runErr error) {
 			}
 			w.set("preparing", "")
 			var fresh PoolScan
-			if w.config.Version == PoolVersion2 {
+			if w.recovery != nil {
+				issued, issueErr := w.issueRecoverable(ctx)
+				if ctx.Err() != nil {
+					return nil
+				}
+				if errors.Is(issueErr, errPoolIssueTerminal) {
+					backoff = time.Second
+					continue
+				}
+				if issueErr != nil {
+					if errors.Is(issueErr, ErrCapacity) {
+						w.capacityPaused = true
+						w.set("paused", "capacity")
+					} else if recoverableIssueRetry(issueErr) {
+						w.set("retrying", poolErrorCode(issueErr))
+					} else {
+						return issueErr
+					}
+					if w.wait(ctx, backoff) != nil {
+						return nil
+					}
+					backoff = min(30*time.Second, backoff*2)
+					continue
+				}
+				fresh = *issued
+			} else if w.config.Version == PoolVersion2 {
 				var issued *PoolScan
 				issued, err = w.issueDaily(ctx)
 				if ctx.Err() != nil {

@@ -1,0 +1,355 @@
+// Copyright (c) 2026 The SLUG developers. ISC license.
+package registry
+
+import (
+	"bytes"
+	"context"
+	"encoding/json"
+	"errors"
+	"os"
+	"path/filepath"
+	"time"
+
+	"github.com/syndtr/goleveldb/leveldb"
+	"github.com/syndtr/goleveldb/leveldb/opt"
+	"github.com/taytr-llc/slug/fighterdescriptor"
+	"github.com/taytr-llc/slug/internal/operatorauthority"
+)
+
+type issueRegistryState struct {
+	profile  IssueProfile
+	requests uint64
+}
+type issueRegistryMarker struct {
+	Application  string         `json:"application"`
+	Version      uint32         `json:"version"`
+	Base         manifestMarker `json:"base"`
+	IssueProfile IssueProfile   `json:"issue_profile"`
+}
+type issueRegistryMetadata struct {
+	Application  string           `json:"application"`
+	Version      uint32           `json:"version"`
+	Base         manifestMetadata `json:"base"`
+	IssueProfile IssueProfile     `json:"issue_profile"`
+	Requests     uint64           `json:"requests"`
+}
+
+func issueContext(ctx context.Context) (context.Context, context.CancelFunc, error) {
+	if ctx == nil {
+		return nil, nil, ErrManifestAuthority
+	}
+	if err := ctx.Err(); err != nil {
+		return nil, nil, err
+	}
+	c, cancel := context.WithTimeout(ctx, 30*time.Second)
+	return c, cancel, nil
+}
+
+func recoverableOperatorState(ctx context.Context, p OperatorProfile, i IssueProfile, owner *operatorauthority.Owner, readOnly bool) (*publicManifestState, error) {
+	if err := ValidateRecoverableOperatorProfile(p, i); err != nil {
+		return nil, err
+	}
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+	binding, err := operatorBinding(p)
+	if err != nil {
+		return nil, err
+	}
+	if readOnly {
+		if owner != nil {
+			return nil, ErrPublicOwnership
+		}
+	} else {
+		if owner == nil || owner.Capabilities() != (operatorauthority.Capabilities{Admission: true, Publication: true, Cutoff: true}) {
+			return nil, ErrPublicOwnership
+		}
+		if err := owner.Check(ctx, binding); err != nil {
+			return nil, err
+		}
+	}
+	selected := newSelectedPublicState(p.Pin(), publicEvidenceCodec{operator: true})
+	selected.operator, selected.binding = owner, binding
+	return selected, nil
+}
+
+// CreateRecoverableOperatorManifestAuthority selects a fresh request-only
+// issuer. No legacy root is upgraded and no expected pin is read from disk.
+func CreateRecoverableOperatorManifestAuthority(ctx context.Context, path string, d fighterdescriptor.Descriptor, p OperatorProfile, i IssueProfile, owner *operatorauthority.Owner) (*ManifestStore, error) {
+	ctx, cancel, err := issueContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+	defer cancel()
+	selected, err := recoverableOperatorState(ctx, p, i, owner, false)
+	if err != nil {
+		return nil, err
+	}
+	if err := manifestProduction(); err != nil {
+		return nil, err
+	}
+	want, err := validateManifestPin(p.Pin().Source)
+	if err != nil || want != d {
+		return nil, ErrManifestAuthority
+	}
+	if !filepath.IsAbs(path) || filepath.Clean(path) != path {
+		return nil, ErrPublicOwnership
+	}
+	for parent := filepath.Dir(path); ; parent = filepath.Dir(parent) {
+		if regularDirectory(parent) != nil {
+			return nil, ErrCorrupt
+		}
+		if parent == filepath.Dir(parent) {
+			break
+		}
+	}
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+	if err := os.Mkdir(path, 0700); err != nil {
+		return nil, err
+	}
+	pin := p.Pin().Source
+	base := manifestMarker{application, Version5, pin.Network, pin.Genesis, pin.AuthorityID, pin.DescriptorID, d}
+	s := &ManifestStore{public: selected, issue: &issueRegistryState{profile: i}, meta: manifestMetadata{Version: Version5, Network: pin.Network, Genesis: pin.Genesis, AuthorityID: pin.AuthorityID, DescriptorID: pin.DescriptorID, Descriptor: d}}
+	if err := s.writeIssueFile(filepath.Join(path, selected.codec.markerName()), selected.codec.guard(selected.pin)); err != nil {
+		return failedIssueFileOwner(s, err)
+	}
+	if err := s.writeIssueFile(filepath.Join(path, markerName), issueRegistryMarker{issueApplication, IssueVersion1, base, i}); err != nil {
+		return failedIssueFileOwner(s, err)
+	}
+	if err := s.syncIssueDirectory(path); err != nil {
+		return failedIssueFileOwner(s, err)
+	}
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+	dbPath := filepath.Join(path, databaseName)
+	if err := os.Mkdir(dbPath, 0700); err != nil {
+		return nil, err
+	}
+	db, err := leveldb.OpenFile(dbPath, &opt.Options{Strict: opt.StrictAll, ErrorIfExist: true})
+	if err != nil {
+		return nil, err
+	}
+	s.db, s.writeBatch = db, db.Write
+	batch := new(leveldb.Batch)
+	guard, _ := json.Marshal(selected.codec.guard(selected.pin))
+	batch.Put([]byte("ownership/guard"), guard)
+	if err = ctx.Err(); err == nil {
+		err = s.commit(batch, s.meta)
+	}
+	if err == nil {
+		for _, dir := range []string{dbPath, path, filepath.Dir(path)} {
+			if err = s.syncIssueDirectory(dir); err != nil {
+				break
+			}
+		}
+	}
+	if err != nil {
+		return closeFailedIssueStore(s, err)
+	}
+	return s, nil
+}
+
+func closeFailedIssueStore(s *ManifestStore, cause error) (*ManifestStore, error) {
+	if err := s.Close(); err != nil {
+		return s, errors.Join(cause, err)
+	}
+	return nil, cause
+}
+
+func (s *ManifestStore) readIssueMarker(path string, p IssueProfile) (manifestMarker, error) {
+	var m issueRegistryMarker
+	raw, err := s.readIssueFile(filepath.Join(path, markerName), maxIssueMetadataSize)
+	if err != nil {
+		return m.Base, err
+	}
+	if len(raw) < 2 || len(raw) > maxIssueMetadataSize || raw[len(raw)-1] != '\n' || decodeManifestJSON(raw[:len(raw)-1], maxIssueMetadataSize, 3, &m) != nil || m.Application != issueApplication || m.Version != IssueVersion1 || m.IssueProfile != p || m.Base.Application != application {
+		return manifestMarker{}, ErrCorrupt
+	}
+	base, _ := json.Marshal(m.Base)
+	if len(base)+1 > MaxManifestMarkerSize {
+		return manifestMarker{}, ErrCorrupt
+	}
+	d, err := validateManifestPin(m.Base.pin())
+	if err != nil || d != m.Base.Descriptor {
+		return manifestMarker{}, ErrCorrupt
+	}
+	return m.Base, nil
+}
+
+func OpenRecoverableOperatorManifestAuthority(ctx context.Context, path string, p OperatorProfile, i IssueProfile, owner *operatorauthority.Owner) (*ManifestStore, error) {
+	return openIssueStore(ctx, path, p, i, owner, false)
+}
+func OpenRecoverableOperatorManifestAuthorityAudit(ctx context.Context, path string, p OperatorProfile, i IssueProfile) (*ManifestStore, error) {
+	return openIssueStore(ctx, path, p, i, nil, true)
+}
+func openIssueStore(ctx context.Context, path string, p OperatorProfile, i IssueProfile, owner *operatorauthority.Owner, readOnly bool) (*ManifestStore, error) {
+	ctx, cancel, err := issueContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+	defer cancel()
+	selected, err := recoverableOperatorState(ctx, p, i, owner, readOnly)
+	if err != nil {
+		return nil, err
+	}
+	if err := manifestProduction(); err != nil {
+		return nil, err
+	}
+	s := &ManifestStore{public: selected, issue: &issueRegistryState{profile: i}, readOnly: readOnly}
+	if err := selectedPublicInventory(path, false, selected.codec); err != nil {
+		return nil, err
+	}
+	guardRaw, err := s.readIssueFile(filepath.Join(path, selected.codec.markerName()), MaxPublicSmallSize)
+	if err != nil {
+		return failedIssueFileOwner(s, err)
+	}
+	var guard publicGuard
+	if len(guardRaw) < 2 || guardRaw[len(guardRaw)-1] != '\n' || publicDecode(guardRaw[:len(guardRaw)-1], MaxPublicSmallSize, &guard) != nil || guard != selected.codec.guard(selected.pin) {
+		return nil, ErrCorrupt
+	}
+	m, err := s.readIssueMarker(path, i)
+	if err != nil {
+		return failedIssueFileOwner(s, err)
+	}
+	if m.pin() != p.Pin().Source {
+		return nil, ErrManifestAuthority
+	}
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+	db, err := leveldb.OpenFile(filepath.Join(path, databaseName), &opt.Options{Strict: opt.StrictAll, ErrorIfMissing: true, ReadOnly: readOnly})
+	if err != nil {
+		return nil, err
+	}
+	s.db, s.writeBatch = db, db.Write
+	if err = s.auditContext(ctx, m); err == nil {
+		err = s.auditPublicContext(ctx)
+	}
+	if err == nil {
+		err = s.checkIssueCapacity()
+	}
+	if err == nil {
+		err = ctx.Err()
+	}
+	if err != nil {
+		return closeFailedIssueStore(s, err)
+	}
+	return s, nil
+}
+
+func (s *ManifestStore) issueHoldback(changes publicBatchChanges, publicBytes int) (int64, error) {
+	v, ok := changes[metadataKey]
+	if !ok {
+		raw, err := s.db.Get([]byte(metadataKey), nil)
+		if err != nil {
+			return 0, err
+		}
+		v = publicBatchValue{value: raw}
+	}
+	var m issueRegistryMetadata
+	if v.remove || decodeManifestJSON(v.value, maxIssueMetadataSize, 3, &m) != nil || m.Application != issueApplication || m.Version != IssueVersion1 || m.IssueProfile != s.issue.profile || m.Requests > m.IssueProfile.MaxRequests || m.Base.JobCount > m.Requests || publicBytes > MaxPublicSmallSize {
+		return 0, ErrCorrupt
+	}
+	const per = int64(40 + MaxIssueRowSize + 40 + 32 + 68 + 8192)
+	return int64(m.IssueProfile.MaxRequests-m.Requests)*per + int64(maxIssueMetadataSize-len(v.value)) + int64(MaxPublicSmallSize-publicBytes), nil
+}
+func (s *ManifestStore) checkIssueCapacity() error {
+	raw, err := s.db.Get([]byte(publicMetaKey), nil)
+	if err != nil {
+		return err
+	}
+	n, err := s.issueHoldback(publicBatchChanges{}, len(raw))
+	if err != nil {
+		return err
+	}
+	m := s.public.meta
+	n += int64(m.AcceptedSequence-m.SignedAdmissionSequence) * int64(MaxPublicAdmissionSize+MaxPublicSmallSize)
+	if int64(m.LogicalBytes)+n > int64(s.public.pin.Limits.LogicalBytes) {
+		return ErrCorrupt
+	}
+	return nil
+}
+
+// AuditIssueBinding returns only copied metadata after a complete original
+// namespace audit. It never adopts a different live owner's stored metadata.
+func (s *ManifestStore) AuditIssueBinding(ctx context.Context, expected ManifestAuthorityPin, p IssueProfile) (ManifestAuthorityInfo, uint64, error) {
+	ctx, cancel, err := issueContext(ctx)
+	if err != nil {
+		return ManifestAuthorityInfo{}, 0, err
+	}
+	defer cancel()
+	if s == nil {
+		return ManifestAuthorityInfo{}, 0, ErrClosed
+	}
+	if !s.mu.TryLock() {
+		return ManifestAuthorityInfo{}, 0, ErrBusy
+	}
+	defer s.mu.Unlock()
+	if err = s.state(false); err != nil {
+		return ManifestAuthorityInfo{}, 0, err
+	}
+	if s.issue == nil || s.issue.profile != p || s.meta.pin() != expected {
+		return ManifestAuthorityInfo{}, 0, ErrManifestAuthority
+	}
+	if err = s.auditIssueLive(ctx); err != nil {
+		return ManifestAuthorityInfo{}, 0, err
+	}
+	return ManifestAuthorityInfo{s.meta.pin(), s.meta.Descriptor, s.meta.LastSequence, s.meta.JobCount, s.readOnly}, s.issue.requests, nil
+}
+func (s *ManifestStore) auditIssueLive(ctx context.Context) error {
+	expected, _ := json.Marshal(issueRegistryMetadata{issueApplication, IssueVersion1, s.meta, s.issue.profile, s.issue.requests})
+	raw, err := s.db.Get([]byte(metadataKey), nil)
+	if err != nil || !bytes.Equal(raw, expected) {
+		return ErrCorrupt
+	}
+	expected, _ = json.Marshal(s.public.meta)
+	raw, err = s.db.Get([]byte(publicMetaKey), nil)
+	if err != nil || !bytes.Equal(raw, expected) {
+		return ErrCorrupt
+	}
+	m := manifestMarker{application, Version5, s.meta.Network, s.meta.Genesis, s.meta.AuthorityID, s.meta.DescriptorID, s.meta.Descriptor}
+	if err = s.auditContext(ctx, m); err != nil {
+		return err
+	}
+	if err = s.auditPublicContext(ctx); err != nil {
+		return err
+	}
+	if err = s.checkIssueCapacity(); err != nil {
+		return err
+	}
+	return ctx.Err()
+}
+
+// CheckIssueSelection is a live-owner constructor fence, not a marker reader
+// or issuance capability. nil selects an issuer with no recovery wrapper.
+func (s *ManifestStore) CheckIssueSelection(ctx context.Context, expected *IssueProfile) error {
+	if ctx == nil {
+		return ErrManifestAuthority
+	}
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	if s == nil {
+		return ErrClosed
+	}
+	if !s.mu.TryLock() {
+		return ErrBusy
+	}
+	defer s.mu.Unlock()
+	if err := s.state(false); err != nil {
+		return err
+	}
+	if expected == nil {
+		if s.issue != nil {
+			return ErrManifestAuthority
+		}
+		return ctx.Err()
+	}
+	if s.issue == nil || s.issue.profile != *expected {
+		return ErrManifestAuthority
+	}
+	return ctx.Err()
+}

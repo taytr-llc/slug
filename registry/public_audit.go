@@ -3,13 +3,19 @@ package registry
 
 import (
 	"bytes"
+	"context"
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
 	"github.com/taytr-llc/slug/chaincfg/v2"
 )
 
-func (s *ManifestStore) auditPublic() error {
+func (s *ManifestStore) auditPublic() error { return s.auditPublicContext(context.Background()) }
+
+func (s *ManifestStore) auditPublicContext(ctx context.Context) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
 	p := s.public
 	if p == nil {
 		return ErrPublicOwnership
@@ -34,6 +40,9 @@ func (s *ManifestStore) auditPublic() error {
 	it := s.db.NewIterator(nil, nil)
 	defer it.Release()
 	for it.Next() {
+		if err := ctx.Err(); err != nil {
+			return err
+		}
 		key, value := it.Key(), it.Value()
 		size += uint64(len(key) + len(value))
 		if size > uint64(p.pin.Limits.LogicalBytes) {
@@ -119,6 +128,9 @@ func (s *ManifestStore) auditPublic() error {
 	}
 	previous := publicZero
 	for n := uint32(1); n <= m.SignedAdmissionSequence; n++ {
+		if err := ctx.Err(); err != nil {
+			return err
+		}
 		a, ok := admissions[n]
 		if !ok || a.PreviousAdmissionID != previous || outboxes[n].ProspectID != a.Record.Verified.ProspectID {
 			return ErrCorrupt
@@ -138,6 +150,9 @@ func (s *ManifestStore) auditPublic() error {
 	seenCheckpoints := map[string]bool{}
 	seenCutoffs := map[string]bool{}
 	for n := uint32(1); n <= m.PublicationSequence; n++ {
+		if err := ctx.Err(); err != nil {
+			return err
+		}
 		v, ok := publications[n]
 		if !ok || v.PreviousID != previous || v.AttestedAtMS < clock || v.AttestedAtMS > m.ClockHighWaterMS {
 			return ErrCorrupt

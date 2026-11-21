@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "cause": "/usr/bin/python3 launcher emitted sandbox xcode diagnostics before valid Python 3.9.6 version; root strict version-prefix assertion stopped before producer execution under Python3.9.",
+  "failed_attempt": "/Users/taytrrip/slug/artifacts/set80/reference-attempt4/report.json",
+  "producer_unchanged": true,
+  "predecessor_sha256": "0703cc42f9bc9935f33bd22459f9da2a3b4aeced2818863003e73f47d0ab0b1f",
+  "successor_sha256": "deabd8e4998421f8185fb5c7f48c6adc80e7603b7770ff329cf114917fd884dd",
+  "correction": "Select installed CommandLineTools Python3 directly; exact version and executable hash remain checked. No output/producer/count/assertion change."
+}

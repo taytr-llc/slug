@@ -1,0 +1,449 @@
+{
+  "cli": {
+    "config_id": "3605378263936927941037c82e393763137392ea6dc7176009cec618152f3495",
+    "exit_code": 0,
+    "forced_kill": false,
+    "io_error": false,
+    "joined": true,
+    "last_status": {
+      "version": 2,
+      "observed_at_ms": 1795264402909,
+      "config_id": "3605378263936927941037c82e393763137392ea6dc7176009cec618152f3495",
+      "state": "signed_in",
+      "worker_state": "preparing",
+      "code": "",
+      "records": 1,
+      "pending": 0
+    },
+    "parent_pid": 84446,
+    "pgid": 84446,
+    "pid": 84502,
+    "signal": "SIGTERM",
+    "signal_count": 1,
+    "status_count": 5,
+    "stderr_joined": true,
+    "stdout_joined": true,
+    "unexpected_exit": false,
+    "wait_error": false
+  },
+  "control": {
+    "records": 1,
+    "pending": 0,
+    "requests": 2,
+    "active_request_id": "bd3bae7634b31f78b386e06bc6e4784bd333babb660ebb6f5cbb04addbc2e61b",
+    "logical_bytes": 13087,
+    "reserved": 58785889,
+    "meta_sha256": "8bac2149205d04e6fe0d28c7cc1b851c9e182b2e5e155c6d800e9577e1b57784",
+    "meta_bytes": 1865,
+    "marker_sha256": "bab687611b5fadb5616e24726c30d80912ae1e0bcccbe67e044c10011699dac6",
+    "scan_sha256": "",
+    "scan_request_id": "",
+    "cursor_sha256": "",
+    "next_nonce": 0,
+    "requests_sha256": "5f4c9f6e8755a248158fdd38702b33e87fcf86ac04986eec2b0ef6dde379df27",
+    "rows_sha256": "b5a6819518d4fe5f10cbd8eb09648c506d37adafa7dc4b6fef82e692e6ae9b81",
+    "namespace_rows": 5,
+    "read_only_unchanged": true
+  },
+  "request": {
+    "version": 3,
+    "binding_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+    "settlement_config_id": "744a4f6a8fa2160cf96353c396867021a1dbe0eaf6308978a753ebc326c546b9",
+    "recipient_script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+    "issue_profile_id": "1013ef34defb46cc5847e31ba0aeb93bea7b4b06d570c01d17c6fbadde557eb6",
+    "request_id": "e065a06ba76623189f8fbe01db02a4b3bbb283534d44bcb68d41b2724f3eb1aa",
+    "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+    "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+    "result": {
+      "version": 1,
+      "state": "work",
+      "intent_id": "3677fd69f3ec7cb1eeb26f579e77e8734f3ab49fcbd357daa41fffba42d02d80",
+      "job_id": "cdcbb7665d7ae4849f82cc9e3a8cafb92260f50482999b0ebb7319c649e71e7c",
+      "resolved_at_ms": 1795264394403,
+      "reason": "",
+      "work": {
+        "job": {
+          "version": 2,
+          "rule_version": 1,
+          "id": "cdcbb7665d7ae4849f82cc9e3a8cafb92260f50482999b0ebb7319c649e71e7c",
+          "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+          "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+          "context": {
+            "version": 1,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "dna_version": 1,
+            "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+            "parent_height": 2,
+            "expected_bits": 545259519,
+            "min_timestamp": 1795170106,
+            "max_timestamp": 1795271588
+          },
+          "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+          "challenge": "b7f6a75a3d6f1fe3b0fc91112deaa98b0c9c2a937b8339086e8e7fd689a7af5d",
+          "issued_at_ms": 1795264388281,
+          "expires_at_ms": 1795264688281
+        },
+        "template": {
+          "context": {
+            "version": 1,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "dna_version": 1,
+            "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+            "parent_height": 2,
+            "expected_bits": 545259519,
+            "min_timestamp": 1795170106,
+            "max_timestamp": 1795271588
+          },
+          "block": {
+            "bits": "207fffff",
+            "curtime": 1795264388,
+            "height": 3,
+            "previousblockhash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+            "sigoplimit": 80000,
+            "sizelimit": 4000000,
+            "weightlimit": 4000000,
+            "transactions": [],
+            "version": 536870912,
+            "coinbaseaux": {
+              "flags": "0b2f503253482f627463642f"
+            },
+            "coinbasevalue": 1000000000,
+            "longpollid": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d-1795264386",
+            "target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+            "maxtime": 1795271588,
+            "mintime": 1795170106,
+            "mutable": [
+              "time",
+              "transactions/add",
+              "prevblock",
+              "coinbase/append"
+            ],
+            "noncerange": "00000000ffffffff",
+            "capabilities": [
+              "proposal"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "rows": {
+    "outbox": {
+      "records": 1,
+      "pending": 0,
+      "requests": 2,
+      "active_request_id": "bd3bae7634b31f78b386e06bc6e4784bd333babb660ebb6f5cbb04addbc2e61b",
+      "logical_bytes": 13087,
+      "reserved": 58785889,
+      "meta_sha256": "8bac2149205d04e6fe0d28c7cc1b851c9e182b2e5e155c6d800e9577e1b57784",
+      "meta_bytes": 1865,
+      "marker_sha256": "bab687611b5fadb5616e24726c30d80912ae1e0bcccbe67e044c10011699dac6",
+      "scan_sha256": "",
+      "scan_request_id": "",
+      "cursor_sha256": "",
+      "next_nonce": 0,
+      "requests_sha256": "5f4c9f6e8755a248158fdd38702b33e87fcf86ac04986eec2b0ef6dde379df27",
+      "rows_sha256": "b5a6819518d4fe5f10cbd8eb09648c506d37adafa7dc4b6fef82e692e6ae9b81",
+      "namespace_rows": 5,
+      "read_only_unchanged": true
+    },
+    "rows": [
+      {
+        "version": 2,
+        "sequence": 1,
+        "work": {
+          "job": {
+            "version": 2,
+            "rule_version": 1,
+            "id": "cdcbb7665d7ae4849f82cc9e3a8cafb92260f50482999b0ebb7319c649e71e7c",
+            "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+            "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+            "context": {
+              "version": 1,
+              "network": 1397511495,
+              "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+              "dna_version": 1,
+              "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+              "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+              "parent_height": 2,
+              "expected_bits": 545259519,
+              "min_timestamp": 1795170106,
+              "max_timestamp": 1795271588
+            },
+            "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "challenge": "b7f6a75a3d6f1fe3b0fc91112deaa98b0c9c2a937b8339086e8e7fd689a7af5d",
+            "issued_at_ms": 1795264388281,
+            "expires_at_ms": 1795264688281
+          },
+          "template": {
+            "context": {
+              "version": 1,
+              "network": 1397511495,
+              "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+              "dna_version": 1,
+              "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+              "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+              "parent_height": 2,
+              "expected_bits": 545259519,
+              "min_timestamp": 1795170106,
+              "max_timestamp": 1795271588
+            },
+            "block": {
+              "bits": "207fffff",
+              "curtime": 1795264388,
+              "height": 3,
+              "previousblockhash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+              "sigoplimit": 80000,
+              "sizelimit": 4000000,
+              "weightlimit": 4000000,
+              "transactions": [],
+              "version": 536870912,
+              "coinbaseaux": {
+                "flags": "0b2f503253482f627463642f"
+              },
+              "coinbasevalue": 1000000000,
+              "longpollid": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d-1795264386",
+              "target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+              "maxtime": 1795271588,
+              "mintime": 1795170106,
+              "mutable": [
+                "time",
+                "transactions/add",
+                "prevblock",
+                "coinbase/append"
+              ],
+              "noncerange": "00000000ffffffff",
+              "capabilities": [
+                "proposal"
+              ]
+            }
+          }
+        },
+        "nonce": 0,
+        "work_hash": "015efd500b770b961a092ef87f2c40c44be881b749503901a8e54e90ee4a73dd",
+        "duplicate_key": "c8126a4902f26662dbcd822a0752c00d1275b6029b3acb4c6d7fdbcbbd607c69",
+        "pool_win": true,
+        "pool_state": "accepted",
+        "pool_receipt": {
+          "version": 1,
+          "sequence": 1,
+          "accepted_sequence": 1,
+          "job_id": "cdcbb7665d7ae4849f82cc9e3a8cafb92260f50482999b0ebb7319c649e71e7c",
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+          "nonce": 0,
+          "pool_target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+          "header": "000000202d3e62a4e954656cfd09c7f2fc6c7aa3bd89dc4bf0ad965946e0bb42ffe3c81173464096d1fd61bf7fa13e6f896d1845dd7bce1d7d216fa3b650c99d1bfe25c4848f016bffff7f2000000000",
+          "work_hash": "015efd500b770b961a092ef87f2c40c44be881b749503901a8e54e90ee4a73dd",
+          "duplicate_key": "c8126a4902f26662dbcd822a0752c00d1275b6029b3acb4c6d7fdbcbbd607c69",
+          "pool": true,
+          "prospect": true,
+          "block": true,
+          "block_height": 3,
+          "received_at_ms": 1795264400187,
+          "accepted_at_ms": 1795264401221,
+          "acceptance": "canonical-winning-block",
+          "block_state": "canonical-observed",
+          "block_observed_at_ms": 1795264401221
+        },
+        "fighter": {
+          "version": 2,
+          "sequence": 1,
+          "work_hash": "015efd500b770b961a092ef87f2c40c44be881b749503901a8e54e90ee4a73dd",
+          "job": {
+            "version": 2,
+            "rule_version": 1,
+            "id": "cdcbb7665d7ae4849f82cc9e3a8cafb92260f50482999b0ebb7319c649e71e7c",
+            "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+            "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+            "context": {
+              "version": 1,
+              "network": 1397511495,
+              "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+              "dna_version": 1,
+              "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+              "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+              "parent_height": 2,
+              "expected_bits": 545259519,
+              "min_timestamp": 1795170106,
+              "max_timestamp": 1795271588
+            },
+            "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "challenge": "b7f6a75a3d6f1fe3b0fc91112deaa98b0c9c2a937b8339086e8e7fd689a7af5d",
+            "issued_at_ms": 1795264388281,
+            "expires_at_ms": 1795264688281
+          },
+          "candidate": {
+            "version": 1,
+            "job_id": "cdcbb7665d7ae4849f82cc9e3a8cafb92260f50482999b0ebb7319c649e71e7c",
+            "block_hex": "000000202d3e62a4e954656cfd09c7f2fc6c7aa3bd89dc4bf0ad965946e0bb42ffe3c81173464096d1fd61bf7fa13e6f896d1845dd7bce1d7d216fa3b650c99d1bfe25c4848f016bffff7f20000000000102000000010000000000000000000000000000000000000000000000000000000000000000ffffffff16530800000000000000000b2f503253482f627463642fffffffff0200ca9a3b00000000160014810816db7129a0ac531ca0eaea0d47a04a71a77d00000000000000002a6a28534c5547505230324f31d425f71263863942de8179114350a2dce81396300cecffaea91664d9ad4600000000",
+            "proof": {
+              "version": 2,
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "header": "000000202d3e62a4e954656cfd09c7f2fc6c7aa3bd89dc4bf0ad965946e0bb42ffe3c81173464096d1fd61bf7fa13e6f896d1845dd7bce1d7d216fa3b650c99d1bfe25c4848f016bffff7f2000000000",
+              "coinbase": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff16530800000000000000000b2f503253482f627463642fffffffff0200ca9a3b00000000160014810816db7129a0ac531ca0eaea0d47a04a71a77d00000000000000002a6a28534c5547505230324f31d425f71263863942de8179114350a2dce81396300cecffaea91664d9ad4600000000",
+              "merkle_branch": [],
+              "job_id": "cdcbb7665d7ae4849f82cc9e3a8cafb92260f50482999b0ebb7319c649e71e7c"
+            },
+            "payout_address": "slug1qsyypdkm39xs2c5cu5r4w5r285p98rfmaqk7uzh",
+            "coinbase_value": 1000000000,
+            "transaction_count": 1,
+            "weight": 944,
+            "sigop_cost": 0
+          },
+          "block_win": true,
+          "prospect_win": true,
+          "authorization": {
+            "version": 2,
+            "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+            "signature": "3045022100a4cde72a7058968c9fb28e12509775eedf7a5defdc140d22ada148255e66cecf022051f04c177e1b091927c98668c76a4de6ccfade8d4f4b17fcf977b6dd15af58a0"
+          },
+          "receipt": {
+            "version": 3,
+            "context_source": "trusted-node-snapshot",
+            "current_node_checked": true,
+            "authentication": "gym-key-control",
+            "birth_rule": "job-issuance",
+            "inserted": true,
+            "record": {
+              "version": 5,
+              "sequence": 1,
+              "context": {
+                "version": 1,
+                "network": 1397511495,
+                "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+                "dna_version": 1,
+                "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+                "parent_height": 2,
+                "expected_bits": 545259519,
+                "min_timestamp": 1795170106,
+                "max_timestamp": 1795271588
+              },
+              "proof": {
+                "version": 2,
+                "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+                "header": "000000202d3e62a4e954656cfd09c7f2fc6c7aa3bd89dc4bf0ad965946e0bb42ffe3c81173464096d1fd61bf7fa13e6f896d1845dd7bce1d7d216fa3b650c99d1bfe25c4848f016bffff7f2000000000",
+                "coinbase": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff16530800000000000000000b2f503253482f627463642fffffffff0200ca9a3b00000000160014810816db7129a0ac531ca0eaea0d47a04a71a77d00000000000000002a6a28534c5547505230324f31d425f71263863942de8179114350a2dce81396300cecffaea91664d9ad4600000000",
+                "merkle_branch": [],
+                "job_id": "cdcbb7665d7ae4849f82cc9e3a8cafb92260f50482999b0ebb7319c649e71e7c"
+              },
+              "verified": {
+                "version": 2,
+                "verification": "supplied-context",
+                "network": 1397511495,
+                "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+                "prospect_id": "a458e92e6356680d802208347ad89cd6631969c53fc74232ede03ecaa82318d6",
+                "policy_id": "2dd6301ce9989bc383f942f3d1520e8bc61ee2564761a7f754eb09677b24fb8c",
+                "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+                "work_hash": "015efd500b770b961a092ef87f2c40c44be881b749503901a8e54e90ee4a73dd",
+                "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+                "parent_height": 2,
+                "dna": {
+                  "dna_version": 1,
+                  "seed": "015efd500b770b961a092ef87f2c40c44be881b749503901a8e54e90ee4a73dd",
+                  "rarity": "contender",
+                  "talent_budget": 391,
+                  "attributes": {
+                    "power": 93,
+                    "speed": 66,
+                    "chin": 81,
+                    "stamina": 88,
+                    "skill": 63
+                  },
+                  "prime_weeks": 29,
+                  "decline_weeks": 38
+                }
+              },
+              "authorization": {
+                "version": 2,
+                "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+                "signature": "3045022100a4cde72a7058968c9fb28e12509775eedf7a5defdc140d22ada148255e66cecf022051f04c177e1b091927c98668c76a4de6ccfade8d4f4b17fcf977b6dd15af58a0"
+              },
+              "job": {
+                "version": 2,
+                "rule_version": 1,
+                "id": "cdcbb7665d7ae4849f82cc9e3a8cafb92260f50482999b0ebb7319c649e71e7c",
+                "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+                "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+                "context": {
+                  "version": 1,
+                  "network": 1397511495,
+                  "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+                  "dna_version": 1,
+                  "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                  "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+                  "parent_height": 2,
+                  "expected_bits": 545259519,
+                  "min_timestamp": 1795170106,
+                  "max_timestamp": 1795271588
+                },
+                "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+                "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+                "challenge": "b7f6a75a3d6f1fe3b0fc91112deaa98b0c9c2a937b8339086e8e7fd689a7af5d",
+                "issued_at_ms": 1795264388281,
+                "expires_at_ms": 1795264688281
+              },
+              "birth": {
+                "rule_version": 1,
+                "born_at_ms": 1795264388281,
+                "accepted_at_ms": 1795264402069
+              },
+              "eligibility": {
+                "rule_version": 2,
+                "source": "canonical-winning-block",
+                "hash": "015efd500b770b961a092ef87f2c40c44be881b749503901a8e54e90ee4a73dd",
+                "height": 3
+              },
+              "static_binding": {
+                "version": 1,
+                "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+                "manifest_digest": "5c98adeab4d426c39b4b9a0705174a173a157c0605976696ceed807ba3a94c1b",
+                "portrait_digest": "57e9d4cb35c511d72825afb02e7fa491d3624e6fe1649da1d955172fecfd2868"
+              }
+            }
+          },
+          "block_state": "canonical",
+          "admission_state": "accepted",
+          "next_attempt_ms": 0,
+          "retry_count": 0
+        },
+        "next_attempt_ms": 0,
+        "retry_count": 0
+      }
+    ],
+    "accepted": [
+      {
+        "version": 1,
+        "sequence": 1,
+        "accepted_sequence": 1,
+        "job_id": "cdcbb7665d7ae4849f82cc9e3a8cafb92260f50482999b0ebb7319c649e71e7c",
+        "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+        "nonce": 0,
+        "pool_target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+        "header": "000000202d3e62a4e954656cfd09c7f2fc6c7aa3bd89dc4bf0ad965946e0bb42ffe3c81173464096d1fd61bf7fa13e6f896d1845dd7bce1d7d216fa3b650c99d1bfe25c4848f016bffff7f2000000000",
+        "work_hash": "015efd500b770b961a092ef87f2c40c44be881b749503901a8e54e90ee4a73dd",
+        "duplicate_key": "c8126a4902f26662dbcd822a0752c00d1275b6029b3acb4c6d7fdbcbbd607c69",
+        "pool": true,
+        "prospect": true,
+        "block": true,
+        "block_height": 3,
+        "received_at_ms": 1795264400187,
+        "accepted_at_ms": 1795264401221,
+        "acceptance": "canonical-winning-block",
+        "block_state": "canonical-observed",
+        "block_observed_at_ms": 1795264401221
+      }
+    ],
+    "authorizations": 1,
+    "accepted_fighters": 1,
+    "pending_fighters": 0,
+    "lookup_missing": []
+  }
+}

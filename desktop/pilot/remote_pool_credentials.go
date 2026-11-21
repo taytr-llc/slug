@@ -46,6 +46,7 @@ type remotePoolCredentialSlot struct {
 
 // Private to the future concrete attachment owner: no token/client getter.
 type remotePoolCredentials struct {
+	recovery        *RecoverableRemotePoolConfig
 	config          RemotePoolConfig
 	configID        string
 	worker          prospectworker.PoolConfig
@@ -78,7 +79,10 @@ func remotePoolParseSelectedCredential(raw []byte, id, gym, audience string, ver
 func openRemotePoolCredentials(life context.Context, expected RemotePoolConfig, selection remotePoolCredentialSelection) (*remotePoolCredentials, error) {
 	return openSelectedRemotePoolCredentials(life, expected, selection, false)
 }
-func openSelectedRemotePoolCredentials(life context.Context, expected RemotePoolConfig, selection remotePoolCredentialSelection, daily bool) (out *remotePoolCredentials, resultErr error) {
+func openSelectedRemotePoolCredentials(life context.Context, expected RemotePoolConfig, selection remotePoolCredentialSelection, daily bool) (*remotePoolCredentials, error) {
+	return openRemotePoolCredentialsSelection(life, expected, selection, daily, nil)
+}
+func openRemotePoolCredentialsSelection(life context.Context, expected RemotePoolConfig, selection remotePoolCredentialSelection, daily bool, recovery *RecoverableRemotePoolConfig) (out *remotePoolCredentials, resultErr error) {
 	if wire.TestPoW {
 		return nil, errRemotePoolCredentialProfile
 	}
@@ -101,8 +105,11 @@ func openSelectedRemotePoolCredentials(life context.Context, expected RemotePool
 	if e != nil {
 		return nil, e
 	}
+	if recovery != nil && (!daily || ValidateRecoverableRemotePoolConfig(*recovery) != nil || !sameRecoverableRemoteBase(*recovery, config)) {
+		return nil, ErrRemotePoolConfig
+	}
 	ctx, cancel := context.WithCancel(life)
-	o := &remotePoolCredentials{config: config, configID: id, worker: worker, ctx: ctx, cancel: cancel, closed: make(chan struct{})}
+	o := &remotePoolCredentials{recovery: recovery, config: config, configID: id, worker: worker, ctx: ctx, cancel: cancel, closed: make(chan struct{})}
 	defer func() {
 		if resultErr == nil {
 			return
@@ -115,8 +122,12 @@ func openSelectedRemotePoolCredentials(life context.Context, expected RemotePool
 			out = nil
 		}
 	}()
+	limit := remotePoolCredentialLimit
+	if recovery != nil {
+		limit += 1024
+	}
 	for n, path := range []string{selection.PoolPath, selection.AdmissionPath} {
-		f, e := selectRemotePoolPrivateInput(ctx, path, remotePoolCredentialLimit)
+		f, e := selectRemotePoolPrivateInput(ctx, path, limit)
 		o.slots[n].file = f // Retain even failed partial descriptor construction.
 		if e != nil {
 			return nil, e
@@ -129,7 +140,7 @@ func openSelectedRemotePoolCredentials(life context.Context, expected RemotePool
 		if n == 1 {
 			audience = poolminer.AdmissionAudience
 		}
-		r, e := remotePoolParseSelectedCredential(b, id, config.ExpectedLocal.Recipient.Config.Identity.GymID, audience, config.Version)
+		r, e := o.parseCredential(b, audience)
 		clear(b)
 		if e != nil {
 			return nil, e
@@ -227,7 +238,11 @@ func (o *remotePoolCredentials) begin(ctx context.Context, audience int) (*remot
 				var dc poolservice.DailyClientConfig
 				dc, e = remotePoolDailyClientConfig(o.config, string(o.slots[0].token))
 				if e == nil {
-					l.pool, e = poolservice.NewDailyClient(dc)
+					if o.recovery != nil {
+						l.pool, e = poolservice.NewRecoverableDailyClient(poolservice.RecoverableDailyClientConfig{Version: 1, Base: dc, IssueProfile: o.recovery.IssueProfile})
+					} else {
+						l.pool, e = poolservice.NewDailyClient(dc)
+					}
 				}
 			} else {
 				l.pool, e = poolservice.NewClient(remotePoolClientConfig(o.config, string(o.slots[0].token)))

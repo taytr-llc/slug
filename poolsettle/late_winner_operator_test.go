@@ -96,6 +96,8 @@ func (s lateWinnerSessions) WithSession(ctx context.Context, token string, fn fu
 type lateWinnerOwners struct {
 	root         string
 	profile      registry.OperatorProfile
+	issueProfile *registry.IssueProfile
+	issueRequest uint64
 	binding      operatorauthority.Binding
 	seeds        operatorauthority.OnlineSeedFiles
 	owner        *operatorauthority.Owner

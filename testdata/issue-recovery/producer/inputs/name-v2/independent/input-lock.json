@@ -1,0 +1,27 @@
+{
+  "status": "frozen before generation",
+  "files": {
+    "approval.json": "993792280545137c30e44da3f47406c2cfe71061eb3433ddc136f6088994caf4",
+    "fighter-manifest-v2-contract.md": "0283415807d33b362aaeffbb1570504085cd975bf9f3adc0b497d0c8b79856a7",
+    "independent/README.md": "cadfd97c20a5021cb76b77a51bbc54a7744654a1ed2297576d0d185ed695b47c",
+    "independent/inputs/portrait-v1/input_hashes.json": "108b6911cc622b9510d1f8de96086964fb6718bc3e6029f28ea42a2db821ca19",
+    "independent/inputs/portrait-v1/inputs/fighter-manifest-contract.md": "ba8d33dbad3722eed6b4406ef120f946d7e06e1ea04305cbe8648889ba169e80",
+    "independent/inputs/portrait-v1/inputs/manifest/baseline/dna_v1.json": "b88f16a29eaaf0cd0b190b7bbcf7a908edb39f9c4357567eabc3249cf40d6e71",
+    "independent/inputs/portrait-v1/inputs/manifest/baseline/reference_dna.py": "d0b2acb1d078cbe559d30d310297a934d5d133088bec3654b4fc0f2a75baf4b2",
+    "independent/inputs/portrait-v1/inputs/manifest/manifests_v1.json": "75eb01acb79f45b74a6445edf956c5e3f3b68024998ae56ab44a7ed07cf15f3d",
+    "independent/inputs/portrait-v1/inputs/manifest/reference_manifest.py": "9fb1a814047f2329066bb19596e910ac7c4c7aadfce4b8f994e02dab81e51b4f",
+    "independent/inputs/portrait-v1/inputs/manifest/tables_v1.json": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+    "independent/inputs/portrait-v1/inputs/portrait-renderer-contract.md": "8ae3c8dbe92fbef719880227e107cb98cbfd6419d984cad08ebb5d5e0a9c0df5",
+    "independent/inputs/portrait-v1/inputs/portraits.py": "9bac3d966e7093e0665cd9c9a683e7a6ab73381948dccfd0dc8cac8c98a75a72",
+    "independent/inputs/portrait-v1/portraits_v1.json": "03df75cbf923a6dfc8fcac78e98d704641c0edf65ce563cf307f20a52f250670",
+    "independent/inputs/portrait-v1/reference_portraits.py": "1a44c0506944211cf699b653f63905c6802e2012928855354f4053d03d209093",
+    "independent/provenance.json": "062ddfd4c920a0a9b644a24e8db76000a4651580a878b9da53338c2c583a4197",
+    "independent/public-inputs.json": "1bb6eb19386a74bd8c97ebf6f99201d43659e06d18d04f6eaa43f7578ad8f90e",
+    "independent/reference_v2.py": "44feef72ff87781e4c4fcfb53c335e3d9a2e1152af24a17d1145fd04133c4b1f",
+    "inherited/fighter-manifest-v1-contract.md": "ba8d33dbad3722eed6b4406ef120f946d7e06e1ea04305cbe8648889ba169e80",
+    "inherited/full-tables-v1.json": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+    "inherited/portrait-renderer-v1-contract.md": "8ae3c8dbe92fbef719880227e107cb98cbfd6419d984cad08ebb5d5e0a9c0df5",
+    "portrait-renderer-v2-contract.md": "6044ce174e9a7a466783985e34b02b34ae2785719ca77b1268f7e6ad3c717677",
+    "tables_v2.json": "96e7ae3eaae038932355e44ef4a3a88ecab4c8f5fa1dea7371d748b6fab0b051"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "slugd": {
+    "path": "/Users/taytrrip/slug/artifacts/set80/smoke-attempt1/bin/slugd",
+    "sha256": "5310fbb8f251c24a3b976336a9f24ba4a64356c52153cfdf4d552d18b4737e67",
+    "build_info": "/Users/taytrrip/slug/artifacts/set80/smoke-attempt1/slugd-build-info.txt",
+    "build_info_sha256": "24e406021a2a1618ee3aba59a7ecd60ade2ffc9d956d3d68a528348620c97873",
+    "settings": {
+      "-buildmode": "exe",
+      "-compiler": "gc",
+      "-gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+      "DefaultGODEBUG": "tracebacklabels=0,x509sslcertoverrideplatform=0",
+      "CGO_ENABLED": "0",
+      "GOARCH": "arm64",
+      "GOOS": "darwin",
+      "GOARM64": "v8.0",
+      "vcs": "git",
+      "vcs.revision": "fdd40d8edd9a685613f1f667f0074e56ec4e7da5",
+      "vcs.time": "2026-11-21T10:38:42Z",
+      "vcs.modified": "true"
+    },
+    "go_version": "go1.27.4",
+    "compiler_setting_evidence": "embedded_build_info"
+  },
+  "slugctl": {
+    "path": "/Users/taytrrip/slug/artifacts/set80/smoke-attempt1/bin/slugctl",
+    "sha256": "8c933d6c144c8e41cff4fccd90838d683bd938f276c07eeb865d3634fbdd57b9",
+    "build_info": "/Users/taytrrip/slug/artifacts/set80/smoke-attempt1/slugctl-build-info.txt",
+    "build_info_sha256": "6ef5a403d07e40dba5559349e8c0e48dd39063ff8a906e22e48288b4e52da8b4",
+    "settings": {
+      "-buildmode": "exe",
+      "-compiler": "gc",
+      "-gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+      "DefaultGODEBUG": "tracebacklabels=0,x509sslcertoverrideplatform=0",
+      "CGO_ENABLED": "0",
+      "GOARCH": "arm64",
+      "GOOS": "darwin",
+      "GOARM64": "v8.0",
+      "vcs": "git",
+      "vcs.revision": "fdd40d8edd9a685613f1f667f0074e56ec4e7da5",
+      "vcs.time": "2026-11-21T10:38:42Z",
+      "vcs.modified": "true"
+    },
+    "go_version": "go1.27.4",
+    "compiler_setting_evidence": "embedded_build_info"
+  }
+}

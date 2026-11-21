@@ -1,0 +1,63 @@
+--- before/wire.py
++++ after/wire.py
+@@ -19,12 +19,12 @@
+     need(value['version'] == 3 and value['binding_id'] == profile['source_config_id'], 'selected-source')
+ 
+ 
+-def validate_error(value, expected, status, inherited_valid):
++def validate_error(value, expected, status, mapped_status, inherited_valid):
+     fields(value, 'version,error')
+     fields(value['error'], 'code,outcome_unknown')
+     need(type(value['version']) is int and value['version'] == 3, 'selected-error-version')
+     need(inherited_valid and canon(value) == canon(expected), 'unchanged-error-code-flag')
+-    need(status in (400, 401, 403, 404, 409, 413, 429, 500, 503), 'inherited-status')
++    need(type(status) is int and status == mapped_status, 'inherited-status')
+ 
+ 
+ def produce_wire(fixtures, inherited, recipe):
+@@ -55,6 +55,7 @@
+                           lambda v: v.update(issue_profile_id='ab' * 32), validate_extension,
+                           old['value'], profile, group == 'page', True)
+     errors = Cases('Version3 only; exact inherited DAILY code/flag/status; no server error clears retained local intent')
++    status_map = inherited['transport']['error_status_map']
+     for old in inherited['transport']['error_cases']:
+         value = clone(old['value'])
+         expected = clone(value)
+@@ -63,8 +64,17 @@
+         # not turn that negative into a valid frame then inherit its old label.
+         if value['version'] == 2:
+             value['version'] = 3
+-        row = errors.add(old['name'], value, validate_error, expected, old['http_status'], old['valid'], valid=old['valid'])
+-        row.update(http_status=old['http_status'], clears_active_request=False)
++        status = old.get('http_status')
++        mapped = status_map.get(old['value']['error']['code'])
++        # Unknown-code and v1-frame negatives deliberately assert no HTTP
++        # status. Keep that absence; a map entry for a nested code does not
++        # assign a status to an invalid outer frame.
++        need(status is not None or not old['valid'], 'valid-error-needs-inherited-status')
++        need(status is None or type(status) is int and status == mapped, 'inherited-error-status-map')
++        row = errors.add(old['name'], value, validate_error, expected, status, mapped, old['valid'], valid=old['valid'])
++        row.update(http_status_asserted=status is not None, clears_active_request=False)
++        if status is not None:
++            row['http_status'] = status
+     return dict(response_cases=cases.rows, error_cases=errors.rows,
+                 page_requests_unchanged=clone(inherited['payments']['requests']),
+                 retained_legacy_error_status_map=clone(inherited['transport']['error_status_map']),
+--- before/README.md
++++ after/README.md
+@@ -32,6 +32,15 @@
+ the different page position, and error version/flag/status categories were checked
+ against all inherited input shapes. No inherited response body, source or monetary
+ value is rewritten; no case count or cap changes.
++
++Root attempt3 then reached the deliberately invalid `unknown-code`/`v1-error`
++frames, whose inherited schema has no `http_status`. The full predecessor is
++preserved at `../reference-before-error-status-selection`. The successor retains
++the absent assertion for those negatives and checks the six explicitly supplied
++statuses against the frozen inherited code/status map. It assigns no invented
++HTTP status to invalid frames. Remaining inherited field-access variants were
++inventoried before this freeze; generated framing and count code uses the
++producer's own declared output structures. All three failed reports stay intact.
+ 
+ `recipe.json` contains authored deterministic input choices and hand-counted case
+ declarations. It selects three exact Setup2 fixtures and independently derives

@@ -193,12 +193,15 @@ type dailyLaunchStatus struct {
 // runDailyRemoteLaunch is an explicit existing-session headless worker. It does
 // not serve helper commands, start a node, create a wallet, or retry a failed
 // operation. Close performs the original controller's joined stop/logout path.
-func runDailyRemoteLaunch(ctx context.Context, output *os.File, paths remoteLaunchPaths, options pilot.PoolOptions) (result error) {
+func runDailyRemoteLaunch(ctx context.Context, output *os.File, paths remoteLaunchPaths, options pilot.PoolOptions) error {
+	return runDailyRemoteLaunchSelection(ctx, output, paths, options, false)
+}
+func runDailyRemoteLaunchSelection(ctx context.Context, output *os.File, paths remoteLaunchPaths, options pilot.PoolOptions, recovery bool) (result error) {
 	if output == nil {
 		return errRemoteLaunchInvalid
 	}
 	signal.Ignore(syscall.SIGPIPE)
-	o, expected, e := openRemoteLaunchMode(ctx, paths, options, true)
+	o, expected, e := openRemoteLaunchSelection(ctx, paths, options, true, recovery)
 	if e != nil {
 		return e
 	}

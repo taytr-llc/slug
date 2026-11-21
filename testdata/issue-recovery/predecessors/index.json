@@ -1,0 +1,29 @@
+[
+  {
+    "source": "reference-before-descriptor-selection",
+    "changed_files": [
+      "README.md",
+      "fixtures.py",
+      "generate.py",
+      "input-catalog.json",
+      "wire.py"
+    ],
+    "reconstruct": "Use this predecessor lock as the complete file list. For each row, select changed/path when present, otherwise producer/path; verify row size and SHA256. Add predecessor source-ready and proposed lock. Extra successor files are excluded."
+  },
+  {
+    "source": "reference-before-money-profile-selection",
+    "changed_files": [
+      "README.md",
+      "wire.py"
+    ],
+    "reconstruct": "Use this predecessor lock as the complete file list. For each row, select changed/path when present, otherwise producer/path; verify row size and SHA256. Add predecessor source-ready and proposed lock. Extra successor files are excluded."
+  },
+  {
+    "source": "reference-before-error-status-selection",
+    "changed_files": [
+      "README.md",
+      "wire.py"
+    ],
+    "reconstruct": "Use this predecessor lock as the complete file list. For each row, select changed/path when present, otherwise producer/path; verify row size and SHA256. Add predecessor source-ready and proposed lock. Extra successor files are excluded."
+  }
+]

@@ -76,6 +76,9 @@ func construct(ctx context.Context, root string, expected Setup, borrowed Borrow
 	return constructVersion(ctx, root, expected, borrowed, private, create, false)
 }
 func constructVersion(ctx context.Context, root string, expected Setup, borrowed BorrowedOwners, private PrivateInputs, create, daily bool) (r *Runtime, err error) {
+	return constructSelection(ctx, root, expected, borrowed, private, create, daily, nil)
+}
+func constructSelection(ctx context.Context, root string, expected Setup, borrowed BorrowedOwners, private PrivateInputs, create, daily bool, issue *RecoverableDailySetup) (r *Runtime, err error) {
 	if ctx == nil || borrowed.Authority == nil || borrowed.Wallet == nil || wire.TestPoW {
 		return nil, ErrInvalid
 	}
@@ -93,6 +96,15 @@ func constructVersion(ctx context.Context, root string, expected Setup, borrowed
 	owned, e := parseSetupVersion(raw, version)
 	if e != nil {
 		return nil, e
+	}
+	if issue != nil {
+		if !daily || ValidateRecoverableDailySetup(*issue) != nil {
+			return nil, ErrInvalid
+		}
+		base, x := MarshalDailySetup(issue.Base)
+		if x != nil || string(base) != string(raw) {
+			return nil, ErrInvalid
+		}
 	}
 	var reservation CapacityReservation
 	var dailyReservation *DailyCapacityReservation
@@ -132,7 +144,14 @@ func constructVersion(ctx context.Context, root string, expected Setup, borrowed
 	}
 	life, cancel := context.WithCancel(ctx)
 	id, _ := setupIDVersion(owned, version)
+	if issue != nil {
+		id, _ = RecoverableDailySetupID(*issue)
+	}
 	r = &Runtime{daily: daily, dailyReservation: dailyReservation, setup: owned, setupID: id, profile: profile, borrowed: borrowed, binding: binding, life: life, cancel: cancel, runDone: make(chan struct{}), localGate: make(chan struct{}, 1)}
+	if issue != nil {
+		p := issue.IssueProfile
+		r.issueProfile = &p
+	}
 	r.reservation = reservation
 	r.status = Status{Version: version, RuntimeID: owned.RuntimeID, SetupID: id, Custody: "locked", Capacity: CapacityStatus{Reservation: reservation, DailyReservation: dailyReservation, Mode: "paused"}, PublicCode: "not_started", RoundCode: "not_started"}
 	defer func() {
@@ -152,7 +171,7 @@ func constructVersion(ctx context.Context, root string, expected Setup, borrowed
 			r = nil
 		}
 	}()
-	r.files, err = openOperatorFilesVersion(root, owned, create, version)
+	r.files, err = openOperatorFilesSelection(root, owned, create, version, issue)
 	if err != nil {
 		return r, err
 	}
@@ -181,6 +200,9 @@ func constructVersion(ctx context.Context, root string, expected Setup, borrowed
 	newIngress := poolingress.New
 	if daily {
 		newIngress = poolingress.NewDaily
+	}
+	if issue != nil {
+		newIngress = poolingress.NewRecoverableDaily
 	}
 	r.ingress, err = newIngress(owned.Ingress, cert, key)
 	if err != nil {
@@ -271,9 +293,17 @@ func (r *Runtime) constructStores(ctx context.Context) error {
 		if x != nil {
 			return x
 		}
-		r.issuer, e = registry.CreateOperatorManifestAuthority(path, descriptor, r.profile, r.borrowed.Authority)
+		if r.issueProfile != nil {
+			r.issuer, e = registry.CreateRecoverableOperatorManifestAuthority(ctx, path, descriptor, r.profile, *r.issueProfile, r.borrowed.Authority)
+		} else {
+			r.issuer, e = registry.CreateOperatorManifestAuthority(path, descriptor, r.profile, r.borrowed.Authority)
+		}
 	} else {
-		r.issuer, e = registry.OpenOperatorManifestAuthority(path, r.profile, r.borrowed.Authority)
+		if r.issueProfile != nil {
+			r.issuer, e = registry.OpenRecoverableOperatorManifestAuthority(ctx, path, r.profile, *r.issueProfile, r.borrowed.Authority)
+		} else {
+			r.issuer, e = registry.OpenOperatorManifestAuthority(path, r.profile, r.borrowed.Authority)
+		}
 	}
 	if e != nil {
 		return e
@@ -289,7 +319,13 @@ func (r *Runtime) constructStores(ctx context.Context) error {
 	if e != nil {
 		return e
 	}
-	if r.daily {
+	if r.issueProfile != nil {
+		if fresh {
+			r.pool, e = poolshare.CreateRecoverableDaily(ctx, path, r.setup.Pool, *r.issueProfile, r.issuer, r.node, r.miners.PoolSessions())
+		} else {
+			r.pool, e = poolshare.OpenRecoverableDaily(ctx, path, r.setup.Pool, *r.issueProfile, r.issuer, r.node, r.miners.PoolSessions())
+		}
+	} else if r.daily {
 		if fresh {
 			r.pool, e = poolshare.CreateDaily(ctx, path, r.setup.Pool, r.issuer, r.node, r.miners.PoolSessions())
 		} else {
@@ -404,7 +440,9 @@ func (r *Runtime) constructStores(ctx context.Context) error {
 func privateListen(origin string) string { u, _ := url.Parse(origin); return u.Host }
 func (r *Runtime) constructServices() error {
 	var e error
-	if r.daily {
+	if r.issueProfile != nil {
+		r.poolServer, e = poolservice.NewRecoverableDailyServer(r.life, poolservice.ServerConfig{Version: 3, Listen: privateListen(r.setup.Ingress.PoolURL)}, r.pool, r.settlement, r.miners.PoolSessions(), *r.issueProfile)
+	} else if r.daily {
 		r.poolServer, e = poolservice.NewDailyServer(r.life, poolservice.ServerConfig{Version: 2, Listen: privateListen(r.setup.Ingress.PoolURL)}, r.pool, r.settlement, r.miners.PoolSessions())
 	} else {
 		r.poolServer, e = poolservice.NewServer(poolservice.ServerConfig{Version: 1, Listen: privateListen(r.setup.Ingress.PoolURL)}, r.pool, r.settlement, r.miners.PoolSessions())

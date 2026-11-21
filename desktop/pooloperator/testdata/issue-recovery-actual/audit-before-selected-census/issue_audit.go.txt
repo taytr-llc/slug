@@ -1,0 +1,67 @@
+// Public original-owner audits; no private custody database access or repair.
+package main
+import (
+ "bytes"
+ "context"
+ "encoding/json"
+ "path/filepath"
+ "reflect"
+ "github.com/syndtr/goleveldb/leveldb"
+ "github.com/syndtr/goleveldb/leveldb/opt"
+ "github.com/taytr-llc/slug/desktop/pooloperator"
+ "github.com/taytr-llc/slug/poolshare"
+ "github.com/taytr-llc/slug/prospectjob"
+ "github.com/taytr-llc/slug/prospectwork"
+ "github.com/taytr-llc/slug/registry"
+)
+type sourceRequest struct {Version uint32 `json:"version"`;Intent registry.IssueIntent `json:"intent"`;IntentID string `json:"intent_id"`;State string `json:"state"`;JobID string `json:"job_id"`;ResolvedAtMS int64 `json:"resolved_at_ms"`;Reason string `json:"reason"`}
+type issueAudit struct {
+ Financial attachmentOperatorAudit `json:"financial"`
+ Request sourceRequest `json:"source_request"`;Issuer registry.IssuerRequest `json:"issuer_request"`
+ Job prospectjob.ManifestJob `json:"job"`;Template prospectwork.Template `json:"template"`
+ TemplateSHA256 string `json:"template_sha256"`;SourceRequests uint64 `json:"source_requests"`;IssuerRequests uint64 `json:"issuer_requests"`
+ Work *poolshare.MiningWork `json:"work"`;RowHashes map[string]string `json:"row_hashes"`;ReadOnlyUnchanged bool `json:"read_only_unchanged"`
+}
+func keyed(prefix,id string) []byte {return append([]byte(prefix),dec(id)...)}
+func auditIssue(ctx context.Context,root string,s pooloperator.RecoverableDailySetup,id string) (out issueAudit) {
+ before:=attachmentPublicFiles(root)
+ // Full original financial/source/issuer audits authenticate every namespace
+ // before the bounded request projections below.
+ out.Financial=auditOperator(ctx,root,s)
+ p,e:=registry.NewOperatorProfile(s.Base.Authority);check(e,"original audit profile")
+ issuer,e:=registry.OpenRecoverableOperatorManifestAuthorityAudit(ctx,filepath.Join(root,"operator","issuer"),p,s.IssueProfile);check(e,"selected issuer audit")
+ closed:=false;defer func(){if !closed {check(issuer.Close(),"partial selected issuer close")}}()
+ info,n,e:=issuer.AuditIssueBinding(ctx,s.Base.Pool.AuthorityPin,s.IssueProfile);check(e,"complete selected issuer binding")
+ out.IssuerRequests=n;require(info.Jobs==out.Financial.AuthorityJobs,"audited complete job census")
+ out.Issuer,e=issuer.TryIssueRequest(ctx,id);check(e,"exact original issued request")
+ out.Job,e=issuer.TryGetManifestJob(ctx,out.Issuer.JobID);check(e,"exact original job")
+ check(issuer.Close(),"selected issuer audit joined");closed=true
+ db,e:=leveldb.OpenFile(filepath.Join(root,"operator","pool","db"),&opt.Options{ReadOnly:true,ErrorIfMissing:true,Strict:opt.StrictAll});check(e,"selected source public projection")
+ dbclosed:=false;defer func(){if !dbclosed {check(db.Close(),"partial source projection close")}}()
+ out.RowHashes=map[string]string{}
+ get:=func(key []byte,limit int)[]byte{raw,e:=db.Get(key,nil);check(e,"audited exact request key");require(len(raw)>0 && len(raw)<=limit,"request projection bound");out.RowHashes[hx(key)]=hx(digest(raw));return raw}
+ var meta struct {Requests uint64 `json:"requests"`;IssueProfile registry.IssueProfile `json:"issue_profile"`}
+ check(json.Unmarshal(get([]byte("meta"),32768),&meta),"selected source metadata");require(meta.IssueProfile==s.IssueProfile,"same selected source");out.SourceRequests=meta.Requests
+ raw:=get(keyed("issue/r/",id),4096);check(json.Unmarshal(raw,&out.Request),"audited source request")
+ require(out.Request.Intent.RequestID==id && out.Request.IntentID==out.Issuer.IntentID && (out.Request.JobID==out.Job.ID || (out.Request.State=="pending" && out.Request.JobID=="")) && out.Issuer.JobID==out.Job.ID,"original request intent/job pair")
+ if out.Request.State=="work" {
+  var saved struct {Job prospectjob.ManifestJob `json:"job"`;Template prospectwork.Template `json:"template"`}
+  raw=get(keyed("w",out.Job.ID),prospectwork.MaxTemplateSize+16384);check(json.Unmarshal(raw,&saved),"audited original saved work");require(saved.Job==out.Job,"same saved original job");out.Template=saved.Template
+  out.Work=&poolshare.MiningWork{Job:out.Job,Template:out.Template}
+  // Public source Work carries its own full selected projection; use the
+  // original field grammar below rather than manufacture a winning nonce.
+  inverse:=get(keyed("issue/j/",out.Job.ID),32);require(bytes.Equal(inverse,dec(id)),"original work reverse")
+ } else {
+  raw=get(keyed("issue/t/",id),prospectwork.MaxTemplateSize);check(json.Unmarshal(raw,&out.Template),"retained original template")
+  present,e:=db.Has(keyed("w",out.Job.ID),nil);check(e,"no original work test");require(!present,"never published work")
+  if out.Request.State=="pending" {present,e=db.Has(keyed("issue/j/",out.Job.ID),nil);check(e,"pending inverse absence");require(!present,"no pending inverse")} else {inverse:=get(keyed("issue/j/",out.Job.ID),32);require(bytes.Equal(inverse,dec(id)),"exact issued-unused inverse")}
+ }
+ template,e:=json.Marshal(out.Template);check(e,"canonical original template");out.TemplateSHA256=hx(digest(template));require(out.TemplateSHA256==out.Request.Intent.TemplateSHA256,"exact durable template intent")
+ check(db.Close(),"selected source projection joined");dbclosed=true
+ require(reflect.DeepEqual(before,attachmentPublicFiles(root)),"full selected audit read only");out.ReadOnlyUnchanged=true;return
+}
+func requireGap(v issueAudit,ack proposalBarrier,s pooloperator.RecoverableDailySetup) {
+ require(v.SourceRequests==1 && v.IssuerRequests==1 && v.Issuer.State=="issued" && v.Request.State=="pending" && v.Financial.AuthorityJobs==1 && v.Financial.Works==0 && v.Financial.Submissions==0 && v.Financial.Accepted==0 && v.Financial.Births==0 && v.Financial.Header.Credits==0 && v.Financial.Header.Batches==0,"exact pending/issued gap, no hidden effects")
+ w,e:=prospectwork.PrepareManifestWork(v.Job,v.Template,s.Base.Pool.PayoutAddress,0,s.Base.Pool.PoolTarget);check(e,"reconstruct original proposal")
+ require(w.Candidate().BlockHex==ack.Block,"captured proposal equals exact audited job/template")
+}

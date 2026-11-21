@@ -1,0 +1,87 @@
+{
+  "version": 3,
+  "binding_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+  "settlement_config_id": "744a4f6a8fa2160cf96353c396867021a1dbe0eaf6308978a753ebc326c546b9",
+  "recipient_script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+  "issue_profile_id": "474748bd9d5467aee79941442050f4bbef7b7bbdd81f3328dfc61b8a3269e058",
+  "request_id": "5300ff515732f714379b01443df7997c6645d2aa0114de402492bfc6a2e46ea5",
+  "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+  "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+  "result": {
+    "version": 1,
+    "state": "work",
+    "intent_id": "01dbc6e4ac030f9ad3a3672a68491f0ea611d2b115ef83e70cc9edb094319254",
+    "job_id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728",
+    "resolved_at_ms": 1795264866956,
+    "reason": "",
+    "work": {
+      "job": {
+        "version": 2,
+        "rule_version": 1,
+        "id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728",
+        "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+        "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+        "context": {
+          "version": 1,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "dna_version": 1,
+          "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+          "parent_height": 2,
+          "expected_bits": 545259519,
+          "min_timestamp": 1795170106,
+          "max_timestamp": 1795272061
+        },
+        "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+        "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+        "challenge": "3a747e46a681946f80a5399492173a93b094e813de54b26879173356950950d9",
+        "issued_at_ms": 1795264861973,
+        "expires_at_ms": 1795265161973
+      },
+      "template": {
+        "context": {
+          "version": 1,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "dna_version": 1,
+          "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+          "parent_height": 2,
+          "expected_bits": 545259519,
+          "min_timestamp": 1795170106,
+          "max_timestamp": 1795272061
+        },
+        "block": {
+          "bits": "207fffff",
+          "curtime": 1795264861,
+          "height": 3,
+          "previousblockhash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+          "sigoplimit": 80000,
+          "sizelimit": 4000000,
+          "weightlimit": 4000000,
+          "transactions": [],
+          "version": 536870912,
+          "coinbaseaux": {
+            "flags": "0b2f503253482f627463642f"
+          },
+          "coinbasevalue": 1000000000,
+          "longpollid": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d-1795264859",
+          "target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+          "maxtime": 1795272061,
+          "mintime": 1795170106,
+          "mutable": [
+            "time",
+            "transactions/add",
+            "prevblock",
+            "coinbase/append"
+          ],
+          "noncerange": "00000000ffffffff",
+          "capabilities": [
+            "proposal"
+          ]
+        }
+      }
+    }
+  }
+}

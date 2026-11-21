@@ -79,6 +79,7 @@ type BalanceResponse struct {
 }
 type clientRates struct{ issue, submit, read *rate.Limiter }
 type Server struct {
+	recoverable      *recoverableServerBinding
 	daily            *dailyServerBinding
 	config           ServerConfig
 	source           poolshare.Config
@@ -96,6 +97,7 @@ type Server struct {
 // Client's immutable trust/public identity may survive token refresh. Tokens
 // stay in memory only; owners replace clients rather than mutate credentials.
 type Client struct {
+	recoverable         *recoverableClientBinding
 	daily               *dailyClientBinding
 	config              ClientConfig
 	binding, trust, gym string

@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "base_commit": "fdd40d8edd9a685613f1f667f0074e56ec4e7da5",
+  "composition_names": ["one-enrollment", "two-enrollments", "64-enrollments"],
+  "remote_names": ["zero256-default", "zero256-maximum"],
+  "request_ids": ["1111111111111111111111111111111111111111111111111111111111111111", "2222222222222222222222222222222222222222222222222222222222222222", "3333333333333333333333333333333333333333333333333333333333333333"],
+  "job_challenges": ["000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f", "202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f", "404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f"],
+  "issued_at_ms": 1794787200000,
+  "credential_expires_at_ms": 1794790800000,
+  "conditional_setup_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "synthetic_tokens": {"pool": "4444444444444444444444444444444444444444444444444444444444444444", "admission": "5555555555555555555555555555555555555555555555555555555555555555"},
+  "scope": "Published deterministic input recipe only. New challenges/requests are conditional public fixtures, not random entropy or live issuance. Original jobs/proofs are separate unchanged anchors.",
+  "execution_limits": {"seconds": 120, "log_bytes": 1048576, "output_bytes": 16777216, "input_bytes": 33554432},
+  "expected_case_counts": {
+    "profiles": 3, "profile_cases": 12, "wrapper_cases": 8, "wrappers": 52,
+    "mode_boundaries": 15, "matching_families": 3, "conditional_transport": 3,
+    "remote": 2, "inherited_anchors": 6, "state_pairs": 15,
+    "state_refusals": 31, "response_cases": 20, "outbox_cases": 47,
+    "outbox_request_rows": 6, "inherited_entry_anchors": 8,
+    "lifecycle_traces": 19, "authority_refusals": 12, "wire_responses": 120,
+    "wire_errors": 8, "framing_targets": 39, "raw_cases": 418,
+    "source_bounds": 13, "registry_bounds": 10, "count_bounds": 5,
+    "outbox_bounds": 9, "checked_arithmetic": 9
+  }
+}

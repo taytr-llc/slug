@@ -57,7 +57,7 @@ See [the implemented surface and remaining gates](POOL_PUBLIC_DAILY.md).
   under the original caller; mixed fatal/canceled/expired results still refuse.
   V1 and public read gate behavior remain unchanged. This change is installed
   and passes focused plus full affected-suite qualification and complete public
-  Paths A, B and C. Final builds/static checks pass; exact-tip CI remains pending.
+  Paths A, B and C. Final builds/static checks and all seven exact-tip CI jobs pass.
 
 ## Qualification snapshot — 2026-11-21
 
@@ -197,7 +197,16 @@ See [the implemented surface and remaining gates](POOL_PUBLIC_DAILY.md).
   their full inventories still bind test hash `285f41c4…`, while the final test
   is `7be0587f…`. That file is in `TestGoFiles`, not compiled normal
   `GoFiles`/`CgoFiles`; no actual rerun or production change is claimed.
-- Set79 exact-tip chain/wallet CI and downloaded Linux evidence: **PENDING**.
+- Set79 exact-tip chain/wallet CI and downloaded Linux evidence: **PASS** at
+  chain `fdd40d8edd9a685613f1f667f0074e56ec4e7da5` and wallet
+  `dfc5d9dd7e0f604486fbac812d0413fce1f45cd6`. All six Build and Test jobs
+  (run `44895338644`) and operator-linux (run `44895338636`) succeeded.
+  The downloaded Linux report records 339 required passing assertions,
+  1,260.502 seconds, unchanged before/after sources and clean process joins.
+  Its scope excludes actual daily-runtime and deployed-host qualification;
+  the three local normal-PoW actuals above supply their separate runtime scope.
+  See [exact-tip CI evidence](docs/evidence/set79/ci.json). This post-push result
+  is recorded on the next stacked branch; no seed rollout was necessary.
 
 [Component evidence](docs/evidence/set79/components.json) binds each completed
 report's byte count and SHA256, its source/profile metadata and command results.
@@ -319,9 +328,9 @@ value or equality assertion changed. The corrected desktop qualification passed.
 
 The Set78 direct-owner actual and its seven green CI jobs qualify that
 predecessor, not this public composition. Likewise Set76's 721-input/64-payee
-proof is not continuous 64-miner acceptance. Set79 must retain explicit source,
+proof is not continuous 64-miner acceptance. Set79 retains explicit source,
 profile, process-join and immutable-public-evidence bindings for its own actual
-and final CI results before those pending entries can change.
+and passing final CI results; none qualifies continuous load or a deployed host.
 
 ## Remaining boundaries
 

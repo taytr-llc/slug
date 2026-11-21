@@ -1,0 +1,104 @@
+{
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 79984,
+        "pid": 79984,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./registry",
+        "./poolshare"
+      ],
+      "exit_code": 0,
+      "label": "deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 79984,
+      "pid": 79984,
+      "seconds": 0.292,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 79994,
+        "pid": 79994,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "test",
+        "-count=1",
+        "-p=1",
+        "-timeout=450s",
+        "-json",
+        "-race",
+        "-run",
+        "^Test(Recoverable|IssueRecovery|IssueProfile|IssueIntent|IssueRequest)",
+        "./registry",
+        "./poolshare"
+      ],
+      "exit_code": 0,
+      "label": "race",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 79994,
+      "pid": 79994,
+      "seconds": 14.87,
+      "timed_out": false
+    }
+  ],
+  "expected_profile_skips": [
+    "github.com/taytr-llc/slug/poolshare/TestRecoverableSourceCheapRefusesBeforeEffects"
+  ],
+  "failed_tests": [],
+  "passed": true,
+  "passing_packages": [
+    "github.com/taytr-llc/slug/registry",
+    "github.com/taytr-llc/slug/poolshare"
+  ],
+  "passing_tests": [
+    "github.com/taytr-llc/slug/registry/TestRecoverableIssuerFailedFileCloseRetainsOriginal",
+    "github.com/taytr-llc/slug/registry/TestRecoverableIssuerFileSuccessAndFailureOwnership",
+    "github.com/taytr-llc/slug/registry/TestRecoverableIssueIndependentProfiles",
+    "github.com/taytr-llc/slug/registry/TestRecoverableIssueIndependentIntentsAndBounds",
+    "github.com/taytr-llc/slug/registry/TestRecoverableIssuerExactReplaySealAndReopen",
+    "github.com/taytr-llc/slug/registry/TestRecoverableIssuerAuditReverseAndUncertainCommit",
+    "github.com/taytr-llc/slug/poolshare/TestRecoverableSourceIndependentReservation",
+    "github.com/taytr-llc/slug/poolshare/TestRecoverableSourceProposalGapExactReopen",
+    "github.com/taytr-llc/slug/poolshare/TestRecoverableSourceExpiredUnusedAndSealedAbsence/issued-unused",
+    "github.com/taytr-llc/slug/poolshare/TestRecoverableSourceExpiredUnusedAndSealedAbsence/pending-absent-seal",
+    "github.com/taytr-llc/slug/poolshare/TestRecoverableSourceExpiredUnusedAndSealedAbsence",
+    "github.com/taytr-llc/slug/poolshare/TestRecoverableSourceUncertainCommitAndNamespaceCensus",
+    "github.com/taytr-llc/slug/poolshare/TestRecoverableSourceCancellationAndReservedBytes"
+  ],
+  "pattern": "^Test(Recoverable|IssueRecovery|IssueProfile|IssueIntent|IssueRequest)",
+  "profile_unchanged": true,
+  "scope": "Set80 core race",
+  "skipped_tests": [
+    "github.com/taytr-llc/slug/poolshare/TestRecoverableSourceCheapRefusesBeforeEffects"
+  ],
+  "sources_unchanged": true,
+  "version": 1
+}

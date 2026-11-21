@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "passed": true,
+  "maps": [
+    {
+      "path": "docs/evidence/set80/archive-base.json",
+      "bytes": 85896,
+      "sha256": "df1f6dc8ca8362a68e8e422b95a4e7d86481fb3204ce1f1afbc66c91e0c6b963",
+      "entries": 197
+    },
+    {
+      "path": "docs/evidence/set80/archive-supplement.json",
+      "bytes": 67729,
+      "sha256": "19d695d234812ec075171cc5f167336fe8f6063bd72cc71a58e34fa93d395d10",
+      "entries": 130
+    },
+    {
+      "path": "docs/evidence/set80/archive-final.json",
+      "bytes": 70532,
+      "sha256": "52581e11d5cd9b064872b58e4e7febdf6b87d18d85c029ffc9d59cf3946da615",
+      "entries": 134
+    }
+  ],
+  "verified_target_entries": 461,
+  "runtime_executed": false,
+  "note": "Exact copied archival bytes; this is not an independent rerun of the tests."
+}

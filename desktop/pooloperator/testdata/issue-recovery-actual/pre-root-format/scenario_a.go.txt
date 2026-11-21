@@ -1,0 +1,89 @@
+package main
+import (
+ "encoding/json"
+ "path/filepath"
+ "reflect"
+ "time"
+ "github.com/taytr-llc/slug/desktop/accountpilot"
+ "github.com/taytr-llc/slug/poolservice"
+)
+func sameIssue(a,b poolservice.IssueResponse) bool {x,e:=json.Marshal(a);check(e,"canonical original response");y,e:=json.Marshal(b);check(e,"canonical replay response");return string(x)==string(y)}
+func (v *scenario) runA(a,b *node) {
+ phase="same original selected operator and successful TLS reply loss"
+ require(time.Now().UnixMilli()<v.gap.Job.ExpiresAtMS,"original job still live before recovery")
+ v.owners.tls.armLoss(v.id);v.serve("operator-serve-2");cli:=v.launch("cli-2")
+ select{case <-v.owners.tls.loss:case <-v.ctx.Done():panic("TLS loss scenario deadline");case <-time.After(120*time.Second):panic("TLS successful loss bound")}
+ check(cli.stop(),"lost-response original CLI stopped and joined")
+ check(v.current.stop(false,0),"completed-source operator joined before closed audit")
+ v.phase("04-response-loss",v.owners.tls.evidence())
+ completed:=auditIssue(v.ctx,v.root,v.s,v.id)
+ require(completed.Request.State=="work" && completed.Work!=nil && completed.SourceRequests==1 && completed.IssuerRequests==1 && completed.Financial.Works==1 && completed.Financial.AuthorityJobs==1 && completed.Financial.Submissions==0 && completed.Financial.Header.Credits==0 && completed.Job==v.gap.Job && reflect.DeepEqual(completed.Template,v.gap.Template),"original one work/job after source completion, no delivered mining")
+ result,local:=readRequest(v.in.AttachmentRoot,v.c,v.id);require(result==nil && local.ActiveRequestID==v.id && local.Requests==1 && local.Records==0,"lost success retains exact null original outbox request")
+ v.phase("05-completed-source",map[string]any{"audit":completed,"local":local})
+ v.owners.tls.mu.Lock();withheld:=v.owners.tls.lostResult;v.owners.tls.mu.Unlock()
+ require(withheld.Result.Work!=nil && reflect.DeepEqual(*withheld.Result.Work,*completed.Work) && withheld.Result.IntentID==v.gap.Request.IntentID && withheld.Result.JobID==v.gap.Job.ID,"fully captured response matches closed original work")
+ phase="same outbox exact authenticated work replay and real miner"
+ require(time.Now().UnixMilli()<v.gap.Job.ExpiresAtMS,"original job live without expiry renewal")
+ v.serve("operator-serve-3");v.owners.tls.releaseAfterJoin();cli=v.launch("cli-3")
+ var replay poolservice.IssueResponse
+ select{case replay=<-v.owners.tls.replay:case <-v.ctx.Done():panic("replay deadline");case <-time.After(120*time.Second):panic("same request replay bound")}
+ require(sameIssue(replay,withheld),"exact withheld reply returned by real server")
+ v.phase("06-replayed-work",replay)
+ wait(v.ctx,240*time.Second,func()bool{
+  v.current.running();snap,ok:=cli.status();if !ok{return false}
+  var height uint32;a.rpc.must(v.ctx,"getblockcount",nil,&height);require(height>=2 && height<=4,"bounded one-or-two actual worker rewards")
+  if height>2 && snap.Records>0 && snap.Pending==0{return true}
+  status,known:=v.current.status();return known && status.Capacity.Mode=="draining" && status.Capacity.Submissions==2
+ })
+ check(cli.stop(),"actual recovered-work CLI clean SIGTERM and joined pipes")
+ phase="closed original request results and signatures"
+ ev:=auditRows(v.ctx,v.in.AttachmentRoot,v.c,v.owners.clients[0],a)
+ found:=false;for _,r:=range ev.Accepted {if r.JobID==v.gap.Job.ID {found=true}}
+ require(found,"canonical receipt from original recovered job, not replacement")
+ original,state:=readRequest(v.in.AttachmentRoot,v.c,v.id);require(original!=nil && sameIssue(*original,withheld) && state.ActiveRequestID!=v.id,"exact completed original q and active clear")
+ v.phase("07-worker-closed",map[string]any{"rows":ev,"request":original,"control":state,"cli":cli.evidence()})
+ econ:=selectedEconomics(v.ref.Base,len(ev.Accepted));inputs:=funding(v.ctx,a,v.s.Base,ev.Accepted)
+ phase="same stopped original controller reopen"
+ next:=openController(v.ctx,filepath.Join(v.root,"owned-gym"),v.ref.Base.Fixture,v.in,&v.owners.controller)
+ reopened:=snapshot(v.ctx,v.owners.controller)
+ require(reopened.Remote.Records==uint64(len(ev.Rows)) && reopened.Remote.Pending==ev.Outbox.Pending && reopened.Remote.Attempts==0,"same stopped original complete outbox")
+ v.phase("08-stopped-reopen",reopened)
+ phase="actual normal maturity before immutable original UTC due"
+ var last,height uint32;for _,r:=range ev.Accepted {if r.BlockHeight>last {last=r.BlockHeight}}
+ for {v.current.running();a.rpc.must(v.ctx,"getblockcount",nil,&height);if height>=last+100 {break};require(time.Now().UnixMilli()<v.due,"maturity precedes originally selected due");generate(v.ctx,a,b)}
+ wait(v.ctx,60*time.Second,func()bool{s,ok:=v.current.status();return ok && s.RoundCode=="" && s.Rounds.Through==uint64(econ.AcceptedRewards) && s.Rounds.Rounds==uint64(econ.AcceptedRewards)})
+ var mature accountpilot.RemotePoolControllerSnapshot
+ wait(v.ctx,60*time.Second,func()bool{v.current.running();mature=snapshot(v.ctx,v.owners.controller);return mature.Remote.WalletState=="ready" && mature.Remote.WalletHeight>=height})
+ sends,_,e:=v.owners.rpc.sends();check(e,"original relay before due");require(len(sends)==0 && time.Now().UnixMilli()<v.due,"no early payout")
+ v.phase("09-mature",map[string]any{"snapshot":mature,"due_ms":v.due,"observed_at_ms":time.Now().UnixMilli(),"height":height,"economics":econ})
+ phase="actual original scheduler and schema16 signed payout"
+ var send observedSend
+ wait(v.ctx,300*time.Second,func()bool{v.current.running();calls,_,e:=v.owners.rpc.sends();check(e,"original RPC relay");require(len(calls)<=1,"one original actual broadcast");if len(calls)==1 {send=calls[0];return true};return false})
+ require(send.AtMS>=v.due,"original real due payment")
+ payment:=validatePayment(send,v.s.Base,inputs,econ);confirmation:=generate(v.ctx,a,b);require(minedTx(v.ctx,a,confirmation,send.TxID).TxHash().String()==send.TxID,"actual canonical payout")
+ confirmed:=time.Now().UnixMilli();v.phase("10-confirmed-payment",map[string]any{"payment":payment,"confirmation_block":confirmation,"confirmed_at_ms":confirmed})
+ balances,pages:=waitMoney(v.ctx,v.owners.clients,v.s.Base,econ,send.TxID,confirmed,filepath.Join(v.root,"money-read-evidence.json"))
+ var finalWallet accountpilot.RemotePoolControllerSnapshot
+ wait(v.ctx,60*time.Second,func()bool{v.current.running();finalWallet=snapshot(v.ctx,v.owners.controller);return finalWallet.Remote.WalletState=="ready" && finalWallet.Remote.WalletHeight>=height+1 && finalWallet.Remote.SpendableAtoms==mature.Remote.SpendableAtoms+econ.MinerAtoms})
+ require(finalWallet.View!=nil && finalWallet.View.ViewID==next && finalWallet.Remote.Attempts==0,"same stopped original wallet receives exact output")
+ v.phase("11-payment-wallet",map[string]any{"payment":payment,"balances":balances,"pages":pages,"wallet_before":mature,"wallet_after":finalWallet,"confirmation_block":confirmation})
+ check(v.owners.controller.Logout(v.ctx,next),"same original logout");check(v.owners.controller.Close(),"stopped original controller joined");v.owners.controller=nil
+ finalRows,finalState:=readOutbox(v.in.AttachmentRoot,v.c);require(reflect.DeepEqual(ev.Rows,finalRows) && ev.Outbox==finalState,"stopped reopen preserves q/e/h/p/meta/scan/cursor/active request")
+ v.phase("outbox-after",finalState)
+ phase="historical exact completed work after real expiry"
+ for time.Now().UnixMilli()<v.gap.Job.ExpiresAtMS {v.current.running();d:=time.Until(time.UnixMilli(v.gap.Job.ExpiresAtMS));if d>time.Second {d=time.Second};check(pauseActual(v.ctx,d),"historical original expiry wait")};require(time.Now().UnixMilli()>=v.gap.Job.ExpiresAtMS,"original expiry passed without renewed hashing")
+ history:=v.exactIssue(true,"historical authenticated lookup");check(v.owners.clients[0].CheckIssueResponse(v.id,history),"original client provenance")
+ repeated:=v.exactIssue(false,"historical exact request resume");check(v.owners.clients[0].CheckIssueResponse(v.id,repeated),"original same-client provenance")
+ require(sameIssue(withheld,history) && sameIssue(withheld,repeated),"completed work unchanged after expiry")
+ v.phase("historical-replay",map[string]any{"lookup":history,"resume":repeated,"observed_at_ms":time.Now().UnixMilli()})
+ phase="closed full original financial and issue audit"
+ check(v.current.stop(false,0),"final operator joined")
+ final:=auditIssue(v.ctx,v.root,v.s,v.id);verifyFinal(final.Financial,v.s.Base,ev,econ,send)
+ require(final.Job==v.gap.Job && final.Request==completed.Request && reflect.DeepEqual(final.Template,v.gap.Template) && final.Financial.Works<=final.Financial.AuthorityJobs && final.IssuerRequests<=final.SourceRequests && final.SourceRequests<=v.s.IssueProfile.MaxRequests,"original request unchanged; complete all-request census")
+ v.phase("12-final-audit",final)
+ sends,attempts,e:=v.owners.rpc.sends();check(e,"final original RPC evidence");require(len(sends)==1 && len(attempts)>=1 && len(attempts)<=16,"one broadcast bounded attempts");for _,a:=range attempts {require(a.Raw==send.Raw,"only original signed raw")}
+ a.rpc.must(v.ctx,"getblockcount",nil,&height);require(height<=105 && sameTip(v.ctx,a,b)!="","bounded final chain")
+ complete:=map[string]any{"completed":true,"case":"A","request_id":v.id,"job_id":v.gap.Job.ID,"accepted_rewards":len(ev.Accepted),"accepted_fighters":ev.AcceptedFighters,"pending_fighters":ev.PendingFighters,"original_signatures":ev.Authorizations,"stopped_reopen":true,"paid_atoms":econ.MinerAtoms,"fee_atoms":econ.FeeAtoms,"send_count":len(sends),"attempts":attempts,"final_audit_unchanged":final.ReadOnlyUnchanged,"final_height":height}
+ v.phase("13-complete",complete)
+ for k,value:=range complete {v.out[k]=value};v.out["miner_atoms"]=econ.MinerAtoms;v.out["scheduled_payment"]=true;v.out["original_wallet_received"]=true
+}

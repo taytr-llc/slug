@@ -1,0 +1,556 @@
+{
+  "case": "A",
+  "clean_join": true,
+  "cleanup_errors": [],
+  "cli_generations": [
+    {
+      "config_id": "ef6c553ca3b3b276b66ad90df6389c59abc82b0dd19f5c1325538ab8c63fdbe6",
+      "exit_code": 0,
+      "forced_kill": false,
+      "io_error": false,
+      "joined": true,
+      "last_status": {
+        "version": 2,
+        "observed_at_ms": 1795264861737,
+        "config_id": "ef6c553ca3b3b276b66ad90df6389c59abc82b0dd19f5c1325538ab8c63fdbe6",
+        "state": "signed_in",
+        "worker_state": "preparing",
+        "code": "",
+        "records": 0,
+        "pending": 0
+      },
+      "parent_pid": 85367,
+      "pgid": 85367,
+      "pid": 85383,
+      "signal": "SIGTERM",
+      "signal_count": 1,
+      "status_count": 1,
+      "stderr_joined": true,
+      "stdout_joined": true,
+      "unexpected_exit": false,
+      "wait_error": false
+    },
+    {
+      "config_id": "ef6c553ca3b3b276b66ad90df6389c59abc82b0dd19f5c1325538ab8c63fdbe6",
+      "exit_code": 0,
+      "forced_kill": false,
+      "io_error": false,
+      "joined": true,
+      "last_status": {
+        "version": 2,
+        "observed_at_ms": 1795264866819,
+        "config_id": "ef6c553ca3b3b276b66ad90df6389c59abc82b0dd19f5c1325538ab8c63fdbe6",
+        "state": "signed_in",
+        "worker_state": "preparing",
+        "code": "",
+        "records": 0,
+        "pending": 0
+      },
+      "parent_pid": 85367,
+      "pgid": 85367,
+      "pid": 85391,
+      "signal": "SIGTERM",
+      "signal_count": 1,
+      "status_count": 1,
+      "stderr_joined": true,
+      "stdout_joined": true,
+      "unexpected_exit": false,
+      "wait_error": false
+    },
+    {
+      "config_id": "ef6c553ca3b3b276b66ad90df6389c59abc82b0dd19f5c1325538ab8c63fdbe6",
+      "exit_code": 0,
+      "forced_kill": false,
+      "io_error": false,
+      "joined": true,
+      "last_status": {
+        "version": 2,
+        "observed_at_ms": 1795264873496,
+        "config_id": "ef6c553ca3b3b276b66ad90df6389c59abc82b0dd19f5c1325538ab8c63fdbe6",
+        "state": "signed_in",
+        "worker_state": "preparing",
+        "code": "",
+        "records": 1,
+        "pending": 0
+      },
+      "parent_pid": 85367,
+      "pgid": 85367,
+      "pid": 85393,
+      "signal": "SIGTERM",
+      "signal_count": 1,
+      "status_count": 3,
+      "stderr_joined": true,
+      "stdout_joined": true,
+      "unexpected_exit": false,
+      "wait_error": false
+    }
+  ],
+  "completed": false,
+  "due_ms": 1795265220000,
+  "expires_at_ms": 1795265161973,
+  "failure": "exact interrupted pool result only",
+  "failure_phase": "closed original request results and signatures",
+  "initial_height": 2,
+  "initial_tip": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+  "intent_id": "01dbc6e4ac030f9ad3a3672a68491f0ea611d2b115ef83e70cc9edb094319254",
+  "intentional_crash_count": 1,
+  "issue_profile_id": "474748bd9d5467aee79941442050f4bbef7b7bbdd81f3328dfc61b8a3269e058",
+  "issued_at_ms": 1795264861973,
+  "job_id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728",
+  "node_cleanup": [
+    {
+      "clean": true,
+      "forced_kill": false,
+      "group_error": false,
+      "joined": true,
+      "log_close_error": false,
+      "parent_pid": 85367,
+      "pgid": 85367,
+      "pid": 85372,
+      "stop_rpc_error": false,
+      "unexpected_exit": false,
+      "wait_error": ""
+    },
+    {
+      "clean": true,
+      "forced_kill": false,
+      "group_error": false,
+      "joined": true,
+      "log_close_error": false,
+      "parent_pid": 85367,
+      "pgid": 85367,
+      "pid": 85371,
+      "stop_rpc_error": false,
+      "unexpected_exit": false,
+      "wait_error": ""
+    }
+  ],
+  "operator_generations": [
+    {
+      "cleanup_error": false,
+      "command": "init",
+      "exit_code": 0,
+      "frames": [
+        {
+          "version": 2,
+          "command": "init",
+          "observed_at_ms": 1795264854035,
+          "code": "complete",
+          "result": {
+            "capacity": {
+              "daily_reservation": {
+                "ordinary_maximum": 2,
+                "reservation": {
+                  "submissions": 3,
+                  "blocks": 3,
+                  "max_batches": 5,
+                  "claim_leaves": 6,
+                  "ledger_bytes": 8534577,
+                  "round_bytes": 211005,
+                  "largest_round_bytes": 66520,
+                  "largest_credit_bytes": 1243,
+                  "largest_batch_bytes": 980210,
+                  "report_bytes": 20628,
+                  "receipt_bytes": 12288,
+                  "signing_bytes": 8450828,
+                  "manager_copy_bytes": 1181620
+                }
+              },
+              "reservation": {
+                "submissions": 0,
+                "max_batches": 0,
+                "state_bytes": 0,
+                "round_bytes": 0,
+                "largest_round_bytes": 0
+              },
+              "mode": "paused",
+              "reason": "",
+              "submissions": 0,
+              "over_bound": false,
+              "canonical_recovery": false,
+              "recovery_blocks": 0,
+              "at_ms": 0
+            },
+            "version": 2,
+            "runtime_id": "3ccd61b5c0e78f0743d97cc8d5cf0d72332a2981cac7bd17c9febb50d9116119",
+            "setup_id": "b84eea3b19ed23cc7944c51ddfc1b9e6d122ef08f59e792903a86df3e09d9ded",
+            "running": false,
+            "closing": false,
+            "custody": "locked",
+            "custody_at_ms": 0,
+            "custody_until_ms": 0,
+            "public": {
+              "work_id": "",
+              "phase": "",
+              "next_admission": 0,
+              "next_publication": 0,
+              "next_height": 0,
+              "ready": false,
+              "head": null
+            },
+            "public_code": "not_started",
+            "public_at_ms": 0,
+            "rounds": {
+              "through": 0,
+              "rounds": 0,
+              "pending_shares": 0
+            },
+            "round_code": "not_started",
+            "round_at_ms": 0,
+            "schedule": {
+              "state": {
+                "version": 2,
+                "config": {
+                  "version": 2,
+                  "scheduler_id": "ba73e624dd9cac964c482933a6d54b0ba1e66c28e69581087cebc13e32104a89",
+                  "runtime_id": "3ccd61b5c0e78f0743d97cc8d5cf0d72332a2981cac7bd17c9febb50d9116119",
+                  "settlement_binding_id": "1a8f11297217a9d3ef471be9070ede3df0291d353fbf17c3cbce693571631035",
+                  "daily_utc_minute": 767,
+                  "retry_ms": 30000
+                },
+                "revision": 1,
+                "last_clock_ms": 1795264853977,
+                "daily_cursor": "",
+                "next_wake_ms": 0,
+                "attempt": null
+              },
+              "running": false,
+              "poisoned": false
+            }
+          }
+        }
+      ],
+      "generation": "operator-init",
+      "intentional_crash": false,
+      "io_error": false,
+      "joined": true,
+      "parent_pid": 85367,
+      "pgid": 85367,
+      "pid": 85378,
+      "signal": "",
+      "signal_count": 0,
+      "unexpected_exit": false
+    },
+    {
+      "cleanup_error": false,
+      "command": "rotate",
+      "exit_code": 0,
+      "frames": [
+        {
+          "version": 2,
+          "command": "rotate",
+          "observed_at_ms": 1795264854830,
+          "code": "complete",
+          "result": {
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "audience": "pool",
+            "generation": 1,
+            "token_hash": "a2228093647f4f5dba8031abacb93e45234f11bd1422eef0d6716b4627d7030d",
+            "reuse_hash": "65a38d36193d92f27a577be632c84322cd7f781521b37a0e9d8fd764155cba70",
+            "issued_at_ms": 1795264854796,
+            "expires_at_ms": 1795268450047,
+            "revoked_at_ms": 0
+          }
+        }
+      ],
+      "generation": "operator-rotate-pool-0",
+      "intentional_crash": false,
+      "io_error": false,
+      "joined": true,
+      "parent_pid": 85367,
+      "pgid": 85367,
+      "pid": 85379,
+      "signal": "",
+      "signal_count": 0,
+      "unexpected_exit": false
+    },
+    {
+      "cleanup_error": false,
+      "command": "rotate",
+      "exit_code": 0,
+      "frames": [
+        {
+          "version": 2,
+          "command": "rotate",
+          "observed_at_ms": 1795264855617,
+          "code": "complete",
+          "result": {
+            "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+            "audience": "pool",
+            "generation": 1,
+            "token_hash": "daf162d0b29bbed3e7f1a48ee17db235d640e5350436526e305d587caf794c29",
+            "reuse_hash": "9b4914df4b631ea0c0887ca15206ad72b820c838b302d6efdaecac4dc124da33",
+            "issued_at_ms": 1795264855584,
+            "expires_at_ms": 1795268450047,
+            "revoked_at_ms": 0
+          }
+        }
+      ],
+      "generation": "operator-rotate-pool-1",
+      "intentional_crash": false,
+      "io_error": false,
+      "joined": true,
+      "parent_pid": 85367,
+      "pgid": 85367,
+      "pid": 85380,
+      "signal": "",
+      "signal_count": 0,
+      "unexpected_exit": false
+    },
+    {
+      "cleanup_error": false,
+      "command": "rotate",
+      "exit_code": 0,
+      "frames": [
+        {
+          "version": 2,
+          "command": "rotate",
+          "observed_at_ms": 1795264856330,
+          "code": "complete",
+          "result": {
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "audience": "admission",
+            "generation": 1,
+            "token_hash": "2283da69b73fe83b5d9689b13d3d35374090e94ed0e0ec17175f44c142ff19aa",
+            "reuse_hash": "04d7bacc7386ba685009c2929e5fe7c3b500dc34492d72e843aaf9c48f268c41",
+            "issued_at_ms": 1795264856319,
+            "expires_at_ms": 1795268450047,
+            "revoked_at_ms": 0
+          }
+        }
+      ],
+      "generation": "operator-rotate-admission",
+      "intentional_crash": false,
+      "io_error": false,
+      "joined": true,
+      "parent_pid": 85367,
+      "pgid": 85367,
+      "pid": 85381,
+      "signal": "",
+      "signal_count": 0,
+      "unexpected_exit": false
+    },
+    {
+      "cleanup_error": false,
+      "command": "serve",
+      "exit_code": -1,
+      "frames": [
+        {
+          "version": 2,
+          "command": "serve",
+          "observed_at_ms": 1795264857562,
+          "code": "listening",
+          "result": {
+            "origin": "https://127.0.0.1:65242"
+          }
+        }
+      ],
+      "generation": "operator-serve-1",
+      "intentional_crash": true,
+      "io_error": false,
+      "joined": true,
+      "parent_pid": 85367,
+      "pgid": 85367,
+      "pid": 85382,
+      "signal": "SIGKILL",
+      "signal_count": 1,
+      "unexpected_exit": false
+    },
+    {
+      "cleanup_error": false,
+      "command": "serve",
+      "exit_code": 0,
+      "frames": [
+        {
+          "version": 2,
+          "command": "serve",
+          "observed_at_ms": 1795264863610,
+          "code": "listening",
+          "result": {
+            "origin": "https://127.0.0.1:65242"
+          }
+        }
+      ],
+      "generation": "operator-serve-2",
+      "intentional_crash": false,
+      "io_error": false,
+      "joined": true,
+      "parent_pid": 85367,
+      "pgid": 85367,
+      "pid": 85387,
+      "signal": "SIGTERM",
+      "signal_count": 1,
+      "unexpected_exit": false
+    },
+    {
+      "cleanup_error": false,
+      "command": "serve",
+      "exit_code": 0,
+      "frames": [
+        {
+          "version": 2,
+          "command": "serve",
+          "observed_at_ms": 1795264868338,
+          "code": "listening",
+          "result": {
+            "origin": "https://127.0.0.1:65242"
+          }
+        }
+      ],
+      "generation": "operator-serve-3",
+      "intentional_crash": false,
+      "io_error": false,
+      "joined": true,
+      "parent_pid": 85367,
+      "pgid": 85367,
+      "pid": 85392,
+      "signal": "SIGTERM",
+      "signal_count": 1,
+      "unexpected_exit": false
+    }
+  ],
+  "passed": false,
+  "public_seed_mining": false,
+  "remote_id": "ef6c553ca3b3b276b66ad90df6389c59abc82b0dd19f5c1325538ab8c63fdbe6",
+  "request_id": "5300ff515732f714379b01443df7997c6645d2aa0114de402492bfc6a2e46ea5",
+  "scope": "finite original request recovery on standalone operator and headless CLI",
+  "seconds": 23.828016,
+  "send_attempts": [],
+  "send_error": false,
+  "sends": [],
+  "setup_id": "b84eea3b19ed23cc7944c51ddfc1b9e6d122ef08f59e792903a86df3e09d9ded",
+  "start_ms": 1795264850047,
+  "tls_relay": {
+    "error": false,
+    "events": [
+      {
+        "request_id": "5300ff515732f714379b01443df7997c6645d2aa0114de402492bfc6a2e46ea5",
+        "path": "/pool/v3/issue",
+        "at_ms": 1795264861713,
+        "forwarded": true,
+        "status": 0,
+        "response_sha256": "",
+        "lost": false
+      },
+      {
+        "request_id": "5300ff515732f714379b01443df7997c6645d2aa0114de402492bfc6a2e46ea5",
+        "path": "/pool/v3/issue",
+        "at_ms": 1795264866791,
+        "forwarded": true,
+        "status": 200,
+        "response_sha256": "7e7a4116a54083a62227aedfd6a5b98b116eff916759cf22077d948058e5fda2",
+        "lost": true
+      },
+      {
+        "request_id": "5300ff515732f714379b01443df7997c6645d2aa0114de402492bfc6a2e46ea5",
+        "path": "/pool/v3/issue",
+        "at_ms": 1795264871556,
+        "forwarded": true,
+        "status": 200,
+        "response_sha256": "7e7a4116a54083a62227aedfd6a5b98b116eff916759cf22077d948058e5fda2",
+        "lost": false
+      },
+      {
+        "request_id": "296c0f28398cf61c446f9df0d01d1212339399fe6aa48515f5697c0828e4e5f7",
+        "path": "/pool/v3/issue",
+        "at_ms": 1795264873369,
+        "forwarded": true,
+        "status": 0,
+        "response_sha256": "",
+        "lost": false
+      }
+    ],
+    "held": false,
+    "lost": true,
+    "request_id": "5300ff515732f714379b01443df7997c6645d2aa0114de402492bfc6a2e46ea5",
+    "response": {
+      "version": 3,
+      "binding_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+      "settlement_config_id": "744a4f6a8fa2160cf96353c396867021a1dbe0eaf6308978a753ebc326c546b9",
+      "recipient_script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+      "issue_profile_id": "474748bd9d5467aee79941442050f4bbef7b7bbdd81f3328dfc61b8a3269e058",
+      "request_id": "5300ff515732f714379b01443df7997c6645d2aa0114de402492bfc6a2e46ea5",
+      "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+      "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+      "result": {
+        "version": 1,
+        "state": "work",
+        "intent_id": "01dbc6e4ac030f9ad3a3672a68491f0ea611d2b115ef83e70cc9edb094319254",
+        "job_id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728",
+        "resolved_at_ms": 1795264866956,
+        "reason": "",
+        "work": {
+          "job": {
+            "version": 2,
+            "rule_version": 1,
+            "id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728",
+            "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+            "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+            "context": {
+              "version": 1,
+              "network": 1397511495,
+              "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+              "dna_version": 1,
+              "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+              "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+              "parent_height": 2,
+              "expected_bits": 545259519,
+              "min_timestamp": 1795170106,
+              "max_timestamp": 1795272061
+            },
+            "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "challenge": "3a747e46a681946f80a5399492173a93b094e813de54b26879173356950950d9",
+            "issued_at_ms": 1795264861973,
+            "expires_at_ms": 1795265161973
+          },
+          "template": {
+            "context": {
+              "version": 1,
+              "network": 1397511495,
+              "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+              "dna_version": 1,
+              "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+              "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+              "parent_height": 2,
+              "expected_bits": 545259519,
+              "min_timestamp": 1795170106,
+              "max_timestamp": 1795272061
+            },
+            "block": {
+              "bits": "207fffff",
+              "curtime": 1795264861,
+              "height": 3,
+              "previousblockhash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+              "sigoplimit": 80000,
+              "sizelimit": 4000000,
+              "weightlimit": 4000000,
+              "transactions": [],
+              "version": 536870912,
+              "coinbaseaux": {
+                "flags": "0b2f503253482f627463642f"
+              },
+              "coinbasevalue": 1000000000,
+              "longpollid": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d-1795264859",
+              "target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+              "maxtime": 1795272061,
+              "mintime": 1795170106,
+              "mutable": [
+                "time",
+                "transactions/add",
+                "prevblock",
+                "coinbase/append"
+              ],
+              "noncerange": "00000000ffffffff",
+              "capabilities": [
+                "proposal"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "response_sha256": "7e7a4116a54083a62227aedfd6a5b98b116eff916759cf22077d948058e5fda2"
+  },
+  "version": 1
+}

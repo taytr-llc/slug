@@ -19,6 +19,9 @@ import (
 )
 
 func (worker *PoolWorker) deliveryAuthoritiesMatch() bool {
+	if worker.recovery != nil {
+		return worker.recoverableAuthorityMatches()
+	}
 	a, f, c := worker.authority, worker.admission, worker.config
 	return a != nil && f != nil && a.ProtocolVersion() == c.Version && a.AuthorityOrigin() == c.AuthorityOrigin && a.SourceConfig() == c.Source && a.TransportTrustID() == c.TransportTrustID && a.PublicKey() == c.PublicKey && f.ProtocolVersion() == 3 && f.AuthorityOrigin() == c.AdmissionOrigin && f.AuthorityPin() == c.Source.AuthorityPin && f.TransportTrustID() == c.AdmissionTrustID
 }

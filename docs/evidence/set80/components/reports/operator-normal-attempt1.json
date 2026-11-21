@@ -1,0 +1,102 @@
+{
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 78617,
+        "pid": 78617,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./pooloperator"
+      ],
+      "exit_code": 0,
+      "label": "deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 78617,
+      "pid": 78617,
+      "seconds": 0.257,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 78627,
+        "pid": 78627,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "test",
+        "-count=1",
+        "-p=1",
+        "-timeout=450s",
+        "-json",
+        "-run",
+        "^Test(Recoverable|IssueRecovery|IssueProfile|IssueIntent|IssueRequest)",
+        "./pooloperator"
+      ],
+      "exit_code": 0,
+      "label": "normal",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 78627,
+      "pid": 78627,
+      "seconds": 5.559,
+      "timed_out": false
+    }
+  ],
+  "expected_profile_skips": [],
+  "failed_tests": [],
+  "passed": true,
+  "passing_packages": [
+    "github.com/taytr-llc/slug/desktop/pooloperator"
+  ],
+  "passing_tests": [
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorFilesRefuseOtherModes",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableProvisionOriginalMaterialLostReady",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableProvisionCapacityBeforeEffects",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentWrappers/one-enrollment",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentWrappers/two-enrollments",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentWrappers/64-enrollments",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentWrappers",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentSetupFraming/one-enrollment-setup/canonical",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentSetupFraming/one-enrollment-setup/unknown-field",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentSetupFraming/one-enrollment-setup/duplicate-field",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentSetupFraming/one-enrollment-setup/reordered-fields",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentSetupFraming/one-enrollment-setup/missing-field",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentSetupFraming/one-enrollment-setup/invalid-utf8",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentSetupFraming/one-enrollment-setup/vertical-tab-prefix",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentSetupFraming/one-enrollment-setup/trailing-value",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentSetupFraming/one-enrollment-setup/alternate-number",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentSetupFraming/one-enrollment-setup/unexpected-final-lf",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorIndependentSetupFraming",
+    "github.com/taytr-llc/slug/desktop/pooloperator/TestRecoverableOperatorCommandExplicitSelection"
+  ],
+  "pattern": "^Test(Recoverable|IssueRecovery|IssueProfile|IssueIntent|IssueRequest)",
+  "profile_unchanged": true,
+  "scope": "Set80 operator normal",
+  "skipped_tests": [],
+  "sources_unchanged": true,
+  "version": 1
+}

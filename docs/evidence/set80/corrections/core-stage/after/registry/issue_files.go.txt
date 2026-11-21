@@ -1,0 +1,55 @@
+// Copyright (c) 2026 The SLUG developers. ISC license.
+package registry
+
+import (
+ "encoding/json"
+ "errors"
+ "io"
+ "os"
+)
+
+// Only explicit recoverable constructors use these helpers. A failed Close
+// retains its exact descriptor for reporting, never for another Close attempt.
+func(s *ManifestStore) closeIssueFile(f *os.File,cause error)error{
+ closeErr:=f.Close()
+ if closeErr!=nil{
+  s.failedIssueFile=f
+  s.closeErr=errors.Join(cause,closeErr)
+  s.poisoned=s.closeErr
+  return s.closeErr
+ }
+ return cause
+}
+func failedIssueFileOwner(s *ManifestStore,cause error)(*ManifestStore,error){
+ if s.failedIssueFile!=nil{return s,cause}
+ return nil,cause
+}
+func(s *ManifestStore) writeIssueFile(path string,value any)error{
+ raw,err:=json.Marshal(value)
+ if err!=nil||len(raw)+1>maxIssueMetadataSize{return ErrManifestAuthority}
+ f,err:=os.OpenFile(path,os.O_WRONLY|os.O_CREATE|os.O_EXCL,0600)
+ if err!=nil{return err}
+ raw=append(raw,'\n')
+ n,writeErr:=f.Write(raw)
+ if writeErr==nil&&n!=len(raw){writeErr=io.ErrShortWrite}
+ var syncErr error
+ if writeErr==nil{syncErr=f.Sync()}
+ return s.closeIssueFile(f,errors.Join(writeErr,syncErr))
+}
+func(s *ManifestStore) readIssueFile(path string,limit int)([]byte,error){
+ before,err:=os.Lstat(path)
+ if err!=nil||!before.Mode().IsRegular()||before.Size()>int64(limit){return nil,ErrCorrupt}
+ f,err:=os.Open(path)
+ if err!=nil{return nil,err}
+ opened,err:=f.Stat()
+ if err!=nil||!opened.Mode().IsRegular()||!os.SameFile(before,opened){return nil,s.closeIssueFile(f,errors.Join(ErrCorrupt,err))}
+ raw,readErr:=io.ReadAll(io.LimitReader(f,int64(limit)+1))
+ if len(raw)>limit{readErr=errors.Join(readErr,ErrCorrupt)}
+ if err=s.closeIssueFile(f,readErr);err!=nil{return nil,err}
+ return raw,nil
+}
+func(s *ManifestStore) syncIssueDirectory(path string)error{
+ f,err:=os.Open(path)
+ if err!=nil{return err}
+ return s.closeIssueFile(f,f.Sync())
+}

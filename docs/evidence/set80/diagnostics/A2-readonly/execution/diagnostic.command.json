@@ -1,0 +1,27 @@
+{
+  "capture_errors": [],
+  "cleanup": {
+    "errors": [],
+    "group_empty": true,
+    "leftover_after_exit": false,
+    "pgid": 86025,
+    "pid": 86025,
+    "return_code": 0,
+    "signals": []
+  },
+  "command": [
+    "/Users/taytrrip/slug/artifacts/set80/a2-readonly-diagnostic-run-attempt1/issue-recovery-actual",
+    "--original-root",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned",
+    "--artifacts",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a2-readonly-diagnostic-attempt1"
+  ],
+  "exit_code": 0,
+  "log_errors": [],
+  "log_joined": true,
+  "log_limit_exceeded": false,
+  "pgid": 86025,
+  "pid": 86025,
+  "seconds": 0.689,
+  "timed_out": false
+}

@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "/opt/homebrew/bin/python3",
+    "-B",
+    "-S",
+    "--version"
+  ],
+  "pgid": 75887,
+  "pid": 75887,
+  "timeout_seconds": 10
+}

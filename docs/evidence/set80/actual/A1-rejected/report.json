@@ -1,0 +1,598 @@
+{
+  "actual_started": true,
+  "artifacts": {
+    "helper": {
+      "build_info": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/helper-build-info.txt",
+      "build_info_sha256": "4e2b461e7e2575fc52f9facb4699ddc49329a09aa07782d83d1aa9444c4dc9aa",
+      "compiler_setting_evidence": "embedded_build_info",
+      "go_version": "go1.27.4",
+      "path": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/bin/slugpilot",
+      "settings": {
+        "-buildmode": "exe",
+        "-compiler": "gc",
+        "-gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "-trimpath": "true",
+        "CGO_ENABLED": "1",
+        "GOARCH": "arm64",
+        "GOARM64": "v8.0",
+        "GOOS": "darwin",
+        "vcs": "git",
+        "vcs.modified": "true",
+        "vcs.revision": "fdd40d8edd9a685613f1f667f0074e56ec4e7da5",
+        "vcs.time": "2026-11-21T10:38:42Z"
+      },
+      "sha256": "8d7f0c18deecf9877a6bc8d4e35ddbd11507164f4d10ee1e9eeb29ba9f790618"
+    },
+    "node": {
+      "build_info": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/node-build-info.txt",
+      "build_info_sha256": "35ca4ba780c93dba4909dd5bf3906511387d35b513475e62ab1014bd4c2e8ed9",
+      "compiler_setting_evidence": "embedded_build_info",
+      "go_version": "go1.27.4",
+      "path": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/bin/slugd",
+      "settings": {
+        "-buildmode": "exe",
+        "-compiler": "gc",
+        "-gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "-trimpath": "true",
+        "CGO_ENABLED": "0",
+        "GOARCH": "arm64",
+        "GOARM64": "v8.0",
+        "GOOS": "darwin",
+        "vcs": "git",
+        "vcs.modified": "true",
+        "vcs.revision": "fdd40d8edd9a685613f1f667f0074e56ec4e7da5",
+        "vcs.time": "2026-11-21T10:38:42Z"
+      },
+      "sha256": "cbae923a1df0439924790cafcf06586af1b84511208ad534bf3161d62ce8f0c7"
+    },
+    "operator": {
+      "build_info": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/operator-build-info.txt",
+      "build_info_sha256": "bf768cfc6b5dd407efcbc250c9c3c097f0b8790f0206dcf7da06af3bcc27031c",
+      "compiler_setting_evidence": "embedded_build_info",
+      "go_version": "go1.27.4",
+      "path": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/bin/slugpoold",
+      "settings": {
+        "-buildmode": "exe",
+        "-compiler": "gc",
+        "-gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "-trimpath": "true",
+        "CGO_ENABLED": "1",
+        "GOARCH": "arm64",
+        "GOARM64": "v8.0",
+        "GOOS": "darwin",
+        "vcs": "git",
+        "vcs.modified": "true",
+        "vcs.revision": "fdd40d8edd9a685613f1f667f0074e56ec4e7da5",
+        "vcs.time": "2026-11-21T10:38:42Z"
+      },
+      "sha256": "8f69647bc1329504f29f8e6febb45d30f9e539c76f66fda9aedf75b4d9ed3074"
+    },
+    "probe": {
+      "build_info": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/probe-build-info.txt",
+      "build_info_sha256": "fb0006e232ce8fff425589128709b14b84b85e934a0d281162ab3920600db48e",
+      "compiler_setting_evidence": "embedded_build_info",
+      "go_version": "go1.27.4",
+      "path": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/bin/issue-recovery-actual",
+      "settings": {
+        "-buildmode": "exe",
+        "-compiler": "gc",
+        "-gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "-trimpath": "true",
+        "CGO_ENABLED": "1",
+        "GOARCH": "arm64",
+        "GOARM64": "v8.0",
+        "GOOS": "darwin"
+      },
+      "sha256": "64f5e27cf91028ef94f47daa685671727bb9bd517f296c4d0d71a6717dc29ffa"
+    }
+  },
+  "case": "A",
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 84252,
+        "pid": 84252,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-json",
+        "-mod=readonly",
+        "."
+      ],
+      "exit_code": 0,
+      "label": "node-deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 84252,
+      "pid": 84252,
+      "seconds": 0.63,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 84272,
+        "pid": 84272,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-json",
+        "-mod=readonly",
+        "./cmd/slugpoold"
+      ],
+      "exit_code": 0,
+      "label": "operator-deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 84272,
+      "pid": 84272,
+      "seconds": 0.432,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 84280,
+        "pid": 84280,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-json",
+        "-mod=readonly",
+        "./cmd/slugpilot"
+      ],
+      "exit_code": 0,
+      "label": "helper-deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 84280,
+      "pid": 84280,
+      "seconds": 0.483,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 84288,
+        "pid": 84288,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-json",
+        "-mod=readonly",
+        "."
+      ],
+      "exit_code": 0,
+      "label": "probe-deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 84288,
+      "pid": 84288,
+      "seconds": 0.261,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 84294,
+        "pid": 84294,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-trimpath",
+        "-tags=",
+        "-o",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/bin/slugd",
+        "."
+      ],
+      "exit_code": 0,
+      "label": "node-build",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 84294,
+      "pid": 84294,
+      "seconds": 2.713,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 84316,
+        "pid": 84316,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-trimpath",
+        "-tags=",
+        "-o",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/bin/slugpoold",
+        "./cmd/slugpoold"
+      ],
+      "exit_code": 0,
+      "label": "operator-build",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 84316,
+      "pid": 84316,
+      "seconds": 2.459,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 84354,
+        "pid": 84354,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-trimpath",
+        "-tags=",
+        "-o",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/bin/slugpilot",
+        "./cmd/slugpilot"
+      ],
+      "exit_code": 0,
+      "label": "helper-build",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 84354,
+      "pid": 84354,
+      "seconds": 4.483,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 84414,
+        "pid": 84414,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-trimpath",
+        "-tags=",
+        "-o",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/bin/issue-recovery-actual",
+        "."
+      ],
+      "exit_code": 0,
+      "label": "probe-build",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 84414,
+      "pid": 84414,
+      "seconds": 3.268,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 84446,
+        "pid": 84446,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/bin/issue-recovery-actual",
+        "--case",
+        "A",
+        "--node",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/bin/slugd",
+        "--operator",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/bin/slugpoold",
+        "--helper",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/bin/slugpilot",
+        "--artifacts",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned",
+        "--reference",
+        "/Users/taytrrip/slug/artifacts/set80/actual-reference-attempt1/python314.json",
+        "--old-reference",
+        "/Users/taytrrip/slug/set80-prep/actual-recovery/inputs/path-c-reference.json",
+        "--base-reference",
+        "/Users/taytrrip/slug/set80-prep/actual-recovery/inputs/base-reference.json"
+      ],
+      "exit_code": 0,
+      "label": "actual",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 84446,
+      "pid": 84446,
+      "seconds": 403.749,
+      "timed_out": false
+    }
+  ],
+  "fixture_preservation": {
+    "allowed_changed_paths": [
+      "authority/db/000002.ldb",
+      "authority/db/000003.log",
+      "authority/db/000017.ldb",
+      "authority/db/000018.log",
+      "authority/db/000020.ldb",
+      "authority/db/CURRENT",
+      "authority/db/CURRENT.bak",
+      "authority/db/LOG",
+      "authority/db/MANIFEST-000004",
+      "authority/db/MANIFEST-000019",
+      "coordinator/db/000002.ldb",
+      "coordinator/db/000003.log",
+      "coordinator/db/000014.ldb",
+      "coordinator/db/000015.ldb",
+      "coordinator/db/000016.log",
+      "coordinator/db/CURRENT",
+      "coordinator/db/CURRENT.bak",
+      "coordinator/db/LOG",
+      "coordinator/db/MANIFEST-000004",
+      "coordinator/db/MANIFEST-000017",
+      "fixture-provider/instance-lock/000002.log",
+      "fixture-provider/instance-lock/000010.log",
+      "fixture-provider/instance-lock/CURRENT",
+      "fixture-provider/instance-lock/CURRENT.bak",
+      "fixture-provider/instance-lock/LOG",
+      "fixture-provider/instance-lock/MANIFEST-000003",
+      "fixture-provider/instance-lock/MANIFEST-000011",
+      "fixture-provider/state.json",
+      "hosted-vault/db/000003.log",
+      "hosted-vault/db/000011.log",
+      "hosted-vault/db/CURRENT",
+      "hosted-vault/db/CURRENT.bak",
+      "hosted-vault/db/LOG",
+      "hosted-vault/db/MANIFEST-000004",
+      "hosted-vault/db/MANIFEST-000012",
+      "instance-lock/000002.log",
+      "instance-lock/000010.log",
+      "instance-lock/CURRENT",
+      "instance-lock/CURRENT.bak",
+      "instance-lock/LOG",
+      "instance-lock/MANIFEST-000003",
+      "instance-lock/MANIFEST-000011",
+      "shared/gyms/incrementing256/owned-wallet/inventory/db/000003.log",
+      "shared/gyms/incrementing256/owned-wallet/inventory/db/000011.log",
+      "shared/gyms/incrementing256/owned-wallet/inventory/db/CURRENT",
+      "shared/gyms/incrementing256/owned-wallet/inventory/db/CURRENT.bak",
+      "shared/gyms/incrementing256/owned-wallet/inventory/db/LOG",
+      "shared/gyms/incrementing256/owned-wallet/inventory/db/MANIFEST-000004",
+      "shared/gyms/incrementing256/owned-wallet/inventory/db/MANIFEST-000012",
+      "shared/gyms/incrementing256/owned-wallet/wallet/slugwallet.db"
+    ],
+    "copied": true,
+    "immutable_paths": 226,
+    "old_histories_unchanged": true,
+    "original_unchanged": true
+  },
+  "maximum_chain_height": 180,
+  "outer_seconds": 1080,
+  "passed": true,
+  "profile_lock_binaries_unchanged": true,
+  "public_evidence": {
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/01-selection.json": {
+      "bytes": 15219,
+      "sha256": "d6f96be9fc20178fd955b8815cc21eb1e2dd36662b218512a322ecca72d4ab73"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/02-gap.json": {
+      "bytes": 26174,
+      "sha256": "919565c4c1b5060d3cc01253de9ce5ef8d7c514771138aec8d39acf023c8df2c"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/03-local-gap.json": {
+      "bytes": 701,
+      "sha256": "63faf5c50fa2fc87fec20725e4554d729e664ec3209ca5e2dcd2aa7aabc209f7"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/04-response-loss.json": {
+      "bytes": 4717,
+      "sha256": "9e4a4a00e322ffd8c3567b95ab4a7e16c8f9f9a68421c638608f3e86745a480c"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/05-completed-source.json": {
+      "bytes": 30494,
+      "sha256": "4f18f945d1b0090b569836ce917b170df9bd8a441dad0db326092cea26ef6cbc"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/06-replayed-work.json": {
+      "bytes": 3709,
+      "sha256": "7377937c55c1c9dcdaac749423affbf25f6b12f719936f486dd2e3953ee950b2"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/07-worker-closed.json": {
+      "bytes": 21427,
+      "sha256": "f9c1dbd6639b967977b806c06da64f63eca1c7dfffeacc238ea2ec6cf0fa6c68"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/08-stopped-reopen.json": {
+      "bytes": 2434,
+      "sha256": "e71d508edab4bb051d35e6b4a5b81626e08e0da4894f0d8cd603e486320b2ba8"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/09-mature.json": {
+      "bytes": 2884,
+      "sha256": "a0488e0640102d8ed5c978092d47c8ebd639c3d6207e08b4f88e46979308da9b"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/10-confirmed-payment.json": {
+      "bytes": 918,
+      "sha256": "835ed5b3d1488cd28be24151a00e085cfcbb33976363fac3f679d5831e8a46b2"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/11-payment-wallet.json": {
+      "bytes": 9545,
+      "sha256": "21630f0a97124dc739c1a45bc4afd71e1cc6e08b2cfaa48139831665fde0ef4e"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/12-final-audit.json": {
+      "bytes": 58122,
+      "sha256": "316933d5bd152f42ce38d72115980b7eb82cad2e8c2f2d58e3cd4a3350a05004"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/13-complete.json": {
+      "bytes": 998,
+      "sha256": "c9118718e73ebcd7f3f84c221f48c1647c1a405d770ca8a3dc788aedacf7a27c"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/actual-report.json": {
+      "bytes": 71373,
+      "sha256": "07a643db4545c0a54edd8a854cb6978038a58c1d6d8fd64edfa492cb3a08230a"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/cli-1-stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/cli-1-stdout.jsonl": {
+      "bytes": 205,
+      "sha256": "4a244f1a1a34c6b5591d0d927553de31a16350e08851201631d7a04a43662826"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/cli-2-stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/cli-2-stdout.jsonl": {
+      "bytes": 205,
+      "sha256": "85472d4c99e0f7a10b057d18a63cb3b7cb7507f92aea8b669788a5515169184d"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/cli-3-stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/cli-3-stdout.jsonl": {
+      "bytes": 1028,
+      "sha256": "eb540d4dfcbee69851e01db112cfcac92f1ebf1a11684be1854de51197966af1"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/historical-replay.json": {
+      "bytes": 7826,
+      "sha256": "b07d6ef9db24bb224e533ffdcfa1ac412f92280924b3da90cd17a11a0f7b317d"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/money-read-evidence.json": {
+      "bytes": 5084,
+      "sha256": "1c38903adaae197422197d39d543a50015cc86dbc846763f94c2994a53ea49fa"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator-init-stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator-init-stdout.jsonl": {
+      "bytes": 1667,
+      "sha256": "0f5407c6147ff3a46bdde7590c24bbb0a9dc830df4d9f306810fcf903787738d"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator-rotate-admission-stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator-rotate-admission-stdout.jsonl": {
+      "bytes": 444,
+      "sha256": "4000e48e2b135a991b764b4460badc1b897a659cb32f60890866d395cfb27577"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator-rotate-pool-0-stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator-rotate-pool-0-stdout.jsonl": {
+      "bytes": 439,
+      "sha256": "f01ccff15ea100cb078624e2190860722c5a9e133f34b6f12029cedbbfd7cb75"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator-rotate-pool-1-stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator-rotate-pool-1-stdout.jsonl": {
+      "bytes": 439,
+      "sha256": "6b37923fbf8e8fd8dd3db20f5642cb3f519aa79d8eaecea2ad77aefecd8d86f8"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator-serve-1-stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator-serve-1-stdout.jsonl": {
+      "bytes": 128,
+      "sha256": "5c546cc2943582410e25e621803ce9515ce87fdb8aa4f1b58fa552ba1cc73dec"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator-serve-2-stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator-serve-2-stdout.jsonl": {
+      "bytes": 128,
+      "sha256": "1244c9e7d5f6bd27f80a49833e94303efd6bb56a7d66fc08759e4a1cb88a2912"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator-serve-3-stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator-serve-3-stdout.jsonl": {
+      "bytes": 29307,
+      "sha256": "2c69b2febeb7c620b8aaf77a9ba17e3408ab8745eec985f61cef3fd1099dacd4"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/outbox-after.json": {
+      "bytes": 703,
+      "sha256": "3917bab468071a8be06307ab3b54fcc200b4f90f2815501451c69c5ffe41dbeb"
+    }
+  },
+  "public_evidence_unchanged": true,
+  "scenario_seconds": 900,
+  "scope": "set80-exact-issuance-recovery-actual",
+  "sources_unchanged": true,
+  "version": 1
+}

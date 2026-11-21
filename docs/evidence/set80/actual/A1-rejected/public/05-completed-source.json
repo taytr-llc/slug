@@ -1,0 +1,440 @@
+{
+  "audit": {
+    "financial": {
+      "submissions": 0,
+      "accepted": 0,
+      "works": 1,
+      "authority_jobs": 1,
+      "admissions": [],
+      "births": 0,
+      "entries": [],
+      "rounds": [],
+      "credits": [],
+      "header": {
+        "application": "slug-pool-settlement-daily",
+        "version": 2,
+        "config_id": "744a4f6a8fa2160cf96353c396867021a1dbe0eaf6308978a753ebc326c546b9",
+        "source_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+        "revision": 3,
+        "credits": 0,
+        "batches": 0,
+        "events": 0,
+        "logical_bytes": 8519680,
+        "pending_batch": 0,
+        "last_day": "",
+        "last_clock_ms": 1795264390091
+      },
+      "body": {
+        "version": 0,
+        "sequence": 0,
+        "day": "",
+        "created_at_ms": 0,
+        "inputs": null,
+        "payments": null,
+        "fee_atoms": 0,
+        "change": null,
+        "txid": "",
+        "raw": ""
+      },
+      "body_sha256": "",
+      "body_bytes": 0,
+      "delivery": "",
+      "report": {
+        "day": "2026-11-21",
+        "observed_at_ms": 1795264390091,
+        "state": "complete",
+        "balances": [
+          {
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "confirmed": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "available": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "reserved_atoms": 0,
+            "paid_atoms": 0,
+            "reason": ""
+          },
+          {
+            "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+            "confirmed": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "available": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "reserved_atoms": 0,
+            "paid_atoms": 0,
+            "reason": ""
+          }
+        ]
+      },
+      "read_only_unchanged": true,
+      "source_requests": 1,
+      "issuer_requests": 1,
+      "public_rows": {
+        "issuer/69737375652f6a2fcdcbb7665d7ae4849f82cc9e3a8cafb92260f50482999b0ebb7319c649e71e7c": "1424dfce2483d0ac6dd2d0b0c9a2918efd5f267a973f167a3e945c20089e1cfd",
+        "issuer/69737375652f722fe065a06ba76623189f8fbe01db02a4b3bbb283534d44bcb68d41b2724f3eb1aa": "99d57370057d63c92968190a0f1604d96ececc49310e5e1e46aed1344b308beb",
+        "issuer/6a6f623a63646362623736363564376165343834396638326363396533613863616662393232363066353034383239393962306562623733313963363439653731653763": "82af5732de274383e421f704aaffe7f997416a61d8aa474d7f81171487844464",
+        "issuer/6d657461": "65bba84a7a629e5b4cb5f3dc60ec29535266821d193f733685723a83d6ed85f0",
+        "issuer/6f776e6572736869702f6775617264": "35b6c80fa6c2ba495059a29041baf7fa287bbb69581e5bee620bfdc1c991daee",
+        "issuer/6f776e6572736869702f6d657461": "5d3b186a85ac871a452ecae9f5132cfdc3a8d5e72f01a8f5e327a2f615704991",
+        "issuer/6f776e6572736869702f7075626c69636174696f6e2f00000001": "557af0d53f433b9b49dd40b4c8f3174794a8cc57a17e3e8f098f49c94aae42e5",
+        "issuer/6f776e6572736869702f7075626c69636174696f6e2f00000002": "c4dffe184419af16986b7d31ada6d26a60a23863dc85d8a7492c8390934d42eb",
+        "pool/69737375652f6a2fcdcbb7665d7ae4849f82cc9e3a8cafb92260f50482999b0ebb7319c649e71e7c": "1424dfce2483d0ac6dd2d0b0c9a2918efd5f267a973f167a3e945c20089e1cfd",
+        "pool/69737375652f722fe065a06ba76623189f8fbe01db02a4b3bbb283534d44bcb68d41b2724f3eb1aa": "06f1cf0d9f1d29a74c8422ccfecacdd403ad9f28b7d83dedd748d5e4aba5f7ac",
+        "pool/6d657461": "d9d64d4a9b8da86dadbacb1945ca41e16181c780eb9e30431139992e0225c8eb",
+        "pool/7763646362623736363564376165343834396638326363396533613863616662393232363066353034383239393962306562623733313963363439653731653763": "8d2aa295d67177d2fbb452b883afd086922352e5c88f551b648f9f040810ccbb",
+        "rounds/6d657461": "68f35d932adbfd57dd8a399b45802c1f7ccd5b7c2124fad46ca6e93a2bb618c2",
+        "settlement/68656164": "cdf342ab7aa747196c7d1156acb1a2dade68102906ebb836fecf301a1c161c02",
+        "settlement/7265706f7274": "7ac6d57864a6b2de6e188bfda287ff552ea8b7596d921e715e0a07124d0cbdc3"
+      },
+      "public_files_before": {
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/issuer/SLUG-MANIFEST-OWNERSHIP-V2.json": "eee47bc87b9c461eda83920a79e77a2a5be5ff3cb2bef783169a2cbb703eccf3",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/issuer/SLUG-REGISTRY.json": "399fe4c93d01bf32910ada461832f9c619b024b5f1c73a26fb24042799c4e1a0",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/issuer/db/000002.ldb": "0c42e7b7e6669f967b41bde9eda4f2350079d3ff95d92256511cda48bf1d2252",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/issuer/db/000011.ldb": "c029b2d42e7c82c482c05277da14c8f30f797091a14872da383529104cf3bfae",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/issuer/db/000012.log": "dcf9b8408f3e77a5adf583a5e20f4d40d4cbfda2c69fcccf830958edecd11918",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/issuer/db/CURRENT": "e6325e36f681074fccd2b1371dbf6f4535a6630e5b95c9ddff92c48ec11ce312",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/issuer/db/CURRENT.bak": "e91d13722e31f9b06c5df3582cad1ea5b73547ce3dc08b12ed461f095aad48ee",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/issuer/db/LOCK": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/issuer/db/LOG": "229138c876b05c1d6ee256d2af13c556b9071cc5bff12096112387774000aa36",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/issuer/db/MANIFEST-000013": "afdf75c8d6c44840c5ee56dc81344a11de688a715ad65620acfc9d868b075eb1",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/pool/SLUG-POOL.json": "4facbd88bbaaf8a12682d8af8896891cf4b3ad7334baf9dfb9267b5bd978f668",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/pool/db/000002.ldb": "072b8f228a82bbb59cf6804906d3e7d4e9b17b3aab7c6f16d2b20d47b83bd9d7",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/pool/db/000011.ldb": "491ac209478c0ca92f191d708bc76e9aaacdbf050cd1412fab0a62f433596aba",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/pool/db/000012.log": "672dbe967e776592210c1e4136bc79a468821839d18ef7500071a85543d79a9e",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/pool/db/CURRENT": "e6325e36f681074fccd2b1371dbf6f4535a6630e5b95c9ddff92c48ec11ce312",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/pool/db/CURRENT.bak": "e91d13722e31f9b06c5df3582cad1ea5b73547ce3dc08b12ed461f095aad48ee",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/pool/db/LOCK": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/pool/db/LOG": "6f6fa08948f5dba27e59f3fc14f6ff785b4561965c7d42a025338f8a9adb92a7",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/pool/db/MANIFEST-000013": "576e39ca1878caa86bf8fc171247cf9067210fc0bdd36dc3ad1a222b0a341729",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/rounds/SLUG-POOL-ROUNDS.json": "142b1031c26ef197170c4f503dbd24c39cbb73aac340d4d083777ab677604931",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/rounds/db/000002.ldb": "b52b8f1434bc8b82f5138f780fd7af3202276eb5763d599b5146c12bb149dbec",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/rounds/db/000011.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/rounds/db/CURRENT": "eaab30ed3bde0318e208d83e6b0701b3ee9eb6b11da2d9fbab1552e8e4ce88f8",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/rounds/db/CURRENT.bak": "e91d13722e31f9b06c5df3582cad1ea5b73547ce3dc08b12ed461f095aad48ee",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/rounds/db/LOCK": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/rounds/db/LOG": "063bb4b3dfdbbe5bd25db9ab3f2e05f19dd2129aaec04cd2732b085d271c86d7",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/rounds/db/MANIFEST-000012": "b5e67778c150e0cdee71ad89cf97c1d7bcd02082d17c47128ce99b95df961be2",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/settlement/SLUG-POOL-SETTLEMENT.json": "9a4aec7b91dc7871e1c59ce506a34404dc77496fb7fc7aa28790ca904ee2f7b6",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/settlement/db/000002.ldb": "05754c39ae348360d1def1c02cdd2c7bd4339b8c39e6bafb84b1c931c00592a7",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/settlement/db/000011.ldb": "da032f2697a74d12a41464ca6869075aee2cf66d63e5736000aa8d8d7eee77a0",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/settlement/db/000012.log": "809391e66b57f498426240c13e4ee323c6cd45f456eedc40fab6e624e3955a64",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/settlement/db/CURRENT": "e6325e36f681074fccd2b1371dbf6f4535a6630e5b95c9ddff92c48ec11ce312",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/settlement/db/CURRENT.bak": "e91d13722e31f9b06c5df3582cad1ea5b73547ce3dc08b12ed461f095aad48ee",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/settlement/db/LOCK": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/settlement/db/LOG": "7595217e1cd7079418543bfe26362dd57f7db562131b81372b3dd2bbc2684aef",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/settlement/db/MANIFEST-000013": "fdd05b884c70291fa021874bf4a1f7bf5753c16bd4595ca708cb5d76fa15a4ff"
+      },
+      "public_files_after": {
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/issuer/SLUG-MANIFEST-OWNERSHIP-V2.json": "eee47bc87b9c461eda83920a79e77a2a5be5ff3cb2bef783169a2cbb703eccf3",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/issuer/SLUG-REGISTRY.json": "399fe4c93d01bf32910ada461832f9c619b024b5f1c73a26fb24042799c4e1a0",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/issuer/db/000002.ldb": "0c42e7b7e6669f967b41bde9eda4f2350079d3ff95d92256511cda48bf1d2252",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/issuer/db/000011.ldb": "c029b2d42e7c82c482c05277da14c8f30f797091a14872da383529104cf3bfae",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/issuer/db/000012.log": "dcf9b8408f3e77a5adf583a5e20f4d40d4cbfda2c69fcccf830958edecd11918",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/issuer/db/CURRENT": "e6325e36f681074fccd2b1371dbf6f4535a6630e5b95c9ddff92c48ec11ce312",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/issuer/db/CURRENT.bak": "e91d13722e31f9b06c5df3582cad1ea5b73547ce3dc08b12ed461f095aad48ee",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/issuer/db/LOCK": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/issuer/db/LOG": "229138c876b05c1d6ee256d2af13c556b9071cc5bff12096112387774000aa36",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/issuer/db/MANIFEST-000013": "afdf75c8d6c44840c5ee56dc81344a11de688a715ad65620acfc9d868b075eb1",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/pool/SLUG-POOL.json": "4facbd88bbaaf8a12682d8af8896891cf4b3ad7334baf9dfb9267b5bd978f668",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/pool/db/000002.ldb": "072b8f228a82bbb59cf6804906d3e7d4e9b17b3aab7c6f16d2b20d47b83bd9d7",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/pool/db/000011.ldb": "491ac209478c0ca92f191d708bc76e9aaacdbf050cd1412fab0a62f433596aba",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/pool/db/000012.log": "672dbe967e776592210c1e4136bc79a468821839d18ef7500071a85543d79a9e",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/pool/db/CURRENT": "e6325e36f681074fccd2b1371dbf6f4535a6630e5b95c9ddff92c48ec11ce312",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/pool/db/CURRENT.bak": "e91d13722e31f9b06c5df3582cad1ea5b73547ce3dc08b12ed461f095aad48ee",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/pool/db/LOCK": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/pool/db/LOG": "6f6fa08948f5dba27e59f3fc14f6ff785b4561965c7d42a025338f8a9adb92a7",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/pool/db/MANIFEST-000013": "576e39ca1878caa86bf8fc171247cf9067210fc0bdd36dc3ad1a222b0a341729",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/rounds/SLUG-POOL-ROUNDS.json": "142b1031c26ef197170c4f503dbd24c39cbb73aac340d4d083777ab677604931",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/rounds/db/000002.ldb": "b52b8f1434bc8b82f5138f780fd7af3202276eb5763d599b5146c12bb149dbec",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/rounds/db/000011.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/rounds/db/CURRENT": "eaab30ed3bde0318e208d83e6b0701b3ee9eb6b11da2d9fbab1552e8e4ce88f8",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/rounds/db/CURRENT.bak": "e91d13722e31f9b06c5df3582cad1ea5b73547ce3dc08b12ed461f095aad48ee",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/rounds/db/LOCK": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/rounds/db/LOG": "063bb4b3dfdbbe5bd25db9ab3f2e05f19dd2129aaec04cd2732b085d271c86d7",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/rounds/db/MANIFEST-000012": "b5e67778c150e0cdee71ad89cf97c1d7bcd02082d17c47128ce99b95df961be2",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/settlement/SLUG-POOL-SETTLEMENT.json": "9a4aec7b91dc7871e1c59ce506a34404dc77496fb7fc7aa28790ca904ee2f7b6",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/settlement/db/000002.ldb": "05754c39ae348360d1def1c02cdd2c7bd4339b8c39e6bafb84b1c931c00592a7",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/settlement/db/000011.ldb": "da032f2697a74d12a41464ca6869075aee2cf66d63e5736000aa8d8d7eee77a0",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/settlement/db/000012.log": "809391e66b57f498426240c13e4ee323c6cd45f456eedc40fab6e624e3955a64",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/settlement/db/CURRENT": "e6325e36f681074fccd2b1371dbf6f4535a6630e5b95c9ddff92c48ec11ce312",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/settlement/db/CURRENT.bak": "e91d13722e31f9b06c5df3582cad1ea5b73547ce3dc08b12ed461f095aad48ee",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/settlement/db/LOCK": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/settlement/db/LOG": "7595217e1cd7079418543bfe26362dd57f7db562131b81372b3dd2bbc2684aef",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/owned/operator/settlement/db/MANIFEST-000013": "fdd05b884c70291fa021874bf4a1f7bf5753c16bd4595ca708cb5d76fa15a4ff"
+      }
+    },
+    "source_request": {
+      "version": 1,
+      "intent": {
+        "version": 1,
+        "profile_id": "1013ef34defb46cc5847e31ba0aeb93bea7b4b06d570c01d17c6fbadde557eb6",
+        "request_id": "e065a06ba76623189f8fbe01db02a4b3bbb283534d44bcb68d41b2724f3eb1aa",
+        "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+        "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+        "template_sha256": "97c2fb94c79fc3e2dc1d03037be4c054a2f75e9bf37322c50696c1354a9a4938"
+      },
+      "intent_id": "3677fd69f3ec7cb1eeb26f579e77e8734f3ab49fcbd357daa41fffba42d02d80",
+      "state": "work",
+      "job_id": "cdcbb7665d7ae4849f82cc9e3a8cafb92260f50482999b0ebb7319c649e71e7c",
+      "resolved_at_ms": 1795264394403,
+      "reason": ""
+    },
+    "issuer_request": {
+      "version": 1,
+      "profile_id": "1013ef34defb46cc5847e31ba0aeb93bea7b4b06d570c01d17c6fbadde557eb6",
+      "request_id": "e065a06ba76623189f8fbe01db02a4b3bbb283534d44bcb68d41b2724f3eb1aa",
+      "intent_id": "3677fd69f3ec7cb1eeb26f579e77e8734f3ab49fcbd357daa41fffba42d02d80",
+      "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+      "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+      "state": "issued",
+      "job_id": "cdcbb7665d7ae4849f82cc9e3a8cafb92260f50482999b0ebb7319c649e71e7c",
+      "sealed_at_ms": 0,
+      "reason": ""
+    },
+    "job": {
+      "version": 2,
+      "rule_version": 1,
+      "id": "cdcbb7665d7ae4849f82cc9e3a8cafb92260f50482999b0ebb7319c649e71e7c",
+      "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+      "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+      "context": {
+        "version": 1,
+        "network": 1397511495,
+        "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "dna_version": 1,
+        "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+        "parent_height": 2,
+        "expected_bits": 545259519,
+        "min_timestamp": 1795170106,
+        "max_timestamp": 1795271588
+      },
+      "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+      "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+      "challenge": "b7f6a75a3d6f1fe3b0fc91112deaa98b0c9c2a937b8339086e8e7fd689a7af5d",
+      "issued_at_ms": 1795264388281,
+      "expires_at_ms": 1795264688281
+    },
+    "template": {
+      "context": {
+        "version": 1,
+        "network": 1397511495,
+        "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "dna_version": 1,
+        "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+        "parent_height": 2,
+        "expected_bits": 545259519,
+        "min_timestamp": 1795170106,
+        "max_timestamp": 1795271588
+      },
+      "block": {
+        "bits": "207fffff",
+        "curtime": 1795264388,
+        "height": 3,
+        "previousblockhash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+        "sigoplimit": 80000,
+        "sizelimit": 4000000,
+        "weightlimit": 4000000,
+        "transactions": [],
+        "version": 536870912,
+        "coinbaseaux": {
+          "flags": "0b2f503253482f627463642f"
+        },
+        "coinbasevalue": 1000000000,
+        "longpollid": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d-1795264386",
+        "target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+        "maxtime": 1795271588,
+        "mintime": 1795170106,
+        "mutable": [
+          "time",
+          "transactions/add",
+          "prevblock",
+          "coinbase/append"
+        ],
+        "noncerange": "00000000ffffffff",
+        "capabilities": [
+          "proposal"
+        ]
+      }
+    },
+    "template_sha256": "97c2fb94c79fc3e2dc1d03037be4c054a2f75e9bf37322c50696c1354a9a4938",
+    "source_requests": 1,
+    "issuer_requests": 1,
+    "source_templates": 0,
+    "source_inverses": 1,
+    "issuer_inverses": 1,
+    "requests": [
+      {
+        "version": 1,
+        "intent": {
+          "version": 1,
+          "profile_id": "1013ef34defb46cc5847e31ba0aeb93bea7b4b06d570c01d17c6fbadde557eb6",
+          "request_id": "e065a06ba76623189f8fbe01db02a4b3bbb283534d44bcb68d41b2724f3eb1aa",
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+          "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+          "template_sha256": "97c2fb94c79fc3e2dc1d03037be4c054a2f75e9bf37322c50696c1354a9a4938"
+        },
+        "intent_id": "3677fd69f3ec7cb1eeb26f579e77e8734f3ab49fcbd357daa41fffba42d02d80",
+        "state": "work",
+        "job_id": "cdcbb7665d7ae4849f82cc9e3a8cafb92260f50482999b0ebb7319c649e71e7c",
+        "resolved_at_ms": 1795264394403,
+        "reason": ""
+      }
+    ],
+    "issuer_rows": [
+      {
+        "version": 1,
+        "profile_id": "1013ef34defb46cc5847e31ba0aeb93bea7b4b06d570c01d17c6fbadde557eb6",
+        "request_id": "e065a06ba76623189f8fbe01db02a4b3bbb283534d44bcb68d41b2724f3eb1aa",
+        "intent_id": "3677fd69f3ec7cb1eeb26f579e77e8734f3ab49fcbd357daa41fffba42d02d80",
+        "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+        "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+        "state": "issued",
+        "job_id": "cdcbb7665d7ae4849f82cc9e3a8cafb92260f50482999b0ebb7319c649e71e7c",
+        "sealed_at_ms": 0,
+        "reason": ""
+      }
+    ],
+    "jobs": [
+      {
+        "version": 2,
+        "rule_version": 1,
+        "id": "cdcbb7665d7ae4849f82cc9e3a8cafb92260f50482999b0ebb7319c649e71e7c",
+        "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+        "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+        "context": {
+          "version": 1,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "dna_version": 1,
+          "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+          "parent_height": 2,
+          "expected_bits": 545259519,
+          "min_timestamp": 1795170106,
+          "max_timestamp": 1795271588
+        },
+        "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+        "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+        "challenge": "b7f6a75a3d6f1fe3b0fc91112deaa98b0c9c2a937b8339086e8e7fd689a7af5d",
+        "issued_at_ms": 1795264388281,
+        "expires_at_ms": 1795264688281
+      }
+    ],
+    "work": {
+      "job": {
+        "version": 2,
+        "rule_version": 1,
+        "id": "cdcbb7665d7ae4849f82cc9e3a8cafb92260f50482999b0ebb7319c649e71e7c",
+        "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+        "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+        "context": {
+          "version": 1,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "dna_version": 1,
+          "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+          "parent_height": 2,
+          "expected_bits": 545259519,
+          "min_timestamp": 1795170106,
+          "max_timestamp": 1795271588
+        },
+        "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+        "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+        "challenge": "b7f6a75a3d6f1fe3b0fc91112deaa98b0c9c2a937b8339086e8e7fd689a7af5d",
+        "issued_at_ms": 1795264388281,
+        "expires_at_ms": 1795264688281
+      },
+      "template": {
+        "context": {
+          "version": 1,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "dna_version": 1,
+          "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+          "parent_height": 2,
+          "expected_bits": 545259519,
+          "min_timestamp": 1795170106,
+          "max_timestamp": 1795271588
+        },
+        "block": {
+          "bits": "207fffff",
+          "curtime": 1795264388,
+          "height": 3,
+          "previousblockhash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+          "sigoplimit": 80000,
+          "sizelimit": 4000000,
+          "weightlimit": 4000000,
+          "transactions": [],
+          "version": 536870912,
+          "coinbaseaux": {
+            "flags": "0b2f503253482f627463642f"
+          },
+          "coinbasevalue": 1000000000,
+          "longpollid": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d-1795264386",
+          "target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+          "maxtime": 1795271588,
+          "mintime": 1795170106,
+          "mutable": [
+            "time",
+            "transactions/add",
+            "prevblock",
+            "coinbase/append"
+          ],
+          "noncerange": "00000000ffffffff",
+          "capabilities": [
+            "proposal"
+          ]
+        }
+      }
+    },
+    "row_hashes": {
+      "issuer/69737375652f6a2fcdcbb7665d7ae4849f82cc9e3a8cafb92260f50482999b0ebb7319c649e71e7c": "1424dfce2483d0ac6dd2d0b0c9a2918efd5f267a973f167a3e945c20089e1cfd",
+      "issuer/69737375652f722fe065a06ba76623189f8fbe01db02a4b3bbb283534d44bcb68d41b2724f3eb1aa": "99d57370057d63c92968190a0f1604d96ececc49310e5e1e46aed1344b308beb",
+      "issuer/6a6f623a63646362623736363564376165343834396638326363396533613863616662393232363066353034383239393962306562623733313963363439653731653763": "82af5732de274383e421f704aaffe7f997416a61d8aa474d7f81171487844464",
+      "issuer/6d657461": "65bba84a7a629e5b4cb5f3dc60ec29535266821d193f733685723a83d6ed85f0",
+      "issuer/6f776e6572736869702f6775617264": "35b6c80fa6c2ba495059a29041baf7fa287bbb69581e5bee620bfdc1c991daee",
+      "issuer/6f776e6572736869702f6d657461": "5d3b186a85ac871a452ecae9f5132cfdc3a8d5e72f01a8f5e327a2f615704991",
+      "issuer/6f776e6572736869702f7075626c69636174696f6e2f00000001": "557af0d53f433b9b49dd40b4c8f3174794a8cc57a17e3e8f098f49c94aae42e5",
+      "issuer/6f776e6572736869702f7075626c69636174696f6e2f00000002": "c4dffe184419af16986b7d31ada6d26a60a23863dc85d8a7492c8390934d42eb",
+      "pool/69737375652f6a2fcdcbb7665d7ae4849f82cc9e3a8cafb92260f50482999b0ebb7319c649e71e7c": "1424dfce2483d0ac6dd2d0b0c9a2918efd5f267a973f167a3e945c20089e1cfd",
+      "pool/69737375652f722fe065a06ba76623189f8fbe01db02a4b3bbb283534d44bcb68d41b2724f3eb1aa": "06f1cf0d9f1d29a74c8422ccfecacdd403ad9f28b7d83dedd748d5e4aba5f7ac",
+      "pool/6d657461": "d9d64d4a9b8da86dadbacb1945ca41e16181c780eb9e30431139992e0225c8eb",
+      "pool/7763646362623736363564376165343834396638326363396533613863616662393232363066353034383239393962306562623733313963363439653731653763": "8d2aa295d67177d2fbb452b883afd086922352e5c88f551b648f9f040810ccbb",
+      "rounds/6d657461": "68f35d932adbfd57dd8a399b45802c1f7ccd5b7c2124fad46ca6e93a2bb618c2",
+      "settlement/68656164": "cdf342ab7aa747196c7d1156acb1a2dade68102906ebb836fecf301a1c161c02",
+      "settlement/7265706f7274": "7ac6d57864a6b2de6e188bfda287ff552ea8b7596d921e715e0a07124d0cbdc3"
+    },
+    "read_only_unchanged": true
+  },
+  "local": {
+    "records": 0,
+    "pending": 0,
+    "requests": 1,
+    "active_request_id": "e065a06ba76623189f8fbe01db02a4b3bbb283534d44bcb68d41b2724f3eb1aa",
+    "logical_bytes": 119,
+    "reserved": 58785889,
+    "meta_sha256": "c90b743f1faa060b6addae9a7c16dc7188d7ab969b299c218f19da65c0a33557",
+    "meta_bytes": 1863,
+    "marker_sha256": "bab687611b5fadb5616e24726c30d80912ae1e0bcccbe67e044c10011699dac6",
+    "scan_sha256": "",
+    "scan_request_id": "",
+    "cursor_sha256": "",
+    "next_nonce": 0,
+    "requests_sha256": "e9291cc079ec2bacb7e42207158455bdc969b7a29711dcb0f9fe49aae8a62396",
+    "rows_sha256": "aafb8375a6217f7452457779f04adbd04dac450d2f3110b66022fe4eafe390b7",
+    "namespace_rows": 2,
+    "read_only_unchanged": true
+  }
+}

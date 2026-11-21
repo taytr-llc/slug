@@ -1,0 +1,111 @@
+--- before/work_evidence.go
++++ after/work_evidence.go
+@@ -63,15 +63,58 @@
+ 	f, ok := e.(*poolservice.ClientError)
+ 	return ok && f != nil && !f.OutcomeUnknown && (f.Code == "busy" || f.Code == "rate_limited")
+ }
+-func readLookup(ctx context.Context, c *poolservice.Client, row prospectworker.PoolEntry) (poolshare.Submission, error) {
++// Public diagnostic only: no error classification or deadline changes.
++type receiptLookupAttempt struct {
++	Sequence uint64 `json:"sequence"`
++	StartedAtMS int64 `json:"started_at_ms"`
++	EndedAtMS int64 `json:"ended_at_ms"`
++	DeadlineAtMS int64 `json:"deadline_at_ms"`
++	ErrorType string `json:"error_type"`
++	ClientError bool `json:"client_error"`
++	Code string `json:"code"`
++	OutcomeUnknown bool `json:"outcome_unknown"`
++	ContextError string `json:"context_error"`
++	Returned *poolshare.Submission `json:"returned"`
++}
++type receiptLookupTrace struct {
++	Version uint32 `json:"version"`
++	Outbox outboxState `json:"outbox"`
++	Rows []prospectworker.PoolEntry `json:"rows"`
++	Attempts []receiptLookupAttempt `json:"attempts"`
++	WaitError string `json:"wait_error"`
++	Completed bool `json:"completed"`
++}
++func lookupContextCode(e error) string {
++	switch e {
++	case nil: return ""
++	case context.Canceled: return "canceled"
++	case context.DeadlineExceeded: return "deadline_exceeded"
++	default: return "other"
++	}
++}
++func readLookup(ctx context.Context, c *poolservice.Client, row prospectworker.PoolEntry, trace *receiptLookupTrace) (poolshare.Submission, error) {
+ 	call, cancel := context.WithTimeout(ctx, 20*time.Second)
+ 	defer cancel()
+ 	for {
++		started := time.Now()
++		deadline, _ := call.Deadline()
+ 		v, e := c.Lookup(call, row.Work, row.Nonce)
++		attempt := receiptLookupAttempt{Sequence: row.Sequence, StartedAtMS: started.UnixMilli(), EndedAtMS: time.Now().UnixMilli(), DeadlineAtMS: deadline.UnixMilli(), ContextError: lookupContextCode(call.Err())}
++		if e != nil {
++			attempt.ErrorType = fmt.Sprintf("%T", e)
++			if ce, ok := e.(*poolservice.ClientError); ok && ce != nil {
++				attempt.ClientError, attempt.Code, attempt.OutcomeUnknown = true, ce.Code, ce.OutcomeUnknown
++			}
++		} else {
++			copy := v
++			attempt.Returned = &copy
++		}
++		trace.Attempts = append(trace.Attempts, attempt)
+ 		if !transient(e) {
+ 			return v, e
+ 		}
+ 		if e = pauseActual(call, time.Second); e != nil {
++			trace.WaitError = lookupContextCode(e)
+ 			return poolshare.Submission{}, e
+ 		}
+ 	}
+@@ -92,10 +135,15 @@
+ 	LookupMissing    []uint64                   `json:"lookup_missing"`
+ }
+ 
+-func auditRows(ctx context.Context, root string, c pilot.RecoverableRemotePoolConfig, client *poolservice.Client, n *node) rowEvidence {
++func auditRows(ctx context.Context, root string, c pilot.RecoverableRemotePoolConfig, client *poolservice.Client, n *node, evidencePath string) rowEvidence {
+ 	wc := recoveryWorkerConfig(c)
+ 	check(client.CheckRecoverableDailySelection(poolservice.RecoverableDailySelection{Version: 1, BaseVersion: 2, URL: wc.Base.AuthorityOrigin, PublicKey: wc.Base.PublicKey, Source: wc.Base.Source, IssueProfile: wc.IssueProfile, SettlementConfigID: wc.SettlementConfigID, RecipientScript: wc.RecipientScript, BaseTransportTrustID: wc.Base.TransportTrustID, TransportTrustID: wc.TransportTrustID}), "original selected client for authenticated receipt audit")
+ 	rows, state := readOutbox(root, c)
++	trace := receiptLookupTrace{Version: 1, Outbox: state, Rows: rows, Attempts: []receiptLookupAttempt{}}
++	defer func() {
++		require(len(encode(trace)) <= 16<<20, "bounded public receipt lookup diagnostics")
++		write(evidencePath, trace)
++	}()
+ 	out := rowEvidence{Rows: rows, Outbox: state, Accepted: []poolshare.Submission{}, LookupMissing: []uint64{}}
+ 	for i, r := range out.Rows {
+ 		require(r.Sequence == uint64(i+1), "contiguous original outbox")
+@@ -132,10 +180,10 @@
+ 			require(r.PoolReceipt == nil, "prospect-only never credit")
+ 			continue
+ 		}
+-		got, e := readLookup(ctx, client, r)
++		got, e := readLookup(ctx, client, r, &trace)
+ 		if e != nil {
+ 			f, ok := e.(*poolservice.ClientError)
+-			require(ok && !f.OutcomeUnknown && f.Code == "not_found" && r.PoolState == "pending", "exact interrupted pool result only")
++			require(ok && f != nil && !f.OutcomeUnknown && f.Code == "not_found" && r.PoolState == "pending", fmt.Sprintf("exact interrupted pool result only: error_type=%T client_error=%t code=%q outcome_unknown=%t sequence=%d pool_state=%q receipt=%t", e, ok && f != nil, trace.Attempts[len(trace.Attempts)-1].Code, trace.Attempts[len(trace.Attempts)-1].OutcomeUnknown, r.Sequence, r.PoolState, r.PoolReceipt != nil))
+ 			out.LookupMissing = append(out.LookupMissing, r.Sequence)
+ 			continue
+ 		}
+@@ -157,6 +205,7 @@
+ 	for i, r := range out.Accepted {
+ 		require(r.AcceptedSequence == uint64(i+1), "complete exact accepted source prefix")
+ 	}
++	trace.Completed = true
+ 	return out
+ }
+ func requireNoControllerFailure(s accountpilot.RemotePoolControllerSnapshot) {
+--- before/scenario_a.go
++++ after/scenario_a.go
+@@ -73,7 +73,7 @@
+ 	})
+ 	check(cli.stop(), "actual recovered-work CLI clean SIGTERM and joined pipes")
+ 	phase = "closed original request results and signatures"
+-	ev := auditRows(v.ctx, v.in.AttachmentRoot, v.c, v.owners.clients[0], a)
++	ev := auditRows(v.ctx, v.in.AttachmentRoot, v.c, v.owners.clients[0], a, filepath.Join(v.root, "receipt-lookup-evidence.json"))
+ 	found := false
+ 	for _, r := range ev.Accepted {
+ 		if r.JobID == v.gap.Job.ID {

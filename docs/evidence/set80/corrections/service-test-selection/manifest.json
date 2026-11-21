@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "scope": "test-only selection correction; fixed oracle unchanged",
+  "failure": "artifacts/set80/transport-attempt1",
+  "cause": "Cases.bad wrong-profile rows omit Profile metadata; test expected it even though base binding remains exact",
+  "files": [
+    {
+      "path": "after/recoverable_reference_test.go",
+      "bytes": 11639,
+      "sha256": "61e611bbf65c35536bb6c66f548feb66602895ea41079868cdad2466d1b1decf"
+    },
+    {
+      "path": "before/recoverable_reference_test.go",
+      "bytes": 11109,
+      "sha256": "ff5efe9d8f204c45777d432272f6bcd7f368877402a7ea318f9e1e65059acc6a"
+    }
+  ]
+}

@@ -1,0 +1,291 @@
+--- before/issue_tls_relay.go
++++ after/issue_tls_relay.go
+@@ -46,6 +46,8 @@
+ 	events           []issueWireEvent
+ 	replay           chan poolservice.IssueResponse
+ 	replayed         bool
++	receiptReads []receiptWireEvent
++	receiptReadsDropped uint64
+ }
+ 
+ func publicSelection(c poolservice.RecoverableDailyClientConfig) poolservice.RecoverableDailySelection {
+@@ -77,12 +79,18 @@
+ 		r.active.Add(1)
+ 		r.mu.Unlock()
+ 		defer r.active.Done()
++		receiptIndex, receipt := r.beginReceiptWire(q)
++		defer r.endReceiptWire(receiptIndex, receipt, q.Context())
+ 		if q.Host != selected.Host || q.URL.RawQuery != "" || q.URL.Fragment != "" {
++			receipt.fail("origin", nil)
+ 			http.Error(w, "origin", 400)
+ 			return
+ 		}
++		if receipt != nil { receipt.OriginOK = true }
+ 		raw, e := io.ReadAll(io.LimitReader(q.Body, poolservice.MaxWorkResponseSize+1))
++		receipt.requestBody(raw)
+ 		if e != nil || len(raw) > poolservice.MaxWorkResponseSize {
++			receipt.fail("request_read", e)
+ 			http.Error(w, "bound", 400)
+ 			return
+ 		}
+@@ -131,6 +139,7 @@
+ 		}
+ 		up, e := http.NewRequestWithContext(q.Context(), q.Method, "https://"+backend+q.URL.EscapedPath(), bytes.NewReader(raw))
+ 		if e != nil {
++			receipt.fail("request_create", e)
+ 			http.Error(w, "request", 502)
+ 			return
+ 		}
+@@ -143,14 +152,19 @@
+ 			r.events[index].Forwarded = true
+ 			r.mu.Unlock()
+ 		}
++		if receipt != nil { receipt.Forwarded = true }
+ 		response, e := r.client.Do(up)
+ 		if e != nil {
++			receipt.fail("upstream", e)
+ 			http.Error(w, "upstream", 502)
+ 			return
+ 		}
++		receipt.responseHeaders(response)
+ 		body, e := io.ReadAll(io.LimitReader(response.Body, poolservice.MaxWorkResponseSize+1))
+ 		ce := response.Body.Close()
++		receipt.responseBody(body, e, ce, r.expected)
+ 		if e != nil || ce != nil || len(body) > poolservice.MaxWorkResponseSize {
++			receipt.fail("response_read_close", errors.Join(e, ce))
+ 			http.Error(w, "response", 502)
+ 			return
+ 		}
+@@ -236,7 +250,12 @@
+ 			}
+ 		}
+ 		w.WriteHeader(response.StatusCode)
+-		_, _ = w.Write(body) // ordinary canceled downstream delivery is preserved by client unknown semantics
++		n, writeErr := w.Write(body) // ordinary canceled downstream delivery is preserved by client unknown semantics
++		if receipt != nil {
++			receipt.DownstreamAttempted = true
++			receipt.DownstreamBytes = n
++			receipt.DownstreamError = receiptWireError(writeErr)
++		}
+ 	})
+ 	go func() { r.done <- r.server.Serve(r.listener) }()
+ 	return r
+--- before/main.go
++++ after/main.go
+@@ -161,6 +161,11 @@
+ 		out["clean_join"] = len(cleanup) == 0
+ 		out["seconds"] = time.Since(start).Seconds()
+ 		out["passed"] = out["completed"] == true && len(cleanup) == 0 && crashes == 1
++		if owners.tls != nil {
++			wire := owners.tls.receiptWireEvidence()
++			require(len(encode(wire)) <= 16<<20, "bounded public receipt wire diagnostics")
++			write(filepath.Join(root, "receipt-lookup-wire.json"), wire)
++		}
+ 		write(filepath.Join(root, "actual-report.json"), out)
+ 	}()
+ 	phase = "independent wrapper and original published fixture"
+--- before/receipt_lookup_relay.go
++++ after/receipt_lookup_relay.go
+@@ -0,0 +1,202 @@
++// Bounded public diagnostics only. This file never changes forwarding, retries,
++// client validation, deadlines, or the original report / TLS evidence schema.
++package main
++
++import (
++	"bytes"
++	"context"
++	"encoding/json"
++	"errors"
++	"mime"
++	"net/http"
++	"strings"
++	"time"
++	"unicode/utf8"
++
++	"github.com/taytr-llc/slug/poolservice"
++	"github.com/taytr-llc/slug/poolshare"
++	"github.com/taytr-llc/slug/registry"
++)
++
++const receiptWireLimit = 128
++
++type receiptWireRequest struct {
++	JobID string `json:"job_id"`
++	Nonce uint32 `json:"nonce"`
++}
++
++type receiptWireEvent struct {
++	Ordinal uint64 `json:"ordinal"`
++	StartedAtMS int64 `json:"started_at_ms"`
++	EndedAtMS int64 `json:"ended_at_ms"`
++	MethodPOST bool `json:"method_post"`
++	OriginOK bool `json:"origin_ok"`
++	RequestBytes int `json:"request_bytes"`
++	RequestSHA256 string `json:"request_sha256"`
++	Request *receiptWireRequest `json:"request"`
++	Forwarded bool `json:"forwarded"`
++	Status int `json:"status"`
++	JSONContentType bool `json:"json_content_type"`
++	NoContentEncoding bool `json:"no_content_encoding"`
++	DeclaredLengthFits bool `json:"declared_length_fits"`
++	ResponseBytes int `json:"response_bytes"`
++	ResponseSHA256 string `json:"response_sha256"`
++	BodyComplete bool `json:"body_complete"`
++	ResponseKind string `json:"response_kind"`
++	Receipt *poolservice.RecoverableSubmissionResponse `json:"receipt"`
++	APIError *poolservice.ErrorResponse `json:"api_error"`
++	SelectedBinding bool `json:"selected_binding"`
++	RequestBinding bool `json:"request_binding"`
++	ErrorStatusMatches bool `json:"error_status_matches"`
++	ErrorUnknownMatches bool `json:"error_unknown_matches"`
++	FailurePhase string `json:"failure_phase"`
++	FailureKind string `json:"failure_kind"`
++	RequestContext string `json:"request_context"`
++	ReadError bool `json:"read_error"`
++	CloseError bool `json:"close_error"`
++	DownstreamAttempted bool `json:"downstream_attempted"`
++	DownstreamBytes int `json:"downstream_bytes"`
++	DownstreamError string `json:"downstream_error"`
++}
++
++type receiptWireEvidence struct {
++	Version uint32 `json:"version"`
++	Path string `json:"path"`
++	MaxEvents int `json:"max_events"`
++	Dropped uint64 `json:"dropped"`
++	Events []receiptWireEvent `json:"events"`
++}
++
++func receiptWireError(e error) string {
++	switch {
++	case e == nil: return ""
++	case errors.Is(e, context.Canceled): return "canceled"
++	case errors.Is(e, context.DeadlineExceeded): return "deadline_exceeded"
++	default: return "other"
++	}
++}
++
++// Each event reserves a bounded slot at request start. The final artifact is
++// read only after the original server and all original handlers have joined.
++func (r *issueTLSRelay) beginReceiptWire(q *http.Request) (int, *receiptWireEvent) {
++	if q.URL.Path != "/pool/v3/lookup" { return -1, nil }
++	r.mu.Lock()
++	defer r.mu.Unlock()
++	if len(r.receiptReads) >= receiptWireLimit {
++		if r.receiptReadsDropped != ^uint64(0) { r.receiptReadsDropped++ }
++		return -1, nil
++	}
++	i := len(r.receiptReads)
++	v := receiptWireEvent{Ordinal: uint64(i+1), StartedAtMS: time.Now().UnixMilli(), MethodPOST: q.Method == http.MethodPost, ResponseKind: "none"}
++	r.receiptReads = append(r.receiptReads, v)
++	return i, &v
++}
++
++func (r *issueTLSRelay) endReceiptWire(i int, v *receiptWireEvent, ctx context.Context) {
++	if v == nil { return }
++	v.EndedAtMS = time.Now().UnixMilli()
++	v.RequestContext = receiptWireError(ctx.Err())
++	r.mu.Lock()
++	r.receiptReads[i] = *v
++	r.mu.Unlock()
++}
++
++func (r *issueTLSRelay) receiptWireEvidence() receiptWireEvidence {
++	r.mu.Lock()
++	defer r.mu.Unlock()
++	return receiptWireEvidence{Version: 1, Path: "/pool/v3/lookup", MaxEvents: receiptWireLimit, Dropped: r.receiptReadsDropped, Events: append([]receiptWireEvent{}, r.receiptReads...)}
++}
++
++func receiptWireCanonical(raw []byte, limit int, v any) bool {
++	if len(raw) == 0 || len(raw) > limit || !utf8.Valid(raw) { return false }
++	d := json.NewDecoder(bytes.NewReader(raw))
++	d.DisallowUnknownFields()
++	if d.Decode(v) != nil { return false }
++	b, e := json.Marshal(v)
++	return e == nil && bytes.Equal(bytes.Trim(raw, " \t\r\n"), b)
++}
++
++func receiptWireHex(s string, n int) bool {
++	if len(s) != n { return false }
++	for _, c := range s { if !(c >= '0' && c <= '9' || c >= 'a' && c <= 'f') { return false } }
++	return true
++}
++
++func (v *receiptWireEvent) requestBody(raw []byte) {
++	if v == nil { return }
++	v.RequestBytes, v.RequestSHA256 = len(raw), hx(digest(raw))
++	var q receiptWireRequest
++	if receiptWireCanonical(raw, poolservice.MaxRequestSize, &q) && receiptWireHex(q.JobID, 64) { v.Request = &q }
++}
++
++func (v *receiptWireEvent) fail(phase string, e error) {
++	if v == nil { return }
++	v.FailurePhase, v.FailureKind = phase, receiptWireError(e)
++	if v.FailureKind == "" { v.FailureKind = "invalid" }
++}
++
++func (v *receiptWireEvent) responseHeaders(response *http.Response) {
++	if v == nil { return }
++	v.Status = response.StatusCode
++	v.NoContentEncoding = len(response.Header.Values("Content-Encoding")) == 0
++	v.DeclaredLengthFits = response.ContentLength <= int64(poolservice.MaxResponseSize)
++	values := response.Header.Values("Content-Type")
++	if len(values) != 1 { return }
++	media, params, e := mime.ParseMediaType(values[0])
++	if e != nil || media != "application/json" { return }
++	for k, value := range params { if k != "charset" || !strings.EqualFold(value, "utf-8") { return } }
++	v.JSONContentType = true
++}
++
++// Only the closed public receipt grammar is projected. This is not a work
++// verification or authentication predicate; the original Client still owns
++// those decisions. Invalid/oversized bodies remain digest/length metadata only.
++func receiptWireShape(v poolservice.RecoverableSubmissionResponse) bool {
++	s := v.Submission
++	if v.Version != 3 || !receiptWireHex(v.BindingID, 64) || !receiptWireHex(v.SettlementConfigID, 64) || !receiptWireHex(v.RecipientScript, 44) || !receiptWireHex(v.IssueProfileID, 64) || s.Version != 1 { return false }
++	if !receiptWireHex(s.JobID, 64) || !receiptWireHex(s.GymID, 64) || !receiptWireHex(s.PoolTarget, 64) || !receiptWireHex(s.Header, 160) || !receiptWireHex(s.WorkHash, 64) || !receiptWireHex(s.DuplicateKey, 64) { return false }
++	if s.ReceivedAtMS < 0 || s.AcceptedAtMS < 0 || s.BlockObservedAtMS < 0 || s.ReceivedAtMS > 253402300799999 || s.AcceptedAtMS > 253402300799999 || s.BlockObservedAtMS > 253402300799999 { return false }
++	switch s.Acceptance { case "", "current-parent", "canonical-winning-block", "canonical-late-winner": default: return false }
++	switch s.BlockState { case "none", "pending", "processed", "unknown", "rejected", "canonical-observed": default: return false }
++	return true
++}
++
++func receiptWireStatus(code string) int {
++	switch code {
++	case "invalid_request": return 400
++	case "unauthorized": return 401
++	case "forbidden": return 403
++	case "not_found": return 404
++	case "expired", "stale_capture": return 409
++	case "rejected": return 422
++	case "too_large": return 413
++	case "rate_limited": return 429
++	case "busy", "capacity", "unavailable", "outcome_unknown": return 503
++	default: return 0
++	}
++}
++
++func (v *receiptWireEvent) responseBody(raw []byte, readErr, closeErr error, selected poolservice.RecoverableDailySelection) {
++	if v == nil { return }
++	v.ResponseBytes, v.ResponseSHA256 = len(raw), hx(digest(raw))
++	v.ReadError, v.CloseError = readErr != nil, closeErr != nil
++	v.BodyComplete = readErr == nil && len(raw) <= poolservice.MaxWorkResponseSize
++	v.ResponseKind = "invalid"
++	if readErr != nil { v.ResponseKind = "read_error"; return }
++	if len(raw) > poolservice.MaxResponseSize { v.ResponseKind = "oversize"; return }
++	if v.Status == http.StatusOK {
++		var response poolservice.RecoverableSubmissionResponse
++		if !receiptWireCanonical(raw, poolservice.MaxResponseSize, &response) || !receiptWireShape(response) { return }
++		v.ResponseKind, v.Receipt = "receipt", &response
++		binding, be := poolshare.DailyConfigID(selected.Source)
++		profile, pe := registry.IssueProfileID(selected.IssueProfile)
++		v.SelectedBinding = be == nil && pe == nil && response.BindingID == binding && response.SettlementConfigID == selected.SettlementConfigID && response.RecipientScript == selected.RecipientScript && response.IssueProfileID == profile
++		v.RequestBinding = v.Request != nil && response.Submission.JobID == v.Request.JobID && response.Submission.Nonce == v.Request.Nonce
++		return
++	}
++	var response poolservice.ErrorResponse
++	if !receiptWireCanonical(raw, poolservice.MaxResponseSize, &response) || response.Version != 3 || receiptWireStatus(response.Error.Code) == 0 { return }
++	v.ResponseKind, v.APIError = "error", &response
++	v.ErrorStatusMatches = receiptWireStatus(response.Error.Code) == v.Status
++	v.ErrorUnknownMatches = response.Error.OutcomeUnknown == (response.Error.Code == "outcome_unknown")
++}

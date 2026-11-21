@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "go",
+    "list",
+    "-deps",
+    "-test",
+    "-json",
+    "-p=1",
+    "-mod=readonly",
+    "-tags=",
+    "-race",
+    "./pilot",
+    "./accountpilot",
+    "./cmd/slugpilot"
+  ],
+  "pgid": 86560,
+  "pid": 86560,
+  "timeout_seconds": 120
+}

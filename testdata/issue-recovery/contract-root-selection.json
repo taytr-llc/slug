@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "approved_by": "root",
+  "scope": "Independent reference producer authoring under the reviewed Set80 exact-request recovery contract",
+  "chain_base": "fdd40d8edd9a685613f1f667f0074e56ec4e7da5",
+  "files": {
+    "EXACT_REQUEST_ISSUE_PLAN.md": {
+      "bytes": 19728,
+      "sha256": "7136b5aacffc71fdaa4c5063c3428bacd5a2db44bf1ad26b73fb26ab20c31cf2"
+    },
+    "ISSUE_RECOVERY_CONTRACT.md": {
+      "bytes": 27904,
+      "sha256": "f3e019a840d6b69d853350763364a3fc41f10ea899f00ed6f164db5d58a95610"
+    },
+    "REFERENCE_PLAN.md": {
+      "bytes": 7068,
+      "sha256": "568251bda8d3589874c8dccd0652442c1be7b3b218f40518f70606ad1279c99d"
+    }
+  },
+  "producer_execution_authorized": false,
+  "go_implementation_authorized": false,
+  "reason": "Recover the same durable request across lost replies and issuer/source crash gaps without replacement jobs, renewed expiry or changed financial rules."
+}

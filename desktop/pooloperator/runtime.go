@@ -54,6 +54,7 @@ type Status struct {
 // supplied custody owners. It exposes no child/store/wallet/authority getter.
 type Runtime struct {
 	daily                               bool
+	issueProfile                        *registry.IssueProfile
 	dailyReservation                    *DailyCapacityReservation
 	intakeMu                            sync.Mutex
 	intake                              *poolshare.OperatorAdmission

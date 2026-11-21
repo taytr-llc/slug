@@ -1,0 +1,75 @@
+// Copyright (c) 2026 The SLUG developers. ISC license.
+package poolshare
+
+import (
+	"context"
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
+	"os"
+	"path/filepath"
+	"testing"
+
+	"github.com/taytr-llc/slug/registry"
+	"github.com/taytr-llc/slug/wire/v2"
+)
+
+func TestRecoverableSourceIndependentReservation(t *testing.T) {
+	raw, err := os.ReadFile("../testdata/issue-recovery/reference-v1.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	h := sha256.Sum256(raw)
+	if len(raw) != 6134980 || hex.EncodeToString(h[:]) != "4bbe4eb9556ed5a894cee6ff565b0dcca805f27fea2d77cfe3a56242dc3dac91" {
+		t.Fatal("independent corpus")
+	}
+	var f struct {
+		Bounds struct {
+			Source []struct {
+				Name     string
+				Inputs   []uint64
+				Expected struct {
+					Reserved       uint64 `json:"pending_reserved"`
+					Classification string `json:"classification"`
+				}
+			}
+		}
+	}
+	if json.Unmarshal(raw, &f) != nil || len(f.Bounds.Source) == 0 {
+		t.Fatal("bounds")
+	}
+	for _, v := range f.Bounds.Source {
+		if len(v.Inputs) != 6 {
+			t.Fatal(v.Name)
+		}
+		if v.Expected.Classification == "invalid" {
+			continue
+		}
+		if got := issuePendingReserve(int(v.Inputs[1]), int(v.Inputs[0])); got != v.Expected.Reserved {
+			t.Fatal(v.Name, got, v.Expected.Reserved)
+		}
+	}
+	if issueOccupancyFits(^uint64(0), 1, 1, ^uint64(0)) || issueOccupancyFits(1, ^uint64(0), 1, ^uint64(0)) || issueOccupancyFits(1, 1, ^uint64(0), ^uint64(0)) {
+		t.Fatal("overflow wrapped into fit")
+	}
+}
+func TestRecoverableSourceCheapRefusesBeforeEffects(t *testing.T) {
+	if !wire.TestPoW {
+		t.Skip("cheap profile control")
+	}
+	path := filepath.Join(t.TempDir(), "absent")
+	ctx := context.Background()
+	if p, err := CreateRecoverableDaily(ctx, path, Config{Version: Version2}, registry.IssueProfile{}, nil, nil, nil); err != ErrProfile || p != nil {
+		t.Fatal(p, err)
+	}
+	if _, err := os.Lstat(path); !os.IsNotExist(err) {
+		t.Fatal("profile created path", err)
+	}
+	var p *Pool
+	if _, err := p.ResumeIssue(ctx, "public", ""); err != ErrProfile {
+		t.Fatal(err)
+	}
+	if _, err := p.LookupIssue(ctx, "public", ""); err != ErrProfile {
+		t.Fatal(err)
+	}
+}

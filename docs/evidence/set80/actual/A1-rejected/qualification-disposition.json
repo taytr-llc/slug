@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "qualified": false,
+  "scope": "root qualification disposition overrides any mechanical report passed flag",
+  "reason": "A checker-only source edit and restoration occurred after execution freeze. Root and peer observed successor0bf2c3b8 on disk. No helper/product/runtime source change was reported. Continuous freeze is not established even if endpoint hash comparison matches. Preserve this run as diagnostic evidence and require a separate clean attempt.",
+  "original_checker_sha256": "87cb6364644db35b707a90a4bcf1c97467915aa3d691e65c81e3b9fc4539736e",
+  "observed_successor_sha256": "0bf2c3b86da848e755a8456027c972cc4a2695ec940fccebd2a6f38f4fb4388e",
+  "coordination_record": {
+    "path": "/Users/taytrrip/slug/set80-prep/check-actual-count-successor/COORDINATION-RECORD.json",
+    "bytes": 463,
+    "sha256": "67b0611e0d2315783a4a7ee7cb058cf2c9c43297c6870f292297d90da524b5d8"
+  },
+  "runtime_action": "Allow the bounded original scenario to finish and join its owners; do not alter or repair its evidence."
+}

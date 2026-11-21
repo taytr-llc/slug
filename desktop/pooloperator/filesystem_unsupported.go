@@ -15,3 +15,7 @@ func (*operatorFiles) close() error                                 { return nil
 func openOperatorFilesVersion(string, Setup, bool, uint32) (*operatorFiles, error) {
 	return nil, ErrUnsupported
 }
+
+func openOperatorFilesSelection(string, Setup, bool, uint32, *RecoverableDailySetup) (*operatorFiles, error) {
+	return nil, ErrUnsupported
+}

@@ -86,7 +86,12 @@ func (c *RemotePoolController) LoginFixture(ctx context.Context, fixture string)
 	if c.daily {
 		openAttachment = pilot.OpenDailyRemotePoolAttachment
 	}
-	attachment, e := openAttachment(work, session, view, c.inputs)
+	var attachment *pilot.RemotePoolAttachment
+	if c.recovery != nil {
+		attachment, e = pilot.OpenRecoverableDailyRemotePoolAttachment(work, session, view, pilot.RecoverableRemotePoolInputs{AttachmentRoot: c.inputs.AttachmentRoot, Config: *c.recovery, NodeRPC: c.inputs.NodeRPC, PoolCredentialPath: c.inputs.PoolCredentialPath, AdmissionCredentialPath: c.inputs.AdmissionCredentialPath})
+	} else {
+		attachment, e = openAttachment(work, session, view, c.inputs)
+	}
 	c.mu.Lock()
 	c.attachment = attachment
 	c.mu.Unlock()

@@ -1,0 +1,2382 @@
+[
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestAccountCanceledCleanupStillClosesChild"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestAccountChildSessionMismatchDeniedBeforeAccess"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestAccountCleanupFailureSurvivesDroppedChild"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestAccountFailedProjectionHidesRetainedChild"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestAccountPilotCheapProfileRefusal"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestAccountPilotProviderCannotSelectPrincipalOrResetAssurance"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestAccountPilotStoreRefusesForeignOrMissingEstablishedData"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestAccountResetThenDetachOldSession"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestBoutInstallProcessCrash"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestBoutRootCheapRefusalBeforeFilesystem"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestBoutRootFreshUpgradeAndClosedOldRoutes"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestBoutRootMalformedBeforeMutationAndExactFields"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestBoutStartupCancelledAdmissionAndJoinedLegacyOpen"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestBoutUpgradePreservesAccountSession"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestCardInstallProcessCrash"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestCardRootCheapRefusalBeforeFilesystem"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestCardRootFreshUpgradeAndClosedOldRoutes"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestCardRootMalformedBeforeMutationAndExactFields"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestCardUpgradePreservesAccountSession"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestCareerInstallProcessCrash"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestCareerPreviewParentOriginalChildGate"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestCareerWaitingRootAndPredecessorRefusal"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestDailyRemoteControllerKeepsOriginalEpochAndRefusesLegacyWire"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestDailyRemoteControllerModeRefusesBeforeRoot"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestDailyRemoteObservedEpochLossSurvivesCancellation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestDailyRemoteOriginalAccountCancellationProvenance"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestEntryInstallProcessCrash"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestEntryParentMarkerExactFieldsAndOldV2Refusal"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestEntryRootCheapProfileBeforeUpgrade"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestEntryRootFreshUpgradeAndOldRefusal"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestEntryRootMalformedMarkerNoLockMutation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestEntryUpgradePreservesExistingAuthoritySession"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestEventInstallProcessCrash"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestEventRootCheapRefusalBeforeFilesystem"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestEventRootFreshUpgradeAndClosedOldRoutes"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestEventRootMalformedBeforeMutationAndExactFields"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestEventUpgradePreservesAccountSession"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestFighterEvidenceParentHeldViewAndSharedPermit"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestFighterEvidenceParentOriginalViewNoLeaseAcrossIO"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestHistoryParentBudgetIncludesInitialLookup"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestHistoryPublicationLeaseOriginalEpochAndParentMutex"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestHostedControlIndependentMarkersAndOrderedPublication"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestHostedControlPrefixRefusesMissingUnknownAndSkippedStores"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestHostedControlRootCannotAdoptLegacyOrAliases"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestHostedControlStrictRawFramingAndLimits"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestHostedEpochFenceFailsFastAndOriginalView"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestHostedFixtureIndependentProvider"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestHostedFixtureLostWritePoisonAndOriginalRecovery"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestHostedFixtureResetOriginalReplayAndReopen"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestHostedFixtureWrapperPurposeIsolation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestHostedPendingStartupDoesNotMutateCredentials"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestHostedRecoveryOnlyExactPayloadAbsence"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestHostedResetBarrierPrecedesJoinAndCredentialCAS"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestManifestAccountBackupProtectsSiblingRootsAndAliases"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestManifestAccountCheapProfileRefusesBeforeStorage"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestManifestAccountConstructorFailure"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestManifestAccountEstablishedMissingDirectoryIsNotReplaced"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestManifestAccountExpiredViewDrainsAndCannotRefresh"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestManifestAccountIdleLoginResetAndIsolation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestManifestAccountMarkerIsolationAndIncompleteRetention"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestManifestAccountMarkerPreflightBeforeLock"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestManifestAccountSnapshotRechecksAfterDetach"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestManifestAccountStartCannotRestartDetachedChild"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestManifestLoginPublicationSnapshot"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestManifestUnpublishableSnapshotStates"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestMiningAuthorizerBindsChildAccount"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestMiningAuthorizerRechecksRevocationAndCancellation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestOwnedGymCloseJoinsParentOperation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestOwnedGymControlCanonicalAndCreateOnly"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestOwnedGymImmutableInitAndEpoch"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestOwnedGymPendingStartupIsSignedOutAndExact"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestOwnedGymRootIsolationAndEstablishedPrefix"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestPoolAccountPreflightsInnerSelectionBeforeOuterLock"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestPoolAccountSelectionBeforeAnyAuthorityLock"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestPoolBackupParentOriginalViewAndHold"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestPoolBackupParentRejectsManagedPathBeforeChild"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestPoolBackupParentResetDuringBlockedExport"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestPoolLeagueParentForwardsWithoutLeaseAndRechecksOriginalSession"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestPoolLeagueParentHeldSessionRetainsEntryCapability"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestPoolLeagueParentRejectsPreviousViewBeforeDispatch"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestPoolParentExpiryDrainsOutsideAccountLeaseThenRelogin"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestPoolParentOriginalViewLifecycle"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestPoolParentRejectsCrossGymCacheAndConstructorFailure"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestPoolPayoutParentHeldViewIsReadOnly"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestPoolPayoutParentResetDuringReadNoLeaseAndNoReplacement"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestPoolPipelineParentHistoryPublicationFencesTransition"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestPoolPipelineParentHoldBlocksPublicationButAllowsHistory"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestPoolPipelineParentPurposeLeasesRemainOriginal"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestRecoverableRemoteControllerOriginalEpochAndLegacyRefusal"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestRecoverableRemoteControllerRefusesBeforeOriginalRoot"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestRemotePoolAdmissionContextDoesNotEndOwner"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestRemotePoolExistingRootNeverCreates"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestRemotePoolExistingRootUsesOriginalExclusiveLock"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestRemotePoolExistingVaultMarkerRequired"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestRemotePoolExpiryInvalidatesAndJoinsAdmittedAction"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestRemotePoolLogoutAdmissionInvalidatesBeforeExpiry"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestRemotePoolOriginalRootReplacementRefused"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestRemotePoolOriginalSignedAccountEpoch"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestRemotePoolRootsStaySeparate"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestRemotePoolWireAdapterPreservesOriginalDTO"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestResultInstallProcessCrash"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestResultNodeLeaseOriginalEpochHeldAndTransitionalGuards"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestResultRootCheapRefusalBeforeFilesystem"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestResultRootFreshUpgradeAndClosedOldRoutes"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestResultRootMalformedBeforeMutationAndExactFields"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestResultStartupCancelledAdmissionAndJoinedLegacyOpen"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestResultUpgradePreservesAccountSession"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestSeedInstallProcessCrash"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestSeedRootCheapRefusalBeforeFilesystem"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestSeedRootFreshUpgradeAndClosedOldRoutes"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestSeedRootMalformedBeforeMutationAndExactFields"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestSeedUpgradePreservesAccountSession"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestStableInstallLegacyPreparationCrash"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestStableInstallProcessCrash"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestStableRootCheapProfileBeforeUpgrade"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestStableRootFreshUpgradeAndOldRefusal"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestStableRootMalformedMarkerNoLockMutation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestStableUpgradePreservesExistingAuthoritySession"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestWalletActivityParentHeldViewIsReadOnly"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestWalletActivityParentResetDuringReadNoLeaseAndNoReplacement"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestWithdrawalParentOriginalAuthenticationAndMutationGate"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+    "test": "TestWithdrawalParentRevokesBeforeBlockedDrain"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestBoutFlagRequiresCompleteRoute"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestCardFlagRequiresCompleteRoute"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestCareerFlagRequiresCompleteRouteBeforeEffects"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestDailyHeadlessCancellationPreservesOtherCauses"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestDailyHeadlessFixedStatusAtomicFrame"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestDailyHeadlessFlagsAndCancellationBeforeEffects"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestDailyHeadlessObservedIntegrityIsNotCancellation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestDailyHeadlessOriginalFileOwnersJoinBeforeCancellationSuccess"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestDailyHeadlessOutputCancellationJoins"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestDailyHeadlessOutputFailureSurvivesParentCancellation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestDailyHeadlessParentCancellationInterruptsOriginalPipe"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestEventFlagRequiresExplicitCandidateStack"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestHostedPoolFlagsRejectLegacyEvenFalseBeforeEffects"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestHostedRecoveryFlagsRejectOtherModesBeforeEffects"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestOwnedFlagsRejectOtherModesBeforeEffects"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestOwnedFlagsRequireOwnedLifetimeAndExplicitSelection"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestPoolModeRejectsLegacyFlagsBeforeEffects"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestPoolNameFlagAcceptsBothTrueBooleanSpellings"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestPoolNameFlagsRejectBeforeEffects"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestRecoverableIssueHeadlessSoleSelection"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestRemoteHelperCanceledOwnerAndChangedSelectionRefuseDispatch"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestRemoteHelperCheapRefusalBeforeEffects"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestRemoteHelperCloseJoinsAndRetainsFailedFile"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestRemoteHelperFlagsClosedGrammar"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestRemoteHelperFlagsExclusiveBeforeEffects"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestRemoteHelperOriginalConfigBeforeControllerEffects"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestRemoteHelperRPCOriginalGrammarAndLocalProfile"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestRemoteHelperSelectedFilesBoundsAndLinks"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestRemoteHelperSelectedFilesOriginalIdentity"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestResultFlagRequiresCompleteRoute"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+    "test": "TestSeedFlagRequiresCompleteRoute"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "FuzzManifestProtocolRequest"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "FuzzPreviewClosedCodecs"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestAccountIdentifierCanonicalBoundary"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestAccountProtocolAcceptsOnlyFixtureLabels"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestAccountWalletExplicitFixtureIsolation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestAccountWalletRefusesUnknownWithoutCreation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestBackupInvalidFileFailsAsynchronouslyWithoutStartingNodes"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestBackupKeyControlChallengeDoesNotNeedCurrentChainOrPoW"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestBackupOperationExcludesMiningAndCloseJoins"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestBackupReaderRejectsSelectedSymlink"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestBackupStrictBoundsAndForeignFixture"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestBoutIndependentTransport"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestBoutLaneACKRollbackAndReciprocalReservation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestBoutLaneAllFamilyOrderingAndDrain"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestBoutLaneForeignWorkAndStopJoin"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestBoutLaneTerminalAndFamilyIsolation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestBoutMetadataPreservesShorterCallerDeadline"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestBoutReservationPreservesOtherFamilyRefusal"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestBoutTransportNoRegenerationOrPublicRecordAudit"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCancelledBackupCleanupFailureIsReportedThroughClose"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCardClosedRequestAndUnavailableCodec"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCardIndependentTransport"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCardLaneACKFenceAndReciprocalReservation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCardLaneAllFamilyOrderingAndDrain"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCardLaneIncompleteAndTerminalImmutability"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCardLaneSharedFamiliesAndStopJoin"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCardMetadataPreservesShorterCallerDeadline"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCardReservationPreservesOtherFamilyRefusal"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCardStandaloneUsabilityRequiresRecordContext"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCardTransportNoProjectionDependencies"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerHistoryAdmittedLostAckDoesNotRetract"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerHistoryAllLazyCacheAdmissionsIncludeHistory"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerHistoryCancellationAndSharedLane"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerHistoryCaptureReplayAndStop"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerHistoryErrorAndDeadlinePrecedence"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerHistoryFatalActiveReservationLivesUntilJoin"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerHistoryFatalStableFailuresLatchWhileReaderHealthy"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerHistoryFinalAdmissionGuardPreservesPrior"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerHistoryIndependentWire"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerHistoryInternalPageMismatchLatchesCorruption"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerHistoryKnownClockAndUnfencedLatch"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerHistoryKnownUnknownSurvivesReaderCloseAndBusy"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerHistoryKnownUnknownSurvivesStopWithoutSelection"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerHistoryOriginalViewDeadlineFatalAndUnknown"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerHistoryPageUnknownClearsHandleAndRemainsLatched"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerHistoryPublicationInsideLeaseAndImmutableAfterCancel"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerHistoryRefusedTerminalReleasesJoinedReservation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerHistoryRejectsYearZeroWithoutChangingLegacyEvent"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerHistoryServeCareersClosedRouting"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerHistoryStopJoinsWithoutLatchingHealthyOwner"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerHistoryUnpublishedRollbackCannotClobberSuccessor"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerIneligibleIDsAndMutationUncertainty"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerPreviewAdmissionRollbackPreservesOtherFamily"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerPreviewCapacityReciprocityAndReaderLifetime"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerPreviewExpiredUnpublishedReservationCannotClobberSuccessor"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerPreviewFinalPublicationAndCancellationBoundaries"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerPreviewIndependentCompositions"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerPreviewIndependentValuesAndWire"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerPreviewInheritedErrorMappingAndFrameBoundary"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerPreviewLearnedFailurePreservesQueuedLegacyReservation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerPreviewSharedActiveExclusionAndCancellation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerPreviewTrustedSuccessReplayOwnershipAndOriginalView"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerReadExactJobAndTransactionalReservation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerReadOriginalViewRevocationAndShortDeadline"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerReadStrictEnvelopeAndProjection"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerRequestNoMutationOrUnusedFields"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCareerReservationConstrainsOlderResultAndLazyAdmissions"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestConcurrentFirstLaunchNeverReplacesIdentity"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestConcurrentStartStopAndFailedChildCleanup"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestCustomPilotBackupProtectsEntireDefaultApplicationRoot"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestDailyRemoteCancellationCauseAndLegacyParity"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestDailyRemoteIndependentConfigAndMoneyBinding"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestDailyRemoteIndependentCredentialGrammar"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestDailyRemoteMarkersAndExactOutboxRemainSeparate"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestDailyRemoteOriginalWalletRecipientAndMiningEpoch"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestDailyRemoteProtectedOriginalAudienceAndCancellation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestDailyRemoteSelectionBeforeOriginalOwnerEffects"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestDailyRemoteStartRetainsObservedCloseFailure"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestDelegatedAdmissionSignerReauthorizesOutsideProviderCall"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestDelegatedAdmissionSignerRejectsCallbackProofMutation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestEOFInterruptsBlockedOutputAndDrainsController"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestEntryAbandonPostCommitCancellationReconciles"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestEntryClosedRequestsAndUnavailable"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestEntryIndependentTransport"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestEntryLaneBudgetCancellationAndMetadataContention"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestEntryLaneCommittedWrapperValidationFailureIsUnknown"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestEntryLaneDurablePrepareApplyReplayAndStoppedMetadata"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestEntryLaneFailedPublicationPreservesTerminalAndCannotRun"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestEntryLaneFamiliesShareOneActiveAndOneQueued"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestEntryLanePostCommitLeaseLossReportsUnknown"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestEntryLaneSavedMemberCheckAndHistoricalPending"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestEntryLaneStopJoinsActiveBeforeClosingStores"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestEntryServePreservesAllFamiliesAndDrain"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestEntryTransportAvoidsExpensiveCoreValidation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestEstablishedPilotNeverRecreatesMissingEvidence"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestEventBorrowedStoreLifetimeAndFatalFailure"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestEventCaptureTransportCreationLowerBound"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestEventClosedRequestAndUnavailableCodec"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestEventIndependentTransport"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestEventLaneNotDueCacheAndStoppedMetadata"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestEventLanePublicationFenceAndReservation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestEventLaneSharedFamiliesAndStopJoin"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestEventTransportNoProjectionDependencies"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestFailedStatusSavePropagatesThroughClose"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestFamilyRetainedMetadataBounds"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestFamilyRetainedMetadataChargesFullTerminal"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestFighterEvidenceLiveExportOriginalCaptureAndChecksum"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestFighterEvidenceLostAdmissionAckRecoversKnownID"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestFighterEvidencePoolBackupDrainsDirectLane"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestFighterEvidencePoolStopJoinsDirectLaneAndPermit"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestFighterEvidenceRevokedViewAfterSourceCannotPublish"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestFighterEvidenceStoppedAdmissionAndCrossChildReservation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestFixtureWalletMissingSymlinkAndNetworkRefusal"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestFixtureWalletRetainedLifecycle"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestHostedAllocationSetupFreshAndResumeDirectories"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestHostedAllocationSetupRejectsFileAndSymlinkDirectories"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestHostedPoolFailedWalletCloseRetainsOwnership"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestHostedPoolRecoveryPermitSurvivesChildGeneration"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestHostedPoolSignerVaultFailureHasNoLocalFallback"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestHostedPoolSnapshotClosedModeAndPendingReset"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestHostedRecoveryAdmissionRejectsBrokenOuterEpoch"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestHostedRecoveryAuditAccountingNoBackendNoWrites"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestHostedRecoveryCloseJoinsAndPreservesCleanupFailure"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestHostedRecoveryIndependentBindingAndClosedFrames"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestHostedRecoveryReceiveStatusAndResultPublishTogether"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestHostedRecoveryReceiveStopJoins"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestHostedRecoveryRejectsLegacyRootDispatch"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestHostedRecoveryUncertaintyDominatesCancellation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestHostedRecoveryWithdrawalVersionBeforeResolve"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestIncompleteAndPreexistingChainCannotBeAdopted"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestInitializedChainLossFailsBeforeNodeLaunch"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestLegacyIdentityRejectedBeforeLockOrDirectoryMutation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestManagedSymlinkRefused"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestManifestEngineColdVerifiedPageAndLeaseRevocation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestManifestEngineLiveProjectionReferenceAndOwnership"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestManifestEngineNewIdentityAndIncompleteRefusal"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestManifestEnginePortraitFinalLeaseAndExportSlot"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestManifestExclusivePublicationRaceAndCancellation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestManifestMalformedIdentityDoesNotCreateLock"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestManifestMarkersStrictCanonicalLFAndSymlinks"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestManifestOldAncestorRejectedWithoutMutation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestManifestPopulatedRefreshLoadingCancellationAndFailure"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestManifestProjectionRecentEightCoverageAndBudgets"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestManifestProtocolCancelDrainsAndRetainsCloseFailure"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestManifestProtocolEOFDrainsBlockedOutput"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestManifestProtocolIndependentMaximumReceipt"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestManifestProtocolStrictCommandShapes"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestManifestProtocolTypedErrorsAndBounds"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestManifestRejectsAmbiguousSchema"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestManifestStopDrainsWithoutHoldingCacheLock"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestNameV2SavedBoutCompletedJob"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestNameV2StableAndEntrySourceShapes"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestNameV2TransportGrammarAndTupleRefusal"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestNewPreservesIdentityAndDoesNotStartMining"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymCalendarCareerFenceBeforeCapture"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymCalendarContinuesUnavailableCurrentReplay"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymCalendarDates"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymCalendarOrdinaryWorkReservesBoundary"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymCalendarRejectsForeignEvent"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymCalendarUpcomingUsesPinnedCalendar"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymChildCleanupFailureRetainsBorrow"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymChildCloseCancelsAndJoins"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymChildOriginalFence"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymChildRealLoginAndMiningCapabilities"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymChildStopJoinsBackup"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymLeagueCompleteIntentFraming"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymRefreshContinuationWithoutIdleTick"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymRefreshIdleAndCancellation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymRuntimeCloseJoinsSuccessfulBorrow"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymRuntimeCloseRetainsFailedBorrow"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymStartupSourceCancellationJoins"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymStartupSourceFreshAndReopened"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymWireBootstrapResetBoundary"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymWireClosedRequest"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymWireCompleteScopeRoundTrip"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymWireErrorsCannotCarrySuccess"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymWireNormalTransitionsUseOriginalSealedScope"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymWirePendingResetRemainsBootstrapOnly"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymWireRejectsChangedScopeRedisclosure"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymWireResultShapesHaveExplicitTags"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymWireRetainsMutationUncertainty"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymWireSealedScopeOwnsNestedValues"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymWireServeStartupAndBothCompleteScopes"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedGymWireTransferRequiresExactCorrelation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedLocalChainReadiness"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedSourceRuntimeChainResumeBeforeAdmissions"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedSourceRuntimeCutoffResumeBeforeLeague"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedSourceRuntimeIntentBeforeDatabase"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedSourceRuntimeRejectsLegacyAuthority"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedSourceRuntimeRetainedIdentity"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedSourceRuntimeSameTipObservationChanges"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedTransferCompletedObservePreservesReceiptAndOriginalView"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedTransferDeliveryCancellationJoinsRequest"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedTransferDeliveryExactNodeObservations"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedTransferDeliveryLegsAndClosedOwner"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedTransferDeliveryReferenceRawHash"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedWalletCheapProfileRefusesBeforeFilesystem"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedWalletControlsRefuseForeignAndMissingState"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedWalletFreshAndExactUnfinishedResume"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedWalletStartupSyncDoesNotSampleCatchupBalances"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedWalletStartupSyncLifecycleRefusals"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestOwnedWalletStartupSyncOriginalSessionFenceBeforeAttach"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPilotRequiresActivatedNodeMetadata"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolBackupAdmissionDrainsRefreshWithoutLeaseAndRefusesStart"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolBackupBundleRequiresIssuedNative84Cursor"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolBackupCancelAndCloseJoinCleanup"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolBackupCleanupFailureCannotHideBehindCancellation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolBackupComparisonDefersUnconfirmedState"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolBackupComparisonDetectsSameTipChangesBeforeMismatch"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolBackupExportUsesRetainedWalletAndOriginalCapability"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolBackupHoldDeniesExportButAllowsVerification"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolBackupRestoreCancellationJoinsStepAndFinalSource"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolBackupRestoreCleanupIsJoinedStickyAndPreservesScratch"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolBackupRestoreCompletionRequiresExactSourceCheckpoint"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolBackupRestoreDerivationAloneStillSteps"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolBackupRestoreRPCUsesOnlyOwnedLiteralLoopback"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolBackupRestoreRejectsCancelledRunBeforeCreatingScratch"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolBackupRestoreRejectsIncompleteCheckpointClaims"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolChildCancelledBalanceCannotPublishIntoRevokedView"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolChildSharedReopenNeverOpensSoloSource"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolChildSignerReleasesLeaseAndDiscardsOriginalAfterReset"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolChildStaleStartDoesNotConstructWorker"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolChildStopRestartAndCloseJoinOwnedRun"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolChildStorageResumesIntentButDoesNotReplaceReadyStable"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolChildTimedOutBalancePublishesOnlyFailureToOriginalView"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolCycleChildBackupGateAndNoNodeSpawn"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolCycleChildCareerReopenRejectsOtherActivation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolCycleChildExactAuthorityAndBorrowedLifetime"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolCycleClosedWireFamilies"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolCycleResultLostViewPreservesUncertainty"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolDesktopCheapProfileRefusal"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolDesktopCloseCancelsAndDrains"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolDesktopCredentialRefreshPreservesBinding"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolDesktopDiscardsResponseAfterAccountChange"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolDesktopMutationKeepsOriginalCredentialOnUncertainty"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolDesktopRejectsCrossAccountAndTrustChange"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolDesktopTransactionCapacityBalanceProjection"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolIssuerV2RequiresExactSourceOnReopen"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolLeagueChildBackupJoinsLaneAndRejectsDispatch"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolLeagueChildBindingAndBorrowedLifetime"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolLeagueChildEstablishedStableCannotBeRecreated"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolLeagueChildPendingReopensWithSameFactories"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolLeagueChildRevokedCommitRetainsUnknownAndBlanksView"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolLeagueCloseJoinsBorrowerBeforeEventOwner"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolLeagueClosedWireFamilies"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolLeagueEstablishedLossNeverRecreates"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolLeagueExactSetupReopenAndOwnedBindings"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolLeagueExistingStableRecordedBeforeCreation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolLeagueIntentCannotRepinOrAdoptOrphans"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolLeagueNarrowMutationLostViewPreservesUncertainty"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolLeagueRecoversCompletedStoreAfterLostAcknowledgment"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolLeagueWireRejectsBeforeDispatch"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolOptionsExactTwoDescriptors"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolPayoutAuthorityCloseJoinsHTTP"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolPayoutAuthorityHeldViewAndExactReadRoute"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolPayoutAuthorityOriginalTokenSurvivesBlockedHTTP"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolPayoutCaptureOwnsPagesAndRetainsOldOnFailedRefresh"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolPayoutStopBackupCloseJoinIndependentSlot"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolPayoutTaskFailureCategories"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolPayoutWalletReadSelectionAndOriginalView"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolPipelineActivatesBeforePublicationAndReopensExact"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolPipelineCloseJoinsChildBeforeCareerOwner"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolPipelineEstablishedLossRefusesRecreation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolPipelineRefusesOrphanAndForeignIntent"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolPipelineResumesOriginalActivationAfterUncertainCommit"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolRecipientActualWalletRPCPreservesLegacyAndRestores"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolRecipientBindingPublishesIntentBeforeWalletAndReadyAfterRechecks"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolRecipientBindingRejectsBrokenLeaseCallbacks"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolRecipientBindingRejectsRebindingBeforeWalletIO"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolRecipientBindingRejectsSymlinksAndNoncanonicalMarkers"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolRecipientBindingRequiresEstablishedIntentAndOwnedWallet"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolRecipientBindingRequiresSyncAndOriginalAuthorization"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolRecipientBindingUncertainRecoveryKeepsOriginalDestination"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolRecipientFrozenIdentities"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolRecipientLostAllocationAcknowledgmentRequiresReopen"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolRuntimeCloseCancelsAndJoinsBorrower"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolRuntimeImmutableRecords"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolRuntimeOrphanIssuerRefused"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolRuntimePartialRecipientsRequireWalletVerification"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolRuntimePinnedIssuerCannotBeReplaced"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolRuntimePinnedIssuerReopen"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolRuntimeReadyRequiresBothExactGyms"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolRuntimeRecipientWalletAndSourceLossRefused"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolRuntimeRejectsManagedAncestorAndSymlink"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolRuntimeRootNamespace"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolRuntimeSelectionRejectsBeforeMutation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolWithdrawalSetupEmptyResumeDoesNotAllocate"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolWithdrawalSetupEstablishedLossNeverRecreates"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolWithdrawalSetupPopulatedBeforeReadyRefuses"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolWithdrawalSetupRootInventory"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPoolWithdrawalSetupWalletWithoutJournalRefuses"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPreviewArrayPreallocationClosedCounts"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPreviewClosedDependencyErrorPrecedence"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPreviewClosingDependencyDoesNotEnterLease"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPreviewDoesNotScheduleImplicitCatchup"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPreviewEngineShapeIndependentCorpus"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPreviewFailedPublicationPreservesTerminalAndCannotRun"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPreviewFatalClosedDependencyStopsLane"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPreviewFinalLeaseLossWithholdsCompletedComputation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPreviewIndependentTransportAndDigest"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPreviewLaneCancelAfterPairAndAggregateQueue"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPreviewLaneQueueAndClassRefusalWithoutEngine"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPreviewLaneSuccessReplayAndRevocation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPreviewLiveDependencyCallerCancellation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPreviewRequestClosedFamily"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPreviewReservationProtectedCache"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPreviewSelfRehashedInconsistencyAndOutcomeGrammar"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPreviewServePreservesFamiliesAndDrain"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPreviewStableActiveThenQueuedPreviewPreservesStableResult"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPreviewStopDrainsBeforeSourceClose"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestPreviewUnavailableExactAndNoSimulation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestProtocolCancellationClosesIdlePipe"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestProtocolEOFReleasesPilotAndRedactsErrors"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestProtocolOutputFailureDrains"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestProtocolRejectsMalformedAndUnboundedRequests"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRecoverableRemoteCheapSelectionBeforeOwners"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRecoverableRemoteCredentialChangeAfterClientResponseRetainsIntent"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRecoverableRemoteIndependentConfigCredentialMarkers"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRecoverableRemoteProtectedOriginalLeaseAndMarkers"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRecoveryExportUsesRetainedReopenedWalletAndProtectedPaths"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRecoveryRequestBoundary"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolAttachmentCheapRefusalBeforeEffects"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolAttachmentCloseJoinsAndRetainsFailure"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolAttachmentZeroAndPrivateStatus"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolAuditFailedCloserRetained"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolCredentialProfileRefusal"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolCredentialReferenceGrammar"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolCredentialsCloseJoinsAndKeepsUnknown"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolCredentialsOriginalLeasesAndReplacement"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolCredentialsSelectedFileRefusals"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolCredentialsStickyDescriptorClose"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolEstablishedRecipientControlsBeforeOpen"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolFilesActualOutboxReopen"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolFilesCreateResumeReady"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolFilesFailedCloseRetainsRootLock"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolFilesLockAndIdentity"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolFilesNamespaceAndSymlinkRefusals"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolFilesOriginalSetupAndMissingChild"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolNodeSelectionIsPrivateLocalOnly"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolProtocolIndependentCorpus"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolRecipientAuditDoesNotReallocateMissingWalletRecipient"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolRecipientAuditExistingOnly"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolRecipientAuditMissingMarkerBeforeWallet"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolRecipientAuditOriginalAccountFences"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolRecipientAuditReadyLostDuringWallet"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolReferenceConfigAndMarkers"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolReferenceRefusals"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolSavedAdmissionEmptyBranch"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRemotePoolWireReadErrorDoesNotMaskUncertainty"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRestoredActionProjectionDoesNotExposeSignedBytes"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRestoredCompletedObservePreservesReceiptWithoutNetwork"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRestoredDeliveryReviewOneUseBeforeAnyNodeAccess"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRestoredGymCloseJoinsAndRetainsStickyOwner"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRestoredGymFileCleanupRetainsExactFirstFailure"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRestoredGymIndependentSetupCodec"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRestoredGymSelectedFileAndRootRefusals"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRestoredGymSetupActivationCrashWindows"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRestoredGymSetupPendingResumeAndMissingStore"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRestoredRecoveryDiscoveryResultOwnership"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRestoredRefreshChangedOriginalNodeRefuses"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRestoredRefreshCloseJoinsActiveSlice"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRestoredRefreshOriginalCancelAndCloseJoin"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRestoredRefreshOriginalSourceClosureRefuses"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestRestoredRefreshRetainsOneReplayAcrossBoundedSlices"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestResultBorrowedMiningOwnerSurvivesJobCancellation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestResultIndependentTransport"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestResultLaneACKRollbackAndReciprocalReservation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestResultLaneAllFamilyOrderingAndDrain"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestResultLaneForeignWorkAndStopJoin"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestResultLaneTerminalAndFamilyIsolation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestResultLateStartupCleanupDoesNotClearSuccessor"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestResultMetadataPreservesShorterCallerDeadline"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestResultNodeReservationRejectedLeaseCleansOnlyItsEpoch"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestResultOwnerExactEpochDrainsBothBorrowerFamilies"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestResultProofFileBoundsAndProtectedRoots"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestResultProofFileExclusiveFencedStreaming"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestResultReservationPreservesOtherFamilyRefusal"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestResultTypedErrorsAndUnknownPriority"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestSeedBorrowClosesInActionScope"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestSeedClosedRequestAndUnavailableCodec"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestSeedIndependentTransport"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestSeedLaneACKFenceAndReciprocalReservation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestSeedLaneIncompleteOfflineAndTerminalImmutability"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestSeedLaneSharedFamiliesAndStopJoin"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestSeedOwnedRunRegistrationAndDrain"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestSeedTransportAuthenticatedDeclarationConflict"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestSeedTransportFixedCarrierSignatureAndMerkle"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestSeedTransportNoProjectionDependencies"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestServeRemotePoolCancellationJoinsBlockedWrite"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestServeRemotePoolCancellationJoinsReadAndClose"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestServeRemotePoolEOFAndPipelineCancelBlockedAction"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestServeRemotePoolMutationUnknownRetiresOwner"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestServeRemotePoolOriginalFlowAndNoAutostart"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestServeRemotePoolRetainsOriginalCloseFailure"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestServeRemotePoolStaleViewCannotMutate"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestServeRemotePoolStrictFramingAndSequence"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestSharedCareerPagePreservesSparseSourceAndOverlay"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestSharedCareerRecentRetainsExactOpaqueSelectionAndViewFence"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestSharedStableLaneKeepsOriginalReceiptsOutsideLegacyProjection"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestSharedStableSparsePageTypedBoundaries"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestSharedStableSyncAllowsForeignOnlyProgress"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestStableFullNestedResponseAndBoundaries"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestStableLaneAutomaticDiscoveryPrepareApplyAndPrivateCache"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestStableLaneExplicitRecentUnprotectsEvidence"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestStableLaneFailedQueuePublicationNeverExecutes"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestStableLaneHistoricalAbandonKeepsNewPending"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestStableLaneQueueCancellationAndMetadataBudget"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestStableServeSelectsExactFamilyAndPreservesUnknown"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestStableStrictRequestCommands"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestStableUpgradeNewRequiresOriginalRealLock"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestUnrelatedDirectoryAndSymlinkAreRefused"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWalletActivityCancelRetainsPriorAndDoesNotCancelDone"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWalletActivityCapturePagesDetailAndFailedRefresh"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWalletActivityFailedPublicationRestoresOldCapture"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWalletActivityHelperClosedRoutingAndNoErrorPayload"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWalletActivityIndependentProjection"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWalletActivityOriginalViewAndFailedOuterAdmission"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWalletActivityProjectionCancellationAndBounds"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWalletActivityRuntimeExactObservation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWalletActivityStopBackupCloseJoinCaptureAndProjection"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWalletHTTPActualRequestAndRedaction"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWalletHTTPBoundedErrorsAndNoRedirect"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWalletPayoutHTTPMethodAndErrors"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWalletPayoutIndependentRPCObservations"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWalletPayoutIndependentTransactions"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWalletPayoutMissingSyncAndCancellation"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWalletPayoutRPCArrayLimits"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWalletPayoutRPCClosedShape"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWithdrawalBackupJoinsAuthoringBeforeWalletReuse"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWithdrawalFailedOuterAdmissionNeverRunsBackend"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWithdrawalFenceRejectsMissingDoubleAndSwallowedCallbacks"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWithdrawalHeldViewRecoveryAndFreshReviewBoundary"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWithdrawalNodeCancellationJoinsTransport"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWithdrawalNodeDelivery"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWithdrawalNodeGrammarAndEndpoint"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWithdrawalNodeInspect"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWithdrawalNodeObserve"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWithdrawalNodeTransportRefusal"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWithdrawalPrepareReviewSignAndExactReplay"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWithdrawalResetDuringScratchSignCannotCommitOrSend"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWithdrawalSendReviewInspectsBeforePublication"
+  },
+  {
+    "package": "github.com/taytr-llc/slug/desktop/pilot",
+    "test": "TestWithdrawalStopJoinsBlockedWalletAndRetainsIntent"
+  }
+]

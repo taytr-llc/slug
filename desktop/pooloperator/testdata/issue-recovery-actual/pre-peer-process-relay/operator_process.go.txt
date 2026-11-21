@@ -1,0 +1,76 @@
+// Original standalone operator children; no in-process serving replacement.
+package main
+
+import (
+ "bufio"
+ "bytes"
+ "context"
+ "encoding/json"
+ "errors"
+ "io"
+ "os"
+ "os/exec"
+ "path/filepath"
+ "sync"
+ "syscall"
+ "time"
+ "github.com/taytr-llc/slug/desktop/pooloperator"
+)
+
+type operatorFrame struct { Version uint32 `json:"version"`; Command string `json:"command"`; ObservedAtMS int64 `json:"observed_at_ms"`; Code string `json:"code"`; Result json.RawMessage `json:"result,omitempty"` }
+type operatorProcess struct {
+ cmd *exec.Cmd; generation, command, setupID string; pid,pgid,parent int
+ done chan error; reads [2]chan struct{}; files [2]*os.File;writers,logs [2]*os.File;started bool
+ mu sync.Mutex; frames []operatorFrame; ioErr error
+ joined,unexpected,closed,killed bool; waitErr,closeErr error; signals int; signal string
+}
+func operatorArgs(command,root,private string) []string {
+ return []string{command,"--daily-recoverable-issue","--setup-file",filepath.Join(private,"selected-setup.json"),"--root",filepath.Join(root,"operator"),"--wallet-root",filepath.Join(root,"wallet16"),"--wallet-public-passphrase-file",filepath.Join(private,"public.pass"),"--wallet-unlock-passphrase-file",filepath.Join(private,"unlock.pass"),"--admission-seed-file",filepath.Join(private,"admission.seed"),"--publication-seed-file",filepath.Join(private,"publication.seed"),"--cutoff-seed-file",filepath.Join(private,"cutoff.seed"),"--rpc-config-file",filepath.Join(private,"rpc.json"),"--tls-certificate-file",filepath.Join(private,"tls-cert.pem"),"--tls-key-file",filepath.Join(private,"tls-key.pem")}
+}
+func (p *operatorProcess) fail(e error) { if e!=nil { p.mu.Lock();p.ioErr=errors.Join(p.ioErr,e);p.mu.Unlock() } }
+func (p *operatorProcess) reader(f,log *os.File,index int) {
+ defer close(p.reads[index]);defer func(){p.fail(errors.Join(f.Close(),log.Sync(),log.Close()))}()
+ b:=bufio.NewReaderSize(f,131072);n:=0
+ for { raw,e:=b.ReadSlice('\n'); if len(raw)>0 {
+  if n+len(raw)>1<<20 {p.fail(errors.New("operator output bound"))};if n<1<<20 {part:=raw[:min(len(raw),(1<<20)-n)];written,x:=log.Write(part);p.fail(x);if written!=len(part){p.fail(io.ErrShortWrite)}};n=min((1<<20)+1,n+len(raw))
+  if index==1 {p.fail(errors.New("operator stderr"))} else if n<=1<<20 {
+   var v operatorFrame;d:=json.NewDecoder(bytes.NewReader(raw));d.DisallowUnknownFields();x:=d.Decode(&v);canonical,ce:=json.Marshal(v)
+   if e!=nil || x!=nil || ce!=nil || !bytes.Equal(raw,append(canonical,'\n')) || v.Version!=2 || v.Command!=p.command || v.ObservedAtMS<=0 || (v.Code!="complete" && v.Code!="listening" && v.Code!="status" && v.Code!="busy" && v.Code!="unavailable") {p.fail(errors.New("operator public frame"))} else {p.mu.Lock();if len(p.frames)>=256 {p.ioErr=errors.Join(p.ioErr,errors.New("operator frame count"))} else {p.frames=append(p.frames,v)};p.mu.Unlock()}
+  }
+ };if errors.Is(e,io.EOF){return};if e!=nil && !errors.Is(e,bufio.ErrBufferFull){p.fail(e);return} }
+}
+func launchOperator(binary,root,private,generation,command,setupID string,extra []string,owners *[]*operatorProcess) *operatorProcess {
+ p:=&operatorProcess{generation:generation,command:command,setupID:setupID,done:make(chan error,1),reads:[2]chan struct{}{make(chan struct{}),make(chan struct{})}}
+ *owners=append(*owners,p)
+ 
+ for i,name:=range []string{"stdout.jsonl","stderr.log"} {var e error;p.files[i],p.writers[i],e=os.Pipe();check(e,"operator owned pipe");p.logs[i],e=os.OpenFile(filepath.Join(root,generation+"-"+name),os.O_CREATE|os.O_EXCL|os.O_WRONLY,0600);check(e,"operator exclusive log")}
+ p.cmd=exec.Command(binary,append(operatorArgs(command,root,private),extra...)...);p.cmd.Stdout=p.writers[0];p.cmd.Stderr=p.writers[1]
+ check(p.cmd.Start(),"operator start");p.started=true;p.pid=p.cmd.Process.Pid;p.parent=os.Getpid();var e error;p.pgid,e=syscall.Getpgid(p.pid)
+ for i:=0;i<2;i++ {go p.reader(p.files[i],p.logs[i],i)};go func(){p.done<-p.cmd.Wait()}()
+ for i,w:=range p.writers {e:=w.Close();p.fail(e);if e==nil{p.writers[i]=nil}};check(e,"operator PGID");parent,e:=syscall.Getpgid(0);check(e,"parent PGID");require(parent==p.pgid && parent==p.parent,"original inherited operator group")
+ return p
+}
+func (p *operatorProcess) observe() { if p==nil || !p.started || p.joined{return};select{case e:=<-p.done:p.joined=true;p.unexpected=true;p.waitErr=e;default:} }
+func (p *operatorProcess) running() {p.observe();require(p!=nil && !p.joined,"original operator still running");p.mu.Lock();e:=p.ioErr;p.mu.Unlock();check(e,"operator output")}
+func (p *operatorProcess) status() (pooloperator.Status,bool) {
+ p.running();p.mu.Lock();defer p.mu.Unlock();for i:=len(p.frames)-1;i>=0;i-- {v:=p.frames[i];if v.Code=="status" {var s pooloperator.Status;check(json.Unmarshal(v.Result,&s),"operator status");require(s.SetupID==p.setupID,"original setup status");return s,true}};return pooloperator.Status{},false
+}
+func (p *operatorProcess) ready(ctx context.Context,origin string) {
+ wait(ctx,90*time.Second,func()bool{p.running();p.mu.Lock();defer p.mu.Unlock();for _,v:=range p.frames {if v.Code=="listening" {var x struct{Origin string `json:"origin"`};check(json.Unmarshal(v.Result,&x),"operator listen identity");require(x.Origin==origin,"original external Origin");return true}};return false})
+}
+func (p *operatorProcess) joinOutput() error {
+ var e error;for i,ch:=range p.reads {select{case <-ch:case <-time.After(5*time.Second):e=errors.Join(e,errors.New("operator reader timeout"),p.files[i].Close());select{case <-ch:case <-time.After(5*time.Second):e=errors.Join(e,errors.New("operator reader unjoined"))}}}
+ p.mu.Lock();e=errors.Join(e,p.ioErr);p.mu.Unlock();return e
+}
+func (p *operatorProcess) finishCommand(ctx context.Context) operatorFrame {
+ select{case e:=<-p.done:p.joined=true;p.waitErr=e;case <-ctx.Done():panic("one-shot operator deadline")}
+ check(errors.Join(p.waitErr,p.joinOutput()),"original one-shot operator join");p.closed=true;p.mu.Lock();defer p.mu.Unlock();require(len(p.frames)==1 && p.frames[0].Code=="complete","one complete command frame");return p.frames[0]
+}
+func (p *operatorProcess) stop(kill bool,ackMS int64) error {
+ if p==nil{return nil};if p.closed{return p.closeErr};if !p.started {var e error;for _,group:=range [][2]*os.File{p.files,p.writers,p.logs}{for _,f:=range group{if f!=nil{e=errors.Join(e,f.Close())}}};p.closed=true;p.closeErr=e;return e};p.observe();var e error
+ if !p.joined {p.signal="SIGTERM";sig:=syscall.SIGTERM;if kill {require(ackMS>0 && time.Now().UnixMilli()-ackMS<5000,"intentional crash within acknowledged gap");p.killed=true;p.signal="SIGKILL";sig=syscall.SIGKILL};e=p.cmd.Process.Signal(sig);if e==nil{p.signals++}
+ select{case x:=<-p.done:p.joined=true;p.waitErr=x;case <-time.After(30*time.Second):e=errors.Join(e,errors.New("operator join bound"),p.cmd.Process.Kill());select{case x:=<-p.done:p.joined=true;p.waitErr=x;case <-time.After(5*time.Second):e=errors.Join(e,errors.New("operator unreaped"))}}}
+ e=errors.Join(e,p.joinOutput());if kill {var exit *exec.ExitError;if !errors.As(p.waitErr,&exit) || !exit.ProcessState.Sys().(syscall.WaitStatus).Signaled() || exit.ProcessState.Sys().(syscall.WaitStatus).Signal()!=syscall.SIGKILL {e=errors.Join(e,errors.New("intentional crash status"))}} else {e=errors.Join(e,p.waitErr)}
+ if p.unexpected || !p.joined || p.signals!=1 {e=errors.Join(e,errors.New("operator ownership incomplete"))};p.closed=p.joined;p.closeErr=e;return e
+}
+func (p *operatorProcess) evidence() map[string]any {if p==nil{return nil};p.mu.Lock();defer p.mu.Unlock();exit:=-1;if p.cmd!=nil && p.cmd.ProcessState!=nil {exit=p.cmd.ProcessState.ExitCode()};return map[string]any{"generation":p.generation,"command":p.command,"pid":p.pid,"parent_pid":p.parent,"pgid":p.pgid,"joined":p.joined,"intentional_crash":p.killed,"unexpected_exit":p.unexpected,"signal":p.signal,"signal_count":p.signals,"exit_code":exit,"cleanup_error":p.closeErr!=nil,"io_error":p.ioErr!=nil,"frames":p.frames}}

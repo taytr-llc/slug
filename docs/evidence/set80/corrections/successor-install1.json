@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/slug/poolshare/issue_reference_test.go",
+      "sha256": "ccaeb991031a7563baa2be88a3d75d71e1ab8c12d6ebd9fcf6c0740788456e3b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/registry/issue_files.go",
+      "sha256": "5a290c7de6c7d6f93f616fda1720d4ad7e1c242242a1af2f038972773a7f0c24"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/registry/issue_files_test.go",
+      "sha256": "54472fc96674a6dfdd4882c0e66d51e8f332b65bab64bb84afe544e11606f3be"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/registry/issue_store.go",
+      "sha256": "f0b6b0f22a531a90fb36147cfa42d1c9876d80beb9a39f7f6b1432241c5797ab"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/registry/manifest_store.go",
+      "sha256": "995b6a7a5e8e1ef8e92ca593eea67e9e39c13a8fbab39ffc38664668922023b3"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/registry/manifest_types.go",
+      "sha256": "5a2979b9dceca2511fabaacc4d419c572ebb835952dc1176146923905a4d063c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolservice/recoverable_reference_test.go",
+      "sha256": "19d74da52755d9952ae09f3d1a2650e4d755d452e6b46936529cae2e38fd07d5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_issue_postresponse_test.go",
+      "sha256": "654a34acf4264c8c6294497a9a926ae99166c8423404b8f713f6ac4c78806042"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectworker/pool_issue_intent_actual_test.go",
+      "sha256": "59c4737bd337797eb253ec25e44c32fe676ba41e6cd441a35c43b9372fb55e3e"
+    }
+  ]
+}

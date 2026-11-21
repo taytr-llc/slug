@@ -1,0 +1,84 @@
+{
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 77859,
+        "pid": 77859,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./poolservice",
+        "./poolingress"
+      ],
+      "exit_code": 0,
+      "label": "deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 77859,
+      "pid": 77859,
+      "seconds": 0.293,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 77869,
+        "pid": 77869,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "test",
+        "-count=1",
+        "-p=1",
+        "-timeout=450s",
+        "-json",
+        "-run",
+        "^$",
+        "./poolservice",
+        "./poolingress"
+      ],
+      "exit_code": 0,
+      "label": "compile",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 77869,
+      "pid": 77869,
+      "seconds": 4.432,
+      "timed_out": false
+    }
+  ],
+  "failed_tests": [],
+  "passed": true,
+  "passing_packages": [
+    "github.com/taytr-llc/slug/poolservice",
+    "github.com/taytr-llc/slug/poolingress"
+  ],
+  "passing_tests": [],
+  "pattern": "^Test(Recoverable|IssueRecovery|IssueProfile|IssueIntent|IssueRequest)",
+  "profile_unchanged": true,
+  "scope": "Set80 transport compile",
+  "skipped_tests": [],
+  "sources_unchanged": true,
+  "version": 1
+}

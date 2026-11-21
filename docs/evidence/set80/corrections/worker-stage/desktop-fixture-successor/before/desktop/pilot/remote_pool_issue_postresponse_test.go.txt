@@ -1,0 +1,241 @@
+//go:build linux || (darwin && cgo)
+
+// Copyright (c) 2026 The SLUG developers. ISC license.
+package pilot
+
+import (
+	"context"
+	"encoding/hex"
+	"encoding/json"
+	"errors"
+	"net/http"
+	"net/http/httptest"
+	"os"
+	"path/filepath"
+	"strings"
+	"sync/atomic"
+	"testing"
+	"time"
+
+	"github.com/syndtr/goleveldb/leveldb"
+	"github.com/syndtr/goleveldb/leveldb/opt"
+	"github.com/taytr-llc/slug/gymauth"
+	"github.com/taytr-llc/slug/poolservice"
+	"github.com/taytr-llc/slug/poolshare"
+	"github.com/taytr-llc/slug/prospect"
+	"github.com/taytr-llc/slug/prospectnode"
+	"github.com/taytr-llc/slug/prospectwork"
+	"github.com/taytr-llc/slug/prospectworker"
+	"github.com/taytr-llc/slug/registry"
+	"github.com/taytr-llc/slug/wire/v2"
+)
+
+// The only fault is between the actual concrete client's successful validation
+// and the original protected lease's post-call check. No receipt is fabricated.
+type issuePostResponseAuthority struct {
+	*remotePoolPoolLease
+	replacement, path   string
+	validated, returned atomic.Int32
+}
+
+func (a *issuePostResponseAuthority) ResumeIssue(ctx context.Context, id string) (poolservice.IssueResponse, error) {
+	result, e := remotePoolLeaseCall(ctx, a.lease, true, func(call context.Context) (poolservice.IssueResponse, error) {
+		result, e := a.lease.pool.ResumeIssue(call, id)
+		if e != nil {
+			return result, e
+		}
+		if a.lease.pool.CheckIssueResponse(id, result) != nil {
+			return poolservice.IssueResponse{}, errors.New("original client receipt missing")
+		}
+		a.validated.Add(1)
+		if e = os.Rename(a.replacement, a.path); e != nil {
+			return poolservice.IssueResponse{}, e
+		}
+		return result, nil
+	})
+	if e == nil {
+		a.returned.Add(1)
+	}
+	return result, e
+}
+
+type issueNoNode struct{ calls atomic.Int32 }
+
+func (n *issueNoNode) fail() error { n.calls.Add(1); return errors.New("unexpected node work") }
+func (n *issueNoNode) ResolveTemplate(context.Context, prospectnode.Policy) (prospectwork.Template, error) {
+	return prospectwork.Template{}, n.fail()
+}
+func (n *issueNoNode) Proposal(context.Context, prospect.Context, string) error    { return n.fail() }
+func (n *issueNoNode) RecheckContext(context.Context, prospect.Context) error      { return n.fail() }
+func (n *issueNoNode) SubmitBlock(context.Context, prospect.Context, string) error { return n.fail() }
+func (n *issueNoNode) CanonicalBlock(context.Context, prospect.Context, prospect.Proof, string) error {
+	return n.fail()
+}
+
+func TestRecoverableRemoteCredentialChangeAfterClientResponseRetainsIntent(t *testing.T) {
+	if wire.TestPoW {
+		t.Skip("normal original client/credential owner")
+	}
+	c := remoteIssueReference(t).Fixtures.Remote[0].Config
+	var wc prospectworker.RecoverablePoolConfig
+	var calls atomic.Int32
+	ready := make(chan struct{})
+	server := httptest.NewServer(http.HandlerFunc(func(out http.ResponseWriter, in *http.Request) {
+		<-ready
+		calls.Add(1)
+		if in.URL.Path != "/pool/v3/issue" {
+			t.Error("unexpected route")
+			out.WriteHeader(400)
+			return
+		}
+		var request poolservice.IssueRequest
+		if json.NewDecoder(in.Body).Decode(&request) != nil {
+			t.Error("request")
+			out.WriteHeader(400)
+			return
+		}
+		pid, _ := registry.IssueProfileID(c.IssueProfile)
+		response := poolservice.IssueResponse{Version: 3, BindingID: c.IssueProfile.SourceConfigID, SettlementConfigID: wc.SettlementConfigID, RecipientScript: wc.RecipientScript, IssueProfileID: pid, RequestID: request.RequestID, GymID: c.Base.ExpectedLocal.Recipient.Config.Identity.GymID, PublicKey: wc.Base.PublicKey, Result: poolshare.IssueResult{Version: 1, State: "not_issued", IntentID: strings.Repeat("a", 64), ResolvedAtMS: time.Now().UnixMilli(), Reason: "intake_drained"}}
+		out.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(out).Encode(response)
+	}))
+	defer server.Close()
+	c.Base.Origin = server.URL
+	c.Base.CACertificate = ""
+	var e error
+	wc, e = remotePoolRecoverableWorkerConfig(c)
+	if e != nil {
+		t.Fatal(e)
+	}
+	baseID, e := DailyRemotePoolConfigID(c.Base)
+	if e != nil {
+		t.Fatal(e)
+	}
+	pid, _ := registry.IssueProfileID(c.IssueProfile)
+	close(ready)
+	dir := remoteAttachmentTestDir(t)
+	selected := remotePoolCredentialSelection{filepath.Join(dir, "pool.json"), filepath.Join(dir, "admission.json")}
+	for i, path := range []string{selected.PoolPath, selected.AdmissionPath} {
+		audience := "pool"
+		if i == 1 {
+			audience = "admission"
+		}
+		record := remotePoolRecoverableCredential{1, remotePoolCredentialRecord{2, baseID, c.Base.ExpectedLocal.Recipient.Config.Identity.GymID, audience, 1, time.Now().Add(time.Hour).UnixMilli(), strings.Repeat([]string{"1", "2"}[i], 64)}, pid}
+		raw, _ := json.Marshal(record)
+		if e = os.WriteFile(path, append(raw, '\n'), 0600); e != nil {
+			t.Fatal(e)
+		}
+	}
+	replacement := filepath.Join(dir, "replacement.json")
+	original, e := os.ReadFile(selected.PoolPath)
+	if e != nil {
+		t.Fatal(e)
+	}
+	if e = os.WriteFile(replacement, original, 0600); e != nil {
+		t.Fatal(e)
+	}
+	life, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	owner, e := openRemotePoolCredentialsSelection(life, c.Base, selected, true, &c)
+	if e != nil {
+		if owner != nil {
+			_ = owner.Close()
+		}
+		t.Fatal(e)
+	}
+	defer func() {
+		if e := owner.Close(); e != nil {
+			t.Error(e)
+		}
+	}()
+	pool, e := owner.beginPool(life)
+	if e != nil {
+		t.Fatal(e)
+	}
+	admission, e := owner.beginAdmission(life)
+	if e != nil {
+		t.Fatal(e)
+	}
+	boxPath := filepath.Join(dir, "outbox")
+	box, e := prospectworker.CreateRecoverableDailyPoolOutbox(boxPath, wc)
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer func() {
+		if box != nil {
+			if e := box.Close(); e != nil {
+				t.Error(e)
+			}
+		}
+	}()
+	authority := &issuePostResponseAuthority{remotePoolPoolLease: pool, replacement: replacement, path: selected.PoolPath}
+	node := new(issueNoNode)
+	worker, e := prospectworker.NewRecoverableDailyPool(wc, pool.lease.pool, authority, admission, node, func(context.Context, prospect.Context, prospect.Proof) (gymauth.Authorization, error) {
+		t.Error("unexpected signer")
+		return gymauth.Authorization{}, errors.New("no signer")
+	}, box)
+	if e != nil {
+		t.Fatal(e)
+	}
+	ctx, stop := context.WithTimeout(context.Background(), 5*time.Second)
+	defer stop()
+	e = worker.Run(ctx)
+	// First response is unknown after the observed file change; the next call's
+	// original precheck refuses. Both preserve the same local request.
+	if e == nil || authority.validated.Load() != 1 || authority.returned.Load() != 0 || calls.Load() != 1 || node.calls.Load() != 0 || worker.Status().Attempts != 0 {
+		t.Fatal("post-response credential fence failed", e)
+	}
+	if e = box.Close(); e != nil {
+		t.Fatal(e)
+	}
+	box = nil
+	audit, e := prospectworker.OpenRecoverableDailyPoolOutboxAudit(boxPath, wc)
+	if e != nil {
+		t.Fatal(e)
+	}
+	if e = audit.Close(); e != nil {
+		t.Fatal(e)
+	}
+	// Only after the original full selected audit has closed, inspect its bounded
+	// public control records. This does not bypass the product outbox audit.
+	db, e := leveldb.OpenFile(filepath.Join(boxPath, "db"), &opt.Options{ReadOnly: true, ErrorIfMissing: true, Strict: opt.StrictAll})
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer func() {
+		if e := db.Close(); e != nil {
+			t.Error(e)
+		}
+	}()
+	raw, e := db.Get([]byte("meta"), nil)
+	if e != nil || len(raw) > 256<<10 {
+		t.Fatal("metadata", e)
+	}
+	var meta struct {
+		Requests uint64 `json:"requests"`
+		Records  uint64 `json:"records"`
+		Active   string `json:"active_request_id"`
+	}
+	if json.Unmarshal(raw, &meta) != nil || meta.Requests != 1 || meta.Records != 0 || len(meta.Active) != 64 {
+		t.Fatal("durable original intent lost")
+	}
+	id, e := hex.DecodeString(meta.Active)
+	if e != nil {
+		t.Fatal(e)
+	}
+	raw, e = db.Get(append([]byte{'q'}, id...), nil)
+	if e != nil || len(raw) > 256 {
+		t.Fatal("pending request", e)
+	}
+	var q struct {
+		Version uint32                     `json:"version"`
+		Request poolservice.IssueRequest   `json:"request"`
+		Result  *poolservice.IssueResponse `json:"result"`
+	}
+	if json.Unmarshal(raw, &q) != nil || q.Version != 1 || q.Request.RequestID != meta.Active || q.Result != nil {
+		t.Fatal("rejected response completed q")
+	}
+	if yes, e := db.Has([]byte("scan"), nil); e != nil || yes {
+		t.Fatal("rejected response produced a scan", e)
+	}
+}

@@ -1,0 +1,25 @@
+{
+  "version": 4,
+  "approved_by": "root",
+  "scope": "finite explicit public daily operator, authenticated client/worker, original attachment and scheduled payout integration",
+  "source_documents": {
+    "public-daily-contract.md": "a6a30ab580f6463d30bd29c00a4c60d7d7b32e6d6d70560b761a7661cbd0da05",
+    "public-daily-test-plan.md": "3896b45cb46aab155e90f54a67c1d5a5083cbbe9b4b8a3cd3217deb90aeb1e61"
+  },
+  "cli_selector": "--daily",
+  "default_mode": "v1",
+  "runtime_lane": "root only",
+  "producer_execution_authorized": false,
+  "requirements": [
+    "Existing V1 bytes and owners stay exact",
+    "Independent producer source and input lock require separate review before execution",
+    "Use original wallet, vault, session, source, ledger and scheduler owners",
+    "Every successful daily response pins source, settlement and recipient",
+    "Persist issue_pending before any Issue network call; release mutex before external work",
+    "Unknown issuance stays held across restart without replacement; preserve pending recovery",
+    "D84 defers the complete oversized payout",
+    "No UI reorganization, sign-in work, production genesis or release approval"
+  ],
+  "predecessor_selection_sha256": "f16572d1e96871f2e9862fb3206dfd8cbf77a630aa03aa8a8457eb3cb53003cc",
+  "correction": "Preserve 65536-byte balance/error HTTP caps and 131072-byte page cap. New read-only stale_capture uses HTTP409 and OutcomeUnknown=false; inherited mappings unchanged. Producer execution remains a separate reviewed lock."
+}

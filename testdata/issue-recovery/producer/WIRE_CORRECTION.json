@@ -1,0 +1,64 @@
+{
+  "cause": "Money examples were independently generated from transport.remote_positives[0].daily_client, but the extension profile map contained mining-work identities only; its fallback selected a different source.",
+  "delta": "Add existing exact remote wrapper profiles to map, refuse unknown-source valid inputs, retain negative-body fallback only for deliberately invalid old source IDs.",
+  "failed_attempt": {
+    "bytes": 2127,
+    "clean_join": true,
+    "lock_unchanged": true,
+    "outputs": {},
+    "passed": false,
+    "path": "/Users/taytrrip/slug/artifacts/set80/reference-attempt2/report.json",
+    "sha256": "201cd01ee4f7d21e41fda91ba9b0163a7ac50bec732c440e0039932074328f03",
+    "sources_unchanged": true
+  },
+  "predecessor": {
+    "path": "/Users/taytrrip/slug/set80-prep/reference-before-money-profile-selection",
+    "producer_lock_sha256": "8197d60983f0091cf6796a29c198f7973f0f17f25074394a1a848ff4ca47dda5",
+    "source_ready_sha256": "c8a4adcf6caeba821b21e6b581ae3ce868f8319be277d18bf1f283b24c87d502"
+  },
+  "reviewed_inherited_categories": [
+    {
+      "all_valid_original_field_orders_match": true,
+      "category": "work-receipt",
+      "inherited_cases": 14,
+      "inherited_valid": 6,
+      "profile_position": "after recipient_script",
+      "source_selection": "original work wire identities"
+    },
+    {
+      "all_valid_original_field_orders_match": true,
+      "category": "balance",
+      "inherited_cases": 41,
+      "inherited_valid": 29,
+      "profile_position": "after recipient_script",
+      "source_selection": "original remote_positives daily client"
+    },
+    {
+      "all_valid_original_field_orders_match": true,
+      "category": "page",
+      "inherited_cases": 19,
+      "inherited_valid": 11,
+      "profile_position": "after settlement_config_id",
+      "source_selection": "original remote_positives daily client"
+    },
+    {
+      "all_valid_original_field_orders_match": true,
+      "category": "error",
+      "inherited_cases": 8,
+      "inherited_valid": 3,
+      "profile_position": "none; only outer version changes",
+      "source_selection": "not applicable"
+    }
+  ],
+  "source_basis": "Copied Set79 reference/generate.py selects money_expected(transport_result[remote_positives][0][daily_client]); no old producer imported.",
+  "successor_executed": false,
+  "unchanged": [
+    "all inherited bytes and classifications",
+    "input recipe",
+    "ordered insertion positions",
+    "error flags/status",
+    "case counts",
+    "caps/economics"
+  ],
+  "version": 1
+}

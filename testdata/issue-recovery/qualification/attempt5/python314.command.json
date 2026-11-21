@@ -1,0 +1,30 @@
+{
+  "capture_errors": [],
+  "cleanup": {
+    "errors": [],
+    "group_empty": true,
+    "leftover_after_exit": false,
+    "pgid": 76132,
+    "pid": 76132,
+    "return_code": 0,
+    "signals": []
+  },
+  "command": [
+    "/opt/homebrew/bin/python3",
+    "-B",
+    "-S",
+    "/Users/taytrrip/slug/set80-prep/reference/generate.py",
+    "--lock",
+    "/Users/taytrrip/slug/set80-prep/reference-execution-lock.root-attempt4.json",
+    "--output",
+    "/Users/taytrrip/slug/artifacts/set80/reference-attempt5/python314.json"
+  ],
+  "exit_code": 0,
+  "log_errors": [],
+  "log_joined": true,
+  "log_limit_exceeded": false,
+  "pgid": 76132,
+  "pid": 76132,
+  "seconds": 0.498,
+  "timed_out": false
+}

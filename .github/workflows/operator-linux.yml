@@ -1,7 +1,7 @@
 name: Operator Linux qualification
 on:
   push:
-    branches: [slug-public-pool-runtime, slug-pool-capacity, slug-pool-daily-capacity, slug-pool-live-rounds, slug-pool-daily-admission, slug-public-daily-pool]
+    branches: [slug-public-pool-runtime, slug-pool-capacity, slug-pool-daily-capacity, slug-pool-live-rounds, slug-pool-daily-admission, slug-public-daily-pool, slug-pool-issue-recovery]
 permissions:
   contents: read
 concurrency:
@@ -11,7 +11,8 @@ jobs:
   operator-linux:
     if: github.repository == 'taytr-llc/slug'
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    # The selected full-intake expiry control adds 300s in normal and race.
+    timeout-minutes: 55
     env:
       GOENV: 'off'
       GOTOOLCHAIN: local

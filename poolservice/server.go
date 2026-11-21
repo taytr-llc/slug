@@ -182,6 +182,11 @@ func requestActionSelected(r *http.Request, prefix string) string {
 	switch r.URL.Path {
 	case prefix + "issue":
 		return "issue"
+	case prefix + "issue-lookup":
+		if prefix == recoverablePathPrefix {
+			return "issue-lookup"
+		}
+		return ""
 	case prefix + "work":
 		return "work"
 	case prefix + "submit":

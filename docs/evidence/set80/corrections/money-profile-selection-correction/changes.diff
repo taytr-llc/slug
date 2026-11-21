@@ -1,0 +1,41 @@
+--- before/wire.py
++++ after/wire.py
+@@ -30,11 +30,19 @@
+ def produce_wire(fixtures, inherited, recipe):
+     profiles = {source_id(i['client']['source']): make_profile(i['client']['source'], recipe['conditional_setup_id'])
+                 for i in inherited['transport']['wire_identities']}
++    # Inherited balances/pages come from the remote attachment's daily client,
++    # not from any mining-work family. Retain that exact original source too.
++    for selected in fixtures['remote']:
++        profile = selected['config']['issue_profile']
++        sid = profile['source_config_id']
++        need(sid not in profiles or canon(profiles[sid]) == canon(profile), 'ambiguous-selected-source-profile')
++        profiles[sid] = profile
+     first = fixtures['conditional_transport'][0]['profile']
+     cases = Cases('exact new outer envelope over unchanged inherited classified DAILY body; not a second payout/PoW oracle')
+     for group, source in [('work-receipt', inherited['transport']['envelope_cases']),
+                           ('balance', inherited['payments']['balances']), ('page', inherited['payments']['pages'])]:
+         for old in source:
++            need(not old['valid'] or old['value'].get('binding_id') in profiles, 'unselected-inherited-valid-source:' + old['name'])
+             profile = profiles.get(old['value'].get('binding_id'), first)
+             value = extend(old['value'], profile, group == 'page')
+             row = cases.add(group + '-' + old['name'], value, validate_extension, old['value'], profile, group == 'page', old['valid'], valid=old['valid'])
+--- before/README.md
++++ after/README.md
+@@ -22,6 +22,16 @@
+ It does not relabel an older tuple or change any selected Setup, old job/PoW anchor,
+ policy, deterministic recipe or case count. The earlier corpus remains the job
+ grammar and parity source. No successor producer execution is claimed here.
++
++The second root execution also failed before output: balance/page anchors select
++the inherited remote attachment's daily source, which was missing from the wire
++extension's mining-family-only profile map. Its full predecessor is retained at
++`../reference-before-money-profile-selection`. This successor includes the exact
++already-derived remote profile and refuses every valid inherited envelope whose
++source is absent from the complete selection map. Work/receipt profile placement,
++the different page position, and error version/flag/status categories were checked
++against all inherited input shapes. No inherited response body, source or monetary
++value is rewritten; no case count or cap changes.
+ 
+ `recipe.json` contains authored deterministic input choices and hand-counted case
+ declarations. It selects three exact Setup2 fixtures and independently derives

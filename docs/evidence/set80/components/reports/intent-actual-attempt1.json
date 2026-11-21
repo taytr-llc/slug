@@ -1,0 +1,85 @@
+{
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 79179,
+        "pid": 79179,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=slugissuerecoveryactual",
+        "./prospectworker"
+      ],
+      "exit_code": 0,
+      "label": "deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 79179,
+      "pid": 79179,
+      "seconds": 0.293,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 79189,
+        "pid": 79189,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "test",
+        "-count=1",
+        "-p=1",
+        "-timeout=45s",
+        "-json",
+        "-tags=slugissuerecoveryactual",
+        "-run",
+        "^TestRecoverablePoolActualIntentCrashBeforeDispatch$",
+        "./prospectworker"
+      ],
+      "exit_code": 0,
+      "label": "intent-actual",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 79189,
+      "pid": 79189,
+      "seconds": 3.021,
+      "timed_out": false
+    }
+  ],
+  "expected_profile_skips": [],
+  "failed_tests": [],
+  "passed": true,
+  "passing_packages": [
+    "github.com/taytr-llc/slug/prospectworker"
+  ],
+  "passing_tests": [
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolActualIntentCrashBeforeDispatch"
+  ],
+  "pattern": "^Test(Recoverable|IssueRecovery|IssueProfile|IssueIntent|IssueRequest)",
+  "profile_unchanged": true,
+  "scope": "Set80 worker intent-actual",
+  "skipped_tests": [],
+  "sources_unchanged": true,
+  "version": 1
+}

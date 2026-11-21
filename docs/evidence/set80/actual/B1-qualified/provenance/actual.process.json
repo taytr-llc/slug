@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-b-actual-attempt1/bin/issue-recovery-actual",
+    "--case",
+    "B",
+    "--node",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-b-actual-attempt1/bin/slugd",
+    "--operator",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-b-actual-attempt1/bin/slugpoold",
+    "--helper",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-b-actual-attempt1/bin/slugpilot",
+    "--artifacts",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-b-actual-attempt1/owned",
+    "--reference",
+    "/Users/taytrrip/slug/artifacts/set80/actual-reference-attempt1/python314.json",
+    "--old-reference",
+    "/Users/taytrrip/slug/set80-prep/actual-recovery/inputs/path-c-reference.json",
+    "--base-reference",
+    "/Users/taytrrip/slug/set80-prep/actual-recovery/inputs/base-reference.json"
+  ],
+  "pgid": 84815,
+  "pid": 84815,
+  "timeout_seconds": 1080
+}

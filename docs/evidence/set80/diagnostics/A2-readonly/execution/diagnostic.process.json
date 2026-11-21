@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "/Users/taytrrip/slug/artifacts/set80/a2-readonly-diagnostic-run-attempt1/issue-recovery-actual",
+    "--original-root",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned",
+    "--artifacts",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a2-readonly-diagnostic-attempt1"
+  ],
+  "pgid": 86025,
+  "pid": 86025,
+  "timeout_seconds": 90
+}

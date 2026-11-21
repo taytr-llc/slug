@@ -1,0 +1,112 @@
+// Copyright (c) 2026 The SLUG developers. ISC license.
+package poolshare
+
+import (
+	"context"
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
+	"os"
+	"path/filepath"
+	"testing"
+
+	"github.com/taytr-llc/slug/registry"
+	"github.com/taytr-llc/slug/wire/v2"
+)
+
+func TestRecoverableSourceIndependentReservation(t *testing.T) {
+	raw, err := os.ReadFile("../testdata/issue-recovery/reference-v1.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	h := sha256.Sum256(raw)
+	if len(raw) != 6134980 || hex.EncodeToString(h[:]) != "4bbe4eb9556ed5a894cee6ff565b0dcca805f27fea2d77cfe3a56242dc3dac91" {
+		t.Fatal("independent corpus")
+	}
+	var f struct {
+		Bounds struct {
+			Source []struct {
+				Name     string
+				Inputs   []uint64
+				Expected struct {
+					Reserved       uint64 `json:"pending_reserved"`
+					Classification string `json:"classification"`
+					Effective      uint64 `json:"effective_bytes"`
+					SharedHoldback uint64 `json:"one_shared_canonical_holdback"`
+					Required       uint64 `json:"required_bytes"`
+				}
+			}
+		}
+	}
+	if json.Unmarshal(raw, &f) != nil || len(f.Bounds.Source) == 0 {
+		t.Fatal("bounds")
+	}
+	for _, v := range f.Bounds.Source {
+		if v.Expected.Classification == "outside_selected_bound" {
+			// This private reserve helper is called only after bounded canonical row
+			// and template decoding. These two input-domain refusals are not arithmetic
+			// results; retain their inventory without claiming helper error coverage.
+			if len(v.Inputs) != 6 || (v.Inputs[0] <= 16<<20 && v.Inputs[1] <= 4096) {
+				t.Fatal("outside-domain case changed", v.Name)
+			}
+			continue
+		}
+		var requests, templateBytes, rowBytes, baseBytes, limit, submissions, maximum uint64
+		requests = 1
+		switch len(v.Inputs) {
+		case 6:
+			templateBytes, rowBytes, baseBytes, limit, submissions, maximum = v.Inputs[0], v.Inputs[1], v.Inputs[2], v.Inputs[3], v.Inputs[4], v.Inputs[5]
+		case 4:
+			requests, templateBytes, rowBytes, limit = v.Inputs[0], v.Inputs[1], v.Inputs[2], v.Inputs[3]
+		default:
+			t.Fatal("unknown independent bound shape", v.Name)
+		}
+		reserve := issuePendingReserve(int(rowBytes), int(templateBytes))
+		used := (40 + rowBytes + 40 + templateBytes) * requests
+		reserved := reserve * requests
+		if v.Expected.Classification == "uint64_overflow" {
+			if issueOccupancyFits(baseBytes, used, reserved, limit) {
+				t.Fatal("overflow admitted", v.Name)
+			}
+			continue
+		}
+		if len(v.Inputs) == 6 && reserve != v.Expected.Reserved {
+			t.Fatal(v.Name, reserve, v.Expected.Reserved)
+		}
+		if len(v.Inputs) == 4 && (used+reserved != v.Expected.Effective || v.Expected.SharedHoldback != 4096 || v.Expected.Required != used+reserved+v.Expected.SharedHoldback) {
+			t.Fatal("aggregate/shared holdback", v.Name)
+		}
+		// A scalar-only conditional owner exercises the actual pre-issuer headroom
+		// check. It has no database, session, node, job or signing capability.
+		p := &Pool{config: Config{MaxBytes: limit}, meta: metadata{Bytes: baseBytes, Submissions: submissions}, issueRecovery: &issueState{bytes: used, reserved: reserved}}
+		p.operatorAdmission = &OperatorAdmission{pool: p, maximum: maximum, daily: &dailyAdmission{}}
+		err := p.dailyWorkHeadroom(0)
+		if (err == nil) != (v.Expected.Classification == "fits") || (err != nil && err != ErrCapacity) {
+			t.Fatal("independent capacity classification", v.Name, err)
+		}
+	}
+
+	if issueOccupancyFits(^uint64(0), 1, 1, ^uint64(0)) || issueOccupancyFits(1, ^uint64(0), 1, ^uint64(0)) || issueOccupancyFits(1, 1, ^uint64(0), ^uint64(0)) {
+		t.Fatal("overflow wrapped into fit")
+	}
+}
+func TestRecoverableSourceCheapRefusesBeforeEffects(t *testing.T) {
+	if !wire.TestPoW {
+		t.Skip("cheap profile control")
+	}
+	path := filepath.Join(t.TempDir(), "absent")
+	ctx := context.Background()
+	if p, err := CreateRecoverableDaily(ctx, path, Config{Version: Version2}, registry.IssueProfile{}, nil, nil, nil); err != ErrProfile || p != nil {
+		t.Fatal(p, err)
+	}
+	if _, err := os.Lstat(path); !os.IsNotExist(err) {
+		t.Fatal("profile created path", err)
+	}
+	var p *Pool
+	if _, err := p.ResumeIssue(ctx, "public", ""); err != ErrProfile {
+		t.Fatal(err)
+	}
+	if _, err := p.LookupIssue(ctx, "public", ""); err != ErrProfile {
+		t.Fatal(err)
+	}
+}

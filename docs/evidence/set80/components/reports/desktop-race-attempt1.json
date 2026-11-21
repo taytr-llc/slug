@@ -1,0 +1,102 @@
+{
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 80651,
+        "pid": 80651,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./pilot",
+        "./accountpilot",
+        "./cmd/slugpilot"
+      ],
+      "exit_code": 0,
+      "label": "deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 80651,
+      "pid": 80651,
+      "seconds": 0.491,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 80691,
+        "pid": 80691,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "test",
+        "-count=1",
+        "-p=1",
+        "-timeout=450s",
+        "-json",
+        "-race",
+        "-run",
+        "^Test(Recoverable|IssueRecovery|IssueProfile|IssueIntent|IssueRequest)",
+        "./pilot",
+        "./accountpilot",
+        "./cmd/slugpilot"
+      ],
+      "exit_code": 0,
+      "label": "race",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 80691,
+      "pid": 80691,
+      "seconds": 51.074,
+      "timed_out": false
+    }
+  ],
+  "expected_profile_skips": [
+    "github.com/taytr-llc/slug/desktop/pilot/TestRecoverableRemoteCheapSelectionBeforeOwners"
+  ],
+  "failed_tests": [],
+  "passed": true,
+  "passing_packages": [
+    "github.com/taytr-llc/slug/desktop/pilot",
+    "github.com/taytr-llc/slug/desktop/accountpilot",
+    "github.com/taytr-llc/slug/desktop/cmd/slugpilot"
+  ],
+  "passing_tests": [
+    "github.com/taytr-llc/slug/desktop/pilot/TestRecoverableRemoteProtectedOriginalLeaseAndMarkers",
+    "github.com/taytr-llc/slug/desktop/pilot/TestRecoverableRemoteCredentialChangeAfterClientResponseRetainsIntent",
+    "github.com/taytr-llc/slug/desktop/pilot/TestRecoverableRemoteIndependentConfigCredentialMarkers/zero256-default",
+    "github.com/taytr-llc/slug/desktop/pilot/TestRecoverableRemoteIndependentConfigCredentialMarkers/zero256-maximum",
+    "github.com/taytr-llc/slug/desktop/pilot/TestRecoverableRemoteIndependentConfigCredentialMarkers",
+    "github.com/taytr-llc/slug/desktop/accountpilot/TestRecoverableRemoteControllerOriginalEpochAndLegacyRefusal",
+    "github.com/taytr-llc/slug/desktop/accountpilot/TestRecoverableRemoteControllerRefusesBeforeOriginalRoot",
+    "github.com/taytr-llc/slug/desktop/cmd/slugpilot/TestRecoverableIssueHeadlessSoleSelection"
+  ],
+  "pattern": "^Test(Recoverable|IssueRecovery|IssueProfile|IssueIntent|IssueRequest)",
+  "profile_unchanged": true,
+  "scope": "Set80 desktop race",
+  "skipped_tests": [
+    "github.com/taytr-llc/slug/desktop/pilot/TestRecoverableRemoteCheapSelectionBeforeOwners"
+  ],
+  "sources_unchanged": true,
+  "version": 1
+}

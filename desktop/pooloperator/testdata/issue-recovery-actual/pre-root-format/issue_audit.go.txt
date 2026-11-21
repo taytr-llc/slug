@@ -1,0 +1,183 @@
+// Public original-owner audits; no private custody database access or repair.
+package main
+
+import (
+ "bytes"
+ "context"
+ "encoding/json"
+ "path/filepath"
+ "reflect"
+
+ "github.com/syndtr/goleveldb/leveldb"
+ "github.com/syndtr/goleveldb/leveldb/opt"
+ "github.com/taytr-llc/slug/desktop/pooloperator"
+ "github.com/taytr-llc/slug/poolshare"
+ "github.com/taytr-llc/slug/prospectjob"
+ "github.com/taytr-llc/slug/prospectwork"
+ "github.com/taytr-llc/slug/registry"
+)
+
+type sourceRequest struct {
+ Version uint32 `json:"version"`
+ Intent registry.IssueIntent `json:"intent"`
+ IntentID string `json:"intent_id"`
+ State string `json:"state"`
+ JobID string `json:"job_id"`
+ ResolvedAtMS int64 `json:"resolved_at_ms"`
+ Reason string `json:"reason"`
+}
+type issueAudit struct {
+ Financial attachmentOperatorAudit `json:"financial"`
+ Request sourceRequest `json:"source_request"`
+ Issuer registry.IssuerRequest `json:"issuer_request"`
+ Job prospectjob.ManifestJob `json:"job"`
+ Template prospectwork.Template `json:"template"`
+ TemplateSHA256 string `json:"template_sha256"`
+ SourceRequests uint64 `json:"source_requests"`
+ IssuerRequests uint64 `json:"issuer_requests"`
+ SourceTemplates uint64 `json:"source_templates"`
+ SourceInverses uint64 `json:"source_inverses"`
+ IssuerInverses uint64 `json:"issuer_inverses"`
+ Requests []sourceRequest `json:"requests"`
+ IssuerRows []registry.IssuerRequest `json:"issuer_rows"`
+ Jobs []prospectjob.ManifestJob `json:"jobs"`
+ Work *poolshare.MiningWork `json:"work"`
+ RowHashes map[string]string `json:"row_hashes"`
+ ReadOnlyUnchanged bool `json:"read_only_unchanged"`
+}
+
+// Only the new issue namespace uses raw 32-byte IDs. Original w and job: keys
+// deliberately retain their existing ASCII hexadecimal encodings.
+func keyed(prefix,id string) []byte {
+ raw:=dec(id);require(len(raw)==32 && hx(raw)==id && !bytes.Equal(raw,make([]byte,32)),"original canonical request/job ID")
+ return append([]byte(prefix),raw...)
+}
+func auditIssue(ctx context.Context,root string,s pooloperator.RecoverableDailySetup,id string) (out issueAudit) {
+ require(ctx!=nil,"original issue audit context");check(ctx.Err(),"original issue audit context")
+ _=keyed("issue/r/",id)
+ before:=attachmentPublicFiles(root)
+ out.Financial=auditOperator(ctx,root,s)
+ out.SourceRequests,out.IssuerRequests=out.Financial.SourceRequests,out.Financial.IssuerRequests
+ out.RowHashes=map[string]string{}
+ for k,v:=range out.Financial.PublicRows {out.RowHashes[k]=v}
+ var owners auditOwnerStack;defer owners.finish()
+ p,e:=registry.NewOperatorProfile(s.Base.Authority);check(e,"original audit profile")
+ issuer,e:=registry.OpenRecoverableOperatorManifestAuthorityAudit(ctx,filepath.Join(root,"operator","issuer"),p,s.IssueProfile)
+ if issuer!=nil {owners.opened("exact original issuer",issuer.Close,e)}
+ check(e,"selected issuer audit")
+ info,n,e:=issuer.AuditIssueBinding(ctx,s.Base.Pool.AuthorityPin,s.IssueProfile);check(e,"complete selected issuer binding")
+ require(info.ReadOnly && info.Jobs==out.Financial.AuthorityJobs && n==out.IssuerRequests,"same audited complete job/request census")
+ out.Issuer,e=issuer.TryIssueRequest(ctx,id);check(e,"exact original issuer request")
+ if out.Issuer.State=="issued" {
+  out.Job,e=issuer.TryGetManifestJob(ctx,out.Issuer.JobID);check(e,"exact original job")
+ } else {require(out.Issuer.State=="sealed" && out.Issuer.JobID=="","exact original terminal seal")}
+ check(owners.close(),"selected issuer audit joined")
+
+ // All namespaces have passed the concrete full audits. Independently count
+ // their bounded retained rows and bind every projected byte to that snapshot.
+ out.Requests=[]sourceRequest{};out.IssuerRows=[]registry.IssuerRequest{};out.Jobs=[]prospectjob.ManifestJob{}
+ for _,name:=range []string{"issuer","pool"} {
+  rows:=walkAuditRows(ctx,root,name,func(k,v []byte){
+   require(out.RowHashes[name+"/"+hx(k)]==hx(digest(v)),"same complete audited row snapshot")
+   switch {
+   case bytes.HasPrefix(k,[]byte("issue/r/")):
+    require(len(k)==40 && len(v)<=registry.MaxIssueRowSize,"bounded exact request key")
+    rid:=hx(k[8:]);var canonical []byte
+    if name=="pool" {
+     var r sourceRequest;check(json.Unmarshal(v,&r),"source request census")
+     canonical,e=json.Marshal(r);check(e,"source request encoding")
+     require(r.Intent.RequestID==rid && r.Version==1,"source request key identity")
+     out.Requests=append(out.Requests,r)
+    } else {
+     var r registry.IssuerRequest;check(json.Unmarshal(v,&r),"issuer request census")
+     canonical,e=json.Marshal(r);check(e,"issuer request encoding")
+     require(r.RequestID==rid && r.Version==1,"issuer request key identity")
+     out.IssuerRows=append(out.IssuerRows,r)
+    }
+    require(bytes.Equal(v,canonical),"exact original canonical request bytes")
+   case bytes.HasPrefix(k,[]byte("issue/t/")):
+    require(name=="pool" && len(k)==40,"source-only retained template")
+    out.SourceTemplates++
+   case bytes.HasPrefix(k,[]byte("issue/j/")):
+    require(len(k)==40 && len(v)==32,"exact inverse row shape")
+    if name=="pool" {out.SourceInverses++} else {out.IssuerInverses++}
+   case name=="issuer" && bytes.HasPrefix(k,[]byte("job:")):
+    require(len(k)==68 && len(v)<=prospectjob.MaxManifestJobSize,"bounded original job row")
+    var j prospectjob.ManifestJob;check(json.Unmarshal(v,&j),"original job census")
+    raw,e:=json.Marshal(j);check(e,"original job encoding")
+    require(bytes.Equal(raw,v) && j.ID==string(k[4:]),"original ASCII job key and bytes")
+    out.Jobs=append(out.Jobs,j)
+   }
+  })
+  count:=0;for k:=range out.RowHashes {if len(k)>len(name) && k[:len(name)+1]==name+"/" {count++}}
+  require(count==len(rows),"no omitted or new audited public rows")
+ }
+ require(uint64(len(out.Requests))==out.SourceRequests && uint64(len(out.IssuerRows))==out.IssuerRequests && uint64(len(out.Jobs))==out.Financial.AuthorityJobs && out.IssuerInverses==out.Financial.AuthorityJobs,"complete original request/job/reverse census")
+ require(out.SourceRequests<=s.IssueProfile.MaxRequests && out.SourceRequests>=out.IssuerRequests,"bounded original selected request census")
+ matched:=uint64(0);works:=uint64(0);inverses:=uint64(0)
+ for _,r:=range out.Requests {
+  found:=false
+  for _,ir:=range out.IssuerRows {if ir.RequestID==r.Intent.RequestID {
+   require(!found && ir.IntentID==r.IntentID && ir.ProfileID==r.Intent.ProfileID && ir.GymID==r.Intent.GymID && ir.PublicKey==r.Intent.PublicKey,"unique exact paired request")
+   found=true;matched++
+  }}
+  require(found || r.State=="pending","only pending source may precede issuer")
+  if r.State=="work" {works++}
+  if r.State=="work" || r.State=="issued_unused" {inverses++}
+ }
+ require(matched==out.IssuerRequests && works==out.Financial.Works && out.SourceTemplates==out.SourceRequests-works && out.SourceInverses==inverses,"complete matched issuer/source projection")
+
+ db,e:=leveldb.OpenFile(filepath.Join(root,"operator","pool","db"),&opt.Options{ReadOnly:true,ErrorIfMissing:true,Strict:opt.StrictAll});check(e,"selected source public projection")
+ owners.add("exact source projection",db.Close)
+ get:=func(key []byte,limit int) []byte {
+  check(ctx.Err(),"exact request projection context")
+  raw,e:=db.Get(key,nil);check(e,"audited exact request key")
+  require(len(raw)>0 && len(raw)<=limit && out.RowHashes["pool/"+hx(key)]==hx(digest(raw)),"bounded same audited request row")
+  return raw
+ }
+ absent:=func(key []byte) {present,e:=db.Has(key,nil);check(e,"audited absence");require(!present,"exact original row absent")}
+ raw:=get(keyed("issue/r/",id),registry.MaxIssueRowSize);check(json.Unmarshal(raw,&out.Request),"audited exact source request")
+ iid,e:=registry.IssueIntentID(out.Request.Intent);check(e,"original intent identity")
+ pid,e:=registry.IssueProfileID(s.IssueProfile);check(e,"original profile identity")
+ require(out.Request.Intent.RequestID==id && iid==out.Request.IntentID && iid==out.Issuer.IntentID && out.Request.Intent.ProfileID==pid && out.Issuer.ProfileID==pid && out.Issuer.GymID==out.Request.Intent.GymID && out.Issuer.PublicKey==out.Request.Intent.PublicKey,"original complete request pairing")
+ if out.Issuer.State=="issued" {
+  require(out.Issuer.JobID==out.Job.ID && out.Job.GymID==out.Request.Intent.GymID && out.Job.PublicKey==out.Request.Intent.PublicKey,"original issued job identity")
+ }
+ if out.Request.State=="work" {
+  require(out.Issuer.State=="issued" && out.Request.JobID==out.Job.ID,"exact completed original work")
+  var saved poolshare.MiningWork
+  raw=get([]byte("w"+out.Job.ID),prospectwork.MaxTemplateSize+16384)
+  check(json.Unmarshal(raw,&saved),"audited original saved work")
+  require(saved.Job==out.Job,"same saved original job")
+  canonical,e:=json.Marshal(saved);check(e,"saved work encoding");require(bytes.Equal(raw,canonical),"exact original saved work bytes")
+  out.Template=saved.Template;out.Work=&saved
+  absent(keyed("issue/t/",id))
+  inverse:=get(keyed("issue/j/",out.Job.ID),32);require(bytes.Equal(inverse,dec(id)),"original work reverse")
+ } else {
+  raw=get(keyed("issue/t/",id),prospectwork.MaxTemplateSize)
+  check(json.Unmarshal(raw,&out.Template),"retained original template")
+  canonical,e:=json.Marshal(out.Template);check(e,"retained template encoding");require(bytes.Equal(raw,canonical),"exact original template bytes")
+  switch out.Request.State {
+  case "pending":
+   require(out.Request.JobID=="" && out.Request.ResolvedAtMS==0 && out.Request.Reason=="","original pending source row")
+   if out.Issuer.State=="issued" {absent([]byte("w"+out.Job.ID));absent(keyed("issue/j/",out.Job.ID))}
+  case "issued_unused":
+   require(out.Issuer.State=="issued" && out.Request.JobID==out.Job.ID && out.Request.ResolvedAtMS>=out.Job.ExpiresAtMS && out.Request.Reason=="expired_before_work","original expired unpublished job")
+   absent([]byte("w"+out.Job.ID));inverse:=get(keyed("issue/j/",out.Job.ID),32);require(bytes.Equal(inverse,dec(id)),"exact issued-unused inverse")
+  case "not_issued":
+   require(out.Issuer.State=="sealed" && out.Request.JobID=="" && out.Request.Reason==out.Issuer.Reason && out.Request.ResolvedAtMS>=out.Issuer.SealedAtMS,"original durable negative seal")
+  default:panic("unexpected original request state")
+  }
+ }
+ template,e:=json.Marshal(out.Template);check(e,"canonical original template")
+ out.TemplateSHA256=hx(digest(template));require(out.TemplateSHA256==out.Request.Intent.TemplateSHA256,"exact durable template intent")
+ if out.Issuer.State=="issued" {require(out.Job.Context==out.Template.Context,"original job/template context")}
+ check(owners.close(),"selected source projection joined")
+ require(reflect.DeepEqual(before,attachmentPublicFiles(root)),"full selected audit read only")
+ out.ReadOnlyUnchanged=true;return
+}
+func requireGap(v issueAudit,ack proposalBarrier,s pooloperator.RecoverableDailySetup) {
+ require(v.ReadOnlyUnchanged && v.Financial.ReadOnlyUnchanged && v.SourceRequests==1 && v.IssuerRequests==1 && v.SourceTemplates==1 && v.SourceInverses==0 && v.IssuerInverses==1 && v.Issuer.State=="issued" && v.Request.State=="pending" && v.Work==nil && v.Financial.AuthorityJobs==1 && v.Financial.Works==0 && v.Financial.Submissions==0 && v.Financial.Accepted==0 && v.Financial.Births==0 && len(v.Financial.Entries)==0 && len(v.Financial.Rounds)==0 && v.Financial.Header.Credits==0 && v.Financial.Header.Batches==0,"exact pending/issued gap, no hidden effects")
+ w,e:=prospectwork.PrepareManifestWork(v.Job,v.Template,s.Base.Pool.PayoutAddress,0,s.Base.Pool.PoolTarget);check(e,"reconstruct original proposal")
+ require(w.Candidate().BlockHex==ack.Block && hx(digest(dec(ack.Block)))==ack.SHA256 && ack.AtMS>=v.Job.IssuedAtMS && ack.AtMS<v.Job.ExpiresAtMS,"captured successful proposal equals exact unexpired audited job/template")
+}

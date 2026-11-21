@@ -1,0 +1,509 @@
+{
+  "approved_by": "root",
+  "case": "A",
+  "execution_authorized": true,
+  "files": {
+    "/Users/taytrrip/slug/artifacts/set80/a2-readonly-diagnostic-run-attempt1/report.json": {
+      "bytes": 3443,
+      "sha256": "e9fceb82b57543d79d4d0d67d05b4a8c82c1565c11a835ce34e0bf3e431d6472"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/actual-reference-attempt1/python314.json": {
+      "bytes": 173644,
+      "sha256": "0f0890e529b64c10ed000673aab7861b9bd526057cc3c2bbbe05b868028f3d10"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/actual-reference-attempt1/report.json": {
+      "bytes": 4479,
+      "sha256": "c00b9b36a0c047a1854cc4efb278f101a4935d433413a4aeb11259ef5b967f50"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt1/qualification-disposition.json": {
+      "bytes": 1038,
+      "sha256": "1bd55bef59c0a9e4d68056a2e53cef3627a3d373f1077f95d3df92209a2d3d27"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/report.json": {
+      "bytes": 13899,
+      "sha256": "4710edb5ce05683be459d0db4feba22c03a8658ea63fae5cdcae136aa5d0cf73"
+    },
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a2-readonly-diagnostic-attempt1/diagnostic-report.json": {
+      "bytes": 79421,
+      "sha256": "1396acb8203f063dcdcd8eb2d2764c56da6d6c05ccacda667200b6e7bf62408c"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/run.py": {
+      "bytes": 32403,
+      "sha256": "d5bed85d6b29771ff9f084d27ba1056bdf38ef52bde66ec83216893968d1a573"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/runner_support.py": {
+      "bytes": 3888,
+      "sha256": "54bb3e7caf33e744ce76bf366dd23a4eff4d370d9246b85758089b57dd2439d7"
+    },
+    "/Users/taytrrip/slug/set80-prep/CHECK_ACTUAL_LOOKUP.md": {
+      "bytes": 3041,
+      "sha256": "9bdc732ce13ac703bd3dc6f76dab02aa24b79183c6ab96855641e7606d77fd32"
+    },
+    "/Users/taytrrip/slug/set80-prep/CHECK_ACTUAL_SCHEMA.md": {
+      "bytes": 3835,
+      "sha256": "5ef1dc7c4c7810f1e617824b1cd79fe74910b5086febb97fd8fd6a7e985ad1e6"
+    },
+    "/Users/taytrrip/slug/set80-prep/a2-lookup-diagnostic-successor/after/scenario_a.go": {
+      "bytes": 10556,
+      "sha256": "b76130ca6f24a98a43e2c7ff91a3237a3cfd2d8fc95fa9cbdaaa25a2c2741cef"
+    },
+    "/Users/taytrrip/slug/set80-prep/a2-lookup-diagnostic-successor/after/work_evidence.go": {
+      "bytes": 9905,
+      "sha256": "5ab02c80981475dc9682dc6d4ce274cec131f31979f1373c01f39d98f937abca"
+    },
+    "/Users/taytrrip/slug/set80-prep/a2-lookup-diagnostic-successor/manifest.json": {
+      "bytes": 2832,
+      "sha256": "6f30cd172e62e2094ef0bc87a25f161e96e9c7f844d73e947cfbf2a6d7d7e59b"
+    },
+    "/Users/taytrrip/slug/set80-prep/a2-lookup-relay-diagnostic/README.md": {
+      "bytes": 4191,
+      "sha256": "a0fab5fc85c8a9f0e95e7a097205abfe87dc6735d734568ea39ea79bd2874692"
+    },
+    "/Users/taytrrip/slug/set80-prep/a2-lookup-relay-diagnostic/after/issue_tls_relay.go": {
+      "bytes": 10230,
+      "sha256": "e3a266c9fe3910df2a93d6cc515c9c427dbaa30ae00994290ce46d7a99e4c7bd"
+    },
+    "/Users/taytrrip/slug/set80-prep/a2-lookup-relay-diagnostic/after/main.go": {
+      "bytes": 14859,
+      "sha256": "2a090aed63d5f74f4a959f2cf9de6bede10762df74891ae5a974ba318110f979"
+    },
+    "/Users/taytrrip/slug/set80-prep/a2-lookup-relay-diagnostic/after/receipt_lookup_relay.go": {
+      "bytes": 8632,
+      "sha256": "bb75e98050f14d58651258de66ba0aa4c0b6d91fcef77dffc9c041a71812f15f"
+    },
+    "/Users/taytrrip/slug/set80-prep/a2-lookup-relay-diagnostic/manifest.json": {
+      "bytes": 3348,
+      "sha256": "63e81c938f942c78e87c8d90dcab0164721ba43df8335dff02888f8a3775b252"
+    },
+    "/Users/taytrrip/slug/set80-prep/a2-readonly-diagnostic/source-manifest.json": {
+      "bytes": 4006,
+      "sha256": "2df07faae94161affc17848d66a733f9aa8d461d99d7bfdb4df0e1abaa27f7a1"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/IMPLEMENTATION_PLAN.md": {
+      "bytes": 3429,
+      "sha256": "3f8c6fe043148e612f585373a1ac7c8448ae216dff382f18d1da77c41cff50b1"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/PERSISTENCE_EVIDENCE.md": {
+      "bytes": 798,
+      "sha256": "d81c0e9370f3113eb138349107af98b535ebde228d975e27cd4ad79ea5ae3be9"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/PUBLIC_SCHEMA.md": {
+      "bytes": 3216,
+      "sha256": "e2be94239906e35d1312053e29d6eadfc88971760450745bf4b68d643502b48d"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/README.md": {
+      "bytes": 4884,
+      "sha256": "54c0bd6e22a29cdc86797b41ef285d5661bbde8455b8e2a854247f97149f4853"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/audit-before-selected-census/issue_audit.go": {
+      "bytes": 6018,
+      "sha256": "2e8325283dd75fb01be007992a79a2ab3b1ea88a73af7f29d52ffd5e05fbb242"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/audit-before-selected-census/operator_audit.go": {
+      "bytes": 10008,
+      "sha256": "6652f909c24f7a819cb244ae6bdf432fff5e484447864e85df61e3c67f16fee1"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/audit-selected-census.diff": {
+      "bytes": 33964,
+      "sha256": "187b6cf7b176d00e890ef72ffe9925ef3ed0ab93ba851d023c318daba9b9e4f3"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/audit-source-manifest.json": {
+      "bytes": 1530,
+      "sha256": "4a63d841615b504b3db11da604000f1fb49106ef836128664d166728ad8bfe86"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/cli_process.go": {
+      "bytes": 9473,
+      "sha256": "a25c7a14f56d3b4a0a2a90f4807d87a8cc048a6ffccaec7dc6747f4ed4b007b2"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/copied-inputs.json": {
+      "bytes": 7453,
+      "sha256": "5d1ce505b66dc6865bef53b15bdb5755d719a699b1b02e0cde4ddf2518fa533c"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/fixture-catalog.json": {
+      "bytes": 66249,
+      "sha256": "2637978c2e08637dae2a21bf7fcb8e9ab37edb3476e2b9512c73ff16809b7e55"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/fixture-public.json": {
+      "bytes": 7244,
+      "sha256": "83bfe6cdd6020524199ba6abada82614fb67987b32b9fb96111bf6bddf879f23"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/fixture_setup.go": {
+      "bytes": 5416,
+      "sha256": "7b3ddd36d8c8e6098f6db7f3d04e74ffb77533cdcfdc10e480b2b66f38063dd0"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/go.mod": {
+      "bytes": 1371,
+      "sha256": "2acab03476a5fbe3c41af0d387342778f499e97d6e876c7f0d936f704021d4c1"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inherited/path-b/late_audit.go": {
+      "bytes": 9296,
+      "sha256": "e80bcf271bfb60f81451ee08f40774af964374bf395770666f1e59351f688d5f"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inherited/path-b/late_flow.go": {
+      "bytes": 25249,
+      "sha256": "b963fdbf562ea2916f076942380a020a9070c5c1c8a1192d4bfb7272b7f83603"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inherited/path-b/main.go": {
+      "bytes": 39307,
+      "sha256": "6413d9086f770bd6d5433c8e88f155841cb0c133facd396ade391c96aac356a9"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inherited/path-b/node_helpers.go": {
+      "bytes": 8444,
+      "sha256": "330ba64bdff3836b3a4d12f426e90e55fb2f4e2c6ecc3272b290597ac405e92b"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inherited/path-b/source-manifest.json": {
+      "bytes": 4793,
+      "sha256": "866c7f2e5c8c48465bae90d1e93e22bc94631a4adbf6f2c6e87855cf279f0ae6"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inherited/path-c/PLAN.md": {
+      "bytes": 4034,
+      "sha256": "31141ea19126aa37fa54226552c75e3a5d9c1256cbba9d58ff06ae6d5ef47eb0"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inherited/path-c/README.md": {
+      "bytes": 1707,
+      "sha256": "3293ca67314a8454b9440a9395bbeebbfa7927f81834b221506f545d1818f302"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inherited/path-c/cli_process.go": {
+      "bytes": 9454,
+      "sha256": "aab907a4038b10804611e0d6ea49ea6bb27fc64ecee8315ec90448dddbf65fc7"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inherited/path-c/fixture-catalog.json": {
+      "bytes": 66249,
+      "sha256": "2637978c2e08637dae2a21bf7fcb8e9ab37edb3476e2b9512c73ff16809b7e55"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inherited/path-c/fixture-public.json": {
+      "bytes": 7244,
+      "sha256": "83bfe6cdd6020524199ba6abada82614fb67987b32b9fb96111bf6bddf879f23"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inherited/path-c/go.mod": {
+      "bytes": 1371,
+      "sha256": "2800011a777f0d44ad9c035bba09a64889780529d2fede1df8b710b36532c026"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inherited/path-c/main.go": {
+      "bytes": 14081,
+      "sha256": "1fc1060c68105d3807c568eb7217fe33ecfcf148dc2c13b288bd5c25e6434ea2"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inherited/path-c/node_helpers.go": {
+      "bytes": 8556,
+      "sha256": "2aed24b4ca1543331f95bccfdffb6118d43a83ec490c8c1bcf8206d2a44ba451"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inherited/path-c/operator_audit.go": {
+      "bytes": 9605,
+      "sha256": "6f9c5e90841ed0b5362282749ceb6705380d1ab720dfc1ced2ea3653510d54fb"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inherited/path-c/payment.go": {
+      "bytes": 10011,
+      "sha256": "1483c0ec3882de879d2a2b8570422a45f4b6df70319c291cc6e1adea4b17edc8"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inherited/path-c/provenance.json": {
+      "bytes": 2990,
+      "sha256": "aea1615cd731e731287d168916ed07e6ba62d6abf3e03f938d7585b956472e21"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inherited/path-c/relay.go": {
+      "bytes": 4206,
+      "sha256": "2abc55505b26b680a9cf321a04cd57e5227ca5cdccd8dfe4534a9d4a8d98c69c"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inherited/path-c/runtime_helpers.go": {
+      "bytes": 11411,
+      "sha256": "7b55b892d218f236ed0c4b6408f0f909996bb2ce1f8c20cea4a338de9ebb2caa"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inherited/path-c/selection.go": {
+      "bytes": 6929,
+      "sha256": "e84e8563c197aae0795ed49e01cc41f6bf85efeed9979442192d5884d8052afc"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inherited/path-c/source-manifest.json": {
+      "bytes": 7207,
+      "sha256": "092fd06f36f300a7d17b43ad458bf58a814c4f8fa487c93ce7b535054138ccb4"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inherited/path-c/work_evidence.go": {
+      "bytes": 9795,
+      "sha256": "8b33fb269929580dee3543421b8d55a952fa3c99464aaf5426b192d3b77096fa"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inputs/ISSUE_RECOVERY_ACCEPTANCE_PLAN.md": {
+      "bytes": 13245,
+      "sha256": "1fcbd0b1e2216b9db33e1c477b06456c3adddf59a33d04353e4c43864111d9c1"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inputs/ISSUE_RECOVERY_CONTRACT.md": {
+      "bytes": 27904,
+      "sha256": "f3e019a840d6b69d853350763364a3fc41f10ea899f00ed6f164db5d58a95610"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inputs/actual-reference.json": {
+      "bytes": 173644,
+      "sha256": "0f0890e529b64c10ed000673aab7861b9bd526057cc3c2bbbe05b868028f3d10"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inputs/base-reference.json": {
+      "bytes": 3176583,
+      "sha256": "a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inputs/path-c-reference.json": {
+      "bytes": 46498,
+      "sha256": "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/inputs/reference-v1.json": {
+      "bytes": 6134980,
+      "sha256": "4bbe4eb9556ed5a894cee6ff565b0dcca805f27fea2d77cfe3a56242dc3dac91"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/issue_audit.go": {
+      "bytes": 12822,
+      "sha256": "f1dda87812b30e59e6408ebedaa32518fe1073dc8da8adc67eaacf7dd0179833"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/issue_calls.go": {
+      "bytes": 1344,
+      "sha256": "5d90599fbe133f46023ede7ddd90db66dce5a412af5f7ca234d484ea296c27be"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/issue_tls_relay.go": {
+      "bytes": 10301,
+      "sha256": "d23c5046f0979a3a8c9a42c7420531a4f31173e93b576a3e2b8a3afbbde111fc"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/main.go": {
+      "bytes": 14859,
+      "sha256": "2a090aed63d5f74f4a959f2cf9de6bede10762df74891ae5a974ba318110f979"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/node_helpers.go": {
+      "bytes": 8810,
+      "sha256": "331190728f79c5f5b0aaae4109426ffc4e41768a087b86126f31799940fb66cd"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/operator_audit.go": {
+      "bytes": 14293,
+      "sha256": "14d463c15ae4438ef6172b89d2e8714d1591ce0869efad3b2a28dfda6e45b2bc"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/operator_process.go": {
+      "bytes": 9743,
+      "sha256": "4e62812e828e3ec6cef2a9c605527d23c1478ee0da701cb2b5d14666ecfd6417"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/outbox-helper-manifest.json": {
+      "bytes": 2553,
+      "sha256": "1c76a7793ab5cc9749d18194f55c7aee9fca523e88172e4c36c16caf84696165"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/outbox-helper-preimages/work_evidence.go": {
+      "bytes": 9795,
+      "sha256": "8b33fb269929580dee3543421b8d55a952fa3c99464aaf5426b192d3b77096fa"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/outbox-helper.diff": {
+      "bytes": 19450,
+      "sha256": "09e57ac4576c7f69237c3cf471d354150aaf2be735b80f95eaa26e81f5f03f45"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/outbox_audit.go": {
+      "bytes": 11444,
+      "sha256": "84fa9a045b9f1edb607cbfdec7948902cdc8f344595bebbc62922862bc8e0f77"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/payment.go": {
+      "bytes": 10011,
+      "sha256": "1483c0ec3882de879d2a2b8570422a45f4b6df70319c291cc6e1adea4b17edc8"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/pre-final-selector/cli_process.go": {
+      "bytes": 9500,
+      "sha256": "3a0a2c2b181cff29b0a1fa0fe6414b5e794db985487f436fda597671e71a4333"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/pre-final-selector/node_helpers.go": {
+      "bytes": 8556,
+      "sha256": "2aed24b4ca1543331f95bccfdffb6118d43a83ec490c8c1bcf8206d2a44ba451"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/pre-final-selector/source-manifest.json": {
+      "bytes": 11183,
+      "sha256": "ce7d4f28aff87998800c428ce38e82588b50679d51a932442c4578e88745c194"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/pre-instrumentation-manifest.json": {
+      "bytes": 14956,
+      "sha256": "087cfdadf9ca2816a42afe168d60a721ab3793c2cb58993b38189aa44b2e601f"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/pre-peer-process-relay/issue_tls_relay.go": {
+      "bytes": 8243,
+      "sha256": "637804fde09d8d879f19058da3447fef89383d48db135a2fcbd769b9ec08301b"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/pre-peer-process-relay/operator_process.go": {
+      "bytes": 7954,
+      "sha256": "4b763fbfcf664d74b8c576b0056c6cbc0bd764adca15f922728f3891f34a5fd2"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/pre-peer-process-relay/proposal_relay.go": {
+      "bytes": 5874,
+      "sha256": "1a9f8c620c3da66eeb6446826cdb2adb24bfadff3d4dac776ec3c8b4c0d62615"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/pre-root-format/cli_process.go.txt": {
+      "bytes": 9473,
+      "sha256": "a25c7a14f56d3b4a0a2a90f4807d87a8cc048a6ffccaec7dc6747f4ed4b007b2"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/pre-root-format/fixture_setup.go.txt": {
+      "bytes": 5368,
+      "sha256": "03637dffe93c1bb004871da81826ae5b17151f6a7ecb325b3b499ac815dc218f"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/pre-root-format/issue_audit.go.txt": {
+      "bytes": 11735,
+      "sha256": "adf6de5de3652abfa0eea0cebf2bedeeeadad50824cd7be134ea86d798247418"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/pre-root-format/issue_calls.go.txt": {
+      "bytes": 1241,
+      "sha256": "f7babc8495d252e27d44978017dca734eaf52dc7091e9f36f84c1caa807058c8"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/pre-root-format/issue_tls_relay.go.txt": {
+      "bytes": 8299,
+      "sha256": "6ab8222f60012d36533db232493368773302e8d59285f3d0c1c122499b7eb143"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/pre-root-format/main.go.txt": {
+      "bytes": 12929,
+      "sha256": "2c2196f87645ce7ad6a44feec1756e18cf2b6ce3c70fed05076c5bea271abf92"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/pre-root-format/node_helpers.go.txt": {
+      "bytes": 8776,
+      "sha256": "483d633d66485a624de8bd5d1913aa7242e9c119b06d08a19fab546d15b054c0"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/pre-root-format/operator_audit.go.txt": {
+      "bytes": 13462,
+      "sha256": "e3ea9d82b23c1857c8ba053a4703a87b6b312ef48da1844e1ae03b767a3b7a79"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/pre-root-format/operator_process.go.txt": {
+      "bytes": 8089,
+      "sha256": "96a50e82301983cad22546d661e7ee0393917e5bdc203c4ec3a2e1137dc9480e"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/pre-root-format/outbox_audit.go.txt": {
+      "bytes": 11444,
+      "sha256": "84fa9a045b9f1edb607cbfdec7948902cdc8f344595bebbc62922862bc8e0f77"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/pre-root-format/payment.go.txt": {
+      "bytes": 10011,
+      "sha256": "1483c0ec3882de879d2a2b8570422a45f4b6df70319c291cc6e1adea4b17edc8"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/pre-root-format/proposal_relay.go.txt": {
+      "bytes": 6096,
+      "sha256": "7e07ee54a2c4b04c69cd291c96a6cb6e5faa3ebca4c170fb85ab1632b6b03455"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/pre-root-format/scenario_a.go.txt": {
+      "bytes": 9805,
+      "sha256": "25a1f9f30345cb14466f1749a0dc0eed69c6f25d5dbc52a78e8e913013416f30"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/pre-root-format/scenario_b.go.txt": {
+      "bytes": 3533,
+      "sha256": "eb5ad4ee26f793d15278d52c0aaa594eb2f298fbde8474d9995b601d001a6a71"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/pre-root-format/selection.go.txt": {
+      "bytes": 10207,
+      "sha256": "09311e8a2a25755c0d16fbbeb2f29243c4db8f4241d574c0f61765a7348ebd3d"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/pre-root-format/source-manifest.json": {
+      "bytes": 12039,
+      "sha256": "bbe55fa77957305a6478de197a0720254ca73fb697ce716c3f84c3742afd81e7"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/pre-root-format/work_evidence.go.txt": {
+      "bytes": 7669,
+      "sha256": "42ef9e32843082665d2b3013ec79da8eaad923536857014c61141a0d824e58bc"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/proposal_relay.go": {
+      "bytes": 6312,
+      "sha256": "f14227d8b135f7bf66f5c7937acb636d05471ef3e953fca87396caac957e9a91"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/receipt_lookup_relay.go": {
+      "bytes": 10119,
+      "sha256": "1819365aaa509b8108238c7620b209cf4868ab4a66ceaaaa3d0bec6e61a11f72"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/scenario_a.go": {
+      "bytes": 10556,
+      "sha256": "b76130ca6f24a98a43e2c7ff91a3237a3cfd2d8fc95fa9cbdaaa25a2c2741cef"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/scenario_b.go": {
+      "bytes": 3766,
+      "sha256": "a14e09cbb6c17522ba73e9390cb918dcebceb8789d8ab4c4e46c2d2300d21c0b"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/selection-lock.proposed.json": {
+      "bytes": 1307,
+      "sha256": "1bc724edaef7fdb6396484f2b7c9220aa5fde17d8f99db999a8b6662fca33493"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/selection-recipe.json": {
+      "bytes": 1039,
+      "sha256": "0b418f9cc6317aa7b02786bfd807c4b503d9746eef8666b4d58616a7e37d3173"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/selection.go": {
+      "bytes": 10439,
+      "sha256": "8ec99e0040b490592c62b49fe3a084f6a2359d21f6773b0748f07bd83fc176b3"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/selection_reference.py": {
+      "bytes": 9287,
+      "sha256": "fb56a5ce58cb04f250ceb8b4a0498dd2f996dd2a2fe9a86629f7c19b9d12cc76"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/source-manifest.json": {
+      "bytes": 15800,
+      "sha256": "0ad1f3f0a9b9d22bfcde4682ecdd1530837311e4261ba3a47b57544c861c056b"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/work_evidence.go": {
+      "bytes": 10191,
+      "sha256": "c806ecdc4bf8584a8bc3d67af0abb8ab1dbb3594975d06ccd0022cd01857f956"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery/PUBLIC_SCHEMA.md": {
+      "bytes": 3216,
+      "sha256": "e2be94239906e35d1312053e29d6eadfc88971760450745bf4b68d643502b48d"
+    },
+    "/Users/taytrrip/slug/set80-prep/actual-recovery/source-manifest.json": {
+      "bytes": 14956,
+      "sha256": "087cfdadf9ca2816a42afe168d60a721ab3793c2cb58993b38189aa44b2e601f"
+    },
+    "/Users/taytrrip/slug/set80-prep/check-actual-count-successor/COORDINATION-RECORD.json": {
+      "bytes": 463,
+      "sha256": "67b0611e0d2315783a4a7ee7cb058cf2c9c43297c6870f292297d90da524b5d8"
+    },
+    "/Users/taytrrip/slug/set80-prep/check-actual-lookup-manifest.json": {
+      "bytes": 4851,
+      "sha256": "b0a37d964f6b813a82a5e446d56ebca52db2c05ace544b04244122007c11bef6"
+    },
+    "/Users/taytrrip/slug/set80-prep/check-actual-lookup.py": {
+      "bytes": 15057,
+      "sha256": "d2bf5f105ff0250a6cd5c0a8365a79df323855a29d61ea866dfdc63452348546"
+    },
+    "/Users/taytrrip/slug/set80-prep/check-actual-source-manifest.json": {
+      "bytes": 1214,
+      "sha256": "7200b2218c6c39207860820e002333f9c40f798b729ca6d891f57b5a39e5742b"
+    },
+    "/Users/taytrrip/slug/set80-prep/check-actual.py": {
+      "bytes": 65246,
+      "sha256": "87cb6364644db35b707a90a4bcf1c97467915aa3d691e65c81e3b9fc4539736e"
+    },
+    "/Users/taytrrip/slug/set80-prep/run-actual-instrumented.py": {
+      "bytes": 11536,
+      "sha256": "113181b9f619ec492e613f342c35fc6f3744cfa23b025c39beed930d895c293e"
+    },
+    "/Users/taytrrip/slug/slug/build-profile.json": {
+      "bytes": 179,
+      "sha256": "e5ddb9d30e8048ad3b656358134632e48852f44deef44bdd93df7dda13208295"
+    },
+    "/Users/taytrrip/slug/slug/desktop/go.sum": {
+      "bytes": 1922,
+      "sha256": "8db3d7c6bb03f449ea27eb139be2a55912e2e409a50922274171436fdf914555"
+    },
+    "/Users/taytrrip/slug/slug/poolservice/client.go": {
+      "bytes": 12225,
+      "sha256": "4a37ad46fa42c0bf06a4ffaa15f022ad40f240806e47841928efd1d86c5039d1"
+    },
+    "/Users/taytrrip/slug/slug/poolservice/daily_client.go": {
+      "bytes": 5122,
+      "sha256": "e682850f1836f386d76c3d448634f383bba1fd33d7a3ae3f2d3607d8d14c09c1"
+    },
+    "/Users/taytrrip/slug/slug/poolservice/daily_server.go": {
+      "bytes": 10637,
+      "sha256": "f1b1d6b0d7f5fb37ad9439b9b3b4e900a83c8fd13ae0be941ea7f29ee6d2c368"
+    },
+    "/Users/taytrrip/slug/slug/poolservice/recoverable_server.go": {
+      "bytes": 1322,
+      "sha256": "c7d1cff15f8f81f3d913b39343606f2537c19fe7b7caee7f9076f2568e5cd153"
+    },
+    "/Users/taytrrip/slug/slug/poolservice/recoverable_types.go": {
+      "bytes": 5194,
+      "sha256": "38f4e94e214b03ef1dfbd874cba3fc9f90f75197c72f99dfac2b3339408dbf45"
+    },
+    "/Users/taytrrip/slug/slug/poolservice/types.go": {
+      "bytes": 3849,
+      "sha256": "84a7f5cf6efe77500fef8b5b8510509d24ef481598d8149f82661cdfa0844a50"
+    },
+    "/Users/taytrrip/slug/slug/scripts/candidate-go.sh": {
+      "bytes": 2725,
+      "sha256": "64e073ba868e42b04e3e93a51826b2e6ee1b99103b92b417868cbf74f9b6436e"
+    },
+    "/private/tmp/slug_set48_build_profile.py": {
+      "bytes": 4753,
+      "sha256": "b6033d66edb4d24a57a7fac4e59ddaeee6964f0943aca21fddc6f65c7f5e6ee4"
+    }
+  },
+  "maximum_chain_height": 180,
+  "outer_seconds": 1080,
+  "reason": "One instrumented successor of failed A2: complete original stores read-only audited and one matching accepted receipt verified. Original live error omitted and remains unknown. Public client/wire diagnostics only; unchanged product, receipts, acceptance, retry codes, deadlines and financial expectations. Root-reviewed immutable separate helper0ad1 and wrapperd2bf; original87cb proof remains required. Fresh published synthetic fixtures only.",
+  "scenario_seconds": 900,
+  "scope": "set80-exact-issuance-recovery-actual",
+  "version": 1
+}

@@ -1,0 +1,202 @@
+{
+  "cause": "Two inherited invalid error frames have no http_status field; the wrapper loop indexed that optional premise unconditionally.",
+  "delta": "Preserve status absence on invalid frames; compare only explicit inherited statuses to original frozen map; valid errors still require exact original status. No new status or negative-label change.",
+  "error_schema_audit": [
+    {
+      "frozen_map_value": 409,
+      "has_status": true,
+      "input_fields": [
+        "name",
+        "valid",
+        "scope",
+        "value",
+        "canonical_hex",
+        "http_status"
+      ],
+      "name": "stale_capture",
+      "nested_code": "stale_capture",
+      "status": 409,
+      "valid": true
+    },
+    {
+      "frozen_map_value": 409,
+      "has_status": true,
+      "input_fields": [
+        "name",
+        "valid",
+        "scope",
+        "value",
+        "canonical_hex",
+        "http_status"
+      ],
+      "name": "stale_capture-wrong-flag",
+      "nested_code": "stale_capture",
+      "status": 409,
+      "valid": false
+    },
+    {
+      "frozen_map_value": 503,
+      "has_status": true,
+      "input_fields": [
+        "name",
+        "valid",
+        "scope",
+        "value",
+        "canonical_hex",
+        "http_status"
+      ],
+      "name": "outcome_unknown",
+      "nested_code": "outcome_unknown",
+      "status": 503,
+      "valid": true
+    },
+    {
+      "frozen_map_value": 503,
+      "has_status": true,
+      "input_fields": [
+        "name",
+        "valid",
+        "scope",
+        "value",
+        "canonical_hex",
+        "http_status"
+      ],
+      "name": "outcome_unknown-wrong-flag",
+      "nested_code": "outcome_unknown",
+      "status": 503,
+      "valid": false
+    },
+    {
+      "frozen_map_value": 503,
+      "has_status": true,
+      "input_fields": [
+        "name",
+        "valid",
+        "scope",
+        "value",
+        "canonical_hex",
+        "http_status"
+      ],
+      "name": "busy",
+      "nested_code": "busy",
+      "status": 503,
+      "valid": true
+    },
+    {
+      "frozen_map_value": 503,
+      "has_status": true,
+      "input_fields": [
+        "name",
+        "valid",
+        "scope",
+        "value",
+        "canonical_hex",
+        "http_status"
+      ],
+      "name": "busy-wrong-flag",
+      "nested_code": "busy",
+      "status": 503,
+      "valid": false
+    },
+    {
+      "frozen_map_value": null,
+      "has_status": false,
+      "input_fields": [
+        "name",
+        "valid",
+        "scope",
+        "value",
+        "canonical_hex"
+      ],
+      "name": "unknown-code",
+      "nested_code": "manual_clear",
+      "status": null,
+      "valid": false
+    },
+    {
+      "frozen_map_value": 409,
+      "has_status": false,
+      "input_fields": [
+        "name",
+        "valid",
+        "scope",
+        "value",
+        "canonical_hex"
+      ],
+      "name": "v1-error",
+      "nested_code": "stale_capture",
+      "status": null,
+      "valid": false
+    }
+  ],
+  "failed_attempt": {
+    "bytes": 2127,
+    "clean_join": true,
+    "lock_unchanged": true,
+    "outputs": {},
+    "passed": false,
+    "path": "/Users/taytrrip/slug/artifacts/set80/reference-attempt3/report.json",
+    "sha256": "a5db58400c595833669267e13d581def015419f865faf8da6aab43b7b63a840e",
+    "sources_unchanged": true
+  },
+  "predecessor": {
+    "path": "/Users/taytrrip/slug/set80-prep/reference-before-error-status-selection",
+    "producer_lock_sha256": "782d5f29f432ec46e6706a9283a53d6680a27d12e0ca56c65f7cdda7b118aec0",
+    "source_ready_sha256": "18f1c07067f5b21876f78d04eef069a41bf3dcc89bb023322e58774e4e96a651"
+  },
+  "remaining_input_access_audit": [
+    {
+      "all_present": true,
+      "cases": 14,
+      "category": "envelopes",
+      "required_fields": [
+        "name",
+        "valid",
+        "value",
+        "canonical_hex"
+      ]
+    },
+    {
+      "all_present": true,
+      "cases": 41,
+      "category": "balances",
+      "required_fields": [
+        "name",
+        "valid",
+        "value",
+        "canonical_hex"
+      ]
+    },
+    {
+      "all_present": true,
+      "cases": 19,
+      "category": "pages",
+      "required_fields": [
+        "name",
+        "valid",
+        "value",
+        "canonical_hex"
+      ]
+    },
+    {
+      "all_present": true,
+      "cases": 8,
+      "category": "entries",
+      "required_fields": [
+        "name",
+        "valid",
+        "value",
+        "canonical_hex"
+      ]
+    }
+  ],
+  "successor_executed": false,
+  "unchanged": [
+    "all112 public input copies",
+    "input recipe",
+    "case counts",
+    "caps",
+    "economic policy"
+  ],
+  "version": 1
+}

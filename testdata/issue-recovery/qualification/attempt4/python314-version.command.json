@@ -1,0 +1,26 @@
+{
+  "capture_errors": [],
+  "cleanup": {
+    "errors": [],
+    "group_empty": true,
+    "leftover_after_exit": false,
+    "pgid": 76051,
+    "pid": 76051,
+    "return_code": 0,
+    "signals": []
+  },
+  "command": [
+    "/opt/homebrew/bin/python3",
+    "-B",
+    "-S",
+    "--version"
+  ],
+  "exit_code": 0,
+  "log_errors": [],
+  "log_joined": true,
+  "log_limit_exceeded": false,
+  "pgid": 76051,
+  "pid": 76051,
+  "seconds": 0.021,
+  "timed_out": false
+}

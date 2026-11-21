@@ -5,6 +5,7 @@ package registry
 import (
 	"errors"
 	"io"
+	"os"
 	"sync"
 	"time"
 
@@ -104,15 +105,17 @@ func (m manifestMetadata) pin() ManifestAuthorityPin {
 // It never migrates or enriches legacy evidence. Operations and Close serialize
 // under one gate; callbacks must not reenter it. Callers bound their own queues.
 type ManifestStore struct {
-	public     *publicManifestState // selected only by the explicit public constructor
-	mu         sync.Mutex
-	db         *leveldb.DB
-	meta       manifestMetadata
-	readOnly   bool
-	closed     bool
-	closeErr   error
-	poisoned   error
-	writeBatch func(*leveldb.Batch, *opt.WriteOptions) error
+	failedIssueFile *os.File             // exact failed-Close descriptor; never retried
+	issue           *issueRegistryState  // fresh explicitly selected recovery mode
+	public          *publicManifestState // selected only by the explicit public constructor
+	mu              sync.Mutex
+	db              *leveldb.DB
+	meta            manifestMetadata
+	readOnly        bool
+	closed          bool
+	closeErr        error
+	poisoned        error
+	writeBatch      func(*leveldb.Batch, *opt.WriteOptions) error
 	// Private deterministic/fault seams, never public configuration.
 	now        func() time.Time
 	random     io.Reader

@@ -33,15 +33,18 @@ const (
 )
 
 type poolOutboxMetadata struct {
-	Application  string     `json:"application"`
-	Version      uint32     `json:"version"`
-	Config       PoolConfig `json:"config"`
-	LastSequence uint64     `json:"last_sequence"`
-	Records      uint64     `json:"records"`
-	Bytes        uint64     `json:"bytes"`
-	Pending      uint64     `json:"pending"`
-	Reserved     uint64     `json:"reserved"`
-	IssuePending bool       `json:"-"`
+	Application     string     `json:"application"`
+	Version         uint32     `json:"version"`
+	Config          PoolConfig `json:"config"`
+	LastSequence    uint64     `json:"last_sequence"`
+	Records         uint64     `json:"records"`
+	Bytes           uint64     `json:"bytes"`
+	Pending         uint64     `json:"pending"`
+	Reserved        uint64     `json:"reserved"`
+	IssuePending    bool       `json:"-"`
+	Requests        uint64     `json:"-"`
+	ActiveRequestID string     `json:"-"`
+	FirstReserved   uint64     `json:"-"`
 }
 type poolOutboxMarker struct {
 	Application string     `json:"application"`
@@ -59,12 +62,14 @@ type PoolOutbox struct {
 	config                    PoolConfig
 	closed, poisoned, running bool
 	closeErr                  error
+	failedMarker              *os.File
 	closeDB                   func() error
 	checkpoint                func(string)
 	writeBatch                func(*leveldb.Batch, *opt.WriteOptions) error
 	cachedScan                *PoolScan
 	cachedEntryBytes          uint64
 	issueAttempt              *poolDailyIssueAttempt
+	recovery                  *poolIssueRecovery
 }
 
 func samePoolIdentity(a, b PoolConfig) bool {
@@ -76,6 +81,9 @@ func samePoolIdentity(a, b PoolConfig) bool {
 // Bound container allocation before typed JSON decoding. Null is allowed only
 // where the concrete type's canonical JSON retains it, preserving nil slices.
 func poolDecodeCanonical(raw []byte, limit int, out any) error {
+	return poolDecodeBounded(raw, limit, out, 12)
+}
+func poolDecodeBounded(raw []byte, limit int, out any, maximumDepth int) error {
 	if len(raw) == 0 || len(raw) > limit || raw[0] != '{' || !utf8.Valid(raw) {
 		return ErrCorrupt
 	}
@@ -83,7 +91,7 @@ func poolDecodeCanonical(raw []byte, limit int, out any) error {
 	d.UseNumber()
 	var visit func(int, string) error
 	visit = func(depth int, field string) error {
-		if depth > 12 {
+		if depth > maximumDepth {
 			return ErrCorrupt
 		}
 		token, e := d.Token()
@@ -304,14 +312,24 @@ func (b *PoolOutbox) state() error {
 	return nil
 }
 func (b *PoolOutbox) fits(m poolOutboxMetadata) bool {
+	if b.recovery != nil {
+		return b.recoveryFits(m)
+	}
 	return m.Bytes <= b.config.MaxBytes && m.Reserved <= b.config.MaxBytes-m.Bytes && m.Records <= b.config.MaxRecords
 }
 func (b *PoolOutbox) commit(batch *leveldb.Batch, m poolOutboxMetadata) error {
+	if b.recovery != nil && b.recovery.readOnly {
+		return ErrCorrupt
+	}
 	if b.poisoned {
 		return ErrPoisoned
 	}
-	raw, e := encodePoolMetadata(m)
-	if e != nil || len(raw) > maxMetadataSize || !b.fits(m) {
+	raw, e := b.encodeMetadata(m)
+	limit := maxMetadataSize
+	if b.recovery != nil {
+		limit = poolIssueMetadataLimit
+	}
+	if e != nil || len(raw) > limit || !b.fits(m) {
 		return ErrCorrupt
 	}
 	batch.Put([]byte("meta"), raw)
@@ -353,13 +371,21 @@ func poolFutureReserve(e PoolEntry) uint64 {
 
 func (b *PoolOutbox) audit() error {
 	raw, e := b.db.Get([]byte("meta"), nil)
-	if e != nil || decodePoolMetadata(raw, b.config.Version, &b.meta) != nil || b.meta.Application != poolApplication || b.meta.Version != b.config.Version || !poolReopenConfig(b.meta.Config, b.config) || b.meta.Records != b.meta.LastSequence || b.meta.Pending > b.meta.Records || !b.fits(b.meta) {
+	if e != nil || b.decodeMetadata(raw) != nil || b.meta.Application != poolApplication || b.meta.Version != b.config.Version || !poolReopenConfig(b.meta.Config, b.config) || b.meta.Records != b.meta.LastSequence || b.meta.Pending > b.meta.Records || !b.fits(b.meta) {
 		return ErrCorrupt
 	}
 	if c, e := validateSelectedPoolConfig(b.meta.Config, b.config.Version == PoolVersion2); e != nil || c != b.meta.Config {
 		return ErrCorrupt
 	}
 	var count, size, indexes, pending, reserved uint64
+	var links *poolIssueAudit
+	if b.recovery != nil {
+		links, e = b.auditIssueRequests()
+		if e != nil {
+			return e
+		}
+		size, reserved = links.bytes, links.reserved
+	}
 	var scan *PoolScan
 	var nonce uint64
 	haveCursor := false
@@ -371,7 +397,11 @@ func (b *PoolOutbox) audit() error {
 		case bytes.Equal(k, []byte("meta")):
 		case bytes.Equal(k, []byte("scan")):
 			var s PoolScan
-			if poolDecodeCanonical(v, poolMaxScanSize, &s) != nil || s.NextNonce != 0 || validatePoolScan(s, b.config) != nil {
+			if b.recovery != nil {
+				if e := b.decodeIssueScan(v, &s, links); e != nil {
+					return e
+				}
+			} else if poolDecodeCanonical(v, poolMaxScanSize, &s) != nil || s.NextNonce != 0 || validatePoolScan(s, b.config) != nil {
 				return ErrCorrupt
 			}
 			scan = &s
@@ -390,6 +420,12 @@ func (b *PoolOutbox) audit() error {
 			var entry PoolEntry
 			if poolDecodeCanonical(v, poolMaxEntrySize, &entry) != nil || entry.Sequence != binary.BigEndian.Uint64(k[1:]) || entry.Sequence > b.meta.LastSequence || validatePoolEntry(entry, b.config) != nil {
 				return ErrCorrupt
+			}
+			if links != nil && !links.match(entry.Work) {
+				return ErrCorrupt
+			}
+			if links != nil {
+				links.entries[entry.Work.Job.ID] = true
 			}
 			index, e := b.db.Get(hashKey(entry.DuplicateKey), nil)
 			if e != nil || !bytes.Equal(index, k) {
@@ -437,8 +473,22 @@ func (b *PoolOutbox) audit() error {
 			if pending > b.meta.Records {
 				return ErrCorrupt
 			}
+		case b.recovery != nil && len(k) == 33 && k[0] == 'q':
+			// Fully decoded, selected and counted in the first request pass.
 		default:
 			return ErrCorrupt
+		}
+	}
+	if b.recovery != nil {
+		if b.meta.ActiveRequestID != "" && (scan != nil || haveCursor) {
+			return ErrCorrupt
+		}
+		if scan != nil && !links.entries[scan.Work.Job.ID] {
+			b.meta.FirstReserved = poolReservationEntryBytes(*scan, b.config)
+			if b.meta.FirstReserved == poolInvalidReserve || b.meta.FirstReserved > poolMaxEntrySize {
+				return ErrCorrupt
+			}
+			reserved += b.meta.FirstReserved
 		}
 	}
 	if it.Error() != nil || b.meta.IssuePending && (scan != nil || haveCursor) || (scan != nil) != haveCursor || count != b.meta.Records || indexes != count || size != b.meta.Bytes || pending != b.meta.Pending || reserved != b.meta.Reserved || !b.fits(b.meta) {
@@ -577,6 +627,9 @@ func (b *PoolOutbox) saveScan(s *PoolScan) error {
 	if e := b.state(); e != nil {
 		return e
 	}
+	if b.recovery != nil {
+		return b.clearIssueScan(s)
+	}
 	if b.meta.IssuePending {
 		return errPoolIssueHeld
 	}
@@ -677,6 +730,13 @@ func (b *PoolOutbox) reserve(s PoolScan) error {
 		return ErrCapacity
 	}
 	m := b.meta
+	if b.recovery != nil {
+		if m.Reserved < m.FirstReserved {
+			return ErrCorrupt
+		}
+		m.Reserved -= m.FirstReserved
+		m.FirstReserved = 0
+	}
 	m.Bytes += b.cachedEntryBytes
 	m.Records++
 	if !b.fits(m) {
@@ -744,6 +804,13 @@ func (b *PoolOutbox) found(entry PoolEntry, s PoolScan) (PoolEntry, error) {
 		return PoolEntry{}, ErrCapacity
 	}
 	m := b.meta
+	if b.recovery != nil {
+		if m.Reserved < m.FirstReserved {
+			return PoolEntry{}, ErrCorrupt
+		}
+		m.Reserved -= m.FirstReserved
+		m.FirstReserved = 0
+	}
 	m.Bytes += uint64(len(raw))
 	m.Reserved += reserve
 	m.Records++

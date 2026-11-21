@@ -1,0 +1,87 @@
+{
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 78089,
+        "pid": 78089,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./pilot",
+        "./accountpilot",
+        "./cmd/slugpilot"
+      ],
+      "exit_code": 0,
+      "label": "deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 78089,
+      "pid": 78089,
+      "seconds": 0.517,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 78101,
+        "pid": 78101,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "test",
+        "-count=1",
+        "-p=1",
+        "-timeout=450s",
+        "-json",
+        "-run",
+        "^$",
+        "./pilot",
+        "./accountpilot",
+        "./cmd/slugpilot"
+      ],
+      "exit_code": 0,
+      "label": "compile",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 78101,
+      "pid": 78101,
+      "seconds": 36.248,
+      "timed_out": false
+    }
+  ],
+  "failed_tests": [],
+  "passed": true,
+  "passing_packages": [
+    "github.com/taytr-llc/slug/desktop/pilot",
+    "github.com/taytr-llc/slug/desktop/accountpilot",
+    "github.com/taytr-llc/slug/desktop/cmd/slugpilot"
+  ],
+  "passing_tests": [],
+  "pattern": "^Test(Recoverable|IssueRecovery|IssueProfile|IssueIntent|IssueRequest)",
+  "profile_unchanged": true,
+  "scope": "Set80 desktop compile",
+  "skipped_tests": [],
+  "sources_unchanged": true,
+  "version": 1
+}

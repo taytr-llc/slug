@@ -377,6 +377,13 @@ func (s *ManifestStore) stagePublicBatch(batch *leveldb.Batch, next manifestMeta
 		}
 		if m.LogicalBytes == uint32(want) {
 			reserve := int64(m.AcceptedSequence-m.SignedAdmissionSequence) * int64(MaxPublicAdmissionSize+MaxPublicSmallSize)
+			if s.issue != nil {
+				more, err := s.issueHoldback(changes, len(raw))
+				if err != nil {
+					return m, err
+				}
+				reserve += more
+			}
 			if want+reserve > int64(s.public.pin.Limits.LogicalBytes) {
 				return m, ErrPublicCapacity
 			}

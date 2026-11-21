@@ -1,0 +1,140 @@
+// Copyright (c) 2026 The SLUG developers. ISC license.
+package pilot
+
+import (
+	"bytes"
+	"context"
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
+	"os"
+	"reflect"
+	"strings"
+	"testing"
+
+	"github.com/taytr-llc/slug/prospectworker"
+	"github.com/taytr-llc/slug/wire/v2"
+)
+
+type remoteIssueOracle struct {
+	Fixtures struct {
+		Remote []struct {
+			Name        string                            `json:"name"`
+			Config      RecoverableRemotePoolConfig       `json:"config"`
+			ConfigID    string                            `json:"config_id"`
+			Credentials []remotePoolRecoverableCredential `json:"credentials"`
+		} `json:"remote"`
+		Wrappers []struct {
+			Name string `json:"name"`
+			Hex  string `json:"canonical_hex"`
+		} `json:"wrappers"`
+	} `json:"fixtures"`
+}
+
+func remoteIssueReference(t *testing.T) remoteIssueOracle {
+	t.Helper()
+	raw, e := os.ReadFile("../../testdata/issue-recovery/reference-v1.json")
+	if e != nil || len(raw) != 6134980 {
+		t.Fatal(e)
+	}
+	sum := sha256.Sum256(raw)
+	if hex.EncodeToString(sum[:]) != "4bbe4eb9556ed5a894cee6ff565b0dcca805f27fea2d77cfe3a56242dc3dac91" {
+		t.Fatal("reference identity")
+	}
+	var r remoteIssueOracle
+	if json.Unmarshal(raw, &r) != nil || len(r.Fixtures.Remote) != 2 {
+		t.Fatal("reference grammar")
+	}
+	return r
+}
+func TestRecoverableRemoteIndependentConfigCredentialMarkers(t *testing.T) {
+	if wire.TestPoW {
+		t.Skip("normal selected config; production constructors refuse cheap PoW")
+	}
+	r := remoteIssueReference(t)
+	for _, v := range r.Fixtures.Remote {
+		t.Run(v.Name, func(t *testing.T) {
+			raw, e := MarshalRecoverableRemotePoolConfig(v.Config)
+			if e != nil {
+				t.Fatal(e)
+			}
+			parsed, e := ParseRecoverableRemotePoolConfig(raw)
+			if e != nil || !reflect.DeepEqual(parsed, v.Config) {
+				t.Fatal("owned parse", e)
+			}
+			id, e := RecoverableRemotePoolConfigID(parsed)
+			if e != nil || id != v.ConfigID {
+				t.Fatal("independent wrapper ID", id, e)
+			}
+			intent, ready, e := remotePoolRecoverableMarkerBytes(parsed)
+			if e != nil {
+				t.Fatal(e)
+			}
+			for _, x := range r.Fixtures.Wrappers {
+				var want []byte
+				switch x.Name {
+				case v.Name + "-remote":
+					want = raw
+				case v.Name + "-remote-intent":
+					want = intent
+				case v.Name + "-remote-ready":
+					want = ready
+				default:
+					continue
+				}
+				if !bytes.Equal(want, remotePoolTestHex(t, x.Hex)) {
+					t.Fatal("independent bytes", x.Name)
+				}
+			}
+			old, _ := MarshalDailyRemotePoolConfig(parsed.Base)
+			if _, e = ParseRecoverableRemotePoolConfig(old); e == nil {
+				t.Fatal("old config adopted")
+			}
+			if _, e = ParseDailyRemotePoolConfig(raw); e == nil {
+				t.Fatal("new wrapper accepted by old route")
+			}
+			baseID, _ := DailyRemotePoolConfigID(parsed.Base)
+			owner := &remotePoolCredentials{config: parsed.Base, configID: baseID, recovery: &parsed}
+			for _, credential := range v.Credentials {
+				b, _ := json.Marshal(credential)
+				b = append(b, '\n')
+				got, e := owner.parseCredential(b, credential.Base.Audience)
+				if e != nil || got != credential.Base {
+					t.Fatal("original selected credential", e)
+				}
+				credential.IssueProfileID = strings.Repeat("b", 64)
+				b, _ = json.Marshal(credential)
+				if _, e = owner.parseCredential(append(b, '\n'), credential.Base.Audience); e == nil {
+					t.Fatal("foreign profile accepted")
+				}
+			}
+			copied, _ := MarshalDailyRemotePoolConfig(parsed.Base)
+			if !bytes.Equal(old, copied) {
+				t.Fatal("base changed")
+			}
+			worker, e := remotePoolRecoverableWorkerConfig(parsed)
+			if e != nil || worker.Base.Source != parsed.Base.Source || worker.Base.TransportTrustID == worker.TransportTrustID {
+				t.Fatal("selected worker binding", e)
+			}
+			changed := parsed
+			changed.IssueProfile.MaxRequests--
+			if ValidateRecoverableRemotePoolConfig(changed) == nil {
+				t.Fatal("arbitrary request quota")
+			}
+		})
+	}
+}
+func TestRecoverableRemoteCheapSelectionBeforeOwners(t *testing.T) {
+	if !wire.TestPoW {
+		t.Skip("cheap profile only")
+	}
+	a, e := OpenRecoverableDailyRemotePoolAttachment(context.Background(), nil, "", RecoverableRemotePoolInputs{})
+	if a != nil || e != ErrRemotePoolProfile {
+		t.Fatal("profile order", e)
+	}
+	for _, f := range []func(string, prospectworker.RecoverablePoolConfig) (*prospectworker.PoolOutbox, error){prospectworker.CreateRecoverableDailyPoolOutbox, prospectworker.OpenRecoverableDailyPoolOutbox, prospectworker.OpenRecoverableDailyPoolOutboxAudit} {
+		if b, e := f("/unselected", prospectworker.RecoverablePoolConfig{}); b != nil || e == nil {
+			t.Fatal("cheap worker path")
+		}
+	}
+}

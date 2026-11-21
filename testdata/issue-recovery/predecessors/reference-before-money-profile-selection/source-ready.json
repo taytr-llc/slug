@@ -1,0 +1,51 @@
+{
+  "base_commit": "fdd40d8edd9a685613f1f667f0074e56ec4e7da5",
+  "checks": [
+    "all producer leaves syntax-only ast.parse; successor not imported/executed",
+    "112 public copies match catalog and declared source bytes",
+    "root failed attempt1 retained; no output generated; no case-count/recipe/policy changes"
+  ],
+  "contract_sha256": "f3e019a840d6b69d853350763364a3fc41f10ea899f00ed6f164db5d58a95610",
+  "copied_public_input_bytes": 16049118,
+  "copied_public_input_count": 112,
+  "correction_sha256": "f8cc172a3b05ccb1ba7ab044a0d1782bfe2ed95e1253d5bd7d31588a36e6d4d3",
+  "execution_authorized": false,
+  "expected_case_counts": {
+    "authority_refusals": 12,
+    "checked_arithmetic": 9,
+    "conditional_transport": 3,
+    "count_bounds": 5,
+    "framing_targets": 39,
+    "inherited_anchors": 6,
+    "inherited_entry_anchors": 8,
+    "lifecycle_traces": 19,
+    "matching_families": 3,
+    "mode_boundaries": 15,
+    "outbox_bounds": 9,
+    "outbox_cases": 47,
+    "outbox_request_rows": 6,
+    "profile_cases": 12,
+    "profiles": 3,
+    "raw_cases": 418,
+    "registry_bounds": 10,
+    "remote": 2,
+    "response_cases": 20,
+    "source_bounds": 13,
+    "state_pairs": 15,
+    "state_refusals": 31,
+    "wire_errors": 8,
+    "wire_responses": 120,
+    "wrapper_cases": 8,
+    "wrappers": 52
+  },
+  "plan_sha256": "568251bda8d3589874c8dccd0652442c1be7b3b218f40518f70606ad1279c99d",
+  "predecessors": [
+    "../reference-before-descriptor-selection"
+  ],
+  "producer_lock_sha256": "8197d60983f0091cf6796a29c198f7973f0f17f25074394a1a848ff4ca47dda5",
+  "scope": "conditional independent bytes/states/bounds; runtime/session/atomicity/financial authority unclaimed",
+  "source_bytes": 16234323,
+  "source_file_count": 126,
+  "status": "SOURCE_ONLY_SUCCESSOR_UNEXECUTED",
+  "version": 1
+}

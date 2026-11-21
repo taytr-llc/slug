@@ -1,0 +1,1332 @@
+{
+  "destination_roots": [
+    "docs/evidence/set80/diagnostics",
+    "docs/evidence/set80/instrumented-execution",
+    "docs/evidence/set80/desktop-race-partitions",
+    "docs/evidence/set80/actual-A3"
+  ],
+  "entries": [
+    {
+      "action": "copy",
+      "bytes": 2240,
+      "kind": "A2 readonly diagnostic declared source",
+      "qualification_scope": "historical public source only; inert Go copies",
+      "sha256": "88f74910d0c8e411b34f5afb7d7dd67c56d43db549bf37fa5d5b7647b4cc0c2a",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-readonly-diagnostic/README.md",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/README.md"
+    },
+    {
+      "action": "copy",
+      "bytes": 6666,
+      "kind": "A2 readonly diagnostic declared source",
+      "qualification_scope": "historical public source only; inert Go copies",
+      "sha256": "1aabfeeae9bdc9e79428871ee2c03f63016c10e76ad4ddc7f2562d50b528a299",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-readonly-diagnostic/copied-sources.json",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/copied-sources.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 841,
+      "kind": "A2 readonly diagnostic declared source",
+      "qualification_scope": "historical public source only; inert Go copies",
+      "sha256": "3a0ed465b476bcd0ce8a3ad543b98cb94dd1b5653480be87082af1d77ec14c1b",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-readonly-diagnostic/public-inputs.json",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/public-inputs.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 9473,
+      "kind": "A2 readonly diagnostic declared source",
+      "qualification_scope": "historical public source only; inert Go copies",
+      "sha256": "a25c7a14f56d3b4a0a2a90f4807d87a8cc048a6ffccaec7dc6747f4ed4b007b2",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-readonly-diagnostic/source/cli_process.go",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/source/cli_process.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 9216,
+      "kind": "A2 readonly diagnostic declared source",
+      "qualification_scope": "historical public source only; inert Go copies",
+      "sha256": "584666d592da95c44cb90db5da2f6d0fa078f39a7a3724e7a5cc7b99eedd2fae",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-readonly-diagnostic/source/diagnostic_main.go",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/source/diagnostic_main.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 5416,
+      "kind": "A2 readonly diagnostic declared source",
+      "qualification_scope": "historical public source only; inert Go copies",
+      "sha256": "7b3ddd36d8c8e6098f6db7f3d04e74ffb77533cdcfdc10e480b2b66f38063dd0",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-readonly-diagnostic/source/fixture_setup.go",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/source/fixture_setup.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 1371,
+      "kind": "A2 readonly diagnostic declared source",
+      "qualification_scope": "historical public source only; inert Go copies",
+      "sha256": "2acab03476a5fbe3c41af0d387342778f499e97d6e876c7f0d936f704021d4c1",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-readonly-diagnostic/source/go.mod",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/source/go.mod.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 12822,
+      "kind": "A2 readonly diagnostic declared source",
+      "qualification_scope": "historical public source only; inert Go copies",
+      "sha256": "f1dda87812b30e59e6408ebedaa32518fe1073dc8da8adc67eaacf7dd0179833",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-readonly-diagnostic/source/issue_audit.go",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/source/issue_audit.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 1344,
+      "kind": "A2 readonly diagnostic declared source",
+      "qualification_scope": "historical public source only; inert Go copies",
+      "sha256": "5d90599fbe133f46023ede7ddd90db66dce5a412af5f7ca234d484ea296c27be",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-readonly-diagnostic/source/issue_calls.go",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/source/issue_calls.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 9499,
+      "kind": "A2 readonly diagnostic declared source",
+      "qualification_scope": "historical public source only; inert Go copies",
+      "sha256": "3247e731168b2727ebf7fa5a7a0768888405dde0195305832a3c3a19f2450ab4",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-readonly-diagnostic/source/issue_tls_relay.go",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/source/issue_tls_relay.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 14645,
+      "kind": "A2 readonly diagnostic declared source",
+      "qualification_scope": "historical public source only; inert Go copies",
+      "sha256": "ded80e26edcdcaf14e974d5d84296b501c81ae49343ed03d026e87946e1007da",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-readonly-diagnostic/source/main.go",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/source/main.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 8810,
+      "kind": "A2 readonly diagnostic declared source",
+      "qualification_scope": "historical public source only; inert Go copies",
+      "sha256": "331190728f79c5f5b0aaae4109426ffc4e41768a087b86126f31799940fb66cd",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-readonly-diagnostic/source/node_helpers.go",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/source/node_helpers.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 14293,
+      "kind": "A2 readonly diagnostic declared source",
+      "qualification_scope": "historical public source only; inert Go copies",
+      "sha256": "14d463c15ae4438ef6172b89d2e8714d1591ce0869efad3b2a28dfda6e45b2bc",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-readonly-diagnostic/source/operator_audit.go",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/source/operator_audit.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 9743,
+      "kind": "A2 readonly diagnostic declared source",
+      "qualification_scope": "historical public source only; inert Go copies",
+      "sha256": "4e62812e828e3ec6cef2a9c605527d23c1478ee0da701cb2b5d14666ecfd6417",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-readonly-diagnostic/source/operator_process.go",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/source/operator_process.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 11444,
+      "kind": "A2 readonly diagnostic declared source",
+      "qualification_scope": "historical public source only; inert Go copies",
+      "sha256": "84fa9a045b9f1edb607cbfdec7948902cdc8f344595bebbc62922862bc8e0f77",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-readonly-diagnostic/source/outbox_audit.go",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/source/outbox_audit.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 10011,
+      "kind": "A2 readonly diagnostic declared source",
+      "qualification_scope": "historical public source only; inert Go copies",
+      "sha256": "1483c0ec3882de879d2a2b8570422a45f4b6df70319c291cc6e1adea4b17edc8",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-readonly-diagnostic/source/payment.go",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/source/payment.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 6312,
+      "kind": "A2 readonly diagnostic declared source",
+      "qualification_scope": "historical public source only; inert Go copies",
+      "sha256": "f14227d8b135f7bf66f5c7937acb636d05471ef3e953fca87396caac957e9a91",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-readonly-diagnostic/source/proposal_relay.go",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/source/proposal_relay.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 10501,
+      "kind": "A2 readonly diagnostic declared source",
+      "qualification_scope": "historical public source only; inert Go copies",
+      "sha256": "403ec4febc7c63a2e907ef4252fc8d6744bb233753f3095a2e5861c0564dcce8",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-readonly-diagnostic/source/scenario_a.go",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/source/scenario_a.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 3766,
+      "kind": "A2 readonly diagnostic declared source",
+      "qualification_scope": "historical public source only; inert Go copies",
+      "sha256": "a14e09cbb6c17522ba73e9390cb918dcebceb8789d8ab4c4e46c2d2300d21c0b",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-readonly-diagnostic/source/scenario_b.go",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/source/scenario_b.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 10439,
+      "kind": "A2 readonly diagnostic declared source",
+      "qualification_scope": "historical public source only; inert Go copies",
+      "sha256": "8ec99e0040b490592c62b49fe3a084f6a2359d21f6773b0748f07bd83fc176b3",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-readonly-diagnostic/source/selection.go",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/source/selection.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 7669,
+      "kind": "A2 readonly diagnostic declared source",
+      "qualification_scope": "historical public source only; inert Go copies",
+      "sha256": "42ef9e32843082665d2b3013ec79da8eaad923536857014c61141a0d824e58bc",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-readonly-diagnostic/source/work_evidence.go",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/source/work_evidence.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 4006,
+      "kind": "exact diagnostic source manifest",
+      "qualification_scope": "root-only diagnostic source qualification",
+      "sha256": "2df07faae94161affc17848d66a733f9aa8d461d99d7bfdb4df0e1abaa27f7a1",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-readonly-diagnostic/source-manifest.json",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/source-manifest.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 5284,
+      "kind": "root diagnostic wrapper",
+      "qualification_scope": "historical source; not executed by archive",
+      "sha256": "62ad07026239f7c012b5d114bb4487a6e3dd74f948cd81a02f72b8b34be83df1",
+      "source": "/Users/taytrrip/slug/set80-prep/run-a2-readonly-diagnostic.py",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/run-a2-readonly-diagnostic.py"
+    },
+    {
+      "action": "copy",
+      "bytes": 3443,
+      "kind": "completed readonly diagnostic execution evidence",
+      "qualification_scope": "diagnostic only; does not qualify failed actual A2",
+      "sha256": "e9fceb82b57543d79d4d0d67d05b4a8c82c1565c11a835ce34e0bf3e431d6472",
+      "source": "/Users/taytrrip/slug/artifacts/set80/a2-readonly-diagnostic-run-attempt1/report.json",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/execution/report.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 962,
+      "kind": "completed readonly diagnostic execution evidence",
+      "qualification_scope": "diagnostic only; does not qualify failed actual A2",
+      "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03",
+      "source": "/Users/taytrrip/slug/artifacts/set80/a2-readonly-diagnostic-run-attempt1/profile.json",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/execution/profile.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 522974,
+      "kind": "completed readonly diagnostic execution evidence",
+      "qualification_scope": "diagnostic only; does not qualify failed actual A2",
+      "sha256": "165f78c763d8d67850f09fb4ed773cda749c5e6de0d6372d99c8de2570f5ff14",
+      "source": "/Users/taytrrip/slug/artifacts/set80/a2-readonly-diagnostic-run-attempt1/sources-before.json",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/execution/sources-before.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 522974,
+      "kind": "completed readonly diagnostic execution evidence",
+      "qualification_scope": "diagnostic only; does not qualify failed actual A2",
+      "sha256": "165f78c763d8d67850f09fb4ed773cda749c5e6de0d6372d99c8de2570f5ff14",
+      "source": "/Users/taytrrip/slug/artifacts/set80/a2-readonly-diagnostic-run-attempt1/sources-after.json",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/execution/sources-after.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 3345,
+      "kind": "completed readonly diagnostic execution evidence",
+      "qualification_scope": "diagnostic only; does not qualify failed actual A2",
+      "sha256": "0ebecbebcb40c91adc093492ada23a00e245ec3e21a799fc46dd5ae7a91a9d27",
+      "source": "/Users/taytrrip/slug/artifacts/set80/a2-readonly-diagnostic-run-attempt1/build-info.txt",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/execution/build-info.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 704,
+      "kind": "completed readonly diagnostic execution evidence",
+      "qualification_scope": "diagnostic only; does not qualify failed actual A2",
+      "sha256": "a59d9e8bf936775ac5a499b9c377920231c972c86e551774f72c2ae4cc02c6d2",
+      "source": "/Users/taytrrip/slug/artifacts/set80/a2-readonly-diagnostic-run-attempt1/diagnostic.command.json",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/execution/diagnostic.command.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 395,
+      "kind": "completed readonly diagnostic execution evidence",
+      "qualification_scope": "diagnostic only; does not qualify failed actual A2",
+      "sha256": "4bb8b4448d7f1aaff211dd4c43085d1ab9c9c5cf06e920c3bf1c86a8f24a8daa",
+      "source": "/Users/taytrrip/slug/artifacts/set80/a2-readonly-diagnostic-run-attempt1/diagnostic.process.json",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/execution/diagnostic.process.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 79421,
+      "kind": "bounded public original-store projection",
+      "qualification_scope": "actual_qualification:false; paths recorded, not followed",
+      "sha256": "1396acb8203f063dcdcd8eb2d2764c56da6d6c05ccacda667200b6e7bf62408c",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a2-readonly-diagnostic-attempt1/diagnostic-report.json",
+      "target": "docs/evidence/set80/diagnostics/A2-readonly/diagnostic-report.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 10301,
+      "kind": "instrumented helper source delta",
+      "qualification_scope": "diagnostics only; original acceptance predicates unchanged",
+      "sha256": "d23c5046f0979a3a8c9a42c7420531a4f31173e93b576a3e2b8a3afbbde111fc",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/issue_tls_relay.go",
+      "target": "docs/evidence/set80/instrumented-execution/helper/issue_tls_relay.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 14859,
+      "kind": "instrumented helper source delta",
+      "qualification_scope": "diagnostics only; original acceptance predicates unchanged",
+      "sha256": "2a090aed63d5f74f4a959f2cf9de6bede10762df74891ae5a974ba318110f979",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/main.go",
+      "target": "docs/evidence/set80/instrumented-execution/helper/main.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 10556,
+      "kind": "instrumented helper source delta",
+      "qualification_scope": "diagnostics only; original acceptance predicates unchanged",
+      "sha256": "b76130ca6f24a98a43e2c7ff91a3237a3cfd2d8fc95fa9cbdaaa25a2c2741cef",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/scenario_a.go",
+      "target": "docs/evidence/set80/instrumented-execution/helper/scenario_a.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 10191,
+      "kind": "instrumented helper source delta",
+      "qualification_scope": "diagnostics only; original acceptance predicates unchanged",
+      "sha256": "c806ecdc4bf8584a8bc3d67af0abb8ab1dbb3594975d06ccd0022cd01857f956",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/work_evidence.go",
+      "target": "docs/evidence/set80/instrumented-execution/helper/work_evidence.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 10119,
+      "kind": "instrumented helper source delta",
+      "qualification_scope": "diagnostics only; original acceptance predicates unchanged",
+      "sha256": "1819365aaa509b8108238c7620b209cf4868ab4a66ceaaaa3d0bec6e61a11f72",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/receipt_lookup_relay.go",
+      "target": "docs/evidence/set80/instrumented-execution/helper/receipt_lookup_relay.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 14956,
+      "kind": "instrumented helper source delta",
+      "qualification_scope": "diagnostics only; original acceptance predicates unchanged",
+      "sha256": "087cfdadf9ca2816a42afe168d60a721ab3793c2cb58993b38189aa44b2e601f",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/pre-instrumentation-manifest.json",
+      "target": "docs/evidence/set80/instrumented-execution/helper/pre-instrumentation-manifest.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 15800,
+      "kind": "instrumented helper source delta",
+      "qualification_scope": "diagnostics only; original acceptance predicates unchanged",
+      "sha256": "0ad1f3f0a9b9d22bfcde4682ecdd1530837311e4261ba3a47b57544c861c056b",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery-instrumented/source-manifest.json",
+      "target": "docs/evidence/set80/instrumented-execution/helper/source-manifest.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 3688,
+      "kind": "lookup diagnostic stage/preimage/diff",
+      "qualification_scope": "source-only historical diagnostic addition",
+      "sha256": "db3f29fce52952a9bb7bb3b1fc56f6a249900e38d9255e315f7ca332120edcb7",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-lookup-diagnostic-successor/DIAGNOSIS.md",
+      "target": "docs/evidence/set80/diagnostics/a2-lookup-diagnostic-successor/DIAGNOSIS.md"
+    },
+    {
+      "action": "copy",
+      "bytes": 10556,
+      "kind": "lookup diagnostic stage/preimage/diff",
+      "qualification_scope": "source-only historical diagnostic addition",
+      "sha256": "b76130ca6f24a98a43e2c7ff91a3237a3cfd2d8fc95fa9cbdaaa25a2c2741cef",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-lookup-diagnostic-successor/after/scenario_a.go",
+      "target": "docs/evidence/set80/diagnostics/a2-lookup-diagnostic-successor/after/scenario_a.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 9905,
+      "kind": "lookup diagnostic stage/preimage/diff",
+      "qualification_scope": "source-only historical diagnostic addition",
+      "sha256": "5ab02c80981475dc9682dc6d4ce274cec131f31979f1373c01f39d98f937abca",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-lookup-diagnostic-successor/after/work_evidence.go",
+      "target": "docs/evidence/set80/diagnostics/a2-lookup-diagnostic-successor/after/work_evidence.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 10501,
+      "kind": "lookup diagnostic stage/preimage/diff",
+      "qualification_scope": "source-only historical diagnostic addition",
+      "sha256": "403ec4febc7c63a2e907ef4252fc8d6744bb233753f3095a2e5861c0564dcce8",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-lookup-diagnostic-successor/before/scenario_a.go",
+      "target": "docs/evidence/set80/diagnostics/a2-lookup-diagnostic-successor/before/scenario_a.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 7669,
+      "kind": "lookup diagnostic stage/preimage/diff",
+      "qualification_scope": "source-only historical diagnostic addition",
+      "sha256": "42ef9e32843082665d2b3013ec79da8eaad923536857014c61141a0d824e58bc",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-lookup-diagnostic-successor/before/work_evidence.go",
+      "target": "docs/evidence/set80/diagnostics/a2-lookup-diagnostic-successor/before/work_evidence.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 5444,
+      "kind": "lookup diagnostic stage/preimage/diff",
+      "qualification_scope": "source-only historical diagnostic addition",
+      "sha256": "7d5c7dbdbd18c551618059b6408ccca1ec449b8d7672898a24d269e565839376",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-lookup-diagnostic-successor/changes.diff",
+      "target": "docs/evidence/set80/diagnostics/a2-lookup-diagnostic-successor/changes.diff"
+    },
+    {
+      "action": "copy",
+      "bytes": 2832,
+      "kind": "diagnostic source manifest",
+      "qualification_scope": "exact reviewed source scope",
+      "sha256": "6f30cd172e62e2094ef0bc87a25f161e96e9c7f844d73e947cfbf2a6d7d7e59b",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-lookup-diagnostic-successor/manifest.json",
+      "target": "docs/evidence/set80/diagnostics/a2-lookup-diagnostic-successor/manifest.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 4191,
+      "kind": "lookup diagnostic stage/preimage/diff",
+      "qualification_scope": "source-only historical diagnostic addition",
+      "sha256": "a0fab5fc85c8a9f0e95e7a097205abfe87dc6735d734568ea39ea79bd2874692",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-lookup-relay-diagnostic/README.md",
+      "target": "docs/evidence/set80/diagnostics/a2-lookup-relay-diagnostic/README.md"
+    },
+    {
+      "action": "copy",
+      "bytes": 10230,
+      "kind": "lookup diagnostic stage/preimage/diff",
+      "qualification_scope": "source-only historical diagnostic addition",
+      "sha256": "e3a266c9fe3910df2a93d6cc515c9c427dbaa30ae00994290ce46d7a99e4c7bd",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-lookup-relay-diagnostic/after/issue_tls_relay.go",
+      "target": "docs/evidence/set80/diagnostics/a2-lookup-relay-diagnostic/after/issue_tls_relay.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 14859,
+      "kind": "lookup diagnostic stage/preimage/diff",
+      "qualification_scope": "source-only historical diagnostic addition",
+      "sha256": "2a090aed63d5f74f4a959f2cf9de6bede10762df74891ae5a974ba318110f979",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-lookup-relay-diagnostic/after/main.go",
+      "target": "docs/evidence/set80/diagnostics/a2-lookup-relay-diagnostic/after/main.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 8632,
+      "kind": "lookup diagnostic stage/preimage/diff",
+      "qualification_scope": "source-only historical diagnostic addition",
+      "sha256": "bb75e98050f14d58651258de66ba0aa4c0b6d91fcef77dffc9c041a71812f15f",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-lookup-relay-diagnostic/after/receipt_lookup_relay.go",
+      "target": "docs/evidence/set80/diagnostics/a2-lookup-relay-diagnostic/after/receipt_lookup_relay.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 9499,
+      "kind": "lookup diagnostic stage/preimage/diff",
+      "qualification_scope": "source-only historical diagnostic addition",
+      "sha256": "3247e731168b2727ebf7fa5a7a0768888405dde0195305832a3c3a19f2450ab4",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-lookup-relay-diagnostic/before/issue_tls_relay.go",
+      "target": "docs/evidence/set80/diagnostics/a2-lookup-relay-diagnostic/before/issue_tls_relay.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 14639,
+      "kind": "lookup diagnostic stage/preimage/diff",
+      "qualification_scope": "source-only historical diagnostic addition",
+      "sha256": "3ffbeb386db9bb498e182ff6a71c124a5a6be4bca8e12bbf7aba7bd1b77695a4",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-lookup-relay-diagnostic/before/main.go",
+      "target": "docs/evidence/set80/diagnostics/a2-lookup-relay-diagnostic/before/main.go.txt"
+    },
+    {
+      "action": "copy",
+      "bytes": 11955,
+      "kind": "lookup diagnostic stage/preimage/diff",
+      "qualification_scope": "source-only historical diagnostic addition",
+      "sha256": "a0323d4d18cab04c518ce375fb7e8ef7b92046e2d3c21ae66d4942c990c14fc8",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-lookup-relay-diagnostic/changes.diff",
+      "target": "docs/evidence/set80/diagnostics/a2-lookup-relay-diagnostic/changes.diff"
+    },
+    {
+      "action": "copy",
+      "bytes": 3348,
+      "kind": "diagnostic source manifest",
+      "qualification_scope": "exact reviewed source scope",
+      "sha256": "63e81c938f942c78e87c8d90dcab0164721ba43df8335dff02888f8a3775b252",
+      "source": "/Users/taytrrip/slug/set80-prep/a2-lookup-relay-diagnostic/manifest.json",
+      "target": "docs/evidence/set80/diagnostics/a2-lookup-relay-diagnostic/manifest.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 15057,
+      "kind": "root instrumented execution source/lock",
+      "qualification_scope": "frozen original87cb dependency; outcome in the separately retained qualified A3 report",
+      "sha256": "d2bf5f105ff0250a6cd5c0a8365a79df323855a29d61ea866dfdc63452348546",
+      "source": "/Users/taytrrip/slug/set80-prep/check-actual-lookup.py",
+      "target": "docs/evidence/set80/instrumented-execution/check-actual-lookup.py"
+    },
+    {
+      "action": "copy",
+      "bytes": 3041,
+      "kind": "root instrumented execution source/lock",
+      "qualification_scope": "frozen original87cb dependency; outcome in the separately retained qualified A3 report",
+      "sha256": "9bdc732ce13ac703bd3dc6f76dab02aa24b79183c6ab96855641e7606d77fd32",
+      "source": "/Users/taytrrip/slug/set80-prep/CHECK_ACTUAL_LOOKUP.md",
+      "target": "docs/evidence/set80/instrumented-execution/CHECK_ACTUAL_LOOKUP.md"
+    },
+    {
+      "action": "copy",
+      "bytes": 4851,
+      "kind": "root instrumented execution source/lock",
+      "qualification_scope": "frozen original87cb dependency; outcome in the separately retained qualified A3 report",
+      "sha256": "b0a37d964f6b813a82a5e446d56ebca52db2c05ace544b04244122007c11bef6",
+      "source": "/Users/taytrrip/slug/set80-prep/check-actual-lookup-manifest.json",
+      "target": "docs/evidence/set80/instrumented-execution/check-actual-lookup-manifest.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 11536,
+      "kind": "root instrumented execution source/lock",
+      "qualification_scope": "frozen original87cb dependency; outcome in the separately retained qualified A3 report",
+      "sha256": "113181b9f619ec492e613f342c35fc6f3744cfa23b025c39beed930d895c293e",
+      "source": "/Users/taytrrip/slug/set80-prep/run-actual-instrumented.py",
+      "target": "docs/evidence/set80/instrumented-execution/run-actual-instrumented.py"
+    },
+    {
+      "action": "copy",
+      "bytes": 11102,
+      "kind": "root instrumented execution source/lock",
+      "qualification_scope": "frozen original87cb dependency; outcome in the separately retained qualified A3 report",
+      "sha256": "c7c2838662feafd60dbbfc8130fddcff2dfce73252d054b7c99ac93d2e2cfd8a",
+      "source": "/Users/taytrrip/slug/set80-prep/run-actual-instrumented-before-failure-evidence.py",
+      "target": "docs/evidence/set80/instrumented-execution/run-actual-instrumented-before-failure-evidence.py"
+    },
+    {
+      "action": "copy",
+      "bytes": 25889,
+      "equivalent_sources": [
+        {
+          "bytes": 25889,
+          "path": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/execution-lock.json",
+          "sha256": "3c1c48e0e46a2b5e6a7dc5857093793b8adca1180d555c06597b616b1b2319fb"
+        }
+      ],
+      "kind": "root instrumented execution source/lock",
+      "qualification_scope": "frozen original87cb dependency; outcome in the separately retained qualified A3 report",
+      "sha256": "3c1c48e0e46a2b5e6a7dc5857093793b8adca1180d555c06597b616b1b2319fb",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-a-execution-lock.root-attempt3.json",
+      "target": "docs/evidence/set80/instrumented-execution/actual-a-execution-lock.root-attempt3.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 19497,
+      "kind": "partition source/whole-name plan",
+      "qualification_scope": "fixed complete coverage declaration; outcome in the separately retained completed partition report",
+      "sha256": "69fad8455cfdb9ef7d1247821e737b671b5ce30753249d54b79ea4b3ca8eabc5",
+      "source": "/Users/taytrrip/slug/set80-prep/desktop-race-partitions/run.py",
+      "target": "docs/evidence/set80/desktop-race-partitions/run.py"
+    },
+    {
+      "action": "copy",
+      "bytes": 178962,
+      "kind": "partition source/whole-name plan",
+      "qualification_scope": "fixed complete coverage declaration; outcome in the separately retained completed partition report",
+      "sha256": "508589c0f545e558a1637a70c558f462344a9d00b7673d17ecafe516f1a7b91d",
+      "source": "/Users/taytrrip/slug/set80-prep/desktop-race-partitions/partition-plan.json",
+      "target": "docs/evidence/set80/desktop-race-partitions/partition-plan.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 17188,
+      "kind": "partition source/whole-name plan",
+      "qualification_scope": "fixed complete coverage declaration; outcome in the separately retained completed partition report",
+      "sha256": "5a8328c7983c0e4c358e0b6f4ee247735b48449638ff94b7e554859f45150c33",
+      "source": "/Users/taytrrip/slug/set80-prep/desktop-race-partitions/regression-skips.json",
+      "target": "docs/evidence/set80/desktop-race-partitions/regression-skips.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 3252,
+      "kind": "partition source/whole-name plan",
+      "qualification_scope": "fixed complete coverage declaration; outcome in the separately retained completed partition report",
+      "sha256": "9d70aae55933f2efc38d87372233641a90c960a21b0a057372b530a086b443dc",
+      "source": "/Users/taytrrip/slug/set80-prep/desktop-race-partitions/REVIEW.md",
+      "target": "docs/evidence/set80/desktop-race-partitions/REVIEW.md"
+    },
+    {
+      "action": "copy",
+      "bytes": 27174,
+      "kind": "partition source/whole-name plan",
+      "qualification_scope": "fixed complete coverage declaration; outcome in the separately retained completed partition report",
+      "sha256": "bf89a0cd7adf3f2465a300cfc30196981f841b4948be316c693a2fe1bce231f5",
+      "source": "/Users/taytrrip/slug/set80-prep/desktop-race-partitions/runner.diff",
+      "target": "docs/evidence/set80/desktop-race-partitions/runner.diff"
+    },
+    {
+      "action": "copy",
+      "bytes": 16233,
+      "kind": "partition source/whole-name plan",
+      "qualification_scope": "fixed complete coverage declaration; outcome in the separately retained completed partition report",
+      "sha256": "937db88c89bd4910eb6cbbdeb81cfe4c2beb5ebaeeeeeb68699aa8117a6e673a",
+      "source": "/Users/taytrrip/slug/set80-prep/desktop-race-partitions/before/run-regressions.py",
+      "target": "docs/evidence/set80/desktop-race-partitions/before/run-regressions.py"
+    },
+    {
+      "action": "copy",
+      "bytes": 17188,
+      "kind": "partition source/whole-name plan",
+      "qualification_scope": "fixed complete coverage declaration; outcome in the separately retained completed partition report",
+      "sha256": "5a8328c7983c0e4c358e0b6f4ee247735b48449638ff94b7e554859f45150c33",
+      "source": "/Users/taytrrip/slug/set80-prep/desktop-race-partitions/before/regression-skips.json",
+      "target": "docs/evidence/set80/desktop-race-partitions/before/regression-skips.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 1578,
+      "kind": "partition source manifest",
+      "qualification_scope": "no result inferred from scheduling estimates",
+      "sha256": "cb2b90f6374b1f428f4758a049fae3236e198422776e50d04d57f657a2c72999",
+      "source": "/Users/taytrrip/slug/set80-prep/desktop-race-partitions/manifest.json",
+      "target": "docs/evidence/set80/desktop-race-partitions/manifest.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 3804,
+      "kind": "final extension scope and pending outcomes",
+      "qualification_scope": "preserved historical pending preparation; superseded by this final outcome map",
+      "sha256": "167baeaa8eebc9a33486e70de86606115e884e1fc9838493cf7b9e4e604928bb",
+      "source": "/Users/taytrrip/slug/set80-prep/final-evidence-stage/README.md",
+      "target": "docs/evidence/set80/instrumented-execution/PREPARATION_PENDING.md"
+    },
+    {
+      "action": "copy",
+      "bytes": 15219,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "773c68ae72e19e7b3ce2c7c9253008f1c8834864a863312b14022827017e3e7e",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/01-selection.json",
+      "target": "docs/evidence/set80/actual-A3/public/01-selection.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 26174,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "c4b325d45549697798e586fddcbdcbb893650efb226f95bf52634115d8aad391",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/02-gap.json",
+      "target": "docs/evidence/set80/actual-A3/public/02-gap.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 701,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "b30a97757d66257fda228d703e9bed2f7a85c4cc2b2c919256b15f6ba5ac4a24",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/03-local-gap.json",
+      "target": "docs/evidence/set80/actual-A3/public/03-local-gap.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 4717,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "fe291603c97f9e5ae5b47ba37f1e2b95fa7a048af4b52b9939951182b1b3d442",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/04-response-loss.json",
+      "target": "docs/evidence/set80/actual-A3/public/04-response-loss.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 30494,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "a0708c0506f624625cc4b85282c4a80b1a6aa34eec9da44663c05dca073b1cbc",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/05-completed-source.json",
+      "target": "docs/evidence/set80/actual-A3/public/05-completed-source.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 3709,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "48fceb118bc131e8a1df1accddc7a9ba254eaa1f50fa211b628dd04b1f48e487",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/06-replayed-work.json",
+      "target": "docs/evidence/set80/actual-A3/public/06-replayed-work.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 28540,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "42f077acf1aca9f6b89ac0598d97f852edc735f4eebc0ac9b7bbcc8be0509667",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/07-worker-closed.json",
+      "target": "docs/evidence/set80/actual-A3/public/07-worker-closed.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 2434,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "5f392f9f1349aa71a732c19b383b12ed0b333f9dfb77e9b541c4a869abb8858a",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/08-stopped-reopen.json",
+      "target": "docs/evidence/set80/actual-A3/public/08-stopped-reopen.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 2884,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "08ec47ef4a4ac68c5cff7a90f844a53d12e288ede13d664cb8c1e52302e16cb3",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/09-mature.json",
+      "target": "docs/evidence/set80/actual-A3/public/09-mature.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 918,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "36ed2e76de0931479adb60f5c35c0c628cb17b1f5e8bb1238b96cc944592952d",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/10-confirmed-payment.json",
+      "target": "docs/evidence/set80/actual-A3/public/10-confirmed-payment.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 9545,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "0f501ef01dd52a3e6c0304ed954a604edf178c0ee79d949acf4f08cb24108ed3",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/11-payment-wallet.json",
+      "target": "docs/evidence/set80/actual-A3/public/11-payment-wallet.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 58342,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "316c82b2a08296d6d97bc916491cbc1bdb9abe4d87affc263b05202af875b6e5",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/12-final-audit.json",
+      "target": "docs/evidence/set80/actual-A3/public/12-final-audit.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 998,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "ab0220959ce3df98b96239bc045e6fa566ad2d732e4ae1779d4d9c90bffee583",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/13-complete.json",
+      "target": "docs/evidence/set80/actual-A3/public/13-complete.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 80295,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "ab0ca830ba97ee740c605b9f7bcc5dd7f75aee2c383bf06052534772d7652afc",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/actual-report.json",
+      "target": "docs/evidence/set80/actual-A3/public/actual-report.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 0,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/cli-1-stderr.log",
+      "target": "docs/evidence/set80/actual-A3/public/cli-1-stderr.log"
+    },
+    {
+      "action": "copy",
+      "bytes": 205,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "f7762b11a4d8aa143abfc255044b79451e388ca2b3e64126b57e8cd3a85685b3",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/cli-1-stdout.jsonl",
+      "target": "docs/evidence/set80/actual-A3/public/cli-1-stdout.jsonl"
+    },
+    {
+      "action": "copy",
+      "bytes": 0,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/cli-2-stderr.log",
+      "target": "docs/evidence/set80/actual-A3/public/cli-2-stderr.log"
+    },
+    {
+      "action": "copy",
+      "bytes": 205,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "f462064d3cc837c45e2dba982ff8d64953f55ff8fc1076105492e6395a4cebc5",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/cli-2-stdout.jsonl",
+      "target": "docs/evidence/set80/actual-A3/public/cli-2-stdout.jsonl"
+    },
+    {
+      "action": "copy",
+      "bytes": 0,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/cli-3-stderr.log",
+      "target": "docs/evidence/set80/actual-A3/public/cli-3-stderr.log"
+    },
+    {
+      "action": "copy",
+      "bytes": 822,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "ba339a248af10f7db850e2cf34c762e888385117fbc085adf1c0943938e43498",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/cli-3-stdout.jsonl",
+      "target": "docs/evidence/set80/actual-A3/public/cli-3-stdout.jsonl"
+    },
+    {
+      "action": "copy",
+      "bytes": 7826,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "83d4de740335af67ab44c7a101f6f2eb954d323613a0479b70e9fd428f63b50a",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/historical-replay.json",
+      "target": "docs/evidence/set80/actual-A3/public/historical-replay.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 5084,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "2b9c61577768d812d4ce0929b6460d3636f51d496e256f751a35ca07248fc501",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/money-read-evidence.json",
+      "target": "docs/evidence/set80/actual-A3/public/money-read-evidence.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 0,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/operator-init-stderr.log",
+      "target": "docs/evidence/set80/actual-A3/public/operator-init-stderr.log"
+    },
+    {
+      "action": "copy",
+      "bytes": 1667,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "aa724044e04ef24e88801016ccda7097bc0af99fd1da6f0a772d03178c646843",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/operator-init-stdout.jsonl",
+      "target": "docs/evidence/set80/actual-A3/public/operator-init-stdout.jsonl"
+    },
+    {
+      "action": "copy",
+      "bytes": 0,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/operator-rotate-admission-stderr.log",
+      "target": "docs/evidence/set80/actual-A3/public/operator-rotate-admission-stderr.log"
+    },
+    {
+      "action": "copy",
+      "bytes": 444,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "24b6202b07500532dc5b176ac47c489af4f9d86d5560ffbbbdf6ef9a85ca3e38",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/operator-rotate-admission-stdout.jsonl",
+      "target": "docs/evidence/set80/actual-A3/public/operator-rotate-admission-stdout.jsonl"
+    },
+    {
+      "action": "copy",
+      "bytes": 0,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/operator-rotate-pool-0-stderr.log",
+      "target": "docs/evidence/set80/actual-A3/public/operator-rotate-pool-0-stderr.log"
+    },
+    {
+      "action": "copy",
+      "bytes": 439,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "d98df037dc088f78a3a4bba6d70feb1f3aabe87fa8d9d703cb37e4412eb22cf4",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/operator-rotate-pool-0-stdout.jsonl",
+      "target": "docs/evidence/set80/actual-A3/public/operator-rotate-pool-0-stdout.jsonl"
+    },
+    {
+      "action": "copy",
+      "bytes": 0,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/operator-rotate-pool-1-stderr.log",
+      "target": "docs/evidence/set80/actual-A3/public/operator-rotate-pool-1-stderr.log"
+    },
+    {
+      "action": "copy",
+      "bytes": 439,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "900a8fab29cce592c37d4e2b8c756e3c238a3bb90ab92f6450a0cdd1258cc266",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/operator-rotate-pool-1-stdout.jsonl",
+      "target": "docs/evidence/set80/actual-A3/public/operator-rotate-pool-1-stdout.jsonl"
+    },
+    {
+      "action": "copy",
+      "bytes": 0,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/operator-serve-1-stderr.log",
+      "target": "docs/evidence/set80/actual-A3/public/operator-serve-1-stderr.log"
+    },
+    {
+      "action": "copy",
+      "bytes": 128,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "a0b94657c59b436cb18eca3edf687c5cce51c153775c7c658b81c7e7dfc14b17",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/operator-serve-1-stdout.jsonl",
+      "target": "docs/evidence/set80/actual-A3/public/operator-serve-1-stdout.jsonl"
+    },
+    {
+      "action": "copy",
+      "bytes": 0,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/operator-serve-2-stderr.log",
+      "target": "docs/evidence/set80/actual-A3/public/operator-serve-2-stderr.log"
+    },
+    {
+      "action": "copy",
+      "bytes": 128,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "7e88d852b7f83c3f089ccb8fce9d3220d54b84ac2112c05d159f42e9909a08b5",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/operator-serve-2-stdout.jsonl",
+      "target": "docs/evidence/set80/actual-A3/public/operator-serve-2-stdout.jsonl"
+    },
+    {
+      "action": "copy",
+      "bytes": 0,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/operator-serve-3-stderr.log",
+      "target": "docs/evidence/set80/actual-A3/public/operator-serve-3-stderr.log"
+    },
+    {
+      "action": "copy",
+      "bytes": 34487,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "3a2628e779797f4defae6ee3266df4aeb6e11dacfd77f9290d7dad081a5b3720",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/operator-serve-3-stdout.jsonl",
+      "target": "docs/evidence/set80/actual-A3/public/operator-serve-3-stdout.jsonl"
+    },
+    {
+      "action": "copy",
+      "bytes": 829,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "27d70454e67032d684b4b17b3b2923805700b5ad9f7a8060e1339f3a9f53c52a",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/outbox-after.json",
+      "target": "docs/evidence/set80/actual-A3/public/outbox-after.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 22743,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "c9e0d27a5c65d1f8eaf481fd51b8fa145b0043130c9b7a3c2f5fb7cc0970596a",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/receipt-lookup-evidence.json",
+      "target": "docs/evidence/set80/actual-A3/public/receipt-lookup-evidence.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 5341,
+      "kind": "qualified A3 explicit public evidence",
+      "qualification_scope": "exact original+supplementary checker public identity; no private paths followed",
+      "sha256": "828a22b8dc58a7b6059efab3b011f696afd4987b6af3ee46f0e56cca4b9f01d2",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/owned/receipt-lookup-wire.json",
+      "target": "docs/evidence/set80/actual-A3/public/receipt-lookup-wire.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 22162,
+      "kind": "A3 qualification report/provenance",
+      "qualification_scope": "qualified finite actual; helper duration differs from capture duration",
+      "sha256": "de61a0ed8ceb4faded6b9a8b592e36c5c63aeb68617d513db423b5125a0067d0",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/report.json",
+      "target": "docs/evidence/set80/actual-A3/execution/report.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 962,
+      "kind": "A3 qualification report/provenance",
+      "qualification_scope": "qualified finite actual; helper duration differs from capture duration",
+      "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/profile.json",
+      "target": "docs/evidence/set80/actual-A3/execution/profile.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 562855,
+      "kind": "A3 qualification report/provenance",
+      "qualification_scope": "qualified finite actual; helper duration differs from capture duration",
+      "sha256": "8f556e724e0d3ae2aeb228f610e2271d5b7f467e2f56c841dc1778d152875cf9",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/sources-before.json",
+      "target": "docs/evidence/set80/actual-A3/execution/sources-before.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 562855,
+      "kind": "A3 qualification report/provenance",
+      "qualification_scope": "qualified finite actual; helper duration differs from capture duration",
+      "sha256": "8f556e724e0d3ae2aeb228f610e2271d5b7f467e2f56c841dc1778d152875cf9",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/sources-after.json",
+      "target": "docs/evidence/set80/actual-A3/execution/sources-after.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 1276,
+      "kind": "A3 qualification report/provenance",
+      "qualification_scope": "qualified finite actual; helper duration differs from capture duration",
+      "sha256": "253d601bd89401f24192c054b14701e16c2eb8be871004f8bd2caf48b051f75c",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/actual.command.json",
+      "target": "docs/evidence/set80/actual-A3/execution/actual.command.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 967,
+      "kind": "A3 qualification report/provenance",
+      "qualification_scope": "qualified finite actual; helper duration differs from capture duration",
+      "sha256": "090c2a0ab766bafb8ac84c20a3ca0a56a97a863e4f64a0fff5063f7730cda7a9",
+      "source": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt3/actual.process.json",
+      "target": "docs/evidence/set80/actual-A3/execution/actual.process.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 758209,
+      "kind": "completed complete desktop race evidence",
+      "qualification_scope": "all595 targets accounted; natural skips distinct from PASS; original aggregate remains failed",
+      "sha256": "b0e73ae153d271ee1680e11442c0029e6f5c5b706bccb3f9c005d840dbecc2b2",
+      "source": "/Users/taytrrip/slug/artifacts/set80/regressions-desktop-race-partitions-attempt1/report.json",
+      "target": "docs/evidence/set80/desktop-race-partitions/execution/report.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 962,
+      "kind": "completed complete desktop race evidence",
+      "qualification_scope": "all595 targets accounted; natural skips distinct from PASS; original aggregate remains failed",
+      "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03",
+      "source": "/Users/taytrrip/slug/artifacts/set80/regressions-desktop-race-partitions-attempt1/profile.json",
+      "target": "docs/evidence/set80/desktop-race-partitions/execution/profile.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 962,
+      "kind": "completed complete desktop race evidence",
+      "qualification_scope": "all595 targets accounted; natural skips distinct from PASS; original aggregate remains failed",
+      "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03",
+      "source": "/Users/taytrrip/slug/artifacts/set80/regressions-desktop-race-partitions-attempt1/profile-after.json",
+      "target": "docs/evidence/set80/desktop-race-partitions/execution/profile-after.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 104017,
+      "kind": "completed complete desktop race evidence",
+      "qualification_scope": "all595 targets accounted; natural skips distinct from PASS; original aggregate remains failed",
+      "sha256": "0567895b3e89857833d9804cce54e2e6e42ff3cfd21a68b9ea9d20cd9fbe87af",
+      "source": "/Users/taytrrip/slug/artifacts/set80/regressions-desktop-race-partitions-attempt1/test-inventory.json",
+      "target": "docs/evidence/set80/desktop-race-partitions/execution/test-inventory.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 77301,
+      "kind": "completed complete desktop race evidence",
+      "qualification_scope": "all595 targets accounted; natural skips distinct from PASS; original aggregate remains failed",
+      "sha256": "677cb4c458d936f01d3d5553dbdfee491200e7b3c33929ac8156b2054088b94e",
+      "source": "/Users/taytrrip/slug/artifacts/set80/regressions-desktop-race-partitions-attempt1/selected-tests.json",
+      "target": "docs/evidence/set80/desktop-race-partitions/execution/selected-tests.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 46853,
+      "kind": "completed complete desktop race evidence",
+      "qualification_scope": "all595 targets accounted; natural skips distinct from PASS; original aggregate remains failed",
+      "sha256": "9c4554fdecb1410d5beb498688b129409f33e4903e274a39b92a913b542f4537",
+      "source": "/Users/taytrrip/slug/artifacts/set80/regressions-desktop-race-partitions-attempt1/selected-partitions.json",
+      "target": "docs/evidence/set80/desktop-race-partitions/execution/selected-partitions.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 1013833,
+      "kind": "completed complete desktop race evidence",
+      "qualification_scope": "all595 targets accounted; natural skips distinct from PASS; original aggregate remains failed",
+      "sha256": "f1d72da7743f06695dda3ea7426fd1507ed93930f3ef0093fe6690e3179a6832",
+      "source": "/Users/taytrrip/slug/artifacts/set80/regressions-desktop-race-partitions-attempt1/sources-inventory-before.json",
+      "target": "docs/evidence/set80/desktop-race-partitions/execution/sources-inventory-before.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 1013833,
+      "kind": "completed complete desktop race evidence",
+      "qualification_scope": "all595 targets accounted; natural skips distinct from PASS; original aggregate remains failed",
+      "sha256": "f1d72da7743f06695dda3ea7426fd1507ed93930f3ef0093fe6690e3179a6832",
+      "source": "/Users/taytrrip/slug/artifacts/set80/regressions-desktop-race-partitions-attempt1/sources-before.json",
+      "target": "docs/evidence/set80/desktop-race-partitions/execution/sources-before.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 1013833,
+      "kind": "completed complete desktop race evidence",
+      "qualification_scope": "all595 targets accounted; natural skips distinct from PASS; original aggregate remains failed",
+      "sha256": "f1d72da7743f06695dda3ea7426fd1507ed93930f3ef0093fe6690e3179a6832",
+      "source": "/Users/taytrrip/slug/artifacts/set80/regressions-desktop-race-partitions-attempt1/sources-after.json",
+      "target": "docs/evidence/set80/desktop-race-partitions/execution/sources-after.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 567,
+      "kind": "exact partition process/command record",
+      "qualification_scope": "same600-second package timeout and joined original processes",
+      "sha256": "2dad0acb26fcf87b84ad19b00234bfd40e11b8218e874f6d55c91da3c8f33592",
+      "source": "/Users/taytrrip/slug/artifacts/set80/regressions-desktop-race-partitions-attempt1/deps.command.json",
+      "target": "docs/evidence/set80/desktop-race-partitions/execution/deps.command.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 259,
+      "kind": "exact partition process/command record",
+      "qualification_scope": "same600-second package timeout and joined original processes",
+      "sha256": "99749d3d1d4013d077eddc597c9c7414ac953e684a25c3c2ed05310bba350f54",
+      "source": "/Users/taytrrip/slug/artifacts/set80/regressions-desktop-race-partitions-attempt1/deps.process.json",
+      "target": "docs/evidence/set80/desktop-race-partitions/execution/deps.process.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 5763,
+      "kind": "exact partition process/command record",
+      "qualification_scope": "same600-second package timeout and joined original processes",
+      "sha256": "b221f2fbf3964f69a21a5bdf3293ecc167e5e1e0767e8a891c721c098ed38357",
+      "source": "/Users/taytrrip/slug/artifacts/set80/regressions-desktop-race-partitions-attempt1/race-pilot-1.command.json",
+      "target": "docs/evidence/set80/desktop-race-partitions/execution/race-pilot-1.command.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 5453,
+      "kind": "exact partition process/command record",
+      "qualification_scope": "same600-second package timeout and joined original processes",
+      "sha256": "81c47831741eec147e918fae4c3e9878a5685f199e8562d6d7665ff87e536f73",
+      "source": "/Users/taytrrip/slug/artifacts/set80/regressions-desktop-race-partitions-attempt1/race-pilot-1.process.json",
+      "target": "docs/evidence/set80/desktop-race-partitions/execution/race-pilot-1.process.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 5848,
+      "kind": "exact partition process/command record",
+      "qualification_scope": "same600-second package timeout and joined original processes",
+      "sha256": "fb3d92a2a890d9f292d9fbeae52c972ce407544f2b9dbd520adb943ca473bcff",
+      "source": "/Users/taytrrip/slug/artifacts/set80/regressions-desktop-race-partitions-attempt1/race-pilot-2.command.json",
+      "target": "docs/evidence/set80/desktop-race-partitions/execution/race-pilot-2.command.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 5538,
+      "kind": "exact partition process/command record",
+      "qualification_scope": "same600-second package timeout and joined original processes",
+      "sha256": "cb32ec302d29b67fdb60766952e975b237ffe711b3746c90cc25f6a6e177f2f0",
+      "source": "/Users/taytrrip/slug/artifacts/set80/regressions-desktop-race-partitions-attempt1/race-pilot-2.process.json",
+      "target": "docs/evidence/set80/desktop-race-partitions/execution/race-pilot-2.process.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 5900,
+      "kind": "exact partition process/command record",
+      "qualification_scope": "same600-second package timeout and joined original processes",
+      "sha256": "96834e0c1f8fb94afc6d08df6dcd9b7a5a7c60cc19663ca462530bbb2162ed5c",
+      "source": "/Users/taytrrip/slug/artifacts/set80/regressions-desktop-race-partitions-attempt1/race-pilot-3.command.json",
+      "target": "docs/evidence/set80/desktop-race-partitions/execution/race-pilot-3.command.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 5590,
+      "kind": "exact partition process/command record",
+      "qualification_scope": "same600-second package timeout and joined original processes",
+      "sha256": "5d11ab67cd62c2bc46d11b1cad4c2aff7ef50d3115b8a0a61ecf6391803eb2c7",
+      "source": "/Users/taytrrip/slug/artifacts/set80/regressions-desktop-race-partitions-attempt1/race-pilot-3.process.json",
+      "target": "docs/evidence/set80/desktop-race-partitions/execution/race-pilot-3.process.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 5771,
+      "kind": "exact partition process/command record",
+      "qualification_scope": "same600-second package timeout and joined original processes",
+      "sha256": "1e7425313e63a716ed376a7c8493530fc2658c4be2c79c0694e028890bd317b0",
+      "source": "/Users/taytrrip/slug/artifacts/set80/regressions-desktop-race-partitions-attempt1/race-pilot-4.command.json",
+      "target": "docs/evidence/set80/desktop-race-partitions/execution/race-pilot-4.command.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 5461,
+      "kind": "exact partition process/command record",
+      "qualification_scope": "same600-second package timeout and joined original processes",
+      "sha256": "a19f8499d03f582a50f0aed19af18c2c2365d281311ecb6d59e687af6127c6c5",
+      "source": "/Users/taytrrip/slug/artifacts/set80/regressions-desktop-race-partitions-attempt1/race-pilot-4.process.json",
+      "target": "docs/evidence/set80/desktop-race-partitions/execution/race-pilot-4.process.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 1830,
+      "kind": "exact public test/dependency log identities",
+      "qualification_scope": "raw logs retained at original paths; no copied megabyte log text",
+      "sha256": "9f2f9f55c7f637963624116439a4fdd154e8ed0faca9f55d4ad0d853b13011c1",
+      "source": "/Users/taytrrip/slug/set80-prep/final-evidence-stage/PARTITION_LOG_IDENTITIES.json",
+      "target": "docs/evidence/set80/desktop-race-partitions/LOG_IDENTITIES.json"
+    },
+    {
+      "action": "copy",
+      "bytes": 3841,
+      "kind": "final extension outcome/scope",
+      "qualification_scope": "preserves prior failures and finite actual qualification limits",
+      "sha256": "9b8755b467e52b92c72d7cd92ca29c3d8c15e994ad34fe21c56b41f3e13c33fd",
+      "source": "/Users/taytrrip/slug/set80-prep/final-evidence-stage/FINAL_ARCHIVE.md",
+      "target": "docs/evidence/set80/instrumented-execution/FINAL_EXTENSION_ARCHIVE.md"
+    }
+  ],
+  "entry_count": 134,
+  "excluded": "No DB, private-fixture, wallet, credential, node-home, binary or recursive owned/runtime tree reads/copies; historical metadata paths are never followed.",
+  "existing_base_references": [
+    {
+      "bytes": 14956,
+      "existing_archive": "desktop/pooloperator/testdata/issue-recovery-actual/source-manifest.json",
+      "sha256": "087cfdadf9ca2816a42afe168d60a721ab3793c2cb58993b38189aa44b2e601f",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery/source-manifest.json"
+    },
+    {
+      "bytes": 9499,
+      "existing_archive": "desktop/pooloperator/testdata/issue-recovery-actual/issue_tls_relay.go",
+      "sha256": "3247e731168b2727ebf7fa5a7a0768888405dde0195305832a3c3a19f2450ab4",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery/issue_tls_relay.go"
+    },
+    {
+      "bytes": 14639,
+      "existing_archive": "desktop/pooloperator/testdata/issue-recovery-actual/main.go",
+      "sha256": "3ffbeb386db9bb498e182ff6a71c124a5a6be4bca8e12bbf7aba7bd1b77695a4",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery/main.go"
+    },
+    {
+      "bytes": 10501,
+      "existing_archive": "desktop/pooloperator/testdata/issue-recovery-actual/scenario_a.go",
+      "sha256": "403ec4febc7c63a2e907ef4252fc8d6744bb233753f3095a2e5861c0564dcce8",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery/scenario_a.go"
+    },
+    {
+      "bytes": 7669,
+      "existing_archive": "desktop/pooloperator/testdata/issue-recovery-actual/work_evidence.go",
+      "sha256": "42ef9e32843082665d2b3013ec79da8eaad923536857014c61141a0d824e58bc",
+      "source": "/Users/taytrrip/slug/set80-prep/actual-recovery/work_evidence.go"
+    },
+    {
+      "bytes": 65246,
+      "existing_archive": "docs/evidence/set80/execution-supplement/check-actual.py",
+      "sha256": "87cb6364644db35b707a90a4bcf1c97467915aa3d691e65c81e3b9fc4539736e",
+      "source": "/Users/taytrrip/slug/set80-prep/check-actual.py"
+    },
+    {
+      "bytes": 1214,
+      "existing_archive": "docs/evidence/set80/execution-supplement/check-actual-source-manifest.json",
+      "sha256": "7200b2218c6c39207860820e002333f9c40f798b729ca6d891f57b5a39e5742b",
+      "source": "/Users/taytrrip/slug/set80-prep/check-actual-source-manifest.json"
+    },
+    {
+      "bytes": 3835,
+      "existing_archive": "docs/evidence/set80/execution-supplement/CHECK_ACTUAL_SCHEMA.md",
+      "sha256": "5ef1dc7c4c7810f1e617824b1cd79fe74910b5086febb97fd8fd6a7e985ad1e6",
+      "source": "/Users/taytrrip/slug/set80-prep/CHECK_ACTUAL_SCHEMA.md"
+    }
+  ],
+  "outcomes": {
+    "A2_readonly": {
+      "actual_qualification": false,
+      "diagnostic_passed": true
+    },
+    "A3": {
+      "capture_seconds": 440.362,
+      "fee_atoms": 141,
+      "final_height": 104,
+      "helper_seconds": 439.852440333,
+      "paid_atoms": 990000000,
+      "pending_rows_not_claimed_resolved": true,
+      "public_files": 39,
+      "qualification": "qualified"
+    },
+    "desktop_race_partitions": {
+      "partition_targets": [
+        109,
+        112,
+        111,
+        110
+      ],
+      "passed": true,
+      "prior_aggregate_still_failed": true,
+      "targets": 595,
+      "top_level_pass": 572,
+      "top_level_skip": 23
+    },
+    "unchanged_prior_dispositions": {
+      "A1": "rejected_source_excursion",
+      "A2": "failed",
+      "B1": "qualified"
+    }
+  },
+  "pending_evidence": [],
+  "predecessor_pending_plan": {
+    "bytes": 35858,
+    "path": "/Users/taytrrip/slug/set80-prep/final-evidence-stage/archive-plan.base-pending.json",
+    "sha256": "67aff97e64fc76bccae67f8271ee6a84a76680b7b72a02322457adf65f81d94a"
+  },
+  "prior_plans": [
+    {
+      "bytes": 85896,
+      "path": "/Users/taytrrip/slug/set80-prep/closeout-stage/archive-plan.proposed.json",
+      "sha256": "df1f6dc8ca8362a68e8e422b95a4e7d86481fb3204ce1f1afbc66c91e0c6b963"
+    },
+    {
+      "bytes": 67729,
+      "path": "/Users/taytrrip/slug/set80-prep/supplementary-evidence-stage/archive-plan.proposed.json",
+      "sha256": "19d695d234812ec075171cc5f167336fe8f6063bd72cc71a58e34fa93d395d10"
+    }
+  ],
+  "ready_for_install": true,
+  "scope": "Final source-only explicit public evidence extension, ready for root review/install",
+  "source_only": true,
+  "total_bytes": 7459569,
+  "version": 1
+}

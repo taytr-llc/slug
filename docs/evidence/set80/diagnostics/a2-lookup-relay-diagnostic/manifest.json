@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "kind": "source-only-receipt-lookup-relay-diagnostic",
+  "root_execution_only": true,
+  "active_sources_changed": false,
+  "new_build_files": [
+    "receipt_lookup_relay.go"
+  ],
+  "changed_build_files": [
+    "issue_tls_relay.go",
+    "main.go"
+  ],
+  "new_public_artifact": "receipt-lookup-wire.json",
+  "original_report_shapes_unchanged": true,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 4191,
+      "sha256": "a0fab5fc85c8a9f0e95e7a097205abfe87dc6735d734568ea39ea79bd2874692"
+    },
+    {
+      "path": "after/issue_tls_relay.go",
+      "bytes": 10230,
+      "sha256": "e3a266c9fe3910df2a93d6cc515c9c427dbaa30ae00994290ce46d7a99e4c7bd"
+    },
+    {
+      "path": "after/main.go",
+      "bytes": 14859,
+      "sha256": "2a090aed63d5f74f4a959f2cf9de6bede10762df74891ae5a974ba318110f979"
+    },
+    {
+      "path": "after/receipt_lookup_relay.go",
+      "bytes": 8632,
+      "sha256": "bb75e98050f14d58651258de66ba0aa4c0b6d91fcef77dffc9c041a71812f15f"
+    },
+    {
+      "path": "before/issue_tls_relay.go",
+      "bytes": 9499,
+      "sha256": "3247e731168b2727ebf7fa5a7a0768888405dde0195305832a3c3a19f2450ab4"
+    },
+    {
+      "path": "before/main.go",
+      "bytes": 14639,
+      "sha256": "3ffbeb386db9bb498e182ff6a71c124a5a6be4bca8e12bbf7aba7bd1b77695a4"
+    },
+    {
+      "path": "changes.diff",
+      "bytes": 11955,
+      "sha256": "a0323d4d18cab04c518ce375fb7e8ef7b92046e2d3c21ae66d4942c990c14fc8"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "set80-prep/actual-recovery/source-manifest.json",
+      "bytes": 14956,
+      "sha256": "087cfdadf9ca2816a42afe168d60a721ab3793c2cb58993b38189aa44b2e601f"
+    },
+    {
+      "path": "set80-prep/actual-recovery/issue_tls_relay.go",
+      "bytes": 9499,
+      "sha256": "3247e731168b2727ebf7fa5a7a0768888405dde0195305832a3c3a19f2450ab4"
+    },
+    {
+      "path": "set80-prep/actual-recovery/main.go",
+      "bytes": 14639,
+      "sha256": "3ffbeb386db9bb498e182ff6a71c124a5a6be4bca8e12bbf7aba7bd1b77695a4"
+    },
+    {
+      "path": "set80-prep/a2-lookup-diagnostic-successor/manifest.json",
+      "bytes": 2832,
+      "sha256": "6f30cd172e62e2094ef0bc87a25f161e96e9c7f844d73e947cfbf2a6d7d7e59b"
+    },
+    {
+      "path": "set80-prep/check-actual.py",
+      "bytes": 65246,
+      "sha256": "87cb6364644db35b707a90a4bcf1c97467915aa3d691e65c81e3b9fc4539736e"
+    },
+    {
+      "path": "slug/poolservice/client.go",
+      "bytes": 12225,
+      "sha256": "4a37ad46fa42c0bf06a4ffaa15f022ad40f240806e47841928efd1d86c5039d1"
+    },
+    {
+      "path": "slug/poolservice/daily_client.go",
+      "bytes": 5122,
+      "sha256": "e682850f1836f386d76c3d448634f383bba1fd33d7a3ae3f2d3607d8d14c09c1"
+    },
+    {
+      "path": "slug/poolservice/daily_types.go",
+      "bytes": 2008,
+      "sha256": "842c45dfdb1f7b1adde9d82e30f5880f9ebcc418067b59d8fe40b2fa583aae2b"
+    },
+    {
+      "path": "slug/poolservice/recoverable_types.go",
+      "bytes": 5194,
+      "sha256": "38f4e94e214b03ef1dfbd874cba3fc9f90f75197c72f99dfac2b3339408dbf45"
+    },
+    {
+      "path": "slug/poolservice/json.go",
+      "bytes": 1459,
+      "sha256": "2aa5b371a55e0978a8b9ceddc84bc35ed5597f6095293deb6ce50bb6365ddf52"
+    },
+    {
+      "path": "slug/poolshare/types.go",
+      "bytes": 6660,
+      "sha256": "dda6b882566758a34189d6992f7dacd0821c102f0533bf072e9a377605035701"
+    }
+  ]
+}

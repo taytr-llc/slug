@@ -15,3 +15,7 @@ func (*remotePoolFiles) child(string) (string, bool, error) {
 func (*remotePoolFiles) adopt(string) error { return errRemotePoolCredentialUnsupported }
 func (*remotePoolFiles) markReady() error   { return errRemotePoolCredentialUnsupported }
 func (*remotePoolFiles) close() error       { return nil }
+
+func openRemotePoolFilesSelection(string, RemotePoolConfig, bool, *RecoverableRemotePoolConfig) (*remotePoolFiles, error) {
+	return nil, errRemotePoolCredentialUnsupported
+}

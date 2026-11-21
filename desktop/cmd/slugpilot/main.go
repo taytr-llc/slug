@@ -25,6 +25,7 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 	}
 	data := flags.String("data-dir", "", "Explicit disposable pilot directory")
 	node := flags.String("node-binary", "", "Explicit bundled normal SLUG node binary")
+	recoverableIssue := flags.Bool("daily-recoverable-issue", false, "Select exact-request daily remote issuance")
 	daily := flags.Bool("daily", false, "Select the explicit daily headless remote worker")
 	remote := flags.Bool("candidate-remote-pool", false, "Attach the original wallet to an explicit remote pool")
 	attachment := flags.String("remote-attachment-root", "", "Explicit remote attachment directory")
@@ -74,19 +75,19 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 		}
 	})
 	if remoteArgs {
-		if !*remote || legacyExplicit || hostedExplicit || recoveryExplicit || ownedExplicit || flags.NArg() != 0 || validateRemoteLaunchArgs(args) != nil {
+		if (!*remote && !*recoverableIssue) || legacyExplicit || hostedExplicit || recoveryExplicit || ownedExplicit || flags.NArg() != 0 || validateRemoteLaunchArgs(args) != nil {
 			return errRemoteLaunchInvalid
 		}
 		options, e := poolselection.HostedOptions(*nameVersion, nameExplicit, *data, dataExplicit)
 		if e != nil {
 			return errRemoteLaunchInvalid
 		}
-		if *daily {
+		if *daily || *recoverableIssue {
 			output, ok := stdout.(*os.File)
 			if !ok {
 				return errRemoteLaunchInvalid
 			}
-			return runDailyRemoteLaunch(ctx, output, remoteLaunchPaths{*data, *attachment, *remoteConfig, *remoteRPC, *poolCredential, *admissionCredential}, options)
+			return runDailyRemoteLaunchSelection(ctx, output, remoteLaunchPaths{*data, *attachment, *remoteConfig, *remoteRPC, *poolCredential, *admissionCredential}, options, *recoverableIssue)
 		}
 		input, ok := stdin.(io.ReadCloser)
 		if !ok {

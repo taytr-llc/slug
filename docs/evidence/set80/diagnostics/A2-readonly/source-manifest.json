@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "scope": "Separate source-only original A2 read-only diagnostic; root alone compiles/executes",
+  "base_helper_sha256": "087cfdadf9ca2816a42afe168d60a721ab3793c2cb58993b38189aa44b2e601f",
+  "source_root": "source",
+  "build_files": [
+    "cli_process.go",
+    "diagnostic_main.go",
+    "fixture_setup.go",
+    "go.mod",
+    "issue_audit.go",
+    "issue_calls.go",
+    "issue_tls_relay.go",
+    "main.go",
+    "node_helpers.go",
+    "operator_audit.go",
+    "operator_process.go",
+    "outbox_audit.go",
+    "payment.go",
+    "proposal_relay.go",
+    "scenario_a.go",
+    "scenario_b.go",
+    "selection.go",
+    "work_evidence.go"
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 2240,
+      "sha256": "88f74910d0c8e411b34f5afb7d7dd67c56d43db549bf37fa5d5b7647b4cc0c2a"
+    },
+    {
+      "path": "copied-sources.json",
+      "bytes": 6666,
+      "sha256": "1aabfeeae9bdc9e79428871ee2c03f63016c10e76ad4ddc7f2562d50b528a299"
+    },
+    {
+      "path": "public-inputs.json",
+      "bytes": 841,
+      "sha256": "3a0ed465b476bcd0ce8a3ad543b98cb94dd1b5653480be87082af1d77ec14c1b"
+    },
+    {
+      "path": "source/cli_process.go",
+      "bytes": 9473,
+      "sha256": "a25c7a14f56d3b4a0a2a90f4807d87a8cc048a6ffccaec7dc6747f4ed4b007b2"
+    },
+    {
+      "path": "source/diagnostic_main.go",
+      "bytes": 9216,
+      "sha256": "584666d592da95c44cb90db5da2f6d0fa078f39a7a3724e7a5cc7b99eedd2fae"
+    },
+    {
+      "path": "source/fixture_setup.go",
+      "bytes": 5416,
+      "sha256": "7b3ddd36d8c8e6098f6db7f3d04e74ffb77533cdcfdc10e480b2b66f38063dd0"
+    },
+    {
+      "path": "source/go.mod",
+      "bytes": 1371,
+      "sha256": "2acab03476a5fbe3c41af0d387342778f499e97d6e876c7f0d936f704021d4c1"
+    },
+    {
+      "path": "source/issue_audit.go",
+      "bytes": 12822,
+      "sha256": "f1dda87812b30e59e6408ebedaa32518fe1073dc8da8adc67eaacf7dd0179833"
+    },
+    {
+      "path": "source/issue_calls.go",
+      "bytes": 1344,
+      "sha256": "5d90599fbe133f46023ede7ddd90db66dce5a412af5f7ca234d484ea296c27be"
+    },
+    {
+      "path": "source/issue_tls_relay.go",
+      "bytes": 9499,
+      "sha256": "3247e731168b2727ebf7fa5a7a0768888405dde0195305832a3c3a19f2450ab4"
+    },
+    {
+      "path": "source/main.go",
+      "bytes": 14645,
+      "sha256": "ded80e26edcdcaf14e974d5d84296b501c81ae49343ed03d026e87946e1007da"
+    },
+    {
+      "path": "source/node_helpers.go",
+      "bytes": 8810,
+      "sha256": "331190728f79c5f5b0aaae4109426ffc4e41768a087b86126f31799940fb66cd"
+    },
+    {
+      "path": "source/operator_audit.go",
+      "bytes": 14293,
+      "sha256": "14d463c15ae4438ef6172b89d2e8714d1591ce0869efad3b2a28dfda6e45b2bc"
+    },
+    {
+      "path": "source/operator_process.go",
+      "bytes": 9743,
+      "sha256": "4e62812e828e3ec6cef2a9c605527d23c1478ee0da701cb2b5d14666ecfd6417"
+    },
+    {
+      "path": "source/outbox_audit.go",
+      "bytes": 11444,
+      "sha256": "84fa9a045b9f1edb607cbfdec7948902cdc8f344595bebbc62922862bc8e0f77"
+    },
+    {
+      "path": "source/payment.go",
+      "bytes": 10011,
+      "sha256": "1483c0ec3882de879d2a2b8570422a45f4b6df70319c291cc6e1adea4b17edc8"
+    },
+    {
+      "path": "source/proposal_relay.go",
+      "bytes": 6312,
+      "sha256": "f14227d8b135f7bf66f5c7937acb636d05471ef3e953fca87396caac957e9a91"
+    },
+    {
+      "path": "source/scenario_a.go",
+      "bytes": 10501,
+      "sha256": "403ec4febc7c63a2e907ef4252fc8d6744bb233753f3095a2e5861c0564dcce8"
+    },
+    {
+      "path": "source/scenario_b.go",
+      "bytes": 3766,
+      "sha256": "a14e09cbb6c17522ba73e9390cb918dcebceb8789d8ab4c4e46c2d2300d21c0b"
+    },
+    {
+      "path": "source/selection.go",
+      "bytes": 10439,
+      "sha256": "8ec99e0040b490592c62b49fe3a084f6a2359d21f6773b0748f07bd83fc176b3"
+    },
+    {
+      "path": "source/work_evidence.go",
+      "bytes": 7669,
+      "sha256": "42ef9e32843082665d2b3013ec79da8eaad923536857014c61141a0d824e58bc"
+    }
+  ],
+  "no_agent_execution": true,
+  "no_actual_qualification": true
+}

@@ -83,3 +83,19 @@ func TestPoolCheapProfileRefusesBeforeState(t *testing.T) {
 		t.Fatal("cheap profile disclosed journal rows")
 	}
 }
+
+func TestRecoverablePoolCheapBeforeState(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "absent")
+	for _, open := range []func(string, RecoverablePoolConfig) (*PoolOutbox, error){CreateRecoverableDailyPoolOutbox, OpenRecoverableDailyPoolOutbox, OpenRecoverableDailyPoolOutboxAudit} {
+		b, e := open(path, RecoverablePoolConfig{})
+		if b != nil || e == nil || !strings.Contains(e.Error(), "slugtestpow") {
+			t.Fatal(e)
+		}
+	}
+	if _, e := os.Stat(path); !os.IsNotExist(e) {
+		t.Fatal("cheap selection touched path")
+	}
+	if w, e := NewRecoverableDailyPool(RecoverablePoolConfig{}, nil, nil, nil, nil, nil, nil); w != nil || e == nil || !strings.Contains(e.Error(), "slugtestpow") {
+		t.Fatal(e)
+	}
+}

@@ -28,6 +28,7 @@ type RemotePoolController struct {
 	inputs                            pilot.RemotePoolInputs
 	configID                          string
 	daily                             bool
+	recovery                          *pilot.RecoverableRemotePoolConfig
 	lock                              *leveldb.DB
 	rootInfo, lockInfo                os.FileInfo
 	init                              ownedGymInit
@@ -74,7 +75,22 @@ func OpenRemotePoolController(ctx context.Context, existingRoot string, options 
 func OpenDailyRemotePoolController(ctx context.Context, existingRoot string, options pilot.PoolOptions, inputs pilot.RemotePoolInputs) (*RemotePoolController, error) {
 	return openRemotePoolController(ctx, existingRoot, options, inputs, true)
 }
-func openRemotePoolController(ctx context.Context, existingRoot string, options pilot.PoolOptions, inputs pilot.RemotePoolInputs, daily bool) (out *RemotePoolController, resultErr error) {
+func OpenRecoverableDailyRemotePoolController(ctx context.Context, root string, options pilot.PoolOptions, in pilot.RecoverableRemotePoolInputs) (*RemotePoolController, error) {
+	raw, e := pilot.MarshalRecoverableRemotePoolConfig(in.Config)
+	if e != nil {
+		return nil, e
+	}
+	c, e := pilot.ParseRecoverableRemotePoolConfig(raw)
+	if e != nil {
+		return nil, e
+	}
+	in.Config = c
+	return openRemotePoolControllerSelection(ctx, root, options, in.BaseInputs(), true, &c)
+}
+func openRemotePoolController(ctx context.Context, existingRoot string, options pilot.PoolOptions, inputs pilot.RemotePoolInputs, daily bool) (*RemotePoolController, error) {
+	return openRemotePoolControllerSelection(ctx, existingRoot, options, inputs, daily, nil)
+}
+func openRemotePoolControllerSelection(ctx context.Context, existingRoot string, options pilot.PoolOptions, inputs pilot.RemotePoolInputs, daily bool, recovery *pilot.RecoverableRemotePoolConfig) (out *RemotePoolController, resultErr error) {
 	if ctx == nil || wire.TestPoW {
 		return nil, pilot.ErrRemotePoolConfig
 	}
@@ -102,6 +118,12 @@ func openRemotePoolController(ctx context.Context, existingRoot string, options 
 	if e != nil {
 		return nil, e
 	}
+	if recovery != nil {
+		id, e = pilot.RecoverableRemotePoolConfigID(*recovery)
+		if e != nil {
+			return nil, e
+		}
+	}
 	if e = remotePoolRoots(existingRoot, inputs.AttachmentRoot); e != nil {
 		return nil, e
 	}
@@ -120,7 +142,7 @@ func openRemotePoolController(ctx context.Context, existingRoot string, options 
 	// Open ctx bounds admission only. The retained owner ends at Close, not
 	// when a successful caller releases its construction timeout.
 	life, cancel := context.WithCancel(context.Background())
-	c := &RemotePoolController{daily: daily, root: existingRoot, options: options, inputs: inputs, configID: id, lock: lock, rootInfo: rootInfo, lockInfo: lockInfo, life: life, cancel: cancel, fixture: inputs.Config.ExpectedLocal.Recipient.Config.Fixture, state: "signed_out"}
+	c := &RemotePoolController{recovery: recovery, daily: daily, root: existingRoot, options: options, inputs: inputs, configID: id, lock: lock, rootInfo: rootInfo, lockInfo: lockInfo, life: life, cancel: cancel, fixture: inputs.Config.ExpectedLocal.Recipient.Config.Fixture, state: "signed_out"}
 	defer func() {
 		if resultErr != nil {
 			ce := c.Close()

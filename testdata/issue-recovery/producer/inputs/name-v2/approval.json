@@ -1,0 +1,54 @@
+{
+  "status": "frozen engineering candidate approved by root after review",
+  "approval_date": "2026-11-19",
+  "authority": "Root instruction approving exact content/byte rules after reviewing both contracts and compatibility-review.md; introductory status-only change authorized; bodies unchanged.",
+  "bundle_paths_are_normative": true,
+  "no_production_activation": true,
+  "current_defaults": "v1 unchanged",
+  "approved_files": {
+    "tables_v2.json": {
+      "sha256": "96e7ae3eaae038932355e44ef4a3a88ecab4c8f5fa1dea7371d748b6fab0b051",
+      "bytes": 9017
+    },
+    "fighter-manifest-v2-contract.md": {
+      "sha256": "0283415807d33b362aaeffbb1570504085cd975bf9f3adc0b497d0c8b79856a7",
+      "bytes": 9616
+    },
+    "portrait-renderer-v2-contract.md": {
+      "sha256": "6044ce174e9a7a466783985e34b02b34ae2785719ca77b1268f7e6ad3c717677",
+      "bytes": 7254
+    },
+    "inherited/fighter-manifest-v1-contract.md": {
+      "sha256": "ba8d33dbad3722eed6b4406ef120f946d7e06e1ea04305cbe8648889ba169e80",
+      "bytes": 13247
+    },
+    "inherited/portrait-renderer-v1-contract.md": {
+      "sha256": "8ae3c8dbe92fbef719880227e107cb98cbfd6419d984cad08ebb5d5e0a9c0df5",
+      "bytes": 28710
+    },
+    "inherited/full-tables-v1.json": {
+      "sha256": "9f9380b708cae73b8d2641eaf04ecefb3a3b7fa9dd1b25b1f234f6511780b8c7",
+      "bytes": 2578
+    }
+  },
+  "reviewed_proposals": {
+    "fighter-manifest-v2-contract.md": "8421f24e32a05147282754a85458078b734f82446d9b647af6bc827be36c82a5",
+    "portrait-renderer-v2-contract.md": "efe8797c7fb76ddebbe5022546320f450ac1af1f7f6792e7ad1f9e3e12219ac1"
+  },
+  "contract_bodies_unchanged": true,
+  "name_list_and_order_unchanged": true,
+  "descriptor": {
+    "version": 1,
+    "dna_version": 1,
+    "manifest_version": 2,
+    "generator_id": "slug-fighter-manifest-candidate-v2",
+    "manifest_table_hash": "b537490e1e602e27de01975aeec36f5fb53ba9a3a35f98143e8ecb7f9e2687c2",
+    "manifest_contract_hash": "0283415807d33b362aaeffbb1570504085cd975bf9f3adc0b497d0c8b79856a7",
+    "portrait_trait_version": 1,
+    "renderer_version": 2,
+    "renderer_id": "slug-fighter-portrait-candidate-v2",
+    "renderer_contract_hash": "6044ce174e9a7a466783985e34b02b34ae2785719ca77b1268f7e6ad3c717677"
+  },
+  "descriptor_domain_hex": "534c554720666967687465722069737375616e63652064657363726970746f7200763100",
+  "descriptor_id": "independent reference derives after script/input freeze"
+}

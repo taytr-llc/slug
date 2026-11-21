@@ -19,7 +19,7 @@ func (a *OperatorAdmission) dailyCensus(ctx context.Context) (blocks uint64, ove
 	}
 	raw, err := p.db.Get([]byte("meta"), nil)
 	var candidate metadata
-	if err != nil || decode(raw, maxMetadataSize, &candidate) != nil || candidate != p.meta || candidate.Application != application || candidate.Version != Version2 || candidate.Config != p.config || candidate.Works > p.config.MaxWorks || candidate.Submissions > p.config.MaxSubmissions || candidate.Accepted > candidate.Submissions || candidate.Bytes > p.config.MaxBytes || candidate.LastClockMS < 0 {
+	if err != nil || p.decodeStoredMetadata(raw, &candidate) != nil || candidate != p.meta || candidate.Application != application || candidate.Version != Version2 || candidate.Config != p.config || candidate.Works > p.config.MaxWorks || candidate.Submissions > p.config.MaxSubmissions || candidate.Accepted > candidate.Submissions || candidate.Bytes > p.config.MaxBytes || candidate.LastClockMS < 0 {
 		return 0, false, ErrCorrupt
 	}
 	info, err := p.originalInfo(ctx)
@@ -73,6 +73,26 @@ func (a *OperatorAdmission) dailyCensus(ctx context.Context) (blocks uint64, ove
 		}
 		if sequence > a.maximum && (!r.Block || r.AcceptedSequence == 0 || r.BlockState != "canonical-observed" || (r.Acceptance != "canonical-winning-block" && r.Acceptance != "canonical-late-winner")) {
 			over = true
+		}
+	}
+	if p.issueRecovery != nil {
+		requests := p.db.NewIterator(util.BytesPrefix([]byte("issue/r/")), nil)
+		for requests.Next() {
+			if err := ctx.Err(); err != nil {
+				requests.Release()
+				return 0, false, err
+			}
+			var r issueRequest
+			if decode(requests.Value(), 4096, &r) != nil {
+				requests.Release()
+				return 0, false, ErrCorrupt
+			}
+			nonmember = nonmember || !a.daily.member(r.Intent.GymID)
+		}
+		requestErr := requests.Error()
+		requests.Release()
+		if requestErr != nil {
+			return 0, false, ErrCorrupt
 		}
 	}
 	var window uint64

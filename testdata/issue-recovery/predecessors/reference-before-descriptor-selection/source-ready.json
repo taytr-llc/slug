@@ -1,0 +1,51 @@
+{
+  "base_commit": "fdd40d8edd9a685613f1f667f0074e56ec4e7da5",
+  "checks": [
+    "all producer leaves syntax-only ast.parse; none imported or executed",
+    "101 public copies match catalog and declared source bytes",
+    "no output generated"
+  ],
+  "contract_sha256": "f3e019a840d6b69d853350763364a3fc41f10ea899f00ed6f164db5d58a95610",
+  "copied_public_input_bytes": 10463244,
+  "copied_public_input_count": 101,
+  "execution_authorized": false,
+  "expected_case_counts": {
+    "authority_refusals": 12,
+    "checked_arithmetic": 9,
+    "conditional_transport": 3,
+    "count_bounds": 5,
+    "framing_targets": 39,
+    "inherited_anchors": 6,
+    "inherited_entry_anchors": 8,
+    "lifecycle_traces": 19,
+    "matching_families": 3,
+    "mode_boundaries": 15,
+    "outbox_bounds": 9,
+    "outbox_cases": 47,
+    "outbox_request_rows": 6,
+    "profile_cases": 12,
+    "profiles": 3,
+    "raw_cases": 418,
+    "registry_bounds": 10,
+    "remote": 2,
+    "response_cases": 20,
+    "source_bounds": 13,
+    "state_pairs": 15,
+    "state_refusals": 31,
+    "wire_errors": 8,
+    "wire_responses": 120,
+    "wrapper_cases": 8,
+    "wrappers": 52
+  },
+  "plan_sha256": "568251bda8d3589874c8dccd0652442c1be7b3b218f40518f70606ad1279c99d",
+  "predecessors": [
+    "../producer-pre-nested-profile/fixtures.py",
+    "../producer-pre-state-review/{states,outbox,lifecycle,wire}.py"
+  ],
+  "producer_lock_sha256": "c2150feb2079948627ba7517bdefc10b86935b3fb53761f8bdf05ab69e0e9250",
+  "scope": "conditional independent bytes/states/bounds; runtime/session/atomicity/financial authority unclaimed",
+  "source_bytes": 10640967,
+  "source_file_count": 114,
+  "status": "SOURCE_ONLY_UNEXECUTED",
+  "version": 1
+}

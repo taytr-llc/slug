@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "scope": "Existing inherited JSON serialization order only; no new semantic values, proofs, hashes or authority",
+  "declarations": [
+    {
+      "source": "slug/btcjson/chainsvrresults.go",
+      "input": "inputs/wire-declarations/gbt.go.txt",
+      "bytes": 36753,
+      "sha256": "c937eb70080ac95bb812c2f04670896558ddc1e7ee3afaf1c1763da3563f845b"
+    },
+    {
+      "source": "slug/prospectjob/manifest_job.go",
+      "input": "inputs/wire-declarations/manifest-job.go.txt",
+      "bytes": 5121,
+      "sha256": "01ccdea190ec433e0d2aeba2bf3b2879081f978b6d8cc0b7671501a1a1a4324e"
+    },
+    {
+      "source": "slug/prospect/proof.go",
+      "input": "inputs/wire-declarations/prospect.go.txt",
+      "bytes": 17735,
+      "sha256": "d6a173252ea782517ef82b344bd050aaef4e0189cfc7e38096dc1a4207e142af"
+    },
+    {
+      "source": "slug/prospectwork/types.go",
+      "input": "inputs/wire-declarations/template.go.txt",
+      "bytes": 1465,
+      "sha256": "e8a2bf0f628483f47c41d4319c5e3e105a325225511524ff096984a7a7fb96ea"
+    }
+  ],
+  "template": [
+    "context",
+    "block"
+  ],
+  "context": [
+    "version",
+    "network",
+    "genesis",
+    "dna_version",
+    "prospect_target",
+    "parent_hash",
+    "parent_height",
+    "expected_bits",
+    "min_timestamp",
+    "max_timestamp"
+  ],
+  "job": [
+    "version",
+    "rule_version",
+    "id",
+    "authority_id",
+    "descriptor_id",
+    "context",
+    "public_key",
+    "gym_id",
+    "challenge",
+    "issued_at_ms",
+    "expires_at_ms"
+  ],
+  "block": [
+    "bits",
+    "curtime",
+    "height",
+    "previousblockhash",
+    "sigoplimit",
+    "sizelimit",
+    "weightlimit",
+    "transactions",
+    "version",
+    "coinbaseaux",
+    "coinbasetxn",
+    "coinbasevalue",
+    "workid",
+    "default_witness_commitment",
+    "longpollid",
+    "longpolluri",
+    "submitold",
+    "target",
+    "expires",
+    "maxtime",
+    "mintime",
+    "mutable",
+    "noncerange",
+    "capabilities",
+    "reject-reason"
+  ],
+  "block_omit_empty": [
+    "sigoplimit",
+    "sizelimit",
+    "weightlimit",
+    "coinbaseaux",
+    "coinbasetxn",
+    "coinbasevalue",
+    "workid",
+    "default_witness_commitment",
+    "longpollid",
+    "longpolluri",
+    "submitold",
+    "target",
+    "expires",
+    "maxtime",
+    "mintime",
+    "mutable",
+    "noncerange",
+    "capabilities",
+    "reject-reason"
+  ],
+  "block_optional_pointer": [
+    "coinbaseaux",
+    "coinbasetxn",
+    "coinbasevalue",
+    "submitold"
+  ],
+  "transaction": [
+    "data",
+    "hash",
+    "txid",
+    "depends",
+    "fee",
+    "sigops",
+    "weight"
+  ],
+  "aux": [
+    "flags"
+  ]
+}

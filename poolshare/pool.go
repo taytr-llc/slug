@@ -148,6 +148,9 @@ func (p *Pool) issue(ctx context.Context, token string) (savedWork, Work, error)
 	var retained savedWork
 	var result Work
 	err := p.withSession(ctx, token, func(ctx context.Context, key string, session *poolSession) error {
+		if p.issueRecovery != nil {
+			return ErrConfig
+		}
 		if err := p.dailyRequestMember(session.gym); err != nil {
 			return err
 		}
@@ -161,7 +164,7 @@ func (p *Pool) issue(ctx context.Context, token string) (savedWork, Work, error)
 		if info.Pin != p.config.AuthorityPin || info.ReadOnly {
 			return ErrCorrupt
 		}
-		if info.Jobs >= p.config.MaxWorks || p.meta.Works >= p.config.MaxWorks || p.meta.Submissions >= p.config.MaxSubmissions || maxSubmissionSize >= p.config.MaxBytes-p.meta.Bytes {
+		if info.Jobs >= p.config.MaxWorks || p.meta.Works >= p.config.MaxWorks || p.meta.Submissions >= p.config.MaxSubmissions || maxSubmissionSize >= p.freeSourceBytes() {
 			return ErrCapacity
 		}
 		if err := p.dailyWorkHeadroom(maxWorkSize); err != nil {
@@ -320,7 +323,7 @@ func (p *Pool) Submit(ctx context.Context, token, jobID string, nonce uint32) (S
 		if intakeErr != nil && !canonicalRecovery {
 			return intakeErr
 		}
-		if !(canonicalRecovery && p.operatorAdmission.daily != nil) && (p.meta.Submissions >= p.config.MaxSubmissions || maxSubmissionSize > p.config.MaxBytes-p.meta.Bytes) {
+		if !(canonicalRecovery && p.operatorAdmission.daily != nil) && (p.meta.Submissions >= p.config.MaxSubmissions || maxSubmissionSize > p.freeSourceBytes()) {
 			return ErrCapacity
 		}
 		received, err := p.sessionClock(session)

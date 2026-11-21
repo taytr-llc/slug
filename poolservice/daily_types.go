@@ -32,6 +32,9 @@ type DailyBalanceResponse struct {
 }
 
 func (c *Client) pathPrefix() string {
+	if c.recoverable != nil {
+		return recoverablePathPrefix
+	}
 	if c.daily != nil {
 		return dailyPathPrefix
 	}

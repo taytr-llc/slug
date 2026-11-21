@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "scope": "exact original A2 public metadata only; backing public stores are separately original-gated readonly audited",
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/01-selection.json",
+      "bytes": 15219,
+      "sha256": "a2b4794f20a9422626d1dbced28ffa4ac355ae5b9e83553476a0f75d596b9884"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/02-gap.json",
+      "bytes": 26174,
+      "sha256": "355f8f6b7c0cc144bec8047a57ce082809b47c4b6c1f060b6cd26bc0f1499188"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/actual-report.json",
+      "bytes": 18206,
+      "sha256": "21f72745f1c225d8e8c0db7bceb358299aea637e72142b34d1b1a4d4c90f52b8"
+    }
+  ]
+}

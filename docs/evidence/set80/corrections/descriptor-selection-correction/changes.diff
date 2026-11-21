@@ -1,0 +1,70 @@
+--- before/fixtures.py
++++ after/fixtures.py
+@@ -33,13 +33,25 @@
+                 transport_trust_id=trust)
+ 
+ 
+-def produce_fixtures(inherited, manifest, recipe):
++def produce_fixtures(inherited, manifest, recipe, name_v2_reference):
+     positives = {x['name']: x for x in inherited['composition']['positives']}
+     selected = [positives[name] for name in recipe['composition_names']]
+     wrappers, boundaries, families, profiles = [], [], [], []
+     profile_cases = Cases('new profile predicate; inherited source validity is a conditional input premise')
+     wrapper_cases = Cases('exact selected complete base/profile binding; no runtime or wallet authority')
+     descriptors = {x['id']: x['descriptor'] for x in manifest['descriptors']}
++    # Setup2 selects the later independently qualified names-v2 candidate.
++    # The old ManifestJob2 corpus remains the exact job-grammar/parity input;
++    # it does not contain this newer descriptor tuple. Never relabel an old one.
++    selected_descriptor = name_v2_reference['descriptor']
++    descriptor_raw = canon(selected_descriptor['descriptor'])
++    descriptor_preimage = b'SLUG fighter issuance descriptor\0v1\0' + descriptor_raw
++    need(descriptor_raw.decode('utf-8') == selected_descriptor['canonical']
++         and descriptor_preimage.hex() == selected_descriptor['preimage_hex']
++         and sha(descriptor_preimage) == selected_descriptor['id'], 'inherited-name-v2-descriptor-bytes')
++    need(selected_descriptor['supported_candidate'] is True
++         and selected_descriptor['id'] not in descriptors, 'distinct-inherited-name-v2-selection')
++    descriptors[selected_descriptor['id']] = selected_descriptor['descriptor']
+     old_work = next(x['value']['work'] for x in inherited['transport']['envelope_cases']
+                     if x['name'] == 'coinbase-only-work' and x['valid'])
+ 
+--- before/generate.py
++++ after/generate.py
+@@ -87,6 +87,7 @@
+         files[item['path']] = item
+     for mandatory in ['generate.py', 'recipe.json', 'input-catalog.json', 'README.md',
+                       'inputs/set79/reference-v1.json', 'inputs/manifest-job/manifest_job_v1.json',
++                      'inputs/name-v2/independent/reference-v2.json',
+                       'inputs/selection/ISSUE_RECOVERY_CONTRACT.md', 'inputs/selection/REFERENCE_PLAN.md'] + [x + '.py' for x in MODULES]:
+         require(mandatory in files, 'required-input-absent:' + mandatory)
+     ignored = set(UNBOUND_METADATA)
+@@ -133,9 +134,10 @@
+         require(Path(module.__file__).resolve() == ROOT / (name + '.py'), 'foreign-producer-module')
+     inherited = document(values['inputs/set79/reference-v1.json'])
+     manifest = document(values['inputs/manifest-job/manifest_job_v1.json'])
++    name_v2_reference = document(values['inputs/name-v2/independent/reference-v2.json'])
+     recipe = document(values['recipe.json'])
+     require(recipe['base_commit'] == BASE_COMMIT, 'recipe-commit')
+-    fixtures = modules['fixtures'].produce_fixtures(inherited, manifest, recipe)
++    fixtures = modules['fixtures'].produce_fixtures(inherited, manifest, recipe, name_v2_reference)
+     states = modules['states'].produce_states(fixtures['matching_families'])
+     outbox = modules['outbox'].produce_outbox(fixtures['matching_families'], inherited)
+     lifecycle = modules['lifecycle'].produce_lifecycle(fixtures['matching_families'])
+--- before/README.md
++++ after/README.md
+@@ -12,6 +12,16 @@
+ the unchanged Set79 corpus `a5c65673...25e3`, its complete source/qualification
+ bundle, and the original ManifestJob2 grammar corpus. No runtime fixture,
+ credential selection, wallet, seed, DB or network input is read.
++
++Root's first execution failed before output: the selected Setup2 uses the later
++names-v2 descriptor, absent from the older job-grammar corpus. The complete failed
++source is preserved at `../reference-before-descriptor-selection`; root retained
++`artifacts/set80/reference-attempt1`. This successor adds the committed independent
++names-v2 descriptor corpus/provenance and verifies its exact canonical bytes,
++existing descriptor preimage/domain and ID before extending the descriptor lookup.
++It does not relabel an older tuple or change any selected Setup, old job/PoW anchor,
++policy, deterministic recipe or case count. The earlier corpus remains the job
++grammar and parity source. No successor producer execution is claimed here.
+ 
+ `recipe.json` contains authored deterministic input choices and hand-counted case
+ declarations. It selects three exact Setup2 fixtures and independently derives

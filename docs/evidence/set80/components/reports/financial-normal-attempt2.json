@@ -1,0 +1,89 @@
+{
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 79837,
+        "pid": 79837,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./poolsettle",
+        "./poolschedule"
+      ],
+      "exit_code": 0,
+      "label": "deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 79837,
+      "pid": 79837,
+      "seconds": 0.258,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 79847,
+        "pid": 79847,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "test",
+        "-count=1",
+        "-p=1",
+        "-timeout=450s",
+        "-json",
+        "-run",
+        "^(TestRecoverableDailyFullIntakeExpiredWinnerPreservesPendingPayout|TestDailyAdmissionFullIntakePreservesPendingPayoutAcrossOwners|TestDailyLedgerConditionalWholeFrontierWeightDeferral)$",
+        "./poolsettle",
+        "./poolschedule"
+      ],
+      "exit_code": 0,
+      "label": "normal",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 79847,
+      "pid": 79847,
+      "seconds": 307.192,
+      "timed_out": false
+    }
+  ],
+  "expected_profile_skips": [],
+  "failed_tests": [],
+  "passed": true,
+  "passing_packages": [
+    "github.com/taytr-llc/slug/poolsettle",
+    "github.com/taytr-llc/slug/poolschedule"
+  ],
+  "passing_tests": [
+    "github.com/taytr-llc/slug/poolsettle/TestDailyAdmissionFullIntakePreservesPendingPayoutAcrossOwners",
+    "github.com/taytr-llc/slug/poolsettle/TestRecoverableDailyFullIntakeExpiredWinnerPreservesPendingPayout",
+    "github.com/taytr-llc/slug/poolsettle/TestDailyLedgerConditionalWholeFrontierWeightDeferral"
+  ],
+  "pattern": "^(TestRecoverableDailyFullIntakeExpiredWinnerPreservesPendingPayout|TestDailyAdmissionFullIntakePreservesPendingPayoutAcrossOwners|TestDailyLedgerConditionalWholeFrontierWeightDeferral)$",
+  "profile_unchanged": true,
+  "scope": "Set80 financial normal",
+  "skipped_tests": [],
+  "sources_unchanged": true,
+  "version": 1
+}

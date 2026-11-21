@@ -1,0 +1,321 @@
+{
+  "due_ms": 1795266660000,
+  "initial_height": 2,
+  "remote": {
+    "version": 1,
+    "base": {
+      "version": 2,
+      "connection_id": "8e0d949d6b5f1e5114f66712f4ecd965b682505560b7850ebfd2a976e9ffe3c7",
+      "operator_pin": {
+        "version": 2,
+        "source": {
+          "version": 5,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+          "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75"
+        },
+        "publication_id": "aa4b1d7232b11edef26270a04978bb8c5f9adab4bb3a3f5a5c31bf811eb37d50",
+        "admission_key": "7553c62962d2bf238b10521cf40ed6053f4c60c902f5d610e415a7a8ca9ab5af",
+        "publication_key": "8b9ede3a118acb72bfd556975f0aa02a2dea3de57633c13ce312440ab26b74d1",
+        "cutoff_key": "d15f97a13dc524f992c83ecb4c56848fae4fa5f967ead21fab158b5743a54207",
+        "checkpoint_key": "811349556ea792060edbb0518dd3a513c5906abe495a81eaf629abd5900c44a3",
+        "rule_id": "59d5f82360fd78eb5372a2d8b501fdaea999428498d19a1c9805b0428ec4fbf8",
+        "scan_origin": {
+          "height": 0,
+          "hash": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd"
+        },
+        "limits": {
+          "admissions": 1000,
+          "publications": 16384,
+          "carriers": 4096,
+          "checkpoints": 1024,
+          "cutoffs": 256,
+          "headers": 65536,
+          "logical_bytes": 268435456
+        }
+      },
+      "source": {
+        "version": 2,
+        "authority_pin": {
+          "version": 5,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+          "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75"
+        },
+        "policy": {
+          "version": 1,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "dna_version": 1,
+          "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+        },
+        "payout_address": "slug1qsyypdkm39xs2c5cu5r4w5r285p98rfmaqk7uzh",
+        "pool_target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+        "max_works": 8,
+        "max_submissions": 8,
+        "max_bytes": 67108864
+      },
+      "settlement": {
+        "version": 2,
+        "change_script": "0014810816db7129a0ac531ca0eaea0d47a04a71a77d",
+        "destinations": [
+          {
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4"
+          },
+          {
+            "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+            "script": "001416d630413cea75fd5ad88433cd815ae5ba1ba645"
+          }
+        ],
+        "max_rounds": 8,
+        "max_batches": 6
+      },
+      "miners": {
+        "version": 2,
+        "credential_id": "59e40b0e20dad2d09773a33c81846de745f496bd0b0b3c9706f88f2d8a19738c",
+        "runtime_id": "3ccd61b5c0e78f0743d97cc8d5cf0d72332a2981cac7bd17c9febb50d9116119",
+        "operator_profile_id": "d72ac8e5f8d0ab01264b0bbcc5f9c1274df8e44dc0106149366df72f1321a018",
+        "source_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+        "settlement_config_id": "744a4f6a8fa2160cf96353c396867021a1dbe0eaf6308978a753ebc326c546b9",
+        "enrollments": [
+          {
+            "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "payee_script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4"
+          },
+          {
+            "public_key": "03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519",
+            "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+            "payee_script": "001416d630413cea75fd5ad88433cd815ae5ba1ba645"
+          }
+        ]
+      },
+      "origin": "https://127.0.0.1:54273",
+      "ca_certificate": "-----BEGIN CERTIFICATE-----\nMIIBRjCB+aADAgECAgFKMAUGAytlcDArMSkwJwYDVQQDEyBTZXQ3NCBpc29sYXRl\nZCBwb29sIHJlaGVhcnNhbCBDQTAeFw0yNjExMjExMzAzMTlaFw0yNjExMjExNDA0\nMTlaMCsxKTAnBgNVBAMTIFNldDc0IGlzb2xhdGVkIHBvb2wgcmVoZWFyc2FsIENB\nMCowBQYDK2VwAyEAnR1qr2q2C/YIpTuFOAScuIjJG0HpZBXN5Zf1lSiPKrujQjBA\nMA4GA1UdDwEB/wQEAwICBDAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBQa7Bcg\nEfYKiWw8S7KxwAlHBS2AvTAFBgMrZXADQQAXKwsXZ+IE7ksQeQu1puCHfrqYWhLd\nZBQUo8t9jC7rhcECz+g+syza7XKooBcncvyIx+6Ng9npc1MiILojfOsB\n-----END CERTIFICATE-----\n",
+      "expected_local": {
+        "version": 1,
+        "manager_schema": 14,
+        "wallet_owner_id": "fdc5bc893760175efc7a9e1fc8cef122e387ef1ed09caf81695ab6f4a0f1cbd9",
+        "allocation_binding_id": "53cdee17ef2d626df77c55e77a7a4c0e4581d2a48f2a98e6c5cd3e7340195d0e",
+        "original_source_binding_id": "da88bc58614de71388f66d6376163173f2246660ebf429289cc97329f485b9be",
+        "recipient": {
+          "version": 1,
+          "config": {
+            "version": 1,
+            "account_authority_id": "010a11aeb64ba59ed8c256da57cc2e26b210bd7c0555ecd90ab13c9d517edfe1",
+            "account_id": "e26d18e35b50e2cbc74250e6a56c567215660fc71a22b80e20b7466e9874a0c5",
+            "fixture": "incrementing256",
+            "identity": {
+              "network": 1397511495,
+              "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+              "profile": "slug-phase-a-fixture-bip39-v1",
+              "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+              "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+            },
+            "source": {
+              "version": 1,
+              "authority_pin": {
+                "version": 5,
+                "network": 1397511495,
+                "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+                "authority_id": "49209891295f4ab454dcfbf31de48c94097bbf1d5827a00d7270c4d0fe5a6ed2",
+                "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303"
+              },
+              "policy": {
+                "version": 1,
+                "network": 1397511495,
+                "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+                "dna_version": 1,
+                "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+              },
+              "payout_address": "slug1q0ht9tyks4vh7p5p904t340cr9nvahy7u3swf3t",
+              "pool_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+              "max_works": 256,
+              "max_submissions": 4096,
+              "max_bytes": 268435456
+            }
+          },
+          "source_binding_id": "da88bc58614de71388f66d6376163173f2246660ebf429289cc97329f485b9be",
+          "recipient": {
+            "address": "slug1qslk39wvggqa0vl8nd6jckaz54dw3vk45c8educ",
+            "script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+            "purpose": 84,
+            "coin": 0,
+            "account": 0,
+            "branch": 0,
+            "index": 0
+          }
+        }
+      },
+      "max_records": 64,
+      "max_bytes": 67108864
+    },
+    "issue_profile": {
+      "version": 1,
+      "base_setup_id": "f85854d1736e2412fc6405c2cb63a19fdf0cec591dd2f2dc6c980729ebafc929",
+      "source_config_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+      "max_requests": 8
+    }
+  },
+  "remote_id": "e77f10e1c5dcb616d44600fa81be5b8347f8a6f494b69bf059a6606f7d1be64d",
+  "setup": {
+    "version": 1,
+    "base": {
+      "version": 2,
+      "runtime_id": "3ccd61b5c0e78f0743d97cc8d5cf0d72332a2981cac7bd17c9febb50d9116119",
+      "authority": {
+        "version": 2,
+        "source": {
+          "version": 5,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+          "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75"
+        },
+        "publication_id": "aa4b1d7232b11edef26270a04978bb8c5f9adab4bb3a3f5a5c31bf811eb37d50",
+        "admission_key": "7553c62962d2bf238b10521cf40ed6053f4c60c902f5d610e415a7a8ca9ab5af",
+        "publication_key": "8b9ede3a118acb72bfd556975f0aa02a2dea3de57633c13ce312440ab26b74d1",
+        "cutoff_key": "d15f97a13dc524f992c83ecb4c56848fae4fa5f967ead21fab158b5743a54207",
+        "checkpoint_key": "811349556ea792060edbb0518dd3a513c5906abe495a81eaf629abd5900c44a3",
+        "rule_id": "59d5f82360fd78eb5372a2d8b501fdaea999428498d19a1c9805b0428ec4fbf8",
+        "scan_origin": {
+          "height": 0,
+          "hash": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd"
+        },
+        "limits": {
+          "admissions": 1000,
+          "publications": 16384,
+          "carriers": 4096,
+          "checkpoints": 1024,
+          "cutoffs": 256,
+          "headers": 65536,
+          "logical_bytes": 268435456
+        }
+      },
+      "ownership_store_id": "a20ceb7304d1ff787939dd9c61f3f2492191a328f5dd52402a3939c8b59e638b",
+      "pool": {
+        "version": 2,
+        "authority_pin": {
+          "version": 5,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+          "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75"
+        },
+        "policy": {
+          "version": 1,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "dna_version": 1,
+          "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+        },
+        "payout_address": "slug1qsyypdkm39xs2c5cu5r4w5r285p98rfmaqk7uzh",
+        "pool_target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+        "max_works": 8,
+        "max_submissions": 8,
+        "max_bytes": 67108864
+      },
+      "round_limits": {
+        "version": 2,
+        "max_rounds": 8,
+        "max_bytes": 67108864
+      },
+      "settlement": {
+        "version": 2,
+        "change_script": "0014810816db7129a0ac531ca0eaea0d47a04a71a77d",
+        "destinations": [
+          {
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4"
+          },
+          {
+            "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+            "script": "001416d630413cea75fd5ad88433cd815ae5ba1ba645"
+          }
+        ],
+        "max_rounds": 8,
+        "max_batches": 6
+      },
+      "schedule": {
+        "version": 2,
+        "scheduler_id": "ba73e624dd9cac964c482933a6d54b0ba1e66c28e69581087cebc13e32104a89",
+        "runtime_id": "3ccd61b5c0e78f0743d97cc8d5cf0d72332a2981cac7bd17c9febb50d9116119",
+        "settlement_binding_id": "1a8f11297217a9d3ef471be9070ede3df0291d353fbf17c3cbce693571631035",
+        "daily_utc_minute": 791,
+        "retry_ms": 30000
+      },
+      "miners": {
+        "version": 2,
+        "credential_id": "59e40b0e20dad2d09773a33c81846de745f496bd0b0b3c9706f88f2d8a19738c",
+        "runtime_id": "3ccd61b5c0e78f0743d97cc8d5cf0d72332a2981cac7bd17c9febb50d9116119",
+        "operator_profile_id": "d72ac8e5f8d0ab01264b0bbcc5f9c1274df8e44dc0106149366df72f1321a018",
+        "source_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+        "settlement_config_id": "744a4f6a8fa2160cf96353c396867021a1dbe0eaf6308978a753ebc326c546b9",
+        "enrollments": [
+          {
+            "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "payee_script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4"
+          },
+          {
+            "public_key": "03ec7488667fd544b4a1de8fb0ae03730c9a2dc346c652cbaa59a077dbeddca519",
+            "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+            "payee_script": "001416d630413cea75fd5ad88433cd815ae5ba1ba645"
+          }
+        ]
+      },
+      "wallet_guard": {
+        "version": 1,
+        "manager_schema": 16,
+        "wallet_owner_id": "82028ea13effbc80a6e6c6b13ad071cf93fd2c1fd8b9db5bd521f36f259d88b6",
+        "operator_profile_id": "d72ac8e5f8d0ab01264b0bbcc5f9c1274df8e44dc0106149366df72f1321a018",
+        "source_binding_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+        "settlement_config_id": "744a4f6a8fa2160cf96353c396867021a1dbe0eaf6308978a753ebc326c546b9",
+        "derivation_id": "slug-phase-a-operator-pool-native84-v1",
+        "network": 1397511495,
+        "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "root_public_key": "JgduaQiYjRcnjcD9sy97zcNZRiXagRmzNRMUeekjhW3oy7hyVX13EHacpz3uPzCXzaorijR4t6S7y3RrJXC6EHeA1vhTD3cbWqaf4545V4gXPbLF",
+        "funding_public_key": "033c82426e79a02318e797eec2021a10a8d7a8edfcd889adc82df78b303380bcc5",
+        "funding_script": "0014810816db7129a0ac531ca0eaea0d47a04a71a77d"
+      },
+      "node": {
+        "version": 1,
+        "network": 1397511495,
+        "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "pool_public_key": "033c82426e79a02318e797eec2021a10a8d7a8edfcd889adc82df78b303380bcc5",
+        "pool_script": "0014810816db7129a0ac531ca0eaea0d47a04a71a77d",
+        "fee": {
+          "mode": "fixed",
+          "confirmation_target": 0,
+          "atoms_per_kvb": 1000,
+          "max_atoms_per_kvb": 100000,
+          "max_fee_atoms": 1000000
+        }
+      },
+      "ingress": {
+        "version": 2,
+        "listen": "127.0.0.1:54274",
+        "origin": "https://127.0.0.1:54273",
+        "certificate_spki": "8454f90fa6267ad836a9af2b8fbcc7af59cf9d7d5c2dd735c32f7b56c288d613",
+        "pool_url": "http://127.0.0.1:54275",
+        "admission_url": "http://127.0.0.1:54276",
+        "ownership_url": "http://127.0.0.1:54277"
+      },
+      "maintenance_interval_ms": 30000,
+      "unlock_lifetime_ms": 3600000,
+      "unlock_renewal_ms": 300000
+    },
+    "issue_profile": {
+      "version": 1,
+      "base_setup_id": "f85854d1736e2412fc6405c2cb63a19fdf0cec591dd2f2dc6c980729ebafc929",
+      "source_config_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+      "max_requests": 8
+    }
+  },
+  "setup_id": "d245dd22686aded0d9f696d527e3749c4128105d581421764d8d54e10a3333cd",
+  "start_ms": 1795266259420
+}

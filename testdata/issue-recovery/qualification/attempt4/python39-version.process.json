@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "/usr/bin/python3",
+    "-B",
+    "-S",
+    "--version"
+  ],
+  "pgid": 76057,
+  "pid": 76057,
+  "timeout_seconds": 10
+}

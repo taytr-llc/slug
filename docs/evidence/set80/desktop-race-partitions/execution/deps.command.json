@@ -1,0 +1,34 @@
+{
+  "capture_errors": [],
+  "cleanup": {
+    "errors": [],
+    "group_empty": true,
+    "leftover_after_exit": false,
+    "pgid": 86560,
+    "pid": 86560,
+    "return_code": 0,
+    "signals": []
+  },
+  "command": [
+    "go",
+    "list",
+    "-deps",
+    "-test",
+    "-json",
+    "-p=1",
+    "-mod=readonly",
+    "-tags=",
+    "-race",
+    "./pilot",
+    "./accountpilot",
+    "./cmd/slugpilot"
+  ],
+  "exit_code": 0,
+  "log_errors": [],
+  "log_joined": true,
+  "log_limit_exceeded": false,
+  "pgid": 86560,
+  "pid": 86560,
+  "seconds": 0.441,
+  "timed_out": false
+}

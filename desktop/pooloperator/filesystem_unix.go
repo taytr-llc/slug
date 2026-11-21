@@ -23,6 +23,7 @@ var componentNames = [...]string{"issuer", "pool", "rounds", "settlement", "sche
 type operatorFiles struct {
 	path                                  string
 	setup                                 Setup
+	issue                                 *RecoverableDailySetup
 	create, established, closed, poisoned bool
 	closeErr                              error
 	failedClosers                         []*os.File
@@ -47,6 +48,19 @@ func openOperatorFiles(path string, s Setup, create bool) (*operatorFiles, error
 	return openOperatorFilesVersion(path, s, create, 1)
 }
 func openOperatorFilesVersion(path string, s Setup, create bool, version uint32) (f *operatorFiles, err error) {
+	return openOperatorFilesSelection(path, s, create, version, nil)
+}
+func openOperatorFilesSelection(path string, s Setup, create bool, version uint32, issue *RecoverableDailySetup) (f *operatorFiles, err error) {
+	if issue != nil {
+		if version != 2 || ValidateRecoverableDailySetup(*issue) != nil {
+			return nil, ErrInvalid
+		}
+		base, e := MarshalDailySetup(s)
+		want, x := MarshalDailySetup(issue.Base)
+		if e != nil || x != nil || !bytes.Equal(base, want) {
+			return nil, ErrInvalid
+		}
+	}
 	if validateSetupVersion(s, version) != nil || !filepath.IsAbs(path) || filepath.Clean(path) != path || len(path) > 4096 || strings.IndexByte(path, 0) >= 0 || os.Getuid() != os.Geteuid() {
 		return nil, ErrInvalid
 	}
@@ -59,7 +73,7 @@ func openOperatorFilesVersion(path string, s Setup, create bool, version uint32)
 			return nil, ErrInvalid
 		}
 	}
-	f = &operatorFiles{path: path, setup: s, create: create, children: map[string]directoryRef{}}
+	f = &operatorFiles{path: path, setup: s, issue: issue, create: create, children: map[string]directoryRef{}}
 	fd, e := unix.Open("/", unix.O_RDONLY|unix.O_DIRECTORY|unix.O_NOFOLLOW|unix.O_CLOEXEC, 0)
 	if e != nil {
 		return f, ErrUnavailable
@@ -109,8 +123,8 @@ func openOperatorFilesVersion(path string, s Setup, create bool, version uint32)
 	if e != nil {
 		return f, e
 	}
-	_, hasIntent := names[operatorIntentName(f.setup.Version)]
-	_, hasReady := names[operatorReadyName(f.setup.Version)]
+	_, hasIntent := names[f.intentFilename()]
+	_, hasReady := names[f.readyFilename()]
 	if create && hasReady || !create && (!hasReady || !hasIntent) {
 		return f, ErrIntegrity
 	}
@@ -118,15 +132,15 @@ func openOperatorFilesVersion(path string, s Setup, create bool, version uint32)
 		if !create || len(names) != 0 {
 			return f, ErrIntegrity
 		}
-		raw, e := marshalSetupVersion(s, s.Version)
+		raw, e := f.setupBytes()
 		if e != nil {
 			return f, e
 		}
-		if e = f.writeExclusive(operatorIntentName(f.setup.Version), append(raw, '\n')); e != nil {
+		if e = f.writeExclusive(f.intentFilename(), append(raw, '\n')); e != nil {
 			return f, e
 		}
 	}
-	f.intent, e = selectPrivateInput(context.Background(), filepath.Join(path, operatorIntentName(f.setup.Version)), MaxSetupBytes+1)
+	f.intent, e = selectPrivateInput(context.Background(), filepath.Join(path, f.intentFilename()), f.setupLimit()+1)
 	if e != nil {
 		return f, e
 	}
@@ -134,14 +148,14 @@ func openOperatorFilesVersion(path string, s Setup, create bool, version uint32)
 	if e != nil {
 		return f, e
 	}
-	want, _ := marshalSetupVersion(s, s.Version)
+	want, _ := f.setupBytes()
 	want = append(want, '\n')
 	if !bytes.Equal(got, want) {
 		return f, ErrIntegrity
 	}
 	f.established = hasReady
 	if hasReady {
-		f.ready, e = selectPrivateInput(context.Background(), filepath.Join(path, operatorReadyName(f.setup.Version)), 1024)
+		f.ready, e = selectPrivateInput(context.Background(), filepath.Join(path, f.readyFilename()), 1024)
 		if e != nil {
 			return f, e
 		}
@@ -149,7 +163,7 @@ func openOperatorFilesVersion(path string, s Setup, create bool, version uint32)
 		if e != nil {
 			return f, e
 		}
-		want, e = readyBytesVersion(s, s.Version)
+		want, e = f.readyBytes()
 		if e != nil || !bytes.Equal(got, want) {
 			return f, ErrIntegrity
 		}
@@ -178,7 +192,7 @@ func (f *operatorFiles) names() (map[string]bool, error) {
 	names := map[string]bool{}
 	for _, entry := range entries {
 		n := entry.Name()
-		if n != operatorIntentName(f.setup.Version) && n != operatorReadyName(f.setup.Version) && !component(n) || entry.Type()&os.ModeSymlink != 0 {
+		if n != f.intentFilename() && n != f.readyFilename() && !component(n) || entry.Type()&os.ModeSymlink != 0 {
 			return nil, ErrIntegrity
 		}
 		names[n] = true
@@ -243,7 +257,7 @@ func (f *operatorFiles) check() error {
 	if e != nil {
 		return e
 	}
-	if !names[operatorIntentName(f.setup.Version)] || names[operatorReadyName(f.setup.Version)] != f.established {
+	if !names[f.intentFilename()] || names[f.readyFilename()] != f.established {
 		return ErrIntegrity
 	}
 	for name, d := range f.children {
@@ -310,14 +324,14 @@ func (f *operatorFiles) markReady() error {
 	if len(f.children) != len(componentNames) {
 		return ErrIntegrity
 	}
-	raw, e := readyBytesVersion(f.setup, f.setup.Version)
+	raw, e := f.readyBytes()
 	if e != nil {
 		return e
 	}
-	if e = f.writeExclusive(operatorReadyName(f.setup.Version), raw); e != nil {
+	if e = f.writeExclusive(f.readyFilename(), raw); e != nil {
 		return e
 	}
-	f.ready, e = selectPrivateInput(context.Background(), filepath.Join(f.path, operatorReadyName(f.setup.Version)), 1024)
+	f.ready, e = selectPrivateInput(context.Background(), filepath.Join(f.path, f.readyFilename()), 1024)
 	if e != nil {
 		f.poisoned = true
 		return e
@@ -359,4 +373,35 @@ func (f *operatorFiles) close() error {
 		}
 	}
 	return f.closeErr
+}
+
+func (f *operatorFiles) intentFilename() string {
+	if f.issue != nil {
+		return "SLUG-POOL-OPERATOR-ISSUE1.json"
+	}
+	return operatorIntentName(f.setup.Version)
+}
+func (f *operatorFiles) readyFilename() string {
+	if f.issue != nil {
+		return "SLUG-POOL-OPERATOR-READY-ISSUE1.json"
+	}
+	return operatorReadyName(f.setup.Version)
+}
+func (f *operatorFiles) setupBytes() ([]byte, error) {
+	if f.issue != nil {
+		return MarshalRecoverableDailySetup(*f.issue)
+	}
+	return marshalSetupVersion(f.setup, f.setup.Version)
+}
+func (f *operatorFiles) readyBytes() ([]byte, error) {
+	if f.issue != nil {
+		return recoverableReadyBytes(*f.issue)
+	}
+	return readyBytesVersion(f.setup, f.setup.Version)
+}
+func (f *operatorFiles) setupLimit() int {
+	if f.issue != nil {
+		return MaxRecoverableSetupBytes
+	}
+	return MaxSetupBytes
 }

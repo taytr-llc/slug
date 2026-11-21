@@ -1,0 +1,80 @@
+{
+  "base_commit": "fdd40d8edd9a685613f1f667f0074e56ec4e7da5",
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 75627,
+        "pid": 75627,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "/opt/homebrew/bin/python3",
+        "-B",
+        "-S",
+        "--version"
+      ],
+      "exit_code": 0,
+      "label": "python314-version",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 75627,
+      "pid": 75627,
+      "seconds": 0.021,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 75628,
+        "pid": 75628,
+        "return_code": 1,
+        "signals": []
+      },
+      "command": [
+        "/opt/homebrew/bin/python3",
+        "-B",
+        "-S",
+        "/Users/taytrrip/slug/set80-prep/reference/generate.py",
+        "--lock",
+        "/Users/taytrrip/slug/set80-prep/reference-execution-lock.root-attempt2.json",
+        "--output",
+        "/Users/taytrrip/slug/artifacts/set80/reference-attempt2/python314.json"
+      ],
+      "exit_code": 1,
+      "label": "python314",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 75628,
+      "pid": 75628,
+      "seconds": 0.386,
+      "timed_out": false
+    }
+  ],
+  "error": "RuntimeError: failed python314",
+  "interpreters": {
+    "python314": {
+      "bytes": 52640,
+      "path": "/opt/homebrew/bin/python3",
+      "real_path": "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+      "sha256": "f13707ff725eb3675d57e0f04527a4dada0511cebfb7cbd80f5cab72733a2a9d",
+      "version": "Python 3.14.3"
+    }
+  },
+  "lock_unchanged": true,
+  "outputs": {},
+  "passed": false,
+  "scope": "Set80 independent dual-interpreter byte/state/capacity reference",
+  "sources_unchanged": true,
+  "version": 1
+}

@@ -1,0 +1,1145 @@
+{
+  "actual_qualification": false,
+  "audit": {
+    "financial": {
+      "submissions": 1,
+      "accepted": 1,
+      "works": 1,
+      "authority_jobs": 1,
+      "admissions": [
+        {
+          "version": 5,
+          "sequence": 1,
+          "context": {
+            "version": 1,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "dna_version": 1,
+            "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+            "parent_height": 2,
+            "expected_bits": 545259519,
+            "min_timestamp": 1795170106,
+            "max_timestamp": 1795272061
+          },
+          "proof": {
+            "version": 2,
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "header": "000000202d3e62a4e954656cfd09c7f2fc6c7aa3bd89dc4bf0ad965946e0bb42ffe3c81163823d2a6fbac2efd500412fea5f008e16fbda77bd78505cc0a3621a5912d9565d91016bffff7f2000000000",
+            "coinbase": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff16530800000000000000000b2f503253482f627463642fffffffff0200ca9a3b00000000160014810816db7129a0ac531ca0eaea0d47a04a71a77d00000000000000002a6a28534c554750523032e13287122e2327866fca6c5ea9f71bfd19391fd025bfef11db67a6a797bbb11d00000000",
+            "merkle_branch": [],
+            "job_id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728"
+          },
+          "verified": {
+            "version": 2,
+            "verification": "supplied-context",
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "prospect_id": "891eee1686d305abfe22c63ea4034e0bef09b7a06b7fb2fc19fcbd421fdab2df",
+            "policy_id": "2dd6301ce9989bc383f942f3d1520e8bc61ee2564761a7f754eb09677b24fb8c",
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "work_hash": "658b448a12dd79f4878d6e211f6799e6a1711df7defd0f5e08019223e5c0958a",
+            "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+            "parent_height": 2,
+            "dna": {
+              "dna_version": 1,
+              "seed": "658b448a12dd79f4878d6e211f6799e6a1711df7defd0f5e08019223e5c0958a",
+              "rarity": "club",
+              "talent_budget": 270,
+              "attributes": {
+                "power": 19,
+                "speed": 54,
+                "chin": 25,
+                "stamina": 100,
+                "skill": 72
+              },
+              "prime_weeks": 43,
+              "decline_weeks": 26
+            }
+          },
+          "authorization": {
+            "version": 2,
+            "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+            "signature": "3045022100ecc556d655b98c96d771ded3170bbc0cf64cba092dfbdbac1ae4f6678cab612c02200f416e594dee21ec06f82fa7d8320b3bf2121ee7bc0a30a894c82ac2631f61ce"
+          },
+          "job": {
+            "version": 2,
+            "rule_version": 1,
+            "id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728",
+            "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+            "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+            "context": {
+              "version": 1,
+              "network": 1397511495,
+              "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+              "dna_version": 1,
+              "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+              "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+              "parent_height": 2,
+              "expected_bits": 545259519,
+              "min_timestamp": 1795170106,
+              "max_timestamp": 1795272061
+            },
+            "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "challenge": "3a747e46a681946f80a5399492173a93b094e813de54b26879173356950950d9",
+            "issued_at_ms": 1795264861973,
+            "expires_at_ms": 1795265161973
+          },
+          "birth": {
+            "rule_version": 1,
+            "born_at_ms": 1795264861973,
+            "accepted_at_ms": 1795264873233
+          },
+          "eligibility": {
+            "rule_version": 2,
+            "source": "canonical-winning-block",
+            "hash": "658b448a12dd79f4878d6e211f6799e6a1711df7defd0f5e08019223e5c0958a",
+            "height": 3
+          },
+          "static_binding": {
+            "version": 1,
+            "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+            "manifest_digest": "1ab1c792a79262b90b92e0a87ff8690bb647fb4f934af73e66db4d91c00200ef",
+            "portrait_digest": "db721737396f9f05a6ce155d47a2b83354906654bb3d4d61c8243e98d70046ae"
+          }
+        }
+      ],
+      "births": 1,
+      "entries": [
+        {
+          "share": {
+            "version": 1,
+            "sequence": 1,
+            "accepted_sequence": 1,
+            "job_id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728",
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "nonce": 0,
+            "pool_target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+            "header": "000000202d3e62a4e954656cfd09c7f2fc6c7aa3bd89dc4bf0ad965946e0bb42ffe3c81163823d2a6fbac2efd500412fea5f008e16fbda77bd78505cc0a3621a5912d9565d91016bffff7f2000000000",
+            "work_hash": "658b448a12dd79f4878d6e211f6799e6a1711df7defd0f5e08019223e5c0958a",
+            "duplicate_key": "0a7898b16d577d7d2d5ca5cb0d728fac92f31784b421005c7b6689edd869d91c",
+            "pool": true,
+            "prospect": true,
+            "block": true,
+            "block_height": 3,
+            "received_at_ms": 1795264872294,
+            "accepted_at_ms": 1795264872904,
+            "acceptance": "canonical-winning-block",
+            "block_state": "",
+            "block_observed_at_ms": 0
+          },
+          "job": {
+            "version": 2,
+            "rule_version": 1,
+            "id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728",
+            "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+            "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+            "context": {
+              "version": 1,
+              "network": 1397511495,
+              "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+              "dna_version": 1,
+              "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+              "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+              "parent_height": 2,
+              "expected_bits": 545259519,
+              "min_timestamp": 1795170106,
+              "max_timestamp": 1795272061
+            },
+            "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "challenge": "3a747e46a681946f80a5399492173a93b094e813de54b26879173356950950d9",
+            "issued_at_ms": 1795264861973,
+            "expires_at_ms": 1795265161973
+          },
+          "proof": {
+            "version": 2,
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "header": "000000202d3e62a4e954656cfd09c7f2fc6c7aa3bd89dc4bf0ad965946e0bb42ffe3c81163823d2a6fbac2efd500412fea5f008e16fbda77bd78505cc0a3621a5912d9565d91016bffff7f2000000000",
+            "coinbase": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff16530800000000000000000b2f503253482f627463642fffffffff0200ca9a3b00000000160014810816db7129a0ac531ca0eaea0d47a04a71a77d00000000000000002a6a28534c554750523032e13287122e2327866fca6c5ea9f71bfd19391fd025bfef11db67a6a797bbb11d00000000",
+            "merkle_branch": [],
+            "job_id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728"
+          },
+          "reward_atoms": 1000000000
+        }
+      ],
+      "rounds": [],
+      "credits": [],
+      "header": {
+        "application": "slug-pool-settlement-daily",
+        "version": 2,
+        "config_id": "744a4f6a8fa2160cf96353c396867021a1dbe0eaf6308978a753ebc326c546b9",
+        "source_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+        "revision": 4,
+        "credits": 0,
+        "batches": 0,
+        "events": 0,
+        "logical_bytes": 8519680,
+        "pending_batch": 0,
+        "last_day": "",
+        "last_clock_ms": 1795264868344
+      },
+      "body": {
+        "version": 0,
+        "sequence": 0,
+        "day": "",
+        "created_at_ms": 0,
+        "inputs": null,
+        "payments": null,
+        "fee_atoms": 0,
+        "change": null,
+        "txid": "",
+        "raw": ""
+      },
+      "body_sha256": "",
+      "body_bytes": 0,
+      "delivery": "",
+      "report": {
+        "day": "2026-11-21",
+        "observed_at_ms": 1795264868344,
+        "state": "complete",
+        "balances": [
+          {
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "confirmed": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "available": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "reserved_atoms": 0,
+            "paid_atoms": 0,
+            "reason": ""
+          },
+          {
+            "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+            "confirmed": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "available": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "reserved_atoms": 0,
+            "paid_atoms": 0,
+            "reason": ""
+          }
+        ]
+      },
+      "read_only_unchanged": true,
+      "source_requests": 2,
+      "issuer_requests": 1,
+      "public_rows": {
+        "issuer/69737375652f6a2f18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728": "eb34ca8ac50f485110016f0172bacd7994c032a2924453788ff93059a14244ea",
+        "issuer/69737375652f722f5300ff515732f714379b01443df7997c6645d2aa0114de402492bfc6a2e46ea5": "c1e6c47006a511433975a15aac0b09e4519fc1508ddf5ab54d0aa106568398ea",
+        "issuer/6a6f623a31383534376532666463393631313830353836663433333136393363323439393763306639643739323730393663356134616633363631333934396333373238": "1927a249c615c02b99822e0759d5f036a8f3a2e3937bb8214570aba18ee98931",
+        "issuer/6d657461": "16e71d6c13b74049945e3a0303881e2b3868901d55e4891f367fb2b8da1d33ff",
+        "issuer/6f776e6572736869702f6775617264": "35b6c80fa6c2ba495059a29041baf7fa287bbb69581e5bee620bfdc1c991daee",
+        "issuer/6f776e6572736869702f6d657461": "c85fc692d072caea823ddc8ed3ae1e7974c3c4226b81fe692da6117fe209c2fe",
+        "issuer/6f776e6572736869702f6f7574626f782f00000001": "c342ef5dd963ec42e7f543b4b990c3ad4be76494aa947512dd2de67233e6c803",
+        "issuer/6f776e6572736869702f7075626c69636174696f6e2f00000001": "90c5d3d511b570f8b03bca25eec8c0af3e1cca5673bcfdc2837f61cfbe2702a1",
+        "issuer/6f776e6572736869702f7075626c69636174696f6e2f00000002": "1f3437fccfe477512cd6a7120c2dc62a746e5f2b1ef15906586f3dd67697890a",
+        "issuer/6f776e6572736869702f7075626c69636174696f6e2f00000003": "936f76dabdbc31e34c8e0b2a2e08f8ac63f8ddfbd3925712057f1c2446e915d7",
+        "issuer/7265636f72643a38393165656531363836643330356162666532326336336561343033346530626566303962376130366237666232666331396663626434323166646162326466": "df690b97b8f3466da24511b3d1a43516a5271dfbf1066f50f0a209299b370995",
+        "issuer/73657175656e63653a0000000000000001": "f25c316aa4a4296178f0b06b68befd29c684f833eab3b802311a24322df6c6f7",
+        "pool/610000000000000001": "310de2a802ecf4161b59ab5ff85b5c7bae134da7bb82c528f78f738e2f6ebaf9",
+        "pool/69737375652f6a2f18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728": "eb34ca8ac50f485110016f0172bacd7994c032a2924453788ff93059a14244ea",
+        "pool/69737375652f722f296c0f28398cf61c446f9df0d01d1212339399fe6aa48515f5697c0828e4e5f7": "c960178c13b6e29caeae6223494b7f3ca4776ab8c8f03edbd67e26676fcbd04b",
+        "pool/69737375652f722f5300ff515732f714379b01443df7997c6645d2aa0114de402492bfc6a2e46ea5": "6f787b39364c6ff5e3089188e39cc8adb959f48e256e68589b25d5a10dba296a",
+        "pool/69737375652f742f296c0f28398cf61c446f9df0d01d1212339399fe6aa48515f5697c0828e4e5f7": "d9e49a28fb3a26641a12dfc618afad9e93b4a8465ef6d112019d70504c800069",
+        "pool/6d657461": "1b16e09084d52d151113fb50e7b0fd36117fcad20de3a8af7e64b2f880bb2399",
+        "pool/6e313835343765326664633936313138303538366634333331363933633234393937633066396437393237303936633561346166333636313339343963333732383030303030303030": "310de2a802ecf4161b59ab5ff85b5c7bae134da7bb82c528f78f738e2f6ebaf9",
+        "pool/710000000000000001": "310de2a802ecf4161b59ab5ff85b5c7bae134da7bb82c528f78f738e2f6ebaf9",
+        "pool/7330613738393862313664353737643764326435636135636230643732386661633932663331373834623432313030356337623636383965646438363964393163": "a33244fd610960e87d30865f68c5c498d47eed9eb8f4778ed900d8c4e0b8cb03",
+        "pool/7731383534376532666463393631313830353836663433333136393363323439393763306639643739323730393663356134616633363631333934396333373238": "0c4bcf8db5bfe994fa9f5a973794c74de3371cc6b79bbaa40c6e7ef7c62fc73c",
+        "rounds/6d657461": "68f35d932adbfd57dd8a399b45802c1f7ccd5b7c2124fad46ca6e93a2bb618c2",
+        "settlement/68656164": "597521931a7c5fa5cb919d6e56fb71a89d1def919b024bc045db3781098bc7f1",
+        "settlement/7265706f7274": "7d335a98155ab2f0a4e21b6593bdb91cb0e056e099c0afe59e7433e6c598006e"
+      },
+      "public_files_before": {
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/SLUG-MANIFEST-OWNERSHIP-V2.json": "eee47bc87b9c461eda83920a79e77a2a5be5ff3cb2bef783169a2cbb703eccf3",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/SLUG-REGISTRY.json": "afb96cf2ec0bec95d0d4415867192d71cf60f6754f2ba416c5d3a281f410afce",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/000002.ldb": "b07f1283ffca62a2c5a1f51051c280a9724da30b8166f32055e986f50d02cd61",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/000011.ldb": "e60325430b8d273f250f340b861203b17c4007b296e731affd0f74eaf1f78c86",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/000014.ldb": "e9e8a4ae6b462f47cd92129b2821ae87de61c8b868de2bb76c6ee5c2a3ab8c8b",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/000015.log": "0f37ea745217e1199b7ea12596f5c4f9615ae39349e46029ee2f6ac7667be579",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/CURRENT": "befea596b4676ccf7cc37ea8048044bfa0556c8931d76fdeeb693d20264e50d6",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/CURRENT.bak": "e6325e36f681074fccd2b1371dbf6f4535a6630e5b95c9ddff92c48ec11ce312",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/LOCK": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/LOG": "ff0c19b1ffced183f90a2d14a5e27688ec0e03d6286599ae9f22724dd94d5212",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/MANIFEST-000016": "1487eebbc8a781350dbdba97d1626e8788d255eb8b7d7280a121f9af5f1ab47f",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/SLUG-POOL.json": "9e38e6f2df363e6bd27b7724b4924142aaba1ac0a315347dd9c5e8f8296b9e65",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/000002.ldb": "d5c9eb642be48701cb7c6750ce349c7594d1175c2c393a898ee72fd8732e1349",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/000011.ldb": "3d5c58d478ce968abc45714eca22a992094ae051c648c222f22c643653b4e6d0",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/000014.ldb": "2e54a9faec5ba9f19db7e43ea46faf2b1f8806d87a498db2b0d5a1b636b81391",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/000015.log": "39934525cf2834e25ccafec607a1929972fd2718975883fe3d36fb4dfef2866c",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/CURRENT": "befea596b4676ccf7cc37ea8048044bfa0556c8931d76fdeeb693d20264e50d6",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/CURRENT.bak": "e6325e36f681074fccd2b1371dbf6f4535a6630e5b95c9ddff92c48ec11ce312",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/LOCK": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/LOG": "da0fba16947f4a4d2685139c9cbff1755c839242e0f986dc76183f431e2be19f",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/MANIFEST-000016": "a34e8fc6d08be2b1dcf67e25cdca3450bb8424409a515da04971fe629962266f",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/SLUG-POOL-ROUNDS.json": "142b1031c26ef197170c4f503dbd24c39cbb73aac340d4d083777ab677604931",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/000002.ldb": "b52b8f1434bc8b82f5138f780fd7af3202276eb5763d599b5146c12bb149dbec",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/000013.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/CURRENT": "61657118abc562d70c10cbea1e8c92fab3a92739f5445033e813c3511688c625",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/CURRENT.bak": "eaab30ed3bde0318e208d83e6b0701b3ee9eb6b11da2d9fbab1552e8e4ce88f8",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/LOCK": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/LOG": "e1718375e9ad486e9494bdebd19ea1a2a6110fa8fa2d8a14de236d61f562028d",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/MANIFEST-000014": "5425fce281afcbf01b2068dfe37fcf5ef52a33f0ed0f79b26cfe0c3f1bbeaee5",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/SLUG-POOL-SETTLEMENT.json": "9a4aec7b91dc7871e1c59ce506a34404dc77496fb7fc7aa28790ca904ee2f7b6",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/000002.ldb": "05754c39ae348360d1def1c02cdd2c7bd4339b8c39e6bafb84b1c931c00592a7",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/000011.ldb": "a5ecba36af5fc3f04b9f1a349f31ef81d07c850cbe2dcd0a2cabdf45a0c66a33",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/000014.ldb": "c6409a6620109605cf7ed287c429d0058bb9844e7b742bb37db35bc8f0220345",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/000015.log": "1e610c78b747b487199ae9c7770c48b971f37d0532b0bb88f23d916ef0ffe917",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/CURRENT": "befea596b4676ccf7cc37ea8048044bfa0556c8931d76fdeeb693d20264e50d6",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/CURRENT.bak": "e6325e36f681074fccd2b1371dbf6f4535a6630e5b95c9ddff92c48ec11ce312",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/LOCK": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/LOG": "622d7c12cbeb547179116589f09a7a229c55982e028e8f9502c2dcdc379f7942",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/MANIFEST-000016": "4e4b7cdc242833d6cdf6c499650d24d428828298d516bf6db7fc09006de58008"
+      },
+      "public_files_after": {
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/SLUG-MANIFEST-OWNERSHIP-V2.json": "eee47bc87b9c461eda83920a79e77a2a5be5ff3cb2bef783169a2cbb703eccf3",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/SLUG-REGISTRY.json": "afb96cf2ec0bec95d0d4415867192d71cf60f6754f2ba416c5d3a281f410afce",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/000002.ldb": "b07f1283ffca62a2c5a1f51051c280a9724da30b8166f32055e986f50d02cd61",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/000011.ldb": "e60325430b8d273f250f340b861203b17c4007b296e731affd0f74eaf1f78c86",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/000014.ldb": "e9e8a4ae6b462f47cd92129b2821ae87de61c8b868de2bb76c6ee5c2a3ab8c8b",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/000015.log": "0f37ea745217e1199b7ea12596f5c4f9615ae39349e46029ee2f6ac7667be579",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/CURRENT": "befea596b4676ccf7cc37ea8048044bfa0556c8931d76fdeeb693d20264e50d6",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/CURRENT.bak": "e6325e36f681074fccd2b1371dbf6f4535a6630e5b95c9ddff92c48ec11ce312",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/LOCK": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/LOG": "ff0c19b1ffced183f90a2d14a5e27688ec0e03d6286599ae9f22724dd94d5212",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/MANIFEST-000016": "1487eebbc8a781350dbdba97d1626e8788d255eb8b7d7280a121f9af5f1ab47f",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/SLUG-POOL.json": "9e38e6f2df363e6bd27b7724b4924142aaba1ac0a315347dd9c5e8f8296b9e65",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/000002.ldb": "d5c9eb642be48701cb7c6750ce349c7594d1175c2c393a898ee72fd8732e1349",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/000011.ldb": "3d5c58d478ce968abc45714eca22a992094ae051c648c222f22c643653b4e6d0",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/000014.ldb": "2e54a9faec5ba9f19db7e43ea46faf2b1f8806d87a498db2b0d5a1b636b81391",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/000015.log": "39934525cf2834e25ccafec607a1929972fd2718975883fe3d36fb4dfef2866c",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/CURRENT": "befea596b4676ccf7cc37ea8048044bfa0556c8931d76fdeeb693d20264e50d6",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/CURRENT.bak": "e6325e36f681074fccd2b1371dbf6f4535a6630e5b95c9ddff92c48ec11ce312",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/LOCK": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/LOG": "da0fba16947f4a4d2685139c9cbff1755c839242e0f986dc76183f431e2be19f",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/MANIFEST-000016": "a34e8fc6d08be2b1dcf67e25cdca3450bb8424409a515da04971fe629962266f",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/SLUG-POOL-ROUNDS.json": "142b1031c26ef197170c4f503dbd24c39cbb73aac340d4d083777ab677604931",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/000002.ldb": "b52b8f1434bc8b82f5138f780fd7af3202276eb5763d599b5146c12bb149dbec",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/000013.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/CURRENT": "61657118abc562d70c10cbea1e8c92fab3a92739f5445033e813c3511688c625",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/CURRENT.bak": "eaab30ed3bde0318e208d83e6b0701b3ee9eb6b11da2d9fbab1552e8e4ce88f8",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/LOCK": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/LOG": "e1718375e9ad486e9494bdebd19ea1a2a6110fa8fa2d8a14de236d61f562028d",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/MANIFEST-000014": "5425fce281afcbf01b2068dfe37fcf5ef52a33f0ed0f79b26cfe0c3f1bbeaee5",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/SLUG-POOL-SETTLEMENT.json": "9a4aec7b91dc7871e1c59ce506a34404dc77496fb7fc7aa28790ca904ee2f7b6",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/000002.ldb": "05754c39ae348360d1def1c02cdd2c7bd4339b8c39e6bafb84b1c931c00592a7",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/000011.ldb": "a5ecba36af5fc3f04b9f1a349f31ef81d07c850cbe2dcd0a2cabdf45a0c66a33",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/000014.ldb": "c6409a6620109605cf7ed287c429d0058bb9844e7b742bb37db35bc8f0220345",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/000015.log": "1e610c78b747b487199ae9c7770c48b971f37d0532b0bb88f23d916ef0ffe917",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/CURRENT": "befea596b4676ccf7cc37ea8048044bfa0556c8931d76fdeeb693d20264e50d6",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/CURRENT.bak": "e6325e36f681074fccd2b1371dbf6f4535a6630e5b95c9ddff92c48ec11ce312",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/LOCK": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/LOG": "622d7c12cbeb547179116589f09a7a229c55982e028e8f9502c2dcdc379f7942",
+        "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/MANIFEST-000016": "4e4b7cdc242833d6cdf6c499650d24d428828298d516bf6db7fc09006de58008"
+      }
+    },
+    "source_request": {
+      "version": 1,
+      "intent": {
+        "version": 1,
+        "profile_id": "474748bd9d5467aee79941442050f4bbef7b7bbdd81f3328dfc61b8a3269e058",
+        "request_id": "5300ff515732f714379b01443df7997c6645d2aa0114de402492bfc6a2e46ea5",
+        "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+        "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+        "template_sha256": "110d86f5d774e3e73398aa0e01d56a0135e0ebf64a1e9003a48194476dff2a09"
+      },
+      "intent_id": "01dbc6e4ac030f9ad3a3672a68491f0ea611d2b115ef83e70cc9edb094319254",
+      "state": "work",
+      "job_id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728",
+      "resolved_at_ms": 1795264866956,
+      "reason": ""
+    },
+    "issuer_request": {
+      "version": 1,
+      "profile_id": "474748bd9d5467aee79941442050f4bbef7b7bbdd81f3328dfc61b8a3269e058",
+      "request_id": "5300ff515732f714379b01443df7997c6645d2aa0114de402492bfc6a2e46ea5",
+      "intent_id": "01dbc6e4ac030f9ad3a3672a68491f0ea611d2b115ef83e70cc9edb094319254",
+      "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+      "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+      "state": "issued",
+      "job_id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728",
+      "sealed_at_ms": 0,
+      "reason": ""
+    },
+    "job": {
+      "version": 2,
+      "rule_version": 1,
+      "id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728",
+      "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+      "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+      "context": {
+        "version": 1,
+        "network": 1397511495,
+        "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "dna_version": 1,
+        "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+        "parent_height": 2,
+        "expected_bits": 545259519,
+        "min_timestamp": 1795170106,
+        "max_timestamp": 1795272061
+      },
+      "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+      "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+      "challenge": "3a747e46a681946f80a5399492173a93b094e813de54b26879173356950950d9",
+      "issued_at_ms": 1795264861973,
+      "expires_at_ms": 1795265161973
+    },
+    "template": {
+      "context": {
+        "version": 1,
+        "network": 1397511495,
+        "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "dna_version": 1,
+        "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+        "parent_height": 2,
+        "expected_bits": 545259519,
+        "min_timestamp": 1795170106,
+        "max_timestamp": 1795272061
+      },
+      "block": {
+        "bits": "207fffff",
+        "curtime": 1795264861,
+        "height": 3,
+        "previousblockhash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+        "sigoplimit": 80000,
+        "sizelimit": 4000000,
+        "weightlimit": 4000000,
+        "transactions": [],
+        "version": 536870912,
+        "coinbaseaux": {
+          "flags": "0b2f503253482f627463642f"
+        },
+        "coinbasevalue": 1000000000,
+        "longpollid": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d-1795264859",
+        "target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+        "maxtime": 1795272061,
+        "mintime": 1795170106,
+        "mutable": [
+          "time",
+          "transactions/add",
+          "prevblock",
+          "coinbase/append"
+        ],
+        "noncerange": "00000000ffffffff",
+        "capabilities": [
+          "proposal"
+        ]
+      }
+    },
+    "template_sha256": "110d86f5d774e3e73398aa0e01d56a0135e0ebf64a1e9003a48194476dff2a09",
+    "source_requests": 2,
+    "issuer_requests": 1,
+    "source_templates": 1,
+    "source_inverses": 1,
+    "issuer_inverses": 1,
+    "requests": [
+      {
+        "version": 1,
+        "intent": {
+          "version": 1,
+          "profile_id": "474748bd9d5467aee79941442050f4bbef7b7bbdd81f3328dfc61b8a3269e058",
+          "request_id": "296c0f28398cf61c446f9df0d01d1212339399fe6aa48515f5697c0828e4e5f7",
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+          "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+          "template_sha256": "d9e49a28fb3a26641a12dfc618afad9e93b4a8465ef6d112019d70504c800069"
+        },
+        "intent_id": "43da1945e89a3fe91264e7fe0de179eff69eef737d4f009bbb623ada33009ebc",
+        "state": "pending",
+        "job_id": "",
+        "resolved_at_ms": 0,
+        "reason": ""
+      },
+      {
+        "version": 1,
+        "intent": {
+          "version": 1,
+          "profile_id": "474748bd9d5467aee79941442050f4bbef7b7bbdd81f3328dfc61b8a3269e058",
+          "request_id": "5300ff515732f714379b01443df7997c6645d2aa0114de402492bfc6a2e46ea5",
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+          "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+          "template_sha256": "110d86f5d774e3e73398aa0e01d56a0135e0ebf64a1e9003a48194476dff2a09"
+        },
+        "intent_id": "01dbc6e4ac030f9ad3a3672a68491f0ea611d2b115ef83e70cc9edb094319254",
+        "state": "work",
+        "job_id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728",
+        "resolved_at_ms": 1795264866956,
+        "reason": ""
+      }
+    ],
+    "issuer_rows": [
+      {
+        "version": 1,
+        "profile_id": "474748bd9d5467aee79941442050f4bbef7b7bbdd81f3328dfc61b8a3269e058",
+        "request_id": "5300ff515732f714379b01443df7997c6645d2aa0114de402492bfc6a2e46ea5",
+        "intent_id": "01dbc6e4ac030f9ad3a3672a68491f0ea611d2b115ef83e70cc9edb094319254",
+        "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+        "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+        "state": "issued",
+        "job_id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728",
+        "sealed_at_ms": 0,
+        "reason": ""
+      }
+    ],
+    "jobs": [
+      {
+        "version": 2,
+        "rule_version": 1,
+        "id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728",
+        "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+        "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+        "context": {
+          "version": 1,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "dna_version": 1,
+          "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+          "parent_height": 2,
+          "expected_bits": 545259519,
+          "min_timestamp": 1795170106,
+          "max_timestamp": 1795272061
+        },
+        "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+        "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+        "challenge": "3a747e46a681946f80a5399492173a93b094e813de54b26879173356950950d9",
+        "issued_at_ms": 1795264861973,
+        "expires_at_ms": 1795265161973
+      }
+    ],
+    "work": {
+      "job": {
+        "version": 2,
+        "rule_version": 1,
+        "id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728",
+        "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+        "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+        "context": {
+          "version": 1,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "dna_version": 1,
+          "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+          "parent_height": 2,
+          "expected_bits": 545259519,
+          "min_timestamp": 1795170106,
+          "max_timestamp": 1795272061
+        },
+        "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+        "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+        "challenge": "3a747e46a681946f80a5399492173a93b094e813de54b26879173356950950d9",
+        "issued_at_ms": 1795264861973,
+        "expires_at_ms": 1795265161973
+      },
+      "template": {
+        "context": {
+          "version": 1,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "dna_version": 1,
+          "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+          "parent_height": 2,
+          "expected_bits": 545259519,
+          "min_timestamp": 1795170106,
+          "max_timestamp": 1795272061
+        },
+        "block": {
+          "bits": "207fffff",
+          "curtime": 1795264861,
+          "height": 3,
+          "previousblockhash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+          "sigoplimit": 80000,
+          "sizelimit": 4000000,
+          "weightlimit": 4000000,
+          "transactions": [],
+          "version": 536870912,
+          "coinbaseaux": {
+            "flags": "0b2f503253482f627463642f"
+          },
+          "coinbasevalue": 1000000000,
+          "longpollid": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d-1795264859",
+          "target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+          "maxtime": 1795272061,
+          "mintime": 1795170106,
+          "mutable": [
+            "time",
+            "transactions/add",
+            "prevblock",
+            "coinbase/append"
+          ],
+          "noncerange": "00000000ffffffff",
+          "capabilities": [
+            "proposal"
+          ]
+        }
+      }
+    },
+    "row_hashes": {
+      "issuer/69737375652f6a2f18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728": "eb34ca8ac50f485110016f0172bacd7994c032a2924453788ff93059a14244ea",
+      "issuer/69737375652f722f5300ff515732f714379b01443df7997c6645d2aa0114de402492bfc6a2e46ea5": "c1e6c47006a511433975a15aac0b09e4519fc1508ddf5ab54d0aa106568398ea",
+      "issuer/6a6f623a31383534376532666463393631313830353836663433333136393363323439393763306639643739323730393663356134616633363631333934396333373238": "1927a249c615c02b99822e0759d5f036a8f3a2e3937bb8214570aba18ee98931",
+      "issuer/6d657461": "16e71d6c13b74049945e3a0303881e2b3868901d55e4891f367fb2b8da1d33ff",
+      "issuer/6f776e6572736869702f6775617264": "35b6c80fa6c2ba495059a29041baf7fa287bbb69581e5bee620bfdc1c991daee",
+      "issuer/6f776e6572736869702f6d657461": "c85fc692d072caea823ddc8ed3ae1e7974c3c4226b81fe692da6117fe209c2fe",
+      "issuer/6f776e6572736869702f6f7574626f782f00000001": "c342ef5dd963ec42e7f543b4b990c3ad4be76494aa947512dd2de67233e6c803",
+      "issuer/6f776e6572736869702f7075626c69636174696f6e2f00000001": "90c5d3d511b570f8b03bca25eec8c0af3e1cca5673bcfdc2837f61cfbe2702a1",
+      "issuer/6f776e6572736869702f7075626c69636174696f6e2f00000002": "1f3437fccfe477512cd6a7120c2dc62a746e5f2b1ef15906586f3dd67697890a",
+      "issuer/6f776e6572736869702f7075626c69636174696f6e2f00000003": "936f76dabdbc31e34c8e0b2a2e08f8ac63f8ddfbd3925712057f1c2446e915d7",
+      "issuer/7265636f72643a38393165656531363836643330356162666532326336336561343033346530626566303962376130366237666232666331396663626434323166646162326466": "df690b97b8f3466da24511b3d1a43516a5271dfbf1066f50f0a209299b370995",
+      "issuer/73657175656e63653a0000000000000001": "f25c316aa4a4296178f0b06b68befd29c684f833eab3b802311a24322df6c6f7",
+      "pool/610000000000000001": "310de2a802ecf4161b59ab5ff85b5c7bae134da7bb82c528f78f738e2f6ebaf9",
+      "pool/69737375652f6a2f18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728": "eb34ca8ac50f485110016f0172bacd7994c032a2924453788ff93059a14244ea",
+      "pool/69737375652f722f296c0f28398cf61c446f9df0d01d1212339399fe6aa48515f5697c0828e4e5f7": "c960178c13b6e29caeae6223494b7f3ca4776ab8c8f03edbd67e26676fcbd04b",
+      "pool/69737375652f722f5300ff515732f714379b01443df7997c6645d2aa0114de402492bfc6a2e46ea5": "6f787b39364c6ff5e3089188e39cc8adb959f48e256e68589b25d5a10dba296a",
+      "pool/69737375652f742f296c0f28398cf61c446f9df0d01d1212339399fe6aa48515f5697c0828e4e5f7": "d9e49a28fb3a26641a12dfc618afad9e93b4a8465ef6d112019d70504c800069",
+      "pool/6d657461": "1b16e09084d52d151113fb50e7b0fd36117fcad20de3a8af7e64b2f880bb2399",
+      "pool/6e313835343765326664633936313138303538366634333331363933633234393937633066396437393237303936633561346166333636313339343963333732383030303030303030": "310de2a802ecf4161b59ab5ff85b5c7bae134da7bb82c528f78f738e2f6ebaf9",
+      "pool/710000000000000001": "310de2a802ecf4161b59ab5ff85b5c7bae134da7bb82c528f78f738e2f6ebaf9",
+      "pool/7330613738393862313664353737643764326435636135636230643732386661633932663331373834623432313030356337623636383965646438363964393163": "a33244fd610960e87d30865f68c5c498d47eed9eb8f4778ed900d8c4e0b8cb03",
+      "pool/7731383534376532666463393631313830353836663433333136393363323439393763306639643739323730393663356134616633363631333934396333373238": "0c4bcf8db5bfe994fa9f5a973794c74de3371cc6b79bbaa40c6e7ef7c62fc73c",
+      "rounds/6d657461": "68f35d932adbfd57dd8a399b45802c1f7ccd5b7c2124fad46ca6e93a2bb618c2",
+      "settlement/68656164": "597521931a7c5fa5cb919d6e56fb71a89d1def919b024bc045db3781098bc7f1",
+      "settlement/7265706f7274": "7d335a98155ab2f0a4e21b6593bdb91cb0e056e099c0afe59e7433e6c598006e"
+    },
+    "read_only_unchanged": true
+  },
+  "deadline_seconds": 60,
+  "diagnostic_passed": true,
+  "original_input_hashes": {
+    "01-selection.json": "a2b4794f20a9422626d1dbced28ffa4ac355ae5b9e83553476a0f75d596b9884",
+    "02-gap.json": "355f8f6b7c0cc144bec8047a57ce082809b47c4b6c1f060b6cd26bc0f1499188",
+    "actual-report.json": "21f72745f1c225d8e8c0db7bceb358299aea637e72142b34d1b1a4d4c90f52b8"
+  },
+  "original_request_result": {
+    "version": 3,
+    "binding_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+    "settlement_config_id": "744a4f6a8fa2160cf96353c396867021a1dbe0eaf6308978a753ebc326c546b9",
+    "recipient_script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+    "issue_profile_id": "474748bd9d5467aee79941442050f4bbef7b7bbdd81f3328dfc61b8a3269e058",
+    "request_id": "5300ff515732f714379b01443df7997c6645d2aa0114de402492bfc6a2e46ea5",
+    "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+    "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+    "result": {
+      "version": 1,
+      "state": "work",
+      "intent_id": "01dbc6e4ac030f9ad3a3672a68491f0ea611d2b115ef83e70cc9edb094319254",
+      "job_id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728",
+      "resolved_at_ms": 1795264866956,
+      "reason": "",
+      "work": {
+        "job": {
+          "version": 2,
+          "rule_version": 1,
+          "id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728",
+          "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+          "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+          "context": {
+            "version": 1,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "dna_version": 1,
+            "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+            "parent_height": 2,
+            "expected_bits": 545259519,
+            "min_timestamp": 1795170106,
+            "max_timestamp": 1795272061
+          },
+          "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+          "challenge": "3a747e46a681946f80a5399492173a93b094e813de54b26879173356950950d9",
+          "issued_at_ms": 1795264861973,
+          "expires_at_ms": 1795265161973
+        },
+        "template": {
+          "context": {
+            "version": 1,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "dna_version": 1,
+            "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+            "parent_height": 2,
+            "expected_bits": 545259519,
+            "min_timestamp": 1795170106,
+            "max_timestamp": 1795272061
+          },
+          "block": {
+            "bits": "207fffff",
+            "curtime": 1795264861,
+            "height": 3,
+            "previousblockhash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+            "sigoplimit": 80000,
+            "sizelimit": 4000000,
+            "weightlimit": 4000000,
+            "transactions": [],
+            "version": 536870912,
+            "coinbaseaux": {
+              "flags": "0b2f503253482f627463642f"
+            },
+            "coinbasevalue": 1000000000,
+            "longpollid": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d-1795264859",
+            "target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+            "maxtime": 1795272061,
+            "mintime": 1795170106,
+            "mutable": [
+              "time",
+              "transactions/add",
+              "prevblock",
+              "coinbase/append"
+            ],
+            "noncerange": "00000000ffffffff",
+            "capabilities": [
+              "proposal"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "original_root": "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned",
+  "outbox": {
+    "records": 1,
+    "pending": 0,
+    "requests": 2,
+    "active_request_id": "296c0f28398cf61c446f9df0d01d1212339399fe6aa48515f5697c0828e4e5f7",
+    "logical_bytes": 13083,
+    "reserved": 58785889,
+    "meta_sha256": "c6f7b2d30dc119f8e5765d877e7b9975b4d66675de76a2b3c0bc90dd39311072",
+    "meta_bytes": 1865,
+    "marker_sha256": "12b8cd5c4641de5a7f5fd96ee30bdc4891f6a1e0d6ceb620f7cc85ee6ca99e42",
+    "scan_sha256": "",
+    "scan_request_id": "",
+    "cursor_sha256": "",
+    "next_nonce": 0,
+    "requests_sha256": "bc3d99163b4fc03cd063bfc35ae3eb2196a709b89c3f1eb6b162c518cbaf47ff",
+    "rows_sha256": "daef07db410efb6eb84c8dc0321ac4fd463f43e2250a48cda69ed5d545e2d90e",
+    "namespace_rows": 5,
+    "read_only_unchanged": true
+  },
+  "outbox_files_after": {
+    "SLUG-POOL-WORKER.json": "12b8cd5c4641de5a7f5fd96ee30bdc4891f6a1e0d6ceb620f7cc85ee6ca99e42",
+    "db/000002.ldb": "d69616a04e3a412c9678adbd9ae6d854a7a7b5f1aaaabbde124e18eeeddd9ee8",
+    "db/000005.log": "c066b22b16092f6bf534a001e6b4b800a142042125c121af50cf44f420fe14b4",
+    "db/CURRENT": "4166bf17b2da789b0d0cc5c74203041d98005f5d4ef88c27e8281e00148cd611",
+    "db/CURRENT.bak": "0861415cada612ea5834d56e2cf1055d3e63979b69eb71d32ae9ae394d8306cd",
+    "db/LOCK": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "db/LOG": "1f2c8220b837e94ae6e26178da5305c10415b47ab7c9e233e7d974bea5d3ff2f",
+    "db/MANIFEST-000006": "711b07c76e9714dfbe85098a62c97b17da35c261b324a6ee3647c3090447a63a"
+  },
+  "outbox_files_before": {
+    "SLUG-POOL-WORKER.json": "12b8cd5c4641de5a7f5fd96ee30bdc4891f6a1e0d6ceb620f7cc85ee6ca99e42",
+    "db/000002.ldb": "d69616a04e3a412c9678adbd9ae6d854a7a7b5f1aaaabbde124e18eeeddd9ee8",
+    "db/000005.log": "c066b22b16092f6bf534a001e6b4b800a142042125c121af50cf44f420fe14b4",
+    "db/CURRENT": "4166bf17b2da789b0d0cc5c74203041d98005f5d4ef88c27e8281e00148cd611",
+    "db/CURRENT.bak": "0861415cada612ea5834d56e2cf1055d3e63979b69eb71d32ae9ae394d8306cd",
+    "db/LOCK": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "db/LOG": "1f2c8220b837e94ae6e26178da5305c10415b47ab7c9e233e7d974bea5d3ff2f",
+    "db/MANIFEST-000006": "711b07c76e9714dfbe85098a62c97b17da35c261b324a6ee3647c3090447a63a"
+  },
+  "outbox_files_unchanged": true,
+  "public_files_after": {
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/SLUG-MANIFEST-OWNERSHIP-V2.json": "eee47bc87b9c461eda83920a79e77a2a5be5ff3cb2bef783169a2cbb703eccf3",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/SLUG-REGISTRY.json": "afb96cf2ec0bec95d0d4415867192d71cf60f6754f2ba416c5d3a281f410afce",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/000002.ldb": "b07f1283ffca62a2c5a1f51051c280a9724da30b8166f32055e986f50d02cd61",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/000011.ldb": "e60325430b8d273f250f340b861203b17c4007b296e731affd0f74eaf1f78c86",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/000014.ldb": "e9e8a4ae6b462f47cd92129b2821ae87de61c8b868de2bb76c6ee5c2a3ab8c8b",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/000015.log": "0f37ea745217e1199b7ea12596f5c4f9615ae39349e46029ee2f6ac7667be579",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/CURRENT": "befea596b4676ccf7cc37ea8048044bfa0556c8931d76fdeeb693d20264e50d6",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/CURRENT.bak": "e6325e36f681074fccd2b1371dbf6f4535a6630e5b95c9ddff92c48ec11ce312",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/LOCK": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/LOG": "ff0c19b1ffced183f90a2d14a5e27688ec0e03d6286599ae9f22724dd94d5212",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/MANIFEST-000016": "1487eebbc8a781350dbdba97d1626e8788d255eb8b7d7280a121f9af5f1ab47f",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/SLUG-POOL.json": "9e38e6f2df363e6bd27b7724b4924142aaba1ac0a315347dd9c5e8f8296b9e65",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/000002.ldb": "d5c9eb642be48701cb7c6750ce349c7594d1175c2c393a898ee72fd8732e1349",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/000011.ldb": "3d5c58d478ce968abc45714eca22a992094ae051c648c222f22c643653b4e6d0",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/000014.ldb": "2e54a9faec5ba9f19db7e43ea46faf2b1f8806d87a498db2b0d5a1b636b81391",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/000015.log": "39934525cf2834e25ccafec607a1929972fd2718975883fe3d36fb4dfef2866c",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/CURRENT": "befea596b4676ccf7cc37ea8048044bfa0556c8931d76fdeeb693d20264e50d6",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/CURRENT.bak": "e6325e36f681074fccd2b1371dbf6f4535a6630e5b95c9ddff92c48ec11ce312",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/LOCK": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/LOG": "da0fba16947f4a4d2685139c9cbff1755c839242e0f986dc76183f431e2be19f",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/MANIFEST-000016": "a34e8fc6d08be2b1dcf67e25cdca3450bb8424409a515da04971fe629962266f",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/SLUG-POOL-ROUNDS.json": "142b1031c26ef197170c4f503dbd24c39cbb73aac340d4d083777ab677604931",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/000002.ldb": "b52b8f1434bc8b82f5138f780fd7af3202276eb5763d599b5146c12bb149dbec",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/000013.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/CURRENT": "61657118abc562d70c10cbea1e8c92fab3a92739f5445033e813c3511688c625",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/CURRENT.bak": "eaab30ed3bde0318e208d83e6b0701b3ee9eb6b11da2d9fbab1552e8e4ce88f8",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/LOCK": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/LOG": "e1718375e9ad486e9494bdebd19ea1a2a6110fa8fa2d8a14de236d61f562028d",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/MANIFEST-000014": "5425fce281afcbf01b2068dfe37fcf5ef52a33f0ed0f79b26cfe0c3f1bbeaee5",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/SLUG-POOL-SETTLEMENT.json": "9a4aec7b91dc7871e1c59ce506a34404dc77496fb7fc7aa28790ca904ee2f7b6",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/000002.ldb": "05754c39ae348360d1def1c02cdd2c7bd4339b8c39e6bafb84b1c931c00592a7",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/000011.ldb": "a5ecba36af5fc3f04b9f1a349f31ef81d07c850cbe2dcd0a2cabdf45a0c66a33",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/000014.ldb": "c6409a6620109605cf7ed287c429d0058bb9844e7b742bb37db35bc8f0220345",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/000015.log": "1e610c78b747b487199ae9c7770c48b971f37d0532b0bb88f23d916ef0ffe917",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/CURRENT": "befea596b4676ccf7cc37ea8048044bfa0556c8931d76fdeeb693d20264e50d6",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/CURRENT.bak": "e6325e36f681074fccd2b1371dbf6f4535a6630e5b95c9ddff92c48ec11ce312",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/LOCK": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/LOG": "622d7c12cbeb547179116589f09a7a229c55982e028e8f9502c2dcdc379f7942",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/MANIFEST-000016": "4e4b7cdc242833d6cdf6c499650d24d428828298d516bf6db7fc09006de58008"
+  },
+  "public_files_before": {
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/SLUG-MANIFEST-OWNERSHIP-V2.json": "eee47bc87b9c461eda83920a79e77a2a5be5ff3cb2bef783169a2cbb703eccf3",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/SLUG-REGISTRY.json": "afb96cf2ec0bec95d0d4415867192d71cf60f6754f2ba416c5d3a281f410afce",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/000002.ldb": "b07f1283ffca62a2c5a1f51051c280a9724da30b8166f32055e986f50d02cd61",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/000011.ldb": "e60325430b8d273f250f340b861203b17c4007b296e731affd0f74eaf1f78c86",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/000014.ldb": "e9e8a4ae6b462f47cd92129b2821ae87de61c8b868de2bb76c6ee5c2a3ab8c8b",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/000015.log": "0f37ea745217e1199b7ea12596f5c4f9615ae39349e46029ee2f6ac7667be579",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/CURRENT": "befea596b4676ccf7cc37ea8048044bfa0556c8931d76fdeeb693d20264e50d6",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/CURRENT.bak": "e6325e36f681074fccd2b1371dbf6f4535a6630e5b95c9ddff92c48ec11ce312",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/LOCK": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/LOG": "ff0c19b1ffced183f90a2d14a5e27688ec0e03d6286599ae9f22724dd94d5212",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/issuer/db/MANIFEST-000016": "1487eebbc8a781350dbdba97d1626e8788d255eb8b7d7280a121f9af5f1ab47f",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/SLUG-POOL.json": "9e38e6f2df363e6bd27b7724b4924142aaba1ac0a315347dd9c5e8f8296b9e65",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/000002.ldb": "d5c9eb642be48701cb7c6750ce349c7594d1175c2c393a898ee72fd8732e1349",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/000011.ldb": "3d5c58d478ce968abc45714eca22a992094ae051c648c222f22c643653b4e6d0",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/000014.ldb": "2e54a9faec5ba9f19db7e43ea46faf2b1f8806d87a498db2b0d5a1b636b81391",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/000015.log": "39934525cf2834e25ccafec607a1929972fd2718975883fe3d36fb4dfef2866c",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/CURRENT": "befea596b4676ccf7cc37ea8048044bfa0556c8931d76fdeeb693d20264e50d6",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/CURRENT.bak": "e6325e36f681074fccd2b1371dbf6f4535a6630e5b95c9ddff92c48ec11ce312",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/LOCK": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/LOG": "da0fba16947f4a4d2685139c9cbff1755c839242e0f986dc76183f431e2be19f",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/pool/db/MANIFEST-000016": "a34e8fc6d08be2b1dcf67e25cdca3450bb8424409a515da04971fe629962266f",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/SLUG-POOL-ROUNDS.json": "142b1031c26ef197170c4f503dbd24c39cbb73aac340d4d083777ab677604931",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/000002.ldb": "b52b8f1434bc8b82f5138f780fd7af3202276eb5763d599b5146c12bb149dbec",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/000013.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/CURRENT": "61657118abc562d70c10cbea1e8c92fab3a92739f5445033e813c3511688c625",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/CURRENT.bak": "eaab30ed3bde0318e208d83e6b0701b3ee9eb6b11da2d9fbab1552e8e4ce88f8",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/LOCK": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/LOG": "e1718375e9ad486e9494bdebd19ea1a2a6110fa8fa2d8a14de236d61f562028d",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/rounds/db/MANIFEST-000014": "5425fce281afcbf01b2068dfe37fcf5ef52a33f0ed0f79b26cfe0c3f1bbeaee5",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/SLUG-POOL-SETTLEMENT.json": "9a4aec7b91dc7871e1c59ce506a34404dc77496fb7fc7aa28790ca904ee2f7b6",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/000002.ldb": "05754c39ae348360d1def1c02cdd2c7bd4339b8c39e6bafb84b1c931c00592a7",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/000011.ldb": "a5ecba36af5fc3f04b9f1a349f31ef81d07c850cbe2dcd0a2cabdf45a0c66a33",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/000014.ldb": "c6409a6620109605cf7ed287c429d0058bb9844e7b742bb37db35bc8f0220345",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/000015.log": "1e610c78b747b487199ae9c7770c48b971f37d0532b0bb88f23d916ef0ffe917",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/CURRENT": "befea596b4676ccf7cc37ea8048044bfa0556c8931d76fdeeb693d20264e50d6",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/CURRENT.bak": "e6325e36f681074fccd2b1371dbf6f4535a6630e5b95c9ddff92c48ec11ce312",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/LOCK": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/LOG": "622d7c12cbeb547179116589f09a7a229c55982e028e8f9502c2dcdc379f7942",
+    "/Users/taytrrip/slug/artifacts/set80/issue-recovery-a-actual-attempt2/owned/operator/settlement/db/MANIFEST-000016": "4e4b7cdc242833d6cdf6c499650d24d428828298d516bf6db7fc09006de58008"
+  },
+  "public_files_unchanged": true,
+  "public_inputs_unchanged": true,
+  "pure_client_receipt_checks": [
+    {
+      "job_id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728",
+      "nonce": 0,
+      "outbox_receipt_valid": true,
+      "pool_receipt_present": true,
+      "pool_state": "accepted",
+      "sequence": 1,
+      "stored_matches": 1,
+      "stored_receipt_valid": true
+    }
+  ],
+  "remote_id": "ef6c553ca3b3b276b66ad90df6389c59abc82b0dd19f5c1325538ab8c63fdbe6",
+  "request_id": "5300ff515732f714379b01443df7997c6645d2aa0114de402492bfc6a2e46ea5",
+  "rows": [
+    {
+      "version": 2,
+      "sequence": 1,
+      "work": {
+        "job": {
+          "version": 2,
+          "rule_version": 1,
+          "id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728",
+          "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+          "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+          "context": {
+            "version": 1,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "dna_version": 1,
+            "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+            "parent_height": 2,
+            "expected_bits": 545259519,
+            "min_timestamp": 1795170106,
+            "max_timestamp": 1795272061
+          },
+          "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+          "challenge": "3a747e46a681946f80a5399492173a93b094e813de54b26879173356950950d9",
+          "issued_at_ms": 1795264861973,
+          "expires_at_ms": 1795265161973
+        },
+        "template": {
+          "context": {
+            "version": 1,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "dna_version": 1,
+            "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+            "parent_height": 2,
+            "expected_bits": 545259519,
+            "min_timestamp": 1795170106,
+            "max_timestamp": 1795272061
+          },
+          "block": {
+            "bits": "207fffff",
+            "curtime": 1795264861,
+            "height": 3,
+            "previousblockhash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+            "sigoplimit": 80000,
+            "sizelimit": 4000000,
+            "weightlimit": 4000000,
+            "transactions": [],
+            "version": 536870912,
+            "coinbaseaux": {
+              "flags": "0b2f503253482f627463642f"
+            },
+            "coinbasevalue": 1000000000,
+            "longpollid": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d-1795264859",
+            "target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+            "maxtime": 1795272061,
+            "mintime": 1795170106,
+            "mutable": [
+              "time",
+              "transactions/add",
+              "prevblock",
+              "coinbase/append"
+            ],
+            "noncerange": "00000000ffffffff",
+            "capabilities": [
+              "proposal"
+            ]
+          }
+        }
+      },
+      "nonce": 0,
+      "work_hash": "658b448a12dd79f4878d6e211f6799e6a1711df7defd0f5e08019223e5c0958a",
+      "duplicate_key": "0a7898b16d577d7d2d5ca5cb0d728fac92f31784b421005c7b6689edd869d91c",
+      "pool_win": true,
+      "pool_state": "accepted",
+      "pool_receipt": {
+        "version": 1,
+        "sequence": 1,
+        "accepted_sequence": 1,
+        "job_id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728",
+        "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+        "nonce": 0,
+        "pool_target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+        "header": "000000202d3e62a4e954656cfd09c7f2fc6c7aa3bd89dc4bf0ad965946e0bb42ffe3c81163823d2a6fbac2efd500412fea5f008e16fbda77bd78505cc0a3621a5912d9565d91016bffff7f2000000000",
+        "work_hash": "658b448a12dd79f4878d6e211f6799e6a1711df7defd0f5e08019223e5c0958a",
+        "duplicate_key": "0a7898b16d577d7d2d5ca5cb0d728fac92f31784b421005c7b6689edd869d91c",
+        "pool": true,
+        "prospect": true,
+        "block": true,
+        "block_height": 3,
+        "received_at_ms": 1795264872294,
+        "accepted_at_ms": 1795264872904,
+        "acceptance": "canonical-winning-block",
+        "block_state": "canonical-observed",
+        "block_observed_at_ms": 1795264872904
+      },
+      "fighter": {
+        "version": 2,
+        "sequence": 1,
+        "work_hash": "658b448a12dd79f4878d6e211f6799e6a1711df7defd0f5e08019223e5c0958a",
+        "job": {
+          "version": 2,
+          "rule_version": 1,
+          "id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728",
+          "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+          "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+          "context": {
+            "version": 1,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "dna_version": 1,
+            "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+            "parent_height": 2,
+            "expected_bits": 545259519,
+            "min_timestamp": 1795170106,
+            "max_timestamp": 1795272061
+          },
+          "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+          "challenge": "3a747e46a681946f80a5399492173a93b094e813de54b26879173356950950d9",
+          "issued_at_ms": 1795264861973,
+          "expires_at_ms": 1795265161973
+        },
+        "candidate": {
+          "version": 1,
+          "job_id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728",
+          "block_hex": "000000202d3e62a4e954656cfd09c7f2fc6c7aa3bd89dc4bf0ad965946e0bb42ffe3c81163823d2a6fbac2efd500412fea5f008e16fbda77bd78505cc0a3621a5912d9565d91016bffff7f20000000000102000000010000000000000000000000000000000000000000000000000000000000000000ffffffff16530800000000000000000b2f503253482f627463642fffffffff0200ca9a3b00000000160014810816db7129a0ac531ca0eaea0d47a04a71a77d00000000000000002a6a28534c554750523032e13287122e2327866fca6c5ea9f71bfd19391fd025bfef11db67a6a797bbb11d00000000",
+          "proof": {
+            "version": 2,
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "header": "000000202d3e62a4e954656cfd09c7f2fc6c7aa3bd89dc4bf0ad965946e0bb42ffe3c81163823d2a6fbac2efd500412fea5f008e16fbda77bd78505cc0a3621a5912d9565d91016bffff7f2000000000",
+            "coinbase": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff16530800000000000000000b2f503253482f627463642fffffffff0200ca9a3b00000000160014810816db7129a0ac531ca0eaea0d47a04a71a77d00000000000000002a6a28534c554750523032e13287122e2327866fca6c5ea9f71bfd19391fd025bfef11db67a6a797bbb11d00000000",
+            "merkle_branch": [],
+            "job_id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728"
+          },
+          "payout_address": "slug1qsyypdkm39xs2c5cu5r4w5r285p98rfmaqk7uzh",
+          "coinbase_value": 1000000000,
+          "transaction_count": 1,
+          "weight": 944,
+          "sigop_cost": 0
+        },
+        "block_win": true,
+        "prospect_win": true,
+        "authorization": {
+          "version": 2,
+          "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+          "signature": "3045022100ecc556d655b98c96d771ded3170bbc0cf64cba092dfbdbac1ae4f6678cab612c02200f416e594dee21ec06f82fa7d8320b3bf2121ee7bc0a30a894c82ac2631f61ce"
+        },
+        "receipt": {
+          "version": 3,
+          "context_source": "trusted-node-snapshot",
+          "current_node_checked": true,
+          "authentication": "gym-key-control",
+          "birth_rule": "job-issuance",
+          "inserted": true,
+          "record": {
+            "version": 5,
+            "sequence": 1,
+            "context": {
+              "version": 1,
+              "network": 1397511495,
+              "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+              "dna_version": 1,
+              "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+              "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+              "parent_height": 2,
+              "expected_bits": 545259519,
+              "min_timestamp": 1795170106,
+              "max_timestamp": 1795272061
+            },
+            "proof": {
+              "version": 2,
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "header": "000000202d3e62a4e954656cfd09c7f2fc6c7aa3bd89dc4bf0ad965946e0bb42ffe3c81163823d2a6fbac2efd500412fea5f008e16fbda77bd78505cc0a3621a5912d9565d91016bffff7f2000000000",
+              "coinbase": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff16530800000000000000000b2f503253482f627463642fffffffff0200ca9a3b00000000160014810816db7129a0ac531ca0eaea0d47a04a71a77d00000000000000002a6a28534c554750523032e13287122e2327866fca6c5ea9f71bfd19391fd025bfef11db67a6a797bbb11d00000000",
+              "merkle_branch": [],
+              "job_id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728"
+            },
+            "verified": {
+              "version": 2,
+              "verification": "supplied-context",
+              "network": 1397511495,
+              "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+              "prospect_id": "891eee1686d305abfe22c63ea4034e0bef09b7a06b7fb2fc19fcbd421fdab2df",
+              "policy_id": "2dd6301ce9989bc383f942f3d1520e8bc61ee2564761a7f754eb09677b24fb8c",
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "work_hash": "658b448a12dd79f4878d6e211f6799e6a1711df7defd0f5e08019223e5c0958a",
+              "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+              "parent_height": 2,
+              "dna": {
+                "dna_version": 1,
+                "seed": "658b448a12dd79f4878d6e211f6799e6a1711df7defd0f5e08019223e5c0958a",
+                "rarity": "club",
+                "talent_budget": 270,
+                "attributes": {
+                  "power": 19,
+                  "speed": 54,
+                  "chin": 25,
+                  "stamina": 100,
+                  "skill": 72
+                },
+                "prime_weeks": 43,
+                "decline_weeks": 26
+              }
+            },
+            "authorization": {
+              "version": 2,
+              "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+              "signature": "3045022100ecc556d655b98c96d771ded3170bbc0cf64cba092dfbdbac1ae4f6678cab612c02200f416e594dee21ec06f82fa7d8320b3bf2121ee7bc0a30a894c82ac2631f61ce"
+            },
+            "job": {
+              "version": 2,
+              "rule_version": 1,
+              "id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728",
+              "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+              "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+              "context": {
+                "version": 1,
+                "network": 1397511495,
+                "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+                "dna_version": 1,
+                "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+                "parent_height": 2,
+                "expected_bits": 545259519,
+                "min_timestamp": 1795170106,
+                "max_timestamp": 1795272061
+              },
+              "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "challenge": "3a747e46a681946f80a5399492173a93b094e813de54b26879173356950950d9",
+              "issued_at_ms": 1795264861973,
+              "expires_at_ms": 1795265161973
+            },
+            "birth": {
+              "rule_version": 1,
+              "born_at_ms": 1795264861973,
+              "accepted_at_ms": 1795264873233
+            },
+            "eligibility": {
+              "rule_version": 2,
+              "source": "canonical-winning-block",
+              "hash": "658b448a12dd79f4878d6e211f6799e6a1711df7defd0f5e08019223e5c0958a",
+              "height": 3
+            },
+            "static_binding": {
+              "version": 1,
+              "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+              "manifest_digest": "1ab1c792a79262b90b92e0a87ff8690bb647fb4f934af73e66db4d91c00200ef",
+              "portrait_digest": "db721737396f9f05a6ce155d47a2b83354906654bb3d4d61c8243e98d70046ae"
+            }
+          }
+        },
+        "block_state": "canonical",
+        "admission_state": "accepted",
+        "next_attempt_ms": 0,
+        "retry_count": 0
+      },
+      "next_attempt_ms": 0,
+      "retry_count": 0
+    }
+  ],
+  "scope": "original joined A2 public stores and outbox only; no network, node, operator, wallet or signer",
+  "seconds": 0.278603958,
+  "setup_id": "b84eea3b19ed23cc7944c51ddfc1b9e6d122ef08f59e792903a86df3e09d9ded",
+  "stored_submissions": [
+    {
+      "version": 1,
+      "sequence": 1,
+      "accepted_sequence": 1,
+      "job_id": "18547e2fdc961180586f4331693c24997c0f9d7927096c5a4af36613949c3728",
+      "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+      "nonce": 0,
+      "pool_target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+      "header": "000000202d3e62a4e954656cfd09c7f2fc6c7aa3bd89dc4bf0ad965946e0bb42ffe3c81163823d2a6fbac2efd500412fea5f008e16fbda77bd78505cc0a3621a5912d9565d91016bffff7f2000000000",
+      "work_hash": "658b448a12dd79f4878d6e211f6799e6a1711df7defd0f5e08019223e5c0958a",
+      "duplicate_key": "0a7898b16d577d7d2d5ca5cb0d728fac92f31784b421005c7b6689edd869d91c",
+      "pool": true,
+      "prospect": true,
+      "block": true,
+      "block_height": 3,
+      "received_at_ms": 1795264872294,
+      "accepted_at_ms": 1795264872904,
+      "acceptance": "canonical-winning-block",
+      "block_state": "canonical-observed",
+      "block_observed_at_ms": 1795264872904
+    }
+  ],
+  "version": 1
+}

@@ -1,0 +1,79 @@
+{
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 78932,
+        "pid": 78932,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./pilot",
+        "./accountpilot",
+        "./cmd/slugpilot"
+      ],
+      "exit_code": 0,
+      "label": "deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 78932,
+      "pid": 78932,
+      "seconds": 0.382,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 78942,
+        "pid": 78942,
+        "return_code": 1,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "test",
+        "-count=1",
+        "-p=1",
+        "-timeout=450s",
+        "-json",
+        "-run",
+        "^Test(Recoverable|IssueRecovery|IssueProfile|IssueIntent|IssueRequest)",
+        "./pilot",
+        "./accountpilot",
+        "./cmd/slugpilot"
+      ],
+      "exit_code": 1,
+      "label": "normal",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 78942,
+      "pid": 78942,
+      "seconds": 35.758,
+      "timed_out": false
+    }
+  ],
+  "error": "RuntimeError: failed normal",
+  "passed": false,
+  "pattern": "^Test(Recoverable|IssueRecovery|IssueProfile|IssueIntent|IssueRequest)",
+  "scope": "Set80 desktop normal",
+  "sources_unchanged": true,
+  "version": 1
+}

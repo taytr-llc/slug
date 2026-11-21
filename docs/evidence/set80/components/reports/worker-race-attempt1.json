@@ -1,0 +1,108 @@
+{
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 80196,
+        "pid": 80196,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./prospectworker"
+      ],
+      "exit_code": 0,
+      "label": "deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 80196,
+      "pid": 80196,
+      "seconds": 0.276,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 80206,
+        "pid": 80206,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "test",
+        "-count=1",
+        "-p=1",
+        "-timeout=450s",
+        "-json",
+        "-race",
+        "-run",
+        "^Test(Recoverable|IssueRecovery|IssueProfile|IssueIntent|IssueRequest)",
+        "./prospectworker"
+      ],
+      "exit_code": 0,
+      "label": "race",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 80206,
+      "pid": 80206,
+      "seconds": 10.315,
+      "timed_out": false
+    }
+  ],
+  "expected_profile_skips": [],
+  "failed_tests": [],
+  "passed": true,
+  "passing_packages": [
+    "github.com/taytr-llc/slug/prospectworker"
+  ],
+  "passing_tests": [
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolIndependentConfigRowsAndModes/q-None",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolIndependentConfigRowsAndModes/q-work",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolIndependentConfigRowsAndModes/q-issued_unused",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolIndependentConfigRowsAndModes/q-not_issued",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolIndependentConfigRowsAndModes/q-cannot-retain-absent",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolIndependentConfigRowsAndModes/q-cannot-retain-pending",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolIndependentConfigRowsAndModes",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolRunUnknownRestartExactRequest",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolIntentCancellationCapacityAndUnknownSync/capacity",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolIntentCancellationCapacityAndUnknownSync/before-dispatch",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolIntentCancellationCapacityAndUnknownSync/unknown-sync",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolIntentCancellationCapacityAndUnknownSync",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolNamespaceRejectsMixedWrongLinks/orphan-cursor",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolNamespaceRejectsMixedWrongLinks/extra-key",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolNamespaceRejectsMixedWrongLinks/wrong-counter",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolNamespaceRejectsMixedWrongLinks/null-scan",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolNamespaceRejectsMixedWrongLinks/foreign-money",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolNamespaceRejectsMixedWrongLinks",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolPendingHistoryAndActiveRequestAudit",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolTerminalClearsOnlyValidatedResult/issued_unused",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolTerminalClearsOnlyValidatedResult/not_issued",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolTerminalClearsOnlyValidatedResult",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolRunReconcilesOriginalEntryBeforeResume",
+    "github.com/taytr-llc/slug/prospectworker/TestRecoverablePoolRejectsManufacturedDTOAuthority"
+  ],
+  "pattern": "^Test(Recoverable|IssueRecovery|IssueProfile|IssueIntent|IssueRequest)",
+  "profile_unchanged": true,
+  "scope": "Set80 worker race",
+  "skipped_tests": [],
+  "sources_unchanged": true,
+  "version": 1
+}

@@ -7,6 +7,7 @@ import (
 	"github.com/taytr-llc/slug/poolsettle"
 	"github.com/taytr-llc/slug/poolshare"
 	"github.com/taytr-llc/slug/prospectservice"
+	"github.com/taytr-llc/slug/registry"
 	"github.com/taytr-llc/slug/wire/v2"
 	"io"
 	"net/http"
@@ -22,10 +23,17 @@ type dailyServerBinding struct {
 // NewDailyServer borrows the original fully audited writable daily owners.
 // It never selects daily mode from on-disk data or repairs an old root.
 func NewDailyServer(ctx context.Context, c ServerConfig, pool *poolshare.Pool, settlement *poolsettle.Store, sessions prospectservice.SessionAuthorizer) (*Server, error) {
+	return newSelectedDailyServer(ctx, c, pool, settlement, sessions, nil)
+}
+func newSelectedDailyServer(ctx context.Context, c ServerConfig, pool *poolshare.Pool, settlement *poolsettle.Store, sessions prospectservice.SessionAuthorizer, profile *registry.IssueProfile) (*Server, error) {
+	version := Version2
+	if profile != nil {
+		version = Version3
+	}
 	if wire.TestPoW {
 		return nil, poolshare.ErrProfile
 	}
-	if ctx == nil || ctx.Err() != nil || c.Version != Version2 || pool == nil || settlement == nil || !nonnil(sessions) {
+	if ctx == nil || ctx.Err() != nil || c.Version != version || pool == nil || settlement == nil || !nonnil(sessions) {
 		return nil, errServer
 	}
 	legacy := c
@@ -35,6 +43,9 @@ func NewDailyServer(ctx context.Context, c ServerConfig, pool *poolshare.Pool, s
 		return nil, errServer
 	}
 	c.Listen = validated.Listen
+	if err := pool.CheckDailyServiceSelection(ctx, profile); err != nil {
+		return nil, err
+	}
 	source, err := pool.DailyBinding(ctx)
 	if err != nil {
 		return nil, err
@@ -61,7 +72,22 @@ func NewDailyServer(ctx context.Context, c ServerConfig, pool *poolshare.Pool, s
 	if ctx.Err() != nil {
 		return nil, ctx.Err()
 	}
-	return &Server{config: c, source: source, binding: binding, pool: pool, settlement: settlement, sessions: sessions, active: make(chan struct{}, 1), rates: make(map[string]*clientRates), daily: &dailyServerBinding{configID, destinations, uint64(cfg.MaxBatches)}}, nil
+	server := &Server{config: c, source: source, binding: binding, pool: pool, settlement: settlement, sessions: sessions, active: make(chan struct{}, 1), rates: make(map[string]*clientRates), daily: &dailyServerBinding{configID, destinations, uint64(cfg.MaxBatches)}}
+	if profile != nil {
+		matched, selected, e := pool.RecoverableDailyBinding(ctx)
+		if e != nil {
+			return nil, e
+		}
+		if matched != source || selected != *profile {
+			return nil, errServer
+		}
+		id, e := registry.IssueProfileID(*profile)
+		if e != nil {
+			return nil, errServer
+		}
+		server.recoverable = &recoverableServerBinding{*profile, id}
+	}
+	return server, nil
 }
 func writeDailyFailure(w http.ResponseWriter, code string) {
 	raw, _ := json.Marshal(ErrorResponse{Version: Version2, Error: APIError{Code: code, OutcomeUnknown: code == "outcome_unknown"}})
@@ -72,23 +98,23 @@ func writeDailyFailure(w http.ResponseWriter, code string) {
 
 func (s *Server) serveDailyHTTP(w http.ResponseWriter, r *http.Request) {
 	if s == nil || wire.TestPoW || !s.begin() {
-		writeDailyFailure(w, "unavailable")
+		s.writeSelectedDailyFailure(w, "unavailable")
 		return
 	}
 	defer s.handlers.Done()
 	if r == nil || r.URL == nil || r.Body == nil || !validHost(r) || len(r.Header.Values("Origin")) != 0 || r.ContentLength < 0 || len(r.TransferEncoding) != 0 || len(r.Trailer) != 0 || len(r.Header.Values("Content-Length")) > 1 || r.URL.Fragment != "" || r.RequestURI != "" && r.RequestURI != r.URL.Path {
-		writeDailyFailure(w, "forbidden")
+		s.writeSelectedDailyFailure(w, "forbidden")
 		return
 	}
-	action := requestActionSelected(r, dailyPathPrefix)
+	action := requestActionSelected(r, s.selectedDailyPrefix())
 	if action == "" {
-		writeDailyFailure(w, "invalid_request")
+		s.writeSelectedDailyFailure(w, "invalid_request")
 		return
 	}
 	select {
 	case s.active <- struct{}{}:
 	default:
-		writeDailyFailure(w, "busy")
+		s.writeSelectedDailyFailure(w, "busy")
 		return
 	}
 	data, failure := func() ([]byte, string) {
@@ -125,6 +151,7 @@ func (s *Server) serveDailyHTTP(w http.ResponseWriter, r *http.Request) {
 			return nil, "unavailable"
 		}
 		var query poolsettle.DailyPayoutRequest
+		var requestID string
 		var jobID string
 		var nonce uint32
 		switch action {
@@ -132,7 +159,20 @@ func (s *Server) serveDailyHTTP(w http.ResponseWriter, r *http.Request) {
 			if decodeDailyPageRequest(body, &query) != nil || poolsettle.ValidateDailyPayoutRequest(query, s.daily.maxBatches) != nil {
 				return nil, "invalid_request"
 			}
-		case "issue", "balance":
+		case "issue", "issue-lookup":
+			if s.recoverable != nil {
+				var q issueRequest
+				if decodeDailyStrict(body, MaxRequestSize, &q) != nil || !hex64(q.RequestID, true) {
+					return nil, "invalid_request"
+				}
+				requestID = q.RequestID
+				break
+			}
+			var empty struct{}
+			if decodeDailyStrict(body, MaxRequestSize, &empty) != nil {
+				return nil, "invalid_request"
+			}
+		case "balance":
 			var empty struct{}
 			if decodeDailyStrict(body, MaxRequestSize, &empty) != nil {
 				return nil, "invalid_request"
@@ -162,9 +202,28 @@ func (s *Server) serveDailyHTTP(w http.ResponseWriter, r *http.Request) {
 					return nil, "unavailable"
 				}
 				result = history
+				if s.recoverable != nil {
+					result = recoverablePage(history, s.recoverable.profileID)
+				}
 				maxSize = MaxPayoutResponseSize
 			}
-		case "issue", "work":
+		case "issue", "issue-lookup", "work":
+			if s.recoverable != nil && action != "work" {
+				var v poolshare.IssueResult
+				if action == "issue" {
+					v, e = s.pool.ResumeIssue(ctx, token, requestID)
+				} else {
+					v, e = s.pool.LookupIssue(ctx, token, requestID)
+				}
+				if e == nil {
+					if v.Work != nil && (v.Work.Job.PublicKey != key || v.Work.Job.GymID != gym) {
+						return nil, operationFailure(errServer, mutating)
+					}
+					result = IssueResponse{Version: Version3, BindingID: s.binding, SettlementConfigID: s.daily.settlement, RecipientScript: recipient, IssueProfileID: s.recoverable.profileID, RequestID: requestID, GymID: gym, PublicKey: key, Result: v}
+					maxSize = MaxWorkResponseSize
+				}
+				break
+			}
 			var work poolshare.MiningWork
 			if action == "issue" {
 				work, e = s.pool.IssueMiningWork(ctx, token)
@@ -176,6 +235,9 @@ func (s *Server) serveDailyHTTP(w http.ResponseWriter, r *http.Request) {
 					return nil, operationFailure(errServer, mutating)
 				}
 				result = DailyWorkResponse{Version2, s.binding, s.daily.settlement, recipient, work}
+				if s.recoverable != nil {
+					result = RecoverableWorkResponse{Version3, s.binding, s.daily.settlement, recipient, s.recoverable.profileID, work}
+				}
 				maxSize = MaxWorkResponseSize
 			}
 		case "submit", "lookup":
@@ -190,6 +252,9 @@ func (s *Server) serveDailyHTTP(w http.ResponseWriter, r *http.Request) {
 					return nil, operationFailure(errServer, mutating)
 				}
 				result = DailySubmissionResponse{Version2, s.binding, s.daily.settlement, recipient, receipt}
+				if s.recoverable != nil {
+					result = RecoverableSubmissionResponse{Version3, s.binding, s.daily.settlement, recipient, s.recoverable.profileID, receipt}
+				}
 			}
 		case "balance":
 			var balance poolsettle.Balance
@@ -208,6 +273,9 @@ func (s *Server) serveDailyHTTP(w http.ResponseWriter, r *http.Request) {
 					return nil, "unavailable"
 				}
 				result = DailyBalanceResponse{Version2, s.binding, s.daily.settlement, recipient, dailyBalance, ms}
+				if s.recoverable != nil {
+					result = RecoverableBalanceResponse{Version3, s.binding, s.daily.settlement, recipient, s.recoverable.profileID, dailyBalance, ms}
+				}
 			}
 		}
 		if e != nil {
@@ -241,7 +309,7 @@ func (s *Server) serveDailyHTTP(w http.ResponseWriter, r *http.Request) {
 		return append(encoded, '\n'), ""
 	}()
 	if failure != "" {
-		writeDailyFailure(w, failure)
+		s.writeSelectedDailyFailure(w, failure)
 		return
 	}
 	// Slow readers cannot occupy the hash/account operation slot after the

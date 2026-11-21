@@ -1,0 +1,5 @@
+{"version":2,"observed_at_ms":1795264398977,"config_id":"3605378263936927941037c82e393763137392ea6dc7176009cec618152f3495","state":"signed_in","worker_state":"preparing","code":"","records":0,"pending":0}
+{"version":2,"observed_at_ms":1795264399931,"config_id":"3605378263936927941037c82e393763137392ea6dc7176009cec618152f3495","state":"signed_in","worker_state":"delivering","code":"","records":1,"pending":1}
+{"version":2,"observed_at_ms":1795264400943,"config_id":"3605378263936927941037c82e393763137392ea6dc7176009cec618152f3495","state":"signed_in","worker_state":"delivering","code":"","records":1,"pending":1}
+{"version":2,"observed_at_ms":1795264401941,"config_id":"3605378263936927941037c82e393763137392ea6dc7176009cec618152f3495","state":"signed_in","worker_state":"delivering","code":"","records":1,"pending":1}
+{"version":2,"observed_at_ms":1795264402909,"config_id":"3605378263936927941037c82e393763137392ea6dc7176009cec618152f3495","state":"signed_in","worker_state":"preparing","code":"","records":1,"pending":0}

@@ -1,0 +1,78 @@
+{
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 81593,
+        "pid": 81593,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=slugtestpow",
+        "./poolservice",
+        "./poolingress"
+      ],
+      "exit_code": 0,
+      "label": "deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 81593,
+      "pid": 81593,
+      "seconds": 0.449,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 81604,
+        "pid": 81604,
+        "return_code": 1,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "test",
+        "-count=1",
+        "-p=1",
+        "-timeout=450s",
+        "-json",
+        "-tags=slugtestpow",
+        "-run",
+        "^Test(Recoverable|IssueRecovery|IssueProfile|IssueIntent|IssueRequest)",
+        "./poolservice",
+        "./poolingress"
+      ],
+      "exit_code": 1,
+      "label": "cheap",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 81604,
+      "pid": 81604,
+      "seconds": 5.001,
+      "timed_out": false
+    }
+  ],
+  "error": "RuntimeError: failed cheap",
+  "passed": false,
+  "pattern": "^Test(Recoverable|IssueRecovery|IssueProfile|IssueIntent|IssueRequest)",
+  "scope": "Set80 transport cheap",
+  "sources_unchanged": true,
+  "version": 1
+}

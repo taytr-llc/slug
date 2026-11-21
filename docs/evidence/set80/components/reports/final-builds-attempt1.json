@@ -1,0 +1,1338 @@
+{
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 81761,
+        "pid": 81761,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "git",
+        "ls-files",
+        "-z",
+        "--cached",
+        "--others",
+        "--exclude-standard"
+      ],
+      "exit_code": 0,
+      "label": "inventory-before-chain",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 81761,
+      "pid": 81761,
+      "seconds": 0.077,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 81762,
+        "pid": 81762,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "git",
+        "ls-files",
+        "-z",
+        "--cached",
+        "--others",
+        "--exclude-standard"
+      ],
+      "exit_code": 0,
+      "label": "inventory-before-wallet",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 81762,
+      "pid": 81762,
+      "seconds": 0.042,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 81765,
+        "pid": 81765,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "deps-chain-0",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 81765,
+      "pid": 81765,
+      "seconds": 0.689,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 81782,
+        "pid": 81782,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "deps-chain-1",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 81782,
+      "pid": 81782,
+      "seconds": 0.326,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 81794,
+        "pid": 81794,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "deps-chain-2",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 81794,
+      "pid": 81794,
+      "seconds": 0.332,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 81806,
+        "pid": 81806,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "deps-chain-3",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 81806,
+      "pid": 81806,
+      "seconds": 0.327,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 81818,
+        "pid": 81818,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "deps-chain-4",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 81818,
+      "pid": 81818,
+      "seconds": 0.328,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 81830,
+        "pid": 81830,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "deps-chain-5",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 81830,
+      "pid": 81830,
+      "seconds": 0.293,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 81842,
+        "pid": 81842,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "deps-chain-6",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 81842,
+      "pid": 81842,
+      "seconds": 0.33,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 81855,
+        "pid": 81855,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "deps-chain-7",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 81855,
+      "pid": 81855,
+      "seconds": 0.331,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 81867,
+        "pid": 81867,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "deps-chain-8",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 81867,
+      "pid": 81867,
+      "seconds": 0.258,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 81878,
+        "pid": 81878,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "deps-chain-9",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 81878,
+      "pid": 81878,
+      "seconds": 0.379,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 81892,
+        "pid": 81892,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "deps-wallet-0",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 81892,
+      "pid": 81892,
+      "seconds": 0.433,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 81900,
+        "pid": 81900,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "deps-wallet-1",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 81900,
+      "pid": 81900,
+      "seconds": 0.187,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 81906,
+        "pid": 81906,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "deps-wallet-2",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 81906,
+      "pid": 81906,
+      "seconds": 0.124,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 81909,
+        "pid": 81909,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "deps-wallet-3",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 81909,
+      "pid": 81909,
+      "seconds": 0.181,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 81915,
+        "pid": 81915,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "deps-wallet-4",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 81915,
+      "pid": 81915,
+      "seconds": 0.187,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 81921,
+        "pid": 81921,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "deps-wallet-5",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 81921,
+      "pid": 81921,
+      "seconds": 0.189,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 81927,
+        "pid": 81927,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "deps-desktop-0",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 81927,
+      "pid": 81927,
+      "seconds": 0.495,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 81935,
+        "pid": 81935,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "build-chain-0",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 81935,
+      "pid": 81935,
+      "seconds": 9.186,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82106,
+        "pid": 82106,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "build-chain-1",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82106,
+      "pid": 82106,
+      "seconds": 0.185,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82125,
+        "pid": 82125,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "build-chain-2",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82125,
+      "pid": 82125,
+      "seconds": 0.179,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82136,
+        "pid": 82136,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "build-chain-3",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82136,
+      "pid": 82136,
+      "seconds": 0.183,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82149,
+        "pid": 82149,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "build-chain-4",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82149,
+      "pid": 82149,
+      "seconds": 0.132,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82158,
+        "pid": 82158,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "build-chain-5",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82158,
+      "pid": 82158,
+      "seconds": 0.13,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82176,
+        "pid": 82176,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "build-chain-6",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82176,
+      "pid": 82176,
+      "seconds": 0.184,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82188,
+        "pid": 82188,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "build-chain-7",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82188,
+      "pid": 82188,
+      "seconds": 0.18,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82198,
+        "pid": 82198,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "build-chain-8",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82198,
+      "pid": 82198,
+      "seconds": 0.178,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82209,
+        "pid": 82209,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "build-chain-9",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82209,
+      "pid": 82209,
+      "seconds": 0.18,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82222,
+        "pid": 82222,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "build-wallet-0",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82222,
+      "pid": 82222,
+      "seconds": 6.139,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82333,
+        "pid": 82333,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "build-wallet-1",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82333,
+      "pid": 82333,
+      "seconds": 0.182,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82345,
+        "pid": 82345,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "build-wallet-2",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82345,
+      "pid": 82345,
+      "seconds": 0.178,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82356,
+        "pid": 82356,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "build-wallet-3",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82356,
+      "pid": 82356,
+      "seconds": 0.18,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82367,
+        "pid": 82367,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "build-wallet-4",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82367,
+      "pid": 82367,
+      "seconds": 0.126,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82379,
+        "pid": 82379,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "build-wallet-5",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82379,
+      "pid": 82379,
+      "seconds": 0.187,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82389,
+        "pid": 82389,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-tags=",
+        "./..."
+      ],
+      "exit_code": 0,
+      "label": "build-desktop-0",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82389,
+      "pid": 82389,
+      "seconds": 13.049,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82579,
+        "pid": 82579,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "vet",
+        "-p=1",
+        "-tags=",
+        "-gcflags=all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "./internal/mininglease",
+        "./internal/poolcapacity",
+        "./poolshare",
+        "./poolround",
+        "./poolsettle",
+        "./poolschedule",
+        "./poolservice",
+        "./poolingress",
+        "./poolminer",
+        "./prospectworker"
+      ],
+      "exit_code": 0,
+      "label": "accounting-vet",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82579,
+      "pid": 82579,
+      "seconds": 2.507,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82610,
+        "pid": 82610,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "vet",
+        "-p=1",
+        "-tags=",
+        "-gcflags=all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "./pooloperator",
+        "./pilot",
+        "./accountpilot",
+        "./cmd/slugpilot"
+      ],
+      "exit_code": 0,
+      "label": "pooloperator-vet",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82610,
+      "pid": 82610,
+      "seconds": 3.516,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82697,
+        "pid": 82697,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "gofmt",
+        "-l",
+        "."
+      ],
+      "exit_code": 0,
+      "label": "gofmt-chain",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82697,
+      "pid": 82697,
+      "seconds": 0.883,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82725,
+        "pid": 82725,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "label": "diff-chain",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82725,
+      "pid": 82725,
+      "seconds": 0.073,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82728,
+        "pid": 82728,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "gofmt",
+        "-l",
+        "."
+      ],
+      "exit_code": 0,
+      "label": "gofmt-wallet",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82728,
+      "pid": 82728,
+      "seconds": 0.235,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82731,
+        "pid": 82731,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "label": "diff-wallet",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82731,
+      "pid": 82731,
+      "seconds": 0.022,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82732,
+        "pid": 82732,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "git",
+        "ls-files",
+        "-z",
+        "--cached",
+        "--others",
+        "--exclude-standard"
+      ],
+      "exit_code": 0,
+      "label": "inventory-after-chain",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82732,
+      "pid": 82732,
+      "seconds": 0.078,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82733,
+        "pid": 82733,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "git",
+        "ls-files",
+        "-z",
+        "--cached",
+        "--others",
+        "--exclude-standard"
+      ],
+      "exit_code": 0,
+      "label": "inventory-after-wallet",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82733,
+      "pid": 82733,
+      "seconds": 0.042,
+      "timed_out": false
+    }
+  ],
+  "dependency_capture_complete": true,
+  "passed": true,
+  "profile_unchanged": true,
+  "scope": "exact-issuance-final17-module-builds-and-static-checks",
+  "source_count": 7940,
+  "sources_unchanged": true
+}

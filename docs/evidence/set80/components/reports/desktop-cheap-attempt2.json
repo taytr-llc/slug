@@ -1,0 +1,91 @@
+{
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82846,
+        "pid": 82846,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=slugtestpow",
+        "./pilot",
+        "./accountpilot",
+        "./cmd/slugpilot"
+      ],
+      "exit_code": 0,
+      "label": "deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82846,
+      "pid": 82846,
+      "seconds": 0.383,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 82856,
+        "pid": 82856,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "test",
+        "-count=1",
+        "-p=1",
+        "-timeout=450s",
+        "-json",
+        "-tags=slugtestpow",
+        "-run",
+        "^TestRecoverableRemoteCheapSelectionBeforeOwners$",
+        "./pilot",
+        "./accountpilot",
+        "./cmd/slugpilot"
+      ],
+      "exit_code": 0,
+      "label": "cheap",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 82856,
+      "pid": 82856,
+      "seconds": 3.546,
+      "timed_out": false
+    }
+  ],
+  "expected_profile_skips": [],
+  "failed_tests": [],
+  "passed": true,
+  "passing_packages": [
+    "github.com/taytr-llc/slug/desktop/pilot",
+    "github.com/taytr-llc/slug/desktop/accountpilot",
+    "github.com/taytr-llc/slug/desktop/cmd/slugpilot"
+  ],
+  "passing_tests": [
+    "github.com/taytr-llc/slug/desktop/pilot/TestRecoverableRemoteCheapSelectionBeforeOwners"
+  ],
+  "pattern": "^TestRecoverableRemoteCheapSelectionBeforeOwners$",
+  "profile_unchanged": true,
+  "scope": "Set80 desktop cheap",
+  "skipped_tests": [],
+  "sources_unchanged": true,
+  "version": 1
+}

@@ -22,7 +22,9 @@ PROFILE = {
     "scope": "candidate_engineering",
 }
 LOG_LIMIT = 32 << 20
-TOTAL_SECONDS = 2100
+# Set80 adds one real 300-second job-expiry wait in each normal/race ledger
+# suite (+600 seconds). Product and per-command audit/operation bounds remain unchanged.
+TOTAL_SECONDS = 2700
 ACL_TEST = "TestOperatorPrivateInputLinuxACLRefusal"
 ACL_CASES = ["file-access-before", "parent-access-before", "parent-default-before",
              "file-access-after", "parent-default-after"]
@@ -314,7 +316,7 @@ def main():
                                 "TestDailyPoolWalletBindingReference",
                                 "TestDailyPoolWalletFreshOwnerAndLegacyRefusal"])
             gate.test(mode + "-operator", desktop, ["./pooloperator"], desktop / "go.work", race,
-                      run="^Test(Operator|DailyOperator|DailyProvision|DailyIntake)", required=[ACL_TEST] + [ACL_TEST + "/" + case for case in ACL_CASES] + [
+                      run="^Test(Operator|DailyOperator|DailyProvision|DailyIntake|Recoverable)", required=[ACL_TEST] + [ACL_TEST + "/" + case for case in ACL_CASES] + [
                           "TestOperatorIntakeSourceBusyErrorTrees",
                           "TestOperatorIntakeMutexCancellationJoinsHolder",
                           "TestDailyIntakeOriginalIssuerBusyPreservesDrainAndPayout",
@@ -330,7 +332,13 @@ def main():
                           "TestOperatorLiveRoundOriginalCatchupAndDefault",
                           "TestOperatorLiveRoundCapacityRefresh",
                           "TestOperatorLiveRoundSelectionRefusals",
-                          "TestOperatorLiveRoundCloseJoinsSelection"])
+                          "TestOperatorLiveRoundCloseJoinsSelection",
+                          "TestRecoverableOperatorIndependentWrappers",
+                          "TestRecoverableOperatorIndependentSetupFraming",
+                          "TestRecoverableOperatorCommandExplicitSelection",
+                          "TestRecoverableOperatorFilesRefuseOtherModes",
+                          "TestRecoverableProvisionOriginalMaterialLostReady",
+                          "TestRecoverableProvisionCapacityBeforeEffects"])
             gate.test(mode + "-daily-public-transport", root,
                       ["./poolminer", "./poolservice", "./poolingress"], desktop / "go.work", race,
                       required=["TestDailyMinerIndependentBytesAndBindings",
@@ -343,19 +351,37 @@ def main():
                                 "TestDailyServerRefusesBeforeEffects",
                                 "TestDailyServerBusyAndRunJoins",
                                 "TestDailyIngressCatalogAndCrossMode",
-                                "TestDailyIngressOriginalTLSAndJoin"])
+                                "TestDailyIngressOriginalTLSAndJoin",
+                                "TestRecoverableTransportIndependentBindings",
+                                "TestRecoverableIssueIndependentResults",
+                                "TestRecoverableTransportIndependentMoneyAndWork",
+                                "TestRecoverableTransportIndependentFraming",
+                                "TestRecoverableClientOriginalResponseProvenance",
+                                "TestRecoverableClientExactRequestUnknownAndRead",
+                                "TestRecoverableServerOriginalOwnersAndExactRequest",
+                                "TestRecoverableServerRefusesBeforeEffects",
+                                "TestRecoverableIngressOriginalTLSAndJoin",
+                                "TestRecoverableIngressCatalogAndCrossMode"])
             gate.test(mode + "-daily-public-worker", root, ["./prospectworker"],
-                      desktop / "go.work", race, run="^Test(DailyPool|Pool)", required=[
+                      desktop / "go.work", race, run="^Test(DailyPool|Pool|RecoverablePool)", required=[
                           "TestDailyPoolIndependentBytesAndModes",
                           "TestDailyPoolIndependentJournalAuditAndReopen",
                           "TestDailyPoolIssueOriginalAttemptAndUncertainty",
                           "TestDailyPoolIssueSyncFailuresKeepOriginalEvidence",
                           "TestDailyPoolHeldReopenStillReconcilesOriginalPending",
                           "TestDailyPoolRunUnknownIssuePersistsAcrossOriginalReopen",
-                          "TestDailyPoolConstructorFailureRetainsOriginalCleanupOwner"])
+                          "TestDailyPoolConstructorFailureRetainsOriginalCleanupOwner",
+                          "TestRecoverablePoolIndependentConfigRowsAndModes",
+                          "TestRecoverablePoolRunUnknownRestartExactRequest",
+                          "TestRecoverablePoolIntentCancellationCapacityAndUnknownSync",
+                          "TestRecoverablePoolNamespaceRejectsMixedWrongLinks",
+                          "TestRecoverablePoolPendingHistoryAndActiveRequestAudit",
+                          "TestRecoverablePoolTerminalClearsOnlyValidatedResult",
+                          "TestRecoverablePoolRunReconcilesOriginalEntryBeforeResume",
+                          "TestRecoverablePoolRejectsManufacturedDTOAuthority"])
             gate.test(mode + "-daily-public-desktop", desktop,
                       ["./pilot", "./accountpilot", "./cmd/slugpilot"], desktop / "go.work", race,
-                      run="^Test(Daily|RemotePool)", required=[
+                      run="^Test(Daily|RemotePool|Recoverable)", required=[
                           "TestDailyRemoteIndependentConfigAndMoneyBinding",
                           "TestDailyRemoteIndependentCredentialGrammar",
                           "TestDailyRemoteSelectionBeforeOriginalOwnerEffects",
@@ -375,7 +401,13 @@ def main():
                           "TestDailyHeadlessOriginalFileOwnersJoinBeforeCancellationSuccess",
                           "TestDailyHeadlessObservedIntegrityIsNotCancellation",
                           "TestDailyHeadlessFlagsAndCancellationBeforeEffects",
-                          "TestDailyHeadlessOutputCancellationJoins"])
+                          "TestDailyHeadlessOutputCancellationJoins",
+                          "TestRecoverableRemoteIndependentConfigCredentialMarkers",
+                          "TestRecoverableRemoteProtectedOriginalLeaseAndMarkers",
+                          "TestRecoverableRemoteCredentialChangeAfterClientResponseRetainsIntent",
+                          "TestRecoverableRemoteControllerOriginalEpochAndLegacyRefusal",
+                          "TestRecoverableRemoteControllerRefusesBeforeOriginalRoot",
+                          "TestRecoverableIssueHeadlessSoleSelection"])
             gate.test(mode + "-daily-mining-lease", root, ["./internal/mininglease"],
                       desktop / "go.work", race, required=[
                           "TestDailyCaptureOriginalCancellationAndLegacyParity",
@@ -418,13 +450,24 @@ def main():
                           "TestRoundLiveReadOnlyRefusal",
                           "TestRoundLiveFullSyncFailureIsAtomic",
                           "TestRoundLiveIndependentModeledPages",
-                          "TestRoundSourceExactBusyClassification"])
+                          "TestRoundSourceExactBusyClassification",
+                          "TestRecoverableSourceIndependentReservation",
+                          "TestRecoverableSourceProposalGapExactReopen",
+                          "TestRecoverableSourceExpiredUnusedAndSealedAbsence",
+                          "TestRecoverableSourceUncertainCommitAndNamespaceCensus",
+                          "TestRecoverableSourceCancellationAndReservedBytes"])
             gate.test(mode + "-daily-source-fences", root, ["./registry", "./poolservice"],
                       desktop / "go.work", race,
-                      run="^(TestManifestTryJob|TestPoolServiceDoesNotAdoptDailySource)", required=[
+                      run="^(TestManifestTryJob|TestPoolServiceDoesNotAdoptDailySource|TestRecoverableIssuer|TestRecoverableIssueIndependent(Profiles|IntentsAndBounds))", required=[
                           "TestManifestTryJobOriginalReadOnlyAndNonblocking",
                           "TestManifestTryJobCancellationAndClosedState",
-                          "TestPoolServiceDoesNotAdoptDailySource"])
+                          "TestPoolServiceDoesNotAdoptDailySource",
+                          "TestRecoverableIssueIndependentProfiles",
+                          "TestRecoverableIssueIndependentIntentsAndBounds",
+                          "TestRecoverableIssuerExactReplaySealAndReopen",
+                          "TestRecoverableIssuerAuditReverseAndUncertainCommit",
+                          "TestRecoverableIssuerFailedFileCloseRetainsOriginal",
+                          "TestRecoverableIssuerFileSuccessAndFailureOwnership"])
             gate.test(mode + "-daily-node-shape", root, ["./pooltxshape", "./poolsettlenode"],
                       desktop / "go.work", race, required=[
                           "TestNativeP2WPKHIndependentReference",
@@ -436,6 +479,8 @@ def main():
                           "TestDailyNodeFourWorkersCancelAndClose",
                           "TestDailyNodeFeeRawAndWeightProfile",
                           "TestDailyNodeObservedWeightAndOwnedBroadcast"])
+            # The selected full-intake test below waits for real expiry. Keep it
+            # in this existing full suite exactly once per normal/race mode.
             gate.test(mode + "-daily-ledger-schedule", root, ["./poolsettle", "./poolschedule"],
                       desktop / "go.work", race, required=[
                           "TestSettlementReplayV1Parity",
@@ -462,6 +507,7 @@ def main():
                           "TestDailyLedgerWriteUncertaintyRetainsExactSignedHistory",
                           "TestDailyLedgerConditionalWholeFrontierWeightDeferral",
                           "TestDailyAdmissionFullIntakePreservesPendingPayoutAcrossOwners",
+                          "TestRecoverableDailyFullIntakeExpiredWinnerPreservesPendingPayout",
                           "TestDailyOperatorSourcePendingRecoveryAndNextDay",
                           "TestDailySigningIndependentBytes",
                           "TestDailySigningOpaqueOriginalLifetime",
@@ -472,7 +518,8 @@ def main():
                           "TestDailyScheduleOriginalOwnerModesAndReopen",
                           "TestDailyScheduleRunCancelAndJoin"])
         # Refusals only: no positive custody/source test is relabeled as cheap
-        # proof, and the opt-in slugdailyactual tag is never admitted here.
+        # proof. Opt-in slugdailyactual/slugissuerecoveryactual tags are never
+        # admitted here: local A/B and intentional-crash L remain separate evidence.
         cheap_wire = json.loads(gate.run("cheap-wire-selection", ["go", "list", "-tags=slugtestpow", "-json",
                                              "github.com/taytr-llc/slug/wire/v2"], seconds=180))
         if (Path(cheap_wire["Dir"]).resolve() != root / "wire" or
@@ -489,7 +536,8 @@ def main():
                       "TestRoundSourceExactBusyClassification",
                       "TestScheduleRetryIndependentErrorTrees",
                       "TestDailyAdmissionContentionErrorTrees",
-                      "TestDailyAdmissionContentionBudgetDoesNotRenew"]
+                      "TestDailyAdmissionContentionBudgetDoesNotRenew",
+                      "TestRecoverableSourceCheapRefusesBeforeEffects"]
         gate.test("cheap-daily-core", root,
                   ["./poolshare", "./poolround", "./poolsettlenode", "./poolsettle",
                    "./poolschedule", "./registry"], desktop / "go.work",
@@ -498,15 +546,18 @@ def main():
         gate.test("cheap-daily-wallet", wallet, ["./waddrmgr", "./wallet"], wallet / "go.work",
                   run="^(" + "|".join(cheap_wallet) + ")$", required=cheap_wallet, tags="slugtestpow")
         cheap_public = ["TestDailyMinerRefusalBeforeEffects", "TestDailyTransportCheapRefuses",
-                        "TestPoolCheapProfileRefusesBeforeState"]
+                        "TestPoolCheapProfileRefusesBeforeState",
+                        "TestRecoverableTransportCheapRefuses", "TestRecoverablePoolCheapBeforeState"]
         gate.test("cheap-daily-public", root, ["./poolminer", "./poolservice", "./prospectworker"],
                   desktop / "go.work", run="^(" + "|".join(cheap_public) + ")$",
                   required=cheap_public, tags="slugtestpow")
         gate.test("cheap-daily-desktop", desktop, ["./pilot"], desktop / "go.work",
-                  run="^TestDailyRemoteSelectionBeforeOriginalOwnerEffects$",
-                  required=["TestDailyRemoteSelectionBeforeOriginalOwnerEffects"], tags="slugtestpow")
+                  run="^(TestDailyRemoteSelectionBeforeOriginalOwnerEffects|TestRecoverableRemoteCheapSelectionBeforeOwners)$",
+                  required=["TestDailyRemoteSelectionBeforeOriginalOwnerEffects",
+                            "TestRecoverableRemoteCheapSelectionBeforeOwners"], tags="slugtestpow")
         intake_controls = ["TestOperatorIntakeSourceBusyErrorTrees",
-                           "TestOperatorIntakeMutexCancellationJoinsHolder"]
+                           "TestOperatorIntakeMutexCancellationJoinsHolder",
+                           "TestRecoverableCommandsRejectCheapBeforeFiles"]
         gate.test("cheap-intake-controls", desktop, ["./pooloperator"], desktop / "go.work",
                   run="^(" + "|".join(intake_controls) + ")$",
                   required=intake_controls, tags="slugtestpow")
@@ -579,7 +630,7 @@ def main():
                             and all(c["passed"] for c in gate.commands))
         write_json(artifacts / "report.json", report)
         summary = ("Operator Linux qualification: " + ("PASS" if report["passed"] else "FAIL") + "\n\n"
-                   + "Focused authority, wallet16, fixture provisioning, daily public transport/worker/desktop and accounting checks; deployed-host and long actual acceptance are excluded.\n"
+                   + "Focused authority, wallet16, fixture provisioning, daily public transport/worker/desktop, exact-request recovery and accounting controls; deployed-host and local A/B/L actual acceptance are excluded.\n"
                    + "Source unchanged: " + str(report["source_unchanged"]) + "; clean join: " + str(report["clean_join"]) + "\n")
         if report["errors"]:
             summary += "Errors: " + "; ".join(report["errors"]) + "\n"

@@ -1,0 +1,57 @@
+{
+  "execution_performed": false,
+  "files": [
+    {
+      "bytes": 16233,
+      "path": "/Users/taytrrip/slug/set80-prep/run-regressions.py",
+      "sha256": "937db88c89bd4910eb6cbbdeb81cfe4c2beb5ebaeeeeeb68699aa8117a6e673a"
+    },
+    {
+      "bytes": 17188,
+      "path": "/Users/taytrrip/slug/set80-prep/regression-skips.json",
+      "sha256": "5a8328c7983c0e4c358e0b6f4ee247735b48449638ff94b7e554859f45150c33"
+    },
+    {
+      "bytes": 3325,
+      "path": "/Users/taytrrip/slug/set80-prep/REGRESSIONS.md",
+      "sha256": "ef9bd5a2544054f6b575990b7e01d9f72e11cfc39c8b98b99fb61882e69c9da2"
+    },
+    {
+      "bytes": 6463,
+      "path": "/Users/taytrrip/slug/set80-prep/run-components.py",
+      "sha256": "390e75954b6b4349ef2c54072c26ca090920f052172c14116c4c6d0cdf21e46a"
+    },
+    {
+      "bytes": 3786,
+      "path": "/Users/taytrrip/slug/set79-prep/run-post-refresh.py",
+      "sha256": "0b235508e16b00863c72fda19b6242cd85da630bfbfcf52913807f4b5681b0bb"
+    },
+    {
+      "bytes": 24143,
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/testdata/late-winner-actual/run.py",
+      "sha256": "b81af69c02a18b7f74ed96e08ae4dba8548e94a4958aeacb721c62dcbf8ba05e"
+    },
+    {
+      "bytes": 3888,
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/testdata/late-winner-actual/runner_support.py",
+      "sha256": "54bb3e7caf33e744ce76bf366dd23a4eff4d370d9246b85758089b57dd2439d7"
+    },
+    {
+      "bytes": 4753,
+      "path": "/private/tmp/slug_set48_build_profile.py",
+      "sha256": "b6033d66edb4d24a57a7fac4e59ddaeee6964f0943aca21fddc6f65c7f5e6ee4"
+    },
+    {
+      "bytes": 2519,
+      "path": "/Users/taytrrip/slug/artifacts/set80/financial-normal-attempt2/report.json",
+      "sha256": "1f7d6a9ec1c28e8e0fd18ac49c2a5218e90449f324dda72cec0dfcfcaf6a5160"
+    },
+    {
+      "bytes": 2531,
+      "path": "/Users/taytrrip/slug/artifacts/set80/financial-race-attempt1/report.json",
+      "sha256": "0ba9a9384ad5644454cacc496e68ea449bf72bb7f2705cc90c5c15ab0f98475b"
+    }
+  ],
+  "scope": "Source-only full affected normal/race regression runner; root execution required",
+  "version": 1
+}

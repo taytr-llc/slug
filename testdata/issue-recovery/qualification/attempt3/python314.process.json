@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "/opt/homebrew/bin/python3",
+    "-B",
+    "-S",
+    "/Users/taytrrip/slug/set80-prep/reference/generate.py",
+    "--lock",
+    "/Users/taytrrip/slug/set80-prep/reference-execution-lock.root-attempt3.json",
+    "--output",
+    "/Users/taytrrip/slug/artifacts/set80/reference-attempt3/python314.json"
+  ],
+  "pgid": 75888,
+  "pid": 75888,
+  "timeout_seconds": 120
+}

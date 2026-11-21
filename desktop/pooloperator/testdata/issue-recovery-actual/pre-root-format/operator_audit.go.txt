@@ -1,0 +1,263 @@
+// Full daily public audits; adapted from frozen Path B. No private wallet reads.
+package main
+
+import (
+	"bytes"
+	"context"
+	"encoding/binary"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"io/fs"
+	"os"
+	"path/filepath"
+	"reflect"
+
+	"github.com/syndtr/goleveldb/leveldb"
+	"github.com/syndtr/goleveldb/leveldb/opt"
+	"github.com/taytr-llc/slug/desktop/pooloperator"
+	"github.com/taytr-llc/slug/poolround"
+	"github.com/taytr-llc/slug/poolsettle"
+	"github.com/taytr-llc/slug/poolshare"
+	"github.com/taytr-llc/slug/registry"
+)
+
+type dailyAuditHeader struct {
+	Application  string `json:"application"`
+	Version      uint32 `json:"version"`
+	ConfigID     string `json:"config_id"`
+	SourceID     string `json:"source_id"`
+	Revision     uint64 `json:"revision"`
+	Credits      uint64 `json:"credits"`
+	Batches      uint64 `json:"batches"`
+	Events       uint64 `json:"events"`
+	LogicalBytes uint64 `json:"logical_bytes"`
+	PendingBatch uint64 `json:"pending_batch"`
+	LastDay      string `json:"last_day"`
+	LastClockMS  int64  `json:"last_clock_ms"`
+}
+type dailyAuditBody struct {
+	Version     uint32 `json:"version"`
+	Sequence    uint64 `json:"sequence"`
+	Day         string `json:"day"`
+	CreatedAtMS int64  `json:"created_at_ms"`
+	Inputs      []struct {
+		TxID  string `json:"txid"`
+		Index uint32 `json:"index"`
+	} `json:"inputs"`
+	Payments []poolsettle.Payment `json:"payments"`
+	FeeAtoms int64                `json:"fee_atoms"`
+	Change   *struct {
+		Index        uint32 `json:"index"`
+		Atoms        int64  `json:"atoms"`
+		Script       string `json:"script"`
+		ClaimCount   uint64 `json:"claim_count"`
+		ClaimsDigest string `json:"claims_digest"`
+	} `json:"change"`
+	TxID string `json:"txid"`
+	Raw  string `json:"raw"`
+}
+type attachmentOperatorAudit struct {
+	Submissions       uint64                      `json:"submissions"`
+	Accepted          uint64                      `json:"accepted"`
+	Works             uint64                      `json:"works"`
+	AuthorityJobs     uint64                      `json:"authority_jobs"`
+	Admissions        []registry.ManifestRecord   `json:"admissions"`
+	Births            uint64                      `json:"births"`
+	Entries           []poolshare.AccountingEntry `json:"entries"`
+	Rounds            []poolround.Record          `json:"rounds"`
+	Credits           []poolsettle.Credit         `json:"credits"`
+	Header            dailyAuditHeader            `json:"header"`
+	Body              dailyAuditBody              `json:"body"`
+	BodySHA256        string                      `json:"body_sha256"`
+	BodyBytes         int                         `json:"body_bytes"`
+	Delivery          string                      `json:"delivery"`
+	Report            poolsettle.Report           `json:"report"`
+	ReadOnlyUnchanged bool                        `json:"read_only_unchanged"`
+	SourceRequests uint64 `json:"source_requests"`
+	IssuerRequests uint64 `json:"issuer_requests"`
+	PublicRows map[string]string `json:"public_rows"`
+	PublicFilesBefore map[string]string `json:"public_files_before"`
+	PublicFilesAfter map[string]string `json:"public_files_after"`
+}
+
+// Only named public accounting stores; never wallets, credentials or seed files.
+func attachmentPublicFiles(root string) map[string]string {
+	out := map[string]string{}
+	var total int64
+	for _, name := range []string{"issuer", "pool", "rounds", "settlement"} {
+		dir := filepath.Join(root, "operator", name)
+		canonical, e := filepath.EvalSymlinks(dir)
+		check(e, "public store path")
+		require(canonical == dir, "original public store path")
+		check(filepath.WalkDir(dir, func(path string, d fs.DirEntry, e error) error {
+			if e != nil {
+				return e
+			}
+			if d.IsDir() {
+				return nil
+			}
+			info, e := os.Lstat(path)
+			if e != nil {
+				return e
+			}
+			require(info.Mode().IsRegular() && info.Size() <= 128<<20 && len(out) < 4096, "bounded public audit inventory")
+			total += info.Size()
+			require(total <= 512<<20, "bounded complete public file inventory")
+			out[path] = hx(digest(readBound(path, 128<<20)))
+			return nil
+		}), "public audit inventory")
+	}
+	return out
+}
+func auditKey(prefix string, n uint64) []byte {
+	k := make([]byte, len(prefix)+8)
+	copy(k, prefix)
+	binary.BigEndian.PutUint64(k[len(prefix):], n)
+	return k
+}
+
+// A failed Close is recorded once and never retried through this helper. The
+// outer scenario retains the original tree and fails; no replacement opens.
+type auditOwnedClose struct { name string; close func() error }
+type auditOwnerStack struct { open, failed []auditOwnedClose }
+func (s *auditOwnerStack) add(name string, close func() error) {
+ s.open=append(s.open,auditOwnedClose{name,close})
+}
+// Selected Open APIs return a nonnil error owner only after failed cleanup.
+// Retain that concrete owner without another Close attempt.
+func (s *auditOwnerStack) opened(name string, close func() error, err error) {
+ if err!=nil {s.failed=append(s.failed,auditOwnedClose{name,close});return};s.add(name,close)
+}
+func (s *auditOwnerStack) close() error {
+ var all error
+ for len(s.open)>0 {
+  i:=len(s.open)-1; c:=s.open[i]; s.open=s.open[:i]
+  if e:=c.close();e!=nil {s.failed=append(s.failed,c);all=errors.Join(all,fmt.Errorf("%s: %w",c.name,e))}
+ }
+ return all
+}
+func (s *auditOwnerStack) finish() {
+ fault:=recover(); e:=s.close()
+ if fault!=nil {if e!=nil {panic(fmt.Sprintf("%v; public audit cleanup: %v",fault,e))};panic(fault)}
+ check(e,"public audit cleanup")
+}
+
+// Only after all full original owners close, enumerate public logical rows.
+// The caps bound this tiny scenario, not a product capacity or a new authority.
+func walkAuditRows(ctx context.Context,root,name string,visit func([]byte,[]byte)) map[string]string {
+ check(ctx.Err(),"public row context")
+ db,e:=leveldb.OpenFile(filepath.Join(root,"operator",name,"db"),&opt.Options{ReadOnly:true,ErrorIfMissing:true,Strict:opt.StrictAll})
+ check(e,"readonly public row census")
+ var owners auditOwnerStack;owners.add(name+" projection",db.Close);defer owners.finish()
+ rows:=map[string]string{};var total uint64
+ func(){
+  it:=db.NewIterator(nil,nil);defer it.Release()
+  for it.Next(){
+   check(ctx.Err(),"public row census context")
+   k,v:=it.Key(),it.Value()
+   require(len(k)>0 && len(k)<=256 && len(v)<=40<<20 && len(rows)<4096,"bounded public logical row")
+   total+=uint64(len(k)+len(v));require(total<=256<<20,"bounded complete public row census")
+   key:=name+"/"+hx(k);_,exists:=rows[key];require(!exists,"unique public key")
+   rows[key]=hx(digest(v));if visit!=nil {visit(k,v)}
+  }
+  check(it.Error(),"complete public row iterator")
+ }()
+ check(owners.close(),"readonly public row census joined")
+ return rows
+}
+
+// Called only after every original runtime/CLI has joined and released this root.
+// Full production audits authenticate the subsequent bounded public projection.
+func auditOperator(ctx context.Context, root string, selected pooloperator.RecoverableDailySetup) (out attachmentOperatorAudit) {
+ require(ctx!=nil,"original audit context");check(ctx.Err(),"original audit context")
+ s:=selected.Base
+ before:=attachmentPublicFiles(root)
+ var owners auditOwnerStack;defer owners.finish()
+ profile,e:=registry.NewOperatorProfile(s.Authority);check(e,"audit original profile")
+ issuer,e:=registry.OpenRecoverableOperatorManifestAuthorityAudit(ctx,filepath.Join(root,"operator","issuer"),profile,selected.IssueProfile)
+ if issuer!=nil {owners.opened("original issuer",issuer.Close,e)}
+ check(e,"full selected issuer audit")
+ info,requests,e:=issuer.AuditIssueBinding(ctx,s.Pool.AuthorityPin,selected.IssueProfile);check(e,"full selected issuer binding")
+ require(info.ReadOnly && info.Pin==s.Pool.AuthorityPin && info.Jobs<=requests && requests<=selected.IssueProfile.MaxRequests,"same complete issuer selection")
+ out.IssuerRequests=requests;out.AuthorityJobs=info.Jobs;out.Births=info.Records
+ require(info.Records<=64,"bounded original admission count")
+ out.Admissions=[]registry.ManifestRecord{}
+ for uint64(len(out.Admissions))<info.Records {
+  check(ctx.Err(),"admission audit context")
+  page,e:=issuer.ListManifestAdmissions(uint64(len(out.Admissions)),8);check(e,"original verified admissions")
+  require(len(page)>0 && len(out.Admissions)+len(page)<=64,"bounded complete admissions")
+  out.Admissions=append(out.Admissions,page...)
+ }
+ require(uint64(len(out.Admissions))==info.Records,"complete original admissions")
+ pool,e:=poolshare.OpenRecoverableDailyAudit(ctx,filepath.Join(root,"operator","pool"),s.Pool,selected.IssueProfile,issuer)
+ if pool!=nil {owners.opened("original pool",pool.Close,e)}
+ check(e,"full selected source audit")
+ entries,e:=pool.AccountingPage(ctx,0,0,8);check(e,"complete bounded accepted prefix")
+ require(entries.Config==s.Pool && entries.Through==uint64(len(entries.Entries)) && entries.Through<=2,"original complete prefix")
+ out.Entries=entries.Entries
+ rounds,e:=poolround.OpenDailyAudit(ctx,filepath.Join(root,"operator","rounds"),s.RoundLimits,pool)
+ if rounds!=nil {owners.opened("original rounds",rounds.Close,e)}
+ check(e,"full daily round audit")
+ out.Rounds,e=rounds.List(ctx,0,8);check(e,"bounded complete rounds")
+ require(len(out.Rounds)<=2,"bounded original round count")
+ settle,e:=poolsettle.OpenDailyAudit(ctx,filepath.Join(root,"operator","settlement"),s.Settlement,rounds)
+ if settle!=nil {owners.opened("original settlement",settle.Close,e)}
+ check(e,"full indexed settlement/source audit")
+ out.Report,e=settle.View(ctx);check(e,"original saved report")
+ check(owners.close(),"all original public audits joined")
+
+ out.PublicRows=map[string]string{}
+ var workRows,submissionRows,acceptRows,sequenceRows,requestRows uint64
+ for _,name:=range []string{"issuer","pool","rounds","settlement"} {
+  rows:=walkAuditRows(ctx,root,name,func(k,v []byte){
+   if name!="pool" {return}
+   if bytes.Equal(k,[]byte("meta")) {
+    require(len(v)<=32768,"source metadata bound")
+    var meta struct {
+     Application string `json:"application"`;Version uint32 `json:"version"`
+     Base struct {Config poolshare.Config `json:"config"`;Works uint64 `json:"works"`;Submissions uint64 `json:"submissions"`;Accepted uint64 `json:"accepted"`} `json:"base"`
+     IssueProfile registry.IssueProfile `json:"issue_profile"`;Requests uint64 `json:"requests"`
+    }
+    check(json.Unmarshal(v,&meta),"selected source metadata")
+    require(meta.Application=="slug-pool-issue-recovery" && meta.Version==1 && meta.IssueProfile==selected.IssueProfile && meta.Base.Config==s.Pool && meta.Base.Accepted==entries.Through && meta.Base.Submissions<=2 && meta.Base.Works<=s.Pool.MaxWorks && meta.Requests<=selected.IssueProfile.MaxRequests,"exact selected physical metadata")
+    out.Submissions,out.Accepted,out.Works,out.SourceRequests=meta.Base.Submissions,meta.Base.Accepted,meta.Base.Works,meta.Requests
+   } else if len(k)==65 && k[0]=='w' {workRows++
+   } else if len(k)==65 && k[0]=='s' {submissionRows++
+   } else if len(k)==9 && k[0]=='a' {acceptRows++
+   } else if len(k)==9 && k[0]=='q' {sequenceRows++
+   } else if len(k)==40 && bytes.HasPrefix(k,[]byte("issue/r/")) {requestRows++}
+  })
+  for k,v:=range rows {out.PublicRows[k]=v}
+ }
+ require(workRows==out.Works && submissionRows==out.Submissions && sequenceRows==out.Submissions && acceptRows==out.Accepted && requestRows==out.SourceRequests,"complete physical source row census")
+ db,e:=leveldb.OpenFile(filepath.Join(root,"operator","settlement","db"),&opt.Options{ReadOnly:true,ErrorIfMissing:true,Strict:opt.StrictAll});check(e,"readonly indexed projection")
+ owners.add("indexed projection",db.Close)
+ get:=func(key []byte,limit int,target any) []byte {
+  check(ctx.Err(),"indexed projection context")
+  raw,e:=db.Get(key,nil);check(e,"exact audited index key")
+  require(len(raw)>0 && len(raw)<=limit && out.PublicRows["settlement/"+hx(key)]==hx(digest(raw)),"bounded same audited index row")
+  check(json.Unmarshal(raw,target),"public index projection");return raw
+ }
+ get([]byte("head"),128<<10,&out.Header)
+ require(out.Header.Version==2 && out.Header.Application=="slug-pool-settlement-daily" && out.Header.ConfigID==s.WalletGuard.SettlementConfigID && out.Header.SourceID==s.WalletGuard.SourceBindingID && out.Header.Batches<=1 && out.Header.Credits<=2 && out.Header.Events==out.Header.Credits+out.Header.Batches,"fixed tiny original daily ledger")
+ var report poolsettle.Report;get([]byte("report"),8<<20,&report)
+ require(reflect.DeepEqual(report,out.Report),"audited original saved report")
+ if out.Header.Batches==1 {
+  body:=get(auditKey("b/",1),2<<20,&out.Body);out.BodySHA256=hx(digest(body));out.BodyBytes=len(body)
+  var state struct {State string `json:"state"`};get(auditKey("bs/",1),256,&state);out.Delivery=state.State
+ }
+ out.Credits=[]poolsettle.Credit{}
+ for seq:=uint64(1);seq<=out.Header.Credits;seq++ {
+  var credit poolsettle.Credit;get(auditKey("c/",seq),128<<10,&credit);out.Credits=append(out.Credits,credit)
+ }
+ for seq:=uint64(1);seq<=out.Header.Events;seq++ {
+  var event struct {Kind string `json:"kind"`;Sequence uint64 `json:"sequence"`}
+  get(auditKey("e/",seq),256,&event)
+  require(event.Sequence>0 && ((event.Kind=="credit" && event.Sequence<=out.Header.Credits) || (event.Kind=="batch" && event.Sequence==1)),"bounded original event references")
+ }
+ check(owners.close(),"readonly indexed projection joined")
+ after:=attachmentPublicFiles(root);require(reflect.DeepEqual(before,after),"closed public audit changed files")
+ out.PublicFilesBefore,out.PublicFilesAfter=before,after;out.ReadOnlyUnchanged=true
+ return
+}

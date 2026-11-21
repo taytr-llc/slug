@@ -1,0 +1,114 @@
+{
+  "error": false,
+  "events": [
+    {
+      "request_id": "b21e3c3dc70121f8332365e615eefd01a14125b490ddf35a8d0875c46d89d382",
+      "path": "/pool/v3/issue",
+      "at_ms": 1795266270905,
+      "forwarded": true,
+      "status": 0,
+      "response_sha256": "",
+      "lost": false
+    },
+    {
+      "request_id": "b21e3c3dc70121f8332365e615eefd01a14125b490ddf35a8d0875c46d89d382",
+      "path": "/pool/v3/issue",
+      "at_ms": 1795266275708,
+      "forwarded": true,
+      "status": 200,
+      "response_sha256": "19d92824db323075e4770f04eba92a7fd608b1e16add02a5748e42a3e6fc7fbf",
+      "lost": true
+    }
+  ],
+  "held": true,
+  "lost": true,
+  "request_id": "b21e3c3dc70121f8332365e615eefd01a14125b490ddf35a8d0875c46d89d382",
+  "response": {
+    "version": 3,
+    "binding_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+    "settlement_config_id": "744a4f6a8fa2160cf96353c396867021a1dbe0eaf6308978a753ebc326c546b9",
+    "recipient_script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+    "issue_profile_id": "dce96f3b5d85953aee6efb510fd103d0887b28cfcded575201593c57f955adda",
+    "request_id": "b21e3c3dc70121f8332365e615eefd01a14125b490ddf35a8d0875c46d89d382",
+    "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+    "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+    "result": {
+      "version": 1,
+      "state": "work",
+      "intent_id": "c1e5cc3528254437078ff696aa8c9e95a169cc175482b06d88d816f5771c2a85",
+      "job_id": "536959e87d566dee489bd3c4ab0801e0748fe3d26f605c91c305a7771989a54d",
+      "resolved_at_ms": 1795266275814,
+      "reason": "",
+      "work": {
+        "job": {
+          "version": 2,
+          "rule_version": 1,
+          "id": "536959e87d566dee489bd3c4ab0801e0748fe3d26f605c91c305a7771989a54d",
+          "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+          "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+          "context": {
+            "version": 1,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "dna_version": 1,
+            "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+            "parent_height": 2,
+            "expected_bits": 545259519,
+            "min_timestamp": 1795170106,
+            "max_timestamp": 1795273470
+          },
+          "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+          "challenge": "f16b4e713b8d25a2be35b8bdb566615771a58074c5157bd78e4333aead86bc6d",
+          "issued_at_ms": 1795266271023,
+          "expires_at_ms": 1795266571023
+        },
+        "template": {
+          "context": {
+            "version": 1,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "dna_version": 1,
+            "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "parent_hash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+            "parent_height": 2,
+            "expected_bits": 545259519,
+            "min_timestamp": 1795170106,
+            "max_timestamp": 1795273470
+          },
+          "block": {
+            "bits": "207fffff",
+            "curtime": 1795266270,
+            "height": 3,
+            "previousblockhash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+            "sigoplimit": 80000,
+            "sizelimit": 4000000,
+            "weightlimit": 4000000,
+            "transactions": [],
+            "version": 536870912,
+            "coinbaseaux": {
+              "flags": "0b2f503253482f627463642f"
+            },
+            "coinbasevalue": 1000000000,
+            "longpollid": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d-1795266268",
+            "target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+            "maxtime": 1795273470,
+            "mintime": 1795170106,
+            "mutable": [
+              "time",
+              "transactions/add",
+              "prevblock",
+              "coinbase/append"
+            ],
+            "noncerange": "00000000ffffffff",
+            "capabilities": [
+              "proposal"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "response_sha256": "19d92824db323075e4770f04eba92a7fd608b1e16add02a5748e42a3e6fc7fbf"
+}

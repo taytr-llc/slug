@@ -1,0 +1,12 @@
+{
+  "target": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_issue_recovery_test.go",
+  "reason": "Positive selected config test requires normal PoW; explicit cheap refusal is separately required. Preserve desktop-cheap-attempt1 failure and refusal-only attempt2 PASS. No product or expected-vector change.",
+  "before": {
+    "bytes": 4458,
+    "sha256": "e4b6de5a2fabf1bb57f1ed6ef57d884c2415f9dce7428f7605de9ca52f4564a1"
+  },
+  "after": {
+    "bytes": 4557,
+    "sha256": "67884e1a0a87610e19c3e74d46edd4d7783e973f9c419620844cb38cfdc4f771"
+  }
+}

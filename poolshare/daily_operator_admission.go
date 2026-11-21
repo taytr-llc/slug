@@ -151,7 +151,7 @@ func (p *Pool) dailyWorkHeadroom(workBytes uint64) error {
 	if p.meta.Bytes > p.config.MaxBytes {
 		return ErrCorrupt
 	}
-	free, receipts := p.config.MaxBytes-p.meta.Bytes, remaining*maxSubmissionSize
+	free, receipts := p.freeSourceBytes(), remaining*maxSubmissionSize
 	if workBytes > free || receipts > free-workBytes {
 		return ErrCapacity
 	}
@@ -171,7 +171,7 @@ func (a *OperatorAdmission) dailyRecoveryBound(ctx context.Context) error {
 	if err == poolcapacity.ErrInvalid {
 		return ErrCorrupt
 	}
-	if err != nil || maxSubmissionSize > p.config.MaxBytes-p.meta.Bytes {
+	if err != nil || maxSubmissionSize > p.freeSourceBytes() {
 		return ErrCapacity
 	}
 	return ctx.Err()

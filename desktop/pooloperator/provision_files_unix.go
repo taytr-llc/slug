@@ -28,7 +28,7 @@ func openProvisionFiles(path string, create bool) (*provisionFiles, error) {
 	return openProvisionFilesVersion(path, create, 1)
 }
 func openProvisionFilesVersion(path string, create bool, version uint32) (f *provisionFiles, err error) {
-	if (version != 1 && version != 2) || !commandPath(path) || os.Getuid() != os.Geteuid() {
+	if (version != 1 && version != 2 && version != 3) || !commandPath(path) || os.Getuid() != os.Geteuid() {
 		return nil, ErrProvisionInvalid
 	}
 	parts := strings.Split(strings.TrimPrefix(path, "/"), "/")

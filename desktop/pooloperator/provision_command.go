@@ -2,6 +2,7 @@
 package pooloperator
 
 import (
+	"bytes"
 	"context"
 	"crypto/rand"
 	"errors"
@@ -12,12 +13,15 @@ import (
 	"strings"
 	"time"
 
+	"github.com/taytr-llc/slug/registry"
 	"github.com/taytr-llc/slug/wire/v2"
 	"github.com/taytr-llc/slugwallet/wallet"
 )
 
 const provisionUsage = `slugpool-provision create|resume|verify [local file selections]
 --daily explicitly selects fresh DAILY provisioning; defaults remain V1.
+--daily-recoverable-issue selects fresh exact-request issuance recovery.
+The two selections are mutually exclusive.
 Required: --policy-file --root --tls-certificate-file
  --wallet-public-passphrase-file --wallet-unlock-passphrase-file
 Paths must be absolute and canonical; selected files must be protected regular
@@ -31,7 +35,7 @@ Only bounded public JSON and closed error codes are printed.
 
 type provisionOptions struct {
 	command, policy, root, certificate, publicPass, unlockPass string
-	daily                                                      bool
+	daily, recoverableIssue                                    bool
 }
 
 func parseProvisionCommand(args []string) (provisionOptions, error) {
@@ -58,6 +62,7 @@ func parseProvisionCommand(args []string) (provisionOptions, error) {
 	fs := flag.NewFlagSet("slugpool-provision", flag.ContinueOnError)
 	fs.SetOutput(io.Discard)
 	fs.BoolVar(&o.daily, "daily", false, "")
+	fs.BoolVar(&o.recoverableIssue, "daily-recoverable-issue", false, "")
 	for name, dst := range map[string]*string{"policy-file": &o.policy, "root": &o.root, "tls-certificate-file": &o.certificate, "wallet-public-passphrase-file": &o.publicPass, "wallet-unlock-passphrase-file": &o.unlockPass} {
 		fs.StringVar(dst, name, "", "")
 	}
@@ -69,11 +74,11 @@ func parseProvisionCommand(args []string) (provisionOptions, error) {
 		}
 		name := strings.TrimPrefix(strings.TrimPrefix(a, "-"), "-")
 		if j := strings.IndexByte(name, '='); j >= 0 {
-			if name[:j] == "daily" && name[j+1:] != "true" {
+			if (name[:j] == "daily" || name[:j] == "daily-recoverable-issue") && name[j+1:] != "true" {
 				return o, ErrCommandArguments
 			}
 			name = name[:j]
-		} else if name != "daily" {
+		} else if name != "daily" && name != "daily-recoverable-issue" {
 			i++
 			if i >= len(args) {
 				return o, ErrCommandArguments
@@ -84,7 +89,7 @@ func parseProvisionCommand(args []string) (provisionOptions, error) {
 		}
 		seen[name] = true
 	}
-	if fs.Parse(args[1:]) != nil || fs.NArg() != 0 || len(seen) != 5+boolCount(seen["daily"]) {
+	if fs.Parse(args[1:]) != nil || fs.NArg() != 0 || len(seen) != 5+boolCount(seen["daily"])+boolCount(seen["daily-recoverable-issue"]) || seen["daily"] && seen["daily-recoverable-issue"] {
 		return o, ErrCommandArguments
 	}
 	for _, p := range []string{o.policy, o.root, o.certificate, o.publicPass, o.unlockPass} {
@@ -246,8 +251,12 @@ func runProvisionCommand(ctx context.Context, args []string, stdout, stderr *os.
 		return e
 	}
 	command = options.command
-	if options.daily {
+	if options.daily || options.recoverableIssue {
 		version = 2
+	}
+	fileVersion := version
+	if options.recoverableIssue {
+		fileVersion = 3
 	}
 	if wire.TestPoW {
 		return ErrProvisionInvalid
@@ -264,9 +273,16 @@ func runProvisionCommand(ctx context.Context, args []string, stdout, stderr *os.
 	if e != nil {
 		return e
 	}
-	if options.daily {
+	if options.daily || options.recoverableIssue {
 		if e = dailyProvisionCapacity(policy); e != nil {
 			return e
+		}
+	}
+	if options.recoverableIssue {
+		// Pure limits preflight precedes root creation and entropy. Exact complete
+		// Setup/profile validation repeats after original material is derived.
+		if e = registry.ValidateRecoverableIssueCapacity(registry.PublicOwnershipDefaultLimits(), policy.Limits.MaxWorks); e != nil {
+			return ErrProvisionInvalid
 		}
 	}
 	raw, e = o.common.readInput(ctx, options.certificate, 65536)
@@ -294,18 +310,26 @@ func runProvisionCommand(ctx context.Context, args []string, stdout, stderr *os.
 	if e = o.common.check(ctx); e != nil {
 		return e
 	}
-	o.files, e = openProvisionFilesVersion(options.root, command == "create", version)
+	o.files, e = openProvisionFilesVersion(options.root, command == "create", fileVersion)
 	if e != nil {
 		return e
 	}
 	f := o.files
-	raw, exists, e := f.read(ctx, "", provisionIntentFile(version), 131072)
+	intentLimit := 131072
+	if options.recoverableIssue {
+		intentLimit += 1024
+	}
+	raw, exists, e := f.read(ctx, "", provisionIntentFile(fileVersion), intentLimit)
 	if e != nil {
 		return e
 	}
 	var intent provisionIntent
 	if exists {
-		intent, e = parseProvisionIntent(raw, policy, certificate)
+		if options.recoverableIssue {
+			intent, e = parseIssueProvisionIntent(raw, policy, certificate)
+		} else {
+			intent, e = parseProvisionIntent(raw, policy, certificate)
+		}
 		clear(raw)
 		if e != nil {
 			return ErrProvisionIncomplete
@@ -323,17 +347,21 @@ func runProvisionCommand(ctx context.Context, args []string, stdout, stderr *os.
 			return e
 		}
 		intent = provisionIntent{version, policy, pid, certificate.CertificateSHA256, created}
-		raw, e = provisionJSON(intent, 131072)
+		if options.recoverableIssue {
+			raw, e = issueProvisionIntentBytes(intent)
+		} else {
+			raw, e = provisionJSON(intent, 131072)
+		}
 		if e != nil {
 			return e
 		}
-		e = f.ensure(ctx, "", provisionIntentFile(version), raw, 131072, true)
+		e = f.ensure(ctx, "", provisionIntentFile(fileVersion), raw, intentLimit, true)
 		clear(raw)
 		if e != nil {
 			return e
 		}
 	}
-	readyRaw, established, e := f.read(ctx, "", provisionReadyFile(version), 1024)
+	readyRaw, established, e := f.read(ctx, "", provisionReadyFile(fileVersion), 1024)
 	if e != nil {
 		return e
 	}
@@ -371,18 +399,35 @@ func runProvisionCommand(ctx context.Context, args []string, stdout, stderr *os.
 	if e != nil {
 		return e
 	}
+	var issueSetup *RecoverableDailySetup
+	if options.recoverableIssue {
+		v, x := ComposeRecoverableDailySetup(setup)
+		if x != nil {
+			return x
+		}
+		issueSetup = &v
+	}
 	expectedReady, e := makeProvisionReady(policy, setup, intent.CreatedAtMS)
 	if e != nil {
 		return e
 	}
 	expectedReadyRaw, e := provisionJSON(expectedReady, 1024)
+	if issueSetup != nil {
+		expectedReadyRaw, e = issueProvisionReadyBytes(expectedReady, *issueSetup)
+	}
 	if e != nil {
 		return e
 	}
 	if established {
-		var got provisionReady
-		if provisionJSONFile(readyRaw, 1024, &got) != nil || got != expectedReady {
-			return ErrProvisionIncomplete
+		if issueSetup != nil {
+			if !bytes.Equal(readyRaw, expectedReadyRaw) {
+				return ErrProvisionIncomplete
+			}
+		} else {
+			var got provisionReady
+			if provisionJSONFile(readyRaw, 1024, &got) != nil || got != expectedReady {
+				return ErrProvisionIncomplete
+			}
 		}
 	}
 	if !hasMaterial {
@@ -401,7 +446,18 @@ func runProvisionCommand(ctx context.Context, args []string, stdout, stderr *os.
 	if e = verifyProvisionBackup(backup, policy, setup, intent.CreatedAtMS); e != nil {
 		return e
 	}
-	if e = f.ensure(ctx, "offline", provisionBackupFile(version), backup, 8192, allowCreate); e != nil {
+	backupLimit := 8192
+	if issueSetup != nil {
+		wrapped, x := issueProvisionBackupBytes(backup, *issueSetup)
+		if x != nil {
+			return x
+		}
+		clear(backup)
+		backup = wrapped
+		defer clear(wrapped)
+		backupLimit += 1024
+	}
+	if e = f.ensure(ctx, "offline", provisionBackupFile(fileVersion), backup, backupLimit, allowCreate); e != nil {
 		return e
 	}
 	for _, dir := range []string{"online", "public"} {
@@ -415,11 +471,16 @@ func runProvisionCommand(ctx context.Context, args []string, stdout, stderr *os.
 		}
 	}
 	setupRaw, e := marshalSetupVersion(setup, version)
+	setupLimit := MaxSetupBytes
+	if issueSetup != nil {
+		setupRaw, e = MarshalRecoverableDailySetup(*issueSetup)
+		setupLimit = MaxRecoverableSetupBytes
+	}
 	if e != nil {
 		return e
 	}
 	setupRaw = append(setupRaw, '\n')
-	if e = f.ensure(ctx, "public", "setup.json", setupRaw, MaxSetupBytes+1, allowCreate); e != nil {
+	if e = f.ensure(ctx, "public", "setup.json", setupRaw, setupLimit+1, allowCreate); e != nil {
 		return e
 	}
 	if e = o.check(ctx); e != nil {
@@ -435,7 +496,7 @@ func runProvisionCommand(ctx context.Context, args []string, stdout, stderr *os.
 	custody, cancelCustody := context.WithCancel(context.Background())
 	o.common.custodyCancel = cancelCustody
 	openWallet, createWallet := wallet.OpenPoolSettlementWallet, wallet.CreatePoolSettlementWallet
-	if options.daily {
+	if options.daily || options.recoverableIssue {
 		openWallet, createWallet = wallet.OpenDailyPoolSettlementWallet, wallet.CreateDailyPoolSettlementWallet
 	}
 	if walletExists {
@@ -473,7 +534,7 @@ func runProvisionCommand(ctx context.Context, args []string, stdout, stderr *os.
 	o.common.wallet = nil
 	// READY follows the original wallet's successful close. Other selected files
 	// and the root lock stay owned through exact publication and final checks.
-	if e = f.ensure(ctx, "", provisionReadyFile(version), expectedReadyRaw, 1024, allowCreate); e != nil {
+	if e = f.ensure(ctx, "", provisionReadyFile(fileVersion), expectedReadyRaw, 1024, allowCreate); e != nil {
 		return e
 	}
 	if e = f.inventory(); e != nil {
@@ -486,7 +547,14 @@ func runProvisionCommand(ctx context.Context, args []string, stdout, stderr *os.
 	if !established {
 		status = "provisioned"
 	}
-	response = &commandResponse{Version: version, Command: command, ObservedAtMS: now().UTC().UnixMilli(), Code: status, Result: provisionResult{policy.RequestID, expectedReady.PolicyID, expectedReady.SetupID, expectedReady.WalletGuardID, material.AdmissionKey, material.PublicationKey, material.CutoffKey, setup.Pool.PayoutAddress}}
+	selectedSetupID := expectedReady.SetupID
+	if issueSetup != nil {
+		selectedSetupID, e = RecoverableDailySetupID(*issueSetup)
+		if e != nil {
+			return e
+		}
+	}
+	response = &commandResponse{Version: version, Command: command, ObservedAtMS: now().UTC().UnixMilli(), Code: status, Result: provisionResult{policy.RequestID, expectedReady.PolicyID, selectedSetupID, expectedReady.WalletGuardID, material.AdmissionKey, material.PublicationKey, material.CutoffKey, setup.Pool.PayoutAddress}}
 	return nil
 }
 

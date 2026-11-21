@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "/Library/Developer/CommandLineTools/usr/bin/python3",
+    "-B",
+    "-S",
+    "/Users/taytrrip/slug/set80-prep/reference/generate.py",
+    "--lock",
+    "/Users/taytrrip/slug/set80-prep/reference-execution-lock.root-attempt4.json",
+    "--output",
+    "/Users/taytrrip/slug/artifacts/set80/reference-attempt5/python39.json"
+  ],
+  "pgid": 76136,
+  "pid": 76136,
+  "timeout_seconds": 120
+}

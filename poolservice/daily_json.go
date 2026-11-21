@@ -12,6 +12,9 @@ import (
 // Daily HTTP framing is deliberately separate from legacy TrimSpace behavior.
 // Only outer SP/TAB/CR/LF is permitted; the cap includes that outer framing.
 func decodeDailyStrict(raw []byte, limit int, value any) error {
+	return decodeSelectedWork(raw, limit, value, "work")
+}
+func decodeSelectedWork(raw []byte, limit int, value any, workPath string) error {
 	if len(raw) == 0 || len(raw) > limit || !utf8.Valid(raw) {
 		return errConfig
 	}
@@ -21,7 +24,7 @@ func decodeDailyStrict(raw []byte, limit int, value any) error {
 	}
 	// Bound containers before typed decoding. Template arrays retain the original
 	// limits; other messages have no arrays. Field names are bounded too.
-	arrays := map[string]int{"work.template.block.transactions": 16666, "work.template.block.transactions[].depends": 16666, "work.template.block.mutable": 1024, "work.template.block.capabilities": 1024}
+	arrays := map[string]int{workPath + ".template.block.transactions": 16666, workPath + ".template.block.transactions[].depends": 16666, workPath + ".template.block.mutable": 1024, workPath + ".template.block.capabilities": 1024}
 	d := json.NewDecoder(bytes.NewReader(raw))
 	d.UseNumber()
 	var walk func(string, int) error

@@ -1,0 +1,85 @@
+{
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 77775,
+        "pid": 77775,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-test",
+        "-json",
+        "-mod=readonly",
+        "-tags=",
+        "./registry",
+        "./poolshare"
+      ],
+      "exit_code": 0,
+      "label": "deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 77775,
+      "pid": 77775,
+      "seconds": 0.94,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 77794,
+        "pid": 77794,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "test",
+        "-count=1",
+        "-p=1",
+        "-timeout=450s",
+        "-json",
+        "-run",
+        "^$",
+        "./registry",
+        "./poolshare"
+      ],
+      "exit_code": 0,
+      "label": "compile",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 77794,
+      "pid": 77794,
+      "seconds": 5.807,
+      "timed_out": false
+    }
+  ],
+  "failed_tests": [],
+  "passed": false,
+  "passing_packages": [
+    "github.com/taytr-llc/slug/registry",
+    "github.com/taytr-llc/slug/poolshare"
+  ],
+  "passing_tests": [],
+  "pattern": "^Test(Recoverable|IssueRecovery|IssueProfile|IssueIntent|IssueRequest)",
+  "profile_unchanged": true,
+  "scope": "Set80 core compile",
+  "skipped_tests": [],
+  "source_error": "[Errno 17] File exists: '/Users/taytrrip/slug/artifacts/set80/core-compile-attempt1/sources-after.json'",
+  "sources_unchanged": false,
+  "version": 1
+}

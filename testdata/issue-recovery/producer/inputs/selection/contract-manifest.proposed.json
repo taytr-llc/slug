@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "status": "proposed-source-only-contract",
+  "execution_authorized": false,
+  "implementation_authorized": false,
+  "scope": "Exact ordered byte/state/API proposal and independent reference plan; no producer, Go, expected outputs, or runtime.",
+  "files": [
+    {
+      "path": "EXACT_REQUEST_ISSUE_PLAN.md",
+      "bytes": 19728,
+      "sha256": "7136b5aacffc71fdaa4c5063c3428bacd5a2db44bf1ad26b73fb26ab20c31cf2"
+    },
+    {
+      "path": "ISSUE_RECOVERY_CONTRACT.md",
+      "bytes": 27904,
+      "sha256": "f3e019a840d6b69d853350763364a3fc41f10ea899f00ed6f164db5d58a95610"
+    },
+    {
+      "path": "REFERENCE_PLAN.md",
+      "bytes": 7068,
+      "sha256": "568251bda8d3589874c8dccd0652442c1be7b3b218f40518f70606ad1279c99d"
+    },
+    {
+      "path": "ISSUE_RECOVERY_CONTRACT.pre-peer-review.md",
+      "bytes": 24556,
+      "sha256": "d9ffbc5fb8ee3ed9becf291a8adb66c6822c983f8de1bde3ad297b4f55cecf2d"
+    },
+    {
+      "path": "ISSUE_RECOVERY_CONTRACT.pre-final-names.md",
+      "bytes": 27591,
+      "sha256": "1b9907ae4f04b3a99aa224a4d42b8fa64ba6a2f7274f774f296e222c53f64b47"
+    },
+    {
+      "path": "contract-corrections.diff",
+      "bytes": 8573,
+      "sha256": "e3a30431b9f24e271123801a783c043262891ed2504f35e6c080cd918644c1e8"
+    }
+  ]
+}

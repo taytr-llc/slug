@@ -58,18 +58,27 @@ func operatorReadyName(version uint32) string {
 	return "SLUG-POOL-OPERATOR-READY-V1.json"
 }
 func provisionIntentFile(version uint32) string {
+	if version == 3 {
+		return "SLUG-POOL-PROVISION-INTENT-ISSUE1.json"
+	}
 	if version == 2 {
 		return "SLUG-POOL-PROVISION-INTENT-V2.json"
 	}
 	return provisionIntentName
 }
 func provisionReadyFile(version uint32) string {
+	if version == 3 {
+		return "SLUG-POOL-PROVISION-READY-ISSUE1.json"
+	}
 	if version == 2 {
 		return "SLUG-POOL-PROVISION-READY-V2.json"
 	}
 	return provisionReadyName
 }
 func provisionBackupFile(version uint32) string {
+	if version == 3 {
+		return "SLUG-OPERATOR-POOL-WALLET-BACKUP-ISSUE1.json"
+	}
 	if version == 2 {
 		return "SLUG-OPERATOR-POOL-WALLET-BACKUP-V2.json"
 	}
