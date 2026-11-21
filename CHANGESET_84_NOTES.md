@@ -20,9 +20,12 @@ Old fixture assertions and profiles remain strict and unchanged.
 
 [Provider qualification](AUTH_PROVIDER_QUALIFICATION.md) records the concrete
 Auth0 reset-hook findings and remaining assurance/recovery gates. Auth0 is the
-first evaluation candidate, not a selected or deployed integration. The owned
-login/RP domain and any existing SLUG auth/email provider are awaiting Mike's
-answer; real passkey registration must not guess that domain.
+first evaluation candidate, not a selected or deployed integration. Mike clarified
+that no server domain has been chosen; his intended account email is separate.
+Continue implementation and qualify an explicitly isolated, provider-supported
+test RP/origin. Choose the permanent owned login domain before release (EF-21),
+without automatically migrating test credentials or wallets. No test hostname or
+provider tenant has been provisioned by this clarification.
 
 Provider selection must qualify all enabled credential/factor/reset paths,
 including administrative/API routes, against the existing durable reset barrier.

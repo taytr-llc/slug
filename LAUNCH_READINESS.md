@@ -45,8 +45,9 @@ The current order is:
    single-use account code plus fresh verified-email proof, replacement-factor
    enrollment, revocation and the same 24-hour hold. Confirm code saving at
    enrollment and notify email/all enrolled devices on use.
-   [Set84 provider qualification](AUTH_PROVIDER_QUALIFICATION.md) is in progress;
-   the owned login domain is requested before real passkey registration.
+   [Set84 provider qualification](AUTH_PROVIDER_QUALIFICATION.md) is in progress.
+   Qualify an isolated test RP/origin before credential registration; the
+   permanent owned login domain remains the EF-21 launch follow-up.
 4. **Full joint design review with Mike (D74).** Review the working major flows
    together, including app organization. Keep this last before friends/tester or
    public release; an engineering test build is not that release approval.

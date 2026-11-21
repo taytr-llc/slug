@@ -75,11 +75,17 @@ authentication cryptography is proposed.
 
 ## Next implementation gates
 
-1. Bind an operator-owned login/RP domain and an isolated provider tenant/client.
-   The three existing SLUG Railway services have no HTTP service/custom domains;
-   they do not establish a login domain. Mike has been asked which owned domain
-   to use and whether a SLUG auth/email provider already exists. Register no real
-   passkeys against a guessed or temporary production identity.
+1. Bind an isolated provider tenant/client and an exact supported test RP/origin
+   before registering engineering credentials. Mike clarified that no server
+   domain has been chosen. His intended account email is a separate input, not
+   proof of email verification, ownership of a domain or an existing provider
+   account. Keep personal account addresses out of committed fixtures.
+   The permanent owned login domain is [EF-21](docs/EDGE_CASE_FOLLOW_UPS.md#ef-21--permanent-login-domain-and-test-passkey-transition),
+   a launch decision rather than a prerequisite for implementation. The three
+   existing SLUG Railway services have no HTTP service/custom domains and do not
+   establish an authentication origin. A supported provider test hostname or
+   isolated test service can be evaluated without buying a permanent domain;
+   do not claim either has been provisioned or qualified yet.
 2. For the selected provider, map login, ordinary reset, factor changes, D85
    recovery, administrative/API changes, refresh and imported/impersonated
    sessions. Every enabled mutation must enter the durable SLUG barrier first
@@ -92,6 +98,13 @@ authentication cryptography is proposed.
    sign-out/reopen, interrupted reset and D85 same-wallet recovery. Require code
    save-confirmation and email/all-device notification delivery evidence; an
    outbox record alone is not delivery.
+
+Auth0's current [Universal Login passkey prerequisites](https://auth0.com/docs/authenticate/database-connections/passkeys/configure-passkey-policy)
+do not list a custom domain, while its [embedded React passkey example](https://github.com/auth0/auth0-react/blob/main/EXAMPLES.md)
+explicitly requires one. This is a distinction between integration paths, not
+proof that a particular default tenant domain is usable. Qualify the exact
+selected system-browser flow. Do not substitute an embedded flow or treat a
+test RP as the permanent identity merely to avoid choosing the release domain.
 
 No runtime or product source changed during this evaluation. Nonblocking findings
 continue in [the follow-up log](docs/EDGE_CASE_FOLLOW_UPS.md). The full joint D74

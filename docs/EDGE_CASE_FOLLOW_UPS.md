@@ -439,3 +439,27 @@ external tester onboarding.
   diagnosis and explicit failed-session close/reopen path. Promote now only if
   it prevents the agreed test after its prerequisites are restored, loses data,
   or changes security or payment correctness.
+
+## EF-21 — Permanent login domain and test passkey transition
+
+**Status:** Open public-launch configuration decision. Nonblocking for
+implementation and explicitly isolated tests on a supported, pinned test origin.
+
+- **Trigger:** Moving sign-in from an engineering test hostname to the permanent
+  SLUG login domain, or changing its WebAuthn relying-party identity.
+- **Player impact:** Test passkeys may require fresh enrollment on the permanent
+  domain. An undocumented switch could leave a player unable to use a saved
+  passkey or confuse which account/environment they are accessing.
+- **Evidence:** Mike clarified on November 21 that no server domain has been
+  chosen. An intended account email does not select or establish that domain.
+  [Auth0's passkey documentation](https://auth0.com/docs/authenticate/database-connections/passkeys)
+  binds credentials to an RP/domain; [provider qualification](../AUTH_PROVIDER_QUALIFICATION.md)
+  distinguishes the still-unqualified test origin from the release choice.
+- **Workaround:** Keep engineering credentials in an explicitly selected isolated
+  tenant/profile with a provider-supported RP/origin, trusted issuer and callback.
+  Prove actual compatibility before registration; no inferred Auth0 default-domain
+  support, email-based identity rebinding, automatic wallet migration or security
+  exceptions. Tell test users their passkey may need re-enrollment at release.
+- **Revisit:** Choose and verify the permanent owned login domain before D74 and
+  friends/public enrollment. Qualify any actual credential transition before
+  changing an existing account's RP; no silent fallback around D82 or D85.
