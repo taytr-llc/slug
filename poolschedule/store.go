@@ -68,23 +68,32 @@ func Open(ctx context.Context, path string, expected Config, store *poolsettle.S
 	return open(ctx, path, expected, store, false)
 }
 func open(ctx context.Context, path string, expected Config, store *poolsettle.Store, create bool) (s *Scheduler, err error) {
+	return openSelected(ctx, path, expected, store, create, Version1)
+}
+func openSelected(ctx context.Context, path string, expected Config, store *poolsettle.Store, create bool, selected uint32) (s *Scheduler, err error) {
 	if wire.TestPoW {
 		return nil, ErrProfile
 	}
-	if ctx == nil || !validConfig(expected) || store == nil {
+	if ctx == nil || !validConfigSelected(expected, selected) || store == nil {
 		return nil, ErrInvalid
 	}
 	if e := ctx.Err(); e != nil {
 		return nil, e
 	}
-	binding, e := SettlementBinding(ctx, store)
+	var binding string
+	var e error
+	if selected == Version2 {
+		binding, e = DailySettlementBinding(ctx, store)
+	} else {
+		binding, e = SettlementBinding(ctx, store)
+	}
 	if e != nil {
 		return nil, e
 	}
 	if binding != expected.SettlementBindingID {
 		return nil, ErrInvalid
 	}
-	s = &Scheduler{store: store}
+	s = &Scheduler{store: store, daily: selected == Version2}
 	claims.Lock()
 	if claims.owners[store] != nil {
 		claims.Unlock()
@@ -107,7 +116,7 @@ func open(ctx context.Context, path string, expected Config, store *poolsettle.S
 	if err != nil {
 		return s, err
 	}
-	raw, e := encodeMarker(expected)
+	raw, e := encodeMarkerSelected(expected, selected)
 	if e != nil {
 		return s, e
 	}
@@ -116,7 +125,7 @@ func open(ctx context.Context, path string, expected Config, store *poolsettle.S
 			return s, err
 		}
 	} else {
-		got, e := decodeMarker(s.files.markerRaw)
+		got, e := decodeMarkerSelected(s.files.markerRaw, selected)
 		if e != nil || got != expected {
 			return s, ErrInvalid
 		}
@@ -136,8 +145,8 @@ func open(ctx context.Context, path string, expected Config, store *poolsettle.S
 		if checkedTime(now, 0) != nil {
 			return s, ErrClock
 		}
-		s.state = State{Version: Version1, Config: expected, Revision: 1, LastClockMS: now}
-		raw, e := encodeState(s.state)
+		s.state = State{Version: selected, Config: expected, Revision: 1, LastClockMS: now}
+		raw, e := encodeStateSelected(s.state, selected)
 		if e != nil {
 			return s, e
 		}
@@ -154,7 +163,7 @@ func open(ctx context.Context, path string, expected Config, store *poolsettle.S
 		if e != nil {
 			return s, ErrStorage
 		}
-		st, e := decodeState(raw)
+		st, e := decodeStateSelected(raw, selected)
 		if e != nil || st.Config != expected {
 			return s, ErrInvalid
 		}
@@ -197,12 +206,12 @@ func (s *Scheduler) auditLocked() error {
 	}
 	e := it.Error()
 	it.Release()
-	want, we := encodeState(s.state)
+	want, we := encodeStateSelected(s.state, s.selectedVersion())
 	if e != nil || we != nil || count != 1 || !bytes.Equal(stored, want) {
 		s.poisoned = true
 		return ErrPoisoned
 	}
-	if _, e = decodeState(stored); e != nil {
+	if _, e = decodeStateSelected(stored, s.selectedVersion()); e != nil {
 		s.poisoned = true
 		return ErrPoisoned
 	}
@@ -218,7 +227,7 @@ func (s *Scheduler) writeLocked(next State) error {
 	if next.Revision != s.state.Revision+1 || next.Revision == 0 || next.Config != s.state.Config || next.LastClockMS < s.state.LastClockMS || next.DailyCursor < s.state.DailyCursor {
 		return ErrInvalid
 	}
-	raw, e := encodeState(next)
+	raw, e := encodeStateSelected(next, s.selectedVersion())
 	if e != nil {
 		return e
 	}

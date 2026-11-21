@@ -61,7 +61,14 @@ func (b *Client) EstimateFee(ctx context.Context, coins []poolsettle.Coin, payme
 		return 0, err
 	}
 	defer end()
-	size, err := conservativeVSize(len(coins), len(payments))
+	if b.daily {
+		if len(coins) > b.inputLimit() || len(payments) > 256 {
+			return 0, ErrInvalid
+		}
+		coins = append([]poolsettle.Coin(nil), coins...)
+		payments = append([]poolsettle.Payment(nil), payments...)
+	}
+	size, err := b.quoteVSize(len(coins), len(payments))
 	if err != nil || change != b.config.PoolScript {
 		return 0, ErrInvalid
 	}

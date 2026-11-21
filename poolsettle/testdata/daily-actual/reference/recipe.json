@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "scope": "public synthetic64-gym actual daily composition and expected integer economics; no signatures or mined proofs generated",
+  "source_maxima": {
+    "max_works": 8192,
+    "max_submissions": 16384,
+    "max_bytes": 8589934592
+  },
+  "round_limits": {
+    "version": 2,
+    "max_rounds": 16384,
+    "max_bytes": 8589934592
+  },
+  "settlement_maxima": {
+    "max_rounds": 16384,
+    "max_batches": 32767
+  },
+  "accounts": {
+    "count": 64,
+    "public_scalar_start": 1,
+    "public_scalar_end": 64,
+    "public_token_domain_ascii": "SLUG Set76 daily actual public token\u0000v1\u0000",
+    "gym_domain_ascii": "SLUG gym identity\u0000v1\u0000",
+    "payee": "native v0 HASH160(compressed public key)"
+  },
+  "days": {
+    "first_offset": 0,
+    "second_offset": 1,
+    "clock_scope": "test-only settlement UTC bookkeeping; real node/work/expiry clocks"
+  },
+  "counts": {
+    "first_rewards": 1,
+    "second_rewards": 720,
+    "new_reward_assignment": "scalar order cyclic index0..63",
+    "all_rewards": 721,
+    "all_issuer_jobs": 721,
+    "all_accepted_submissions": 721,
+    "fighter_admissions": 0,
+    "second_inputs": 721,
+    "second_payees": 64,
+    "final_change_origins": 721,
+    "signed_batches": 2,
+    "final_node_height": 924
+  },
+  "economics": {
+    "reward_atoms": 1000000000,
+    "miner_numerator": 99,
+    "miner_denominator": 100,
+    "fee_rate_atoms_per_kvb": 1000,
+    "first_fee_atoms": 141,
+    "second_fee_atoms": 51236,
+    "first_change_atoms": 9999859,
+    "second_change_atoms": 7209948623,
+    "total_miner_atoms": 713790000000
+  },
+  "source_domain_ascii": "SLUG pool share daily source\u0000v2\u0000",
+  "config_domain_ascii": "SLUG operator pool settlement config\u0000v2\u0000",
+  "guard_domain_ascii": "SLUG operator pool wallet guard\u0000v1\u0000",
+  "frozen_inputs": [
+    {
+      "source": "slug/desktop/pooloperator/testdata/late-winner-actual/reference/setup-late-winner-v1.python314.json",
+      "path": "inputs/setup-v1.json",
+      "bytes": 28735,
+      "sha256": "97fa4879bf955f2f321202c34a95dfc335e684031152e100979e27f0d98da0b3"
+    },
+    {
+      "source": "slug/desktop/pooloperator/testdata/provision/reference/inputs/inherited/crypto.py",
+      "path": "inputs/crypto.py",
+      "bytes": 10124,
+      "sha256": "ea87b9021e14712b1ac7130daa73cd12fb8acf2fd8995ca5ce9e32d0d770fd1c"
+    },
+    {
+      "source": "slug/gymauth/testdata/reference_authorizations.py",
+      "path": "inputs/gym-reference.py",
+      "bytes": 9946,
+      "sha256": "0490d6e7931cf0edb30e632a2fa213c8660e88afe916d3ed09421e34954b84d9"
+    },
+    {
+      "source": "artifacts/set76/wallet-reference-attempt1/py314.json",
+      "path": "inputs/wallet-daily-v1.json",
+      "bytes": 63872,
+      "sha256": "9b8e52f41690db7ca1fee37c34f99dfcd0a7266b81a7793859871bd9b006ae30"
+    },
+    {
+      "source": "slug/pooltxshape/testdata/native84-v1.json",
+      "path": "inputs/native84-v1.json",
+      "bytes": 7411,
+      "sha256": "482c9e42ecb154cc0e38fad962cc5df4e08705f933e13cc7f571f0d5bf75ff33"
+    },
+    {
+      "source": "slug/desktop/pooloperator/testdata/late-winner-actual/reference/inputs/POOL_ACCOUNTING_POLICY.md",
+      "path": "inputs/accounting-policy.md",
+      "bytes": 6396,
+      "sha256": "b7769251fbe4d46a8e077fdfd1ba7b5e5f8bb015833aff9d20310ca8739ae081"
+    }
+  ]
+}

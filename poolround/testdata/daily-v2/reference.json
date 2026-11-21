@@ -1,0 +1,175 @@
+{
+  "scope": "Canonical configuration/key bytes only, not proof or round authority",
+  "cases": [
+    {
+      "name": "legacy",
+      "limits": {
+        "version": 1,
+        "max_rounds": 32,
+        "max_bytes": 1048576
+      },
+      "source": {
+        "version": 1,
+        "authority_pin": {
+          "version": 5,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "authority_id": "404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f",
+          "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303"
+        },
+        "policy": {
+          "version": 1,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "dna_version": 1,
+          "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+        },
+        "payout_address": "aQ4RFUbZbrBjSQcb7TnfLdYaERhaWwBNoD",
+        "pool_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "max_works": 8,
+        "max_submissions": 32,
+        "max_bytes": 1048576
+      },
+      "marker": "{\"application\":\"slug-pool-round-journal\",\"version\":1,\"limits\":{\"version\":1,\"max_rounds\":32,\"max_bytes\":1048576},\"source\":{\"version\":1,\"authority_pin\":{\"version\":5,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"authority_id\":\"404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f\",\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\"},\"policy\":{\"version\":1,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"dna_version\":1,\"prospect_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\"},\"payout_address\":\"aQ4RFUbZbrBjSQcb7TnfLdYaERhaWwBNoD\",\"pool_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"max_works\":8,\"max_submissions\":32,\"max_bytes\":1048576}}",
+      "meta": "{\"application\":\"slug-pool-round-journal\",\"version\":1,\"limits\":{\"version\":1,\"max_rounds\":32,\"max_bytes\":1048576},\"source\":{\"version\":1,\"authority_pin\":{\"version\":5,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"authority_id\":\"404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f\",\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\"},\"policy\":{\"version\":1,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"dna_version\":1,\"prospect_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\"},\"payout_address\":\"aQ4RFUbZbrBjSQcb7TnfLdYaERhaWwBNoD\",\"pool_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"max_works\":8,\"max_submissions\":32,\"max_bytes\":1048576},\"through\":0,\"prefix\":\"1fb982c592ee462a49b610f2ee622cae98a812297d9b686e421acc3e33ebe9c3\",\"rounds\":0,\"bytes\":0}",
+      "initial_prefix": "1fb982c592ee462a49b610f2ee622cae98a812297d9b686e421acc3e33ebe9c3"
+    },
+    {
+      "name": "daily-721",
+      "limits": {
+        "version": 2,
+        "max_rounds": 721,
+        "max_bytes": 8589934592
+      },
+      "source": {
+        "version": 2,
+        "authority_pin": {
+          "version": 5,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "authority_id": "404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f",
+          "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303"
+        },
+        "policy": {
+          "version": 1,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "dna_version": 1,
+          "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+        },
+        "payout_address": "aQ4RFUbZbrBjSQcb7TnfLdYaERhaWwBNoD",
+        "pool_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "max_works": 721,
+        "max_submissions": 4097,
+        "max_bytes": 8589934592
+      },
+      "marker": "{\"application\":\"slug-pool-round-journal\",\"version\":2,\"limits\":{\"version\":2,\"max_rounds\":721,\"max_bytes\":8589934592},\"source\":{\"version\":2,\"authority_pin\":{\"version\":5,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"authority_id\":\"404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f\",\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\"},\"policy\":{\"version\":1,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"dna_version\":1,\"prospect_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\"},\"payout_address\":\"aQ4RFUbZbrBjSQcb7TnfLdYaERhaWwBNoD\",\"pool_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"max_works\":721,\"max_submissions\":4097,\"max_bytes\":8589934592}}",
+      "meta": "{\"application\":\"slug-pool-round-journal\",\"version\":2,\"limits\":{\"version\":2,\"max_rounds\":721,\"max_bytes\":8589934592},\"source\":{\"version\":2,\"authority_pin\":{\"version\":5,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"authority_id\":\"404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f\",\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\"},\"policy\":{\"version\":1,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"dna_version\":1,\"prospect_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\"},\"payout_address\":\"aQ4RFUbZbrBjSQcb7TnfLdYaERhaWwBNoD\",\"pool_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"max_works\":721,\"max_submissions\":4097,\"max_bytes\":8589934592},\"through\":0,\"prefix\":\"16a4fa4a7a8e890ae79913f2c5b7f54ed9938b67adac963b4d456feb590af456\",\"rounds\":0,\"bytes\":0}",
+      "initial_prefix": "16a4fa4a7a8e890ae79913f2c5b7f54ed9938b67adac963b4d456feb590af456"
+    },
+    {
+      "name": "daily-max",
+      "limits": {
+        "version": 2,
+        "max_rounds": 16384,
+        "max_bytes": 8589934592
+      },
+      "source": {
+        "version": 2,
+        "authority_pin": {
+          "version": 5,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "authority_id": "404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f",
+          "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303"
+        },
+        "policy": {
+          "version": 1,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "dna_version": 1,
+          "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+        },
+        "payout_address": "aQ4RFUbZbrBjSQcb7TnfLdYaERhaWwBNoD",
+        "pool_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "max_works": 8192,
+        "max_submissions": 16384,
+        "max_bytes": 8589934592
+      },
+      "marker": "{\"application\":\"slug-pool-round-journal\",\"version\":2,\"limits\":{\"version\":2,\"max_rounds\":16384,\"max_bytes\":8589934592},\"source\":{\"version\":2,\"authority_pin\":{\"version\":5,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"authority_id\":\"404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f\",\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\"},\"policy\":{\"version\":1,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"dna_version\":1,\"prospect_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\"},\"payout_address\":\"aQ4RFUbZbrBjSQcb7TnfLdYaERhaWwBNoD\",\"pool_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"max_works\":8192,\"max_submissions\":16384,\"max_bytes\":8589934592}}",
+      "meta": "{\"application\":\"slug-pool-round-journal\",\"version\":2,\"limits\":{\"version\":2,\"max_rounds\":16384,\"max_bytes\":8589934592},\"source\":{\"version\":2,\"authority_pin\":{\"version\":5,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"authority_id\":\"404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f\",\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\"},\"policy\":{\"version\":1,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"dna_version\":1,\"prospect_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\"},\"payout_address\":\"aQ4RFUbZbrBjSQcb7TnfLdYaERhaWwBNoD\",\"pool_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"max_works\":8192,\"max_submissions\":16384,\"max_bytes\":8589934592},\"through\":0,\"prefix\":\"34cd2064f27421dce8fcb0bd5f5ddfe6a4be2efe2811f35a7c47f20ab520d6a7\",\"rounds\":0,\"bytes\":0}",
+      "initial_prefix": "34cd2064f27421dce8fcb0bd5f5ddfe6a4be2efe2811f35a7c47f20ab520d6a7"
+    },
+    {
+      "name": "daily-lower",
+      "limits": {
+        "version": 2,
+        "max_rounds": 1,
+        "max_bytes": 4096
+      },
+      "source": {
+        "version": 2,
+        "authority_pin": {
+          "version": 5,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "authority_id": "404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f",
+          "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303"
+        },
+        "policy": {
+          "version": 1,
+          "network": 1397511495,
+          "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+          "dna_version": 1,
+          "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+        },
+        "payout_address": "aQ4RFUbZbrBjSQcb7TnfLdYaERhaWwBNoD",
+        "pool_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "max_works": 1,
+        "max_submissions": 1,
+        "max_bytes": 4096
+      },
+      "marker": "{\"application\":\"slug-pool-round-journal\",\"version\":2,\"limits\":{\"version\":2,\"max_rounds\":1,\"max_bytes\":4096},\"source\":{\"version\":2,\"authority_pin\":{\"version\":5,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"authority_id\":\"404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f\",\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\"},\"policy\":{\"version\":1,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"dna_version\":1,\"prospect_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\"},\"payout_address\":\"aQ4RFUbZbrBjSQcb7TnfLdYaERhaWwBNoD\",\"pool_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"max_works\":1,\"max_submissions\":1,\"max_bytes\":4096}}",
+      "meta": "{\"application\":\"slug-pool-round-journal\",\"version\":2,\"limits\":{\"version\":2,\"max_rounds\":1,\"max_bytes\":4096},\"source\":{\"version\":2,\"authority_pin\":{\"version\":5,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"authority_id\":\"404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f\",\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\"},\"policy\":{\"version\":1,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"dna_version\":1,\"prospect_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\"},\"payout_address\":\"aQ4RFUbZbrBjSQcb7TnfLdYaERhaWwBNoD\",\"pool_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"max_works\":1,\"max_submissions\":1,\"max_bytes\":4096},\"through\":0,\"prefix\":\"fdb1b479fd1b509cd70db0d19e9b71d0e3e27a78a15913b3ccd67f1c9b9b2c69\",\"rounds\":0,\"bytes\":0}",
+      "initial_prefix": "fdb1b479fd1b509cd70db0d19e9b71d0e3e27a78a15913b3ccd67f1c9b9b2c69"
+    }
+  ],
+  "index_keys": [
+    {
+      "sequence": 1,
+      "hex": "690000000000000001"
+    },
+    {
+      "sequence": 255,
+      "hex": "6900000000000000ff"
+    },
+    {
+      "sequence": 256,
+      "hex": "690000000000000100"
+    },
+    {
+      "sequence": 257,
+      "hex": "690000000000000101"
+    },
+    {
+      "sequence": 720,
+      "hex": "6900000000000002d0"
+    },
+    {
+      "sequence": 721,
+      "hex": "6900000000000002d1"
+    },
+    {
+      "sequence": 4096,
+      "hex": "690000000000001000"
+    },
+    {
+      "sequence": 4097,
+      "hex": "690000000000001001"
+    },
+    {
+      "sequence": 16384,
+      "hex": "690000000000004000"
+    }
+  ]
+}

@@ -20,6 +20,7 @@ import (
 	"github.com/taytr-llc/slug/prospect"
 	"github.com/taytr-llc/slug/prospectjob"
 	"github.com/taytr-llc/slug/prospectnode"
+	"github.com/taytr-llc/slug/prospectservice"
 	"github.com/taytr-llc/slug/prospectwork"
 	"github.com/taytr-llc/slug/registry"
 	"github.com/taytr-llc/slug/wire/v2"
@@ -204,6 +205,10 @@ func sourceSequence(prefix byte, number uint64) []byte {
 // published Set53 storage format. The concrete Pool.Open still independently
 // verifies every actual Argon proof, binding, index and counter before use.
 func newRoundHarness(t *testing.T, pending bool) *roundHarness {
+	return newRoundProfileHarness(t, pending, Version1)
+}
+
+func newRoundProfileHarness(t *testing.T, pending bool, version uint32) *roundHarness {
 	t.Helper()
 	if wire.TestPoW {
 		t.Skip("normal-PoW source; profile refusal checked separately")
@@ -235,11 +240,21 @@ func newRoundHarness(t *testing.T, pending bool) *roundHarness {
 	}
 	authority, pin := roundAuthority(t)
 	c := input.Job.Context
-	config := poolshare.Config{Version: 1, AuthorityPin: pin, Policy: prospectnode.Policy{Version: 1, Network: c.Network, Genesis: c.Genesis, DNAVersion: c.DNAVersion, ProspectTarget: c.ProspectTarget}, PayoutAddress: input.Payout, PoolTarget: strings.Repeat("f", 64), MaxWorks: 16, MaxSubmissions: 16, MaxBytes: 32 << 20}
+	config := poolshare.Config{Version: version, AuthorityPin: pin, Policy: prospectnode.Policy{Version: 1, Network: c.Network, Genesis: c.Genesis, DNAVersion: c.DNAVersion, ProspectTarget: c.ProspectTarget}, PayoutAddress: input.Payout, PoolTarget: strings.Repeat("f", 64), MaxWorks: 16, MaxSubmissions: 16, MaxBytes: 32 << 20}
 	poolNode := &fixturePoolNode{source: input, winner: winner}
 	sessions := &fixtureSessions{key: input.Job.PublicKey}
 	sourcePath := filepath.Join(t.TempDir(), "source")
-	p, err := poolshare.Create(sourcePath, config, authority, poolNode, sessions)
+	createSource := poolshare.Create
+	openSource := poolshare.Open
+	if version == Version2 {
+		createSource = func(path string, c poolshare.Config, a *registry.ManifestStore, n poolshare.Node, s prospectservice.SessionAuthorizer) (*poolshare.Pool, error) {
+			return poolshare.CreateDaily(context.Background(), path, c, a, n, s)
+		}
+		openSource = func(path string, c poolshare.Config, a *registry.ManifestStore, n poolshare.Node, s prospectservice.SessionAuthorizer) (*poolshare.Pool, error) {
+			return poolshare.OpenDaily(context.Background(), path, c, a, n, s)
+		}
+	}
+	p, err := createSource(sourcePath, config, authority, poolNode, sessions)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -314,7 +329,7 @@ func newRoundHarness(t *testing.T, pending bool) *roundHarness {
 		Accepted    uint64           `json:"accepted"`
 		Bytes       uint64           `json:"bytes"`
 		LastClockMS int64            `json:"last_clock_ms"`
-	}{"slug-pool-share-journal", 1, config, 1, 3, accepted, uint64(len(workRaw)) + 3*4096, input.Job.IssuedAtMS + 1003}
+	}{"slug-pool-share-journal", version, config, 1, 3, accepted, uint64(len(workRaw)) + 3*4096, input.Job.IssuedAtMS + 1003}
 	metaRaw, err := json.Marshal(meta)
 	if err != nil {
 		t.Fatal(err)
@@ -326,13 +341,18 @@ func newRoundHarness(t *testing.T, pending bool) *roundHarness {
 	if db.Close() != nil {
 		t.Fatal("close source seed")
 	}
-	p, err = poolshare.Open(sourcePath, config, authority, poolNode, sessions)
+	p, err = openSource(sourcePath, config, authority, poolNode, sessions)
 	if err != nil {
 		t.Fatal(err)
 	}
 	t.Cleanup(func() { _ = p.Close() })
-	h := &roundHarness{path: filepath.Join(t.TempDir(), "rounds"), limits: Limits{Version: 1, MaxRounds: 16, MaxBytes: 32 << 20}, source: p, sourceConfig: config, poolNode: poolNode, input: input, winner: winner, observer: &fixtureObserver{want: winner, canonical: true, depth: 59}}
-	h.store, err = Create(h.path, h.limits, h.source, h.observer)
+	h := &roundHarness{path: filepath.Join(t.TempDir(), "rounds"), limits: Limits{Version: version, MaxRounds: 16, MaxBytes: 32 << 20}, source: p, sourceConfig: config, poolNode: poolNode, input: input, winner: winner, observer: &fixtureObserver{want: winner, canonical: true, depth: 59}}
+	if version == Version2 {
+		h.limits.MaxRounds = 721
+		h.store, err = CreateDaily(context.Background(), h.path, h.limits, h.source, h.observer)
+	} else {
+		h.store, err = Create(h.path, h.limits, h.source, h.observer)
+	}
 	if err != nil {
 		t.Fatal(err)
 	}

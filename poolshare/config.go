@@ -2,6 +2,7 @@
 package poolshare
 
 import (
+	"context"
 	"encoding/hex"
 	"encoding/json"
 	"reflect"
@@ -20,13 +21,16 @@ import (
 )
 
 const (
-	application       = "slug-pool-share-journal"
-	markerName        = "SLUG-POOL.json"
-	maxMetadataSize   = 8192
-	maxWorkSize       = prospectwork.MaxTemplateSize + 16384
-	maxSubmissionSize = 4096
-	maxWorks          = 256
-	maxSubmissions    = 4096
+	application                = "slug-pool-share-journal"
+	markerName                 = "SLUG-POOL.json"
+	maxMetadataSize            = 8192
+	maxWorkSize                = prospectwork.MaxTemplateSize + 16384
+	maxSubmissionSize          = 4096
+	maxWorks                   = 256
+	maxSubmissions             = 4096
+	dailyMaxWorks              = 8192
+	dailyMaxSubmissions        = 16384
+	dailyMaxBytes       uint64 = 8 << 30
 )
 
 func canonicalHash(s string, nonzero bool) bool {
@@ -54,10 +58,22 @@ func validateConfig(c Config, authority *registry.ManifestStore, node Node, sess
 }
 
 func validateConfigMode(c Config, authority *registry.ManifestStore, node Node, sessions prospectservice.SessionAuthorizer, auditOnly bool) error {
+	return validateConfigSelected(context.Background(), c, authority, node, sessions, auditOnly, Version1)
+}
+
+// validateConfigShape is pure. The selected version is explicit, never inferred
+// from a stored marker or silently chosen from the caller's configuration.
+func validateConfigShape(c Config, selected uint32) error {
 	if wire.TestPoW {
 		return ErrProfile
 	}
-	if c.Version != Version1 || c.MaxWorks == 0 || c.MaxWorks > maxWorks || c.MaxSubmissions == 0 || c.MaxSubmissions > maxSubmissions || c.MaxBytes < maxSubmissionSize || c.MaxBytes > 1<<30 || !canonicalHash(c.PoolTarget, true) || len(c.PayoutAddress) > 128 || !nonnil(authority) || (!auditOnly && (!nonnil(node) || !nonnil(sessions))) {
+	works, submissions, size := uint64(maxWorks), uint64(maxSubmissions), uint64(1<<30)
+	if selected == Version2 {
+		works, submissions, size = dailyMaxWorks, dailyMaxSubmissions, dailyMaxBytes
+	} else if selected != Version1 {
+		return ErrConfig
+	}
+	if c.Version != selected || c.MaxWorks == 0 || c.MaxWorks > works || c.MaxSubmissions == 0 || c.MaxSubmissions > submissions || c.MaxBytes < maxSubmissionSize || c.MaxBytes > size || !canonicalHash(c.PoolTarget, true) || len(c.PayoutAddress) > 128 {
 		return ErrConfig
 	}
 	raw, _ := json.Marshal(c.Policy)
@@ -82,7 +98,35 @@ func validateConfigMode(c Config, authority *registry.ManifestStore, node Node, 
 	if _, err := txscript.PayToAddrScript(destination); err != nil {
 		return ErrConfig
 	}
-	info, err := authority.Info()
+	return nil
+}
+
+func validateConfigSelected(ctx context.Context, c Config, authority *registry.ManifestStore, node Node, sessions prospectservice.SessionAuthorizer, auditOnly bool, selected uint32) error {
+	if ctx == nil {
+		return ErrInvalid
+	}
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	if err := validateConfigShape(c, selected); err != nil {
+		return err
+	}
+	if !nonnil(authority) || (!auditOnly && (!nonnil(node) || !nonnil(sessions))) {
+		return ErrConfig
+	}
+	var info registry.ManifestAuthorityInfo
+	var err error
+	if selected == Version2 {
+		info, err = authority.TryInfo()
+		if ctx.Err() != nil {
+			return ctx.Err()
+		}
+		if err == registry.ErrBusy {
+			return ErrBusy
+		}
+	} else {
+		info, err = authority.Info()
+	}
 	if err != nil || (!auditOnly && info.ReadOnly) || info.Pin != c.AuthorityPin {
 		return ErrConfig
 	}

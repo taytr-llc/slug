@@ -41,6 +41,9 @@ func (s *Store) verifyStream(ctx context.Context) error {
 	if prefix != s.meta.Prefix || builder.rounds != s.meta.Rounds {
 		return ErrSourceChanged
 	}
+	if builder.overWindow {
+		return ErrCorrupt
+	}
 	if size != s.meta.Bytes {
 		return ErrCorrupt
 	}

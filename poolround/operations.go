@@ -37,6 +37,9 @@ func (s *Store) Sync(ctx context.Context) (Summary, error) {
 			return ErrSourceChanged
 		}
 		round, err := builder.add(entry)
+		if builder.overWindow {
+			capacity = true
+		}
 		if err != nil || round == nil {
 			return err
 		}

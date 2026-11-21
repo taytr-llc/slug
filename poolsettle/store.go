@@ -268,6 +268,9 @@ func (s *Store) sourceState(ctx context.Context, st *state, importNew bool) erro
 }
 
 func (s *Store) verify(ctx context.Context) error {
+	if s.daily != nil {
+		return s.verifyDaily(ctx)
+	}
 	it := s.db.NewIterator(nil, nil)
 	count := 0
 	for it.Next() {
@@ -335,7 +338,7 @@ func (s *Store) begin(ctx context.Context) (func(), error) {
 	return end, nil
 }
 func (s *Store) Close() error {
-	if s == nil || s.db == nil {
+	if s == nil || s.db == nil && s.daily == nil {
 		return ErrClosed
 	}
 	s.lifecycle.Lock()
@@ -348,7 +351,10 @@ func (s *Store) Close() error {
 	s.closing = true
 	s.lifecycle.Unlock()
 	s.gate <- struct{}{}
-	if s.db.Close() != nil {
+	if s.daily != nil && s.daily.closeErr != nil {
+		s.closeErr = s.daily.closeErr
+	}
+	if s.db != nil && s.db.Close() != nil {
 		s.closeErr = ErrPoisoned
 	}
 	<-s.gate

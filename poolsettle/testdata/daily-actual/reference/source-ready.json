@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "status": "frozen-before-execution",
+  "scope": "independent public64-gym daily actual composition; no Go output or runtime facts",
+  "files": [
+    {
+      "path": "inputs/accounting-policy.md",
+      "bytes": 6396,
+      "sha256": "b7769251fbe4d46a8e077fdfd1ba7b5e5f8bb015833aff9d20310ca8739ae081"
+    },
+    {
+      "path": "inputs/crypto.py",
+      "bytes": 10124,
+      "sha256": "ea87b9021e14712b1ac7130daa73cd12fb8acf2fd8995ca5ce9e32d0d770fd1c"
+    },
+    {
+      "path": "inputs/gym-reference.py",
+      "bytes": 9946,
+      "sha256": "0490d6e7931cf0edb30e632a2fa213c8660e88afe916d3ed09421e34954b84d9"
+    },
+    {
+      "path": "inputs/native84-v1.json",
+      "bytes": 7411,
+      "sha256": "482c9e42ecb154cc0e38fad962cc5df4e08705f933e13cc7f571f0d5bf75ff33"
+    },
+    {
+      "path": "inputs/setup-v1.json",
+      "bytes": 28735,
+      "sha256": "97fa4879bf955f2f321202c34a95dfc335e684031152e100979e27f0d98da0b3"
+    },
+    {
+      "path": "inputs/wallet-daily-v1.json",
+      "bytes": 63872,
+      "sha256": "9b8e52f41690db7ca1fee37c34f99dfcd0a7266b81a7793859871bd9b006ae30"
+    },
+    {
+      "path": "model.py",
+      "bytes": 6841,
+      "sha256": "a586661c97acaefa690d2ec7ffaaca6a786d22cb26c72ad4ba361b04b187d61a"
+    },
+    {
+      "path": "recipe.json",
+      "bytes": 3330,
+      "sha256": "617e844706ba230dc4b62512b4cfe9c28cda1d4971e4ba80b62d10892d9eac4d"
+    }
+  ],
+  "proposal": {
+    "path": "../PROPOSAL.md",
+    "bytes": 9971,
+    "sha256": "1b5ec9d60cc4bee54aa8289e75e538a30aef400b9bbcf22b258066fbdbef0db1"
+  },
+  "invocation": "python3 model.py --inputs inputs --recipe recipe.json --out <fresh-public-output.json>",
+  "execution": "Root owns both Python versions after source review; no generator executed by this agent."
+}

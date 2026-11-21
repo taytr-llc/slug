@@ -44,7 +44,7 @@ func (p *Pool) AttachOperatorAdmission(ctx context.Context, expected Config, max
 	if wire.TestPoW {
 		return nil, ErrProfile
 	}
-	if p == nil || ctx == nil || p.auditOnly || maximum > 256 || maximum > expected.MaxSubmissions {
+	if p == nil || ctx == nil || p.auditOnly || expected.Version != Version1 || p.config.Version != Version1 || maximum > 256 || maximum > expected.MaxSubmissions {
 		return nil, ErrInvalid
 	}
 	var result *OperatorAdmission

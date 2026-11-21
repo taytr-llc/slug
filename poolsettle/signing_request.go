@@ -79,6 +79,9 @@ func (s *Store) signingAlive() error {
 // original backend pointer and independently retained configuration. Never call
 // it from Backend.Sign: RunDaily already holds the store gate at that point.
 func (s *Store) CheckBackendBinding(ctx context.Context, backend Backend, expected Config, source poolshare.Config) error {
+	if s != nil && s.daily != nil {
+		return ErrConfig
+	}
 	if s != nil && s.auditOnly {
 		return ErrInvalid
 	}
@@ -151,6 +154,9 @@ func CheckSigningRequest(ctx context.Context, original *Store, backend Backend, 
 	if wire.TestPoW {
 		return ErrProfile
 	}
+	if original != nil && original.daily != nil {
+		return ErrInvalid
+	}
 	if ctx == nil {
 		return ErrInvalid
 	}
@@ -180,6 +186,9 @@ func CheckSigningRequest(ctx context.Context, original *Store, backend Backend, 
 // before RunDaily validates signatures, publishes a batch or may broadcast.
 // Legacy backends see the same copied inputs/raw and can ignore the capability.
 func (s *Store) signSettlementRequest(ctx context.Context, inputs []Coin, payments []Payment, change *Coin, fee int64, unsigned []byte) ([]byte, error) {
+	if s != nil && s.daily != nil {
+		return s.signDailySettlementRequest(ctx, inputs, payments, change, fee, unsigned)
+	}
 	body := signingRequestBody{Version: 1, Config: clone(s.state.Config), Source: s.state.Source, Inputs: clone(inputs), Payments: clone(payments), FeeAtoms: fee, Change: clone(change), Unsigned: hex.EncodeToString(unsigned)}
 	digest, e := signingRequestDigest(body)
 	if e != nil {

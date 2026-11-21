@@ -124,6 +124,9 @@ func ValidatePayoutHistory(h PayoutHistory, expectedGym string) (PayoutHistory, 
 // MinerPayoutHistory verifies the concrete journal once outside account leases.
 // It observes no node/backend and never advances settlement or its clock.
 func (s *Store) MinerPayoutHistory(ctx context.Context, sessions prospectservice.SessionAuthorizer, token string) (PayoutHistory, error) {
+	if s != nil && s.daily != nil {
+		return PayoutHistory{}, ErrConfig
+	}
 	if wire.TestPoW {
 		return PayoutHistory{}, ErrProfile
 	}

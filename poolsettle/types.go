@@ -142,6 +142,7 @@ type state struct {
 	Report      Report           `json:"report"`
 }
 type Store struct {
+	daily      *dailyState // set only by explicit daily constructors
 	auditOnly  bool
 	db         *leveldb.DB
 	state      state

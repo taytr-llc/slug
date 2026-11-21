@@ -1,0 +1,247 @@
+{
+  "version": 1,
+  "status": "local-qualified-fresh-process-pass-exact-tip-ci-separate",
+  "scope": "Public independent references and passed component, build, operator, smoke and fresh-process financial evidence. Exact-tip CI separately reported; no continuous-miner or deployment claim.",
+  "references": [
+    {
+      "name": "native-transaction-shape",
+      "path": "pooltxshape/testdata/native84-v1.json",
+      "bytes": 7411,
+      "sha256": "482c9e42ecb154cc0e38fad962cc5df4e08705f933e13cc7f571f0d5bf75ff33",
+      "qualification_report": "artifacts/set76/shape-reference-attempt1/report.json",
+      "qualification_report_identity": {
+        "bytes": 985,
+        "sha256": "41fd8ce36c9a287dd289caf370a6c41c1fad935ffba573c089ea20598fb63ca4"
+      }
+    },
+    {
+      "name": "source-v2",
+      "path": "poolshare/testdata/daily-source-v2.json",
+      "bytes": 74750,
+      "sha256": "3ae0cac7a3ecdd38f8f4dd1613f919da205ea36fb1958dc121211057a8fa23f9",
+      "qualification_report": "artifacts/set76/source-reference-attempt1/report.json",
+      "qualification_report_identity": {
+        "bytes": 487,
+        "sha256": "4f6a91497a248cfe8da03e6563d6ac05408f0139ce2c83a3640b311763a4141b"
+      }
+    },
+    {
+      "name": "round-v2",
+      "path": "poolround/testdata/daily-v2/reference.json",
+      "bytes": 13470,
+      "sha256": "bc843808b12bc731d73fbcb943b4fc43ff5e9f63e21185c1ecd42c4b3e1e2076",
+      "qualification_report": "artifacts/set76/round-reference-attempt1/report.json",
+      "qualification_report_identity": {
+        "bytes": 574,
+        "sha256": "b5230160f081c9e956807cec9e875dd7fea469b82687e2b77c34645b8b49f3bb"
+      }
+    },
+    {
+      "name": "wallet-binding-v2",
+      "path": "poolsettle/testdata/operator-wallet/daily-v1.json",
+      "bytes": 63872,
+      "sha256": "9b8e52f41690db7ca1fee37c34f99dfcd0a7266b81a7793859871bd9b006ae30",
+      "qualification_report": "artifacts/set76/wallet-reference-attempt1/report.json",
+      "qualification_report_identity": {
+        "bytes": 426,
+        "sha256": "27ed9dfe5a3b7fe6439e2d6ecb253edc66d9537ea032034d810d3563a11285c2"
+      }
+    },
+    {
+      "name": "daily-signing",
+      "path": "poolsettle/testdata/daily-signing/reference.json",
+      "bytes": 41051,
+      "sha256": "a60c1444b447020576241d24674f10bfbed6370f9b1ec26d7e49531ba01e3598",
+      "qualification_report": "artifacts/set76/signing-reference-attempt1/report.json",
+      "qualification_report_identity": {
+        "bytes": 838,
+        "sha256": "0440d9e56645a2b0208e07183c5c3c87ce0dcd2eb7c118c441a2cfb2cae539b5"
+      }
+    },
+    {
+      "name": "indexed-daily-ledger",
+      "path": "poolsettle/testdata/daily-ledger/reference.json",
+      "bytes": 7765328,
+      "sha256": "c490b5b918dd155008ff67013c87d708239a17394554f1a8e6eca05053722af5",
+      "qualification_report": "artifacts/set76/ledger-reference-attempt2/report.json",
+      "qualification_report_identity": {
+        "bytes": 1031,
+        "sha256": "b327ebbbef4c59e0dcfc1bba95179b928f6cab77345a360f6642bda1aca69c61"
+      }
+    },
+    {
+      "name": "daily-scheduler",
+      "path": "poolschedule/testdata/daily-reference/v2.json",
+      "bytes": 137913,
+      "sha256": "e2d493d4dd4db21306e5d78d4b7bfcad7b96ccd20255d1d7ed4eba48d2c1a108",
+      "qualification_report": "artifacts/set76/scheduler-reference-attempt1/report.json",
+      "qualification_report_identity": {
+        "bytes": 906,
+        "sha256": "af4fdaf3a34d72812a988bbd69d3dbcbeb1b55e3f6b23edc7e12c764769da01f"
+      }
+    },
+    {
+      "name": "actual64-gym-recipe",
+      "path": "poolsettle/testdata/daily-actual/reference-v1.json",
+      "bytes": 85070,
+      "sha256": "9bcb4b64505e38de193411dcf51fb19f4d1332cbb2af53d21904663848cb4955",
+      "qualification_report": "artifacts/set76/actual-reference-attempt1/report.json",
+      "qualification_report_identity": {
+        "bytes": 1333,
+        "sha256": "5c6dd4334b09d2bf69a1613aaf39cbb8a7635f3683219c82d731beb5db78872e"
+      }
+    }
+  ],
+  "completed_qualifications": [
+    {
+      "report": "artifacts/set76/daily-components-attempt1/report.json",
+      "bytes": 7226,
+      "sha256": "7133cb7aea92c5dc7d07f853c00a516e34e8e7929456440516ad5573ce7f9c56",
+      "passed": true,
+      "sources_unchanged": true
+    },
+    {
+      "report": "artifacts/set76/daily-ledger-scheduler-attempt2/report.json",
+      "bytes": 1783,
+      "sha256": "c729843464dc156f60e9c7023f4991344a3187d13047bae3ec09aa0970a8b5e1",
+      "passed": true,
+      "sources_unchanged": true
+    },
+    {
+      "report": "artifacts/set76/closeout-attempt1/report.json",
+      "bytes": 29664,
+      "sha256": "298225b75c4c66e3deadf85628b163ac595682009461aece44b2a66346f14f04",
+      "passed": true,
+      "sources_unchanged": true,
+      "source_count": 7388,
+      "build_targets": 17,
+      "operator_normal_seconds": 37.03,
+      "operator_race_seconds": 242.281,
+      "clean_join": true
+    },
+    {
+      "report": "artifacts/set76/smoke-attempt1/result.json",
+      "bytes": 9118,
+      "sha256": "007d45cc151d74a04f4463a0995c802efc51b349e91c7dc4d2c6f807ec5492a7",
+      "passed": true,
+      "scope": "normal256MiB PoW seed sync/checkpoint/restart; only isolated blocks mined",
+      "seed_height": 61,
+      "checkpoint_height": 1,
+      "checkpoint_descendants": 60,
+      "isolated_blocks": 2,
+      "public_chain_mined": false,
+      "clean_join": true
+    }
+  ],
+  "actual": {
+    "status": "fresh-process-financial-pass",
+    "preserved_failures": [
+      "attempt1: unused test import, compilation stopped",
+      "attempt2: standalone bdb driver registration omitted; no wallet DB/payout, clean joins"
+    ],
+    "in_process_attempt3": {
+      "report": "artifacts/set76/daily-actual-attempt3/report.json",
+      "bytes": 6381,
+      "sha256": "79b626472a19551c9e4406f53317a4a2d74354e1d38934a47bd7695c85278a02",
+      "public_result": {
+        "report": "artifacts/set76/daily-actual-attempt3/public/actual-report.json",
+        "bytes": 438741,
+        "sha256": "4b9dbd28ce4d5f86384112400db1fbaa4c84a755a78791a81798e49e1b2ad60b"
+      },
+      "complete_evidence": {
+        "report": "artifacts/set76/daily-actual-attempt3/public/03-complete.json",
+        "bytes": 1540759,
+        "sha256": "c7f003111917d4113bcaa9be9ebeb44e5361a17175425c5308af9858eced538c"
+      },
+      "scope_clarification": {
+        "report": "artifacts/set76/daily-actual-attempt3/scope-clarification.json",
+        "bytes": 733,
+        "sha256": "85434114e33bb00e1b8f7fe48459def85d2fd6ba54094d97a58a26f31dc00370"
+      },
+      "passed": true,
+      "elapsed_seconds": 1116.386100458,
+      "winning_jobs": 721,
+      "inputs": 721,
+      "fixture_payees": 64,
+      "B_payment_atoms": 712800000000,
+      "B_raw_bytes": 109086,
+      "B_fee_atoms": 51236,
+      "broadcasts": 2,
+      "change_origins": 721,
+      "economic_bytes_unchanged": true,
+      "clean_join": true,
+      "source_count": 2527,
+      "sources_unchanged": true,
+      "fresh_process_restart": false,
+      "owner_reopen_seconds": 0.264496125,
+      "process_header_cache_capacity": 4096
+    },
+    "fresh_process_attempt4": {
+      "status": "passed",
+      "report": "artifacts/set76/daily-actual-attempt4/report.json",
+      "bytes": 7047,
+      "sha256": "a27671daf016620da0b0098647c7305c3d38f582e064a5888e9a7d2cf47ad5bd",
+      "passed": true,
+      "elapsed_seconds": 1255.733130583,
+      "cold_source_seconds": 142.533776292,
+      "fresh_process_restart": true,
+      "original_owner_reopens": 1,
+      "winning_jobs": 721,
+      "inputs": 721,
+      "fixture_payees": 64,
+      "B_payment_atoms": 712800000000,
+      "B_raw_bytes": 109102,
+      "B_fee_atoms": 51236,
+      "broadcasts": 2,
+      "change_origins": 721,
+      "economic_bytes_unchanged": true,
+      "clean_join": true,
+      "source_count": 2531,
+      "sources_unchanged": true,
+      "public_evidence": {
+        "artifacts/set76/daily-actual-attempt4/public/01-A.json": {
+          "bytes": 3872,
+          "sha256": "3b8afc0d7c51b470bea71f3d50a00260398e838f2690c84b61fa87bc9484544e"
+        },
+        "artifacts/set76/daily-actual-attempt4/public/02-B-pending.json": {
+          "bytes": 2148403,
+          "sha256": "74f3dcd1702a235e12b95ebb562aea3ad3ec7af1e17a9ffa3040d00d41cde4c4"
+        },
+        "artifacts/set76/daily-actual-attempt4/public/03-complete.json": {
+          "bytes": 1540791,
+          "sha256": "9120bae412b7217a5bcf9f6da0333b35210779e7bd4b348658fcebad1e0cce98"
+        },
+        "artifacts/set76/daily-actual-attempt4/public/actual-report.json": {
+          "bytes": 439519,
+          "sha256": "64b256f425d53031620b1357ea3556272632ba357a466f3e530b144e9746b2fc"
+        },
+        "artifacts/set76/daily-actual-attempt4/public/recovery-child-report.json": {
+          "bytes": 542,
+          "sha256": "5d33494fb5aa3dc6c0923c2faf5ab7e4fb2d757111b941a058b011fcd51c687f"
+        },
+        "artifacts/set76/daily-actual-attempt4/public/recovery-child.log": {
+          "bytes": 89,
+          "sha256": "8b6e88ea63165021dc7ba9b6f24eadaaa0d67df2bfa5d0b320a691e30f386957"
+        },
+        "artifacts/set76/daily-actual-attempt4/public/recovery-handoff.json": {
+          "bytes": 705,
+          "sha256": "8ecc3b2b8ba7d7bc33ff5a42e35f621e5ba286dfa7f3a327f46de9007517d71d"
+        }
+      }
+    },
+    "scope_limits": [
+      "fixture authentication, not public V2 transport/operator integration",
+      "test-only settlement day, not real-day scheduler",
+      "721 winning jobs/64 fixture payees, not continuous64-miner share/job-refresh traffic",
+      "finite Source2 lifetime8192works/16384receipts"
+    ]
+  },
+  "remaining": [
+    "explicit Source2 public transport/client/operator setup integration",
+    "signed admission and ownership publication capacity",
+    "V2 full-intake original late-winner and pending-payout restart proof",
+    "host retention/disk-full and long-running scheduled payout acceptance",
+    "final exact-source CI",
+    "D74 final joint design review"
+  ]
+}

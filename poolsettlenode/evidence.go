@@ -10,6 +10,7 @@ import (
 	"github.com/taytr-llc/slug/chaincfg/v2"
 	"github.com/taytr-llc/slug/chainhash/v2"
 	"github.com/taytr-llc/slug/poolsettle"
+	"github.com/taytr-llc/slug/pooltxshape"
 	"github.com/taytr-llc/slug/txscript/v2"
 	"github.com/taytr-llc/slug/wire/v2"
 	"math"
@@ -129,7 +130,7 @@ func (b *Client) transaction(ctx context.Context, txid string, at tip) (*wire.Ms
 		return nil, nil, v, 0, ErrUnavailable
 	}
 	raw, err := hex.DecodeString(v.Hex)
-	if err != nil || len(raw) == 0 || len(raw) > poolsettle.MaxTransactionBytes || v.Hex != hex.EncodeToString(raw) || v.TxID != txid || v.Confirmations < 0 {
+	if err != nil || len(raw) == 0 || len(raw) > b.rawLimit() || v.Hex != hex.EncodeToString(raw) || v.TxID != txid || v.Confirmations < 0 {
 		return nil, nil, v, 0, ErrUnavailable
 	}
 	var tx wire.MsgTx
@@ -139,6 +140,9 @@ func (b *Client) transaction(ctx context.Context, txid string, at tip) (*wire.Ms
 	}
 	var canonicalRaw bytes.Buffer
 	if tx.Serialize(&canonicalRaw) != nil || !bytes.Equal(canonicalRaw.Bytes(), raw) {
+		return nil, nil, v, 0, ErrUnavailable
+	}
+	if b.daily && 3*int64(tx.SerializeSizeStripped())+int64(len(raw)) > pooltxshape.MaxStandardWeight {
 		return nil, nil, v, 0, ErrUnavailable
 	}
 	if v.BlockHash == "" {
@@ -166,6 +170,9 @@ func (b *Client) validCoin(c poolsettle.Coin) bool {
 }
 
 func (b *Client) inspect(ctx context.Context, coins []poolsettle.Coin) ([]poolsettle.Funding, error) {
+	if b.daily {
+		return b.inspectDaily(ctx, coins)
+	}
 	if len(coins) > poolsettle.MaxInputs {
 		return nil, ErrUnavailable
 	}
@@ -214,90 +221,9 @@ func (b *Client) inspect(ctx context.Context, coins []poolsettle.Coin) ([]poolse
 			out = append(out, f)
 			continue
 		}
-		if c.Coinbase {
-			if c.BlockHeight > before.Height {
-				out = append(out, f)
-				continue
-			}
-			var canonical string
-			if b.call(ctx, "getblockhash", []any{c.BlockHeight}, &canonical) != nil {
-				return nil, ErrUnavailable
-			}
-			if canonical != c.BlockHash {
-				out = append(out, f)
-				continue
-			}
-		}
-		tx, _, observed, height, err := b.transaction(ctx, c.TxID, before)
+		f, err := b.inspectCoin(ctx, c, before, f)
 		if err != nil {
 			return nil, err
-		}
-		if tx == nil {
-			out = append(out, f)
-			continue
-		}
-		isCoinbase := len(tx.TxIn) == 1 && tx.TxIn[0].PreviousOutPoint.Index == wire.MaxPrevOutIndex && tx.TxIn[0].PreviousOutPoint.Hash == (chainhash.Hash{})
-		if int(c.Index) >= len(tx.TxOut) || tx.TxOut[c.Index].Value != c.Atoms || hex.EncodeToString(tx.TxOut[c.Index].PkScript) != c.Script || isCoinbase != c.Coinbase || c.Coinbase && (height != c.BlockHeight || observed.BlockHash != c.BlockHash) {
-			return nil, ErrUnavailable
-		}
-		var utxo *struct {
-			BestBlock     string          `json:"bestblock"`
-			Confirmations uint32          `json:"confirmations"`
-			Value         json.RawMessage `json:"value"`
-			Coinbase      bool            `json:"coinbase"`
-			Script        struct {
-				Hex string `json:"hex"`
-			} `json:"scriptPubKey"`
-		}
-		if b.callNullableFields(ctx, "gettxout", []any{c.TxID, c.Index, true}, &utxo, "bestblock", "confirmations", "value", "coinbase", "scriptPubKey.hex") != nil {
-			return nil, ErrUnavailable
-		}
-		if utxo == nil {
-			out = append(out, f)
-			continue
-		}
-		// This node's gettxout does not hide canonical UTXOs reserved by
-		// mempool spends. Inspect that separate state explicitly.
-		var spends []struct {
-			TxID     string `json:"txid"`
-			Index    uint32 `json:"vout"`
-			Spending string `json:"spendingtxid"`
-		}
-		var spendRows []json.RawMessage
-		if b.call(ctx, "gettxspendingprevout", []any{[]map[string]any{{"txid": c.TxID, "vout": c.Index}}}, &spendRows) != nil || len(spendRows) != 1 {
-			return nil, ErrUnavailable
-		}
-		spends = append(spends, struct {
-			TxID     string `json:"txid"`
-			Index    uint32 `json:"vout"`
-			Spending string `json:"spendingtxid"`
-		}{})
-		if decodeFields(spendRows[0], &spends[0], "txid", "vout") != nil || spends[0].TxID != c.TxID || spends[0].Index != c.Index {
-			return nil, ErrUnavailable
-		}
-		var spendFields map[string]json.RawMessage
-		_ = json.Unmarshal(spendRows[0], &spendFields)
-		if value, ok := spendFields["spendingtxid"]; ok && bytes.Equal(bytes.TrimSpace(value), []byte("null")) {
-			return nil, ErrUnavailable
-		}
-		if spends[0].Spending != "" {
-			if !hash(spends[0].Spending) {
-				return nil, ErrUnavailable
-			}
-			out = append(out, f)
-			continue
-		}
-		atoms, err := amount(utxo.Value)
-		if err != nil || utxo.BestBlock != before.Hash || atoms != c.Atoms || utxo.Script.Hex != c.Script || utxo.Coinbase != c.Coinbase || uint64(utxo.Confirmations) != uint64(observed.Confirmations) {
-			return nil, ErrUnavailable
-		}
-		switch {
-		case observed.Confirmations == 0:
-			f.State = "awaiting-confirmation"
-		case c.Coinbase && before.Height+1-height < uint32(chaincfg.MainNetParams.CoinbaseMaturity):
-			f.State = "immature"
-		default:
-			f.State = "ready"
 		}
 		out = append(out, f)
 	}
@@ -335,7 +261,7 @@ func (b *Client) observeTransaction(ctx context.Context, txid string) (poolsettl
 }
 
 func (b *Client) broadcast(ctx context.Context, raw []byte) (string, error) {
-	if len(raw) == 0 || len(raw) > poolsettle.MaxTransactionBytes {
+	if len(raw) == 0 || len(raw) > b.rawLimit() {
 		return "", ErrUnavailable
 	}
 	var tx wire.MsgTx
@@ -347,8 +273,11 @@ func (b *Client) broadcast(ctx context.Context, raw []byte) (string, error) {
 	if tx.Serialize(&canonicalRaw) != nil || !bytes.Equal(canonicalRaw.Bytes(), raw) || tx.Version != 2 || tx.LockTime != 0 || len(tx.TxOut) == 0 || len(tx.TxOut) > 257 {
 		return "", ErrInvalid
 	}
-	if len(tx.TxIn) == 0 || len(tx.TxIn) > poolsettle.MaxInputs {
+	if len(tx.TxIn) == 0 || len(tx.TxIn) > b.inputLimit() {
 		return "", ErrUnavailable
+	}
+	if b.daily && b.dailyBroadcastShape(&tx) != nil {
+		return "", ErrInvalid
 	}
 	public, _ := hex.DecodeString(b.config.PoolPublicKey)
 	for _, in := range tx.TxIn {
@@ -364,4 +293,89 @@ func (b *Client) broadcast(ctx context.Context, raw []byte) (string, error) {
 		return "", ErrUnavailable
 	}
 	return txid, nil
+}
+
+// Shared exact coin evidence; callers retain their original operation and tip.
+func (b *Client) inspectCoin(ctx context.Context, c poolsettle.Coin, before tip, f poolsettle.Funding) (poolsettle.Funding, error) {
+	if c.Coinbase {
+		if c.BlockHeight > before.Height {
+			return f, nil
+		}
+		var canonical string
+		if b.call(ctx, "getblockhash", []any{c.BlockHeight}, &canonical) != nil {
+			return poolsettle.Funding{}, ErrUnavailable
+		}
+		if canonical != c.BlockHash {
+			return f, nil
+		}
+	}
+	tx, _, observed, height, err := b.transaction(ctx, c.TxID, before)
+	if err != nil {
+		return poolsettle.Funding{}, err
+	}
+	if tx == nil {
+		return f, nil
+	}
+	isCoinbase := len(tx.TxIn) == 1 && tx.TxIn[0].PreviousOutPoint.Index == wire.MaxPrevOutIndex && tx.TxIn[0].PreviousOutPoint.Hash == (chainhash.Hash{})
+	if int(c.Index) >= len(tx.TxOut) || tx.TxOut[c.Index].Value != c.Atoms || hex.EncodeToString(tx.TxOut[c.Index].PkScript) != c.Script || isCoinbase != c.Coinbase || c.Coinbase && (height != c.BlockHeight || observed.BlockHash != c.BlockHash) {
+		return poolsettle.Funding{}, ErrUnavailable
+	}
+	var utxo *struct {
+		BestBlock     string          `json:"bestblock"`
+		Confirmations uint32          `json:"confirmations"`
+		Value         json.RawMessage `json:"value"`
+		Coinbase      bool            `json:"coinbase"`
+		Script        struct {
+			Hex string `json:"hex"`
+		} `json:"scriptPubKey"`
+	}
+	if b.callNullableFields(ctx, "gettxout", []any{c.TxID, c.Index, true}, &utxo, "bestblock", "confirmations", "value", "coinbase", "scriptPubKey.hex") != nil {
+		return poolsettle.Funding{}, ErrUnavailable
+	}
+	if utxo == nil {
+		return f, nil
+	}
+	// This node's gettxout does not hide canonical UTXOs reserved by
+	// mempool spends. Inspect that separate state explicitly.
+	var spends []struct {
+		TxID     string `json:"txid"`
+		Index    uint32 `json:"vout"`
+		Spending string `json:"spendingtxid"`
+	}
+	var spendRows []json.RawMessage
+	if b.call(ctx, "gettxspendingprevout", []any{[]map[string]any{{"txid": c.TxID, "vout": c.Index}}}, &spendRows) != nil || len(spendRows) != 1 {
+		return poolsettle.Funding{}, ErrUnavailable
+	}
+	spends = append(spends, struct {
+		TxID     string `json:"txid"`
+		Index    uint32 `json:"vout"`
+		Spending string `json:"spendingtxid"`
+	}{})
+	if decodeFields(spendRows[0], &spends[0], "txid", "vout") != nil || spends[0].TxID != c.TxID || spends[0].Index != c.Index {
+		return poolsettle.Funding{}, ErrUnavailable
+	}
+	var spendFields map[string]json.RawMessage
+	_ = json.Unmarshal(spendRows[0], &spendFields)
+	if value, ok := spendFields["spendingtxid"]; ok && bytes.Equal(bytes.TrimSpace(value), []byte("null")) {
+		return poolsettle.Funding{}, ErrUnavailable
+	}
+	if spends[0].Spending != "" {
+		if !hash(spends[0].Spending) {
+			return poolsettle.Funding{}, ErrUnavailable
+		}
+		return f, nil
+	}
+	atoms, err := amount(utxo.Value)
+	if err != nil || utxo.BestBlock != before.Hash || atoms != c.Atoms || utxo.Script.Hex != c.Script || utxo.Coinbase != c.Coinbase || uint64(utxo.Confirmations) != uint64(observed.Confirmations) {
+		return poolsettle.Funding{}, ErrUnavailable
+	}
+	switch {
+	case observed.Confirmations == 0:
+		f.State = "awaiting-confirmation"
+	case c.Coinbase && before.Height+1-height < uint32(chaincfg.MainNetParams.CoinbaseMaturity):
+		f.State = "immature"
+	default:
+		f.State = "ready"
+	}
+	return f, nil
 }

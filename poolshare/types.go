@@ -6,6 +6,7 @@ package poolshare
 import (
 	"context"
 	"errors"
+	"os"
 	"sync"
 	"time"
 
@@ -20,6 +21,7 @@ import (
 )
 
 const Version1 uint32 = 1
+const Version2 uint32 = 2
 
 var (
 	ErrConfig         = errors.New("invalid pool configuration")
@@ -136,6 +138,8 @@ type Pool struct {
 	closing           bool
 	closeDone         chan struct{}
 	closeErr          error
+	failedFile        *os.File                    // V2 constructor close failure; retained, never retried
+	nonceMemo         map[[32]byte]nonceMemoValue // V2 retained receipts only; original gate
 	poisoned          bool
 	clockSeen         int64
 	now               func() time.Time

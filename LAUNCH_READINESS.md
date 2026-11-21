@@ -1,6 +1,6 @@
 # SLUG launch readiness
 
-Updated November 19, 2026. Numbered change sets are reviewable engineering
+Updated November 20, 2026. Numbered change sets are reviewable engineering
 increments, not a fixed countdown to launch. This checklist tracks the actual
 finish line and must be updated from evidence rather than a branch number.
 
@@ -540,6 +540,28 @@ of the ownership, transfer or independent restored-wallet flow. See
   recovery across boundaries, signed authority limits, paged client history and
   concrete hosted operations still require qualification. See
   `POOL_CAPACITY_CONTINUATION.md` and `CHANGESET_75_NOTES.md`.
+
+- Set76 provides a fresh explicit V2 source, round, indexed settlement,
+  operator-wallet, node and scheduler foundation. Component normal/race/profile/
+  vet checks pass, including 71 top-level ledger/scheduler tests per mode.
+  Old roots and V1 interfaces are not migrated or repinned. D84 still defers the
+  entire oversized payout; exact signed pending payments recover first.
+  All 17 build targets and full operator normal/race/vet checks pass, with
+  7,388 source inputs unchanged. Normal-PoW seed sync/checkpoint/restart smoke
+  also passes, mining only two isolated blocks before connecting.
+  Actual attempt3 passes 721 canonical rewards, a 721-input/64-payee payment,
+  unchanged A/B bytes and lost-response recovery in-process. The wire header
+  hash cache survives owner Close/Open, so this is not fresh-process replay.
+  Fresh-process attempt4 passes: 142.534-second cold source audit, exact payout
+  recovery without another broadcast, unchanged balances and clean joins.
+  Exact-tip CI remains a separate gate. This financial proof does not establish
+  continuous operation by 64 miners: Source2 retains
+  lifetime caps of 8,192 works and 16,384 receipts, and the test does not generate
+  continuous ordinary shares or refresh/expiry traffic. V2 public clients and
+  operator/native composition, signed publication capacity, V2 full-intake late
+  winners, history continuation and real hosted scheduled payouts still need
+  implementation or acceptance. See `CHANGESET_76_NOTES.md` and
+  `POOL_CAPACITY_CONTINUATION.md`. No public deployment or product launch is claimed.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace

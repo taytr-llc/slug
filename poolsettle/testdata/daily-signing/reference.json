@@ -1,0 +1,616 @@
+{
+  "scope": "conditional byte codec and bounds only",
+  "cases": [
+    {
+      "name": "zero256-change",
+      "body": {
+        "version": 2,
+        "config": {
+          "version": 2,
+          "change_script": "001416d630413cea75fd5ad88433cd815ae5ba1ba645",
+          "destinations": [
+            {
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "script": "0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42"
+            },
+            {
+              "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+              "script": "0014bce0055a0a6de98fd52bdeaa22217b2f4a45cfad"
+            }
+          ],
+          "max_rounds": 16384,
+          "max_batches": 32767
+        },
+        "source": {
+          "version": 2,
+          "authority_pin": {
+            "version": 5,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "authority_id": "8af55a21be3c8d783d41c49141111a1b395798935456b3c3f3cb04dfb0cd0be1",
+            "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303"
+          },
+          "policy": {
+            "version": 1,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "dna_version": 1,
+            "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+          },
+          "payout_address": "slug1qzmtrqsfuaf6l6kkcsseumq26ukaphfj9s9ptme",
+          "pool_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "max_works": 8192,
+          "max_submissions": 16384,
+          "max_bytes": 8589934592
+        },
+        "inputs": [
+          {
+            "txid": "8fc28cb0b4f3164cfd8ab2a77b263e676ba14dfc81111c4d53910cd815325f91",
+            "index": 0,
+            "atoms": 1000000000,
+            "script": "001416d630413cea75fd5ad88433cd815ae5ba1ba645",
+            "coinbase": true,
+            "block_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+            "block_height": 62,
+            "claims": [
+              {
+                "round_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+                "round_height": 62,
+                "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+                "amount": {
+                  "numerator": "990000000",
+                  "denominator": "1"
+                }
+              },
+              {
+                "round_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+                "round_height": 62,
+                "gym_id": "",
+                "amount": {
+                  "numerator": "10000000",
+                  "denominator": "1"
+                }
+              }
+            ]
+          }
+        ],
+        "payments": [
+          {
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "script": "0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42",
+            "atoms": 100000000
+          }
+        ],
+        "fee_atoms": 1032,
+        "change": {
+          "txid": "",
+          "index": 1,
+          "atoms": 899998968,
+          "script": "001416d630413cea75fd5ad88433cd815ae5ba1ba645",
+          "coinbase": false,
+          "block_hash": "",
+          "block_height": 0,
+          "claims": [
+            {
+              "round_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+              "round_height": 62,
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "amount": {
+                "numerator": "890000000",
+                "denominator": "1"
+              }
+            },
+            {
+              "round_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+              "round_height": 62,
+              "gym_id": "",
+              "amount": {
+                "numerator": "9998968",
+                "denominator": "1"
+              }
+            }
+          ]
+        },
+        "unsigned": "0200000001915f3215d80c91534d1c1181fc4da16b673e267ba7b28afd4c16f3b4b08cc28f0000000000ffffffff0200e1f50500000000160014cc0ef0be0b2a8d2cecbd754eca79368d135ada42f8e4a4350000000016001416d630413cea75fd5ad88433cd815ae5ba1ba64500000000"
+      },
+      "canonical": "{\"version\":2,\"config\":{\"version\":2,\"change_script\":\"001416d630413cea75fd5ad88433cd815ae5ba1ba645\",\"destinations\":[{\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"script\":\"0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42\"},{\"gym_id\":\"a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5\",\"script\":\"0014bce0055a0a6de98fd52bdeaa22217b2f4a45cfad\"}],\"max_rounds\":16384,\"max_batches\":32767},\"source\":{\"version\":2,\"authority_pin\":{\"version\":5,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"authority_id\":\"8af55a21be3c8d783d41c49141111a1b395798935456b3c3f3cb04dfb0cd0be1\",\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\"},\"policy\":{\"version\":1,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"dna_version\":1,\"prospect_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\"},\"payout_address\":\"slug1qzmtrqsfuaf6l6kkcsseumq26ukaphfj9s9ptme\",\"pool_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"max_works\":8192,\"max_submissions\":16384,\"max_bytes\":8589934592},\"inputs\":[{\"txid\":\"8fc28cb0b4f3164cfd8ab2a77b263e676ba14dfc81111c4d53910cd815325f91\",\"index\":0,\"atoms\":1000000000,\"script\":\"001416d630413cea75fd5ad88433cd815ae5ba1ba645\",\"coinbase\":true,\"block_hash\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"block_height\":62,\"claims\":[{\"round_hash\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"round_height\":62,\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"amount\":{\"numerator\":\"990000000\",\"denominator\":\"1\"}},{\"round_hash\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"round_height\":62,\"gym_id\":\"\",\"amount\":{\"numerator\":\"10000000\",\"denominator\":\"1\"}}]}],\"payments\":[{\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"script\":\"0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42\",\"atoms\":100000000}],\"fee_atoms\":1032,\"change\":{\"txid\":\"\",\"index\":1,\"atoms\":899998968,\"script\":\"001416d630413cea75fd5ad88433cd815ae5ba1ba645\",\"coinbase\":false,\"block_hash\":\"\",\"block_height\":0,\"claims\":[{\"round_hash\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"round_height\":62,\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"amount\":{\"numerator\":\"890000000\",\"denominator\":\"1\"}},{\"round_hash\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"round_height\":62,\"gym_id\":\"\",\"amount\":{\"numerator\":\"9998968\",\"denominator\":\"1\"}}]},\"unsigned\":\"0200000001915f3215d80c91534d1c1181fc4da16b673e267ba7b28afd4c16f3b4b08cc28f0000000000ffffffff0200e1f50500000000160014cc0ef0be0b2a8d2cecbd754eca79368d135ada42f8e4a4350000000016001416d630413cea75fd5ad88433cd815ae5ba1ba64500000000\"}",
+      "digest": "a39ef16e977f597424616259bf5c1ecc2cf6d371eb547162d0318cb26833a349"
+    },
+    {
+      "name": "zero256-null-control",
+      "body": {
+        "version": 2,
+        "config": {
+          "version": 2,
+          "change_script": "001416d630413cea75fd5ad88433cd815ae5ba1ba645",
+          "destinations": [
+            {
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "script": "0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42"
+            },
+            {
+              "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+              "script": "0014bce0055a0a6de98fd52bdeaa22217b2f4a45cfad"
+            }
+          ],
+          "max_rounds": 16384,
+          "max_batches": 32767
+        },
+        "source": {
+          "version": 2,
+          "authority_pin": {
+            "version": 5,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "authority_id": "8af55a21be3c8d783d41c49141111a1b395798935456b3c3f3cb04dfb0cd0be1",
+            "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303"
+          },
+          "policy": {
+            "version": 1,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "dna_version": 1,
+            "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+          },
+          "payout_address": "slug1qzmtrqsfuaf6l6kkcsseumq26ukaphfj9s9ptme",
+          "pool_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "max_works": 8192,
+          "max_submissions": 16384,
+          "max_bytes": 8589934592
+        },
+        "inputs": [
+          {
+            "txid": "8fc28cb0b4f3164cfd8ab2a77b263e676ba14dfc81111c4d53910cd815325f91",
+            "index": 0,
+            "atoms": 1000000000,
+            "script": "001416d630413cea75fd5ad88433cd815ae5ba1ba645",
+            "coinbase": true,
+            "block_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+            "block_height": 62,
+            "claims": [
+              {
+                "round_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+                "round_height": 62,
+                "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+                "amount": {
+                  "numerator": "990000000",
+                  "denominator": "1"
+                }
+              },
+              {
+                "round_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+                "round_height": 62,
+                "gym_id": "",
+                "amount": {
+                  "numerator": "10000000",
+                  "denominator": "1"
+                }
+              }
+            ]
+          }
+        ],
+        "payments": [
+          {
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "script": "0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42",
+            "atoms": 100000000
+          }
+        ],
+        "fee_atoms": 1032,
+        "change": null,
+        "unsigned": "0200000001915f3215d80c91534d1c1181fc4da16b673e267ba7b28afd4c16f3b4b08cc28f0000000000ffffffff0200e1f50500000000160014cc0ef0be0b2a8d2cecbd754eca79368d135ada42f8e4a4350000000016001416d630413cea75fd5ad88433cd815ae5ba1ba64500000000"
+      },
+      "canonical": "{\"version\":2,\"config\":{\"version\":2,\"change_script\":\"001416d630413cea75fd5ad88433cd815ae5ba1ba645\",\"destinations\":[{\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"script\":\"0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42\"},{\"gym_id\":\"a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5\",\"script\":\"0014bce0055a0a6de98fd52bdeaa22217b2f4a45cfad\"}],\"max_rounds\":16384,\"max_batches\":32767},\"source\":{\"version\":2,\"authority_pin\":{\"version\":5,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"authority_id\":\"8af55a21be3c8d783d41c49141111a1b395798935456b3c3f3cb04dfb0cd0be1\",\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\"},\"policy\":{\"version\":1,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"dna_version\":1,\"prospect_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\"},\"payout_address\":\"slug1qzmtrqsfuaf6l6kkcsseumq26ukaphfj9s9ptme\",\"pool_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"max_works\":8192,\"max_submissions\":16384,\"max_bytes\":8589934592},\"inputs\":[{\"txid\":\"8fc28cb0b4f3164cfd8ab2a77b263e676ba14dfc81111c4d53910cd815325f91\",\"index\":0,\"atoms\":1000000000,\"script\":\"001416d630413cea75fd5ad88433cd815ae5ba1ba645\",\"coinbase\":true,\"block_hash\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"block_height\":62,\"claims\":[{\"round_hash\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"round_height\":62,\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"amount\":{\"numerator\":\"990000000\",\"denominator\":\"1\"}},{\"round_hash\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"round_height\":62,\"gym_id\":\"\",\"amount\":{\"numerator\":\"10000000\",\"denominator\":\"1\"}}]}],\"payments\":[{\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"script\":\"0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42\",\"atoms\":100000000}],\"fee_atoms\":1032,\"change\":null,\"unsigned\":\"0200000001915f3215d80c91534d1c1181fc4da16b673e267ba7b28afd4c16f3b4b08cc28f0000000000ffffffff0200e1f50500000000160014cc0ef0be0b2a8d2cecbd754eca79368d135ada42f8e4a4350000000016001416d630413cea75fd5ad88433cd815ae5ba1ba64500000000\"}",
+      "digest": "a98944403f57dc9f067962465c8e2733d3fc317aa065dedfd0e90f99d75c25d4"
+    },
+    {
+      "name": "incrementing256-change",
+      "body": {
+        "version": 2,
+        "config": {
+          "version": 2,
+          "change_script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+          "destinations": [
+            {
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "script": "0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42"
+            },
+            {
+              "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+              "script": "0014bce0055a0a6de98fd52bdeaa22217b2f4a45cfad"
+            }
+          ],
+          "max_rounds": 16384,
+          "max_batches": 32767
+        },
+        "source": {
+          "version": 2,
+          "authority_pin": {
+            "version": 5,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "authority_id": "8af55a21be3c8d783d41c49141111a1b395798935456b3c3f3cb04dfb0cd0be1",
+            "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303"
+          },
+          "policy": {
+            "version": 1,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "dna_version": 1,
+            "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+          },
+          "payout_address": "slug1qslk39wvggqa0vl8nd6jckaz54dw3vk45c8educ",
+          "pool_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "max_works": 8192,
+          "max_submissions": 16384,
+          "max_bytes": 8589934592
+        },
+        "inputs": [
+          {
+            "txid": "52fc1f44a9d8af19cf8553a46b56c8f0d01627b02da7da9ee882151e2c6b9ad6",
+            "index": 0,
+            "atoms": 1000000000,
+            "script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+            "coinbase": true,
+            "block_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+            "block_height": 62,
+            "claims": [
+              {
+                "round_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+                "round_height": 62,
+                "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+                "amount": {
+                  "numerator": "990000000",
+                  "denominator": "1"
+                }
+              },
+              {
+                "round_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+                "round_height": 62,
+                "gym_id": "",
+                "amount": {
+                  "numerator": "10000000",
+                  "denominator": "1"
+                }
+              }
+            ]
+          }
+        ],
+        "payments": [
+          {
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "script": "0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42",
+            "atoms": 100000000
+          }
+        ],
+        "fee_atoms": 1032,
+        "change": {
+          "txid": "",
+          "index": 1,
+          "atoms": 899998968,
+          "script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+          "coinbase": false,
+          "block_hash": "",
+          "block_height": 0,
+          "claims": [
+            {
+              "round_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+              "round_height": 62,
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "amount": {
+                "numerator": "890000000",
+                "denominator": "1"
+              }
+            },
+            {
+              "round_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+              "round_height": 62,
+              "gym_id": "",
+              "amount": {
+                "numerator": "9998968",
+                "denominator": "1"
+              }
+            }
+          ]
+        },
+        "unsigned": "0200000001d69a6b2c1e1582e89edaa72db02716d0f0c8566ba45385cf19afd8a9441ffc520000000000ffffffff0200e1f50500000000160014cc0ef0be0b2a8d2cecbd754eca79368d135ada42f8e4a4350000000016001487ed12b988403af67cf36ea58b7454ab5d165ab400000000"
+      },
+      "canonical": "{\"version\":2,\"config\":{\"version\":2,\"change_script\":\"001487ed12b988403af67cf36ea58b7454ab5d165ab4\",\"destinations\":[{\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"script\":\"0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42\"},{\"gym_id\":\"a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5\",\"script\":\"0014bce0055a0a6de98fd52bdeaa22217b2f4a45cfad\"}],\"max_rounds\":16384,\"max_batches\":32767},\"source\":{\"version\":2,\"authority_pin\":{\"version\":5,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"authority_id\":\"8af55a21be3c8d783d41c49141111a1b395798935456b3c3f3cb04dfb0cd0be1\",\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\"},\"policy\":{\"version\":1,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"dna_version\":1,\"prospect_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\"},\"payout_address\":\"slug1qslk39wvggqa0vl8nd6jckaz54dw3vk45c8educ\",\"pool_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"max_works\":8192,\"max_submissions\":16384,\"max_bytes\":8589934592},\"inputs\":[{\"txid\":\"52fc1f44a9d8af19cf8553a46b56c8f0d01627b02da7da9ee882151e2c6b9ad6\",\"index\":0,\"atoms\":1000000000,\"script\":\"001487ed12b988403af67cf36ea58b7454ab5d165ab4\",\"coinbase\":true,\"block_hash\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"block_height\":62,\"claims\":[{\"round_hash\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"round_height\":62,\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"amount\":{\"numerator\":\"990000000\",\"denominator\":\"1\"}},{\"round_hash\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"round_height\":62,\"gym_id\":\"\",\"amount\":{\"numerator\":\"10000000\",\"denominator\":\"1\"}}]}],\"payments\":[{\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"script\":\"0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42\",\"atoms\":100000000}],\"fee_atoms\":1032,\"change\":{\"txid\":\"\",\"index\":1,\"atoms\":899998968,\"script\":\"001487ed12b988403af67cf36ea58b7454ab5d165ab4\",\"coinbase\":false,\"block_hash\":\"\",\"block_height\":0,\"claims\":[{\"round_hash\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"round_height\":62,\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"amount\":{\"numerator\":\"890000000\",\"denominator\":\"1\"}},{\"round_hash\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"round_height\":62,\"gym_id\":\"\",\"amount\":{\"numerator\":\"9998968\",\"denominator\":\"1\"}}]},\"unsigned\":\"0200000001d69a6b2c1e1582e89edaa72db02716d0f0c8566ba45385cf19afd8a9441ffc520000000000ffffffff0200e1f50500000000160014cc0ef0be0b2a8d2cecbd754eca79368d135ada42f8e4a4350000000016001487ed12b988403af67cf36ea58b7454ab5d165ab400000000\"}",
+      "digest": "3b3f38aa2d2c84c4c3b550b9a8aa711e6dfeba6c556cc7ba282ff658fcabf56a"
+    },
+    {
+      "name": "incrementing256-null-control",
+      "body": {
+        "version": 2,
+        "config": {
+          "version": 2,
+          "change_script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+          "destinations": [
+            {
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "script": "0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42"
+            },
+            {
+              "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+              "script": "0014bce0055a0a6de98fd52bdeaa22217b2f4a45cfad"
+            }
+          ],
+          "max_rounds": 16384,
+          "max_batches": 32767
+        },
+        "source": {
+          "version": 2,
+          "authority_pin": {
+            "version": 5,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "authority_id": "8af55a21be3c8d783d41c49141111a1b395798935456b3c3f3cb04dfb0cd0be1",
+            "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303"
+          },
+          "policy": {
+            "version": 1,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "dna_version": 1,
+            "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+          },
+          "payout_address": "slug1qslk39wvggqa0vl8nd6jckaz54dw3vk45c8educ",
+          "pool_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "max_works": 8192,
+          "max_submissions": 16384,
+          "max_bytes": 8589934592
+        },
+        "inputs": [
+          {
+            "txid": "52fc1f44a9d8af19cf8553a46b56c8f0d01627b02da7da9ee882151e2c6b9ad6",
+            "index": 0,
+            "atoms": 1000000000,
+            "script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+            "coinbase": true,
+            "block_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+            "block_height": 62,
+            "claims": [
+              {
+                "round_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+                "round_height": 62,
+                "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+                "amount": {
+                  "numerator": "990000000",
+                  "denominator": "1"
+                }
+              },
+              {
+                "round_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+                "round_height": 62,
+                "gym_id": "",
+                "amount": {
+                  "numerator": "10000000",
+                  "denominator": "1"
+                }
+              }
+            ]
+          }
+        ],
+        "payments": [
+          {
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "script": "0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42",
+            "atoms": 100000000
+          }
+        ],
+        "fee_atoms": 1032,
+        "change": null,
+        "unsigned": "0200000001d69a6b2c1e1582e89edaa72db02716d0f0c8566ba45385cf19afd8a9441ffc520000000000ffffffff0200e1f50500000000160014cc0ef0be0b2a8d2cecbd754eca79368d135ada42f8e4a4350000000016001487ed12b988403af67cf36ea58b7454ab5d165ab400000000"
+      },
+      "canonical": "{\"version\":2,\"config\":{\"version\":2,\"change_script\":\"001487ed12b988403af67cf36ea58b7454ab5d165ab4\",\"destinations\":[{\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"script\":\"0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42\"},{\"gym_id\":\"a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5\",\"script\":\"0014bce0055a0a6de98fd52bdeaa22217b2f4a45cfad\"}],\"max_rounds\":16384,\"max_batches\":32767},\"source\":{\"version\":2,\"authority_pin\":{\"version\":5,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"authority_id\":\"8af55a21be3c8d783d41c49141111a1b395798935456b3c3f3cb04dfb0cd0be1\",\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\"},\"policy\":{\"version\":1,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"dna_version\":1,\"prospect_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\"},\"payout_address\":\"slug1qslk39wvggqa0vl8nd6jckaz54dw3vk45c8educ\",\"pool_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"max_works\":8192,\"max_submissions\":16384,\"max_bytes\":8589934592},\"inputs\":[{\"txid\":\"52fc1f44a9d8af19cf8553a46b56c8f0d01627b02da7da9ee882151e2c6b9ad6\",\"index\":0,\"atoms\":1000000000,\"script\":\"001487ed12b988403af67cf36ea58b7454ab5d165ab4\",\"coinbase\":true,\"block_hash\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"block_height\":62,\"claims\":[{\"round_hash\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"round_height\":62,\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"amount\":{\"numerator\":\"990000000\",\"denominator\":\"1\"}},{\"round_hash\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"round_height\":62,\"gym_id\":\"\",\"amount\":{\"numerator\":\"10000000\",\"denominator\":\"1\"}}]}],\"payments\":[{\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"script\":\"0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42\",\"atoms\":100000000}],\"fee_atoms\":1032,\"change\":null,\"unsigned\":\"0200000001d69a6b2c1e1582e89edaa72db02716d0f0c8566ba45385cf19afd8a9441ffc520000000000ffffffff0200e1f50500000000160014cc0ef0be0b2a8d2cecbd754eca79368d135ada42f8e4a4350000000016001487ed12b988403af67cf36ea58b7454ab5d165ab400000000\"}",
+      "digest": "0556bf0faa88856e851ddaaa221771ba62208133e5fe44403292cbbb7d8552d1"
+    },
+    {
+      "name": "official-leading-zero-account-change",
+      "body": {
+        "version": 2,
+        "config": {
+          "version": 2,
+          "change_script": "0014810816db7129a0ac531ca0eaea0d47a04a71a77d",
+          "destinations": [
+            {
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "script": "0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42"
+            },
+            {
+              "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+              "script": "0014bce0055a0a6de98fd52bdeaa22217b2f4a45cfad"
+            }
+          ],
+          "max_rounds": 16384,
+          "max_batches": 32767
+        },
+        "source": {
+          "version": 2,
+          "authority_pin": {
+            "version": 5,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "authority_id": "8af55a21be3c8d783d41c49141111a1b395798935456b3c3f3cb04dfb0cd0be1",
+            "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303"
+          },
+          "policy": {
+            "version": 1,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "dna_version": 1,
+            "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+          },
+          "payout_address": "slug1qsyypdkm39xs2c5cu5r4w5r285p98rfmaqk7uzh",
+          "pool_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "max_works": 8192,
+          "max_submissions": 16384,
+          "max_bytes": 8589934592
+        },
+        "inputs": [
+          {
+            "txid": "8534e5d2df8b9f9ce39db41bc9b391cc644562e646be800d2ebd2fef975133b0",
+            "index": 0,
+            "atoms": 1000000000,
+            "script": "0014810816db7129a0ac531ca0eaea0d47a04a71a77d",
+            "coinbase": true,
+            "block_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+            "block_height": 62,
+            "claims": [
+              {
+                "round_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+                "round_height": 62,
+                "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+                "amount": {
+                  "numerator": "990000000",
+                  "denominator": "1"
+                }
+              },
+              {
+                "round_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+                "round_height": 62,
+                "gym_id": "",
+                "amount": {
+                  "numerator": "10000000",
+                  "denominator": "1"
+                }
+              }
+            ]
+          }
+        ],
+        "payments": [
+          {
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "script": "0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42",
+            "atoms": 100000000
+          }
+        ],
+        "fee_atoms": 1032,
+        "change": {
+          "txid": "",
+          "index": 1,
+          "atoms": 899998968,
+          "script": "0014810816db7129a0ac531ca0eaea0d47a04a71a77d",
+          "coinbase": false,
+          "block_hash": "",
+          "block_height": 0,
+          "claims": [
+            {
+              "round_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+              "round_height": 62,
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "amount": {
+                "numerator": "890000000",
+                "denominator": "1"
+              }
+            },
+            {
+              "round_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+              "round_height": 62,
+              "gym_id": "",
+              "amount": {
+                "numerator": "9998968",
+                "denominator": "1"
+              }
+            }
+          ]
+        },
+        "unsigned": "0200000001b0335197ef2fbd2e0d80be46e6624564cc91b3c91bb49de39c9f8bdfd2e534850000000000ffffffff0200e1f50500000000160014cc0ef0be0b2a8d2cecbd754eca79368d135ada42f8e4a43500000000160014810816db7129a0ac531ca0eaea0d47a04a71a77d00000000"
+      },
+      "canonical": "{\"version\":2,\"config\":{\"version\":2,\"change_script\":\"0014810816db7129a0ac531ca0eaea0d47a04a71a77d\",\"destinations\":[{\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"script\":\"0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42\"},{\"gym_id\":\"a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5\",\"script\":\"0014bce0055a0a6de98fd52bdeaa22217b2f4a45cfad\"}],\"max_rounds\":16384,\"max_batches\":32767},\"source\":{\"version\":2,\"authority_pin\":{\"version\":5,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"authority_id\":\"8af55a21be3c8d783d41c49141111a1b395798935456b3c3f3cb04dfb0cd0be1\",\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\"},\"policy\":{\"version\":1,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"dna_version\":1,\"prospect_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\"},\"payout_address\":\"slug1qsyypdkm39xs2c5cu5r4w5r285p98rfmaqk7uzh\",\"pool_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"max_works\":8192,\"max_submissions\":16384,\"max_bytes\":8589934592},\"inputs\":[{\"txid\":\"8534e5d2df8b9f9ce39db41bc9b391cc644562e646be800d2ebd2fef975133b0\",\"index\":0,\"atoms\":1000000000,\"script\":\"0014810816db7129a0ac531ca0eaea0d47a04a71a77d\",\"coinbase\":true,\"block_hash\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"block_height\":62,\"claims\":[{\"round_hash\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"round_height\":62,\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"amount\":{\"numerator\":\"990000000\",\"denominator\":\"1\"}},{\"round_hash\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"round_height\":62,\"gym_id\":\"\",\"amount\":{\"numerator\":\"10000000\",\"denominator\":\"1\"}}]}],\"payments\":[{\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"script\":\"0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42\",\"atoms\":100000000}],\"fee_atoms\":1032,\"change\":{\"txid\":\"\",\"index\":1,\"atoms\":899998968,\"script\":\"0014810816db7129a0ac531ca0eaea0d47a04a71a77d\",\"coinbase\":false,\"block_hash\":\"\",\"block_height\":0,\"claims\":[{\"round_hash\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"round_height\":62,\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"amount\":{\"numerator\":\"890000000\",\"denominator\":\"1\"}},{\"round_hash\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"round_height\":62,\"gym_id\":\"\",\"amount\":{\"numerator\":\"9998968\",\"denominator\":\"1\"}}]},\"unsigned\":\"0200000001b0335197ef2fbd2e0d80be46e6624564cc91b3c91bb49de39c9f8bdfd2e534850000000000ffffffff0200e1f50500000000160014cc0ef0be0b2a8d2cecbd754eca79368d135ada42f8e4a43500000000160014810816db7129a0ac531ca0eaea0d47a04a71a77d00000000\"}",
+      "digest": "170e46bab25fd36bf62459c8992021b626a01b2856d667636b759b026ee6aedb"
+    },
+    {
+      "name": "official-leading-zero-account-null-control",
+      "body": {
+        "version": 2,
+        "config": {
+          "version": 2,
+          "change_script": "0014810816db7129a0ac531ca0eaea0d47a04a71a77d",
+          "destinations": [
+            {
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "script": "0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42"
+            },
+            {
+              "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+              "script": "0014bce0055a0a6de98fd52bdeaa22217b2f4a45cfad"
+            }
+          ],
+          "max_rounds": 16384,
+          "max_batches": 32767
+        },
+        "source": {
+          "version": 2,
+          "authority_pin": {
+            "version": 5,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "authority_id": "8af55a21be3c8d783d41c49141111a1b395798935456b3c3f3cb04dfb0cd0be1",
+            "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303"
+          },
+          "policy": {
+            "version": 1,
+            "network": 1397511495,
+            "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+            "dna_version": 1,
+            "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+          },
+          "payout_address": "slug1qsyypdkm39xs2c5cu5r4w5r285p98rfmaqk7uzh",
+          "pool_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "max_works": 8192,
+          "max_submissions": 16384,
+          "max_bytes": 8589934592
+        },
+        "inputs": [
+          {
+            "txid": "8534e5d2df8b9f9ce39db41bc9b391cc644562e646be800d2ebd2fef975133b0",
+            "index": 0,
+            "atoms": 1000000000,
+            "script": "0014810816db7129a0ac531ca0eaea0d47a04a71a77d",
+            "coinbase": true,
+            "block_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+            "block_height": 62,
+            "claims": [
+              {
+                "round_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+                "round_height": 62,
+                "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+                "amount": {
+                  "numerator": "990000000",
+                  "denominator": "1"
+                }
+              },
+              {
+                "round_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+                "round_height": 62,
+                "gym_id": "",
+                "amount": {
+                  "numerator": "10000000",
+                  "denominator": "1"
+                }
+              }
+            ]
+          }
+        ],
+        "payments": [
+          {
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+            "script": "0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42",
+            "atoms": 100000000
+          }
+        ],
+        "fee_atoms": 1032,
+        "change": null,
+        "unsigned": "0200000001b0335197ef2fbd2e0d80be46e6624564cc91b3c91bb49de39c9f8bdfd2e534850000000000ffffffff0200e1f50500000000160014cc0ef0be0b2a8d2cecbd754eca79368d135ada42f8e4a43500000000160014810816db7129a0ac531ca0eaea0d47a04a71a77d00000000"
+      },
+      "canonical": "{\"version\":2,\"config\":{\"version\":2,\"change_script\":\"0014810816db7129a0ac531ca0eaea0d47a04a71a77d\",\"destinations\":[{\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"script\":\"0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42\"},{\"gym_id\":\"a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5\",\"script\":\"0014bce0055a0a6de98fd52bdeaa22217b2f4a45cfad\"}],\"max_rounds\":16384,\"max_batches\":32767},\"source\":{\"version\":2,\"authority_pin\":{\"version\":5,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"authority_id\":\"8af55a21be3c8d783d41c49141111a1b395798935456b3c3f3cb04dfb0cd0be1\",\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\"},\"policy\":{\"version\":1,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"dna_version\":1,\"prospect_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\"},\"payout_address\":\"slug1qsyypdkm39xs2c5cu5r4w5r285p98rfmaqk7uzh\",\"pool_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"max_works\":8192,\"max_submissions\":16384,\"max_bytes\":8589934592},\"inputs\":[{\"txid\":\"8534e5d2df8b9f9ce39db41bc9b391cc644562e646be800d2ebd2fef975133b0\",\"index\":0,\"atoms\":1000000000,\"script\":\"0014810816db7129a0ac531ca0eaea0d47a04a71a77d\",\"coinbase\":true,\"block_hash\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"block_height\":62,\"claims\":[{\"round_hash\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"round_height\":62,\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"amount\":{\"numerator\":\"990000000\",\"denominator\":\"1\"}},{\"round_hash\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"round_height\":62,\"gym_id\":\"\",\"amount\":{\"numerator\":\"10000000\",\"denominator\":\"1\"}}]}],\"payments\":[{\"gym_id\":\"28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510\",\"script\":\"0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42\",\"atoms\":100000000}],\"fee_atoms\":1032,\"change\":null,\"unsigned\":\"0200000001b0335197ef2fbd2e0d80be46e6624564cc91b3c91bb49de39c9f8bdfd2e534850000000000ffffffff0200e1f50500000000160014cc0ef0be0b2a8d2cecbd754eca79368d135ada42f8e4a43500000000160014810816db7129a0ac531ca0eaea0d47a04a71a77d00000000\"}",
+      "digest": "67c080b32d68b95395630ad7a4118bb0eedd0cf657276b51d2c1e11dbd50dbbd"
+    }
+  ],
+  "bound": {
+    "max_claim_bytes": 8418,
+    "conservative_body_bytes": 605735680,
+    "limit": 671088640
+  }
+}

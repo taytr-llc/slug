@@ -41,7 +41,7 @@ func cloneEntry(e poolshare.AccountingEntry) poolshare.AccountingEntry {
 // derive is conditional arithmetic over an immutable acceptance projection.
 // Only snapshot's concrete source can authorize these inputs for storage.
 func derive(config poolshare.Config, entries []poolshare.AccountingEntry) ([]Round, error) {
-	if len(entries) > maxAccepted || !canonicalHash(config.PoolTarget, true) {
+	if uint64(len(entries)) > acceptedLimit(config) || !canonicalHash(config.PoolTarget, true) {
 		return nil, ErrSourceChanged
 	}
 	builder := newRoundDerivation(config)
@@ -54,6 +54,9 @@ func derive(config poolshare.Config, entries []poolshare.AccountingEntry) ([]Rou
 		if round != nil {
 			rounds = append(rounds, *round)
 		}
+	}
+	if builder.overWindow {
+		return nil, ErrCapacity
 	}
 	return rounds, nil
 }
@@ -71,6 +74,7 @@ type roundDerivation struct {
 	winners     map[string]bool
 	counts      map[string]uint64
 	window      []string
+	overWindow  bool
 }
 
 func newRoundDerivation(config poolshare.Config) *roundDerivation {
@@ -83,7 +87,7 @@ func newRoundDerivation(config poolshare.Config) *roundDerivation {
 // add is conditional arithmetic, not authority. Its caller must discard the
 // derivation after any error, and authenticate the entire prefix before use.
 func (b *roundDerivation) add(e poolshare.AccountingEntry) (*Round, error) {
-	if b.accepted >= maxAccepted || !canonicalHash(b.config.PoolTarget, true) {
+	if b.accepted >= acceptedLimit(b.config) || !canonicalHash(b.config.PoolTarget, true) {
 		return nil, ErrSourceChanged
 	}
 	config := b.config
@@ -114,6 +118,9 @@ func (b *roundDerivation) add(e poolshare.AccountingEntry) (*Round, error) {
 	b.submissions[r.Sequence] = true
 	b.counts[r.GymID]++
 	b.window = append(b.window, r.DuplicateKey)
+	if len(b.window) > maxAccepted {
+		b.overWindow = true
+	}
 	b.accepted++
 	if !r.Block {
 		if e.Proof != nil || e.RewardAtoms != 0 || r.BlockHeight != 0 {

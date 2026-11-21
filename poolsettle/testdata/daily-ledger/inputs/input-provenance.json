@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "inputs": [
+    {
+      "source": "/Users/taytrrip/slug/slug/poolsettle/testdata/operator-wallet/reference-v1.json",
+      "copy": "operator-wallet-v1.json",
+      "bytes": 603047,
+      "sha256": "c1f2d725fcdbc3af7ba1b0a30f4dd4dfc6983352ffb0b4f72d83f7c09ac7b087"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set76-prep/daily-ledger-design.md",
+      "copy": "CONTRACT.md",
+      "bytes": 20041,
+      "sha256": "fc9165be594d1dad03e6d0d54c574eae1cead5a5d072fdddbbe085d05974eae9"
+    }
+  ]
+}

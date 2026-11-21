@@ -28,6 +28,9 @@ func (s *Store) SourceConfig(ctx context.Context) (poolshare.Config, error) {
 // capability. The operator runtime retains the original path and Store pointer.
 // Read-only audit handles cannot be attached to a mutation scheduler.
 func (s *Store) SchedulerBinding(ctx context.Context) (Config, poolshare.Config, error) {
+	if s != nil && s.daily != nil {
+		return Config{}, poolshare.Config{}, ErrConfig
+	}
 	if s != nil && s.auditOnly {
 		return Config{}, poolshare.Config{}, ErrInvalid
 	}
@@ -40,4 +43,23 @@ func (s *Store) SchedulerBinding(ctx context.Context) (Config, poolshare.Config,
 		return Config{}, poolshare.Config{}, err
 	}
 	return clone(s.state.Config), s.state.Source, nil
+}
+
+// DailySchedulerBinding selects the original writable Config2 owner. It audits
+// the full current source/indexed ledger and returns owned configuration only.
+func (s *Store) DailySchedulerBinding(ctx context.Context) (Config, poolshare.Config, error) {
+	if s == nil || s.daily == nil || s.auditOnly {
+		return Config{}, poolshare.Config{}, ErrConfig
+	}
+	end, err := s.begin(ctx)
+	if err != nil {
+		return Config{}, poolshare.Config{}, err
+	}
+	defer end()
+	if err = s.verifyDaily(ctx); err != nil {
+		return Config{}, poolshare.Config{}, err
+	}
+	c := s.state.Config
+	c.Destinations = append([]Destination(nil), c.Destinations...)
+	return c, s.state.Source, ctx.Err()
 }

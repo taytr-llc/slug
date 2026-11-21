@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "date": "2026-11-18",
+  "stamp_ms": 1794960000000,
+  "source": {
+    "version": 2,
+    "max_works": 8192,
+    "max_submissions": 16384,
+    "max_bytes": 8589934592
+  },
+  "settlement": {
+    "version": 2,
+    "max_rounds": 16384,
+    "max_batches": 32767
+  },
+  "bounds": {
+    "head": 131072,
+    "report": 8388608,
+    "credit": 131072,
+    "batch": 2097152,
+    "state_ref": 256,
+    "logical": 8589934592,
+    "signing_stream": 671088640
+  },
+  "cases": [
+    "all-nine-frozen-transactions-prepared",
+    "all-nine-frozen-transactions-confirmed",
+    "empty-first-guard"
+  ],
+  "mutations": [
+    "missing-credit-index",
+    "wrong-credit-index",
+    "wrong-tx-index",
+    "wrong-day-index",
+    "missing-spent",
+    "wrong-spent",
+    "wrong-object-reference",
+    "missing-event",
+    "duplicate-event-target",
+    "unknown-key",
+    "wrong-claims-digest",
+    "wrong-logical-bytes"
+  ]
+}

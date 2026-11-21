@@ -151,7 +151,7 @@ func (s *Scheduler) dispatch(ctx context.Context, kind string) (poolsettle.Repor
 	if e := ctx.Err(); e != nil {
 		return poolsettle.Report{}, e
 	}
-	binding, e := SettlementBinding(ctx, s.store)
+	binding, e := s.settlementBinding(ctx)
 	if e != nil {
 		return poolsettle.Report{}, e
 	}

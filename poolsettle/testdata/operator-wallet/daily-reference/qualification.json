@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "input_manifest_sha256": "adf323e54cc71bd09c2891d8998ba9afe5877c85de44ed7fbb029c28aa4ea1c6",
+  "commands": [
+    {
+      "name": "py314",
+      "exit_code": 0,
+      "sha256": "9b8e52f41690db7ca1fee37c34f99dfcd0a7266b81a7793859871bd9b006ae30"
+    },
+    {
+      "name": "system-python",
+      "exit_code": 0,
+      "sha256": "9b8e52f41690db7ca1fee37c34f99dfcd0a7266b81a7793859871bd9b006ae30"
+    }
+  ]
+}

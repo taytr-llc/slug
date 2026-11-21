@@ -69,17 +69,33 @@ func configuration(l Limits, source *poolshare.Pool, node Observer) (poolshare.C
 }
 
 func configurationMode(l Limits, source *poolshare.Pool, node Observer, auditOnly bool) (poolshare.Config, error) {
+	return configurationProfile(context.Background(), l, source, node, auditOnly, false)
+}
+
+func configurationProfile(ctx context.Context, l Limits, source *poolshare.Pool, node Observer, auditOnly, daily bool) (poolshare.Config, error) {
 	if wire.TestPoW {
 		return poolshare.Config{}, ErrProfile
 	}
-	if !validLimits(l) || source == nil || (!auditOnly && !nonnil(node)) {
+	if ctx == nil {
+		return poolshare.Config{}, ErrInvalid
+	}
+	if err := ctx.Err(); err != nil {
+		return poolshare.Config{}, err
+	}
+	valid := validLimits(l)
+	version, maximum := poolshare.Version1, uint64(maxAccepted)
+	if daily {
+		valid = validDailyLimits(l)
+		version, maximum = poolshare.Version2, maxDailyAccepted
+	}
+	if !valid || source == nil || (!auditOnly && !nonnil(node)) {
 		return poolshare.Config{}, ErrConfig
 	}
-	page, err := source.AccountingPage(context.Background(), 0, 0, 1)
+	page, err := source.AccountingPage(ctx, 0, 0, 1)
 	if err != nil {
 		return poolshare.Config{}, sourceError(err)
 	}
-	if page.Config.Version != poolshare.Version1 || page.Config.MaxSubmissions == 0 || page.Config.MaxSubmissions > maxAccepted || !canonicalHash(page.Config.PoolTarget, true) {
+	if page.Config.Version != version || page.Config.MaxSubmissions == 0 || page.Config.MaxSubmissions > maximum || !canonicalHash(page.Config.PoolTarget, true) {
 		return poolshare.Config{}, ErrConfig
 	}
 	return page.Config, nil
@@ -148,14 +164,21 @@ func newStore(l Limits, c poolshare.Config, source *poolshare.Pool, node Observe
 // Create initializes a separate new journal without importing or changing the
 // source. Partial creation is retained for inspection, never silently repaired.
 func Create(path string, l Limits, source *poolshare.Pool, node Observer) (*Store, error) {
-	c, err := configuration(l, source, node)
+	return createProfile(context.Background(), path, l, source, node, false)
+}
+
+func createProfile(ctx context.Context, path string, l Limits, source *poolshare.Pool, node Observer, daily bool) (*Store, error) {
+	c, err := configurationProfile(ctx, l, source, node, false, daily)
 	if err != nil {
+		return nil, err
+	}
+	if err := ctx.Err(); err != nil {
 		return nil, err
 	}
 	if os.Mkdir(path, 0700) != nil {
 		return nil, ErrInvalid
 	}
-	raw, _ := json.Marshal(marker{application, Version1, l, c})
+	raw, _ := json.Marshal(marker{application, l.Version, l, c})
 	f, err := os.OpenFile(filepath.Join(path, markerName), os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0600)
 	if err != nil {
 		return nil, ErrCorrupt
@@ -174,14 +197,15 @@ func Create(path string, l Limits, source *poolshare.Pool, node Observer) (*Stor
 	}
 	s := newStore(l, c, source, node)
 	s.db, s.writeBatch = db, db.Write
-	s.meta = metadata{Application: application, Version: Version1, Limits: l, Source: c, Prefix: initialPrefix(c)}
+	s.meta = metadata{Application: application, Version: l.Version, Limits: l, Source: c, Prefix: initialPrefix(c)}
 	if err := s.commit(new(leveldb.Batch), s.meta); err != nil {
-		_ = db.Close()
-		return nil, err
+		return failedProfileOpen(s, daily, err)
 	}
 	if errors.Join(syncDir(dbPath), syncDir(path), syncDir(filepath.Dir(filepath.Clean(path)))) != nil {
-		_ = db.Close()
-		return nil, ErrPoisoned
+		return failedProfileOpen(s, daily, ErrPoisoned)
+	}
+	if err := ctx.Err(); err != nil {
+		return failedProfileOpen(s, daily, err)
 	}
 	return s, nil
 }
@@ -193,7 +217,11 @@ func Open(path string, l Limits, source *poolshare.Pool, node Observer) (*Store,
 }
 
 func openMode(path string, l Limits, source *poolshare.Pool, node Observer, auditOnly bool) (*Store, error) {
-	c, err := configurationMode(l, source, node, auditOnly)
+	return openProfile(context.Background(), path, l, source, node, auditOnly, false)
+}
+
+func openProfile(ctx context.Context, path string, l Limits, source *poolshare.Pool, node Observer, auditOnly, daily bool) (*Store, error) {
+	c, err := configurationProfile(ctx, l, source, node, auditOnly, daily)
 	if err != nil {
 		return nil, err
 	}
@@ -214,7 +242,7 @@ func openMode(path string, l Limits, source *poolshare.Pool, node Observer, audi
 		return nil, ErrCorrupt
 	}
 	var m marker
-	if decode(raw, maxMetadataSize, &m) != nil || m.Application != application || m.Version != Version1 || m.Limits != l || m.Source != c {
+	if decode(raw, maxMetadataSize, &m) != nil || m.Application != application || m.Version != l.Version || m.Limits != l || m.Source != c {
 		return nil, ErrSourceChanged
 	}
 	db, err := leveldb.OpenFile(filepath.Join(path, "db"), &opt.Options{ErrorIfMissing: true, ReadOnly: auditOnly, Strict: opt.StrictAll})
@@ -225,12 +253,15 @@ func openMode(path string, l Limits, source *poolshare.Pool, node Observer, audi
 	s.db, s.writeBatch, s.auditOnly = db, db.Write, auditOnly
 	raw, err = db.Get([]byte("meta"), nil)
 	if err != nil || decode(raw, maxMetadataSize, &s.meta) != nil || !s.validMetadata(s.meta) {
-		_ = db.Close()
-		return nil, ErrCorrupt
+		return failedProfileOpen(s, daily, ErrCorrupt)
 	}
-	if _, err := s.verifyStored(context.Background()); err != nil {
-		_ = db.Close()
-		return nil, err
+	if daily {
+		err = s.verifyStream(ctx)
+	} else {
+		_, err = s.verifyStored(ctx)
+	}
+	if err != nil {
+		return failedProfileOpen(s, daily, err)
 	}
 	return s, nil
 }
@@ -244,7 +275,7 @@ func indexKey(sequence uint64) []byte {
 }
 
 func (s *Store) validMetadata(m metadata) bool {
-	return m.Application == application && m.Version == Version1 && m.Limits == s.limits && m.Source == s.sourceConfig && m.Through <= s.sourceConfig.MaxSubmissions && m.Rounds <= m.Through && m.Rounds <= s.limits.MaxRounds && m.Bytes <= s.limits.MaxBytes && canonicalHash(m.Prefix, false)
+	return m.Application == application && m.Version == s.limits.Version && m.Limits == s.limits && m.Source == s.sourceConfig && m.Through <= s.sourceConfig.MaxSubmissions && m.Rounds <= m.Through && m.Rounds <= s.limits.MaxRounds && m.Bytes <= s.limits.MaxBytes && canonicalHash(m.Prefix, false)
 }
 
 func (s *Store) commit(batch *leveldb.Batch, m metadata) error {

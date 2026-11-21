@@ -16,6 +16,7 @@ import (
 )
 
 const Version1 uint32 = 1
+const Version2 uint32 = 2
 const MaxPage = 8
 
 var (

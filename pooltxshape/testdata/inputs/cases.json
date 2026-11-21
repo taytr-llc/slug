@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "cases": [
+    {"name":"minimum-no-change","inputs":1,"payees":1,"change":false},
+    {"name":"minimum-with-change","inputs":1,"payees":1,"change":true},
+    {"name":"input-compact-252","inputs":252,"payees":1,"change":false},
+    {"name":"input-compact-253","inputs":253,"payees":1,"change":false},
+    {"name":"output-252-with-change","inputs":1,"payees":251,"change":true},
+    {"name":"output-252-no-change","inputs":1,"payees":252,"change":false},
+    {"name":"output-253-with-change","inputs":1,"payees":252,"change":true},
+    {"name":"output-253-no-change","inputs":1,"payees":253,"change":false},
+    {"name":"daily-721-64","inputs":721,"payees":64,"change":true},
+    {"name":"daily-721-64-no-change","inputs":721,"payees":64,"change":false},
+    {"name":"daily-721-256","inputs":721,"payees":256,"change":true},
+    {"name":"daily-721-256-no-change","inputs":721,"payees":256,"change":false},
+    {"name":"full-payees-1348","inputs":1348,"payees":256,"change":true},
+    {"name":"full-payees-1349","inputs":1349,"payees":256,"change":true},
+    {"name":"exact-weight","inputs":1366,"payees":218,"change":false},
+    {"name":"exact-weight-with-change","inputs":1366,"payees":217,"change":true},
+    {"name":"over-exact-weight","inputs":1366,"payees":219,"change":false},
+    {"name":"maximum-inputs","inputs":1464,"payees":1,"change":true},
+    {"name":"maximum-inputs-no-change","inputs":1464,"payees":1,"change":false},
+    {"name":"maximum-inputs-full-payees","inputs":1464,"payees":256,"change":true},
+    {"name":"input-limit-plus-one","inputs":1465,"payees":1,"change":false},
+    {"name":"zero-inputs","inputs":0,"payees":1,"change":false},
+    {"name":"negative-inputs","inputs":-1,"payees":1,"change":true},
+    {"name":"zero-payees","inputs":1,"payees":0,"change":false},
+    {"name":"negative-payees","inputs":1,"payees":-1,"change":true},
+    {"name":"payee-limit-plus-one","inputs":1,"payees":257,"change":false}
+  ]
+}

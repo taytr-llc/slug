@@ -89,7 +89,7 @@ func (p *Pool) AccountingPage(ctx context.Context, after, through uint64, limit 
 		if err != nil || decode(raw, maxSubmissionSize, &share) != nil || share.DuplicateKey != string(key) || share.AcceptedSequence != sequence {
 			return AccountingPage{}, ErrCorrupt
 		}
-		work, prepared, err := p.loadWork(share.JobID)
+		work, prepared, err := p.loadWorkContext(ctx, share.JobID)
 		if err != nil {
 			return AccountingPage{}, err
 		}

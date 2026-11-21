@@ -15,7 +15,7 @@ import sys
 import tempfile
 import time
 
-WALLET_SHA = "6a69ecfcfc20f5433b5a1ca75e6dbb3a4db725a0"
+WALLET_SHA = "dfc5d9dd7e0f604486fbac812d0413fce1f45cd6"
 PROFILE = {
     "version": 1, "id": "slug-go1274-no-cse-v1", "go_version": "go1.27.4",
     "gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
@@ -184,8 +184,10 @@ class Gate:
         write_json(self.artifacts / (label + ".json"), result)
         return result
 
-    def test(self, label, cwd, packages, workspace, race=False, run=None, required=()):
-        args = ["sh", self.root / "scripts/candidate-go.sh", "test", "-json", "-tags=",
+    def test(self, label, cwd, packages, workspace, race=False, run=None, required=(), tags=""):
+        if tags not in ("", "slugtestpow"):
+            raise ValueError("only normal or explicit refusal profile is allowed")
+        args = ["sh", self.root / "scripts/candidate-go.sh", "test", "-json", "-tags=" + tags,
                 "-p=1", "-parallel=1", "-count=1", "-timeout=10m"]
         if race:
             args.append("-race")
@@ -203,7 +205,7 @@ class Gate:
                 events.append({k: item[k] for k in ("Action", "Package", "Test", "Elapsed") if k in item})
         passed = {x.get("Test") for x in events if x["Action"] == "pass"}
         package_passes = [x for x in events if x["Action"] == "pass" and "Test" not in x]
-        self.tests.append({"command": label, "events": events, "required": list(required)})
+        self.tests.append({"command": label, "tags": tags, "events": events, "required": list(required)})
         if not package_passes or any(x["Action"] == "fail" for x in events) or not set(required) <= passed:
             raise RuntimeError("missing required test execution: " + label)
 
@@ -244,6 +246,7 @@ def main():
     gate = Gate(root, wallet, artifacts)
     report = {"version": 1, "passed": False, "scope": "focused_linux_operator",
               "provisioning_qualified": False, "deployed_host_qualified": False,
+              "daily_actual_qualified": False,
               "platform": platform.platform(), "uname": list(platform.uname()),
               "uid": os.geteuid(), "profile": PROFILE, "errors": [], "source_unchanged": False}
     before = None
@@ -251,7 +254,9 @@ def main():
         if platform.system() != "Linux" or platform.machine() != "x86_64":
             raise RuntimeError("this finite gate requires native Linux amd64")
         expected = os.environ.get("SLUG_EXPECTED_CHAIN", "")
-        if not re.fullmatch(r"[0-9a-f]{40}", expected) or os.environ.get("SLUG_EXPECTED_WALLET") != WALLET_SHA:
+        if (not re.fullmatch(r"[0-9a-f]{40}", expected) or
+                not re.fullmatch(r"[0-9a-f]{40}", WALLET_SHA) or
+                os.environ.get("SLUG_EXPECTED_WALLET") != WALLET_SHA):
             raise RuntimeError("exact paired revisions are required")
         # All temporary compiler/test material stays outside the upload directory.
         gate.work = Path(tempfile.mkdtemp(prefix=".operator-linux-work-", dir=root.parent))
@@ -299,13 +304,88 @@ def main():
             gate.test(mode + "-authority", root, ["./internal/operatorauthority"], desktop / "go.work", race,
                       required=["TestOperatorAuthorityExtendedACLRefusal", "TestOperatorAuthorityIndependentNamedSignatures"])
             gate.test(mode + "-wallet", wallet, ["./waddrmgr", "./wallet"], wallet / "go.work", race,
-                      run="^TestPool(Settlement|Wallet)", required=["TestPoolSettlementManagerIndependentSigning", "TestPoolWalletOwnerLifecycle"])
+                      run="^(TestPool(Settlement|Wallet)|TestDailyPool(Settlement|Wallet))",
+                      required=["TestPoolSettlementManagerIndependentSigning", "TestPoolWalletOwnerLifecycle",
+                                "TestDailyPoolSettlementConditionalIndependentSignatures",
+                                "TestDailyPoolSettlementConditional721AndCancellation",
+                                "TestDailyPoolSettlementOwnedInputsAndShapeRefusals",
+                                "TestDailyPoolWalletBindingReference",
+                                "TestDailyPoolWalletFreshOwnerAndLegacyRefusal"])
             gate.test(mode + "-operator", desktop, ["./pooloperator"], desktop / "go.work", race,
                       run="^TestOperator", required=[ACL_TEST] + [ACL_TEST + "/" + case for case in ACL_CASES])
+            # These complete package suites preserve V1 controls as well as
+            # requiring the new daily boundary cases. No actual-test build tag.
+            gate.test(mode + "-daily-source-round", root, ["./poolshare", "./poolround"],
+                      desktop / "go.work", race, required=[
+                          "TestDailySourceIndependentGrammarAndKeys",
+                          "TestDailySource721OriginalJobsAndReopen",
+                          "TestDailySourceCanonicalStorageRefusals",
+                          "TestDailySourceModesCancellationAndLimits",
+                          "TestDailySourceMemoOwnedWarmColdAndTamper",
+                          "TestDailyRoundIndependentBytes",
+                          "TestDailyRoundLifetimeAndWindowBounds",
+                          "TestDailyRoundOriginalSourceRestartAndFences"])
+            gate.test(mode + "-daily-source-fences", root, ["./registry", "./poolservice"],
+                      desktop / "go.work", race,
+                      run="^(TestManifestTryJob|TestPoolServiceDoesNotAdoptDailySource)", required=[
+                          "TestManifestTryJobOriginalReadOnlyAndNonblocking",
+                          "TestManifestTryJobCancellationAndClosedState",
+                          "TestPoolServiceDoesNotAdoptDailySource"])
+            gate.test(mode + "-daily-node-shape", root, ["./pooltxshape", "./poolsettlenode"],
+                      desktop / "go.work", race, required=[
+                          "TestNativeP2WPKHIndependentReference",
+                          "TestNativeP2WPKHRejectsMachineIntExtremes",
+                          "TestDailyNode721AndLegacyBounds",
+                          "TestDailyNodeWholeFrontierBeyondTransactionLimit",
+                          "TestDailyNodeFrontierAdmissionBound",
+                          "TestDailyNodeCarriedOriginsAndLateFailure",
+                          "TestDailyNodeFourWorkersCancelAndClose",
+                          "TestDailyNodeFeeRawAndWeightProfile",
+                          "TestDailyNodeObservedWeightAndOwnedBroadcast"])
+            gate.test(mode + "-daily-ledger-schedule", root, ["./poolsettle", "./poolschedule"],
+                      desktop / "go.work", race, required=[
+                          "TestSettlementReplayV1Parity",
+                          "TestDailyLedgerIndependentCodecReplay",
+                          "TestDailyLedgerForgedInverseIndicesAndCancellation",
+                          "TestDailyLedgerStagedImportAtomic",
+                          "TestDailyLedgerWriteUncertaintyRetainsExactSignedHistory",
+                          "TestDailyLedgerConditionalWholeFrontierWeightDeferral",
+                          "TestDailyOperatorSourcePendingRecoveryAndNextDay",
+                          "TestDailySigningIndependentBytes",
+                          "TestDailySigningOpaqueOriginalLifetime",
+                          "TestDailySigningBoundsAndOwnerCopies",
+                          "TestDailyScheduleIndependentBindings",
+                          "TestDailyScheduleIndependentCodecAndMode",
+                          "TestDailyScheduleIndependentCursorAndD84",
+                          "TestDailyScheduleOriginalOwnerModesAndReopen",
+                          "TestDailyScheduleRunCancelAndJoin"])
+        # Refusals only: no positive custody/source test is relabeled as cheap
+        # proof, and the opt-in slugdailyactual tag is never admitted here.
+        cheap_wire = json.loads(gate.run("cheap-wire-selection", ["go", "list", "-tags=slugtestpow", "-json",
+                                             "github.com/taytr-llc/slug/wire/v2"], seconds=180))
+        if (Path(cheap_wire["Dir"]).resolve() != root / "wire" or
+                "pow_testpow.go" not in cheap_wire["GoFiles"] or
+                "pow_production.go" in cheap_wire["GoFiles"]):
+            raise RuntimeError("cheap refusal proof-of-work source not selected")
+        cheap_core = ["TestDailySourceCheapRefusesBeforeEffects",
+                      "TestDailyRoundProfileRefusal", "TestDailyNodeCheapProfile",
+                      "TestDailyLedgerCheapRefusalBeforeEffects", "TestDailySigningCheapRefusal",
+                      "TestDailyScheduleCheapAndCanceledBeforeEffects",
+                      "TestManifestTryJobCheapRefusesBeforeOwner"]
+        gate.test("cheap-daily-core", root,
+                  ["./poolshare", "./poolround", "./poolsettlenode", "./poolsettle",
+                   "./poolschedule", "./registry"], desktop / "go.work",
+                  run="^(" + "|".join(cheap_core) + ")$", required=cheap_core, tags="slugtestpow")
+        cheap_wallet = ["TestDailyPoolSettlementCheapRefusal", "TestDailyPoolWalletCheapRefusal"]
+        gate.test("cheap-daily-wallet", wallet, ["./waddrmgr", "./wallet"], wallet / "go.work",
+                  run="^(" + "|".join(cheap_wallet) + ")$", required=cheap_wallet, tags="slugtestpow")
         for label, cwd, packages, workspace in (
             ("authority", root, ["./internal/operatorauthority"], desktop / "go.work"),
             ("wallet", wallet, ["./waddrmgr", "./wallet"], wallet / "go.work"),
-            ("operator", desktop, ["./pooloperator"], desktop / "go.work")):
+            ("operator", desktop, ["./pooloperator"], desktop / "go.work"),
+            ("daily-components", root,
+             ["./poolshare", "./poolround", "./pooltxshape", "./poolsettlenode",
+              "./poolsettle", "./poolschedule", "./registry", "./poolservice"], desktop / "go.work")):
             gate.run("vet-" + label, ["go", "vet", "-p=1", "-tags=", "-gcflags=" + PROFILE["gcflags"]] + packages,
                      cwd, 300, {"GOWORK": str(workspace)})
     except BaseException as e:
@@ -349,7 +429,7 @@ def main():
                             and all(c["passed"] for c in gate.commands))
         write_json(artifacts / "report.json", report)
         summary = ("Operator Linux qualification: " + ("PASS" if report["passed"] else "FAIL") + "\n\n"
-                   + "Focused authority, wallet16 and operator checks only; provisioning/deployed-host acceptance are excluded.\n"
+                   + "Focused authority, wallet16, operator and daily component checks only; provisioning, deployed-host and actual 924-block daily acceptance are excluded.\n"
                    + "Source unchanged: " + str(report["source_unchanged"]) + "; clean join: " + str(report["clean_join"]) + "\n")
         if report["errors"]:
             summary += "Errors: " + "; ".join(report["errors"]) + "\n"

@@ -89,19 +89,28 @@ func newPool(c Config, authority *registry.ManifestStore, node Node, sessions pr
 
 // Create initializes a new journal only; an existing path is never adopted.
 func Create(path string, c Config, authority *registry.ManifestStore, node Node, sessions prospectservice.SessionAuthorizer) (*Pool, error) {
-	if err := validateConfig(c, authority, node, sessions); err != nil {
+	return createSelected(context.Background(), path, c, authority, node, sessions, Version1)
+}
+
+func createSelected(ctx context.Context, path string, c Config, authority *registry.ManifestStore, node Node, sessions prospectservice.SessionAuthorizer, selected uint32) (*Pool, error) {
+	if err := validateConfigSelected(ctx, c, authority, node, sessions, false, selected); err != nil {
 		return nil, err
 	}
+	p := newPool(c, authority, node, sessions)
 	if err := os.Mkdir(path, 0700); err != nil {
 		return nil, ErrInvalid
 	}
-	raw, _ := json.Marshal(marker{application, Version1, c})
+	raw, _ := json.Marshal(marker{application, selected, c})
 	f, err := os.OpenFile(filepath.Join(path, markerName), os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
 	if err != nil {
 		return nil, ErrCorrupt
 	}
 	_, we := f.Write(raw)
-	if errors.Join(we, f.Sync(), f.Close()) != nil {
+	se, ce := f.Sync(), f.Close()
+	if selected == Version2 && ce != nil {
+		return failedDailyFile(p, f, errors.Join(we, se, ce))
+	}
+	if errors.Join(we, se, ce) != nil {
 		return nil, ErrPoisoned
 	}
 	dbPath := filepath.Join(path, "db")
@@ -112,16 +121,22 @@ func Create(path string, c Config, authority *registry.ManifestStore, node Node,
 	if err != nil {
 		return nil, ErrCorrupt
 	}
-	p := newPool(c, authority, node, sessions)
 	p.db, p.writeBatch = db, db.Write
-	p.meta = metadata{Application: application, Version: Version1, Config: c}
+	p.meta = metadata{Application: application, Version: selected, Config: c}
+	if err := ctx.Err(); err != nil {
+		return failedSelectedPool(p, err)
+	}
 	if err := p.commit(new(leveldb.Batch), p.meta); err != nil {
-		_ = db.Close()
-		return nil, err
+		return failedSelectedPool(p, err)
+	}
+	if selected == Version2 {
+		return syncDailyDirectories(ctx, p, dbPath, path, filepath.Dir(filepath.Clean(path)))
 	}
 	if errors.Join(syncDir(dbPath), syncDir(path), syncDir(filepath.Dir(filepath.Clean(path)))) != nil {
-		_ = db.Close()
-		return nil, ErrPoisoned
+		return failedSelectedPool(p, ErrPoisoned)
+	}
+	if err := ctx.Err(); err != nil {
+		return failedSelectedPool(p, err)
 	}
 	return p, nil
 }
@@ -134,9 +149,14 @@ func Open(path string, c Config, authority *registry.ManifestStore, node Node, s
 }
 
 func openMode(path string, c Config, authority *registry.ManifestStore, node Node, sessions prospectservice.SessionAuthorizer, auditOnly bool) (*Pool, error) {
-	if err := validateConfigMode(c, authority, node, sessions, auditOnly); err != nil {
+	return openSelected(context.Background(), path, c, authority, node, sessions, auditOnly, Version1)
+}
+
+func openSelected(ctx context.Context, path string, c Config, authority *registry.ManifestStore, node Node, sessions prospectservice.SessionAuthorizer, auditOnly bool, selected uint32) (*Pool, error) {
+	if err := validateConfigSelected(ctx, c, authority, node, sessions, auditOnly, selected); err != nil {
 		return nil, err
 	}
+	p := newPool(c, authority, node, sessions)
 	if !directory(path) || !directory(filepath.Join(path, "db")) {
 		return nil, ErrCorrupt
 	}
@@ -150,22 +170,27 @@ func openMode(path string, c Config, authority *registry.ManifestStore, node Nod
 		return nil, ErrCorrupt
 	}
 	raw, re := io.ReadAll(io.LimitReader(f, maxMetadataSize+1))
-	if errors.Join(re, f.Close()) != nil {
+	ce := f.Close()
+	if selected == Version2 && ce != nil {
+		return failedDailyFile(p, f, errors.Join(re, ce))
+	}
+	if errors.Join(re, ce) != nil {
 		return nil, ErrCorrupt
 	}
 	var m marker
-	if decode(raw, maxMetadataSize, &m) != nil || m.Application != application || m.Version != Version1 || m.Config != c {
+	if decode(raw, maxMetadataSize, &m) != nil || m.Application != application || m.Version != selected || m.Config != c {
 		return nil, ErrCorrupt
+	}
+	if err := ctx.Err(); err != nil {
+		return nil, err
 	}
 	db, err := leveldb.OpenFile(filepath.Join(path, "db"), &opt.Options{ErrorIfMissing: true, ReadOnly: auditOnly, Strict: opt.StrictAll})
 	if err != nil {
 		return nil, ErrCorrupt
 	}
-	p := newPool(c, authority, node, sessions)
 	p.db, p.writeBatch, p.auditOnly = db, db.Write, auditOnly
-	if err := p.audit(); err != nil {
-		_ = db.Close()
-		return nil, err
+	if err := p.auditContext(ctx); err != nil {
+		return failedSelectedPool(p, err)
 	}
 	return p, nil
 }
@@ -196,7 +221,7 @@ func (p *Pool) commit(batch *leveldb.Batch, next metadata) error {
 	if p.poisoned {
 		return ErrPoisoned
 	}
-	if next.Application != application || next.Version != Version1 || next.Config != p.config || next.Works > p.config.MaxWorks || next.Submissions > p.config.MaxSubmissions || next.Accepted > next.Submissions || next.Bytes > p.config.MaxBytes || next.LastClockMS < p.meta.LastClockMS {
+	if next.Application != application || next.Version != p.config.Version || next.Config != p.config || next.Works > p.config.MaxWorks || next.Submissions > p.config.MaxSubmissions || next.Accepted > next.Submissions || next.Bytes > p.config.MaxBytes || next.LastClockMS < p.meta.LastClockMS {
 		return ErrCorrupt
 	}
 	raw, err := json.Marshal(next)
@@ -258,22 +283,44 @@ func (p *Pool) clock(recheck func() error) (int64, error) {
 }
 
 func (p *Pool) prepare(w savedWork) (*prospectwork.ManifestWork, error) {
+	return p.prepareContext(context.Background(), w)
+}
+
+func (p *Pool) prepareContext(ctx context.Context, w savedWork) (*prospectwork.ManifestWork, error) {
+	if p.config.Version == Version2 {
+		if ctx == nil {
+			return nil, ErrInvalid
+		}
+		if err := ctx.Err(); err != nil {
+			return nil, err
+		}
+	}
 	j := w.Job
 	if !p.samePolicy(j.Context) || j.AuthorityID != p.config.AuthorityPin.AuthorityID || j.DescriptorID != p.config.AuthorityPin.DescriptorID || !templateBounds(w.Template) {
 		return nil, ErrCorrupt
 	}
-	actual, err := p.authority.GetManifestJob(j.ID)
-	if err != nil || actual != j {
+	actual, err := p.originalJob(ctx, j.ID)
+	if err != nil {
+		return nil, p.sourceReadError(ctx, err)
+	}
+	if actual != j {
 		return nil, ErrCorrupt
 	}
 	prepared, err := prospectwork.PrepareManifestWork(j, w.Template, p.config.PayoutAddress, 0, p.config.PoolTarget)
 	if err != nil {
 		return nil, ErrCorrupt
 	}
+	if p.config.Version == Version2 && ctx.Err() != nil {
+		return nil, ctx.Err()
+	}
 	return prepared, nil
 }
 
 func (p *Pool) loadWork(id string) (savedWork, *prospectwork.ManifestWork, error) {
+	return p.loadWorkContext(context.Background(), id)
+}
+
+func (p *Pool) loadWorkContext(ctx context.Context, id string) (savedWork, *prospectwork.ManifestWork, error) {
 	if !canonicalHash(id, false) {
 		return savedWork{}, nil, ErrInvalid
 	}
@@ -285,7 +332,7 @@ func (p *Pool) loadWork(id string) (savedWork, *prospectwork.ManifestWork, error
 	if err != nil || decode(raw, maxWorkSize, &w) != nil || w.Job.ID != id || w.Job.IssuedAtMS > p.meta.LastClockMS {
 		return savedWork{}, nil, ErrCorrupt
 	}
-	prepared, err := p.prepare(w)
+	prepared, err := p.prepareContext(ctx, w)
 	return w, prepared, err
 }
 
@@ -449,7 +496,7 @@ func (p *Pool) saveSubmission(job prospectjob.ManifestJob, r Submission, previou
 }
 
 func (p *Pool) validateSubmission(ctx context.Context, r Submission, w savedWork, prepared *prospectwork.ManifestWork) (prospectwork.ShareCheck, error) {
-	check, err := prepared.CheckNonce(ctx, r.Nonce)
+	check, err := p.checkRetainedNonce(ctx, w, prepared, r.Nonce)
 	if err != nil {
 		return prospectwork.ShareCheck{}, err
 	}
@@ -514,18 +561,34 @@ func (p *Pool) validateSubmission(ctx context.Context, r Submission, w savedWork
 			return prospectwork.ShareCheck{}, ErrCorrupt
 		}
 	}
+	if err := p.rememberRetainedNonce(ctx, w, check); err != nil {
+		return prospectwork.ShareCheck{}, err
+	}
 	return check, nil
 }
 
 func (p *Pool) audit() error {
+	return p.auditContext(context.Background())
+}
+
+func (p *Pool) auditContext(ctx context.Context) error {
+	if ctx == nil {
+		return ErrInvalid
+	}
+	if err := ctx.Err(); err != nil {
+		return err
+	}
 	raw, err := p.db.Get([]byte("meta"), nil)
-	if err != nil || decode(raw, maxMetadataSize, &p.meta) != nil || p.meta.Application != application || p.meta.Version != Version1 || p.meta.Config != p.config || p.meta.Works > p.config.MaxWorks || p.meta.Submissions > p.config.MaxSubmissions || p.meta.Accepted > p.meta.Submissions || p.meta.Bytes > p.config.MaxBytes || p.meta.LastClockMS < 0 {
+	if err != nil || decode(raw, maxMetadataSize, &p.meta) != nil || p.meta.Application != application || p.meta.Version != p.config.Version || p.meta.Config != p.config || p.meta.Works > p.config.MaxWorks || p.meta.Submissions > p.config.MaxSubmissions || p.meta.Accepted > p.meta.Submissions || p.meta.Bytes > p.config.MaxBytes || p.meta.LastClockMS < 0 {
 		return ErrCorrupt
 	}
 	var works, submissions, nonces, sequences, accepted, size uint64
 	it := p.db.NewIterator(nil, nil)
 	defer it.Release()
 	for it.Next() {
+		if err := ctx.Err(); err != nil {
+			return err
+		}
 		k, v := it.Key(), it.Value()
 		if string(k) == "meta" {
 			continue
@@ -538,7 +601,7 @@ func (p *Pool) audit() error {
 			if len(k) != 65 || !canonicalHash(string(k[1:]), false) {
 				return ErrCorrupt
 			}
-			if _, _, err := p.loadWork(string(k[1:])); err != nil {
+			if _, _, err := p.loadWorkContext(ctx, string(k[1:])); err != nil {
 				return err
 			}
 			works++
@@ -551,11 +614,11 @@ func (p *Pool) audit() error {
 			if decode(v, maxSubmissionSize, &r) != nil || string(k[1:]) != r.DuplicateKey {
 				return ErrCorrupt
 			}
-			w, prepared, err := p.loadWork(r.JobID)
+			w, prepared, err := p.loadWorkContext(ctx, r.JobID)
 			if err != nil {
 				return err
 			}
-			if _, err = p.validateSubmission(context.Background(), r, w, prepared); err != nil {
+			if _, err = p.validateSubmission(ctx, r, w, prepared); err != nil {
 				return err
 			}
 			submissions++
@@ -604,10 +667,13 @@ func (p *Pool) audit() error {
 	if it.Error() != nil || works != p.meta.Works || submissions != p.meta.Submissions || nonces != submissions || sequences != submissions || accepted != p.meta.Accepted || size != p.meta.Bytes {
 		return ErrCorrupt
 	}
-	return nil
+	return ctx.Err()
 }
 
 func (p *Pool) Close() error {
+	if p != nil && p.failedFile != nil {
+		return p.closeErr
+	}
 	if p == nil || p.gate == nil || p.closeDone == nil || p.db == nil {
 		return ErrClosed
 	}

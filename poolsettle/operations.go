@@ -22,13 +22,10 @@ func add(m map[string]*big.Rat, key string, v *big.Rat) {
 	m[key].Add(m[key], v)
 }
 func makeBalances(st state, available []Coin, reason string, reasons map[string]string) ([]Balance, error) {
-	totals, ready := make(map[string]*big.Rat), make(map[string]*big.Rat)
-	paid, reserved := make(map[string]int64), make(map[string]int64)
-	dest := make(map[string]bool)
-	for _, d := range st.Config.Destinations {
-		dest[d.GymID] = true
-		totals[d.GymID] = new(big.Rat)
-	}
+	// Preserve this V1 projection's validation behavior: callers already own
+	// ledger verification, and fee claims are not miner balance entries.
+	p := newBalanceProjection(st.Config)
+	totals, paid, reserved := p.gross, p.paid, p.reserved
 	for _, c := range st.Credits {
 		for _, claim := range c.Coin.Claims {
 			if claim.GymID == "" {
@@ -49,6 +46,18 @@ func makeBalances(st state, available []Coin, reason string, reasons map[string]
 				reserved[p.GymID] += p.Atoms
 			}
 		}
+	}
+	return projectBalances(st.Config, p, available, reason, reasons)
+}
+
+// projectBalances is the shared pure display projection; it does not inspect
+// source, funding or storage. Empty GymID remains the operator fee reserve.
+func projectBalances(config Config, p balanceProjection, available []Coin, reason string, reasons map[string]string) ([]Balance, error) {
+	totals, paid, reserved := p.gross, p.paid, p.reserved
+	ready := make(map[string]*big.Rat)
+	dest := make(map[string]bool)
+	for _, d := range config.Destinations {
+		dest[d.GymID] = true
 	}
 	for _, c := range available {
 		for _, claim := range c.Claims {
@@ -195,6 +204,9 @@ func (s *Store) RunDaily(ctx context.Context) (Report, error) {
 // runSettlement shares the original exact-byte recovery prefix. Recovery-only
 // callers return before the credit import, plan, fee quote and signing path.
 func (s *Store) runSettlement(ctx context.Context, recoveryOnly bool) (Report, error) {
+	if s != nil && s.daily != nil {
+		return s.runDailySettlement(ctx, recoveryOnly)
+	}
 	if s != nil && s.auditOnly {
 		return Report{}, ErrInvalid
 	}

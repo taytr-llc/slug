@@ -32,7 +32,7 @@ func (p *Pool) IssueMiningWork(ctx context.Context, token string) (MiningWork, e
 func (p *Pool) RecoverMiningWork(ctx context.Context, token, jobID string) (MiningWork, error) {
 	var result MiningWork
 	err := p.withSession(ctx, token, func(ctx context.Context, key string, session *poolSession) error {
-		w, _, err := p.loadWork(jobID)
+		w, _, err := p.loadWorkContext(ctx, jobID)
 		if err != nil {
 			return err
 		}

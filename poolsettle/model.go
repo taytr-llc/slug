@@ -8,9 +8,9 @@ import (
 	"encoding/json"
 	"math/big"
 	"strings"
-	"time"
 
 	"github.com/taytr-llc/slug/poolround"
+	"github.com/taytr-llc/slug/pooltxshape"
 	"github.com/taytr-llc/slug/wire/v2"
 )
 
@@ -195,7 +195,19 @@ func validCoin(c Coin, allowUnbound bool) error {
 // plan preserves the input/claim order when charging exact per-round claims.
 // Caller-owned concrete credits, not this arithmetic function, grant authority.
 func plan(coins []Coin, config Config, fee int64) ([]Payment, *Coin, string, error) {
-	if validateConfig(config) != nil || fee < 0 || fee > MaxMoney || len(coins) > MaxInputs {
+	return planProfile(coins, config, fee, false)
+}
+
+func planDaily(coins []Coin, config Config, fee int64) ([]Payment, *Coin, string, error) {
+	return planProfile(coins, config, fee, true)
+}
+
+func planProfile(coins []Coin, config Config, fee int64, daily bool) ([]Payment, *Coin, string, error) {
+	configErr, inputLimit := validateConfig(config), MaxInputs
+	if daily {
+		configErr, inputLimit = validateDailyConfig(config), pooltxshape.MaxNativeInputs
+	}
+	if configErr != nil || fee < 0 || fee > MaxMoney || len(coins) > inputLimit {
 		return nil, nil, "", ErrInvalid
 	}
 	destinations := make(map[string]string)
@@ -220,6 +232,9 @@ func plan(coins []Coin, config Config, fee int64) ([]Payment, *Coin, string, err
 				return nil, nil, "", ErrCorrupt
 			}
 			seenClaims[key] = true
+			if daily && len(seenClaims) > dailySigningClaims {
+				return nil, nil, "", ErrCapacity
+			}
 			amount, _ := rat(claim.Amount)
 			claims, amounts = append(claims, claim), append(amounts, amount)
 			if totals[claim.GymID] == nil {
@@ -304,89 +319,38 @@ func plan(coins []Coin, config Config, fee int64) ([]Payment, *Coin, string, err
 // is not spend authorization; the store blocks further batches until all prior
 // transactions have fresh canonical observations.
 func liveCoins(s state) ([]Coin, error) {
+	// V1 keeps its exact selected limits and in-memory duplicate checks.
 	if validateConfig(s.Config) != nil || len(s.Credits) > int(s.Config.MaxRounds) || len(s.Batches) > int(s.Config.MaxBatches) {
 		return nil, ErrCorrupt
 	}
-	coins := make([]Coin, 0, len(s.Credits)+1)
+	r, err := newSettlementReplay(s.Config, s.LastClockMS, replayCounts{uint64(len(s.Credits)), uint64(len(s.Batches))})
+	if err != nil {
+		return nil, err
+	}
 	seenRoots, seenCoins := make(map[string]bool), make(map[string]bool)
-	for _, credit := range s.Credits {
-		coin := credit.Coin
-		if validCoin(coin, false) != nil || !coin.Coinbase || coin.BlockHash != credit.RoundHash || coin.Script != s.Config.ChangeScript || seenRoots[credit.RoundHash] || seenCoins[coinKey(coin)] {
-			return nil, ErrCorrupt
+	for i, credit := range s.Credits {
+		check := replayCreditCheck{uint64(i) + 1, seenRoots[credit.RoundHash], seenCoins[coinKey(credit.Coin)]}
+		if err := r.addCredit(credit, check); err != nil {
+			return nil, err
 		}
-		if _, ok := hexBytes(credit.RoundDigest, 32); !ok {
-			return nil, ErrCorrupt
-		}
-		fee, net := new(big.Rat), new(big.Rat)
-		for _, claim := range coin.Claims {
-			if claim.RoundHash != credit.RoundHash || claim.RoundHeight != coin.BlockHeight {
-				return nil, ErrCorrupt
-			}
-			amount, _ := rat(claim.Amount)
-			if claim.GymID == "" {
-				fee.Add(fee, amount)
-			} else {
-				net.Add(net, amount)
-			}
-		}
-		if fee.Cmp(new(big.Rat).SetFrac(big.NewInt(coin.Atoms), big.NewInt(100))) != 0 || net.Cmp(new(big.Rat).Mul(new(big.Rat).SetInt64(coin.Atoms), big.NewRat(99, 100))) != 0 {
-			return nil, ErrCorrupt
-		}
-		seenRoots[credit.RoundHash], seenCoins[coinKey(coin)] = true, true
-		if coin.Atoms != 0 {
-			coins = append(coins, coin)
-		}
+		seenRoots[credit.RoundHash], seenCoins[coinKey(credit.Coin)] = true, true
 	}
-	lastDay := ""
-	lastTime := int64(0)
 	seenTx := make(map[string]bool)
-	for batchIndex, batch := range s.Batches {
-		if batch.Day <= lastDay || batch.CreatedAtMS <= lastTime || batch.CreatedAtMS > s.LastClockMS || batch.Day != time.UnixMilli(batch.CreatedAtMS).UTC().Format("2006-01-02") || batch.State != "prepared" && batch.State != "broadcast" && batch.State != "confirmed" || batchIndex < len(s.Batches)-1 && batch.State != "confirmed" || len(batch.Inputs) == 0 {
-			return nil, ErrCorrupt
+	for i, batch := range s.Batches {
+		check := replayBatchCheck{Sequence: uint64(i) + 1, DuplicateTx: seenTx[batch.TxID]}
+		if batch.Change != nil {
+			check.DuplicateChange = seenCoins[coinKey(*batch.Change)]
 		}
-		lastDay, lastTime = batch.Day, batch.CreatedAtMS
-		remaining := make([]Coin, 0, len(coins))
-		next := 0
-		for _, coin := range coins {
-			if next < len(batch.Inputs) && coinKey(coin) == coinKey(batch.Inputs[next]) {
-				if !sameValue(coin, batch.Inputs[next]) {
-					return nil, ErrCorrupt
-				}
-				next++
-			} else {
-				remaining = append(remaining, coin)
-			}
+		if err := r.applyBatch(batch, check); err != nil {
+			return nil, err
 		}
-		if next != len(batch.Inputs) {
-			return nil, ErrCorrupt
-		}
-		payments, change, reason, err := plan(batch.Inputs, s.Config, batch.FeeAtoms)
-		if err != nil || reason != "" || !sameValue(payments, batch.Payments) {
-			return nil, ErrCorrupt
-		}
-		if change != nil {
-			change.TxID = batch.TxID
-		}
-		if !sameValue(change, batch.Change) || len(batch.Raw) == 0 || len(batch.Raw) > 2*MaxTransactionBytes {
-			return nil, ErrCorrupt
-		}
-		raw, err := hex.DecodeString(batch.Raw)
-		if err != nil || hex.EncodeToString(raw) != batch.Raw {
-			return nil, ErrCorrupt
-		}
-		txid, err := validateSigned(batch.Inputs, batch.Payments, batch.Change, batch.FeeAtoms, raw)
-		if err != nil || txid != batch.TxID || seenTx[txid] {
-			return nil, ErrCorrupt
-		}
-		seenTx[txid] = true
-		coins = remaining
-		if change != nil {
-			if seenCoins[coinKey(*change)] {
-				return nil, ErrCorrupt
-			}
-			seenCoins[coinKey(*change)] = true
-			coins = append([]Coin{*change}, coins...)
+		seenTx[batch.TxID] = true
+		if batch.Change != nil {
+			seenCoins[coinKey(*batch.Change)] = true
 		}
 	}
-	return coins, nil
+	if err := r.complete(); err != nil {
+		return nil, err
+	}
+	return r.frontier(), nil
 }

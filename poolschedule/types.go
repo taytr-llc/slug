@@ -13,6 +13,7 @@ import (
 )
 
 const Version1 uint32 = 1
+const Version2 uint32 = 2
 const MaxTimeMS int64 = 253402300799999
 const markerName = "SLUG-POOL-SCHEDULE.json"
 const maxMarkerBytes = 2048
@@ -70,6 +71,7 @@ type Status struct {
 
 type Scheduler struct {
 	mu        sync.Mutex
+	daily     bool // immutable explicit constructor selection; never inferred from disk
 	store     *poolsettle.Store
 	files     *scheduleFiles
 	db        *leveldb.DB

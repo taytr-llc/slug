@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "status": "frozen-before-generation",
+  "files": [
+    {
+      "path": "inputs/native84-v1.json",
+      "bytes": 7411,
+      "sha256": "482c9e42ecb154cc0e38fad962cc5df4e08705f933e13cc7f571f0d5bf75ff33"
+    },
+    {
+      "path": "inputs/operator-wallet-v1.json",
+      "bytes": 603047,
+      "sha256": "c1f2d725fcdbc3af7ba1b0a30f4dd4dfc6983352ffb0b4f72d83f7c09ac7b087"
+    },
+    {
+      "path": "inputs/recipe.json",
+      "bytes": 1080,
+      "sha256": "97035d76e3f34f02c7ac0f85969f8f38cc8d9843a1a29ab919fc7181e83907cb"
+    },
+    {
+      "path": "model.py",
+      "bytes": 4751,
+      "sha256": "73f4df0bf7318446cb30ef0d3a17ce62f71b6c43fc3561767e1c98d4668e6a80"
+    }
+  ]
+}

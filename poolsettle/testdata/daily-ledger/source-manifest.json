@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "status": "source-frozen-before-execution",
+  "files": [
+    {
+      "path": "reference.py",
+      "bytes": 16753,
+      "sha256": "1372c8c33e2d57bb739cd8b64013ac032b5400bfb67defd60137ef9c4f85d4e8"
+    },
+    {
+      "path": "PLAN.md",
+      "bytes": 2134,
+      "sha256": "e7d123366f8216c69dde94c8a4bb6282c4c1e008cf9389a71855606bd89bd44e"
+    },
+    {
+      "path": "inputs/CONTRACT.md",
+      "bytes": 20041,
+      "sha256": "fc9165be594d1dad03e6d0d54c574eae1cead5a5d072fdddbbe085d05974eae9"
+    },
+    {
+      "path": "inputs/input-provenance.json",
+      "bytes": 517,
+      "sha256": "9d707e79eb3032c9c6818c684a599e48afb8349c1f1e80bbaf7775485195bcda"
+    },
+    {
+      "path": "inputs/operator-wallet-v1.json",
+      "bytes": 603047,
+      "sha256": "c1f2d725fcdbc3af7ba1b0a30f4dd4dfc6983352ffb0b4f72d83f7c09ac7b087"
+    },
+    {
+      "path": "inputs/recipe.json",
+      "bytes": 915,
+      "sha256": "b0f0cd32af729ef2acaf7e6c915828bff9a57f68409665de43f6d39b93bde286"
+    }
+  ],
+  "execution": "two Python versions; fresh outputs; 30s each; <=8MiB; exact equality; no Go",
+  "predecessor_manifest": "6cc4fdf5c8e004bb767bdd92a7c271fe1912efe37b8a9c40eb2b21a9ffb1b32b",
+  "successor_reason": "Select known credit object so wrong-object-reference cannot be a no-op; failed attempt and predecessor preserved."
+}

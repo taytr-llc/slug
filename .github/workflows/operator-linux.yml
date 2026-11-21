@@ -1,7 +1,7 @@
 name: Operator Linux qualification
 on:
   push:
-    branches: [slug-public-pool-runtime, slug-pool-capacity]
+    branches: [slug-public-pool-runtime, slug-pool-capacity, slug-pool-daily-capacity]
 permissions:
   contents: read
 concurrency:
@@ -19,7 +19,7 @@ jobs:
       GOEXPERIMENT: ''
       GOMAXPROCS: '2'
       SLUG_EXPECTED_CHAIN: ${{ github.sha }}
-      SLUG_EXPECTED_WALLET: 6a69ecfcfc20f5433b5a1ca75e6dbb3a4db725a0
+      SLUG_EXPECTED_WALLET: dfc5d9dd7e0f604486fbac812d0413fce1f45cd6
     steps:
       - name: Exact topic source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -33,7 +33,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           repository: taytr-llc/slugwallet
-          ref: 6a69ecfcfc20f5433b5a1ca75e6dbb3a4db725a0
+          ref: dfc5d9dd7e0f604486fbac812d0413fce1f45cd6
           path: slugwallet
           persist-credentials: false
           fetch-depth: 1

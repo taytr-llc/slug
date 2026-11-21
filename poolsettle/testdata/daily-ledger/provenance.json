@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "source_manifest_sha256": "464911e29e508d6a7c71ab6d628d05b4753d25605631eab52d26e7633ca15ca3",
+  "producer_sha256": "1372c8c33e2d57bb739cd8b64013ac032b5400bfb67defd60137ef9c4f85d4e8",
+  "reference_sha256": "c490b5b918dd155008ff67013c87d708239a17394554f1a8e6eca05053722af5",
+  "reference_bytes": 7765328,
+  "qualified_output": "/Users/taytrrip/slug/artifacts/set76/ledger-reference-attempt2/py314.json",
+  "scope": "independent conditional codec, inverse indices and byte proof; not mined source/funding authority",
+  "predecessor_failure": "artifacts/set76/ledger-reference-attempt1; wrong-object-reference no-op corrected before attempt2"
+}

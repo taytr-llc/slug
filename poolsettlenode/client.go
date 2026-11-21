@@ -32,6 +32,7 @@ var (
 
 type Client struct {
 	config                   Config
+	daily                    bool // immutable constructor-selected evidence profile
 	endpoint, user, password string
 	http                     *http.Client
 	id                       atomic.Uint64
@@ -49,6 +50,16 @@ func (*Client) GoString() string { return "pool settlement node owner" }
 // New retains the original runtime lifetime. No request context or public input
 // can choose another endpoint after creation. Constructor failure joins cleanup.
 func New(life context.Context, config Config, rpc prospectnode.RPCConfig) (*Client, error) {
+	return newClient(life, config, rpc, false)
+}
+
+// NewDaily selects bounded daily-scale node evidence only. It grants no signing
+// authority and does not change Config or the legacy New profile.
+func NewDaily(life context.Context, config Config, rpc prospectnode.RPCConfig) (*Client, error) {
+	return newClient(life, config, rpc, true)
+}
+
+func newClient(life context.Context, config Config, rpc prospectnode.RPCConfig, daily bool) (*Client, error) {
 	if life == nil || ValidateConfig(config) != nil {
 		return nil, ErrInvalid
 	}
@@ -75,7 +86,7 @@ func New(life context.Context, config Config, rpc prospectnode.RPCConfig) (*Clie
 	}
 	tr := &http.Transport{Proxy: nil, DisableKeepAlives: true, DisableCompression: true, MaxResponseHeaderBytes: 65536, TLSClientConfig: tc, TLSHandshakeTimeout: 10 * time.Second, ResponseHeaderTimeout: 10 * time.Second, DialContext: (&net.Dialer{Timeout: 10 * time.Second}).DialContext}
 	owned, cancel := context.WithCancel(life)
-	b := &Client{config: config, endpoint: rpc.URL, user: rpc.Username, password: rpc.Password, life: owned, cancel: cancel, done: make(chan struct{}), http: &http.Client{Transport: tr, Timeout: 10 * time.Second, CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }}}
+	b := &Client{config: config, daily: daily, endpoint: rpc.URL, user: rpc.Username, password: rpc.Password, life: owned, cancel: cancel, done: make(chan struct{}), http: &http.Client{Transport: tr, Timeout: 10 * time.Second, CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }}}
 	ctx, end, err := b.begin(life)
 	if err == nil {
 		_, err = b.snapshot(ctx)
@@ -195,6 +206,12 @@ func (b *Client) Broadcast(ctx context.Context, raw []byte) (string, error) {
 		return "", err
 	}
 	defer end()
+	if b.daily {
+		if len(raw) > b.rawLimit() {
+			return "", ErrUnavailable
+		}
+		raw = append([]byte(nil), raw...)
+	}
 	out, err := b.broadcast(work, raw)
 	if err != nil {
 		return "", err

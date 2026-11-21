@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 
 	"github.com/taytr-llc/slug/chainhash/v2"
+	"github.com/taytr-llc/slug/pooltxshape"
 	"github.com/taytr-llc/slug/txscript/v2"
 	"github.com/taytr-llc/slug/wire/v2"
 )
@@ -28,7 +29,14 @@ func transactionCapacity(inputs, payments int, change bool) bool {
 }
 
 func transaction(inputs []Coin, payments []Payment, change *Coin) (*wire.MsgTx, error) {
-	if len(inputs) == 0 || len(inputs) > MaxInputs || len(payments) == 0 || len(payments) > 256 {
+	return transactionProfile(inputs, payments, change, false)
+}
+func transactionProfile(inputs []Coin, payments []Payment, change *Coin, daily bool) (*wire.MsgTx, error) {
+	cap := MaxInputs
+	if daily {
+		cap = pooltxshape.MaxNativeInputs
+	}
+	if len(inputs) == 0 || len(inputs) > cap || len(payments) == 0 || len(payments) > 256 {
 		return nil, ErrInvalid
 	}
 	tx := wire.NewMsgTx(2)
@@ -68,12 +76,22 @@ func transaction(inputs []Coin, payments []Payment, change *Coin) (*wire.MsgTx, 
 }
 
 func unsignedTransaction(inputs []Coin, payments []Payment, change *Coin) ([]byte, error) {
-	tx, err := transaction(inputs, payments, change)
+	return unsignedTransactionProfile(inputs, payments, change, false)
+}
+func unsignedTransactionProfile(inputs []Coin, payments []Payment, change *Coin, daily bool) ([]byte, error) {
+	limit := MaxTransactionBytes
+	if daily {
+		limit = pooltxshape.MaxStandardWeight
+		if _, e := pooltxshape.NativeP2WPKH(len(inputs), len(payments), change != nil); e != nil {
+			return nil, ErrInvalid
+		}
+	}
+	tx, err := transactionProfile(inputs, payments, change, daily)
 	if err != nil {
 		return nil, err
 	}
 	var raw bytes.Buffer
-	if tx.Serialize(&raw) != nil || raw.Len() > MaxTransactionBytes {
+	if tx.Serialize(&raw) != nil || raw.Len() > limit {
 		return nil, ErrInvalid
 	}
 	return raw.Bytes(), nil
@@ -82,10 +100,17 @@ func unsignedTransaction(inputs []Coin, payments []Payment, change *Coin) ([]byt
 // validateSigned checks the actual retained witness bytes. Signing callbacks
 // cannot change destinations, inputs, fees, locktime, sequence or sighash mode.
 func validateSigned(inputs []Coin, payments []Payment, change *Coin, fee int64, raw []byte) (string, error) {
-	if fee < 0 || fee > MaxMoney || len(raw) == 0 || len(raw) > MaxTransactionBytes {
+	return validateSignedProfile(inputs, payments, change, fee, raw, false)
+}
+func validateSignedProfile(inputs []Coin, payments []Payment, change *Coin, fee int64, raw []byte, daily bool) (string, error) {
+	limit := MaxTransactionBytes
+	if daily {
+		limit = pooltxshape.MaxStandardWeight
+	}
+	if fee < 0 || fee > MaxMoney || len(raw) == 0 || len(raw) > limit {
 		return "", ErrInvalid
 	}
-	expected, err := transaction(inputs, payments, change)
+	expected, err := transactionProfile(inputs, payments, change, daily)
 	if err != nil {
 		return "", err
 	}
@@ -97,6 +122,12 @@ func validateSigned(inputs []Coin, payments []Payment, change *Coin, fee int64, 
 	var canonical bytes.Buffer
 	if tx.Serialize(&canonical) != nil || !bytes.Equal(canonical.Bytes(), raw) {
 		return "", ErrInvalid
+	}
+	if daily {
+		shape, e := pooltxshape.NativeP2WPKH(len(inputs), len(payments), change != nil)
+		if e != nil || int64(tx.SerializeSizeStripped()) != shape.StrippedBytes || int64(len(raw)) > shape.RawBytes || 3*shape.StrippedBytes+int64(len(raw)) > pooltxshape.MaxStandardWeight {
+			return "", ErrInvalid
+		}
 	}
 	var inTotal, outTotal int64
 	fetcher := txscript.NewMultiPrevOutFetcher(nil)

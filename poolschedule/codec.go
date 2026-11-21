@@ -17,7 +17,10 @@ func identifier(s string) bool {
 	return e == nil && hex.EncodeToString(raw) == s
 }
 func validConfig(c Config) bool {
-	return c.Version == Version1 && identifier(c.SchedulerID) && identifier(c.RuntimeID) && identifier(c.SettlementBindingID) && c.DailyUTCMinute <= 1439 && c.RetryMS >= 1000 && c.RetryMS <= 3600000
+	return validConfigSelected(c, Version1)
+}
+func validConfigSelected(c Config, selected uint32) bool {
+	return (selected == Version1 || selected == Version2) && c.Version == selected && identifier(c.SchedulerID) && identifier(c.RuntimeID) && identifier(c.SettlementBindingID) && c.DailyUTCMinute <= 1439 && c.RetryMS >= 1000 && c.RetryMS <= 3600000
 }
 func date(ms int64) string { return time.UnixMilli(ms).UTC().Format("2006-01-02") }
 func validDay(s string) bool {
@@ -45,7 +48,10 @@ func validError(s string) bool {
 	return false
 }
 func validState(s State) bool {
-	if s.Version != Version1 || !validConfig(s.Config) || s.Revision == 0 || s.LastClockMS < 1 || s.LastClockMS > MaxTimeMS {
+	return validStateSelected(s, Version1)
+}
+func validStateSelected(s State, selected uint32) bool {
+	if s.Version != selected || !validConfigSelected(s.Config, selected) || s.Revision == 0 || s.LastClockMS < 1 || s.LastClockMS > MaxTimeMS {
 		return false
 	}
 	if s.DailyCursor != "" && (!validDay(s.DailyCursor) || s.DailyCursor > date(s.LastClockMS)) {
@@ -176,7 +182,10 @@ func boundedJSON(raw []byte, max int, out any) error {
 	return nil
 }
 func encodeMarker(c Config) ([]byte, error) {
-	if !validConfig(c) {
+	return encodeMarkerSelected(c, Version1)
+}
+func encodeMarkerSelected(c Config, selected uint32) ([]byte, error) {
+	if !validConfigSelected(c, selected) {
 		return nil, ErrInvalid
 	}
 	raw, e := json.Marshal(c)
@@ -186,14 +195,20 @@ func encodeMarker(c Config) ([]byte, error) {
 	return append(raw, '\n'), nil
 }
 func decodeMarker(raw []byte) (Config, error) {
+	return decodeMarkerSelected(raw, Version1)
+}
+func decodeMarkerSelected(raw []byte, selected uint32) (Config, error) {
 	var c Config
-	if len(raw) == 0 || len(raw) > maxMarkerBytes || raw[len(raw)-1] != '\n' || boundedJSON(raw[:len(raw)-1], maxMarkerBytes-1, &c) != nil || !validConfig(c) {
+	if len(raw) == 0 || len(raw) > maxMarkerBytes || raw[len(raw)-1] != '\n' || boundedJSON(raw[:len(raw)-1], maxMarkerBytes-1, &c) != nil || !validConfigSelected(c, selected) {
 		return Config{}, ErrInvalid
 	}
 	return c, nil
 }
 func encodeState(s State) ([]byte, error) {
-	if !validState(s) {
+	return encodeStateSelected(s, Version1)
+}
+func encodeStateSelected(s State, selected uint32) ([]byte, error) {
+	if !validStateSelected(s, selected) {
 		return nil, ErrInvalid
 	}
 	raw, e := json.Marshal(s)
@@ -203,8 +218,11 @@ func encodeState(s State) ([]byte, error) {
 	return raw, nil
 }
 func decodeState(raw []byte) (State, error) {
+	return decodeStateSelected(raw, Version1)
+}
+func decodeStateSelected(raw []byte, selected uint32) (State, error) {
 	var s State
-	if boundedJSON(raw, maxStateBytes, &s) != nil || !validState(s) {
+	if boundedJSON(raw, maxStateBytes, &s) != nil || !validStateSelected(s, selected) {
 		return State{}, ErrInvalid
 	}
 	return s, nil

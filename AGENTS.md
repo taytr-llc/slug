@@ -418,6 +418,29 @@ authorization must be repository-limited, not an account-wide OAuth expansion.
   explicit durable adoption/append history, preserved old-job recovery and
   full-intake restart acceptance before public host qualification. See
   `POOL_CAPACITY_CONTINUATION.md` and `CHANGESET_75_NOTES.md`.
+- Set76 adds a fresh, explicitly selected V2 daily foundation across source,
+  rounds, indexed settlement, schema16 custody, node evidence and scheduling.
+  Old V1 constructors, pins and roots stay strict; no migration or automatic
+  adoption is implemented. Source2 still has finite lifetime caps: 8,192 works
+  and 16,384 receipts. Daily settlement has 16,384 credits and 32,767 batches.
+  Preserve one original Store/backend capability, exact pending bytes, global
+  duplicate guards and D84 whole-payout deferral. Node/signing operation limits
+  remain unchanged in time; the daily transaction must fit standard weight.
+  Component normal/race/profile/vet checks pass; the complete ledger/scheduler
+  suites pass 71 top-level tests per mode. The 17-target build/full operator
+  normal/race closeout and normal-PoW seed smoke/restart pass. Actual attempt3
+  passes the 721-input/64-payee financial proof in-process; its owner reopen
+  retains the wire hash cache and is not fresh-process replay evidence.
+  Fresh-process attempt4 passes with a 142.534-second cold source audit, exact
+  A/B recovery and no additional broadcast; all owners and nodes join cleanly.
+  Exact-tip CI is tracked separately. The isolated proof does not model
+  continuous mining by 64 miners, ordinary share traffic
+  or job refresh/expiry. Do not treat it as public readiness. Explicit V2 public
+  transport/operator/native integration, signed-authority capacity, original
+  late-winner recovery at V2 intake boundaries, durable continuation and hosted
+  scheduled operation remain gates. Never silently enlarge a signed profile or
+  repin an old wallet. See `CHANGESET_76_NOTES.md` and
+  `POOL_CAPACITY_CONTINUATION.md`; sign-in follows public pool work and D74 is last.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

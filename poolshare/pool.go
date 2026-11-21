@@ -22,7 +22,8 @@ import (
 // issuer read may run in do. The original token is never replaced after reset.
 type poolSession struct {
 	lease   *mininglease.Lease
-	effects bool // issued work, retained share, or attempted block transmission
+	ctx     context.Context // original bounded operation; never a replacement
+	effects bool            // issued work, retained share, or attempted block transmission
 }
 
 func poolLeaseError(err error) error {
@@ -52,8 +53,11 @@ func (p *Pool) sessionClock(s *poolSession) (int64, error) {
 func (p *Pool) sessionSubmission(s *poolSession, job prospectjob.ManifestJob, r Submission, previous *Submission) (Submission, error) {
 	// The issuer may be serving a long historical proof read. Wait only while
 	// the account gate is free, and preserve the previous exact-job health check.
-	actual, err := p.authority.GetManifestJob(job.ID)
-	if err != nil || actual != job {
+	actual, err := p.originalJob(s.ctx, job.ID)
+	if err != nil {
+		return Submission{}, p.sourceReadError(s.ctx, err)
+	}
+	if actual != job {
 		return Submission{}, ErrCorrupt
 	}
 	var saved Submission
@@ -111,7 +115,7 @@ func (p *Pool) withSession(ctx context.Context, token string, fn func(context.Co
 	if _, err := gymauth.GymID(identity, key); err != nil {
 		return ErrUnauthorized
 	}
-	session := &poolSession{lease: lease}
+	session := &poolSession{lease: lease, ctx: ctx}
 	err = fn(ctx, key, session)
 	if (err == ErrCapacity || err == registry.ErrPublicCapacity) && p.operatorAdmission != nil {
 		p.operatorAdmission.draining = true
@@ -145,8 +149,11 @@ func (p *Pool) issue(ctx context.Context, token string) (savedWork, Work, error)
 		if err := p.operatorIntake(); err != nil {
 			return err
 		}
-		info, err := p.authority.Info()
-		if err != nil || info.Pin != p.config.AuthorityPin || info.ReadOnly {
+		info, err := p.originalInfo(ctx)
+		if err != nil {
+			return p.sourceReadError(ctx, err)
+		}
+		if info.Pin != p.config.AuthorityPin || info.ReadOnly {
 			return ErrCorrupt
 		}
 		if info.Jobs >= p.config.MaxWorks || p.meta.Works >= p.config.MaxWorks || p.meta.Submissions >= p.config.MaxSubmissions || maxSubmissionSize >= p.config.MaxBytes-p.meta.Bytes {
@@ -195,7 +202,7 @@ func (p *Pool) issue(ctx context.Context, token string) (savedWork, Work, error)
 			return err
 		}
 		w := savedWork{Job: job, Template: owned}
-		prepared, err := p.prepare(w)
+		prepared, err := p.prepareContext(ctx, w)
 		if err != nil {
 			return err
 		}
@@ -206,7 +213,7 @@ func (p *Pool) issue(ctx context.Context, token string) (savedWork, Work, error)
 		if p.node.RecheckContext(ctx, job.Context) != nil {
 			return ErrNode
 		}
-		if _, err := p.prepare(w); err != nil {
+		if _, err := p.prepareContext(ctx, w); err != nil {
 			return err
 		}
 		if err := session.do(func(check func() error) error { return p.saveWork(w, check) }); err != nil {
@@ -227,7 +234,7 @@ func (p *Pool) issue(ctx context.Context, token string) (savedWork, Work, error)
 func (p *Pool) Work(ctx context.Context, token, jobID string) (Work, error) {
 	var result Work
 	err := p.withSession(ctx, token, func(ctx context.Context, key string, session *poolSession) error {
-		w, prepared, err := p.loadWork(jobID)
+		w, prepared, err := p.loadWorkContext(ctx, jobID)
 		if err != nil {
 			return err
 		}
@@ -248,7 +255,7 @@ func (p *Pool) Work(ctx context.Context, token, jobID string) (Work, error) {
 func (p *Pool) Lookup(ctx context.Context, token, jobID string, nonce uint32) (Submission, error) {
 	var result Submission
 	err := p.withSession(ctx, token, func(ctx context.Context, key string, session *poolSession) error {
-		w, prepared, err := p.loadWork(jobID)
+		w, prepared, err := p.loadWorkContext(ctx, jobID)
 		if err != nil {
 			return err
 		}
@@ -278,7 +285,7 @@ func (p *Pool) Lookup(ctx context.Context, token, jobID string, nonce uint32) (S
 func (p *Pool) Submit(ctx context.Context, token, jobID string, nonce uint32) (Submission, error) {
 	var result Submission
 	err := p.withSession(ctx, token, func(ctx context.Context, key string, session *poolSession) error {
-		w, prepared, err := p.loadWork(jobID)
+		w, prepared, err := p.loadWorkContext(ctx, jobID)
 		if err != nil {
 			return err
 		}
@@ -355,6 +362,9 @@ func (p *Pool) Submit(ctx context.Context, token, jobID string, nonce uint32) (S
 		}
 		r, err = p.sessionSubmission(session, w.Job, r, nil)
 		if err != nil {
+			return err
+		}
+		if err := p.rememberRetainedNonce(ctx, w, check); err != nil {
 			return err
 		}
 		result, err = p.deliver(ctx, w, r, check, session)
