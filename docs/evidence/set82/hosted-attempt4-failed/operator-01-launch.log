@@ -1,0 +1,12 @@
+{"service": "dedabe18-acd1-4dfe-a775-8bd02f799717", "started": 1795283307.1275818, "elapsed": 115.60635614395142, "exit_code": 1, "output": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/operator-01-start.txt"}
+Traceback (most recent call last):
+  File "/Users/taytrrip/slug/set82-prep/hosted-actual-4/operator-control.py", line 51, in <module>
+    ssh('operator-'+a.generation+'-'+a.action+'.txt','exec '+shlex.join(args),1080 if a.action=='start' else 45)
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/taytrrip/slug/set82-prep/hosted-actual-4/operator-control.py", line 40, in ssh
+    subprocess.run(cmd,check=True,timeout=limit+5)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/lib/python3.14/subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['python3', '/Users/taytrrip/slug/set82-prep/hosted-actual-4/host-command.py', '--service', 'pool', '--output', '/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/operator-01-start.txt', '--timeout', '1080', '--', '/bin/su', '-s', '/bin/sh', '-c', 'exec /usr/local/bin/host-operator-lifecycle-4 run 01 1795284181 b95e7bbb9fda98aa573b7061661bcb727040d3cbd0e9224a134448bf9762b69c 86a3bfa7cb07951e83eaca6df346a4be8bebe72df30d779705c83f7f8ac3a85f', 'slug']' returned non-zero exit status 1.
