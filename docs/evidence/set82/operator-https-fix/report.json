@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "scope": "operator-only explicit-CA HTTPS guard; hosted successor remains required",
+  "predecessor_product": "138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c",
+  "checks": {
+    "pre-fix": {
+      "outcome": "fail",
+      "test_passes": 0,
+      "skips": [],
+      "elapsed": 0.437
+    },
+    "focused": {
+      "outcome": "pass",
+      "test_passes": 18,
+      "skips": [],
+      "elapsed": 0.527
+    },
+    "normal": {
+      "outcome": "pass",
+      "test_passes": 205,
+      "skips": [],
+      "elapsed": 7.176
+    },
+    "race": {
+      "outcome": "pass",
+      "test_passes": 205,
+      "skips": [],
+      "elapsed": 16.599
+    },
+    "vet": {
+      "passed": true,
+      "first_wrapper_attempt": "unsupported subcommand, preserved; direct go vet successor exited0"
+    },
+    "cheap_profile_refusal": {
+      "passed": true
+    }
+  },
+  "sources": {
+    "fighterownership/chain_source.go": "ae8c88dff07490b4ce863f1b569b7540cc2fef4ed7b36c3872ba553eef6b5d00",
+    "fighterownership/operator_chain_https_test.go": "800de7ceb7a0bec522072bbd379b8c08c92336c6eb2d6e6031ea398d332754e1"
+  }
+}

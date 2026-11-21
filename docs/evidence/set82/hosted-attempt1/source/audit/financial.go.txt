@@ -1,0 +1,111 @@
+package main
+
+import (
+	"bytes"
+	"encoding/hex"
+	"reflect"
+	"strings"
+
+	"github.com/taytr-llc/slug/chainhash/v2"
+	"github.com/taytr-llc/slug/desktop/pooloperator"
+	"github.com/taytr-llc/slug/poolsettle"
+	"github.com/taytr-llc/slug/wire/v2"
+)
+
+const minerAtoms int64 = 1980000000
+const feeAtoms int64 = 209
+const changeAtoms int64 = 19999791
+
+// These fixed two-reward expectations come from reference17557 and the approved
+// normal height2->62 bootstrap, not a newly observed product result.
+func verifyFinancial(a attachmentOperatorAudit, s pooloperator.Setup, delivery string) {
+	require(a.ReadOnlyUnchanged && reflect.DeepEqual(a.PublicFilesBefore, a.PublicFilesAfter), "complete readonly public audit")
+	require(a.Submissions == 2 && a.Accepted == 2 && len(a.Entries) == 2 && len(a.Rounds) == 2 && len(a.Credits) == 2, "exact two rewards and credits")
+	require(a.Works > 0 && a.Works <= s.Pool.MaxWorks && a.AuthorityJobs >= a.Works && a.Births == uint64(len(a.Admissions)), "original source/issuer inventory")
+	require(a.Header.Batches == 1 && a.Header.Credits == 2 && a.Header.Events == 3 && a.Delivery == delivery, "one original batch and exact delivery")
+	require(a.Header.ConfigID == s.WalletGuard.SettlementConfigID && a.Header.SourceID == s.WalletGuard.SourceBindingID, "unchanged financial owner IDs")
+	require(len(s.Settlement.Destinations) == 2 && len(s.Miners.Enrollments) == 2, "two original gyms")
+	payee := s.Miners.Enrollments[0]
+	require(a.Body.Version == 2 && a.Body.Sequence == 1 && a.Body.FeeAtoms == feeAtoms && len(a.Body.Inputs) == 2 && len(a.Body.Payments) == 1 && a.Body.Payments[0].GymID == payee.GymID && a.Body.Payments[0].Script == payee.PayeeScript && a.Body.Payments[0].Atoms == minerAtoms, "one original miner payment")
+	require(a.Body.Change != nil && a.Body.Change.Index == 1 && a.Body.Change.Atoms == changeAtoms && a.Body.Change.Script == s.Settlement.ChangeScript && a.Body.Change.ClaimCount == 2, "original operator fee and change")
+	require(a.BodyBytes > 0 && a.BodySHA256 == a.PublicRows["settlement/"+hx(auditKey("b/", 1))], "immutable body hash")
+	roundHashes := map[string]uint32{}
+	heights := map[uint32]bool{}
+	for _, r := range a.Rounds {
+		require(r.Confirmation != nil && r.Confirmation.Canonical && r.Round.RewardAtoms == 1000000000 && len(r.Round.ShareKeys) == 1 && len(r.Round.Allocations) == 1 && r.Round.Allocations[0].GymID == payee.GymID, "one canonical winner per round")
+		h := r.Round.BlockHeight
+		require((h == 63 || h == 64) && !heights[h] && r.Round.BlockHash != "", "host normal bootstrap reward heights")
+		heights[h] = true
+		roundHashes[r.Round.BlockHash] = h
+	}
+	require(len(roundHashes) == 2, "distinct original rounds")
+	inputs := map[wire.OutPoint]bool{}
+	for _, c := range a.Credits {
+		require(c.Coin.Coinbase && c.Coin.Atoms == 1000000000 && c.Coin.Script == s.Settlement.ChangeScript && len(c.Coin.Claims) == 2 && roundHashes[c.RoundHash] == c.Coin.BlockHeight && c.Coin.BlockHash == c.RoundHash, "credit original round provenance")
+		expected := map[string]string{payee.GymID: "990000000", "": "10000000"}
+		for _, claim := range c.Coin.Claims {
+			require(claim.RoundHash == c.RoundHash && claim.Amount.Denominator == "1" && expected[claim.GymID] == claim.Amount.Numerator, "independent 99/1 claims")
+			delete(expected, claim.GymID)
+		}
+		require(len(expected) == 0, "complete credit claims")
+		hash, e := chainhash.NewHashFromStr(c.Coin.TxID)
+		check(e, "original credit txid")
+		key := wire.OutPoint{Hash: *hash, Index: c.Coin.Index}
+		require(!inputs[key], "unique credit outpoint")
+		inputs[key] = true
+	}
+	raw, e := hex.DecodeString(a.Body.Raw)
+	check(e, "signed public raw")
+	require(len(raw) > 0 && len(raw) <= 400000 && hx(raw) == a.Body.Raw, "bounded canonical raw")
+	reader := bytes.NewReader(raw)
+	var tx wire.MsgTx
+	check(tx.Deserialize(reader), "signed transaction decode")
+	require(reader.Len() == 0 && tx.TxHash().String() == a.Body.TxID && len(tx.TxIn) == 2 && len(tx.TxOut) == 2, "exact signed transaction shape")
+	seen := map[wire.OutPoint]bool{}
+	for i, in := range tx.TxIn {
+		require(inputs[in.PreviousOutPoint] && !seen[in.PreviousOutPoint] && len(in.Witness) > 0, "original unique funding input")
+		require(a.Body.Inputs[i].TxID == in.PreviousOutPoint.Hash.String() && a.Body.Inputs[i].Index == in.PreviousOutPoint.Index, "stored original input order")
+		seen[in.PreviousOutPoint] = true
+	}
+	require(len(seen) == 2 && hx(tx.TxOut[0].PkScript) == s.Settlement.Destinations[0].Script && tx.TxOut[0].Value == minerAtoms && hx(tx.TxOut[1].PkScript) == s.Settlement.ChangeScript && tx.TxOut[1].Value == changeAtoms && 2000000000-minerAtoms-changeAtoms == feeAtoms, "exact two outputs and fee")
+	require(len(a.Report.Balances) == 2, "complete balance inventory")
+	pending := delivery != "confirmed"
+	if pending {
+		require(a.Header.PendingBatch == 1, "original reservation retained")
+	} else {
+		require(a.Header.PendingBatch == 0, "confirmed reservation released")
+	}
+	for i, b := range a.Report.Balances {
+		require(b.GymID == s.Settlement.Destinations[i].GymID, "original balance order")
+		paid, reserved := int64(0), int64(0)
+		confirmed := "0"
+		if i == 0 {
+			if pending {
+				reserved = minerAtoms
+				confirmed = "1980000000"
+			} else {
+				paid = minerAtoms
+			}
+		}
+		require(b.PaidAtoms == paid && b.ReservedAtoms == reserved && b.Confirmed == (poolsettle.Fraction{Numerator: confirmed, Denominator: "1"}), "exact cumulative paid and reserved atoms")
+	}
+}
+
+func immutableSettlementRows(a attachmentOperatorAudit) map[string]string {
+	out := map[string]string{}
+	for key, hash := range a.PublicRows {
+		if !strings.HasPrefix(key, "settlement/") {
+			continue
+		}
+		raw, e := hex.DecodeString(strings.TrimPrefix(key, "settlement/"))
+		check(e, "public settlement key")
+		// Existing mutable observation/control rows only. All credits, events, body,
+		// indexes, change/provenance rows remain in the complete equality comparison.
+		if bytes.Equal(raw, []byte("head")) || bytes.Equal(raw, []byte("report")) || (len(raw) == 11 && bytes.HasPrefix(raw, []byte("bs/"))) {
+			continue
+		}
+		out[key] = hash
+	}
+	require(len(out) > 0, "complete immutable settlement rows")
+	return out
+}

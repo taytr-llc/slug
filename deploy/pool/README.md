@@ -93,7 +93,20 @@ docker run --name slug-operator-bounded "${container_options[@]}" \
 
 Bind the image by its recorded digest for execution. Port values must match the selected public transport and ingress listen configuration. Publish only ingress. Keep pool/admission/ownership upstreams on their configured literal loopback endpoints. The operator terminates its own TLS1.3/HTTP1.1 and verifies Host/SNI/certificate selection; use raw TCP forwarding. An HTTP edge that terminates TLS or inserts forwarded-identity headers is not a compatible substitute. No `$PORT` override or automatic repinning is introduced.
 
-Prefer a separately managed node with verified HTTPS RPC on its private hostname. `prospectnode.ParseRPCConfig` allows HTTPS with system roots or the explicitly selected CA; plain HTTP requires a literal loopback IP, so a private DNS name over HTTP is refused. The same endpoint rules apply to the daily funding client; the concrete schema16 backend adds binding checks, not a loopback-only restriction. Node RPC remains private and authenticated. `slugpoold` does not launch or supervise a node. This package has no same-container supervision or seed replacement.
+Use a separately managed node with verified HTTPS RPC on its private hostname
+and an explicit CA in the protected RPC configuration. The operator ownership
+reader requires that explicit CA for every non-loopback endpoint; normal TLS
+hostname verification and network/genesis checks still apply. Plain HTTP is
+limited to literal loopback IPs. The desktop ownership reader retains its
+loopback-only rule. Node RPC remains private and authenticated. `slugpoold`
+does not launch or supervise a node.
+
+The original `138553b1` image failed hosted initialization because the operator
+ownership reader still inherited the desktop address restriction. The scoped
+correction and real TLS regression checks are recorded in
+[Set82's evidence](../../docs/evidence/set82/operator-https-fix/report.json).
+The first hosted failure is retained separately; the corrected image needs its
+own hosted payment proof.
 
 Consume stdout continuously and retain public logs; blocked output is an error. PID1 is the original operator process, so SIGTERM reaches its existing joined shutdown. The180s container stop grace is a proposed supervisor allowance, not a product deadline extension or a promise of clean shutdown. Prove it on the selected host. Preserve containers/logs and all persistent roots on failure; do not auto-reset or restart uncertain owners. Local `status`, `rotate`, `revoke` and `checkpoint` commands need the original runtime stopped and exclusively available; a parallel `status` container is not a live health check. Use existing serve status plus authenticated service observations for the bounded test.
 

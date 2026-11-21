@@ -1,0 +1,191 @@
+{
+  "version": 1,
+  "passed": false,
+  "phase": "original standalone operator init",
+  "error": "original init outcome_unknown; deterministic operator chain source rejects selected non-loopback private HTTPS URL",
+  "init_exit": 1,
+  "miner_started": false,
+  "rotations_started": false,
+  "pool_serve_started": false,
+  "new_shares_submitted": 0,
+  "payout_test_started": false,
+  "root_reinitialized": false,
+  "original_due_preserved": true,
+  "operator_process_absent_after_exit": true,
+  "runtime_children": [
+    "SLUG-POOL-OPERATOR-ISSUE1.json"
+  ],
+  "ready_present": false,
+  "source_checks": [
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/host-command.py",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/advance-local.py",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/fetch-selection.py",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/prepare-attempt.py",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/operator-control.py",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/client-control.py",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/ACCEPTANCE.md",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/expectations.json",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/check-selection.py",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/lifecycle/operator-lifecycle.sh",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/client-flow/run-client.py",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/client-flow/credentials.py",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/preparer/files.go",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/preparer/main.go",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/preparer/selection.go",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/preparer/tls.go",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/preparer/go.mod",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/audit/financial.go",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/audit/main.go",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/audit/operator_audit.go",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/audit/support.go",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/audit/go.mod",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/client/main.go",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/client/go.mod",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/bindings.go",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/chain.go",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/common.go",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/main.go",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/money.go",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/outbox_audit.go",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/replay.go",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/go.mod",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/node/certs.go",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/node/main.go",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/node/relay.go",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/node/relay_test.go",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/node/go.mod",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/proofclient-native-attempt1/slug-host-proof",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/client-native-attempt1/slug-host-client",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/client-binaries-attempt1/slugpilot",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/client-binaries-attempt1/slugd",
+      "unchanged": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/node-client-build-attempt1/slug-node-fixture",
+      "unchanged": true
+    }
+  ],
+  "ended_ms": 1795280915467,
+  "scope": "Failed timed attempt; isolated normal node/bridge infrastructure retained for continued authorized work"
+}

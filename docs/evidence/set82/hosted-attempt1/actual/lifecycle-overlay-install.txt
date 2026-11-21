@@ -1,0 +1,2 @@
+0:0:555
+c3ff7087f1060ae4b28986a45ae7afb367c3911310b979f8e5237b0b518f2997  /usr/local/bin/host-operator-lifecycle

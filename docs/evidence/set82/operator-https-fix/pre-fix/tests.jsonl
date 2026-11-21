@@ -1,0 +1,9 @@
+{"Time":"2026-11-21T09:11:52.099161-08:00","Action":"start","Package":"github.com/taytr-llc/slug/fighterownership"}
+{"Time":"2026-11-21T09:11:52.527611-08:00","Action":"run","Package":"github.com/taytr-llc/slug/fighterownership","Test":"TestOperatorOwnedChainSourceExplicitHTTPS"}
+{"Time":"2026-11-21T09:11:52.527744-08:00","Action":"output","Package":"github.com/taytr-llc/slug/fighterownership","Test":"TestOperatorOwnedChainSourceExplicitHTTPS","Output":"=== RUN   TestOperatorOwnedChainSourceExplicitHTTPS\n","OutputType":"frame"}
+{"Time":"2026-11-21T09:11:52.53543-08:00","Action":"output","Package":"github.com/taytr-llc/slug/fighterownership","Test":"TestOperatorOwnedChainSourceExplicitHTTPS","Output":"    operator_chain_https_test.go:158: operator HTTPS with original explicit CA and verified DNS identity public ownership source mismatch\n","OutputType":"error"}
+{"Time":"2026-11-21T09:11:52.535599-08:00","Action":"output","Package":"github.com/taytr-llc/slug/fighterownership","Test":"TestOperatorOwnedChainSourceExplicitHTTPS","Output":"--- FAIL: TestOperatorOwnedChainSourceExplicitHTTPS (0.01s)\n","OutputType":"frame"}
+{"Time":"2026-11-21T09:11:52.53562-08:00","Action":"fail","Package":"github.com/taytr-llc/slug/fighterownership","Test":"TestOperatorOwnedChainSourceExplicitHTTPS","Elapsed":0.01}
+{"Time":"2026-11-21T09:11:52.53566-08:00","Action":"output","Package":"github.com/taytr-llc/slug/fighterownership","Output":"FAIL\n","OutputType":"frame"}
+{"Time":"2026-11-21T09:11:52.53657-08:00","Action":"output","Package":"github.com/taytr-llc/slug/fighterownership","Output":"FAIL\tgithub.com/taytr-llc/slug/fighterownership\t0.437s\n","OutputType":"frame"}
+{"Time":"2026-11-21T09:11:52.53661-08:00","Action":"fail","Package":"github.com/taytr-llc/slug/fighterownership","Elapsed":0.437}

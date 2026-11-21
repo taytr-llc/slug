@@ -1,0 +1,197 @@
+// A stopped-only hosted fixture audit. It never opens custody/wallet16, uses a
+// node, signs, issues work, runs the operator, or changes a public store.
+package main
+
+import (
+	"bytes"
+	"context"
+	"encoding/json"
+	"errors"
+	"flag"
+	"fmt"
+	"io"
+	"os"
+	"os/signal"
+	"path/filepath"
+	"reflect"
+	"syscall"
+	"time"
+
+	"github.com/taytr-llc/slug/desktop/pooloperator"
+	"github.com/taytr-llc/slug/registry"
+	"github.com/taytr-llc/slug/wire/v2"
+)
+
+const referenceSHA = "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a"
+const outputLimit = 16 << 20
+
+type economics struct {
+	AcceptedRewards int   `json:"accepted_rewards"`
+	Credits         int   `json:"credits"`
+	Batches         int   `json:"batches"`
+	InputCount      int   `json:"input_count"`
+	OutputCount     int   `json:"output_count"`
+	GrossAtoms      int64 `json:"gross_atoms"`
+	MinerAtoms      int64 `json:"miner_atoms"`
+	FeeAtoms        int64 `json:"fee_atoms"`
+	ChangeAtoms     int64 `json:"change_atoms"`
+}
+type selectedReference struct {
+	Version                 uint32
+	Setup                   pooloperator.RecoverableDailySetup
+	SetupID                 string    `json:"setup_id"`
+	RequiredAcceptedRewards int       `json:"required_accepted_rewards"`
+	SelectedEconomics       economics `json:"selected_economics"`
+}
+type readyRecord struct {
+	Version        uint32 `json:"version"`
+	RuntimeID      string `json:"runtime_id"`
+	SetupID        string `json:"setup_id"`
+	IssueProfileID string `json:"issue_profile_id"`
+}
+type options struct{ root, setupID, delivery, reference, compare string }
+type result struct {
+	Version                           uint32                  `json:"version"`
+	Scope                             string                  `json:"scope"`
+	Root                              string                  `json:"root"`
+	PID                               int                     `json:"pid"`
+	StartedAtMS                       int64                   `json:"started_at_ms"`
+	EndedAtMS                         int64                   `json:"ended_at_ms"`
+	ReferenceSHA256                   string                  `json:"reference_sha256"`
+	SetupID                           string                  `json:"setup_id"`
+	SetupSHA256                       string                  `json:"setup_sha256"`
+	Delivery                          string                  `json:"delivery"`
+	OriginalRootLockAcquired          bool                    `json:"original_root_lock_acquired"`
+	OriginalRootLockClosed            bool                    `json:"original_root_lock_closed"`
+	SelectedInputsUnchanged           bool                    `json:"selected_inputs_unchanged"`
+	Compared                          bool                    `json:"compared"`
+	PriorSHA256                       string                  `json:"prior_sha256"`
+	ImmutableBatchAndCreditsUnchanged bool                    `json:"immutable_batch_and_credits_unchanged"`
+	Audit                             attachmentOperatorAudit `json:"audit"`
+	Error                             string                  `json:"error"`
+	Passed                            bool                    `json:"passed"`
+}
+
+func execute(parent context.Context, o options) (out result, err error) {
+	out = result{Version: 1, Scope: "Stopped original hosted operator public audit only; no live chain or wallet observation", Root: o.root, PID: os.Getpid(), StartedAtMS: time.Now().UTC().UnixMilli(), ReferenceSHA256: referenceSHA, SetupID: o.setupID, Delivery: o.delivery}
+	defer func() {
+		if p := recover(); p != nil {
+			err = errors.Join(err, fmt.Errorf("%v", p))
+		}
+		out.EndedAtMS = time.Now().UTC().UnixMilli()
+		if err != nil {
+			out.Error = err.Error()
+		}
+		out.Passed = err == nil && out.OriginalRootLockAcquired && out.OriginalRootLockClosed && out.SelectedInputsUnchanged && out.Audit.ReadOnlyUnchanged
+	}()
+	require(!wire.TestPoW, "normal PoW required")
+	require(o.delivery == "prepared" || o.delivery == "broadcast" || o.delivery == "confirmed", "selected delivery state")
+	ctx, cancel := context.WithTimeout(parent, 30*time.Second)
+	defer cancel()
+	check(ctx.Err(), "audit context")
+	var lock *rootLock
+	defer func() {
+		if lock != nil {
+			ve := lock.verify()
+			ce := lock.close()
+			out.OriginalRootLockClosed = ce == nil
+			err = errors.Join(err, ve, ce)
+		}
+	}()
+	lock = lockOperator(o.root)
+	out.OriginalRootLockAcquired = true
+	inputRaw := map[string][]byte{}
+	capture := func(path string, limit int64) []byte { raw := readBound(path, limit); inputRaw[path] = raw; return raw }
+	raw := capture(o.reference, 174293)
+	require(len(raw) == 174293 && hx(digest(raw)) == referenceSHA, "independent reference identity")
+	var ref selectedReference
+	check(json.Unmarshal(raw, &ref), "qualified reference projection")
+	check(pooloperator.ValidateRecoverableDailySetup(ref.Setup), "qualified reference setup")
+	refID, e := pooloperator.RecoverableDailySetupID(ref.Setup)
+	check(e, "reference ID")
+	require(ref.Version == 1 && ref.SetupID == refID && ref.RequiredAcceptedRewards == 2 && ref.SelectedEconomics == (economics{2, 2, 1, 2, 2, 2000000000, minerAtoms, feeAtoms, changeAtoms}), "independent exact fixture economics")
+	setupPath := filepath.Join(o.root, "public", "setup.json")
+	setupRaw := capture(setupPath, pooloperator.MaxRecoverableSetupBytes)
+	selected, e := pooloperator.ParseRecoverableDailySetup(setupRaw)
+	check(e, "original public setup")
+	id, e := pooloperator.RecoverableDailySetupID(selected)
+	check(e, "selected setup ID")
+	require(id == o.setupID, "explicit expected hosted setup")
+	normalized := selected.Base
+	normalized.Ingress = ref.Setup.Base.Ingress
+	normalized.Schedule.DailyUTCMinute = ref.Setup.Base.Schedule.DailyUTCMinute
+	require(reflect.DeepEqual(normalized, ref.Setup.Base), "only admitted host transport and schedule may differ")
+	out.SetupSHA256 = hx(digest(setupRaw))
+	pid, e := registry.IssueProfileID(selected.IssueProfile)
+	check(e, "selected issue profile")
+	intentPath := filepath.Join(o.root, "operator", "SLUG-POOL-OPERATOR-ISSUE1.json")
+	readyPath := filepath.Join(o.root, "operator", "SLUG-POOL-OPERATOR-READY-ISSUE1.json")
+	require(bytes.Equal(capture(intentPath, pooloperator.MaxRecoverableSetupBytes+1), append(append([]byte(nil), setupRaw...), '\n')), "original runtime intent selection")
+	ready, e := json.Marshal(readyRecord{1, selected.Base.RuntimeID, id, pid})
+	check(e, "selected ready frame")
+	require(bytes.Equal(capture(readyPath, 1024), append(ready, '\n')), "original complete runtime ready")
+	var prior result
+	if o.compare != "" {
+		require(filepath.Dir(o.compare) == filepath.Join(o.root, "public") && filepath.Ext(o.compare) == ".json", "prior public report path only")
+		old := capture(o.compare, outputLimit)
+		strictReport(old, &prior)
+		require(prior.Version == 1 && prior.Passed && prior.Error == "" && prior.Root == o.root && prior.SetupID == id && prior.SetupSHA256 == out.SetupSHA256 && prior.ReferenceSHA256 == referenceSHA && prior.OriginalRootLockAcquired && prior.OriginalRootLockClosed && prior.SelectedInputsUnchanged, "original successful prior audit")
+		require(prior.Delivery == "prepared" || prior.Delivery == "broadcast" || prior.Delivery == "confirmed", "prior selected delivery")
+		verifyFinancial(prior.Audit, selected.Base, prior.Delivery)
+		// Forward-only state observation; no reset or re-reservation is accepted.
+		rank := map[string]int{"prepared": 0, "broadcast": 1, "confirmed": 2}
+		require(rank[o.delivery] >= rank[prior.Delivery], "delivery must not regress")
+		out.PriorSHA256 = hx(digest(old))
+	}
+	out.Audit = auditOperator(ctx, o.root, selected)
+	verifyFinancial(out.Audit, selected.Base, o.delivery)
+	if o.compare != "" {
+		require(out.Audit.BodySHA256 == prior.Audit.BodySHA256 && out.Audit.BodyBytes == prior.Audit.BodyBytes && reflect.DeepEqual(out.Audit.Body, prior.Audit.Body) && reflect.DeepEqual(out.Audit.Credits, prior.Audit.Credits) && reflect.DeepEqual(immutableSettlementRows(out.Audit), immutableSettlementRows(prior.Audit)), "same immutable original signed payment and complete credit/history rows")
+		out.Compared = true
+		out.ImmutableBatchAndCreditsUnchanged = true
+	}
+	for path, before := range inputRaw {
+		require(bytes.Equal(before, readBound(path, int64(len(before)))), "selected public input changed")
+	}
+	out.SelectedInputsUnchanged = true
+	check(ctx.Err(), "complete audit within original deadline")
+	return
+}
+func main() {
+	if wire.TestPoW {
+		fmt.Fprintln(os.Stderr, "hosted audit requires normal PoW")
+		os.Exit(1)
+	}
+	if len(os.Args) < 2 || os.Args[1] != "audit" {
+		fmt.Fprintln(os.Stderr, "usage: slug-host-audit audit --root ABS --expected-setup-id HEX --expect-delivery prepared|broadcast|confirmed [--compare ABS_PUBLIC_JSON] [--reference ABS]")
+		os.Exit(2)
+	}
+	var o options
+	fs := flag.NewFlagSet("audit", flag.ContinueOnError)
+	fs.StringVar(&o.root, "root", "/data/hosted-test", "original hosted root")
+	fs.StringVar(&o.setupID, "expected-setup-id", "", "independently checked selected ID")
+	fs.StringVar(&o.delivery, "expect-delivery", "", "exact retained delivery state")
+	fs.StringVar(&o.reference, "reference", "/usr/share/slug/fixture/reference-v1.json", "qualified public reference")
+	fs.StringVar(&o.compare, "compare", "", "prior successful public audit frame")
+	if fs.Parse(os.Args[2:]) != nil || fs.NArg() != 0 || len(o.setupID) != 64 {
+		os.Exit(2)
+	}
+	life, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	out, e := execute(life, o)
+	stop()
+	raw, me := json.Marshal(out)
+	if me == nil && len(raw) <= outputLimit {
+		raw = append(raw, '\n')
+		n, we := os.Stdout.Write(raw)
+		if n != len(raw) {
+			we = errors.Join(we, io.ErrShortWrite)
+		}
+		e = errors.Join(e, we)
+	} else {
+		e = errors.Join(e, me, errors.New("bounded public output refused"))
+	}
+	if e != nil {
+		fmt.Fprintln(os.Stderr, "stopped public audit failed")
+		os.Exit(1)
+	}
+}

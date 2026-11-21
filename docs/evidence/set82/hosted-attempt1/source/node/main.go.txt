@@ -1,0 +1,195 @@
+// Disposable published-fixture host helper; never production custody.
+// This changes no node, wallet, pool or consensus implementation.
+package main
+
+import (
+	"bytes"
+	"crypto/ed25519"
+	"crypto/rand"
+	"crypto/sha256"
+	"crypto/tls"
+	"crypto/x509"
+	"crypto/x509/pkix"
+	"encoding/hex"
+	"encoding/json"
+	"encoding/pem"
+	"fmt"
+	"io"
+	"math/big"
+	"net"
+	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
+	"syscall"
+	"time"
+)
+
+const root = "/data/node-test"
+const dns = "slug-pool-node-test.railway.internal"
+const payout = "slug1qsyypdkm39xs2c5cu5r4w5r285p98rfmaqk7uzh"
+
+func need(ok bool, label string) {
+	if !ok {
+		panic(label)
+	}
+}
+func check(err error) {
+	if err != nil {
+		panic("host fixture operation failed")
+	}
+}
+func write(name string, data []byte) {
+	f, e := os.OpenFile(filepath.Join(root, name), os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
+	check(e)
+	n, e := f.Write(data)
+	check(e)
+	need(n == len(data), "short write")
+	check(f.Sync())
+	check(f.Close())
+}
+func ownedRoot() {
+	need(os.Getuid() == 10001 && os.Geteuid() == 10001 && os.Getgid() == 10001 && os.Getegid() == 10001, "expected UID/GID10001")
+	st, e := os.Lstat(root)
+	check(e)
+	need(st.IsDir() && st.Mode().Perm() == 0700 && st.Sys().(*syscall.Stat_t).Uid == 10001, "protected fixture root")
+}
+func bootstrap() {
+	need(os.Getuid() == 0 && os.Geteuid() == 0, "fresh mount preparation needs root")
+	raw, e := os.ReadFile("/proc/self/mountinfo")
+	check(e)
+	mounted := false
+	for _, line := range strings.Split(string(raw), "\n") {
+		f := strings.Fields(line)
+		if len(f) > 5 && f[4] == "/data" {
+			mounted = true
+		}
+	}
+	need(mounted, "real /data volume required")
+	st, e := os.Lstat("/data")
+	check(e)
+	need(st.IsDir() && st.Mode()&os.ModeSymlink == 0, "real mount path")
+	entries, e := os.ReadDir("/data")
+	check(e)
+	for _, entry := range entries {
+		need(entry.Name() == "lost+found", "fresh selected node volume required")
+	}
+	// Only a fresh mount's traversability changes; the protected child stays0700.
+	check(os.Chmod("/data", 0755))
+	check(os.Mkdir(root, 0700))
+	check(os.Chown(root, 10001, 10001))
+	check(syscall.Setgroups([]int{10001}))
+	check(syscall.Setgid(10001))
+	check(syscall.Setuid(10001))
+	ownedRoot()
+	pub, key, e := ed25519.GenerateKey(rand.Reader)
+	check(e)
+	defer clear(key)
+	now := time.Now().UTC()
+	serial, e := rand.Int(rand.Reader, new(big.Int).Lsh(big.NewInt(1), 120))
+	check(e)
+	cert := &x509.Certificate{SerialNumber: serial, Subject: pkix.Name{CommonName: "SLUG isolated hosted fixture RPC"}, NotBefore: now.Add(-time.Minute), NotAfter: now.Add(48 * time.Hour), KeyUsage: x509.KeyUsageDigitalSignature | x509.KeyUsageCertSign, ExtKeyUsage: []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth}, BasicConstraintsValid: true, IsCA: true, DNSNames: []string{dns, "localhost"}, IPAddresses: []net.IP{net.ParseIP("127.0.0.1"), net.ParseIP("::1")}}
+	der, e := x509.CreateCertificate(rand.Reader, cert, cert, pub, key)
+	check(e)
+	pk, e := x509.MarshalPKCS8PrivateKey(key)
+	check(e)
+	defer clear(pk)
+	certPEM := pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: der})
+	write("rpc.cert", certPEM)
+	write("rpc.key", pem.EncodeToMemory(&pem.Block{Type: "PRIVATE KEY", Bytes: pk}))
+	p2pCA, p2pSPKI, p2pClient := createP2P()
+	// Explicit connect-only disables discovery. The local external fixture peer
+	// connects inbound; the unused loopback destination never leaves this host.
+	config := fmt.Sprintf("rpcuser=fixture\nrpcpass=public-pool-hosted\nrpclisten=:29332\nlisten=127.0.0.1:29334\nconnect=127.0.0.1:29499\nnodnsseed=1\nmaxpeers=2\ntxindex=1\nminingaddr=%s\ndatadir=%s/data\nlogdir=%s/logs\nrpccert=%s/rpc.cert\nrpckey=%s/rpc.key\n", payout, root, root, root, root)
+	write("node.conf", []byte(config))
+	// Only the public certificate and selected node identity leave this helper.
+	parsed, e := x509.ParseCertificate(der)
+	check(e)
+	spki := sha256.Sum256(parsed.RawSubjectPublicKeyInfo)
+	report := map[string]any{"version": 1, "scope": "isolated published-fixture node", "dns": dns, "rpc_url": "https://" + dns + ":29332", "ca_certificate": string(certPEM), "spki_sha256": hex.EncodeToString(spki[:]), "not_after": cert.NotAfter, "uid": os.Getuid(), "gid": os.Getgid(), "localwalletpilot": false, "payout_address": payout}
+	report["p2p_ca_certificate"], report["p2p_spki_sha256"], report["p2p_client_certificate"] = p2pCA, p2pSPKI, p2pClient
+	report["p2p_endpoint"] = "zephyr.proxy.rlwy.net:37362"
+	report["p2p_client_required"] = true
+	encoded, e := json.MarshalIndent(report, "", "  ")
+	check(e)
+	write("public.json", append(encoded, '\n'))
+	d, e := os.Open(root)
+	check(e)
+	check(d.Sync())
+	check(d.Close())
+	fmt.Println("hosted fixture node prepared as UID10001; public selection in /data/node-test/public.json")
+	serve()
+}
+func serve() {
+	ownedRoot()
+	for _, name := range []string{"node.conf", "rpc.cert", "rpc.key", "public.json", "p2p-ca.cert", "p2p-server.cert", "p2p-server.key", "p2p-client.cert", "p2p-client.key"} {
+		st, e := os.Lstat(filepath.Join(root, name))
+		check(e)
+		s := st.Sys().(*syscall.Stat_t)
+		need(st.Mode().IsRegular() && st.Mode().Perm() == 0600 && s.Uid == 10001 && s.Nlink == 1, "original protected input")
+	}
+	serveNode()
+}
+func rpc() {
+	ownedRoot()
+	need(len(os.Args) == 4, "rpc method and JSON array required")
+	allowed := map[string]bool{"getblockchaininfo": true, "getpeerinfo": true, "getblockhash": true, "getblock": true, "getrawtransaction": true, "getrawmempool": true, "getblocktemplate": true, "generate": true, "submitblock": true, "gettxout": true}
+	need(allowed[os.Args[2]], "unselected RPC method")
+	var params []json.RawMessage
+	check(json.Unmarshal([]byte(os.Args[3]), &params))
+	body, e := json.Marshal(map[string]any{"jsonrpc": "1.0", "id": "hosted-fixture", "method": os.Args[2], "params": params})
+	check(e)
+	ca, e := os.ReadFile(root + "/rpc.cert")
+	check(e)
+	roots := x509.NewCertPool()
+	need(roots.AppendCertsFromPEM(ca), "original certificate")
+	transport := &http.Transport{Proxy: nil, DisableKeepAlives: true, TLSClientConfig: &tls.Config{RootCAs: roots, MinVersion: tls.VersionTLS12}}
+	defer transport.CloseIdleConnections()
+	client := &http.Client{Transport: transport, Timeout: 60 * time.Second, CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }}
+	req, e := http.NewRequest("POST", "https://127.0.0.1:29332", bytes.NewReader(body))
+	check(e)
+	req.SetBasicAuth("fixture", "public-pool-hosted")
+	req.Header.Set("Content-Type", "application/json")
+	response, e := client.Do(req)
+	check(e)
+	defer response.Body.Close()
+	raw, e := io.ReadAll(io.LimitReader(response.Body, 4<<20+1))
+	check(e)
+	need(len(raw) <= 4<<20 && response.StatusCode == 200, "RPC status or bound")
+	var frame struct {
+		Error json.RawMessage `json:"error"`
+	}
+	check(json.Unmarshal(raw, &frame))
+	need(string(frame.Error) == "null", "RPC returned error")
+	_, e = os.Stdout.Write(raw)
+	check(e)
+}
+func main() {
+	defer func() {
+		if v := recover(); v != nil {
+			fmt.Fprintln(os.Stderr, "host fixture refused:", v)
+			os.Exit(1)
+		}
+	}()
+	need(len(os.Args) >= 2, "bootstrap, serve, public or rpc required")
+	switch os.Args[1] {
+	case "bootstrap":
+		need(len(os.Args) == 2, "no bootstrap overrides")
+		bootstrap()
+	case "serve":
+		need(len(os.Args) == 2, "no serve overrides")
+		serve()
+	case "public":
+		ownedRoot()
+		raw, e := os.ReadFile(root + "/public.json")
+		check(e)
+		_, e = os.Stdout.Write(raw)
+		check(e)
+	case "rpc":
+		rpc()
+	case "bridge":
+		bridge()
+	default:
+		panic("unselected command")
+	}
+}

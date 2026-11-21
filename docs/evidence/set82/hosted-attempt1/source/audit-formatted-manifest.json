@@ -1,0 +1,18 @@
+{
+  "financial.go": {
+    "bytes": 6187,
+    "sha256": "3e80fa91933a374c57fae990286daa240d9a7fa27a75984b16f61caaff71ea8f"
+  },
+  "main.go": {
+    "bytes": 9850,
+    "sha256": "00c299e1fd4300545ff98548c0ce7bdfae1f43fe3c35542db450d8e7d65da55e"
+  },
+  "operator_audit.go": {
+    "bytes": 14293,
+    "sha256": "14d463c15ae4438ef6172b89d2e8714d1591ce0869efad3b2a28dfda6e45b2bc"
+  },
+  "support.go": {
+    "bytes": 4297,
+    "sha256": "a90ff8bfd59cd726b179e80e62592dd89af74110dd3ba2dfddbafa1d174a119a"
+  }
+}

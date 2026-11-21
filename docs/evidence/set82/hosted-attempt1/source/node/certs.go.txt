@@ -1,0 +1,64 @@
+package main
+
+import (
+	"crypto/ed25519"
+	"crypto/rand"
+	"crypto/sha256"
+	"crypto/x509"
+	"crypto/x509/pkix"
+	"encoding/hex"
+	"encoding/pem"
+	"math/big"
+	"time"
+)
+
+// These fresh disposable transport keys are unrelated to public wallet fixtures
+// or any official operator key. The CA private key is never persisted.
+func createP2P() (string, string, string) {
+	now := time.Now().UTC()
+	serial := func() *big.Int {
+		v, e := rand.Int(rand.Reader, new(big.Int).Lsh(big.NewInt(1), 120))
+		check(e)
+		return v
+	}
+	caPub, caKey, e := ed25519.GenerateKey(rand.Reader)
+	check(e)
+	defer clear(caKey)
+	caTemplate := &x509.Certificate{SerialNumber: serial(), Subject: pkix.Name{CommonName: "SLUG isolated hosted P2P CA"}, NotBefore: now.Add(-time.Minute), NotAfter: now.Add(48 * time.Hour), KeyUsage: x509.KeyUsageCertSign, BasicConstraintsValid: true, IsCA: true, MaxPathLenZero: true}
+	caDER, e := x509.CreateCertificate(rand.Reader, caTemplate, caTemplate, caPub, caKey)
+	check(e)
+	ca, e := x509.ParseCertificate(caDER)
+	check(e)
+	caPEM := pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: caDER})
+	write("p2p-ca.cert", caPEM)
+	var spki, clientPEM string
+	for _, role := range []string{"server", "client"} {
+		pub, key, e := ed25519.GenerateKey(rand.Reader)
+		check(e)
+		leaf := &x509.Certificate{SerialNumber: serial(), Subject: pkix.Name{CommonName: "SLUG selected hosted P2P " + role}, NotBefore: ca.NotBefore, NotAfter: ca.NotAfter, KeyUsage: x509.KeyUsageDigitalSignature, BasicConstraintsValid: true}
+		if role == "server" {
+			leaf.ExtKeyUsage = []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth}
+			leaf.DNSNames = []string{"zephyr.proxy.rlwy.net", dns}
+		} else {
+			leaf.ExtKeyUsage = []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth}
+		}
+		der, e := x509.CreateCertificate(rand.Reader, leaf, ca, pub, caKey)
+		check(e)
+		keyDER, e := x509.MarshalPKCS8PrivateKey(key)
+		clear(key)
+		check(e)
+		encoded := pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: der})
+		write("p2p-"+role+".cert", encoded)
+		write("p2p-"+role+".key", pem.EncodeToMemory(&pem.Block{Type: "PRIVATE KEY", Bytes: keyDER}))
+		clear(keyDER)
+		if role == "server" {
+			parsed, e := x509.ParseCertificate(der)
+			check(e)
+			h := sha256.Sum256(parsed.RawSubjectPublicKeyInfo)
+			spki = hex.EncodeToString(h[:])
+		} else {
+			clientPEM = string(encoded)
+		}
+	}
+	return string(caPEM), spki, clientPEM
+}

@@ -305,3 +305,54 @@ qualified path and this does not block the hosted test.
 - **Revisit:** When local Linux cross-builds are needed for distribution or
   developer portability. A failure of the selected native host build is a
   separate immediate test blocker.
+
+## EF-15 — Final scratch PID1/provider shutdown remains unqualified
+
+**Status:** Open provider/distribution qualification; nonblocking for the
+explicit bounded admin-image test with its independently observed original
+operator child. That test must still obtain all original cleanup results.
+
+- **Trigger:** Moving from the disposable admin-image lifecycle witness to the
+  final scratch image, where the original operator is PID1 and the provider
+  controls its stop/restart.
+- **Player impact:** A provider stopped/removed state or SSH disconnect alone
+  does not establish that the original operator, wallet and file owners joined
+  cleanly. This is a qualification gap, not an observed lost payout or data loss.
+- **Evidence:** [Hosted shutdown scope](evidence/set82/hosted-attempt1/source/HOST_SHUTDOWN_EVIDENCE.md),
+  [fixture lifecycle witness](evidence/set82/hosted-attempt1/source/lifecycle/README.md),
+  and [failed attempt selection](evidence/set82/hosted-attempt1/actual/execution-selection.json).
+  The original hosted attempt failed at init before any serve generation, so it
+  supplies no scratch PID1 shutdown result.
+- **Workaround:** For the bounded test, run the unchanged selected operator as
+  UID10001 under the reviewed fixture-only witness; retain its actual child wait,
+  monitor join, unchanged selection and complete stopped-owner audits. Do not
+  infer cleanup from deployment state, remove uncertain locks, or relax payment
+  checks. Final scratch provider supervision remains a separate claim.
+- **Revisit:** Before using the final scratch deployment for unattended/public
+  service; immediately if the selected bounded test cannot prove its original
+  owners joined or exposes a funds, data, security or payout-correctness risk.
+
+## EF-16 — An upload TLS failure needs deployment-state reconciliation
+
+**Status:** Open recurrence/diagnostic follow-up. One observed failed upload was
+reconciled; no general upload reliability defect or ongoing failure is proven.
+
+- **Trigger:** A provider upload ends with the observed fatal TLS
+  `BadRecordMac` error after `Indexing`/`Uploading`, leaving the CLI result alone
+  insufficient to decide whether a deployment was created or is still active.
+- **Player impact:** Setup can be delayed, and an immediate blind retry could
+  leave the operator uncertain which deployment/image is selected. No mining or
+  payout corruption was observed in this upload failure.
+- **Evidence:** [Attempt 4 upload log](evidence/set82/hosted-attempt1/builds/operator-host-build-attempt4/build.log)
+  and [saved provider FAILED reconfirmation](evidence/set82/hosted-attempt1/builds/operator-host-build-attempt4/provider-failure-reconciliation.json).
+  Root reported its original FAILED check before retry; the saved connector
+  read reconfirms that state later and must not be presented as a pre-retry
+  timestamp. [Attempt 5](evidence/set82/hosted-attempt1/builds/operator-host-build-attempt5/build.log)
+  is a separate successful build/deployment record.
+- **Workaround:** Preserve the failed log, reconcile the exact original
+  project/service/environment/deployment through the provider, and retry only
+  after its state is understood. Keep the exact image/context and protected
+  volume selection. Do not disable TLS verification or auto-reset roots.
+- **Revisit:** If this recurs or prevents the agreed hosted test. Repeated or
+  uncertain live-owner deployments become an active test blocker; a one-off
+  reconciled upload does not require unrelated product work.

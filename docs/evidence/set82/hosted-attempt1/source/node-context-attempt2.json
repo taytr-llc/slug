@@ -1,0 +1,58 @@
+{
+  "scope": "one-time prepared-node access handoff; retains original files",
+  "source_context": "/Users/taytrrip/slug/set82-prep/hosted-actual/node-context-attempt1",
+  "files": {
+    ".dockerignore": {
+      "bytes": 150,
+      "sha256": "6dc5b529df5b4aab262fe5e0688a52783527679f28f46fe1ecc2e5aa59f563ea"
+    },
+    "Dockerfile": {
+      "bytes": 2707,
+      "sha256": "4f67815650057e228c34c06e6d3299b49af7f667e28e2326b5a6fe57141c6681"
+    },
+    "build-profile.json": {
+      "bytes": 179,
+      "sha256": "e5ddb9d30e8048ad3b656358134632e48852f44deef44bdd93df7dda13208295"
+    },
+    "candidate-go.sh": {
+      "bytes": 2725,
+      "sha256": "64e073ba868e42b04e3e93a51826b2e6ee1b99103b92b417868cbf74f9b6436e"
+    },
+    "certs.go": {
+      "bytes": 2381,
+      "sha256": "1d92ea6ba5f4c9f3e25f92c5187e3a6a6c96e59af919a66bb2d06ad8091f6efe"
+    },
+    "go.mod": {
+      "bytes": 97,
+      "sha256": "a2eeb50a2860dfd95d3b35e982dc5522fca59c8f7a29622c16d0d329e845fdbe"
+    },
+    "go.sum": {
+      "bytes": 153,
+      "sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64"
+    },
+    "inputs.sha256": {
+      "bytes": 522,
+      "sha256": "b5bd0f107fcc803d62b26b67542e7ebb00f1d8eb2e0b84329375e2da9096504c"
+    },
+    "main.go": {
+      "bytes": 7471,
+      "sha256": "1e9856bdadb205a64b687ac88862c6a01342c63ed46ac4b278a0e0f4c91a57f8"
+    },
+    "node-access.sh": {
+      "bytes": 4701,
+      "sha256": "62603a886692b4f88070f70eb326fb71e96909a63fa4f6c2883459be320c542f"
+    },
+    "relay.go": {
+      "bytes": 14669,
+      "sha256": "4ddd15868bca6539206aa85de1afd76cac0e467a904869fd3a1d243b0699704e"
+    },
+    "relay_test.go": {
+      "bytes": 7605,
+      "sha256": "0f66b07a9de2e465d5d3125e7d14b30edbd87a8d1697362da1c4c80c5752bcb7"
+    },
+    "slugd": {
+      "bytes": 20199783,
+      "sha256": "c1b66721bc6ce368a5fced3265829c68719596023b53400aa4de39ca713cf04e"
+    }
+  }
+}

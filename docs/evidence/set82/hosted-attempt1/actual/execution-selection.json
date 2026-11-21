@@ -1,0 +1,220 @@
+{
+  "version": 1,
+  "scope": "bounded original hosted normal-pool payment test; shipping scratch PID1 unqualified",
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/host-command.py",
+      "bytes": 1563,
+      "sha256": "99ada9109e4775584736830cba47ef36d89608c1b092b32361aeca2326f0cf2d"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/advance-local.py",
+      "bytes": 1991,
+      "sha256": "e60835754664f9ed5ca0497a050fd27de59a6e328526008b7525c203b46a7815"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/fetch-selection.py",
+      "bytes": 1500,
+      "sha256": "a0f6e042afed96637a50374f81f7e7f7f7240ea4ac5d5699781a49daef88629b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/prepare-attempt.py",
+      "bytes": 6354,
+      "sha256": "321e1129d7d7b0a823e962c965c520fb72ecd9c39111b5f83aa0432d9b81db59"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/operator-control.py",
+      "bytes": 3666,
+      "sha256": "9b08ab07b4b375bc2e01e545ab2364c317b64445140c7e4ce0ac8b2678414e8f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/client-control.py",
+      "bytes": 2382,
+      "sha256": "fcea72652dc7c9053c2c5b97286a5891ca640038acfcc03539f4d428f296d546"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/ACCEPTANCE.md",
+      "bytes": 13389,
+      "sha256": "38913a00ccab15555d6bd3c3caa4556f391dfe0baeef985b191ada945dde6e64"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/expectations.json",
+      "bytes": 2583,
+      "sha256": "83454d9f2d760864ae063f6b41e970155a144ad7296b44352effa4e2d46489bb"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/check-selection.py",
+      "bytes": 15189,
+      "sha256": "04e6c11ac65c1c3693ef8074fcd8ef84b9318a3c6b172a0d7b63f7267e9bdbe7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/lifecycle/operator-lifecycle.sh",
+      "bytes": 10562,
+      "sha256": "c3ff7087f1060ae4b28986a45ae7afb367c3911310b979f8e5237b0b518f2997"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/client-flow/run-client.py",
+      "bytes": 11682,
+      "sha256": "8673e3394dfbad1d98fcd39fc515f9a7fc04c8e12f378a2d1f1eda93c1562b12"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/client-flow/credentials.py",
+      "bytes": 8206,
+      "sha256": "903565d5434da7a526a4ab89364cbfd3912b498b9115fe391d73cca9dc588a16"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/preparer/files.go",
+      "bytes": 4054,
+      "sha256": "3be483f18edb96abe3eaef82974bc46bd1c1a0acb0db988a4f638c14c964842b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/preparer/main.go",
+      "bytes": 10012,
+      "sha256": "06877e0035116a1f9f17f7bbdfe9fa8487d78849e09863cca8ef71bf7b94592a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/preparer/selection.go",
+      "bytes": 7263,
+      "sha256": "3d2c22da16ca30397659491818b4930443d30c3fa770db6b30be2bb92040aaf1"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/preparer/tls.go",
+      "bytes": 3334,
+      "sha256": "91712df486e73337192e18341d3a623ed6237913fe0a200d3e4b30daeb2edfeb"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/preparer/go.mod",
+      "bytes": 487,
+      "sha256": "04996f5c29d939e0fcea87d6cc5fafe1b425c1e19b09408cc795dbcdf886b4e3"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/audit/financial.go",
+      "bytes": 6187,
+      "sha256": "3e80fa91933a374c57fae990286daa240d9a7fa27a75984b16f61caaff71ea8f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/audit/main.go",
+      "bytes": 9850,
+      "sha256": "00c299e1fd4300545ff98548c0ce7bdfae1f43fe3c35542db450d8e7d65da55e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/audit/operator_audit.go",
+      "bytes": 14293,
+      "sha256": "14d463c15ae4438ef6172b89d2e8714d1591ce0869efad3b2a28dfda6e45b2bc"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/audit/support.go",
+      "bytes": 4297,
+      "sha256": "a90ff8bfd59cd726b179e80e62592dd89af74110dd3ba2dfddbafa1d174a119a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/audit/go.mod",
+      "bytes": 466,
+      "sha256": "2bfb7edb070fac1c320edcadd7d73c5f799b156732f50b9d6a1da85b818ca65e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/client/main.go",
+      "bytes": 14938,
+      "sha256": "146a3c004348a70b364d86ff58ababdb03a3029fcf7dcbfb2ffb06e94ffc4599"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/client/go.mod",
+      "bytes": 356,
+      "sha256": "4d9d47fc752d49df3e33199a88aa659a3189e733da61c60819834f6325363e1c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/bindings.go",
+      "bytes": 3243,
+      "sha256": "0f3954f9d49a0286e2c3f4ce5c9ef1d3267c789de0bf47736d90684e7744a1b2"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/chain.go",
+      "bytes": 10832,
+      "sha256": "cb33057349c1b42c1694e0f03935b2ef2e5d97c51c5dba5fc1c3e6a486ab9aa5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/common.go",
+      "bytes": 10493,
+      "sha256": "b7182c2b9ba84f249e298dfcb6c3b35e5a12503162daa6df5f6da0766a397f1a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/main.go",
+      "bytes": 3488,
+      "sha256": "a18294495f881462742d8feccfbde618bb37f848fc2f83523e0d50e0e01bdeba"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/money.go",
+      "bytes": 6097,
+      "sha256": "60a695ba9116c72800f3b7ec8d3a95c25350cbbd6cfd2633f9c501dfcac8d8e4"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/outbox_audit.go",
+      "bytes": 11444,
+      "sha256": "84fa9a045b9f1edb607cbfdec7948902cdc8f344595bebbc62922862bc8e0f77"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/replay.go",
+      "bytes": 4846,
+      "sha256": "b040a41f29e6066c18a23cf52aff65516bca99e74b09cf4db81a62def7b95026"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/go.mod",
+      "bytes": 389,
+      "sha256": "48a24758c29654ed272301267d377e1540c26f56cb88f9c66283c7d6af11f44b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/node/certs.go",
+      "bytes": 2381,
+      "sha256": "1d92ea6ba5f4c9f3e25f92c5187e3a6a6c96e59af919a66bb2d06ad8091f6efe"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/node/main.go",
+      "bytes": 7471,
+      "sha256": "1e9856bdadb205a64b687ac88862c6a01342c63ed46ac4b278a0e0f4c91a57f8"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/node/relay.go",
+      "bytes": 14669,
+      "sha256": "4ddd15868bca6539206aa85de1afd76cac0e467a904869fd3a1d243b0699704e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/node/relay_test.go",
+      "bytes": 7605,
+      "sha256": "0f66b07a9de2e465d5d3125e7d14b30edbd87a8d1697362da1c4c80c5752bcb7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/node/go.mod",
+      "bytes": 97,
+      "sha256": "a2eeb50a2860dfd95d3b35e982dc5522fca59c8f7a29622c16d0d329e845fdbe"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/proofclient-native-attempt1/slug-host-proof",
+      "bytes": 14749442,
+      "sha256": "8cfda509c696cd84fdbda519bf823227ff4eac2038fabcf23e748e86b9f4d0b4"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/client-native-attempt1/slug-host-client",
+      "bytes": 20732674,
+      "sha256": "009e00caf68379a98ebeafaf89e062217bd26bd612d84cf77c20af61075942bc"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/client-binaries-attempt1/slugpilot",
+      "bytes": 35885730,
+      "sha256": "c26c6097efb8b163fb84414e81d9668597b66a709dd7c4aad3df2fb3f95f1951"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/client-binaries-attempt1/slugd",
+      "bytes": 19310674,
+      "sha256": "22bcb27c4e818d80a2115e1fc508b8b239da8c798756b5ee5f62d14c8a68c2ee"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/node-client-build-attempt1/slug-node-fixture",
+      "bytes": 10710162,
+      "sha256": "ef6f068850ecb61f1950fa11114576249cefe5082227fc62a9771ab77796dabb"
+    }
+  ],
+  "operator_deployment": "76a33e0e-4111-4f18-adec-ba583c052a19",
+  "operator_image": "sha256:92fb93be2d23379561180cfedf9fe4a988fed8f52033ffc61d48872d6c12d693",
+  "node_deployment": "99516d38-4dda-4ae2-9de9-40af04e68039",
+  "fixture_public_keys_only": true
+}

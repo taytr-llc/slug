@@ -1,0 +1,154 @@
+package main
+
+import (
+	"bytes"
+	"context"
+	"errors"
+	"io"
+	"net/http"
+	"strings"
+	"time"
+
+	"github.com/taytr-llc/slug/poolservice"
+	"github.com/taytr-llc/slug/poolsettle"
+)
+
+func noAuth(ctx context.Context, s *selected, out map[string]any) {
+	h := newHTTP(s.c.Base.CACertificate)
+	defer h.CloseIdleConnections()
+	events := []map[string]any{}
+	defer func() { out["auth_refusals"] = events }()
+	request := poolservice.IssueRequest{RequestID: hx(digest([]byte("SLUG hosted negative auth request\x00v1\x00" + s.profileID)))}
+	routes := []struct {
+		path  string
+		value any
+	}{{"issue", request}, {"balance", struct{}{}}, {"payouts", poolsettle.DailyPayoutRequest{}}}
+	for _, wrong := range []bool{false, true} {
+		for _, route := range routes {
+			s.check(ctx)
+			call, cancel := context.WithTimeout(ctx, 20*time.Second)
+			req, e := http.NewRequestWithContext(call, http.MethodPost, s.c.Base.Origin+"/pool/v3/"+route.path, bytes.NewReader(encode(route.value)))
+			check(e, "negative auth request")
+			req.Header.Set("Content-Type", "application/json")
+			if wrong {
+				req.Header.Set("Authorization", "Bearer "+strings.Repeat("0", 64))
+			}
+			res, e := h.Do(req)
+			if e != nil {
+				cancel()
+				panic("negative auth HTTP failure")
+			}
+			raw, re := io.ReadAll(io.LimitReader(res.Body, poolservice.MaxResponseSize+1))
+			ce := res.Body.Close()
+			cancel()
+			check(errors.Join(re, ce), "negative auth body and close")
+			require(len(raw) <= poolservice.MaxResponseSize && res.Header.Get("Content-Encoding") == "", "bounded uncompressed negative auth reply")
+			var failure poolservice.ErrorResponse
+			strictJSON(raw, &failure)
+			require(bytes.Equal(bytes.Trim(raw, " \t\r\n"), encode(failure)), "canonical negative auth envelope")
+			event := map[string]any{"route": "/pool/v3/" + route.path, "wrong_auth": wrong, "status": res.StatusCode, "response": failure, "body_bytes": len(raw), "body_sha256": hx(digest(raw))}
+			events = append(events, event)
+			require(res.StatusCode == http.StatusUnauthorized && failure.Version == 3 && failure.Error.Code == "unauthorized" && !failure.Error.OutcomeUnknown, "exact definite unauthorized before effects")
+			s.check(ctx)
+		}
+	}
+	out["negative_issue_request_id"] = request.RequestID
+	out["authenticated_issue_calls"] = 0
+	// Remote allocation counters are deliberately not inferred from HTTP. Root
+	// corroborates its original before/after operator status/closed census.
+}
+func money(ctx context.Context, s *selected, o options, out map[string]any) {
+	require(o.phase == "initial" || o.phase == "confirmed", "money phase")
+	if o.phase == "confirmed" {
+		require(isID(o.txid) && o.afterMS > 0, "independent confirmed transaction/time")
+	}
+	first := s.poolToken(o.pool)
+	other := s.otherToken(o.other)
+	require(first != other, "distinct original enrolled credentials")
+	clients := []*poolservice.Client{s.client(0, first), s.client(1, other)}
+	defer func() {
+		for _, c := range clients {
+			c.Close()
+		}
+	}()
+	first, other = "", ""
+	if o.phase == "initial" {
+		noAuth(ctx, s, out)
+	}
+	refusals := []map[string]any{}
+	defer func() { out["read_refusals"] = refusals }()
+	for {
+		s.check(ctx)
+		balances := []poolservice.DailyBalanceResponse{}
+		pages := []poolsettle.DailyPayoutPage{}
+		ready := true
+		for i, c := range clients {
+			b, e := c.DailyBalance(ctx)
+			if e != nil {
+				refusals = append(refusals, map[string]any{"read": "balance", "gym_index": i, "at_ms": time.Now().UnixMilli(), "error": errorData(e)})
+				require(retryable(e, true), "definite bounded money-read refusal only")
+				ready = false
+				break
+			}
+			s.check(ctx)
+			p, e := c.PayoutsPage(ctx, poolsettle.DailyPayoutRequest{})
+			if e != nil {
+				refusals = append(refusals, map[string]any{"read": "payouts", "gym_index": i, "at_ms": time.Now().UnixMilli(), "error": errorData(e)})
+				require(retryable(e, true), "definite bounded page refusal only")
+				ready = false
+				break
+			}
+			s.check(ctx)
+			enrollment := s.s.Base.Miners.Enrollments[i]
+			require(b.Version == 2 && b.BindingID == s.s.Base.Miners.SourceID && b.SettlementConfigID == s.s.Base.Miners.SettlementConfigID && b.RecipientScript == enrollment.PayeeScript && b.Balance.GymID == enrollment.GymID, "complete selected balance binding")
+			require(p.Version == 2 && p.BindingID == b.BindingID && p.SettlementConfigID == b.SettlementConfigID && p.RecipientScript == b.RecipientScript && p.Balance.GymID == b.Balance.GymID, "complete selected page binding")
+			high := uint64(0)
+			paid := int64(0)
+			items := 0
+			if o.phase == "confirmed" {
+				high = 1
+				if i == 0 {
+					paid = 1980000000
+					items = 1
+				}
+			}
+			// One bounded page is the ENTIRE selected history in this fixture: high0/1
+			// and Done are mandatory. Empty matching Items alone never means EOF.
+			if p.HighBatch != high || p.BeforeBatch != high+1 || !p.Done || p.NextBefore != 0 || b.Balance.PaidAtoms != paid || p.Balance.PaidAtoms != paid || b.Balance.ReservedAtoms != 0 || p.Balance.ReservedAtoms != 0 || len(p.Items) != items {
+				ready = false
+				break
+			}
+			zero := poolsettle.Fraction{Numerator: "0", Denominator: "1"}
+			if b.Balance.Confirmed != zero || b.Balance.Available != zero || p.Balance.Confirmed != zero || p.Balance.Available != zero {
+				ready = false
+				break
+			}
+			if o.phase == "confirmed" {
+				if b.ObservedAtMS < o.afterMS || p.ObservedAtMS < o.afterMS {
+					ready = false
+					break
+				}
+				if i == 0 {
+					v := p.Items[0]
+					require(v.BatchSequence == 1 && v.Payment.TxID == o.txid && v.Payment.OutputIndex == 0 && v.Payment.Atoms == 1980000000, "same whole original payout")
+					if v.Payment.RecordedState != "confirmed" {
+						ready = false
+						break
+					}
+				}
+			}
+			balances = append(balances, b)
+			pages = append(pages, p)
+		}
+		require(len(refusals) <= 128, "bounded money refusal evidence")
+		out["balances"] = balances
+		out["pages"] = pages
+		if ready && len(balances) == 2 && len(pages) == 2 {
+			out["phase"] = o.phase
+			out["entire_history"] = true
+			out["wire_protocol"] = 3
+			return
+		}
+		check(pause(ctx, time.Second), "same original money deadline")
+	}
+}

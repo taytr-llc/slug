@@ -1,0 +1,140 @@
+{
+  "version": 1,
+  "scope": "Unexecuted hosted published-fixture client orchestration; no network/build/Go or product edits",
+  "source": [
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/client-flow/credentials.py",
+      "bytes": 8206,
+      "sha256": "903565d5434da7a526a4ab89364cbfd3912b498b9115fe391d73cca9dc588a16"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/client-flow/run-client.py",
+      "bytes": 11682,
+      "sha256": "8673e3394dfbad1d98fcd39fc515f9a7fc04c8e12f378a2d1f1eda93c1562b12"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/client-flow/README.md",
+      "bytes": 13032,
+      "sha256": "382e54a2ed5cc77abdc54357db0de116be941a57249966ed366ee856ca4b1260"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/check-selection.py",
+      "bytes": 15189,
+      "sha256": "04e6c11ac65c1c3693ef8074fcd8ef84b9318a3c6b172a0d7b63f7267e9bdbe7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/client/main.go",
+      "bytes": 14938,
+      "sha256": "146a3c004348a70b364d86ff58ababdb03a3029fcf7dcbfb2ffb06e94ffc4599"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/client/README.md",
+      "bytes": 4572,
+      "sha256": "b12b7370a4d45a6b92e828c42e97f8bdd6eb6cdab91653e1c531de05c61742fa"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/reference-v1.json",
+      "bytes": 174293,
+      "sha256": "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/main.go",
+      "bytes": 13366,
+      "sha256": "cf2f367ac2270873ea9aa0da4bd0c15f8d928d4fd8e2960b1d27ca8694f1ade7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/selection.go",
+      "bytes": 11497,
+      "sha256": "6d263214a096aa60325bdfe760edcbe24c68aa0c3731472a5c136225c04ae7ee"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/payment.go",
+      "bytes": 10011,
+      "sha256": "1483c0ec3882de879d2a2b8570422a45f4b6df70319c291cc6e1adea4b17edc8"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/work_evidence.go",
+      "bytes": 10191,
+      "sha256": "c806ecdc4bf8584a8bc3d67af0abb8ab1dbb3594975d06ccd0022cd01857f956"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/outbox_audit.go",
+      "bytes": 11444,
+      "sha256": "84fa9a045b9f1edb607cbfdec7948902cdc8f344595bebbc62922862bc8e0f77"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/cli_process.go",
+      "bytes": 9484,
+      "sha256": "9e0d2fbcb97382e9f8ba16284f96b08da2d1cd9260e479edd847463e3e143149"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/remote_launch.go",
+      "bytes": 12405,
+      "sha256": "37ea643827b2f9ecbfdfee9a1bc20a48f85bb7c3137145965d715394ece6468e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/daily_launch.go",
+      "bytes": 8966,
+      "sha256": "f3890324cde9a5263fc618e213cfd7211ed71de623219213c90c921d47feb577"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_issue_recovery.go",
+      "bytes": 7314,
+      "sha256": "18ab16d5402052ed91ec174ddf0da006db8a0b0907221be211b6ec4ba2e393e2"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_credentials.go",
+      "bytes": 11664,
+      "sha256": "c4acd5c966e3e1adbc3658978c3d5ee493fbc4320d57cd67a26928620f062e15"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/command.go",
+      "bytes": 22575,
+      "sha256": "3fc053322a16a307c1a7e66178fa7e74aa6ea0c9fa4b4e7bbd10b159ec3b81c8"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolminer/config.go",
+      "bytes": 5085,
+      "sha256": "0ac16d74a62c382d7fe458a53a086a66583b0c04c7e96310ddabb5539ed0cd92"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolminer/types.go",
+      "bytes": 4973,
+      "sha256": "19a6606a5f16bbd68cf256e8a1909e87357eaed09de62b93aba31b9f0ab3a7eb"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolservice/daily_client.go",
+      "bytes": 5122,
+      "sha256": "e682850f1836f386d76c3d448634f383bba1fd33d7a3ae3f2d3607d8d14c09c1"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolservice/recoverable_types.go",
+      "bytes": 5194,
+      "sha256": "38f4e94e214b03ef1dfbd874cba3fc9f90f75197c72f99dfac2b3339408dbf45"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolsettle/daily_payout_history.go",
+      "bytes": 10499,
+      "sha256": "19c7b4e0a4bc2be5f204c5c75b70a2d2418b884cd9e9fdfb595339a9c0176e47"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/client-flow/pre-join-deadline-review/run-client.py",
+      "bytes": 11550,
+      "sha256": "21c8c4195f7e9dbf311ecfd4be7fbfba3a027726a31aa93e5363a4f0b025d640"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/client-flow/pre-join-deadline-review/source-manifest.json",
+      "bytes": 4950,
+      "sha256": "765bb30bb5e44df84fb139c8fc1c6145bdb1d32ab81cd972244e28118384a9be"
+    }
+  ],
+  "checks": [
+    "Python AST parse only; neither script imported or executed"
+  ],
+  "execution_pending": true,
+  "shared_scenario_deadline_required": true,
+  "source_mutations": false,
+  "successor": "One forced-kill/reap absolute deadline; no repeated kill or extra five-second cleanup window."
+}

@@ -28,6 +28,10 @@ The current order is:
    holds. Synthetic loopback proofs alone do not count as hosted acceptance.
    [Set82](CHANGESET_82_NOTES.md) passes all seven CI jobs, including native Linux image/component checks;
    provider storage, endpoint and actual hosted payout remain to be verified.
+   The first hosted initialization failed at an inherited desktop-only address
+   rule. Its operator-only explicit-CA HTTPS correction passes normal/race and
+   refusal checks; a new hosted payout attempt is required. See
+   [Set82's retained failure and correction](CHANGESET_82_NOTES.md).
 2. **Wallet balances and history.** Connect and verify the existing authenticated
    balance, payout and wallet-activity paths against the hosted test service,
    including dated observations and visible pending/deferred states.

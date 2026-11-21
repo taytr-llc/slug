@@ -1,0 +1,257 @@
+{
+  "version": 1,
+  "before": 2,
+  "count": 60,
+  "started": 1795279733.234734,
+  "normal_pow": true,
+  "initial": {
+    "chain": "mainnet",
+    "blocks": 2,
+    "headers": 2,
+    "bestblockhash": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+    "difficulty": 1,
+    "mediantime": 1795170105,
+    "pruned": false,
+    "warnings": null,
+    "bip9_softforks": {
+      "csv": {
+        "status": "defined",
+        "bit": 0,
+        "startTime": 0,
+        "start_time": 1462060800,
+        "timeout": 1493596800,
+        "since": 0,
+        "min_activation_height": 0,
+        "always_active_height": 62
+      },
+      "dummy": {
+        "status": "defined",
+        "bit": 28,
+        "startTime": 0,
+        "start_time": 11991456010,
+        "timeout": 1230767999,
+        "since": 0,
+        "min_activation_height": 0
+      },
+      "dummy-always-active": {
+        "status": "active",
+        "bit": 30,
+        "startTime": 0,
+        "start_time": -62135596800,
+        "timeout": -62135596800,
+        "since": 0,
+        "min_activation_height": 0,
+        "always_active_height": 1
+      },
+      "dummy-min-activation": {
+        "status": "defined",
+        "bit": 22,
+        "startTime": 0,
+        "start_time": -62135596800,
+        "timeout": -62135596800,
+        "since": 0,
+        "min_activation_height": 100000
+      },
+      "segwit": {
+        "status": "defined",
+        "bit": 1,
+        "startTime": 0,
+        "start_time": 1479168000,
+        "timeout": 1510704000,
+        "since": 0,
+        "min_activation_height": 0,
+        "always_active_height": 62
+      },
+      "taproot": {
+        "status": "defined",
+        "bit": 2,
+        "startTime": 0,
+        "start_time": 1619222400,
+        "timeout": 1628640000,
+        "since": 0,
+        "min_activation_height": 709632,
+        "always_active_height": 62
+      }
+    },
+    "softforks": [
+      {
+        "id": "bip34",
+        "version": 2,
+        "reject": {
+          "status": false
+        }
+      },
+      {
+        "id": "bip66",
+        "version": 3,
+        "reject": {
+          "status": false
+        }
+      },
+      {
+        "id": "bip65",
+        "version": 4,
+        "reject": {
+          "status": false
+        }
+      }
+    ]
+  },
+  "generated": [
+    "440456186fa81504cdd9303704b926132f79f1dad7e2c4bd3fe11098f453dc7c",
+    "7a3dca92b7496a52f20f4765dd86b19cc77d6e8d9b1c86ba3d0d0fad714dbaa7",
+    "0e6d8ea3d7ed756d7fe5c129ddda30a0a8efe23ab8375c90f16e23b333a6d6ea",
+    "6ba9bf9f8ca1cd625deed22994bcc9c3e0a66976cc5a27a3effbd5d37e195a0c",
+    "7e1281abb8660f94968be508ebcf70d33f081253c27c3f7f5110b18a4e8900c8",
+    "550e0ab4c55eb3af89be28ea97d1639b99498229e003bc2a14269449b74faadb",
+    "550eb3ef6cee0c816a28e5c447f7dc6d3ef2c4e8ce1eb9e581ef4df1ffc6ff16",
+    "56d36ba9fdfc2aa535fd9c962934f7083f3146b65627ae05aade0f1570949bd4",
+    "7a19b97311c80f25d20d20979fdbd5924b8f144ebbee10591bb9c47de5d01486",
+    "5cf9dfac5fd37f327a511300d021472a0163ccdffe0aa99f2c7ed740b6ecc6c2",
+    "3eb1b04b41050e970ff89f169ffcafd52e569499c1e07c14a6d8f9349a86e2a2",
+    "3bf02bba6144a601f7c7e58307989d8f72706483c0d7e9f13dbfbbb851cff92f",
+    "4130d240cbedfaf6efd5b50ee06603678af778dfac53f261b328a89f68b45bab",
+    "6cd3ed56ad850811c0cc23ed4a0440a22a03436da7065d34dee85b6fa29f2fa6",
+    "5880a0ca1320fd043dbdbd5a03ce031895ef7b33c821fd02078abf781c47f9db",
+    "047c602634d2ccd38f20f5598be475a1c1e18ebb75781b43eb2ee29386993b78",
+    "5ae7868fbde7d1d436cc50ba0a5a517d01b9f3777a10050e44032e45fb578f00",
+    "25f635496d7ab06133acd669fb9118e28c0650309f5482411892f18cfe5fb8e9",
+    "502113a6e03e5ed102edba665186ba76c265372bfef62513959b9f51ce977ffb",
+    "05cc485eb5483d6cd7e0352fc09807b922bc1e32728623bfd5877c966e2cbbe9",
+    "1d2e2dc2367af2c9cb1e34d7dfcf7238f2c103abe7f486e883fb3222ad2338ed",
+    "17636acc2f52761b0c1e3eefd0ad980467d370d522bb397722111126f5a30c40",
+    "73952c98e58a4a3533d3bd174631215f880b0e3d7d005ad2f447b7fe694239fd",
+    "7d13f26fe794ba6adaa782c9cbd0b2e675e60756eb9a407b4516815d6ce9a49d",
+    "6ca5a499ab80e21556a0d810856bc1ddc494bc05b6c7ad643aaadec1685afb98",
+    "78348736986365c77112427c4648ea5daab296cacb456e017d971061e7a5c6bf",
+    "5d6dd69b191236f5e7e321654166edcd160651becad79f6143cf81572922ecf0",
+    "3cdb45d3be50cc525b95e5d35da5431cf595afaaf40818154e9de3d05d1fb118",
+    "5aa436b32e29190eb24cf510bd01843b77ea80d058e037c3bb5212ba4af7ea77",
+    "0d7adb72f45a025a255d7d4c4e815f9c36965731a1e232459fcc539fd59ce7a1",
+    "54645021c46f9b0bf254897d6e9ce0030e0d6d8d3692c4bdbee2fd6d4a0c0d7e",
+    "5aef63f01b0b7a520468d42ff87435da1f483ada43fcca90a698c676ff500f23",
+    "34c0b088288153af4a3f3cf9bb2855dfbfcec3b0800372f456db68a4727deab9",
+    "249ef63b2918fade688ecaf782f6e9125fc11ef21945795478781500599cc2c2",
+    "4e2f1a0c4f305836cc4f2ec86227dc48a7d0974452c9e8c0ed6772fac4d60784",
+    "0947de4639e31e86f83d366160c1ec1fcb22c896e61ba0a15fa104099b250fdc",
+    "735617f3fda19f3f6f4cdcbb3b3a4c0b90f46971e9ebe779cbbdef4f4085a7b4",
+    "3be3b0c8023f4e58669610aa835a16b9df09d3cb8b99336fc460fbcf352ec028",
+    "7d8eb5877c934fc21037e712aecc040da5a850e70e4b8d642fef66a2ee21a0a3",
+    "3b7623abde7f2b91a8165f8fb143718163dfaff749f14e1e4a4602c59703af27",
+    "15bae393999f11602dbbac8d8b184b08362d66858171c61c0f4fa46e420cc204",
+    "627141e1e1479c957b3f9d4e14b3d73d48534f1c0e9bd644a5d25d65652a642c",
+    "044be6e99bd9ef5d4b6d90c87a591f5fac2f77074f6bb5f690dd114510319142",
+    "16abdab0e59854fedf2f995baeb3f6b9d29a953871f41e6105a37b58f3e229d3",
+    "75b20133d7f078c9aac44ad96c2779592ef43b3b367d85ffb66f75009840438a",
+    "3bad95f8f74fe686bf9cc415fd7fa336aa965facf737cf9313ef8797e286ac12",
+    "3dd72d447a10b12bc0e2086c63f53d2666c8c1f3510e34861f1d1983e8535f0c",
+    "064e6b0a0b2961a09b1b786ce3e0a1fcb82279b86243d215988b81da6aaedd7a",
+    "4481462436e3916a6f37a24a772f7b18983ea19de3477b4a72f876f75995837d",
+    "3597cfdb9c71074901f77c7ecc8c34a5243b0a900ce943d6d9d269ef2dc37381",
+    "42c73ee2df124ac0825379da82f1b9108161dcda04cb14761416a7dfedae6e05",
+    "6f4eba3725ccccbc367fd1441c36cde648b593a0c2e1e7ffe10440a27d9b161f",
+    "55b35bf77d21a40c259782d55418ceabd4b5c3c0b0f177dba49acc71b864e302",
+    "56780de6373da9d3a84e2a88533a96458f989f45d6af45794ebdfa19611a4f59",
+    "2abc3f9d37a16775fea858a70917b4b43351799c61f9d05709ea9ab756153e47",
+    "11e0c06b11e9ce4fbf7c89375a1e0211a786b70a9d4d29488ceb49341feda47e",
+    "33b5cfb94ce85840782004b6646dc63e422d9106e27ab20a5e302e3a88ef4a8a",
+    "471ae3bcf21f0898a7ec6e33d66f8fc5c199181dbf14f9b92328f8f900dc9e56",
+    "4625df01b8165f4c73f6bb49ad97ed4ef4a462cfeb1a01a689a378ee94948497",
+    "06bd9d10f47a9e61a1d6ce1f6cdebed210b74f319215a0adba25e35cb89c1861"
+  ],
+  "final": {
+    "chain": "mainnet",
+    "blocks": 62,
+    "headers": 62,
+    "bestblockhash": "06bd9d10f47a9e61a1d6ce1f6cdebed210b74f319215a0adba25e35cb89c1861",
+    "difficulty": 1,
+    "mediantime": 1795279763,
+    "pruned": false,
+    "warnings": null,
+    "bip9_softforks": {
+      "csv": {
+        "status": "active",
+        "bit": 0,
+        "startTime": 0,
+        "start_time": 1462060800,
+        "timeout": 1493596800,
+        "since": 0,
+        "min_activation_height": 0,
+        "always_active_height": 62
+      },
+      "dummy": {
+        "status": "defined",
+        "bit": 28,
+        "startTime": 0,
+        "start_time": 11991456010,
+        "timeout": 1230767999,
+        "since": 0,
+        "min_activation_height": 0
+      },
+      "dummy-always-active": {
+        "status": "active",
+        "bit": 30,
+        "startTime": 0,
+        "start_time": -62135596800,
+        "timeout": -62135596800,
+        "since": 0,
+        "min_activation_height": 0,
+        "always_active_height": 1
+      },
+      "dummy-min-activation": {
+        "status": "defined",
+        "bit": 22,
+        "startTime": 0,
+        "start_time": -62135596800,
+        "timeout": -62135596800,
+        "since": 0,
+        "min_activation_height": 100000
+      },
+      "segwit": {
+        "status": "active",
+        "bit": 1,
+        "startTime": 0,
+        "start_time": 1479168000,
+        "timeout": 1510704000,
+        "since": 0,
+        "min_activation_height": 0,
+        "always_active_height": 62
+      },
+      "taproot": {
+        "status": "active",
+        "bit": 2,
+        "startTime": 0,
+        "start_time": 1619222400,
+        "timeout": 1628640000,
+        "since": 0,
+        "min_activation_height": 709632,
+        "always_active_height": 62
+      }
+    },
+    "softforks": [
+      {
+        "id": "bip34",
+        "version": 2,
+        "reject": {
+          "status": true
+        }
+      },
+      {
+        "id": "bip66",
+        "version": 3,
+        "reject": {
+          "status": true
+        }
+      },
+      {
+        "id": "bip65",
+        "version": 4,
+        "reject": {
+          "status": true
+        }
+      }
+    ]
+  },
+  "passed": true,
+  "ended": 1795279768.835704
+}

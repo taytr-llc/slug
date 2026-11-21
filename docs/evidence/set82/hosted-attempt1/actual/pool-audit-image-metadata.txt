@@ -1,0 +1,10 @@
+uid=0(root) gid=0(root) groups=0(root)
+Name:	host-bootstrap
+Uid:	10001	10001	10001	10001
+Gid:	10001	10001	10001	10001
+0:0:755
+10001:10001:700
+10001:10001:700
+7a8f7e783d7798a5200775d27e41bb077a196928e4e5a4c3f9baa510d65a443d  /out/slugpoold
+d35b561da1691ac786589b867583f5b39b9ab15e3557fac582645f092afc9f2b  /out/slugpool-provision
+8ef12f7ca41ae63e8788abc718bd21c84bc2ae3e4bcdbd24d75b9e413f941fcd  /out/slug-host-audit

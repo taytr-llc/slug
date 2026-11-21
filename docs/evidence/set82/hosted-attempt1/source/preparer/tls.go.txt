@@ -1,0 +1,109 @@
+package main
+
+import (
+	"crypto/ed25519"
+	"crypto/rand"
+	"crypto/tls"
+	"crypto/x509"
+	"crypto/x509/pkix"
+	"encoding/pem"
+	"errors"
+	"math/big"
+	"net"
+	"time"
+)
+
+type tlsMaterial struct {
+	CA, Certificate, Key []byte
+	SPKI                 string
+}
+
+func tlsInputs(h hostSelection, hostname string, now, due time.Time) (tlsMaterial, error) {
+	var out tlsMaterial
+	var e error
+	if h.TLSCAPath != "" {
+		out.CA, e = readFile(h.TLSCAPath, 65536, true)
+		if e != nil {
+			return out, e
+		}
+		out.Certificate, e = readFile(h.TLSCertificatePath, 65536, true)
+		if e != nil {
+			return out, e
+		}
+		out.Key, e = readFile(h.TLSKeyPath, 65536, true)
+		if e != nil {
+			return out, e
+		}
+	} else {
+		caPub, caPriv, e := ed25519.GenerateKey(rand.Reader)
+		if e != nil {
+			return out, e
+		}
+		defer clear(caPriv)
+		pub, priv, e := ed25519.GenerateKey(rand.Reader)
+		if e != nil {
+			return out, e
+		}
+		defer clear(priv)
+		caT := &x509.Certificate{SerialNumber: big.NewInt(82), Subject: pkix.Name{CommonName: "Set82 synthetic hosted test CA"}, NotBefore: now.Add(-time.Minute), NotAfter: due.Add(time.Hour), KeyUsage: x509.KeyUsageCertSign, BasicConstraintsValid: true, IsCA: true}
+		caDER, e := x509.CreateCertificate(rand.Reader, caT, caT, caPub, caPriv)
+		if e != nil {
+			return out, e
+		}
+		ca, e := x509.ParseCertificate(caDER)
+		if e != nil {
+			return out, e
+		}
+		leafT := &x509.Certificate{SerialNumber: big.NewInt(83), Subject: pkix.Name{CommonName: "Set82 synthetic hosted pool"}, NotBefore: ca.NotBefore, NotAfter: ca.NotAfter, KeyUsage: x509.KeyUsageDigitalSignature, ExtKeyUsage: []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth}, BasicConstraintsValid: true}
+		if ip := net.ParseIP(hostname); ip != nil {
+			leafT.IPAddresses = []net.IP{ip}
+		} else {
+			leafT.DNSNames = []string{hostname}
+		}
+		der, e := x509.CreateCertificate(rand.Reader, leafT, ca, pub, caPriv)
+		if e != nil {
+			return out, e
+		}
+		pk, e := x509.MarshalPKCS8PrivateKey(priv)
+		if e != nil {
+			return out, e
+		}
+		defer clear(pk)
+		out.CA = pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: caDER})
+		out.Certificate = append(pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: der}), out.CA...)
+		out.Key = pem.EncodeToMemory(&pem.Block{Type: "PRIVATE KEY", Bytes: pk})
+	}
+	pair, e := tls.X509KeyPair(out.Certificate, out.Key)
+	if e != nil {
+		clear(out.Key)
+		return tlsMaterial{}, errors.New("TLS certificate/key mismatch")
+	}
+	leaf, e := x509.ParseCertificate(pair.Certificate[0])
+	if e != nil {
+		clear(out.Key)
+		return tlsMaterial{}, e
+	}
+	roots := x509.NewCertPool()
+	if !roots.AppendCertsFromPEM(out.CA) {
+		clear(out.Key)
+		return tlsMaterial{}, errors.New("invalid explicit CA")
+	}
+	intermediates := x509.NewCertPool()
+	for _, raw := range pair.Certificate[1:] {
+		c, e := x509.ParseCertificate(raw)
+		if e != nil {
+			clear(out.Key)
+			return tlsMaterial{}, e
+		}
+		intermediates.AddCert(c)
+	}
+	for _, at := range []time.Time{now, due.Add(30 * time.Minute)} {
+		_, e = leaf.Verify(x509.VerifyOptions{Roots: roots, Intermediates: intermediates, CurrentTime: at, DNSName: hostname, KeyUsages: []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth}})
+		if e != nil || leaf.IsCA {
+			clear(out.Key)
+			return tlsMaterial{}, errors.New("TLS hostname/chain/lifetime invalid")
+		}
+	}
+	out.SPKI = sum(leaf.RawSubjectPublicKeyInfo)
+	return out, nil
+}

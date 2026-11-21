@@ -1,0 +1,132 @@
+{
+  "passed": true,
+  "package_commit": "2d79de95984c72c64ee37575a5333b0afc24d470",
+  "product_commit": "138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c",
+  "wallet_commit": "dfc5d9dd7e0f604486fbac812d0413fce1f45cd6",
+  "scope": "Downloaded package-job evidence consistency; no hosted payout or provider volume acceptance",
+  "image_id": "sha256:4e0ee315e0c2f5c1410b6d5a3bd08af8dd8839d1d5516699d8ff6fdfed1041b0",
+  "required_assertions": 15,
+  "observed_passing_tests": {
+    "operator-tests.jsonl": 28,
+    "authority-tests.jsonl": 4,
+    "ingress-tests.jsonl": 2
+  },
+  "public_archives_match_local_export": true,
+  "source_files_unchanged": true,
+  "dockerignore_evidence": "Upload omits hidden raw file; context manifest SHA256 matches exact package commit source",
+  "package_job_url": "https://github.com/taytr-llc/slug/actions/runs/44919766385",
+  "files": {
+    "Dockerfile": {
+      "bytes": 6102,
+      "sha256": "e8a1b09348ddbc55077f126fd6fffa059547e4cc1a837a6e8f9d760d3b44245a"
+    },
+    "build/authority-tests.jsonl": {
+      "bytes": 4320,
+      "sha256": "823721c1350ae7da8fa859141fdfecc297ad0c32b474fa79461ba1e876db3a89"
+    },
+    "build/binary-sha256.txt": {
+      "bytes": 171,
+      "sha256": "de6cc091c590ff18ebb2b65fbedc3a55c6a9ece92df52b1f17b12c1eb8a175b5"
+    },
+    "build/build-info.txt": {
+      "bytes": 6158,
+      "sha256": "6ee674eaa92a765f5a85f3ea6f426474f54df1fc1bc68b72d944fff9fa5e9d79"
+    },
+    "build/build-profile.json": {
+      "bytes": 179,
+      "sha256": "e5ddb9d30e8048ad3b656358134632e48852f44deef44bdd93df7dda13208295"
+    },
+    "build/check-user.txt": {
+      "bytes": 33,
+      "sha256": "f538005296ee815ad51cd104a8780a7d78d693c2a98bb8e3dd0abebe708c972d"
+    },
+    "build/dependencies.json": {
+      "bytes": 1162628,
+      "sha256": "938ae4bc2b222c8c2a4c128c9ec694b581b17d0829237e4a95c1a21a2959bbd6"
+    },
+    "build/go-env.json": {
+      "bytes": 165,
+      "sha256": "e5cdfa4ceb47eb4ae9482395c63fa79db62b692715ca6b14add1346c849dd252"
+    },
+    "build/ingress-tests.jsonl": {
+      "bytes": 2153,
+      "sha256": "91b6aa410e5d2dc7d9064e828cd096ed5115de4f16db89c84bba06b81081ca22"
+    },
+    "build/operator-symbols.txt": {
+      "bytes": 853826,
+      "sha256": "a3ebf1420ae4178ab17c81fc8b5b134cc38cfa77696d9064f71792a180f1e31c"
+    },
+    "build/operator-tests.jsonl": {
+      "bytes": 26735,
+      "sha256": "65320cf1b27994201b48775d6c664bf03847165f15d309eb5b75198943d0940e"
+    },
+    "build/provision-symbols.txt": {
+      "bytes": 625709,
+      "sha256": "dcbbf01293e4c7a4eb970d421ca0cb5027390823b8903cd36a30243026de88cc"
+    },
+    "build/source-after.sha256": {
+      "bytes": 1191924,
+      "sha256": "debc2d8c0e60c00127ad6a570ebcf48a580a47e605ae5757b47c6b60a21e9fd5"
+    },
+    "build/source-archives.sha256": {
+      "bytes": 153,
+      "sha256": "02d7fce6dfc6b3e258454ec61f08c0e493a4f1afc6bbe89393d4ab555f3f0ee2"
+    },
+    "build/source-before.sha256": {
+      "bytes": 1191924,
+      "sha256": "debc2d8c0e60c00127ad6a570ebcf48a580a47e605ae5757b47c6b60a21e9fd5"
+    },
+    "build/source-revisions.txt": {
+      "bytes": 98,
+      "sha256": "b0dad67cc9b61c8cd5931b1c3976d1a430ab3d38b751b097bffbed684cdb5061"
+    },
+    "build/wire-files.txt": {
+      "bytes": 613,
+      "sha256": "6d24b97eeefe011dc18b987ccf6f0760a985709551136f4696e98de746bbc250"
+    },
+    "build/workspace.json": {
+      "bytes": 743,
+      "sha256": "172dc6e116b9b654d5222881a1bbf3139ff7a9e492d186548c454adb5032d098"
+    },
+    "build.log": {
+      "bytes": 10157,
+      "sha256": "c58167879b739d1656293b613ccabc8d78910c481d4c0d45e64679ee808ef9e5"
+    },
+    "containers.json": {
+      "bytes": 16053,
+      "sha256": "d5f1903314b5c685321ead185a48e117f2a9625ac47301538809427489709465"
+    },
+    "context.json": {
+      "bytes": 608,
+      "sha256": "8d8b405be9a6f0667c0c793cb3d774b18cab638d701ad1a42e72e2ef5a42dd27"
+    },
+    "docker-version.txt": {
+      "bytes": 769,
+      "sha256": "d08649ab21d0e73e37c3d07f05b7dee2c670f0e1afceb39f62fafed3ad74ecb6"
+    },
+    "export-context.py": {
+      "bytes": 2320,
+      "sha256": "ebf8ffb8701cbffe985503a0774fe32e59cb8f0d0670675a4eccdc20bc54f771"
+    },
+    "image.json": {
+      "bytes": 2819,
+      "sha256": "5f5a0a1fea21f7c475a68c1895a72cf983055e3c5b00ac52a2d2d81752db4c3f"
+    },
+    "operator-help.txt": {
+      "bytes": 1367,
+      "sha256": "158910675c4ae0d106249e90f678286470784fe892cf9f12d9419973c65d1c04"
+    },
+    "package-revision.txt": {
+      "bytes": 41,
+      "sha256": "bdec53474819a569239504c796e16ca5296c4cd33903a3ef2c446786b33beb66"
+    },
+    "provision-help.txt": {
+      "bytes": 914,
+      "sha256": "f402e3bb7f2728c0f8d184825fc394f816469a317905ef554d1bf25274cbbdb0"
+    },
+    "result.json": {
+      "bytes": 269,
+      "sha256": "5e13ed065933220fa5fb3a074e9bf73bae91c6ee44fa5ee655ec74e720892f71"
+    }
+  }
+}

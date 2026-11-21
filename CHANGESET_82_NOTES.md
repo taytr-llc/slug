@@ -4,6 +4,23 @@ Branch: `slug-hosted-pool-test`, stacked on Set81 `138553b1`.
 Status: public-source export and native image/component qualification pass.
 Hosted service and scheduled-payout acceptance remain open.
 
+The first timed hosted attempt failed during initialization, before rotations,
+serving, mining or payouts. Only the original runtime intent was written; the
+ownership reader rejected the selected private DNS HTTPS endpoint under its
+desktop-only address rule. The [failed attempt](docs/evidence/set82/hosted-attempt1/)
+retains its original clock and state. Normal nodes separately reached matching
+height62, and hosted image/volume/public-selection checks passed.
+
+The operator-specific correction permits non-loopback HTTPS only with an
+explicit CA. Desktop restrictions and TLS/hostname, RPC authentication,
+network/genesis, redirect, lifetime and cleanup checks remain intact. A real
+TLS regression fails on the old code and passes after the correction. The
+complete ownership normal/race suites, nine transport/identity refusals,
+cheap-profile refusal and vet pass; see the
+[regression report](docs/evidence/set82/operator-https-fix/report.json).
+A corrected hosted attempt remains required. Final scratch PID1/provider
+shutdown and a reconciled one-off upload failure are logged as EF-15/16.
+
 The active work is a finite hosted operator and scheduled-payout test. General
 capacity continuation remains in [the follow-up log](docs/EDGE_CASE_FOLLOW_UPS.md).
 This slice packages the existing qualified source with the pinned paired wallet

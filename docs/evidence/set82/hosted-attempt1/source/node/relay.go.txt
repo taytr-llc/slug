@@ -1,0 +1,510 @@
+// Fixture-only transport isolation and original node process ownership.
+// No consensus, node RPC, wallet, or pool authority is replaced here.
+package main
+
+import (
+	"bytes"
+	"context"
+	"crypto/sha256"
+	"crypto/tls"
+	"crypto/x509"
+	"encoding/hex"
+	"encoding/pem"
+	"errors"
+	"fmt"
+	"io"
+	"net"
+	"os"
+	"os/exec"
+	"os/signal"
+	"path/filepath"
+	"strings"
+	"sync"
+	"syscall"
+	"time"
+
+	"golang.org/x/sys/unix"
+)
+
+const peerDNS = "zephyr.proxy.rlwy.net"
+const peerRemote = "zephyr.proxy.rlwy.net:37362"
+const peerALPN = "slug-hosted-fixture-p2p-v1"
+
+// Descriptor-relative traversal rejects symlinks at every component. Only the
+// immediate input parent must be owned0700; system ancestors remain unchanged.
+func relayPrivateFile(path string) (raw []byte, result error) {
+	if os.Getuid() != os.Geteuid() || os.Getgid() != os.Getegid() ||
+		!filepath.IsAbs(path) || filepath.Clean(path) != path || strings.ContainsRune(path, 0) {
+		return nil, errors.New("invalid protected relay input")
+	}
+	parts := strings.Split(strings.TrimPrefix(path, "/"), "/")
+	if len(parts) < 2 || len(parts) > 64 {
+		return nil, errors.New("protected relay path bound")
+	}
+	var fds []int
+	var names []string
+	var stamps []unix.Stat_t
+	defer func() {
+		for i := len(fds) - 1; i >= 0; i-- {
+			result = errors.Join(result, unix.Close(fds[i]))
+		}
+		if result != nil {
+			clear(raw)
+			raw = nil
+		}
+	}()
+	fd, e := unix.Open("/", unix.O_RDONLY|unix.O_CLOEXEC|unix.O_DIRECTORY|unix.O_NOFOLLOW, 0)
+	if e != nil {
+		return nil, e
+	}
+	fds = append(fds, fd)
+	for _, component := range parts[:len(parts)-1] {
+		var st unix.Stat_t
+		next, e := unix.Openat(fd, component, unix.O_RDONLY|unix.O_CLOEXEC|unix.O_DIRECTORY|unix.O_NOFOLLOW, 0)
+		if e != nil {
+			return nil, e
+		}
+		fds = append(fds, next)
+		if e = unix.Fstat(next, &st); e != nil {
+			return nil, e
+		}
+		names = append(names, component)
+		stamps = append(stamps, st)
+		fd = next
+	}
+	parent := stamps[len(stamps)-1]
+	if parent.Uid != uint32(os.Getuid()) || parent.Mode&07777 != 0700 {
+		return nil, errors.New("relay input parent is not protected")
+	}
+	leaf := parts[len(parts)-1]
+	lfd, e := unix.Openat(fd, leaf, unix.O_RDONLY|unix.O_CLOEXEC|unix.O_NOFOLLOW, 0)
+	if e != nil {
+		return nil, e
+	}
+	f := os.NewFile(uintptr(lfd), "protected relay input")
+	if f == nil {
+		return nil, errors.Join(errors.New("relay input descriptor"), unix.Close(lfd))
+	}
+	defer func() {
+		result = errors.Join(result, f.Close())
+		if result != nil {
+			clear(raw)
+			raw = nil
+		}
+	}()
+	var before unix.Stat_t
+	if e = unix.Fstat(lfd, &before); e != nil {
+		return nil, e
+	}
+	if before.Mode&unix.S_IFMT != unix.S_IFREG || before.Mode&07777 != 0600 ||
+		before.Uid != uint32(os.Getuid()) || before.Nlink != 1 || before.Size < 1 || before.Size > 64<<10 {
+		return nil, errors.New("relay input is not owned single-link0600")
+	}
+	raw, e = io.ReadAll(io.LimitReader(f, (64<<10)+1))
+	if e != nil || len(raw) > 64<<10 || int64(len(raw)) != before.Size {
+		return nil, errors.Join(errors.New("relay input read bound"), e)
+	}
+	var after unix.Stat_t
+	if e = unix.Fstat(lfd, &after); e != nil {
+		return nil, e
+	}
+	if !relaySameFile(before, after) {
+		return nil, errors.New("relay input changed during read")
+	}
+	for i, name := range names {
+		var current unix.Stat_t
+		if e = unix.Fstatat(fds[i], name, &current, unix.AT_SYMLINK_NOFOLLOW); e != nil {
+			return nil, e
+		}
+		if !relaySameIdentity(stamps[i], current) {
+			return nil, errors.New("relay input ancestor replaced")
+		}
+	}
+	if e = unix.Fstatat(fd, leaf, &after, unix.AT_SYMLINK_NOFOLLOW); e != nil {
+		return nil, e
+	}
+	if !relaySameFile(before, after) {
+		return nil, errors.New("relay input pathname replaced")
+	}
+	return raw, nil
+}
+
+func relaySameIdentity(a, b unix.Stat_t) bool {
+	return a.Dev == b.Dev && a.Ino == b.Ino && a.Mode == b.Mode && a.Uid == b.Uid && a.Gid == b.Gid
+}
+func relaySameFile(a, b unix.Stat_t) bool {
+	// Reading may update access time. Modification/change times remain binding.
+	return relaySameIdentity(a, b) && a.Nlink == b.Nlink && a.Size == b.Size && a.Mtim == b.Mtim && a.Ctim == b.Ctim
+}
+
+func relayCertificate(raw []byte) (*x509.Certificate, error) {
+	b, rest := pem.Decode(raw)
+	if b == nil || b.Type != "CERTIFICATE" || len(b.Headers) != 0 || len(bytes.TrimSpace(rest)) != 0 {
+		return nil, errors.New("one relay certificate required")
+	}
+	return x509.ParseCertificate(b.Bytes)
+}
+
+func relayPair(certPath, keyPath string) (tls.Certificate, error) {
+	cert, e := relayPrivateFile(certPath)
+	if e != nil {
+		return tls.Certificate{}, e
+	}
+	key, e := relayPrivateFile(keyPath)
+	if e != nil {
+		return tls.Certificate{}, e
+	}
+	defer clear(key)
+	return tls.X509KeyPair(cert, key)
+}
+
+func relayRoots(path string) (*x509.CertPool, error) {
+	raw, e := relayPrivateFile(path)
+	if e != nil {
+		return nil, e
+	}
+	ca, e := relayCertificate(raw)
+	if e != nil || !ca.IsCA {
+		return nil, errors.Join(errors.New("relay CA required"), e)
+	}
+	p := x509.NewCertPool()
+	p.AddCert(ca)
+	return p, nil
+}
+
+func relayServerTLS() (*tls.Config, error) {
+	pair, e := relayPair(root+"/p2p-server.cert", root+"/p2p-server.key")
+	if e != nil {
+		return nil, e
+	}
+	roots, e := relayRoots(root + "/p2p-ca.cert")
+	if e != nil {
+		return nil, e
+	}
+	raw, e := relayPrivateFile(root + "/p2p-client.cert")
+	if e != nil {
+		return nil, e
+	}
+	client, e := relayCertificate(raw)
+	if e != nil || client.IsCA {
+		return nil, errors.Join(errors.New("relay client leaf required"), e)
+	}
+	return relaySelectedServerTLS(pair, roots, client), nil
+}
+
+func relaySelectedServerTLS(pair tls.Certificate, roots *x509.CertPool, client *x509.Certificate) *tls.Config {
+	return &tls.Config{MinVersion: tls.VersionTLS13, NextProtos: []string{peerALPN},
+		Certificates: []tls.Certificate{pair}, ClientCAs: roots, ClientAuth: tls.RequireAndVerifyClientCert,
+		VerifyConnection: func(s tls.ConnectionState) error {
+			if s.NegotiatedProtocol != peerALPN || len(s.PeerCertificates) == 0 ||
+				!bytes.Equal(s.PeerCertificates[0].Raw, client.Raw) {
+				return errors.New("unselected fixture peer")
+			}
+			return nil
+		}}
+}
+
+type relayConn struct {
+	net.Conn
+	once sync.Once
+	err  error
+}
+
+func (c *relayConn) close() error {
+	c.once.Do(func() { c.err = c.Conn.Close() })
+	if errors.Is(c.err, net.ErrClosed) {
+		return nil
+	}
+	return c.err
+}
+
+type peerRelay struct {
+	listener   net.Listener
+	mu         sync.Mutex
+	closing    bool
+	owned      map[*relayConn]struct{}
+	wg         sync.WaitGroup
+	slot       chan struct{}
+	acceptDone chan error
+	cleanup    error
+}
+
+func (r *peerRelay) remember(e error) {
+	if e == nil {
+		return
+	}
+	r.mu.Lock()
+	r.cleanup = errors.Join(r.cleanup, e)
+	r.mu.Unlock()
+}
+func (r *peerRelay) cleanupError() error {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	return r.cleanup
+}
+
+func startPeerRelay(ctx context.Context, listener net.Listener, session func(context.Context, *peerRelay, *relayConn)) *peerRelay {
+	r := &peerRelay{listener: listener, owned: make(map[*relayConn]struct{}), slot: make(chan struct{}, 1), acceptDone: make(chan error, 1)}
+	go func() {
+		for {
+			c, e := listener.Accept()
+			if e != nil {
+				r.mu.Lock()
+				closing := r.closing
+				r.mu.Unlock()
+				if closing && errors.Is(e, net.ErrClosed) {
+					e = nil
+				}
+				r.acceptDone <- e
+				return
+			}
+			owned := &relayConn{Conn: c}
+			select {
+			case r.slot <- struct{}{}:
+			default:
+				r.remember(owned.close())
+				continue
+			}
+			r.mu.Lock()
+			if r.closing {
+				r.mu.Unlock()
+				r.remember(owned.close())
+				<-r.slot
+				continue
+			}
+			r.owned[owned] = struct{}{}
+			r.wg.Add(1)
+			r.mu.Unlock()
+			go func() {
+				defer r.wg.Done()
+				defer func() { r.remember(owned.close()); r.mu.Lock(); delete(r.owned, owned); r.mu.Unlock(); <-r.slot }()
+				session(ctx, r, owned)
+			}()
+		}
+	}()
+	return r
+}
+
+func (r *peerRelay) attach(c net.Conn) (*relayConn, bool) {
+	o := &relayConn{Conn: c}
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	if r.closing {
+		r.cleanup = errors.Join(r.cleanup, o.close())
+		return nil, false
+	}
+	r.owned[o] = struct{}{}
+	return o, true
+}
+func (r *peerRelay) release(c *relayConn) {
+	r.remember(c.close())
+	r.mu.Lock()
+	delete(r.owned, c)
+	r.mu.Unlock()
+}
+
+func (r *peerRelay) stop(acceptReceived bool) error {
+	r.mu.Lock()
+	r.closing = true
+	all := make([]*relayConn, 0, len(r.owned))
+	for c := range r.owned {
+		all = append(all, c)
+	}
+	r.mu.Unlock()
+	var result error
+	if e := r.listener.Close(); e != nil && !errors.Is(e, net.ErrClosed) {
+		result = errors.Join(result, e)
+	}
+	for _, c := range all {
+		result = errors.Join(result, c.close())
+	}
+	joined := make(chan struct{})
+	go func() { r.wg.Wait(); close(joined) }()
+	timer := time.NewTimer(5 * time.Second)
+	defer timer.Stop()
+	if !acceptReceived {
+		select {
+		case e := <-r.acceptDone:
+			result = errors.Join(result, e)
+		case <-timer.C:
+			return errors.Join(result, r.cleanupError(), errors.New("relay accept did not join"))
+		}
+	}
+	select {
+	case <-joined:
+		return errors.Join(result, r.cleanupError())
+	case <-timer.C:
+		return errors.Join(result, r.cleanupError(), errors.New("relay sessions did not join"))
+	}
+}
+
+// The first closed direction closes both owned sockets and then joins both
+// copies. No plaintext node byte is read until the TLS handshake is verified.
+func relayCopies(a, b io.ReadWriter, ca, cb *relayConn) {
+	done := make(chan struct{}, 2)
+	go func() { _, _ = io.Copy(a, b); done <- struct{}{} }()
+	go func() { _, _ = io.Copy(b, a); done <- struct{}{} }()
+	<-done
+	_ = ca.close()
+	_ = cb.close()
+	<-done
+}
+
+func relayServerSession(config *tls.Config) func(context.Context, *peerRelay, *relayConn) {
+	return relayServerSessionAt(config, "127.0.0.1:29334")
+}
+
+func relayServerSessionAt(config *tls.Config, target string) func(context.Context, *peerRelay, *relayConn) {
+	return func(ctx context.Context, r *peerRelay, raw *relayConn) {
+		secure := tls.Server(raw.Conn, config)
+		handshake, cancel := context.WithTimeout(ctx, 5*time.Second)
+		e := secure.HandshakeContext(handshake)
+		cancel()
+		if e != nil {
+			return
+		}
+		dial := net.Dialer{Timeout: 5 * time.Second}
+		conn, e := dial.DialContext(ctx, "tcp4", target)
+		if e != nil {
+			return
+		}
+		upstream, ok := r.attach(conn)
+		if !ok {
+			return
+		}
+		defer r.release(upstream)
+		relayCopies(secure, upstream.Conn, raw, upstream)
+	}
+}
+
+func joinedNodeStop(cmd *exec.Cmd, done <-chan error) error {
+	var result error
+	if e := cmd.Process.Signal(syscall.SIGTERM); e != nil && !errors.Is(e, os.ErrProcessDone) {
+		result = e
+	}
+	timer := time.NewTimer(30 * time.Second)
+	defer timer.Stop()
+	select {
+	case e := <-done:
+		return errors.Join(result, e)
+	case <-timer.C:
+		result = errors.Join(result, errors.New("original node SIGTERM join deadline"))
+	}
+	if e := cmd.Process.Kill(); e != nil && !errors.Is(e, os.ErrProcessDone) {
+		result = errors.Join(result, e)
+	}
+	last := time.NewTimer(5 * time.Second)
+	defer last.Stop()
+	select {
+	case e := <-done:
+		return errors.Join(result, e)
+	case <-last.C:
+		return errors.Join(result, errors.New("original node kill did not join"))
+	}
+}
+
+func serveNode() {
+	ownedRoot()
+	config, e := relayServerTLS()
+	check(e)
+	listener, e := net.Listen("tcp", ":29333")
+	check(e)
+	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
+	r := startPeerRelay(ctx, listener, relayServerSession(config))
+	cmd := exec.Command("/usr/local/bin/slugd", "--configfile="+root+"/node.conf")
+	cmd.Env = []string{"HOME=" + root, "PATH=/usr/local/bin:/usr/bin:/bin"}
+	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
+	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
+	if e = cmd.Start(); e != nil {
+		stop()
+		check(errors.Join(e, r.stop(false)))
+		return
+	}
+	done := make(chan error, 1)
+	go func() { done <- cmd.Wait() }()
+	var result error
+	joined, acceptReceived := false, false
+	select {
+	case e = <-done:
+		joined = true
+		result = errors.Join(errors.New("original node exited before requested shutdown"), e)
+	case e = <-r.acceptDone:
+		acceptReceived = true
+		result = errors.Join(errors.New("fixture listener exited before requested shutdown"), e)
+	case <-ctx.Done():
+		select {
+		case e = <-done:
+			joined = true
+			result = errors.Join(errors.New("original node already exited before shutdown"), e)
+		default:
+		}
+	}
+	stop()
+	result = errors.Join(result, r.stop(acceptReceived))
+	if !joined {
+		result = errors.Join(result, joinedNodeStop(cmd, done))
+	}
+	check(result)
+	fmt.Println("{\"version\":1,\"node_child_joined\":true,\"relay_joined\":true,\"clean_shutdown\":true}")
+}
+
+func bridge() {
+	need(os.Geteuid() != 0 && os.Getuid() == os.Geteuid() && os.Getgid() == os.Getegid(), "non-root original bridge user required")
+	need(len(os.Args) == 10 && os.Args[2] == "--ca" && os.Args[4] == "--cert" && os.Args[6] == "--key" && os.Args[8] == "--server-spki", "exact bridge selections required")
+	need(len(os.Args[9]) == 64 && strings.ToLower(os.Args[9]) == os.Args[9], "canonical server SPKI required")
+	expected, e := hex.DecodeString(os.Args[9])
+	check(e)
+	need(len(expected) == 32, "server SPKI width")
+	roots, e := relayRoots(os.Args[3])
+	check(e)
+	pair, e := relayPair(os.Args[5], os.Args[7])
+	check(e)
+	config := &tls.Config{MinVersion: tls.VersionTLS13, ServerName: peerDNS, RootCAs: roots,
+		Certificates: []tls.Certificate{pair}, NextProtos: []string{peerALPN},
+		VerifyConnection: func(s tls.ConnectionState) error {
+			if s.NegotiatedProtocol != peerALPN || len(s.PeerCertificates) == 0 {
+				return errors.New("unselected relay server")
+			}
+			h := sha256.Sum256(s.PeerCertificates[0].RawSubjectPublicKeyInfo)
+			if !bytes.Equal(h[:], expected) {
+				return errors.New("relay server SPKI mismatch")
+			}
+			return nil
+		}}
+	listener, e := net.Listen("tcp4", "127.0.0.1:29489")
+	check(e)
+	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
+	r := startPeerRelay(ctx, listener, func(ctx context.Context, r *peerRelay, local *relayConn) {
+		dial := net.Dialer{Timeout: 5 * time.Second}
+		conn, e := dial.DialContext(ctx, "tcp", peerRemote)
+		if e != nil {
+			return
+		}
+		remote, ok := r.attach(conn)
+		if !ok {
+			return
+		}
+		defer r.release(remote)
+		secure := tls.Client(remote.Conn, config)
+		handshake, cancel := context.WithTimeout(ctx, 5*time.Second)
+		e = secure.HandshakeContext(handshake)
+		cancel()
+		if e != nil {
+			return
+		}
+		relayCopies(local.Conn, secure, local, remote)
+	})
+	fmt.Println("fixture peer bridge listening on127.0.0.1:29489 with selected mTLS peer")
+	var result error
+	acceptReceived := false
+	select {
+	case e = <-r.acceptDone:
+		acceptReceived = true
+		result = errors.Join(errors.New("fixture bridge listener exited"), e)
+	case <-ctx.Done():
+	}
+	stop()
+	check(errors.Join(result, r.stop(acceptReceived)))
+}

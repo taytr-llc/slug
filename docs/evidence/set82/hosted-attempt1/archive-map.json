@@ -1,0 +1,820 @@
+{
+  "version": 1,
+  "status": "installed-and-hash-verified",
+  "scope": "Original failed hosted attempt 1 and separately scoped bootstrap milestones; no payout or final scratch PID1 qualification",
+  "product_commit": "138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c",
+  "wallet_commit": "dfc5d9dd7e0f604486fbac812d0413fce1f45cd6",
+  "copy_count": 114,
+  "copy_bytes": 575513,
+  "target_root": "docs/evidence/set82/hosted-attempt1",
+  "entries": [
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/failed-attempt-report.json",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/failed-attempt-report.json",
+      "bytes": 5805,
+      "sha256": "b4315c2dd8af7913c1e31ee426c27e56a167cec5997ce96a17ee1566bc6da816",
+      "scope": "original failed attempt or separately bounded public bootstrap/selection evidence; not payout qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/attempt-selection.json",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/attempt-selection.json",
+      "bytes": 182,
+      "sha256": "55f37577395b8910beae74c7b2c9f2621aefadd58ffa244f53382d148bb9c47a",
+      "scope": "original failed attempt or separately bounded public bootstrap/selection evidence; not payout qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/execution-selection.json",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/execution-selection.json",
+      "bytes": 8825,
+      "sha256": "0036efd824fe2e027d776896f1326cfcf7e4b97ec28dfc9ad3140e326adeccc5",
+      "scope": "original failed attempt or separately bounded public bootstrap/selection evidence; not payout qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/operator-init.stdout.json",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/operator-init.stdout.json",
+      "bytes": 88,
+      "sha256": "2e552bf299c0f815b2f052474b2a0b0bc57c236249cedb59af4cbc95bc4eb62d",
+      "scope": "original failed attempt or separately bounded public bootstrap/selection evidence; not payout qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/operator-init.stdout.json.status.json",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/operator-init.stdout.json.status.json",
+      "bytes": 241,
+      "sha256": "d45299befb880fb73efce4e929fe75dd53dabbb7343f10cb92939397c8d3d93e",
+      "scope": "original failed attempt or separately bounded public bootstrap/selection evidence; not payout qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/init-child-metadata.txt",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/init-child-metadata.txt",
+      "bytes": 88,
+      "sha256": "777db19a87efd1e557f0d20080f18ae6f3d6735e465555516200a0835cd760a4",
+      "scope": "original failed attempt or separately bounded public bootstrap/selection evidence; not payout qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/init-child-metadata.txt.status.json",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/init-child-metadata.txt.status.json",
+      "bytes": 238,
+      "sha256": "9236eb33df2b2fa41905eaf59c57f5a8ebf066d66c40701850e061f3f3e740ba",
+      "scope": "original failed attempt or separately bounded public bootstrap/selection evidence; not payout qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/init-refusal-public-metadata.txt",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/init-refusal-public-metadata.txt",
+      "bytes": 129,
+      "sha256": "09fb8801b7dfb16a9a9802cae57355aa21ae826c1528e9a037bfb952c866f922",
+      "scope": "original failed attempt or separately bounded public bootstrap/selection evidence; not payout qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/init-refusal-public-metadata.txt.status.json",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/init-refusal-public-metadata.txt.status.json",
+      "bytes": 247,
+      "sha256": "a5a764323833803475be8b46766cb9fb75f1dfb250f7e452b02db8f4b22346f4",
+      "scope": "original failed attempt or separately bounded public bootstrap/selection evidence; not payout qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/normal-bootstrap62.json",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/normal-bootstrap62.json",
+      "bytes": 8818,
+      "sha256": "403aa8c230ac0d9c4b6d42e644aa213a8f0035375886e4b61489821e72471bfb",
+      "scope": "original failed attempt or separately bounded public bootstrap/selection evidence; not payout qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/node-state-before-sync.json",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/node-state-before-sync.json",
+      "bytes": 1397,
+      "sha256": "722de7d6afd3684e279e9be99dda95524c09f2f6b7c4543fc0440a91f339ccf1",
+      "scope": "original failed attempt or separately bounded public bootstrap/selection evidence; not payout qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/node-state-before-sync.json.status.json",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/node-state-before-sync.json.status.json",
+      "bytes": 243,
+      "sha256": "658d63f035c63d0cec1e603dd9667badd4c2a0908d6a3ce7a620e397c6ada995",
+      "scope": "original failed attempt or separately bounded public bootstrap/selection evidence; not payout qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/node-state-height62.json",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/node-state-height62.json",
+      "bytes": 1393,
+      "sha256": "6acf04bdae56d93b87e0449aeecd1d9df200342cac8fc91a483e7940cbfca7e7",
+      "scope": "original failed attempt or separately bounded public bootstrap/selection evidence; not payout qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/node-state-height62.json.status.json",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/node-state-height62.json.status.json",
+      "bytes": 239,
+      "sha256": "b897023e7ad144452a8e1c9d859d89ba61f4243f205210218db35b39a46516df",
+      "scope": "original failed attempt or separately bounded public bootstrap/selection evidence; not payout qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/selection-check.json",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/selection-check.json",
+      "bytes": 2734,
+      "sha256": "4608955afe0396686da9cc9356dff55ca1d7782d27bec231cd072442e49783d7",
+      "scope": "original failed attempt or separately bounded public bootstrap/selection evidence; not payout qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/public-transfer.json",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/public-transfer.json",
+      "bytes": 744,
+      "sha256": "3bd442f6a108edad1d709a286898103030bf0ccc98db5be422d8e6a92f4e6e4b",
+      "scope": "original failed attempt or separately bounded public bootstrap/selection evidence; not payout qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/prepare-host.stdout.json",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/prepare-host.stdout.json",
+      "bytes": 67,
+      "sha256": "262d628c3c70e87fec7c2036d54835cd246f33ce2aead734a10da706537f0f26",
+      "scope": "original failed attempt or separately bounded public bootstrap/selection evidence; not payout qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/prepare-host.stdout.json.status.json",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/prepare-host.stdout.json.status.json",
+      "bytes": 239,
+      "sha256": "525146108975680c2d7fda6d2de011741a41a9261f1ca41e4e0f3f8ee470f9fb",
+      "scope": "original failed attempt or separately bounded public bootstrap/selection evidence; not payout qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/host-selection.json",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/host-selection.json",
+      "bytes": 299,
+      "sha256": "21da0107e47ec5582e9f7152ff79ffb28acb520cce1e2874ec8b76666326eed8",
+      "scope": "original failed attempt or separately bounded public bootstrap/selection evidence; not payout qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/pool-initial-metadata.txt",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/pool-initial-metadata.txt",
+      "bytes": 125,
+      "sha256": "8b63af38f3de2c7215ed10adde5c2e815333bd75b05a12288da272b58cb97c69",
+      "scope": "original failed attempt or separately bounded public bootstrap/selection evidence; not payout qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/pool-initial-metadata.txt.status.json",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/pool-initial-metadata.txt.status.json",
+      "bytes": 241,
+      "sha256": "683c447a86485be9fecf002cd3911b6b612029d956771edaf4e8cd4598ec3836",
+      "scope": "original failed attempt or separately bounded public bootstrap/selection evidence; not payout qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/pool-audit-image-metadata.txt",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/pool-audit-image-metadata.txt",
+      "bytes": 426,
+      "sha256": "6157b7bf261af923cfca39cd8267ca418518dab8f80a6fbd5e48dd65d8e61931",
+      "scope": "original failed attempt or separately bounded public bootstrap/selection evidence; not payout qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/pool-audit-image-metadata.txt.status.json",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/pool-audit-image-metadata.txt.status.json",
+      "bytes": 245,
+      "sha256": "edb7dd5a13052a0af6213cb959c4a852709428658a3564b01bf13d1a841f61f9",
+      "scope": "original failed attempt or separately bounded public bootstrap/selection evidence; not payout qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/lifecycle-overlay-install.txt",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/lifecycle-overlay-install.txt",
+      "bytes": 115,
+      "sha256": "1aa5d9d32bd1c68a35110f98f92631cca074e8e2d10e99d0839e61ba71a8af70",
+      "scope": "original failed attempt or separately bounded public bootstrap/selection evidence; not payout qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/lifecycle-overlay-install.txt.status.json",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/lifecycle-overlay-install.txt.status.json",
+      "bytes": 244,
+      "sha256": "627502bb58e02f885a08cab14f25180c9f03337d79be758f326aa9e3568b6f89",
+      "scope": "original failed attempt or separately bounded public bootstrap/selection evidence; not payout qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/selection-host-handoff.txt",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/selection-host-handoff.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "scope": "original failed attempt or separately bounded public bootstrap/selection evidence; not payout qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/selection-host-handoff.txt.status.json",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/selection-host-handoff.txt.status.json",
+      "bytes": 241,
+      "sha256": "7d3de16887b79a1abdd9584cace3b5ff168c5dcbc753d76992650f47ba51a269",
+      "scope": "original failed attempt or separately bounded public bootstrap/selection evidence; not payout qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/public/endpoints.json",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/public/endpoints.json",
+      "bytes": 239,
+      "sha256": "e01cf821d308372258d006e6dea345b1f07e449d64d3616fa13b4f18f16c0f27",
+      "scope": "public selected configuration/certificate only; no private key or credential"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/public/setup.json",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/public/setup.json",
+      "bytes": 5512,
+      "sha256": "4b247d1d5081efaff73afe07884757416e2b658e4baacb5f71706e7152466bb3",
+      "scope": "public selected configuration/certificate only; no private key or credential"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/public/remote.json",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/public/remote.json",
+      "bytes": 6076,
+      "sha256": "62796a2f102a7a1b9f029c0fb98bc0fc181d63dd723cc03fefa285cd35751a52",
+      "scope": "public selected configuration/certificate only; no private key or credential"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/public/prepared.json",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/public/prepared.json",
+      "bytes": 996,
+      "sha256": "d581d6d467e8b5a1ccbdae5ea62d890a3b565923f3299038dc47c694d4718b70",
+      "scope": "public selected configuration/certificate only; no private key or credential"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/public/ca.pem",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/public/ca.pem",
+      "bytes": 497,
+      "sha256": "45a8945cd399db428cbcf16e3a32d5f1cadf9a1a89e07e099d698d825e334eb1",
+      "scope": "public selected configuration/certificate only; no private key or credential"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/public/tls-cert.pem",
+      "target": "docs/evidence/set82/hosted-attempt1/actual/public/tls-cert.pem",
+      "bytes": 1067,
+      "sha256": "e6f3a173b6c850d6aa0e9107726a0bc39a45b39316cc8b1b1ca126936a968d91",
+      "scope": "public selected configuration/certificate only; no private key or credential"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/operator-host-build-attempt1/build.log",
+      "target": "docs/evidence/set82/hosted-attempt1/builds/operator-host-build-attempt1/build.log",
+      "bytes": 113,
+      "sha256": "5df1ca8f5b08f53475635a850aaab5837e482d4096e9f6b319c4f962f4400930",
+      "scope": "raw public build/upload record; retain original failures independently"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/operator-host-build-attempt2/build.log",
+      "target": "docs/evidence/set82/hosted-attempt1/builds/operator-host-build-attempt2/build.log",
+      "bytes": 48,
+      "sha256": "bf6e1562ee448068abda3062667430a8fee860a6f6587edc94d2cb5dfd17117f",
+      "scope": "raw public build/upload record; retain original failures independently"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/operator-host-build-attempt3/build.log",
+      "target": "docs/evidence/set82/hosted-attempt1/builds/operator-host-build-attempt3/build.log",
+      "bytes": 34275,
+      "sha256": "4220ae87123b5e2c0fd520332710c52dae7a8e18b8607b7bb785a7dc14e06e01",
+      "scope": "raw public build/upload record; retain original failures independently"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/operator-host-build-attempt4/build.log",
+      "target": "docs/evidence/set82/hosted-attempt1/builds/operator-host-build-attempt4/build.log",
+      "bytes": 434,
+      "sha256": "d5cdbefbc3608041e97f50ddf3df07d5ae7bec8d5845b16cd2f6098ddc089c83",
+      "scope": "raw public build/upload record; retain original failures independently"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/operator-host-build-attempt5/build.log",
+      "target": "docs/evidence/set82/hosted-attempt1/builds/operator-host-build-attempt5/build.log",
+      "bytes": 21124,
+      "sha256": "cdd27f492c56f97fce574f0b783419d2332439ab7affa275c6bbccc428fea365",
+      "scope": "raw public build/upload record; retain original failures independently"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/operator-host-build-attempt6/build.log",
+      "target": "docs/evidence/set82/hosted-attempt1/builds/operator-host-build-attempt6/build.log",
+      "bytes": 28602,
+      "sha256": "431a83b8953a11ca508a03642a39348dec67a6ffb301ab9ba8cc7c202fe80419",
+      "scope": "raw public build/upload record; retain original failures independently"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/node-host-build-attempt1/build.log",
+      "target": "docs/evidence/set82/hosted-attempt1/builds/node-host-build-attempt1/build.log",
+      "bytes": 9385,
+      "sha256": "8455a96f4f44e8dc0f6a115212dc4d92c035063adb1ab9ab63015ce32edef259",
+      "scope": "raw public build/upload record; retain original failures independently"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/node-host-build-attempt2/build.log",
+      "target": "docs/evidence/set82/hosted-attempt1/builds/node-host-build-attempt2/build.log",
+      "bytes": 8329,
+      "sha256": "594cfbe0b02b7dbb9c704fa71ff1a735b30ee82ae9b00f860e61c7e157a56387",
+      "scope": "raw public build/upload record; retain original failures independently"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/operator-host-build-attempt4/provider-failure-reconciliation.json",
+      "target": "docs/evidence/set82/hosted-attempt1/builds/operator-host-build-attempt4/provider-failure-reconciliation.json",
+      "bytes": 285,
+      "sha256": "42fc9437afe13251db708d3a57684c0d32092daa7f2a2461bf2e665155c2a44c",
+      "scope": "later FAILED reconfirmation; not evidence of pre-retry observation timestamp"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/package-artifact-verification-attempt1.json",
+      "target": "docs/evidence/set82/hosted-attempt1/builds/package-artifact-verification-attempt1.json",
+      "bytes": 251,
+      "sha256": "b110ae0ccf2fd07b482306dece4c0494344cb9501bd66cc8e7283eb400c0a79b",
+      "scope": "package-evidence verification only; no hosted runtime qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/package-artifact-verification-attempt2.json",
+      "target": "docs/evidence/set82/hosted-attempt1/builds/package-artifact-verification-attempt2.json",
+      "bytes": 4812,
+      "sha256": "d95fd79ccbe1a80fef6bcf9ae67144a7338e8f0556f2aed1cec133c9a46c27db",
+      "scope": "package-evidence verification only; no hosted runtime qualification"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/host-command.py",
+      "target": "docs/evidence/set82/hosted-attempt1/source/host-command.py",
+      "bytes": 1563,
+      "sha256": "99ada9109e4775584736830cba47ef36d89608c1b092b32361aeca2326f0cf2d",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/advance-local.py",
+      "target": "docs/evidence/set82/hosted-attempt1/source/advance-local.py",
+      "bytes": 1991,
+      "sha256": "e60835754664f9ed5ca0497a050fd27de59a6e328526008b7525c203b46a7815",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/fetch-selection.py",
+      "target": "docs/evidence/set82/hosted-attempt1/source/fetch-selection.py",
+      "bytes": 1500,
+      "sha256": "a0f6e042afed96637a50374f81f7e7f7f7240ea4ac5d5699781a49daef88629b",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/prepare-attempt.py",
+      "target": "docs/evidence/set82/hosted-attempt1/source/prepare-attempt.py",
+      "bytes": 6354,
+      "sha256": "321e1129d7d7b0a823e962c965c520fb72ecd9c39111b5f83aa0432d9b81db59",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/operator-control.py",
+      "target": "docs/evidence/set82/hosted-attempt1/source/operator-control.py",
+      "bytes": 3666,
+      "sha256": "9b08ab07b4b375bc2e01e545ab2364c317b64445140c7e4ce0ac8b2678414e8f",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/client-control.py",
+      "target": "docs/evidence/set82/hosted-attempt1/source/client-control.py",
+      "bytes": 2382,
+      "sha256": "fcea72652dc7c9053c2c5b97286a5891ca640038acfcc03539f4d428f296d546",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/ACCEPTANCE.md",
+      "target": "docs/evidence/set82/hosted-attempt1/source/ACCEPTANCE.md",
+      "bytes": 13389,
+      "sha256": "38913a00ccab15555d6bd3c3caa4556f391dfe0baeef985b191ada945dde6e64",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/expectations.json",
+      "target": "docs/evidence/set82/hosted-attempt1/source/expectations.json",
+      "bytes": 2583,
+      "sha256": "83454d9f2d760864ae063f6b41e970155a144ad7296b44352effa4e2d46489bb",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/check-selection.py",
+      "target": "docs/evidence/set82/hosted-attempt1/source/check-selection.py",
+      "bytes": 15189,
+      "sha256": "04e6c11ac65c1c3693ef8074fcd8ef84b9318a3c6b172a0d7b63f7267e9bdbe7",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/lifecycle/operator-lifecycle.sh",
+      "target": "docs/evidence/set82/hosted-attempt1/source/lifecycle/operator-lifecycle.sh",
+      "bytes": 10562,
+      "sha256": "c3ff7087f1060ae4b28986a45ae7afb367c3911310b979f8e5237b0b518f2997",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/client-flow/run-client.py",
+      "target": "docs/evidence/set82/hosted-attempt1/source/client-flow/run-client.py",
+      "bytes": 11682,
+      "sha256": "8673e3394dfbad1d98fcd39fc515f9a7fc04c8e12f378a2d1f1eda93c1562b12",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/client-flow/credentials.py",
+      "target": "docs/evidence/set82/hosted-attempt1/source/client-flow/credentials.py",
+      "bytes": 8206,
+      "sha256": "903565d5434da7a526a4ab89364cbfd3912b498b9115fe391d73cca9dc588a16",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/preparer/files.go",
+      "target": "docs/evidence/set82/hosted-attempt1/source/preparer/files.go.txt",
+      "bytes": 4054,
+      "sha256": "3be483f18edb96abe3eaef82974bc46bd1c1a0acb0db988a4f638c14c964842b",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/preparer/main.go",
+      "target": "docs/evidence/set82/hosted-attempt1/source/preparer/main.go.txt",
+      "bytes": 10012,
+      "sha256": "06877e0035116a1f9f17f7bbdfe9fa8487d78849e09863cca8ef71bf7b94592a",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/preparer/selection.go",
+      "target": "docs/evidence/set82/hosted-attempt1/source/preparer/selection.go.txt",
+      "bytes": 7263,
+      "sha256": "3d2c22da16ca30397659491818b4930443d30c3fa770db6b30be2bb92040aaf1",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/preparer/tls.go",
+      "target": "docs/evidence/set82/hosted-attempt1/source/preparer/tls.go.txt",
+      "bytes": 3334,
+      "sha256": "91712df486e73337192e18341d3a623ed6237913fe0a200d3e4b30daeb2edfeb",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/preparer/go.mod",
+      "target": "docs/evidence/set82/hosted-attempt1/source/preparer/go.mod",
+      "bytes": 487,
+      "sha256": "04996f5c29d939e0fcea87d6cc5fafe1b425c1e19b09408cc795dbcdf886b4e3",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/audit/financial.go",
+      "target": "docs/evidence/set82/hosted-attempt1/source/audit/financial.go.txt",
+      "bytes": 6187,
+      "sha256": "3e80fa91933a374c57fae990286daa240d9a7fa27a75984b16f61caaff71ea8f",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/audit/main.go",
+      "target": "docs/evidence/set82/hosted-attempt1/source/audit/main.go.txt",
+      "bytes": 9850,
+      "sha256": "00c299e1fd4300545ff98548c0ce7bdfae1f43fe3c35542db450d8e7d65da55e",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/audit/operator_audit.go",
+      "target": "docs/evidence/set82/hosted-attempt1/source/audit/operator_audit.go.txt",
+      "bytes": 14293,
+      "sha256": "14d463c15ae4438ef6172b89d2e8714d1591ce0869efad3b2a28dfda6e45b2bc",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/audit/support.go",
+      "target": "docs/evidence/set82/hosted-attempt1/source/audit/support.go.txt",
+      "bytes": 4297,
+      "sha256": "a90ff8bfd59cd726b179e80e62592dd89af74110dd3ba2dfddbafa1d174a119a",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/audit/go.mod",
+      "target": "docs/evidence/set82/hosted-attempt1/source/audit/go.mod",
+      "bytes": 466,
+      "sha256": "2bfb7edb070fac1c320edcadd7d73c5f799b156732f50b9d6a1da85b818ca65e",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/client/main.go",
+      "target": "docs/evidence/set82/hosted-attempt1/source/client/main.go.txt",
+      "bytes": 14938,
+      "sha256": "146a3c004348a70b364d86ff58ababdb03a3029fcf7dcbfb2ffb06e94ffc4599",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/client/go.mod",
+      "target": "docs/evidence/set82/hosted-attempt1/source/client/go.mod",
+      "bytes": 356,
+      "sha256": "4d9d47fc752d49df3e33199a88aa659a3189e733da61c60819834f6325363e1c",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/bindings.go",
+      "target": "docs/evidence/set82/hosted-attempt1/source/proofclient/bindings.go.txt",
+      "bytes": 3243,
+      "sha256": "0f3954f9d49a0286e2c3f4ce5c9ef1d3267c789de0bf47736d90684e7744a1b2",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/chain.go",
+      "target": "docs/evidence/set82/hosted-attempt1/source/proofclient/chain.go.txt",
+      "bytes": 10832,
+      "sha256": "cb33057349c1b42c1694e0f03935b2ef2e5d97c51c5dba5fc1c3e6a486ab9aa5",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/common.go",
+      "target": "docs/evidence/set82/hosted-attempt1/source/proofclient/common.go.txt",
+      "bytes": 10493,
+      "sha256": "b7182c2b9ba84f249e298dfcb6c3b35e5a12503162daa6df5f6da0766a397f1a",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/main.go",
+      "target": "docs/evidence/set82/hosted-attempt1/source/proofclient/main.go.txt",
+      "bytes": 3488,
+      "sha256": "a18294495f881462742d8feccfbde618bb37f848fc2f83523e0d50e0e01bdeba",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/money.go",
+      "target": "docs/evidence/set82/hosted-attempt1/source/proofclient/money.go.txt",
+      "bytes": 6097,
+      "sha256": "60a695ba9116c72800f3b7ec8d3a95c25350cbbd6cfd2633f9c501dfcac8d8e4",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/outbox_audit.go",
+      "target": "docs/evidence/set82/hosted-attempt1/source/proofclient/outbox_audit.go.txt",
+      "bytes": 11444,
+      "sha256": "84fa9a045b9f1edb607cbfdec7948902cdc8f344595bebbc62922862bc8e0f77",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/replay.go",
+      "target": "docs/evidence/set82/hosted-attempt1/source/proofclient/replay.go.txt",
+      "bytes": 4846,
+      "sha256": "b040a41f29e6066c18a23cf52aff65516bca99e74b09cf4db81a62def7b95026",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/go.mod",
+      "target": "docs/evidence/set82/hosted-attempt1/source/proofclient/go.mod",
+      "bytes": 389,
+      "sha256": "48a24758c29654ed272301267d377e1540c26f56cb88f9c66283c7d6af11f44b",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/node/certs.go",
+      "target": "docs/evidence/set82/hosted-attempt1/source/node/certs.go.txt",
+      "bytes": 2381,
+      "sha256": "1d92ea6ba5f4c9f3e25f92c5187e3a6a6c96e59af919a66bb2d06ad8091f6efe",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/node/main.go",
+      "target": "docs/evidence/set82/hosted-attempt1/source/node/main.go.txt",
+      "bytes": 7471,
+      "sha256": "1e9856bdadb205a64b687ac88862c6a01342c63ed46ac4b278a0e0f4c91a57f8",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/node/relay.go",
+      "target": "docs/evidence/set82/hosted-attempt1/source/node/relay.go.txt",
+      "bytes": 14669,
+      "sha256": "4ddd15868bca6539206aa85de1afd76cac0e467a904869fd3a1d243b0699704e",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/node/relay_test.go",
+      "target": "docs/evidence/set82/hosted-attempt1/source/node/relay_test.go.txt",
+      "bytes": 7605,
+      "sha256": "0f66b07a9de2e465d5d3125e7d14b30edbd87a8d1697362da1c4c80c5752bcb7",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/node/go.mod",
+      "target": "docs/evidence/set82/hosted-attempt1/source/node/go.mod",
+      "bytes": 97,
+      "sha256": "a2eeb50a2860dfd95d3b35e982dc5522fca59c8f7a29622c16d0d329e845fdbe",
+      "scope": "exact original execution-selected public helper source; documentary Go files use .go.txt"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/HOST_BOOTSTRAP_PLAN.md",
+      "target": "docs/evidence/set82/hosted-attempt1/source/HOST_BOOTSTRAP_PLAN.md",
+      "bytes": 10764,
+      "sha256": "f228274daea98bd163578350f4e9f7d923f98add097f897a52de6968e6c31497",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/HOST_SHUTDOWN_EVIDENCE.md",
+      "target": "docs/evidence/set82/hosted-attempt1/source/HOST_SHUTDOWN_EVIDENCE.md",
+      "bytes": 6380,
+      "sha256": "ff902093a76eeac557084ae4a75da24b119a031a414ede6312416caf6b2a7cec",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/INPUT_PLAN.md",
+      "target": "docs/evidence/set82/hosted-attempt1/source/INPUT_PLAN.md",
+      "bytes": 10445,
+      "sha256": "ab436d13e6299af764060d208105ce52951cb2698beb04b0d4ae10f186189a3c",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/SELECTION_CHECKER.md",
+      "target": "docs/evidence/set82/hosted-attempt1/source/SELECTION_CHECKER.md",
+      "bytes": 3955,
+      "sha256": "87e9b2a693ab57abf2c84c5cf63561de7e38dda7113f6387151ec571ff6c93ce",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/AUDIT_INTEGRATION.md",
+      "target": "docs/evidence/set82/hosted-attempt1/source/AUDIT_INTEGRATION.md",
+      "bytes": 10635,
+      "sha256": "f4c3c445588cbd32997a036de9e668d3ba2a2e56af859b19900620ad1b73babe",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/lifecycle/README.md",
+      "target": "docs/evidence/set82/hosted-attempt1/source/lifecycle/README.md",
+      "bytes": 5191,
+      "sha256": "0dff03925e554d570abc57f41d05c4ff106002ddd4e5fb1ca80745f3a301c2d3",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/lifecycle/source-manifest.json",
+      "target": "docs/evidence/set82/hosted-attempt1/source/lifecycle/source-manifest.json",
+      "bytes": 1945,
+      "sha256": "86eb09f1c1a5c42346272501cf951d6b3754f07a17cafbe66570736e753a67ef",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/client-flow/README.md",
+      "target": "docs/evidence/set82/hosted-attempt1/source/client-flow/README.md",
+      "bytes": 13032,
+      "sha256": "382e54a2ed5cc77abdc54357db0de116be941a57249966ed366ee856ca4b1260",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/client-flow/source-manifest.json",
+      "target": "docs/evidence/set82/hosted-attempt1/source/client-flow/source-manifest.json",
+      "bytes": 5532,
+      "sha256": "c3ded25f29b70de35f7305a33783cd9f63f79024fea266a35b158ee554b9653e",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/preparer/README.md",
+      "target": "docs/evidence/set82/hosted-attempt1/source/preparer/README.md",
+      "bytes": 5905,
+      "sha256": "311fb5f59c2d2a7162b9632bb3bb6f9717fbced6600125ec316b0cd8f20e3963",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/preparer/source-manifest.json",
+      "target": "docs/evidence/set82/hosted-attempt1/source/preparer/source-manifest.json",
+      "bytes": 5448,
+      "sha256": "da1428dbb558fe5a99a968e9eb3878d3ef54c3737832879bffc2aca4926d5afe",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/preparer-formatted-manifest.json",
+      "target": "docs/evidence/set82/hosted-attempt1/source/preparer-formatted-manifest.json",
+      "bytes": 1015,
+      "sha256": "87313a61517c6d959c285e4d499832df28ee63ac0cf568bda8b94755a1a92847",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/audit/README.md",
+      "target": "docs/evidence/set82/hosted-attempt1/source/audit/README.md",
+      "bytes": 5704,
+      "sha256": "8aa4accd2fee6dca9bfa129204ae2773ce398c4bd5e322276f555744f369d0c7",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/audit/source-manifest.json",
+      "target": "docs/evidence/set82/hosted-attempt1/source/audit/source-manifest.json",
+      "bytes": 4609,
+      "sha256": "7db6c1c4d9f1932edd45e4b0efbbedabe52e40c021b1cc9c56563a12fc8af73c",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/audit-formatted-manifest.json",
+      "target": "docs/evidence/set82/hosted-attempt1/source/audit-formatted-manifest.json",
+      "bytes": 502,
+      "sha256": "0f216bf7b626edbd743534c95caa784c9fcf1bbb3d785fc74c63f584a01d4909",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/client/README.md",
+      "target": "docs/evidence/set82/hosted-attempt1/source/client/README.md",
+      "bytes": 4572,
+      "sha256": "b12b7370a4d45a6b92e828c42e97f8bdd6eb6cdab91653e1c531de05c61742fa",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/client/source-manifest.json",
+      "target": "docs/evidence/set82/hosted-attempt1/source/client/source-manifest.json",
+      "bytes": 3299,
+      "sha256": "e24b8396acc0b705dc504fbeab94b4d41db9eafd575c3ade4c5dcb29bc3190ac",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/README.md",
+      "target": "docs/evidence/set82/hosted-attempt1/source/proofclient/README.md",
+      "bytes": 10407,
+      "sha256": "20681c4f0886f2e7c56a3edfcef983c61806ad58edec79ea6b2f99e06e5683aa",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/source-manifest.json",
+      "target": "docs/evidence/set82/hosted-attempt1/source/proofclient/source-manifest.json",
+      "bytes": 9733,
+      "sha256": "3950f9ce1a092cdb4f185373c7bcc25b032b73e1b849a80d08c8facfefa0fa40",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/production-checkpoint.json",
+      "target": "docs/evidence/set82/hosted-attempt1/source/proofclient/production-checkpoint.json",
+      "bytes": 1731,
+      "sha256": "9b3870be011abbfa9ab513f0a6746e8fea275d0dd7a41bfd8ef9ba4102586a23",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient-formatted-manifest.json",
+      "target": "docs/evidence/set82/hosted-attempt1/source/proofclient-formatted-manifest.json",
+      "bytes": 2416,
+      "sha256": "2282ca10295103ab29d40f602adac274644253a6c128d946be8a0fc993d738ac",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/source-manifest.json",
+      "target": "docs/evidence/set82/hosted-attempt1/source/source-manifest.json",
+      "bytes": 14291,
+      "sha256": "dea275daf7f72cd99cc5aff7a80c81dffb765953ee1e38fa9f73403105441568",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/package/README.md",
+      "target": "docs/evidence/set82/hosted-attempt1/source/package/README.md",
+      "bytes": 8041,
+      "sha256": "6f1a93a8b12f33aeffd5452fb21be7cc60dfe79e0437ef227cb4de71d77f0d51",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/package/bootstrap.sh",
+      "target": "docs/evidence/set82/hosted-attempt1/source/package/bootstrap.sh",
+      "bytes": 3474,
+      "sha256": "bcb999dbf009b2fd709c6abcb46bbefaee257228b66466e26eefcbfc7e9ba0fc",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/package/before-mount-read-access/bootstrap.sh",
+      "target": "docs/evidence/set82/hosted-attempt1/source/package/before-mount-read-access/bootstrap.sh",
+      "bytes": 2725,
+      "sha256": "a3233740b2e40807b2b27537dc46900d85c7d4324cdb9eac467e52233042f484",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/package/before-mount-read-access/README.md",
+      "target": "docs/evidence/set82/hosted-attempt1/source/package/before-mount-read-access/README.md",
+      "bytes": 6850,
+      "sha256": "b0ea6465dac9de3aaffbfcfe9d4b4199a6490d2874b04148aef6cebb7ca286a3",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/package/before-mount-read-access/HOST_BOOTSTRAP_PLAN.md",
+      "target": "docs/evidence/set82/hosted-attempt1/source/package/before-mount-read-access/HOST_BOOTSTRAP_PLAN.md",
+      "bytes": 10539,
+      "sha256": "5582f9e91e934557564af0e3869c2cb24470d8c4705bf1da3f7b6e7b79834b3b",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/operator-context-attempt1.json",
+      "target": "docs/evidence/set82/hosted-attempt1/source/operator-context-attempt1.json",
+      "bytes": 2252,
+      "sha256": "0dc03553699e5f96c72b82aaf7b2b6629dc2a857b639c595d9065d01bc61ccba",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/operator-context-attempt2.json",
+      "target": "docs/evidence/set82/hosted-attempt1/source/operator-context-attempt2.json",
+      "bytes": 2252,
+      "sha256": "7bf7672796d0baf9619f7bcbb07dd5422981d91d97bb6240ebb8cef5081626bf",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/operator-context-attempt3.json",
+      "target": "docs/evidence/set82/hosted-attempt1/source/operator-context-attempt3.json",
+      "bytes": 2066,
+      "sha256": "cc778443c91c27b5ccb335d04ee6d4dfb43211232f5cd36c80ff94008fb69150",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/operator-context-attempt4.json",
+      "target": "docs/evidence/set82/hosted-attempt1/source/operator-context-attempt4.json",
+      "bytes": 2810,
+      "sha256": "08c960bdbe887ad8809547f626e94264b733967a54dcb92d013b6b8e7c6f4b45",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/node-context-attempt1.json",
+      "target": "docs/evidence/set82/hosted-attempt1/source/node-context-attempt1.json",
+      "bytes": 1741,
+      "sha256": "a06b6253d36d6d3fba4d011403374024e488288b5d0c26ca796f57228ff4fcf9",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-actual/node-context-attempt2.json",
+      "target": "docs/evidence/set82/hosted-attempt1/source/node-context-attempt2.json",
+      "bytes": 1895,
+      "sha256": "9ff947a9cbf25b56825c9a6d5191489db3bf7b37fa20b99b8c812cb9f2088355",
+      "scope": "public source/selection history; referenced nested paths are not implicit archive members"
+    }
+  ],
+  "excluded": [
+    "owned runtime trees and every database",
+    "transport directory and RPC credentials",
+    "custody/wallet files",
+    "private TLS keys, seeds, tokens and passphrases",
+    "process environment and full argument dumps",
+    "binaries and image/context tarballs",
+    "recursive expansion of source/context/fixture manifests"
+  ],
+  "future_extension": "Active private-DNS fix and qualification, later runtime attempts, live payouts, wallet observations and provider shutdown results require separately selected evidence."
+}

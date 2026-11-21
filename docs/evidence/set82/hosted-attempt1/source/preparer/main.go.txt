@@ -1,0 +1,283 @@
+// Published synthetic fixtures only. This program has no network/process API.
+package main
+
+import (
+	"context"
+	"crypto/ed25519"
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
+	"errors"
+	"flag"
+	"fmt"
+	"net/url"
+	"os"
+	"os/signal"
+	"path/filepath"
+	"syscall"
+	"time"
+
+	"github.com/taytr-llc/slug/btcutil/v2/hdkeychain"
+	"github.com/taytr-llc/slug/chaincfg/v2"
+	"github.com/taytr-llc/slug/desktop/pilot"
+	"github.com/taytr-llc/slug/desktop/pooloperator"
+	"github.com/taytr-llc/slug/prospectnode"
+	"github.com/taytr-llc/slug/registry"
+	"github.com/taytr-llc/slug/wire/v2"
+	"github.com/taytr-llc/slugwallet/recovery"
+	"github.com/taytr-llc/slugwallet/wallet"
+	_ "github.com/taytr-llc/slugwallet/walletdb/bdb"
+)
+
+const publicPass = "published pool wallet public passphrase"
+const privatePass = "published pool wallet private passphrase"
+
+type endpoints struct {
+	Version      uint32 `json:"version"`
+	Origin       string `json:"origin"`
+	Listen       string `json:"listen"`
+	PoolURL      string `json:"pool_url"`
+	AdmissionURL string `json:"admission_url"`
+	OwnershipURL string `json:"ownership_url"`
+	DueUTC       string `json:"due_utc"`
+}
+type prepared struct {
+	Version                   uint32 `json:"version"`
+	SourceReferenceSHA256     string `json:"source_reference_sha256"`
+	AttachmentReferenceSHA256 string `json:"attachment_reference_sha256"`
+	BaseReferenceSHA256       string `json:"base_reference_sha256"`
+	SetupID                   string `json:"setup_id"`
+	BaseSetupID               string `json:"base_setup_id"`
+	ProfileID                 string `json:"profile_id"`
+	RemoteID                  string `json:"remote_id"`
+	BaseRemoteID              string `json:"base_remote_id"`
+	DueAtMS                   int64  `json:"due_at_ms"`
+	CredentialExpiresAtMS     int64  `json:"credential_expires_at_ms"`
+	TLSSPKI                   string `json:"tls_spki"`
+	WalletCreated             bool   `json:"wallet_created"`
+	WalletClosed              bool   `json:"wallet_closed"`
+	ExpectedRewards           int    `json:"expected_rewards"`
+	MinerAtoms                int64  `json:"miner_atoms"`
+	FeeAtoms                  int64  `json:"fee_atoms"`
+	ChangeAtoms               int64  `json:"change_atoms"`
+	NodeRPCCopied             bool   `json:"node_rpc_copied"`
+}
+
+func createWallet(ctx context.Context, root string, s pooloperator.Setup, mnemonic string) error {
+	seed, e := recovery.Seed(mnemonic)
+	if e != nil {
+		return e
+	}
+	master, e := hdkeychain.NewMaster(seed[:], &chaincfg.MainNetParams)
+	clear(seed[:])
+	if e != nil {
+		return e
+	}
+	defer master.Zero()
+	binding := wallet.PoolWalletBinding{Version: 2, WalletOwnerID: s.WalletGuard.WalletOwnerID, OperatorProfileID: s.WalletGuard.OperatorProfileID, Source: s.Pool, Settlement: s.Settlement, Guard: s.WalletGuard}
+	w, e := wallet.CreateDailyPoolSettlementWallet(ctx, root, binding, []byte(publicPass), []byte(privatePass), master, time.Now().Add(-24*time.Hour))
+	if w != nil {
+		e = errors.Join(e, w.Close())
+	}
+	if e != nil {
+		return e
+	}
+	return insist(w != nil, "wallet constructor returned no owner")
+}
+
+func prepare(ctx context.Context, root, selection, refs, rpcPath string) error {
+	if wire.TestPoW {
+		return errors.New("hosted fixture requires normal PoW")
+	}
+	if e := ctx.Err(); e != nil {
+		return e
+	}
+	if e := emptyRoot(root); e != nil {
+		return e
+	}
+	now := time.Now().UTC()
+	h, due, hostname, e := parseHost(selection, now)
+	if e != nil {
+		return e
+	}
+	r, mnemonic, e := loadReference(refs)
+	if e != nil {
+		return e
+	}
+	material, e := tlsInputs(h, hostname, now, due)
+	if e != nil {
+		return e
+	}
+	defer clear(material.Key)
+	s, c, e := compose(r, h, due, string(material.CA), material.SPKI)
+	if e != nil {
+		return e
+	}
+	// Validate every public/optional runtime input before the first output write.
+	var rpcRaw []byte
+	if rpcPath != "" {
+		rpcRaw, e = readFile(rpcPath, prospectnode.MaxRPCConfigSize, true)
+		if e != nil {
+			return e
+		}
+		defer clear(rpcRaw)
+		rc, e := prospectnode.ParseRPCConfig(rpcRaw)
+		if e != nil {
+			return e
+		}
+		u, e := url.Parse(rc.URL)
+		if e != nil || u.Scheme != "https" || rc.CACertificate == "" {
+			return errors.New("hosted node requires separately selected verified HTTPS and explicit CA")
+		}
+	}
+	setupRaw, e := pooloperator.MarshalRecoverableDailySetup(s)
+	if e != nil {
+		return e
+	}
+	remoteRaw, e := pilot.MarshalRecoverableRemotePoolConfig(c)
+	if e != nil {
+		return e
+	}
+	p := prepared{Version: 1, SourceReferenceSHA256: selectedSHA, AttachmentReferenceSHA256: attachmentSHA, BaseReferenceSHA256: baseSHA, DueAtMS: due.UnixMilli(), CredentialExpiresAtMS: due.Add(time.Hour).UnixMilli(), TLSSPKI: material.SPKI, ExpectedRewards: 2, MinerAtoms: 1980000000, FeeAtoms: 209, ChangeAtoms: 19999791, NodeRPCCopied: rpcPath != ""}
+	p.SetupID, e = pooloperator.RecoverableDailySetupID(s)
+	if e != nil {
+		return e
+	}
+	p.BaseSetupID, e = pooloperator.DailySetupID(s.Base)
+	if e != nil {
+		return e
+	}
+	p.ProfileID, e = registry.IssueProfileID(s.IssueProfile)
+	if e != nil {
+		return e
+	}
+	p.RemoteID, e = pilot.RecoverableRemotePoolConfigID(c)
+	if e != nil {
+		return e
+	}
+	p.BaseRemoteID, e = pilot.DailyRemotePoolConfigID(c.Base)
+	if e != nil {
+		return e
+	}
+	roles := []struct{ name, key string }{{"admission", s.Base.Authority.AdmissionKey}, {"publication", s.Base.Authority.PublicationKey}, {"cutoff", s.Base.Authority.CutoffKey}}
+	for _, role := range roles {
+		seed := sha256.Sum256([]byte("SLUG set74 public synthetic operator " + role.name + "\x00v1\x00"))
+		key := ed25519.NewKeyFromSeed(seed[:])
+		pub := hex.EncodeToString(key.Public().(ed25519.PublicKey))
+		clear(seed[:])
+		clear(key)
+		if pub != role.key {
+			return errors.New("published authority recipe does not match original pin")
+		}
+	}
+	if e = ctx.Err(); e != nil {
+		return e
+	}
+	for _, name := range []string{"private", "public", "custody"} {
+		if e = os.Mkdir(filepath.Join(root, name), 0700); e != nil {
+			return e
+		}
+	}
+	private, public := filepath.Join(root, "private"), filepath.Join(root, "public")
+	for _, role := range roles {
+		seed := sha256.Sum256([]byte("SLUG set74 public synthetic operator " + role.name + "\x00v1\x00"))
+		e = writeFile(filepath.Join(private, role.name+".seed"), seed[:])
+		clear(seed[:])
+		if e != nil {
+			return e
+		}
+	}
+	for _, f := range []struct {
+		name string
+		raw  []byte
+	}{{"public.pass", []byte(publicPass)}, {"unlock.pass", []byte(privatePass)}, {"selected-setup.json", setupRaw}, {"remote-config.json", remoteRaw}, {"tls-cert.pem", material.Certificate}, {"tls-key.pem", material.Key}, {"ca.pem", material.CA}} {
+		if e = writeFile(filepath.Join(private, f.name), f.raw); e != nil {
+			return e
+		}
+	}
+	if rpcPath != "" {
+		if e = writeFile(filepath.Join(private, "node-rpc.json"), rpcRaw); e != nil {
+			return e
+		}
+	}
+	for i, en := range s.Base.Miners.Enrollments {
+		token := sum([]byte("SLUG Set79 Path A pool " + en.GymID))
+		if e = writeFile(filepath.Join(private, fmt.Sprintf("pool-token-%d", i)), []byte(token)); e != nil {
+			return e
+		}
+	}
+	gym := c.Base.ExpectedLocal.Recipient.Config.Identity.GymID
+	if len(s.Base.Miners.Enrollments) != 2 || s.Base.Miners.Enrollments[0].GymID != gym {
+		return errors.New("original two enrollment order")
+	}
+	if e = writeFile(filepath.Join(private, "admission-token"), []byte(sum([]byte("SLUG Set79 Path A admission "+gym)))); e != nil {
+		return e
+	}
+	for _, f := range []struct {
+		name string
+		raw  []byte
+	}{{"setup.json", setupRaw}, {"remote.json", remoteRaw}, {"ca.pem", material.CA}, {"tls-cert.pem", material.Certificate}} {
+		if e = writeFile(filepath.Join(public, f.name), f.raw); e != nil {
+			return e
+		}
+	}
+	if e = writeJSON(filepath.Join(public, "endpoints.json"), endpoints{h.Version, h.Origin, h.Listen, h.PoolURL, h.AdmissionURL, h.OwnershipURL, h.DueUTC}); e != nil {
+		return e
+	}
+	// No service/credential is created here. Real stopped init/rotate and its
+	// authenticated result must precede construction of remote credential files.
+	if e = createWallet(ctx, filepath.Join(root, "custody", "wallet16"), s.Base, mnemonic); e != nil {
+		return e
+	}
+	mnemonic = ""
+	if e = ctx.Err(); e != nil {
+		return e
+	}
+	if !time.Now().Before(due) {
+		return errors.New("fixed due elapsed during preparation; retain this failed root")
+	}
+	p.WalletCreated = true
+	p.WalletClosed = true
+	for _, dir := range []string{private, public, filepath.Join(root, "custody"), root} {
+		if e = syncDir(dir); e != nil {
+			return e
+		}
+	}
+	if e = writeJSON(filepath.Join(public, "prepared.json"), p); e != nil {
+		return e
+	}
+	return syncDir(public)
+}
+
+func main() {
+	if wire.TestPoW {
+		fmt.Fprintln(os.Stderr, "hosted fixture requires normal PoW")
+		os.Exit(1)
+	}
+	if len(os.Args) < 2 || os.Args[1] != "prepare" {
+		fmt.Fprintln(os.Stderr, "usage: slug-host-fixture prepare --root ABS --selection-file ABS --reference-dir ABS [--node-rpc-file ABS]")
+		os.Exit(2)
+	}
+	flags := flag.NewFlagSet("prepare", flag.ContinueOnError)
+	root := flags.String("root", "", "existing empty protected root")
+	selection := flags.String("selection-file", "", "protected host selection JSON")
+	refs := flags.String("reference-dir", "", "three original hash-pinned public references")
+	rpc := flags.String("node-rpc-file", "", "optional separately selected protected HTTPS RPC input")
+	if e := flags.Parse(os.Args[2:]); e != nil || flags.NArg() != 0 || !absolute(*root) || !absolute(*selection) || !absolute(*refs) || (*rpc != "" && !absolute(*rpc)) {
+		os.Exit(2)
+	}
+	life, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer stop()
+	ctx, cancel := context.WithTimeout(life, 30*time.Second)
+	defer cancel()
+	if e := prepare(ctx, *root, *selection, *refs, *rpc); e != nil {
+		fmt.Fprintln(os.Stderr, "fixture preparation failed:", e)
+		os.Exit(1)
+	}
+	// This is a preparation receipt, not payment or deployment acceptance.
+	raw, _ := json.Marshal(struct {
+		Version  uint32 `json:"version"`
+		Prepared string `json:"prepared"`
+	}{1, filepath.Join(*root, "public", "prepared.json")})
+	fmt.Println(string(raw))
+}

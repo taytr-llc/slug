@@ -1,0 +1,6 @@
+{
+  "passed": false,
+  "phase": "artifact inventory",
+  "failure": "Expected raw .dockerignore; upload-artifact excludes hidden files by default",
+  "effect": "No image execution failure; successor checks its recorded hash against pinned Git source"
+}

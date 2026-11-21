@@ -1,0 +1,9 @@
+{
+  "observed_by": "Railway connector get_logs",
+  "scope": "deployment",
+  "deploymentId": "9f55cd72-d0d5-4410-ab18-6fc91bbc18d1",
+  "serviceId": "dedabe18-acd1-4dfe-a775-8bd02f799717",
+  "environmentId": "3fd7da79-0f2f-4077-bf29-e7035d62ac57",
+  "status": "FAILED",
+  "deploy": []
+}

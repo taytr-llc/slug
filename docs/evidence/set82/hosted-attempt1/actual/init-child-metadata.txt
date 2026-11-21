@@ -1,0 +1,1 @@
+/data/hosted-test/operator/SLUG-POOL-OPERATOR-ISSUE1.json regular file 10001:10001:600

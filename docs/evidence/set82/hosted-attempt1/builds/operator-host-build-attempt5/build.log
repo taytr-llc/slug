@@ -1,0 +1,112 @@
+Indexing...
+Uploading...
+  Build Logs: https://railway.com/project/62fdb666-7f67-4cf3-98f0-6177f099b580/service/dedabe18-acd1-4dfe-a775-8bd02f799717?id=ba0aca5a-9eea-42c7-a1d6-8dd841ff215a&
+CI mode enabled
+fetched snapshot sha256:5b04c73325c6994b62b59ab886bd40c50ea305c00292c329b88a5e8c7ff22065 (82 MB bytes)
+fetching snapshot
+unpacking archive
+[internal] load build definition from Dockerfile
+[internal] load build definition from Dockerfile
+[internal] load build definition from Dockerfile
+[internal] load build definition from Dockerfile
+[internal] load metadata for docker.io/library/golang:1.27.4-alpine@sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280
+[internal] load metadata for docker.io/library/golang:1.27.4-alpine@sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280
+[internal] load .dockerignore
+[internal] load .dockerignore
+[internal] load .dockerignore
+[internal] load .dockerignore
+importing cache manifest from s3:9030405925439967209
+[build 11/13] RUN if sh scripts/candidate-go.sh test -mod=readonly -count=1 -timeout=3m -json ./internal/operatorauthority       -run '^TestOperatorAuthorityExtendedACLRefusal$' > /build-evidence/authority-tests.jsonl; then :; else cat /build-evidence/authority-tests.jsonl; exit 1; fi &&     if sh scripts/candidate-go.sh test -mod=readonly -count=1 -timeout=3m -json ./poolingress       -run '^(TestRecoverableIngressOriginalTLSAndJoin|TestIngressCloseCancelsAndJoins)$' > /build-evidence/ingress-tests.jsonl; then :; else cat /build-evidence/ingress-tests.jsonl; exit 1; fi
+[build 10/13] WORKDIR /src/slug
+[build  9/13] RUN test "$(id -u)" = 10001 && test "$(id -g)" = 10001 && id > /build-evidence/check-user.txt &&     if sh ../scripts/candidate-go.sh test -mod=readonly -count=1 -timeout=3m -json ./pooloperator       -run '^(TestOperatorPrivateInputOwnedReadAndLifetime|TestOperatorPrivateInputAdmissionRefusals|TestOperatorPrivateInputOriginalIdentityRefusals|TestOperatorPrivateInputLinuxACLRefusal|TestOperatorFilesLockAndIdentity|TestOperatorCommandBlockedOutputJoins|TestOperatorRuntimeCloseJoinsAdmittedLocalAction)$'       > /build-evidence/operator-tests.jsonl; then :; else cat /build-evidence/operator-tests.jsonl; exit 1; fi
+[build  8/13] RUN mkdir -p /checks/cache /checks/tmp && cp -a /go/pkg/mod /checks/mod &&     chown -R 10001:10001 /checks && chown 10001:10001 /build-evidence
+[build  7/13] RUN go list -mod=readonly -deps -json ./cmd/slugpoold ./cmd/slugpool-provision > /build-evidence/dependencies.json &&     sh ../scripts/candidate-go.sh build -mod=readonly -p=1 -trimpath -buildvcs=false -tags= -o /out/slugpoold ./cmd/slugpoold &&     sh ../scripts/candidate-go.sh build -mod=readonly -p=1 -trimpath -buildvcs=false -tags= -o /out/slugpool-provision ./cmd/slugpool-provision &&     sh ../scripts/candidate-go.sh verify-binary /out/slugpoold /out/slugpool-provision > /build-evidence/build-info.txt &&     go tool nm /out/slugpoold > /build-evidence/operator-symbols.txt &&     go tool nm /out/slugpool-provision > /build-evidence/provision-symbols.txt &&     ! grep -E 'ForTestClock|UseOwnedCalendarOffsetForTest|UseCalendarClockForTest|UseOwnedClockForTest|UseAuthorityClockForTest' /build-evidence/*-symbols.txt
+[build 13/13] RUN find slug slugwallet -type f -print0 | sort -z | xargs -0 sha256sum > /build-evidence/source-after.sha256 &&     cmp /build-evidence/source-before.sha256 /build-evidence/source-after.sha256 &&     cp slug/build-profile.json /build-evidence/build-profile.json &&     sha256sum /out/slugpoold /out/slugpool-provision > /build-evidence/binary-sha256.txt &&     test -s /etc/ssl/certs/ca-certificates.crt &&     mkdir -p /runtime-root/etc/ssl/certs /runtime-root/data /runtime-root/tmp &&     cp /etc/ssl/certs/ca-certificates.crt /runtime-root/etc/ssl/certs/ &&     printf '%s\n' 'slug:x:10001:10001:SLUG operator:/data:/sbin/nologin' > /runtime-root/etc/passwd &&     printf '%s\n' 'slug:x:10001:' > /runtime-root/etc/group &&     chmod 0700 /runtime-root/data && chown 10001:10001 /runtime-root/data && chmod 1777 /runtime-root/tmp
+[build  5/13] WORKDIR /src/slug/desktop
+[build  4/13] RUN test "$BUILDPLATFORM" = linux/amd64 && test "$TARGETPLATFORM" = linux/amd64 &&     printf '%s\n' "$CHAIN_ARCHIVE_SHA256" "$WALLET_ARCHIVE_SHA256" | grep -Eq '^[0-9a-f]{64}$' &&     test "${#CHAIN_ARCHIVE_SHA256}" = 64 && test "${#WALLET_ARCHIVE_SHA256}" = 64 &&     printf '%s  %s\n' "$CHAIN_ARCHIVE_SHA256" /archives/chain.tar "$WALLET_ARCHIVE_SHA256" /archives/wallet.tar | sha256sum -c - &&     tar -xf /archives/chain.tar && tar -xf /archives/wallet.tar &&     test -f slug/desktop/go.work && test -f slugwallet/go.mod &&     mkdir -p /out /build-evidence &&     printf '%s\n' 'slug=138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c' 'slugwallet=dfc5d9dd7e0f604486fbac812d0413fce1f45cd6' > /build-evidence/source-revisions.txt &&     printf '%s  %s\n' "$CHAIN_ARCHIVE_SHA256" chain.tar "$WALLET_ARCHIVE_SHA256" wallet.tar > /build-evidence/source-archives.sha256 &&     find slug slugwallet -type f -print0 | sort -z | xargs -0 sha256sum > /build-evidence/source-before.sha256
+[fixture-build  3/16] COPY chain.tar wallet.tar /archives/
+[internal] load build context
+[fixture-build  2/16] WORKDIR /src
+[build 12/13] WORKDIR /src
+[operator 1/4] COPY --from=build /runtime-root/ /
+[fixture-build  1/16] FROM docker.io/library/golang:1.27.4-alpine@sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280
+[build  6/13] RUN sh ../scripts/candidate-go.sh check &&     go env -json GOVERSION GOOS GOARCH CGO_ENABLED GOWORK GOFLAGS GOEXPERIMENT > /build-evidence/go-env.json &&     go work edit -json > /build-evidence/workspace.json &&     go list -mod=readonly -f '{{range .GoFiles}}{{println .}}{{end}}' github.com/taytr-llc/slug/wire/v2 > /build-evidence/wire-files.txt &&     grep -Fx pow_production.go /build-evidence/wire-files.txt &&     ! grep -Fx pow_testpow.go /build-evidence/wire-files.txt
+[fixture-build  9/16] WORKDIR /src/slug/desktop
+[fixture-build  8/16] RUN test "${#FIXTURE_MANIFEST_SHA256}" = 64 &&     printf '%s  %s\n' "$FIXTURE_MANIFEST_SHA256" /fixture-inputs.sha256 | sha256sum -c - &&     sha256sum -c /fixture-inputs.sha256 &&     printf '%s  %s\n'       17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a /fixture/reference-v1.json       a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386 /fixture/path-c-reference.json       a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3 /fixture/base-reference.json | sha256sum -c -
+[fixture-build  7/16] COPY fixture-inputs.sha256 /fixture-inputs.sha256
+[fixture-build  6/16] COPY fixture/reference-v1.json fixture/path-c-reference.json fixture/base-reference.json /fixture/
+[fixture-build  5/16] COPY fixture-src/go.mod fixture-src/main.go fixture-src/selection.go fixture-src/files.go fixture-src/tls.go /src/slug/desktop/hostedfixture/
+[fixture-build  4/16] RUN test "$BUILDPLATFORM" = linux/amd64 && test "$TARGETPLATFORM" = linux/amd64 &&     test "${#CHAIN_ARCHIVE_SHA256}" = 64 && test "${#WALLET_ARCHIVE_SHA256}" = 64 &&     printf '%s  %s\n' "$CHAIN_ARCHIVE_SHA256" /archives/chain.tar "$WALLET_ARCHIVE_SHA256" /archives/wallet.tar | sha256sum -c - &&     tar -xf /archives/chain.tar && tar -xf /archives/wallet.tar
+[admin 3/9] COPY --from=operator /usr/share/slug/build/ /usr/share/slug/operator-build/
+[admin 2/9] COPY --from=operator /usr/local/bin/slugpoold /usr/local/bin/slugpool-provision /usr/local/bin/
+[operator 4/4] WORKDIR /data
+[operator 3/4] COPY --from=build /build-evidence/ /usr/share/slug/build/
+[operator 2/4] COPY --from=build /out/ /usr/local/bin/
+[admin 5/9] COPY --from=fixture-build /fixture/ /usr/share/slug/fixture/
+[admin 4/9] COPY --from=fixture-build /out/slug-host-fixture /usr/local/bin/
+[fixture-build 16/16] RUN find slug slugwallet -type f -print0 | sort -z | xargs -0 sha256sum > /build-evidence/source-after.sha256 &&     cmp /build-evidence/source-before.sha256 /build-evidence/source-after.sha256
+[fixture-build 15/16] WORKDIR /src
+[fixture-build 14/16] RUN go list -mod=readonly -deps -json ./hostedfixture > /build-evidence/dependencies.json &&     sh ../scripts/candidate-go.sh build -mod=readonly -p=1 -trimpath -buildvcs=false -tags=       -o /out/slug-host-fixture ./hostedfixture &&     sh ../scripts/candidate-go.sh verify-binary /out/slug-host-fixture > /build-evidence/build-info.txt &&     sha256sum /out/slug-host-fixture > /build-evidence/binary-sha256.txt
+[fixture-build 13/16] WORKDIR /src/slug/desktop
+[fixture-build 12/16] RUN find slug slugwallet -type f -print0 | sort -z | xargs -0 sha256sum > /build-evidence/source-before.sha256
+[fixture-build 11/16] WORKDIR /src
+[fixture-build 10/16] RUN cp go.work hosted-fixture.work && cp go.work.sum hosted-fixture.work.sum &&     cp go.sum hostedfixture/go.sum && go work edit -use ./hostedfixture       -replace github.com/taytr-llc/slug/desktop@v0.0.0=/src/slug/desktop       -replace github.com/taytr-llc/slugwallet@v0.0.0=/src/slugwallet       -replace github.com/taytr-llc/slug@v0.27.0=/src/slug &&     mkdir -p /out /build-evidence &&     sh ../scripts/candidate-go.sh check &&     go env -json GOVERSION GOOS GOARCH CGO_ENABLED GOWORK GOFLAGS GOEXPERIMENT > /build-evidence/go-env.json &&     go work edit -json > /build-evidence/workspace.json &&     go list -mod=readonly -f '{{range .GoFiles}}{{println .}}{{end}}' github.com/taytr-llc/slug/wire/v2 > /build-evidence/wire-files.txt &&     grep -Fx pow_production.go /build-evidence/wire-files.txt &&     ! grep -Fx pow_testpow.go /build-evidence/wire-files.txt
+[admin 8/9] RUN ! grep -q '^slug:' /etc/passwd && ! grep -q '^[^:]*:[^:]*:10001:' /etc/passwd &&     ! grep -q '^slug:' /etc/group && ! grep -q '^[^:]*:[^:]*:10001:' /etc/group &&     printf '%s\n' 'slug:x:10001:10001:SLUG fixture bootstrap:/data:/bin/sh' >> /etc/passwd &&     printf '%s\n' 'slug:x:10001:' >> /etc/group &&     chmod 0555 /usr/local/bin/host-bootstrap &&     su -s /bin/sh -c 'test "$(id -u)" = 10001 && test "$(id -ru)" = 10001 && test "$(id -g)" = 10001 && test "$(id -rg)" = 10001' slug
+[admin 7/9] COPY bootstrap.sh /usr/local/bin/host-bootstrap
+[admin 6/9] COPY --from=fixture-build /build-evidence/ /usr/share/slug/fixture-build/
+[internal] load build context
+[fixture-build  1/16] FROM docker.io/library/golang:1.27.4-alpine@sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280
+[fixture-build  1/16] FROM docker.io/library/golang:1.27.4-alpine@sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280
+importing cache manifest from s3:9030405925439967209
+[internal] load build context
+[internal] load build context
+[fixture-build  2/16] WORKDIR /src
+[fixture-build  3/16] COPY chain.tar wallet.tar /archives/
+[build  4/13] RUN test "$BUILDPLATFORM" = linux/amd64 && test "$TARGETPLATFORM" = linux/amd64 &&     printf '%s\n' "$CHAIN_ARCHIVE_SHA256" "$WALLET_ARCHIVE_SHA256" | grep -Eq '^[0-9a-f]{64}$' &&     test "${#CHAIN_ARCHIVE_SHA256}" = 64 && test "${#WALLET_ARCHIVE_SHA256}" = 64 &&     printf '%s  %s\n' "$CHAIN_ARCHIVE_SHA256" /archives/chain.tar "$WALLET_ARCHIVE_SHA256" /archives/wallet.tar | sha256sum -c - &&     tar -xf /archives/chain.tar && tar -xf /archives/wallet.tar &&     test -f slug/desktop/go.work && test -f slugwallet/go.mod &&     mkdir -p /out /build-evidence &&     printf '%s\n' 'slug=138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c' 'slugwallet=dfc5d9dd7e0f604486fbac812d0413fce1f45cd6' > /build-evidence/source-revisions.txt &&     printf '%s  %s\n' "$CHAIN_ARCHIVE_SHA256" chain.tar "$WALLET_ARCHIVE_SHA256" wallet.tar > /build-evidence/source-archives.sha256 &&     find slug slugwallet -type f -print0 | sort -z | xargs -0 sha256sum > /build-evidence/source-before.sha256
+[build  5/13] WORKDIR /src/slug/desktop
+[build  6/13] RUN sh ../scripts/candidate-go.sh check &&     go env -json GOVERSION GOOS GOARCH CGO_ENABLED GOWORK GOFLAGS GOEXPERIMENT > /build-evidence/go-env.json &&     go work edit -json > /build-evidence/workspace.json &&     go list -mod=readonly -f '{{range .GoFiles}}{{println .}}{{end}}' github.com/taytr-llc/slug/wire/v2 > /build-evidence/wire-files.txt &&     grep -Fx pow_production.go /build-evidence/wire-files.txt &&     ! grep -Fx pow_testpow.go /build-evidence/wire-files.txt
+[build  7/13] RUN go list -mod=readonly -deps -json ./cmd/slugpoold ./cmd/slugpool-provision > /build-evidence/dependencies.json &&     sh ../scripts/candidate-go.sh build -mod=readonly -p=1 -trimpath -buildvcs=false -tags= -o /out/slugpoold ./cmd/slugpoold &&     sh ../scripts/candidate-go.sh build -mod=readonly -p=1 -trimpath -buildvcs=false -tags= -o /out/slugpool-provision ./cmd/slugpool-provision &&     sh ../scripts/candidate-go.sh verify-binary /out/slugpoold /out/slugpool-provision > /build-evidence/build-info.txt &&     go tool nm /out/slugpoold > /build-evidence/operator-symbols.txt &&     go tool nm /out/slugpool-provision > /build-evidence/provision-symbols.txt &&     ! grep -E 'ForTestClock|UseOwnedCalendarOffsetForTest|UseCalendarClockForTest|UseOwnedClockForTest|UseAuthorityClockForTest' /build-evidence/*-symbols.txt
+[build  8/13] RUN mkdir -p /checks/cache /checks/tmp && cp -a /go/pkg/mod /checks/mod &&     chown -R 10001:10001 /checks && chown 10001:10001 /build-evidence
+[build  9/13] RUN test "$(id -u)" = 10001 && test "$(id -g)" = 10001 && id > /build-evidence/check-user.txt &&     if sh ../scripts/candidate-go.sh test -mod=readonly -count=1 -timeout=3m -json ./pooloperator       -run '^(TestOperatorPrivateInputOwnedReadAndLifetime|TestOperatorPrivateInputAdmissionRefusals|TestOperatorPrivateInputOriginalIdentityRefusals|TestOperatorPrivateInputLinuxACLRefusal|TestOperatorFilesLockAndIdentity|TestOperatorCommandBlockedOutputJoins|TestOperatorRuntimeCloseJoinsAdmittedLocalAction)$'       > /build-evidence/operator-tests.jsonl; then :; else cat /build-evidence/operator-tests.jsonl; exit 1; fi
+[build 10/13] WORKDIR /src/slug
+[build 11/13] RUN if sh scripts/candidate-go.sh test -mod=readonly -count=1 -timeout=3m -json ./internal/operatorauthority       -run '^TestOperatorAuthorityExtendedACLRefusal$' > /build-evidence/authority-tests.jsonl; then :; else cat /build-evidence/authority-tests.jsonl; exit 1; fi &&     if sh scripts/candidate-go.sh test -mod=readonly -count=1 -timeout=3m -json ./poolingress       -run '^(TestRecoverableIngressOriginalTLSAndJoin|TestIngressCloseCancelsAndJoins)$' > /build-evidence/ingress-tests.jsonl; then :; else cat /build-evidence/ingress-tests.jsonl; exit 1; fi
+[build 12/13] WORKDIR /src
+[build 13/13] RUN find slug slugwallet -type f -print0 | sort -z | xargs -0 sha256sum > /build-evidence/source-after.sha256 &&     cmp /build-evidence/source-before.sha256 /build-evidence/source-after.sha256 &&     cp slug/build-profile.json /build-evidence/build-profile.json &&     sha256sum /out/slugpoold /out/slugpool-provision > /build-evidence/binary-sha256.txt &&     test -s /etc/ssl/certs/ca-certificates.crt &&     mkdir -p /runtime-root/etc/ssl/certs /runtime-root/data /runtime-root/tmp &&     cp /etc/ssl/certs/ca-certificates.crt /runtime-root/etc/ssl/certs/ &&     printf '%s\n' 'slug:x:10001:10001:SLUG operator:/data:/sbin/nologin' > /runtime-root/etc/passwd &&     printf '%s\n' 'slug:x:10001:' > /runtime-root/etc/group &&     chmod 0700 /runtime-root/data && chown 10001:10001 /runtime-root/data && chmod 1777 /runtime-root/tmp
+[operator 1/4] COPY --from=build /runtime-root/ /
+[operator 2/4] COPY --from=build /out/ /usr/local/bin/
+[operator 3/4] COPY --from=build /build-evidence/ /usr/share/slug/build/
+[operator 4/4] WORKDIR /data
+[admin 2/9] COPY --from=operator /usr/local/bin/slugpoold /usr/local/bin/slugpool-provision /usr/local/bin/
+[admin 3/9] COPY --from=operator /usr/share/slug/build/ /usr/share/slug/operator-build/
+[fixture-build  4/16] RUN test "$BUILDPLATFORM" = linux/amd64 && test "$TARGETPLATFORM" = linux/amd64 &&     test "${#CHAIN_ARCHIVE_SHA256}" = 64 && test "${#WALLET_ARCHIVE_SHA256}" = 64 &&     printf '%s  %s\n' "$CHAIN_ARCHIVE_SHA256" /archives/chain.tar "$WALLET_ARCHIVE_SHA256" /archives/wallet.tar | sha256sum -c - &&     tar -xf /archives/chain.tar && tar -xf /archives/wallet.tar
+[fixture-build  5/16] COPY fixture-src/go.mod fixture-src/main.go fixture-src/selection.go fixture-src/files.go fixture-src/tls.go /src/slug/desktop/hostedfixture/
+[fixture-build  6/16] COPY fixture/reference-v1.json fixture/path-c-reference.json fixture/base-reference.json /fixture/
+[fixture-build  7/16] COPY fixture-inputs.sha256 /fixture-inputs.sha256
+[fixture-build  8/16] RUN test "${#FIXTURE_MANIFEST_SHA256}" = 64 &&     printf '%s  %s\n' "$FIXTURE_MANIFEST_SHA256" /fixture-inputs.sha256 | sha256sum -c - &&     sha256sum -c /fixture-inputs.sha256 &&     printf '%s  %s\n'       17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a /fixture/reference-v1.json       a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386 /fixture/path-c-reference.json       a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3 /fixture/base-reference.json | sha256sum -c -
+[fixture-build  9/16] WORKDIR /src/slug/desktop
+[fixture-build 10/16] RUN cp go.work hosted-fixture.work && cp go.work.sum hosted-fixture.work.sum &&     cp go.sum hostedfixture/go.sum && go work edit -use ./hostedfixture       -replace github.com/taytr-llc/slug/desktop@v0.0.0=/src/slug/desktop       -replace github.com/taytr-llc/slugwallet@v0.0.0=/src/slugwallet       -replace github.com/taytr-llc/slug@v0.27.0=/src/slug &&     mkdir -p /out /build-evidence &&     sh ../scripts/candidate-go.sh check &&     go env -json GOVERSION GOOS GOARCH CGO_ENABLED GOWORK GOFLAGS GOEXPERIMENT > /build-evidence/go-env.json &&     go work edit -json > /build-evidence/workspace.json &&     go list -mod=readonly -f '{{range .GoFiles}}{{println .}}{{end}}' github.com/taytr-llc/slug/wire/v2 > /build-evidence/wire-files.txt &&     grep -Fx pow_production.go /build-evidence/wire-files.txt &&     ! grep -Fx pow_testpow.go /build-evidence/wire-files.txt
+[fixture-build 11/16] WORKDIR /src
+[fixture-build 12/16] RUN find slug slugwallet -type f -print0 | sort -z | xargs -0 sha256sum > /build-evidence/source-before.sha256
+[fixture-build 13/16] WORKDIR /src/slug/desktop
+[fixture-build 14/16] RUN go list -mod=readonly -deps -json ./hostedfixture > /build-evidence/dependencies.json &&     sh ../scripts/candidate-go.sh build -mod=readonly -p=1 -trimpath -buildvcs=false -tags=       -o /out/slug-host-fixture ./hostedfixture &&     sh ../scripts/candidate-go.sh verify-binary /out/slug-host-fixture > /build-evidence/build-info.txt &&     sha256sum /out/slug-host-fixture > /build-evidence/binary-sha256.txt
+[fixture-build 15/16] WORKDIR /src
+[fixture-build 16/16] RUN find slug slugwallet -type f -print0 | sort -z | xargs -0 sha256sum > /build-evidence/source-after.sha256 &&     cmp /build-evidence/source-before.sha256 /build-evidence/source-after.sha256
+[admin 4/9] COPY --from=fixture-build /out/slug-host-fixture /usr/local/bin/
+[admin 5/9] COPY --from=fixture-build /fixture/ /usr/share/slug/fixture/
+[admin 6/9] COPY --from=fixture-build /build-evidence/ /usr/share/slug/fixture-build/
+[admin 7/9] COPY bootstrap.sh /usr/local/bin/host-bootstrap
+[admin 7/9] COPY bootstrap.sh /usr/local/bin/host-bootstrap
+[admin 8/9] RUN ! grep -q '^slug:' /etc/passwd && ! grep -q '^[^:]*:[^:]*:10001:' /etc/passwd &&     ! grep -q '^slug:' /etc/group && ! grep -q '^[^:]*:[^:]*:10001:' /etc/group &&     printf '%s\n' 'slug:x:10001:10001:SLUG fixture bootstrap:/data:/bin/sh' >> /etc/passwd &&     printf '%s\n' 'slug:x:10001:' >> /etc/group &&     chmod 0555 /usr/local/bin/host-bootstrap &&     su -s /bin/sh -c 'test "$(id -u)" = 10001 && test "$(id -ru)" = 10001 && test "$(id -g)" = 10001 && test "$(id -rg)" = 10001' slug
+[admin 8/9] RUN ! grep -q '^slug:' /etc/passwd && ! grep -q '^[^:]*:[^:]*:10001:' /etc/passwd &&     ! grep -q '^slug:' /etc/group && ! grep -q '^[^:]*:[^:]*:10001:' /etc/group &&     printf '%s\n' 'slug:x:10001:10001:SLUG fixture bootstrap:/data:/bin/sh' >> /etc/passwd &&     printf '%s\n' 'slug:x:10001:' >> /etc/group &&     chmod 0555 /usr/local/bin/host-bootstrap &&     su -s /bin/sh -c 'test "$(id -u)" = 10001 && test "$(id -ru)" = 10001 && test "$(id -g)" = 10001 && test "$(id -rg)" = 10001' slug
+exporting to image
+exporting to image
+exporting cache to Amazon S3
+exporting to image
+exporting cache to Amazon S3
+exporting to image
+railway.push.duration: 1.626125308s
+containerimage.descriptor: eyJtZWRpYVR5cGUiOiJhcHBsaWNhdGlvbi92bmQub2NpLmltYWdlLm1hbmlmZXN0LnYxK2pzb24iLCJkaWdlc3QiOiJzaGEyNTY6MjlhNGMxNjM0ZTViZWZmOWE2MWJiOTRlZWFiYjNmMjJkZjUxYjg1NWJlYTVhMDA0NjdjZDJiMmU3MTNhNzU0NyIsInNpemUiOjI1NzcsInBsYXRmb3JtIjp7ImFyY2hpdGVjdHVyZSI6ImFtZDY0Iiwib3MiOiJsaW51eCJ9fQ==
+containerimage.config.digest: sha256:1f7ddb96fe803150c888ecede636dd569ac630c5c26bbb2dcc5675a9a09a20e7
+containerimage.digest: sha256:29a4c1634e5beff9a61bb94eeabb3f22df51b855bea5a00467cd2b2e713a7547
+image.name: production-dpsjc-b.railway-registry.com/dedabe18-acd1-4dfe-a775-8bd02f799717:ba0aca5a-9eea-42c7-a1d6-8dd841ff215a
+Deploy complete

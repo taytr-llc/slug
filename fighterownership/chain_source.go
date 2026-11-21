@@ -38,8 +38,9 @@ type ChainHeader struct {
 	Raw    []byte
 }
 
-// OwnedChainSource is attached to one original parent lifetime and a literal
-// loopback endpoint. Every operation rechecks network/genesis. Replay must also
+// OwnedChainSource is attached to one original parent lifetime and endpoint.
+// Desktop sources require literal loopback; operator sources may also select
+// HTTPS with an explicit CA. Every operation rechecks network/genesis. Replay must also
 // bracket its traversal with Check to detect restart, ABA and advancing tips.
 type OwnedChainSource struct {
 	codec                        ownershipCodec
@@ -83,8 +84,17 @@ func newSelectedOwnedChainSource(ctx context.Context, expected Pin, config prosp
 		return nil, ErrInvalid
 	}
 	u, err := url.Parse(config.URL)
-	if err != nil || net.ParseIP(u.Hostname()) == nil || !net.ParseIP(u.Hostname()).IsLoopback() {
+	if err != nil {
 		return nil, ErrSource
+	}
+	ip := net.ParseIP(u.Hostname())
+	if ip == nil || !ip.IsLoopback() {
+		// Only the explicitly selected operator owner may use a remote node.
+		// It must retain an explicit CA and normal HTTPS hostname verification;
+		// legacy desktop owners remain restricted to literal loopback endpoints.
+		if !codec.operator || u.Scheme != "https" || config.CACertificate == "" {
+			return nil, ErrSource
+		}
 	}
 	tlsConfig := &tls.Config{MinVersion: tls.VersionTLS12}
 	if config.CACertificate != "" {

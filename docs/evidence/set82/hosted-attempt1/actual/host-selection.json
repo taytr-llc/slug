@@ -1,0 +1,1 @@
+{"version":1,"origin":"https://turntable.proxy.rlwy.net:26354","listen":"0.0.0.0:8443","pool_url":"http://127.0.0.1:18441","admission_url":"http://127.0.0.1:18442","ownership_url":"http://127.0.0.1:18443","due_utc":"2026-11-21T17:11:00Z","tls_ca_path":"","tls_certificate_path":"","tls_key_path":""}

@@ -1,0 +1,126 @@
+// Public-only bounded readers for the stopped hosted fixture audit.
+package main
+
+import (
+	"bytes"
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"io"
+	"os"
+	"path/filepath"
+	"syscall"
+)
+
+func require(ok bool, label string) {
+	if !ok {
+		panic(label)
+	}
+}
+func check(e error, label string) {
+	if e != nil {
+		panic(fmt.Errorf("%s: %w", label, e))
+	}
+}
+func hx(b []byte) string     { return hex.EncodeToString(b) }
+func digest(b []byte) []byte { h := sha256.Sum256(b); return h[:] }
+func absolute(path string) {
+	require(filepath.IsAbs(path) && filepath.Clean(path) == path, "canonical absolute public path")
+	resolved, e := filepath.EvalSymlinks(path)
+	check(e, "public path")
+	require(resolved == path, "public path symlink refused")
+}
+func readBound(path string, limit int64) []byte {
+	absolute(path)
+	before, e := os.Lstat(path)
+	check(e, "public input stat")
+	st, ok := before.Sys().(*syscall.Stat_t)
+	require(ok && before.Mode().IsRegular() && st.Nlink == 1 && before.Size() >= 0 && before.Size() <= limit, "bounded original public file")
+	f, e := os.OpenFile(path, os.O_RDONLY|syscall.O_NOFOLLOW, 0)
+	check(e, "public input open")
+	opened, se := f.Stat()
+	if se != nil || !os.SameFile(before, opened) {
+		check(errors.Join(errors.New("original public file changed"), se, f.Close()), "public input identity")
+	}
+	raw, re := io.ReadAll(io.LimitReader(f, limit+1))
+	ce := f.Close()
+	check(errors.Join(re, ce), "public input read and close")
+	after, e := os.Lstat(path)
+	check(e, "public input restat")
+	require(os.SameFile(before, after) && before.Mode() == after.Mode() && before.Size() == after.Size() && before.ModTime() == after.ModTime() && int64(len(raw)) == before.Size(), "unchanged complete public input")
+	return raw
+}
+func strictReport(raw []byte, into any) {
+	d := json.NewDecoder(bytes.NewReader(raw))
+	d.DisallowUnknownFields()
+	check(d.Decode(into), "public report decode")
+	var extra any
+	require(d.Decode(&extra) == io.EOF, "one public report")
+	canonical, e := json.Marshal(into)
+	check(e, "public report marshal")
+	// The helper emits exactly one compact frame with LF; accept that frame only.
+	require(bytes.Equal(raw, append(canonical, '\n')), "canonical original audit report")
+}
+
+type rootLock struct {
+	file   *os.File
+	path   string
+	info   os.FileInfo
+	closed bool
+}
+
+func lockOperator(root string) *rootLock {
+	absolute(root)
+	require(os.Getuid() == os.Geteuid(), "original effective owner")
+	path := filepath.Join(root, "operator")
+	absolute(path)
+	before, e := os.Lstat(path)
+	check(e, "operator root stat")
+	st, ok := before.Sys().(*syscall.Stat_t)
+	require(ok && before.IsDir() && before.Mode().Perm() == 0700 && before.Mode()&(os.ModeSetuid|os.ModeSetgid|os.ModeSticky) == 0 && st.Uid == uint32(os.Geteuid()), "original owned operator0700")
+	fd, e := syscall.Open(path, syscall.O_RDONLY|syscall.O_DIRECTORY|syscall.O_NOFOLLOW|syscall.O_CLOEXEC, 0)
+	check(e, "operator root open")
+	f := os.NewFile(uintptr(fd), "stopped-operator-audit")
+	opened, se := f.Stat()
+	if se != nil || !os.SameFile(before, opened) {
+		check(errors.Join(errors.New("operator root changed"), se, f.Close()), "operator root identity")
+	}
+	// This is the same directory-flock used by openOperatorFilesSelection. A live
+	// original runtime excludes this audit; the lock also excludes restart until
+	// all original read-only owners and projections have closed.
+	if e = syscall.Flock(fd, syscall.LOCK_EX|syscall.LOCK_NB); e != nil {
+		check(errors.Join(e, f.Close()), "operator must be stopped and joined")
+	}
+	return &rootLock{file: f, path: path, info: before}
+}
+func (l *rootLock) verify() error {
+	resolved, e := filepath.EvalSymlinks(l.path)
+	if e != nil {
+		return e
+	}
+	if resolved != l.path {
+		return errors.New("operator root symlink changed")
+	}
+	now, e := os.Lstat(l.path)
+	if e != nil {
+		return e
+	}
+	live, e := l.file.Stat()
+	if e != nil {
+		return e
+	}
+	if !os.SameFile(l.info, now) || !os.SameFile(l.info, live) || l.info.Mode() != now.Mode() {
+		return errors.New("original operator root changed")
+	}
+	return nil
+}
+func (l *rootLock) close() error {
+	if l == nil || l.closed {
+		return errors.New("operator audit lock closed twice")
+	}
+	l.closed = true
+	// Close releases the flock. Never retry an ambiguous close descriptor.
+	return l.file.Close()
+}

@@ -1,0 +1,436 @@
+// Stopped original-wallet observer. No Start, Issue, mining or wallet creation.
+package main
+
+import (
+	"context"
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
+	"errors"
+	"flag"
+	"fmt"
+	"io"
+	"os"
+	"os/signal"
+	"path/filepath"
+	"reflect"
+	"syscall"
+	"time"
+
+	"github.com/taytr-llc/slug/desktop/accountpilot"
+	"github.com/taytr-llc/slug/desktop/pilot"
+	"github.com/taytr-llc/slug/prospectnode"
+	"github.com/taytr-llc/slug/wire/v2"
+)
+
+const referenceSHA = "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a"
+
+type fixture struct {
+	Version       uint32                       `json:"version"`
+	Fixture       string                       `json:"fixture"`
+	Options       pilot.PoolOptions            `json:"options"`
+	ExpectedLocal pilot.RemotePoolLocalBinding `json:"expected_local"`
+}
+type reference struct {
+	Fixture fixture
+	Remote  pilot.RecoverableRemotePoolConfig
+}
+type selections struct{ owned, attachment, reference, remote, rpc, pool, admission, snapshots, report string }
+type retainedInput struct {
+	path      string
+	info      os.FileInfo
+	hash      [32]byte
+	cap       int64
+	protected bool
+}
+
+func readInput(path string, cap int64, protected bool) ([]byte, retainedInput, error) {
+	var out retainedInput
+	if !filepath.IsAbs(path) || filepath.Clean(path) != path {
+		return nil, out, errors.New("absolute input required")
+	}
+	resolved, e := filepath.EvalSymlinks(path)
+	if e != nil || resolved != path {
+		return nil, out, errors.New("input symlink refused")
+	}
+	st, e := os.Lstat(path)
+	if e != nil {
+		return nil, out, e
+	}
+	s, ok := st.Sys().(*syscall.Stat_t)
+	if !ok || !st.Mode().IsRegular() || s.Nlink != 1 || st.Size() < 1 || st.Size() > cap {
+		return nil, out, errors.New("bounded original regular input required")
+	}
+	if protected && (s.Uid != uint32(os.Geteuid()) || st.Mode().Perm()&0077 != 0) {
+		return nil, out, errors.New("protected input ownership")
+	}
+	f, e := os.Open(path)
+	if e != nil {
+		return nil, out, e
+	}
+	opened, e := f.Stat()
+	if e != nil || !os.SameFile(st, opened) {
+		return nil, out, errors.Join(errors.New("original input changed"), e, f.Close())
+	}
+	raw, re := io.ReadAll(io.LimitReader(f, cap+1))
+	ce := f.Close()
+	if re != nil || ce != nil || int64(len(raw)) != st.Size() {
+		clear(raw)
+		return nil, out, errors.Join(errors.New("bounded input read/close"), re, ce)
+	}
+	out = retainedInput{path, st, sha256.Sum256(raw), cap, protected}
+	return raw, out, nil
+}
+func unchanged(inputs []retainedInput) error {
+	for _, original := range inputs {
+		raw, current, e := readInput(original.path, original.cap, original.protected)
+		clear(raw)
+		if e != nil {
+			return e
+		}
+		if !os.SameFile(original.info, current.info) || original.info.Mode() != current.info.Mode() || original.hash != current.hash {
+			return errors.New("selected original input changed")
+		}
+	}
+	return nil
+}
+func exclusive(path string) (*os.File, error) {
+	if !filepath.IsAbs(path) || filepath.Clean(path) != path {
+		return nil, errors.New("absolute output required")
+	}
+	parent := filepath.Dir(path)
+	resolved, e := filepath.EvalSymlinks(parent)
+	if e != nil || resolved != parent {
+		return nil, errors.New("output parent symlink refused")
+	}
+	st, e := os.Lstat(parent)
+	if e != nil {
+		return nil, e
+	}
+	owner, ok := st.Sys().(*syscall.Stat_t)
+	if !ok || !st.IsDir() || st.Mode().Perm() != 0700 || owner.Uid != uint32(os.Geteuid()) {
+		return nil, errors.New("output parent must be original owned0700")
+	}
+	return os.OpenFile(path, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
+}
+func writeFrame(f *os.File, value any) error {
+	raw, e := json.Marshal(value)
+	if e != nil {
+		return e
+	}
+	if len(raw) > 8191 {
+		return errors.New("public frame bound")
+	}
+	raw = append(raw, '\n')
+	n, we := f.Write(raw)
+	if n != len(raw) {
+		we = errors.Join(we, io.ErrShortWrite)
+	}
+	return errors.Join(we, f.Sync())
+}
+func pause(ctx context.Context, d time.Duration) error {
+	timer := time.NewTimer(d)
+	defer timer.Stop()
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	case <-timer.C:
+		return nil
+	}
+}
+func snapshot(ctx context.Context, c *accountpilot.RemotePoolController) (accountpilot.RemotePoolControllerSnapshot, error) {
+	work, cancel := context.WithTimeout(ctx, 20*time.Second)
+	defer cancel()
+	for {
+		v, e := c.Snapshot(work)
+		if e != pilot.ErrRemotePoolBusy {
+			return v, e
+		}
+		if e = pause(work, 100*time.Millisecond); e != nil {
+			return accountpilot.RemotePoolControllerSnapshot{}, e
+		}
+	}
+}
+func cancellationOnly(e error) bool {
+	if e == context.Canceled {
+		return true
+	}
+	if many, ok := e.(interface{ Unwrap() []error }); ok {
+		children := many.Unwrap()
+		if len(children) == 0 {
+			return false
+		}
+		for _, c := range children {
+			if !cancellationOnly(c) {
+				return false
+			}
+		}
+		return true
+	}
+	return false
+}
+func code(e error) string {
+	if e == nil {
+		return ""
+	}
+	if cancellationOnly(e) {
+		return "canceled"
+	}
+	if e == context.DeadlineExceeded {
+		return "deadline_exceeded"
+	}
+	return "unavailable"
+}
+
+type observation struct {
+	Version                 uint32 `json:"version"`
+	Sequence                uint64 `json:"sequence"`
+	ObservedAtMS            int64  `json:"observed_at_ms"`
+	ConfigID                string `json:"config_id"`
+	GymID                   string `json:"gym_id"`
+	SourceBindingID         string `json:"source_binding_id"`
+	OriginalSourceBindingID string `json:"original_source_binding_id"`
+	PayoutAddress           string `json:"payout_address"`
+	State                   string `json:"state"`
+	WorkerState             string `json:"worker_state"`
+	Attempts                uint64 `json:"attempts"`
+	HashesPerSecondMilli    uint64 `json:"hashes_per_second_milli"`
+	Records                 uint64 `json:"records"`
+	Pending                 uint64 `json:"pending"`
+	WalletState             string `json:"wallet_state"`
+	WalletHeight            uint32 `json:"wallet_height"`
+	SpendableAtoms          int64  `json:"spendable_atoms"`
+	ImmatureAtoms           int64  `json:"immature_atoms"`
+	UnconfirmedAtoms        int64  `json:"unconfirmed_atoms"`
+	LastError               string `json:"last_error"`
+}
+
+func observed(v accountpilot.RemotePoolControllerSnapshot, f fixture, c pilot.RecoverableRemotePoolConfig, id, view string, seq uint64) (observation, error) {
+	var o observation
+	if v.Version != 2 || v.ConfigID != id || v.State != "signed_in" || v.View == nil || v.Remote == nil || v.Error != "" {
+		return o, errors.New("original signed-in observer required")
+	}
+	r := v.Remote
+	want := f.ExpectedLocal
+	if v.View.ViewID == "" || (view != "" && v.View.ViewID != view) || v.View.GymPublicKey != want.Recipient.Config.Identity.GymPublicKey || v.View.GymID != want.Recipient.Config.Identity.GymID || v.View.AccountID != want.Recipient.Config.AccountID || r.ConfigID != id || r.State != "stopped" || r.WorkerState != "stopped" || r.Attempts != 0 || r.HashesPerSecondMilli != 0 || r.SourceBindingID != c.Base.Miners.SourceID || r.OriginalSourceBindingID != want.OriginalSourceBindingID || r.PayoutAddress != want.Recipient.Recipient.Address {
+		return o, errors.New("stopped original-wallet binding changed")
+	}
+	o = observation{1, seq, time.Now().UTC().UnixMilli(), id, v.View.GymID, r.SourceBindingID, r.OriginalSourceBindingID, r.PayoutAddress, r.State, r.WorkerState, r.Attempts, r.HashesPerSecondMilli, r.Records, r.Pending, r.WalletState, r.WalletHeight, r.SpendableAtoms, r.ImmatureAtoms, r.UnconfirmedAtoms, r.LastError}
+	return o, nil
+}
+
+type result struct {
+	Version         uint32       `json:"version"`
+	Scope           string       `json:"scope"`
+	PID             int          `json:"pid"`
+	ParentPID       int          `json:"parent_pid"`
+	StartedAtMS     int64        `json:"started_at_ms"`
+	EndedAtMS       int64        `json:"ended_at_ms"`
+	DeadlineAtMS    int64        `json:"deadline_at_ms"`
+	ReferenceSHA256 string       `json:"reference_sha256"`
+	ConfigID        string       `json:"config_id"`
+	Samples         uint64       `json:"samples"`
+	Last            *observation `json:"last"`
+	StartCalls      uint64       `json:"start_calls"`
+	RequestedStop   bool         `json:"requested_stop"`
+	LoggedOut       bool         `json:"logged_out"`
+	Closed          bool         `json:"closed"`
+	InputsUnchanged bool         `json:"inputs_unchanged"`
+	CleanJoin       bool         `json:"clean_join"`
+	Error           string       `json:"error"`
+	CleanupError    string       `json:"cleanup_error"`
+	Passed          bool         `json:"passed"`
+}
+
+func run(life context.Context, s selections) (returnErr error) {
+	if wire.TestPoW {
+		return errors.New("observer requires normal PoW")
+	}
+	// Original parent's signal bounds every acquisition/call. Original controller
+	// Close retains its separate lifetime and is always joined after the last call.
+	ctx, cancel := context.WithTimeout(life, 900*time.Second)
+	defer cancel()
+	started := time.Now().UTC()
+	deadline, _ := ctx.Deadline()
+	report := result{Version: 1, Scope: "Stopped original-controller wallet observation only", PID: os.Getpid(), ParentPID: os.Getppid(), StartedAtMS: started.UnixMilli(), DeadlineAtMS: deadline.UnixMilli(), ReferenceSHA256: referenceSHA}
+	reportFile, e := exclusive(s.report)
+	if e != nil {
+		return e
+	}
+	var output *os.File
+	var owner *accountpilot.RemotePoolController
+	var view string
+	var inputs []retainedInput
+	defer func() {
+		var cleanup error
+		report.RequestedStop = life.Err() == context.Canceled
+		if owner != nil {
+			if view != "" {
+				closeCtx, stop := context.WithTimeout(context.Background(), 30*time.Second)
+				le := owner.Logout(closeCtx, view)
+				stop()
+				report.LoggedOut = le == nil
+				cleanup = errors.Join(cleanup, le)
+			}
+			ce := owner.Close()
+			report.Closed = ce == nil
+			cleanup = errors.Join(cleanup, ce)
+		}
+		if output != nil {
+			cleanup = errors.Join(cleanup, output.Sync(), output.Close())
+		}
+		ie := unchanged(inputs)
+		report.InputsUnchanged = ie == nil
+		cleanup = errors.Join(cleanup, ie)
+		if report.RequestedStop && owner != nil && report.Samples > 0 && cancellationOnly(returnErr) {
+			returnErr = nil
+		}
+		report.EndedAtMS = time.Now().UTC().UnixMilli()
+		report.Error = code(returnErr)
+		report.CleanupError = code(cleanup)
+		report.CleanJoin = owner != nil && report.Closed && cleanup == nil
+		report.Passed = returnErr == nil && report.RequestedStop && report.LoggedOut && report.CleanJoin && report.Samples > 0
+		we := writeFrame(reportFile, report)
+		ce := reportFile.Close()
+		returnErr = errors.Join(returnErr, cleanup, we, ce)
+		if !report.Passed && returnErr == nil {
+			returnErr = errors.New("observer did not complete requested stopped observation")
+		}
+	}()
+	raw, input, e := readInput(s.reference, 174293, false)
+	if e != nil {
+		return e
+	}
+	inputs = append(inputs, input)
+	if len(raw) != 174293 || hex.EncodeToString(input.hash[:]) != referenceSHA {
+		return errors.New("qualified public reference mismatch")
+	}
+	var ref reference
+	if e = json.Unmarshal(raw, &ref); e != nil {
+		return e
+	}
+	if ref.Fixture.Fixture != "incrementing256" || ref.Fixture.ExpectedLocal != ref.Remote.Base.ExpectedLocal {
+		return errors.New("original unheld fixture selection")
+	}
+	raw, input, e = readInput(s.remote, pilot.RecoverableRemotePoolMaxConfigBytes, true)
+	if e != nil {
+		return e
+	}
+	inputs = append(inputs, input)
+	c, e := pilot.ParseRecoverableRemotePoolConfig(raw)
+	if e != nil {
+		return e
+	}
+	normalized := c.Base
+	normalized.Origin = ref.Remote.Base.Origin
+	normalized.CACertificate = ref.Remote.Base.CACertificate
+	if c.Base.ExpectedLocal != ref.Fixture.ExpectedLocal || !reflect.DeepEqual(normalized, ref.Remote.Base) {
+		return errors.New("only admitted remote transport may differ")
+	}
+	report.ConfigID, e = pilot.RecoverableRemotePoolConfigID(c)
+	if e != nil {
+		return e
+	}
+	raw, input, e = readInput(s.rpc, prospectnode.MaxRPCConfigSize, true)
+	if e != nil {
+		return e
+	}
+	inputs = append(inputs, input)
+	rpc, e := prospectnode.ParseRPCConfig(raw)
+	clear(raw)
+	if e != nil {
+		return e
+	}
+	for _, p := range []string{s.pool, s.admission} {
+		raw, input, e = readInput(p, 4096, true)
+		clear(raw)
+		if e != nil {
+			return e
+		}
+		inputs = append(inputs, input)
+	}
+	output, e = exclusive(s.snapshots)
+	if e != nil {
+		return e
+	}
+	in := pilot.RecoverableRemotePoolInputs{AttachmentRoot: s.attachment, Config: c, NodeRPC: rpc, PoolCredentialPath: s.pool, AdmissionCredentialPath: s.admission}
+	work, stop := context.WithTimeout(ctx, 60*time.Second)
+	owner, e = accountpilot.OpenRecoverableDailyRemotePoolController(work, s.owned, ref.Fixture.Options, in)
+	stop()
+	if e != nil {
+		return e
+	}
+	first, e := snapshot(ctx, owner)
+	if e != nil {
+		return e
+	}
+	if first.Version != 2 || first.ConfigID != report.ConfigID || first.State != "signed_out" || first.View != nil || first.Remote != nil {
+		return errors.New("original stopped open state")
+	}
+	work, stop = context.WithTimeout(ctx, 90*time.Second)
+	e = owner.LoginFixture(work, ref.Fixture.Fixture)
+	stop()
+	if e != nil {
+		return e
+	}
+	for {
+		v, e := snapshot(ctx, owner)
+		if e != nil {
+			return e
+		}
+		if view == "" && v.View != nil {
+			view = v.View.ViewID
+		}
+		if report.Samples >= 1024 {
+			return errors.New("snapshot count bound")
+		}
+		o, e := observed(v, ref.Fixture, c, report.ConfigID, view, report.Samples+1)
+		if e != nil {
+			return e
+		}
+		if e = writeFrame(output, o); e != nil {
+			return e
+		}
+		report.Samples++
+		report.Last = &o
+		if e = pause(ctx, time.Second); e != nil {
+			return e
+		}
+	}
+}
+func main() {
+	if wire.TestPoW {
+		fmt.Fprintln(os.Stderr, "observer requires normal PoW")
+		os.Exit(1)
+	}
+	if len(os.Args) < 2 || os.Args[1] != "observe" {
+		fmt.Fprintln(os.Stderr, "usage: slug-host-client observe --owned-root ABS --attachment-root ABS --reference ABS --remote-config ABS --node-rpc ABS --pool-credential ABS --admission-credential ABS --snapshots ABS --report ABS")
+		os.Exit(2)
+	}
+	var s selections
+	fs := flag.NewFlagSet("observe", flag.ContinueOnError)
+	for _, v := range []struct {
+		name   string
+		target *string
+	}{{"owned-root", &s.owned}, {"attachment-root", &s.attachment}, {"reference", &s.reference}, {"remote-config", &s.remote}, {"node-rpc", &s.rpc}, {"pool-credential", &s.pool}, {"admission-credential", &s.admission}, {"snapshots", &s.snapshots}, {"report", &s.report}} {
+		fs.StringVar(v.target, v.name, "", "explicit original path")
+	}
+	if e := fs.Parse(os.Args[2:]); e != nil || fs.NArg() != 0 {
+		os.Exit(2)
+	}
+	paths := []string{s.owned, s.attachment, s.reference, s.remote, s.rpc, s.pool, s.admission, s.snapshots, s.report}
+	seen := map[string]bool{}
+	for _, p := range paths {
+		if !filepath.IsAbs(p) || filepath.Clean(p) != p || seen[p] {
+			os.Exit(2)
+		}
+		seen[p] = true
+	}
+	life, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer stop()
+	if e := run(life, s); e != nil {
+		fmt.Fprintln(os.Stderr, "stopped observer failed; inspect bounded public report")
+		os.Exit(1)
+	}
+	fmt.Println("stopped original wallet observation joined")
+}

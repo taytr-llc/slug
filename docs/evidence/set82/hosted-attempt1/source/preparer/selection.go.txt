@@ -1,0 +1,203 @@
+package main
+
+import (
+	"encoding/hex"
+	"encoding/json"
+	"errors"
+	"net/url"
+	"path/filepath"
+	"reflect"
+	"time"
+
+	"github.com/taytr-llc/slug/desktop/pilot"
+	"github.com/taytr-llc/slug/desktop/pooloperator"
+	"github.com/taytr-llc/slug/poolingress"
+	"github.com/taytr-llc/slug/registry"
+)
+
+const selectedSHA = "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a"
+const attachmentSHA = "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386"
+const baseSHA = "a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3"
+
+type hostSelection struct {
+	Version            uint32 `json:"version"`
+	Origin             string `json:"origin"`
+	Listen             string `json:"listen"`
+	PoolURL            string `json:"pool_url"`
+	AdmissionURL       string `json:"admission_url"`
+	OwnershipURL       string `json:"ownership_url"`
+	DueUTC             string `json:"due_utc"`
+	TLSCAPath          string `json:"tls_ca_path"`
+	TLSCertificatePath string `json:"tls_certificate_path"`
+	TLSKeyPath         string `json:"tls_key_path"`
+}
+type economics struct {
+	AcceptedRewards int   `json:"accepted_rewards"`
+	Credits         int   `json:"credits"`
+	Batches         int   `json:"batches"`
+	InputCount      int   `json:"input_count"`
+	OutputCount     int   `json:"output_count"`
+	GrossAtoms      int64 `json:"gross_atoms"`
+	MinerAtoms      int64 `json:"miner_atoms"`
+	FeeAtoms        int64 `json:"fee_atoms"`
+	ChangeAtoms     int64 `json:"change_atoms"`
+}
+type selectedReference struct {
+	Version                 uint32
+	Setup                   pooloperator.RecoverableDailySetup
+	SetupID                 string `json:"setup_id"`
+	Remote                  pilot.RecoverableRemotePoolConfig
+	RemoteID                string `json:"remote_id"`
+	Profile                 registry.IssueProfile
+	ProfileID               string    `json:"profile_id"`
+	RequiredAcceptedRewards int       `json:"required_accepted_rewards"`
+	SelectedEconomics       economics `json:"selected_economics"`
+}
+
+func pinned(dir, name, hash string, size int64) ([]byte, error) {
+	raw, e := readFile(filepath.Join(dir, name), size, false)
+	if e != nil {
+		return nil, e
+	}
+	if int64(len(raw)) != size || sum(raw) != hash {
+		return nil, errors.New("published reference identity mismatch")
+	}
+	return raw, nil
+}
+func loadReference(dir string) (selectedReference, string, error) {
+	var r selectedReference
+	raw, e := pinned(dir, "reference-v1.json", selectedSHA, 174293)
+	if e != nil {
+		return r, "", e
+	}
+	// The entire bounded reference is hash-pinned; projection intentionally ignores
+	// independent producer's documentary fields. Product parsers validate owners.
+	if e = json.Unmarshal(raw, &r); e != nil {
+		return r, "", e
+	}
+	if e = pooloperator.ValidateRecoverableDailySetup(r.Setup); e != nil {
+		return r, "", e
+	}
+	if e = pilot.ValidateRecoverableRemotePoolConfig(r.Remote); e != nil {
+		return r, "", e
+	}
+	sid, e := pooloperator.RecoverableDailySetupID(r.Setup)
+	if e != nil {
+		return r, "", e
+	}
+	rid, e := pilot.RecoverableRemotePoolConfigID(r.Remote)
+	if e != nil {
+		return r, "", e
+	}
+	pid, e := registry.IssueProfileID(r.Profile)
+	if e != nil {
+		return r, "", e
+	}
+	if r.Version != 1 || sid != r.SetupID || rid != r.RemoteID || pid != r.ProfileID || r.Profile != r.Setup.IssueProfile || r.Profile != r.Remote.IssueProfile || r.RequiredAcceptedRewards != 2 || r.SelectedEconomics != (economics{2, 2, 1, 2, 2, 2000000000, 1980000000, 209, 19999791}) {
+		return r, "", errors.New("qualified selected bindings/economics")
+	}
+	oldRaw, e := pinned(dir, "path-c-reference.json", attachmentSHA, 46498)
+	if e != nil {
+		return r, "", e
+	}
+	var old struct {
+		BaseID string `json:"base_composition_setup_id"`
+		Remote pilot.RemotePoolConfig
+	}
+	if e = json.Unmarshal(oldRaw, &old); e != nil {
+		return r, "", e
+	}
+	if !reflect.DeepEqual(old.Remote, r.Remote.Base) {
+		return r, "", errors.New("unchanged original attachment selection")
+	}
+	baseRaw, e := pinned(dir, "base-reference.json", baseSHA, 3176583)
+	if e != nil {
+		return r, "", e
+	}
+	var corpus struct {
+		Composition struct {
+			Positives []struct {
+				Name   string
+				ID     string `json:"setup_id"`
+				Backup string `json:"published_fixture_backup_hex"`
+			}
+		}
+	}
+	if e = json.Unmarshal(baseRaw, &corpus); e != nil {
+		return r, "", e
+	}
+	for _, v := range corpus.Composition.Positives {
+		if v.Name != "two-enrollments" {
+			continue
+		}
+		b, e := hex.DecodeString(v.Backup)
+		if e != nil {
+			return r, "", e
+		}
+		var backup struct {
+			Version  uint32
+			SetupID  string `json:"setup_id"`
+			Mnemonic string
+		}
+		if e = json.Unmarshal(b, &backup); e != nil {
+			return r, "", e
+		}
+		if v.ID != old.BaseID || backup.Version != 2 || backup.SetupID != v.ID || backup.Mnemonic == "" {
+			return r, "", errors.New("published original funding fixture mismatch")
+		}
+		return r, backup.Mnemonic, nil
+	}
+	return r, "", errors.New("missing published funding recipe")
+}
+
+func parseHost(path string, now time.Time) (hostSelection, time.Time, string, error) {
+	var h hostSelection
+	raw, e := readFile(path, 16384, true)
+	if e != nil {
+		return h, time.Time{}, "", e
+	}
+	if e = decode(raw, &h); e != nil {
+		return h, time.Time{}, "", e
+	}
+	u, e := url.Parse(h.Origin)
+	if e != nil || h.Version != 1 || u.Scheme != "https" || u.Hostname() == "" || u.User != nil || u.Path != "" || u.RawQuery != "" || u.Fragment != "" || u.Opaque != "" || u.String() != h.Origin {
+		return h, time.Time{}, "", errors.New("explicit HTTPS origin required")
+	}
+	due, e := time.Parse(time.RFC3339, h.DueUTC)
+	if e != nil || due.Format("2006-01-02T15:04:05Z") != h.DueUTC || due.Second() != 0 || due.Nanosecond() != 0 || !due.After(now) || due.Format("2006-01-02") != now.UTC().Format("2006-01-02") {
+		return h, time.Time{}, "", errors.New("due must be fixed future same-day UTC minute")
+	}
+	supplied := 0
+	for _, p := range []string{h.TLSCAPath, h.TLSCertificatePath, h.TLSKeyPath} {
+		if p != "" {
+			supplied++
+		}
+	}
+	if supplied != 0 && supplied != 3 {
+		return h, time.Time{}, "", errors.New("TLS inputs must be all supplied or all absent")
+	}
+	return h, due, u.Hostname(), nil
+}
+func compose(r selectedReference, h hostSelection, due time.Time, ca, spki string) (pooloperator.RecoverableDailySetup, pilot.RecoverableRemotePoolConfig, error) {
+	s := r.Setup.Base
+	s.Schedule.DailyUTCMinute = uint32(due.Hour()*60 + due.Minute())
+	s.Ingress = poolingress.Config{Version: 2, Listen: h.Listen, Origin: h.Origin, CertificateSPKI: spki, PoolURL: h.PoolURL, AdmissionURL: h.AdmissionURL, OwnershipURL: h.OwnershipURL}
+	normalized := s
+	normalized.Ingress = r.Setup.Base.Ingress
+	normalized.Schedule.DailyUTCMinute = r.Setup.Base.Schedule.DailyUTCMinute
+	if !reflect.DeepEqual(normalized, r.Setup.Base) {
+		return pooloperator.RecoverableDailySetup{}, pilot.RecoverableRemotePoolConfig{}, errors.New("unexpected nontransport mutation")
+	}
+	wrapped, e := pooloperator.ComposeRecoverableDailySetup(s)
+	if e != nil {
+		return wrapped, pilot.RecoverableRemotePoolConfig{}, e
+	}
+	remote := r.Remote
+	remote.Base.Origin = h.Origin
+	remote.Base.CACertificate = ca
+	remote.IssueProfile = wrapped.IssueProfile
+	if e = pilot.ValidateRecoverableRemotePoolConfig(remote); e != nil {
+		return wrapped, remote, e
+	}
+	return wrapped, remote, nil
+}

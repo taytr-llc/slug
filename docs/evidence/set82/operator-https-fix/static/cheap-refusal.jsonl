@@ -1,0 +1,8 @@
+{"Time":"2026-11-21T09:13:49.893263-08:00","Action":"start","Package":"github.com/taytr-llc/slug/fighterownership"}
+{"Time":"2026-11-21T09:13:50.301059-08:00","Action":"run","Package":"github.com/taytr-llc/slug/fighterownership","Test":"TestOwnershipOperatorCheapRuntimeRefusal"}
+{"Time":"2026-11-21T09:13:50.301155-08:00","Action":"output","Package":"github.com/taytr-llc/slug/fighterownership","Test":"TestOwnershipOperatorCheapRuntimeRefusal","Output":"=== RUN   TestOwnershipOperatorCheapRuntimeRefusal\n","OutputType":"frame"}
+{"Time":"2026-11-21T09:13:50.305945-08:00","Action":"output","Package":"github.com/taytr-llc/slug/fighterownership","Test":"TestOwnershipOperatorCheapRuntimeRefusal","Output":"--- PASS: TestOwnershipOperatorCheapRuntimeRefusal (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-21T09:13:50.305982-08:00","Action":"pass","Package":"github.com/taytr-llc/slug/fighterownership","Test":"TestOwnershipOperatorCheapRuntimeRefusal","Elapsed":0}
+{"Time":"2026-11-21T09:13:50.306003-08:00","Action":"output","Package":"github.com/taytr-llc/slug/fighterownership","Output":"PASS\n","OutputType":"frame"}
+{"Time":"2026-11-21T09:13:50.306814-08:00","Action":"output","Package":"github.com/taytr-llc/slug/fighterownership","Output":"ok  \tgithub.com/taytr-llc/slug/fighterownership\t0.413s\n"}
+{"Time":"2026-11-21T09:13:50.306842-08:00","Action":"pass","Package":"github.com/taytr-llc/slug/fighterownership","Elapsed":0.414}

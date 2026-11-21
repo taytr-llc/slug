@@ -1,0 +1,278 @@
+package main
+
+import (
+	"bufio"
+	"context"
+	"crypto/ed25519"
+	"crypto/rand"
+	"crypto/tls"
+	"crypto/x509"
+	"crypto/x509/pkix"
+	"errors"
+	"io"
+	"math/big"
+	"net"
+	"os"
+	"os/exec"
+	"os/signal"
+	"path/filepath"
+	"sync/atomic"
+	"syscall"
+	"testing"
+	"time"
+)
+
+func relayTestCertificates(t *testing.T) (*tls.Config, *x509.CertPool, tls.Certificate, tls.Certificate) {
+	t.Helper()
+	now := time.Now()
+	caPub, caKey, e := ed25519.GenerateKey(rand.Reader)
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer clear(caKey)
+	ca := &x509.Certificate{SerialNumber: big.NewInt(1), Subject: pkix.Name{CommonName: "fixture test CA"}, NotBefore: now.Add(-time.Minute), NotAfter: now.Add(time.Hour), BasicConstraintsValid: true, IsCA: true, KeyUsage: x509.KeyUsageCertSign}
+	caDER, e := x509.CreateCertificate(rand.Reader, ca, ca, caPub, caKey)
+	if e != nil {
+		t.Fatal(e)
+	}
+	ca, e = x509.ParseCertificate(caDER)
+	if e != nil {
+		t.Fatal(e)
+	}
+	roots := x509.NewCertPool()
+	roots.AddCert(ca)
+	leaf := func(serial int64, usage x509.ExtKeyUsage) tls.Certificate {
+		pub, key, e := ed25519.GenerateKey(rand.Reader)
+		if e != nil {
+			t.Fatal(e)
+		}
+		t.Cleanup(func() { clear(key) })
+		cert := &x509.Certificate{SerialNumber: big.NewInt(serial), NotBefore: now.Add(-time.Minute), NotAfter: now.Add(time.Hour), DNSNames: []string{"fixture.local"}, KeyUsage: x509.KeyUsageDigitalSignature, ExtKeyUsage: []x509.ExtKeyUsage{usage}, BasicConstraintsValid: true}
+		der, e := x509.CreateCertificate(rand.Reader, cert, ca, pub, caKey)
+		if e != nil {
+			t.Fatal(e)
+		}
+		parsed, e := x509.ParseCertificate(der)
+		if e != nil {
+			t.Fatal(e)
+		}
+		return tls.Certificate{Certificate: [][]byte{der}, PrivateKey: key, Leaf: parsed}
+	}
+	server := leaf(2, x509.ExtKeyUsageServerAuth)
+	selected := leaf(3, x509.ExtKeyUsageClientAuth)
+	wrong := leaf(4, x509.ExtKeyUsageClientAuth)
+	return relaySelectedServerTLS(server, roots, selected.Leaf), roots, selected, wrong
+}
+
+// Real TLS and TCP streams: both no-client and a different valid same-CA
+// client are refused before any node connection. The selected client forwards.
+func TestHostedRelaySelectedPeerAndCancellation(t *testing.T) {
+	server, roots, selected, wrong := relayTestCertificates(t)
+	ctx, cancel := context.WithCancel(context.Background())
+	upstream, e := net.Listen("tcp4", "127.0.0.1:0")
+	if e != nil {
+		t.Fatal(e)
+	}
+	var admitted atomic.Int32
+	upDone := make(chan struct{})
+	go func() {
+		defer close(upDone)
+		for {
+			c, e := upstream.Accept()
+			if e != nil {
+				return
+			}
+			admitted.Add(1)
+			_, _ = io.Copy(c, c)
+			_ = c.Close()
+		}
+	}()
+	listener, e := net.Listen("tcp4", "127.0.0.1:0")
+	if e != nil {
+		cancel()
+		_ = upstream.Close()
+		<-upDone
+		t.Fatal(e)
+	}
+	r := startPeerRelay(ctx, listener, relayServerSessionAt(server, upstream.Addr().String()))
+	stopped := false
+	t.Cleanup(func() {
+		cancel()
+		if !stopped {
+			if e := r.stop(false); e != nil {
+				t.Error(e)
+			}
+		}
+		_ = upstream.Close()
+		select {
+		case <-upDone:
+		case <-time.After(2 * time.Second):
+			t.Error("upstream owner not joined")
+		}
+	})
+	dial := func(cert *tls.Certificate) (*tls.Conn, error) {
+		cfg := &tls.Config{MinVersion: tls.VersionTLS13, RootCAs: roots, ServerName: "fixture.local", NextProtos: []string{peerALPN}}
+		if cert != nil {
+			cfg.Certificates = []tls.Certificate{*cert}
+		}
+		return tls.DialWithDialer(&net.Dialer{Timeout: 2 * time.Second}, "tcp4", listener.Addr().String(), cfg)
+	}
+	for _, tc := range []struct {
+		name string
+		cert *tls.Certificate
+	}{{"no-client", nil}, {"wrong-same-ca-client", &wrong}} {
+		t.Run(tc.name, func(t *testing.T) {
+			c, e := dial(tc.cert)
+			if e == nil {
+				_ = c.SetDeadline(time.Now().Add(2 * time.Second))
+				_, we := c.Write([]byte("must not reach node"))
+				var b [1]byte
+				_, re := c.Read(b[:])
+				_ = c.Close()
+				if we == nil && re == nil {
+					t.Fatal("unselected peer accepted")
+				}
+			}
+			// Acquiring the original single-session slot is an exact completion
+			// barrier, not a sleep-based assumption about handshake completion.
+			select {
+			case r.slot <- struct{}{}:
+				<-r.slot
+			case <-time.After(2 * time.Second):
+				t.Fatal("refused session did not release slot")
+			}
+			if admitted.Load() != 0 {
+				t.Fatal("unauthorized peer reached node")
+			}
+		})
+	}
+	c, e := dial(&selected)
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer c.Close()
+	_ = c.SetDeadline(time.Now().Add(2 * time.Second))
+	if _, e = c.Write([]byte("selected")); e != nil {
+		t.Fatal(e)
+	}
+	buf := make([]byte, len("selected"))
+	if _, e = io.ReadFull(c, buf); e != nil || string(buf) != "selected" {
+		t.Fatal("selected forwarding", e)
+	}
+	if admitted.Load() != 1 {
+		t.Fatal("selected node count")
+	}
+	cancel()
+	e = r.stop(false)
+	stopped = true
+	if e != nil {
+		t.Fatal("cancel join", e)
+	}
+	_ = c.SetReadDeadline(time.Now().Add(time.Second))
+	var b [1]byte
+	if _, e = c.Read(b[:]); e == nil {
+		t.Fatal("active connection remained after joined cancellation")
+	}
+	if len(r.owned) != 0 {
+		t.Fatal("original connections retained after joined stop")
+	}
+}
+
+func TestHostedRelayProtectedFirstRead(t *testing.T) {
+	dir, e := filepath.EvalSymlinks(t.TempDir())
+	if e != nil {
+		t.Fatal(e)
+	}
+	if e := os.Chmod(dir, 0700); e != nil {
+		t.Fatal(e)
+	}
+	p := filepath.Join(dir, "certificate")
+	if e := os.WriteFile(p, []byte("public test bytes"), 0600); e != nil {
+		t.Fatal(e)
+	}
+	now := time.Now()
+	if e := os.Chtimes(p, now.Add(-48*time.Hour), now); e != nil {
+		t.Fatal(e)
+	}
+	raw, e := relayPrivateFile(p)
+	if e != nil || string(raw) != "public test bytes" {
+		t.Fatal("first read must permit atime change", e)
+	}
+	link := filepath.Join(dir, "linked")
+	if e = os.Symlink(p, link); e != nil {
+		t.Fatal(e)
+	}
+	if _, e = relayPrivateFile(link); e == nil {
+		t.Fatal("symlink accepted")
+	}
+	if e = os.Chmod(p, 0644); e != nil {
+		t.Fatal(e)
+	}
+	if _, e = relayPrivateFile(p); e == nil {
+		t.Fatal("unprotected input accepted")
+	}
+}
+
+func TestHostedRelayChildProcess(t *testing.T) {
+	if os.Getenv("SLUG_HOST_RELAY_TEST_CHILD") != "1" {
+		return
+	}
+	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGTERM)
+	defer stop()
+	_, _ = os.Stdout.WriteString("ready\n")
+	<-ctx.Done()
+}
+
+func TestHostedRelayOriginalChildJoined(t *testing.T) {
+	cmd := exec.Command(os.Args[0], "-test.run=^TestHostedRelayChildProcess$")
+	cmd.Env = append(os.Environ(), "SLUG_HOST_RELAY_TEST_CHILD=1")
+	stdout, e := cmd.StdoutPipe()
+	if e != nil {
+		t.Fatal(e)
+	}
+	if e = cmd.Start(); e != nil {
+		t.Fatal(e)
+	}
+	done := make(chan error, 1)
+	waited := make(chan struct{})
+	go func() { done <- cmd.Wait(); close(waited) }()
+	ready := make(chan string, 1)
+	readyDone := make(chan struct{})
+	go func() { defer close(readyDone); line, _ := bufio.NewReader(stdout).ReadString('\n'); ready <- line }()
+	t.Cleanup(func() {
+		select {
+		case <-waited:
+		default:
+			_ = cmd.Process.Kill()
+			select {
+			case <-waited:
+			case <-time.After(5 * time.Second):
+				t.Error("original child cleanup did not join")
+			}
+		}
+		select {
+		case <-readyDone:
+		case <-time.After(time.Second):
+			t.Error("original readiness reader did not join")
+		}
+	})
+	select {
+	case line := <-ready:
+		if line != "ready\n" {
+			t.Fatal("child readiness")
+		}
+	case <-time.After(5 * time.Second):
+		t.Fatal("child readiness deadline")
+	}
+	e = joinedNodeStop(cmd, done)
+	if e != nil {
+		t.Fatal("original child did not cleanly join", e)
+	}
+	<-waited
+	if cmd.ProcessState == nil || !cmd.ProcessState.Success() {
+		t.Fatal("original process completion missing")
+	}
+	if e = cmd.Process.Signal(syscall.SIGTERM); !errors.Is(e, os.ErrProcessDone) {
+		t.Fatal("joined process handle remains live", e)
+	}
+}

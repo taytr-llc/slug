@@ -1,0 +1,104 @@
+// Source-only normal hosted proof composition. No wallet owner or mining loop.
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"errors"
+	"flag"
+	"fmt"
+	"github.com/taytr-llc/slug/wire/v2"
+	"io"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
+)
+
+type options struct {
+	command, reference, setup, remote, setupID, remoteID, pool, other, attachment, phase, txid, rpc, audit, auditSHA string
+	sequence                                                                                                         uint64
+	afterMS                                                                                                          int64
+}
+
+func execute(parent context.Context, o options) (out map[string]any, err error) {
+	out = map[string]any{"version": 1, "command": o.command, "reference_sha256": referenceSHA, "setup_id": o.setupID, "remote_id": o.remoteID, "pid": os.Getpid(), "parent_pid": os.Getppid(), "started_at_ms": time.Now().UnixMilli(), "passed": false}
+	ctx, cancel := context.WithTimeout(parent, 60*time.Second)
+	defer cancel()
+	deadline, _ := ctx.Deadline()
+	out["deadline_at_ms"] = deadline.UnixMilli()
+	defer func() {
+		if p := recover(); p != nil {
+			err = fmt.Errorf("%v", p)
+		}
+		out["ended_at_ms"] = time.Now().UnixMilli()
+		if err != nil {
+			out["error"] = err.Error()
+		} else {
+			out["error"] = ""
+			out["passed"] = true
+		}
+	}()
+	require(!wire.TestPoW && isID(o.setupID) && isID(o.remoteID), "normal profile and explicit original selection IDs")
+	s := load(o)
+	defer func() {
+		for _, r := range s.inputs {
+			r.verify()
+		}
+		out["selected_inputs_unchanged"] = true
+	}()
+	switch o.command {
+	case "replay":
+		replay(ctx, s, o, out)
+	case "money":
+		money(ctx, s, o, out)
+	case "chain":
+		chain(ctx, s, o, out)
+	default:
+		panic("unknown proof command")
+	}
+	s.check(ctx)
+	out["clean_join"] = true
+	return
+}
+func main() {
+	if wire.TestPoW {
+		fmt.Fprintln(os.Stderr, "host proof requires normal PoW")
+		os.Exit(1)
+	}
+	if len(os.Args) < 2 {
+		fmt.Fprintln(os.Stderr, "usage: slug-host-proof replay|money|chain --reference ABS --setup ABS --remote ABS --expected-setup-id HEX --expected-remote-id HEX [selected command arguments]")
+		os.Exit(2)
+	}
+	o := options{command: os.Args[1]}
+	f := flag.NewFlagSet(o.command, flag.ContinueOnError)
+	for _, v := range []struct {
+		name string
+		p    *string
+	}{{"reference", &o.reference}, {"setup", &o.setup}, {"remote", &o.remote}, {"expected-setup-id", &o.setupID}, {"expected-remote-id", &o.remoteID}, {"pool-credential", &o.pool}, {"other-pool-token", &o.other}, {"attachment-root", &o.attachment}, {"phase", &o.phase}, {"txid", &o.txid}, {"node-rpc", &o.rpc}, {"audit-report", &o.audit}, {"audit-sha256", &o.auditSHA}} {
+		f.StringVar(v.p, v.name, "", "explicit original selection")
+	}
+	f.Uint64Var(&o.sequence, "sequence", 0, "original completed entry sequence")
+	f.Int64Var(&o.afterMS, "after-ms", 0, "original confirmation observation milliseconds")
+	if f.Parse(os.Args[2:]) != nil || f.NArg() != 0 {
+		os.Exit(2)
+	}
+	life, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	out, e := execute(life, o)
+	stop()
+	raw, me := json.Marshal(out)
+	if me == nil && len(raw) <= publicLimit {
+		raw = append(raw, '\n')
+		n, we := os.Stdout.Write(raw)
+		if n != len(raw) {
+			we = errors.Join(we, io.ErrShortWrite)
+		}
+		e = errors.Join(e, we)
+	} else {
+		e = errors.Join(e, me, errors.New("public proof output bound"))
+	}
+	if e != nil {
+		fmt.Fprintln(os.Stderr, "host proof failed")
+		os.Exit(1)
+	}
+}

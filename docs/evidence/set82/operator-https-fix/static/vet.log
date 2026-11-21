@@ -1,0 +1,1 @@
+Usage: candidate-go.sh check|profile|verify-binary FILE...|build|test|install [Go arguments]

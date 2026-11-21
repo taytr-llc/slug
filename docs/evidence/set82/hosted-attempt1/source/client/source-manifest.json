@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "scope": "Source-only stopped original wallet observer; no Start/Issue/mining/credential fabrication/runtime qualification",
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/client/main.go",
+      "bytes": 12998,
+      "sha256": "84788edda15b5ae616b9f428439a13728b7bb5f0aceca163be8be39d29707d5e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/client/go.mod",
+      "bytes": 356,
+      "sha256": "4d9d47fc752d49df3e33199a88aa659a3189e733da61c60819834f6325363e1c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/client/README.md",
+      "bytes": 4572,
+      "sha256": "b12b7370a4d45a6b92e828c42e97f8bdd6eb6cdab91653e1c531de05c61742fa"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/reference-v1.json",
+      "bytes": 174293,
+      "sha256": "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/work_evidence.go",
+      "bytes": 10191,
+      "sha256": "c806ecdc4bf8584a8bc3d67af0abb8ab1dbb3594975d06ccd0022cd01857f956"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/accountpilot/remote_pool_controller.go",
+      "bytes": 11309,
+      "sha256": "8c23bc195a1ba370d5dc5611f1c02845982cbdfe97b381dfeae4ed304a6410a8"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/accountpilot/remote_pool_session.go",
+      "bytes": 13419,
+      "sha256": "eb83ee3399ca511538ecf3452471e26fa31633a4f6115250095dd36e3e63305f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_attachment.go",
+      "bytes": 11586,
+      "sha256": "2890bfb46fcd0af674fe17ba234f00eece226cd7f6227fc82d9ac8c448afbcd4"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_read.go",
+      "bytes": 3903,
+      "sha256": "416e739ffcdc7b1f324dc34bc21f248b8a232a37527e64ff0275c9b91998b41f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_issue_recovery.go",
+      "bytes": 7314,
+      "sha256": "18ab16d5402052ed91ec174ddf0da006db8a0b0907221be211b6ec4ba2e393e2"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_node.go",
+      "bytes": 4064,
+      "sha256": "bc2dfc81dd7ea9f36ebdaa7ea4be09deb0675af3b051575b3651a9803e1f731f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/daily_launch.go",
+      "bytes": 8966,
+      "sha256": "f3890324cde9a5263fc618e213cfd7211ed71de623219213c90c921d47feb577"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/go.work",
+      "bytes": 304,
+      "sha256": "98e4579688df659d0ef70881e09619dbfbdcac1003273415cb022a2dd94db6da"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/go.mod",
+      "bytes": 651,
+      "sha256": "69a59d265aaec3377498c019b1cd2cb04241820e4cdb7cb2a5505a3f2363e4b7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+      "bytes": 2725,
+      "sha256": "64e073ba868e42b04e3e93a51826b2e6ee1b99103b92b417868cbf74f9b6436e"
+    }
+  ],
+  "execution": "not run",
+  "build_binding": "Root must bind complete composed workspace/dependencies/profile; direct provenance here is not an executable closure."
+}

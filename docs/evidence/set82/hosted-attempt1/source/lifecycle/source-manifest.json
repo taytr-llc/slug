@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "scope": "source-only fixture operator lifecycle witness; unchanged original standalone binary under temporary shell owner, not scratch PID1/provider shutdown qualification",
+  "executed": false,
+  "checks": [
+    "sh -n only",
+    "source review; root owns all runtime"
+  ],
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/lifecycle/operator-lifecycle.sh",
+      "bytes": 10562,
+      "sha256": "c3ff7087f1060ae4b28986a45ae7afb367c3911310b979f8e5237b0b518f2997"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/lifecycle/README.md",
+      "bytes": 5191,
+      "sha256": "0dff03925e554d570abc57f41d05c4ff106002ddd4e5fb1ca80745f3a301c2d3"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/package/bootstrap.sh",
+      "bytes": 3474,
+      "sha256": "bcb999dbf009b2fd709c6abcb46bbefaee257228b66466e26eefcbfc7e9ba0fc"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/HOST_SHUTDOWN_EVIDENCE.md",
+      "bytes": 6380,
+      "sha256": "ff902093a76eeac557084ae4a75da24b119a031a414ede6312416caf6b2a7cec"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/operator-context-attempt4/Dockerfile",
+      "bytes": 11723,
+      "sha256": "0f5c937d926ca98524a4619bb87719503fcbe72b53757e4c7cb63626a14d9022"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/operator-context-attempt4.json",
+      "bytes": 2810,
+      "sha256": "08c960bdbe887ad8809547f626e94264b733967a54dcb92d013b6b8e7c6f4b45"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/cmd/slugpoold/main.go",
+      "bytes": 706,
+      "sha256": "f3af1744069da9c0949c21be7c652f0bb40feb3ed8e8016bbd6d3ba34f4f2d8b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/command.go",
+      "bytes": 22575,
+      "sha256": "3fc053322a16a307c1a7e66178fa7e74aa6ea0c9fa4b4e7bbd10b159ec3b81c8"
+    }
+  ]
+}

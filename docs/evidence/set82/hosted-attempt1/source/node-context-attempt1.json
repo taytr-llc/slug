@@ -1,0 +1,55 @@
+{
+  "scope": "isolated public fixture node build context",
+  "node_source": "138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c",
+  "node_ci_run": 44918359817,
+  "files": {
+    ".dockerignore": {
+      "bytes": 134,
+      "sha256": "5c05ea5cc3be9e05c5e2ad346ed083a5f1c99bd996d7515c05ecf61413a085ed"
+    },
+    "Dockerfile": {
+      "bytes": 2628,
+      "sha256": "d1940524aa487969d0185b4c51244b1869c10d5af6d89109d8fc6fc7bead9bca"
+    },
+    "build-profile.json": {
+      "bytes": 179,
+      "sha256": "e5ddb9d30e8048ad3b656358134632e48852f44deef44bdd93df7dda13208295"
+    },
+    "candidate-go.sh": {
+      "bytes": 2725,
+      "sha256": "64e073ba868e42b04e3e93a51826b2e6ee1b99103b92b417868cbf74f9b6436e"
+    },
+    "certs.go": {
+      "bytes": 2381,
+      "sha256": "1d92ea6ba5f4c9f3e25f92c5187e3a6a6c96e59af919a66bb2d06ad8091f6efe"
+    },
+    "go.mod": {
+      "bytes": 97,
+      "sha256": "a2eeb50a2860dfd95d3b35e982dc5522fca59c8f7a29622c16d0d329e845fdbe"
+    },
+    "go.sum": {
+      "bytes": 153,
+      "sha256": "c5aa31f1f2b470a810c0dc6bf49bcc63eb42a100ad9b093ba23a54895bf63f64"
+    },
+    "inputs.sha256": {
+      "bytes": 522,
+      "sha256": "9bca0407f7566430f76354a916041efc63082336abd6a0d165968e20c9e229c1"
+    },
+    "main.go": {
+      "bytes": 7471,
+      "sha256": "8ed74a845e3127b5a0482eddf1d4b8abf8da9c28a998068fc2eb0cf2f2cee5e5"
+    },
+    "relay.go": {
+      "bytes": 14564,
+      "sha256": "ead27d235820dd364f8023d890fe8745d1a03b73f2aa373a7084fc26dc7795aa"
+    },
+    "relay_test.go": {
+      "bytes": 7605,
+      "sha256": "0f66b07a9de2e465d5d3125e7d14b30edbd87a8d1697362da1c4c80c5752bcb7"
+    },
+    "slugd": {
+      "bytes": 20199783,
+      "sha256": "c1b66721bc6ce368a5fced3265829c68719596023b53400aa4de39ca713cf04e"
+    }
+  }
+}

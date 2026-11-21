@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/bindings.go",
+      "bytes": 3243,
+      "sha256": "0f3954f9d49a0286e2c3f4ce5c9ef1d3267c789de0bf47736d90684e7744a1b2",
+      "pre_format_sha256": "734b2be069873c18c37a7ed6c3a3f4181caf7e6e087bf7f3170906f8398f01b8",
+      "format_only": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/chain.go",
+      "bytes": 10832,
+      "sha256": "cb33057349c1b42c1694e0f03935b2ef2e5d97c51c5dba5fc1c3e6a486ab9aa5",
+      "pre_format_sha256": "23e2ef6bd8e215785fc3ec1b23866bdc110e9c68b8b1ffe47cad25a735ab7503",
+      "format_only": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/common.go",
+      "bytes": 10493,
+      "sha256": "b7182c2b9ba84f249e298dfcb6c3b35e5a12503162daa6df5f6da0766a397f1a",
+      "pre_format_sha256": "65129091db526dca4d0a4f82bbd23cd2f1259d6ded310d95a2abe62907fdcfe8",
+      "format_only": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/main.go",
+      "bytes": 3488,
+      "sha256": "a18294495f881462742d8feccfbde618bb37f848fc2f83523e0d50e0e01bdeba",
+      "pre_format_sha256": "6a7199573c7fc7c818bd8002c81f4a0befacd71b7aa970810002547a4b2763d7",
+      "format_only": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/money.go",
+      "bytes": 6097,
+      "sha256": "60a695ba9116c72800f3b7ec8d3a95c25350cbbd6cfd2633f9c501dfcac8d8e4",
+      "pre_format_sha256": "a5e4f858d77801131adcad9779f49a60ffc17acf14291d01600d9bee39fa02b7",
+      "format_only": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/outbox_audit.go",
+      "bytes": 11444,
+      "sha256": "84fa9a045b9f1edb607cbfdec7948902cdc8f344595bebbc62922862bc8e0f77",
+      "pre_format_sha256": "84fa9a045b9f1edb607cbfdec7948902cdc8f344595bebbc62922862bc8e0f77",
+      "format_only": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/replay.go",
+      "bytes": 4846,
+      "sha256": "b040a41f29e6066c18a23cf52aff65516bca99e74b09cf4db81a62def7b95026",
+      "pre_format_sha256": "6905408b3b5ec757e2a8b59c276f948d19ddb45b32585053cd24f716ad09d842",
+      "format_only": true
+    }
+  ],
+  "build": "/Users/taytrrip/slug/artifacts/set82/proofclient-native-attempt1",
+  "native_build_exit": 0
+}

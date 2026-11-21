@@ -1,0 +1,154 @@
+package main
+
+import (
+	"bytes"
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
+	"errors"
+	"io"
+	"os"
+	"path/filepath"
+	"syscall"
+)
+
+func sum(raw []byte) string { v := sha256.Sum256(raw); return hex.EncodeToString(v[:]) }
+func insist(ok bool, label string) error {
+	if !ok {
+		return errors.New(label)
+	}
+	return nil
+}
+
+func absolute(path string) bool { return filepath.IsAbs(path) && filepath.Clean(path) == path }
+
+func readFile(path string, limit int64, protected bool) ([]byte, error) {
+	if !absolute(path) {
+		return nil, errors.New("input path must be canonical absolute")
+	}
+	before, e := os.Lstat(path)
+	if e != nil {
+		return nil, e
+	}
+	if !before.Mode().IsRegular() || before.Size() > limit {
+		return nil, errors.New("input is not a bounded regular file")
+	}
+	if protected {
+		st, ok := before.Sys().(*syscall.Stat_t)
+		if !ok || st.Uid != uint32(os.Geteuid()) || before.Mode().Perm()&0077 != 0 {
+			return nil, errors.New("input ownership or protection")
+		}
+	}
+	f, e := os.Open(path)
+	if e != nil {
+		return nil, e
+	}
+	after, se := f.Stat()
+	if se != nil || !os.SameFile(before, after) {
+		return nil, errors.Join(errors.New("input changed while opening"), se, f.Close())
+	}
+	raw, re := io.ReadAll(io.LimitReader(f, limit+1))
+	ce := f.Close()
+	if int64(len(raw)) > limit {
+		return nil, errors.Join(errors.New("input exceeds bound"), ce)
+	}
+	return raw, errors.Join(re, ce)
+}
+
+func decode(raw []byte, value any) error {
+	// Host selection is one flat object. Reject duplicate/missing keys before
+	// decoding; an optional TLS path must still be explicitly present as "".
+	probe := json.NewDecoder(bytes.NewReader(raw))
+	first, e := probe.Token()
+	if e != nil || first != json.Delim('{') {
+		return errors.New("selection must be an object")
+	}
+	seen := map[string]bool{}
+	for probe.More() {
+		t, e := probe.Token()
+		if e != nil {
+			return e
+		}
+		key, ok := t.(string)
+		if !ok || seen[key] {
+			return errors.New("duplicate selection field")
+		}
+		seen[key] = true
+		var ignored json.RawMessage
+		if e = probe.Decode(&ignored); e != nil {
+			return e
+		}
+		if key != "version" && (len(ignored) == 0 || ignored[0] != '"') {
+			return errors.New("selection text must be a string")
+		}
+	}
+	if _, e = probe.Token(); e != nil {
+		return e
+	}
+	for _, key := range []string{"version", "origin", "listen", "pool_url", "admission_url", "ownership_url", "due_utc", "tls_ca_path", "tls_certificate_path", "tls_key_path"} {
+		if !seen[key] {
+			return errors.New("missing selection field")
+		}
+	}
+	d := json.NewDecoder(bytes.NewReader(raw))
+	d.DisallowUnknownFields()
+	if e := d.Decode(value); e != nil {
+		return e
+	}
+	var extra any
+	if e := d.Decode(&extra); e != io.EOF {
+		return errors.New("extra JSON value")
+	}
+	return nil
+}
+
+func writeFile(path string, raw []byte) error {
+	f, e := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0600)
+	if e != nil {
+		return e
+	}
+	n, we := f.Write(raw)
+	se := f.Sync()
+	ce := f.Close()
+	if n != len(raw) {
+		we = errors.Join(we, io.ErrShortWrite)
+	}
+	return errors.Join(we, se, ce)
+}
+func writeJSON(path string, value any) error {
+	raw, e := json.Marshal(value)
+	if e != nil {
+		return e
+	}
+	return writeFile(path, append(raw, '\n'))
+}
+func syncDir(path string) error {
+	f, e := os.Open(path)
+	if e != nil {
+		return e
+	}
+	return errors.Join(f.Sync(), f.Close())
+}
+
+func emptyRoot(root string) error {
+	if !absolute(root) || os.Geteuid() == 0 || os.Getuid() != os.Geteuid() {
+		return errors.New("explicit unprivileged original root required")
+	}
+	resolved, e := filepath.EvalSymlinks(root)
+	if e != nil || resolved != root {
+		return errors.New("root must have no symlink components")
+	}
+	st, e := os.Lstat(root)
+	if e != nil {
+		return e
+	}
+	owner, ok := st.Sys().(*syscall.Stat_t)
+	if !ok || !st.IsDir() || st.Mode().Perm() != 0700 || owner.Uid != uint32(os.Geteuid()) {
+		return errors.New("root must be owned protected directory")
+	}
+	entries, e := os.ReadDir(root)
+	if e != nil {
+		return e
+	}
+	return insist(len(entries) == 0, "preparer refuses nonempty root; retain any failed preparation")
+}

@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "scope": "Source-only stopped hosted original operator public audit; no wallet/RPC/runtime execution",
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/audit/main.go",
+      "bytes": 8546,
+      "sha256": "03fca619a85a072f0af8debca0fc803e41d07250b462e58d29c0126565b67250"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/audit/support.go",
+      "bytes": 4066,
+      "sha256": "d2f056135b22c783e1c2eae4aa80e2534e80cf9e912e096631316468031a9cfe"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/audit/financial.go",
+      "bytes": 5830,
+      "sha256": "762af8a958d0bfc22b6683b5b17755504ce891ea1c1e3ca9fbd0b1f78a850c11"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/audit/operator_audit.go",
+      "bytes": 14293,
+      "sha256": "14d463c15ae4438ef6172b89d2e8714d1591ce0869efad3b2a28dfda6e45b2bc"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/audit/go.mod",
+      "bytes": 466,
+      "sha256": "2bfb7edb070fac1c320edcadd7d73c5f799b156732f50b9d6a1da85b818ca65e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/audit/README.md",
+      "bytes": 5704,
+      "sha256": "8aa4accd2fee6dca9bfa129204ae2773ce398c4bd5e322276f555744f369d0c7"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/operator_audit.go",
+      "bytes": 14293,
+      "sha256": "14d463c15ae4438ef6172b89d2e8714d1591ce0869efad3b2a28dfda6e45b2bc"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/payment.go",
+      "bytes": 10011,
+      "sha256": "1483c0ec3882de879d2a2b8570422a45f4b6df70319c291cc6e1adea4b17edc8"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/reference-v1.json",
+      "bytes": 174293,
+      "sha256": "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/ACCEPTANCE.md",
+      "bytes": 11784,
+      "sha256": "7a47d852f32608dd13c6a02c2844bfa99e44a611cedd4ad69407cb1afaeb08f6"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/expectations.json",
+      "bytes": 2583,
+      "sha256": "83454d9f2d760864ae063f6b41e970155a144ad7296b44352effa4e2d46489bb"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/issue_setup.go",
+      "bytes": 7039,
+      "sha256": "8ee7b57401124962bac4466d78886456f9a0a746ac595c588bf792df50473b3f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pooloperator/filesystem_unix.go",
+      "bytes": 11314,
+      "sha256": "452a5857b2eb06f5a1afe5ff9587f77554ab2d762954e696b42e6b17a50dfdb8"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolsettle/daily_types.go",
+      "bytes": 2813,
+      "sha256": "06a794809de4b1db67dd45913a70d574ca71d3c80e915537caf789a3863ebc51"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolsettle/daily_commit.go",
+      "bytes": 7584,
+      "sha256": "0711ba7c5665dea0d4276ee6eccafaf9468aca73b96a85d013194204919be296"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolsettle/model.go",
+      "bytes": 12363,
+      "sha256": "604d95fb8cfde897f00e13d086ffd343ad7dc28853157860649564fa26d2a2f4"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolsettle/types.go",
+      "bytes": 5766,
+      "sha256": "94ba356a7fef3a7f440a04068d8d62f3a4b60efd1c277062b3b33d5e57d3df4d"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolround/types.go",
+      "bytes": 5799,
+      "sha256": "bd1eab6b72e1cff8f381e609454a3aa575fe19a444c962d18f86bb6add69c81c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/go.mod",
+      "bytes": 2065,
+      "sha256": "576bb2321489371a5186f4dddd03a41284b98d51b2f02e25c9b484887ef75360"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/go.mod",
+      "bytes": 651,
+      "sha256": "69a59d265aaec3377498c019b1cd2cb04241820e4cdb7cb2a5505a3f2363e4b7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/go.work",
+      "bytes": 304,
+      "sha256": "98e4579688df659d0ef70881e09619dbfbdcac1003273415cb022a2dd94db6da"
+    }
+  ],
+  "copied_unchanged": {
+    "source": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/operator_audit.go",
+    "destination": "/Users/taytrrip/slug/set82-prep/hosted-actual/audit/operator_audit.go"
+  },
+  "execution": "not run",
+  "build_binding": "Root must bind full normal composed workspace/dependencies/profile and format-only successor if used; this direct manifest is not an executable closure."
+}
