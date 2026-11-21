@@ -1,0 +1,12 @@
+Chain source: 7e1f6b7982a4af1ce765d9883417a20d17f46dcf
+Chain tracked changes: Wallet source: dfc5d9dd7e0f604486fbac812d0413fce1f45cd6
+Wallet tracked changes: Wallet untracked paths: Chain untracked paths: Build profile: slug-go1274-no-cse-v1 (candidate_engineering; qualification recorded separately).
+Build profile SHA256: e5ddb9d30e8048ad3b656358134632e48852f44deef44bdd93df7dda13208295  /Users/taytrrip/slug/artifacts/set83/remote-package/BUILD-PROFILE.json
+Go: go version go1.27.4 darwin/arm64
+Platform: Darwin arm64
+Explicit remote bundle: GUI and helper CGO1; no node, wallet, config or credentials bundled.
+Launch requires --candidate-remote-pool and all six selected paths; no Finder default account creation.
+Native macOS build; ad hoc signed, not notarized.
+Deployment target 13.0; older OS runtime compatibility is not proven by compilation.
+9ffffcd47239522e1e0960192d3423267d096187325c16b5bf09ca72c5c10cfd  /Users/taytrrip/slug/artifacts/set83/remote-package/SLUG Remote Pool Pilot.app/Contents/MacOS/SLUGPilot
+8c61109cd45107c5cc565769d9a2b414b8ab39c8e6774f3bfaf9e948e4e50f82  /Users/taytrrip/slug/artifacts/set83/remote-package/SLUG Remote Pool Pilot.app/Contents/Resources/bin/slugpilot

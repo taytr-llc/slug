@@ -1,0 +1,66 @@
+--- /Users/taytrrip/slug/set83-prep/paid-ui-acceptance/run.py
++++ /Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/run.py
+@@ -1,6 +1,7 @@
+ #!/usr/bin/env python3
+ """Root-only actual WIRE2 proof; no host or node lifecycle is inferred here."""
+ import argparse
++from decimal import Decimal
+ import json
+ import os
+ from pathlib import Path
+@@ -24,6 +25,21 @@
+     'public/remote.json': (6076, '81b2b901eb0329feedfeed5c2dd6eb52c3cce6cb7d6afc3f2b2e24919036811f'),
+     'public/setup.json': (5509, '87db5803e70418affbf492b2716e2104d6902ec9294940141fe97a885a5c3525'),
+ }
++PUBLIC_REPORTS = {'qualification.json', 'proof-confirmed-money.json', 'wallet-confirmed.json', 'proof-chain.json'}
++
++
++def prior_evidence(name, raw):
++    """Only these immutable public reports may contain exact decimal timings."""
++    need(name in PUBLIC_REPORTS and (len(raw), sha(raw)) == PUBLIC[name], 'named hash-bound public report')
++    def pairs(items):
++        result = {}
++        for key, value in items:
++            need(key not in result, 'duplicate prior evidence field')
++            result[key] = value
++        return result
++    def bad(_):
++        raise RuntimeError('nonfinite prior evidence value')
++    return json.loads(raw.decode('ascii'), object_pairs_hook=pairs, parse_float=Decimal, parse_constant=bad)
+ 
+ 
+ def poll_job(h, command, view, arm):
+@@ -201,7 +217,7 @@
+         raw, inode = read_file(path, size)
+         need(len(raw)==size and sha(raw)==digest, 'original public qualification changed')
+         originals['prior:'+name] = (str(path),size,raw,inode)
+-        prior[name] = parse(raw)
++        prior[name] = prior_evidence(name, raw) if name in PUBLIC_REPORTS else parse(raw)
+     need(prior['qualification.json']['passed'] is True and prior['proof-chain.json']['passed'] is True and prior['proof-confirmed-money.json']['passed'] is True, 'prior paid qualification')
+     config = values['remote_config']
+     s, checked = values['preparation'], values['selection_check']
+--- /Users/taytrrip/slug/set83-prep/paid-ui-acceptance/README.md
++++ /Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/README.md
+@@ -34,7 +34,7 @@
+     "node_rpc": {"path": "/ABS/client-inputs/remote-rpc.json", "bytes": 0, "sha256": "ROOT-PIN"},
+     "pool_credential": {"path": "/ABS/client-inputs/pool.credential", "bytes": 0, "sha256": "ROOT-PIN"},
+     "admission_credential": {"path": "/ABS/client-inputs/admission.credential", "bytes": 0, "sha256": "ROOT-PIN"},
+-    "source_manifest": {"path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/source-manifest.json", "bytes": 0, "sha256": "ROOT-PIN"}
++    "source_manifest": {"path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/source-manifest.json", "bytes": 0, "sha256": "ROOT-PIN"}
+   }
+ }
+ ```
+@@ -81,3 +81,13 @@
+ before/after audit (two credits, one immutable batch), node/host readiness and
+ actual joins, complete wallet catalog, and native-window observation. None of
+ those gates is inferred from this runner's `passed` value.
++
++This separate successor preserves the original `0649705b` tree unchanged. The
++first execution refused a legitimate decimal timing metric in the already
++hash-bound historical qualification report before spawning a helper. Only the
++four explicitly named historical public reports now parse fractional JSON
++numbers as exact `decimal.Decimal` values, after exact size/SHA validation.
++Duplicate keys and nonfinite constants remain refused. Historical config files,
++new selections/configs and every original protocol frame still use the unchanged
++integer-only parser. No proof value, fixture, product or acceptance predicate is
++changed; no successor execution is claimed.

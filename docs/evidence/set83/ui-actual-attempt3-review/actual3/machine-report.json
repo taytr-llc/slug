@@ -1,0 +1,1455 @@
+{
+  "version": 1,
+  "scope": "Actual serial WIRE2 machine helper only; native-window CUA, whole wallet catalog, closed financial and infrastructure audits are separate gates",
+  "started_at_ms": 1795291208224,
+  "deadline_at_ms": 1795291508000,
+  "machine_cutoff_at_ms": 1795291463000,
+  "host_cleanup_reserve_seconds": 45,
+  "execution_sha256": "9f29842cc39ff7c8ed81936a5be2a242f0f8414e912415e37b1e2a28d8167f83",
+  "config_id": "2a4caf50bf775e0c09fd136cb680d5ab340d4f63732672acc0a7c916ae1e046a",
+  "generations": [
+    {
+      "number": 1,
+      "logged_out": true,
+      "old_view_refused": false,
+      "view": {
+        "version": 1,
+        "view_id": "43264529e15a3b51d78970cbc9a9ea35b52da917776ba9e35f6b1703b2e1be4f",
+        "account_authority_id": "010a11aeb64ba59ed8c256da57cc2e26b210bd7c0555ecd90ab13c9d517edfe1",
+        "account_id": "e26d18e35b50e2cbc74250e6a56c567215660fc71a22b80e20b7466e9874a0c5",
+        "generation": 1,
+        "fixture": "incrementing256",
+        "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+        "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+        "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+      },
+      "wallet_before": {
+        "version": 2,
+        "config_id": "2a4caf50bf775e0c09fd136cb680d5ab340d4f63732672acc0a7c916ae1e046a",
+        "state": "signed_in",
+        "account": {
+          "state": "signed_in",
+          "fixture": "incrementing256",
+          "id": "e26d18e35b50e2cbc74250e6a56c567215660fc71a22b80e20b7466e9874a0c5",
+          "generation": 1,
+          "hold_until_ms": 0,
+          "held": false,
+          "can_export": false,
+          "last_error": ""
+        },
+        "view": {
+          "version": 1,
+          "view_id": "43264529e15a3b51d78970cbc9a9ea35b52da917776ba9e35f6b1703b2e1be4f",
+          "account_authority_id": "010a11aeb64ba59ed8c256da57cc2e26b210bd7c0555ecd90ab13c9d517edfe1",
+          "account_id": "e26d18e35b50e2cbc74250e6a56c567215660fc71a22b80e20b7466e9874a0c5",
+          "generation": 1,
+          "fixture": "incrementing256",
+          "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+          "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+        },
+        "remote": {
+          "version": 2,
+          "config_id": "2a4caf50bf775e0c09fd136cb680d5ab340d4f63732672acc0a7c916ae1e046a",
+          "view": {
+            "version": 1,
+            "view_id": "43264529e15a3b51d78970cbc9a9ea35b52da917776ba9e35f6b1703b2e1be4f",
+            "account_authority_id": "010a11aeb64ba59ed8c256da57cc2e26b210bd7c0555ecd90ab13c9d517edfe1",
+            "account_id": "e26d18e35b50e2cbc74250e6a56c567215660fc71a22b80e20b7466e9874a0c5",
+            "generation": 1,
+            "fixture": "incrementing256",
+            "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+            "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+          },
+          "source_binding_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+          "original_source_binding_id": "da88bc58614de71388f66d6376163173f2246660ebf429289cc97329f485b9be",
+          "state": "stopped",
+          "worker_state": "stopped",
+          "last_error": "",
+          "attempts": 0,
+          "hashes_per_second_milli": 0,
+          "records": 0,
+          "pending": 0,
+          "wallet_state": "ready",
+          "wallet_height": 165,
+          "spendable_atoms": 1980000000,
+          "immature_atoms": 0,
+          "unconfirmed_atoms": 0,
+          "payout_address": "slug1qslk39wvggqa0vl8nd6jckaz54dw3vk45c8educ"
+        },
+        "error": ""
+      },
+      "payout_read": {
+        "job": {
+          "sequence": "1",
+          "capture_sequence": "0",
+          "before_batch": "0",
+          "state": "done",
+          "error": ""
+        },
+        "capture": {
+          "sequence": "1",
+          "binding": {
+            "view": {
+              "version": 1,
+              "view_id": "43264529e15a3b51d78970cbc9a9ea35b52da917776ba9e35f6b1703b2e1be4f",
+              "account_authority_id": "010a11aeb64ba59ed8c256da57cc2e26b210bd7c0555ecd90ab13c9d517edfe1",
+              "account_id": "e26d18e35b50e2cbc74250e6a56c567215660fc71a22b80e20b7466e9874a0c5",
+              "generation": 1,
+              "fixture": "incrementing256",
+              "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+              "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+            },
+            "config_id": "2a4caf50bf775e0c09fd136cb680d5ab340d4f63732672acc0a7c916ae1e046a",
+            "source_binding_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+            "settlement_config_id": "744a4f6a8fa2160cf96353c396867021a1dbe0eaf6308978a753ebc326c546b9",
+            "recipient_script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+            "issue_profile_id": "9b38b70e8a41c106eb6919aea3dfa44cecdbf2f85a113422edf1008f0100c0d8",
+            "original_source_binding_id": "da88bc58614de71388f66d6376163173f2246660ebf429289cc97329f485b9be",
+            "wallet_owner_id": "fdc5bc893760175efc7a9e1fc8cef122e387ef1ed09caf81695ab6f4a0f1cbd9",
+            "allocation_binding_id": "53cdee17ef2d626df77c55e77a7a4c0e4581d2a48f2a98e6c5cd3e7340195d0e"
+          },
+          "captured_at_ms": 1795291263083,
+          "stale": false,
+          "first": {
+            "version": 2,
+            "binding_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+            "settlement_config_id": "744a4f6a8fa2160cf96353c396867021a1dbe0eaf6308978a753ebc326c546b9",
+            "revision": "51",
+            "high_batch": "1",
+            "before_batch": "2",
+            "next_before": "0",
+            "done": true,
+            "recipient_script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+            "balance": {
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "confirmed": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "available": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "reserved_atoms": "0",
+              "paid_atoms": "1980000000",
+              "reason": ""
+            },
+            "observed_at_ms": 1795291244870,
+            "items": [
+              {
+                "batch_sequence": "1",
+                "payment": {
+                  "day": "2026-11-21",
+                  "created_at_ms": 1795284060298,
+                  "txid": "2a475d6318ff194115024169265271221aea644a95c7d89e2782ec7492a1afa9",
+                  "output_index": 0,
+                  "atoms": 1980000000,
+                  "recorded_state": "confirmed"
+                }
+              }
+            ]
+          },
+          "current": {
+            "version": 2,
+            "binding_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+            "settlement_config_id": "744a4f6a8fa2160cf96353c396867021a1dbe0eaf6308978a753ebc326c546b9",
+            "revision": "51",
+            "high_batch": "1",
+            "before_batch": "2",
+            "next_before": "0",
+            "done": true,
+            "recipient_script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+            "balance": {
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "confirmed": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "available": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "reserved_atoms": "0",
+              "paid_atoms": "1980000000",
+              "reason": ""
+            },
+            "observed_at_ms": 1795291244870,
+            "items": [
+              {
+                "batch_sequence": "1",
+                "payment": {
+                  "day": "2026-11-21",
+                  "created_at_ms": 1795284060298,
+                  "txid": "2a475d6318ff194115024169265271221aea644a95c7d89e2782ec7492a1afa9",
+                  "output_index": 0,
+                  "atoms": 1980000000,
+                  "recorded_state": "confirmed"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "payout_observation": {
+        "capture_sequence": "1",
+        "binding": {
+          "view": {
+            "version": 1,
+            "view_id": "43264529e15a3b51d78970cbc9a9ea35b52da917776ba9e35f6b1703b2e1be4f",
+            "account_authority_id": "010a11aeb64ba59ed8c256da57cc2e26b210bd7c0555ecd90ab13c9d517edfe1",
+            "account_id": "e26d18e35b50e2cbc74250e6a56c567215660fc71a22b80e20b7466e9874a0c5",
+            "generation": 1,
+            "fixture": "incrementing256",
+            "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+            "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+          },
+          "config_id": "2a4caf50bf775e0c09fd136cb680d5ab340d4f63732672acc0a7c916ae1e046a",
+          "source_binding_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+          "settlement_config_id": "744a4f6a8fa2160cf96353c396867021a1dbe0eaf6308978a753ebc326c546b9",
+          "recipient_script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+          "issue_profile_id": "9b38b70e8a41c106eb6919aea3dfa44cecdbf2f85a113422edf1008f0100c0d8",
+          "original_source_binding_id": "da88bc58614de71388f66d6376163173f2246660ebf429289cc97329f485b9be",
+          "wallet_owner_id": "fdc5bc893760175efc7a9e1fc8cef122e387ef1ed09caf81695ab6f4a0f1cbd9",
+          "allocation_binding_id": "53cdee17ef2d626df77c55e77a7a4c0e4581d2a48f2a98e6c5cd3e7340195d0e"
+        },
+        "revision": "51",
+        "high_batch": "1",
+        "captured_at_ms": 1795291263083,
+        "settlement_observed_at_ms": 1795291244870,
+        "stale": false,
+        "batch_sequence": "1",
+        "payment": {
+          "day": "2026-11-21",
+          "created_at_ms": 1795284060298,
+          "txid": "2a475d6318ff194115024169265271221aea644a95c7d89e2782ec7492a1afa9",
+          "output_index": 0,
+          "atoms": 1980000000,
+          "recorded_state": "confirmed"
+        },
+        "observed_at_ms": 1795291263515,
+        "state": "confirmed",
+        "error": "",
+        "wallet_synced": true,
+        "wallet_height": 165,
+        "wallet_tip": "47a427c54e584cd90cfedc0f2918ab4251eee194bd93f2bdf6b8774159acf503",
+        "confirmations": 1,
+        "block_hash": "47a427c54e584cd90cfedc0f2918ab4251eee194bd93f2bdf6b8774159acf503"
+      },
+      "activity_read": {
+        "job": {
+          "sequence": "1",
+          "state": "done",
+          "error": ""
+        },
+        "capture": {
+          "sequence": "1",
+          "binding": {
+            "view": {
+              "version": 1,
+              "view_id": "43264529e15a3b51d78970cbc9a9ea35b52da917776ba9e35f6b1703b2e1be4f",
+              "account_authority_id": "010a11aeb64ba59ed8c256da57cc2e26b210bd7c0555ecd90ab13c9d517edfe1",
+              "account_id": "e26d18e35b50e2cbc74250e6a56c567215660fc71a22b80e20b7466e9874a0c5",
+              "generation": 1,
+              "fixture": "incrementing256",
+              "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+              "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+            },
+            "config_id": "2a4caf50bf775e0c09fd136cb680d5ab340d4f63732672acc0a7c916ae1e046a",
+            "source_binding_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+            "settlement_config_id": "744a4f6a8fa2160cf96353c396867021a1dbe0eaf6308978a753ebc326c546b9",
+            "recipient_script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+            "issue_profile_id": "9b38b70e8a41c106eb6919aea3dfa44cecdbf2f85a113422edf1008f0100c0d8",
+            "original_source_binding_id": "da88bc58614de71388f66d6376163173f2246660ebf429289cc97329f485b9be",
+            "wallet_owner_id": "fdc5bc893760175efc7a9e1fc8cef122e387ef1ed09caf81695ab6f4a0f1cbd9",
+            "allocation_binding_id": "53cdee17ef2d626df77c55e77a7a4c0e4581d2a48f2a98e6c5cd3e7340195d0e"
+          },
+          "metadata": {
+            "version": 1,
+            "captured_at_ms": 1795291263703,
+            "wallet_height": 165,
+            "wallet_tip": "47a427c54e584cd90cfedc0f2918ab4251eee194bd93f2bdf6b8774159acf503",
+            "node_height": 165,
+            "node_tip": "47a427c54e584cd90cfedc0f2918ab4251eee194bd93f2bdf6b8774159acf503",
+            "count": 1,
+            "has_older": false
+          }
+        }
+      },
+      "activity_pages": [
+        {
+          "capture": {
+            "sequence": "1",
+            "binding": {
+              "view": {
+                "version": 1,
+                "view_id": "43264529e15a3b51d78970cbc9a9ea35b52da917776ba9e35f6b1703b2e1be4f",
+                "account_authority_id": "010a11aeb64ba59ed8c256da57cc2e26b210bd7c0555ecd90ab13c9d517edfe1",
+                "account_id": "e26d18e35b50e2cbc74250e6a56c567215660fc71a22b80e20b7466e9874a0c5",
+                "generation": 1,
+                "fixture": "incrementing256",
+                "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+                "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+                "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+              },
+              "config_id": "2a4caf50bf775e0c09fd136cb680d5ab340d4f63732672acc0a7c916ae1e046a",
+              "source_binding_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+              "settlement_config_id": "744a4f6a8fa2160cf96353c396867021a1dbe0eaf6308978a753ebc326c546b9",
+              "recipient_script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+              "issue_profile_id": "9b38b70e8a41c106eb6919aea3dfa44cecdbf2f85a113422edf1008f0100c0d8",
+              "original_source_binding_id": "da88bc58614de71388f66d6376163173f2246660ebf429289cc97329f485b9be",
+              "wallet_owner_id": "fdc5bc893760175efc7a9e1fc8cef122e387ef1ed09caf81695ab6f4a0f1cbd9",
+              "allocation_binding_id": "53cdee17ef2d626df77c55e77a7a4c0e4581d2a48f2a98e6c5cd3e7340195d0e"
+            },
+            "metadata": {
+              "version": 1,
+              "captured_at_ms": 1795291263703,
+              "wallet_height": 165,
+              "wallet_tip": "47a427c54e584cd90cfedc0f2918ab4251eee194bd93f2bdf6b8774159acf503",
+              "node_height": 165,
+              "node_tip": "47a427c54e584cd90cfedc0f2918ab4251eee194bd93f2bdf6b8774159acf503",
+              "count": 1,
+              "has_older": false
+            }
+          },
+          "after": 0,
+          "limit": 8,
+          "next": 1,
+          "has_more": false,
+          "items": [
+            {
+              "txid": "2a475d6318ff194115024169265271221aea644a95c7d89e2782ec7492a1afa9",
+              "raw_sha256": "83889f90b7ffcee9d5ae8f283f1a9b74b214da27037549ac1f861abe8466eb8c",
+              "recorded_at_ms": 1795284099000,
+              "coinbase": false,
+              "block": {
+                "height": 165,
+                "hash": "47a427c54e584cd90cfedc0f2918ab4251eee194bd93f2bdf6b8774159acf503",
+                "time_ms": 1795284098000
+              },
+              "confirmations": 1,
+              "received_atoms": 1980000000,
+              "spent_atoms": 0,
+              "change_atoms": 0,
+              "net_atoms": 1980000000,
+              "fee_atoms": null,
+              "input_count": 2,
+              "output_count": 2,
+              "owned_input_count": 0,
+              "owned_output_count": 1
+            }
+          ]
+        }
+      ],
+      "activity_detail": {
+        "capture": {
+          "sequence": "1",
+          "binding": {
+            "view": {
+              "version": 1,
+              "view_id": "43264529e15a3b51d78970cbc9a9ea35b52da917776ba9e35f6b1703b2e1be4f",
+              "account_authority_id": "010a11aeb64ba59ed8c256da57cc2e26b210bd7c0555ecd90ab13c9d517edfe1",
+              "account_id": "e26d18e35b50e2cbc74250e6a56c567215660fc71a22b80e20b7466e9874a0c5",
+              "generation": 1,
+              "fixture": "incrementing256",
+              "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+              "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+            },
+            "config_id": "2a4caf50bf775e0c09fd136cb680d5ab340d4f63732672acc0a7c916ae1e046a",
+            "source_binding_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+            "settlement_config_id": "744a4f6a8fa2160cf96353c396867021a1dbe0eaf6308978a753ebc326c546b9",
+            "recipient_script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+            "issue_profile_id": "9b38b70e8a41c106eb6919aea3dfa44cecdbf2f85a113422edf1008f0100c0d8",
+            "original_source_binding_id": "da88bc58614de71388f66d6376163173f2246660ebf429289cc97329f485b9be",
+            "wallet_owner_id": "fdc5bc893760175efc7a9e1fc8cef122e387ef1ed09caf81695ab6f4a0f1cbd9",
+            "allocation_binding_id": "53cdee17ef2d626df77c55e77a7a4c0e4581d2a48f2a98e6c5cd3e7340195d0e"
+          },
+          "metadata": {
+            "version": 1,
+            "captured_at_ms": 1795291263703,
+            "wallet_height": 165,
+            "wallet_tip": "47a427c54e584cd90cfedc0f2918ab4251eee194bd93f2bdf6b8774159acf503",
+            "node_height": 165,
+            "node_tip": "47a427c54e584cd90cfedc0f2918ab4251eee194bd93f2bdf6b8774159acf503",
+            "count": 1,
+            "has_older": false
+          }
+        },
+        "item": {
+          "txid": "2a475d6318ff194115024169265271221aea644a95c7d89e2782ec7492a1afa9",
+          "raw_sha256": "83889f90b7ffcee9d5ae8f283f1a9b74b214da27037549ac1f861abe8466eb8c",
+          "recorded_at_ms": 1795284099000,
+          "coinbase": false,
+          "block": {
+            "height": 165,
+            "hash": "47a427c54e584cd90cfedc0f2918ab4251eee194bd93f2bdf6b8774159acf503",
+            "time_ms": 1795284098000
+          },
+          "confirmations": 1,
+          "received_atoms": 1980000000,
+          "spent_atoms": 0,
+          "change_atoms": 0,
+          "net_atoms": 1980000000,
+          "fee_atoms": null,
+          "input_count": 2,
+          "output_count": 2,
+          "owned_input_count": 0,
+          "owned_output_count": 1
+        },
+        "outputs": [
+          {
+            "index": 0,
+            "atoms": 1980000000,
+            "owned": true,
+            "change": false,
+            "address": "slug1qslk39wvggqa0vl8nd6jckaz54dw3vk45c8educ"
+          },
+          {
+            "index": 1,
+            "atoms": 19999791,
+            "owned": false,
+            "change": false,
+            "address": "slug1qsyypdkm39xs2c5cu5r4w5r285p98rfmaqk7uzh"
+          }
+        ]
+      },
+      "wallet_after": {
+        "version": 2,
+        "config_id": "2a4caf50bf775e0c09fd136cb680d5ab340d4f63732672acc0a7c916ae1e046a",
+        "state": "signed_in",
+        "account": {
+          "state": "signed_in",
+          "fixture": "incrementing256",
+          "id": "e26d18e35b50e2cbc74250e6a56c567215660fc71a22b80e20b7466e9874a0c5",
+          "generation": 1,
+          "hold_until_ms": 0,
+          "held": false,
+          "can_export": false,
+          "last_error": ""
+        },
+        "view": {
+          "version": 1,
+          "view_id": "43264529e15a3b51d78970cbc9a9ea35b52da917776ba9e35f6b1703b2e1be4f",
+          "account_authority_id": "010a11aeb64ba59ed8c256da57cc2e26b210bd7c0555ecd90ab13c9d517edfe1",
+          "account_id": "e26d18e35b50e2cbc74250e6a56c567215660fc71a22b80e20b7466e9874a0c5",
+          "generation": 1,
+          "fixture": "incrementing256",
+          "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+          "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+        },
+        "remote": {
+          "version": 2,
+          "config_id": "2a4caf50bf775e0c09fd136cb680d5ab340d4f63732672acc0a7c916ae1e046a",
+          "view": {
+            "version": 1,
+            "view_id": "43264529e15a3b51d78970cbc9a9ea35b52da917776ba9e35f6b1703b2e1be4f",
+            "account_authority_id": "010a11aeb64ba59ed8c256da57cc2e26b210bd7c0555ecd90ab13c9d517edfe1",
+            "account_id": "e26d18e35b50e2cbc74250e6a56c567215660fc71a22b80e20b7466e9874a0c5",
+            "generation": 1,
+            "fixture": "incrementing256",
+            "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+            "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+          },
+          "source_binding_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+          "original_source_binding_id": "da88bc58614de71388f66d6376163173f2246660ebf429289cc97329f485b9be",
+          "state": "stopped",
+          "worker_state": "stopped",
+          "last_error": "",
+          "attempts": 0,
+          "hashes_per_second_milli": 0,
+          "records": 0,
+          "pending": 0,
+          "wallet_state": "ready",
+          "wallet_height": 165,
+          "spendable_atoms": 1980000000,
+          "immature_atoms": 0,
+          "unconfirmed_atoms": 0,
+          "payout_address": "slug1qslk39wvggqa0vl8nd6jckaz54dw3vk45c8educ"
+        },
+        "error": ""
+      }
+    },
+    {
+      "number": 2,
+      "logged_out": true,
+      "old_view_refused": true,
+      "view": {
+        "version": 1,
+        "view_id": "8790618898816cbd7c58bc73ca787e7d8dfa755ec2d2542ea94f73ff7061f827",
+        "account_authority_id": "010a11aeb64ba59ed8c256da57cc2e26b210bd7c0555ecd90ab13c9d517edfe1",
+        "account_id": "e26d18e35b50e2cbc74250e6a56c567215660fc71a22b80e20b7466e9874a0c5",
+        "generation": 1,
+        "fixture": "incrementing256",
+        "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+        "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+        "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+      },
+      "wallet_before": {
+        "version": 2,
+        "config_id": "2a4caf50bf775e0c09fd136cb680d5ab340d4f63732672acc0a7c916ae1e046a",
+        "state": "signed_in",
+        "account": {
+          "state": "signed_in",
+          "fixture": "incrementing256",
+          "id": "e26d18e35b50e2cbc74250e6a56c567215660fc71a22b80e20b7466e9874a0c5",
+          "generation": 1,
+          "hold_until_ms": 0,
+          "held": false,
+          "can_export": false,
+          "last_error": ""
+        },
+        "view": {
+          "version": 1,
+          "view_id": "8790618898816cbd7c58bc73ca787e7d8dfa755ec2d2542ea94f73ff7061f827",
+          "account_authority_id": "010a11aeb64ba59ed8c256da57cc2e26b210bd7c0555ecd90ab13c9d517edfe1",
+          "account_id": "e26d18e35b50e2cbc74250e6a56c567215660fc71a22b80e20b7466e9874a0c5",
+          "generation": 1,
+          "fixture": "incrementing256",
+          "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+          "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+        },
+        "remote": {
+          "version": 2,
+          "config_id": "2a4caf50bf775e0c09fd136cb680d5ab340d4f63732672acc0a7c916ae1e046a",
+          "view": {
+            "version": 1,
+            "view_id": "8790618898816cbd7c58bc73ca787e7d8dfa755ec2d2542ea94f73ff7061f827",
+            "account_authority_id": "010a11aeb64ba59ed8c256da57cc2e26b210bd7c0555ecd90ab13c9d517edfe1",
+            "account_id": "e26d18e35b50e2cbc74250e6a56c567215660fc71a22b80e20b7466e9874a0c5",
+            "generation": 1,
+            "fixture": "incrementing256",
+            "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+            "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+          },
+          "source_binding_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+          "original_source_binding_id": "da88bc58614de71388f66d6376163173f2246660ebf429289cc97329f485b9be",
+          "state": "stopped",
+          "worker_state": "stopped",
+          "last_error": "",
+          "attempts": 0,
+          "hashes_per_second_milli": 0,
+          "records": 0,
+          "pending": 0,
+          "wallet_state": "ready",
+          "wallet_height": 165,
+          "spendable_atoms": 1980000000,
+          "immature_atoms": 0,
+          "unconfirmed_atoms": 0,
+          "payout_address": "slug1qslk39wvggqa0vl8nd6jckaz54dw3vk45c8educ"
+        },
+        "error": ""
+      },
+      "payout_read": {
+        "job": {
+          "sequence": "1",
+          "capture_sequence": "0",
+          "before_batch": "0",
+          "state": "done",
+          "error": ""
+        },
+        "capture": {
+          "sequence": "1",
+          "binding": {
+            "view": {
+              "version": 1,
+              "view_id": "8790618898816cbd7c58bc73ca787e7d8dfa755ec2d2542ea94f73ff7061f827",
+              "account_authority_id": "010a11aeb64ba59ed8c256da57cc2e26b210bd7c0555ecd90ab13c9d517edfe1",
+              "account_id": "e26d18e35b50e2cbc74250e6a56c567215660fc71a22b80e20b7466e9874a0c5",
+              "generation": 1,
+              "fixture": "incrementing256",
+              "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+              "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+            },
+            "config_id": "2a4caf50bf775e0c09fd136cb680d5ab340d4f63732672acc0a7c916ae1e046a",
+            "source_binding_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+            "settlement_config_id": "744a4f6a8fa2160cf96353c396867021a1dbe0eaf6308978a753ebc326c546b9",
+            "recipient_script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+            "issue_profile_id": "9b38b70e8a41c106eb6919aea3dfa44cecdbf2f85a113422edf1008f0100c0d8",
+            "original_source_binding_id": "da88bc58614de71388f66d6376163173f2246660ebf429289cc97329f485b9be",
+            "wallet_owner_id": "fdc5bc893760175efc7a9e1fc8cef122e387ef1ed09caf81695ab6f4a0f1cbd9",
+            "allocation_binding_id": "53cdee17ef2d626df77c55e77a7a4c0e4581d2a48f2a98e6c5cd3e7340195d0e"
+          },
+          "captured_at_ms": 1795291268580,
+          "stale": false,
+          "first": {
+            "version": 2,
+            "binding_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+            "settlement_config_id": "744a4f6a8fa2160cf96353c396867021a1dbe0eaf6308978a753ebc326c546b9",
+            "revision": "51",
+            "high_batch": "1",
+            "before_batch": "2",
+            "next_before": "0",
+            "done": true,
+            "recipient_script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+            "balance": {
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "confirmed": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "available": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "reserved_atoms": "0",
+              "paid_atoms": "1980000000",
+              "reason": ""
+            },
+            "observed_at_ms": 1795291244870,
+            "items": [
+              {
+                "batch_sequence": "1",
+                "payment": {
+                  "day": "2026-11-21",
+                  "created_at_ms": 1795284060298,
+                  "txid": "2a475d6318ff194115024169265271221aea644a95c7d89e2782ec7492a1afa9",
+                  "output_index": 0,
+                  "atoms": 1980000000,
+                  "recorded_state": "confirmed"
+                }
+              }
+            ]
+          },
+          "current": {
+            "version": 2,
+            "binding_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+            "settlement_config_id": "744a4f6a8fa2160cf96353c396867021a1dbe0eaf6308978a753ebc326c546b9",
+            "revision": "51",
+            "high_batch": "1",
+            "before_batch": "2",
+            "next_before": "0",
+            "done": true,
+            "recipient_script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+            "balance": {
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "confirmed": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "available": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "reserved_atoms": "0",
+              "paid_atoms": "1980000000",
+              "reason": ""
+            },
+            "observed_at_ms": 1795291244870,
+            "items": [
+              {
+                "batch_sequence": "1",
+                "payment": {
+                  "day": "2026-11-21",
+                  "created_at_ms": 1795284060298,
+                  "txid": "2a475d6318ff194115024169265271221aea644a95c7d89e2782ec7492a1afa9",
+                  "output_index": 0,
+                  "atoms": 1980000000,
+                  "recorded_state": "confirmed"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "payout_observation": {
+        "capture_sequence": "1",
+        "binding": {
+          "view": {
+            "version": 1,
+            "view_id": "8790618898816cbd7c58bc73ca787e7d8dfa755ec2d2542ea94f73ff7061f827",
+            "account_authority_id": "010a11aeb64ba59ed8c256da57cc2e26b210bd7c0555ecd90ab13c9d517edfe1",
+            "account_id": "e26d18e35b50e2cbc74250e6a56c567215660fc71a22b80e20b7466e9874a0c5",
+            "generation": 1,
+            "fixture": "incrementing256",
+            "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+            "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+          },
+          "config_id": "2a4caf50bf775e0c09fd136cb680d5ab340d4f63732672acc0a7c916ae1e046a",
+          "source_binding_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+          "settlement_config_id": "744a4f6a8fa2160cf96353c396867021a1dbe0eaf6308978a753ebc326c546b9",
+          "recipient_script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+          "issue_profile_id": "9b38b70e8a41c106eb6919aea3dfa44cecdbf2f85a113422edf1008f0100c0d8",
+          "original_source_binding_id": "da88bc58614de71388f66d6376163173f2246660ebf429289cc97329f485b9be",
+          "wallet_owner_id": "fdc5bc893760175efc7a9e1fc8cef122e387ef1ed09caf81695ab6f4a0f1cbd9",
+          "allocation_binding_id": "53cdee17ef2d626df77c55e77a7a4c0e4581d2a48f2a98e6c5cd3e7340195d0e"
+        },
+        "revision": "51",
+        "high_batch": "1",
+        "captured_at_ms": 1795291268580,
+        "settlement_observed_at_ms": 1795291244870,
+        "stale": false,
+        "batch_sequence": "1",
+        "payment": {
+          "day": "2026-11-21",
+          "created_at_ms": 1795284060298,
+          "txid": "2a475d6318ff194115024169265271221aea644a95c7d89e2782ec7492a1afa9",
+          "output_index": 0,
+          "atoms": 1980000000,
+          "recorded_state": "confirmed"
+        },
+        "observed_at_ms": 1795291269042,
+        "state": "confirmed",
+        "error": "",
+        "wallet_synced": true,
+        "wallet_height": 165,
+        "wallet_tip": "47a427c54e584cd90cfedc0f2918ab4251eee194bd93f2bdf6b8774159acf503",
+        "confirmations": 1,
+        "block_hash": "47a427c54e584cd90cfedc0f2918ab4251eee194bd93f2bdf6b8774159acf503"
+      },
+      "activity_read": {
+        "job": {
+          "sequence": "1",
+          "state": "done",
+          "error": ""
+        },
+        "capture": {
+          "sequence": "1",
+          "binding": {
+            "view": {
+              "version": 1,
+              "view_id": "8790618898816cbd7c58bc73ca787e7d8dfa755ec2d2542ea94f73ff7061f827",
+              "account_authority_id": "010a11aeb64ba59ed8c256da57cc2e26b210bd7c0555ecd90ab13c9d517edfe1",
+              "account_id": "e26d18e35b50e2cbc74250e6a56c567215660fc71a22b80e20b7466e9874a0c5",
+              "generation": 1,
+              "fixture": "incrementing256",
+              "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+              "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+            },
+            "config_id": "2a4caf50bf775e0c09fd136cb680d5ab340d4f63732672acc0a7c916ae1e046a",
+            "source_binding_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+            "settlement_config_id": "744a4f6a8fa2160cf96353c396867021a1dbe0eaf6308978a753ebc326c546b9",
+            "recipient_script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+            "issue_profile_id": "9b38b70e8a41c106eb6919aea3dfa44cecdbf2f85a113422edf1008f0100c0d8",
+            "original_source_binding_id": "da88bc58614de71388f66d6376163173f2246660ebf429289cc97329f485b9be",
+            "wallet_owner_id": "fdc5bc893760175efc7a9e1fc8cef122e387ef1ed09caf81695ab6f4a0f1cbd9",
+            "allocation_binding_id": "53cdee17ef2d626df77c55e77a7a4c0e4581d2a48f2a98e6c5cd3e7340195d0e"
+          },
+          "metadata": {
+            "version": 1,
+            "captured_at_ms": 1795291269261,
+            "wallet_height": 165,
+            "wallet_tip": "47a427c54e584cd90cfedc0f2918ab4251eee194bd93f2bdf6b8774159acf503",
+            "node_height": 165,
+            "node_tip": "47a427c54e584cd90cfedc0f2918ab4251eee194bd93f2bdf6b8774159acf503",
+            "count": 1,
+            "has_older": false
+          }
+        }
+      },
+      "activity_pages": [
+        {
+          "capture": {
+            "sequence": "1",
+            "binding": {
+              "view": {
+                "version": 1,
+                "view_id": "8790618898816cbd7c58bc73ca787e7d8dfa755ec2d2542ea94f73ff7061f827",
+                "account_authority_id": "010a11aeb64ba59ed8c256da57cc2e26b210bd7c0555ecd90ab13c9d517edfe1",
+                "account_id": "e26d18e35b50e2cbc74250e6a56c567215660fc71a22b80e20b7466e9874a0c5",
+                "generation": 1,
+                "fixture": "incrementing256",
+                "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+                "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+                "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+              },
+              "config_id": "2a4caf50bf775e0c09fd136cb680d5ab340d4f63732672acc0a7c916ae1e046a",
+              "source_binding_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+              "settlement_config_id": "744a4f6a8fa2160cf96353c396867021a1dbe0eaf6308978a753ebc326c546b9",
+              "recipient_script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+              "issue_profile_id": "9b38b70e8a41c106eb6919aea3dfa44cecdbf2f85a113422edf1008f0100c0d8",
+              "original_source_binding_id": "da88bc58614de71388f66d6376163173f2246660ebf429289cc97329f485b9be",
+              "wallet_owner_id": "fdc5bc893760175efc7a9e1fc8cef122e387ef1ed09caf81695ab6f4a0f1cbd9",
+              "allocation_binding_id": "53cdee17ef2d626df77c55e77a7a4c0e4581d2a48f2a98e6c5cd3e7340195d0e"
+            },
+            "metadata": {
+              "version": 1,
+              "captured_at_ms": 1795291269261,
+              "wallet_height": 165,
+              "wallet_tip": "47a427c54e584cd90cfedc0f2918ab4251eee194bd93f2bdf6b8774159acf503",
+              "node_height": 165,
+              "node_tip": "47a427c54e584cd90cfedc0f2918ab4251eee194bd93f2bdf6b8774159acf503",
+              "count": 1,
+              "has_older": false
+            }
+          },
+          "after": 0,
+          "limit": 8,
+          "next": 1,
+          "has_more": false,
+          "items": [
+            {
+              "txid": "2a475d6318ff194115024169265271221aea644a95c7d89e2782ec7492a1afa9",
+              "raw_sha256": "83889f90b7ffcee9d5ae8f283f1a9b74b214da27037549ac1f861abe8466eb8c",
+              "recorded_at_ms": 1795284099000,
+              "coinbase": false,
+              "block": {
+                "height": 165,
+                "hash": "47a427c54e584cd90cfedc0f2918ab4251eee194bd93f2bdf6b8774159acf503",
+                "time_ms": 1795284098000
+              },
+              "confirmations": 1,
+              "received_atoms": 1980000000,
+              "spent_atoms": 0,
+              "change_atoms": 0,
+              "net_atoms": 1980000000,
+              "fee_atoms": null,
+              "input_count": 2,
+              "output_count": 2,
+              "owned_input_count": 0,
+              "owned_output_count": 1
+            }
+          ]
+        }
+      ],
+      "activity_detail": {
+        "capture": {
+          "sequence": "1",
+          "binding": {
+            "view": {
+              "version": 1,
+              "view_id": "8790618898816cbd7c58bc73ca787e7d8dfa755ec2d2542ea94f73ff7061f827",
+              "account_authority_id": "010a11aeb64ba59ed8c256da57cc2e26b210bd7c0555ecd90ab13c9d517edfe1",
+              "account_id": "e26d18e35b50e2cbc74250e6a56c567215660fc71a22b80e20b7466e9874a0c5",
+              "generation": 1,
+              "fixture": "incrementing256",
+              "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+              "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+            },
+            "config_id": "2a4caf50bf775e0c09fd136cb680d5ab340d4f63732672acc0a7c916ae1e046a",
+            "source_binding_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+            "settlement_config_id": "744a4f6a8fa2160cf96353c396867021a1dbe0eaf6308978a753ebc326c546b9",
+            "recipient_script": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+            "issue_profile_id": "9b38b70e8a41c106eb6919aea3dfa44cecdbf2f85a113422edf1008f0100c0d8",
+            "original_source_binding_id": "da88bc58614de71388f66d6376163173f2246660ebf429289cc97329f485b9be",
+            "wallet_owner_id": "fdc5bc893760175efc7a9e1fc8cef122e387ef1ed09caf81695ab6f4a0f1cbd9",
+            "allocation_binding_id": "53cdee17ef2d626df77c55e77a7a4c0e4581d2a48f2a98e6c5cd3e7340195d0e"
+          },
+          "metadata": {
+            "version": 1,
+            "captured_at_ms": 1795291269261,
+            "wallet_height": 165,
+            "wallet_tip": "47a427c54e584cd90cfedc0f2918ab4251eee194bd93f2bdf6b8774159acf503",
+            "node_height": 165,
+            "node_tip": "47a427c54e584cd90cfedc0f2918ab4251eee194bd93f2bdf6b8774159acf503",
+            "count": 1,
+            "has_older": false
+          }
+        },
+        "item": {
+          "txid": "2a475d6318ff194115024169265271221aea644a95c7d89e2782ec7492a1afa9",
+          "raw_sha256": "83889f90b7ffcee9d5ae8f283f1a9b74b214da27037549ac1f861abe8466eb8c",
+          "recorded_at_ms": 1795284099000,
+          "coinbase": false,
+          "block": {
+            "height": 165,
+            "hash": "47a427c54e584cd90cfedc0f2918ab4251eee194bd93f2bdf6b8774159acf503",
+            "time_ms": 1795284098000
+          },
+          "confirmations": 1,
+          "received_atoms": 1980000000,
+          "spent_atoms": 0,
+          "change_atoms": 0,
+          "net_atoms": 1980000000,
+          "fee_atoms": null,
+          "input_count": 2,
+          "output_count": 2,
+          "owned_input_count": 0,
+          "owned_output_count": 1
+        },
+        "outputs": [
+          {
+            "index": 0,
+            "atoms": 1980000000,
+            "owned": true,
+            "change": false,
+            "address": "slug1qslk39wvggqa0vl8nd6jckaz54dw3vk45c8educ"
+          },
+          {
+            "index": 1,
+            "atoms": 19999791,
+            "owned": false,
+            "change": false,
+            "address": "slug1qsyypdkm39xs2c5cu5r4w5r285p98rfmaqk7uzh"
+          }
+        ]
+      },
+      "wallet_after": {
+        "version": 2,
+        "config_id": "2a4caf50bf775e0c09fd136cb680d5ab340d4f63732672acc0a7c916ae1e046a",
+        "state": "signed_in",
+        "account": {
+          "state": "signed_in",
+          "fixture": "incrementing256",
+          "id": "e26d18e35b50e2cbc74250e6a56c567215660fc71a22b80e20b7466e9874a0c5",
+          "generation": 1,
+          "hold_until_ms": 0,
+          "held": false,
+          "can_export": false,
+          "last_error": ""
+        },
+        "view": {
+          "version": 1,
+          "view_id": "8790618898816cbd7c58bc73ca787e7d8dfa755ec2d2542ea94f73ff7061f827",
+          "account_authority_id": "010a11aeb64ba59ed8c256da57cc2e26b210bd7c0555ecd90ab13c9d517edfe1",
+          "account_id": "e26d18e35b50e2cbc74250e6a56c567215660fc71a22b80e20b7466e9874a0c5",
+          "generation": 1,
+          "fixture": "incrementing256",
+          "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+          "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+          "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+        },
+        "remote": {
+          "version": 2,
+          "config_id": "2a4caf50bf775e0c09fd136cb680d5ab340d4f63732672acc0a7c916ae1e046a",
+          "view": {
+            "version": 1,
+            "view_id": "8790618898816cbd7c58bc73ca787e7d8dfa755ec2d2542ea94f73ff7061f827",
+            "account_authority_id": "010a11aeb64ba59ed8c256da57cc2e26b210bd7c0555ecd90ab13c9d517edfe1",
+            "account_id": "e26d18e35b50e2cbc74250e6a56c567215660fc71a22b80e20b7466e9874a0c5",
+            "generation": 1,
+            "fixture": "incrementing256",
+            "root_public_key": "JgduaQiYjRcnjcD9syNDf4x3txTZkg8HpvTKZtposTTw7bTLpRzvd7ibV3buRixMEqAwVAyreX36pAw5DxLXwG5gW6EGNWeRcJfJitkx2kCJ54pC",
+            "gym_public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+            "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510"
+          },
+          "source_binding_id": "afdb86363799e9a6293381be5eece52bf28a13aecf7046e45694927c5861ac5c",
+          "original_source_binding_id": "da88bc58614de71388f66d6376163173f2246660ebf429289cc97329f485b9be",
+          "state": "stopped",
+          "worker_state": "stopped",
+          "last_error": "",
+          "attempts": 0,
+          "hashes_per_second_milli": 0,
+          "records": 0,
+          "pending": 0,
+          "wallet_state": "ready",
+          "wallet_height": 165,
+          "spendable_atoms": 1980000000,
+          "immature_atoms": 0,
+          "unconfirmed_atoms": 0,
+          "payout_address": "slug1qslk39wvggqa0vl8nd6jckaz54dw3vk45c8educ"
+        },
+        "error": ""
+      }
+    }
+  ],
+  "processes": [
+    {
+      "number": 1,
+      "pid": 31500,
+      "pgid": 31500,
+      "parent_pid": 31499,
+      "started_at_ms": 1795291259340,
+      "joined": true,
+      "exit_code": 0,
+      "eof_requested": true,
+      "forced": false,
+      "signals": [],
+      "commands": [
+        {
+          "id": "1",
+          "command": "snapshot",
+          "view_id": "",
+          "request_sha256": "aecae015ee0dfc370345d425208bc9f2fe276081affea674636ba75be162a478",
+          "sent_at_ms": 1795291259341,
+          "response_sha256": "82dd73bbc3479957883c5d2a83d227882f08e8d3c75bbbcfe798e1a6613a1e2e",
+          "response_bytes": 646,
+          "received_at_ms": 1795291259682,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "2",
+          "command": "login_fixture",
+          "view_id": "",
+          "request_sha256": "b547caef5cbdbc0f89c85ca7a1720b5fbd18df79ee55cbb8bfee1608a1c66a88",
+          "sent_at_ms": 1795291259682,
+          "response_sha256": "882bb501e23e20ae7b122fd15cf84108d93d52c9fbec32ad43cc3c12ffeb5903",
+          "response_bytes": 2485,
+          "received_at_ms": 1795291262666,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "3",
+          "command": "snapshot",
+          "view_id": "43264529e15a3b51d78970cbc9a9ea35b52da917776ba9e35f6b1703b2e1be4f",
+          "request_sha256": "3e38a6bcadd8861f4b09025ab4086ab760c93aabe8a12f7dea170f4cfbc29ea5",
+          "sent_at_ms": 1795291262666,
+          "response_sha256": "1d79371a45a8871d32758382afe2bca84b1ad8a78fb42cb53c35f268d4595de5",
+          "response_bytes": 2544,
+          "received_at_ms": 1795291262722,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "4",
+          "command": "daily_payout_begin",
+          "view_id": "43264529e15a3b51d78970cbc9a9ea35b52da917776ba9e35f6b1703b2e1be4f",
+          "request_sha256": "ce94ed9cfe00b365ffc6748457f2992e1a3676fb5807ddaea29865f43572f198",
+          "sent_at_ms": 1795291262723,
+          "response_sha256": "a1d1906a021968d14d2855ded84235d6e41b5e2ac72b282be10dff7b528e8339",
+          "response_bytes": 507,
+          "received_at_ms": 1795291262868,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "5",
+          "command": "daily_payout_read",
+          "view_id": "43264529e15a3b51d78970cbc9a9ea35b52da917776ba9e35f6b1703b2e1be4f",
+          "request_sha256": "679926a37e961385c88cc9f7511f6deda3e6e53357b012c95a9cdcaafd98afd4",
+          "sent_at_ms": 1795291262868,
+          "response_sha256": "e93a820b2b5199d44e08d439d588d79eb7255e420427fa14066de1c7a9b290f9",
+          "response_bytes": 428,
+          "received_at_ms": 1795291262936,
+          "ok": false,
+          "error": "busy"
+        },
+        {
+          "id": "6",
+          "command": "daily_payout_read",
+          "view_id": "43264529e15a3b51d78970cbc9a9ea35b52da917776ba9e35f6b1703b2e1be4f",
+          "request_sha256": "a35beb8607148a0c91bfcd3d24079755eb59ed6a58ae85d05312b477698f200a",
+          "sent_at_ms": 1795291263041,
+          "response_sha256": "5e8268f045a9ffa6e889c0997fbfdef3e4d0046eb2bb9b66af5428131c0b7b67",
+          "response_bytes": 3577,
+          "received_at_ms": 1795291263192,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "7",
+          "command": "daily_payout_cancel",
+          "view_id": "43264529e15a3b51d78970cbc9a9ea35b52da917776ba9e35f6b1703b2e1be4f",
+          "request_sha256": "57629f6061cde64a2f52f8db799ca2eed23dbd0fb34f4efc8031c9db0a3039d6",
+          "sent_at_ms": 1795291263192,
+          "response_sha256": "2b3556e7caaf9a4168071f45ced6583ff51a351e559ec0c5f50c4e48d6f4b5c9",
+          "response_bytes": 3579,
+          "received_at_ms": 1795291263389,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "8",
+          "command": "daily_payout_observe",
+          "view_id": "43264529e15a3b51d78970cbc9a9ea35b52da917776ba9e35f6b1703b2e1be4f",
+          "request_sha256": "0d230863ffcf293309f41dafb5fde4e3985e990edf52e00419e810664b712e61",
+          "sent_at_ms": 1795291263389,
+          "response_sha256": "f1a1c4d8af18ac8d722c8c9632f76f919497b9be71bb718839f950d1f588c4e9",
+          "response_bytes": 2366,
+          "received_at_ms": 1795291263551,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "9",
+          "command": "wallet_activity_begin",
+          "view_id": "43264529e15a3b51d78970cbc9a9ea35b52da917776ba9e35f6b1703b2e1be4f",
+          "request_sha256": "47669fb03d90aa7450fde36987c8b67b8414c0b39a56e17380ae53637cf7bd12",
+          "sent_at_ms": 1795291263551,
+          "response_sha256": "b03a0a581fcf43fa94b10c56e3ded0a3df7cc3ee68b7b50cdddf03a80c75f632",
+          "response_bytes": 468,
+          "received_at_ms": 1795291263658,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "10",
+          "command": "wallet_activity_read",
+          "view_id": "43264529e15a3b51d78970cbc9a9ea35b52da917776ba9e35f6b1703b2e1be4f",
+          "request_sha256": "75746d6b4fd1676522576c21215e564b4ef371079ca660d2dee530aaed1dfb9c",
+          "sent_at_ms": 1795291263658,
+          "response_sha256": "7268e887209378da9d84077232e13e85fcda2fab45bcb96b52800a7a128c7ea6",
+          "response_bytes": 2078,
+          "received_at_ms": 1795291263850,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "11",
+          "command": "wallet_activity_page",
+          "view_id": "43264529e15a3b51d78970cbc9a9ea35b52da917776ba9e35f6b1703b2e1be4f",
+          "request_sha256": "e37cf27c56dee6d8e89f26883dfbcdaec17b898147b380db671aa4529f33dc8f",
+          "sent_at_ms": 1795291263850,
+          "response_sha256": "0742de1f0b09bd60e044496f4b1b0f2e1342c9234f307e561fdbe5eeaee31b58",
+          "response_bytes": 2607,
+          "received_at_ms": 1795291263960,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "12",
+          "command": "wallet_activity_detail",
+          "view_id": "43264529e15a3b51d78970cbc9a9ea35b52da917776ba9e35f6b1703b2e1be4f",
+          "request_sha256": "6d5385e449e3aabe6d1e555bbb7edeb6cf985d9334e1113b0827e55e45471cce",
+          "sent_at_ms": 1795291263960,
+          "response_sha256": "5a94bc34bd710e90fcd31f326a39e6c38af42e20af49b96217e2be292c9540a6",
+          "response_bytes": 2803,
+          "received_at_ms": 1795291264097,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "13",
+          "command": "wallet_activity_cancel",
+          "view_id": "43264529e15a3b51d78970cbc9a9ea35b52da917776ba9e35f6b1703b2e1be4f",
+          "request_sha256": "f86feef1c69fa248e1c68e8df6796abf13d51bd4e543260808cf73929214f5ef",
+          "sent_at_ms": 1795291264097,
+          "response_sha256": "7d1efaf195412f2becafab8029cd87fa8073709993608509336e9d82fa996d2e",
+          "response_bytes": 2080,
+          "received_at_ms": 1795291264289,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "14",
+          "command": "stop",
+          "view_id": "43264529e15a3b51d78970cbc9a9ea35b52da917776ba9e35f6b1703b2e1be4f",
+          "request_sha256": "f2c571e8aac0c6b2950088ea55f629042be6558a5a377de1873538fad1794864",
+          "sent_at_ms": 1795291264289,
+          "response_sha256": "65cc9edde8200b390de87bc08b6752ce6a638562930d266e0646618dcc3af3a4",
+          "response_bytes": 2541,
+          "received_at_ms": 1795291264463,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "15",
+          "command": "daily_payout_read",
+          "view_id": "43264529e15a3b51d78970cbc9a9ea35b52da917776ba9e35f6b1703b2e1be4f",
+          "request_sha256": "e33756dbab8ac909f02059a33123f1528a7b5f2bf358602104a94441dc1f8db2",
+          "sent_at_ms": 1795291264464,
+          "response_sha256": "9f58d277a900b47203e3617e230de89cad41aed3b1920d864d12053d5e5ead8e",
+          "response_bytes": 3578,
+          "received_at_ms": 1795291264589,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "16",
+          "command": "wallet_activity_read",
+          "view_id": "43264529e15a3b51d78970cbc9a9ea35b52da917776ba9e35f6b1703b2e1be4f",
+          "request_sha256": "a6e10a3cb5c7ee44a9100203baefd31f82700518a778cf4e8438958b0cb3ab79",
+          "sent_at_ms": 1795291264589,
+          "response_sha256": "b625bbdaf373007e7a1838fbc260b34a27081cc51919926948f93379d052ece5",
+          "response_bytes": 2078,
+          "received_at_ms": 1795291264700,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "17",
+          "command": "logout",
+          "view_id": "43264529e15a3b51d78970cbc9a9ea35b52da917776ba9e35f6b1703b2e1be4f",
+          "request_sha256": "a6d8f379d167fd17241dbc25c009db1e096477077f684b98d706a365bdb8d4ff",
+          "sent_at_ms": 1795291264700,
+          "response_sha256": "16caccfb6de190d869ed86c2923f4bea8660c834018e759b9e7d237c60f15fb5",
+          "response_bytes": 709,
+          "received_at_ms": 1795291264777,
+          "ok": true,
+          "error": ""
+        }
+      ],
+      "closed": true,
+      "ended_at_ms": 1795291264804,
+      "stdout_bytes": 35074,
+      "stderr_bytes": 0
+    },
+    {
+      "number": 2,
+      "pid": 31506,
+      "pgid": 31506,
+      "parent_pid": 31499,
+      "started_at_ms": 1795291265302,
+      "joined": true,
+      "exit_code": 0,
+      "eof_requested": true,
+      "forced": false,
+      "signals": [],
+      "commands": [
+        {
+          "id": "1",
+          "command": "snapshot",
+          "view_id": "",
+          "request_sha256": "aecae015ee0dfc370345d425208bc9f2fe276081affea674636ba75be162a478",
+          "sent_at_ms": 1795291265302,
+          "response_sha256": "82dd73bbc3479957883c5d2a83d227882f08e8d3c75bbbcfe798e1a6613a1e2e",
+          "response_bytes": 646,
+          "received_at_ms": 1795291265629,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "2",
+          "command": "login_fixture",
+          "view_id": "",
+          "request_sha256": "b547caef5cbdbc0f89c85ca7a1720b5fbd18df79ee55cbb8bfee1608a1c66a88",
+          "sent_at_ms": 1795291265629,
+          "response_sha256": "cb70ab6876a38a68694df8a07ea4470d45bd4e701f9d27dbf81320ac08b25e09",
+          "response_bytes": 2485,
+          "received_at_ms": 1795291268117,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "3",
+          "command": "daily_payout_read",
+          "view_id": "43264529e15a3b51d78970cbc9a9ea35b52da917776ba9e35f6b1703b2e1be4f",
+          "request_sha256": "116f6dc9f093c54eb9aa133d14f7ee30829d5a8dec7cda840d6d5df72d10e34d",
+          "sent_at_ms": 1795291268117,
+          "response_sha256": "d6f7113f9eff522fa3ebb9b4d191192f01db847b33fc4c2a2f03905a75c18e56",
+          "response_bytes": 434,
+          "received_at_ms": 1795291268166,
+          "ok": false,
+          "error": "stale_view"
+        },
+        {
+          "id": "4",
+          "command": "wallet_activity_read",
+          "view_id": "43264529e15a3b51d78970cbc9a9ea35b52da917776ba9e35f6b1703b2e1be4f",
+          "request_sha256": "7623554a5928cf9f3b05e12daf23df3128637e70c702a55b4ee3da3ee1fc7fb6",
+          "sent_at_ms": 1795291268166,
+          "response_sha256": "3abe7aaa3e3af0bcac9139bdfa6562097ceda5da1f5f3035781b4552f7114750",
+          "response_bytes": 437,
+          "received_at_ms": 1795291268218,
+          "ok": false,
+          "error": "stale_view"
+        },
+        {
+          "id": "5",
+          "command": "snapshot",
+          "view_id": "8790618898816cbd7c58bc73ca787e7d8dfa755ec2d2542ea94f73ff7061f827",
+          "request_sha256": "b70984ec73bac0c95b151c45ccffc8d5e865bc38ea813a6eb00f12e407a63f2b",
+          "sent_at_ms": 1795291268218,
+          "response_sha256": "733f8fc4d26806c65cbec77db231f14529ab435348d2c354ef90a3af52552de3",
+          "response_bytes": 2544,
+          "received_at_ms": 1795291268275,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "6",
+          "command": "daily_payout_begin",
+          "view_id": "8790618898816cbd7c58bc73ca787e7d8dfa755ec2d2542ea94f73ff7061f827",
+          "request_sha256": "e8dcd8d9ae2b6b5c1eba7e9a66a8835380adeebf49bd24dbcb25fa025a064157",
+          "sent_at_ms": 1795291268276,
+          "response_sha256": "cf3dc01b861dca60061d290fb446d8b318746d2f97c9be304beb138c870067ea",
+          "response_bytes": 507,
+          "received_at_ms": 1795291268424,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "7",
+          "command": "daily_payout_read",
+          "view_id": "8790618898816cbd7c58bc73ca787e7d8dfa755ec2d2542ea94f73ff7061f827",
+          "request_sha256": "9d8cc61e00eaf9ead3e594c4ac50d7e89934a5e27c175743a750f840aba38be8",
+          "sent_at_ms": 1795291268424,
+          "response_sha256": "f819ffdc768c6f2d9140ec75bcea1f1a4341270724cc766df2109639a50598a9",
+          "response_bytes": 428,
+          "received_at_ms": 1795291268507,
+          "ok": false,
+          "error": "busy"
+        },
+        {
+          "id": "8",
+          "command": "daily_payout_read",
+          "view_id": "8790618898816cbd7c58bc73ca787e7d8dfa755ec2d2542ea94f73ff7061f827",
+          "request_sha256": "20442caa6537f0c1c78740a32d59e419a1ba5393bceea4460b4d7afcce273bb6",
+          "sent_at_ms": 1795291268615,
+          "response_sha256": "431d41e9a098af42b6dc1f7955bdcbe98a339bdfc7f32eb039b566eae2517336",
+          "response_bytes": 3577,
+          "received_at_ms": 1795291268752,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "9",
+          "command": "daily_payout_cancel",
+          "view_id": "8790618898816cbd7c58bc73ca787e7d8dfa755ec2d2542ea94f73ff7061f827",
+          "request_sha256": "784c46494963e3a9607696fbf8ce6ff5a2ca0389fa767e7478bdb90b7bde3b27",
+          "sent_at_ms": 1795291268753,
+          "response_sha256": "f359dad3bf9216f39e457a1e11ec510d25aa4574c7c194af5af1f48e3bb0f64e",
+          "response_bytes": 3579,
+          "received_at_ms": 1795291268929,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "10",
+          "command": "daily_payout_observe",
+          "view_id": "8790618898816cbd7c58bc73ca787e7d8dfa755ec2d2542ea94f73ff7061f827",
+          "request_sha256": "914e5891115cda0a47d9221a9efc6cb3479d4cd43a9e6485cdaf54862e1be9f3",
+          "sent_at_ms": 1795291268929,
+          "response_sha256": "41f87567ed630e3f3ffe23a3e9a3fc2ea62a46bd6c8c6ce3adab0a08814f1e20",
+          "response_bytes": 2367,
+          "received_at_ms": 1795291269086,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "11",
+          "command": "wallet_activity_begin",
+          "view_id": "8790618898816cbd7c58bc73ca787e7d8dfa755ec2d2542ea94f73ff7061f827",
+          "request_sha256": "ff0af0bfd7afc52e24c4d3ec6b2d8a8cc4eb8dd449927b9d72dd42cd952547b2",
+          "sent_at_ms": 1795291269086,
+          "response_sha256": "d20bcd3886c9d1b60ba67fcb0701c8b6e99a8bfd197a9d722c57b34a6af1c476",
+          "response_bytes": 469,
+          "received_at_ms": 1795291269208,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "12",
+          "command": "wallet_activity_read",
+          "view_id": "8790618898816cbd7c58bc73ca787e7d8dfa755ec2d2542ea94f73ff7061f827",
+          "request_sha256": "9fe03ee872302f610ee1f8fab5070a508cb93a321283714acd1238658ca6938d",
+          "sent_at_ms": 1795291269208,
+          "response_sha256": "5ed4899969cd2d1a7dd2a394a1265963754f9c7a4abc7fb2332935a633284109",
+          "response_bytes": 2078,
+          "received_at_ms": 1795291269403,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "13",
+          "command": "wallet_activity_page",
+          "view_id": "8790618898816cbd7c58bc73ca787e7d8dfa755ec2d2542ea94f73ff7061f827",
+          "request_sha256": "2f809dd1c0a91ab2b19af12f675fb7707b21aed88a14e0ecc59d941379313569",
+          "sent_at_ms": 1795291269403,
+          "response_sha256": "ad06eaa5385b8c8c8f4b581b4d6bb328188129dd6939a837d28a459a14f6aae0",
+          "response_bytes": 2607,
+          "received_at_ms": 1795291269523,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "14",
+          "command": "wallet_activity_detail",
+          "view_id": "8790618898816cbd7c58bc73ca787e7d8dfa755ec2d2542ea94f73ff7061f827",
+          "request_sha256": "2d3daa9cc913fc2d45100027ca1fc3034ec6e562577b91f18eb8857d6d5aa368",
+          "sent_at_ms": 1795291269523,
+          "response_sha256": "a149355c2e897ec2c0ec965c0d5df43941379465a17ab1d0d3d978fc3b3f0e7d",
+          "response_bytes": 2803,
+          "received_at_ms": 1795291269686,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "15",
+          "command": "wallet_activity_cancel",
+          "view_id": "8790618898816cbd7c58bc73ca787e7d8dfa755ec2d2542ea94f73ff7061f827",
+          "request_sha256": "6f7eb3cfae816a93ffc000d01f49c6a066d9f76e480735024cf1aec763ce52dd",
+          "sent_at_ms": 1795291269686,
+          "response_sha256": "abaea3bcc2a23eeb6f9d9d72569bc60715c97082187d409b239d7c8fbc4d9a56",
+          "response_bytes": 2080,
+          "received_at_ms": 1795291269912,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "16",
+          "command": "stop",
+          "view_id": "8790618898816cbd7c58bc73ca787e7d8dfa755ec2d2542ea94f73ff7061f827",
+          "request_sha256": "a6326c9700ba2f692ff829f494bd0b2d9d4672b413571ad1a7bc0a8a492d6a27",
+          "sent_at_ms": 1795291269912,
+          "response_sha256": "d886bbbf94c3021d1021da6fcccaf9bec8e600e38e1cee17bbfa3183bd0546eb",
+          "response_bytes": 2541,
+          "received_at_ms": 1795291270104,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "17",
+          "command": "daily_payout_read",
+          "view_id": "8790618898816cbd7c58bc73ca787e7d8dfa755ec2d2542ea94f73ff7061f827",
+          "request_sha256": "60c4c759e480c7116fa204bf3d9d7d349ea00e018b8cb41001613e8020c72692",
+          "sent_at_ms": 1795291270105,
+          "response_sha256": "a572c5923c16834135cdff4fdea6ae03d386954fa25ce81d2b7ff413a7777859",
+          "response_bytes": 3578,
+          "received_at_ms": 1795291270228,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "18",
+          "command": "wallet_activity_read",
+          "view_id": "8790618898816cbd7c58bc73ca787e7d8dfa755ec2d2542ea94f73ff7061f827",
+          "request_sha256": "f0fc87497393ee8dadf36dbf9e4883fa4fd92d5bdf97d0fea055c8474d1086ab",
+          "sent_at_ms": 1795291270228,
+          "response_sha256": "ef200c63e54c1a21150f982dca9253b45d77d1f7c585f0f30556350973deca8b",
+          "response_bytes": 2078,
+          "received_at_ms": 1795291270363,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "id": "19",
+          "command": "logout",
+          "view_id": "8790618898816cbd7c58bc73ca787e7d8dfa755ec2d2542ea94f73ff7061f827",
+          "request_sha256": "3c68c93d44b257a044d82455b4e63e98457d3ca8326bd783306c130a4dfb5fad",
+          "sent_at_ms": 1795291270363,
+          "response_sha256": "2d8880a825542e5e61243356c365872f4824d352e8ea418d5bf294351d320ec4",
+          "response_bytes": 709,
+          "received_at_ms": 1795291270433,
+          "ok": true,
+          "error": ""
+        }
+      ],
+      "closed": true,
+      "ended_at_ms": 1795291270545,
+      "stdout_bytes": 35947,
+      "stderr_bytes": 0
+    }
+  ],
+  "empty_audits": [
+    {
+      "number": 1,
+      "joined": true,
+      "exit_code": 0,
+      "forced": false,
+      "signals": [],
+      "pid": 31504,
+      "pgid": 31504,
+      "started_at_ms": 1795291264809,
+      "report_sha256": "a5cfbc4f9e2aae8a3307064e43adf2b806eb3ced13d529568e9012cb83c4f176",
+      "report_bytes": 1219,
+      "ended_at_ms": 1795291265299
+    },
+    {
+      "number": 2,
+      "joined": true,
+      "exit_code": 0,
+      "forced": false,
+      "signals": [],
+      "pid": 31512,
+      "pgid": 31512,
+      "started_at_ms": 1795291270551,
+      "report_sha256": "0395d5e0e4c481fc8150fecb12a76bde2a1c304d5a67a7862aeccf94f52d0b6e",
+      "report_bytes": 1219,
+      "ended_at_ms": 1795291270606
+    }
+  ],
+  "errors": [],
+  "start_calls": 0,
+  "issue_calls": 0,
+  "old_attachment_unchanged": true,
+  "inputs_unchanged": true,
+  "original_wallet_root_unchanged": true,
+  "clean_join": true,
+  "passed": true,
+  "ended_at_ms": 1795291270635
+}

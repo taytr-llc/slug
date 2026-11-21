@@ -1,0 +1,79 @@
+{
+  "scope": "read-only helper diagnosis after native helper exited; host operator stopped",
+  "errors": [
+    "RuntimeError: unexpected definite or unknown refusal",
+    "close original helper cleanup failed"
+  ],
+  "initial": {
+    "version": 2,
+    "application": "SLUG-REMOTE-DAILY-WALLET-2",
+    "id": "1",
+    "command": "snapshot",
+    "config_id": "2a4caf50bf775e0c09fd136cb680d5ab340d4f63732672acc0a7c916ae1e046a",
+    "view_id": "",
+    "ok": true,
+    "snapshot": {
+      "version": 2,
+      "config_id": "2a4caf50bf775e0c09fd136cb680d5ab340d4f63732672acc0a7c916ae1e046a",
+      "state": "signed_out",
+      "account": {
+        "state": "signed_out",
+        "fixture": "incrementing256",
+        "id": "",
+        "generation": 0,
+        "hold_until_ms": 0,
+        "held": false,
+        "can_export": false,
+        "last_error": ""
+      },
+      "view": null,
+      "remote": null,
+      "error": ""
+    },
+    "job": null,
+    "read": null,
+    "activity_job": null,
+    "activity_read": null,
+    "activity_page": null,
+    "activity_detail": null,
+    "payout_observation": null,
+    "error": ""
+  },
+  "process": {
+    "number": 1,
+    "pid": 32308,
+    "pgid": 32308,
+    "parent_pid": 32307,
+    "started_at_ms": 1795292083115,
+    "joined": true,
+    "exit_code": 1,
+    "eof_requested": true,
+    "forced": false,
+    "signals": [],
+    "commands": [
+      {
+        "id": "1",
+        "command": "snapshot",
+        "view_id": "",
+        "request_sha256": "aecae015ee0dfc370345d425208bc9f2fe276081affea674636ba75be162a478",
+        "sent_at_ms": 1795292083115,
+        "response_sha256": "82dd73bbc3479957883c5d2a83d227882f08e8d3c75bbbcfe798e1a6613a1e2e",
+        "response_bytes": 646,
+        "received_at_ms": 1795292083540,
+        "ok": true,
+        "error": ""
+      },
+      {
+        "id": "2",
+        "command": "login_fixture",
+        "view_id": "",
+        "request_sha256": "b547caef5cbdbc0f89c85ca7a1720b5fbd18df79ee55cbb8bfee1608a1c66a88",
+        "sent_at_ms": 1795292083540
+      }
+    ],
+    "closed": false,
+    "ended_at_ms": 1795292084533,
+    "stdout_bytes": 1017,
+    "stderr_bytes": 37
+  }
+}

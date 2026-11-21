@@ -1,0 +1,25 @@
+{
+  "recordedAt": 1795292477315,
+  "results": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "67939b",
+        "wall_time_seconds": 0.000034959,
+        "exit_code": 0,
+        "original_token_count": 310,
+        "output": "2026-11-21 12:19:16.127 [INF] RPCS: New websocket client 127.0.0.1:62164\r\n2026-11-21 12:19:17.148 [INF] RPCS: Beginning rescan for 1 address\r\n2026-11-21 12:19:17.416 [INF] RPCS: Finished rescan\r\n2026-11-21 12:19:59.415 [ERR] RPCS: Websocket receive error from 127.0.0.1:62164: websocket: close 1006 (abnormal closure): unexpected EOF\r\n2026-11-21 12:19:59.415 [INF] RPCS: Disconnected websocket client 127.0.0.1:62164\r\n^C2026-11-21 12:21:17.163 [INF] BTCD: Received signal (interrupt).  Shutting down...\r\n2026-11-21 12:21:17.164 [INF] BTCD: Gracefully shutting down the server...\r\n2026-11-21 12:21:17.164 [WRN] SRVR: Server shutting down\r\n2026-11-21 12:21:17.164 [WRN] RPCS: RPC server shutting down\r\n2026-11-21 12:21:17.164 [INF] RPCS: RPC server shutdown complete\r\n2026-11-21 12:21:17.164 [INF] SYNC: Sync manager shutting down\r\n2026-11-21 12:21:17.164 [INF] CHAN: Flushing UTXO cache of 97 MiB with 1 entries to disk. For large sizes, this can take up to several minutes...\r\n2026-11-21 12:21:17.175 [INF] AMGR: Address manager shutting down\r\n2026-11-21 12:21:17.176 [INF] SRVR: Server shutdown complete\r\n2026-11-21 12:21:17.176 [INF] BTCD: Gracefully shutting down the database...\r\n2026-11-21 12:21:17.189 [INF] BTCD: Shutdown complete\r\n"
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "a1991f",
+        "wall_time_seconds": 0.000029917,
+        "exit_code": 0,
+        "original_token_count": 1,
+        "output": "^C"
+      }
+    }
+  ]
+}

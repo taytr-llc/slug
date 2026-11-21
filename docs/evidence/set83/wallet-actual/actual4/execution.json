@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "scope": "Separate native window only; previous partial attempt unchanged",
+  "started_at_ms": 1795291908348,
+  "deadline_at_ms": 1795292208000,
+  "app_source_commit": "7e1f6b7982a4af1ce765d9883417a20d17f46dcf",
+  "prepared_selection_sha256": "41efc07c1e6a717c091d9f807268d1cb5fd392f02ec00579d5cf4e5e467119aa",
+  "prepared_expiry_at_ms": 1795296893000
+}

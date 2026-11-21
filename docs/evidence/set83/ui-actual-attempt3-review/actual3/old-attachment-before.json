@@ -1,0 +1,172 @@
+{
+  "version": 1,
+  "scope": "Closed original OLD5 attachment hash inventory only; no DB open",
+  "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/remote-attachment",
+  "identity": {
+    "device": 16777233,
+    "inode": 559134417,
+    "uid": 502,
+    "gid": 20,
+    "mode": 448
+  },
+  "directories": {
+    "outbox": {
+      "device": 16777233,
+      "inode": 559134432,
+      "uid": 502,
+      "gid": 20,
+      "mode": 448
+    },
+    "outbox/db": {
+      "device": 16777233,
+      "inode": 559134434,
+      "uid": 502,
+      "gid": 20,
+      "mode": 448
+    }
+  },
+  "files": {
+    "SLUG-REMOTE-POOL-INTENT.json": {
+      "bytes": 6227,
+      "sha256": "b475080e9d22886cf576eb163020900bb6d8fd16f16ed1a497ea45698888d427",
+      "identity": {
+        "device": 16777233,
+        "inode": 559134418,
+        "uid": 502,
+        "gid": 20,
+        "mode": 384
+      },
+      "links": 1,
+      "modified_ns": 1795283715377181920,
+      "changed_ns": 1795283715377181920
+    },
+    "SLUG-REMOTE-POOL-READY.json": {
+      "bytes": 224,
+      "sha256": "e117d88f9307f4ebd333f3c619fe2911c61b46ece4a60da9a458afffff34a5a7",
+      "identity": {
+        "device": 16777233,
+        "inode": 559134440,
+        "uid": 502,
+        "gid": 20,
+        "mode": 384
+      },
+      "links": 1,
+      "modified_ns": 1795283717187893976,
+      "changed_ns": 1795283717187893976
+    },
+    "outbox/SLUG-POOL-WORKER.json": {
+      "bytes": 1719,
+      "sha256": "ce7b436ecf6502fa313c8dca552a701a4939d9e561f2581b57035a4939750e57",
+      "identity": {
+        "device": 16777233,
+        "inode": 559134433,
+        "uid": 502,
+        "gid": 20,
+        "mode": 384
+      },
+      "links": 1,
+      "modified_ns": 1795283717139193401,
+      "changed_ns": 1795283717139193401
+    },
+    "outbox/db/000002.ldb": {
+      "bytes": 53425,
+      "sha256": "ac585381d10f3c8224b916b13052db332533b614827e70862f1d1edaefd45de8",
+      "identity": {
+        "device": 16777233,
+        "inode": 559134766,
+        "uid": 502,
+        "gid": 20,
+        "mode": 384
+      },
+      "links": 1,
+      "modified_ns": 1795283906145450172,
+      "changed_ns": 1795283906145450172
+    },
+    "outbox/db/000007.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "identity": {
+        "device": 16777233,
+        "inode": 559153199,
+        "uid": 502,
+        "gid": 20,
+        "mode": 384
+      },
+      "links": 1,
+      "modified_ns": 1795287226019039424,
+      "changed_ns": 1795287226019099259
+    },
+    "outbox/db/CURRENT": {
+      "bytes": 16,
+      "sha256": "26d067dbb5e448b16f93a1bb22a2541beb7134b1b3e39903346d10b96022b6b8",
+      "identity": {
+        "device": 16777233,
+        "inode": 559153201,
+        "uid": 502,
+        "gid": 20,
+        "mode": 384
+      },
+      "links": 1,
+      "modified_ns": 1795287226030296056,
+      "changed_ns": 1795287226035048320
+    },
+    "outbox/db/CURRENT.bak": {
+      "bytes": 16,
+      "sha256": "4166bf17b2da789b0d0cc5c74203041d98005f5d4ef88c27e8281e00148cd611",
+      "identity": {
+        "device": 16777233,
+        "inode": 559134770,
+        "uid": 502,
+        "gid": 20,
+        "mode": 384
+      },
+      "links": 1,
+      "modified_ns": 1795287226025406541,
+      "changed_ns": 1795287226025406541
+    },
+    "outbox/db/LOCK": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "identity": {
+        "device": 16777233,
+        "inode": 559134435,
+        "uid": 502,
+        "gid": 20,
+        "mode": 384
+      },
+      "links": 1,
+      "modified_ns": 1795283717144518491,
+      "changed_ns": 1795283717144568989
+    },
+    "outbox/db/LOG": {
+      "bytes": 2297,
+      "sha256": "9c21d0d7ba71852ba2737a2d5899d514c3ec632a317dcd0ba5e7eed203ff1f05",
+      "identity": {
+        "device": 16777233,
+        "inode": 559134436,
+        "uid": 502,
+        "gid": 20,
+        "mode": 384
+      },
+      "links": 1,
+      "modified_ns": 1795287227075146863,
+      "changed_ns": 1795287227075146863
+    },
+    "outbox/db/MANIFEST-000008": {
+      "bytes": 75,
+      "sha256": "b4801456b6031ffabd442d932a1d99a87e81bce7093356ffcb97ada09973c038",
+      "identity": {
+        "device": 16777233,
+        "inode": 559153200,
+        "uid": 502,
+        "gid": 20,
+        "mode": 384
+      },
+      "links": 1,
+      "modified_ns": 1795287226019880309,
+      "changed_ns": 1795287226019880309
+    }
+  },
+  "total_bytes": 63999,
+  "database_opened": false
+}

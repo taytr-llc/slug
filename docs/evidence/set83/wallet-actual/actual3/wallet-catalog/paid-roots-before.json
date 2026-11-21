@@ -1,0 +1,1617 @@
+{
+  "catalog_sha256": "2637978c2e08637dae2a21bf7fcb8e9ab37edb3476e2b9512c73ff16809b7e55",
+  "immutable_baseline_paths": 226,
+  "logical_outbox_checked": false,
+  "scope": "closed owner hash inventory only; root separately observes owner joins",
+  "trees": {
+    "attachment": {
+      "database_opened": false,
+      "directories": {
+        "outbox": {
+          "device": 16777233,
+          "gid": 20,
+          "inode": 559134432,
+          "mode": 448,
+          "uid": 502
+        },
+        "outbox/db": {
+          "device": 16777233,
+          "gid": 20,
+          "inode": 559134434,
+          "mode": 448,
+          "uid": 502
+        }
+      },
+      "files": {
+        "SLUG-REMOTE-POOL-INTENT.json": {
+          "bytes": 6227,
+          "changed_ns": 1795283715377181920,
+          "identity": {
+            "device": 16777233,
+            "gid": 20,
+            "inode": 559134418,
+            "mode": 384,
+            "uid": 502
+          },
+          "links": 1,
+          "modified_ns": 1795283715377181920,
+          "sha256": "b475080e9d22886cf576eb163020900bb6d8fd16f16ed1a497ea45698888d427"
+        },
+        "SLUG-REMOTE-POOL-READY.json": {
+          "bytes": 224,
+          "changed_ns": 1795283717187893976,
+          "identity": {
+            "device": 16777233,
+            "gid": 20,
+            "inode": 559134440,
+            "mode": 384,
+            "uid": 502
+          },
+          "links": 1,
+          "modified_ns": 1795283717187893976,
+          "sha256": "e117d88f9307f4ebd333f3c619fe2911c61b46ece4a60da9a458afffff34a5a7"
+        },
+        "outbox/SLUG-POOL-WORKER.json": {
+          "bytes": 1719,
+          "changed_ns": 1795283717139193401,
+          "identity": {
+            "device": 16777233,
+            "gid": 20,
+            "inode": 559134433,
+            "mode": 384,
+            "uid": 502
+          },
+          "links": 1,
+          "modified_ns": 1795283717139193401,
+          "sha256": "ce7b436ecf6502fa313c8dca552a701a4939d9e561f2581b57035a4939750e57"
+        },
+        "outbox/db/000002.ldb": {
+          "bytes": 53425,
+          "changed_ns": 1795283906145450172,
+          "identity": {
+            "device": 16777233,
+            "gid": 20,
+            "inode": 559134766,
+            "mode": 384,
+            "uid": 502
+          },
+          "links": 1,
+          "modified_ns": 1795283906145450172,
+          "sha256": "ac585381d10f3c8224b916b13052db332533b614827e70862f1d1edaefd45de8"
+        },
+        "outbox/db/000007.log": {
+          "bytes": 0,
+          "changed_ns": 1795287226019099259,
+          "identity": {
+            "device": 16777233,
+            "gid": 20,
+            "inode": 559153199,
+            "mode": 384,
+            "uid": 502
+          },
+          "links": 1,
+          "modified_ns": 1795287226019039424,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "outbox/db/CURRENT": {
+          "bytes": 16,
+          "changed_ns": 1795287226035048320,
+          "identity": {
+            "device": 16777233,
+            "gid": 20,
+            "inode": 559153201,
+            "mode": 384,
+            "uid": 502
+          },
+          "links": 1,
+          "modified_ns": 1795287226030296056,
+          "sha256": "26d067dbb5e448b16f93a1bb22a2541beb7134b1b3e39903346d10b96022b6b8"
+        },
+        "outbox/db/CURRENT.bak": {
+          "bytes": 16,
+          "changed_ns": 1795287226025406541,
+          "identity": {
+            "device": 16777233,
+            "gid": 20,
+            "inode": 559134770,
+            "mode": 384,
+            "uid": 502
+          },
+          "links": 1,
+          "modified_ns": 1795287226025406541,
+          "sha256": "4166bf17b2da789b0d0cc5c74203041d98005f5d4ef88c27e8281e00148cd611"
+        },
+        "outbox/db/LOCK": {
+          "bytes": 0,
+          "changed_ns": 1795283717144568989,
+          "identity": {
+            "device": 16777233,
+            "gid": 20,
+            "inode": 559134435,
+            "mode": 384,
+            "uid": 502
+          },
+          "links": 1,
+          "modified_ns": 1795283717144518491,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "outbox/db/LOG": {
+          "bytes": 2297,
+          "changed_ns": 1795287227075146863,
+          "identity": {
+            "device": 16777233,
+            "gid": 20,
+            "inode": 559134436,
+            "mode": 384,
+            "uid": 502
+          },
+          "links": 1,
+          "modified_ns": 1795287227075146863,
+          "sha256": "9c21d0d7ba71852ba2737a2d5899d514c3ec632a317dcd0ba5e7eed203ff1f05"
+        },
+        "outbox/db/MANIFEST-000008": {
+          "bytes": 75,
+          "changed_ns": 1795287226019880309,
+          "identity": {
+            "device": 16777233,
+            "gid": 20,
+            "inode": 559153200,
+            "mode": 384,
+            "uid": 502
+          },
+          "links": 1,
+          "modified_ns": 1795287226019880309,
+          "sha256": "b4801456b6031ffabd442d932a1d99a87e81bce7093356ffcb97ada09973c038"
+        }
+      },
+      "identity": {
+        "device": 16777233,
+        "gid": 20,
+        "inode": 559134417,
+        "mode": 448,
+        "uid": 502
+      },
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/remote-attachment",
+      "scope": "Closed original OLD5 attachment hash inventory only; no DB open",
+      "total_bytes": 63999,
+      "version": 1
+    },
+    "owned": {
+      "directories": {
+        "authority": 448,
+        "authority/db": 493,
+        "coordinator": 448,
+        "coordinator/db": 493,
+        "fixture-provider": 448,
+        "fixture-provider/instance-lock": 493,
+        "hosted-vault": 448,
+        "hosted-vault/db": 493,
+        "instance-lock": 493,
+        "setup": 448,
+        "shared": 448,
+        "shared/gyms": 448,
+        "shared/gyms/incrementing256": 448,
+        "shared/gyms/incrementing256/owned-outbox": 448,
+        "shared/gyms/incrementing256/owned-outbox/db": 448,
+        "shared/gyms/incrementing256/owned-wallet": 448,
+        "shared/gyms/incrementing256/owned-wallet/carrier": 448,
+        "shared/gyms/incrementing256/owned-wallet/inventory": 448,
+        "shared/gyms/incrementing256/owned-wallet/inventory/db": 493,
+        "shared/gyms/incrementing256/owned-wallet/wallet": 448,
+        "shared/gyms/incrementing256/owned-wallet/withdrawal": 448,
+        "shared/gyms/zero256": 448,
+        "shared/gyms/zero256/owned-outbox": 448,
+        "shared/gyms/zero256/owned-outbox/db": 448,
+        "shared/gyms/zero256/owned-wallet": 448,
+        "shared/gyms/zero256/owned-wallet/carrier": 448,
+        "shared/gyms/zero256/owned-wallet/inventory": 448,
+        "shared/gyms/zero256/owned-wallet/inventory/db": 493,
+        "shared/gyms/zero256/owned-wallet/wallet": 448,
+        "shared/gyms/zero256/owned-wallet/withdrawal": 448,
+        "shared/instance-lock": 493,
+        "shared/issuer": 448,
+        "shared/issuer/db": 448,
+        "shared/owned-chain": 448,
+        "shared/owned-chain/db": 493,
+        "shared/owned-league": 448,
+        "shared/owned-league/bouts": 448,
+        "shared/owned-league/bouts/db": 448,
+        "shared/owned-league/cards": 448,
+        "shared/owned-league/cards/db": 448,
+        "shared/owned-league/events": 448,
+        "shared/owned-league/events/db": 448,
+        "shared/owned-league/incrementing256-entries": 448,
+        "shared/owned-league/incrementing256-entries/db": 448,
+        "shared/owned-league/incrementing256-stable": 448,
+        "shared/owned-league/incrementing256-stable/db": 448,
+        "shared/owned-league/results": 448,
+        "shared/owned-league/results/db": 448,
+        "shared/owned-league/seeds": 448,
+        "shared/owned-league/seeds/db": 448,
+        "shared/owned-league/zero256-entries": 448,
+        "shared/owned-league/zero256-entries/db": 448,
+        "shared/owned-league/zero256-stable": 448,
+        "shared/owned-league/zero256-stable/db": 448,
+        "shared/peer-chain": 448,
+        "shared/peer-chain/mainnet": 448,
+        "shared/peer-chain/mainnet/blocks_ffldb": 448,
+        "shared/peer-chain/mainnet/blocks_ffldb/metadata": 493,
+        "shared/peer-logs": 448,
+        "shared/peer-logs/mainnet": 448,
+        "shared/primary-chain": 448,
+        "shared/primary-chain/mainnet": 448,
+        "shared/primary-chain/mainnet/blocks_ffldb": 448,
+        "shared/primary-chain/mainnet/blocks_ffldb/metadata": 493,
+        "shared/primary-logs": 448,
+        "shared/primary-logs/mainnet": 448,
+        "shared/rounds": 448,
+        "shared/rounds/db": 448,
+        "shared/settlement": 448,
+        "shared/settlement/db": 493,
+        "shared/shares": 448,
+        "shared/shares/db": 448
+      },
+      "files": {
+        "SLUG-OWNED-GYM-INIT.json": {
+          "bytes": 3067,
+          "mode": 384,
+          "sha256": "6a32a6dfe9bda54f050097803e5335fe637798739f06dd0c9083ec8502b95cd6"
+        },
+        "SLUG-OWNED-GYM-READY.json": {
+          "bytes": 2566,
+          "mode": 384,
+          "sha256": "886e4751b846adc206e44bd22b66facd30c919b57a6a50df9b060317bbbfa963"
+        },
+        "authority/SLUG-ACCOUNTS.json": {
+          "bytes": 1001,
+          "mode": 384,
+          "sha256": "b2cc3b08643a208f2d72460d4bb2fab6a6ed301731cd9e06cfd9ae4fe471d029"
+        },
+        "authority/db/000017.ldb": {
+          "bytes": 79368,
+          "mode": 384,
+          "sha256": "5d2927ec60831ef0b695b5dc57d35b7716d36c8f3080b3fab819295cd980310e"
+        },
+        "authority/db/000018.log": {
+          "bytes": 380118,
+          "mode": 384,
+          "sha256": "5a1a1acae5f5bde7171f0398d92755522e9cfbce19b834abbee0b9550579d8de"
+        },
+        "authority/db/000020.ldb": {
+          "bytes": 16618,
+          "mode": 384,
+          "sha256": "5ae2d1bd83a2382b6075d1614077dca4aebec9ef3611aa089b5896e531ff60de"
+        },
+        "authority/db/CURRENT": {
+          "bytes": 16,
+          "mode": 384,
+          "sha256": "300feb3870e7d5e43b28bd6b7826d9e0c21e0e81ac1b44e9c4e35957ad0fa023"
+        },
+        "authority/db/CURRENT.bak": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "f6a28e2e41d451b4de8597a14916d7a3058ebdd8046a89109658321142660d69"
+        },
+        "authority/db/LOCK": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "authority/db/LOG": {
+          "bytes": 5501,
+          "mode": 420,
+          "sha256": "e12277862fdff217bc8d4ff647f2dff49420e2f6bba93a9531caf6e358336ee4"
+        },
+        "authority/db/MANIFEST-000019": {
+          "bytes": 894,
+          "mode": 384,
+          "sha256": "e4880bdce63b9608b9feba4b4417a74bd4046bfea77986236c466ffdd9faf134"
+        },
+        "coordinator/SLUG-PROVIDER.json": {
+          "bytes": 893,
+          "mode": 384,
+          "sha256": "9f4931755ccab279db9c8c1fc1ea3a3e6c71a4dea6701b58575ef1b718ea6ead"
+        },
+        "coordinator/db/000014.ldb": {
+          "bytes": 11131,
+          "mode": 384,
+          "sha256": "c8895ce1950b45c27eb3a4c39d77a068823b98fb822ea9b28f88883ad114faa6"
+        },
+        "coordinator/db/000015.ldb": {
+          "bytes": 3860,
+          "mode": 384,
+          "sha256": "b5a1eef33699abf60c8a307b4148c686a3bcc6117b449c65fdc872845ffb9b8c"
+        },
+        "coordinator/db/000016.log": {
+          "bytes": 11309,
+          "mode": 384,
+          "sha256": "55e981b66a5f92ac4cef0af470bf33916766da9e4795fd12a71442e905ea548d"
+        },
+        "coordinator/db/CURRENT": {
+          "bytes": 16,
+          "mode": 384,
+          "sha256": "7d3d7c3b6e16591b894a5ce28f255cb136bb6c45f5038c3b120b44b413082e35"
+        },
+        "coordinator/db/CURRENT.bak": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "e6325e36f681074fccd2b1371dbf6f4535a6630e5b95c9ddff92c48ec11ce312"
+        },
+        "coordinator/db/LOCK": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "coordinator/db/LOG": {
+          "bytes": 4336,
+          "mode": 420,
+          "sha256": "a212b7a4a8e79df32a2575cfdb11a307ad970ba028666538481a799a501bce1d"
+        },
+        "coordinator/db/MANIFEST-000017": {
+          "bytes": 614,
+          "mode": 384,
+          "sha256": "a582eeac6578e183cb5c79738182e809f29f9517c16831f0a1e2aad32b763b2b"
+        },
+        "fixture-provider/instance-lock/000010.log": {
+          "bytes": 0,
+          "mode": 384,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "fixture-provider/instance-lock/CURRENT": {
+          "bytes": 16,
+          "mode": 384,
+          "sha256": "a197cc479c3bc03ef7b8d2b228f02a9bfc8c7cc6343719c5e26bebc0ca4ecf06"
+        },
+        "fixture-provider/instance-lock/CURRENT.bak": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "b3524365a633ee6d1fa9953638d2867946c515218c497a5ec2dbef7dc44a7c53"
+        },
+        "fixture-provider/instance-lock/LOCK": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "fixture-provider/instance-lock/LOG": {
+          "bytes": 3289,
+          "mode": 420,
+          "sha256": "fda46965c3231c2abb9a9385120adf08ab8ee476d3d2ac72b1ef3a62b6092773"
+        },
+        "fixture-provider/instance-lock/MANIFEST-000011": {
+          "bytes": 41,
+          "mode": 384,
+          "sha256": "2ca874f8b5b48191c2a986e89ba56770190fa1b5745c3ba065683f1638a15565"
+        },
+        "fixture-provider/state.json": {
+          "bytes": 12143,
+          "mode": 384,
+          "sha256": "2b376ebc3bbbf1c35a7224b339ce726617fc3fa76049643397052f5b5446caa8"
+        },
+        "hosted-vault/SLUG-RECOVERY-VAULT.json": {
+          "bytes": 961,
+          "mode": 384,
+          "sha256": "74133ec8e367ef4cc48600b2bad1ef4d66f995fe8b0c0918dd3693d769234586"
+        },
+        "hosted-vault/db/000002.ldb": {
+          "bytes": 31672,
+          "mode": 420,
+          "sha256": "47ed35e41f53caf41541f008370c8094675506acb971027fe070d60850b0e069"
+        },
+        "hosted-vault/db/000011.log": {
+          "bytes": 0,
+          "mode": 384,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "hosted-vault/db/CURRENT": {
+          "bytes": 16,
+          "mode": 384,
+          "sha256": "eaab30ed3bde0318e208d83e6b0701b3ee9eb6b11da2d9fbab1552e8e4ce88f8"
+        },
+        "hosted-vault/db/CURRENT.bak": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "e91d13722e31f9b06c5df3582cad1ea5b73547ce3dc08b12ed461f095aad48ee"
+        },
+        "hosted-vault/db/LOCK": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "hosted-vault/db/LOG": {
+          "bytes": 3486,
+          "mode": 420,
+          "sha256": "169e0c1db0717bea0580bdf02238a128880882e9e5c8859ab85fdde9b64a3811"
+        },
+        "hosted-vault/db/MANIFEST-000012": {
+          "bytes": 141,
+          "mode": 384,
+          "sha256": "fa95a5c3901174f2577e4990e0b4118fbbb04a4400626bfbe5699e3d4a47fb4e"
+        },
+        "instance-lock/000010.log": {
+          "bytes": 0,
+          "mode": 384,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "instance-lock/CURRENT": {
+          "bytes": 16,
+          "mode": 384,
+          "sha256": "a197cc479c3bc03ef7b8d2b228f02a9bfc8c7cc6343719c5e26bebc0ca4ecf06"
+        },
+        "instance-lock/CURRENT.bak": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "b3524365a633ee6d1fa9953638d2867946c515218c497a5ec2dbef7dc44a7c53"
+        },
+        "instance-lock/LOCK": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "instance-lock/LOG": {
+          "bytes": 3285,
+          "mode": 420,
+          "sha256": "2ddac4b5b92edcc1b34f187d843ad9cb59f36d95e8cfa7bda436c49153d52df1"
+        },
+        "instance-lock/MANIFEST-000011": {
+          "bytes": 41,
+          "mode": 384,
+          "sha256": "2ca874f8b5b48191c2a986e89ba56770190fa1b5745c3ba065683f1638a15565"
+        },
+        "setup/authority.json": {
+          "bytes": 200,
+          "mode": 384,
+          "sha256": "df1d85ba75b84e6be24047163579b634e5954718a577955359db876a9873c15c"
+        },
+        "setup/coordinator.json": {
+          "bytes": 202,
+          "mode": 384,
+          "sha256": "75787782a65348db11d465f3f78c92402d69f0aba6eba3ed9867dacb3efe0d1f"
+        },
+        "setup/driver.json": {
+          "bytes": 197,
+          "mode": 384,
+          "sha256": "ddf93e1efb17ef263daa679b44c6dce15f269bbb20e8acb69e17ac648715477f"
+        },
+        "setup/fixture-incrementing256.json": {
+          "bytes": 214,
+          "mode": 384,
+          "sha256": "97909267314f675c3cf1d2b0f019fe463517ce29a194edc97705ea3242314275"
+        },
+        "setup/fixture-zero256.json": {
+          "bytes": 206,
+          "mode": 384,
+          "sha256": "3b1702d6f74714202accdd630c002103fbc6a32fc07c8b3cb76a99c5d4ec2f0d"
+        },
+        "setup/league.json": {
+          "bytes": 197,
+          "mode": 384,
+          "sha256": "b06e5aa6c7f7d03a2cff13fdf7d619c1403defa039c795659de31b069f29eb88"
+        },
+        "setup/runtime.json": {
+          "bytes": 198,
+          "mode": 384,
+          "sha256": "eb6de0e52f5e26cc3bab48bee9ac8b066590bcc745bc20c8e0ad677b542ebdf5"
+        },
+        "setup/vault.json": {
+          "bytes": 196,
+          "mode": 384,
+          "sha256": "0deed8db602f9917f6d612f2b962b21aa56d1d7766bbdaf0455ef43f577ef30f"
+        },
+        "shared/SLUG-OWNED-SOURCE.json": {
+          "bytes": 1174,
+          "mode": 384,
+          "sha256": "d7cf74339833f4034e8dcedb5d14bf50b2c8e47693be28f3682cb74ed3e6c3cc"
+        },
+        "shared/SLUG-POOL-CORE.json": {
+          "bytes": 101,
+          "mode": 384,
+          "sha256": "eba57d3f8ab994479df2ad4618123386f486cb7cdd4df5279fddc6befb475800"
+        },
+        "shared/SLUG-POOL-READY.json": {
+          "bytes": 3500,
+          "mode": 384,
+          "sha256": "275c8239688a15d7d546b76082e31e750636d3d371cf0cbc1f34f0aba8a9f098"
+        },
+        "shared/SLUG-POOL-RUNTIME.json": {
+          "bytes": 464,
+          "mode": 384,
+          "sha256": "c1f14facfa4601d502ebd178ae98e631e959bd6bd49a2a7783cd39fa530af49c"
+        },
+        "shared/SLUG-POOL-SOURCE.json": {
+          "bytes": 735,
+          "mode": 384,
+          "sha256": "2ab2fe61c0415e13859fad62bd5270409868c33d0b3dffb046e0e15383a1b702"
+        },
+        "shared/gyms/incrementing256/SLUG-OWNED-WORKER-INTENT.json": {
+          "bytes": 4948,
+          "mode": 384,
+          "sha256": "9d29507d5e78ab696e8c2d380290a835cceecc128092703a6b357804ebc0590e"
+        },
+        "shared/gyms/incrementing256/SLUG-OWNED-WORKER-READY.json": {
+          "bytes": 4948,
+          "mode": 384,
+          "sha256": "9d29507d5e78ab696e8c2d380290a835cceecc128092703a6b357804ebc0590e"
+        },
+        "shared/gyms/incrementing256/owned-outbox/SLUG-POOL-WORKER.json": {
+          "bytes": 1200,
+          "mode": 384,
+          "sha256": "368ba8c675dd0c3a7b0bcd4a0b829128fecbf0df7085a9299d099414a4a3a44f"
+        },
+        "shared/gyms/incrementing256/owned-outbox/db/000001.log": {
+          "bytes": 62363,
+          "mode": 420,
+          "sha256": "6257b57e878defad1c5b4370ddba5c89248f067c5020cb55d75d2b4e2da50917"
+        },
+        "shared/gyms/incrementing256/owned-outbox/db/CURRENT": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "179aee986b08dd1c9b42165766a9f86be710e30d130c79ff234c4f8fbfb85f76"
+        },
+        "shared/gyms/incrementing256/owned-outbox/db/LOCK": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/gyms/incrementing256/owned-outbox/db/LOG": {
+          "bytes": 433,
+          "mode": 420,
+          "sha256": "e4dc2443d1d245acfbae82bf9c358e5495ce79c9db158f00d7ce70fcf73675ac"
+        },
+        "shared/gyms/incrementing256/owned-outbox/db/MANIFEST-000000": {
+          "bytes": 54,
+          "mode": 420,
+          "sha256": "135e8bb0b3d297c61e0b989d02d4445d9a16a7d4ffd1c66fcff7b42e1bcc53ac"
+        },
+        "shared/gyms/incrementing256/owned-wallet/SLUG-OWNED-WALLET-INTENT.json": {
+          "bytes": 7867,
+          "mode": 384,
+          "sha256": "6f9e043012db6212639bc812546111ce425ac9d348c9cbbf864e5ad1a2d72553"
+        },
+        "shared/gyms/incrementing256/owned-wallet/SLUG-OWNED-WALLET-READY.json": {
+          "bytes": 2064,
+          "mode": 384,
+          "sha256": "60e8ed769469610f84146b2f24aa9256cf6fa84d7a73e111c35696cca5a31bb9"
+        },
+        "shared/gyms/incrementing256/owned-wallet/SLUG-POOL-RECIPIENT-READY.json": {
+          "bytes": 1772,
+          "mode": 384,
+          "sha256": "392035cb7ea3557817a5ca1a45a6bc1993d93329282f321f91d284d72db13948"
+        },
+        "shared/gyms/incrementing256/owned-wallet/SLUG-POOL-RECIPIENT.json": {
+          "bytes": 1779,
+          "mode": 384,
+          "sha256": "6efcc464cdc9a6c67e83f07c84757f9aa04db3b6550efa82b1551a644ce3f023"
+        },
+        "shared/gyms/incrementing256/owned-wallet/carrier/LOCK": {
+          "bytes": 0,
+          "mode": 384,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/gyms/incrementing256/owned-wallet/carrier/SLUG-FIGHTER-CARRIER-JOURNAL.json": {
+          "bytes": 1185,
+          "mode": 384,
+          "sha256": "5a24445071f0ce30cb88e1627d321b3bc7463840efa4cbc36394e527ecec9203"
+        },
+        "shared/gyms/incrementing256/owned-wallet/carrier/state.json": {
+          "bytes": 255,
+          "mode": 384,
+          "sha256": "d97d22ecc8123d9a9c9691474191f531b5c651c7669ad6bbdaa810e4e73db17e"
+        },
+        "shared/gyms/incrementing256/owned-wallet/inventory/SLUG-HOSTED-TRANSFER-ALLOCATION.json": {
+          "bytes": 2356,
+          "mode": 384,
+          "sha256": "f19fbd15751f0bc2b380d2adf59f7df6dd6947a3600cddb0f96734049e509359"
+        },
+        "shared/gyms/incrementing256/owned-wallet/inventory/db/000002.ldb": {
+          "bytes": 1377,
+          "mode": 420,
+          "sha256": "5eaea54550f7f8135eb907bf60ad6a9978423e49233a699b0379b5ba5bacab43"
+        },
+        "shared/gyms/incrementing256/owned-wallet/inventory/db/000011.log": {
+          "bytes": 0,
+          "mode": 384,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/gyms/incrementing256/owned-wallet/inventory/db/CURRENT": {
+          "bytes": 16,
+          "mode": 384,
+          "sha256": "eaab30ed3bde0318e208d83e6b0701b3ee9eb6b11da2d9fbab1552e8e4ce88f8"
+        },
+        "shared/gyms/incrementing256/owned-wallet/inventory/db/CURRENT.bak": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "e91d13722e31f9b06c5df3582cad1ea5b73547ce3dc08b12ed461f095aad48ee"
+        },
+        "shared/gyms/incrementing256/owned-wallet/inventory/db/LOCK": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/gyms/incrementing256/owned-wallet/inventory/db/LOG": {
+          "bytes": 3459,
+          "mode": 420,
+          "sha256": "335614460a9bfc3d99fb3ff40d9ee0e4e5818725e6c5a3d6a28126b5cc5a034d"
+        },
+        "shared/gyms/incrementing256/owned-wallet/inventory/db/MANIFEST-000012": {
+          "bytes": 143,
+          "mode": 384,
+          "sha256": "e4dcfcc33e1f6f482c84585398a9fdc5fedbeffa28153f976987000a87fcd479"
+        },
+        "shared/gyms/incrementing256/owned-wallet/wallet/slugwallet.db": {
+          "bytes": 524288,
+          "mode": 384,
+          "sha256": "c37f7e6059ab209e9ec131931b7171b1460989ba25d059ed5acfb7c1e1267385"
+        },
+        "shared/gyms/incrementing256/owned-wallet/withdrawal/LOCK": {
+          "bytes": 0,
+          "mode": 384,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/gyms/incrementing256/owned-wallet/withdrawal/SLUG-WITHDRAWAL-JOURNAL.json": {
+          "bytes": 975,
+          "mode": 384,
+          "sha256": "24a6477079c2ac7bc71a529c8417251e47ec39766aeb9f2b8f013953dcb06233"
+        },
+        "shared/gyms/incrementing256/owned-wallet/withdrawal/state.json": {
+          "bytes": 260,
+          "mode": 384,
+          "sha256": "00dd7c5f8202b1029dc2b2e5792d574c2f5a0198cd2e574bf46d6e8d93958d8d"
+        },
+        "shared/gyms/zero256/SLUG-OWNED-WORKER-INTENT.json": {
+          "bytes": 4940,
+          "mode": 384,
+          "sha256": "3a382ad310695de1ae73244544727dd55d787f7cce542c8892e559b93c0e0444"
+        },
+        "shared/gyms/zero256/SLUG-OWNED-WORKER-READY.json": {
+          "bytes": 4940,
+          "mode": 384,
+          "sha256": "3a382ad310695de1ae73244544727dd55d787f7cce542c8892e559b93c0e0444"
+        },
+        "shared/gyms/zero256/owned-outbox/SLUG-POOL-WORKER.json": {
+          "bytes": 1200,
+          "mode": 384,
+          "sha256": "7e486233c724d08b263ad03f2af73d899a3670606ff0d62b31d4b6a54e698b0e"
+        },
+        "shared/gyms/zero256/owned-outbox/db/000002.ldb": {
+          "bytes": 22592,
+          "mode": 420,
+          "sha256": "b78a9e1f5c0099b72f1a84dde5cc3acf9c8f36b6e817b2d8c7c89fc8597c0e51"
+        },
+        "shared/gyms/zero256/owned-outbox/db/000005.log": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/gyms/zero256/owned-outbox/db/CURRENT": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "4166bf17b2da789b0d0cc5c74203041d98005f5d4ef88c27e8281e00148cd611"
+        },
+        "shared/gyms/zero256/owned-outbox/db/CURRENT.bak": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "0861415cada612ea5834d56e2cf1055d3e63979b69eb71d32ae9ae394d8306cd"
+        },
+        "shared/gyms/zero256/owned-outbox/db/LOCK": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/gyms/zero256/owned-outbox/db/LOG": {
+          "bytes": 1698,
+          "mode": 420,
+          "sha256": "8ee8b65fa3ad26cee05c114074800166b94121a002dcc1ec616145f20c6f836f"
+        },
+        "shared/gyms/zero256/owned-outbox/db/MANIFEST-000006": {
+          "bytes": 75,
+          "mode": 420,
+          "sha256": "3fdda57ce2092f7dacace80557b40542a3e2810f8d2395c7fa2ecca14e8d0008"
+        },
+        "shared/gyms/zero256/owned-wallet/SLUG-OWNED-WALLET-INTENT.json": {
+          "bytes": 7851,
+          "mode": 384,
+          "sha256": "d906c6ce9e968ec677a1d87adf536ebd330e92af9464ac1f3e6ee1b2daa93245"
+        },
+        "shared/gyms/zero256/owned-wallet/SLUG-OWNED-WALLET-READY.json": {
+          "bytes": 2056,
+          "mode": 384,
+          "sha256": "620575b68db86e28729d2bca3547d6b38ac29e7714cb75e48c3093ba6c83996f"
+        },
+        "shared/gyms/zero256/owned-wallet/SLUG-POOL-RECIPIENT-READY.json": {
+          "bytes": 1764,
+          "mode": 384,
+          "sha256": "097eb0b18344cc30ebcc31e3fec27586ed7d8bea81940e61055e0c5f5f6cda6e"
+        },
+        "shared/gyms/zero256/owned-wallet/SLUG-POOL-RECIPIENT.json": {
+          "bytes": 1771,
+          "mode": 384,
+          "sha256": "9b6196c7cf82a188115dc5cedb6c2f0865e5a5d4d053b95a3f967d55c433dab3"
+        },
+        "shared/gyms/zero256/owned-wallet/carrier/LOCK": {
+          "bytes": 0,
+          "mode": 384,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/gyms/zero256/owned-wallet/carrier/SLUG-FIGHTER-CARRIER-JOURNAL.json": {
+          "bytes": 1185,
+          "mode": 384,
+          "sha256": "17e1325dfcae3bbeecebbd366c420c9aaee3129db67146d78fa0c7dda6a5b4e6"
+        },
+        "shared/gyms/zero256/owned-wallet/carrier/state.json": {
+          "bytes": 255,
+          "mode": 384,
+          "sha256": "c8ca04e5f3a7a7a3a16e2c9098fa71d66e0aa0fa569a604af65bd08b54dc07e3"
+        },
+        "shared/gyms/zero256/owned-wallet/inventory/SLUG-HOSTED-TRANSFER-ALLOCATION.json": {
+          "bytes": 2356,
+          "mode": 384,
+          "sha256": "983b1b7d85a5aacc739b97ecbe96bea5c54a7c345623d033787d780667b5bc73"
+        },
+        "shared/gyms/zero256/owned-wallet/inventory/db/000002.ldb": {
+          "bytes": 1376,
+          "mode": 420,
+          "sha256": "df41fc9a1d72a2987e130be5cad078c8853220ba95ce2ce92310882a7f26aa2d"
+        },
+        "shared/gyms/zero256/owned-wallet/inventory/db/000003.log": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/gyms/zero256/owned-wallet/inventory/db/CURRENT": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "0861415cada612ea5834d56e2cf1055d3e63979b69eb71d32ae9ae394d8306cd"
+        },
+        "shared/gyms/zero256/owned-wallet/inventory/db/CURRENT.bak": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "179aee986b08dd1c9b42165766a9f86be710e30d130c79ff234c4f8fbfb85f76"
+        },
+        "shared/gyms/zero256/owned-wallet/inventory/db/LOCK": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/gyms/zero256/owned-wallet/inventory/db/LOG": {
+          "bytes": 1095,
+          "mode": 420,
+          "sha256": "aa85ea1686cfd98c75999b4522d98f3a15bb48afb593d7874b962e261f029953"
+        },
+        "shared/gyms/zero256/owned-wallet/inventory/db/MANIFEST-000004": {
+          "bytes": 245,
+          "mode": 420,
+          "sha256": "782017d96c14d6cb3b0366210985848dbb780085b799aabff7f29a105781f35c"
+        },
+        "shared/gyms/zero256/owned-wallet/wallet/slugwallet.db": {
+          "bytes": 524288,
+          "mode": 384,
+          "sha256": "b1220f1f39a13880dc54a1efd5560e726737bfe06fa9dac64f27145ef5aadca9"
+        },
+        "shared/gyms/zero256/owned-wallet/withdrawal/LOCK": {
+          "bytes": 0,
+          "mode": 384,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/gyms/zero256/owned-wallet/withdrawal/SLUG-WITHDRAWAL-JOURNAL.json": {
+          "bytes": 967,
+          "mode": 384,
+          "sha256": "660fe40a12e3f57855898a0bdb9e0d71290631f93fa3c011a509fca5cc2e7ff7"
+        },
+        "shared/gyms/zero256/owned-wallet/withdrawal/state.json": {
+          "bytes": 260,
+          "mode": 384,
+          "sha256": "ae22f8ac26ee81ffcedaca9a71361583d65dc4d5ab7c5973303fc3eff4863901"
+        },
+        "shared/instance-lock/000002.log": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/instance-lock/CURRENT": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "f1e338495ed17df4b482ce25d53b545e17b782ec77ada5331286ecab66c6d55b"
+        },
+        "shared/instance-lock/CURRENT.bak": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "179aee986b08dd1c9b42165766a9f86be710e30d130c79ff234c4f8fbfb85f76"
+        },
+        "shared/instance-lock/LOCK": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/instance-lock/LOG": {
+          "bytes": 1002,
+          "mode": 420,
+          "sha256": "e2b86a8514ba61508d3fc97b8e72dfbd063c5f3f3bffd2d53a157bad35511997"
+        },
+        "shared/instance-lock/MANIFEST-000003": {
+          "bytes": 41,
+          "mode": 420,
+          "sha256": "3933e8c40512b17c4012d1b4b019126517157dd3aee3f384e6256bc8e34037ec"
+        },
+        "shared/issuer/SLUG-MANIFEST-OWNERSHIP-V1.json": {
+          "bytes": 1261,
+          "mode": 384,
+          "sha256": "9fdc1efc0f14c22c115f9b3a173e44ab2f307bb7111e80283af92296b0e6a48a"
+        },
+        "shared/issuer/SLUG-REGISTRY.json": {
+          "bytes": 804,
+          "mode": 384,
+          "sha256": "36ff618e8137629535f9a18c7671f832c0a71cd984a33ba06a42dff343e9ec91"
+        },
+        "shared/issuer/db/000002.ldb": {
+          "bytes": 21031,
+          "mode": 420,
+          "sha256": "b80037d04ddae77cacbeff3516df92b8f4640938f0d1d3f54600fb5add6b2322"
+        },
+        "shared/issuer/db/000003.log": {
+          "bytes": 5151,
+          "mode": 420,
+          "sha256": "26084848d3c0ccda27a21baffc12c2d71ce6b02d7c03fbba32bdeee7de825554"
+        },
+        "shared/issuer/db/CURRENT": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "0861415cada612ea5834d56e2cf1055d3e63979b69eb71d32ae9ae394d8306cd"
+        },
+        "shared/issuer/db/CURRENT.bak": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "179aee986b08dd1c9b42165766a9f86be710e30d130c79ff234c4f8fbfb85f76"
+        },
+        "shared/issuer/db/LOCK": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/issuer/db/LOG": {
+          "bytes": 1114,
+          "mode": 420,
+          "sha256": "afacf1531b91c94e13720756197cc2b96d458d447aa426262775b69b5a7529fc"
+        },
+        "shared/issuer/db/MANIFEST-000004": {
+          "bytes": 259,
+          "mode": 420,
+          "sha256": "98bb4e407bd3e161259942b52e93e5d4fb28c68c70a89704dcef357025dd74cc"
+        },
+        "shared/owned-chain/SLUG-FIGHTER-OWNERSHIP-V1.json": {
+          "bytes": 1248,
+          "mode": 384,
+          "sha256": "d538fb9aa25ead1c63aa342bf4683fb44feceb4d974c2b2fa1035a8066712278"
+        },
+        "shared/owned-chain/db/000002.ldb": {
+          "bytes": 46508,
+          "mode": 420,
+          "sha256": "179c62078d5e8d103a6c33095bf8a729c26357c2229cc331bccfc59106b1aac7"
+        },
+        "shared/owned-chain/db/000003.log": {
+          "bytes": 55757,
+          "mode": 420,
+          "sha256": "7dedf2898f82b52f770d8f0661562b6fb650261f484b06ed4170450911468052"
+        },
+        "shared/owned-chain/db/CURRENT": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "0861415cada612ea5834d56e2cf1055d3e63979b69eb71d32ae9ae394d8306cd"
+        },
+        "shared/owned-chain/db/CURRENT.bak": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "179aee986b08dd1c9b42165766a9f86be710e30d130c79ff234c4f8fbfb85f76"
+        },
+        "shared/owned-chain/db/LOCK": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/owned-chain/db/LOG": {
+          "bytes": 1112,
+          "mode": 420,
+          "sha256": "a3fc486fd7b977332d61be40d66141c74a5604e9447e93e74a7d564084eee406"
+        },
+        "shared/owned-chain/db/MANIFEST-000004": {
+          "bytes": 110,
+          "mode": 420,
+          "sha256": "403eddd3fbf617a25aa6a9631d78b2959eb74a2f4b485a5eeffcf1fce40b7701"
+        },
+        "shared/owned-league/SLUG-OWNED-LEAGUE-ACTIVATING.json": {
+          "bytes": 1623,
+          "mode": 384,
+          "sha256": "608118e19270c0ab522570471aad0c603cc09b9ef75a674ca7d1bd8d816e684f"
+        },
+        "shared/owned-league/SLUG-OWNED-LEAGUE-ACTIVATION.json": {
+          "bytes": 367,
+          "mode": 384,
+          "sha256": "7e4aae4d5a9b2a2c8ad4162755d64f9fc349ed79a7165e19c0de90806d8e267b"
+        },
+        "shared/owned-league/SLUG-OWNED-LEAGUE-INTENT.json": {
+          "bytes": 48686,
+          "mode": 384,
+          "sha256": "d3fdc296b45a9a43ff2e9e14f0076e9fec3a0c74e7b39387286eb8120e8fe58a"
+        },
+        "shared/owned-league/SLUG-OWNED-LEAGUE-READY.json": {
+          "bytes": 2024,
+          "mode": 384,
+          "sha256": "8975d8f49cd833ab3b66759147db598518cd8bb184f2ef69235c8359c82f4708"
+        },
+        "shared/owned-league/bouts-READY.json": {
+          "bytes": 174,
+          "mode": 384,
+          "sha256": "6d0fa6ea6a24f956d06d5a7c53227eda77d5ee027a91ae3ea8c8f8506831b0a9"
+        },
+        "shared/owned-league/bouts/SLUG-OWNED-BOUT-V1.json": {
+          "bytes": 7657,
+          "mode": 384,
+          "sha256": "57941405941bc8522edf0a13cf7585167134393897b4a7ed9d6f5ce883454e16"
+        },
+        "shared/owned-league/bouts/db/000002.ldb": {
+          "bytes": 6700,
+          "mode": 420,
+          "sha256": "44921078bebcf7df2db1ce055b33458ec87e7acc6a5c5dd4bdfe8e86a270484b"
+        },
+        "shared/owned-league/bouts/db/000003.log": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/owned-league/bouts/db/CURRENT": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "0861415cada612ea5834d56e2cf1055d3e63979b69eb71d32ae9ae394d8306cd"
+        },
+        "shared/owned-league/bouts/db/CURRENT.bak": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "179aee986b08dd1c9b42165766a9f86be710e30d130c79ff234c4f8fbfb85f76"
+        },
+        "shared/owned-league/bouts/db/LOCK": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/owned-league/bouts/db/LOG": {
+          "bytes": 1091,
+          "mode": 420,
+          "sha256": "1792b4fb2617c509d91d538135997689fb3dac5a76ff431671f97f679dc4203d"
+        },
+        "shared/owned-league/bouts/db/MANIFEST-000004": {
+          "bytes": 103,
+          "mode": 420,
+          "sha256": "372c3c1b65b1695e29fba7ed2c71ed5368babe345ce3b20f351b96aa10bd8cf7"
+        },
+        "shared/owned-league/cards-READY.json": {
+          "bytes": 174,
+          "mode": 384,
+          "sha256": "426312bdc2f1c234a22c05684b0bdcb89279b049e5cc12da1f72be87c0b63bbd"
+        },
+        "shared/owned-league/cards/SLUG-OWNED-CARD-V1.json": {
+          "bytes": 7467,
+          "mode": 384,
+          "sha256": "3a6440e99bcffa7b5afb8fd8af74386d769290874a655dd1dc447162c51016ab"
+        },
+        "shared/owned-league/cards/db/000002.ldb": {
+          "bytes": 6767,
+          "mode": 420,
+          "sha256": "e58803003675875b22335ea1a63778250f4fefd6f6e615ce30e448c3d23916f6"
+        },
+        "shared/owned-league/cards/db/000003.log": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/owned-league/cards/db/CURRENT": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "0861415cada612ea5834d56e2cf1055d3e63979b69eb71d32ae9ae394d8306cd"
+        },
+        "shared/owned-league/cards/db/CURRENT.bak": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "179aee986b08dd1c9b42165766a9f86be710e30d130c79ff234c4f8fbfb85f76"
+        },
+        "shared/owned-league/cards/db/LOCK": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/owned-league/cards/db/LOG": {
+          "bytes": 1095,
+          "mode": 420,
+          "sha256": "73967bac24a1cd310a412725ee1015f060ef41e207423f393bdf91f1402f05c5"
+        },
+        "shared/owned-league/cards/db/MANIFEST-000004": {
+          "bytes": 119,
+          "mode": 420,
+          "sha256": "874c18b1f10ca620c190206b0a639f37a08ac3cababa6731caa236fb34fcc289"
+        },
+        "shared/owned-league/events-READY.json": {
+          "bytes": 163,
+          "mode": 384,
+          "sha256": "6a64be23db5a9c011bc802043b18250147830d96f66931e4844e12d12c83beff"
+        },
+        "shared/owned-league/events/SLUG-OWNED-EVENT-V1.json": {
+          "bytes": 6195,
+          "mode": 384,
+          "sha256": "a3748846502b6ac13375b734db4e26fed5506e7195e50394f8c177524d40e552"
+        },
+        "shared/owned-league/events/db/000002.ldb": {
+          "bytes": 2581,
+          "mode": 420,
+          "sha256": "591a468c993aacc55c8388f6ea0d39e9bda241ad95172a3d61b8851c58af715b"
+        },
+        "shared/owned-league/events/db/000003.log": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/owned-league/events/db/CURRENT": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "0861415cada612ea5834d56e2cf1055d3e63979b69eb71d32ae9ae394d8306cd"
+        },
+        "shared/owned-league/events/db/CURRENT.bak": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "179aee986b08dd1c9b42165766a9f86be710e30d130c79ff234c4f8fbfb85f76"
+        },
+        "shared/owned-league/events/db/LOCK": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/owned-league/events/db/LOG": {
+          "bytes": 1091,
+          "mode": 420,
+          "sha256": "b5ca5e51ba1ad97ec9cd0a8aa82100c67f8bbb99330f79379d68c859bc853a3d"
+        },
+        "shared/owned-league/events/db/MANIFEST-000004": {
+          "bytes": 103,
+          "mode": 420,
+          "sha256": "d8b51fe9464134c317aa7f99f2ae2d31b270a9d918f73bff853e132e163b5359"
+        },
+        "shared/owned-league/incrementing256-entries-READY.json": {
+          "bytes": 168,
+          "mode": 384,
+          "sha256": "840dc22e6fb36d9fe29f82cb2a8bc7a4a871328f06872638aefd4b0edc26b1d0"
+        },
+        "shared/owned-league/incrementing256-entries/SLUG-OWNED-ENTRY-V1.json": {
+          "bytes": 2542,
+          "mode": 384,
+          "sha256": "724da760c3b242282c0aec74688de4ac48310bfa81e8d6d9a2a4c4ab334c38e9"
+        },
+        "shared/owned-league/incrementing256-entries/db/000002.ldb": {
+          "bytes": 9939,
+          "mode": 420,
+          "sha256": "c8e839e2018f2a177110af07881fc9599f08147ace0bdd29d129d19122eb4822"
+        },
+        "shared/owned-league/incrementing256-entries/db/000003.log": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/owned-league/incrementing256-entries/db/CURRENT": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "0861415cada612ea5834d56e2cf1055d3e63979b69eb71d32ae9ae394d8306cd"
+        },
+        "shared/owned-league/incrementing256-entries/db/CURRENT.bak": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "179aee986b08dd1c9b42165766a9f86be710e30d130c79ff234c4f8fbfb85f76"
+        },
+        "shared/owned-league/incrementing256-entries/db/LOCK": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/owned-league/incrementing256-entries/db/LOG": {
+          "bytes": 1111,
+          "mode": 420,
+          "sha256": "0cb14e08da87ecf35845255ac608e75f4f259e78bc52a0de7f5b1aaf928e6d8f"
+        },
+        "shared/owned-league/incrementing256-entries/db/MANIFEST-000004": {
+          "bytes": 239,
+          "mode": 420,
+          "sha256": "ffeb27f391e4b62dc7e8db963a91ccca4bfbb59a2062e4a7d9815ec04ffa50d8"
+        },
+        "shared/owned-league/incrementing256-stable-READY.json": {
+          "bytes": 167,
+          "mode": 384,
+          "sha256": "85f7786f26fcaba121ffaccc53048265650e25f3044a19959ef3f63be080e5da"
+        },
+        "shared/owned-league/incrementing256-stable/SLUG-OWNED-STABLE-V1.json": {
+          "bytes": 2190,
+          "mode": 384,
+          "sha256": "801a22c7bba147d4fe268b5fe0ceb41c803235ac3f19548b5246a1181d3ba7e2"
+        },
+        "shared/owned-league/incrementing256-stable/db/000002.ldb": {
+          "bytes": 13454,
+          "mode": 420,
+          "sha256": "0452be27b2bc29e07b113796438c8789a0a2f0de2204a03651d2a4a1892a7871"
+        },
+        "shared/owned-league/incrementing256-stable/db/000003.log": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/owned-league/incrementing256-stable/db/CURRENT": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "0861415cada612ea5834d56e2cf1055d3e63979b69eb71d32ae9ae394d8306cd"
+        },
+        "shared/owned-league/incrementing256-stable/db/CURRENT.bak": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "179aee986b08dd1c9b42165766a9f86be710e30d130c79ff234c4f8fbfb85f76"
+        },
+        "shared/owned-league/incrementing256-stable/db/LOCK": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/owned-league/incrementing256-stable/db/LOG": {
+          "bytes": 1098,
+          "mode": 420,
+          "sha256": "a143b648ebf8d9a35b2a7e04d63afa7f513688f9fdce5bf47126cdac49100724"
+        },
+        "shared/owned-league/incrementing256-stable/db/MANIFEST-000004": {
+          "bytes": 123,
+          "mode": 420,
+          "sha256": "946cff5b76ae8aeaa6b19c05c3974ab7c3bd812ace91b3fc9f4aa281375dddc7"
+        },
+        "shared/owned-league/results-READY.json": {
+          "bytes": 176,
+          "mode": 384,
+          "sha256": "0b0fb8542e59b45a5564d87b965611c4be1325fbf76455e32910f3e384fb6417"
+        },
+        "shared/owned-league/results/SLUG-OWNED-RESULT-V1.json": {
+          "bytes": 9231,
+          "mode": 384,
+          "sha256": "cfc4c27be847b5e6d9b2bcf020856a1f2e74bb579f4c984dbc7f9e6d4d593913"
+        },
+        "shared/owned-league/results/db/000002.ldb": {
+          "bytes": 7726,
+          "mode": 420,
+          "sha256": "636a5b007655bb84f9a32b1e9647db31c65e82df0b2603d2fb41485913d024eb"
+        },
+        "shared/owned-league/results/db/000007.ldb": {
+          "bytes": 4344,
+          "mode": 420,
+          "sha256": "2c130ada94e8093d45d2022e6c7008716716339a1c8b2303338f11258f65b1e3"
+        },
+        "shared/owned-league/results/db/000008.log": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/owned-league/results/db/CURRENT": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "b3524365a633ee6d1fa9953638d2867946c515218c497a5ec2dbef7dc44a7c53"
+        },
+        "shared/owned-league/results/db/CURRENT.bak": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "4166bf17b2da789b0d0cc5c74203041d98005f5d4ef88c27e8281e00148cd611"
+        },
+        "shared/owned-league/results/db/LOCK": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/owned-league/results/db/LOG": {
+          "bytes": 2357,
+          "mode": 420,
+          "sha256": "a2952fe1be910f0668f73cc6b88074b0b2068be33f3831ccf41b6b73016e5dcb"
+        },
+        "shared/owned-league/results/db/MANIFEST-000009": {
+          "bytes": 148,
+          "mode": 420,
+          "sha256": "5c3882b86e73a46a8cb13ed753aa8bfbd82d87c080dcbae37646471f00cf8d1f"
+        },
+        "shared/owned-league/seeds-READY.json": {
+          "bytes": 174,
+          "mode": 384,
+          "sha256": "f938e81a14fde540c122e0811283816c5b440008b4e2ced9a1e29a46afc40971"
+        },
+        "shared/owned-league/seeds/SLUG-OWNED-SEED-V1.json": {
+          "bytes": 7277,
+          "mode": 384,
+          "sha256": "fc49a3acb46946e456d4631de9dafa3a11ac968ff76a9e21c8721c3e1dec803d"
+        },
+        "shared/owned-league/seeds/db/000002.ldb": {
+          "bytes": 6281,
+          "mode": 420,
+          "sha256": "101a8d75133c0194a13be7a135e239e71a8a03cb94d7bfaab617b2948e797cca"
+        },
+        "shared/owned-league/seeds/db/000003.log": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/owned-league/seeds/db/CURRENT": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "0861415cada612ea5834d56e2cf1055d3e63979b69eb71d32ae9ae394d8306cd"
+        },
+        "shared/owned-league/seeds/db/CURRENT.bak": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "179aee986b08dd1c9b42165766a9f86be710e30d130c79ff234c4f8fbfb85f76"
+        },
+        "shared/owned-league/seeds/db/LOCK": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/owned-league/seeds/db/LOG": {
+          "bytes": 1085,
+          "mode": 420,
+          "sha256": "5e32ed7ceed43fa467169b725a35fcfbfbd11a72b02de2e9395277ebf86ab310"
+        },
+        "shared/owned-league/seeds/db/MANIFEST-000004": {
+          "bytes": 103,
+          "mode": 420,
+          "sha256": "bc4e80a2756ccd1f62878ae6781a072785fb7e3561dc725f21126e5194f5a12c"
+        },
+        "shared/owned-league/zero256-entries-READY.json": {
+          "bytes": 160,
+          "mode": 384,
+          "sha256": "86b80931f85330568096ca804b8f94299b3c89e8ccf37c5af30771c488467826"
+        },
+        "shared/owned-league/zero256-entries/SLUG-OWNED-ENTRY-V1.json": {
+          "bytes": 2542,
+          "mode": 384,
+          "sha256": "e62e9dd2f62982a895d44f20faf5a2cc542ae1bb6e2a2688ed2eae9c2c238df0"
+        },
+        "shared/owned-league/zero256-entries/db/000002.ldb": {
+          "bytes": 9798,
+          "mode": 420,
+          "sha256": "d5a03fd09b98c74550fa4f07dc29db985e614dad54cf95e536ad6622736d05aa"
+        },
+        "shared/owned-league/zero256-entries/db/000003.log": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/owned-league/zero256-entries/db/CURRENT": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "0861415cada612ea5834d56e2cf1055d3e63979b69eb71d32ae9ae394d8306cd"
+        },
+        "shared/owned-league/zero256-entries/db/CURRENT.bak": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "179aee986b08dd1c9b42165766a9f86be710e30d130c79ff234c4f8fbfb85f76"
+        },
+        "shared/owned-league/zero256-entries/db/LOCK": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/owned-league/zero256-entries/db/LOG": {
+          "bytes": 1113,
+          "mode": 420,
+          "sha256": "7347e4c6790773a7f52f74dc358cb14e2d1f95aeb97d0a3ac084ca8341a23272"
+        },
+        "shared/owned-league/zero256-entries/db/MANIFEST-000004": {
+          "bytes": 239,
+          "mode": 420,
+          "sha256": "abcfeca049fa83ec1e4af67318f60e1d36fa90005116d68244f33228664c3eb9"
+        },
+        "shared/owned-league/zero256-stable-READY.json": {
+          "bytes": 159,
+          "mode": 384,
+          "sha256": "75612c2a354929a3b67dc8eb583c7550c005432dc8c7e3cf65a753e48a08dd36"
+        },
+        "shared/owned-league/zero256-stable/SLUG-OWNED-STABLE-V1.json": {
+          "bytes": 2190,
+          "mode": 384,
+          "sha256": "4549bd16c01f708deef6a3c10de9dcbd28dc6bc371c50bcd4571997c0758afab"
+        },
+        "shared/owned-league/zero256-stable/db/000002.ldb": {
+          "bytes": 13265,
+          "mode": 420,
+          "sha256": "b5222747c44b7d2134e892766bda8047bff413fd904e6e0ac6d6a65032936f17"
+        },
+        "shared/owned-league/zero256-stable/db/000003.log": {
+          "bytes": 4790,
+          "mode": 420,
+          "sha256": "c6066d358b85dd6eb3947a9cf34c84c3bf9656542944e36481e001c998d5d535"
+        },
+        "shared/owned-league/zero256-stable/db/CURRENT": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "0861415cada612ea5834d56e2cf1055d3e63979b69eb71d32ae9ae394d8306cd"
+        },
+        "shared/owned-league/zero256-stable/db/CURRENT.bak": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "179aee986b08dd1c9b42165766a9f86be710e30d130c79ff234c4f8fbfb85f76"
+        },
+        "shared/owned-league/zero256-stable/db/LOCK": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/owned-league/zero256-stable/db/LOG": {
+          "bytes": 1101,
+          "mode": 420,
+          "sha256": "75ffd2dfa07969f59ee05d2a8bfd8ffa99c302ecb9286027e4d9007a59973778"
+        },
+        "shared/owned-league/zero256-stable/db/MANIFEST-000004": {
+          "bytes": 123,
+          "mode": 420,
+          "sha256": "94438d31b9c8516bae0d60af970d252909a8ce1e866dc2f1d6f4530aac22edb1"
+        },
+        "shared/peer-chain/mainnet/blocks_ffldb/000000000.fdb": {
+          "bytes": 726,
+          "mode": 420,
+          "sha256": "9ea2343c97b8fdb75b1a3f6a934db69d70ed3aef2945082f1923c0518f814e9f"
+        },
+        "shared/peer-chain/mainnet/blocks_ffldb/metadata/000003.ldb": {
+          "bytes": 260,
+          "mode": 420,
+          "sha256": "d9445e32e268c827e4b86fd18dc5260021458fc7edf4b05cb8e020b9f4d7ba6f"
+        },
+        "shared/peer-chain/mainnet/blocks_ffldb/metadata/000004.ldb": {
+          "bytes": 2723,
+          "mode": 420,
+          "sha256": "340aaa5bbff3be09da8c66bd9931a84736fe58a32633741c3f254586e7f46b45"
+        },
+        "shared/peer-chain/mainnet/blocks_ffldb/metadata/000005.log": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/peer-chain/mainnet/blocks_ffldb/metadata/000007.ldb": {
+          "bytes": 499,
+          "mode": 420,
+          "sha256": "a80c20dfbfcbcf9c57230ca03feb84ef10e1a671d65112d1c8e3d37a81b4f27e"
+        },
+        "shared/peer-chain/mainnet/blocks_ffldb/metadata/CURRENT": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "4166bf17b2da789b0d0cc5c74203041d98005f5d4ef88c27e8281e00148cd611"
+        },
+        "shared/peer-chain/mainnet/blocks_ffldb/metadata/CURRENT.bak": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "179aee986b08dd1c9b42165766a9f86be710e30d130c79ff234c4f8fbfb85f76"
+        },
+        "shared/peer-chain/mainnet/blocks_ffldb/metadata/LOCK": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/peer-chain/mainnet/blocks_ffldb/metadata/LOG": {
+          "bytes": 1645,
+          "mode": 420,
+          "sha256": "50e87c18cd7679c9026b077f972e0ff6789ba09245b8935488de1a23e13a98ba"
+        },
+        "shared/peer-chain/mainnet/blocks_ffldb/metadata/MANIFEST-000006": {
+          "bytes": 210,
+          "mode": 420,
+          "sha256": "d6fa8abfa9857302955e6447a51fe51902043c4099e1842f99de76096f417403"
+        },
+        "shared/peer-chain/mainnet/peers.json": {
+          "bytes": 3445,
+          "mode": 420,
+          "sha256": "31cdf1585b32fee494cfc8943dea9c734c3a71163856f8a01624558d10795b63"
+        },
+        "shared/peer-logs/mainnet/slug.log": {
+          "bytes": 4599,
+          "mode": 420,
+          "sha256": "849d30121c14d6a47cfc000c62fa55f5d0335b7fd99acf8ab7d05dfaec7f49e9"
+        },
+        "shared/peer-process.log": {
+          "bytes": 2078,
+          "mode": 384,
+          "sha256": "4e5156ba406791de01cf54f19b94694f1dcd0ab509a1acf70593297ec33931e6"
+        },
+        "shared/peer.conf": {
+          "bytes": 417,
+          "mode": 384,
+          "sha256": "164a1143accde635c6436a65820ee70fb31858110fd9fdb6fa8cef2b7f7058c6"
+        },
+        "shared/primary-chain/mainnet/blocks_ffldb/000000000.fdb": {
+          "bytes": 726,
+          "mode": 420,
+          "sha256": "9ea2343c97b8fdb75b1a3f6a934db69d70ed3aef2945082f1923c0518f814e9f"
+        },
+        "shared/primary-chain/mainnet/blocks_ffldb/metadata/000003.ldb": {
+          "bytes": 260,
+          "mode": 420,
+          "sha256": "d9445e32e268c827e4b86fd18dc5260021458fc7edf4b05cb8e020b9f4d7ba6f"
+        },
+        "shared/primary-chain/mainnet/blocks_ffldb/metadata/000004.ldb": {
+          "bytes": 3466,
+          "mode": 420,
+          "sha256": "59920622767e5cb9e3cda560899b714f6e9166bb8418db2cedb65fdbfaee5ba7"
+        },
+        "shared/primary-chain/mainnet/blocks_ffldb/metadata/000005.log": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/primary-chain/mainnet/blocks_ffldb/metadata/000007.ldb": {
+          "bytes": 544,
+          "mode": 420,
+          "sha256": "3ca1676c4286ef57632881f96e9593ebb4881df3d0c3ea72bdf3d4d511ec625e"
+        },
+        "shared/primary-chain/mainnet/blocks_ffldb/metadata/CURRENT": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "4166bf17b2da789b0d0cc5c74203041d98005f5d4ef88c27e8281e00148cd611"
+        },
+        "shared/primary-chain/mainnet/blocks_ffldb/metadata/CURRENT.bak": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "179aee986b08dd1c9b42165766a9f86be710e30d130c79ff234c4f8fbfb85f76"
+        },
+        "shared/primary-chain/mainnet/blocks_ffldb/metadata/LOCK": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/primary-chain/mainnet/blocks_ffldb/metadata/LOG": {
+          "bytes": 1649,
+          "mode": 420,
+          "sha256": "71d86f880d5abc5a44833894fd968ba289b3260bff5c8bd6464f47b1133da393"
+        },
+        "shared/primary-chain/mainnet/blocks_ffldb/metadata/MANIFEST-000006": {
+          "bytes": 223,
+          "mode": 420,
+          "sha256": "15b24cf8f6fff2165f46cafb881d24104784ebf84efccaea6503f51673b44299"
+        },
+        "shared/primary-chain/mainnet/peers.json": {
+          "bytes": 3448,
+          "mode": 420,
+          "sha256": "0d6bed3b53f38b4bb64bef199f7fe93ae666c9774637e6d38b778ac98804788d"
+        },
+        "shared/primary-logs/mainnet/slug.log": {
+          "bytes": 30906,
+          "mode": 420,
+          "sha256": "7a10d0eec2cbf740e4f16124692abb150f85ccc9a0969566f7b12a8dcfecc730"
+        },
+        "shared/primary-process.log": {
+          "bytes": 12013,
+          "mode": 384,
+          "sha256": "c966abdcf715402e78c78f67e91bf34ccd5961861ba3e6b40a1f3195d5c29d3d"
+        },
+        "shared/primary.conf": {
+          "bytes": 421,
+          "mode": 384,
+          "sha256": "6f521c6398783b06e645aed7458bab5ce315e3a914b33667bf5329aea684cc67"
+        },
+        "shared/rounds/SLUG-POOL-ROUNDS.json": {
+          "bytes": 859,
+          "mode": 384,
+          "sha256": "14e3e50cdcd230f041578fe875cb5c6c85d632440505dbd150a8e3f14b6dff20"
+        },
+        "shared/rounds/db/000002.ldb": {
+          "bytes": 5483,
+          "mode": 420,
+          "sha256": "fb1440b5baf9105c09c3263836546e0781ca5502f08ec144e4070f2658b41f09"
+        },
+        "shared/rounds/db/000003.log": {
+          "bytes": 8862,
+          "mode": 420,
+          "sha256": "362f7e74d26349c70f847299185f5047bef276ef673317bdbe88e9165d3c715f"
+        },
+        "shared/rounds/db/CURRENT": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "0861415cada612ea5834d56e2cf1055d3e63979b69eb71d32ae9ae394d8306cd"
+        },
+        "shared/rounds/db/CURRENT.bak": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "179aee986b08dd1c9b42165766a9f86be710e30d130c79ff234c4f8fbfb85f76"
+        },
+        "shared/rounds/db/LOCK": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/rounds/db/LOG": {
+          "bytes": 1113,
+          "mode": 420,
+          "sha256": "cf86ade91ba20a01b951252fa3e7921d78d2b9887039d7928d1c95001354d6e8"
+        },
+        "shared/rounds/db/MANIFEST-000004": {
+          "bytes": 235,
+          "mode": 420,
+          "sha256": "6816401bec87f7cf153020dec2ade714f6c0bea3033c349a8406849c6d7525ed"
+        },
+        "shared/settlement/db/000002.ldb": {
+          "bytes": 1457,
+          "mode": 420,
+          "sha256": "c3dab74660d90e25f1b2bc69dfc06d27d2d6eb574c4df9331dec1b7374256045"
+        },
+        "shared/settlement/db/000003.log": {
+          "bytes": 1811,
+          "mode": 420,
+          "sha256": "6f210666fe48cc9f0c262e5c5fbc1e218717dc53e160e359b8ac1d5008f1c04d"
+        },
+        "shared/settlement/db/CURRENT": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "0861415cada612ea5834d56e2cf1055d3e63979b69eb71d32ae9ae394d8306cd"
+        },
+        "shared/settlement/db/CURRENT.bak": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "179aee986b08dd1c9b42165766a9f86be710e30d130c79ff234c4f8fbfb85f76"
+        },
+        "shared/settlement/db/LOCK": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/settlement/db/LOG": {
+          "bytes": 1095,
+          "mode": 420,
+          "sha256": "7fdbd1b574c2106901e8959c84cd50c361d984430fd3cbbc343e48a95a39d8ab"
+        },
+        "shared/settlement/db/MANIFEST-000004": {
+          "bytes": 179,
+          "mode": 420,
+          "sha256": "5add251cb1a979b7643c76c391ab2b2300c99248c731df0b18ff76f3ec4b8118"
+        },
+        "shared/shares/SLUG-POOL.json": {
+          "bytes": 797,
+          "mode": 384,
+          "sha256": "2b6ab4acc42d359ed9e91ff8f3ff802b6254734122853590adcdfbb330a26578"
+        },
+        "shared/shares/db/000002.ldb": {
+          "bytes": 7689,
+          "mode": 420,
+          "sha256": "531a851123f12fdcda90d5b1ed54b9b0fcea1005958e1f8b3adbb94f231012d3"
+        },
+        "shared/shares/db/000003.log": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/shares/db/CURRENT": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "0861415cada612ea5834d56e2cf1055d3e63979b69eb71d32ae9ae394d8306cd"
+        },
+        "shared/shares/db/CURRENT.bak": {
+          "bytes": 16,
+          "mode": 420,
+          "sha256": "179aee986b08dd1c9b42165766a9f86be710e30d130c79ff234c4f8fbfb85f76"
+        },
+        "shared/shares/db/LOCK": {
+          "bytes": 0,
+          "mode": 420,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shared/shares/db/LOG": {
+          "bytes": 1116,
+          "mode": 420,
+          "sha256": "d28a5425153541a4753ed5e3337cddbe57db3fb0503c5c21a49b16c06277caf1"
+        },
+        "shared/shares/db/MANIFEST-000004": {
+          "bytes": 235,
+          "mode": 420,
+          "sha256": "76e9f6b933cec9c3020ee8c87885422861b0cd6a565eb5bd16f914c052b5dcbd"
+        }
+      },
+      "identity": {
+        "device": 16777233,
+        "gid": 20,
+        "inode": 559133079,
+        "mode": 448,
+        "uid": 502
+      },
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/owned/owned-gym"
+    }
+  },
+  "version": 1
+}

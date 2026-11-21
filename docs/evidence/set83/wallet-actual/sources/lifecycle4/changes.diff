@@ -1,0 +1,52 @@
+--- before/operator-lifecycle.sh
++++ after/operator-lifecycle.sh
+@@ -5,8 +5,8 @@
+ PATH=/usr/local/bin:/usr/bin:/bin
+ export PATH
+ BASE=/data/hosted-test-5
+-EVIDENCE=$BASE/set83-ui3-lifecycle
+-SELF=/usr/local/bin/host-paid-ui3-lifecycle-83
++EVIDENCE=$BASE/set83-ui4-lifecycle
++SELF=/usr/local/bin/host-paid-ui4-lifecycle-83
+ BIN=/usr/local/bin/slugpoold
+ SETUP=$BASE/private/selected-setup.json
+ CERT=$BASE/set83-ui-private/tls-cert.pem
+@@ -107,6 +107,29 @@
+         [ "$(stat -c '%s' "$BASE/set83-ui-lifecycle/01/result.json")" = 408 ] || fail 'exact original UI clean result changed'
+     [ "$(cat "$BASE/set83-ui-lifecycle/01/selection.sha256")" = "$selection_sha" ] &&
+         [ "$(cat "$BASE/set83-ui-lifecycle/01/certificate.sha256")" = "$certificate_sha" ] || fail 'original prepared UI selection changed'
++    # Prior UI3 reached its deadline. The original child and monitor joined,
++    # but clean=false and its active marker remain evidence of that failure.
++    directory "$BASE/set83-ui3-lifecycle"
++    directory "$BASE/set83-ui3-lifecycle/01"
++    directory "$BASE/set83-ui3-lifecycle/active"
++    [ ! -e "$BASE/set83-ui3-lifecycle/01/owner.complete" ] && [ ! -L "$BASE/set83-ui3-lifecycle/01/owner.complete" ] || fail 'prior deadline result must not be relabeled clean'
++    for file in result.json selection.sha256 certificate.sha256 child.waited term.reason owner.pid owner.identity owner.exe child.pid child.identity; do
++        [ -f "$BASE/set83-ui3-lifecycle/01/$file" ] && [ ! -L "$BASE/set83-ui3-lifecycle/01/$file" ] &&
++            [ "$(stat -c '%u:%g:%a:%h' "$BASE/set83-ui3-lifecycle/01/$file")" = 10001:10001:600:1 ] || fail 'prior UI3 joined deadline evidence missing'
++    done
++    [ -f "$BASE/set83-ui3-lifecycle/active/generation" ] && [ ! -L "$BASE/set83-ui3-lifecycle/active/generation" ] &&
++        [ "$(stat -c '%u:%g:%a:%h' "$BASE/set83-ui3-lifecycle/active/generation")" = 10001:10001:600:1 ] &&
++        [ "$(cat "$BASE/set83-ui3-lifecycle/active/generation")" = 01 ] || fail 'prior UI3 failed active marker changed'
++    [ "$(hash "$BASE/set83-ui3-lifecycle/01/result.json")" = d2acb5869e704ee5d6cf898cd052be790d15be4007d5896f06269748bdf43ad7 ] &&
++        [ "$(stat -c '%s' "$BASE/set83-ui3-lifecycle/01/result.json")" = 408 ] &&
++        [ "$(cat "$BASE/set83-ui3-lifecycle/01/child.waited")" = 0 ] &&
++        [ "$(cat "$BASE/set83-ui3-lifecycle/01/term.reason")" = deadline ] || fail 'exact prior UI3 joined deadline result changed'
++    [ "$(cat "$BASE/set83-ui3-lifecycle/01/selection.sha256")" = "$selection_sha" ] &&
++        [ "$(cat "$BASE/set83-ui3-lifecycle/01/certificate.sha256")" = "$certificate_sha" ] || fail 'prepared selection or certificate renewed after UI3'
++    [ "$(cat "$BASE/set83-ui3-lifecycle/01/owner.pid")" = 102 ] &&
++        [ "$(cat "$BASE/set83-ui3-lifecycle/01/child.pid")" = 248 ] || fail 'original UI3 process identity changed'
++    if same 102 "$(cat "$BASE/set83-ui3-lifecycle/01/owner.identity")" "$(cat "$BASE/set83-ui3-lifecycle/01/owner.exe")"; then fail 'original UI3 owner still live'; fi
++    if same 248 "$(cat "$BASE/set83-ui3-lifecycle/01/child.identity")" "$BIN"; then fail 'original UI3 child still live'; fi
+ 
+ }
+ 
+@@ -129,7 +152,7 @@
+     prior_paid_owner
+     # Preserve the launch boundary before setsid. All paths are public
+     # evidence inside the fixed protected fixture tree, never private inputs.
+-    launch_root=$BASE/set83-ui3-lifecycle-launch
++    launch_root=$BASE/set83-ui4-lifecycle-launch
+     if [ ! -e "$launch_root" ] && [ ! -L "$launch_root" ]; then mkdir -m 0700 "$launch_root"; fi
+     directory "$launch_root"
+     launch=$launch_root/$gen

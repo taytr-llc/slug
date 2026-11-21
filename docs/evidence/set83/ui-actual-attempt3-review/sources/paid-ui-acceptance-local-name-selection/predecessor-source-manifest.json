@@ -1,0 +1,152 @@
+{
+  "version": 1,
+  "scope": "Source-only exact-Decimal parsing of four named immutable historical public reports; original strict protocol/config/selection parsing unchanged",
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/run.py",
+      "bytes": 19298,
+      "sha256": "9e916551c470c3972d457bc4ed809619c337d607a4ef8b41b815a9c4e729bed2"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/support.py",
+      "bytes": 13035,
+      "sha256": "ed01cd5031a9ac63613e8abf316e9b6091662f5d5bafc310b30fa34d64d6b377"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/expectations.py",
+      "bytes": 9364,
+      "sha256": "68856263ed531db9b5ab4106bc87d5ad5f297632b0e3245b15f14aab752f2f36"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/catalog.py",
+      "bytes": 4802,
+      "sha256": "f355c1a7d567ae7c849d5c7a3617793c7f3c833781eeb0ce920794cdd03ff4b6"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/README.md",
+      "bytes": 5908,
+      "sha256": "68bdd965705a643d4d4eea3fa91cc035bf22f3f4308c608f9d99efd1af752f0c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/audit-source-manifest.json",
+      "bytes": 3154,
+      "sha256": "9421ebf8b9acd24fba3649fdd5630faffa1b3e4b72073b585adfd263e339632b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/audit/main.go",
+      "bytes": 6311,
+      "sha256": "380a0bac75fd26234e80638d3c9bb5ed9a56e859df280c9764f0d10b5ac283fb"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/audit/outbox_audit.go",
+      "bytes": 11444,
+      "sha256": "84fa9a045b9f1edb607cbfdec7948902cdc8f344595bebbc62922862bc8e0f77"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/audit/bindings.go",
+      "bytes": 2506,
+      "sha256": "2519ce9dafdcb5da03623a088f30b3f12e4963d2cc3cf1d799d90109bd6ad6b2"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/audit/go.mod",
+      "bytes": 329,
+      "sha256": "5c5878b6238b385dec82783263637b3394203cbb5f2b272cb925dbe400cad0c6"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/audit/README.md",
+      "bytes": 2611,
+      "sha256": "7eaaa85e7c2183de75319f5f90fa778593ba39087df87162f33c6c604f404c17"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/predecessor-source-manifest.json",
+      "bytes": 5322,
+      "sha256": "0649705b7c8c9b229448505359ca9d7231f76352cff2dea0bcb2beed0f5abc2f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/changes.diff",
+      "bytes": 3737,
+      "sha256": "30fbeef8bd9a9f0cfa6bd41f40cfc0a0cda92884d1e555fd206801dc08b9846b"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/WIRE2.md",
+      "bytes": 10590,
+      "sha256": "20ae3033647feb93ddd5c9ae7af123cd8034f2fa582c212b9b476a03163a347b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/installation-checkpoint.json",
+      "bytes": 13163,
+      "sha256": "5172035995a99bdd149a6721ea6b989c8f56ea1220df9c0ee58af9d68a06f503"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/source-manifest.json",
+      "bytes": 9472,
+      "sha256": "715fd6ac6734ac89b37b456ee0d42d4419d27b6cb27954324bff610c585649a2"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/credentials.py",
+      "bytes": 9886,
+      "sha256": "ec170df91aed54568d72bf99390889acf343b6f9265206429cea6fef70c963c7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/lifecycle/source-manifest.json",
+      "bytes": 2157,
+      "sha256": "56fb3ac420374b3ace1fa414e5e907a5f6410ea2ae700537a185b64f4ea1ac66"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/qualification.json",
+      "bytes": 3310,
+      "sha256": "5050e22b3b90106b2f65fa9263453bb1aa7194c80f64390bb7a8812f61ccbc79"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/proof-confirmed-money.json",
+      "bytes": 3168,
+      "sha256": "6f15c9b75f68fb555846ed8214c6a7269719176f9034c95fc743cd5f479e2d18"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/wallet-confirmed.json",
+      "bytes": 779,
+      "sha256": "a4fd782e71f3d4fb22f36101fdb85407a77fe61ab1532b5f7af078dbbc051902"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/proof-chain.json",
+      "bytes": 7777,
+      "sha256": "133a15bd9432fc627d7b9ddc12ab98aadd0a346285d61f57f8f31fd3c4356e0d"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/public/remote.json",
+      "bytes": 6076,
+      "sha256": "81b2b901eb0329feedfeed5c2dd6eb52c3cce6cb7d6afc3f2b2e24919036811f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/public/setup.json",
+      "bytes": 5509,
+      "sha256": "87db5803e70418affbf492b2716e2104d6902ec9294940141fe97a885a5c3525"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/source-manifest.json",
+      "bytes": 5322,
+      "sha256": "0649705b7c8c9b229448505359ca9d7231f76352cff2dea0bcb2beed0f5abc2f"
+    }
+  ],
+  "build_files": [
+    "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/audit/main.go",
+    "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/audit/outbox_audit.go",
+    "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/audit/bindings.go",
+    "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/audit/go.mod"
+  ],
+  "root_only_execution": true,
+  "executed": false,
+  "validation": [
+    "Python AST only",
+    "all original source/input identities unchanged",
+    "exact narrow diff; no runner import or execution"
+  ],
+  "root_execution_selection": "README.md; fresh protected explicit root selection required",
+  "predecessor": {
+    "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/source-manifest.json",
+    "bytes": 5322,
+    "sha256": "0649705b7c8c9b229448505359ca9d7231f76352cff2dea0bcb2beed0f5abc2f"
+  }
+}

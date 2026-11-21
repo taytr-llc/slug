@@ -29,15 +29,16 @@ The current order is:
    `4a15e8c9`; failed attempts 1–4 remain retained. This is synthetic fixture
    custody and a finite test envelope, not general public-launch approval.
    EF-12/15/18 preserve catch-up, final PID1/provider and status follow-ups.
-2. **Wallet balances and history — active.** Connect and verify the existing authenticated
-   balance, payout and wallet-activity paths against the hosted test service,
-   including dated observations and visible pending/deferred states.
-   Set83's native paid-wallet read/reopen passes: the original 19.8-test-SLUG
-   payment, credits, outbox and protected history survive both lifetimes.
-   The desktop history, own-wallet activity and selected-output display now pass
-   component/reference/race checks. Actual helper/window and package acceptance
-   remain before this item closes; see [Set83](CHANGESET_83_NOTES.md).
-3. **Sign-in and onboarding.** Complete D82 mandatory MFA/passkey support and the
+2. **Wallet balances and history — bounded test complete.** Set83's normal Mac
+   package at `7e1f6b79` passes the actual paid-wallet helper read/reopen and
+   separate native-window check. The window shows the original 19.8-test-SLUG
+   payment, its independently observed wallet output, dated activity and raw
+   transaction details; sign-out clears the view and normal Quit joins cleanly.
+   Both credits, the one immutable payment, 226 protected history files and the
+   unopened original mining attachment remain intact. All six exact-commit
+   GitHub jobs pass. Failed attempts remain recorded; see
+   [Set83](CHANGESET_83_NOTES.md) and its [qualification](docs/evidence/set83/wallet-actual/QUALIFICATION.md).
+3. **Sign-in and onboarding — active.** Complete D82 mandatory MFA/passkey support and the
    approved recovery/reset controls after the pool and wallet flows. Fixture
    buttons are not real authentication; no security requirement is deferred.
 4. **Full joint design review with Mike (D74).** Review the working major flows

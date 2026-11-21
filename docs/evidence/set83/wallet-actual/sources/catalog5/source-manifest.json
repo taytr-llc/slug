@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "scope": "One literal catalog output destination4\u21925 only; same226immutable wallet paths and strict unopenedOLD5 attachment comparison. No runtime.",
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog-attempt5/check-paid-roots.py",
+      "bytes": 7437,
+      "sha256": "5410610fccdba18fb452ca43e72eda39b140e8bd618bd5510cefda145b7d9154"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog-attempt5/check-paid-roots.before.py",
+      "bytes": 7437,
+      "sha256": "d45c6605cfe503e184c73c44ed43296cd1050a4d1bb1356f17e95ab8c8968bad"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog-attempt5/attachment_catalog.py",
+      "bytes": 4802,
+      "sha256": "f355c1a7d567ae7c849d5c7a3617793c7f3c833781eeb0ce920794cdd03ff4b6"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog-attempt5/changes.diff",
+      "bytes": 466,
+      "sha256": "b0d50a77e7a09eeb86d0dd0314640800a8e1302b1e4c679d1ce2352184419bed"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog-attempt5/predecessor-source-manifest.json",
+      "bytes": 3451,
+      "sha256": "adc42ded085ede3017d4bbd76d31794d636e44f75a75be7bdd633bf49e93ab5b"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog-attempt4/check-paid-roots.py",
+      "bytes": 7437,
+      "sha256": "d45c6605cfe503e184c73c44ed43296cd1050a4d1bb1356f17e95ab8c8968bad"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog-attempt4/source-manifest.json",
+      "bytes": 3451,
+      "sha256": "adc42ded085ede3017d4bbd76d31794d636e44f75a75be7bdd633bf49e93ab5b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog-attempt4/attachment_catalog.py",
+      "bytes": 4802,
+      "sha256": "f355c1a7d567ae7c849d5c7a3617793c7f3c833781eeb0ce920794cdd03ff4b6"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/fixture-catalog.json",
+      "bytes": 66249,
+      "sha256": "2637978c2e08637dae2a21bf7fcb8e9ab37edb3476e2b9512c73ff16809b7e55"
+    }
+  ],
+  "output_directory": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5",
+  "script_executed": false,
+  "live_private_files_read": false
+}

@@ -1,0 +1,13 @@
+{
+  "number": 2,
+  "joined": true,
+  "exit_code": 0,
+  "forced": false,
+  "signals": [],
+  "pid": 31512,
+  "pgid": 31512,
+  "started_at_ms": 1795291270551,
+  "report_sha256": "0395d5e0e4c481fc8150fecb12a76bde2a1c304d5a67a7862aeccf94f52d0b6e",
+  "report_bytes": 1219,
+  "ended_at_ms": 1795291270606
+}

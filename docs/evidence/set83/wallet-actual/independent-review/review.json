@@ -1,0 +1,340 @@
+{
+  "version": 1,
+  "status": "source/public evidence review complete; combined component qualification draft for root review",
+  "scope": "actual3 machine helper and separately bounded actual5 native window; no overall pass for failed attempts",
+  "review_execution": {
+    "runtime": false,
+    "builds": false,
+    "network": false,
+    "private_roots_read": false,
+    "checkout_edits": false,
+    "archive_installed_by_reviewer": false
+  },
+  "components": {
+    "actual3_machine": {
+      "passed": true,
+      "elapsed_ms": 62411,
+      "original_window_ms": 299776,
+      "helper_lifetimes": 2,
+      "request_response_pairs": 36,
+      "old_view_refused_after_reopen": true,
+      "original_logout_eof_exit0": true,
+      "start_calls": 0,
+      "issue_calls": 0
+    },
+    "actual5_native": {
+      "passed": true,
+      "evidence_kind": "root-sealed functional CUA accessibility observations and original process result; no appearance/design approval",
+      "package_commit": "7e1f6b7982a4af1ce765d9883417a20d17f46dcf",
+      "app_sha256": "9ffffcd47239522e1e0960192d3423267d096187325c16b5bf09ca72c5c10cfd",
+      "pid": 32615,
+      "natural_exit": true,
+      "signals": [],
+      "app_elapsed_ms": 65241,
+      "original_window_ms": 299882,
+      "host_requested_stop_clean": true,
+      "host_child_and_monitor_joined": true,
+      "local_node_and_relay_exit0": true,
+      "hosted_node_structured_join_timestamp": "2026-11-21T20:21:22.448635914Z",
+      "all_recorded_completion_before_original_deadline": true
+    }
+  },
+  "common_identity": {
+    "config_id": "2a4caf50bf775e0c09fd136cb680d5ab340d4f63732672acc0a7c916ae1e046a",
+    "selection_sha256": "41efc07c1e6a717c091d9f807268d1cb5fd392f02ec00579d5cf4e5e467119aa",
+    "wallet_height": 165,
+    "spendable_atoms": 1980000000,
+    "txid": "2a475d6318ff194115024169265271221aea644a95c7d89e2782ec7492a1afa9",
+    "raw_sha256": "83889f90b7ffcee9d5ae8f283f1a9b74b214da27037549ac1f861abe8466eb8c",
+    "block_hash": "47a427c54e584cd90cfedc0f2918ab4251eee194bd93f2bdf6b8774159acf503",
+    "output_index": 0
+  },
+  "integrity": {
+    "baseline_immutable_paths": 226,
+    "old_attachment_unopened_and_unchanged": true,
+    "fresh_attachment_meta_only": true,
+    "financial_audit_sha256": "1fb4af15f88e0113b7d22938c171ed9367143af1b87a744d9f25ac02be613ae0",
+    "prior_audit_sha256": "a2b1fccc1449b1b91fcb25b03cf97f1d330d555f0a850bc05cbccb7ba1143d13",
+    "body_sha256": "f6f38d28fd38e5a980d1ea7d6920292f61ebcecde13c97f218339ea51b462e6b",
+    "body_credits_and_admissions_exactly_equal_prior": true,
+    "accepted_submissions": 2,
+    "credits": 2,
+    "original_jobs": 2,
+    "births": 2,
+    "batch_sequence": 1,
+    "payment_atoms": 1980000000,
+    "change_atoms": 19999791,
+    "fee_atoms": 209,
+    "all_namespaces_unchanged_claimed": false
+  },
+  "preserved_failures": {
+    "actual1": "historical decimal parser before helper spawn",
+    "actual2": "wrong local name selector before initial snapshot",
+    "actual3": "machine passed; native forced exit-9; host deadline clean:false; no overall pass",
+    "actual4": "zero-peer GBT refusal at Login/Resolve, helper exit1; native forced exit-9; no overall pass"
+  },
+  "limits": [
+    "No new mining or payment",
+    "No D74 appearance/design approval",
+    "No overall Set83, CI or broad launch qualification asserted",
+    "Fresh transport config/attachment is explicit; no repinning or reopening old attachment",
+    "Root owns final archive and qualification"
+  ],
+  "predecessor": {
+    "path": "/Users/taytrrip/slug/set83-prep/ui3-closeout-review/archive-plan.proposed.json",
+    "bytes": 32662,
+    "sha256": "e8edde28451b940afe1cb9e1a1d24c6f77e5fc9f92b9ea74b6dff8a694cc8594"
+  },
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/ui3-closeout-review/archive-plan.proposed.json",
+      "bytes": 32662,
+      "sha256": "e8edde28451b940afe1cb9e1a1d24c6f77e5fc9f92b9ea74b6dff8a694cc8594"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/ui3-closeout-review/manifest.json",
+      "bytes": 859,
+      "sha256": "b083c7e45ae50160b13c844fdc3e6df474ea55b646f831277b4123c2d21aac8f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/ui3-closeout-review/review.json",
+      "bytes": 4158,
+      "sha256": "ffebc86627174173404251b702b62eec7d38b4c8a7b510a89f39dd8ec0f716f0"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/ui3-closeout-review/QUALIFICATION.md",
+      "bytes": 3062,
+      "sha256": "088ab995f8a0bfcca5e7a1d2b81fbf9abb05ecf647c903930ae63b91f01a2f0d"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/machine-report.json",
+      "bytes": 66032,
+      "sha256": "7b42c3c3a3f97743bf0fba5d7bb331367c25ff5373324bb445d234f23ea846bc"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/execution.json",
+      "bytes": 2496,
+      "sha256": "9f29842cc39ff7c8ed81936a5be2a242f0f8414e912415e37b1e2a28d8167f83"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt1/public/audit-before.json",
+      "bytes": 48318,
+      "sha256": "a2b1fccc1449b1b91fcb25b03cf97f1d330d555f0a850bc05cbccb7ba1143d13"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/execution.json",
+      "bytes": 394,
+      "sha256": "ca08c637a3f4d42abc10f64b63a67e89ee12444c0ffc0965164729a71df57fb4"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/empty-outbox-native.json",
+      "bytes": 1219,
+      "sha256": "07281f9b1a7d960f16ca72b1123b69002795e95f30095fff8a6d4cdb0168f759"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/paid-roots-before.json",
+      "bytes": 63394,
+      "sha256": "47ba18d8cc532fc69fa28d5a5584798d820618205449fef32adef4355da2d56b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/paid-roots-after.json",
+      "bytes": 63580,
+      "sha256": "68bed4bfbc66bad64fdc8c3a78e4b704e442877a8eefa73fb4c3571c2f79e9e7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/paid-roots-comparison.json",
+      "bytes": 2741,
+      "sha256": "402fcbab7b51afe3d6cfa1295dc3852bafeb7bbcbd869cf0152b28b82b2f1cf8"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/native-observations.json",
+      "bytes": 1657,
+      "sha256": "170005f65fdcd1440ebf6dc69faadceba2ce9b9b4633202940e32bb0ef506235"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/native-window-process.json",
+      "bytes": 401,
+      "sha256": "90515ca18f76d9f563f7ff57fa925ab78bfaf25a1000246c07c3dd3e0d95d4a6"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/native-window-start.json",
+      "bytes": 328,
+      "sha256": "41592ea2d1b7595fabb4c369af0be7ca51cd8f1451fb05ea5b333735a91219e2"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/native-window.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/native-window.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/closed-outbox-process.json",
+      "bytes": 175,
+      "sha256": "da2d5835060a2e6368d39c3e4a2009836b1f353b6e2eefb6ad462692bc8d1909"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/host-node-cleanup.json",
+      "bytes": 4276,
+      "sha256": "124f010b97ff5632b5d121ba582c33e199e45bd415e40b17d500941e85a09336"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/local-infrastructure-joins.json",
+      "bytes": 1766,
+      "sha256": "ae2d0d11d620896250510de5fb9864ed52d19020058d722f5e4f7ca8e5cedf44"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/audit-after.json",
+      "bytes": 48837,
+      "sha256": "1fb4af15f88e0113b7d22938c171ed9367143af1b87a744d9f25ac02be613ae0"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/closed-host-audit.stdout",
+      "bytes": 66830,
+      "sha256": "437aef139bc0faf9a84c14380aa4b6257595fe583e0bdef382e094c4fc48c865"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/closed-host-audit.stdout.status.json",
+      "bytes": 241,
+      "sha256": "a27f5645d8297e1d0f18c469a60886c6c9601027a26ae1581dbd534950217252"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/operator-stop.json",
+      "bytes": 411,
+      "sha256": "c1ba63dc228a272e090b875c63a43d5224c68cbb1fcfa1f8f64c0eb5100b96ff"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/operator-run.stdout.status.json",
+      "bytes": 238,
+      "sha256": "e94f7fd4b9c0b540b0e60c21586ba03c7a7b175c4ebceccba7df81dd4d3a4514"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/host-lifecycle/launch-start.json",
+      "bytes": 261,
+      "sha256": "905496553cfb05bb4a457fe394609c4f14622fff79f06bda0c64555a683cb952"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/host-lifecycle/launch-wait.json",
+      "bytes": 111,
+      "sha256": "0f018b7b9b6551c6aa67f6e3be6bd8f37aa212cb0a9218af210a3a25bf0390b0"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/host-lifecycle/result.json",
+      "bytes": 410,
+      "sha256": "b4e6efd4024fb0bcdb0787851f36c37ec1b69a0afbeb674f91f2209ce4a5beb1"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/host-lifecycle/owner.complete",
+      "bytes": 41,
+      "sha256": "9966092ad09606df22ad455c08a4c42ecb863040f399f440fbba3637875747f1"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/host-lifecycle/selection.sha256",
+      "bytes": 65,
+      "sha256": "d01d9492ce1a0fec8745f67325c21bbb7cf9075d04f7ce0b8396f87babc5fe22"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/host-lifecycle/certificate.sha256",
+      "bytes": 65,
+      "sha256": "3a36581021d3aa11932fed2b2dead9955ce0367a0dcae0ef6c59d39ba9012ae7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/host-lifecycle/stdout.jsonl",
+      "bytes": 6256,
+      "sha256": "547f3dba516ac477b98281b4e936a241729df67f08703e9111571f0cc606693a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/host-lifecycle/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/execution.json",
+      "bytes": 374,
+      "sha256": "9109d06e1d8b8a187be1d0e176695ea117c1a5620016959a82eae2b4ce6cfabf"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/public/native-window-process.json",
+      "bytes": 429,
+      "sha256": "351b1ed7148b6450fbc4ac67031b878b920b6c5fc093b00fca863760c6d03669"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/public/getconnectioncount-diagnostic.json",
+      "bytes": 104,
+      "sha256": "4835b8a69305ab34e949dc89296a52765edf48d60e839a105fe4733f458d9c0a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/public/getblocktemplate-diagnostic.json",
+      "bytes": 146,
+      "sha256": "6c59804bf563fc132283a9ce131554f22dc1ab53dd6a6ac04faf3a66a6debfce"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/public/relay-restored.json",
+      "bytes": 235,
+      "sha256": "95301b843ded59c87ab0628d232a2d68f4c10c7f8f78a23e5801e2f8db899805"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/public/peer-ready.json",
+      "bytes": 169,
+      "sha256": "b5d6343b6df6b8a4ea0fff0bda20158daaffac4d536ffce98ce7f4fb3b7d53e7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/public/operator-stop.json",
+      "bytes": 411,
+      "sha256": "796f4428a473e98c5e38fe587fc255215df58321041dae43843982f8c389028c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/helper-diagnostic/report.json",
+      "bytes": 2146,
+      "sha256": "3a41b859991af4b24afe03e9e17b9e48473b2f79fb5e6d332b690a430af2dcca"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/helper-diagnostic/helper-1.requests.jsonl",
+      "bytes": 654,
+      "sha256": "25b32de10405df3806519c7d944fccdf2e4c2ff353faea39a3769c72e76b1a89"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/helper-diagnostic/helper-1.stdout.jsonl",
+      "bytes": 1017,
+      "sha256": "a86de900f11e332cc76556ece6681cc00b35a56cf8428758c5e040c7d97e6153"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/helper-diagnostic/helper-1.stderr.log",
+      "bytes": 37,
+      "sha256": "3f8946eafa06a1d4ccd65f3e08a3ea6e505160a50dfdd8bbf49d0ccbb7c48fe6"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/lifecycle/attempt5-successor/source-manifest.json",
+      "bytes": 1952,
+      "sha256": "c72f99c2aeaee7883f6b98866822b474af5a78aa803de2df55ef228b9f8332e5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/lifecycle/attempt5-successor/operator-lifecycle.sh",
+      "bytes": 21798,
+      "sha256": "aa45fd0827b66087155461abb51a451d4ed851503885908242a0919a4242bc6f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog-attempt5/source-manifest.json",
+      "bytes": 2418,
+      "sha256": "c13c933c849ef9eb366dc563e356e126d236ef047acd92c1fce6e474555ce63c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog-attempt5/check-paid-roots.py",
+      "bytes": 7437,
+      "sha256": "5410610fccdba18fb452ca43e72eda39b140e8bd618bd5510cefda145b7d9154"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-window5.py",
+      "bytes": 2708,
+      "sha256": "ab6e225d056e5dfef4386642a70c076137e999b7155ae8faaa31282a63f745ff"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/docs/evidence/set83/wallet-actual/archive-manifest.json",
+      "bytes": 57756,
+      "sha256": "4646c771c552b333e283929154dfb46c14f6f4ebd17a1fc816a15e8a3a942c12"
+    }
+  ]
+}

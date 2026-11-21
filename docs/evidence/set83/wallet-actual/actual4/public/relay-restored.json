@@ -1,0 +1,14 @@
+{
+  "observed_at_ms": 1795292222177,
+  "getconnectioncount": {
+    "error": null,
+    "peers": 0
+  },
+  "getblocktemplate": {
+    "error": {
+      "code": -9,
+      "message": "Bitcoin is not connected"
+    },
+    "height": null
+  }
+}

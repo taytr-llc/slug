@@ -1,0 +1,11 @@
+--- before/run.py
++++ after/run.py
+@@ -245,7 +245,7 @@
+     command=[lock['files']['helper']['path'],'--daily-recoverable-issue','--daily-wallet-helper','--daily-wallet-helper-version=2',
+              '--data-dir',str(OWNED),'--remote-attachment-root',str(attachment),
+              '--remote-config',lock['files']['remote_config']['path'],'--remote-node-rpc',lock['files']['node_rpc']['path'],
+-             '--remote-pool-credential',lock['files']['pool_credential']['path'],'--remote-admission-credential',lock['files']['admission_credential']['path'],'--candidate-name-version=2']
++             '--remote-pool-credential',lock['files']['pool_credential']['path'],'--remote-admission-credential',lock['files']['admission_credential']['path'],'--candidate-name-version=1']
+     try:
+         for generation in (1,2):
+             need(not interrupted[0] and time.monotonic()<deadline-60,'remaining original generation budget')

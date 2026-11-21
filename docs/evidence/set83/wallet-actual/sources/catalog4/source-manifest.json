@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "scope": "Source-only one-literal output-root successor for separate native-only attempt4; original old5 wallet/attachment,226 immutable policy and strict old attachment bytes unchanged",
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog-attempt4/check-paid-roots.py",
+      "bytes": 7437,
+      "sha256": "d45c6605cfe503e184c73c44ed43296cd1050a4d1bb1356f17e95ab8c8968bad"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog-attempt4/check-paid-roots.before.py",
+      "bytes": 7437,
+      "sha256": "27f0b24f2e4fb308d5ce6c0ba8a5a156fd9cc6ec7bfc4ae68a6da3a32094f19a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog-attempt4/attachment_catalog.py",
+      "bytes": 4802,
+      "sha256": "f355c1a7d567ae7c849d5c7a3617793c7f3c833781eeb0ce920794cdd03ff4b6"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog-attempt4/changes.diff",
+      "bytes": 466,
+      "sha256": "52d75927c181d0141c39d01e976d7a8c9d7e6806490c96ddd8b2f990cf2045a5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog-attempt4/predecessor-source-manifest.json",
+      "bytes": 3022,
+      "sha256": "0652f6226e598081569f14695268e4871685fb1f68f203a7a31d54267dc045bb"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog/check-paid-roots.py",
+      "bytes": 7437,
+      "sha256": "27f0b24f2e4fb308d5ce6c0ba8a5a156fd9cc6ec7bfc4ae68a6da3a32094f19a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog/attachment_catalog.py",
+      "bytes": 4802,
+      "sha256": "f355c1a7d567ae7c849d5c7a3617793c7f3c833781eeb0ce920794cdd03ff4b6"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog/source-manifest.json",
+      "bytes": 3022,
+      "sha256": "0652f6226e598081569f14695268e4871685fb1f68f203a7a31d54267dc045bb"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-catalog-review/check-paid-roots.py",
+      "bytes": 6983,
+      "sha256": "32e8580549efdb2dc23ce84a43729d8426bb1058006ac01b892aa1016a773a4e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-catalog-review/source-manifest.json",
+      "bytes": 1010,
+      "sha256": "2abdc947321937b0b2ad41aec00c60ba949aa190e1d3efe78d735b123cb31e2c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/fixture-catalog.json",
+      "bytes": 66249,
+      "sha256": "2637978c2e08637dae2a21bf7fcb8e9ab37edb3476e2b9512c73ff16809b7e55"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/catalog.py",
+      "bytes": 4802,
+      "sha256": "f355c1a7d567ae7c849d5c7a3617793c7f3c833781eeb0ce920794cdd03ff4b6"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/audit-source-manifest.json",
+      "bytes": 3154,
+      "sha256": "9421ebf8b9acd24fba3649fdd5630faffa1b3e4b72073b585adfd263e339632b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/source-manifest.json",
+      "bytes": 5322,
+      "sha256": "0649705b7c8c9b229448505359ca9d7231f76352cff2dea0bcb2beed0f5abc2f"
+    }
+  ],
+  "script_executed": false,
+  "private_roots_read": false,
+  "output_directory": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4"
+}

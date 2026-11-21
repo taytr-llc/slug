@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "scope": "Source-only closed fresh empty attachment audit and unopened OLD5 hash catalog; no financial or runtime claim.",
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/audit/main.go",
+      "bytes": 6311,
+      "sha256": "380a0bac75fd26234e80638d3c9bb5ed9a56e859df280c9764f0d10b5ac283fb"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/audit/outbox_audit.go",
+      "bytes": 11444,
+      "sha256": "84fa9a045b9f1edb607cbfdec7948902cdc8f344595bebbc62922862bc8e0f77"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/audit/bindings.go",
+      "bytes": 2506,
+      "sha256": "2519ce9dafdcb5da03623a088f30b3f12e4963d2cc3cf1d799d90109bd6ad6b2"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/audit/go.mod",
+      "bytes": 329,
+      "sha256": "5c5878b6238b385dec82783263637b3394203cbb5f2b272cb925dbe400cad0c6"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/audit/README.md",
+      "bytes": 2611,
+      "sha256": "7eaaa85e7c2183de75319f5f90fa778593ba39087df87162f33c6c604f404c17"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/catalog.py",
+      "bytes": 4802,
+      "sha256": "f355c1a7d567ae7c849d5c7a3617793c7f3c833781eeb0ce920794cdd03ff4b6"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/proofclient/outbox_audit.go",
+      "bytes": 11444,
+      "sha256": "84fa9a045b9f1edb607cbfdec7948902cdc8f344595bebbc62922862bc8e0f77"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/proofclient/bindings.go",
+      "bytes": 3243,
+      "sha256": "0f3954f9d49a0286e2c3f4ce5c9ef1d3267c789de0bf47736d90684e7744a1b2"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/proofclient/go.mod",
+      "bytes": 389,
+      "sha256": "48a24758c29654ed272301267d377e1540c26f56cb88f9c66283c7d6af11f44b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-catalog-review/check-paid-roots.py",
+      "bytes": 6983,
+      "sha256": "32e8580549efdb2dc23ce84a43729d8426bb1058006ac01b892aa1016a773a4e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectworker/pool_issue_outbox.go",
+      "bytes": 11027,
+      "sha256": "12d7c0a66e7dfbb175c58a63f5fe1a7efdaf3b10b764aafc83a687f8fe9183f4"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_issue_recovery.go",
+      "bytes": 7314,
+      "sha256": "18ab16d5402052ed91ec174ddf0da006db8a0b0907221be211b6ec4ba2e393e2"
+    }
+  ],
+  "checks": [
+    "catalog AST only",
+    "qualified outbox leaf byte-identical",
+    "two original binding bodies exact"
+  ],
+  "go_executed": false,
+  "product_or_live_data_read": false,
+  "runtime_authority": "root only; parent bounds and joins original helper within remaining 300-second deadline",
+  "predecessor": {
+    "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/audit-before-walk-errors/audit-source-manifest.json",
+    "bytes": 2912,
+    "sha256": "9859f3fce83f0bebb55ce550458cde3a0ceecd47819beebf23c41a8e0351868d"
+  }
+}

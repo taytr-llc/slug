@@ -411,3 +411,31 @@ blocker once the concrete startup configuration is corrected.
 - **Revisit:** If it recurs, or during build-toolchain qualification before
   distribution. Do not alter product dependencies or compiler settings merely
   to repair this cache.
+
+## EF-20 — Failed wallet attachment obscures a missing node peer
+
+**Status:** Open diagnostic and failed-session recovery follow-up. Nonblocking
+for the bounded test with its node prerequisites verified; revisit before
+external tester onboarding.
+
+- **Trigger:** The selected node has zero peers when the DAILY wallet attaches.
+  Attachment intentionally resolves a normal mining template; node height alone
+  does not satisfy the existing connected/current-node requirements.
+- **Player impact:** Sign-in shows an unavailable/unknown outcome. The helper
+  exits with failure and native Quit retains a cleanup error, even when the
+  helper process has ended. The message does not identify the missing peer.
+- **Evidence:** [Attempt4 RPC diagnostics](evidence/set83/wallet-actual/actual4/public/getblocktemplate-diagnostic.json)
+  record error -9 with zero connections. [Restored prerequisites](evidence/set83/wallet-actual/actual4/public/peer-ready.json)
+  show one peer and a valid template. The unchanged package then passes
+  [attempt5](evidence/set83/wallet-actual/QUALIFICATION.md). Source boundaries are
+  `desktop/pilot/remote_pool_attachment.go`, `prospectnode/client.go`,
+  `desktop/pilot/remote_pool_daily_serve.go` and the native WIRE2 cleanup owner.
+- **Workaround:** Verify the original node's peer and template before the bounded
+  test. After a failed attempt, retain its evidence, verify its helper has ended,
+  close the failed fixture app and reopen the same wallet after restoring the
+  connection. Do not reset data, auto-repeat an uncertain mutation, weaken
+  template checks or label a nonzero helper exit clean.
+- **Revisit:** Before external tester onboarding, improve the safe public
+  diagnosis and explicit failed-session close/reopen path. Promote now only if
+  it prevents the agreed test after its prerequisites are restored, loses data,
+  or changes security or payment correctness.

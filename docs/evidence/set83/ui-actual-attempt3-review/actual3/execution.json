@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "approved_by": "root",
+  "execution_authorized": true,
+  "started_at_ms": 1795291208224,
+  "deadline_at_ms": 1795291508000,
+  "artifacts": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3",
+  "attachment_root": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/remote-attachment",
+  "files": {
+    "helper": {
+      "path": "/Users/taytrrip/slug/artifacts/set83/remote-package/SLUG Remote Pool Pilot.app/Contents/Resources/bin/slugpilot",
+      "bytes": 35941248,
+      "sha256": "8c61109cd45107c5cc565769d9a2b414b8ab39c8e6774f3bfaf9e948e4e50f82"
+    },
+    "audit_helper": {
+      "path": "/Users/taytrrip/slug/artifacts/set83/paid-ui-audit-build/empty-attachment-audit",
+      "bytes": 12141234,
+      "sha256": "ca909c7a29fc381dbd6d3c2ca688a023ead8c0db5fcae3b0b2496618cc20df3a"
+    },
+    "preparation": {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt1/prepared/selection.json",
+      "bytes": 628,
+      "sha256": "41efc07c1e6a717c091d9f807268d1cb5fd392f02ec00579d5cf4e5e467119aa"
+    },
+    "selection_check": {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt1/public/selection-check.json",
+      "bytes": 1056,
+      "sha256": "e242edc0128969d1bd756136913a63ad988b52778a2f9d25ef25ff8f1b19caa1"
+    },
+    "remote_config": {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt1/client-inputs/remote-config.json",
+      "bytes": 6118,
+      "sha256": "d417de9e7ab615c996ab6c3a4c1c65808f35ee6487c363483f5889c4a84df2d1"
+    },
+    "node_rpc": {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt1/client-inputs/remote-rpc.json",
+      "bytes": 117,
+      "sha256": "fa45749d8c0dc4387204c5112b4013aaaea8e1fe068b7072df4d845cf460ac2a"
+    },
+    "pool_credential": {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt1/client-inputs/pool.credential",
+      "bytes": 414,
+      "sha256": "334720aa9dc05f4eb0ca6c832335d0e558ae6385d64fe5da7f2a7915de063f80"
+    },
+    "admission_credential": {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt1/client-inputs/admission.credential",
+      "bytes": 419,
+      "sha256": "4b2b2c70996f55cf0c1369a824395688c04ae43a6fec31f29c51242de9d5cdd1"
+    },
+    "source_manifest": {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-local-name-selection/source-manifest.json",
+      "bytes": 9962,
+      "sha256": "28a008f36e1853635421a86ee075728a6a70d7bfcad79e57bacc33901e7f4301"
+    }
+  }
+}

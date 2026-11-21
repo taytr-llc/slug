@@ -1,0 +1,40 @@
+--- before/operator-lifecycle.sh
++++ after/operator-lifecycle.sh
+@@ -5,8 +5,8 @@
+ PATH=/usr/local/bin:/usr/bin:/bin
+ export PATH
+ BASE=/data/hosted-test-5
+-EVIDENCE=$BASE/set83-ui4-lifecycle
+-SELF=/usr/local/bin/host-paid-ui4-lifecycle-83
++EVIDENCE=$BASE/set83-ui5-lifecycle
++SELF=/usr/local/bin/host-paid-ui5-lifecycle-83
+ BIN=/usr/local/bin/slugpoold
+ SETUP=$BASE/private/selected-setup.json
+ CERT=$BASE/set83-ui-private/tls-cert.pem
+@@ -130,6 +130,17 @@
+         [ "$(cat "$BASE/set83-ui3-lifecycle/01/child.pid")" = 248 ] || fail 'original UI3 process identity changed'
+     if same 102 "$(cat "$BASE/set83-ui3-lifecycle/01/owner.identity")" "$(cat "$BASE/set83-ui3-lifecycle/01/owner.exe")"; then fail 'original UI3 owner still live'; fi
+     if same 248 "$(cat "$BASE/set83-ui3-lifecycle/01/child.identity")" "$BIN"; then fail 'original UI3 child still live'; fi
++    directory "$BASE/set83-ui4-lifecycle"
++    directory "$BASE/set83-ui4-lifecycle/01"
++    [ ! -e "$BASE/set83-ui4-lifecycle/active" ] && [ ! -L "$BASE/set83-ui4-lifecycle/active" ] || fail 'prior UI4 owner or failed lock remains'
++    for file in owner.complete result.json selection.sha256 certificate.sha256; do
++        [ -f "$BASE/set83-ui4-lifecycle/01/$file" ] && [ ! -L "$BASE/set83-ui4-lifecycle/01/$file" ] &&
++            [ "$(stat -c '%u:%g:%a:%h' "$BASE/set83-ui4-lifecycle/01/$file")" = 10001:10001:600:1 ] || fail 'prior UI4 clean owner evidence missing'
++    done
++    [ "$(hash "$BASE/set83-ui4-lifecycle/01/result.json")" = 26559da2bc6ea5335165be990231b89906a5237613ea70017bdf3e7370dc1692 ] &&
++        [ "$(stat -c '%s' "$BASE/set83-ui4-lifecycle/01/result.json")" = 410 ] || fail 'exact original UI4 clean result changed'
++    [ "$(cat "$BASE/set83-ui4-lifecycle/01/selection.sha256")" = "$selection_sha" ] &&
++        [ "$(cat "$BASE/set83-ui4-lifecycle/01/certificate.sha256")" = "$certificate_sha" ] || fail 'prepared selection or certificate renewed after UI4'
+ 
+ }
+ 
+@@ -152,7 +163,7 @@
+     prior_paid_owner
+     # Preserve the launch boundary before setsid. All paths are public
+     # evidence inside the fixed protected fixture tree, never private inputs.
+-    launch_root=$BASE/set83-ui4-lifecycle-launch
++    launch_root=$BASE/set83-ui5-lifecycle-launch
+     if [ ! -e "$launch_root" ] && [ ! -L "$launch_root" ]; then mkdir -m 0700 "$launch_root"; fi
+     directory "$launch_root"
+     launch=$launch_root/$gen

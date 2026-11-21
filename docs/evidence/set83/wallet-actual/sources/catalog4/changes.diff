@@ -1,0 +1,11 @@
+--- before/check-paid-roots.py
++++ after/check-paid-roots.py
+@@ -10,7 +10,7 @@
+ from attachment_catalog import snapshot_old, compare_old
+ 
+ W = Path('/Users/taytrrip/slug')
+-A = W / 'artifacts/set83/ui-actual-attempt1'
++A = W / 'artifacts/set83/ui-actual-attempt4'
+ OLD = W / 'artifacts/set82/hosted-actual-attempt5'
+ CAT = W / 'set81-prep/retained-admission-actual/fixture-catalog.json'
+ CAT_SHA = '2637978c2e08637dae2a21bf7fcb8e9ab37edb3476e2b9512c73ff16809b7e55'

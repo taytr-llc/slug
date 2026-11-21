@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "started_at_ms": 1795291311731,
+  "deadline_at_ms": 1795291508000,
+  "app_sha256": "9ffffcd47239522e1e0960192d3423267d096187325c16b5bf09ca72c5c10cfd",
+  "signals": [
+    "TERM",
+    "KILL"
+  ],
+  "joined": true,
+  "pid": 31540,
+  "pgid": 31540,
+  "exit_code": -9,
+  "ended_at_ms": 1795291493090,
+  "natural_exit": false
+}

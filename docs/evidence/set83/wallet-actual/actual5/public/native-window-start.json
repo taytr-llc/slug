@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "started_at_ms": 1795292344916,
+  "deadline_at_ms": 1795292628000,
+  "source_sha256": "ab6e225d056e5dfef4386642a70c076137e999b7155ae8faaa31282a63f745ff",
+  "app_sha256": "9ffffcd47239522e1e0960192d3423267d096187325c16b5bf09ca72c5c10cfd",
+  "signals": [],
+  "joined": false,
+  "pid": 32615,
+  "pgid": 32615
+}

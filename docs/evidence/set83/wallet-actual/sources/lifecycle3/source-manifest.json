@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "scope": "Fresh UI attempt3 lifecycle namespace and original attempt2 clean-owner precondition only. Same paidroot/setup/binary/key/prepared selection and expiry; new <=300s deadline only in fresh namespace, never overwrite prior deadlines.",
+  "before": {
+    "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/lifecycle/attempt3-successor/operator-lifecycle.before.sh",
+    "bytes": 17301,
+    "sha256": "0be116c81c2ddfd1bff37895188c51b26fa7cbac98be2c8b783c431150de23a8"
+  },
+  "after": {
+    "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/lifecycle/attempt3-successor/operator-lifecycle.sh",
+    "bytes": 18354,
+    "sha256": "3c43cac2c529d08b97cc0ff1cb703ea4a413abeb04d813ce3f69afb90eddaa9f"
+  },
+  "diff": {
+    "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/lifecycle/attempt3-successor/changes.diff",
+    "bytes": 2402,
+    "sha256": "c9bd4d72885cf769d9c01e540734fe7b4ab303dffe32ee1a4a0a0e53849a320f"
+  },
+  "original_unchanged": {
+    "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/lifecycle/public-selection-guard-successor/operator-lifecycle.sh",
+    "bytes": 17301,
+    "sha256": "0be116c81c2ddfd1bff37895188c51b26fa7cbac98be2c8b783c431150de23a8"
+  },
+  "prior_public_stop": {
+    "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt2/public/operator-stop.json",
+    "bytes": 409,
+    "sha256": "c0be7b0cc8cc17bba3a2d7faa7b54bf26ac851d4ac88ea9eed40290a70fac690"
+  },
+  "derived_host_stop": {
+    "path": "/data/hosted-test-5/set83-ui-lifecycle/01/result.json",
+    "bytes": 408,
+    "sha256": "4c3dd73f0f55e5ed7f8475cd8cabcbd80ff4e8fd42b7b67f443a3401adf67de0",
+    "derivation": "Replace the one terminal SSH CRLF with original wrapper LF; JSON structure unchanged. Host exact hash/length must match before admission."
+  },
+  "script_executed": false,
+  "live_private_files_read": false
+}

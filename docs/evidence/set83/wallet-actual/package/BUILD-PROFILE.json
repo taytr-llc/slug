@@ -1,0 +1,7 @@
+{
+  "version": 1,
+  "id": "slug-go1274-no-cse-v1",
+  "go_version": "go1.27.4",
+  "gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+  "scope": "candidate_engineering"
+}

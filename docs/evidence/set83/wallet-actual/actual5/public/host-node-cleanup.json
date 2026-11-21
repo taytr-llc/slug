@@ -1,0 +1,168 @@
+{
+  "scope": "deployment",
+  "deploymentId": "2c78bcb4-00ef-4f00-bf60-e0f1f04f4b7e",
+  "serviceId": "c7ba8d73-fe01-418e-8f7b-14a141da8043",
+  "environmentId": "3fd7da79-0f2f-4077-bf29-e7035d62ac57",
+  "status": "SUCCESS",
+  "deploy": [
+    {
+      "timestamp": "2026-11-21T20:21:22.448597555Z",
+      "severity": "info",
+      "message": "2026-11-21 20:21:17.222 [INF] SYNC: Lost peer 127.0.0.1:38580 (inbound)",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T20:21:22.448600845Z",
+      "severity": "info",
+      "message": "2026-11-21 20:21:21.444 [INF] BTCD: Received signal (terminated).  Shutting down...",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T20:21:22.448604515Z",
+      "severity": "info",
+      "message": "2026-11-21 20:21:21.445 [INF] BTCD: Gracefully shutting down the server...",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T20:21:22.448608045Z",
+      "severity": "info",
+      "message": "2026-11-21 20:21:21.445 [WRN] SRVR: Server shutting down",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T20:21:22.448611065Z",
+      "severity": "info",
+      "message": "2026-11-21 20:21:21.445 [WRN] RPCS: RPC server shutting down",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T20:21:22.448614465Z",
+      "severity": "info",
+      "message": "2026-11-21 20:21:21.445 [INF] RPCS: RPC server shutdown complete",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T20:21:22.448617725Z",
+      "severity": "info",
+      "message": "2026-11-21 20:21:21.464 [INF] SYNC: Sync manager shutting down",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T20:21:22.448620585Z",
+      "severity": "info",
+      "message": "2026-11-21 20:21:21.464 [INF] CHAN: Flushing UTXO cache of 97 MiB with 1 entries to disk. For large sizes, this can take up to several minutes...",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T20:21:22.448623885Z",
+      "severity": "info",
+      "message": "2026-11-21 20:21:21.468 [INF] AMGR: Address manager shutting down",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T20:21:22.448626945Z",
+      "severity": "info",
+      "message": "2026-11-21 20:21:21.468 [INF] SRVR: Server shutdown complete",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T20:21:22.448629815Z",
+      "severity": "info",
+      "message": "2026-11-21 20:21:21.468 [INF] BTCD: Gracefully shutting down the database...",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T20:21:22.448633004Z",
+      "severity": "info",
+      "message": "2026-11-21 20:21:21.478 [INF] BTCD: Shutdown complete",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T20:21:22.448635914Z",
+      "severity": "info",
+      "message": "",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        },
+        {
+          "key": "version",
+          "value": "1"
+        },
+        {
+          "key": "node_child_joined",
+          "value": "true"
+        },
+        {
+          "key": "relay_joined",
+          "value": "true"
+        },
+        {
+          "key": "clean_shutdown",
+          "value": "true"
+        }
+      ]
+    }
+  ]
+}

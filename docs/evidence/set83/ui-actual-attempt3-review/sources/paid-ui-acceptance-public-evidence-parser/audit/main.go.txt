@@ -1,0 +1,130 @@
+// Closed-owner, public-only empty attachment audit. Root alone executes.
+package main
+
+import (
+ "bytes"
+ "crypto/sha256"
+ "encoding/hex"
+ "encoding/json"
+ "errors"
+ "flag"
+ "fmt"
+ "io"
+ "os"
+ "path/filepath"
+ "syscall"
+ "time"
+
+ "github.com/taytr-llc/slug/desktop/pilot"
+ "github.com/taytr-llc/slug/wire/v2"
+)
+
+const oldAttachment = "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/remote-attachment"
+
+type auditReport struct {
+ Version uint32 `json:"version"`
+ Scope string `json:"scope"`
+ PID int `json:"pid"`
+ ParentPID int `json:"parent_pid"`
+ StartedAtMS int64 `json:"started_at_ms"`
+ EndedAtMS int64 `json:"ended_at_ms"`
+ AttachmentRoot string `json:"attachment_root"`
+ ConfigID string `json:"config_id"`
+ ConfigSHA256 string `json:"config_sha256"`
+ State outboxState `json:"state"`
+ Empty bool `json:"empty"`
+ RootUnchanged bool `json:"root_unchanged"`
+ ConfigUnchanged bool `json:"config_unchanged"`
+ OriginalAuditClosed bool `json:"original_audit_closed"`
+ ProjectionClosed bool `json:"projection_closed"`
+ OldAttachmentOpened bool `json:"old_attachment_opened"`
+ Passed bool `json:"passed"`
+ Error string `json:"error"`
+}
+
+func check(e error, message string) { if e != nil { panic(fmt.Errorf("%s: %w", message, e)) } }
+func require(ok bool, message string) { if !ok { panic(message) } }
+func digest(raw []byte) []byte { h:=sha256.Sum256(raw); return h[:] }
+func hx(raw []byte) string { return hex.EncodeToString(raw) }
+
+func canonicalPath(path string) {
+ require(filepath.IsAbs(path) && filepath.Clean(path)==path, "canonical absolute public path")
+ selected,e:=filepath.EvalSymlinks(path);check(e,"public ancestry")
+ require(selected==path,"nonlinked public ancestry")
+}
+func directory(path string) os.FileInfo {
+ canonicalPath(path)
+ info,e:=os.Lstat(path);check(e,"closed attachment directory")
+ stat,ok:=info.Sys().(*syscall.Stat_t)
+ require(ok && info.IsDir() && info.Mode().Perm()==0700 && stat.Uid==uint32(os.Geteuid()),"owned0700 closed directory")
+ return info
+}
+func sameFile(before, after os.FileInfo) bool {
+ if before==nil || after==nil || !os.SameFile(before,after) || before.Mode()!=after.Mode() || before.Size()!=after.Size() || !before.ModTime().Equal(after.ModTime()) { return false }
+ a,ok:=before.Sys().(*syscall.Stat_t);b,ok2:=after.Sys().(*syscall.Stat_t)
+ return ok && ok2 && a.Uid==b.Uid && a.Gid==b.Gid && a.Nlink==b.Nlink
+}
+func publicFile(path string) (raw []byte, info os.FileInfo) {
+ canonicalPath(path)
+ before,e:=os.Lstat(path);check(e,"public config stat")
+ st,ok:=before.Sys().(*syscall.Stat_t)
+ require(ok && before.Mode().IsRegular() && st.Nlink==1 && before.Size()>0 && before.Size()<=pilot.RecoverableRemotePoolMaxConfigBytes,"bounded public config file")
+ fd,e:=syscall.Open(path,syscall.O_RDONLY|syscall.O_NOFOLLOW,0);check(e,"public config open")
+ f:=os.NewFile(uintptr(fd),path)
+ opened,se:=f.Stat()
+ raw,re:=io.ReadAll(io.LimitReader(f,pilot.RecoverableRemotePoolMaxConfigBytes+1))
+ after,ae:=f.Stat()
+ ce:=f.Close()
+ check(errors.Join(se,re,ae,ce),"public config read and close")
+ named,e:=os.Lstat(path);check(e,"public config retained name")
+ require(sameFile(before,opened)&&sameFile(before,after)&&sameFile(before,named)&&int64(len(raw))==before.Size(),"public config unchanged during read")
+ return raw,before
+}
+
+func audit(root, config string) (out auditReport) {
+ out=auditReport{Version:1,Scope:"Closed original selected outbox audit then bounded StrictAll public projection; no wallet, network, Start or Issue",PID:os.Getpid(),ParentPID:os.Getppid(),StartedAtMS:time.Now().UnixMilli(),AttachmentRoot:root}
+ defer func(){
+  if p:=recover();p!=nil { out.Error=fmt.Sprint(p) }
+  out.EndedAtMS=time.Now().UnixMilli()
+  out.Passed=out.Error=="" && out.Empty && out.RootUnchanged && out.ConfigUnchanged && out.OriginalAuditClosed && out.ProjectionClosed && out.State.ReadOnlyUnchanged
+ }()
+ require(!wire.TestPoW,"normal profile required")
+ require(root!=oldAttachment,"old attachment remains unopened")
+ original:=directory(root)
+ raw,originalConfig:=publicFile(config)
+ c,e:=pilot.ParseRecoverableRemotePoolConfig(raw);check(e,"original selected remote config")
+ canonical,e:=pilot.MarshalRecoverableRemotePoolConfig(c);check(e,"selected config canonical encoding")
+ require(bytes.Equal(raw,canonical),"exact canonical public config without LF")
+ out.ConfigID,e=pilot.RecoverableRemotePoolConfigID(c);check(e,"selected config ID")
+ out.ConfigSHA256=hx(digest(raw))
+ rows,state:=readOutbox(root,c)
+ out.OriginalAuditClosed=true;out.ProjectionClosed=true;out.State=state
+ require(len(rows)==0 && state.Records==0 && state.Pending==0 && state.Requests==0 && state.ActiveRequestID=="" && state.LogicalBytes==0 && state.Reserved==0 && state.ScanSHA256=="" && state.ScanRequestID=="" && state.CursorSHA256=="" && state.NextNonce==0 && state.NamespaceRows==1 && state.ReadOnlyUnchanged,"exact empty selected q/e/h/p/scan/cursor census; meta only")
+ out.Empty=true
+ now:=directory(root);require(sameFile(original,now),"same closed attachment root")
+ out.RootUnchanged=true
+ again,named:=publicFile(config);require(bytes.Equal(raw,again)&&sameFile(originalConfig,named),"same selected config after closed audit")
+ out.ConfigUnchanged=true
+ return
+}
+
+func writeReport(path string, out auditReport) error {
+ if !filepath.IsAbs(path)||filepath.Clean(path)!=path { return errors.New("absolute fresh report path required") }
+ directory(filepath.Dir(path))
+ raw,e:=json.Marshal(out);if e!=nil{return e}
+ if len(raw)>64<<10{return errors.New("public report bound")};raw=append(raw,'\n')
+ f,e:=os.OpenFile(path,os.O_WRONLY|os.O_CREATE|os.O_EXCL,0600);if e!=nil{return e}
+ n,we:=f.Write(raw);if n!=len(raw){we=errors.Join(we,io.ErrShortWrite)}
+ se:=f.Sync();ce:=f.Close();return errors.Join(we,se,ce)
+}
+func main() {
+ var root,config,report string
+ flag.StringVar(&root,"attachment-root","","fresh closed attachment root")
+ flag.StringVar(&config,"remote-config","","selected public remote config")
+ flag.StringVar(&report,"report","","fresh public output")
+ flag.Parse()
+ if flag.NArg()!=0||root==""||config==""||report==""{fmt.Fprintln(os.Stderr,"three explicit selected paths required");os.Exit(2)}
+ out:=audit(root,config)
+ e:=writeReport(report,out)
+ if e!=nil||!out.Passed {fmt.Fprintln(os.Stderr,"closed empty-attachment audit failed");os.Exit(1)}
+}

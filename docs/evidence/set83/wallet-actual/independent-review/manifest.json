@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "scope": "Immutable combined public review draft, no execution or installation",
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/combined-ui-closeout-review/QUALIFICATION.md",
+      "bytes": 5254,
+      "sha256": "85bf6c494411fc0a35359cbea017d3c6f8ccf7e94b377c19a5d6bae5d9bb1294"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/combined-ui-closeout-review/review.json",
+      "bytes": 14704,
+      "sha256": "17a09824b87fcb5060c226d88fe89179fcf8d57be115d7554872e5364c023353"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/combined-ui-closeout-review/archive-plan.proposed.json",
+      "bytes": 20675,
+      "sha256": "2f8d176a8f36e7ac65a0960b35dd38353bca8f7047ebd975c1fe714ef0997066"
+    }
+  ],
+  "input_count": 50,
+  "predecessor_verified_unchanged": {
+    "path": "/Users/taytrrip/slug/set83-prep/ui3-closeout-review/archive-plan.proposed.json",
+    "bytes": 32662,
+    "sha256": "e8edde28451b940afe1cb9e1a1d24c6f77e5fc9f92b9ea74b6dff8a694cc8594"
+  },
+  "root_archive": {
+    "path": "/Users/taytrrip/slug/slug/docs/evidence/set83/wallet-actual/archive-manifest.json",
+    "bytes": 57756,
+    "sha256": "4646c771c552b333e283929154dfb46c14f6f4ebd17a1fc816a15e8a3a942c12"
+  }
+}

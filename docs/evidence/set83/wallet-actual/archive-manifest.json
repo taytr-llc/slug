@@ -1,0 +1,1085 @@
+{
+  "version": 1,
+  "scope": "Explicit public source/results only; no credential contents, private keys or wallet/database contents",
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/execution.json",
+      "bytes": 2496,
+      "sha256": "9f29842cc39ff7c8ed81936a5be2a242f0f8414e912415e37b1e2a28d8167f83",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/execution.json",
+      "role": "machine public evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/machine-report.json",
+      "bytes": 66032,
+      "sha256": "7b42c3c3a3f97743bf0fba5d7bb331367c25ff5373324bb445d234f23ea846bc",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/machine-report.json",
+      "role": "machine public evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/old-attachment-before.json",
+      "bytes": 4516,
+      "sha256": "d793a294c30782d72a0cccf089f38a95821a35ebc5c17da6f9c6cee868a804b3",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/old-attachment-before.json",
+      "role": "machine public evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/old-attachment-after.json",
+      "bytes": 4516,
+      "sha256": "d793a294c30782d72a0cccf089f38a95821a35ebc5c17da6f9c6cee868a804b3",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/old-attachment-after.json",
+      "role": "machine public evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/old-attachment-comparison.json",
+      "bytes": 127,
+      "sha256": "2d6fccddc7f0762cc1fcf1f9cf79b6ff75a1b9a153a56a243d5944239e7479b5",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/old-attachment-comparison.json",
+      "role": "machine public evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/helper-1.requests.jsonl",
+      "bytes": 6636,
+      "sha256": "58cf8da1b3bae20b0abd9d65fed10c85f1121a89ef190f28a90ebcf97eb4c96f",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/helper-1.requests.jsonl",
+      "role": "machine public evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/helper-1.stdout.jsonl",
+      "bytes": 35074,
+      "sha256": "6062138b1811fa85dc4844a7f2067d738ec595836cd47020b83c802ac5dd8a7a",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/helper-1.stdout.jsonl",
+      "role": "machine public evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/helper-1.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/helper-1.stderr.log",
+      "role": "machine public evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/helper-2.requests.jsonl",
+      "bytes": 7421,
+      "sha256": "a013f71728d71f233407fec5ac03a66f2ffb46ac79583082f7b133b9102e8e68",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/helper-2.requests.jsonl",
+      "role": "machine public evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/helper-2.stdout.jsonl",
+      "bytes": 35947,
+      "sha256": "38e4742b5d8cf132badfa63a063bb078f898f4f42cfa8617f6594e23928a80e5",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/helper-2.stdout.jsonl",
+      "role": "machine public evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/helper-2.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/helper-2.stderr.log",
+      "role": "machine public evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/empty-outbox-1.json",
+      "bytes": 1219,
+      "sha256": "a5cfbc4f9e2aae8a3307064e43adf2b806eb3ced13d529568e9012cb83c4f176",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/empty-outbox-1.json",
+      "role": "machine public evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/empty-outbox-1.process.json",
+      "bytes": 300,
+      "sha256": "337e4b28dd40b2921925f47a10ac6b02ba8b511516432a815bc80dbc114b15df",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/empty-outbox-1.process.json",
+      "role": "machine public evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/empty-outbox-1.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/empty-outbox-1.stdout",
+      "role": "machine public evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/empty-outbox-1.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/empty-outbox-1.stderr",
+      "role": "machine public evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/empty-outbox-2.json",
+      "bytes": 1219,
+      "sha256": "0395d5e0e4c481fc8150fecb12a76bde2a1c304d5a67a7862aeccf94f52d0b6e",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/empty-outbox-2.json",
+      "role": "machine public evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/empty-outbox-2.process.json",
+      "bytes": 300,
+      "sha256": "89cb9596594376577db279865e5a1ab468a305073b14424ab510eaa26a47ee60",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/empty-outbox-2.process.json",
+      "role": "machine public evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/empty-outbox-2.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/empty-outbox-2.stdout",
+      "role": "machine public evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/empty-outbox-2.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/empty-outbox-2.stderr",
+      "role": "machine public evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/public/install-preflight-failure.json",
+      "bytes": 159,
+      "sha256": "eb484e759250bb7b074e720b01a3df3da583fa3e803706d10b56c8529f338e18",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/public/install-preflight-failure.json",
+      "role": "public native/host or preparation result; no overall pass"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/public/lifecycle-install.stdout",
+      "bytes": 306,
+      "sha256": "09552cd62d6569eb138fa887dc5dc466e04c9131c779cd908ba5e76b3021571b",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/public/lifecycle-install.stdout",
+      "role": "public native/host or preparation result; no overall pass"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/public/lifecycle-install.stdout.status.json",
+      "bytes": 242,
+      "sha256": "fe469ebd96b2f6849939eca115432357e9fcbc477f87c4f05f92d418dfa3399d",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/public/lifecycle-install.stdout.status.json",
+      "role": "public native/host or preparation result; no overall pass"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/public/lifecycle-install.stdout.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/public/lifecycle-install.stdout.stderr",
+      "role": "public native/host or preparation result; no overall pass"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/public/machine-run.stdout",
+      "bytes": 106,
+      "sha256": "b2bf43fc045bba7a89429bdf9a7e3ee6c40caf0be063cdbe45c242f615b7663b",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/public/machine-run.stdout",
+      "role": "public native/host or preparation result; no overall pass"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/public/machine-run.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/public/machine-run.stderr",
+      "role": "public native/host or preparation result; no overall pass"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/public/native-window-start.json",
+      "bytes": 241,
+      "sha256": "8f01a6dab32357fdef22b3b644cb6e69be43e24c92aaf9e42cbff69da34085fd",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/public/native-window-start.json",
+      "role": "public native/host or preparation result; no overall pass"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/public/native-window-process.json",
+      "bytes": 342,
+      "sha256": "55ce22efeddba55b90154aaa712066a072359881c069532f7c79bdf98ea7e404",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/public/native-window-process.json",
+      "role": "public native/host or preparation result; no overall pass"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/public/native-window.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/public/native-window.stdout",
+      "role": "public native/host or preparation result; no overall pass"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/public/native-window.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/public/native-window.stderr",
+      "role": "public native/host or preparation result; no overall pass"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/public/operator-listening.json",
+      "bytes": 144,
+      "sha256": "42425b7af5e3f7f0f72d2b67b219a9b73f96cb5e2de26656741a25a44119b5ae",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/public/operator-listening.json",
+      "role": "public native/host or preparation result; no overall pass"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/public/operator-listening.json.status.json",
+      "bytes": 241,
+      "sha256": "fa939d75f166d38b075aa9e3550906b3727d346c212216b0320ffdd432a1716e",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/public/operator-listening.json.status.json",
+      "role": "public native/host or preparation result; no overall pass"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/public/operator-listening.json.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/public/operator-listening.json.stderr",
+      "role": "public native/host or preparation result; no overall pass"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/public/operator-run.stdout",
+      "bytes": 98,
+      "sha256": "b4178fd26609a0d0a4855585d6c3330d1a842da6c3bb7bbebca8f9cc79a332e6",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/public/operator-run.stdout",
+      "role": "public native/host or preparation result; no overall pass"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/public/operator-run.stdout.status.json",
+      "bytes": 237,
+      "sha256": "87dddaa1b1702391c0f9673c9f8fe0fc5c83671dd78032c8cb90edb409e54cf8",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/public/operator-run.stdout.status.json",
+      "role": "public native/host or preparation result; no overall pass"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/public/operator-run.stdout.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/public/operator-run.stdout.stderr",
+      "role": "public native/host or preparation result; no overall pass"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/public/closed-host-audit.stdout",
+      "bytes": 66887,
+      "sha256": "9b39b375be14e4075c7852a6e0a4efe2eca3ac020c089f86d5b8733cca8e4af4",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/public/closed-host-audit.stdout",
+      "role": "public native/host or preparation result; no overall pass"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/public/closed-host-audit.stdout.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/actual3/public/closed-host-audit.stdout.stderr",
+      "role": "public native/host or preparation result; no overall pass"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt1/public/machine-run.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/failed-attempt1/public/machine-run.stdout",
+      "role": "preserved failed machine attempt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt1/public/machine-run.stderr",
+      "bytes": 1483,
+      "sha256": "d3e479967e3968a1346d5df9e491ac8fa12b434ec8d37d1410721993524c1a12",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/failed-attempt1/public/machine-run.stderr",
+      "role": "preserved failed machine attempt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt2/machine-report.json",
+      "bytes": 1531,
+      "sha256": "f2d4f424d3c604409029c8d3577d846a6beeae2d0368680de1cf48a2b0166cf0",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/failed-attempt2/machine-report.json",
+      "role": "preserved failed machine attempt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt2/public/runner-preflight.json",
+      "bytes": 221,
+      "sha256": "3f6cb0500c9429713580247e8706a6e54ecea831cbb158aa878d59adef2560d6",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/failed-attempt2/public/runner-preflight.json",
+      "role": "preserved failed machine attempt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt2/public/machine-run.stdout",
+      "bytes": 107,
+      "sha256": "ee01cc5281d598b4b6b81694990beb6c8f4bc684d65193403ad7d562c31c0c30",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/failed-attempt2/public/machine-run.stdout",
+      "role": "preserved failed machine attempt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt2/public/machine-run.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/failed-attempt2/public/machine-run.stderr",
+      "role": "preserved failed machine attempt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt2/helper-1.requests.jsonl",
+      "bytes": 317,
+      "sha256": "aecae015ee0dfc370345d425208bc9f2fe276081affea674636ba75be162a478",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/failed-attempt2/helper-1.requests.jsonl",
+      "role": "preserved failed machine attempt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt2/helper-1.stdout.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/failed-attempt2/helper-1.stdout.jsonl",
+      "role": "preserved failed machine attempt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt2/helper-1.stderr.log",
+      "bytes": 37,
+      "sha256": "3f8946eafa06a1d4ccd65f3e08a3ea6e505160a50dfdd8bbf49d0ccbb7c48fe6",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/failed-attempt2/helper-1.stderr.log",
+      "role": "preserved failed machine attempt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/source-manifest.json",
+      "bytes": 5322,
+      "sha256": "0649705b7c8c9b229448505359ca9d7231f76352cff2dea0bcb2beed0f5abc2f",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance/source-manifest.json",
+      "role": "source selection and predecessor provenance"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/run.py",
+      "bytes": 18491,
+      "sha256": "5b3d21a0e606528ad78ac1eed325a3e03dacb7bc50fc42d8985750acc90711f9",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance/run.py",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/support.py",
+      "bytes": 13035,
+      "sha256": "ed01cd5031a9ac63613e8abf316e9b6091662f5d5bafc310b30fa34d64d6b377",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance/support.py",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/expectations.py",
+      "bytes": 9364,
+      "sha256": "68856263ed531db9b5ab4106bc87d5ad5f297632b0e3245b15f14aab752f2f36",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance/expectations.py",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/catalog.py",
+      "bytes": 4802,
+      "sha256": "f355c1a7d567ae7c849d5c7a3617793c7f3c833781eeb0ce920794cdd03ff4b6",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance/catalog.py",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/README.md",
+      "bytes": 5218,
+      "sha256": "0c89daa40d0c30e874efe0699e65be6866857fdc8e9440d8d41cf92088b2e0c0",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance/README.md",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/audit-source-manifest.json",
+      "bytes": 3154,
+      "sha256": "9421ebf8b9acd24fba3649fdd5630faffa1b3e4b72073b585adfd263e339632b",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance/audit-source-manifest.json",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/audit/main.go",
+      "bytes": 6311,
+      "sha256": "380a0bac75fd26234e80638d3c9bb5ed9a56e859df280c9764f0d10b5ac283fb",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance/audit/main.go.txt",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/audit/outbox_audit.go",
+      "bytes": 11444,
+      "sha256": "84fa9a045b9f1edb607cbfdec7948902cdc8f344595bebbc62922862bc8e0f77",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance/audit/outbox_audit.go.txt",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/audit/bindings.go",
+      "bytes": 2506,
+      "sha256": "2519ce9dafdcb5da03623a088f30b3f12e4963d2cc3cf1d799d90109bd6ad6b2",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance/audit/bindings.go.txt",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/audit/go.mod",
+      "bytes": 329,
+      "sha256": "5c5878b6238b385dec82783263637b3394203cbb5f2b272cb925dbe400cad0c6",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance/audit/go.mod",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/audit/README.md",
+      "bytes": 2611,
+      "sha256": "7eaaa85e7c2183de75319f5f90fa778593ba39087df87162f33c6c604f404c17",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance/audit/README.md",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/source-manifest.json",
+      "bytes": 6610,
+      "sha256": "ec7f4e8ed5e665afd060add6bce611edb9df92431a5aab422198b7616ccab229",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance-public-evidence-parser/source-manifest.json",
+      "role": "source selection and predecessor provenance"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/run.py",
+      "bytes": 19298,
+      "sha256": "9e916551c470c3972d457bc4ed809619c337d607a4ef8b41b815a9c4e729bed2",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance-public-evidence-parser/run.py",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/support.py",
+      "bytes": 13035,
+      "sha256": "ed01cd5031a9ac63613e8abf316e9b6091662f5d5bafc310b30fa34d64d6b377",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance-public-evidence-parser/support.py",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/expectations.py",
+      "bytes": 9364,
+      "sha256": "68856263ed531db9b5ab4106bc87d5ad5f297632b0e3245b15f14aab752f2f36",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance-public-evidence-parser/expectations.py",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/catalog.py",
+      "bytes": 4802,
+      "sha256": "f355c1a7d567ae7c849d5c7a3617793c7f3c833781eeb0ce920794cdd03ff4b6",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance-public-evidence-parser/catalog.py",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/README.md",
+      "bytes": 5908,
+      "sha256": "68bdd965705a643d4d4eea3fa91cc035bf22f3f4308c608f9d99efd1af752f0c",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance-public-evidence-parser/README.md",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/audit-source-manifest.json",
+      "bytes": 3154,
+      "sha256": "9421ebf8b9acd24fba3649fdd5630faffa1b3e4b72073b585adfd263e339632b",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance-public-evidence-parser/audit-source-manifest.json",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/audit/main.go",
+      "bytes": 6311,
+      "sha256": "380a0bac75fd26234e80638d3c9bb5ed9a56e859df280c9764f0d10b5ac283fb",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance-public-evidence-parser/audit/main.go.txt",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/audit/outbox_audit.go",
+      "bytes": 11444,
+      "sha256": "84fa9a045b9f1edb607cbfdec7948902cdc8f344595bebbc62922862bc8e0f77",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance-public-evidence-parser/audit/outbox_audit.go.txt",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/audit/bindings.go",
+      "bytes": 2506,
+      "sha256": "2519ce9dafdcb5da03623a088f30b3f12e4963d2cc3cf1d799d90109bd6ad6b2",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance-public-evidence-parser/audit/bindings.go.txt",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/audit/go.mod",
+      "bytes": 329,
+      "sha256": "5c5878b6238b385dec82783263637b3394203cbb5f2b272cb925dbe400cad0c6",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance-public-evidence-parser/audit/go.mod",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/audit/README.md",
+      "bytes": 2611,
+      "sha256": "7eaaa85e7c2183de75319f5f90fa778593ba39087df87162f33c6c604f404c17",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance-public-evidence-parser/audit/README.md",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/predecessor-source-manifest.json",
+      "bytes": 5322,
+      "sha256": "0649705b7c8c9b229448505359ca9d7231f76352cff2dea0bcb2beed0f5abc2f",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance-public-evidence-parser/predecessor-source-manifest.json",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-public-evidence-parser/changes.diff",
+      "bytes": 3737,
+      "sha256": "30fbeef8bd9a9f0cfa6bd41f40cfc0a0cda92884d1e555fd206801dc08b9846b",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance-public-evidence-parser/changes.diff",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-local-name-selection/source-manifest.json",
+      "bytes": 9962,
+      "sha256": "28a008f36e1853635421a86ee075728a6a70d7bfcad79e57bacc33901e7f4301",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance-local-name-selection/source-manifest.json",
+      "role": "source selection and predecessor provenance"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-local-name-selection/run.py",
+      "bytes": 19298,
+      "sha256": "ce9d57fc304fc7b3b176d4efea18b9379a338da07bf7801c62097f5b903eac36",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance-local-name-selection/run.py",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-local-name-selection/support.py",
+      "bytes": 13035,
+      "sha256": "ed01cd5031a9ac63613e8abf316e9b6091662f5d5bafc310b30fa34d64d6b377",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance-local-name-selection/support.py",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-local-name-selection/expectations.py",
+      "bytes": 9364,
+      "sha256": "68856263ed531db9b5ab4106bc87d5ad5f297632b0e3245b15f14aab752f2f36",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance-local-name-selection/expectations.py",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-local-name-selection/catalog.py",
+      "bytes": 4802,
+      "sha256": "f355c1a7d567ae7c849d5c7a3617793c7f3c833781eeb0ce920794cdd03ff4b6",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance-local-name-selection/catalog.py",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-local-name-selection/README.md",
+      "bytes": 2134,
+      "sha256": "75d799b69c3931eef26406da198616ac4dacdc7eee58fdee4d011110c5b57899",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance-local-name-selection/README.md",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-local-name-selection/run.before.py",
+      "bytes": 19298,
+      "sha256": "9e916551c470c3972d457bc4ed809619c337d607a4ef8b41b815a9c4e729bed2",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance-local-name-selection/run.before.py",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-local-name-selection/predecessor-source-manifest.json",
+      "bytes": 6610,
+      "sha256": "ec7f4e8ed5e665afd060add6bce611edb9df92431a5aab422198b7616ccab229",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance-local-name-selection/predecessor-source-manifest.json",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance-local-name-selection/changes.diff",
+      "bytes": 930,
+      "sha256": "39946bf5dace1b8f04fcff5efe65f2a0eb7a14082fb4b9e5037ec6752e0c3ee7",
+      "target": "docs/evidence/set83/ui-actual-attempt3-review/sources/paid-ui-acceptance-local-name-selection/changes.diff",
+      "role": "exact selected public source; historical Go stored as .go.txt"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/execution.json",
+      "target": "docs/evidence/set83/wallet-actual/actual4/execution.json",
+      "bytes": 374,
+      "sha256": "9109d06e1d8b8a187be1d0e176695ea117c1a5620016959a82eae2b4ce6cfabf"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/paid-roots-before.json",
+      "target": "docs/evidence/set83/wallet-actual/actual4/paid-roots-before.json",
+      "bytes": 63212,
+      "sha256": "524cba531b1626b4abfe29be8b27206170feb45b5931b83dff1504eb50f30cff"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/paid-roots-after.json",
+      "target": "docs/evidence/set83/wallet-actual/actual4/paid-roots-after.json",
+      "bytes": 63394,
+      "sha256": "47ba18d8cc532fc69fa28d5a5584798d820618205449fef32adef4355da2d56b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/paid-roots-comparison.json",
+      "target": "docs/evidence/set83/wallet-actual/actual4/paid-roots-comparison.json",
+      "bytes": 2740,
+      "sha256": "de80e7e569192f5f57abb1fe98645fe3e24b4dd5b89ebce3ca891ee2cc05f201"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/public/native-window-start.json",
+      "target": "docs/evidence/set83/wallet-actual/actual4/public/native-window-start.json",
+      "bytes": 328,
+      "sha256": "c58ead0b246514cc919e7db7ee3abd9c931dad10cfab2ee6c8a1b1b878d9ab14"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/public/native-window-process.json",
+      "target": "docs/evidence/set83/wallet-actual/actual4/public/native-window-process.json",
+      "bytes": 429,
+      "sha256": "351b1ed7148b6450fbc4ac67031b878b920b6c5fc093b00fca863760c6d03669"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/public/native-window.stderr",
+      "target": "docs/evidence/set83/wallet-actual/actual4/public/native-window.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/public/operator-stop.json",
+      "target": "docs/evidence/set83/wallet-actual/actual4/public/operator-stop.json",
+      "bytes": 411,
+      "sha256": "796f4428a473e98c5e38fe587fc255215df58321041dae43843982f8c389028c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/public/operator-run.stdout.status.json",
+      "target": "docs/evidence/set83/wallet-actual/actual4/public/operator-run.stdout.status.json",
+      "bytes": 238,
+      "sha256": "70e74fd0650a9523de96b65a351bd63af16a16c5c6dc61f434cc45179760aa28"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/public/operator-run.stdout.stderr",
+      "target": "docs/evidence/set83/wallet-actual/actual4/public/operator-run.stdout.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/execution.json",
+      "target": "docs/evidence/set83/wallet-actual/actual5/execution.json",
+      "bytes": 394,
+      "sha256": "ca08c637a3f4d42abc10f64b63a67e89ee12444c0ffc0965164729a71df57fb4"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/paid-roots-before.json",
+      "target": "docs/evidence/set83/wallet-actual/actual5/paid-roots-before.json",
+      "bytes": 63394,
+      "sha256": "47ba18d8cc532fc69fa28d5a5584798d820618205449fef32adef4355da2d56b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/paid-roots-after.json",
+      "target": "docs/evidence/set83/wallet-actual/actual5/paid-roots-after.json",
+      "bytes": 63580,
+      "sha256": "68bed4bfbc66bad64fdc8c3a78e4b704e442877a8eefa73fb4c3571c2f79e9e7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/paid-roots-comparison.json",
+      "target": "docs/evidence/set83/wallet-actual/actual5/paid-roots-comparison.json",
+      "bytes": 2741,
+      "sha256": "402fcbab7b51afe3d6cfa1295dc3852bafeb7bbcbd869cf0152b28b82b2f1cf8"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/native-window-start.json",
+      "target": "docs/evidence/set83/wallet-actual/actual5/public/native-window-start.json",
+      "bytes": 328,
+      "sha256": "41592ea2d1b7595fabb4c369af0be7ca51cd8f1451fb05ea5b333735a91219e2"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/native-window-process.json",
+      "target": "docs/evidence/set83/wallet-actual/actual5/public/native-window-process.json",
+      "bytes": 401,
+      "sha256": "90515ca18f76d9f563f7ff57fa925ab78bfaf25a1000246c07c3dd3e0d95d4a6"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/native-window.stderr",
+      "target": "docs/evidence/set83/wallet-actual/actual5/public/native-window.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/operator-stop.json",
+      "target": "docs/evidence/set83/wallet-actual/actual5/public/operator-stop.json",
+      "bytes": 411,
+      "sha256": "c1ba63dc228a272e090b875c63a43d5224c68cbb1fcfa1f8f64c0eb5100b96ff"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/operator-run.stdout.status.json",
+      "target": "docs/evidence/set83/wallet-actual/actual5/public/operator-run.stdout.status.json",
+      "bytes": 238,
+      "sha256": "e94f7fd4b9c0b540b0e60c21586ba03c7a7b175c4ebceccba7df81dd4d3a4514"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/operator-run.stdout.stderr",
+      "target": "docs/evidence/set83/wallet-actual/actual5/public/operator-run.stdout.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/empty-outbox-native.json",
+      "target": "docs/evidence/set83/wallet-actual/actual5/empty-outbox-native.json",
+      "bytes": 1219,
+      "sha256": "07281f9b1a7d960f16ca72b1123b69002795e95f30095fff8a6d4cdb0168f759"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/closed-outbox-process.json",
+      "target": "docs/evidence/set83/wallet-actual/actual5/public/closed-outbox-process.json",
+      "bytes": 175,
+      "sha256": "da2d5835060a2e6368d39c3e4a2009836b1f353b6e2eefb6ad462692bc8d1909"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/native-observations.json",
+      "target": "docs/evidence/set83/wallet-actual/actual5/public/native-observations.json",
+      "bytes": 1657,
+      "sha256": "170005f65fdcd1440ebf6dc69faadceba2ce9b9b4633202940e32bb0ef506235"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/local-infrastructure-joins.json",
+      "target": "docs/evidence/set83/wallet-actual/actual5/public/local-infrastructure-joins.json",
+      "bytes": 1766,
+      "sha256": "ae2d0d11d620896250510de5fb9864ed52d19020058d722f5e4f7ca8e5cedf44"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/host-node-cleanup.json",
+      "target": "docs/evidence/set83/wallet-actual/actual5/public/host-node-cleanup.json",
+      "bytes": 4276,
+      "sha256": "124f010b97ff5632b5d121ba582c33e199e45bd415e40b17d500941e85a09336"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/node-stop.json.status.json",
+      "target": "docs/evidence/set83/wallet-actual/actual5/public/node-stop.json.status.json",
+      "bytes": 233,
+      "sha256": "92f47bedc0c9f27547028f4b27355d8460f6605805736ef72945f10d3137c161"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/audit-after.json",
+      "target": "docs/evidence/set83/wallet-actual/actual5/public/audit-after.json",
+      "bytes": 48837,
+      "sha256": "1fb4af15f88e0113b7d22938c171ed9367143af1b87a744d9f25ac02be613ae0"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/closed-host-audit.stdout.status.json",
+      "target": "docs/evidence/set83/wallet-actual/actual5/public/closed-host-audit.stdout.status.json",
+      "bytes": 241,
+      "sha256": "a27f5645d8297e1d0f18c469a60886c6c9601027a26ae1581dbd534950217252"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/operator-listening.json",
+      "target": "docs/evidence/set83/wallet-actual/actual5/public/operator-listening.json",
+      "bytes": 144,
+      "sha256": "bcc469b45d75ecc0ca91056d5cde019004f9d086719fdab7046d4dad3dbcd8e7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/operator-listening.json.status.json",
+      "target": "docs/evidence/set83/wallet-actual/actual5/public/operator-listening.json.status.json",
+      "bytes": 241,
+      "sha256": "3f754ec6c32a3d5dd600885d2fa8e3e427c6285532a64acccdc563cbd87b9a09"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/host-lifecycle/stdout.jsonl",
+      "target": "docs/evidence/set83/wallet-actual/actual5/public/host-lifecycle/stdout.jsonl",
+      "bytes": 6256,
+      "sha256": "547f3dba516ac477b98281b4e936a241729df67f08703e9111571f0cc606693a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/host-lifecycle/stderr.log",
+      "target": "docs/evidence/set83/wallet-actual/actual5/public/host-lifecycle/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/host-lifecycle/result.json",
+      "target": "docs/evidence/set83/wallet-actual/actual5/public/host-lifecycle/result.json",
+      "bytes": 410,
+      "sha256": "b4e6efd4024fb0bcdb0787851f36c37ec1b69a0afbeb674f91f2209ce4a5beb1"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/host-lifecycle/owner.complete",
+      "target": "docs/evidence/set83/wallet-actual/actual5/public/host-lifecycle/owner.complete",
+      "bytes": 41,
+      "sha256": "9966092ad09606df22ad455c08a4c42ecb863040f399f440fbba3637875747f1"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/host-lifecycle/selection.sha256",
+      "target": "docs/evidence/set83/wallet-actual/actual5/public/host-lifecycle/selection.sha256",
+      "bytes": 65,
+      "sha256": "d01d9492ce1a0fec8745f67325c21bbb7cf9075d04f7ce0b8396f87babc5fe22"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/host-lifecycle/certificate.sha256",
+      "target": "docs/evidence/set83/wallet-actual/actual5/public/host-lifecycle/certificate.sha256",
+      "bytes": 65,
+      "sha256": "3a36581021d3aa11932fed2b2dead9955ce0367a0dcae0ef6c59d39ba9012ae7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/host-lifecycle/launch-start.json",
+      "target": "docs/evidence/set83/wallet-actual/actual5/public/host-lifecycle/launch-start.json",
+      "bytes": 261,
+      "sha256": "905496553cfb05bb4a457fe394609c4f14622fff79f06bda0c64555a683cb952"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt5/public/host-lifecycle/launch-wait.json",
+      "target": "docs/evidence/set83/wallet-actual/actual5/public/host-lifecycle/launch-wait.json",
+      "bytes": 111,
+      "sha256": "0f018b7b9b6551c6aa67f6e3be6bd8f37aa212cb0a9218af210a3a25bf0390b0"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/public/getconnectioncount-diagnostic.json",
+      "target": "docs/evidence/set83/wallet-actual/actual4/public/getconnectioncount-diagnostic.json",
+      "bytes": 104,
+      "sha256": "4835b8a69305ab34e949dc89296a52765edf48d60e839a105fe4733f458d9c0a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/public/getblocktemplate-diagnostic.json",
+      "target": "docs/evidence/set83/wallet-actual/actual4/public/getblocktemplate-diagnostic.json",
+      "bytes": 146,
+      "sha256": "6c59804bf563fc132283a9ce131554f22dc1ab53dd6a6ac04faf3a66a6debfce"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/public/relay-restored.json",
+      "target": "docs/evidence/set83/wallet-actual/actual4/public/relay-restored.json",
+      "bytes": 235,
+      "sha256": "95301b843ded59c87ab0628d232a2d68f4c10c7f8f78a23e5801e2f8db899805"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/public/peer-ready.json",
+      "target": "docs/evidence/set83/wallet-actual/actual4/public/peer-ready.json",
+      "bytes": 169,
+      "sha256": "b5d6343b6df6b8a4ea0fff0bda20158daaffac4d536ffce98ce7f4fb3b7d53e7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/helper-diagnostic/report.json",
+      "target": "docs/evidence/set83/wallet-actual/actual4/helper-diagnostic/report.json",
+      "bytes": 2146,
+      "sha256": "3a41b859991af4b24afe03e9e17b9e48473b2f79fb5e6d332b690a430af2dcca"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/helper-diagnostic/helper-1.requests.jsonl",
+      "target": "docs/evidence/set83/wallet-actual/actual4/helper-diagnostic/helper-1.requests.jsonl",
+      "bytes": 654,
+      "sha256": "25b32de10405df3806519c7d944fccdf2e4c2ff353faea39a3769c72e76b1a89"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/helper-diagnostic/helper-1.stdout.jsonl",
+      "target": "docs/evidence/set83/wallet-actual/actual4/helper-diagnostic/helper-1.stdout.jsonl",
+      "bytes": 1017,
+      "sha256": "a86de900f11e332cc76556ece6681cc00b35a56cf8428758c5e040c7d97e6153"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/helper-diagnostic/helper-1.stderr.log",
+      "target": "docs/evidence/set83/wallet-actual/actual4/helper-diagnostic/helper-1.stderr.log",
+      "bytes": 37,
+      "sha256": "3f8946eafa06a1d4ccd65f3e08a3ea6e505160a50dfdd8bbf49d0ccbb7c48fe6"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt1/paid-roots-comparison.json",
+      "target": "docs/evidence/set83/wallet-actual/actual3/wallet-catalog/paid-roots-comparison.json",
+      "bytes": 2846,
+      "sha256": "402a84db2756479045b698c5cab25f972b4b1c037a0aa26093db94e7aa5e6b43"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt1/paid-roots-before.json",
+      "target": "docs/evidence/set83/wallet-actual/actual3/wallet-catalog/paid-roots-before.json",
+      "bytes": 63209,
+      "sha256": "1a865020061aed34378c24a261918053c1aa04b2a2804173aef18b1657021e9d"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt1/paid-roots-after.json",
+      "target": "docs/evidence/set83/wallet-actual/actual3/wallet-catalog/paid-roots-after.json",
+      "bytes": 63212,
+      "sha256": "524cba531b1626b4abfe29be8b27206170feb45b5931b83dff1504eb50f30cff"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/empty-outbox-native.json",
+      "target": "docs/evidence/set83/wallet-actual/actual3/empty-outbox-native.json",
+      "bytes": 1219,
+      "sha256": "39cbbdb3d8b069320494afa75c1cb53433ca9809686a3a2220324384cc8e857a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/public/closed-outbox-process.json",
+      "target": "docs/evidence/set83/wallet-actual/actual3/public/closed-outbox-process.json",
+      "bytes": 178,
+      "sha256": "7b141cfbdb8b2aa9d288bc95a848535e5945e80d729a15b019979a12c8f2669f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/public/audit-after.json",
+      "target": "docs/evidence/set83/wallet-actual/actual3/public/audit-after.json",
+      "bytes": 48578,
+      "sha256": "06c3645b2bf06031c0c5d0664eac3663aa7dbe6fe7860fac0e5a159080f90e24"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/public/operator-result.json",
+      "target": "docs/evidence/set83/wallet-actual/actual3/public/operator-result.json",
+      "bytes": 408,
+      "sha256": "d2acb5869e704ee5d6cf898cd052be790d15be4007d5896f06269748bdf43ad7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/lifecycle/attempt3-successor/source-manifest.json",
+      "target": "docs/evidence/set83/wallet-actual/sources/lifecycle3/source-manifest.json",
+      "bytes": 1903,
+      "sha256": "6340e2fdbcad888249c290648f28f32d8e64cb8b0cdd03085e5f6a9cdf3a6025"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/lifecycle/attempt3-successor/operator-lifecycle.sh",
+      "target": "docs/evidence/set83/wallet-actual/sources/lifecycle3/operator-lifecycle.sh",
+      "bytes": 18354,
+      "sha256": "3c43cac2c529d08b97cc0ff1cb703ea4a413abeb04d813ce3f69afb90eddaa9f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/lifecycle/attempt3-successor/operator-lifecycle.before.sh",
+      "target": "docs/evidence/set83/wallet-actual/sources/lifecycle3/operator-lifecycle.before.sh",
+      "bytes": 17301,
+      "sha256": "0be116c81c2ddfd1bff37895188c51b26fa7cbac98be2c8b783c431150de23a8"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/lifecycle/attempt3-successor/changes.diff",
+      "target": "docs/evidence/set83/wallet-actual/sources/lifecycle3/changes.diff",
+      "bytes": 2402,
+      "sha256": "c9bd4d72885cf769d9c01e540734fe7b4ab303dffe32ee1a4a0a0e53849a320f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/lifecycle/attempt4-successor/source-manifest.json",
+      "target": "docs/evidence/set83/wallet-actual/sources/lifecycle4/source-manifest.json",
+      "bytes": 1928,
+      "sha256": "d4650f25cb21d167e59e32800f8059b5ca34a66eb182698e39e88fdeab7ca5f9"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/lifecycle/attempt4-successor/operator-lifecycle.sh",
+      "target": "docs/evidence/set83/wallet-actual/sources/lifecycle4/operator-lifecycle.sh",
+      "bytes": 20721,
+      "sha256": "779687701c15582d6afa4e443ec424194b2ba050e7f3293b520d6f05bd179bf6"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/lifecycle/attempt4-successor/operator-lifecycle.before.sh",
+      "target": "docs/evidence/set83/wallet-actual/sources/lifecycle4/operator-lifecycle.before.sh",
+      "bytes": 18354,
+      "sha256": "3c43cac2c529d08b97cc0ff1cb703ea4a413abeb04d813ce3f69afb90eddaa9f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/lifecycle/attempt4-successor/changes.diff",
+      "target": "docs/evidence/set83/wallet-actual/sources/lifecycle4/changes.diff",
+      "bytes": 3661,
+      "sha256": "79797721ff4481da7f8cce490337089d54d08b6dda557f1a0184aadcc328f6d6"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/lifecycle/attempt5-successor/source-manifest.json",
+      "target": "docs/evidence/set83/wallet-actual/sources/lifecycle5/source-manifest.json",
+      "bytes": 1952,
+      "sha256": "c72f99c2aeaee7883f6b98866822b474af5a78aa803de2df55ef228b9f8332e5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/lifecycle/attempt5-successor/operator-lifecycle.sh",
+      "target": "docs/evidence/set83/wallet-actual/sources/lifecycle5/operator-lifecycle.sh",
+      "bytes": 21798,
+      "sha256": "aa45fd0827b66087155461abb51a451d4ed851503885908242a0919a4242bc6f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/lifecycle/attempt5-successor/operator-lifecycle.before.sh",
+      "target": "docs/evidence/set83/wallet-actual/sources/lifecycle5/operator-lifecycle.before.sh",
+      "bytes": 20721,
+      "sha256": "779687701c15582d6afa4e443ec424194b2ba050e7f3293b520d6f05bd179bf6"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/lifecycle/attempt5-successor/changes.diff",
+      "target": "docs/evidence/set83/wallet-actual/sources/lifecycle5/changes.diff",
+      "bytes": 2415,
+      "sha256": "da7957f975d6befe0be19633825936ccfc58e14e87143c8ea7e2ca7365a16386"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog-attempt4/source-manifest.json",
+      "target": "docs/evidence/set83/wallet-actual/sources/catalog4/source-manifest.json",
+      "bytes": 3451,
+      "sha256": "adc42ded085ede3017d4bbd76d31794d636e44f75a75be7bdd633bf49e93ab5b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog-attempt4/check-paid-roots.py",
+      "target": "docs/evidence/set83/wallet-actual/sources/catalog4/check-paid-roots.py",
+      "bytes": 7437,
+      "sha256": "d45c6605cfe503e184c73c44ed43296cd1050a4d1bb1356f17e95ab8c8968bad"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog-attempt4/check-paid-roots.before.py",
+      "target": "docs/evidence/set83/wallet-actual/sources/catalog4/check-paid-roots.before.py",
+      "bytes": 7437,
+      "sha256": "27f0b24f2e4fb308d5ce6c0ba8a5a156fd9cc6ec7bfc4ae68a6da3a32094f19a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog-attempt4/attachment_catalog.py",
+      "target": "docs/evidence/set83/wallet-actual/sources/catalog4/attachment_catalog.py",
+      "bytes": 4802,
+      "sha256": "f355c1a7d567ae7c849d5c7a3617793c7f3c833781eeb0ce920794cdd03ff4b6"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog-attempt4/changes.diff",
+      "target": "docs/evidence/set83/wallet-actual/sources/catalog4/changes.diff",
+      "bytes": 466,
+      "sha256": "52d75927c181d0141c39d01e976d7a8c9d7e6806490c96ddd8b2f990cf2045a5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-window4.py",
+      "target": "docs/evidence/set83/wallet-actual/sources/native-window4.py",
+      "bytes": 2708,
+      "sha256": "3958a7440e4e54919b4ac96cd8e24280397ea3cc0e5e46c749177a4dcad6d926"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog-attempt5/source-manifest.json",
+      "target": "docs/evidence/set83/wallet-actual/sources/catalog5/source-manifest.json",
+      "bytes": 2418,
+      "sha256": "c13c933c849ef9eb366dc563e356e126d236ef047acd92c1fce6e474555ce63c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog-attempt5/check-paid-roots.py",
+      "target": "docs/evidence/set83/wallet-actual/sources/catalog5/check-paid-roots.py",
+      "bytes": 7437,
+      "sha256": "5410610fccdba18fb452ca43e72eda39b140e8bd618bd5510cefda145b7d9154"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog-attempt5/check-paid-roots.before.py",
+      "target": "docs/evidence/set83/wallet-actual/sources/catalog5/check-paid-roots.before.py",
+      "bytes": 7437,
+      "sha256": "d45c6605cfe503e184c73c44ed43296cd1050a4d1bb1356f17e95ab8c8968bad"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog-attempt5/attachment_catalog.py",
+      "target": "docs/evidence/set83/wallet-actual/sources/catalog5/attachment_catalog.py",
+      "bytes": 4802,
+      "sha256": "f355c1a7d567ae7c849d5c7a3617793c7f3c833781eeb0ce920794cdd03ff4b6"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/paid-ui-acceptance/wallet-catalog-attempt5/changes.diff",
+      "target": "docs/evidence/set83/wallet-actual/sources/catalog5/changes.diff",
+      "bytes": 466,
+      "sha256": "b0d50a77e7a09eeb86d0dd0314640800a8e1302b1e4c679d1ce2352184419bed"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-window5.py",
+      "target": "docs/evidence/set83/wallet-actual/sources/native-window5.py",
+      "bytes": 2708,
+      "sha256": "ab6e225d056e5dfef4386642a70c076137e999b7155ae8faaa31282a63f745ff"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/remote-package/BUILD.txt",
+      "target": "docs/evidence/set83/wallet-actual/package/BUILD.txt",
+      "bytes": 1201,
+      "sha256": "4b82e3261caa7a7e1000682dc63a5f77e4d5ab8d7617e153500649738e43a57f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/remote-package/BUILD-INFO.txt",
+      "target": "docs/evidence/set83/wallet-actual/package/BUILD-INFO.txt",
+      "bytes": 7037,
+      "sha256": "41ac03f67acff17b9c9d067d4a97d75488e4d1d1924d400724d84fca5274cf53"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/remote-package/BUILD-PROFILE.json",
+      "target": "docs/evidence/set83/wallet-actual/package/BUILD-PROFILE.json",
+      "bytes": 179,
+      "sha256": "e5ddb9d30e8048ad3b656358134632e48852f44deef44bdd93df7dda13208295"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/wallet-own-activity-tests/github-current-jobs2.json",
+      "target": "docs/evidence/set83/wallet-actual/github-jobs.json",
+      "bytes": 15278,
+      "sha256": "1414c26596d224ff36129823269d39a4b5f45d6f2f0760904c5d66b7f72d44af"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/ui3-closeout-review/QUALIFICATION.md",
+      "target": "docs/evidence/set83/wallet-actual/actual3-partial-qualification.md",
+      "bytes": 3062,
+      "sha256": "088ab995f8a0bfcca5e7a1d2b81fbf9abb05ecf647c903930ae63b91f01a2f0d"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/combined-ui-closeout-review/review.json",
+      "target": "docs/evidence/set83/wallet-actual/independent-review/review.json",
+      "bytes": 14704,
+      "sha256": "17a09824b87fcb5060c226d88fe89179fcf8d57be115d7554872e5364c023353"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/combined-ui-closeout-review/manifest.json",
+      "target": "docs/evidence/set83/wallet-actual/independent-review/manifest.json",
+      "bytes": 1241,
+      "sha256": "0aaa9df766c831b216f78ee5248807190397f5d77d66a8bde32e00a81ee5b5b9"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/combined-ui-closeout-review/QUALIFICATION.md",
+      "target": "docs/evidence/set83/wallet-actual/independent-review/QUALIFICATION.md",
+      "bytes": 5254,
+      "sha256": "85bf6c494411fc0a35359cbea017d3c6f8ccf7e94b377c19a5d6bae5d9bb1294"
+    }
+  ],
+  "file_count": 166,
+  "bytes": 1244757
+}

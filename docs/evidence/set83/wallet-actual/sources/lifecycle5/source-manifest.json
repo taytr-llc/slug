@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "scope": "Fresh native-only UI5 lifecycle namespace plus exact priorUI4 requested clean-stop guard. All priorUI3 failed active evidence, original paidroot/selection/key/certificate expiry and300s bound unchanged.",
+  "before": {
+    "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/lifecycle/attempt5-successor/operator-lifecycle.before.sh",
+    "bytes": 20721,
+    "sha256": "779687701c15582d6afa4e443ec424194b2ba050e7f3293b520d6f05bd179bf6"
+  },
+  "after": {
+    "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/lifecycle/attempt5-successor/operator-lifecycle.sh",
+    "bytes": 21798,
+    "sha256": "aa45fd0827b66087155461abb51a451d4ed851503885908242a0919a4242bc6f"
+  },
+  "diff": {
+    "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/lifecycle/attempt5-successor/changes.diff",
+    "bytes": 2415,
+    "sha256": "da7957f975d6befe0be19633825936ccfc58e14e87143c8ea7e2ca7365a16386"
+  },
+  "original_unchanged": {
+    "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/lifecycle/attempt4-successor/operator-lifecycle.sh",
+    "bytes": 20721,
+    "sha256": "779687701c15582d6afa4e443ec424194b2ba050e7f3293b520d6f05bd179bf6"
+  },
+  "prior_public_result": {
+    "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt4/public/operator-stop.json",
+    "bytes": 411,
+    "sha256": "796f4428a473e98c5e38fe587fc255215df58321041dae43843982f8c389028c"
+  },
+  "expected_host_result": {
+    "path": "/data/hosted-test-5/set83-ui4-lifecycle/01/result.json",
+    "bytes": 410,
+    "sha256": "26559da2bc6ea5335165be990231b89906a5237613ea70017bdf3e7370dc1692",
+    "derivation": "One terminal SSH CRLF normalized to original wrapper LF; exact JSON unchanged.",
+    "clean": true,
+    "reason": "requested",
+    "child_exit": 0,
+    "monitor_exit": 0,
+    "child_waited": true,
+    "monitor_joined": true
+  },
+  "script_executed": false,
+  "live_private_files_read": false
+}

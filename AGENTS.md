@@ -576,6 +576,17 @@ authorization must be repository-limited, not an account-wide OAuth expansion.
   report. This is bounded synthetic-custody acceptance, not public launch or
   final scratch PID1 qualification. EF-12/15/17/18 remain deferred. Continue
   wallet balances/history, then sign-in and D74; marketplace stays on hold.
+- Set83 on `slug-wallet-daily-history` completes bounded wallet balances/history
+  at `7e1f6b79`, paired with wallet `dfc5d9dd`. All six exact-commit CI jobs pass.
+  The normal Mac package passes separate actual helper read/reopen and native
+  window/sign-out/normal-Quit gates. Preserve the original 19.8-test-SLUG payment,
+  two credits, 226 protected files and unopened original mining attachment.
+  Attempts3/4 retain their failed UI cleanup/environment results; attempt5
+  restores the omitted original peer relay without changing product checks.
+  No new mining, issuance or payment is part of the wallet read acceptance.
+  See `CHANGESET_83_NOTES.md` and its public qualification. Continue D82 sign-in
+  and onboarding under the active work order; EF-20 is deferred diagnostics,
+  D74 stays last and marketplace remains on hold. Seed/master remain unchanged.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

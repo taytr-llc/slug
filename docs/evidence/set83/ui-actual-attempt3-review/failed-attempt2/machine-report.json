@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "scope": "Actual serial WIRE2 machine helper only; native-window CUA, whole wallet catalog, closed financial and infrastructure audits are separate gates",
+  "started_at_ms": 1795290794855,
+  "deadline_at_ms": 1795291094000,
+  "machine_cutoff_at_ms": 1795291049000,
+  "host_cleanup_reserve_seconds": 45,
+  "execution_sha256": "434cbb54cdb1afe49cdfadd2668103d188b54ef0a9cbabeb5b4644daa281a866",
+  "config_id": "2a4caf50bf775e0c09fd136cb680d5ab340d4f63732672acc0a7c916ae1e046a",
+  "generations": [],
+  "processes": [
+    {
+      "number": 1,
+      "pid": 31120,
+      "pgid": 31120,
+      "parent_pid": 31119,
+      "started_at_ms": 1795290835154,
+      "joined": true,
+      "exit_code": 1,
+      "eof_requested": true,
+      "forced": false,
+      "signals": [],
+      "commands": [
+        {
+          "id": "1",
+          "command": "snapshot",
+          "view_id": "",
+          "request_sha256": "aecae015ee0dfc370345d425208bc9f2fe276081affea674636ba75be162a478",
+          "sent_at_ms": 1795290835154
+        }
+      ],
+      "closed": false,
+      "ended_at_ms": 1795290836296,
+      "stdout_bytes": 0,
+      "stderr_bytes": 37
+    }
+  ],
+  "empty_audits": [],
+  "errors": [
+    "RuntimeError: original helper exited before response",
+    "original helper cleanup: RuntimeError"
+  ],
+  "start_calls": 0,
+  "issue_calls": 0,
+  "old_attachment_unchanged": true,
+  "inputs_unchanged": true,
+  "original_wallet_root_unchanged": true,
+  "clean_join": false,
+  "passed": false,
+  "ended_at_ms": 1795290836314
+}

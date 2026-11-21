@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "scope": "Fresh native-only UI4 host wrapper namespace. PriorUI3 deadline child0/monitor0 joined but clean:false remains failed, original active marker/absence of owner.complete retained. Same paidroot/setup/binary/key/preparedselection/certificate expiry and <=300s new namespace only.",
+  "before": {
+    "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/lifecycle/attempt4-successor/operator-lifecycle.before.sh",
+    "bytes": 18354,
+    "sha256": "3c43cac2c529d08b97cc0ff1cb703ea4a413abeb04d813ce3f69afb90eddaa9f"
+  },
+  "after": {
+    "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/lifecycle/attempt4-successor/operator-lifecycle.sh",
+    "bytes": 20721,
+    "sha256": "779687701c15582d6afa4e443ec424194b2ba050e7f3293b520d6f05bd179bf6"
+  },
+  "diff": {
+    "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/lifecycle/attempt4-successor/changes.diff",
+    "bytes": 3661,
+    "sha256": "79797721ff4481da7f8cce490337089d54d08b6dda557f1a0184aadcc328f6d6"
+  },
+  "original_unchanged": {
+    "path": "/Users/taytrrip/slug/set83-prep/paid-root-ui-preparation/lifecycle/attempt3-successor/operator-lifecycle.sh",
+    "bytes": 18354,
+    "sha256": "3c43cac2c529d08b97cc0ff1cb703ea4a413abeb04d813ce3f69afb90eddaa9f"
+  },
+  "prior_public_result": {
+    "path": "/Users/taytrrip/slug/artifacts/set83/ui-actual-attempt3/public/operator-result.json",
+    "bytes": 408,
+    "sha256": "d2acb5869e704ee5d6cf898cd052be790d15be4007d5896f06269748bdf43ad7"
+  },
+  "expected_host_result": {
+    "path": "/data/hosted-test-5/set83-ui3-lifecycle/01/result.json",
+    "bytes": 408,
+    "sha256": "d2acb5869e704ee5d6cf898cd052be790d15be4007d5896f06269748bdf43ad7",
+    "reason": "deadline",
+    "child_exit": 0,
+    "monitor_exit": 0,
+    "child_waited": true,
+    "monitor_joined": true,
+    "clean": false
+  },
+  "script_executed": false,
+  "live_private_files_read": false
+}

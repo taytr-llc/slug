@@ -1,8 +1,9 @@
 # Set83: remote wallet balances and history
 
 Branch: `slug-wallet-daily-history`, stacked on Set82 `25d220e6`.
-Status: implementation and verification in progress; no wallet UI qualification
-or completed Set83 claim yet.
+Status: bounded synthetic-wallet test complete at `7e1f6b79`; normal Mac
+package, actual helper/native-window acceptance and all six GitHub jobs pass.
+This is engineering acceptance, not friends/public release approval.
 
 The first native slice connects authenticated DAILY balances and payout pages
 to the original remote attachment and account controller. Reads use an exact
@@ -85,7 +86,30 @@ See [activity integration evidence](docs/evidence/set83/wallet-own-activity/repo
 All six GitHub jobs also pass for earlier integration commit `edc37d08`; later
 component commits retain their separate local and remote evidence.
 
-Remaining: actual selected helper/native-window acceptance, normal package and
-integrated acceptance. Existing V1 paths, headless mining,
-wallet pins and payout rules stay unchanged. Sign-in follows this work, D74
-remains the final joint design review, and marketplace remains on hold.
+The normal Mac package at `7e1f6b79` now passes actual acceptance. All six
+GitHub jobs pass on that exact commit, including the full race job. The helper
+and native-window checks are separate finite gates on the same packaged bytes:
+attempt3 proves two physical helper lifetimes, original-view refusal, the one
+19.8-test-SLUG payment, complete incoming activity and transaction detail.
+Attempt5 independently proves the working native window, selected output's
+wallet confirmation, sign-out clearing and normal menu Quit with exit0 and no
+signals. Its operator closes by request; original node/relay owners join,
+closed financial audits preserve both credits and the one immutable payment,
+and the 226-file wallet policy and unopened original attachment compare intact.
+The fresh attachment remains empty: no mining, issuance or new payment occurred.
+See the [combined qualification](docs/evidence/set83/wallet-actual/QUALIFICATION.md).
+
+Earlier attempts remain failures in their original scopes. Attempt3's UI
+watchdog forced exit and its host reached the deadline; the machine subtest's
+pass does not relabel either failure. Attempt4 omitted the local peer relay:
+RPC confirmed zero peers and getblocktemplate error -9, which blocks attachment
+even at height165. Restoring the original relay and restarting the local node
+gave one peer and a valid height166 template; unchanged product bytes then
+passed attempt5. No template, sync, ownership or cleanup check was relaxed.
+EF-20 tracks the confusing failed-attachment diagnostics separately.
+
+Wallet balances/history is complete for this bounded synthetic fixture test.
+The bundle is ad-hoc signed, not notarized, and is not a friends/public release.
+Existing V1 paths, headless mining, wallet pins and payout rules stay unchanged.
+Sign-in/onboarding is next, D74 remains the final joint design review, and
+marketplace remains on hold.
