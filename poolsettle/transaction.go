@@ -10,6 +10,23 @@ import (
 	"github.com/taytr-llc/slug/wire/v2"
 )
 
+// transactionCapacity bounds full signed bytes, not virtual fee bytes. Every
+// supported input is native P2WPKH: at most 73 signature bytes (including the
+// sighash byte), a 33-byte key and three one-byte witness counts total 109.
+// D84 defers the entire daily batch if it cannot fit; this grants no authority
+// to split funding or payments. The current 256/256 caps fit the byte ceiling.
+func transactionCapacity(inputs, payments int, change bool) bool {
+	if inputs < 1 || inputs > MaxInputs || payments < 1 || payments > 256 {
+		return false
+	}
+	outputs := payments
+	if change {
+		outputs++
+	}
+	base := 4 + wire.VarIntSerializeSize(uint64(inputs)) + 41*inputs + wire.VarIntSerializeSize(uint64(outputs)) + 31*outputs + 4
+	return base+2+109*inputs <= MaxTransactionBytes
+}
+
 func transaction(inputs []Coin, payments []Payment, change *Coin) (*wire.MsgTx, error) {
 	if len(inputs) == 0 || len(inputs) > MaxInputs || len(payments) == 0 || len(payments) > 256 {
 		return nil, ErrInvalid

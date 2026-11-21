@@ -532,6 +532,15 @@ of the ownership, transfer or independent restored-wallet flow. See
   Sign-in follows; the full joint D74 review stays last. See
   `CHANGESET_74_NOTES.md` and `docs/evidence/set74/operator-actual.json`.
 
+- Set75's first capacity slice streams original accepted work/round audits
+  into settlement without changing V1 identities or limits. Its source/namespace
+  audit precedes credit import and capacity refusal. D84 defers an oversized
+  daily payout in full, carrying all balances with a visible reason. This does
+  not close continuous capacity: durable history continuation, old-job/nonce
+  recovery across boundaries, signed authority limits, paged client history and
+  concrete hosted operations still require qualification. See
+  `POOL_CAPACITY_CONTINUATION.md` and `CHANGESET_75_NOTES.md`.
+
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace
 `sim-handoff-intake.json` preserves archive and file checksums. They are reference

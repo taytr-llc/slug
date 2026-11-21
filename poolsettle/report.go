@@ -12,7 +12,7 @@ func knownReason(s string) bool {
 		"payout-conflict", "funding-unavailable", "funding-conflict", "funding-changed",
 		"immature", "awaiting-confirmation", "below-minimum", "destination-unavailable",
 		"daily-batch-complete", "fee-unavailable", "fee-budget", "change-dust",
-		"signing-unavailable", "capacity":
+		"signing-unavailable", "capacity", "transaction-capacity":
 		return true
 	}
 	return false

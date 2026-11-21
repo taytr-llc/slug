@@ -1,4 +1,4 @@
-# Official pool accounting — D58 completion, D79, D80 and D81
+# Official pool accounting — D58 completion, D79–D81 and D84
 
 Mike approved per-block proportional rounds on November 18, 2026, Pacific.
 The pool's daily payment schedule does not define its share-allocation window.
@@ -101,3 +101,25 @@ payment history, visibly block conflicted funding, and never make reserve
 advances. Work classification, share acceptance, round confirmation and
 successful payment remain distinct. See `POOL_ROUNDS.md` and
 `POOL_SETTLEMENT.md`.
+
+## Whole-batch capacity deferral — D84
+
+Mike chose **“Defer the entire payout until it fits”** on November 20, 2026.
+When the complete ready funding/payment set exceeds one supported transaction,
+defer the entire daily payout. Do not choose an oldest-first subset or split
+miners into multiple transactions. Retain every exact balance, add no debit or
+reservation, and leave that day available for a complete retry. Show the
+transaction-capacity reason in the affected balance view.
+
+This choice preserves the one-transaction daily contract and avoids choosing
+which eligible miners get paid first. Its tradeoff is an operator capacity
+hold: simply waiting may add inputs rather than make the batch smaller. A
+future capacity upgrade must preserve the complete batch and all original
+funding claims; this decision authorizes neither consolidation spending nor
+a change of payout policy.
+
+Inspect funding in bounded pages if necessary, but retain the complete ready
+set. Page boundaries are never payout boundaries. Recheck original funding
+before a new signature/broadcast. Recover any existing reserved payment first,
+using only its exact signed bytes. The 60-descendant lock, 100-block maturity,
+1 SLUG minimum, 1% fee, fractional carry and no-advance rules remain in force.

@@ -9,14 +9,6 @@ import (
 	"github.com/taytr-llc/slug/poolshare"
 )
 
-func summary(through uint64, rounds []Round) Summary {
-	last := uint64(0)
-	if len(rounds) > 0 {
-		last = rounds[len(rounds)-1].LastAccepted
-	}
-	return Summary{Through: through, Rounds: uint64(len(rounds)), PendingShares: through - last}
-}
-
 // Sync consumes one fixed accepted tail. It closes rounds only at accepted
 // winning shares and never moves members when delivery or chain status changes.
 // It makes no new node observation and grants no confirmation by itself.
@@ -29,67 +21,90 @@ func (s *Store) Sync(ctx context.Context) (Summary, error) {
 		return Summary{}, err
 	}
 	defer end()
-	entries, prefix, err := s.snapshot(ctx, nil)
-	if err != nil {
-		return Summary{}, err
+	if !s.validMetadata(s.meta) {
+		return Summary{}, ErrCorrupt
 	}
-	if uint64(len(entries)) < s.meta.Through {
+	if s.meta.Through == 0 && s.meta.Prefix != initialPrefix(s.sourceConfig) {
 		return Summary{}, ErrSourceChanged
 	}
-	oldPrefix := initialPrefix(s.sourceConfig)
-	for _, entry := range entries[:s.meta.Through] {
-		oldPrefix, err = extendPrefix(oldPrefix, entry)
-		if err != nil {
-			return Summary{}, err
-		}
-	}
-	if oldPrefix != s.meta.Prefix {
-		return Summary{}, ErrSourceChanged
-	}
-	rounds, err := derive(s.sourceConfig, entries)
-	if err != nil {
-		return Summary{}, err
-	}
-	oldRounds := 0
-	for oldRounds < len(rounds) && rounds[oldRounds].LastAccepted <= s.meta.Through {
-		oldRounds++
-	}
-	if _, err := s.stored(rounds[:oldRounds]); err != nil {
-		return Summary{}, err
-	}
-	result := summary(uint64(len(entries)), rounds)
-	if result.Through == s.meta.Through {
-		return result, ctx.Err()
-	}
-	if result.Rounds > s.limits.MaxRounds {
-		return Summary{}, ErrCapacity
-	}
+	builder := newRoundDerivation(s.sourceConfig)
 	batch := new(leveldb.Batch)
 	next := s.meta
-	for _, round := range rounds[oldRounds:] {
-		budget, err := roundBudget(round)
+	var oldRounds, oldBytes uint64
+	capacity := false
+	through, prefix, err := s.streamAccepted(ctx, nil, func(entry poolshare.AccountingEntry, prefix string) error {
+		if entry.Share.AcceptedSequence == s.meta.Through && prefix != s.meta.Prefix {
+			return ErrSourceChanged
+		}
+		round, err := builder.add(entry)
+		if err != nil || round == nil {
+			return err
+		}
+		if round.LastAccepted <= s.meta.Through {
+			budget, err := s.verifyStreamRound(*round)
+			if err != nil {
+				return err
+			}
+			if oldBytes > s.meta.Bytes || budget > s.meta.Bytes-oldBytes {
+				return ErrCorrupt
+			}
+			oldRounds++
+			oldBytes += budget
+			return nil
+		}
+		if capacity || round.Sequence > s.limits.MaxRounds {
+			capacity = true
+			return nil
+		}
+		budget, err := roundBudget(*round)
 		if err != nil {
-			return Summary{}, err
+			if err == ErrCapacity {
+				capacity = true
+				return nil
+			}
+			return err
 		}
 		if budget > s.limits.MaxBytes-next.Bytes {
-			return Summary{}, ErrCapacity
+			capacity = true
+			return nil
 		}
-		record := Record{Round: round}
-		raw, err := recordBytes(record)
+		raw, err := recordBytes(Record{Round: *round})
 		if err != nil {
-			return Summary{}, err
+			return err
 		}
 		for _, key := range [][]byte{roundKey(round.BlockHash), indexKey(round.Sequence)} {
-			exists, e := s.db.Has(key, nil)
-			if e != nil || exists {
-				return Summary{}, ErrCorrupt
+			exists, err := s.db.Has(key, nil)
+			if err != nil || exists {
+				return ErrCorrupt
 			}
 		}
 		batch.Put(roundKey(round.BlockHash), raw)
 		batch.Put(indexKey(round.Sequence), []byte(round.BlockHash))
 		next.Bytes += budget
+		return nil
+	})
+	if err != nil {
+		return Summary{}, err
 	}
-	next.Through, next.Prefix, next.Rounds = result.Through, prefix, result.Rounds
+	if through < s.meta.Through || oldRounds != s.meta.Rounds {
+		return Summary{}, ErrSourceChanged
+	}
+	if oldBytes != s.meta.Bytes {
+		return Summary{}, ErrCorrupt
+	}
+	if err := s.verifyStreamKeys(ctx); err != nil {
+		return Summary{}, err
+	}
+	// Capacity never masks corruption or an incomplete source read. All staged
+	// additions are discarded together when the complete new tail cannot fit.
+	if capacity {
+		return Summary{}, ErrCapacity
+	}
+	result := Summary{Through: through, Rounds: builder.rounds, PendingShares: through - (builder.first - 1)}
+	if through == s.meta.Through {
+		return result, ctx.Err()
+	}
+	next.Through, next.Prefix, next.Rounds = through, prefix, builder.rounds
 	if err := ctx.Err(); err != nil {
 		return Summary{}, err
 	}

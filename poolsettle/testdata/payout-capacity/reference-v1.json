@@ -1,0 +1,248 @@
+{
+  "version": 1,
+  "scope": "independent symbolic native84 byte/count arithmetic only; no funding, signature, capacity-continuation or RunDaily execution claim",
+  "cases": [
+    {
+      "inputs": 1,
+      "payments": 1,
+      "change": false,
+      "dimensions": {
+        "outputs": 1,
+        "stripped_bytes": 82,
+        "witness_and_marker_bytes": 111,
+        "raw_bytes": 193,
+        "vsize": 110
+      },
+      "allowed": true,
+      "scope": "valid-counts-symbolic-size"
+    },
+    {
+      "inputs": 1,
+      "payments": 1,
+      "change": true,
+      "dimensions": {
+        "outputs": 2,
+        "stripped_bytes": 113,
+        "witness_and_marker_bytes": 111,
+        "raw_bytes": 224,
+        "vsize": 141
+      },
+      "allowed": true,
+      "scope": "valid-counts-symbolic-size"
+    },
+    {
+      "inputs": 252,
+      "payments": 1,
+      "change": false,
+      "dimensions": {
+        "outputs": 1,
+        "stripped_bytes": 10373,
+        "witness_and_marker_bytes": 27470,
+        "raw_bytes": 37843,
+        "vsize": 17241
+      },
+      "allowed": true,
+      "scope": "valid-counts-symbolic-size"
+    },
+    {
+      "inputs": 253,
+      "payments": 1,
+      "change": false,
+      "dimensions": {
+        "outputs": 1,
+        "stripped_bytes": 10416,
+        "witness_and_marker_bytes": 27579,
+        "raw_bytes": 37995,
+        "vsize": 17311
+      },
+      "allowed": true,
+      "scope": "valid-counts-symbolic-size"
+    },
+    {
+      "inputs": 1,
+      "payments": 251,
+      "change": true,
+      "dimensions": {
+        "outputs": 252,
+        "stripped_bytes": 7863,
+        "witness_and_marker_bytes": 111,
+        "raw_bytes": 7974,
+        "vsize": 7891
+      },
+      "allowed": true,
+      "scope": "valid-counts-symbolic-size"
+    },
+    {
+      "inputs": 1,
+      "payments": 252,
+      "change": false,
+      "dimensions": {
+        "outputs": 252,
+        "stripped_bytes": 7863,
+        "witness_and_marker_bytes": 111,
+        "raw_bytes": 7974,
+        "vsize": 7891
+      },
+      "allowed": true,
+      "scope": "valid-counts-symbolic-size"
+    },
+    {
+      "inputs": 1,
+      "payments": 252,
+      "change": true,
+      "dimensions": {
+        "outputs": 253,
+        "stripped_bytes": 7896,
+        "witness_and_marker_bytes": 111,
+        "raw_bytes": 8007,
+        "vsize": 7924
+      },
+      "allowed": true,
+      "scope": "valid-counts-symbolic-size"
+    },
+    {
+      "inputs": 1,
+      "payments": 253,
+      "change": false,
+      "dimensions": {
+        "outputs": 253,
+        "stripped_bytes": 7896,
+        "witness_and_marker_bytes": 111,
+        "raw_bytes": 8007,
+        "vsize": 7924
+      },
+      "allowed": true,
+      "scope": "valid-counts-symbolic-size"
+    },
+    {
+      "inputs": 256,
+      "payments": 256,
+      "change": false,
+      "dimensions": {
+        "outputs": 256,
+        "stripped_bytes": 18446,
+        "witness_and_marker_bytes": 27906,
+        "raw_bytes": 46352,
+        "vsize": 25423
+      },
+      "allowed": true,
+      "scope": "valid-counts-symbolic-size"
+    },
+    {
+      "inputs": 256,
+      "payments": 256,
+      "change": true,
+      "dimensions": {
+        "outputs": 257,
+        "stripped_bytes": 18477,
+        "witness_and_marker_bytes": 27906,
+        "raw_bytes": 46383,
+        "vsize": 25454
+      },
+      "allowed": true,
+      "scope": "valid-counts-symbolic-size"
+    },
+    {
+      "inputs": 257,
+      "payments": 1,
+      "change": false,
+      "dimensions": {
+        "outputs": 1,
+        "stripped_bytes": 10580,
+        "witness_and_marker_bytes": 28015,
+        "raw_bytes": 38595,
+        "vsize": 17584
+      },
+      "allowed": false,
+      "scope": "size-only-outside-valid-counts"
+    },
+    {
+      "inputs": 1,
+      "payments": 257,
+      "change": false,
+      "dimensions": {
+        "outputs": 257,
+        "stripped_bytes": 8020,
+        "witness_and_marker_bytes": 111,
+        "raw_bytes": 8131,
+        "vsize": 8048
+      },
+      "allowed": false,
+      "scope": "size-only-outside-valid-counts"
+    },
+    {
+      "inputs": 0,
+      "payments": 1,
+      "change": false,
+      "dimensions": null,
+      "allowed": false,
+      "scope": "size-only-outside-valid-counts"
+    },
+    {
+      "inputs": -1,
+      "payments": 1,
+      "change": true,
+      "dimensions": null,
+      "allowed": false,
+      "scope": "size-only-outside-valid-counts"
+    },
+    {
+      "inputs": 1,
+      "payments": 0,
+      "change": false,
+      "dimensions": null,
+      "allowed": false,
+      "scope": "size-only-outside-valid-counts"
+    },
+    {
+      "inputs": 1,
+      "payments": -1,
+      "change": true,
+      "dimensions": null,
+      "allowed": false,
+      "scope": "size-only-outside-valid-counts"
+    },
+    {
+      "inputs": 618,
+      "payments": 235,
+      "change": false,
+      "dimensions": {
+        "outputs": 235,
+        "stripped_bytes": 32635,
+        "witness_and_marker_bytes": 67364,
+        "raw_bytes": 99999,
+        "vsize": 49476
+      },
+      "allowed": false,
+      "scope": "size-only-outside-valid-counts"
+    },
+    {
+      "inputs": 624,
+      "payments": 206,
+      "change": false,
+      "dimensions": {
+        "outputs": 206,
+        "stripped_bytes": 31982,
+        "witness_and_marker_bytes": 68018,
+        "raw_bytes": 100000,
+        "vsize": 48987
+      },
+      "allowed": false,
+      "scope": "size-only-outside-valid-counts"
+    },
+    {
+      "inputs": 630,
+      "payments": 177,
+      "change": false,
+      "dimensions": {
+        "outputs": 177,
+        "stripped_bytes": 31329,
+        "witness_and_marker_bytes": 68672,
+        "raw_bytes": 100001,
+        "vsize": 48497
+      },
+      "allowed": false,
+      "scope": "size-only-outside-valid-counts"
+    }
+  ]
+}

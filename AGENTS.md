@@ -399,6 +399,25 @@ authorization must be repository-limited, not an account-wide OAuth expansion.
   authority. Never migrate V1 history or load the offline checkpoint key online.
   Keep exact retained transaction recovery separate from daily preparation.
   See `CHANGESET_74_NOTES.md`; no public pool readiness is implied.
+- Set75 on `slug-pool-capacity` follows Set74 `e0e71ac0`. Its first slice
+  streams the concrete accepted prefix/round audit into settlement while keeping
+  all V1 schemas, source pins, duplicate guards and ceilings. Authenticate the
+  full source and stored namespaces before callbacks or commits; capacity must
+  never mask corruption. Stage credit imports until complete source/old-credit
+  validation succeeds. Preserve original pending payout bytes and owner handles.
+  D84 (Mike, November 20): if the complete daily payout cannot fit, defer the
+  entire batch with a visible transaction-capacity reason. No oldest-first
+  subset, multiple payouts, miner surcharge or reserve advance. Inspecting
+  funding in pages never selects only one page. A deferral occupies no daily
+  slot. Waiting need not shrink an oversized batch; report the capacity hold.
+  Six pool packages pass normal/race checks, thirteen cheap-profile refusals
+  pass, and focused desktop normal/race/vet checks pass. Preserve the sandbox
+  bind failure and unsupported vet-wrapper invocation as failed harness attempts.
+  Streaming is a prerequisite, not continuous capacity: original V1 history,
+  source/client, signed publication and funding-claim limits remain. Continue
+  explicit durable adoption/append history, preserved old-job recovery and
+  full-intake restart acceptance before public host qualification. See
+  `POOL_CAPACITY_CONTINUATION.md` and `CHANGESET_75_NOTES.md`.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

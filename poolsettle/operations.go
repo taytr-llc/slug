@@ -134,12 +134,26 @@ func (s *Store) inspect(ctx context.Context, coins []Coin) ([]Coin, map[string]s
 	if len(coins) == 0 {
 		return []Coin{}, map[string]string{}, nil
 	}
-	states, err := s.backend.Inspect(ctx, clone(coins))
-	if err != nil {
-		return nil, nil, err
-	}
-	if len(states) != len(coins) {
-		return nil, nil, ErrBackend
+	// Inspect every original live coin in bounded requests. This partitions
+	// observations only, never the set selected for the one daily transaction.
+	// The final pre-broadcast funding check still covers its complete inputs.
+	states := make([]Funding, 0, len(coins))
+	for first := 0; first < len(coins); first += MaxInputs {
+		if err := ctx.Err(); err != nil {
+			return nil, nil, err
+		}
+		last := first + MaxInputs
+		if last > len(coins) {
+			last = len(coins)
+		}
+		page, err := s.backend.Inspect(ctx, clone(coins[first:last]))
+		if err != nil {
+			return nil, nil, err
+		}
+		if len(page) != last-first {
+			return nil, nil, ErrBackend
+		}
+		states = append(states, page...)
 	}
 	ready := []Coin{}
 	reasons := make(map[string]string)
@@ -163,6 +177,9 @@ func (s *Store) inspect(ctx context.Context, coins []Coin) ([]Coin, map[string]s
 		default:
 			return nil, nil, ErrBackend
 		}
+	}
+	if err := ctx.Err(); err != nil {
+		return nil, nil, err
 	}
 	return ready, reasons, nil
 }
@@ -273,6 +290,11 @@ func (s *Store) runSettlement(ctx context.Context, recoveryOnly bool) (Report, e
 	if len(st.Batches) > 0 && st.Batches[len(st.Batches)-1].Day >= day {
 		return s.finish(ctx, st, day, "complete", "daily-batch-complete", ready, reasons)
 	}
+	if len(ready) > MaxInputs {
+		// D84: keep all earnings and defer the entire batch. Never choose a
+		// partial oldest-first payout or consume the day's slot on a deferral.
+		return s.finish(ctx, st, day, "deferred", "transaction-capacity", ready, reasons)
+	}
 	payments, _, reason, err := plan(ready, st.Config, 0)
 	if err != nil {
 		return Report{}, err
@@ -290,6 +312,9 @@ func (s *Store) runSettlement(ctx context.Context, recoveryOnly bool) (Report, e
 	}
 	if reason != "" {
 		return s.finish(ctx, st, day, "deferred", reason, ready, reasons)
+	}
+	if !transactionCapacity(len(ready), len(payments), change != nil) {
+		return s.finish(ctx, st, day, "deferred", "transaction-capacity", ready, reasons)
 	}
 	if len(st.Batches) >= int(st.Config.MaxBatches) {
 		return s.finish(ctx, st, day, "deferred", "capacity", ready, reasons)

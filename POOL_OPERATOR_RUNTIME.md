@@ -118,11 +118,19 @@ journal permits drain only and cannot claim a retroactive reservation.
 Rollover and compaction are not implemented. Do not remove financial journals,
 repin a source or discard fractional balances to resume mining.
 
-There is also an unresolved D80 boundary: a previously issued job can produce an
-unseen canonical winner after intake drains. Its client evidence remains pending,
-but the full journal has no operator row or credit yet. Continuation-backed
-acceptance is required before public operation; saved-row recovery is insufficient.
-The unallocated coinbase is not authority to spend or discard the miner's reward.
+Set74's `e0e71ac0` closes the ordinary-intake D80 boundary within V1: an unseen
+canonical winner from an original job can cross the ordinary ceiling after a
+separate whole-history row/block reservation. Actual normal-PoW full-intake,
+expiry, restart and unchanged-payout acceptance passed. A physically full or
+financially unbacked journal still holds; the unallocated coinbase grants no
+authority to spend or discard the miner's reward. Continuous public operation
+still requires durable continuation beyond those limits.
+
+Set75 starts that work with streaming round verification and settlement reads;
+it does not raise the V1 ceilings. D84 requires visible whole-batch deferral if
+all ready funding/payments cannot fit one daily transaction. Keep all balances,
+do not select a partial payout, and recover previously signed bytes first. See
+`POOL_CAPACITY_CONTINUATION.md` for the remaining acceptance boundaries.
 
 Retain the complete operator root, independently selected public Setup, wallet
 and protected custody. Public hostname/TLS, real online authority, enrolled

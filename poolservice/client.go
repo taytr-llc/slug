@@ -269,7 +269,7 @@ func fraction(f poolsettle.Fraction) (*big.Rat, bool) {
 }
 func balanceReason(s string) bool {
 	switch s {
-	case "", "payout-pending", "broadcast-unknown", "transaction-unavailable", "payout-conflict", "funding-unavailable", "funding-conflict", "funding-changed", "immature", "awaiting-confirmation", "below-minimum", "destination-unavailable", "daily-batch-complete", "fee-unavailable", "fee-budget", "change-dust", "signing-unavailable", "capacity":
+	case "", "payout-pending", "broadcast-unknown", "transaction-unavailable", "payout-conflict", "funding-unavailable", "funding-conflict", "funding-changed", "immature", "awaiting-confirmation", "below-minimum", "destination-unavailable", "daily-batch-complete", "fee-unavailable", "fee-budget", "change-dust", "signing-unavailable", "capacity", "transaction-capacity":
 		return true
 	}
 	return false

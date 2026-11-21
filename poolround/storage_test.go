@@ -296,4 +296,8 @@ func TestRoundCheapProfileRefusesBeforeStorage(t *testing.T) {
 	if _, err := s.List(ctx, 0, 1); !errors.Is(err, ErrProfile) {
 		t.Fatal("cheap list", err)
 	}
+	called := false
+	if source, err := s.WalkSettlement(ctx, func([]Record) error { called = true; return nil }); !errors.Is(err, ErrProfile) || source.Version != 0 || called {
+		t.Fatal("cheap walk disclosed source or called visitor", err)
+	}
 }

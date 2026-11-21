@@ -154,6 +154,7 @@ const poolReasons = {
   'below-minimum': 'The balance carries forward until it reaches 1 SLUG.',
   'destination-unavailable': 'The wallet recipient needs verification before payment.',
   'daily-batch-complete': 'Today’s batch is complete. Remaining earnings carry forward.',
+  'transaction-capacity': 'The full daily payout exceeds transaction capacity. All earnings carry forward; no partial payout was sent.',
   'fee-unavailable': 'A network fee could not be checked. Payment is deferred.',
   'fee-budget': 'Payment is deferred until the pool’s 1% cut covers the network fee.',
   'change-dust': 'Payment is deferred to preserve the remaining balance.',

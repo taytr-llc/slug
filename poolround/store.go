@@ -290,60 +290,6 @@ func recordBytes(r Record) ([]byte, error) {
 	return raw, nil
 }
 
-// snapshot reads one fixed accepted tail, never source delivery state. A nil
-// limit selects the current tail; zero explicitly requests an empty old prefix.
-func (s *Store) snapshot(ctx context.Context, limit *uint64) ([]poolshare.AccountingEntry, string, error) {
-	requested := uint64(0)
-	if limit != nil {
-		requested = *limit
-	}
-	page, err := s.source.AccountingPage(ctx, 0, requested, poolshare.MaxAccountingPage)
-	if err != nil {
-		return nil, "", sourceError(err)
-	}
-	if page.Config != s.sourceConfig || page.Through > s.sourceConfig.MaxSubmissions {
-		return nil, "", ErrSourceChanged
-	}
-	through := page.Through
-	if limit != nil {
-		through = *limit
-		if requested != 0 && page.Through != requested {
-			return nil, "", ErrSourceChanged
-		}
-	}
-	prefix := initialPrefix(s.sourceConfig)
-	entries := make([]poolshare.AccountingEntry, 0, through)
-	if through == 0 {
-		return entries, prefix, nil
-	}
-	for {
-		if err := ctx.Err(); err != nil {
-			return nil, "", err
-		}
-		if page.Config != s.sourceConfig || page.Through != through || len(page.Entries) == 0 || len(page.Entries) > poolshare.MaxAccountingPage {
-			return nil, "", ErrSourceChanged
-		}
-		for _, entry := range page.Entries {
-			if uint64(len(entries)) >= through || entry.Share.AcceptedSequence != uint64(len(entries))+1 {
-				return nil, "", ErrSourceChanged
-			}
-			prefix, err = extendPrefix(prefix, entry)
-			if err != nil {
-				return nil, "", err
-			}
-			entries = append(entries, entry)
-		}
-		if uint64(len(entries)) == through {
-			break
-		}
-		page, err = s.source.AccountingPage(ctx, uint64(len(entries)), through, poolshare.MaxAccountingPage)
-		if err != nil {
-			return nil, "", sourceError(err)
-		}
-	}
-	return entries, prefix, nil
-}
-
 func sameRound(a, b Round) bool {
 	x, e := json.Marshal(a)
 	if e != nil {
@@ -353,79 +299,19 @@ func sameRound(a, b Round) bool {
 	return e == nil && bytes.Equal(x, y)
 }
 
-// stored validates all indexes and immutable rows against independently
-// reconstructed source windows. No incoming JSON can authorize a round.
-func (s *Store) stored(expected []Round) ([]Record, error) {
-	if uint64(len(expected)) != s.meta.Rounds {
-		return nil, ErrSourceChanged
+func (s *Store) verifyStored(ctx context.Context) ([]Record, error) {
+	if err := s.verifyStream(ctx); err != nil {
+		return nil, err
 	}
-	records := make([]Record, len(expected))
-	byHash := make(map[string]int, len(expected))
-	for i, r := range expected {
-		byHash[r.BlockHash] = i
-	}
-	var rows, indexes, size uint64
-	seenMetadata := false
-	it := s.db.NewIterator(nil, nil)
-	defer it.Release()
-	for it.Next() {
-		k, v := it.Key(), it.Value()
-		if string(k) == "meta" {
-			var m metadata
-			if decode(v, maxMetadataSize, &m) != nil || m != s.meta {
-				return nil, ErrCorrupt
-			}
-			seenMetadata = true
-			continue
-		}
-		if len(k) == 65 && k[0] == 'r' {
-			index, exists := byHash[string(k[1:])]
-			if !exists {
-				return nil, ErrCorrupt
-			}
-			var record Record
-			if decode(v, maxRecordSize, &record) != nil || !sameRound(record.Round, expected[index]) || !validRecord(record) {
-				return nil, ErrCorrupt
-			}
-			budget, err := roundBudget(record.Round)
-			if err != nil || uint64(len(v)) > budget {
-				return nil, ErrCorrupt
-			}
-			records[index] = record
-			rows++
-			size += budget
-		} else if len(k) == 9 && k[0] == 'i' {
-			n := binary.BigEndian.Uint64(k[1:])
-			if n == 0 || n > uint64(len(expected)) || string(v) != expected[n-1].BlockHash {
-				return nil, ErrCorrupt
-			}
-			indexes++
-		} else {
-			return nil, ErrCorrupt
-		}
-		if rows > s.meta.Rounds || indexes > s.meta.Rounds || size > s.meta.Bytes {
-			return nil, ErrCorrupt
-		}
-	}
-	if it.Error() != nil || !seenMetadata || rows != s.meta.Rounds || indexes != s.meta.Rounds || size != s.meta.Bytes {
-		return nil, ErrCorrupt
+	records := make([]Record, 0, s.meta.Rounds)
+	err := s.walkRecords(ctx, func(page []Record) error {
+		records = append(records, page...)
+		return nil
+	})
+	if err != nil {
+		return nil, err
 	}
 	return records, nil
-}
-
-func (s *Store) verifyStored(ctx context.Context) ([]Record, error) {
-	entries, prefix, err := s.snapshot(ctx, &s.meta.Through)
-	if err != nil {
-		return nil, err
-	}
-	if prefix != s.meta.Prefix {
-		return nil, ErrSourceChanged
-	}
-	rounds, err := derive(s.sourceConfig, entries)
-	if err != nil {
-		return nil, err
-	}
-	return s.stored(rounds)
 }
 
 func (s *Store) begin(ctx context.Context) (func(), error) {

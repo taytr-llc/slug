@@ -63,11 +63,11 @@ func initialMode(c Config, source *poolround.Store, backend Backend, auditOnly b
 	if validateConfig(c) != nil || source == nil || (!auditOnly && !nonnil(backend)) {
 		return state{}, ErrConfig
 	}
-	snapshot, err := source.SettlementSnapshot(context.Background())
+	sourceConfig, err := source.WalkSettlement(context.Background(), nil)
 	if err != nil {
 		return state{}, ErrSource
 	}
-	addr, err := address.DecodeAddress(snapshot.Source.PayoutAddress, &chaincfg.MainNetParams)
+	addr, err := address.DecodeAddress(sourceConfig.PayoutAddress, &chaincfg.MainNetParams)
 	if err != nil {
 		return state{}, ErrConfig
 	}
@@ -75,7 +75,7 @@ func initialMode(c Config, source *poolround.Store, backend Backend, auditOnly b
 	if err != nil || hex.EncodeToString(script) != c.ChangeScript {
 		return state{}, ErrConfig
 	}
-	return state{Config: clone(c), Source: snapshot.Source, Credits: []Credit{}, Batches: []Batch{}}, nil
+	return state{Config: clone(c), Source: sourceConfig, Credits: []Credit{}, Batches: []Batch{}}, nil
 }
 func newStore(st state, source *poolround.Store, backend Backend) *Store {
 	return &Store{state: st, source: source, backend: backend, now: time.Now, gate: make(chan struct{}, 1), closeDone: make(chan struct{})}
@@ -198,45 +198,47 @@ func (s *Store) commit(st state, reserve bool) error {
 // supplied JSON allocation cannot create a balance. New confirmations are
 // imported exactly once; old credits must still match their original source.
 func (s *Store) sourceState(ctx context.Context, st *state, importNew bool) error {
-	snapshot, err := s.source.SettlementSnapshot(ctx)
-	if err != nil {
-		return ErrSource
-	}
-	if snapshot.Source != st.Source {
-		return ErrSource
-	}
-	expected := make(map[string]Credit)
-	ordered := make([]Credit, 0, len(snapshot.Records))
-	for _, r := range snapshot.Records {
-		if r.Confirmation == nil {
-			continue
-		}
-		credit, e := deriveCredit(r)
-		if e != nil || credit.Coin.Script != st.Config.ChangeScript {
-			return ErrSource
-		}
-		if _, ok := expected[credit.RoundHash]; ok {
-			return ErrSource
-		}
-		expected[credit.RoundHash] = credit
-		ordered = append(ordered, credit)
-	}
-	seen := make(map[string]bool)
+	// Stage every effect until the concrete walk has authenticated the complete
+	// prefix, every old credit and the original source. No partial page import
+	// may survive a callback/read failure, cancellation or final identity check.
+	existing := make(map[string]Credit, len(st.Credits))
 	for _, credit := range st.Credits {
-		want, ok := expected[credit.RoundHash]
-		if !ok || seen[credit.RoundHash] || !same(credit, want) {
+		if _, duplicate := existing[credit.RoundHash]; duplicate {
 			return ErrSource
 		}
-		seen[credit.RoundHash] = true
+		existing[credit.RoundHash] = credit
 	}
-	if importNew {
-		additional := make([]Credit, 0)
-		for _, credit := range ordered {
-			if !seen[credit.RoundHash] {
+	checked := make(map[string]bool, len(st.Credits))
+	additional := make([]Credit, 0)
+	sourceConfig, err := s.source.WalkSettlement(ctx, func(page []poolround.Record) error {
+		for _, r := range page {
+			if err := ctx.Err(); err != nil {
+				return err
+			}
+			if r.Confirmation == nil {
+				continue
+			}
+			credit, err := deriveCredit(r)
+			if err != nil || credit.Coin.Script != st.Config.ChangeScript {
+				return ErrSource
+			}
+			if old, exists := existing[credit.RoundHash]; exists {
+				if checked[credit.RoundHash] || !same(credit, old) {
+					return ErrSource
+				}
+				checked[credit.RoundHash] = true
+			} else if importNew {
+				// The verified concrete round stream already proves distinct
+				// winning hashes and their original global sequence order.
 				additional = append(additional, credit)
-				seen[credit.RoundHash] = true
 			}
 		}
+		return nil
+	})
+	if err != nil || sourceConfig != st.Source || len(checked) != len(existing) {
+		return ErrSource
+	}
+	if importNew {
 		if len(st.Credits)+len(additional) > int(st.Config.MaxRounds) {
 			return ErrCapacity
 		}
@@ -256,7 +258,11 @@ func (s *Store) sourceState(ctx context.Context, st *state, importNew bool) erro
 		if len(gyms) > 256 {
 			return ErrCapacity
 		}
+		if err := ctx.Err(); err != nil {
+			return err
+		}
 		st.Credits = append(st.Credits, additional...)
+		return nil
 	}
 	return ctx.Err()
 }

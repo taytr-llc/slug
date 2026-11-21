@@ -322,6 +322,12 @@ Master and Railway run `e3eb4d49`, with the original chain, volume and endpoint
 verified after rollout.
 `CHANGESET_73_NOTES.md` records their exact scopes. Visible native acceptance and D74 remain product gates.
 
+Set75 starts the capacity prerequisite with streaming original round audits.
+It preserves V1 limits and custody; explicit durable continuation and source/
+client/authority capacity still precede host qualification. D84 requires full
+payout deferral when one complete transaction cannot fit, with all earnings
+carried and a visible reason. See `POOL_CAPACITY_CONTINUATION.md`.
+
 After this transfer/recovery milestone, complete the public mining pool and
 scheduled payouts. The current desktop already has a joined 30-second scheduler
 and durable settlement journals. The concrete missing integration is an

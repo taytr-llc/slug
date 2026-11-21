@@ -325,7 +325,7 @@ func poolBalanceValid(s PoolSnapshot) bool {
 	if v.Version != 1 || v.BindingID != s.SourceBindingID || v.ObservedAtMS < 0 || v.ObservedAtMS > 8640000000000000 || r.GymID != s.GymID || r.PaidAtoms < 0 || r.PaidAtoms > poolsettle.MaxMoney || r.ReservedAtoms < 0 || r.ReservedAtoms > poolsettle.MaxMoney {
 		return false
 	}
-	if !stableOne(r.Reason, "", "payout-pending", "broadcast-unknown", "transaction-unavailable", "payout-conflict", "funding-unavailable", "funding-conflict", "funding-changed", "immature", "awaiting-confirmation", "below-minimum", "destination-unavailable", "daily-batch-complete", "fee-unavailable", "fee-budget", "change-dust", "signing-unavailable", "capacity") {
+	if !stableOne(r.Reason, "", "payout-pending", "broadcast-unknown", "transaction-unavailable", "payout-conflict", "funding-unavailable", "funding-conflict", "funding-changed", "immature", "awaiting-confirmation", "below-minimum", "destination-unavailable", "daily-batch-complete", "fee-unavailable", "fee-budget", "change-dust", "signing-unavailable", "capacity", "transaction-capacity") {
 		return false
 	}
 	confirmed, ok := poolFraction(r.Confirmed)

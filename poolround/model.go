@@ -44,72 +44,108 @@ func derive(config poolshare.Config, entries []poolshare.AccountingEntry) ([]Rou
 	if len(entries) > maxAccepted || !canonicalHash(config.PoolTarget, true) {
 		return nil, ErrSourceChanged
 	}
+	builder := newRoundDerivation(config)
 	rounds := make([]Round, 0)
-	keys := make(map[string]bool)
-	submissions := make(map[uint64]bool)
-	winners := make(map[string]bool)
-	counts := make(map[string]uint64)
-	window := make([]string, 0)
-	first := uint64(1)
-	for i, e := range entries {
-		r, j := e.Share, e.Job
-		if r.Version != poolshare.Version1 || r.AcceptedSequence != uint64(i+1) || r.Sequence == 0 || submissions[r.Sequence] || !canonicalHash(r.DuplicateKey, false) || keys[r.DuplicateKey] || !canonicalHash(r.WorkHash, false) || !canonicalHash(r.GymID, false) || r.GymID != j.GymID || r.JobID != j.ID || r.PoolTarget != config.PoolTarget || r.BlockState != "" || r.BlockObservedAtMS != 0 || (!r.Pool && !r.Block) || r.AcceptedAtMS < r.ReceivedAtMS || r.ReceivedAtMS < j.IssuedAtMS || len(r.Header) != 160 {
-			return nil, ErrSourceChanged
+	for _, e := range entries {
+		round, err := builder.add(e)
+		if err != nil {
+			return nil, err
 		}
-		if _, err := hex.DecodeString(r.Header); err != nil {
-			return nil, ErrSourceChanged
+		if round != nil {
+			rounds = append(rounds, *round)
 		}
-		switch r.Acceptance {
-		case "current-parent":
-			if !r.Pool || r.AcceptedAtMS >= j.ExpiresAtMS {
-				return nil, ErrSourceChanged
-			}
-		case "canonical-winning-block":
-			if !r.Block || r.AcceptedAtMS >= j.ExpiresAtMS {
-				return nil, ErrSourceChanged
-			}
-		case "canonical-late-winner":
-			if !r.Block || r.AcceptedAtMS < j.ExpiresAtMS {
-				return nil, ErrSourceChanged
-			}
-		default:
-			return nil, ErrSourceChanged
-		}
-		keys[r.DuplicateKey] = true
-		submissions[r.Sequence] = true
-		counts[r.GymID]++
-		window = append(window, r.DuplicateKey)
-		if !r.Block {
-			if e.Proof != nil || e.RewardAtoms != 0 || r.BlockHeight != 0 {
-				return nil, ErrSourceChanged
-			}
-			continue
-		}
-		if winners[r.WorkHash] || j.Context.ParentHeight >= math.MaxInt32 || r.BlockHeight != j.Context.ParentHeight+1 || e.Proof == nil || e.Proof.Header != r.Header || e.Proof.GymID != r.GymID || e.Proof.JobID != r.JobID || e.RewardAtoms < 0 || e.RewardAtoms > maxMoney {
-			return nil, ErrSourceChanged
-		}
-		proofBytes, err := json.Marshal(e.Proof)
-		if err != nil || len(proofBytes) > prospect.MaxProofSize {
-			return nil, ErrSourceChanged
-		}
-		winners[r.WorkHash] = true
-		gyms := make([]string, 0, len(counts))
-		for gym := range counts {
-			gyms = append(gyms, gym)
-		}
-		sort.Strings(gyms)
-		allocations := make([]Allocation, 0, len(gyms))
-		for _, gym := range gyms {
-			numerator := new(big.Int).Mul(big.NewInt(e.RewardAtoms), new(big.Int).SetUint64(counts[gym]))
-			amount := new(big.Rat).SetFrac(numerator, new(big.Int).SetUint64(uint64(len(window))))
-			allocations = append(allocations, Allocation{gym, counts[gym], amount.Num().String(), amount.Denom().String()})
-		}
-		rounds = append(rounds, Round{Version: Version1, Sequence: uint64(len(rounds)) + 1, BlockHash: r.WorkHash, BlockHeight: r.BlockHeight, FirstAccepted: first, LastAccepted: r.AcceptedSequence, ShareKeys: append([]string(nil), window...), PoolTarget: config.PoolTarget, PayoutAddress: config.PayoutAddress, RewardAtoms: e.RewardAtoms, Allocations: allocations, Winner: cloneEntry(e)})
-		first = r.AcceptedSequence + 1
-		counts = make(map[string]uint64)
-		window = make([]string, 0)
 	}
 	return rounds, nil
+}
+
+// roundDerivation retains one open window and the V1 duplicate guards, not all
+// historical jobs, proofs and completed rounds. Page boundaries never close a
+// window. The V1 lifetime bounds and exact serialized Round remain unchanged.
+type roundDerivation struct {
+	config      poolshare.Config
+	accepted    uint64
+	rounds      uint64
+	first       uint64
+	keys        map[string]bool
+	submissions map[uint64]bool
+	winners     map[string]bool
+	counts      map[string]uint64
+	window      []string
+}
+
+func newRoundDerivation(config poolshare.Config) *roundDerivation {
+	return &roundDerivation{config: config, first: 1,
+		keys: make(map[string]bool), submissions: make(map[uint64]bool),
+		winners: make(map[string]bool), counts: make(map[string]uint64),
+		window: make([]string, 0)}
+}
+
+// add is conditional arithmetic, not authority. Its caller must discard the
+// derivation after any error, and authenticate the entire prefix before use.
+func (b *roundDerivation) add(e poolshare.AccountingEntry) (*Round, error) {
+	if b.accepted >= maxAccepted || !canonicalHash(b.config.PoolTarget, true) {
+		return nil, ErrSourceChanged
+	}
+	config := b.config
+	r, j := e.Share, e.Job
+	if r.Version != poolshare.Version1 || r.AcceptedSequence != b.accepted+1 || r.Sequence == 0 || b.submissions[r.Sequence] || !canonicalHash(r.DuplicateKey, false) || b.keys[r.DuplicateKey] || !canonicalHash(r.WorkHash, false) || !canonicalHash(r.GymID, false) || r.GymID != j.GymID || r.JobID != j.ID || r.PoolTarget != config.PoolTarget || r.BlockState != "" || r.BlockObservedAtMS != 0 || (!r.Pool && !r.Block) || r.AcceptedAtMS < r.ReceivedAtMS || r.ReceivedAtMS < j.IssuedAtMS || len(r.Header) != 160 {
+		return nil, ErrSourceChanged
+	}
+	if _, err := hex.DecodeString(r.Header); err != nil {
+		return nil, ErrSourceChanged
+	}
+	switch r.Acceptance {
+	case "current-parent":
+		if !r.Pool || r.AcceptedAtMS >= j.ExpiresAtMS {
+			return nil, ErrSourceChanged
+		}
+	case "canonical-winning-block":
+		if !r.Block || r.AcceptedAtMS >= j.ExpiresAtMS {
+			return nil, ErrSourceChanged
+		}
+	case "canonical-late-winner":
+		if !r.Block || r.AcceptedAtMS < j.ExpiresAtMS {
+			return nil, ErrSourceChanged
+		}
+	default:
+		return nil, ErrSourceChanged
+	}
+	b.keys[r.DuplicateKey] = true
+	b.submissions[r.Sequence] = true
+	b.counts[r.GymID]++
+	b.window = append(b.window, r.DuplicateKey)
+	b.accepted++
+	if !r.Block {
+		if e.Proof != nil || e.RewardAtoms != 0 || r.BlockHeight != 0 {
+			return nil, ErrSourceChanged
+		}
+		return nil, nil
+	}
+	if b.winners[r.WorkHash] || j.Context.ParentHeight >= math.MaxInt32 || r.BlockHeight != j.Context.ParentHeight+1 || e.Proof == nil || e.Proof.Header != r.Header || e.Proof.GymID != r.GymID || e.Proof.JobID != r.JobID || e.RewardAtoms < 0 || e.RewardAtoms > maxMoney {
+		return nil, ErrSourceChanged
+	}
+	proofBytes, err := json.Marshal(e.Proof)
+	if err != nil || len(proofBytes) > prospect.MaxProofSize {
+		return nil, ErrSourceChanged
+	}
+	b.winners[r.WorkHash] = true
+	gyms := make([]string, 0, len(b.counts))
+	for gym := range b.counts {
+		gyms = append(gyms, gym)
+	}
+	sort.Strings(gyms)
+	allocations := make([]Allocation, 0, len(gyms))
+	for _, gym := range gyms {
+		numerator := new(big.Int).Mul(big.NewInt(e.RewardAtoms), new(big.Int).SetUint64(b.counts[gym]))
+		amount := new(big.Rat).SetFrac(numerator, new(big.Int).SetUint64(uint64(len(b.window))))
+		allocations = append(allocations, Allocation{gym, b.counts[gym], amount.Num().String(), amount.Denom().String()})
+	}
+	b.rounds++
+	round := &Round{Version: Version1, Sequence: b.rounds, BlockHash: r.WorkHash, BlockHeight: r.BlockHeight, FirstAccepted: b.first, LastAccepted: r.AcceptedSequence, ShareKeys: append([]string(nil), b.window...), PoolTarget: config.PoolTarget, PayoutAddress: config.PayoutAddress, RewardAtoms: e.RewardAtoms, Allocations: allocations, Winner: cloneEntry(e)}
+	b.first = r.AcceptedSequence + 1
+	b.counts = make(map[string]uint64)
+	b.window = make([]string, 0)
+	return round, nil
 }
 
 func initialPrefix(config poolshare.Config) string {

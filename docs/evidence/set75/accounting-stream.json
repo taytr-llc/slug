@@ -1,0 +1,453 @@
+{
+  "version": 1,
+  "status": "passed_local",
+  "scope": "Set75 first streaming/accounting capacity prerequisite and D84 complete-payout deferral; no lifetime-cap crossing or public hosting claim",
+  "base_commit": "e0e71ac0f602a55c5efca1537db60e69aeb9857a",
+  "branch": "slug-pool-capacity",
+  "wallet_commit": "6a69ecfcfc20f5433b5a1ca75e6dbb3a4db725a0",
+  "profile": {
+    "version": 1,
+    "id": "slug-go1274-no-cse-v1",
+    "go_version": "go1.27.4",
+    "gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+    "scope": "candidate_engineering"
+  },
+  "source_files": [
+    {
+      "path": "desktop/frontend/stable.js",
+      "sha256": "1d97958cbd4b6e0d6848da0cd3952b5fa34c5072cf24f01aa1dde6506775a94a",
+      "bytes": 463833
+    },
+    {
+      "path": "desktop/pilot/pool_protocol.go",
+      "sha256": "2527349163d2169467a6d84b2d6673810c9c9ffb9fa2f1c475dd060ae204a035",
+      "bytes": 26512
+    },
+    {
+      "path": "desktop/pilot/transaction_capacity_test.go",
+      "sha256": "9e2fa942f27f5a963d0782fbd2761175471c959171cbc8b38a7ce5bc6c79bc20",
+      "bytes": 1857
+    },
+    {
+      "path": "poolround/model.go",
+      "sha256": "37f09736551034aeaf103d987c8eac475b92856b0c7a6b60e3c4158f7e411aee",
+      "bytes": 7236
+    },
+    {
+      "path": "poolround/operations.go",
+      "sha256": "bc2a67eab64decae3b994a9d56981b73c153ae7334f204ff2ec41244a0f515b3",
+      "bytes": 7186
+    },
+    {
+      "path": "poolround/settlement.go",
+      "sha256": "9af93cb4cf2d6054ec9ab2aaedd57546b691deefc1acb7919b1aeb1d7a7b3112",
+      "bytes": 1949
+    },
+    {
+      "path": "poolround/settlement_walk_test.go",
+      "sha256": "c635d519db5ba07bc4f393f9e47141a38331c0b84d4652ffa1fa9232f6c688ff",
+      "bytes": 11898
+    },
+    {
+      "path": "poolround/storage_test.go",
+      "sha256": "93b8dcc9cbb62d4076c7e9b8be7a09d1aefb4c5c7019f3c09de574ed8fa15292",
+      "bytes": 9273
+    },
+    {
+      "path": "poolround/store.go",
+      "sha256": "03309954e4dfac0377fc7ba9dfa140399b90b9f1d28f8f7a888d02f000f3159c",
+      "bytes": 9892
+    },
+    {
+      "path": "poolround/stream.go",
+      "sha256": "afd90c15ca875dd0de28d844ace26f9cd3325ffd863535b9b18e8d4a019aeed3",
+      "bytes": 5936
+    },
+    {
+      "path": "poolround/stream_iteration_test.go",
+      "sha256": "15d1a30d1c07b2b0d3cd0803fa42faecfb33f5990ff1fa7da85266f8c0732962",
+      "bytes": 2323
+    },
+    {
+      "path": "poolround/stream_model_test.go",
+      "sha256": "30e6b1a59f9a6711e4a912911f0c1dec4cc20d0140322509ad57c1a3f0b32fea",
+      "bytes": 2329
+    },
+    {
+      "path": "poolround/sync_capacity_order_test.go",
+      "sha256": "9d0d88086845a7ff1ee869ecfbe741de4297d7e5a29f486d7ad5f1f1833d0b47",
+      "bytes": 2484
+    },
+    {
+      "path": "poolservice/client.go",
+      "sha256": "bb21a8a09590f8f588dccdf93de4bd33d0d5e5b0d0a23927210233f5ed6b6e78",
+      "bytes": 11480
+    },
+    {
+      "path": "poolservice/transaction_capacity_test.go",
+      "sha256": "8f58faf63175ea452fc9d71e0cdada3d3cf5736628e07abfad8582332ff56fa6",
+      "bytes": 1686
+    },
+    {
+      "path": "poolsettle/inspect_pages_test.go",
+      "sha256": "a6eef38af8ca46c8e2983419b176a9a9614c4fd402c420f691af413eba5fe734",
+      "bytes": 8202
+    },
+    {
+      "path": "poolsettle/operations.go",
+      "sha256": "74ddc8796b417a2f5f1de27425111d65f1726b7dcb0e7e59e754491bc41baf80",
+      "bytes": 14419
+    },
+    {
+      "path": "poolsettle/report.go",
+      "sha256": "383a85baca87db9bd24116452e3ddb01864792e329ac35f036fe81df2ae8773f",
+      "bytes": 2220
+    },
+    {
+      "path": "poolsettle/source_stream_test.go",
+      "sha256": "28bfe45b683efa76425b6769384aab68ee2295a67ead560151a8c7bc29098e67",
+      "bytes": 10272
+    },
+    {
+      "path": "poolsettle/store.go",
+      "sha256": "92cfd89b9a13f5cc7e4133f7b68d5fa5db38977b191cb3dcf17f94e3e20f5256",
+      "bytes": 9647
+    },
+    {
+      "path": "poolsettle/testdata/payout-capacity/reference-v1.json",
+      "sha256": "1353e4856d0fb601c7a7fa9ef99af8cf1ffe3d1ac83f9f23ead28c62d2e5b291",
+      "bytes": 5759
+    },
+    {
+      "path": "poolsettle/testdata/payout-capacity/reference.py",
+      "sha256": "89109a3f77ea1b72a3ed0e83b2aac05830af0cbdbffff3d433f4d9b56e14b987",
+      "bytes": 2652
+    },
+    {
+      "path": "poolsettle/transaction.go",
+      "sha256": "a1ae44f970b3d7b826dcbfb30be0003ee598ee93d41d8b71431fb8e5c14c858f",
+      "bytes": 5206
+    },
+    {
+      "path": "poolsettle/transaction_capacity_test.go",
+      "sha256": "996abe5f5928e5ecaac1f93a05d177f2652eb01f438da245c7dce773918d0331",
+      "bytes": 2788
+    }
+  ],
+  "core_source_capture": {
+    "path": "/Users/taytrrip/slug/artifacts/set75/stream-attempt1/source.json",
+    "all_21_captured_files_unchanged": true,
+    "later_test_additions": "Added a tag-only WalkSettlement refusal assertion and service/desktop reason controls; qualified in the explicit tagged and transport/desktop runs."
+  },
+  "checks": [
+    {
+      "log": "/Users/taytrrip/slug/artifacts/set75/stream-attempt1/normal.jsonl",
+      "sha256": "9d46543bdbd8a6e166cfd3a26a61a6f3182721b73bbce26919ade2bac1e64a80",
+      "bytes": 269496,
+      "packages": [
+        {
+          "Package": "github.com/taytr-llc/slug/poolround",
+          "Action": "pass",
+          "Elapsed": 9.671
+        },
+        {
+          "Package": "github.com/taytr-llc/slug/poolsettle",
+          "Action": "pass",
+          "Elapsed": 24.148
+        }
+      ],
+      "top_level_passes": 64,
+      "test_pass_events": 281
+    },
+    {
+      "log": "/Users/taytrrip/slug/artifacts/set75/stream-attempt1/race.jsonl",
+      "sha256": "1f5458839d25941b243176947ff11a87a3528da8186b6be94c6d20e66ba67b16",
+      "bytes": 269581,
+      "packages": [
+        {
+          "Package": "github.com/taytr-llc/slug/poolround",
+          "Action": "pass",
+          "Elapsed": 20.17
+        },
+        {
+          "Package": "github.com/taytr-llc/slug/poolsettle",
+          "Action": "pass",
+          "Elapsed": 157.208
+        }
+      ],
+      "top_level_passes": 64,
+      "test_pass_events": 281
+    },
+    {
+      "log": "/Users/taytrrip/slug/artifacts/set75/stream-attempt2/dependencies-normal.log",
+      "sha256": "25e90b18a217a23eea1a6d557d22d47086512278ed51bf95d77e7beef35db5ad",
+      "bytes": 283099,
+      "packages": [
+        {
+          "Package": "github.com/taytr-llc/slug/poolservice",
+          "Action": "pass",
+          "Elapsed": 5.227
+        },
+        {
+          "Package": "github.com/taytr-llc/slug/poolsettlenode",
+          "Action": "pass",
+          "Elapsed": 0.468
+        },
+        {
+          "Package": "github.com/taytr-llc/slug/poolshare",
+          "Action": "pass",
+          "Elapsed": 9.655
+        },
+        {
+          "Package": "github.com/taytr-llc/slug/poolschedule",
+          "Action": "pass",
+          "Elapsed": 5.51
+        }
+      ],
+      "top_level_passes": 66,
+      "test_pass_events": 306
+    },
+    {
+      "log": "/Users/taytrrip/slug/artifacts/set75/stream-attempt2/dependencies-race.log",
+      "sha256": "aa529d9400f665493be47c7b3a2b44ee8a6583b8e707c1cb476e01a1981bff19",
+      "bytes": 283147,
+      "packages": [
+        {
+          "Package": "github.com/taytr-llc/slug/poolservice",
+          "Action": "pass",
+          "Elapsed": 13.755
+        },
+        {
+          "Package": "github.com/taytr-llc/slug/poolsettlenode",
+          "Action": "pass",
+          "Elapsed": 2.056
+        },
+        {
+          "Package": "github.com/taytr-llc/slug/poolshare",
+          "Action": "pass",
+          "Elapsed": 23.575
+        },
+        {
+          "Package": "github.com/taytr-llc/slug/poolschedule",
+          "Action": "pass",
+          "Elapsed": 21.457
+        }
+      ],
+      "top_level_passes": 66,
+      "test_pass_events": 306
+    },
+    {
+      "log": "/Users/taytrrip/slug/artifacts/set75/stream-attempt2/cheap-refusal.log",
+      "sha256": "93077cff26d4039f3f500bb7a88a6027c6033327248cfec718dd2a31d407be54",
+      "bytes": 13949,
+      "packages": [
+        {
+          "Package": "github.com/taytr-llc/slug/poolshare",
+          "Action": "pass",
+          "Elapsed": 0.31
+        },
+        {
+          "Package": "github.com/taytr-llc/slug/poolservice",
+          "Action": "pass",
+          "Elapsed": 0.327
+        },
+        {
+          "Package": "github.com/taytr-llc/slug/poolsettlenode",
+          "Action": "pass",
+          "Elapsed": 0.435
+        },
+        {
+          "Package": "github.com/taytr-llc/slug/poolschedule",
+          "Action": "pass",
+          "Elapsed": 0.301
+        },
+        {
+          "Package": "github.com/taytr-llc/slug/poolround",
+          "Action": "pass",
+          "Elapsed": 0.28
+        },
+        {
+          "Package": "github.com/taytr-llc/slug/poolsettle",
+          "Action": "pass",
+          "Elapsed": 0.315
+        }
+      ],
+      "top_level_passes": 13,
+      "test_pass_events": 13
+    },
+    {
+      "log": "/Users/taytrrip/slug/artifacts/set75/stream-attempt3/desktop-normal.log",
+      "sha256": "b1de7b98533007f931d7174643e4854cf286ec8719a510a0a0a9ac28669dce69",
+      "bytes": 9895,
+      "packages": [
+        {
+          "Package": "github.com/taytr-llc/slug/desktop/pilot",
+          "Action": "pass",
+          "Elapsed": 0.577
+        }
+      ],
+      "top_level_passes": 6,
+      "test_pass_events": 9
+    },
+    {
+      "log": "/Users/taytrrip/slug/artifacts/set75/stream-attempt3/desktop-race.log",
+      "sha256": "8adf5d4bf3cbe917e7bda5aa5c18c3a7e9c9601e6f63153185031a0a372f49ca",
+      "bytes": 9914,
+      "packages": [
+        {
+          "Package": "github.com/taytr-llc/slug/desktop/pilot",
+          "Action": "pass",
+          "Elapsed": 1.755
+        }
+      ],
+      "top_level_passes": 6,
+      "test_pass_events": 9
+    }
+  ],
+  "remaining_commands": [
+    {
+      "label": "profile-check",
+      "argv": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "check"
+      ],
+      "cwd": "/Users/taytrrip/slug/slug",
+      "exit_code": 0,
+      "elapsed_seconds": 0.021,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "label": "root-vet",
+      "argv": [
+        "go",
+        "vet",
+        "-gcflags=all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "./poolshare",
+        "./poolservice",
+        "./poolsettlenode",
+        "./poolschedule",
+        "./poolround",
+        "./poolsettle"
+      ],
+      "cwd": "/Users/taytrrip/slug/slug",
+      "exit_code": 0,
+      "elapsed_seconds": 0.603,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "label": "desktop-normal",
+      "argv": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "test",
+        "-count=1",
+        "-timeout=8m",
+        "-json",
+        "./pilot",
+        "-run",
+        "TestPoolDesktop"
+      ],
+      "cwd": "/Users/taytrrip/slug/slug/desktop",
+      "exit_code": 0,
+      "elapsed_seconds": 15.12,
+      "sha256": "b1de7b98533007f931d7174643e4854cf286ec8719a510a0a0a9ac28669dce69",
+      "bytes": 9895
+    },
+    {
+      "label": "desktop-race",
+      "argv": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "test",
+        "-race",
+        "-count=1",
+        "-timeout=8m",
+        "-json",
+        "./pilot",
+        "-run",
+        "TestPoolDesktop"
+      ],
+      "cwd": "/Users/taytrrip/slug/slug/desktop",
+      "exit_code": 0,
+      "elapsed_seconds": 18.324,
+      "sha256": "8adf5d4bf3cbe917e7bda5aa5c18c3a7e9c9601e6f63153185031a0a372f49ca",
+      "bytes": 9914
+    },
+    {
+      "label": "desktop-vet",
+      "argv": [
+        "go",
+        "vet",
+        "-gcflags=all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "./pilot"
+      ],
+      "cwd": "/Users/taytrrip/slug/slug/desktop",
+      "exit_code": 0,
+      "elapsed_seconds": 1.421,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "label": "frontend-syntax",
+      "argv": [
+        "node",
+        "--check",
+        "desktop/frontend/stable.js"
+      ],
+      "cwd": "/Users/taytrrip/slug/slug",
+      "exit_code": 0,
+      "elapsed_seconds": 0.08,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "label": "diff-check",
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": "/Users/taytrrip/slug/slug",
+      "exit_code": 0,
+      "elapsed_seconds": 0.038,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  ],
+  "independent_reference": {
+    "pass": true,
+    "producer_sha256": "89109a3f77ea1b72a3ed0e83b2aac05830af0cbdbffff3d433f4d9b56e14b987",
+    "output_sha256": "1353e4856d0fb601c7a7fa9ef99af8cf1ffe3d1ac83f9f23ead28c62d2e5b291",
+    "bytes": 5759,
+    "runtime": "Python 3.9.6"
+  },
+  "preserved_failed_attempts": [
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set75/stream-attempt1/dependencies-normal.log",
+      "sha256": "956c72c8d8dfc1646319a8a86a79a9c6a0fffeed47630c0d4e07e5218184acfa",
+      "reason": "Pool share/node httptest listeners reported bind operation not permitted in sandbox; service Run returned unavailable. Unchanged loopback-enabled successor passes."
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set75/stream-attempt2/root-vet.log",
+      "sha256": "4b925bc27248620f24abe5cbbb731f4449892309fec5ca55345674b3e4db1210",
+      "reason": "Harness invoked unsupported candidate-go.sh vet mode. Remaining vet ran with the existing explicit no-CSE profile after profile check; no product assertion or deadline changed."
+    }
+  ],
+  "reviewed_invariants": [
+    "original global accepted order and open round across page boundaries",
+    "complete source and namespace audit before visitor/commit/capacity refusal",
+    "one credit per original confirmed round; original pending payout payload unchanged through reopen/recovery",
+    "late read/callback/cancel/refusal does not publish partial credit import",
+    "D84 full ready set retained; no partial transaction selection or day-slot consumption",
+    "source/view-bound visible deferral and unknown-reason refusal"
+  ],
+  "limitations": [
+    "All V1 history/count/byte/pin/ownership limits remain.",
+    "Duplicate sets and full-prefix verification remain lifetime-scaled within V1; no constant-memory or resumable audit claim.",
+    "Current supported transaction max is46383 raw bytes; larger modeled arithmetic/inspection cases are not a beyond-V1 RunDaily ledger.",
+    "No new two-node actual proof, public-host deployment, native design review or production-genesis approval is claimed."
+  ]
+}
