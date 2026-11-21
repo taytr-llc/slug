@@ -35,7 +35,10 @@ The first artifact check incorrectly expected a raw `.dockerignore`, omitted by
 the upload action's hidden-file policy. That failed check is retained; the
 successor verifies its context-manifest hash against the pinned Git source.
 The image job itself passed on its first run. See [public evidence](docs/evidence/set82/package-ci/).
-The broader exact-tip CI jobs are still being observed separately.
+All six broader exact-tip Build and Test jobs also pass, including the complete
+race job, so all seven jobs are green at `2d79de95`. See the retained
+[CI completion report](docs/evidence/set82/ci.json). This closes package/source
+CI, not hosted execution.
 
 The intended host path uses its own TLS listener over raw TCP forwarding,
 literal-loopback private services and a separate verified HTTPS node RPC. The

@@ -283,3 +283,25 @@ or source contracts; distinguish an observed failure from a hypothesis or an
 intentional hold. Append new nonblocking findings here rather than expanding
 an active change set. Close only with a linked fix/decision and verification;
 preserve the original observation and explain any remaining limitation.
+
+## EF-14 — Local Linux cross-compiler source is incomplete
+
+**Status:** Open engineering portability issue; native Linux builds remain the
+qualified path and this does not block the hosted test.
+
+- **Trigger:** Cross-compiling the new host-only fixture helper from this Mac's
+  Homebrew Go1.27.4 installation to Linux/amd64.
+- **Player impact:** No observed runtime impact; that local cross-build cannot
+  produce a Linux artifact. It does not invalidate the native Linux CI results.
+- **Evidence:** Set82's retained local cross-build attempt reports missing
+  standard-library source packages `internal/runtime/cgroup`,
+  `internal/runtime/syscall/linux`, and vendored `golang.org/x/sys/cpu`. The
+  native Linux image job and all seven exact-tip CI jobs pass at `2d79de95`; see
+  [Set82 notes](../CHANGESET_82_NOTES.md) and
+  [CI completion](evidence/set82/ci.json).
+- **Workaround:** Build host artifacts natively in the already pinned Linux
+  compiler image and verify their source, compiler settings and hashes. Do not
+  change the installed compiler or substitute an unqualified profile.
+- **Revisit:** When local Linux cross-builds are needed for distribution or
+  developer portability. A failure of the selected native host build is a
+  separate immediate test blocker.

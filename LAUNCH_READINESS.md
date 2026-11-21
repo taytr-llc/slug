@@ -26,7 +26,7 @@ The current order is:
    custody and enrolled miner flow, scheduled payout, restart and exact retry.
    Declare and stay inside a finite test envelope; preserve recovery and visible
    holds. Synthetic loopback proofs alone do not count as hosted acceptance.
-   [Set82](CHANGESET_82_NOTES.md) passes native Linux image/component checks;
+   [Set82](CHANGESET_82_NOTES.md) passes all seven CI jobs, including native Linux image/component checks;
    provider storage, endpoint and actual hosted payout remain to be verified.
 2. **Wallet balances and history.** Connect and verify the existing authenticated
    balance, payout and wallet-activity paths against the hosted test service,

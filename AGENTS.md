@@ -552,7 +552,8 @@ authorization must be repository-limited, not an account-wide OAuth expansion.
   passes at package commit `2d79de95`: ten required component tests plus five
   named Linux ACL subcases under UID10001, then both shipped command help paths
   in the final scratch image. Public source archives and source-before/after
-  match. Broader exact-tip CI is tracked separately. This is not hosted mining,
+  match. All seven exact-tip CI jobs pass at `2d79de95`, including the complete
+  race job; see `docs/evidence/set82/ci.json`. This is not hosted mining,
   provider volume, full serve shutdown or payout qualification; continue those
   concrete host checks without general capacity expansion. See
   `CHANGESET_82_NOTES.md` and `deploy/pool/README.md`. Transport-pin renewal and
