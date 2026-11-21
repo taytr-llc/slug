@@ -1,0 +1,172 @@
+{
+  "accepted_rewards": 2,
+  "actual_cli": true,
+  "clean_join": true,
+  "cleanup_errors": [],
+  "cli_cleanup": {
+    "config_id": "f81b35ddf9daffdec54ca5521e40fecc909739225fc3113104a2ba549c9a2c52",
+    "exit_code": 0,
+    "forced_kill": false,
+    "io_error": false,
+    "joined": true,
+    "last_status": {
+      "version": 2,
+      "observed_at_ms": 1795256715781,
+      "config_id": "f81b35ddf9daffdec54ca5521e40fecc909739225fc3113104a2ba549c9a2c52",
+      "state": "signed_in",
+      "worker_state": "paused",
+      "code": "outcome_unknown",
+      "records": 10,
+      "pending": 0
+    },
+    "parent_pid": 70693,
+    "pgid": 70693,
+    "pid": 70698,
+    "signal": "SIGTERM",
+    "signal_count": 1,
+    "status_count": 26,
+    "stderr_joined": true,
+    "stdout_joined": true,
+    "unexpected_exit": false,
+    "wait_error": false
+  },
+  "completed": true,
+  "due_ms": 1795256940000,
+  "fee_atoms": 209,
+  "final_height": 105,
+  "initial_height": 2,
+  "initial_tip": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+  "miner_atoms": 1980000000,
+  "node_cleanup": [
+    {
+      "clean": true,
+      "forced_kill": false,
+      "joined": true,
+      "log_close_error": false,
+      "pid": 70695,
+      "stop_rpc_error": false,
+      "unexpected_exit": false,
+      "wait_error": ""
+    },
+    {
+      "clean": true,
+      "forced_kill": false,
+      "joined": true,
+      "log_close_error": false,
+      "pid": 70694,
+      "stop_rpc_error": false,
+      "unexpected_exit": false,
+      "wait_error": ""
+    }
+  ],
+  "original_wallet_received": true,
+  "passed": true,
+  "public_seed_mining": false,
+  "runtime_completion": {
+    "cancellation_only": true,
+    "error_present": true,
+    "error_type": "*errors.joinError",
+    "joined": true,
+    "last_status": {
+      "capacity": {
+        "daily_reservation": {
+          "ordinary_maximum": 2,
+          "reservation": {
+            "submissions": 3,
+            "blocks": 3,
+            "max_batches": 5,
+            "claim_leaves": 6,
+            "ledger_bytes": 8534577,
+            "round_bytes": 211005,
+            "largest_round_bytes": 66520,
+            "largest_credit_bytes": 1243,
+            "largest_batch_bytes": 980210,
+            "report_bytes": 20628,
+            "receipt_bytes": 12288,
+            "signing_bytes": 8450828,
+            "manager_copy_bytes": 1181620
+          }
+        },
+        "reservation": {
+          "submissions": 0,
+          "max_batches": 0,
+          "state_bytes": 0,
+          "round_bytes": 0,
+          "largest_round_bytes": 0
+        },
+        "mode": "draining",
+        "reason": "pool_capacity",
+        "submissions": 2,
+        "over_bound": false,
+        "canonical_recovery": true,
+        "recovery_blocks": 2,
+        "at_ms": 1795256777985
+      },
+      "version": 2,
+      "runtime_id": "3ccd61b5c0e78f0743d97cc8d5cf0d72332a2981cac7bd17c9febb50d9116119",
+      "setup_id": "bcb6cdb587cbe1ec7ee5d25dce9488e8cbfda67b9f85a1a8b286e309ce577c2c",
+      "running": true,
+      "closing": false,
+      "custody": "unlocked",
+      "custody_at_ms": 1795256685974,
+      "custody_until_ms": 1795260285474,
+      "public": {
+        "work_id": "62f75f6119341ac7222229c27ec364064104254fb9fb9ab38f992e32de9937ad",
+        "phase": "publications",
+        "next_admission": 11,
+        "next_publication": 3,
+        "next_height": 0,
+        "ready": false,
+        "head": null
+      },
+      "public_code": "unavailable",
+      "public_at_ms": 1795256777984,
+      "rounds": {
+        "through": 2,
+        "rounds": 2,
+        "pending_shares": 0
+      },
+      "round_code": "",
+      "round_at_ms": 1795256776128,
+      "schedule": {
+        "state": {
+          "version": 2,
+          "config": {
+            "version": 2,
+            "scheduler_id": "ba73e624dd9cac964c482933a6d54b0ba1e66c28e69581087cebc13e32104a89",
+            "runtime_id": "3ccd61b5c0e78f0743d97cc8d5cf0d72332a2981cac7bd17c9febb50d9116119",
+            "settlement_binding_id": "1a8f11297217a9d3ef471be9070ede3df0291d353fbf17c3cbce693571631035",
+            "daily_utc_minute": 629,
+            "retry_ms": 30000
+          },
+          "revision": 9,
+          "last_clock_ms": 1795256776148,
+          "daily_cursor": "",
+          "next_wake_ms": 1795256806148,
+          "attempt": {
+            "sequence": 4,
+            "kind": "recovery",
+            "admitted_day": "2026-11-21",
+            "started_at_ms": 1795256776139,
+            "finished_at_ms": 1795256776148,
+            "result": "returned",
+            "report_state": "complete",
+            "report_reason": "",
+            "error_code": ""
+          }
+        },
+        "running": true,
+        "poisoned": false
+      }
+    },
+    "observed_at_ms": 1795256972156,
+    "owners_closed": true,
+    "premature": false,
+    "round_busy": false
+  },
+  "scheduled_payment": true,
+  "scope": "actual headless DAILY original wallet to scheduled payout",
+  "seconds": 289.811943875,
+  "stopped_reopen": true,
+  "version": 1
+}

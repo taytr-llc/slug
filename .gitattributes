@@ -6,3 +6,16 @@ fightercondition/testdata/reference/inputs/lifecycle_rating_reference.py.txt whi
 # the inherited runner helper's terminal blank line exactly as qualified.
 desktop/pooloperator/testdata/late-winner-actual/*-successor.diff -whitespace
 desktop/pooloperator/testdata/late-winner-actual/runner_support.py whitespace=-blank-at-eof
+
+# Set79 archives preserve qualified patch context and inherited helper bytes.
+desktop/cmd/slugpilot/testdata/public-daily-headless/*.diff -whitespace
+desktop/pilot/testdata/public-daily-attachment/*.diff -whitespace
+desktop/pooloperator/testdata/public-daily-actual/*.diff -whitespace
+desktop/cmd/slugpilot/testdata/public-daily-headless/runner_support.py whitespace=-blank-at-eof
+desktop/pilot/testdata/public-daily-attachment/runner_support.py whitespace=-blank-at-eof
+docs/evidence/set79/actual-test-only-source-successor/two-defers.patch -whitespace
+
+# Raw go version -m evidence includes terminal tab-separated empty fields.
+docs/evidence/set79/attachment-actual-attempt2/*-build-info.txt whitespace=-blank-at-eol
+docs/evidence/set79/headless-actual-attempt1/*-build-info.txt whitespace=-blank-at-eol
+docs/evidence/set79/public-actual-attempt5/*-build-info.txt whitespace=-blank-at-eol

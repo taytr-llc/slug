@@ -40,10 +40,13 @@ func NewPool(c PoolConfig, a poolservice.Authority, admission ManifestAuthority,
 	return NewPoolWithHooks(c, a, admission, node, signer, outbox, nil, nil)
 }
 func NewPoolWithHooks(c PoolConfig, a poolservice.Authority, admission ManifestAuthority, node Node, signer Signer, outbox *PoolOutbox, observer ManifestReceiptObserver, hook ManifestCycleHook) (*PoolWorker, error) {
+	return newPool(c, a, admission, node, signer, outbox, observer, hook, false)
+}
+func newPool(c PoolConfig, a poolservice.Authority, admission ManifestAuthority, node Node, signer Signer, outbox *PoolOutbox, observer ManifestReceiptObserver, hook ManifestCycleHook, daily bool) (*PoolWorker, error) {
 	if err := manifestProduction(); err != nil {
 		return nil, err
 	}
-	c, err := ValidatePoolConfig(c)
+	c, err := validateSelectedPoolConfig(c, daily)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +68,7 @@ func NewPoolWithHooks(c PoolConfig, a poolservice.Authority, admission ManifestA
 }
 func (w *PoolWorker) authorityMatches() bool {
 	c, a, m := w.config, w.authority, w.admission
-	return a.ProtocolVersion() == poolservice.Version1 && a.AuthorityOrigin() == c.AuthorityOrigin && a.SourceConfig() == c.Source && a.TransportTrustID() == c.TransportTrustID && a.PublicKey() == c.PublicKey && m.ProtocolVersion() == 3 && m.AuthorityOrigin() == c.AdmissionOrigin && m.AuthorityPin() == c.Source.AuthorityPin && m.TransportTrustID() == c.AdmissionTrustID
+	return a.ProtocolVersion() == c.Version && a.AuthorityOrigin() == c.AuthorityOrigin && a.SourceConfig() == c.Source && a.TransportTrustID() == c.TransportTrustID && a.PublicKey() == c.PublicKey && m.ProtocolVersion() == 3 && m.AuthorityOrigin() == c.AdmissionOrigin && m.AuthorityPin() == c.Source.AuthorityPin && m.TransportTrustID() == c.AdmissionTrustID
 }
 func (w *PoolWorker) Status() Status { w.mu.Lock(); defer w.mu.Unlock(); return w.status }
 func (w *PoolWorker) set(state, code string) {
@@ -140,6 +143,7 @@ func (w *PoolWorker) Run(ctx context.Context) (runErr error) {
 	defer func() {
 		w.outbox.mu.Lock()
 		w.outbox.running = false
+		w.outbox.issueAttempt = nil
 		w.outbox.mu.Unlock()
 		s := w.Status()
 		if runErr != nil {
@@ -207,7 +211,15 @@ func (w *PoolWorker) Run(ctx context.Context) (runErr error) {
 		if w.current == nil {
 			w.outbox.mu.Lock()
 			full := w.outbox.meta.Records >= w.config.MaxRecords
+			held := w.outbox.meta.IssuePending
 			w.outbox.mu.Unlock()
+			if held {
+				w.set("paused", "issue_unknown")
+				if w.wait(ctx, time.Second) != nil {
+					return nil
+				}
+				continue
+			}
 			if full || w.capacityPaused {
 				w.set("paused", "capacity")
 				if w.wait(ctx, time.Second) != nil {
@@ -216,55 +228,88 @@ func (w *PoolWorker) Run(ctx context.Context) (runErr error) {
 				continue
 			}
 			w.set("preparing", "")
-			call, cancel := context.WithTimeout(ctx, 30*time.Second)
-			work, issueErr := w.authority.Issue(call)
-			cancel()
-			if ctx.Err() != nil {
-				return nil
-			}
-			if issueErr != nil {
-				w.set("retrying", poolErrorCode(issueErr))
-				if w.wait(ctx, backoff) != nil {
+			var fresh PoolScan
+			if w.config.Version == PoolVersion2 {
+				var issued *PoolScan
+				issued, err = w.issueDaily(ctx)
+				if ctx.Err() != nil {
 					return nil
 				}
-				backoff = min(30*time.Second, backoff*2)
-				continue
-			}
-			fresh := PoolScan{Version: PoolVersion1, Work: work}
-			now, err = w.clock()
-			if err != nil {
-				return err
-			}
-			if validatePoolScan(fresh, w.config) != nil {
-				return ErrCorrupt
-			}
-			fresh.Work = poolDeliveryWork(work)
-			if now < work.Job.IssuedAtMS || now >= work.Job.ExpiresAtMS-renewalLead.Milliseconds() {
-				w.set("retrying", "expired")
-				if w.wait(ctx, backoff) != nil {
-					return nil
-				}
-				continue
-			}
-			if err := w.outbox.saveScan(&fresh); err != nil {
-				if errors.Is(err, ErrCapacity) {
-					w.capacityPaused = true
-					w.set("paused", "capacity")
+				if errors.Is(err, errPoolIssueHeld) {
+					w.set("paused", "issue_unknown")
 					if w.wait(ctx, time.Second) != nil {
 						return nil
 					}
 					continue
 				}
-				return err
+				if err != nil {
+					if !dailyIssueNoEffect(err) {
+						return err
+					}
+					w.set("retrying", poolErrorCode(err))
+					if w.wait(ctx, backoff) != nil {
+						return nil
+					}
+					backoff = min(30*time.Second, backoff*2)
+					continue
+				}
+				fresh = *issued
+			} else {
+				w.set("preparing", "")
+				call, cancel := context.WithTimeout(ctx, 30*time.Second)
+				work, issueErr := w.authority.Issue(call)
+				cancel()
+				if ctx.Err() != nil {
+					return nil
+				}
+				if issueErr != nil {
+					w.set("retrying", poolErrorCode(issueErr))
+					if w.wait(ctx, backoff) != nil {
+						return nil
+					}
+					backoff = min(30*time.Second, backoff*2)
+					continue
+				}
+				fresh = PoolScan{Version: PoolVersion1, Work: work}
+				now, err = w.clock()
+				if err != nil {
+					return err
+				}
+				if validatePoolScan(fresh, w.config) != nil {
+					return ErrCorrupt
+				}
+				fresh.Work = poolDeliveryWork(work)
+				if now < work.Job.IssuedAtMS || now >= work.Job.ExpiresAtMS-renewalLead.Milliseconds() {
+					w.set("retrying", "expired")
+					if w.wait(ctx, backoff) != nil {
+						return nil
+					}
+					continue
+				}
+				if err := w.outbox.saveScan(&fresh); err != nil {
+					if errors.Is(err, ErrCapacity) {
+						w.capacityPaused = true
+						w.set("paused", "capacity")
+						if w.wait(ctx, time.Second) != nil {
+							return nil
+						}
+						continue
+					}
+					return err
+				}
 			}
+
 			w.current = &fresh
+			if w.config.Version == PoolVersion2 && (w.now().UnixMilli() < fresh.Work.Job.IssuedAtMS || w.now().UnixMilli() >= fresh.Work.Job.ExpiresAtMS-renewalLead.Milliseconds()) {
+				continue
+			}
 			prepared = nil
 			preparedID = ""
 			refreshed = time.Time{}
 		}
 		s := w.current
 		if prepared == nil || preparedID != s.Work.Job.ID {
-			prepared, err = poolservice.PrepareWork(w.config.Source, w.config.PublicKey, s.Work)
+			prepared, err = preparePoolWork(w.config, s.Work)
 			if err != nil {
 				return ErrCorrupt
 			}

@@ -7,9 +7,10 @@ import (
 	"io"
 )
 
-func validTime(n int64) bool { return n >= 1 && n <= MaxTimeMS }
-func validState(s State) bool {
-	if s.Version != Version1 || !validConfig(s.Config) || s.Revision == 0 || !validTime(s.ClockMS) || s.Credentials == nil || s.History == nil || len(s.Credentials) > 128 || len(s.History) > maxHistory || uint64(len(s.History)) > uint64(s.Revision)-1 {
+func validTime(n int64) bool  { return n >= 1 && n <= MaxTimeMS }
+func validState(s State) bool { return validStateVersion(s, Version1) }
+func validStateVersion(s State, version uint32) bool {
+	if s.Version != version || !validConfigVersion(s.Config, version) || s.Revision == 0 || !validTime(s.ClockMS) || s.Credentials == nil || s.History == nil || len(s.Credentials) > 128 || len(s.History) > maxHistory || uint64(len(s.History)) > uint64(s.Revision)-1 {
 		return false
 	}
 	gyms := map[string]bool{}
@@ -135,8 +136,9 @@ func boundedJSON(raw []byte, max int, out any) error {
 	}
 	return nil
 }
-func encodeMarker(c Config) ([]byte, error) {
-	if !validConfig(c) {
+func encodeMarker(c Config) ([]byte, error) { return encodeMarkerVersion(c, Version1) }
+func encodeMarkerVersion(c Config, version uint32) ([]byte, error) {
+	if !validConfigVersion(c, version) {
 		return nil, ErrInvalid
 	}
 	raw, e := json.Marshal(c)
@@ -145,15 +147,17 @@ func encodeMarker(c Config) ([]byte, error) {
 	}
 	return append(raw, '\n'), nil
 }
-func decodeMarker(raw []byte) (Config, error) {
+func decodeMarker(raw []byte) (Config, error) { return decodeMarkerVersion(raw, Version1) }
+func decodeMarkerVersion(raw []byte, version uint32) (Config, error) {
 	var c Config
-	if len(raw) < 2 || len(raw) > maxMarkerBytes || raw[len(raw)-1] != '\n' || boundedJSON(raw[:len(raw)-1], maxMarkerBytes-1, &c) != nil || !validConfig(c) {
+	if len(raw) < 2 || len(raw) > maxMarkerBytes || raw[len(raw)-1] != '\n' || boundedJSON(raw[:len(raw)-1], maxMarkerBytes-1, &c) != nil || !validConfigVersion(c, version) {
 		return Config{}, ErrInvalid
 	}
 	return c, nil
 }
-func encodeState(s State) ([]byte, error) {
-	if !validState(s) {
+func encodeState(s State) ([]byte, error) { return encodeStateVersion(s, Version1) }
+func encodeStateVersion(s State, version uint32) ([]byte, error) {
+	if !validStateVersion(s, version) {
 		return nil, ErrInvalid
 	}
 	raw, e := json.Marshal(s)
@@ -162,9 +166,10 @@ func encodeState(s State) ([]byte, error) {
 	}
 	return raw, nil
 }
-func decodeState(raw []byte) (State, error) {
+func decodeState(raw []byte) (State, error) { return decodeStateVersion(raw, Version1) }
+func decodeStateVersion(raw []byte, version uint32) (State, error) {
 	var s State
-	if boundedJSON(raw, maxStateBytes, &s) != nil || !validState(s) {
+	if boundedJSON(raw, maxStateBytes, &s) != nil || !validStateVersion(s, version) {
 		return State{}, ErrInvalid
 	}
 	return s, nil

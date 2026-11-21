@@ -9,6 +9,9 @@ import (
 // WireSnapshot mechanically converts the actual original-owner projection.
 // Snapshot and its existing JSON tags/bytes remain unchanged.
 func (c *RemotePoolController) WireSnapshot(ctx context.Context) (pilot.RemotePoolWireSnapshot, error) {
+	if c == nil || c.daily {
+		return pilot.RemotePoolWireSnapshot{}, pilot.ErrRemotePoolProtocol
+	}
 	s, e := c.Snapshot(ctx)
 	if e != nil {
 		return pilot.RemotePoolWireSnapshot{}, e

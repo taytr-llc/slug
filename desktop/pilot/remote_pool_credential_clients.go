@@ -14,7 +14,7 @@ import (
 )
 
 // Metadata is an immutable selected public binding, not a liveness assertion.
-func (l *remotePoolPoolLease) ProtocolVersion() uint32        { return 1 }
+func (l *remotePoolPoolLease) ProtocolVersion() uint32        { return l.lease.owner.config.Version }
 func (l *remotePoolPoolLease) AuthorityOrigin() string        { return l.lease.owner.config.Origin }
 func (l *remotePoolPoolLease) SourceConfig() poolshare.Config { return l.lease.owner.config.Source }
 func (l *remotePoolPoolLease) PublicKey() string {

@@ -1,6 +1,6 @@
 # SLUG launch readiness
 
-Updated November 20, 2026. Numbered change sets are reviewable engineering
+Updated November 21, 2026. Numbered change sets are reviewable engineering
 increments, not a fixed countdown to launch. This checklist tracks the actual
 finish line and must be updated from evidence rather than a branch number.
 
@@ -583,12 +583,36 @@ of the ownership, transfer or independent restored-wallet flow. See
   the failed attempt is preserved. Normal-node/schema16 fresh-process actual
   and seed smoke/restart pass. The original runner and second checker failures
   remain preserved; checker3 verifies the unchanged execution/evidence.
-  **Set78 exact-tip CI remains pending**. The true-derived two-to-three receipt
+  **Set78 exact-tip CI passes all seven jobs** at chain `1f086601647c` and
+  wallet `dfc5d9dd7e0f`; see `docs/evidence/set78/ci.json`. The true-derived two-to-three receipt
   proof is not sustained mining or public TLS/runtime deployment. Set77's seven
   predecessor checks pass at
   chain `21da8ea51de2` / wallet `dfc5d9dd7e0f`. Preserve explicit V2 public integration,
   signed capacity, retention/load and hosted-payout gates. Public pool/payouts
   precede onboarding; D74 remains last. See `CHANGESET_78_NOTES.md`.
+
+- Set79 connects explicitly selected DAILY TLS/operator transport, paged payout
+  history and the existing-wallet/headless worker. Full affected accounting and
+  operator normal/race suites, scoped transport/worker/desktop/profile checks
+  and unchanged-node smoke pass. All three isolated normal-PoW acceptance paths
+  pass: a canonical late winner crosses full ordinary intake, survives actual
+  process restarts and receives one credit at 60 descendants while reserved A
+  stays byte-identical; the automatic wallet worker receives its scheduled
+  payment; and the actual `slugpilot --daily` process mines, joins cleanly after
+  one SIGTERM, reopens and receives its payment. Both automatic cases paid
+  19.8 SLUG from two rewards in one transaction, with fees from the pool cut.
+  These are bounded TLS/schema16 fixture proofs, not a deployed public pool or
+  sustained miner-load qualification. Earlier failed attempts remain preserved.
+  Final build/static and exact-tip CI results are tracked separately in
+  `CHANGESET_79_NOTES.md` and `docs/evidence/set79`.
+  Both automatic runs preserved an unknown-issuance hold across restart.
+  Recovering that exact request is the next availability fix; never replace its
+  job or clear an unidentified old hold. Continuous source/outbox/signed-authority
+  capacity, retained fighter delivery at capacity and real hosted scheduled
+  operation remain gates. No source/financial limits were enlarged, and D84
+  whole-payout deferral remains intact. The live seed needs no redundant rollout
+  for this unchanged node closure. See `POOL_PUBLIC_DAILY.md`; onboarding follows
+  public-pool work, and the full joint D74 review remains last.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`
 on November 16. `README_HANDOFF.md` records their provenance; workspace

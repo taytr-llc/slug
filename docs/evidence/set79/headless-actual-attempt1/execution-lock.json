@@ -1,0 +1,625 @@
+{
+  "approved_by": "root",
+  "execution_authorized": true,
+  "files": {
+    "/Users/taytrrip/slug/artifacts/set79/admission-contention-attempt1/report.json": {
+      "bytes": 3737,
+      "sha256": "8dddda4b72aa5770171fc2a5d32ae7951cbd7d4d15a0fd5eea251f9d8d8df064"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/attachment-reference-attempt1/python314.json": {
+      "bytes": 46498,
+      "sha256": "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/attachment-reference-attempt1/python39.json": {
+      "bytes": 46498,
+      "sha256": "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/attachment-reference-attempt1/report.json": {
+      "bytes": 4304,
+      "sha256": "b1fc75d5a8e3d0fa380f8f655deb62a4417919787dcd48643fc8e44af010a0b8"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/cli-cancellation-attempt1/report.json": {
+      "bytes": 5492,
+      "sha256": "aaf556ecbe674de5163eb689492db70a1325ff5f7574410199c5fa4109af9ca5"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt1/owned/actual-report.json": {
+      "bytes": 4185,
+      "sha256": "78bc107e9f77668099c080334764455e3e2b38590349a99de7faaf507d8e393c"
+    },
+    "/Users/taytrrip/slug/set79-prep/daily-admission-contention/source-manifest.json": {
+      "bytes": 8698,
+      "sha256": "a1f2c9cb4bf4bd46e1201de21b70cb3257db9d6fab85abbf39fe63369c7f1d75"
+    },
+    "/Users/taytrrip/slug/set79-prep/daily-cli-cancellation-complete/manifest.json": {
+      "bytes": 9988,
+      "sha256": "260441c7a30f550b418ef8d561e5c0b80ecce19e4c047b70b2b15357c111c615"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/fixture-catalog.json": {
+      "bytes": 66249,
+      "sha256": "2637978c2e08637dae2a21bf7fcb8e9ab37edb3476e2b9512c73ff16809b7e55"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/fixture-public.json": {
+      "bytes": 7244,
+      "sha256": "83bfe6cdd6020524199ba6abada82614fb67987b32b9fb96111bf6bddf879f23"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/go-source-manifest.json": {
+      "bytes": 3493,
+      "sha256": "23a8644a5228a8fb44d02cbbb983c735e506a622f13785bb1350acf60a5f8a5f"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/go.mod": {
+      "bytes": 1373,
+      "sha256": "145a1639a11781fc24fa6f850c9fa71667af83cb1adf85c9b63985f0a541be35"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/main.go": {
+      "bytes": 13752,
+      "sha256": "80598e676f7442ac319038d8eb8c814928b5e36c6bde48561309c32d1cdbc0cb"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/node_helpers.go": {
+      "bytes": 8530,
+      "sha256": "2adf72c974e2a171e52c6d5275dd965f9e3020e54acd03f13766436a4a55cb8a"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/operator_audit.go": {
+      "bytes": 9605,
+      "sha256": "6f9c5e90841ed0b5362282749ceb6705380d1ab720dfc1ced2ea3653510d54fb"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/payment.go": {
+      "bytes": 8216,
+      "sha256": "c27a58575749b654b0562ae72034723877c7a2cfa9d972f756b085aad91a6eee"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/relay.go": {
+      "bytes": 4206,
+      "sha256": "2abc55505b26b680a9cf321a04cd57e5227ca5cdccd8dfe4534a9d4a8d98c69c"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/runner_support.py": {
+      "bytes": 3888,
+      "sha256": "54bb3e7caf33e744ce76bf366dd23a4eff4d370d9246b85758089b57dd2439d7"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/runtime_helpers.go": {
+      "bytes": 11411,
+      "sha256": "7b55b892d218f236ed0c4b6408f0f909996bb2ce1f8c20cea4a338de9ebb2caa"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/selection.go": {
+      "bytes": 6929,
+      "sha256": "e84e8563c197aae0795ed49e01cc41f6bf85efeed9979442192d5884d8052afc"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/source-manifest.json": {
+      "bytes": 8007,
+      "sha256": "f498b40fb404b74a53b4edba84c741f003c5224b53d0fd16a4b53bf5ca53d895"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/work_evidence.go": {
+      "bytes": 9503,
+      "sha256": "f6d1e31937ec003c88f5ef7b13952ac1ed34d5997b5b05bb7407e97e08bcae14"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/core.py": {
+      "bytes": 5913,
+      "sha256": "f7554311b65ebd8773cc75d124698bd41680224dde75173f66cafea4eec60685"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/generate.py": {
+      "bytes": 7716,
+      "sha256": "69932211259ef4f1d3038e8e8799348945cb755972c6f6eede777d5101ca34a3"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/input-catalog.json": {
+      "bytes": 1762,
+      "sha256": "9ef3742c35b2887da1b51c15c3c9ff000dbeff61834785aaa7c8674a5f9a18fb"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/inputs/CONTRACT.md": {
+      "bytes": 25102,
+      "sha256": "a6a30ab580f6463d30bd29c00a4c60d7d7b32e6d6d70560b761a7661cbd0da05"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/inputs/chain-params.go": {
+      "bytes": 47803,
+      "sha256": "1bfdd5f930487edccdf5025d9f22b31b31bb8758a47198dd00ae576d574e8065"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/inputs/fixture-catalog.json": {
+      "bytes": 66249,
+      "sha256": "2637978c2e08637dae2a21bf7fcb8e9ab37edb3476e2b9512c73ff16809b7e55"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/inputs/fixture-public.json": {
+      "bytes": 7244,
+      "sha256": "83bfe6cdd6020524199ba6abada82614fb67987b32b9fb96111bf6bddf879f23"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/inputs/native-shape.go": {
+      "bytes": 2930,
+      "sha256": "8b338a83505d57d66267e219b8a9835e2efa4454979a44d7beecb1c7614fb883"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/inputs/public-daily.json": {
+      "bytes": 3176583,
+      "sha256": "a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/recipe.json": {
+      "bytes": 1336,
+      "sha256": "b32273cfbfea3bd8cba72a5a4fb9986c619bdd510125b9c9641a5bc4653e2751"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/source-ready.json": {
+      "bytes": 1678,
+      "sha256": "49b53496726c9c6a2f027c5958f2bd713941f146857535c82c10b4c0f056ae63"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/MONEY_READ_SUCCESSOR.md": {
+      "bytes": 1805,
+      "sha256": "b5641430a85f0192e89c7d65203bce9605830edc80deafc7c0f02ec6ad24cdce"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/PLAN.md": {
+      "bytes": 4034,
+      "sha256": "31141ea19126aa37fa54226552c75e3a5d9c1256cbba9d58ff06ae6d5ef47eb0"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/README.md": {
+      "bytes": 1707,
+      "sha256": "3293ca67314a8454b9440a9395bbeebbfa7927f81834b221506f545d1818f302"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/cli_process.go": {
+      "bytes": 9454,
+      "sha256": "aab907a4038b10804611e0d6ea49ea6bb27fc64ecee8315ec90448dddbf65fc7"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/fixture-catalog.json": {
+      "bytes": 66249,
+      "sha256": "2637978c2e08637dae2a21bf7fcb8e9ab37edb3476e2b9512c73ff16809b7e55"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/fixture-public.json": {
+      "bytes": 7244,
+      "sha256": "83bfe6cdd6020524199ba6abada82614fb67987b32b9fb96111bf6bddf879f23"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/go-source-manifest.json": {
+      "bytes": 4658,
+      "sha256": "b31d7cb5396cd11214ac9d3159878ebdcffe4e9a7c2007afb19e6772cb182538"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/go.mod": {
+      "bytes": 1371,
+      "sha256": "2800011a777f0d44ad9c035bba09a64889780529d2fede1df8b710b36532c026"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/main.go": {
+      "bytes": 14081,
+      "sha256": "1fc1060c68105d3807c568eb7217fe33ecfcf148dc2c13b288bd5c25e6434ea2"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/money-read-manifest.json": {
+      "bytes": 5125,
+      "sha256": "1045cdda05b6aba1c42071aa6041d68bae681fc018233f00f0f85a0dfc70f45c"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/money-read.diff": {
+      "bytes": 14135,
+      "sha256": "01101df46c6985da0613d949b4a44dbff1fd796bcbabe490bc57fbb683dc6d34"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/node_helpers.go": {
+      "bytes": 8556,
+      "sha256": "2aed24b4ca1543331f95bccfdffb6118d43a83ec490c8c1bcf8206d2a44ba451"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/operator_audit.go": {
+      "bytes": 9605,
+      "sha256": "6f9c5e90841ed0b5362282749ceb6705380d1ab720dfc1ced2ea3653510d54fb"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/path-c.diff": {
+      "bytes": 19379,
+      "sha256": "fe3366b97fd92a0b3939e60ae1d010e4d877d56401287c7a69488a0285dbf05e"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/payment.go": {
+      "bytes": 10011,
+      "sha256": "1483c0ec3882de879d2a2b8570422a45f4b6df70319c291cc6e1adea4b17edc8"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/pre-money-read/go-source-manifest.json": {
+      "bytes": 4187,
+      "sha256": "e70adc770517d328afebe7a110087152c44b6b329c0b3751536dcab12e0e17b7"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/pre-money-read/source-manifest.json": {
+      "bytes": 5658,
+      "sha256": "520f49ce4ebfffc234febc663fa0a138326bf981c493380ff33d4c4f68ce57e4"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/provenance.json": {
+      "bytes": 2990,
+      "sha256": "aea1615cd731e731287d168916ed07e6ba62d6abf3e03f938d7585b956472e21"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/relay.go": {
+      "bytes": 4206,
+      "sha256": "2abc55505b26b680a9cf321a04cd57e5227ca5cdccd8dfe4534a9d4a8d98c69c"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/run.py": {
+      "bytes": 32403,
+      "sha256": "d5bed85d6b29771ff9f084d27ba1056bdf38ef52bde66ec83216893968d1a573"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/runner-manifest.json": {
+      "bytes": 2272,
+      "sha256": "d6d653afaf87202a8b88e7a582828d484a6acffae94568f071455860fab0e25e"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/runner_support.py": {
+      "bytes": 3888,
+      "sha256": "54bb3e7caf33e744ce76bf366dd23a4eff4d370d9246b85758089b57dd2439d7"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/runtime_helpers.go": {
+      "bytes": 11411,
+      "sha256": "7b55b892d218f236ed0c4b6408f0f909996bb2ce1f8c20cea4a338de9ebb2caa"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/selection.go": {
+      "bytes": 6929,
+      "sha256": "e84e8563c197aae0795ed49e01cc41f6bf85efeed9979442192d5884d8052afc"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/source-manifest.json": {
+      "bytes": 7207,
+      "sha256": "092fd06f36f300a7d17b43ad458bf58a814c4f8fa487c93ce7b535054138ccb4"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-headless/work_evidence.go": {
+      "bytes": 9795,
+      "sha256": "8b33fb269929580dee3543421b8d55a952fa3c99464aaf5426b192d3b77096fa"
+    },
+    "/Users/taytrrip/slug/slug/build-profile.json": {
+      "bytes": 179,
+      "sha256": "e5ddb9d30e8048ad3b656358134632e48852f44deef44bdd93df7dda13208295"
+    },
+    "/Users/taytrrip/slug/slug/desktop/accountpilot/remote_pool_controller.go": {
+      "bytes": 10311,
+      "sha256": "8f9acaa37957ea8c39f8330190599274b54ddf3f49063066443465a76f6bf664"
+    },
+    "/Users/taytrrip/slug/slug/desktop/accountpilot/remote_pool_daily_cancellation_test.go": {
+      "bytes": 2376,
+      "sha256": "cc817f607e788b387a9b01f99f9d4ed78c254ebb85ae4fed4cb5a7b350c4b19d"
+    },
+    "/Users/taytrrip/slug/slug/desktop/accountpilot/remote_pool_files.go": {
+      "bytes": 6874,
+      "sha256": "fa566f347fe246ac991052c9c4faa16642f6393d0564ab313c409daca6265d6c"
+    },
+    "/Users/taytrrip/slug/slug/desktop/accountpilot/remote_pool_session.go": {
+      "bytes": 13020,
+      "sha256": "26e13b5f91ab12b8f5f55e2f12e8b91ec888e8f287c81cd59f90f5f13e085a64"
+    },
+    "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/bout_flags_test.go": {
+      "bytes": 1029,
+      "sha256": "ed160baac9e92bcf200ddc25781d2c94cc76b6db8646caabe0673555629e46b6"
+    },
+    "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/card_flags_test.go": {
+      "bytes": 893,
+      "sha256": "50d49f3f8ee4280a7339fa05ee68a64a60c2a7ed761278aa149852023c1d7c79"
+    },
+    "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/career_flags_test.go": {
+      "bytes": 1170,
+      "sha256": "2d90258755ff1c6445a61e524915a38e38f4d5f6871d9d0c9a6d1b9cb1f5dc23"
+    },
+    "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/daily_launch.go": {
+      "bytes": 8727,
+      "sha256": "c6426ea00eb341f6d7d6004df933b474396882057f099d4d1aeeb34121b98928"
+    },
+    "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/daily_launch_cancellation_test.go": {
+      "bytes": 4895,
+      "sha256": "f6e1f7f327e244259641043a3d31abe399d8ecf68c849875bad3328ab858b172"
+    },
+    "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/daily_launch_owner_cancellation_test.go": {
+      "bytes": 2467,
+      "sha256": "f24bd868b28cc77e69390941e403ada4498ef14d9fc2e80d526962055e165938"
+    },
+    "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/daily_launch_pipe_unix_test.go": {
+      "bytes": 3186,
+      "sha256": "6dfc763e823262c9e6451daa3e46d5a9a1d364ac4b7176623c4e611de3e7a359"
+    },
+    "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/daily_launch_test.go": {
+      "bytes": 2666,
+      "sha256": "af02953bcbfff39cfa93f508402950f3e38a53ca6cb4dc7ed8a1dd6a512ac2d9"
+    },
+    "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/event_flags_test.go": {
+      "bytes": 945,
+      "sha256": "aa7b587714e44d0960c37bbd7834be34d497d62991bac8a378c416e61de5d4aa"
+    },
+    "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/hosted_pool_flags_test.go": {
+      "bytes": 948,
+      "sha256": "786a26411620d4b0d7d24ba4d0c4c843e04827e0225a26bc2f3a23bce3865582"
+    },
+    "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/hosted_recovery_flags_test.go": {
+      "bytes": 964,
+      "sha256": "ec4399c3140ffc7ac8c2e19fb6186968deeed2eeca511e7968260e684feef261"
+    },
+    "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/main.go": {
+      "bytes": 11942,
+      "sha256": "771a0f7b8f8a365a419156f57af3d2e6d2b519bfabe44ed3fc058b73200ea2d4"
+    },
+    "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/owned_flags_test.go": {
+      "bytes": 1846,
+      "sha256": "e16b26b38b96306d60b4bcce30bbcdb8ed18aef4649d843ab34958bc8f4954a6"
+    },
+    "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/pool_flags_test.go": {
+      "bytes": 808,
+      "sha256": "2fe9252496900aeb6407281e1386738156eb60cc57ab2660ee93cc94e172e98a"
+    },
+    "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/pool_name_flags_test.go": {
+      "bytes": 1603,
+      "sha256": "af4a32f748b89da8057e3fdc2aa80092a0e34bb0904ec683da68119dcfd30123"
+    },
+    "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/remote_acl_darwin.go": {
+      "bytes": 1003,
+      "sha256": "46302a4b43709007bd6b08026c49e066d52c7d96bbbe5265c35d40ea461a60ae"
+    },
+    "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/remote_acl_linux.go": {
+      "bytes": 517,
+      "sha256": "38beadb1d5366ec602fcd01552818b3fd52c325661159eb1a1451f5064d21dea"
+    },
+    "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/remote_file_test.go": {
+      "bytes": 8884,
+      "sha256": "4f3c9b193a39b9fb39807c9af04ce25abaef114068c55bd2e4b3ab960bac9a89"
+    },
+    "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/remote_file_unix.go": {
+      "bytes": 7557,
+      "sha256": "0f0eb087fee525c8149ddb3041fd8d4179b8f8c132da2e378ac86bccb4c36834"
+    },
+    "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/remote_file_unsupported.go": {
+      "bytes": 563,
+      "sha256": "5c08d560984c23ed265d3ba0461e6d6a5d1727c02dd85cf24ae91a07c131b8ea"
+    },
+    "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/remote_file_unsupported_test.go": {
+      "bytes": 427,
+      "sha256": "ff8fe446b107757ec63c9ac811845b90ca9d5f95d0b065a0ac865d37453b5555"
+    },
+    "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/remote_launch.go": {
+      "bytes": 11222,
+      "sha256": "571fc298fb67eafc0358b1595afbce9be803507e517104f7d3abe2cbf9e3e6d6"
+    },
+    "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/remote_launch_test.go": {
+      "bytes": 5208,
+      "sha256": "f34b3c0d01d1ada64e0174c3ad3482402eb4be35e56b2cb4b43916785ec20c9f"
+    },
+    "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/result_flags_test.go": {
+      "bytes": 1080,
+      "sha256": "94db00fc8bfc6b0016e989ce2a8aee4a9f92c34094ec499075e7c176c61f64f9"
+    },
+    "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/seed_flags_test.go": {
+      "bytes": 872,
+      "sha256": "23288996dbba5e809eb85e7f1beca148cd72c4cc33dbbd15af72e3344255c7a7"
+    },
+    "/Users/taytrrip/slug/slug/desktop/go.mod": {
+      "bytes": 651,
+      "sha256": "69a59d265aaec3377498c019b1cd2cb04241820e4cdb7cb2a5505a3f2363e4b7"
+    },
+    "/Users/taytrrip/slug/slug/desktop/go.sum": {
+      "bytes": 1922,
+      "sha256": "8db3d7c6bb03f449ea27eb139be2a55912e2e409a50922274171436fdf914555"
+    },
+    "/Users/taytrrip/slug/slug/desktop/go.work": {
+      "bytes": 304,
+      "sha256": "98e4579688df659d0ef70881e09619dbfbdcac1003273415cb022a2dd94db6da"
+    },
+    "/Users/taytrrip/slug/slug/desktop/go.work.sum": {
+      "bytes": 1528,
+      "sha256": "24f5e88e1323df93cbab6ba6df1ffc700a240e2fcf393bc2c755177e2162c487"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_acl_darwin.go": {
+      "bytes": 995,
+      "sha256": "cc42c0344c3e2b88b8e516da4149e1a3f68f673d5e9275fe3cc1c74191520878"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_acl_linux.go": {
+      "bytes": 510,
+      "sha256": "29331ff3e01aab60a09bc4abfa305b361d1dafced0fa920ed34dd99927c81716"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_attachment.go": {
+      "bytes": 10571,
+      "sha256": "92207bd0c415d4253049ca3ffc93918d537458818f077bdb3808e972fefa6aaf"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_attachment_test.go": {
+      "bytes": 6736,
+      "sha256": "cd4b6d38098e21bbb97dd67f96e9fcdc5c32377033927c8cff7cb4987036e5a7"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_config.go": {
+      "bytes": 10582,
+      "sha256": "6d8e04f4e6a07c3e87acc8b441594970a0d0387f932b3161606a3ed37b47ec7e"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_config_test.go": {
+      "bytes": 5374,
+      "sha256": "a5e78740104c148be9fa2d9fd4a12fe6bfdcbf542649f5427dfb81f8e5698c41"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_credential_clients.go": {
+      "bytes": 3646,
+      "sha256": "9c0c3f030f62c3db486dc4cef66542563ad88df6d3cc9dea387290363315fdac"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_credentials.go": {
+      "bytes": 10946,
+      "sha256": "ec48efb802b63e0bc6afaaa739054cfe0a7d20a54dd1bb42fec860c7d7b40148"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_credentials_test.go": {
+      "bytes": 8078,
+      "sha256": "e4ae947b9032f10efd1e9e383a082be839ae1c5cf54e8efcc66fe45bfe9989f2"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_credentials_unsupported_test.go": {
+      "bytes": 589,
+      "sha256": "c69b9b9f25ff390c6957d4cf89afcc05f89341ee64bedbdee9b35151f4a4b72d"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily.go": {
+      "bytes": 3396,
+      "sha256": "8ab99634b37bde5052576267c4741c2f233eb078944a07b6c32b084153bf5396"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_cancellation_test.go": {
+      "bytes": 2347,
+      "sha256": "35f691200646d971fea7d4c004dcec90cc181bb7ca7bb0a90b756c3f3ec5224f"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_custody_test.go": {
+      "bytes": 4892,
+      "sha256": "4fce8de28ce56e2a809e6ce1288d90399b09d6a8754b4a80aec3b2b067384b83"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_owner_test.go": {
+      "bytes": 5504,
+      "sha256": "d41d8d7ee9212009888aabeffcc2794f22f99de1162be6a3616363c04e4055a0"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_test.go": {
+      "bytes": 6722,
+      "sha256": "552aaa1688a4eca44644a743cc0061c4f0656622f8edf85d55e9e8397a863045"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_existing.go": {
+      "bytes": 4436,
+      "sha256": "6664894280c1786680213dbd8d7bfaedade189f2c343587d3186442267874fb0"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_files_test.go": {
+      "bytes": 14588,
+      "sha256": "7325b5dfe73c263f2414f8e7230e6d13f73a66b1dc82766f78213e6e484ba673"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_files_unix.go": {
+      "bytes": 10496,
+      "sha256": "74ad43bdd8db710b57b49b06b179aa87432cc642d4559b7cf19b4c45769f4991"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_files_unsupported.go": {
+      "bytes": 718,
+      "sha256": "6308bbc49e98887228b7be001bf89dba4c4053f92d18695b84f6d9f2fddb0338"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_local.go": {
+      "bytes": 8757,
+      "sha256": "da0734fcffbf5ce7cdc40e447291c228ac6e0c9a5f3d5de8ed95b511ecac83c1"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_node.go": {
+      "bytes": 4064,
+      "sha256": "bc2dfc81dd7ea9f36ebdaa7ea4be09deb0675af3b051575b3651a9803e1f731f"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_private_unix.go": {
+      "bytes": 7534,
+      "sha256": "0c6adb6fb4f4705e936b92deb3b19a80a675002aea9542456bca7c8941890cfd"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_private_unsupported.go": {
+      "bytes": 604,
+      "sha256": "019519261680d45bdb78bd65af1a8b7bb223a95eafe331221b63950725a74141"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_protocol.go": {
+      "bytes": 11467,
+      "sha256": "fdb05994103546921e7f8f792ce97c72f016a050de82fba7313fb47b873a4771"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_protocol_test.go": {
+      "bytes": 5201,
+      "sha256": "72022d1768f3f67e6f81072ffd54cbaaf36fe6537f2b99d7ac4c119f46c8e2a4"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_read.go": {
+      "bytes": 3903,
+      "sha256": "416e739ffcdc7b1f324dc34bc21f248b8a232a37527e64ff0275c9b91998b41f"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_recipient_test.go": {
+      "bytes": 7900,
+      "sha256": "4350bd28d9c80895701feb94a4e90ad6e4857e944f89f669ec6e1d508b3eca3f"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_serve.go": {
+      "bytes": 8233,
+      "sha256": "4bc78aaafb893862dd07ca7ea76826384f2f5000106d4001ba9fe6c661e0b9fb"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_serve_test.go": {
+      "bytes": 14247,
+      "sha256": "95067cdf266ae41293ee4f91486a2dd85c9ccdf1b5d99af7e2c47fa8d71f9c78"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_worker.go": {
+      "bytes": 11339,
+      "sha256": "c36cf037bcde42a951df0875f75427c39f0049a1d0e4c9c3c62e9464ab788886"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pooloperator/capacity_drain.go": {
+      "bytes": 6507,
+      "sha256": "f78d3613a6db6169e3562c67fa36418c66afffa8b6f1f7cca771a43e0024f21e"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pooloperator/command.go": {
+      "bytes": 21390,
+      "sha256": "e0be27a6ba9190f4fe357dbb1718398e0580316b696fc072a8de3750a66c9f39"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pooloperator/construction.go": {
+      "bytes": 14646,
+      "sha256": "13fc84f736b661c728842f229fef8ab2309cc8d0448eb268c8657c972ab85dbc"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pooloperator/daily_setup.go": {
+      "bytes": 3747,
+      "sha256": "6192c440d21a875fe9f7e8c503221548fde080907332e8da5270fc8ec8315d69"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pooloperator/filesystem_unix.go": {
+      "bytes": 10201,
+      "sha256": "002252bc61fbdf5ea7d0217cfbf95f4abc18b93ebaf0e3865aa14fc3ba1d482a"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pooloperator/local_actions.go": {
+      "bytes": 5553,
+      "sha256": "81c5b4bb6969c405d774cf4ff380eb8fc4f2db7c45c8d400f2d29940840a1f5d"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pooloperator/maintenance.go": {
+      "bytes": 5272,
+      "sha256": "e42e84f2842a73070b57ebdd466bfa1d619fe2f20692db0066d595bbe8c66a90"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pooloperator/private_acl_darwin.go": {
+      "bytes": 981,
+      "sha256": "4bfbe0b5d745cdd1ee366106c81a5b3a05627718fc5701f9fa6d28ebff32546c"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pooloperator/private_file_unix.go": {
+      "bytes": 6646,
+      "sha256": "ac1f2da653074ebc1debc41d060703932fa4431023a6d9d1633bed2f5cac946e"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pooloperator/runtime.go": {
+      "bytes": 21124,
+      "sha256": "50f72d1e1e54b5f851522f4d94f8d0b99a189089de8bd833aba0aee8d8520749"
+    },
+    "/Users/taytrrip/slug/slug/desktop/pooloperator/setup.go": {
+      "bytes": 7325,
+      "sha256": "5f919758ad747386157ebe08427714f9a0b5421a8a947da56e8510c49dea0494"
+    },
+    "/Users/taytrrip/slug/slug/go.mod": {
+      "bytes": 2065,
+      "sha256": "576bb2321489371a5186f4dddd03a41284b98d51b2f02e25c9b484887ef75360"
+    },
+    "/Users/taytrrip/slug/slug/internal/mininglease/daily.go": {
+      "bytes": 2272,
+      "sha256": "7178a954778e101d3c554cc48d88a4168b54e358ee2bdbc8546dcab60d85b759"
+    },
+    "/Users/taytrrip/slug/slug/internal/mininglease/daily_test.go": {
+      "bytes": 3969,
+      "sha256": "90541f5e3f2bb82fc6aec4c442b8a74dfc1eee336b149af6fc321d1ffbb41663"
+    },
+    "/Users/taytrrip/slug/slug/poolschedule/daily_admission_contention_integration_test.go": {
+      "bytes": 6815,
+      "sha256": "285f41c46c1ea0f7c05ae01dad0875e6050cca9bff3be9a45f3c88821a87c4fb"
+    },
+    "/Users/taytrrip/slug/slug/poolschedule/round_busy_integration_test.go": {
+      "bytes": 8321,
+      "sha256": "0787a4b4f8d1d4e380983251ab3c724643a18682fcb05f117712574c30439dab"
+    },
+    "/Users/taytrrip/slug/slug/poolservice/client.go": {
+      "bytes": 12165,
+      "sha256": "7816f4aad86f42f107de15d348e8d1f4658aa3f5655af6ed81015ae0366f4185"
+    },
+    "/Users/taytrrip/slug/slug/poolservice/daily_client.go": {
+      "bytes": 5012,
+      "sha256": "6b564e216ac4bef6f6df8240416e4a2d6a0805d4117c9cce737c0ee0f1ad92a0"
+    },
+    "/Users/taytrrip/slug/slug/poolservice/daily_server.go": {
+      "bytes": 8027,
+      "sha256": "d961a65eb8b25ebe3f8a8b7229d6cb456e2d093b8f63ba4a298b272963f7d706"
+    },
+    "/Users/taytrrip/slug/slug/poolservice/server.go": {
+      "bytes": 14087,
+      "sha256": "3f961e147f3df37673d0045e2b035c26d326daf0a218486484e9bb7a292e1c8e"
+    },
+    "/Users/taytrrip/slug/slug/poolsettle/daily_admission_contention_classification_test.go": {
+      "bytes": 3905,
+      "sha256": "fc94c73fdceb6458a927ff325586ff9adeeb2efa65154bfe11c4712a8acbef90"
+    },
+    "/Users/taytrrip/slug/slug/poolsettle/daily_admission_contention_test.go": {
+      "bytes": 12655,
+      "sha256": "640235e777f932d5354a669252c20a2c1e4574e5523ef34fb2e8058891362c44"
+    },
+    "/Users/taytrrip/slug/slug/poolsettle/daily_audit.go": {
+      "bytes": 9062,
+      "sha256": "340ea31bdda0bdb527f049e9e04f17b71c85d912e2601c6b50a215e389062596"
+    },
+    "/Users/taytrrip/slug/slug/poolsettle/daily_contention.go": {
+      "bytes": 3974,
+      "sha256": "b1c7e3c69ab704d530daadd63c4c6f76416f6fe51e39f49c60cf4ddb636d73f6"
+    },
+    "/Users/taytrrip/slug/slug/poolsettle/daily_operations.go": {
+      "bytes": 9666,
+      "sha256": "3ff5c0e48a1b55ecbe49c5de9ebc6fb9d2915faa12fe0e0f474c9c230ea3767b"
+    },
+    "/Users/taytrrip/slug/slug/poolsettle/operations.go": {
+      "bytes": 15023,
+      "sha256": "d50c1f2e81a0d2df25699a08365372940765b4a544593de43c4e09f475f9297c"
+    },
+    "/Users/taytrrip/slug/slug/poolsettle/source.go": {
+      "bytes": 2273,
+      "sha256": "a6fd511e81143cc77e9ceb166fe07aa1a5b41d097d6ee0b36d49bd598a8a5287"
+    },
+    "/Users/taytrrip/slug/slug/scripts/candidate-go.sh": {
+      "bytes": 2725,
+      "sha256": "64e073ba868e42b04e3e93a51826b2e6ee1b99103b92b417868cbf74f9b6436e"
+    },
+    "/Users/taytrrip/slug/slug/testdata/public-daily/reference-v1.json": {
+      "bytes": 3176583,
+      "sha256": "a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3"
+    },
+    "/Users/taytrrip/slug/slugwallet/go.mod": {
+      "bytes": 3038,
+      "sha256": "5d03456113449b2abeead30ae16ac8054649bc611237e22f44e6972b9f00bcf5"
+    },
+    "/private/tmp/slug_set48_build_profile.py": {
+      "bytes": 4753,
+      "sha256": "b6033d66edb4d24a57a7fac4e59ddaeee6964f0943aca21fddc6f65c7f5e6ee4"
+    }
+  },
+  "notes": "Exact frozen harness successor and installed CLI/intake/daily contention sources; focused normal/race qualification passed. Execution remains isolated candidate acceptance, not public-host approval.",
+  "scope": "set79-public-daily-headless-actual",
+  "version": 1
+}

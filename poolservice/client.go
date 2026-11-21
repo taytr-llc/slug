@@ -42,6 +42,10 @@ func NewClient(config ClientConfig) (*Client, error) {
 	if e != nil {
 		return nil, errConfig
 	}
+	return newClient(c, binding, trust, gym, nil)
+}
+
+func newClient(c ClientConfig, binding, trust, gym string, daily *dailyClientBinding) (*Client, error) {
 	tlsConfig := &tls.Config{MinVersion: tls.VersionTLS12}
 	if c.CACertificate != "" {
 		roots := x509.NewCertPool()
@@ -51,9 +55,14 @@ func NewClient(config ClientConfig) (*Client, error) {
 		tlsConfig.RootCAs = roots
 	}
 	transport := &http.Transport{Proxy: nil, DialContext: (&net.Dialer{Timeout: 10 * time.Second}).DialContext, TLSClientConfig: tlsConfig, TLSHandshakeTimeout: 10 * time.Second, ResponseHeaderTimeout: 30 * time.Second, MaxResponseHeaderBytes: 8192, DisableCompression: true, DisableKeepAlives: true}
-	return &Client{config: c, binding: binding, trust: trust, gym: gym, http: &http.Client{Transport: transport, Timeout: 30 * time.Second, CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }}}, nil
+	return &Client{daily: daily, config: c, binding: binding, trust: trust, gym: gym, http: &http.Client{Transport: transport, Timeout: 30 * time.Second, CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }}}, nil
 }
-func (c *Client) ProtocolVersion() uint32        { return Version1 }
+func (c *Client) ProtocolVersion() uint32 {
+	if c != nil && c.daily != nil {
+		return Version2
+	}
+	return Version1
+}
 func (c *Client) AuthorityOrigin() string        { return c.config.URL }
 func (c *Client) SourceConfig() poolshare.Config { return c.config.Source }
 func (c *Client) TransportTrustID() string       { return c.trust }
@@ -87,7 +96,7 @@ func (c *Client) post(ctx context.Context, path string, value any, mutation bool
 	if e != nil || len(raw) > MaxRequestSize {
 		return nil, &ClientError{Code: "invalid_request"}
 	}
-	req, e := http.NewRequestWithContext(ctx, http.MethodPost, c.config.URL+pathPrefix+path, bytes.NewReader(raw))
+	req, e := http.NewRequestWithContext(ctx, http.MethodPost, c.config.URL+c.pathPrefix()+path, bytes.NewReader(raw))
 	if e != nil {
 		return nil, &ClientError{Code: "invalid_request"}
 	}
@@ -124,12 +133,14 @@ func (c *Client) post(ctx context.Context, path string, value any, mutation bool
 	if res.StatusCode != http.StatusOK {
 		var result ErrorResponse
 		decodeErr := error(nil)
-		if path == "payouts" {
+		if c.daily != nil {
+			decodeErr = decodeDailyError(raw, &result)
+		} else if path == "payouts" {
 			decodeErr = decodePayoutError(raw, &result)
 		} else {
 			decodeErr = decodeStrict(raw, MaxResponseSize, &result)
 		}
-		if decodeErr != nil || result.Version != Version1 || errorStatus(result.Error.Code) != res.StatusCode || result.Error.OutcomeUnknown != (result.Error.Code == "outcome_unknown") {
+		if decodeErr != nil || result.Version != c.ProtocolVersion() || c.errorStatus(result.Error.Code) != res.StatusCode || result.Error.OutcomeUnknown != (result.Error.Code == "outcome_unknown") {
 			return nil, failure(mutation)
 		}
 		return nil, &ClientError{Code: result.Error.Code, OutcomeUnknown: result.Error.OutcomeUnknown}
@@ -137,6 +148,9 @@ func (c *Client) post(ctx context.Context, path string, value any, mutation bool
 	return raw, nil
 }
 func (c *Client) work(ctx context.Context, jobID string, issue bool) (poolshare.MiningWork, error) {
+	if c != nil && c.daily != nil {
+		return c.dailyWork(ctx, jobID, issue)
+	}
 	if e := c.ready(ctx); e != nil {
 		return poolshare.MiningWork{}, e
 	}
@@ -215,6 +229,9 @@ func validSubmission(source poolshare.Config, w poolshare.MiningWork, nonce uint
 	return false
 }
 func (c *Client) submission(ctx context.Context, w poolshare.MiningWork, nonce uint32, submit bool) (poolshare.Submission, error) {
+	if c != nil && c.daily != nil {
+		return c.dailySubmission(ctx, w, nonce, submit)
+	}
 	if e := c.ready(ctx); e != nil {
 		return poolshare.Submission{}, e
 	}
@@ -294,6 +311,13 @@ func validBalance(r BalanceResponse, gym, binding string) bool {
 	return r.ObservedAtMS != 0 || (confirmed.Sign() == 0 && available.Sign() == 0 && b.PaidAtoms == 0 && b.ReservedAtoms == 0 && b.Reason == "")
 }
 func (c *Client) Balance(ctx context.Context) (BalanceResponse, error) {
+	if c != nil && c.daily != nil {
+		r, err := c.DailyBalance(ctx)
+		if err != nil {
+			return BalanceResponse{}, err
+		}
+		return BalanceResponse{r.Version, r.BindingID, r.Balance.Balance(), r.ObservedAtMS}, nil
+	}
 	if e := c.ready(ctx); e != nil {
 		return BalanceResponse{}, e
 	}

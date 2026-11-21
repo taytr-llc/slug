@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "scope": "Staged archive whitespace follow-up to final static qualification",
+  "initial_status": "failed: raw patch context, inherited runner EOF and raw go build metadata whitespace",
+  "preserved_initial_diagnostic": {
+    "path": "/Users/taytrrip/slug/set79-prep/staged-whitespace-check.txt",
+    "sha256": "6b8cc70a449d21a27d21825d8f14cedbbed130d7ca7a9b5db868a5a23640ab66"
+  },
+  "correction": "Exact archive-path Git attributes preserve qualified bytes; ordinary code whitespace checks remain enabled. No product, test or archive bytes changed.",
+  "attributes_sha256": "939d1da0ab4a5f6683d5a2d960f7a8daeb9c5c3a1cf5f52db39ed5acf41cf95a",
+  "final_status": "PASS: git diff --cached --check"
+}

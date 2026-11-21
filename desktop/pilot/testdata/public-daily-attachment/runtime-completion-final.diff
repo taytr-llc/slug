@@ -1,0 +1,18 @@
+--- reviewed/runtime_helpers.go
++++ final/runtime_helpers.go
+@@ -183,6 +183,15 @@
+ 	if r.closed {
+ 		return r.stopErr
+ 	}
++	// Observe an already-published completion before requesting shutdown.
++	// In particular, a premature nil return must not become a clean stop.
++	if r.done != nil && !r.joined {
++		select {
++		case x := <-r.done:
++			r.recordCompletion(x, true)
++		default:
++		}
++	}
+ 	if r.runCancel != nil {
+ 		r.runCancel()
+ 	}

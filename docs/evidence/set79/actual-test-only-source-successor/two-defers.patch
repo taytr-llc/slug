@@ -1,0 +1,18 @@
+--- before.test.txt
++++ after.test.txt
+@@ -72,6 +72,7 @@
+ 	// attempt. Joining must retain all old state and leave the same owner reusable.
+ 	release := holdScheduleOriginalRound(t, h)
+ 	runCtx, cancel := context.WithCancel(ctx)
++	defer cancel()
+ 	done := make(chan error, 1)
+ 	go func() { done <- s.Run(runCtx) }()
+ 	joined := false
+@@ -108,6 +109,7 @@
+ 	// The same original owners must now progress, despite another occupied gate.
+ 	release = holdScheduleOriginalRound(t, h)
+ 	runCtx, cancel = context.WithCancel(ctx)
++	defer cancel()
+ 	done = make(chan error, 1)
+ 	joined = false
+ 	go func() { done <- s.Run(runCtx) }()

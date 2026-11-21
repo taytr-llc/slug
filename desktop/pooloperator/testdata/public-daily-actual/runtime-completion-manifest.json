@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "scope": "harness-only retained runtime completion, early premature-exit refusal, unchanged deadlines and financial checks",
+  "files": [
+    {
+      "target": "/Users/taytrrip/slug/set79-prep/public-daily-actual/main.go",
+      "before": {
+        "path": "/Users/taytrrip/slug/set79-prep/public-daily-actual/pre-runtime-completion/main.go",
+        "bytes": 36003,
+        "sha256": "ba0dea82f58bbb627539c2b542b6d1ff6ad163f9d1cb97abd991e7ad9b2fc7f4"
+      },
+      "after": {
+        "bytes": 39228,
+        "sha256": "2cdd20669b678a54d5df4c7843cbc7cf8a877323cf4dfc2895a9fd73e3246530"
+      }
+    }
+  ],
+  "diff": {
+    "path": "/Users/taytrrip/slug/set79-prep/public-daily-actual/runtime-completion.diff",
+    "bytes": 7305,
+    "sha256": "8305b37c9a0b1866149144a9ec81869388f61e30ace731d727a7bd640db53ac2"
+  },
+  "predecessor_manifest": {
+    "path": "/Users/taytrrip/slug/set79-prep/public-daily-actual/pre-runtime-completion/source-manifest.json",
+    "bytes": 3398,
+    "sha256": "245bf6befc9ae8e4d028ec75e515c953d90eed86d32a18e550a368d970e6c4c9"
+  },
+  "executed": false,
+  "reviewed_predecessor": {
+    "path": "/Users/taytrrip/slug/set79-prep/public-daily-actual/runtime-completion-v1/runtime-completion-manifest.json",
+    "bytes": 1100,
+    "sha256": "9ca2e55163588dfd8edac43d6768907927eaddfae8e425a15d5c028b75f21106"
+  },
+  "final_delta": {
+    "path": "/Users/taytrrip/slug/set79-prep/public-daily-actual/runtime-completion-final.diff",
+    "bytes": 415,
+    "sha256": "b17dcdaa233a642b04270f3097fbaa1e6f4746cab595769eded86de6778e7100"
+  }
+}

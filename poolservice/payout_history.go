@@ -45,6 +45,9 @@ func payoutFailure(err error) string {
 }
 
 func (c *Client) Payouts(ctx context.Context) (PayoutHistoryResponse, error) {
+	if c != nil && c.daily != nil {
+		return PayoutHistoryResponse{}, &ClientError{Code: "invalid_request"}
+	}
 	if err := c.ready(ctx); err != nil {
 		return PayoutHistoryResponse{}, err
 	}

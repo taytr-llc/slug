@@ -1,0 +1,124 @@
+{
+  "actual_source_delta_evidence": {
+    "bytes": 9558,
+    "repository_path": "docs/evidence/set79/actual-test-only-source-successor.json",
+    "sha256": "fcc404b1847ab91ad43c5c5cfcb6355a7347d2df2f9d20e494c9825e828b6899"
+  },
+  "clean_join": true,
+  "failure": "Accounting vet: reassigned cancellation function from line110 might be unused on a failure path; all17 module builds passed before that refusal. Later static checks were not run.",
+  "failure_log": {
+    "artifact_path": "artifacts/set79/final-builds-attempt1/accounting-vet.log",
+    "bytes": 289,
+    "sha256": "cf58f24f7a86f39a5c5ba2b2db7b87c578d3b43bd87a632c0b505e53c5c1e1da"
+  },
+  "id": "final-builds-attempt1",
+  "passed_builds": [
+    {
+      "exit_code": 0,
+      "label": "build-chain-0",
+      "seconds": 9.802
+    },
+    {
+      "exit_code": 0,
+      "label": "build-chain-1",
+      "seconds": 0.133
+    },
+    {
+      "exit_code": 0,
+      "label": "build-chain-2",
+      "seconds": 0.127
+    },
+    {
+      "exit_code": 0,
+      "label": "build-chain-3",
+      "seconds": 0.182
+    },
+    {
+      "exit_code": 0,
+      "label": "build-chain-4",
+      "seconds": 0.128
+    },
+    {
+      "exit_code": 0,
+      "label": "build-chain-5",
+      "seconds": 0.125
+    },
+    {
+      "exit_code": 0,
+      "label": "build-chain-6",
+      "seconds": 0.178
+    },
+    {
+      "exit_code": 0,
+      "label": "build-chain-7",
+      "seconds": 0.179
+    },
+    {
+      "exit_code": 0,
+      "label": "build-chain-8",
+      "seconds": 0.132
+    },
+    {
+      "exit_code": 0,
+      "label": "build-chain-9",
+      "seconds": 0.132
+    },
+    {
+      "exit_code": 0,
+      "label": "build-wallet-0",
+      "seconds": 6.202
+    },
+    {
+      "exit_code": 0,
+      "label": "build-wallet-1",
+      "seconds": 0.184
+    },
+    {
+      "exit_code": 0,
+      "label": "build-wallet-2",
+      "seconds": 0.183
+    },
+    {
+      "exit_code": 0,
+      "label": "build-wallet-3",
+      "seconds": 0.181
+    },
+    {
+      "exit_code": 0,
+      "label": "build-wallet-4",
+      "seconds": 0.129
+    },
+    {
+      "exit_code": 0,
+      "label": "build-wallet-5",
+      "seconds": 0.177
+    },
+    {
+      "exit_code": 0,
+      "label": "build-desktop-0",
+      "seconds": 18.597
+    }
+  ],
+  "profile_binding": {
+    "artifact_path": "artifacts/set79/final-builds-attempt1/profile.json",
+    "bytes": 962,
+    "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03"
+  },
+  "profile_unchanged": true,
+  "report": {
+    "artifact_path": "artifacts/set79/final-builds-attempt1/report.json",
+    "bytes": 26234,
+    "sha256": "32edc4da06bf787257e09f553e2a27b4059757eefe144223df38b23c5df6bf29"
+  },
+  "scope": "public-daily-final17-module-builds-and-static-checks",
+  "source_count": 7696,
+  "source_inventory": {
+    "artifact_path": "artifacts/set79/final-builds-attempt1/sources.json",
+    "bytes": 1466735,
+    "sha256": "c564c2c561f72b3c47b380aa9ff28aaab1503e89d2a47bfafe612f73d83eb00b"
+  },
+  "sources_unchanged": true,
+  "status": "FAILED_PRESERVED",
+  "successor": "Exact two-defer test-only cleanup; focused normal/race and final-builds-attempt2 pass separately. No production change or weakening of existing joins/assertions.",
+  "version": 1
+}

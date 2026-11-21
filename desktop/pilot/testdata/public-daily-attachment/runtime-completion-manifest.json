@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "scope": "harness-only retained runtime completion, early premature-exit refusal, unchanged deadlines and financial checks",
+  "files": [
+    {
+      "target": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/main.go",
+      "before": {
+        "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-runtime-completion/main.go",
+        "bytes": 13641,
+        "sha256": "cc9a3d95d1e72a2057f7a9d9cd10a2659fa3c8c58d8607b62d681e9f60cd4875"
+      },
+      "after": {
+        "bytes": 13752,
+        "sha256": "80598e676f7442ac319038d8eb8c814928b5e36c6bde48561309c32d1cdbc0cb"
+      }
+    },
+    {
+      "target": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/runtime_helpers.go",
+      "before": {
+        "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-runtime-completion/runtime_helpers.go",
+        "bytes": 9326,
+        "sha256": "5b3c9439c606524a71658955beddaadddf33c62c57920d18530dd035d640e7e5"
+      },
+      "after": {
+        "bytes": 11411,
+        "sha256": "7b55b892d218f236ed0c4b6408f0f909996bb2ce1f8c20cea4a338de9ebb2caa"
+      }
+    }
+  ],
+  "diff": {
+    "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/runtime-completion.diff",
+    "bytes": 6457,
+    "sha256": "c80f09fdb59433f2fd9c13e5f6d06d1411e8ceed6c0bd173bea7c0a8923db4ba"
+  },
+  "predecessor_manifest": {
+    "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-runtime-completion/source-manifest.json",
+    "bytes": 7344,
+    "sha256": "0925c1792f45f6d01bd63e2af9e6457f37f6c98a7e419ada9de96017d0b432e1"
+  },
+  "executed": false,
+  "reviewed_predecessor": {
+    "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/runtime-completion-v1/runtime-completion-manifest.json",
+    "bytes": 1609,
+    "sha256": "cd46c3b005656f272eec04b0316a6b26e111ede31cf2ac323128a3d9bbd5cdb2"
+  },
+  "final_delta": {
+    "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/runtime-completion-final.diff",
+    "bytes": 437,
+    "sha256": "eb1a4c56f85caa248b607ea55d7c1b4288852909a172afea6c93ec9147630e59"
+  }
+}

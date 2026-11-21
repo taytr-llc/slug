@@ -1,0 +1,230 @@
+{
+  "all_original_owners_and_process_groups_joined": true,
+  "commit_binding": "containing commit / exact file hashes below",
+  "copies_unchanged": true,
+  "corroboration": "Root executed the complete actual/outer checker. Archive construction checks exact checker-bound identities and public row/payment/wallet/reopen/cleanup correlations; it does not rerun cryptography, the product or an independent economic oracle.",
+  "final_height": 105,
+  "final_ledger": {
+    "batches": 1,
+    "credits": 2,
+    "delivery": "confirmed",
+    "immutable_body_bytes": 1460,
+    "immutable_body_sha256": "d3fab531d8a0ff5a3291e43bd717d90ef0ab1a8f7b7709f61274980ae679edad",
+    "pending_batch": 0,
+    "rounds": 2
+  },
+  "finite_bounds": {
+    "max_chain_height": 180,
+    "outer_seconds": 1080,
+    "scenario_seconds": 900
+  },
+  "fixture_preservation": {
+    "immutable_copied_paths": 226,
+    "note": "The original complete catalog remains unchanged. Only the explicitly allowed copied runtime/wallet namespaces changed; 226 immutable copied paths remain exact. No underlying fixture or database files are archived.",
+    "old_copied_histories_unchanged": true,
+    "original_catalog_directories": 72,
+    "original_catalog_files": 268,
+    "original_unchanged": true
+  },
+  "go_scenario_elapsed_seconds": 345.011106042,
+  "id": "public-daily-attachment-actual-attempt2",
+  "normal_profile_unchanged": true,
+  "original_wallet": {
+    "issue_pending_retained": true,
+    "outbox_metadata_scan_cursor_unchanged": true,
+    "outbox_pending": 0,
+    "outbox_records": 3,
+    "received_atoms": 1980000000,
+    "spendable_atoms_after": 1980000000,
+    "spendable_atoms_before": 0,
+    "stopped_reopen_without_start": true
+  },
+  "outer_actual_command_seconds": 345.672,
+  "payment": {
+    "change_atoms": 19999791,
+    "fee_atoms": 209,
+    "input_count": 2,
+    "miner_atoms": 1980000000,
+    "raw_sha256": "9f285da0a3aa88cdc4f29a006f702399a1f74eb15f66ebe28f0e41805bdca60d",
+    "txid": "06a1249364462d82ad37e8eb286156678505588248f323cf21b581aaaa4fde7d"
+  },
+  "preserved_failure": "docs/evidence/set79/attachment-actual-attempt1-failure.json",
+  "public_archive": {
+    "bytes": 1325599,
+    "files": 24,
+    "identities": [
+      {
+        "artifact_path": "artifacts/set79/public-daily-attachment-actual-attempt2/owned/01-runtime-and-selection.json",
+        "bytes": 13847,
+        "repository_path": "docs/evidence/set79/attachment-actual-attempt2/owned/01-runtime-and-selection.json",
+        "sha256": "890133624333a8206e28e189dbd30b5035662f31c4c00a7ce1e2219e9e9bf43c"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-daily-attachment-actual-attempt2/owned/02-stopped-original-view.json",
+        "bytes": 2434,
+        "repository_path": "docs/evidence/set79/attachment-actual-attempt2/owned/02-stopped-original-view.json",
+        "sha256": "34fe58d9893fc6410b3c553ff5e792728181891566e16118633b256c107c4006"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-daily-attachment-actual-attempt2/owned/03-work-stopped.json",
+        "bytes": 2449,
+        "repository_path": "docs/evidence/set79/attachment-actual-attempt2/owned/03-work-stopped.json",
+        "sha256": "fdc1c56ceca1001e6ae331b45f9e7d4d41ed8ea0d08fe130f17bccf3516e5d18"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-daily-attachment-actual-attempt2/owned/04-closed-rows.json",
+        "bytes": 41801,
+        "repository_path": "docs/evidence/set79/attachment-actual-attempt2/owned/04-closed-rows.json",
+        "sha256": "c01ea16d4ff1ce7cbcb1260d8c7d3d18e68dcdd9b7c84aec18b40cd18c9f6d8a"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-daily-attachment-actual-attempt2/owned/05-stopped-reopen.json",
+        "bytes": 2434,
+        "repository_path": "docs/evidence/set79/attachment-actual-attempt2/owned/05-stopped-reopen.json",
+        "sha256": "f1aa7279b2b4c6eeb8de7f412ab107a2ce4e46c72291f90969f06d9614fb4f22"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-daily-attachment-actual-attempt2/owned/06-mature-before-due.json",
+        "bytes": 2886,
+        "repository_path": "docs/evidence/set79/attachment-actual-attempt2/owned/06-mature-before-due.json",
+        "sha256": "0b18539f7c8b45741921ac1a2f99cb784c1b003d66fde9d41eda1cad0c2d050a"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-daily-attachment-actual-attempt2/owned/07-confirmed-payment.json",
+        "bytes": 1218,
+        "repository_path": "docs/evidence/set79/attachment-actual-attempt2/owned/07-confirmed-payment.json",
+        "sha256": "7cea5664c8eb32bb917cb51765551b075beb0428218181c4aa7ca78e34dfed05"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-daily-attachment-actual-attempt2/owned/07-payment-and-wallet.json",
+        "bytes": 9849,
+        "repository_path": "docs/evidence/set79/attachment-actual-attempt2/owned/07-payment-and-wallet.json",
+        "sha256": "b6c1b310f3e9dee750203ae813a713d86e7d6ad2d750e7cd72ab2f7594447939"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-daily-attachment-actual-attempt2/owned/08-final-public-audit.json",
+        "bytes": 35550,
+        "repository_path": "docs/evidence/set79/attachment-actual-attempt2/owned/08-final-public-audit.json",
+        "sha256": "028e789af54d406830a6765fe4a0385024d1f1aeb40a36c9503db55f99ceec7e"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-daily-attachment-actual-attempt2/owned/09-complete.json",
+        "bytes": 1095,
+        "repository_path": "docs/evidence/set79/attachment-actual-attempt2/owned/09-complete.json",
+        "sha256": "01a4c39c9d30d450b169ec108ff2153d09f898d44ea7b972416344e20ed5ad05"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-daily-attachment-actual-attempt2/owned/actual-report.json",
+        "bytes": 4196,
+        "repository_path": "docs/evidence/set79/attachment-actual-attempt2/owned/actual-report.json",
+        "sha256": "1c31464eff2d17fe15f86a0ccf16322ef97df39cd36312a4d6fc1085701b00d8"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-daily-attachment-actual-attempt2/owned/money-read-evidence.json",
+        "bytes": 5084,
+        "repository_path": "docs/evidence/set79/attachment-actual-attempt2/owned/money-read-evidence.json",
+        "sha256": "03daa9ba3adccabd054486e31a371fd9ae0a62dee54585bcb43a44a04ab2f93f"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-daily-attachment-actual-attempt2/owned/outbox-after.json",
+        "bytes": 179,
+        "repository_path": "docs/evidence/set79/attachment-actual-attempt2/owned/outbox-after.json",
+        "sha256": "f2b28a930ab8524b92e18c11b42e7868fb9d6c40ad3ceb60d78bcbd1b6448177"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-daily-attachment-actual-attempt2/owned/selected-public-setup.json",
+        "bytes": 6164,
+        "repository_path": "docs/evidence/set79/attachment-actual-attempt2/owned/selected-public-setup.json",
+        "sha256": "9608494781811582cf736d10d7b4807899208a3a79f095692bb6f09944570269"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-daily-attachment-actual-attempt2/report.json",
+        "bytes": 11482,
+        "repository_path": "docs/evidence/set79/attachment-actual-attempt2/report.json",
+        "sha256": "883e499bce0099f45956fe87094bd3d93ec814565e5fae9942a249757fb60b0a"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-daily-attachment-actual-attempt2/profile.json",
+        "bytes": 962,
+        "repository_path": "docs/evidence/set79/attachment-actual-attempt2/profile.json",
+        "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-daily-attachment-actual-attempt2/execution-lock.json",
+        "bytes": 23816,
+        "repository_path": "docs/evidence/set79/attachment-actual-attempt2/execution-lock.json",
+        "sha256": "89e1e08a3ba02a03b0dae7ce2d3fd3b6c0b754f7b6cfbddc593ffb01f17ac8ac"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-daily-attachment-actual-attempt2/source-before.json",
+        "bytes": 548801,
+        "repository_path": "docs/evidence/set79/attachment-actual-attempt2/source-before.json",
+        "sha256": "07208da681ae8dd97692c5eb505eb80a7626d9938a815f52c817522ec0b88b49"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-daily-attachment-actual-attempt2/source-after.json",
+        "bytes": 548801,
+        "repository_path": "docs/evidence/set79/attachment-actual-attempt2/source-after.json",
+        "sha256": "07208da681ae8dd97692c5eb505eb80a7626d9938a815f52c817522ec0b88b49"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-daily-attachment-actual-attempt2/source-copies.json",
+        "bytes": 2984,
+        "repository_path": "docs/evidence/set79/attachment-actual-attempt2/source-copies.json",
+        "sha256": "7b17847aaa0f45e09cb242b3a9145eb17346eca1189363c87a8c73f455aca172"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-daily-attachment-actual-attempt2/fixture-copied.json",
+        "bytes": 51657,
+        "repository_path": "docs/evidence/set79/attachment-actual-attempt2/fixture-copied.json",
+        "sha256": "7d411a8c173390654f2b197eec68c7bbca8005be769451821c615d16b3742951"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-daily-attachment-actual-attempt2/fixture-after.json",
+        "bytes": 2171,
+        "repository_path": "docs/evidence/set79/attachment-actual-attempt2/fixture-after.json",
+        "sha256": "2df94a122e03a3b2a1901cfc0608b470d62ba2b99ef0f7c8e9ee36dea8b2bbe9"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-daily-attachment-actual-attempt2/node-build-info.txt",
+        "bytes": 2380,
+        "repository_path": "docs/evidence/set79/attachment-actual-attempt2/node-build-info.txt",
+        "sha256": "c5f42513f1ad373817d9d0528228d022a741c78ae5c88c516944fbe9fc2d6a0e"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-daily-attachment-actual-attempt2/probe-build-info.txt",
+        "bytes": 3359,
+        "repository_path": "docs/evidence/set79/attachment-actual-attempt2/probe-build-info.txt",
+        "sha256": "ef3b134c18cd726ecc6de44a7c1ba3f5eab7993dafc63fafa42953b37de300e4"
+      }
+    ]
+  },
+  "public_seed_mining": false,
+  "reference_sha256": {
+    "attachment": "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386",
+    "base_setup": "a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3"
+  },
+  "result": {
+    "accepted_fighters": 3,
+    "accepted_rewards": 2,
+    "fee_atoms": 209,
+    "final_audit_unchanged": true,
+    "original_signatures": 3,
+    "paid_atoms": 1980000000,
+    "pending_fighters": 0,
+    "send_count": 1,
+    "stopped_reopen": true
+  },
+  "scope": "Path A: original existing schema14 account/wallet/vault/Mining attachment and automatic DAILY worker through normal nodes/TLS to the original schema16 scheduled payout and stopped reopen",
+  "scope_limits": [
+    "Direct original controller composition does not qualify the separate headless command process; Path C attempt1 is running and remains unqualified.",
+    "Three accepted fighters and zero pending delivery rows describe this run; no universal fighter completion or sustained load claim.",
+    "issue_pending=true remains durably retained despite zero pending fighter/receipt rows; ambiguous issuance recovery is still an availability boundary.",
+    "Final exact-source paired builds/closeout and exact-tip CI remain pending; no hosted deployment, unlimited capacity or product-release claim.",
+    "Only public JSON, source/build/lock metadata and fixture hash catalogs are copied. No private fixture, credential, seed, runtime database or executable is copied."
+  ],
+  "source_count": 3079,
+  "sources_unchanged": true,
+  "status": "PASS",
+  "version": 1
+}

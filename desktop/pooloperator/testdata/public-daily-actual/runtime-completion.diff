@@ -1,0 +1,198 @@
+--- before/main.go
++++ after/main.go
+@@ -35,6 +35,7 @@
+ 	"github.com/taytr-llc/slug/internal/operatorauthority"
+ 	"github.com/taytr-llc/slug/poolingress"
+ 	"github.com/taytr-llc/slug/poolminer"
++	"github.com/taytr-llc/slug/poolround"
+ 	"github.com/taytr-llc/slug/poolservice"
+ 	"github.com/taytr-llc/slug/poolsettle"
+ 	"github.com/taytr-llc/slug/poolsettlefixture"
+@@ -374,6 +375,10 @@
+ 	lifeCancel, custodyCancel, runCancel context.CancelFunc
+ 	done                                 chan error
+ 	joined, closed                       bool
++	runErr, stopErr                      error
++	runObservedMS                        int64
++	prematureExit                        bool
++	lastStatus                           *pooloperator.Status
+ }
+ 
+ func cancellationOnly(e error) bool {
+@@ -393,9 +398,85 @@
+ 	}
+ 	return false
+ }
++
++// Only the harness's serial scenario/cleanup path receives done. Retain the
++// original joined result even when a wait detects completion before cleanup.
++func (r *runningOperator) recordCompletion(e error, premature bool) {
++	require(r != nil && !r.joined, "original runtime completion received once")
++	r.joined, r.runErr, r.prematureExit, r.runObservedMS = true, e, premature, time.Now().UnixMilli()
++}
++func (r *runningOperator) checkRunning() {
++	require(r != nil && r.done != nil, "original runtime was started")
++	if !r.joined {
++		select {
++		case e := <-r.done:
++			r.recordCompletion(e, true)
++		default:
++		}
++	}
++	if r.joined {
++		check(r.runErr, "original runtime exited before requested stop")
++		panic("original runtime exited nil before requested stop")
++	}
++}
++func (r *runningOperator) status(ctx context.Context) pooloperator.Status {
++	r.checkRunning()
++	v := runtimeStatus(ctx, r.runtime)
++	r.lastStatus = &v
++	r.checkRunning()
++	return v
++}
++func (r *runningOperator) completionEvidence() map[string]any {
++	if r == nil {
++		return nil
++	}
++	return map[string]any{"joined": r.joined, "owners_closed": r.closed, "premature": r.prematureExit,
++		"observed_at_ms": r.runObservedMS, "error_present": r.runErr != nil, "error_type": fmt.Sprintf("%T", r.runErr),
++		"cancellation_only": cancellationOnly(r.runErr), "round_busy": errors.Is(r.runErr, poolround.ErrBusy), "last_status": r.lastStatus}
++}
++
++// Same original wall target/context as lateWaitWall, with the already-owned
++// completion channel added to the wait. No new timer or replacement deadline.
++func (r *runningOperator) waitWall(ctx context.Context, targetMS int64, label string) int64 {
++	for {
++		r.checkRunning()
++		observed := time.Now().UnixMilli()
++		require(ctx.Err() == nil, fmt.Sprintf("%s canceled: observed_wall_ms=%d target_wall_ms=%d", label, observed, targetMS))
++		if observed >= targetMS {
++			return observed
++		}
++		d := time.Duration(targetMS-observed) * time.Millisecond
++		if d < time.Millisecond {
++			d = time.Millisecond
++		}
++		timer := time.NewTimer(d)
++		select {
++		case e := <-r.done:
++			timer.Stop()
++			r.recordCompletion(e, true)
++			r.checkRunning()
++		case <-ctx.Done():
++			timer.Stop()
++			panic(fmt.Sprintf("%s canceled: observed_wall_ms=%d target_wall_ms=%d", label, time.Now().UnixMilli(), targetMS))
++		case <-timer.C:
++		}
++	}
++}
+ func (r *runningOperator) stop() error {
+-	if r == nil || r.closed {
++	if r == nil {
+ 		return nil
++	}
++	if r.closed {
++		return r.stopErr
++	}
++	// Observe an already-published completion before requesting shutdown.
++	// In particular, a premature nil return must not become a clean stop.
++	if r.done != nil && !r.joined {
++		select {
++		case x := <-r.done:
++			r.recordCompletion(x, true)
++		default:
++		}
+ 	}
+ 	if r.runCancel != nil {
+ 		r.runCancel()
+@@ -404,13 +485,16 @@
+ 	if r.done != nil && !r.joined {
+ 		select {
+ 		case x := <-r.done:
+-			r.joined = true
+-			if !cancellationOnly(x) {
+-				e = errors.Join(e, x)
+-			}
++			r.recordCompletion(x, false)
+ 		case <-time.After(90 * time.Second):
+ 			return errors.New("runtime join timeout")
+ 		}
++	}
++	if !cancellationOnly(r.runErr) {
++		e = r.runErr
++	}
++	if r.prematureExit && cancellationOnly(r.runErr) {
++		e = errors.Join(e, errors.New("runtime exited before requested stop"))
+ 	}
+ 	if r.runtime != nil {
+ 		if x := r.runtime.Close(); x != nil {
+@@ -437,6 +521,7 @@
+ 		r.custodyCancel()
+ 	}
+ 	r.closed = true
++	r.stopErr = e
+ 	return e
+ }
+ func constructRuntime(ctx context.Context, root, private string, s pooloperator.Setup, rpcConfig prospectnode.RPCConfig, create bool, mnemonic string) (r *runningOperator) {
+@@ -487,8 +572,9 @@
+ 	select {
+ 	case s := <-ready:
+ 		require(s == origin, "exact ingress ready")
++		r.checkRunning()
+ 	case e := <-r.done:
+-		r.joined = true
++		r.recordCompletion(e, true)
+ 		check(e, "runtime exited before ready")
+ 		panic("runtime stopped before ready")
+ 	case <-ctx.Done():
+@@ -730,6 +816,7 @@
+ 			if e := running.stop(); e != nil {
+ 				cleanup = append(cleanup, fmt.Sprintf("runtime: %.512s", e))
+ 			}
++			out["runtime_completion"] = running.completionEvidence()
+ 		}
+ 		if relay != nil {
+ 			if e := relay.close(); e != nil {
+@@ -833,7 +920,7 @@
+ 	for _, c := range configs {
+ 		clients = append(clients, clientFor(s, c))
+ 	}
+-	write(filepath.Join(root, "01-runtime-listening.json"), runtimeStatus(ctx, running.runtime))
++	write(filepath.Join(root, "01-runtime-listening.json"), running.status(ctx))
+ 	phase = "A original TLS job and one canonical reward"
+ 	workA := lateIssue(ctx, clients[0], running)
+ 	require(workA.Job.Context.ParentHeight == 1, "A original parent height")
+@@ -845,13 +932,18 @@
+ 	write(filepath.Join(root, "02-A-block.json"), map[string]any{"work": workA, "receipt": receiptA, "coin": coinA, "height": 2})
+ 	phase = "mature A then original real UTC due"
+ 	for height = 2; height < 102; height++ {
++		running.checkRunning()
+ 		generate(ctx, a, b)
+ 	}
+-	dueObserved := lateWaitWall(ctx, due.UnixMilli(), "original real UTC due")
++	dueObserved := running.waitWall(ctx, due.UnixMilli(), "original real UTC due")
+ 	sameDay(day)
+ 	var lost lostBroadcast
+ 	select {
+ 	case lost = <-relay.lost:
++		running.checkRunning()
++	case e := <-running.done:
++		running.recordCompletion(e, true)
++		running.checkRunning()
+ 	case <-ctx.Done():
+ 		panic("A payout canceled")
+ 	case <-time.After(90 * time.Second):
+@@ -859,10 +951,11 @@
+ 	}
+ 	payment := validatePayment(lost.Raw, s, coinA, economics)
+ 	require(payment["txid"] == lost.TxID, "accepted original A txid")
+-	status := runtimeStatus(ctx, running.runtime)
++	status := running.status(ctx)
+ 	pendingBalances := dailyWaitBalances(ctx, clients, economics, "a_lost_reply", 0, 45*time.Second, false)
+ 	require(status.Schedule != nil && status.Schedule.State.Attempt != nil && status.Schedule.State.Attempt.Kind == "daily" && status.Schedule.State.Attempt.StartedAtMS >= due.UnixMilli(), "actual scheduler daily attempt, never manual RunDaily")
+ 	check(running.stop(), "join original pending A owner")
++	out["original_runtime_completion"] = running.completionEvidence()
+ 	running = nil
+ 	first := lateClosedAudit(ctx, root, s)
+ 	require(first.Submissions == 1 && first.Accepted == 1 && first.Works == 1 && first.AuthorityJobs == 1 && first.Births == 0 && len(first.Rounds) == 1 && len(first.Credits) == 1 && first.Header.PendingBatch == 1 && first.Delivery == "prepared" && first.Body.Raw == lost.Raw && first.Body.TxID == lost.TxID, "original synchronized pending A")

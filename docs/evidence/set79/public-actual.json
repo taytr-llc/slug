@@ -1,0 +1,211 @@
+{
+  "all_original_owners_and_process_groups_joined": true,
+  "commit_binding": "containing commit / exact file hashes below",
+  "copies_unchanged": true,
+  "corroboration": "Root executed the full actual/checker. This archive additionally checks exact report-bound public identities, receipt/credit/body continuity, 59/60 transition and one-send equality; it is not a rerun or an independent economic oracle.",
+  "finite_bounds": {
+    "max_blocks": 180,
+    "outer_seconds": 1080,
+    "scenario_seconds": 900
+  },
+  "go_scenario_elapsed_seconds": 673.486473334,
+  "id": "public-actual-attempt5",
+  "late_b": {
+    "at_59": {
+      "confirmation": null,
+      "tip_height": 162,
+      "total_credits": 1
+    },
+    "at_60": {
+      "confirmation_descendants": 60,
+      "funding_state": "immature",
+      "late_credits": 1,
+      "tip_height": 163,
+      "total_credits": 2
+    },
+    "height": 103,
+    "receipt_accepted_sequence": 3,
+    "receipt_sequence": 3
+  },
+  "normal_profile_unchanged": true,
+  "original_a": {
+    "broadcast_attempts": 1,
+    "change_atoms": 9999859,
+    "delivery_transition": [
+      "prepared",
+      "confirmed"
+    ],
+    "fee_atoms": 141,
+    "immutable_body_bytes": 1074,
+    "immutable_body_sha256": "c82e50a2953eba1ae85d07a1b2d1dee85f840b392f3281bd92727ed7d59ba3ce",
+    "miner_atoms": 990000000,
+    "raw_sha256": "c7f50dfffe934650e08b3b989a228026087bb060db3a7e9be2fc354036e4e09e",
+    "successful_broadcasts": 1,
+    "txid": "624e793cf5a54a7525e1429f91f544acf60bebd272187cff2701bb4f95c8e4b6"
+  },
+  "outer_actual_command_seconds": 673.947,
+  "preserved_failed_paths": [
+    "docs/evidence/set79/public-actual-attempt1-failure.json",
+    "docs/evidence/set79/public-actual-attempt2-failure.json",
+    "docs/evidence/set79/public-actual-attempt3-failure.json",
+    "docs/evidence/set79/public-actual-attempt4-failure.json"
+  ],
+  "public_archive": {
+    "bytes": 1133404,
+    "files": 20,
+    "identities": [
+      {
+        "artifact_path": "artifacts/set79/public-actual-attempt5/owned/01-runtime-listening.json",
+        "bytes": 2461,
+        "repository_path": "docs/evidence/set79/public-actual-attempt5/owned/01-runtime-listening.json",
+        "sha256": "285d24b86736154bd01bea00900ddb8b3c0039aa809eb6517e9cca37aafa2dcb"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-actual-attempt5/owned/02-A-block.json",
+        "bytes": 3803,
+        "repository_path": "docs/evidence/set79/public-actual-attempt5/owned/02-A-block.json",
+        "sha256": "6977d39d7e0978017f0b5742c6e73820c53f9be0a7f50e9f1fc12004554f8e1d"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-actual-attempt5/owned/03-A-pending.json",
+        "bytes": 18001,
+        "repository_path": "docs/evidence/set79/public-actual-attempt5/owned/03-A-pending.json",
+        "sha256": "18b4bef1ba753ba09636226040fc1accd173cebd58a69ae25689feafbe0aef79"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-actual-attempt5/owned/04-full-intake.json",
+        "bytes": 26774,
+        "repository_path": "docs/evidence/set79/public-actual-attempt5/owned/04-full-intake.json",
+        "sha256": "b38121736df6295922901973b157f7ec8ffa5abf5639abac2131c84962d01cab"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-actual-attempt5/owned/05-expired-absent.json",
+        "bytes": 16492,
+        "repository_path": "docs/evidence/set79/public-actual-attempt5/owned/05-expired-absent.json",
+        "sha256": "007e2c6c322de51920ef5e28ec08a9c724075bc4c6d350b43473048189b8423a"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-actual-attempt5/owned/06-B-pending.json",
+        "bytes": 31467,
+        "repository_path": "docs/evidence/set79/public-actual-attempt5/owned/06-B-pending.json",
+        "sha256": "bbf1a685237e65e7e99dcb203f670e64a7b76a71203771f07eacb3839cedcf12"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-actual-attempt5/owned/07-B59-restart.json",
+        "bytes": 31731,
+        "repository_path": "docs/evidence/set79/public-actual-attempt5/owned/07-B59-restart.json",
+        "sha256": "b444a9c55adb41a1f0f2fcd3c3f41a155b5ab22995d9a0143ce764725c08b17b"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-actual-attempt5/owned/08-B60-final.json",
+        "bytes": 30700,
+        "repository_path": "docs/evidence/set79/public-actual-attempt5/owned/08-B60-final.json",
+        "sha256": "2ab78d7d1367e494fd6455db68869c3708124c56f96fc520fc2cffa0e9cd81bd"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-actual-attempt5/owned/actual-report.json",
+        "bytes": 7270,
+        "repository_path": "docs/evidence/set79/public-actual-attempt5/owned/actual-report.json",
+        "sha256": "ace7fe3c424e32a6d6dde2783f55ea503669e0346b1d57de3cace054704ee94a"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-actual-attempt5/owned/balance-wait-evidence.json",
+        "bytes": 9411,
+        "repository_path": "docs/evidence/set79/public-actual-attempt5/owned/balance-wait-evidence.json",
+        "sha256": "b3886d294390eca88c1517a51a4b7599337d201e949a454fefdb07b08b2e1ddb"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-actual-attempt5/owned/selected-public-setup.json",
+        "bytes": 6164,
+        "repository_path": "docs/evidence/set79/public-actual-attempt5/owned/selected-public-setup.json",
+        "sha256": "3e6c91186ea36f7febc6fdd068720a1eb70f6bc48964165cfe93f5e874bdf12d"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-actual-attempt5/report.json",
+        "bytes": 21025,
+        "repository_path": "docs/evidence/set79/public-actual-attempt5/report.json",
+        "sha256": "f2a3e2f02c9bb135b5c87ed191364ff1096373da29e44569d1ce101cb0c09a7e"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-actual-attempt5/profile.json",
+        "bytes": 962,
+        "repository_path": "docs/evidence/set79/public-actual-attempt5/profile.json",
+        "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-actual-attempt5/execution-lock.json",
+        "bytes": 12636,
+        "repository_path": "docs/evidence/set79/public-actual-attempt5/execution-lock.json",
+        "sha256": "2271f84e7e2ef8b2ac6213853b069fdfaf10848c74a707b861ee1fbf3ccf8419"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-actual-attempt5/source-before.json",
+        "bytes": 451859,
+        "repository_path": "docs/evidence/set79/public-actual-attempt5/source-before.json",
+        "sha256": "77609803a5ea98f1326754567d5f3b339658ded0c64229fd36ab32f6b6e7a150"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-actual-attempt5/source-after.json",
+        "bytes": 451859,
+        "repository_path": "docs/evidence/set79/public-actual-attempt5/source-after.json",
+        "sha256": "77609803a5ea98f1326754567d5f3b339658ded0c64229fd36ab32f6b6e7a150"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-actual-attempt5/source-copies.json",
+        "bytes": 1927,
+        "repository_path": "docs/evidence/set79/public-actual-attempt5/source-copies.json",
+        "sha256": "d3f259d4bd52569c90c1a9bcd32efc5f99d72c10a6a03fccfb2f8640b398b794"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-actual-attempt5/node-build-info.txt",
+        "bytes": 2363,
+        "repository_path": "docs/evidence/set79/public-actual-attempt5/node-build-info.txt",
+        "sha256": "9c2022caa9b18e2e65b7ce130f949e89b78548278baceef28106931c6d124beb"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-actual-attempt5/operator-build-info.txt",
+        "bytes": 3303,
+        "repository_path": "docs/evidence/set79/public-actual-attempt5/operator-build-info.txt",
+        "sha256": "5a3f3e2ce2031cc571fd4ff512ba9b740b7a782c48d54be00ad1abbea58c1fc2"
+      },
+      {
+        "artifact_path": "artifacts/set79/public-actual-attempt5/probe-build-info.txt",
+        "bytes": 3196,
+        "repository_path": "docs/evidence/set79/public-actual-attempt5/probe-build-info.txt",
+        "sha256": "b14fb6c7ab53658487aa4ff8254b04c23c596d31fce6839d2a41a5058b89e71a"
+      }
+    ]
+  },
+  "reference_sha256": {
+    "economics": "1d2b1462296bd022c53df9dc583db3c38cd13a8e13e84f9983f2505b3aefb08f",
+    "setup": "a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3"
+  },
+  "result": {
+    "daily_tls_money_binding": true,
+    "exact_restart_receipt": true,
+    "final_height": 163,
+    "fresh_production_cli_lifetimes": 2,
+    "late_births": 0,
+    "late_block_rows": 2,
+    "late_credit_count": 1,
+    "late_rows": 3,
+    "ordinary_intake": 2,
+    "original_a_recovery_without_resend": true,
+    "pending_batch_unchanged": true,
+    "public_seed_mining": false,
+    "real_expiry": true,
+    "signed_batches": 1
+  },
+  "scope": "Path B: original public DAILY TLS/runtime/schema16 payout, full derived intake, real-expiry delayed original-job winner, two fresh production operator processes, exactly-once receipt/credit and immutable reserved A",
+  "scope_limits": [
+    "Delayed client recovery does not prove automatic scanning of expired work.",
+    "No fighter birth was required or claimed; this run records zero births.",
+    "Finite derived ordinary intake and available physical/financial headroom; no physical-full continuation or unlimited service claim.",
+    "Automatic original-wallet Path A attempt 2 is running; headless Path C, final exact-source build/closeout and exact-tip CI remain pending.",
+    "Archived reports retain original absolute evidence paths; repository_path supplies the portable copy mapping. No private fixture, credential, seed, runtime database or executable is copied."
+  ],
+  "source_count": 2513,
+  "sources_unchanged": true,
+  "status": "PASS",
+  "version": 1
+}

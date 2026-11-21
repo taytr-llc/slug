@@ -1,0 +1,247 @@
+{
+  "version": 1,
+  "path": "B",
+  "selection": "explicit frozen allowlists; no recursive source or runtime copy",
+  "files": [
+    {
+      "source_path": "/Users/taytrrip/slug/set79-prep/public-daily-actual/source-manifest.json",
+      "bytes": 4793,
+      "sha256": "866c7f2e5c8c48465bae90d1e93e22bc94631a4adbf6f2c6e87855cf279f0ae6",
+      "proposed_repo_path": "desktop/pooloperator/testdata/public-daily-actual/source-manifest.json",
+      "staged_path": "/Users/taytrrip/slug/set79-prep/acceptance-archive-stage/after/desktop/pooloperator/testdata/public-daily-actual/source-manifest.json",
+      "kind": "source manifest",
+      "allowlist": {
+        "manifest": "/Users/taytrrip/slug/set79-prep/public-daily-actual/source-manifest.json",
+        "selector": "root-approved frozen source manifest"
+      }
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set79-prep/public-daily-actual/PLAN.md",
+      "bytes": 6581,
+      "sha256": "e4fc97f7378497fdb427abb23874809312387508b1a0504e370ef82b6850744f",
+      "proposed_repo_path": "desktop/pooloperator/testdata/public-daily-actual/PLAN.md",
+      "staged_path": "/Users/taytrrip/slug/set79-prep/acceptance-archive-stage/after/desktop/pooloperator/testdata/public-daily-actual/PLAN.md",
+      "kind": "public source/reference",
+      "allowlist": {
+        "manifest": "/Users/taytrrip/slug/set79-prep/public-daily-actual/source-manifest.json",
+        "selector": "files[0]"
+      }
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set79-prep/public-daily-actual/PLAN.pre-two-cli-audits.md",
+      "bytes": 6216,
+      "sha256": "a8fd1705efba7ebcad25b3afa01c1bd40d6fba32f898cd36ff9cd410b44a18ac",
+      "proposed_repo_path": "desktop/pooloperator/testdata/public-daily-actual/PLAN.pre-two-cli-audits.md",
+      "staged_path": "/Users/taytrrip/slug/set79-prep/acceptance-archive-stage/after/desktop/pooloperator/testdata/public-daily-actual/PLAN.pre-two-cli-audits.md",
+      "kind": "public source/reference",
+      "allowlist": {
+        "manifest": "/Users/taytrrip/slug/set79-prep/public-daily-actual/source-manifest.json",
+        "selector": "files[1]"
+      }
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set79-prep/public-daily-actual/README.md",
+      "bytes": 6214,
+      "sha256": "d3f7bb6f3893ea24b3b6b97b7d3de1851e3e140a7cd66d054be4d6d3ac55d252",
+      "proposed_repo_path": "desktop/pooloperator/testdata/public-daily-actual/README.md",
+      "staged_path": "/Users/taytrrip/slug/set79-prep/acceptance-archive-stage/after/desktop/pooloperator/testdata/public-daily-actual/README.md",
+      "kind": "public source/reference",
+      "allowlist": {
+        "manifest": "/Users/taytrrip/slug/set79-prep/public-daily-actual/source-manifest.json",
+        "selector": "files[2]"
+      }
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set79-prep/public-daily-actual/main.go",
+      "bytes": 39307,
+      "sha256": "6413d9086f770bd6d5433c8e88f155841cb0c133facd396ade391c96aac356a9",
+      "proposed_repo_path": "desktop/pooloperator/testdata/public-daily-actual/main.go",
+      "staged_path": "/Users/taytrrip/slug/set79-prep/acceptance-archive-stage/after/desktop/pooloperator/testdata/public-daily-actual/main.go",
+      "kind": "public source/reference",
+      "allowlist": {
+        "manifest": "/Users/taytrrip/slug/set79-prep/public-daily-actual/source-manifest.json",
+        "selector": "files[3]"
+      }
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set79-prep/public-daily-actual/late_flow.go",
+      "bytes": 25249,
+      "sha256": "b963fdbf562ea2916f076942380a020a9070c5c1c8a1192d4bfb7272b7f83603",
+      "proposed_repo_path": "desktop/pooloperator/testdata/public-daily-actual/late_flow.go",
+      "staged_path": "/Users/taytrrip/slug/set79-prep/acceptance-archive-stage/after/desktop/pooloperator/testdata/public-daily-actual/late_flow.go",
+      "kind": "public source/reference",
+      "allowlist": {
+        "manifest": "/Users/taytrrip/slug/set79-prep/public-daily-actual/source-manifest.json",
+        "selector": "files[4]"
+      }
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set79-prep/public-daily-actual/late_audit.go",
+      "bytes": 9296,
+      "sha256": "e80bcf271bfb60f81451ee08f40774af964374bf395770666f1e59351f688d5f",
+      "proposed_repo_path": "desktop/pooloperator/testdata/public-daily-actual/late_audit.go",
+      "staged_path": "/Users/taytrrip/slug/set79-prep/acceptance-archive-stage/after/desktop/pooloperator/testdata/public-daily-actual/late_audit.go",
+      "kind": "public source/reference",
+      "allowlist": {
+        "manifest": "/Users/taytrrip/slug/set79-prep/public-daily-actual/source-manifest.json",
+        "selector": "files[5]"
+      }
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set79-prep/public-daily-actual/node_helpers.go",
+      "bytes": 8444,
+      "sha256": "330ba64bdff3836b3a4d12f426e90e55fb2f4e2c6ecc3272b290597ac405e92b",
+      "proposed_repo_path": "desktop/pooloperator/testdata/public-daily-actual/node_helpers.go",
+      "staged_path": "/Users/taytrrip/slug/set79-prep/acceptance-archive-stage/after/desktop/pooloperator/testdata/public-daily-actual/node_helpers.go",
+      "kind": "public source/reference",
+      "allowlist": {
+        "manifest": "/Users/taytrrip/slug/set79-prep/public-daily-actual/source-manifest.json",
+        "selector": "files[6]"
+      }
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set79-prep/public-daily-actual/go.mod",
+      "bytes": 1361,
+      "sha256": "18cf3bc2e16ae0d140cbd71ee0f9fcdecc40e527ce3380c0b2898d2a36f7f7c5",
+      "proposed_repo_path": "desktop/pooloperator/testdata/public-daily-actual/go.mod",
+      "staged_path": "/Users/taytrrip/slug/set79-prep/acceptance-archive-stage/after/desktop/pooloperator/testdata/public-daily-actual/go.mod",
+      "kind": "public source/reference",
+      "allowlist": {
+        "manifest": "/Users/taytrrip/slug/set79-prep/public-daily-actual/source-manifest.json",
+        "selector": "files[7]"
+      }
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set79-prep/public-daily-actual/runtime-completion.diff",
+      "bytes": 7305,
+      "sha256": "8305b37c9a0b1866149144a9ec81869388f61e30ace731d727a7bd640db53ac2",
+      "proposed_repo_path": "desktop/pooloperator/testdata/public-daily-actual/runtime-completion.diff",
+      "staged_path": "/Users/taytrrip/slug/set79-prep/acceptance-archive-stage/after/desktop/pooloperator/testdata/public-daily-actual/runtime-completion.diff",
+      "kind": "public source/reference",
+      "allowlist": {
+        "manifest": "/Users/taytrrip/slug/set79-prep/public-daily-actual/source-manifest.json",
+        "selector": "files[8]"
+      }
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set79-prep/public-daily-actual/runtime-completion-manifest.json",
+      "bytes": 1575,
+      "sha256": "cadfefcaa38ab10af8ad1778e753bb9d75d3ec74c226cb98c9fa9fc5743d3019",
+      "proposed_repo_path": "desktop/pooloperator/testdata/public-daily-actual/runtime-completion-manifest.json",
+      "staged_path": "/Users/taytrrip/slug/set79-prep/acceptance-archive-stage/after/desktop/pooloperator/testdata/public-daily-actual/runtime-completion-manifest.json",
+      "kind": "public source/reference",
+      "allowlist": {
+        "manifest": "/Users/taytrrip/slug/set79-prep/public-daily-actual/source-manifest.json",
+        "selector": "files[9]"
+      }
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set79-prep/public-daily-actual/runtime-completion-final.diff",
+      "bytes": 415,
+      "sha256": "b17dcdaa233a642b04270f3097fbaa1e6f4746cab595769eded86de6778e7100",
+      "proposed_repo_path": "desktop/pooloperator/testdata/public-daily-actual/runtime-completion-final.diff",
+      "staged_path": "/Users/taytrrip/slug/set79-prep/acceptance-archive-stage/after/desktop/pooloperator/testdata/public-daily-actual/runtime-completion-final.diff",
+      "kind": "public source/reference",
+      "allowlist": {
+        "manifest": "/Users/taytrrip/slug/set79-prep/public-daily-actual/source-manifest.json",
+        "selector": "files[10]"
+      }
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set79-prep/public-daily-actual/startup-readiness.diff",
+      "bytes": 4587,
+      "sha256": "ec35a0b6a2aeff290bf11b6565e4d68e5656718025c1486847ebec302c676f6e",
+      "proposed_repo_path": "desktop/pooloperator/testdata/public-daily-actual/startup-readiness.diff",
+      "staged_path": "/Users/taytrrip/slug/set79-prep/acceptance-archive-stage/after/desktop/pooloperator/testdata/public-daily-actual/startup-readiness.diff",
+      "kind": "public source/reference",
+      "allowlist": {
+        "manifest": "/Users/taytrrip/slug/set79-prep/public-daily-actual/source-manifest.json",
+        "selector": "files[11]"
+      }
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set79-prep/public-daily-actual/startup-readiness-manifest.json",
+      "bytes": 1714,
+      "sha256": "57c222c570d2609a4f01a4d00d2e1dfb2bce6f0fe79edf6661a55931b3cd1e2e",
+      "proposed_repo_path": "desktop/pooloperator/testdata/public-daily-actual/startup-readiness-manifest.json",
+      "staged_path": "/Users/taytrrip/slug/set79-prep/acceptance-archive-stage/after/desktop/pooloperator/testdata/public-daily-actual/startup-readiness-manifest.json",
+      "kind": "public source/reference",
+      "allowlist": {
+        "manifest": "/Users/taytrrip/slug/set79-prep/public-daily-actual/source-manifest.json",
+        "selector": "files[12]"
+      }
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set79-prep/public-daily-actual/balance_wait.go",
+      "bytes": 3206,
+      "sha256": "4408b94380f7645809046c4a3c18abc2ee0aad27dab7e012cf8da45be3f6ce3d",
+      "proposed_repo_path": "desktop/pooloperator/testdata/public-daily-actual/balance_wait.go",
+      "staged_path": "/Users/taytrrip/slug/set79-prep/acceptance-archive-stage/after/desktop/pooloperator/testdata/public-daily-actual/balance_wait.go",
+      "kind": "public source/reference",
+      "allowlist": {
+        "manifest": "/Users/taytrrip/slug/set79-prep/public-daily-actual/source-manifest.json",
+        "selector": "files[13]"
+      }
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set79-prep/public-daily-actual/balance-wait.diff",
+      "bytes": 20157,
+      "sha256": "fb751242009f28a249505e5275e3c7a8c6ff1094518c9bbab3050d2c40374bdb",
+      "proposed_repo_path": "desktop/pooloperator/testdata/public-daily-actual/balance-wait.diff",
+      "staged_path": "/Users/taytrrip/slug/set79-prep/acceptance-archive-stage/after/desktop/pooloperator/testdata/public-daily-actual/balance-wait.diff",
+      "kind": "public source/reference",
+      "allowlist": {
+        "manifest": "/Users/taytrrip/slug/set79-prep/public-daily-actual/source-manifest.json",
+        "selector": "files[14]"
+      }
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set79-prep/public-daily-actual/balance-wait-manifest.json",
+      "bytes": 4318,
+      "sha256": "6567784f4943d36b6b332afb8d38500eb05aea645aaa2df2a7277beee4fd35cd",
+      "proposed_repo_path": "desktop/pooloperator/testdata/public-daily-actual/balance-wait-manifest.json",
+      "staged_path": "/Users/taytrrip/slug/set79-prep/acceptance-archive-stage/after/desktop/pooloperator/testdata/public-daily-actual/balance-wait-manifest.json",
+      "kind": "source manifest",
+      "allowlist": {
+        "manifest": "/Users/taytrrip/slug/set79-prep/public-daily-actual/balance-wait-manifest.json",
+        "selector": "root-reviewed diagnostic successor manifest"
+      }
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set79-prep/run-public-actual.py",
+      "bytes": 9087,
+      "sha256": "2cabdf569459ede752aa1a85b0e7e8f7b6ec6030b3625552ff421b33547baf05",
+      "proposed_repo_path": "desktop/pooloperator/testdata/public-daily-actual/run-public-actual.py",
+      "staged_path": "/Users/taytrrip/slug/set79-prep/acceptance-archive-stage/after/desktop/pooloperator/testdata/public-daily-actual/run-public-actual.py",
+      "kind": "public runner/checker source",
+      "allowlist": {
+        "manifest": "/Users/taytrrip/slug/set79-prep/public-daily-actual/balance-wait-manifest.json",
+        "selector": "changes[4].after"
+      }
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set79-prep/check-public-actual.py",
+      "bytes": 15404,
+      "sha256": "0602f639e0a42e82c4d3f7deabda2cd7cf41fefa89a1c8e38521f1c8fcf7eb8e",
+      "proposed_repo_path": "desktop/pooloperator/testdata/public-daily-actual/check-public-actual.py",
+      "staged_path": "/Users/taytrrip/slug/set79-prep/acceptance-archive-stage/after/desktop/pooloperator/testdata/public-daily-actual/check-public-actual.py",
+      "kind": "public runner/checker source",
+      "allowlist": {
+        "manifest": "/Users/taytrrip/slug/set79-prep/public-daily-actual/balance-wait-manifest.json",
+        "selector": "changes[5].after"
+      }
+    },
+    {
+      "source_path": "/Users/taytrrip/slug/set79-prep/public-daily-actual/pre-balance-wait-evidence/source-manifest.json",
+      "bytes": 4484,
+      "sha256": "1f96483591a9afbf571f78434e3f115919f49592fd1c6e83a06312d219d8b61c",
+      "proposed_repo_path": "desktop/pooloperator/testdata/public-daily-actual/pre-balance-wait-evidence/source-manifest.json",
+      "staged_path": "/Users/taytrrip/slug/set79-prep/acceptance-archive-stage/after/desktop/pooloperator/testdata/public-daily-actual/pre-balance-wait-evidence/source-manifest.json",
+      "kind": "predecessor manifest",
+      "allowlist": {
+        "manifest": "/Users/taytrrip/slug/set79-prep/public-daily-actual/source-manifest.json",
+        "selector": "predecessor"
+      }
+    }
+  ]
+}

@@ -45,7 +45,10 @@ type provisionTestSelection struct {
 func newProvisionTestSelection(t *testing.T) *provisionTestSelection {
 	t.Helper()
 	refs := provisionReference(t)
-	v := refs.Positives[0]
+	return newProvisionTestSelectionForVector(t, refs, refs.Positives[0])
+}
+func newProvisionTestSelectionForVector(t *testing.T, refs provisionCorpus, v provisionVector) *provisionTestSelection {
+	t.Helper()
 	inputs := opSetupTestDir(t)
 	root := filepath.Join(opSetupTestDir(t), "provision")
 	files := map[string][]byte{"policy": provisionHex(t, v.PolicyFile), "certificate": []byte(refs.CertificateFixture.ChainPEM), "public-pass": []byte("published provision public password"), "unlock-pass": []byte("published provision private password")}
@@ -91,7 +94,7 @@ func (f *provisionTestSelection) run(t *testing.T, command string, entropy io.Re
 }
 func (f *provisionTestSelection) expected(t *testing.T) map[string][]byte {
 	t.Helper()
-	return map[string][]byte{provisionIntentName: provisionHex(t, f.v.Intent), "offline/material-v1.bin": append([]byte(nil), f.capsule...), "offline/" + provisionBackupName: provisionHex(t, f.v.BackupFile), "online/admission.seed": append([]byte(nil), f.capsule[32:64]...), "online/publication.seed": append([]byte(nil), f.capsule[64:96]...), "online/cutoff.seed": append([]byte(nil), f.capsule[96:128]...), "public/setup.json": provisionHex(t, f.v.SetupFile), provisionReadyName: provisionHex(t, f.v.Ready)}
+	return map[string][]byte{provisionIntentFile(f.v.Policy.Version): provisionHex(t, f.v.Intent), "offline/material-v1.bin": append([]byte(nil), f.capsule...), "offline/" + provisionBackupFile(f.v.Policy.Version): provisionHex(t, f.v.BackupFile), "online/admission.seed": append([]byte(nil), f.capsule[32:64]...), "online/publication.seed": append([]byte(nil), f.capsule[64:96]...), "online/cutoff.seed": append([]byte(nil), f.capsule[96:128]...), "public/setup.json": provisionHex(t, f.v.SetupFile), provisionReadyFile(f.v.Policy.Version): provisionHex(t, f.v.Ready)}
 }
 func (f *provisionTestSelection) assertFiles(t *testing.T) {
 	t.Helper()
@@ -107,7 +110,7 @@ func (f *provisionTestSelection) prefix(t *testing.T, n int) {
 	if e := os.Mkdir(f.root, 0700); e != nil {
 		t.Fatal(e)
 	}
-	order := []string{provisionIntentName, "offline/material-v1.bin", "offline/" + provisionBackupName, "online/admission.seed", "online/publication.seed", "online/cutoff.seed", "public/setup.json"}
+	order := []string{provisionIntentFile(f.v.Policy.Version), "offline/material-v1.bin", "offline/" + provisionBackupFile(f.v.Policy.Version), "online/admission.seed", "online/publication.seed", "online/cutoff.seed", "public/setup.json"}
 	expected := f.expected(t)
 	for _, name := range order[:n] {
 		p := filepath.Join(f.root, name)
@@ -120,7 +123,9 @@ func (f *provisionTestSelection) prefix(t *testing.T, n int) {
 	}
 }
 func TestProvisionCreateVerifyLostReadyAndRuntimeInit(t *testing.T) {
-	f := newProvisionTestSelection(t)
+	testProvisionCreateVerifyLostReadyAndRuntimeInit(t, newProvisionTestSelection(t))
+}
+func testProvisionCreateVerifyLostReadyAndRuntimeInit(t *testing.T, f *provisionTestSelection) {
 	out, e := f.run(t, "create", bytes.NewReader(f.capsule))
 	if e != nil {
 		t.Fatal("create", e)
@@ -140,7 +145,7 @@ func TestProvisionCreateVerifyLostReadyAndRuntimeInit(t *testing.T) {
 		t.Fatal("established verification drew entropy")
 	}
 	// A complete wallet with lost READY is reused through Open, never created.
-	if e = os.Remove(filepath.Join(f.root, provisionReadyName)); e != nil {
+	if e = os.Remove(filepath.Join(f.root, provisionReadyFile(f.v.Policy.Version))); e != nil {
 		t.Fatal(e)
 	}
 	if _, e = f.run(t, "resume", noEntropy); e != nil {
@@ -230,6 +235,9 @@ func TestProvisionCreateVerifyLostReadyAndRuntimeInit(t *testing.T) {
 	}
 	runtimeRoot := filepath.Join(opSetupTestDir(t), "operator")
 	args := []string{"init", "--setup-file", filepath.Join(f.root, "public/setup.json"), "--root", runtimeRoot, "--wallet-root", filepath.Join(f.root, "wallet"), "--wallet-public-passphrase-file", filepath.Join(f.inputs, "public-pass"), "--wallet-unlock-passphrase-file", filepath.Join(f.inputs, "unlock-pass"), "--admission-seed-file", filepath.Join(f.root, "online/admission.seed"), "--publication-seed-file", filepath.Join(f.root, "online/publication.seed"), "--cutoff-seed-file", filepath.Join(f.root, "online/cutoff.seed"), "--rpc-config-file", rpcPath, "--tls-certificate-file", filepath.Join(f.inputs, "certificate"), "--tls-key-file", keyPath}
+	if f.v.Policy.Version == 2 {
+		args = append(args, "--daily")
+	}
 	for _, command := range []string{"init", "status"} {
 		args[0] = command
 		if e = RunCommand(context.Background(), args, provisionTestOutput(t), provisionTestOutput(t)); e != nil {

@@ -11,6 +11,7 @@ import (
 	"github.com/taytr-llc/slug/gymauth"
 	"github.com/taytr-llc/slug/poolservice"
 	"github.com/taytr-llc/slug/poolsettle"
+	"github.com/taytr-llc/slug/poolshare"
 	"github.com/taytr-llc/slug/prospect"
 )
 
@@ -39,9 +40,10 @@ func script(s string) bool {
 	b, e := hex.DecodeString(s)
 	return e == nil && hex.EncodeToString(b) == s
 }
-func audience(s string) bool { return s == PoolAudience || s == AdmissionAudience }
-func validConfig(c Config) bool {
-	if c.Version != Version1 || !identifier(c.CredentialID) || !identifier(c.RuntimeID) || !identifier(c.OperatorProfileID) || !identifier(c.SourceID) || !identifier(c.SettlementConfigID) || len(c.Enrollments) < 1 || len(c.Enrollments) > 64 {
+func audience(s string) bool    { return s == PoolAudience || s == AdmissionAudience }
+func validConfig(c Config) bool { return validConfigVersion(c, Version1) }
+func validConfigVersion(c Config, version uint32) bool {
+	if (version != Version1 && version != Version2) || c.Version != version || !identifier(c.CredentialID) || !identifier(c.RuntimeID) || !identifier(c.OperatorProfileID) || !identifier(c.SourceID) || !identifier(c.SettlementConfigID) || len(c.Enrollments) < 1 || len(c.Enrollments) > 64 {
 		return false
 	}
 	keys, scripts := map[string]bool{}, map[string]bool{}
@@ -60,15 +62,22 @@ func validConfig(c Config) bool {
 
 // ValidateConfig is pure preflight. It neither selects a marker's identity nor
 // authenticates a concrete source/store, and the constructors repeat it.
-func ValidateConfig(c Config, b Binding) error {
-	if !validConfig(c) || b.Profile.Validate() != nil || b.Profile.ID() != c.OperatorProfileID || b.Profile.Pin().Source != b.Source.AuthorityPin {
+func ValidateConfig(c Config, b Binding) error { return validateConfigVersion(c, b, Version1) }
+func validateConfigVersion(c Config, b Binding, version uint32) error {
+	if !validConfigVersion(c, version) || b.Profile.Validate() != nil || b.Profile.ID() != c.OperatorProfileID || b.Profile.Pin().Source != b.Source.AuthorityPin {
 		return ErrInvalid
 	}
-	source, e := poolservice.BindingID(b.Source)
+	sourceID := poolservice.BindingID
+	settlementID := poolsettle.ConfigBindingID
+	if version == Version2 {
+		sourceID = poolshare.DailyConfigID
+		settlementID = poolsettle.DailyConfigBindingID
+	}
+	source, e := sourceID(b.Source)
 	if e != nil || source != c.SourceID {
 		return ErrInvalid
 	}
-	settlement, e := poolsettle.ConfigBindingID(b.Settlement)
+	settlement, e := settlementID(b.Settlement)
 	if e != nil || settlement != c.SettlementConfigID || len(b.Settlement.Destinations) != len(c.Enrollments) {
 		return ErrInvalid
 	}
@@ -83,24 +92,32 @@ func ValidateConfig(c Config, b Binding) error {
 	}
 	return nil
 }
-func digest(domain string, v any) (string, error) {
+func digest(domain string, v any) (string, error) { return digestVersion(domain, v, Version1) }
+func digestVersion(domain string, v any, version uint32) (string, error) {
+	label := "v1"
+	if version == Version2 {
+		label = "v2"
+	} else if version != Version1 {
+		return "", ErrInvalid
+	}
 	raw, e := json.Marshal(v)
 	if e != nil || len(raw) > maxMarkerBytes {
 		return "", ErrInvalid
 	}
 	h := sha256.New()
-	h.Write([]byte(domain + "\x00v1\x00"))
+	h.Write([]byte(domain + "\x00" + label + "\x00"))
 	var n [4]byte
 	binary.LittleEndian.PutUint32(n[:], uint32(len(raw)))
 	h.Write(n[:])
 	h.Write(raw)
 	return hex.EncodeToString(h.Sum(nil)), nil
 }
-func configDigest(c Config) (string, error) {
-	if !validConfig(c) {
+func configDigest(c Config) (string, error) { return configDigestVersion(c, Version1) }
+func configDigestVersion(c Config, version uint32) (string, error) {
+	if !validConfigVersion(c, version) {
 		return "", ErrInvalid
 	}
-	return digest("SLUG pool miner enrollment", c)
+	return digestVersion("SLUG pool miner enrollment", c, version)
 }
 func ConfigID(c Config, b Binding) (string, error) {
 	if e := ValidateConfig(c, b); e != nil {
@@ -109,20 +126,23 @@ func ConfigID(c Config, b Binding) (string, error) {
 	return configDigest(c)
 }
 func tokenHashes(id, a, token string) (TokenUse, error) {
+	return tokenHashesVersion(id, a, token, Version1)
+}
+func tokenHashesVersion(id, a, token string, version uint32) (TokenUse, error) {
 	if !identifier(id) || !audience(a) || !identifier(token) {
 		return TokenUse{}, ErrInvalid
 	}
-	x, e := digest("SLUG pool miner credential", struct {
+	x, e := digestVersion("SLUG pool miner credential", struct {
 		ConfigID string `json:"config_id"`
 		Audience string `json:"audience"`
 		Token    string `json:"token"`
-	}{id, a, token})
+	}{id, a, token}, version)
 	if e != nil {
 		return TokenUse{}, e
 	}
-	y, e := digest("SLUG pool miner token reuse", struct {
+	y, e := digestVersion("SLUG pool miner token reuse", struct {
 		ConfigID string `json:"config_id"`
 		Token    string `json:"token"`
-	}{id, token})
+	}{id, token}, version)
 	return TokenUse{x, y}, e
 }

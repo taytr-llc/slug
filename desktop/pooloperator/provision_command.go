@@ -17,6 +17,7 @@ import (
 )
 
 const provisionUsage = `slugpool-provision create|resume|verify [local file selections]
+--daily explicitly selects fresh DAILY provisioning; defaults remain V1.
 Required: --policy-file --root --tls-certificate-file
  --wallet-public-passphrase-file --wallet-unlock-passphrase-file
 Paths must be absolute and canonical; selected files must be protected regular
@@ -28,14 +29,17 @@ The protected operator wallet backup is not a service-journal restoration file.
 Only bounded public JSON and closed error codes are printed.
 `
 
-type provisionOptions struct{ command, policy, root, certificate, publicPass, unlockPass string }
+type provisionOptions struct {
+	command, policy, root, certificate, publicPass, unlockPass string
+	daily                                                      bool
+}
 
 func parseProvisionCommand(args []string) (provisionOptions, error) {
 	var o provisionOptions
 	if len(args) == 0 || len(args) == 1 && (args[0] == "help" || args[0] == "--help" || args[0] == "-h") {
 		return o, flag.ErrHelp
 	}
-	if len(args) > 11 {
+	if len(args) > 12 {
 		return o, ErrCommandArguments
 	}
 	total := 0
@@ -53,6 +57,7 @@ func parseProvisionCommand(args []string) (provisionOptions, error) {
 	}
 	fs := flag.NewFlagSet("slugpool-provision", flag.ContinueOnError)
 	fs.SetOutput(io.Discard)
+	fs.BoolVar(&o.daily, "daily", false, "")
 	for name, dst := range map[string]*string{"policy-file": &o.policy, "root": &o.root, "tls-certificate-file": &o.certificate, "wallet-public-passphrase-file": &o.publicPass, "wallet-unlock-passphrase-file": &o.unlockPass} {
 		fs.StringVar(dst, name, "", "")
 	}
@@ -64,8 +69,11 @@ func parseProvisionCommand(args []string) (provisionOptions, error) {
 		}
 		name := strings.TrimPrefix(strings.TrimPrefix(a, "-"), "-")
 		if j := strings.IndexByte(name, '='); j >= 0 {
+			if name[:j] == "daily" && name[j+1:] != "true" {
+				return o, ErrCommandArguments
+			}
 			name = name[:j]
-		} else {
+		} else if name != "daily" {
 			i++
 			if i >= len(args) {
 				return o, ErrCommandArguments
@@ -76,7 +84,7 @@ func parseProvisionCommand(args []string) (provisionOptions, error) {
 		}
 		seen[name] = true
 	}
-	if fs.Parse(args[1:]) != nil || fs.NArg() != 0 || len(seen) != 5 {
+	if fs.Parse(args[1:]) != nil || fs.NArg() != 0 || len(seen) != 5+boolCount(seen["daily"]) {
 		return o, ErrCommandArguments
 	}
 	for _, p := range []string{o.policy, o.root, o.certificate, o.publicPass, o.unlockPass} {
@@ -193,6 +201,7 @@ func runProvisionCommand(ctx context.Context, args []string, stdout, stderr *os.
 	}
 	o := &provisionCommandOwner{common: &commandOwner{stdout: out, stderr: errout}}
 	command := "command"
+	version := uint32(1)
 	var response *commandResponse
 	changed := func() bool { return o.files != nil && o.files.changed }
 	defer func() {
@@ -206,7 +215,7 @@ func runProvisionCommand(ctx context.Context, args []string, stdout, stderr *os.
 			result = errors.Join(ErrCommandOutcomeUnknown, result)
 		}
 		if result != nil {
-			diagnostic := commandResponse{Version: 1, Command: command, ObservedAtMS: now().UTC().UnixMilli(), Code: provisionCode(result)}
+			diagnostic := commandResponse{Version: version, Command: command, ObservedAtMS: now().UTC().UnixMilli(), Code: provisionCode(result)}
 			logctx, end := context.WithTimeout(context.Background(), 5*time.Second)
 			e := errout.json(logctx, diagnostic)
 			end()
@@ -237,6 +246,9 @@ func runProvisionCommand(ctx context.Context, args []string, stdout, stderr *os.
 		return e
 	}
 	command = options.command
+	if options.daily {
+		version = 2
+	}
 	if wire.TestPoW {
 		return ErrProvisionInvalid
 	}
@@ -247,10 +259,15 @@ func runProvisionCommand(ctx context.Context, args []string, stdout, stderr *os.
 	if e != nil {
 		return e
 	}
-	policy, e := ParseProvisionPolicy(raw)
+	policy, e := parseProvisionPolicyVersion(raw, version)
 	clear(raw)
 	if e != nil {
 		return e
+	}
+	if options.daily {
+		if e = dailyProvisionCapacity(policy); e != nil {
+			return e
+		}
 	}
 	raw, e = o.common.readInput(ctx, options.certificate, 65536)
 	if e != nil {
@@ -277,12 +294,12 @@ func runProvisionCommand(ctx context.Context, args []string, stdout, stderr *os.
 	if e = o.common.check(ctx); e != nil {
 		return e
 	}
-	o.files, e = openProvisionFiles(options.root, command == "create")
+	o.files, e = openProvisionFilesVersion(options.root, command == "create", version)
 	if e != nil {
 		return e
 	}
 	f := o.files
-	raw, exists, e := f.read(ctx, "", provisionIntentName, 131072)
+	raw, exists, e := f.read(ctx, "", provisionIntentFile(version), 131072)
 	if e != nil {
 		return e
 	}
@@ -301,22 +318,22 @@ func runProvisionCommand(ctx context.Context, args []string, stdout, stderr *os.
 		if !provisionTime(created) {
 			return ErrProvisionInvalid
 		}
-		pid, e := ProvisionPolicyID(policy)
+		pid, e := provisionPolicyIDVersion(policy, version)
 		if e != nil {
 			return e
 		}
-		intent = provisionIntent{1, policy, pid, certificate.CertificateSHA256, created}
+		intent = provisionIntent{version, policy, pid, certificate.CertificateSHA256, created}
 		raw, e = provisionJSON(intent, 131072)
 		if e != nil {
 			return e
 		}
-		e = f.ensure(ctx, "", provisionIntentName, raw, 131072, true)
+		e = f.ensure(ctx, "", provisionIntentFile(version), raw, 131072, true)
 		clear(raw)
 		if e != nil {
 			return e
 		}
 	}
-	readyRaw, established, e := f.read(ctx, "", provisionReadyName, 1024)
+	readyRaw, established, e := f.read(ctx, "", provisionReadyFile(version), 1024)
 	if e != nil {
 		return e
 	}
@@ -350,7 +367,7 @@ func runProvisionCommand(ctx context.Context, args []string, stdout, stderr *os.
 		return e
 	}
 	defer root.Zero()
-	setup, e := ComposeProvisionSetup(policy, material, certificate)
+	setup, e := composeProvisionSetupVersion(policy, material, certificate, version)
 	if e != nil {
 		return e
 	}
@@ -384,7 +401,7 @@ func runProvisionCommand(ctx context.Context, args []string, stdout, stderr *os.
 	if e = verifyProvisionBackup(backup, policy, setup, intent.CreatedAtMS); e != nil {
 		return e
 	}
-	if e = f.ensure(ctx, "offline", provisionBackupName, backup, 8192, allowCreate); e != nil {
+	if e = f.ensure(ctx, "offline", provisionBackupFile(version), backup, 8192, allowCreate); e != nil {
 		return e
 	}
 	for _, dir := range []string{"online", "public"} {
@@ -397,7 +414,7 @@ func runProvisionCommand(ctx context.Context, args []string, stdout, stderr *os.
 			return e
 		}
 	}
-	setupRaw, e := MarshalSetup(setup)
+	setupRaw, e := marshalSetupVersion(setup, version)
 	if e != nil {
 		return e
 	}
@@ -417,13 +434,17 @@ func runProvisionCommand(ctx context.Context, args []string, stdout, stderr *os.
 	}
 	custody, cancelCustody := context.WithCancel(context.Background())
 	o.common.custodyCancel = cancelCustody
+	openWallet, createWallet := wallet.OpenPoolSettlementWallet, wallet.CreatePoolSettlementWallet
+	if options.daily {
+		openWallet, createWallet = wallet.OpenDailyPoolSettlementWallet, wallet.CreateDailyPoolSettlementWallet
+	}
 	if walletExists {
-		o.common.wallet, e = wallet.OpenPoolSettlementWallet(custody, filepath.Join(options.root, "wallet"), setup.walletBinding(), publicPass)
+		o.common.wallet, e = openWallet(custody, filepath.Join(options.root, "wallet"), setup.walletBinding(), publicPass)
 	} else {
 		// The factory may publish its directory before reporting any error. Never
 		// retry Create on an existing directory, including a torn first creation.
 		f.changed = true
-		o.common.wallet, e = wallet.CreatePoolSettlementWallet(custody, filepath.Join(options.root, "wallet"), setup.walletBinding(), publicPass, unlockPass, root, time.UnixMilli(intent.CreatedAtMS).UTC())
+		o.common.wallet, e = createWallet(custody, filepath.Join(options.root, "wallet"), setup.walletBinding(), publicPass, unlockPass, root, time.UnixMilli(intent.CreatedAtMS).UTC())
 	}
 	if e != nil {
 		return errors.Join(ErrProvisionIncompleteWallet, e)
@@ -452,7 +473,7 @@ func runProvisionCommand(ctx context.Context, args []string, stdout, stderr *os.
 	o.common.wallet = nil
 	// READY follows the original wallet's successful close. Other selected files
 	// and the root lock stay owned through exact publication and final checks.
-	if e = f.ensure(ctx, "", provisionReadyName, expectedReadyRaw, 1024, allowCreate); e != nil {
+	if e = f.ensure(ctx, "", provisionReadyFile(version), expectedReadyRaw, 1024, allowCreate); e != nil {
 		return e
 	}
 	if e = f.inventory(); e != nil {
@@ -465,6 +486,13 @@ func runProvisionCommand(ctx context.Context, args []string, stdout, stderr *os.
 	if !established {
 		status = "provisioned"
 	}
-	response = &commandResponse{Version: 1, Command: command, ObservedAtMS: now().UTC().UnixMilli(), Code: status, Result: provisionResult{policy.RequestID, expectedReady.PolicyID, expectedReady.SetupID, expectedReady.WalletGuardID, material.AdmissionKey, material.PublicationKey, material.CutoffKey, setup.Pool.PayoutAddress}}
+	response = &commandResponse{Version: version, Command: command, ObservedAtMS: now().UTC().UnixMilli(), Code: status, Result: provisionResult{policy.RequestID, expectedReady.PolicyID, expectedReady.SetupID, expectedReady.WalletGuardID, material.AdmissionKey, material.PublicationKey, material.CutoffKey, setup.Pool.PayoutAddress}}
 	return nil
+}
+
+func boolCount(v bool) int {
+	if v {
+		return 1
+	}
+	return 0
 }

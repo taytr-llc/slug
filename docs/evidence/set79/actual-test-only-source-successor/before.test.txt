@@ -1,0 +1,180 @@
+//go:build !slugtestpow && (linux || (darwin && cgo))
+
+// Copyright (c) 2026 The SLUG developers. ISC license.
+package poolschedule
+
+import (
+	"bytes"
+	"context"
+	"encoding/json"
+	"errors"
+	"reflect"
+	"testing"
+	"time"
+
+	"github.com/taytr-llc/slug/poolsettle"
+)
+
+// This specifically starts with a genuinely empty persisted scheduler cursor:
+// A was signed and sent but its lost acknowledgement has not yet been recovered.
+// B becomes confirmed on the original source before that recovery. No cursor,
+// clock, credit or payment bytes are injected to make daily dispatch reachable.
+func TestDailyScheduleEmptyCursorContentionImportsOnce(t *testing.T) {
+	if now := time.Now().UTC(); now.Hour() == 23 && now.Minute() >= 58 {
+		t.Skip("same-day contention test requires two real UTC minutes before midnight")
+	}
+	h := newDailyScheduleHarness(t)
+	h.confirmFirst(t)
+	s, path, config := dailyScheduleFixture(t, h, 0)
+	ctx := context.Background()
+	day := time.Now().UTC().Format("2006-01-02")
+	h.backend.loseAck = true
+	if err := oneCycle(t, s); err != nil {
+		t.Fatal(err)
+	}
+	prior, err := s.Status(ctx)
+	if err != nil || prior.State.DailyCursor != "" || prior.State.Attempt == nil || prior.State.Attempt.ReportState != "pending" {
+		t.Fatal("original pending A did not leave empty cursor", prior, err)
+	}
+	if h.backend.signCalls != 1 || h.backend.feeCalls != 1 || h.backend.broadcasts != 1 {
+		t.Fatal("original A payment inventory")
+	}
+	sentA := append([]byte(nil), h.backend.broadcastBytes[0]...)
+	s, before := completedRefreshReopen(t, h, s, path, config)
+	bodyA, creditA := before[completedRefreshKey("b/", 1)], before[completedRefreshKey("c/", 1)]
+	if len(bodyA) == 0 || len(creditA) == 0 {
+		t.Fatal("missing original A evidence")
+	}
+	h.addConfirmedRound(t)
+	winnerB := h.node.winner.WorkHash
+	h.backend.confirmations = 1
+	// Real recurring original round ownership refuses bounded admissions but
+	// cannot create durable attempts, clear the empty cursor or change A.
+	for i := 0; i < 2; i++ {
+		release := holdScheduleOriginalRound(t, h)
+		bounded, cancel := context.WithTimeout(ctx, 50*time.Millisecond)
+		binding, err := DailySettlementBinding(bounded, h.store)
+		cancel()
+		release()
+		if binding != "" || !errors.Is(err, context.DeadlineExceeded) {
+			t.Fatal("original bounded admission", binding, err)
+		}
+	}
+	s, unchanged := completedRefreshReopen(t, h, s, path, config)
+	if !reflect.DeepEqual(before, unchanged) {
+		t.Fatal("read-only contention changed original A ledger")
+	}
+	prior, err = s.Status(ctx)
+	if err != nil || prior.State.DailyCursor != "" {
+		t.Fatal("contention occupied empty cursor", prior, err)
+	}
+	// Cancel an actual scheduler Run while its first binding owns no durable
+	// attempt. Joining must retain all old state and leave the same owner reusable.
+	release := holdScheduleOriginalRound(t, h)
+	runCtx, cancel := context.WithCancel(ctx)
+	done := make(chan error, 1)
+	go func() { done <- s.Run(runCtx) }()
+	joined := false
+	stop := func() {
+		cancel()
+		if !joined {
+			select {
+			case err := <-done:
+				joined = true
+				if !errors.Is(err, context.Canceled) {
+					t.Error("canceled original Run", err)
+				}
+			case <-time.After(10 * time.Second):
+				t.Error("original Run did not join")
+			}
+		}
+	}
+	t.Cleanup(stop)
+	select {
+	case err := <-done:
+		joined = true
+		t.Fatal("contention escaped original Run", err)
+	case <-time.After(75 * time.Millisecond):
+	}
+	stop()
+	release()
+	afterCancel, err := s.Status(ctx)
+	if err != nil || !reflect.DeepEqual(prior.State, afterCancel.State) {
+		t.Fatal("canceled admission wrote scheduler", afterCancel, err)
+	}
+	if h.backend.signCalls != 1 || h.backend.feeCalls != 1 || h.backend.broadcasts != 1 {
+		t.Fatal("canceled binding caused payment")
+	}
+	// The same original owners must now progress, despite another occupied gate.
+	release = holdScheduleOriginalRound(t, h)
+	runCtx, cancel = context.WithCancel(ctx)
+	done = make(chan error, 1)
+	joined = false
+	go func() { done <- s.Run(runCtx) }()
+	select {
+	case err := <-done:
+		joined = true
+		t.Fatal("second contention escaped Run", err)
+	case <-time.After(75 * time.Millisecond):
+	}
+	during, err := s.Status(ctx)
+	if err != nil || !reflect.DeepEqual(prior.State, during.State) {
+		t.Fatal("waiting admission changed durable attempt", during, err)
+	}
+	release()
+	deadline := time.NewTimer(10 * time.Second)
+	defer deadline.Stop()
+	for {
+		current, e := s.Status(ctx)
+		if e == nil && current.State.DailyCursor == day && current.State.Attempt != nil && current.State.Attempt.Kind == "daily" && current.State.Attempt.ReportReason == "daily-batch-complete" {
+			break
+		}
+		if e != nil && e != ErrBusy {
+			t.Fatal(e)
+		}
+		select {
+		case e := <-done:
+			joined = true
+			t.Fatal("original Run stopped before progress", e)
+		case <-deadline.C:
+			t.Fatal("empty-cursor daily import never progressed")
+		case <-time.After(10 * time.Millisecond):
+		}
+	}
+	stop()
+	if h.backend.signCalls != 1 || h.backend.feeCalls != 1 || h.backend.broadcasts != 1 || len(h.backend.broadcastBytes) != 1 || !bytes.Equal(sentA, h.backend.broadcastBytes[0]) {
+		t.Fatal("contention repeated A quote/sign/send")
+	}
+	report, err := h.store.View(ctx)
+	if err != nil || len(report.Balances) != 1 {
+		t.Fatal(report, err)
+	}
+	balance := report.Balances[0]
+	if balance.GymID != h.gym || balance.Confirmed != (poolsettle.Fraction{Numerator: "990000000", Denominator: "1"}) || balance.Available != balance.Confirmed || balance.PaidAtoms != 990000000 || balance.ReservedAtoms != 0 {
+		t.Fatal("exact original 99/1 credit or paid amount changed", balance)
+	}
+	s, after := completedRefreshReopen(t, h, s, path, config)
+	if !bytes.Equal(bodyA, after[completedRefreshKey("b/", 1)]) || !bytes.Equal(creditA, after[completedRefreshKey("c/", 1)]) {
+		t.Fatal("original immutable A changed")
+	}
+	var head struct {
+		Credits, Batches, Events uint64
+		Pending                  uint64 `json:"pending_batch"`
+	}
+	if json.Unmarshal(after["head"], &head) != nil || head.Credits != 2 || head.Batches != 1 || head.Events != 3 || head.Pending != 0 {
+		t.Fatal("once-only ledger inventory", head)
+	}
+	var credit struct {
+		RoundHash string `json:"round_hash"`
+	}
+	if json.Unmarshal(after[completedRefreshKey("c/", 2)], &credit) != nil || credit.RoundHash != winnerB {
+		t.Fatal("original B credit missing", credit)
+	}
+	if err = oneCycle(t, s); err != nil {
+		t.Fatal(err)
+	}
+	_, final := completedRefreshReopen(t, h, s, path, config)
+	if !bytes.Equal(bodyA, final[completedRefreshKey("b/", 1)]) || !bytes.Equal(after[completedRefreshKey("c/", 2)], final[completedRefreshKey("c/", 2)]) || final[completedRefreshKey("c/", 3)] != nil || final[completedRefreshKey("b/", 2)] != nil || h.backend.signCalls != 1 || h.backend.feeCalls != 1 || h.backend.broadcasts != 1 {
+		t.Fatal("physical reopen/repeat duplicated financial effects")
+	}
+}

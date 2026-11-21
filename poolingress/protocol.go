@@ -14,13 +14,21 @@ type route struct {
 	timeout                               time.Duration
 }
 
-func routeFor(path string) (route, bool) {
+func routeFor(path string) (route, bool) { return selectedRouteFor(path, 1) }
+func selectedRouteFor(path string, version uint32) (route, bool) {
+	if version != 1 && version != 2 {
+		return route{}, false
+	}
+	prefix := "/pool/v1/"
+	if version == 2 {
+		prefix = "/pool/v2/"
+	}
 	r := route{requestLimit: 1024, responseLimit: 65536, timeout: 35 * time.Second}
 	switch path {
-	case "/pool/v1/issue", "/pool/v1/work":
+	case prefix + "issue", prefix + "work":
 		r.responseLimit = 16842752
-	case "/pool/v1/submit", "/pool/v1/lookup", "/pool/v1/balance":
-	case "/pool/v1/payouts":
+	case prefix + "submit", prefix + "lookup", prefix + "balance":
+	case prefix + "payouts":
 		r.responseLimit = 131072
 	case "/v3/admissions":
 		r.upstream = 1
@@ -58,10 +66,13 @@ func bearer(values []string) bool {
 	return e == nil && len(raw) == 32
 }
 func requestRoute(r *http.Request, host string) (route, bool) {
+	return requestSelectedRoute(r, host, 1)
+}
+func requestSelectedRoute(r *http.Request, host string, version uint32) (route, bool) {
 	if r == nil || r.URL == nil || r.Host != host || r.Method != http.MethodPost || r.URL.IsAbs() || r.URL.Host != "" || r.URL.RawPath != "" || r.URL.RawQuery != "" || r.URL.ForceQuery || r.URL.Fragment != "" || r.URL.Opaque != "" || r.ProtoMajor != 1 || r.ProtoMinor != 1 || len(r.TransferEncoding) != 0 || len(r.Trailer) != 0 {
 		return route{}, false
 	}
-	selected, ok := routeFor(r.URL.Path)
+	selected, ok := selectedRouteFor(r.URL.Path, version)
 	if !ok || r.RequestURI != "" && r.RequestURI != r.URL.Path {
 		return route{}, false
 	}

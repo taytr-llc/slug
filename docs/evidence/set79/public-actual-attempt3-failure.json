@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "scope": "Set79 third public DAILY actual failure",
+  "passed": false,
+  "failure": "original runtime exited before requested stop: *errors.joinError: pool operator input unavailable\npool operation is busy\ncontext canceled\ncontext canceled\ncontext canceled",
+  "phase": "original B/C jobs and true ordinary two-row intake",
+  "sources_unchanged": true,
+  "copies_unchanged": true,
+  "profile_artifacts_unchanged": true,
+  "runtime_clean_join": false,
+  "runtime_errors": [
+    "runtime: pool operator input unavailable\npool operation is busy\ncontext canceled\ncontext canceled\ncontext canceled"
+  ],
+  "runtime_owners_closed": true,
+  "runtime_completion_joined": true,
+  "all_outer_groups_empty": true,
+  "node_cleanup": [
+    {
+      "clean": true,
+      "forced_kill": false,
+      "joined": true,
+      "log_close_error": false,
+      "stop_rpc_error": false,
+      "unexpected_exit": false,
+      "wait_error": ""
+    },
+    {
+      "clean": true,
+      "forced_kill": false,
+      "joined": true,
+      "log_close_error": false,
+      "stop_rpc_error": false,
+      "unexpected_exit": false,
+      "wait_error": ""
+    }
+  ],
+  "last_capacity": {
+    "daily_reservation": {
+      "ordinary_maximum": 2,
+      "reservation": {
+        "submissions": 3,
+        "blocks": 3,
+        "max_batches": 5,
+        "claim_leaves": 6,
+        "ledger_bytes": 8534577,
+        "round_bytes": 211005,
+        "largest_round_bytes": 66520,
+        "largest_credit_bytes": 1243,
+        "largest_batch_bytes": 980210,
+        "report_bytes": 20628,
+        "receipt_bytes": 12288,
+        "signing_bytes": 8450828,
+        "manager_copy_bytes": 1181620
+      }
+    },
+    "reservation": {
+      "submissions": 0,
+      "max_batches": 0,
+      "state_bytes": 0,
+      "round_bytes": 0,
+      "largest_round_bytes": 0
+    },
+    "mode": "paused",
+    "reason": "",
+    "submissions": 1,
+    "over_bound": false,
+    "canonical_recovery": true,
+    "recovery_blocks": 1,
+    "at_ms": 1795251361418
+  },
+  "last_public_code": "busy",
+  "payout_broadcast_attempts": 1,
+  "fresh_operator_cli_lifetimes": 0,
+  "public_seed_mining": false,
+  "files": [
+    {
+      "path": "artifacts/set79/public-actual-attempt3/report.json",
+      "bytes": 8349,
+      "sha256": "c34168e4e619f40ebe23ea46ebea2b15fc3500408e869fea5bd1b1171f009db3"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt3/execution-lock.json",
+      "bytes": 6418,
+      "sha256": "637e96230cc57fd5ba9d24c1b317b4cbc63efee3e113590960c7a09dbf3ee075"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt3/source-before.json",
+      "bytes": 446450,
+      "sha256": "bc3b10165faa14e4e2636229236ee61b16c95ef549844db2614e2fdcb19012f0"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt3/source-after.json",
+      "bytes": 446450,
+      "sha256": "bc3b10165faa14e4e2636229236ee61b16c95ef549844db2614e2fdcb19012f0"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt3/source-copies.json",
+      "bytes": 1641,
+      "sha256": "011e7124aa9d186613bbe57b8eb91c4b5dbef12b0f39da5d4990cbe75ed44407"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt3/profile.json",
+      "bytes": 962,
+      "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt3/actual.log",
+      "bytes": 86,
+      "sha256": "2bfcdbb4618c37464c90a44df2d16f48ed109b2ed0ad5bbf2af3a2792e6d580b"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt3/owned/actual-report.json",
+      "bytes": 9982,
+      "sha256": "6f6fa804da29f1180c9c89ce8d4f44b125a848b0a6873fbb1ef85a4bea554fac"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt3/owned/01-runtime-listening.json",
+      "bytes": 2461,
+      "sha256": "6ae4269a33c1eb450117c5053bfcffcbf1ad7eca00a28faa6e1828d1f9ea25b7"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt3/owned/02-A-block.json",
+      "bytes": 3803,
+      "sha256": "b4637245a8f0d785a932bbcfe1fe09ebbedfe8b10c3b1414a6e51b77eefdfb29"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt3/owned/03-A-pending.json",
+      "bytes": 17998,
+      "sha256": "6f396649af177f98b4824651fb8a422695e2df3865e66a73ede8bedfe189d3c4"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt3/owned/selected-public-setup.json",
+      "bytes": 6164,
+      "sha256": "e0780853e0c454eb5d7c388f22cb094d6f3b9914dd59fdaee86d085d0415a97c"
+    }
+  ],
+  "qualification": "Failure retained. Real scheduled A and reserved closed audit passed; original reopened runtime exited with raw poolshare Busy before B/C readiness. Last status is dated and does not identify which intake call failed. Source trace identifies registry TryInfo/TryGetManifestJob Busy normalized by daily intake census, then returned fatally by updateIntake callers. Bounded exact-contention handling and original-owner regression remain pending. No full-intake/expiry/restart credit proof claimed."
+}

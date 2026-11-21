@@ -287,14 +287,16 @@ def main():
             raise RuntimeError("normal proof-of-work source not selected")
         gate.test("normal-wire-guard", root / "wire", ["."], desktop / "go.work",
                   run="^TestBlockHashMemoizationPreservesArgon2$", required=["TestBlockHashMemoizationPreservesArgon2"])
-        for name, cwd, package in (("slugd", root, "."), ("slugpoold", desktop, "./cmd/slugpoold")):
+        for name, cwd, package, cgo in (("slugd", root, ".", "0"),
+                                       ("slugpoold", desktop, "./cmd/slugpoold", "0"),
+                                       ("slugpilot", desktop, "./cmd/slugpilot", "1")):
             binary = artifacts / "bin" / name
-            gate.run("build-" + name, ["sh", root / "scripts/candidate-go.sh", "build", "-p=1", "-trimpath", "-tags=", "-o", binary, package], cwd, 600, {"CGO_ENABLED": "0"})
+            gate.run("build-" + name, ["sh", root / "scripts/candidate-go.sh", "build", "-p=1", "-trimpath", "-tags=", "-o", binary, package], cwd, 600, {"CGO_ENABLED": cgo})
             metadata = gate.run("verify-" + name, ["sh", root / "scripts/candidate-go.sh", "verify-binary", binary], seconds=30).decode()
             symbols = gate.run("symbols-" + name, ["go", "tool", "nm", binary], seconds=60).decode()
             if any(tag in metadata for tag in ("slugtestpow", "slugtestclock")) or any(x in symbols for x in FORBIDDEN_SYMBOLS):
                 raise RuntimeError("diagnostic profile leaked into normal artifact")
-            if "CGO_ENABLED=0" not in metadata or "GOOS=linux" not in metadata or "GOARCH=amd64" not in metadata:
+            if "CGO_ENABLED=" + cgo not in metadata or "GOOS=linux" not in metadata or "GOARCH=amd64" not in metadata:
                 raise RuntimeError("normal binary target mismatch")
             report.setdefault("binaries", []).append({"path": "bin/" + name, "bytes": binary.stat().st_size,
                                                        "sha256": digest(binary), "profile_verified": True,
@@ -312,16 +314,79 @@ def main():
                                 "TestDailyPoolWalletBindingReference",
                                 "TestDailyPoolWalletFreshOwnerAndLegacyRefusal"])
             gate.test(mode + "-operator", desktop, ["./pooloperator"], desktop / "go.work", race,
-                      run="^TestOperator", required=[ACL_TEST] + [ACL_TEST + "/" + case for case in ACL_CASES] + [
+                      run="^Test(Operator|DailyOperator|DailyProvision|DailyIntake)", required=[ACL_TEST] + [ACL_TEST + "/" + case for case in ACL_CASES] + [
+                          "TestOperatorIntakeSourceBusyErrorTrees",
+                          "TestOperatorIntakeMutexCancellationJoinsHolder",
+                          "TestDailyIntakeOriginalIssuerBusyPreservesDrainAndPayout",
+                          "TestDailyIntakeOriginalIssuerCancellationNeverEnables",
+                          "TestDailyOperatorIndependentComposition",
+                          "TestDailyOperatorIndependentFraming",
+                          "TestDailyProvisionOriginalWalletAndRuntimeReopen",
+                          "TestDailyProvisionResumesOriginalMaterialAndRefusesOtherMode",
+                          "TestDailyOperatorFilesSelectedMarkers",
+                          "TestDailyProvisionCapacityBeforeCreation",
+                          "TestDailyOperatorCommandExplicitSelection",
+                          "TestDailyOperatorCanceledCommandBeforeEffects",
                           "TestOperatorLiveRoundOriginalCatchupAndDefault",
                           "TestOperatorLiveRoundCapacityRefresh",
                           "TestOperatorLiveRoundSelectionRefusals",
                           "TestOperatorLiveRoundCloseJoinsSelection"])
+            gate.test(mode + "-daily-public-transport", root,
+                      ["./poolminer", "./poolservice", "./poolingress"], desktop / "go.work", race,
+                      required=["TestDailyMinerIndependentBytesAndBindings",
+                                "TestDailyMinerRotationAudienceAndReopen",
+                                "TestDailyTransportIndependentBindings",
+                                "TestDailyTransportIndependentMoneyPages",
+                                "TestDailyTransportIndependentFraming",
+                                "TestDailyClientUnknownIssueNeverRetries",
+                                "TestDailyServerOriginalOwnersAndMoneyBinding",
+                                "TestDailyServerRefusesBeforeEffects",
+                                "TestDailyServerBusyAndRunJoins",
+                                "TestDailyIngressCatalogAndCrossMode",
+                                "TestDailyIngressOriginalTLSAndJoin"])
+            gate.test(mode + "-daily-public-worker", root, ["./prospectworker"],
+                      desktop / "go.work", race, run="^Test(DailyPool|Pool)", required=[
+                          "TestDailyPoolIndependentBytesAndModes",
+                          "TestDailyPoolIndependentJournalAuditAndReopen",
+                          "TestDailyPoolIssueOriginalAttemptAndUncertainty",
+                          "TestDailyPoolIssueSyncFailuresKeepOriginalEvidence",
+                          "TestDailyPoolHeldReopenStillReconcilesOriginalPending",
+                          "TestDailyPoolRunUnknownIssuePersistsAcrossOriginalReopen",
+                          "TestDailyPoolConstructorFailureRetainsOriginalCleanupOwner"])
+            gate.test(mode + "-daily-public-desktop", desktop,
+                      ["./pilot", "./accountpilot", "./cmd/slugpilot"], desktop / "go.work", race,
+                      run="^Test(Daily|RemotePool)", required=[
+                          "TestDailyRemoteIndependentConfigAndMoneyBinding",
+                          "TestDailyRemoteIndependentCredentialGrammar",
+                          "TestDailyRemoteSelectionBeforeOriginalOwnerEffects",
+                          "TestDailyRemoteOriginalWalletRecipientAndMiningEpoch",
+                          "TestDailyRemoteProtectedOriginalAudienceAndCancellation",
+                          "TestDailyRemoteMarkersAndExactOutboxRemainSeparate",
+                          "TestDailyRemoteControllerKeepsOriginalEpochAndRefusesLegacyWire",
+                          "TestDailyRemoteControllerModeRefusesBeforeRoot",
+                          "TestDailyRemoteCancellationCauseAndLegacyParity",
+                          "TestDailyRemoteStartRetainsObservedCloseFailure",
+                          "TestDailyRemoteOriginalAccountCancellationProvenance",
+                          "TestDailyRemoteObservedEpochLossSurvivesCancellation",
+                          "TestDailyHeadlessParentCancellationInterruptsOriginalPipe",
+                          "TestDailyHeadlessOutputFailureSurvivesParentCancellation",
+                          "TestDailyHeadlessCancellationPreservesOtherCauses",
+                          "TestDailyHeadlessFixedStatusAtomicFrame",
+                          "TestDailyHeadlessOriginalFileOwnersJoinBeforeCancellationSuccess",
+                          "TestDailyHeadlessObservedIntegrityIsNotCancellation",
+                          "TestDailyHeadlessFlagsAndCancellationBeforeEffects",
+                          "TestDailyHeadlessOutputCancellationJoins"])
+            gate.test(mode + "-daily-mining-lease", root, ["./internal/mininglease"],
+                      desktop / "go.work", race, required=[
+                          "TestDailyCaptureOriginalCancellationAndLegacyParity",
+                          "TestDailyCapturePreservesObservedIndependentFailures",
+                          "TestDailyCaptureSuccessfulLeaseRetainsOriginalCommitFences"])
             # These complete package suites preserve V1 controls as well as
             # requiring the new daily boundary cases. No actual-test build tag.
             gate.test(mode + "-daily-source-round", root, ["./internal/poolcapacity", "./poolshare", "./poolround"],
                       desktop / "go.work", race, required=[
                           "TestDailyRecoveryIndependentReference",
+                          "TestDailyPublicBindingOriginalOwner",
                           "TestDailyEnvelopeIndependentReference",
                           "TestDailyCapacityProofFrames",
                           "TestRecoveryIndependentTwoAxisReference",
@@ -352,7 +417,8 @@ def main():
                           "TestRoundLiveOriginalCloseJoins",
                           "TestRoundLiveReadOnlyRefusal",
                           "TestRoundLiveFullSyncFailureIsAtomic",
-                          "TestRoundLiveIndependentModeledPages"])
+                          "TestRoundLiveIndependentModeledPages",
+                          "TestRoundSourceExactBusyClassification"])
             gate.test(mode + "-daily-source-fences", root, ["./registry", "./poolservice"],
                       desktop / "go.work", race,
                       run="^(TestManifestTryJob|TestPoolServiceDoesNotAdoptDailySource)", required=[
@@ -373,6 +439,23 @@ def main():
             gate.test(mode + "-daily-ledger-schedule", root, ["./poolsettle", "./poolschedule"],
                       desktop / "go.work", race, required=[
                           "TestSettlementReplayV1Parity",
+                          "TestDailyPayoutIndependentReference",
+                          "TestDailyPayoutPageOriginalOwnerCaptureAndRestart",
+                          "TestDailyPayoutPageFinalSessionFence",
+                          "TestDailyPayoutPageOriginalSparseSlotTraversal",
+                          "TestDailyCompletedRefreshGuardsBeforeEffects",
+                          "TestDailyCompletedRefreshRefusesOriginalV1",
+                          "TestDailyCompletedRefreshProfileAndMissingOwner",
+                          "TestDailyScheduleCompletedRefreshIndependentDecisions",
+                          "TestDailyScheduleCompletedRefreshExpiryRetry",
+                          "TestDailyScheduleCompletedRefreshImportsOnceAcrossReopen",
+                          "TestScheduleRetryIndependentErrorTrees",
+                          "TestDailyScheduleOriginalRoundBusyRecoversWithoutNewPayment",
+                          "TestDailyScheduleEmptyCursorContentionImportsOnce",
+                          "TestDailyAdmissionContentionErrorTrees",
+                          "TestDailyAdmissionContentionBudgetDoesNotRenew",
+                          "TestDailyAdmissionOriginalLedgerWaitCancellationAndClose",
+                          "TestDailyAdmissionPostSignRoundContentionUsesOriginalAttempt",
                           "TestDailyLedgerIndependentCodecReplay",
                           "TestDailyLedgerForgedInverseIndicesAndCancellation",
                           "TestDailyLedgerStagedImportAtomic",
@@ -400,7 +483,13 @@ def main():
                       "TestDailyRoundProfileRefusal", "TestDailyNodeCheapProfile",
                       "TestDailyLedgerCheapRefusalBeforeEffects", "TestDailySigningCheapRefusal",
                       "TestDailyScheduleCheapAndCanceledBeforeEffects",
-                      "TestManifestTryJobCheapRefusesBeforeOwner", "TestRoundLiveCheapProfileRefusal"]
+                      "TestManifestTryJobCheapRefusesBeforeOwner", "TestRoundLiveCheapProfileRefusal",
+                      "TestDailyPublicBindingCheapRefusal",
+                      "TestDailyCompletedRefreshProfileAndMissingOwner",
+                      "TestRoundSourceExactBusyClassification",
+                      "TestScheduleRetryIndependentErrorTrees",
+                      "TestDailyAdmissionContentionErrorTrees",
+                      "TestDailyAdmissionContentionBudgetDoesNotRenew"]
         gate.test("cheap-daily-core", root,
                   ["./poolshare", "./poolround", "./poolsettlenode", "./poolsettle",
                    "./poolschedule", "./registry"], desktop / "go.work",
@@ -408,13 +497,45 @@ def main():
         cheap_wallet = ["TestDailyPoolSettlementCheapRefusal", "TestDailyPoolWalletCheapRefusal"]
         gate.test("cheap-daily-wallet", wallet, ["./waddrmgr", "./wallet"], wallet / "go.work",
                   run="^(" + "|".join(cheap_wallet) + ")$", required=cheap_wallet, tags="slugtestpow")
+        cheap_public = ["TestDailyMinerRefusalBeforeEffects", "TestDailyTransportCheapRefuses",
+                        "TestPoolCheapProfileRefusesBeforeState"]
+        gate.test("cheap-daily-public", root, ["./poolminer", "./poolservice", "./prospectworker"],
+                  desktop / "go.work", run="^(" + "|".join(cheap_public) + ")$",
+                  required=cheap_public, tags="slugtestpow")
+        gate.test("cheap-daily-desktop", desktop, ["./pilot"], desktop / "go.work",
+                  run="^TestDailyRemoteSelectionBeforeOriginalOwnerEffects$",
+                  required=["TestDailyRemoteSelectionBeforeOriginalOwnerEffects"], tags="slugtestpow")
+        intake_controls = ["TestOperatorIntakeSourceBusyErrorTrees",
+                           "TestOperatorIntakeMutexCancellationJoinsHolder"]
+        gate.test("cheap-intake-controls", desktop, ["./pooloperator"], desktop / "go.work",
+                  run="^(" + "|".join(intake_controls) + ")$",
+                  required=intake_controls, tags="slugtestpow")
+        cancellation_controls = [
+            "TestDailyCaptureOriginalCancellationAndLegacyParity",
+            "TestDailyCapturePreservesObservedIndependentFailures",
+            "TestDailyCaptureSuccessfulLeaseRetainsOriginalCommitFences",
+            "TestDailyRemoteCancellationCauseAndLegacyParity",
+            "TestDailyRemoteStartRetainsObservedCloseFailure",
+            "TestDailyHeadlessParentCancellationInterruptsOriginalPipe",
+            "TestDailyHeadlessOutputFailureSurvivesParentCancellation",
+            "TestDailyHeadlessCancellationPreservesOtherCauses",
+            "TestDailyHeadlessFixedStatusAtomicFrame",
+            "TestDailyHeadlessOriginalFileOwnersJoinBeforeCancellationSuccess",
+            "TestDailyHeadlessObservedIntegrityIsNotCancellation",
+            "TestDailyHeadlessFlagsAndCancellationBeforeEffects",
+            "TestDailyHeadlessOutputCancellationJoins"]
+        gate.test("cheap-cancellation-controls", desktop,
+                  ["../internal/mininglease", "./pilot", "./cmd/slugpilot"], desktop / "go.work",
+                  run="^(" + "|".join(cancellation_controls) + ")$",
+                  required=cancellation_controls, tags="slugtestpow")
         for label, cwd, packages, workspace in (
             ("authority", root, ["./internal/operatorauthority"], desktop / "go.work"),
             ("wallet", wallet, ["./waddrmgr", "./wallet"], wallet / "go.work"),
-            ("operator", desktop, ["./pooloperator"], desktop / "go.work"),
+            ("operator", desktop, ["./pooloperator", "./pilot", "./accountpilot", "./cmd/slugpilot"], desktop / "go.work"),
             ("daily-components", root,
-             ["./internal/poolcapacity", "./poolshare", "./poolround", "./pooltxshape", "./poolsettlenode",
-              "./poolsettle", "./poolschedule", "./registry", "./poolservice"], desktop / "go.work")):
+             ["./internal/mininglease", "./internal/poolcapacity", "./poolshare", "./poolround", "./pooltxshape", "./poolsettlenode",
+              "./poolsettle", "./poolschedule", "./registry", "./poolservice", "./poolminer",
+              "./poolingress", "./prospectworker"], desktop / "go.work")):
             gate.run("vet-" + label, ["go", "vet", "-p=1", "-tags=", "-gcflags=" + PROFILE["gcflags"]] + packages,
                      cwd, 300, {"GOWORK": str(workspace)})
     except BaseException as e:
@@ -458,7 +579,7 @@ def main():
                             and all(c["passed"] for c in gate.commands))
         write_json(artifacts / "report.json", report)
         summary = ("Operator Linux qualification: " + ("PASS" if report["passed"] else "FAIL") + "\n\n"
-                   + "Focused authority, wallet16, operator and daily component checks only; provisioning, deployed-host and actual 924-block daily acceptance are excluded.\n"
+                   + "Focused authority, wallet16, fixture provisioning, daily public transport/worker/desktop and accounting checks; deployed-host and long actual acceptance are excluded.\n"
                    + "Source unchanged: " + str(report["source_unchanged"]) + "; clean join: " + str(report["clean_join"]) + "\n")
         if report["errors"]:
             summary += "Errors: " + "; ".join(report["errors"]) + "\n"

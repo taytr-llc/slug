@@ -1,0 +1,155 @@
+--- before/main.go
++++ after/main.go
+@@ -243,7 +243,9 @@
+ 	check(controller.Logout(ctx, next), "reopened original Logout")
+ 	check(controller.Close(), "reopened original controller joined")
+ 	controller = nil
+-	require(reflect.DeepEqual(ev.Rows, readRows(in.AttachmentRoot, c)), "stopped reopen preserves exact public rows")
++	finalRows, finalOutbox := readOutbox(in.AttachmentRoot, c)
++	require(reflect.DeepEqual(ev.Rows, finalRows) && ev.Outbox == finalOutbox, "stopped reopen preserves exact rows, metadata, scan/cursor and issuance hold")
++	write(filepath.Join(root, "outbox-after.json"), finalOutbox)
+ 	phase = "joined original financial audit"
+ 	check(running.stop(), "operator joined before public audit")
+ 	closed := auditOperator(ctx, root, s)
+--- before/work_evidence.go
++++ after/work_evidence.go
+@@ -2,13 +2,17 @@
+ 
+ import (
+ 	"context"
++	"encoding/json"
+ 	"errors"
+ 	"fmt"
++	"github.com/syndtr/goleveldb/leveldb"
++	"github.com/syndtr/goleveldb/leveldb/opt"
+ 	"github.com/taytr-llc/slug/desktop/accountpilot"
+ 	"github.com/taytr-llc/slug/desktop/pilot"
+ 	"github.com/taytr-llc/slug/gymauth"
+ 	"github.com/taytr-llc/slug/poolservice"
+ 	"github.com/taytr-llc/slug/poolshare"
++	"github.com/taytr-llc/slug/prospectwork"
+ 	"github.com/taytr-llc/slug/prospectworker"
+ 	"path/filepath"
+ 	"reflect"
+@@ -49,14 +53,64 @@
+ 	require(s.View.GymPublicKey == f.ExpectedLocal.Recipient.Config.Identity.GymPublicKey && s.View.AccountID == f.ExpectedLocal.Recipient.Config.AccountID && s.Remote.SourceBindingID == in.Config.Miners.SourceID && s.Remote.OriginalSourceBindingID == f.ExpectedLocal.OriginalSourceBindingID && s.Remote.PayoutAddress == f.ExpectedLocal.Recipient.Recipient.Address, "original wallet and independently selected remote")
+ 	return s.View.ViewID
+ }
+-func readRows(root string, c pilot.RemotePoolConfig) []prospectworker.PoolEntry {
++
++type outboxState struct {
++	MetaSHA256   string `json:"meta_sha256"`
++	MetaBytes    int    `json:"meta_bytes"`
++	ScanSHA256   string `json:"scan_sha256"`
++	CursorSHA256 string `json:"cursor_sha256"`
++	IssuePending bool   `json:"issue_pending"`
++}
++
++func readOutbox(root string, c pilot.RemotePoolConfig) ([]prospectworker.PoolEntry, outboxState) {
+ 	b, e := prospectworker.OpenDailyPoolOutboxAudit(filepath.Join(root, "outbox"), workerConfig(c))
+ 	check(e, "closed actual daily outbox audit")
+ 	rows, re := b.List(0, 100)
+ 	ce := b.Close()
+ 	check(errors.Join(re, ce), "outbox audit join")
+ 	require(len(rows) > 0 && len(rows) <= 64, "bounded retained rows")
+-	return rows
++	// The concrete read-only full audit above verifies all entries, indexes,
++	// configuration and metadata before these three exact public projections.
++	db, e := leveldb.OpenFile(filepath.Join(root, "outbox", "db"), &opt.Options{ReadOnly: true, ErrorIfMissing: true, Strict: opt.StrictAll})
++	check(e, "readonly outbox control projection")
++	closed := false
++	defer func() {
++		if !closed {
++			check(db.Close(), "partial outbox projection close")
++		}
++	}()
++	raw, e := db.Get([]byte("meta"), nil)
++	check(e, "audited original outbox meta")
++	require(len(raw) > 0 && len(raw) <= 65536, "outbox meta bound")
++	var m struct {
++		IssuePending *bool                     `json:"issue_pending"`
++		Config       prospectworker.PoolConfig `json:"config"`
++	}
++	check(json.Unmarshal(raw, &m), "audited hold projection")
++	require(m.IssuePending != nil && m.Config == workerConfig(c), "same daily hold/config")
++	v := outboxState{MetaSHA256: hx(digest(raw)), MetaBytes: len(raw), IssuePending: *m.IssuePending}
++	for _, key := range []string{"scan", "cursor"} {
++		raw, e = db.Get([]byte(key), nil)
++		if errors.Is(e, leveldb.ErrNotFound) {
++			continue
++		}
++		check(e, "audited scan/cursor projection")
++		limit := prospectwork.MaxTemplateSize + (64 << 10)
++		if key == "cursor" {
++			limit = 8
++		}
++		require(len(raw) > 0 && len(raw) <= limit, "scan/cursor bound")
++		if key == "scan" {
++			v.ScanSHA256 = hx(digest(raw))
++		} else {
++			v.CursorSHA256 = hx(digest(raw))
++		}
++	}
++	e = db.Close()
++	closed = true
++	check(e, "outbox projection joined")
++	require((v.ScanSHA256 == "") == (v.CursorSHA256 == "") && (!v.IssuePending || v.ScanSHA256 == ""), "original hold and scan exclusive")
++	return rows, v
+ }
+ func pauseActual(ctx context.Context, d time.Duration) error {
+ 	t := time.NewTimer(d)
+@@ -92,6 +146,7 @@
+ }
+ 
+ type rowEvidence struct {
++	Outbox           outboxState                `json:"outbox"`
+ 	Rows             []prospectworker.PoolEntry `json:"rows"`
+ 	Accepted         []poolshare.Submission     `json:"accepted"`
+ 	Authorizations   int                        `json:"authorizations"`
+@@ -101,7 +156,8 @@
+ }
+ 
+ func auditRows(ctx context.Context, root string, c pilot.RemotePoolConfig, client *poolservice.Client, n *node) rowEvidence {
+-	out := rowEvidence{Rows: readRows(root, c), Accepted: []poolshare.Submission{}, LookupMissing: []uint64{}}
++	rows, state := readOutbox(root, c)
++	out := rowEvidence{Rows: rows, Outbox: state, Accepted: []poolshare.Submission{}, LookupMissing: []uint64{}}
+ 	for i, r := range out.Rows {
+ 		require(r.Sequence == uint64(i+1), "contiguous original outbox")
+ 		require(r.Fighter != nil, "original all-ones prospect result")
+--- before/run.py
++++ after/run.py
+@@ -339,7 +339,7 @@
+          x.get('log_close_error') is False and x.get('stop_rpc_error') is False for x in nodes),
+          'original node cleanup')
+     evidence={}
+-    for name in (*PHASES,'selected-public-setup.json','actual-report.json'):
++    for name in (*PHASES,'outbox-after.json','selected-public-setup.json','actual-report.json'):
+         p=owned/name;read_json(p,4<<20);evidence[str(p)]=support.identity(p)
+     ref=read_json(SETUP_REFERENCE,262144)
+     expected=next(x for x in ref['economics'] if x['accepted_rewards']==n)
+@@ -347,6 +347,8 @@
+     stopped=read_json(owned/'03-work-stopped.json',1<<20)
+     reopened=read_json(owned/'05-stopped-reopen.json',1<<20)
+     done=read_json(owned/'09-complete.json',4<<20)
++    outbox=read_json(owned/'outbox-after.json',65536)
++    need(rows['outbox']==outbox and type(outbox.get('issue_pending')) is bool, 'original hold/metadata/scan/cursor changed')
+     paid=read_json(owned/'07-payment-and-wallet.json',4<<20)
+     audit=read_json(owned/'08-final-public-audit.json',4<<20)
+     need(len(rows['accepted'])==n and rows['authorizations']>0 and
+--- before/PLAN.md
++++ after/PLAN.md
+@@ -34,7 +34,7 @@
+ 1. Start exactly the two normal node processes on the copied chains, isolated to each other with DNS discovery disabled. Require the original matching nonzero tip, normal genesis/network, original bits `207fffff`, and initial height 2. Require the full scenario remains below the first 2,016-block retarget. No background mining runs. Create the fresh daily operator/schema16 wallet, rotate two distinct audience credentials for incrementing256, then Run the original runtime. Wait within existing bounds for enabled intake and public readiness before admitting worker startup.
+ 2. Open the daily controller against the copied original root and exact original name-v1 options. Cancel the Open admission context after success, require signed-out/stopped. Login incrementing256 through the actual signed account/vault path, cancel that admission context and require a surviving original view, exact local wallet/recipient IDs, independently selected remote source ID and stopped zero-attempt child. Read the local wallet balance/height baseline through its real snapshot. Explicitly Start once using that original view.
+ 3. Allow at most 240 seconds for actual worker discovery and delivery. Do not issue work or select nonces on its behalf. Poll only real snapshots/runtime status and the actual node. Request Stop once the node has advanced and the original snapshot shows retained records with Pending=0 plus a nonzero runtime submission count; these are a stop cue, not receipt proof. If the worker reaches derived full intake 2 first, use that exact draining/count cue and Stop even with pending admissions. No competing mining runs in this interval. Stop using the original view and join; require zero rate, with stopped or saved failed state accepted only when the exact closed evidence below passes. Record every nonempty error/code; no generic failure is silently treated as completion. Integrity, authentication, changed-source, cleanup and unexpected terminal errors fail the case. Exact busy/rate/unknown/capacity delivery states remain conditional pending evidence, not successful effects. Logout, reject the old view and Close.
+-4. Only after that Close, use `OpenDailyPoolOutboxAudit` and bounded List, plus the actual authenticated TLS Work/Lookup endpoints for each exact retained work/nonce. Require one or two distinct nonzero accepted pool receipts, contiguous accepted sequences and matching canonical node block hashes. A second outcome that raced Stop is included in all subsequent accounting. Every other row must be identified as prospect-only or an exact preserved interrupted/uncertain delivery; no uncredited row is counted as earnings. Check all immutable jobs/nonces/proofs/authorizations and every successful receipt. Require at least one actual private-vault signature under the original gym; verify every retained authorization and exact issuer receipt for every claimed accepted fighter. An additional result synchronized by an already-started hash during Stop may remain needs-signature/pending; identify it as interrupted work and preserve it, without claiming signer or birth completion for that row. A capacity-held admission is explicitly pending, never a fabricated birth. Source/issuer full census is deferred to the final closed operator audit; no raw reader overlaps the runtime. If no accepted canonical pool receipt is proved, fail. No harness Submit or replacement Issue repairs the result.
++4. Only after that Close, use `OpenDailyPoolOutboxAudit` and bounded List, revalidate each saved authenticated Issue work/template, and use the actual TLS Lookup endpoint for every retained pool-winning job/nonce. Require one or two distinct nonzero accepted pool receipts, contiguous accepted sequences and matching canonical node block hashes. A second outcome that raced Stop is included in all subsequent accounting. Every other row must be identified as prospect-only or an exact preserved interrupted/uncertain delivery; no uncredited row is counted as earnings. Check all immutable jobs/nonces/proofs/authorizations and every successful receipt. Require at least one actual private-vault signature under the original gym; verify every retained authorization and exact issuer receipt for every claimed accepted fighter. An additional result synchronized by an already-started hash during Stop may remain needs-signature/pending; identify it as interrupted work and preserve it, without claiming signer or birth completion for that row. A capacity-held admission is explicitly pending, never a fabricated birth. Source/issuer full census is deferred to the final closed operator audit; no raw reader overlaps the runtime. If no accepted canonical pool receipt is proved, fail. No harness Submit or replacement Issue repairs the result.
+ 5. Reopen the same controller/local wallet/remote root/config. Require a new original view, old-view refusal and stopped state with exactly the saved immutable rows and pending count; no automatic or explicit Start on this reopen. Preserve any existing issuance hold. Retain this stopped attachment for observing the original wallet. This proves exact stopped reopen, not fresh recovery of a pending admission. Any retries already performed by the original first Run are evidenced from their actual rows; never claim an unobserved expiry or receipt after Stop.
+ 6. With worker stopped, mine only normal uncredited helper blocks to the separate fixture address until every accepted pool coinbase has 100 descendants. Require no other pool-source earnings. A second canonical block published but not accepted before Stop is separately preserved as unresolved/uncredited; it cannot become a payout input. Helper blocks never mine/submit a retained pool job. Reach maturity before the immutable due minute; use the runtime's original round maintenance and final dated full audit to establish locks. At the real due, let only the retained runtime scheduler prepare/sign/broadcast one payout. Record the actual first raw/txid without injecting loss or altering RPC responses. Match the independently frozen one- or two-reward branch: exact accepted coinbase inputs, original incrementing256 payee, operator change and fee. Mine one further uncredited block including that transaction and wait for ordinary scheduler recovery to mark the same batch confirmed.
+ 
+@@ -51,4 +51,4 @@
+ 
+ Current `pooloperator/capacity_drain.go:updateIntake` drains both ordinary pool and new admission intake when row2 fills the pool. `prospectworker/pool_delivery.go:deliver` submits the pool result before signing/submitting its fighter; `prospectservice/manifest_fenced_server.go:admitFenced` permits historical receipts during drain but refuses a new first receipt with `capacity`. The worker correctly retains this signed admission as pending. A first admission can therefore be held even for the winning row that filled the pool, and old signed-but-not-yet-admitted rows can remain held too. Requiring Pending=0 or every fighter accepted would be a timing-dependent harness assumption. This plan can prove original signatures, exact pending preservation and the scheduled payment without claiming every fighter birth. If full fighter completion at the boundary is required, root must first select a narrow product contract for retained issued-work admission/headroom; do not change financial capacity, reorder product delivery or weaken admission guards in the harness. There is no automatic new-job or hold-reset workaround.
+ 
+-No missing product accessor is required for this plan: the concrete controller snapshot, closed outbox audit, current daily HTTP reads and full closed ledger audits suffice. The independent block-target/config/economic fixture and source-bound harness are not yet authored or qualified. Direct controller composition does not by itself qualify the new headless `slugpilot --daily` argv/process path; that can be checked separately without inventing a daily helper protocol. Only incrementing256 is exercised; honoring zero256's hold is intentional. This case proves one original-wallet automatic mining/payment cycle, not public hosting, continuous 64-miner load, all retained capacity, V2 fighter ownership/history adoption, transfers/recovery, general login/onboarding or D74 release readiness. Path B retains the independent ordinary-target/late-winner/reserved-payout obligations.
++No missing product accessor is required for this plan: the concrete controller snapshot, closed outbox audit, current daily HTTP reads and full closed ledger audits suffice. The independent block-target/config/economic fixture is now qualified (a48a854d); the source-bound harness remains unexecuted pending review and root authorization. Direct controller composition does not by itself qualify the new headless `slugpilot --daily` argv/process path; that can be checked separately without inventing a daily helper protocol. Only incrementing256 is exercised; honoring zero256's hold is intentional. This case proves one original-wallet automatic mining/payment cycle, not public hosting, continuous 64-miner load, all retained capacity, V2 fighter ownership/history adoption, transfers/recovery, general login/onboarding or D74 release readiness. Path B retains the independent ordinary-target/late-winner/reserved-payout obligations.

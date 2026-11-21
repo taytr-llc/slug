@@ -1,0 +1,224 @@
+{
+  "actual_captured_selections": [
+    {
+      "actual": "public-actual-attempt5",
+      "captured_normal_dependency_log": {
+        "artifact_path": "artifacts/set79/public-actual-attempt5/probe-deps.log",
+        "bytes": 1152751,
+        "sha256": "db8d093a01b1cc7ca5ce673242d1a179bd9ba44a044d0391acb8a65aed23c4da"
+      },
+      "package_projection": {
+        "CgoFiles": null,
+        "Dir": "/Users/taytrrip/slug/slug/poolschedule",
+        "ForTest": null,
+        "GoFiles": [
+          "codec.go",
+          "completed_refresh.go",
+          "daily.go",
+          "files_unix.go",
+          "run.go",
+          "store.go",
+          "timing.go",
+          "types.go"
+        ],
+        "ImportPath": "github.com/taytr-llc/slug/poolschedule",
+        "TestGoFiles": [
+          "codec_test.go",
+          "completed_refresh_integration_test.go",
+          "completed_refresh_test.go",
+          "daily_admission_contention_integration_test.go",
+          "daily_codec_test.go",
+          "daily_fixture_test.go",
+          "daily_schedule_test.go",
+          "fixture_test.go",
+          "retry_tree_test.go",
+          "round_busy_integration_test.go",
+          "schedule_test.go",
+          "transaction_capacity_test.go"
+        ],
+        "XTestGoFiles": null
+      },
+      "portable_log": "docs/evidence/set79/actual-test-only-source-successor/path-b-probe-deps.log",
+      "recorded_full_source_inventory_still_binds_predecessor": {
+        "bytes": 6815,
+        "sha256": "285f41c46c1ea0f7c05ae01dad0875e6050cca9bff3be9a45f3c88821a87c4fb"
+      },
+      "source_inventory": {
+        "artifact_path": "artifacts/set79/public-actual-attempt5/source-before.json",
+        "bytes": 451859,
+        "sha256": "77609803a5ea98f1326754567d5f3b339658ded0c64229fd36ab32f6b6e7a150"
+      }
+    },
+    {
+      "actual": "public-daily-attachment-actual-attempt2",
+      "captured_normal_dependency_log": {
+        "artifact_path": "artifacts/set79/public-daily-attachment-actual-attempt2/probe-dependencies.json",
+        "bytes": 1369643,
+        "sha256": "0e8f9c6d83412c6f5d27ab803c6f7c9d24aadf12c66c7ed3edb6123c2617e9a3"
+      },
+      "package_projection": {
+        "CgoFiles": null,
+        "Dir": "/Users/taytrrip/slug/slug/poolschedule",
+        "ForTest": null,
+        "GoFiles": [
+          "codec.go",
+          "completed_refresh.go",
+          "daily.go",
+          "files_unix.go",
+          "run.go",
+          "store.go",
+          "timing.go",
+          "types.go"
+        ],
+        "ImportPath": "github.com/taytr-llc/slug/poolschedule",
+        "TestGoFiles": [
+          "codec_test.go",
+          "completed_refresh_integration_test.go",
+          "completed_refresh_test.go",
+          "daily_admission_contention_integration_test.go",
+          "daily_codec_test.go",
+          "daily_fixture_test.go",
+          "daily_schedule_test.go",
+          "fixture_test.go",
+          "retry_tree_test.go",
+          "round_busy_integration_test.go",
+          "schedule_test.go",
+          "transaction_capacity_test.go"
+        ],
+        "XTestGoFiles": null
+      },
+      "portable_log": "docs/evidence/set79/actual-test-only-source-successor/path-a-probe-dependencies.json",
+      "recorded_full_source_inventory_still_binds_predecessor": {
+        "bytes": 6815,
+        "sha256": "285f41c46c1ea0f7c05ae01dad0875e6050cca9bff3be9a45f3c88821a87c4fb"
+      },
+      "source_inventory": {
+        "artifact_path": "artifacts/set79/public-daily-attachment-actual-attempt2/source-before.json",
+        "bytes": 548801,
+        "sha256": "07208da681ae8dd97692c5eb505eb80a7626d9938a815f52c817522ec0b88b49"
+      }
+    },
+    {
+      "actual": "public-daily-headless-actual-attempt1",
+      "captured_normal_dependency_log": {
+        "artifact_path": "artifacts/set79/public-daily-headless-actual-attempt1/probe-dependencies.json",
+        "bytes": 1369712,
+        "sha256": "5a6e6523280383ae58c9af6fe93fbf131fa23811336f0d6743c2a3b95ad5b538"
+      },
+      "package_projection": {
+        "CgoFiles": null,
+        "Dir": "/Users/taytrrip/slug/slug/poolschedule",
+        "ForTest": null,
+        "GoFiles": [
+          "codec.go",
+          "completed_refresh.go",
+          "daily.go",
+          "files_unix.go",
+          "run.go",
+          "store.go",
+          "timing.go",
+          "types.go"
+        ],
+        "ImportPath": "github.com/taytr-llc/slug/poolschedule",
+        "TestGoFiles": [
+          "codec_test.go",
+          "completed_refresh_integration_test.go",
+          "completed_refresh_test.go",
+          "daily_admission_contention_integration_test.go",
+          "daily_codec_test.go",
+          "daily_fixture_test.go",
+          "daily_schedule_test.go",
+          "fixture_test.go",
+          "retry_tree_test.go",
+          "round_busy_integration_test.go",
+          "schedule_test.go",
+          "transaction_capacity_test.go"
+        ],
+        "XTestGoFiles": null
+      },
+      "portable_log": "docs/evidence/set79/actual-test-only-source-successor/path-c-probe-dependencies.json",
+      "recorded_full_source_inventory_still_binds_predecessor": {
+        "bytes": 6815,
+        "sha256": "285f41c46c1ea0f7c05ae01dad0875e6050cca9bff3be9a45f3c88821a87c4fb"
+      },
+      "source_inventory": {
+        "artifact_path": "artifacts/set79/public-daily-headless-actual-attempt1/source-before.json",
+        "bytes": 554610,
+        "sha256": "f9da6e991562c058836d88032669e0a219266237cca6f5e461eefaa1744e6163"
+      }
+    }
+  ],
+  "after": {
+    "bytes": 6847,
+    "sha256": "7be0587fa3c9b7ee4ff8335844a37ac7e8bacf0803b64fb85e4f8c9a52ebe3bb"
+  },
+  "before": {
+    "bytes": 6815,
+    "sha256": "285f41c46c1ea0f7c05ae01dad0875e6050cca9bff3be9a45f3c88821a87c4fb"
+  },
+  "commit_binding": "containing commit / exact file hashes below",
+  "compiled_selection_claim": "Each captured normal go-list probe closure has ForTest empty, lists the changed file in TestGoFiles, and excludes it from GoFiles/CgoFiles. The actual binaries were normal go build outputs. The two added defer calls therefore change test cleanup, not their compiled production path.",
+  "delta_scope": "Only defer cancel() immediately after each of two original context.WithCancel calls; all existing explicit cancellation, joins and financial assertions retained.",
+  "final_static_successor_report": {
+    "artifact_path": "artifacts/set79/final-builds-attempt2/report.json",
+    "bytes": 29125,
+    "sha256": "2b78a83ddece856c3eea0e0b7afdacf6a4ff6794d36915013a1f0de98b7494d1"
+  },
+  "focused_successor_report": {
+    "artifact_path": "artifacts/set79/admission-test-cleanup-attempt1/report.json",
+    "bytes": 2348,
+    "sha256": "7bf8396c321cea46e416d65790b47a7733951bbc8813fe64960d3c82aa642a08"
+  },
+  "portable_files": [
+    {
+      "bytes": 6815,
+      "repository_path": "docs/evidence/set79/actual-test-only-source-successor/before.test.txt",
+      "sha256": "285f41c46c1ea0f7c05ae01dad0875e6050cca9bff3be9a45f3c88821a87c4fb"
+    },
+    {
+      "bytes": 6847,
+      "repository_path": "docs/evidence/set79/actual-test-only-source-successor/after.test.txt",
+      "sha256": "7be0587fa3c9b7ee4ff8335844a37ac7e8bacf0803b64fb85e4f8c9a52ebe3bb"
+    },
+    {
+      "bytes": 624,
+      "repository_path": "docs/evidence/set79/actual-test-only-source-successor/two-defers.patch",
+      "sha256": "7d89bf5e769a96254262d1733966527e155b37f1103ee39e5dad73192bbdfa87"
+    },
+    {
+      "bytes": 500,
+      "repository_path": "docs/evidence/set79/actual-test-only-source-successor/selection-manifest.json",
+      "sha256": "c48bdcdf5e432dfba8a788f15f29d52802b923adaf15bc02e0b31aa38d8fba67"
+    },
+    {
+      "bytes": 1152751,
+      "repository_path": "docs/evidence/set79/actual-test-only-source-successor/path-b-probe-deps.log",
+      "sha256": "db8d093a01b1cc7ca5ce673242d1a179bd9ba44a044d0391acb8a65aed23c4da"
+    },
+    {
+      "bytes": 1369643,
+      "repository_path": "docs/evidence/set79/actual-test-only-source-successor/path-a-probe-dependencies.json",
+      "sha256": "0e8f9c6d83412c6f5d27ab803c6f7c9d24aadf12c66c7ed3edb6123c2617e9a3"
+    },
+    {
+      "bytes": 1369712,
+      "repository_path": "docs/evidence/set79/actual-test-only-source-successor/path-c-probe-dependencies.json",
+      "sha256": "5a6e6523280383ae58c9af6fe93fbf131fa23811336f0d6743c2a3b95ad5b538"
+    }
+  ],
+  "production_change": false,
+  "qualification_limit": "No actual rerun is claimed. The historical actuals, explicit test-only delta, focused normal/race regression and final full-build/static pass are separate linked evidence.",
+  "root_final_recheck": {
+    "all_three_actual_catalogs_only_current_delta": "poolschedule/daily_admission_contention_integration_test.go",
+    "delta_after": "7be0587fa3c9b7ee4ff8335844a37ac7e8bacf0803b64fb85e4f8c9a52ebe3bb",
+    "delta_before": "285f41c46c1ea0f7c05ae01dad0875e6050cca9bff3be9a45f3c88821a87c4fb",
+    "note": "Root-reported final source recheck; no new actual or smoke execution.",
+    "observed_at_utc": "2026-11-21T10:35:00Z",
+    "reported_by": "root qualification lane",
+    "smoke_bound_files_rechecked_unchanged": 1780
+  },
+  "scope": "Exact two-defer test cleanup after completed actuals; normal compiled selection versus broader recorded source inventory",
+  "source_inventory_claim": "All three actual source-before/source-after catalogs include the old test hash. Those reports and their portable copies remain unchanged and do not claim the final full test inventory was exercised by the actuals.",
+  "target": "poolschedule/daily_admission_contention_integration_test.go",
+  "version": 1
+}

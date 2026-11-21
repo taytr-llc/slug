@@ -1,0 +1,277 @@
+{
+  "version": 1,
+  "scope": "hand-derived eligibility and Store pre-effect guards; not owner authority or executed evidence",
+  "defaults": {
+    "state_version": 2,
+    "config_version": 2,
+    "minute": 5,
+    "previous": "2026-11-21T00:00:00.000Z",
+    "cursor": "2026-11-21"
+  },
+  "predicate_cases": [
+    {
+      "name": "one_ms_before_due",
+      "now": "2026-11-21T00:04:59.999Z",
+      "refresh_due": false,
+      "new_payment_due": false
+    },
+    {
+      "name": "exact_due",
+      "now": "2026-11-21T00:05:00.000Z",
+      "refresh_due": true,
+      "new_payment_due": false
+    },
+    {
+      "name": "same_day_after_due",
+      "now": "2026-11-21T12:30:00.000Z",
+      "refresh_due": true,
+      "new_payment_due": false
+    },
+    {
+      "name": "same_day_last_ms",
+      "now": "2026-11-21T23:59:59.999Z",
+      "refresh_due": true,
+      "new_payment_due": false
+    },
+    {
+      "name": "cursor_empty",
+      "now": "2026-11-21T00:05:00.000Z",
+      "cursor": "",
+      "refresh_due": false,
+      "new_payment_due": true
+    },
+    {
+      "name": "cursor_previous_day",
+      "now": "2026-11-21T00:05:00.000Z",
+      "cursor": "2026-11-20",
+      "refresh_due": false,
+      "new_payment_due": true
+    },
+    {
+      "name": "cursor_future_day_conditional",
+      "now": "2026-11-21T00:05:00.000Z",
+      "cursor": "2026-11-22",
+      "refresh_due": false,
+      "new_payment_due": false
+    },
+    {
+      "name": "next_day_before_due",
+      "now": "2026-11-22T00:00:00.000Z",
+      "refresh_due": false,
+      "new_payment_due": false
+    },
+    {
+      "name": "next_day_due_new_payment_only",
+      "now": "2026-11-22T00:05:00.000Z",
+      "refresh_due": false,
+      "new_payment_due": true
+    },
+    {
+      "name": "midnight_configured_due",
+      "now": "2026-11-21T00:00:00.000Z",
+      "minute": 0,
+      "refresh_due": true,
+      "new_payment_due": false
+    },
+    {
+      "name": "last_minute_before_due",
+      "now": "2026-11-21T23:58:59.999Z",
+      "minute": 1439,
+      "refresh_due": false,
+      "new_payment_due": false
+    },
+    {
+      "name": "last_minute_exact_due",
+      "now": "2026-11-21T23:59:00.000Z",
+      "minute": 1439,
+      "refresh_due": true,
+      "new_payment_due": false
+    },
+    {
+      "name": "equal_original_clock",
+      "now": "2026-11-21T00:05:00.000Z",
+      "previous": "2026-11-21T00:05:00.000Z",
+      "refresh_due": true,
+      "new_payment_due": false
+    },
+    {
+      "name": "one_ms_clock_rollback",
+      "now": "2026-11-21T00:05:00.000Z",
+      "previous": "2026-11-21T00:05:00.001Z",
+      "refresh_due": false,
+      "new_payment_due": false
+    },
+    {
+      "name": "legacy_completed_unchanged",
+      "state_version": 1,
+      "config_version": 1,
+      "now": "2026-11-21T00:05:00.000Z",
+      "refresh_due": false,
+      "new_payment_due": false
+    },
+    {
+      "name": "legacy_unpaid_unchanged",
+      "state_version": 1,
+      "config_version": 1,
+      "cursor": "",
+      "now": "2026-11-21T00:05:00.000Z",
+      "refresh_due": false,
+      "new_payment_due": true
+    },
+    {
+      "name": "mixed_state_legacy_conditional",
+      "state_version": 1,
+      "now": "2026-11-21T00:05:00.000Z",
+      "refresh_due": false,
+      "new_payment_due": false
+    },
+    {
+      "name": "mixed_config_legacy_conditional",
+      "config_version": 1,
+      "now": "2026-11-21T00:05:00.000Z",
+      "refresh_due": false,
+      "new_payment_due": false
+    },
+    {
+      "name": "zero_time",
+      "now_ms": "0",
+      "previous_ms": "0",
+      "cursor": "1970-01-01",
+      "minute": 0,
+      "refresh_due": false,
+      "new_payment_due": false
+    },
+    {
+      "name": "negative_time",
+      "now_ms": "-1",
+      "previous_ms": "0",
+      "cursor": "1969-12-31",
+      "minute": 0,
+      "refresh_due": false,
+      "new_payment_due": false
+    },
+    {
+      "name": "max_time_eligibility_only",
+      "now_ms": "253402300799999",
+      "previous_ms": "253402300799999",
+      "cursor": "9999-12-31",
+      "minute": 1439,
+      "refresh_due": true,
+      "new_payment_due": false
+    },
+    {
+      "name": "over_max_time",
+      "now_ms": "253402300800000",
+      "previous_ms": "0",
+      "cursor": "10000-01-01",
+      "minute": 0,
+      "refresh_due": false,
+      "new_payment_due": false
+    }
+  ],
+  "store_guard_cases": [
+    {
+      "name": "same_completed_original_day",
+      "daily": true,
+      "writable": true,
+      "admitted_day": "2026-11-21",
+      "sampled_day": "2026-11-21",
+      "last_day": "2026-11-21",
+      "allow_accounting": true,
+      "may_sign": false,
+      "pending_batch": 0
+    },
+    {
+      "name": "rollover_after_dispatch",
+      "daily": true,
+      "writable": true,
+      "admitted_day": "2026-11-21",
+      "sampled_day": "2026-11-22",
+      "last_day": "2026-11-21",
+      "allow_accounting": false,
+      "may_sign": false,
+      "pending_batch": 0,
+      "error": "ErrDailyRefreshExpired",
+      "scheduler_error_code": "unavailable",
+      "scheduler_retryable": true
+    },
+    {
+      "name": "future_admitted_day",
+      "daily": true,
+      "writable": true,
+      "admitted_day": "2026-11-22",
+      "sampled_day": "2026-11-21",
+      "last_day": "2026-11-21",
+      "allow_accounting": false,
+      "may_sign": false,
+      "pending_batch": 0
+    },
+    {
+      "name": "no_original_completed_slot",
+      "daily": true,
+      "writable": true,
+      "admitted_day": "2026-11-21",
+      "sampled_day": "2026-11-21",
+      "last_day": "",
+      "allow_accounting": false,
+      "may_sign": false,
+      "pending_batch": 0
+    },
+    {
+      "name": "only_prior_day_completed",
+      "daily": true,
+      "writable": true,
+      "admitted_day": "2026-11-21",
+      "sampled_day": "2026-11-21",
+      "last_day": "2026-11-20",
+      "allow_accounting": false,
+      "may_sign": false,
+      "pending_batch": 0
+    },
+    {
+      "name": "v1_owner_refusal",
+      "daily": false,
+      "writable": true,
+      "admitted_day": "2026-11-21",
+      "sampled_day": "2026-11-21",
+      "last_day": "2026-11-21",
+      "allow_accounting": false,
+      "may_sign": false,
+      "pending_batch": 0
+    },
+    {
+      "name": "readonly_owner_refusal",
+      "daily": true,
+      "writable": false,
+      "admitted_day": "2026-11-21",
+      "sampled_day": "2026-11-21",
+      "last_day": "2026-11-21",
+      "allow_accounting": false,
+      "may_sign": false,
+      "pending_batch": 0
+    },
+    {
+      "name": "same_day_prepared_pending_not_completed",
+      "daily": true,
+      "writable": true,
+      "admitted_day": "2026-11-21",
+      "sampled_day": "2026-11-21",
+      "last_day": "2026-11-21",
+      "pending_batch": 1,
+      "allow_accounting": false,
+      "may_sign": false
+    }
+  ],
+  "integration_requirements": [
+    "Original recovery runs first; noncomplete or nonempty reason stops before accounting refresh.",
+    "Bind original Store and check exact binding before durable scheduler admission.",
+    "Carry durable Attempt.AdmittedDay to Store; never resample it as a new authorization.",
+    "Guard failure occurs before backend calls, credit import, signing, broadcast or commit.",
+    "Original audited PendingBatch must be zero; a same-day prepared/pending batch is not a completed refresh slot.",
+    "B59 remains one credit, B60 imports exactly one additional credit, repeat remains two.",
+    "Original b/1 bytes/raw/claims and one signed batch remain unchanged across repeat and restart.",
+    "Full same-day report may update outstanding balances and funding reasons; DailyCursor remains same day.",
+    "V1 dispatch and every original dailyDue boundary remain unchanged.",
+    "Expired expected day is a distinct no-effect ErrDailyRefreshExpired mapped to retryable unavailable; no fatal ordinary-midnight shutdown."
+  ]
+}

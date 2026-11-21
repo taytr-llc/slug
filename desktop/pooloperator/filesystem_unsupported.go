@@ -11,3 +11,7 @@ func (*operatorFiles) child(string) (string, bool, error)           { return "",
 func (*operatorFiles) adopt(string) error                           { return ErrUnsupported }
 func (*operatorFiles) markReady() error                             { return ErrUnsupported }
 func (*operatorFiles) close() error                                 { return nil }
+
+func openOperatorFilesVersion(string, Setup, bool, uint32) (*operatorFiles, error) {
+	return nil, ErrUnsupported
+}

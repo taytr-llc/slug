@@ -51,12 +51,13 @@ func (s *Store) DailySchedulerBinding(ctx context.Context) (Config, poolshare.Co
 	if s == nil || s.daily == nil || s.auditOnly {
 		return Config{}, poolshare.Config{}, ErrConfig
 	}
-	end, err := s.begin(ctx)
+	contention := &dailyContention{}
+	end, err := s.beginDailyContention(ctx, contention)
 	if err != nil {
 		return Config{}, poolshare.Config{}, err
 	}
 	defer end()
-	if err = s.verifyDaily(ctx); err != nil {
+	if _, err = s.auditDailyContention(ctx, contention); err != nil {
 		return Config{}, poolshare.Config{}, err
 	}
 	c := s.state.Config

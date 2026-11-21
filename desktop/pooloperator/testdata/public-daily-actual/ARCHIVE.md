@@ -1,0 +1,11 @@
+# Path B source archive
+
+This is a byte-identical source snapshot for original DAILY operator full-intake reservation, unseen expired canonical winner and unchanged pending payout. It is an archive for review and later reproduction, not an execution result or a public deployment claim. The original source manifests retain their historical status text. Current acceptance is recorded separately by the root qualifier.
+
+Original source directory: `/Users/taytrrip/slug/set79-prep/public-daily-actual`. Original runner: `/Users/taytrrip/slug/set79-prep/run-public-actual.py`. `ARCHIVE-MAP.json` maps every copied source identity to this repository location. The sources, recipes, public fixture catalogs and manifests were copied only from frozen allowlists. No runtime trees, generated credentials, wallet databases or private fixture files are included; a fixture catalog is only the public identity list, not the files it names.
+
+The original absolute paths, module replacements and execution-lock checks are intentionally unchanged. Moving these files into `testdata` does not make the runner portable. Reproduction requires the selected original workspace layout, separately qualified build profile/cache, explicit root-approved source lock, and the original privately retained synthetic fixture where required. Relocating a runner requires a separately reviewed source/lock successor. This archive grants no execution permission.
+
+The scenario remains bounded to 900 seconds, the outer actual process to 1080 seconds, and the isolated chain to 180 blocks. The copied runner retains its exact capture, source/profile/binary checks and joined cleanup rules.
+
+The runner and checker were originally sibling files under `set79-prep`; both are archived here unchanged. It still imports the existing `desktop/pooloperator/testdata/late-winner-actual/run.py` and support, uses the existing `testdata/public-daily/reference-v1.json` (`a5c65673…`) and `poolsettle/testdata/daily-admission-actual/reference-v1.json` (`1d2b1462…`), and requires the original profile helper. Those existing repository inputs are recorded as dependencies rather than duplicated. The new `balance-wait-evidence.json` is a future public runtime artifact, not part of this source archive; its bounded collection does not change the success predicates.

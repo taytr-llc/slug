@@ -161,7 +161,8 @@ func validHost(r *http.Request) bool {
 	}
 	return true
 }
-func requestAction(r *http.Request) string {
+func requestAction(r *http.Request) string { return requestActionSelected(r, pathPrefix) }
+func requestActionSelected(r *http.Request, prefix string) string {
 	if r.Method != http.MethodPost || r.URL.RawQuery != "" || r.URL.ForceQuery || r.URL.IsAbs() || r.URL.Host != "" || r.URL.RawPath != "" || len(r.Header.Values("Content-Encoding")) != 0 {
 		return ""
 	}
@@ -179,17 +180,17 @@ func requestAction(r *http.Request) string {
 		}
 	}
 	switch r.URL.Path {
-	case pathPrefix + "issue":
+	case prefix + "issue":
 		return "issue"
-	case pathPrefix + "work":
+	case prefix + "work":
 		return "work"
-	case pathPrefix + "submit":
+	case prefix + "submit":
 		return "submit"
-	case pathPrefix + "lookup":
+	case prefix + "lookup":
 		return "lookup"
-	case pathPrefix + "balance":
+	case prefix + "balance":
 		return "balance"
-	case pathPrefix + "payouts":
+	case prefix + "payouts":
 		return "payouts"
 	}
 	return ""
@@ -314,6 +315,10 @@ func operationFailure(err error, mutating bool) string {
 }
 
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	if s != nil && s.daily != nil {
+		s.serveDailyHTTP(w, r)
+		return
+	}
 	if s == nil || wire.TestPoW || !s.begin() {
 		writeFailure(w, "unavailable")
 		return

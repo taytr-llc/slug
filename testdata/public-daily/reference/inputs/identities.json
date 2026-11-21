@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "scope": "Public pool source and literal-loopback transport identities; no work or receipt authority",
+  "provenance": {
+    "input_path": "prospectwork/testdata/pool_share_reference/pool_share_v1.json",
+    "input_sha256": "2210d992e618b7a0952736dede1263b678f1a7a2d55d14ccde1cc6b29317de87",
+    "oracle": "Python standard-library hashlib, json and struct; no Go execution or harvested output",
+    "oracle_sha256": "b7b9c078d9f4d9a9b1db2647e480dcd5441c9378b7211889338b4122664accd8"
+  },
+  "client": {
+    "version": 1,
+    "url": "http://127.0.0.1:19056",
+    "token": "abababababababababababababababababababababababababababababababab",
+    "ca_certificate": "",
+    "public_key": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+    "source": {
+      "version": 1,
+      "authority_pin": {
+        "version": 5,
+        "network": 1397511495,
+        "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "authority_id": "404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f",
+        "descriptor_id": "c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303"
+      },
+      "policy": {
+        "version": 1,
+        "network": 1397511495,
+        "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "dna_version": 1,
+        "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "payout_address": "aQ4RFUbZbrBjSQcb7TnfLdYaERhaWwBNoD",
+      "pool_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "max_works": 8,
+      "max_submissions": 32,
+      "max_bytes": 1048576
+    }
+  },
+  "source_canonical": "{\"version\":1,\"authority_pin\":{\"version\":5,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"authority_id\":\"404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f\",\"descriptor_id\":\"c1a8650a39f695814db67fddf79815ef249a13a5c0cc5af0b906b061c4c3a303\"},\"policy\":{\"version\":1,\"network\":1397511495,\"genesis\":\"7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd\",\"dna_version\":1,\"prospect_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\"},\"payout_address\":\"aQ4RFUbZbrBjSQcb7TnfLdYaERhaWwBNoD\",\"pool_target\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"max_works\":8,\"max_submissions\":32,\"max_bytes\":1048576}",
+  "source_id": "adfbb76ca10a2892cfb9b635c651387cde3974771e402a474a7e5f92a8472d41",
+  "manifest_http_preimage_hex": "534c5547206d616e6966657374207472616e73706f72742074727573740076310016000000687474703a2f2f3132372e302e302e313a31393035360100000000",
+  "manifest_http_trust_id": "3625e29c15950a5d8ee71473c46b926c8467fb0e41f15140cc438c57cbbab3c4",
+  "pool_transport_preimage_hex": "534c554720706f6f6c207472616e73706f7274207472757374007631003336323565323963313539353061356438656537313437336334366239323663383436376662306534316631353134306363343338633537636262616233633461646662623736636131306132383932636662396236333563363531333837636465333937343737316534303261343734613765356639326138343732643431303237396265363637656639646362626163353561303632393563653837306230373032396266636462326463653238643935396632383135623136663831373938",
+  "pool_transport_trust_id": "d0f7d0e3d8eba7441615b15ceb82f1cfdf843059794c6def65b217ba5273d787"
+}

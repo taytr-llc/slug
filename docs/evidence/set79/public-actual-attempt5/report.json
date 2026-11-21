@@ -1,0 +1,628 @@
+{
+  "actual_started": true,
+  "artifacts": {
+    "node": {
+      "build_info": "/Users/taytrrip/slug/artifacts/set79/public-actual-attempt5/node-build-info.txt",
+      "build_info_sha256": "9c2022caa9b18e2e65b7ce130f949e89b78548278baceef28106931c6d124beb",
+      "compiler_setting_evidence": "embedded_build_info",
+      "go_version": "go1.27.4",
+      "path": "/Users/taytrrip/slug/artifacts/set79/public-actual-attempt5/bin/slugd",
+      "settings": {
+        "-buildmode": "exe",
+        "-compiler": "gc",
+        "-gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "-trimpath": "true",
+        "CGO_ENABLED": "0",
+        "GOARCH": "arm64",
+        "GOARM64": "v8.0",
+        "GOOS": "darwin",
+        "vcs": "git",
+        "vcs.modified": "true",
+        "vcs.revision": "1f086601647c00e33fad1dca9275aa63b18caa07",
+        "vcs.time": "2026-11-21T07:01:17Z"
+      },
+      "sha256": "74fc2da71f83c6b1952ea8ec4247ed551da08295f52d229eaadc62eb8a808140"
+    },
+    "operator": {
+      "build_info": "/Users/taytrrip/slug/artifacts/set79/public-actual-attempt5/operator-build-info.txt",
+      "build_info_sha256": "5a3f3e2ce2031cc571fd4ff512ba9b740b7a782c48d54be00ad1abbea58c1fc2",
+      "compiler_setting_evidence": "embedded_build_info",
+      "go_version": "go1.27.4",
+      "path": "/Users/taytrrip/slug/artifacts/set79/public-actual-attempt5/bin/slugpoold",
+      "settings": {
+        "-buildmode": "exe",
+        "-compiler": "gc",
+        "-gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "-trimpath": "true",
+        "CGO_ENABLED": "1",
+        "GOARCH": "arm64",
+        "GOARM64": "v8.0",
+        "GOOS": "darwin",
+        "vcs": "git",
+        "vcs.modified": "true",
+        "vcs.revision": "1f086601647c00e33fad1dca9275aa63b18caa07",
+        "vcs.time": "2026-11-21T07:01:17Z"
+      },
+      "sha256": "412e3ed0bd2bdc2b7ecca45b285df1ed6f81c6153e5c31135fcff758f220cb2e"
+    },
+    "probe": {
+      "build_info": "/Users/taytrrip/slug/artifacts/set79/public-actual-attempt5/probe-build-info.txt",
+      "build_info_sha256": "b14fb6c7ab53658487aa4ff8254b04c23c596d31fce6839d2a41a5058b89e71a",
+      "compiler_setting_evidence": "embedded_build_info",
+      "go_version": "go1.27.4",
+      "path": "/Users/taytrrip/slug/artifacts/set79/public-actual-attempt5/bin/public-daily-actual",
+      "settings": {
+        "-buildmode": "exe",
+        "-compiler": "gc",
+        "-gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "-trimpath": "true",
+        "CGO_ENABLED": "1",
+        "GOARCH": "arm64",
+        "GOARM64": "v8.0",
+        "GOOS": "darwin"
+      },
+      "sha256": "3af3af82c11257488809efb7355ed4bf1c52ba3940c806d66686c98980cc872e"
+    }
+  },
+  "balance_wait_diagnostics": {
+    "evidence": {
+      "/Users/taytrrip/slug/artifacts/set79/public-actual-attempt5/owned/balance-wait-evidence.json": {
+        "bytes": 9411,
+        "sha256": "b3886d294390eca88c1517a51a4b7599337d201e949a454fefdb07b08b2e1ddb"
+      },
+      "/Users/taytrrip/slug/artifacts/set79/public-actual-attempt5/owned/selected-public-setup.json": {
+        "bytes": 6164,
+        "sha256": "3e6c91186ea36f7febc6fdd068720a1eb70f6bc48964165cfe93f5e874bdf12d"
+      }
+    },
+    "waits": [
+      {
+        "after_ms": 0,
+        "budget_ms": 45000,
+        "check_reasons": false,
+        "context_deadline_ms": 1795256485268,
+        "elapsed_ms": 153,
+        "ended_at_ms": 1795255740244,
+        "last": [
+          {
+            "balance": {
+              "balance": {
+                "available": {
+                  "denominator": "1",
+                  "numerator": "0"
+                },
+                "confirmed": {
+                  "denominator": "1",
+                  "numerator": "990000000"
+                },
+                "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+                "paid_atoms": "0",
+                "reason": "broadcast-unknown",
+                "reserved_atoms": "990000000"
+              },
+              "binding_id": "fe47047cd33aa5ff5676e97c5e9d5388955c14211bedb0007e6dad6d9c3db93f",
+              "observed_at_ms": 1795255740091,
+              "recipient_script": "0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42",
+              "settlement_config_id": "0d01347c0ffb9105441083d2e508804c872a1ce51eb84bc4c570b1f0f2be0025",
+              "version": 2
+            },
+            "gym_index": 0,
+            "observed_at_ms": 1795255740175,
+            "sample": 1
+          },
+          {
+            "balance": {
+              "balance": {
+                "available": {
+                  "denominator": "1",
+                  "numerator": "0"
+                },
+                "confirmed": {
+                  "denominator": "1",
+                  "numerator": "0"
+                },
+                "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+                "paid_atoms": "0",
+                "reason": "",
+                "reserved_atoms": "0"
+              },
+              "binding_id": "fe47047cd33aa5ff5676e97c5e9d5388955c14211bedb0007e6dad6d9c3db93f",
+              "observed_at_ms": 1795255740091,
+              "recipient_script": "0014bce0055a0a6de98fd52bdeaa22217b2f4a45cfad",
+              "settlement_config_id": "0d01347c0ffb9105441083d2e508804c872a1ce51eb84bc4c570b1f0f2be0025",
+              "version": 2
+            },
+            "gym_index": 1,
+            "observed_at_ms": 1795255740244,
+            "sample": 2
+          }
+        ],
+        "name": "a_lost_reply",
+        "started_at_ms": 1795255740091,
+        "terminal": "success",
+        "total_samples": 2
+      },
+      {
+        "after_ms": 0,
+        "budget_ms": 90000,
+        "check_reasons": true,
+        "context_deadline_ms": 1795256485268,
+        "elapsed_ms": 189,
+        "ended_at_ms": 1795256109291,
+        "last": [
+          {
+            "balance": {
+              "balance": {
+                "available": {
+                  "denominator": "1",
+                  "numerator": "0"
+                },
+                "confirmed": {
+                  "denominator": "1",
+                  "numerator": "0"
+                },
+                "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+                "paid_atoms": "990000000",
+                "reason": "",
+                "reserved_atoms": "0"
+              },
+              "binding_id": "fe47047cd33aa5ff5676e97c5e9d5388955c14211bedb0007e6dad6d9c3db93f",
+              "observed_at_ms": 1795256108809,
+              "recipient_script": "0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42",
+              "settlement_config_id": "0d01347c0ffb9105441083d2e508804c872a1ce51eb84bc4c570b1f0f2be0025",
+              "version": 2
+            },
+            "gym_index": 0,
+            "observed_at_ms": 1795256109182,
+            "sample": 1
+          },
+          {
+            "balance": {
+              "balance": {
+                "available": {
+                  "denominator": "1",
+                  "numerator": "0"
+                },
+                "confirmed": {
+                  "denominator": "1",
+                  "numerator": "0"
+                },
+                "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+                "paid_atoms": "0",
+                "reason": "",
+                "reserved_atoms": "0"
+              },
+              "binding_id": "fe47047cd33aa5ff5676e97c5e9d5388955c14211bedb0007e6dad6d9c3db93f",
+              "observed_at_ms": 1795256108809,
+              "recipient_script": "0014bce0055a0a6de98fd52bdeaa22217b2f4a45cfad",
+              "settlement_config_id": "0d01347c0ffb9105441083d2e508804c872a1ce51eb84bc4c570b1f0f2be0025",
+              "version": 2
+            },
+            "gym_index": 1,
+            "observed_at_ms": 1795256109291,
+            "sample": 2
+          }
+        ],
+        "name": "a_recovered_before_b_credit",
+        "started_at_ms": 1795256109102,
+        "terminal": "success",
+        "total_samples": 2
+      },
+      {
+        "after_ms": 1795256155302,
+        "budget_ms": 45000,
+        "check_reasons": true,
+        "context_deadline_ms": 1795256485268,
+        "elapsed_ms": 157,
+        "ended_at_ms": 1795256220461,
+        "last": [
+          {
+            "balance": {
+              "balance": {
+                "available": {
+                  "denominator": "1",
+                  "numerator": "0"
+                },
+                "confirmed": {
+                  "denominator": "1",
+                  "numerator": "0"
+                },
+                "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+                "paid_atoms": "990000000",
+                "reason": "",
+                "reserved_atoms": "0"
+              },
+              "binding_id": "fe47047cd33aa5ff5676e97c5e9d5388955c14211bedb0007e6dad6d9c3db93f",
+              "observed_at_ms": 1795256199184,
+              "recipient_script": "0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42",
+              "settlement_config_id": "0d01347c0ffb9105441083d2e508804c872a1ce51eb84bc4c570b1f0f2be0025",
+              "version": 2
+            },
+            "gym_index": 0,
+            "observed_at_ms": 1795256220391,
+            "sample": 1
+          },
+          {
+            "balance": {
+              "balance": {
+                "available": {
+                  "denominator": "1",
+                  "numerator": "0"
+                },
+                "confirmed": {
+                  "denominator": "1",
+                  "numerator": "0"
+                },
+                "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+                "paid_atoms": "0",
+                "reason": "",
+                "reserved_atoms": "0"
+              },
+              "binding_id": "fe47047cd33aa5ff5676e97c5e9d5388955c14211bedb0007e6dad6d9c3db93f",
+              "observed_at_ms": 1795256199184,
+              "recipient_script": "0014bce0055a0a6de98fd52bdeaa22217b2f4a45cfad",
+              "settlement_config_id": "0d01347c0ffb9105441083d2e508804c872a1ce51eb84bc4c570b1f0f2be0025",
+              "version": 2
+            },
+            "gym_index": 1,
+            "observed_at_ms": 1795256220461,
+            "sample": 2
+          }
+        ],
+        "name": "b59_same_day",
+        "started_at_ms": 1795256220304,
+        "terminal": "success",
+        "total_samples": 2
+      },
+      {
+        "after_ms": 1795256221348,
+        "budget_ms": 150000,
+        "check_reasons": true,
+        "context_deadline_ms": 1795256485268,
+        "elapsed_ms": 309,
+        "ended_at_ms": 1795256223480,
+        "last": [
+          {
+            "failure": {
+              "code": "busy",
+              "outcome_unknown": false
+            },
+            "gym_index": 0,
+            "observed_at_ms": 1795256223225,
+            "sample": 1
+          },
+          {
+            "balance": {
+              "balance": {
+                "available": {
+                  "denominator": "1",
+                  "numerator": "0"
+                },
+                "confirmed": {
+                  "denominator": "200",
+                  "numerator": "99000013959"
+                },
+                "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+                "paid_atoms": "990000000",
+                "reason": "daily-batch-complete",
+                "reserved_atoms": "0"
+              },
+              "binding_id": "fe47047cd33aa5ff5676e97c5e9d5388955c14211bedb0007e6dad6d9c3db93f",
+              "observed_at_ms": 1795256223302,
+              "recipient_script": "0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42",
+              "settlement_config_id": "0d01347c0ffb9105441083d2e508804c872a1ce51eb84bc4c570b1f0f2be0025",
+              "version": 2
+            },
+            "gym_index": 0,
+            "observed_at_ms": 1795256223408,
+            "sample": 2
+          },
+          {
+            "balance": {
+              "balance": {
+                "available": {
+                  "denominator": "1",
+                  "numerator": "0"
+                },
+                "confirmed": {
+                  "denominator": "200",
+                  "numerator": "99000013959"
+                },
+                "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+                "paid_atoms": "0",
+                "reason": "daily-batch-complete",
+                "reserved_atoms": "0"
+              },
+              "binding_id": "fe47047cd33aa5ff5676e97c5e9d5388955c14211bedb0007e6dad6d9c3db93f",
+              "observed_at_ms": 1795256223302,
+              "recipient_script": "0014bce0055a0a6de98fd52bdeaa22217b2f4a45cfad",
+              "settlement_config_id": "0d01347c0ffb9105441083d2e508804c872a1ce51eb84bc4c570b1f0f2be0025",
+              "version": 2
+            },
+            "gym_index": 1,
+            "observed_at_ms": 1795256223480,
+            "sample": 3
+          }
+        ],
+        "name": "b60_same_day",
+        "started_at_ms": 1795256223171,
+        "terminal": "success",
+        "total_samples": 3
+      }
+    ]
+  },
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 69282,
+        "pid": 69282,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-json",
+        "."
+      ],
+      "exit_code": 0,
+      "label": "node-deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 69282,
+      "pid": 69282,
+      "seconds": 0.329,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 69290,
+        "pid": 69290,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-json",
+        "."
+      ],
+      "exit_code": 0,
+      "label": "operator-deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 69290,
+      "pid": 69290,
+      "seconds": 0.273,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 69298,
+        "pid": 69298,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-json",
+        "."
+      ],
+      "exit_code": 0,
+      "label": "probe-deps",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 69298,
+      "pid": 69298,
+      "seconds": 0.233,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 69304,
+        "pid": 69304,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-trimpath",
+        "-tags=",
+        "-o",
+        "/Users/taytrrip/slug/artifacts/set79/public-actual-attempt5/bin/slugd",
+        "."
+      ],
+      "exit_code": 0,
+      "label": "node-build",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 69304,
+      "pid": 69304,
+      "seconds": 1.397,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 69319,
+        "pid": 69319,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-trimpath",
+        "-tags=",
+        "-o",
+        "/Users/taytrrip/slug/artifacts/set79/public-actual-attempt5/bin/slugpoold",
+        "."
+      ],
+      "exit_code": 0,
+      "label": "operator-build",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 69319,
+      "pid": 69319,
+      "seconds": 7.822,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 69389,
+        "pid": 69389,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-trimpath",
+        "-tags=",
+        "-o",
+        "/Users/taytrrip/slug/artifacts/set79/public-actual-attempt5/bin/public-daily-actual",
+        "."
+      ],
+      "exit_code": 0,
+      "label": "probe-build",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 69389,
+      "pid": 69389,
+      "seconds": 2.21,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 69418,
+        "pid": 69418,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "/Users/taytrrip/slug/artifacts/set79/public-actual-attempt5/bin/public-daily-actual",
+        "--node",
+        "/Users/taytrrip/slug/artifacts/set79/public-actual-attempt5/bin/slugd",
+        "--operator-binary",
+        "/Users/taytrrip/slug/artifacts/set79/public-actual-attempt5/bin/slugpoold",
+        "--artifacts",
+        "/Users/taytrrip/slug/artifacts/set79/public-actual-attempt5/owned",
+        "--setup-reference",
+        "/Users/taytrrip/slug/slug/testdata/public-daily/reference-v1.json",
+        "--economics-reference",
+        "/Users/taytrrip/slug/slug/poolsettle/testdata/daily-admission-actual/reference-v1.json"
+      ],
+      "exit_code": 0,
+      "label": "actual",
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 69418,
+      "pid": 69418,
+      "seconds": 673.947,
+      "timed_out": false
+    }
+  ],
+  "copies_unchanged": true,
+  "fixture_timeout_seconds": 900,
+  "max_blocks": 180,
+  "outer_timeout_seconds": 1080,
+  "passed": true,
+  "profile_artifacts_unchanged": true,
+  "public_evidence": {
+    "/Users/taytrrip/slug/artifacts/set79/public-actual-attempt5/owned/01-runtime-listening.json": {
+      "bytes": 2461,
+      "sha256": "285d24b86736154bd01bea00900ddb8b3c0039aa809eb6517e9cca37aafa2dcb"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/public-actual-attempt5/owned/02-A-block.json": {
+      "bytes": 3803,
+      "sha256": "6977d39d7e0978017f0b5742c6e73820c53f9be0a7f50e9f1fc12004554f8e1d"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/public-actual-attempt5/owned/03-A-pending.json": {
+      "bytes": 18001,
+      "sha256": "18b4bef1ba753ba09636226040fc1accd173cebd58a69ae25689feafbe0aef79"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/public-actual-attempt5/owned/04-full-intake.json": {
+      "bytes": 26774,
+      "sha256": "b38121736df6295922901973b157f7ec8ffa5abf5639abac2131c84962d01cab"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/public-actual-attempt5/owned/05-expired-absent.json": {
+      "bytes": 16492,
+      "sha256": "007e2c6c322de51920ef5e28ec08a9c724075bc4c6d350b43473048189b8423a"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/public-actual-attempt5/owned/06-B-pending.json": {
+      "bytes": 31467,
+      "sha256": "bbf1a685237e65e7e99dcb203f670e64a7b76a71203771f07eacb3839cedcf12"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/public-actual-attempt5/owned/07-B59-restart.json": {
+      "bytes": 31731,
+      "sha256": "b444a9c55adb41a1f0f2fcd3c3f41a155b5ab22995d9a0143ce764725c08b17b"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/public-actual-attempt5/owned/08-B60-final.json": {
+      "bytes": 30700,
+      "sha256": "2ab78d7d1367e494fd6455db68869c3708124c56f96fc520fc2cffa0e9cd81bd"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/public-actual-attempt5/owned/actual-report.json": {
+      "bytes": 7270,
+      "sha256": "ace7fe3c424e32a6d6dde2783f55ea503669e0346b1d57de3cace054704ee94a"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/public-actual-attempt5/owned/balance-wait-evidence.json": {
+      "bytes": 9411,
+      "sha256": "b3886d294390eca88c1517a51a4b7599337d201e949a454fefdb07b08b2e1ddb"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/public-actual-attempt5/owned/selected-public-setup.json": {
+      "bytes": 6164,
+      "sha256": "3e6c91186ea36f7febc6fdd068720a1eb70f6bc48964165cfe93f5e874bdf12d"
+    }
+  },
+  "scope": "set79-public-daily-actual",
+  "sources_unchanged": true
+}

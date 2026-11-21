@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "scope": "harness-only original-owner startup readiness before unchanged Issue budget",
+  "execution_authorized": false,
+  "files": [
+    {
+      "path": "late_flow.go",
+      "before": {
+        "path": "pre-startup-readiness/late_flow.go",
+        "bytes": 24705,
+        "sha256": "8d3c943bed0566715e3cd4998e075aed60220d3ee4daa768e0ec0741fe8f70f5"
+      },
+      "after": {
+        "bytes": 24998,
+        "sha256": "2b6928470f975a5c35a6bc11176b2ccdbe16e9116ed7f09be0967636759031c2"
+      }
+    },
+    {
+      "path": "README.md",
+      "before": {
+        "path": "pre-startup-readiness/README.md",
+        "bytes": 4753,
+        "sha256": "03a634aa90defccd84d8bb17d4258beda026bbdf1391be5552d7a9dde8800903"
+      },
+      "after": {
+        "bytes": 5558,
+        "sha256": "ae37c2cf5897d0798f08ad44549418d1a6165b1d9c468abc4ed2e0832c576e24"
+      }
+    }
+  ],
+  "predecessor_manifest": {
+    "path": "pre-startup-readiness/source-manifest.json",
+    "bytes": 4069,
+    "sha256": "c89f2f38c852796dd6fd3323a6eae75e26f951b654bd8404302961505783a7fe"
+  },
+  "diff": {
+    "path": "startup-readiness.diff",
+    "bytes": 4587,
+    "sha256": "ec35a0b6a2aeff290bf11b6565e4d68e5656718025c1486847ebec302c676f6e"
+  },
+  "failed_public_report": {
+    "path": "/Users/taytrrip/slug/artifacts/set79/public-actual-attempt2/owned/actual-report.json",
+    "bytes": 6934,
+    "sha256": "523a1d31c9eb43b27c22bea76c3da368c0e7e106f445fb32a6eecc47ef127530"
+  },
+  "bounds": {
+    "read_only_startup_seconds": 90,
+    "issue_operation_seconds": 20,
+    "scenario_seconds": 900,
+    "outer_seconds": 1080
+  },
+  "evidence_limit": "Prior paused reason was not retained; exact production cause remains unobserved."
+}

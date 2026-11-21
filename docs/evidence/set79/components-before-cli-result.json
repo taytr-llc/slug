@@ -1,0 +1,1096 @@
+{
+  "artifact_path_base": "original workspace root; artifact_path values are relative and contain public reports/logs/metadata only",
+  "commit_binding": "containing commit; exact source inventories and report identities below",
+  "components": [
+    {
+      "all_command_groups_clean": true,
+      "commands": [
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "deps",
+          "seconds": 0.437
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "normal",
+          "seconds": 4.426
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "race",
+          "seconds": 9.033
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "cheap",
+          "seconds": 3.164
+        }
+      ],
+      "id": "core-attempt1",
+      "profile_binding": {
+        "artifact_path": "artifacts/set79/core-attempt1/profile.json",
+        "bytes": 962,
+        "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03"
+      },
+      "qualification_note": "Initial focused payout/source/binding checks; before the stronger sparse 18-batch case and before completed-day refresh.",
+      "report": {
+        "artifact_path": "artifacts/set79/core-attempt1/report.json",
+        "bytes": 3510,
+        "sha256": "42e9d0fe9de1094061ec82fdf7e61cba2ea93b0a2f9fcebfa927cd3e0fe146d8"
+      },
+      "reported_clean_join": true,
+      "reported_sources_unchanged": true,
+      "scope": "focused daily payout/source construction and unchanged scheduler binding",
+      "source_count": 2002,
+      "source_inventory": {
+        "artifact_path": "artifacts/set79/core-attempt1/sources.json",
+        "bytes": 362802,
+        "sha256": "6366d6652f5f4bc8f8215b971ab979cd258938bc141fd9c45a28320337d3bf5c"
+      },
+      "status": "PASS"
+    },
+    {
+      "all_command_groups_clean": true,
+      "commands": [
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "deps",
+          "seconds": 0.331
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "normal",
+          "seconds": 13.186
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "race",
+          "seconds": 73.344
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "cheap",
+          "seconds": 2.463
+        }
+      ],
+      "id": "core-attempt2",
+      "profile_binding": {
+        "artifact_path": "artifacts/set79/core-attempt2/profile.json",
+        "bytes": 962,
+        "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03"
+      },
+      "qualification_note": "Adds the original daily sparse 18-batch traversal; before completed-day refresh.",
+      "report": {
+        "artifact_path": "artifacts/set79/core-attempt2/report.json",
+        "bytes": 3512,
+        "sha256": "2486d18de69b20586c6f59555d5b1792e4b181d7affca260383dae2789977c89"
+      },
+      "reported_clean_join": true,
+      "reported_sources_unchanged": true,
+      "scope": "focused daily payout/source construction and unchanged scheduler binding",
+      "source_count": 2002,
+      "source_inventory": {
+        "artifact_path": "artifacts/set79/core-attempt2/sources.json",
+        "bytes": 362802,
+        "sha256": "0da9b31a723a953bcdd52ea786ca73c11d597e77c0d0ca800c510c0f19238005"
+      },
+      "status": "PASS"
+    },
+    {
+      "all_command_groups_clean": true,
+      "commands": [
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "deps",
+          "seconds": 0.256
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "normal",
+          "seconds": 7.533
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "race",
+          "seconds": 24.472
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "cheap",
+          "seconds": 3.574
+        }
+      ],
+      "id": "transport-attempt3",
+      "profile_binding": {
+        "artifact_path": "artifacts/set79/transport-attempt3/profile.json",
+        "bytes": 962,
+        "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03"
+      },
+      "qualification_note": "Full poolservice/poolingress/poolminer normal and race suites plus selected cheap gates; prior V1 regressions retained.",
+      "report": {
+        "artifact_path": "artifacts/set79/transport-attempt3/report.json",
+        "bytes": 3192,
+        "sha256": "ed300e8f9e615a7401d0dea19c0e227f62800bb638e86428d5056f9e9fca8f41"
+      },
+      "reported_clean_join": true,
+      "reported_sources_unchanged": true,
+      "scope": "daily transport ingress credentials and unchanged V1 regression",
+      "source_count": 1956,
+      "source_inventory": {
+        "artifact_path": "artifacts/set79/transport-attempt3/sources.json",
+        "bytes": 352622,
+        "sha256": "ee0f0f3e8287865830b80f0a87d8d165cbd46d60c37f71de78d8ca91e5de1d97"
+      },
+      "status": "PASS"
+    },
+    {
+      "all_command_groups_clean": true,
+      "commands": [
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "deps",
+          "seconds": 0.432
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "normal",
+          "seconds": 11.724
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "race",
+          "seconds": 21.189
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "cheap",
+          "seconds": 4.927
+        }
+      ],
+      "id": "worker-attempt3",
+      "profile_binding": {
+        "artifact_path": "artifacts/set79/worker-attempt3/profile.json",
+        "bytes": 962,
+        "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03"
+      },
+      "qualification_note": "Focused legacy and daily pool worker/outbox normal and race tests plus selected cheap refusal; no actual attached wallet/process claim.",
+      "report": {
+        "artifact_path": "artifacts/set79/worker-attempt3/report.json",
+        "bytes": 2990,
+        "sha256": "94662b2da9183d529346cbc25df382ae149f4ca098b8adcb503f873b312ce5ff"
+      },
+      "reported_clean_join": true,
+      "reported_sources_unchanged": true,
+      "scope": "daily and legacy durable pool worker and original outbox regression",
+      "source_count": 1906,
+      "source_inventory": {
+        "artifact_path": "artifacts/set79/worker-attempt3/sources.json",
+        "bytes": 344903,
+        "sha256": "82bdb083fe6e1110c0d247da40613e2fc59b548289a6a827e2f3fdd8cb6e9084"
+      },
+      "status": "PASS"
+    },
+    {
+      "all_command_groups_clean": true,
+      "commands": [
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "deps",
+          "seconds": 0.686
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "normal",
+          "seconds": 55.861
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "race",
+          "seconds": 386.167
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "cheap",
+          "seconds": 22.274
+        }
+      ],
+      "id": "desktop-attempt2",
+      "profile_binding": {
+        "artifact_path": "artifacts/set79/desktop-attempt2/profile.json",
+        "bytes": 962,
+        "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03"
+      },
+      "qualification_note": "Selected daily/remote/operator/provision normal and race tests plus cheap owner/selection refusals. Corrected only the named original public provisioning fixture; no full desktop or actual headless-process claim.",
+      "report": {
+        "artifact_path": "artifacts/set79/desktop-attempt2/report.json",
+        "bytes": 3436,
+        "sha256": "f7d543440e930ff8cc64a9bcdc30ca3f420e2eba52eb4a73dbb4a6caf5df63df"
+      },
+      "reported_clean_join": true,
+      "reported_sources_unchanged": true,
+      "scope": "daily original wallet desktop controller and operator integration regression",
+      "source_count": 3395,
+      "source_inventory": {
+        "artifact_path": "artifacts/set79/desktop-attempt2/sources.json",
+        "bytes": 610142,
+        "sha256": "4f14482bee7689a91041c956a2193352b68601c15301f08934fdd91e21875280"
+      },
+      "status": "PASS"
+    },
+    {
+      "all_command_groups_clean": true,
+      "commands": [
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "deps",
+          "seconds": 0.294
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "normal",
+          "seconds": 79.175
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "race",
+          "seconds": 276.489
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "cheap",
+          "seconds": 3.84
+        }
+      ],
+      "id": "accounting-attempt1",
+      "profile_binding": {
+        "artifact_path": "artifacts/set79/accounting-attempt1/profile.json",
+        "bytes": 962,
+        "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03"
+      },
+      "qualification_note": "Full poolshare/poolround/poolsettle/poolschedule normal and race suites plus selected cheap refusals. This run precedes the completed-day refresh change.",
+      "report": {
+        "artifact_path": "artifacts/set79/accounting-attempt1/report.json",
+        "bytes": 3388,
+        "sha256": "35b3419d256a59ebc89a110f57c220062bf5606b374e9e3dc7a992588869e891"
+      },
+      "reported_clean_join": true,
+      "reported_sources_unchanged": true,
+      "scope": "complete daily accounting ledger scheduling and prior source regression",
+      "source_count": 2039,
+      "source_inventory": {
+        "artifact_path": "artifacts/set79/accounting-attempt1/sources.json",
+        "bytes": 370407,
+        "sha256": "e81bc18f778f7d6431bb8dd81aab1bd4af12a2720af50eef0900b392bf6afa0f"
+      },
+      "status": "PASS"
+    },
+    {
+      "all_command_groups_clean": true,
+      "cheap_required": [
+        "TestDailyCompletedRefreshProfileAndMissingOwner"
+      ],
+      "commands": [
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "deps",
+          "seconds": 0.292
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "normal",
+          "seconds": 4.038
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "race",
+          "seconds": 8.791
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "cheap",
+          "seconds": 2.318
+        }
+      ],
+      "id": "refresh-attempt1",
+      "named_pass_evidence": {
+        "normal": {
+          "artifact_path": "artifacts/set79/refresh-attempt1/normal.log",
+          "bytes": 4876,
+          "sha256": "be3f9a5b96af43d37bfe2af58f54b76ed0ecc33d23caf857bc52cc2f05cf4715"
+        },
+        "race": {
+          "artifact_path": "artifacts/set79/refresh-attempt1/race.log",
+          "bytes": 4876,
+          "sha256": "18e3d31900841deffc0dc7dce037371ba8824ba6a17c98613f77fcb0c6fc2c28"
+        }
+      },
+      "profile_binding": {
+        "artifact_path": "artifacts/set79/refresh-attempt1/profile.json",
+        "bytes": 962,
+        "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03"
+      },
+      "qualification_note": "Post-change focused completed-day refresh qualification: six required normal and race tests and one explicit profile refusal. Not a post-refresh rerun of the full accounting suites.",
+      "report": {
+        "artifact_path": "artifacts/set79/refresh-attempt1/report.json",
+        "bytes": 3145,
+        "sha256": "089cfb808e451c2b6f04a5259f5600dc7dfb77ac4f6d5c10e2fb7fd9e6597046"
+      },
+      "reported_clean_join": true,
+      "reported_sources_unchanged": true,
+      "required_normal_and_race_tests": [
+        "TestDailyCompletedRefreshGuardsBeforeEffects",
+        "TestDailyCompletedRefreshRefusesOriginalV1",
+        "TestDailyCompletedRefreshProfileAndMissingOwner",
+        "TestDailyScheduleCompletedRefreshIndependentDecisions",
+        "TestDailyScheduleCompletedRefreshExpiryRetry",
+        "TestDailyScheduleCompletedRefreshImportsOnceAcrossReopen"
+      ],
+      "scope": "completed daily source import without another payment",
+      "source_count": 1992,
+      "source_inventory": {
+        "artifact_path": "artifacts/set79/refresh-attempt1/sources.json",
+        "bytes": 362029,
+        "sha256": "e0780e21eb2a6cc66558872ef554b300e00eb5d83553c443f4ee8728fd13850c"
+      },
+      "status": "PASS"
+    },
+    {
+      "all_command_groups_clean": true,
+      "commands": [
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "command-1",
+          "seconds": 0.013
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "command-2",
+          "seconds": 0.332
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "command-3",
+          "seconds": 0.041
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "command-4",
+          "seconds": 0.384
+        }
+      ],
+      "id": "reference-attempt2",
+      "independent_reproductions": [
+        {
+          "bytes": 3176583,
+          "name": "py314",
+          "seconds": 0.332,
+          "sha256": "a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3",
+          "version": "Python 3.14.3"
+        },
+        {
+          "bytes": 3176583,
+          "name": "py39",
+          "seconds": 0.384,
+          "sha256": "a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3",
+          "version": "Python 3.9.6"
+        }
+      ],
+      "qualification_note": "Independent canonical wire-order successor reproduced by two Python interpreters; does not establish runtime acceptance.",
+      "report": {
+        "artifact_path": "artifacts/set79/reference-attempt2/report.json",
+        "bytes": 3620,
+        "sha256": "93509efd34524d269b521b444f52dc750f986db6b1308180798c1b0b751136fe"
+      },
+      "reported_byte_identical": true,
+      "reported_clean_join": true,
+      "reported_source_inputs_outputs_unchanged": true,
+      "scope": "Set79 independent public daily reference",
+      "status": "PASS"
+    },
+    {
+      "all_command_groups_clean": true,
+      "byte_identical_outputs": true,
+      "commands": [
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "command-1",
+          "seconds": 0.079
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "command-2",
+          "seconds": 0.132
+        }
+      ],
+      "id": "attachment-reference-attempt1",
+      "independent_outputs": [
+        {
+          "artifact_path": "artifacts/set79/attachment-reference-attempt1/python314.json",
+          "bytes": 46498,
+          "sha256": "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386"
+        },
+        {
+          "artifact_path": "artifacts/set79/attachment-reference-attempt1/python39.json",
+          "bytes": 46498,
+          "sha256": "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386"
+        }
+      ],
+      "qualification_note": "Independent Path A target/config/economic branches reproduced byte-identically; no actual attachment execution claim.",
+      "report": {
+        "artifact_path": "artifacts/set79/attachment-reference-attempt1/report.json",
+        "bytes": 4304,
+        "sha256": "b1fc75d5a8e3d0fa380f8f655deb62a4417919787dcd48643fc8e44af010a0b8"
+      },
+      "reported_sources_unchanged": true,
+      "scope": "Path A independent explicit actual target/payee/config/economics",
+      "status": "PASS"
+    },
+    {
+      "all_command_groups_clean": true,
+      "commands": [
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "deps",
+          "seconds": 0.331
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "normal",
+          "seconds": 39.602
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "race",
+          "seconds": 324.463
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "cheap",
+          "seconds": 2.407
+        }
+      ],
+      "id": "post-refresh-attempt1",
+      "profile_binding": {
+        "artifact_path": "artifacts/set79/post-refresh-attempt1/profile.json",
+        "bytes": 962,
+        "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03"
+      },
+      "qualification_note": "Complete poolsettle/poolschedule regression after completed-day refresh, before original-source Busy successor.",
+      "report": {
+        "artifact_path": "artifacts/set79/post-refresh-attempt1/report.json",
+        "bytes": 3088,
+        "sha256": "c364eff3c368b1db4725a9fb7448919842521c01174fd1caca22c3f5819032f9"
+      },
+      "reported_clean_join": true,
+      "reported_sources_unchanged": true,
+      "scope": "post-refresh complete settlement and scheduling regression",
+      "source_inventory": {
+        "artifact_path": "artifacts/set79/post-refresh-attempt1/sources.json",
+        "bytes": 369774,
+        "sha256": "0b7f1eba6cd2c0f9ee61b639415891e3392e6426fb097a040d81887cf760a7b4"
+      },
+      "status": "PASS"
+    },
+    {
+      "build_artifacts": {
+        "artifact_path": "artifacts/set79/smoke-attempt1/build-artifacts.json",
+        "bytes": 1861,
+        "sha256": "dd8b6bcaac5bcac5f800c82b7971b849a9cc349da1dfc72a6238bc51a45ed460"
+      },
+      "build_result": {
+        "artifact_path": "artifacts/set79/smoke-attempt1/build-result.json",
+        "bytes": 5993,
+        "sha256": "93ce7cb93e3fb70bf6ecb0f2ab72398f0f1ff6f5ff2912ef2569a108ac8a803f"
+      },
+      "checkpoint_descendants": 60,
+      "coinbase_value": 10,
+      "id": "smoke-attempt1",
+      "isolated_blocks_before_public_connection": 2,
+      "profile_binding": {
+        "artifact_path": "artifacts/set79/smoke-attempt1/build-profile-binding.json",
+        "bytes": 962,
+        "sha256": "81b56d4d3dae9bc52e22be57262771dcd6d7c773ed89ca78d219af836bd86b48"
+      },
+      "public_chain_mined": false,
+      "qualification_note": "No public pool payout or headless-command acceptance claim; source and binaries are bound by exact inventories, not the inherited checkout HEAD label alone.",
+      "report": {
+        "artifact_path": "artifacts/set79/smoke-attempt1/result.json",
+        "bytes": 9118,
+        "sha256": "eafc97d1c30f26868c323b60a84504b24c2445ace5c5384e43d3023828974e19"
+      },
+      "reported_clean_join": true,
+      "reported_profile_unchanged": true,
+      "reported_sources_unchanged": true,
+      "scope": "Normal isolated 10-SLUG reward/report-only conflict; read-only public seed synchronization and original node restart.",
+      "seed_height": 61,
+      "source_inventory": {
+        "artifact_path": "artifacts/set79/smoke-attempt1/source-inputs.json",
+        "bytes": 270944,
+        "sha256": "baf76632173cb349250c31d9585947777a82d9603376cacb21944bb3b1ae6e81"
+      },
+      "status": "PASS",
+      "sync_seconds": 12.11394312500488
+    },
+    {
+      "all_command_groups_clean": true,
+      "commands": [
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "deps",
+          "seconds": 0.256
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "normal",
+          "seconds": 7.482
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "race",
+          "seconds": 15.676
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "cheap",
+          "seconds": 1.839
+        }
+      ],
+      "id": "contention-attempt1",
+      "profile_binding": {
+        "artifact_path": "artifacts/set79/contention-attempt1/profile.json",
+        "bytes": 962,
+        "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03"
+      },
+      "qualification_note": "Focused post-fix evidence only; complete public actual successor is running and remains pending.",
+      "report": {
+        "artifact_path": "artifacts/set79/contention-attempt1/report.json",
+        "bytes": 3420,
+        "sha256": "5321ba8f5bb8bbec2c8e1bbe6dab35cf0de8405a51acae5f1b69b80d755c6cb0"
+      },
+      "reported_clean_join": true,
+      "reported_sources_unchanged": true,
+      "required_cheap_passes": [
+        "TestRoundSourceExactBusyClassification",
+        "TestScheduleRetryIndependentErrorTrees"
+      ],
+      "required_named_logs": [
+        {
+          "artifact_path": "artifacts/set79/contention-attempt1/normal.log",
+          "bytes": 7977,
+          "sha256": "d2738b6581a758aaf73e6b0c60921c13dc6549672564c584fee4f5b763007333"
+        },
+        {
+          "artifact_path": "artifacts/set79/contention-attempt1/race.log",
+          "bytes": 7979,
+          "sha256": "9b7f305a927b85827896f5fca67afca29e849a7ef79c40d633e2c1e31b538383"
+        },
+        {
+          "artifact_path": "artifacts/set79/contention-attempt1/cheap.log",
+          "bytes": 8045,
+          "sha256": "d0cd3728ebf32911c65d9cc412700392f80fe128471272d58a839c128b73ea4a"
+        }
+      ],
+      "required_normal_race_passes": [
+        "TestRoundSourceExactBusyClassification",
+        "TestScheduleRetryIndependentErrorTrees",
+        "TestDailyScheduleOriginalRoundBusyRecoversWithoutNewPayment"
+      ],
+      "scope": "Exact original source/round contention classification and Scheduler.Run pending-recovery regression",
+      "source_inventory": {
+        "artifact_path": "artifacts/set79/contention-attempt1/sources.json",
+        "bytes": 368282,
+        "sha256": "5aa80ff03f03dc4667eafa52059809b2af572aa0dd617049b0f26a4f9a4155de"
+      },
+      "status": "PASS"
+    },
+    {
+      "all_command_groups_clean": true,
+      "commands": [
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "deps",
+          "seconds": 0.261
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "normal",
+          "seconds": 66.393
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "race",
+          "seconds": 299.936
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "cheap",
+          "seconds": 3.92
+        }
+      ],
+      "id": "accounting-attempt2",
+      "portable_record": {
+        "artifact_path": "docs/evidence/set79/accounting-after-contention.json",
+        "bytes": 2256,
+        "record_path_base": "repository root",
+        "sha256": "38b2c9bd789fa9143efb063817184565ec1b4eff5916f74f2fd7d0cbdb1877d7"
+      },
+      "profile_binding": {
+        "artifact_path": "artifacts/set79/accounting-attempt2/profile.json",
+        "bytes": 962,
+        "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03"
+      },
+      "qualification_note": "Full poolshare/poolround/poolsettle/poolschedule regression with completed-day refresh and exact source/round scheduler contention fix. Predates the later desktop intake retry.",
+      "report": {
+        "artifact_path": "artifacts/set79/accounting-attempt2/report.json",
+        "bytes": 3388,
+        "sha256": "033adb5e3126d15aabba823470abc58ddf85ed05cfabed673f7f36893bf35b1c"
+      },
+      "reported_clean_join": true,
+      "reported_sources_unchanged": true,
+      "required_named_logs": [
+        {
+          "artifact_path": "artifacts/set79/accounting-attempt2/normal.log",
+          "bytes": 131105,
+          "sha256": "2ee0bcce90f4c2008c49c4518a0485e22be4c13f81940688a2eeb6119c61b0e9"
+        },
+        {
+          "artifact_path": "artifacts/set79/accounting-attempt2/race.log",
+          "bytes": 131115,
+          "sha256": "eed52a065165e2c441ed2242b7f0b5df4785477fa04ceef895e97383c7581c9d"
+        },
+        {
+          "artifact_path": "artifacts/set79/accounting-attempt2/cheap.log",
+          "bytes": 1010,
+          "sha256": "b1da485a60e558032c5ba263f03b3c8d74cd971539d78832a75c5dc7e509ffca"
+        }
+      ],
+      "required_normal_race_passes": [
+        "TestRoundSourceExactBusyClassification",
+        "TestScheduleRetryIndependentErrorTrees",
+        "TestDailyScheduleOriginalRoundBusyRecoversWithoutNewPayment",
+        "TestDailyCompletedRefreshGuardsBeforeEffects",
+        "TestDailyCompletedRefreshRefusesOriginalV1",
+        "TestDailyCompletedRefreshProfileAndMissingOwner",
+        "TestDailyScheduleCompletedRefreshIndependentDecisions",
+        "TestDailyScheduleCompletedRefreshExpiryRetry",
+        "TestDailyScheduleCompletedRefreshImportsOnceAcrossReopen"
+      ],
+      "scope": "complete daily accounting ledger scheduling and prior source regression",
+      "source_inventory": {
+        "artifact_path": "artifacts/set79/accounting-attempt2/sources.json",
+        "bytes": 372554,
+        "sha256": "77b25b8c8cc2316020b5d4520175d43990e7614edc4870443c9c85c047122ecf"
+      },
+      "status": "PASS"
+    },
+    {
+      "all_command_groups_clean": true,
+      "commands": [
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "deps",
+          "seconds": 0.382
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "normal",
+          "seconds": 7.471
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "race",
+          "seconds": 16.276
+        },
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "cheap",
+          "seconds": 5.301
+        }
+      ],
+      "id": "intake-attempt1",
+      "profile_binding": {
+        "artifact_path": "artifacts/set79/intake-attempt1/profile.json",
+        "bytes": 962,
+        "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03"
+      },
+      "qualification_note": "Focused desktop intake retry qualification: original issuer contention retains the same capacity cause and exact pending A; parent cancellation/deadline do not enable intake. Does not qualify the complete actual scenario or CLI shutdown successor.",
+      "report": {
+        "artifact_path": "artifacts/set79/intake-attempt1/report.json",
+        "bytes": 3125,
+        "sha256": "1eda8eacd747e6290de5c4d20ec235a6e2eb93433102aefb8e1220a3a57a265c"
+      },
+      "reported_clean_join": true,
+      "reported_sources_unchanged": true,
+      "required_cheap_passes": [
+        "TestOperatorIntakeSourceBusyErrorTrees",
+        "TestOperatorIntakeMutexCancellationJoinsHolder"
+      ],
+      "required_named_logs": [
+        {
+          "artifact_path": "artifacts/set79/intake-attempt1/normal.log",
+          "bytes": 4268,
+          "sha256": "dacc6202011d35338ffbfc5c516881b95fc5b5444e41ae03c51ecafdd9516ce2"
+        },
+        {
+          "artifact_path": "artifacts/set79/intake-attempt1/race.log",
+          "bytes": 4268,
+          "sha256": "bafed883a14e0acae4615b06028bef9573fcea605ac48dc554e0ede9a5abbf35"
+        },
+        {
+          "artifact_path": "artifacts/set79/intake-attempt1/cheap.log",
+          "bytes": 3650,
+          "sha256": "ae2c8ef41b1d72a2e37186d9481f6b4b5c2a50cf81409449601fa72f218bd46c"
+        }
+      ],
+      "required_normal_race_passes": [
+        "TestOperatorIntakeSourceBusyErrorTrees",
+        "TestOperatorIntakeMutexCancellationJoinsHolder",
+        "TestDailyIntakeOriginalIssuerBusyPreservesDrainAndPayout",
+        "TestDailyIntakeOriginalIssuerCancellationNeverEnables"
+      ],
+      "scope": "bounded original intake contention preserves capacity cause and reserved payout",
+      "source_inventory": {
+        "artifact_path": "artifacts/set79/intake-attempt1/sources.json",
+        "bytes": 564824,
+        "sha256": "72c157772aaad0d8a5a4b0a4f52f7d052095a0610a828561c0cb91e5f03e8b1f"
+      },
+      "status": "PASS"
+    }
+  ],
+  "coverage_order": {
+    "contention_successor": "contention-attempt1: focused normal/race/cheap PASS",
+    "core_sparse_history_successor": "core-attempt2",
+    "focused_accounting_after_refresh": "refresh-attempt1",
+    "full_accounting_after_refresh": "post-refresh-attempt1",
+    "full_accounting_after_round_contention": "accounting-attempt2: full normal/race/cheap PASS before desktop intake retry",
+    "full_accounting_before_refresh": "accounting-attempt1",
+    "intake_contention_successor": "intake-attempt1: four required normal/race tests and two cheap controls PASS",
+    "note": "Full accounting after completed-day refresh and exact round/source scheduler contention precedes the desktop intake retry. The latter has focused original-owner qualification. No component/smoke PASS implies complete public scheduled-payout, headless process, full closeout or exact-tip CI acceptance."
+  },
+  "failed_attempts_preserved": [
+    {
+      "cause": "Compile failure from an unused golang.org/x/time/rate import in daily_server.go; retained as failure.",
+      "commands": [
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "deps",
+          "seconds": 0.332
+        },
+        {
+          "clean_success": false,
+          "exit_code": 1,
+          "label": "normal",
+          "seconds": 1.189
+        }
+      ],
+      "failure_log": {
+        "artifact_path": "artifacts/set79/transport-attempt1/normal.log",
+        "bytes": 12739,
+        "sha256": "876885315040a3d64c82e217e5577ee5e7dfb84e4d0cfc3143d92d1e9bc54402"
+      },
+      "id": "transport-attempt1",
+      "record": {
+        "artifact_path": "artifacts/set79/transport-attempt1/report.json",
+        "bytes": 1606,
+        "sha256": "0d033430be82889804f65ed6f97a91763a2c936d2ec07f819b3e6ac3aa08af0e"
+      },
+      "reported_clean_join": false,
+      "reported_sources_unchanged": true,
+      "status": "FAILED_PRESERVED"
+    },
+    {
+      "cause": "Existing canonical parser rejected inherited work/template wire field order. No parser relaxation; independently reproduced order-only successor selected afterward.",
+      "commands": [
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "deps",
+          "seconds": 0.258
+        },
+        {
+          "clean_success": false,
+          "exit_code": 1,
+          "label": "normal",
+          "seconds": 7.108
+        }
+      ],
+      "failure_log": {
+        "artifact_path": "artifacts/set79/transport-attempt2/normal.log",
+        "bytes": 69918,
+        "sha256": "f3b6bd5832ea43e4d4bbcbce716ae4c3cb7fc838f4af7b7fd979fafd6b793844"
+      },
+      "id": "transport-attempt2",
+      "record": {
+        "artifact_path": "artifacts/set79/transport-attempt2/report.json",
+        "bytes": 1606,
+        "sha256": "0d275cf8b511f8ffe57fd5d404126bc755715ae39e57147fcfe9ed2a9c7c1e09"
+      },
+      "reported_clean_join": false,
+      "reported_sources_unchanged": true,
+      "status": "FAILED_PRESERVED"
+    },
+    {
+      "cause": "Normal/race test processes passed, but the cheap dependency build failed and 161 dependency-cache identities were missing/changed at final closure. The overall attempt is FAILED, not partial qualification.",
+      "failure_log": {
+        "artifact_path": "artifacts/set79/worker-attempt1/cheap.log",
+        "bytes": 1999,
+        "sha256": "9942f23d106b030839761d2ed79ded2d236e6288492d09dca76c7b33ff025e5f"
+      },
+      "id": "worker-attempt1",
+      "record": {
+        "artifact_path": "artifacts/set79/worker-attempt1/failure-closeout.json",
+        "bytes": 17340,
+        "sha256": "aacaf14f3eeb0486277e48768520bd9bddf4af5007ba603905cdc0432543d24a"
+      },
+      "reported_changed_or_missing_count": 161,
+      "reported_cheap_build_passed": false,
+      "reported_normal_test_passed": true,
+      "reported_race_test_passed": true,
+      "reported_source_closure_unchanged": false,
+      "status": "FAILED_PRESERVED"
+    },
+    {
+      "cause": "Dependency discovery failed with GOPROXY=off because a required module was absent from the selected cache; no product test pass.",
+      "commands": [
+        {
+          "clean_success": false,
+          "exit_code": 1,
+          "label": "deps",
+          "seconds": 0.293
+        }
+      ],
+      "failure_log": {
+        "artifact_path": "artifacts/set79/worker-attempt2/deps.log",
+        "bytes": 139,
+        "sha256": "494a8488031a7e104407ec00699927c2d0900ce303ddead62158b7091e472e12"
+      },
+      "id": "worker-attempt2",
+      "record": {
+        "artifact_path": "artifacts/set79/worker-attempt2/report.json",
+        "bytes": 867,
+        "sha256": "1822cf1131ce1fdabae8b1c6e94891eadb755e5d2b3398183198322a1c09a398"
+      },
+      "reported_clean_join": false,
+      "reported_sources_unchanged": false,
+      "status": "FAILED_PRESERVED"
+    },
+    {
+      "cause": "Daily tests selected V1 first vector zero256 instead of the frozen official-leading-zero-account material/capsule/time. Test-only named selection corrected; product and independent expected bytes unchanged.",
+      "commands": [
+        {
+          "clean_success": true,
+          "exit_code": 0,
+          "label": "deps",
+          "seconds": 0.762
+        },
+        {
+          "clean_success": false,
+          "exit_code": 1,
+          "label": "normal",
+          "seconds": 68.593
+        }
+      ],
+      "failure_log": {
+        "artifact_path": "artifacts/set79/desktop-attempt1/normal.log",
+        "bytes": 86255,
+        "sha256": "2b7f3aa15c2d3415fe2fef9346b5f0164329f3b077cb2d0452427065654f8fae"
+      },
+      "id": "desktop-attempt1",
+      "record": {
+        "artifact_path": "artifacts/set79/desktop-attempt1/report.json",
+        "bytes": 1743,
+        "sha256": "3c05e483a92651fa9c9ebbce84921724ff295de5b3a86f913e5a984471867186"
+      },
+      "reported_clean_join": false,
+      "reported_sources_unchanged": true,
+      "status": "FAILED_PRESERVED"
+    },
+    {
+      "all_outer_groups_empty": true,
+      "cause": "A scheduler did not broadcast after actual due",
+      "fresh_operator_cli_lifetimes": 0,
+      "id": "public-actual-attempt1",
+      "payout_broadcast_attempts": 0,
+      "phase": "mature A then original real UTC due",
+      "record": {
+        "artifact_path": "docs/evidence/set79/public-actual-attempt1-failure.json",
+        "bytes": 3480,
+        "sha256": "30cf5630ce2dd64d01f138c8cd78db92b4fd0c766e090386eb7f02b2268a7766"
+      },
+      "record_path_base": "repository root",
+      "reported_sources_unchanged": true,
+      "runtime_clean_join": false,
+      "source_diagnosis": "Exact round Busy from original daily binding/full audit was not retryable in Scheduler.Run. Exact source Busy was also collapsed to round SourceUnavailable. Public report does not identify the precise competing maintenance call or instant.",
+      "status": "FAILED_PRESERVED",
+      "successor_source_manifest": {
+        "artifact_path": "set79-prep/scheduler-round-busy/source-manifest.json",
+        "bytes": 4985,
+        "sha256": "deca309fe13f6c91b9fcf7341d0ad2fc5d1fed6e808706c3d1cdfbb63ebabb73"
+      },
+      "successor_status": "FOCUSED_QUALIFICATION_PASS; COMPLETE_ACTUAL_SUCCESSOR_PENDING"
+    },
+    {
+      "all_outer_groups_empty": true,
+      "cause": "original Issue readiness deadline: context.deadlineExceededError: context deadline exceeded",
+      "fresh_operator_cli_lifetimes": 0,
+      "id": "public-actual-attempt2",
+      "payout_broadcast_attempts": 1,
+      "phase": "original B/C jobs and true ordinary two-row intake",
+      "qualification_note": "One actual scheduled A send and reserved audit completed. Restart readiness timed out without a final paused status; exact original cause was not captured. Readiness-only harness successor retained; whole actual remains pending.",
+      "record": {
+        "artifact_path": "docs/evidence/set79/public-actual-attempt2-failure.json",
+        "bytes": 3861,
+        "sha256": "16c819a6910cc0d161a103367e2e43b1d9f263d17abb263491ec6f6b6fbcafc8"
+      },
+      "record_path_base": "repository root",
+      "runtime_clean_join": true,
+      "sources_unchanged": true,
+      "status": "FAILED_PRESERVED"
+    },
+    {
+      "all_outer_groups_empty": true,
+      "cause": "original runtime exited before requested stop: *errors.joinError: pool operator input unavailable\npool operation is busy\ncontext canceled\ncontext canceled\ncontext canceled",
+      "fresh_operator_cli_lifetimes": 0,
+      "id": "public-actual-attempt3",
+      "payout_broadcast_attempts": 1,
+      "phase": "original B/C jobs and true ordinary two-row intake",
+      "qualification_note": "Original reopened runtime returned raw poolshare Busy before B/C readiness; original scheduled A and reserved audit passed. Source trace identifies unhandled direct intake census contention, not the precise competing operation. Exact bounded intake retry now has focused PASS; actual successor remains pending.",
+      "record": {
+        "artifact_path": "docs/evidence/set79/public-actual-attempt3-failure.json",
+        "bytes": 5013,
+        "sha256": "8a3bf3eafb634661b30a59f9e39648a310081243546ab8851504bc59f69cc71b"
+      },
+      "record_path_base": "repository root",
+      "runtime_clean_join": false,
+      "sources_unchanged": true,
+      "status": "FAILED_PRESERVED"
+    },
+    {
+      "cause": "authenticated daily balance: *poolservice.ClientError: pool service: unavailable",
+      "id": "public-daily-attachment-actual-attempt1",
+      "original_fixture_unchanged": true,
+      "phase": "authenticated daily money and attached wallet observation",
+      "qualification_note": "Automatic original-wallet worker accepted two pool rewards and retained outbox state; scheduled payment was validated/mined before first authenticated balance read returned unavailable. Final exact wallet delta and full closed ledger audit were not completed. Do not label the unobserved read cause proven Busy; complete successor remains pending.",
+      "record": {
+        "artifact_path": "docs/evidence/set79/attachment-actual-attempt1-failure.json",
+        "bytes": 4703,
+        "sha256": "fa388f640a0e1c793e8044b091a545e6c2cfb4028565d1f97273a8aa3c0230f8"
+      },
+      "record_path_base": "repository root",
+      "runtime_clean_join": true,
+      "source_unchanged": true,
+      "status": "FAILED_PRESERVED"
+    },
+    {
+      "actual_owner_clean_join": true,
+      "cause": "bounded wait",
+      "id": "public-daily-actual-attempt4",
+      "outer_clean_join_flag": false,
+      "phase": "one descendant then second exact production DAILY process",
+      "qualification_note": "Through B59: derived intake 2 to 3, real expiry, fresh production CLI exact receipt retry/lookup, unchanged A body and recovered delivery, one send. Final B60 credit wait failed. All owners/nodes/CLI and outer groups joined; outer aggregate clean_join=false reflects actual exit 1. No complete actual PASS or exclusive contention cause claimed.",
+      "record": {
+        "artifact_path": "docs/evidence/set79/public-actual-attempt4-failure.json",
+        "bytes": 7659,
+        "sha256": "05538e61976a384c81d1a71c64e78f168a631b584b47072c99c50297803483b1"
+      },
+      "record_path_base": "repository root",
+      "source_unchanged": true,
+      "status": "FAILED_PRESERVED"
+    }
+  ],
+  "pending_gates": {
+    "complete_paired_build_vet_profile_closeout": "PENDING",
+    "exact_tip_chain_wallet_ci_and_downloaded_linux_evidence": "PENDING",
+    "full_accounting_after_round_source_contention": "PASS: accounting-attempt2; before desktop intake retry",
+    "headless_daily_command_process_acceptance": "PENDING",
+    "original_intake_contention_retry": "PASS: focused intake-attempt1",
+    "original_source_contention_retry": "PASS: focused contention-attempt1",
+    "public_path_a_automatic_worker_wallet_scheduled_payout": "FAILED_ATTEMPT1; COMPLETE_SUCCESSOR_PENDING",
+    "public_path_b_full_intake_expiry_restart_reserved_payout": "FAILED_ATTEMPTS1_2_3_4; FINAL_B60_CREDIT_AND_COMPLETE_SUCCESSOR_PENDING",
+    "seed_smoke": "PASS: smoke-attempt1"
+  },
+  "predecessor": {
+    "artifact_path": "docs/evidence/set79/components-before-public-b4-result.json",
+    "bytes": 41547,
+    "note": "Exact pre-B4 result snapshot preserved; all earlier component/failure records and predecessor chain remain unchanged.",
+    "record_path_base": "repository root",
+    "sha256": "d37e4ed57d973295c729b2954ed84a1575b7169a00b206295b5dc5bc8ae1f242"
+  },
+  "remaining_boundaries": [
+    "Finite retained work/receipt/byte and financial limits; no retirement, rollover, repinning or physical-full continuation.",
+    "Durable ambiguous Issue hold has no automatic request-identity recovery.",
+    "Accepted pool work may retain a later fighter admission at capacity; earnings and signatures do not prove every fighter birth.",
+    "D84 defers the whole ready candidate; no subset, surcharge, advances or consolidation.",
+    "No hosted deployment, continuous miner-load, onboarding or final D74 product-release claim."
+  ],
+  "scope": "Set79 component/reference and normal-node smoke qualification; integrated public acceptance pending after preserved failure",
+  "status": "COMPONENTS_AND_SMOKE_PASS_INTEGRATED_ACCEPTANCE_PENDING",
+  "superseded_reference": {
+    "id": "reference-attempt1",
+    "limitation": "Dual-interpreter equality did not establish compatibility with inherited canonical Go field order; transport-attempt2 exposed that mismatch. This output is not the selected current public DAILY corpus.",
+    "output": {
+      "bytes": 3175720,
+      "sha256": "0ee0cfc5946987e7f2f1d739fccfda3735591863c8ad8e769edea52f19d8de5a"
+    },
+    "preserved_repository_path": "testdata/public-daily-pre-work-wire-order",
+    "report": {
+      "artifact_path": "artifacts/set79/reference-attempt1/report.json",
+      "bytes": 3620,
+      "sha256": "67ec76ec200f2ffb121f8cb3fcbfe4a61e19a3f91e4b752c6e0a64963f70c827"
+    },
+    "reported_reproduction_passed": true,
+    "status": "REPRODUCIBLE_BUT_SUPERSEDED_WIRE_ORDER"
+  },
+  "version": 1
+}

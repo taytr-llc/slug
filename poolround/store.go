@@ -61,6 +61,11 @@ func sourceError(err error) error {
 	if errors.Is(err, poolshare.ErrCorrupt) || errors.Is(err, poolshare.ErrInvalid) {
 		return ErrSourceChanged
 	}
+	// AccountingPage's exact non-admitted gate contention is retryable. Do not
+	// turn an unknown or mixed source failure into a benign Busy result.
+	if err == poolshare.ErrBusy {
+		return ErrBusy
+	}
 	return ErrSourceUnavailable
 }
 

@@ -61,9 +61,9 @@ func (a *RemotePoolAttachment) Snapshot(ctx context.Context, view string) (Remot
 	if e != nil {
 		return RemotePoolSnapshot{}, e
 	}
-	out := RemotePoolSnapshot{Version: 1, ConfigID: a.configID, View: a.view, SourceBindingID: a.config.Miners.SourceID, OriginalSourceBindingID: a.config.ExpectedLocal.OriginalSourceBindingID, State: state, WorkerState: remotePoolWorkerState(status.State), LastError: code, Attempts: status.Attempts, HashesPerSecondMilli: uint64(rate), Records: records, Pending: pending, WalletState: "unavailable", PayoutAddress: a.config.ExpectedLocal.Recipient.Recipient.Address}
+	out := RemotePoolSnapshot{Version: a.config.Version, ConfigID: a.configID, View: a.view, SourceBindingID: a.config.Miners.SourceID, OriginalSourceBindingID: a.config.ExpectedLocal.OriginalSourceBindingID, State: state, WorkerState: remotePoolWorkerState(status.State), LastError: code, Attempts: status.Attempts, HashesPerSecondMilli: uint64(rate), Records: records, Pending: pending, WalletState: "unavailable", PayoutAddress: a.config.ExpectedLocal.Recipient.Recipient.Address}
 	if out.LastError == "" {
-		out.LastError = remotePoolPublicCode(status.LastError)
+		out.LastError = remotePoolSelectedPublicCode(a.config.Version, status.LastError)
 	}
 	if run == nil {
 		out.HashesPerSecondMilli = 0
@@ -83,6 +83,13 @@ func (a *RemotePoolAttachment) Snapshot(ctx context.Context, view string) (Remot
 		return RemotePoolSnapshot{}, e
 	}
 	return out, nil
+}
+
+func remotePoolSelectedPublicCode(version uint32, code string) string {
+	if version == 2 && code == "issue_unknown" {
+		return "outcome_unknown"
+	}
+	return remotePoolPublicCode(code)
 }
 
 var _ prospectworker.Node = (*remotePoolNode)(nil)

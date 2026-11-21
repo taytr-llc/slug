@@ -1,0 +1,137 @@
+--- /Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/main.go
++++ /Users/taytrrip/slug/set79-prep/public-daily-attachment/main.go
+@@ -235,8 +235,9 @@
+ 	confirmBlock := generate(ctx, a, b)
+ 	require(minedTx(ctx, a, confirmBlock, send.TxID).TxHash().String() == send.TxID, "actual on-chain payment")
+ 	confirmedAt := time.Now().UnixMilli()
++	write(filepath.Join(root, "07-confirmed-payment.json"), map[string]any{"payment": payment, "confirmation_block": confirmBlock, "confirmed_at_ms": confirmedAt})
+ 	phase = "authenticated daily money and attached wallet observation"
+-	balances, pages := waitMoney(ctx, clients, s, econ, send.TxID, confirmedAt)
++	balances, pages := waitMoney(ctx, clients, s, econ, send.TxID, confirmedAt, filepath.Join(root, "money-read-evidence.json"))
+ 	var finalWallet accountpilot.RemotePoolControllerSnapshot
+ 	wait(ctx, 60*time.Second, func() bool {
+ 		running.checkRunning()
+--- /Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/payment.go
++++ /Users/taytrrip/slug/set79-prep/public-daily-attachment/payment.go
+@@ -55,20 +55,66 @@
+ 	require(len(seen) == len(inputs) && hx(tx.TxOut[0].PkScript) == s.Settlement.Destinations[0].Script && tx.TxOut[0].Value == e.MinerAtoms && hx(tx.TxOut[1].PkScript) == s.Settlement.ChangeScript && tx.TxOut[1].Value == e.ChangeAtoms && e.GrossAtoms-e.MinerAtoms-e.ChangeAtoms == e.FeeAtoms, "independent exact recipient/change/fee")
+ 	return map[string]any{"txid": send.TxID, "raw": send.Raw, "raw_sha256": hx(digest(b)), "input_count": len(tx.TxIn), "miner_atoms": e.MinerAtoms, "fee_atoms": e.FeeAtoms, "change_atoms": e.ChangeAtoms, "broadcast_at_ms": send.AtMS}
+ }
+-func waitMoney(ctx context.Context, clients []*poolservice.Client, s pooloperator.Setup, e economicBranch, txid string, after int64) ([]poolservice.DailyBalanceResponse, []poolsettle.DailyPayoutPage) {
++
++type moneyReadRefusal struct {
++	Read           string `json:"read"`
++	GymIndex       int    `json:"gym_index"`
++	AtMS           int64  `json:"at_ms"`
++	Code           string `json:"code"`
++	OutcomeUnknown bool   `json:"outcome_unknown"`
++}
++type moneyReadEvidence struct {
++	Complete     bool               `json:"complete"`
++	DeadlineMS   int64              `json:"deadline_ms"`
++	RefusalCount uint64             `json:"refusal_count"`
++	Refusals     []moneyReadRefusal `json:"refusals"`
++	LastRefusal  *moneyReadRefusal  `json:"last_refusal"`
++}
++
++// Only these pure money reads retry definite unavailable. A successful complete
++// authenticated response remains mandatory; no mutation or Lookup policy changes.
++func (v *moneyReadEvidence) refused(read string, gym int, err error) bool {
++	if err == nil {
++		return false
++	}
++	r := moneyReadRefusal{Read: read, GymIndex: gym, AtMS: time.Now().UnixMilli(), Code: "other"}
++	retry := false
++	if f, ok := err.(*poolservice.ClientError); ok && f != nil {
++		r.OutcomeUnknown = f.OutcomeUnknown
++		switch f.Code {
++		case "busy", "rate_limited", "unavailable":
++			r.Code = f.Code
++			retry = !f.OutcomeUnknown
++		case "outcome_unknown", "unauthorized", "invalid_request", "forbidden", "not_found", "stale_capture", "capacity":
++			r.Code = f.Code
++		}
++	}
++	v.RefusalCount++
++	v.LastRefusal = &r
++	if len(v.Refusals) < 32 {
++		v.Refusals = append(v.Refusals, r)
++	}
++	return retry
++}
++func waitMoney(ctx context.Context, clients []*poolservice.Client, s pooloperator.Setup, e economicBranch, txid string, after int64, evidencePath string) ([]poolservice.DailyBalanceResponse, []poolsettle.DailyPayoutPage) {
++	work, cancel := context.WithTimeout(ctx, 120*time.Second)
++	defer cancel()
++	deadline, _ := work.Deadline()
++	reads := moneyReadEvidence{DeadlineMS: deadline.UnixMilli(), Refusals: []moneyReadRefusal{}}
++	defer func() { write(evidencePath, reads) }()
+ 	var balances []poolservice.DailyBalanceResponse
+ 	var pages []poolsettle.DailyPayoutPage
+-	wait(ctx, 120*time.Second, func() bool {
++	wait(work, 120*time.Second, func() bool {
+ 		balances = []poolservice.DailyBalanceResponse{}
+ 		pages = []poolsettle.DailyPayoutPage{}
+ 		for i, c := range clients {
+-			v, err := c.DailyBalance(ctx)
+-			if transient(err) {
++			v, err := c.DailyBalance(work)
++			if reads.refused("balance", i, err) {
+ 				return false
+ 			}
+ 			check(err, "authenticated daily balance")
+-			p, err := c.PayoutsPage(ctx, poolsettle.DailyPayoutRequest{})
+-			if transient(err) {
++			p, err := c.PayoutsPage(work, poolsettle.DailyPayoutRequest{})
++			if reads.refused("payouts", i, err) {
+ 				return false
+ 			}
+ 			check(err, "authenticated original page")
+@@ -100,6 +146,8 @@
+ 		}
+ 		return true
+ 	})
++	require(work.Err() == nil, "money reads within original bound")
++	reads.Complete = true
+ 	return balances, pages
+ }
+ func verifyFinal(a attachmentOperatorAudit, s pooloperator.Setup, ev rowEvidence, e economicBranch, send observedSend) {
+--- /Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/run.py
++++ /Users/taytrrip/slug/set79-prep/public-daily-attachment/run.py
+@@ -339,7 +339,7 @@
+          x.get('log_close_error') is False and x.get('stop_rpc_error') is False for x in nodes),
+          'original node cleanup')
+     evidence={}
+-    for name in (*PHASES,'outbox-after.json','selected-public-setup.json','actual-report.json'):
++    for name in (*PHASES,'outbox-after.json','selected-public-setup.json','actual-report.json','07-confirmed-payment.json','money-read-evidence.json'):
+         p=owned/name;read_json(p,4<<20);evidence[str(p)]=support.identity(p)
+     ref=read_json(SETUP_REFERENCE,262144)
+     expected=next(x for x in ref['economics'] if x['accepted_rewards']==n)
+@@ -360,6 +360,19 @@
+          done['paid_atoms']==expected['miner_atoms'] and done['fee_atoms']==expected['fee_atoms'] and
+          v['miner_atoms']==expected['miner_atoms'] and v['fee_atoms']==expected['fee_atoms'], 'exact independent economic branch')
+     payment=paid['payment']
++    confirmed=read_json(owned/'07-confirmed-payment.json',4<<20)
++    reads=read_json(owned/'money-read-evidence.json',65536)
++    need(confirmed['payment']==payment and confirmed['confirmation_block']==paid['confirmation_block'] and
++         type(confirmed['confirmed_at_ms']) is int and confirmed['confirmed_at_ms']>0,
++         'original validated payment evidence')
++    count=reads.get('refusal_count')
++    need(reads.get('complete') is True and type(count) is int and 0<=count<=2400 and
++         isinstance(reads.get('refusals'),list) and len(reads['refusals'])==min(count,32) and
++         (reads.get('last_refusal') is None)==(count==0), 'complete bounded money read evidence')
++    for refusal in reads['refusals']+([reads['last_refusal']] if count else []):
++        need(refusal['read'] in ('balance','payouts') and type(refusal['gym_index']) is int and
++             0<=refusal['gym_index']<2 and refusal['code'] in ('busy','rate_limited','unavailable') and
++             refusal['outcome_unknown'] is False, 'only definite pure read retries')
+     need(payment['miner_atoms']==expected['miner_atoms'] and payment['change_atoms']==expected['change_atoms'] and
+          payment['fee_atoms']==expected['fee_atoms'] and payment['input_count']==n and
+          paid['wallet_after']['remote']['spendable_atoms']-paid['wallet_before']['remote']['spendable_atoms']==expected['miner_atoms'], 'actual original wallet exact payment')
+--- /Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/README.md
++++ /Users/taytrrip/slug/set79-prep/public-daily-attachment/README.md
+@@ -73,3 +73,6 @@
+ This finite synthetic account test is not 64-miner load, continuous capacity,
+ public deployment, production authentication, D74 review, or the separate Path B
+ full-intake/expired-winner/reserved-payout acceptance.
++
++The preserved `pre-money-read` successor adds only bounded pure money-read
++retries and partial-payment/refusal evidence; see `MONEY_READ_SUCCESSOR.md`.

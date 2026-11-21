@@ -41,7 +41,7 @@ func (f *remotePoolFiles) root() *os.File { return f.dirs[len(f.dirs)-1].file }
 // The returned partial owner must be closed even on failure. It retains every
 // descriptor/lock until cleanup actually completes; no ambiguous fd is retried.
 func openRemotePoolFiles(path string, s RemotePoolConfig, create bool) (f *remotePoolFiles, err error) {
-	if ValidateRemotePoolConfig(s) != nil || !filepath.IsAbs(path) || filepath.Clean(path) != path || len(path) > 4096 || strings.IndexByte(path, 0) >= 0 || os.Getuid() != os.Geteuid() {
+	if validateRemotePoolConfig(s, s.Version == 2) != nil || !filepath.IsAbs(path) || filepath.Clean(path) != path || len(path) > 4096 || strings.IndexByte(path, 0) >= 0 || os.Getuid() != os.Geteuid() {
 		return nil, ErrRemotePoolConfig
 	}
 	parts := strings.Split(strings.TrimPrefix(path, "/"), "/")

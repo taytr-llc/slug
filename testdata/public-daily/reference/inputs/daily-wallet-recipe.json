@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "scope": "independent public daily Config2/Binding2/schema16 guard identities; no signature generation",
+  "inherited_sha256": "c1f2d725fcdbc3af7ba1b0a30f4dd4dfc6983352ffb0b4f72d83f7c09ac7b087",
+  "fixtures": [
+    "zero256",
+    "incrementing256",
+    "official-leading-zero-account"
+  ],
+  "source_limits": {
+    "max_works": 8192,
+    "max_submissions": 16384,
+    "max_bytes": 8589934592
+  },
+  "settlement_limits": {
+    "max_rounds": 16384,
+    "max_batches": 32767
+  },
+  "source_domain_hex": "534c554720706f6f6c207368617265206461696c7920736f7572636500763200",
+  "config_domain_hex": "534c5547206f70657261746f7220706f6f6c20736574746c656d656e7420636f6e66696700763200",
+  "guard_domain_hex": "534c5547206f70657261746f7220706f6f6c2077616c6c657420677561726400763100",
+  "negative_cases": [
+    "binding-v1",
+    "source-v1",
+    "settlement-v1",
+    "source-over-limit",
+    "rounds-over-limit",
+    "batches-over-limit",
+    "zero-rounds",
+    "old-source-id",
+    "old-config-id",
+    "wrong-owner",
+    "wrong-operator",
+    "wrong-funding-script"
+  ]
+}

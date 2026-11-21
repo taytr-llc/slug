@@ -79,6 +79,10 @@ func TestDailyScheduleIndependentBindings(t *testing.T) {
 	f := readDailyScheduleReference(t)
 	for _, tc := range f.Bindings {
 		id, err := dailyBinding(tc.Config, tc.Source)
+		publicID, publicErr := DailySettlementConfigBinding(tc.Config, tc.Source)
+		if publicID != id || !errors.Is(publicErr, err) {
+			t.Fatal("public preflight differs from original encoding", publicID, publicErr)
+		}
 		if wire.TestPoW {
 			if id != "" || !errors.Is(err, ErrProfile) {
 				t.Fatal("cheap binding", err)
@@ -92,6 +96,9 @@ func TestDailyScheduleIndependentBindings(t *testing.T) {
 	for _, tc := range f.BindingRefusals {
 		if id, err := dailyBinding(tc.Config, tc.Source); id != "" || err == nil {
 			t.Fatal("legacy component adopted", tc.Name)
+		}
+		if id, err := DailySettlementConfigBinding(tc.Config, tc.Source); id != "" || err == nil {
+			t.Fatal("public preflight adopted legacy component", tc.Name)
 		}
 	}
 }

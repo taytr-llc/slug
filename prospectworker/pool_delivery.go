@@ -20,7 +20,7 @@ import (
 
 func (worker *PoolWorker) deliveryAuthoritiesMatch() bool {
 	a, f, c := worker.authority, worker.admission, worker.config
-	return a != nil && f != nil && a.ProtocolVersion() == poolservice.Version1 && a.AuthorityOrigin() == c.AuthorityOrigin && a.SourceConfig() == c.Source && a.TransportTrustID() == c.TransportTrustID && a.PublicKey() == c.PublicKey && f.ProtocolVersion() == 3 && f.AuthorityOrigin() == c.AdmissionOrigin && f.AuthorityPin() == c.Source.AuthorityPin && f.TransportTrustID() == c.AdmissionTrustID
+	return a != nil && f != nil && a.ProtocolVersion() == c.Version && a.AuthorityOrigin() == c.AuthorityOrigin && a.SourceConfig() == c.Source && a.TransportTrustID() == c.TransportTrustID && a.PublicKey() == c.PublicKey && f.ProtocolVersion() == 3 && f.AuthorityOrigin() == c.AdmissionOrigin && f.AuthorityPin() == c.Source.AuthorityPin && f.TransportTrustID() == c.AdmissionTrustID
 }
 
 // deliver treats pool credit, block publication and fighter admission as separate
@@ -29,7 +29,7 @@ func (worker *PoolWorker) deliver(ctx context.Context, entry *PoolEntry) (bool, 
 	if entry == nil || validatePoolEntry(*entry, worker.config) != nil || !worker.deliveryAuthoritiesMatch() {
 		return false, ErrCorrupt
 	}
-	prepared, err := poolservice.PrepareWork(worker.config.Source, worker.config.PublicKey, entry.Work)
+	prepared, err := preparePoolWork(worker.config, entry.Work)
 	if err != nil {
 		return false, ErrCorrupt
 	}

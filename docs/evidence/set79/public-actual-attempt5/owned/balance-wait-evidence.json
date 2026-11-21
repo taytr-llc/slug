@@ -1,0 +1,278 @@
+{
+  "version": 1,
+  "waits": [
+    {
+      "name": "a_lost_reply",
+      "budget_ms": 45000,
+      "started_at_ms": 1795255740091,
+      "ended_at_ms": 1795255740244,
+      "elapsed_ms": 153,
+      "context_deadline_ms": 1795256485268,
+      "after_ms": 0,
+      "check_reasons": false,
+      "total_samples": 2,
+      "last": [
+        {
+          "sample": 1,
+          "gym_index": 0,
+          "observed_at_ms": 1795255740175,
+          "balance": {
+            "version": 2,
+            "binding_id": "fe47047cd33aa5ff5676e97c5e9d5388955c14211bedb0007e6dad6d9c3db93f",
+            "settlement_config_id": "0d01347c0ffb9105441083d2e508804c872a1ce51eb84bc4c570b1f0f2be0025",
+            "recipient_script": "0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42",
+            "balance": {
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "confirmed": {
+                "numerator": "990000000",
+                "denominator": "1"
+              },
+              "available": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "reserved_atoms": "990000000",
+              "paid_atoms": "0",
+              "reason": "broadcast-unknown"
+            },
+            "observed_at_ms": 1795255740091
+          }
+        },
+        {
+          "sample": 2,
+          "gym_index": 1,
+          "observed_at_ms": 1795255740244,
+          "balance": {
+            "version": 2,
+            "binding_id": "fe47047cd33aa5ff5676e97c5e9d5388955c14211bedb0007e6dad6d9c3db93f",
+            "settlement_config_id": "0d01347c0ffb9105441083d2e508804c872a1ce51eb84bc4c570b1f0f2be0025",
+            "recipient_script": "0014bce0055a0a6de98fd52bdeaa22217b2f4a45cfad",
+            "balance": {
+              "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+              "confirmed": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "available": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "reserved_atoms": "0",
+              "paid_atoms": "0",
+              "reason": ""
+            },
+            "observed_at_ms": 1795255740091
+          }
+        }
+      ],
+      "terminal": "success"
+    },
+    {
+      "name": "a_recovered_before_b_credit",
+      "budget_ms": 90000,
+      "started_at_ms": 1795256109102,
+      "ended_at_ms": 1795256109291,
+      "elapsed_ms": 189,
+      "context_deadline_ms": 1795256485268,
+      "after_ms": 0,
+      "check_reasons": true,
+      "total_samples": 2,
+      "last": [
+        {
+          "sample": 1,
+          "gym_index": 0,
+          "observed_at_ms": 1795256109182,
+          "balance": {
+            "version": 2,
+            "binding_id": "fe47047cd33aa5ff5676e97c5e9d5388955c14211bedb0007e6dad6d9c3db93f",
+            "settlement_config_id": "0d01347c0ffb9105441083d2e508804c872a1ce51eb84bc4c570b1f0f2be0025",
+            "recipient_script": "0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42",
+            "balance": {
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "confirmed": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "available": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "reserved_atoms": "0",
+              "paid_atoms": "990000000",
+              "reason": ""
+            },
+            "observed_at_ms": 1795256108809
+          }
+        },
+        {
+          "sample": 2,
+          "gym_index": 1,
+          "observed_at_ms": 1795256109291,
+          "balance": {
+            "version": 2,
+            "binding_id": "fe47047cd33aa5ff5676e97c5e9d5388955c14211bedb0007e6dad6d9c3db93f",
+            "settlement_config_id": "0d01347c0ffb9105441083d2e508804c872a1ce51eb84bc4c570b1f0f2be0025",
+            "recipient_script": "0014bce0055a0a6de98fd52bdeaa22217b2f4a45cfad",
+            "balance": {
+              "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+              "confirmed": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "available": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "reserved_atoms": "0",
+              "paid_atoms": "0",
+              "reason": ""
+            },
+            "observed_at_ms": 1795256108809
+          }
+        }
+      ],
+      "terminal": "success"
+    },
+    {
+      "name": "b59_same_day",
+      "budget_ms": 45000,
+      "started_at_ms": 1795256220304,
+      "ended_at_ms": 1795256220461,
+      "elapsed_ms": 157,
+      "context_deadline_ms": 1795256485268,
+      "after_ms": 1795256155302,
+      "check_reasons": true,
+      "total_samples": 2,
+      "last": [
+        {
+          "sample": 1,
+          "gym_index": 0,
+          "observed_at_ms": 1795256220391,
+          "balance": {
+            "version": 2,
+            "binding_id": "fe47047cd33aa5ff5676e97c5e9d5388955c14211bedb0007e6dad6d9c3db93f",
+            "settlement_config_id": "0d01347c0ffb9105441083d2e508804c872a1ce51eb84bc4c570b1f0f2be0025",
+            "recipient_script": "0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42",
+            "balance": {
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "confirmed": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "available": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "reserved_atoms": "0",
+              "paid_atoms": "990000000",
+              "reason": ""
+            },
+            "observed_at_ms": 1795256199184
+          }
+        },
+        {
+          "sample": 2,
+          "gym_index": 1,
+          "observed_at_ms": 1795256220461,
+          "balance": {
+            "version": 2,
+            "binding_id": "fe47047cd33aa5ff5676e97c5e9d5388955c14211bedb0007e6dad6d9c3db93f",
+            "settlement_config_id": "0d01347c0ffb9105441083d2e508804c872a1ce51eb84bc4c570b1f0f2be0025",
+            "recipient_script": "0014bce0055a0a6de98fd52bdeaa22217b2f4a45cfad",
+            "balance": {
+              "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+              "confirmed": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "available": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "reserved_atoms": "0",
+              "paid_atoms": "0",
+              "reason": ""
+            },
+            "observed_at_ms": 1795256199184
+          }
+        }
+      ],
+      "terminal": "success"
+    },
+    {
+      "name": "b60_same_day",
+      "budget_ms": 150000,
+      "started_at_ms": 1795256223171,
+      "ended_at_ms": 1795256223480,
+      "elapsed_ms": 309,
+      "context_deadline_ms": 1795256485268,
+      "after_ms": 1795256221348,
+      "check_reasons": true,
+      "total_samples": 3,
+      "last": [
+        {
+          "sample": 1,
+          "gym_index": 0,
+          "observed_at_ms": 1795256223225,
+          "failure": {
+            "code": "busy",
+            "outcome_unknown": false
+          }
+        },
+        {
+          "sample": 2,
+          "gym_index": 0,
+          "observed_at_ms": 1795256223408,
+          "balance": {
+            "version": 2,
+            "binding_id": "fe47047cd33aa5ff5676e97c5e9d5388955c14211bedb0007e6dad6d9c3db93f",
+            "settlement_config_id": "0d01347c0ffb9105441083d2e508804c872a1ce51eb84bc4c570b1f0f2be0025",
+            "recipient_script": "0014cc0ef0be0b2a8d2cecbd754eca79368d135ada42",
+            "balance": {
+              "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+              "confirmed": {
+                "numerator": "99000013959",
+                "denominator": "200"
+              },
+              "available": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "reserved_atoms": "0",
+              "paid_atoms": "990000000",
+              "reason": "daily-batch-complete"
+            },
+            "observed_at_ms": 1795256223302
+          }
+        },
+        {
+          "sample": 3,
+          "gym_index": 1,
+          "observed_at_ms": 1795256223480,
+          "balance": {
+            "version": 2,
+            "binding_id": "fe47047cd33aa5ff5676e97c5e9d5388955c14211bedb0007e6dad6d9c3db93f",
+            "settlement_config_id": "0d01347c0ffb9105441083d2e508804c872a1ce51eb84bc4c570b1f0f2be0025",
+            "recipient_script": "0014bce0055a0a6de98fd52bdeaa22217b2f4a45cfad",
+            "balance": {
+              "gym_id": "a227587d837507dbcb5f9d781967339d816070fb7bd574931c690ba6937b88e5",
+              "confirmed": {
+                "numerator": "99000013959",
+                "denominator": "200"
+              },
+              "available": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "reserved_atoms": "0",
+              "paid_atoms": "0",
+              "reason": "daily-batch-complete"
+            },
+            "observed_at_ms": 1795256223302
+          }
+        }
+      ],
+      "terminal": "success"
+    }
+  ]
+}

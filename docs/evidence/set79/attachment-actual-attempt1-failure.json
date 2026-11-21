@@ -1,0 +1,114 @@
+{
+  "version": 1,
+  "scope": "Set79 original wallet automatic DAILY worker first actual failure",
+  "passed": false,
+  "failure": "authenticated daily balance: *poolservice.ClientError: pool service: unavailable",
+  "phase": "authenticated daily money and attached wallet observation",
+  "source_unchanged": true,
+  "profile_lock_artifacts_unchanged": true,
+  "source_copies_exact_after": true,
+  "runtime_clean_join": true,
+  "cleanup_errors": [],
+  "node_cleanup": [
+    {
+      "clean": true,
+      "forced_kill": false,
+      "joined": true,
+      "log_close_error": false,
+      "stop_rpc_error": false,
+      "unexpected_exit": false,
+      "wait_error": ""
+    },
+    {
+      "clean": true,
+      "forced_kill": false,
+      "joined": true,
+      "log_close_error": false,
+      "stop_rpc_error": false,
+      "unexpected_exit": false,
+      "wait_error": ""
+    }
+  ],
+  "original_fixture_unchanged": true,
+  "immutable_copy_paths": 226,
+  "accepted_pool_rewards": 2,
+  "saved_rows": 9,
+  "authorizations": 9,
+  "accepted_fighters": 9,
+  "pending_fighters": 0,
+  "issue_pending_retained": true,
+  "public_seed_mining": false,
+  "files": [
+    {
+      "path": "artifacts/set79/public-daily-attachment-actual-attempt1/report.json",
+      "bytes": 8340,
+      "sha256": "a7826ff5765b101a3257046d523e5878d9d8870b2ab2d29ebc80874a1083c608"
+    },
+    {
+      "path": "artifacts/set79/public-daily-attachment-actual-attempt1/execution-lock.json",
+      "bytes": 19507,
+      "sha256": "6f907da5c4ba092d4a04ae6d92e64dec9a165db8d8bd4d6d20feca71474c6229"
+    },
+    {
+      "path": "artifacts/set79/public-daily-attachment-actual-attempt1/source-before.json",
+      "bytes": 545314,
+      "sha256": "0c7d602a58ea20454ddaf71998e3a3ecaba7d16b397ac5a77840935779605cef"
+    },
+    {
+      "path": "artifacts/set79/public-daily-attachment-actual-attempt1/source-after.json",
+      "bytes": 545314,
+      "sha256": "0c7d602a58ea20454ddaf71998e3a3ecaba7d16b397ac5a77840935779605cef"
+    },
+    {
+      "path": "artifacts/set79/public-daily-attachment-actual-attempt1/profile.json",
+      "bytes": 962,
+      "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03"
+    },
+    {
+      "path": "artifacts/set79/public-daily-attachment-actual-attempt1/actual.log",
+      "bytes": 157,
+      "sha256": "d79596b85138c91a3c62078c38feca47972490ca5906b928d0fb5e4f1d37f56b"
+    },
+    {
+      "path": "artifacts/set79/public-daily-attachment-actual-attempt1/fixture-after.json",
+      "bytes": 2171,
+      "sha256": "2df94a122e03a3b2a1901cfc0608b470d62ba2b99ef0f7c8e9ee36dea8b2bbe9"
+    },
+    {
+      "path": "artifacts/set79/public-daily-attachment-actual-attempt1/owned/actual-report.json",
+      "bytes": 4185,
+      "sha256": "78bc107e9f77668099c080334764455e3e2b38590349a99de7faaf507d8e393c"
+    },
+    {
+      "path": "artifacts/set79/public-daily-attachment-actual-attempt1/owned/01-runtime-and-selection.json",
+      "bytes": 13847,
+      "sha256": "e489aa9b3a1397bc053936d03473aa7e070841e3f504379633e1c147043ff222"
+    },
+    {
+      "path": "artifacts/set79/public-daily-attachment-actual-attempt1/owned/02-stopped-original-view.json",
+      "bytes": 2434,
+      "sha256": "19117de89c847e9bdcf8d18e4d736977c67fdf1f9797fbca69ca784ab331f08b"
+    },
+    {
+      "path": "artifacts/set79/public-daily-attachment-actual-attempt1/owned/03-work-stopped.json",
+      "bytes": 2449,
+      "sha256": "5e8395cec51589dfe32f86c8617694eedea98248fe89be801455bb38d5da46cc"
+    },
+    {
+      "path": "artifacts/set79/public-daily-attachment-actual-attempt1/owned/04-closed-rows.json",
+      "bytes": 116405,
+      "sha256": "944cf23605a5ad63609a4733c4c18ad88dfc72644d74ec5f8e05adf423fff901"
+    },
+    {
+      "path": "artifacts/set79/public-daily-attachment-actual-attempt1/owned/05-stopped-reopen.json",
+      "bytes": 2434,
+      "sha256": "5d31e4b47897b688782b1b7ba75b5eec2c0a84d13ebf0ff80da2b7a4781dfbbf"
+    },
+    {
+      "path": "artifacts/set79/public-daily-attachment-actual-attempt1/owned/06-mature-before-due.json",
+      "bytes": 2886,
+      "sha256": "d547b628a579d9cd6da5a0f0f35a63327c0fd9e4ccac1539753bf33c2e91400d"
+    }
+  ],
+  "qualification": "Source reached authenticated money observation after validating and mining scheduled payment; first balance read returned unavailable. Exact original wallet delta and final full closed ledger audit were not completed. Underlying read failure is unobserved; it must not be labeled a proven Busy. Original records/hold, stopped reopen, maturity and clean cleanup evidence remain scoped partial results. A bounded pure-read successor may retry definite unavailable, preserving eventual full authenticated values and closed audit as mandatory."
+}

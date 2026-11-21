@@ -85,13 +85,13 @@ func (s *Store) inspectDaily(ctx context.Context, coins []Coin) ([]Coin, map[str
 	}
 	return ready, reasons, ctx.Err()
 }
-func (m *dailyMutation) checkSource(ctx context.Context, importNew bool) error {
+func (m *dailyMutation) checkSource(ctx context.Context, contention *dailyContention, importNew bool) error {
 	s := m.store
 	snapshot, err := s.db.GetSnapshot()
 	if err != nil {
 		return ErrCorrupt
 	}
-	additional, err := s.dailySource(ctx, snapshot, s.daily.head, true)
+	additional, err := s.dailySourceContention(ctx, contention, snapshot, s.daily.head, true)
 	snapshot.Release()
 	if err != nil {
 		return err
@@ -124,15 +124,20 @@ func (m *dailyMutation) checkSource(ctx context.Context, importNew bool) error {
 }
 
 func (s *Store) runDailySettlement(ctx context.Context, recoveryOnly bool) (Report, error) {
+	return s.runDailySettlementSelected(ctx, recoveryOnly, "")
+}
+
+func (s *Store) runDailySettlementSelected(ctx context.Context, recoveryOnly bool, refreshDay string) (Report, error) {
 	if s.auditOnly {
 		return Report{}, ErrInvalid
 	}
-	end, err := s.begin(ctx)
+	contention := &dailyContention{}
+	end, err := s.beginDailyContention(ctx, contention)
 	if err != nil {
 		return Report{}, err
 	}
 	defer end()
-	v, err := s.auditDaily(ctx)
+	v, err := s.auditDailyContention(ctx, contention)
 	if err != nil {
 		return Report{}, err
 	}
@@ -142,6 +147,16 @@ func (s *Store) runDailySettlement(ctx context.Context, recoveryOnly bool) (Repo
 		return Report{}, err
 	}
 	day := time.UnixMilli(ms).UTC().Format("2006-01-02")
+	if refreshDay != "" {
+		// The caller's durable admission day cannot authorize a new day's
+		// payment. These guards precede observations, imports and all writes.
+		if day != refreshDay {
+			return Report{}, ErrDailyRefreshExpired
+		}
+		if v.head.LastDay < day || v.head.PendingBatch != 0 {
+			return Report{}, ErrInvalid
+		}
+	}
 	// The complete prior signed history remains present. Stream one bounded
 	// body at a time; only the original last pending inputs are materialized.
 	for seq := uint64(1); seq <= v.head.Batches; seq++ {
@@ -196,7 +211,7 @@ func (s *Store) runDailySettlement(ctx context.Context, recoveryOnly bool) (Repo
 		if len(ready) != len(b.Inputs) {
 			return m.finish(ctx, day, "pending", "funding-conflict", nil, nil, false)
 		}
-		if e = m.checkSource(ctx, false); e != nil {
+		if e = m.checkSource(ctx, contention, false); e != nil {
 			return Report{}, e
 		}
 		if _, e = m.finish(ctx, day, "pending", "payout-pending", nil, nil, false); e != nil {
@@ -216,7 +231,7 @@ func (s *Store) runDailySettlement(ctx context.Context, recoveryOnly bool) (Repo
 		return m.finish(ctx, day, "complete", "", nil, nil, true)
 	}
 	// Pending recovery above has no dependency on new intake capacity.
-	if err = m.checkSource(ctx, true); err != nil {
+	if err = m.checkSource(ctx, contention, true); err != nil {
 		if err == ErrCapacity {
 			return m.finish(ctx, day, "deferred", "capacity", nil, nil, false)
 		}
@@ -263,7 +278,7 @@ func (s *Store) runDailySettlement(ctx context.Context, recoveryOnly bool) (Repo
 	if err != nil || len(fresh) != len(ready) {
 		return m.finish(ctx, day, "deferred", "funding-changed", nil, nil, false)
 	}
-	if err = m.checkSource(ctx, false); err != nil {
+	if err = m.checkSource(ctx, contention, false); err != nil {
 		return Report{}, err
 	}
 	ms, err = m.sample()

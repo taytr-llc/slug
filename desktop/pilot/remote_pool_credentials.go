@@ -61,10 +61,13 @@ type remotePoolCredentials struct {
 }
 
 func remotePoolParseCredential(raw []byte, id, gym, audience string) (remotePoolCredentialRecord, error) {
+	return remotePoolParseSelectedCredential(raw, id, gym, audience, 1)
+}
+func remotePoolParseSelectedCredential(raw []byte, id, gym, audience string, version uint32) (remotePoolCredentialRecord, error) {
 	var r remotePoolCredentialRecord
 	if len(raw) < 2 || len(raw) > remotePoolCredentialLimit || raw[len(raw)-1] != '\n' ||
 		ownedcodec.Decode(raw[:len(raw)-1], remotePoolCredentialLimit-1, &r) != nil ||
-		r.Version != 1 || r.ConfigID != id || r.GymID != gym || r.Audience != audience ||
+		(version != 1 && version != 2) || r.Version != version || r.ConfigID != id || r.GymID != gym || r.Audience != audience ||
 		(audience != poolminer.PoolAudience && audience != poolminer.AdmissionAudience) ||
 		r.Generation == 0 || r.ExpiresAtMS <= 0 || r.ExpiresAtMS > poolminer.MaxTimeMS || !remotePoolID(r.Token) {
 		return remotePoolCredentialRecord{}, errRemotePoolCredential
@@ -72,22 +75,25 @@ func remotePoolParseCredential(raw []byte, id, gym, audience string) (remotePool
 	return r, nil
 }
 
-func openRemotePoolCredentials(life context.Context, expected RemotePoolConfig, selection remotePoolCredentialSelection) (out *remotePoolCredentials, resultErr error) {
+func openRemotePoolCredentials(life context.Context, expected RemotePoolConfig, selection remotePoolCredentialSelection) (*remotePoolCredentials, error) {
+	return openSelectedRemotePoolCredentials(life, expected, selection, false)
+}
+func openSelectedRemotePoolCredentials(life context.Context, expected RemotePoolConfig, selection remotePoolCredentialSelection, daily bool) (out *remotePoolCredentials, resultErr error) {
 	if wire.TestPoW {
 		return nil, errRemotePoolCredentialProfile
 	}
 	if life == nil || life.Err() != nil {
 		return nil, errRemotePoolCredential
 	}
-	raw, e := MarshalRemotePoolConfig(expected)
+	raw, e := marshalSelectedRemotePoolConfig(expected, daily)
 	if e != nil {
 		return nil, e
 	}
-	config, e := ParseRemotePoolConfig(raw)
+	config, e := parseSelectedRemotePoolConfig(raw, daily)
 	if e != nil {
 		return nil, e
 	}
-	id, e := RemotePoolConfigID(config)
+	id, e := selectedRemotePoolConfigID(config)
 	if e != nil {
 		return nil, e
 	}
@@ -123,7 +129,7 @@ func openRemotePoolCredentials(life context.Context, expected RemotePoolConfig, 
 		if n == 1 {
 			audience = poolminer.AdmissionAudience
 		}
-		r, e := remotePoolParseCredential(b, id, config.ExpectedLocal.Recipient.Config.Identity.GymID, audience)
+		r, e := remotePoolParseSelectedCredential(b, id, config.ExpectedLocal.Recipient.Config.Identity.GymID, audience, config.Version)
 		clear(b)
 		if e != nil {
 			return nil, e
@@ -217,7 +223,15 @@ func (o *remotePoolCredentials) begin(ctx context.Context, audience int) (*remot
 			return
 		}
 		if audience == 0 {
-			l.pool, e = poolservice.NewClient(remotePoolClientConfig(o.config, string(o.slots[0].token)))
+			if o.config.Version == 2 {
+				var dc poolservice.DailyClientConfig
+				dc, e = remotePoolDailyClientConfig(o.config, string(o.slots[0].token))
+				if e == nil {
+					l.pool, e = poolservice.NewDailyClient(dc)
+				}
+			} else {
+				l.pool, e = poolservice.NewClient(remotePoolClientConfig(o.config, string(o.slots[0].token)))
+			}
 		} else {
 			l.admission, e = prospectservice.NewManifestClient(remotePoolAdmissionConfig(o.config, string(o.slots[1].token)), o.config.Source.Policy)
 		}

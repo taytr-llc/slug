@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "scope": "public reference/source inputs only; no private fixture rows",
+  "files": [
+    {
+      "path": "inputs/public-daily.json",
+      "source": "/Users/taytrrip/slug/slug/testdata/public-daily/reference-v1.json",
+      "bytes": 3176583,
+      "sha256": "a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3"
+    },
+    {
+      "path": "inputs/fixture-public.json",
+      "source": "/Users/taytrrip/slug/set74-prep/remote-attachment-actual/fixture-public.json",
+      "bytes": 7244,
+      "sha256": "83bfe6cdd6020524199ba6abada82614fb67987b32b9fb96111bf6bddf879f23"
+    },
+    {
+      "path": "inputs/fixture-catalog.json",
+      "source": "/Users/taytrrip/slug/set74-prep/remote-attachment-actual/fixture-catalog.json",
+      "bytes": 66249,
+      "sha256": "2637978c2e08637dae2a21bf7fcb8e9ab37edb3476e2b9512c73ff16809b7e55"
+    },
+    {
+      "path": "inputs/chain-params.go",
+      "source": "/Users/taytrrip/slug/slug/chaincfg/params.go",
+      "bytes": 47803,
+      "sha256": "1bfdd5f930487edccdf5025d9f22b31b31bb8758a47198dd00ae576d574e8065"
+    },
+    {
+      "path": "inputs/native-shape.go",
+      "source": "/Users/taytrrip/slug/slug/pooltxshape/native.go",
+      "bytes": 2930,
+      "sha256": "8b338a83505d57d66267e219b8a9835e2efa4454979a44d7beecb1c7614fb883"
+    },
+    {
+      "path": "inputs/CONTRACT.md",
+      "source": "/Users/taytrrip/slug/set79-prep/public-daily-contract.md",
+      "bytes": 25102,
+      "sha256": "a6a30ab580f6463d30bd29c00a4c60d7d7b32e6d6d70560b761a7661cbd0da05"
+    },
+    {
+      "path": "core.py",
+      "source": "/Users/taytrrip/slug/set79-prep/reference/core.py",
+      "bytes": 5913,
+      "sha256": "f7554311b65ebd8773cc75d124698bd41680224dde75173f66cafea4eec60685"
+    }
+  ]
+}

@@ -93,9 +93,10 @@ func origin(raw, scheme string, loopback bool) (*url.URL, error) {
 // filesystem access, normalization or network activity.
 func ValidateConfig(c Config) error { _, _, e := validateConfig(c); return e }
 
-func validateConfig(c Config) (*url.URL, [3]*url.URL, error) {
+func validateConfig(c Config) (*url.URL, [3]*url.URL, error) { return validateSelectedConfig(c, 1) }
+func validateSelectedConfig(c Config, version uint32) (*url.URL, [3]*url.URL, error) {
 	var targets [3]*url.URL
-	if c.Version != 1 || len(c.Listen) > 128 || len(c.CertificateSPKI) != 64 {
+	if (version != 1 && version != 2) || c.Version != version || len(c.Listen) > 128 || len(c.CertificateSPKI) != 64 {
 		return nil, targets, ErrConfig
 	}
 	h, p, e := net.SplitHostPort(c.Listen)

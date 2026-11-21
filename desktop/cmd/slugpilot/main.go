@@ -25,6 +25,7 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 	}
 	data := flags.String("data-dir", "", "Explicit disposable pilot directory")
 	node := flags.String("node-binary", "", "Explicit bundled normal SLUG node binary")
+	daily := flags.Bool("daily", false, "Select the explicit daily headless remote worker")
 	remote := flags.Bool("candidate-remote-pool", false, "Attach the original wallet to an explicit remote pool")
 	attachment := flags.String("remote-attachment-root", "", "Explicit remote attachment directory")
 	remoteConfig := flags.String("remote-config", "", "Protected public remote configuration file")
@@ -79,6 +80,13 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 		options, e := poolselection.HostedOptions(*nameVersion, nameExplicit, *data, dataExplicit)
 		if e != nil {
 			return errRemoteLaunchInvalid
+		}
+		if *daily {
+			output, ok := stdout.(*os.File)
+			if !ok {
+				return errRemoteLaunchInvalid
+			}
+			return runDailyRemoteLaunch(ctx, output, remoteLaunchPaths{*data, *attachment, *remoteConfig, *remoteRPC, *poolCredential, *admissionCredential}, options)
 		}
 		input, ok := stdin.(io.ReadCloser)
 		if !ok {

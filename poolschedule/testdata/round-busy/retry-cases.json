@@ -1,0 +1,432 @@
+{
+  "version": 1,
+  "scope": "hand-derived error-tree classification, no financial or source authority",
+  "allowed_leaf_names": [
+    "schedule_busy",
+    "schedule_unavailable",
+    "settlement_busy",
+    "settlement_source",
+    "settlement_backend",
+    "deadline",
+    "round_busy"
+  ],
+  "cases": [
+    {
+      "name": "schedule_busy",
+      "error": {
+        "leaf": "schedule_busy"
+      },
+      "retry": true
+    },
+    {
+      "name": "wrapped_schedule_busy",
+      "error": {
+        "wrap": {
+          "leaf": "schedule_busy"
+        }
+      },
+      "retry": true
+    },
+    {
+      "name": "schedule_unavailable",
+      "error": {
+        "leaf": "schedule_unavailable"
+      },
+      "retry": true
+    },
+    {
+      "name": "wrapped_schedule_unavailable",
+      "error": {
+        "wrap": {
+          "leaf": "schedule_unavailable"
+        }
+      },
+      "retry": true
+    },
+    {
+      "name": "settlement_busy",
+      "error": {
+        "leaf": "settlement_busy"
+      },
+      "retry": true
+    },
+    {
+      "name": "wrapped_settlement_busy",
+      "error": {
+        "wrap": {
+          "leaf": "settlement_busy"
+        }
+      },
+      "retry": true
+    },
+    {
+      "name": "settlement_source",
+      "error": {
+        "leaf": "settlement_source"
+      },
+      "retry": true
+    },
+    {
+      "name": "wrapped_settlement_source",
+      "error": {
+        "wrap": {
+          "leaf": "settlement_source"
+        }
+      },
+      "retry": true
+    },
+    {
+      "name": "settlement_backend",
+      "error": {
+        "leaf": "settlement_backend"
+      },
+      "retry": true
+    },
+    {
+      "name": "wrapped_settlement_backend",
+      "error": {
+        "wrap": {
+          "leaf": "settlement_backend"
+        }
+      },
+      "retry": true
+    },
+    {
+      "name": "deadline",
+      "error": {
+        "leaf": "deadline"
+      },
+      "retry": true
+    },
+    {
+      "name": "wrapped_deadline",
+      "error": {
+        "wrap": {
+          "leaf": "deadline"
+        }
+      },
+      "retry": true
+    },
+    {
+      "name": "round_busy",
+      "error": {
+        "leaf": "round_busy"
+      },
+      "retry": true
+    },
+    {
+      "name": "wrapped_round_busy",
+      "error": {
+        "wrap": {
+          "leaf": "round_busy"
+        }
+      },
+      "retry": true
+    },
+    {
+      "name": "nil",
+      "error": {
+        "leaf": "nil"
+      },
+      "retry": false
+    },
+    {
+      "name": "unknown",
+      "error": {
+        "leaf": "unknown"
+      },
+      "retry": false
+    },
+    {
+      "name": "cancelled",
+      "error": {
+        "leaf": "cancelled"
+      },
+      "retry": false
+    },
+    {
+      "name": "round_source_unavailable",
+      "error": {
+        "leaf": "round_source_unavailable"
+      },
+      "retry": false
+    },
+    {
+      "name": "round_corrupt",
+      "error": {
+        "leaf": "round_corrupt"
+      },
+      "retry": false
+    },
+    {
+      "name": "round_closed",
+      "error": {
+        "leaf": "round_closed"
+      },
+      "retry": false
+    },
+    {
+      "name": "settlement_corrupt",
+      "error": {
+        "leaf": "settlement_corrupt"
+      },
+      "retry": false
+    },
+    {
+      "name": "settlement_closed",
+      "error": {
+        "leaf": "settlement_closed"
+      },
+      "retry": false
+    },
+    {
+      "name": "schedule_clock",
+      "error": {
+        "leaf": "schedule_clock"
+      },
+      "retry": false
+    },
+    {
+      "name": "schedule_invalid",
+      "error": {
+        "leaf": "schedule_invalid"
+      },
+      "retry": false
+    },
+    {
+      "name": "schedule_capacity",
+      "error": {
+        "leaf": "schedule_capacity"
+      },
+      "retry": false
+    },
+    {
+      "name": "schedule_profile",
+      "error": {
+        "leaf": "schedule_profile"
+      },
+      "retry": false
+    },
+    {
+      "name": "schedule_poisoned",
+      "error": {
+        "leaf": "schedule_poisoned"
+      },
+      "retry": false
+    },
+    {
+      "name": "schedule_storage",
+      "error": {
+        "leaf": "schedule_storage"
+      },
+      "retry": false
+    },
+    {
+      "name": "round_busy_plus_unknown",
+      "error": {
+        "join": [
+          {
+            "leaf": "round_busy"
+          },
+          {
+            "leaf": "unknown"
+          }
+        ]
+      },
+      "retry": false
+    },
+    {
+      "name": "round_busy_plus_cancelled",
+      "error": {
+        "join": [
+          {
+            "leaf": "round_busy"
+          },
+          {
+            "leaf": "cancelled"
+          }
+        ]
+      },
+      "retry": false
+    },
+    {
+      "name": "round_busy_plus_round_source_unavailable",
+      "error": {
+        "join": [
+          {
+            "leaf": "round_busy"
+          },
+          {
+            "leaf": "round_source_unavailable"
+          }
+        ]
+      },
+      "retry": false
+    },
+    {
+      "name": "round_busy_plus_round_corrupt",
+      "error": {
+        "join": [
+          {
+            "leaf": "round_busy"
+          },
+          {
+            "leaf": "round_corrupt"
+          }
+        ]
+      },
+      "retry": false
+    },
+    {
+      "name": "round_busy_plus_settlement_corrupt",
+      "error": {
+        "join": [
+          {
+            "leaf": "round_busy"
+          },
+          {
+            "leaf": "settlement_corrupt"
+          }
+        ]
+      },
+      "retry": false
+    },
+    {
+      "name": "round_busy_plus_settlement_closed",
+      "error": {
+        "join": [
+          {
+            "leaf": "round_busy"
+          },
+          {
+            "leaf": "settlement_closed"
+          }
+        ]
+      },
+      "retry": false
+    },
+    {
+      "name": "round_busy_plus_schedule_clock",
+      "error": {
+        "join": [
+          {
+            "leaf": "round_busy"
+          },
+          {
+            "leaf": "schedule_clock"
+          }
+        ]
+      },
+      "retry": false
+    },
+    {
+      "name": "round_busy_plus_schedule_storage",
+      "error": {
+        "join": [
+          {
+            "leaf": "round_busy"
+          },
+          {
+            "leaf": "schedule_storage"
+          }
+        ]
+      },
+      "retry": false
+    },
+    {
+      "name": "all_allowed_join",
+      "error": {
+        "join": [
+          {
+            "leaf": "schedule_busy"
+          },
+          {
+            "leaf": "schedule_unavailable"
+          },
+          {
+            "leaf": "settlement_busy"
+          },
+          {
+            "leaf": "settlement_source"
+          },
+          {
+            "leaf": "settlement_backend"
+          },
+          {
+            "leaf": "deadline"
+          },
+          {
+            "leaf": "round_busy"
+          }
+        ]
+      },
+      "retry": true
+    },
+    {
+      "name": "nested_all_allowed",
+      "error": {
+        "wrap": {
+          "join": [
+            {
+              "wrap": {
+                "leaf": "round_busy"
+              }
+            },
+            {
+              "join": [
+                {
+                  "leaf": "settlement_busy"
+                },
+                {
+                  "leaf": "deadline"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "retry": true
+    },
+    {
+      "name": "nested_fatal",
+      "error": {
+        "wrap": {
+          "join": [
+            {
+              "leaf": "round_busy"
+            },
+            {
+              "wrap": {
+                "join": [
+                  {
+                    "leaf": "schedule_unavailable"
+                  },
+                  {
+                    "leaf": "unknown"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "retry": false
+    },
+    {
+      "name": "empty_multi_unwrap",
+      "error": {
+        "join": []
+      },
+      "retry": false
+    },
+    {
+      "name": "wrapped_nil",
+      "error": {
+        "wrap": {
+          "leaf": "nil"
+        }
+      },
+      "retry": false
+    }
+  ]
+}

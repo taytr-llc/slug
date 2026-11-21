@@ -1,0 +1,132 @@
+{
+  "version": 1,
+  "scope": "A/C harness-only definite pure money-read retry and retained partial proof",
+  "files": [
+    {
+      "target": "/Users/taytrrip/slug/set79-prep/public-daily-headless/main.go",
+      "before": {
+        "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/pre-money-read/main.go",
+        "bytes": 13871,
+        "sha256": "d45b128a1021a8f9982fef4a5a9f39e871d8417f0dfacd25c4dba0516aac02e2"
+      },
+      "after": {
+        "bytes": 14081,
+        "sha256": "1fc1060c68105d3807c568eb7217fe33ecfcf148dc2c13b288bd5c25e6434ea2"
+      }
+    },
+    {
+      "target": "/Users/taytrrip/slug/set79-prep/public-daily-headless/payment.go",
+      "before": {
+        "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/pre-money-read/payment.go",
+        "bytes": 8216,
+        "sha256": "c27a58575749b654b0562ae72034723877c7a2cfa9d972f756b085aad91a6eee"
+      },
+      "after": {
+        "bytes": 10011,
+        "sha256": "1483c0ec3882de879d2a2b8570422a45f4b6df70319c291cc6e1adea4b17edc8"
+      }
+    },
+    {
+      "target": "/Users/taytrrip/slug/set79-prep/public-daily-headless/run.py",
+      "before": {
+        "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/pre-money-read/run.py",
+        "bytes": 31301,
+        "sha256": "71ea904b88652b88b3e30af07cbe9e296a36a02d43a276405e8e687b5f61ec48"
+      },
+      "after": {
+        "bytes": 32403,
+        "sha256": "d5bed85d6b29771ff9f084d27ba1056bdf38ef52bde66ec83216893968d1a573"
+      }
+    },
+    {
+      "target": "/Users/taytrrip/slug/set79-prep/public-daily-headless/README.md",
+      "before": {
+        "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/pre-money-read/README.md",
+        "bytes": 1554,
+        "sha256": "b52379b31b5d8bc5838de6f62e88138ea04f17585b97aa10e6a8e276cd57b425"
+      },
+      "after": {
+        "bytes": 1707,
+        "sha256": "3293ca67314a8454b9440a9395bbeebbfa7927f81834b221506f545d1818f302"
+      }
+    },
+    {
+      "target": "/Users/taytrrip/slug/set79-prep/public-daily-headless/provenance.json",
+      "before": {
+        "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/pre-money-read/provenance.json",
+        "bytes": 2810,
+        "sha256": "22b21f267275b04763241638cebce28f7261caefacb9e739002684b609ba7bae"
+      },
+      "after": {
+        "bytes": 2990,
+        "sha256": "aea1615cd731e731287d168916ed07e6ba62d6abf3e03f938d7585b956472e21"
+      }
+    },
+    {
+      "target": "/Users/taytrrip/slug/set79-prep/public-daily-headless/runner-manifest.json",
+      "before": {
+        "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/pre-money-read/runner-manifest.json",
+        "bytes": 1891,
+        "sha256": "0fdb6a49ef5c00a47e6de7c126e5088caad896805163f16ee61a4ceac1ba2402"
+      },
+      "after": {
+        "bytes": 2272,
+        "sha256": "d6d653afaf87202a8b88e7a582828d484a6acffae94568f071455860fab0e25e"
+      }
+    }
+  ],
+  "new_notes": {
+    "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/MONEY_READ_SUCCESSOR.md",
+    "bytes": 1805,
+    "sha256": "b5641430a85f0192e89c7d65203bce9605830edc80deafc7c0f02ec6ad24cdce"
+  },
+  "diff": {
+    "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/money-read.diff",
+    "bytes": 14135,
+    "sha256": "01101df46c6985da0613d949b4a44dbff1fd796bcbabe490bc57fbb683dc6d34"
+  },
+  "predecessor_manifest": {
+    "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/pre-money-read/source-manifest.json",
+    "bytes": 5658,
+    "sha256": "520f49ce4ebfffc234febc663fa0a138326bf981c493380ff33d4c4f68ce57e4"
+  },
+  "failure": {
+    "path": "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt1/owned/actual-report.json",
+    "bytes": 4185,
+    "sha256": "78bc107e9f77668099c080334764455e3e2b38590349a99de7faaf507d8e393c"
+  },
+  "source_mapping": [
+    {
+      "path": "/Users/taytrrip/slug/slug/poolservice/server.go",
+      "bytes": 14087,
+      "sha256": "3f961e147f3df37673d0045e2b035c26d326daf0a218486484e9bb7a292e1c8e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolservice/daily_server.go",
+      "bytes": 8027,
+      "sha256": "d961a65eb8b25ebe3f8a8b7229d6cb456e2d093b8f63ba4a298b272963f7d706"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolservice/client.go",
+      "bytes": 12165,
+      "sha256": "7816f4aad86f42f107de15d348e8d1f4658aa3f5655af6ed81015ae0366f4185"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolservice/daily_client.go",
+      "bytes": 5012,
+      "sha256": "6b564e216ac4bef6f6df8240416e4a2d6a0805d4117c9cce737c0ee0f1ad92a0"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolsettle/operations.go",
+      "bytes": 15023,
+      "sha256": "d50c1f2e81a0d2df25699a08365372940765b4a544593de43c4e09f475f9297c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolsettle/daily_audit.go",
+      "bytes": 9062,
+      "sha256": "340ea31bdda0bdb527f049e9e04f17b71c85d912e2601c6b50a215e389062596"
+    }
+  ],
+  "executed": false,
+  "provenance_note": "Path C inherited A preimages now point to the preserved pre-money-read snapshot, retaining their exact previous bytes."
+}

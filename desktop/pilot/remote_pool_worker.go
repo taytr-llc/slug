@@ -50,7 +50,7 @@ type remotePoolAuthority struct {
 	lease *remotePoolPoolLease
 }
 
-func (p *remotePoolAuthority) ProtocolVersion() uint32        { return 1 }
+func (p *remotePoolAuthority) ProtocolVersion() uint32        { return p.owner.config.Version }
 func (p *remotePoolAuthority) AuthorityOrigin() string        { return p.owner.config.Origin }
 func (p *remotePoolAuthority) SourceConfig() poolshare.Config { return p.owner.config.Source }
 func (p *remotePoolAuthority) PublicKey() string              { return p.owner.view.GymPublicKey }
@@ -170,19 +170,39 @@ func (a *RemotePoolAttachment) Start(ctx context.Context, view string) error {
 	q, e := a.credentials.beginAdmission(life)
 	if e != nil {
 		cancel()
-		_ = p.Close()
-		return e
+		return a.startCleanup(e, p, nil)
 	}
-	w, e := prospectworker.NewPool(a.workerConfig, &remotePoolAuthority{a, p}, &remotePoolAdmission{a, q}, a.node, a.signAdmission, a.box)
+	var w *prospectworker.PoolWorker
+	if a.config.Version == 2 {
+		w, e = prospectworker.NewDailyPool(a.workerConfig, &remotePoolAuthority{a, p}, &remotePoolAdmission{a, q}, a.node, a.signAdmission, a.box)
+	} else {
+		w, e = prospectworker.NewPool(a.workerConfig, &remotePoolAuthority{a, p}, &remotePoolAdmission{a, q}, a.node, a.signAdmission, a.box)
+	}
 	if e != nil {
 		cancel()
-		_ = q.Close()
-		_ = p.Close()
-		return e
+		return a.startCleanup(e, p, q)
 	}
 	run := &remotePoolRun{ctx: life, cancel: cancel, done: make(chan struct{}), worker: w}
 	published := false
 	e = a.local.withView(work, func(_ gymaccount.Account, check func() error) error {
+		if a.config.Version == 2 {
+			if e := check(); e != nil {
+				return e
+			}
+			if e := work.Err(); e != nil {
+				return e
+			}
+			a.mu.Lock()
+			defer a.mu.Unlock()
+			if a.closing || !a.ready || a.run != nil || a.life.Err() != nil {
+				return ErrRemotePoolUnavailable
+			}
+			a.run = run
+			a.state, a.lastError = "starting", ""
+			a.active.Add(1)
+			published = true
+			return nil
+		}
 		if check() == nil && work.Err() == nil {
 			a.mu.Lock()
 			defer a.mu.Unlock()
@@ -199,8 +219,7 @@ func (a *RemotePoolAttachment) Start(ctx context.Context, view string) error {
 	})
 	if e != nil {
 		cancel()
-		_ = q.Close()
-		_ = p.Close()
+		e = a.startCleanup(e, p, q)
 		if published {
 			a.mu.Lock()
 			if a.run == run {
@@ -216,6 +235,36 @@ func (a *RemotePoolAttachment) Start(ctx context.Context, view string) error {
 	go a.runWorker(run, p, q)
 	return nil
 }
+
+// The daily path retains any observed failed cleanup owner. Legacy callers keep
+// their original error behavior; both modes still close the same exact leases.
+type remotePoolStartCleanup struct {
+	pool      *remotePoolPoolLease
+	admission *remotePoolAdmissionLease
+	cause     error
+}
+
+func (*remotePoolStartCleanup) Error() string   { return "remote pool start cleanup incomplete" }
+func (e *remotePoolStartCleanup) Unwrap() error { return e.cause }
+func (a *RemotePoolAttachment) retainStartCleanup(p *remotePoolPoolLease, q *remotePoolAdmissionLease, ce error) error {
+	if ce == nil || a.config.Version != 2 {
+		return nil
+	}
+	held := &remotePoolStartCleanup{pool: p, admission: q, cause: errors.Join(ErrRemotePoolCleanup, ce)}
+	a.mu.Lock()
+	a.closeErr = errors.Join(a.closeErr, held)
+	a.mu.Unlock()
+	return held
+}
+func (a *RemotePoolAttachment) startCleanup(cause error, p *remotePoolPoolLease, q *remotePoolAdmissionLease) error {
+	ce := errors.Join(q.Close(), p.Close())
+	held := a.retainStartCleanup(p, q, ce)
+	if held == nil {
+		return cause
+	}
+	return errors.Join(cause, held)
+}
+
 func (a *RemotePoolAttachment) runWorker(run *remotePoolRun, p *remotePoolPoolLease, q *remotePoolAdmissionLease) {
 	defer a.active.Done()
 	e := run.worker.Run(run.ctx)

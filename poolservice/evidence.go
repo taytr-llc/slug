@@ -11,5 +11,5 @@ import (
 // Journal readers may use a claimed digest for structural auditing, but must
 // verify PoW before acting on retained evidence.
 func SubmissionMatches(source poolshare.Config, work poolshare.MiningWork, nonce uint32, check prospectwork.ShareCheck, receipt poolshare.Submission) bool {
-	return validSubmission(source, work, nonce, check, receipt)
+	return source.Version == poolshare.Version1 && validSubmission(source, work, nonce, check, receipt)
 }

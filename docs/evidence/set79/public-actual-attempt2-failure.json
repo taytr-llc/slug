@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "scope": "Set79 second public DAILY actual acceptance failure",
+  "passed": false,
+  "failure": "original Issue readiness deadline: context.deadlineExceededError: context deadline exceeded",
+  "phase": "original B/C jobs and true ordinary two-row intake",
+  "actual_started": true,
+  "sources_unchanged": true,
+  "copies_unchanged": true,
+  "profile_artifacts_unchanged": true,
+  "runtime_clean_join": true,
+  "runtime_errors": [],
+  "all_outer_groups_empty": true,
+  "node_cleanup": [
+    {
+      "clean": true,
+      "forced_kill": false,
+      "joined": true,
+      "log_close_error": false,
+      "stop_rpc_error": false,
+      "unexpected_exit": false,
+      "wait_error": ""
+    },
+    {
+      "clean": true,
+      "forced_kill": false,
+      "joined": true,
+      "log_close_error": false,
+      "stop_rpc_error": false,
+      "unexpected_exit": false,
+      "wait_error": ""
+    }
+  ],
+  "payout_broadcast_attempts": 1,
+  "payout_accepted_broadcasts": 1,
+  "fresh_operator_cli_lifetimes": 0,
+  "maintenance_interval_ms": 30000,
+  "readiness_plus_issue_budget_ms": 20000,
+  "public_seed_mining": false,
+  "files": [
+    {
+      "path": "artifacts/set79/public-actual-attempt2/report.json",
+      "bytes": 8349,
+      "sha256": "cd6cdcdbef0994bef890d492cc7766d99c74e102faf8d860b77a89d4b7f1ac14"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt2/execution-lock.json",
+      "bytes": 5959,
+      "sha256": "d02edbb6e60f8fec8b4bea6a64ee05026438b36b693300efa43557c837b097b5"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt2/source-before.json",
+      "bytes": 446060,
+      "sha256": "c2822ae9589747781030f826b5069457c0f46e5134ba987b252c634d88382fce"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt2/source-after.json",
+      "bytes": 446060,
+      "sha256": "c2822ae9589747781030f826b5069457c0f46e5134ba987b252c634d88382fce"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt2/source-copies.json",
+      "bytes": 1641,
+      "sha256": "499f07e838fa4e973936c7968b1e31b113fa652c42c5e02d7bf951dee47ac31b"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt2/profile.json",
+      "bytes": 962,
+      "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt2/actual.log",
+      "bytes": 86,
+      "sha256": "2bfcdbb4618c37464c90a44df2d16f48ed109b2ed0ad5bbf2af3a2792e6d580b"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt2/owned/actual-report.json",
+      "bytes": 6934,
+      "sha256": "523a1d31c9eb43b27c22bea76c3da368c0e7e106f445fb32a6eecc47ef127530"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt2/owned/01-runtime-listening.json",
+      "bytes": 2461,
+      "sha256": "e4fd7bf72234b3f34683292bf331c51f420452dc0511861e083d24aa254b20ba"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt2/owned/02-A-block.json",
+      "bytes": 3803,
+      "sha256": "84f0c8702802ee201083359801262ea45f33652f1dd31bcf32173cf8f8cb6130"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt2/owned/03-A-pending.json",
+      "bytes": 18000,
+      "sha256": "b7758123294be1386b06b3bcc222946f56e260e53791618929a590dba9c7b175"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt2/owned/selected-public-setup.json",
+      "bytes": 6164,
+      "sha256": "0dbdd954b66fa7b89460b07adb2cbefdec20f37648d02be6bc752825034c6dad"
+    }
+  ],
+  "qualification": "Failure retained. Original UTC scheduler prepared and sent A once; lost acknowledgment preserved original reserved A and passed closed audit. Restarted B/C job readiness timed out before full intake, expiry or CLI restart proof. Harness combines readiness and request in20s while maintenance interval is30s; source review of bounded readiness successor is pending."
+}

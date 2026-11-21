@@ -1,0 +1,276 @@
+--- pre-balance-wait-evidence/main.go
++++ public-daily-actual/main.go
+@@ -855,6 +855,7 @@
+ 		require(filepath.IsAbs(p), "explicit absolute selected inputs")
+ 	}
+ 	check(os.Mkdir(root, 0700), "fresh actual root")
++	balanceWaits := newDailyBalanceWaitEvidence(root)
+ 	private := filepath.Join(root, "private-fixture")
+ 	check(os.Mkdir(private, 0700), "private fixture directory")
+ 	original, mnemonic := poolSetup(reference)
+@@ -952,7 +953,7 @@
+ 	payment := validatePayment(lost.Raw, s, coinA, economics)
+ 	require(payment["txid"] == lost.TxID, "accepted original A txid")
+ 	status := running.status(ctx)
+-	pendingBalances := dailyWaitBalances(ctx, clients, economics, "a_lost_reply", 0, 45*time.Second, false)
++	pendingBalances := dailyWaitBalances(ctx, balanceWaits, clients, economics, "a_lost_reply", 0, 45*time.Second, false)
+ 	require(status.Schedule != nil && status.Schedule.State.Attempt != nil && status.Schedule.State.Attempt.Kind == "daily" && status.Schedule.State.Attempt.StartedAtMS >= due.UnixMilli(), "actual scheduler daily attempt, never manual RunDaily")
+ 	check(running.stop(), "join original pending A owner")
+ 	out["original_runtime_completion"] = running.completionEvidence()
+@@ -963,7 +964,7 @@
+ 	assertAttempts(relay, lost.Raw)
+ 	require(len(relay.sends()) == 1, "one accepted A send")
+ 	write(filepath.Join(root, "03-A-pending.json"), map[string]any{"audit": first, "payment": payment, "balances": pendingBalances, "status": status, "due_ms": due.UnixMilli(), "due_observed_ms": dueObserved})
+-	result := runDailyLate(ctx, root, private, operatorBinary, s, a, b, relay, &running, &children, configs, clients, rpcConfig, first, economics, day)
++	result := runDailyLate(ctx, root, private, operatorBinary, s, a, b, relay, &running, &children, configs, clients, rpcConfig, first, economics, day, balanceWaits)
+ 	for k, v := range result {
+ 		out[k] = v
+ 	}
+--- pre-balance-wait-evidence/late_flow.go
++++ public-daily-actual/late_flow.go
+@@ -217,13 +217,16 @@
+ func dailyBalanceMatches(got poolsettle.DailyBalance, want expectedBalance, reason bool) bool {
+ 	return got.Confirmed == want.Confirmed && got.Available == want.Available && got.ReservedAtoms == want.Reserved && got.PaidAtoms == want.Paid && (!reason || got.Reason == want.Reason)
+ }
+-func dailyWaitBalances(ctx context.Context, clients []*poolservice.Client, e actualEconomics, name string, after int64, d time.Duration, reasons bool) []poolservice.DailyBalanceResponse {
++func dailyWaitBalances(ctx context.Context, evidence *dailyBalanceWaitEvidence, clients []*poolservice.Client, e actualEconomics, name string, after int64, d time.Duration, reasons bool) []poolservice.DailyBalanceResponse {
++	record, save := evidence.begin(ctx, name, after, d, reasons)
++	defer save()
+ 	want, ok := e.Reports[name]
+ 	require(ok && len(want.Balances) == 2, "independent report expectation")
+ 	out := make([]poolservice.DailyBalanceResponse, 2)
+ 	wait(ctx, d, func() bool {
+ 		for i, c := range clients {
+ 			v, err := c.DailyBalance(ctx)
++			record.sample(i, v, err)
+ 			if err != nil || v.ObservedAtMS < after || !dailyBalanceMatches(v.Balance, want.Balances[i], reasons) {
+ 				return false
+ 			}
+@@ -231,6 +234,7 @@
+ 		}
+ 		return true
+ 	})
++	record.Terminal = "success"
+ 	return out
+ }
+ func dailyPages(ctx context.Context, clients []*poolservice.Client, s pooloperator.Setup, txid string, e actualEconomics, name string) []poolsettle.DailyPayoutPage {
+@@ -294,7 +298,7 @@
+ 	return c
+ }
+ 
+-func runDailyLate(ctx context.Context, root, private, binary string, s pooloperator.Setup, a, b *node, relay *rpcRelay, running **runningOperator, children *[]*childProcess, configs []publicFixtureMinerConfig, clients []*poolservice.Client, rpcConfig prospectnode.RPCConfig, first lateAudit, e actualEconomics, day string) map[string]any {
++func runDailyLate(ctx context.Context, root, private, binary string, s pooloperator.Setup, a, b *node, relay *rpcRelay, running **runningOperator, children *[]*childProcess, configs []publicFixtureMinerConfig, clients []*poolservice.Client, rpcConfig prospectnode.RPCConfig, first lateAudit, e actualEconomics, day string, balanceWaits *dailyBalanceWaitEvidence) map[string]any {
+ 	phase = "original B/C jobs and true ordinary two-row intake"
+ 	*running = constructRuntime(ctx, root, private, s, rpcConfig, false, "")
+ 	(*running).run(ctx, s.Ingress.Origin)
+@@ -383,7 +387,7 @@
+ 		return true
+ 	})
+ 	require(reflect.DeepEqual(reopenedWork, workB), "fresh process retained original work/template")
+-	recovered := dailyWaitBalances(ctx, clients, e, "a_recovered_before_b_credit", 0, 90*time.Second, true)
++	recovered := dailyWaitBalances(ctx, balanceWaits, clients, e, "a_recovered_before_b_credit", 0, 90*time.Second, true)
+ 	require(len(relay.sends()) == 1, "original A recovered by observation, never resent")
+ 	phase = "B59 original process observation then closed audit"
+ 	for height := uint32(103); height < 162; height++ {
+@@ -391,7 +395,7 @@
+ 	}
+ 	observed59 := time.Now().UnixMilli()
+ 	check(pauseActual(ctx, 65*time.Second), "two original30s maintenance intervals at B59")
+-	balances59 := dailyWaitBalances(ctx, clients, e, "b59_same_day", observed59, 45*time.Second, true)
++	balances59 := dailyWaitBalances(ctx, balanceWaits, clients, e, "b59_same_day", observed59, 45*time.Second, true)
+ 	pages59 := dailyPages(ctx, clients, s, first.Body.TxID, e, "b59_same_day")
+ 	cli.stop()
+ 	require(cli.clean(), "first production DAILY process joined")
+@@ -405,7 +409,7 @@
+ 	at60 := time.Now().UnixMilli()
+ 	sameDay(day)
+ 	cli = lateStartCLI(ctx, binary, root, private, "slugpoold-daily-b60", s, children)
+-	balances60 := dailyWaitBalances(ctx, clients, e, "b60_same_day", at60, 150*time.Second, true)
++	balances60 := dailyWaitBalances(ctx, balanceWaits, clients, e, "b60_same_day", at60, 150*time.Second, true)
+ 	check(pauseActual(ctx, 35*time.Second), "repeat original scheduler interval without second batch")
+ 	pages60 := dailyPages(ctx, clients, s, first.Body.TxID, e, "b60_same_day")
+ 	cli.stop()
+--- /dev/null
++++ public-daily-actual/balance_wait.go
+@@ -0,0 +1,76 @@
++package main
++
++import (
++	"context"
++	"path/filepath"
++	"time"
++
++	"github.com/taytr-llc/slug/poolservice"
++)
++
++// Diagnostic evidence only. Values come from the existing authenticated read;
++// there are no added requests, retries, replacement contexts or acceptance rules.
++type dailyBalanceWaitSample struct {
++	Sample       uint64                            `json:"sample"`
++	GymIndex     int                               `json:"gym_index"`
++	ObservedAtMS int64                             `json:"observed_at_ms"`
++	Failure      *lateServiceFailure               `json:"failure,omitempty"`
++	Balance      *poolservice.DailyBalanceResponse `json:"balance,omitempty"`
++}
++
++type dailyBalanceWaitRecord struct {
++	Name              string                   `json:"name"`
++	BudgetMS          int64                    `json:"budget_ms"`
++	StartedAtMS       int64                    `json:"started_at_ms"`
++	EndedAtMS         int64                    `json:"ended_at_ms"`
++	ElapsedMS         int64                    `json:"elapsed_ms"`
++	ContextDeadlineMS int64                    `json:"context_deadline_ms"`
++	AfterMS           int64                    `json:"after_ms"`
++	CheckReasons      bool                     `json:"check_reasons"`
++	TotalSamples      uint64                   `json:"total_samples"`
++	Last              []dailyBalanceWaitSample `json:"last"`
++	Terminal          string                   `json:"terminal"`
++}
++
++type dailyBalanceWaitEvidence struct {
++	Version uint32                   `json:"version"`
++	Waits   []dailyBalanceWaitRecord `json:"waits"`
++	path    string
++}
++
++func newDailyBalanceWaitEvidence(root string) *dailyBalanceWaitEvidence {
++	return &dailyBalanceWaitEvidence{Version: 1, Waits: []dailyBalanceWaitRecord{}, path: filepath.Join(root, "balance-wait-evidence.json")}
++}
++
++func (r *dailyBalanceWaitRecord) sample(gym int, v poolservice.DailyBalanceResponse, err error) {
++	r.TotalSamples++
++	s := dailyBalanceWaitSample{Sample: r.TotalSamples, GymIndex: gym, ObservedAtMS: time.Now().UnixMilli()}
++	if err != nil {
++		failure := lateFailure(err) // Closed code/unknown only, never raw error text.
++		s.Failure = &failure
++	} else {
++		// DailyBalance has already authenticated the complete source, settlement,
++		// recipient and public balance before returning this owned typed value.
++		s.Balance = &v
++	}
++	if len(r.Last) == 32 {
++		copy(r.Last, r.Last[1:])
++		r.Last = r.Last[:31]
++	}
++	r.Last = append(r.Last, s)
++}
++
++func (e *dailyBalanceWaitEvidence) begin(ctx context.Context, name string, after int64, budget time.Duration, reasons bool) (*dailyBalanceWaitRecord, func()) {
++	require(e != nil && len(e.Waits) < 4, "bounded public balance wait evidence")
++	started := time.Now()
++	r := &dailyBalanceWaitRecord{Name: name, BudgetMS: budget.Milliseconds(), StartedAtMS: started.UnixMilli(), AfterMS: after, CheckReasons: reasons, Last: []dailyBalanceWaitSample{}, Terminal: "failure"}
++	if deadline, ok := ctx.Deadline(); ok {
++		r.ContextDeadlineMS = deadline.UnixMilli()
++	}
++	return r, func() {
++		r.EndedAtMS, r.ElapsedMS = time.Now().UnixMilli(), time.Since(started).Milliseconds()
++		e.Waits = append(e.Waits, *r)
++		// Runs on the original wait's panic path too, before outer owner cleanup.
++		write(e.path, e)
++	}
++}
+--- pre-balance-wait-evidence/README.md
++++ public-daily-actual/README.md
+@@ -28,3 +28,5 @@
+ Attempt2 reached the real scheduled A broadcast and immutable reserved audit, then failed the reopened B/C readiness phase. Its runtime and nodes joined cleanly. The combined readiness/Issue allowance was 20s although the selected maintenance interval is 30000ms; one legitimate maintenance retry can outlast that allowance. The final paused reason was not recorded, so the precise production cause is not claimed. This successor separates a 90s read-only readiness wait on the same runtime from the unchanged 20s Issue operation. Each readiness observation is retained in the original runtime's public completion evidence, and premature Run completion remains fatal. Issue still retries only exact definite busy/rate_limited responses; no unknown retry, replacement owner, request deadline, selected configuration, 900s parent or 1080s outer bound changes. The complete predecessor manifest/files are preserved under `pre-startup-readiness/`.
+ 
+ This is a finite two-gym transport/runtime proof. It does not establish physical-full recovery, continuous 64-miner operation, deployment, account login, or wallet history migration. The unchanged `node_helpers.go` is copied from the committed late-winner harness; main/flow/audit adapt only this selected scenario. Compilation, race behavior and runtime evidence remain pending until the root executes the frozen snapshot.
++
++Balance-wait diagnostic successor: the same four original waits now retain their names, selected budgets, start/end/context deadline, total existing reads and last 32 public outcomes in `balance-wait-evidence.json`. Each outcome is only a closed code/unknown flag or the complete authenticated daily balance. Deferred persistence includes bounded-wait failure. No request, wait predicate, polling interval, credential, economic assertion or deadline changes. The runner binds this artifact on success and retains it on failure; a refusal is an observation, not proof of its internal cause. Earlier actual failures and their exact source remain preserved.
+--- pre-balance-wait-evidence/run-public-actual.py
++++ run-public-actual.py
+@@ -9,7 +9,7 @@
+ REFERENCE=ROOT/'testdata/public-daily/reference-v1.json'
+ ECONOMICS=ROOT/'poolsettle/testdata/daily-admission-actual/reference-v1.json'
+ CHECKER=BASE/'set79-prep/check-public-actual.py'
+-SOURCES=('main.go','node_helpers.go','late_flow.go','late_audit.go','go.mod')
++SOURCES=('main.go','node_helpers.go','late_flow.go','late_audit.go','balance_wait.go','go.mod')
+ PINNED={LEGACY/'run.py':'b81af69c02a18b7f74ed96e08ae4dba8548e94a4958aeacb721c62dcbf8ba05e',
+         LEGACY/'runner_support.py':'54bb3e7caf33e744ce76bf366dd23a4eff4d370d9246b85758089b57dd2439d7',
+         PROFILE:'b6033d66edb4d24a57a7fac4e59ddaeee6964f0943aca21fddc6f65c7f5e6ee4',
+@@ -31,7 +31,7 @@
+     lockpath=Path(args.approved_lock)
+     need(support.identity(lockpath)['sha256']==args.approved_lock_sha256,'execution lock changed')
+     lock=json.loads(lockpath.read_bytes())
+-    required=set(PINNED)|{HERE/s for s in SOURCES}|{HERE/'PLAN.md',CHECKER,Path(__file__).resolve(),ROOT/'desktop/go.sum',ROOT/'build-profile.json',ROOT/'scripts/candidate-go.sh'}
++    required=set(PINNED)|{HERE/s for s in SOURCES}|{HERE/'PLAN.md',HERE/'source-manifest.json',HERE/'balance-wait-manifest.json',CHECKER,Path(__file__).resolve(),ROOT/'desktop/go.sum',ROOT/'build-profile.json',ROOT/'scripts/candidate-go.sh'}
+     need(lock.get('approved_by')=='root' and lock.get('execution_authorized') is True and lock.get('scope')=='set79-public-daily-actual','missing exact execution selection')
+     need(required <= set(map(Path,lock['files'])) and len(lock['files'])<=160,'incomplete/oversized input selection')
+     def locked():return all(support.identity(p)==v for p,v in lock['files'].items()) and support.identity(lockpath)['sha256']==args.approved_lock_sha256
+@@ -82,6 +82,16 @@
+     except BaseException as e:
+         report['error']=dict(type=type(e).__name__,message=str(e)[:1000])
+     finally:
++        # Preserve bounded PUBLIC observations even when the actual subprocess
++        # failed before the full success checker. This grants no acceptance.
++        try:
++            if (artifact/'owned/balance-wait-evidence.json').exists():
++                report['balance_wait_diagnostics']=checker.balance_wait_evidence(artifact/'owned',support)
++                if report.get('passed'):
++                    need(all(report['public_evidence'].get(p)==v for p,v in report['balance_wait_diagnostics']['evidence'].items()),'public balance diagnostics changed after success checks')
++        except BaseException as e:
++            report['passed']=False
++            report['balance_wait_diagnostic_error']=dict(type=type(e).__name__,message=str(e)[:1000])
+         report['artifacts']=built
+         try:
+             after={str(p):support.identity(p) for p in before} if before is not None else None
+@@ -95,7 +105,7 @@
+             report['passed']=False;report['final_binding_error']=dict(type=type(e).__name__,message=str(e)[:1000])
+         report['clean_join']=bool(report['commands']) and all(old.okay(c) for c in report['commands'])
+         support.write(artifact/'report.json',report)
+-    print(json.dumps({k:v for k,v in report.items() if k not in ('commands','artifacts','public_evidence')}),flush=True)
++    print(json.dumps({k:v for k,v in report.items() if k not in ('commands','artifacts','public_evidence','balance_wait_diagnostics')}),flush=True)
+     return 0 if report['passed'] else 1
+ 
+ if __name__=='__main__':
+--- pre-balance-wait-evidence/check-public-actual.py
++++ check-public-actual.py
+@@ -3,6 +3,37 @@
+ 
+ def need(ok,why):
+     if not ok:raise RuntimeError(why)
++
++def balance_wait_evidence(root,support,complete=False):
++    path=root/'balance-wait-evidence.json';identity=support.identity(path)
++    need(0<identity['bytes']<=4<<20,'public balance wait evidence bound')
++    raw=path.read_bytes();need(len(raw)==identity['bytes'] and support.identity(path)==identity,'public balance wait evidence changed')
++    value=json.loads(raw)
++    need(set(value)=={'version','waits'} and value['version']==1 and isinstance(value['waits'],list) and 1<=len(value['waits'])<=4,'balance wait evidence shape')
++    selected=root/'selected-public-setup.json';selected_id=support.identity(selected)
++    need(0<selected_id['bytes']<=1<<20,'public selected setup bound')
++    setup=json.loads(selected.read_bytes());need(support.identity(selected)==selected_id,'selected setup changed during diagnostic read')
++    expected=[('a_lost_reply',45000,False),('a_recovered_before_b_credit',90000,True),('b59_same_day',45000,True),('b60_same_day',150000,True)]
++    codes={'invalid_request','unauthorized','forbidden','not_found','expired','rejected','too_large','rate_limited','busy','capacity','unavailable','outcome_unknown','non_client_error','unrecognized'}
++    fields={'name','budget_ms','started_at_ms','ended_at_ms','elapsed_ms','context_deadline_ms','after_ms','check_reasons','total_samples','last','terminal'}
++    if complete:need(len(value['waits'])==4,'all original balance waits required')
++    for index,w in enumerate(value['waits']):
++        name,budget,reasons=expected[index]
++        need(set(w)==fields and w['name']==name and w['budget_ms']==budget and w['check_reasons'] is reasons,'original balance wait selection')
++        need(all(type(w[k]) is int and w[k]>=0 for k in ('started_at_ms','ended_at_ms','elapsed_ms','context_deadline_ms','after_ms','total_samples')) and w['started_at_ms']>0 and w['ended_at_ms']>0,'public balance wait times/count')
++        need(w['terminal'] in ('success','failure') and (not complete or w['terminal']=='success') and (index==len(value['waits'])-1 or w['terminal']=='success'),'balance wait terminal state')
++        tail=w['last'];total=w['total_samples']
++        need(isinstance(tail,list) and len(tail)==min(32,total),'bounded last32 balance outcomes')
++        for n,row in enumerate(tail,start=total-len(tail)+1):
++            common={'sample','gym_index','observed_at_ms'}
++            need(set(row) in (common|{'failure'},common|{'balance'}) and row['sample']==n and type(row['gym_index']) is int and row['gym_index'] in (0,1) and type(row['observed_at_ms']) is int and row['observed_at_ms']>0,'public sample framing/correlation')
++            if 'failure' in row:
++                f=row['failure'];need(set(f)=={'code','outcome_unknown'} and f['code'] in codes and type(f['outcome_unknown']) is bool,'closed public refusal only')
++            else:
++                b=row['balance'];i=row['gym_index'];enrollment=setup['miners']['enrollments'][i]
++                need(set(b)=={'version','binding_id','settlement_config_id','recipient_script','balance','observed_at_ms'} and b['version']==2 and b['binding_id']==setup['wallet_guard']['source_binding_id'] and b['settlement_config_id']==setup['wallet_guard']['settlement_config_id'] and b['recipient_script']==enrollment['payee_script'] and b['balance']['gym_id']==enrollment['gym_id'],'original authenticated diagnostic balance binding')
++        if w['terminal']=='success':need(len(tail)>=2 and [x['gym_index'] for x in tail[-2:]]==[0,1] and all('balance' in x for x in tail[-2:]),'successful wait needs both final authenticated reads')
++    return dict(evidence={str(path):identity,str(selected):selected_id},waits=value['waits'])
+ 
+ def check(root,reference,economics,support):
+     evidence={}
+@@ -33,6 +64,10 @@
+     listening=read('01-runtime-listening.json')
+     a=read('02-A-block.json');first=read('03-A-pending.json');full=read('04-full-intake.json')
+     absent=read('05-expired-absent.json');b=read('06-B-pending.json');p59=read('07-B59-restart.json');p60=read('08-B60-final.json')
++    waits=balance_wait_evidence(root,support,complete=True);evidence.update(waits['evidence'])
++    final_reads=(first['balances'],p59['recovered_balances'],p59['balances'],p60['balances'])
++    for w,balances in zip(waits['waits'],final_reads):
++        need([sample['balance'] for sample in w['last'][-2:]]==balances,'diagnostic final reads differ from original accepted phase evidence')
+     auditA=first['audit'];body=auditA['body'];day=body['day']
+     need(body['payments']==[dict(gym_id=gyms[0],script=enroll[0]['payee_script'],atoms=e['a_payment_atoms'])] and len(body['inputs'])==e['a_inputs'] and body['fee_atoms']==e['a_fee_atoms'] and body['change']['atoms']==e['a_change_atoms'] and body['change']['index']==1 and body['change']['script']==s['wallet_guard']['funding_script'],'independent A transaction amounts/provenance')
+     need(body['version']==2 and body['sequence']==1 and auditA['delivery']=='prepared' and auditA['header']['pending_batch']==1,'original A reserved')

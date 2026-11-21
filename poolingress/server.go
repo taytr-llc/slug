@@ -36,7 +36,10 @@ type Server struct {
 }
 
 func New(c Config, certificatePEM, privateKeyPEM []byte) (*Server, error) {
-	external, targets, e := validateConfig(c)
+	return newSelected(c, certificatePEM, privateKeyPEM, 1)
+}
+func newSelected(c Config, certificatePEM, privateKeyPEM []byte, version uint32) (*Server, error) {
+	external, targets, e := validateSelectedConfig(c, version)
 	if e != nil {
 		return nil, e
 	}
@@ -157,7 +160,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		fail(w, http.StatusServiceUnavailable)
 		return
 	}
-	selected, ok := requestRoute(r, s.host)
+	selected, ok := requestSelectedRoute(r, s.host, s.config.Version)
 	if !ok || r.TLS == nil || r.Body == nil {
 		fail(w, http.StatusBadRequest)
 		return

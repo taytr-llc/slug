@@ -1,0 +1,228 @@
+{
+  "version": 1,
+  "scope": "Set79 Path A original-wallet DAILY actual; source-only unexecuted",
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/main.go",
+      "bytes": 13962,
+      "sha256": "fe3ea7476e038dfacb7d5db57cf142752f47cb729b81072a97b8d525ca479a14"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/selection.go",
+      "bytes": 6929,
+      "sha256": "e84e8563c197aae0795ed49e01cc41f6bf85efeed9979442192d5884d8052afc"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/runtime_helpers.go",
+      "bytes": 11411,
+      "sha256": "7b55b892d218f236ed0c4b6408f0f909996bb2ce1f8c20cea4a338de9ebb2caa"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/relay.go",
+      "bytes": 4206,
+      "sha256": "2abc55505b26b680a9cf321a04cd57e5227ca5cdccd8dfe4534a9d4a8d98c69c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/work_evidence.go",
+      "bytes": 9503,
+      "sha256": "f6d1e31937ec003c88f5ef7b13952ac1ed34d5997b5b05bb7407e97e08bcae14"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/payment.go",
+      "bytes": 10011,
+      "sha256": "1483c0ec3882de879d2a2b8570422a45f4b6df70319c291cc6e1adea4b17edc8"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/operator_audit.go",
+      "bytes": 9605,
+      "sha256": "6f9c5e90841ed0b5362282749ceb6705380d1ab720dfc1ced2ea3653510d54fb"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/node_helpers.go",
+      "bytes": 8530,
+      "sha256": "2adf72c974e2a171e52c6d5275dd965f9e3020e54acd03f13766436a4a55cb8a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/go.mod",
+      "bytes": 1373,
+      "sha256": "145a1639a11781fc24fa6f850c9fa71667af83cb1adf85c9b63985f0a541be35"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/run.py",
+      "bytes": 28071,
+      "sha256": "20b5ac5e29614435615909d1c2baae2d5224d5a124c53bf07ad74ffd2ee571cc"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/runner_support.py",
+      "bytes": 3888,
+      "sha256": "54bb3e7caf33e744ce76bf366dd23a4eff4d370d9246b85758089b57dd2439d7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/README.md",
+      "bytes": 4751,
+      "sha256": "6d8c2d7cadefceb7bf03fe200e7f48111a554841c191abdbb83adc1ca642fc18"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/PLAN.md",
+      "bytes": 16732,
+      "sha256": "2e737d252b48500b2753dd08350b4caeee8299af19e1a5e8deb33263b4569ae5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/provenance.json",
+      "bytes": 1578,
+      "sha256": "88dfdbd4b1543632abe465dde0a809fbe37cfc401e10b0a0aae19360c6c5e499"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/fixture-public.json",
+      "bytes": 7244,
+      "sha256": "83bfe6cdd6020524199ba6abada82614fb67987b32b9fb96111bf6bddf879f23"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/fixture-catalog.json",
+      "bytes": 66249,
+      "sha256": "2637978c2e08637dae2a21bf7fcb8e9ab37edb3476e2b9512c73ff16809b7e55"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/go-source-manifest.json",
+      "bytes": 3711,
+      "sha256": "5f694dd5e7c1288b518998d82cbf651a199a0dd88329f9d56ecf309d888b5039"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/core.py",
+      "bytes": 5913,
+      "sha256": "f7554311b65ebd8773cc75d124698bd41680224dde75173f66cafea4eec60685"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/generate.py",
+      "bytes": 7716,
+      "sha256": "69932211259ef4f1d3038e8e8799348945cb755972c6f6eede777d5101ca34a3"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/input-catalog.json",
+      "bytes": 1762,
+      "sha256": "9ef3742c35b2887da1b51c15c3c9ff000dbeff61834785aaa7c8674a5f9a18fb"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/inputs/CONTRACT.md",
+      "bytes": 25102,
+      "sha256": "a6a30ab580f6463d30bd29c00a4c60d7d7b32e6d6d70560b761a7661cbd0da05"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/inputs/chain-params.go",
+      "bytes": 47803,
+      "sha256": "1bfdd5f930487edccdf5025d9f22b31b31bb8758a47198dd00ae576d574e8065"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/inputs/fixture-catalog.json",
+      "bytes": 66249,
+      "sha256": "2637978c2e08637dae2a21bf7fcb8e9ab37edb3476e2b9512c73ff16809b7e55"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/inputs/fixture-public.json",
+      "bytes": 7244,
+      "sha256": "83bfe6cdd6020524199ba6abada82614fb67987b32b9fb96111bf6bddf879f23"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/inputs/native-shape.go",
+      "bytes": 2930,
+      "sha256": "8b338a83505d57d66267e219b8a9835e2efa4454979a44d7beecb1c7614fb883"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/inputs/public-daily.json",
+      "bytes": 3176583,
+      "sha256": "a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/recipe.json",
+      "bytes": 1336,
+      "sha256": "b32273cfbfea3bd8cba72a5a4fb9986c619bdd510125b9c9641a5bc4653e2751"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/source-ready.json",
+      "bytes": 1678,
+      "sha256": "49b53496726c9c6a2f027c5958f2bd713941f146857535c82c10b4c0f056ae63"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/peer-outbox-state.diff",
+      "bytes": 15711,
+      "sha256": "478e0612de8080f4a2b83edfc7172e5bbceec79292ddfc88224e77aa27db8bd7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/runtime-completion.diff",
+      "bytes": 6457,
+      "sha256": "c80f09fdb59433f2fd9c13e5f6d06d1411e8ceed6c0bd173bea7c0a8923db4ba"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/runtime-completion-manifest.json",
+      "bytes": 2092,
+      "sha256": "06eec8a2c4cfe43642466e17c4e4a4ccebd5720fa0895ad3444393622e89575f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/runtime-completion-final.diff",
+      "bytes": 437,
+      "sha256": "eb1a4c56f85caa248b607ea55d7c1b4288852909a172afea6c93ec9147630e59"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/MONEY_READ_SUCCESSOR.md",
+      "bytes": 1805,
+      "sha256": "b5641430a85f0192e89c7d65203bce9605830edc80deafc7c0f02ec6ad24cdce"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/money-read.diff",
+      "bytes": 7891,
+      "sha256": "3ce70ec07d14f54c006a4a86c4d1a674ab11eb4a3e18e55457deef375f4e37b9"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/money-read-manifest.json",
+      "bytes": 4045,
+      "sha256": "da8fb551e23627f52fddda17561fdcb704e09bd07be54cdc142cdcf819fb60a4"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/source-manifest.json",
+      "bytes": 8007,
+      "sha256": "f498b40fb404b74a53b4edba84c741f003c5224b53d0fd16a4b53bf5ca53d895"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/go-source-manifest.json",
+      "bytes": 3493,
+      "sha256": "23a8644a5228a8fb44d02cbbb983c735e506a622f13785bb1350acf60a5f8a5f"
+    }
+  ],
+  "qualified_reference": [
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set79/attachment-reference-attempt1/python314.json",
+      "bytes": 46498,
+      "sha256": "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set79/attachment-reference-attempt1/python39.json",
+      "bytes": 46498,
+      "sha256": "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set79/attachment-reference-attempt1/report.json",
+      "bytes": 4304,
+      "sha256": "b1fc75d5a8e3d0fa380f8f655deb62a4417919787dcd48643fc8e44af010a0b8"
+    }
+  ],
+  "execution": {
+    "go_scenario_seconds": 900,
+    "outer_actual_seconds": 1080,
+    "maximum_chain_height": 180,
+    "accepted_reward_branches": [
+      1,
+      2
+    ],
+    "product_changes": false
+  },
+  "predecessor": {
+    "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/source-manifest.json",
+    "bytes": 8007,
+    "sha256": "f498b40fb404b74a53b4edba84c741f003c5224b53d0fd16a4b53bf5ca53d895"
+  },
+  "money_read_delta": {
+    "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/money-read-manifest.json",
+    "bytes": 4045,
+    "sha256": "da8fb551e23627f52fddda17561fdcb704e09bd07be54cdc142cdcf819fb60a4"
+  }
+}

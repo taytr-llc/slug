@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "scope": "Independent finite DAILY public composition, transport, original-local attachment, outbox hold and conditional payout-page byte/state projections. Inherited public cryptography is unchanged; no runtime, signing, durability, confirmed funding, payout execution or continuous-service authority is generated.",
+  "limits": {
+    "max_works": 8,
+    "max_submissions": 8,
+    "pool_max_bytes": 67108864,
+    "max_rounds": 8,
+    "max_batches": 6,
+    "round_max_bytes": 67108864
+  },
+  "alternate_request_id": "7979797979797979797979797979797979797979797979797979797979797979",
+  "daily_stale_capture_http_status": 409,
+  "public_material_selection": "official-leading-zero-account from the immutable provision reference; funding is distinct from both original local recipients",
+  "capacity_scope": "Selected limits reuse the Set78 finite original capacity profile. This producer derives new public byte identities, not a second capacity kernel or actual capacity permission. Existing independent capacity corpus remains unchanged and separately required.",
+  "embedded_evidence_scope": "Original job Version2 and original independent template/hash/nonce bytes remain literal. Daily wire wrappers and receipt status are conditional protocol projections, never new issuer signatures, node canonicality, admission or payment evidence.",
+  "expected_counts": {
+    "compositions": 5,
+    "policy_cases": 19,
+    "credential_cases": 14,
+    "wire_identities": 3,
+    "envelope_cases": 14,
+    "error_cases": 8,
+    "remote_cases": 8,
+    "local_credential_cases": 8,
+    "balance_cases": 41,
+    "page_cases": 19,
+    "request_cases": 6,
+    "traversals": 6,
+    "raw_cases": 143,
+    "outbox_config_cases": 7,
+    "outbox_marker_cases": 3,
+    "outbox_scan_cases": 18,
+    "outbox_entry_cases": 8,
+    "outbox_journal_cases": 20,
+    "outbox_issue_transitions": 26
+  },
+  "frame_cross_check": {
+    "fraction": 8225,
+    "balance": 16662,
+    "payment": 199,
+    "wrapped_payment": 236,
+    "eight_items": 1897,
+    "balance_response_lf": 16960,
+    "page_response_lf": 18979,
+    "request": 79,
+    "money_binding_increment": 156,
+    "work_response_lf": 16785686,
+    "receipt_response_lf": 4360
+  },
+  "frame_scope": "Producer computes every width from literal ordered frames and separately compares this peer's hand arithmetic. 19-digit observation frames are conservative over-width, not valid beyond the inherited year9999 clock. Maximal fraction components are codec envelopes, not necessarily reduced or attainable balances.",
+  "execution": {
+    "root_only": true,
+    "max_seconds_per_interpreter": 120,
+    "max_log_bytes": 1048576,
+    "max_output_bytes": 16777216,
+    "interpreters": ["Python3.14", "Python3.9"],
+    "output_filename": "reference.json",
+    "require_identical_bytes": true,
+    "fresh_exclusive_output": true,
+    "no_network_go_randomness_private_inputs": true
+  }
+}

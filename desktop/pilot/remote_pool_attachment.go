@@ -97,18 +97,27 @@ type RemotePoolAttachment struct {
 	closeErr         error
 }
 
-func OpenRemotePoolAttachment(ctx context.Context, session *OwnedWalletSession, viewID string, in RemotePoolInputs) (out *RemotePoolAttachment, resultErr error) {
+func OpenRemotePoolAttachment(ctx context.Context, session *OwnedWalletSession, viewID string, in RemotePoolInputs) (*RemotePoolAttachment, error) {
+	return openRemotePoolAttachment(ctx, session, viewID, in, false)
+}
+func openRemotePoolAttachment(ctx context.Context, session *OwnedWalletSession, viewID string, in RemotePoolInputs, daily bool) (out *RemotePoolAttachment, resultErr error) {
 	if wire.TestPoW {
 		return nil, ErrRemotePoolProfile
 	}
-	if ctx == nil || ctx.Err() != nil || session == nil || session.setup == nil || session.entry == nil || session.runtime == nil || !remotePoolID(viewID) {
+	if ctx == nil || session == nil || session.setup == nil || session.entry == nil || session.runtime == nil || !remotePoolID(viewID) {
 		return nil, ErrRemotePoolUnavailable
 	}
-	raw, e := MarshalRemotePoolConfig(in.Config)
+	if e := ctx.Err(); e != nil {
+		if daily {
+			return nil, e
+		}
+		return nil, ErrRemotePoolUnavailable
+	}
+	raw, e := marshalSelectedRemotePoolConfig(in.Config, daily)
 	if e != nil {
 		return nil, e
 	}
-	config, e := ParseRemotePoolConfig(raw)
+	config, e := parseSelectedRemotePoolConfig(raw, daily)
 	if e != nil {
 		return nil, e
 	}
@@ -118,7 +127,7 @@ func OpenRemotePoolAttachment(ctx context.Context, session *OwnedWalletSession, 
 	if e = remotePoolValidateNode(in.NodeRPC); e != nil {
 		return nil, e
 	}
-	id, e := RemotePoolConfigID(config)
+	id, e := selectedRemotePoolConfigID(config)
 	if e != nil {
 		return nil, e
 	}
@@ -143,7 +152,7 @@ func OpenRemotePoolAttachment(ctx context.Context, session *OwnedWalletSession, 
 	defer stop()
 	stopLife := context.AfterFunc(life, stop)
 	defer stopLife()
-	a.local, e = claimRemotePoolLocal(work, session, config.ExpectedLocal)
+	a.local, e = claimRemotePoolLocalMode(work, session, config.ExpectedLocal, daily)
 	if e != nil {
 		return nil, e
 	}
@@ -153,7 +162,7 @@ func OpenRemotePoolAttachment(ctx context.Context, session *OwnedWalletSession, 
 	if e != nil {
 		return nil, e
 	}
-	a.credentials, e = openRemotePoolCredentials(life, config, remotePoolCredentialSelection{in.PoolCredentialPath, in.AdmissionCredentialPath})
+	a.credentials, e = openSelectedRemotePoolCredentials(life, config, remotePoolCredentialSelection{in.PoolCredentialPath, in.AdmissionCredentialPath}, daily)
 	if e != nil {
 		return nil, e
 	}
@@ -171,10 +180,18 @@ func OpenRemotePoolAttachment(ctx context.Context, session *OwnedWalletSession, 
 	if e != nil {
 		return nil, e
 	}
-	if create {
-		a.box, e = prospectworker.CreatePoolOutbox(path, wc)
+	if daily {
+		if create {
+			a.box, e = prospectworker.CreateDailyPoolOutbox(path, wc)
+		} else {
+			a.box, e = prospectworker.OpenDailyPoolOutbox(path, wc)
+		}
 	} else {
-		a.box, e = prospectworker.OpenPoolOutbox(path, wc)
+		if create {
+			a.box, e = prospectworker.CreatePoolOutbox(path, wc)
+		} else {
+			a.box, e = prospectworker.OpenPoolOutbox(path, wc)
+		}
 	}
 	if e != nil {
 		return nil, e
@@ -241,7 +258,13 @@ func remotePoolSelectedPaths(s *OwnedWalletSession, in RemotePoolInputs) error {
 }
 
 func (a *RemotePoolAttachment) check(ctx context.Context) error {
-	if a == nil || ctx == nil || ctx.Err() != nil {
+	if a == nil || ctx == nil {
+		return ErrRemotePoolUnavailable
+	}
+	if e := ctx.Err(); e != nil {
+		if a.config.Version == 2 {
+			return e
+		}
 		return ErrRemotePoolUnavailable
 	}
 	a.mu.Lock()
@@ -253,13 +276,24 @@ func (a *RemotePoolAttachment) check(ctx context.Context) error {
 	if e := a.local.check(ctx); e != nil {
 		return e
 	}
+	if a.config.Version == 2 {
+		if e := a.local.dailyRecipientControls(ctx); e != nil {
+			return e
+		}
+	}
 	a.fileMu.Lock()
 	e := a.files.check()
 	a.fileMu.Unlock()
 	return e
 }
 func (a *RemotePoolAttachment) begin(ctx context.Context, view string) (context.Context, func(), error) {
-	if a == nil || ctx == nil || ctx.Err() != nil || view != a.view.ViewID {
+	if a == nil || ctx == nil || view != a.view.ViewID {
+		return nil, nil, ErrRemotePoolUnavailable
+	}
+	if e := ctx.Err(); e != nil {
+		if a.config.Version == 2 {
+			return nil, nil, e
+		}
 		return nil, nil, ErrRemotePoolUnavailable
 	}
 	a.mu.Lock()

@@ -82,7 +82,11 @@ func (c *RemotePoolController) LoginFixture(ctx context.Context, fixture string)
 	if e != nil {
 		return e
 	}
-	attachment, e := pilot.OpenRemotePoolAttachment(work, session, view, c.inputs)
+	openAttachment := pilot.OpenRemotePoolAttachment
+	if c.daily {
+		openAttachment = pilot.OpenDailyRemotePoolAttachment
+	}
+	attachment, e := openAttachment(work, session, view, c.inputs)
 	c.mu.Lock()
 	c.attachment = attachment
 	c.mu.Unlock()
@@ -117,7 +121,13 @@ func (c *RemotePoolController) LoginFixture(ctx context.Context, fixture string)
 	// recursively wait for that same callback.
 	c.mu.Lock()
 	defer c.mu.Unlock()
-	if work.Err() != nil || c.closed || c.viewID != view || c.session.Token != login.Token || c.attachment != attachment || login.ExpiresAtMS <= time.Now().UnixMilli() {
+	if c.closed || c.viewID != view || c.session.Token != login.Token || c.attachment != attachment || login.ExpiresAtMS <= time.Now().UnixMilli() {
+		return gymaccount.ErrUnauthorized
+	}
+	if e := work.Err(); e != nil {
+		if c.daily {
+			return e
+		}
 		return gymaccount.ErrUnauthorized
 	}
 	expiryDone := make(chan struct{})
@@ -170,7 +180,16 @@ func (c *RemotePoolController) epoch(login gymaccount.Session, view string) reco
 		}
 		defer c.mu.Unlock()
 		check := func() error {
-			if ctx.Err() != nil || c.closed || c.shutdownErr != nil || c.life.Err() != nil || view == "" || c.viewID != view || c.session.Token != login.Token || c.session.Account.ID != login.Account.ID || c.session.Account.Generation != login.Account.Generation || c.state != "signed_in" && c.state != "signing_in" {
+			if !c.daily && ctx.Err() != nil {
+				return gymaccount.ErrUnauthorized
+			}
+			if c.closed || c.shutdownErr != nil || c.life.Err() != nil || view == "" || c.viewID != view || c.session.Token != login.Token || c.session.Account.ID != login.Account.ID || c.session.Account.Generation != login.Account.Generation || c.state != "signed_in" && c.state != "signing_in" {
+				return gymaccount.ErrUnauthorized
+			}
+			if e := ctx.Err(); e != nil {
+				if c.daily {
+					return e
+				}
 				return gymaccount.ErrUnauthorized
 			}
 			return nil
@@ -201,7 +220,16 @@ func (c *RemotePoolController) withView(ctx context.Context, view string, attach
 				return gymstable.ErrBusy
 			}
 			defer c.mu.Unlock()
-			if ctx.Err() != nil || c.closed || c.shutdownErr != nil || c.life.Err() != nil || c.viewID != view || c.session.Token != login.Token || a.ID != login.Account.ID || a.Generation != login.Account.Generation || c.attachment != attachment || c.state != "signed_in" && c.state != "signing_in" {
+			if !c.daily && ctx.Err() != nil {
+				return gymaccount.ErrUnauthorized
+			}
+			if c.closed || c.shutdownErr != nil || c.life.Err() != nil || c.viewID != view || c.session.Token != login.Token || a.ID != login.Account.ID || a.Generation != login.Account.Generation || c.attachment != attachment || c.state != "signed_in" && c.state != "signing_in" {
+				return gymaccount.ErrUnauthorized
+			}
+			if e := ctx.Err(); e != nil {
+				if c.daily {
+					return e
+				}
 				return gymaccount.ErrUnauthorized
 			}
 			return nil
@@ -360,7 +388,11 @@ func (c *RemotePoolController) Snapshot(ctx context.Context) (RemotePoolControll
 	c.mu.Lock()
 	state, view, attachment, last := c.state, c.viewID, c.attachment, c.lastError
 	c.mu.Unlock()
-	out = RemotePoolControllerSnapshot{Version: 1, ConfigID: c.configID, State: state, Account: pilot.AccountSnapshot{State: state, Fixture: c.fixture, LastError: last}, Error: last}
+	version := uint32(1)
+	if c.daily {
+		version = 2
+	}
+	out = RemotePoolControllerSnapshot{Version: version, ConfigID: c.configID, State: state, Account: pilot.AccountSnapshot{State: state, Fixture: c.fixture, LastError: last}, Error: last}
 	if state != "signed_in" || attachment == nil || view == "" {
 		return out, nil
 	}

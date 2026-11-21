@@ -16,6 +16,7 @@ import (
 )
 
 const Version1 uint32 = 1
+const Version2 uint32 = 2
 const MaxRequestSize = 1024
 const MaxWorkResponseSize = prospectwork.MaxTemplateSize + (64 << 10)
 const MaxResponseSize = 64 << 10
@@ -78,6 +79,7 @@ type BalanceResponse struct {
 }
 type clientRates struct{ issue, submit, read *rate.Limiter }
 type Server struct {
+	daily            *dailyServerBinding
 	config           ServerConfig
 	source           poolshare.Config
 	binding          string
@@ -94,6 +96,7 @@ type Server struct {
 // Client's immutable trust/public identity may survive token refresh. Tokens
 // stay in memory only; owners replace clients rather than mutate credentials.
 type Client struct {
+	daily               *dailyClientBinding
 	config              ClientConfig
 	binding, trust, gym string
 	http                *http.Client

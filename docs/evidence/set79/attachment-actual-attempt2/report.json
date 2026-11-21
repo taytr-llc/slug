@@ -1,0 +1,323 @@
+{
+  "actual_started": true,
+  "artifacts": {
+    "node": {
+      "build_info": "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/node-build-info.txt",
+      "build_info_sha256": "c5f42513f1ad373817d9d0528228d022a741c78ae5c88c516944fbe9fc2d6a0e",
+      "compiler_setting_evidence": "embedded_build_info",
+      "go_version": "go1.27.4",
+      "path": "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/bin/slugd",
+      "settings": {
+        "-buildmode": "exe",
+        "-compiler": "gc",
+        "-gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "-trimpath": "true",
+        "CGO_ENABLED": "0",
+        "GOARCH": "arm64",
+        "GOARM64": "v8.0",
+        "GOOS": "darwin",
+        "vcs": "git",
+        "vcs.modified": "true",
+        "vcs.revision": "1f086601647c00e33fad1dca9275aa63b18caa07",
+        "vcs.time": "2026-11-21T07:01:17Z"
+      },
+      "sha256": "74fc2da71f83c6b1952ea8ec4247ed551da08295f52d229eaadc62eb8a808140"
+    },
+    "probe": {
+      "build_info": "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/probe-build-info.txt",
+      "build_info_sha256": "ef3b134c18cd726ecc6de44a7c1ba3f5eab7993dafc63fafa42953b37de300e4",
+      "compiler_setting_evidence": "embedded_build_info",
+      "go_version": "go1.27.4",
+      "path": "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/bin/daily-attachment-actual",
+      "settings": {
+        "-buildmode": "exe",
+        "-compiler": "gc",
+        "-gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "-trimpath": "true",
+        "CGO_ENABLED": "1",
+        "GOARCH": "arm64",
+        "GOARM64": "v8.0",
+        "GOOS": "darwin"
+      },
+      "sha256": "6558853c3180f6c831e3876007b95f9957a5bf1ccc731456715b40d7aaec933a"
+    }
+  },
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 70116,
+        "pid": 70116,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-json",
+        "."
+      ],
+      "exit_code": 0,
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 70116,
+      "pid": 70116,
+      "seconds": 0.256,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 70123,
+        "pid": 70123,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "go",
+        "list",
+        "-deps",
+        "-json",
+        "."
+      ],
+      "exit_code": 0,
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 70123,
+      "pid": 70123,
+      "seconds": 0.293,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 70130,
+        "pid": 70130,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-trimpath",
+        "-tags=",
+        "-o",
+        "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/bin/slugd",
+        "."
+      ],
+      "exit_code": 0,
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 70130,
+      "pid": 70130,
+      "seconds": 0.685,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 70144,
+        "pid": 70144,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "sh",
+        "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-trimpath",
+        "-tags=",
+        "-o",
+        "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/bin/daily-attachment-actual",
+        "."
+      ],
+      "exit_code": 0,
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 70144,
+      "pid": 70144,
+      "seconds": 12.834,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 70209,
+        "pid": 70209,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/bin/daily-attachment-actual",
+        "--node",
+        "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/bin/slugd",
+        "--artifacts",
+        "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/owned",
+        "--reference",
+        "/Users/taytrrip/slug/artifacts/set79/attachment-reference-attempt1/python314.json",
+        "--base-reference",
+        "/Users/taytrrip/slug/slug/testdata/public-daily/reference-v1.json"
+      ],
+      "exit_code": 0,
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 70209,
+      "pid": 70209,
+      "seconds": 345.672,
+      "timed_out": false
+    }
+  ],
+  "fixture_preservation": {
+    "allowed_changed_paths": [
+      "authority/db/000002.ldb",
+      "authority/db/000003.log",
+      "authority/db/000009.ldb",
+      "authority/db/000010.log",
+      "authority/db/000012.ldb",
+      "authority/db/CURRENT",
+      "authority/db/CURRENT.bak",
+      "authority/db/LOG",
+      "authority/db/MANIFEST-000004",
+      "authority/db/MANIFEST-000011",
+      "coordinator/db/000003.log",
+      "coordinator/db/000005.ldb",
+      "coordinator/db/000008.ldb",
+      "coordinator/db/000009.log",
+      "coordinator/db/CURRENT",
+      "coordinator/db/CURRENT.bak",
+      "coordinator/db/LOG",
+      "coordinator/db/MANIFEST-000004",
+      "coordinator/db/MANIFEST-000010",
+      "fixture-provider/instance-lock/000002.log",
+      "fixture-provider/instance-lock/000006.log",
+      "fixture-provider/instance-lock/CURRENT",
+      "fixture-provider/instance-lock/CURRENT.bak",
+      "fixture-provider/instance-lock/LOG",
+      "fixture-provider/instance-lock/MANIFEST-000003",
+      "fixture-provider/instance-lock/MANIFEST-000007",
+      "fixture-provider/state.json",
+      "hosted-vault/db/000003.log",
+      "hosted-vault/db/000007.log",
+      "hosted-vault/db/CURRENT",
+      "hosted-vault/db/CURRENT.bak",
+      "hosted-vault/db/LOG",
+      "hosted-vault/db/MANIFEST-000004",
+      "hosted-vault/db/MANIFEST-000008",
+      "instance-lock/000002.log",
+      "instance-lock/000006.log",
+      "instance-lock/CURRENT",
+      "instance-lock/CURRENT.bak",
+      "instance-lock/LOG",
+      "instance-lock/MANIFEST-000003",
+      "instance-lock/MANIFEST-000007",
+      "shared/gyms/incrementing256/owned-wallet/inventory/db/000003.log",
+      "shared/gyms/incrementing256/owned-wallet/inventory/db/000007.log",
+      "shared/gyms/incrementing256/owned-wallet/inventory/db/CURRENT",
+      "shared/gyms/incrementing256/owned-wallet/inventory/db/CURRENT.bak",
+      "shared/gyms/incrementing256/owned-wallet/inventory/db/LOG",
+      "shared/gyms/incrementing256/owned-wallet/inventory/db/MANIFEST-000004",
+      "shared/gyms/incrementing256/owned-wallet/inventory/db/MANIFEST-000008",
+      "shared/gyms/incrementing256/owned-wallet/wallet/slugwallet.db"
+    ],
+    "copied": true,
+    "immutable_paths": 226,
+    "old_histories_unchanged": true,
+    "original_unchanged": true
+  },
+  "fixture_timeout_seconds": 900,
+  "max_chain_height": 180,
+  "outer_timeout_seconds": 1080,
+  "passed": true,
+  "profile_lock_artifacts_unchanged": true,
+  "public_evidence": {
+    "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/owned/01-runtime-and-selection.json": {
+      "bytes": 13847,
+      "sha256": "890133624333a8206e28e189dbd30b5035662f31c4c00a7ce1e2219e9e9bf43c"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/owned/02-stopped-original-view.json": {
+      "bytes": 2434,
+      "sha256": "34fe58d9893fc6410b3c553ff5e792728181891566e16118633b256c107c4006"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/owned/03-work-stopped.json": {
+      "bytes": 2449,
+      "sha256": "fdc1c56ceca1001e6ae331b45f9e7d4d41ed8ea0d08fe130f17bccf3516e5d18"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/owned/04-closed-rows.json": {
+      "bytes": 41801,
+      "sha256": "c01ea16d4ff1ce7cbcb1260d8c7d3d18e68dcdd9b7c84aec18b40cd18c9f6d8a"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/owned/05-stopped-reopen.json": {
+      "bytes": 2434,
+      "sha256": "f1aa7279b2b4c6eeb8de7f412ab107a2ce4e46c72291f90969f06d9614fb4f22"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/owned/06-mature-before-due.json": {
+      "bytes": 2886,
+      "sha256": "0b18539f7c8b45741921ac1a2f99cb784c1b003d66fde9d41eda1cad0c2d050a"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/owned/07-confirmed-payment.json": {
+      "bytes": 1218,
+      "sha256": "7cea5664c8eb32bb917cb51765551b075beb0428218181c4aa7ca78e34dfed05"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/owned/07-payment-and-wallet.json": {
+      "bytes": 9849,
+      "sha256": "b6c1b310f3e9dee750203ae813a713d86e7d6ad2d750e7cd72ab2f7594447939"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/owned/08-final-public-audit.json": {
+      "bytes": 35550,
+      "sha256": "028e789af54d406830a6765fe4a0385024d1f1aeb40a36c9503db55f99ceec7e"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/owned/09-complete.json": {
+      "bytes": 1095,
+      "sha256": "01a4c39c9d30d450b169ec108ff2153d09f898d44ea7b972416344e20ed5ad05"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/owned/actual-report.json": {
+      "bytes": 4196,
+      "sha256": "1c31464eff2d17fe15f86a0ccf16322ef97df39cd36312a4d6fc1085701b00d8"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/owned/money-read-evidence.json": {
+      "bytes": 5084,
+      "sha256": "03daa9ba3adccabd054486e31a371fd9ae0a62dee54585bcb43a44a04ab2f93f"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/owned/outbox-after.json": {
+      "bytes": 179,
+      "sha256": "f2b28a930ab8524b92e18c11b42e7868fb9d6c40ad3ceb60d78bcbd1b6448177"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/owned/selected-public-setup.json": {
+      "bytes": 6164,
+      "sha256": "9608494781811582cf736d10d7b4807899208a3a79f095692bb6f09944570269"
+    }
+  },
+  "public_evidence_unchanged": true,
+  "scope": "set79-public-daily-attachment-actual",
+  "source_copies_exact_after": true,
+  "source_copies_exact_before": true,
+  "source_count": 3079,
+  "source_unchanged": true,
+  "version": 1
+}

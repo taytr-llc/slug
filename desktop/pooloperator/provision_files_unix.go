@@ -17,21 +17,25 @@ import (
 )
 
 type provisionFiles struct {
+	version uint32
 	base    *operatorFiles // reuse retained descriptor and sticky close leaves only
 	path    string
 	inputs  map[string]*privateInput
 	changed bool
 }
 
-func openProvisionFiles(path string, create bool) (f *provisionFiles, err error) {
-	if !commandPath(path) || os.Getuid() != os.Geteuid() {
+func openProvisionFiles(path string, create bool) (*provisionFiles, error) {
+	return openProvisionFilesVersion(path, create, 1)
+}
+func openProvisionFilesVersion(path string, create bool, version uint32) (f *provisionFiles, err error) {
+	if (version != 1 && version != 2) || !commandPath(path) || os.Getuid() != os.Geteuid() {
 		return nil, ErrProvisionInvalid
 	}
 	parts := strings.Split(strings.TrimPrefix(path, "/"), "/")
 	if len(parts) < 2 || len(parts) > 65 {
 		return nil, ErrProvisionInvalid
 	}
-	f = &provisionFiles{base: &operatorFiles{path: path, children: map[string]directoryRef{}}, path: path, inputs: map[string]*privateInput{}}
+	f = &provisionFiles{version: version, base: &operatorFiles{path: path, children: map[string]directoryRef{}}, path: path, inputs: map[string]*privateInput{}}
 	fd, e := unix.Open("/", unix.O_RDONLY|unix.O_DIRECTORY|unix.O_NOFOLLOW|unix.O_CLOEXEC, 0)
 	if e != nil {
 		return f, ErrUnavailable
@@ -97,12 +101,13 @@ func openProvisionFiles(path string, create bool) (f *provisionFiles, err error)
 	}
 	return f, nil
 }
-func provisionAllowed(dir, name string) bool {
+func provisionAllowed(dir, name string) bool { return provisionAllowedVersion(dir, name, 1) }
+func provisionAllowedVersion(dir, name string, version uint32) bool {
 	switch dir {
 	case "":
-		return name == provisionIntentName || name == provisionReadyName || name == "offline" || name == "online" || name == "public" || name == "wallet"
+		return name == provisionIntentFile(version) || name == provisionReadyFile(version) || name == "offline" || name == "online" || name == "public" || name == "wallet"
 	case "offline":
-		return name == "material-v1.bin" || name == provisionBackupName
+		return name == "material-v1.bin" || name == provisionBackupFile(version)
 	case "online":
 		return name == "admission.seed" || name == "publication.seed" || name == "cutoff.seed"
 	case "public":
@@ -138,7 +143,7 @@ func (f *provisionFiles) names(dir string) (map[string]bool, error) {
 	found := map[string]bool{}
 	for _, row := range rows {
 		name := row.Name()
-		if !provisionAllowed(dir, name) || row.Type()&os.ModeSymlink != 0 {
+		if !provisionAllowedVersion(dir, name, f.version) || row.Type()&os.ModeSymlink != 0 {
 			return nil, ErrIntegrity
 		}
 		isDir := dir == "" && (name == "offline" || name == "online" || name == "public" || name == "wallet")
@@ -244,7 +249,7 @@ func (f *provisionFiles) check(ctx context.Context) error {
 	return ctx.Err()
 }
 func (f *provisionFiles) read(ctx context.Context, dir, name string, limit int) ([]byte, bool, error) {
-	if !provisionAllowed(dir, name) || name == "offline" || name == "online" || name == "public" || name == "wallet" || dir == "wallet" {
+	if !provisionAllowedVersion(dir, name, f.version) || name == "offline" || name == "online" || name == "public" || name == "wallet" || dir == "wallet" {
 		return nil, false, ErrProvisionInvalid
 	}
 	if e := f.check(ctx); e != nil {
@@ -327,7 +332,7 @@ func (f *provisionFiles) ensure(ctx context.Context, dir, name string, raw []byt
 }
 func (f *provisionFiles) canGenerate() bool {
 	names, e := f.names("")
-	if e != nil || names[provisionReadyName] || names["online"] || names["public"] || names["wallet"] {
+	if e != nil || names[provisionReadyFile(f.version)] || names["online"] || names["public"] || names["wallet"] {
 		return false
 	}
 	if f.directory("offline") == nil {

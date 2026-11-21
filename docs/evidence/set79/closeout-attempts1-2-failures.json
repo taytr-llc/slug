@@ -1,0 +1,128 @@
+{
+  "attempts": [
+    {
+      "attempt": 1,
+      "clean_join": true,
+      "dependency_capture_complete": false,
+      "failed_command": {
+        "exit_code": 1,
+        "label": "deps-desktop-0",
+        "seconds": 0.234
+      },
+      "failure": "RuntimeError: failed deps-desktop-0",
+      "files": [
+        {
+          "artifact_path": "artifacts/set79/closeout-attempt1/report.json",
+          "bytes": 13858,
+          "sha256": "ec1874b3d4e7b6ce2fb5579c5ad7232aed8afe55b08894c64bb2b93f317f13e4"
+        },
+        {
+          "artifact_path": "artifacts/set79/closeout-attempt1/deps-desktop-0.log",
+          "bytes": 166,
+          "sha256": "dbe519b09cd2965a63865f81f5deb6ef6a018c1d89baaa7934d1ea231384d39e"
+        },
+        {
+          "artifact_path": "artifacts/set79/closeout-attempt1/deps-desktop-0.command.json",
+          "bytes": 495,
+          "sha256": "39d145ed80f9c3bd3e218b2edb4f01035c4dc29f16e15268c1e5b4f1487a0ff3"
+        },
+        {
+          "artifact_path": "artifacts/set79/closeout-attempt1/deps-desktop-0.process.json",
+          "bytes": 187,
+          "sha256": "8bed97c2fa9a1b7364b4020696b626a32f74daa57869047503cb7c82c5e65b6a"
+        },
+        {
+          "artifact_path": "artifacts/set79/closeout-attempt1/sources-inventory-before.json",
+          "bytes": 944237,
+          "sha256": "bf7da94789b8626026377b64f96178a8d7b426c2b1604618359b486a0894a217"
+        },
+        {
+          "artifact_path": "artifacts/set79/closeout-attempt1/sources-final-bound.json",
+          "bytes": 1382011,
+          "sha256": "b030ddc47e167dc51c9596cda9bb71736e413041fb6c8604f83440502ed41a15"
+        },
+        {
+          "artifact_path": "artifacts/set79/closeout-attempt1/sources-after.json",
+          "bytes": 1382011,
+          "sha256": "b030ddc47e167dc51c9596cda9bb71736e413041fb6c8604f83440502ed41a15"
+        },
+        {
+          "artifact_path": "artifacts/set79/closeout-attempt1/profile.json",
+          "bytes": 962,
+          "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03"
+        }
+      ],
+      "passed": false,
+      "phase": "desktop dependency discovery before any module build",
+      "profile_unchanged": true,
+      "source_count": 7312,
+      "sources_unchanged": true
+    },
+    {
+      "attempt": 2,
+      "clean_join": true,
+      "dependency_capture_complete": false,
+      "failed_command": {
+        "exit_code": 1,
+        "label": "deps-desktop-0",
+        "seconds": 0.235
+      },
+      "failure": "RuntimeError: failed deps-desktop-0",
+      "files": [
+        {
+          "artifact_path": "artifacts/set79/closeout-attempt2/report.json",
+          "bytes": 13856,
+          "sha256": "8c10feed19f9fde7f442add77040ba64b42c3243b1253772171d6842c358de43"
+        },
+        {
+          "artifact_path": "artifacts/set79/closeout-attempt2/deps-desktop-0.log",
+          "bytes": 166,
+          "sha256": "dbe519b09cd2965a63865f81f5deb6ef6a018c1d89baaa7934d1ea231384d39e"
+        },
+        {
+          "artifact_path": "artifacts/set79/closeout-attempt2/deps-desktop-0.command.json",
+          "bytes": 495,
+          "sha256": "02e603eced8b88f60ba26583a27871df7f8635b00458c3ced978cd46aaede05d"
+        },
+        {
+          "artifact_path": "artifacts/set79/closeout-attempt2/deps-desktop-0.process.json",
+          "bytes": 187,
+          "sha256": "acde363ea1ffdffc56c6fa42916e538352f95a2e9f00e47db99b9d6e52c4a479"
+        },
+        {
+          "artifact_path": "artifacts/set79/closeout-attempt2/sources-inventory-before.json",
+          "bytes": 944237,
+          "sha256": "bf7da94789b8626026377b64f96178a8d7b426c2b1604618359b486a0894a217"
+        },
+        {
+          "artifact_path": "artifacts/set79/closeout-attempt2/sources-final-bound.json",
+          "bytes": 1382011,
+          "sha256": "b030ddc47e167dc51c9596cda9bb71736e413041fb6c8604f83440502ed41a15"
+        },
+        {
+          "artifact_path": "artifacts/set79/closeout-attempt2/sources-after.json",
+          "bytes": 1382011,
+          "sha256": "b030ddc47e167dc51c9596cda9bb71736e413041fb6c8604f83440502ed41a15"
+        },
+        {
+          "artifact_path": "artifacts/set79/closeout-attempt2/profile.json",
+          "bytes": 962,
+          "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03"
+        }
+      ],
+      "passed": false,
+      "phase": "desktop dependency discovery before any module build",
+      "profile_unchanged": true,
+      "source_count": 7312,
+      "sources_unchanged": true
+    }
+  ],
+  "root_reported_diagnosis": {
+    "attempt1": "Selected Wails v3.1.0 module extraction lacked 4314 archive members. Root preserved partial extraction and restored offline from exact cached archive whose ziphash matched committed go.sum; all 4545 archive members byte-verified.",
+    "attempt2": "Same discovery error persisted in old GOCACHE after archive restoration. Root same-input go list failed with old cache and resolved full application with a fresh cache; closeout3 selected a fresh persistent native cache.",
+    "scope": "These cache diagnostics were supplied by the root execution lane, not independently rerun here. No product, module version or expected financial bytes changed."
+  },
+  "scope": "Set79 pre-admission-contention closeout discovery failures; no build/test PASS claimed",
+  "successor_status": "closeout-attempt3 running as pre-admission-contention qualification; final exact-source closeout and actual acceptance remain pending",
+  "version": 1
+}

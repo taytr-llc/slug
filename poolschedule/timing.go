@@ -7,6 +7,7 @@ import (
 	"math"
 	"time"
 
+	"github.com/taytr-llc/slug/poolround"
 	"github.com/taytr-llc/slug/poolsettle"
 )
 
@@ -84,7 +85,7 @@ func errorCode(e error) string {
 		return "cancelled"
 	case errors.Is(e, context.DeadlineExceeded):
 		return "deadline"
-	case errors.Is(e, ErrBusy), errors.Is(e, poolsettle.ErrBusy):
+	case errors.Is(e, ErrBusy), errors.Is(e, poolsettle.ErrBusy), errors.Is(e, poolround.ErrBusy):
 		return "busy"
 	case errors.Is(e, ErrUnavailable), errors.Is(e, poolsettle.ErrSource), errors.Is(e, poolsettle.ErrBackend):
 		return "unavailable"
@@ -93,8 +94,30 @@ func errorCode(e error) string {
 	}
 }
 func retryable(e error) bool {
-	c := errorCode(e)
-	return c == "busy" || c == "unavailable" || c == "deadline"
+	// The original round owner is nonwaiting. Full settlement binding/audits
+	// may encounter its exact Busy while maintenance holds that same gate.
+	// A joined fatal cause must never be hidden by a retryable sibling.
+	switch e {
+	case ErrBusy, ErrUnavailable, poolsettle.ErrBusy, poolsettle.ErrSource,
+		poolsettle.ErrBackend, poolround.ErrBusy, context.DeadlineExceeded:
+		return true
+	}
+	if many, ok := e.(interface{ Unwrap() []error }); ok {
+		children := many.Unwrap()
+		if len(children) == 0 {
+			return false
+		}
+		for _, child := range children {
+			if !retryable(child) {
+				return false
+			}
+		}
+		return true
+	}
+	if one, ok := e.(interface{ Unwrap() error }); ok {
+		return retryable(one.Unwrap())
+	}
+	return false
 }
 func finish(s State, r poolsettle.Report, callErr error, now int64) (State, error) {
 	if s.Attempt == nil || s.Attempt.Result != "running" {

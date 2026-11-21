@@ -1,0 +1,249 @@
+{
+  "version": 1,
+  "status": "frozen source-only; producer never imported or executed by author",
+  "source_documents": {
+    "contract_sha256": "a6a30ab580f6463d30bd29c00a4c60d7d7b32e6d6d70560b761a7661cbd0da05",
+    "test_plan_sha256": "3896b45cb46aab155e90f54a67c1d5a5083cbbe9b4b8a3cd3217deb90aeb1e61",
+    "root_selection_sha256": "e6533d4af294a0cd4f1baf4471c2f7cc1cc5db92f18aaf67a251a519dcc78a08"
+  },
+  "files": [
+    {
+      "path": "core.py",
+      "bytes": 5913,
+      "sha256": "f7554311b65ebd8773cc75d124698bd41680224dde75173f66cafea4eec60685"
+    },
+    {
+      "path": "composition.py",
+      "bytes": 14503,
+      "sha256": "76f3791f16dea0374310414f74c31e74bc4bca894fec756bf5fc7c4e6001022d"
+    },
+    {
+      "path": "payments.py",
+      "bytes": 13496,
+      "sha256": "78c90b5b6eb4647fa89d1e7e445c1c898c026a6fd94bb9721f06085c0fe36a2d"
+    },
+    {
+      "path": "transport.py",
+      "bytes": 15263,
+      "sha256": "9c0c5f069a3b79ce53a211957b07ba7b506b10a03d45f7dd28741d297f535354"
+    },
+    {
+      "path": "outbox.py",
+      "bytes": 20308,
+      "sha256": "2e4b8a400dca9d8e456c14ab1109ea5e107d5f1b6c59ef5fa6e51037cc7c2e09"
+    },
+    {
+      "path": "generate.py",
+      "bytes": 10650,
+      "sha256": "3ca84c3b3e5a0a621d6133c51c3338502dd172cd392607db76e2824ac920c14e"
+    },
+    {
+      "path": "recipe.json",
+      "bytes": 2924,
+      "sha256": "ef476a40bc15e8a84cbeb25de322675c6235d4879988c6b3948c758eb970befc"
+    },
+    {
+      "path": "PROPOSAL.md",
+      "bytes": 16140,
+      "sha256": "e7d63d84d63b055b76b73633cf22e9848982c4251268b42d3a3266c57cf222e7"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4070,
+      "sha256": "f58f51af416332d67548d14c0cde09246fc58481aba3f6678f4f7c075087d7b9"
+    },
+    {
+      "path": "copied-inputs.json",
+      "bytes": 8356,
+      "sha256": "e973f5304e7f4c55ee08ac3aea74a4c2eea1629f257ac34f8fe10477ce48504e"
+    },
+    {
+      "path": "input-catalog.json",
+      "bytes": 8356,
+      "sha256": "e973f5304e7f4c55ee08ac3aea74a4c2eea1629f257ac34f8fe10477ce48504e"
+    },
+    {
+      "path": "inputs/admission-actual.json",
+      "bytes": 29980,
+      "sha256": "1d2b1462296bd022c53df9dc583db3c38cd13a8e13e84f9983f2505b3aefb08f"
+    },
+    {
+      "path": "inputs/ca.pem",
+      "bytes": 1200,
+      "sha256": "4bf9786af942540c8b9f0b5275dbf658d9950f523b199b77b07aa8921c6cbdbf"
+    },
+    {
+      "path": "inputs/capacity.json",
+      "bytes": 81247,
+      "sha256": "2db086115f51b0c7e22d2fd7688ad5b46c56e238fa1346d709c9a19bebb7aa78"
+    },
+    {
+      "path": "inputs/contract.md",
+      "bytes": 25102,
+      "sha256": "a6a30ab580f6463d30bd29c00a4c60d7d7b32e6d6d70560b761a7661cbd0da05"
+    },
+    {
+      "path": "inputs/daily-actual.json",
+      "bytes": 85070,
+      "sha256": "9bcb4b64505e38de193411dcf51fb19f4d1332cbb2af53d21904663848cb4955"
+    },
+    {
+      "path": "inputs/daily-scheduler.json",
+      "bytes": 137913,
+      "sha256": "e2d493d4dd4db21306e5d78d4b7bfcad7b96ccd20255d1d7ed4eba48d2c1a108"
+    },
+    {
+      "path": "inputs/daily-wallet-recipe.json",
+      "bytes": 1080,
+      "sha256": "97035d76e3f34f02c7ac0f85969f8f38cc8d9843a1a29ab919fc7181e83907cb"
+    },
+    {
+      "path": "inputs/daily-wallet.json",
+      "bytes": 63872,
+      "sha256": "9b8e52f41690db7ca1fee37c34f99dfcd0a7266b81a7793859871bd9b006ae30"
+    },
+    {
+      "path": "inputs/frame-bounds.md",
+      "bytes": 5249,
+      "sha256": "f6fd5e1876fb3ceb9b53d96df2556c2a1f245cb0b9a46f6c6d0e8315f3499bae"
+    },
+    {
+      "path": "inputs/identities.json",
+      "bytes": 3411,
+      "sha256": "361a08179c56d024836c45646de215024096d3a234fab93fe9566dbcd3c37a1c"
+    },
+    {
+      "path": "inputs/identity-model.py",
+      "bytes": 3558,
+      "sha256": "b7b9c078d9f4d9a9b1db2647e480dcd5441c9378b7211889338b4122664accd8"
+    },
+    {
+      "path": "inputs/manifest-admission.json",
+      "bytes": 1207894,
+      "sha256": "d32a8653c76c643addb3df091ca8d7dfdba66c2486f2ca305e718113f71d5794"
+    },
+    {
+      "path": "inputs/miner-model.py",
+      "bytes": 8137,
+      "sha256": "b4d2f765b3ade0c94499ecab9792270600a24e57fcc309b6756e76e26cc172a8"
+    },
+    {
+      "path": "inputs/miner-v1.json",
+      "bytes": 113223,
+      "sha256": "d6b517f13cb0f738ab5579e366416c40482bd22935b09fe53d9fa8da4151f4c5"
+    },
+    {
+      "path": "inputs/payout-case-plan.md",
+      "bytes": 6295,
+      "sha256": "0c254430790a73c501d719e90bf6e91019aba2b7b4fecd1e47197e71a11fe877"
+    },
+    {
+      "path": "inputs/payout-common.py",
+      "bytes": 5618,
+      "sha256": "0e041ebca683773cd844aa7ffb4920c7ba0e8d7ba988ec2eefaaaf5173eae72a"
+    },
+    {
+      "path": "inputs/payout-generate.py",
+      "bytes": 18072,
+      "sha256": "19d7f7ff6a4f9898c7f57c0a8c74147ff395dea74e8c357d0eb776889fdf8102"
+    },
+    {
+      "path": "inputs/payout-history.json",
+      "bytes": 2945128,
+      "sha256": "7aaf45191dc4ac5d34d5ab930c2e6461d50f389ac22611278a897da938cc1825"
+    },
+    {
+      "path": "inputs/pool-share.json",
+      "bytes": 33879,
+      "sha256": "2210d992e618b7a0952736dede1263b678f1a7a2d55d14ccde1cc6b29317de87"
+    },
+    {
+      "path": "inputs/provision-bytes.md",
+      "bytes": 10163,
+      "sha256": "f938004d817ffa5b07cac64d24a470130180d2cb6743a5a0bc5ff40546df1948"
+    },
+    {
+      "path": "inputs/provision-contract.md",
+      "bytes": 14065,
+      "sha256": "3e0c1d771b99ca05e817e841c3ca3016550002484f0f926cb48193483da0a26e"
+    },
+    {
+      "path": "inputs/provision.json",
+      "bytes": 543515,
+      "sha256": "8c3cde66c35b69dbc0f4daf516c271fb91358a988b591c363f65a106f25a401f"
+    },
+    {
+      "path": "inputs/recipients.json",
+      "bytes": 3500,
+      "sha256": "7bf54bc34de877bef5afd296cbdb9bf30f59d3589057e818a363bb7c6fd8547f"
+    },
+    {
+      "path": "inputs/remote-bytes.md",
+      "bytes": 7106,
+      "sha256": "641297da441c33ce3a49eeceb4f462f7bb5f894f2cd85ac3a8acce072331ad80"
+    },
+    {
+      "path": "inputs/remote-model.py",
+      "bytes": 13779,
+      "sha256": "2636ad193f206ffc62aa547c4c43421a06e8e438a0bfb38501cad4fac8ffe3ea"
+    },
+    {
+      "path": "inputs/remote-recipe.json",
+      "bytes": 1281,
+      "sha256": "c56c5dbec593772d40037a48e6ccbec3155d6d431bccd863111733ecb9bbd669"
+    },
+    {
+      "path": "inputs/remote-v1.json",
+      "bytes": 563867,
+      "sha256": "5f67fcaaba0c78b97b0f116a4c598eb0ec62ee1436bbcf280edcc747856e5177"
+    },
+    {
+      "path": "inputs/root-selection.json",
+      "bytes": 1516,
+      "sha256": "e6533d4af294a0cd4f1baf4471c2f7cc1cc5db92f18aaf67a251a519dcc78a08"
+    },
+    {
+      "path": "inputs/setup-bytes.md",
+      "bytes": 3491,
+      "sha256": "0c63dab5bcb0a63e6d48f50a53eabf9d77644b6ebc1783d4f5852004aeeb68cc"
+    },
+    {
+      "path": "inputs/test-plan.md",
+      "bytes": 14002,
+      "sha256": "3896b45cb46aab155e90f54a67c1d5a5083cbbe9b4b8a3cd3217deb90aeb1e61"
+    },
+    {
+      "path": "inputs/wire-declarations/gbt.go.txt",
+      "bytes": 36753,
+      "sha256": "c937eb70080ac95bb812c2f04670896558ddc1e7ee3afaf1c1763da3563f845b"
+    },
+    {
+      "path": "inputs/wire-declarations/manifest-job.go.txt",
+      "bytes": 5121,
+      "sha256": "01ccdea190ec433e0d2aeba2bf3b2879081f978b6d8cc0b7671501a1a1a4324e"
+    },
+    {
+      "path": "inputs/wire-declarations/prospect.go.txt",
+      "bytes": 17735,
+      "sha256": "d6a173252ea782517ef82b344bd050aaef4e0189cfc7e38096dc1a4207e142af"
+    },
+    {
+      "path": "inputs/wire-declarations/template.go.txt",
+      "bytes": 1465,
+      "sha256": "e8a2bf0f628483f47c41d4319c5e3e105a325225511524ff096984a7a7fb96ea"
+    },
+    {
+      "path": "inputs/work-wire-order.json",
+      "bytes": 2611,
+      "sha256": "fcd3c6ae7f568fc53bdd2497a1b7e85d4e78dfb914335f1d9809aefcd043df26"
+    }
+  ],
+  "checks": [
+    "Python AST parse only",
+    "JSON recipe/catalog parse only",
+    "All public copies hash/size checked",
+    "No expected output or producer import/execution"
+  ],
+  "predecessor_source_ready_sha256": "c602f0e80cc8a58a6a0e0477e1b6d90dad4f0fac3e36f301f8717b6253050de7",
+  "successor": "Only inherited nested work JSON order from explicit copied source declarations; semantic object equality and original proof/job/context values retained"
+}

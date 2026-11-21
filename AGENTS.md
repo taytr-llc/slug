@@ -465,11 +465,36 @@ authorization must be repository-limited, not an account-wide OAuth expansion.
   kernel test's zero-descendant tip-hash fixture failure and its test-only fix.
   Normal-node/schema16 fresh-process two-to-three receipt recovery and seed
   smoke/restart pass; preserve the actual runner/checker failures and exact
-  checker-only correction. Set78 exact-tip CI remains pending. This is not
+  checker-only correction. Set78 exact-tip CI passes all seven jobs at
+  chain `1f086601647c` / wallet `dfc5d9dd7e0f`; see docs/evidence/set78/ci.json. This is not
   miner-load or public TLS/runtime acceptance. Set77's seven predecessor CI jobs
   are green at chain `21da8ea51de2` / wallet `dfc5d9dd7e0f`.
   Continue explicit V2 public integration and hosted payouts before onboarding;
   D74 remains last. See `POOL_DAILY_ADMISSION.md` and `CHANGESET_78_NOTES.md`.
+- Set79 on `slug-public-daily-pool` explicitly connects DAILY public TLS,
+  provisioning/runtime, paged money history, the existing-wallet worker and
+  `slugpilot --daily`. V1 defaults, old roots, wallet pins and D84 remain strict.
+  Complete affected accounting/operator normal/race checks and selected
+  transport/worker/desktop/profile controls pass. Normal-PoW actual acceptance
+  now passes all three paths: full ordinary intake plus a real-expiry canonical
+  winner and fresh-process retry (one B credit, immutable reserved A, one send);
+  automatic original-wallet mining to a scheduled payment; and the actual
+  headless command with one SIGTERM, exit 0, joined cleanup and wallet receipt.
+  Both automatic paths paid 19.8 SLUG from two rewards in one transaction.
+  Preserve the failed attempts and exact corrections. Public source/evidence
+  archives are path-bound, not a portable execution claim. Final build/static
+  and exact-tip CI status are recorded separately in `CHANGESET_79_NOTES.md`
+  and `docs/evidence/set79`; do not infer a deployment from these local proofs.
+  DAILY contention retries only original-owner read/admission work within the
+  fixed budget; never replay an entire quote/sign/broadcast on Busy. Completed
+  daily slots may refresh accounting without preparing another payment.
+  Unknown Issue outcomes retain a durable hold across restart; both automatic
+  proofs retained that hold. Exact-request issuance recovery is next, followed
+  by continuous history/capacity and real hosted operation. Never clear an
+  unidentified hold, adopt the latest job, renew expiry or discard old rights.
+  Source2 lifetime caps and signed-authority limits remain. The node closure
+  is unchanged; avoid a redundant seed rollout. Sign-in follows public-pool
+  work, and the joint D74 review remains last. See `POOL_PUBLIC_DAILY.md`.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

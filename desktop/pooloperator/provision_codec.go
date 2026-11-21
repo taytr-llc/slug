@@ -148,6 +148,9 @@ func provisionDecode(raw []byte, limit int, out any) error {
 	return nil
 }
 func ParseProvisionPolicy(raw []byte) (ProvisionPolicy, error) {
+	return parseProvisionPolicyVersion(raw, 1)
+}
+func parseProvisionPolicyVersion(raw []byte, version uint32) (ProvisionPolicy, error) {
 	var p ProvisionPolicy
 	if len(raw) > MaxProvisionPolicyBytes+1 {
 		return p, ErrProvisionInvalid
@@ -155,7 +158,7 @@ func ParseProvisionPolicy(raw []byte) (ProvisionPolicy, error) {
 	if len(raw) > 0 && raw[len(raw)-1] == '\n' {
 		raw = raw[:len(raw)-1]
 	}
-	if provisionDecode(raw, MaxProvisionPolicyBytes, &p) != nil || ValidateProvisionPolicy(p) != nil {
+	if provisionDecode(raw, MaxProvisionPolicyBytes, &p) != nil || validateProvisionPolicyVersion(p, version) != nil {
 		return ProvisionPolicy{}, ErrProvisionInvalid
 	}
 	return p, nil
@@ -182,20 +185,20 @@ func parseProvisionIntent(raw []byte, p ProvisionPolicy, c ProvisionCertificate)
 	if provisionJSONFile(raw, 131072, &v) != nil {
 		return v, ErrProvisionInvalid
 	}
-	id, e := ProvisionPolicyID(p)
+	id, e := provisionPolicyIDVersion(p, p.Version)
 	want, _ := json.Marshal(p)
 	got, _ := json.Marshal(v.Policy)
-	if e != nil || v.Version != 1 || v.PolicyID != id || v.CertificateSHA256 != c.CertificateSHA256 || !provisionTime(v.CreatedAtMS) || !bytes.Equal(want, got) {
+	if e != nil || v.Version != p.Version || v.PolicyID != id || v.CertificateSHA256 != c.CertificateSHA256 || !provisionTime(v.CreatedAtMS) || !bytes.Equal(want, got) {
 		return provisionIntent{}, ErrProvisionInvalid
 	}
 	return v, nil
 }
 func makeProvisionReady(p ProvisionPolicy, s Setup, created int64) (provisionReady, error) {
-	pid, e := ProvisionPolicyID(p)
+	pid, e := provisionPolicyIDVersion(p, p.Version)
 	if e != nil {
 		return provisionReady{}, e
 	}
-	sid, e := SetupID(s)
+	sid, e := setupIDVersion(s, p.Version)
 	if e != nil {
 		return provisionReady{}, e
 	}
@@ -203,7 +206,7 @@ func makeProvisionReady(p ProvisionPolicy, s Setup, created int64) (provisionRea
 	if e != nil || !provisionTime(created) {
 		return provisionReady{}, ErrProvisionInvalid
 	}
-	return provisionReady{1, p.RequestID, pid, sid, gid, created}, nil
+	return provisionReady{p.Version, p.RequestID, pid, sid, gid, created}, nil
 }
 func deriveProvisionMaterial(capsule []byte, created int64) (m ProvisionPublicMaterial, root *hdkeychain.ExtendedKey, err error) {
 	if len(capsule) != 128 || !provisionTime(created) {
@@ -318,7 +321,7 @@ func provisionBackupBytes(entropy [32]byte, p ProvisionPolicy, s Setup, created 
 	if m.RootPublicKey != s.WalletGuard.RootPublicKey || m.FundingPublicKey != s.WalletGuard.FundingPublicKey {
 		return nil, ErrProvisionInvalid
 	}
-	v := provisionBackup{1, "slug-operator-pool-wallet-backup", p.RequestID, ready.PolicyID, ready.SetupID, created, provisionMnemonicProfile, recovery.Mnemonic(entropy), waddrmgr.PoolSettlementDerivation, provisionFundingPath, p.Network, p.Genesis, s.WalletGuard, ready.WalletGuardID}
+	v := provisionBackup{p.Version, "slug-operator-pool-wallet-backup", p.RequestID, ready.PolicyID, ready.SetupID, created, provisionMnemonicProfile, recovery.Mnemonic(entropy), waddrmgr.PoolSettlementDerivation, provisionFundingPath, p.Network, p.Genesis, s.WalletGuard, ready.WalletGuardID}
 	return provisionJSON(v, 8192)
 }
 func verifyProvisionBackup(raw []byte, p ProvisionPolicy, s Setup, created int64) error {

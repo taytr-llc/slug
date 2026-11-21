@@ -1,0 +1,97 @@
+{
+  "coin": {
+    "Hash": "6c6047e2931e2f3c09a8c93125c080955065edebb67e623f17e5e004da173cc8",
+    "Index": 0
+  },
+  "height": 2,
+  "receipt": {
+    "version": 1,
+    "sequence": 1,
+    "accepted_sequence": 1,
+    "job_id": "171f36df333c665abd69bed83a7e5a29ba8246b9383bafc215af3aa61cf93a51",
+    "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+    "nonce": 1,
+    "pool_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "header": "00000020d3f7407eaee2f2852426a1cf6cbe46fee9fc3cc6dcbbf7442e7831259bf5a24fc83c17da04e0e5173f627eb6ebed65509580c02531c9a8093c2f1e93e247606c266d016bffff7f2001000000",
+    "work_hash": "2e30511f61228a6e4572277d0a2e63f82c55d19818ed03b7ced867dcb3c810a1",
+    "duplicate_key": "7a0e6735df3659cdad544afc63cd94c15de2a395f45d395379aca535caae2919",
+    "pool": true,
+    "prospect": true,
+    "block": true,
+    "block_height": 2,
+    "received_at_ms": 1795255592139,
+    "accepted_at_ms": 1795255592534,
+    "acceptance": "canonical-winning-block",
+    "block_state": "canonical-observed",
+    "block_observed_at_ms": 1795255592534
+  },
+  "work": {
+    "job": {
+      "version": 2,
+      "rule_version": 1,
+      "id": "171f36df333c665abd69bed83a7e5a29ba8246b9383bafc215af3aa61cf93a51",
+      "authority_id": "907cb91a24f3d7ddbc2d2a662b61b1e3ebdc0218e32f2c4c5913e65e3dfcf796",
+      "descriptor_id": "cd02ae57b5918548244be2cabbe6c0c433feb5a1c165745e2e5c6bf235128e75",
+      "context": {
+        "version": 1,
+        "network": 1397511495,
+        "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "dna_version": 1,
+        "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "parent_hash": "4fa2f59b2531782e44f7bbdcc63cfce9fe46be6ccfa1262485f2e2ae7e40f7d3",
+        "parent_height": 1,
+        "expected_bits": 545259519,
+        "min_timestamp": 1795255587,
+        "max_timestamp": 1795262790
+      },
+      "public_key": "033de5e2e3d5ad06f616572fcb3d61f089ce1105ef486debf308027b3b663d6d92",
+      "gym_id": "28452fc8a478d28f284dfe671cfc57e7cabeca08ea953aef371f5674d3f4c510",
+      "challenge": "7f29a8b3bf7cc5c7a4023c7dbab212cdbabd5d219c5d8a186b9c19e9d9cfbee3",
+      "issued_at_ms": 1795255590956,
+      "expires_at_ms": 1795255890956
+    },
+    "template": {
+      "context": {
+        "version": 1,
+        "network": 1397511495,
+        "genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+        "dna_version": 1,
+        "prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "parent_hash": "4fa2f59b2531782e44f7bbdcc63cfce9fe46be6ccfa1262485f2e2ae7e40f7d3",
+        "parent_height": 1,
+        "expected_bits": 545259519,
+        "min_timestamp": 1795255587,
+        "max_timestamp": 1795262790
+      },
+      "block": {
+        "bits": "207fffff",
+        "curtime": 1795255590,
+        "height": 2,
+        "previousblockhash": "4fa2f59b2531782e44f7bbdcc63cfce9fe46be6ccfa1262485f2e2ae7e40f7d3",
+        "sigoplimit": 80000,
+        "sizelimit": 4000000,
+        "weightlimit": 4000000,
+        "transactions": [],
+        "version": 536870912,
+        "coinbaseaux": {
+          "flags": "0b2f503253482f627463642f"
+        },
+        "coinbasevalue": 1000000000,
+        "longpollid": "4fa2f59b2531782e44f7bbdcc63cfce9fe46be6ccfa1262485f2e2ae7e40f7d3-1795255590",
+        "target": "7fffff0000000000000000000000000000000000000000000000000000000000",
+        "maxtime": 1795262790,
+        "mintime": 1795255587,
+        "mutable": [
+          "time",
+          "transactions/add",
+          "prevblock",
+          "coinbase/append"
+        ],
+        "noncerange": "00000000ffffffff",
+        "capabilities": [
+          "proposal"
+        ]
+      }
+    }
+  }
+}

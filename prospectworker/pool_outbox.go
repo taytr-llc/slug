@@ -17,7 +17,6 @@ import (
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/opt"
 	"github.com/syndtr/goleveldb/leveldb/util"
-	"github.com/taytr-llc/slug/poolservice"
 	"github.com/taytr-llc/slug/prospectwork"
 )
 
@@ -42,6 +41,7 @@ type poolOutboxMetadata struct {
 	Bytes        uint64     `json:"bytes"`
 	Pending      uint64     `json:"pending"`
 	Reserved     uint64     `json:"reserved"`
+	IssuePending bool       `json:"-"`
 }
 type poolOutboxMarker struct {
 	Application string     `json:"application"`
@@ -59,10 +59,12 @@ type PoolOutbox struct {
 	config                    PoolConfig
 	closed, poisoned, running bool
 	closeErr                  error
+	closeDB                   func() error
 	checkpoint                func(string)
 	writeBatch                func(*leveldb.Batch, *opt.WriteOptions) error
 	cachedScan                *PoolScan
 	cachedEntryBytes          uint64
+	issueAttempt              *poolDailyIssueAttempt
 }
 
 func samePoolIdentity(a, b PoolConfig) bool {
@@ -173,17 +175,20 @@ func clonePoolEntry(e PoolEntry) (PoolEntry, error) {
 }
 
 func CreatePoolOutbox(path string, config PoolConfig) (*PoolOutbox, error) {
+	return createPoolOutbox(path, config, false)
+}
+func createPoolOutbox(path string, config PoolConfig, daily bool) (*PoolOutbox, error) {
 	if e := manifestProduction(); e != nil {
 		return nil, e
 	}
-	c, e := ValidatePoolConfig(config)
+	c, e := validateSelectedPoolConfig(config, daily)
 	if e != nil {
 		return nil, e
 	}
 	if os.Mkdir(path, 0700) != nil {
 		return nil, errors.New("could not create new pool outbox")
 	}
-	raw, _ := json.Marshal(poolOutboxMarker{poolApplication, PoolVersion1, c})
+	raw, _ := json.Marshal(poolOutboxMarker{poolApplication, c.Version, c})
 	if len(raw) > maxMetadataSize {
 		return nil, ErrCorrupt
 	}
@@ -203,14 +208,12 @@ func CreatePoolOutbox(path string, config PoolConfig) (*PoolOutbox, error) {
 	if e != nil {
 		return nil, errors.New("could not initialize pool outbox")
 	}
-	b := &PoolOutbox{db: db, config: c, meta: poolOutboxMetadata{Application: poolApplication, Version: PoolVersion1, Config: c}, writeBatch: db.Write}
+	b := &PoolOutbox{db: db, config: c, meta: poolOutboxMetadata{Application: poolApplication, Version: c.Version, Config: c}, writeBatch: db.Write}
 	if e = b.commit(new(leveldb.Batch), b.meta); e != nil {
-		_ = db.Close()
-		return nil, e
+		return poolOutboxConstructorFailure(b, e, daily)
 	}
 	if e = errors.Join(syncDir(dbPath), syncDir(path), syncDir(filepath.Dir(filepath.Clean(path)))); e != nil {
-		_ = db.Close()
-		return nil, errors.New("could not synchronize pool outbox directory")
+		return poolOutboxConstructorFailure(b, errors.New("could not synchronize pool outbox directory"), daily)
 	}
 	return b, nil
 }
@@ -237,28 +240,31 @@ func readPoolMarker(path string, c PoolConfig) error {
 		return ErrCorrupt
 	}
 	var m poolOutboxMarker
-	if poolDecodeCanonical(raw, maxMetadataSize, &m) != nil || m.Application != poolApplication || m.Version != PoolVersion1 || !samePoolIdentity(m.Config, c) || c.MaxRecords < m.Config.MaxRecords || c.MaxBytes < m.Config.MaxBytes {
+	if poolDecodeCanonical(raw, maxMetadataSize, &m) != nil || m.Application != poolApplication || m.Version != c.Version || !poolReopenConfig(m.Config, c) {
 		return ErrCorrupt
 	}
-	if valid, e := ValidatePoolConfig(m.Config); e != nil || valid != m.Config {
+	if valid, e := validateSelectedPoolConfig(m.Config, c.Version == PoolVersion2); e != nil || valid != m.Config {
 		return ErrCorrupt
 	}
 	return nil
 }
 func OpenPoolOutbox(path string, config PoolConfig) (*PoolOutbox, error) {
-	return openPoolOutboxAudit(path, config, false)
+	return openSelectedPoolOutbox(path, config, false, false)
 }
 
 // OpenPoolOutboxAudit requires the exact established configuration and audits
 // all rows read-only. It cannot publish a capacity/configuration change.
 func OpenPoolOutboxAudit(path string, config PoolConfig) (*PoolOutbox, error) {
-	return openPoolOutboxAudit(path, config, true)
+	return openSelectedPoolOutbox(path, config, true, false)
 }
 func openPoolOutboxAudit(path string, config PoolConfig, readOnly bool) (*PoolOutbox, error) {
+	return openSelectedPoolOutbox(path, config, readOnly, false)
+}
+func openSelectedPoolOutbox(path string, config PoolConfig, readOnly, daily bool) (*PoolOutbox, error) {
 	if e := manifestProduction(); e != nil {
 		return nil, e
 	}
-	c, e := ValidatePoolConfig(config)
+	c, e := validateSelectedPoolConfig(config, daily)
 	if e != nil {
 		return nil, e
 	}
@@ -271,19 +277,16 @@ func openPoolOutboxAudit(path string, config PoolConfig, readOnly bool) (*PoolOu
 	}
 	b := &PoolOutbox{db: db, config: c, writeBatch: db.Write}
 	if e = b.audit(); e != nil {
-		_ = db.Close()
-		return nil, e
+		return poolOutboxConstructorFailure(b, e, daily)
 	}
 	if b.meta.Config != c {
 		if readOnly {
-			_ = db.Close()
-			return nil, ErrCorrupt
+			return poolOutboxConstructorFailure(b, ErrCorrupt, daily)
 		}
 		next := b.meta
 		next.Config = c
 		if e = b.commit(new(leveldb.Batch), next); e != nil {
-			_ = db.Close()
-			return nil, e
+			return poolOutboxConstructorFailure(b, e, daily)
 		}
 	}
 	return b, nil
@@ -307,7 +310,7 @@ func (b *PoolOutbox) commit(batch *leveldb.Batch, m poolOutboxMetadata) error {
 	if b.poisoned {
 		return ErrPoisoned
 	}
-	raw, e := json.Marshal(m)
+	raw, e := encodePoolMetadata(m)
 	if e != nil || len(raw) > maxMetadataSize || !b.fits(m) {
 		return ErrCorrupt
 	}
@@ -350,10 +353,10 @@ func poolFutureReserve(e PoolEntry) uint64 {
 
 func (b *PoolOutbox) audit() error {
 	raw, e := b.db.Get([]byte("meta"), nil)
-	if e != nil || poolDecodeCanonical(raw, maxMetadataSize, &b.meta) != nil || b.meta.Application != poolApplication || b.meta.Version != PoolVersion1 || !samePoolIdentity(b.meta.Config, b.config) || b.config.MaxRecords < b.meta.Config.MaxRecords || b.config.MaxBytes < b.meta.Config.MaxBytes || b.meta.Records != b.meta.LastSequence || b.meta.Pending > b.meta.Records || !b.fits(b.meta) {
+	if e != nil || decodePoolMetadata(raw, b.config.Version, &b.meta) != nil || b.meta.Application != poolApplication || b.meta.Version != b.config.Version || !poolReopenConfig(b.meta.Config, b.config) || b.meta.Records != b.meta.LastSequence || b.meta.Pending > b.meta.Records || !b.fits(b.meta) {
 		return ErrCorrupt
 	}
-	if c, e := ValidatePoolConfig(b.meta.Config); e != nil || c != b.meta.Config {
+	if c, e := validateSelectedPoolConfig(b.meta.Config, b.config.Version == PoolVersion2); e != nil || c != b.meta.Config {
 		return ErrCorrupt
 	}
 	var count, size, indexes, pending, reserved uint64
@@ -438,7 +441,7 @@ func (b *PoolOutbox) audit() error {
 			return ErrCorrupt
 		}
 	}
-	if it.Error() != nil || (scan != nil) != haveCursor || count != b.meta.Records || indexes != count || size != b.meta.Bytes || pending != b.meta.Pending || reserved != b.meta.Reserved || !b.fits(b.meta) {
+	if it.Error() != nil || b.meta.IssuePending && (scan != nil || haveCursor) || (scan != nil) != haveCursor || count != b.meta.Records || indexes != count || size != b.meta.Bytes || pending != b.meta.Pending || reserved != b.meta.Reserved || !b.fits(b.meta) {
 		return ErrCorrupt
 	}
 	if scan != nil {
@@ -466,7 +469,11 @@ func (b *PoolOutbox) Close() error {
 	}
 	b.closed = true
 	if b.db != nil {
-		b.closeErr = b.db.Close()
+		if b.closeDB != nil {
+			b.closeErr = b.closeDB()
+		} else {
+			b.closeErr = b.db.Close()
+		}
 	}
 	return b.closeErr
 }
@@ -570,8 +577,20 @@ func (b *PoolOutbox) saveScan(s *PoolScan) error {
 	if e := b.state(); e != nil {
 		return e
 	}
+	if b.meta.IssuePending {
+		return errPoolIssueHeld
+	}
+	prepared, e := preparePoolScan(s, b.config)
+	if e != nil {
+		return e
+	}
+	return b.savePreparedScan(prepared, b.meta)
+}
+
+// Caller owns the original outbox mutex. Daily response validation and copying
+// have already completed outside it; the remaining work is the exact sync commit.
+func (b *PoolOutbox) savePreparedScan(p *poolPreparedScan, m poolOutboxMetadata) error {
 	batch := new(leveldb.Batch)
-	m := b.meta
 	old, e := b.db.Get([]byte("scan"), nil)
 	if e != nil && !errors.Is(e, leveldb.ErrNotFound) {
 		return ErrCorrupt
@@ -582,33 +601,13 @@ func (b *PoolOutbox) saveScan(s *PoolScan) error {
 		}
 		m.Bytes -= uint64(len(old)) + 8
 	}
-	var cached *PoolScan
-	var reservation uint64
-	if s == nil {
+	if p == nil {
 		batch.Delete([]byte("scan"))
 		batch.Delete([]byte("cursor"))
 	} else {
-		if validatePoolScan(*s, b.config) != nil {
-			return ErrCorrupt
-		}
-		owned, e := clonePoolScan(*s)
-		if e != nil {
-			return e
-		}
-		cached = &owned
-		payload := owned
-		payload.NextNonce = 0
-		raw, e := json.Marshal(payload)
-		if e != nil || len(raw) > poolMaxScanSize {
-			return ErrCapacity
-		}
-		reservation = poolReservationEntryBytes(owned, b.config)
-		if reservation == poolInvalidReserve {
-			return ErrCapacity
-		}
-		m.Bytes += uint64(len(raw)) + 8
-		batch.Put([]byte("scan"), raw)
-		batch.Put([]byte("cursor"), cursor(s.NextNonce))
+		m.Bytes += uint64(len(p.raw)) + 8
+		batch.Put([]byte("scan"), p.raw)
+		batch.Put([]byte("cursor"), cursor(p.scan.NextNonce))
 	}
 	if !b.fits(m) {
 		return ErrCapacity
@@ -616,7 +615,10 @@ func (b *PoolOutbox) saveScan(s *PoolScan) error {
 	if e = b.commit(batch, m); e != nil {
 		return e
 	}
-	b.cachedScan, b.cachedEntryBytes = cached, reservation
+	b.cachedScan, b.cachedEntryBytes = nil, 0
+	if p != nil {
+		b.cachedScan, b.cachedEntryBytes = &p.scan, p.reservation
+	}
 	return nil
 }
 func (b *PoolOutbox) sameScan(s PoolScan) bool {
@@ -645,7 +647,7 @@ func (b *PoolOutbox) advance(s PoolScan) error {
 	return nil
 }
 func poolReservationEntryBytes(s PoolScan, c PoolConfig) uint64 {
-	w, e := poolservice.PrepareWork(c.Source, c.PublicKey, s.Work)
+	w, e := preparePoolWork(c, s.Work)
 	if e != nil {
 		return poolInvalidReserve
 	}

@@ -53,6 +53,8 @@ type Status struct {
 // Runtime owns created children and transports, and borrows exactly the two
 // supplied custody owners. It exposes no child/store/wallet/authority getter.
 type Runtime struct {
+	daily                               bool
+	dailyReservation                    *DailyCapacityReservation
 	intakeMu                            sync.Mutex
 	intake                              *poolshare.OperatorAdmission
 	reservation                         CapacityReservation
@@ -104,11 +106,11 @@ func (r *Runtime) Setup() Setup {
 	if r == nil {
 		return Setup{}
 	}
-	raw, e := MarshalSetup(r.setup)
+	raw, e := marshalSetupVersion(r.setup, r.setup.Version)
 	if e != nil {
 		return Setup{}
 	}
-	out, _ := ParseSetup(raw)
+	out, _ := parseSetupVersion(raw, r.setup.Version)
 	return out
 }
 func cloneStatus(s Status) (Status, error) {

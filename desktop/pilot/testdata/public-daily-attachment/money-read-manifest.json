@@ -1,0 +1,107 @@
+{
+  "version": 1,
+  "scope": "A/C harness-only definite pure money-read retry and retained partial proof",
+  "files": [
+    {
+      "target": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/main.go",
+      "before": {
+        "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/main.go",
+        "bytes": 13752,
+        "sha256": "80598e676f7442ac319038d8eb8c814928b5e36c6bde48561309c32d1cdbc0cb"
+      },
+      "after": {
+        "bytes": 13962,
+        "sha256": "fe3ea7476e038dfacb7d5db57cf142752f47cb729b81072a97b8d525ca479a14"
+      }
+    },
+    {
+      "target": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/payment.go",
+      "before": {
+        "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/payment.go",
+        "bytes": 8216,
+        "sha256": "c27a58575749b654b0562ae72034723877c7a2cfa9d972f756b085aad91a6eee"
+      },
+      "after": {
+        "bytes": 10011,
+        "sha256": "1483c0ec3882de879d2a2b8570422a45f4b6df70319c291cc6e1adea4b17edc8"
+      }
+    },
+    {
+      "target": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/run.py",
+      "before": {
+        "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/run.py",
+        "bytes": 26969,
+        "sha256": "c5fdd40373b071f0d9de9674157727565df990510863037341b4bc5fec6cd7a3"
+      },
+      "after": {
+        "bytes": 28071,
+        "sha256": "20b5ac5e29614435615909d1c2baae2d5224d5a124c53bf07ad74ffd2ee571cc"
+      }
+    },
+    {
+      "target": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/README.md",
+      "before": {
+        "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/README.md",
+        "bytes": 4598,
+        "sha256": "d26e06c844956e306e1082ae3df1fd5b95a98e314415d12dfefbd15f7cc6d380"
+      },
+      "after": {
+        "bytes": 4751,
+        "sha256": "6d8c2d7cadefceb7bf03fe200e7f48111a554841c191abdbb83adc1ca642fc18"
+      }
+    }
+  ],
+  "new_notes": {
+    "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/MONEY_READ_SUCCESSOR.md",
+    "bytes": 1805,
+    "sha256": "b5641430a85f0192e89c7d65203bce9605830edc80deafc7c0f02ec6ad24cdce"
+  },
+  "diff": {
+    "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/money-read.diff",
+    "bytes": 7891,
+    "sha256": "3ce70ec07d14f54c006a4a86c4d1a674ab11eb4a3e18e55457deef375f4e37b9"
+  },
+  "predecessor_manifest": {
+    "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/source-manifest.json",
+    "bytes": 8007,
+    "sha256": "f498b40fb404b74a53b4edba84c741f003c5224b53d0fd16a4b53bf5ca53d895"
+  },
+  "failure": {
+    "path": "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt1/owned/actual-report.json",
+    "bytes": 4185,
+    "sha256": "78bc107e9f77668099c080334764455e3e2b38590349a99de7faaf507d8e393c"
+  },
+  "source_mapping": [
+    {
+      "path": "/Users/taytrrip/slug/slug/poolservice/server.go",
+      "bytes": 14087,
+      "sha256": "3f961e147f3df37673d0045e2b035c26d326daf0a218486484e9bb7a292e1c8e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolservice/daily_server.go",
+      "bytes": 8027,
+      "sha256": "d961a65eb8b25ebe3f8a8b7229d6cb456e2d093b8f63ba4a298b272963f7d706"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolservice/client.go",
+      "bytes": 12165,
+      "sha256": "7816f4aad86f42f107de15d348e8d1f4658aa3f5655af6ed81015ae0366f4185"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolservice/daily_client.go",
+      "bytes": 5012,
+      "sha256": "6b564e216ac4bef6f6df8240416e4a2d6a0805d4117c9cce737c0ee0f1ad92a0"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolsettle/operations.go",
+      "bytes": 15023,
+      "sha256": "d50c1f2e81a0d2df25699a08365372940765b4a544593de43c4e09f475f9297c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolsettle/daily_audit.go",
+      "bytes": 9062,
+      "sha256": "340ea31bdda0bdb527f049e9e04f17b71c85d912e2601c6b50a215e389062596"
+    }
+  ],
+  "executed": false
+}

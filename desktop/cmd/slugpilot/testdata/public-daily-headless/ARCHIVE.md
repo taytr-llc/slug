@@ -1,0 +1,15 @@
+# Path C source archive
+
+This is a byte-identical source snapshot for actual slugpilot --daily process, original attached wallet, signal/join, scheduled payout and stopped reopen. It is an archive for review and later reproduction, not an execution result or a public deployment claim. The original source manifests retain their historical status text. Current acceptance is recorded separately by the root qualifier.
+
+Original source directory: `/Users/taytrrip/slug/set79-prep/public-daily-headless`. Original runner: `/Users/taytrrip/slug/set79-prep/public-daily-headless/run.py`. `ARCHIVE-MAP.json` maps every copied source identity to this repository location. The sources, recipes, public fixture catalogs and manifests were copied only from frozen allowlists. No runtime trees, generated credentials, wallet databases or private fixture files are included; a fixture catalog is only the public identity list, not the files it names.
+
+The original absolute paths, module replacements and execution-lock checks are intentionally unchanged. Moving these files into `testdata` does not make the runner portable. Reproduction requires the selected original workspace layout, separately qualified build profile/cache, explicit root-approved source lock, and the original privately retained synthetic fixture where required. Relocating a runner requires a separately reviewed source/lock successor. This archive grants no execution permission.
+
+The scenario remains bounded to 900 seconds, the outer actual process to 1080 seconds, and the isolated chain to 180 blocks. The copied runner retains its exact capture, source/profile/binary checks and joined cleanup rules.
+
+The common independently derived target, source/config and one/two-reward economics are archived once under `desktop/pilot/testdata/public-daily-attachment/reference`. The two qualified outputs retain SHA256 `a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386`; the unchanged qualification report is beside them in `reference/qualified`. Their original location is `/Users/taytrrip/slug/artifacts/set79/attachment-reference-attempt1/{python314.json,python39.json,report.json}`. The frozen producer/source-ready file and all ten recipe inputs are included. The source-only recipe can be reproduced with `python3 generate.py --output /absolute/new/output.json` from the archived `reference` directory; this archive preparation did not run it.
+
+Actual runtime evidence remains separate: the runner's report and named public phases must be bound to the final execution lock and exact compiled source/profile before any PASS claim. The payment/read-refusal diagnostic successor keeps all original authenticated result, payout and closed-audit assertions.
+
+This runner still locates the reference through its original sibling `public-daily-attachment/reference`; the proposed repository locations are not siblings. No symlink or implicit fallback has been added. It requires the original CGO1 `slugpilot` dependency/profile closure, one exact CLI process and its stdout/signal/exit/reader joins; direct-controller evidence does not substitute for that process proof.

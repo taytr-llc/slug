@@ -1,0 +1,295 @@
+// External Path A normal-node owner. Frozen Path B predecessor is in provenance.json.
+// Only the pre-copied home admission differs; no node or consensus policy changes.
+package main
+
+import (
+	"bytes"
+	"context"
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"io"
+	"net"
+	"net/http"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"sync"
+	"time"
+
+	"github.com/taytr-llc/slug/chaincfg/v2"
+	"github.com/taytr-llc/slug/wire/v2"
+)
+
+const maxBlocks = 180
+
+var params = &chaincfg.MainNetParams
+var phase = "initial"
+
+func require(ok bool, label string) {
+	if !ok {
+		panic(label)
+	}
+}
+func check(e error, label string) {
+	if e != nil {
+		// Inputs are isolated public fixtures; bound diagnostics so a malformed
+		// RPC response cannot flood the preserved public failure report.
+		panic(fmt.Sprintf("%s: %T: %.512s", label, e, e.Error()))
+	}
+}
+func hx(b []byte) string     { return hex.EncodeToString(b) }
+func dec(s string) []byte    { b, e := hex.DecodeString(s); check(e, "hex"); return b }
+func digest(b []byte) []byte { h := sha256.Sum256(b); return h[:] }
+func raw(tx *wire.MsgTx) []byte {
+	var b bytes.Buffer
+	check(tx.Serialize(&b), "serialize tx")
+	require(b.Len() <= 20000, "tx cap")
+	return b.Bytes()
+}
+func encode(v any) []byte {
+	b, e := json.MarshalIndent(v, "", "  ")
+	check(e, "json")
+	return append(b, '\n')
+}
+func write(path string, v any) { check(os.WriteFile(path, encode(v), 0600), "write public report") }
+
+type cappedLog struct {
+	mu sync.Mutex
+	f  *os.File
+	n  int64
+}
+
+func (l *cappedLog) Write(b []byte) (int, error) {
+	l.mu.Lock()
+	defer l.mu.Unlock()
+	total := len(b)
+	if l.n < 16<<20 {
+		n := min(int64(total), (16<<20)-l.n)
+		_, e := l.f.Write(b[:n])
+		l.n += n
+		if e != nil {
+			return 0, e
+		}
+	}
+	return total, nil
+}
+
+type rpc struct {
+	endpoint string
+	c        *http.Client
+}
+
+func (r *rpc) call(ctx context.Context, method string, args any, out any) error {
+	if ctx.Err() != nil {
+		return ctx.Err()
+	}
+	data, _ := json.Marshal(map[string]any{"jsonrpc": "1.0", "id": 1, "method": method, "params": args})
+	q, e := http.NewRequestWithContext(ctx, "POST", r.endpoint, bytes.NewReader(data))
+	if e != nil {
+		return e
+	}
+	q.SetBasicAuth("fixture", "public-pool-actual")
+	q.Header.Set("Content-Type", "application/json")
+	response, e := r.c.Do(q)
+	if e != nil {
+		return e
+	}
+	defer response.Body.Close()
+	body, e := io.ReadAll(io.LimitReader(response.Body, 9<<20+1))
+	if e != nil {
+		return e
+	}
+	if len(body) > 9<<20 {
+		return errors.New("RPC cap")
+	}
+	var v struct {
+		ID     json.RawMessage `json:"id"`
+		Result json.RawMessage `json:"result"`
+		Error  *struct {
+			Code    int    `json:"code"`
+			Message string `json:"message"`
+		} `json:"error"`
+	}
+	if e = json.Unmarshal(body, &v); e != nil {
+		return e
+	}
+	if !bytes.Equal(v.ID, []byte("1")) {
+		return errors.New("RPC response ID")
+	}
+	if v.Error != nil {
+		return fmt.Errorf("RPC %s code %d", method, v.Error.Code)
+	}
+	if response.StatusCode != 200 {
+		return errors.New("RPC status")
+	}
+	if out == nil {
+		return nil
+	}
+	return json.Unmarshal(v.Result, out)
+}
+func (r *rpc) must(ctx context.Context, method string, args any, out any) {
+	work, cancel := context.WithTimeout(ctx, 30*time.Second)
+	defer cancel()
+	if err := r.call(work, method, args, out); err != nil {
+		panic(err.Error()) // Method/code only; never includes credentials or request bytes.
+	}
+}
+func port() string {
+	l, e := net.Listen("tcp4", "127.0.0.1:0")
+	check(e, "port")
+	p := l.Addr().String()
+	check(l.Close(), "port close")
+	return p
+}
+
+type node struct {
+	rpc            *rpc
+	cmd            *exec.Cmd
+	done           chan error
+	log            *os.File
+	logCloseError  bool
+	stopOnce       sync.Once
+	joined         bool
+	forcedKill     bool
+	unexpectedExit bool
+	waitError      string
+	stopRPCError   bool
+}
+
+func (n *node) exit(e error) {
+	n.joined = true
+	if e != nil {
+		n.waitError = e.Error()
+	}
+}
+func (n *node) clean() bool {
+	return n.joined && !n.forcedKill && !n.unexpectedExit && n.waitError == "" && !n.logCloseError && !n.stopRPCError
+}
+func (n *node) cleanupReport() map[string]any {
+	return map[string]any{"joined": n.joined, "forced_kill": n.forcedKill, "unexpected_exit": n.unexpectedExit, "wait_error": n.waitError, "stop_rpc_error": n.stopRPCError, "log_close_error": n.logCloseError, "clean": n.clean()}
+}
+
+func startNode(ctx context.Context, binary, root, name, listen, connect, mining string) *node {
+	home := filepath.Join(root, name)
+	info, e := os.Lstat(home)
+	require(e == nil && info.IsDir() && info.Mode()&os.ModeSymlink == 0, "pre-copied node home")
+	rp := port()
+	conf := fmt.Sprintf("rpcuser=fixture\nrpcpass=public-pool-actual\nnotls=1\nrpclisten=%s\nlisten=%s\nconnect=%s\nnodnsseed=1\nlocalwalletpilot=1\ntxindex=1\nminingaddr=%s\ndatadir=%s\nlogdir=%s\n", rp, listen, connect, mining, filepath.Join(home, "data"), filepath.Join(home, "logs"))
+	path := filepath.Join(home, "fixture.conf")
+	check(os.WriteFile(path, []byte(conf), 0600), "node config")
+	log, e := os.OpenFile(filepath.Join(home, "node.log"), os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0600)
+	check(e, "node log")
+	n := &node{rpc: &rpc{"http://" + rp, &http.Client{Transport: &http.Transport{Proxy: nil, DisableKeepAlives: true, DisableCompression: true}, Timeout: 30 * time.Second, CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }}}, cmd: exec.Command(binary, "--configfile="+path), done: make(chan error, 1), log: log}
+	n.cmd.Stdout = &cappedLog{f: log}
+	n.cmd.Stderr = n.cmd.Stdout
+	if e := n.cmd.Start(); e != nil {
+		ce := log.Close()
+		check(errors.Join(e, ce), "node start/close")
+	}
+	go func() { n.done <- n.cmd.Wait() }()
+	return n
+}
+func (n *node) stop() {
+	n.stopOnce.Do(func() {
+		defer func() { n.logCloseError = n.log.Close() != nil; n.rpc.c.CloseIdleConnections() }()
+		select {
+		case e := <-n.done:
+			n.unexpectedExit = true
+			n.exit(e)
+			return
+		default:
+		}
+		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+		n.stopRPCError = n.rpc.call(ctx, "stop", nil, nil) != nil
+		cancel()
+		select {
+		case e := <-n.done:
+			n.exit(e)
+		case <-time.After(12 * time.Second):
+			n.forcedKill = true
+			_ = n.cmd.Process.Kill()
+			select {
+			case e := <-n.done:
+				n.exit(e)
+			case <-time.After(3 * time.Second):
+			}
+		}
+	})
+}
+
+func wait(ctx context.Context, d time.Duration, f func() bool) {
+	deadline := time.Now().Add(d)
+	for time.Now().Before(deadline) {
+		require(ctx.Err() == nil, "cancelled")
+		if f() {
+			return
+		}
+		select {
+		case <-ctx.Done():
+			panic("cancelled")
+		case <-time.After(100 * time.Millisecond):
+		}
+	}
+	panic("bounded wait")
+}
+func ready(ctx context.Context, n *node) {
+	wait(ctx, 30*time.Second, func() bool {
+		var network uint32
+		if n.rpc.call(ctx, "getcurrentnet", nil, &network) != nil {
+			return false
+		}
+		require(network == uint32(params.Net), "network")
+		var genesis string
+		n.rpc.must(ctx, "getblockhash", []any{0}, &genesis)
+		require(genesis == params.GenesisHash.String(), "genesis")
+		return true
+	})
+}
+func sameTip(ctx context.Context, a, b *node) string {
+	var expected string
+	a.rpc.must(ctx, "getbestblockhash", nil, &expected)
+	wait(ctx, 20*time.Second, func() bool { var h string; return b.rpc.call(ctx, "getbestblockhash", nil, &h) == nil && h == expected })
+	return expected
+}
+func peers(ctx context.Context, n *node) {
+	var rows []struct {
+		Addr string `json:"addr"`
+	}
+	n.rpc.must(ctx, "getpeerinfo", nil, &rows)
+	require(len(rows) > 0 && len(rows) <= 2, "isolated peer count")
+	for _, r := range rows {
+		host, _, e := net.SplitHostPort(r.Addr)
+		require(e == nil && host == "127.0.0.1", "nonloopback peer")
+	}
+}
+func generate(ctx context.Context, n, peer *node) string {
+	var height int
+	n.rpc.must(ctx, "getblockcount", nil, &height)
+	require(height < maxBlocks, "block budget")
+	var hashes []string
+	n.rpc.must(ctx, "generate", []any{1}, &hashes)
+	require(len(hashes) == 1, "generate count")
+	require(sameTip(ctx, n, peer) == hashes[0], "generated membership")
+	return hashes[0]
+}
+func block(ctx context.Context, n *node, hash string) *wire.MsgBlock {
+	var encoded string
+	n.rpc.must(ctx, "getblock", []any{hash, 0}, &encoded)
+	b := dec(encoded)
+	require(len(b) <= 4000000, "block bound")
+	var out wire.MsgBlock
+	check(out.Deserialize(bytes.NewReader(b)), "block parse")
+	return &out
+}
+func minedTx(ctx context.Context, n *node, hash, txid string) *wire.MsgTx {
+	b := block(ctx, n, hash)
+	for _, tx := range b.Transactions {
+		if tx.TxHash().String() == txid {
+			return tx
+		}
+	}
+	panic("missing block transaction")
+}

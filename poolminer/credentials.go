@@ -43,7 +43,7 @@ func (s *Store) Rotate(ctx context.Context, gym, a string, expected uint32, toke
 	if _, ok := s.enrolled(gym); !ok {
 		return Credential{}, ErrUnauthorized
 	}
-	hashes, e := tokenHashes(s.configID, a, token)
+	hashes, e := tokenHashesVersion(s.configID, a, token, s.version())
 	if e != nil {
 		return Credential{}, e
 	}
@@ -140,7 +140,7 @@ func (a *Sessions) WithSession(ctx context.Context, token string, fn func(string
 		return e
 	}
 	defer end()
-	hashes, e := tokenHashes(s.configID, a.audience, token)
+	hashes, e := tokenHashesVersion(s.configID, a.audience, token, s.version())
 	if e != nil {
 		return ErrUnauthorized
 	}

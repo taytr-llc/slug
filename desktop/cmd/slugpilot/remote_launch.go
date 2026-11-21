@@ -53,7 +53,7 @@ func remoteLaunchRequested(args []string) bool {
 			continue
 		}
 		name := strings.SplitN(strings.TrimLeft(a, "-"), "=", 2)[0]
-		if name == "candidate-remote-pool" || strings.HasPrefix(name, "remote-") {
+		if name == "daily" || name == "candidate-remote-pool" || strings.HasPrefix(name, "remote-") {
 			return true
 		}
 	}
@@ -63,7 +63,7 @@ func remoteLaunchPath(s string) bool {
 	return len(s) > 1 && len(s) <= 4096 && filepath.IsAbs(s) && filepath.Clean(s) == s && !strings.ContainsAny(s, "\x00\r\n\t")
 }
 func validateRemoteLaunchArgs(args []string) error {
-	if len(args) < 1 || len(args) > 18 {
+	if len(args) < 1 || len(args) > 19 {
 		return errRemoteLaunchInvalid
 	}
 	seen := make(map[string]bool, 8)
@@ -79,7 +79,7 @@ func validateRemoteLaunchArgs(args []string) error {
 		}
 		seen[name] = true
 		value := ""
-		if name == "candidate-remote-pool" {
+		if name == "candidate-remote-pool" || name == "daily" {
 			if len(nameValue) == 2 && nameValue[1] != "true" {
 				return errRemoteLaunchInvalid
 			}
@@ -198,7 +198,10 @@ func (o *remoteLaunchOwner) Close() error {
 // Fixed-purpose dispatch is the only way parsed secrets reach the original
 // constructor. Raw buffers are cleared immediately; immutable RPC strings are
 // retained only by the concrete controller for its original node attachment.
-func openRemoteLaunch(ctx context.Context, p remoteLaunchPaths, options pilot.PoolOptions) (owner *remoteLaunchOwner, expected pilot.RemotePoolConfig, resultErr error) {
+func openRemoteLaunch(ctx context.Context, p remoteLaunchPaths, options pilot.PoolOptions) (*remoteLaunchOwner, pilot.RemotePoolConfig, error) {
+	return openRemoteLaunchMode(ctx, p, options, false)
+}
+func openRemoteLaunchMode(ctx context.Context, p remoteLaunchPaths, options pilot.PoolOptions, daily bool) (owner *remoteLaunchOwner, expected pilot.RemotePoolConfig, resultErr error) {
 	if ctx == nil || ctx.Err() != nil {
 		return nil, expected, errRemoteLaunchUnavailable
 	}
@@ -228,7 +231,11 @@ func openRemoteLaunch(ctx context.Context, p remoteLaunchPaths, options pilot.Po
 	if e != nil {
 		return nil, expected, e
 	}
-	expected, e = pilot.ParseRemotePoolConfig(raw) // exact existing grammar; no LF stripping
+	parse := pilot.ParseRemotePoolConfig
+	if daily {
+		parse = pilot.ParseDailyRemotePoolConfig
+	}
+	expected, e = parse(raw) // exact selected grammar; no LF stripping
 	clear(raw)
 	if e != nil {
 		return nil, pilot.RemotePoolConfig{}, e
@@ -249,7 +256,11 @@ func openRemoteLaunch(ctx context.Context, p remoteLaunchPaths, options pilot.Po
 	if e = o.checkLocked(ctx); e != nil {
 		return nil, expected, e
 	}
-	o.controller, e = accountpilot.OpenRemotePoolController(ctx, p.data, options, pilot.RemotePoolInputs{AttachmentRoot: p.attachment, Config: expected, NodeRPC: rpc, PoolCredentialPath: p.poolCredential, AdmissionCredentialPath: p.admissionCredential})
+	open := accountpilot.OpenRemotePoolController
+	if daily {
+		open = accountpilot.OpenDailyRemotePoolController
+	}
+	o.controller, e = open(ctx, p.data, options, pilot.RemotePoolInputs{AttachmentRoot: p.attachment, Config: expected, NodeRPC: rpc, PoolCredentialPath: p.poolCredential, AdmissionCredentialPath: p.admissionCredential})
 	if e != nil {
 		return nil, expected, e
 	}

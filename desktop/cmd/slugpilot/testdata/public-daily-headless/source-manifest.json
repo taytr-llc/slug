@@ -1,0 +1,183 @@
+{
+  "version": 1,
+  "scope": "Set79 Path C actual headless DAILY source-only harness",
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/main.go",
+      "bytes": 14081,
+      "sha256": "1fc1060c68105d3807c568eb7217fe33ecfcf148dc2c13b288bd5c25e6434ea2"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/selection.go",
+      "bytes": 6929,
+      "sha256": "e84e8563c197aae0795ed49e01cc41f6bf85efeed9979442192d5884d8052afc"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/runtime_helpers.go",
+      "bytes": 11411,
+      "sha256": "7b55b892d218f236ed0c4b6408f0f909996bb2ce1f8c20cea4a338de9ebb2caa"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/relay.go",
+      "bytes": 4206,
+      "sha256": "2abc55505b26b680a9cf321a04cd57e5227ca5cdccd8dfe4534a9d4a8d98c69c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/work_evidence.go",
+      "bytes": 9795,
+      "sha256": "8b33fb269929580dee3543421b8d55a952fa3c99464aaf5426b192d3b77096fa"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/payment.go",
+      "bytes": 10011,
+      "sha256": "1483c0ec3882de879d2a2b8570422a45f4b6df70319c291cc6e1adea4b17edc8"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/operator_audit.go",
+      "bytes": 9605,
+      "sha256": "6f9c5e90841ed0b5362282749ceb6705380d1ab720dfc1ced2ea3653510d54fb"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/node_helpers.go",
+      "bytes": 8556,
+      "sha256": "2aed24b4ca1543331f95bccfdffb6118d43a83ec490c8c1bcf8206d2a44ba451"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/cli_process.go",
+      "bytes": 9454,
+      "sha256": "aab907a4038b10804611e0d6ea49ea6bb27fc64ecee8315ec90448dddbf65fc7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/go.mod",
+      "bytes": 1371,
+      "sha256": "2800011a777f0d44ad9c035bba09a64889780529d2fede1df8b710b36532c026"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/PLAN.md",
+      "bytes": 4034,
+      "sha256": "31141ea19126aa37fa54226552c75e3a5d9c1256cbba9d58ff06ae6d5ef47eb0"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/README.md",
+      "bytes": 1707,
+      "sha256": "3293ca67314a8454b9440a9395bbeebbfa7927f81834b221506f545d1818f302"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/provenance.json",
+      "bytes": 2990,
+      "sha256": "aea1615cd731e731287d168916ed07e6ba62d6abf3e03f938d7585b956472e21"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/path-c.diff",
+      "bytes": 19379,
+      "sha256": "fe3366b97fd92a0b3939e60ae1d010e4d877d56401287c7a69488a0285dbf05e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/fixture-catalog.json",
+      "bytes": 66249,
+      "sha256": "2637978c2e08637dae2a21bf7fcb8e9ab37edb3476e2b9512c73ff16809b7e55"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/fixture-public.json",
+      "bytes": 7244,
+      "sha256": "83bfe6cdd6020524199ba6abada82614fb67987b32b9fb96111bf6bddf879f23"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/runner_support.py",
+      "bytes": 3888,
+      "sha256": "54bb3e7caf33e744ce76bf366dd23a4eff4d370d9246b85758089b57dd2439d7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/run.py",
+      "bytes": 32403,
+      "sha256": "d5bed85d6b29771ff9f084d27ba1056bdf38ef52bde66ec83216893968d1a573"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/runner-manifest.json",
+      "bytes": 2272,
+      "sha256": "d6d653afaf87202a8b88e7a582828d484a6acffae94568f071455860fab0e25e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/go-source-manifest.json",
+      "bytes": 4658,
+      "sha256": "b31d7cb5396cd11214ac9d3159878ebdcffe4e9a7c2007afb19e6772cb182538"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/MONEY_READ_SUCCESSOR.md",
+      "bytes": 1805,
+      "sha256": "b5641430a85f0192e89c7d65203bce9605830edc80deafc7c0f02ec6ad24cdce"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/money-read.diff",
+      "bytes": 14135,
+      "sha256": "01101df46c6985da0613d949b4a44dbff1fd796bcbabe490bc57fbb683dc6d34"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/money-read-manifest.json",
+      "bytes": 5125,
+      "sha256": "1045cdda05b6aba1c42071aa6041d68bae681fc018233f00f0f85a0dfc70f45c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/pre-money-read/source-manifest.json",
+      "bytes": 5658,
+      "sha256": "520f49ce4ebfffc234febc663fa0a138326bf981c493380ff33d4c4f68ce57e4"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/pre-money-read/go-source-manifest.json",
+      "bytes": 4187,
+      "sha256": "e70adc770517d328afebe7a110087152c44b6b329c0b3751536dcab12e0e17b7"
+    }
+  ],
+  "inherited_source_manifest": {
+    "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/source-manifest.json",
+    "bytes": 8007,
+    "sha256": "f498b40fb404b74a53b4edba84c741f003c5224b53d0fd16a4b53bf5ca53d895"
+  },
+  "reference_source_ready": {
+    "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/source-ready.json",
+    "bytes": 1678,
+    "sha256": "49b53496726c9c6a2f027c5958f2bd713941f146857535c82c10b4c0f056ae63"
+  },
+  "qualified_reference": [
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set79/attachment-reference-attempt1/python314.json",
+      "bytes": 46498,
+      "sha256": "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set79/attachment-reference-attempt1/python39.json",
+      "bytes": 46498,
+      "sha256": "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set79/attachment-reference-attempt1/report.json",
+      "bytes": 4304,
+      "sha256": "b1fc75d5a8e3d0fa380f8f655deb62a4417919787dcd48643fc8e44af010a0b8"
+    }
+  ],
+  "execution": {
+    "go_scenario_seconds": 900,
+    "outer_actual_seconds": 1080,
+    "maximum_chain_height": 180,
+    "accepted_reward_branches": [
+      1,
+      2
+    ],
+    "cli_processes": 1,
+    "cli_stop_seconds": 30,
+    "cli_stdout_bytes": 1048576,
+    "cli_status_rows": 1024,
+    "product_changes": false,
+    "execution_authorized": false
+  },
+  "predecessor": {
+    "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/pre-money-read/source-manifest.json",
+    "bytes": 5658,
+    "sha256": "520f49ce4ebfffc234febc663fa0a138326bf981c493380ff33d4c4f68ce57e4"
+  },
+  "money_read_delta": {
+    "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/money-read-manifest.json",
+    "bytes": 5125,
+    "sha256": "1045cdda05b6aba1c42071aa6041d68bae681fc018233f00f0f85a0dfc70f45c"
+  }
+}

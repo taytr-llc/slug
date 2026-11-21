@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "scope": "Set79 Path A finite original-wallet automatic worker/payment",
+  "selected_composition": "two-enrollments",
+  "selected_fixture": "incrementing256",
+  "bits_hex": "207fffff",
+  "expected_network": 1397511495,
+  "expected_genesis": "7893676099cf9985bb198dfb6a347d9422a19f2422cf3326a999a7230ce246cd",
+  "expected_prospect_target": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+  "source_limits": {
+    "max_works": 8,
+    "max_submissions": 8,
+    "max_bytes": 67108864
+  },
+  "round_limits": {
+    "version": 2,
+    "max_rounds": 8,
+    "max_bytes": 67108864
+  },
+  "settlement_limits": {
+    "max_rounds": 8,
+    "max_batches": 6
+  },
+  "ordinary_maximum": 2,
+  "outbox_limits": {
+    "max_records": 64,
+    "max_bytes": 67108864
+  },
+  "connection_recipe": "SLUG Set79 Path A original wallet daily attachment v1",
+  "subsidy_atoms": 1000000000,
+  "miner_numerator": 99,
+  "allocation_denominator": 100,
+  "atoms_per_kvb": 1000,
+  "reward_counts": [
+    1,
+    2
+  ],
+  "runtime_only_fields": [
+    "ingress loopback endpoints/CA/SPKI",
+    "schedule.daily_utc_minute from actual UTC+5min",
+    "remote origin/CA",
+    "credential generation/expiry/token"
+  ],
+  "unchanged_local": true,
+  "execution": "root only, two independent Python interpreters; no Go expectation generation"
+}

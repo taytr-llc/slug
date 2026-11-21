@@ -122,10 +122,11 @@ func provisionPolicyContext(p ProvisionPolicy) prospect.Context {
 }
 func provisionIngress(p ProvisionPolicy, spki string) poolingress.Config {
 	t := p.Transport
-	return poolingress.Config{Version: 1, Listen: t.Listen, Origin: t.Origin, CertificateSPKI: spki, PoolURL: t.PoolURL, AdmissionURL: t.AdmissionURL, OwnershipURL: t.OwnershipURL}
+	return poolingress.Config{Version: p.Version, Listen: t.Listen, Origin: t.Origin, CertificateSPKI: spki, PoolURL: t.PoolURL, AdmissionURL: t.AdmissionURL, OwnershipURL: t.OwnershipURL}
 }
-func ValidateProvisionPolicy(p ProvisionPolicy) error {
-	if p.Version != 1 || p.Scope != provisionScope || !identifier(p.RequestID) || p.Network != uint32(chaincfg.MainNetParams.Net) || p.Genesis != chaincfg.MainNetParams.GenesisHash.String() || p.CheckpointPublicKey != hex.EncodeToString(chaincfg.MainNetParams.CheckpointPublicKey) || !identifier(p.DescriptorID) || !identifier(p.Mining.ProspectTarget) || !identifier(p.Mining.PoolTarget) {
+func ValidateProvisionPolicy(p ProvisionPolicy) error { return validateProvisionPolicyVersion(p, 1) }
+func validateProvisionPolicyVersion(p ProvisionPolicy, version uint32) error {
+	if (version != 1 && version != 2) || p.Version != version || p.Scope != provisionScope || !identifier(p.RequestID) || p.Network != uint32(chaincfg.MainNetParams.Net) || p.Genesis != chaincfg.MainNetParams.GenesisHash.String() || p.CheckpointPublicKey != hex.EncodeToString(chaincfg.MainNetParams.CheckpointPublicKey) || !identifier(p.DescriptorID) || !identifier(p.Mining.ProspectTarget) || !identifier(p.Mining.PoolTarget) {
 		return ErrProvisionInvalid
 	}
 	d, e := fighterdescriptor.ResolveCandidate(p.DescriptorID)
@@ -139,7 +140,13 @@ func ValidateProvisionPolicy(p ProvisionPolicy) error {
 		return ErrProvisionInvalid
 	}
 	l := p.Limits
-	if l.MaxWorks < 1 || l.MaxWorks > 256 || l.MaxSubmissions < 1 || l.MaxSubmissions > 4096 || l.PoolMaxBytes < 4096 || l.PoolMaxBytes > 1<<30 || l.MaxRounds < 1 || l.MaxRounds > 256 || uint64(l.MaxRounds) < l.MaxWorks || l.MaxBatches < 1 || l.MaxBatches > 366 || l.RoundMaxBytes < 4096 || l.RoundMaxBytes > 1<<30 {
+	maxWorks, maxRows, maxBytes, maxRounds, maxBatches := uint64(256), uint64(4096), uint64(1<<30), uint32(256), uint32(366)
+	ingressValidate := poolingress.ValidateConfig
+	if version == 2 {
+		maxWorks, maxRows, maxBytes, maxRounds, maxBatches = 8192, 16384, 8<<30, 16384, 32767
+		ingressValidate = poolingress.ValidateDailyConfig
+	}
+	if l.MaxWorks < 1 || l.MaxWorks > maxWorks || l.MaxSubmissions < 1 || l.MaxSubmissions > maxRows || l.PoolMaxBytes < 4096 || l.PoolMaxBytes > maxBytes || l.MaxRounds < 1 || l.MaxRounds > maxRounds || uint64(l.MaxRounds) < l.MaxWorks || l.MaxBatches < 1 || l.MaxBatches > maxBatches || l.RoundMaxBytes < 4096 || l.RoundMaxBytes > maxBytes {
 		return ErrProvisionInvalid
 	}
 	if len(p.Enrollments) < 1 || len(p.Enrollments) > 64 {
@@ -179,7 +186,7 @@ func ValidateProvisionPolicy(p ProvisionPolicy) error {
 		return ErrProvisionInvalid
 	}
 	// Shape-only placeholder; it never leaves validation or becomes selected trust.
-	if poolingress.ValidateConfig(provisionIngress(p, p.RequestID)) != nil || p.Transport.PoolURL == p.Transport.AdmissionURL || p.Transport.PoolURL == p.Transport.OwnershipURL || p.Transport.AdmissionURL == p.Transport.OwnershipURL {
+	if ingressValidate(provisionIngress(p, p.RequestID)) != nil || p.Transport.PoolURL == p.Transport.AdmissionURL || p.Transport.PoolURL == p.Transport.OwnershipURL || p.Transport.AdmissionURL == p.Transport.OwnershipURL {
 		return ErrProvisionInvalid
 	}
 	// The reusable ingress unit-test grammar permits port0; durable Setup does not.
@@ -192,25 +199,32 @@ func ValidateProvisionPolicy(p ProvisionPolicy) error {
 	}
 	return nil
 }
-func ProvisionPolicyID(p ProvisionPolicy) (string, error) {
-	if e := ValidateProvisionPolicy(p); e != nil {
+func ProvisionPolicyID(p ProvisionPolicy) (string, error) { return provisionPolicyIDVersion(p, 1) }
+func provisionPolicyIDVersion(p ProvisionPolicy, version uint32) (string, error) {
+	if e := validateProvisionPolicyVersion(p, version); e != nil {
 		return "", e
 	}
 	raw, _ := json.Marshal(p)
-	return framedHash("SLUG pool provision policy", raw), nil
+	return framedHashVersion("SLUG pool provision policy", raw, version), nil
 }
 func provisionNamespace(request, role string) string {
+	return provisionNamespaceVersion(request, role, 1)
+}
+func provisionNamespaceVersion(request, role string, version uint32) string {
 	raw, _ := hex.DecodeString(request)
 	raw = append(raw, []byte(role)...)
-	return framedHash("SLUG pool provision identity", raw)
+	return framedHashVersion("SLUG pool provision identity", raw, version)
 }
 func ComposeProvisionSetup(p ProvisionPolicy, m ProvisionPublicMaterial, c ProvisionCertificate) (Setup, error) {
+	return composeProvisionSetupVersion(p, m, c, 1)
+}
+func composeProvisionSetupVersion(p ProvisionPolicy, m ProvisionPublicMaterial, c ProvisionCertificate, version uint32) (Setup, error) {
 	var s Setup
-	if ValidateProvisionPolicy(p) != nil || m.Version != 1 || !provisionTime(m.CreatedAtMS) || c.Version != 1 || !identifier(c.CertificateSHA256) || !identifier(c.CertificateSPKI) || !provisionPoint(m.FundingPublicKey) {
+	if validateProvisionPolicyVersion(p, version) != nil || m.Version != 1 || !provisionTime(m.CreatedAtMS) || c.Version != 1 || !identifier(c.CertificateSHA256) || !identifier(c.CertificateSPKI) || !provisionPoint(m.FundingPublicKey) {
 		return s, ErrProvisionInvalid
 	}
-	source := registry.ManifestAuthorityPin{Version: 5, Network: p.Network, Genesis: p.Genesis, AuthorityID: provisionNamespace(p.RequestID, "authority"), DescriptorID: p.DescriptorID}
-	pin := registry.PublicManifestPin{Version: 2, Source: source, PublicationID: provisionNamespace(p.RequestID, "publication"), AdmissionKey: m.AdmissionKey, PublicationKey: m.PublicationKey, CutoffKey: m.CutoffKey, CheckpointKey: p.CheckpointPublicKey, RuleID: registry.PublicOwnershipRuleID(), ScanOrigin: registry.PublicChainPoint{Height: 0, Hash: p.Genesis}, Limits: registry.PublicOwnershipDefaultLimits()}
+	source := registry.ManifestAuthorityPin{Version: 5, Network: p.Network, Genesis: p.Genesis, AuthorityID: provisionNamespaceVersion(p.RequestID, "authority", version), DescriptorID: p.DescriptorID}
+	pin := registry.PublicManifestPin{Version: 2, Source: source, PublicationID: provisionNamespaceVersion(p.RequestID, "publication", version), AdmissionKey: m.AdmissionKey, PublicationKey: m.PublicationKey, CutoffKey: m.CutoffKey, CheckpointKey: p.CheckpointPublicKey, RuleID: registry.PublicOwnershipRuleID(), ScanOrigin: registry.PublicChainPoint{Height: 0, Hash: p.Genesis}, Limits: registry.PublicOwnershipDefaultLimits()}
 	profile, e := registry.NewOperatorProfile(pin)
 	if e != nil {
 		return s, ErrProvisionInvalid
@@ -221,8 +235,8 @@ func ComposeProvisionSetup(p ProvisionPolicy, m ProvisionPublicMaterial, c Provi
 	if e != nil {
 		return s, ErrProvisionInvalid
 	}
-	pool := poolshare.Config{Version: 1, AuthorityPin: source, Policy: prospectnode.Policy{Version: 1, Network: p.Network, Genesis: p.Genesis, DNAVersion: p.Mining.DNAVersion, ProspectTarget: p.Mining.ProspectTarget}, PayoutAddress: addr.EncodeAddress(), PoolTarget: p.Mining.PoolTarget, MaxWorks: p.Limits.MaxWorks, MaxSubmissions: p.Limits.MaxSubmissions, MaxBytes: p.Limits.PoolMaxBytes}
-	settlement := poolsettle.Config{Version: 1, ChangeScript: script, MaxRounds: p.Limits.MaxRounds, MaxBatches: p.Limits.MaxBatches}
+	pool := poolshare.Config{Version: version, AuthorityPin: source, Policy: prospectnode.Policy{Version: 1, Network: p.Network, Genesis: p.Genesis, DNAVersion: p.Mining.DNAVersion, ProspectTarget: p.Mining.ProspectTarget}, PayoutAddress: addr.EncodeAddress(), PoolTarget: p.Mining.PoolTarget, MaxWorks: p.Limits.MaxWorks, MaxSubmissions: p.Limits.MaxSubmissions, MaxBytes: p.Limits.PoolMaxBytes}
+	settlement := poolsettle.Config{Version: version, ChangeScript: script, MaxRounds: p.Limits.MaxRounds, MaxBatches: p.Limits.MaxBatches}
 	enrollments := make([]poolminer.Enrollment, 0, len(p.Enrollments))
 	for _, en := range p.Enrollments {
 		id, e := gymauth.GymID(provisionPolicyContext(p), en.PublicKey)
@@ -232,22 +246,38 @@ func ComposeProvisionSetup(p ProvisionPolicy, m ProvisionPublicMaterial, c Provi
 		settlement.Destinations = append(settlement.Destinations, poolsettle.Destination{GymID: id, Script: en.PayeeScript})
 		enrollments = append(enrollments, poolminer.Enrollment{PublicKey: en.PublicKey, GymID: id, PayeeScript: en.PayeeScript})
 	}
-	sourceID, e := poolservice.BindingID(pool)
+	sourceDigest := poolservice.BindingID
+	settlementDigest := poolsettle.ConfigBindingID
+	if version == 2 {
+		sourceDigest = poolshare.DailyConfigID
+		settlementDigest = poolsettle.DailyConfigBindingID
+	}
+	sourceID, e := sourceDigest(pool)
 	if e != nil {
 		return s, ErrProvisionInvalid
 	}
-	configID, e := poolsettle.ConfigBindingID(settlement)
+	configID, e := settlementDigest(settlement)
 	if e != nil {
 		return s, ErrProvisionInvalid
 	}
-	runtimeID := provisionNamespace(p.RequestID, "runtime")
-	guard := waddrmgr.PoolSettlementGuard{Version: 1, ManagerSchema: 16, WalletOwnerID: provisionNamespace(p.RequestID, "wallet"), OperatorProfileID: profile.ID(), SourceBindingID: sourceID, SettlementConfigID: configID, DerivationID: waddrmgr.PoolSettlementDerivation, Network: p.Network, Genesis: p.Genesis, RootPublicKey: m.RootPublicKey, FundingPublicKey: m.FundingPublicKey, FundingScript: script}
+	runtimeID := provisionNamespaceVersion(p.RequestID, "runtime", version)
+	guard := waddrmgr.PoolSettlementGuard{Version: 1, ManagerSchema: 16, WalletOwnerID: provisionNamespaceVersion(p.RequestID, "wallet", version), OperatorProfileID: profile.ID(), SourceBindingID: sourceID, SettlementConfigID: configID, DerivationID: waddrmgr.PoolSettlementDerivation, Network: p.Network, Genesis: p.Genesis, RootPublicKey: m.RootPublicKey, FundingPublicKey: m.FundingPublicKey, FundingScript: script}
 	binding, _ := json.Marshal(struct {
 		Config poolsettle.Config `json:"config"`
 		Source poolshare.Config  `json:"source"`
 	}{settlement, pool})
-	s = Setup{Version: 1, RuntimeID: runtimeID, Authority: pin, OwnershipStoreID: provisionNamespace(p.RequestID, "ownership"), Pool: pool, RoundLimits: poolround.Limits{Version: 1, MaxRounds: uint64(p.Limits.MaxRounds), MaxBytes: p.Limits.RoundMaxBytes}, Settlement: settlement, Schedule: poolschedule.Config{Version: 1, SchedulerID: provisionNamespace(p.RequestID, "scheduler"), RuntimeID: runtimeID, SettlementBindingID: framedHash("SLUG pool settlement binding", binding), DailyUTCMinute: p.Schedule.DailyUTCMinute, RetryMS: uint32(p.Schedule.RetryMS)}, Miners: poolminer.Config{Version: 1, CredentialID: provisionNamespace(p.RequestID, "credentials"), RuntimeID: runtimeID, OperatorProfileID: profile.ID(), SourceID: sourceID, SettlementConfigID: configID, Enrollments: enrollments}, WalletGuard: guard, Node: poolsettlenode.Config{Version: 1, Network: p.Network, Genesis: p.Genesis, PoolPublicKey: m.FundingPublicKey, PoolScript: script, Fee: p.Fee}, Ingress: provisionIngress(p, c.CertificateSPKI), MaintenanceIntervalMS: p.MaintenanceIntervalMS, UnlockLifetimeMS: p.UnlockLifetimeMS, UnlockRenewalMS: p.UnlockRenewalMS}
-	if ValidateSetup(s) != nil {
+	scheduleID := framedHash("SLUG pool settlement binding", binding)
+	if version == 2 {
+		scheduleID, e = poolschedule.DailySettlementConfigBinding(settlement, pool)
+		if e != nil {
+			return Setup{}, ErrProvisionInvalid
+		}
+	}
+	s = Setup{Version: version, RuntimeID: runtimeID, Authority: pin, OwnershipStoreID: provisionNamespaceVersion(p.RequestID, "ownership", version), Pool: pool, RoundLimits: poolround.Limits{Version: version, MaxRounds: uint64(p.Limits.MaxRounds), MaxBytes: p.Limits.RoundMaxBytes}, Settlement: settlement, Schedule: poolschedule.Config{Version: version, SchedulerID: provisionNamespaceVersion(p.RequestID, "scheduler", version), RuntimeID: runtimeID, SettlementBindingID: scheduleID, DailyUTCMinute: p.Schedule.DailyUTCMinute, RetryMS: uint32(p.Schedule.RetryMS)}, Miners: poolminer.Config{Version: version, CredentialID: provisionNamespaceVersion(p.RequestID, "credentials", version), RuntimeID: runtimeID, OperatorProfileID: profile.ID(), SourceID: sourceID, SettlementConfigID: configID, Enrollments: enrollments}, WalletGuard: guard, Node: poolsettlenode.Config{Version: 1, Network: p.Network, Genesis: p.Genesis, PoolPublicKey: m.FundingPublicKey, PoolScript: script, Fee: p.Fee}, Ingress: provisionIngress(p, c.CertificateSPKI), MaintenanceIntervalMS: p.MaintenanceIntervalMS, UnlockLifetimeMS: p.UnlockLifetimeMS, UnlockRenewalMS: p.UnlockRenewalMS}
+	if validateSetupVersion(s, version) != nil {
+		return Setup{}, ErrProvisionInvalid
+	}
+	if version == 2 && dailyProvisionCapacity(p) != nil {
 		return Setup{}, ErrProvisionInvalid
 	}
 	return s, nil

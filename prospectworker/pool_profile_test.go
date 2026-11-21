@@ -65,6 +65,18 @@ func TestPoolCheapProfileRefusesBeforeState(t *testing.T) {
 		t.Fatal("cheap-profile hook constructor leaked a worker")
 	}
 	require((&PoolWorker{}).Run(context.Background()))
+	for _, open := range []func(string, PoolConfig) (*PoolOutbox, error){CreateDailyPoolOutbox, OpenDailyPoolOutbox, OpenDailyPoolOutboxAudit} {
+		daily, e := open(filepath.Join(path, "daily-absent"), c)
+		require(e)
+		if daily != nil {
+			t.Fatal("cheap daily outbox escaped")
+		}
+	}
+	daily, e := NewDailyPool(c, nil, nil, nil, nil, nil)
+	require(e)
+	if daily != nil {
+		t.Fatal("cheap daily worker escaped")
+	}
 	rows, err := (&PoolOutbox{}).List(0, 1)
 	require(err)
 	if rows != nil {

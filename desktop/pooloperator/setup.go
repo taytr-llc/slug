@@ -51,10 +51,11 @@ func identifier(s string) bool {
 	return e == nil && hex.EncodeToString(b) == s && !bytes.Equal(b, make([]byte, 32))
 }
 
-func framedHash(label string, raw []byte) string {
+func framedHash(label string, raw []byte) string { return framedHashVersion(label, raw, 1) }
+func framedHashVersion(label string, raw []byte, version uint32) string {
 	h := sha256.New()
 	h.Write([]byte(label))
-	h.Write([]byte{0, 'v', '1', 0})
+	h.Write([]byte{0, 'v', byte('0' + version), 0})
 	var n [4]byte
 	binary.LittleEndian.PutUint32(n[:], uint32(len(raw)))
 	h.Write(n[:])
@@ -63,7 +64,7 @@ func framedHash(label string, raw []byte) string {
 }
 
 func (s Setup) walletBinding() wallet.PoolWalletBinding {
-	return wallet.PoolWalletBinding{Version: 1, WalletOwnerID: s.WalletGuard.WalletOwnerID, OperatorProfileID: s.WalletGuard.OperatorProfileID, Source: s.Pool, Settlement: s.Settlement, Guard: s.WalletGuard}
+	return wallet.PoolWalletBinding{Version: s.Version, WalletOwnerID: s.WalletGuard.WalletOwnerID, OperatorProfileID: s.WalletGuard.OperatorProfileID, Source: s.Pool, Settlement: s.Settlement, Guard: s.WalletGuard}
 }
 
 func (s Setup) minerBinding(profile registry.OperatorProfile) poolminer.Binding {
@@ -72,39 +73,56 @@ func (s Setup) minerBinding(profile registry.OperatorProfile) poolminer.Binding 
 
 // ValidateSetup is side-effect-free. Constructors repeat the original concrete
 // owners' audits; this validation and its digest cannot replace them.
-func ValidateSetup(s Setup) error {
-	if s.Version != 1 || !identifier(s.RuntimeID) || !identifier(s.OwnershipStoreID) {
+func ValidateSetup(s Setup) error { return validateSetupVersion(s, 1) }
+func validateSetupVersion(s Setup, version uint32) error {
+	if (version != 1 && version != 2) || s.Version != version || !identifier(s.RuntimeID) || !identifier(s.OwnershipStoreID) {
 		return ErrInvalid
 	}
 	p, e := registry.NewOperatorProfile(s.Authority)
 	if e != nil || p.Pin().Source != s.Pool.AuthorityPin {
 		return ErrInvalid
 	}
-	if s.Miners.RuntimeID != s.RuntimeID || poolminer.ValidateConfig(s.Miners, s.minerBinding(p)) != nil {
+	minerValidate := poolminer.ValidateConfig
+	walletValidate := wallet.ValidatePoolWalletBinding
+	ingressValidate := poolingress.ValidateConfig
+	if version == 2 {
+		minerValidate = poolminer.ValidateDailyConfig
+		walletValidate = wallet.ValidateDailyPoolWalletBinding
+		ingressValidate = poolingress.ValidateDailyConfig
+	}
+	if s.Miners.RuntimeID != s.RuntimeID || minerValidate(s.Miners, s.minerBinding(p)) != nil {
 		return ErrInvalid
 	}
-	if wallet.ValidatePoolWalletBinding(s.walletBinding()) != nil || s.WalletGuard.OperatorProfileID != p.ID() {
+	if walletValidate(s.walletBinding()) != nil || s.WalletGuard.OperatorProfileID != p.ID() {
 		return ErrInvalid
 	}
 	if poolsettlenode.ValidateConfig(s.Node) != nil || s.Node.Network != s.Authority.Source.Network || s.Node.Genesis != s.Authority.Source.Genesis || s.Node.PoolPublicKey != s.WalletGuard.FundingPublicKey || s.Node.PoolScript != s.WalletGuard.FundingScript {
 		return ErrInvalid
 	}
 	l := s.RoundLimits
-	if l.Version != 1 || l.MaxRounds != uint64(s.Settlement.MaxRounds) || l.MaxRounds < uint64(s.Pool.MaxWorks) || l.MaxBytes < 4096 || l.MaxBytes > 1<<30 {
+	maxBytes := uint64(1 << 30)
+	if version == 2 {
+		maxBytes = 8 << 30
+	}
+	if l.Version != version || l.MaxRounds != uint64(s.Settlement.MaxRounds) || l.MaxRounds < uint64(s.Pool.MaxWorks) || l.MaxBytes < 4096 || l.MaxBytes > maxBytes {
 		return ErrInvalid
 	}
 	c := s.Schedule
-	if c.Version != 1 || !identifier(c.SchedulerID) || c.RuntimeID != s.RuntimeID || c.DailyUTCMinute > 1439 || c.RetryMS < 1000 || c.RetryMS > 3600000 {
+	if c.Version != version || !identifier(c.SchedulerID) || c.RuntimeID != s.RuntimeID || c.DailyUTCMinute > 1439 || c.RetryMS < 1000 || c.RetryMS > 3600000 {
 		return ErrInvalid
 	}
 	raw, e := json.Marshal(struct {
 		Config poolsettle.Config `json:"config"`
 		Source poolshare.Config  `json:"source"`
 	}{s.Settlement, s.Pool})
-	if e != nil || c.SettlementBindingID != framedHash("SLUG pool settlement binding", raw) {
+	binding := framedHash("SLUG pool settlement binding", raw)
+	if version == 2 {
+		binding, e = poolschedule.DailySettlementConfigBinding(s.Settlement, s.Pool)
+	}
+	if e != nil || c.SettlementBindingID != binding {
 		return ErrInvalid
 	}
-	if poolingress.ValidateConfig(s.Ingress) != nil || s.Ingress.PoolURL == s.Ingress.AdmissionURL || s.Ingress.PoolURL == s.Ingress.OwnershipURL || s.Ingress.AdmissionURL == s.Ingress.OwnershipURL {
+	if ingressValidate(s.Ingress) != nil || s.Ingress.PoolURL == s.Ingress.AdmissionURL || s.Ingress.PoolURL == s.Ingress.OwnershipURL || s.Ingress.AdmissionURL == s.Ingress.OwnershipURL {
 		return ErrInvalid
 	}
 	_, port, e := net.SplitHostPort(s.Ingress.Listen)
@@ -117,8 +135,9 @@ func ValidateSetup(s Setup) error {
 	return nil
 }
 
-func MarshalSetup(s Setup) ([]byte, error) {
-	if e := ValidateSetup(s); e != nil {
+func MarshalSetup(s Setup) ([]byte, error) { return marshalSetupVersion(s, 1) }
+func marshalSetupVersion(s Setup, version uint32) ([]byte, error) {
+	if e := validateSetupVersion(s, version); e != nil {
 		return nil, e
 	}
 	raw, e := json.Marshal(s)
@@ -128,7 +147,8 @@ func MarshalSetup(s Setup) ([]byte, error) {
 	return raw, nil
 }
 
-func ParseSetup(raw []byte) (Setup, error) {
+func ParseSetup(raw []byte) (Setup, error) { return parseSetupVersion(raw, 1) }
+func parseSetupVersion(raw []byte, version uint32) (Setup, error) {
 	var s Setup
 	if len(raw) == 0 || len(raw) > MaxSetupBytes {
 		return s, ErrInvalid
@@ -138,19 +158,20 @@ func ParseSetup(raw []byte) (Setup, error) {
 	if d.Decode(&s) != nil {
 		return Setup{}, ErrInvalid
 	}
-	canonical, e := MarshalSetup(s)
+	canonical, e := marshalSetupVersion(s, version)
 	if e != nil || !bytes.Equal(canonical, raw) {
 		return Setup{}, ErrInvalid
 	}
 	return s, nil
 }
 
-func SetupID(s Setup) (string, error) {
-	raw, e := MarshalSetup(s)
+func SetupID(s Setup) (string, error) { return setupIDVersion(s, 1) }
+func setupIDVersion(s Setup, version uint32) (string, error) {
+	raw, e := marshalSetupVersion(s, version)
 	if e != nil {
 		return "", e
 	}
-	return framedHash("SLUG pool operator setup", raw), nil
+	return framedHashVersion("SLUG pool operator setup", raw, version), nil
 }
 
 type readyRecord struct {
@@ -159,11 +180,12 @@ type readyRecord struct {
 	SetupID   string `json:"setup_id"`
 }
 
-func readyBytes(s Setup) ([]byte, error) {
-	id, e := SetupID(s)
+func readyBytes(s Setup) ([]byte, error) { return readyBytesVersion(s, 1) }
+func readyBytesVersion(s Setup, version uint32) ([]byte, error) {
+	id, e := setupIDVersion(s, version)
 	if e != nil {
 		return nil, e
 	}
-	raw, e := json.Marshal(readyRecord{1, s.RuntimeID, id})
+	raw, e := json.Marshal(readyRecord{version, s.RuntimeID, id})
 	return append(raw, '\n'), e
 }

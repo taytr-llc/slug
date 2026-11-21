@@ -169,7 +169,15 @@ func workBounds(w poolshare.MiningWork) bool {
 // public inputs. Configured trust authenticates the service; this validates the
 // job, template, gym and payout binding without asserting issuance or finality.
 func PrepareWork(source poolshare.Config, key string, w poolshare.MiningWork) (*prospectwork.ManifestWork, error) {
-	if wire.TestPoW || !validSource(source) || !publicKey(key) || prospectjob.ValidateManifest(w.Job) != nil || !workBounds(w) {
+	return prepareSelectedWork(source, key, w, false)
+}
+
+func prepareSelectedWork(source poolshare.Config, key string, w poolshare.MiningWork, daily bool) (*prospectwork.ManifestWork, error) {
+	valid := validSource(source)
+	if daily {
+		valid = validDailySource(source)
+	}
+	if wire.TestPoW || !valid || !publicKey(key) || prospectjob.ValidateManifest(w.Job) != nil || !workBounds(w) {
 		return nil, errConfig
 	}
 	j, p, pin := w.Job, source.Policy, source.AuthorityPin

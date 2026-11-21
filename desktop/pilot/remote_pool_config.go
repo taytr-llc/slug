@@ -119,14 +119,30 @@ func remotePoolValueBound(v reflect.Value, depth int, left *int) bool {
 // ValidateRemotePoolConfig is pure. It grants no local signing/wallet authority,
 // remote enrollment acceptance, current chain evidence or ownership history.
 func ValidateRemotePoolConfig(c RemotePoolConfig) error {
+	return validateRemotePoolConfig(c, false)
+}
+func validateRemotePoolConfig(c RemotePoolConfig, daily bool) error {
+	version := uint32(1)
+	if daily {
+		version = 2
+	}
 	budget := RemotePoolMaxConfigBytes
-	if !remotePoolValueBound(reflect.ValueOf(c), 0, &budget) || c.Version != 1 || !remotePoolID(c.ConnectionID) ||
+	if !remotePoolValueBound(reflect.ValueOf(c), 0, &budget) || c.Version != version || !remotePoolID(c.ConnectionID) ||
 		len(c.Miners.Enrollments) < 1 || len(c.Miners.Enrollments) > 64 || len(c.Settlement.Destinations) > 64 ||
 		c.MaxRecords < 1 || c.MaxRecords > 4096 || c.MaxBytes < 64<<20 || c.MaxBytes > 1<<30 {
 		return ErrRemotePoolConfig
 	}
 	p, e := registry.NewOperatorProfile(c.OperatorPin)
-	if e != nil || poolminer.ValidateConfig(c.Miners, poolminer.Binding{Profile: p, Source: c.Source, Settlement: c.Settlement}) != nil {
+	if e != nil {
+		return ErrRemotePoolConfig
+	}
+	binding := poolminer.Binding{Profile: p, Source: c.Source, Settlement: c.Settlement}
+	if daily {
+		e = poolminer.ValidateDailyConfig(c.Miners, binding)
+	} else {
+		e = poolminer.ValidateConfig(c.Miners, binding)
+	}
+	if e != nil {
 		return ErrRemotePoolConfig
 	}
 	l := c.ExpectedLocal
@@ -153,9 +169,20 @@ func ValidateRemotePoolConfig(c RemotePoolConfig) error {
 	if e != nil || !remotePoolOrigin(u, c.Origin) || c.CACertificate == "" {
 		return ErrRemotePoolConfig
 	}
-	pc, e := poolservice.ValidateClientConfig(remotePoolClientConfig(c, strings.Repeat("1", 64)))
-	if e != nil || pc.URL != c.Origin || pc.CACertificate != c.CACertificate {
-		return ErrRemotePoolConfig
+	if daily {
+		pc, e := remotePoolDailyClientConfig(c, strings.Repeat("1", 64))
+		if e != nil {
+			return ErrRemotePoolConfig
+		}
+		valid, e := poolservice.ValidateDailyClientConfig(pc)
+		if e != nil || valid.URL != c.Origin || valid.CACertificate != c.CACertificate {
+			return ErrRemotePoolConfig
+		}
+	} else {
+		pc, e := poolservice.ValidateClientConfig(remotePoolClientConfig(c, strings.Repeat("1", 64)))
+		if e != nil || pc.URL != c.Origin || pc.CACertificate != c.CACertificate {
+			return ErrRemotePoolConfig
+		}
 	}
 	ac, e := prospectservice.ValidateManifestClientConfig(remotePoolAdmissionConfig(c, strings.Repeat("1", 64)))
 	if e != nil || ac.URL != c.Origin || ac.CACertificate != c.CACertificate {
@@ -165,7 +192,12 @@ func ValidateRemotePoolConfig(c RemotePoolConfig) error {
 	if e != nil {
 		return ErrRemotePoolConfig
 	}
-	if _, e = prospectworker.ValidatePoolConfig(w); e != nil {
+	if daily {
+		_, e = prospectworker.ValidateDailyPoolConfig(w)
+	} else {
+		_, e = prospectworker.ValidatePoolConfig(w)
+	}
+	if e != nil {
 		return ErrRemotePoolConfig
 	}
 	b, e := json.Marshal(c)
@@ -187,7 +219,17 @@ func remotePoolAdmissionConfig(c RemotePoolConfig, token string) prospectservice
 	return prospectservice.ManifestClientConfig{Version: 3, URL: c.Origin, Token: token, CACertificate: c.CACertificate, AuthorityPin: c.Source.AuthorityPin}
 }
 func remotePoolWorkerConfig(c RemotePoolConfig) (prospectworker.PoolConfig, error) {
-	pt, e := poolservice.TransportTrustID(remotePoolClientConfig(c, strings.Repeat("1", 64)))
+	var pt string
+	var e error
+	if c.Version == 2 {
+		var dc poolservice.DailyClientConfig
+		dc, e = remotePoolDailyClientConfig(c, strings.Repeat("1", 64))
+		if e == nil {
+			pt, e = poolservice.DailyTransportTrustID(dc)
+		}
+	} else {
+		pt, e = poolservice.TransportTrustID(remotePoolClientConfig(c, strings.Repeat("1", 64)))
+	}
 	if e != nil {
 		return prospectworker.PoolConfig{}, ErrRemotePoolConfig
 	}
@@ -195,7 +237,7 @@ func remotePoolWorkerConfig(c RemotePoolConfig) (prospectworker.PoolConfig, erro
 	if e != nil {
 		return prospectworker.PoolConfig{}, ErrRemotePoolConfig
 	}
-	return prospectworker.PoolConfig{Version: 1, Source: c.Source, PublicKey: c.ExpectedLocal.Recipient.Config.Identity.GymPublicKey, AuthorityOrigin: c.Origin, TransportTrustID: pt, AdmissionOrigin: c.Origin, AdmissionTrustID: at, MaxRecords: c.MaxRecords, MaxBytes: c.MaxBytes}, nil
+	return prospectworker.PoolConfig{Version: c.Version, Source: c.Source, PublicKey: c.ExpectedLocal.Recipient.Config.Identity.GymPublicKey, AuthorityOrigin: c.Origin, TransportTrustID: pt, AdmissionOrigin: c.Origin, AdmissionTrustID: at, MaxRecords: c.MaxRecords, MaxBytes: c.MaxBytes}, nil
 }
 
 func MarshalRemotePoolConfig(c RemotePoolConfig) ([]byte, error) {
@@ -239,17 +281,17 @@ type remotePoolReady struct {
 }
 
 func remotePoolMarkerBytes(c RemotePoolConfig) ([]byte, []byte, error) {
-	id, e := RemotePoolConfigID(c)
+	id, e := selectedRemotePoolConfigID(c)
 	if e != nil {
 		return nil, nil, e
 	}
-	i, e := json.Marshal(remotePoolIntent{1, remotePoolApplication, id, c})
+	i, e := json.Marshal(remotePoolIntent{c.Version, remotePoolApplication, id, c})
 	if e != nil {
 		return nil, nil, ErrRemotePoolConfig
 	}
 	i = append(i, '\n')
 	h := sha256.Sum256(i)
-	r, e := json.Marshal(remotePoolReady{1, remotePoolApplication, id, hex.EncodeToString(h[:])})
+	r, e := json.Marshal(remotePoolReady{c.Version, remotePoolApplication, id, hex.EncodeToString(h[:])})
 	if e != nil {
 		return nil, nil, ErrRemotePoolConfig
 	}

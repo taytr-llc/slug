@@ -41,6 +41,10 @@ func dailyIntegrationFixture(t *testing.T) *lateWinnerOwners {
 // An explicit independently selected profile creates fresh daily owners. The
 // existing fixture retains its exact original limits when selection is nil.
 func dailyIntegrationFixtureWithCapacity(t *testing.T, selected *poolcapacity.DailyInputs) *lateWinnerOwners {
+	return dailyIntegrationFixtureWithWorkLimit(t, selected, 8)
+}
+
+func dailyIntegrationFixtureWithWorkLimit(t *testing.T, selected *poolcapacity.DailyInputs, works uint64) *lateWinnerOwners {
 	t.Helper()
 	h := &lateWinnerOwners{clock: time.Date(2030, 1, 1, 12, 0, 0, 0, time.UTC)}
 	t.Cleanup(func() {
@@ -159,7 +163,7 @@ func dailyIntegrationFixtureWithCapacity(t *testing.T, selected *poolcapacity.Da
 		if selected.Gyms != uint64(len(h.settleConfig.Destinations)) {
 			t.Fatal("selected capacity destination count")
 		}
-		h.poolConfig.MaxWorks = 8 // independent Set78 three-job fixture limit
+		h.poolConfig.MaxWorks = works // Set78 retains its independent eight-work fixture limit
 		h.poolConfig.MaxSubmissions, h.poolConfig.MaxBytes = selected.SourceMax, selected.SourceBytes
 		h.roundLimits.MaxRounds, h.roundLimits.MaxBytes = selected.Rounds, selected.RoundBytes
 		h.settleConfig.MaxRounds, h.settleConfig.MaxBatches = uint32(selected.CreditRounds), uint32(selected.Batches)

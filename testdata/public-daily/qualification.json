@@ -1,0 +1,139 @@
+{
+  "attempts": [
+    {
+      "bytes": 3176583,
+      "interpreter": "/opt/homebrew/bin/python3",
+      "name": "py314",
+      "seconds": 0.332,
+      "sha256": "a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3",
+      "version": "Python 3.14.3"
+    },
+    {
+      "bytes": 3176583,
+      "interpreter": "/usr/bin/python3",
+      "name": "py39",
+      "seconds": 0.384,
+      "sha256": "a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3",
+      "version": "Python 3.9.6"
+    }
+  ],
+  "byte_identical": true,
+  "clean_join": true,
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 52250,
+        "pid": 52250,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "/opt/homebrew/bin/python3",
+        "--version"
+      ],
+      "exit_code": 0,
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 52250,
+      "pid": 52250,
+      "seconds": 0.013,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 52251,
+        "pid": 52251,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "/opt/homebrew/bin/python3",
+        "-B",
+        "/Users/taytrrip/slug/set79-prep/reference/generate.py",
+        "--inputs",
+        "/Users/taytrrip/slug/set79-prep/reference/inputs",
+        "--lock",
+        "/Users/taytrrip/slug/artifacts/set79/reference-attempt2/producer-lock.approved.json",
+        "--out",
+        "/Users/taytrrip/slug/artifacts/set79/reference-attempt2/py314.json"
+      ],
+      "exit_code": 0,
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 52251,
+      "pid": 52251,
+      "seconds": 0.332,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 52253,
+        "pid": 52253,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "/usr/bin/python3",
+        "--version"
+      ],
+      "exit_code": 0,
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 52253,
+      "pid": 52253,
+      "seconds": 0.041,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 52254,
+        "pid": 52254,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/Users/taytrrip/slug/set79-prep/reference/generate.py",
+        "--inputs",
+        "/Users/taytrrip/slug/set79-prep/reference/inputs",
+        "--lock",
+        "/Users/taytrrip/slug/artifacts/set79/reference-attempt2/producer-lock.approved.json",
+        "--out",
+        "/Users/taytrrip/slug/artifacts/set79/reference-attempt2/py39.json"
+      ],
+      "exit_code": 0,
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 52254,
+      "pid": 52254,
+      "seconds": 0.384,
+      "timed_out": false
+    }
+  ],
+  "elapsed_seconds": 0.835,
+  "passed": true,
+  "proposal_sha256": "5c2dd3186fa1f00f148517be71ef41e32bfaeaca104f5f8bf2c3f5f5d55fb261",
+  "scope": "Set79 independent public daily reference",
+  "source_inputs_outputs_unchanged": true
+}

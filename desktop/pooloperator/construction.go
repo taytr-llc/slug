@@ -72,24 +72,41 @@ func authorityBinding(p registry.OperatorProfile) (operatorauthority.Binding, er
 	}
 	return operatorauthority.Binding{Version: 2, PinID: p.ID(), Network: wire.BitcoinNet(pin.Source.Network), Genesis: *genesis, Keys: operatorauthority.Keys{Admission: pin.AdmissionKey, Publication: pin.PublicationKey, Cutoff: pin.CutoffKey, Checkpoint: pin.CheckpointKey}}, nil
 }
-func construct(ctx context.Context, root string, expected Setup, borrowed BorrowedOwners, private PrivateInputs, create bool) (r *Runtime, err error) {
+func construct(ctx context.Context, root string, expected Setup, borrowed BorrowedOwners, private PrivateInputs, create bool) (*Runtime, error) {
+	return constructVersion(ctx, root, expected, borrowed, private, create, false)
+}
+func constructVersion(ctx context.Context, root string, expected Setup, borrowed BorrowedOwners, private PrivateInputs, create, daily bool) (r *Runtime, err error) {
 	if ctx == nil || borrowed.Authority == nil || borrowed.Wallet == nil || wire.TestPoW {
 		return nil, ErrInvalid
 	}
 	if e := ctx.Err(); e != nil {
 		return nil, e
 	}
-	raw, e := MarshalSetup(expected)
+	version := uint32(1)
+	if daily {
+		version = 2
+	}
+	raw, e := marshalSetupVersion(expected, version)
 	if e != nil {
 		return nil, e
 	}
-	owned, e := ParseSetup(raw)
+	owned, e := parseSetupVersion(raw, version)
 	if e != nil {
 		return nil, e
 	}
-	reservation, e := CapacityEnvelope(owned)
-	if e != nil {
-		return nil, e
+	var reservation CapacityReservation
+	var dailyReservation *DailyCapacityReservation
+	if daily {
+		v, x := DailyCapacityEnvelope(owned)
+		if x != nil {
+			return nil, x
+		}
+		dailyReservation = &v
+	} else {
+		reservation, e = CapacityEnvelope(owned)
+		if e != nil {
+			return nil, e
+		}
 	}
 	profile, e := registry.NewOperatorProfile(owned.Authority)
 	if e != nil {
@@ -114,10 +131,10 @@ func construct(ctx context.Context, root string, expected Setup, borrowed Borrow
 		return nil, ErrInvalid
 	}
 	life, cancel := context.WithCancel(ctx)
-	id, _ := SetupID(owned)
-	r = &Runtime{setup: owned, setupID: id, profile: profile, borrowed: borrowed, binding: binding, life: life, cancel: cancel, runDone: make(chan struct{}), localGate: make(chan struct{}, 1)}
+	id, _ := setupIDVersion(owned, version)
+	r = &Runtime{daily: daily, dailyReservation: dailyReservation, setup: owned, setupID: id, profile: profile, borrowed: borrowed, binding: binding, life: life, cancel: cancel, runDone: make(chan struct{}), localGate: make(chan struct{}, 1)}
 	r.reservation = reservation
-	r.status = Status{Version: 1, RuntimeID: owned.RuntimeID, SetupID: id, Custody: "locked", Capacity: CapacityStatus{Reservation: reservation, Mode: "paused"}, PublicCode: "not_started", RoundCode: "not_started"}
+	r.status = Status{Version: version, RuntimeID: owned.RuntimeID, SetupID: id, Custody: "locked", Capacity: CapacityStatus{Reservation: reservation, DailyReservation: dailyReservation, Mode: "paused"}, PublicCode: "not_started", RoundCode: "not_started"}
 	defer func() {
 		if err != nil {
 			// Concrete child cleanup errors carry their original owner. Keep that cause
@@ -135,7 +152,7 @@ func construct(ctx context.Context, root string, expected Setup, borrowed Borrow
 			r = nil
 		}
 	}()
-	r.files, err = openOperatorFiles(root, owned, create)
+	r.files, err = openOperatorFilesVersion(root, owned, create, version)
 	if err != nil {
 		return r, err
 	}
@@ -161,7 +178,11 @@ func construct(ctx context.Context, root string, expected Setup, borrowed Borrow
 		return r, e
 	}
 	defer clear(key)
-	r.ingress, err = poolingress.New(owned.Ingress, cert, key)
+	newIngress := poolingress.New
+	if daily {
+		newIngress = poolingress.NewDaily
+	}
+	r.ingress, err = newIngress(owned.Ingress, cert, key)
 	if err != nil {
 		return r, err
 	}
@@ -173,19 +194,39 @@ func construct(ctx context.Context, root string, expected Setup, borrowed Borrow
 	if err != nil {
 		return r, err
 	}
-	r.fundingNode, err = poolsettlenode.New(life, owned.Node, rpc)
+	newFunding := poolsettlenode.New
+	newBackend := wallet.NewPoolSettlementBackend
+	if daily {
+		newFunding = poolsettlenode.NewDaily
+		newBackend = wallet.NewDailyPoolSettlementBackend
+	}
+	r.fundingNode, err = newFunding(life, owned.Node, rpc)
 	if err != nil {
 		return r, err
 	}
-	r.backend, err = wallet.NewPoolSettlementBackend(life, borrowed.Wallet, r.fundingNode, owned.walletBinding())
+	r.backend, err = newBackend(life, borrowed.Wallet, r.fundingNode, owned.walletBinding())
 	if err != nil {
 		return r, err
 	}
 	if err = r.constructStores(ctx); err != nil {
 		return r, err
 	}
-	if err = r.backend.BindSettlement(ctx, r.settlement); err != nil {
+	bindBackend := r.backend.BindSettlement
+	if daily {
+		bindBackend = r.backend.BindDailySettlement
+	}
+	if err = bindBackend(ctx, r.settlement); err != nil {
 		return r, err
+	}
+	if daily {
+		gyms := make([]string, len(owned.Settlement.Destinations))
+		for i, d := range owned.Settlement.Destinations {
+			gyms[i] = d.GymID
+		}
+		r.intake, err = r.pool.AttachDailyOperatorAdmission(ctx, owned.Pool, poolshare.DailyRecoveryBudget{Rounds: owned.RoundLimits.MaxRounds, RoundBytes: owned.RoundLimits.MaxBytes, CreditRounds: uint64(owned.Settlement.MaxRounds), Batches: uint64(owned.Settlement.MaxBatches), GymIDs: gyms})
+		if err != nil {
+			return r, err
+		}
 	}
 	if err = r.constructServices(); err != nil {
 		return r, err
@@ -206,10 +247,14 @@ func (r *Runtime) constructStores(ctx context.Context) error {
 	if e != nil {
 		return e
 	}
+	createMiners, openMiners := poolminer.Create, poolminer.Open
+	if r.daily {
+		createMiners, openMiners = poolminer.CreateDaily, poolminer.OpenDaily
+	}
 	if fresh {
-		r.miners, e = poolminer.Create(ctx, path, r.setup.Miners, r.setup.minerBinding(r.profile))
+		r.miners, e = createMiners(ctx, path, r.setup.Miners, r.setup.minerBinding(r.profile))
 	} else {
-		r.miners, e = poolminer.Open(ctx, path, r.setup.Miners, r.setup.minerBinding(r.profile))
+		r.miners, e = openMiners(ctx, path, r.setup.Miners, r.setup.minerBinding(r.profile))
 	}
 	if e != nil {
 		return e
@@ -244,7 +289,13 @@ func (r *Runtime) constructStores(ctx context.Context) error {
 	if e != nil {
 		return e
 	}
-	if fresh {
+	if r.daily {
+		if fresh {
+			r.pool, e = poolshare.CreateDaily(ctx, path, r.setup.Pool, r.issuer, r.node, r.miners.PoolSessions())
+		} else {
+			r.pool, e = poolshare.OpenDaily(ctx, path, r.setup.Pool, r.issuer, r.node, r.miners.PoolSessions())
+		}
+	} else if fresh {
 		r.pool, e = poolshare.Create(path, r.setup.Pool, r.issuer, r.node, r.miners.PoolSessions())
 	} else {
 		r.pool, e = poolshare.Open(path, r.setup.Pool, r.issuer, r.node, r.miners.PoolSessions())
@@ -255,15 +306,23 @@ func (r *Runtime) constructStores(ctx context.Context) error {
 	if e = r.files.adopt("pool"); e != nil {
 		return e
 	}
-	r.intake, e = r.pool.AttachOperatorAdmission(ctx, r.setup.Pool, r.reservation.Submissions)
-	if e != nil {
-		return e
+	if !r.daily {
+		r.intake, e = r.pool.AttachOperatorAdmission(ctx, r.setup.Pool, r.reservation.Submissions)
+		if e != nil {
+			return e
+		}
 	}
 	path, fresh, e = r.files.child("rounds")
 	if e != nil {
 		return e
 	}
-	if fresh {
+	if r.daily {
+		if fresh {
+			r.rounds, e = poolround.CreateDaily(ctx, path, r.setup.RoundLimits, r.pool, r.node)
+		} else {
+			r.rounds, e = poolround.OpenDaily(ctx, path, r.setup.RoundLimits, r.pool, r.node)
+		}
+	} else if fresh {
 		r.rounds, e = poolround.Create(path, r.setup.RoundLimits, r.pool, r.node)
 	} else {
 		r.rounds, e = poolround.Open(path, r.setup.RoundLimits, r.pool, r.node)
@@ -278,7 +337,13 @@ func (r *Runtime) constructStores(ctx context.Context) error {
 	if e != nil {
 		return e
 	}
-	if fresh {
+	if r.daily {
+		if fresh {
+			r.settlement, e = poolsettle.CreateDaily(ctx, path, r.setup.Settlement, r.rounds, r.backend)
+		} else {
+			r.settlement, e = poolsettle.OpenDaily(ctx, path, r.setup.Settlement, r.rounds, r.backend)
+		}
+	} else if fresh {
 		r.settlement, e = poolsettle.Create(path, r.setup.Settlement, r.rounds, r.backend)
 	} else {
 		r.settlement, e = poolsettle.Open(path, r.setup.Settlement, r.rounds, r.backend)
@@ -293,10 +358,14 @@ func (r *Runtime) constructStores(ctx context.Context) error {
 	if e != nil {
 		return e
 	}
+	createSchedule, openSchedule := poolschedule.Create, poolschedule.Open
+	if r.daily {
+		createSchedule, openSchedule = poolschedule.CreateDaily, poolschedule.OpenDaily
+	}
 	if fresh {
-		r.schedule, e = poolschedule.Create(ctx, path, r.setup.Schedule, r.settlement)
+		r.schedule, e = createSchedule(ctx, path, r.setup.Schedule, r.settlement)
 	} else {
-		r.schedule, e = poolschedule.Open(ctx, path, r.setup.Schedule, r.settlement)
+		r.schedule, e = openSchedule(ctx, path, r.setup.Schedule, r.settlement)
 	}
 	if e != nil {
 		return e
@@ -323,6 +392,9 @@ func (r *Runtime) constructStores(ctx context.Context) error {
 	// All original concrete journals, scheduler and custody bindings have been
 	// reopened and audited before granting the canonical-only recovery lane.
 	// The ordinary reservation and every persisted setup limit stay unchanged.
+	if r.daily {
+		return nil
+	}
 	return r.intake.EnableCanonicalRecovery(ctx, poolshare.RecoveryBudget{
 		Rounds: r.setup.RoundLimits.MaxRounds, RoundBytes: r.setup.RoundLimits.MaxBytes,
 		CreditRounds: uint64(r.setup.Settlement.MaxRounds), Batches: uint64(r.setup.Settlement.MaxBatches),
@@ -332,7 +404,11 @@ func (r *Runtime) constructStores(ctx context.Context) error {
 func privateListen(origin string) string { u, _ := url.Parse(origin); return u.Host }
 func (r *Runtime) constructServices() error {
 	var e error
-	r.poolServer, e = poolservice.NewServer(poolservice.ServerConfig{Version: 1, Listen: privateListen(r.setup.Ingress.PoolURL)}, r.pool, r.settlement, r.miners.PoolSessions())
+	if r.daily {
+		r.poolServer, e = poolservice.NewDailyServer(r.life, poolservice.ServerConfig{Version: 2, Listen: privateListen(r.setup.Ingress.PoolURL)}, r.pool, r.settlement, r.miners.PoolSessions())
+	} else {
+		r.poolServer, e = poolservice.NewServer(poolservice.ServerConfig{Version: 1, Listen: privateListen(r.setup.Ingress.PoolURL)}, r.pool, r.settlement, r.miners.PoolSessions())
+	}
 	if e != nil {
 		return e
 	}

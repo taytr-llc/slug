@@ -43,8 +43,11 @@ func (f *operatorFiles) root() *os.File { return f.dirs[len(f.dirs)-1].file }
 
 // The returned partial owner must be closed even on failure. It retains every
 // descriptor/lock until cleanup actually completes; no ambiguous fd is retried.
-func openOperatorFiles(path string, s Setup, create bool) (f *operatorFiles, err error) {
-	if ValidateSetup(s) != nil || !filepath.IsAbs(path) || filepath.Clean(path) != path || len(path) > 4096 || strings.IndexByte(path, 0) >= 0 || os.Getuid() != os.Geteuid() {
+func openOperatorFiles(path string, s Setup, create bool) (*operatorFiles, error) {
+	return openOperatorFilesVersion(path, s, create, 1)
+}
+func openOperatorFilesVersion(path string, s Setup, create bool, version uint32) (f *operatorFiles, err error) {
+	if validateSetupVersion(s, version) != nil || !filepath.IsAbs(path) || filepath.Clean(path) != path || len(path) > 4096 || strings.IndexByte(path, 0) >= 0 || os.Getuid() != os.Geteuid() {
 		return nil, ErrInvalid
 	}
 	parts := strings.Split(strings.TrimPrefix(path, "/"), "/")
@@ -106,8 +109,8 @@ func openOperatorFiles(path string, s Setup, create bool) (f *operatorFiles, err
 	if e != nil {
 		return f, e
 	}
-	_, hasIntent := names[intentName]
-	_, hasReady := names[readyName]
+	_, hasIntent := names[operatorIntentName(f.setup.Version)]
+	_, hasReady := names[operatorReadyName(f.setup.Version)]
 	if create && hasReady || !create && (!hasReady || !hasIntent) {
 		return f, ErrIntegrity
 	}
@@ -115,15 +118,15 @@ func openOperatorFiles(path string, s Setup, create bool) (f *operatorFiles, err
 		if !create || len(names) != 0 {
 			return f, ErrIntegrity
 		}
-		raw, e := MarshalSetup(s)
+		raw, e := marshalSetupVersion(s, s.Version)
 		if e != nil {
 			return f, e
 		}
-		if e = f.writeExclusive(intentName, append(raw, '\n')); e != nil {
+		if e = f.writeExclusive(operatorIntentName(f.setup.Version), append(raw, '\n')); e != nil {
 			return f, e
 		}
 	}
-	f.intent, e = selectPrivateInput(context.Background(), filepath.Join(path, intentName), MaxSetupBytes+1)
+	f.intent, e = selectPrivateInput(context.Background(), filepath.Join(path, operatorIntentName(f.setup.Version)), MaxSetupBytes+1)
 	if e != nil {
 		return f, e
 	}
@@ -131,14 +134,14 @@ func openOperatorFiles(path string, s Setup, create bool) (f *operatorFiles, err
 	if e != nil {
 		return f, e
 	}
-	want, _ := MarshalSetup(s)
+	want, _ := marshalSetupVersion(s, s.Version)
 	want = append(want, '\n')
 	if !bytes.Equal(got, want) {
 		return f, ErrIntegrity
 	}
 	f.established = hasReady
 	if hasReady {
-		f.ready, e = selectPrivateInput(context.Background(), filepath.Join(path, readyName), 1024)
+		f.ready, e = selectPrivateInput(context.Background(), filepath.Join(path, operatorReadyName(f.setup.Version)), 1024)
 		if e != nil {
 			return f, e
 		}
@@ -146,7 +149,7 @@ func openOperatorFiles(path string, s Setup, create bool) (f *operatorFiles, err
 		if e != nil {
 			return f, e
 		}
-		want, e = readyBytes(s)
+		want, e = readyBytesVersion(s, s.Version)
 		if e != nil || !bytes.Equal(got, want) {
 			return f, ErrIntegrity
 		}
@@ -175,7 +178,7 @@ func (f *operatorFiles) names() (map[string]bool, error) {
 	names := map[string]bool{}
 	for _, entry := range entries {
 		n := entry.Name()
-		if n != intentName && n != readyName && !component(n) || entry.Type()&os.ModeSymlink != 0 {
+		if n != operatorIntentName(f.setup.Version) && n != operatorReadyName(f.setup.Version) && !component(n) || entry.Type()&os.ModeSymlink != 0 {
 			return nil, ErrIntegrity
 		}
 		names[n] = true
@@ -240,7 +243,7 @@ func (f *operatorFiles) check() error {
 	if e != nil {
 		return e
 	}
-	if !names[intentName] || names[readyName] != f.established {
+	if !names[operatorIntentName(f.setup.Version)] || names[operatorReadyName(f.setup.Version)] != f.established {
 		return ErrIntegrity
 	}
 	for name, d := range f.children {
@@ -307,14 +310,14 @@ func (f *operatorFiles) markReady() error {
 	if len(f.children) != len(componentNames) {
 		return ErrIntegrity
 	}
-	raw, e := readyBytes(f.setup)
+	raw, e := readyBytesVersion(f.setup, f.setup.Version)
 	if e != nil {
 		return e
 	}
-	if e = f.writeExclusive(readyName, raw); e != nil {
+	if e = f.writeExclusive(operatorReadyName(f.setup.Version), raw); e != nil {
 		return e
 	}
-	f.ready, e = selectPrivateInput(context.Background(), filepath.Join(f.path, readyName), 1024)
+	f.ready, e = selectPrivateInput(context.Background(), filepath.Join(f.path, operatorReadyName(f.setup.Version)), 1024)
 	if e != nil {
 		f.poisoned = true
 		return e

@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "scope": "full accounting regression after exact round/source Busy scheduler fix",
+  "passed": true,
+  "sources_unchanged": true,
+  "clean_join": true,
+  "packages": [
+    "poolshare",
+    "poolround",
+    "poolsettle",
+    "poolschedule"
+  ],
+  "required_actual_pass_each_normal_and_race": [
+    "TestRoundSourceExactBusyClassification",
+    "TestScheduleRetryIndependentErrorTrees",
+    "TestDailyScheduleOriginalRoundBusyRecoversWithoutNewPayment",
+    "TestDailyCompletedRefreshGuardsBeforeEffects",
+    "TestDailyCompletedRefreshRefusesOriginalV1",
+    "TestDailyCompletedRefreshProfileAndMissingOwner",
+    "TestDailyScheduleCompletedRefreshIndependentDecisions",
+    "TestDailyScheduleCompletedRefreshExpiryRetry",
+    "TestDailyScheduleCompletedRefreshImportsOnceAcrossReopen"
+  ],
+  "timings": {
+    "deps": 0.261,
+    "normal": 66.393,
+    "race": 299.936,
+    "cheap": 3.92
+  },
+  "files": [
+    {
+      "path": "artifacts/set79/accounting-attempt2/report.json",
+      "bytes": 3388,
+      "sha256": "033adb5e3126d15aabba823470abc58ddf85ed05cfabed673f7f36893bf35b1c"
+    },
+    {
+      "path": "artifacts/set79/accounting-attempt2/sources.json",
+      "bytes": 372554,
+      "sha256": "77b25b8c8cc2316020b5d4520175d43990e7614edc4870443c9c85c047122ecf"
+    },
+    {
+      "path": "artifacts/set79/accounting-attempt2/profile.json",
+      "bytes": 962,
+      "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03"
+    },
+    {
+      "path": "artifacts/set79/accounting-attempt2/normal.log",
+      "bytes": 131105,
+      "sha256": "2ee0bcce90f4c2008c49c4518a0485e22be4c13f81940688a2eeb6119c61b0e9"
+    },
+    {
+      "path": "artifacts/set79/accounting-attempt2/race.log",
+      "bytes": 131115,
+      "sha256": "eed52a065165e2c441ed2242b7f0b5df4785477fa04ceef895e97383c7581c9d"
+    },
+    {
+      "path": "artifacts/set79/accounting-attempt2/cheap.log",
+      "bytes": 1010,
+      "sha256": "b1da485a60e558032c5ba263f03b3c8d74cd971539d78832a75c5dc7e509ffca"
+    }
+  ],
+  "qualification": "Full original accounting and prior-source regression passes with completed-day refresh and scheduler/source Busy changes installed. Does not qualify the subsequent desktop intake retry or actual public scenarios."
+}

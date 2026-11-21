@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "setup_case_index": 2,
+  "connection_ids": [
+    "9191919191919191919191919191919191919191919191919191919191919191",
+    "9292929292929292929292929292929292929292929292929292929292929292"
+  ],
+  "wallet_owner_ids": [
+    "9393939393939393939393939393939393939393939393939393939393939393",
+    "9494949494949494949494949494949494949494949494949494949494949494"
+  ],
+  "allocation_binding_ids": [
+    "9595959595959595959595959595959595959595959595959595959595959595",
+    "9696969696969696969696969696969696969696969696969696969696969696"
+  ],
+  "max_records": 64,
+  "max_bytes": 67108864,
+  "credential_generations": {
+    "pool": 1,
+    "admission": 2
+  },
+  "credential_expires_at_ms": 2000000000000,
+  "synthetic_tokens": {
+    "pool": "9797979797979797979797979797979797979797979797979797979797979797",
+    "admission": "9898989898989898989898989898989898989898989898989898989898989898"
+  },
+  "scope": "Pure conditional public composition; no wallet availability, authority, TLS execution or actual setup adoption.",
+  "setup_case_name": "official-leading-zero-account",
+  "composition_note": "Use the frozen third operator Setup funding address/change script, distinct from both unchanged local native84 recipients; recompute all dependent remote IDs."
+}

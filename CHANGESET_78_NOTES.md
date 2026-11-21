@@ -32,8 +32,12 @@ unchanged. See [the contract](POOL_DAILY_ADMISSION.md).
   height61/checkpoint60, clean restart and no public-chain mining.
 - Normal-node/schema16 fresh-process actual: **PASS**, composing the retained
   execution with the source-bound checker3 correction below.
-- Set78 exact-tip chain/wallet GitHub checks and Linux evidence:
-  **PENDING — root to fill after the final commit.**
+- Set78 exact-tip chain/wallet GitHub checks and Linux evidence: **PASS**,
+  all seven jobs at chain `1f086601647c00e33fad1dca9275aa63b18caa07` and
+  wallet `dfc5d9dd7e0f604486fbac812d0413fce1f45cd6`. The downloaded Linux
+  report passed in 547.351 seconds with identical before/after source heads,
+  mandatory daily tests present and clean process joins. See
+  [remote evidence](docs/evidence/set78/ci.json).
 
 Closeout attempt1 passed all 17 builds and the pure-capacity, poolshare, round
 and scheduler normal suites. The new cross-owner kernel test failed because its

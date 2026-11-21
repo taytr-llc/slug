@@ -6,6 +6,7 @@ import (
 )
 
 const PoolVersion1 uint32 = 1
+const PoolVersion2 uint32 = 2
 
 // PoolConfig is public, credential-free identity for a separate pool outbox.
 // Admission uses the same source authority pin, but its own transport pin.

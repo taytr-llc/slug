@@ -1,0 +1,52 @@
+{
+  "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/probe-source/go.mod": {
+    "bytes": 1373,
+    "sha256": "145a1639a11781fc24fa6f850c9fa71667af83cb1adf85c9b63985f0a541be35",
+    "source": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/go.mod"
+  },
+  "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/probe-source/go.sum": {
+    "bytes": 1922,
+    "sha256": "8db3d7c6bb03f449ea27eb139be2a55912e2e409a50922274171436fdf914555",
+    "source": "/Users/taytrrip/slug/slug/desktop/go.sum"
+  },
+  "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/probe-source/main.go": {
+    "bytes": 13962,
+    "sha256": "fe3ea7476e038dfacb7d5db57cf142752f47cb729b81072a97b8d525ca479a14",
+    "source": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/main.go"
+  },
+  "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/probe-source/node_helpers.go": {
+    "bytes": 8530,
+    "sha256": "2adf72c974e2a171e52c6d5275dd965f9e3020e54acd03f13766436a4a55cb8a",
+    "source": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/node_helpers.go"
+  },
+  "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/probe-source/operator_audit.go": {
+    "bytes": 9605,
+    "sha256": "6f9c5e90841ed0b5362282749ceb6705380d1ab720dfc1ced2ea3653510d54fb",
+    "source": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/operator_audit.go"
+  },
+  "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/probe-source/payment.go": {
+    "bytes": 10011,
+    "sha256": "1483c0ec3882de879d2a2b8570422a45f4b6df70319c291cc6e1adea4b17edc8",
+    "source": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/payment.go"
+  },
+  "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/probe-source/relay.go": {
+    "bytes": 4206,
+    "sha256": "2abc55505b26b680a9cf321a04cd57e5227ca5cdccd8dfe4534a9d4a8d98c69c",
+    "source": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/relay.go"
+  },
+  "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/probe-source/runtime_helpers.go": {
+    "bytes": 11411,
+    "sha256": "7b55b892d218f236ed0c4b6408f0f909996bb2ce1f8c20cea4a338de9ebb2caa",
+    "source": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/runtime_helpers.go"
+  },
+  "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/probe-source/selection.go": {
+    "bytes": 6929,
+    "sha256": "e84e8563c197aae0795ed49e01cc41f6bf85efeed9979442192d5884d8052afc",
+    "source": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/selection.go"
+  },
+  "/Users/taytrrip/slug/artifacts/set79/public-daily-attachment-actual-attempt2/probe-source/work_evidence.go": {
+    "bytes": 9503,
+    "sha256": "f6d1e31937ec003c88f5ef7b13952ac1ed34d5997b5b05bb7407e97e08bcae14",
+    "source": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/work_evidence.go"
+  }
+}

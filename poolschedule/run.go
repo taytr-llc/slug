@@ -136,7 +136,7 @@ func (s *Scheduler) cycle(ctx context.Context) error {
 	s.mu.Lock()
 	now := time.Now().UTC().UnixMilli()
 	e = checkedTime(now, s.state.LastClockMS)
-	due := dailyDue(s.state, now)
+	due := dailyDue(s.state, now) || completedDailyRefreshDue(s.state, now)
 	s.mu.Unlock()
 	if e != nil {
 		return e
@@ -165,7 +165,8 @@ func (s *Scheduler) dispatch(ctx context.Context, kind string) (poolsettle.Repor
 		return poolsettle.Report{}, ErrInvalid
 	}
 	now := time.Now().UTC().UnixMilli()
-	if kind == "daily" && !dailyDue(s.state, now) {
+	refresh := kind == "daily" && completedDailyRefreshDue(s.state, now)
+	if kind == "daily" && !dailyDue(s.state, now) && !refresh {
 		s.mu.Unlock()
 		return poolsettle.Report{}, ErrClock
 	}
@@ -184,6 +185,8 @@ func (s *Scheduler) dispatch(ctx context.Context, kind string) (poolsettle.Repor
 	var report poolsettle.Report
 	if kind == "recovery" {
 		report, e = s.store.RecoverPending(call)
+	} else if refresh {
+		report, e = s.refreshCompletedDaily(call, next.Attempt.AdmittedDay)
 	} else {
 		report, e = s.store.RunDaily(call)
 	}

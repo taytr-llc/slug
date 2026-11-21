@@ -1,0 +1,27 @@
+{
+  "config_id": "f81b35ddf9daffdec54ca5521e40fecc909739225fc3113104a2ba549c9a2c52",
+  "exit_code": 0,
+  "forced_kill": false,
+  "io_error": false,
+  "joined": true,
+  "last_status": {
+    "version": 2,
+    "observed_at_ms": 1795256715781,
+    "config_id": "f81b35ddf9daffdec54ca5521e40fecc909739225fc3113104a2ba549c9a2c52",
+    "state": "signed_in",
+    "worker_state": "paused",
+    "code": "outcome_unknown",
+    "records": 10,
+    "pending": 0
+  },
+  "parent_pid": 70693,
+  "pgid": 70693,
+  "pid": 70698,
+  "signal": "SIGTERM",
+  "signal_count": 1,
+  "status_count": 26,
+  "stderr_joined": true,
+  "stdout_joined": true,
+  "unexpected_exit": false,
+  "wait_error": false
+}

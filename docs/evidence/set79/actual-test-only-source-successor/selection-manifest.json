@@ -1,0 +1,8 @@
+{
+  "scope": "test-only explicit defers for both original Run contexts; existing stop/join/assertions unchanged",
+  "target": "/Users/taytrrip/slug/slug/poolschedule/daily_admission_contention_integration_test.go",
+  "before_sha256": "285f41c46c1ea0f7c05ae01dad0875e6050cca9bff3be9a45f3c88821a87c4fb",
+  "after_sha256": "7be0587fa3c9b7ee4ff8335844a37ac7e8bacf0803b64fb85e4f8c9a52ebe3bb",
+  "production_changes": false,
+  "trigger": "artifacts/set79/final-builds-attempt1 accounting-vet lostcancel"
+}

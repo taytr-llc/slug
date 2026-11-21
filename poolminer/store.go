@@ -19,7 +19,10 @@ func Create(ctx context.Context, path string, expected Config, b Binding) (*Stor
 func Open(ctx context.Context, path string, expected Config, b Binding) (*Store, error) {
 	return open(ctx, path, expected, b, false)
 }
-func open(ctx context.Context, path string, expected Config, b Binding, create bool) (s *Store, err error) {
+func open(ctx context.Context, path string, expected Config, b Binding, create bool) (*Store, error) {
+	return openVersion(ctx, path, expected, b, create, false)
+}
+func openVersion(ctx context.Context, path string, expected Config, b Binding, create, daily bool) (s *Store, err error) {
 	if wire.TestPoW {
 		return nil, ErrProfile
 	}
@@ -29,11 +32,15 @@ func open(ctx context.Context, path string, expected Config, b Binding, create b
 	if e := ctx.Err(); e != nil {
 		return nil, e
 	}
-	id, e := ConfigID(expected, b)
+	idFor := ConfigID
+	if daily {
+		idFor = DailyConfigID
+	}
+	id, e := idFor(expected, b)
 	if e != nil {
 		return nil, e
 	}
-	s = &Store{gate: make(chan struct{}, 1), closeGate: make(chan struct{}, 1), configID: id, now: time.Now}
+	s = &Store{daily: daily, gate: make(chan struct{}, 1), closeGate: make(chan struct{}, 1), configID: id, now: time.Now}
 	defer func() {
 		if err != nil {
 			original := err
@@ -47,7 +54,7 @@ func open(ctx context.Context, path string, expected Config, b Binding, create b
 	if err != nil {
 		return s, err
 	}
-	marker, e := encodeMarker(expected)
+	marker, e := encodeMarkerVersion(expected, s.version())
 	if e != nil {
 		return s, e
 	}
@@ -56,7 +63,7 @@ func open(ctx context.Context, path string, expected Config, b Binding, create b
 			return s, err
 		}
 	} else {
-		got, e := decodeMarker(s.files.markerRaw)
+		got, e := decodeMarkerVersion(s.files.markerRaw, s.version())
 		if e != nil || !reflect.DeepEqual(got, expected) {
 			return s, ErrInvalid
 		}
@@ -77,8 +84,8 @@ func open(ctx context.Context, path string, expected Config, b Binding, create b
 		if !validTime(now) {
 			return s, ErrClock
 		}
-		s.state = State{Version: Version1, Config: cloneConfig(expected), Revision: 1, ClockMS: now, Credentials: []Credential{}, History: []TokenUse{}}
-		raw, e := encodeState(s.state)
+		s.state = State{Version: s.version(), Config: cloneConfig(expected), Revision: 1, ClockMS: now, Credentials: []Credential{}, History: []TokenUse{}}
+		raw, e := encodeStateVersion(s.state, s.version())
 		if e != nil {
 			return s, e
 		}
@@ -91,7 +98,7 @@ func open(ctx context.Context, path string, expected Config, b Binding, create b
 		if e != nil {
 			return s, ErrStorage
 		}
-		st, e := decodeState(raw)
+		st, e := decodeStateVersion(raw, s.version())
 		if e != nil || !reflect.DeepEqual(st.Config, expected) {
 			return s, ErrInvalid
 		}
@@ -175,12 +182,12 @@ func (s *Store) audit() error {
 	}
 	e := it.Error()
 	it.Release()
-	want, we := encodeState(s.state)
+	want, we := encodeStateVersion(s.state, s.version())
 	if e != nil || we != nil || count != 1 || !bytes.Equal(raw, want) {
 		s.poisoned.Store(true)
 		return ErrPoisoned
 	}
-	if _, e = decodeState(raw); e != nil {
+	if _, e = decodeStateVersion(raw, s.version()); e != nil {
 		s.poisoned.Store(true)
 		return ErrPoisoned
 	}
@@ -199,7 +206,7 @@ func (s *Store) commit(ctx context.Context, next State) error {
 	if next.Revision != s.state.Revision+1 || next.ClockMS < s.state.ClockMS || !reflect.DeepEqual(next.Config, s.state.Config) {
 		return ErrInvalid
 	}
-	raw, e := encodeState(next)
+	raw, e := encodeStateVersion(next, s.version())
 	if e != nil {
 		return e
 	}

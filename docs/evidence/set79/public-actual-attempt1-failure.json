@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "scope": "Set79 first public DAILY actual acceptance failure",
+  "passed": false,
+  "failure": "A scheduler did not broadcast after actual due",
+  "phase": "mature A then original real UTC due",
+  "actual_started": true,
+  "sources_unchanged": true,
+  "copies_unchanged": true,
+  "profile_artifacts_unchanged": true,
+  "runtime_clean_join": false,
+  "runtime_errors": [
+    "runtime: pool operator input unavailable\npool round operation is busy\ncontext canceled\ncontext canceled\ncontext canceled"
+  ],
+  "all_outer_groups_empty": true,
+  "node_cleanup": [
+    {
+      "clean": true,
+      "forced_kill": false,
+      "joined": true,
+      "log_close_error": false,
+      "stop_rpc_error": false,
+      "unexpected_exit": false,
+      "wait_error": ""
+    },
+    {
+      "clean": true,
+      "forced_kill": false,
+      "joined": true,
+      "log_close_error": false,
+      "stop_rpc_error": false,
+      "unexpected_exit": false,
+      "wait_error": ""
+    }
+  ],
+  "payout_broadcast_attempts": 0,
+  "fresh_operator_cli_lifetimes": 0,
+  "public_seed_mining": false,
+  "files": [
+    {
+      "path": "artifacts/set79/public-actual-attempt1/report.json",
+      "bytes": 8349,
+      "sha256": "5010fdd38a3c1f48da6d5c275ba85b9bc5f5d86c9883e18d4d608086978a96e4"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt1/execution-lock.json",
+      "bytes": 4028,
+      "sha256": "f5969384aadd2443b1806379c55b43bc6edf7de29eb6e6d74d142913209f1a2d"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt1/source-before.json",
+      "bytes": 444779,
+      "sha256": "facefbb7556aa365ab194d13c4cee58e9868cbee2ddb56327806bb629deff459"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt1/source-after.json",
+      "bytes": 444779,
+      "sha256": "facefbb7556aa365ab194d13c4cee58e9868cbee2ddb56327806bb629deff459"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt1/source-copies.json",
+      "bytes": 1641,
+      "sha256": "0e1bac87fb39f77bc03751c7fb1d65f0f5d394ddfbed08ecc44ab9144b240f89"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt1/profile.json",
+      "bytes": 962,
+      "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt1/actual.log",
+      "bytes": 71,
+      "sha256": "5d6a6bb7800e92b19d7623055ef2bc92b278ababd4ab5b70a70af1fb5ed6b3da"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt1/owned/actual-report.json",
+      "bytes": 1655,
+      "sha256": "73e0a9a43a18f207fbe93368b11fb9780294fdd6524e5d4cd2e94d13443732b7"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt1/owned/01-runtime-listening.json",
+      "bytes": 2461,
+      "sha256": "fb8d07444fe772e9b56f589fb0829dfd46d2cd0a836930d2aad4175ad36c294f"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt1/owned/02-A-block.json",
+      "bytes": 3803,
+      "sha256": "45fb4052a9f5b650b63127a105e98cd8051a3cd29af69eb3faf0c20ce75e6909"
+    },
+    {
+      "path": "artifacts/set79/public-actual-attempt1/owned/selected-public-setup.json",
+      "bytes": 6164,
+      "sha256": "688a72a25284885357e9c10f4f237c631704ad5c7cb35648a15b6f305d45057c"
+    }
+  ],
+  "qualification": "Failure retained. Accepted first canonical pool receipt, but no scheduled payout or restart proof. The runtime returned a fatal raw round-busy error. A successor must qualify the retry fix and rerun the complete scenario."
+}

@@ -15,6 +15,7 @@ import (
 )
 
 type remotePoolLocal struct {
+	daily    bool
 	session  *OwnedWalletSession
 	expected RemotePoolLocalBinding
 	mu       sync.Mutex
@@ -24,14 +25,24 @@ type remotePoolLocal struct {
 }
 
 func claimRemotePoolLocal(ctx context.Context, s *OwnedWalletSession, expected RemotePoolLocalBinding) (*remotePoolLocal, error) {
+	return claimRemotePoolLocalMode(ctx, s, expected, false)
+}
+func claimRemotePoolLocalMode(ctx context.Context, s *OwnedWalletSession, expected RemotePoolLocalBinding, daily bool) (*remotePoolLocal, error) {
 	if s == nil || s.entry == nil || s.runtime == nil || s.setup == nil || ctx == nil || !s.opMu.TryLock() {
 		return nil, ErrRemotePoolBusy
 	}
 	defer s.opMu.Unlock()
-	if s.remoteClaimed || !s.ready.Load() || !s.entry.config.RequireExisting || s.check(ctx) != nil {
+	if daily {
+		if s.remoteClaimed || !s.ready.Load() || !s.entry.config.RequireExisting {
+			return nil, ErrRemotePoolUnavailable
+		}
+		if e := s.check(ctx); e != nil {
+			return nil, e
+		}
+	} else if s.remoteClaimed || !s.ready.Load() || !s.entry.config.RequireExisting || s.check(ctx) != nil {
 		return nil, ErrRemotePoolUnavailable
 	}
-	l := &remotePoolLocal{session: s, expected: expected}
+	l := &remotePoolLocal{session: s, expected: expected, daily: daily}
 	if e := l.identity(); e != nil {
 		return nil, e
 	}
@@ -63,7 +74,13 @@ func (l *remotePoolLocal) identity() error {
 	return nil
 }
 func (l *remotePoolLocal) check(ctx context.Context) error {
-	if l == nil || ctx == nil || ctx.Err() != nil {
+	if l == nil || ctx == nil {
+		return ErrRemotePoolUnavailable
+	}
+	if e := ctx.Err(); e != nil {
+		if l.daily {
+			return e
+		}
 		return ErrRemotePoolUnavailable
 	}
 	l.mu.Lock()
@@ -128,7 +145,13 @@ func (l *remotePoolLocal) token(ctx context.Context) (string, error) {
 	if e != nil {
 		return "", e
 	}
-	if m.Account.ID != l.session.login.Account.ID || m.Account.Generation != l.session.login.Account.Generation || ctx.Err() != nil {
+	if m.Account.ID != l.session.login.Account.ID || m.Account.Generation != l.session.login.Account.Generation {
+		return "", gymaccount.ErrUnauthorized
+	}
+	if e := ctx.Err(); e != nil {
+		if l.daily {
+			return "", e
+		}
 		return "", gymaccount.ErrUnauthorized
 	}
 	l.mu.Lock()
@@ -144,8 +167,18 @@ func (l *remotePoolLocal) capture(ctx context.Context) (*mininglease.Lease, stri
 	if e != nil {
 		return nil, "", e
 	}
-	lease, e := mininglease.Capture(ctx, remotePoolMiningSessions{l}, token)
-	if e != nil || lease.PublicKey() != l.expected.Recipient.Config.Identity.GymPublicKey {
+	capture := mininglease.Capture
+	if l.daily {
+		capture = mininglease.CaptureDaily
+	}
+	lease, e := capture(ctx, remotePoolMiningSessions{l}, token)
+	if e != nil {
+		if l.daily {
+			return nil, "", e
+		}
+		return nil, "", gymaccount.ErrUnauthorized
+	}
+	if lease.PublicKey() != l.expected.Recipient.Config.Identity.GymPublicKey {
 		return nil, "", gymaccount.ErrUnauthorized
 	}
 	if e = l.check(ctx); e != nil {

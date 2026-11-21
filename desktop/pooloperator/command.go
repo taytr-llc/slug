@@ -24,6 +24,7 @@ import (
 
 const commandUsage = `slugpoold COMMAND [local file selections]
 Commands: init, serve, status, rotate, revoke, checkpoint
+--daily selects a fresh DAILY profile; defaults remain V1.
 Required selections: --setup-file --root --wallet-root
  --wallet-public-passphrase-file --wallet-unlock-passphrase-file
  --admission-seed-file --publication-seed-file --cutoff-seed-file
@@ -60,6 +61,7 @@ func (e *CommandError) GoString() string { return e.Error() }
 func (e *CommandError) Unwrap() error    { return e.cause }
 
 type commandOptions struct {
+	daily                                                             bool
 	command, setup, root, walletRoot, publicPass, unlockPass          string
 	admissionSeed, publicationSeed, cutoffSeed, rpc, certificate, key string
 	gym, audience, token, checkpoint                                  string
@@ -93,6 +95,7 @@ func parseCommand(args []string) (commandOptions, error) {
 	}
 	fs := flag.NewFlagSet("slugpoold", flag.ContinueOnError)
 	fs.SetOutput(io.Discard)
+	fs.BoolVar(&o.daily, "daily", false, "")
 	for name, p := range map[string]*string{
 		"setup-file": &o.setup, "root": &o.root, "wallet-root": &o.walletRoot,
 		"wallet-public-passphrase-file": &o.publicPass, "wallet-unlock-passphrase-file": &o.unlockPass,
@@ -115,8 +118,11 @@ func parseCommand(args []string) (commandOptions, error) {
 		}
 		name := strings.TrimPrefix(strings.TrimPrefix(a, "-"), "-")
 		if j := strings.IndexByte(name, '='); j >= 0 {
+			if name[:j] == "daily" && name[j+1:] != "true" {
+				return o, ErrCommandArguments
+			}
 			name = name[:j]
-		} else {
+		} else if name != "daily" {
 			i++
 			if i >= len(args) {
 				return o, ErrCommandArguments
@@ -330,11 +336,12 @@ func (o *commandOwner) check(ctx context.Context) error {
 	}
 	return ctx.Err()
 }
-func parseCommandSetup(raw []byte) (Setup, error) {
+func parseCommandSetup(raw []byte) (Setup, error) { return parseCommandSetupVersion(raw, 1) }
+func parseCommandSetupVersion(raw []byte, version uint32) (Setup, error) {
 	if len(raw) > 0 && raw[len(raw)-1] == '\n' {
 		raw = raw[:len(raw)-1]
 	}
-	return ParseSetup(raw)
+	return parseSetupVersion(raw, version)
 }
 func parseCommandCheckpoint(raw []byte) (chaincfg.SignedCheckpoint, error) {
 	var out chaincfg.SignedCheckpoint
@@ -416,7 +423,7 @@ func (o *commandOwner) serve(ctx context.Context) (result error) {
 			if e := o.check(work); e != nil {
 				return e
 			}
-			if e := o.stdout.json(work, commandResponse{1, "serve", time.Now().UTC().UnixMilli(), "listening", struct {
+			if e := o.stdout.json(work, commandResponse{o.runtime.setup.Version, "serve", time.Now().UTC().UnixMilli(), "listening", struct {
 				Origin string `json:"origin"`
 			}{origin}}); e != nil {
 				return e
@@ -426,7 +433,7 @@ func (o *commandOwner) serve(ctx context.Context) (result error) {
 				return e
 			}
 			s, e := o.runtime.Status(work)
-			response := commandResponse{Version: 1, Command: "serve", ObservedAtMS: time.Now().UTC().UnixMilli(), Code: "status"}
+			response := commandResponse{Version: o.runtime.setup.Version, Command: "serve", ObservedAtMS: time.Now().UTC().UnixMilli(), Code: "status"}
 			if e != nil {
 				response.Code = commandCode(e)
 			} else {
@@ -472,6 +479,7 @@ func RunCommand(ctx context.Context, args []string, stdout, stderr *os.File) (re
 	mutated := false
 	var response *commandResponse
 	command := "command"
+	version := uint32(1)
 	defer func() {
 		// No successful local mutation is reported until all original owners close.
 		ce := o.close()
@@ -493,7 +501,7 @@ func RunCommand(ctx context.Context, args []string, stdout, stderr *os.File) (re
 			result = errors.Join(ErrCommandOutcomeUnknown, result)
 		}
 		if result != nil {
-			diagnostic := commandResponse{Version: 1, Command: command, ObservedAtMS: time.Now().UTC().UnixMilli(), Code: commandCode(result)}
+			diagnostic := commandResponse{Version: version, Command: command, ObservedAtMS: time.Now().UTC().UnixMilli(), Code: commandCode(result)}
 			// Even cancellation diagnostics get their own finite output bound; never
 			// log the underlying RPC, filesystem or argument error text.
 			logctx, end := context.WithTimeout(context.Background(), 5*time.Second)
@@ -530,6 +538,9 @@ func RunCommand(ctx context.Context, args []string, stdout, stderr *os.File) (re
 		return ErrCommandArguments
 	}
 	command = options.command
+	if options.daily {
+		version = 2
+	}
 	if e = ctx.Err(); e != nil {
 		return e
 	}
@@ -537,7 +548,7 @@ func RunCommand(ctx context.Context, args []string, stdout, stderr *os.File) (re
 	if e != nil {
 		return e
 	}
-	setup, e := parseCommandSetup(raw)
+	setup, e := parseCommandSetupVersion(raw, version)
 	clear(raw)
 	if e != nil {
 		return ErrInvalid
@@ -612,7 +623,11 @@ func RunCommand(ctx context.Context, args []string, stdout, stderr *os.File) (re
 	if e = o.check(ctx); e != nil {
 		return e
 	}
-	o.wallet, e = wallet.OpenPoolSettlementWallet(custody, options.walletRoot, setup.walletBinding(), publicPass)
+	openWallet := wallet.OpenPoolSettlementWallet
+	if options.daily {
+		openWallet = wallet.OpenDailyPoolSettlementWallet
+	}
+	o.wallet, e = openWallet(custody, options.walletRoot, setup.walletBinding(), publicPass)
 	clear(publicPass)
 	if e != nil {
 		return e
@@ -622,11 +637,15 @@ func RunCommand(ctx context.Context, args []string, stdout, stderr *os.File) (re
 	}
 	borrowed := BorrowedOwners{Authority: o.authority, Wallet: o.wallet}
 	private := PrivateInputs{NodeRPC: rpc, TLSCertificateFile: options.certificate, TLSPrivateKeyFile: options.key, UnlockPassphraseFile: options.unlockPass}
+	createRuntime, openRuntime := Create, Open
+	if options.daily {
+		createRuntime, openRuntime = CreateDaily, OpenDaily
+	}
 	if command == "init" {
 		mutated = true
-		o.runtime, e = Create(ctx, options.root, setup, borrowed, private)
+		o.runtime, e = createRuntime(ctx, options.root, setup, borrowed, private)
 	} else {
-		o.runtime, e = Open(ctx, options.root, setup, borrowed, private)
+		o.runtime, e = openRuntime(ctx, options.root, setup, borrowed, private)
 	}
 	if e != nil {
 		if mutated {
@@ -640,7 +659,7 @@ func RunCommand(ctx context.Context, args []string, stdout, stderr *os.File) (re
 		}
 		return e
 	}
-	response = &commandResponse{Version: 1, Command: command, ObservedAtMS: time.Now().UTC().UnixMilli(), Code: "complete"}
+	response = &commandResponse{Version: version, Command: command, ObservedAtMS: time.Now().UTC().UnixMilli(), Code: "complete"}
 	switch command {
 	case "serve":
 		response = nil

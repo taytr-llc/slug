@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "status": "passed",
+  "chain_sha": "1f086601647c00e33fad1dca9275aa63b18caa07",
+  "wallet_sha": "dfc5d9dd7e0f604486fbac812d0413fce1f45cd6",
+  "jobs": [
+    {
+      "name": "Build",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44878280759/job/136767733651"
+    },
+    {
+      "name": "Unit rpctest",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44878280759/job/136767733910"
+    },
+    {
+      "name": "In-tree modules",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44878280759/job/136767733944"
+    },
+    {
+      "name": "Unit race",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44878280759/job/136767733955"
+    },
+    {
+      "name": "Minimum Go version (compatibility)",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44878280759/job/136767734019"
+    },
+    {
+      "name": "Unit coverage",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44878280759/job/136767734074"
+    },
+    {
+      "name": "operator-linux",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44878280817/job/136767734085"
+    }
+  ],
+  "linux_evidence": {
+    "scope": "Set78 exact Linux operator qualification; other CI jobs tracked separately",
+    "chain_sha": "1f086601647c00e33fad1dca9275aa63b18caa07",
+    "wallet_sha": "dfc5d9dd7e0f604486fbac812d0413fce1f45cd6",
+    "run_url": "https://github.com/taytr-llc/slug/actions/runs/44878280817",
+    "report": "/Users/taytrrip/slug/artifacts/set78/linux-run-44878280817/operator-linux-1f086601647c00e33fad1dca9275aa63b18caa07-1/report.json",
+    "report_sha256": "a960f2fbdf404ccc9137331fb0c12c477743a32b8eb69562ea471ce0eab6c7f5",
+    "passed": true,
+    "source_unchanged": true,
+    "clean_join": true,
+    "elapsed_seconds": 547.351,
+    "before_after_heads_verified": true,
+    "mandatory_daily_tests_verified": {
+      "normal-daily-source-round": [
+        "TestDailyRecoveryIndependentReference",
+        "TestDailyEnvelopeIndependentReference",
+        "TestDailyCapacityProofFrames",
+        "TestDailyOperatorDerivedFullUnseenCanonicalReopen",
+        "TestDailyOperatorSelectionMembershipAndOwnedBudget",
+        "TestDailyOperatorSourceHoldbackBeforeIssuer",
+        "TestDailyOperatorAuditPrecedenceAndOriginalMetadata",
+        "TestDailyOperatorUncertainCommitAndExactSavedRecovery",
+        "TestDailyOperatorDrainOnlyPendingAndPostCeilingHold",
+        "TestDailyOperatorOriginalCancellationCloseAndErrorClass",
+        "TestDailyOperatorAliasesCountWholeBudget",
+        "TestDailyOperatorPhysicalFullAuditAndLegacyParity",
+        "TestDailyOperatorFinalSessionClockAndCapacityError"
+      ],
+      "normal-daily-ledger-schedule": [
+        "TestDailyAdmissionFullIntakePreservesPendingPayoutAcrossOwners",
+        "TestDailyOperatorSourcePendingRecoveryAndNextDay"
+      ],
+      "race-daily-source-round": [
+        "TestDailyRecoveryIndependentReference",
+        "TestDailyEnvelopeIndependentReference",
+        "TestDailyCapacityProofFrames",
+        "TestDailyOperatorDerivedFullUnseenCanonicalReopen",
+        "TestDailyOperatorSelectionMembershipAndOwnedBudget",
+        "TestDailyOperatorSourceHoldbackBeforeIssuer",
+        "TestDailyOperatorAuditPrecedenceAndOriginalMetadata",
+        "TestDailyOperatorUncertainCommitAndExactSavedRecovery",
+        "TestDailyOperatorDrainOnlyPendingAndPostCeilingHold",
+        "TestDailyOperatorOriginalCancellationCloseAndErrorClass",
+        "TestDailyOperatorAliasesCountWholeBudget",
+        "TestDailyOperatorPhysicalFullAuditAndLegacyParity",
+        "TestDailyOperatorFinalSessionClockAndCapacityError"
+      ],
+      "race-daily-ledger-schedule": [
+        "TestDailyAdmissionFullIntakePreservesPendingPayoutAcrossOwners",
+        "TestDailyOperatorSourcePendingRecoveryAndNextDay"
+      ],
+      "cheap-daily-core": [
+        "TestDailyOperatorCheapRefusal"
+      ]
+    },
+    "daily_actual_qualified": false,
+    "deployed_host_qualified": false
+  },
+  "live_seed_unchanged": true,
+  "no_seed_deploy_needed": "No changed code linked into seed binary",
+  "public_pool_enabled": false
+}

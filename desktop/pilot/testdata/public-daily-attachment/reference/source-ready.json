@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "scope": "Set79 Path A independent target/payee/config/economics recipe; source-only unexecuted",
+  "files": [
+    {
+      "path": "core.py",
+      "bytes": 5913,
+      "sha256": "f7554311b65ebd8773cc75d124698bd41680224dde75173f66cafea4eec60685"
+    },
+    {
+      "path": "generate.py",
+      "bytes": 7716,
+      "sha256": "69932211259ef4f1d3038e8e8799348945cb755972c6f6eede777d5101ca34a3"
+    },
+    {
+      "path": "input-catalog.json",
+      "bytes": 1762,
+      "sha256": "9ef3742c35b2887da1b51c15c3c9ff000dbeff61834785aaa7c8674a5f9a18fb"
+    },
+    {
+      "path": "inputs/CONTRACT.md",
+      "bytes": 25102,
+      "sha256": "a6a30ab580f6463d30bd29c00a4c60d7d7b32e6d6d70560b761a7661cbd0da05"
+    },
+    {
+      "path": "inputs/chain-params.go",
+      "bytes": 47803,
+      "sha256": "1bfdd5f930487edccdf5025d9f22b31b31bb8758a47198dd00ae576d574e8065"
+    },
+    {
+      "path": "inputs/fixture-catalog.json",
+      "bytes": 66249,
+      "sha256": "2637978c2e08637dae2a21bf7fcb8e9ab37edb3476e2b9512c73ff16809b7e55"
+    },
+    {
+      "path": "inputs/fixture-public.json",
+      "bytes": 7244,
+      "sha256": "83bfe6cdd6020524199ba6abada82614fb67987b32b9fb96111bf6bddf879f23"
+    },
+    {
+      "path": "inputs/native-shape.go",
+      "bytes": 2930,
+      "sha256": "8b338a83505d57d66267e219b8a9835e2efa4454979a44d7beecb1c7614fb883"
+    },
+    {
+      "path": "inputs/public-daily.json",
+      "bytes": 3176583,
+      "sha256": "a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3"
+    },
+    {
+      "path": "recipe.json",
+      "bytes": 1336,
+      "sha256": "b32273cfbfea3bd8cba72a5a4fb9986c619bdd510125b9c9641a5bc4653e2751"
+    }
+  ]
+}

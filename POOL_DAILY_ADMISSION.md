@@ -3,7 +3,8 @@
 Set78 adds explicit intake reservation for one original Source2 pool. Local
 build, normal/race, profile-refusal and vet qualification passes, as do the direct
 normal-node/schema16 fresh-process actual and seed smoke/restart. Exact-tip CI
-remains **pending**. This is a finite kernel addition, not public TLS/runtime
+passes all seven jobs at chain `1f086601647c` / wallet `dfc5d9dd7e0f`; see
+[remote evidence](docs/evidence/set78/ci.json). This is a finite kernel addition, not public TLS/runtime
 deployment or continuous capacity.
 
 `AttachDailyOperatorAdmission(ctx, expected, budget)` selects the original pool,

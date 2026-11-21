@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "scope": "source-only Path C original headless CLI runner adaptation",
+  "execution_authorized": false,
+  "runner": {
+    "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/run.py",
+    "bytes": 32403,
+    "sha256": "d5bed85d6b29771ff9f084d27ba1056bdf38ef52bde66ec83216893968d1a573"
+  },
+  "inherited_runner": {
+    "path": "/Users/taytrrip/slug/set79-prep/public-daily-attachment/pre-money-read/run.py",
+    "bytes": 26969,
+    "sha256": "c5fdd40373b071f0d9de9674157727565df990510863037341b4bc5fec6cd7a3"
+  },
+  "unchanged_support": {
+    "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/runner_support.py",
+    "bytes": 3888,
+    "sha256": "54bb3e7caf33e744ce76bf366dd23a4eff4d370d9246b85758089b57dd2439d7"
+  },
+  "only_runner_changes": [
+    "Path C source/phase/artifact selection and sibling independent reference directory",
+    "Required CLI source files plus exact node/CLI/probe dependency closures and normal profile-bound builds",
+    "Exact --helper argument to probe, inherited original outer process group",
+    "Public child PID/parent/PGID, one SIGTERM/no forced close, stdout/stderr joined and canonical bounded status correlation",
+    "Closed outbox pending count from the audited metadata projection; original economics and preserved history checks unchanged",
+    "Bound pre-poll confirmed-payment artifact and completed pure money-read refusal evidence; existing financial assertions unchanged"
+  ],
+  "limits": {
+    "scenario_seconds": 900,
+    "actual_with_cleanup_seconds": 1080,
+    "maximum_chain_height": 180,
+    "dependency_seconds": 120,
+    "build_seconds": 240,
+    "cli_stdout_bytes": 1048576,
+    "cli_status_rows": 1024,
+    "cli_stderr_bytes": 0
+  },
+  "static_checks": [
+    "Python AST parsed without importing or executing runner",
+    "Compared declared CLI JSON/status fields to source",
+    "Verified unchanged inherited support and predecessor hash"
+  ],
+  "qualification": "Root admission, builds, actual runtime and final evidence remain pending.",
+  "predecessor": {
+    "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/pre-money-read/runner-manifest.json",
+    "bytes": 1891,
+    "sha256": "0fdb6a49ef5c00a47e6de7c126e5088caad896805163f16ee61a4ceac1ba2402"
+  }
+}

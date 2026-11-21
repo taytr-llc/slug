@@ -19,3 +19,7 @@ func (*provisionFiles) ensure(context.Context, string, string, []byte, int, bool
 }
 func (*provisionFiles) canGenerate() bool { return false }
 func (*provisionFiles) close() error      { return nil }
+
+func openProvisionFilesVersion(string, bool, uint32) (*provisionFiles, error) {
+	return nil, ErrUnsupported
+}

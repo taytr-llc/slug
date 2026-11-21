@@ -27,6 +27,7 @@ type RemotePoolController struct {
 	options                           pilot.PoolOptions
 	inputs                            pilot.RemotePoolInputs
 	configID                          string
+	daily                             bool
 	lock                              *leveldb.DB
 	rootInfo, lockInfo                os.FileInfo
 	init                              ownedGymInit
@@ -67,7 +68,13 @@ type RemotePoolControllerSnapshot struct {
 	Error    string                    `json:"error,omitempty"`
 }
 
-func OpenRemotePoolController(ctx context.Context, existingRoot string, options pilot.PoolOptions, inputs pilot.RemotePoolInputs) (out *RemotePoolController, resultErr error) {
+func OpenRemotePoolController(ctx context.Context, existingRoot string, options pilot.PoolOptions, inputs pilot.RemotePoolInputs) (*RemotePoolController, error) {
+	return openRemotePoolController(ctx, existingRoot, options, inputs, false)
+}
+func OpenDailyRemotePoolController(ctx context.Context, existingRoot string, options pilot.PoolOptions, inputs pilot.RemotePoolInputs) (*RemotePoolController, error) {
+	return openRemotePoolController(ctx, existingRoot, options, inputs, true)
+}
+func openRemotePoolController(ctx context.Context, existingRoot string, options pilot.PoolOptions, inputs pilot.RemotePoolInputs, daily bool) (out *RemotePoolController, resultErr error) {
 	if ctx == nil || wire.TestPoW {
 		return nil, pilot.ErrRemotePoolConfig
 	}
@@ -79,15 +86,19 @@ func OpenRemotePoolController(ctx context.Context, existingRoot string, options 
 		return nil, e
 	}
 	// Marshal/parse supplies an owned deep copy of all selected public slices.
-	raw, e := pilot.MarshalRemotePoolConfig(inputs.Config)
+	marshal, parse, configID := pilot.MarshalRemotePoolConfig, pilot.ParseRemotePoolConfig, pilot.RemotePoolConfigID
+	if daily {
+		marshal, parse, configID = pilot.MarshalDailyRemotePoolConfig, pilot.ParseDailyRemotePoolConfig, pilot.DailyRemotePoolConfigID
+	}
+	raw, e := marshal(inputs.Config)
 	if e != nil {
 		return nil, e
 	}
-	inputs.Config, e = pilot.ParseRemotePoolConfig(raw)
+	inputs.Config, e = parse(raw)
 	if e != nil {
 		return nil, e
 	}
-	id, e := pilot.RemotePoolConfigID(inputs.Config)
+	id, e := configID(inputs.Config)
 	if e != nil {
 		return nil, e
 	}
@@ -109,7 +120,7 @@ func OpenRemotePoolController(ctx context.Context, existingRoot string, options 
 	// Open ctx bounds admission only. The retained owner ends at Close, not
 	// when a successful caller releases its construction timeout.
 	life, cancel := context.WithCancel(context.Background())
-	c := &RemotePoolController{root: existingRoot, options: options, inputs: inputs, configID: id, lock: lock, rootInfo: rootInfo, lockInfo: lockInfo, life: life, cancel: cancel, fixture: inputs.Config.ExpectedLocal.Recipient.Config.Fixture, state: "signed_out"}
+	c := &RemotePoolController{daily: daily, root: existingRoot, options: options, inputs: inputs, configID: id, lock: lock, rootInfo: rootInfo, lockInfo: lockInfo, life: life, cancel: cancel, fixture: inputs.Config.ExpectedLocal.Recipient.Config.Fixture, state: "signed_out"}
 	defer func() {
 		if resultErr != nil {
 			ce := c.Close()

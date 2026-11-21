@@ -1,0 +1,117 @@
+{
+  "commands": [
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 56068,
+        "pid": 56068,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "/opt/homebrew/bin/python3",
+        "-B",
+        "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/generate.py",
+        "--output",
+        "/Users/taytrrip/slug/artifacts/set79/attachment-reference-attempt1/python314.json"
+      ],
+      "exit_code": 0,
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 56068,
+      "pid": 56068,
+      "seconds": 0.079,
+      "timed_out": false
+    },
+    {
+      "capture_errors": [],
+      "cleanup": {
+        "errors": [],
+        "group_empty": true,
+        "leftover_after_exit": false,
+        "pgid": 56069,
+        "pid": 56069,
+        "return_code": 0,
+        "signals": []
+      },
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/generate.py",
+        "--output",
+        "/Users/taytrrip/slug/artifacts/set79/attachment-reference-attempt1/python39.json"
+      ],
+      "exit_code": 0,
+      "log_errors": [],
+      "log_joined": true,
+      "log_limit_exceeded": false,
+      "pgid": 56069,
+      "pid": 56069,
+      "seconds": 0.132,
+      "timed_out": false
+    }
+  ],
+  "outputs": {
+    "/Users/taytrrip/slug/artifacts/set79/attachment-reference-attempt1/python314.json": {
+      "bytes": 46498,
+      "sha256": "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386"
+    },
+    "/Users/taytrrip/slug/artifacts/set79/attachment-reference-attempt1/python39.json": {
+      "bytes": 46498,
+      "sha256": "a48a854d20298fced726b816d11690aa45e9f4184e3b161cbc7c258b74897386"
+    }
+  },
+  "passed": true,
+  "scope": "Path A independent explicit actual target/payee/config/economics",
+  "sources": {
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/core.py": {
+      "bytes": 5913,
+      "sha256": "f7554311b65ebd8773cc75d124698bd41680224dde75173f66cafea4eec60685"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/generate.py": {
+      "bytes": 7716,
+      "sha256": "69932211259ef4f1d3038e8e8799348945cb755972c6f6eede777d5101ca34a3"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/input-catalog.json": {
+      "bytes": 1762,
+      "sha256": "9ef3742c35b2887da1b51c15c3c9ff000dbeff61834785aaa7c8674a5f9a18fb"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/inputs/CONTRACT.md": {
+      "bytes": 25102,
+      "sha256": "a6a30ab580f6463d30bd29c00a4c60d7d7b32e6d6d70560b761a7661cbd0da05"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/inputs/chain-params.go": {
+      "bytes": 47803,
+      "sha256": "1bfdd5f930487edccdf5025d9f22b31b31bb8758a47198dd00ae576d574e8065"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/inputs/fixture-catalog.json": {
+      "bytes": 66249,
+      "sha256": "2637978c2e08637dae2a21bf7fcb8e9ab37edb3476e2b9512c73ff16809b7e55"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/inputs/fixture-public.json": {
+      "bytes": 7244,
+      "sha256": "83bfe6cdd6020524199ba6abada82614fb67987b32b9fb96111bf6bddf879f23"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/inputs/native-shape.go": {
+      "bytes": 2930,
+      "sha256": "8b338a83505d57d66267e219b8a9835e2efa4454979a44d7beecb1c7614fb883"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/inputs/public-daily.json": {
+      "bytes": 3176583,
+      "sha256": "a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/recipe.json": {
+      "bytes": 1336,
+      "sha256": "b32273cfbfea3bd8cba72a5a4fb9986c619bdd510125b9c9641a5bc4653e2751"
+    },
+    "/Users/taytrrip/slug/set79-prep/public-daily-attachment/reference/source-ready.json": {
+      "bytes": 1678,
+      "sha256": "49b53496726c9c6a2f027c5958f2bd713941f146857535c82c10b4c0f056ae63"
+    }
+  },
+  "sources_unchanged": true
+}

@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "scope": "external source-only Path B bounded public balance-wait diagnostics",
+  "execution_authorized": false,
+  "source_manifest": {
+    "path": "source-manifest.json",
+    "bytes": 4793,
+    "sha256": "866c7f2e5c8c48465bae90d1e93e22bc94631a4adbf6f2c6e87855cf279f0ae6"
+  },
+  "changes": [
+    {
+      "before": {
+        "path": "pre-balance-wait-evidence/main.go",
+        "bytes": 39228,
+        "sha256": "2cdd20669b678a54d5df4c7843cbc7cf8a877323cf4dfc2895a9fd73e3246530"
+      },
+      "after": {
+        "path": "set79-prep/public-daily-actual/main.go",
+        "bytes": 39307,
+        "sha256": "6413d9086f770bd6d5433c8e88f155841cb0c133facd396ade391c96aac356a9"
+      }
+    },
+    {
+      "before": {
+        "path": "pre-balance-wait-evidence/late_flow.go",
+        "bytes": 24998,
+        "sha256": "2b6928470f975a5c35a6bc11176b2ccdbe16e9116ed7f09be0967636759031c2"
+      },
+      "after": {
+        "path": "set79-prep/public-daily-actual/late_flow.go",
+        "bytes": 25249,
+        "sha256": "b963fdbf562ea2916f076942380a020a9070c5c1c8a1192d4bfb7272b7f83603"
+      }
+    },
+    {
+      "before": null,
+      "after": {
+        "path": "set79-prep/public-daily-actual/balance_wait.go",
+        "bytes": 3206,
+        "sha256": "4408b94380f7645809046c4a3c18abc2ee0aad27dab7e012cf8da45be3f6ce3d"
+      }
+    },
+    {
+      "before": {
+        "path": "pre-balance-wait-evidence/README.md",
+        "bytes": 5558,
+        "sha256": "ae37c2cf5897d0798f08ad44549418d1a6165b1d9c468abc4ed2e0832c576e24"
+      },
+      "after": {
+        "path": "set79-prep/public-daily-actual/README.md",
+        "bytes": 6214,
+        "sha256": "d3f7bb6f3893ea24b3b6b97b7d3de1851e3e140a7cd66d054be4d6d3ac55d252"
+      }
+    },
+    {
+      "before": {
+        "path": "pre-balance-wait-evidence/run-public-actual.py",
+        "bytes": 8229,
+        "sha256": "59de5ba43a79d63234fe591bd6303b28c8f53c54cee1b74f72fd910d6d59f36c"
+      },
+      "after": {
+        "path": "set79-prep/run-public-actual.py",
+        "bytes": 9087,
+        "sha256": "2cabdf569459ede752aa1a85b0e7e8f7b6ec6030b3625552ff421b33547baf05"
+      }
+    },
+    {
+      "before": {
+        "path": "pre-balance-wait-evidence/check-public-actual.py",
+        "bytes": 11373,
+        "sha256": "9d8b40ab729e363d2cbc322b9ab24dc4c7dc503f0337c8103fea4bfd89294d5f"
+      },
+      "after": {
+        "path": "set79-prep/check-public-actual.py",
+        "bytes": 15404,
+        "sha256": "0602f639e0a42e82c4d3f7deabda2cd7cf41fefa89a1c8e38521f1c8fcf7eb8e"
+      }
+    }
+  ],
+  "diff": {
+    "path": "balance-wait.diff",
+    "bytes": 20157,
+    "sha256": "fb751242009f28a249505e5275e3c7a8c6ff1094518c9bbab3050d2c40374bdb"
+  },
+  "predecessors": [
+    {
+      "path": "pre-balance-wait-evidence/README.md",
+      "bytes": 5558,
+      "sha256": "ae37c2cf5897d0798f08ad44549418d1a6165b1d9c468abc4ed2e0832c576e24"
+    },
+    {
+      "path": "pre-balance-wait-evidence/check-public-actual.py",
+      "bytes": 11373,
+      "sha256": "9d8b40ab729e363d2cbc322b9ab24dc4c7dc503f0337c8103fea4bfd89294d5f"
+    },
+    {
+      "path": "pre-balance-wait-evidence/late_flow.go",
+      "bytes": 24998,
+      "sha256": "2b6928470f975a5c35a6bc11176b2ccdbe16e9116ed7f09be0967636759031c2"
+    },
+    {
+      "path": "pre-balance-wait-evidence/main.go",
+      "bytes": 39228,
+      "sha256": "2cdd20669b678a54d5df4c7843cbc7cf8a877323cf4dfc2895a9fd73e3246530"
+    },
+    {
+      "path": "pre-balance-wait-evidence/public-actual-root-lock-attempt4.json",
+      "bytes": 7631,
+      "sha256": "c098151f8cee452c0125d8b5c3fb8302b0e8924ec40fb80eaf0c0461c301522b"
+    },
+    {
+      "path": "pre-balance-wait-evidence/run-public-actual.py",
+      "bytes": 8229,
+      "sha256": "59de5ba43a79d63234fe591bd6303b28c8f53c54cee1b74f72fd910d6d59f36c"
+    },
+    {
+      "path": "pre-balance-wait-evidence/source-manifest.json",
+      "bytes": 4484,
+      "sha256": "1f96483591a9afbf571f78434e3f115919f49592fd1c6e83a06312d219d8b61c"
+    }
+  ],
+  "unchanged_scope": {
+    "scenario_seconds": 900,
+    "outer_seconds": 1080,
+    "max_blocks": 180,
+    "balance_wait_seconds": [
+      45,
+      90,
+      45,
+      150
+    ],
+    "poll_milliseconds": 100,
+    "tail_per_wait": 32,
+    "wait_count": 4
+  },
+  "verification": "gofmt and Python AST only; no Go/runtime/checker execution"
+}

@@ -1,0 +1,142 @@
+{
+  "accepted_rewards": 2,
+  "clean_join": true,
+  "cleanup_errors": [],
+  "completed": true,
+  "due_ms": 1795256580000,
+  "fee_atoms": 209,
+  "final_height": 105,
+  "initial_height": 2,
+  "initial_tip": "11c8e3ff42bbe0465996adf04bdc89bda37a6cfcf2c709fd6c6554e9a4623e2d",
+  "miner_atoms": 1980000000,
+  "node_cleanup": [
+    {
+      "clean": true,
+      "forced_kill": false,
+      "joined": true,
+      "log_close_error": false,
+      "stop_rpc_error": false,
+      "unexpected_exit": false,
+      "wait_error": ""
+    },
+    {
+      "clean": true,
+      "forced_kill": false,
+      "joined": true,
+      "log_close_error": false,
+      "stop_rpc_error": false,
+      "unexpected_exit": false,
+      "wait_error": ""
+    }
+  ],
+  "original_wallet_received": true,
+  "passed": true,
+  "public_seed_mining": false,
+  "runtime_completion": {
+    "cancellation_only": true,
+    "error_present": true,
+    "error_type": "*errors.joinError",
+    "joined": true,
+    "last_status": {
+      "capacity": {
+        "daily_reservation": {
+          "ordinary_maximum": 2,
+          "reservation": {
+            "submissions": 3,
+            "blocks": 3,
+            "max_batches": 5,
+            "claim_leaves": 6,
+            "ledger_bytes": 8534577,
+            "round_bytes": 211005,
+            "largest_round_bytes": 66520,
+            "largest_credit_bytes": 1243,
+            "largest_batch_bytes": 980210,
+            "report_bytes": 20628,
+            "receipt_bytes": 12288,
+            "signing_bytes": 8450828,
+            "manager_copy_bytes": 1181620
+          }
+        },
+        "reservation": {
+          "submissions": 0,
+          "max_batches": 0,
+          "state_bytes": 0,
+          "round_bytes": 0,
+          "largest_round_bytes": 0
+        },
+        "mode": "draining",
+        "reason": "pool_capacity",
+        "submissions": 2,
+        "over_bound": false,
+        "canonical_recovery": true,
+        "recovery_blocks": 2,
+        "at_ms": 1795256407740
+      },
+      "version": 2,
+      "runtime_id": "3ccd61b5c0e78f0743d97cc8d5cf0d72332a2981cac7bd17c9febb50d9116119",
+      "setup_id": "fe6992c142472c48778a86f9faaf18251b15ef4f312150ba1b8e1cdf0bdf8e0e",
+      "running": true,
+      "closing": false,
+      "custody": "unlocked",
+      "custody_at_ms": 1795256316208,
+      "custody_until_ms": 1795259915717,
+      "public": {
+        "work_id": "ddf4368ce1ebc6842391ac47377ffaebd9f0e7f422278c6537fdf28835f45255",
+        "phase": "publications",
+        "next_admission": 4,
+        "next_publication": 8,
+        "next_height": 0,
+        "ready": false,
+        "head": null
+      },
+      "public_code": "unavailable",
+      "public_at_ms": 1795256407739,
+      "rounds": {
+        "through": 2,
+        "rounds": 2,
+        "pending_shares": 0
+      },
+      "round_code": "",
+      "round_at_ms": 1795256406415,
+      "schedule": {
+        "state": {
+          "version": 2,
+          "config": {
+            "version": 2,
+            "scheduler_id": "ba73e624dd9cac964c482933a6d54b0ba1e66c28e69581087cebc13e32104a89",
+            "runtime_id": "3ccd61b5c0e78f0743d97cc8d5cf0d72332a2981cac7bd17c9febb50d9116119",
+            "settlement_binding_id": "1a8f11297217a9d3ef471be9070ede3df0291d353fbf17c3cbce693571631035",
+            "daily_utc_minute": 623,
+            "retry_ms": 30000
+          },
+          "revision": 9,
+          "last_clock_ms": 1795256406429,
+          "daily_cursor": "",
+          "next_wake_ms": 1795256436429,
+          "attempt": {
+            "sequence": 4,
+            "kind": "recovery",
+            "admitted_day": "2026-11-21",
+            "started_at_ms": 1795256406420,
+            "finished_at_ms": 1795256406429,
+            "result": "returned",
+            "report_state": "complete",
+            "report_reason": "",
+            "error_code": ""
+          }
+        },
+        "running": true,
+        "poisoned": false
+      }
+    },
+    "observed_at_ms": 1795256657450,
+    "owners_closed": true,
+    "premature": false,
+    "round_busy": false
+  },
+  "scheduled_payment": true,
+  "scope": "original schema14 DAILY attachment to real scheduled payout",
+  "seconds": 345.011106042,
+  "stopped_reopen": true,
+  "version": 1
+}

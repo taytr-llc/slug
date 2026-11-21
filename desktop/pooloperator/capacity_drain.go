@@ -17,14 +17,15 @@ import (
 // settlement scheduler, exact pending transactions and retained round refresh
 // alive. It never promises payment of below-minimum, fee- or funding-held carry.
 type CapacityStatus struct {
-	Reservation       CapacityReservation `json:"reservation"`
-	Mode              string              `json:"mode"`
-	Reason            string              `json:"reason"`
-	Submissions       uint64              `json:"submissions"`
-	OverBound         bool                `json:"over_bound"`
-	CanonicalRecovery bool                `json:"canonical_recovery"`
-	RecoveryBlocks    uint64              `json:"recovery_blocks"`
-	AtMS              int64               `json:"at_ms"`
+	DailyReservation  *DailyCapacityReservation `json:"daily_reservation,omitempty"`
+	Reservation       CapacityReservation       `json:"reservation"`
+	Mode              string                    `json:"mode"`
+	Reason            string                    `json:"reason"`
+	Submissions       uint64                    `json:"submissions"`
+	OverBound         bool                      `json:"over_bound"`
+	CanonicalRecovery bool                      `json:"canonical_recovery"`
+	RecoveryBlocks    uint64                    `json:"recovery_blocks"`
+	AtMS              int64                     `json:"at_ms"`
 }
 
 // Only a nonempty error tree made entirely of known capacity leaves can enter
@@ -56,8 +57,59 @@ func capacityOnly(err error) bool {
 // its listeners. The mutex coordinates their transitions, not financial work.
 // Each concrete controller independently joins its original active writer.
 func (r *Runtime) updateIntake(ctx context.Context, publicReady, roundReady bool, cause string) error {
+	// Start the shared budget before waiting for intakeMu. The mutex joins the
+	// original transition; acquiring it is not independently cancel-selectable.
+	// A waiter never obtains a renewed budget after the current owner releases it.
+	work, cancel := context.WithTimeout(ctx, 30*time.Second)
+	defer cancel()
 	r.intakeMu.Lock()
 	defer r.intakeMu.Unlock()
+	for {
+		if err := work.Err(); err != nil {
+			return err
+		}
+		err := r.updateIntakeLocked(work, publicReady, roundReady, cause)
+		if !intakeSourceBusyOnly(err) {
+			return err
+		}
+		// Each pass has already released the concrete pool/issuer gates. Keep
+		// this invocation's readiness and capacity cause until its full transition
+		// succeeds; a failed Status must not lose a permanent drain request.
+		timer := time.NewTimer(10 * time.Millisecond)
+		select {
+		case <-work.Done():
+			timer.Stop()
+			return work.Err()
+		case <-timer.C:
+		}
+	}
+}
+
+// intakeSourceBusyOnly accepts no generic unavailable or mixed-error tree.
+func intakeSourceBusyOnly(err error) bool {
+	if err == poolshare.ErrBusy {
+		return true
+	}
+	if many, ok := err.(interface{ Unwrap() []error }); ok {
+		children := many.Unwrap()
+		if len(children) == 0 {
+			return false
+		}
+		for _, child := range children {
+			if !intakeSourceBusyOnly(child) {
+				return false
+			}
+		}
+		return true
+	}
+	if one, ok := err.(interface{ Unwrap() error }); ok {
+		return intakeSourceBusyOnly(one.Unwrap())
+	}
+	return false
+}
+
+// updateIntakeLocked runs one original transition while intakeMu is held.
+func (r *Runtime) updateIntakeLocked(ctx context.Context, publicReady, roundReady bool, cause string) error {
 	if err := ctx.Err(); err != nil {
 		return err
 	}
@@ -118,7 +170,7 @@ func (r *Runtime) updateIntake(ctx context.Context, publicReady, roundReady bool
 		}
 	}
 	r.mu.Lock()
-	r.status.Capacity = CapacityStatus{Reservation: r.reservation, Mode: pool.Mode, Reason: r.intakeReason, Submissions: pool.Submissions, OverBound: pool.OverBound, CanonicalRecovery: pool.CanonicalRecovery, RecoveryBlocks: pool.RecoveryBlocks, AtMS: time.Now().UTC().UnixMilli()}
+	r.status.Capacity = CapacityStatus{Reservation: r.reservation, DailyReservation: r.dailyReservation, Mode: pool.Mode, Reason: r.intakeReason, Submissions: pool.Submissions, OverBound: pool.OverBound, CanonicalRecovery: pool.CanonicalRecovery, RecoveryBlocks: pool.RecoveryBlocks, AtMS: time.Now().UTC().UnixMilli()}
 	r.mu.Unlock()
 	return ctx.Err()
 }

@@ -38,10 +38,10 @@ func ValidatePoolConfig(c PoolConfig) (PoolConfig, error) {
 }
 
 func validatePoolScan(s PoolScan, c PoolConfig) error {
-	if s.Version != PoolVersion1 || s.NextNonce > 1<<32 {
+	if s.Version != c.Version || s.NextNonce > 1<<32 {
 		return ErrCorrupt
 	}
-	if _, err := poolservice.PrepareWork(c.Source, c.PublicKey, s.Work); err != nil {
+	if _, err := preparePoolWork(c, s.Work); err != nil {
 		return ErrCorrupt
 	}
 	return nil
@@ -50,7 +50,7 @@ func validatePoolScan(s PoolScan, c PoolConfig) error {
 // poolCheck validates structure using the retained digest. It is deliberately
 // not a proof verifier: delivery rehashes exact work before any external call.
 func poolCheck(e PoolEntry, c PoolConfig) (prospectwork.ShareCheck, error) {
-	w, err := poolservice.PrepareWork(c.Source, c.PublicKey, e.Work)
+	w, err := preparePoolWork(c, e.Work)
 	if err != nil {
 		return prospectwork.ShareCheck{}, ErrCorrupt
 	}
@@ -78,7 +78,7 @@ func poolCheck(e PoolEntry, c PoolConfig) (prospectwork.ShareCheck, error) {
 }
 
 func validatePoolEntry(e PoolEntry, c PoolConfig) error {
-	if e.Version != PoolVersion1 || e.Sequence == 0 || e.Sequence > c.MaxRecords || e.NextAttemptMS < 0 || e.RetryCount > 32 {
+	if e.Version != c.Version || e.Sequence == 0 || e.Sequence > c.MaxRecords || e.NextAttemptMS < 0 || e.RetryCount > 32 {
 		return ErrCorrupt
 	}
 	check, err := poolCheck(e, c)
@@ -106,7 +106,7 @@ func validatePoolEntry(e PoolEntry, c PoolConfig) error {
 		return ErrCorrupt
 	}
 	if e.PoolReceipt != nil {
-		if !poolservice.SubmissionMatches(c.Source, e.Work, e.Nonce, check, *e.PoolReceipt) || (e.PoolReceipt.AcceptedSequence > 0) != (e.PoolState == "accepted") || e.PoolReceipt.AcceptedSequence == 0 && e.PoolState != "pending" {
+		if !poolSubmissionMatches(c, e.Work, e.Nonce, check, *e.PoolReceipt) || (e.PoolReceipt.AcceptedSequence > 0) != (e.PoolState == "accepted") || e.PoolReceipt.AcceptedSequence == 0 && e.PoolState != "pending" {
 			return ErrCorrupt
 		}
 	} else if e.PoolState == "accepted" {
@@ -179,7 +179,7 @@ func poolTransition(a, b PoolEntry) bool {
 }
 
 func poolEntryForCheck(s PoolScan, check prospectwork.ShareCheck) PoolEntry {
-	e := PoolEntry{Version: PoolVersion1, Work: s.Work, Nonce: check.Nonce, WorkHash: check.WorkHash, DuplicateKey: check.DuplicateKey, PoolWin: check.Pool, PoolState: "not-applicable"}
+	e := PoolEntry{Version: s.Version, Work: s.Work, Nonce: check.Nonce, WorkHash: check.WorkHash, DuplicateKey: check.DuplicateKey, PoolWin: check.Pool, PoolState: "not-applicable"}
 	if check.Pool || check.Block {
 		e.PoolState = "pending"
 	}

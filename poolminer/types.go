@@ -18,6 +18,7 @@ import (
 )
 
 const Version1 uint32 = 1
+const Version2 uint32 = 2
 const PoolAudience = "pool"
 const AdmissionAudience = "admission"
 const MaxTimeMS int64 = 253402300799999
@@ -89,6 +90,7 @@ type State struct {
 // Store retains its original files until all callbacks/rechecks join. Callbacks
 // must be bounded and may not reenter the store (contention returns ErrBusy).
 type Store struct {
+	daily      bool // selected only by the explicit constructor
 	gate       chan struct{}
 	closeGate  chan struct{}
 	checkMu    sync.Mutex

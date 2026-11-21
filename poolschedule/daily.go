@@ -44,8 +44,14 @@ func DailySettlementBinding(ctx context.Context, original *poolsettle.Store) (st
 	return id, nil
 }
 
-// Only DailySettlementBinding calls this with the original audited owner.
-// Bounded pure component validation is not a substitute for that ownership.
+// DailySettlementConfigBinding validates public daily components and returns
+// their existing scheduler binding. It grants no journal or payment authority;
+// construction still requires DailySettlementBinding on the original owner.
+func DailySettlementConfigBinding(config poolsettle.Config, source poolshare.Config) (string, error) {
+	return dailyBinding(config, source)
+}
+
+// Keep one encoding for public preflight and original-owner validation.
 func dailyBinding(config poolsettle.Config, source poolshare.Config) (string, error) {
 	if wire.TestPoW {
 		return "", ErrProfile

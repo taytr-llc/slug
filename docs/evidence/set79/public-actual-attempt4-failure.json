@@ -1,0 +1,215 @@
+{
+  "actual_command": {
+    "capture_errors": [],
+    "cleanup": {
+      "errors": [],
+      "group_empty": true,
+      "leftover_after_exit": false,
+      "pgid": 61396,
+      "pid": 61396,
+      "return_code": 1,
+      "signals": []
+    },
+    "exit_code": 1,
+    "log_errors": [],
+    "log_joined": true,
+    "seconds": 783.492,
+    "timed_out": false
+  },
+  "actual_owner_clean_join": true,
+  "child_cleanup": [
+    {
+      "clean": true,
+      "forced": false,
+      "joined": true,
+      "log_close_error": "",
+      "name": "slugpoold-daily-b59",
+      "pid": 61917,
+      "wait_error": ""
+    },
+    {
+      "clean": true,
+      "forced": false,
+      "joined": true,
+      "log_close_error": "",
+      "name": "slugpoold-daily-b60",
+      "pid": 62055,
+      "wait_error": ""
+    }
+  ],
+  "cleanup_errors": [],
+  "completed_public_phases": {
+    "after_late_accepted": 3,
+    "after_late_submissions": 3,
+    "attempt_and_send_raw_equal": true,
+    "authority_jobs": 3,
+    "b59_confirmation": null,
+    "b59_descendants": 59,
+    "births": 0,
+    "broadcast_attempts": 1,
+    "closed_b59_height": 162,
+    "credits_at_b59": 1,
+    "delivery_after": "confirmed",
+    "delivery_before": "prepared",
+    "derived_ordinary_maximum": 2,
+    "expiry_observed_at_ms": 1795252891796,
+    "full_intake_submissions": 2,
+    "job_expires_at_ms": 1795252891796,
+    "late_block_height": 103,
+    "observation_fault_refusals": 3,
+    "original_A_body_bytes": 1072,
+    "original_A_body_sha256": "1f91cf600c069cf6b5ee2bbd8ef9f62c67743c0eab4c458266d6820b520510e6",
+    "original_A_body_unchanged": true,
+    "original_credit_unchanged": true,
+    "original_txid": "8dc381328cdcd066a2a07cef906ffc843e0d6fce281979cbacb941317f35e26d",
+    "pending_batch_at_b59": 0,
+    "raw_hex_sha256": "00669a400f98486d4668a663315016dd3d6711ac14a62ebdebc7dab7e46d19de",
+    "read_only_audits_unchanged": true,
+    "receipt_duplicate_lookup_exact": true,
+    "retained_batches": 1,
+    "retained_works": 3,
+    "rounds_at_b59": 2,
+    "successful_sends": 1,
+    "winner_observed_at_ms": 1795252892245
+  },
+  "copies_unchanged": true,
+  "elapsed_seconds": 783.03884025,
+  "failure": "bounded wait",
+  "files": [
+    {
+      "bytes": 8350,
+      "path": "artifacts/set79/public-actual-attempt4/report.json",
+      "sha256": "577d44c73cd6c912939b69ae8263f473e17832373b0ec35c1ccb89f7fd27ae00"
+    },
+    {
+      "bytes": 7631,
+      "path": "artifacts/set79/public-actual-attempt4/execution-lock.json",
+      "sha256": "c098151f8cee452c0125d8b5c3fb8302b0e8924ec40fb80eaf0c0461c301522b"
+    },
+    {
+      "bytes": 447393,
+      "path": "artifacts/set79/public-actual-attempt4/source-before.json",
+      "sha256": "db80f352a46eccef7b9b611044b881cb4e54a0918e9e1e383d6bc60b60aeb931"
+    },
+    {
+      "bytes": 447393,
+      "path": "artifacts/set79/public-actual-attempt4/source-after.json",
+      "sha256": "db80f352a46eccef7b9b611044b881cb4e54a0918e9e1e383d6bc60b60aeb931"
+    },
+    {
+      "bytes": 1641,
+      "path": "artifacts/set79/public-actual-attempt4/source-copies.json",
+      "sha256": "ae3865a1d877002ee748dab955398ba05486bb52d829db28fd63d70558964fec"
+    },
+    {
+      "bytes": 962,
+      "path": "artifacts/set79/public-actual-attempt4/profile.json",
+      "sha256": "07a03add888675b5bc8ef7fb5b03ff6dd31946e38c2f946e42d2423261b1ad03"
+    },
+    {
+      "bytes": 93,
+      "path": "artifacts/set79/public-actual-attempt4/actual.log",
+      "sha256": "e99dd648ce8fc42c8af04f1bbd61583c3b450cb5629e69289d83d5b1ba946c71"
+    },
+    {
+      "bytes": 680,
+      "path": "artifacts/set79/public-actual-attempt4/actual.process.json",
+      "sha256": "aa375defd8e4c6475a3ff864c01dae5ff6ed44d29f7647166b66d01a28077838"
+    },
+    {
+      "bytes": 2363,
+      "path": "artifacts/set79/public-actual-attempt4/node-build-info.txt",
+      "sha256": "49ebeb77c1762c2c86f304ac01892b8f5b7083b328d39486bafb2d49305cdb33"
+    },
+    {
+      "bytes": 3303,
+      "path": "artifacts/set79/public-actual-attempt4/operator-build-info.txt",
+      "sha256": "7079e5d633f303acd9b82a13eeefa40edca544aa93487ef9b60c1c7ae36d8e88"
+    },
+    {
+      "bytes": 3196,
+      "path": "artifacts/set79/public-actual-attempt4/probe-build-info.txt",
+      "sha256": "a61367b74799ee0d2e32b3f02e57df56985a61c9468bb069dbef58746877f257"
+    },
+    {
+      "bytes": 6949,
+      "path": "artifacts/set79/public-actual-attempt4/owned/actual-report.json",
+      "sha256": "ed143bc8968e6efb2c1395bbcd128ea2661ea7c269934444b80b628496b684c5"
+    },
+    {
+      "bytes": 2153,
+      "path": "artifacts/set79/public-actual-attempt4/owned/01-runtime-listening.json",
+      "sha256": "25929e12bfeba6eb64e42a137677350b73ababc25bd92506064a153911a3829f"
+    },
+    {
+      "bytes": 3803,
+      "path": "artifacts/set79/public-actual-attempt4/owned/02-A-block.json",
+      "sha256": "c251bfcc2ea5277dae2697f154bd892013041ef826e50c770c1fcb34669b8cde"
+    },
+    {
+      "bytes": 17998,
+      "path": "artifacts/set79/public-actual-attempt4/owned/03-A-pending.json",
+      "sha256": "d92f0030c7ebca75285f6b513d0bd9a79781b6c9b3ad037b1d47374d0e6af313"
+    },
+    {
+      "bytes": 26766,
+      "path": "artifacts/set79/public-actual-attempt4/owned/04-full-intake.json",
+      "sha256": "7f9c77f730d10501af321df18b6ca55099b654c50643d3f7b5a56fc482fce39b"
+    },
+    {
+      "bytes": 16489,
+      "path": "artifacts/set79/public-actual-attempt4/owned/05-expired-absent.json",
+      "sha256": "9b618a2ae92bbf9636e6a58d5b92446a6fdb0a66df29226ec63629f025541b27"
+    },
+    {
+      "bytes": 31461,
+      "path": "artifacts/set79/public-actual-attempt4/owned/06-B-pending.json",
+      "sha256": "58ca490b48bff53f98e5b5fe52946a37d8eeff70f10325c10d26ea0d0305c277"
+    },
+    {
+      "bytes": 31689,
+      "path": "artifacts/set79/public-actual-attempt4/owned/07-B59-restart.json",
+      "sha256": "fae1ab6025797701ac292b7b07704cccf225e04311836dd6da010c038bb58267"
+    }
+  ],
+  "join_flag_explanation": "Outer clean_join is false because the actual command exited 1. Actual owner clean_join is true; the original runtime, both CLI lifetimes, both nodes and every outer process group joined. The failure is acceptance, not a reported resource leak.",
+  "node_cleanup": [
+    {
+      "clean": true,
+      "forced_kill": false,
+      "joined": true,
+      "log_close_error": false,
+      "stop_rpc_error": false,
+      "unexpected_exit": false,
+      "wait_error": ""
+    },
+    {
+      "clean": true,
+      "forced_kill": false,
+      "joined": true,
+      "log_close_error": false,
+      "stop_rpc_error": false,
+      "unexpected_exit": false,
+      "wait_error": ""
+    }
+  ],
+  "original_runtime_completion": {
+    "cancellation_only": true,
+    "error_present": true,
+    "error_type": "*errors.joinError",
+    "joined": true,
+    "observed_at_ms": 1795252560207,
+    "owners_closed": true,
+    "premature": false,
+    "round_busy": false
+  },
+  "outer_clean_join_flag": false,
+  "passed": false,
+  "phase": "one descendant then second exact production DAILY process",
+  "profile_artifacts_unchanged": true,
+  "public_seed_mining": false,
+  "qualification": "Failure preserved. Public artifacts through 07-B59 prove true derived full intake, real expiry, one additional canonical receipt/round, exact retry/lookup in a fresh production DAILY process, and unchanged original A body recovered with only one send. The final B60 bounded wait failed; no final closed B60 credit/complete actual proof exists. Source analysis of scheduler contention is ongoing; these reports do not establish an exclusive competing call or justify a product fix.",
+  "scope": "Set79 fourth public DAILY actual failure",
+  "sources_unchanged": true,
+  "version": 1
+}

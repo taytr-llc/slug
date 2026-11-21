@@ -1,0 +1,57 @@
+--- before/late_flow.go
++++ after/late_flow.go
+@@ -18,17 +18,27 @@
+ 	"time"
+ )
+ 
++// Startup readiness is read-only and belongs to the same original runtime.
++// Its selected maintenance interval is 30s, so readiness must allow a retry
++// before the distinct 20s Issue operation begins. Both use the original 900s ctx.
++func lateWaitIssueReady(ctx context.Context, r *runningOperator) {
++	ready, cancel := context.WithTimeout(ctx, 90*time.Second)
++	defer cancel()
++	for {
++		status := r.status(ready)
++		if status.Capacity.Mode == "enabled" && status.Public.Ready {
++			return
++		}
++		check(pauseActual(ready, time.Second), "original read-only startup readiness deadline")
++	}
++}
++
+ func lateIssue(ctx context.Context, c *poolservice.Client, r *runningOperator) poolshare.MiningWork {
++	lateWaitIssueReady(ctx, r)
+ 	work, cancel := context.WithTimeout(ctx, 20*time.Second)
+ 	defer cancel()
+ 	for {
+-		// Intake and public replay readiness consume this same original20s
+-		// budget. They never renew it or authorize a replacement runtime.
+-		status := runtimeStatus(work, r.runtime)
+-		if status.Capacity.Mode != "enabled" || !status.Public.Ready {
+-			check(pauseActual(work, time.Second), "original Issue readiness deadline")
+-			continue
+-		}
++		r.checkRunning()
+ 		v, e := c.Issue(work)
+ 		if e == nil {
+ 			return v
+--- before/README.md
++++ after/README.md
+@@ -1,6 +1,6 @@
+ # Public DAILY Path B actual source
+ 
+-This external snapshot adapts the qualified Set74/Set78 late-winner harness for the fresh, explicitly selected Set79 DAILY headless runtime. It has not been compiled or executed. Root owns the sole build/runtime lane and the outer runner.
++This external snapshot adapts the qualified Set74/Set78 late-winner harness for the fresh, explicitly selected Set79 DAILY headless runtime. This readiness successor has not been compiled or executed; prior failed attempts and exact source snapshots are preserved. Root owns the sole build/runtime lane and the outer runner.
+ 
+ Executable interface:
+ 
+@@ -23,6 +23,8 @@
+ 
+ Public phase files are `01-runtime-listening.json`, `02-A-block.json`, `03-A-pending.json`, `04-full-intake.json`, `05-expired-absent.json`, `06-B-pending.json`, `07-B59-restart.json`, and `08-B60-final.json`. `actual-report.json` contains completion, exact counts, source reference identities, all attempted/accepted broadcasts, explicit relay fault, two original CLI process cleanup rows, two node cleanup rows and the final pass conjunction. A failure retains the owned tree; it is never deleted by this executable.
+ 
+-The final source integration requires the root-selected DAILY scheduler accounting refresh after its same-day payment cursor is complete. The current V1-style cursor otherwise suppresses importing later B confirmations until another day. This source snapshot intentionally retains the demanded B60 assertion; it does not bypass the scheduler with a direct ledger call. Root owns that production correction and qualification before execution.
++The source uses the root-qualified DAILY scheduler accounting refresh after its same-day payment cursor is complete. It retains the demanded B60 assertion and does not bypass the scheduler with a direct ledger call.
++
++Attempt2 reached the real scheduled A broadcast and immutable reserved audit, then failed the reopened B/C readiness phase. Its runtime and nodes joined cleanly. The combined readiness/Issue allowance was 20s although the selected maintenance interval is 30000ms; one legitimate maintenance retry can outlast that allowance. The final paused reason was not recorded, so the precise production cause is not claimed. This successor separates a 90s read-only readiness wait on the same runtime from the unchanged 20s Issue operation. Each readiness observation is retained in the original runtime's public completion evidence, and premature Run completion remains fatal. Issue still retries only exact definite busy/rate_limited responses; no unknown retry, replacement owner, request deadline, selected configuration, 900s parent or 1080s outer bound changes. The complete predecessor manifest/files are preserved under `pre-startup-readiness/`.
+ 
+ This is a finite two-gym transport/runtime proof. It does not establish physical-full recovery, continuous 64-miner operation, deployment, account login, or wallet history migration. The unchanged `node_helpers.go` is copied from the committed late-winner harness; main/flow/audit adapt only this selected scenario. Compilation, race behavior and runtime evidence remain pending until the root executes the frozen snapshot.
