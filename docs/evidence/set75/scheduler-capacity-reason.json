@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "status": "passed_local",
+  "base_commit": "6539b3fb951f295fe3abd66799232cec6f7b3420",
+  "finding": "poolschedule closed reason grammar omitted transaction-capacity; finish rejected the new deferred report.",
+  "fix": "Accept the one D84 reason while preserving unknown-reason refusal, exact config and daily cursor.",
+  "scope": "Conditional scheduler finish/state encode/decode/retry regression plus complete poolschedule normal/race and vet. No beyond-V1 funding ledger or new actual payout is claimed.",
+  "commands": [
+    {
+      "label": "normal",
+      "args": [
+        "sh",
+        "scripts/candidate-go.sh",
+        "test",
+        "-count=1",
+        "-json",
+        "./poolschedule"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 4.777,
+      "sha256": "6ae842e9af5bb5d8fe106b442a48879e7eb942fadec3767c8154e1dbe043822e"
+    },
+    {
+      "label": "race",
+      "args": [
+        "sh",
+        "scripts/candidate-go.sh",
+        "test",
+        "-race",
+        "-count=1",
+        "-json",
+        "./poolschedule"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 25.601,
+      "sha256": "7244195845417215243f109c8fc96cd89fdec263c75a74cf320a1410e514824f"
+    },
+    {
+      "label": "vet",
+      "args": [
+        "go",
+        "vet",
+        "-gcflags=all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "./poolschedule"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.653,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "runs": [
+    {
+      "log": "/Users/taytrrip/slug/artifacts/set75/scheduler-reason/before.jsonl",
+      "sha256": "4b1de3605f9a9f0a81ac89842893798382bcbf32addd75337a026a78244fb7b7",
+      "failures": [
+        {
+          "Time": "2026-11-20T18:32:13.390733-08:00",
+          "Action": "fail",
+          "Package": "github.com/taytr-llc/slug/poolschedule",
+          "Test": "TestScheduleTransactionCapacityRetainsRetry",
+          "Elapsed": 0
+        },
+        {
+          "Time": "2026-11-20T18:32:13.391508-08:00",
+          "Action": "fail",
+          "Package": "github.com/taytr-llc/slug/poolschedule",
+          "Elapsed": 0.393
+        }
+      ],
+      "top_level_passes": 0
+    },
+    {
+      "log": "/Users/taytrrip/slug/artifacts/set75/scheduler-reason/normal.log",
+      "sha256": "6ae842e9af5bb5d8fe106b442a48879e7eb942fadec3767c8154e1dbe043822e",
+      "failures": [],
+      "top_level_passes": 7
+    },
+    {
+      "log": "/Users/taytrrip/slug/artifacts/set75/scheduler-reason/race.log",
+      "sha256": "7244195845417215243f109c8fc96cd89fdec263c75a74cf320a1410e514824f",
+      "failures": [],
+      "top_level_passes": 7
+    }
+  ],
+  "source_files": [
+    {
+      "path": "poolschedule/codec.go",
+      "sha256": "05ce8895df005a285220c86d5b1ce9499676a3133cac6c138da47b36b6e15fc7"
+    },
+    {
+      "path": "poolschedule/transaction_capacity_test.go",
+      "sha256": "90e29d32b2f33b783a0e25f8b68e2eb2691e79c313934d2bac192b917f173659"
+    }
+  ]
+}

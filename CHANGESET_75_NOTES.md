@@ -68,6 +68,18 @@ not implement a `vet` subcommand. The remaining checks use the existing explicit
 `go vet` compiler profile after `candidate-go.sh check`; no product/test
 assertion or timeout changed for either correction.
 
+## Scheduler integration follow-up
+
+Before Set75 closeout, source review found one omitted closed-reason grammar
+in `poolschedule`: it rejected `transaction-capacity` instead of retaining the
+D84 deferral. A new conditional scheduler-state regression failed against
+`6539b3fb` before the one-reason fix. Complete scheduler normal/race tests and
+vet then passed. The regression checks retained state round-trip, unchanged
+daily cursor, recovery-first retry and refusal of an unknown reason. See
+`docs/evidence/set75/scheduler-capacity-reason.json`; the original failed
+reproduction is retained. Other accounting source is unchanged from the
+initial local qualification. This is not a claim of a beyond-V1 actual payout.
+
 ## Remaining debt
 
 The first slice crosses no lifetime cap. Global duplicate sets, per-round share
