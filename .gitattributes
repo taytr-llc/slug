@@ -27,3 +27,5 @@ docs/evidence/set80/execution/set79-prep/public-daily-headless/runner_support.py
 desktop/pooloperator/testdata/issue-recovery-actual/pre-peer-process-relay/operator_process.go.txt whitespace=-blank-at-eol
 desktop/pooloperator/testdata/issue-recovery-actual/pre-root-format/operator_process.go.txt whitespace=-blank-at-eol
 docs/evidence/set80/diagnostics/A2-readonly/execution/build-info.txt whitespace=-blank-at-eol
+# GitHub's raw job log retains its timestamped empty line byte for byte.
+docs/evidence/set80/stable-close-ci/ci-failure-excerpt.txt whitespace=-blank-at-eol
