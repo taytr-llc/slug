@@ -41,6 +41,12 @@ The current order is:
 3. **Sign-in and onboarding — active.** Complete D82 mandatory MFA/passkey support and the
    approved recovery/reset controls after the pool and wallet flows. Fixture
    buttons are not real authentication; no security requirement is deferred.
+   [D85](ACCOUNT_FACTOR_RECOVERY.md) now fixes lost-factor recovery: a saved
+   single-use account code plus fresh verified-email proof, replacement-factor
+   enrollment, revocation and the same 24-hour hold. Confirm code saving at
+   enrollment and notify email/all enrolled devices on use.
+   [Set84 provider qualification](AUTH_PROVIDER_QUALIFICATION.md) is in progress;
+   the owned login domain is requested before real passkey registration.
 4. **Full joint design review with Mike (D74).** Review the working major flows
    together, including app organization. Keep this last before friends/tester or
    public release; an engineering test build is not that release approval.

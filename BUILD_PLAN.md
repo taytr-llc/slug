@@ -298,19 +298,20 @@ local hosted-account plumbing, not a live signup provider, continuous recovery
 coverage or production custody. D82 requires mandatory MFA for hosted login and
 passkey support. Email/password must include a second factor; the proposed
 passkey route requires server-verified user verification. Mike requires a backup
-factor/code with no support bypass. The real provider, exact account-recovery
-proof contract and final screens remain open; distinguish account codes from
-the 24-word wallet backup. Preserve the approved same-wallet verified reset and
-24-hour hold without an MFA bypass.
+factor/code with no support bypass. D85 settles the recovery policy; the real
+provider, exact recovery wire contract and final screens remain open. Distinguish
+account codes from the 24-word wallet backup. Preserve the approved same-wallet
+verified reset and 24-hour hold without an MFA bypass.
 See `HOSTED_AUTHENTICATION.md` for accepted requirements, proposed mechanisms and
 the provider/assurance/recovery acceptance work still required.
-Mike has deferred login-flow work until the wallet/gym/fighter ownership and
-recovery foundations are complete. Keep D82 recorded, but stop provider selection,
-signup/MFA flow implementation and account-recovery UX design for now. Continue
-with evolving-wallet recovery, authoritative fighter ownership and direct
-transfers, then end-to-end restoration of the same gym and its owned fighters.
-Using the existing fixture sessions to verify these foundations is not real-login
-work. The final joint D74 review still follows the major functional flows.
+Mike deferred login-flow work until the asset/recovery, hosted-payout and wallet
+history foundations were ready. Sets73, 82 and 83 now satisfy their bounded
+engineering gates. Sign-in/onboarding is active under `LAUNCH_READINESS.md`;
+existing fixture buttons do not qualify real MFA. D85 selects a single-use saved
+account code plus fresh verified-email proof, replacement-factor enrollment,
+session revocation and the same 24-hour hold. Code saving must be confirmed at
+enrollment; use notifies email and enrolled devices. See
+`ACCOUNT_FACTOR_RECOVERY.md`. The final joint D74 review remains last.
 Set72 implements durable address-issuance inventory and deliberate recovery when
 the exact local wallet payload is missing, in a separate explicit fixture mode.
 The frozen contract is `HOSTED_ALLOCATION_RECOVERY.md`; qualification and limits
@@ -343,7 +344,8 @@ signer/backend and its operational lifetime. Current fixed-fixture/loopback
 transports and the public scalar-3 test signer do not qualify that service.
 Preserve existing payout policies and exact-byte recovery while proving actual
 scheduled rollover, maturity, deferrals, restart/lost-reply recovery and on-chain
-payout reporting. Sign-in/provider/MFA work remains deferred until afterward.
+payout reporting. Set82 now proves the bounded hosted fixture payout and Set83
+proves the packaged wallet read flow, so sign-in/provider/MFA work proceeds next.
 Never repin solo event histories. Keep the existing layout/logos until the final
 joint D74 review. Public hosting, production signer custody/capacity, real account
 configuration and permanent genesis remain separate gates. The implemented

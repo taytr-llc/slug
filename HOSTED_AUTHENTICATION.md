@@ -1,17 +1,17 @@
 # D82 — Mandatory MFA and passkey support
 
-**Status:** Accepted product requirement; delivery design and implementation
-deferred behind wallet/gym/fighter ownership and recovery work.
+**Status:** Active workstream after Set83's bounded wallet acceptance. D82 and
+D85 product requirements are accepted; real authentication is not yet delivered.
 **Date:** November 19, 2026 Pacific.
 **Decider:** Mike. Mandatory MFA, passkey support and no support bypass are
-accepted. Provider selection and the exact recovery-proof contract remain open.
+accepted. D85 now settles the lost-factor recovery policy; provider selection
+and the exact trusted wire/epoch contracts remain engineering work.
 
-Mike subsequently asked to stop focusing on login flow until wallet recovery,
-fighter ownership/transfer and full gym/fighter restoration are complete. Preserve
-the requirements and proposals below as future work; do not advance provider
-selection, signup/MFA implementation or account-recovery UX in parallel. The
-existing fixture sessions can still support tests of the core asset flows. This
-sequencing change does not waive MFA or the final joint D74 design review.
+Mike deferred login work while wallet/fighter recovery, transfers, hosted pool
+payouts and wallet history were completed. Sets73, 82 and 83 now supply those
+bounded engineering gates, so the current burn list proceeds to sign-in and
+onboarding. The fixture buttons still do not prove real MFA. App organization
+and the full joint D74 review remain last; marketplace remains on hold.
 
 ## Context and accepted requirement
 
@@ -72,25 +72,33 @@ must be explicit before freezing the recovery mechanism:
 
 - D70's 24 words plus SLUG recovery metadata recover wallet/gym keys through
   SLUG recovery software. They are not automatically a hosted-login MFA reset.
-- The proposed account recovery codes are separate, single-use secrets for loss
+- The approved account recovery codes are separate, single-use secrets for loss
   of login factors. They are not wallet seeds and cannot restore wallet keys.
 - A backup passkey/security key is another enrolled login method, separate from
   either kind of recovery secret.
 
-No support bypass is approved; separate account codes remain the recommended
-mechanism, not a frozen or implemented protocol. Do not infer that Mike approved
+No support bypass is approved. D85 now selects separate account codes together
+with fresh proof sent to the previously verified email; see the accepted policy
+below. The exact protocol is not yet implemented. Do not infer that Mike approved
 collecting a wallet phrase for account recovery, or that an exported wallet
 automatically restores the hosted account. If all accepted login recovery methods
 are lost, the hosted account can remain inaccessible while an independently
 exported wallet backup remains usable separately. The UI must explain both
 backups and what each can recover; neither belongs in support messages or chat.
 
-Before coding recovery, define exactly what proof a code must accompany, atomic
-one-time consumption, replacement-factor enrollment, credential/session epochs,
-revocation, notifications and hold behavior. Do not assume possession of an
-email inbox or a logged-in session may regenerate MFA recovery codes. Keep the
-approved password-reset hold unchanged; factor-recovery hold details must be
-made explicit rather than inferred.
+**D85, accepted November 21:** require a separate single-use saved recovery code
+and a fresh code sent to the already-verified email, then a new qualifying
+passkey/authenticator, session revocation and D72's same 24-hour security hold.
+Require code save-confirmation at enrollment through completed download or
+confirmation entry. Code use notifies the verified email and all enrolled
+devices. Neither email alone, code alone nor support can bypass this rule.
+The complete accepted policy and remaining implementation gates are in
+[ACCOUNT_FACTOR_RECOVERY.md](ACCOUNT_FACTOR_RECOVERY.md).
+
+Before coding the recovery transitions, freeze atomic consumption, original
+attempt binding, replacement-factor enrollment, credential/session epochs and
+durable notification delivery. A logged-in session or email access alone cannot
+regenerate recovery authority. Preserve D72's same-wallet and replay rules.
 
 ## Compatibility and implementation boundary
 
@@ -116,9 +124,10 @@ no service and does not change wallet derivation, seed deployment or custody.
 
 ## Action items and acceptance
 
-- [ ] Freeze the allowed backup factors and account recovery-code proof/hold
-      contract under the approved no-support-bypass rule; make the distinction
-      from the 24-word wallet backup explicit before onboarding is finalized.
+- [x] Select account recovery proof and hold policy under the no-support-bypass
+      rule (D85), with save-confirmation and email/device notifications.
+- [ ] Freeze and implement its exact proof/epoch/consumption contract; prove the
+      account-code and 24-word wallet-backup distinction in onboarding.
 - [ ] Select and qualify a provider supporting enforced MFA, passkeys and the
       required reset/revocation ordering; document its operational recovery power.
 - [ ] Freeze a versioned assurance and factor-lifecycle contract with independent

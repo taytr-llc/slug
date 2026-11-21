@@ -609,18 +609,23 @@ authorization must be repository-limited, not an account-wide OAuth expansion.
 
 ## Hosted authentication requirement (D82)
 
-- Mike deferred login-flow/provider/MFA implementation and account-recovery UX
-  work until wallet recovery, fighter ownership/transfer and full gym/fighter
-  restoration are done. Keep the requirements below recorded for later. Existing
-  fixture authentication may support core tests; do not turn it into real-login
-  work or resume screen/navigation design before the final joint D74 review.
+- Mike deferred login work until the asset/recovery foundations, hosted pool
+  payouts and wallet history were ready. Sets73/82/83 now satisfy their bounded
+  test gates; proceed with sign-in/onboarding under the current burn list.
+  Existing fixture authentication is not real MFA. Screen/navigation organization
+  still belongs in the final joint D74 review.
 - Mike requires strict mandatory MFA for email/password login and wants passkey
   support (November 19). Record and preserve these release requirements in
   `HOSTED_AUTHENTICATION.md`; the current signed fixture buttons do not prove MFA.
 - Preserve D72's same-wallet reset, revocation and hold. Password reset must not
   remove the second factor or create an email-only bypass. Mike requires a backup
-  factor/code with no support bypass. Separate single-use login recovery codes
-  remain proposed; never assume the 24-word wallet phrase is a login reset code.
+  factor/code with no support bypass. D85 now requires a separate single-use
+  saved account code AND fresh proof sent to the already-verified email for lost
+  factors; then verified replacement-factor enrollment, session revocation and
+  D72's same 24-hour hold. Require code save-confirmation at enrollment, and
+  notify the verified email and all enrolled devices on use. Preserve exact
+  replay and the same hosted wallet; the 24 wallet words are never login proof.
+  See `ACCOUNT_FACTOR_RECOVERY.md`; this policy still needs implementation.
 - Passkey user verification and password-plus-authenticator are proposed paths.
   Freeze a separately versioned trusted assurance contract before implementing;
   do not reinterpret old fixture assertions, freshness timestamps or schemas as
@@ -637,8 +642,8 @@ authorization must be repository-limited, not an account-wide OAuth expansion.
 - See `FIGHTER_TRANSFER_POLICY.md`. This closes the previously open timing/order
   question, not implementation. Preserve immutable birth, old event/result gym
   attribution, D27 ownership/roster distinction and D72 held-transfer refusal.
-  The next usable milestone includes actual transfer and independently restored
-  gym ownership; login work remains deferred and the D74 review remains last.
+  Set73 supplies the bounded transfer/restored-ownership gate. Follow the active
+  work order above; sign-in now proceeds and the D74 review remains last.
 
 ## Build and test
 
