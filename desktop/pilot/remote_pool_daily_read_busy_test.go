@@ -1,0 +1,100 @@
+//go:build linux || (darwin && cgo)
+
+package pilot
+
+import (
+	"context"
+	"errors"
+	"testing"
+	"time"
+
+	"github.com/taytr-llc/slug/poolsettle"
+)
+
+// This is the exact lease/check boundary used by DailyPayoutRead. The fixture
+// holds a real selected TLS request after consuming its body; no wallet READY
+// or attachment is fabricated, and polling must not replace the original Run.
+func TestDailyRemotePayoutPollingExportsBusyAndRetainsLease(t *testing.T) {
+	for _, recoverable := range []bool{false, true} {
+		t.Run(map[bool]string{false: "daily", true: "recoverable"}[recoverable], func(t *testing.T) {
+			h := newDailyReadLeaseFixture(t, recoverable)
+			ctx, cancel := context.WithCancel(context.Background())
+			defer cancel()
+			run, e := h.owner.beginPool(ctx)
+			if e != nil {
+				t.Fatal(e)
+			}
+			defer func() {
+				if e := run.Close(); e != nil {
+					t.Error(e)
+				}
+			}()
+			original := run.lease
+			client := original.pool
+			h.blocked.Store(true)
+			done := make(chan error, 1)
+			go func() { _, e := original.dailyPayoutPage(ctx, poolsettle.DailyPayoutRequest{}); done <- e }()
+			select {
+			case <-h.entered:
+			case <-time.After(5 * time.Second):
+				t.Fatal("original TLS read did not enter")
+			}
+			borrowed, owned, e := h.owner.dailyReadLease(ctx)
+			if e != nil || owned || borrowed != original {
+				t.Fatal("poll replaced original lease", e)
+			}
+			if e = borrowed.dailyReadCheck(ctx); e != ErrRemotePoolBusy {
+				t.Fatal("public polling busy sentinel", e)
+			}
+			h.owner.mu.Lock()
+			registered := h.owner.slots[0].lease
+			h.owner.mu.Unlock()
+			if registered != original || original.pool != client || h.calls.Load() != 1 || ctx.Err() != nil {
+				t.Fatal("poll changed original operation")
+			}
+			select {
+			case e := <-done:
+				t.Fatal("poll ended original read", e)
+			default:
+			}
+			select {
+			case <-original.closed:
+				t.Fatal("poll closed borrowed lease")
+			default:
+			}
+			if _, e = h.owner.beginPool(ctx); e != errRemotePoolCredentialBusy {
+				t.Fatal("legacy Run gate error changed", e)
+			}
+			// Exact selected gate busy is the only mapped value. An independent
+			// cause or an opaque wrapper must not become a retryable public busy.
+			joined := errors.Join(errRemotePoolCredentialBusy, ErrRemotePoolChanged)
+			wrapped := errors.Join(errRemotePoolCredentialBusy)
+			if dailyReadCredentialError(joined) != joined || dailyReadCredentialError(wrapped) != wrapped {
+				t.Fatal("non-exact error was normalized")
+			}
+			cancel()
+			if e = run.Close(); e != nil {
+				t.Fatal(e)
+			}
+			select {
+			case e := <-done:
+				if e == nil {
+					t.Fatal("cancelled original read succeeded")
+				}
+			case <-time.After(5 * time.Second):
+				t.Fatal("original read did not join")
+			}
+			select {
+			case <-h.cancelled:
+			case <-time.After(5 * time.Second):
+				t.Fatal("original TLS handler did not observe cancellation")
+			}
+			h.owner.mu.Lock()
+			registered = h.owner.slots[0].lease
+			h.owner.mu.Unlock()
+			if registered != nil || h.calls.Load() != 1 {
+				t.Fatal("original lease or extra request retained")
+			}
+		})
+	}
+}

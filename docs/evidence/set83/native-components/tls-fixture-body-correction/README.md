@@ -1,0 +1,9 @@
+# TLS fixture body-before-wait correction
+
+Source-only test proposal; no producer, Go, tests, server or client executed by this reviewer. The running original attempt must finish and retain its result before root applies anything. No product code changes.
+
+The current blocked handler waits for request-context cancellation without consuming its POST body. Go's original HTTP/1 server starts its disconnect-detecting background read only after the body reaches EOF (`net/http/server.go`, lines 2143–2151 in the bound toolchain source). A client may cancel and join while this artificial handler never observes the disconnect; `httptest.Server.Close` then waits for the handler. This is a source-supported fixture failure mechanism, not a claim about the still-running attempt's eventual stack dump.
+
+The successor reads at most the existing service request limit plus one byte, refuses oversized/read/JSON errors, and keeps the exact zero-cursor requirement before entering the blocked phase. It retains route, method, bearer, original busy-gate, cancelled-response, original lease removal, owner join and no-extra-call assertions. Both cancellation tests additionally require the real handler to observe its original request cancellation within five seconds before test cleanup. A teardown-only release prevents server cleanup from hanging if that assertion fails; it cannot satisfy the cancellation event. No retry, production timeout or positive response is added. Whole JSON parsing also refuses trailing JSON that the old one-shot decoder did not inspect.
+
+Affected existing names: `TestDailyRemotePayoutReadCancellationJoinsOriginalLease` and `TestDailyRemotePayoutOwnerCloseJoinsRead`. Shared fixture consumers retain their original assertions. Normal/race execution remains root-owned and pending.

@@ -1,0 +1,383 @@
+//go:build linux || (darwin && cgo)
+
+package pilot
+
+import (
+	"context"
+	"encoding/json"
+	"encoding/pem"
+	"errors"
+	"io"
+	"net/http"
+	"net/http/httptest"
+	"os"
+	"path/filepath"
+	"strings"
+	"sync/atomic"
+	"testing"
+	"time"
+
+	"github.com/taytr-llc/slug/gymaccount"
+	"github.com/taytr-llc/slug/poolservice"
+	"github.com/taytr-llc/slug/poolsettle"
+	"github.com/taytr-llc/slug/registry"
+	"github.com/taytr-llc/slug/wire/v2"
+)
+
+type dailyReadLeaseFixture struct {
+	owner    *remotePoolCredentials
+	selected remotePoolCredentialSelection
+	page     poolsettle.DailyPayoutPage
+	calls    atomic.Int32
+	blocked  atomic.Bool
+	entered  chan struct{}
+	cancelled chan struct{}
+	release chan struct{}
+}
+
+// Concrete selected TLS clients and protected credential descriptors. Responses
+// are conditional page-shape fixtures, not a ledger/chain/payment authority.
+func newDailyReadLeaseFixture(t *testing.T, recoverable bool) *dailyReadLeaseFixture {
+	t.Helper()
+	if wire.TestPoW {
+		t.Skip("normal concrete TLS credential owner")
+	}
+	h := &dailyReadLeaseFixture{entered: make(chan struct{}, 1), cancelled: make(chan struct{}, 1), release: make(chan struct{})}
+	c := remoteDailyOracle(t).Transport.Positives[0].Config
+	var recovery *RecoverableRemotePoolConfig
+	if recoverable {
+		r := remoteIssueReference(t).Fixtures.Remote[0].Config
+		recovery = &r
+		c = r.Base
+	}
+	version := uint32(2)
+	if recoverable {
+		version = 3
+	}
+	pid := ""
+	server := httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		h.calls.Add(1)
+		path := "/pool/v2/payouts"
+		if recoverable {
+			path = "/pool/v3/payouts"
+		}
+		if r.URL.Path != path || r.Method != "POST" || r.Header.Get("Authorization") != "Bearer "+strings.Repeat("1", 64) {
+			t.Error("unexpected authority call")
+			w.WriteHeader(400)
+			return
+		}
+		// HTTP/1 starts its disconnect-detecting background read only after the
+		// request body reaches EOF. Consume the bounded original request before
+		// blocking, so cancellation can be observed independently of teardown.
+		body, readErr := io.ReadAll(io.LimitReader(r.Body, poolservice.MaxRequestSize+1))
+		var request poolsettle.DailyPayoutRequest
+		if readErr != nil || len(body) > poolservice.MaxRequestSize || json.Unmarshal(body, &request) != nil || request != (poolsettle.DailyPayoutRequest{}) {
+			t.Error("unexpected page cursor")
+			w.WriteHeader(400)
+			return
+		}
+		if h.blocked.Load() {
+			select {
+			case h.entered <- struct{}{}:
+			case <-h.release:
+				return
+			}
+			select {
+			case <-r.Context().Done():
+				h.cancelled <- struct{}{}
+			case <-h.release:
+				// Failure cleanup only: tests require cancellation before cleanup.
+			}
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		var reply any = h.page
+		if recoverable {
+			p := h.page
+			reply = poolservice.RecoverablePayoutPage{Version: 3, BindingID: p.BindingID, SettlementConfigID: p.SettlementConfigID, IssueProfileID: pid, Revision: p.Revision, HighBatch: p.HighBatch, BeforeBatch: p.BeforeBatch, NextBefore: p.NextBefore, Done: p.Done, RecipientScript: p.RecipientScript, Balance: p.Balance, ObservedAtMS: p.ObservedAtMS, Items: p.Items}
+		}
+		if e := json.NewEncoder(w).Encode(reply); e != nil {
+			t.Error(e)
+		}
+	}))
+	t.Cleanup(func() {
+		close(h.release)
+		server.Close()
+	})
+	c.Origin = server.URL
+	c.CACertificate = string(pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: server.Certificate().Raw}))
+	if recovery != nil {
+		recovery.Base = c
+		var e error
+		pid, e = registry.IssueProfileID(recovery.IssueProfile)
+		if e != nil {
+			t.Fatal(e)
+		}
+	}
+	dc, e := remotePoolDailyClientConfig(c, strings.Repeat("1", 64))
+	if e != nil {
+		t.Fatal(e)
+	}
+	_, p := dailyReadPageFixture()
+	p.BindingID, p.SettlementConfigID, p.RecipientScript = c.Miners.SourceID, dc.SettlementConfigID, dc.RecipientScript
+	p.Balance.GymID = c.ExpectedLocal.Recipient.Config.Identity.GymID
+	h.page = p
+	dir := remoteAttachmentTestDir(t)
+	h.selected = remotePoolCredentialSelection{filepath.Join(dir, "pool.json"), filepath.Join(dir, "admission.json")}
+	id, e := DailyRemotePoolConfigID(c)
+	if e != nil {
+		t.Fatal(e)
+	}
+	for i, path := range []string{h.selected.PoolPath, h.selected.AdmissionPath} {
+		audience := "pool"
+		if i == 1 {
+			audience = "admission"
+		}
+		record := remotePoolCredentialRecord{2, id, p.Balance.GymID, audience, 1, time.Now().Add(time.Hour).UnixMilli(), strings.Repeat([]string{"1", "2"}[i], 64)}
+		var value any = record
+		if recovery != nil {
+			value = remotePoolRecoverableCredential{1, record, pid}
+		}
+		raw, e := json.Marshal(value)
+		if e != nil {
+			t.Fatal(e)
+		}
+		if e = os.WriteFile(path, append(raw, '\n'), 0600); e != nil {
+			t.Fatal(e)
+		}
+	}
+	h.owner, e = openRemotePoolCredentialsSelection(context.Background(), c, h.selected, true, recovery)
+	if h.owner != nil {
+		t.Cleanup(func() {
+			if e := h.owner.Close(); e != nil {
+				t.Error(e)
+			}
+		})
+	}
+	if e != nil {
+		t.Fatal(e)
+	}
+	l, own, e := h.owner.dailyReadLease(context.Background())
+	if e != nil || !own || l.pool.ProtocolVersion() != version {
+		t.Fatal("selected original client", e)
+	}
+	if e = l.Close(); e != nil {
+		t.Fatal(e)
+	}
+	return h
+}
+
+func TestDailyRemotePayoutReadBorrowedAndStoppedLease(t *testing.T) {
+	for _, recoverable := range []bool{false, true} {
+		t.Run(map[bool]string{false: "daily", true: "recoverable"}[recoverable], func(t *testing.T) {
+			h := newDailyReadLeaseFixture(t, recoverable)
+			ctx := context.Background()
+			l, own, e := h.owner.dailyReadLease(ctx)
+			if e != nil || !own {
+				t.Fatal("stopped lease", e)
+			}
+			p, e := l.dailyPayoutPage(ctx, poolsettle.DailyPayoutRequest{})
+			if e != nil || p.Balance != h.page.Balance {
+				t.Fatal("validated page", e)
+			}
+			if _, e = h.owner.beginPool(ctx); e != errRemotePoolCredentialBusy {
+				t.Fatal("read overlapped Start", e)
+			}
+			if e = l.Close(); e != nil {
+				t.Fatal(e)
+			}
+			run, e := h.owner.beginPool(ctx)
+			if e != nil {
+				t.Fatal(e)
+			}
+			borrow, own, e := h.owner.dailyReadLease(ctx)
+			if e != nil || own || borrow != run.lease {
+				t.Fatal("original Run lease not borrowed", e)
+			}
+			if _, e = borrow.dailyPayoutPage(ctx, poolsettle.DailyPayoutRequest{}); e != nil {
+				t.Fatal(e)
+			}
+			// Borrowing never closes the Run lease. A real operation still works.
+			if e = run.lease.dailyReadCheck(ctx); e != nil {
+				t.Fatal("borrow closed original", e)
+			}
+			if e = run.Close(); e != nil {
+				t.Fatal(e)
+			}
+			if e = borrow.dailyReadCheck(ctx); e == nil {
+				t.Fatal("closed borrowed pointer revived")
+			}
+			if h.calls.Load() != 2 {
+				t.Fatal("cached checks issued network work", h.calls.Load())
+			}
+		})
+	}
+}
+
+func TestDailyRemotePayoutCredentialAndViewAfterResponse(t *testing.T) {
+	t.Run("credential", func(t *testing.T) {
+		h := newDailyReadLeaseFixture(t, true)
+		l, own, e := h.owner.dailyReadLease(context.Background())
+		if e != nil || !own {
+			t.Fatal(e)
+		}
+		defer func() {
+			if e := l.Close(); e != nil {
+				t.Error(e)
+			}
+		}()
+		raw, e := os.ReadFile(h.selected.PoolPath)
+		if e != nil {
+			t.Fatal(e)
+		}
+		replacement := filepath.Join(filepath.Dir(h.selected.PoolPath), "replacement.json")
+		if e = os.WriteFile(replacement, raw, 0600); e != nil {
+			t.Fatal(e)
+		}
+		validated := false
+		out, e := remotePoolLeaseCall(context.Background(), l, false, func(ctx context.Context) (poolsettle.DailyPayoutPage, error) {
+			p, e := l.pool.PayoutsPage(ctx, poolsettle.DailyPayoutRequest{})
+			if e != nil {
+				return p, e
+			}
+			validated = true
+			if e = os.Rename(replacement, h.selected.PoolPath); e != nil {
+				return poolsettle.DailyPayoutPage{}, e
+			}
+			return p, nil
+		})
+		if !validated || e == nil || out.Version != 0 || h.calls.Load() != 1 {
+			t.Fatal("post-client credential publication", e)
+		}
+	})
+	t.Run("original-view", func(t *testing.T) {
+		h := newDailyReadLeaseFixture(t, false)
+		account, session := ownedStartupWallet(t)
+		local := &remotePoolLocal{daily: true, session: session}
+		l, own, e := h.owner.dailyReadLease(context.Background())
+		if e != nil || !own {
+			t.Fatal(e)
+		}
+		defer func() {
+			if e := l.Close(); e != nil {
+				t.Error(e)
+			}
+		}()
+		p, e := l.dailyPayoutPage(context.Background(), poolsettle.DailyPayoutRequest{})
+		if e != nil {
+			t.Fatal(e)
+		}
+		account.revoked.Store(true)
+		published := false
+		e = local.withView(context.Background(), func(_ gymaccount.Account, check func() error) error { published = true; return check() })
+		if p.Version != 2 || !errors.Is(e, gymaccount.ErrUnauthorized) || published {
+			t.Fatal("original post-response epoch", e)
+		}
+		// This is the real enrolled account/vault/View fence, not a fabricated
+		// ready attachment or proof of watched-wallet/node acceptance.
+	})
+}
+
+func TestDailyRemotePayoutReadCancellationJoinsOriginalLease(t *testing.T) {
+	h := newDailyReadLeaseFixture(t, false)
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	l, own, e := h.owner.dailyReadLease(ctx)
+	if e != nil || !own {
+		t.Fatal(e)
+	}
+	h.blocked.Store(true)
+	done := make(chan error, 1)
+	go func() { _, e := l.dailyPayoutPage(ctx, poolsettle.DailyPayoutRequest{}); done <- e }()
+	select {
+	case <-h.entered:
+	case <-time.After(5 * time.Second):
+		cancel()
+		<-done
+		t.Fatal("HTTP not entered")
+	}
+	if _, e := l.dailyPayoutPage(context.Background(), poolsettle.DailyPayoutRequest{}); e != errRemotePoolCredentialBusy {
+		cancel()
+		<-done
+		t.Fatal("original gate overlap", e)
+	}
+	cancel()
+	if e = l.Close(); e != nil {
+		t.Fatal(e)
+	}
+	select {
+	case e := <-done:
+		if e == nil {
+			t.Fatal("cancelled response succeeded")
+		}
+	case <-time.After(5 * time.Second):
+		t.Fatal("original read not joined")
+	}
+	select {
+	case <-h.cancelled:
+	case <-time.After(5 * time.Second):
+		t.Fatal("original HTTP handler did not observe cancellation")
+	}
+	h.owner.mu.Lock()
+	registered := h.owner.slots[0].lease != nil
+	h.owner.mu.Unlock()
+	if registered || h.calls.Load() != 1 {
+		t.Fatal("lease or extra call retained", registered, h.calls.Load())
+	}
+}
+
+// Conditional attachment lifecycle control: the original concrete credential
+// client performs the read; no watched wallet or READY marker is fabricated.
+// Close must join it before releasing the actual credential descriptors.
+func TestDailyRemotePayoutOwnerCloseJoinsRead(t *testing.T) {
+	h := newDailyReadLeaseFixture(t, true)
+	life, cancel := context.WithCancel(context.Background())
+	a := &RemotePoolAttachment{config: RemotePoolConfig{Version: 2}, credentials: h.owner, life: life, cancel: cancel, closeDone: make(chan struct{})}
+	t.Cleanup(func() {
+		if e := a.Close(); e != nil {
+			t.Error(e)
+		}
+	})
+	ctx, stop := context.WithTimeout(life, 30*time.Second)
+	l, own, e := h.owner.dailyReadLease(ctx)
+	if e != nil || !own {
+		stop()
+		t.Fatal(e)
+	}
+	op := &remoteDailyPayoutOperation{job: RemoteDailyPayoutJob{Sequence: 1, State: "working"}, ctx: ctx, cancel: stop, done: make(chan struct{}), lease: l, ownLease: true}
+	a.dailyRead = op
+	a.dailyReadSequence = 1
+	a.active.Add(1)
+	h.blocked.Store(true)
+	go a.runDailyPayoutRead(op)
+	select {
+	case <-h.entered:
+	case <-time.After(5 * time.Second):
+		cancel()
+		<-op.done
+		t.Fatal("original read did not enter")
+	}
+	closed := make(chan error, 1)
+	go func() { closed <- a.Close() }()
+	select {
+	case e := <-closed:
+		if e != nil {
+			t.Fatal(e)
+		}
+	case <-time.After(5 * time.Second):
+		t.Fatal("original owner Close did not join")
+	}
+	select {
+	case <-op.done:
+	default:
+		t.Fatal("Close preceded read join")
+	}
+	select {
+	case <-h.cancelled:
+	case <-time.After(5 * time.Second):
+		t.Fatal("original HTTP handler did not observe owner cancellation")
+	}
+	if a.dailyRead != nil || a.dailyPayout != nil || a.dailyReadLast.Sequence != 0 || h.calls.Load() != 1 {
+		t.Fatal("read state survived owner close")
+	}
+}

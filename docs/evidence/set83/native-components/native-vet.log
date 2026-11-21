@@ -1,0 +1,2 @@
+desktop/pilot/remote_pool_daily_pages_test.go:20:351: github.com/taytr-llc/slug/poolsettle.Fraction struct literal uses unkeyed fields
+desktop/pilot/remote_pool_daily_pages_test.go:20:393: github.com/taytr-llc/slug/poolsettle.Fraction struct literal uses unkeyed fields

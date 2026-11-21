@@ -73,30 +73,34 @@ type remotePoolRun struct {
 // The session is borrowed, never closed here. Controller Close first joins this
 // owner, then closes its original wallet session/setup/vault/account/root owners.
 type RemotePoolAttachment struct {
-	recovery         *RecoverableRemotePoolConfig
-	recoveryWorker   prospectworker.RecoverablePoolConfig
-	config           RemotePoolConfig
-	configID         string
-	view             RemotePoolView
-	workerConfig     prospectworker.PoolConfig
-	local            *remotePoolLocal
-	node             *remotePoolNode
-	credentials      *remotePoolCredentials
-	files            *remotePoolFiles
-	box              *prospectworker.PoolOutbox
-	life             context.Context
-	cancel           context.CancelFunc
-	mu               sync.Mutex
-	closing, ready   bool
-	gate             chan struct{}
-	active           sync.WaitGroup
-	run              *remotePoolRun
-	last             prospectworker.Status
-	state, lastError string
-	fileMu           sync.Mutex
-	closeOnce        sync.Once
-	closeDone        chan struct{}
-	closeErr         error
+	recovery          *RecoverableRemotePoolConfig
+	recoveryWorker    prospectworker.RecoverablePoolConfig
+	config            RemotePoolConfig
+	configID          string
+	view              RemotePoolView
+	workerConfig      prospectworker.PoolConfig
+	local             *remotePoolLocal
+	node              *remotePoolNode
+	credentials       *remotePoolCredentials
+	files             *remotePoolFiles
+	box               *prospectworker.PoolOutbox
+	life              context.Context
+	cancel            context.CancelFunc
+	mu                sync.Mutex
+	closing, ready    bool
+	gate              chan struct{}
+	active            sync.WaitGroup
+	run               *remotePoolRun
+	dailyRead         *remoteDailyPayoutOperation
+	dailyReadLast     RemoteDailyPayoutJob
+	dailyReadSequence uint64
+	dailyPayout       *RemoteDailyPayoutCapture
+	last              prospectworker.Status
+	state, lastError  string
+	fileMu            sync.Mutex
+	closeOnce         sync.Once
+	closeDone         chan struct{}
+	closeErr          error
 }
 
 func OpenRemotePoolAttachment(ctx context.Context, session *OwnedWalletSession, viewID string, in RemotePoolInputs) (*RemotePoolAttachment, error) {
@@ -359,6 +363,12 @@ func (a *RemotePoolAttachment) Close() error {
 		}
 		a.mu.Unlock()
 		a.active.Wait()
+		if a.config.Version == 2 {
+			a.mu.Lock()
+			a.dailyPayout = nil
+			a.dailyReadLast = RemoteDailyPayoutJob{}
+			a.mu.Unlock()
+		}
 		if a.node != nil {
 			a.node.close()
 		}

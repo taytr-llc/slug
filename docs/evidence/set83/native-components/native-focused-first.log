@@ -1,0 +1,59 @@
+=== RUN   TestDailyRemotePayoutCapturedWindowsAndExactCounters
+--- PASS: TestDailyRemotePayoutCapturedWindowsAndExactCounters (0.00s)
+=== RUN   TestDailyRemotePayoutHeaderAndCursorRefusals
+=== RUN   TestDailyRemotePayoutHeaderAndCursorRefusals/revision
+=== RUN   TestDailyRemotePayoutHeaderAndCursorRefusals/high
+=== RUN   TestDailyRemotePayoutHeaderAndCursorRefusals/cursor
+=== RUN   TestDailyRemotePayoutHeaderAndCursorRefusals/balance
+=== RUN   TestDailyRemotePayoutHeaderAndCursorRefusals/time
+=== RUN   TestDailyRemotePayoutHeaderAndCursorRefusals/source
+=== RUN   TestDailyRemotePayoutHeaderAndCursorRefusals/settlement
+=== RUN   TestDailyRemotePayoutHeaderAndCursorRefusals/recipient
+--- PASS: TestDailyRemotePayoutHeaderAndCursorRefusals (0.00s)
+    --- PASS: TestDailyRemotePayoutHeaderAndCursorRefusals/revision (0.00s)
+    --- PASS: TestDailyRemotePayoutHeaderAndCursorRefusals/high (0.00s)
+    --- PASS: TestDailyRemotePayoutHeaderAndCursorRefusals/cursor (0.00s)
+    --- PASS: TestDailyRemotePayoutHeaderAndCursorRefusals/balance (0.00s)
+    --- PASS: TestDailyRemotePayoutHeaderAndCursorRefusals/time (0.00s)
+    --- PASS: TestDailyRemotePayoutHeaderAndCursorRefusals/source (0.00s)
+    --- PASS: TestDailyRemotePayoutHeaderAndCursorRefusals/settlement (0.00s)
+    --- PASS: TestDailyRemotePayoutHeaderAndCursorRefusals/recipient (0.00s)
+=== RUN   TestDailyRemotePayoutModeAndCancellationBeforeEffects
+--- PASS: TestDailyRemotePayoutModeAndCancellationBeforeEffects (0.00s)
+=== RUN   TestDailyRemotePayoutExactOperationSequence
+--- PASS: TestDailyRemotePayoutExactOperationSequence (0.00s)
+=== RUN   TestDailyRemotePayoutReadBorrowedAndStoppedLease
+=== RUN   TestDailyRemotePayoutReadBorrowedAndStoppedLease/daily
+--- FAIL: TestDailyRemotePayoutReadBorrowedAndStoppedLease (0.01s)
+    --- FAIL: TestDailyRemotePayoutReadBorrowedAndStoppedLease/daily (0.01s)
+panic: httptest: failed to listen on a port: listen tcp6 [::1]:0: bind: operation not permitted [recovered, repanicked]
+
+goroutine 37 [running]:
+testing.tRunner.func1.2({0x101c4cc10, 0x28eaa7566070})
+	/opt/homebrew/Cellar/go/1.27.4/libexec/src/testing/testing.go:2125 +0x1a0
+testing.tRunner.func1()
+	/opt/homebrew/Cellar/go/1.27.4/libexec/src/testing/testing.go:2128 +0x2cc
+panic({0x101c4cc10?, 0x28eaa7566070?})
+	/opt/homebrew/Cellar/go/1.27.4/libexec/src/runtime/panic.go:859 +0x12c
+net/http/httptest.newLocalListener()
+	/opt/homebrew/Cellar/go/1.27.4/libexec/src/net/http/httptest/server.go:226 +0xdc
+net/http/httptest.NewUnstartedServer(...)
+	/opt/homebrew/Cellar/go/1.27.4/libexec/src/net/http/httptest/server.go:284
+net/http/httptest.NewTLSServer({0x101d86e78, 0x28eaa75c8c00})
+	/opt/homebrew/Cellar/go/1.27.4/libexec/src/net/http/httptest/server.go:459 +0x28
+github.com/taytr-llc/slug/desktop/pilot.newDailyReadLeaseFixture(0x28eaa78ab8c8, 0x0)
+	/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_read_lease_test.go:55 +0x274
+github.com/taytr-llc/slug/desktop/pilot.TestDailyRemotePayoutReadBorrowedAndStoppedLease.func1(0x28eaa78ab8c8)
+	/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_read_lease_test.go:154 +0x2c
+testing.tRunner(0x28eaa78ab8c8, 0x28eaa7888f40)
+	/opt/homebrew/Cellar/go/1.27.4/libexec/src/testing/testing.go:2195 +0xc4
+created by testing.(*T).Run in goroutine 36
+	/opt/homebrew/Cellar/go/1.27.4/libexec/src/testing/testing.go:2260 +0x3b8
+FAIL	github.com/taytr-llc/slug/desktop/pilot	0.588s
+=== RUN   TestDailyRemotePayoutParentModeBeforeOwners
+--- PASS: TestDailyRemotePayoutParentModeBeforeOwners (0.00s)
+=== RUN   TestDailyRemotePayoutParentCancellationBeforeAttachment
+--- PASS: TestDailyRemotePayoutParentCancellationBeforeAttachment (0.23s)
+PASS
+ok  	github.com/taytr-llc/slug/desktop/accountpilot	1.207s
+FAIL

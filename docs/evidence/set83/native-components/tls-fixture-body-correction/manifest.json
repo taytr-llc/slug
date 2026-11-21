@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "scope": "external test-only proposal; no execution; original active attempt preserved",
+  "target": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_read_lease_test.go",
+  "target_preimage": {
+    "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_read_lease_test.go",
+    "bytes": 10765,
+    "sha256": "ca5f41310995007ef3c3f58d8c333b0ff0315647ca0c27adb99f20fed44c0b4e"
+  },
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/wallet-daily-adapter/tls-fixture-body-correction/before.go.txt",
+      "bytes": 10765,
+      "sha256": "ca5f41310995007ef3c3f58d8c333b0ff0315647ca0c27adb99f20fed44c0b4e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/wallet-daily-adapter/tls-fixture-body-correction/after.go.txt",
+      "bytes": 11754,
+      "sha256": "d4d209c0be988ebecdec3a4f66b9cefaaf800524dc368884fc3324a145501db5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/wallet-daily-adapter/tls-fixture-body-correction/changes.diff",
+      "bytes": 3054,
+      "sha256": "e09c8182ea9bee30130546c2a06e3198893d44ba315829eb3d29f201422dc36b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/wallet-daily-adapter/tls-fixture-body-correction/README.md",
+      "bytes": 1808,
+      "sha256": "a15e2408983ce4e3d59194784522a590d0f78640078b7a1722c45309f5fe29aa"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/wallet-daily-adapter/implementation/source-checkpoint.json",
+      "bytes": 8624,
+      "sha256": "21bfa077d87dab5128294f1e8b5e2a3909152293cde288f4e45cc424248e64a4"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolservice/types.go",
+      "bytes": 3849,
+      "sha256": "84a7f5cf6efe77500fef8b5b8510509d24ef481598d8149f82661cdfa0844a50"
+    },
+    {
+      "path": "/opt/homebrew/Cellar/go/1.27.4/libexec/src/net/http/server.go",
+      "bytes": 140485,
+      "sha256": "10c0a1fa7cc5224c949f57b7054e025bede1a6d0662fef90473d799ee95e405b"
+    }
+  ],
+  "tests": [
+    "TestDailyRemotePayoutReadCancellationJoinsOriginalLease",
+    "TestDailyRemotePayoutOwnerCloseJoinsRead"
+  ],
+  "execution": "none"
+}

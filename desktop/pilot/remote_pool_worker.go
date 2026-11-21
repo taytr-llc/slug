@@ -307,6 +307,9 @@ func (a *RemotePoolAttachment) Stop(ctx context.Context, view string) error {
 		return e
 	}
 	defer end()
+	if a.config.Version == 2 {
+		a.cancelDailyPayoutRead()
+	}
 	a.mu.Lock()
 	run := a.run
 	if run != nil {

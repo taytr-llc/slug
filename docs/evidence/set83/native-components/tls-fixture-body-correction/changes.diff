@@ -1,0 +1,99 @@
+--- before/desktop/pilot/remote_pool_daily_read_lease_test.go
++++ after/desktop/pilot/remote_pool_daily_read_lease_test.go
+@@ -7,6 +7,7 @@
+ 	"encoding/json"
+ 	"encoding/pem"
+ 	"errors"
++	"io"
+ 	"net/http"
+ 	"net/http/httptest"
+ 	"os"
+@@ -30,6 +31,8 @@
+ 	calls    atomic.Int32
+ 	blocked  atomic.Bool
+ 	entered  chan struct{}
++	cancelled chan struct{}
++	release chan struct{}
+ }
+ 
+ // Concrete selected TLS clients and protected credential descriptors. Responses
+@@ -39,7 +42,7 @@
+ 	if wire.TestPoW {
+ 		t.Skip("normal concrete TLS credential owner")
+ 	}
+-	h := &dailyReadLeaseFixture{entered: make(chan struct{}, 1)}
++	h := &dailyReadLeaseFixture{entered: make(chan struct{}, 1), cancelled: make(chan struct{}, 1), release: make(chan struct{})}
+ 	c := remoteDailyOracle(t).Transport.Positives[0].Config
+ 	var recovery *RecoverableRemotePoolConfig
+ 	if recoverable {
+@@ -63,15 +66,28 @@
+ 			w.WriteHeader(400)
+ 			return
+ 		}
+-		if h.blocked.Load() {
+-			h.entered <- struct{}{}
+-			<-r.Context().Done()
+-			return
+-		}
++		// HTTP/1 starts its disconnect-detecting background read only after the
++		// request body reaches EOF. Consume the bounded original request before
++		// blocking, so cancellation can be observed independently of teardown.
++		body, readErr := io.ReadAll(io.LimitReader(r.Body, poolservice.MaxRequestSize+1))
+ 		var request poolsettle.DailyPayoutRequest
+-		if json.NewDecoder(r.Body).Decode(&request) != nil || request != (poolsettle.DailyPayoutRequest{}) {
++		if readErr != nil || len(body) > poolservice.MaxRequestSize || json.Unmarshal(body, &request) != nil || request != (poolsettle.DailyPayoutRequest{}) {
+ 			t.Error("unexpected page cursor")
+ 			w.WriteHeader(400)
++			return
++		}
++		if h.blocked.Load() {
++			select {
++			case h.entered <- struct{}{}:
++			case <-h.release:
++				return
++			}
++			select {
++			case <-r.Context().Done():
++				h.cancelled <- struct{}{}
++			case <-h.release:
++				// Failure cleanup only: tests require cancellation before cleanup.
++			}
+ 			return
+ 		}
+ 		w.Header().Set("Content-Type", "application/json")
+@@ -84,7 +100,10 @@
+ 			t.Error(e)
+ 		}
+ 	}))
+-	t.Cleanup(server.Close)
++	t.Cleanup(func() {
++		close(h.release)
++		server.Close()
++	})
+ 	c.Origin = server.URL
+ 	c.CACertificate = string(pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: server.Certificate().Raw}))
+ 	if recovery != nil {
+@@ -293,6 +312,11 @@
+ 		}
+ 	case <-time.After(5 * time.Second):
+ 		t.Fatal("original read not joined")
++	}
++	select {
++	case <-h.cancelled:
++	case <-time.After(5 * time.Second):
++		t.Fatal("original HTTP handler did not observe cancellation")
+ 	}
+ 	h.owner.mu.Lock()
+ 	registered := h.owner.slots[0].lease != nil
+@@ -348,6 +372,11 @@
+ 	default:
+ 		t.Fatal("Close preceded read join")
+ 	}
++	select {
++	case <-h.cancelled:
++	case <-time.After(5 * time.Second):
++		t.Fatal("original HTTP handler did not observe owner cancellation")
++	}
+ 	if a.dailyRead != nil || a.dailyPayout != nil || a.dailyReadLast.Sequence != 0 || h.calls.Load() != 1 {
+ 		t.Fatal("read state survived owner close")
+ 	}

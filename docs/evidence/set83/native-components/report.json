@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "passed": true,
+  "scope": "native read components only; healthy watched wallet and UI acceptance remain pending",
+  "normal_top_level_passes": 64,
+  "race_top_level_passes": 64,
+  "profile_top_level_passes": 5,
+  "vet_passed": true,
+  "failures_retained": [
+    "sandbox denied local TLS bind",
+    "HTTP fixture cleanup timed out5m before bounded-body correction",
+    "vet refused two unkeyed external Fraction literals; keyed test-only correction"
+  ],
+  "files": [
+    {
+      "file": "native-install.json",
+      "bytes": 1782,
+      "sha256": "5771819f1dc52a0a723f4c6cb99d2950d2950263f7c6fd624ffc9f5791741fc2"
+    },
+    {
+      "file": "native-focused-first.log",
+      "bytes": 3729,
+      "sha256": "868c10bdd776b8f2e299fcafa15849b053cc1ca8051daf3121178c76588e1ba4"
+    },
+    {
+      "file": "native-focused.log",
+      "bytes": 6147,
+      "sha256": "05c53e9e3aa641876fa194969e5f9d8b5098683e16bd1b1e0dfa45ff2a9f2db0"
+    },
+    {
+      "file": "native-focused-corrected.jsonl",
+      "bytes": 21324,
+      "sha256": "442ed2217a9be3c3937a7b9b6bb6858a35a85494800a2c7e17a36cb9be4353c1"
+    },
+    {
+      "file": "native-remote-race.jsonl",
+      "bytes": 314020,
+      "sha256": "c36c9222d4a7de8d2d9df7d1000fc6c319c211ecd7d3dd54fa7fe024af53df70"
+    },
+    {
+      "file": "native-remote-corrected-normal.jsonl",
+      "bytes": 316507,
+      "sha256": "fd32069a8e620ae8be2eabc973e54cb4ecc2c926251774562752dc5791d73f1b"
+    },
+    {
+      "file": "native-remote-corrected-race.jsonl",
+      "bytes": 316884,
+      "sha256": "1ec0bfde80c979d816c33883b20b3c13889f754ff6e6788c427f56a7232959a5"
+    },
+    {
+      "file": "native-profile-refusal.jsonl",
+      "bytes": 12914,
+      "sha256": "c1e45913b784c8524dae79f5e9a7f35463912585868a78d815a35beeaec90ead"
+    },
+    {
+      "file": "native-vet.log",
+      "bytes": 270,
+      "sha256": "80fb051edb98943b485ce82d4fa108b31aa959e1d0be796b7542f0e96407e209"
+    },
+    {
+      "file": "native-vet-corrected.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "native-build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

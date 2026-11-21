@@ -1,0 +1,102 @@
+=== RUN   TestDailyRemotePayoutCapturedWindowsAndExactCounters
+--- PASS: TestDailyRemotePayoutCapturedWindowsAndExactCounters (0.00s)
+=== RUN   TestDailyRemotePayoutHeaderAndCursorRefusals
+=== RUN   TestDailyRemotePayoutHeaderAndCursorRefusals/revision
+=== RUN   TestDailyRemotePayoutHeaderAndCursorRefusals/high
+=== RUN   TestDailyRemotePayoutHeaderAndCursorRefusals/cursor
+=== RUN   TestDailyRemotePayoutHeaderAndCursorRefusals/balance
+=== RUN   TestDailyRemotePayoutHeaderAndCursorRefusals/time
+=== RUN   TestDailyRemotePayoutHeaderAndCursorRefusals/source
+=== RUN   TestDailyRemotePayoutHeaderAndCursorRefusals/settlement
+=== RUN   TestDailyRemotePayoutHeaderAndCursorRefusals/recipient
+--- PASS: TestDailyRemotePayoutHeaderAndCursorRefusals (0.00s)
+    --- PASS: TestDailyRemotePayoutHeaderAndCursorRefusals/revision (0.00s)
+    --- PASS: TestDailyRemotePayoutHeaderAndCursorRefusals/high (0.00s)
+    --- PASS: TestDailyRemotePayoutHeaderAndCursorRefusals/cursor (0.00s)
+    --- PASS: TestDailyRemotePayoutHeaderAndCursorRefusals/balance (0.00s)
+    --- PASS: TestDailyRemotePayoutHeaderAndCursorRefusals/time (0.00s)
+    --- PASS: TestDailyRemotePayoutHeaderAndCursorRefusals/source (0.00s)
+    --- PASS: TestDailyRemotePayoutHeaderAndCursorRefusals/settlement (0.00s)
+    --- PASS: TestDailyRemotePayoutHeaderAndCursorRefusals/recipient (0.00s)
+=== RUN   TestDailyRemotePayoutModeAndCancellationBeforeEffects
+--- PASS: TestDailyRemotePayoutModeAndCancellationBeforeEffects (0.00s)
+=== RUN   TestDailyRemotePayoutExactOperationSequence
+--- PASS: TestDailyRemotePayoutExactOperationSequence (0.00s)
+=== RUN   TestDailyRemotePayoutReadBorrowedAndStoppedLease
+=== RUN   TestDailyRemotePayoutReadBorrowedAndStoppedLease/daily
+=== RUN   TestDailyRemotePayoutReadBorrowedAndStoppedLease/recoverable
+--- PASS: TestDailyRemotePayoutReadBorrowedAndStoppedLease (0.06s)
+    --- PASS: TestDailyRemotePayoutReadBorrowedAndStoppedLease/daily (0.02s)
+    --- PASS: TestDailyRemotePayoutReadBorrowedAndStoppedLease/recoverable (0.04s)
+=== RUN   TestDailyRemotePayoutCredentialAndViewAfterResponse
+=== RUN   TestDailyRemotePayoutCredentialAndViewAfterResponse/credential
+=== RUN   TestDailyRemotePayoutCredentialAndViewAfterResponse/original-view
+--- PASS: TestDailyRemotePayoutCredentialAndViewAfterResponse (2.93s)
+    --- PASS: TestDailyRemotePayoutCredentialAndViewAfterResponse/credential (0.03s)
+    --- PASS: TestDailyRemotePayoutCredentialAndViewAfterResponse/original-view (2.90s)
+=== RUN   TestDailyRemotePayoutReadCancellationJoinsOriginalLease
+2026/11/21 10:17:04 httptest.Server blocked in Close after 5 seconds, waiting for connections:
+  *tls.Conn 0x76ecb57fe408 127.0.0.1:57734 in state active
+panic: test timed out after 5m0s
+	running tests:
+		TestDailyRemotePayoutReadCancellationJoinsOriginalLease (4m57s)
+
+goroutine 74 [running]:
+testing.(*M).startAlarm.func1()
+	/opt/homebrew/Cellar/go/1.27.4/libexec/src/testing/testing.go:2961 +0x2cc
+created by time.goFunc
+	/opt/homebrew/Cellar/go/1.27.4/libexec/src/time/sleep.go:182 +0x38
+
+goroutine 1 [chan receive, 4 minutes]:
+testing.(*T).Run(0x76ecb5337208, {0x1034fc241?, 0x76ecb52efa28?}, 0x104185da8)
+	/opt/homebrew/Cellar/go/1.27.4/libexec/src/testing/testing.go:2268 +0x3cc
+testing.runTests.func1(0x76ecb5337208)
+	/opt/homebrew/Cellar/go/1.27.4/libexec/src/testing/testing.go:2744 +0x38
+testing.tRunner(0x76ecb5337208, 0x76ecb52efb58)
+	/opt/homebrew/Cellar/go/1.27.4/libexec/src/testing/testing.go:2195 +0xc4
+testing.runTests({0x1034d9639, 0x21}, {0x1034e56af, 0x27}, 0x76ecb52b44c8, {0x1041fd460, 0x1c0, 0x1c0}, {0x46?, 0x3?, ...})
+	/opt/homebrew/Cellar/go/1.27.4/libexec/src/testing/testing.go:2742 +0x400
+testing.(*M).Run(0x76ecb52a3900)
+	/opt/homebrew/Cellar/go/1.27.4/libexec/src/testing/testing.go:2602 +0x600
+github.com/taytr-llc/slug/desktop/pilot.TestMain(0x76ecb52a3900)
+	/Users/taytrrip/slug/slug/desktop/pilot/controller_test.go:30 +0x29c
+main.main()
+	_testmain.go:946 +0x88
+
+goroutine 96 [sync.WaitGroup.Wait, 4 minutes]:
+sync.runtime_SemacquireWaitGroup(0x0?, 0x0?)
+	/opt/homebrew/Cellar/go/1.27.4/libexec/src/runtime/sema.go:114 +0x38
+sync.(*WaitGroup).Wait(0x76ecb565c2f0)
+	/opt/homebrew/Cellar/go/1.27.4/libexec/src/sync/waitgroup.go:206 +0xa4
+net/http/httptest.(*Server).Close(0x76ecb565c280)
+	/opt/homebrew/Cellar/go/1.27.4/libexec/src/net/http/httptest/server.go:524 +0x290
+testing.(*common).Cleanup.func1()
+	/opt/homebrew/Cellar/go/1.27.4/libexec/src/testing/testing.go:1462 +0xdc
+testing.(*common).runCleanup(0x76ecb5565d48, 0x0?)
+	/opt/homebrew/Cellar/go/1.27.4/libexec/src/testing/testing.go:1822 +0xdc
+testing.tRunner.func2()
+	/opt/homebrew/Cellar/go/1.27.4/libexec/src/testing/testing.go:2189 +0x2c
+testing.tRunner(0x76ecb5565d48, 0x104185da8)
+	/opt/homebrew/Cellar/go/1.27.4/libexec/src/testing/testing.go:2201 +0xf0
+created by testing.(*T).Run in goroutine 1
+	/opt/homebrew/Cellar/go/1.27.4/libexec/src/testing/testing.go:2260 +0x3b8
+
+goroutine 72 [chan receive, 4 minutes]:
+github.com/taytr-llc/slug/desktop/pilot.newDailyReadLeaseFixture.func1({0x104180368, 0x76ecb54f13b0}, 0x76ecb590f400)
+	/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_read_lease_test.go:68 +0x274
+net/http.HandlerFunc.ServeHTTP(0x1000000000000?, {0x104180368?, 0x76ecb54f13b0?}, 0x76ecb5677ae0?)
+	/opt/homebrew/Cellar/go/1.27.4/libexec/src/net/http/server.go:2362 +0x38
+net/http.serverHandler.ServeHTTP({0x10?}, {0x104180368?, 0x76ecb54f13b0?}, 0x1?)
+	/opt/homebrew/Cellar/go/1.27.4/libexec/src/net/http/server.go:3440 +0x12c
+net/http.(*conn).serve(0x76ecb5644360, {0x104181550, 0x76ecb57f8360})
+	/opt/homebrew/Cellar/go/1.27.4/libexec/src/net/http/server.go:2161 +0x5a8
+created by net/http.(*Server).Serve in goroutine 97
+	/opt/homebrew/Cellar/go/1.27.4/libexec/src/net/http/server.go:3608 +0x3ec
+FAIL	github.com/taytr-llc/slug/desktop/pilot	300.414s
+=== RUN   TestDailyRemotePayoutParentModeBeforeOwners
+--- PASS: TestDailyRemotePayoutParentModeBeforeOwners (0.00s)
+=== RUN   TestDailyRemotePayoutParentCancellationBeforeAttachment
+--- PASS: TestDailyRemotePayoutParentCancellationBeforeAttachment (0.49s)
+PASS
+ok  	github.com/taytr-llc/slug/desktop/accountpilot	1.189s
+FAIL

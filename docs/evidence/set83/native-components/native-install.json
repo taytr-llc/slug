@@ -1,0 +1,41 @@
+{
+  "before_checkpoint": "21bfa077d87dab5128294f1e8b5e2a3909152293cde288f4e45cc424248e64a4",
+  "installed_and_formatted": [
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/accountpilot/remote_pool_daily_reads.go",
+      "sha256": "53fb2c1c0cc2717d028e1e078ae85a326b2dc02c029abdef54bcb04e2d527573"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/accountpilot/remote_pool_daily_reads_test.go",
+      "sha256": "3dad5a8db1210ae3fa2fe2ac4d5102b4df3df8a93321a2c1d23ca285a3f5bad6"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_attachment.go",
+      "sha256": "2f9e4a95e914bf648874e70e05a6b46c4e7bb924c5f1096292b2b19b59abb9d9"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_pages.go",
+      "sha256": "90a3c002279c74a7f394a4a27094554772fa035ef4aa594ecbca5bf8d99c7879"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_pages_test.go",
+      "sha256": "31bc96c6815f57103377902696888c0516dea1e6b292d65bcfaeb2749373995e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_read_lease.go",
+      "sha256": "374885365bcab737ae7d02cec9585095f73667c556b12f3e797271d701bf765b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_read_lease_test.go",
+      "sha256": "ca5f41310995007ef3c3f58d8c333b0ff0315647ca0c27adb99f20fed44c0b4e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_reads.go",
+      "sha256": "44e0b06741c9ac1052334bb535ca0ec882c39278bae4fef53dc56d08144e410f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_worker.go",
+      "sha256": "c7a4a08c1dcf59d059f2010ba1455993ceeb5248d89a074a9f794e8d034342fd"
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "scope": "selected native read exact busy mapping; external source-only; no execution",
+  "targets": [
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_read_lease.go",
+      "before": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-daily-adapter/selected-busy-correction/before.go.txt",
+        "bytes": 2053,
+        "sha256": "374885365bcab737ae7d02cec9585095f73667c556b12f3e797271d701bf765b"
+      },
+      "after": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-daily-adapter/selected-busy-correction/after.go.txt",
+        "bytes": 2465,
+        "sha256": "7139cbb5262b2af89f1bed6687087d48f609d4f1a8a78a208a6f3dacb94b17a2"
+      }
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_read_busy_test.go",
+      "before": null,
+      "after": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-daily-adapter/selected-busy-correction/remote_pool_daily_read_busy_test.go.txt",
+        "bytes": 2957,
+        "sha256": "27cebba344e6cb0af13c9e01737f8212287369a84464cb727f19cc5444646642"
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_read_lease_test.go",
+      "bytes": 11762,
+      "sha256": "9af7865f504d1182d965b9b5124fba0c5d1c8d1f5d5d91f81bcd53fd105b8d0b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_reads.go",
+      "bytes": 9918,
+      "sha256": "44e0b06741c9ac1052334bb535ca0ec882c39278bae4fef53dc56d08144e410f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_credentials.go",
+      "bytes": 11664,
+      "sha256": "c4acd5c966e3e1adbc3658978c3d5ee493fbc4320d57cd67a26928620f062e15"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/wallet-daily-adapter/tls-fixture-body-correction/manifest.json",
+      "bytes": 2125,
+      "sha256": "e76cbc4d8e733654f688085990b75511ddff2a9beea0216869f05dd7fe5a439f"
+    }
+  ],
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/wallet-daily-adapter/selected-busy-correction/changes.diff",
+      "bytes": 3978,
+      "sha256": "6a5bcd24e3fa1418af5f55f86ca84d35993a0256ab1a9553be76bea219ab93f8"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/wallet-daily-adapter/selected-busy-correction/README.md",
+      "bytes": 1795,
+      "sha256": "1a9f8aca9a68bf8ef8f0994ba04188dd736d7ab0d4f884e51fa9e82ea61cdb23"
+    }
+  ],
+  "required_tests": [
+    "TestDailyRemotePayoutPollingExportsBusyAndRetainsLease"
+  ],
+  "execution": "none"
+}
