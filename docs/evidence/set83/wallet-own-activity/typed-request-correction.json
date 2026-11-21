@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "target": "/Users/taytrrip/slug/slug/desktop/pilot/remote_wallet_protocol2_test.go",
+  "before": {
+    "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/typed-request-fixture-correction/before/remote_wallet_protocol2_test.go",
+    "bytes": 6835,
+    "sha256": "6cdf54f7399fa23ee71dc1e002f7646be3e5c21725a5927a808b60d84636591f"
+  },
+  "after": {
+    "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/typed-request-fixture-correction/after/remote_wallet_protocol2_test.go",
+    "bytes": 7071,
+    "sha256": "a1054d47603078e88140e68a9dd61fb7acd0764af754965d5283991cffd91e00"
+  },
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/installation-checkpoint.json",
+      "bytes": 13163,
+      "sha256": "5172035995a99bdd149a6721ea6b989c8f56ea1220df9c0ee58af9d68a06f503"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/typed-request-fixture-correction/changes.diff",
+      "bytes": 1544,
+      "sha256": "ab41ff23ef1e8bbed4aa8a73cd64f09b0313282e6e5937c60669794a4bbf0da9"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/typed-request-fixture-correction/README.md",
+      "bytes": 563,
+      "sha256": "106879fd0ec478818e28f4b3ecef67425feb5c42e52c2dc008576720c907e0b4"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/wallet-own-activity-reference/python39.json",
+      "bytes": 838381,
+      "sha256": "65bc7cb4119e2dabae9260112745ef3fd4cd0541398b209c6b0816acf29c1e8a"
+    }
+  ],
+  "Go_executed": false
+}

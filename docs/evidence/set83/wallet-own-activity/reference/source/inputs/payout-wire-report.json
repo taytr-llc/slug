@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "wire_sha256": "4b3eafc010d515557097357a968bd007571c7126f7c0f15a2cd4184bcc88f802",
+  "wire_bytes": 488661,
+  "positives": 72,
+  "negatives": 61,
+  "raw_cases": 8,
+  "scenarios": 3,
+  "normal_work_calls": 0,
+  "production_calls": 0
+}

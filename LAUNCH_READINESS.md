@@ -34,7 +34,9 @@ The current order is:
    including dated observations and visible pending/deferred states.
    Set83's native paid-wallet read/reopen passes: the original 19.8-test-SLUG
    payment, credits, outbox and protected history survive both lifetimes.
-   The desktop history display and own-wallet activity/output checks remain.
+   The desktop history, own-wallet activity and selected-output display now pass
+   component/reference/race checks. Actual helper/window and package acceptance
+   remain before this item closes; see [Set83](CHANGESET_83_NOTES.md).
 3. **Sign-in and onboarding.** Complete D82 mandatory MFA/passkey support and the
    approved recovery/reset controls after the pool and wallet flows. Fixture
    buttons are not real authentication; no security requirement is deferred.

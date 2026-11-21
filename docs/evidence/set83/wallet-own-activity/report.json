@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "status": "PASS_COMPONENT_ONLY",
+  "parent_commit": "5d83a63b",
+  "checks": {
+    "normal-attempt2": {
+      "top_level": {
+        "pass": 11,
+        "skip": 1
+      },
+      "packages": 4
+    },
+    "race-attempt1": {
+      "top_level": {
+        "pass": 31,
+        "skip": 2
+      },
+      "packages": 4
+    },
+    "cheap-attempt1": {
+      "top_level": {
+        "skip": 5,
+        "pass": 3
+      },
+      "packages": 4
+    },
+    "legacy-attempt1": {
+      "top_level": {
+        "pass": 21
+      },
+      "packages": 2
+    }
+  },
+  "dom_tests": {
+    "pass": 8,
+    "fail": 0
+  },
+  "vet": "PASS",
+  "source_checkpoint": "5172035995a99bdd149a6721ea6b989c8f56ea1220df9c0ee58af9d68a06f503",
+  "test_only_correction": "df7b85c1848029bab62b90e5cfe75143c2c424ac155a6148883d97bbdc6697f4",
+  "independent_corpus_sha256": "65bc7cb4119e2dabae9260112745ef3fd4cd0541398b209c6b0816acf29c1e8a",
+  "corpus_frames": 165,
+  "corpus_valid": 90,
+  "corpus_invalid": 75,
+  "failed_attempt": "normal-attempt1: fixture consumer prematurely decoded deliberately invalid request companions; RawMessage leaves malformed requests for the actual parser. Independent expected bytes and product code unchanged.",
+  "scope": "Additive explicitly selected DAILY helper version2, real-process bridge, existing wallet activity/output display. Actual healthy helper/native window and package acceptance remain pending.",
+  "skips": "Normal-only independent wallet/profile fixtures skip under slugtestpow; cheap-only refusal skips normally. Embedded bridge process fixture is only a subprocess entry point."
+}

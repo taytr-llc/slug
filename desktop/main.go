@@ -26,7 +26,7 @@ import (
 	"github.com/wailsapp/wails/v3/pkg/events"
 )
 
-//go:embed frontend/index.html frontend/style.css frontend/app.js frontend/manifest.html frontend/manifest.js frontend/manifest.css frontend/stable.html frontend/stable.js frontend/stable.css frontend/slug-transparent.png frontend/owned.html frontend/owned.js frontend/remote.html frontend/remote.js frontend/remote-daily.html frontend/remote-daily.js
+//go:embed frontend/index.html frontend/style.css frontend/app.js frontend/manifest.html frontend/manifest.js frontend/manifest.css frontend/stable.html frontend/stable.js frontend/stable.css frontend/slug-transparent.png frontend/owned.html frontend/owned.js frontend/remote.html frontend/remote.js frontend/remote-daily.html frontend/remote-daily.js frontend/remote-daily2.html frontend/remote-daily2.js
 var assets embed.FS
 
 // Only the separate candidate bundle build sets this private mode default.
@@ -256,6 +256,9 @@ func assetSecurity(next http.Handler) http.Handler {
 	})
 }
 func run() (resultErr error) {
+	if nativeDailyWalletRequested2(os.Args[1:]) {
+		return runNativeDailyWallet2(os.Args[1:])
+	}
 	if nativeDailyWalletRequested(os.Args[1:]) {
 		return runNativeDailyWallet(os.Args[1:])
 	}

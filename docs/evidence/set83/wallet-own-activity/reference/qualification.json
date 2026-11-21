@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "passed": true,
+  "runs": [
+    {
+      "interpreter": "/usr/bin/python3",
+      "exit_code": 0,
+      "elapsed": 0.18273711204528809,
+      "stdout_bytes": 171,
+      "stderr_bytes": 0,
+      "bytes": 838381,
+      "sha256": "65bc7cb4119e2dabae9260112745ef3fd4cd0541398b209c6b0816acf29c1e8a",
+      "version": "Python 3.9.6"
+    },
+    {
+      "interpreter": "/opt/homebrew/bin/python3",
+      "exit_code": 0,
+      "elapsed": 0.12558889389038086,
+      "stdout_bytes": 171,
+      "stderr_bytes": 0,
+      "bytes": 838381,
+      "sha256": "65bc7cb4119e2dabae9260112745ef3fd4cd0541398b209c6b0816acf29c1e8a",
+      "version": "Python 3.14.3"
+    }
+  ],
+  "approved_lock_sha256": "a8ca276182d5b0feb0844225567080795c789d8fd7a2d0bb4860cf6f58cda369",
+  "proposed_lock_sha256": "b053d328394d416fa0f640c456ccff226fd2e9a7a6998ae4a5c13c034da6ad7c",
+  "sources_unchanged": true,
+  "product_calls": 0
+}

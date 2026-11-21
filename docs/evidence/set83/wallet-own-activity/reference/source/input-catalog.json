@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "status": "frozen public copies for root-authorized independent WIRE2 source; no producer execution",
+  "inputs": [
+    {
+      "name": "daily-wire-v1.json",
+      "source": "/Users/taytrrip/slug/artifacts/set83/wallet-wire-reference-attempt1/homebrew.json",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/reference/inputs/daily-wire-v1.json",
+      "bytes": 895972,
+      "sha256": "b62572b6f1966acad3845348feb446ebb24cb5d1d3c043498a6f95e5b6645f1a"
+    },
+    {
+      "name": "daily-wire-qualification.json",
+      "source": "/Users/taytrrip/slug/artifacts/set83/wallet-wire-reference-attempt1/qualification.json",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/reference/inputs/daily-wire-qualification.json",
+      "bytes": 653,
+      "sha256": "2b3ca0d014af36014c061f6d2953b84fe573e61c5654f10826773374d5f8e4b6"
+    },
+    {
+      "name": "activity-wire-v1.json",
+      "source": "/Users/taytrrip/slug/slug/desktop/frontend/testdata/wallet-activity-wire/wire-v1.json",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/reference/inputs/activity-wire-v1.json",
+      "bytes": 1705410,
+      "sha256": "fd0f28ff06b4cb0502e7822ad401330941cdb71e9a4d4b5e31d5a017f911dc2b"
+    },
+    {
+      "name": "activity-wire-readme.md",
+      "source": "/Users/taytrrip/slug/slug/desktop/frontend/testdata/wallet-activity-wire/README.md",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/reference/inputs/activity-wire-readme.md",
+      "bytes": 1288,
+      "sha256": "8f51606fa9923d858be5017b732a8e6ab7381fc9fcfa4226eccb121c9799cf18"
+    },
+    {
+      "name": "activity-wire-producer-lock.json",
+      "source": "/Users/taytrrip/slug/slug/desktop/frontend/testdata/wallet-activity-wire/producer-lock.json",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/reference/inputs/activity-wire-producer-lock.json",
+      "bytes": 922,
+      "sha256": "502b29d2ed03347a31bec10797d75b2a213b1e331d10e7c53d7bc3359de1130b"
+    },
+    {
+      "name": "payout-wire-v1.json",
+      "source": "/Users/taytrrip/slug/slug/desktop/frontend/testdata/payout-history-wire/wire-v1.json",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/reference/inputs/payout-wire-v1.json",
+      "bytes": 488661,
+      "sha256": "4b3eafc010d515557097357a968bd007571c7126f7c0f15a2cd4184bcc88f802"
+    },
+    {
+      "name": "payout-wire-report.json",
+      "source": "/Users/taytrrip/slug/slug/desktop/frontend/testdata/payout-history-wire/report.json",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/reference/inputs/payout-wire-report.json",
+      "bytes": 253,
+      "sha256": "81b8b5ece486b940a1158fc4fdfe28395c15fc6fd84149d79271949629c635c5"
+    },
+    {
+      "name": "activity-types.go.txt",
+      "source": "/Users/taytrrip/slug/slug/desktop/pilot/wallet_activity_types.go",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/reference/inputs/activity-types.go.txt",
+      "bytes": 5621,
+      "sha256": "ca28f3fea48d0008e6b9804c57696358906a6f499211a385d68e61b98805afc7"
+    },
+    {
+      "name": "activity-codec.go.txt",
+      "source": "/Users/taytrrip/slug/slug/desktop/pilot/wallet_activity_codec.go",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/reference/inputs/activity-codec.go.txt",
+      "bytes": 11566,
+      "sha256": "4537cf483f55e1e41792492bbc848ee3af2ba02031a8ec9436d0724ba36a0688"
+    },
+    {
+      "name": "activity-projection.go.txt",
+      "source": "/Users/taytrrip/slug/slug/desktop/pilot/wallet_activity_projection.go",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/reference/inputs/activity-projection.go.txt",
+      "bytes": 10688,
+      "sha256": "023b988863087596789b38e9e70bb3017b31a18482c3e19293552a890e6720c3"
+    },
+    {
+      "name": "activity-runtime.go.txt",
+      "source": "/Users/taytrrip/slug/slug/desktop/pilot/wallet_activity_runtime.go",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/reference/inputs/activity-runtime.go.txt",
+      "bytes": 4592,
+      "sha256": "a352775169b21fd90410dabc6bab948c582c768a6be509ee58ef4f8cdb08e936"
+    },
+    {
+      "name": "payout-types.go.txt",
+      "source": "/Users/taytrrip/slug/slug/desktop/pilot/pool_payout_types.go",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/reference/inputs/payout-types.go.txt",
+      "bytes": 4616,
+      "sha256": "6a1cf52455e6d23e38536742f1da9c749f5dd5a4dad7ded4111e1a28de996a2c"
+    },
+    {
+      "name": "wallet-payout.go.txt",
+      "source": "/Users/taytrrip/slug/slug/desktop/pilot/wallet_payout.go",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/reference/inputs/wallet-payout.go.txt",
+      "bytes": 4561,
+      "sha256": "9f357cb5754f3c9cc1c7275fb601f0600bb77c8c6b76ce2181bf8a91be125c1b"
+    },
+    {
+      "name": "wallet-payout-transaction.go.txt",
+      "source": "/Users/taytrrip/slug/slug/desktop/pilot/wallet_payout_transaction.go",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/reference/inputs/wallet-payout-transaction.go.txt",
+      "bytes": 3939,
+      "sha256": "56d038382c8cadbd30568dfd0907fd936547656f7049d9f6b2bcf22ac3ab0da8"
+    },
+    {
+      "name": "allocator2-read.go.txt",
+      "source": "/Users/taytrrip/slug/slugwallet/wallet/hosted_transfer_allocator_read.go",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/reference/inputs/allocator2-read.go.txt",
+      "bytes": 3615,
+      "sha256": "4b166cd24c51eeedb9ffdcebf4539bf292b469cd57b9bf4ddadfa411ce6c024b"
+    },
+    {
+      "name": "own-activity-plan.md",
+      "source": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-plan/PLAN.md",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/reference/inputs/own-activity-plan.md",
+      "bytes": 8129,
+      "sha256": "885afa8d3e7a461e4582cd55ff163a2bde84508366d50f00a1dd106d048a0ae0"
+    },
+    {
+      "name": "wire2.md",
+      "source": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/WIRE2.md",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/reference/inputs/wire2.md",
+      "bytes": 10590,
+      "sha256": "20ae3033647feb93ddd5c9ae7af123cd8034f2fa582c212b9b476a03163a347b"
+    },
+    {
+      "name": "wire1.md",
+      "source": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/WIRE.md",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/reference/inputs/wire1.md",
+      "bytes": 6021,
+      "sha256": "8ae33abfd6b98c39a4157537ba9b1de5f1f55d012439c390db2218762f2b7538"
+    },
+    {
+      "name": "payout-codec.go.txt",
+      "source": "/Users/taytrrip/slug/slug/desktop/pilot/pool_payout_codec.go",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/reference/inputs/payout-codec.go.txt",
+      "bytes": 10272,
+      "sha256": "e6b626843c1a67b94ac83f9180167ac34bb399df57f832200c9d00efd020029a"
+    }
+  ]
+}

@@ -1,0 +1,314 @@
+{
+  "version": 1,
+  "scope": "External source-only WIRE2/helper/bridge/UI installation. Native nine already installed at root commit 5d83a63b; exact installed bytes bound only, never reinstalled. Root alone executes formatting/tests/runtime.",
+  "files": [
+    {
+      "target": "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/daily_wallet_launch2.go",
+      "after": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/after/desktop/cmd/slugpilot/daily_wallet_launch2.go",
+        "bytes": 4202,
+        "sha256": "e13b9161742c05da276dac8ed47587b459021aaaf3cd1b534c68ed3e93d10839"
+      },
+      "before": null
+    },
+    {
+      "target": "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/daily_wallet_launch2_test.go",
+      "after": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/after/desktop/cmd/slugpilot/daily_wallet_launch2_test.go",
+        "bytes": 1369,
+        "sha256": "831cbe95af09961690b018ee59f3dca72b186713e035cdd58b95aa9ce2a87dbb"
+      },
+      "before": null
+    },
+    {
+      "target": "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/main.go",
+      "after": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/after/desktop/cmd/slugpilot/main.go",
+        "bytes": 12945,
+        "sha256": "7d9dfcf0fbe08546aa01820320318f11ae8f1d0d3e406df4c69fb06159b1e9e4"
+      },
+      "before": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/before/desktop/cmd/slugpilot/main.go",
+        "bytes": 12607,
+        "sha256": "b46192ff7f6355624e42cca02b5983ed56c95fcb649cac794e2c5d5ced7b83ff"
+      }
+    },
+    {
+      "target": "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/remote_launch.go",
+      "after": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/after/desktop/cmd/slugpilot/remote_launch.go",
+        "bytes": 12856,
+        "sha256": "6e4a5bd0b7ddb9c0b1ae9aba0e3aee72592e7f428dde95bbb369f2bf0ce835f1"
+      },
+      "before": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/before/desktop/cmd/slugpilot/remote_launch.go",
+        "bytes": 12576,
+        "sha256": "21682798cb1b662448a73f0de54d623b02a36b02c3f6b38ca5b95431d30088bd"
+      }
+    },
+    {
+      "target": "/Users/taytrrip/slug/slug/desktop/frontend/remote-daily2.html",
+      "after": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/after/desktop/frontend/remote-daily2.html",
+        "bytes": 4524,
+        "sha256": "b8cec808ead21388a989e0259b03cdb9513843f7915296c1003570324213e38a"
+      },
+      "before": null
+    },
+    {
+      "target": "/Users/taytrrip/slug/slug/desktop/frontend/remote-daily2.js",
+      "after": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/after/desktop/frontend/remote-daily2.js",
+        "bytes": 32494,
+        "sha256": "aa878806093a3790d18125ee03c078a291a754887b95736ce6506d3e8f0ebbc2"
+      },
+      "before": null
+    },
+    {
+      "target": "/Users/taytrrip/slug/slug/desktop/frontend/remote-daily2.test.mjs",
+      "after": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/after/desktop/frontend/remote-daily2.test.mjs",
+        "bytes": 13427,
+        "sha256": "be8aa5b97688fcba3b4f08b71fd1475ba5bf53210b80a61c9d086e53ed33837b"
+      },
+      "before": null
+    },
+    {
+      "target": "/Users/taytrrip/slug/slug/desktop/internal/bridge/remote_wallet2_bridge.go",
+      "after": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/after/desktop/internal/bridge/remote_wallet2_bridge.go",
+        "bytes": 13221,
+        "sha256": "b60c6e74404e1acb4fa1aa4bb91e1fd0179ccbc55f53eba1d7a843406a539fc5"
+      },
+      "before": null
+    },
+    {
+      "target": "/Users/taytrrip/slug/slug/desktop/internal/bridge/remote_wallet2_bridge_test.go",
+      "after": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/after/desktop/internal/bridge/remote_wallet2_bridge_test.go",
+        "bytes": 10105,
+        "sha256": "74f84f0e01bc725f0d637ee35e76a7fba4bd8ad4fb7fe36b4165ad74d6997623"
+      },
+      "before": null
+    },
+    {
+      "target": "/Users/taytrrip/slug/slug/desktop/internal/bridge/remote_wallet2_process.go",
+      "after": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/after/desktop/internal/bridge/remote_wallet2_process.go",
+        "bytes": 4781,
+        "sha256": "c877a4dcfa364b348cae6e92fa4234ec934fc818a97a5d73959f7742f36ea91e"
+      },
+      "before": null
+    },
+    {
+      "target": "/Users/taytrrip/slug/slug/desktop/main.go",
+      "after": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/after/desktop/main.go",
+        "bytes": 25146,
+        "sha256": "31e9a2c798577755de3135838b4422ea4c69024c66ce9e4baffd53c0cefd820a"
+      },
+      "before": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/before/desktop/main.go",
+        "bytes": 25001,
+        "sha256": "ac06306073bd4b0f5f8d43ee81ac2efda44d2c7b7ac77f8e451de76d02e57a38"
+      }
+    },
+    {
+      "target": "/Users/taytrrip/slug/slug/desktop/pilot/remote_wallet_protocol2.go",
+      "after": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/after/desktop/pilot/remote_wallet_protocol2.go",
+        "bytes": 16176,
+        "sha256": "4e3f5c8d5b4d9b29bfcfc1938463ca2e047d0d526eff8dcb7d96137dedc75e11"
+      },
+      "before": null
+    },
+    {
+      "target": "/Users/taytrrip/slug/slug/desktop/pilot/remote_wallet_protocol2_test.go",
+      "after": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/after/desktop/pilot/remote_wallet_protocol2_test.go",
+        "bytes": 5903,
+        "sha256": "96b9f4b68ec262fdeeab6cb5b6bd84690ac650e8a78d3ae81a0ff32c6e2971ca"
+      },
+      "before": null
+    },
+    {
+      "target": "/Users/taytrrip/slug/slug/desktop/pilot/remote_wallet_serve2.go",
+      "after": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/after/desktop/pilot/remote_wallet_serve2.go",
+        "bytes": 8075,
+        "sha256": "558e937acc33858db6bf55f46b0f4a3504d8e9997bab604dda73ab05b2da441a"
+      },
+      "before": null
+    },
+    {
+      "target": "/Users/taytrrip/slug/slug/desktop/pilot/remote_wallet_serve2_test.go",
+      "after": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/after/desktop/pilot/remote_wallet_serve2_test.go",
+        "bytes": 5270,
+        "sha256": "3c1cd348a452c85cabea5e4ee3fca509091b516999620fa29ac95013ea84888a"
+      },
+      "before": null
+    },
+    {
+      "target": "/Users/taytrrip/slug/slug/desktop/pilot/testdata/daily-wallet-activity/reference-v1.json",
+      "after": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/after/desktop/pilot/testdata/daily-wallet-activity/reference-v1.json",
+        "bytes": 838381,
+        "sha256": "65bc7cb4119e2dabae9260112745ef3fd4cd0541398b209c6b0816acf29c1e8a"
+      },
+      "before": null
+    },
+    {
+      "target": "/Users/taytrrip/slug/slug/desktop/remote_wallet2.go",
+      "after": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/after/desktop/remote_wallet2.go",
+        "bytes": 15883,
+        "sha256": "9294efb5ae1ec7f9bc34020bcfb9bd92678fefe23b2dbf5af3474930ede4ba40"
+      },
+      "before": null
+    },
+    {
+      "target": "/Users/taytrrip/slug/slug/desktop/remote_wallet2_app.go",
+      "after": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/after/desktop/remote_wallet2_app.go",
+        "bytes": 5554,
+        "sha256": "6fcffc13ba395ad9bb820a03a96489de38f507121ac68f64afe4d84b6b1d0bd1"
+      },
+      "before": null
+    },
+    {
+      "target": "/Users/taytrrip/slug/slug/desktop/remote_wallet2_test.go",
+      "after": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/after/desktop/remote_wallet2_test.go",
+        "bytes": 1685,
+        "sha256": "547bc9e063850ceb4f1516b6fcce2d5b07ab5a8d4fc647d80bbe2d17dba753b1"
+      },
+      "before": null
+    }
+  ],
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/WIRE2.md",
+      "bytes": 10590,
+      "sha256": "20ae3033647feb93ddd5c9ae7af123cd8034f2fa582c212b9b476a03163a347b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/README.md",
+      "bytes": 3470,
+      "sha256": "ebeb92a872af6dd9cc822901a535d339dd7e9517af82f54bf7306f3e4d345053"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/native-checkpoint.json",
+      "bytes": 5443,
+      "sha256": "5328fe6e5e60c61b9d1746536da02ceec86d48137ac9f4b16cbda8964df2b91e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/wire-production-checkpoint-successor.json",
+      "bytes": 2303,
+      "sha256": "68fb04f8bc2042ba6340248c19e21a509142bac5f5d939b042063b13ed83ffcd"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/wire-peer-fixes.diff",
+      "bytes": 1553,
+      "sha256": "a7e6623fac96204e384ed9a5a7fc83eacaf700b55fe5adee79ca4b180fa43d69"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/wire-integration.diff",
+      "bytes": 150978,
+      "sha256": "9fa2f4669af50d99bfeb8c0f59a02232dd3ce3ccb3c98356b81fe1a4dc37b2fa"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/reference/source-ready.json",
+      "bytes": 1085,
+      "sha256": "6edaa8ffcdcc34beb2442ae7009c01463df3fe61ecb1eaf87da8d9e29f9070a5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/reference/producer-lock.proposed.json",
+      "bytes": 6467,
+      "sha256": "b053d328394d416fa0f640c456ccff226fd2e9a7a6998ae4a5c13c034da6ad7c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/wallet-own-activity-reference/qualification.json",
+      "bytes": 912,
+      "sha256": "ff1ee49e86527db151ebfe1ca23704c440597d6db311f9cc12709d55a2e07d42"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/wallet-own-activity-reference/python39.json",
+      "bytes": 838381,
+      "sha256": "65bc7cb4119e2dabae9260112745ef3fd4cd0541398b209c6b0816acf29c1e8a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/accountpilot/remote_wallet_activity.go",
+      "bytes": 3888,
+      "sha256": "ab7349c7df4cec1a3442010acf1636c029ace33e780e24845b31f75a23f8bbc8"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/accountpilot/remote_wallet_activity_test.go",
+      "bytes": 1895,
+      "sha256": "f325a9356952db667aae632f1d6be4ac71d38ceeb7180cb46f9e652684b048b2"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_daily_observation.go",
+      "bytes": 4090,
+      "sha256": "92b085c668a226b7302723124827040c717456b817e5c587a5e227a022c0c699"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_attachment.go",
+      "bytes": 12376,
+      "sha256": "c6b3c0d86cc65f351cae21e31b4f18df1ae2c4e86bcc0121baf1ca095743fbc5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_worker.go",
+      "bytes": 11743,
+      "sha256": "f52ea88353f19a30b06c172f0de789a58ce72a7ef6843a4e5f12531e710e4064"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_wallet_activity.go",
+      "bytes": 10396,
+      "sha256": "076f9c7c5332855ccde3333ebd9f0607062abff2889986466bb63a77dd149e64"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_wallet_activity_test.go",
+      "bytes": 8095,
+      "sha256": "c0864a3afaf09c61f8b20f3b218bd63bb921f5bce57adce07cd54c0eda5ee789"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/wallet_activity_projection.go",
+      "bytes": 11521,
+      "sha256": "2b33d7ea467041d297493f73f2e6b98426dc594c7c88896d9b4ba155a0254471"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/wallet_activity_runtime.go",
+      "bytes": 4865,
+      "sha256": "65b9a877800b3f971d734a2e65125f7f4d29af79084acd4c832e6f688bd05af2"
+    }
+  ],
+  "tests": [
+    "TestDailyWallet2HelperExplicitVersionSelection",
+    "TestDailyWallet2BridgeFixtureProcess",
+    "TestDailyWallet2BridgeOriginalProcessCaptureAndOpaqueView",
+    "TestDailyWallet2BridgeLostBeginRetiresWithoutReplacement",
+    "TestDailyWallet2BridgeSelectedHelperArguments",
+    "TestDailyWallet2IndependentCorpus",
+    "TestDailyWallet2IndependentRetainedPaymentMembership",
+    "TestDailyWallet2PreservesWideLegacyMoney",
+    "TestDailyWallet2CheapProfileRefusal",
+    "TestDailyWallet2PipeSequenceCancelAndNoImplicitStart",
+    "TestDailyWallet2WrongViewAndLegacyFormatRefuse",
+    "TestNativeDailyWallet2ExplicitSelectionAndFixedMethods"
+  ],
+  "dom_tests": 8,
+  "golden": {
+    "target": "/Users/taytrrip/slug/slug/desktop/pilot/testdata/daily-wallet-activity/reference-v1.json",
+    "bytes": 838381,
+    "sha256": "65bc7cb4119e2dabae9260112745ef3fd4cd0541398b209c6b0816acf29c1e8a",
+    "frames": 165,
+    "valid": 90,
+    "invalid": 75
+  },
+  "execution": {
+    "Go": false,
+    "Node": false,
+    "runtime": false
+  }
+}

@@ -72,8 +72,20 @@ The first incorrectly spelled cheap-build tag is retained as a normal-profile
 diagnostic; only the corrected `slugtestpow` run qualifies the cheap controls.
 These tests do not replace a healthy watched-wallet or native-window run.
 
-Remaining: actual selected helper/native-window acceptance and the additive
-activity/output helper and display path;
-then package and integrated acceptance. Existing V1 paths, headless mining,
+The additive `--daily-wallet-helper-version=2` path now carries activity pages,
+transaction detail and separately dated selected-output observations through the
+real helper bridge into the existing wallet panel. Version 1 remains strict.
+Its independent 165-frame corpus reproduces exactly under Python 3.9.6 and
+3.14.3, including wide cumulative payout amounts inherited from version 1.
+Eleven normal tests, 31 combined race tests, 21 original-selector regressions,
+three cheap-profile controls, eight DOM tests and vet pass. The deliberately
+malformed request cases exposed a test-loader defect on the first run; the
+corrected loader passes the unchanged independent bytes to the real parser.
+See [activity integration evidence](docs/evidence/set83/wallet-own-activity/report.json).
+All six GitHub jobs also pass for earlier integration commit `edc37d08`; later
+component commits retain their separate local and remote evidence.
+
+Remaining: actual selected helper/native-window acceptance, normal package and
+integrated acceptance. Existing V1 paths, headless mining,
 wallet pins and payout rules stay unchanged. Sign-in follows this work, D74
 remains the final joint design review, and marketplace remains on hold.

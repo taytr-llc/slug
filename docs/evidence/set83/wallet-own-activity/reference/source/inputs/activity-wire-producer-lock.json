@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "approved_by": "root",
+  "frozen_at_utc": "2026-11-19T22:27:48.258751+00:00",
+  "input_lock_sha256": "177734937ccfeaf12c6618fbd15d757b86a9a85731b06460b9a8d3e1269c2ee0",
+  "contract_sha256": "71bff8b11210aab89e324fc96d296a41e3a0248c5ae6e2293face8e51de51138",
+  "sources": {
+    "wire_model.py": "8b438dad3510f3b41bd48372c3a59709765efabdbb74ac4a7a7a3801aa904f73",
+    "generate_wire.py": "388b1b1fd389007ce297206a50755abbaee7b060ec444552a1a11a7d117295b0",
+    "wire-case-plan.json": "747e05d27ff46993f0d1aeaa3bed272802e143c57c866ec504baf87f14870275"
+  },
+  "review": "Root read all wire model/generator/case plan source before execution. Incoming first-seen changed to explicitly modeled zero, not sender observation. Closed fixture shape model and original-context correlation are separate. No core outputs or new implementation used.",
+  "producer_executed": false,
+  "implementation_started": false
+}

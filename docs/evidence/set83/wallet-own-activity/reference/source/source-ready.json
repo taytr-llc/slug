@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "status": "source_only_unexecuted_pending_finite_peer_review",
+  "contract": {
+    "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/reference/inputs/wire2.md",
+    "bytes": 10590,
+    "sha256": "20ae3033647feb93ddd5c9ae7af123cd8034f2fa582c212b9b476a03163a347b"
+  },
+  "proposed_lock": {
+    "path": "/Users/taytrrip/slug/set83-prep/wallet-own-activity-stage/reference/producer-lock.proposed.json",
+    "bytes": 6467,
+    "sha256": "b053d328394d416fa0f640c456ccff226fd2e9a7a6998ae4a5c13c034da6ad7c"
+  },
+  "bound_files": 27,
+  "bound_bytes": 3248044,
+  "copied_public_inputs": 19,
+  "copied_public_bytes": 3177369,
+  "authored_counts": {
+    "frames": 165,
+    "valid": 90,
+    "invalid": 75,
+    "context_cases": 8,
+    "operation_cases": 10,
+    "cursor_cases": 20,
+    "decimal_cases": 19,
+    "amount_formats": 14
+  },
+  "checks": [
+    "AST parsing only",
+    "all copied input identities exact",
+    "static arithmetic and authored case tally"
+  ],
+  "execution_authorized": false,
+  "producer_executed": false,
+  "output_generated": false
+}

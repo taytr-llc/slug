@@ -54,7 +54,7 @@ func remoteLaunchRequested(args []string) bool {
 			continue
 		}
 		name := strings.SplitN(strings.TrimLeft(a, "-"), "=", 2)[0]
-		if name == "daily-wallet-helper" || name == "daily-recoverable-issue" || name == "daily" || name == "candidate-remote-pool" || strings.HasPrefix(name, "remote-") {
+		if name == "daily-wallet-helper-version" || name == "daily-wallet-helper" || name == "daily-recoverable-issue" || name == "daily" || name == "candidate-remote-pool" || strings.HasPrefix(name, "remote-") {
 			return true
 		}
 	}
@@ -87,7 +87,7 @@ func validateRemoteLaunchArgs(args []string) error {
 			continue
 		}
 		switch name {
-		case "data-dir", "remote-attachment-root", "remote-config", "remote-node-rpc", "remote-pool-credential", "remote-admission-credential", "candidate-name-version":
+		case "data-dir", "remote-attachment-root", "remote-config", "remote-node-rpc", "remote-pool-credential", "remote-admission-credential", "candidate-name-version", "daily-wallet-helper-version":
 		default:
 			return errRemoteLaunchInvalid
 		}
@@ -100,13 +100,20 @@ func validateRemoteLaunchArgs(args []string) error {
 			}
 			value = args[i]
 		}
-		if name == "candidate-name-version" {
+		if name == "daily-wallet-helper-version" {
+			if value != "2" {
+				return errRemoteLaunchInvalid
+			}
+		} else if name == "candidate-name-version" {
 			if value != "1" && value != "2" {
 				return errRemoteLaunchInvalid
 			}
 		} else if !remoteLaunchPath(value) {
 			return errRemoteLaunchInvalid
 		}
+	}
+	if seen["daily-wallet-helper-version"] && !seen["daily-wallet-helper"] {
+		return errRemoteLaunchInvalid
 	}
 	if seen["daily-wallet-helper"] && !seen["daily-recoverable-issue"] {
 		return errRemoteLaunchInvalid

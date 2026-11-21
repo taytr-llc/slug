@@ -1,0 +1,99 @@
+{
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/daily_wallet_launch2.go",
+      "bytes": 4570,
+      "sha256": "f5a6d38311017ebd24098e7cfeb442745ff2980b069c4d0b953ed319e9b4acf6"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/daily_wallet_launch2_test.go",
+      "bytes": 1514,
+      "sha256": "681e3acf477d3e9e74c2bfa77e82ced7b99c0e06e52202731f7d1de6141d7252"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/main.go",
+      "bytes": 12952,
+      "sha256": "ccac5c2b3fc18201ad44c637cc670412964e81446dce57763cfe1a09644eb781"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/remote_launch.go",
+      "bytes": 12869,
+      "sha256": "111fd6068a1097a041fdc8a8aa11228f47bb715c20d4fb6f5de4d62656755fa3"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/frontend/remote-daily2.html",
+      "bytes": 4524,
+      "sha256": "b8cec808ead21388a989e0259b03cdb9513843f7915296c1003570324213e38a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/frontend/remote-daily2.js",
+      "bytes": 32494,
+      "sha256": "aa878806093a3790d18125ee03c078a291a754887b95736ce6506d3e8f0ebbc2"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/frontend/remote-daily2.test.mjs",
+      "bytes": 13427,
+      "sha256": "be8aa5b97688fcba3b4f08b71fd1475ba5bf53210b80a61c9d086e53ed33837b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/internal/bridge/remote_wallet2_bridge.go",
+      "bytes": 13341,
+      "sha256": "ebcf3e933378c1cff68682ccab5c7cd82e31aa820efde03e73bf7505031012d8"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/internal/bridge/remote_wallet2_bridge_test.go",
+      "bytes": 10175,
+      "sha256": "cbf6e68f6dd3423d0c96ce8041669a6225b5eeaa9b406153857df655b2c61fe4"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/internal/bridge/remote_wallet2_process.go",
+      "bytes": 4803,
+      "sha256": "4692d8b816df6b4e805edfa7ef8ade28de407a4fc3b6ffa34520663e2525feca"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/main.go",
+      "bytes": 25149,
+      "sha256": "3c7a6d7676b2f445104d7f6abac07b471471ee9fb6281a7ae41f99e9b8f9f969"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_wallet_protocol2.go",
+      "bytes": 18690,
+      "sha256": "63d02cd4467696403b592fa170cfbf47ef44e10125e997ff2df2d937b1a7aaff"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_wallet_protocol2_test.go",
+      "bytes": 6835,
+      "sha256": "6cdf54f7399fa23ee71dc1e002f7646be3e5c21725a5927a808b60d84636591f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_wallet_serve2.go",
+      "bytes": 8370,
+      "sha256": "9c7fdf7bb4938d4393450a2bc29528c52862c5f83886580168cf3a819ddd31f6"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_wallet_serve2_test.go",
+      "bytes": 5966,
+      "sha256": "10b4681c928467b806a28aaaf7b93db1de03cfba48b73ca8c497ef0d91e3ff47"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/testdata/daily-wallet-activity/reference-v1.json",
+      "bytes": 838381,
+      "sha256": "65bc7cb4119e2dabae9260112745ef3fd4cd0541398b209c6b0816acf29c1e8a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/remote_wallet2.go",
+      "bytes": 16294,
+      "sha256": "a47cb303d280dcec99b9eecfc21a7a2355561ea4ab060696a2641fabefd2b319"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/remote_wallet2_app.go",
+      "bytes": 5554,
+      "sha256": "6fcffc13ba395ad9bb820a03a96489de38f507121ac68f64afe4d84b6b1d0bd1"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/remote_wallet2_test.go",
+      "bytes": 1863,
+      "sha256": "688c92c1ed7532ab73e5a1c953303cbcb8062e7b548469952688fc9b5b4ed17e"
+    }
+  ]
+}

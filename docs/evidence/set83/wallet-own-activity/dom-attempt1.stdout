@@ -1,0 +1,16 @@
+✔ same layout with fourteen fixed methods and explicit mining only (6.213042ms)
+✔ wide cumulative money keeps all digits separately from local spendable (3.32225ms)
+✔ empty original activity capture stays dated through failed refresh and joined cancellation (2.9685ms)
+✔ unknown activity acknowledgement keeps exact sequence without automatic restart (1.70275ms)
+✔ all independent positive payloads preserve safe signed amounts, exact capture and output selection (4.615833ms)
+✔ selected activity detail is fetched by exact capture and txid, never invented amount (2.164042ms)
+✔ foreign activity binding, replacement capture and unsafe amount retire original display (4.571291ms)
+✔ selected payout output uses retained tuple and shows wallet observation separately (2.504625ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 139.186666
