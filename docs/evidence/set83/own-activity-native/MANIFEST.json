@@ -1,0 +1,82 @@
+[
+  {
+    "path": "cheap-attempt1.jsonl",
+    "bytes": 56682,
+    "sha256": "cea1ea368372107f555dfdb7947ea7a83b61923c9ef878b0b5e3737db888cc9e"
+  },
+  {
+    "path": "cheap-attempt1.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "cheap-attempt2.jsonl",
+    "bytes": 57206,
+    "sha256": "9ba02c00d233abd20363c35694ee9827decdf6f47b8fc9ea7b016a9f1d4c2456"
+  },
+  {
+    "path": "cheap-attempt2.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "installation-attempt1.json",
+    "bytes": 282,
+    "sha256": "e6eb50987486a7fe25342441104ddb668de8f22f09ef842cf8f73ded6d5d51f1"
+  },
+  {
+    "path": "installed-source.json",
+    "bytes": 1958,
+    "sha256": "92fb4bb7a5ad7c144332dcfe96180223f040c057c4bcaafbae616686bb76f8ed"
+  },
+  {
+    "path": "normal-allocator.jsonl",
+    "bytes": 1449,
+    "sha256": "9923c7fe20ce71c864413556fb7a5d932210d7b818eb6b310b1c194c46f62e05"
+  },
+  {
+    "path": "normal-allocator.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "normal-attempt1.jsonl",
+    "bytes": 164646,
+    "sha256": "f728b0223669ad04c8fb9bb595dbb66b569fe38756cafca7a1c523e78970def3"
+  },
+  {
+    "path": "normal-attempt1.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "race-attempt1.jsonl",
+    "bytes": 167309,
+    "sha256": "f3bbc1fffbcbeff82974f6d3220f3ef06006e199850c167a17041d47ef4dcc64"
+  },
+  {
+    "path": "race-attempt1.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "report.json",
+    "bytes": 2269,
+    "sha256": "ac139b73a418dfb842a2764d395f60500557e45a0deb1e6ad422d86bcc3de3a5"
+  },
+  {
+    "path": "source-after.json",
+    "bytes": 1958,
+    "sha256": "92fb4bb7a5ad7c144332dcfe96180223f040c057c4bcaafbae616686bb76f8ed"
+  },
+  {
+    "path": "vet.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "vet.stdout",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

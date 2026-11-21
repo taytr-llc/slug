@@ -1,0 +1,8 @@
+{"Time":"2026-11-21T11:22:34.774543-08:00","Action":"start","Package":"github.com/taytr-llc/slug/desktop/pilot"}
+{"Time":"2026-11-21T11:22:35.173799-08:00","Action":"run","Package":"github.com/taytr-llc/slug/desktop/pilot","Test":"TestDailyWalletOriginalAllocatorActivityEpoch"}
+{"Time":"2026-11-21T11:22:35.173898-08:00","Action":"output","Package":"github.com/taytr-llc/slug/desktop/pilot","Test":"TestDailyWalletOriginalAllocatorActivityEpoch","Output":"=== RUN   TestDailyWalletOriginalAllocatorActivityEpoch\n","OutputType":"frame"}
+{"Time":"2026-11-21T11:22:37.920715-08:00","Action":"output","Package":"github.com/taytr-llc/slug/desktop/pilot","Test":"TestDailyWalletOriginalAllocatorActivityEpoch","Output":"--- PASS: TestDailyWalletOriginalAllocatorActivityEpoch (2.75s)\n","OutputType":"frame"}
+{"Time":"2026-11-21T11:22:37.920827-08:00","Action":"pass","Package":"github.com/taytr-llc/slug/desktop/pilot","Test":"TestDailyWalletOriginalAllocatorActivityEpoch","Elapsed":2.75}
+{"Time":"2026-11-21T11:22:37.920923-08:00","Action":"output","Package":"github.com/taytr-llc/slug/desktop/pilot","Output":"PASS\n","OutputType":"frame"}
+{"Time":"2026-11-21T11:22:37.930781-08:00","Action":"output","Package":"github.com/taytr-llc/slug/desktop/pilot","Output":"ok  \tgithub.com/taytr-llc/slug/desktop/pilot\t3.156s\n"}
+{"Time":"2026-11-21T11:22:37.930891-08:00","Action":"pass","Package":"github.com/taytr-llc/slug/desktop/pilot","Elapsed":3.156}

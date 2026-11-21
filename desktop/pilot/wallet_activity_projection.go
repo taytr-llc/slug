@@ -313,49 +313,60 @@ func projectWalletActivity(ctx context.Context, record wallet.OwnActivityRecord,
 // The wallet API transfers ownership of this bounded snapshot. No whole raw
 // capture copy is made here or in the read/status paths.
 func buildWalletActivityCache(ctx context.Context, job WalletActivityJob, source walletActivityRead) (*walletActivityCache, error) {
-	if ctx == nil {
-		return nil, gymstable.ErrInvalid
-	}
-	if e := ctx.Err(); e != nil {
+	identity := walletIdentity{RootPublicKey: job.Binding.RootPublicKey, GymPublicKey: job.Binding.GymPublicKey, GymID: job.Binding.GymID}
+	cache, meta, e := projectWalletActivityCapture(ctx, identity, source)
+	if e != nil {
 		return nil, e
 	}
+	job.State, job.Capture = "done", &meta
+	cache.job = job
+	return cache, nil
+}
+
+// Pure bounded projection shared by legacy and DAILY owners. No legacy View or
+// job is manufactured for a DAILY capture; callers retain their own capability.
+func projectWalletActivityCapture(ctx context.Context, identity walletIdentity, source walletActivityRead) (*walletActivityCache, WalletActivityCapture, error) {
+	if ctx == nil {
+		return nil, WalletActivityCapture{}, gymstable.ErrInvalid
+	}
+	if e := ctx.Err(); e != nil {
+		return nil, WalletActivityCapture{}, e
+	}
 	s := source.snapshot
-	if s.Version != 1 || s.RootPublicKey != job.Binding.RootPublicKey || s.GymPublicKey != job.Binding.GymPublicKey || s.GymID != job.Binding.GymID || s.Records == nil || len(s.Records) > 256 {
-		return nil, ErrActivityUnavailable
+	if s.Version != 1 || s.RootPublicKey != identity.RootPublicKey || s.GymPublicKey != identity.GymPublicKey || s.GymID != identity.GymID || s.Records == nil || len(s.Records) > 256 {
+		return nil, WalletActivityCapture{}, ErrActivityUnavailable
 	}
 	meta := WalletActivityCapture{Version: 1, CapturedAtMS: source.at, WalletHeight: s.SyncedHeight, WalletTip: s.SyncedHash.String(), NodeHeight: s.SyncedHeight, NodeTip: s.SyncedHash.String(), Count: uint32(len(s.Records)), HasOlder: s.HasOlder}
 	if ValidateWalletActivityCapture(meta) != nil {
-		return nil, ErrActivityUnavailable
+		return nil, WalletActivityCapture{}, ErrActivityUnavailable
 	}
 	cache := &walletActivityCache{records: s.Records, items: make([]WalletActivityItem, 0, len(s.Records))}
 	total := 0
 	seen := make(map[chainhash.Hash]bool, len(s.Records))
 	for _, record := range s.Records {
 		if e := ctx.Err(); e != nil {
-			return nil, e
+			return nil, WalletActivityCapture{}, e
 		}
 		if len(record.Raw) > 8388608-total {
-			return nil, gymstable.ErrCapacity
+			return nil, WalletActivityCapture{}, gymstable.ErrCapacity
 		}
 		total += len(record.Raw)
 		if seen[record.TxID] {
-			return nil, ErrActivityUnavailable
+			return nil, WalletActivityCapture{}, ErrActivityUnavailable
 		}
 		seen[record.TxID] = true
 		item, _, e := projectWalletActivity(ctx, record, meta, false)
 		if e != nil {
-			return nil, e
+			return nil, WalletActivityCapture{}, e
 		}
 		if len(cache.items) > 0 && !WalletActivityItemLess(cache.items[len(cache.items)-1], item) {
-			return nil, ErrActivityUnavailable
+			return nil, WalletActivityCapture{}, ErrActivityUnavailable
 		}
 		cache.items = append(cache.items, item)
 	}
 	summary, e := json.Marshal(cache.items)
 	if e != nil || len(summary) > 524288 {
-		return nil, gymstable.ErrCapacity
+		return nil, WalletActivityCapture{}, gymstable.ErrCapacity
 	}
-	job.State, job.Capture = "done", &meta
-	cache.job = job
-	return cache, nil
+	return cache, meta, nil
 }

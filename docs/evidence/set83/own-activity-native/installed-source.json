@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "checkpoint_sha256": "5328fe6e5e60c61b9d1746536da02ceec86d48137ac9f4b16cbda8964df2b91e",
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/accountpilot/remote_wallet_activity.go",
+      "bytes": 3888,
+      "sha256": "ab7349c7df4cec1a3442010acf1636c029ace33e780e24845b31f75a23f8bbc8"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/accountpilot/remote_wallet_activity_test.go",
+      "bytes": 1895,
+      "sha256": "f325a9356952db667aae632f1d6be4ac71d38ceeb7180cb46f9e652684b048b2"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_daily_observation.go",
+      "bytes": 4090,
+      "sha256": "92b085c668a226b7302723124827040c717456b817e5c587a5e227a022c0c699"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_attachment.go",
+      "bytes": 12376,
+      "sha256": "c6b3c0d86cc65f351cae21e31b4f18df1ae2c4e86bcc0121baf1ca095743fbc5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_worker.go",
+      "bytes": 11743,
+      "sha256": "f52ea88353f19a30b06c172f0de789a58ce72a7ef6843a4e5f12531e710e4064"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_wallet_activity.go",
+      "bytes": 10396,
+      "sha256": "076f9c7c5332855ccde3333ebd9f0607062abff2889986466bb63a77dd149e64"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_wallet_activity_test.go",
+      "bytes": 8095,
+      "sha256": "c0864a3afaf09c61f8b20f3b218bd63bb921f5bce57adce07cd54c0eda5ee789"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/wallet_activity_projection.go",
+      "bytes": 11521,
+      "sha256": "2b33d7ea467041d297493f73f2e6b98426dc594c7c88896d9b4ba155a0254471"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/wallet_activity_runtime.go",
+      "bytes": 4865,
+      "sha256": "65b9a877800b3f971d734a2e65125f7f4d29af79084acd4c832e6f688bd05af2"
+    }
+  ]
+}

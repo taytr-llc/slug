@@ -59,8 +59,21 @@ retained. EF-19 records the separate cache follow-up. All six triggered GitHub
 jobs pass for the earlier native component at `005897c3`; this does not qualify
 the later integration commit.
 
-Remaining: actual selected helper/native-window acceptance;
-own-wallet activity and selected-output observations;
+The next native slice connects the original DAILY wallet allocator to bounded
+own-wallet activity captures, fixed pages and transaction detail. Selected pool
+payments can be observed only from the retained authenticated capture; callers
+cannot supply an amount or recipient script. Identical first/current-page
+copies are deduplicated, while conflicting copies fail closed. Original View,
+operation, cancellation and wallet-owner fences remain in force.
+Eighteen focused normal tests and twenty combined race tests pass, with five
+cheap-profile controls and two expected normal-wallet skips. Vet passes. See
+[own-activity component evidence](docs/evidence/set83/own-activity-native/report.json).
+The first incorrectly spelled cheap-build tag is retained as a normal-profile
+diagnostic; only the corrected `slugtestpow` run qualifies the cheap controls.
+These tests do not replace a healthy watched-wallet or native-window run.
+
+Remaining: actual selected helper/native-window acceptance and the additive
+activity/output helper and display path;
 then package and integrated acceptance. Existing V1 paths, headless mining,
 wallet pins and payout rules stay unchanged. Sign-in follows this work, D74
 remains the final joint design review, and marketplace remains on hold.

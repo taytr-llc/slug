@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "installed": false,
+  "go_invoked": false,
+  "error": "Root installer expected targets/after.path instead of this manifest files/after/after_identity shape; subsequent shell output redirection failed before Go ran. No source installed by this failed attempt."
+}

@@ -63,7 +63,16 @@ func (r *walletRuntime) captureWalletActivity(ctx context.Context, config prospe
 		}
 		var out walletActivityRead
 		if read {
-			if r.allocation != nil {
+			if r.allocation2 != nil {
+				allocator := r.allocation2
+				r.mu.Unlock()
+				locked = false
+				out.snapshot, e = allocator.CaptureOwnActivity(ctx)
+				if !r.mu.TryLock() {
+					return walletActivityRead{}, localTip{}, gymstable.ErrBusy
+				}
+				locked = true
+			} else if r.allocation != nil {
 				allocator := r.allocation
 				r.mu.Unlock()
 				locked = false

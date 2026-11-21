@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "status": "PASS_COMPONENT_ONLY",
+  "parent_commit": "edc37d08669487516cf58b455fca63e5401d5d3c",
+  "source_checkpoint_sha256": "5328fe6e5e60c61b9d1746536da02ceec86d48137ac9f4b16cbda8964df2b91e",
+  "checks": {
+    "normal-attempt1": {
+      "top_level": {
+        "pass": 17
+      },
+      "packages": [
+        {
+          "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+          "status": "pass"
+        },
+        {
+          "package": "github.com/taytr-llc/slug/desktop/pilot",
+          "status": "pass"
+        }
+      ]
+    },
+    "normal-allocator": {
+      "top_level": {
+        "pass": 1
+      },
+      "packages": [
+        {
+          "package": "github.com/taytr-llc/slug/desktop/pilot",
+          "status": "pass"
+        }
+      ]
+    },
+    "race-attempt1": {
+      "top_level": {
+        "pass": 20
+      },
+      "packages": [
+        {
+          "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+          "status": "pass"
+        },
+        {
+          "package": "github.com/taytr-llc/slug/desktop/pilot",
+          "status": "pass"
+        }
+      ]
+    },
+    "cheap-attempt2": {
+      "top_level": {
+        "pass": 5,
+        "skip": 2
+      },
+      "packages": [
+        {
+          "package": "github.com/taytr-llc/slug/desktop/pilot",
+          "status": "pass"
+        },
+        {
+          "package": "github.com/taytr-llc/slug/desktop/accountpilot",
+          "status": "pass"
+        }
+      ]
+    }
+  },
+  "vet": "PASS",
+  "scope": "Original DAILY attachment own-wallet activity and selected payout observation; actual healthy watched-wallet/helper/native-window acceptance remains pending.",
+  "retained_diagnostics": [
+    "installation-attempt1 used the wrong checkpoint key and stopped before writes; following redirection failed before Go",
+    "cheap-attempt1 used slug_test_pow instead of slugtestpow and is only a normal-profile diagnostic"
+  ],
+  "source_review": "Two finite source reviews; no actionable lifecycle, View, cache, or selected-payment membership issue.",
+  "skip_scope": "Two normal-wallet fixture guards skip under slugtestpow; three inherited Set70 subcases skip after JSON spelling is erased before the typed DTO. No skip establishes actual owner acceptance."
+}
