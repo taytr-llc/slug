@@ -36,3 +36,6 @@ desktop/pooloperator/testdata/retained-admission-actual/pre-b-maturity/retained_
 desktop/pooloperator/testdata/retained-admission-actual/pre-format/retained_flow.go.before.txt whitespace=-blank-at-eof
 docs/evidence/set81/**/*.diff -whitespace
 docs/evidence/set81/actual/A2-qualified/execution/*-build-info.txt whitespace=-blank-at-eol
+
+# Set82 preserves raw go version -m output from the native image build.
+docs/evidence/set82/package-ci/public/build/build-info.txt whitespace=-blank-at-eol

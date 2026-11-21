@@ -542,10 +542,21 @@ authorization must be repository-limited, not an account-wide OAuth expansion.
   passes full intake, restarts, lost admission reply, identical replay and one
   scheduled 19.8-SLUG payment. B1 fails extended offline publication readiness
   before expiry replay/final wallet verification; preserve it as EF-12, not a
-  pass. Exact-tip CI is pending. See `CHANGESET_81_NOTES.md` and
+  pass. All seven exact-tip CI jobs pass at `138553b1`; downloaded Linux evidence
+  verifies 470 required assertions, unchanged sources and clean joins. See `CHANGESET_81_NOTES.md` and
   `docs/evidence/set81/`. Continue bounded hosted pool/payouts; general capacity
   and long-outage follow-ups do not block that test unless they meet the triage
   rule. Wallet balances/history follow, then sign-in and the full D74 review.
+- Set82 on `slug-hosted-pool-test` packages the bounded operator with exact
+  product source `138553b1` and wallet `dfc5d9dd`. Native image job `44919766385`
+  passes at package commit `2d79de95`: ten required component tests plus five
+  named Linux ACL subcases under UID10001, then both shipped command help paths
+  in the final scratch image. Public source archives and source-before/after
+  match. Broader exact-tip CI is tracked separately. This is not hosted mining,
+  provider volume, full serve shutdown or payout qualification; continue those
+  concrete host checks without general capacity expansion. See
+  `CHANGESET_82_NOTES.md` and `deploy/pool/README.md`. Transport-pin renewal and
+  rotation limits are logged as EF-13; do not fix them incidentally.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

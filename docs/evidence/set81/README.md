@@ -42,7 +42,13 @@ Public replay made partial progress; rounds were ready. The expiry retry never
 launched and final wallet/financial acceptance was not reached. Its one observed
 send is not a qualified payout result. [EF-12](../../EDGE_CASE_FOLLOW_UPS.md#ef-12--extended-offline-catch-up-exceeded-the-restart-readiness-window)
 tracks this gap under Mike's November 21 triage; it is not silently repaired or
-relabeled passed. Component expiry coverage remains separate. Remote CI is pending.
+relabeled passed. Component expiry coverage remains separate.
+
+[Exact-tip CI](ci-closeout/) passes all seven jobs at `138553b1`. Downloaded
+evidence verifies 470 required PASS assertions, 32 groups and 64 commands, with
+unchanged sources and clean joins. The first external verifier's JSON-prelude
+failure and its narrow passing parser successor are both retained. This does
+not change B1's failed actual outcome or establish a hosted deployment.
 
 The [initial archive map](archive-initial.json) records the first public copies.
 The [source map](archive-source-map.json) and [installation check](archive-source-installation.json)

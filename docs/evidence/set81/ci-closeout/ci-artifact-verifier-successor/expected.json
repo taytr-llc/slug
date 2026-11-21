@@ -1,0 +1,3281 @@
+{
+  "version": 1,
+  "scope": "Static exact Set81 Linux gate expectations only; not execution evidence. No actual or deployed-host qualification.",
+  "head": "138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c",
+  "wallet": "dfc5d9dd7e0f604486fbac812d0413fce1f45cd6",
+  "branch": "slug-pool-retained-admission",
+  "profile": {
+    "version": 1,
+    "id": "slug-go1274-no-cse-v1",
+    "go_version": "go1.27.4",
+    "gcflags": "all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+    "scope": "candidate_engineering"
+  },
+  "totals": {
+    "required_assertions": 470,
+    "groups": 32,
+    "commands": 64,
+    "normal_assertions_including_wire": 214,
+    "race_assertions": 213,
+    "cheap_assertions": 43
+  },
+  "source_pins": {
+    "scripts/qualify-operator-linux.py": {
+      "bytes": 45079,
+      "sha256": "a475f757abd61627b05a5c9564cbb6813e1f314b490ee29f409a447d1bc9eaf8"
+    },
+    ".github/workflows/operator-linux.yml": {
+      "bytes": 2256,
+      "sha256": "fd8ff4f4f6e7bb37b2d85d338895c22a173df8dc4dc74feda5d155e3dc4d6900"
+    },
+    "build-profile.json": {
+      "bytes": 179,
+      "sha256": "e5ddb9d30e8048ad3b656358134632e48852f44deef44bdd93df7dda13208295"
+    },
+    "scripts/candidate-go.sh": {
+      "bytes": 2725,
+      "sha256": "64e073ba868e42b04e3e93a51826b2e6ee1b99103b92b417868cbf74f9b6436e"
+    }
+  },
+  "required_declaration_files": {
+    "slug/wire/pow_production_test.go": {
+      "bytes": 436,
+      "sha256": "971e2f9688926eebb66589571a22220e19a68bdf5c5ef0763ece88f2b9529580"
+    },
+    "slug/wire/pow_testpow_test.go": {
+      "bytes": 421,
+      "sha256": "fb4a6328ed0ea07bd32953ec88140acb349059403e6742ac81a195d003777a47"
+    },
+    "slug/internal/operatorauthority/files_test.go": {
+      "bytes": 10858,
+      "sha256": "fb25a131fa2f3f136ac67233204d3d65af6edfa60a3faa609a82d2e8ee63019b"
+    },
+    "slug/internal/operatorauthority/owner_test.go": {
+      "bytes": 16714,
+      "sha256": "3a304f0ee172c8f729fa253d8e60e54d5e7f7a14dfcf572fd71125d2a43e616d"
+    },
+    "slugwallet/waddrmgr/pool_settlement_test.go": {
+      "bytes": 17497,
+      "sha256": "3efdcec1473806e42b5ca161636bcba274aa16d764b3b0fdd0ac1969f3f2aa07"
+    },
+    "slugwallet/wallet/pool_settlement_test.go": {
+      "bytes": 15824,
+      "sha256": "68d2a26e53d3e5cea35174a5457e215cfa514cfe9a6b9a54b9761c0fd505b99c"
+    },
+    "slugwallet/waddrmgr/pool_settlement_daily_test.go": {
+      "bytes": 9816,
+      "sha256": "3743326ea320cbf75f7e3cd3abe9dce209333e70c555927bb0619edbf487648b"
+    },
+    "slugwallet/wallet/pool_settlement_daily_test.go": {
+      "bytes": 5830,
+      "sha256": "0e87bbac6c5742c7f09d35c789dd006f568f10fb7bda4615adedb1ddba65c41d"
+    },
+    "slug/desktop/pooloperator/private_acl_linux_test.go": {
+      "bytes": 3983,
+      "sha256": "56a6d657a4765b53f9bbc79653b0b552e092dccf191603fb5a8dee0d7318d674"
+    },
+    "slug/desktop/pooloperator/intake_source_busy_classification_test.go": {
+      "bytes": 3686,
+      "sha256": "1d3f0431322a71b8f51d123f8ed52a37e6351c2daebe6d611f088141f01dceb5"
+    },
+    "slug/desktop/pooloperator/intake_source_busy_test.go": {
+      "bytes": 17355,
+      "sha256": "c903a46429aa2a82192b33b2aecde71052d51196d6f723b55de3b3773022a916"
+    },
+    "slug/desktop/pooloperator/daily_retained_admission_test.go": {
+      "bytes": 12923,
+      "sha256": "94001cf1d7a3508adb63dbef2ff21a36565d9c02fc26f85e1ac6b6b5bf714f03"
+    },
+    "slug/desktop/pooloperator/daily_round_contention_test.go": {
+      "bytes": 11849,
+      "sha256": "984ef70f36a080c50321150b97618dd6fd5cbede6cfb642b90bd4a605aeec361"
+    },
+    "slug/desktop/pooloperator/daily_setup_test.go": {
+      "bytes": 6476,
+      "sha256": "88c6ee9c9c92c15580bf6629565f55b45c3d6930fce17069831eca78918a9adf"
+    },
+    "slug/desktop/pooloperator/daily_lifecycle_test.go": {
+      "bytes": 3848,
+      "sha256": "83a2d8c84c66d0a5c06a2d90da561bdd455c927883ab0937e9a67d6e5f909154"
+    },
+    "slug/desktop/pooloperator/daily_command_test.go": {
+      "bytes": 2678,
+      "sha256": "35d64f1b6f1f0b120275c3176581c0e58d075104b9c1d71bfb55ad31b4be479a"
+    },
+    "slug/desktop/pooloperator/live_round_test.go": {
+      "bytes": 14660,
+      "sha256": "56c32aa3f3cbfd005eca735769c15007ab0739c15b1e913870207ec41fce985d"
+    },
+    "slug/desktop/pooloperator/issue_setup_test.go": {
+      "bytes": 6463,
+      "sha256": "1b6eccf2214a7d02205599d4a6c559bae3c77a644ddb48796f6363a8f8f12807"
+    },
+    "slug/desktop/pooloperator/issue_lifecycle_test.go": {
+      "bytes": 5335,
+      "sha256": "981068fde1cc5dfc336eb1d15d2412b055fb00b2bcafe98017f938a0ff244a0a"
+    },
+    "slug/poolminer/daily_test.go": {
+      "bytes": 7793,
+      "sha256": "e4e306639e9c96e667caa4082c5b9772b792df0d197f0bdbdfa47defd4765b29"
+    },
+    "slug/poolservice/daily_reference_test.go": {
+      "bytes": 11572,
+      "sha256": "2c49776fb70d7c19f884ae84c772f24fa178cfac899370d5725ddfc261e27e85"
+    },
+    "slug/poolservice/daily_server_test.go": {
+      "bytes": 5843,
+      "sha256": "07b78c4f694964a9a99a27c8bd5043eaff945505464bc16e5f55737a41c9a522"
+    },
+    "slug/poolservice/daily_lifecycle_test.go": {
+      "bytes": 2447,
+      "sha256": "8692087398350bfff512ff2f403ccf38503c5306dc58a48227c63a5114175f68"
+    },
+    "slug/poolingress/daily_test.go": {
+      "bytes": 4649,
+      "sha256": "f21f0527e7af3d753012dd5aa23be52594922d6c642b0aaac737e6b0f55cf01f"
+    },
+    "slug/poolservice/recoverable_reference_test.go": {
+      "bytes": 11648,
+      "sha256": "19d74da52755d9952ae09f3d1a2650e4d755d452e6b46936529cae2e38fd07d5"
+    },
+    "slug/poolservice/recoverable_client_test.go": {
+      "bytes": 5611,
+      "sha256": "c34d6851d4c549a95b3223d60c9cfd866783d13cd0e069735c409ee8b48c3027"
+    },
+    "slug/poolservice/recoverable_server_test.go": {
+      "bytes": 5209,
+      "sha256": "7b91a5835be0a4d41d3662fba37b5c26c2c2f2bcd98a56c5358c5df2871898f2"
+    },
+    "slug/poolingress/recoverable_test.go": {
+      "bytes": 4504,
+      "sha256": "3c46340fce04ab63c5622924450f20eeb88487b71d68b25844c981e0c1d67034"
+    },
+    "slug/prospectworker/pool_daily_test.go": {
+      "bytes": 21359,
+      "sha256": "629a801a17eb09a6709e408728d099194e4344dcf8957b83e53f9b712c5af317"
+    },
+    "slug/prospectworker/pool_issue_recovery_test.go": {
+      "bytes": 24137,
+      "sha256": "a206ee442c7a793e4f6902dae1dbc2c6593f20f1076c8c2e58a4d163cf8ce8ea"
+    },
+    "slug/desktop/pilot/remote_pool_daily_test.go": {
+      "bytes": 6722,
+      "sha256": "552aaa1688a4eca44644a743cc0061c4f0656622f8edf85d55e9e8397a863045"
+    },
+    "slug/desktop/pilot/remote_pool_daily_owner_test.go": {
+      "bytes": 5504,
+      "sha256": "d41d8d7ee9212009888aabeffcc2794f22f99de1162be6a3616363c04e4055a0"
+    },
+    "slug/desktop/pilot/remote_pool_daily_custody_test.go": {
+      "bytes": 4892,
+      "sha256": "4fce8de28ce56e2a809e6ce1288d90399b09d6a8754b4a80aec3b2b067384b83"
+    },
+    "slug/desktop/accountpilot/remote_pool_daily_test.go": {
+      "bytes": 1215,
+      "sha256": "3c9e4c3520862dc02881f90ccdd0b05c746c3e7b93004a5c10f71ee11c45ea1d"
+    },
+    "slug/desktop/pilot/remote_pool_daily_cancellation_test.go": {
+      "bytes": 2347,
+      "sha256": "35f691200646d971fea7d4c004dcec90cc181bb7ca7bb0a90b756c3f3ec5224f"
+    },
+    "slug/desktop/accountpilot/remote_pool_daily_cancellation_test.go": {
+      "bytes": 2376,
+      "sha256": "cc817f607e788b387a9b01f99f9d4ed78c254ebb85ae4fed4cb5a7b350c4b19d"
+    },
+    "slug/desktop/cmd/slugpilot/daily_launch_pipe_unix_test.go": {
+      "bytes": 3186,
+      "sha256": "6dfc763e823262c9e6451daa3e46d5a9a1d364ac4b7176623c4e611de3e7a359"
+    },
+    "slug/desktop/cmd/slugpilot/daily_launch_cancellation_test.go": {
+      "bytes": 4895,
+      "sha256": "f6e1f7f327e244259641043a3d31abe399d8ecf68c849875bad3328ab858b172"
+    },
+    "slug/desktop/cmd/slugpilot/daily_launch_owner_cancellation_test.go": {
+      "bytes": 2467,
+      "sha256": "f24bd868b28cc77e69390941e403ada4498ef14d9fc2e80d526962055e165938"
+    },
+    "slug/desktop/cmd/slugpilot/daily_launch_test.go": {
+      "bytes": 2666,
+      "sha256": "af02953bcbfff39cfa93f508402950f3e38a53ca6cb4dc7ed8a1dd6a512ac2d9"
+    },
+    "slug/desktop/pilot/remote_pool_issue_recovery_test.go": {
+      "bytes": 4557,
+      "sha256": "67884e1a0a87610e19c3e74d46edd4d7783e973f9c419620844cb38cfdc4f771"
+    },
+    "slug/desktop/pilot/remote_pool_issue_custody_test.go": {
+      "bytes": 4126,
+      "sha256": "596676f86053e0343ae8206cd2723dcae9a05a06f2e72951894bddd7fc8cd643"
+    },
+    "slug/desktop/pilot/remote_pool_issue_postresponse_test.go": {
+      "bytes": 8419,
+      "sha256": "009bf4d32cfacfc23658a77b49cc9b46706eb95fe8771849c4c1631bbb14979c"
+    },
+    "slug/desktop/accountpilot/remote_pool_issue_recovery_test.go": {
+      "bytes": 1274,
+      "sha256": "090bb73b6e0758d72820e2ac3e8bcd2aaa585f498ec5c22d34daebac00b704f9"
+    },
+    "slug/desktop/cmd/slugpilot/issue_recovery_launch_test.go": {
+      "bytes": 1335,
+      "sha256": "979086063a200d722611d50ca9b5a9232a062d12ee0eabe6b78197b18ef6260a"
+    },
+    "slug/internal/mininglease/daily_test.go": {
+      "bytes": 3969,
+      "sha256": "90541f5e3f2bb82fc6aec4c442b8a74dfc1eee336b149af6fc321d1ffbb41663"
+    },
+    "slug/internal/poolcapacity/daily_reference_test.go": {
+      "bytes": 10827,
+      "sha256": "3d6dedc26efe3bc3d7996233f775c94d21f07fa3d2427f6e978d4694dc3e134c"
+    },
+    "slug/poolshare/daily_binding_test.go": {
+      "bytes": 2243,
+      "sha256": "a27d5bfc7b4323a0ee5966395dc3db46619d485541db25ae2be112d035527c9c"
+    },
+    "slug/internal/poolcapacity/reference_test.go": {
+      "bytes": 2627,
+      "sha256": "1aa127631dec6021acdac586d0b561dc1741e445c5fcf0c0c7d983a324408c76"
+    },
+    "slug/poolshare/daily_operator_admission_test.go": {
+      "bytes": 29925,
+      "sha256": "1f7c5da3ad1d4e595ec5caf2506bce1abbb0dbf389de496b751fe7ac6ffa70cd"
+    },
+    "slug/poolshare/daily_test.go": {
+      "bytes": 19393,
+      "sha256": "e1da781a712cb5613d66c2529461e9a7d86c2d47efcb64e88217d5b1802f2aac"
+    },
+    "slug/poolround/daily_test.go": {
+      "bytes": 8723,
+      "sha256": "8df2d26b1d99795145677f45588481e4d15b5a262a012dda9c29a34c95a6b04c"
+    },
+    "slug/poolround/live_test.go": {
+      "bytes": 17542,
+      "sha256": "a6ca292096077dc54377673e66c0dc61f431900b7ea4ac7c7af3d1a411927b80"
+    },
+    "slug/poolround/live_reference_test.go": {
+      "bytes": 6211,
+      "sha256": "95941991e2e10f88845f43b1c4ba02d4d1e750f81c8229ec12677efe8815668d"
+    },
+    "slug/poolround/source_busy_test.go": {
+      "bytes": 1427,
+      "sha256": "5bbb9236ae675c69470fd4d6a9fa2bc203dd2151712483dcf3da581e3f7a9270"
+    },
+    "slug/poolshare/issue_reference_test.go": {
+      "bytes": 4198,
+      "sha256": "ccaeb991031a7563baa2be88a3d75d71e1ab8c12d6ebd9fcf6c0740788456e3b"
+    },
+    "slug/poolshare/issue_test.go": {
+      "bytes": 12969,
+      "sha256": "94c2391711d053b2d0aa9d54d3174c19c08acba1108fded6eb21ac80a6016b13"
+    },
+    "slug/registry/manifest_job_try_test.go": {
+      "bytes": 3722,
+      "sha256": "e1d55cbd4a5c36ab7320eca1d87c9e2581e9c6d14e8c1472cee4d8f32a19f5c2"
+    },
+    "slug/poolservice/daily_source_refusal_test.go": {
+      "bytes": 890,
+      "sha256": "0b4dabe3b70dcc666ac2529d13bf197dc2fa20b443b1166a739568090bb85c0b"
+    },
+    "slug/registry/issue_reference_test.go": {
+      "bytes": 2925,
+      "sha256": "139265ff83547064b347f886a2aef82af3f2ab93eb5489f609822ad56c37cd2f"
+    },
+    "slug/registry/issue_store_test.go": {
+      "bytes": 6721,
+      "sha256": "e4436d361c77baaebf88ac9ba486668c69c8e17f4881db42e9ad530467f360b4"
+    },
+    "slug/registry/issue_files_test.go": {
+      "bytes": 2272,
+      "sha256": "54472fc96674a6dfdd4882c0e66d51e8f332b65bab64bb84afe544e11606f3be"
+    },
+    "slug/registry/manifest_admission_preflight_test.go": {
+      "bytes": 12807,
+      "sha256": "ff6102914a978e885d899eeb53186cee0075ebc11b5f97ba816c30d2199f510f"
+    },
+    "slug/prospectservice/daily_fenced_admission_test.go": {
+      "bytes": 12017,
+      "sha256": "80c3fa74dc5f9879cd7309307fdfcfe00bf5e64400ab6854f9f744f46d491f14"
+    },
+    "slug/prospectservice/daily_fenced_capacity_reopen_test.go": {
+      "bytes": 4760,
+      "sha256": "c6c5cd567d1bb7e884d799f89bf47ccae9e12ea7a7a25cc6bb269835e90e5847"
+    },
+    "slug/prospectworker/pool_retained_admission_test.go": {
+      "bytes": 3628,
+      "sha256": "bfa83577f9d12eaf7915c35216db41604aba0bcce43f8f61122fdb4133073d7e"
+    },
+    "slug/pooltxshape/native_test.go": {
+      "bytes": 3869,
+      "sha256": "ffcd3bac78d8b3213452cb2da57d70b904bf246ed4072104e56ef1f0b9ad0ad3"
+    },
+    "slug/poolsettlenode/daily_test.go": {
+      "bytes": 18790,
+      "sha256": "5988a0f951b43f872d11297c56f7f633d73997e293a268e4aa1666c200c8ff1e"
+    },
+    "slug/poolsettle/replay_test.go": {
+      "bytes": 14892,
+      "sha256": "d68de971cbe20a7effd2787ddad540e3408c364c31ac82c2658e141b97977c48"
+    },
+    "slug/poolsettle/daily_payout_reference_test.go": {
+      "bytes": 4744,
+      "sha256": "08afddb4134ae3d4c8cf64dd5ae05bde4da66378bf232d56a27e51f1b014d609"
+    },
+    "slug/poolsettle/daily_payout_history_test.go": {
+      "bytes": 7604,
+      "sha256": "3f561c93cbf8cf581da5f81e5dc5cf851e384c438614aca92f4494d2da2dfb43"
+    },
+    "slug/poolsettle/daily_refresh_test.go": {
+      "bytes": 6137,
+      "sha256": "c8aa19d0cfba9ef941817f30e89b2be6e1656f787ab79182644e1941cf400a26"
+    },
+    "slug/poolsettle/daily_refresh_profile_test.go": {
+      "bytes": 465,
+      "sha256": "989dca73883736715900a3e98423ef3a7db825e6be4038302c00bb19fbb0080d"
+    },
+    "slug/poolschedule/completed_refresh_test.go": {
+      "bytes": 4675,
+      "sha256": "61db179e45c028d8e33812dcd1f0a4fe436c2acdc9d82ba7e552edf812a4fc0d"
+    },
+    "slug/poolschedule/completed_refresh_integration_test.go": {
+      "bytes": 7889,
+      "sha256": "fd8583403588cac7befd69265a6e2f0d19904ec783e34f734c74f84f4707f5ac"
+    },
+    "slug/poolschedule/retry_tree_test.go": {
+      "bytes": 3038,
+      "sha256": "09518cc9e9d0c3274fdaf8ca290b509d2b4511690d1efcc4a9488f1c3fe7d709"
+    },
+    "slug/poolschedule/round_busy_integration_test.go": {
+      "bytes": 8321,
+      "sha256": "0787a4b4f8d1d4e380983251ab3c724643a18682fcb05f117712574c30439dab"
+    },
+    "slug/poolschedule/daily_admission_contention_integration_test.go": {
+      "bytes": 6847,
+      "sha256": "7be0587fa3c9b7ee4ff8335844a37ac7e8bacf0803b64fb85e4f8c9a52ebe3bb"
+    },
+    "slug/poolsettle/daily_admission_contention_classification_test.go": {
+      "bytes": 3905,
+      "sha256": "fc94c73fdceb6458a927ff325586ff9adeeb2efa65154bfe11c4712a8acbef90"
+    },
+    "slug/poolsettle/daily_admission_contention_test.go": {
+      "bytes": 12655,
+      "sha256": "640235e777f932d5354a669252c20a2c1e4574e5523ef34fb2e8058891362c44"
+    },
+    "slug/poolsettle/daily_codec_test.go": {
+      "bytes": 16432,
+      "sha256": "4d1b3f858875e7cc26be8b32bcb836653e46dc38b6494185357d00566ebf4583"
+    },
+    "slug/poolsettle/daily_admission_integration_test.go": {
+      "bytes": 14792,
+      "sha256": "f00b4bc5c99cc7af5ea57c98bf92c4a77e50bc2f255f11cfeab6a4c47f4aff55"
+    },
+    "slug/poolsettle/daily_integration_test.go": {
+      "bytes": 20648,
+      "sha256": "5a76cc14e485b1f34ff1fc273198f3d14de43388544c46aece07b313ae55face"
+    },
+    "slug/poolsettle/daily_signing_test.go": {
+      "bytes": 8239,
+      "sha256": "516a2560a84f0fa5b2e490dba676d50c1bbbeff73c364b240e3fa8964d9ae8ba"
+    },
+    "slug/poolschedule/daily_codec_test.go": {
+      "bytes": 8331,
+      "sha256": "b546622e784ebacaa6d769a8e918b23feb295387c8d11466340862a3eb1b904a"
+    },
+    "slug/poolschedule/daily_schedule_test.go": {
+      "bytes": 6535,
+      "sha256": "d4599f5042c6f89336f0eb1559680e2f70578032e38b20f4925491015bd3c959"
+    },
+    "slug/registry/manifest_job_try_cheap_test.go": {
+      "bytes": 501,
+      "sha256": "4bcf480bf91e890a0ebd133d86bf7d6fee56b8934a4087407927122af589889a"
+    },
+    "slug/registry/manifest_admission_preflight_profile_test.go": {
+      "bytes": 657,
+      "sha256": "d0d8067d1daabdad0fec6a6ede485722a5743daebbff71686187a592ee2418a0"
+    },
+    "slug/prospectservice/daily_fenced_profile_test.go": {
+      "bytes": 536,
+      "sha256": "d2b7efaa31e341db468faf5a85e04f97ec5b0bc4c5c52f9fe0c8b0975b4f6ef6"
+    },
+    "slug/prospectworker/pool_profile_test.go": {
+      "bytes": 3075,
+      "sha256": "cde87d9d906552ad939f2acb73dd69f76050e2b4c821154558709f171283da38"
+    },
+    "slug/desktop/pooloperator/issue_profile_test.go": {
+      "bytes": 1232,
+      "sha256": "3ca9bb6df218ca365cfcfb38df70c6f3f284c756ba298ef2f682dfa5836d8093"
+    }
+  },
+  "groups": [
+    {
+      "line": 290,
+      "command": "normal-wire-guard",
+      "cwd": "$CHAIN/wire",
+      "packages": [
+        "."
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": false,
+      "run": "^TestBlockHashMemoizationPreservesArgon2$",
+      "tags": "",
+      "required": [
+        "TestBlockHashMemoizationPreservesArgon2"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/wire/v2"
+      ],
+      "required_packages": {
+        "TestBlockHashMemoizationPreservesArgon2": "github.com/taytr-llc/slug/wire/v2"
+      }
+    },
+    {
+      "line": 308,
+      "command": "normal-authority",
+      "cwd": "$CHAIN",
+      "packages": [
+        "./internal/operatorauthority"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": false,
+      "run": null,
+      "tags": "",
+      "required": [
+        "TestOperatorAuthorityExtendedACLRefusal",
+        "TestOperatorAuthorityIndependentNamedSignatures"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/internal/operatorauthority"
+      ],
+      "required_packages": {
+        "TestOperatorAuthorityExtendedACLRefusal": "github.com/taytr-llc/slug/internal/operatorauthority",
+        "TestOperatorAuthorityIndependentNamedSignatures": "github.com/taytr-llc/slug/internal/operatorauthority"
+      }
+    },
+    {
+      "line": 310,
+      "command": "normal-wallet",
+      "cwd": "$WALLET",
+      "packages": [
+        "./waddrmgr",
+        "./wallet"
+      ],
+      "workspace": "$WALLET/go.work",
+      "race": false,
+      "run": "^(TestPool(Settlement|Wallet)|TestDailyPool(Settlement|Wallet))",
+      "tags": "",
+      "required": [
+        "TestPoolSettlementManagerIndependentSigning",
+        "TestPoolWalletOwnerLifecycle",
+        "TestDailyPoolSettlementConditionalIndependentSignatures",
+        "TestDailyPoolSettlementConditional721AndCancellation",
+        "TestDailyPoolSettlementOwnedInputsAndShapeRefusals",
+        "TestDailyPoolWalletBindingReference",
+        "TestDailyPoolWalletFreshOwnerAndLegacyRefusal"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slugwallet/waddrmgr",
+        "github.com/taytr-llc/slugwallet/wallet"
+      ],
+      "required_packages": {
+        "TestPoolSettlementManagerIndependentSigning": "github.com/taytr-llc/slugwallet/waddrmgr",
+        "TestPoolWalletOwnerLifecycle": "github.com/taytr-llc/slugwallet/wallet",
+        "TestDailyPoolSettlementConditionalIndependentSignatures": "github.com/taytr-llc/slugwallet/waddrmgr",
+        "TestDailyPoolSettlementConditional721AndCancellation": "github.com/taytr-llc/slugwallet/waddrmgr",
+        "TestDailyPoolSettlementOwnedInputsAndShapeRefusals": "github.com/taytr-llc/slugwallet/waddrmgr",
+        "TestDailyPoolWalletBindingReference": "github.com/taytr-llc/slugwallet/wallet",
+        "TestDailyPoolWalletFreshOwnerAndLegacyRefusal": "github.com/taytr-llc/slugwallet/wallet"
+      }
+    },
+    {
+      "line": 318,
+      "command": "normal-operator",
+      "cwd": "$DESKTOP",
+      "packages": [
+        "./pooloperator"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": false,
+      "run": "^Test(Operator|DailyOperator|DailyProvision|DailyIntake|DailyRetained|Recoverable)",
+      "tags": "",
+      "required": [
+        "TestOperatorPrivateInputLinuxACLRefusal",
+        "TestOperatorPrivateInputLinuxACLRefusal/file-access-before",
+        "TestOperatorPrivateInputLinuxACLRefusal/parent-access-before",
+        "TestOperatorPrivateInputLinuxACLRefusal/parent-default-before",
+        "TestOperatorPrivateInputLinuxACLRefusal/file-access-after",
+        "TestOperatorPrivateInputLinuxACLRefusal/parent-default-after",
+        "TestOperatorIntakeSourceBusyErrorTrees",
+        "TestOperatorIntakeMutexCancellationJoinsHolder",
+        "TestDailyIntakeOriginalIssuerBusyPreservesDrainAndPayout",
+        "TestDailyIntakeOriginalIssuerCancellationNeverEnables",
+        "TestDailyRetainedAdmissionSelectionReadinessAndDirectDrain",
+        "TestDailyRetainedAdmissionFullSourceReopenPreservesPayment",
+        "TestDailyRetainedAdmissionHardEscalationAndConcurrentReadiness",
+        "TestDailyRetainedAdmissionHardCauseSurvivesSourceBusy",
+        "TestDailyRetainedAdmissionEnableErrorsKeepOriginalOwner",
+        "TestDailyRetainedAdmissionCanceledBeforeTransition",
+        "TestDailyRetainedRoundOriginalIssuerReconciles",
+        "TestDailyRetainedRoundCancellationJoinsWhileIssuerHeld",
+        "TestDailyRetainedRoundRetryClassifiesExactBusy",
+        "TestDailyRetainedRoundRetryKeepsOriginalDeadline",
+        "TestDailyOperatorIndependentComposition",
+        "TestDailyOperatorIndependentFraming",
+        "TestDailyProvisionOriginalWalletAndRuntimeReopen",
+        "TestDailyProvisionResumesOriginalMaterialAndRefusesOtherMode",
+        "TestDailyOperatorFilesSelectedMarkers",
+        "TestDailyProvisionCapacityBeforeCreation",
+        "TestDailyOperatorCommandExplicitSelection",
+        "TestDailyOperatorCanceledCommandBeforeEffects",
+        "TestOperatorLiveRoundOriginalCatchupAndDefault",
+        "TestOperatorLiveRoundCapacityRefresh",
+        "TestOperatorLiveRoundSelectionRefusals",
+        "TestOperatorLiveRoundCloseJoinsSelection",
+        "TestRecoverableOperatorIndependentWrappers",
+        "TestRecoverableOperatorIndependentSetupFraming",
+        "TestRecoverableOperatorCommandExplicitSelection",
+        "TestRecoverableOperatorFilesRefuseOtherModes",
+        "TestRecoverableProvisionOriginalMaterialLostReady",
+        "TestRecoverableProvisionCapacityBeforeEffects"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/desktop/pooloperator"
+      ],
+      "required_packages": {
+        "TestOperatorPrivateInputLinuxACLRefusal": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestOperatorPrivateInputLinuxACLRefusal/file-access-before": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestOperatorPrivateInputLinuxACLRefusal/parent-access-before": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestOperatorPrivateInputLinuxACLRefusal/parent-default-before": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestOperatorPrivateInputLinuxACLRefusal/file-access-after": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestOperatorPrivateInputLinuxACLRefusal/parent-default-after": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestOperatorIntakeSourceBusyErrorTrees": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestOperatorIntakeMutexCancellationJoinsHolder": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyIntakeOriginalIssuerBusyPreservesDrainAndPayout": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyIntakeOriginalIssuerCancellationNeverEnables": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyRetainedAdmissionSelectionReadinessAndDirectDrain": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyRetainedAdmissionFullSourceReopenPreservesPayment": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyRetainedAdmissionHardEscalationAndConcurrentReadiness": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyRetainedAdmissionHardCauseSurvivesSourceBusy": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyRetainedAdmissionEnableErrorsKeepOriginalOwner": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyRetainedAdmissionCanceledBeforeTransition": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyRetainedRoundOriginalIssuerReconciles": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyRetainedRoundCancellationJoinsWhileIssuerHeld": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyRetainedRoundRetryClassifiesExactBusy": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyRetainedRoundRetryKeepsOriginalDeadline": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyOperatorIndependentComposition": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyOperatorIndependentFraming": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyProvisionOriginalWalletAndRuntimeReopen": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyProvisionResumesOriginalMaterialAndRefusesOtherMode": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyOperatorFilesSelectedMarkers": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyProvisionCapacityBeforeCreation": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyOperatorCommandExplicitSelection": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyOperatorCanceledCommandBeforeEffects": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestOperatorLiveRoundOriginalCatchupAndDefault": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestOperatorLiveRoundCapacityRefresh": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestOperatorLiveRoundSelectionRefusals": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestOperatorLiveRoundCloseJoinsSelection": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestRecoverableOperatorIndependentWrappers": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestRecoverableOperatorIndependentSetupFraming": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestRecoverableOperatorCommandExplicitSelection": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestRecoverableOperatorFilesRefuseOtherModes": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestRecoverableProvisionOriginalMaterialLostReady": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestRecoverableProvisionCapacityBeforeEffects": "github.com/taytr-llc/slug/desktop/pooloperator"
+      }
+    },
+    {
+      "line": 352,
+      "command": "normal-daily-public-transport",
+      "cwd": "$CHAIN",
+      "packages": [
+        "./poolminer",
+        "./poolservice",
+        "./poolingress"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": false,
+      "run": null,
+      "tags": "",
+      "required": [
+        "TestDailyMinerIndependentBytesAndBindings",
+        "TestDailyMinerRotationAudienceAndReopen",
+        "TestDailyTransportIndependentBindings",
+        "TestDailyTransportIndependentMoneyPages",
+        "TestDailyTransportIndependentFraming",
+        "TestDailyClientUnknownIssueNeverRetries",
+        "TestDailyServerOriginalOwnersAndMoneyBinding",
+        "TestDailyServerRefusesBeforeEffects",
+        "TestDailyServerBusyAndRunJoins",
+        "TestDailyIngressCatalogAndCrossMode",
+        "TestDailyIngressOriginalTLSAndJoin",
+        "TestRecoverableTransportIndependentBindings",
+        "TestRecoverableIssueIndependentResults",
+        "TestRecoverableTransportIndependentMoneyAndWork",
+        "TestRecoverableTransportIndependentFraming",
+        "TestRecoverableClientOriginalResponseProvenance",
+        "TestRecoverableClientExactRequestUnknownAndRead",
+        "TestRecoverableServerOriginalOwnersAndExactRequest",
+        "TestRecoverableServerRefusesBeforeEffects",
+        "TestRecoverableIngressOriginalTLSAndJoin",
+        "TestRecoverableIngressCatalogAndCrossMode"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/poolminer",
+        "github.com/taytr-llc/slug/poolservice",
+        "github.com/taytr-llc/slug/poolingress"
+      ],
+      "required_packages": {
+        "TestDailyMinerIndependentBytesAndBindings": "github.com/taytr-llc/slug/poolminer",
+        "TestDailyMinerRotationAudienceAndReopen": "github.com/taytr-llc/slug/poolminer",
+        "TestDailyTransportIndependentBindings": "github.com/taytr-llc/slug/poolservice",
+        "TestDailyTransportIndependentMoneyPages": "github.com/taytr-llc/slug/poolservice",
+        "TestDailyTransportIndependentFraming": "github.com/taytr-llc/slug/poolservice",
+        "TestDailyClientUnknownIssueNeverRetries": "github.com/taytr-llc/slug/poolservice",
+        "TestDailyServerOriginalOwnersAndMoneyBinding": "github.com/taytr-llc/slug/poolservice",
+        "TestDailyServerRefusesBeforeEffects": "github.com/taytr-llc/slug/poolservice",
+        "TestDailyServerBusyAndRunJoins": "github.com/taytr-llc/slug/poolservice",
+        "TestDailyIngressCatalogAndCrossMode": "github.com/taytr-llc/slug/poolingress",
+        "TestDailyIngressOriginalTLSAndJoin": "github.com/taytr-llc/slug/poolingress",
+        "TestRecoverableTransportIndependentBindings": "github.com/taytr-llc/slug/poolservice",
+        "TestRecoverableIssueIndependentResults": "github.com/taytr-llc/slug/poolservice",
+        "TestRecoverableTransportIndependentMoneyAndWork": "github.com/taytr-llc/slug/poolservice",
+        "TestRecoverableTransportIndependentFraming": "github.com/taytr-llc/slug/poolservice",
+        "TestRecoverableClientOriginalResponseProvenance": "github.com/taytr-llc/slug/poolservice",
+        "TestRecoverableClientExactRequestUnknownAndRead": "github.com/taytr-llc/slug/poolservice",
+        "TestRecoverableServerOriginalOwnersAndExactRequest": "github.com/taytr-llc/slug/poolservice",
+        "TestRecoverableServerRefusesBeforeEffects": "github.com/taytr-llc/slug/poolservice",
+        "TestRecoverableIngressOriginalTLSAndJoin": "github.com/taytr-llc/slug/poolingress",
+        "TestRecoverableIngressCatalogAndCrossMode": "github.com/taytr-llc/slug/poolingress"
+      }
+    },
+    {
+      "line": 375,
+      "command": "normal-daily-public-worker",
+      "cwd": "$CHAIN",
+      "packages": [
+        "./prospectworker"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": false,
+      "run": "^Test(DailyPool|Pool|RecoverablePool)",
+      "tags": "",
+      "required": [
+        "TestDailyPoolIndependentBytesAndModes",
+        "TestDailyPoolIndependentJournalAuditAndReopen",
+        "TestDailyPoolIssueOriginalAttemptAndUncertainty",
+        "TestDailyPoolIssueSyncFailuresKeepOriginalEvidence",
+        "TestDailyPoolHeldReopenStillReconcilesOriginalPending",
+        "TestDailyPoolRunUnknownIssuePersistsAcrossOriginalReopen",
+        "TestDailyPoolConstructorFailureRetainsOriginalCleanupOwner",
+        "TestRecoverablePoolIndependentConfigRowsAndModes",
+        "TestRecoverablePoolRunUnknownRestartExactRequest",
+        "TestRecoverablePoolIntentCancellationCapacityAndUnknownSync",
+        "TestRecoverablePoolNamespaceRejectsMixedWrongLinks",
+        "TestRecoverablePoolPendingHistoryAndActiveRequestAudit",
+        "TestRecoverablePoolTerminalClearsOnlyValidatedResult",
+        "TestRecoverablePoolRunReconcilesOriginalEntryBeforeResume",
+        "TestRecoverablePoolRejectsManufacturedDTOAuthority"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/prospectworker"
+      ],
+      "required_packages": {
+        "TestDailyPoolIndependentBytesAndModes": "github.com/taytr-llc/slug/prospectworker",
+        "TestDailyPoolIndependentJournalAuditAndReopen": "github.com/taytr-llc/slug/prospectworker",
+        "TestDailyPoolIssueOriginalAttemptAndUncertainty": "github.com/taytr-llc/slug/prospectworker",
+        "TestDailyPoolIssueSyncFailuresKeepOriginalEvidence": "github.com/taytr-llc/slug/prospectworker",
+        "TestDailyPoolHeldReopenStillReconcilesOriginalPending": "github.com/taytr-llc/slug/prospectworker",
+        "TestDailyPoolRunUnknownIssuePersistsAcrossOriginalReopen": "github.com/taytr-llc/slug/prospectworker",
+        "TestDailyPoolConstructorFailureRetainsOriginalCleanupOwner": "github.com/taytr-llc/slug/prospectworker",
+        "TestRecoverablePoolIndependentConfigRowsAndModes": "github.com/taytr-llc/slug/prospectworker",
+        "TestRecoverablePoolRunUnknownRestartExactRequest": "github.com/taytr-llc/slug/prospectworker",
+        "TestRecoverablePoolIntentCancellationCapacityAndUnknownSync": "github.com/taytr-llc/slug/prospectworker",
+        "TestRecoverablePoolNamespaceRejectsMixedWrongLinks": "github.com/taytr-llc/slug/prospectworker",
+        "TestRecoverablePoolPendingHistoryAndActiveRequestAudit": "github.com/taytr-llc/slug/prospectworker",
+        "TestRecoverablePoolTerminalClearsOnlyValidatedResult": "github.com/taytr-llc/slug/prospectworker",
+        "TestRecoverablePoolRunReconcilesOriginalEntryBeforeResume": "github.com/taytr-llc/slug/prospectworker",
+        "TestRecoverablePoolRejectsManufacturedDTOAuthority": "github.com/taytr-llc/slug/prospectworker"
+      }
+    },
+    {
+      "line": 392,
+      "command": "normal-daily-public-desktop",
+      "cwd": "$DESKTOP",
+      "packages": [
+        "./pilot",
+        "./accountpilot",
+        "./cmd/slugpilot"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": false,
+      "run": "^Test(Daily|RemotePool|Recoverable)",
+      "tags": "",
+      "required": [
+        "TestDailyRemoteIndependentConfigAndMoneyBinding",
+        "TestDailyRemoteIndependentCredentialGrammar",
+        "TestDailyRemoteSelectionBeforeOriginalOwnerEffects",
+        "TestDailyRemoteOriginalWalletRecipientAndMiningEpoch",
+        "TestDailyRemoteProtectedOriginalAudienceAndCancellation",
+        "TestDailyRemoteMarkersAndExactOutboxRemainSeparate",
+        "TestDailyRemoteControllerKeepsOriginalEpochAndRefusesLegacyWire",
+        "TestDailyRemoteControllerModeRefusesBeforeRoot",
+        "TestDailyRemoteCancellationCauseAndLegacyParity",
+        "TestDailyRemoteStartRetainsObservedCloseFailure",
+        "TestDailyRemoteOriginalAccountCancellationProvenance",
+        "TestDailyRemoteObservedEpochLossSurvivesCancellation",
+        "TestDailyHeadlessParentCancellationInterruptsOriginalPipe",
+        "TestDailyHeadlessOutputFailureSurvivesParentCancellation",
+        "TestDailyHeadlessCancellationPreservesOtherCauses",
+        "TestDailyHeadlessFixedStatusAtomicFrame",
+        "TestDailyHeadlessOriginalFileOwnersJoinBeforeCancellationSuccess",
+        "TestDailyHeadlessObservedIntegrityIsNotCancellation",
+        "TestDailyHeadlessFlagsAndCancellationBeforeEffects",
+        "TestDailyHeadlessOutputCancellationJoins",
+        "TestRecoverableRemoteIndependentConfigCredentialMarkers",
+        "TestRecoverableRemoteProtectedOriginalLeaseAndMarkers",
+        "TestRecoverableRemoteCredentialChangeAfterClientResponseRetainsIntent",
+        "TestRecoverableRemoteControllerOriginalEpochAndLegacyRefusal",
+        "TestRecoverableRemoteControllerRefusesBeforeOriginalRoot",
+        "TestRecoverableIssueHeadlessSoleSelection"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/desktop/pilot",
+        "github.com/taytr-llc/slug/desktop/accountpilot",
+        "github.com/taytr-llc/slug/desktop/cmd/slugpilot"
+      ],
+      "required_packages": {
+        "TestDailyRemoteIndependentConfigAndMoneyBinding": "github.com/taytr-llc/slug/desktop/pilot",
+        "TestDailyRemoteIndependentCredentialGrammar": "github.com/taytr-llc/slug/desktop/pilot",
+        "TestDailyRemoteSelectionBeforeOriginalOwnerEffects": "github.com/taytr-llc/slug/desktop/pilot",
+        "TestDailyRemoteOriginalWalletRecipientAndMiningEpoch": "github.com/taytr-llc/slug/desktop/pilot",
+        "TestDailyRemoteProtectedOriginalAudienceAndCancellation": "github.com/taytr-llc/slug/desktop/pilot",
+        "TestDailyRemoteMarkersAndExactOutboxRemainSeparate": "github.com/taytr-llc/slug/desktop/pilot",
+        "TestDailyRemoteControllerKeepsOriginalEpochAndRefusesLegacyWire": "github.com/taytr-llc/slug/desktop/accountpilot",
+        "TestDailyRemoteControllerModeRefusesBeforeRoot": "github.com/taytr-llc/slug/desktop/accountpilot",
+        "TestDailyRemoteCancellationCauseAndLegacyParity": "github.com/taytr-llc/slug/desktop/pilot",
+        "TestDailyRemoteStartRetainsObservedCloseFailure": "github.com/taytr-llc/slug/desktop/pilot",
+        "TestDailyRemoteOriginalAccountCancellationProvenance": "github.com/taytr-llc/slug/desktop/accountpilot",
+        "TestDailyRemoteObservedEpochLossSurvivesCancellation": "github.com/taytr-llc/slug/desktop/accountpilot",
+        "TestDailyHeadlessParentCancellationInterruptsOriginalPipe": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+        "TestDailyHeadlessOutputFailureSurvivesParentCancellation": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+        "TestDailyHeadlessCancellationPreservesOtherCauses": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+        "TestDailyHeadlessFixedStatusAtomicFrame": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+        "TestDailyHeadlessOriginalFileOwnersJoinBeforeCancellationSuccess": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+        "TestDailyHeadlessObservedIntegrityIsNotCancellation": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+        "TestDailyHeadlessFlagsAndCancellationBeforeEffects": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+        "TestDailyHeadlessOutputCancellationJoins": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+        "TestRecoverableRemoteIndependentConfigCredentialMarkers": "github.com/taytr-llc/slug/desktop/pilot",
+        "TestRecoverableRemoteProtectedOriginalLeaseAndMarkers": "github.com/taytr-llc/slug/desktop/pilot",
+        "TestRecoverableRemoteCredentialChangeAfterClientResponseRetainsIntent": "github.com/taytr-llc/slug/desktop/pilot",
+        "TestRecoverableRemoteControllerOriginalEpochAndLegacyRefusal": "github.com/taytr-llc/slug/desktop/accountpilot",
+        "TestRecoverableRemoteControllerRefusesBeforeOriginalRoot": "github.com/taytr-llc/slug/desktop/accountpilot",
+        "TestRecoverableIssueHeadlessSoleSelection": "github.com/taytr-llc/slug/desktop/cmd/slugpilot"
+      }
+    },
+    {
+      "line": 421,
+      "command": "normal-daily-mining-lease",
+      "cwd": "$CHAIN",
+      "packages": [
+        "./internal/mininglease"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": false,
+      "run": null,
+      "tags": "",
+      "required": [
+        "TestDailyCaptureOriginalCancellationAndLegacyParity",
+        "TestDailyCapturePreservesObservedIndependentFailures",
+        "TestDailyCaptureSuccessfulLeaseRetainsOriginalCommitFences"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/internal/mininglease"
+      ],
+      "required_packages": {
+        "TestDailyCaptureOriginalCancellationAndLegacyParity": "github.com/taytr-llc/slug/internal/mininglease",
+        "TestDailyCapturePreservesObservedIndependentFailures": "github.com/taytr-llc/slug/internal/mininglease",
+        "TestDailyCaptureSuccessfulLeaseRetainsOriginalCommitFences": "github.com/taytr-llc/slug/internal/mininglease"
+      }
+    },
+    {
+      "line": 428,
+      "command": "normal-daily-source-round",
+      "cwd": "$CHAIN",
+      "packages": [
+        "./internal/poolcapacity",
+        "./poolshare",
+        "./poolround"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": false,
+      "run": null,
+      "tags": "",
+      "required": [
+        "TestDailyRecoveryIndependentReference",
+        "TestDailyPublicBindingOriginalOwner",
+        "TestDailyEnvelopeIndependentReference",
+        "TestDailyCapacityProofFrames",
+        "TestRecoveryIndependentTwoAxisReference",
+        "TestDailyOperatorDerivedFullUnseenCanonicalReopen",
+        "TestDailyOperatorSelectionMembershipAndOwnedBudget",
+        "TestDailyOperatorSourceHoldbackBeforeIssuer",
+        "TestDailyOperatorAuditPrecedenceAndOriginalMetadata",
+        "TestDailyOperatorUncertainCommitAndExactSavedRecovery",
+        "TestDailyOperatorDrainOnlyPendingAndPostCeilingHold",
+        "TestDailyOperatorOriginalCancellationCloseAndErrorClass",
+        "TestDailyOperatorAliasesCountWholeBudget",
+        "TestDailyOperatorPhysicalFullAuditAndLegacyParity",
+        "TestDailyOperatorFinalSessionClockAndCapacityError",
+        "TestDailySourceIndependentGrammarAndKeys",
+        "TestDailySource721OriginalJobsAndReopen",
+        "TestDailySourceCanonicalStorageRefusals",
+        "TestDailySourceModesCancellationAndLimits",
+        "TestDailySourceMemoOwnedWarmColdAndTamper",
+        "TestDailyRoundIndependentBytes",
+        "TestDailyRoundLifetimeAndWindowBounds",
+        "TestDailyRoundOriginalSourceRestartAndFences",
+        "TestRoundLiveOriginalOwnerSyncAndRefresh",
+        "TestRoundLiveLateWinnerAndReopen",
+        "TestRoundLiveTouchedCorruptionRevokes",
+        "TestRoundLiveDoesNotWeakenFullAudits",
+        "TestRoundLiveUncertainWriteAndExplicitReanchor",
+        "TestRoundLiveSourceFencesCancellationAndOwnership",
+        "TestRoundLiveOriginalCloseJoins",
+        "TestRoundLiveReadOnlyRefusal",
+        "TestRoundLiveFullSyncFailureIsAtomic",
+        "TestRoundLiveIndependentModeledPages",
+        "TestRoundSourceExactBusyClassification",
+        "TestRecoverableSourceIndependentReservation",
+        "TestRecoverableSourceProposalGapExactReopen",
+        "TestRecoverableSourceExpiredUnusedAndSealedAbsence",
+        "TestRecoverableSourceUncertainCommitAndNamespaceCensus",
+        "TestRecoverableSourceCancellationAndReservedBytes"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/internal/poolcapacity",
+        "github.com/taytr-llc/slug/poolshare",
+        "github.com/taytr-llc/slug/poolround"
+      ],
+      "required_packages": {
+        "TestDailyRecoveryIndependentReference": "github.com/taytr-llc/slug/internal/poolcapacity",
+        "TestDailyPublicBindingOriginalOwner": "github.com/taytr-llc/slug/poolshare",
+        "TestDailyEnvelopeIndependentReference": "github.com/taytr-llc/slug/internal/poolcapacity",
+        "TestDailyCapacityProofFrames": "github.com/taytr-llc/slug/internal/poolcapacity",
+        "TestRecoveryIndependentTwoAxisReference": "github.com/taytr-llc/slug/internal/poolcapacity",
+        "TestDailyOperatorDerivedFullUnseenCanonicalReopen": "github.com/taytr-llc/slug/poolshare",
+        "TestDailyOperatorSelectionMembershipAndOwnedBudget": "github.com/taytr-llc/slug/poolshare",
+        "TestDailyOperatorSourceHoldbackBeforeIssuer": "github.com/taytr-llc/slug/poolshare",
+        "TestDailyOperatorAuditPrecedenceAndOriginalMetadata": "github.com/taytr-llc/slug/poolshare",
+        "TestDailyOperatorUncertainCommitAndExactSavedRecovery": "github.com/taytr-llc/slug/poolshare",
+        "TestDailyOperatorDrainOnlyPendingAndPostCeilingHold": "github.com/taytr-llc/slug/poolshare",
+        "TestDailyOperatorOriginalCancellationCloseAndErrorClass": "github.com/taytr-llc/slug/poolshare",
+        "TestDailyOperatorAliasesCountWholeBudget": "github.com/taytr-llc/slug/poolshare",
+        "TestDailyOperatorPhysicalFullAuditAndLegacyParity": "github.com/taytr-llc/slug/poolshare",
+        "TestDailyOperatorFinalSessionClockAndCapacityError": "github.com/taytr-llc/slug/poolshare",
+        "TestDailySourceIndependentGrammarAndKeys": "github.com/taytr-llc/slug/poolshare",
+        "TestDailySource721OriginalJobsAndReopen": "github.com/taytr-llc/slug/poolshare",
+        "TestDailySourceCanonicalStorageRefusals": "github.com/taytr-llc/slug/poolshare",
+        "TestDailySourceModesCancellationAndLimits": "github.com/taytr-llc/slug/poolshare",
+        "TestDailySourceMemoOwnedWarmColdAndTamper": "github.com/taytr-llc/slug/poolshare",
+        "TestDailyRoundIndependentBytes": "github.com/taytr-llc/slug/poolround",
+        "TestDailyRoundLifetimeAndWindowBounds": "github.com/taytr-llc/slug/poolround",
+        "TestDailyRoundOriginalSourceRestartAndFences": "github.com/taytr-llc/slug/poolround",
+        "TestRoundLiveOriginalOwnerSyncAndRefresh": "github.com/taytr-llc/slug/poolround",
+        "TestRoundLiveLateWinnerAndReopen": "github.com/taytr-llc/slug/poolround",
+        "TestRoundLiveTouchedCorruptionRevokes": "github.com/taytr-llc/slug/poolround",
+        "TestRoundLiveDoesNotWeakenFullAudits": "github.com/taytr-llc/slug/poolround",
+        "TestRoundLiveUncertainWriteAndExplicitReanchor": "github.com/taytr-llc/slug/poolround",
+        "TestRoundLiveSourceFencesCancellationAndOwnership": "github.com/taytr-llc/slug/poolround",
+        "TestRoundLiveOriginalCloseJoins": "github.com/taytr-llc/slug/poolround",
+        "TestRoundLiveReadOnlyRefusal": "github.com/taytr-llc/slug/poolround",
+        "TestRoundLiveFullSyncFailureIsAtomic": "github.com/taytr-llc/slug/poolround",
+        "TestRoundLiveIndependentModeledPages": "github.com/taytr-llc/slug/poolround",
+        "TestRoundSourceExactBusyClassification": "github.com/taytr-llc/slug/poolround",
+        "TestRecoverableSourceIndependentReservation": "github.com/taytr-llc/slug/poolshare",
+        "TestRecoverableSourceProposalGapExactReopen": "github.com/taytr-llc/slug/poolshare",
+        "TestRecoverableSourceExpiredUnusedAndSealedAbsence": "github.com/taytr-llc/slug/poolshare",
+        "TestRecoverableSourceUncertainCommitAndNamespaceCensus": "github.com/taytr-llc/slug/poolshare",
+        "TestRecoverableSourceCancellationAndReservedBytes": "github.com/taytr-llc/slug/poolshare"
+      }
+    },
+    {
+      "line": 469,
+      "command": "normal-daily-source-fences",
+      "cwd": "$CHAIN",
+      "packages": [
+        "./registry",
+        "./poolservice"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": false,
+      "run": "^(TestManifestTryJob|TestPoolServiceDoesNotAdoptDailySource|TestRecoverableIssuer|TestRecoverableIssueIndependent(Profiles|IntentsAndBounds))",
+      "tags": "",
+      "required": [
+        "TestManifestTryJobOriginalReadOnlyAndNonblocking",
+        "TestManifestTryJobCancellationAndClosedState",
+        "TestPoolServiceDoesNotAdoptDailySource",
+        "TestRecoverableIssueIndependentProfiles",
+        "TestRecoverableIssueIndependentIntentsAndBounds",
+        "TestRecoverableIssuerExactReplaySealAndReopen",
+        "TestRecoverableIssuerAuditReverseAndUncertainCommit",
+        "TestRecoverableIssuerFailedFileCloseRetainsOriginal",
+        "TestRecoverableIssuerFileSuccessAndFailureOwnership"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/registry",
+        "github.com/taytr-llc/slug/poolservice"
+      ],
+      "required_packages": {
+        "TestManifestTryJobOriginalReadOnlyAndNonblocking": "github.com/taytr-llc/slug/registry",
+        "TestManifestTryJobCancellationAndClosedState": "github.com/taytr-llc/slug/registry",
+        "TestPoolServiceDoesNotAdoptDailySource": "github.com/taytr-llc/slug/poolservice",
+        "TestRecoverableIssueIndependentProfiles": "github.com/taytr-llc/slug/registry",
+        "TestRecoverableIssueIndependentIntentsAndBounds": "github.com/taytr-llc/slug/registry",
+        "TestRecoverableIssuerExactReplaySealAndReopen": "github.com/taytr-llc/slug/registry",
+        "TestRecoverableIssuerAuditReverseAndUncertainCommit": "github.com/taytr-llc/slug/registry",
+        "TestRecoverableIssuerFailedFileCloseRetainsOriginal": "github.com/taytr-llc/slug/registry",
+        "TestRecoverableIssuerFileSuccessAndFailureOwnership": "github.com/taytr-llc/slug/registry"
+      }
+    },
+    {
+      "line": 481,
+      "command": "normal-retained-admission",
+      "cwd": "$CHAIN",
+      "packages": [
+        "./registry",
+        "./prospectservice",
+        "./prospectworker"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": false,
+      "run": "^Test(ManifestAdmissionPreflight|DailyFencedAdmission|RetainedPoolAdmission)",
+      "tags": "",
+      "required": [
+        "TestManifestAdmissionPreflightOriginalOwnerAndHistory",
+        "TestManifestAdmissionPreflightExpiryAndRestart",
+        "TestManifestAdmissionPreflightClockCapacityAndUncertainty",
+        "TestManifestAdmissionPreflightPublicCounts",
+        "TestDailyFencedAdmissionExpiryBeforeIntake",
+        "TestDailyFencedAdmissionSessionAndDuplicateFences",
+        "TestDailyFencedAdmissionHistoricalAndLegacy",
+        "TestDailyFencedAdmissionErrorProvenance",
+        "TestDailyFencedAdmissionLiveCapacityReopen",
+        "TestRetainedPoolAdmissionDefiniteExpiryAndUnknownReopen"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/registry",
+        "github.com/taytr-llc/slug/prospectservice",
+        "github.com/taytr-llc/slug/prospectworker"
+      ],
+      "required_packages": {
+        "TestManifestAdmissionPreflightOriginalOwnerAndHistory": "github.com/taytr-llc/slug/registry",
+        "TestManifestAdmissionPreflightExpiryAndRestart": "github.com/taytr-llc/slug/registry",
+        "TestManifestAdmissionPreflightClockCapacityAndUncertainty": "github.com/taytr-llc/slug/registry",
+        "TestManifestAdmissionPreflightPublicCounts": "github.com/taytr-llc/slug/registry",
+        "TestDailyFencedAdmissionExpiryBeforeIntake": "github.com/taytr-llc/slug/prospectservice",
+        "TestDailyFencedAdmissionSessionAndDuplicateFences": "github.com/taytr-llc/slug/prospectservice",
+        "TestDailyFencedAdmissionHistoricalAndLegacy": "github.com/taytr-llc/slug/prospectservice",
+        "TestDailyFencedAdmissionErrorProvenance": "github.com/taytr-llc/slug/prospectservice",
+        "TestDailyFencedAdmissionLiveCapacityReopen": "github.com/taytr-llc/slug/prospectservice",
+        "TestRetainedPoolAdmissionDefiniteExpiryAndUnknownReopen": "github.com/taytr-llc/slug/prospectworker"
+      }
+    },
+    {
+      "line": 494,
+      "command": "normal-daily-node-shape",
+      "cwd": "$CHAIN",
+      "packages": [
+        "./pooltxshape",
+        "./poolsettlenode"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": false,
+      "run": null,
+      "tags": "",
+      "required": [
+        "TestNativeP2WPKHIndependentReference",
+        "TestNativeP2WPKHRejectsMachineIntExtremes",
+        "TestDailyNode721AndLegacyBounds",
+        "TestDailyNodeWholeFrontierBeyondTransactionLimit",
+        "TestDailyNodeFrontierAdmissionBound",
+        "TestDailyNodeCarriedOriginsAndLateFailure",
+        "TestDailyNodeFourWorkersCancelAndClose",
+        "TestDailyNodeFeeRawAndWeightProfile",
+        "TestDailyNodeObservedWeightAndOwnedBroadcast"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/pooltxshape",
+        "github.com/taytr-llc/slug/poolsettlenode"
+      ],
+      "required_packages": {
+        "TestNativeP2WPKHIndependentReference": "github.com/taytr-llc/slug/pooltxshape",
+        "TestNativeP2WPKHRejectsMachineIntExtremes": "github.com/taytr-llc/slug/pooltxshape",
+        "TestDailyNode721AndLegacyBounds": "github.com/taytr-llc/slug/poolsettlenode",
+        "TestDailyNodeWholeFrontierBeyondTransactionLimit": "github.com/taytr-llc/slug/poolsettlenode",
+        "TestDailyNodeFrontierAdmissionBound": "github.com/taytr-llc/slug/poolsettlenode",
+        "TestDailyNodeCarriedOriginsAndLateFailure": "github.com/taytr-llc/slug/poolsettlenode",
+        "TestDailyNodeFourWorkersCancelAndClose": "github.com/taytr-llc/slug/poolsettlenode",
+        "TestDailyNodeFeeRawAndWeightProfile": "github.com/taytr-llc/slug/poolsettlenode",
+        "TestDailyNodeObservedWeightAndOwnedBroadcast": "github.com/taytr-llc/slug/poolsettlenode"
+      }
+    },
+    {
+      "line": 507,
+      "command": "normal-daily-ledger-schedule",
+      "cwd": "$CHAIN",
+      "packages": [
+        "./poolsettle",
+        "./poolschedule"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": false,
+      "run": null,
+      "tags": "",
+      "required": [
+        "TestSettlementReplayV1Parity",
+        "TestDailyPayoutIndependentReference",
+        "TestDailyPayoutPageOriginalOwnerCaptureAndRestart",
+        "TestDailyPayoutPageFinalSessionFence",
+        "TestDailyPayoutPageOriginalSparseSlotTraversal",
+        "TestDailyCompletedRefreshGuardsBeforeEffects",
+        "TestDailyCompletedRefreshRefusesOriginalV1",
+        "TestDailyCompletedRefreshProfileAndMissingOwner",
+        "TestDailyScheduleCompletedRefreshIndependentDecisions",
+        "TestDailyScheduleCompletedRefreshExpiryRetry",
+        "TestDailyScheduleCompletedRefreshImportsOnceAcrossReopen",
+        "TestScheduleRetryIndependentErrorTrees",
+        "TestDailyScheduleOriginalRoundBusyRecoversWithoutNewPayment",
+        "TestDailyScheduleEmptyCursorContentionImportsOnce",
+        "TestDailyAdmissionContentionErrorTrees",
+        "TestDailyAdmissionContentionBudgetDoesNotRenew",
+        "TestDailyAdmissionOriginalLedgerWaitCancellationAndClose",
+        "TestDailyAdmissionPostSignRoundContentionUsesOriginalAttempt",
+        "TestDailyLedgerIndependentCodecReplay",
+        "TestDailyLedgerForgedInverseIndicesAndCancellation",
+        "TestDailyLedgerStagedImportAtomic",
+        "TestDailyLedgerWriteUncertaintyRetainsExactSignedHistory",
+        "TestDailyLedgerConditionalWholeFrontierWeightDeferral",
+        "TestDailyAdmissionFullIntakePreservesPendingPayoutAcrossOwners",
+        "TestRecoverableDailyFullIntakeExpiredWinnerPreservesPendingPayout",
+        "TestDailyOperatorSourcePendingRecoveryAndNextDay",
+        "TestDailySigningIndependentBytes",
+        "TestDailySigningOpaqueOriginalLifetime",
+        "TestDailySigningBoundsAndOwnerCopies",
+        "TestDailyScheduleIndependentBindings",
+        "TestDailyScheduleIndependentCodecAndMode",
+        "TestDailyScheduleIndependentCursorAndD84",
+        "TestDailyScheduleOriginalOwnerModesAndReopen",
+        "TestDailyScheduleRunCancelAndJoin"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/poolsettle",
+        "github.com/taytr-llc/slug/poolschedule"
+      ],
+      "required_packages": {
+        "TestSettlementReplayV1Parity": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyPayoutIndependentReference": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyPayoutPageOriginalOwnerCaptureAndRestart": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyPayoutPageFinalSessionFence": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyPayoutPageOriginalSparseSlotTraversal": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyCompletedRefreshGuardsBeforeEffects": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyCompletedRefreshRefusesOriginalV1": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyCompletedRefreshProfileAndMissingOwner": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyScheduleCompletedRefreshIndependentDecisions": "github.com/taytr-llc/slug/poolschedule",
+        "TestDailyScheduleCompletedRefreshExpiryRetry": "github.com/taytr-llc/slug/poolschedule",
+        "TestDailyScheduleCompletedRefreshImportsOnceAcrossReopen": "github.com/taytr-llc/slug/poolschedule",
+        "TestScheduleRetryIndependentErrorTrees": "github.com/taytr-llc/slug/poolschedule",
+        "TestDailyScheduleOriginalRoundBusyRecoversWithoutNewPayment": "github.com/taytr-llc/slug/poolschedule",
+        "TestDailyScheduleEmptyCursorContentionImportsOnce": "github.com/taytr-llc/slug/poolschedule",
+        "TestDailyAdmissionContentionErrorTrees": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyAdmissionContentionBudgetDoesNotRenew": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyAdmissionOriginalLedgerWaitCancellationAndClose": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyAdmissionPostSignRoundContentionUsesOriginalAttempt": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyLedgerIndependentCodecReplay": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyLedgerForgedInverseIndicesAndCancellation": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyLedgerStagedImportAtomic": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyLedgerWriteUncertaintyRetainsExactSignedHistory": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyLedgerConditionalWholeFrontierWeightDeferral": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyAdmissionFullIntakePreservesPendingPayoutAcrossOwners": "github.com/taytr-llc/slug/poolsettle",
+        "TestRecoverableDailyFullIntakeExpiredWinnerPreservesPendingPayout": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyOperatorSourcePendingRecoveryAndNextDay": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailySigningIndependentBytes": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailySigningOpaqueOriginalLifetime": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailySigningBoundsAndOwnerCopies": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyScheduleIndependentBindings": "github.com/taytr-llc/slug/poolschedule",
+        "TestDailyScheduleIndependentCodecAndMode": "github.com/taytr-llc/slug/poolschedule",
+        "TestDailyScheduleIndependentCursorAndD84": "github.com/taytr-llc/slug/poolschedule",
+        "TestDailyScheduleOriginalOwnerModesAndReopen": "github.com/taytr-llc/slug/poolschedule",
+        "TestDailyScheduleRunCancelAndJoin": "github.com/taytr-llc/slug/poolschedule"
+      }
+    },
+    {
+      "line": 308,
+      "command": "race-authority",
+      "cwd": "$CHAIN",
+      "packages": [
+        "./internal/operatorauthority"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": true,
+      "run": null,
+      "tags": "",
+      "required": [
+        "TestOperatorAuthorityExtendedACLRefusal",
+        "TestOperatorAuthorityIndependentNamedSignatures"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/internal/operatorauthority"
+      ],
+      "required_packages": {
+        "TestOperatorAuthorityExtendedACLRefusal": "github.com/taytr-llc/slug/internal/operatorauthority",
+        "TestOperatorAuthorityIndependentNamedSignatures": "github.com/taytr-llc/slug/internal/operatorauthority"
+      }
+    },
+    {
+      "line": 310,
+      "command": "race-wallet",
+      "cwd": "$WALLET",
+      "packages": [
+        "./waddrmgr",
+        "./wallet"
+      ],
+      "workspace": "$WALLET/go.work",
+      "race": true,
+      "run": "^(TestPool(Settlement|Wallet)|TestDailyPool(Settlement|Wallet))",
+      "tags": "",
+      "required": [
+        "TestPoolSettlementManagerIndependentSigning",
+        "TestPoolWalletOwnerLifecycle",
+        "TestDailyPoolSettlementConditionalIndependentSignatures",
+        "TestDailyPoolSettlementConditional721AndCancellation",
+        "TestDailyPoolSettlementOwnedInputsAndShapeRefusals",
+        "TestDailyPoolWalletBindingReference",
+        "TestDailyPoolWalletFreshOwnerAndLegacyRefusal"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slugwallet/waddrmgr",
+        "github.com/taytr-llc/slugwallet/wallet"
+      ],
+      "required_packages": {
+        "TestPoolSettlementManagerIndependentSigning": "github.com/taytr-llc/slugwallet/waddrmgr",
+        "TestPoolWalletOwnerLifecycle": "github.com/taytr-llc/slugwallet/wallet",
+        "TestDailyPoolSettlementConditionalIndependentSignatures": "github.com/taytr-llc/slugwallet/waddrmgr",
+        "TestDailyPoolSettlementConditional721AndCancellation": "github.com/taytr-llc/slugwallet/waddrmgr",
+        "TestDailyPoolSettlementOwnedInputsAndShapeRefusals": "github.com/taytr-llc/slugwallet/waddrmgr",
+        "TestDailyPoolWalletBindingReference": "github.com/taytr-llc/slugwallet/wallet",
+        "TestDailyPoolWalletFreshOwnerAndLegacyRefusal": "github.com/taytr-llc/slugwallet/wallet"
+      }
+    },
+    {
+      "line": 318,
+      "command": "race-operator",
+      "cwd": "$DESKTOP",
+      "packages": [
+        "./pooloperator"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": true,
+      "run": "^Test(Operator|DailyOperator|DailyProvision|DailyIntake|DailyRetained|Recoverable)",
+      "tags": "",
+      "required": [
+        "TestOperatorPrivateInputLinuxACLRefusal",
+        "TestOperatorPrivateInputLinuxACLRefusal/file-access-before",
+        "TestOperatorPrivateInputLinuxACLRefusal/parent-access-before",
+        "TestOperatorPrivateInputLinuxACLRefusal/parent-default-before",
+        "TestOperatorPrivateInputLinuxACLRefusal/file-access-after",
+        "TestOperatorPrivateInputLinuxACLRefusal/parent-default-after",
+        "TestOperatorIntakeSourceBusyErrorTrees",
+        "TestOperatorIntakeMutexCancellationJoinsHolder",
+        "TestDailyIntakeOriginalIssuerBusyPreservesDrainAndPayout",
+        "TestDailyIntakeOriginalIssuerCancellationNeverEnables",
+        "TestDailyRetainedAdmissionSelectionReadinessAndDirectDrain",
+        "TestDailyRetainedAdmissionFullSourceReopenPreservesPayment",
+        "TestDailyRetainedAdmissionHardEscalationAndConcurrentReadiness",
+        "TestDailyRetainedAdmissionHardCauseSurvivesSourceBusy",
+        "TestDailyRetainedAdmissionEnableErrorsKeepOriginalOwner",
+        "TestDailyRetainedAdmissionCanceledBeforeTransition",
+        "TestDailyRetainedRoundOriginalIssuerReconciles",
+        "TestDailyRetainedRoundCancellationJoinsWhileIssuerHeld",
+        "TestDailyRetainedRoundRetryClassifiesExactBusy",
+        "TestDailyRetainedRoundRetryKeepsOriginalDeadline",
+        "TestDailyOperatorIndependentComposition",
+        "TestDailyOperatorIndependentFraming",
+        "TestDailyProvisionOriginalWalletAndRuntimeReopen",
+        "TestDailyProvisionResumesOriginalMaterialAndRefusesOtherMode",
+        "TestDailyOperatorFilesSelectedMarkers",
+        "TestDailyProvisionCapacityBeforeCreation",
+        "TestDailyOperatorCommandExplicitSelection",
+        "TestDailyOperatorCanceledCommandBeforeEffects",
+        "TestOperatorLiveRoundOriginalCatchupAndDefault",
+        "TestOperatorLiveRoundCapacityRefresh",
+        "TestOperatorLiveRoundSelectionRefusals",
+        "TestOperatorLiveRoundCloseJoinsSelection",
+        "TestRecoverableOperatorIndependentWrappers",
+        "TestRecoverableOperatorIndependentSetupFraming",
+        "TestRecoverableOperatorCommandExplicitSelection",
+        "TestRecoverableOperatorFilesRefuseOtherModes",
+        "TestRecoverableProvisionOriginalMaterialLostReady",
+        "TestRecoverableProvisionCapacityBeforeEffects"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/desktop/pooloperator"
+      ],
+      "required_packages": {
+        "TestOperatorPrivateInputLinuxACLRefusal": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestOperatorPrivateInputLinuxACLRefusal/file-access-before": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestOperatorPrivateInputLinuxACLRefusal/parent-access-before": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestOperatorPrivateInputLinuxACLRefusal/parent-default-before": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestOperatorPrivateInputLinuxACLRefusal/file-access-after": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestOperatorPrivateInputLinuxACLRefusal/parent-default-after": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestOperatorIntakeSourceBusyErrorTrees": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestOperatorIntakeMutexCancellationJoinsHolder": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyIntakeOriginalIssuerBusyPreservesDrainAndPayout": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyIntakeOriginalIssuerCancellationNeverEnables": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyRetainedAdmissionSelectionReadinessAndDirectDrain": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyRetainedAdmissionFullSourceReopenPreservesPayment": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyRetainedAdmissionHardEscalationAndConcurrentReadiness": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyRetainedAdmissionHardCauseSurvivesSourceBusy": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyRetainedAdmissionEnableErrorsKeepOriginalOwner": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyRetainedAdmissionCanceledBeforeTransition": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyRetainedRoundOriginalIssuerReconciles": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyRetainedRoundCancellationJoinsWhileIssuerHeld": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyRetainedRoundRetryClassifiesExactBusy": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyRetainedRoundRetryKeepsOriginalDeadline": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyOperatorIndependentComposition": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyOperatorIndependentFraming": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyProvisionOriginalWalletAndRuntimeReopen": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyProvisionResumesOriginalMaterialAndRefusesOtherMode": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyOperatorFilesSelectedMarkers": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyProvisionCapacityBeforeCreation": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyOperatorCommandExplicitSelection": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestDailyOperatorCanceledCommandBeforeEffects": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestOperatorLiveRoundOriginalCatchupAndDefault": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestOperatorLiveRoundCapacityRefresh": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestOperatorLiveRoundSelectionRefusals": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestOperatorLiveRoundCloseJoinsSelection": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestRecoverableOperatorIndependentWrappers": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestRecoverableOperatorIndependentSetupFraming": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestRecoverableOperatorCommandExplicitSelection": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestRecoverableOperatorFilesRefuseOtherModes": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestRecoverableProvisionOriginalMaterialLostReady": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestRecoverableProvisionCapacityBeforeEffects": "github.com/taytr-llc/slug/desktop/pooloperator"
+      }
+    },
+    {
+      "line": 352,
+      "command": "race-daily-public-transport",
+      "cwd": "$CHAIN",
+      "packages": [
+        "./poolminer",
+        "./poolservice",
+        "./poolingress"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": true,
+      "run": null,
+      "tags": "",
+      "required": [
+        "TestDailyMinerIndependentBytesAndBindings",
+        "TestDailyMinerRotationAudienceAndReopen",
+        "TestDailyTransportIndependentBindings",
+        "TestDailyTransportIndependentMoneyPages",
+        "TestDailyTransportIndependentFraming",
+        "TestDailyClientUnknownIssueNeverRetries",
+        "TestDailyServerOriginalOwnersAndMoneyBinding",
+        "TestDailyServerRefusesBeforeEffects",
+        "TestDailyServerBusyAndRunJoins",
+        "TestDailyIngressCatalogAndCrossMode",
+        "TestDailyIngressOriginalTLSAndJoin",
+        "TestRecoverableTransportIndependentBindings",
+        "TestRecoverableIssueIndependentResults",
+        "TestRecoverableTransportIndependentMoneyAndWork",
+        "TestRecoverableTransportIndependentFraming",
+        "TestRecoverableClientOriginalResponseProvenance",
+        "TestRecoverableClientExactRequestUnknownAndRead",
+        "TestRecoverableServerOriginalOwnersAndExactRequest",
+        "TestRecoverableServerRefusesBeforeEffects",
+        "TestRecoverableIngressOriginalTLSAndJoin",
+        "TestRecoverableIngressCatalogAndCrossMode"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/poolminer",
+        "github.com/taytr-llc/slug/poolservice",
+        "github.com/taytr-llc/slug/poolingress"
+      ],
+      "required_packages": {
+        "TestDailyMinerIndependentBytesAndBindings": "github.com/taytr-llc/slug/poolminer",
+        "TestDailyMinerRotationAudienceAndReopen": "github.com/taytr-llc/slug/poolminer",
+        "TestDailyTransportIndependentBindings": "github.com/taytr-llc/slug/poolservice",
+        "TestDailyTransportIndependentMoneyPages": "github.com/taytr-llc/slug/poolservice",
+        "TestDailyTransportIndependentFraming": "github.com/taytr-llc/slug/poolservice",
+        "TestDailyClientUnknownIssueNeverRetries": "github.com/taytr-llc/slug/poolservice",
+        "TestDailyServerOriginalOwnersAndMoneyBinding": "github.com/taytr-llc/slug/poolservice",
+        "TestDailyServerRefusesBeforeEffects": "github.com/taytr-llc/slug/poolservice",
+        "TestDailyServerBusyAndRunJoins": "github.com/taytr-llc/slug/poolservice",
+        "TestDailyIngressCatalogAndCrossMode": "github.com/taytr-llc/slug/poolingress",
+        "TestDailyIngressOriginalTLSAndJoin": "github.com/taytr-llc/slug/poolingress",
+        "TestRecoverableTransportIndependentBindings": "github.com/taytr-llc/slug/poolservice",
+        "TestRecoverableIssueIndependentResults": "github.com/taytr-llc/slug/poolservice",
+        "TestRecoverableTransportIndependentMoneyAndWork": "github.com/taytr-llc/slug/poolservice",
+        "TestRecoverableTransportIndependentFraming": "github.com/taytr-llc/slug/poolservice",
+        "TestRecoverableClientOriginalResponseProvenance": "github.com/taytr-llc/slug/poolservice",
+        "TestRecoverableClientExactRequestUnknownAndRead": "github.com/taytr-llc/slug/poolservice",
+        "TestRecoverableServerOriginalOwnersAndExactRequest": "github.com/taytr-llc/slug/poolservice",
+        "TestRecoverableServerRefusesBeforeEffects": "github.com/taytr-llc/slug/poolservice",
+        "TestRecoverableIngressOriginalTLSAndJoin": "github.com/taytr-llc/slug/poolingress",
+        "TestRecoverableIngressCatalogAndCrossMode": "github.com/taytr-llc/slug/poolingress"
+      }
+    },
+    {
+      "line": 375,
+      "command": "race-daily-public-worker",
+      "cwd": "$CHAIN",
+      "packages": [
+        "./prospectworker"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": true,
+      "run": "^Test(DailyPool|Pool|RecoverablePool)",
+      "tags": "",
+      "required": [
+        "TestDailyPoolIndependentBytesAndModes",
+        "TestDailyPoolIndependentJournalAuditAndReopen",
+        "TestDailyPoolIssueOriginalAttemptAndUncertainty",
+        "TestDailyPoolIssueSyncFailuresKeepOriginalEvidence",
+        "TestDailyPoolHeldReopenStillReconcilesOriginalPending",
+        "TestDailyPoolRunUnknownIssuePersistsAcrossOriginalReopen",
+        "TestDailyPoolConstructorFailureRetainsOriginalCleanupOwner",
+        "TestRecoverablePoolIndependentConfigRowsAndModes",
+        "TestRecoverablePoolRunUnknownRestartExactRequest",
+        "TestRecoverablePoolIntentCancellationCapacityAndUnknownSync",
+        "TestRecoverablePoolNamespaceRejectsMixedWrongLinks",
+        "TestRecoverablePoolPendingHistoryAndActiveRequestAudit",
+        "TestRecoverablePoolTerminalClearsOnlyValidatedResult",
+        "TestRecoverablePoolRunReconcilesOriginalEntryBeforeResume",
+        "TestRecoverablePoolRejectsManufacturedDTOAuthority"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/prospectworker"
+      ],
+      "required_packages": {
+        "TestDailyPoolIndependentBytesAndModes": "github.com/taytr-llc/slug/prospectworker",
+        "TestDailyPoolIndependentJournalAuditAndReopen": "github.com/taytr-llc/slug/prospectworker",
+        "TestDailyPoolIssueOriginalAttemptAndUncertainty": "github.com/taytr-llc/slug/prospectworker",
+        "TestDailyPoolIssueSyncFailuresKeepOriginalEvidence": "github.com/taytr-llc/slug/prospectworker",
+        "TestDailyPoolHeldReopenStillReconcilesOriginalPending": "github.com/taytr-llc/slug/prospectworker",
+        "TestDailyPoolRunUnknownIssuePersistsAcrossOriginalReopen": "github.com/taytr-llc/slug/prospectworker",
+        "TestDailyPoolConstructorFailureRetainsOriginalCleanupOwner": "github.com/taytr-llc/slug/prospectworker",
+        "TestRecoverablePoolIndependentConfigRowsAndModes": "github.com/taytr-llc/slug/prospectworker",
+        "TestRecoverablePoolRunUnknownRestartExactRequest": "github.com/taytr-llc/slug/prospectworker",
+        "TestRecoverablePoolIntentCancellationCapacityAndUnknownSync": "github.com/taytr-llc/slug/prospectworker",
+        "TestRecoverablePoolNamespaceRejectsMixedWrongLinks": "github.com/taytr-llc/slug/prospectworker",
+        "TestRecoverablePoolPendingHistoryAndActiveRequestAudit": "github.com/taytr-llc/slug/prospectworker",
+        "TestRecoverablePoolTerminalClearsOnlyValidatedResult": "github.com/taytr-llc/slug/prospectworker",
+        "TestRecoverablePoolRunReconcilesOriginalEntryBeforeResume": "github.com/taytr-llc/slug/prospectworker",
+        "TestRecoverablePoolRejectsManufacturedDTOAuthority": "github.com/taytr-llc/slug/prospectworker"
+      }
+    },
+    {
+      "line": 392,
+      "command": "race-daily-public-desktop",
+      "cwd": "$DESKTOP",
+      "packages": [
+        "./pilot",
+        "./accountpilot",
+        "./cmd/slugpilot"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": true,
+      "run": "^Test(Daily|RemotePool|Recoverable)",
+      "tags": "",
+      "required": [
+        "TestDailyRemoteIndependentConfigAndMoneyBinding",
+        "TestDailyRemoteIndependentCredentialGrammar",
+        "TestDailyRemoteSelectionBeforeOriginalOwnerEffects",
+        "TestDailyRemoteOriginalWalletRecipientAndMiningEpoch",
+        "TestDailyRemoteProtectedOriginalAudienceAndCancellation",
+        "TestDailyRemoteMarkersAndExactOutboxRemainSeparate",
+        "TestDailyRemoteControllerKeepsOriginalEpochAndRefusesLegacyWire",
+        "TestDailyRemoteControllerModeRefusesBeforeRoot",
+        "TestDailyRemoteCancellationCauseAndLegacyParity",
+        "TestDailyRemoteStartRetainsObservedCloseFailure",
+        "TestDailyRemoteOriginalAccountCancellationProvenance",
+        "TestDailyRemoteObservedEpochLossSurvivesCancellation",
+        "TestDailyHeadlessParentCancellationInterruptsOriginalPipe",
+        "TestDailyHeadlessOutputFailureSurvivesParentCancellation",
+        "TestDailyHeadlessCancellationPreservesOtherCauses",
+        "TestDailyHeadlessFixedStatusAtomicFrame",
+        "TestDailyHeadlessOriginalFileOwnersJoinBeforeCancellationSuccess",
+        "TestDailyHeadlessObservedIntegrityIsNotCancellation",
+        "TestDailyHeadlessFlagsAndCancellationBeforeEffects",
+        "TestDailyHeadlessOutputCancellationJoins",
+        "TestRecoverableRemoteIndependentConfigCredentialMarkers",
+        "TestRecoverableRemoteProtectedOriginalLeaseAndMarkers",
+        "TestRecoverableRemoteCredentialChangeAfterClientResponseRetainsIntent",
+        "TestRecoverableRemoteControllerOriginalEpochAndLegacyRefusal",
+        "TestRecoverableRemoteControllerRefusesBeforeOriginalRoot",
+        "TestRecoverableIssueHeadlessSoleSelection"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/desktop/pilot",
+        "github.com/taytr-llc/slug/desktop/accountpilot",
+        "github.com/taytr-llc/slug/desktop/cmd/slugpilot"
+      ],
+      "required_packages": {
+        "TestDailyRemoteIndependentConfigAndMoneyBinding": "github.com/taytr-llc/slug/desktop/pilot",
+        "TestDailyRemoteIndependentCredentialGrammar": "github.com/taytr-llc/slug/desktop/pilot",
+        "TestDailyRemoteSelectionBeforeOriginalOwnerEffects": "github.com/taytr-llc/slug/desktop/pilot",
+        "TestDailyRemoteOriginalWalletRecipientAndMiningEpoch": "github.com/taytr-llc/slug/desktop/pilot",
+        "TestDailyRemoteProtectedOriginalAudienceAndCancellation": "github.com/taytr-llc/slug/desktop/pilot",
+        "TestDailyRemoteMarkersAndExactOutboxRemainSeparate": "github.com/taytr-llc/slug/desktop/pilot",
+        "TestDailyRemoteControllerKeepsOriginalEpochAndRefusesLegacyWire": "github.com/taytr-llc/slug/desktop/accountpilot",
+        "TestDailyRemoteControllerModeRefusesBeforeRoot": "github.com/taytr-llc/slug/desktop/accountpilot",
+        "TestDailyRemoteCancellationCauseAndLegacyParity": "github.com/taytr-llc/slug/desktop/pilot",
+        "TestDailyRemoteStartRetainsObservedCloseFailure": "github.com/taytr-llc/slug/desktop/pilot",
+        "TestDailyRemoteOriginalAccountCancellationProvenance": "github.com/taytr-llc/slug/desktop/accountpilot",
+        "TestDailyRemoteObservedEpochLossSurvivesCancellation": "github.com/taytr-llc/slug/desktop/accountpilot",
+        "TestDailyHeadlessParentCancellationInterruptsOriginalPipe": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+        "TestDailyHeadlessOutputFailureSurvivesParentCancellation": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+        "TestDailyHeadlessCancellationPreservesOtherCauses": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+        "TestDailyHeadlessFixedStatusAtomicFrame": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+        "TestDailyHeadlessOriginalFileOwnersJoinBeforeCancellationSuccess": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+        "TestDailyHeadlessObservedIntegrityIsNotCancellation": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+        "TestDailyHeadlessFlagsAndCancellationBeforeEffects": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+        "TestDailyHeadlessOutputCancellationJoins": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+        "TestRecoverableRemoteIndependentConfigCredentialMarkers": "github.com/taytr-llc/slug/desktop/pilot",
+        "TestRecoverableRemoteProtectedOriginalLeaseAndMarkers": "github.com/taytr-llc/slug/desktop/pilot",
+        "TestRecoverableRemoteCredentialChangeAfterClientResponseRetainsIntent": "github.com/taytr-llc/slug/desktop/pilot",
+        "TestRecoverableRemoteControllerOriginalEpochAndLegacyRefusal": "github.com/taytr-llc/slug/desktop/accountpilot",
+        "TestRecoverableRemoteControllerRefusesBeforeOriginalRoot": "github.com/taytr-llc/slug/desktop/accountpilot",
+        "TestRecoverableIssueHeadlessSoleSelection": "github.com/taytr-llc/slug/desktop/cmd/slugpilot"
+      }
+    },
+    {
+      "line": 421,
+      "command": "race-daily-mining-lease",
+      "cwd": "$CHAIN",
+      "packages": [
+        "./internal/mininglease"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": true,
+      "run": null,
+      "tags": "",
+      "required": [
+        "TestDailyCaptureOriginalCancellationAndLegacyParity",
+        "TestDailyCapturePreservesObservedIndependentFailures",
+        "TestDailyCaptureSuccessfulLeaseRetainsOriginalCommitFences"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/internal/mininglease"
+      ],
+      "required_packages": {
+        "TestDailyCaptureOriginalCancellationAndLegacyParity": "github.com/taytr-llc/slug/internal/mininglease",
+        "TestDailyCapturePreservesObservedIndependentFailures": "github.com/taytr-llc/slug/internal/mininglease",
+        "TestDailyCaptureSuccessfulLeaseRetainsOriginalCommitFences": "github.com/taytr-llc/slug/internal/mininglease"
+      }
+    },
+    {
+      "line": 428,
+      "command": "race-daily-source-round",
+      "cwd": "$CHAIN",
+      "packages": [
+        "./internal/poolcapacity",
+        "./poolshare",
+        "./poolround"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": true,
+      "run": null,
+      "tags": "",
+      "required": [
+        "TestDailyRecoveryIndependentReference",
+        "TestDailyPublicBindingOriginalOwner",
+        "TestDailyEnvelopeIndependentReference",
+        "TestDailyCapacityProofFrames",
+        "TestRecoveryIndependentTwoAxisReference",
+        "TestDailyOperatorDerivedFullUnseenCanonicalReopen",
+        "TestDailyOperatorSelectionMembershipAndOwnedBudget",
+        "TestDailyOperatorSourceHoldbackBeforeIssuer",
+        "TestDailyOperatorAuditPrecedenceAndOriginalMetadata",
+        "TestDailyOperatorUncertainCommitAndExactSavedRecovery",
+        "TestDailyOperatorDrainOnlyPendingAndPostCeilingHold",
+        "TestDailyOperatorOriginalCancellationCloseAndErrorClass",
+        "TestDailyOperatorAliasesCountWholeBudget",
+        "TestDailyOperatorPhysicalFullAuditAndLegacyParity",
+        "TestDailyOperatorFinalSessionClockAndCapacityError",
+        "TestDailySourceIndependentGrammarAndKeys",
+        "TestDailySource721OriginalJobsAndReopen",
+        "TestDailySourceCanonicalStorageRefusals",
+        "TestDailySourceModesCancellationAndLimits",
+        "TestDailySourceMemoOwnedWarmColdAndTamper",
+        "TestDailyRoundIndependentBytes",
+        "TestDailyRoundLifetimeAndWindowBounds",
+        "TestDailyRoundOriginalSourceRestartAndFences",
+        "TestRoundLiveOriginalOwnerSyncAndRefresh",
+        "TestRoundLiveLateWinnerAndReopen",
+        "TestRoundLiveTouchedCorruptionRevokes",
+        "TestRoundLiveDoesNotWeakenFullAudits",
+        "TestRoundLiveUncertainWriteAndExplicitReanchor",
+        "TestRoundLiveSourceFencesCancellationAndOwnership",
+        "TestRoundLiveOriginalCloseJoins",
+        "TestRoundLiveReadOnlyRefusal",
+        "TestRoundLiveFullSyncFailureIsAtomic",
+        "TestRoundLiveIndependentModeledPages",
+        "TestRoundSourceExactBusyClassification",
+        "TestRecoverableSourceIndependentReservation",
+        "TestRecoverableSourceProposalGapExactReopen",
+        "TestRecoverableSourceExpiredUnusedAndSealedAbsence",
+        "TestRecoverableSourceUncertainCommitAndNamespaceCensus",
+        "TestRecoverableSourceCancellationAndReservedBytes"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/internal/poolcapacity",
+        "github.com/taytr-llc/slug/poolshare",
+        "github.com/taytr-llc/slug/poolround"
+      ],
+      "required_packages": {
+        "TestDailyRecoveryIndependentReference": "github.com/taytr-llc/slug/internal/poolcapacity",
+        "TestDailyPublicBindingOriginalOwner": "github.com/taytr-llc/slug/poolshare",
+        "TestDailyEnvelopeIndependentReference": "github.com/taytr-llc/slug/internal/poolcapacity",
+        "TestDailyCapacityProofFrames": "github.com/taytr-llc/slug/internal/poolcapacity",
+        "TestRecoveryIndependentTwoAxisReference": "github.com/taytr-llc/slug/internal/poolcapacity",
+        "TestDailyOperatorDerivedFullUnseenCanonicalReopen": "github.com/taytr-llc/slug/poolshare",
+        "TestDailyOperatorSelectionMembershipAndOwnedBudget": "github.com/taytr-llc/slug/poolshare",
+        "TestDailyOperatorSourceHoldbackBeforeIssuer": "github.com/taytr-llc/slug/poolshare",
+        "TestDailyOperatorAuditPrecedenceAndOriginalMetadata": "github.com/taytr-llc/slug/poolshare",
+        "TestDailyOperatorUncertainCommitAndExactSavedRecovery": "github.com/taytr-llc/slug/poolshare",
+        "TestDailyOperatorDrainOnlyPendingAndPostCeilingHold": "github.com/taytr-llc/slug/poolshare",
+        "TestDailyOperatorOriginalCancellationCloseAndErrorClass": "github.com/taytr-llc/slug/poolshare",
+        "TestDailyOperatorAliasesCountWholeBudget": "github.com/taytr-llc/slug/poolshare",
+        "TestDailyOperatorPhysicalFullAuditAndLegacyParity": "github.com/taytr-llc/slug/poolshare",
+        "TestDailyOperatorFinalSessionClockAndCapacityError": "github.com/taytr-llc/slug/poolshare",
+        "TestDailySourceIndependentGrammarAndKeys": "github.com/taytr-llc/slug/poolshare",
+        "TestDailySource721OriginalJobsAndReopen": "github.com/taytr-llc/slug/poolshare",
+        "TestDailySourceCanonicalStorageRefusals": "github.com/taytr-llc/slug/poolshare",
+        "TestDailySourceModesCancellationAndLimits": "github.com/taytr-llc/slug/poolshare",
+        "TestDailySourceMemoOwnedWarmColdAndTamper": "github.com/taytr-llc/slug/poolshare",
+        "TestDailyRoundIndependentBytes": "github.com/taytr-llc/slug/poolround",
+        "TestDailyRoundLifetimeAndWindowBounds": "github.com/taytr-llc/slug/poolround",
+        "TestDailyRoundOriginalSourceRestartAndFences": "github.com/taytr-llc/slug/poolround",
+        "TestRoundLiveOriginalOwnerSyncAndRefresh": "github.com/taytr-llc/slug/poolround",
+        "TestRoundLiveLateWinnerAndReopen": "github.com/taytr-llc/slug/poolround",
+        "TestRoundLiveTouchedCorruptionRevokes": "github.com/taytr-llc/slug/poolround",
+        "TestRoundLiveDoesNotWeakenFullAudits": "github.com/taytr-llc/slug/poolround",
+        "TestRoundLiveUncertainWriteAndExplicitReanchor": "github.com/taytr-llc/slug/poolround",
+        "TestRoundLiveSourceFencesCancellationAndOwnership": "github.com/taytr-llc/slug/poolround",
+        "TestRoundLiveOriginalCloseJoins": "github.com/taytr-llc/slug/poolround",
+        "TestRoundLiveReadOnlyRefusal": "github.com/taytr-llc/slug/poolround",
+        "TestRoundLiveFullSyncFailureIsAtomic": "github.com/taytr-llc/slug/poolround",
+        "TestRoundLiveIndependentModeledPages": "github.com/taytr-llc/slug/poolround",
+        "TestRoundSourceExactBusyClassification": "github.com/taytr-llc/slug/poolround",
+        "TestRecoverableSourceIndependentReservation": "github.com/taytr-llc/slug/poolshare",
+        "TestRecoverableSourceProposalGapExactReopen": "github.com/taytr-llc/slug/poolshare",
+        "TestRecoverableSourceExpiredUnusedAndSealedAbsence": "github.com/taytr-llc/slug/poolshare",
+        "TestRecoverableSourceUncertainCommitAndNamespaceCensus": "github.com/taytr-llc/slug/poolshare",
+        "TestRecoverableSourceCancellationAndReservedBytes": "github.com/taytr-llc/slug/poolshare"
+      }
+    },
+    {
+      "line": 469,
+      "command": "race-daily-source-fences",
+      "cwd": "$CHAIN",
+      "packages": [
+        "./registry",
+        "./poolservice"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": true,
+      "run": "^(TestManifestTryJob|TestPoolServiceDoesNotAdoptDailySource|TestRecoverableIssuer|TestRecoverableIssueIndependent(Profiles|IntentsAndBounds))",
+      "tags": "",
+      "required": [
+        "TestManifestTryJobOriginalReadOnlyAndNonblocking",
+        "TestManifestTryJobCancellationAndClosedState",
+        "TestPoolServiceDoesNotAdoptDailySource",
+        "TestRecoverableIssueIndependentProfiles",
+        "TestRecoverableIssueIndependentIntentsAndBounds",
+        "TestRecoverableIssuerExactReplaySealAndReopen",
+        "TestRecoverableIssuerAuditReverseAndUncertainCommit",
+        "TestRecoverableIssuerFailedFileCloseRetainsOriginal",
+        "TestRecoverableIssuerFileSuccessAndFailureOwnership"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/registry",
+        "github.com/taytr-llc/slug/poolservice"
+      ],
+      "required_packages": {
+        "TestManifestTryJobOriginalReadOnlyAndNonblocking": "github.com/taytr-llc/slug/registry",
+        "TestManifestTryJobCancellationAndClosedState": "github.com/taytr-llc/slug/registry",
+        "TestPoolServiceDoesNotAdoptDailySource": "github.com/taytr-llc/slug/poolservice",
+        "TestRecoverableIssueIndependentProfiles": "github.com/taytr-llc/slug/registry",
+        "TestRecoverableIssueIndependentIntentsAndBounds": "github.com/taytr-llc/slug/registry",
+        "TestRecoverableIssuerExactReplaySealAndReopen": "github.com/taytr-llc/slug/registry",
+        "TestRecoverableIssuerAuditReverseAndUncertainCommit": "github.com/taytr-llc/slug/registry",
+        "TestRecoverableIssuerFailedFileCloseRetainsOriginal": "github.com/taytr-llc/slug/registry",
+        "TestRecoverableIssuerFileSuccessAndFailureOwnership": "github.com/taytr-llc/slug/registry"
+      }
+    },
+    {
+      "line": 481,
+      "command": "race-retained-admission",
+      "cwd": "$CHAIN",
+      "packages": [
+        "./registry",
+        "./prospectservice",
+        "./prospectworker"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": true,
+      "run": "^Test(ManifestAdmissionPreflight|DailyFencedAdmission|RetainedPoolAdmission)",
+      "tags": "",
+      "required": [
+        "TestManifestAdmissionPreflightOriginalOwnerAndHistory",
+        "TestManifestAdmissionPreflightExpiryAndRestart",
+        "TestManifestAdmissionPreflightClockCapacityAndUncertainty",
+        "TestManifestAdmissionPreflightPublicCounts",
+        "TestDailyFencedAdmissionExpiryBeforeIntake",
+        "TestDailyFencedAdmissionSessionAndDuplicateFences",
+        "TestDailyFencedAdmissionHistoricalAndLegacy",
+        "TestDailyFencedAdmissionErrorProvenance",
+        "TestDailyFencedAdmissionLiveCapacityReopen",
+        "TestRetainedPoolAdmissionDefiniteExpiryAndUnknownReopen"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/registry",
+        "github.com/taytr-llc/slug/prospectservice",
+        "github.com/taytr-llc/slug/prospectworker"
+      ],
+      "required_packages": {
+        "TestManifestAdmissionPreflightOriginalOwnerAndHistory": "github.com/taytr-llc/slug/registry",
+        "TestManifestAdmissionPreflightExpiryAndRestart": "github.com/taytr-llc/slug/registry",
+        "TestManifestAdmissionPreflightClockCapacityAndUncertainty": "github.com/taytr-llc/slug/registry",
+        "TestManifestAdmissionPreflightPublicCounts": "github.com/taytr-llc/slug/registry",
+        "TestDailyFencedAdmissionExpiryBeforeIntake": "github.com/taytr-llc/slug/prospectservice",
+        "TestDailyFencedAdmissionSessionAndDuplicateFences": "github.com/taytr-llc/slug/prospectservice",
+        "TestDailyFencedAdmissionHistoricalAndLegacy": "github.com/taytr-llc/slug/prospectservice",
+        "TestDailyFencedAdmissionErrorProvenance": "github.com/taytr-llc/slug/prospectservice",
+        "TestDailyFencedAdmissionLiveCapacityReopen": "github.com/taytr-llc/slug/prospectservice",
+        "TestRetainedPoolAdmissionDefiniteExpiryAndUnknownReopen": "github.com/taytr-llc/slug/prospectworker"
+      }
+    },
+    {
+      "line": 494,
+      "command": "race-daily-node-shape",
+      "cwd": "$CHAIN",
+      "packages": [
+        "./pooltxshape",
+        "./poolsettlenode"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": true,
+      "run": null,
+      "tags": "",
+      "required": [
+        "TestNativeP2WPKHIndependentReference",
+        "TestNativeP2WPKHRejectsMachineIntExtremes",
+        "TestDailyNode721AndLegacyBounds",
+        "TestDailyNodeWholeFrontierBeyondTransactionLimit",
+        "TestDailyNodeFrontierAdmissionBound",
+        "TestDailyNodeCarriedOriginsAndLateFailure",
+        "TestDailyNodeFourWorkersCancelAndClose",
+        "TestDailyNodeFeeRawAndWeightProfile",
+        "TestDailyNodeObservedWeightAndOwnedBroadcast"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/pooltxshape",
+        "github.com/taytr-llc/slug/poolsettlenode"
+      ],
+      "required_packages": {
+        "TestNativeP2WPKHIndependentReference": "github.com/taytr-llc/slug/pooltxshape",
+        "TestNativeP2WPKHRejectsMachineIntExtremes": "github.com/taytr-llc/slug/pooltxshape",
+        "TestDailyNode721AndLegacyBounds": "github.com/taytr-llc/slug/poolsettlenode",
+        "TestDailyNodeWholeFrontierBeyondTransactionLimit": "github.com/taytr-llc/slug/poolsettlenode",
+        "TestDailyNodeFrontierAdmissionBound": "github.com/taytr-llc/slug/poolsettlenode",
+        "TestDailyNodeCarriedOriginsAndLateFailure": "github.com/taytr-llc/slug/poolsettlenode",
+        "TestDailyNodeFourWorkersCancelAndClose": "github.com/taytr-llc/slug/poolsettlenode",
+        "TestDailyNodeFeeRawAndWeightProfile": "github.com/taytr-llc/slug/poolsettlenode",
+        "TestDailyNodeObservedWeightAndOwnedBroadcast": "github.com/taytr-llc/slug/poolsettlenode"
+      }
+    },
+    {
+      "line": 507,
+      "command": "race-daily-ledger-schedule",
+      "cwd": "$CHAIN",
+      "packages": [
+        "./poolsettle",
+        "./poolschedule"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": true,
+      "run": null,
+      "tags": "",
+      "required": [
+        "TestSettlementReplayV1Parity",
+        "TestDailyPayoutIndependentReference",
+        "TestDailyPayoutPageOriginalOwnerCaptureAndRestart",
+        "TestDailyPayoutPageFinalSessionFence",
+        "TestDailyPayoutPageOriginalSparseSlotTraversal",
+        "TestDailyCompletedRefreshGuardsBeforeEffects",
+        "TestDailyCompletedRefreshRefusesOriginalV1",
+        "TestDailyCompletedRefreshProfileAndMissingOwner",
+        "TestDailyScheduleCompletedRefreshIndependentDecisions",
+        "TestDailyScheduleCompletedRefreshExpiryRetry",
+        "TestDailyScheduleCompletedRefreshImportsOnceAcrossReopen",
+        "TestScheduleRetryIndependentErrorTrees",
+        "TestDailyScheduleOriginalRoundBusyRecoversWithoutNewPayment",
+        "TestDailyScheduleEmptyCursorContentionImportsOnce",
+        "TestDailyAdmissionContentionErrorTrees",
+        "TestDailyAdmissionContentionBudgetDoesNotRenew",
+        "TestDailyAdmissionOriginalLedgerWaitCancellationAndClose",
+        "TestDailyAdmissionPostSignRoundContentionUsesOriginalAttempt",
+        "TestDailyLedgerIndependentCodecReplay",
+        "TestDailyLedgerForgedInverseIndicesAndCancellation",
+        "TestDailyLedgerStagedImportAtomic",
+        "TestDailyLedgerWriteUncertaintyRetainsExactSignedHistory",
+        "TestDailyLedgerConditionalWholeFrontierWeightDeferral",
+        "TestDailyAdmissionFullIntakePreservesPendingPayoutAcrossOwners",
+        "TestRecoverableDailyFullIntakeExpiredWinnerPreservesPendingPayout",
+        "TestDailyOperatorSourcePendingRecoveryAndNextDay",
+        "TestDailySigningIndependentBytes",
+        "TestDailySigningOpaqueOriginalLifetime",
+        "TestDailySigningBoundsAndOwnerCopies",
+        "TestDailyScheduleIndependentBindings",
+        "TestDailyScheduleIndependentCodecAndMode",
+        "TestDailyScheduleIndependentCursorAndD84",
+        "TestDailyScheduleOriginalOwnerModesAndReopen",
+        "TestDailyScheduleRunCancelAndJoin"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/poolsettle",
+        "github.com/taytr-llc/slug/poolschedule"
+      ],
+      "required_packages": {
+        "TestSettlementReplayV1Parity": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyPayoutIndependentReference": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyPayoutPageOriginalOwnerCaptureAndRestart": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyPayoutPageFinalSessionFence": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyPayoutPageOriginalSparseSlotTraversal": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyCompletedRefreshGuardsBeforeEffects": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyCompletedRefreshRefusesOriginalV1": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyCompletedRefreshProfileAndMissingOwner": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyScheduleCompletedRefreshIndependentDecisions": "github.com/taytr-llc/slug/poolschedule",
+        "TestDailyScheduleCompletedRefreshExpiryRetry": "github.com/taytr-llc/slug/poolschedule",
+        "TestDailyScheduleCompletedRefreshImportsOnceAcrossReopen": "github.com/taytr-llc/slug/poolschedule",
+        "TestScheduleRetryIndependentErrorTrees": "github.com/taytr-llc/slug/poolschedule",
+        "TestDailyScheduleOriginalRoundBusyRecoversWithoutNewPayment": "github.com/taytr-llc/slug/poolschedule",
+        "TestDailyScheduleEmptyCursorContentionImportsOnce": "github.com/taytr-llc/slug/poolschedule",
+        "TestDailyAdmissionContentionErrorTrees": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyAdmissionContentionBudgetDoesNotRenew": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyAdmissionOriginalLedgerWaitCancellationAndClose": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyAdmissionPostSignRoundContentionUsesOriginalAttempt": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyLedgerIndependentCodecReplay": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyLedgerForgedInverseIndicesAndCancellation": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyLedgerStagedImportAtomic": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyLedgerWriteUncertaintyRetainsExactSignedHistory": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyLedgerConditionalWholeFrontierWeightDeferral": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyAdmissionFullIntakePreservesPendingPayoutAcrossOwners": "github.com/taytr-llc/slug/poolsettle",
+        "TestRecoverableDailyFullIntakeExpiredWinnerPreservesPendingPayout": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyOperatorSourcePendingRecoveryAndNextDay": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailySigningIndependentBytes": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailySigningOpaqueOriginalLifetime": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailySigningBoundsAndOwnerCopies": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyScheduleIndependentBindings": "github.com/taytr-llc/slug/poolschedule",
+        "TestDailyScheduleIndependentCodecAndMode": "github.com/taytr-llc/slug/poolschedule",
+        "TestDailyScheduleIndependentCursorAndD84": "github.com/taytr-llc/slug/poolschedule",
+        "TestDailyScheduleOriginalOwnerModesAndReopen": "github.com/taytr-llc/slug/poolschedule",
+        "TestDailyScheduleRunCancelAndJoin": "github.com/taytr-llc/slug/poolschedule"
+      }
+    },
+    {
+      "line": 564,
+      "command": "cheap-daily-core",
+      "cwd": "$CHAIN",
+      "packages": [
+        "./poolshare",
+        "./poolround",
+        "./poolsettlenode",
+        "./poolsettle",
+        "./poolschedule",
+        "./registry"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": false,
+      "run": "^(TestDailyOperatorCheapRefusal|TestDailySourceCheapRefusesBeforeEffects|TestDailyRoundProfileRefusal|TestDailyNodeCheapProfile|TestDailyLedgerCheapRefusalBeforeEffects|TestDailySigningCheapRefusal|TestDailyScheduleCheapAndCanceledBeforeEffects|TestManifestTryJobCheapRefusesBeforeOwner|TestRoundLiveCheapProfileRefusal|TestDailyPublicBindingCheapRefusal|TestDailyCompletedRefreshProfileAndMissingOwner|TestRoundSourceExactBusyClassification|TestScheduleRetryIndependentErrorTrees|TestDailyAdmissionContentionErrorTrees|TestDailyAdmissionContentionBudgetDoesNotRenew|TestRecoverableSourceCheapRefusesBeforeEffects)$",
+      "tags": "slugtestpow",
+      "required": [
+        "TestDailyOperatorCheapRefusal",
+        "TestDailySourceCheapRefusesBeforeEffects",
+        "TestDailyRoundProfileRefusal",
+        "TestDailyNodeCheapProfile",
+        "TestDailyLedgerCheapRefusalBeforeEffects",
+        "TestDailySigningCheapRefusal",
+        "TestDailyScheduleCheapAndCanceledBeforeEffects",
+        "TestManifestTryJobCheapRefusesBeforeOwner",
+        "TestRoundLiveCheapProfileRefusal",
+        "TestDailyPublicBindingCheapRefusal",
+        "TestDailyCompletedRefreshProfileAndMissingOwner",
+        "TestRoundSourceExactBusyClassification",
+        "TestScheduleRetryIndependentErrorTrees",
+        "TestDailyAdmissionContentionErrorTrees",
+        "TestDailyAdmissionContentionBudgetDoesNotRenew",
+        "TestRecoverableSourceCheapRefusesBeforeEffects"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/poolshare",
+        "github.com/taytr-llc/slug/poolround",
+        "github.com/taytr-llc/slug/poolsettlenode",
+        "github.com/taytr-llc/slug/poolsettle",
+        "github.com/taytr-llc/slug/poolschedule",
+        "github.com/taytr-llc/slug/registry"
+      ],
+      "required_packages": {
+        "TestDailyOperatorCheapRefusal": "github.com/taytr-llc/slug/poolshare",
+        "TestDailySourceCheapRefusesBeforeEffects": "github.com/taytr-llc/slug/poolshare",
+        "TestDailyRoundProfileRefusal": "github.com/taytr-llc/slug/poolround",
+        "TestDailyNodeCheapProfile": "github.com/taytr-llc/slug/poolsettlenode",
+        "TestDailyLedgerCheapRefusalBeforeEffects": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailySigningCheapRefusal": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyScheduleCheapAndCanceledBeforeEffects": "github.com/taytr-llc/slug/poolschedule",
+        "TestManifestTryJobCheapRefusesBeforeOwner": "github.com/taytr-llc/slug/registry",
+        "TestRoundLiveCheapProfileRefusal": "github.com/taytr-llc/slug/poolround",
+        "TestDailyPublicBindingCheapRefusal": "github.com/taytr-llc/slug/poolshare",
+        "TestDailyCompletedRefreshProfileAndMissingOwner": "github.com/taytr-llc/slug/poolsettle",
+        "TestRoundSourceExactBusyClassification": "github.com/taytr-llc/slug/poolround",
+        "TestScheduleRetryIndependentErrorTrees": "github.com/taytr-llc/slug/poolschedule",
+        "TestDailyAdmissionContentionErrorTrees": "github.com/taytr-llc/slug/poolsettle",
+        "TestDailyAdmissionContentionBudgetDoesNotRenew": "github.com/taytr-llc/slug/poolsettle",
+        "TestRecoverableSourceCheapRefusesBeforeEffects": "github.com/taytr-llc/slug/poolshare"
+      }
+    },
+    {
+      "line": 569,
+      "command": "cheap-retained-admission",
+      "cwd": "$CHAIN",
+      "packages": [
+        "./registry",
+        "./prospectservice"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": false,
+      "run": "^(TestManifestAdmissionPreflightCheapRefuses|TestDailyFencedAdmissionCheapRefuses)$",
+      "tags": "slugtestpow",
+      "required": [
+        "TestManifestAdmissionPreflightCheapRefuses",
+        "TestDailyFencedAdmissionCheapRefuses"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/registry",
+        "github.com/taytr-llc/slug/prospectservice"
+      ],
+      "required_packages": {
+        "TestManifestAdmissionPreflightCheapRefuses": "github.com/taytr-llc/slug/registry",
+        "TestDailyFencedAdmissionCheapRefuses": "github.com/taytr-llc/slug/prospectservice"
+      }
+    },
+    {
+      "line": 572,
+      "command": "cheap-daily-wallet",
+      "cwd": "$WALLET",
+      "packages": [
+        "./waddrmgr",
+        "./wallet"
+      ],
+      "workspace": "$WALLET/go.work",
+      "race": false,
+      "run": "^(TestDailyPoolSettlementCheapRefusal|TestDailyPoolWalletCheapRefusal)$",
+      "tags": "slugtestpow",
+      "required": [
+        "TestDailyPoolSettlementCheapRefusal",
+        "TestDailyPoolWalletCheapRefusal"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slugwallet/waddrmgr",
+        "github.com/taytr-llc/slugwallet/wallet"
+      ],
+      "required_packages": {
+        "TestDailyPoolSettlementCheapRefusal": "github.com/taytr-llc/slugwallet/waddrmgr",
+        "TestDailyPoolWalletCheapRefusal": "github.com/taytr-llc/slugwallet/wallet"
+      }
+    },
+    {
+      "line": 577,
+      "command": "cheap-daily-public",
+      "cwd": "$CHAIN",
+      "packages": [
+        "./poolminer",
+        "./poolservice",
+        "./prospectworker"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": false,
+      "run": "^(TestDailyMinerRefusalBeforeEffects|TestDailyTransportCheapRefuses|TestPoolCheapProfileRefusesBeforeState|TestRecoverableTransportCheapRefuses|TestRecoverablePoolCheapBeforeState)$",
+      "tags": "slugtestpow",
+      "required": [
+        "TestDailyMinerRefusalBeforeEffects",
+        "TestDailyTransportCheapRefuses",
+        "TestPoolCheapProfileRefusesBeforeState",
+        "TestRecoverableTransportCheapRefuses",
+        "TestRecoverablePoolCheapBeforeState"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/poolminer",
+        "github.com/taytr-llc/slug/poolservice",
+        "github.com/taytr-llc/slug/prospectworker"
+      ],
+      "required_packages": {
+        "TestDailyMinerRefusalBeforeEffects": "github.com/taytr-llc/slug/poolminer",
+        "TestDailyTransportCheapRefuses": "github.com/taytr-llc/slug/poolservice",
+        "TestPoolCheapProfileRefusesBeforeState": "github.com/taytr-llc/slug/prospectworker",
+        "TestRecoverableTransportCheapRefuses": "github.com/taytr-llc/slug/poolservice",
+        "TestRecoverablePoolCheapBeforeState": "github.com/taytr-llc/slug/prospectworker"
+      }
+    },
+    {
+      "line": 580,
+      "command": "cheap-daily-desktop",
+      "cwd": "$DESKTOP",
+      "packages": [
+        "./pilot"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": false,
+      "run": "^(TestDailyRemoteSelectionBeforeOriginalOwnerEffects|TestRecoverableRemoteCheapSelectionBeforeOwners)$",
+      "tags": "slugtestpow",
+      "required": [
+        "TestDailyRemoteSelectionBeforeOriginalOwnerEffects",
+        "TestRecoverableRemoteCheapSelectionBeforeOwners"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/desktop/pilot"
+      ],
+      "required_packages": {
+        "TestDailyRemoteSelectionBeforeOriginalOwnerEffects": "github.com/taytr-llc/slug/desktop/pilot",
+        "TestRecoverableRemoteCheapSelectionBeforeOwners": "github.com/taytr-llc/slug/desktop/pilot"
+      }
+    },
+    {
+      "line": 587,
+      "command": "cheap-intake-controls",
+      "cwd": "$DESKTOP",
+      "packages": [
+        "./pooloperator"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": false,
+      "run": "^(TestOperatorIntakeSourceBusyErrorTrees|TestOperatorIntakeMutexCancellationJoinsHolder|TestRecoverableCommandsRejectCheapBeforeFiles)$",
+      "tags": "slugtestpow",
+      "required": [
+        "TestOperatorIntakeSourceBusyErrorTrees",
+        "TestOperatorIntakeMutexCancellationJoinsHolder",
+        "TestRecoverableCommandsRejectCheapBeforeFiles"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/desktop/pooloperator"
+      ],
+      "required_packages": {
+        "TestOperatorIntakeSourceBusyErrorTrees": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestOperatorIntakeMutexCancellationJoinsHolder": "github.com/taytr-llc/slug/desktop/pooloperator",
+        "TestRecoverableCommandsRejectCheapBeforeFiles": "github.com/taytr-llc/slug/desktop/pooloperator"
+      }
+    },
+    {
+      "line": 604,
+      "command": "cheap-cancellation-controls",
+      "cwd": "$DESKTOP",
+      "packages": [
+        "../internal/mininglease",
+        "./pilot",
+        "./cmd/slugpilot"
+      ],
+      "workspace": "$DESKTOP/go.work",
+      "race": false,
+      "run": "^(TestDailyCaptureOriginalCancellationAndLegacyParity|TestDailyCapturePreservesObservedIndependentFailures|TestDailyCaptureSuccessfulLeaseRetainsOriginalCommitFences|TestDailyRemoteCancellationCauseAndLegacyParity|TestDailyRemoteStartRetainsObservedCloseFailure|TestDailyHeadlessParentCancellationInterruptsOriginalPipe|TestDailyHeadlessOutputFailureSurvivesParentCancellation|TestDailyHeadlessCancellationPreservesOtherCauses|TestDailyHeadlessFixedStatusAtomicFrame|TestDailyHeadlessOriginalFileOwnersJoinBeforeCancellationSuccess|TestDailyHeadlessObservedIntegrityIsNotCancellation|TestDailyHeadlessFlagsAndCancellationBeforeEffects|TestDailyHeadlessOutputCancellationJoins)$",
+      "tags": "slugtestpow",
+      "required": [
+        "TestDailyCaptureOriginalCancellationAndLegacyParity",
+        "TestDailyCapturePreservesObservedIndependentFailures",
+        "TestDailyCaptureSuccessfulLeaseRetainsOriginalCommitFences",
+        "TestDailyRemoteCancellationCauseAndLegacyParity",
+        "TestDailyRemoteStartRetainsObservedCloseFailure",
+        "TestDailyHeadlessParentCancellationInterruptsOriginalPipe",
+        "TestDailyHeadlessOutputFailureSurvivesParentCancellation",
+        "TestDailyHeadlessCancellationPreservesOtherCauses",
+        "TestDailyHeadlessFixedStatusAtomicFrame",
+        "TestDailyHeadlessOriginalFileOwnersJoinBeforeCancellationSuccess",
+        "TestDailyHeadlessObservedIntegrityIsNotCancellation",
+        "TestDailyHeadlessFlagsAndCancellationBeforeEffects",
+        "TestDailyHeadlessOutputCancellationJoins"
+      ],
+      "package_names": [
+        "github.com/taytr-llc/slug/internal/mininglease",
+        "github.com/taytr-llc/slug/desktop/pilot",
+        "github.com/taytr-llc/slug/desktop/cmd/slugpilot"
+      ],
+      "required_packages": {
+        "TestDailyCaptureOriginalCancellationAndLegacyParity": "github.com/taytr-llc/slug/internal/mininglease",
+        "TestDailyCapturePreservesObservedIndependentFailures": "github.com/taytr-llc/slug/internal/mininglease",
+        "TestDailyCaptureSuccessfulLeaseRetainsOriginalCommitFences": "github.com/taytr-llc/slug/internal/mininglease",
+        "TestDailyRemoteCancellationCauseAndLegacyParity": "github.com/taytr-llc/slug/desktop/pilot",
+        "TestDailyRemoteStartRetainsObservedCloseFailure": "github.com/taytr-llc/slug/desktop/pilot",
+        "TestDailyHeadlessParentCancellationInterruptsOriginalPipe": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+        "TestDailyHeadlessOutputFailureSurvivesParentCancellation": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+        "TestDailyHeadlessCancellationPreservesOtherCauses": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+        "TestDailyHeadlessFixedStatusAtomicFrame": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+        "TestDailyHeadlessOriginalFileOwnersJoinBeforeCancellationSuccess": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+        "TestDailyHeadlessObservedIntegrityIsNotCancellation": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+        "TestDailyHeadlessFlagsAndCancellationBeforeEffects": "github.com/taytr-llc/slug/desktop/cmd/slugpilot",
+        "TestDailyHeadlessOutputCancellationJoins": "github.com/taytr-llc/slug/desktop/cmd/slugpilot"
+      }
+    }
+  ],
+  "commands": [
+    {
+      "name": "sources-before-chain-head",
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 20,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "sources-before-chain-status",
+      "argv": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 20,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "sources-before-chain-files",
+      "argv": [
+        "git",
+        "ls-files",
+        "-z"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 20,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "sources-before-wallet-head",
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "$WALLET",
+      "max_bound_seconds": 20,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "sources-before-wallet-status",
+      "argv": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "cwd": "$WALLET",
+      "max_bound_seconds": 20,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "sources-before-wallet-files",
+      "argv": [
+        "git",
+        "ls-files",
+        "-z"
+      ],
+      "cwd": "$WALLET",
+      "max_bound_seconds": 20,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "candidate-profile",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "check"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 30,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "go-environment",
+      "argv": [
+        "go",
+        "env",
+        "-json",
+        "GOVERSION",
+        "GOOS",
+        "GOARCH",
+        "CGO_ENABLED",
+        "CC",
+        "GOCACHE",
+        "GOMODCACHE",
+        "GOWORK",
+        "GOFLAGS",
+        "GOEXPERIMENT"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 30,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "c-compiler",
+      "argv": [
+        "$CC",
+        "--version"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 20,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "workspace-desktop",
+      "argv": [
+        "go",
+        "work",
+        "edit",
+        "-json",
+        "$DESKTOP/go.work"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 30,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "workspace-wallet",
+      "argv": [
+        "go",
+        "work",
+        "edit",
+        "-json",
+        "$WALLET/go.work"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 30,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "normal-wire-selection",
+      "argv": [
+        "go",
+        "list",
+        "-json",
+        "github.com/taytr-llc/slug/wire/v2"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 180,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "normal-wire-guard",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "-run",
+        "^TestBlockHashMemoizationPreservesArgon2$",
+        "."
+      ],
+      "cwd": "$CHAIN/wire",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "build-slugd",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-trimpath",
+        "-tags=",
+        "-o",
+        "$ARTIFACT/bin/slugd",
+        "."
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 600,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "0"
+    },
+    {
+      "name": "verify-slugd",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "verify-binary",
+        "$ARTIFACT/bin/slugd"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 30,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "symbols-slugd",
+      "argv": [
+        "go",
+        "tool",
+        "nm",
+        "$ARTIFACT/bin/slugd"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 60,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "build-slugpoold",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-trimpath",
+        "-tags=",
+        "-o",
+        "$ARTIFACT/bin/slugpoold",
+        "./cmd/slugpoold"
+      ],
+      "cwd": "$DESKTOP",
+      "max_bound_seconds": 600,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "0"
+    },
+    {
+      "name": "verify-slugpoold",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "verify-binary",
+        "$ARTIFACT/bin/slugpoold"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 30,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "symbols-slugpoold",
+      "argv": [
+        "go",
+        "tool",
+        "nm",
+        "$ARTIFACT/bin/slugpoold"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 60,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "build-slugpilot",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "build",
+        "-p=1",
+        "-trimpath",
+        "-tags=",
+        "-o",
+        "$ARTIFACT/bin/slugpilot",
+        "./cmd/slugpilot"
+      ],
+      "cwd": "$DESKTOP",
+      "max_bound_seconds": 600,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "verify-slugpilot",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "verify-binary",
+        "$ARTIFACT/bin/slugpilot"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 30,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "symbols-slugpilot",
+      "argv": [
+        "go",
+        "tool",
+        "nm",
+        "$ARTIFACT/bin/slugpilot"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 60,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "normal-authority",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "./internal/operatorauthority"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "normal-wallet",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "-run",
+        "^(TestPool(Settlement|Wallet)|TestDailyPool(Settlement|Wallet))",
+        "./waddrmgr",
+        "./wallet"
+      ],
+      "cwd": "$WALLET",
+      "max_bound_seconds": 660,
+      "workspace": "$WALLET/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "normal-operator",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "-run",
+        "^Test(Operator|DailyOperator|DailyProvision|DailyIntake|DailyRetained|Recoverable)",
+        "./pooloperator"
+      ],
+      "cwd": "$DESKTOP",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "normal-daily-public-transport",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "./poolminer",
+        "./poolservice",
+        "./poolingress"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "normal-daily-public-worker",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "-run",
+        "^Test(DailyPool|Pool|RecoverablePool)",
+        "./prospectworker"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "normal-daily-public-desktop",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "-run",
+        "^Test(Daily|RemotePool|Recoverable)",
+        "./pilot",
+        "./accountpilot",
+        "./cmd/slugpilot"
+      ],
+      "cwd": "$DESKTOP",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "normal-daily-mining-lease",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "./internal/mininglease"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "normal-daily-source-round",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "./internal/poolcapacity",
+        "./poolshare",
+        "./poolround"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "normal-daily-source-fences",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "-run",
+        "^(TestManifestTryJob|TestPoolServiceDoesNotAdoptDailySource|TestRecoverableIssuer|TestRecoverableIssueIndependent(Profiles|IntentsAndBounds))",
+        "./registry",
+        "./poolservice"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "normal-retained-admission",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "-run",
+        "^Test(ManifestAdmissionPreflight|DailyFencedAdmission|RetainedPoolAdmission)",
+        "./registry",
+        "./prospectservice",
+        "./prospectworker"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "normal-daily-node-shape",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "./pooltxshape",
+        "./poolsettlenode"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "normal-daily-ledger-schedule",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "./poolsettle",
+        "./poolschedule"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "race-authority",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "-race",
+        "./internal/operatorauthority"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "race-wallet",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "-race",
+        "-run",
+        "^(TestPool(Settlement|Wallet)|TestDailyPool(Settlement|Wallet))",
+        "./waddrmgr",
+        "./wallet"
+      ],
+      "cwd": "$WALLET",
+      "max_bound_seconds": 660,
+      "workspace": "$WALLET/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "race-operator",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "-race",
+        "-run",
+        "^Test(Operator|DailyOperator|DailyProvision|DailyIntake|DailyRetained|Recoverable)",
+        "./pooloperator"
+      ],
+      "cwd": "$DESKTOP",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "race-daily-public-transport",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "-race",
+        "./poolminer",
+        "./poolservice",
+        "./poolingress"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "race-daily-public-worker",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "-race",
+        "-run",
+        "^Test(DailyPool|Pool|RecoverablePool)",
+        "./prospectworker"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "race-daily-public-desktop",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "-race",
+        "-run",
+        "^Test(Daily|RemotePool|Recoverable)",
+        "./pilot",
+        "./accountpilot",
+        "./cmd/slugpilot"
+      ],
+      "cwd": "$DESKTOP",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "race-daily-mining-lease",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "-race",
+        "./internal/mininglease"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "race-daily-source-round",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "-race",
+        "./internal/poolcapacity",
+        "./poolshare",
+        "./poolround"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "race-daily-source-fences",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "-race",
+        "-run",
+        "^(TestManifestTryJob|TestPoolServiceDoesNotAdoptDailySource|TestRecoverableIssuer|TestRecoverableIssueIndependent(Profiles|IntentsAndBounds))",
+        "./registry",
+        "./poolservice"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "race-retained-admission",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "-race",
+        "-run",
+        "^Test(ManifestAdmissionPreflight|DailyFencedAdmission|RetainedPoolAdmission)",
+        "./registry",
+        "./prospectservice",
+        "./prospectworker"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "race-daily-node-shape",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "-race",
+        "./pooltxshape",
+        "./poolsettlenode"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "race-daily-ledger-schedule",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "-race",
+        "./poolsettle",
+        "./poolschedule"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "cheap-wire-selection",
+      "argv": [
+        "go",
+        "list",
+        "-tags=slugtestpow",
+        "-json",
+        "github.com/taytr-llc/slug/wire/v2"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 180,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "cheap-daily-core",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=slugtestpow",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "-run",
+        "^(TestDailyOperatorCheapRefusal|TestDailySourceCheapRefusesBeforeEffects|TestDailyRoundProfileRefusal|TestDailyNodeCheapProfile|TestDailyLedgerCheapRefusalBeforeEffects|TestDailySigningCheapRefusal|TestDailyScheduleCheapAndCanceledBeforeEffects|TestManifestTryJobCheapRefusesBeforeOwner|TestRoundLiveCheapProfileRefusal|TestDailyPublicBindingCheapRefusal|TestDailyCompletedRefreshProfileAndMissingOwner|TestRoundSourceExactBusyClassification|TestScheduleRetryIndependentErrorTrees|TestDailyAdmissionContentionErrorTrees|TestDailyAdmissionContentionBudgetDoesNotRenew|TestRecoverableSourceCheapRefusesBeforeEffects)$",
+        "./poolshare",
+        "./poolround",
+        "./poolsettlenode",
+        "./poolsettle",
+        "./poolschedule",
+        "./registry"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "cheap-retained-admission",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=slugtestpow",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "-run",
+        "^(TestManifestAdmissionPreflightCheapRefuses|TestDailyFencedAdmissionCheapRefuses)$",
+        "./registry",
+        "./prospectservice"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "cheap-daily-wallet",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=slugtestpow",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "-run",
+        "^(TestDailyPoolSettlementCheapRefusal|TestDailyPoolWalletCheapRefusal)$",
+        "./waddrmgr",
+        "./wallet"
+      ],
+      "cwd": "$WALLET",
+      "max_bound_seconds": 660,
+      "workspace": "$WALLET/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "cheap-daily-public",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=slugtestpow",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "-run",
+        "^(TestDailyMinerRefusalBeforeEffects|TestDailyTransportCheapRefuses|TestPoolCheapProfileRefusesBeforeState|TestRecoverableTransportCheapRefuses|TestRecoverablePoolCheapBeforeState)$",
+        "./poolminer",
+        "./poolservice",
+        "./prospectworker"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "cheap-daily-desktop",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=slugtestpow",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "-run",
+        "^(TestDailyRemoteSelectionBeforeOriginalOwnerEffects|TestRecoverableRemoteCheapSelectionBeforeOwners)$",
+        "./pilot"
+      ],
+      "cwd": "$DESKTOP",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "cheap-intake-controls",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=slugtestpow",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "-run",
+        "^(TestOperatorIntakeSourceBusyErrorTrees|TestOperatorIntakeMutexCancellationJoinsHolder|TestRecoverableCommandsRejectCheapBeforeFiles)$",
+        "./pooloperator"
+      ],
+      "cwd": "$DESKTOP",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "cheap-cancellation-controls",
+      "argv": [
+        "sh",
+        "$CHAIN/scripts/candidate-go.sh",
+        "test",
+        "-json",
+        "-tags=slugtestpow",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-timeout=10m",
+        "-run",
+        "^(TestDailyCaptureOriginalCancellationAndLegacyParity|TestDailyCapturePreservesObservedIndependentFailures|TestDailyCaptureSuccessfulLeaseRetainsOriginalCommitFences|TestDailyRemoteCancellationCauseAndLegacyParity|TestDailyRemoteStartRetainsObservedCloseFailure|TestDailyHeadlessParentCancellationInterruptsOriginalPipe|TestDailyHeadlessOutputFailureSurvivesParentCancellation|TestDailyHeadlessCancellationPreservesOtherCauses|TestDailyHeadlessFixedStatusAtomicFrame|TestDailyHeadlessOriginalFileOwnersJoinBeforeCancellationSuccess|TestDailyHeadlessObservedIntegrityIsNotCancellation|TestDailyHeadlessFlagsAndCancellationBeforeEffects|TestDailyHeadlessOutputCancellationJoins)$",
+        "../internal/mininglease",
+        "./pilot",
+        "./cmd/slugpilot"
+      ],
+      "cwd": "$DESKTOP",
+      "max_bound_seconds": 660,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "vet-authority",
+      "argv": [
+        "go",
+        "vet",
+        "-p=1",
+        "-tags=",
+        "-gcflags=all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "./internal/operatorauthority"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 300,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "vet-wallet",
+      "argv": [
+        "go",
+        "vet",
+        "-p=1",
+        "-tags=",
+        "-gcflags=all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "./waddrmgr",
+        "./wallet"
+      ],
+      "cwd": "$WALLET",
+      "max_bound_seconds": 300,
+      "workspace": "$WALLET/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "vet-operator",
+      "argv": [
+        "go",
+        "vet",
+        "-p=1",
+        "-tags=",
+        "-gcflags=all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "./pooloperator",
+        "./pilot",
+        "./accountpilot",
+        "./cmd/slugpilot"
+      ],
+      "cwd": "$DESKTOP",
+      "max_bound_seconds": 300,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "vet-daily-components",
+      "argv": [
+        "go",
+        "vet",
+        "-p=1",
+        "-tags=",
+        "-gcflags=all=-d=ssa/generic_cse/off,ssa/lowered_cse/off",
+        "./internal/mininglease",
+        "./internal/poolcapacity",
+        "./poolshare",
+        "./poolround",
+        "./pooltxshape",
+        "./poolsettlenode",
+        "./poolsettle",
+        "./poolschedule",
+        "./registry",
+        "./poolservice",
+        "./poolminer",
+        "./poolingress",
+        "./prospectworker"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 300,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "sources-after-chain-head",
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 20,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "sources-after-chain-status",
+      "argv": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 20,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "sources-after-chain-files",
+      "argv": [
+        "git",
+        "ls-files",
+        "-z"
+      ],
+      "cwd": "$CHAIN",
+      "max_bound_seconds": 20,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "sources-after-wallet-head",
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "$WALLET",
+      "max_bound_seconds": 20,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "sources-after-wallet-status",
+      "argv": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "cwd": "$WALLET",
+      "max_bound_seconds": 20,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    },
+    {
+      "name": "sources-after-wallet-files",
+      "argv": [
+        "git",
+        "ls-files",
+        "-z"
+      ],
+      "cwd": "$WALLET",
+      "max_bound_seconds": 20,
+      "workspace": "$DESKTOP/go.work",
+      "cgo": "1"
+    }
+  ],
+  "set80_delta": {
+    "required_assertions": 42,
+    "groups": 3,
+    "commands": 3,
+    "required": [
+      {
+        "command": "normal-operator",
+        "added": [
+          "TestDailyRetainedAdmissionSelectionReadinessAndDirectDrain",
+          "TestDailyRetainedAdmissionFullSourceReopenPreservesPayment",
+          "TestDailyRetainedAdmissionHardEscalationAndConcurrentReadiness",
+          "TestDailyRetainedAdmissionHardCauseSurvivesSourceBusy",
+          "TestDailyRetainedAdmissionEnableErrorsKeepOriginalOwner",
+          "TestDailyRetainedAdmissionCanceledBeforeTransition",
+          "TestDailyRetainedRoundOriginalIssuerReconciles",
+          "TestDailyRetainedRoundCancellationJoinsWhileIssuerHeld",
+          "TestDailyRetainedRoundRetryClassifiesExactBusy",
+          "TestDailyRetainedRoundRetryKeepsOriginalDeadline"
+        ],
+        "removed": []
+      },
+      {
+        "command": "normal-retained-admission",
+        "added": [
+          "TestManifestAdmissionPreflightOriginalOwnerAndHistory",
+          "TestManifestAdmissionPreflightExpiryAndRestart",
+          "TestManifestAdmissionPreflightClockCapacityAndUncertainty",
+          "TestManifestAdmissionPreflightPublicCounts",
+          "TestDailyFencedAdmissionExpiryBeforeIntake",
+          "TestDailyFencedAdmissionSessionAndDuplicateFences",
+          "TestDailyFencedAdmissionHistoricalAndLegacy",
+          "TestDailyFencedAdmissionErrorProvenance",
+          "TestDailyFencedAdmissionLiveCapacityReopen",
+          "TestRetainedPoolAdmissionDefiniteExpiryAndUnknownReopen"
+        ],
+        "removed": []
+      },
+      {
+        "command": "race-operator",
+        "added": [
+          "TestDailyRetainedAdmissionSelectionReadinessAndDirectDrain",
+          "TestDailyRetainedAdmissionFullSourceReopenPreservesPayment",
+          "TestDailyRetainedAdmissionHardEscalationAndConcurrentReadiness",
+          "TestDailyRetainedAdmissionHardCauseSurvivesSourceBusy",
+          "TestDailyRetainedAdmissionEnableErrorsKeepOriginalOwner",
+          "TestDailyRetainedAdmissionCanceledBeforeTransition",
+          "TestDailyRetainedRoundOriginalIssuerReconciles",
+          "TestDailyRetainedRoundCancellationJoinsWhileIssuerHeld",
+          "TestDailyRetainedRoundRetryClassifiesExactBusy",
+          "TestDailyRetainedRoundRetryKeepsOriginalDeadline"
+        ],
+        "removed": []
+      },
+      {
+        "command": "race-retained-admission",
+        "added": [
+          "TestManifestAdmissionPreflightOriginalOwnerAndHistory",
+          "TestManifestAdmissionPreflightExpiryAndRestart",
+          "TestManifestAdmissionPreflightClockCapacityAndUncertainty",
+          "TestManifestAdmissionPreflightPublicCounts",
+          "TestDailyFencedAdmissionExpiryBeforeIntake",
+          "TestDailyFencedAdmissionSessionAndDuplicateFences",
+          "TestDailyFencedAdmissionHistoricalAndLegacy",
+          "TestDailyFencedAdmissionErrorProvenance",
+          "TestDailyFencedAdmissionLiveCapacityReopen",
+          "TestRetainedPoolAdmissionDefiniteExpiryAndUnknownReopen"
+        ],
+        "removed": []
+      },
+      {
+        "command": "cheap-retained-admission",
+        "added": [
+          "TestManifestAdmissionPreflightCheapRefuses",
+          "TestDailyFencedAdmissionCheapRefuses"
+        ],
+        "removed": []
+      }
+    ]
+  },
+  "overall_jobs": {
+    "Build and Test": [
+      "Build",
+      "Unit coverage",
+      "Unit race",
+      "Unit rpctest",
+      "Minimum Go version (compatibility)",
+      "In-tree modules"
+    ],
+    "Operator Linux qualification": [
+      "operator-linux"
+    ]
+  },
+  "total_gate_seconds": 2700,
+  "workflow_timeout_minutes": 55,
+  "log_limit_bytes": 33554432,
+  "forbidden_symbols": [
+    "ForTestClock",
+    "UseOwnedCalendarOffsetForTest",
+    "UseCalendarClockForTest",
+    "UseOwnedClockForTest",
+    "UseAuthorityClockForTest"
+  ]
+}

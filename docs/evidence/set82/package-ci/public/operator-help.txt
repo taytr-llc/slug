@@ -1,0 +1,21 @@
+slugpoold COMMAND [local file selections]
+Commands: init, serve, status, rotate, revoke, checkpoint
+--daily selects a fresh DAILY profile; defaults remain V1.
+--daily-recoverable-issue selects fresh exact-request issuance recovery.
+The two selections are mutually exclusive.
+Required selections: --setup-file --root --wallet-root
+ --wallet-public-passphrase-file --wallet-unlock-passphrase-file
+ --admission-seed-file --publication-seed-file --cutoff-seed-file
+ --rpc-config-file --tls-certificate-file --tls-key-file
+rotate: --gym-id --audience pool|admission --expected-generation
+ --token-file --expires-at-ms
+revoke: --gym-id --audience pool|admission --expected-generation
+checkpoint: --checkpoint-file (already signed public envelope)
+All paths must be absolute and canonical. Selected files are bounded, protected
+regular files in private directories. Passphrases are raw file bytes; tokens are
+exactly 64 lowercase hexadecimal bytes without a newline. init creates/resumes
+runtime children only: the schema16 wallet and online seed files must preexist.
+No command generates keys, starts a miner, or exposes an offline checkpoint key.
+Only serve starts listeners and the configured settlement scheduler. Local
+commands require exclusive ownership of the stopped runtime root. Output is
+bounded public JSON lines with dated observations and closed error codes.

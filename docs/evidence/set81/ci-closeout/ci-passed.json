@@ -1,0 +1,90 @@
+{
+  "head_sha": "138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c",
+  "branch": "slug-pool-retained-admission",
+  "observed_at": "2026-11-21T15:44:38.068965+00:00",
+  "runs": [
+    {
+      "id": 44918359851,
+      "name": "Build and Test",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44918359851",
+      "jobs": [
+        {
+          "id": 136888750193,
+          "name": "Unit rpctest",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/taytr-llc/slug/actions/runs/44918359851/job/136888750193",
+          "started_at": "2026-11-21T15:17:15Z",
+          "completed_at": "2026-11-21T15:26:10Z"
+        },
+        {
+          "id": 136888750408,
+          "name": "Unit race",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/taytr-llc/slug/actions/runs/44918359851/job/136888750408",
+          "started_at": "2026-11-21T15:17:15Z",
+          "completed_at": "2026-11-21T15:44:27Z"
+        },
+        {
+          "id": 136888750426,
+          "name": "Unit coverage",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/taytr-llc/slug/actions/runs/44918359851/job/136888750426",
+          "started_at": "2026-11-21T15:17:15Z",
+          "completed_at": "2026-11-21T15:29:22Z"
+        },
+        {
+          "id": 136888750428,
+          "name": "Minimum Go version (compatibility)",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/taytr-llc/slug/actions/runs/44918359851/job/136888750428",
+          "started_at": "2026-11-21T15:17:15Z",
+          "completed_at": "2026-11-21T15:26:19Z"
+        },
+        {
+          "id": 136888750442,
+          "name": "In-tree modules",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/taytr-llc/slug/actions/runs/44918359851/job/136888750442",
+          "started_at": "2026-11-21T15:17:16Z",
+          "completed_at": "2026-11-21T15:25:57Z"
+        },
+        {
+          "id": 136888750488,
+          "name": "Build",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/taytr-llc/slug/actions/runs/44918359851/job/136888750488",
+          "started_at": "2026-11-21T15:17:16Z",
+          "completed_at": "2026-11-21T15:18:31Z"
+        }
+      ]
+    },
+    {
+      "id": 44918359817,
+      "name": "Operator Linux qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44918359817",
+      "jobs": [
+        {
+          "id": 136888750163,
+          "name": "operator-linux",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/taytr-llc/slug/actions/runs/44918359817/job/136888750163",
+          "started_at": "2026-11-21T15:17:16Z",
+          "completed_at": "2026-11-21T15:43:41Z"
+        }
+      ]
+    }
+  ],
+  "status": "passed",
+  "elapsed_seconds": 1638.511
+}

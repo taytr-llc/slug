@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "scope": "Set81 static CI expectations and unexecuted downloaded-artifact verifier",
+  "head": "138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c",
+  "wallet": "dfc5d9dd7e0f604486fbac812d0413fce1f45cd6",
+  "derived_totals": {
+    "required_assertions": 470,
+    "test_groups": 32,
+    "commands": 64
+  },
+  "execution_claim": false,
+  "validation": "Restricted AST/source inspection and identity checks only; no verifier, gate, Go, test, runtime or network execution.",
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/slug/scripts/qualify-operator-linux.py",
+      "bytes": 45079,
+      "sha256": "a475f757abd61627b05a5c9564cbb6813e1f314b490ee29f409a447d1bc9eaf8"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/.github/workflows/operator-linux.yml",
+      "bytes": 2256,
+      "sha256": "fd8ff4f4f6e7bb37b2d85d338895c22a173df8dc4dc74feda5d155e3dc4d6900"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/scripts/candidate-go.sh",
+      "bytes": 2725,
+      "sha256": "64e073ba868e42b04e3e93a51826b2e6ee1b99103b92b417868cbf74f9b6436e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/build-profile.json",
+      "bytes": 179,
+      "sha256": "e5ddb9d30e8048ad3b656358134632e48852f44deef44bdd93df7dda13208295"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/docs/evidence/set80/ci-closeout/final-linux-verification.json",
+      "bytes": 867,
+      "sha256": "78b72503aa20baae5e7ef9744f39e45ccf3ddd78640aab93b3c2a44331f7d8b7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/docs/evidence/set80/ci-closeout/final-linux-report.json",
+      "bytes": 1314108,
+      "sha256": "a72290fa7b31dd89a6a5bc41590453a2e17243719dd3205b075d05b626c681b7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/docs/evidence/set80/ci-closeout/README.md",
+      "bytes": 1023,
+      "sha256": "0164ad531008f1e6f76ada8ccf22dc8050e000babb60a1ea5b20d3edd6c63087"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/ci-artifact-verifier/expected.json",
+      "bytes": 140091,
+      "sha256": "f059d2f4d2988b1c1febebbc1b503d4ce95b6b893335f4671e2fb1fb57cbc2e1"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/ci-artifact-verifier/verify.py",
+      "bytes": 17178,
+      "sha256": "85498af304ca738fbcb174930e9b7b482f4b8cf2b0fa06c16fa819650ccccfe2"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/ci-artifact-verifier/README.md",
+      "bytes": 6722,
+      "sha256": "bce54dd73122e395e3f0c05cc88c49d7d7fbab39ce51080f9f1534f43c9e1e78"
+    }
+  ]
+}

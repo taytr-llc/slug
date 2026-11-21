@@ -1,0 +1,7 @@
+{
+  "actual_or_deployment_claim": false,
+  "error": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+  "passed": false,
+  "scope": "Downloaded Set81 Linux evidence verification",
+  "version": 1
+}

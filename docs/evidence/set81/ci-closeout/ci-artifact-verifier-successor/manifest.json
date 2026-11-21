@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "scope": "Unexecuted parser-only successor for the exact Set81 downloaded Linux wire-selection prelude",
+  "head": "138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c",
+  "predecessor_manifest_sha256": "77ad8ea5f178f2ea0729ae9e5e08362a648b17d59b5db93c1f7589ae00dab9fb",
+  "expectations_unchanged": true,
+  "required_assertions": 470,
+  "test_groups": 32,
+  "commands": 64,
+  "execution_claim": false,
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/ci-artifact-verifier/manifest.json",
+      "bytes": 2513,
+      "sha256": "77ad8ea5f178f2ea0729ae9e5e08362a648b17d59b5db93c1f7589ae00dab9fb"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/ci-artifact-verifier/verify.py",
+      "bytes": 17178,
+      "sha256": "85498af304ca738fbcb174930e9b7b482f4b8cf2b0fa06c16fa819650ccccfe2"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/ci-artifact-verifier/expected.json",
+      "bytes": 140091,
+      "sha256": "f059d2f4d2988b1c1febebbc1b503d4ce95b6b893335f4671e2fb1fb57cbc2e1"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-ci-verification-attempt1.json",
+      "bytes": 209,
+      "sha256": "c6f63279f8643d7ec2873f246e78c2834738c28921272f5cf2b2be402a81766e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/normal-wire-selection.log",
+      "bytes": 6310,
+      "sha256": "46eb8bfd139ba3142942c744257e116a034a58876412f0805d3129e213babd94"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/cheap-wire-selection.log",
+      "bytes": 6245,
+      "sha256": "541e7c33197df0343db54274f54fa16f5e9de6a85ea1a509a9f7592fc053a60a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/wire/go.mod",
+      "bytes": 473,
+      "sha256": "353603edbe6501cfbfa4075ac86e37738a462c80c638ae77d57a36eb75933aa5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/wire/go.sum",
+      "bytes": 968,
+      "sha256": "9e7faed341ff0f3e32e68bc36a1477801442d88f61e5f86ab4d47083b4d2c9d5"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/ci-artifact-verifier-successor/verify.py",
+      "bytes": 18387,
+      "sha256": "67665881a4082043ad071bc15f1476e830ff7337beb436dfd2be29469d01e2d8"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/ci-artifact-verifier-successor/expected.json",
+      "bytes": 140091,
+      "sha256": "f059d2f4d2988b1c1febebbc1b503d4ce95b6b893335f4671e2fb1fb57cbc2e1"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/ci-artifact-verifier-successor/predecessor-manifest.json",
+      "bytes": 2513,
+      "sha256": "77ad8ea5f178f2ea0729ae9e5e08362a648b17d59b5db93c1f7589ae00dab9fb"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/ci-artifact-verifier-successor/changes.diff",
+      "bytes": 2129,
+      "sha256": "d6349e97eeb6e55e909d60cce88a8c9b3a0b6a416c7280fde30c8b6fcb0dfcd7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/ci-artifact-verifier-successor/README.md",
+      "bytes": 1923,
+      "sha256": "981fc1105513e2bd49d226d9a9ebd7d61f86bafe3e70ee1a6bfb14af4a537099"
+    }
+  ]
+}

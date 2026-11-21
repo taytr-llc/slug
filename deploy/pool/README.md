@@ -1,13 +1,13 @@
 # Bounded Linux operator package
 
-Candidate package; image execution qualification is pending. The public source
-export has been checked locally. This packages the existing finite operator;
+Candidate package; [native image/component qualification passes](../../CHANGESET_82_NOTES.md)
+at `2d79de95`. The public source export has been checked locally. This packages the existing finite operator;
 it adds no capacity, migration, account login or node supervisor. No private
 files are copied into the build context and no service is deployed by this recipe.
 
 The selected sources are chain `138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c` and wallet `dfc5d9dd7e0f604486fbac812d0413fce1f45cd6`. Preserve sibling `slug/` and `slugwallet/` directories: `slug/desktop/go.work` selects all paired modules, and its `go.mod` replaces the wallet with `../../slugwallet`. Build from `slug/desktop`, using local Go1.27.4 and the unchanged `scripts/candidate-go.sh` compiler profile. Do not build from the seed's existing Docker context.
 
-Linux's protected-file ACL checks use `x/sys/unix.Fgetxattr`, not a C library. The existing Linux qualification script already builds `slugpoold` with `CGO_ENABLED=0`; only its race tests and `slugpilot` build select CGO. This image therefore uses static CGO0 headless binaries and `scratch`, with no GCC, glibc/musl, libacl, GTK or Wails runtime dependency. Darwin's CGO requirement does not transfer to Linux. The additional CGO0 provisioner build and this exact image still need execution; they are not claimed by that prior operator build.
+Linux's protected-file ACL checks use `x/sys/unix.Fgetxattr`, not a C library. The existing Linux qualification script already builds `slugpoold` with `CGO_ENABLED=0`; only its race tests and `slugpilot` build select CGO. This image therefore uses static CGO0 headless binaries and `scratch`, with no GCC, glibc/musl, libacl, GTK or Wails runtime dependency. Darwin's CGO requirement does not transfer to Linux. Both shipped commands now pass native image execution; the earlier operator-only build remains separate evidence.
 
 ## Public build context
 
@@ -32,7 +32,7 @@ docker build --platform linux/amd64 \
   --tag slug-operator:138553b1 "$context_dir"
 ```
 
-The archive commit checks are part of the build procedure; OCI labels alone do not authenticate a source tree. The Dockerfile verifies both supplied archive hashes, the candidate compiler, production wire selection and final binaries, and refuses any source-file change during compilation. It retains dependency closure, workspace, binary hashes and build settings under `/usr/share/slug/build/`. Root must retain the archive hashes, build logs and resulting image digest. The exact public Go Alpine image digest comes from the selected chain Dockerfile; its availability and native platform manifest were not queried here. Module downloads still need the pinned checksums and reachable public module sources or a separately verified cache; no module/version update is proposed. This is a reproducible selection recipe, not a claimed byte-identical image result.
+The archive commit checks are part of the build procedure; OCI labels alone do not authenticate a source tree. The Dockerfile verifies both supplied archive hashes, the candidate compiler, production wire selection and final binaries, and refuses any source-file change during compilation. It retains dependency closure, workspace, binary hashes and build settings under `/usr/share/slug/build/`. Root must retain the archive hashes, build logs and resulting image digest. The exact public Go Alpine image digest comes from the selected chain Dockerfile; the native Linux image job successfully resolved and used it. Module downloads still need the pinned checksums and reachable public module sources or a separately verified cache; no module/version update is proposed. This is a reproducible selection recipe, not a claimed byte-identical image result.
 
 The branch-scoped [package workflow](../../.github/workflows/hosted-pool-package.yml)
 builds this image on native Linux amd64. It requires ten existing component
@@ -93,12 +93,20 @@ docker run --name slug-operator-bounded "${container_options[@]}" \
 
 Bind the image by its recorded digest for execution. Port values must match the selected public transport and ingress listen configuration. Publish only ingress. Keep pool/admission/ownership upstreams on their configured literal loopback endpoints. The operator terminates its own TLS1.3/HTTP1.1 and verifies Host/SNI/certificate selection; use raw TCP forwarding. An HTTP edge that terminates TLS or inserts forwarded-identity headers is not a compatible substitute. No `$PORT` override or automatic repinning is introduced.
 
-Prefer a separately managed node with verified HTTPS RPC on its private hostname. `prospectnode.ParseRPCConfig` allows HTTPS with system roots or the explicitly selected CA; plain HTTP requires a literal loopback IP, so a private DNS name over HTTP is refused. The same endpoint rules apply to the daily funding client; the concrete schema16 backend adds binding checks, not a loopback-only restriction. Node RPC remains private and authenticated. `slugpoold` does not launch or supervise a node. This proposal has no same-container supervision or seed replacement.
+Prefer a separately managed node with verified HTTPS RPC on its private hostname. `prospectnode.ParseRPCConfig` allows HTTPS with system roots or the explicitly selected CA; plain HTTP requires a literal loopback IP, so a private DNS name over HTTP is refused. The same endpoint rules apply to the daily funding client; the concrete schema16 backend adds binding checks, not a loopback-only restriction. Node RPC remains private and authenticated. `slugpoold` does not launch or supervise a node. This package has no same-container supervision or seed replacement.
 
 Consume stdout continuously and retain public logs; blocked output is an error. PID1 is the original operator process, so SIGTERM reaches its existing joined shutdown. The180s container stop grace is a proposed supervisor allowance, not a product deadline extension or a promise of clean shutdown. Prove it on the selected host. Preserve containers/logs and all persistent roots on failure; do not auto-reset or restart uncertain owners. Local `status`, `rotate`, `revoke` and `checkpoint` commands need the original runtime stopped and exclusively available; a parallel `status` container is not a live health check. Use existing serve status plus authenticated service observations for the bounded test.
 
 ## Remaining target execution
 
-The existing workflow specifies native Ubuntu24.04/amd64 builds and focused controls; its exact-tip execution/result was not queried for this proposal, and it does not qualify deployment of this image. This proposal has not built either binary or pulled the image. Root reports no available local Docker daemon, so a later native CI/provider build is needed. Root must verify native platform/toolchain and static ELF metadata, run the existing Linux protected-file/ACL/owner/shutdown controls under UID10001 on the chosen volume, then qualify direct TLS, private HTTPS node access, an original worker receipt, real scheduled payment to its selected wallet, and exact stopped reopen. Retain compiler/image/source identities and clean joins. Existing finite reservations and D84 whole-payout deferral remain enforced; no continuation work is a prerequisite for this explicitly bounded rehearsal. Host sizing and supervision must accommodate normal256MiB Argon2id verification and observed peak memory, not assume a tiny generic web-service limit.
+The native Linux CI image build, UID10001 component controls and final command
+execution pass. The exact public evidence is linked above. The local Docker
+daemon is unavailable; no local container execution is claimed. Still qualify
+the selected provider volume/ownership, direct TLS, private HTTPS node access,
+an original worker receipt, scheduled payment to its selected wallet, full
+serve/PID1 shutdown and exact stopped reopen. Retain compiler/image/source
+identities and clean joins. Existing finite reservations and D84 remain in force;
+general continuation is not a prerequisite. Size the host for normal 256 MiB
+Argon2id verification and measured peak memory.
 
 A2's local scheduled-payment proof is useful prior evidence. It does not establish remote DNS/TLS, Linux volume behavior, host resource capacity or image shutdown. The failed extended-offline B1 catch-up remains a separately recorded limitation; this package makes no extended-offline recovery or continuous public-operation claim. D74 stays the final release review.

@@ -26,8 +26,8 @@ The current order is:
    custody and enrolled miner flow, scheduled payout, restart and exact retry.
    Declare and stay inside a finite test envelope; preserve recovery and visible
    holds. Synthetic loopback proofs alone do not count as hosted acceptance.
-   [Set82](CHANGESET_82_NOTES.md) is preparing the separate Linux operator
-   package and target execution; no hosted deployment is claimed yet.
+   [Set82](CHANGESET_82_NOTES.md) passes native Linux image/component checks;
+   provider storage, endpoint and actual hosted payout remain to be verified.
 2. **Wallet balances and history.** Connect and verify the existing authenticated
    balance, payout and wallet-activity paths against the hosted test service,
    including dated observations and visible pending/deferred states.
@@ -662,7 +662,8 @@ of the ownership, transfer or independent restored-wallet flow. See
   publication readiness after a 100-block offline interval, before expiry retry
   and final wallet verification; it remains failed and logged as EF-12. That
   extended outage gap is deferred under the latest triage unless it blocks the
-  agreed hosted test. Exact-tip CI remains pending. See `CHANGESET_81_NOTES.md`
+  agreed hosted test. All seven exact-tip CI jobs pass at `138553b1`, with 470
+  required Linux assertions verified. See `CHANGESET_81_NOTES.md`
   and `docs/evidence/set81/`; these fixture results do not establish hosting.
 
 The missing simulator and prototype sources arrived in `../slug-sim-export`

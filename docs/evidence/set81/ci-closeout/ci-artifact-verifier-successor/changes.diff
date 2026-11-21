@@ -1,0 +1,44 @@
+--- ci-artifact-verifier/verify.py
++++ ci-artifact-verifier-successor/verify.py
+@@ -33,6 +33,32 @@
+ def decode(raw):
+     return json.loads(raw, object_pairs_hook=unique_object,
+                       parse_constant=lambda value: (_ for _ in ()).throw(ValueError('nonfinite JSON: ' + value)))
++
++
++def decode_wire_log(raw):
++    # Gate.run retains merged stdout/stderr evidence, while go list returns only
++    # stdout to its original JSON parser. These two exact module/version lines
++    # are the observed download prelude and are pinned by selected wire/go.mod.
++    # No warnings, arbitrary diagnostics, duplicate downloads or suffix text
++    # are discarded. The original full log is still byte/hash checked above.
++    allowed = {
++        b'go: downloading golang.org/x/crypto v0.57.0\n',
++        b'go: downloading golang.org/x/sys v0.48.0\n',
++    }
++    offset, seen = 0, set()
++    while raw.startswith(b'go: downloading ', offset):
++        need(len(seen) < 2, 'wire download prelude line bound')
++        end = raw.find(b'\n', offset, offset + 128)
++        need(end >= 0, 'wire download prelude byte bound')
++        line = raw[offset:end + 1]
++        need(line in allowed and line not in seen, 'exact selected module download line')
++        seen.add(line)
++        offset = end + 1
++    body = raw[offset:]
++    need(body.lstrip(b' \t\r\n').startswith(b'{'), 'one strict wire JSON object after prelude')
++    value = decode(body)
++    need(type(value) is dict, 'wire JSON object')
++    return value
+ 
+ 
+ def integer(value, minimum=0):
+@@ -221,7 +247,7 @@
+     for cheap in (False, True):
+         name = 'cheap-wire-selection' if cheap else 'normal-wire-selection'
+         raw, _ = read(artifacts / ('logs/' + name + '.log'), expected['log_limit_bytes'])
+-        wire = decode(raw)
++        wire = decode_wire_log(raw)
+         need(wire['Dir'] == expand('$CHAIN/wire'), 'original wire module')
+         yes, no = ('pow_testpow.go', 'pow_production.go') if cheap else ('pow_production.go', 'pow_testpow.go')
+         need(yes in wire['GoFiles'] and no not in wire['GoFiles'], 'normal/cheap wire selection')

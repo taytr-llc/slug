@@ -1,0 +1,131 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile:
+#1 transferring dockerfile: 6.14kB done
+#1 DONE 0.5s
+
+#2 [internal] load metadata for docker.io/library/golang:1.27.4-alpine@sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280
+#2 ...
+
+#3 [auth] library/golang:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/golang:1.27.4-alpine@sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280
+#2 DONE 1.1s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 78B done
+#4 DONE 0.0s
+
+#5 [build  1/13] FROM docker.io/library/golang:1.27.4-alpine@sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280
+#5 resolve docker.io/library/golang:1.27.4-alpine@sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280 done
+#5 sha256:ea30e25680a5470bac02b08bb0e0a735fb75bd0ab7d431b9b95ee0abef362586 1.92kB / 1.92kB done
+#5 sha256:3f9f7b68d2300deb4acba48650f28dec9098ead84cd167a56c0e2bf361f24592 2.19kB / 2.19kB done
+#5 sha256:881fc932939efef04ca120ad44bbd2c0917851eb247aa4995428afb1e80ede17 0B / 3.85MB 0.1s
+#5 sha256:1d88fd0fb393f123f061aada1719163fe157015d4f15ab0a77954f6b499de6de 244.47kB / 244.47kB 0.1s done
+#5 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 0B / 71.22MB 0.1s
+#5 sha256:c050182f513fb753ca709ec66cab639c3c37a5356e5d597ca81bcddcf2aaee91 0B / 126B 0.1s
+#5 sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280 10.29kB / 10.29kB done
+#5 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 8.39MB / 71.22MB 0.2s
+#5 sha256:881fc932939efef04ca120ad44bbd2c0917851eb247aa4995428afb1e80ede17 3.85MB / 3.85MB 0.3s done
+#5 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 52.43MB / 71.22MB 0.3s
+#5 sha256:c050182f513fb753ca709ec66cab639c3c37a5356e5d597ca81bcddcf2aaee91 126B / 126B 0.2s done
+#5 sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1 0B / 32B 0.3s
+#5 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 71.22MB / 71.22MB 0.4s done
+#5 sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1 32B / 32B 0.3s done
+#5 extracting sha256:881fc932939efef04ca120ad44bbd2c0917851eb247aa4995428afb1e80ede17 0.1s
+#5 extracting sha256:881fc932939efef04ca120ad44bbd2c0917851eb247aa4995428afb1e80ede17 0.1s done
+#5 extracting sha256:1d88fd0fb393f123f061aada1719163fe157015d4f15ab0a77954f6b499de6de 0.0s done
+#5 extracting sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f
+#5 ...
+
+#6 [internal] load build context
+#6 transferring context: 555.58MB 1.6s done
+#6 DONE 1.6s
+
+#5 [build  1/13] FROM docker.io/library/golang:1.27.4-alpine@sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280
+#5 extracting sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 2.7s done
+#5 extracting sha256:c050182f513fb753ca709ec66cab639c3c37a5356e5d597ca81bcddcf2aaee91
+#5 extracting sha256:c050182f513fb753ca709ec66cab639c3c37a5356e5d597ca81bcddcf2aaee91 done
+#5 extracting sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1 done
+#5 DONE 3.4s
+
+#7 [build  2/13] WORKDIR /src
+#7 DONE 4.0s
+
+#8 [build  3/13] COPY chain.tar wallet.tar /archives/
+#8 DONE 2.5s
+
+#9 [build  4/13] RUN test "$BUILDPLATFORM" = linux/amd64 && test "$TARGETPLATFORM" = linux/amd64 &&     printf '%s\n' "$CHAIN_ARCHIVE_SHA256" "$WALLET_ARCHIVE_SHA256" | grep -Eq '^[0-9a-f]{64}$' &&     test "${#CHAIN_ARCHIVE_SHA256}" = 64 && test "${#WALLET_ARCHIVE_SHA256}" = 64 &&     printf '%s  %s\n' "$CHAIN_ARCHIVE_SHA256" /archives/chain.tar "$WALLET_ARCHIVE_SHA256" /archives/wallet.tar | sha256sum -c - &&     tar -xf /archives/chain.tar && tar -xf /archives/wallet.tar &&     test -f slug/desktop/go.work && test -f slugwallet/go.mod &&     mkdir -p /out /build-evidence &&     printf '%s\n' 'slug=138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c' 'slugwallet=dfc5d9dd7e0f604486fbac812d0413fce1f45cd6' > /build-evidence/source-revisions.txt &&     printf '%s  %s\n' "$CHAIN_ARCHIVE_SHA256" chain.tar "$WALLET_ARCHIVE_SHA256" wallet.tar > /build-evidence/source-archives.sha256 &&     find slug slugwallet -type f -print0 | sort -z | xargs -0 sha256sum > /build-evidence/source-before.sha256
+#9 2.195 /archives/chain.tar: OK
+#9 2.285 /archives/wallet.tar: OK
+#9 DONE 6.5s
+
+#10 [build  5/13] WORKDIR /src/slug/desktop
+#10 DONE 0.0s
+
+#11 [build  6/13] RUN sh ../scripts/candidate-go.sh check &&     go env -json GOVERSION GOOS GOARCH CGO_ENABLED GOWORK GOFLAGS GOEXPERIMENT > /build-evidence/go-env.json &&     go work edit -json > /build-evidence/workspace.json &&     go list -mod=readonly -f '{{range .GoFiles}}{{println .}}{{end}}' github.com/taytr-llc/slug/wire/v2 > /build-evidence/wire-files.txt &&     grep -Fx pow_production.go /build-evidence/wire-files.txt &&     ! grep -Fx pow_testpow.go /build-evidence/wire-files.txt
+#11 0.949 go: downloading golang.org/x/crypto v0.57.0
+#11 1.107 go: downloading golang.org/x/sys v0.48.0
+#11 1.268 pow_production.go
+#11 DONE 1.3s
+
+#12 [build  7/13] RUN go list -mod=readonly -deps -json ./cmd/slugpoold ./cmd/slugpool-provision > /build-evidence/dependencies.json &&     sh ../scripts/candidate-go.sh build -mod=readonly -p=1 -trimpath -buildvcs=false -tags= -o /out/slugpoold ./cmd/slugpoold &&     sh ../scripts/candidate-go.sh build -mod=readonly -p=1 -trimpath -buildvcs=false -tags= -o /out/slugpool-provision ./cmd/slugpool-provision &&     sh ../scripts/candidate-go.sh verify-binary /out/slugpoold /out/slugpool-provision > /build-evidence/build-info.txt &&     go tool nm /out/slugpoold > /build-evidence/operator-symbols.txt &&     go tool nm /out/slugpool-provision > /build-evidence/provision-symbols.txt &&     ! grep -E 'ForTestClock|UseOwnedCalendarOffsetForTest|UseCalendarClockForTest|UseOwnedClockForTest|UseAuthorityClockForTest' /build-evidence/*-symbols.txt
+#12 0.118 go: downloading golang.org/x/net v0.60.0
+#12 0.134 go: downloading github.com/decred/dcrd/dcrec/secp256k1/v4 v4.4.1
+#12 0.219 go: downloading github.com/syndtr/goleveldb v1.0.1-0.20220721030215-126854af5e6d
+#12 0.251 go: downloading golang.org/x/time v0.16.0
+#12 0.263 go: downloading github.com/btcsuite/btclog v1.0.0
+#12 0.274 go: downloading github.com/lightninglabs/neutrino/cache v1.1.4
+#12 0.291 go: downloading go.etcd.io/bbolt v1.3.11
+#12 0.317 go: downloading github.com/davecgh/go-spew v1.1.1
+#12 0.319 go: downloading github.com/gorilla/websocket v1.5.3
+#12 0.333 go: downloading github.com/lightningnetwork/lnd/fn/v2 v2.0.8
+#12 0.353 go: downloading golang.org/x/exp v0.0.0-20260410095643-746e56fc9e2f
+#12 0.356 go: downloading golang.org/x/term v0.46.0
+#12 0.367 go: downloading github.com/lightningnetwork/lnd/clock v1.0.1
+#12 0.379 go: downloading github.com/stretchr/testify v1.12.1
+#12 0.410 go: downloading golang.org/x/sync v0.23.0
+#12 0.412 go: downloading github.com/golang/snappy v1.0.0
+#12 0.425 go: downloading github.com/decred/dcrd/crypto/blake256 v1.1.0
+#12 0.427 go: downloading github.com/aead/siphash v1.0.1
+#12 0.436 go: downloading github.com/kkdai/bstream v1.0.0
+#12 0.438 go: downloading go.yaml.in/yaml/v3 v3.0.5
+#12 DONE 43.6s
+
+#13 [build  8/13] RUN mkdir -p /checks/cache /checks/tmp && cp -a /go/pkg/mod /checks/mod &&     chown -R 10001:10001 /checks && chown 10001:10001 /build-evidence
+#13 DONE 0.3s
+
+#14 [build  9/13] RUN test "$(id -u)" = 10001 && test "$(id -g)" = 10001 && id > /build-evidence/check-user.txt &&     if sh ../scripts/candidate-go.sh test -mod=readonly -count=1 -timeout=3m -json ./pooloperator       -run '^(TestOperatorPrivateInputOwnedReadAndLifetime|TestOperatorPrivateInputAdmissionRefusals|TestOperatorPrivateInputOriginalIdentityRefusals|TestOperatorPrivateInputLinuxACLRefusal|TestOperatorFilesLockAndIdentity|TestOperatorCommandBlockedOutputJoins|TestOperatorRuntimeCloseJoinsAdmittedLocalAction)$'       > /build-evidence/operator-tests.jsonl; then :; else cat /build-evidence/operator-tests.jsonl; exit 1; fi
+#14 DONE 26.3s
+
+#15 [build 10/13] WORKDIR /src/slug
+#15 DONE 0.0s
+
+#16 [build 11/13] RUN if sh scripts/candidate-go.sh test -mod=readonly -count=1 -timeout=3m -json ./internal/operatorauthority       -run '^TestOperatorAuthorityExtendedACLRefusal$' > /build-evidence/authority-tests.jsonl; then :; else cat /build-evidence/authority-tests.jsonl; exit 1; fi &&     if sh scripts/candidate-go.sh test -mod=readonly -count=1 -timeout=3m -json ./poolingress       -run '^(TestRecoverableIngressOriginalTLSAndJoin|TestIngressCloseCancelsAndJoins)$' > /build-evidence/ingress-tests.jsonl; then :; else cat /build-evidence/ingress-tests.jsonl; exit 1; fi
+#16 DONE 0.9s
+
+#17 [build 12/13] WORKDIR /src
+#17 DONE 0.0s
+
+#18 [build 13/13] RUN find slug slugwallet -type f -print0 | sort -z | xargs -0 sha256sum > /build-evidence/source-after.sha256 &&     cmp /build-evidence/source-before.sha256 /build-evidence/source-after.sha256 &&     cp slug/build-profile.json /build-evidence/build-profile.json &&     sha256sum /out/slugpoold /out/slugpool-provision > /build-evidence/binary-sha256.txt &&     test -s /etc/ssl/certs/ca-certificates.crt &&     mkdir -p /runtime-root/etc/ssl/certs /runtime-root/data /runtime-root/tmp &&     cp /etc/ssl/certs/ca-certificates.crt /runtime-root/etc/ssl/certs/ &&     printf '%s\n' 'slug:x:10001:10001:SLUG operator:/data:/sbin/nologin' > /runtime-root/etc/passwd &&     printf '%s\n' 'slug:x:10001:' > /runtime-root/etc/group &&     chmod 0700 /runtime-root/data && chown 10001:10001 /runtime-root/data && chmod 1777 /runtime-root/tmp
+#18 DONE 2.4s
+
+#19 [stage-1 1/4] COPY --from=build /runtime-root/ /
+#19 DONE 0.0s
+
+#20 [stage-1 2/4] COPY --from=build /out/ /usr/local/bin/
+#20 DONE 0.0s
+
+#21 [stage-1 3/4] COPY --from=build /build-evidence/ /usr/share/slug/build/
+#21 DONE 0.0s
+
+#22 [stage-1 4/4] WORKDIR /data
+#22 DONE 0.0s
+
+#23 exporting to image
+#23 exporting layers 0.1s done
+#23 writing image sha256:4e0ee315e0c2f5c1410b6d5a3bd08af8dd8839d1d5516699d8ff6fdfed1041b0 done
+#23 naming to docker.io/library/slug-operator:qualification done
+#23 DONE 0.1s

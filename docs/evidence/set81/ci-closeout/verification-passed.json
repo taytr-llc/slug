@@ -1,0 +1,388 @@
+{
+  "actual_or_deployment_claim": false,
+  "clean_join": true,
+  "commands_verified": 64,
+  "head": "138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c",
+  "inputs": [
+    {
+      "bytes": 3182,
+      "path": "/Users/taytrrip/slug/artifacts/set81/ci-attempt1/report.json",
+      "sha256": "cdab8c563817bdc798fcb2310e404c16992a2db926cce8029ded62faf798ccf8"
+    },
+    {
+      "bytes": 20199783,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/bin/slugd",
+      "sha256": "c1b66721bc6ce368a5fced3265829c68719596023b53400aa4de39ca713cf04e"
+    },
+    {
+      "bytes": 39148114,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/bin/slugpilot",
+      "sha256": "18b943ef75f24cfcfa747990af698f3c1b6edde2cca24fec250b236bca81f08d"
+    },
+    {
+      "bytes": 21083125,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/bin/slugpoold",
+      "sha256": "ced5d23f204de5d6a37c2befe70c42182cda8da528a2c75190eeb6d20731da3e"
+    },
+    {
+      "bytes": 698,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/build-slugd.log",
+      "sha256": "030c0ef473677232a34fdce0edff81af1dfd0ea75a548c3297516da5652a7c9d"
+    },
+    {
+      "bytes": 81,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/build-slugpilot.log",
+      "sha256": "0ed611fad0c584c6d4ebc7f53b3780739ab20c4d35ebfe2be13e100781213385"
+    },
+    {
+      "bytes": 378,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/build-slugpoold.log",
+      "sha256": "6ba9a916b1ad92caec56e67d0c918bba5b56f9f120c2f05d974a0a256dab1aeb"
+    },
+    {
+      "bytes": 246,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/c-compiler.log",
+      "sha256": "8497f84b2b8334c413d9c6166bd39d009ba55d2ff60a8f23e66dfa5819c2b048"
+    },
+    {
+      "bytes": 0,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/candidate-profile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 39526,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/cheap-cancellation-controls.log",
+      "sha256": "567f883b0158b63c7e3c4c40bba1c2935c3dd82b92c256bb69be9a2cd5a7bf6a"
+    },
+    {
+      "bytes": 84604,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/cheap-daily-core.log",
+      "sha256": "f4d4380396aeff414ed1a456a6296455da41be0423eaf6874810230fa4d2c0bf"
+    },
+    {
+      "bytes": 2334,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/cheap-daily-desktop.log",
+      "sha256": "434d6c9bdcb8d073ac9f4df4ae02c752b0b9e06645e8e33ed7b111412fed91be"
+    },
+    {
+      "bytes": 5663,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/cheap-daily-public.log",
+      "sha256": "38a4bbd22d10913d8634cb2404cb7bf1768a6241e6e777c0f2b30409b026093b"
+    },
+    {
+      "bytes": 2716,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/cheap-daily-wallet.log",
+      "sha256": "b92a81f2295940cb35c42562c9b9a1322285d1e0c67cd7c1611b21f903731bff"
+    },
+    {
+      "bytes": 25765,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/cheap-intake-controls.log",
+      "sha256": "04e81708e49a4032128c332dc41581cf577374e4303f40f4fe3e039ca86977eb"
+    },
+    {
+      "bytes": 2759,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/cheap-retained-admission.log",
+      "sha256": "0ee07514a1e9bc470c28e57dc88c1355ecb4f76f93f371b47f70a476f921f50d"
+    },
+    {
+      "bytes": 6245,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/cheap-wire-selection.log",
+      "sha256": "541e7c33197df0343db54274f54fa16f5e9de6a85ea1a509a9f7592fc053a60a"
+    },
+    {
+      "bytes": 365,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/go-environment.log",
+      "sha256": "08d5533eb91d78eac58c5eb75466c58aeb42453b158dd823dbf9c040c6620e06"
+    },
+    {
+      "bytes": 43970,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/normal-authority.log",
+      "sha256": "fb85bd010d448691b286aeb692ee89214d77197e25e1e38faee264596ab67ba3"
+    },
+    {
+      "bytes": 615206,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/normal-daily-ledger-schedule.log",
+      "sha256": "b6551231408517c6f95a2d1b925866dadddf830bb321ba9d6b39922e94e75a0a"
+    },
+    {
+      "bytes": 31684,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/normal-daily-mining-lease.log",
+      "sha256": "cf26ebe2c7bd4a54467db65c2a93bf64b2c054b34b4afb002c3b6ce5fc6d4cb7"
+    },
+    {
+      "bytes": 43352,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/normal-daily-node-shape.log",
+      "sha256": "c132d84a0102483451ee7ecb4ac1101b6e6b89186ba53a30aef76641fdc1a4a9"
+    },
+    {
+      "bytes": 309348,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/normal-daily-public-desktop.log",
+      "sha256": "9d87bd171b666cb5eaf030b2ac6d1651a337cacfe228e3a6e388edb00ee89d69"
+    },
+    {
+      "bytes": 742199,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/normal-daily-public-transport.log",
+      "sha256": "dee7b46cb66ab52ef6c4d5f465abf10234bda66a150448006900cc50d9be4586"
+    },
+    {
+      "bytes": 159032,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/normal-daily-public-worker.log",
+      "sha256": "6474788ce0ac6080fab1f541643389bdf4ab6486ceb1d84beba8becc1aa98e81"
+    },
+    {
+      "bytes": 8764,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/normal-daily-source-fences.log",
+      "sha256": "7e29d09ef953e33e72c9afebffd41c7d6a8d3b249d196e083ef03a86e444d261"
+    },
+    {
+      "bytes": 352257,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/normal-daily-source-round.log",
+      "sha256": "f3118a50ae544747fa7c43e6c402bc593c0a799b3e9e6525befb82f40dfa67c9"
+    },
+    {
+      "bytes": 265774,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/normal-operator.log",
+      "sha256": "ae93bd800ef99876e86e581d00ca3d2737d847d4303fb6ab99cc72a7fd6a74f0"
+    },
+    {
+      "bytes": 46531,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/normal-retained-admission.log",
+      "sha256": "b17675ca9325d2d98f17a326581d35f6b6601d0e629dedfc4c173e0f5191e833"
+    },
+    {
+      "bytes": 39675,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/normal-wallet.log",
+      "sha256": "822b5fafe7f1e60bdaa892168bd0ebddfe2af6619d9f5a6f909bd61f87573de0"
+    },
+    {
+      "bytes": 6936,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/normal-wire-guard.log",
+      "sha256": "63d2ea600d0c7013c4bef999ab22ad1c6254b3bb54e2bafe2c767903d179bda1"
+    },
+    {
+      "bytes": 6310,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/normal-wire-selection.log",
+      "sha256": "46eb8bfd139ba3142942c744257e116a034a58876412f0805d3129e213babd94"
+    },
+    {
+      "bytes": 43981,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/race-authority.log",
+      "sha256": "1b03a65a1a9f684d5a028d2356c4ba4f329b82ee114aaeb0c8c40323edc0c26f"
+    },
+    {
+      "bytes": 615468,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/race-daily-ledger-schedule.log",
+      "sha256": "7eb968e195bfc98649a61a3700ff69e3c5121159b3ca0ed9c838472b26ab5954"
+    },
+    {
+      "bytes": 31689,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/race-daily-mining-lease.log",
+      "sha256": "925c261dfc560876e11b0864b7b2599abf6715849a3d65c5aa1aba4ae57cc37e"
+    },
+    {
+      "bytes": 43383,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/race-daily-node-shape.log",
+      "sha256": "c5964e0f969208f8c49c3faf72d985243527f9b35204d29d3c5fa7b1149c2992"
+    },
+    {
+      "bytes": 309769,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/race-daily-public-desktop.log",
+      "sha256": "efd16b60d56017d427fb3b8347de092a4bd98440f8c165b4acb12e7bd903c28d"
+    },
+    {
+      "bytes": 742299,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/race-daily-public-transport.log",
+      "sha256": "b165119a40f6c9dc426b6b9c1c300a28075e08a3ff82782d5205991e97ff40a2"
+    },
+    {
+      "bytes": 159218,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/race-daily-public-worker.log",
+      "sha256": "8c4b2e97f3efa0a23c72b8c0980acd0ab06632be50ec4b71f7b4ebfc71067d82"
+    },
+    {
+      "bytes": 8781,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/race-daily-source-fences.log",
+      "sha256": "582c5c75823b2d31370b28909cfd6a01d0058711400628821e0770ead793e274"
+    },
+    {
+      "bytes": 352304,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/race-daily-source-round.log",
+      "sha256": "2ec89e2895b6985bbab623f889b557318140c76ec5b640e3bddfc8a6c9d4c5c1"
+    },
+    {
+      "bytes": 265893,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/race-operator.log",
+      "sha256": "be894ba1fdb66e8797b7e12b64c8280adcf2568a7c76664271e0fa0368faf8a3"
+    },
+    {
+      "bytes": 46567,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/race-retained-admission.log",
+      "sha256": "b952734e589c037790c98b35617494020c67e34bf674b93156352b00dd5db371"
+    },
+    {
+      "bytes": 39671,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/race-wallet.log",
+      "sha256": "095a8bb860b41a763273ab13a5d147f64fb0ac597ba61c009ac7b23cac5b59fd"
+    },
+    {
+      "bytes": 493700,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/sources-after-chain-files.log",
+      "sha256": "bb2fe42bde1a0cf29496123b290899443026fc74c4f731e98fe13c5a748f6ab4"
+    },
+    {
+      "bytes": 41,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/sources-after-chain-head.log",
+      "sha256": "6753e05dcdfda3a61baf6cb1cd584060020118caf874b7d8b1d9f96035b52409"
+    },
+    {
+      "bytes": 0,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/sources-after-chain-status.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 27600,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/sources-after-wallet-files.log",
+      "sha256": "4c585e317f686756b6a2dcac40ad94b2499a2ac1e566879c2d6d589d79522d9a"
+    },
+    {
+      "bytes": 41,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/sources-after-wallet-head.log",
+      "sha256": "94fce74f0b4fd84abfaf26e71cb711e729dc298eca4da3ea24c0145eda683826"
+    },
+    {
+      "bytes": 0,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/sources-after-wallet-status.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 493700,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/sources-before-chain-files.log",
+      "sha256": "bb2fe42bde1a0cf29496123b290899443026fc74c4f731e98fe13c5a748f6ab4"
+    },
+    {
+      "bytes": 41,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/sources-before-chain-head.log",
+      "sha256": "6753e05dcdfda3a61baf6cb1cd584060020118caf874b7d8b1d9f96035b52409"
+    },
+    {
+      "bytes": 0,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/sources-before-chain-status.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 27600,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/sources-before-wallet-files.log",
+      "sha256": "4c585e317f686756b6a2dcac40ad94b2499a2ac1e566879c2d6d589d79522d9a"
+    },
+    {
+      "bytes": 41,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/sources-before-wallet-head.log",
+      "sha256": "94fce74f0b4fd84abfaf26e71cb711e729dc298eca4da3ea24c0145eda683826"
+    },
+    {
+      "bytes": 0,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/sources-before-wallet-status.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 852147,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/symbols-slugd.log",
+      "sha256": "682ed6d0e5aa6991c59974ca193fd062f893cf89f00c95c03959106f5c933ac1"
+    },
+    {
+      "bytes": 1543499,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/symbols-slugpilot.log",
+      "sha256": "f3b8ce1862b91f36d7e59abba7686328efd755259f9febad84fdf2ce7f514a7d"
+    },
+    {
+      "bytes": 853826,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/symbols-slugpoold.log",
+      "sha256": "0ba80796bd72cfdc34cd0b189a26c90f4b1905caad4e3f45dfbe95a385683f2a"
+    },
+    {
+      "bytes": 2348,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/verify-slugd.log",
+      "sha256": "d254e637f091d96d4341ed46dccd12f370a8af71dc9e1021b835d01129af1a7f"
+    },
+    {
+      "bytes": 3406,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/verify-slugpilot.log",
+      "sha256": "095942599168e7e3a3ad2f185b8f3b445e02d81cf2d2266ad63178034bf0ce32"
+    },
+    {
+      "bytes": 3288,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/verify-slugpoold.log",
+      "sha256": "e3dd4b28dae2e44acd9df476ab7634a8c9da9402a3f0096c56a0bb1513518e88"
+    },
+    {
+      "bytes": 0,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/vet-authority.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/vet-daily-components.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/vet-operator.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/vet-wallet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 743,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/workspace-desktop.log",
+      "sha256": "172dc6e116b9b654d5222881a1bbf3139ff7a9e492d186548c454adb5032d098"
+    },
+    {
+      "bytes": 675,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/logs/workspace-wallet.log",
+      "sha256": "3f4732bea3622d7864f7d4c77b9dc84126dce3c4d9caa5b80296fc29ccbe8895"
+    },
+    {
+      "bytes": 1361609,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/report.json",
+      "sha256": "34775ac137cd8d0bbe09a844a09da6caa2e472e9e721fa46281b07352ee3ee16"
+    },
+    {
+      "bytes": 2288042,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/sources-after.json",
+      "sha256": "6af1bacb6ce04996cbdedb7f43036079f2da48e6a4407f84c8a6fbce917e7349"
+    },
+    {
+      "bytes": 2288042,
+      "path": "/Users/taytrrip/slug/artifacts/set81/linux-run-44918359817/operator-linux-138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c-1/sources-before.json",
+      "sha256": "6af1bacb6ce04996cbdedb7f43036079f2da48e6a4407f84c8a6fbce917e7349"
+    },
+    {
+      "bytes": 140091,
+      "path": "/Users/taytrrip/slug/set81-prep/ci-artifact-verifier-successor/expected.json",
+      "sha256": "f059d2f4d2988b1c1febebbc1b503d4ce95b6b893335f4671e2fb1fb57cbc2e1"
+    }
+  ],
+  "overall_seven_job_ci_verified": true,
+  "passed": true,
+  "report": {
+    "bytes": 1361609,
+    "sha256": "34775ac137cd8d0bbe09a844a09da6caa2e472e9e721fa46281b07352ee3ee16"
+  },
+  "required_passes": 470,
+  "scope": "Downloaded exact-tip Set81 Linux operator gate verification",
+  "sources_after": {
+    "bytes": 2288042,
+    "sha256": "6af1bacb6ce04996cbdedb7f43036079f2da48e6a4407f84c8a6fbce917e7349"
+  },
+  "sources_before": {
+    "bytes": 2288042,
+    "sha256": "6af1bacb6ce04996cbdedb7f43036079f2da48e6a4407f84c8a6fbce917e7349"
+  },
+  "sources_equal": true,
+  "test_groups": 32,
+  "version": 1,
+  "wallet": "dfc5d9dd7e0f604486fbac812d0413fce1f45cd6"
+}

@@ -248,6 +248,33 @@ the smaller qualified restart flow. Exact cause is not established.
   immediately if this prevents the agreed hosted test flow or reveals a funds,
   data, security or payout-correctness risk.
 
+## EF-13 — Established transport pins have no in-place rotation path
+
+**Status:** Open operations follow-up; nonblocking with an unchanged endpoint
+and a certificate valid throughout the bounded test window.
+
+- **Trigger:** The pool needs a different public origin, TLS key or client CA,
+  or its current leaf certificate approaches expiry.
+- **Player impact:** An expired certificate prevents new TLS connections.
+  Changing immutable transport identities cannot currently preserve established
+  operator/attachment roots through a supported rotation command. Miner
+  credential rotation does not rotate those transport pins.
+- **Evidence:** [TLS selection checks](../poolingress/config.go),
+  [operator marker equality](../desktop/pooloperator/filesystem_unix.go),
+  [attachment identity](../desktop/pilot/remote_pool_config.go), and
+  [provisioning certificate binding](../desktop/pooloperator/provision_codec.go).
+  Source permits a same-key, same-host leaf under the existing client CA after
+  complete stop/reopen, but that renewal flow has not been rehearsed. Offline
+  provisioning resume/verify retains the original certificate bytes and is not
+  a renewal command.
+- **Workaround:** Keep the selected endpoint/key/CA and ensure certificate
+  validity covers the test. Monitor expiry; preserve original provisioning
+  inputs and journals. Do not replace selected files under a running owner,
+  reset roots, disable TLS verification or repin clients to force recovery.
+- **Revisit:** Before certificate renewal or an endpoint/CA/key change, and
+  before continuous public operation. Promote immediately if this blocks the
+  agreed test or requires responding to a compromised key.
+
 ## Adding or closing an entry
 
 Use a stable EF number, open/closed status and scope label. Record **trigger,

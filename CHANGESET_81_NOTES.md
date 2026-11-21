@@ -62,7 +62,7 @@ conflict checks, followed by read-only seed synchronization to height 61 and
 restart. Compiled node/control inputs are unchanged from release `e3eb4d49`;
 no seed rollout is needed. The initial closure diagnostic counted two Python
 qualification helpers as compiled inputs; the corrected classification is
-archived alongside it. Exact-tip CI remains pending.
+archived alongside it. All seven exact-tip CI jobs now pass at `138553b1`.
 
 The first actual A run failed its original 90-second readiness gate. Three
 standalone status samples showed full pool intake and ready publication, but
@@ -99,6 +99,13 @@ they do not turn this actual run into a pass. Preserve [B1](docs/evidence/set81/
 and track the availability/rehearsal gap as [EF-12](docs/EDGE_CASE_FOLLOW_UPS.md#ef-12--extended-offline-catch-up-exceeded-the-restart-readiness-window).
 Under Mike's latest triage, extended offline catch-up is deferred unless it
 blocks the agreed bounded hosted test or reveals a correctness/security risk.
+
+Downloaded Linux evidence verifies 470 required PASS assertions across 32 test
+groups and 64 commands, with unchanged paired sources and clean process joins.
+The first external verifier failed on normal Go download messages preceding
+wire-selection JSON. Its successor accepts only those two exact pinned download
+lines before the strict object; all original checks remain unchanged. Preserve
+both verifier attempts. See [CI closeout](docs/evidence/set81/ci-closeout/).
 
 Coverage distinguishes component composition from direct actual scenarios.
 The full-source fixture has an all-f pool target; it proves admission without

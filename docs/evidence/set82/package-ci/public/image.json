@@ -1,0 +1,71 @@
+[
+    {
+        "Id": "sha256:4e0ee315e0c2f5c1410b6d5a3bd08af8dd8839d1d5516699d8ff6fdfed1041b0",
+        "RepoTags": [
+            "slug-operator:qualification"
+        ],
+        "RepoDigests": [],
+        "Parent": "",
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-11-21T15:34:57.287493429Z",
+        "DockerVersion": "",
+        "Author": "",
+        "Config": {
+            "Hostname": "",
+            "Domainname": "",
+            "User": "10001:10001",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt"
+            ],
+            "Cmd": [
+                "help"
+            ],
+            "ArgsEscaped": true,
+            "Image": "",
+            "Volumes": null,
+            "WorkingDir": "/data",
+            "Entrypoint": [
+                "/usr/local/bin/slugpoold"
+            ],
+            "OnBuild": null,
+            "Labels": {
+                "org.opencontainers.image.revision": "138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c",
+                "org.slug.build.profile": "slug-go1274-no-cse-v1",
+                "org.slug.qualification": "candidate package; see exact CI evidence; hosted execution pending",
+                "org.slug.wallet.revision": "dfc5d9dd7e0f604486fbac812d0413fce1f45cd6"
+            },
+            "StopSignal": "SIGTERM"
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 41417040,
+        "GraphDriver": {
+            "Data": {
+                "LowerDir": "/var/lib/docker/overlay2/3uv7ziya8hh3aczfho9crxy1w/diff:/var/lib/docker/overlay2/56is483kr8bfcqoyrrdhxcfwv/diff:/var/lib/docker/overlay2/p839r4gtgg0f280uqwt59ystf/diff",
+                "MergedDir": "/var/lib/docker/overlay2/aeujxc3z2m0rlmuojjgbgflfv/merged",
+                "UpperDir": "/var/lib/docker/overlay2/aeujxc3z2m0rlmuojjgbgflfv/diff",
+                "WorkDir": "/var/lib/docker/overlay2/aeujxc3z2m0rlmuojjgbgflfv/work"
+            },
+            "Name": "overlay2"
+        },
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:17ec1578a1b1c62a7eca9adc0b4fb92e033ac1b1b177178736b3141631f89a2d",
+                "sha256:edd42162caacfeb1fea791a6e01a0d219994394cf2c3cb1881dc01383c324169",
+                "sha256:e3bbcb5743815d6a87575c7d2113823bb83f7081fa018882f42ec944b28233a3",
+                "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-11-21T15:34:57.344039012Z"
+        }
+    }
+]
