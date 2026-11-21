@@ -1,0 +1,90 @@
+{
+  "commands": [
+    {
+      "name": "legacy-normal",
+      "command": [
+        "sh",
+        "scripts/candidate-go.sh",
+        "test",
+        "-count=1",
+        "-json",
+        "-timeout=5m",
+        "./desktop/pilot",
+        "./desktop/internal/bridge",
+        "./desktop/cmd/slugpilot",
+        "./desktop",
+        "-run",
+        "RemotePoolProtocolIndependentCorpus|ServeRemotePool|RemotePoolWireReadError|RemotePoolBridge|RemoteHelper|NativeRemote"
+      ],
+      "exit_code": 0,
+      "started_at_ms": 1795288332695,
+      "ended_at_ms": 1795288339124
+    },
+    {
+      "name": "cheap-controls",
+      "command": [
+        "sh",
+        "scripts/candidate-go.sh",
+        "test",
+        "-tags=slugtestpow",
+        "-count=1",
+        "-json",
+        "-timeout=5m",
+        "./desktop/pilot",
+        "./desktop/cmd/slugpilot",
+        "-run",
+        "DailyWalletProtocolCheapRefusal|RemoteHelperCheapRefusalBeforeEffects"
+      ],
+      "exit_code": 0,
+      "started_at_ms": 1795288339124,
+      "ended_at_ms": 1795288364137
+    },
+    {
+      "name": "vet",
+      "command": [
+        "go",
+        "vet",
+        "./desktop/pilot",
+        "./desktop/accountpilot",
+        "./desktop/internal/bridge",
+        "./desktop/cmd/slugpilot",
+        "./desktop"
+      ],
+      "exit_code": 0,
+      "started_at_ms": 1795288364138,
+      "ended_at_ms": 1795288416396
+    },
+    {
+      "name": "helper-build",
+      "command": [
+        "sh",
+        "scripts/candidate-go.sh",
+        "build",
+        "-trimpath",
+        "-o",
+        "/Users/taytrrip/slug/artifacts/set83/wallet-integration-tests/slugpilot",
+        "./desktop/cmd/slugpilot"
+      ],
+      "exit_code": 0,
+      "started_at_ms": 1795288416397,
+      "ended_at_ms": 1795288453648
+    },
+    {
+      "name": "app-build",
+      "command": [
+        "sh",
+        "scripts/candidate-go.sh",
+        "build",
+        "-trimpath",
+        "-tags=production",
+        "-ldflags=-extldflags=-mmacosx-version-min=13.0 -X main.remoteBuild=1",
+        "-o",
+        "/Users/taytrrip/slug/artifacts/set83/wallet-integration-tests/SLUGPilot",
+        "./desktop"
+      ],
+      "exit_code": 0,
+      "started_at_ms": 1795288453649,
+      "ended_at_ms": 1795288485323
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+✖ same wallet layout, explicit login and Start, only eight fixed methods (3.709541ms)
+✖ lossless cumulative money is separate from local spendable and never rounded (1.094625ms)
+✖ empty window continues exactly, stale cached first stays dated without recapture (1.076708ms)
+✖ Busy before acknowledgement retains same sequence and never auto-begins (1.136709ms)
+✖ foreign capture, changed View, unsafe numbers and malformed decimals clear results (1.063208ms)
+✖ all independent successful read shapes fit the exact frontend validator (0.973042ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 0
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 119.6685
+
+✖ failing tests:
+
+test at desktop/frontend/remote-daily.test.mjs:37:1
+✖ same wallet layout, explicit login and Start, only eight fixed methods (3.709541ms)
+  TypeError: Cannot read properties of null (reading 'state')
+      at Object.login (file:///Users/taytrrip/slug/slug/desktop/frontend/remote-daily.test.mjs:35:361)
+      at async TestContext.<anonymous> (file:///Users/taytrrip/slug/slug/desktop/frontend/remote-daily.test.mjs:40:2)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)
+
+test at desktop/frontend/remote-daily.test.mjs:43:1
+✖ lossless cumulative money is separate from local spendable and never rounded (1.094625ms)
+  TypeError: Cannot read properties of null (reading 'state')
+      at Object.login (file:///Users/taytrrip/slug/slug/desktop/frontend/remote-daily.test.mjs:35:361)
+      at async TestContext.<anonymous> (file:///Users/taytrrip/slug/slug/desktop/frontend/remote-daily.test.mjs:44:26)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at desktop/frontend/remote-daily.test.mjs:48:1
+✖ empty window continues exactly, stale cached first stays dated without recapture (1.076708ms)
+  TypeError: Cannot read properties of null (reading 'state')
+      at Object.login (file:///Users/taytrrip/slug/slug/desktop/frontend/remote-daily.test.mjs:35:361)
+      at async TestContext.<anonymous> (file:///Users/taytrrip/slug/slug/desktop/frontend/remote-daily.test.mjs:49:26)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at desktop/frontend/remote-daily.test.mjs:58:1
+✖ Busy before acknowledgement retains same sequence and never auto-begins (1.136709ms)
+  TypeError: Cannot read properties of null (reading 'state')
+      at Object.login (file:///Users/taytrrip/slug/slug/desktop/frontend/remote-daily.test.mjs:35:361)
+      at async TestContext.<anonymous> (file:///Users/taytrrip/slug/slug/desktop/frontend/remote-daily.test.mjs:59:26)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at desktop/frontend/remote-daily.test.mjs:64:1
+✖ foreign capture, changed View, unsafe numbers and malformed decimals clear results (1.063208ms)
+  TypeError: Cannot read properties of null (reading 'state')
+      at Object.login (file:///Users/taytrrip/slug/slug/desktop/frontend/remote-daily.test.mjs:35:361)
+      at async TestContext.<anonymous> (file:///Users/taytrrip/slug/slug/desktop/frontend/remote-daily.test.mjs:66:27)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at desktop/frontend/remote-daily.test.mjs:73:1
+✖ all independent successful read shapes fit the exact frontend validator (0.973042ms)
+  TypeError: Cannot read properties of null (reading 'state')
+      at Object.login (file:///Users/taytrrip/slug/slug/desktop/frontend/remote-daily.test.mjs:35:361)
+      at async TestContext.<anonymous> (file:///Users/taytrrip/slug/slug/desktop/frontend/remote-daily.test.mjs:74:26)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)

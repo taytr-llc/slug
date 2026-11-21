@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "passed": true,
+  "source_commit": "005897c3e0fa87f55c6ab9a703a28d9f80163da2",
+  "run_id": 44936841642,
+  "url": "https://github.com/taytr-llc/slug/actions/runs/44936841642",
+  "jobs": [
+    {
+      "name": "Unit rpctest",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44936841642/job/136945217963"
+    },
+    {
+      "name": "Build",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44936841642/job/136945218197"
+    },
+    {
+      "name": "Minimum Go version (compatibility)",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44936841642/job/136945218203"
+    },
+    {
+      "name": "In-tree modules",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44936841642/job/136945218285"
+    },
+    {
+      "name": "Unit race",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44936841642/job/136945218293"
+    },
+    {
+      "name": "Unit coverage",
+      "conclusion": "success",
+      "html_url": "https://github.com/taytr-llc/slug/actions/runs/44936841642/job/136945218297"
+    }
+  ],
+  "jobs_sha256": "295994b568569e3c33a9e658e4b107774390b6045d55c8812a3271992a9b054c",
+  "scope": "All six triggered Build and Test jobs for native read component; not the later uncommitted UI integration."
+}

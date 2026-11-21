@@ -1,0 +1,24 @@
+{
+	"ImportPath": "github.com/wailsapp/wails/v3/pkg/application",
+	"Match": [
+		"github.com/wailsapp/wails/v3/pkg/application"
+	],
+	"Incomplete": true,
+	"Error": {
+		"ImportStack": [],
+		"Pos": "",
+		"Err": "no required module provides package github.com/wailsapp/wails/v3/pkg/application; to add it:\n\tgo get github.com/wailsapp/wails/v3/pkg/application"
+	}
+}
+{
+	"ImportPath": "github.com/wailsapp/wails/v3/pkg/events",
+	"Match": [
+		"github.com/wailsapp/wails/v3/pkg/events"
+	],
+	"Incomplete": true,
+	"Error": {
+		"ImportStack": [],
+		"Pos": "",
+		"Err": "no required module provides package github.com/wailsapp/wails/v3/pkg/events; to add it:\n\tgo get github.com/wailsapp/wails/v3/pkg/events"
+	}
+}

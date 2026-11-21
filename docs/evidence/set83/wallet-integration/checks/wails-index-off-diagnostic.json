@@ -1,0 +1,94 @@
+{
+	"Dir": "/Users/taytrrip/slug/build-cache/go-mod/github.com/wailsapp/wails/v3@v3.1.0/pkg/events",
+	"ImportPath": "github.com/wailsapp/wails/v3/pkg/events",
+	"Name": "events",
+	"Root": "/Users/taytrrip/slug/build-cache/go-mod/github.com/wailsapp/wails/v3@v3.1.0",
+	"Module": {
+		"Path": "github.com/wailsapp/wails/v3",
+		"Version": "v3.1.0",
+		"Time": "2026-11-01T11:57:25Z",
+		"Dir": "/Users/taytrrip/slug/build-cache/go-mod/github.com/wailsapp/wails/v3@v3.1.0",
+		"GoMod": "/Users/taytrrip/slug/build-cache/go-mod/cache/download/github.com/wailsapp/wails/v3/@v/v3.1.0.mod",
+		"GoVersion": "1.26.0",
+		"Sum": "h1:ld0AXSicXiTTsIvmTq3qNn9FzCP8vIHRSJdkRLgaAo8=",
+		"GoModSum": "h1:tzDY3W1jzN3ksSqfGalTt7K3PwnGfIqtl+IgIXlXz0I="
+	},
+	"Match": [
+		"github.com/wailsapp/wails/v3/pkg/events"
+	],
+	"Stale": true,
+	"StaleReason": "build ID mismatch",
+	"GoFiles": [
+		"defaults.go",
+		"events.go",
+		"known_events.go"
+	],
+	"CgoFiles": [
+		"events_darwin.go"
+	],
+	"IgnoredGoFiles": [
+		"events_darwin_purego.go",
+		"events_linux.go"
+	],
+	"IgnoredOtherFiles": [
+		"events_ios.h",
+		"events_linux.h"
+	],
+	"HFiles": [
+		"events.h",
+		"events_darwin.h"
+	],
+	"CgoCFLAGS": [
+		"-x",
+		"objective-c"
+	],
+	"CgoLDFLAGS": [
+		"-framework",
+		"Cocoa",
+		"-mmacosx-version-min=10.13"
+	],
+	"Imports": [
+		"C",
+		"runtime"
+	],
+	"Deps": [
+		"errors",
+		"internal/abi",
+		"internal/asan",
+		"internal/bytealg",
+		"internal/byteorder",
+		"internal/chacha8rand",
+		"internal/coverage/rtcov",
+		"internal/cpu",
+		"internal/goarch",
+		"internal/godebugs",
+		"internal/goexperiment",
+		"internal/goos",
+		"internal/msan",
+		"internal/oserror",
+		"internal/profilerecord",
+		"internal/race",
+		"internal/reflectlite",
+		"internal/runtime/atomic",
+		"internal/runtime/exithook",
+		"internal/runtime/gc",
+		"internal/runtime/gc/scan",
+		"internal/runtime/maps",
+		"internal/runtime/math",
+		"internal/runtime/pprof/label",
+		"internal/runtime/sys",
+		"internal/strconv",
+		"internal/stringslite",
+		"internal/sync",
+		"internal/synctest",
+		"internal/trace/tracev2",
+		"internal/unsafeheader",
+		"math/bits",
+		"runtime",
+		"runtime/cgo",
+		"sync",
+		"sync/atomic",
+		"syscall",
+		"unsafe"
+	]
+}

@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "scope": "root attempt1 three narrow fixes; expected corpus unchanged; source only",
+  "targets": [
+    {
+      "target": "/Users/taytrrip/slug/slug/desktop/frontend/remote-daily.js",
+      "before": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/first-run-correction/before/desktop/frontend/remote-daily.js",
+        "bytes": 18085,
+        "sha256": "15137a3db64095c4417df82f18c1b374e53629d1b4de06f873401dd57a5267de"
+      },
+      "after": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/first-run-correction/after/desktop/frontend/remote-daily.js",
+        "bytes": 18214,
+        "sha256": "0c6d6559b334ae74a97df9d7ca36005c9b0b66d14e9098a0f9b293762d636862"
+      }
+    },
+    {
+      "target": "/Users/taytrrip/slug/slug/desktop/frontend/remote-daily.test.mjs",
+      "before": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/first-run-correction/before/desktop/frontend/remote-daily.test.mjs",
+        "bytes": 9671,
+        "sha256": "18ce079ea6f5d43e994620e8099f087a078842a72681300c4f8d8ff9bee02396"
+      },
+      "after": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/first-run-correction/after/desktop/frontend/remote-daily.test.mjs",
+        "bytes": 10027,
+        "sha256": "73b1103e2182368e34270a63d7906d15015bd45717c962edf3108a069a3f764f"
+      }
+    },
+    {
+      "target": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_protocol_test.go",
+      "before": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/first-run-correction/before/desktop/pilot/remote_pool_daily_protocol_test.go",
+        "bytes": 6724,
+        "sha256": "4fae4e9e896fe4c8d78b1292e68bb5de51fbdd90433d2a5cac1e5492d8dd2e12"
+      },
+      "after": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/first-run-correction/after/desktop/pilot/remote_pool_daily_protocol_test.go",
+        "bytes": 7761,
+        "sha256": "c75409fe58a05e3c16ea5b701e0773cbb8f7d1bab1d8faebbb7ae78a785f7007"
+      }
+    },
+    {
+      "target": "/Users/taytrrip/slug/slug/desktop/remote_pool_daily.go",
+      "before": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/first-run-correction/before/desktop/remote_pool_daily.go",
+        "bytes": 15414,
+        "sha256": "598b3f6d4ee68f37670ce6e5654346523029d962c108bd71371add2ee710cb33"
+      },
+      "after": {
+        "path": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/first-run-correction/after/desktop/remote_pool_daily.go",
+        "bytes": 15397,
+        "sha256": "3d08c066c8ba7606dee8c0fac41abe816b5ade7b223315f9c4f346fbd315f0ae"
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/checkpoint.json",
+      "bytes": 15391,
+      "sha256": "59e5878c3922713454bfd75746b0c3cd485e1b33710c58f040a336635299d3a0"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_serve.go",
+      "bytes": 8508,
+      "sha256": "d099bc7b017c4470d8b555436e2c23215416c30071eb961e9aa001ccedc215ac"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_protocol.go",
+      "bytes": 16475,
+      "sha256": "61b62f73a35177fc26b446e993198823d808fc49d4193dc55323bddd5dc7824c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_serve_test.go",
+      "bytes": 9057,
+      "sha256": "0e584f7c0c22fef1225731cf2ad61f77b0fb5eec21a0946438f0e2651dde78bd"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/gymaccount/fixtures.go",
+      "bytes": 1332,
+      "sha256": "f499c5042d61cff5bfeac127a21b92d9560ccbdb5c5a96ed7606acb70a38d3fa"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/wallet-integration-tests/normal-attempt1.jsonl",
+      "bytes": 191103,
+      "sha256": "d77fd77e81adcd3452af0ad04d00731b8cbbb7e6875c1bfbc0268c8a52580f2d"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/wallet-integration-tests/dom-attempt1.tap",
+      "bytes": 4148,
+      "sha256": "3c56154478678eea6734ab655c302542c7f140a43dc1e6d80c3ffc936d288442"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/testdata/daily-wallet-protocol/reference-v1.json",
+      "bytes": 895972,
+      "sha256": "b62572b6f1966acad3845348feb446ebb24cb5d1d3c043498a6f95e5b6645f1a"
+    }
+  ],
+  "diff": {
+    "path": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/first-run-correction/changes.diff",
+    "bytes": 8143,
+    "sha256": "a3fa69f4be41024e82531e4d9b34a2e81387ba108e49430479d883c12511ad9a"
+  },
+  "readme": {
+    "path": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/first-run-correction/README.md",
+    "bytes": 1444,
+    "sha256": "8e6b70af00419debc4d93be641ecfb2f38740bb3a6801aab56fb61b9927be7c1"
+  }
+}

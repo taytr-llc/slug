@@ -1,0 +1,466 @@
+// Copyright (c) 2026 The SLUG developers. ISC license.
+package main
+
+import (
+	"context"
+	"errors"
+	"github.com/taytr-llc/slug/wire/v2"
+	"path/filepath"
+	"strconv"
+	"strings"
+	"sync"
+	"time"
+
+	"github.com/taytr-llc/slug/desktop/internal/bridge"
+	"github.com/taytr-llc/slug/desktop/internal/poolselection"
+	"github.com/taytr-llc/slug/desktop/pilot"
+)
+
+// No retained path, RPC value, token or arbitrary cause is displayed by Error.
+type nativeDailyWalletError struct {
+	cause    error
+	retained *nativeDailyWalletOwner
+}
+
+func (e *nativeDailyWalletError) Error() string {
+	var failure *bridge.RemotePoolFailure
+	errors.As(e.cause, &failure)
+	if errors.Is(e.cause, bridge.ErrRemotePoolOutcomeUnknown) || failure != nil && failure.Code == "outcome_unknown" {
+		return "The remote request outcome is unknown. Do not repeat it automatically; reopen the original attachment to inspect its saved state."
+	}
+	if e.retained != nil || errors.Is(e.cause, errNativeRemoteCleanup) || errors.Is(e.cause, bridge.ErrRemotePoolBridgeCleanup) || failure != nil && failure.Code == "cleanup_incomplete" {
+		return errNativeRemoteCleanup.Error()
+	}
+	if errors.Is(e.cause, bridge.ErrBusy) {
+		return "The remote gym is busy. Wait for its current request to finish."
+	}
+	if failure != nil && failure.Code == "busy" {
+		return "The remote gym is busy. Wait for its current request to finish."
+	}
+	return errNativeRemoteUnavailable.Error()
+}
+func (e *nativeDailyWalletError) Unwrap() error { return e.cause }
+
+func nativeDailyWalletRequested(args []string) bool {
+	for _, arg := range args {
+		if !strings.HasPrefix(arg, "-") {
+			continue
+		}
+		name := strings.SplitN(strings.TrimLeft(arg, "-"), "=", 2)[0]
+		if name == "daily-wallet-helper" || name == "daily-recoverable-issue" {
+			return true
+		}
+	}
+	return false
+}
+
+// Parse before any default-directory discovery, environment selection or I/O.
+// Unknown legacy selectors are refused even when explicitly false.
+func parseNativeDailyWalletArgs(args []string) (out bridge.RemotePoolLaunchSelection, resultErr error) {
+	if len(args) < 1 || len(args) > 20 {
+		return out, errNativeRemoteInvalid
+	}
+	values := make(map[string]string, 8)
+	for i := 0; i < len(args); i++ {
+		arg := args[i]
+		if len(arg) > 4160 || !strings.HasPrefix(arg, "-") {
+			return out, errNativeRemoteInvalid
+		}
+		parts := strings.SplitN(strings.TrimPrefix(strings.TrimPrefix(arg, "-"), "-"), "=", 2)
+		name := parts[0]
+		if _, ok := values[name]; ok {
+			return out, errNativeRemoteInvalid
+		}
+		if name == "daily-wallet-helper" || name == "daily-recoverable-issue" {
+			if len(parts) == 2 && parts[1] != "true" {
+				return out, errNativeRemoteInvalid
+			}
+			values[name] = "true"
+			continue
+		}
+		switch name {
+		case "data-dir", "remote-attachment-root", "remote-config", "remote-node-rpc", "remote-pool-credential", "remote-admission-credential", "candidate-name-version":
+		default:
+			return out, errNativeRemoteInvalid
+		}
+		var value string
+		if len(parts) == 2 {
+			value = parts[1]
+		} else {
+			i++
+			if i >= len(args) {
+				return out, errNativeRemoteInvalid
+			}
+			value = args[i]
+		}
+		if name == "candidate-name-version" {
+			if value != "1" && value != "2" {
+				return out, errNativeRemoteInvalid
+			}
+		} else if !nativeRemotePath(value) {
+			return out, errNativeRemoteInvalid
+		}
+		values[name] = value
+	}
+	for _, name := range []string{"daily-wallet-helper", "daily-recoverable-issue", "data-dir", "remote-attachment-root", "remote-config", "remote-node-rpc", "remote-pool-credential", "remote-admission-credential"} {
+		if values[name] == "" {
+			return out, errNativeRemoteInvalid
+		}
+	}
+	version, explicit := values["candidate-name-version"]
+	if !explicit {
+		version = "1"
+	}
+	options, e := poolselection.Options(true, true, version, explicit, values["data-dir"], true)
+	if e != nil {
+		return out, errNativeRemoteInvalid
+	}
+	return bridge.RemotePoolLaunchSelection{ExistingRoot: values["data-dir"], AttachmentRoot: values["remote-attachment-root"], ConfigPath: values["remote-config"], NodeRPCPath: values["remote-node-rpc"], PoolCredentialPath: values["remote-pool-credential"], AdmissionCredentialPath: values["remote-admission-credential"], Options: options}, nil
+}
+
+type nativeDailyWalletOwner struct {
+	mu       sync.Mutex
+	life     context.Context
+	cancel   context.CancelFunc
+	closing  bool
+	active   sync.WaitGroup
+	gate     chan struct{}
+	input    *nativeRemoteInput
+	helper   *bridge.DailyWalletBridge
+	expected pilot.RecoverableRemotePoolConfig
+	configID string
+	once     sync.Once
+	closeErr error
+}
+
+func (o *nativeDailyWalletOwner) checkLocked(ctx context.Context) error {
+	if o == nil || ctx == nil || o.life == nil || o.closing || o.input == nil {
+		return errNativeRemoteUnavailable
+	}
+	if e := ctx.Err(); e != nil {
+		return e
+	}
+	if e := o.life.Err(); e != nil {
+		return e
+	}
+	return o.input.check(ctx)
+}
+func (o *nativeDailyWalletOwner) close() error {
+	if o == nil {
+		return nil
+	}
+	o.once.Do(func() {
+		o.mu.Lock()
+		o.closing = true
+		if o.cancel != nil {
+			o.cancel()
+		}
+		o.mu.Unlock()
+		o.active.Wait()
+		if o.helper != nil {
+			ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+			e := o.helper.Close(ctx)
+			cancel()
+			if e != nil {
+				o.closeErr = errors.Join(errNativeRemoteCleanup, e)
+				return
+			}
+		}
+		if e := o.input.close(); e != nil {
+			o.closeErr = errors.Join(errNativeRemoteCleanup, e)
+		}
+	})
+	return o.closeErr
+}
+func (o *nativeDailyWalletOwner) failure(cause error, retire bool) error {
+	e := &nativeDailyWalletError{cause: cause}
+	if retire {
+		if cleanup := o.close(); cleanup != nil {
+			e.cause = errors.Join(cause, cleanup)
+			e.retained = o
+		}
+	}
+	return e
+}
+
+// This leaf reads exactly one independently selected PUBLIC config. Private
+// RPC/bearer inputs are paths only and are opened by the original helper.
+func selectNativeDailyWallet(ctx context.Context, path string) (out *nativeDailyWalletOwner, resultErr error) {
+	if wire.TestPoW || ctx == nil || ctx.Err() != nil {
+		return nil, errNativeRemoteUnavailable
+	}
+	life, cancel := context.WithCancel(ctx)
+	o := &nativeDailyWalletOwner{life: life, cancel: cancel, gate: make(chan struct{}, 1)}
+	defer func() {
+		if resultErr != nil {
+			resultErr = o.failure(resultErr, true)
+			if o.closeErr != nil {
+				out = o
+			}
+		}
+	}()
+	var e error
+	o.input, e = selectNativeRemoteInput(life, path, pilot.RecoverableRemotePoolMaxConfigBytes)
+	if e != nil {
+		return nil, e
+	}
+	raw, e := o.input.read(life)
+	if e != nil {
+		return nil, e
+	}
+	o.expected, e = pilot.ParseRecoverableRemotePoolConfig(raw)
+	clear(raw)
+	if e != nil {
+		return nil, e
+	}
+	o.configID, e = pilot.RecoverableRemotePoolConfigID(o.expected)
+	if e != nil {
+		return nil, e
+	}
+	if e = o.checkLocked(life); e != nil {
+		return nil, e
+	}
+	return o, nil
+}
+func openNativeDailyWallet(ctx context.Context, helper string, selection bridge.RemotePoolLaunchSelection) (out *nativeDailyWalletOwner, resultErr error) {
+	for _, path := range []string{helper, selection.ExistingRoot, selection.AttachmentRoot, selection.ConfigPath, selection.NodeRPCPath, selection.PoolCredentialPath, selection.AdmissionCredentialPath} {
+		if !nativeRemotePath(path) {
+			return nil, errNativeRemoteInvalid
+		}
+	}
+	o, e := selectNativeDailyWallet(ctx, selection.ConfigPath)
+	if e != nil {
+		return o, e
+	}
+	defer func() {
+		if resultErr != nil {
+			resultErr = o.failure(resultErr, true)
+			if o.closeErr != nil {
+				out = o
+			}
+		}
+	}()
+	work, cancel := context.WithTimeout(o.life, 2*time.Minute)
+	defer cancel()
+	o.helper, e = bridge.LaunchDailyWallet(work, helper, selection, o.expected)
+	if e != nil {
+		return nil, e
+	}
+	if e = o.checkLocked(work); e != nil {
+		return nil, e
+	}
+	return o, nil
+}
+
+// Only the concrete owner and opaque original context authorize dispatch.
+// View IDs are comparison data; they can never manufacture bridge authority.
+func (o *nativeDailyWalletOwner) capture(view string, requireView bool) (*bridge.DailyWalletContext, error) {
+	if o == nil {
+		return nil, errNativeRemoteUnavailable
+	}
+	o.mu.Lock()
+	defer o.mu.Unlock()
+	if e := o.checkLocked(o.life); e != nil {
+		return nil, e
+	}
+	if o.helper == nil {
+		return nil, errNativeRemoteUnavailable
+	}
+	original, e := o.helper.Context()
+	if requireView {
+		if e != nil || original == nil || original.View().ViewID != view {
+			return nil, errNativeRemoteStale
+		}
+		return original, nil
+	}
+	// Snapshot may be signed out. The bridge independently checks nil versus
+	// its original live view, including a concurrent expiry or retirement.
+	return original, nil
+}
+func (o *nativeDailyWalletOwner) call(command, arg string, original *bridge.DailyWalletContext, sequence, capture, before uint64) (out pilot.DailyWalletResponse, resultErr error) {
+	if o == nil {
+		return out, &nativeDailyWalletError{cause: errNativeRemoteUnavailable}
+	}
+	select {
+	case o.gate <- struct{}{}:
+		defer func() { <-o.gate }()
+	default:
+		return out, &nativeDailyWalletError{cause: bridge.ErrBusy}
+	}
+	o.mu.Lock()
+	e := o.checkLocked(o.life)
+	if e == nil && o.helper == nil {
+		e = errNativeRemoteUnavailable
+	}
+	if e != nil {
+		o.mu.Unlock()
+		return out, o.failure(e, true)
+	}
+	if original != nil && !o.helper.ContextMatches(original) {
+		o.mu.Unlock()
+		return out, o.failure(errNativeRemoteUnavailable, false)
+	}
+	o.active.Add(1)
+	work, cancel := context.WithTimeout(o.life, 2*time.Minute)
+	o.mu.Unlock()
+	// Gate remains owned through the final disclosure fence. Close cancels
+	// work then waits for active.Done before joining helper and selected file.
+	defer func() {
+		workErr := work.Err()
+		cancel()
+		o.mu.Lock()
+		check := o.checkLocked(o.life)
+		if check == nil {
+			check = workErr
+		}
+		if resultErr == nil && check == nil {
+			if out.ConfigID != o.configID {
+				check = errNativeRemoteIntegrity
+			} else if out.Snapshot == nil {
+				if original == nil || !o.helper.ContextMatches(original) || out.ViewID != original.View().ViewID {
+					check = errNativeRemoteStale
+				}
+			} else if out.Snapshot.View != nil {
+				current, ce := o.helper.Context()
+				if ce != nil || !o.helper.ContextMatches(current) || current.View() != *out.Snapshot.View || command != "login_fixture" && current != original {
+					check = errNativeRemoteStale
+				}
+			} else if command != "snapshot" && command != "logout" {
+				check = errNativeRemoteUnavailable
+			}
+		}
+		o.mu.Unlock()
+		o.active.Done()
+		if check != nil {
+			out = pilot.DailyWalletResponse{}
+			if command != "snapshot" {
+				check = errors.Join(bridge.ErrRemotePoolOutcomeUnknown, check)
+			}
+			resultErr = o.failure(errors.Join(resultErr, check), true)
+		} else if resultErr != nil {
+			out = pilot.DailyWalletResponse{}
+			resultErr = o.failure(resultErr, false)
+		}
+	}()
+	switch command {
+	case "snapshot":
+		return o.helper.Snapshot(work, original)
+	case "login_fixture":
+		return o.helper.LoginFixture(work, arg)
+	case "start":
+		return o.helper.Start(work, original)
+	case "stop":
+		return o.helper.Stop(work, original)
+	case "logout":
+		return o.helper.Logout(work, original)
+	case "daily_payout_begin":
+		return o.helper.BeginDailyPayoutRead(work, original, sequence, capture, before)
+	case "daily_payout_read":
+		return o.helper.DailyPayoutRead(work, original, sequence)
+	case "daily_payout_cancel":
+		return o.helper.CancelDailyPayoutRead(work, original, sequence)
+	default:
+		return out, errNativeRemoteInvalid
+	}
+}
+
+// Exactly these eight public methods are registered in the remote webview.
+// No legacy Gym service, path chooser, arbitrary dispatcher or restart exists.
+type DailyRemoteGym struct{ owner *nativeDailyWalletOwner }
+
+func (g *DailyRemoteGym) Snapshot() (pilot.DailyWalletResponse, error) {
+	if g == nil || g.owner == nil {
+		return pilot.DailyWalletResponse{}, &nativeDailyWalletError{cause: errNativeRemoteUnavailable}
+	}
+	v, e := g.owner.capture("", false)
+	if e != nil {
+		return pilot.DailyWalletResponse{}, g.owner.failure(e, true)
+	}
+	return g.owner.call("snapshot", "", v, 0, 0, 0)
+}
+func (g *DailyRemoteGym) LoginFixture(fixture string) (pilot.DailyWalletResponse, error) {
+	if g == nil || g.owner == nil {
+		return pilot.DailyWalletResponse{}, &nativeDailyWalletError{cause: errNativeRemoteUnavailable}
+	}
+	if fixture != g.owner.expected.Base.ExpectedLocal.Recipient.Config.Fixture {
+		return pilot.DailyWalletResponse{}, g.owner.failure(errNativeRemoteInvalid, false)
+	}
+	return g.owner.call("login_fixture", fixture, nil, 0, 0, 0)
+}
+func (g *DailyRemoteGym) dispatch(command, view string) (pilot.DailyWalletResponse, error) {
+	if g == nil || g.owner == nil {
+		return pilot.DailyWalletResponse{}, &nativeDailyWalletError{cause: errNativeRemoteUnavailable}
+	}
+	v, e := g.owner.capture(view, true)
+	if e != nil {
+		return pilot.DailyWalletResponse{}, g.owner.failure(e, !errors.Is(e, errNativeRemoteStale))
+	}
+	return g.owner.call(command, "", v, 0, 0, 0)
+}
+func (g *DailyRemoteGym) Start(view string) (pilot.DailyWalletResponse, error) {
+	return g.dispatch("start", view)
+}
+func (g *DailyRemoteGym) Stop(view string) (pilot.DailyWalletResponse, error) {
+	return g.dispatch("stop", view)
+}
+func (g *DailyRemoteGym) Logout(view string) (pilot.DailyWalletResponse, error) {
+	return g.dispatch("logout", view)
+}
+
+func (g *DailyRemoteGym) menuAction(command string) func() error {
+	if g == nil || g.owner == nil {
+		return func() error { return errNativeRemoteUnavailable }
+	}
+	o := g.owner
+	v, e := o.capture("", false)
+	if e != nil {
+		return func() error { return o.failure(e, true) }
+	}
+	if v == nil || (command != "start" && command != "stop") {
+		return func() error { return errNativeRemoteUnavailable }
+	}
+	return func() error { _, e := o.call(command, "", v, 0, 0, 0); return e }
+}
+
+// Browser strings are correlation only. Parse before selecting a live owner.
+func dailyWalletUint(s string, zero bool) (uint64, error) {
+	if len(s) == 0 || len(s) > 20 {
+		return 0, errNativeRemoteInvalid
+	}
+	n, e := strconv.ParseUint(s, 10, 64)
+	if e != nil || strconv.FormatUint(n, 10) != s || !zero && n == 0 {
+		return 0, errNativeRemoteInvalid
+	}
+	return n, nil
+}
+func (g *DailyRemoteGym) payout(command, view, sequence, capture, before string) (pilot.DailyWalletResponse, error) {
+	seq, e := dailyWalletUint(sequence, false)
+	if e != nil {
+		return pilot.DailyWalletResponse{}, &nativeDailyWalletError{cause: e}
+	}
+	cap, e := dailyWalletUint(capture, true)
+	if e != nil {
+		return pilot.DailyWalletResponse{}, &nativeDailyWalletError{cause: e}
+	}
+	cur, e := dailyWalletUint(before, true)
+	if e != nil {
+		return pilot.DailyWalletResponse{}, &nativeDailyWalletError{cause: e}
+	}
+	if g == nil || g.owner == nil {
+		return pilot.DailyWalletResponse{}, &nativeDailyWalletError{cause: errNativeRemoteUnavailable}
+	}
+	v, e := g.owner.capture(view, true)
+	if e != nil {
+		return pilot.DailyWalletResponse{}, g.owner.failure(e, !errors.Is(e, errNativeRemoteStale))
+	}
+	return g.owner.call(command, "", v, seq, cap, cur)
+}
+func (g *DailyRemoteGym) BeginDailyPayoutRead(view, sequence, capture, before string) (pilot.DailyWalletResponse, error) {
+	return g.payout("daily_payout_begin", view, sequence, capture, before)
+}
+func (g *DailyRemoteGym) DailyPayoutRead(view, sequence string) (pilot.DailyWalletResponse, error) {
+	return g.payout("daily_payout_read", view, sequence, "0", "0")
+}
+func (g *DailyRemoteGym) CancelDailyPayoutRead(view, sequence string) (pilot.DailyWalletResponse, error) {
+	return g.payout("daily_payout_cancel", view, sequence, "0", "0")
+}

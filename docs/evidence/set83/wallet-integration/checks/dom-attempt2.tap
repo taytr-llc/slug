@@ -1,0 +1,14 @@
+✔ same wallet layout, explicit login and Start, only eight fixed methods (4.84825ms)
+✔ lossless cumulative money is separate from local spendable and never rounded (3.632084ms)
+✔ empty window continues exactly, stale cached first stays dated without recapture (2.9375ms)
+✔ Busy before acknowledgement retains same sequence and never auto-begins (1.583875ms)
+✔ foreign capture, changed View, unsafe numbers and malformed decimals clear results (8.789167ms)
+✔ all independent successful read shapes fit the exact frontend validator (4.408542ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 137.432833

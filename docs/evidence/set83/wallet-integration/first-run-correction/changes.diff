@@ -1,0 +1,76 @@
+--- a/desktop/frontend/remote-daily.js
++++ b/desktop/frontend/remote-daily.js
+@@ -49,7 +49,7 @@
+  exact(s,['version','config_id','state','account','view','remote','error']);need(s.version===2&&id(s.config_id)&&(!configID||s.config_id===configID));
+  const a=s.account;exact(a,['state','fixture','id','generation','hold_until_ms','held','can_export','last_error']);need(a.state===s.state&&['zero256','incrementing256'].includes(a.fixture)&&(!fixture||fixture===a.fixture)&&safe(a.generation)&&safe(a.hold_until_ms)&&typeof a.held==='boolean'&&a.can_export===false&&a.last_error===s.error);
+  if(s.state==='signed_in'){
+-  const v=s.view;exact(v,['version','view_id','account_authority_id','account_id','generation','fixture','root_public_key','gym_public_key','gym_id']);need(v.version===1&&id(v.view_id)&&id(v.account_authority_id)&&id(v.account_id)&&v.account_id===a.id&&v.generation===a.generation&&v.generation>0&&v.fixture===a.fixture&&id(v.root_public_key)&&id(v.gym_public_key)&&id(v.gym_id)&&s.error===''&&(!a.held||a.hold_until_ms>0));
++  const v=s.view;exact(v,['version','view_id','account_authority_id','account_id','generation','fixture','root_public_key','gym_public_key','gym_id']);need(v.version===1&&id(v.view_id)&&id(v.account_authority_id)&&id(v.account_id)&&v.account_id===a.id&&v.generation===a.generation&&v.generation>0&&v.fixture===a.fixture&&typeof v.root_public_key==='string'&&/^[1-9A-HJ-NP-Za-km-z]{112}$/.test(v.root_public_key)&&typeof v.gym_public_key==='string'&&/^0[23][0-9a-f]{64}$/.test(v.gym_public_key)&&id(v.gym_id)&&s.error===''&&(!a.held||a.hold_until_ms>0));
+   const r=s.remote;exact(r,['version','config_id','view','source_binding_id','original_source_binding_id','state','worker_state','last_error','attempts','hashes_per_second_milli','records','pending','wallet_state','wallet_height','spendable_atoms','immature_atoms','unconfirmed_atoms','payout_address']);need(r.version===2&&r.config_id===s.config_id&&same(r.view,v));
+   for(const k of ['attempts','hashes_per_second_milli','records','pending'])need(safe(r[k]));need(safe(r.wallet_height,2147483647)&&r.pending<=r.records);
+   for(const k of ['spendable_atoms','immature_atoms','unconfirmed_atoms'])need(safe(r[k],2100000000000000));
+--- a/desktop/frontend/remote-daily.test.mjs
++++ b/desktop/frontend/remote-daily.test.mjs
+@@ -32,7 +32,7 @@
+  const prefix="import { Call } from '/wails/runtime.js';\n";assert.ok(source.startsWith(prefix));vm.runInContext(source.slice(prefix.length)+'\nglobalThis.uiState=()=>({snapshot,attempt,capture,shown,busy,retired,nextSequence:String(nextSequence)});globalThis.validateCapture=x=>checkedCapture(x);',context,{timeout:1000});
+  async function settle(){for(let i=0;i<30;i++)await Promise.resolve();}
+  await settle();assert.equal(context.uiState().busy,false);calls.length=0;
+- return {$:id=>elements.get(id),calls,handlers,timers,state:context.uiState,validateCapture:x=>context.validateCapture(structuredClone(x)),async tick(){assert.ok(timers.length);await timers.shift()();await settle();},async login(){await elements.get(corpus.selection.view.fixture==='zero256'?'login-a':'login-b').click();assert.equal(context.uiState().snapshot.state,'signed_in');},begin(){handlers.set('BeginDailyPayoutRead',(_view,sequence,capture,before)=>{const r=response('begin-working');Object.assign(r.job,{sequence,capture_sequence:capture,before_batch:before});return r;});}};
++ return {$:id=>elements.get(id),calls,handlers,timers,state:context.uiState,validateCapture:x=>context.validateCapture(structuredClone(x)),async tick(){assert.ok(timers.length);await timers.shift()();await settle();},async login(){await elements.get(corpus.selection.view.fixture==='zero256'?'login-a':'login-b').click();assert.equal(context.uiState().snapshot?.state,'signed_in',elements.get('alert').textContent);},begin(){handlers.set('BeginDailyPayoutRead',(_view,sequence,capture,before)=>{const r=response('begin-working');Object.assign(r.job,{sequence,capture_sequence:capture,before_batch:before});return r;});}};
+ }
+ test('same wallet layout, explicit login and Start, only eight fixed methods',async()=>{
+  const h=await harness();assert.match(html,/class="masthead"/);assert.match(html,/class="mining-bar"/);assert.match(html,/href="\/stable.css"/);
+@@ -62,9 +62,9 @@
+  h.handlers.set('CancelDailyPayoutRead',()=>{const r=response('working-no-capture');r.read.job.state='cancelled';return r;});await h.$('history-cancel').click();assert.equal(h.state().attempt.state,'cancelled');assert.equal(h.calls.at(-1).args[1],'1');
+ });
+ test('foreign capture, changed View, unsafe numbers and malformed decimals clear results',async()=>{
+- for(const defect of ['view','binding','numeric-paid','leading-zero','unsafe-local']){
++ for(const defect of ['view','root-key','gym-key','binding','numeric-paid','leading-zero','unsafe-local']){
+   const h=await harness();await h.login();
+-  if(defect==='view'){h.handlers.set('Start',()=>{const r=response('control-start-result');r.snapshot.view.view_id='e'.repeat(64);r.snapshot.remote.view.view_id='e'.repeat(64);return r;});await h.$('mining').click();}
++  if(['view','root-key','gym-key'].includes(defect)){h.handlers.set('Start',()=>{const r=response('control-start-result');if(defect==='view'){r.snapshot.view.view_id='e'.repeat(64);r.snapshot.remote.view.view_id='e'.repeat(64);}else if(defect==='root-key'){r.snapshot.view.root_public_key='0'.repeat(112);r.snapshot.remote.view.root_public_key='0'.repeat(112);}else{r.snapshot.view.gym_public_key='04'+'a'.repeat(64);r.snapshot.remote.view.gym_public_key='04'+'a'.repeat(64);}return r;});await h.$('mining').click();}
+   else if(defect==='unsafe-local'){h.handlers.set('Snapshot',()=>{const r=response('control-snapshot-result');r.snapshot.remote.spendable_atoms=9007199254740992;return r;});await h.tick();}
+   else{h.begin();await h.$('history-refresh').click();h.handlers.set('DailyPayoutRead',()=>{const r=response('fresh-empty-nonfinal');if(defect==='binding')r.read.capture.binding.settlement_config_id='f'.repeat(64);if(defect==='numeric-paid')r.read.capture.first.balance.paid_atoms=1;if(defect==='leading-zero')r.read.capture.sequence='01';return r;});await h.tick();}
+   assert.equal(h.state().retired,true,defect);assert.equal(h.state().snapshot,null);assert.equal(h.state().capture,null);assert.equal(h.$('pool-paid').textContent,'—');
+--- a/desktop/pilot/remote_pool_daily_protocol_test.go
++++ b/desktop/pilot/remote_pool_daily_protocol_test.go
+@@ -3,6 +3,7 @@
+ 
+ import (
+ 	"bytes"
++ "context"
+ 	"crypto/sha256"
+ 	"encoding/hex"
+ 	"encoding/json"
+@@ -86,8 +87,19 @@
+ 				body := raw[:len(raw)-1]
+ 				switch c.Kind {
+ 				case "request":
+-					_, e := ParseDailyWalletRequest(body, s.Remote)
+-					accepted = e == nil
++                    q,e:=ParseDailyWalletRequest(body,s.Remote)
++                    accepted=e==nil
++                    // This independent case includes an original live View.
++                    // The stateless byte parser knows only configuration;
++                    // exercise the real contextual step before any effect.
++                    if e==nil && q.ViewID!="" && q.ViewID!=s.View.ViewID {
++                     initial,logged:=dailyWalletTestSnapshots(t,r)
++                     owner:=&dailyWireTestController{remoteWireTestController:&remoteWireTestController{initial:initial,logged:logged,current:logged}}
++                     out,stepErr:=dailyWalletStep(context.Background(),q,owner,s.Remote,&s.View)
++                     if stepErr!=nil || out.OK || out.Error!="stale_view" || owner.starts!=0 || owner.stops!=0 || owner.logins!=0 || owner.logouts!=0 || owner.begun!=0 || owner.cancelled!=0 { t.Fatal("foreign View reached an effect or wrong refusal",stepErr,out) }
++                     if e:=owner.Close();e!=nil { t.Fatal(e) }
++                     accepted=false
++                    }
+ 				case "response":
+ 					var prior *RemotePoolView
+ 					if c.Request.ViewID != "" {
+--- a/desktop/remote_pool_daily.go
++++ b/desktop/remote_pool_daily.go
+@@ -5,7 +5,6 @@
+ 	"context"
+ 	"errors"
+ 	"github.com/taytr-llc/slug/wire/v2"
+-	"path/filepath"
+ 	"strconv"
+ 	"strings"
+ 	"sync"

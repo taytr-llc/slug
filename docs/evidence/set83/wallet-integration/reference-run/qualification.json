@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "commands": [
+    {
+      "name": "system",
+      "interpreter": "/usr/bin/python3",
+      "version": "Python 3.9.6",
+      "exit_code": 0,
+      "started_at_ms": 1795287461520,
+      "ended_at_ms": 1795287461728
+    },
+    {
+      "name": "homebrew",
+      "interpreter": "/opt/homebrew/bin/python3",
+      "version": "Python 3.14.3",
+      "exit_code": 0,
+      "started_at_ms": 1795287461728,
+      "ended_at_ms": 1795287461870
+    }
+  ],
+  "passed": true,
+  "source_unchanged": true,
+  "exact_outputs_equal": true,
+  "output_sha256": "b62572b6f1966acad3845348feb446ebb24cb5d1d3c043498a6f95e5b6645f1a",
+  "output_bytes": 895972
+}

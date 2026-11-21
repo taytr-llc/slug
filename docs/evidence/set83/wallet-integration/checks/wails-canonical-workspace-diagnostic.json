@@ -1,0 +1,12 @@
+{
+	"ImportPath": "github.com/wailsapp/wails/v3/pkg/events",
+	"Match": [
+		"github.com/wailsapp/wails/v3/pkg/events"
+	],
+	"Incomplete": true,
+	"Error": {
+		"ImportStack": [],
+		"Pos": "",
+		"Err": "no required module provides package github.com/wailsapp/wails/v3/pkg/events; to add it:\n\tgo get github.com/wailsapp/wails/v3/pkg/events"
+	}
+}

@@ -45,8 +45,22 @@ cleanup. No mining, new issuance or payment was requested. See
 [native acceptance](docs/evidence/set83/native-actual/QUALIFICATION.md).
 Preparatory command/deployment failures remain separately recorded.
 
-Remaining: the selected DAILY helper/bridge and
-existing wallet panel; own-wallet activity and selected-output observations;
+The explicit DAILY wallet helper, concrete bridge and existing wallet display
+now pass component qualification: 13 new normal tests, 53 combined race tests,
+40 original-path normal regressions, two cheap-profile refusals, six DOM tests,
+vet and both normal helper/app builds. The independent wire corpus has 170
+cases, reproduced byte-for-byte by Python 3.9.6 and 3.14.3. Its cumulative money
+and operation/cursor counters remain exact decimal strings. See the
+[integration report](docs/evidence/set83/wallet-integration/report.json).
+The first run exposed incorrect frontend public-key shape checks, a contextual
+View test applied to a stateless parser, and an unavailable cached dependency
+index. Narrow corrections and a fresh build cache pass; failed evidence stays
+retained. EF-19 records the separate cache follow-up. All six triggered GitHub
+jobs pass for the earlier native component at `005897c3`; this does not qualify
+the later integration commit.
+
+Remaining: actual selected helper/native-window acceptance;
+own-wallet activity and selected-output observations;
 then package and integrated acceptance. Existing V1 paths, headless mining,
 wallet pins and payout rules stay unchanged. Sign-in follows this work, D74
 remains the final joint design review, and marketplace remains on hold.

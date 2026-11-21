@@ -391,3 +391,23 @@ blocker once the concrete startup configuration is corrected.
 - **Evidence:** `docs/evidence/set82/hosted-attempt5-financial-proof/client-evidence/miner-1/process-report.json` reports 2 records/0 pending and clean requested exit0; `operator-01-closed/stdout.jsonl` independently reports draining/pool_capacity, ordinary maximum 2, submissions 2 and rounds 2; `proof-replay-before.json` preserves two exact accepted rows, both fighter receipts, and the third retained null request. Source: `poolshare/operator_admission.go:operatorIntake`, `poolservice/daily_server.go` Issue failure classification, `prospectworker/pool_issue_run.go` same-request retry and `pool_worker.go` status projection. `review.json` pins the named completed public evidence.
 - **Workaround:** Stop and join after actual delivered records and original operator full-intake status, then verify complete closed outbox/source evidence. Keep the exact active request retained; do not clear it, start a replacement request, require an invented CLI capacity code, or relabel uncertainty as a definite no-effect response. The auxiliary overly strict status watcher remains a recorded failed observation, separate from the selected protocol proof.
 - **Revisit:** Improve the explanatory status once a trustworthy capacity signal can be correlated with the original request/owner without weakening conservative Issue semantics. This banner refinement is nonblocking for the bounded hosted payout test; financial correctness, exact replay and all owner cleanup remain mandatory.
+
+## EF-19 — An existing Go cache can hide installed desktop packages
+
+**Status:** Open build-environment follow-up; nonblocking with a fresh cache.
+
+- **Trigger:** Building the desktop with the previously reused Go cache reports
+  that Wails application/events packages are unavailable despite their pinned
+  module and source files being installed.
+- **Player impact:** A developer build can fail before compilation. No wallet,
+  payout or player-data failure was observed.
+- **Evidence:** Set83's [package lookup diagnostics](evidence/set83/wallet-integration/checks/wails-package-diagnostic.json)
+  and [fresh-cache lookup](evidence/set83/wallet-integration/checks/wails-fresh-cache-diagnostic.json).
+  Disabling the module index also restored lookup in a diagnostic. This isolates
+  the cache/index boundary; the original cause of the stale entry is unproven.
+- **Workaround:** Select a new build cache, retaining the failed cache and logs.
+  The unchanged Go 1.27.4 no-CSE profile then passed tests, vet and both normal
+  desktop/helper builds; see the [component report](evidence/set83/wallet-integration/report.json).
+- **Revisit:** If it recurs, or during build-toolchain qualification before
+  distribution. Do not alter product dependencies or compiler settings merely
+  to repair this cache.

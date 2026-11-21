@@ -1,0 +1,110 @@
+/Users/taytrrip/slug/artifacts/set83/wallet-integration-tests/slugpilot: go1.27.4
+	path	github.com/taytr-llc/slug/desktop
+	mod	github.com/taytr-llc/slug/desktop	v0.0.0-20261121190354-aa1b9827040a+dirty	
+	dep	github.com/aead/siphash	v1.0.1	h1:FwHfE/T45KPKYuuSAKyyvE+oPWcaQ+CUmFW0bPlM+kg=
+	dep	github.com/btcsuite/btclog	v1.0.0	h1:sEkpKJMmfGiyZjADwEIgB1NSwMyfdD1FB8v6+w1T0Ns=
+	dep	github.com/btcsuite/websocket	v0.0.0-20150119174127-31079b680792	h1:R8vQdOQdZ9Y3SkEwmHoWBmX1DNXhXZqlTpq6s4tyJGc=
+	dep	github.com/davecgh/go-spew	v1.1.1	h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
+	dep	github.com/decred/dcrd/crypto/blake256	v1.1.0	h1:zPMNGQCm0g4QTY27fOCorQW7EryeQ/U0x++OzVrdms8=
+	dep	github.com/decred/dcrd/dcrec/secp256k1/v4	v4.4.1	h1:5RVFMOWjMyRy8cARdy79nAmgYw3hK/4HUq48LQ6Wwqo=
+	dep	github.com/golang/snappy	v1.0.0	h1:Oy607GVXHs7RtbggtPBnr2RmDArIsAefDwvrdWvRhGs=
+	dep	github.com/gorilla/websocket	v1.5.3	h1:saDtZ6Pbx/0u+bgYQ3q96pZgCzfhKXGPqt7kZ72aNNg=
+	dep	github.com/kkdai/bstream	v1.0.0	h1:Se5gHwgp2VT2uHfDrkbbgbgEvV9cimLELwrPJctSjg8=
+	dep	github.com/lightninglabs/neutrino/cache	v1.1.4	h1:KVtvUmBwYr7eKtjfjHG/q6/cQlcrjHl23Gag+VdxF2g=
+	dep	github.com/lightningnetwork/lnd/clock	v1.0.1	h1:QQod8+m3KgqHdvVMV+2DRNNZS1GRFir8mHZYA+Z2hFo=
+	dep	github.com/lightningnetwork/lnd/fn/v2	v2.0.8	h1:r2SLz7gZYQPVc3IZhU82M66guz3Zk2oY+Rlj9QN5S3g=
+	dep	github.com/stretchr/testify	v1.12.1	h1:EuwCh5fleGS7H32xRwO3wRGT7DxrDhLAT6FF8MpWDWE=
+	dep	github.com/syndtr/goleveldb	v1.0.1-0.20220721030215-126854af5e6d	h1:vfofYNRScrDdvS342BElfbETmL1Aiz3i2t0zfRj16Hs=
+	dep	github.com/taytr-llc/slug	(devel)	
+	dep	github.com/taytr-llc/slug/address/v2	(devel)	
+	dep	github.com/taytr-llc/slug/btcec/v2	(devel)	
+	dep	github.com/taytr-llc/slug/btcutil/v2	(devel)	
+	dep	github.com/taytr-llc/slug/chaincfg/v2	(devel)	
+	dep	github.com/taytr-llc/slug/chainhash/v2	(devel)	
+	dep	github.com/taytr-llc/slug/psbt/v2	(devel)	
+	dep	github.com/taytr-llc/slug/txscript/v2	(devel)	
+	dep	github.com/taytr-llc/slug/wire/v2	(devel)	
+	dep	github.com/taytr-llc/slugwallet	(devel)	
+	dep	github.com/taytr-llc/slugwallet/wallet/txauthor	(devel)	
+	dep	github.com/taytr-llc/slugwallet/wallet/txrules	(devel)	
+	dep	github.com/taytr-llc/slugwallet/wallet/txsizes	(devel)	
+	dep	github.com/taytr-llc/slugwallet/walletdb	(devel)	
+	dep	github.com/taytr-llc/slugwallet/wtxmgr	(devel)	
+	dep	github.com/wailsapp/wails/v3	v3.1.0	h1:ld0AXSicXiTTsIvmTq3qNn9FzCP8vIHRSJdkRLgaAo8=
+	dep	go.etcd.io/bbolt	v1.3.11	h1:yGEzV1wPz2yVCLsD8ZAiGHhHVlczyC9d1rP43/VCRJ0=
+	dep	go.yaml.in/yaml/v3	v3.0.5	h1:N6y/pJk8buWs9NY5ERU2HSMfm+IuD/OtfdAnq6kESPw=
+	dep	golang.org/x/crypto	v0.57.0	h1:3ZVCjf8Ggz7zneR/EHRVx68Ctf+2pmIMP2UFhh9cC6M=
+	dep	golang.org/x/exp	v0.0.0-20260410095643-746e56fc9e2f	h1:W3F4c+6OLc6H2lb//N1q4WpJkhzJCK5J6kUi1NTVXfM=
+	dep	golang.org/x/net	v0.60.0	h1:79p50tfZlm0J9YfoDsSi639qSXNGVwEzOPLCxM2FsYU=
+	dep	golang.org/x/sync	v0.23.0	h1:KameEIfc1IkluZyXWLn39Wd4tURc6GbCiISGiZm2bQk=
+	dep	golang.org/x/sys	v0.48.0	h1:bbX/i/6MgT9BVLM9RT1thmxL04yeTAhbEz4SyadbXoo=
+	dep	golang.org/x/term	v0.46.0	h1:3+OXuTbaKDgwk8jTi3aSLHRlmWqHEUDUtxnbFigO4YE=
+	dep	golang.org/x/time	v0.16.0	h1:vMb6ptszcQMkcwiRTAuNNU50gom6++Q/6gY2hDM6VDE=
+	build	-buildmode=exe
+	build	-compiler=gc
+	build	-gcflags=all=-d=ssa/generic_cse/off,ssa/lowered_cse/off
+	build	-tags=production
+	build	-trimpath=true
+	build	CGO_ENABLED=1
+	build	GOARCH=arm64
+	build	GOOS=darwin
+	build	GOARM64=v8.0
+	build	vcs=git
+	build	vcs.revision=aa1b9827040a16f09efe954bb796d72ff7dfc0d7
+	build	vcs.time=2026-11-21T19:03:54Z
+	build	vcs.modified=true
+/Users/taytrrip/slug/artifacts/set83/wallet-integration-tests/SLUGPilot: go1.27.4
+	path	github.com/taytr-llc/slug/desktop
+	mod	github.com/taytr-llc/slug/desktop	v0.0.0-20261121190354-aa1b9827040a+dirty	
+	dep	github.com/aead/siphash	v1.0.1	h1:FwHfE/T45KPKYuuSAKyyvE+oPWcaQ+CUmFW0bPlM+kg=
+	dep	github.com/btcsuite/btclog	v1.0.0	h1:sEkpKJMmfGiyZjADwEIgB1NSwMyfdD1FB8v6+w1T0Ns=
+	dep	github.com/btcsuite/websocket	v0.0.0-20150119174127-31079b680792	h1:R8vQdOQdZ9Y3SkEwmHoWBmX1DNXhXZqlTpq6s4tyJGc=
+	dep	github.com/davecgh/go-spew	v1.1.1	h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
+	dep	github.com/decred/dcrd/crypto/blake256	v1.1.0	h1:zPMNGQCm0g4QTY27fOCorQW7EryeQ/U0x++OzVrdms8=
+	dep	github.com/decred/dcrd/dcrec/secp256k1/v4	v4.4.1	h1:5RVFMOWjMyRy8cARdy79nAmgYw3hK/4HUq48LQ6Wwqo=
+	dep	github.com/golang/snappy	v1.0.0	h1:Oy607GVXHs7RtbggtPBnr2RmDArIsAefDwvrdWvRhGs=
+	dep	github.com/gorilla/websocket	v1.5.3	h1:saDtZ6Pbx/0u+bgYQ3q96pZgCzfhKXGPqt7kZ72aNNg=
+	dep	github.com/kkdai/bstream	v1.0.0	h1:Se5gHwgp2VT2uHfDrkbbgbgEvV9cimLELwrPJctSjg8=
+	dep	github.com/lightninglabs/neutrino/cache	v1.1.4	h1:KVtvUmBwYr7eKtjfjHG/q6/cQlcrjHl23Gag+VdxF2g=
+	dep	github.com/lightningnetwork/lnd/clock	v1.0.1	h1:QQod8+m3KgqHdvVMV+2DRNNZS1GRFir8mHZYA+Z2hFo=
+	dep	github.com/lightningnetwork/lnd/fn/v2	v2.0.8	h1:r2SLz7gZYQPVc3IZhU82M66guz3Zk2oY+Rlj9QN5S3g=
+	dep	github.com/stretchr/testify	v1.12.1	h1:EuwCh5fleGS7H32xRwO3wRGT7DxrDhLAT6FF8MpWDWE=
+	dep	github.com/syndtr/goleveldb	v1.0.1-0.20220721030215-126854af5e6d	h1:vfofYNRScrDdvS342BElfbETmL1Aiz3i2t0zfRj16Hs=
+	dep	github.com/taytr-llc/slug	(devel)	
+	dep	github.com/taytr-llc/slug/address/v2	(devel)	
+	dep	github.com/taytr-llc/slug/btcec/v2	(devel)	
+	dep	github.com/taytr-llc/slug/btcutil/v2	(devel)	
+	dep	github.com/taytr-llc/slug/chaincfg/v2	(devel)	
+	dep	github.com/taytr-llc/slug/chainhash/v2	(devel)	
+	dep	github.com/taytr-llc/slug/psbt/v2	(devel)	
+	dep	github.com/taytr-llc/slug/txscript/v2	(devel)	
+	dep	github.com/taytr-llc/slug/wire/v2	(devel)	
+	dep	github.com/taytr-llc/slugwallet	(devel)	
+	dep	github.com/taytr-llc/slugwallet/wallet/txauthor	(devel)	
+	dep	github.com/taytr-llc/slugwallet/wallet/txrules	(devel)	
+	dep	github.com/taytr-llc/slugwallet/wallet/txsizes	(devel)	
+	dep	github.com/taytr-llc/slugwallet/walletdb	(devel)	
+	dep	github.com/taytr-llc/slugwallet/wtxmgr	(devel)	
+	dep	github.com/wailsapp/wails/v3	v3.1.0	h1:ld0AXSicXiTTsIvmTq3qNn9FzCP8vIHRSJdkRLgaAo8=
+	dep	go.etcd.io/bbolt	v1.3.11	h1:yGEzV1wPz2yVCLsD8ZAiGHhHVlczyC9d1rP43/VCRJ0=
+	dep	go.yaml.in/yaml/v3	v3.0.5	h1:N6y/pJk8buWs9NY5ERU2HSMfm+IuD/OtfdAnq6kESPw=
+	dep	golang.org/x/crypto	v0.57.0	h1:3ZVCjf8Ggz7zneR/EHRVx68Ctf+2pmIMP2UFhh9cC6M=
+	dep	golang.org/x/exp	v0.0.0-20260410095643-746e56fc9e2f	h1:W3F4c+6OLc6H2lb//N1q4WpJkhzJCK5J6kUi1NTVXfM=
+	dep	golang.org/x/net	v0.60.0	h1:79p50tfZlm0J9YfoDsSi639qSXNGVwEzOPLCxM2FsYU=
+	dep	golang.org/x/sync	v0.23.0	h1:KameEIfc1IkluZyXWLn39Wd4tURc6GbCiISGiZm2bQk=
+	dep	golang.org/x/sys	v0.48.0	h1:bbX/i/6MgT9BVLM9RT1thmxL04yeTAhbEz4SyadbXoo=
+	dep	golang.org/x/term	v0.46.0	h1:3+OXuTbaKDgwk8jTi3aSLHRlmWqHEUDUtxnbFigO4YE=
+	dep	golang.org/x/time	v0.16.0	h1:vMb6ptszcQMkcwiRTAuNNU50gom6++Q/6gY2hDM6VDE=
+	build	-buildmode=exe
+	build	-compiler=gc
+	build	-gcflags=all=-d=ssa/generic_cse/off,ssa/lowered_cse/off
+	build	-tags=production
+	build	-trimpath=true
+	build	CGO_ENABLED=1
+	build	GOARCH=arm64
+	build	GOOS=darwin
+	build	GOARM64=v8.0
+	build	vcs=git
+	build	vcs.revision=aa1b9827040a16f09efe954bb796d72ff7dfc0d7
+	build	vcs.time=2026-11-21T19:03:54Z
+	build	vcs.modified=true

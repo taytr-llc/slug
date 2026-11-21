@@ -1,0 +1,16 @@
+{"Time":"2026-11-21T11:12:42.684458-08:00","Action":"start","Package":"github.com/taytr-llc/slug/desktop/pilot"}
+{"Time":"2026-11-21T11:12:42.684673-08:00","Action":"start","Package":"github.com/taytr-llc/slug/desktop/cmd/slugpilot"}
+{"Time":"2026-11-21T11:12:43.132853-08:00","Action":"run","Package":"github.com/taytr-llc/slug/desktop/pilot","Test":"TestDailyWalletProtocolCheapRefusal"}
+{"Time":"2026-11-21T11:12:43.132958-08:00","Action":"output","Package":"github.com/taytr-llc/slug/desktop/pilot","Test":"TestDailyWalletProtocolCheapRefusal","Output":"=== RUN   TestDailyWalletProtocolCheapRefusal\n","OutputType":"frame"}
+{"Time":"2026-11-21T11:12:43.133057-08:00","Action":"output","Package":"github.com/taytr-llc/slug/desktop/pilot","Test":"TestDailyWalletProtocolCheapRefusal","Output":"--- PASS: TestDailyWalletProtocolCheapRefusal (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-21T11:12:43.133183-08:00","Action":"pass","Package":"github.com/taytr-llc/slug/desktop/pilot","Test":"TestDailyWalletProtocolCheapRefusal","Elapsed":0}
+{"Time":"2026-11-21T11:12:43.13373-08:00","Action":"output","Package":"github.com/taytr-llc/slug/desktop/pilot","Output":"PASS\n","OutputType":"frame"}
+{"Time":"2026-11-21T11:12:43.134987-08:00","Action":"output","Package":"github.com/taytr-llc/slug/desktop/pilot","Output":"ok  \tgithub.com/taytr-llc/slug/desktop/pilot\t0.450s\n"}
+{"Time":"2026-11-21T11:12:43.135025-08:00","Action":"pass","Package":"github.com/taytr-llc/slug/desktop/pilot","Elapsed":0.451}
+{"Time":"2026-11-21T11:12:43.520604-08:00","Action":"run","Package":"github.com/taytr-llc/slug/desktop/cmd/slugpilot","Test":"TestRemoteHelperCheapRefusalBeforeEffects"}
+{"Time":"2026-11-21T11:12:43.520673-08:00","Action":"output","Package":"github.com/taytr-llc/slug/desktop/cmd/slugpilot","Test":"TestRemoteHelperCheapRefusalBeforeEffects","Output":"=== RUN   TestRemoteHelperCheapRefusalBeforeEffects\n","OutputType":"frame"}
+{"Time":"2026-11-21T11:12:43.521505-08:00","Action":"output","Package":"github.com/taytr-llc/slug/desktop/cmd/slugpilot","Test":"TestRemoteHelperCheapRefusalBeforeEffects","Output":"--- PASS: TestRemoteHelperCheapRefusalBeforeEffects (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-21T11:12:43.521534-08:00","Action":"pass","Package":"github.com/taytr-llc/slug/desktop/cmd/slugpilot","Test":"TestRemoteHelperCheapRefusalBeforeEffects","Elapsed":0}
+{"Time":"2026-11-21T11:12:43.521544-08:00","Action":"output","Package":"github.com/taytr-llc/slug/desktop/cmd/slugpilot","Output":"PASS\n","OutputType":"frame"}
+{"Time":"2026-11-21T11:12:43.522278-08:00","Action":"output","Package":"github.com/taytr-llc/slug/desktop/cmd/slugpilot","Output":"ok  \tgithub.com/taytr-llc/slug/desktop/cmd/slugpilot\t0.838s\n"}
+{"Time":"2026-11-21T11:12:43.522302-08:00","Action":"pass","Package":"github.com/taytr-llc/slug/desktop/cmd/slugpilot","Elapsed":0.838}

@@ -1,0 +1,132 @@
+{
+  "version": 1,
+  "passed": true,
+  "scope": "Selected DAILY wallet wire/helper/bridge/native controls and DOM component qualification; actual native GUI and wallet activity remain pending",
+  "source_files": [
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/accountpilot/remote_pool_daily_protocol.go",
+      "bytes": 802,
+      "sha256": "681e627b72963083e2369e9a62461722282d3bc438a7c8fd40c57511df09fe29"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/daily_wallet_launch.go",
+      "bytes": 4035,
+      "sha256": "5be82ea48944443ae5dd1447fcdfcd56c7d774ac65f0c5932653b3f41fada00a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/daily_wallet_launch_test.go",
+      "bytes": 1947,
+      "sha256": "1cbbd79b07c872e6a090685fce8975eef43640777c544eed39c531fcc58cca9e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/main.go",
+      "bytes": 12607,
+      "sha256": "b46192ff7f6355624e42cca02b5983ed56c95fcb649cac794e2c5d5ced7b83ff"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/cmd/slugpilot/remote_launch.go",
+      "bytes": 12576,
+      "sha256": "21682798cb1b662448a73f0de54d623b02a36b02c3f6b38ca5b95431d30088bd"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/frontend/remote-daily.html",
+      "bytes": 3807,
+      "sha256": "af9dde556c8e5ac87b61e4d8f947b61131f59b68ca1b2e5cf98ae4cdb1869960"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/frontend/remote-daily.js",
+      "bytes": 18214,
+      "sha256": "0c6d6559b334ae74a97df9d7ca36005c9b0b66d14e9098a0f9b293762d636862"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/frontend/remote-daily.test.mjs",
+      "bytes": 10027,
+      "sha256": "73b1103e2182368e34270a63d7906d15015bd45717c962edf3108a069a3f764f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/internal/bridge/remote_pool_daily_bridge.go",
+      "bytes": 11163,
+      "sha256": "3856adf6b82b68fd6263ed1bfaed146f73a29f63b7d77a43d672387c6090a805"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/internal/bridge/remote_pool_daily_bridge_test.go",
+      "bytes": 8124,
+      "sha256": "d8922e4cd93a702bdb1ce3ce6d944889e7376fb8029f2af7df3be9bfba46fd45"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/internal/bridge/remote_pool_daily_process.go",
+      "bytes": 5651,
+      "sha256": "644698e2b5bc0e4bfcb631d2d07161518f89bcbfbc5fb1642e3994cdf1824989"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/main.go",
+      "bytes": 25001,
+      "sha256": "ac06306073bd4b0f5f8d43ee81ac2efda44d2c7b7ac77f8e451de76d02e57a38"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_protocol.go",
+      "bytes": 16475,
+      "sha256": "61b62f73a35177fc26b446e993198823d808fc49d4193dc55323bddd5dc7824c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_protocol_test.go",
+      "bytes": 7650,
+      "sha256": "ced886905ebb0df1814bc21181352d6dde54b36244b4385a935f01f91942e880"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_serve.go",
+      "bytes": 8508,
+      "sha256": "d099bc7b017c4470d8b555436e2c23215416c30071eb961e9aa001ccedc215ac"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_serve_test.go",
+      "bytes": 9057,
+      "sha256": "0e584f7c0c22fef1225731cf2ad61f77b0fb5eec21a0946438f0e2651dde78bd"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/testdata/daily-wallet-protocol/reference-v1.json",
+      "bytes": 895972,
+      "sha256": "b62572b6f1966acad3845348feb446ebb24cb5d1d3c043498a6f95e5b6645f1a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/remote_pool_daily.go",
+      "bytes": 15397,
+      "sha256": "3d08c066c8ba7606dee8c0fac41abe816b5ade7b223315f9c4f346fbd315f0ae"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/remote_pool_daily_app.go",
+      "bytes": 5547,
+      "sha256": "2ebe68389045a4fcd395184115df5ba74b8dee7c0cceeb647c3fb46164bd615c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/remote_pool_daily_test.go",
+      "bytes": 2750,
+      "sha256": "0c95702403e715540929a2eeec8b644a0800d6672dc7f282c793a29dd6515e9e"
+    }
+  ],
+  "corpus_sha256": "b62572b6f1966acad3845348feb446ebb24cb5d1d3c043498a6f95e5b6645f1a",
+  "tests": {
+    "normal-attempt2.jsonl": {
+      "pass": 13,
+      "skip": 1
+    },
+    "race-attempt1.jsonl": {
+      "pass": 53,
+      "skip": 1
+    },
+    "legacy-normal.stdout": {
+      "pass": 40,
+      "skip": 0
+    },
+    "cheap-controls.stdout": {
+      "pass": 2,
+      "skip": 0
+    }
+  },
+  "dom_passed": 6,
+  "vet_passed": true,
+  "normal_helper_and_app_builds_passed": true,
+  "binary_profile_verified": true,
+  "failed_attempts_preserved": true,
+  "build_cache_workaround": "Fresh /private/tmp/slug-set83-desktop-diagnostic-cache; unchanged Go1.27.4 no-CSE compiler profile. Prior cache package-index failure remains diagnosed but not repaired."
+}

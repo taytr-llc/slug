@@ -1,0 +1,174 @@
+// Copyright (c) 2026 The SLUG developers. ISC license.
+package pilot
+
+import (
+	"bytes"
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
+	"os"
+	"strings"
+	"testing"
+
+	"github.com/taytr-llc/slug/poolsettle"
+	"github.com/taytr-llc/slug/wire/v2"
+)
+
+// Root fills this pin only from the independently qualified producer output.
+// No product serialization is used to manufacture expected wire bytes.
+const dailyWalletReferenceSHA = "b62572b6f1966acad3845348feb446ebb24cb5d1d3c043498a6f95e5b6645f1a"
+
+type dailyWalletReferenceSelection struct {
+	Remote   RecoverableRemotePoolConfig `json:"remote"`
+	ConfigID string                      `json:"config_id"`
+	View     RemotePoolView              `json:"view"`
+	Binding  DailyWalletBinding          `json:"binding"`
+}
+type dailyWalletReferenceCase struct {
+	Name              string                         `json:"name"`
+	Kind              string                         `json:"kind"`
+	Valid             bool                           `json:"valid"`
+	FrameHex          string                         `json:"frame_hex"`
+	FrameBytes        int                            `json:"frame_bytes"`
+	SHA256            string                         `json:"sha256"`
+	Request           DailyWalletRequest             `json:"request"`
+	SelectionOverride *dailyWalletReferenceSelection `json:"selection_override"`
+}
+type dailyWalletReference struct {
+	Version   uint32                        `json:"version"`
+	Selection dailyWalletReferenceSelection `json:"selection"`
+	Cases     []dailyWalletReferenceCase    `json:"cases"`
+}
+
+func dailyWalletTestReference(t *testing.T) dailyWalletReference {
+	t.Helper()
+	if wire.TestPoW {
+		t.Skip("positive independent normal-profile codec controls")
+	}
+	raw, e := os.ReadFile("testdata/daily-wallet-protocol/reference-v1.json")
+	if e != nil {
+		t.Fatal(e)
+	}
+	sum := sha256.Sum256(raw)
+	if hex.EncodeToString(sum[:]) != dailyWalletReferenceSHA {
+		t.Fatal("independent reference pin")
+	}
+	var r dailyWalletReference
+	if json.Unmarshal(raw, &r) != nil || r.Version != 1 || len(r.Cases) == 0 {
+		t.Fatal("independent reference shape")
+	}
+	return r
+}
+func dailyWalletTestFrame(t *testing.T, c dailyWalletReferenceCase) []byte {
+	t.Helper()
+	raw, e := hex.DecodeString(c.FrameHex)
+	if e != nil || len(raw) != c.FrameBytes {
+		t.Fatal("case bytes", c.Name, e)
+	}
+	sum := sha256.Sum256(raw)
+	if hex.EncodeToString(sum[:]) != c.SHA256 {
+		t.Fatal("case hash", c.Name)
+	}
+	return raw
+}
+func TestDailyWalletProtocolIndependentCorpus(t *testing.T) {
+	r := dailyWalletTestReference(t)
+	for _, c := range r.Cases {
+		t.Run(c.Name, func(t *testing.T) {
+			s := r.Selection
+			if c.SelectionOverride != nil {
+				s = *c.SelectionOverride
+			}
+			raw := dailyWalletTestFrame(t, c)
+			framed := len(raw) > 1 && raw[len(raw)-1] == '\n' && bytes.IndexByte(raw[:len(raw)-1], '\n') < 0 && bytes.IndexByte(raw, '\r') < 0
+			accepted := false
+			if framed {
+				body := raw[:len(raw)-1]
+				switch c.Kind {
+				case "request":
+					_, e := ParseDailyWalletRequest(body, s.Remote)
+					accepted = e == nil
+				case "response":
+					var prior *RemotePoolView
+					if c.Request.ViewID != "" {
+						v := s.View
+						prior = &v
+					}
+					_, e := ParseDailyWalletResponse(body, c.Request, s.Remote, prior)
+					accepted = e == nil
+				default:
+					t.Fatal("unhandled independent case kind", c.Kind)
+				}
+			}
+			if accepted != c.Valid {
+				t.Fatalf("accepted=%v expected=%v", accepted, c.Valid)
+			}
+		})
+	}
+}
+func dailyWalletTestSnapshots(t *testing.T, r dailyWalletReference) (RemotePoolWireSnapshot, RemotePoolWireSnapshot) {
+	t.Helper()
+	var initial, logged RemotePoolWireSnapshot
+	for _, c := range r.Cases {
+		if !c.Valid || c.Kind != "response" || c.SelectionOverride != nil {
+			continue
+		}
+		var out DailyWalletResponse
+		raw := dailyWalletTestFrame(t, c)
+		if json.Unmarshal(bytes.TrimSuffix(raw, []byte{'\n'}), &out) != nil {
+			t.Fatal(c.Name)
+		}
+		if out.Snapshot != nil {
+			if out.Snapshot.State == "signed_out" {
+				initial = *out.Snapshot
+			}
+			if out.Snapshot.State == "signed_in" && out.Snapshot.Remote.State == "stopped" {
+				logged = *out.Snapshot
+			}
+		}
+	}
+	if initial.Version != 2 || logged.View == nil {
+		t.Fatal("independent snapshot controls absent")
+	}
+	return initial, logged
+}
+func TestDailyWalletProjectionOwnsPagesAndRejectsForeignBinding(t *testing.T) {
+	r := dailyWalletTestReference(t)
+	b, e := dailyWalletExpectedBinding(r.Selection.Remote, r.Selection.View)
+	if e != nil || b != r.Selection.Binding {
+		t.Fatal("independent selected binding", e)
+	}
+	_, p := dailyReadPageFixture()
+	p.BindingID = b.SourceBindingID
+	p.SettlementConfigID = b.SettlementConfigID
+	p.RecipientScript = b.RecipientScript
+	p.Balance.GymID = b.View.GymID
+	native := RemoteDailyPayoutRead{Job: RemoteDailyPayoutJob{Sequence: 1, State: "done"}, Capture: &RemoteDailyPayoutCapture{Sequence: 1, Binding: RemoteDailyPayoutBinding{View: b.View, ConfigID: b.ConfigID, SourceBindingID: b.SourceBindingID, SettlementConfigID: b.SettlementConfigID, RecipientScript: b.RecipientScript, IssueProfileID: b.IssueProfileID, OriginalSourceBindingID: b.OriginalSourceBindingID, WalletOwnerID: b.WalletOwnerID, AllocationBindingID: b.AllocationBindingID}, CapturedAtMS: 2, First: p, Current: p}}
+	projected := DailyWalletReadProjection(native)
+	q := DailyWalletRequest{Version: 1, Application: DailyWalletApplication, ID: 3, Command: "daily_payout_read", ConfigID: b.ConfigID, ViewID: b.View.ViewID, Sequence: 1}
+	out := DailyWalletResponse{Version: 1, Application: q.Application, ID: q.ID, Command: q.Command, ConfigID: q.ConfigID, ViewID: q.ViewID, OK: true, Read: &projected}
+	if ValidateDailyWalletResponse(out, q, r.Selection.Remote, &b.View) != nil {
+		t.Fatal("large exact cumulative counter refused")
+	}
+	projected.Capture.Binding.RecipientScript = "0014" + strings.Repeat("f", 40)
+	if ValidateDailyWalletResponse(out, q, r.Selection.Remote, &b.View) == nil || native.Capture.Binding.RecipientScript != b.RecipientScript {
+		t.Fatal("foreign money binding or alias")
+	}
+	native.Capture.First.Items = []poolsettle.DailyPayoutItem{{BatchSequence: 18}}
+	projected = DailyWalletReadProjection(native)
+	projected.Capture.First.Items[0].BatchSequence = 17
+	if native.Capture.First.Items[0].BatchSequence != 18 {
+		t.Fatal("native page was aliased")
+	}
+}
+func TestDailyWalletProtocolCheapRefusal(t *testing.T) {
+	if !wire.TestPoW {
+		t.Skip("cheap-profile refusal only")
+	}
+	if _, e := MarshalDailyWalletRequest(DailyWalletRequest{}, RecoverableRemotePoolConfig{}); e == nil {
+		t.Fatal("cheap profile accepted selected config")
+	}
+	if ValidateDailyWalletSnapshot(RemotePoolWireSnapshot{}, RecoverableRemotePoolConfig{}) == nil {
+		t.Fatal("cheap snapshot accepted")
+	}
+}

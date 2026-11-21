@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "scope": "explicit source declarations and independently qualified public fixture corpora only; no runtime or private roots",
+  "inputs": [
+    {
+      "name": "wire-contract.md",
+      "source": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/WIRE.md",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/reference/inputs/wire-contract.md",
+      "bytes": 6021,
+      "sha256": "8ae33abfd6b98c39a4157537ba9b1de5f1f55d012439c390db2218762f2b7538"
+    },
+    {
+      "name": "selection-reference.json",
+      "source": "/Users/taytrrip/slug/artifacts/set81/actual-selection-attempt1/primary.json",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/reference/inputs/selection-reference.json",
+      "bytes": 174293,
+      "sha256": "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a"
+    },
+    {
+      "name": "daily-reference.json",
+      "source": "/Users/taytrrip/slug/slug/testdata/public-daily/reference-v1.json",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/reference/inputs/daily-reference.json",
+      "bytes": 3176583,
+      "sha256": "a5c65673442846249b500d0db05c80652b5350ed1c032a586d275265698d25e3"
+    },
+    {
+      "name": "legacy-protocol.go.txt",
+      "source": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_protocol.go",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/reference/inputs/legacy-protocol.go.txt",
+      "bytes": 11467,
+      "sha256": "fdb05994103546921e7f8f792ce97c72f016a050de82fba7313fb47b873a4771"
+    },
+    {
+      "name": "native-pages.go.txt",
+      "source": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_pages.go",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/reference/inputs/native-pages.go.txt",
+      "bytes": 5281,
+      "sha256": "90a3c002279c74a7f394a4a27094554772fa035ef4aa594ecbca5bf8d99c7879"
+    },
+    {
+      "name": "native-reads.go.txt",
+      "source": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_reads.go",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/reference/inputs/native-reads.go.txt",
+      "bytes": 9918,
+      "sha256": "44e0b06741c9ac1052334bb535ca0ec882c39278bae4fef53dc56d08144e410f"
+    },
+    {
+      "name": "remote-types.go.txt",
+      "source": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_attachment.go",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/reference/inputs/remote-types.go.txt",
+      "bytes": 11900,
+      "sha256": "2f9e4a95e914bf648874e70e05a6b46c4e7bb924c5f1096292b2b19b59abb9d9"
+    },
+    {
+      "name": "account-types.go.txt",
+      "source": "/Users/taytrrip/slug/slug/desktop/pilot/types.go",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/reference/inputs/account-types.go.txt",
+      "bytes": 3249,
+      "sha256": "3eeaefdd6a934dcbd64a65ba24419c18039ac6c4b8f89b9fbaa8708ad807a34d"
+    },
+    {
+      "name": "daily-payout-history.go.txt",
+      "source": "/Users/taytrrip/slug/slug/poolsettle/daily_payout_history.go",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/reference/inputs/daily-payout-history.go.txt",
+      "bytes": 10499,
+      "sha256": "19c7b4e0a4bc2be5f204c5c75b70a2d2418b884cd9e9fdfb595339a9c0176e47"
+    },
+    {
+      "name": "payout-history.go.txt",
+      "source": "/Users/taytrrip/slug/slug/poolsettle/payout_history.go",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/reference/inputs/payout-history.go.txt",
+      "bytes": 6571,
+      "sha256": "bd964c89fc6bece822d39d3397d14c44eb52f7908060193c829f3a9dbb1907af"
+    },
+    {
+      "name": "settlement-types.go.txt",
+      "source": "/Users/taytrrip/slug/slug/poolsettle/types.go",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/reference/inputs/settlement-types.go.txt",
+      "bytes": 5766,
+      "sha256": "94ba356a7fef3a7f440a04068d8d62f3a4b60efd1c277062b3b33d5e57d3df4d"
+    },
+    {
+      "name": "daily-config.go.txt",
+      "source": "/Users/taytrrip/slug/slug/poolsettle/daily_config.go",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/reference/inputs/daily-config.go.txt",
+      "bytes": 1305,
+      "sha256": "ac7ae93fb5c2331cf662850b88f59c51d1723be5975e05c2cd9f2c87f8324926"
+    },
+    {
+      "name": "settlement-model.go.txt",
+      "source": "/Users/taytrrip/slug/slug/poolsettle/model.go",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/reference/inputs/settlement-model.go.txt",
+      "bytes": 12363,
+      "sha256": "604d95fb8cfde897f00e13d086ffd343ad7dc28853157860649564fa26d2a2f4"
+    },
+    {
+      "name": "remote-read.go.txt",
+      "source": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_read.go",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/reference/inputs/remote-read.go.txt",
+      "bytes": 3903,
+      "sha256": "416e739ffcdc7b1f324dc34bc21f248b8a232a37527e64ff0275c9b91998b41f"
+    },
+    {
+      "name": "remote-config.go.txt",
+      "source": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_config.go",
+      "copy": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/reference/inputs/remote-config.go.txt",
+      "bytes": 10582,
+      "sha256": "6d8e04f4e6a07c3e87acc8b441594970a0d0387f932b3161606a3ed37b47ec7e"
+    }
+  ]
+}

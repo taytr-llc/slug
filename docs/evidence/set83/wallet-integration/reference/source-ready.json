@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "status": "source-ready-unexecuted",
+  "producer": {
+    "path": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/reference/producer.py",
+    "bytes": 42823,
+    "sha256": "1ac27feba49d1764f85510d183a20799871227649d1876ac23c04e4c41728905"
+  },
+  "lock": {
+    "path": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/reference/producer-lock.proposed.json",
+    "bytes": 4594,
+    "sha256": "13117816d5967114a2c2b99748deaf47c4c325616bfa157105a5683da4f6dbd7"
+  },
+  "catalog": {
+    "path": "/Users/taytrrip/slug/set83-prep/wallet-history-integration-stage/reference/input-catalog.json",
+    "bytes": 5516,
+    "sha256": "b29abb8b7ff17dfedb760ae1fb55a3fadebcec831e177ec7ad080294500809d6"
+  },
+  "source_files": 18,
+  "bound_bytes": 3502738,
+  "declarations": {
+    "frame_cases": 170,
+    "valid": 55,
+    "invalid": 115,
+    "continuations": 11,
+    "request_id_sequences": 5
+  },
+  "source_review_corrections": [
+    "Original reduced fraction grammar checked before freeze; exact settlement model source copied.",
+    "Peer finding: completed cached first/current may retain stale capture; fresh done+stale remains refused.",
+    "Peer finding: original payout txid hex shape permits zero; conditional shape case added.",
+    "Copied remote worker state/code and nonzero View-ID declarations."
+  ],
+  "execution": "No import of producer, generate() call, Go, runtime, network or expected-output generation. Static Python AST and byte/hash checks only.",
+  "claim_limits": [
+    "Conditional grammar/linkage/bounds only; no live account/credential/View/ledger/payment authority.",
+    "Root must qualify two interpreter outputs before production corpus consumption."
+  ]
+}

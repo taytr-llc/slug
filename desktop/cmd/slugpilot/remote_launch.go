@@ -54,7 +54,7 @@ func remoteLaunchRequested(args []string) bool {
 			continue
 		}
 		name := strings.SplitN(strings.TrimLeft(a, "-"), "=", 2)[0]
-		if name == "daily-recoverable-issue" || name == "daily" || name == "candidate-remote-pool" || strings.HasPrefix(name, "remote-") {
+		if name == "daily-wallet-helper" || name == "daily-recoverable-issue" || name == "daily" || name == "candidate-remote-pool" || strings.HasPrefix(name, "remote-") {
 			return true
 		}
 	}
@@ -64,7 +64,7 @@ func remoteLaunchPath(s string) bool {
 	return len(s) > 1 && len(s) <= 4096 && filepath.IsAbs(s) && filepath.Clean(s) == s && !strings.ContainsAny(s, "\x00\r\n\t")
 }
 func validateRemoteLaunchArgs(args []string) error {
-	if len(args) < 1 || len(args) > 19 {
+	if len(args) < 1 || len(args) > 20 {
 		return errRemoteLaunchInvalid
 	}
 	seen := make(map[string]bool, 8)
@@ -80,7 +80,7 @@ func validateRemoteLaunchArgs(args []string) error {
 		}
 		seen[name] = true
 		value := ""
-		if name == "daily-recoverable-issue" || name == "candidate-remote-pool" || name == "daily" {
+		if name == "daily-wallet-helper" || name == "daily-recoverable-issue" || name == "candidate-remote-pool" || name == "daily" {
 			if len(nameValue) == 2 && nameValue[1] != "true" {
 				return errRemoteLaunchInvalid
 			}
@@ -107,6 +107,9 @@ func validateRemoteLaunchArgs(args []string) error {
 		} else if !remoteLaunchPath(value) {
 			return errRemoteLaunchInvalid
 		}
+	}
+	if seen["daily-wallet-helper"] && !seen["daily-recoverable-issue"] {
+		return errRemoteLaunchInvalid
 	}
 	if seen["daily-recoverable-issue"] {
 		if seen["daily"] || seen["candidate-remote-pool"] {
