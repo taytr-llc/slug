@@ -1,0 +1,34 @@
+--- /Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/money.go
++++ /Users/taytrrip/slug/set82-prep/hosted-actual-5/proofclient/money.go
+@@ -43,12 +43,26 @@
+ 			cancel()
+ 			check(errors.Join(re, ce), "negative auth body and close")
+ 			require(len(raw) <= poolservice.MaxResponseSize && res.Header.Get("Content-Encoding") == "", "bounded uncompressed negative auth reply")
+-			var failure poolservice.ErrorResponse
+-			strictJSON(raw, &failure)
+-			require(bytes.Equal(bytes.Trim(raw, " \t\r\n"), encode(failure)), "canonical negative auth envelope")
+-			event := map[string]any{"route": "/pool/v3/" + route.path, "wrong_auth": wrong, "status": res.StatusCode, "response": failure, "body_bytes": len(raw), "body_sha256": hx(digest(raw))}
++			event := map[string]any{"route": "/pool/v3/" + route.path, "wrong_auth": wrong, "status": res.StatusCode, "content_type": res.Header.Get("Content-Type"), "cache_control": res.Header.Get("Cache-Control"), "content_type_options": res.Header.Get("X-Content-Type-Options"), "body_bytes": len(raw), "body_sha256": hx(digest(raw))}
+ 			events = append(events, event)
+-			require(res.StatusCode == http.StatusUnauthorized && failure.Version == 3 && failure.Error.Code == "unauthorized" && !failure.Error.OutcomeUnknown, "exact definite unauthorized before effects")
++			require(res.Header.Get("Cache-Control") == "no-store" && res.Header.Get("X-Content-Type-Options") == "nosniff", "original ingress refusal headers")
++			if !wrong {
++				// The original ingress requires a syntactically valid bearer before
++				// forwarding. Missing auth is its exact 400 http.Error frame, not
++				// an upstream service authentication envelope.
++				event["refusal_layer"] = "ingress"
++				require(res.StatusCode == http.StatusBadRequest && res.Header.Get("Content-Type") == "text/plain; charset=utf-8" && bytes.Equal(raw, []byte("pool ingress unavailable\n")), "exact missing-bearer ingress refusal")
++				event["body_text"] = "pool ingress unavailable\n"
++			} else {
++				// This well-formed but wrong bearer passes only the ingress syntax
++				// guard. The original selected service must reject it canonically.
++				event["refusal_layer"] = "service"
++				var failure poolservice.ErrorResponse
++				strictJSON(raw, &failure)
++				require(bytes.Equal(bytes.Trim(raw, " \t\r\n"), encode(failure)), "canonical negative auth envelope")
++				event["response"] = failure
++				require(res.StatusCode == http.StatusUnauthorized && res.Header.Get("Content-Type") == "application/json" && failure.Version == 3 && failure.Error.Code == "unauthorized" && !failure.Error.OutcomeUnknown, "exact definite unauthorized before effects")
++			}
+ 			s.check(ctx)
+ 		}
+ 	}

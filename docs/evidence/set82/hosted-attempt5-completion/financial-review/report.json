@@ -1,0 +1,582 @@
+{
+  "version": 1,
+  "scope": "Finite read-only acceptance review of named completed public financial/replay/owner evidence; not a new runtime or full infrastructure qualification",
+  "review_passed": true,
+  "overall_hosted_qualification": "Root final infrastructure cleanup and source/input brackets pending; not asserted by this review",
+  "attempt": 5,
+  "setup_id": "d885fe4cc7c16067c216ddc4e23ec5357b9a6765403cbb0cff06cd0501f19885",
+  "remote_id": "3e791fbf57b62895ced4b413c15d079500e69247ecea382650ee89e5e240e02f",
+  "original_deadline_ms": 1795284553357,
+  "final_audit_ended_at_ms": 1795284357650,
+  "seconds_remaining_at_final_audit": 195.707,
+  "prior_audit_sha256": "0fc01d066bed4a1460acdfd8306e404d3dc47543465c12c775877532506ca4b4",
+  "final_audit_sha256": "083f67b573b0fde1cd010869839616bd8b6cc4a74c54a7643a9566d9c57406c1",
+  "transaction": {
+    "txid": "2a475d6318ff194115024169265271221aea644a95c7d89e2782ec7492a1afa9",
+    "raw_sha256": "83889f90b7ffcee9d5ae8f283f1a9b74b214da27037549ac1f861abe8466eb8c",
+    "raw_bytes": 370,
+    "funding_heights": [
+      63,
+      64
+    ],
+    "confirmed_height": 165,
+    "confirmation_hash": "47a427c54e584cd90cfedc0f2918ab4251eee194bd93f2bdf6b8774159acf503",
+    "miner_atoms": 1980000000,
+    "change_atoms": 19999791,
+    "fee_atoms": 209,
+    "body_created_after_original_due": true,
+    "direct_raw_decode_review": "Previously read directly without product imports: same txid, two original ordered outpoints, two expected outputs and witnesses; complete signed raw equals mempool/audit/chain."
+  },
+  "audit_comparison": {
+    "same_original_root_and_setup": true,
+    "original_owners_and_root_lock_closed": true,
+    "within_audit_public_files_unchanged": true,
+    "whole_body_credits_entries_rounds_admissions_unchanged": true,
+    "immutable_settlement_rows": 15,
+    "immutable_settlement_rows_unchanged": true,
+    "mutable_exclusions": [
+      "head",
+      "report",
+      "11-byte bs/ state keys"
+    ],
+    "before_and_after_census": {
+      "source_submissions": 2,
+      "source_accepted": 2,
+      "works": 2,
+      "authority_jobs": 2,
+      "source_requests": 2,
+      "issuer_requests": 2,
+      "admissions": 2,
+      "births": 2,
+      "rounds": 2,
+      "credits": 2,
+      "batches": 1,
+      "pending_batch": 0
+    },
+    "no_extra_admission_or_birth": true
+  },
+  "outbox": {
+    "all_rows_and_controls_equal_across_before_after_replay": true,
+    "exact_original_sequence1_work_nonce_receipt": true,
+    "new_issue_calls": 0,
+    "records": 2,
+    "pending": 0,
+    "requests": 3,
+    "active_request_id_retained": "5b170de4ee85fc6cdb519df370d5f3987f12f93212fdc01ba45f42dd7b41b5ed",
+    "rows_sha256": "cc273bbb94ca68fd5300da96ca18b10b13e18dbc3988b5f9c9957be02bbbe720"
+  },
+  "wallet": {
+    "samples": 228,
+    "all_original_stopped_zero_attempts": true,
+    "ready_baseline_height": 164,
+    "ready_baseline_atoms": 0,
+    "ready_confirmed_height": 165,
+    "ready_confirmed_atoms": 1980000000,
+    "delta_atoms": 1980000000,
+    "original_account_recipient_bindings_equal": true,
+    "actual_logout_close_and_process_join": true,
+    "deadline_note": "The original launcher enforced the fixed scenario deadline. The observer has its own internal900s cap; all its actual work and cleanup ended before the original external bound."
+  },
+  "money": {
+    "both_authenticated_selected_gyms": true,
+    "both_complete_history_high_batch": 1,
+    "first_paid_atoms": 1980000000,
+    "second_paid_atoms": 0,
+    "zero_remaining_confirmed_available_reserved": true,
+    "same_txid_output0_confirmed": true,
+    "retained_read_refusals": [
+      {
+        "at_ms": 1795284121398,
+        "error": {
+          "code": "unavailable",
+          "outcome_unknown": false
+        },
+        "gym_index": 1,
+        "read": "balance"
+      }
+    ]
+  },
+  "recovery": {
+    "samples": 46,
+    "observed_span_ms": 90009,
+    "fixed_height": 165,
+    "empty_mempools": true,
+    "same_confirmed_block": true,
+    "claim_limit": "One canonical payout and unchanged batch; no literal broadcast RPC call count is established."
+  },
+  "processes": {
+    "five_proof_commands_exit0_joined_inputs_unchanged": true,
+    "miner_single_requested_sigterm_clean": true,
+    "observer_single_requested_sigterm_clean": true,
+    "all_three_operator_child_monitor_clean": true,
+    "generations": [
+      {
+        "version": 1,
+        "generation": "01",
+        "owner_pid": 2822,
+        "child_pid": 2849,
+        "started_at": 1795283678,
+        "finished_at": 1795283805,
+        "deadline": 1795284553,
+        "reason": "requested",
+        "child_exit": 0,
+        "monitor_exit": 0,
+        "child_waited": true,
+        "monitor_joined": true,
+        "clean": true,
+        "setup_sha256": "87db5803e70418affbf492b2716e2104d6902ec9294940141fe97a885a5c3525",
+        "binary_sha256": "86a3bfa7cb07951e83eaca6df346a4be8bebe72df30d779705c83f7f8ac3a85f"
+      },
+      {
+        "version": 1,
+        "generation": "02",
+        "owner_pid": 5445,
+        "child_pid": 5474,
+        "started_at": 1795283854,
+        "finished_at": 1795284162,
+        "deadline": 1795284553,
+        "reason": "requested",
+        "child_exit": 0,
+        "monitor_exit": 0,
+        "child_waited": true,
+        "monitor_joined": true,
+        "clean": true,
+        "setup_sha256": "87db5803e70418affbf492b2716e2104d6902ec9294940141fe97a885a5c3525",
+        "binary_sha256": "86a3bfa7cb07951e83eaca6df346a4be8bebe72df30d779705c83f7f8ac3a85f"
+      },
+      {
+        "version": 1,
+        "generation": "03",
+        "owner_pid": 11621,
+        "child_pid": 11650,
+        "started_at": 1795284209,
+        "finished_at": 1795284354,
+        "deadline": 1795284553,
+        "reason": "requested",
+        "child_exit": 0,
+        "monitor_exit": 0,
+        "child_waited": true,
+        "monitor_joined": true,
+        "clean": true,
+        "setup_sha256": "87db5803e70418affbf492b2716e2104d6902ec9294940141fe97a885a5c3525",
+        "binary_sha256": "86a3bfa7cb07951e83eaca6df346a4be8bebe72df30d779705c83f7f8ac3a85f"
+      }
+    ],
+    "nodes_bridge_provider_cleanup": "Root is recording separately; not claimed complete here"
+  },
+  "availability_scope": {
+    "public_status_samples": [
+      {
+        "generation": "01",
+        "observed_at_ms": 1795283709602,
+        "public_code": "",
+        "public_ready": true,
+        "round_code": ""
+      },
+      {
+        "generation": "01",
+        "observed_at_ms": 1795283739602,
+        "public_code": "",
+        "public_ready": true,
+        "round_code": ""
+      },
+      {
+        "generation": "01",
+        "observed_at_ms": 1795283769601,
+        "public_code": "",
+        "public_ready": true,
+        "round_code": ""
+      },
+      {
+        "generation": "01",
+        "observed_at_ms": 1795283799602,
+        "public_code": "",
+        "public_ready": true,
+        "round_code": ""
+      },
+      {
+        "generation": "02",
+        "observed_at_ms": 1795283885979,
+        "public_code": "",
+        "public_ready": false,
+        "round_code": ""
+      },
+      {
+        "generation": "02",
+        "observed_at_ms": 1795283915980,
+        "public_code": "unavailable",
+        "public_ready": false,
+        "round_code": "unavailable"
+      },
+      {
+        "generation": "02",
+        "observed_at_ms": 1795283945980,
+        "public_code": "busy",
+        "public_ready": false,
+        "round_code": ""
+      },
+      {
+        "generation": "02",
+        "observed_at_ms": 1795283975980,
+        "public_code": "busy",
+        "public_ready": false,
+        "round_code": ""
+      },
+      {
+        "generation": "02",
+        "observed_at_ms": 1795284005980,
+        "public_code": "busy",
+        "public_ready": false,
+        "round_code": ""
+      },
+      {
+        "generation": "02",
+        "observed_at_ms": 1795284035979,
+        "public_code": "busy",
+        "public_ready": false,
+        "round_code": ""
+      },
+      {
+        "generation": "02",
+        "observed_at_ms": 1795284065979,
+        "public_code": "",
+        "public_ready": false,
+        "round_code": ""
+      },
+      {
+        "generation": "02",
+        "observed_at_ms": 1795284095980,
+        "public_code": "busy",
+        "public_ready": false,
+        "round_code": ""
+      },
+      {
+        "generation": "02",
+        "observed_at_ms": 1795284125979,
+        "public_code": "busy",
+        "public_ready": false,
+        "round_code": ""
+      },
+      {
+        "generation": "02",
+        "observed_at_ms": 1795284155980,
+        "public_code": "",
+        "public_ready": false,
+        "round_code": ""
+      },
+      {
+        "generation": "03",
+        "observed_at_ms": 1795284240510,
+        "public_code": "busy",
+        "public_ready": false,
+        "round_code": ""
+      },
+      {
+        "generation": "03",
+        "observed_at_ms": 1795284270511,
+        "public_code": "busy",
+        "public_ready": false,
+        "round_code": ""
+      },
+      {
+        "generation": "03",
+        "observed_at_ms": 1795284300511,
+        "public_code": "busy",
+        "public_ready": false,
+        "round_code": ""
+      },
+      {
+        "generation": "03",
+        "observed_at_ms": 1795284330510,
+        "public_code": "busy",
+        "public_ready": false,
+        "round_code": ""
+      }
+    ],
+    "remaining": "Generation2 and3 public channel was observed unready with busy/unavailable codes while the financial/replay path completed. No full public catch-up or continuous readiness claim. EF-12 extended-offline qualification remains open; this run kept operator online during maturity and proves only the selected small restart.",
+    "source": "Current docs/EDGE_CASE_FOLLOW_UPS.md EF-12 explicitly concerns extended offline catch-up, not a payout failure proved by this run."
+  },
+  "auxiliary_watcher": {
+    "disposition": "Failed auxiliary observation, preserved separately; not reclassified as passed",
+    "reason": "It incorrectly required the CLI capacity code, while source/operator full intake was correctly draining2/2 and delivered worker reported retrying/outcome_unknown. Root reported its failure after chain advancement.",
+    "root_reported_exception_path": "Not provided in the named artifact set; no invented traceback or exit metadata",
+    "nonblocking_follow_up": "EF18.proposed.md, prior progress-review9a95c865"
+  },
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/attempt-selection.json",
+      "bytes": 182,
+      "sha256": "c1561275bb92358cb7fd7d4b34b6e8c6184fda483e6f422b4c839e04de6bc00b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/audit-after-command.txt.status.json",
+      "bytes": 237,
+      "sha256": "2de2633725be16f6d494efcd714072782e7942ab78d9d9d57a0a69de473088d6"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/audit-after-command.txt.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/audit-after.base64.status.json",
+      "bytes": 233,
+      "sha256": "fa95214733e4f705e180e8ce3b91e1316913cbb1fe6a60c77ad9434400e79232"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/audit-after.base64.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/audit-after.json",
+      "bytes": 48192,
+      "sha256": "083f67b573b0fde1cd010869839616bd8b6cc4a74c54a7643a9566d9c57406c1"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/audit-before-command.txt.status.json",
+      "bytes": 238,
+      "sha256": "128a9f2c469c784ad2e52f2800aecf8609b25ee2a8f665c28d0ba2ff80c4edd4"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/audit-before-command.txt.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/audit-before.base64.status.json",
+      "bytes": 234,
+      "sha256": "675d4c4db407c2d025a3a55c4f60a7f033c9210c55f5c31500b9738f63000f22"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/audit-before.base64.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/audit-before.json",
+      "bytes": 48235,
+      "sha256": "0fc01d066bed4a1460acdfd8306e404d3dc47543465c12c775877532506ca4b4"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/client-evidence/miner-1/process-report.json",
+      "bytes": 1036,
+      "sha256": "b0f0dee0aaddb0883f044f245a50abcb6704cba8dc6d6231af532258e5117d8f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/client-evidence/observer-1/process-report.json",
+      "bytes": 769,
+      "sha256": "14c91efaa97b056293505f76e2146207149ec648736ad059727a88277be755d2"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/client-evidence/observer-1/wallet-report.json",
+      "bytes": 1237,
+      "sha256": "ea993dccb3adfcb7fe16b4c63bcf3369f62665fa77f1366b3ec01b61bb84b87a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/client-evidence/observer-1/wallet-snapshots.jsonl",
+      "bytes": 157929,
+      "sha256": "7f6037930f6bab25d04647ef3b0c4c3b28566744070ffd61692b307d3e0644fd"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/confirmation-observation.json",
+      "bytes": 226,
+      "sha256": "4fe7a5b68b451dcb8b234d7bb8bd40af26a21e2673303a6f914226be2d08ee76"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/final-recovery-observation.json",
+      "bytes": 244,
+      "sha256": "16dc62fda500eb86b9da6d55ebfeadf3352cecb8fc61372dcfe0890da4da86ec"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/final-recovery-observations.jsonl",
+      "bytes": 6026,
+      "sha256": "975e678ed7cdfb47b15583d26a209e1827cf9b0c2ac0378510bcbf071820c17e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/operator-01-closed/owner.complete",
+      "bytes": 41,
+      "sha256": "9966092ad09606df22ad455c08a4c42ecb863040f399f440fbba3637875747f1"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/operator-01-closed/result.json",
+      "bytes": 410,
+      "sha256": "224b26f0da86b757e19295369c7a1d5b6171eefbb4dca3ad1695a547446156fb"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/operator-01-closed/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/operator-01-closed/stdout.jsonl",
+      "bytes": 10481,
+      "sha256": "4bdb007fa65a7b7d2c3b5f3a9b3dd5cd1e82ced931e847f445bc4de36437f319"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/operator-01-start.txt.status.json",
+      "bytes": 235,
+      "sha256": "436ea574d189ca8550dfb24e3aa6be599b5ac245711a05493fa2a39ffa9853cc"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/operator-01-stop.txt.status.json",
+      "bytes": 235,
+      "sha256": "5c9f33b04e5d261804c74d8c584b919e3a736c5c05c24a4505d442042c3ad792"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/operator-02-closed/owner.complete",
+      "bytes": 41,
+      "sha256": "9966092ad09606df22ad455c08a4c42ecb863040f399f440fbba3637875747f1"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/operator-02-closed/result.json",
+      "bytes": 410,
+      "sha256": "dffe347f4c5b0a79567382597234eba9d2521ad2d68ca7345ee21b2d94f3cfa5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/operator-02-closed/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/operator-02-closed/stdout.jsonl",
+      "bytes": 20320,
+      "sha256": "3d1213ba57d013c498d1fbac0784c7fae5012513d03f57daa997d3be9b7472b9"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/operator-02-start.txt.status.json",
+      "bytes": 236,
+      "sha256": "75c6af49d2a286234b362425b94765ca14756c7ab1485b549ba84d20bc9e140d"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/operator-02-stop.txt.status.json",
+      "bytes": 235,
+      "sha256": "fdd4d22d41e0e2e7f2254d3185c2426d89691d123dd0f1ba52a88997a32b3a1e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/operator-03-closed/owner.complete",
+      "bytes": 41,
+      "sha256": "9966092ad09606df22ad455c08a4c42ecb863040f399f440fbba3637875747f1"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/operator-03-closed/result.json",
+      "bytes": 412,
+      "sha256": "8daa8957a71aa4bd7d85fa5772c93945efbd5b7267661074309b0e433aa6c96c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/operator-03-closed/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/operator-03-closed/stdout.jsonl",
+      "bytes": 8289,
+      "sha256": "34ef2d01cbe93fe0dc0badad981c596273bc14ffe7304f93e610b2c4dca208ee"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/operator-03-start.txt.status.json",
+      "bytes": 235,
+      "sha256": "95d58890d8fadc46b929b86732df958a24768cf9f384aea0495efec80909f3e5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/operator-03-stop.txt.status.json",
+      "bytes": 235,
+      "sha256": "ae603370ac1e16017b6cefd2d5a0025ad0cad9f6d492fea5e3a18156e0392b82"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/proof-chain.json",
+      "bytes": 7777,
+      "sha256": "133a15bd9432fc627d7b9ddc12ab98aadd0a346285d61f57f8f31fd3c4356e0d"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/proof-chain.status.json",
+      "bytes": 1103,
+      "sha256": "e0ea1a6109b5bf19d5efaee3cc8b3078a3a5a5c2a1d95ced1ba1ef2c63b45381"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/proof-chain.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/proof-confirmed-money.json",
+      "bytes": 3168,
+      "sha256": "6f15c9b75f68fb555846ed8214c6a7269719176f9034c95fc743cd5f479e2d18"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/proof-confirmed-money.status.json",
+      "bytes": 926,
+      "sha256": "602c12301ec6af1330360345e6a55a44992938f63c952c554f47c91e39f7d813"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/proof-confirmed-money.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/proof-initial-money.json",
+      "bytes": 5012,
+      "sha256": "f773f8e6420370da18af470f57e274f912563590bba73b450435996a03f39218"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/proof-initial-money.status.json",
+      "bytes": 924,
+      "sha256": "b10ef46390cf741e393a7ec741dbdea0080995df173f1c957bb058ae86730d9c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/proof-initial-money.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/proof-replay-after.json",
+      "bytes": 26855,
+      "sha256": "65f48981afe3f86bd5a3e3ca00c7bb7a81b117ba1b9388d6140908ad21ac8095"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/proof-replay-after.status.json",
+      "bytes": 924,
+      "sha256": "4fc2e1eba1b43f700e12ad77af0fa3e6a34e6b2fb220549db003ec54ab4274c1"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/proof-replay-after.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/proof-replay-before.json",
+      "bytes": 26855,
+      "sha256": "c4e4ba2dbc31dd92b1766cd72aefe5205a9be88151396405c8e36d05ebd09377"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/proof-replay-before.status.json",
+      "bytes": 925,
+      "sha256": "d5e52db9b7f18de92e006d780e9837315d00cc78d6807a615bafedb57ec2aed4"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/proof-replay-before.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/scheduled-payout-mempool.json",
+      "bytes": 4123,
+      "sha256": "10da7ea441213cdacd005a68dbed28b92a7689ffef10ca7260a8ec4329240294"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/selection-check.json",
+      "bytes": 2734,
+      "sha256": "c2fb055e48c7985fb33198f53dffb0e9112b77cc5a451e9027f157732f69961b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/wallet-baseline.json",
+      "bytes": 770,
+      "sha256": "562d2e43c8498befda3fbe88c9c4cde726d920a964a894940bb42584b41700cd"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/wallet-confirmed.json",
+      "bytes": 779,
+      "sha256": "a4fd782e71f3d4fb22f36101fdb85407a77fe61ab1532b5f7af078dbbc051902"
+    }
+  ]
+}

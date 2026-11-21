@@ -553,9 +553,9 @@ authorization must be repository-limited, not an account-wide OAuth expansion.
   named Linux ACL subcases under UID10001, then both shipped command help paths
   in the final scratch image. Public source archives and source-before/after
   match. All seven exact-tip CI jobs pass at `2d79de95`, including the complete
-  race job; see `docs/evidence/set82/ci.json`. This is not hosted mining,
-  provider volume, full serve shutdown or payout qualification; continue those
-  concrete host checks without general capacity expansion. See
+  race job; see `docs/evidence/set82/ci.json`. Those package checks alone do not establish hosted mining, provider volume,
+  full serve shutdown or payouts; the later actual proof below establishes its
+  bounded scope without general capacity expansion. See
   `CHANGESET_82_NOTES.md` and `deploy/pool/README.md`. Transport-pin renewal and
   rotation limits are logged as EF-13; do not fix them incidentally.
   The first hosted attempt failed at init before mining/payouts because the
@@ -566,11 +566,16 @@ authorization must be repository-limited, not an account-wide OAuth expansion.
   required. EF-15/16 cover separate provider qualification/upload follow-ups.
   Corrected package `4a15e8c9` passes all seven CI jobs, including full race
   and Linux image CI (26 required assertions); see `https-fix-ci.json`.
-  Hosted init succeeds; retained attempts2/3 failed before mining/payouts at
-  SSH launch and wildcard-listener boundaries. Fresh attempt4 selects `[::]:8443`
-  and corrected fixture supervision; its clock has not started. Test-service
-  restart awaits explicit permission after automatic approval rejection.
-  EF-17 records diagnostic cancellation masking; do not fix it incidentally.
+  Mike approved the isolated service restart. Attempts2–4 retain their launcher,
+  listener, HTTP-control and fixture-signal failures. Attempt5 passes actual
+  hosted TLS desktop mining to full ordinary intake, maturity, a scheduled
+  19.8-test-SLUG payment and original-wallet receipt. Three same-root operator
+  generations preserve exact receipts, two credits, one immutable payment and
+  the complete outbox. Original wallet/operator/node/relay cleanup completed in
+  856.392 seconds within the original 900 seconds. See the Set82 qualification
+  report. This is bounded synthetic-custody acceptance, not public launch or
+  final scratch PID1 qualification. EF-12/15/17/18 remain deferred. Continue
+  wallet balances/history, then sign-in and D74; marketplace stays on hold.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

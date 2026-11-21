@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "scope": "Source-only one-path successor; attempt4 output/selection root only; native-attempt2 binary and every control remain unchanged",
+  "before": {
+    "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/proof-control.py",
+    "bytes": 14193,
+    "sha256": "40f9970f8b9744d2dfa58ff3da2311128a9ed483177ca125e811bebd9cc5f60c"
+  },
+  "after": {
+    "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-4/proof-control.py",
+    "bytes": 14193,
+    "sha256": "6e7cdea906033ace06c29dec579b3565c9cf29826318743acd931b5db2b562d3"
+  },
+  "diff": {
+    "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-4/proof-control.diff",
+    "bytes": 623,
+    "sha256": "b8932b47d431b0185a3ea324028c8b4396dbdf8191e05f8987a709677863658e"
+  },
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/proof-control-manifest.json",
+      "bytes": 1634,
+      "sha256": "5cf7ab1244904cc3347c9317d4c72f3a25980d7b671d51891ac477ba12010e56"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-2/PROOF_CONTROL.md",
+      "bytes": 4779,
+      "sha256": "9f1f97945fe8d73db03fc6110fbc771dcc0f9e3aefbac58288b9be9ff884c0d8"
+    }
+  ],
+  "binary_selection": {
+    "path": "/Users/taytrrip/slug/artifacts/set82/proofclient-native-attempt2/slug-host-proof",
+    "sha256": "f52dd93daf6acabcba6282afef1c198504ebf97bc59d8f157a98e9563d24b09b",
+    "bytes": 14749442,
+    "runtime_gate": "Must match exact row in attempt4/execution-selection.json; no automatic trust from filename"
+  },
+  "validation": "AST parsed; byte delta is exactly A root attempt3 to attempt4; no imports or execution"
+}

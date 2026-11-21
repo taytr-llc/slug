@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "scope": "DRAFT explicit public completion supplement; root-qualified bounded fixture only; no copying or installation",
+  "ready_for_install": false,
+  "qualification": "Root qualification.json PASS including original infrastructure cleanup inside unchanged scenario deadline; prior failure and scope limits preserved",
+  "fresh_target_root": "docs/evidence/set82/hosted-attempt5-completion",
+  "entry_count": 8,
+  "total_bytes": 65570,
+  "unchanged_prior_plans": [
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-final-archive-draft/attempt4-plan.proposed.json",
+      "bytes": 26628,
+      "sha256": "dcf1fc304380fc9d2841f9871d15b4d3f17bb242b93fd573cff05383987f90ed"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-final-archive-draft/attempt5-plan.proposed.json",
+      "bytes": 58105,
+      "sha256": "c24336f4922f71433f63cbf2d4dea58e07f46e8e58524efd734f45cc90dc3ea5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-final-archive-draft/source5-plan.proposed.json",
+      "bytes": 20126,
+      "sha256": "deaeaca02dd3e35068a546b945be0d60d9402b16e549083c2217fd06d1975ba0"
+    }
+  ],
+  "existing_evidence_references": [
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/execution-after.json",
+      "target": "docs/evidence/set82/hosted-attempt5-financial-proof/execution-after.json",
+      "bytes": 144,
+      "sha256": "f0f42a0e2831ac6b52039963f3b36ce7acfe4c73b8435ea4e64198849f6d5e93",
+      "role": "unchanged existing-map evidence; do not copy again"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/fixture-after.json",
+      "target": "docs/evidence/set82/hosted-attempt5-financial-proof/fixture-after.json",
+      "bytes": 2171,
+      "sha256": "2df94a122e03a3b2a1901cfc0608b470d62ba2b99ef0f7c8e9ee36dea8b2bbe9",
+      "role": "unchanged existing-map evidence; do not copy again"
+    }
+  ],
+  "excluded": [
+    "owned/**",
+    "client-inputs/**",
+    "remote-attachment/**",
+    "private/credential/database/wallet contents",
+    "binaries",
+    "opaque base64/tar transports",
+    "transfer payloads and metadata not named in this map"
+  ],
+  "entries": [
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/qualification.json",
+      "target": "docs/evidence/set82/hosted-attempt5-completion/qualification.json",
+      "bytes": 3310,
+      "sha256": "5050e22b3b90106b2f65fa9263453bb1aa7194c80f64390bb7a8812f61ccbc79"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/infrastructure-cleanup.json",
+      "target": "docs/evidence/set82/hosted-attempt5-completion/infrastructure-cleanup.json",
+      "bytes": 744,
+      "sha256": "45d27b0058bd9eeefcc7c185a6770e90f4608a9f31e73ceb39d367d3e84c5377"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/host-node-shutdown.json",
+      "target": "docs/evidence/set82/hosted-attempt5-completion/host-node-shutdown.json",
+      "bytes": 5382,
+      "sha256": "ddf45c58279a880c87d6bf89fa925b412c2335ef2c66fcb6e8aba386d17fb747"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/local-node-console.log",
+      "target": "docs/evidence/set82/hosted-attempt5-completion/local-node-console.log",
+      "bytes": 29305,
+      "sha256": "b007ee94298620aae3be5eefd42a49909f144e84a8572f77642417c05a186e5c"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-attempt5-final-review/manifest.json",
+      "target": "docs/evidence/set82/hosted-attempt5-completion/financial-review/manifest.json",
+      "bytes": 1061,
+      "sha256": "155fc28618f3c90a2874328d0fde435b8f4b75d1361bafca6ec9d5acae924a07"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-attempt5-final-review/report.json",
+      "target": "docs/evidence/set82/hosted-attempt5-completion/financial-review/report.json",
+      "bytes": 22700,
+      "sha256": "4ec754e9f21b831ce4c7e63c1fce2d3414be30ccaeee2c9ccc5f2985339d629f"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-attempt5-final-review/README.md",
+      "target": "docs/evidence/set82/hosted-attempt5-completion/financial-review/README.md",
+      "bytes": 962,
+      "sha256": "7abd5a71542af86683bf2eb72074a9d4edc9867d21309d57222e0226716e3e54"
+    },
+    {
+      "source": "/Users/taytrrip/slug/set82-prep/hosted-final-archive-draft/completion-notes.md",
+      "target": "docs/evidence/set82/hosted-attempt5-completion/COMPLETION.md",
+      "bytes": 2106,
+      "sha256": "5128484e07ee39eeb046b09558c969d5343ee698b9038b0fb08011c870f4dd61"
+    }
+  ]
+}

@@ -21,21 +21,15 @@ they do not count as completion of this product-release gate.
 Mike's November 21 instruction supersedes earlier capacity-before-host sequencing.
 The current order is:
 
-1. **Hosted pool and scheduled payouts.** Finish the current admission/payout
-   acceptance, then qualify an operator-owned hosted test endpoint, original
-   custody and enrolled miner flow, scheduled payout, restart and exact retry.
-   Declare and stay inside a finite test envelope; preserve recovery and visible
-   holds. Synthetic loopback proofs alone do not count as hosted acceptance.
-   [Set82](CHANGESET_82_NOTES.md) passed all seven CI jobs at `2d79de95`, including native Linux image/component checks;
-   provider storage, endpoint and actual hosted payout remain to be verified.
-   The first hosted initialization failed at an inherited desktop-only address
-   rule. Its operator-only explicit-CA HTTPS correction passes normal/race and
-   refusal checks. All seven corrected-tip CI jobs pass at `4a15e8c9`; hosted init now
-   succeeds. Two later launcher/listener startup failures are retained, and
-   a fresh explicit-listener attempt awaits the test-service restart permission.
-   A completed hosted payout remains required. See
-   [Set82's retained failure and correction](CHANGESET_82_NOTES.md).
-2. **Wallet balances and history.** Connect and verify the existing authenticated
+1. **Hosted pool and scheduled payouts — bounded test complete.**
+   [Set82](CHANGESET_82_NOTES.md) now proves actual hosted TLS mining, full
+   ordinary intake, one scheduled 19.8-test-SLUG payment, original-wallet receipt,
+   same-root restart/exact retry, unchanged payout bytes and clean owner joins
+   inside the original 900 seconds. All seven corrected-package CI jobs pass at
+   `4a15e8c9`; failed attempts 1–4 remain retained. This is synthetic fixture
+   custody and a finite test envelope, not general public-launch approval.
+   EF-12/15/18 preserve catch-up, final PID1/provider and status follow-ups.
+2. **Wallet balances and history — active.** Connect and verify the existing authenticated
    balance, payout and wallet-activity paths against the hosted test service,
    including dated observations and visible pending/deferred states.
 3. **Sign-in and onboarding.** Complete D82 mandatory MFA/passkey support and the

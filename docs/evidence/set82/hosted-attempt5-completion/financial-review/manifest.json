@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "scope": "Public-artifact finite review only",
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-attempt5-final-review/report.json",
+      "bytes": 22700,
+      "sha256": "4ec754e9f21b831ce4c7e63c1fce2d3414be30ccaeee2c9ccc5f2985339d629f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-attempt5-final-review/README.md",
+      "bytes": 962,
+      "sha256": "7abd5a71542af86683bf2eb72074a9d4edc9867d21309d57222e0226716e3e54"
+    }
+  ],
+  "preserved_prior": [
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-attempt5-progress-review/review.json",
+      "bytes": 8003,
+      "sha256": "a619874c481984cb3815f49700938a544e7387f07e2f321475ae603b6f44df5f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-attempt5-progress-review/EF18.proposed.md",
+      "bytes": 2265,
+      "sha256": "9a95c865863d05b079116168d45cd4bd80b6b7c206db9dcc4595065b4848c9b8"
+    }
+  ],
+  "evidence_files": 55,
+  "evidence_rechecked": true,
+  "runtime_by_reviewer": false,
+  "private_reads": false
+}

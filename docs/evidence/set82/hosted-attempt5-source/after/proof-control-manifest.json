@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "scope": "Source-only two-path successor: artifact attempt5 and new native-attempt5 binary; every control unchanged",
+  "before": {
+    "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-4/proof-control.py",
+    "bytes": 14193,
+    "sha256": "6e7cdea906033ace06c29dec579b3565c9cf29826318743acd931b5db2b562d3"
+  },
+  "after": {
+    "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/proof-control.py",
+    "bytes": 14193,
+    "sha256": "826f8a3f65e50443fe801bafac278766a400f57267218252936e4c731fbb58a4"
+  },
+  "diff": {
+    "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/proof-control.diff",
+    "bytes": 776,
+    "sha256": "5b3b68f513c64de4c888ac04308f7eeee3b4a2ef4b535724ec4817426b2ec372"
+  },
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-4/proof-control-manifest.json",
+      "bytes": 1634,
+      "sha256": "583b9cf1e536ba8a0261e9dbdcf6b5820cf9761937e5373d70115f07650b4ede"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/proofclient/source-manifest.json",
+      "bytes": 5453,
+      "sha256": "12145d90eff3816602cd420f62339cdbf3fd2b3762860c53cc15108e16cee075"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-2/PROOF_CONTROL.md",
+      "bytes": 4779,
+      "sha256": "9f1f97945fe8d73db03fc6110fbc771dcc0f9e3aefbac58288b9be9ff884c0d8"
+    }
+  ],
+  "binary_selection": {
+    "path": "/Users/taytrrip/slug/artifacts/set82/proofclient-native-attempt5/slug-host-proof",
+    "qualification": "Not built by agent; root must bind actual new binary bytes/SHA in attempt5 execution-selection.json before execution; no old binary hash reused"
+  },
+  "validation": "AST only; exact two path substitutions, no import or execution"
+}

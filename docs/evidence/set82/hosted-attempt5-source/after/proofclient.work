@@ -1,0 +1,26 @@
+go 1.27.3
+
+use (
+	/Users/taytrrip/slug/slug/desktop
+	/Users/taytrrip/slug/slug
+	/Users/taytrrip/slug/slug/address
+	/Users/taytrrip/slug/slug/btcec
+	/Users/taytrrip/slug/slug/btcutil
+	/Users/taytrrip/slug/slug/chaincfg
+	/Users/taytrrip/slug/slug/chainhash
+	/Users/taytrrip/slug/slug/psbt
+	/Users/taytrrip/slug/slug/txscript
+	/Users/taytrrip/slug/slug/v2transport
+	/Users/taytrrip/slug/slug/wire
+	/Users/taytrrip/slug/slugwallet
+	/Users/taytrrip/slug/slugwallet/wallet/txauthor
+	/Users/taytrrip/slug/slugwallet/wallet/txrules
+	/Users/taytrrip/slug/slugwallet/wallet/txsizes
+	/Users/taytrrip/slug/slugwallet/walletdb
+	/Users/taytrrip/slug/slugwallet/wtxmgr
+	/Users/taytrrip/slug/set82-prep/hosted-actual-5/proofclient
+)
+
+replace github.com/taytr-llc/slug/desktop v0.0.0 => /Users/taytrrip/slug/slug/desktop
+replace github.com/taytr-llc/slugwallet v0.0.0 => /Users/taytrrip/slug/slugwallet
+replace github.com/taytr-llc/slug v0.27.0 => /Users/taytrrip/slug/slug

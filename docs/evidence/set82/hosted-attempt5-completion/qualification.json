@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "passed": true,
+  "scope": "Bounded actual hosted operator, authenticated original desktop miner, scheduled payment and same-root recovery under observed fixture supervision",
+  "attempt": 5,
+  "product_commit": "359a2853ea092b17a832dd1fc824c5d47aec5f12",
+  "package_commit": "4a15e8c91acd02ee352f7a6a0ff9191f698616f3",
+  "paired_wallet": "dfc5d9dd7e0f604486fbac812d0413fce1f45cd6",
+  "image_digest": "sha256:5247a188ee785cad09cd967623526445df3fe5e257fcf38e1a4bf63a2633ae4a",
+  "deployment": "ca9d1c8e-cb96-4dc9-992e-606ade4ebfd1",
+  "selection": {
+    "version": 1,
+    "start_ms": 1795283653357,
+    "due_ms": 1795284060000,
+    "deadline_ms": 1795284553357,
+    "outer_deadline_ms": 1795284733357,
+    "due_utc": "2026-11-21T18:01:00Z"
+  },
+  "actual_infrastructure_finished_at_ms": 1795284509749,
+  "elapsed_seconds": 856.392,
+  "remaining_seconds": 43.608,
+  "normal_pow": true,
+  "pool_reward_heights": [
+    63,
+    64
+  ],
+  "mature_height": 164,
+  "payment_height": 165,
+  "transaction": {
+    "txid": "2a475d6318ff194115024169265271221aea644a95c7d89e2782ec7492a1afa9",
+    "raw_sha256": "83889f90b7ffcee9d5ae8f283f1a9b74b214da27037549ac1f861abe8466eb8c",
+    "raw_bytes": 370,
+    "funding_heights": [
+      63,
+      64
+    ],
+    "confirmed_height": 165,
+    "confirmation_hash": "47a427c54e584cd90cfedc0f2918ab4251eee194bd93f2bdf6b8774159acf503",
+    "miner_atoms": 1980000000,
+    "change_atoms": 19999791,
+    "fee_atoms": 209,
+    "body_created_after_original_due": true,
+    "direct_raw_decode_review": "Previously read directly without product imports: same txid, two original ordered outpoints, two expected outputs and witnesses; complete signed raw equals mempool/audit/chain."
+  },
+  "proof_phases": [
+    "initial-money",
+    "replay-before",
+    "confirmed-money",
+    "chain",
+    "replay-after"
+  ],
+  "accepted_submissions": 2,
+  "admissions": 2,
+  "births": 2,
+  "credits": 2,
+  "payout_batches": 1,
+  "ordinary_capacity": 2,
+  "complete_outbox_unchanged": true,
+  "immutable_batch_and_credits_unchanged": true,
+  "wallet_delta_atoms": 1980000000,
+  "all_three_operator_generations_clean": true,
+  "original_wallet_logout_and_close_clean": true,
+  "original_node_and_bridge_cleanup_clean": true,
+  "old_history_paths_unchanged": 226,
+  "selected_inputs_unchanged": 80,
+  "financial_review_sha256": "4ec754e9f21b831ce4c7e63c1fce2d3414be30ccaeee2c9ccc5f2985339d629f",
+  "scope_limits": [
+    "Published synthetic fixture only; no permanent genesis or real player custody",
+    "One canonical payment proven; literal sendrawtransaction call count not observed",
+    "Original operator under fixture parent; final scratch PID1/provider qualification remains EF-15",
+    "Public replay/catch-up was busy after maturity; no complete fighter public-view or general load claim; retain EF-12",
+    "CLI conservatively reports outcome_unknown when full; preserved third active null request; EF-18",
+    "Auxiliary read-only watcher wrongly required CLI capacity code and failed after chain advance; original full-source status and selected protocol independently proved completion",
+    "Prior attempts1-4 remain failed and preserved; no resets or retimed old roots",
+    "Pool admin container remains owner-free until its original idle timeout; live seed unchanged"
+  ]
+}

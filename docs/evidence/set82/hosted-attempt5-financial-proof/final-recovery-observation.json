@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "passed": true,
+  "start_ms": 1795284245494,
+  "end_ms": 1795284335504,
+  "samples": 46,
+  "height": 165,
+  "no_additional_mempool_transaction": true,
+  "claim": "one canonical payment; no literal broadcast RPC call count"
+}

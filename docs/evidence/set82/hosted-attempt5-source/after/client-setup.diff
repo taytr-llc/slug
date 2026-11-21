@@ -1,0 +1,140 @@
+--- /Users/taytrrip/slug/set82-prep/hosted-actual-4/fetch-selection.py
++++ /Users/taytrrip/slug/set82-prep/hosted-actual-5/fetch-selection.py
+@@ -7,7 +7,7 @@
+ os.umask(0o077); a.output.mkdir(mode=0o700)
+ names=('endpoints.json','setup.json','remote.json','prepared.json','ca.pem','tls-cert.pem')
+ encoded=a.output.parent/(a.output.name+'-transport.base64')
+-cmd='set -eu; tar -C /data/hosted-test-4/public -cf - '+' '.join(names)+' | base64'
++cmd='set -eu; tar -C /data/hosted-test-5/public -cf - '+' '.join(names)+' | base64'
+ subprocess.run(['python3',str(Path(__file__).with_name('host-command.py')),
+     '--service','pool','--output',str(encoded),'--','/bin/sh','-c',cmd],check=True)
+ raw=encoded.read_bytes(); assert len(raw)<4*1024*1024
+--- /Users/taytrrip/slug/set82-prep/hosted-actual-4/prepare-attempt.py
++++ /Users/taytrrip/slug/set82-prep/hosted-actual-5/prepare-attempt.py
+@@ -3,7 +3,7 @@
+ import base64, datetime, hashlib, importlib.util, json, os, shlex, shutil, subprocess, time
+ from pathlib import Path
+ B=Path(__file__).resolve().parent
+-A=Path('/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4')
++A=Path('/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5')
+ REFERENCE=Path('/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/reference-v1.json')
+ os.umask(0o077)
+ start=time.time_ns()//1000000
+@@ -25,10 +25,10 @@
+ def nonroot(name,args):
+     ssh(name,['/bin/su','-s','/bin/sh','-c','exec '+shlex.join([str(x) for x in args]),'slug'])
+ def operator(command,extra=()):
+-    p='/data/hosted-test-4/private/'
++    p='/data/hosted-test-5/private/'
+     return ['/usr/local/bin/slugpoold',command,'--daily-recoverable-issue',
+-        '--setup-file',p+'selected-setup.json','--root','/data/hosted-test-4/operator',
+-        '--wallet-root','/data/hosted-test-4/custody/wallet16',
++        '--setup-file',p+'selected-setup.json','--root','/data/hosted-test-5/operator',
++        '--wallet-root','/data/hosted-test-5/custody/wallet16',
+         '--wallet-public-passphrase-file',p+'public.pass','--wallet-unlock-passphrase-file',p+'unlock.pass',
+         '--admission-seed-file',p+'admission.seed','--publication-seed-file',p+'publication.seed',
+         '--cutoff-seed-file',p+'cutoff.seed','--rpc-config-file',p+'node-rpc.json',
+@@ -38,9 +38,9 @@
+       'due_utc':selected['due_utc'],'tls_ca_path':'','tls_certificate_path':'','tls_key_path':''}
+ raw=json.dumps(host,separators=(',',':')).encode()
+ with (A/'host-selection.json').open('xb') as f:f.write(raw)
+-script='umask 077; set -euC; test "$(id -u):$(id -g)" = 10001:10001; printf %s '+shlex.quote(base64.b64encode(raw).decode())+' | base64 -d > /data/hosted-selection-4/selection.json'
++script='umask 077; set -euC; test "$(id -u):$(id -g)" = 10001:10001; printf %s '+shlex.quote(base64.b64encode(raw).decode())+' | base64 -d > /data/hosted-selection-5/selection.json'
+ ssh('selection-host-handoff.txt',['/bin/su','-s','/bin/sh','-c',script,'slug'])
+-nonroot('prepare-host.stdout.json',['/usr/local/bin/host-bootstrap-4','prepare'])
++nonroot('prepare-host.stdout.json',['/usr/local/bin/host-bootstrap-5','prepare'])
+ run(['python3',B/'fetch-selection.py','--output',A/'public'])
+ run(['python3',B/'check-selection.py','--public',A/'public','--reference',REFERENCE,
+      '--origin',host['origin'],'--due-utc',selected['due_utc'],'--initial-start-ms',start,'--out',A/'selection-check.json'])
+@@ -65,7 +65,7 @@
+     with (private/token_name).open('x') as f:f.write(token)
+     result='rotate-'+name+'.stdout.json'
+     nonroot(result,operator('rotate',['--gym-id',gym,'--audience',audience,'--expected-generation','0',
+-        '--token-file','/data/hosted-test-4/private/'+token_name,'--expires-at-ms',str(expiry)]))
++        '--token-file','/data/hosted-test-5/private/'+token_name,'--expires-at-ms',str(expiry)]))
+     frame=json.loads((A/result).read_text()); c=frame['result']
+     assert frame['version']==2 and frame['command']=='rotate' and frame['code']=='complete'
+     assert c['gym_id']==gym and c['audience']==audience and c['generation']==1 and c['revoked_at_ms']==0 and c['expires_at_ms']==expiry
+--- /Users/taytrrip/slug/set82-prep/hosted-actual-4/operator-control.py
++++ /Users/taytrrip/slug/set82-prep/hosted-actual-5/operator-control.py
+@@ -2,7 +2,7 @@
+ """Fixed generation controls for the selected isolated operator; no retries."""
+ import argparse,base64,hashlib,json,os,shlex,stat,subprocess,time
+ from pathlib import Path
+-B=Path(__file__).resolve().parent; A=Path('/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4')
++B=Path(__file__).resolve().parent; A=Path('/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5')
+ p=argparse.ArgumentParser();p.add_argument('action',choices=['start','stop','logs','audit-before','audit-after']);p.add_argument('generation',choices=['01','02','03']);a=p.parse_args()
+ selection=json.loads((A/'attempt-selection.json').read_text())
+ checked=json.loads((A/'selection-check.json').read_text());assert checked['passed']
+@@ -43,7 +43,7 @@
+     binary_unchanged()
+ if a.action in ('start','stop'):
+     mode='run' if a.action=='start' else 'stop'
+-    args=['/usr/local/bin/host-operator-lifecycle-4',mode,a.generation]
++    args=['/usr/local/bin/host-operator-lifecycle-5',mode,a.generation]
+     if a.action=='start':
+         assert time.time_ns()//1000000<selection['deadline_ms']
+         args.append(str(selection['deadline_ms']//1000))
+@@ -54,7 +54,7 @@
+         assert report['clean'] and report['child_waited'] and report['monitor_joined'] and report['child_exit']==report['monitor_exit']==0
+ elif a.action=='logs':
+     name='operator-'+a.generation+'-logs.base64'
+-    ssh(name,'set -eu; tar -C /data/hosted-test-4/lifecycle/'+a.generation+' -cf - stdout.jsonl stderr.log result.json owner.complete | base64',30)
++    ssh(name,'set -eu; tar -C /data/hosted-test-5/lifecycle/'+a.generation+' -cf - stdout.jsonl stderr.log result.json owner.complete | base64',30)
+     import io,tarfile,os
+     os.umask(0o077);out=A/('operator-'+a.generation+'-closed');out.mkdir(mode=0o700)
+     raw=base64.b64decode(b''.join((A/name).read_bytes().split()),validate=True);assert len(raw)<8*1024*1024
+@@ -67,13 +67,13 @@
+ else:
+     assert (a.action,a.generation) in [('audit-before','02'),('audit-after','03')]
+     name=a.action+'.json'
+-    cmd=['/usr/local/bin/slug-host-audit','audit','--root','/data/hosted-test-4',
++    cmd=['/usr/local/bin/slug-host-audit','audit','--root','/data/hosted-test-5',
+          '--expected-setup-id',checked['setup_id'],'--expect-delivery','confirmed']
+-    if a.action=='audit-after':cmd+=['--compare','/data/hosted-test-4/public/audit-before.json']
+-    script='set -euC; umask 077; '+shlex.join(cmd)+' > /data/hosted-test-4/public/'+name
++    if a.action=='audit-after':cmd+=['--compare','/data/hosted-test-5/public/audit-before.json']
++    script='set -euC; umask 077; '+shlex.join(cmd)+' > /data/hosted-test-5/public/'+name
+     ssh(a.action+'-command.txt',script,60)
+     encoded=a.action+'.base64'
+-    ssh(encoded,'exec base64 /data/hosted-test-4/public/'+name,30)
++    ssh(encoded,'exec base64 /data/hosted-test-5/public/'+name,30)
+     raw=base64.b64decode(b''.join((A/encoded).read_bytes().split()),validate=True);assert len(raw)<16*1024*1024
+     with (A/name).open('xb') as f:f.write(raw)
+     report=json.loads(raw);assert report['passed']
+--- /Users/taytrrip/slug/set82-prep/hosted-actual-4/client-control.py
++++ /Users/taytrrip/slug/set82-prep/hosted-actual-5/client-control.py
+@@ -2,7 +2,7 @@
+ """Launch or request one stop of the fixed selected local fixture child owner."""
+ import argparse,json,os,signal,subprocess,sys,time
+ from pathlib import Path
+-B=Path(__file__).resolve().parent;A=Path('/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4')
++B=Path(__file__).resolve().parent;A=Path('/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5')
+ p=argparse.ArgumentParser();p.add_argument('action',choices=['start','stop']);p.add_argument('mode',choices=['miner','observe']);a=p.parse_args()
+ os.umask(0o077)
+ selected=json.loads((A/'attempt-selection.json').read_text());checked=json.loads((A/'selection-check.json').read_text());assert checked['passed']
+--- /Users/taytrrip/slug/set82-prep/hosted-actual-4/ACCEPTANCE.md
++++ /Users/taytrrip/slug/set82-prep/hosted-actual-5/ACCEPTANCE.md
+@@ -1,10 +1,10 @@
+ # Phase A: bounded hosted pool and payout acceptance
+ 
+-Source-only attempt-4 staging for the already authorized isolated fixture rehearsal, based on qualified Set81 A2. Final source/image selection and runtime qualification remain pending. This is the next hosted test milestone; continuous capacity, extended-outage catch-up, broader sign-in and D74 do not become prerequisites for this bounded test. Funds, security, data preservation and correct payouts remain mandatory.
++Source-only attempt-5 staging for the already authorized isolated fixture rehearsal, based on qualified Set81 A2. Final source/image selection and runtime qualification remain pending. This is the next hosted test milestone; continuous capacity, extended-outage catch-up, broader sign-in and D74 do not become prerequisites for this bounded test. Funds, security, data preservation and correct payouts remain mandatory.
+ 
+-Attempt1 is retained at `/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/failed-attempt-report.json`. It failed original operator init because the ownership-chain constructor rejected the selected non-loopback HTTPS node, before any rotate, serve, miner, submitted share or payout test. Its original due, partial runtime and all private inputs remain untouched. Attempt4 selects the tested operator-only HTTPS correction in the commit below and uses only fresh `/data/hosted-test-4`, `/data/hosted-selection-4` and local `artifacts/set82/hosted-actual-attempt4` roots. It does not copy or reopen attempt1 custody, credentials or runtime stores. The separately retained isolated normal nodes and mTLS bridge remain at agreed height62; no second bootstrap generation is requested.
++Attempt1 is retained at `/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/failed-attempt-report.json`. It failed original operator init because the ownership-chain constructor rejected the selected non-loopback HTTPS node, before any rotate, serve, miner, submitted share or payout test. Its original due, partial runtime and all private inputs remain untouched. Attempt5 selects the tested operator-only HTTPS correction in the commit below and uses only fresh `/data/hosted-test-5`, `/data/hosted-selection-5` and local `artifacts/set82/hosted-actual-attempt5` roots. It does not copy or reopen attempt1 custody, credentials or runtime stores. The separately retained isolated normal nodes and mTLS bridge remain at agreed height62; no second bootstrap generation is requested.
+ 
+-The immutable helper/reference modules remain at `../hosted-actual/{preparer,client,proofclient,audit}` and are rebuilt by root against the new paired product selection. The new setup/control scripts use their own copied `check-selection.py` and `client-flow` Python sources. Root supplies one public `binary-selection.json` in the local attempt4 root after measuring the actual image operator binary: ordered fields `version:1,operator_sha256:<64 lowercase nonzero hex>`, regular single-link current-owner0400/0600, at most256bytes. `operator-control.py` retains and rechecks those exact bytes/identity; no attempt1 binary hash is adopted. The host fixture executables are `/usr/local/bin/host-bootstrap-4` and `/usr/local/bin/host-operator-lifecycle-4`.
++The immutable helper/reference modules remain at `../hosted-actual/{preparer,client,proofclient,audit}` and are rebuilt by root against the new paired product selection. The new setup/control scripts use their own copied `check-selection.py` and `client-flow` Python sources. Root supplies one public `binary-selection.json` in the local attempt5 root after measuring the actual image operator binary: ordered fields `version:1,operator_sha256:<64 lowercase nonzero hex>`, regular single-link current-owner0400/0600, at most256bytes. `operator-control.py` retains and rechecks those exact bytes/identity; no attempt1 binary hash is adopted. The host fixture executables are `/usr/local/bin/host-bootstrap-5` and `/usr/local/bin/host-operator-lifecycle-5`.
+ 
+ The sole selected hosted ingress listener is `[::]:8443`; setup and the independent checker require that exact text. The host probe observed that Go normalizes `tcp 0.0.0.0:8443` to `[::]:8443`, so this fresh selection matches the actual listener without weakening the original exact-address check or introducing fallback. Public Origin, TLS identity checks, upstream loopback sockets and every economic/time bound remain unchanged.
+ 
+@@ -22,7 +22,7 @@
+ 
+ ## Hosted observations and bounded sequence
+ 
+-1. **Prepare before the timed scenario.** Build and qualify the selected image, establish the isolated nodes/private HTTPS RPC and direct public TLS route, and prepare only fresh empty attempt-4 directories on the existing protected test volume, retaining the failed attempt-1 directories unchanged. The one-time admin step may set directories0700 and files0600/0400 to UID10001 before any product owner opens them. Use original constructors/init to create markers and stores. Do not chown, rename, replace inputs, remount selected ancestors or copy a database under an active owner. Verify actual ACL/locking/sync behavior and non-root ownership on this volume; image metadata is insufficient. TLS must terminate at the original operator, preserving Host/SNI/TLS1.3; no HTTP-edge identity substitute. Keep online fixture material separate from recovery/checkpoint material and out of public logs/image layers.
++1. **Prepare before the timed scenario.** Build and qualify the selected image, establish the isolated nodes/private HTTPS RPC and direct public TLS route, and prepare only fresh empty attempt-5 directories on the existing protected test volume, retaining the failed attempt-1 directories unchanged. The one-time admin step may set directories0700 and files0600/0400 to UID10001 before any product owner opens them. Use original constructors/init to create markers and stores. Do not chown, rename, replace inputs, remount selected ancestors or copy a database under an active owner. Verify actual ACL/locking/sync behavior and non-root ownership on this volume; image metadata is insufficient. TLS must terminate at the original operator, preserving Host/SNI/TLS1.3; no HTTP-edge identity substitute. Keep online fixture material separate from recovery/checkpoint material and out of public logs/image layers.
+ 2. **Freeze one attempt.** Once the prepared route and nodes are available, capture `start`, select due=`UTC(start+7minutes)` truncated to its minute, and require the entire15minute scenario to remain in that UTC date. This is the sole due selection. The scenario has900seconds, outer execution1080seconds, chain height maximum180. Slow deployment, missed live-job window, missed due or incomplete cleanup fails this attempt without renewing its clock or overwriting its root. Builds and bootstrap are separate evidence, not an excuse to start the timed scenario late or retime an existing owner.
+ 3. **Mine through the remote route.** The original authenticated CLI must obtain real selected work and produce exactly two canonical accepted pool rewards through hosted TLS. Record full original request/job/work/proof/submission identities and server receipts, plus both nodes' canonical observations. Require the refreshed starting height62, then original reward blocks63/64; do not replace the height2 fixture prefix or issue before genuine normal refresh is complete. Observe the derived-full status and stop/join the miner. Wrong/absent credentials must receive the existing refusal without a new job or receipt; do not add a new auth protocol. No manual proof substitution, direct DB insertion, cheap hashing or “latest job” adoption qualifies.
+ 4. **Use normal delivery and a small stopped restart.** Let the original remote worker complete normal pool/fighter delivery, then stop/join it and the hosted operator promptly. Reopen the same selected volume and repeat one already completed original authenticated pool submission using its exact saved job, work and nonce; recover the identical historical receipt with no new job, source row or credit. If the bounded harness also queries a saved fighter receipt, use its original signed authorization and require exact identity; do not create a replacement signature. All handlers and owners must join before closed audits. Preserve complete outbox rows/control and the same original wallet; do not infer one proof per job or discard unrelated valid rows. No success-loss relay, intentional crash, long offline interval or expired-never-admitted B scenario is included. A2's prior reply-loss/admission fault proof remains separate. Any still-live job retains its original300000ms exclusive expiry; successful historical receipt recovery must use existing service behavior, not an expiry extension.

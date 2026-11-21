@@ -1,0 +1,198 @@
+{
+  "version": 1,
+  "before": 164,
+  "count": 1,
+  "started": 1795284098.949734,
+  "normal_pow": true,
+  "initial": {
+    "chain": "mainnet",
+    "blocks": 164,
+    "headers": 164,
+    "bestblockhash": "3760c3fec2d852d9408dd8c440c218d39d9410e47f51a9cf7dd16f1af717b94b",
+    "difficulty": 1,
+    "mediantime": 1795283962,
+    "pruned": false,
+    "warnings": null,
+    "bip9_softforks": {
+      "csv": {
+        "status": "active",
+        "bit": 0,
+        "startTime": 0,
+        "start_time": 1462060800,
+        "timeout": 1493596800,
+        "since": 0,
+        "min_activation_height": 0,
+        "always_active_height": 62
+      },
+      "dummy": {
+        "status": "defined",
+        "bit": 28,
+        "startTime": 0,
+        "start_time": 11991456010,
+        "timeout": 1230767999,
+        "since": 0,
+        "min_activation_height": 0
+      },
+      "dummy-always-active": {
+        "status": "active",
+        "bit": 30,
+        "startTime": 0,
+        "start_time": -62135596800,
+        "timeout": -62135596800,
+        "since": 0,
+        "min_activation_height": 0,
+        "always_active_height": 1
+      },
+      "dummy-min-activation": {
+        "status": "defined",
+        "bit": 22,
+        "startTime": 0,
+        "start_time": -62135596800,
+        "timeout": -62135596800,
+        "since": 0,
+        "min_activation_height": 100000
+      },
+      "segwit": {
+        "status": "active",
+        "bit": 1,
+        "startTime": 0,
+        "start_time": 1479168000,
+        "timeout": 1510704000,
+        "since": 0,
+        "min_activation_height": 0,
+        "always_active_height": 62
+      },
+      "taproot": {
+        "status": "active",
+        "bit": 2,
+        "startTime": 0,
+        "start_time": 1619222400,
+        "timeout": 1628640000,
+        "since": 0,
+        "min_activation_height": 709632,
+        "always_active_height": 62
+      }
+    },
+    "softforks": [
+      {
+        "id": "bip34",
+        "version": 2,
+        "reject": {
+          "status": true
+        }
+      },
+      {
+        "id": "bip66",
+        "version": 3,
+        "reject": {
+          "status": true
+        }
+      },
+      {
+        "id": "bip65",
+        "version": 4,
+        "reject": {
+          "status": true
+        }
+      }
+    ]
+  },
+  "generated": [
+    "47a427c54e584cd90cfedc0f2918ab4251eee194bd93f2bdf6b8774159acf503"
+  ],
+  "final": {
+    "chain": "mainnet",
+    "blocks": 165,
+    "headers": 165,
+    "bestblockhash": "47a427c54e584cd90cfedc0f2918ab4251eee194bd93f2bdf6b8774159acf503",
+    "difficulty": 1,
+    "mediantime": 1795283963,
+    "pruned": false,
+    "warnings": null,
+    "bip9_softforks": {
+      "csv": {
+        "status": "active",
+        "bit": 0,
+        "startTime": 0,
+        "start_time": 1462060800,
+        "timeout": 1493596800,
+        "since": 0,
+        "min_activation_height": 0,
+        "always_active_height": 62
+      },
+      "dummy": {
+        "status": "defined",
+        "bit": 28,
+        "startTime": 0,
+        "start_time": 11991456010,
+        "timeout": 1230767999,
+        "since": 0,
+        "min_activation_height": 0
+      },
+      "dummy-always-active": {
+        "status": "active",
+        "bit": 30,
+        "startTime": 0,
+        "start_time": -62135596800,
+        "timeout": -62135596800,
+        "since": 0,
+        "min_activation_height": 0,
+        "always_active_height": 1
+      },
+      "dummy-min-activation": {
+        "status": "defined",
+        "bit": 22,
+        "startTime": 0,
+        "start_time": -62135596800,
+        "timeout": -62135596800,
+        "since": 0,
+        "min_activation_height": 100000
+      },
+      "segwit": {
+        "status": "active",
+        "bit": 1,
+        "startTime": 0,
+        "start_time": 1479168000,
+        "timeout": 1510704000,
+        "since": 0,
+        "min_activation_height": 0,
+        "always_active_height": 62
+      },
+      "taproot": {
+        "status": "active",
+        "bit": 2,
+        "startTime": 0,
+        "start_time": 1619222400,
+        "timeout": 1628640000,
+        "since": 0,
+        "min_activation_height": 709632,
+        "always_active_height": 62
+      }
+    },
+    "softforks": [
+      {
+        "id": "bip34",
+        "version": 2,
+        "reject": {
+          "status": true
+        }
+      },
+      {
+        "id": "bip66",
+        "version": 3,
+        "reject": {
+          "status": true
+        }
+      },
+      {
+        "id": "bip65",
+        "version": 4,
+        "reject": {
+          "status": true
+        }
+      }
+    ]
+  },
+  "passed": true,
+  "ended": 1795284099.418277
+}

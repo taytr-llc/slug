@@ -1,0 +1,14 @@
+/data/hosted-test-4/lifecycle/01/result.json
+{"version":1,"generation":"01","owner_pid":211,"child_pid":238,"started_at":1795283308,"finished_at":1795283422,"deadline":1795284181,"reason":"requested","child_exit":0,"monitor_exit":1,"child_waited":true,"monitor_joined":true,"clean":false,"setup_sha256":"b95e7bbb9fda98aa573b7061661bcb727040d3cbd0e9224a134448bf9762b69c","binary_sha256":"86a3bfa7cb07951e83eaca6df346a4be8bebe72df30d779705c83f7f8ac3a85f"}
+/data/hosted-test-4/lifecycle/01/stderr.log
+/data/hosted-test-4/lifecycle/01/monitor.log
+sh: invalid number '--'
+/data/hosted-test-4/lifecycle/01/owner.pid
+211
+/data/hosted-test-4/lifecycle/01/owner.identity
+199:211:211:629740746
+/data/hosted-test-4/lifecycle/01/child.identity
+211:211:211:629740758
+/proc/1 host-bootstrap
+/proc/2544 sh
+/proc/6 sleep

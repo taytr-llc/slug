@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "passed": true,
+  "scope": "actual isolated node/bridge cleanup; operator and wallet joins are separately retained",
+  "host_node_parent_original_child_and_relay_joined": true,
+  "host_clean_marker_timestamp": "2026-11-21T18:08:13.742703127Z",
+  "local_node_session": 27148,
+  "local_node_exit_code": 0,
+  "local_bridge_session": 60917,
+  "local_bridge_exit_code": 0,
+  "local_signal": "SIGINT via original PTY",
+  "observation_source": "root write_stdin completion results and original node console",
+  "local_node_shutdown_local_time": "2026-11-21 10:08:29.749 Pacific",
+  "original_scenario_deadline_ms": 1795284553357,
+  "pool_idle_container_retained_until_its_original_1800s_exit": true,
+  "live_seed_untouched": true
+}

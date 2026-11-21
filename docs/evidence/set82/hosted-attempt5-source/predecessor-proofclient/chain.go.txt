@@ -1,0 +1,231 @@
+package main
+
+import (
+	"bytes"
+	"context"
+	"encoding/hex"
+	"encoding/json"
+	"errors"
+	"io"
+	"net"
+	"net/http"
+	"net/url"
+	"time"
+
+	"github.com/taytr-llc/slug/chainhash/v2"
+	"github.com/taytr-llc/slug/poolsettle"
+	"github.com/taytr-llc/slug/poolshare"
+	"github.com/taytr-llc/slug/prospectnode"
+	"github.com/taytr-llc/slug/wire/v2"
+)
+
+type rpcReader struct {
+	client *http.Client
+	config prospectnode.RPCConfig
+	next   uint64
+	events []map[string]any
+}
+
+func (r *rpcReader) call(ctx context.Context, method string, args []any, target any) {
+	require(method == "getblockcount" || method == "getblockhash" || method == "getblock", "readonly RPC allowlist")
+	call, cancel := context.WithTimeout(ctx, 20*time.Second)
+	defer cancel()
+	r.next++
+	raw := encode(struct {
+		JSONRPC string `json:"jsonrpc"`
+		ID      uint64 `json:"id"`
+		Method  string `json:"method"`
+		Params  []any  `json:"params"`
+	}{"1.0", r.next, method, args})
+	req, e := http.NewRequestWithContext(call, http.MethodPost, r.config.URL, bytes.NewReader(raw))
+	check(e, "readonly RPC request")
+	req.SetBasicAuth(r.config.Username, r.config.Password)
+	req.Header.Set("Content-Type", "application/json")
+	res, e := r.client.Do(req)
+	check(e, "readonly RPC exchange")
+	body, re := io.ReadAll(io.LimitReader(res.Body, (9<<20)+1))
+	ce := res.Body.Close()
+	check(errors.Join(re, ce), "readonly RPC body and close")
+	require(res.StatusCode == 200 && res.Header.Get("Content-Encoding") == "" && len(body) <= 9<<20, "bounded readonly RPC response")
+	var fields map[string]json.RawMessage
+	strictJSON(body, &fields)
+	for k := range fields {
+		require(k == "result" || k == "id" || k == "error" || k == "jsonrpc", "original RPC envelope")
+	}
+	require(len(fields["result"]) > 0 && bytes.Equal(bytes.TrimSpace(fields["error"]), []byte("null")), "successful original RPC result")
+	var id uint64
+	check(json.Unmarshal(fields["id"], &id), "RPC ID")
+	require(id == r.next, "exact original RPC response ID")
+	if version, ok := fields["jsonrpc"]; ok {
+		var v string
+		check(json.Unmarshal(version, &v), "RPC version")
+		require(v == "1.0" || v == "2.0", "RPC version")
+	}
+	check(json.Unmarshal(fields["result"], target), "readonly RPC result")
+	check(call.Err(), "original RPC deadline")
+	r.events = append(r.events, map[string]any{"method": method, "id": id, "status": res.StatusCode, "response_bytes": len(body), "response_sha256": hx(digest(body))})
+	require(len(r.events) <= 16, "bounded readonly RPC calls")
+}
+func (r *rpcReader) block(ctx context.Context, height uint32) (string, []byte, *wire.MsgBlock) {
+	var hash string
+	r.call(ctx, "getblockhash", []any{height}, &hash)
+	require(isID(hash), "canonical block hash")
+	var encoded string
+	r.call(ctx, "getblock", []any{hash, 0}, &encoded)
+	require(len(encoded) > 0 && len(encoded) <= 8000000, "bounded canonical block hex")
+	raw, e := hex.DecodeString(encoded)
+	check(e, "canonical block raw")
+	require(hx(raw) == encoded, "canonical block encoding")
+	reader := bytes.NewReader(raw)
+	var b wire.MsgBlock
+	check(b.Deserialize(reader), "canonical block decode")
+	require(reader.Len() == 0 && b.BlockHash().String() == hash, "independent complete canonical block hash")
+	return hash, raw, &b
+}
+
+type auditedBody struct {
+	Version  uint32 `json:"version"`
+	Sequence uint64 `json:"sequence"`
+	Inputs   []struct {
+		TxID  string `json:"txid"`
+		Index uint32 `json:"index"`
+	} `json:"inputs"`
+	Payments []poolsettle.Payment `json:"payments"`
+	FeeAtoms int64                `json:"fee_atoms"`
+	TxID     string               `json:"txid"`
+	Raw      string               `json:"raw"`
+}
+type auditProjection struct {
+	Version           uint32 `json:"version"`
+	Passed            bool   `json:"passed"`
+	Error             string `json:"error"`
+	SetupID           string `json:"setup_id"`
+	ReferenceSHA      string `json:"reference_sha256"`
+	Delivery          string `json:"delivery"`
+	RootLockClosed    bool   `json:"original_root_lock_closed"`
+	SelectedUnchanged bool   `json:"selected_inputs_unchanged"`
+	Audit             struct {
+		Accepted          uint64                      `json:"accepted"`
+		Submissions       uint64                      `json:"submissions"`
+		Entries           []poolshare.AccountingEntry `json:"entries"`
+		Credits           []poolsettle.Credit         `json:"credits"`
+		Body              auditedBody                 `json:"body"`
+		BodySHA           string                      `json:"body_sha256"`
+		ReadOnlyUnchanged bool                        `json:"read_only_unchanged"`
+		Header            struct {
+			Batches uint64 `json:"batches"`
+			Credits uint64 `json:"credits"`
+			Pending uint64 `json:"pending_batch"`
+		} `json:"header"`
+	} `json:"audit"`
+}
+
+func chain(ctx context.Context, s *selected, o options, out map[string]any) {
+	require(isID(o.txid) && isID(o.auditSHA), "independent transaction and prior audit hash")
+	raw := s.capture(o.audit, publicLimit, false)
+	require(hx(digest(raw)) == o.auditSHA, "root-selected closed audit artifact")
+	var a auditProjection
+	strictJSON(raw, &a)
+	require(a.Version == 1 && a.Passed && a.Error == "" && a.SetupID == s.setupID && a.ReferenceSHA == referenceSHA && a.Delivery == "confirmed" && a.RootLockClosed && a.SelectedUnchanged && a.Audit.ReadOnlyUnchanged, "successful original closed financial audit")
+	require(a.Audit.Accepted == 2 && a.Audit.Submissions == 2 && len(a.Audit.Entries) == 2 && len(a.Audit.Credits) == 2 && a.Audit.Header.Credits == 2 && a.Audit.Header.Batches == 1 && a.Audit.Header.Pending == 0, "original exact two-credit one-batch ledger")
+	body := a.Audit.Body
+	require(body.Version == 2 && body.Sequence == 1 && body.TxID == o.txid && body.FeeAtoms == 209 && len(body.Inputs) == 2 && len(body.Payments) == 1, "original selected signed body")
+	rawRPC := s.capture(o.rpc, prospectnode.MaxRPCConfigSize, true)
+	cfg, e := prospectnode.ParseRPCConfig(rawRPC)
+	clear(rawRPC)
+	check(e, "selected local RPC config")
+	u, e := url.Parse(cfg.URL)
+	check(e, "selected local RPC URL")
+	ip := net.ParseIP(u.Hostname())
+	require(ip != nil && ip.IsLoopback(), "selected original local node only")
+	h := newHTTP(cfg.CACertificate)
+	defer h.CloseIdleConnections()
+	r := &rpcReader{client: h, config: cfg}
+	defer func() { out["rpc_calls"] = r.events }()
+	var genesis string
+	r.call(ctx, "getblockhash", []any{0}, &genesis)
+	require(genesis == s.s.Base.Pool.Policy.Genesis, "original production chain identity")
+	var height uint32
+	r.call(ctx, "getblockcount", []any{}, &height)
+	require(height == 165, "exact hosted two-reward maturity/payment height")
+	inputs := map[wire.OutPoint]bool{}
+	rewards := []map[string]any{}
+	for i, wantHeight := range []uint32{63, 64} {
+		s.check(ctx)
+		hash, blockRaw, b := r.block(ctx, wantHeight)
+		require(b.Header.Bits == 0x207fffff && len(b.Transactions) > 0, "original normal reward target/coinbase")
+		row := a.Audit.Entries[i].Share
+		require(row.AcceptedSequence == uint64(i+1) && row.BlockHeight == wantHeight && row.WorkHash == hash && row.Block && row.Pool, "original canonical accepted reward")
+		coinbase := b.Transactions[0]
+		require(len(coinbase.TxIn) == 1 && coinbase.TxIn[0].PreviousOutPoint.Hash == (chainhash.Hash{}) && coinbase.TxIn[0].PreviousOutPoint.Index == 0xffffffff, "original coinbase shape")
+		matches := 0
+		var credit poolsettle.Credit
+		for n, txo := range coinbase.TxOut {
+			if hx(txo.PkScript) == s.s.Base.Settlement.ChangeScript {
+				require(txo.Value == 1000000000, "exact fee-free original reward")
+				key := wire.OutPoint{Hash: coinbase.TxHash(), Index: uint32(n)}
+				require(!inputs[key], "distinct original rewards")
+				inputs[key] = true
+				matches++
+				found := 0
+				for _, c := range a.Audit.Credits {
+					if c.Coin.TxID == key.Hash.String() && c.Coin.Index == key.Index {
+						credit = c
+						found++
+					}
+				}
+				require(found == 1 && credit.RoundHash == hash && credit.Coin.BlockHash == hash && credit.Coin.BlockHeight == wantHeight && credit.Coin.Coinbase && credit.Coin.Atoms == txo.Value && credit.Coin.Script == hx(txo.PkScript), "original credit equals actual coinbase")
+			}
+		}
+		require(matches == 1, "one original operator coinbase output")
+		rewards = append(rewards, map[string]any{"height": wantHeight, "block_hash": hash, "block_raw": hx(blockRaw), "block_raw_sha256": hx(digest(blockRaw)), "credit": credit})
+	}
+	paymentRaw, e := hex.DecodeString(body.Raw)
+	check(e, "original payment raw")
+	require(len(paymentRaw) > 0 && len(paymentRaw) <= 400000 && hx(paymentRaw) == body.Raw, "canonical bounded signed raw")
+	reader := bytes.NewReader(paymentRaw)
+	var tx wire.MsgTx
+	check(tx.Deserialize(reader), "original signed transaction")
+	require(reader.Len() == 0 && tx.TxHash().String() == o.txid && len(tx.TxIn) == 2 && len(tx.TxOut) == 2, "original exact transaction shape")
+	seen := map[wire.OutPoint]bool{}
+	for i, in := range tx.TxIn {
+		require(inputs[in.PreviousOutPoint] && !seen[in.PreviousOutPoint] && len(in.Witness) > 0, "original unique reward funding/witness")
+		require(body.Inputs[i].TxID == in.PreviousOutPoint.Hash.String() && body.Inputs[i].Index == in.PreviousOutPoint.Index, "same immutable input order")
+		seen[in.PreviousOutPoint] = true
+	}
+	require(len(seen) == 2 && tx.TxOut[0].Value == 1980000000 && hx(tx.TxOut[0].PkScript) == s.s.Base.Settlement.Destinations[0].Script && tx.TxOut[1].Value == 19999791 && hx(tx.TxOut[1].PkScript) == s.s.Base.Settlement.ChangeScript && 2000000000-tx.TxOut[0].Value-tx.TxOut[1].Value == 209, "independent payout/change/fee")
+	confirmation, confirmedRaw, b := r.block(ctx, 165)
+	found := 0
+	for _, candidate := range b.Transactions {
+		if candidate.TxHash().String() == o.txid {
+			var buf bytes.Buffer
+			check(candidate.Serialize(&buf), "canonical transaction bytes")
+			require(bytes.Equal(buf.Bytes(), paymentRaw), "actual canonical transaction equals immutable signed raw")
+			found++
+		}
+	}
+	require(found == 1, "one original transaction in canonical confirmation")
+	// Recheck the selected canonical hashes after all reads; never accept a mixed
+	// reorg snapshot as one proof. No generate/sendrawtransaction method exists.
+	for _, v := range rewards {
+		var again string
+		r.call(ctx, "getblockhash", []any{v["height"]}, &again)
+		require(again == v["block_hash"], "reward canonical membership unchanged")
+	}
+	var final string
+	r.call(ctx, "getblockhash", []any{165}, &final)
+	require(final == confirmation, "payout canonical membership unchanged")
+	out["genesis"] = genesis
+	out["height"] = height
+	out["rewards"] = rewards
+	out["txid"] = o.txid
+	out["raw"] = body.Raw
+	out["raw_sha256"] = hx(digest(paymentRaw))
+	out["confirmation_block"] = confirmation
+	out["confirmation_block_raw"] = hx(confirmedRaw)
+	out["miner_atoms"] = int64(1980000000)
+	out["fee_atoms"] = int64(209)
+	out["change_atoms"] = int64(19999791)
+	out["audit_sha256"] = o.auditSHA
+	out["canonical_payment"] = true
+}

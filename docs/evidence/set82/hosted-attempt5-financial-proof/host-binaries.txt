@@ -1,0 +1,6 @@
+86a3bfa7cb07951e83eaca6df346a4be8bebe72df30d779705c83f7f8ac3a85f  /usr/local/bin/slugpoold
+e0ab2be7aa24da9023cd747fa96051f2e89f65a69fc4bf26b3af4642ed312040  /usr/local/bin/slugpool-provision
+82b0bee2fd1badd4f12a19da1ef5e76318ea80662d473c4271352eddb0b34ddc  /usr/local/bin/slug-host-fixture
+62b1f52d7b8ae9a779e6d922595204e83f0641e8a1b424fbf032ba72586700a6  /usr/local/bin/slug-host-audit
+host-bootstrap
+Uid:	10001	10001	10001	10001

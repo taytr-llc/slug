@@ -1,0 +1,1 @@
+operator lifecycle: original owner did not close cleanly

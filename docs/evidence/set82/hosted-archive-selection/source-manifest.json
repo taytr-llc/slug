@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "scope": "Source-only final hosted evidence draft; no install; infrastructure join disposition pending",
+  "entry_count": 314,
+  "total_bytes": 1009732,
+  "plans": [
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-final-archive-draft/attempt4-plan.proposed.json",
+      "bytes": 26628,
+      "sha256": "dcf1fc304380fc9d2841f9871d15b4d3f17bb242b93fd573cff05383987f90ed"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-final-archive-draft/attempt5-plan.proposed.json",
+      "bytes": 58105,
+      "sha256": "c24336f4922f71433f63cbf2d4dea58e07f46e8e58524efd734f45cc90dc3ea5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-final-archive-draft/source5-plan.proposed.json",
+      "bytes": 20126,
+      "sha256": "deaeaca02dd3e35068a546b945be0d60d9402b16e549083c2217fd06d1975ba0"
+    }
+  ],
+  "execution": "None; explicit path identity/hash selection only"
+}

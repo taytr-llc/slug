@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "mode": "miner",
+  "parent_pid": 15145,
+  "child_pid": 15146,
+  "pgid": 15145,
+  "deadline_at_ms": 1795284553357,
+  "started_at_ms": 1795283713296,
+  "ended_at_ms": 1795283792768,
+  "config_id": "3e791fbf57b62895ced4b413c15d079500e69247ecea382650ee89e5e240e02f",
+  "binary": {
+    "bytes": 35885730,
+    "sha256": "44a04caeb7b8c31115a70f01e682cb4a2732655d6280427b9a4aa31f2a2b8ab4",
+    "device": 16777233,
+    "inode": 559123519
+  },
+  "requested_stop": true,
+  "signal_count": 1,
+  "forced_kill": false,
+  "unexpected_exit": false,
+  "joined": true,
+  "exit_code": 0,
+  "stdout_bytes": 16522,
+  "stderr_bytes": 0,
+  "status_count": 76,
+  "last_status": {
+    "version": 2,
+    "observed_at_ms": 1795283792519,
+    "config_id": "3e791fbf57b62895ced4b413c15d079500e69247ecea382650ee89e5e240e02f",
+    "state": "signed_in",
+    "worker_state": "retrying",
+    "code": "outcome_unknown",
+    "records": 2,
+    "pending": 0
+  },
+  "inputs_unchanged": true,
+  "cleanup_complete": true,
+  "passed": true,
+  "errors": []
+}

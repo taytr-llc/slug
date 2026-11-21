@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "scope": "Public independent selection constants for a proposed hosted Phase A; not product-derived output or execution evidence",
+  "source": {
+    "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/reference-v1.json",
+    "bytes": 174293,
+    "sha256": "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a"
+  },
+  "chain": "359a2853ea092b17a832dd1fc824c5d47aec5f12",
+  "wallet": "dfc5d9dd7e0f604486fbac812d0413fce1f45cd6",
+  "physical_source_limits": {
+    "max_works": 8,
+    "max_submissions": 8,
+    "max_bytes": 67108864
+  },
+  "derived_ordinary_maximum": 2,
+  "round_limits": {
+    "version": 2,
+    "max_rounds": 8,
+    "max_bytes": 67108864
+  },
+  "settlement_limits": {
+    "max_rounds": 8,
+    "max_batches": 6
+  },
+  "signed_authority_limits": {
+    "admissions": 1000,
+    "publications": 16384,
+    "carriers": 4096,
+    "checkpoints": 1024,
+    "cutoffs": 256,
+    "headers": 65536,
+    "logical_bytes": 268435456
+  },
+  "request_maximum": 8,
+  "worker_limits": {
+    "max_records": 64,
+    "max_bytes": 67108864
+  },
+  "maintenance_interval_ms": 1000,
+  "schedule_retry_ms": 30000,
+  "economics": {
+    "accepted_rewards": 2,
+    "credits": 2,
+    "batches": 1,
+    "input_count": 2,
+    "positive_payees": 1,
+    "output_count": 2,
+    "gross_atoms": 2000000000,
+    "miner_atoms": 1980000000,
+    "operator_gross_atoms": 20000000,
+    "fee_atoms": 209,
+    "change_atoms": 19999791,
+    "other_gym_atoms": 0,
+    "shape": {
+      "stripped_bytes": 154,
+      "witness_bytes": 220,
+      "raw_bytes": 374,
+      "weight": 836,
+      "vsize": 209
+    }
+  },
+  "proposed_hosted_bounds": {
+    "scenario_seconds": 900,
+    "outer_seconds": 1080,
+    "height_maximum": 180,
+    "due_from_initial_start_minutes": 7,
+    "original_job_lifetime_ms": 300000,
+    "read_only_readiness_seconds": 90,
+    "same_day_postpayment_restart_seconds": 90,
+    "historical_retry_seconds": 20
+  },
+  "execution_claim": false,
+  "normal_node_selection": {
+    "preserved_prefix_height": 2,
+    "genuine_blocks_before_timed_issue": 60,
+    "issuance_height": 62,
+    "reward_heights": [
+      63,
+      64
+    ],
+    "mature_height": 164,
+    "payout_confirmation_height": 165,
+    "localwalletpilot": false
+  },
+  "delivery": "normal completion followed by same-root restart and exact historical retry; no response-loss relay",
+  "shape_scope": "The reference shape is the independently calculated maximum native signing shape used for the fixed209atom fee, not a claim that actual DER signature/raw length equals that maximum."
+}

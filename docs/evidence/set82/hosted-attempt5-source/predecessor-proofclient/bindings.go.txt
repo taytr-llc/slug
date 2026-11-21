@@ -1,0 +1,49 @@
+// Exact function bodies copied from qualified A2 selection.go.
+package main
+
+import (
+	"github.com/taytr-llc/slug/desktop/pilot"
+	"github.com/taytr-llc/slug/desktop/pooloperator"
+	"github.com/taytr-llc/slug/poolservice"
+	"github.com/taytr-llc/slug/poolsettle"
+	"github.com/taytr-llc/slug/prospectservice"
+	"github.com/taytr-llc/slug/prospectworker"
+	"strings"
+)
+
+func clientConfig(s pooloperator.Setup, c pilot.RemotePoolConfig, index int, token string) poolservice.DailyClientConfig {
+	e := s.Miners.Enrollments[index]
+	return poolservice.DailyClientConfig{Version: 2, URL: c.Origin, Token: token, CACertificate: c.CACertificate, PublicKey: e.PublicKey, Source: s.Pool, SettlementConfigID: s.Miners.SettlementConfigID, RecipientScript: e.PayeeScript}
+}
+func workerConfig(c pilot.RemotePoolConfig) prospectworker.PoolConfig {
+	sid, e := poolsettle.DailyConfigBindingID(c.Settlement)
+	check(e, "worker settlement ID")
+	key := c.ExpectedLocal.Recipient.Config.Identity.GymPublicKey
+	pc := poolservice.DailyClientConfig{Version: 2, URL: c.Origin, Token: strings.Repeat("1", 64), CACertificate: c.CACertificate, PublicKey: key, Source: c.Source, SettlementConfigID: sid, RecipientScript: c.ExpectedLocal.Recipient.Recipient.Script}
+	pt, e := poolservice.DailyTransportTrustID(pc)
+	check(e, "daily trust")
+	ac := prospectservice.ManifestClientConfig{Version: 3, URL: c.Origin, Token: strings.Repeat("1", 64), CACertificate: c.CACertificate, AuthorityPin: c.Source.AuthorityPin}
+	at, e := prospectservice.ManifestTransportTrustID(ac)
+	check(e, "admission trust")
+	w := prospectworker.PoolConfig{Version: 2, Source: c.Source, PublicKey: key, AuthorityOrigin: c.Origin, TransportTrustID: pt, AdmissionOrigin: c.Origin, AdmissionTrustID: at, MaxRecords: c.MaxRecords, MaxBytes: c.MaxBytes}
+	_, e = prospectworker.ValidateDailyPoolConfig(w)
+	check(e, "actual worker config")
+	return w
+}
+
+func recoveryClientConfig(s pooloperator.RecoverableDailySetup, c pilot.RecoverableRemotePoolConfig, index int, token string) poolservice.RecoverableDailyClientConfig {
+	return poolservice.RecoverableDailyClientConfig{Version: 1, Base: clientConfig(s.Base, c.Base, index, token), IssueProfile: s.IssueProfile}
+}
+func recoveryWorkerConfig(c pilot.RecoverableRemotePoolConfig) prospectworker.RecoverablePoolConfig {
+	b := workerConfig(c.Base)
+	sid, e := poolsettle.DailyConfigBindingID(c.Base.Settlement)
+	check(e, "selected financial ID")
+	key := c.Base.ExpectedLocal.Recipient.Config.Identity.GymPublicKey
+	cc := poolservice.RecoverableDailyClientConfig{Version: 1, Base: poolservice.DailyClientConfig{Version: 2, URL: c.Base.Origin, Token: strings.Repeat("1", 64), CACertificate: c.Base.CACertificate, PublicKey: key, Source: c.Base.Source, SettlementConfigID: sid, RecipientScript: c.Base.ExpectedLocal.Recipient.Recipient.Script}, IssueProfile: c.IssueProfile}
+	id, e := poolservice.RecoverableDailyTransportTrustID(cc)
+	check(e, "selected complete transport trust")
+	w := prospectworker.RecoverablePoolConfig{Version: 1, Base: b, IssueProfile: c.IssueProfile, SettlementConfigID: sid, RecipientScript: cc.Base.RecipientScript, TransportTrustID: id}
+	_, e = prospectworker.ValidateRecoverableDailyPoolConfig(w)
+	check(e, "selected original worker")
+	return w
+}

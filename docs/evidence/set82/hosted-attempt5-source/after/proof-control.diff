@@ -1,0 +1,13 @@
+--- /Users/taytrrip/slug/set82-prep/hosted-actual-4/proof-control.py
++++ /Users/taytrrip/slug/set82-prep/hosted-actual-5/proof-control.py
+@@ -10,8 +10,8 @@
+ import subprocess
+ import time
+ 
+-A = Path('/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4')
+-BINARY = Path('/Users/taytrrip/slug/artifacts/set82/proofclient-native-attempt2/slug-host-proof')
++A = Path('/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5')
++BINARY = Path('/Users/taytrrip/slug/artifacts/set82/proofclient-native-attempt5/slug-host-proof')
+ REFERENCE = Path('/Users/taytrrip/slug/set81-prep/retained-admission-actual/inputs/reference-v1.json')
+ REFERENCE_SHA = '17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a'
+ LIMITS = {'stdout': (16 << 20) + 1, 'stderr': 65536}

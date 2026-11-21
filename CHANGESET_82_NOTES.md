@@ -1,8 +1,37 @@
 # Set82: bounded hosted pool packaging
 
 Branch: `slug-hosted-pool-test`, stacked on Set81 `138553b1`.
-Status: public-source export and native image/component qualification pass.
-Hosted service and scheduled-payout acceptance remain open.
+Status: bounded actual hosted mining, scheduled payout and same-root recovery
+PASS, including original-owner cleanup inside the original 900-second clock.
+Public-source export and all seven corrected-package CI jobs also pass.
+
+After Mike's explicit restart approval, attempt5 completed on the isolated
+Railway service with product `359a2853`, package `4a15e8c9` and wallet `dfc5d9dd`.
+The original desktop miner filled ordinary intake (two accepted rewards at
+heights 63/64); after maturity the scheduler paid 19.8 test SLUG to its original
+wallet in one transaction. The 209-atom network fee came from the pool's 1%.
+Payment `2a475d6318ff194115024169265271221aea644a95c7d89e2782ec7492a1afa9`
+confirmed at height 165. The wallet's spendable delta was exactly 1,980,000,000 atoms.
+
+Three original operator generations joined cleanly. Restart retained both
+exact work/nonce/receipts, the complete outbox (including the third active null
+request), two credits and one immutable signed payout. A 90-second recovery
+observation found the same canonical payment and an empty mempool throughout.
+This proves one canonical payment, not a count of literal broadcast RPC calls.
+All 80 selected inputs and 226 prior-history paths remained unchanged. The
+wallet, nodes and relay joined within 856.392 seconds, leaving 43.608 seconds on
+the original clock. See the [qualification report](docs/evidence/set82/hosted-attempt5-completion/qualification.json),
+[financial proof](docs/evidence/set82/hosted-attempt5-financial-proof/), and
+[selected public helper sources](docs/evidence/set82/hosted-attempt5-source/).
+
+This qualifies the bounded synthetic hosted test. The final scratch PID1/provider
+lifecycle remains EF-15; public catch-up was busy after rapid maturity mining
+(EF-12), so no complete public fighter-view or general load claim follows.
+EF-18 records the conservative full-intake worker banner. The overly strict
+auxiliary status watcher failed; the original source status and closed audits
+independently prove full intake. Earlier failed attempts remain failed.
+The live seed and permanent-genesis gates are unchanged. Wallet balances and
+history are next; sign-in and the joint D74 review follow.
 
 The first timed hosted attempt failed during initialization, before rotations,
 serving, mining or payouts. Only the original runtime intent was written; the
@@ -18,7 +47,7 @@ TLS regression fails on the old code and passes after the correction. The
 complete ownership normal/race suites, nine transport/identity refusals,
 cheap-profile refusal and vet pass; see the
 [regression report](docs/evidence/set82/operator-https-fix/report.json).
-A corrected hosted attempt remains required. Final scratch PID1/provider
+The corrected actual hosted proof is recorded above. Final scratch PID1/provider
 shutdown and a reconciled one-off upload failure are logged as EF-15/16.
 
 All seven CI jobs pass at `4a15e8c9`, including the full race job; see
@@ -42,15 +71,20 @@ Its child and monitor were joined; the run failed. The host's generic TCP
 listener normalized the selected IPv4 wildcard to `[::]:8443`, which the
 runtime's exact address guard rejected. A same-host Go probe reproduced the
 mismatch and confirmed that explicitly selecting `[::]:8443` matches. Attempt4
-is prepared with fresh roots, that explicit listen value and the unchanged
-binary; its timed run has not begun. All previous roots and clocks remain
-intact. The diagnostic cancellation label is deferred as EF-17.
+then listened successfully but failed the old negative-control helper's
+incorrect assumption that missing authentication must return401JSON. The
+actual ingress correctly returned400plain text. Its stop joined both owners
+but retained child0/monitor1 and clean=false because BusyBox rejected the
+helper's `kill --` syntax. See [attempt4](docs/evidence/set82/hosted-attempt4-failed/).
+Attempt5 corrected only the source-derived HTTP expectations, that fixture
+signal syntax and fresh attempt paths. Product binaries stayed unchanged.
+All previous roots and clocks remain intact. EF-17 retains the diagnostic
+cancellation-label follow-up.
 
-Automatic approval review rejected restarting only the idle disposable pool
-service, citing its attached volume and requiring explicit permission even
-after an owner-free/no-listener check. Permission is pending. The live seed is
-unchanged; no hosted payout pass is claimed. Wallet balance/history adapter
-preparation continues independently, without product/UI reorganization.
+Automatic approval review initially rejected restarting the idle disposable
+pool service because of its attached volume. Mike explicitly approved that
+restart; it succeeded before attempts 4/5. The completed test stopped its
+product owners and left the admin container to its original idle timeout.
 
 The active work is a finite hosted operator and scheduled-payout test. General
 capacity continuation remains in [the follow-up log](docs/EDGE_CASE_FOLLOW_UPS.md).
@@ -88,11 +122,11 @@ race job, so all seven jobs are green at `2d79de95`. See the retained
 [CI completion report](docs/evidence/set82/ci.json). This closes package/source
 CI, not hosted execution.
 
-The intended host path uses its own TLS listener over raw TCP forwarding,
+The verified fixture host path uses its own TLS listener over raw TCP forwarding,
 literal-loopback private services and a separate verified HTTPS node RPC. The
-existing Railway seed remains unchanged. Persistent-volume ownership, exact
-endpoint/certificate and original private custody must be selected and verified
-before hosted startup. See [package instructions](deploy/pool/README.md).
+existing Railway seed remains unchanged. The proof selected and verified its
+persistent-volume ownership, endpoint/certificate and synthetic fixture custody.
+Real custody and general public launch remain separate. See [package instructions](deploy/pool/README.md).
 
 After hosted pool/payouts: wallet balances/history, sign-in, then the full joint
 D74 review. Marketplace stays on hold. EF-12's extended-outage rehearsal remains

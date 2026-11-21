@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "mode": "observe",
+  "parent_pid": 15367,
+  "child_pid": 15368,
+  "pgid": 15367,
+  "deadline_at_ms": 1795284553357,
+  "started_at_ms": 1795283902885,
+  "ended_at_ms": 1795284149310,
+  "config_id": "3e791fbf57b62895ced4b413c15d079500e69247ecea382650ee89e5e240e02f",
+  "binary": {
+    "bytes": 20732674,
+    "sha256": "f51cb244cfb70b5a526a7858587d9bb2b138e6885cd7f075e1d56e8f68c24c0e",
+    "device": 16777233,
+    "inode": 559123973
+  },
+  "requested_stop": true,
+  "signal_count": 1,
+  "forced_kill": false,
+  "unexpected_exit": false,
+  "joined": true,
+  "exit_code": 0,
+  "stdout_bytes": 43,
+  "stderr_bytes": 0,
+  "status_count": 0,
+  "last_status": null,
+  "inputs_unchanged": true,
+  "cleanup_complete": true,
+  "passed": true,
+  "errors": []
+}

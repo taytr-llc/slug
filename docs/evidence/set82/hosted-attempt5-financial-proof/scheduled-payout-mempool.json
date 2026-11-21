@@ -1,0 +1,84 @@
+{
+  "passed": true,
+  "observed_at_ms": 1795284062419,
+  "due_ms": 1795284060000,
+  "txid": "2a475d6318ff194115024169265271221aea644a95c7d89e2782ec7492a1afa9",
+  "raw": "02000000000102cf75c0ef1fdba50f06c4813128b3c09a97b38e9654fd68ef7b053136a5812eb60000000000ffffffffb33e8cd0577e76d11b684a5a2e958b78544d3142145de3c1118587bca1d20f040000000000ffffffff02006704760000000016001487ed12b988403af67cf36ea58b7454ab5d165ab42f2c310100000000160014810816db7129a0ac531ca0eaea0d47a04a71a77d0247304402207d0f35edf0b5fa417987b7fb0e55319382e24e6789f58bf649a5a8b131f56b0102203d03cf9d5ff1e0cf2844d1c5db5626bab1f8517a81049e60baeb7814b9788d060121033c82426e79a02318e797eec2021a10a8d7a8edfcd889adc82df78b303380bcc5024730440220786568558594fcdafefca02dde43ab4f7387e6da96ee22424a7104804db6502d02202b2458e2bd9484100b10ef6fc81d4857d77bcf12fd4e7c82e581b74886f143c10121033c82426e79a02318e797eec2021a10a8d7a8edfcd889adc82df78b303380bcc500000000",
+  "transaction": {
+    "hex": "02000000000102cf75c0ef1fdba50f06c4813128b3c09a97b38e9654fd68ef7b053136a5812eb60000000000ffffffffb33e8cd0577e76d11b684a5a2e958b78544d3142145de3c1118587bca1d20f040000000000ffffffff02006704760000000016001487ed12b988403af67cf36ea58b7454ab5d165ab42f2c310100000000160014810816db7129a0ac531ca0eaea0d47a04a71a77d0247304402207d0f35edf0b5fa417987b7fb0e55319382e24e6789f58bf649a5a8b131f56b0102203d03cf9d5ff1e0cf2844d1c5db5626bab1f8517a81049e60baeb7814b9788d060121033c82426e79a02318e797eec2021a10a8d7a8edfcd889adc82df78b303380bcc5024730440220786568558594fcdafefca02dde43ab4f7387e6da96ee22424a7104804db6502d02202b2458e2bd9484100b10ef6fc81d4857d77bcf12fd4e7c82e581b74886f143c10121033c82426e79a02318e797eec2021a10a8d7a8edfcd889adc82df78b303380bcc500000000",
+    "txid": "2a475d6318ff194115024169265271221aea644a95c7d89e2782ec7492a1afa9",
+    "hash": "6b5943bb76d88d45a965c4c6893d95505b0ed69d4fc4878437c4373fdf5701f5",
+    "size": 370,
+    "vsize": 208,
+    "weight": 832,
+    "version": 2,
+    "locktime": 0,
+    "vin": [
+      {
+        "txid": "b62e81a53631057bef68fd54968eb3979ac0b3283181c4060fa5db1fefc075cf",
+        "vout": 0,
+        "scriptSig": {
+          "asm": "",
+          "hex": ""
+        },
+        "txinwitness": [
+          "304402207d0f35edf0b5fa417987b7fb0e55319382e24e6789f58bf649a5a8b131f56b0102203d03cf9d5ff1e0cf2844d1c5db5626bab1f8517a81049e60baeb7814b9788d0601",
+          "033c82426e79a02318e797eec2021a10a8d7a8edfcd889adc82df78b303380bcc5"
+        ],
+        "sequence": 4294967295
+      },
+      {
+        "txid": "040fd2a1bc878511c1e35d1442314d54788b952e5a4a681bd1767e57d08c3eb3",
+        "vout": 0,
+        "scriptSig": {
+          "asm": "",
+          "hex": ""
+        },
+        "txinwitness": [
+          "30440220786568558594fcdafefca02dde43ab4f7387e6da96ee22424a7104804db6502d02202b2458e2bd9484100b10ef6fc81d4857d77bcf12fd4e7c82e581b74886f143c101",
+          "033c82426e79a02318e797eec2021a10a8d7a8edfcd889adc82df78b303380bcc5"
+        ],
+        "sequence": 4294967295
+      }
+    ],
+    "vout": [
+      {
+        "value": 19.8,
+        "n": 0,
+        "scriptPubKey": {
+          "asm": "0 87ed12b988403af67cf36ea58b7454ab5d165ab4",
+          "hex": "001487ed12b988403af67cf36ea58b7454ab5d165ab4",
+          "reqSigs": 1,
+          "type": "witness_v0_keyhash",
+          "address": "slug1qslk39wvggqa0vl8nd6jckaz54dw3vk45c8educ",
+          "addresses": [
+            "slug1qslk39wvggqa0vl8nd6jckaz54dw3vk45c8educ"
+          ]
+        }
+      },
+      {
+        "value": 0.19999791,
+        "n": 1,
+        "scriptPubKey": {
+          "asm": "0 810816db7129a0ac531ca0eaea0d47a04a71a77d",
+          "hex": "0014810816db7129a0ac531ca0eaea0d47a04a71a77d",
+          "reqSigs": 1,
+          "type": "witness_v0_keyhash",
+          "address": "slug1qsyypdkm39xs2c5cu5r4w5r285p98rfmaqk7uzh",
+          "addresses": [
+            "slug1qsyypdkm39xs2c5cu5r4w5r285p98rfmaqk7uzh"
+          ]
+        }
+      }
+    ]
+  },
+  "funding_txids": [
+    "b62e81a53631057bef68fd54968eb3979ac0b3283181c4060fa5db1fefc075cf",
+    "040fd2a1bc878511c1e35d1442314d54788b952e5a4a681bd1767e57d08c3eb3"
+  ],
+  "fee_atoms": 209,
+  "amounts_atoms": [
+    1980000000,
+    19999791
+  ]
+}

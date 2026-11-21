@@ -1,0 +1,113 @@
+package main
+
+import (
+	"context"
+	"errors"
+	"os"
+	"path/filepath"
+	"reflect"
+	"syscall"
+	"time"
+
+	"github.com/taytr-llc/slug/gymauth"
+	"github.com/taytr-llc/slug/poolservice"
+	"github.com/taytr-llc/slug/poolshare"
+	"github.com/taytr-llc/slug/prospectworker"
+)
+
+// Same original attachment directory flock as the concrete attachment. Keep it
+// through both closed outbox audits and all replay calls; no restarted worker
+// can mutate the selected original rows between observations.
+func lockAttachment(path string) *os.File {
+	canonical(path)
+	canonical(filepath.Join(path, "outbox"))
+	st, e := os.Lstat(path)
+	check(e, "attachment stat")
+	owner, ok := st.Sys().(*syscall.Stat_t)
+	require(ok && st.IsDir() && st.Mode().Perm() == 0700 && owner.Uid == uint32(os.Geteuid()) && os.Getuid() == os.Geteuid(), "original owned attachment0700")
+	fd, e := syscall.Open(path, syscall.O_RDONLY|syscall.O_DIRECTORY|syscall.O_NOFOLLOW|syscall.O_CLOEXEC, 0)
+	check(e, "attachment open")
+	f := os.NewFile(uintptr(fd), "proof-original-attachment")
+	opened, se := f.Stat()
+	if se != nil || !os.SameFile(st, opened) {
+		check(errors.Join(se, errors.New("attachment identity"), f.Close()), "attachment identity")
+	}
+	if e = syscall.Flock(fd, syscall.LOCK_EX|syscall.LOCK_NB); e != nil {
+		check(errors.Join(e, f.Close()), "miner and observer must be stopped/joined")
+	}
+	return f
+}
+func replayCall(ctx context.Context, s *selected, c *poolservice.Client, row prospectworker.PoolEntry, submit bool, trace *[]map[string]any) (poolshare.Submission, error) {
+	call, cancel := context.WithTimeout(ctx, 20*time.Second)
+	defer cancel()
+	deadline, _ := call.Deadline()
+	for {
+		s.check(call)
+		start := time.Now().UnixMilli()
+		var got poolshare.Submission
+		var e error
+		if submit {
+			got, e = c.Submit(call, row.Work, row.Nonce)
+		} else {
+			got, e = c.Lookup(call, row.Work, row.Nonce)
+		}
+		step := map[string]any{"submit": submit, "sequence": row.Sequence, "started_at_ms": start, "ended_at_ms": time.Now().UnixMilli(), "deadline_at_ms": deadline.UnixMilli(), "error": errorData(e)}
+		if e == nil {
+			step["receipt"] = got
+		}
+		*trace = append(*trace, step)
+		require(len(*trace) <= 42, "bounded original replay attempts")
+		s.check(call)
+		if !retryable(e, false) {
+			return got, e
+		}
+		if e = pause(call, time.Second); e != nil {
+			return poolshare.Submission{}, e
+		}
+	}
+}
+func replay(ctx context.Context, s *selected, o options, out map[string]any) {
+	require(o.sequence > 0 && o.sequence <= 64, "explicit retained sequence")
+	token := s.poolToken(o.pool)
+	c := s.client(0, token)
+	defer c.Close()
+	token = ""
+	lock := lockAttachment(o.attachment)
+	defer func() { check(lock.Close(), "original attachment lock close") }()
+	before, e := lock.Stat()
+	check(e, "locked attachment identity")
+	rows, state := readOutbox(o.attachment, s.c)
+	out["outbox_before"] = state
+	out["rows"] = rows
+	require(o.sequence <= uint64(len(rows)) && state.ReadOnlyUnchanged, "original complete outbox")
+	row := rows[o.sequence-1]
+	require(row.Sequence == o.sequence && row.PoolState == "accepted" && row.PoolReceipt != nil && row.PoolReceipt.AcceptedSequence > 0 && row.PoolWin, "completed original pool result only")
+	prepared, e := poolservice.PrepareDailyWork(s.c.Base.Source, s.c.Base.ExpectedLocal.Recipient.Config.Identity.GymPublicKey, row.Work)
+	check(e, "retained original normal work")
+	checked, e := prepared.CheckNonce(ctx, row.Nonce)
+	check(e, "retained original normal nonce")
+	require(checked.Pool && checked.Block && checked.WorkHash == row.WorkHash, "original actual winning nonce")
+	if row.Fighter != nil && row.Fighter.Authorization != nil {
+		check(gymauth.VerifyAuthorization(row.Fighter.Job.Context, row.Fighter.Candidate.Proof, *row.Fighter.Authorization), "retained original gym signature")
+	}
+	trace := []map[string]any{}
+	defer func() { out["attempts"] = trace }()
+	looked, e := replayCall(ctx, s, c, row, false, &trace)
+	check(e, "original historical Lookup")
+	require(reflect.DeepEqual(looked, *row.PoolReceipt), "complete saved Lookup receipt unchanged")
+	repeated, e := replayCall(ctx, s, c, row, true, &trace)
+	check(e, "exact completed Submit replay")
+	require(reflect.DeepEqual(repeated, looked) && reflect.DeepEqual(repeated, *row.PoolReceipt), "complete original receipt replay unchanged")
+	afterRows, after := readOutbox(o.attachment, s.c)
+	require(reflect.DeepEqual(rows, afterRows) && state == after, "all local original outbox controls and rows unchanged")
+	now, e := os.Lstat(o.attachment)
+	check(e, "original attachment recheck")
+	require(os.SameFile(before, now) && before.Mode() == now.Mode(), "original attachment path identity")
+	out["outbox_after"] = after
+	out["sequence"] = o.sequence
+	out["work"] = row.Work
+	out["nonce"] = row.Nonce
+	out["receipt"] = repeated
+	out["same_original_receipt"] = true
+	out["new_issue_calls"] = 0
+}

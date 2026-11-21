@@ -1,0 +1,278 @@
+package main
+
+import (
+	"bytes"
+	"context"
+	"crypto/sha256"
+	"crypto/tls"
+	"crypto/x509"
+	"encoding/hex"
+	"encoding/json"
+	"errors"
+	"io"
+	"net"
+	"net/http"
+	"os"
+	"path/filepath"
+	"reflect"
+	"syscall"
+	"time"
+
+	"github.com/taytr-llc/slug/desktop/pilot"
+	"github.com/taytr-llc/slug/desktop/pooloperator"
+	"github.com/taytr-llc/slug/poolminer"
+	"github.com/taytr-llc/slug/poolservice"
+	"github.com/taytr-llc/slug/registry"
+)
+
+const referenceSHA = "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a"
+const publicLimit = 16 << 20
+
+func require(ok bool, label string) {
+	if !ok {
+		panic(label)
+	}
+}
+func check(e error, label string) {
+	if e != nil {
+		panic(label)
+	}
+}                            // Never print private input/network error payloads.
+func hx(b []byte) string     { return hex.EncodeToString(b) }
+func digest(b []byte) []byte { h := sha256.Sum256(b); return h[:] }
+func isID(s string) bool {
+	b, e := hex.DecodeString(s)
+	return e == nil && len(b) == 32 && hx(b) == s && !bytes.Equal(b, make([]byte, 32))
+}
+func encode(v any) []byte { b, e := json.Marshal(v); check(e, "public encode"); return b }
+func canonical(path string) {
+	require(filepath.IsAbs(path) && filepath.Clean(path) == path, "canonical absolute selected path")
+	p, e := filepath.EvalSymlinks(path)
+	check(e, "selected path")
+	require(p == path, "symlink refused")
+}
+
+type retainedInput struct {
+	path      string
+	info      os.FileInfo
+	hash      [32]byte
+	limit     int64
+	protected bool
+}
+
+func readSelected(path string, limit int64, protected bool) ([]byte, retainedInput) {
+	canonical(path)
+	st, e := os.Lstat(path)
+	check(e, "selected input stat")
+	owner, ok := st.Sys().(*syscall.Stat_t)
+	require(ok && st.Mode().IsRegular() && owner.Nlink == 1 && st.Size() > 0 && st.Size() <= limit, "bounded original selected input")
+	if protected {
+		parent, e := os.Lstat(filepath.Dir(path))
+		check(e, "protected parent")
+		p, ok := parent.Sys().(*syscall.Stat_t)
+		require(ok && parent.IsDir() && parent.Mode().Perm() == 0700 && p.Uid == uint32(os.Geteuid()) && owner.Uid == uint32(os.Geteuid()) && (st.Mode().Perm() == 0400 || st.Mode().Perm() == 0600), "protected input ownership/mode")
+	}
+	f, e := os.OpenFile(path, os.O_RDONLY|syscall.O_NOFOLLOW, 0)
+	check(e, "selected input open")
+	opened, se := f.Stat()
+	if se != nil || !os.SameFile(st, opened) {
+		check(errors.Join(errors.New("input identity"), se, f.Close()), "selected original input identity")
+	}
+	b, re := io.ReadAll(io.LimitReader(f, limit+1))
+	ce := f.Close()
+	check(errors.Join(re, ce), "selected read/close")
+	now, e := os.Lstat(path)
+	check(e, "selected input recheck")
+	require(os.SameFile(st, now) && st.Mode() == now.Mode() && st.Size() == now.Size() && st.ModTime() == now.ModTime() && int64(len(b)) == st.Size(), "selected input changed")
+	return b, retainedInput{path, st, sha256.Sum256(b), limit, protected}
+}
+func (r retainedInput) verify() {
+	b, v := readSelected(r.path, r.limit, r.protected)
+	clear(b)
+	require(os.SameFile(r.info, v.info) && r.info.Mode() == v.info.Mode() && r.hash == v.hash, "original selected file changed")
+}
+func strictJSON(raw []byte, target any) {
+	// Reject duplicate keys at every level before the typed projection. No claims
+	// are derived from JSON numeric coercion or an ignored duplicate last value.
+	d := json.NewDecoder(bytes.NewReader(raw))
+	d.UseNumber()
+	var scan func()
+	scan = func() {
+		t, e := d.Token()
+		check(e, "JSON token")
+		if delim, ok := t.(json.Delim); ok {
+			switch delim {
+			case '{':
+				seen := map[string]bool{}
+				for d.More() {
+					k, e := d.Token()
+					check(e, "JSON key")
+					s, ok := k.(string)
+					require(ok && !seen[s], "duplicate JSON field")
+					seen[s] = true
+					scan()
+				}
+				t, e = d.Token()
+				check(e, "JSON object end")
+				require(t == json.Delim('}'), "JSON object end")
+			case '[':
+				for d.More() {
+					scan()
+				}
+				t, e = d.Token()
+				check(e, "JSON array end")
+				require(t == json.Delim(']'), "JSON array end")
+			default:
+				panic("JSON unexpected delimiter")
+			}
+		}
+	}
+	scan()
+	_, e := d.Token()
+	require(e == io.EOF, "single JSON value")
+	check(json.Unmarshal(raw, target), "typed public JSON")
+}
+func pause(ctx context.Context, d time.Duration) error {
+	t := time.NewTimer(d)
+	defer t.Stop()
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	case <-t.C:
+		return nil
+	}
+}
+func newHTTP(ca string) *http.Client {
+	t := &tls.Config{MinVersion: tls.VersionTLS13}
+	if ca != "" {
+		roots := x509.NewCertPool()
+		require(roots.AppendCertsFromPEM([]byte(ca)), "selected explicit TLS CA")
+		t.RootCAs = roots
+	}
+	tr := &http.Transport{Proxy: nil, DialContext: (&net.Dialer{Timeout: 10 * time.Second}).DialContext, TLSClientConfig: t, TLSHandshakeTimeout: 10 * time.Second, ResponseHeaderTimeout: 20 * time.Second, MaxResponseHeaderBytes: 8192, DisableCompression: true, DisableKeepAlives: true}
+	return &http.Client{Transport: tr, Timeout: 20 * time.Second, CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }}
+}
+
+type economics struct {
+	AcceptedRewards int   `json:"accepted_rewards"`
+	Credits         int   `json:"credits"`
+	Batches         int   `json:"batches"`
+	InputCount      int   `json:"input_count"`
+	OutputCount     int   `json:"output_count"`
+	GrossAtoms      int64 `json:"gross_atoms"`
+	MinerAtoms      int64 `json:"miner_atoms"`
+	FeeAtoms        int64 `json:"fee_atoms"`
+	ChangeAtoms     int64 `json:"change_atoms"`
+}
+type reference struct {
+	Version                 uint32
+	Setup                   pooloperator.RecoverableDailySetup
+	Remote                  pilot.RecoverableRemotePoolConfig
+	RequiredAcceptedRewards int       `json:"required_accepted_rewards"`
+	SelectedEconomics       economics `json:"selected_economics"`
+}
+type selected struct {
+	s                                          pooloperator.RecoverableDailySetup
+	c                                          pilot.RecoverableRemotePoolConfig
+	setupID, remoteID, baseRemoteID, profileID string
+	inputs                                     []retainedInput
+	credentialExpiry                           int64
+}
+
+func (s *selected) capture(path string, limit int64, protected bool) []byte {
+	b, r := readSelected(path, limit, protected)
+	s.inputs = append(s.inputs, r)
+	return b
+}
+func (s *selected) check(ctx context.Context) {
+	check(ctx.Err(), "original proof deadline")
+	if s.credentialExpiry != 0 {
+		require(time.Now().UnixMilli() < s.credentialExpiry, "original credential expired")
+	}
+	for _, r := range s.inputs {
+		r.verify()
+	}
+}
+func load(o options) *selected {
+	s := &selected{}
+	raw := s.capture(o.reference, 174293, false)
+	require(len(raw) == 174293 && hx(digest(raw)) == referenceSHA, "qualified reference identity")
+	var ref reference
+	check(json.Unmarshal(raw, &ref), "pinned reference projection")
+	require(ref.Version == 1 && ref.RequiredAcceptedRewards == 2 && ref.SelectedEconomics == (economics{2, 2, 1, 2, 2, 2000000000, 1980000000, 209, 19999791}), "independent two-reward economics")
+	var e error
+	s.s, e = pooloperator.ParseRecoverableDailySetup(s.capture(o.setup, pooloperator.MaxRecoverableSetupBytes, false))
+	check(e, "selected original setup")
+	s.c, e = pilot.ParseRecoverableRemotePoolConfig(s.capture(o.remote, pilot.RecoverableRemotePoolMaxConfigBytes, true))
+	check(e, "selected remote binding")
+	s.setupID, e = pooloperator.RecoverableDailySetupID(s.s)
+	check(e, "selected setup ID")
+	s.remoteID, e = pilot.RecoverableRemotePoolConfigID(s.c)
+	check(e, "selected remote ID")
+	require(s.setupID == o.setupID && s.remoteID == o.remoteID, "independently supplied selection IDs")
+	norm := s.s.Base
+	norm.Ingress = ref.Setup.Base.Ingress
+	norm.Schedule.DailyUTCMinute = ref.Setup.Base.Schedule.DailyUTCMinute
+	require(reflect.DeepEqual(norm, ref.Setup.Base), "only selected host/schedule differ")
+	r := s.c.Base
+	r.Origin = ref.Remote.Base.Origin
+	r.CACertificate = ref.Remote.Base.CACertificate
+	require(reflect.DeepEqual(r, ref.Remote.Base) && s.c.IssueProfile == s.s.IssueProfile && s.c.Base.Source == s.s.Base.Pool && reflect.DeepEqual(s.c.Base.Settlement, s.s.Base.Settlement) && reflect.DeepEqual(s.c.Base.Miners, s.s.Base.Miners), "same original financial and remote owners")
+	s.baseRemoteID, e = pilot.DailyRemotePoolConfigID(s.c.Base)
+	check(e, "base attachment ID")
+	s.profileID, e = registry.IssueProfileID(s.s.IssueProfile)
+	check(e, "profile ID")
+	return s
+}
+
+type credentialRecord struct {
+	Version     uint32 `json:"version"`
+	ConfigID    string `json:"config_id"`
+	GymID       string `json:"gym_id"`
+	Audience    string `json:"audience"`
+	Generation  uint32 `json:"generation"`
+	ExpiresAtMS int64  `json:"expires_at_ms"`
+	Token       string `json:"token"`
+}
+type credentialWrapper struct {
+	Version        uint32           `json:"version"`
+	Base           credentialRecord `json:"base"`
+	IssueProfileID string           `json:"issue_profile_id"`
+}
+
+func (s *selected) poolToken(path string) string {
+	raw := s.capture(path, 3072, true)
+	defer clear(raw)
+	var w credentialWrapper
+	strictJSON(raw, &w)
+	require(bytes.Equal(raw, append(encode(w), '\n')) && w.Version == 1 && w.IssueProfileID == s.profileID && w.Base.Version == 2 && w.Base.ConfigID == s.baseRemoteID && w.Base.GymID == s.s.Base.Miners.Enrollments[0].GymID && w.Base.Audience == poolminer.PoolAudience && w.Base.Generation > 0 && w.Base.ExpiresAtMS > time.Now().UnixMilli() && w.Base.ExpiresAtMS <= poolminer.MaxTimeMS && isID(w.Base.Token), "exact protected first-gym credential wrapper")
+	s.credentialExpiry = w.Base.ExpiresAtMS
+	return w.Base.Token
+}
+func (s *selected) otherToken(path string) string {
+	b := s.capture(path, 65, true)
+	defer clear(b)
+	require(len(b) == 64 && isID(string(b)), "exact protected second-gym raw token64")
+	return string(b)
+}
+func (s *selected) client(index int, token string) *poolservice.Client {
+	c, e := poolservice.NewRecoverableDailyClient(recoveryClientConfig(s.s, s.c, index, token))
+	check(e, "original selected v3 client")
+	return c
+}
+func errorData(e error) map[string]any {
+	out := map[string]any{"code": "other", "outcome_unknown": false}
+	if e == nil {
+		out["code"] = ""
+		return out
+	}
+	if ce, ok := e.(*poolservice.ClientError); ok && ce != nil {
+		out["code"] = ce.Code
+		out["outcome_unknown"] = ce.OutcomeUnknown
+	}
+	return out
+}
+func retryable(e error, money bool) bool {
+	c, ok := e.(*poolservice.ClientError)
+	return ok && c != nil && !c.OutcomeUnknown && (c.Code == "busy" || c.Code == "rate_limited" || (money && c.Code == "unavailable"))
+}

@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "scope": "source-only attempt5 fresh paths plus BusyBox explicit-signal group syntax; retain failed4 child0/monitor1 active marker",
+  "executed": false,
+  "syntax_only": [
+    "sh -n lifecycle/operator-lifecycle.sh",
+    "sh -n package/bootstrap.sh"
+  ],
+  "install_paths": {
+    "lifecycle/operator-lifecycle.sh": "/usr/local/bin/host-operator-lifecycle-5",
+    "package/bootstrap.sh": "/usr/local/bin/host-bootstrap-5"
+  },
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/lifecycle/operator-lifecycle.sh",
+      "bytes": 12055,
+      "sha256": "ecdfdf06afae77425466c2d6853bd9b5dfd16407d956976b0d7ab57add2e8b30"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/package/bootstrap.sh",
+      "bytes": 11790,
+      "sha256": "d54084da0e89d945b89a2c4733ec97bcd86562dacf9280adedcb9f22e97c1615"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/TRANSPORT_PATHS.md",
+      "bytes": 2868,
+      "sha256": "b00c25c7ac4bb07dc3b5866b3663ae613bea991ae609361f2e88889d2bd4c732"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/transport-paths.diff",
+      "bytes": 6757,
+      "sha256": "bc9cd358439a216866d05f91ae8862e02132f79517a9fe512c927df5a8ff1629"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/transport-predecessors/operator-lifecycle.sh",
+      "bytes": 12061,
+      "sha256": "a5a8133817389616b059ed5aa3ea197aee140b83a6f4778b7417b1b95840d1ae"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/transport-predecessors/bootstrap.sh",
+      "bytes": 9099,
+      "sha256": "3af22a35c49890bfbb58903b8b6b44dfb7fde919c60c10c7a14602b3102aa8a9"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-4/lifecycle/operator-lifecycle.sh",
+      "bytes": 12061,
+      "sha256": "a5a8133817389616b059ed5aa3ea197aee140b83a6f4778b7417b1b95840d1ae"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-4/transport-source-manifest.json",
+      "bytes": 2589,
+      "sha256": "de298f8fe0a7e2c1694fc0f4942aa72e83cdd64c36fa66c853077567fc731d69"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-4/package/bootstrap.sh",
+      "bytes": 9099,
+      "sha256": "3af22a35c49890bfbb58903b8b6b44dfb7fde919c60c10c7a14602b3102aa8a9"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/failed-generation/lifecycle/01/result.json",
+      "bytes": 409,
+      "sha256": "c90ba53412223baa4bb1f66d31470901cca5698a31098da69987d5fdcb8c62fd"
+    }
+  ]
+}

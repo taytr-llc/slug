@@ -1,0 +1,156 @@
+{
+  "version": 1,
+  "scope": "Source-only fresh attempt4 fixed paths and explicit canonical listener selection; original attempt3 unchanged. No runtime, product, timing, economic, credential or cleanup changes.",
+  "chain": "359a2853ea092b17a832dd1fc824c5d47aec5f12",
+  "wallet": "dfc5d9dd7e0f604486fbac812d0413fce1f45cd6",
+  "predecessor": {
+    "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/client-setup-source-manifest.json",
+    "bytes": 6981,
+    "sha256": "411da612dbbe258daeb5fd1123e4590913d9fb24786800db2bf594638fa24a31"
+  },
+  "before": [
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/host-command.py",
+      "bytes": 1563,
+      "sha256": "99ada9109e4775584736830cba47ef36d89608c1b092b32361aeca2326f0cf2d"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/fetch-selection.py",
+      "bytes": 1502,
+      "sha256": "1f7fe26509a9b2c8e6b59d0d9394586dadbfde8c47c27386acc93fbc70850a0c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/prepare-attempt.py",
+      "bytes": 6366,
+      "sha256": "c2858e7ee7ba4baf0c78b4df7c2256b09d133f24e99daea1e67bc0c21ec1473b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/operator-control.py",
+      "bytes": 5033,
+      "sha256": "df9092ca93852560e9b355dc5e541bdb1e010991fc5937eb19f2af502c22bd7f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/client-control.py",
+      "bytes": 2382,
+      "sha256": "ebe5786b69d51b98a92e8bc0049b749b2e50a2826ea8fb66fe7e477440185605"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/advance-local.py",
+      "bytes": 1991,
+      "sha256": "e60835754664f9ed5ca0497a050fd27de59a6e328526008b7525c203b46a7815"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/check-selection.py",
+      "bytes": 15189,
+      "sha256": "04e6c11ac65c1c3693ef8074fcd8ef84b9318a3c6b172a0d7b63f7267e9bdbe7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/expectations.json",
+      "bytes": 2583,
+      "sha256": "4a9c10dbaade6784422d12ca436f00b333b9f001d6b2c5a1900b104ff7285236"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/client-flow/credentials.py",
+      "bytes": 8206,
+      "sha256": "903565d5434da7a526a4ab89364cbfd3912b498b9115fe391d73cca9dc588a16"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/client-flow/run-client.py",
+      "bytes": 11682,
+      "sha256": "8673e3394dfbad1d98fcd39fc515f9a7fc04c8e12f378a2d1f1eda93c1562b12"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/client-flow/README.md",
+      "bytes": 13214,
+      "sha256": "60e434edaacaabc04d832d446eefa94bb82dc23eb8119ca952c9a9779b682853"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-3/ACCEPTANCE.md",
+      "bytes": 15119,
+      "sha256": "797c4622e4d48b68a3a1eec99bdb9273533848be33a907d9f02c05ce9c53d7b3"
+    }
+  ],
+  "after": [
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-4/host-command.py",
+      "bytes": 1563,
+      "sha256": "99ada9109e4775584736830cba47ef36d89608c1b092b32361aeca2326f0cf2d"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-4/fetch-selection.py",
+      "bytes": 1502,
+      "sha256": "35d3cae90b8c366c15a806f8f15223f170ce32a5fa76f88b65bb1aa7d2f2e849"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-4/prepare-attempt.py",
+      "bytes": 6363,
+      "sha256": "33ae7511c9b299fe97e5a4080aa7c20153b7f4c8b5e73f3373d65022b8e6fd1b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-4/operator-control.py",
+      "bytes": 5033,
+      "sha256": "8539ca2a6075713ea48fddbd9469c83678de83974f488129faff4b9fc76cd5c2"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-4/client-control.py",
+      "bytes": 2382,
+      "sha256": "338ec7e4b813b0e1f2a88df01673cd0d4e88e584d8239db8e56eb2f8c21b2ddc"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-4/advance-local.py",
+      "bytes": 1991,
+      "sha256": "e60835754664f9ed5ca0497a050fd27de59a6e328526008b7525c203b46a7815"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-4/check-selection.py",
+      "bytes": 15284,
+      "sha256": "005f93b9242ce086242c595ef6231acfdb996f4a2fbd83a3bc1203a8bcb81e7f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-4/expectations.json",
+      "bytes": 2583,
+      "sha256": "4a9c10dbaade6784422d12ca436f00b333b9f001d6b2c5a1900b104ff7285236"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-4/client-flow/credentials.py",
+      "bytes": 8206,
+      "sha256": "903565d5434da7a526a4ab89364cbfd3912b498b9115fe391d73cca9dc588a16"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-4/client-flow/run-client.py",
+      "bytes": 11682,
+      "sha256": "8673e3394dfbad1d98fcd39fc515f9a7fc04c8e12f378a2d1f1eda93c1562b12"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-4/client-flow/README.md",
+      "bytes": 13214,
+      "sha256": "60e434edaacaabc04d832d446eefa94bb82dc23eb8119ca952c9a9779b682853"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-4/ACCEPTANCE.md",
+      "bytes": 15553,
+      "sha256": "3989163dd08ba5a3d94b8fc8089ad8c87368f26845310ec65fc537efde1a8046"
+    }
+  ],
+  "diff": {
+    "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-4/client-setup.diff",
+    "bytes": 18283,
+    "sha256": "db3257db3c76636b0ad676b9280bf42172c769c4fbca12a0c68690ff9dff6fd1"
+  },
+  "selection": {
+    "local_attempt": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4",
+    "host_root": "/data/hosted-test-4",
+    "host_selection": "/data/hosted-selection-4",
+    "listen": "[::]:8443",
+    "listen_check": "prepare-attempt selects exactly [::]:8443; independent checker refuses every other listen text before canonical setup/profile/remote ID recomposition. No arbitrary fallback or product fence relaxation.",
+    "bootstrap": "/usr/local/bin/host-bootstrap-4",
+    "lifecycle": "/usr/local/bin/host-operator-lifecycle-4",
+    "operator_binary_selection": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/binary-selection.json",
+    "native_miner": "/Users/taytrrip/slug/artifacts/set82/client-binaries-attempt2/slugpilot",
+    "native_observer": "/Users/taytrrip/slug/artifacts/set82/client-native-attempt2/slug-host-client",
+    "native_binding": "Root-built attempt2 binaries remain selected at product359a. Root execution selection binds exact binary bytes.",
+    "unchanged_limits": "Original900/1080, sole +7min UTC-minute due, remaining-time checks, exact two-reward final economics, and all lifecycle/cleanup assertions unchanged.",
+    "separate_lanes": "Transport owns lifecycle/package4; service owns proof-control4. Original helper/reference modules remain under hosted-actual."
+  },
+  "validation": "All nine Python sources parsed with ast.parse only; none imported or executed. All twelve attempt3 preimages verified against frozen411da612 before copying; exact before/after identities retained."
+}

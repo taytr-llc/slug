@@ -1,0 +1,505 @@
+{
+  "version": 1,
+  "scope": "DRAFT explicit public archive map; no copying or installation",
+  "attempt": 4,
+  "ready_for_install": false,
+  "qualification": "FAILED: initial money test oracle mismatch; original operator child0 but monitor1, both waited, clean=false. No completed mining or payout acceptance.",
+  "fresh_target_root": "docs/evidence/set82/hosted-attempt4-failed",
+  "entry_count": 79,
+  "total_bytes": 57363,
+  "pending": [
+    "Root final disposition and infrastructure shutdown evidence are not present in this map; add an explicit successor only after review."
+  ],
+  "excluded": [
+    "owned/**",
+    "client-inputs/**",
+    "remote-attachment/**",
+    "private/**",
+    "wallet/database contents",
+    "binaries",
+    "opaque base64/tar transports",
+    "fixture-copied.json",
+    "unselected provider configuration or secrets"
+  ],
+  "notes": [
+    "Original ingress missing-auth400/plaintext differed from the test expectation; retain the failed oracle unchanged.",
+    "Original BusyBox monitor rejected unsupported -- syntax; retain exact requested child0/monitor1 result, active-generation failure and absence of owner.complete. No clean shutdown is inferred from child0 alone.",
+    "All named public failure files and all five launch-boundary files are preserved; no original private tree is selected."
+  ],
+  "entries": [
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/attempt-selection.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/attempt-selection.json",
+      "bytes": 182,
+      "sha256": "36a4865380ce984e8081b1abddc50c9517cdb906b8861a67f5daa04df499d2ec"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/binary-selection.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/binary-selection.json",
+      "bytes": 98,
+      "sha256": "de5f8633924615cdacba45fa929a7aaf3a1d187f6ff2f235f15abd1d452df3f5"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/deployment-capture.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/deployment-capture.json",
+      "bytes": 1871,
+      "sha256": "5560aeb4c9c2dc4c94fc1629dec45497d8187caf821fc0c08fd96b8170ec59fb"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/execution-selection.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/execution-selection.json",
+      "bytes": 11053,
+      "sha256": "c178c679f59b431b7a01cf6f75c0e75d67f2cb4aaa6a2a7aba36843534efd6bd"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/failed-generation/lifecycle-launch/01/launcher.pid",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/failed-generation/lifecycle-launch/01/launcher.pid",
+      "bytes": 4,
+      "sha256": "b0b8bff299a44d1aeff054facc6b4f8211ab4a5b03be5cac34618201ac8f4cef"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/failed-generation/lifecycle-launch/01/start.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/failed-generation/lifecycle-launch/01/start.json",
+      "bytes": 260,
+      "sha256": "09f961e96a46d03f936cc272d38bccec0b831426a5031e4c06479d819e4f2cac"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/failed-generation/lifecycle-launch/01/stderr.log",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/failed-generation/lifecycle-launch/01/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/failed-generation/lifecycle-launch/01/stdout.log",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/failed-generation/lifecycle-launch/01/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/failed-generation/lifecycle-launch/01/wait.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/failed-generation/lifecycle-launch/01/wait.json",
+      "bytes": 111,
+      "sha256": "e80daa4e21a1ee2bba0ec700029da5ac957ccb17208c5316f7170bd86a1228ee"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/failed-generation/lifecycle/01/binary.sha256",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/failed-generation/lifecycle/01/binary.sha256",
+      "bytes": 65,
+      "sha256": "d375a30f5f312db1a5062e00fd9db1f125c46cfa2f80a6b1940f14430a908332"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/failed-generation/lifecycle/01/child.identity",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/failed-generation/lifecycle/01/child.identity",
+      "bytes": 22,
+      "sha256": "02827076b77c45b3140b2c01a4dd3f61996f00f03b750def848482088fe65195"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/failed-generation/lifecycle/01/child.pid",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/failed-generation/lifecycle/01/child.pid",
+      "bytes": 4,
+      "sha256": "e4150f95f4c8ee60d27c7e7fbf59f1f3eebe130e1262cb9ea4788a1a20c109e6"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/failed-generation/lifecycle/01/child.waited",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/failed-generation/lifecycle/01/child.waited",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/failed-generation/lifecycle/01/deadline",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/failed-generation/lifecycle/01/deadline",
+      "bytes": 11,
+      "sha256": "50b9e6aca6826316c46b2c03491cdecd3a2ff10911545297af8a7cd2650d0c63"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/failed-generation/lifecycle/01/monitor.log",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/failed-generation/lifecycle/01/monitor.log",
+      "bytes": 24,
+      "sha256": "c85daae2c7d0ab7f5fe00f53b9901b6041fc2cc377ff8ec10765ddde571a3850"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/failed-generation/lifecycle/01/owner.identity",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/failed-generation/lifecycle/01/owner.identity",
+      "bytes": 22,
+      "sha256": "9558b0b8e10d96ff8186a3d22b42e2685b3451be051f1fcd086329be0fe52f9b"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/failed-generation/lifecycle/01/owner.pid",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/failed-generation/lifecycle/01/owner.pid",
+      "bytes": 4,
+      "sha256": "b0b8bff299a44d1aeff054facc6b4f8211ab4a5b03be5cac34618201ac8f4cef"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/failed-generation/lifecycle/01/result.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/failed-generation/lifecycle/01/result.json",
+      "bytes": 409,
+      "sha256": "c90ba53412223baa4bb1f66d31470901cca5698a31098da69987d5fdcb8c62fd"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/failed-generation/lifecycle/01/setup.sha256",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/failed-generation/lifecycle/01/setup.sha256",
+      "bytes": 65,
+      "sha256": "00907c64018dc5db5d277c3a3b20fb4ef69c9b238423941d49f704d674589783"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/failed-generation/lifecycle/01/started_at",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/failed-generation/lifecycle/01/started_at",
+      "bytes": 11,
+      "sha256": "cbc92c863628b81acf183ca43dbfe4a6d82c2b582e197719a3c8885c87727adc"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/failed-generation/lifecycle/01/stderr.log",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/failed-generation/lifecycle/01/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/failed-generation/lifecycle/01/stdout.jsonl",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/failed-generation/lifecycle/01/stdout.jsonl",
+      "bytes": 7865,
+      "sha256": "305d3083caeb163bc613754074f5b872f7924a5351ea2645ddeb13e5b399d994"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/failed-generation/lifecycle/01/stop.request",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/failed-generation/lifecycle/01/stop.request",
+      "bytes": 11,
+      "sha256": "71500b56f48f0a44d82bce787ddcc228536f1dfb7d1530513097dcdbffe2778a"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/failed-generation/lifecycle/01/term.reason",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/failed-generation/lifecycle/01/term.reason",
+      "bytes": 10,
+      "sha256": "048436a4ae6128513025342498fef51092e32c1a3c264ab0744350528bc07715"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/fixture-after.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/fixture-after.json",
+      "bytes": 143,
+      "sha256": "b6c3620586b99d02e8acd7a6ca8f8acfef50d2088bf4344f7e630d4d1a94a20d"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/host-binaries.txt",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/host-binaries.txt",
+      "bytes": 437,
+      "sha256": "fb23ec7f81cb2c056cda4f7ec66bd9b78a374ceeb8fa7f985d7b05f844d340f9"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/host-chain-before.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/host-chain-before.json",
+      "bytes": 1393,
+      "sha256": "6acf04bdae56d93b87e0449aeecd1d9df200342cac8fc91a483e7940cbfca7e7"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/host-chain-before.json.status.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/host-chain-before.json.status.json",
+      "bytes": 236,
+      "sha256": "7cfb1664ccc47d84916a838f36d308821a2ebcdc2e5c4f310fdd317419f2a476"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/host-chain-before.json.stderr",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/host-chain-before.json.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/host-selection.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/host-selection.json",
+      "bytes": 296,
+      "sha256": "eb2102a92c7b1229d0b287378a7a4bfeb8bc94878129cf46797582e6eaa9ce50"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/installed-overlays.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/installed-overlays.json",
+      "bytes": 468,
+      "sha256": "abf2019a69847aff969bb9b8c24953878175533507477a52560fb063498f5362"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/local-chain-before.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/local-chain-before.json",
+      "bytes": 2231,
+      "sha256": "c0188d41dee89c740d274198458c51efe881117b04d9835b98ca0bede0fdd3d0"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/operator-01-launch.log",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/operator-01-launch.log",
+      "bytes": 1569,
+      "sha256": "93bacc6f4420d17d986cbf6f6b47da46ea853b32d53812581391e9682eb9f82a"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/operator-01-ready.jsonl",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/operator-01-ready.jsonl",
+      "bytes": 144,
+      "sha256": "2212861601a0504708cb4387af27380a72b1a50041507b4bcb2b941591530e70"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/operator-01-ready.jsonl.status.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/operator-01-ready.jsonl.status.json",
+      "bytes": 238,
+      "sha256": "2f81682a9f2d5d46958c80d1dbe220fc6c3a982a50941ad69ee24bfbebd67a1f"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/operator-01-ready.jsonl.stderr",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/operator-01-ready.jsonl.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/operator-01-start.txt",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/operator-01-start.txt",
+      "bytes": 98,
+      "sha256": "b4178fd26609a0d0a4855585d6c3330d1a842da6c3bb7bbebca8f9cc79a332e6"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/operator-01-start.txt.status.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/operator-01-start.txt.status.json",
+      "bytes": 237,
+      "sha256": "51ceb75c5b1d8f25dcb2c27071de2f193d7d08e39e1a892e096a609212a70e14"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/operator-01-start.txt.stderr",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/operator-01-start.txt.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/operator-01-stop-launch.log",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/operator-01-stop-launch.log",
+      "bytes": 1554,
+      "sha256": "d8cfd88568c13c42185ab24cbbe8caae4a388cd91950b681e4809c555d58ee39"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/operator-01-stop.txt",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/operator-01-stop.txt",
+      "bytes": 58,
+      "sha256": "f18632ad5b1370e9ec0d1911f527df5cb9700e2bb31bf81b19ca0814d11946b6"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/operator-01-stop.txt.status.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/operator-01-stop.txt.status.json",
+      "bytes": 235,
+      "sha256": "bd2f880e19dd1318674d35c3d688abe3a4e5d8f36c7d317d7137fbd9c04ae72e"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/operator-01-stop.txt.stderr",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/operator-01-stop.txt.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/operator-init.stdout.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/operator-init.stdout.json",
+      "bytes": 1669,
+      "sha256": "45866aced260113259105c7c8593e28cfebe5e2ed74b16750cd5df54c22efac2"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/operator-init.stdout.json.status.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/operator-init.stdout.json.status.json",
+      "bytes": 240,
+      "sha256": "11ee0f1db2f1c788c075f24b5fc2e49fe5a9c561e3511b2580623ec52a6f5394"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/operator-init.stdout.json.stderr",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/operator-init.stdout.json.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/pre-restart-idle-proof.txt",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/pre-restart-idle-proof.txt",
+      "bytes": 956,
+      "sha256": "a1acce0b5a30b4bec74d7044aa5a262cac7124ba0d68c47108dc0caf785bfa56"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/pre-restart-idle-proof.txt.status.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/pre-restart-idle-proof.txt.status.json",
+      "bytes": 241,
+      "sha256": "862c5e80ccfce1bfbc05cf55de68fb503f1cd2f954517c0fb20e61c988aa925b"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/pre-restart-idle-proof.txt.stderr",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/pre-restart-idle-proof.txt.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/prepare-dirs.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/prepare-dirs.json",
+      "bytes": 178,
+      "sha256": "3e0883e2c0f43453b16333fbaa632d237d64ea9e6d89e5f94c6999d7cc4b5fd7"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/prepare-dirs.json.status.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/prepare-dirs.json.status.json",
+      "bytes": 233,
+      "sha256": "561b51f0f40b3ff1090b3a467695a697b53678588e4fc7d64e95b3951d14a3c2"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/prepare-dirs.json.stderr",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/prepare-dirs.json.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/prepare-host.stdout.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/prepare-host.stdout.json",
+      "bytes": 69,
+      "sha256": "79cfbf469755c3d1ec266df9484a9a0641c2b73f6a5ebd476fd935eba64193c7"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/prepare-host.stdout.json.status.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/prepare-host.stdout.json.status.json",
+      "bytes": 239,
+      "sha256": "48b3a3f705b8bc534e72a5d6f3c18488cf87f15b037ec301163c5d1e65a827e0"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/prepare-host.stdout.json.stderr",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/prepare-host.stdout.json.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/proof-initial-money-launch.log",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/proof-initial-money-launch.log",
+      "bytes": 150,
+      "sha256": "0547cb16f32ff1415543514f53404c2921eeca70ee4ad6fb28f19a9f0a9ad00c"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/proof-initial-money.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/proof-initial-money.json",
+      "bytes": 483,
+      "sha256": "dbc228d6cef724d55efa04dead5315d45b518b68c5270c494cdabf77c925e85c"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/proof-initial-money.status.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/proof-initial-money.status.json",
+      "bytes": 953,
+      "sha256": "e795882913f98f2f504b34bec7834dc438d37c16c78d1814a481ee7066f76a2c"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/proof-initial-money.stderr",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/proof-initial-money.stderr",
+      "bytes": 18,
+      "sha256": "e2dd6522e9e4c90e518ea2452aeb8f67cdfe8bd2090a15d04ae7afc6b565b8de"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/public/ca.pem",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/public/ca.pem",
+      "bytes": 497,
+      "sha256": "53b9f04fea2df207e12b3b2cf1460dc47b626030efde7682886ed5872c1be4ab"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/public/endpoints.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/public/endpoints.json",
+      "bytes": 236,
+      "sha256": "86e4c17ef98e93c8ebf18609f08094d1c0a55d9f5ccb9a65b26c3da8faf813bb"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/public/prepared.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/public/prepared.json",
+      "bytes": 996,
+      "sha256": "44cbc0233082cf5213958f317ea4205480bc96d0891042b9f0bf8b995ef9f772"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/public/remote.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/public/remote.json",
+      "bytes": 6076,
+      "sha256": "5abf6e3e3f78f84e6a2877b8bc5637d8d731ec4df7b80454847c39c062f286e7"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/public/setup.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/public/setup.json",
+      "bytes": 5509,
+      "sha256": "b95e7bbb9fda98aa573b7061661bcb727040d3cbd0e9224a134448bf9762b69c"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/public/tls-cert.pem",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/public/tls-cert.pem",
+      "bytes": 1067,
+      "sha256": "45dbddb369b4344aba6e49a0f14bee193d12566b30540d9e01b7f08acdcf6e8a"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/rotate-admission.stdout.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/rotate-admission.stdout.json",
+      "bytes": 445,
+      "sha256": "246cb3012d660fdfccda72feb0eedcf5be2f5776df32c1d4b918e70011c5e79a"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/rotate-admission.stdout.json.status.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/rotate-admission.stdout.json.status.json",
+      "bytes": 244,
+      "sha256": "cb319e58be14645c51b6e6aed8141b9ba8314cfd3e0c09c1fbe913b8e0e62a85"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/rotate-admission.stdout.json.stderr",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/rotate-admission.stdout.json.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/rotate-pool-0.stdout.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/rotate-pool-0.stdout.json",
+      "bytes": 440,
+      "sha256": "fa5d18fa505b4956873ddc95048f581365c2969f1d0705c146551b2943a81dfb"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/rotate-pool-0.stdout.json.status.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/rotate-pool-0.stdout.json.status.json",
+      "bytes": 240,
+      "sha256": "560ecd2c7a0137e43eb90457653e39f1b8c530dee38c5df588057c663c36e224"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/rotate-pool-0.stdout.json.stderr",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/rotate-pool-0.stdout.json.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/rotate-pool-1.stdout.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/rotate-pool-1.stdout.json",
+      "bytes": 440,
+      "sha256": "ba13fd749b3bcdd333af58ae3fba8273e48efb2df510fff6418edde1e6399eaf"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/rotate-pool-1.stdout.json.status.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/rotate-pool-1.stdout.json.status.json",
+      "bytes": 238,
+      "sha256": "cf7ab964c03b18dad860e9efa9b5f6dd5902b770004cea2d8a0947f4f3f4e99f"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/rotate-pool-1.stdout.json.stderr",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/rotate-pool-1.stdout.json.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/selection-check.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/selection-check.json",
+      "bytes": 2734,
+      "sha256": "c33720fc9241f92c59096c4fe0d120f85e545b326f3d013f624ef1b875d94260"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/setup-complete.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/setup-complete.json",
+      "bytes": 278,
+      "sha256": "b88b96559007caa4984c68861cee8ffbf01ac704713329a8305a848ff96a83ef"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/stop-diagnostic.txt",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/stop-diagnostic.txt",
+      "bytes": 819,
+      "sha256": "1b297808a33a284fe27038a11cd7779d03742c7ad6a9fc93a2c32a7a020fee49"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/stop-diagnostic.txt.status.json",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/stop-diagnostic.txt.status.json",
+      "bytes": 234,
+      "sha256": "a3181f0ae2058f62d28562782fddf666ee2d1d3a68bab70a55fee8f4749bdfec"
+    },
+    {
+      "source": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt4/stop-diagnostic.txt.stderr",
+      "target": "docs/evidence/set82/hosted-attempt4-failed/stop-diagnostic.txt.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

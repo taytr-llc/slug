@@ -1,0 +1,201 @@
+{
+  "scope": "deployment",
+  "deploymentId": "99516d38-4dda-4ae2-9de9-40af04e68039",
+  "serviceId": "c7ba8d73-fe01-418e-8f7b-14a141da8043",
+  "environmentId": "3fd7da79-0f2f-4077-bf29-e7035d62ac57",
+  "status": "SUCCESS",
+  "deploy": [
+    {
+      "timestamp": "2026-11-21T17:59:19.368365833Z",
+      "severity": "info",
+      "message": "2026-11-21 17:59:19.330 [INF] SYNC: Processed 16 blocks in the last 10.18s (16 transactions, height 151, 2026-11-21 17:59:18 +0000 UTC, ~97 MiB cache)",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:01:49.616471572Z",
+      "severity": "info",
+      "message": "2026-11-21 18:01:39.828 [INF] SYNC: Processed 14 blocks in the last 2m20.49s (15 transactions, height 165, 2026-11-21 18:01:38 +0000 UTC, ~97 MiB cache)",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:01:49.616476732Z",
+      "severity": "info",
+      "message": "2026-11-21 18:01:39.828 [INF] CHAN: Flushing UTXO cache of 97 MiB with 108 entries to disk. For large sizes, this can take up to several minutes...",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:08:13.742654608Z",
+      "severity": "info",
+      "message": "2026-11-21 18:08:13.413 [INF] BTCD: Gracefully shutting down the server...",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:08:13.742663308Z",
+      "severity": "info",
+      "message": "2026-11-21 18:08:13.413 [WRN] SRVR: Server shutting down",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:08:13.742669008Z",
+      "severity": "info",
+      "message": "2026-11-21 18:08:13.413 [WRN] RPCS: RPC server shutting down",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:08:13.742675247Z",
+      "severity": "info",
+      "message": "2026-11-21 18:08:13.413 [INF] SYNC: Lost peer 127.0.0.1:33812 (inbound)",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:08:13.742679027Z",
+      "severity": "info",
+      "message": "2026-11-21 18:08:13.413 [INF] RPCS: RPC server shutdown complete",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:08:13.742680387Z",
+      "severity": "info",
+      "message": "2026-11-21 18:08:13.413 [INF] BTCD: Received signal (terminated).  Shutting down...",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:08:13.742684387Z",
+      "severity": "info",
+      "message": "2026-11-21 18:08:13.432 [INF] SYNC: Sync manager shutting down",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:08:13.742695287Z",
+      "severity": "info",
+      "message": "2026-11-21 18:08:13.456 [INF] BTCD: Shutdown complete",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:08:13.742703127Z",
+      "severity": "info",
+      "message": "",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        },
+        {
+          "key": "version",
+          "value": "1"
+        },
+        {
+          "key": "node_child_joined",
+          "value": "true"
+        },
+        {
+          "key": "relay_joined",
+          "value": "true"
+        },
+        {
+          "key": "clean_shutdown",
+          "value": "true"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:08:13.742709177Z",
+      "severity": "info",
+      "message": "2026-11-21 18:08:13.432 [INF] CHAN: Flushing UTXO cache of 97 MiB with 1 entries to disk. For large sizes, this can take up to several minutes...",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:08:13.742713537Z",
+      "severity": "info",
+      "message": "2026-11-21 18:08:13.435 [INF] AMGR: Address manager shutting down",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:08:13.742718177Z",
+      "severity": "info",
+      "message": "2026-11-21 18:08:13.437 [INF] SRVR: Server shutdown complete",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:08:13.742722627Z",
+      "severity": "info",
+      "message": "2026-11-21 18:08:13.437 [INF] BTCD: Gracefully shutting down the database...",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    }
+  ]
+}

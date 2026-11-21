@@ -1,0 +1,10 @@
+pid1=host-bootstrap
+pid1_uid=Uid:	10001	10001	10001	10001
+/proc/1 host-bootstrap
+/proc/6 sleep
+/proc/949 sh
+{"version":1,"generation":"01","owner_pid":283,"child_pid":310,"started_at":1795282366,"finished_at":1795282368,"deadline":1795283245,"reason":"premature_exit","child_exit":1,"monitor_exit":0,"child_waited":true,"monitor_joined":true,"clean":false,"setup_sha256":"b7fe6a62e4e3c2d356f39bc9d9edd0276364cf42a794f4083807f32c10ada596","binary_sha256":"86a3bfa7cb07951e83eaca6df346a4be8bebe72df30d779705c83f7f8ac3a85f"}
+{"version":1,"generation":"01","launcher_pid":283,"finished_at":1795282368,"wait_exit":1,"owner_joined":false}
+listening_sockets
+  sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode                                                     
+  sl  local_address                         remote_address                        st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode

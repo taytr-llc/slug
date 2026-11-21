@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "scope": "Source-only exact ingress-vs-service auth oracle correction; no product change",
+  "before": [
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/main.go",
+      "bytes": 3488,
+      "sha256": "a18294495f881462742d8feccfbde618bb37f848fc2f83523e0d50e0e01bdeba"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/common.go",
+      "bytes": 10493,
+      "sha256": "b7182c2b9ba84f249e298dfcb6c3b35e5a12503162daa6df5f6da0766a397f1a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/bindings.go",
+      "bytes": 3243,
+      "sha256": "0f3954f9d49a0286e2c3f4ce5c9ef1d3267c789de0bf47736d90684e7744a1b2"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/replay.go",
+      "bytes": 4846,
+      "sha256": "b040a41f29e6066c18a23cf52aff65516bca99e74b09cf4db81a62def7b95026"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/money.go",
+      "bytes": 6097,
+      "sha256": "60a695ba9116c72800f3b7ec8d3a95c25350cbbd6cfd2633f9c501dfcac8d8e4"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/chain.go",
+      "bytes": 10832,
+      "sha256": "cb33057349c1b42c1694e0f03935b2ef2e5d97c51c5dba5fc1c3e6a486ab9aa5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/outbox_audit.go",
+      "bytes": 11444,
+      "sha256": "84fa9a045b9f1edb607cbfdec7948902cdc8f344595bebbc62922862bc8e0f77"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/go.mod",
+      "bytes": 389,
+      "sha256": "48a24758c29654ed272301267d377e1540c26f56cb88f9c66283c7d6af11f44b"
+    }
+  ],
+  "after": [
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/proofclient/main.go",
+      "bytes": 3488,
+      "sha256": "a18294495f881462742d8feccfbde618bb37f848fc2f83523e0d50e0e01bdeba"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/proofclient/common.go",
+      "bytes": 10493,
+      "sha256": "b7182c2b9ba84f249e298dfcb6c3b35e5a12503162daa6df5f6da0766a397f1a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/proofclient/bindings.go",
+      "bytes": 3243,
+      "sha256": "0f3954f9d49a0286e2c3f4ce5c9ef1d3267c789de0bf47736d90684e7744a1b2"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/proofclient/replay.go",
+      "bytes": 4846,
+      "sha256": "b040a41f29e6066c18a23cf52aff65516bca99e74b09cf4db81a62def7b95026"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/proofclient/money.go",
+      "bytes": 7203,
+      "sha256": "49e3a5f25bcca822bf0b3d014ee2d53e8f0dbac87fbb0dc3fdd0765c2b844cfe"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/proofclient/chain.go",
+      "bytes": 10832,
+      "sha256": "cb33057349c1b42c1694e0f03935b2ef2e5d97c51c5dba5fc1c3e6a486ab9aa5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/proofclient/outbox_audit.go",
+      "bytes": 11444,
+      "sha256": "84fa9a045b9f1edb607cbfdec7948902cdc8f344595bebbc62922862bc8e0f77"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/proofclient/go.mod",
+      "bytes": 389,
+      "sha256": "48a24758c29654ed272301267d377e1540c26f56cb88f9c66283c7d6af11f44b"
+    }
+  ],
+  "support": [
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/proofclient/go.sum",
+      "bytes": 1922,
+      "sha256": "8db3d7c6bb03f449ea27eb139be2a55912e2e409a50922274171436fdf914555"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/proofclient/README.md",
+      "bytes": 1733,
+      "sha256": "20ab0fcccf2f80d4728300b9f68a900bf8917c37bfbf6f62102764e699d2bde9"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/proofclient.diff",
+      "bytes": 2688,
+      "sha256": "b34c1bb767dae230828e899eaaf49af651ac440897637866c6fbe125d20bf29b"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/proofclient/source-manifest.json",
+      "bytes": 9733,
+      "sha256": "3950f9ce1a092cdb4f185373c7bcc25b032b73e1b849a80d08c8facfefa0fa40"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolingress/protocol.go",
+      "bytes": 3455,
+      "sha256": "c0af787d5264144fd25015caac79f13d9d6032a220b0a9187fa76d4b29546479"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolingress/server.go",
+      "bytes": 7625,
+      "sha256": "5af3b394b74d18b02657c0e2d3fb41bf51d73f9931d835c0a2179718ad209776"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolservice/server.go",
+      "bytes": 14198,
+      "sha256": "ae7741e06fd6d510077d2075aa4dd68a9b515c4add0d723f9c08f50fefecb5f0"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolservice/recoverable_server.go",
+      "bytes": 1322,
+      "sha256": "c7d1cff15f8f81f3d913b39343606f2537c19fe7b7caee7f9076f2568e5cd153"
+    },
+    {
+      "path": "/opt/homebrew/Cellar/go/1.27.4/libexec/src/net/http/server.go",
+      "bytes": 140485,
+      "sha256": "10c0a1fa7cc5224c949f57b7054e025bede1a6d0662fef90473d799ee95e405b"
+    }
+  ],
+  "changed_production": [
+    "money.go"
+  ],
+  "unchanged_production": [
+    "main.go",
+    "common.go",
+    "bindings.go",
+    "replay.go",
+    "chain.go",
+    "outbox_audit.go",
+    "go.mod"
+  ],
+  "execution": "none; root owns Go/format/build/runtime"
+}

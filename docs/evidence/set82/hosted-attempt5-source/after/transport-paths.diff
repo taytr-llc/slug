@@ -1,0 +1,125 @@
+--- attempt4/lifecycle/operator-lifecycle.sh
++++ attempt5/lifecycle/operator-lifecycle.sh
+@@ -4,9 +4,9 @@
+ umask 077
+ PATH=/usr/local/bin:/usr/bin:/bin
+ export PATH
+-BASE=/data/hosted-test-4
++BASE=/data/hosted-test-5
+ EVIDENCE=$BASE/lifecycle
+-SELF=/usr/local/bin/host-operator-lifecycle-4
++SELF=/usr/local/bin/host-operator-lifecycle-5
+ BIN=/usr/local/bin/slugpoold
+ SETUP=$BASE/private/selected-setup.json
+ 
+@@ -161,13 +161,13 @@
+             fi
+             printf '%s\n' "$reason" > "$g/term.reason"
+             date +%s > "$g/term.at"
+-            kill -TERM -- "-$owner"
++            kill -TERM "-$owner"
+             end=$(( $(date +%s) + 30 ))
+             while [ ! -f "$g/child.waited" ]; do
+                 if [ "$(date +%s)" -ge "$end" ]; then
+                     printf '%s\n' 'forced_kill_no_clean_join' > "$g/forced-kill"
+                     sync
+-                    kill -KILL -- "-$owner"
++                    kill -KILL "-$owner"
+                     exit 1
+                 fi
+                 sleep 0.1
+--- attempt4/package/bootstrap.sh
++++ attempt5/package/bootstrap.sh
+@@ -65,6 +65,26 @@
+     # failed active marker in place; never relabel it a successful owner.
+     [ "$(stat -c %s "$failed3")" = 414 ] &&
+         [ "$(sha256sum "$failed3" | cut -d ' ' -f 1)" = "7c6ffd9ed9c3f4c52b6abd837d5cd6eda53dc44b747fc169c0b4b63fc0b2830b" ] || fail 'retained public failure result changed'
++    prior4=/data/hosted-test-4
++    prior4_selection=/data/hosted-selection-4
++    for entry in "$prior4" "$prior4/private" "$prior4/operator" "$prior4_selection" "$prior4/lifecycle" "$prior4/lifecycle/01" "$prior4/lifecycle/active"; do
++        [ -d "$entry" ] && [ ! -L "$entry" ] &&
++            [ "$(stat -c '%u:%g:%a' "$entry")" = 10001:10001:700 ] || fail 'retained attempt4 directory mismatch'
++    done
++    ready4=$prior4/operator/SLUG-POOL-OPERATOR-READY-ISSUE1.json
++    result4=$prior4/lifecycle/01/result.json
++    active4=$prior4/lifecycle/active/generation
++    for entry in "$ready4" "$result4" "$active4"; do
++        [ -f "$entry" ] && [ ! -L "$entry" ] &&
++            [ "$(stat -c '%u:%g:%a:%h' "$entry")" = 10001:10001:600:1 ] &&
++            [ "$(stat -c %s "$entry")" -gt 0 ] || fail 'retained attempt4 marker mismatch'
++    done
++    [ "$(stat -c %s "$active4")" = 3 ] && [ "$(cat "$active4")" = 01 ] || fail 'retained attempt4 failed generation mismatch'
++    [ ! -e "$prior4/lifecycle/01/owner.complete" ] && [ ! -L "$prior4/lifecycle/01/owner.complete" ] || fail 'unexpected attempt4 completion'
++    # Exact captured PUBLIC result: requested stop, child0, monitor1, both
++    # joined and cleanfalse. Preserve the monitor failure and active marker.
++    [ "$(stat -c %s "$result4")" = 409 ] &&
++        [ "$(sha256sum "$result4" | cut -d ' ' -f 1)" = "c90ba53412223baa4bb1f66d31470901cca5698a31098da69987d5fdcb8c62fd" ] || fail 'retained operator monitor failure changed'
+     # Read process names only, never credentials, argv, environment or DBs.
+     # Root serializes this one-shot with all product commands; this census is
+     # an additional fail-closed check, not a general process authority service.
+@@ -102,9 +122,19 @@
+     prior3_ready_stamp=$(stamp "$ready3")
+     prior3_failed_stamp=$(stamp "$failed3")
+     prior3_active_generation_stamp=$(stamp "$active3")
++    prior4_stamp=$(stamp "$prior4")
++    prior4_private_stamp=$(stamp "$prior4/private")
++    prior4_operator_stamp=$(stamp "$prior4/operator")
++    prior4_selection_stamp=$(stamp "$prior4_selection")
++    prior4_lifecycle_stamp=$(stamp "$prior4/lifecycle")
++    prior4_generation_stamp=$(stamp "$prior4/lifecycle/01")
++    prior4_ready_stamp=$(stamp "$ready4")
++    prior4_result_stamp=$(stamp "$result4")
++    prior4_active_stamp=$(stamp "$prior4/lifecycle/active")
++    prior4_active_generation_stamp=$(stamp "$active4")
+     mount_stamp=$(stat -c '%d:%i:%u:%g:%a' /data)
+-    a=/data/hosted-test-4
+-    b=/data/hosted-selection-4
++    a=/data/hosted-test-5
++    b=/data/hosted-selection-5
+     fresh "$a"
+     fresh "$b"
+     # Only these two absent adjacent paths are created. No mount chmod,
+@@ -132,9 +162,19 @@
+         [ "$(stamp "$ready3")" = "$prior3_ready_stamp" ] &&
+         [ "$(stamp "$failed3")" = "$prior3_failed_stamp" ] &&
+         [ "$(stamp "$active3")" = "$prior3_active_generation_stamp" ] &&
++        [ "$(stamp "$prior4")" = "$prior4_stamp" ] &&
++        [ "$(stamp "$prior4/private")" = "$prior4_private_stamp" ] &&
++        [ "$(stamp "$prior4/operator")" = "$prior4_operator_stamp" ] &&
++        [ "$(stamp "$prior4_selection")" = "$prior4_selection_stamp" ] &&
++        [ "$(stamp "$prior4/lifecycle")" = "$prior4_lifecycle_stamp" ] &&
++        [ "$(stamp "$prior4/lifecycle/01")" = "$prior4_generation_stamp" ] &&
++        [ "$(stamp "$ready4")" = "$prior4_ready_stamp" ] &&
++        [ "$(stamp "$result4")" = "$prior4_result_stamp" ] &&
++        [ "$(stamp "$prior4/lifecycle/active")" = "$prior4_active_stamp" ] &&
++        [ "$(stamp "$active4")" = "$prior4_active_generation_stamp" ] &&
+         [ "$(stat -c '%d:%i:%u:%g:%a' /data)" = "$mount_stamp" ] || fail 'retained metadata changed'
+     no_product_owners
+-    printf '%s\n' '{"version":1,"action":"prepare-dirs","attempt":4,"new_roots_owned_10001":true,"prior_attempts_directory_and_marker_metadata_unchanged":true,"product_process_census_empty":true}'
++    printf '%s\n' '{"version":1,"action":"prepare-dirs","attempt":5,"new_roots_owned_10001":true,"prior_attempts_directory_and_marker_metadata_unchanged":true,"product_process_census_empty":true}'
+     ;;
+ idle)
+     uid10001
+@@ -152,15 +192,15 @@
+     ;;
+ prepare)
+     uid10001
+-    [ -f /data/hosted-selection-4/selection.json ] &&
+-        [ ! -L /data/hosted-selection-4/selection.json ] || fail 'selected public input required'
+-    [ -f /data/hosted-selection-4/node-rpc.json ] &&
+-        [ ! -L /data/hosted-selection-4/node-rpc.json ] || fail 'selected protected RPC input required'
++    [ -f /data/hosted-selection-5/selection.json ] &&
++        [ ! -L /data/hosted-selection-5/selection.json ] || fail 'selected public input required'
++    [ -f /data/hosted-selection-5/node-rpc.json ] &&
++        [ ! -L /data/hosted-selection-5/node-rpc.json ] || fail 'selected protected RPC input required'
+     exec /usr/local/bin/slug-host-fixture prepare \
+-        --root /data/hosted-test-4 \
+-        --selection-file /data/hosted-selection-4/selection.json \
++        --root /data/hosted-test-5 \
++        --selection-file /data/hosted-selection-5/selection.json \
+         --reference-dir /usr/share/slug/fixture \
+-        --node-rpc-file /data/hosted-selection-4/node-rpc.json
++        --node-rpc-file /data/hosted-selection-5/node-rpc.json
+     ;;
+ *) fail 'unsupported action' ;;
+ esac
