@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "observed_at_ms": 1795287434394,
+  "before_sha256": "830b1e51349db3994c831812860a472ff3ca9713be8c5b8d462fd6c0f469be29",
+  "all_selected_sources_unchanged": true,
+  "clean_paired_repos": [
+    {
+      "path": "/Users/taytrrip/slug/slug",
+      "head": "005897c3e0fa87f55c6ab9a703a28d9f80163da2",
+      "tree": "745a61aa25c33a5f6b0c2e5edb41be1f07c1001e",
+      "clean": true
+    },
+    {
+      "path": "/Users/taytrrip/slug/slugwallet",
+      "head": "dfc5d9dd7e0f604486fbac812d0413fce1f45cd6",
+      "tree": "10f099518bda082ae98bc4d173fbd558bc0dafd7",
+      "clean": true
+    }
+  ],
+  "runner_unchanged": true,
+  "catalog_checker_unchanged": true
+}

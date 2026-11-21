@@ -1,0 +1,344 @@
+{
+  "scope": "deployment",
+  "deploymentId": "2c78bcb4-00ef-4f00-bf60-e0f1f04f4b7e",
+  "serviceId": "c7ba8d73-fe01-418e-8f7b-14a141da8043",
+  "environmentId": "3fd7da79-0f2f-4077-bf29-e7035d62ac57",
+  "status": "SUCCESS",
+  "deploy": [
+    {
+      "timestamp": "2026-11-21T18:40:08.102994724Z",
+      "severity": "info",
+      "message": "Mounting volume on: /var/lib/containers/railwayapp/bind-mounts/30961221-0526-4e7b-842c-668be6bc136b/vol_i3j3a3qeu0mrxahc",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:40:08.558766637Z",
+      "severity": "info",
+      "message": "2026-11-21 18:40:08.192 [INF] CHAN: Loading block index...",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:40:08.558775256Z",
+      "severity": "info",
+      "message": "2026-11-21 18:40:08.195 [INF] CHAN: Chain state (height 165, hash 47a427c54e584cd90cfedc0f2918ab4251eee194bd93f2bdf6b8774159acf503, totaltx 167, work 332)",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:40:08.558780456Z",
+      "severity": "info",
+      "message": "2026-11-21 18:40:08.195 [INF] BTCD: Phase-A script activation: bip34=62 bip65=62 bip66=62 csv=62 segwit=62 taproot=62 nextheight=166",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:40:08.558785156Z",
+      "severity": "info",
+      "message": "2026-11-21 18:40:08.200 [INF] AMGR: Loaded 0 addresses from file '/data/node-test/data/mainnet/peers.json'",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:40:08.558789276Z",
+      "severity": "info",
+      "message": "2026-11-21 18:40:08.200 [INF] RPCS: RPC server listening on 0.0.0.0:29332",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:40:08.558794496Z",
+      "severity": "info",
+      "message": "2026-11-21 18:40:08.201 [INF] CMGR: Server listening on 127.0.0.1:29334",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:40:08.558799006Z",
+      "severity": "info",
+      "message": "2026-11-21 18:40:08.201 [INF] RPCS: RPC server listening on [::]:29332",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:40:08.558832315Z",
+      "severity": "info",
+      "message": "2026-11-21 18:40:08.126 [INF] BTCD: Version 0.27.0",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:40:08.558839705Z",
+      "severity": "info",
+      "message": "2026-11-21 18:40:08.127 [INF] BTCD: Loading block database from '/data/node-test/data/mainnet/blocks_ffldb'",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:40:08.558844815Z",
+      "severity": "info",
+      "message": "2026-11-21 18:40:08.158 [INF] BTCD: Block database loaded",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:40:08.558850475Z",
+      "severity": "info",
+      "message": "2026-11-21 18:40:08.164 [INF] INDX: Transaction index is enabled",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:40:08.558856315Z",
+      "severity": "info",
+      "message": "2026-11-21 18:40:08.164 [INF] INDX: Committed filter index is enabled",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:40:08.558861585Z",
+      "severity": "info",
+      "message": "2026-11-21 18:40:08.164 [INF] CHAN: Pre-allocating for 251 MiB",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:40:09.118331130Z",
+      "severity": "info",
+      "message": "Starting Container",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:43:10.293736753Z",
+      "severity": "info",
+      "message": "2026-11-21 18:43:04.676 [INF] SYNC: New valid peer 127.0.0.1:37434 (inbound) (/btcwire:0.5.0/slug:0.27.0/)",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:55:15.500438943Z",
+      "severity": "info",
+      "message": "2026-11-21 18:55:06.220 [INF] SYNC: Lost peer 127.0.0.1:37434 (inbound)",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:55:45.634610161Z",
+      "severity": "info",
+      "message": "2026-11-21 18:55:36.347 [WRN] RPCS: RPC server shutting down",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:55:45.634619771Z",
+      "severity": "info",
+      "message": "2026-11-21 18:55:36.347 [INF] RPCS: RPC server shutdown complete",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:55:45.634624411Z",
+      "severity": "info",
+      "message": "2026-11-21 18:55:36.365 [INF] SYNC: Sync manager shutting down",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:55:45.634628501Z",
+      "severity": "info",
+      "message": "2026-11-21 18:55:36.365 [INF] CHAN: Flushing UTXO cache of 97 MiB with 1 entries to disk. For large sizes, this can take up to several minutes...",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:55:45.634633311Z",
+      "severity": "info",
+      "message": "2026-11-21 18:55:36.368 [INF] AMGR: Address manager shutting down",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:55:45.634637321Z",
+      "severity": "info",
+      "message": "2026-11-21 18:55:36.369 [INF] SRVR: Server shutdown complete",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:55:45.634642251Z",
+      "severity": "info",
+      "message": "2026-11-21 18:55:36.369 [INF] BTCD: Gracefully shutting down the database...",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:55:45.634646961Z",
+      "severity": "info",
+      "message": "2026-11-21 18:55:36.376 [INF] BTCD: Shutdown complete",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:55:45.634651441Z",
+      "severity": "info",
+      "message": "",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        },
+        {
+          "key": "version",
+          "value": "1"
+        },
+        {
+          "key": "node_child_joined",
+          "value": "true"
+        },
+        {
+          "key": "relay_joined",
+          "value": "true"
+        },
+        {
+          "key": "clean_shutdown",
+          "value": "true"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:55:45.634728179Z",
+      "severity": "info",
+      "message": "2026-11-21 18:55:36.347 [INF] BTCD: Received signal (terminated).  Shutting down...",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:55:45.634732949Z",
+      "severity": "info",
+      "message": "2026-11-21 18:55:36.347 [INF] BTCD: Gracefully shutting down the server...",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:55:45.634737009Z",
+      "severity": "info",
+      "message": "2026-11-21 18:55:36.347 [WRN] SRVR: Server shutting down",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    }
+  ]
+}

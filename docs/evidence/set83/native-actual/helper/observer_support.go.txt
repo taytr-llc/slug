@@ -1,0 +1,214 @@
+// Extracted unchanged bounded input, observation and original Snapshot helpers.
+// Source: Set82 hosted-actual/client/main.go; orchestration is new and separate.
+package main
+
+import (
+	"context"
+	"crypto/sha256"
+	"encoding/json"
+	"errors"
+	"io"
+	"os"
+	"path/filepath"
+	"syscall"
+	"time"
+
+	"github.com/taytr-llc/slug/desktop/accountpilot"
+	"github.com/taytr-llc/slug/desktop/pilot"
+)
+
+const referenceSHA = "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a"
+
+type fixture struct {
+	Version       uint32                       `json:"version"`
+	Fixture       string                       `json:"fixture"`
+	Options       pilot.PoolOptions            `json:"options"`
+	ExpectedLocal pilot.RemotePoolLocalBinding `json:"expected_local"`
+}
+type reference struct {
+	Fixture fixture
+	Remote  pilot.RecoverableRemotePoolConfig
+}
+type selections struct{ owned, attachment, reference, remote, rpc, pool, admission, snapshots, report string }
+type retainedInput struct {
+	path      string
+	info      os.FileInfo
+	hash      [32]byte
+	cap       int64
+	protected bool
+}
+
+func readInput(path string, cap int64, protected bool) ([]byte, retainedInput, error) {
+	var out retainedInput
+	if !filepath.IsAbs(path) || filepath.Clean(path) != path {
+		return nil, out, errors.New("absolute input required")
+	}
+	resolved, e := filepath.EvalSymlinks(path)
+	if e != nil || resolved != path {
+		return nil, out, errors.New("input symlink refused")
+	}
+	st, e := os.Lstat(path)
+	if e != nil {
+		return nil, out, e
+	}
+	s, ok := st.Sys().(*syscall.Stat_t)
+	if !ok || !st.Mode().IsRegular() || s.Nlink != 1 || st.Size() < 1 || st.Size() > cap {
+		return nil, out, errors.New("bounded original regular input required")
+	}
+	if protected && (s.Uid != uint32(os.Geteuid()) || st.Mode().Perm()&0077 != 0) {
+		return nil, out, errors.New("protected input ownership")
+	}
+	f, e := os.Open(path)
+	if e != nil {
+		return nil, out, e
+	}
+	opened, e := f.Stat()
+	if e != nil || !os.SameFile(st, opened) {
+		return nil, out, errors.Join(errors.New("original input changed"), e, f.Close())
+	}
+	raw, re := io.ReadAll(io.LimitReader(f, cap+1))
+	ce := f.Close()
+	if re != nil || ce != nil || int64(len(raw)) != st.Size() {
+		clear(raw)
+		return nil, out, errors.Join(errors.New("bounded input read/close"), re, ce)
+	}
+	out = retainedInput{path, st, sha256.Sum256(raw), cap, protected}
+	return raw, out, nil
+}
+func unchanged(inputs []retainedInput) error {
+	for _, original := range inputs {
+		raw, current, e := readInput(original.path, original.cap, original.protected)
+		clear(raw)
+		if e != nil {
+			return e
+		}
+		if !os.SameFile(original.info, current.info) || original.info.Mode() != current.info.Mode() || original.hash != current.hash {
+			return errors.New("selected original input changed")
+		}
+	}
+	return nil
+}
+func exclusive(path string) (*os.File, error) {
+	if !filepath.IsAbs(path) || filepath.Clean(path) != path {
+		return nil, errors.New("absolute output required")
+	}
+	parent := filepath.Dir(path)
+	resolved, e := filepath.EvalSymlinks(parent)
+	if e != nil || resolved != parent {
+		return nil, errors.New("output parent symlink refused")
+	}
+	st, e := os.Lstat(parent)
+	if e != nil {
+		return nil, e
+	}
+	owner, ok := st.Sys().(*syscall.Stat_t)
+	if !ok || !st.IsDir() || st.Mode().Perm() != 0700 || owner.Uid != uint32(os.Geteuid()) {
+		return nil, errors.New("output parent must be original owned0700")
+	}
+	return os.OpenFile(path, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
+}
+func writeFrame(f *os.File, value any) error {
+	raw, e := json.Marshal(value)
+	if e != nil {
+		return e
+	}
+	if len(raw) > 8191 {
+		return errors.New("public frame bound")
+	}
+	raw = append(raw, '\n')
+	n, we := f.Write(raw)
+	if n != len(raw) {
+		we = errors.Join(we, io.ErrShortWrite)
+	}
+	return errors.Join(we, f.Sync())
+}
+func pause(ctx context.Context, d time.Duration) error {
+	timer := time.NewTimer(d)
+	defer timer.Stop()
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	case <-timer.C:
+		return nil
+	}
+}
+func snapshot(ctx context.Context, c *accountpilot.RemotePoolController) (accountpilot.RemotePoolControllerSnapshot, error) {
+	work, cancel := context.WithTimeout(ctx, 20*time.Second)
+	defer cancel()
+	for {
+		v, e := c.Snapshot(work)
+		if e != pilot.ErrRemotePoolBusy {
+			return v, e
+		}
+		if e = pause(work, 100*time.Millisecond); e != nil {
+			return accountpilot.RemotePoolControllerSnapshot{}, e
+		}
+	}
+}
+func cancellationOnly(e error) bool {
+	if e == context.Canceled {
+		return true
+	}
+	if many, ok := e.(interface{ Unwrap() []error }); ok {
+		children := many.Unwrap()
+		if len(children) == 0 {
+			return false
+		}
+		for _, c := range children {
+			if !cancellationOnly(c) {
+				return false
+			}
+		}
+		return true
+	}
+	return false
+}
+func code(e error) string {
+	if e == nil {
+		return ""
+	}
+	if cancellationOnly(e) {
+		return "canceled"
+	}
+	if e == context.DeadlineExceeded {
+		return "deadline_exceeded"
+	}
+	return "unavailable"
+}
+
+type observation struct {
+	Version                 uint32 `json:"version"`
+	Sequence                uint64 `json:"sequence"`
+	ObservedAtMS            int64  `json:"observed_at_ms"`
+	ConfigID                string `json:"config_id"`
+	GymID                   string `json:"gym_id"`
+	SourceBindingID         string `json:"source_binding_id"`
+	OriginalSourceBindingID string `json:"original_source_binding_id"`
+	PayoutAddress           string `json:"payout_address"`
+	State                   string `json:"state"`
+	WorkerState             string `json:"worker_state"`
+	Attempts                uint64 `json:"attempts"`
+	HashesPerSecondMilli    uint64 `json:"hashes_per_second_milli"`
+	Records                 uint64 `json:"records"`
+	Pending                 uint64 `json:"pending"`
+	WalletState             string `json:"wallet_state"`
+	WalletHeight            uint32 `json:"wallet_height"`
+	SpendableAtoms          int64  `json:"spendable_atoms"`
+	ImmatureAtoms           int64  `json:"immature_atoms"`
+	UnconfirmedAtoms        int64  `json:"unconfirmed_atoms"`
+	LastError               string `json:"last_error"`
+}
+
+func observed(v accountpilot.RemotePoolControllerSnapshot, f fixture, c pilot.RecoverableRemotePoolConfig, id, view string, seq uint64) (observation, error) {
+	var o observation
+	if v.Version != 2 || v.ConfigID != id || v.State != "signed_in" || v.View == nil || v.Remote == nil || v.Error != "" {
+		return o, errors.New("original signed-in observer required")
+	}
+	r := v.Remote
+	want := f.ExpectedLocal
+	if v.View.ViewID == "" || (view != "" && v.View.ViewID != view) || v.View.GymPublicKey != want.Recipient.Config.Identity.GymPublicKey || v.View.GymID != want.Recipient.Config.Identity.GymID || v.View.AccountID != want.Recipient.Config.AccountID || r.ConfigID != id || r.State != "stopped" || r.WorkerState != "stopped" || r.Attempts != 0 || r.HashesPerSecondMilli != 0 || r.SourceBindingID != c.Base.Miners.SourceID || r.OriginalSourceBindingID != want.OriginalSourceBindingID || r.PayoutAddress != want.Recipient.Recipient.Address {
+		return o, errors.New("stopped original-wallet binding changed")
+	}
+	o = observation{1, seq, time.Now().UTC().UnixMilli(), id, v.View.GymID, r.SourceBindingID, r.OriginalSourceBindingID, r.PayoutAddress, r.State, r.WorkerState, r.Attempts, r.HashesPerSecondMilli, r.Records, r.Pending, r.WalletState, r.WalletHeight, r.SpendableAtoms, r.ImmatureAtoms, r.UnconfirmedAtoms, r.LastError}
+	return o, nil
+}

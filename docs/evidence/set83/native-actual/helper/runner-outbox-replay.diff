@@ -1,0 +1,95 @@
+--- set83-prep/native-acceptance-draft/runner-before-outbox-replay/run-native-actual.py
++++ set83-prep/native-acceptance-draft/run-native-actual.py
+@@ -14,6 +14,9 @@
+ OLD = W / 'artifacts/set82/hosted-actual-attempt5'
+ BIN = W / 'artifacts/set83/native-acceptance-build/native-payout-acceptance'
+ BIN_SHA = '18a3ed34493d6598a6871462ee51a1dff18557c9e94349b6f97fbd3fe3114ba6'
++PROOF = W / 'artifacts/set82/proofclient-native-attempt5/slug-host-proof'
++PROOF_SHA = '6ae3e5a8e417ba68a253e29b03ab1b4f815f86c9ed8230af17b66b6f22a80f66'
++PRIOR_REPLAY_SHA = '65f48981afe3f86bd5a3e3ca00c7bb7a81b117ba1b9388d6140908ad21ac8095'
+ SELF = '/usr/local/bin/host-native-payout-lifecycle-83'
+ SETUP_SHA = '87db5803e70418affbf492b2716e2104d6902ec9294940141fe97a885a5c3525'
+ OPERATOR_SHA = '86a3bfa7cb07951e83eaca6df346a4be8bebe72df30d779705c83f7f8ac3a85f'
+@@ -38,10 +41,19 @@
+     need(A == A.resolve(strict=True) and A.is_dir(), 'selected existing evidence root')
+     need((A.stat().st_mode & 0o777) == 0o700 and A.stat().st_uid == os.geteuid(), 'evidence root must be owned0700')
+     names = ['native-execution-selection.json', 'native-orchestration-report.json', 'native-report.json']
+-    names += [name + suffix for name in ('operator-run', 'operator-listening', 'native-helper', 'operator-stop')
++    names += [name + suffix for name in ('operator-run', 'operator-listening', 'native-helper', 'outbox-replay', 'operator-stop')
+               for suffix in ('.stdout', '.stderr')]
+     need(all(not (A / name).exists() and not (A / name).is_symlink() for name in names), 'fresh named evidence required')
+     need(BIN == BIN.resolve(strict=True) and hashlib.sha256(BIN.read_bytes()).hexdigest() == BIN_SHA, 'selected native binary')
++    need(PROOF == PROOF.resolve(strict=True) and hashlib.sha256(PROOF.read_bytes()).hexdigest() == PROOF_SHA, 'original qualified proof binary')
++    old_execution_raw = (OLD / 'execution-selection.json').read_bytes()
++    old_execution = json.loads(old_execution_raw)
++    selected_binary = [v for v in old_execution['files'] if v['path'] == str(PROOF)]
++    need(len(selected_binary) == 1 and selected_binary[0]['sha256'] == PROOF_SHA and
++         selected_binary[0]['bytes'] == PROOF.stat().st_size, 'old original binary selection')
++    prior_raw = (OLD / 'proof-replay-after.json').read_bytes()
++    need(hashlib.sha256(prior_raw).hexdigest() == PRIOR_REPLAY_SHA, 'qualified original outbox projection')
++    prior_replay = json.loads(prior_raw)
+     now = time.time_ns() // 1000000
+     # Round down once for the shell seconds interface; never renew this deadline.
+     deadline_ms = ((now + 300000) // 1000) * 1000
+@@ -51,7 +63,7 @@
+     report = dict(version=1, scope='Native read/owner joins only; root financial and infrastructure audits remain required',
+                   started_at_ms=now, deadline_at_ms=deadline_ms, ended_at_ms=0,
+                   native_binary_sha256=BIN_SHA, processes={}, stop_result=None,
+-                  native_report_passed=False, inputs_unchanged=False, errors=[], passed=False)
++                  native_report_passed=False, outbox_replay_unchanged=False, inputs_unchanged=False, errors=[], passed=False)
+     write('native-execution-selection.json', dict(version=1, started_at_ms=now, deadline_at_ms=deadline_ms,
+           setup_sha256=SETUP_SHA, operator_sha256=OPERATOR_SHA, native_binary_sha256=BIN_SHA))
+     env = os.environ.copy()
+@@ -153,13 +165,33 @@
+                    '--prior-wallet', str(OLD / 'wallet-confirmed.json'),
+                    '--deadline-ms', str(deadline_ms), '--report', str(A / 'native-report.json')]
+         start('native-helper', command)
+-        finish('native-helper', deadline - 60, early_owner=launcher)
++        finish('native-helper', deadline - 125, early_owner=launcher)
+         raw = (A / 'native-report.json').read_bytes()
+         need(len(raw) <= 256 * 1024, 'bounded native report')
+         native = json.loads(raw)
+         report['native_report_passed'] = native['passed'] is True and native['clean_join'] is True
+         need(report['native_report_passed'] and native['deadline_at_ms'] == deadline_ms,
+              'original native acceptance failed')
++        # The native controller has now closed the original outbox. One exact
++        # historical Lookup/duplicate Submit replay adds no Issue or new work.
++        # Do not run the old wrapper, whose prior scenario deadline is expired.
++        need(time.monotonic() + 65 <= deadline - 60, 'original replay and stop reserve required')
++        replay_command = [str(PROOF), 'replay', '--reference', str(W / 'set81-prep/retained-admission-actual/inputs/reference-v1.json'),
++                          '--setup', str(OLD / 'public/setup.json'), '--remote', str(private / 'remote-config.json'),
++                          '--expected-setup-id', prior_replay['setup_id'], '--expected-remote-id', prior_replay['remote_id'],
++                          '--pool-credential', str(private / 'pool.credential'),
++                          '--attachment-root', str(OLD / 'remote-attachment'), '--sequence', '1', '--phase', 'after']
++        start('outbox-replay', replay_command)
++        finish('outbox-replay', min(deadline - 60, time.monotonic() + 65), early_owner=launcher)
++        replay_raw = (A / 'outbox-replay.stdout').read_bytes()
++        need(len(replay_raw) <= 1048576, 'bounded replay projection')
++        replay = json.loads(replay_raw)
++        need(replay['passed'] is True and replay['clean_join'] is True and replay['selected_inputs_unchanged'] is True and
++             replay['new_issue_calls'] == 0 and replay['same_original_receipt'] is True and
++             replay['outbox_before'] == replay['outbox_after'], 'original replay must preserve complete outbox')
++        for field in ('rows', 'outbox_after', 'work', 'nonce', 'receipt', 'sequence', 'setup_id', 'remote_id', 'reference_sha256'):
++            need(replay[field] == prior_replay[field], 'original retained replay field changed: ' + field)
++        report['outbox_replay_unchanged'] = True
+     except BaseException as e:
+         report['errors'].append(type(e).__name__ + ': ' + str(e))
+     finally:
+@@ -184,12 +216,15 @@
+                 report['errors'].append('launcher: ' + type(e).__name__ + ': ' + str(e))
+         report['ended_at_ms'] = time.time_ns() // 1000000
+         try:
+-            report['inputs_unchanged'] = hashlib.sha256(BIN.read_bytes()).hexdigest() == BIN_SHA
++            report['inputs_unchanged'] = (hashlib.sha256(BIN.read_bytes()).hexdigest() == BIN_SHA and
++                hashlib.sha256(PROOF.read_bytes()).hexdigest() == PROOF_SHA and
++                (OLD / 'execution-selection.json').read_bytes() == old_execution_raw and
++                (OLD / 'proof-replay-after.json').read_bytes() == prior_raw)
+         except OSError:
+             report['errors'].append('native binary final recheck failed')
+         if report['ended_at_ms'] > deadline_ms:
+             report['errors'].append('shared execution deadline exceeded')
+-        report['passed'] = (not report['errors'] and report['native_report_passed'] and
++        report['passed'] = (not report['errors'] and report['native_report_passed'] and report['outbox_replay_unchanged'] and
+                             report['inputs_unchanged'] and report['stop_result'] is not None and
+                             all(v['joined'] and v['exit_code'] == 0 and not v['forced'] for v in report['processes'].values()))
+         write('native-orchestration-report.json', report)

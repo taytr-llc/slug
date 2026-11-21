@@ -32,11 +32,20 @@ Actual-read preparation found that occupied credential gates exposed a private
 busy sentinel. The selected read boundary now maps only that exact value to
 public ErrRemotePoolBusy. Its concrete held-TLS regression proves the original
 request/client stays alive, no extra request occurs, wrapped/mixed errors stay
-unchanged, and cancellation joins. Actual watched-wallet qualification remains
-pending.
+unchanged, and cancellation joins.
 
-Remaining: successful component normal/race checks; actual healthy watched-wallet
-read/reopen against the hosted paid record; the selected DAILY helper/bridge and
+The actual healthy paid-wallet read/reopen now passes on source `005897c3`.
+Two physical lifetimes of the original wallet read 19.8 test SLUG and the same
+confirmed payment at height 165. The old View is refused after reopen; cached
+history survives Stop. Full receipt replay and closed hosted audits preserve
+the complete outbox, both credits and the original signed/reserved payment.
+All 226 protected history files remain intact. The bounded orchestration took
+14.816 seconds, with clean original process joins and separately verified node
+cleanup. No mining, new issuance or payment was requested. See
+[native acceptance](docs/evidence/set83/native-actual/QUALIFICATION.md).
+Preparatory command/deployment failures remain separately recorded.
+
+Remaining: the selected DAILY helper/bridge and
 existing wallet panel; own-wallet activity and selected-output observations;
 then package and integrated acceptance. Existing V1 paths, headless mining,
 wallet pins and payout rules stay unchanged. Sign-in follows this work, D74

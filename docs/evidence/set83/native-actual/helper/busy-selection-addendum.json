@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "scope": "Documentary successor and exact current busy-selection binding; original source-manifest and helper source remain unchanged",
+  "predecessor": {
+    "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/source-manifest.json",
+    "bytes": 6785,
+    "sha256": "1da8e7b0b1b3175b19e8fd217ae40316f5f3afc90b361b4359aa1cc09b3b7aa1"
+  },
+  "correction": {
+    "path": "pending_preconditions[0]",
+    "prior": "Root-selected exact private-credential-busy to exported ErrRemotePoolBusy correction must be qualified and rebound before execution; current input hashes explicitly precede that correction.",
+    "replacement": "Root-selected exact private-credential-busy to exported ErrRemotePoolBusy correction is present in the already-bound input7139cbb5. The earlier pre-correction wording was stale; qualification remains root-owned and pending completion of race/refusal/source binding."
+  },
+  "selected_input": {
+    "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_read_lease.go",
+    "bytes": 2465,
+    "sha256": "7139cbb5262b2af89f1bed6687087d48f609d4f1a8a78a208a6f3dacb94b17a2"
+  },
+  "root_reported_status": "Focused affected normal64 tests PASS; race/refusal running at root message. No execution by this agent.",
+  "helper_sources_unchanged": [
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/main.go",
+      "bytes": 16914,
+      "sha256": "2757e233b12d49a328ea7f4b1deb11899a52f8d0e1f0e639e57d7b793e4a8e67"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/observer_support.go",
+      "bytes": 7366,
+      "sha256": "4e874f7f23106e366e3d2cf1c48c7808b6385415eb3885dd8380ae8e2d22dfab"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/go.mod",
+      "bytes": 203,
+      "sha256": "9b0199e64c34218856f9bd9d7d4b22709d8c6a337d227ddbf8ea1c9255a73b8b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/PLAN.md",
+      "bytes": 8487,
+      "sha256": "4e50313bbc74b5fafafebd6ede1f12f7a1e035577ab13d4d22e56b148a41b7ff"
+    }
+  ]
+}

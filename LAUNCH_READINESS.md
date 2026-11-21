@@ -32,6 +32,9 @@ The current order is:
 2. **Wallet balances and history — active.** Connect and verify the existing authenticated
    balance, payout and wallet-activity paths against the hosted test service,
    including dated observations and visible pending/deferred states.
+   Set83's native paid-wallet read/reopen passes: the original 19.8-test-SLUG
+   payment, credits, outbox and protected history survive both lifetimes.
+   The desktop history display and own-wallet activity/output checks remain.
 3. **Sign-in and onboarding.** Complete D82 mandatory MFA/passkey support and the
    approved recovery/reset controls after the pool and wallet flows. Fixture
    buttons are not real authentication; no security requirement is deferred.

@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "status": "source-only-unexecuted",
+  "scope": "Original paid root native read orchestration only; root owns final financial and infrastructure audits",
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/run-native-actual.py",
+      "bytes": 11485,
+      "sha256": "3c10a0f110a475f9abd3a512631dd892237608031e61df5b74b030339904ebc8"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/lifecycle/operator-lifecycle.sh",
+      "bytes": 13486,
+      "sha256": "47aa4461eff2e8e31dec57e625fbc15e71f8be8bb8ca1ddd7a8aa91cb9a495eb"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/lifecycle-source-manifest.json",
+      "bytes": 2726,
+      "sha256": "59254869bda2daffddab0322da3c82fb316a95449b4c372373f097f7dc3d11cf"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/source-manifest.json",
+      "bytes": 6785,
+      "sha256": "1da8e7b0b1b3175b19e8fd217ae40316f5f3afc90b361b4359aa1cc09b3b7aa1"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/busy-selection-addendum.json",
+      "bytes": 2115,
+      "sha256": "d5652bf8baaaa12f8864055e64906680beceb1ab8198fb43fb83eac7f2f103fe"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/operator-control.py",
+      "bytes": 5033,
+      "sha256": "00d4240d47327f1e9e70938372834506705250a762994bd5877e6705127ed99f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/client-control.py",
+      "bytes": 2382,
+      "sha256": "b84d6eb24ac05b1ad7814b4a7ccb5a0ddd829a90219931bd73ea8fe38c4e798e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-acceptance-build/native-payout-acceptance",
+      "bytes": 20989762,
+      "sha256": "18a3ed34493d6598a6871462ee51a1dff18557c9e94349b6f97fbd3fe3114ba6"
+    }
+  ]
+}

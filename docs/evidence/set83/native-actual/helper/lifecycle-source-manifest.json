@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "scope": "Source-only separate300s operator lifetime over exact original paid root; original5 sources/evidence unchanged",
+  "execution_authorized": false,
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/lifecycle/operator-lifecycle.sh",
+      "bytes": 13486,
+      "sha256": "47aa4461eff2e8e31dec57e625fbc15e71f8be8bb8ca1ddd7a8aa91cb9a495eb"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/lifecycle-selection.diff",
+      "bytes": 3459,
+      "sha256": "dc95cf93d904754a6b23bb577c5e04c968300dc4dd917bb84ec2f09c407c64e5"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/LIFECYCLE_SELECTION.md",
+      "bytes": 2638,
+      "sha256": "9db85d07b49cecaa9ab376ab448f770670206a9498d832420ef768652beaba0f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/busy-selection-addendum.json",
+      "bytes": 2115,
+      "sha256": "d5652bf8baaaa12f8864055e64906680beceb1ab8198fb43fb83eac7f2f103fe"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/lifecycle/operator-lifecycle.sh",
+      "bytes": 12055,
+      "sha256": "ecdfdf06afae77425466c2d6853bd9b5dfd16407d956976b0d7ab57add2e8b30"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/transport-source-manifest.json",
+      "bytes": 2601,
+      "sha256": "c7c2af990faf2987899c485cbfad99b4336f638ece3752bdd1a2ce174e9c93bc"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/operator-03-closed/result.json",
+      "bytes": 412,
+      "sha256": "8daa8957a71aa4bd7d85fa5772c93945efbd5b7267661074309b0e433aa6c96c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/qualification.json",
+      "bytes": 3310,
+      "sha256": "5050e22b3b90106b2f65fa9263453bb1aa7194c80f64390bb7a8812f61ccbc79"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/source-manifest.json",
+      "bytes": 6785,
+      "sha256": "1da8e7b0b1b3175b19e8fd217ae40316f5f3afc90b361b4359aa1cc09b3b7aa1"
+    }
+  ],
+  "validation": "sh -n only; no shell action, Go, build, network or host mutation",
+  "runtime_preconditions": [
+    "Root full busy-correction qualification and new source/profile execution lock",
+    "Root-authorized original node/private-TLS/bridge restoration, unchanged original data and height165",
+    "Root fixed setup/binary comparison and old joined owner audit; valid original credentials/certificate; same UTCday",
+    "Separate fresh300s clock shared by operator and native helper; final original joins and immutable financial/outbox/history checks"
+  ]
+}

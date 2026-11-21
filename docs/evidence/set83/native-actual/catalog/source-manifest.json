@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "scope": "Source-only closed original root hash catalog. No database decoding, no old-root writes. Runtime and complete logical outbox proof remain root-owned.",
+  "review_method": "AST and named public/source identities only; reviewer did not inspect owner trees or execute checker",
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-catalog-review/check-paid-roots.py",
+      "bytes": 6983,
+      "sha256": "32e8580549efdb2dc23ce84a43729d8426bb1058006ac01b892aa1016a773a4e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-catalog-review/inputs.json",
+      "bytes": 1978,
+      "sha256": "3ad52aeace84fa3a0d93dfd17ae9efb028beaf3d8a30d755f55ac8db73c665d1"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-catalog-review/README.md",
+      "bytes": 4358,
+      "sha256": "8aeac545eeb83a62a69ba5a2af45373608dcf8bda42ddc947e26de6704c86465"
+    }
+  ],
+  "input_identity_count": 9,
+  "script_execution_authorized_by_root_only": true
+}

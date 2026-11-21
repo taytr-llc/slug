@@ -1,0 +1,609 @@
+{
+  "version": 1,
+  "status": "proposed-copy-map-not-installed",
+  "scope": "Explicit public native component acceptance only; no recursive source or runtime-tree copy",
+  "destination_root": "/Users/taytrrip/slug/slug",
+  "new_root": "docs/evidence/set83/native-actual",
+  "entries": [
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-after-command.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/native-actual/audit-after-command.txt",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-after-command.txt.status.json",
+      "bytes": 237,
+      "sha256": "f3537b7aff9da2993a9428a7a3d6f671a07f3362c1115de62ff50837cc31ae61",
+      "target": "docs/evidence/set83/native-actual/audit-after-command.txt.status.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-after-command.txt.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/native-actual/audit-after-command.txt.stderr",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-after.base64",
+      "bytes": 66124,
+      "sha256": "4db6d80ffb17b1c68113ff755bbcbf3b72d246314526b6145eb437b7a24fc233",
+      "target": "docs/evidence/set83/native-actual/audit-after.base64",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-after.base64.status.json",
+      "bytes": 233,
+      "sha256": "855c65a1bf5b7d38764918d91d239e6aa661b5fe21b3cfc10d967bb141c48e75",
+      "target": "docs/evidence/set83/native-actual/audit-after.base64.status.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-after.base64.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/native-actual/audit-after.base64.stderr",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-after.json",
+      "bytes": 48319,
+      "sha256": "32370035bae86867a63ca03a70238ccd8dd5fe9b6b71fd194ff794c2302cefd0",
+      "target": "docs/evidence/set83/native-actual/audit-after.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-before-command.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/native-actual/audit-before-command.txt",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-before-command.txt.status.json",
+      "bytes": 239,
+      "sha256": "fdb9fcd7facfb35381e609fc58e91ea44165ab4ae42e3bfd34d0b8e8c8344cb7",
+      "target": "docs/evidence/set83/native-actual/audit-before-command.txt.status.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-before-command.txt.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/native-actual/audit-before-command.txt.stderr",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-before.base64",
+      "bytes": 65944,
+      "sha256": "78edbfa0ba89f91dff65e1e9f338cf6606516d9b477ec315ea7c1a2c3c95ec1d",
+      "target": "docs/evidence/set83/native-actual/audit-before.base64",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-before.base64.status.json",
+      "bytes": 234,
+      "sha256": "41baf2fd1826c6e52a42d5cbeaa5132f614bff242f9609c58474dc064ff09898",
+      "target": "docs/evidence/set83/native-actual/audit-before.base64.status.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-before.base64.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/native-actual/audit-before.base64.stderr",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-before.json",
+      "bytes": 48189,
+      "sha256": "6da8d7c1dd9109fc3e8b7dc2ab00ac92ac4ad96f313efe6cdad96f1e34baea1f",
+      "target": "docs/evidence/set83/native-actual/audit-before.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/bridge-console.log",
+      "bytes": 41,
+      "sha256": "1ecfe603001f090483d6b68e823efc2f7d3a52a54e7ae6093e73be5c6464d156",
+      "target": "docs/evidence/set83/native-actual/bridge-console.log",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/bridge-stop-request.json",
+      "bytes": 232,
+      "sha256": "66db270ed6ce2b3f9161233be1be7facb7cecb830f62b8e03cac5f33bbffcfbb",
+      "target": "docs/evidence/set83/native-actual/bridge-stop-request.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/bridge-successor-console.log",
+      "bytes": 72,
+      "sha256": "aed62025a8bdcd8b3c939faf70f0119be7b1e2f8124105d1c4422de1783a344f",
+      "target": "docs/evidence/set83/native-actual/bridge-successor-console.log",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/catalog-checker-selection.json",
+      "bytes": 216,
+      "sha256": "f7645602ae123e4e2d258b40b9e73c0be8b5d2647870d8805a2fbc3c81eb5fd8",
+      "target": "docs/evidence/set83/native-actual/catalog-checker-selection.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/host-node-after.json",
+      "bytes": 1395,
+      "sha256": "a3d48a211ddc8991056451e8740dc6f140fa7b82696fb08ce6df3bf24cdce10b",
+      "target": "docs/evidence/set83/native-actual/host-node-after.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/host-node-after.json.status.json",
+      "bytes": 233,
+      "sha256": "7ca839bb343cff8e61cce7815e8c4d29f6e90cd36d160fefd43c5f15ba9ebac8",
+      "target": "docs/evidence/set83/native-actual/host-node-after.json.status.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/host-node-after.json.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/native-actual/host-node-after.json.stderr",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/host-node-before-corrected.json",
+      "bytes": 1395,
+      "sha256": "a3d48a211ddc8991056451e8740dc6f140fa7b82696fb08ce6df3bf24cdce10b",
+      "target": "docs/evidence/set83/native-actual/host-node-before-corrected.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/host-node-before-corrected.json.status.json",
+      "bytes": 246,
+      "sha256": "37eb3173edac9343af06e33178a32fe7e1308f4b928a6c03234a58b793e7fb99",
+      "target": "docs/evidence/set83/native-actual/host-node-before-corrected.json.status.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/host-node-before-corrected.json.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/native-actual/host-node-before-corrected.json.stderr",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/host-node-before.json",
+      "bytes": 58,
+      "sha256": "c732a54cf94ff9509d2bd8e728aa66f3692a6d81b56b018e1af0bb899a2516b9",
+      "target": "docs/evidence/set83/native-actual/host-node-before.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/host-node-before.json.status.json",
+      "bytes": 235,
+      "sha256": "3e794f535bf6d378e7d5f43ed3cf1ed64c0a08bb98d18ef36920bac4d6eac957",
+      "target": "docs/evidence/set83/native-actual/host-node-before.json.status.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/host-node-before.json.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/native-actual/host-node-before.json.stderr",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/host-node-shutdown.json",
+      "bytes": 9097,
+      "sha256": "a7a4e52b4654568fe59622034a2a317cc6cf6e1ed473a959d0a8d70b5fd3fedc",
+      "target": "docs/evidence/set83/native-actual/host-node-shutdown.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/host-node-stop-request.txt",
+      "bytes": 42,
+      "sha256": "f08a6b385492070c8e4765faed419945448500ba208fea777754c135557a909c",
+      "target": "docs/evidence/set83/native-actual/host-node-stop-request.txt",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/host-node-stop-request.txt.status.json",
+      "bytes": 242,
+      "sha256": "88ac698bae8669b8bac1388fbf2756ea2a4fe3867e23891a23c3fcb2f003a378",
+      "target": "docs/evidence/set83/native-actual/host-node-stop-request.txt.status.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/host-node-stop-request.txt.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/native-actual/host-node-stop-request.txt.stderr",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/installed-identities.txt",
+      "bytes": 313,
+      "sha256": "bfae603e487b8df9f26ae612ed7478d0a0036a45b359feb8a05c588b4d2f3d34",
+      "target": "docs/evidence/set83/native-actual/installed-identities.txt",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/installed-identities.txt.status.json",
+      "bytes": 239,
+      "sha256": "8e995392de08bc4ae86a2906a9f74db13fe04b45d800c9833bb82a42cb5706e8",
+      "target": "docs/evidence/set83/native-actual/installed-identities.txt.status.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/installed-identities.txt.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/native-actual/installed-identities.txt.stderr",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/local-node-console.log",
+      "bytes": 2813,
+      "sha256": "b39b81c7878088fe8bd7b4643d65da2cc8fd8880ca2b95e706ddb96af6c7e6bb",
+      "target": "docs/evidence/set83/native-actual/local-node-console.log",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/native-execution-selection.json",
+      "bytes": 357,
+      "sha256": "9edf8565993f68b838481ec9b7d2aed93ccbdc7d70736cf607b425d6277c3c79",
+      "target": "docs/evidence/set83/native-actual/native-execution-selection.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/native-helper.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/native-actual/native-helper.stderr",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/native-helper.stdout",
+      "bytes": 32,
+      "sha256": "717ba1db52ebc7e3a7986a8b2336325cec9329f5ba59c8e8a301dbcb8b5fa868",
+      "target": "docs/evidence/set83/native-actual/native-helper.stdout",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/native-orchestration-report.json",
+      "bytes": 2420,
+      "sha256": "7aba3aa6341a5c4a683eb80b4bbd0a96138c046e322dcc9378babf2a6a1bff34",
+      "target": "docs/evidence/set83/native-actual/native-orchestration-report.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/native-report.json",
+      "bytes": 24120,
+      "sha256": "b23b82b8a2b279958899375835fa87fd4f02642eefdf42e2472b1d93077ba746",
+      "target": "docs/evidence/set83/native-actual/native-report.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/operator-listening.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/native-actual/operator-listening.stderr",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/operator-listening.stdout",
+      "bytes": 144,
+      "sha256": "6d4e336f8cc85f61fcf4001703a473ace5fddf08e926d93ca4a653c4ad9cb6e4",
+      "target": "docs/evidence/set83/native-actual/operator-listening.stdout",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/operator-run.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/native-actual/operator-run.stderr",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/operator-run.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/native-actual/operator-run.stdout",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/operator-stop.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/native-actual/operator-stop.stderr",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/operator-stop.stdout",
+      "bytes": 407,
+      "sha256": "161d6d4e5d01474386ee6e8c2fcf49a8e3ebd0c64771c2d916e88d57a3e199b3",
+      "target": "docs/evidence/set83/native-actual/operator-stop.stdout",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/outbox-replay.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/native-actual/outbox-replay.stderr",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/outbox-replay.stdout",
+      "bytes": 26855,
+      "sha256": "d8b91cffc48140622d73feff81bb561aae8263e5ec3086cbc2ee662438ca3885",
+      "target": "docs/evidence/set83/native-actual/outbox-replay.stdout",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/paid-roots-after.json",
+      "bytes": 60161,
+      "sha256": "083e5a18e04f0d873b9beaa3ae0f03eb2d41645a164b231faf5c088c05ad329d",
+      "target": "docs/evidence/set83/native-actual/paid-roots-after.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/paid-roots-before.json",
+      "bytes": 60350,
+      "sha256": "d881fac0de67def46b93724ed78dcada08d179088afd986684aefded3bdfeacc",
+      "target": "docs/evidence/set83/native-actual/paid-roots-before.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/paid-roots-comparison.json",
+      "bytes": 2999,
+      "sha256": "bf7a079af0f103d58c5f6074ff34cd0d7d02c502873d5cad59d4a3bb7ed2add3",
+      "target": "docs/evidence/set83/native-actual/paid-roots-comparison.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/root-infrastructure-joins.json",
+      "bytes": 1234,
+      "sha256": "c5ef110a4702f7abb6af6b5411e2e0c6fa7925b9fdf3c2f108ae080287fe4390",
+      "target": "docs/evidence/set83/native-actual/root-infrastructure-joins.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/root-source-after.json",
+      "bytes": 668,
+      "sha256": "0b8d949ccdf8487bf1f5a6fc2c313e393382a695e1fc110ad48c7a35e4cc0fae",
+      "target": "docs/evidence/set83/native-actual/root-source-after.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/root-source-before.json",
+      "bytes": 6420,
+      "sha256": "830b1e51349db3994c831812860a472ff3ca9713be8c5b8d462fd6c0f469be29",
+      "target": "docs/evidence/set83/native-actual/root-source-before.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/runner-selection.json",
+      "bytes": 260,
+      "sha256": "bf052c47a4b5dd9d1461a384c6a0b0abcbd4e6780149f56cd1141e85412b7085",
+      "target": "docs/evidence/set83/native-actual/runner-selection.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/wrapper-install.txt",
+      "bytes": 218,
+      "sha256": "6b008511555f7b77ff4596d8c6ce5508f8e883b3396889c0d1bc91d25d839956",
+      "target": "docs/evidence/set83/native-actual/wrapper-install.txt",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/wrapper-install.txt.status.json",
+      "bytes": 234,
+      "sha256": "322a11ff66b13e0159f765a2b1f03786c00c5ccf5e341b72df1f6873ae733b5f",
+      "target": "docs/evidence/set83/native-actual/wrapper-install.txt.status.json",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/wrapper-install.txt.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/native-actual/wrapper-install.txt.stderr",
+      "category": "public-runtime-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/main.go",
+      "bytes": 16914,
+      "sha256": "2757e233b12d49a328ea7f4b1deb11899a52f8d0e1f0e639e57d7b793e4a8e67",
+      "target": "docs/evidence/set83/native-actual/helper/main.go.txt",
+      "category": "public-helper-source"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/observer_support.go",
+      "bytes": 7366,
+      "sha256": "4e874f7f23106e366e3d2cf1c48c7808b6385415eb3885dd8380ae8e2d22dfab",
+      "target": "docs/evidence/set83/native-actual/helper/observer_support.go.txt",
+      "category": "public-helper-source"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/go.mod",
+      "bytes": 203,
+      "sha256": "9b0199e64c34218856f9bd9d7d4b22709d8c6a337d227ddbf8ea1c9255a73b8b",
+      "target": "docs/evidence/set83/native-actual/helper/go.mod.txt",
+      "category": "public-helper-source"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/PLAN.md",
+      "bytes": 8487,
+      "sha256": "4e50313bbc74b5fafafebd6ede1f12f7a1e035577ab13d4d22e56b148a41b7ff",
+      "target": "docs/evidence/set83/native-actual/helper/PLAN.md",
+      "category": "public-helper-source"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/source-manifest.json",
+      "bytes": 6785,
+      "sha256": "1da8e7b0b1b3175b19e8fd217ae40316f5f3afc90b361b4359aa1cc09b3b7aa1",
+      "target": "docs/evidence/set83/native-actual/helper/source-manifest.json",
+      "category": "public-helper-source"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/busy-selection-addendum.json",
+      "bytes": 2115,
+      "sha256": "d5652bf8baaaa12f8864055e64906680beceb1ab8198fb43fb83eac7f2f103fe",
+      "target": "docs/evidence/set83/native-actual/helper/busy-selection-addendum.json",
+      "category": "public-helper-source"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/run-native-actual.py",
+      "bytes": 14654,
+      "sha256": "56b75b273f407828b864c9493d03f97f1af9321d6bd5f1fb333353796aa70411",
+      "target": "docs/evidence/set83/native-actual/helper/run-native-actual.py",
+      "category": "public-helper-source"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/runner-source-manifest.json",
+      "bytes": 3375,
+      "sha256": "6f02852841e009b30a5c7f7ecbd44d32543c814f14b1292e09daeef361df9895",
+      "target": "docs/evidence/set83/native-actual/helper/runner-source-manifest.json",
+      "category": "public-helper-source"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/runner-outbox-replay.diff",
+      "bytes": 7518,
+      "sha256": "ba8119a3473a240a6fef0aa5f171353896bc845f1264ae304ca2f6e90dbc6f0a",
+      "target": "docs/evidence/set83/native-actual/helper/runner-outbox-replay.diff",
+      "category": "public-helper-source"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/runner-before-outbox-replay/run-native-actual.py",
+      "bytes": 11485,
+      "sha256": "3c10a0f110a475f9abd3a512631dd892237608031e61df5b74b030339904ebc8",
+      "target": "docs/evidence/set83/native-actual/helper/runner-before-outbox-replay.py",
+      "category": "public-helper-source"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/runner-before-outbox-replay/runner-source-manifest.json",
+      "bytes": 1903,
+      "sha256": "e2a87fbfc76977d4401a13cdbaa810ed154d9c62d05c13ffc3da9305290daab2",
+      "target": "docs/evidence/set83/native-actual/helper/runner-before-outbox-replay-manifest.json",
+      "category": "public-helper-source"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/lifecycle/operator-lifecycle.sh",
+      "bytes": 13486,
+      "sha256": "47aa4461eff2e8e31dec57e625fbc15e71f8be8bb8ca1ddd7a8aa91cb9a495eb",
+      "target": "docs/evidence/set83/native-actual/helper/operator-lifecycle.sh",
+      "category": "public-helper-source"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/lifecycle-source-manifest.json",
+      "bytes": 2726,
+      "sha256": "59254869bda2daffddab0322da3c82fb316a95449b4c372373f097f7dc3d11cf",
+      "target": "docs/evidence/set83/native-actual/helper/lifecycle-source-manifest.json",
+      "category": "public-helper-source"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-catalog-review/check-paid-roots.py",
+      "bytes": 6983,
+      "sha256": "32e8580549efdb2dc23ce84a43729d8426bb1058006ac01b892aa1016a773a4e",
+      "target": "docs/evidence/set83/native-actual/catalog/check-paid-roots.py",
+      "category": "public-helper-source"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-catalog-review/source-manifest.json",
+      "bytes": 1010,
+      "sha256": "2abdc947321937b0b2ad41aec00c60ba949aa190e1d3efe78d735b123cb31e2c",
+      "target": "docs/evidence/set83/native-actual/catalog/source-manifest.json",
+      "category": "public-helper-source"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-catalog-review/inputs.json",
+      "bytes": 1978,
+      "sha256": "3ad52aeace84fa3a0d93dfd17ae9efb028beaf3d8a30d755f55ac8db73c665d1",
+      "target": "docs/evidence/set83/native-actual/catalog/inputs.json",
+      "category": "public-helper-source"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-catalog-review/README.md",
+      "bytes": 4358,
+      "sha256": "8aeac545eeb83a62a69ba5a2af45373608dcf8bda42ddc947e26de6704c86465",
+      "target": "docs/evidence/set83/native-actual/catalog/README.md",
+      "category": "public-helper-source"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-acceptance-build/build-info.txt",
+      "bytes": 3393,
+      "sha256": "2a91c05f58589136c843310f5d04938150aa458ad0d0e7ec9a5e8eca756fd6ee",
+      "target": "docs/evidence/set83/native-actual/build/build-info.txt",
+      "category": "public-build-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-acceptance-build/build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target": "docs/evidence/set83/native-actual/build/build.log",
+      "category": "public-build-evidence"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-final-review/review.json",
+      "bytes": 16043,
+      "sha256": "fd01fee2077a93995fd53ff341381af0dadd5f349e2552ec4149b41ee283043a",
+      "target": "docs/evidence/set83/native-actual/review.json",
+      "category": "public-review"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-final-review/QUALIFICATION.md",
+      "bytes": 4095,
+      "sha256": "b7e47c1a3bdf658002e672de12c68665f684a1315ab2f66d90f83cfc3ee65135",
+      "target": "docs/evidence/set83/native-actual/QUALIFICATION.md",
+      "category": "public-review"
+    }
+  ],
+  "reference_only": [
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/qualification.json",
+      "bytes": 3310,
+      "sha256": "5050e22b3b90106b2f65fa9263453bb1aa7194c80f64390bb7a8812f61ccbc79"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/proof-replay-after.json",
+      "bytes": 26855,
+      "sha256": "65f48981afe3f86bd5a3e3ca00c7bb7a81b117ba1b9388d6140908ad21ac8095"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/proof-confirmed-money.json",
+      "bytes": 3168,
+      "sha256": "6f15c9b75f68fb555846ed8214c6a7269719176f9034c95fc743cd5f479e2d18"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/wallet-confirmed.json",
+      "bytes": 779,
+      "sha256": "a4fd782e71f3d4fb22f36101fdb85407a77fe61ab1532b5f7af078dbbc051902"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/audit-after.json",
+      "bytes": 48192,
+      "sha256": "083f67b573b0fde1cd010869839616bd8b6cc4a74c54a7643a9566d9c57406c1"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/fixture-catalog.json",
+      "bytes": 66249,
+      "sha256": "2637978c2e08637dae2a21bf7fcb8e9ab37edb3476e2b9512c73ff16809b7e55"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set81/actual-selection-attempt1/primary.json",
+      "bytes": 174293,
+      "sha256": "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a"
+    }
+  ],
+  "copy_count": 79,
+  "copy_bytes": 568144,
+  "excluded": [
+    "Executables",
+    "Private fixture or wallet DB contents",
+    "Protected credentials or TLS/private keys",
+    "Any unnamed runtime file"
+  ],
+  "immutable_predecessors_preserved": true,
+  "actual_runtime_not_executed_by_reviewer": true
+}

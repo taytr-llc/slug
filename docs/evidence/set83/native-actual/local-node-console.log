@@ -1,0 +1,33 @@
+2026-11-21 10:41:49.304 [INF] BTCD: Version 0.27.0
+2026-11-21 10:41:49.305 [INF] BTCD: Loading block database from '/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/owned/node-primary/data/mainnet/blocks_ffldb'
+2026-11-21 10:41:49.338 [INF] BTCD: Block database loaded
+2026-11-21 10:41:49.343 [INF] INDX: Transaction index is enabled
+2026-11-21 10:41:49.343 [INF] INDX: Committed filter index is enabled
+2026-11-21 10:41:49.343 [INF] CHAN: Pre-allocating for 251 MiB
+2026-11-21 10:41:49.370 [INF] CHAN: Loading block index...
+2026-11-21 10:41:49.371 [INF] CHAN: Chain state (height 165, hash 47a427c54e584cd90cfedc0f2918ab4251eee194bd93f2bdf6b8774159acf503, totaltx 167, work 332)
+2026-11-21 10:41:49.371 [INF] BTCD: Phase-A script activation: bip34=62 bip65=62 bip66=62 csv=62 segwit=62 taproot=62 nextheight=166
+2026-11-21 10:41:49.372 [INF] RPCS: RPC server listening on 127.0.0.1:29582
+2026-11-21 10:41:49.372 [INF] AMGR: Loaded 0 addresses from file '/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt1/owned/node-primary/data/mainnet/peers.json'
+2026-11-21 10:43:04.587 [INF] SYNC: New valid peer 127.0.0.1:29489 (outbound) (/btcwire:0.5.0/slug:0.27.0/)
+2026-11-21 10:53:40.772 [INF] RPCS: New websocket client 127.0.0.1:58844
+2026-11-21 10:53:41.805 [INF] RPCS: Beginning rescan for 1 address
+2026-11-21 10:53:42.052 [INF] RPCS: Finished rescan
+2026-11-21 10:53:43.518 [ERR] RPCS: Websocket receive error from 127.0.0.1:58844: websocket: close 1006 (abnormal closure): unexpected EOF
+2026-11-21 10:53:43.519 [INF] RPCS: Disconnected websocket client 127.0.0.1:58844
+2026-11-21 10:53:44.711 [INF] RPCS: New websocket client 127.0.0.1:58864
+2026-11-21 10:53:45.743 [INF] RPCS: Beginning rescan for 1 address
+2026-11-21 10:53:45.744 [INF] RPCS: Finished rescan
+2026-11-21 10:53:47.075 [ERR] RPCS: Websocket receive error from 127.0.0.1:58864: websocket: close 1006 (abnormal closure): unexpected EOF
+2026-11-21 10:53:47.075 [INF] RPCS: Disconnected websocket client 127.0.0.1:58864
+2026-11-21 10:55:06.157 [INF] BTCD: Received signal (interrupt).  Shutting down...
+2026-11-21 10:55:06.157 [INF] BTCD: Gracefully shutting down the server...
+2026-11-21 10:55:06.157 [WRN] SRVR: Server shutting down
+2026-11-21 10:55:06.157 [WRN] RPCS: RPC server shutting down
+2026-11-21 10:55:06.158 [INF] RPCS: RPC server shutdown complete
+2026-11-21 10:55:06.181 [INF] SYNC: Sync manager shutting down
+2026-11-21 10:55:06.181 [INF] CHAN: Flushing UTXO cache of 97 MiB with 1 entries to disk. For large sizes, this can take up to several minutes...
+2026-11-21 10:55:06.185 [INF] AMGR: Address manager shutting down
+2026-11-21 10:55:06.186 [INF] SRVR: Server shutdown complete
+2026-11-21 10:55:06.186 [INF] BTCD: Gracefully shutting down the database...
+2026-11-21 10:55:06.194 [INF] BTCD: Shutdown complete

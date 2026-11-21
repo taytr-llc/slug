@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "scope": "named public/source files only; no actual owner tree read by reviewer",
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/run.py",
+      "bytes": 32403,
+      "sha256": "d5bed85d6b29771ff9f084d27ba1056bdf38ef52bde66ec83216893968d1a573"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set79-prep/public-daily-headless/runner_support.py",
+      "bytes": 3888,
+      "sha256": "54bb3e7caf33e744ce76bf366dd23a4eff4d370d9246b85758089b57dd2439d7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/fixture-catalog.json",
+      "bytes": 66249,
+      "sha256": "2637978c2e08637dae2a21bf7fcb8e9ab37edb3476e2b9512c73ff16809b7e55"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/fixture-after.json",
+      "bytes": 2171,
+      "sha256": "2df94a122e03a3b2a1901cfc0608b470d62ba2b99ef0f7c8e9ee36dea8b2bbe9"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/proof-replay-after.json",
+      "bytes": 26855,
+      "sha256": "65f48981afe3f86bd5a3e3ca00c7bb7a81b117ba1b9388d6140908ad21ac8095"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/proofclient/replay.go",
+      "bytes": 4846,
+      "sha256": "b040a41f29e6066c18a23cf52aff65516bca99e74b09cf4db81a62def7b95026"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual-5/proofclient/outbox_audit.go",
+      "bytes": 11444,
+      "sha256": "84fa9a045b9f1edb607cbfdec7948902cdc8f344595bebbc62922862bc8e0f77"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_config.go",
+      "bytes": 10582,
+      "sha256": "6d8e04f4e6a07c3e87acc8b441594970a0d0387f932b3161606a3ed37b47ec7e"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/prospectworker/pool_issue_outbox.go",
+      "bytes": 11027,
+      "sha256": "12d7c0a66e7dfbb175c58a63f5fe1a7efdaf3b10b764aafc83a687f8fe9183f4"
+    }
+  ]
+}

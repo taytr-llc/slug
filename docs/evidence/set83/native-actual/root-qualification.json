@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "passed": true,
+  "component": "native paid-wallet reads and same-root reopen",
+  "root_reviewed": true,
+  "public_archive_plan_sha256": "fc0bf26b87f81b8d8c1cf7888e844e1a3687eeaaf791d412ad8a30860ddb2911",
+  "public_archive_copies": 79,
+  "ui_activity_qualified": false,
+  "no_new_payment": true,
+  "source_commit": "005897c3e0fa87f55c6ab9a703a28d9f80163da2",
+  "claims": "See QUALIFICATION.md and public original reports for exact finite scope and prior failed preparations.",
+  "additional_public_evidence": [
+    {
+      "path": "docs/evidence/set83/native-actual/failed-node-reopen-deployment.json",
+      "bytes": 1097,
+      "sha256": "eda6ac3ec2a044a9f2fae6c45f0d589557d61a61f5135367698839a75c497571",
+      "scope": "Failed original-bootstrap reopen9d5 before explicitly staged preserved-root start2c78; not relabeled passed."
+    }
+  ]
+}

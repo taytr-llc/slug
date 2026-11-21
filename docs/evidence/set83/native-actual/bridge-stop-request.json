@@ -1,0 +1,8 @@
+{
+  "pid": 19122,
+  "original_exec_session": 78373,
+  "exact_command_checked": true,
+  "signal": "SIGTERM",
+  "requested_at_ms": 1795287395049,
+  "reason": "PTY input did not yield exit; target remains original qualified process"
+}

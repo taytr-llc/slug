@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "scope": "Native read/owner joins only; root financial and infrastructure audits remain required",
+  "started_at_ms": 1795287215179,
+  "deadline_at_ms": 1795287515000,
+  "ended_at_ms": 1795287229995,
+  "native_binary_sha256": "18a3ed34493d6598a6871462ee51a1dff18557c9e94349b6f97fbd3fe3114ba6",
+  "processes": {
+    "operator-run": {
+      "pid": 19798,
+      "pgid": 19798,
+      "started_at_ms": 1795287215182,
+      "joined": true,
+      "exit_code": 0,
+      "forced": false,
+      "signals": [],
+      "finished_at_ms": 1795287229995,
+      "stdout_bytes": 0,
+      "stderr_bytes": 0
+    },
+    "operator-listening": {
+      "pid": 19799,
+      "pgid": 19799,
+      "started_at_ms": 1795287215184,
+      "joined": true,
+      "exit_code": 0,
+      "forced": false,
+      "signals": [],
+      "finished_at_ms": 1795287218656,
+      "stdout_bytes": 144,
+      "stderr_bytes": 0
+    },
+    "native-helper": {
+      "pid": 19806,
+      "pgid": 19806,
+      "started_at_ms": 1795287218660,
+      "joined": true,
+      "exit_code": 0,
+      "forced": false,
+      "signals": [],
+      "finished_at_ms": 1795287227111,
+      "stdout_bytes": 32,
+      "stderr_bytes": 0
+    },
+    "outbox-replay": {
+      "pid": 19833,
+      "pgid": 19833,
+      "started_at_ms": 1795287227117,
+      "joined": true,
+      "exit_code": 0,
+      "forced": false,
+      "signals": [],
+      "finished_at_ms": 1795287227769,
+      "stdout_bytes": 26855,
+      "stderr_bytes": 0
+    },
+    "operator-stop": {
+      "pid": 19834,
+      "pgid": 19834,
+      "started_at_ms": 1795287227772,
+      "joined": true,
+      "exit_code": 0,
+      "forced": false,
+      "signals": [],
+      "finished_at_ms": 1795287229940,
+      "stdout_bytes": 407,
+      "stderr_bytes": 0
+    }
+  },
+  "stop_result": {
+    "version": 1,
+    "generation": "01",
+    "owner_pid": 48,
+    "child_pid": 90,
+    "started_at": 1795287216,
+    "finished_at": 1795287229,
+    "deadline": 1795287515,
+    "reason": "requested",
+    "child_exit": 0,
+    "monitor_exit": 0,
+    "child_waited": true,
+    "monitor_joined": true,
+    "clean": true,
+    "setup_sha256": "87db5803e70418affbf492b2716e2104d6902ec9294940141fe97a885a5c3525",
+    "binary_sha256": "86a3bfa7cb07951e83eaca6df346a4be8bebe72df30d779705c83f7f8ac3a85f"
+  },
+  "native_report_passed": true,
+  "outbox_replay_unchanged": true,
+  "inputs_unchanged": true,
+  "errors": [],
+  "passed": true
+}

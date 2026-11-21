@@ -1,0 +1,152 @@
+{
+  "version": 1,
+  "scope": "Source-only draft original paid-wallet native acceptance. No product, host or runtime mutation; no build or execution.",
+  "ready_for_execution": false,
+  "build_files": [
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/main.go",
+      "bytes": 16914,
+      "sha256": "2757e233b12d49a328ea7f4b1deb11899a52f8d0e1f0e639e57d7b793e4a8e67"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/observer_support.go",
+      "bytes": 7366,
+      "sha256": "4e874f7f23106e366e3d2cf1c48c7808b6385415eb3885dd8380ae8e2d22dfab"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/go.mod",
+      "bytes": 203,
+      "sha256": "9b0199e64c34218856f9bd9d7d4b22709d8c6a337d227ddbf8ea1c9255a73b8b"
+    }
+  ],
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/PLAN.md",
+      "bytes": 8487,
+      "sha256": "4e50313bbc74b5fafafebd6ede1f12f7a1e035577ab13d4d22e56b148a41b7ff"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/main.go",
+      "bytes": 16914,
+      "sha256": "2757e233b12d49a328ea7f4b1deb11899a52f8d0e1f0e639e57d7b793e4a8e67"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/observer_support.go",
+      "bytes": 7366,
+      "sha256": "4e874f7f23106e366e3d2cf1c48c7808b6385415eb3885dd8380ae8e2d22dfab"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/go.mod",
+      "bytes": 203,
+      "sha256": "9b0199e64c34218856f9bd9d7d4b22709d8c6a337d227ddbf8ea1c9255a73b8b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-acceptance-draft/support-extraction.diff",
+      "bytes": 8975,
+      "sha256": "5c2ad98eafa1b05386ebcb00ee1cb6a434ee1b7c3f7fc961b7d46fa871f6bb1a"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/client/main.go",
+      "bytes": 14938,
+      "sha256": "146a3c004348a70b364d86ff58ababdb03a3029fcf7dcbfb2ffb06e94ffc4599"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set82-prep/hosted-actual/client/source-manifest.json",
+      "bytes": 3299,
+      "sha256": "e24b8396acc0b705dc504fbeab94b4d41db9eafd575c3ade4c5dcb29bc3190ac"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/wallet-daily-adapter/implementation/source-checkpoint.json",
+      "bytes": 8624,
+      "sha256": "21bfa077d87dab5128294f1e8b5e2a3909152293cde288f4e45cc424248e64a4"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set81/actual-selection-attempt1/primary.json",
+      "bytes": 174293,
+      "sha256": "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/qualification.json",
+      "bytes": 3310,
+      "sha256": "5050e22b3b90106b2f65fa9263453bb1aa7194c80f64390bb7a8812f61ccbc79"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/proof-confirmed-money.json",
+      "bytes": 3168,
+      "sha256": "6f15c9b75f68fb555846ed8214c6a7269719176f9034c95fc743cd5f479e2d18"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/wallet-confirmed.json",
+      "bytes": 779,
+      "sha256": "a4fd782e71f3d4fb22f36101fdb85407a77fe61ab1532b5f7af078dbbc051902"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/accountpilot/remote_pool_daily_reads.go",
+      "bytes": 1883,
+      "sha256": "53fb2c1c0cc2717d028e1e078ae85a326b2dc02c029abdef54bcb04e2d527573"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/accountpilot/remote_pool_controller.go",
+      "bytes": 11309,
+      "sha256": "8c23bc195a1ba370d5dc5611f1c02845982cbdfe97b381dfeae4ed304a6410a8"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/accountpilot/remote_pool_session.go",
+      "bytes": 13419,
+      "sha256": "eb83ee3399ca511538ecf3452471e26fa31633a4f6115250095dd36e3e63305f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_reads.go",
+      "bytes": 9918,
+      "sha256": "44e0b06741c9ac1052334bb535ca0ec882c39278bae4fef53dc56d08144e410f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_pages.go",
+      "bytes": 5281,
+      "sha256": "90a3c002279c74a7f394a4a27094554772fa035ef4aa594ecbca5bf8d99c7879"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_daily_read_lease.go",
+      "bytes": 2465,
+      "sha256": "7139cbb5262b2af89f1bed6687087d48f609d4f1a8a78a208a6f3dacb94b17a2"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_attachment.go",
+      "bytes": 11900,
+      "sha256": "2f9e4a95e914bf648874e70e05a6b46c4e7bb924c5f1096292b2b19b59abb9d9"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_credentials.go",
+      "bytes": 11664,
+      "sha256": "c4acd5c966e3e1adbc3658978c3d5ee493fbc4320d57cd67a26928620f062e15"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/desktop/pilot/remote_pool_worker.go",
+      "bytes": 11712,
+      "sha256": "c7a4a08c1dcf59d059f2010ba1455993ceeb5248d89a074a9f794e8d034342fd"
+    },
+    {
+      "path": "/Users/taytrrip/slug/slug/poolsettle/daily_payout_history.go",
+      "bytes": 10499,
+      "sha256": "19c7b4e0a4bc2be5f204c5c75b70a2d2418b884cd9e9fdfb595339a9c0176e47"
+    }
+  ],
+  "pending_preconditions": [
+    "Root-selected exact private-credential-busy to exported ErrRemotePoolBusy correction must be qualified and rebound before execution; current input hashes explicitly precede that correction.",
+    "Root-owned new same-day bounded execution restores unchanged original paid node/operator/account/attachment owners; original attempt5 deadline and evidence remain complete and immutable.",
+    "Original protected credentials/certificates must still be valid; no repinning/rotation/reset authorized by this draft.",
+    "Root binds full current paired product/dependency/profile sources and process supervision before any build/run; this file is not an execution lock."
+  ],
+  "static_checks": [
+    "Original helper extraction/import-use and exact public input hash constants manually inspected; no Go/gofmt/import/runtime/network command executed.",
+    "Native scenario calls no worker Start, Issue, signing, mining, payout or arbitrary wallet-output API."
+  ],
+  "claim_limits": [
+    "Completed Cancel only, not observed blocked-HTTP cancellation.",
+    "Single terminal history window/cached replay only, not nonterminal pagination.",
+    "Physical same-root reopen/new original View, not a retained old View or copied/reset wallet.",
+    "Root closed financial/outbox/history audits and infrastructure process joins remain separate mandatory acceptance evidence."
+  ]
+}

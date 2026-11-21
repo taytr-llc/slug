@@ -1,0 +1,9 @@
+module github.com/taytr-llc/slug/desktop/nativepayoutactual
+
+go 1.27.3
+
+require (
+ github.com/taytr-llc/slug v0.27.0
+ github.com/taytr-llc/slug/desktop v0.0.0
+ github.com/taytr-llc/slug/wire/v2 v2.0.2
+)

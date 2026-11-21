@@ -1,0 +1,282 @@
+// Source-only native payout acceptance over the original paid Set82 owners.
+package main
+
+import (
+	"context"
+	"encoding/hex"
+	"encoding/json"
+	"errors"
+	"flag"
+	"fmt"
+	"io"
+	"os"
+	"os/signal"
+	"path/filepath"
+	"reflect"
+	"strings"
+	"syscall"
+	"time"
+
+	"github.com/taytr-llc/slug/desktop/accountpilot"
+	"github.com/taytr-llc/slug/desktop/pilot"
+	"github.com/taytr-llc/slug/gymstable"
+	"github.com/taytr-llc/slug/poolsettle"
+	"github.com/taytr-llc/slug/prospectnode"
+	"github.com/taytr-llc/slug/registry"
+	"github.com/taytr-llc/slug/wire/v2"
+)
+
+const (
+	paidAtoms int64 = 1980000000
+	priorMoneySHA = "6f15c9b75f68fb555846ed8214c6a7269719176f9034c95fc743cd5f479e2d18"
+	priorWalletSHA = "a4fd782e71f3d4fb22f36101fdb85407a77fe61ab1532b5f7af078dbbc051902"
+	qualificationSHA = "5050e22b3b90106b2f65fa9263453bb1aa7194c80f64390bb7a8812f61ccbc79"
+)
+
+type nativeSelection struct {
+	selections
+	qualification, money, wallet string
+	deadlineMS int64
+}
+type priorMoney struct {
+	Passed bool `json:"passed"`
+	RemoteID string `json:"remote_id"`
+	SetupID string `json:"setup_id"`
+	Pages []poolsettle.DailyPayoutPage `json:"pages"`
+}
+type nativeGeneration struct {
+	Number int `json:"number"`
+	View pilot.RemotePoolView `json:"view"`
+	WalletBefore *observation `json:"wallet_before"`
+	WalletAfter *observation `json:"wallet_after"`
+	Captured *pilot.RemoteDailyPayoutRead `json:"captured"`
+	Replayed *pilot.RemoteDailyPayoutRead `json:"replayed"`
+	AfterStop *pilot.RemoteDailyPayoutRead `json:"after_stop"`
+	AdmissionCallerCanceled bool `json:"admission_caller_canceled"`
+	CompletedCancelJoined bool `json:"completed_cancel_joined"`
+	StopJoined bool `json:"stop_joined"`
+	OldViewRefused bool `json:"old_view_refused"`
+	LoggedOut bool `json:"logged_out"`
+	Closed bool `json:"closed"`
+}
+type nativeResult struct {
+	Version uint32 `json:"version"`
+	Scope string `json:"scope"`
+	PID int `json:"pid"`
+	ParentPID int `json:"parent_pid"`
+	StartedAtMS int64 `json:"started_at_ms"`
+	EndedAtMS int64 `json:"ended_at_ms"`
+	DeadlineAtMS int64 `json:"deadline_at_ms"`
+	ReferenceSHA256 string `json:"reference_sha256"`
+	PriorQualificationSHA256 string `json:"prior_qualification_sha256"`
+	PriorMoneySHA256 string `json:"prior_money_sha256"`
+	PriorWalletSHA256 string `json:"prior_wallet_sha256"`
+	ConfigID string `json:"config_id"`
+	Generations []nativeGeneration `json:"generations"`
+	StartCalls uint64 `json:"start_calls"`
+	IssueCalls uint64 `json:"issue_calls"`
+	InputsUnchanged bool `json:"inputs_unchanged"`
+	OriginalRootIdentitiesUnchanged bool `json:"original_root_identities_unchanged"`
+	CleanJoin bool `json:"clean_join"`
+	Error string `json:"error"`
+	CleanupError string `json:"cleanup_error"`
+	Passed bool `json:"passed"`
+}
+
+func fixedPublic(path string, size int64, sha string, inputs *[]retainedInput, dst any) error {
+	raw, in, e := readInput(path, size, false)
+	if e != nil { return e }
+	*inputs = append(*inputs, in)
+	if int64(len(raw)) != size || hex.EncodeToString(in.hash[:]) != sha { return errors.New("public input selection mismatch") }
+	return json.Unmarshal(raw, dst)
+}
+func rootIdentity(path string) (os.FileInfo, error) {
+	if !filepath.IsAbs(path) || filepath.Clean(path) != path { return nil, errors.New("original root path") }
+	resolved, e := filepath.EvalSymlinks(path)
+	if e != nil || resolved != path { return nil, errors.New("original root ancestry") }
+	i, e := os.Lstat(path)
+	if e != nil { return nil, e }
+	s, ok := i.Sys().(*syscall.Stat_t)
+	if !ok || !i.IsDir() || i.Mode().Perm() != 0700 || s.Uid != uint32(os.Geteuid()) { return nil, errors.New("original closed owned0700 root required") }
+	return i, nil
+}
+func nativeWrite(f *os.File, v any) error {
+	b, e := json.Marshal(v)
+	if e != nil || len(b) > 256*1024 { return errors.Join(errors.New("bounded public report"), e) }
+	b = append(b, '\n')
+	n, e := f.Write(b)
+	if n != len(b) { e = errors.Join(e, io.ErrShortWrite) }
+	return errors.Join(e, f.Sync())
+}
+func nativePoll(ctx context.Context, owner *accountpilot.RemotePoolController, view string, sequence uint64) (pilot.RemoteDailyPayoutRead, error) {
+	work, stop := context.WithTimeout(ctx, 30*time.Second)
+	defer stop()
+	for {
+		v, e := owner.DailyPayoutRead(work, view, sequence)
+		if e == nil {
+			if v.Job.Sequence != sequence { return v, errors.New("read correlation changed") }
+			if v.Job.State == "done" { return v, nil }
+			if v.Job.State != "working" { return v, errors.New("native read failed") }
+		} else if e != pilot.ErrRemotePoolBusy { return v, e }
+		if e = pause(work, 100*time.Millisecond); e != nil { return pilot.RemoteDailyPayoutRead{}, e }
+	}
+}
+func requireWallet(v observation, prior observation) error {
+	if v.WalletState != "ready" || v.WalletHeight != 165 || v.SpendableAtoms != paidAtoms || v.ImmatureAtoms != 0 || v.UnconfirmedAtoms != 0 || v.Records != 2 || v.Pending != 0 || v.LastError != "" || v.ConfigID != prior.ConfigID || v.GymID != prior.GymID || v.SourceBindingID != prior.SourceBindingID || v.OriginalSourceBindingID != prior.OriginalSourceBindingID || v.PayoutAddress != prior.PayoutAddress {
+		return errors.New("original paid wallet changed or not ready")
+	}
+	return nil
+}
+func requireCapture(v pilot.RemoteDailyPayoutRead, view pilot.RemotePoolView, c pilot.RecoverableRemotePoolConfig, id string, prior poolsettle.DailyPayoutPage) error {
+	if v.Job.State != "done" || v.Job.Error != "" || v.Capture == nil || v.Capture.Sequence != 1 || v.Capture.Stale { return errors.New("completed original capture required") }
+	x := v.Capture
+	pid, e := registry.IssueProfileID(c.IssueProfile)
+	if e != nil { return e }
+	sid, e := poolsettle.DailyConfigBindingID(c.Base.Settlement)
+	if e != nil { return e }
+	b := x.Binding
+	local := c.Base.ExpectedLocal
+	if b.View != view || b.ConfigID != id || b.SourceBindingID != c.Base.Miners.SourceID || b.SettlementConfigID != sid || b.RecipientScript != local.Recipient.Recipient.Script || b.IssueProfileID != pid || b.OriginalSourceBindingID != local.OriginalSourceBindingID || b.WalletOwnerID != local.WalletOwnerID || b.AllocationBindingID != local.AllocationBindingID { return errors.New("native original money/view binding changed") }
+	for _, page := range []poolsettle.DailyPayoutPage{x.First,x.Current} {
+		if _, e := poolsettle.ValidateDailyPayoutPage(page, view.GymID); e != nil { return e }
+		if page.Version != 2 || page.BindingID != prior.BindingID || page.SettlementConfigID != prior.SettlementConfigID || page.RecipientScript != prior.RecipientScript || page.HighBatch != 1 || page.BeforeBatch != 2 || page.NextBefore != 0 || !page.Done || page.Balance != prior.Balance || !reflect.DeepEqual(page.Items, prior.Items) || page.ObservedAtMS < prior.ObservedAtMS { return errors.New("original paid page changed") }
+	}
+	if !reflect.DeepEqual(x.First,x.Current) { return errors.New("single-window history changed") }
+	return nil
+}
+
+func nativeRun(life context.Context, s nativeSelection) (returnErr error) {
+	if wire.TestPoW { return errors.New("normal PoW required") }
+	start := time.Now().UTC()
+	deadline := time.UnixMilli(s.deadlineMS)
+	if !deadline.After(start) || deadline.After(start.Add(300*time.Second)) || deadline.UTC().Format("2006-01-02") != "2026-11-21" || start.Format("2006-01-02") != "2026-11-21" { return errors.New("fresh same-day absolute acceptance deadline required") }
+	ctx, cancel := context.WithDeadline(life, deadline)
+	defer cancel()
+	out, e := exclusive(s.report)
+	if e != nil { return e }
+	report := nativeResult{Version:1,Scope:"Native healthy stopped paid-owner reads and physical reopen only; no worker Start, Issue, payment or blocked-HTTP cancellation claim",PID:os.Getpid(),ParentPID:os.Getppid(),StartedAtMS:start.UnixMilli(),DeadlineAtMS:s.deadlineMS,ReferenceSHA256:referenceSHA,PriorQualificationSHA256:qualificationSHA,PriorMoneySHA256:priorMoneySHA,PriorWalletSHA256:priorWalletSHA,Generations:[]nativeGeneration{}}
+	var inputs []retainedInput
+	var owner *accountpilot.RemotePoolController
+	var view string
+	var ownedInfo, attachmentInfo os.FileInfo
+	closeOwner := func() error {
+		if owner == nil { return nil }
+		var ce error
+		g := &report.Generations[len(report.Generations)-1]
+		if view != "" {
+			work, stop := context.WithTimeout(context.Background(),30*time.Second)
+			e := owner.Logout(work,view)
+			stop()
+			g.LoggedOut = e == nil
+			ce = errors.Join(ce,e)
+		}
+		ce2 := owner.Close()
+		g.Closed = ce2 == nil
+		ce = errors.Join(ce,ce2)
+		owner,view = nil,"" // Never retry a possibly failed original Close.
+		return ce
+	}
+	defer func(){
+		if recover()!=nil { returnErr=errors.Join(returnErr,errors.New("native acceptance panic")) }
+		ce := closeOwner()
+		ie := unchanged(inputs)
+		report.InputsUnchanged = ie == nil
+		ce = errors.Join(ce,ie)
+		if ownedInfo != nil && attachmentInfo != nil {
+			a,ae := rootIdentity(s.owned); b,be := rootIdentity(s.attachment)
+			report.OriginalRootIdentitiesUnchanged = ae == nil && be == nil && os.SameFile(ownedInfo,a) && os.SameFile(attachmentInfo,b)
+			ce = errors.Join(ce,ae,be)
+			if !report.OriginalRootIdentitiesUnchanged { ce = errors.Join(ce,errors.New("original root identity changed")) }
+		}
+		report.EndedAtMS=time.Now().UTC().UnixMilli()
+		if report.EndedAtMS>s.deadlineMS { returnErr=errors.Join(returnErr,context.DeadlineExceeded) }
+		report.CleanJoin=ce==nil && len(report.Generations)==2
+		for _,g:=range report.Generations {report.CleanJoin=report.CleanJoin&&g.LoggedOut&&g.Closed}
+		report.Error,report.CleanupError=code(returnErr),code(ce)
+		report.Passed=returnErr==nil&&ce==nil&&report.CleanJoin&&report.InputsUnchanged&&report.OriginalRootIdentitiesUnchanged
+		we:=nativeWrite(out,report); fe:=out.Close()
+		returnErr=errors.Join(returnErr,ce,we,fe)
+		if !report.Passed&&returnErr==nil{returnErr=errors.New("native acceptance incomplete")}
+	}()
+	ownedInfo,e=rootIdentity(s.owned);if e!=nil{return e}
+	attachmentInfo,e=rootIdentity(s.attachment);if e!=nil{return e}
+	var ref reference
+	if e=fixedPublic(s.reference,174293,referenceSHA,&inputs,&ref);e!=nil{return e}
+	var q struct{Passed bool `json:"passed"`; FinancialReviewSHA string `json:"financial_review_sha256"`}
+	if e=fixedPublic(s.qualification,3310,qualificationSHA,&inputs,&q);e!=nil{return e}
+	var money priorMoney
+	if e=fixedPublic(s.money,3168,priorMoneySHA,&inputs,&money);e!=nil{return e}
+	var walletPrior observation
+	if e=fixedPublic(s.wallet,779,priorWalletSHA,&inputs,&walletPrior);e!=nil{return e}
+	if !q.Passed || q.FinancialReviewSHA!="4ec754e9f21b831ce4c7e63c1fce2d3414be30ccaeee2c9ccc5f2985339d629f" || !money.Passed || len(money.Pages)!=2 || money.Pages[0].Balance.PaidAtoms!=paidAtoms || len(money.Pages[0].Items)!=1 || money.Pages[0].Items[0].Payment.Atoms!=paidAtoms || walletPrior.SpendableAtoms!=paidAtoms || ref.Fixture.Fixture!="incrementing256" || ref.Fixture.ExpectedLocal!=ref.Remote.Base.ExpectedLocal {return errors.New("qualified original paid selection required")}
+	raw,in,e:=readInput(s.remote,pilot.RecoverableRemotePoolMaxConfigBytes,true);if e!=nil{return e};inputs=append(inputs,in)
+	c,e:=pilot.ParseRecoverableRemotePoolConfig(raw);if e!=nil{return e}
+	normalized:=c.Base; normalized.Origin=ref.Remote.Base.Origin;normalized.CACertificate=ref.Remote.Base.CACertificate
+	if c.Base.ExpectedLocal!=ref.Fixture.ExpectedLocal || !reflect.DeepEqual(normalized,ref.Remote.Base){return errors.New("original fixture finance or local binding changed")}
+	id,e:=pilot.RecoverableRemotePoolConfigID(c);if e!=nil{return e};report.ConfigID=id
+	if id!=money.RemoteID||id!=walletPrior.ConfigID{return errors.New("original selected remote changed")}
+	raw,in,e=readInput(s.rpc,prospectnode.MaxRPCConfigSize,true);if e!=nil{return e};inputs=append(inputs,in)
+	rpc,e:=prospectnode.ParseRPCConfig(raw);clear(raw);if e!=nil{return e}
+	for _,path:=range []string{s.pool,s.admission}{raw,in,e=readInput(path,4096,true);clear(raw);if e!=nil{return e};inputs=append(inputs,in)}
+	selected:=pilot.RecoverableRemotePoolInputs{AttachmentRoot:s.attachment,Config:c,NodeRPC:rpc,PoolCredentialPath:s.pool,AdmissionCredentialPath:s.admission}
+	var previousView pilot.RemotePoolView
+	for generation:=1;generation<=2;generation++ {
+		report.Generations=append(report.Generations,nativeGeneration{Number:generation})
+		g:=&report.Generations[len(report.Generations)-1]
+		work,stop:=context.WithTimeout(ctx,60*time.Second)
+		owner,e=accountpilot.OpenRecoverableDailyRemotePoolController(work,s.owned,ref.Fixture.Options,selected);stop();if e!=nil{return e}
+		v,e:=snapshot(ctx,owner);if e!=nil{return e}
+		if v.State!="signed_out"||v.View!=nil||v.Remote!=nil||v.Version!=2||v.ConfigID!=id{return errors.New("original reopened signed-out owner required")}
+		work,stop=context.WithTimeout(ctx,90*time.Second);e=owner.LoginFixture(work,ref.Fixture.Fixture);stop();if e!=nil{return e}
+		v,e=snapshot(ctx,owner);if e!=nil{return e};if v.View==nil{return errors.New("original View absent")}
+		view=v.View.ViewID;g.View=*v.View
+		before,e:=observed(v,ref.Fixture,c,id,view,1);if e!=nil{return e};if e=requireWallet(before,walletPrior);e!=nil{return e};g.WalletBefore=&before
+		if generation==2 {
+			stable:=g.View;stable.ViewID=previousView.ViewID
+			if g.View.ViewID==previousView.ViewID||stable!=previousView{return errors.New("same original account must reopen under new View")}
+			_,e=owner.DailyPayoutRead(ctx,previousView.ViewID,1)
+			g.OldViewRefused=e==gymstable.ErrStaleView
+			if !g.OldViewRefused{return errors.New("prior closed View retained access")}
+		}
+		// Canceling this successful admission's caller must not cancel its job.
+		admission,admitCancel:=context.WithCancel(ctx)
+		job,e:=owner.BeginDailyPayoutRead(admission,view,1,0,0);admitCancel()
+		if e!=nil{return e}
+		if job.Sequence!=1||job.CaptureSequence!=0||job.BeforeBatch!=0||job.State!="working"{return errors.New("new native capture admission changed")}
+		g.AdmissionCallerCanceled=true
+		captured,e:=nativePoll(ctx,owner,view,1);if e!=nil{return e}
+		if e=requireCapture(captured,g.View,c,id,money.Pages[0]);e!=nil{return e};g.Captured=&captured
+		if e=owner.CancelDailyPayoutRead(ctx,view,1);e!=nil{return e};g.CompletedCancelJoined=true
+		afterCancel,e:=owner.DailyPayoutRead(ctx,view,1);if e!=nil||!reflect.DeepEqual(afterCancel,captured){return errors.Join(errors.New("completed cancellation changed capture"),e)}
+		// One retained page is the entire selected one-batch history. Replay is
+		// the actual API's cached window path, not an invented next cursor.
+		job,e=owner.BeginDailyPayoutRead(ctx,view,2,1,captured.Capture.First.BeforeBatch);if e!=nil{return e}
+		if job.Sequence!=2||job.CaptureSequence!=1||job.BeforeBatch!=2{return errors.New("cached-window admission changed")}
+		replayed,e:=nativePoll(ctx,owner,view,2);if e!=nil{return e}
+		if e=requireCapture(replayed,g.View,c,id,money.Pages[0]);e!=nil{return e}
+		if !reflect.DeepEqual(replayed.Capture,captured.Capture){return errors.New("cached replay changed original capture")};g.Replayed=&replayed
+		if e=owner.Stop(ctx,view);e!=nil{return e};g.StopJoined=true
+		afterStop,e:=owner.DailyPayoutRead(ctx,view,2);if e!=nil||!reflect.DeepEqual(afterStop,replayed){return errors.Join(errors.New("Stop lost completed capture"),e)};g.AfterStop=&afterStop
+		v,e=snapshot(ctx,owner);if e!=nil{return e}
+		after,e:=observed(v,ref.Fixture,c,id,view,2);if e!=nil{return e};if e=requireWallet(after,walletPrior);e!=nil{return e};g.WalletAfter=&after
+		previousView=g.View
+		if e=closeOwner();e!=nil{return e}
+		if e=unchanged(inputs);e!=nil{return e}
+	}
+	return nil
+}
+
+func main(){
+	if wire.TestPoW {fmt.Fprintln(os.Stderr,"normal PoW required");os.Exit(1)}
+	var s nativeSelection
+	fs:=flag.NewFlagSet("native-payout-acceptance",flag.ContinueOnError)
+	for _,x:=range []struct{name string;target *string}{{"owned-root",&s.owned},{"attachment-root",&s.attachment},{"reference",&s.reference},{"remote-config",&s.remote},{"node-rpc",&s.rpc},{"pool-credential",&s.pool},{"admission-credential",&s.admission},{"prior-qualification",&s.qualification},{"prior-money",&s.money},{"prior-wallet",&s.wallet},{"report",&s.report}}{fs.StringVar(x.target,x.name,"","explicit original path")}
+	fs.Int64Var(&s.deadlineMS,"deadline-ms",0,"fresh absolute deadline, maximum300seconds")
+	if e:=fs.Parse(os.Args[1:]);e!=nil||fs.NArg()!=0{os.Exit(2)}
+	seen:=map[string]bool{}
+	for _,p:=range []string{s.owned,s.attachment,s.reference,s.remote,s.rpc,s.pool,s.admission,s.qualification,s.money,s.wallet,s.report}{if !filepath.IsAbs(p)||filepath.Clean(p)!=p||seen[p]{os.Exit(2)};seen[p]=true}
+	for _,root:=range []string{s.owned,s.attachment}{rel,e:=filepath.Rel(root,s.report);if e!=nil||rel=="."||(rel!=".."&&!strings.HasPrefix(rel,".."+string(os.PathSeparator))){os.Exit(2)}}
+	life,stop:=signal.NotifyContext(context.Background(),os.Interrupt,syscall.SIGTERM);defer stop()
+	if e:=nativeRun(life,s);e!=nil{fmt.Fprintln(os.Stderr,"native payout acceptance failed; inspect bounded public report");os.Exit(1)}
+	fmt.Println("native payout acceptance joined")
+}

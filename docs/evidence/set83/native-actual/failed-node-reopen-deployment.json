@@ -1,0 +1,42 @@
+{
+  "scope": "deployment",
+  "deploymentId": "9d5e3c35-de9c-4185-8b10-cd6e0007b295",
+  "serviceId": "c7ba8d73-fe01-418e-8f7b-14a141da8043",
+  "environmentId": "3fd7da79-0f2f-4077-bf29-e7035d62ac57",
+  "status": "REMOVED",
+  "deploy": [
+    {
+      "timestamp": "2026-11-21T18:30:48.443351692Z",
+      "severity": "error",
+      "message": "node access refused: expected original root-owned0711 mount",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"error\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:30:48.706534000Z",
+      "severity": "info",
+      "message": "Mounting volume on: /var/lib/containers/railwayapp/bind-mounts/4b62a965-b024-4a60-aa0a-d2bf260a99b2/vol_i3j3a3qeu0mrxahc",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-21T18:30:48.706574922Z",
+      "severity": "info",
+      "message": "Starting Container",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        }
+      ]
+    }
+  ]
+}

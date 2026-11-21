@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "started_at_ms": 1795287215179,
+  "deadline_at_ms": 1795287515000,
+  "setup_sha256": "87db5803e70418affbf492b2716e2104d6902ec9294940141fe97a885a5c3525",
+  "operator_sha256": "86a3bfa7cb07951e83eaca6df346a4be8bebe72df30d779705c83f7f8ac3a85f",
+  "native_binary_sha256": "18a3ed34493d6598a6871462ee51a1dff18557c9e94349b6f97fbd3fe3114ba6"
+}

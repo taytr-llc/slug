@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "observed_at_ms": 1795287434395,
+  "local_node": {
+    "exec_session": 79325,
+    "exit_code": 0,
+    "original_session_joined": true,
+    "log_shutdown_complete": true,
+    "control": "terminal Ctrl-C"
+  },
+  "local_bridge": {
+    "exec_session": 78373,
+    "pid": 19122,
+    "exit_code": 0,
+    "original_session_joined": true,
+    "control": "guarded SIGTERM after terminal input did not exit"
+  },
+  "host_node": {
+    "deployment_id": "2c78bcb4-00ef-4f00-bf60-e0f1f04f4b7e",
+    "shutdown": {
+      "timestamp": "2026-11-21T18:55:45.634651441Z",
+      "severity": "info",
+      "message": "",
+      "attributes": [
+        {
+          "key": "level",
+          "value": "\"info\""
+        },
+        {
+          "key": "version",
+          "value": "1"
+        },
+        {
+          "key": "node_child_joined",
+          "value": "true"
+        },
+        {
+          "key": "relay_joined",
+          "value": "true"
+        },
+        {
+          "key": "clean_shutdown",
+          "value": "true"
+        }
+      ]
+    }
+  },
+  "passed": true,
+  "scope": "Original joined local exec sessions and hosted parent structured child+relay marker; isolated idle administration container owns no product state."
+}

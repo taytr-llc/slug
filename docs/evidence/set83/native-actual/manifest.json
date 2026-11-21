@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "status": "finite-public-evidence-review-complete-copy-map-only",
+  "files": [
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-final-review/QUALIFICATION.md",
+      "bytes": 4095,
+      "sha256": "b7e47c1a3bdf658002e672de12c68665f684a1315ab2f66d90f83cfc3ee65135"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-final-review/review.json",
+      "bytes": 16043,
+      "sha256": "fd01fee2077a93995fd53ff341381af0dadd5f349e2552ec4149b41ee283043a"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set83-prep/native-final-review/archive-plan.proposed.json",
+      "bytes": 29078,
+      "sha256": "fc0bf26b87f81b8d8c1cf7888e844e1a3687eeaaf791d412ad8a30860ddb2911"
+    }
+  ],
+  "public_evidence_count": 58,
+  "copy_count": 79,
+  "reference_count": 7,
+  "no_private_root_reads": true,
+  "no_archive_installation": true
+}

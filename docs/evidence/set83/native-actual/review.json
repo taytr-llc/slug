@@ -1,0 +1,373 @@
+{
+  "version": 1,
+  "review_scope": "Named public reports and source identities only; no private-root inspection, product/runtime invocation or archive installation",
+  "native_component_evidence_review": "PASS",
+  "runtime_executor": "root",
+  "source_after_sealed": true,
+  "native_runtime_ms": 7889,
+  "orchestration_runtime_ms": 14816,
+  "absolute_deadline_ms": 1795287515000,
+  "original_wallet_lifetimes": 2,
+  "wallet_height": 165,
+  "spendable_atoms": 1980000000,
+  "confirmed_txid": "2a475d6318ff194115024169265271221aea644a95c7d89e2782ec7492a1afa9",
+  "output_index": 0,
+  "native_start_calls": 0,
+  "native_issue_calls": 0,
+  "complete_old_outbox_preserved": true,
+  "immutable_baseline_file_count": 226,
+  "immutable_settlement_row_count": 15,
+  "financial_body_credits_admissions_unchanged": true,
+  "original_source_identity_rechecks": 28,
+  "public_maintenance_changes": {
+    "ledger_revision_before": 31,
+    "ledger_revision_after": 33,
+    "added_ownership_publications": 1,
+    "new_admissions": 0,
+    "new_births": 0,
+    "new_batches": 0
+  },
+  "prep_failures_preserved": [
+    "wrapper-install.txt",
+    "bridge-console.log",
+    "host-node-before.json"
+  ],
+  "cleanup_basis": "Original five orchestration waits and hosted child/monitor markers; root-infrastructure-joins.json identifies separate original local sessions and structured hosted node marker.",
+  "ui_activity_qualified": false,
+  "continuous_capacity_qualified": false,
+  "blocked_http_cancel_actual_claim": false,
+  "public_evidence": [
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-after-command.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-after-command.txt.status.json",
+      "bytes": 237,
+      "sha256": "f3537b7aff9da2993a9428a7a3d6f671a07f3362c1115de62ff50837cc31ae61"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-after-command.txt.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-after.base64",
+      "bytes": 66124,
+      "sha256": "4db6d80ffb17b1c68113ff755bbcbf3b72d246314526b6145eb437b7a24fc233"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-after.base64.status.json",
+      "bytes": 233,
+      "sha256": "855c65a1bf5b7d38764918d91d239e6aa661b5fe21b3cfc10d967bb141c48e75"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-after.base64.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-after.json",
+      "bytes": 48319,
+      "sha256": "32370035bae86867a63ca03a70238ccd8dd5fe9b6b71fd194ff794c2302cefd0"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-before-command.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-before-command.txt.status.json",
+      "bytes": 239,
+      "sha256": "fdb9fcd7facfb35381e609fc58e91ea44165ab4ae42e3bfd34d0b8e8c8344cb7"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-before-command.txt.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-before.base64",
+      "bytes": 65944,
+      "sha256": "78edbfa0ba89f91dff65e1e9f338cf6606516d9b477ec315ea7c1a2c3c95ec1d"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-before.base64.status.json",
+      "bytes": 234,
+      "sha256": "41baf2fd1826c6e52a42d5cbeaa5132f614bff242f9609c58474dc064ff09898"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-before.base64.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/audit-before.json",
+      "bytes": 48189,
+      "sha256": "6da8d7c1dd9109fc3e8b7dc2ab00ac92ac4ad96f313efe6cdad96f1e34baea1f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/bridge-console.log",
+      "bytes": 41,
+      "sha256": "1ecfe603001f090483d6b68e823efc2f7d3a52a54e7ae6093e73be5c6464d156"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/bridge-stop-request.json",
+      "bytes": 232,
+      "sha256": "66db270ed6ce2b3f9161233be1be7facb7cecb830f62b8e03cac5f33bbffcfbb"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/bridge-successor-console.log",
+      "bytes": 72,
+      "sha256": "aed62025a8bdcd8b3c939faf70f0119be7b1e2f8124105d1c4422de1783a344f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/catalog-checker-selection.json",
+      "bytes": 216,
+      "sha256": "f7645602ae123e4e2d258b40b9e73c0be8b5d2647870d8805a2fbc3c81eb5fd8"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/host-node-after.json",
+      "bytes": 1395,
+      "sha256": "a3d48a211ddc8991056451e8740dc6f140fa7b82696fb08ce6df3bf24cdce10b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/host-node-after.json.status.json",
+      "bytes": 233,
+      "sha256": "7ca839bb343cff8e61cce7815e8c4d29f6e90cd36d160fefd43c5f15ba9ebac8"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/host-node-after.json.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/host-node-before-corrected.json",
+      "bytes": 1395,
+      "sha256": "a3d48a211ddc8991056451e8740dc6f140fa7b82696fb08ce6df3bf24cdce10b"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/host-node-before-corrected.json.status.json",
+      "bytes": 246,
+      "sha256": "37eb3173edac9343af06e33178a32fe7e1308f4b928a6c03234a58b793e7fb99"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/host-node-before-corrected.json.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/host-node-before.json",
+      "bytes": 58,
+      "sha256": "c732a54cf94ff9509d2bd8e728aa66f3692a6d81b56b018e1af0bb899a2516b9"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/host-node-before.json.status.json",
+      "bytes": 235,
+      "sha256": "3e794f535bf6d378e7d5f43ed3cf1ed64c0a08bb98d18ef36920bac4d6eac957"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/host-node-before.json.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/host-node-shutdown.json",
+      "bytes": 9097,
+      "sha256": "a7a4e52b4654568fe59622034a2a317cc6cf6e1ed473a959d0a8d70b5fd3fedc"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/host-node-stop-request.txt",
+      "bytes": 42,
+      "sha256": "f08a6b385492070c8e4765faed419945448500ba208fea777754c135557a909c"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/host-node-stop-request.txt.status.json",
+      "bytes": 242,
+      "sha256": "88ac698bae8669b8bac1388fbf2756ea2a4fe3867e23891a23c3fcb2f003a378"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/host-node-stop-request.txt.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/installed-identities.txt",
+      "bytes": 313,
+      "sha256": "bfae603e487b8df9f26ae612ed7478d0a0036a45b359feb8a05c588b4d2f3d34"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/installed-identities.txt.status.json",
+      "bytes": 239,
+      "sha256": "8e995392de08bc4ae86a2906a9f74db13fe04b45d800c9833bb82a42cb5706e8"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/installed-identities.txt.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/local-node-console.log",
+      "bytes": 2813,
+      "sha256": "b39b81c7878088fe8bd7b4643d65da2cc8fd8880ca2b95e706ddb96af6c7e6bb"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/native-execution-selection.json",
+      "bytes": 357,
+      "sha256": "9edf8565993f68b838481ec9b7d2aed93ccbdc7d70736cf607b425d6277c3c79"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/native-helper.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/native-helper.stdout",
+      "bytes": 32,
+      "sha256": "717ba1db52ebc7e3a7986a8b2336325cec9329f5ba59c8e8a301dbcb8b5fa868"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/native-orchestration-report.json",
+      "bytes": 2420,
+      "sha256": "7aba3aa6341a5c4a683eb80b4bbd0a96138c046e322dcc9378babf2a6a1bff34"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/native-report.json",
+      "bytes": 24120,
+      "sha256": "b23b82b8a2b279958899375835fa87fd4f02642eefdf42e2472b1d93077ba746"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/operator-listening.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/operator-listening.stdout",
+      "bytes": 144,
+      "sha256": "6d4e336f8cc85f61fcf4001703a473ace5fddf08e926d93ca4a653c4ad9cb6e4"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/operator-run.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/operator-run.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/operator-stop.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/operator-stop.stdout",
+      "bytes": 407,
+      "sha256": "161d6d4e5d01474386ee6e8c2fcf49a8e3ebd0c64771c2d916e88d57a3e199b3"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/outbox-replay.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/outbox-replay.stdout",
+      "bytes": 26855,
+      "sha256": "d8b91cffc48140622d73feff81bb561aae8263e5ec3086cbc2ee662438ca3885"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/paid-roots-after.json",
+      "bytes": 60161,
+      "sha256": "083e5a18e04f0d873b9beaa3ae0f03eb2d41645a164b231faf5c088c05ad329d"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/paid-roots-before.json",
+      "bytes": 60350,
+      "sha256": "d881fac0de67def46b93724ed78dcada08d179088afd986684aefded3bdfeacc"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/paid-roots-comparison.json",
+      "bytes": 2999,
+      "sha256": "bf7a079af0f103d58c5f6074ff34cd0d7d02c502873d5cad59d4a3bb7ed2add3"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/root-infrastructure-joins.json",
+      "bytes": 1234,
+      "sha256": "c5ef110a4702f7abb6af6b5411e2e0c6fa7925b9fdf3c2f108ae080287fe4390"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/root-source-after.json",
+      "bytes": 668,
+      "sha256": "0b8d949ccdf8487bf1f5a6fc2c313e393382a695e1fc110ad48c7a35e4cc0fae"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/root-source-before.json",
+      "bytes": 6420,
+      "sha256": "830b1e51349db3994c831812860a472ff3ca9713be8c5b8d462fd6c0f469be29"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/runner-selection.json",
+      "bytes": 260,
+      "sha256": "bf052c47a4b5dd9d1461a384c6a0b0abcbd4e6780149f56cd1141e85412b7085"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/wrapper-install.txt",
+      "bytes": 218,
+      "sha256": "6b008511555f7b77ff4596d8c6ce5508f8e883b3396889c0d1bc91d25d839956"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/wrapper-install.txt.status.json",
+      "bytes": 234,
+      "sha256": "322a11ff66b13e0159f765a2b1f03786c00c5ccf5e341b72df1f6873ae733b5f"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set83/native-actual-attempt1/wrapper-install.txt.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "prior_public_evidence": [
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/qualification.json",
+      "bytes": 3310,
+      "sha256": "5050e22b3b90106b2f65fa9263453bb1aa7194c80f64390bb7a8812f61ccbc79"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/proof-replay-after.json",
+      "bytes": 26855,
+      "sha256": "65f48981afe3f86bd5a3e3ca00c7bb7a81b117ba1b9388d6140908ad21ac8095"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/proof-confirmed-money.json",
+      "bytes": 3168,
+      "sha256": "6f15c9b75f68fb555846ed8214c6a7269719176f9034c95fc743cd5f479e2d18"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/wallet-confirmed.json",
+      "bytes": 779,
+      "sha256": "a4fd782e71f3d4fb22f36101fdb85407a77fe61ab1532b5f7af078dbbc051902"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set82/hosted-actual-attempt5/audit-after.json",
+      "bytes": 48192,
+      "sha256": "083f67b573b0fde1cd010869839616bd8b6cc4a74c54a7643a9566d9c57406c1"
+    },
+    {
+      "path": "/Users/taytrrip/slug/set81-prep/retained-admission-actual/fixture-catalog.json",
+      "bytes": 66249,
+      "sha256": "2637978c2e08637dae2a21bf7fcb8e9ab37edb3476e2b9512c73ff16809b7e55"
+    },
+    {
+      "path": "/Users/taytrrip/slug/artifacts/set81/actual-selection-attempt1/primary.json",
+      "bytes": 174293,
+      "sha256": "17557b28921290461fdf47b9ed6f1b800d3d077ee5d325a4ec59277ab3faca6a"
+    }
+  ],
+  "remaining": [
+    "UI/bridge/activity slice qualification is separate",
+    "Root owns final archive verification/installation",
+    "Earlier failed node deployment public artifact may be added through an explicit supplemental map"
+  ]
+}
