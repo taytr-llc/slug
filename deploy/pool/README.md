@@ -1,11 +1,12 @@
 # Bounded Linux operator package
 
 Candidate package; [native image/component qualification passes](../../CHANGESET_82_NOTES.md)
-at `2d79de95`. The public source export has been checked locally. This packages the existing finite operator;
+for the original package at `2d79de95`. The corrected source below requires its
+own image/host qualification. The public source export has been checked locally. This packages the existing finite operator;
 it adds no capacity, migration, account login or node supervisor. No private
 files are copied into the build context and no service is deployed by this recipe.
 
-The selected sources are chain `138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c` and wallet `dfc5d9dd7e0f604486fbac812d0413fce1f45cd6`. Preserve sibling `slug/` and `slugwallet/` directories: `slug/desktop/go.work` selects all paired modules, and its `go.mod` replaces the wallet with `../../slugwallet`. Build from `slug/desktop`, using local Go1.27.4 and the unchanged `scripts/candidate-go.sh` compiler profile. Do not build from the seed's existing Docker context.
+The selected sources are chain `359a2853ea092b17a832dd1fc824c5d47aec5f12` and wallet `dfc5d9dd7e0f604486fbac812d0413fce1f45cd6`. Preserve sibling `slug/` and `slugwallet/` directories: `slug/desktop/go.work` selects all paired modules, and its `go.mod` replaces the wallet with `../../slugwallet`. Build from `slug/desktop`, using local Go1.27.4 and the unchanged `scripts/candidate-go.sh` compiler profile. Do not build from the seed's existing Docker context.
 
 Linux's protected-file ACL checks use `x/sys/unix.Fgetxattr`, not a C library. The existing Linux qualification script already builds `slugpoold` with `CGO_ENABLED=0`; only its race tests and `slugpilot` build select CGO. This image therefore uses static CGO0 headless binaries and `scratch`, with no GCC, glibc/musl, libacl, GTK or Wails runtime dependency. Darwin's CGO requirement does not transfer to Linux. Both shipped commands now pass native image execution; the earlier operator-only build remains separate evidence.
 
@@ -29,14 +30,15 @@ wallet_archive_sha=$(sha256sum "$context_dir/wallet.tar" | cut -d' ' -f1)
 docker build --platform linux/amd64 \
   --build-arg CHAIN_ARCHIVE_SHA256="$chain_archive_sha" \
   --build-arg WALLET_ARCHIVE_SHA256="$wallet_archive_sha" \
-  --tag slug-operator:138553b1 "$context_dir"
+  --tag slug-operator:359a2853 "$context_dir"
 ```
 
 The archive commit checks are part of the build procedure; OCI labels alone do not authenticate a source tree. The Dockerfile verifies both supplied archive hashes, the candidate compiler, production wire selection and final binaries, and refuses any source-file change during compilation. It retains dependency closure, workspace, binary hashes and build settings under `/usr/share/slug/build/`. Root must retain the archive hashes, build logs and resulting image digest. The exact public Go Alpine image digest comes from the selected chain Dockerfile; the native Linux image job successfully resolved and used it. Module downloads still need the pinned checksums and reachable public module sources or a separately verified cache; no module/version update is proposed. This is a reproducible selection recipe, not a claimed byte-identical image result.
 
 The branch-scoped [package workflow](../../.github/workflows/hosted-pool-package.yml)
 builds this image on native Linux amd64. It requires ten existing component
-tests and all five Linux ACL subcases under UID/GID10001, then executes both
+tests and all five Linux ACL subcases, plus two ownership HTTPS tests and nine
+refusal subcases under UID/GID10001, then executes both
 shipped commands' help paths in the final unprivileged, network-disabled image.
 Its public evidence distinguishes those checks from a real hosted service,
 mounted-volume acceptance, full PID1 shutdown and scheduled payment.
@@ -84,11 +86,11 @@ container_options=(
   --tmpfs /tmp:rw,noexec,nosuid,nodev,size=64m,mode=1777
 )
 docker run --name slug-operator-init "${container_options[@]}" \
-  slug-operator:138553b1 init "${operator_files[@]}"
+  slug-operator:359a2853 init "${operator_files[@]}"
 # Only after the original init result and exact selected identity are verified:
 docker run --name slug-operator-bounded "${container_options[@]}" \
   --publish "$selected_public_port:$selected_ingress_port" \
-  slug-operator:138553b1 serve "${operator_files[@]}"
+  slug-operator:359a2853 serve "${operator_files[@]}"
 ```
 
 Bind the image by its recorded digest for execution. Port values must match the selected public transport and ingress listen configuration. Publish only ingress. Keep pool/admission/ownership upstreams on their configured literal loopback endpoints. The operator terminates its own TLS1.3/HTTP1.1 and verifies Host/SNI/certificate selection; use raw TCP forwarding. An HTTP edge that terminates TLS or inserts forwarded-identity headers is not a compatible substitute. No `$PORT` override or automatic repinning is introduced.

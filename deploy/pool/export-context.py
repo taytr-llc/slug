@@ -7,7 +7,7 @@ from pathlib import Path
 import shutil
 import subprocess
 
-CHAIN = "138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c"
+CHAIN = "359a2853ea092b17a832dd1fc824c5d47aec5f12"
 WALLET = "dfc5d9dd7e0f604486fbac812d0413fce1f45cd6"
 
 

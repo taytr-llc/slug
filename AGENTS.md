@@ -558,6 +558,12 @@ authorization must be repository-limited, not an account-wide OAuth expansion.
   concrete host checks without general capacity expansion. See
   `CHANGESET_82_NOTES.md` and `deploy/pool/README.md`. Transport-pin renewal and
   rotation limits are logged as EF-13; do not fix them incidentally.
+  The first hosted attempt failed at init before mining/payouts because the
+  ownership reader inherited the desktop loopback guard. Correction `359a2853`
+  allows operator-only HTTPS with an explicit CA; full normal/race, TLS/identity
+  refusals, cheap-profile refusal and vet pass. The desktop rule stays strict.
+  Preserve the failed attempt and original clock; a new hosted payout proof is
+  required. EF-15/16 cover separate provider qualification/upload follow-ups.
 - Mike requires a thorough joint design review before friends/tester or public
   product release (D74, November 16). Keep this gate in LAUNCH_READINESS.md;
   a solo review does not replace the session with him. He wants one full review

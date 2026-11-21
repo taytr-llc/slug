@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           repository: taytr-llc/slug
-          ref: 138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c
+          ref: 359a2853ea092b17a832dd1fc824c5d47aec5f12
           path: slug
           persist-credentials: false
           fetch-depth: 1
@@ -84,7 +84,9 @@ jobs:
               'operator-tests.jsonl': ['TestOperatorPrivateInputOwnedReadAndLifetime', 'TestOperatorPrivateInputAdmissionRefusals', 'TestOperatorPrivateInputOriginalIdentityRefusals', 'TestOperatorPrivateInputLinuxACLRefusal', 'TestOperatorFilesLockAndIdentity', 'TestOperatorCommandBlockedOutputJoins', 'TestOperatorRuntimeCloseJoinsAdmittedLocalAction'],
               'authority-tests.jsonl': ['TestOperatorAuthorityExtendedACLRefusal'],
               'ingress-tests.jsonl': ['TestRecoverableIngressOriginalTLSAndJoin', 'TestIngressCloseCancelsAndJoins'],
+              'ownership-https-tests.jsonl': ['TestOperatorOwnedChainSourceExplicitHTTPS', 'TestOperatorOwnedChainSourceHTTPSRefusals'],
           }
+          required['ownership-https-tests.jsonl'] += ['TestOperatorOwnedChainSourceHTTPSRefusals/' + case for case in ('wrong-ca', 'wrong-name', 'wrong-network', 'wrong-genesis', 'wrong-auth', 'empty-ca', 'nonloopback-http', 'redirect', 'desktop-still-loopback')]
           required['operator-tests.jsonl'] += ['TestOperatorPrivateInputLinuxACLRefusal/' + case for case in ('file-access-before', 'parent-access-before', 'parent-default-before', 'file-access-after', 'parent-default-after')]
           for name, names in required.items():
               events = [json.loads(line) for line in (root / 'build' / name).read_text().splitlines()]

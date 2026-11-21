@@ -18,7 +18,7 @@ RUN test "$BUILDPLATFORM" = linux/amd64 && test "$TARGETPLATFORM" = linux/amd64 
     tar -xf /archives/chain.tar && tar -xf /archives/wallet.tar && \
     test -f slug/desktop/go.work && test -f slugwallet/go.mod && \
     mkdir -p /out /build-evidence && \
-    printf '%s\n' 'slug=138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c' 'slugwallet=dfc5d9dd7e0f604486fbac812d0413fce1f45cd6' > /build-evidence/source-revisions.txt && \
+    printf '%s\n' 'slug=359a2853ea092b17a832dd1fc824c5d47aec5f12' 'slugwallet=dfc5d9dd7e0f604486fbac812d0413fce1f45cd6' > /build-evidence/source-revisions.txt && \
     printf '%s  %s\n' "$CHAIN_ARCHIVE_SHA256" chain.tar "$WALLET_ARCHIVE_SHA256" wallet.tar > /build-evidence/source-archives.sha256 && \
     find slug slugwallet -type f -print0 | sort -z | xargs -0 sha256sum > /build-evidence/source-before.sha256
 WORKDIR /src/slug/desktop
@@ -50,6 +50,8 @@ RUN if sh scripts/candidate-go.sh test -mod=readonly -count=1 -timeout=3m -json 
       -run '^TestOperatorAuthorityExtendedACLRefusal$' > /build-evidence/authority-tests.jsonl; then :; else cat /build-evidence/authority-tests.jsonl; exit 1; fi && \
     if sh scripts/candidate-go.sh test -mod=readonly -count=1 -timeout=3m -json ./poolingress \
       -run '^(TestRecoverableIngressOriginalTLSAndJoin|TestIngressCloseCancelsAndJoins)$' > /build-evidence/ingress-tests.jsonl; then :; else cat /build-evidence/ingress-tests.jsonl; exit 1; fi
+RUN if sh scripts/candidate-go.sh test -mod=readonly -count=1 -timeout=3m -json ./fighterownership \
+      -run '^(TestOperatorOwnedChainSourceExplicitHTTPS|TestOperatorOwnedChainSourceHTTPSRefusals)$' > /build-evidence/ownership-https-tests.jsonl; then :; else cat /build-evidence/ownership-https-tests.jsonl; exit 1; fi
 USER 0:0
 WORKDIR /src
 RUN find slug slugwallet -type f -print0 | sort -z | xargs -0 sha256sum > /build-evidence/source-after.sha256 && \
@@ -64,7 +66,7 @@ RUN find slug slugwallet -type f -print0 | sort -z | xargs -0 sha256sum > /build
     chmod 0700 /runtime-root/data && chown 10001:10001 /runtime-root/data && chmod 1777 /runtime-root/tmp
 
 FROM scratch
-LABEL org.opencontainers.image.revision="138553b1c6c3b5e9b1fd13d17861912f7ce1cd4c" \
+LABEL org.opencontainers.image.revision="359a2853ea092b17a832dd1fc824c5d47aec5f12" \
       org.slug.wallet.revision="dfc5d9dd7e0f604486fbac812d0413fce1f45cd6" \
       org.slug.build.profile="slug-go1274-no-cse-v1" \
       org.slug.qualification="candidate package; see exact CI evidence; hosted execution pending"

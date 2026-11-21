@@ -26,7 +26,7 @@ The current order is:
    custody and enrolled miner flow, scheduled payout, restart and exact retry.
    Declare and stay inside a finite test envelope; preserve recovery and visible
    holds. Synthetic loopback proofs alone do not count as hosted acceptance.
-   [Set82](CHANGESET_82_NOTES.md) passes all seven CI jobs, including native Linux image/component checks;
+   [Set82](CHANGESET_82_NOTES.md) passed all seven CI jobs at `2d79de95`, including native Linux image/component checks;
    provider storage, endpoint and actual hosted payout remain to be verified.
    The first hosted initialization failed at an inherited desktop-only address
    rule. Its operator-only explicit-CA HTTPS correction passes normal/race and
